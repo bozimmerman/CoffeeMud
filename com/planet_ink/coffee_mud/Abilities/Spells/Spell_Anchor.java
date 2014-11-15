@@ -82,10 +82,10 @@ public class Spell_Anchor extends Spell
 		{
 			Room roomS=null;
 			Room roomD=null;
-			if((msg.target()!=null)&&(msg.target() instanceof MOB))
+			if(msg.target() instanceof MOB)
 				roomD=((MOB)msg.target()).location();
 			else
-			if((msg.target()!=null)&&(msg.target() instanceof Item))
+			if(msg.target() instanceof Item)
 			{
 				final Item I=(Item)msg.target();
 				if((I.owner()!=null)&&(I.owner() instanceof MOB))
@@ -95,7 +95,7 @@ public class Spell_Anchor extends Spell
 					roomD=(Room)((Item)msg.target()).owner();
 			}
 			else
-			if((msg.target()!=null)&&(msg.target() instanceof Room))
+			if(msg.target() instanceof Room)
 				roomD=(Room)msg.target();
 
 			if((msg.source()!=null)&&(msg.source().location()!=null))

@@ -152,7 +152,7 @@ public class Mime extends ActiveTicker
 		if(msg.tool() instanceof Social)
 		{
 			MOB target=null;
-			if((msg.target()!=null)&&(msg.target() instanceof MOB))
+			if(msg.target() instanceof MOB)
 				target=msg.source();
 			if(ticking instanceof MOB)
 				msg.modify((MOB)ticking,target,msg.tool(),

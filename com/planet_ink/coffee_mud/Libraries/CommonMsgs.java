@@ -560,8 +560,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	public void handleRecall(CMMsg msg)
 	{
 		final MOB recallingmob=msg.source();
-		if((msg.target()!=null)
-		&&(msg.target() instanceof Room)
+		if((msg.target() instanceof Room)
 		&&(recallingmob.location() != msg.target()))
 		{
 			recallingmob.tell(msg.source(),null,msg.tool(),msg.targetMessage());

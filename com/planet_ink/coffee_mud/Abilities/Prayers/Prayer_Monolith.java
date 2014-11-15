@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -98,7 +96,10 @@ public class Prayer_Monolith extends Prayer
 								&&(M.rangeToTarget()>0)
 								&&(M.rangeToTarget()<3)
 								&&(!M.amDead()))
+								{
+									final MOB invoker=(invoker()!=null) ? invoker() : M;
 									CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.phyStats().level()/2,4,0),CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+								}
 							}
 							mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The monolith of ice shatters!!!"));
 							((Item)affected).destroy();

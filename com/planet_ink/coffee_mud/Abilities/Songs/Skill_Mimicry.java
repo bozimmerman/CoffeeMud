@@ -142,7 +142,7 @@ public class Skill_Mimicry extends BardSkill
 		if(msg.tool() instanceof Social)
 		{
 			MOB target=null;
-			if((msg.target()!=null)&&(msg.target() instanceof MOB))
+			if(msg.target() instanceof MOB)
 				target=msg.source();
 			if(affected instanceof MOB)
 				msg.modify((MOB)affected,target,msg.tool(),

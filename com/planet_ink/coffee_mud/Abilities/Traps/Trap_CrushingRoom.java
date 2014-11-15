@@ -126,7 +126,6 @@ public class Trap_CrushingRoom extends StdTrap
 		if((tickID==Tickable.TICKID_TRAP_RESET)&&(getReset()>0))
 		{
 			if((sprung)
-			&&(affected!=null)
 			&&(affected instanceof Room)
 			&&(!disabled())
 			&&(tickDown>=0))

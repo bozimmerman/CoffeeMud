@@ -70,7 +70,7 @@ public class Spell_FakeSpring extends Spell
 			}
 		}
 		else
-		if((msg.tool()!=null)&&(msg.tool()==affected)&&(msg.target()!=null)&&(msg.target() instanceof Drink))
+		if((msg.tool()!=null)&&(msg.tool()==affected)&&(msg.target() instanceof Drink))
 		{
 			if(msg.targetMinor()==CMMsg.TYP_FILL)
 			{

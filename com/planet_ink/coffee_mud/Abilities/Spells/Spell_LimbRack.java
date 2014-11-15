@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -51,9 +50,8 @@ public class Spell_LimbRack extends Spell
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(invoker==null)
-			return false;
 		final MOB mob=(MOB)affected;
+		final MOB invoker=(invoker()!=null) ? invoker() : mob;
 		if((mob.location()!=null)
 		&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>=0)
 		&&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0))

@@ -801,8 +801,7 @@ public class StdDeity extends StdMOB implements Deity
 					   yup=true;
 					break;
 				case TRIGGER_PUTTHING:
-					if((msg.target()!=null)
-					&&(msg.target() instanceof Container)
+					if((msg.target() instanceof Container)
 					&&(msg.tool()!=null)
 					&&(msg.tool() instanceof Item)
 					&&(CMLib.english().containsString(msg.tool().name(),DT.parm1))
@@ -846,7 +845,6 @@ public class StdDeity extends StdMOB implements Deity
 					if((msg.tool()!=null)
 					&&(msg.tool() instanceof Item)
 					&&(((Item)msg.tool()).baseGoldValue()>=CMath.s_int(DT.parm1))
-					&&(msg.target()!=null)
 					&&(msg.target() instanceof Container)
 					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
 						yup=true;
@@ -856,21 +854,18 @@ public class StdDeity extends StdMOB implements Deity
 					&&(msg.tool() instanceof Item)
 					&&(((((Item)msg.tool()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parm1))
 						||((((Item)msg.tool()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parm1)))
-					&&(msg.target()!=null)
 					&&(msg.target() instanceof Container)
 					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
 						yup=true;
 					break;
 				case TRIGGER_BURNMATERIAL:
-					if((msg.target()!=null)
-					&&(msg.target() instanceof Item)
+					if((msg.target() instanceof Item)
 					&&(((((Item)msg.target()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parm1))
 						||((((Item)msg.target()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parm1))))
 							yup=true;
 					break;
 				case TRIGGER_BURNVALUE:
-					if((msg.target()!=null)
-					&&(msg.target() instanceof Item)
+					if((msg.target() instanceof Item)
 					&&(((Item)msg.target()).baseGoldValue()>=CMath.s_int(DT.parm1)))
 						yup=true;
 					break;

@@ -67,7 +67,6 @@ public class Spell_PredictWeather extends Spell
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Tickable.TICKID_MOB)
-		   &&(affected!=null)
 		   &&(affected instanceof MOB)
 		   &&(((MOB)affected).location()!=null)
 		   &&((((MOB)affected).location().domainType()&Room.INDOORS)==0))

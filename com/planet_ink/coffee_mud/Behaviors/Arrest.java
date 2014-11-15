@@ -1873,12 +1873,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 
 		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((msg.tool()==null)||(msg.source().isMine(msg.tool())))
 		&&(msg.target()!=msg.source())
-		&&(!msg.target().name().equals(msg.source().name()))
-		&&(msg.target() instanceof MOB))
+		&&(!msg.target().name().equals(msg.source().name())))
 		{
 			if(isTheJudge(laws,(MOB)msg.target()))
 			{

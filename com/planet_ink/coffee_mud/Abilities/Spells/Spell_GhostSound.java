@@ -51,7 +51,6 @@ public class Spell_GhostSound extends Spell
 	{
 		if((tickID==Tickable.TICKID_MOB)
 		&&(CMLib.dice().rollPercentage()<10)
-		&&(affected!=null)
 		&&(invoker!=null)
 		&&(affected instanceof Room))
 		switch(CMLib.dice().roll(1,14,0))

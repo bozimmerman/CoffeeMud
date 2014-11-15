@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 
@@ -77,6 +75,7 @@ public class Spell_WeaknessFire extends Spell
 		{
 			final MOB M=(MOB)affecting();
 			final Room room=M.location();
+			final MOB invoker=(invoker()!=null) ? invoker() : M;
 			if(room!=null)
 			{
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HEAT_WAVE)

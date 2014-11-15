@@ -52,10 +52,10 @@ public class Spell_StinkingCloud extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
-		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
 			final MOB M=(MOB)affected;
+			final MOB invoker=(invoker()!=null) ? invoker() : M;
 			if((M.location()!=castingLocation)||(M.amDead()))
 				unInvoke();
 			else

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -70,6 +69,7 @@ public class Chant_FeelElectricity extends Chant
 			&&(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)
 			&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_ELECTRIC)))
 			{
+				final MOB invoker=(invoker()!=null) ? invoker() : M;
 				final int damage=CMLib.dice().roll(1,5,0);
 				CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The electricity in the air <DAMAGE> <T-NAME>!");
 				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(invoker!=null)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))

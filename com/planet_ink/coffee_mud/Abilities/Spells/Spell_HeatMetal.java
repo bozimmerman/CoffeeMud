@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -79,10 +77,9 @@ public class Spell_HeatMetal extends Spell
 			return true;
 		if(!(affected instanceof MOB))
 			return true;
-		if(invoker==null)
-			return true;
 
 		final MOB mob=(MOB)affected;
+		final MOB invoker=(invoker()!=null) ? invoker() : mob;
 
 		for(int i=0;i<mob.numItems();i++)
 		{

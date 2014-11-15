@@ -53,7 +53,7 @@ public class Play_Blues extends Play
 			return true;
 
 		final MOB myChar=(MOB)affected;
-		if((msg.target()!=null)&&(msg.target() instanceof MOB)&&(myChar!=invoker()))
+		if((msg.target() instanceof MOB)&&(myChar!=invoker()))
 		{
 			if((msg.amISource(myChar)||(msg.amITarget(myChar))
 			&&(msg.tool() instanceof Social)

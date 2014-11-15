@@ -51,7 +51,7 @@ public class Spell_ShrinkMouth extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((canBeUninvoked())&&(affected!=null))
+		if(canBeUninvoked())
 		{
 			if(affected instanceof MOB)
 			{

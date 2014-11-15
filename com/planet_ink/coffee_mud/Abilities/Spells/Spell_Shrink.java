@@ -52,7 +52,7 @@ public class Spell_Shrink extends Spell
 	{
 		// undo the affects of this spell
 		MOB recheckMOB=null;
-		if((canBeUninvoked())&&(affected!=null))
+		if(canBeUninvoked())
 		{
 			if(affected instanceof MOB)
 			{

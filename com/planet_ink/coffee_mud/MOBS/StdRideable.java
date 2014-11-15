@@ -408,7 +408,6 @@ public class StdRideable extends StdMOB implements Rideable
 			break;
 		case CMMsg.TYP_ENTER:
 			if(amRiding(msg.source())
-			   &&(msg.target()!=null)
 			   &&(msg.target() instanceof Room))
 			{
 				final Room sourceRoom=msg.source().location();
@@ -487,7 +486,7 @@ public class StdRideable extends StdMOB implements Rideable
 		&&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
 		&&(((!CMLib.utensils().reachableItem(msg.source(),msg.target())))
 			|| ((!CMLib.utensils().reachableItem(msg.source(),msg.tool())))
-			|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target()!=null)&&(msg.target() instanceof MOB)&&(msg.target()!=this)&&(!amRiding((MOB)msg.target())))))
+			|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target() instanceof MOB)&&(msg.target()!=this)&&(!amRiding((MOB)msg.target())))))
 		{
 			msg.source().tell(L("You cannot do that while @x1 @x2.",stateString(msg.source()),name(msg.source())));
 			return false;
@@ -507,7 +506,6 @@ public class StdRideable extends StdMOB implements Rideable
 			}
 			else
 			if((msg.amISource(this))
-			   &&(msg.target()!=null)
 			   &&(msg.target() instanceof MOB)
 			   &&((amRiding((MOB)msg.target()))
 				  ||(((MOB)msg.target()).riding()==this)))

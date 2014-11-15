@@ -419,8 +419,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MAGIC)))
 		{
 			Room room=null;
-			if((msg.target()!=null)
-			&&(msg.target() instanceof MOB)
+			if((msg.target() instanceof MOB)
 			&&(((MOB)msg.target()).location()!=null))
 				room=((MOB)msg.target()).location();
 			else

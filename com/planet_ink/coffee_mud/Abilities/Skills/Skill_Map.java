@@ -77,7 +77,6 @@ public class Skill_Map extends StdSkill
 		if((msg.amISource(mob))
 		&&(map!=null)
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof Room)
 		&&(CMLib.flags().canBeSeenBy(msg.target(),msg.source()))
 		&&(!roomsMappedAlready.contains(msg.target()))

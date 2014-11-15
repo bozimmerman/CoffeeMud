@@ -856,8 +856,7 @@ public class StdArea implements Area
 			||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MAGIC)))
 			{
 				Room room=null;
-				if((msg.target()!=null)
-				&&(msg.target() instanceof MOB)
+				if((msg.target() instanceof MOB)
 				&&(((MOB)msg.target()).location()!=null))
 					room=((MOB)msg.target()).location();
 				else
@@ -906,8 +905,7 @@ public class StdArea implements Area
 				if(msg.tool() instanceof Electronics)
 				{
 					Room room=null;
-					if((msg.target()!=null)
-					&&(msg.target() instanceof MOB)
+					if((msg.target() instanceof MOB)
 					&&(((MOB)msg.target()).location()!=null))
 						room=((MOB)msg.target()).location();
 					else

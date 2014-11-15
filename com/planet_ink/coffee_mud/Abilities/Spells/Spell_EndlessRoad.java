@@ -69,7 +69,6 @@ public class Spell_EndlessRoad extends Spell
 		if(msg.amISource(mob)
 		   &&(mob.location()!=null)
 		   &&(msg.targetMinor()==CMMsg.TYP_ENTER)
-		   &&(msg.target()!=null)
 		   &&(msg.target() instanceof Room)
 		   &&(msg.target()!=mob.location()))
 		{

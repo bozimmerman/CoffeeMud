@@ -105,7 +105,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)&&(msg.target()!=null))
+		if(affected!=null)
 		{
 			if((msg.target() instanceof Room)
 			&&(msg.targetMinor()==CMMsg.TYP_ENTER)

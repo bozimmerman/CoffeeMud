@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -69,8 +68,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 		if((--plagueDown)<=0)
 		{
 			plagueDown=5;
-			if(invoker==null)
-				invoker=mob;
+			final MOB invoker=(invoker()!=null) ? invoker() : mob;
 			final int dmg=((mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())))/4)+1;
 			CMLib.combat().postDamage(invoker,mob,this,dmg,CMMsg.TYP_DISEASE,-1,"<T-NAME> feel(s) <T-HIS-HER> innards being consumed by worms!");
 		}

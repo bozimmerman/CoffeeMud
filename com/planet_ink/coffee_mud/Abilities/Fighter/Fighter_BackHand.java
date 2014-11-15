@@ -54,7 +54,6 @@ public class Fighter_BackHand extends MonkSkill
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Tickable.TICKID_MOB)
-		   &&(affected!=null)
 		   &&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;

@@ -79,7 +79,6 @@ public class StdNet extends StdWeapon
 		}
 		else
 		if((msg.tool()==this)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(msg.targetMinor()==CMMsg.TYP_GENERAL)
 		&&(((MOB)msg.target()).isMine(this))

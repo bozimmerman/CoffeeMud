@@ -89,7 +89,7 @@ public class Spell_WizardLock extends Spell
 	@Override
 	public void unInvoke()
 	{
-		if((canBeUninvoked())&&(affected!=null))
+		if(canBeUninvoked())
 		{
 			if(affected instanceof Exit)
 			{

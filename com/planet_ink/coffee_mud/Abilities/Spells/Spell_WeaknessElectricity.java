@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 
@@ -98,6 +96,7 @@ public class Spell_WeaknessElectricity extends Spell
 		{
 			final MOB M=(MOB)affecting();
 			final Room room=M.location();
+			final MOB invoker=(invoker()!=null) ? invoker() : M;
 			if((room!=null)
 			&&(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)
 			&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_ELECTRIC)))

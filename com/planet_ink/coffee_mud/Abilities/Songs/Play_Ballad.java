@@ -51,7 +51,7 @@ public class Play_Ballad extends Play
 			return;
 
 		final MOB myChar=(MOB)affected;
-		if((msg.target()!=null)&&(msg.target() instanceof MOB))
+		if(msg.target() instanceof MOB)
 		{
 			final MOB mate=(MOB)msg.target();
 			if((msg.amISource(myChar))

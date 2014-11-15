@@ -68,7 +68,6 @@ public class Spell_DetectAmbush extends Spell
 		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(msg.target()!=null)
 		&&(msg.target()!=lastRoom)
 		&&(msg.target() instanceof Room)))
 		{

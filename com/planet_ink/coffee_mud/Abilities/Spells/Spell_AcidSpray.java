@@ -51,13 +51,15 @@ public class Spell_AcidSpray extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
-		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
 			final MOB vic=(MOB)affected;
 			if((!vic.amDead())
 			&&(vic.location()!=null))
+			{
+				final MOB invoker=(invoker()!=null) ? invoker() : vic;
 				CMLib.combat().postDamage(invoker,vic,this,CMLib.dice().roll(1,10+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) from the acid!");
+			}
 		}
 		return super.tick(ticking,tickID);
 	}

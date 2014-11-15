@@ -394,7 +394,6 @@ public class StdTitle extends StdItem implements LandTitle
 
 		if((msg.targetMinor()==CMMsg.TYP_SELL)
 		&&(msg.tool()==this)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof ShopKeeper))
 		{
 			final LandTitle A=fetchALandTitle();
@@ -417,7 +416,6 @@ public class StdTitle extends StdItem implements LandTitle
 		&&((msg.source().Name().equals(getOwnerName()))
 			||(msg.source().getLiegeID().equals(getOwnerName())&&msg.source().isMarriedToLiege())
 			||(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER)))
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(!(msg.target() instanceof Banker))
 		&&(!(msg.target() instanceof Auctioneer))

@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -54,12 +52,12 @@ public class Spell_Blademouth extends Spell
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(!noRecurse)
 		&&(affected instanceof MOB)
-		&&(invoker!=null)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.source().location()!=null)
 		&&(msg.source().charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]>=0))
 		{
 			noRecurse=true;
+			final MOB invoker=(invoker()!=null) ? invoker() : msg.source();
 			try{CMLib.combat().postDamage(invoker,msg.source(),this,msg.source().maxState().getHitPoints()/20,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,"The blades in <T-YOUPOSS> mouth <DAMAGE> <T-HIM-HER>!");
 			}finally{noRecurse=false;}
 		}

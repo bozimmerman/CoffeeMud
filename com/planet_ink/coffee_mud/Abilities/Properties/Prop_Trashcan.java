@@ -101,7 +101,6 @@ public class Prop_Trashcan extends Property
 		else
 		if((affected instanceof Room)
 		&&(msg.targetMinor()==CMMsg.TYP_DROP)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof Item))
 			process((Item)msg.target());
 	}

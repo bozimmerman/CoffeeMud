@@ -64,11 +64,11 @@ public class Skill_Stability extends BardSkill
 		{
 			Room roomS=null;
 			Room roomD=null;
-			if((msg.target()!=null)&&(msg.target() instanceof MOB))
+			if(msg.target() instanceof MOB)
 				roomD=((MOB)msg.target()).location();
 			if((msg.source()!=null)&&(msg.source().location()!=null))
 				roomS=msg.source().location();
-			if((msg.target()!=null)&&(msg.target() instanceof Room))
+			if(msg.target() instanceof Room)
 				roomD=(Room)msg.target();
 
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))

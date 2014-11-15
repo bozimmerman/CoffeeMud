@@ -53,7 +53,6 @@ public class Spell_AcidFog extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
-		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
 			final MOB M=(MOB)affected;
@@ -63,6 +62,7 @@ public class Spell_AcidFog extends Spell
 			if((!M.amDead())&&(M.location()!=null))
 			{
 				final int damage=M.phyStats().level()+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker()));
+				final MOB invoker=(invoker()!=null) ? invoker() : M;
 				CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,damage,0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
 				if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
 					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());

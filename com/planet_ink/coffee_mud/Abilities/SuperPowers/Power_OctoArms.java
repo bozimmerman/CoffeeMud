@@ -52,7 +52,6 @@ public class Power_OctoArms extends SuperPower
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Tickable.TICKID_MOB)
-		   &&(affected!=null)
 		   &&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;

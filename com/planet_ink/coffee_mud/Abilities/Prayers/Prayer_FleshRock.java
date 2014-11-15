@@ -52,7 +52,6 @@ public class Prayer_FleshRock extends Prayer
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
-		&&(affected!=null)
 		&&(statue!=null)
 		&&(affected instanceof MOB))
 		{

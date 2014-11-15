@@ -51,7 +51,6 @@ public class Chant_Treemorph extends Chant
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
-		&&(affected!=null)
 		&&(tree!=null)
 		&&(affected instanceof MOB))
 		{

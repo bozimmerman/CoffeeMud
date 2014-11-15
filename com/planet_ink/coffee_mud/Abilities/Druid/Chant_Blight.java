@@ -105,7 +105,6 @@ public class Chant_Blight extends Chant
 			return false;
 
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).charStats().getMyRace().racialCategory().equals("Vegetation")))
 		{

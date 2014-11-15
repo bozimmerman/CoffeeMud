@@ -94,7 +94,6 @@ public class Prop_ReqRaces extends Property implements TriggeredAffect
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
-		   &&(msg.target()!=null)
 		   &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
 		   &&(!CMLib.flags().isFalling(msg.source()))

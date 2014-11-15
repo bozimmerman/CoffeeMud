@@ -265,7 +265,6 @@ public class Arcanist extends Thief
 				if(msg.tool().ID().equals("Skill_Spellcraft"))
 				{
 					if((msg.tool().text().length()>0)
-					&&(msg.target()!=null)
 					&&(msg.target() instanceof MOB))
 					{
 						Ability A=((MOB)msg.target()).fetchAbility(msg.tool().text());

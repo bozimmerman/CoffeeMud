@@ -55,7 +55,6 @@ public class Prop_ReqHeight extends Property implements TriggeredAffect
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
-		   &&(msg.target()!=null)
 		   &&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
 		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))

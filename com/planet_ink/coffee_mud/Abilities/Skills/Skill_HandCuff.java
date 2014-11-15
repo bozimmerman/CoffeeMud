@@ -96,7 +96,6 @@ public class Skill_HandCuff extends StdSkill
 				return true;
 			else
 			if(((msg.sourceMinor()==CMMsg.TYP_ENTER)
-			&&(msg.target()!=null)
 			&&(msg.target() instanceof Room)
 			&&(!((Room)msg.target()).isInhabitant(invoker))))
 			{

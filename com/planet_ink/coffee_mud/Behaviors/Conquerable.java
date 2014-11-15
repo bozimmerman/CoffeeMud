@@ -1157,7 +1157,7 @@ public class Conquerable extends Arrest
 			// a queue.
 			if((((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(msg.tool()!=null)&&(msg.tool() instanceof MOB))
 				||((msg.sourceMinor()==CMMsg.TYP_FOLLOW)
-						&&(msg.target()!=null)&&(msg.target() instanceof MOB)
+						&&(msg.target() instanceof MOB)
 						&&(!noMultiFollows.contains(msg.source()))))
 			&&(msg.source().isMonster())
 			&&(msg.source().getStartRoom()!=null))

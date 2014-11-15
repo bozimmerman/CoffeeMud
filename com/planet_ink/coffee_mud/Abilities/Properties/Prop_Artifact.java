@@ -164,8 +164,7 @@ public class Prop_Artifact extends Property
 				&&(msg.source().location()!=null))
 					room=msg.source().location();
 				else
-				if((msg.target()!=null)
-				&&(msg.target() instanceof MOB)
+				if((msg.target() instanceof MOB)
 				&&(((MOB)msg.target()).location()!=null))
 					room=((MOB)msg.target()).location();
 				if(room==null)

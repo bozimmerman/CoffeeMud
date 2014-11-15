@@ -48,7 +48,7 @@ public class Chant_MuddyGrounds extends Chant
 	@Override
 	public void unInvoke()
 	{
-		if((canBeUninvoked())&&(affected!=null)&&(affected instanceof Room))
+		if((canBeUninvoked())&&(affected instanceof Room))
 			((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The mud in '@x1' dries up.",((Room)affected).displayText()));
 		super.unInvoke();
 	}

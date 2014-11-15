@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -52,12 +51,14 @@ public class Spell_AcidArrow extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
-		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
 			final MOB vic=(MOB)affected;
 			if((!vic.amDead())&&(vic.location()!=null))
+			{
+				final MOB invoker=(invoker()!=null) ? invoker() : vic;
 				CMLib.combat().postDamage(invoker,vic,this,CMLib.dice().roll(2,4+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) from the acid arrow residue!");
+			}
 		}
 		return super.tick(ticking,tickID);
 	}

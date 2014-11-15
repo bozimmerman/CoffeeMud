@@ -87,7 +87,6 @@ public class Dummy extends Doll
 			}
 			else
 			if((msg.targetMinor()==CMMsg.TYP_GET)
-			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item))
 			{
 				msg.source().tell(L("Dummys cant get anything."));

@@ -80,7 +80,6 @@ public class Prop_NoPurge extends Property
 			if(affected instanceof Room)
 			{
 				if((msg.targetMinor()==CMMsg.TYP_DROP)
-				&&(msg.target()!=null)
 				&&(msg.target() instanceof Item))
 					((Item)msg.target()).setExpirationDate(0);
 			}
@@ -89,7 +88,6 @@ public class Prop_NoPurge extends Property
 			{
 				if(((msg.targetMinor()==CMMsg.TYP_PUT)
 					||(msg.targetMinor()==CMMsg.TYP_INSTALL))
-				&&(msg.target()!=null)
 				&&(msg.target()==affected)
 				&&(msg.target() instanceof Item)
 				&&(msg.tool()!=null)
@@ -103,7 +101,6 @@ public class Prop_NoPurge extends Property
 			if(affected instanceof Item)
 			{
 				if((msg.targetMinor()==CMMsg.TYP_DROP)
-				&&(msg.target()!=null)
 				&&(msg.target() instanceof Item)
 				&&(msg.target()==affected))
 					((Item)msg.target()).setExpirationDate(0);

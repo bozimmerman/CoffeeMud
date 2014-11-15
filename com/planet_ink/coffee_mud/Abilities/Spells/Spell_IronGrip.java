@@ -80,7 +80,6 @@ public class Spell_IronGrip extends Spell
 			else
 			if((msg.amISource(mob))
 			&&(msg.targetMinor()==CMMsg.TYP_REMOVE)
-			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item)
 			&&(mob.isMine(msg.target()))
 			&&(((Item)msg.target()).amWearingAt(Wearable.WORN_WIELD)))
@@ -97,7 +96,6 @@ public class Spell_IronGrip extends Spell
 			if((msg.amISource(mob))
 			&&((msg.targetMinor()==CMMsg.TYP_DROP)
 				||(msg.targetMinor()==CMMsg.TYP_GET))
-			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item)
 			&&(mob.isMine(msg.target()))
 			&&(((Item)msg.target()).amWearingAt(Wearable.WORN_WIELD)))

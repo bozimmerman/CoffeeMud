@@ -89,7 +89,6 @@ public class Cow extends StdMOB implements Drink
 		else
 		if((msg.tool()==this)
 		&&(msg.targetMinor()==CMMsg.TYP_FILL)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof Container)
 		&&(((Container)msg.target()).capacity()>0))
 		{

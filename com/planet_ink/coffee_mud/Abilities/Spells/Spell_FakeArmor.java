@@ -58,11 +58,10 @@ public class Spell_FakeArmor extends Spell
 	{
 		if((affected!=null)
 		&&(!notAgainThisRound)
-		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(affected instanceof Item)
-		&&(msg.amITarget(((Item)affected).owner()))
-		&&(msg.target() instanceof MOB))
+		&&(msg.amITarget(((Item)affected).owner())))
 		{
 			notAgainThisRound=true;
 			msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,L("@x1 absorbs some of the damage done to <S-NAME>.",affected.name())));

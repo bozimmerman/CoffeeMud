@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -107,6 +105,7 @@ public class Prayer_FreezeMetal extends Prayer
 			   &&(item.container()==null)
 			   &&(!mob.amDead()))
 			{
+				final MOB invoker=(invoker()!=null) ? invoker() : mob;
 				final int damage=CMLib.dice().roll(1,3+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),1);
 				CMLib.combat().postItemDamage(mob, item, this, 1, CMMsg.TYP_COLD, null);
 				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");

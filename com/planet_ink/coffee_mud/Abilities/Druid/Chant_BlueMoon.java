@@ -84,7 +84,6 @@ public class Chant_BlueMoon extends Chant
 			return false;
 
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		   &&(msg.target()!=null)
 		   &&(msg.target() instanceof MOB))
 		{
 			final MOB mob=(MOB)msg.target();

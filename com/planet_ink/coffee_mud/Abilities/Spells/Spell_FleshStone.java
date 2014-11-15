@@ -52,7 +52,6 @@ public class Spell_FleshStone extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
-		&&(affected!=null)
 		&&(statue!=null)
 		&&(affected instanceof MOB))
 		{

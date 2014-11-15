@@ -174,7 +174,6 @@ public class Prayer_SenseTraps extends Prayer
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Tickable.TICKID_MOB)
-		   &&(affected!=null)
 		   &&(affected instanceof MOB)
 		   &&(((MOB)affected).location()!=null)
 		   &&((lastRoom==null)||(((MOB)affected).location()!=lastRoom)))

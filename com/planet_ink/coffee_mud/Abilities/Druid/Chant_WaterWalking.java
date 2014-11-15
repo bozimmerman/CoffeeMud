@@ -72,7 +72,6 @@ public class Chant_WaterWalking extends Chant
 		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(mob.location()!=null)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof Room))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)

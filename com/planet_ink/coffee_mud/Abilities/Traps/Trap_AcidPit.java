@@ -71,7 +71,6 @@ public class Trap_AcidPit extends Trap_RoomPit
 		if((tickID==Tickable.TICKID_TRAP_RESET)&&(getReset()>0))
 		{
 			if((sprung)
-			&&(affected!=null)
 			&&(affected instanceof Room)
 			&&(pit!=null)
 			&&(pit.size()>1)

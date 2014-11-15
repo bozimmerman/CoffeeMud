@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -101,6 +100,7 @@ public class Chant_FeelCold extends Chant
 			final Room room=M.location();
 			if(room!=null)
 			{
+				final MOB invoker=(invoker()!=null) ? invoker() : M;
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_WINDY)
 				&&((room.getClimateType()&Places.CLIMASK_COLD)>0)
 				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_COLD)))

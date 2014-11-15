@@ -152,8 +152,7 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 				}
 			}
 			else
-			if((msg.target()!=null)
-			&&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
+			if((((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 			  ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
 			&&(!CMLib.flags().isFalling(msg.source()))
 			&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))

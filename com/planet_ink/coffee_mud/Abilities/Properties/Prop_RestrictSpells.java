@@ -51,13 +51,13 @@ public class Prop_RestrictSpells extends Property
 		{
 			Room roomS=null;
 			Room roomD=null;
-			if((msg.target()!=null)&&(msg.target() instanceof MOB)&&(((MOB)msg.target()).location()!=null))
+			if((msg.target() instanceof MOB)&&(((MOB)msg.target()).location()!=null))
 				roomD=((MOB)msg.target()).location();
 			else
 			if((msg.source()!=null)&&(msg.source().location()!=null))
 				roomS=msg.source().location();
 			else
-			if((msg.target()!=null)&&(msg.target() instanceof Room))
+			if(msg.target() instanceof Room)
 				roomD=(Room)msg.target();
 
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))

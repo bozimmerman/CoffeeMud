@@ -77,7 +77,6 @@ public class Thief_RunningFight extends ThiefSkill
 		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(mob.isInCombat())
 		&&(mob.getVictim()!=null)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof Room)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Exit)

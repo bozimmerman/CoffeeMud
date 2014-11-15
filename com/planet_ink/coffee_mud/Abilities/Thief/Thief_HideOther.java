@@ -102,8 +102,7 @@ public class Thief_HideOther extends ThiefSkill
 				case CMMsg.TYP_UNLOCK:
 				case CMMsg.TYP_PUSH:
 				case CMMsg.TYP_PULL:
-					if((msg.target()!=null)
-					&&((msg.target() instanceof Exit)
+					if(((msg.target() instanceof Exit)
 						||((msg.target() instanceof Item)
 						   &&(!msg.source().isMine(msg.target())))))
 					{

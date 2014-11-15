@@ -70,7 +70,6 @@ public class Prisoner extends StdAbility
 			}
 			else
 			if((msg.targetMinor()==CMMsg.TYP_ENTER)
-			   &&(msg.target()!=null)
 			   &&(msg.target() instanceof Room)
 			   &&(msg.source().location()!=null)
 			   &&(!msg.source().location().getArea().name().equals(((Room)msg.target()).getArea().name())))

@@ -100,7 +100,6 @@ public class Prop_PracticeDummy extends Property
 			}
 			else
 			if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
-			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item))
 			{
 				msg.source().tell(L("Dummys cant get anything."));

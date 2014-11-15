@@ -166,7 +166,6 @@ public class Spell_DetectGold extends Spell
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Tickable.TICKID_MOB)
-		   &&(affected!=null)
 		   &&(affected instanceof MOB)
 		   &&(((MOB)affected).location()!=null)
 		   &&((lastRoom==null)||(((MOB)affected).location()!=lastRoom)))
@@ -182,8 +181,7 @@ public class Spell_DetectGold extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)
-		   &&(affected instanceof MOB)
+		if((affected instanceof MOB)
 		   &&(msg.target()!=null)
 		   &&(msg.amISource((MOB)affected))
 		   &&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE)))

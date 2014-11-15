@@ -43,21 +43,22 @@ public class Thief_SlickCaltrops extends Thief_Caltrops
 	@Override
 	public void spring(MOB mob)
 	{
-		if((!invoker().mayIFight(mob))
-		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))
+		final MOB invoker=(invoker()!=null) ? invoker() : CMLib.map().deity();
+		if((!invoker.mayIFight(mob))
+		||(invoker.getGroupMembers(new HashSet<MOB>()).contains(mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) some @x1caltrops on the floor.",caltropTypeName()));
 		else
 
 		{
 			final Ability A=CMClass.getAbility("Slip");
-			if((A!=null)&&(A.castingQuality(invoker(),mob)==Ability.QUALITY_MALICIOUS))
+			if((A!=null)&&(A.castingQuality(invoker,mob)==Ability.QUALITY_MALICIOUS))
 			{
-				mob.location().show(invoker(),mob,this,CMMsg.MSG_OK_ACTION,L("The @x1caltrops on the ground cause <T-NAME> to slip!",caltropTypeName()));
-				if(A.invoke(invoker(),mob,true,adjustedLevel(invoker(),0)))
+				mob.location().show(invoker,mob,this,CMMsg.MSG_OK_ACTION,L("The @x1caltrops on the ground cause <T-NAME> to slip!",caltropTypeName()));
+				if(A.invoke(invoker,mob,true,adjustedLevel(invoker(),0)))
 				{
 					if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-						CMLib.combat().postDamage(invoker(),mob,null,CMLib.dice().roll(5,6,6*adjustedLevel(invoker(),0)),
+						CMLib.combat().postDamage(invoker,mob,null,CMLib.dice().roll(5,6,6*adjustedLevel(invoker(),0)),
 								CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The "+caltropTypeName()+"caltrops on the ground <DAMAGE> <T-NAME>.");
 				}
 			}

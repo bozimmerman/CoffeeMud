@@ -97,7 +97,6 @@ public class Spell_Breadcrumbs extends Spell
 		if((msg.amISource(mob))
 		&&(trail!=null)
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof Room))
 		{
 			final Room newRoom=(Room)msg.target();

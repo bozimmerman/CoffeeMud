@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -123,8 +122,7 @@ public class Poison extends StdAbility implements HealthCondition
 			poisonTick=POISON_DELAY();
 			if(POISON_AFFECT().length()>0)
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,POISON_AFFECT()+CMLib.protocol().msp("poisoned.wav",10));
-			if(invoker==null)
-				invoker=mob;
+			final MOB invoker=(invoker()!=null) ? invoker() : mob;
 			if(POISON_DAMAGE()!=0)
 			{
 				CMLib.combat().postDamage(invoker,mob,this,POISON_DAMAGE(),CMMsg.MASK_ALWAYS|CMMsg.TYP_POISON,-1,null);
@@ -204,7 +202,6 @@ public class Poison extends StdAbility implements HealthCondition
 					{
 					case CMMsg.TYP_DAMAGE:
 						if((msg.source()!=msg.target())
-						&&(msg.target()!=null)
 						&&(myItem instanceof Weapon)
 						&&(msg.target() instanceof MOB))
 						{

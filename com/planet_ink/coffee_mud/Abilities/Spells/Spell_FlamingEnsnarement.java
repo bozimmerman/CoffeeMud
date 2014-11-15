@@ -102,12 +102,12 @@ public class Spell_FlamingEnsnarement extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
-		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
 			final MOB M=(MOB)affected;
 			if((!M.amDead())&&(M.location()!=null))
 			{
+				final MOB invoker=(invoker()!=null) ? invoker() : M;
 				CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(2,4+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),0),CMMsg.TYP_FIRE,-1,"<T-NAME> get(s) singed from <T-HIS-HER> flaming ensnarement!");
 				if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
 					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());

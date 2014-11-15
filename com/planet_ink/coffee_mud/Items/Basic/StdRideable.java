@@ -518,7 +518,6 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		case CMMsg.TYP_ENTER:
 			if(amRiding(msg.source())
-			&&(msg.target()!=null)
 			&&(msg.target() instanceof Room))
 			{
 				final Room sourceRoom=msg.source().location();

@@ -63,7 +63,6 @@ public class Spell_WallOfForce extends Spell
 		&&(mob.isInCombat())
 		&&((mob.getVictim()==invoker)||(mob==invoker))
 		&&(mob.rangeToTarget()>=1)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0))
 		{

@@ -71,25 +71,23 @@ public class Thief_ConcealWalkway extends ThiefSkill
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		if(canBeUninvoked() && (invoker()!=null) && (!msg.source().isMonster()) && (msg.source()!=invoker()) && (msg.sourceMinor()==CMMsg.TYP_ENTER) &&(affected!=null))
+		if(canBeUninvoked() && (invoker()!=null) && (!msg.source().isMonster()) && (msg.source()!=invoker()) && (msg.sourceMinor()==CMMsg.TYP_ENTER))
 		{
-			if(!CMLib.flags().isInTheGame(invoker(), true))
+			final Physical affected=super.affected;
+			if(affected != null)
 			{
-				unInvoke();
-				if(affected!=null)
+				if(!CMLib.flags().isInTheGame(invoker(), true))
 				{
+					unInvoke();
 					affected.delEffect(this);
 					affected.recoverPhyStats();
 				}
-			}
-			else
-			{
-				final Set<MOB> grp=invoker().getGroupMembers(new HashSet<MOB>());
-				if(!grp.contains(msg.source()))
+				else
 				{
-					unInvoke();
-					if(affected!=null)
+					final Set<MOB> grp=invoker().getGroupMembers(new HashSet<MOB>());
+					if(!grp.contains(msg.source()))
 					{
+						unInvoke();
 						affected.delEffect(this);
 						affected.recoverPhyStats();
 					}

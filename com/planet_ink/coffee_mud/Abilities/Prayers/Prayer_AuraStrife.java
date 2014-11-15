@@ -94,7 +94,6 @@ public class Prayer_AuraStrife extends Prayer
 			return false;
 		if((tickID==Tickable.TICKID_MOB)
 		&&(invoker()!=null)
-		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;

@@ -217,7 +217,6 @@ public class StdTrap extends StdAbility implements Trap
 			if((msg.tool()==affected)
 			   &&(msg.targetMinor()==CMMsg.TYP_GIVE)
 			   &&(msg.targetMessage()!=null)
-			   &&(msg.target()!=null)
 			   &&(msg.target() instanceof MOB)
 			   &&(!msg.source().getGroupMembers(new HashSet<MOB>()).contains(msg.target())))
 			{

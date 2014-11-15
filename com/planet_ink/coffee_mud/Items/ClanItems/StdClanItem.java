@@ -291,7 +291,6 @@ public class StdClanItem extends StdItem implements ClanItem
 	{
 		if(((msg.tool()==myHost)||(msg.tool()==((ClanItem)myHost).ultimateContainer(null)))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(myHost instanceof ClanItem)
 		&&(((ClanItem)myHost).clanID().length()>0))

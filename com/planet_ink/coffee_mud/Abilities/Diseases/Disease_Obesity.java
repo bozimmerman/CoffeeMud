@@ -164,7 +164,6 @@ public class Disease_Obesity extends Disease
 	{
 		if((msg.source()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_EAT)
-		&&(msg.target()!=null)
 		&&(msg.source().curState().getHunger()>=msg.source().maxState().maxHunger(msg.source().baseWeight())))
 		{
 			setFatAmountChange(CMLib.dice().roll(1,5,0));

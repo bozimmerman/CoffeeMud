@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -101,6 +99,7 @@ public class Prayer_CurseMetal extends Prayer
 			   &&(item.container()==null)
 			   &&(!mob.amDead()))
 			{
+				final MOB invoker=(invoker()!=null) ? invoker() : mob;
 				final int damage=CMLib.dice().roll(1,6+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),1);
 				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 				if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STAT_STRENGTH))
