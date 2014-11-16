@@ -61,7 +61,6 @@ public class Fighter_ReturnProjectile extends FighterSkill
 		&&(!doneThisRound)
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 		   ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))

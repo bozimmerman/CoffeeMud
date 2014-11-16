@@ -71,7 +71,6 @@ public class Insect extends StdRace
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target() instanceof MOB)
 		&&(mob.fetchWieldedItem()==null)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
 		&&(!((MOB)msg.target()).isMonster())

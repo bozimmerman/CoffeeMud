@@ -179,7 +179,6 @@ public class UnderWater extends StdRoom implements Drink
 		}
 		else
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 		{
 			final Weapon w=(Weapon)msg.tool();

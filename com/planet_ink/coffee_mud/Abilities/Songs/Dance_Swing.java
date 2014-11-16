@@ -68,7 +68,7 @@ public class Dance_Swing extends Dance
 		   &&(!doneThisRound)
 		   &&(mob.rangeToTarget()==0))
 		{
-			if((msg.tool()!=null)&&(msg.tool() instanceof Item))
+			if(msg.tool() instanceof Item)
 			{
 				final Item attackerWeapon=(Item)msg.tool();
 				if((attackerWeapon!=null)

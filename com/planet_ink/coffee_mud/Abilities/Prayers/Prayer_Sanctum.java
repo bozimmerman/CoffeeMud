@@ -78,8 +78,7 @@ public class Prayer_Sanctum extends Prayer
 		||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MALICIOUS)))
 		{
-			if((msg.source()!=null)
-			&&(msg.target()!=null)
+			if((msg.target()!=null)
 			&&(msg.source()!=affected)
 			&&(msg.source()!=msg.target()))
 			{

@@ -1764,7 +1764,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof MOB)
 		&&(laws.basicCrimes().containsKey("MURDER"))
 		&&((!msg.source().isMonster())||(!isTroubleMaker(msg.source()))))
@@ -1822,8 +1821,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(R==null)
 			return;
 
-		if((msg.tool()!=null)
-		&&(msg.tool() instanceof Ability)
+		if((msg.tool() instanceof Ability)
 		&&(msg.othersMessage()!=null)
 		&&((laws.abilityCrimes().containsKey(msg.tool().ID().toUpperCase()))
 				||(laws.abilityCrimes().containsKey(CMLib.flags().getAbilityType((Ability)msg.tool())))

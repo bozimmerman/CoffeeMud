@@ -148,7 +148,6 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 		{
 			if(checkProtection("weapons"))

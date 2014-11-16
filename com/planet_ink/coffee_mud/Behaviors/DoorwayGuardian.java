@@ -177,8 +177,7 @@ public class DoorwayGuardian extends StdBehavior
 				}
 			}
 			else
-			if((msg.tool()!=null)
-			&&(msg.target() instanceof Room)
+			if((msg.target() instanceof Room)
 			&&(msg.tool() instanceof Exit)
 			&&((mask==null)||CMLib.masking().maskCheck(mask,mob,false)))
 			{

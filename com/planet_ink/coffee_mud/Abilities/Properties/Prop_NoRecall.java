@@ -50,8 +50,7 @@ public class Prop_NoRecall extends Property
 	{
 		if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 		{
-			if((msg.source()!=null)
-			&&(msg.source().location()!=null))
+			if(msg.source().location()!=null)
 			{
 				if(((myHost instanceof MOB)&&((msg.source()==myHost)||(msg.source().location()==((MOB)myHost).location()))&&(msg.source().isInCombat()))
 				||((myHost instanceof Rideable)&&(msg.source().riding()==myHost))

@@ -119,7 +119,7 @@ public class Doppleganger extends StdMOB
 				if((mimicing.location()!=null)&&(mimicing.location()!=location()))
 					mimicing=null;
 			}
-			if((mimicing==null)&&(location()!=null)&&(msg.source()!=null))
+			if((mimicing==null)&&(location()!=null))
 			{
 				location().show(this,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> take(s) on a new form!"));
 				mimicing=msg.source();

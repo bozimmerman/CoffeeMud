@@ -94,8 +94,7 @@ public class Archon extends StdCharClass
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.tool() != null)
-		&&(msg.target()==myHost)
+		if((msg.target()==myHost)
 		&&(msg.tool() instanceof Ability)
 		&&((CMParms.indexOf(ARCHON_IMMUNITIES,msg.tool().ID())>=0)
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)

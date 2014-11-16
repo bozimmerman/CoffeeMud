@@ -63,9 +63,9 @@ public class Skill_Puppeteer extends BardSkill
 		&&(msg.targetMinor()!=CMMsg.TYP_SPEAK)
 		&&(msg.targetMinor()==CMMsg.TYP_ORDER)
 		&&(msg.targetMinor()!=CMMsg.TYP_PANIC)
-		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Song)))
-		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Skill_Puppeteer)))
-		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Dance)))
+		&&(!((msg.tool() instanceof Song)))
+		&&(!((msg.tool() instanceof Skill_Puppeteer)))
+		&&(!((msg.tool() instanceof Dance)))
 		&&(!msg.amITarget(puppet)))
 		{
 			if((!msg.source().isInCombat())&&(msg.target() instanceof MOB))

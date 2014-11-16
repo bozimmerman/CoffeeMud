@@ -860,8 +860,7 @@ public class StdArea implements Area
 				&&(((MOB)msg.target()).location()!=null))
 					room=((MOB)msg.target()).location();
 				else
-				if((msg.source()!=null)
-				&&(msg.source().location()!=null))
+				if(msg.source().location()!=null)
 					room=msg.source().location();
 				if(room!=null)
 				{
@@ -909,8 +908,7 @@ public class StdArea implements Area
 					&&(((MOB)msg.target()).location()!=null))
 						room=((MOB)msg.target()).location();
 					else
-					if((msg.source()!=null)
-					&&(msg.source().location()!=null))
+					if(msg.source().location()!=null)
 						room=msg.source().location();
 					if(room!=null)
 						room.showHappens(CMMsg.MSG_OK_VISUAL,L("Technology doesn't seem to work here."));

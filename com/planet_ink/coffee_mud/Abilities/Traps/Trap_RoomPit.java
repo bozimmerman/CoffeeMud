@@ -169,7 +169,6 @@ public class Trap_RoomPit extends StdTrap
 		&&(msg.amITarget(affected))
 		&&((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(!msg.source().isMine(affected)))
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Exit))
 		{
 			final Room room=(Room)affected;

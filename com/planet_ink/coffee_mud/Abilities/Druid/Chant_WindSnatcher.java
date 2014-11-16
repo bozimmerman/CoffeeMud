@@ -106,7 +106,7 @@ public class Chant_WindSnatcher extends Chant
 		if(!(affected instanceof MOB))
 			return true;
 
-		if((msg.tool()!=null)&&(msg.tool() instanceof Ability)
+		if((msg.tool() instanceof Ability)
 		   &&(isSpell(msg.tool().ID())))
 		{
 			msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,L("A form around <S-NAME> snatches @x1.",msg.tool().name()));

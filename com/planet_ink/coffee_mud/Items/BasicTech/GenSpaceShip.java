@@ -851,7 +851,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		else
 		if((msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.tool()==this)
-		&&(msg.source()!=null)
 		&&(getOwnerName().length()>0)
 		&&((msg.source().Name().equals(getOwnerName()))
 			||(msg.source().getLiegeID().equals(getOwnerName())&&msg.source().isMarriedToLiege())

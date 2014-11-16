@@ -57,7 +57,6 @@ public class Prayer_MassMobility extends Prayer
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(!mob.amDead()))
 		{

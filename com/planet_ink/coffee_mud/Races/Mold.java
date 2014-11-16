@@ -141,11 +141,10 @@ public class Mold extends StdRace
 					}
 					break;
 				case CMMsg.TYP_WEAPONATTACK:
-					if((msg.tool()!=null)
-				   &&(msg.tool() instanceof Weapon)
-				   &&((((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_SLASHING)
-					||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_PIERCING)
-					||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_BASHING)))
+					if((msg.tool() instanceof Weapon)
+					&&((((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_SLASHING)
+					  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_PIERCING)
+					  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.TYPE_BASHING)))
 						msg.setValue(1);
 					break;
 				case CMMsg.TYP_COLD:

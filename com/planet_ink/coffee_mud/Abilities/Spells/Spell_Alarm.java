@@ -57,12 +57,9 @@ public class Spell_Alarm extends Spell
 			return;
 		}
 
-		if(msg.source()!=null)
-		{
-			myRoomContainer=msg.source().location();
-			if(msg.source()==invoker)
-				return;
-		}
+		myRoomContainer=msg.source().location();
+		if(msg.source()==invoker)
+			return;
 
 		if(msg.amITarget(affected))
 		{

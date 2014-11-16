@@ -921,8 +921,7 @@ public class StdItem implements Item
 		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		&&(!CMLib.flags().isGettable(this))
 		&&((displayText().length()==0)
-		   ||((msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
+		   ||((msg.tool() instanceof Ability)
 			&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS))))
 		{
 			mob.tell(L("Please don't do that."));

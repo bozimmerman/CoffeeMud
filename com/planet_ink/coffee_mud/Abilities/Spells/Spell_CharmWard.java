@@ -74,7 +74,6 @@ public class Spell_CharmWard extends Spell
 			final MOB mob=(MOB)affected;
 			if((msg.amITarget(mob))
 			&&(!msg.amISource(mob))
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING))
 			&&(!mob.amDead()))
@@ -92,8 +91,7 @@ public class Spell_CharmWard extends Spell
 		if(affected instanceof Room)
 		{
 			final Room R=(Room)affected;
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
+			if((msg.tool() instanceof Ability)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
 			{
 				if((msg.source().location()!=null)&&(msg.source().location()!=R))

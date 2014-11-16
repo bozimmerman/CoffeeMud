@@ -81,7 +81,7 @@ public class Spell_CombatPrecognition extends Spell
 			   &&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-50,false)))
 			{
 				String tool=null;
-				if((msg.tool()!=null)&&(msg.tool() instanceof Ability))
+				if((msg.tool() instanceof Ability))
 					tool=((Ability)msg.tool()).name();
 				CMMsg msg2=null;
 				switch(msg.targetMinor())

@@ -60,7 +60,6 @@ public class Thief_AvoidTraps extends ThiefSkill
 		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!msg.amISource(mob))
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Trap)
 		&&(CMLib.dice().rollPercentage()>90))
 			helpProficiency(mob, 0);

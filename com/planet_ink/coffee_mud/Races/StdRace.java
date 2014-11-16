@@ -276,7 +276,6 @@ public class StdRace implements Race
 	{
 		if(uncharmable()
 		&&(msg.target()==myHost)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(myHost instanceof MOB)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))

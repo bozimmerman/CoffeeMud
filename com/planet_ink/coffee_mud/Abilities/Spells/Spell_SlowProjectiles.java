@@ -49,10 +49,9 @@ public class Spell_SlowProjectiles extends Spell
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon)
 		&&(msg.source().getVictim()==msg.target())
 		&&(msg.source().rangeToTarget()>0)
-		&&(msg.tool() instanceof Weapon)
 		&&(((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)&&(msg.tool() instanceof AmmunitionWeapon)&&(((AmmunitionWeapon)msg.tool()).requiresAmmunition())
 			||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)))
 		&&(msg.source().location()!=null)

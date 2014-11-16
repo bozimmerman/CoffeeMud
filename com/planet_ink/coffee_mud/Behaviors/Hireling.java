@@ -215,7 +215,6 @@ public class Hireling extends StdBehavior
 			if(msg.amITarget(observer)
 			&&(!msg.amISource(observer))
 			&&(msg.targetMinor() == CMMsg.TYP_GIVE)
-			&&(msg.tool() != null)
 			&&(msg.tool() instanceof Coins))
 			{
 				if(!CMLib.masking().maskCheck(zapper(),source,false))
@@ -301,7 +300,6 @@ public class Hireling extends StdBehavior
 		if(msg.amITarget(observer)
 		&&(!msg.amISource(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Coins))
 		{
 			double given=((Coins)msg.tool()).getTotalValue();

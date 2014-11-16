@@ -289,8 +289,7 @@ public class Falling extends StdAbility
 				unInvoke();
 			}
 			else
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
+			if((msg.tool() instanceof Ability)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
 			{
 				damageToTake=0;

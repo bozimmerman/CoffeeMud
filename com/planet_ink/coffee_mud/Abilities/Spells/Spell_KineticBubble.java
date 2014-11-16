@@ -82,7 +82,6 @@ public class Spell_KineticBubble extends Spell
 			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(mob.rangeToTarget()==0)
 			&&(msg.source()!=mob)
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon))
 			{
 				final CMMsg msg2=CMClass.getMsg(mob,source,this,verbalCastCode(mob,source,true),null);

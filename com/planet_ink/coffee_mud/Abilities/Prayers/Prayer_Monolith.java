@@ -118,7 +118,6 @@ public class Prayer_Monolith extends Prayer
 			&&(mob.rangeToTarget()>=1)
 			&&(msg.amITarget(invoker))
 			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon)
 			&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))

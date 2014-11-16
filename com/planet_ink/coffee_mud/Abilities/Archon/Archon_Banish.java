@@ -130,9 +130,7 @@ public class Archon_Banish extends ArchonSkill
 			return false;
 		if(affected instanceof Room)
 		{
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
-			&&(msg.source()!=null)
+			if((msg.tool() instanceof Ability)
 			&&(msg.source().location()!=null)
 			&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
 			{
@@ -146,9 +144,7 @@ public class Archon_Banish extends ArchonSkill
 					return false;
 				}
 			}
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
-			&&(msg.source()!=null)
+			if((msg.tool() instanceof Ability)
 			&&(msg.source().location()!=null)
 			&&(msg.sourceMinor()!=CMMsg.TYP_ENTER))
 			{
@@ -162,9 +158,7 @@ public class Archon_Banish extends ArchonSkill
 					return false;
 				}
 			}
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
-			&&(msg.source()!=null)
+			if((msg.tool() instanceof Ability)
 			&&(msg.source().location()!=null)
 			&&((msg.source().location()==affected)
 			   ||(msg.source().location().getArea()==affected))
@@ -175,7 +169,7 @@ public class Archon_Banish extends ArchonSkill
 			}
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 			{
-				if((msg.source()!=null)&&(msg.source().location()!=null))
+				if(msg.source().location()!=null)
 					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to recall, but the magic fizzles."));
 				return false;
 			}

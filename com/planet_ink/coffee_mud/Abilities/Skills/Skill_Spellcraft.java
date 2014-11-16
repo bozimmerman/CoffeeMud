@@ -83,7 +83,6 @@ public class Skill_Spellcraft extends StdSkill
 		&&(!msg.amISource(mob))
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==craftType())
 		&&(!lastID.equalsIgnoreCase(msg.tool().ID()))

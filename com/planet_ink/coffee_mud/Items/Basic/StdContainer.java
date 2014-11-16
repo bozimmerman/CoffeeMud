@@ -364,8 +364,7 @@ public class StdContainer extends StdItem implements Container
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_PUT:
-				if((msg.tool()!=null)
-				&&(msg.tool() instanceof Item))
+				if(msg.tool() instanceof Item)
 				{
 					final Item newitem=(Item)msg.tool();
 					newitem.setContainer(this);
@@ -415,7 +414,6 @@ public class StdContainer extends StdItem implements Container
 		else
 		if((msg.tool()==this)
 		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
-		&&(msg.source()!=null)
 		&&(msg.source().isMine(this)))
 		{
 			setContainer(null);

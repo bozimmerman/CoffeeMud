@@ -79,8 +79,7 @@ public class Spell_AchillesArmor extends Spell
 		&&(!mob.amDead()))
 		{
 			int weaponType=-1;
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
+			if(msg.tool() instanceof Weapon)
 			   weaponType=((Weapon)msg.tool()).weaponType();
 			else
 			switch(msg.sourceMinor())
@@ -131,7 +130,7 @@ public class Spell_AchillesArmor extends Spell
 			}
 			CMLib.combat().postDeath(msg.source(),mob,msg);
 		}
-		if((msg.tool() != null) && (msg.tool() instanceof Ability))
+		if(msg.tool() instanceof Ability)
 		{
 			if(msg.tool().ID().equals("Amputation"))
 			{

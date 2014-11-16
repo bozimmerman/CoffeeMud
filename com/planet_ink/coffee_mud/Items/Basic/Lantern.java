@@ -63,8 +63,7 @@ public class Lantern extends LightSource
 			switch(msg.targetMinor())
 			{
 				case CMMsg.TYP_FILL:
-					if((msg.tool()!=null)
-					&&(msg.tool()!=msg.target())
+					if((msg.tool()!=msg.target())
 					&&(msg.tool() instanceof Drink))
 					{
 						if(((Drink)msg.tool()).liquidType()!=RawMaterial.RESOURCE_LAMPOIL)
@@ -97,7 +96,7 @@ public class Lantern extends LightSource
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_FILL:
-				if((msg.tool()!=null)&&(msg.tool() instanceof Drink))
+				if((msg.tool() instanceof Drink))
 				{
 					final Drink thePuddle=(Drink)msg.tool();
 					int amountToTake=1;

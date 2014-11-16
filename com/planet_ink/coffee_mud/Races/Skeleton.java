@@ -47,7 +47,6 @@ public class Skeleton extends Undead
 			final MOB mob=(MOB)myHost;
 			if((msg.amITarget(mob))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon)
 			&&((((Weapon)msg.tool()).weaponType()==Weapon.TYPE_PIERCING)
 				||(((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SLASHING))

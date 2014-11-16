@@ -62,7 +62,6 @@ public class Fighter_CritStrike extends FighterSkill
 		&&(msg.target()!=null)
 		&&(mob.getVictim()==msg.target())
 		&&(mob.rangeToTarget()==0)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
 		&&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN)

@@ -74,7 +74,6 @@ public class Chant_Treemind extends Chant
 		{
 			boolean yep=(msg.targetMinor()==CMMsg.TYP_MIND);
 			if((!yep)
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability))
 			{
 				final Ability A=(Ability)msg.tool();

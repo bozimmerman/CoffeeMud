@@ -95,7 +95,6 @@ public class Prop_Trashcan extends Property
 		if((affected instanceof Item)
 		&&(msg.targetMinor()==CMMsg.TYP_PUT)
 		&&(msg.amITarget(affected))
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 			process((Item)msg.tool());
 		else

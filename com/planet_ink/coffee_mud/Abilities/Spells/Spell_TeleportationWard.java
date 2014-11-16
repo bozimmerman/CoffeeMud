@@ -75,7 +75,6 @@ public class Spell_TeleportationWard extends Spell
 			if((msg.amITarget(mob))
 			&&(!msg.amISource(mob))
 			&&(mob.location()!=msg.source().location())
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))
 			&&(!mob.amDead()))
@@ -94,7 +93,6 @@ public class Spell_TeleportationWard extends Spell
 		{
 			final Room R=(Room)affected;
 			if((msg.tool() instanceof Ability)
-			&&(msg.source()!=null)
 			&&(msg.source().location()!=null)
 			&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
 			{

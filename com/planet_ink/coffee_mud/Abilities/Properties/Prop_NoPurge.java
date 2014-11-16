@@ -90,7 +90,6 @@ public class Prop_NoPurge extends Property
 					||(msg.targetMinor()==CMMsg.TYP_INSTALL))
 				&&(msg.target()==affected)
 				&&(msg.target() instanceof Item)
-				&&(msg.tool()!=null)
 				&&(msg.tool() instanceof Item))
 				{
 					((Item)msg.target()).setExpirationDate(0);

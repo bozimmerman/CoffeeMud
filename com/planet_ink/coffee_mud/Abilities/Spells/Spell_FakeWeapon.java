@@ -84,8 +84,7 @@ public class Spell_FakeWeapon extends Spell
 				||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MAGIC))))
 				{
 					Room room=null;
-					if((msg.source()!=null)
-					&&(msg.source().location()!=null))
+					if(msg.source().location()!=null)
 						room=msg.source().location();
 					if(room==null)
 						room=CMLib.map().roomLocation(affected);

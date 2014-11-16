@@ -61,7 +61,7 @@ public class Fighter_DualParry extends FighterSkill
 		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(mob.rangeToTarget()==0))
 		{
-			if((msg.tool()!=null)&&(msg.tool() instanceof Item))
+			if((msg.tool() instanceof Item))
 			{
 				final Item attackerWeapon=(Item)msg.tool();
 				final Item myOtherWeapon=mob.fetchHeldItem();

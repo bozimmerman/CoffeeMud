@@ -1352,14 +1352,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			source=null;
 			endPart=".";
 		}
-		if(msg.tool()!=null)
-		{
-			if(msg.tool() instanceof Trap)
-				endPart=".";
-			else
-			if(msg.tool() instanceof Ability)
-				tool=((Ability)msg.tool()).name();
-		}
+		if(msg.tool() instanceof Trap)
+			endPart=".";
+		else
+		if(msg.tool() instanceof Ability)
+			tool=((Ability)msg.tool()).name();
 
 		String tackOn=null;
 		switch(msg.targetMinor())
@@ -1493,7 +1490,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if(!CMLib.flags().isCloaked(deadmob))
 				for(int i=0;i<channels.size();i++)
 				{
-					if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+					if((msg.tool() instanceof MOB))
 						CMLib.commands().postChannel(channels.get(i),deadmob.clans(),deadmob.Name()+" was just killed in "+CMLib.map().getExtendedRoomID(deadmob.location())+" by "+msg.tool().Name()+".",true);
 					else
 						CMLib.commands().postChannel(channels.get(i),deadmob.clans(),deadmob.Name()+" has just died at "+CMLib.map().getExtendedRoomID(deadmob.location()),true);
@@ -1501,7 +1498,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if(!CMLib.flags().isCloaked(deadmob))
 				{
 					for(int i=0;i<channels2.size();i++)
-						if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+						if((msg.tool() instanceof MOB))
 							CMLib.commands().postChannel(channels2.get(i),deadmob.clans(),deadmob.Name()+" was just killed.",true);
 				}
 			}
@@ -1644,7 +1641,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
 				Item weapon=attacker.myNaturalWeapon();
-				if((msg.tool()!=null)&&(msg.tool() instanceof Item))
+				if((msg.tool() instanceof Item))
 					weapon=(Item)msg.tool();
 				if(weapon!=null)
 				{
@@ -1660,8 +1657,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					attacker.setVictim(target);
 			}
 			else
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Item))
+			if(msg.tool() instanceof Item)
 				postWeaponDamage(attacker,target,(Item)msg.tool(),true);
 		}
 		if(CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target))

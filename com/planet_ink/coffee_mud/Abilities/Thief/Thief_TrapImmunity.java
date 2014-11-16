@@ -61,7 +61,6 @@ public class Thief_TrapImmunity extends ThiefSkill
 		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!msg.amISource(mob))
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Trap))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> deftly avoid(s) a trap."));

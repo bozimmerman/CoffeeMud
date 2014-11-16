@@ -359,8 +359,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case CMMsg.TYP_DISMOUNT:
 			if(msg.amITarget(this))
 			{
-				if((msg.tool()!=null)
-				   &&(msg.tool() instanceof Rider))
+				if(msg.tool() instanceof Rider)
 				{
 					if(!amRiding((Rider)msg.tool()))
 					{
@@ -635,8 +634,7 @@ public class StdRideable extends StdContainer implements Rideable
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			break;
 		case CMMsg.TYP_DISMOUNT:
-			if((msg.tool()!=null)
-			   &&(msg.tool() instanceof Rider))
+			if(msg.tool() instanceof Rider)
 			{
 				((Rider)msg.tool()).setRiding(null);
 				if(msg.source().location()!=null)
@@ -666,8 +664,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case CMMsg.TYP_SLEEP:
 			if(msg.amITarget(this))
 			{
-				if((msg.tool()!=null)
-				   &&(msg.tool() instanceof Rider))
+				if(msg.tool() instanceof Rider)
 				{
 					final Rider R = (Rider)msg.tool();
 					R.setRiding(this);

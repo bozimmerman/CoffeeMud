@@ -76,7 +76,6 @@ public class Prayer_AiryForm extends Prayer
 		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Item))
 		{
 			int recovery=(int)Math.round(CMath.mul((msg.value()),0.75));

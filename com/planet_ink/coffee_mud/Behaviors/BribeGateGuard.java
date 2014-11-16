@@ -356,7 +356,6 @@ public class BribeGateGuard extends StdBehavior
 		if (msg.amITarget(monster)
 		&& (!msg.amISource(monster))
 		&& (msg.targetMinor() == CMMsg.TYP_GIVE)
-		&& (msg.tool() != null)
 		&& (msg.tool()instanceof Coins)
 		&& (!((Coins)msg.tool()).getCurrency().equals(currency)))
 		{
@@ -447,9 +446,8 @@ public class BribeGateGuard extends StdBehavior
 		&& (CMLib.flags().canSenseEnteringLeaving(mob, monster))
 		&& (!CMLib.masking().maskCheck(getParms(), mob,false)))
 		{
-			if ( (msg.tool() != null)
-			&& (msg.target()instanceof Room)
-			&& (msg.tool()instanceof Exit))
+			if ((msg.target() instanceof Room)
+			&& (msg.tool() instanceof Exit))
 			{
 				return false;
 			}
@@ -489,7 +487,7 @@ public class BribeGateGuard extends StdBehavior
 			if (paidPlayers.contains(source))
 			{ // the player that the guard acknowledged as paid has now left
 				paidPlayers.remove(source);
-				if ( (msg.tool() != null) && (msg.tool()instanceof Exit))
+				if (msg.tool()instanceof Exit)
 				{
 					final Exit exit = (Exit) msg.tool();
 					if (exit.Name().equals(e.Name()))
@@ -511,8 +509,7 @@ public class BribeGateGuard extends StdBehavior
 		if (msg.amITarget(observer)
 		&& (!msg.amISource(observer))
 		&& (msg.targetMinor() == CMMsg.TYP_GIVE)
-		&& (msg.tool() != null)
-		&& (msg.tool()instanceof Coins))
+		&& (msg.tool() instanceof Coins))
 		{
 			payment( (Coins) msg.tool(), observer, msg.source());
 			CMLib.commands().postSay(observer, source, L("Thank you very much."), true, false);

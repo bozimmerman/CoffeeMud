@@ -159,8 +159,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 			mob=(MOB)affected;
 		else
 			return;
-		if((msg.source()!=null)
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.value()>0)
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead())

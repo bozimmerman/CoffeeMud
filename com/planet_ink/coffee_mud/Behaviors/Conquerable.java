@@ -1155,7 +1155,7 @@ public class Conquerable extends Arrest
 			// first look for kills and follows and register the points
 			// from those events.  Protect against multi-follows using
 			// a queue.
-			if((((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(msg.tool()!=null)&&(msg.tool() instanceof MOB))
+			if((((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(msg.tool() instanceof MOB))
 				||((msg.sourceMinor()==CMMsg.TYP_FOLLOW)
 						&&(msg.target() instanceof MOB)
 						&&(!noMultiFollows.contains(msg.source()))))

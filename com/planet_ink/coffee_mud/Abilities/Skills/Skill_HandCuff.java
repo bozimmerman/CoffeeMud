@@ -74,7 +74,7 @@ public class Skill_HandCuff extends StdSkill
 		{
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 			{
-				if((msg.source()!=null)&&(msg.source().location()!=null))
+				if(msg.source().location()!=null)
 					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to recall, but the handcuffs prevent <S-HIM-HER>."));
 				return false;
 			}

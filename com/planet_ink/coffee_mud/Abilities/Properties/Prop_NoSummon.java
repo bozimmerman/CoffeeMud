@@ -52,9 +52,7 @@ public class Prop_NoSummon extends Property
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((msg.tool()!=null)
-		&&(msg.tool() instanceof Ability)
-		&&(msg.source()!=null)
+		if((msg.tool() instanceof Ability)
 		&&(msg.source().location()!=null)
 		&&((msg.source().location()==affected)
 		   ||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(msg.source().location().getArea()))))

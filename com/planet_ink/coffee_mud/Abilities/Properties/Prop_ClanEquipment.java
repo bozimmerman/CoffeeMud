@@ -355,14 +355,11 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 			activated=false;
 		if(!activated)
 			return;
-		if(msg.source()!=null)
-		{
-			source=msg.source();
-			/*
-			 * ********************** Weapon addtl. Damage
-			 * **********************
-			 */
-		}
+		source=msg.source();
+		/*
+		 * ********************** Weapon addtl. Damage
+		 * **********************
+		 */
 		if((msg.source().location()!=null)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)&&(msg.value()>0)&&(msg.tool()==affected)&&(!notAgain)
 				&&(msg.target() instanceof MOB)&&(msg.tool() instanceof Weapon)&&(!(msg.tool() instanceof Wand))&&(TypeOfEffect<1000)
 				&&(!((MOB)msg.target()).amDead()))

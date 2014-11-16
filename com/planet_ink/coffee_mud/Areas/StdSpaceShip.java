@@ -423,8 +423,7 @@ public class StdSpaceShip implements Area, SpaceShip
 			&&(((MOB)msg.target()).location()!=null))
 				room=((MOB)msg.target()).location();
 			else
-			if((msg.source()!=null)
-			&&(msg.source().location()!=null))
+			if(msg.source().location()!=null)
 				room=msg.source().location();
 			if(room!=null)
 			{

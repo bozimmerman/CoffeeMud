@@ -86,8 +86,7 @@ public class Prayer_Rockskin extends Prayer
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&((msg.value())>0))
 		{
-			if((msg.tool()!=null)
-			&&(!mob.amDead())
+			if((!mob.amDead())
 			&&(msg.tool() instanceof Weapon))
 			{
 				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);

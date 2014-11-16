@@ -678,7 +678,6 @@ public class Mood extends StdAbility
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(msg.tool()==affected)
-			&&(msg.source()!=null)
 			&&(this.lastOne!=msg.source()))
 			{
 				lastOne=msg.source();

@@ -69,7 +69,6 @@ public class Chant_PlantWall extends Chant
 		{
 			if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			&&(mob.rangeToTarget()>0)
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon)
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(msg.tool().maxRange()>0))
@@ -113,7 +112,6 @@ public class Chant_PlantWall extends Chant
 			else
 			if((mob.rangeToTarget()>0)
 			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
 			&&(msg.tool().maxRange()>0))
 			{

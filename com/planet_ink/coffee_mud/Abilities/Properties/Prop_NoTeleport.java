@@ -44,9 +44,7 @@ public class Prop_NoTeleport extends Property
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((msg.tool()!=null)
-		&&(msg.tool() instanceof Ability)
-		&&(msg.source()!=null)
+		if((msg.tool() instanceof Ability)
 		&&(msg.source().location()!=null)
 		&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
 		{

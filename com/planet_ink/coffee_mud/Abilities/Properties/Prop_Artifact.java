@@ -160,8 +160,7 @@ public class Prop_Artifact extends Property
 				if(affected instanceof Room)
 					room=(Room)affected;
 				else
-				if((msg.source()!=null)
-				&&(msg.source().location()!=null))
+				if(msg.source().location()!=null)
 					room=msg.source().location();
 				else
 				if((msg.target() instanceof MOB)

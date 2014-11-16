@@ -125,7 +125,6 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 			break;
 		case CMMsg.TYP_DROP:
 			if((msg.target() instanceof Item)
-			&&(msg.source()!=null)
 			&&(msg.source().location()!=null)
 			&&((!msg.targetMajor(CMMsg.MASK_INTERMSG))||(!containersOk))) // intermsgs are PUTs on the ground
 			{

@@ -51,7 +51,7 @@ public class Prisoner extends StdAbility
 		if((affected instanceof MOB)&&(msg.amISource((MOB)affected)))
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 			{
-				if((msg.source()!=null)&&(msg.source().location()!=null))
+				if(msg.source().location()!=null)
 					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to recall, but a geas prevents <S-HIM-HER>."));
 				return false;
 			}
@@ -62,7 +62,7 @@ public class Prisoner extends StdAbility
 				return false;
 			}
 			else
-			if((msg.tool()!=null)&&(msg.tool() instanceof Ability)
+			if((msg.tool() instanceof Ability)
 			   &&(msg.targetMinor()==CMMsg.TYP_LEAVE))
 			{
 				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to escape parole, but a geas prevents <S-HIM-HER>."));

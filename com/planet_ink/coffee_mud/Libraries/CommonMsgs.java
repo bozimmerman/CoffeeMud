@@ -1698,8 +1698,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final MOB mob=msg.source();
 		if(item instanceof Container)
 		{
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Item))
+			if(msg.tool() instanceof Item)
 			{
 				final Item newitem=(Item)msg.tool();
 				if(newitem.container()==item)

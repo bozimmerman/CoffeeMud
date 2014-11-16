@@ -79,7 +79,6 @@ public class Paladin_Defend extends StdAbility
 			return;
 		if((msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 			fullRound=false;
 	}

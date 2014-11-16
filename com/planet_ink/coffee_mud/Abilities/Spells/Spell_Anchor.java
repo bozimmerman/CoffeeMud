@@ -72,8 +72,7 @@ public class Spell_Anchor extends Spell
 		if(affected==null)
 			return true;
 
-		if((msg.tool()!=null)
-		&&(msg.tool() instanceof Ability)
+		if((msg.tool() instanceof Ability)
 		&&((affected==null)
 			||((affected instanceof Item)&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))&&(msg.amITarget(((Item)affected).owner())))
 			||((affected instanceof MOB)&&(msg.amITarget(affected))))
@@ -98,7 +97,7 @@ public class Spell_Anchor extends Spell
 			if(msg.target() instanceof Room)
 				roomD=(Room)msg.target();
 
-			if((msg.source()!=null)&&(msg.source().location()!=null))
+			if(msg.source().location()!=null)
 				roomS=msg.source().location();
 
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))

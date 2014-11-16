@@ -96,7 +96,6 @@ public class ItemMender extends StdBehavior
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!CMSecurity.isAllowed(source,source.location(),CMSecurity.SecFlag.CMDROOMS))
 		&&(!(msg.tool() instanceof Coins))
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
 			final double cost=cost((Item)msg.tool());
@@ -143,7 +142,6 @@ public class ItemMender extends StdBehavior
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!CMSecurity.isAllowed(source,source.location(),CMSecurity.SecFlag.CMDROOMS))
 		&&(!(msg.tool() instanceof Coins))
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
 			final double cost=cost((Item)msg.tool());

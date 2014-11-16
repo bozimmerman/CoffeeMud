@@ -45,8 +45,7 @@ public class Prop_RestrictSpells extends Property
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((msg.tool()!=null)
-		&&(msg.tool() instanceof Ability)
+		if((msg.tool() instanceof Ability)
 		&&(text().toUpperCase().indexOf(msg.tool().ID().toUpperCase())>=0))
 		{
 			Room roomS=null;
@@ -54,7 +53,7 @@ public class Prop_RestrictSpells extends Property
 			if((msg.target() instanceof MOB)&&(((MOB)msg.target()).location()!=null))
 				roomD=((MOB)msg.target()).location();
 			else
-			if((msg.source()!=null)&&(msg.source().location()!=null))
+			if(msg.source().location()!=null)
 				roomS=msg.source().location();
 			else
 			if(msg.target() instanceof Room)
@@ -73,8 +72,7 @@ public class Prop_RestrictSpells extends Property
 					roomS.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 				if(roomD!=null)
 					roomD.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
-				if((msg.source()!=null)
-				&&(msg.source().location()!=null)
+				if((msg.source().location()!=null)
 				&&(msg.source().location()!=roomS)
 				&&(msg.source().location()!=roomD))
 					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));

@@ -154,7 +154,6 @@ public class Disease extends StdAbility implements DiseaseAffect
 			if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_DAMAGE))
 			&&(msg.amISource(mob))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon)
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
 			&&(msg.source().fetchWieldedItem()==null)

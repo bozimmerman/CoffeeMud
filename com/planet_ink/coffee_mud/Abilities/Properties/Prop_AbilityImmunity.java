@@ -83,13 +83,11 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if ( (msg.source() != null)
-		&& (msg.target() != null)
-		&& (msg.tool() != null)
+		if ((msg.target() != null)
+		&& (msg.tool() instanceof Ability )
 		&& ((msg.amITarget(affected))
 				||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner()))
-				||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner())&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))))
-		&& (msg.tool() instanceof Ability ))
+				||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner())&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))))
 		{
 			final Ability d = (Ability)msg.tool();
 			for(int i = 0; i < diseases.size(); i++)

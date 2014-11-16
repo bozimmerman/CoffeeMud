@@ -93,7 +93,6 @@ public class ItemRefitter extends StdBehavior
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!CMSecurity.isAllowed(source,source.location(),CMSecurity.SecFlag.CMDROOMS))
-		&&(msg.tool()!=null)
 		&&(!(msg.tool() instanceof Coins))
 		&&(msg.tool() instanceof Item))
 		{
@@ -134,7 +133,6 @@ public class ItemRefitter extends StdBehavior
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!CMSecurity.isAllowed(source,source.location(),CMSecurity.SecFlag.CMDROOMS))
-		&&(msg.tool()!=null)
 		&&(!(msg.tool() instanceof Coins))
 		&&(msg.tool() instanceof Armor))
 		{

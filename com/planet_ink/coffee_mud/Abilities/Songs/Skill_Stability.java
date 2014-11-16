@@ -55,8 +55,7 @@ public class Skill_Stability extends BardSkill
 			return true;
 
 		final MOB mob=(MOB)affected;
-		if((msg.tool()!=null)
-		&&(msg.tool() instanceof Ability)
+		if((msg.tool() instanceof Ability)
 		&&(msg.amITarget(affected))
 		&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
@@ -66,7 +65,7 @@ public class Skill_Stability extends BardSkill
 			Room roomD=null;
 			if(msg.target() instanceof MOB)
 				roomD=((MOB)msg.target()).location();
-			if((msg.source()!=null)&&(msg.source().location()!=null))
+			if(msg.source().location()!=null)
 				roomS=msg.source().location();
 			if(msg.target() instanceof Room)
 				roomD=(Room)msg.target();

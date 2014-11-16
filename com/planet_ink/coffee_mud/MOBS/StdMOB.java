@@ -2143,7 +2143,7 @@ public class StdMOB implements MOB
 			if ((msg.sourceMinor() == CMMsg.TYP_DEATH) && (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.IMMORT)))
 			{
 				curState().setHitPoints(1);
-				if ((msg.tool() != null) && (msg.tool() != this) && (msg.tool() instanceof MOB))
+				if ((msg.tool() != this) && (msg.tool() instanceof MOB))
 					((MOB) msg.tool()).tell(L("@x1 is immortal, and can not die.",name((MOB)msg.tool())));
 				tell(L("You are immortal, and can not die."));
 				return false;
@@ -2161,7 +2161,7 @@ public class StdMOB implements MOB
 
 				if (CMath.bset(srcCode, CMMsg.MASK_MALICIOUS))
 				{
-					if ((msg.target() != this) && (msg.target() != null) && (msg.target() instanceof MOB))
+					if (msg.target() instanceof MOB)
 					{
 						final MOB target = (MOB) msg.target();
 						if ((amFollowing() != null) && (target == amFollowing()))
@@ -2364,7 +2364,7 @@ public class StdMOB implements MOB
 					possHeldItem = null;
 					break;
 				case CMMsg.TYP_JUSTICE:
-					if ((msg.target() != null) && (isInCombat()) && (msg.target() instanceof Item))
+					if ((isInCombat()) && (msg.target() instanceof Item))
 					{
 						tell(L("Not while you are fighting!"));
 						return false;
@@ -2381,7 +2381,7 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_CLOSE:
 					if (isInCombat())
 					{
-						if ((msg.target() != null) && ((msg.target() instanceof Exit) || (srcM.isMine(msg.target()))))
+						if (((msg.target() instanceof Exit) || (srcM.isMine(msg.target()))))
 							break;
 						tell(L("Not while you are fighting!"));
 						return false;
@@ -2512,10 +2512,9 @@ public class StdMOB implements MOB
 
 		if ((msg.sourceCode() != CMMsg.NO_EFFECT)
 		&& (msg.amISource(this))
-		&& (msg.target() != null)
+		&& (msg.target() instanceof MOB)
 		&& (msg.target() != this)
 		&& (!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))
-		&& (msg.target() instanceof MOB)
 		&& (location() != null)
 		&& (location() == ((MOB) msg.target()).location()))
 		{
@@ -2564,7 +2563,8 @@ public class StdMOB implements MOB
 				recoverPhyStats();
 			}
 			else
-			if ((msg.tool() != null) && (msg.sourceMinor() != CMMsg.TYP_BUY)
+			if ((msg.tool() != null) 
+			&& (msg.sourceMinor() != CMMsg.TYP_BUY)
 			&& (msg.sourceMinor() != CMMsg.TYP_BID)
 			&& (msg.sourceMinor() != CMMsg.TYP_SELL)
 			&& (msg.sourceMinor() != CMMsg.TYP_VIEW))
@@ -2782,7 +2782,7 @@ public class StdMOB implements MOB
 						CMMsg.MSG_DROP | CMMsg.MASK_INTERMSG, null, CMMsg.MSG_DROP | CMMsg.MASK_INTERMSG, null);
 				if (!location().okMessage(srcM, msg2))
 					return false;
-				if ((msg.target() != null) && (msg.target() instanceof MOB))
+				if (msg.target() instanceof MOB)
 				{
 					msg2 = CMClass.getMsg((MOB) msg.target(), msg.tool(), null,
 							GC | CMMsg.MSG_GET | CMMsg.MASK_INTERMSG, null,
@@ -2993,7 +2993,7 @@ public class StdMOB implements MOB
 				CMLib.commands().handleRecall(msg);
 				break;
 			case CMMsg.TYP_FOLLOW:
-				if ((msg.target() != null) && (msg.target() instanceof MOB))
+				if (msg.target() instanceof MOB)
 				{
 					setFollowing((MOB) msg.target());
 					tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());

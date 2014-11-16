@@ -292,9 +292,8 @@ public class StdArmor extends StdContainer implements Armor
 			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&((msg.value())>0))
 			{
-				if((msg.tool()!=null)
-				&&(msg.tool() instanceof Weapon))
-				   weaponType=((Weapon)msg.tool()).weaponType();
+				if(msg.tool() instanceof Weapon)
+					weaponType=((Weapon)msg.tool()).weaponType();
 				else
 				switch(msg.sourceMinor())
 				{

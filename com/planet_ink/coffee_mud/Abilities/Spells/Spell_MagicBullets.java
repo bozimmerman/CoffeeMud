@@ -64,8 +64,7 @@ public class Spell_MagicBullets extends Spell
 		else
 			return;
 		
-		if((msg.source()!=null)
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.value()>0)
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead())

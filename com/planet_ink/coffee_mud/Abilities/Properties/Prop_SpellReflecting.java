@@ -95,7 +95,6 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 
 		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(CMLib.dice().rollPercentage()<=chance)
 		&&(abilityCode()>0)

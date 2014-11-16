@@ -98,7 +98,7 @@ public class HoleInTheGround extends StdContainer
 				msg.setOthersMessage("<S-NAME> fill(s) the hole back in.");
 				return true;
 			case CMMsg.TYP_PUT:
-				if((msg.tool()!=null)&&(msg.tool() instanceof Item))
+				if((msg.tool() instanceof Item))
 				{
 					if((text().length()>0)&&(!text().equals(msg.source().Name())))
 					{
@@ -106,7 +106,7 @@ public class HoleInTheGround extends StdContainer
 						return false;
 					}
 				}
-				if((msg.tool()!=null)&&(msg.tool() instanceof ClanItem))
+				if((msg.tool() instanceof ClanItem))
 				{
 					msg.source().tell(L("Go may not bury a clan item."));
 					return false;
@@ -153,7 +153,7 @@ public class HoleInTheGround extends StdContainer
 				}
 				return;
 			case CMMsg.TYP_PUT:
-				if((msg.tool()!=null)&&(msg.tool() instanceof Item))
+				if((msg.tool() instanceof Item))
 				{
 					final PlayerStats pstats=mob.playerStats();
 					if(pstats!=null)

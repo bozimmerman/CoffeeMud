@@ -802,7 +802,6 @@ public class StdDeity extends StdMOB implements Deity
 					break;
 				case TRIGGER_PUTTHING:
 					if((msg.target() instanceof Container)
-					&&(msg.tool()!=null)
 					&&(msg.tool() instanceof Item)
 					&&(CMLib.english().containsString(msg.tool().name(),DT.parm1))
 					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
@@ -842,16 +841,14 @@ public class StdDeity extends StdMOB implements Deity
 						yup=true;
 					break;
 				case TRIGGER_PUTVALUE:
-					if((msg.tool()!=null)
-					&&(msg.tool() instanceof Item)
+					if((msg.tool() instanceof Item)
 					&&(((Item)msg.tool()).baseGoldValue()>=CMath.s_int(DT.parm1))
 					&&(msg.target() instanceof Container)
 					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
 						yup=true;
 					break;
 				case TRIGGER_PUTMATERIAL:
-					if((msg.tool()!=null)
-					&&(msg.tool() instanceof Item)
+					if((msg.tool() instanceof Item)
 					&&(((((Item)msg.tool()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parm1))
 						||((((Item)msg.tool()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parm1)))
 					&&(msg.target() instanceof Container)

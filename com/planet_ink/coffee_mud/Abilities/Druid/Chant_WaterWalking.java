@@ -86,7 +86,6 @@ public class Chant_WaterWalking extends Chant
 			if((msg.sourceMinor()==CMMsg.TYP_LEAVE)
 			&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
 			&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Exit))
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

@@ -94,7 +94,6 @@ public class Paladin_Aura extends PaladinSkill
 		{
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
 			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))

@@ -75,7 +75,6 @@ public class Chant_WindShape extends Chant
 		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Item))
 		{
 			final int recovery=(int)Math.round(CMath.div((msg.value()),4.0));

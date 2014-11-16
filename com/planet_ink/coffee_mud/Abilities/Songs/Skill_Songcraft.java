@@ -58,7 +58,6 @@ public class Skill_Songcraft extends BardSkill
 		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(!msg.amISource(mob))
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0)

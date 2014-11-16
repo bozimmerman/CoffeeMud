@@ -171,7 +171,6 @@ public class Arcanist extends Thief
 		{
 			if(((msg.sourceMinor()==CMMsg.TYP_BUY)
 				||(msg.sourceMinor()==CMMsg.TYP_LIST))
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Potion))
 			{
 				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_BONUS);

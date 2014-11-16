@@ -222,8 +222,7 @@ public class StdTub extends StdRideable implements Drink
 					mob.tell(L("@x1 is full.",name()));
 					return false;
 				}
-				if((msg.tool()!=null)
-				&&(msg.tool()!=msg.target())
+				if((msg.tool()!=msg.target())
 				&&(msg.tool() instanceof Drink))
 				{
 					final Drink thePuddle=(Drink)msg.tool();
@@ -296,7 +295,7 @@ public class StdTub extends StdRideable implements Drink
 				}
 				break;
 			case CMMsg.TYP_FILL:
-				if((msg.tool()!=null)&&(msg.tool() instanceof Drink))
+				if((msg.tool() instanceof Drink))
 				{
 					final Drink thePuddle=(Drink)msg.tool();
 					final int amountToTake=amountTakenToFillMe(thePuddle);

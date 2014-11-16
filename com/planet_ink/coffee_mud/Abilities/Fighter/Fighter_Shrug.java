@@ -58,7 +58,6 @@ public class Fighter_Shrug extends FighterSkill
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(!msg.amISource((MOB)affected))
 		&&(CMLib.flags().aliveAwakeMobile((MOB)affected,true))
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon))
 		{
 			final MOB mob=(MOB)affected;

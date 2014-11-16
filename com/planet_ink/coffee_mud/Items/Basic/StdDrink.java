@@ -168,8 +168,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 						return false;
 					}
 				}
-				if((msg.tool()!=null)
-				&&(msg.tool()!=msg.target())
+				if((msg.tool()!=msg.target())
 				&&(msg.tool() instanceof Drink))
 				{
 					final Drink thePuddle=(Drink)msg.tool();

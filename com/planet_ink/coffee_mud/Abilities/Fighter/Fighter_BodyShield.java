@@ -64,7 +64,6 @@ public class Fighter_BodyShield extends FighterSkill
 		&&(msg.source()!=mob.getVictim())
 		&&(msg.source()!=mob)
 		&&((msg.value())>0)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(mob.getVictim()!=null)
 		&&(mob.getVictim().fetchEffect("Fighter_Pin")!=null)

@@ -69,7 +69,7 @@ public class Skill_Parry extends StdSkill
 		   &&(!doneThisRound)
 		   &&(mob.rangeToTarget()==0))
 		{
-			if((msg.tool()!=null)&&(msg.tool() instanceof Item))
+			if((msg.tool() instanceof Item))
 			{
 				final Item attackerWeapon=(Item)msg.tool();
 				final Item myWeapon=mob.fetchWieldedItem();

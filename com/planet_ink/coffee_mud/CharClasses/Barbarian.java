@@ -169,7 +169,6 @@ public class Barbarian extends StdCharClass
 		final MOB myChar=(MOB)myHost;
 
 		if((msg.amITarget(myChar))
-		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Weapon)
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
@@ -184,7 +183,6 @@ public class Barbarian extends StdCharClass
 		else
 		if((msg.amITarget(myChar))
 		   &&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Ability)
 		   &&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
 		{

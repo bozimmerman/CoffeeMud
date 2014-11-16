@@ -124,7 +124,6 @@ public class SpecialistMage extends Mage
 		else
 		if((msg.amITarget(myChar))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability))
 		{
 			int classLevel=myChar.charStats().getClassLevel(this);

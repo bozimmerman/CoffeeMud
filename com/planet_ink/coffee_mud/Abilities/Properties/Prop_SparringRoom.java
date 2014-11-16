@@ -59,7 +59,7 @@ public class Prop_SparringRoom extends Property
 		&&(msg.source().isInCombat()))
 		{
 			MOB source=null;
-			if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+			if((msg.tool() instanceof MOB))
 				source=(MOB)msg.tool();
 			final MOB target=msg.source();
 			final Room deathRoom=target.location();

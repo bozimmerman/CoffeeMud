@@ -76,7 +76,6 @@ public class Spell_SummoningWard extends Spell
 			if((msg.amITarget(mob))
 			&&(!msg.amISource(mob))
 			&&(mob.location()!=msg.source().location())
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING))
 			&&(!mob.amDead()))
@@ -89,8 +88,7 @@ public class Spell_SummoningWard extends Spell
 		if(affected instanceof Room)
 		{
 			final Room R=(Room)affected;
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
+			if((msg.tool() instanceof Ability)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
 			{
 				final Ability A=(Ability)msg.tool();

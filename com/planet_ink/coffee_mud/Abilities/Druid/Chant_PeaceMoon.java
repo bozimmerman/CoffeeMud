@@ -74,8 +74,7 @@ public class Chant_PeaceMoon extends Chant
 		||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MALICIOUS)))
 		{
-			if((msg.source()!=null)
-			   &&(msg.target()!=null)
+			if((msg.target()!=null)
 			   &&(msg.source()!=msg.target()))
 			{
 				msg.source().tell(L("Nah, you feel too peaceful under that bright moon."));

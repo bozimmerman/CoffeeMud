@@ -259,8 +259,7 @@ public class StdSmokable extends StdContainer implements Light
 			}
 		super.executeMsg(myHost,msg);
 		if((msg.tool()==this)
-		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
-		&&(msg.source()!=null))
+		&&(msg.sourceMinor()==CMMsg.TYP_THROW))
 		{
 			msg.source().recoverPhyStats();
 			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_OPTIMIZE))
@@ -282,17 +281,14 @@ public class StdSmokable extends StdContainer implements Light
 			case CMMsg.TYP_PULL:
 			case CMMsg.TYP_PUSH:
 			case CMMsg.TYP_REMOVE:
-				if(msg.source()!=null)
+				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 				{
-					if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
-					{
-						msg.source().recoverPhyStats();
-						if(msg.source().location()!=null)
-							msg.source().location().recoverRoomStats();
-						final Room R=CMLib.map().roomLocation(msg.tool());
-						if((R!=null)&&(R!=msg.source().location()))
-							R.recoverRoomStats();
-					}
+					msg.source().recoverPhyStats();
+					if(msg.source().location()!=null)
+						msg.source().location().recoverRoomStats();
+					final Room R=CMLib.map().roomLocation(msg.tool());
+					if((R!=null)&&(R!=msg.source().location()))
+						R.recoverRoomStats();
 				}
 				break;
 			}

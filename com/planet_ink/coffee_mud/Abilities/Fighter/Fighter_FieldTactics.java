@@ -97,7 +97,6 @@ public class Fighter_FieldTactics extends FighterSkill
 		&&(msg.amISource((MOB)affected))
 		&&(!msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(msg.value()>0))
 		{

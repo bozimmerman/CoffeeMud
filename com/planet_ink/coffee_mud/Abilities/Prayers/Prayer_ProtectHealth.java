@@ -81,9 +81,8 @@ public class Prayer_ProtectHealth extends Prayer
 
 		if(msg.target()==affected)
 		{
-			if((msg.tool()!=null)
-			   &&(CMLib.dice().rollPercentage()>50)
-			   &&(msg.tool() instanceof DiseaseAffect))
+			if((msg.tool() instanceof DiseaseAffect)
+			   &&(CMLib.dice().rollPercentage()>50))
 			{
 				msg.source().location().show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,L("An unhealthy assault against <S-NAME> is magically repelled."));
 				return false;

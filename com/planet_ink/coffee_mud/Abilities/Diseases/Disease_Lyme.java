@@ -67,7 +67,6 @@ public class Disease_Lyme extends Disease
 		// from trying to do ANYTHING except sleep
 		if((msg.amISource(mob))
 		&&(days>0)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(mob.fetchAbility(msg.tool().ID())==msg.tool())
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_MIND)+25)))

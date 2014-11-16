@@ -69,7 +69,6 @@ public class WereWolf extends GiantWolf
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target() instanceof MOB)
 		&&(mob.fetchWieldedItem()==null)
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(CMLib.dice().rollPercentage()<50)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
