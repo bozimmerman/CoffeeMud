@@ -550,7 +550,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				done.add(A.triggerStrings());
 				for(int t=0;t<A.triggerStrings().length;t++)
 					if(word.equals(A.triggerStrings()[t]))
-						return A.triggerStrings()[t];
+					{
+						if((t>0)&&(A.triggerStrings()[0].startsWith(word)))
+							return A.triggerStrings()[0];
+						else
+							return A.triggerStrings()[t];
+					}
 			}
 		}
 		return null;
