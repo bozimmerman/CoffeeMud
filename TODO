@@ -1,5 +1,5 @@
 BUGS
-  *. You can't 'ca' that.
+  *.
 
 TECH
    *. test launch and landing
@@ -24,13 +24,12 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
-   *. Wait/Notify for synchronous asynchronous code?
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills:
         *. Assassin      : +6
-                         : Two-Dagger Fighting (no negatives on two handed fighting), Cut Throat (crit, injury,bleeding), Double Strike (2x attacks with daggers),
-                         : Study Victim (longer the study, the better chance first strike will kill him), Dagger Defense, Dagger Mastery
+                         : Two-Dagger Fighting (no negatives on two handed fighting), Cut Throat (crit, bleeding), Double Strike (2x attacks with daggers),
+                         : Dagger Defense, Dagger Mastery, Deep Cut (causes injury)
         *. Ranger        : +9
         *. Ranger ideas  : Camoflauge, Repel Vermin, Wind Wall (protect/arrow), Detect Snares/Pits, Delay Poison, Sense Poison, Calm Animals, Speak with Animals, Snare
         *. Paladin       : +6
