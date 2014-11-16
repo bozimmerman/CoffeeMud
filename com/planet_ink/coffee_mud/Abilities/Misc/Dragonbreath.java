@@ -191,7 +191,7 @@ public class Dragonbreath extends StdAbility
 						damage += CMLib.dice().roll(levelBy,6,levelBy);
 						if(msg.value()>0)
 							damage = (int)Math.round(CMath.div(damage,2.0));
-						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|strikeType,WeaponType,"^F^<FIGHT^>The "+stuffWord+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");
+						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|strikeType,WeaponType,L("^F^<FIGHT^>The @x1 <DAMAGE> <T-NAME>!^</FIGHT^>^?",stuffWord));
 					}
 				}
 		}

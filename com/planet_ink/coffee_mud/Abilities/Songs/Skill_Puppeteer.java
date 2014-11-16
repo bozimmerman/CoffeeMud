@@ -112,7 +112,7 @@ public class Skill_Puppeteer extends BardSkill
 					CMLib.combat().postDamage(M,M.getVictim(),affected,
 											CMLib.dice().roll(1,affected.phyStats().level()+(2*getXLEVELLevel(M)),1),
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
-											Weapon.TYPE_BASHING,affected.name()+" attacks and <DAMAGE> <T-NAME>!");
+											Weapon.TYPE_BASHING,L("@x1 attacks and <DAMAGE> <T-NAME>!",affected.name()));
 			}
 			else
 			if(CMLib.dice().rollPercentage()>75)

@@ -111,7 +111,7 @@ public class Chant_MeteorStrike extends Chant
 						if(msg.value()>0)
 							damage = (int)Math.round(CMath.div(damage,2.0));
 						if(target.location()==mob.location())
-							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BASHING,"The meteors <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BASHING,L("The meteors <DAMAGE> <T-NAME>!"));
 					}
 				}
 		}

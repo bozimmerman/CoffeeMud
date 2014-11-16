@@ -110,21 +110,21 @@ public class Troll extends StdRace
 						if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE))
 						{
 							final int damage=CMLib.dice().roll(1,8,0);
-							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The scorching heat <DAMAGE> <T-NAME>!"));
 						}
 						break;
 					case Climate.WEATHER_DUSTSTORM:
 						if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE))
 						{
 							final int damage=CMLib.dice().roll(1,16,0);
-							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The burning hot dust <DAMAGE> <T-NAME>!"));
 						}
 						break;
 					case Climate.WEATHER_DROUGHT:
 						if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE))
 						{
 							final int damage=CMLib.dice().roll(1,8,0);
-							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The burning dry heat <DAMAGE> <T-NAME>!"));
 						}
 						break;
 					}

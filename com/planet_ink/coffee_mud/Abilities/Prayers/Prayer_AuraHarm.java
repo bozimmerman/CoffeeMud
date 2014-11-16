@@ -96,12 +96,12 @@ public class Prayer_AuraHarm extends Prayer
 				if(invoker()!=null)
 				{
 					final int harming=CMLib.dice().roll(1,adjustedLevel(invoker(),0)/3,1);
-					CMLib.combat().postDamage(invoker(),M,this,harming,CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy aura <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(invoker(),M,this,harming,CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The unholy aura <DAMAGE> <T-NAME>!"));
 				}
 				else
 				{
 					final int harming=CMLib.dice().roll(1,CMLib.ableMapper().lowestQualifyingLevel(ID())/3,1);
-					CMLib.combat().postDamage(M,M,this,harming,CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy aura <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(M,M,this,harming,CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The unholy aura <DAMAGE> <T-NAME>!"));
 				}
 				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(invoker!=null)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
 					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());

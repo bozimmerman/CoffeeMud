@@ -46,7 +46,7 @@ public class Spell_ShapeObject extends Spell
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
-		affectableStats.setName(affectedEnv.Name()+" shaped like "+text());
+		affectableStats.setName(L("@x1 shaped like @x2",affectedEnv.Name(),text()));
 	}
 	
 	@Override

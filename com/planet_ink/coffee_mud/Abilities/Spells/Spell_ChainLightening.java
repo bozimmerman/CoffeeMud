@@ -122,7 +122,7 @@ public class Spell_ChainLightening extends Spell
 								dmg = (int)Math.round(CMath.div(dmg,2.0));
 							if(target.location()==mob.location())
 							{
-								CMLib.combat().postDamage(mob,target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
+								CMLib.combat().postDamage(mob,target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,L("The bolt <DAMAGE> <T-NAME>!"));
 								damage = (int)Math.round(CMath.div(damage,2.0));
 								if(damage<5){ damage=0; break;}
 							}

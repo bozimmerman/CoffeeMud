@@ -82,7 +82,7 @@ public class Spell_KnowPain extends Spell
 					damage = (int)Math.round(CMath.div(damage,2.0));
 
 				if(target.location()==mob.location())
-					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_BURSTING,"The horrible memory <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_BURSTING,L("The horrible memory <DAMAGE> <T-NAME>!"));
 			}
 		}
 		else

@@ -90,7 +90,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 			else
 			{
 				final MOB invoker=(invoker()!=null) ? invoker() : mob;
-				CMLib.combat().postDamage(invoker,mob,this,1,CMMsg.TYP_DISEASE,-1,"<T-NAME> feel(s) the fungus between <T-HIS-HER> toes eating <T-HIS-HER> feet away!");
+				CMLib.combat().postDamage(invoker,mob,this,1,CMMsg.TYP_DISEASE,-1,L("<T-NAME> feel(s) the fungus between <T-HIS-HER> toes eating <T-HIS-HER> feet away!"));
 			}
 		}
 		return true;

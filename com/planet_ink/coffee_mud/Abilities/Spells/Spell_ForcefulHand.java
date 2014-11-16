@@ -168,7 +168,7 @@ public class Spell_ForcefulHand extends Spell
 		
 		if(!target.isInCombat())
 		{
-			mob.tell("This only works while in combat.");
+			mob.tell(L("This only works while in combat."));
 			return false;
 		}
 		

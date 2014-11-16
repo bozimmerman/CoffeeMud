@@ -91,7 +91,7 @@ public class Prayer_Godstrike extends Prayer
 				if(undead)
 					harming=harming*2;
 				if(CMLib.flags().isEvil(target))
-					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,"^SThe holy STRIKE of the gods <DAMAGE> <T-NAME>!^?");
+					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,L("^SThe holy STRIKE of the gods <DAMAGE> <T-NAME>!^?"));
 			}
 		}
 		else

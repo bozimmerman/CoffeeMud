@@ -51,7 +51,7 @@ public class Thief_ImprovedCaltrops extends Thief_Caltrops
 		else
 		{
 			CMLib.combat().postDamage(invoker,mob,null,CMLib.dice().roll(8,6,5*adjustedLevel(invoker(),0)),
-					CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The "+caltropTypeName()+"caltrops on the ground <DAMAGE> <T-NAME>.");
+					CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,L("The @x1caltrops on the ground <DAMAGE> <T-NAME>.",caltropTypeName()));
 		}
 		// does not set sprung flag -- as this trap never goes out of use
 	}

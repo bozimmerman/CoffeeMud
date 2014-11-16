@@ -113,7 +113,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 				hpRemaining-=dmg;
 				if(invoker!=null)
 					invoker.tell(L("Your oak is being chopped down!"));
-				CMLib.combat().postDamage(invoker,invoker,null,dmg/2,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
+				CMLib.combat().postDamage(invoker,invoker,null,dmg/2,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_SLASHING,L("The chopping on your oak <DAMAGE> you!"));
 				if(hpRemaining<0)
 				{
 					if(invoker!=null)

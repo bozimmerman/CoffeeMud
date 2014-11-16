@@ -57,7 +57,7 @@ public class Spell_AcidArrow extends Spell
 			if((!vic.amDead())&&(vic.location()!=null))
 			{
 				final MOB invoker=(invoker()!=null) ? invoker() : vic;
-				CMLib.combat().postDamage(invoker,vic,this,CMLib.dice().roll(2,4+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) from the acid arrow residue!");
+				CMLib.combat().postDamage(invoker,vic,this,CMLib.dice().roll(2,4+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,-1,L("<T-NAME> sizzle(s) from the acid arrow residue!"));
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -94,7 +94,7 @@ public class Spell_AcidArrow extends Spell
 				int damage = CMLib.dice().roll(1, numDice+10, 5);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));
-				CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acidic blast <DAMAGES> <T-NAME>!");
+				CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,L("The acidic blast <DAMAGES> <T-NAME>!"));
 				maliciousAffect(mob,target,asLevel,3,-1);
 			}
 		}

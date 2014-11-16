@@ -245,7 +245,7 @@ public class Spell_BigMouth extends Spell
 					int damage=(int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2));
 					if(damage<(TastyMorsel.phyStats().level()+6))
 						damage=TastyMorsel.curState().getHitPoints()*100;
-					CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,L("The stomach acid <DAMAGE> <T-NAME>!"));
 				}
 			}
 		}

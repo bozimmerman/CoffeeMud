@@ -156,7 +156,7 @@ public class Prayer_Tremor extends Prayer
 								if(success)
 								{
 									if(target.location()==mob.location())
-										CMLib.combat().postDamage(mob,target,this,10,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
+										CMLib.combat().postDamage(mob,target,this,10,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,L("The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!"));
 								}
 							}
 							else

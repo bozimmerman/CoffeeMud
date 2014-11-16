@@ -129,7 +129,7 @@ public class Fighter_BodyToss extends MonkSkill
 					dist=mob.location().maxRange();
 				mob.setRangeToTarget(dist);
 				target.setRangeToTarget(dist);
-				CMLib.combat().postDamage(mob,target,this,CMLib.dice().roll(1,12,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"The hard landing <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(mob,target,this,CMLib.dice().roll(1,12,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,L("The hard landing <DAMAGE> <T-NAME>!"));
 				if(mob.getVictim()==null) mob.setVictim(null); // correct range
 				if(target.getVictim()==null) target.setVictim(null); // correct range
 			}

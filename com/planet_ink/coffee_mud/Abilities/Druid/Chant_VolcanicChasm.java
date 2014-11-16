@@ -56,7 +56,7 @@ public class Chant_VolcanicChasm extends Chant
 				if((M!=null)&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
 				{
 					final MOB invoker=(invoker()!=null) ? invoker() : M;
-					CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*super.getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_MELTING,"The extreme heat <DAMAGES> <T-NAME>!");
+					CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*super.getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_MELTING,L("The extreme heat <DAMAGES> <T-NAME>!"));
 					if((!M.isInCombat())
 					&&(M!=invoker)
 					&&(!M.amDead())

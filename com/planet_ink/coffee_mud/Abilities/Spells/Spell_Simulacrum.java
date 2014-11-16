@@ -230,7 +230,7 @@ public class Spell_Simulacrum extends Spell
 					MOB M=determineMonster(mob,mob.phyStats().level(),A);
 					M.setFollowing(mob);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("A simulacrum of <S-NAME> appears, while <S-NAME> open(s) <S-HIS-HER> transluscent eyes."));
-					mob.tell("^xYour simulacrum will now do anything you say, even if they are in another room.");
+					mob.tell(L("^xYour simulacrum will now do anything you say, even if they are in another room."));
 				}
 			}
 		}

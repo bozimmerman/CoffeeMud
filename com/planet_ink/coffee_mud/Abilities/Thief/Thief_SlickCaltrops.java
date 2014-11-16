@@ -59,7 +59,7 @@ public class Thief_SlickCaltrops extends Thief_Caltrops
 				{
 					if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 						CMLib.combat().postDamage(invoker,mob,null,CMLib.dice().roll(5,6,6*adjustedLevel(invoker(),0)),
-								CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The "+caltropTypeName()+"caltrops on the ground <DAMAGE> <T-NAME>.");
+								CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,L("The @x1caltrops on the ground <DAMAGE> <T-NAME>.",caltropTypeName()));
 				}
 			}
 		}

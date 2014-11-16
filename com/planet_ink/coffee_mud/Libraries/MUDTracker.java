@@ -641,7 +641,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			final Room startRoom=M.getStartRoom();
 			if(startRoom!=null)
 			{
-				startRoom.showOthers(M,startRoom,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> enter(s).");
+				startRoom.showOthers(M,startRoom,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> enter(s)."));
 				startRoom.bringMobHere(M,true);
 			}
 		}

@@ -91,7 +91,7 @@ public class Prayer_Hellfire extends Prayer
 					if(undead)
 						harming=harming/2;
 					if(CMLib.flags().isGood(target))
-						CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The unholy HELLFIRE <DAMAGE> <T-NAME>!");
+						CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The unholy HELLFIRE <DAMAGE> <T-NAME>!"));
 				}
 			}
 		}

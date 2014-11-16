@@ -411,7 +411,7 @@ public class Dragon extends StdMOB
 						damage=((short)Math.round(Math.random()*7)*DragonAge());
 					if(dragonbreath==null)
 						dragonbreath=CMClass.getAbility("Dragonbreath");
-					CMLib.combat().postDamage(this,target,dragonbreath,damage,CMMsg.MASK_ALWAYS|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>.");
+					CMLib.combat().postDamage(this,target,dragonbreath,damage,CMMsg.MASK_ALWAYS|AffectCode,WeaponType,L("The blast <DAMAGE> <T-NAME>."));
 				}
 			}
 		}
@@ -527,7 +527,7 @@ public class Dragon extends StdMOB
 					damage=TastyMorsel.curState().getHitPoints()+1;
 				if(DigestMsg.value()!=0)
 					damage=damage/2;
-				CMLib.combat().postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,L("The stomach acid <DAMAGE> <T-NAME>!"));
 			}
 		}
 		return true;

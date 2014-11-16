@@ -172,7 +172,7 @@ public class FieryRoom
 		final MOB M=CMLib.map().getFactoryMOB(mob.location());
 		M.setName(L("fire"));
 		CMLib.combat().postDamage(M, mob, null, directDamage, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
-							"The fire here <DAMAGE> <T-NAME>!");
+							L("The fire here <DAMAGE> <T-NAME>!"));
 		M.destroy();
 	}
 

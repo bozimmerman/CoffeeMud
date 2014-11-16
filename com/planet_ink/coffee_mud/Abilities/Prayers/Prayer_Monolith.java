@@ -98,7 +98,7 @@ public class Prayer_Monolith extends Prayer
 								&&(!M.amDead()))
 								{
 									final MOB invoker=(invoker()!=null) ? invoker() : M;
-									CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.phyStats().level()/2,4,0),CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+									CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.phyStats().level()/2,4,0),CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,L("A shard of ice <DAMAGE> <T-NAME>!"));
 								}
 							}
 							mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The monolith of ice shatters!!!"));
@@ -237,7 +237,7 @@ public class Prayer_Monolith extends Prayer
 						&&(mob.rangeToTarget()==1))
 						{
 							final int damage = CMLib.dice().roll((int)Math.round((adjustedLevel(invoker,0)+(2.0*super.getX1Level(invoker())))/4.0),6,1);
-							CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The monolith of fire flares and <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The monolith of fire flares and <DAMAGE> <T-NAME>!"));
 						}
 					}
 				}

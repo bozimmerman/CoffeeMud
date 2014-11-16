@@ -73,7 +73,7 @@ public class Disease_Asthma extends Disease
 				MOB diseaser=invoker;
 				if(diseaser==null)
 					diseaser=mob;
-				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,"<S-NAME> <S-HAS-HAVE> an asthma attack! It <DAMAGE> <S-NAME>!");
+				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,L("<S-NAME> <S-HAS-HAVE> an asthma attack! It <DAMAGE> <S-NAME>!"));
 			}
 			else
 				mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());

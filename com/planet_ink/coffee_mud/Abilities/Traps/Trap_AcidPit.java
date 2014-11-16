@@ -83,7 +83,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 					if((M!=null)&&(M!=invoker()))
 					{
 						final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
-						CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid <DAMAGE> <T-NAME>!");
+						CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,L("The acid <DAMAGE> <T-NAME>!"));
 						if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(invoker!=null)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
 							CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
 					}

@@ -87,7 +87,7 @@ public class Chant_DeathMoon extends Chant
 				if((M!=null)&&(M!=invoker))
 				{
 					final MOB invoker=(invoker()!=null) ? invoker() : M;
-					CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*super.getXLEVELLevel(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The gaze of the death moon <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*super.getXLEVELLevel(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The gaze of the death moon <DAMAGE> <T-NAME>!"));
 					if((!M.isInCombat())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
 						CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
 				}

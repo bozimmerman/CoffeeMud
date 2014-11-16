@@ -127,7 +127,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 			}
 			else
 				damage+=CMLib.dice().roll(5,4,0);
-			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"Spikes on the pit floor <DAMAGE> <T-NAME>!");
+			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,L("Spikes on the pit floor <DAMAGE> <T-NAME>!"));
 		}
 		CMLib.commands().postLook(target,true);
 	}

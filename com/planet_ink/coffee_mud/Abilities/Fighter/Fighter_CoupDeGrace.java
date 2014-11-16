@@ -138,7 +138,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			{
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(1);
-				CMLib.combat().postDamage(mob,target,ww,dmg,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and Coup-de-Grace(s) <T-NAME>!^</FIGHT^>^?"+CMLib.protocol().msp("decap.wav",30));
+				CMLib.combat().postDamage(mob,target,ww,dmg,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":L("^F^<FIGHT^><S-NAME> rear(s) back and Coup-de-Grace(s) <T-NAME>!^</FIGHT^>^?@x1",CMLib.protocol().msp("decap.wav",30)));
 				mob.location().recoverRoomStats();
 			}
 		}

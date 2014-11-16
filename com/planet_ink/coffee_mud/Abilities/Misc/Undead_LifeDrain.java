@@ -80,7 +80,7 @@ public class Undead_LifeDrain extends StdAbility
 				mob.curState().adjMana(-much,mob.maxState());
 				if(msg.value()>0)
 					much = (int)Math.round(CMath.div(much,2.0));
-				CMLib.combat().postDamage(mob,target,this,much,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_GASSING,"The drain <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(mob,target,this,much,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_GASSING,L("The drain <DAMAGE> <T-NAME>!"));
 			}
 		}
 		else

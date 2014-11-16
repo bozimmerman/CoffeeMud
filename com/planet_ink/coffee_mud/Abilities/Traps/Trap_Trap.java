@@ -120,7 +120,7 @@ public class Trap_Trap extends StdAbility implements Trap
 						target.location().send(target,msg);
 						if(msg.value()>0)
 							dmg=(int)Math.round(CMath.div(dmg,2.0));
-						CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
+						CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,L("The gas <DAMAGE> <T-NAME>!"));
 					}
 				}
 			}
@@ -134,7 +134,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					target.location().send(target,msg);
 					if(msg.value()>0)
 						dmg=(int)Math.round(CMath.div(dmg,2.0));
-					CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,L("A sudden blast of gas <DAMAGE> <T-NAME>!"));
 				}
 			}
 	}
@@ -154,7 +154,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				target.location().send(target,msg);
 				if(msg.value()>0)
 					dmg=(int)Math.round(CMath.div(dmg,2.0));
-				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,L("The needle <DAMAGE> <T-NAME>!"));
 
 				final Ability P=CMClass.getAbility("Poison");
 				if(P!=null)
@@ -181,7 +181,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				final Ability P=CMClass.getAbility("Poison");
 				if(P!=null)
 					P.invoke(invoker(),target,true,0);
-				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(invoker(),target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,L("The blade <DAMAGE> <T-NAME>!"));
 			}
 		}
 	}

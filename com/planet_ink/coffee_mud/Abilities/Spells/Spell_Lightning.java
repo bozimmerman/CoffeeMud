@@ -81,7 +81,7 @@ public class Spell_Lightning extends Spell
 					damage = (int)Math.round(CMath.div(damage,2.0));
 
 				if(target.location()==mob.location())
-					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,L("The bolt <DAMAGE> <T-NAME>!"));
 			}
 		}
 		else

@@ -107,7 +107,7 @@ public class Prayer_Wave extends Prayer
 						if((msg.value()<=0)&&(msg2.value()<=0))
 						{
 							final int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
-							CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,"A crashing wave <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,L("A crashing wave <DAMAGE> <T-NAME>!"));
 							final int chanceToStay=10+(target.charStats().getStat(CharStats.STAT_STRENGTH)-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*4);
 							final int roll=CMLib.dice().rollPercentage();
 							if((roll!=1)&&(roll>chanceToStay))

@@ -204,7 +204,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 					final MOB mob=msg.source();
 					if((brokenParts[Race.BODY_LEG]<0)&&(mob.getWearPositions(Wearable.WORN_LEGS)==0)&&(!CMLib.flags().isSleeping(mob)))
 					{
-						mob.tell("Your legs are broken!");
+						mob.tell(L("Your legs are broken!"));
 						return false;
 					}
 					break;
@@ -214,7 +214,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				final MOB mob=msg.source();
 				if((brokenParts[Race.BODY_LEG]<0)&&(!CMLib.flags().isSleeping(mob)))
 				{
-					mob.tell("Your broken leg made movement too painful this time.  Try again.");
+					mob.tell(L("Your broken leg made movement too painful this time.  Try again."));
 					return false;
 				}
 				break;
@@ -224,7 +224,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				final MOB mob=msg.source();
 				if((brokenParts[Race.BODY_HAND]<0)&&(mob.getWearPositions(Wearable.WORN_WIELD)==0))
 				{
-					mob.tell("Your weapon hand is broken!");
+					mob.tell(L("Your weapon hand is broken!"));
 					return false;
 				}
 				break;
@@ -234,7 +234,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				final MOB mob=msg.source();
 				if(((brokenParts[Race.BODY_HAND]<0)||(brokenParts[Race.BODY_ARM]<0))&&(msg.tool() == mob.fetchWieldedItem()))
 				{
-					mob.tell("Your broken limbs make the attack impossible!");
+					mob.tell(L("Your broken limbs make the attack impossible!"));
 					return false;
 				}
 				break;

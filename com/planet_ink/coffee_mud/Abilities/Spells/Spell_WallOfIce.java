@@ -92,7 +92,7 @@ public class Spell_WallOfIce extends Spell
 							&&(M.rangeToTarget()>0)
 							&&(M.rangeToTarget()<3)
 							&&(!M.amDead()))
-								CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll((M.phyStats().level()+getXLEVELLevel(invoker()))/2,6,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+								CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll((M.phyStats().level()+getXLEVELLevel(invoker()))/2,6,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,L("A shard of ice <DAMAGE> <T-NAME>!"));
 						}
 						((Item)affected).destroy();
 					}

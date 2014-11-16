@@ -209,7 +209,7 @@ public class Skill_Chirgury extends StdSkill
 						((Drink)meat).setLiquidHeld(10);
 						((Drink)meat).setLiquidRemaining(10);
 						if(target instanceof MOB)
-							CMLib.combat().postDamage(mob,(MOB)target,this,amt*3,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,"The bleeding <DAMAGE> <T-NAME>!");
+							CMLib.combat().postDamage(mob,(MOB)target,this,amt*3,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,L("The bleeding <DAMAGE> <T-NAME>!"));
 					}
 					meat.setName(L("the @x1 of @x2",parts[partCode][0].toString().toLowerCase(),target.Name()));
 					if((parts[partCode][0].toString().endsWith("S"))&&(!parts[partCode][0].toString().equalsIgnoreCase("PANCREAS")))

@@ -87,7 +87,7 @@ public class Spell_Frost extends Spell
 					damage = (int)Math.round(CMath.div(damage,2.0));
 
 				if(target.location()==R)
-					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The frost <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,L("The frost <DAMAGE> <T-NAME>!"));
 			}
 		}
 		else

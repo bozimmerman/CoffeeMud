@@ -546,6 +546,19 @@ public class CommonSkill extends StdAbility
 	}
 
 	@Override
+	public void setMiscText(String newMiscText)
+	{
+		if("abort".equalsIgnoreCase(newMiscText))
+		{
+			this.aborted=true;
+			this.tickDown=1;
+			this.tick(affected, Tickable.TICKID_MOB);
+		}
+		else
+			super.setMiscText(newMiscText);
+	}
+	
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		aborted=false;

@@ -77,7 +77,7 @@ public class Spell_ShockingGrasp extends Spell
 					{
 						invoker=mob;
 						final int damage = CMLib.dice().roll(1,8,(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)))/2);
-						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,auto?"<T-NAME> gasp(s) in shock and pain!":"The shocking grasp <DAMAGES> <T-NAME>!");
+						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,auto?L("<T-NAME> gasp(s) in shock and pain!"):L("The shocking grasp <DAMAGES> <T-NAME>!"));
 					}
 				}
 			}

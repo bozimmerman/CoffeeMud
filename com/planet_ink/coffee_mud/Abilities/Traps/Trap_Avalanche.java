@@ -116,7 +116,7 @@ public class Trap_Avalanche extends StdTrap
 							if(invoker().mayIFight(M))
 							{
 								final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
-								CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"The avalanche <DAMAGE> <T-NAME>!");
+								CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,L("The avalanche <DAMAGE> <T-NAME>!"));
 							}
 					}
 				}

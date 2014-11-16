@@ -199,16 +199,16 @@ public class Spell_ColorSpray extends Spell
 								{
 									if(levelDiff>(CMProps.getIntVar(CMProps.Int.EXPRATE)*2))
 									{
-										mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> fall(s) unconscious!");
+										mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> fall(s) unconscious!"));
 									}
 									else
 									if(levelDiff>CMProps.getIntVar(CMProps.Int.EXPRATE))
 									{
-										mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> <T-IS-ARE> stunned!");
+										mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> <T-IS-ARE> stunned!"));
 									}
 									else
 									{
-										mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> <T-IS-ARE> momentarily dazed!");
+										mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> <T-IS-ARE> momentarily dazed!"));
 									}
 									A.setMiscText(text);
 									target.recoverPhyStats();

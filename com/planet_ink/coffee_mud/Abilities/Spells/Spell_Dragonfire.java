@@ -94,7 +94,7 @@ public class Spell_Dragonfire extends Spell
 						int damage = CMLib.dice().roll(maxDie,4,maxDie);
 						if((msg.value()>0)||(msg2.value()>0))
 							damage = (int)Math.round(CMath.div(damage,2.0));
-						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The dragonfire <DAMAGE> <T-NAME>!");
+						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The dragonfire <DAMAGE> <T-NAME>!"));
 					}
 				}
 		}

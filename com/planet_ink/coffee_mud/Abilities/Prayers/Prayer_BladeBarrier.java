@@ -53,7 +53,7 @@ public class Prayer_BladeBarrier extends Prayer
 
 	protected void doDamage(MOB srcM, MOB targetM, int damage)
 	{
-		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,"The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.");
+		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,L("The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>."));
 	}
 
 	@Override

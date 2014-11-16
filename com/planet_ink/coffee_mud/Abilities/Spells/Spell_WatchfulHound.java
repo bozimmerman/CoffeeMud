@@ -95,7 +95,7 @@ public class Spell_WatchfulHound extends Spell
 							public void run() 
 							{
 								if(R != null)
-									R.show(mob, msg.source(), CMMsg.MSG_NOISE, "<S-NAME> start(s) barking angrily at <T-NAME>.");
+									R.show(mob, msg.source(), CMMsg.MSG_NOISE, L("<S-NAME> start(s) barking angrily at <T-NAME>."));
 								if(CMLib.flags().isSleeping(invoker))
 									CMLib.commands().forceStandardCommand(mob, "Wake", new XVector<Object>("Wake","$" + invoker.Name() + "$"));
 							}
@@ -144,7 +144,7 @@ public class Spell_WatchfulHound extends Spell
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell("Not while you are fighting!");
+			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
 		

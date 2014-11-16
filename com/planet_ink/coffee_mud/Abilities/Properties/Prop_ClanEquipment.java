@@ -293,7 +293,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly.",me.name()));
 						final int flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
 						CMLib.combat().postDamage(mob,target,null,flameDamage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,
-								"^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");
+								L("^F^<FIGHT^>The magic of @x1 <DAMAGE> <T-NAME>!^</FIGHT^>^?",clanName));
 						wandUse.helpProficiency(mob, 0);
 						return;
 					}
@@ -387,7 +387,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 					{
 						final int damage=CMLib.dice().roll(1,3*PowerLevel,1*PowerLevel);
 						CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,
-								"^F^<FIGHT^>The magic of "+clanName+" around <S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?");
+								L("^F^<FIGHT^>The magic of @x1 around <S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?",clanName));
 						if((!source.isInCombat())&&(source.isMonster())&&(source!=mob)&&(source.location()==mob.location())&&(source.location().isInhabitant(mob))&&(CMLib.flags().canBeSeenBy(mob,source)))
 							CMLib.combat().postAttack(source,mob,source.fetchWieldedItem());
 					}

@@ -99,12 +99,12 @@ public class Skill_AdLib extends BardSkill
 				final Ability A=(Ability)msg.tool().copyOf();
 				if(msg.target()  instanceof Physical)
 				{
-					mob.location().show(mob,msg.target(),A,CMMsg.MSG_OK_VISUAL,"<S-NAME> attempt(s) to ad-lib <O-NAME> at <T-NAME>!");
+					mob.location().show(mob,msg.target(),A,CMMsg.MSG_OK_VISUAL,L("<S-NAME> attempt(s) to ad-lib <O-NAME> at <T-NAME>!"));
 					A.invoke(mob, new XVector<String>(msg.target().Name()), (Physical)msg.target(), false, 0);
 				}
 				else
 				{
-					mob.location().show(mob,msg.target(),A,CMMsg.MSG_OK_VISUAL,"<S-NAME> attempt(s) to ad-lib <O-NAME>!");
+					mob.location().show(mob,msg.target(),A,CMMsg.MSG_OK_VISUAL,L("<S-NAME> attempt(s) to ad-lib <O-NAME>!"));
 					A.invoke(mob, new XVector<String>(), null, false, 0);
 				}
 				unInvoke();

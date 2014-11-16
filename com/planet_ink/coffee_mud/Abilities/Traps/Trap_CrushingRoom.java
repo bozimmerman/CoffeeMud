@@ -143,7 +143,7 @@ public class Trap_CrushingRoom extends StdTrap
 							if(invoker().mayIFight(M))
 							{
 								final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),30,1);
-								CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"The crushing walls <DAMAGE> <T-NAME>!");
+								CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,L("The crushing walls <DAMAGE> <T-NAME>!"));
 							}
 					}
 				}

@@ -49,7 +49,7 @@ public class Spell_Pocket extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Pocket who or what, into what?");
+			mob.tell(L("Pocket who or what, into what?"));
 			return false;
 		}
 		final Vector<String> targetV=new XVector<String>(commands.get(0).toString());
@@ -138,7 +138,7 @@ public class Spell_Pocket extends Spell
 						return false;
 					pocketItem.setName(L("a tiny ceramic @x1",name));
 					pocketItem.setDisplayText(L("a tiny ceramic @x1 has been left here",name));
-					pocketItem.setDescription("It`s so cute!");
+					pocketItem.setDescription(L("It`s so cute!"));
 					pocketItem.basePhyStats().setLevel(level);
 					pocketItem.basePhyStats().setWeight(1);
 					pocketItem.recoverPhyStats();

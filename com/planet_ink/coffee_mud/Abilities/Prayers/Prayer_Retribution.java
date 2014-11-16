@@ -49,6 +49,6 @@ public class Prayer_Retribution extends Prayer_BladeBarrier
 	@Override
 	protected void doDamage(MOB srcM, MOB targetM, int damage)
 	{
-		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.TYP_ELECTRIC|CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS,Weapon.TYPE_STRIKING,"A bolt of retribution from <S-NAME> <DAMAGE> <T-NAME>.");
+		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.TYP_ELECTRIC|CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS,Weapon.TYPE_STRIKING,L("A bolt of retribution from <S-NAME> <DAMAGE> <T-NAME>."));
 	}
 }

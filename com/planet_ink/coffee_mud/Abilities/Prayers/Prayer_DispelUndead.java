@@ -86,7 +86,7 @@ public class Prayer_DispelUndead extends Prayer
 				int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)+15,adjustedLevel(mob,asLevel)/2);
 				if((msg.value()>0)||(msg2.value()>0))
 					harming=(int)Math.round(CMath.div(harming,2.0));
-				CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,"The holy spell <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,L("The holy spell <DAMAGE> <T-NAME>!"));
 			}
 		}
 		else

@@ -77,7 +77,7 @@ public class Bomb_Explosive extends StdBomb
 			if(target.location().show(invoker(),target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,(affected.name()+" explodes all over <T-NAME>!")+CMLib.protocol().msp("explode.wav",30)))
 			{
 				super.spring(target);
-				CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel()+abilityCode(),10,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel()+abilityCode(),10,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The blast <DAMAGE> <T-NAME>!"));
 			}
 		}
 	}

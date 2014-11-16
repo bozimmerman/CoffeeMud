@@ -149,7 +149,7 @@ public class Spell_Fabricate extends Spell
 		
 		if(intoI == null)
 		{
-			mob.tell("You have no idea what a '"+intoWhat+"' is.  Perhaps if you saw one again?");
+			mob.tell(L("You have no idea what a '@x1' is.  Perhaps if you saw one again?",intoWhat));
 			return false;
 		}
 		

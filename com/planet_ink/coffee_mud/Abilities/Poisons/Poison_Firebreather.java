@@ -85,7 +85,7 @@ public class Poison_Firebreather extends Poison_Liquor
 						damage += CMLib.dice().roll(maxDie,6,1);
 						if(msg.value()>0)
 							damage = (int)Math.round(CMath.div(damage,2.0));
-						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"^F^<FIGHT^>The fire <DAMAGE> <T-NAME>!^</FIGHT^>^?");
+						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("^F^<FIGHT^>The fire <DAMAGE> <T-NAME>!^</FIGHT^>^?"));
 					}
 				}
 			}

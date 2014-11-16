@@ -259,7 +259,7 @@ public class MOBEater extends ActiveTicker
 					damage=tastyMorselM.curState().getHitPoints()+1;
 				if(DigestMsg.value()!=0) 
 					damage=damage/2;
-				CMLib.combat().postDamage(mob,tastyMorselM,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(mob,tastyMorselM,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,L("The stomach acid <DAMAGE> <T-NAME>!"));
 			}
 		}
 		return true;

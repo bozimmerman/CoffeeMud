@@ -76,7 +76,7 @@ public class Prayer_Deathfinger extends Prayer
 					final int levelDiff=(mob.phyStats().level() - target.phyStats().level());
 					if(levelDiff> 0)
 						harming += (int)Math.round(CMath.mul(CMath.div(target.baseState().getHitPoints(),10),levelDiff));
-					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The finger of DEATH <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The finger of DEATH <DAMAGE> <T-NAME>!"));
 				}
 			}
 		}

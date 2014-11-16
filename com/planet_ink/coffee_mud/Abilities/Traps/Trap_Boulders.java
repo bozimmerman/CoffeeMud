@@ -111,7 +111,7 @@ public class Trap_Boulders extends StdTrap
 			{
 				super.spring(target);
 				final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
-				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"Dozens of boulders <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,L("Dozens of boulders <DAMAGE> <T-NAME>!"));
 			}
 		}
 	}

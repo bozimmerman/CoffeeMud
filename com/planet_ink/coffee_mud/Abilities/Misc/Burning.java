@@ -193,7 +193,7 @@ public class Burning extends StdAbility
 							for(int i=0;i<room.numInhabitants();i++)
 							{
 								final MOB target=room.fetchInhabitant(i);
-								CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.phyStats().level(),5,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
+								CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.phyStats().level(),5,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The blast <DAMAGE> <T-NAME>!"));
 							}
 							if(!isFlagSet(FIREFLAG_NEVERDESTROYHOST))
 								((Item)affected).destroy();

@@ -104,7 +104,7 @@ public class Fighter_FlyingKick extends FighterSkill
 				mob.location().send(mob,msg);
 				if(msg.value()>0)
 					damage = (int)Math.round(CMath.div(damage,2.0));
-				CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,"^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME> with a flying KICK!^</FIGHT^>^?"+CMLib.protocol().msp("bashed1.wav",30));
+				CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,L("^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME> with a flying KICK!^</FIGHT^>^?@x1",CMLib.protocol().msp("bashed1.wav",30)));
 				if(mob.getVictim()==target)
 				{
 					mob.setRangeToTarget(0);

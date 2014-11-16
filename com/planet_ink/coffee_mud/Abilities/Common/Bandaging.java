@@ -110,9 +110,9 @@ public class Bandaging extends CommonSkill implements MendingSkill
 						A=bandaging.fetchEffect("BrokenLimbs");
 						if(A != null)
 						{
-							mob.tell(mob,bandaging,null,"You finish setting <T-YOUPOSS> bones, so that they can now heal properly.");
+							mob.tell(mob,bandaging,null,L("You finish setting <T-YOUPOSS> bones, so that they can now heal properly."));
 							if((bandaging instanceof MOB)&&(bandaging != mob))
-								((MOB)bandaging).tell(mob,bandaging,null,"<S-NAME> finishes setting your broken bones, so that they can now heal properly.");
+								((MOB)bandaging).tell(mob,bandaging,null,L("<S-NAME> finishes setting your broken bones, so that they can now heal properly."));
 							A.setMiscText("+SETBONES");
 						}
 					}

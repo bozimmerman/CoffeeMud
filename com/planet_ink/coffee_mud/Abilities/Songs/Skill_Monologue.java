@@ -169,7 +169,7 @@ public class Skill_Monologue extends BardSkill
 					if(mob.mayIFight(target))
 						addMonologue(mob,target,asLevel,auto);
 				}
-				mob.tell("^XYou must now SAY something at least every 4 seconds to maintain the monologue.^?^.");
+				mob.tell(L("^XYou must now SAY something at least every 4 seconds to maintain the monologue.^?^."));
 			}
 			setTimeOfNextCast(mob);
 		}

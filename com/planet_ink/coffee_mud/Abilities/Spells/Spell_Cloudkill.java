@@ -148,7 +148,7 @@ public class Spell_Cloudkill extends Spell
 									if(target.fetchEffect(ID())!=null)
 										addOn =" <T-NAME> collapse(s).";
 								}
-								CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!"+addOn);
+								CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,L("The gas <DAMAGE> <T-NAME>!@x1",addOn));
 							}
 						}
 					}
