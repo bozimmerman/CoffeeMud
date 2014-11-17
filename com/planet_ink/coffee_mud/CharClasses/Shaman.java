@@ -133,11 +133,6 @@ public class Shaman extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_FleshRock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true,CMParms.parseSemicolons("Prayer_ProtParalyzation",true));
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_SelfResurrection",false);
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_CommuneWithDead",false); // (MudChat with corpses + Mood)
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_SpiritHelper",false); // (Always same spirit animal, gives power)
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Awaken",false); // (Cancels sleep spells and wakes the sleeping)
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_SummonAnimalSpirits",false); // (Summons animal spirits to fight)
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_DrunkenStupor",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",false);
