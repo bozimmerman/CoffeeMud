@@ -28,18 +28,19 @@ NON-TECH
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills:
         *. Cleric        : +6 ( 2 of each)
-                         : Hymn of Mercy (prevents any attacks from doing damage, including caster)
-                         : Speak With Dead (MudChat with corpses + Mood)
-                         : Planewalk Death (teleport to a random corpse in game)
-                         : Awaken (dispel sleep and wake people in room) 
-                         : True Resurrection (Resurrection without a corpse -- must find the corpse though)
-                         : Jolting Portent (elec damage when creature attacks or uses a skill)
-                         : Fog
+                         : Confession (unaligned prayer!) - pushes cleric towards the alignment of their God.
+                         : 
+                         : N Speak With Dead (MudChat with corpses + Mood)
+                         : G True Resurrection (Resurrection without a corpse -- must find the corpse though)
+                         : E Unholy Portent (negative damage when creature attacks or uses a skill)
         *. Purist        : +3
                          : Judgement (Geas) - target must go around doing some nice social to other mobs before time runs out or they die.  Only works on evil/neutral.
                          : Piety Curse - if target does or says anything negative, they take damage -- includes attacking, socials, bad words
                          : Protection from Curses (prevents curses from affecting target)
-        *. Shaman        : Animal Spirit (like Find Familiar for Cleric), Summon Animal Spirits
+        *. Shaman        : +3
+                         : Animal Spirit (like Find Familiar for Cleric) 
+                         : Summon Animal Spirits 
+                         : Refuge (item gets trigger word to transport holder back to where spell was cast)
         *. Assassin      : +6
                          : Two-Dagger Fighting (no negatives on two handed fighting), Cut Throat (crit, bleeding), Double Strike (2x attacks with daggers),
                          : Dagger Defense, Dagger Mastery, Deep Cut (causes injury)

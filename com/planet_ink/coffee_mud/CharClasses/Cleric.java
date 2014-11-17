@@ -148,6 +148,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_CureCritical",false,CMParms.parseSemicolons("Prayer_CureSerious",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_CauseCritical",false,CMParms.parseSemicolons("Prayer_CauseSerious",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_SenseHidden",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_Mercy",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_RemoveCurse",false);
@@ -156,6 +157,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Calm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SanctifyRoom",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Anger",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Awaken",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseHoliness",false);
@@ -169,6 +171,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Drain",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_CorpseWalk",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Thunderbolt",false);

@@ -45,7 +45,13 @@ public class Deities extends StdCommand
 	public String getDeityInformation(MOB mob, Deity D)
 	{
 		final StringBuffer msg = new StringBuffer("");
-		msg.append("\n\r^x"+D.name()+"^.^?\n\r");
+		msg.append("\n\r^x"+D.name()+"^.^?");
+		if(D.hasFaction(CMLib.factions().AlignID()))
+		{
+			int faction=D.fetchFaction(CMLib.factions().AlignID());
+			msg.append("^N ("+CMLib.factions().getRange(CMLib.factions().AlignID(), faction)+")");
+		}
+		msg.append("\n\r");
 		msg.append(D.description()+"\n\r\n\r");
 		if((mob==null)||(CMSecurity.isASysOp(mob)))
 		{
