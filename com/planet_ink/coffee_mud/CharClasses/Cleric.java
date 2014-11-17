@@ -91,6 +91,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseLife",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_DeathGuard",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Desecrate",false);
@@ -99,6 +100,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_DeathKnell",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_TurnUndead",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_ControlUndead",true);

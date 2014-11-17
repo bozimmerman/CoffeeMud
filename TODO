@@ -27,21 +27,8 @@ NON-TECH
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills:
-        *. Assassin      : +6
-                         : Two-Dagger Fighting (no negatives on two handed fighting), Cut Throat (crit, bleeding), Double Strike (2x attacks with daggers),
-                         : Dagger Defense, Dagger Mastery, Deep Cut (causes injury)
-        *. Ranger        : +9
-        *. Ranger ideas  : Camoflauge, Repel Vermin, Wind Wall (protect/arrow), Detect Snares/Pits, Delay Poison, Sense Poison, Calm Animals, Speak with Animals, Snare
-        *. Paladin       : +6
-        *. Paladin ideas : Shared Fate (Paladin and mount share bad effects instead of only Paladin), Shared Vision (can see through
-                         : mounts eyes), Death Ward (negative energy ward), Resurrect Mount, Heal Mount, Abide (prevent death for few mins),
-        *. Cleric        : +12 ( 4 of each)
-                         : G Death Guard (if anyone gets below 10%, fires best heal)
-                         : E Death Knell (if anyone gets below 10%, they die)
+        *. Cleric        : +10 ( 4 of each)
                          : N Death Watch (always instantly know which mob in room is injured)
-                         : G Blessed Feast (food gathered or harvested heals, gives +x att +1 dmg)
-                         : E Cursed Lands (food gathered or harvested from room is spoiled and cursed -1 att -1 dmg)
-                         : N Plenty (food gathered or harvested from room -- more of it)
                          : G Anti-Undead Field (pushes back undead from cleric -- can't advance)
                          : E Lead the Dead (all undead in room fight for the caster)
                          : N Hold Undead (all undead are as per Hold spell)
@@ -52,6 +39,14 @@ NON-TECH
                          : Judgement (Geas) - target must go around doing some nice social to other mobs before time runs out or they die.  Only works on evil/neutral.
                          : Piety Curse - if target does or says anything negative, they take damage -- includes attacking, socials, bad words
                          : Protection from Curses (prevents curses from affecting target)
+        *. Assassin      : +6
+                         : Two-Dagger Fighting (no negatives on two handed fighting), Cut Throat (crit, bleeding), Double Strike (2x attacks with daggers),
+                         : Dagger Defense, Dagger Mastery, Deep Cut (causes injury)
+        *. Ranger        : +9
+        *. Ranger ideas  : Camoflauge, Repel Vermin, Wind Wall (protect/arrow), Detect Snares/Pits, Delay Poison, Sense Poison, Calm Animals, Speak with Animals, Snare
+        *. Paladin       : +6
+        *. Paladin ideas : Shared Fate (Paladin and mount share bad effects instead of only Paladin), Shared Vision (can see through
+                         : mounts eyes), Death Ward (negative energy ward), Resurrect Mount, Heal Mount, Abide (prevent death for few mins),
    *. Create Magi Robes(or whatever you wanted to call them) that would enhance his/her magic of their chosen field.
    *. Wants and Needs engine - similar to slavery system
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
