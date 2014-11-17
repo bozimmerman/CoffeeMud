@@ -56,7 +56,7 @@ public class ServiceEngine implements ThreadEngine
 	private volatile CMRunnable[]	unsuspendedRunnables= null;
 
 	private volatile long			schedWaitAt			= 0;
-	private List<CMRunnable>		schedTicks			= new LinkedList<CMRunnable>();
+	private final List<CMRunnable>		schedTicks			= new LinkedList<CMRunnable>();
 
 	@Override public String ID(){return "ServiceEngine";}
 	@Override public String name() { return ID();}
@@ -148,7 +148,8 @@ public class ServiceEngine implements ThreadEngine
 		return null;
 	}
 
-	public void scheduleRunnable(final Runnable R, long ellapsedMs)
+	@Override
+    public void scheduleRunnable(final Runnable R, long ellapsedMs)
 	{
 		try
 		{
@@ -1407,6 +1408,7 @@ public class ServiceEngine implements ThreadEngine
 				}
 				if(nextWake > now)
 				{
+					schedWaitAt = nextWake;
 					Thread.sleep(nextWake-now);
 				}
 			}
