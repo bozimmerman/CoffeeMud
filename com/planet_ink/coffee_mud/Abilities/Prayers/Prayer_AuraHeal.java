@@ -121,11 +121,11 @@ public class Prayer_AuraHeal extends Prayer
 		{
 			if(target instanceof MOB)
 			{
-				if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+				if(CMLib.flags().isUndead((MOB)target))
 					return Ability.QUALITY_INDIFFERENT;
 				if(target!=mob)
 				{
-					if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+					if(CMLib.flags().isUndead((MOB)target))
 						return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
 				}
 			}

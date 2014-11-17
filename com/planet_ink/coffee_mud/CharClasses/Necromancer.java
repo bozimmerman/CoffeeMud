@@ -239,7 +239,7 @@ public class Necromancer extends Cleric
 		if((mob!=null)
 		&&(mob!=killed)
 		&&(!mob.amDead())
-		&&((!mob.isMonster())||(!mob.charStats().getMyRace().racialCategory().equals("Undead")))
+		&&((!mob.isMonster())||(!CMLib.flags().isUndead(mob)))
 		&&((mob.getVictim()==killed)
 		 ||(followers.contains(mob))
 		 ||(mob==killer)))

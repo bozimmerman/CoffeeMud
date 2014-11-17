@@ -58,7 +58,7 @@ public class Prayer_MassHeal extends Prayer implements MendingSkill
 			{
 				if(!supportsMending(target))
 					return Ability.QUALITY_INDIFFERENT;
-				if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+				if(CMLib.flags().isUndead((MOB)target))
 					return Ability.QUALITY_MALICIOUS;
 			}
 		}
@@ -78,7 +78,7 @@ public class Prayer_MassHeal extends Prayer implements MendingSkill
 		for (final Object element : h)
 		{
 			final MOB target=(MOB)element;
-			final boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
+			final boolean undead=CMLib.flags().isUndead(target);
 			if(success)
 			{
 				// it worked, so build a copy of this ability,

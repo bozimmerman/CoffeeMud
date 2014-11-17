@@ -56,7 +56,7 @@ public class Skill_UndeadInvisibility extends StdSkill
 			final MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
 			&&(msg.source().location()==target.location())
-			&&(msg.source().charStats().getMyRace().racialCategory().equals("Undead"))
+			&&(CMLib.flags().isUndead(msg.source()))
 			&&(msg.source().getVictim()!=target))
 			{
 				msg.source().tell(L("You don't see @x1",target.name(msg.source())));

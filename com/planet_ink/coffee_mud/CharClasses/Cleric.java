@@ -112,6 +112,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CureSerious",false,CMParms.parseSemicolons("Prayer_CureLight",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CauseSerious",false,CMParms.parseSemicolons("Prayer_CauseLight",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CreateWater",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseInjury",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Curse",false);
@@ -120,6 +121,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Freedom",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Paralyze",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_AntiUndeadField",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DispelEvil",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DispelGood",false);
@@ -128,6 +130,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_Silence",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_InciteDead",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
@@ -136,6 +139,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_CureDisease",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Plague",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_HoldUndead",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",false);

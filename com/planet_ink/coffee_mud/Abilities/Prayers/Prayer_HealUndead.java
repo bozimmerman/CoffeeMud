@@ -73,7 +73,7 @@ public class Prayer_HealUndead extends Prayer implements MendingSkill
 		if(target==null)
 			return false;
 
-		final boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
+		final boolean undead=CMLib.flags().isUndead(target);
 		if((!undead)&&(!auto))
 		{
 			mob.tell(L("Only the undead are affected by this."));

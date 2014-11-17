@@ -119,7 +119,7 @@ public class Prayer_AuraHarm extends Prayer
 			{
 				if(!mob.isInCombat())
 					return super.castingQuality(mob, target,Ability.QUALITY_INDIFFERENT);
-				if(mob.charStats().getMyRace().racialCategory().equals("Undead"))
+				if(CMLib.flags().isUndead(mob))
 					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 				return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
 			}

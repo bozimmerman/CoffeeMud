@@ -61,7 +61,7 @@ public class Prayer_Heal extends Prayer implements MendingSkill
 			{
 				if(!supportsMending(target))
 					return Ability.QUALITY_INDIFFERENT;
-				if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+				if(CMLib.flags().isUndead((MOB)target))
 					return Ability.QUALITY_MALICIOUS;
 			}
 		}
@@ -74,7 +74,7 @@ public class Prayer_Heal extends Prayer implements MendingSkill
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		final boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
+		final boolean undead=CMLib.flags().isUndead(target);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

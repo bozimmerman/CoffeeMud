@@ -78,7 +78,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 		{
 			final MOB target=(MOB)msg.target();
 			if((!target.isInCombat())
-			&&(msg.source().charStats().getMyRace().racialCategory().equals("Undead"))
+			&&(CMLib.flags().isUndead(msg.source()))
 			&&(msg.source().location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{

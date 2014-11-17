@@ -71,7 +71,7 @@ public class Prayer_FeedTheDead extends Prayer
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if(!target.charStats().getMyRace().racialCategory().equals("Undead"))
+		if(!CMLib.flags().isUndead(target))
 		{
 			mob.tell(L("Only the undead may be fed in this way."));
 			return false;

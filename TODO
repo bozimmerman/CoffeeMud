@@ -27,11 +27,7 @@ NON-TECH
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills:
-        *. Cleric        : +10 ( 4 of each)
-                         : N Death Watch (always instantly know which mob in room is injured)
-                         : G Anti-Undead Field (pushes back undead from cleric -- can't advance)
-                         : E Lead the Dead (all undead in room fight for the caster)
-                         : N Hold Undead (all undead are as per Hold spell)
+        *. Cleric        : +6 ( 2 of each)
                          : G Daylight (Summons Daylight for one "hour")
                          : E Endless Night (night lasts an extra hour in the area)
                          : N Twilight (dawn and dusk last an extra hour in the area)

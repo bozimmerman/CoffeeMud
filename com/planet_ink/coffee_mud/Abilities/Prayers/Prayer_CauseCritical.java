@@ -51,7 +51,7 @@ public class Prayer_CauseCritical extends Prayer
 		{
 			if(target instanceof MOB)
 			{
-				if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+				if(CMLib.flags().isUndead((MOB)target))
 					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
 			}
 		}
@@ -64,7 +64,7 @@ public class Prayer_CauseCritical extends Prayer
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		final boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
+		final boolean undead=CMLib.flags().isUndead(target);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

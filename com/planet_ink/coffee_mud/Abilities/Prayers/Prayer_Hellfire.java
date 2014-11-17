@@ -64,7 +64,7 @@ public class Prayer_Hellfire extends Prayer
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		final boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
+		final boolean undead=CMLib.flags().isUndead(target);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
