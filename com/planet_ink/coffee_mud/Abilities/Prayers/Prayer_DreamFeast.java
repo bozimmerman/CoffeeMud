@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2014 Bo Zimmerman
+   Copyright 2004-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -35,43 +35,50 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class Prayer_Mercy extends Prayer
+public class Prayer_DreamFeast extends Prayer
 {
-	@Override public String ID() { return "Prayer_Mercy"; }
-	private final static String localizedName = CMLib.lang().L("Mercy");
+	@Override public String ID() { return "Prayer_DailyBread"; }
+	private final static String localizedName = CMLib.lang().L("Daily Bread");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Mercy)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	protected int ticksSleeping=0;
 
 	@Override
-	public void unInvoke()
+	public void setMiscText(String newMiscText)
 	{
-		// undo the affects of this spell
-		if(affected==null)
-			return;
-		if(canBeUninvoked())
-		{
-			final Room R=CMLib.map().roomLocation(affected);
-			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
-				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The blessing of mercy fades."));
-		}
-		super.unInvoke();
+		super.setMiscText(newMiscText);
+		ticksSleeping=0;
 	}
-
+	
 	@Override
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.okMessage(myHost, msg))
+		if(!super.tick(ticking, tickID))
 			return false;
-		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.value() > 0))
+		if(CMLib.flags().isSleeping(affected))
 		{
-			msg.setValue(0);
+			ticksSleeping = 5;
+			if(ticksSleeping >= 8)
+			{
+				if(affected instanceof MOB)
+					((MOB)affected).tell(L("You have wonderful dreams of an abundant feasts and overflowing wines."));
+			}
+		}
+		else
+		if(ticksSleeping > 8)
+		{
+			
+			if(affected instanceof MOB)
+			{
+				((MOB)affected).tell(L("You wake up feeling full and content."));
+				((MOB)affected).curState().setHunger(0);
+				((MOB)affected).curState().setThirst(0);
+			}
+			unInvoke();
 		}
 		return true;
 	}
@@ -79,41 +86,31 @@ public class Prayer_Mercy extends Prayer
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Room target=mob.location();
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if(target.fetchEffect(ID())!=null)
-		{
-			mob.tell(L("This place is already under a blessing of mercy."));
-			return false;
-		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1.^?",prayWord(mob)));
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 for <T-NAMESELF> to have dreams of feasts!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The Blessing of mercy rises over <S-NAME>."));
-				if(CMLib.law().doesOwnThisProperty(mob,target))
-				{
-					target.addNonUninvokableEffect((Ability)this.copyOf());
-					CMLib.database().DBUpdateRoom(target);
-				}
-				else
-					beneficialAffect(mob,target,asLevel,0);
+				Ability A=beneficialAffect(mob,target,asLevel,0);
+				if(A!=null)
+					A.setMiscText("");
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for the blessing of Mercy, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF> to have good dreams, but nothing happens.",prayWord(mob)));
 
 
 		// return whether it worked

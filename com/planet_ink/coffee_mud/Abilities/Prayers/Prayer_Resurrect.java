@@ -165,8 +165,11 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			{
 				invoker=mob;
 				mob.location().send(mob,msg);
+				Room room=CMLib.map().roomLocation(body);
+				if(room == null)
+					room=mob.location();
 				if(playerCorpse)
-					success = CMLib.utensils().resurrect(mob,mob.location(), (DeadBody)body, super.getXPCOSTLevel(mob));
+					success = CMLib.utensils().resurrect(mob,room, (DeadBody)body, super.getXPCOSTLevel(mob));
 				else
 				if((nonPlayerData!=null) && (body != null))
 				{

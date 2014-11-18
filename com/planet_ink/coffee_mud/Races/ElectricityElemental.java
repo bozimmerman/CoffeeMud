@@ -42,7 +42,7 @@ public class ElectricityElemental extends StdRace
 	@Override public int lightestWeight(){return 400;}
 	@Override public int weightVariance(){return 100;}
 	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Electricity Elemental";}
+	@Override public String racialCategory(){return "Elemental";}
 	@Override public boolean fertile(){return false;}
 	@Override public boolean uncharmable(){return true;}
 	@Override protected boolean destroyBodyAfterUse(){return true;}

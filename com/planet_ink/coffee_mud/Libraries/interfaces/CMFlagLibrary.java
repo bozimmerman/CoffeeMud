@@ -105,6 +105,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isFalling(Physical P);
 	public boolean isBusy(Physical P);
 	public boolean isUndead(MOB mob);
+	public boolean isOutsider(MOB mob);
 	public boolean isAPlant(Item I);
 	public boolean isAPlant(MOB M);
 	public boolean isUnattackable(Physical P);

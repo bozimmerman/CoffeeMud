@@ -15,11 +15,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
-   Copyright 2014-2014 Bo Zimmerman
+   Copyright 2001-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -35,62 +34,58 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class Prayer_Mercy extends Prayer
+public class Prayer_DevourerCurse extends Prayer
 {
-	@Override public String ID() { return "Prayer_Mercy"; }
-	private final static String localizedName = CMLib.lang().L("Mercy");
+	@Override public String ID() { return "Prayer_DevourerCurse"; }
+	private final static String localizedName = CMLib.lang().L("Devourer Curse");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Mercy)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Face of the Devourer)");
 	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
+	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		if(affected==null)
+			return;
+		affectableStats.setName(affected.Name()+", a horrid devourer");
+	}
+
+	@Override
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		if(affected==null)
+			return;
+		affectableStats.setStat(CharStats.STAT_CHARISMA, 3);
+	}
 
 	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if(affected==null)
-			return;
+		final MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-		{
-			final Room R=CMLib.map().roomLocation(affected);
-			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
-				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The blessing of mercy fades."));
-		}
+			mob.tell(L("The devourer curse is lifted."));
 		super.unInvoke();
 	}
 
 	@Override
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		if(!super.okMessage(myHost, msg))
-			return false;
-		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.value() > 0))
-		{
-			msg.setValue(0);
-		}
-		return true;
-	}
-	
-	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Room target=mob.location();
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		if(target.fetchEffect(ID())!=null)
-		{
-			mob.tell(L("This place is already under a blessing of mercy."));
-			return false;
-		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final boolean success=proficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -98,22 +93,19 @@ public class Prayer_Mercy extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("<T-NAME> <T-IS-ARE> cursed by the devourer!"):L("^S<S-NAME> curse(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The Blessing of mercy rises over <S-NAME>."));
-				if(CMLib.law().doesOwnThisProperty(mob,target))
+				if(msg.value()<=0)
 				{
-					target.addNonUninvokableEffect((Ability)this.copyOf());
-					CMLib.database().DBUpdateRoom(target);
+					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
+					target.recoverPhyStats();
 				}
-				else
-					beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for the blessing of Mercy, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to curse <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

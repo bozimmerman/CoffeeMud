@@ -39,6 +39,8 @@ public class Who extends StdCommand
 
 	private final String[] access=I(new String[]{"WHO","WH"});
 	@Override public String[] getAccessWords(){return access;}
+	
+	private final static Class[][] filterParameters=new Class[][]{{Boolean.class,Filterer.class}};
 
 	public int[] getShortColWidths(MOB seer)
 	{
@@ -106,7 +108,7 @@ public class Who extends StdCommand
 		return msg;
 	}
 
-	public String getWho(MOB mob, Set<String> friends, String mobName)
+	public String getWho(MOB mob, Set<String> friends, boolean emptyOnNone, Filterer<MOB> mobFilter)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		final int[] colWidths=getShortColWidths(mob);
@@ -120,10 +122,11 @@ public class Who extends StdCommand
 			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
 				||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
 			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
+			&&((mobFilter==null)||(mobFilter.passesFilter(mob2)))
 			&&(mob2.phyStats().level()>0))
 				msg.append(showWhoShort(mob2,colWidths));
 		}
-		if((mobName!=null)&&(msg.length()==0))
+		if((emptyOnNone)&&(msg.length()==0))
 			return "";
 		else
 		{
@@ -174,7 +177,7 @@ public class Who extends StdCommand
 			}
 		}
 
-		final String msg = getWho(mob,friends,mobName);
+		final String msg = getWho(mob,friends,mobName!=null,null);
 		if((mobName!=null)&&(msg.length()==0))
 			mob.tell(L("That person doesn't appear to be online.\n\r"));
 		else
@@ -185,7 +188,12 @@ public class Who extends StdCommand
 	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
-		return getWho(mob,null,null);
+		if(args.length==0)
+			return getWho(mob,null,false,null);
+		else
+		if(super.checkArguments(filterParameters, args))
+			return getWho(mob,null,((Boolean)args[0]).booleanValue(),(Filterer)args[1]);
+		return Boolean.FALSE;
 	}
 	@Override public boolean canBeOrdered(){return true;}
 }

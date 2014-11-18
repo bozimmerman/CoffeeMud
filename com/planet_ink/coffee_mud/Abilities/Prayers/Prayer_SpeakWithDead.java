@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2014 Bo Zimmerman
+   Copyright 2001-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -35,58 +35,38 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class Prayer_Mercy extends Prayer
+public class Prayer_SpeakWithDead extends Prayer
 {
-	@Override public String ID() { return "Prayer_Mercy"; }
-	private final static String localizedName = CMLib.lang().L("Mercy");
+	@Override public String ID() { return "Prayer_SpeakWithDead"; }
+	private final static String localizedName = CMLib.lang().L("Speak with Dead");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Mercy)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Being Spoken To)");
 	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 
 	@Override
-	public void unInvoke()
-	{
-		// undo the affects of this spell
-		if(affected==null)
-			return;
-		if(canBeUninvoked())
-		{
-			final Room R=CMLib.map().roomLocation(affected);
-			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
-				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The blessing of mercy fades."));
-		}
-		super.unInvoke();
-	}
-
-	@Override
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		if(!super.okMessage(myHost, msg))
-			return false;
-		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.value() > 0))
-		{
-			msg.setValue(0);
-		}
-		return true;
-	}
-	
-	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Room target=mob.location();
+		final Item target=super.getTarget(mob, mob.location(), givenTarget, commands, Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 			return false;
-		if(target.fetchEffect(ID())!=null)
+
+		if(!(target instanceof DeadBody))
 		{
-			mob.tell(L("This place is already under a blessing of mercy."));
+			mob.tell(L("You can not speak with @x1.",target.name()));
 			return false;
 		}
+
+		if(!CMLib.flags().canHear(mob))
+		{
+			mob.tell(L("You can't hear!"));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -94,28 +74,26 @@ public class Prayer_Mercy extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1.^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> kneel(s) down and speak(s) with <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The Blessing of mercy rises over <S-NAME>."));
-				if(CMLib.law().doesOwnThisProperty(mob,target))
-				{
-					target.addNonUninvokableEffect((Ability)this.copyOf());
-					CMLib.database().DBUpdateRoom(target);
-				}
-				else
-					beneficialAffect(mob,target,asLevel,0);
+				beneficialAffect(mob,target,asLevel,0);
+				DeadBody body=(DeadBody)target;
+				mob.location().show(mob, target, CMMsg.MSG_OK_ACTION, L("<T-NAME> whisper(s) to <S-NAME>."));
+				StringBuilder knowledge=new StringBuilder("");
+				knowledge.append(L("I was @x1, killed on @x2 by @x3 with @x4.",
+						body.mobName(),
+						mob.location().getArea().getTimeObj().deriveClock(body.timeOfDeath()).getShortTimeDescription(),
+						body.killerName(),
+						(body.killingTool()==null) ? L("a weapon") : body.killingTool().Name()));
+				mob.tell(mob,target,null,L("<T-NAME> whisper(s) to you '@x1'.",knowledge.toString()));
+				target.recoverPhyStats();
+				mob.recoverPhyStats();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for the blessing of Mercy, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
-
-
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> kneel(s) before <T-NAME> and @x1, but nothing happens.",prayWord(mob)));
 		// return whether it worked
 		return success;
 	}

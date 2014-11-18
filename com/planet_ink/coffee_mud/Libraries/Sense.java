@@ -308,6 +308,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 	
 	@Override
+	public boolean isOutsider(MOB mob)
+	{
+		return (mob != null) 
+				&& (mob.charStats().getMyRace().racialCategory().equals("Demon") 
+						|| mob.charStats().getMyRace().racialCategory().equals("Elemental"));
+	}
+	
+	
+	@Override
 	public boolean isAPlant(Item I)
 	{
 		return (I!=null) && ((I.material()&RawMaterial.MATERIAL_VEGETATION)>0);

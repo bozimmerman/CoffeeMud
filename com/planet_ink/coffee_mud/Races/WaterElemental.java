@@ -42,7 +42,7 @@ public class WaterElemental extends StdRace
 	@Override public int lightestWeight(){return 400;}
 	@Override public int weightVariance(){return 100;}
 	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Water Elemental";}
+	@Override public String racialCategory(){return "Elemental";}
 	private final String[]racialAbilityNames={"Skill_Swim"};
 	private final int[]racialAbilityLevels={1};
 	private final int[]racialAbilityProficiencies={100};
