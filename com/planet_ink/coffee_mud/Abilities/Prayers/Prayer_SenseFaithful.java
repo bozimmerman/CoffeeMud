@@ -74,14 +74,16 @@ public class Prayer_SenseFaithful extends Prayer
 				if(C!=null)
 					try
 					{
-						C.executeInternal(mob, 0, Boolean.FALSE, new Filterer<MOB>(){
-							@Override
-							public boolean passesFilter(MOB obj)
-							{
-								return (obj!=null) && (obj.getWorshipCharID().equals(deityName));
-							}
-							
-						});
+						if(mob.session()!=null)
+							mob.session().print(
+								C.executeInternal(mob, 0, Boolean.FALSE, new Filterer<MOB>(){
+									@Override
+									public boolean passesFilter(MOB obj)
+									{
+										return (obj!=null) && (obj.getWorshipCharID().equals(deityName));
+									}
+									
+								}).toString());
 					} catch (IOException e) { }
 			}
 		}
