@@ -76,7 +76,7 @@ public class Speculate extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				final Room room=mob.location();

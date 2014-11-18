@@ -45,7 +45,7 @@ public class Prayer_FreezeMetal extends Prayer
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_WATERBASED;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_WATERBASED;}
 
 	protected Vector affectedItems=new Vector();
 	@Override

@@ -96,7 +96,7 @@ public class Addictions extends StdAbility
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			if((msg.source()==affected)
 			&&(msg.targetMinor()==CMMsg.TYP_WEAR)
@@ -115,7 +115,7 @@ public class Addictions extends StdAbility
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			if(msg.source()==affected)
 			{

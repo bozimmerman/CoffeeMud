@@ -147,7 +147,7 @@ public class Prop_WizInvis extends Property
 			return false;
 		}
 		else
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))&&(msg.amISource((MOB)affected)))
 				disabled=true;

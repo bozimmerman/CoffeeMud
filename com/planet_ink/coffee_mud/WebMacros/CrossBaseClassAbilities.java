@@ -66,6 +66,8 @@ public class CrossBaseClassAbilities extends StdWebMacro
 			for(AbilityMapper.AbilityMapping mapping : list)
 			{
 				Ability A=(Ability)CMClass.getPrototypeByID(CMClass.CMObjectType.ABILITY, mapping.abilityID);
+				if(A==null)
+					Log.errOut("CrossBase!",mapping.abilityID);
 				if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
 				&&(!CMLib.ableMapper().getSecretSkill(C.ID(), false, A.ID())))
 					ct++;

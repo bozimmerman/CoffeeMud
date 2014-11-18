@@ -117,7 +117,7 @@ public class Thief_KillLog extends ThiefSkill
 			set[1]=""+mark.phyStats().level();
 			set[3]=Integer.toString(CMath.s_int(set[3])+1);
 			mark=null;
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final Ability A=((MOB)affected).fetchAbility(ID());
 				if(A!=null)
@@ -175,7 +175,7 @@ public class Thief_KillLog extends ThiefSkill
 				}
 				set[1]=""+mark.phyStats().level();
 				set[2]=Integer.toString(CMath.s_int(set[2])+1);
-				if((affected!=null)&&(affected instanceof MOB))
+				if(affected instanceof MOB)
 				{
 					final Ability A=((MOB)affected).fetchAbility(ID());
 					if(A!=null)

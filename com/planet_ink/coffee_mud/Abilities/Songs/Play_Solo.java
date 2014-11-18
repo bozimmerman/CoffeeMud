@@ -50,7 +50,7 @@ public class Play_Solo extends Play
 	{
 		if(!super.okMessage(E,msg))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB myChar=(MOB)affected;
 			if(!msg.amISource(myChar)

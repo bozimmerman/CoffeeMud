@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2014 Bo Zimmerman
+   Copyright 2001-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,23 +34,37 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class Prayer_DreamFeast extends Prayer
+public class Prayer_JoyousRapture extends Prayer
 {
-	@Override public String ID() { return "Prayer_DreamFeast"; }
-	private final static String localizedName = CMLib.lang().L("Dream Feast");
+	@Override public String ID() { return "Prayer_JoyousRapture"; }
+	private final static String localizedName = CMLib.lang().L("Joyous Rapture");
 	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Joyous Rapture)");
+	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	protected int ticksSleeping=0;
-
+	
+	private final static Map<String,String> moodMap = CMParms.parseEQParms(
+			"FORMAL=HAPPY POLITE=HAPPY HAPPY=HAPPY SAD=NORMAL ANGRY=NORMAL RUDE=NORMAL "
+			+ "MEAN=NORMAL GRUMPY=NORMAL EXCITED=HAPPY SCARED=HAPPY LONELY=HAPPY");
+	
+	@Override
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		final MOB mob=(MOB)affected;
+		if(canBeUninvoked())
+			mob.tell(L("Your joyous rapture is lifted."));
+		super.unInvoke();
+	}
+	
 	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		ticksSleeping=0;
 	}
 	
 	@Override
@@ -58,30 +72,36 @@ public class Prayer_DreamFeast extends Prayer
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(CMLib.flags().isSleeping(affected))
+		if(affected != null)
 		{
-			ticksSleeping = 5;
-			if(ticksSleeping >= 8)
+			Ability moodA=affected.fetchEffect("Mood");
+			if(moodA!=null)
 			{
-				if(affected instanceof MOB)
-					((MOB)affected).tell(L("You have wonderful dreams of an abundant feasts and overflowing wines."));
+				if(text().equals("NORMAL"))
+					affected.delEffect(moodA);
+				else
+				if(!moodA.text().equals(text()))
+					moodA.setMiscText(text());
 			}
-		}
-		else
-		if(ticksSleeping > 8)
-		{
-			
+			else
+			if(!text().equals("NORMAL"))
+			{
+				moodA=CMClass.findAbility("Mood");
+				if((moodA!=null)&&(affected instanceof MOB))
+				{
+					final MOB mob=(MOB)affected;
+					final Vector V=new XVector<String>("NORMAL");
+					moodA.invoke(mob,V,mob,true,0);
+				}
+			}
 			if(affected instanceof MOB)
 			{
-				((MOB)affected).tell(L("You wake up feeling full and content."));
-				((MOB)affected).curState().setHunger(0);
-				((MOB)affected).curState().setThirst(0);
+				((MOB)affected).makePeace();
 			}
-			unInvoke();
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -92,24 +112,41 @@ public class Prayer_DreamFeast extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final boolean success=proficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
+
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 for <T-NAMESELF> to have dreams of feasts!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> <T-IS-ARE> in joyous rapture!"):L("^S<S-NAME> @x1 for <T-NAMESELF> to be in joyous rapture.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=beneficialAffect(mob,target,asLevel,0);
-				if(A!=null)
-					A.setMiscText("");
+				if(msg.value()<=0)
+				{
+					Ability A=beneficialAffect(mob,target,asLevel,0);
+					success=A!=null;
+					if(A!=null)
+					{
+						Ability moodA=target.fetchEffect("Mood");
+						if(moodA==null)
+							A.setMiscText("HAPPY");
+						else
+						{
+							String newStr=moodMap.get(moodA.text());
+							if(newStr==null)
+								newStr="HAPPY";
+							A.setMiscText(newStr);
+						}
+					}
+					target.recoverPhyStats();
+				}
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":L("<S-NAME> @x1 for <T-NAMESELF> to have good dreams, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but nothing happens.",prayForWord(mob)));
 
 
 		// return whether it worked

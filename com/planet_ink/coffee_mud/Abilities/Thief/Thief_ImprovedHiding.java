@@ -80,7 +80,7 @@ public class Thief_ImprovedHiding extends ThiefSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			if(CMLib.flags().isHidden(affected))
 			{

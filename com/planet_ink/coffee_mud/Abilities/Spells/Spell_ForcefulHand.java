@@ -107,8 +107,7 @@ public class Spell_ForcefulHand extends Spell
 					mob.setRangeToTarget(1);
 					if(mob==combatMOB)
 						mob.setRangeToTarget(1);
-					if(R!=null)
-						R.show(combatMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE>  pushed back by a forceful hand."));
+					R.show(combatMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE>  pushed back by a forceful hand."));
 					return false;
 				}
 			}

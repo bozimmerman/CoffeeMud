@@ -96,7 +96,7 @@ public class Foraging extends GatheringSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))

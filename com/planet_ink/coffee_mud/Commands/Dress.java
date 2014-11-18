@@ -79,6 +79,8 @@ public class Dress extends StdCommand
 				item.unWear();
 				target.moveItemTo(item);
 				item.wearIfPossible(target);
+				if(item.rawWornCode()!=0)
+					target.executeMsg(target, CMClass.getMsg(target, item,CMMsg.MSG_WEAR|CMMsg.MASK_ALWAYS, null));
 				if((item.rawProperLocationBitmap()!=0)&&(item.amWearingAt(Wearable.IN_INVENTORY))&&(target.isMonster()))
 				{
 					if(item.rawLogicalAnd())

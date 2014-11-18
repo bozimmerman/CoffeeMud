@@ -111,8 +111,7 @@ public class Prayer_AntiUndeadField extends Prayer
 				if((mob.getVictim()==undeadMOB)&&(mob.rangeToTarget() <= 0))
 				{
 					mob.setRangeToTarget(R.maxRange());
-					if(R!=null)
-						R.show(undeadMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-undead field."));
+					R.show(undeadMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-undead field."));
 					return false;
 				}
 			}

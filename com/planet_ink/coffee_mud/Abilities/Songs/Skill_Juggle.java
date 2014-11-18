@@ -58,14 +58,14 @@ public class Skill_Juggle extends BardSkill
 
 	public int maxJuggles()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 			return 5+(CMLib.ableMapper().qualifyingClassLevel((MOB)affected,this)+(2*getXLEVELLevel((MOB)affected)));
 		return 5;
 	}
 
 	public int maxAttacks()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 			return (int)Math.round(affected.phyStats().speed())
 				   +((CMLib.ableMapper().qualifyingClassLevel((MOB)affected,this)+(2*getXLEVELLevel((MOB)affected)))/5);
 		return 1;
@@ -339,7 +339,7 @@ public class Skill_Juggle extends BardSkill
 	@Override
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB M=(MOB)affected;
 			while(juggles.size()>0)

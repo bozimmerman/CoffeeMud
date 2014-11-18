@@ -83,7 +83,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))

@@ -110,8 +110,7 @@ public class Spell_AntiPlantShell extends Spell
 				if((mob.getVictim()==plantMOB)&&(mob.rangeToTarget() <= 0))
 				{
 					mob.setRangeToTarget(R.maxRange());
-					if(R!=null)
-						R.show(plantMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-plant shell."));
+					R.show(plantMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-plant shell."));
 					return false;
 				}
 			}

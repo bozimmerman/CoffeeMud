@@ -27,12 +27,6 @@ NON-TECH
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills:
-        *. Cleric        : +7 ( 3 of each)
-                         : N Snake Staff
-                         : E Unholy Portent (negative damage when creature attacks or uses a skill)
-                         : G Joyful Rapture (negates bad mood, causes good mood)
-                         : N Protection from Curses
-                         : E Bloatbomb (kill weak creature and their corpse, looting corpse causes acid damage explosion to all in room)
         *. Purist        : +3
                          : Judgement (Geas) - target must go around doing some nice social to other mobs before time runs out or they die.  Only works on evil/neutral.
                          : Piety Curse - if target does or says anything negative, they take damage -- includes attacking, socials, bad words
@@ -49,9 +43,10 @@ NON-TECH
         *. Paladin       : +6
         *. Paladin ideas : Shared Fate (Paladin and mount share bad effects instead of only Paladin), Shared Vision (can see through
                          : mounts eyes), Death Ward (negative energy ward), Resurrect Mount, Heal Mount, Abide (prevent death for few mins),
-   *. Create Magi Robes(or whatever you wanted to call them) that would enhance his/her magic of their chosen field.
    *. Wants and Needs engine - similar to slavery system
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
+   *. Rideables with some portal you could enter for below decks, etc.
+   *. Create Magi Robes(or whatever you wanted to call them) that would enhance his/her magic of their chosen field.
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
    *. Finish Player Simulator -- the Perpetual Project

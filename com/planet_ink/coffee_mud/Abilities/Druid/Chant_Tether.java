@@ -53,7 +53,7 @@ public class Chant_Tether extends Chant
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if((lastRoom!=mob.location())
@@ -93,7 +93,7 @@ public class Chant_Tether extends Chant
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if((lastRoom!=mob.location())

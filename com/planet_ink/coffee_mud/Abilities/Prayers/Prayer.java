@@ -48,7 +48,6 @@ public class Prayer extends StdAbility
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER;}
 
-
 	protected String prayWord(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)

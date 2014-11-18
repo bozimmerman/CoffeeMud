@@ -1210,7 +1210,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 									if(mob==regarding)
 										replacement="are";
 									else
-									if(regarding instanceof MOB)
 										replacement="is";
 								}
 								break;

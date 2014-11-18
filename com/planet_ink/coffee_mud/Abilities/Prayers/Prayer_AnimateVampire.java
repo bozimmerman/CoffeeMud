@@ -50,7 +50,7 @@ public class Prayer_AnimateVampire extends Prayer
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if(msg.amISource(mob)

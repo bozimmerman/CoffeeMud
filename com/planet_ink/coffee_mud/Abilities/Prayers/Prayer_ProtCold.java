@@ -43,7 +43,7 @@ public class Prayer_ProtCold extends Prayer
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Protection from Cold)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_HEATING;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEATING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}

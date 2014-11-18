@@ -74,7 +74,7 @@ public class Skill_ControlUndead extends StdSkill
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(!((MOB)affected).isMonster())
-		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();

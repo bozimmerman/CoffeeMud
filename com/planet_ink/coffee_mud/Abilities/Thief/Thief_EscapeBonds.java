@@ -53,7 +53,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if((!CMLib.flags().aliveAwakeMobile(mob,true))

@@ -96,7 +96,7 @@ public class Song_Friendship extends Song
 		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
@@ -127,7 +127,7 @@ public class Song_Friendship extends Song
 	@Override
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			super.unInvoke();

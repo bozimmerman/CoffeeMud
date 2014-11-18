@@ -67,7 +67,7 @@ public class Butchering extends GatheringSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((body!=null)&&(!aborted))

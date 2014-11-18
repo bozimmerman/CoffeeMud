@@ -92,7 +92,7 @@ public class Spell_Timeport extends Spell
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			if(!canBeUninvoked())
 			{

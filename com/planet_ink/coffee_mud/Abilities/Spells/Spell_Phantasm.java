@@ -53,7 +53,7 @@ public class Spell_Phantasm extends Spell
 	{
 		if(tickID==Tickable.TICKID_MOB)
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if(myTarget==null)

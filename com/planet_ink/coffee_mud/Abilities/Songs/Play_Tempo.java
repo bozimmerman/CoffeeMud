@@ -58,7 +58,7 @@ public class Play_Tempo extends Play
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)

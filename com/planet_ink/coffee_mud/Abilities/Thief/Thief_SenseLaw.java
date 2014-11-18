@@ -77,7 +77,7 @@ public class Thief_SenseLaw extends ThiefSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if((mob.location()!=null)&&(!mob.isMonster()))

@@ -76,7 +76,7 @@ public class Thief_Detection extends ThiefSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			if(!CMLib.flags().aliveAwakeMobile((MOB)affected,true))
 			{ unInvoke(); return false;}

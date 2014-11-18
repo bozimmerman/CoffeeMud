@@ -101,7 +101,7 @@ public class Disease_Cannibalism extends Disease
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 		 final MOB source=msg.source();
 		 if(source == null)
@@ -120,7 +120,7 @@ public class Disease_Cannibalism extends Disease
 			}
 		 }
 	  }
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if(msg.amITarget(mob)

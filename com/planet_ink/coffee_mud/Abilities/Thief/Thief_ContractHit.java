@@ -55,7 +55,7 @@ public class Thief_ContractHit extends ThiefSkill
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 			if(msg.amISource((MOB)affected)
 			&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 			{

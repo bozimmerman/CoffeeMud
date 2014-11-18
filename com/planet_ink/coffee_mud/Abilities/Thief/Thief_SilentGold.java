@@ -53,7 +53,7 @@ public class Thief_SilentGold extends ThiefSkill
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(msg.source()!=affected)

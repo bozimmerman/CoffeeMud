@@ -89,7 +89,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))

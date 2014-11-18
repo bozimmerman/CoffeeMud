@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Druid;
+package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,11 +15,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
-   Copyright 2003-2014 Bo Zimmerman
+   Copyright 2004-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,19 +32,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 @SuppressWarnings("rawtypes")
-public class Chant_Root extends Chant
+public class Prayer_ProtCurses extends Prayer
 {
-	@Override public String ID() { return "Chant_Root"; }
-	private final static String localizedName = CMLib.lang().L("Root");
+	@Override public String ID() { return "Prayer_ProtCurses"; }
+	private final static String localizedName = CMLib.lang().L("Protection Curses");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Rooted)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Protection/Curses)");
 	@Override public String displayText() { return localizedStaticDisplay; }
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	protected boolean uprooted=false;
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
+	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+
 
 	@Override
 	public void unInvoke()
@@ -54,64 +54,43 @@ public class Chant_Root extends Chant
 		if(!(affected instanceof MOB))
 			return;
 		final MOB mob=(MOB)affected;
+
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> roots are pulled up."));
+			mob.tell(L("Your natural defences against curses take over."));
+	}
+
+	@Override
+	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	{
+		super.affectCharStats(affectedMOB,affectedStats);
+		affectedStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectedStats.getStat(CharStats.STAT_SAVE_UNDEAD)+10);
 	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected instanceof MOB)
+		if(!super.okMessage(myHost,msg))
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
+
+		if((msg.target()==affected)
+		&&(msg.tool() instanceof Ability)
+		&&(msg.source()!=affected)
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.isTarget(CMMsg.MASK_MALICIOUS))
+		&&(CMLib.dice().rollPercentage()>50)
+		&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS)==Ability.DOMAIN_CURSING)
+		&&(((Ability)msg.tool()).castingQuality(msg.source(), (MOB)msg.target())==Ability.QUALITY_MALICIOUS))
 		{
-			if(msg.amISource((MOB)affected))
-			{
-				if((msg.targetMinor()==CMMsg.TYP_LEAVE)
-				||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
-				||(msg.sourceMinor()==CMMsg.TYP_RETREAT))
-				{
-					if(!uprooted)
-					{
-						msg.source().tell(L("You can't really go anywhere -- you are rooted!"));
-						return false;
-					}
-					uprooted=false;
-				}
-			}
-			else
-			if(msg.amITarget(affected))
-			{
-				if((msg.tool() instanceof Ability)
-				&&((CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
-					||(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))))
-				{
-					if(!uprooted)
-					{
-						msg.source().tell((MOB)affected,null,null,L("<S-NAME> <S-IS-ARE> rooted and can't go anywhere."));
-						return false;
-					}
-					uprooted=false;
-				}
-			}
+			msg.source().location().show((MOB)affected,msg.source(),CMMsg.MSG_OK_VISUAL,L("An curse from <T-NAME> against <S-NAME> is magically repelled."));
+			return false;
 		}
-		return super.okMessage(myHost,msg);
+		return true;
 	}
 
-	@Override
-	public int castingQuality(MOB mob, Physical target)
-	{
-		if(mob!=null)
-		{
-			if(target instanceof MOB)
-			{
-				if((((MOB)target).isInCombat())&&(((MOB)target).isMonster()))
-					return Ability.QUALITY_INDIFFERENT;
-			}
-		}
-		return super.castingQuality(mob,target);
-	}
 
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -122,14 +101,10 @@ public class Chant_Root extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already rooted."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> protection from curses."));
 			return false;
 		}
 
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -141,8 +116,7 @@ public class Chant_Root extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> become(s) rooted to the ground!"):L("^S<S-NAME> chant(s) as <S-HIS-HER> feet become rooted in the ground!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) a blessed mind and body."):L("^S<S-NAME> @x1 for protection from curses.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -150,7 +124,8 @@ public class Chant_Root extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s), but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for protection from curses, but nothing happens.",prayWord(mob)));
+
 
 		// return whether it worked
 		return success;

@@ -109,7 +109,7 @@ public class Spell_IncreaseGravity extends Spell
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			if((((MOB)affected).location()!=gravityRoom())
 			||((gravityRoom()!=null)&&(gravityRoom().fetchEffect(ID())==null)))

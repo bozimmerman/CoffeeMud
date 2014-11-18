@@ -59,7 +59,7 @@ public class Taxidermy extends CraftingSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))

@@ -55,7 +55,7 @@ public class Thief_Alertness extends ThiefSkill
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 
 			final MOB mob=(MOB)affected;

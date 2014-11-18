@@ -15,11 +15,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
-   Copyright 2004-2014 Bo Zimmerman
+   Copyright 2001-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -35,76 +34,58 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class Prayer_DeathsDoor extends Prayer
+public class Prayer_UnholyPortent extends Prayer
 {
-	@Override public String ID() { return "Prayer_DeathsDoor"; }
-	private final static String localizedName = CMLib.lang().L("Deaths Door");
+	@Override public String ID() { return "Prayer_UnholyPortent"; }
+	private final static String localizedName = CMLib.lang().L("Unholy Portent");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Deaths Door)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Unholy Portent)");
 	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
+	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-
-	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
-	{
-		if(affected instanceof MOB)
-		{
-			final MOB mob=(MOB)affected;
-			final Room startRoom=mob.getStartRoom();
-			if(msg.amISource(mob)
-			&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
-			&&(startRoom!=null))
-			{
-				if(mob.fetchAbility("Dueling")!=null)
-					return super.okMessage(host,msg);
-				final Room oldRoom=mob.location();
-				mob.resetToMaxState();
-				oldRoom.show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> pulled back from death's door!"));
-				startRoom.bringMobHere(mob,false);
-				unInvoke();
-				for(int a=mob.numEffects()-1;a>=0;a--) // personal effects
-				{
-					final Ability A=mob.fetchEffect(a);
-					if(A!=null)
-						A.unInvoke();
-				}
-				if((oldRoom!=startRoom) && oldRoom.isInhabitant(mob) && startRoom.isInhabitant(mob))
-					oldRoom.delInhabitant(mob); // hopefully unnecessary
-				return false;
-			}
-		}
-		return super.okMessage(host,msg);
-	}
 
 	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if(!(affected instanceof MOB))
-			return;
 		final MOB mob=(MOB)affected;
-
-		super.unInvoke();
-
 		if(canBeUninvoked())
-			mob.tell(L("Your deaths door protection fades."));
+			mob.tell(L("The unholy portent curse is lifted."));
+		super.unInvoke();
+	}
+	
+	@Override
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((msg.source()==affected) 
+		&& (msg.targetMinor() == CMMsg.TYP_WEAPONATTACK)
+		&& (msg.target() instanceof MOB)
+		&& (CMLib.flags().isEvil((MOB)msg.target())))
+		{
+			final MOB M=(MOB)msg.target();
+			final MOB invoker=(invoker()!=null) ? invoker() : M;
+			final int damage=CMLib.dice().roll(1,3+(invoker.phyStats().level()/10),0);
+			CMLib.combat().postDamage(invoker,M,null,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_STRIKING,L("The unholy portent curse <DAMAGE> <T-NAME>!"));
+			if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+				CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+		}
 	}
 
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final MOB target=getTarget(mob,commands,givenTarget);
+		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final boolean success=proficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -112,15 +93,19 @@ public class Prayer_DeathsDoor extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) guarded at deaths door!"):L("^S<S-NAME> @x1 for <T-NAME> to be guarded at deaths door!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("<T-NAME> gain(s) an unholy portent!"):L("^S<S-NAME> curse(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,0);
+				if(msg.value()<=0)
+				{
+					success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
+					target.recoverPhyStats();
+				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for <T-NAMESELF>, but there is no answer.",prayWord(mob)));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to curse <T-NAMESELF>, but nothing happens."));
 
 
 		// return whether it worked

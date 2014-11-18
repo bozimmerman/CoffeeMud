@@ -113,7 +113,7 @@ public class Prayer_SenseInjury extends Prayer
 			boolean didSomething=false;
 			for(int v=0;v<V.size();v++)
 			{
-				final Environmental E=(Environmental)V.get(v);
+				final Environmental E=V.get(v);
 				if(CMLib.flags().canBeSeenBy(E,mob))
 				{
 					didSomething=true;

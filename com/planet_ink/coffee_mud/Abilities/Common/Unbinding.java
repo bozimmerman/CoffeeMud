@@ -105,7 +105,7 @@ public class Unbinding extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((found!=null)&&(removing!=null)&&(!aborted))

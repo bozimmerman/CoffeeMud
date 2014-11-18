@@ -82,7 +82,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))

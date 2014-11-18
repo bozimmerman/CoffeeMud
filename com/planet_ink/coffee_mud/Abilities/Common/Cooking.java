@@ -164,7 +164,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				if((cookingPot!=null)&&(finalRecipe!=null)&&(buildingI!=null))
 				{

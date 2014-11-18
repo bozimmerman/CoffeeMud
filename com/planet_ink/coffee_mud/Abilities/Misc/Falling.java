@@ -259,7 +259,7 @@ public class Falling extends StdAbility
 		if(temporarilyDisable)
 			return true;
 		final MOB mob=msg.source();
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 			if(msg.amISource((MOB)affected))
 			{
 				if(CMLib.flags().isInFlight(mob))

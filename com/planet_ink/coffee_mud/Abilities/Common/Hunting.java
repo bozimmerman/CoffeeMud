@@ -180,7 +180,7 @@ public class Hunting extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!found.amDead())&&(found.location()!=null)&&(!found.isInCombat()))

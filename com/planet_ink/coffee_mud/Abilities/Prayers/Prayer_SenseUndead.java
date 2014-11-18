@@ -46,7 +46,7 @@ public class Prayer_SenseUndead extends Prayer
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_HOLY;}
 
 	Room lastRoom=null;
 	@Override

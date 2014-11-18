@@ -67,7 +67,7 @@ public class Spell_IronGrip extends Spell
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if((msg.amITarget(mob))

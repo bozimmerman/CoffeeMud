@@ -98,7 +98,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				I.recoverPhyStats();
 				mob.addItem(I);
 				if(I.whereCantWear(mob)<=0)
+				{
 					I.wearIfPossible(mob);
+					if(I.rawWornCode()!=0)
+						mob.executeMsg(mob, CMClass.getMsg(mob, I,CMMsg.MSG_WIELD|CMMsg.MASK_ALWAYS, null));
+				}
 				if(((I instanceof Armor)||(I instanceof Weapon))
 				&&(I.amWearingAt(Wearable.IN_INVENTORY)))
 					I.destroy();

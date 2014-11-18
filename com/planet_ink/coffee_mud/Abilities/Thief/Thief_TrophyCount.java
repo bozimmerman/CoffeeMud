@@ -87,7 +87,7 @@ public class Thief_TrophyCount extends ThiefSkill
 					theList.put(R.name(),set);
 				}
 				set[1]=Integer.toString(CMath.s_int(set[1])+1);
-				if((affected!=null)&&(affected instanceof MOB))
+				if(affected instanceof MOB)
 				{
 					final Ability A=((MOB)affected).fetchAbility(ID());
 					if(A!=null)

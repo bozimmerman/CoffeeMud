@@ -3003,6 +3003,13 @@ public class StdMOB implements MOB
 				setFollowing(null);
 				tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
 				break;
+			case CMMsg.TYP_WEAR:
+			case CMMsg.TYP_HOLD:
+			case CMMsg.TYP_WIELD:
+			case CMMsg.TYP_REMOVE:
+				possWieldedItem = null;
+				possHeldItem = null;
+				break;
 			default:
 				// you pretty much always know what you are doing, if you can do
 				// it.

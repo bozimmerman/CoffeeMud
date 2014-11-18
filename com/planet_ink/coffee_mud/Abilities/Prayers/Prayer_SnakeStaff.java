@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2014 Bo Zimmerman
+   Copyright 2001-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,25 +32,57 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
-public class Spell_SummonSteed extends Spell
-{
-	@Override public String ID() { return "Spell_SummonSteed"; }
-	private final static String localizedName = CMLib.lang().L("Summon Steed");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Steed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_SUMMONING;}
 
+@SuppressWarnings("rawtypes")
+public class Prayer_SnakeStaff extends Prayer
+{
+	@Override public String ID() { return "Prayer_SnakeStaff"; }
+	private final static String localizedName = CMLib.lang().L("Snake Staff");
+	@Override public String name() { return localizedName; }
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Snake Staff)");
+	@Override public String displayText() { return localizedStaticDisplay; }
+	@Override protected int canAffectCode(){return 0;}
+	@Override protected int canTargetCode(){return 0;}
+	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
+	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	protected volatile Item theStaff = null;
+	
+	@Override
+	public void setAffectedOne(Physical affected)
+	{
+		super.setAffectedOne(affected);
+	}
 	@Override
 	public void unInvoke()
 	{
+		if(affected instanceof Item)
+		{
+			Physical affected=this.affected;
+			super.unInvoke();
+			affected.delEffect(this);
+			return;
+		}
 		final MOB mob=(MOB)affected;
+		if(theStaff != null)
+		{
+			final MOB invoker=invoker();
+			if((invoker!=null)&&(canBeUninvoked()))
+			{
+				if((invoker.location()!=null)&&(mob!=null))
+					invoker.location().show(mob, invoker, CMMsg.MSG_OK_ACTION, L("<S-NAME> reform(s) into @x1 in <T-YOUPOSS> hands.",theStaff.name()));
+				invoker.addItem(theStaff);
+				theStaff.setRawWornCode(0);
+				theStaff.recoverPhyStats();
+				invoker.recoverPhyStats();
+				theStaff.wearIfPossible(invoker);
+				if(theStaff.rawWornCode()!=0)
+					invoker.executeMsg(invoker, CMClass.getMsg(invoker, theStaff,CMMsg.MSG_WIELD|CMMsg.MASK_ALWAYS, null));
+				theStaff.recoverPhyStats();
+				invoker.recoverPhyStats();
+			}
+			theStaff = null;
+		}
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
@@ -59,7 +91,7 @@ public class Spell_SummonSteed extends Spell
 			mob.destroy();
 		}
 	}
-
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -73,23 +105,9 @@ public class Spell_SummonSteed extends Spell
 					||(mob.location()==null)
 					||(mob.amDead())
 					||((invoker!=null)
-						&&((mob.location()!=invoker.location())||(!CMLib.flags().isInTheGame(invoker, true))||(invoker.riding()!=affected))))
+						&&((mob.location()!=invoker.location())||(!CMLib.flags().isInTheGame(invoker, true)))))
 					{
-						mob.delEffect(this);
-						if(mob.amDead())
-							mob.setLocation(null);
-						mob.destroy();
-					}
-					else
-					if((mob.amFollowing()==null)
-					&&(mob.location()!=null)
-					&&(mob.curState().getHitPoints()<((mob.maxState().getHitPoints()/10)*3)))
-					{
-						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> flees."));
-						mob.delEffect(this);
-						if(mob.amDead())
-							mob.setLocation(null);
-						mob.destroy();
+						unInvoke();
 					}
 			}
 		}
@@ -100,8 +118,7 @@ public class Spell_SummonSteed extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)
-		&&(affected instanceof MOB)
+		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
@@ -114,6 +131,26 @@ public class Spell_SummonSteed extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		Item target=mob.fetchWieldedItem();
+		if((auto)&&(givenTarget instanceof Item))
+			target=(Item)givenTarget;
+		if(target == null)
+		{
+			mob.tell(L("You aren't wielding a staff!"));
+			return false;
+		}
+		if(target.fetchEffect(this.ID())!=null)
+		{
+			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
+			return false;
+		}
+
+		if((!(target instanceof Weapon))||(((Weapon)target).weaponClassification()!=Weapon.CLASS_STAFF))
+		{
+			mob.tell(L("@x1 is not a staff!",target.name()));
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -121,80 +158,49 @@ public class Spell_SummonSteed extends Spell
 
 		if(success)
 		{
-			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> call(s) for a loyal steed.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 for <T-NAME> to defend <S-HIM-HER>.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final MOB target = determineMonster(mob, mob.phyStats().level()+((getXLEVELLevel(mob)+getX1Level(mob))/2));
-				final MOB squabble = checkPack(target, mob);
-				target.addNonUninvokableEffect( (Ability) copyOf());
-				if(squabble==null)
+				
+				final MOB monster = determineMonster(mob, mob.phyStats().level()+((getXLEVELLevel(mob)+getX1Level(mob))/2),target.name());
+				final Prayer_SnakeStaff A=(Prayer_SnakeStaff)super.beneficialAffect(mob, monster, asLevel, 10);
+				if(A!=null)
 				{
-					if (target.isInCombat()) target.makePeace();
-					CMLib.commands().postFollow(target,mob,true);
+					if (monster.isInCombat()) 
+						monster.makePeace();
+					CMLib.commands().postFollow(monster,mob,true);
 					invoker=mob;
-					if (target.amFollowing() != mob)
+					if (monster.amFollowing() != mob)
 						mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
-				}
-				else
-				if(squabble.location()!=null)
-				{
-					squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,L("^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?"));
-					target.setVictim(squabble);
+					A.theStaff = target;
+					mob.delItem(A.theStaff);
+					target.recoverPhyStats();
+					monster.recoverPhyStats();
+					mob.recoverPhyStats();
 				}
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> call(s) for a loyal steed, but choke(s) on the words."));
-
+			return beneficialWordsFizzle(mob,target,L("^S<S-NAME> @x1 <T-NAME> to defend <S-HIM-HER>, but nothing happens.^?",prayForWord(mob)));
 		// return whether it worked
 		return success;
 	}
-
-	public MOB determineMonster(MOB caster, int level)
+	
+	public MOB determineMonster(MOB caster, int level, String staffName)
 	{
 
-		final MOB newMOB=CMClass.getMOB("GenRideable");
-		final Rideable ride=(Rideable)newMOB;
+		final MOB newMOB=CMClass.getMOB("GenMob");
 		newMOB.basePhyStats().setAbility(11);
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
+		newMOB.baseCharStats().setMyRace(CMClass.getRace("Snake"));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
-		if(level<4)
-		{
-			newMOB.setName(L("a pony"));
-			newMOB.setDisplayText(L("a very pretty pony stands here"));
-			newMOB.setDescription(L("She looks loyal, and oh so pretty."));
-			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
-			ride.setRiderCapacity(1);
-		}
-		else
-		if(level<10)
-		{
-			newMOB.setName(L("a pack horse"));
-			newMOB.setDisplayText(L("a sturdy pack horse stands here"));
-			newMOB.setDescription(L("A strong and loyal beast, who looks like he`s seen his share of work."));
-			ride.setRiderCapacity(2);
-		}
-		else
-		if(level<18)
-		{
-			newMOB.setName(L("a riding horse"));
-			newMOB.setDisplayText(L("a loyal riding horse stands here"));
-			newMOB.setDescription(L("A proud and noble companion; brown hair with a long black mane."));
-			ride.setRiderCapacity(2);
-		}
-		else
-		{
-			newMOB.setName(L("a warhorse"));
-			newMOB.setDisplayText(L("a mighty warhorse stands here"));
-			newMOB.setDescription(L("Ferocious, fleet of foot, and strong, a best of breed!"));
-			ride.setRiderCapacity(3);
-		}
+		newMOB.setName(L("a bunch of snakes"));
+		newMOB.setDisplayText(L("a bunch of nasty snakes writhe here"));
+		newMOB.setDescription(L("The seem like they might be magical."));
 		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
 		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
@@ -202,6 +208,13 @@ public class Spell_SummonSteed extends Spell
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
+		newMOB.addBehavior(CMClass.getBehavior("CombatAbilities"));
+		Ability A=CMClass.getAbility("Poison");
+		if(A!=null)
+		{
+			A.setProficiency(100);
+			newMOB.addAbility(A);
+		}
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
@@ -210,24 +223,10 @@ public class Spell_SummonSteed extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
+		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> forms from @x1!",staffName));
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);
-
-
-	}
-
-	public MOB checkPack(MOB newPackmate, MOB mob)
-	{
-		for(int i=0;i<mob.numFollowers();i++)
-		{
-			final MOB possibleBitch = mob.fetchFollower(i);
-			if(newPackmate.Name().equalsIgnoreCase(possibleBitch.Name())
-			&&(possibleBitch.location()==newPackmate.location())
-			&& (CMLib.dice().rollPercentage()-mob.charStats().getStat(CharStats.STAT_CHARISMA)+newPackmate.phyStats().level() > 75))
-				return possibleBitch;
-		}
-		return null;
 	}
 }
+

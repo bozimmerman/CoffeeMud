@@ -176,7 +176,7 @@ public class Prop_ClosedDayNight extends Property
 		Room R=CMLib.map().getRoom(Home);
 		if(R!=null)
 			return R;
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if(mob.location()!=null)

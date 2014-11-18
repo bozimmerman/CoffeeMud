@@ -95,7 +95,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))

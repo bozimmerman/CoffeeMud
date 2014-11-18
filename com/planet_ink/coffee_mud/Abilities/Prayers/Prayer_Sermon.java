@@ -53,7 +53,7 @@ public class Prayer_Sermon extends Prayer
 		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();

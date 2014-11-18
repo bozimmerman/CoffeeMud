@@ -91,7 +91,7 @@ public class Prop_Retainable extends Property
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if(mob.location()!=null)
@@ -199,7 +199,7 @@ public class Prop_Retainable extends Property
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			if(mob.location()!=null)

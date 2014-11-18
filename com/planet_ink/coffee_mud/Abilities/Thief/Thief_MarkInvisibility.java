@@ -76,7 +76,7 @@ public class Thief_MarkInvisibility extends ThiefSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			mark=getMark(mob);

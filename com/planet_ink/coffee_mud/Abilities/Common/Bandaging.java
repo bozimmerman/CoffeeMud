@@ -92,7 +92,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
 				if((bandaging!=null)&&(!aborted))

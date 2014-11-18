@@ -94,7 +94,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((affected!=null)&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
 			final MOB M=(MOB)affected;
 			if(msg.amISource(M)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
