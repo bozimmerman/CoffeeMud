@@ -71,7 +71,7 @@ public class Spell_WallOfIce extends Spell
 			{
 				Item w=mob.fetchWieldedItem();
 				if(w==null)
-					w=mob.myNaturalWeapon();
+					w=mob.getNaturalWeapon();
 				if(w==null)
 					return false;
 				final Room room=mob.location();

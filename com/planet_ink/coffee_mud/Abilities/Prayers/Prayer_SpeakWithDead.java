@@ -80,7 +80,7 @@ public class Prayer_SpeakWithDead extends Prayer
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
 				DeadBody body=(DeadBody)target;
-				mob.location().show(mob, target, CMMsg.MSG_OK_ACTION, L("<T-NAME> whisper(s) to <S-NAME>."));
+				mob.location().showOthers(mob, target, CMMsg.MSG_OK_ACTION, L("<T-NAME> whisper(s) to <S-NAME>."));
 				StringBuilder knowledge=new StringBuilder("");
 				knowledge.append(L("I was @x1, killed on @x2 by @x3 with @x4.",
 						body.mobName(),

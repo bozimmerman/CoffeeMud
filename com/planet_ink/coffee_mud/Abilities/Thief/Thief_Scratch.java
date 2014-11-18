@@ -80,8 +80,8 @@ public class Thief_Scratch extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				final int damage=CMLib.dice().roll(1, 4, 0);
-				CMLib.combat().postDamage(mob, target, mob.myNaturalWeapon(), damage, CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
-						mob.myNaturalWeapon().weaponType(),L("<S-YOUPOSS> scratch <DAMAGES> <T-NAME>!"));
+				CMLib.combat().postDamage(mob, target, mob.getNaturalWeapon(), damage, CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
+						mob.getNaturalWeapon().weaponType(),L("<S-YOUPOSS> scratch <DAMAGES> <T-NAME>!"));
 				if(CMLib.flags().isHidden(mob) && makePeace)
 				{
 					mob.makePeace();

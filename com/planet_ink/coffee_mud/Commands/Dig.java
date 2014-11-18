@@ -93,7 +93,7 @@ public class Dig extends StdCommand
 			final String msgStr=L("<S-NAME> start(s) digging a hole with <O-NAME>.");
 			Item I=mob.fetchWieldedItem();
 			if(I==null)
-				I=mob.myNaturalWeapon();
+				I=mob.getNaturalWeapon();
 			final CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
 			msg.setValue(1);
 			if(mob.location().okMessage(mob,msg))
@@ -107,7 +107,7 @@ public class Dig extends StdCommand
 			final String msgStr=L("<S-NAME> continue(s) digging a hole with <O-NAME>.");
 			Item I=mob.fetchWieldedItem();
 			if(I==null)
-				I=mob.myNaturalWeapon();
+				I=mob.getNaturalWeapon();
 			final CMMsg msg=CMClass.getMsg(mob,mob.location(),I,CMMsg.MSG_DIG,msgStr);
 			msg.setValue(getDiggingDepth(I));
 			if(mob.location().okMessage(mob,msg))

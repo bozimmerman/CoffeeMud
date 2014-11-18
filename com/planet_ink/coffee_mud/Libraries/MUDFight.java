@@ -1100,6 +1100,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			{
 				body.setKillerName(source.Name());
 				body.setKillerPlayer(!source.isMonster());
+				body.setKillingTool(source.fetchWieldedItem());
+				if(body.killingTool()==null)
+					body.setKillingTool(source.getNaturalWeapon());
 			}
 
 			if((!target.isMonster())&&(CMLib.dice().rollPercentage()==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
@@ -1640,7 +1643,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
-				Item weapon=attacker.myNaturalWeapon();
+				Item weapon=attacker.getNaturalWeapon();
 				if((msg.tool() instanceof Item))
 					weapon=(Item)msg.tool();
 				if(weapon!=null)

@@ -80,7 +80,7 @@ public class ROMGangMember extends StdBehavior
 			return;
 		Item weapon=observer.fetchWieldedItem();
 		if(weapon==null)
-			weapon=observer.myNaturalWeapon();
+			weapon=observer.getNaturalWeapon();
 
 		/* say something, then raise hell */
 		switch (CMLib.dice().roll(1,7,-1))

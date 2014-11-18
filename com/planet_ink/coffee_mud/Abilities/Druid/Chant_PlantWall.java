@@ -92,7 +92,7 @@ public class Chant_PlantWall extends Chant
 			{
 				Item w=mob.fetchWieldedItem();
 				if(w==null)
-					w=mob.myNaturalWeapon();
+					w=mob.getNaturalWeapon();
 				if(w==null)
 					return false;
 				final CMMsg msg2=CMClass.getMsg(mob,null,CMMsg.MSG_WEAPONATTACK,L("^F<S-NAME> hack(s) at the plant wall with @x1.^?",w.name()));

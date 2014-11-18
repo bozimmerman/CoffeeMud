@@ -76,7 +76,7 @@ public class Prayer_Monolith extends Prayer
 				{
 					Item w=mob.fetchWieldedItem();
 					if(w==null)
-						w=mob.myNaturalWeapon();
+						w=mob.getNaturalWeapon();
 					if(w==null)
 						return false;
 					final Room room=mob.location();
@@ -147,7 +147,7 @@ public class Prayer_Monolith extends Prayer
 				{
 					Item w=mob.fetchWieldedItem();
 					if(w==null)
-						w=mob.myNaturalWeapon();
+						w=mob.getNaturalWeapon();
 					if(w==null)
 						return false;
 					if(mob.location().show(mob,null,w,CMMsg.MSG_WEAPONATTACK,L("^F^<FIGHT^><S-NAME> hack(s) at the monolith of stone with <O-NAME>.^</FIGHT^>^?")))

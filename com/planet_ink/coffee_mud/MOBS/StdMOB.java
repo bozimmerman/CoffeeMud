@@ -1608,7 +1608,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public Weapon myNaturalWeapon()
+	public Weapon getNaturalWeapon()
 	{
 		final Weapon W;
 		if ((charStats() != null) && (charStats().getMyRace() != null))

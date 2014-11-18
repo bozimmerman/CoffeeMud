@@ -129,7 +129,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public CharState baseState();
 	public void setBaseState(CharState newState);
 	public void resetToMaxState();
-	public Weapon myNaturalWeapon();
+	public Weapon getNaturalWeapon();
 
 	// misc characteristics
 	public String getLiegeID();

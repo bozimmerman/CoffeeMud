@@ -77,7 +77,7 @@ public class ROMPatrolman extends StdBehavior
 
 		Item weapon=observer.fetchWieldedItem();
 		if(weapon==null)
-			weapon=observer.myNaturalWeapon();
+			weapon=observer.getNaturalWeapon();
 		boolean makePeace=false;
 		boolean fight=false;
 		switch(CMLib.dice().roll(1,7,-1))
