@@ -134,7 +134,7 @@ public class LizardMan extends StdRace
 				resources.addElement(makeResource
 				("a "+name().toLowerCase()+" tongue",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
+				("a "+name().toLowerCase()+" scaly hide",RawMaterial.RESOURCE_SCALES));
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
