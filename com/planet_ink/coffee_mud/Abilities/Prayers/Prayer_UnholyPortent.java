@@ -52,7 +52,7 @@ public class Prayer_UnholyPortent extends Prayer
 	{
 		// undo the affects of this spell
 		final MOB mob=(MOB)affected;
-		if(canBeUninvoked())
+		if(canBeUninvoked() && (mob!=null))
 			mob.tell(L("The unholy portent curse is lifted."));
 		super.unInvoke();
 	}
