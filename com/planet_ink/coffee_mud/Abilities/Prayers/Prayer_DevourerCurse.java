@@ -70,7 +70,7 @@ public class Prayer_DevourerCurse extends Prayer
 	{
 		// undo the affects of this spell
 		final MOB mob=(MOB)affected;
-		if(canBeUninvoked())
+		if(canBeUninvoked() && (mob!=null))
 			mob.tell(L("The devourer curse is lifted."));
 		super.unInvoke();
 	}
