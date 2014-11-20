@@ -171,16 +171,14 @@ public class Fighter_Gouge extends MonkSkill
 					if(injuryA!=null)
 					{
 						injuryA.setMiscText(mob.Name()+"/"+gone);
-						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,L("<DAMAGE> <T-NAME>."));
+						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,L("<S-NAME> <DAMAGE> <T-NAME>."));
 						msg2.setValue(target.maxState().getHitPoints()/(20-getXLEVELLevel(mob)));
-						if(!injuryA.invoke(mob,new XVector(msg2),target,true,0))
+						injuryA.invoke(mob,new XVector(msg2),target,true,0);
+						injuryA=target.fetchEffect("Injury");
+						if( injuryA != null )
 						{
-							injuryA=target.fetchEffect("Injury");
-							if( injuryA != null )
-							{
-								injuryA.setMiscText(mob.Name()+"/"+gone);
-								injuryA.okMessage(target,msg2);
-							}
+							injuryA.setMiscText(mob.Name()+"/"+gone);
+							injuryA.okMessage(target,msg2);
 						}
 					}
 				}
