@@ -95,7 +95,7 @@ public class Prayer_Refuge extends Prayer
 						return;
 					final Room thisRoom=msg.source().location();
 					final Ability thisA=this;
-					CMLib.threads().scheduleRunnable(new Runnable(){
+					msg.addTrailerRunnable(new Runnable(){
 						@Override
 						public void run()
 						{
@@ -119,7 +119,7 @@ public class Prayer_Refuge extends Prayer
 								}
 							}
 						}
-					}, 1000);
+					});
 					unInvoke();
 				}
 			}
@@ -155,7 +155,7 @@ public class Prayer_Refuge extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows slightly!"));
-				mob.tell(L("@x1 will now await someone to SAY 'Refuge' to it before teleporting you back here.",target.name(mob)));
+				mob.tell(L("@x1 will now await someone to 'SAYTO \"@x1\" Refuge' to it before teleporting you back here.",target.name(mob)));
 				final Ability A=beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
 				if(A!=null)
 					A.setMiscText(roomID);
