@@ -41,7 +41,7 @@ public class Prayer_HoldUndead extends Prayer
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HOLY;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Hold Undead)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 

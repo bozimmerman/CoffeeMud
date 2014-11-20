@@ -41,7 +41,7 @@ public class Prayer_Sober extends Prayer implements MendingSkill
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
 
 	@Override
 	public boolean supportsMending(Physical item)

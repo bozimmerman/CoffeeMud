@@ -45,7 +45,7 @@ public class Prayer_SanctifyRoom extends Prayer
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
 
 	public static final SHashSet MSG_CODESH=new SHashSet(new Integer[]{
 		Integer.valueOf(CMMsg.TYP_GET),

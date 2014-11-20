@@ -44,7 +44,7 @@ public class Prayer_Sermon extends Prayer
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_CHARMING|Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_CHARMING|Ability.FLAG_NEUTRAL;}
 	@Override protected int overrideMana(){return Ability.COST_ALL;}
 
 	@Override

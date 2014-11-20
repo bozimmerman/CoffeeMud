@@ -42,7 +42,7 @@ public class Prayer_Retribution extends Prayer_BladeBarrier
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Retribution)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HOLY;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
 
 	@Override protected String startStr() { return "The power of retribution fills <T-NAME>!^?"; }
 

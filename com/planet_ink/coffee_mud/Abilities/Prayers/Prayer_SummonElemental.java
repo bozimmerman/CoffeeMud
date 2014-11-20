@@ -46,7 +46,7 @@ public class Prayer_SummonElemental extends Prayer
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

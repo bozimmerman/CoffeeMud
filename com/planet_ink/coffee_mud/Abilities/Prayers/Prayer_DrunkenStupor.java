@@ -42,7 +42,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_INTOXICATING;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL|Ability.FLAG_INTOXICATING;}
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Drunken Stupor)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}

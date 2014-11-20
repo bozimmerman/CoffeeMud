@@ -46,7 +46,7 @@ public class Prayer_SenseLife extends Prayer
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
 	protected Room lastRoom=null;
 
 	@Override

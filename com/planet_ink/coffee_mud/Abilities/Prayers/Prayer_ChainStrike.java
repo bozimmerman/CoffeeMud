@@ -40,7 +40,7 @@ public class Prayer_ChainStrike extends Prayer
 	private final static String localizedName = CMLib.lang().L("Chain Strike");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_AIRBASED;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL|Ability.FLAG_AIRBASED;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 

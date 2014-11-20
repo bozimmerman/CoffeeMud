@@ -47,7 +47,7 @@ public class Prayer_HolyWind extends Prayer
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(4);}
 	public boolean doneTicking=false;
-	@Override public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_NEUTRAL;}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

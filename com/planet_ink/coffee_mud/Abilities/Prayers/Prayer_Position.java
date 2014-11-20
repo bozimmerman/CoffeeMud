@@ -40,7 +40,7 @@ public class Prayer_Position extends Prayer
 	@Override public String ID() { return "Prayer_Position"; }
 	private final static String localizedName = CMLib.lang().L("Position");
 	@Override public String name() { return localizedName; }
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public Room lastPosition=null;

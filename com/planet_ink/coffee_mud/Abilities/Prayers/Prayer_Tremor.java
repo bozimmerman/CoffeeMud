@@ -45,7 +45,7 @@ public class Prayer_Tremor extends Prayer
 	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
 	protected boolean oncePerRd=false;
 
 	@Override

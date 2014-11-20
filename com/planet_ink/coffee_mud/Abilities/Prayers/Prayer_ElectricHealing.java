@@ -46,7 +46,7 @@ public class Prayer_ElectricHealing extends Prayer
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_HEALINGMAGIC;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL|Ability.FLAG_HEALINGMAGIC;}
 
 
 	@Override

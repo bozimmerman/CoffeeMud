@@ -43,7 +43,7 @@ public class Prayer_UndeniableFaith extends Prayer
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_CHARMING;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL|Ability.FLAG_CHARMING;}
 	@Override protected int overrideMana(){return 100;}
 	protected String godName="";
 	private static DVector convertStack=new DVector(2);

@@ -59,6 +59,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setDisplayText(L("@x1 grows here.",newItem.name()));
 		newItem.setDescription("");
 		final Chant_GrowOak newChant=new Chant_GrowOak();
+		newItem.basePhyStats().setDisposition(newItem.basePhyStats().disposition()|PhyStats.IS_BONUS);
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.basePhyStats().setWeight(10000);
 		CMLib.flags().setGettable(newItem,false);

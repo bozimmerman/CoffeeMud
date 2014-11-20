@@ -27,10 +27,6 @@ NON-TECH
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills:
-        *. Shaman        : +3
-                         : Animal Spirit (like Find Familiar for Cleric) 
-                         : Summon Animal Spirits 
-                         : Refuge (item gets trigger word to transport holder back to where spell was cast)
         *. Assassin      : +6
                          : Two-Dagger Fighting (no negatives on two handed fighting), Cut Throat (crit, bleeding), Double Strike (2x attacks with daggers),
                          : Dagger Defense, Dagger Mastery, Deep Cut (causes injury)

@@ -41,7 +41,7 @@ public class Prayer_Gateway extends Prayer
 	private final static String localizedName = CMLib.lang().L("Gateway");
 	@Override public String name() { return localizedName; }
 	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL|Ability.FLAG_TRANSPORTING;}
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 

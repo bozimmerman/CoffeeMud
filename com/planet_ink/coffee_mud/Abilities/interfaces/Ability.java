@@ -871,10 +871,12 @@ public interface Ability extends Environmental
 	public static final long FLAG_HEATING=128;
 	/** constant mask for the flags() method designating that this ability is a burning effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_FIREBASED=256;
-	/** constant mask for the flags() method designating that this ability is a holy or neutral effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	/** constant mask for the flags() method designating that this ability is a holy effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_HOLY=512;
-	/** constant mask for the flags() method designating that this ability is a unholy or neutral effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	/** constant mask for the flags() method designating that this ability is a unholy  effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_UNHOLY=1024;
+	/** constant mask for the flags() method designating that this ability is a neutral effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_NEUTRAL=1024|512;
 	/** constant mask for the flags() method designating that this ability is a paralyzing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_PARALYZING=2048;
 	/** constant mask for the flags() method designating that this ability may not be ordered @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */

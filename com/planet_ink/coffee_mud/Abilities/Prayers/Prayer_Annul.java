@@ -43,7 +43,7 @@ public class Prayer_Annul extends Prayer
 	private final static String localizedName = CMLib.lang().L("Annul");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 
 	@Override
