@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class Skill_TwoDaggerFighting extends Skill_TwoWeaponFighting
 {
-	@Override public String ID() { return "Skill_TwoWeaponFighting"; }
+	@Override public String ID() { return "Skill_TwoDaggerFighting"; }
 	private final static String localizedName = CMLib.lang().L("Two Dagger Fighting");
 	@Override public String name() { return localizedName; }
 	@Override public String displayText(){ return "";}
