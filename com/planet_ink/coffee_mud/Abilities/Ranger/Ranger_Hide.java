@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Ranger_Hide extends StdAbility
 {
 	@Override public String ID() { return "Ranger_Hide"; }
@@ -94,13 +94,13 @@ public class Ranger_Hide extends StdAbility
 		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,proficiency()+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
 	}
 
-	public int getMOBLevel(MOB meMOB)
+	public static int getMOBLevel(MOB meMOB)
 	{
 		if(meMOB==null)
 			return 0;
 		return meMOB.phyStats().level();
 	}
-	public MOB getHighestLevelMOB(MOB meMOB, Vector not)
+	public static MOB getHighestLevelMOB(MOB meMOB, Collection<MOB> not)
 	{
 		if(meMOB==null)
 			return null;
@@ -160,7 +160,7 @@ public class Ranger_Hide extends StdAbility
 			return false;
 		}
 
-		final MOB highestMOB=this.getHighestLevelMOB(mob,null);
+		final MOB highestMOB=getHighestLevelMOB(mob,null);
 		final int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		String str=L("You creep into some foliage and remain completely still.");
