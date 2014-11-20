@@ -40,7 +40,7 @@ public class Prayer_AnimalSpirit extends Prayer
 	@Override public String ID() { return "Prayer_AnimalSpirit"; }
 	private final static String localizedName = CMLib.lang().L("Animal Spirit");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return spirit.getAffectText(); }
+	@Override public String displayText() { return getAnimalSpirit().getAffectText(); }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	private static final String[] triggerStrings =I(new String[] {"ANIMALSPIRIT"});
@@ -127,6 +127,12 @@ public class Prayer_AnimalSpirit extends Prayer
 		if((spirit == AnimalSpirit.None)||(spirit==null))
 		{
 			spirit = AnimalSpirit.values()[CMLib.dice().roll(1, AnimalSpirit.values().length, -1)];
+			if(invoker()!=null)
+			{
+				Ability A=invoker().fetchAbility(ID());
+				if(A!=null)
+					A.setMiscText(spirit.name());
+			}
 		}
 		return spirit;
 	}
@@ -135,8 +141,12 @@ public class Prayer_AnimalSpirit extends Prayer
 	public void setMiscText(String newText)
 	{
 		if(newText.length()>0)
+		{
 			spirit = AnimalSpirit.valueOf(newText);
-		super.setMiscText(getAnimalSpirit().name());
+			if(spirit == null)
+				spirit=AnimalSpirit.None;
+		}
+		super.setMiscText(spirit.name());
 	}
 	
 	@Override
@@ -144,7 +154,6 @@ public class Prayer_AnimalSpirit extends Prayer
 	{
 		return getAnimalSpirit().name();
 	}
-	
 
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
