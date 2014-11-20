@@ -36,7 +36,6 @@ import java.util.*;
 */
 public class StdSkill extends StdAbility
 {
-	boolean doneTicking=false;
 	@Override public String ID() { return "StdSkill"; }
 	private final static String localizedName = CMLib.lang().L("StdSkill");
 	@Override public String name() { return localizedName; }

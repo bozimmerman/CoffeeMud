@@ -119,20 +119,23 @@ public class Prayer_CorpseWalk extends Prayer
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> emerge(s) from @x1.",corpseItem.name()));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> <S-IS-ARE> sucked into the ground."));
-					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
+					if(corpseItem != null)
 					{
-						if(follower.isInCombat())
+						final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> emerge(s) from @x1.",corpseItem.name()));
+						final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> <S-IS-ARE> sucked into the ground."));
+						if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 						{
-							CMLib.commands().postFlee(follower,("NOWHERE"));
-							follower.makePeace();
+							if(follower.isInCombat())
+							{
+								CMLib.commands().postFlee(follower,("NOWHERE"));
+								follower.makePeace();
+							}
+							thisRoom.send(follower,leaveMsg);
+							newRoom.bringMobHere(follower,true);
+							newRoom.send(follower,enterMsg);
+							follower.tell(L("\n\r\n\r"));
+							CMLib.commands().postLook(follower,true);
 						}
-						thisRoom.send(follower,leaveMsg);
-						newRoom.bringMobHere(follower,true);
-						newRoom.send(follower,enterMsg);
-						follower.tell(L("\n\r\n\r"));
-						CMLib.commands().postLook(follower,true);
 					}
 				}
 			}
