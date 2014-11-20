@@ -76,6 +76,7 @@ public class Purist extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Fidelity",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Sanctimonious",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
@@ -117,6 +118,7 @@ public class Purist extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseHoliness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_PietyCurse",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
@@ -136,8 +138,9 @@ public class Purist extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BlessItem",false,CMParms.parseSemicolons("Prayer_Bless",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassHeal",true,CMParms.parseSemicolons("Prayer_Heal",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassHeal",false,CMParms.parseSemicolons("Prayer_Heal",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_Judgement",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_HolyWord",false,CMParms.parseSemicolons("Prayer_HolyAura",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_Nullification",true);

@@ -759,6 +759,15 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return new String(str2,0,s);
 	}
 
+	@Override
+	public List<String> parseWords(final String thisStr)
+	{
+		if((thisStr==null)||(thisStr.length()==0))
+			return new Vector<String>(1);
+		return CMParms.parseSpaces(CMLib.english().stripPunctuation(thisStr), true);
+	}
+
+	
 	private boolean isPunctuation(final byte b)
 	{
 		if((b<0)||(b>255))

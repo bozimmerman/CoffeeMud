@@ -389,7 +389,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 							final boolean roomprefer,
 							final boolean roomobject,
 							final int[] status,
-							final List<Room> rooms)
+							final Set<Room> rooms)
 	{
 		return beMobile(mob,dooropen,wander,roomprefer,roomobject,true,status,rooms);
 
@@ -401,7 +401,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 							 final boolean roomobject,
 							 final boolean sneakIfAble,
 							 final int[] status,
-							 final List<Room> rooms)
+							 final Set<Room> rooms)
 	{
 		if(status!=null)
 			status[0]=Tickable.STATUS_MISC7+0;

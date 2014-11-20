@@ -49,8 +49,8 @@ public interface SlaveryLibrary extends CMLibrary
 	public static class geasSteps extends Vector<geasStep>
 	{
 		public static final long serialVersionUID=Long.MAX_VALUE;
-		public Vector<Room> botheredPlaces=new Vector<Room>();
-		public Vector<MOB> botheredMOBs=new Vector<MOB>();
+		public Set<Room> botheredPlaces=new HashSet<Room>();
+		public Set<MOB> botheredMOBs=new HashSet<MOB>();
 		public boolean done=false;
 		public MOB you=null;
 		public MOB me=null;
@@ -126,7 +126,7 @@ public interface SlaveryLibrary extends CMLibrary
 		public void move(int moveCode)
 		{
 			if(!botheredPlaces.contains(me.location()))
-				botheredPlaces.addElement(me.location());
+				botheredPlaces.add(me.location());
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 				Log.debugOut("GEAS","BEINGMOBILE: "+moveCode);
 			if(moveCode==0)
@@ -183,7 +183,7 @@ public interface SlaveryLibrary extends CMLibrary
 					{
 						CMLib.commands().postSay(me,M,msgOrQ,false,false);
 						bothering=M;
-						mySteps.botheredMOBs.addElement(M);
+						mySteps.botheredMOBs.add(M);
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 							Log.debugOut("GEAS","BOTHERING: "+bothering.name());
 						return true;

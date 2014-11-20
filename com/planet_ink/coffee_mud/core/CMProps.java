@@ -31,6 +31,10 @@ public class CMProps extends Properties
 	private static final long serialVersionUID = -6592429720705457521L;
 	private static final CMProps[] props	   = new CMProps[256];
 
+	protected static final String FILTER_PATTERN="%#@*!$&?";
+	protected static final char[] FILTER_CHARS=FILTER_PATTERN.toCharArray();
+
+	
 	public CMProps()
 	{
 		super();
@@ -438,6 +442,11 @@ public class CMProps extends Properties
 	public boolean isLoaded()
 	{
 		return loaded;
+	}
+	
+	public static String getFilterPattern()
+	{
+		return FILTER_PATTERN;
 	}
 
 	/** retrieve a local .ini file entry as a string
@@ -1571,7 +1580,6 @@ public class CMProps extends Properties
 		int len=0;
 		StringBuffer newMsg=null;
 		String upp=msg.toUpperCase();
-		final char[] filterPattern={'%','#','@','*','!','$','&','?'};
 		int fpIndex=0;
 		for(final String filterStr : filter)
 		{
@@ -1595,9 +1603,7 @@ public class CMProps extends Properties
 						{
 							if(newMsg==null)
 								newMsg=new StringBuffer(msg);
-							newMsg.setCharAt(fdex,filterPattern[fpIndex]);
-							if((++fpIndex)>=filterPattern.length)
-								fpIndex=0;
+							newMsg.setCharAt(fdex,FILTER_CHARS[fpIndex % FILTER_CHARS.length]);
 							upp=newMsg.toString().toUpperCase();
 						}
 						else

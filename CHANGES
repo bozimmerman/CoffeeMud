@@ -18,6 +18,7 @@
   16. More Cleric spells: Mercy, Awaken, Dream Feast, Corpse Walk, True Resurrection, Devourer Curse, Snake Staff
   17. Even More Cleric spells: Protection from Outsiders, Unholy Portent, Joyous Rapture, Protection from Curses, Bloatbomb
   16. New Oracle spells: Sense Faithful, Speak with Dead
+  17. New Purist spells: Judgement, Piety Curse
    *. Beyond new spells for some, all mage specialists have had their spell lists tinkered with to make them a bit better
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.

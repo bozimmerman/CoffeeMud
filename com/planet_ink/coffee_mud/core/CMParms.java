@@ -755,7 +755,6 @@ public class CMParms
 		return (String)getBitWork(s,which,1);
 	}
 
-	
 	/**
 	 * Returns the string bit at the given 0-based index, which may still have its
 	 * single quotes surrounding it.

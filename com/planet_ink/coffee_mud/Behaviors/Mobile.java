@@ -232,7 +232,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			}
 			if(canAct(ticking,tickID))
 			{
-				Vector objections=null;
+				Set<Room> objections=null;
 				if(room==null)
 					return true;
 
@@ -251,8 +251,8 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 					if((R!=null)&&(!okRoomForMe(mob,room,R)))
 					{
 						if(objections==null)
-							objections=new Vector();
-						objections.addElement(R);
+							objections=new HashSet<Room>();
+						objections.add(R);
 					}
 				}
 				tickStatus=Tickable.STATUS_MISC2+16;

@@ -56,6 +56,7 @@ public interface EnglishParsing extends CMLibrary
 	public void evoke(MOB mob, Vector<String> commands);
 	public boolean containsString(final String toSrchStr, final String srchStr);
 	public String bumpDotNumber(String srchStr);
+	public List<String> parseWords(final String thisStr);
 	public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
 	public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly);
 	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
