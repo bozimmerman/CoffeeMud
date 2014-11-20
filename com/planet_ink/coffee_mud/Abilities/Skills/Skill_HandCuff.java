@@ -221,10 +221,6 @@ public class Skill_HandCuff extends StdSkill
 			mob.tell(L("@x1 doesn't look willing to cooperate.",target.name(mob)));
 			return false;
 		}
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

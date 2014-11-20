@@ -75,10 +75,6 @@ public class Prayer_Purify extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 									auto?"":L("^S<S-NAME> purify <T-NAMESELF>@x1.^?",inTheNameOf(mob)),
 									auto?"":L("^S<S-NAME> purifies <T-NAMESELF>@x1.^?",inTheNameOf(mob)),

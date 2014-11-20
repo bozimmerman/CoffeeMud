@@ -122,10 +122,6 @@ public class Prayer_LinkedHealth extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 that <S-HIS-HER> health be linked with <T-NAME>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

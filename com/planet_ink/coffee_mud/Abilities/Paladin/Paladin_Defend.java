@@ -151,10 +151,6 @@ public class Paladin_Defend extends StdAbility
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,L("^S<S-NAME> assume(s) an all-out defensive posture.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

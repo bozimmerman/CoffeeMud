@@ -72,10 +72,6 @@ public class Skill_Leeching extends StdSkill
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> carefully applie(s) leeches to the skin of <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

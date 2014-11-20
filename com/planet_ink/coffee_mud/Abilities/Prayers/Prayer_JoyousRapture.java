@@ -116,10 +116,6 @@ public class Prayer_JoyousRapture extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> <T-IS-ARE> in joyous rapture!"):L("^S<S-NAME> @x1 for <T-NAMESELF> to be in joyous rapture.^?",prayForWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

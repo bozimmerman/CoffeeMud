@@ -178,10 +178,6 @@ public class Prayer_Judgement extends Prayer
 
 		if(success && (!CMLib.flags().isGood(target)))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("<T-NAME> gain(s) an holy geas of judgement!"):L("^S<S-NAME> judge(s) <T-NAMESELF>, laying a geas upon <T-HIM-HER>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

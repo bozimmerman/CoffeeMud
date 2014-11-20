@@ -186,10 +186,6 @@ public class Prayer_PeaceRitual extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) a peace ritual."):L("^S<S-NAME> @x1 for peace between @x2 and @x3.^?",prayWord(mob),clan1.name(),clan2.name()));
 			if(mob.location().okMessage(mob,msg))
 			{

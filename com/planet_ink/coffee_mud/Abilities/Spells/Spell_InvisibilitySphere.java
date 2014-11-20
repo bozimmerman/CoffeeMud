@@ -238,10 +238,6 @@ public class Spell_InvisibilitySphere extends Spell
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"<T-NAME> lie(s) inside an invisibility sphere!":"^S<S-NAME> casts a spell and summons a sphere of invisibility.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

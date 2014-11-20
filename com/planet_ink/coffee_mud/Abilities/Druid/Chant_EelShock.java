@@ -143,10 +143,6 @@ public class Chant_EelShock extends Chant
 				return false;
 		}
 
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -159,10 +155,6 @@ public class Chant_EelShock extends Chant
 				{
 					final MOB target=(MOB)element;
 
-					// it worked, so build a copy of this ability,
-					// and add it to the affects list of the
-					// affected MOB.  Then tell everyone else
-					// what happened.
 					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_ELECTRIC,L("<T-NAME> is stunned."));
 					if(mob.location().okMessage(mob,msg))
 					{

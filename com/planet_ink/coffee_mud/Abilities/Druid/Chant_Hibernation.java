@@ -166,10 +166,6 @@ public class Chant_Hibernation extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_SLEEP|CMMsg.MASK_MAGIC,L("<S-NAME> begin(s) to hibernate..."));
 			if(mob.location().okMessage(mob,msg))

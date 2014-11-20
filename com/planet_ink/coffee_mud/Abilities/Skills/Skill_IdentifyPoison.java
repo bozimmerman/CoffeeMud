@@ -75,10 +75,6 @@ public class Skill_IdentifyPoison extends StdSkill
 		if((success)&&((offensiveAffects.size()>0)
 					   ||((target instanceof Drink)&&(((Drink)target).liquidType()==RawMaterial.RESOURCE_POISON))))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> carefully sniff(s) and taste(s) <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

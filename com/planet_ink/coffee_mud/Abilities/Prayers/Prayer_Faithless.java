@@ -98,10 +98,6 @@ public class Prayer_Faithless extends Prayer
 		if(auto){ type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}
 		if((success)&&(D!=null))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,type,auto?"":L("^S<S-NAME> @x1 for <T-NAMESELF> to lose faith!^?",prayWord(mob)));
 			final CMMsg msg2=CMClass.getMsg(target,D,this,CMMsg.MSG_REBUKE,L("<S-NAME> LOSE(S) FAITH!!!"));
 			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);

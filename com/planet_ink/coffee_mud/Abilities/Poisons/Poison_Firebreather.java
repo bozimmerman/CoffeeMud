@@ -68,10 +68,6 @@ public class Poison_Firebreather extends Poison_Liquor
 				{
 					final MOB target=room.fetchInhabitant(i);
 
-					// it worked, so build a copy of this ability,
-					// and add it to the affects list of the
-					// affected MOB.  Then tell everyone else
-					// what happened.
 					final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,null);
 					if((mob!=target)&&(mob.mayPhysicallyAttack(target))&&(room.okMessage(mob,msg)))
 					{

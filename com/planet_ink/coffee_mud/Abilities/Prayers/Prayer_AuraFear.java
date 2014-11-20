@@ -181,10 +181,6 @@ public class Prayer_AuraFear extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			int affectType=verbalCastCode(mob,target,auto);
 			if((mob==target)&&(CMath.bset(affectType,CMMsg.MASK_MALICIOUS)))
 				affectType=CMath.unsetb(affectType,CMMsg.MASK_MALICIOUS);

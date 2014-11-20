@@ -172,10 +172,6 @@ public class Chant_PlantTrap extends Chant implements Trap
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("This area seems to writh with malicious plants."):L("^S<S-NAME> chant(s), stirring the plant life into maliciousness.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

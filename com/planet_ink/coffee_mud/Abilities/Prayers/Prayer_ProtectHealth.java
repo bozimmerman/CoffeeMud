@@ -116,10 +116,6 @@ public class Prayer_ProtectHealth extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) a healthy mind and body."):L("^S<S-NAME> @x1 for a healthy mind and body.^?",prayWord(mob)));
 			if(R.okMessage(mob,msg))
 			{

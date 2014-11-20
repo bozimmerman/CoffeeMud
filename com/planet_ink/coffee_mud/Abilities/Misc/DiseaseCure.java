@@ -122,10 +122,6 @@ public class DiseaseCure extends StdAbility
 
 		if((success)&&(offensiveAffects.size()>0))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,null);
 			if(mob.location().okMessage(mob,msg))
 			{

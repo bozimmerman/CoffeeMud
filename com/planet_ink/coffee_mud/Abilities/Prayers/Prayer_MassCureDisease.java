@@ -96,10 +96,6 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?L("A healing glow surrounds this place."):L("^S<S-NAME> @x1 to cure disease here.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

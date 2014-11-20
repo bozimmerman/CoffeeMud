@@ -61,10 +61,6 @@ public class Prayer_SenseFaithful extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> @x1 for knowledge of the faithful^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

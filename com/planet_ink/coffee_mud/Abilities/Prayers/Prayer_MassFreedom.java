@@ -127,10 +127,6 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 
 					if(offensiveAffects.size()>0)
 					{
-						// it worked, so build a copy of this ability,
-						// and add it to the affects list of the
-						// affected MOB.  Then tell everyone else
-						// what happened.
 						for(int a=offensiveAffects.size()-1;a>=0;a--)
 							offensiveAffects.get(a).unInvoke();
 						if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))

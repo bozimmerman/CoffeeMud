@@ -82,10 +82,6 @@ public class Prayer_Anger extends Prayer
 
 		if((success)&&(!someoneIsFighting)&&(mob.location().numInhabitants()>3))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A feeling of anger descends"):L("^S<S-NAME> rage(s) for anger.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

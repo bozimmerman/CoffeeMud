@@ -57,10 +57,6 @@ public class Prayer_Enervate extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|verbalCastCode(mob,target,auto),L(auto?"A light fatigue overcomes <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for extreme fatigue to overcome <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

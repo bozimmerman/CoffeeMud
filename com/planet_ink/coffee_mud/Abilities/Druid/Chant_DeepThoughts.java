@@ -158,10 +158,6 @@ public class Chant_DeepThoughts extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),L("^S<S-NAME> grow(s) very still and begin(s) to think deep thoughts...^?"));
 			if(mob.location().okMessage(mob,msg))

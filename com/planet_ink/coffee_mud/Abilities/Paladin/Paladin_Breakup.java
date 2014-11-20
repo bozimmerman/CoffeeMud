@@ -77,10 +77,6 @@ public class Paladin_Breakup extends StdAbility
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,auto?L("<T-NAME> exude(s) a peaceful aura."):L("<S-NAME> break(s) up the fight between <T-NAME> and @x1.",target.getVictim().name()));
 			if(mob.location().okMessage(mob,msg))
 			{

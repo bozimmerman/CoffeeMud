@@ -85,10 +85,6 @@ public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean au
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A bright yellow glow surrounds <T-NAME>."):L("^S<S-NAME> @x1, delivering a strong touch of infusion to <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

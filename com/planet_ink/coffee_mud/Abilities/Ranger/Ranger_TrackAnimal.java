@@ -206,10 +206,6 @@ public class Ranger_TrackAnimal extends StdAbility
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{
 			theTrail.add(mob.location());
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> begin(s) to track <T-NAMESELF>."),null,L("<S-NAME> begin(s) to track <T-NAMESELF>."));
 			if((mob.location().okMessage(mob,msg))&&(target.okMessage(target,msg)))
 			{

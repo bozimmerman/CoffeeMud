@@ -106,10 +106,6 @@ public class Dragonbreath extends StdAbility
 			colorc=("rlcag").substring(x,x+1).charAt(0);
 		}
 
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -174,10 +170,6 @@ public class Dragonbreath extends StdAbility
 				{
 					final MOB target=(MOB)element;
 
-					// it worked, so build a copy of this ability,
-					// and add it to the affects list of the
-					// affected MOB.  Then tell everyone else
-					// what happened.
 					final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|strikeType|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if(R.okMessage(mob,msg))
 					{

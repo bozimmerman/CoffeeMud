@@ -110,10 +110,6 @@ public class Prayer_MassBlindness extends Prayer
 				final MOB target=(MOB)element;
 				if(auto||(target.charStats().getBodyPart(Race.BODY_EYE)>0))
 				{
-					// it worked, so build a copy of this ability,
-					// and add it to the affects list of the
-					// affected MOB.  Then tell everyone else
-					// what happened.
 					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> @x1 an unholy blindness upon <T-NAMESELF>.^?",prayForWord(mob)));
 					if((target!=mob)&&(mob.location().okMessage(mob,msg)))
 					{

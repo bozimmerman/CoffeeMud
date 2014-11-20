@@ -78,10 +78,6 @@ public class Paladin_HealingHands extends StdAbility
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,auto?L("A pair of celestial hands surround <T-NAME>"):L("^S<S-NAME> lay(s) <S-HIS-HER> healing hands onto <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

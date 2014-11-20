@@ -135,10 +135,6 @@ public class CombatSleep extends StdAbility implements HealthCondition
 		if(levelDiff>2)
 			levelDiff=2;
 
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -147,10 +143,6 @@ public class CombatSleep extends StdAbility implements HealthCondition
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> make(s) <T-NAMESELF> go unconscious!^?"));
 			if(mob.location().okMessage(mob,msg))

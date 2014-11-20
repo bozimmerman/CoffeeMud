@@ -95,10 +95,6 @@ public class Prayer_DreamFeast extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 for <T-NAMESELF> to have dreams of feasts!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

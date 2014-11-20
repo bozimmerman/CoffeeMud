@@ -97,10 +97,6 @@ public class Prayer_Fortress extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> @x1 that <T-NAME> be protected in an unholy fortress.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

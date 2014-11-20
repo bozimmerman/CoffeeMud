@@ -221,10 +221,6 @@ public class Prayer_UnholyArmament extends Prayer
 
 		if((success)&&(I!=null))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> @x1 to be provided armament!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

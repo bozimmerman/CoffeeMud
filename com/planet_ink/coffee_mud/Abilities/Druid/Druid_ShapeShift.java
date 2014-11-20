@@ -413,10 +413,6 @@ public class Druid_ShapeShift extends StdAbility
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
 			if(mob.location().okMessage(mob,msg))
 			{

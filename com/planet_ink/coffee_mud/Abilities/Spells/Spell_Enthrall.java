@@ -218,10 +218,6 @@ public class Spell_Enthrall extends Spell
 		}
 
 
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -229,10 +225,6 @@ public class Spell_Enthrall extends Spell
 		boolean success=proficiencyCheck(mob,-10-((target.charStats().getStat(CharStats.STAT_INTELLIGENCE))+(levelDiff*5)),auto);
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final String str=auto?"":L("^S<S-NAME> smile(s) powerfully at <T-NAMESELF>.^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,str);
 			if(mob.location().okMessage(mob,msg))

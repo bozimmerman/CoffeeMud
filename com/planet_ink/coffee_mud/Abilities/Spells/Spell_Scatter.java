@@ -134,10 +134,6 @@ public class Spell_Scatter extends Spell
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			String str=null;
 			if(mobTarget==null)
 				str=auto?L("<S-NAME> <S-IS-ARE> enveloped in a scattering field!"):L("^S<S-NAME> utter(s) a scattering spell!^?");

@@ -97,10 +97,6 @@ public class Spell_Blindness extends Spell
 			return false;
 		}
 
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -108,10 +104,6 @@ public class Spell_Blindness extends Spell
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^SYou invoke a flashing light into <T-NAME>s eyes.^?"),verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a flashing light into your eyes.^?"),CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":L("^S<S-NAME> invokes a flashing light into <T-NAME>s eyes.^?"));
 			if(mob.location().okMessage(mob,msg))

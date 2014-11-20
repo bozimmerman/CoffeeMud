@@ -54,10 +54,6 @@ public class Spell_Youth extends Spell
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		// it worked, so build a copy of this ability,
-		// and add it to the affects list of the
-		// affected MOB.  Then tell everyone else
-		// what happened.
 		final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> arms around <T-NAMESELF>, drawing forth <T-HIS-HER> youthful self.^?"));
 		if(success)
 		{

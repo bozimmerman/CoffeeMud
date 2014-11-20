@@ -226,10 +226,6 @@ public class Prayer_Rot extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
 									auto?"":L("^S<S-NAME> rot <T-NAMESELF>@x1.^?",inTheNameOf(mob)),
 									auto?"":L("^S<S-NAME> rots <T-NAMESELF>@x1.^?",inTheNameOf(mob)),

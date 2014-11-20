@@ -94,10 +94,6 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 
 		if((success)&&(offensiveAffects.size()>0))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> feel(s) purified of <T-HIS-HER> poisons."):L("^S<S-NAME> @x1 that <T-NAME> be purified of <T-HIS-HER> poisons.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

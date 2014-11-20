@@ -353,10 +353,6 @@ public class Skill_Track extends StdSkill
 		{
 			theTrail.add(thisRoom);
 
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:L("<S-NAME> begin(s) to track."));
 			if(thisRoom.okMessage(mob,msg))
 			{

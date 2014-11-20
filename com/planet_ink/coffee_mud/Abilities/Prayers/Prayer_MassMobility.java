@@ -131,10 +131,6 @@ public class Prayer_MassMobility extends Prayer
 					if(target==null)
 						break;
 
-					// it worked, so build a copy of this ability,
-					// and add it to the affects list of the
-					// affected MOB.  Then tell everyone else
-					// what happened.
 					msg=CMClass.getMsg(mob,target,this,affectType,L("Mobility is invoked upon <T-NAME>."));
 					if(mob.location().okMessage(mob,msg))
 					{

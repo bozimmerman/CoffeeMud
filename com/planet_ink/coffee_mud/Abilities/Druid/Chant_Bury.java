@@ -113,10 +113,6 @@ public class Chant_Bury extends Chant
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> bur(ys) <T-HIM-HERSELF>."):L("^S<S-NAME> chant(s) to <T-NAMESELF>, returning dust to dust.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

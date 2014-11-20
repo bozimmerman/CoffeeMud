@@ -148,10 +148,6 @@ public class Chant_Stonewalking extends Chant
 			mob.tell(L("You must be near walls of stone or massive rock to use this chant."));
 			return false;
 		}
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -159,10 +155,6 @@ public class Chant_Stonewalking extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) quietly to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

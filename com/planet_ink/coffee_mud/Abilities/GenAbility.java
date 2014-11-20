@@ -337,10 +337,6 @@ public class GenAbility extends StdAbility
 
 		if(success[0])
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			int castCode=0;
 			switch(classificationCode()&Ability.ALL_ACODES)
 			{

@@ -81,10 +81,6 @@ public class Prayer_ModerateInfusion extends Prayer implements MendingSkill
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A soft yellow glow surrounds <T-NAME>."):L("^S<S-NAME> @x1, delivering a moderate touch of infusion to <T-NAMESELF>.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

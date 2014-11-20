@@ -106,10 +106,6 @@ public class Spell_PurgeInvisibility extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -117,10 +113,6 @@ public class Spell_PurgeInvisibility extends Spell
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 
 			final Room R=mob.location();
 			final CMMsg msg = CMClass.getMsg(mob, null, this, somanticCastCode(mob,null,auto),L((auto?"S":"^S<S-NAME> gesture(s) and a s")+"upressive magic falls over the area.^?"));

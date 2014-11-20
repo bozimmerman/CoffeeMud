@@ -70,10 +70,6 @@ public class WizInv extends StdCommand
 			}
 		}
 
-		// it worked, so build a copy of this ability,
-		// and add it to the affects list of the
-		// affected MOB.  Then tell everyone else
-		// what happened.
 		if(A==null)
 			A=CMClass.getAbility(str);
 		if(A!=null)

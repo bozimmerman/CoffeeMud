@@ -82,10 +82,6 @@ public class Prayer_Bury extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^S<T-NAME> bur(ys) <T-HIM-HERSELF>.^?"):L("^S<S-NAME> bur(ys) <T-NAMESELF> in the name of @x1.^?",hisHerDiety(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

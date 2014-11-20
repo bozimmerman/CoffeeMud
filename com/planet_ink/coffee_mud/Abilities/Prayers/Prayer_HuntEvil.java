@@ -171,10 +171,6 @@ public class Prayer_HuntEvil extends Prayer
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{
 			theTrail.add(mob.location());
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 for the trail to @x2.^?",prayWord(mob),word()));
 			if(mob.location().okMessage(mob,msg))
 			{

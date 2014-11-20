@@ -98,10 +98,6 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 
 		if((success)&&(remove.size()>0))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("^SA glow surrounds <T-NAME>.^?"):L("^S<S-NAME> call(s) on @x1 for <T-NAME> to be released from a death mark.^?",hisHerDiety(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

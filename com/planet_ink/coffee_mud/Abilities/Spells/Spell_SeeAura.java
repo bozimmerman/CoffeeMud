@@ -60,10 +60,6 @@ public class Spell_SeeAura extends Spell
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		// it worked, so build a copy of this ability,
-		// and add it to the affects list of the
-		// affected MOB.  Then tell everyone else
-		// what happened.
 		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^SYou draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...^?"),verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> draw(s) out your aura.^?"),verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> draws out <T-NAME>s aura.^?"));
 		if(success)
 		{

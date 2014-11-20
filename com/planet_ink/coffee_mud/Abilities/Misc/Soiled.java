@@ -198,10 +198,6 @@ public class Soiled extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		// it worked, so build a copy of this ability,
-		// and add it to the affects list of the
-		// affected MOB.  Then tell everyone else
-		// what happened.
 		Ability A=(Ability)copyOf();
 		A.startTickDown(mob,target,Ability.TICKS_ALMOST_FOREVER);
 		Environmental msgTarget=target;

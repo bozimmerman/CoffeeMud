@@ -87,10 +87,6 @@ public class Prayer_SenseGood extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) glowing blue eyes!"):L("^S<S-NAME> @x1 for divine revelation, and <S-HIS-HER> eyes start glowing blue.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

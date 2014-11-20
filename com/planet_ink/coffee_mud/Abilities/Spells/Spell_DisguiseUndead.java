@@ -133,10 +133,6 @@ public class Spell_DisguiseUndead extends Spell
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> gain(s) a disguise!":"^S<S-NAME> casts a spell for <T-NAMESELF>, causing <T-HIS-HER> appearance to change.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

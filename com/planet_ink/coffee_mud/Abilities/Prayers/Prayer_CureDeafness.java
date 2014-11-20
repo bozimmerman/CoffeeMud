@@ -109,10 +109,6 @@ public class Prayer_CureDeafness extends Prayer implements MendingSkill
 
 		if((success)&&(offensiveAffects.size()>0))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A visible glow surrounds <T-NAME>."):L("^S<S-NAME> @x1 for <T-NAMESELF> to hear <S-HIS-HER> prayer.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

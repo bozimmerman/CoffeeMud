@@ -123,10 +123,6 @@ public class Spell_IceSheet extends Spell
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -143,10 +139,6 @@ public class Spell_IceSheet extends Spell
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 
 			String msgStr=L("the ground becomes covered in ice!");
 			if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)

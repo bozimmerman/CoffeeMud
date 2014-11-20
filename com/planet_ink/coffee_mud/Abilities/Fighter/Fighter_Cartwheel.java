@@ -67,10 +67,6 @@ public class Fighter_Cartwheel extends FighterSkill
 			return false;
 		}
 
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -78,10 +74,6 @@ public class Fighter_Cartwheel extends FighterSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_RETREAT,L("<S-NAME> cartwheel(s) away from <T-NAMESELF>!"));
 			if(mob.location().okMessage(mob,msg))
 			{

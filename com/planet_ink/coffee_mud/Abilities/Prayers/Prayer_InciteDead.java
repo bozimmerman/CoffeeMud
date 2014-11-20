@@ -93,10 +93,6 @@ public class Prayer_InciteDead extends Prayer
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
-					// it worked, so build a copy of this ability,
-					// and add it to the affects list of the
-					// affected MOB.  Then tell everyone else
-					// what happened.
 					final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,null);
 					if((target!=mob)&&(R.okMessage(mob,msg2)))
 					{

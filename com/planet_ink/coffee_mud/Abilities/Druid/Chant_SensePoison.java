@@ -84,10 +84,6 @@ public class Chant_SensePoison extends Chant
 		if((success)&&((offensiveAffects.size()>0)
 					   ||((target instanceof Drink)&&(((Drink)target).liquidType()==RawMaterial.RESOURCE_POISON))))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) over <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

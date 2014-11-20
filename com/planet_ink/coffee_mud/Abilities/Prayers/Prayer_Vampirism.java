@@ -223,10 +223,6 @@ public class Prayer_Vampirism extends Prayer
 		final boolean success=proficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)),auto);
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":L("^S<S-NAME> invoke(s) a vampiric hunger upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

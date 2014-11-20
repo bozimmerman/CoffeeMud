@@ -84,10 +84,6 @@ public class Skill_FireBreathing extends BardSkill
 			mob.tell(L("You need to be holding some fire source to breathe fire."));
 			return false;
 		}
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -95,10 +91,6 @@ public class Skill_FireBreathing extends BardSkill
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),(auto?L("Suddenly flames come up and attack <T-HIM-HER>!^?"):((fireSource!=null)?L("^S<S-NAME> hold(s) @x1 up and puff(s) fire at <T-NAMESELF>!^?",fireSource.name()):L("<S-NAME> breath(es) fire at <T-NAMESELF>!^?")))+CMLib.protocol().msp("fireball.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))

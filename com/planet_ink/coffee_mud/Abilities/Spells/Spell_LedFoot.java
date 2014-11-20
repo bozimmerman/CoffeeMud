@@ -105,10 +105,6 @@ public class Spell_LedFoot extends Spell
 			return false;
 		}
 
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -116,10 +112,6 @@ public class Spell_LedFoot extends Spell
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^SYou invoke a heavy spell into <T-NAME>s feet.^?"),verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a heavy spell into your feet.^?"),CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":L("^S<S-NAME> invokes a heavy spell into <T-NAME>s feet.^?"));
 			if(mob.location().okMessage(mob,msg))

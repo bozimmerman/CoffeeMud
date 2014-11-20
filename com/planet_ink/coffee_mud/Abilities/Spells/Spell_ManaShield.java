@@ -112,10 +112,6 @@ public class Spell_ManaShield extends Spell
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s)@x1 protective shield.^?",adjective()));
 			if(mob.location().okMessage(mob,msg))
 			{

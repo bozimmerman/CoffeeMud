@@ -108,10 +108,6 @@ public class Prayer_RestoreSmell extends Prayer implements MendingSkill
 
 		if((success)&&(offensiveAffects.size()>0))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("A visible glow surrounds the nose of <T-NAME>."):L("^S<S-NAME> @x1 for <T-NAMESELF> to be able to smell the roses.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{

@@ -172,10 +172,6 @@ public class Skill_Chirgury extends StdSkill
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> carefully perform(s) chirurgy upon <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

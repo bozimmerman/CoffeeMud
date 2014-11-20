@@ -86,10 +86,6 @@ public class Chant_SpeedBirth extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(A!=null)&&(remain>0))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

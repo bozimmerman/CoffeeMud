@@ -125,10 +125,6 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 
 			if(success)
 			{
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
 				final CMMsg msg=CMClass.getMsg(mob,target,this,affectType,str);
 				if(mob.location().okMessage(mob,msg))
 				{

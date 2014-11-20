@@ -198,10 +198,6 @@ public class Ranger_Track extends StdAbility
 		{
 			theTrail.add(mob.location());
 
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:L("<S-NAME> begin(s) to track <T-NAMESELF>."),null,mob.isMonster()?null:L("<S-NAME> begin(s) to track <T-NAMESELF>."));
 			if((mob.location().okMessage(mob,msg))&&(target.okMessage(target,msg)))
 			{

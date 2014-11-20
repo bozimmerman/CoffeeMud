@@ -156,10 +156,6 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,body,this,verbalCastCode(mob,body,auto),auto?L("<T-NAME> is resurrected!"):L("^S<S-NAME> resurrect(s) <T-NAMESELF>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

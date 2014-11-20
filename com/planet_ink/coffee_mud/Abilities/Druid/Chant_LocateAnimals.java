@@ -174,10 +174,6 @@ public class Chant_LocateAnimals extends Chant
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{
 			theTrail.add(mob.location());
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> chant(s) for the animals.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

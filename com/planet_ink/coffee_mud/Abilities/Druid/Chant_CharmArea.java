@@ -145,10 +145,6 @@ public class Chant_CharmArea extends Chant
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("This area seems to twinkle with beauty."):L("^S<S-NAME> chant(s), bringing forth the natural beauty of this place.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

@@ -85,10 +85,6 @@ public class Skill_TurnUndead extends StdSkill
 			return false;
 		}
 
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -96,10 +92,6 @@ public class Skill_TurnUndead extends StdSkill
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> turn(s) away."):L("^S<S-NAME> turn(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

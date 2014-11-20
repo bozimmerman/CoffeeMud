@@ -91,10 +91,6 @@ public class Prayer_GreatCurse extends Prayer
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("<T-NAME> <T-IS-ARE> horribly cursed!"):L("^S<S-NAME> curse(s) <T-NAMESELF> horribly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

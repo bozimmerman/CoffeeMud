@@ -71,10 +71,6 @@ public class Spell_Exhaustion extends Spell
 
 		if(success)
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and shout(s)!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

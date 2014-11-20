@@ -77,10 +77,6 @@ public class Prayer_Calm extends Prayer
 
 		if((success)&&(someoneIsFighting))
 		{
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A feeling of calmness descends."):L("^S<S-NAME> @x1 for calmness.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
