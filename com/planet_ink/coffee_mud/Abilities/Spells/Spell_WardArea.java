@@ -114,7 +114,7 @@ public class Spell_WardArea extends Spell implements Trap
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) a magical ward trap."));
 		else
 		{
-			final MOB newCaster=CMClass.getMOB("StdMOB");
+			final MOB newCaster=CMClass.getMOB("StdFactoryMOB");
 			newCaster.setName(L("the thin air"));
 			newCaster.setDescription(" ");
 			newCaster.setDisplayText(" ");

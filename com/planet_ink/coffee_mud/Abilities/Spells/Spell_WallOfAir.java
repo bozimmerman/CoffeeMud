@@ -70,7 +70,7 @@ public class Spell_WallOfAir extends Spell
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 		{
 			mob.location().show(mob,invoker,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile enters the wall of air."));
-			final MOB M=CMClass.getMOB("StdMOB");
+			final MOB M=CMClass.getMOB("StdFactoryMOB");
 			M.setLocation(mob.location());
 			M.setName(L("The wall of air"));
 			M.setVictim(mob);
