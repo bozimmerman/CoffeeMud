@@ -3008,6 +3008,7 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_REMOVE:
 				possWieldedItem = null;
 				possHeldItem = null;
+				tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
 				break;
 			default:
 				// you pretty much always know what you are doing, if you can do
