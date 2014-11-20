@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2014 Bo Zimmerman
+   Copyright 2014-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,17 +33,17 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Thief_BackStab extends ThiefSkill
+public class Thief_CutThroat extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_BackStab"; }
-	private final static String localizedName = CMLib.lang().L("Back Stab");
+	@Override public String ID() { return "Thief_CutThroat"; }
+	private final static String localizedName = CMLib.lang().L("Cut Throat");
 	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Backstabbing)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Throat Cutting)");
 	@Override public String displayText() { return localizedStaticDisplay; }
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"BACKSTAB","BS"});
+	private static final String[] triggerStrings =I(new String[] {"CUTTHROAT","CT"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
@@ -60,7 +60,7 @@ public class Thief_BackStab extends ThiefSkill
 		affectableStats.setDamage(affectableStats.damage()*factor);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100+(10*super.getXLEVELLevel(invoker())));
 	}
-
+	
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -69,11 +69,15 @@ public class Thief_BackStab extends ThiefSkill
 		&&(msg.target() instanceof MOB)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()==msg.source().fetchWieldedItem())
-		&&(!(""+msg.target()).equals(lastMOB)))
+		&&(((MOB)msg.target()).fetchEffect("Bleeding")==null))
 		{
-			if((msg.trailerMsgs()==null)||(msg.trailerMsgs().size()==0))
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_ACTION, L("<S-NAME> stab(s) <T-NAME> in the back with <O-NAME>!")));
-			lastMOB=""+msg.target();
+			final Ability A2=CMClass.getAbility("Bleeding");
+			if(A2!=null)
+			{
+				A2.invoke(msg.source(),(MOB)msg.target(),true,0);
+				if((msg.trailerMsgs()==null)||(msg.trailerMsgs().size()==0))
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_ACTION, L("<S-NAME> cut(s) <T-YOUPOSS> throat with <O-NAME>! Blood start(s) running...")));
+			}
 		}
 	}
 
@@ -90,6 +94,9 @@ public class Thief_BackStab extends ThiefSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if(lastMOB.equals(target+""))
 				return Ability.QUALITY_INDIFFERENT;
+			final Item I=mob.fetchWieldedItem();
+			if((I==null)||(!(I instanceof Weapon))||(((Weapon)I).weaponClassification()!=Weapon.CLASS_DAGGER))
+				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
 	}
@@ -99,7 +106,7 @@ public class Thief_BackStab extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell(L("Backstab whom?"));
+			mob.tell(L("Cut whose throat?"));
 			return false;
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -113,12 +120,12 @@ public class Thief_BackStab extends ThiefSkill
 		}
 		if(lastMOB.equals(target+""))
 		{
-			mob.tell(target,null,null,L("@x1 is watching <S-HIS-HER> back too closely to do that again.",target.name(mob)));
+			mob.tell(target,null,null,L("@x1 is watching <S-HIS-HER> neck too closely to do that again.",target.name(mob)));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(L("You are too busy to focus on backstabbing right now."));
+			mob.tell(L("You are too busy to focus on cutting someone`s throat right now."));
 			return false;
 		}
 
@@ -130,17 +137,12 @@ public class Thief_BackStab extends ThiefSkill
 			weapon=(Weapon)I;
 		if(weapon==null)
 		{
-			mob.tell(mob,target,null,L("Backstab <T-HIM-HER> with what? You need to wield a weapon!"));
+			mob.tell(mob,target,null,L("Cut <T-HIS-HER> throat with what? You need to wield a dagger!"));
 			return false;
 		}
-		if((weapon.weaponClassification()==Weapon.CLASS_BLUNT)
-		||(weapon.weaponClassification()==Weapon.CLASS_HAMMER)
-		||(weapon.weaponClassification()==Weapon.CLASS_FLAILED)
-		||(weapon.weaponClassification()==Weapon.CLASS_RANGED)
-		||(weapon.weaponClassification()==Weapon.CLASS_THROWN)
-		||(weapon.weaponClassification()==Weapon.CLASS_STAFF))
+		if(weapon.weaponClassification()!=Weapon.CLASS_DAGGER)
 		{
-			mob.tell(mob,target,weapon,L("You cannot stab anyone with <O-NAME>."));
+			mob.tell(mob,target,weapon,L("You cannot cut a throat with <O-NAME>.  Try a dagger-type weapon."));
 			return false;
 		}
 
@@ -149,7 +151,7 @@ public class Thief_BackStab extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),auto?"":L("<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),auto?"":L("<S-NAME> attempt(s) to cut <T-YOUPOSS> throat!"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -157,6 +159,7 @@ public class Thief_BackStab extends ThiefSkill
 				mob.location().show(target,mob,CMMsg.MSG_OK_VISUAL,auto?"":L("<S-NAME> spot(s) <T-NAME>!"));
 			else
 			{
+				setInvoker(mob);
 				mob.addEffect(this);
 				mob.recoverPhyStats();
 			}

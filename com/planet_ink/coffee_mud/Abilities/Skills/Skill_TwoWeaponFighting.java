@@ -56,7 +56,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		return null;
 	}
 
-	private Weapon getSecondWeapon(MOB mob)
+	protected Weapon getSecondWeapon(MOB mob)
 	{
 		final Item I=mob.fetchHeldItem();
 		if((I instanceof Weapon)&&(!I.amWearingAt(Wearable.WORN_WIELD)))
