@@ -991,6 +991,57 @@ public class Spell_Wish extends Spell
 						return true;
 					}
 				}
+				code=-1;
+				x=myWish.indexOf(" FORGOT "); if((x>=0)&&(x+7>code)) code=x+5;
+				x=myWish.indexOf(" LOST "); if((x>=0)&&(x+5>code)) code=x+5;
+				x=myWish.indexOf(" LOSE "); if((x>=0)&&(x+5>code)) code=x+6;
+				x=myWish.indexOf(" REVOKE "); if((x>=0)&&(x+7>code)) code=x+6;
+				x=myWish.indexOf(" DIDN`T KNOW "); if((x>=0)&&(x+12>code)) code=x+5;
+				x=myWish.indexOf(" DID NOT KNOW "); if((x>=0)&&(x+13>code)) code=x+10;
+				if(code>=0)
+				{
+					x=myWish.indexOf(" ABILITY TO "); if((x>=0)&&(x+12>code)) code=x+7;
+					x=myWish.indexOf(" KNOWLEDGE OF "); if((x>=0)&&(x+13>code)) code=x+8;
+					x=myWish.indexOf(" CAST "); if((x>=0)&&(x+5>code)) code=x+5;
+					x=myWish.indexOf(" SING "); if((x>=0)&&(x+5>code)) code=x+5;
+					x=myWish.indexOf(" PRAY FOR "); if((x>=0)&&(x+9>code)) code=x+9;
+				}
+				if((code>=0)&&(code<myWish.length()))
+				{
+					final MOB tm=(MOB)target;
+					Ability A=CMClass.findAbility(myWish.substring(code).trim());
+					if((A!=null)
+					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0))
+					{
+						if(tm.fetchAbility(A.ID())!=null)
+						{
+							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 no longer knows @x2!",target.name(),A.name()));
+							tm.delAbility(A);
+						}
+						else
+						if(tm.fetchEffect(A.ID())!=null)
+						{
+							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is no longer under @x2!",target.name(),A.name()));
+						}
+						else
+						{
+							A=null;
+						}
+						if(A!=null)
+						{
+							baseLoss=getXPCOSTAdjustment(mob,baseLoss);
+							CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
+							mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
+							A=tm.fetchEffect(A.ID());
+							if(A!=null)
+							{
+								A.unInvoke();
+								tm.delEffect(A);
+							}
+							return true;
+						}
+					}
+				}
 			}
 
 			// attributes will be hairy
