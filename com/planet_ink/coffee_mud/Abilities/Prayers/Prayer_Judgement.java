@@ -53,10 +53,10 @@ public class Prayer_Judgement extends Prayer
 		return Ability.COST_ALL;
 	}
 	
-	private String socialName="PRAY <T-NAME>";
-	private int numToDo=10;
-	private Set<MOB> doneMobs = new HashSet<MOB>();
-	private Set<Room> botheredRooms = new HashSet<Room>();
+	private final String socialName="PRAY <T-NAME>";
+	private final int numToDo=10;
+	private final Set<MOB> doneMobs = new HashSet<MOB>();
+	private final Set<Room> botheredRooms = new HashSet<Room>();
 	
 	private static String[] FRIENDLY_SOCIALS = 
 		{"ANGELIC","APOLOGIZE","AWE","BEAM","BEARHUG","BKISS","BLUSH","BOW","BSCRATCH","CHEER","CLAP",
@@ -128,6 +128,7 @@ public class Prayer_Judgement extends Prayer
 				{
 					if(!botheredRooms.contains(R))
 						botheredRooms.add(R);
+					CMLib.commands().postStand(mob,true);
 					if(!CMLib.tracking().beMobile(mob,true,true,false,true,null,botheredRooms))
 						CMLib.tracking().beMobile(mob,true,true,false,false,null,null);
 				}
