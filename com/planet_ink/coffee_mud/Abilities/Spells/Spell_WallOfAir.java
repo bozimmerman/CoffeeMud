@@ -48,8 +48,15 @@ public class Spell_WallOfAir extends Spell
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-
+	protected boolean shootback=true;
 	protected Item theWall=null;
+	
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		shootback = CMParms.getParmBool(newMiscText, "SHOOTBACK", true);
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -69,18 +76,25 @@ public class Spell_WallOfAir extends Spell
 		&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 		{
-			mob.location().show(mob,invoker,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile enters the wall of air."));
-			final MOB M=CMClass.getMOB("StdFactoryMOB");
-			M.setLocation(mob.location());
-			M.setName(L("The wall of air"));
-			M.setVictim(mob);
-			M.setRangeToTarget(mob.rangeToTarget());
-			CMLib.combat().postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
-			M.setLocation(null);
-			M.setVictim(null);
-			if(mob.isMonster())
-				CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
-			M.destroy();
+			if(shootback)
+			{
+				mob.location().show(mob,invoker,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile enters the wall of air."));
+				final MOB M=CMClass.getMOB("StdFactoryMOB");
+				M.setLocation(mob.location());
+				M.setName(L("The wall of air"));
+				M.setVictim(mob);
+				M.setRangeToTarget(mob.rangeToTarget());
+				CMLib.combat().postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
+				M.setLocation(null);
+				M.setVictim(null);
+				if(mob.isMonster() && (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STAT_WISDOM)))
+					CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
+				M.destroy();
+			}
+			else
+			{
+				mob.location().show(mob,invoker,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile is lost in a wall of air."));
+			}
 			return false;
 		}
 

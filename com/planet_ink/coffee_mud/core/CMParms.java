@@ -1536,7 +1536,7 @@ public class CMParms
 					s=text.substring(x+1).trim();
 					if(Character.toUpperCase(s.charAt(0))=='T') 
 						return true;
-					if(Character.toUpperCase(s.charAt(0))=='T') 
+					if(Character.toUpperCase(s.charAt(0))=='F') 
 						return false;
 				}
 			}
