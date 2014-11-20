@@ -44,16 +44,4 @@ public class Specialization_Dagger extends Specialization_Weapon
 		weaponClass=Weapon.CLASS_DAGGER;
 		secondWeaponClass=-1;
 	}
-	
-	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		if((affected instanceof MOB)&&(activated))
-		{
-			affectableStats.setDamage(affectableStats.damage()
-					+(int)Math.round((5.0+(getXLEVELLevel((MOB)affected)/3.0))*(CMath.div(proficiency(),100.0))));
-		}
-	}
-
 }
