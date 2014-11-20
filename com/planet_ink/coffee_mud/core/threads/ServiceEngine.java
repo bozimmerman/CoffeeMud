@@ -158,7 +158,17 @@ public class ServiceEngine implements ThreadEngine
 				final long myNextTime = System.currentTimeMillis() + ellapsedMs;
 				final char currentThreadId = Thread.currentThread().getThreadGroup().getName().charAt(0);
 				schedTicks.add(new CMRunnable(){
-					@Override public void run() { R.run(); }
+					@Override public void run() 
+					{
+						try
+						{
+							R.run();
+						}
+						catch(Throwable t)
+						{
+							Log.errOut(t);
+						}
+					}
 					@Override public long activeTimeMillis() { return System.currentTimeMillis() - getStartTime(); }
 					@Override public long getStartTime() { return myNextTime; }
 					@Override public int getGroupID() { return currentThreadId; }
