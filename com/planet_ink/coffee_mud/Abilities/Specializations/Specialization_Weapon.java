@@ -119,8 +119,7 @@ public class Specialization_Weapon extends StdAbility
 			{
 				activated=true;
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
-						+(int)Math.round(15.0*(CMath.div(proficiency(),100.0)))
-						+(10*(getXLEVELLevel((MOB)affected))));
+						+(int)Math.round((15.0+(3.0*getXLEVELLevel((MOB)affected)))*(CMath.div(proficiency(),100.0))));
 
 			}
 		}
