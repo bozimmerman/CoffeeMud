@@ -108,6 +108,8 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isOutsider(MOB mob);
 	public boolean isAPlant(Item I);
 	public boolean isAPlant(MOB M);
+	public boolean isInsect(MOB mob);
+	public boolean isVermin(MOB mob);
 	public boolean isUnattackable(Physical P);
 	public boolean canBeHeardMovingBy(Physical heard , MOB hearer);
 	public boolean canBeHeardSpeakingBy(Physical heard , MOB hearer);

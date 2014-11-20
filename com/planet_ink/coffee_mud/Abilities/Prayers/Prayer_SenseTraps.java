@@ -65,7 +65,7 @@ public class Prayer_SenseTraps extends Prayer
 	{
 		if(P!=null)
 		if(CMLib.utensils().fetchMyTrap(P)!=null)
-			return P.name()+" is trapped.\n\r";
+			return L("@x1 is trapped.\n\r",P.name());
 		return "";
 	}
 
@@ -80,10 +80,11 @@ public class Prayer_SenseTraps extends Prayer
 			final Room R=(Room)P;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				if(R.getExitInDir(d)==P)
+				final Exit E=R.getExitInDir(d);
+				if((E != null)&&(R.getRoomInDir(d) != null))
 				{
 					final Exit E2=R.getReverseExit(d);
-					msg.append(trapHere(mob,P));
+					msg.append(trapHere(mob,E));
 					msg.append(trapHere(mob,E2));
 					break;
 				}

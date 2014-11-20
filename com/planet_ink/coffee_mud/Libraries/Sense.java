@@ -315,6 +315,19 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 						|| mob.charStats().getMyRace().racialCategory().equals("Elemental"));
 	}
 	
+	@Override
+	public boolean isInsect(MOB mob)
+	{
+		final String[] insectRaceCats = {"Insect","Arachnid"};
+		return (mob != null) && (CMParms.contains(insectRaceCats, mob.charStats().getMyRace().racialCategory()));
+	}
+	
+	@Override
+	public boolean isVermin(MOB mob)
+	{
+		final String[] verminRaceCats = {"Insect","Rodent","Worm","Arachnid"};
+		return (mob != null) && (CMParms.contains(verminRaceCats, mob.charStats().getMyRace().racialCategory()));
+	}
 	
 	@Override
 	public boolean isAPlant(Item I)

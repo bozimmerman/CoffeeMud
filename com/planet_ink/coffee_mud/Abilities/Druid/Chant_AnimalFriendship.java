@@ -84,8 +84,6 @@ public class Chant_AnimalFriendship extends Chant
 			mob.tell(L("You seem less animal friendly."));
 	}
 
-
-
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

@@ -64,7 +64,7 @@ public class Spell_DetectTraps extends Spell
 	{
 		if(P!=null)
 		if(CMLib.utensils().fetchMyTrap(P)!=null)
-			return P.name()+" is trapped.\n\r";
+			return L("@x1 is trapped.\n\r",P.name());
 		return "";
 	}
 

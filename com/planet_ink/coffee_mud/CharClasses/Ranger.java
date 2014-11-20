@@ -83,11 +83,13 @@ public class Ranger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Ranger_TrackAnimal",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_DelayPoison",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_TwoWeaponFighting",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Fighter_ArmorTweaking",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_RepelVermin",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_ReadMagic",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_PredictWeather",false);
@@ -121,6 +123,7 @@ public class Ranger extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_ControlFire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_PointBlank",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Ranger_SetSnare",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Ranger_Enemy2",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_AnimalFriendship",false);
@@ -152,6 +155,7 @@ public class Ranger extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_WaterWalking",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Ranger_SenseTraps",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_GasWard",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Ranger_Camouflage",false,CMParms.parseSemicolons("Ranger_Hide",true));
