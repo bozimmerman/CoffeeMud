@@ -2523,8 +2523,7 @@ public class StdMOB implements MOB
 			if (((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK) && (rangeToTarget() > maxRange(msg.tool())))
 			|| ((msg.sourceMinor() == CMMsg.TYP_THROW) && (rangeToTarget() > 2) && (maxRange(msg.tool()) <= 0)))
 			{
-				final String newstr = "<S-NAME> advance(s) at ";
-				msg.modify(this, trgM, null, CMMsg.MSG_ADVANCE, newstr + trgM.name(this), CMMsg.MSG_ADVANCE, newstr + "you", CMMsg.MSG_ADVANCE, newstr + trgM.name());
+				msg.modify(this, trgM, null, CMMsg.MSG_ADVANCE, L("<S-NAME> advance(s) at <T-NAME>."));
 				final boolean ok = location().okMessage(this, msg);
 				if (ok)
 					setRangeToTarget(rangeToTarget() - 1);
