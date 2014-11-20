@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -40,6 +38,8 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override public String ID(){    return "StdTitle";}
 	@Override public String displayText() {return "an official looking document sits here";}
 	@Override public int baseGoldValue() {return getPrice();}
+	protected static final String CANCEL_WORD="CANCEL";
+	
 	@Override
 	public int value()
 	{
@@ -387,7 +387,7 @@ public class StdTitle extends StdItem implements LandTitle
 			}
 			else
 				msg.source().tell(L("You can't see that!"));
-			msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),"CANCEL",msg.othersCode(),msg.othersMessage());
+			msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),CANCEL_WORD,msg.othersCode(),msg.othersMessage());
 		}
 
 		super.executeMsg(myHost,msg);

@@ -113,7 +113,7 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 			final Set<MOB> friendlySet=new HashSet<MOB>();
 			if(invoker()!=null)
 				invoker().getGroupMembers(friendlySet);
-			room.show(mob, affected, CMMsg.MSG_OK_ACTION, "<T-NAME> explodes, spraying clumps of stomach acid everywhere!");
+			room.show(mob, affected, CMMsg.MSG_OK_ACTION, L("<T-NAME> explodes, spraying clumps of stomach acid everywhere!"));
 			for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 			{
 				MOB M=m.nextElement();
@@ -161,7 +161,7 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 						body=(DeadBody)I;
 				}
 				if(body==null)
-					mob.tell("The death did not appear to create a body!");
+					mob.tell(L("The death did not appear to create a body!"));
 				else
 					beneficialAffect(mob, body, asLevel, 0);
 			}

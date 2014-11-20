@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -52,6 +51,7 @@ public class StdLanguage extends StdAbility implements Language
 	@Override public boolean canBeUninvoked(){return false;}
 	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getLangTrainCostFormula(ID()); }
 	@Override public int classificationCode(){return Ability.ACODE_LANGUAGE;}
+	protected static final String CANCEL_WORD="CANCEL";
 
 	private static Hashtable emptyHash=new Hashtable();
 	private static Vector emptyVector=new Vector();
@@ -538,7 +538,7 @@ public class StdLanguage extends StdAbility implements Language
 		&&(!canBeUninvoked())
 		&&(msg.target()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_READ)
-		&&((msg.targetMessage()==null)||(!msg.targetMessage().equals("CANCEL")))
+		&&((msg.targetMessage()==null)||(!msg.targetMessage().equals(CANCEL_WORD)))
 		&&(!(affected instanceof LandTitle))
 		&&(CMLib.flags().canBeSeenBy(this,msg.source()))
 		&&(((Item)affected).isReadable())
@@ -553,7 +553,7 @@ public class StdLanguage extends StdAbility implements Language
 					   msg.sourceCode(),
 					   msg.sourceMessage(),
 					   msg.targetCode(),
-					   "CANCEL",
+					   CANCEL_WORD,
 					   msg.othersCode(),
 					   msg.othersMessage());
 			final Language L=(Language)msg.source().fetchEffect(ID());

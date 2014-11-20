@@ -61,7 +61,7 @@ public class Prayer_DeathKnell extends Prayer
 			&&(CMath.div(mob.curState().getHitPoints(), mob.maxState().getHitPoints())<=0.10)
 			&&(mob.location()!=null))
 			{
-				mob.location().show(mob, null, CMMsg.MSG_OK_ACTION,"<S-NAME> succumbs to the death knell...");
+				mob.location().show(mob, null, CMMsg.MSG_OK_ACTION,L("<S-NAME> succumbs to the death knell..."));
 				CMLib.combat().postDeath(invoker(), mob, null);
 			}
 		}

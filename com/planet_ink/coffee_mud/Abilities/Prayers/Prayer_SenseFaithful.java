@@ -51,7 +51,7 @@ public class Prayer_SenseFaithful extends Prayer
 	{
 		if((mob.getWorshipCharID()==null)||(mob.getWorshipCharID().length()==0))
 		{
-			mob.tell("You don't worship a deity, so this magic means nothing.");
+			mob.tell(L("You don't worship a deity, so this magic means nothing."));
 			return false;
 		}
 		

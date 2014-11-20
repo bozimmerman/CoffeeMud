@@ -53,7 +53,7 @@ public class Prayer_DevourerCurse extends Prayer
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null)
 			return;
-		affectableStats.setName(affected.Name()+", a horrid devourer");
+		affectableStats.setName(L("@x1, a horrid devourer",affected.Name()));
 	}
 
 	@Override
