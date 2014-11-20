@@ -992,16 +992,17 @@ public class Spell_Wish extends Spell
 					}
 				}
 				code=-1;
-				x=myWish.indexOf(" FORGOT "); if((x>=0)&&(x+7>code)) code=x+5;
+				x=myWish.indexOf(" FORGOT "); if((x>=0)&&(x+7>code)) code=x+7;
 				x=myWish.indexOf(" LOST "); if((x>=0)&&(x+5>code)) code=x+5;
-				x=myWish.indexOf(" LOSE "); if((x>=0)&&(x+5>code)) code=x+6;
-				x=myWish.indexOf(" REVOKE "); if((x>=0)&&(x+7>code)) code=x+6;
-				x=myWish.indexOf(" DIDN`T KNOW "); if((x>=0)&&(x+12>code)) code=x+5;
-				x=myWish.indexOf(" DID NOT KNOW "); if((x>=0)&&(x+13>code)) code=x+10;
+				x=myWish.indexOf(" LOSE "); if((x>=0)&&(x+5>code)) code=x+5;
+				x=myWish.indexOf(" REVOKE "); if((x>=0)&&(x+7>code)) code=x+7;
+				x=myWish.indexOf(" REVOKED "); if((x>=0)&&(x+8>code)) code=x+8;
+				x=myWish.indexOf(" DIDN`T KNOW "); if((x>=0)&&(x+12>code)) code=x+12;
+				x=myWish.indexOf(" DID NOT KNOW "); if((x>=0)&&(x+13>code)) code=x+13;
 				if(code>=0)
 				{
-					x=myWish.indexOf(" ABILITY TO "); if((x>=0)&&(x+12>code)) code=x+7;
-					x=myWish.indexOf(" KNOWLEDGE OF "); if((x>=0)&&(x+13>code)) code=x+8;
+					x=myWish.indexOf(" ABILITY TO "); if((x>=0)&&(x+12>code)) code=x+12;
+					x=myWish.indexOf(" KNOWLEDGE OF "); if((x>=0)&&(x+13>code)) code=x+13;
 					x=myWish.indexOf(" CAST "); if((x>=0)&&(x+5>code)) code=x+5;
 					x=myWish.indexOf(" SING "); if((x>=0)&&(x+5>code)) code=x+5;
 					x=myWish.indexOf(" PRAY FOR "); if((x>=0)&&(x+9>code)) code=x+9;
