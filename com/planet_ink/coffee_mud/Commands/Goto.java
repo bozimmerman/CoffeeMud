@@ -61,6 +61,14 @@ public class Goto extends At
 		if(stack.size()>10)
 			stack.remove(0);
 		final Room curRoom=mob.location();
+		if("PARENT".startsWith(cmd.toString().toUpperCase()))
+		{
+			if(mob.location().getGridParent()!=null)
+				room=mob.location().getGridParent();
+			else
+				mob.tell(L("This room is not a grid child."));
+		}
+		else
 		if("PREVIOUS".startsWith(cmd.toString().toUpperCase()))
 		{
 			if(stack.size()==0)
