@@ -89,14 +89,15 @@ public class Say extends StdCommand
 	{
 		String theWord="Say";
 		boolean toFlag=false;
-		if(((String)commands.elementAt(0)).equalsIgnoreCase("ASK"))
+		final String theCommand=((String)commands.elementAt(0)).toUpperCase();
+		if(theCommand.equals("ASK"))
 			theWord="Ask";
 		else
-		if(((String)commands.elementAt(0)).equalsIgnoreCase("YELL"))
+		if(theCommand.equals("YELL"))
 			theWord="Yell";
 		else
-		if(((String)commands.elementAt(0)).equalsIgnoreCase("SAYTO")
-		||((String)commands.elementAt(0)).equalsIgnoreCase("SAYT"))
+		if(theCommand.equals("SAYTO")
+		||theCommand.equals("SAYT"))
 		{
 			theWord="Say";
 			toFlag=true;
@@ -110,7 +111,7 @@ public class Say extends StdCommand
 		}
 
 		Vector<Room> yellRooms=new Vector<Room>();
-		if(theWord.toUpperCase().startsWith("YELL"))
+		if(theCommand.equals("YELL"))
 		{
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
@@ -162,14 +163,14 @@ public class Say extends StdCommand
 				}
 				else
 				{
-					if(theWord.toUpperCase().startsWith("YELL"))
+					if(theCommand.equals("YELL"))
 					{
 						final int dir=Directions.getGoodCompassDirectionCode(whom);
 						if(dir >=0)
 						{
 							commands.removeElementAt(1);
 							yellRooms=new Vector<Room>();
-							if(theWord.toUpperCase().startsWith("YELL"))
+							if(theCommand.equals("YELL"))
 							{
 								final Room R2=R.getRoomInDir(dir);
 								final Exit E2=R.getExitInDir(dir);
@@ -217,7 +218,7 @@ public class Say extends StdCommand
 
 			// if you are addressing someone speaking a language that you
 			// can speak, then speak it.
-			if((langTarget!=null)&&(!mob.isMonster()))
+			if((langTarget!=null)&&(!mob.isMonster())&&(!CMLib.flags().isAnimalIntelligence(mob)))
 			{
 				final Language hisL=CMLib.utensils().getLanguageSpoken(langTarget);
 				final Language myL=CMLib.utensils().getLanguageSpoken(mob);
@@ -249,9 +250,11 @@ public class Say extends StdCommand
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
-
 		CMMsg msg=null;
-		if((!theWord.equalsIgnoreCase("ASK"))&&(target!=null))
+		if(CMLib.flags().isAnimalIntelligence(mob))
+			theWord="go(es)";
+		else
+		if((!theCommand.equals("ASK"))&&(target!=null))
 			theWord+="(s) to";
 		else
 			theWord+="(s)";
@@ -275,7 +278,7 @@ public class Say extends StdCommand
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
-			if(theWord.toUpperCase().startsWith("YELL"))
+			if(theCommand.equals("YELL"))
 			{
 				int dirCode=-1;
 				Room R3=R;
