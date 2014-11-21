@@ -16,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -108,14 +106,8 @@ public class Druid_PackCall extends StdAbility
 		if(mob!=null)
 		{
 			final Room R=mob.location();
-			if(R!=null)
-			{
-				if((R.domainType()&Room.INDOORS)>0)
-					return Ability.QUALITY_INDIFFERENT;
-				if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-				||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
-					return Ability.QUALITY_INDIFFERENT;
-			}
+			if(!CMLib.flags().isInWilderness(mob))
+				return Ability.QUALITY_INDIFFERENT;
 			if(target instanceof MOB)
 			{
 				if(!(((MOB)target).isInCombat()))
@@ -134,7 +126,7 @@ public class Druid_PackCall extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if((mob.location().domainType()&Room.INDOORS)>0)
+		if((!CMLib.flags().isInWilderness(mob)))
 		{
 			mob.tell(L("You must be outdoors to call your pack."));
 			return false;

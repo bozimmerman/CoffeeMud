@@ -169,7 +169,7 @@ public class Ranger_Camouflage extends StdAbility
 			}
 		}
 
-		if((((mob.location().domainType()&Room.INDOORS)>0))&&(!auto))
+		if((!CMLib.flags().isInWilderness(mob))&&(!auto))
 		{
 			mob.tell(L("You only know how to camouflage things outdoors."));
 			return false;

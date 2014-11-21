@@ -90,7 +90,7 @@ public class Ranger_SetSnare extends StdAbility
 			return false;
 		}
 		
-		if((trapThis.domainType() & Room.INDOORS) != 0)
+		if(!CMLib.flags().isInWilderness(trapThis))
 		{
 			mob.tell(L("You can't set a snare here."));
 			return false;

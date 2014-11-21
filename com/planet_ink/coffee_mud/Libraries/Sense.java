@@ -655,6 +655,25 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean isInWilderness(Physical P)
+	{
+		if(P instanceof MOB)
+			return isInWilderness(((MOB)P).location());
+		else
+		if(P instanceof Item)
+			return isInWilderness(((Item)P).owner());
+		else
+		if(P instanceof Room)
+		{
+			return (((Room)P).domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+					&&(((Room)P).domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT)
+					&&((((Room)P).domainType()&Room.INDOORS)==0);
+		}
+		else
+			return false;
+	}
 
 	@Override
 	public boolean canBeHeardMovingBy(Physical heard , MOB hearer)

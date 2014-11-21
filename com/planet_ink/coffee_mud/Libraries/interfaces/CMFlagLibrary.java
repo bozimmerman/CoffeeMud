@@ -100,6 +100,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isSitting(Physical P);
 	public boolean isFlying(Physical P);
 	public boolean isClimbing(Physical P);
+	public boolean isInWilderness(Physical P);
 	public boolean isSwimming(Physical P);
 	public boolean isSwimmingInWater(Physical P);
 	public boolean isFalling(Physical P);

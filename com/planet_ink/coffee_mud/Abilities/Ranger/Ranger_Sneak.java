@@ -94,9 +94,9 @@ public class Ranger_Sneak extends StdAbility
 			return false;
 		}
 
-		if((((mob.location().domainType()&Room.INDOORS)>0))&&(!auto))
+		if((!CMLib.flags().isInWilderness(mob))&&(!auto))
 		{
-			mob.tell(L("You must be outdoors to do this."));
+			mob.tell(L("You must be in the wilderness to do this."));
 			return false;
 		}
 		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)

@@ -70,14 +70,14 @@ public class Ranger_SenseTraps extends StdAbility
 		if((P instanceof Room)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
 			final Room R=(Room)P;
-			if((R.domainType() & Room.INDOORS) == 0)
+			if(CMLib.flags().isInWilderness(R))
 				msg.append(trapCheck(mob,P,-1));
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				final Exit E=R.getExitInDir(d);
 				final Room R2=R.getRoomInDir(d);
 				if((E != null)&&(R2 != null) 
-				&&(((R.domainType() & Room.INDOORS) == 0) || ((R2.domainType() & Room.INDOORS) == 0)))
+				&&((CMLib.flags().isInWilderness(R)) || (CMLib.flags().isInWilderness(R2))))
 				{
 					final Exit E2=R.getReverseExit(d);
 					msg.append(trapHere(mob,E));
@@ -86,7 +86,7 @@ public class Ranger_SenseTraps extends StdAbility
 					break;
 				}
 			}
-			if((((Room)P).domainType() & Room.INDOORS) == 0)
+			if(CMLib.flags().isInWilderness(R))
 			{
 				for(int i=0;i<R.numItems();i++)
 				{
