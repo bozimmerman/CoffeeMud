@@ -504,7 +504,6 @@ public class StdRoom implements Room
 			else
 				upE=CMClass.getExit("UnseenWalkway");
 
-
 			final GridLocale sky=(GridLocale)CMClass.getLocale("EndlessThinSky");
 			sky.setRoomID("");
 			sky.setArea(getArea());
@@ -516,29 +515,33 @@ public class StdRoom implements Room
 				if((d!=Directions.UP)&&(d!=Directions.DOWN))
 				{
 					final Room thatRoom=rawDoors()[d];
-					Room thatSky=null;
 					if((thatRoom!=null)&&(getRawExit(d)!=null))
 					{
 						thatRoom.giveASky(depth+1);
-						thatSky=thatRoom.rawDoors()[Directions.UP];
-					}
-					if((thatSky!=null)&&(thatSky.roomID().length()==0)
-					&&((thatSky instanceof EndlessThinSky)||(thatSky instanceof EndlessSky)))
-					{
-						sky.rawDoors()[d]=thatSky;
-						Exit xo=getRawExit(d);
-						if((xo==null)||(xo.hasADoor()))
-							xo=dnE;
-						sky.setRawExit(d,dnE);
-						thatSky.rawDoors()[Directions.getOpDirectionCode(d)]=sky;
-						if(thatRoom!=null)
+						final Room thatSky=thatRoom.rawDoors()[Directions.UP];
+						if((thatSky!=null)
+						&&(thatSky.roomID().length()==0)
+						&&((thatSky instanceof EndlessThinSky)||(thatSky instanceof EndlessSky)))
 						{
-							xo=thatRoom.getRawExit(Directions.getOpDirectionCode(d));
-							if((xo==null)||(xo.hasADoor()))
-								xo=dnE;
-							thatSky.setRawExit(Directions.getOpDirectionCode(d),xo);
+							Exit xo=getRawExit(d);
+							if(xo!=null)
+							{
+								if(xo.hasADoor())
+									xo=dnE;
+								sky.rawDoors()[d]=thatSky;
+								sky.setRawExit(d,xo);
+							}
+							final int opDir=Directions.getOpDirectionCode(d);
+							xo=thatRoom.getRawExit(opDir);
+							if(xo!=null)
+							{
+								if(xo.hasADoor())
+									xo=dnE;
+								thatSky.rawDoors()[opDir]=sky;
+								thatSky.setRawExit(opDir,xo);
+							}
+							((GridLocale)thatSky).clearGrid(null);
 						}
-						((GridLocale)thatSky).clearGrid(null);
 					}
 				}
 			sky.clearGrid(null);
@@ -559,8 +562,18 @@ public class StdRoom implements Room
 				((GridLocale)skyGridRoom).clearGrid(null);
 				rawDoors()[Directions.UP]=null;
 				setRawExit(Directions.UP,null);
-				skyGridRoom.rawDoors()[Directions.DOWN]=null;
-				skyGridRoom.setRawExit(Directions.DOWN,null);
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				{
+					final Room thatSky=skyGridRoom.rawDoors()[d];
+					final int opDir=Directions.getOpDirectionCode(d);
+					if((thatSky!=null)&&(thatSky.rawDoors()[opDir]==skyGridRoom))
+					{
+						thatSky.rawDoors()[opDir]=null;
+						thatSky.setRawExit(opDir, null);
+					}
+					skyGridRoom.rawDoors()[d]=null;
+					skyGridRoom.setRawExit(d,null);
+				}
 				CMLib.map().emptyRoom(skyGridRoom,null,true);
 				skyGridRoom.destroy();
 				skyedYet=false;
