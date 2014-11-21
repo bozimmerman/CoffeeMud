@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -43,6 +42,11 @@ public class Gorilla extends Monkey
 	@Override public int lightestWeight(){return 220;}
 	@Override public int weightVariance(){return 80;}
 	@Override public String racialCategory(){return "Primate";}
+	
+	private final String[]culturalAbilityNames={"ApeSpeak"};
+	private final int[]culturalAbilityProficiencies={100};
+	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };

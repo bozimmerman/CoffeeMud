@@ -33,29 +33,17 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Blah extends StdLanguage
+public class ApeSpeak extends AnimalSpeak
 {
-	@Override public String ID() { return "Blah"; }
-	private final static String localizedName = CMLib.lang().L("Blah");
+	@Override public String ID() { return "ApeSpeak"; }
+	private final static String localizedName = CMLib.lang().L("Ape Speak");
 	@Override public String name() { return localizedName; }
-	public static List<String[]> wordLists=null;
-	private static boolean mapped=false;
-	public Blah()
+	
+	private final static String[] animalSounds=
 	{
-		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("Archon",1,ID(),false);}
-	}
-
-	@Override
-	public List<String[]> translationVector(String language)
-	{
-		return wordLists;
-	}
-
-	@Override
-	public String translate(String language, String word)
-	{
-		return fixCase(word,"blah");
+		"hoot","bark","grunt","whine","pock","pant"
+	};
+	protected String[] getSounds() {
+		return animalSounds;
 	}
 }
