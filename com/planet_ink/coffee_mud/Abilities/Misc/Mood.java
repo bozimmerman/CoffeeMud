@@ -151,7 +151,7 @@ public class Mood extends StdAbility
 		final int x=msg.indexOf('\'');
 		if(x<0)
 			return msg;
-		final int y=msg.indexOf("say(s)");
+		final int y=msg.indexOf(L("say(s)"));
 		if((y>=0)&&(y<x))
 			return msg.substring(0,y)+to+msg.substring(y+6);
 		return msg;
