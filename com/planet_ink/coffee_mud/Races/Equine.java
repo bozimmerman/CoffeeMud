@@ -44,9 +44,9 @@ public class Equine extends StdRace
 	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EARS|Wearable.WORN_EYES);}
 	@Override public String racialCategory(){return "Equine";}
 	private final String[]racialAbilityNames={"Fighter_Kick","HorseSpeak"};
-	private final int[]racialAbilityLevels={5};
-	private final int[]racialAbilityProficiencies={40};
-	private final boolean[]racialAbilityQuals={false};
+	private final int[]racialAbilityLevels={5,1};
+	private final int[]racialAbilityProficiencies={40,100};
+	private final boolean[]racialAbilityQuals={false,false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}

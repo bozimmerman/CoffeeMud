@@ -378,25 +378,22 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected void queResponse(ArrayList<ChattyTestResponse> responses, MOB source, MOB target, String rest)
 	{
-		final boolean asAnimal=CMLib.flags().isAnimalIntelligence(source);
 		int total=0;
 		for(final ChattyTestResponse CR : responses)
-			if((!asAnimal)||((CR.responses.length>0)&&(CR.responses[0].startsWith("\""))))
-				total+=CR.weight;
+			total+=CR.weight;
 		if(total == 0)
 			return;
 		ChattyTestResponse selection=null;
 		int select=CMLib.dice().roll(1,total,0);
 		for(final ChattyTestResponse CR : responses)
-			if((!asAnimal)||((CR.responses.length>0)&&(CR.responses[0].startsWith("\""))))
+		{
+			select-=CR.weight;
+			if(select<=0)
 			{
-				select-=CR.weight;
-				if(select<=0)
-				{
-					selection=CR;
-					break;
-				}
+				selection=CR;
+				break;
 			}
+		}
 
 		if(selection!=null)
 		{

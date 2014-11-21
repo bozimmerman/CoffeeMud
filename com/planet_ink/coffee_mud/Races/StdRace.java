@@ -404,12 +404,13 @@ public class StdRace implements Race
 			}
 			setHeightWeight(mob.basePhyStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 
+			final boolean isChild=CMLib.flags().isChild(mob);
+			final boolean isAnimal=CMLib.flags().isAnimalIntelligence(mob);
+			final boolean isMonster=mob.isMonster();
+			
 			if((culturalAbilityNames()!=null)&&(culturalAbilityProficiencies()!=null)
 			&&(culturalAbilityNames().length==culturalAbilityProficiencies().length))
 			{
-				final boolean isChild=CMLib.flags().isChild(mob);
-				final boolean isAnimal=CMLib.flags().isAnimalIntelligence(mob);
-				final boolean isMonster=mob.isMonster();
 				for(int a=0;a<culturalAbilityNames().length;a++)
 				{
 					Ability A=CMClass.getAbility(culturalAbilityNames()[a]);
@@ -418,11 +419,10 @@ public class StdRace implements Race
 						A.setProficiency(culturalAbilityProficiencies()[a]);
 						mob.addAbility(A);
 						A.autoInvocation(mob);
-						if((isMonster)
-						&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-						&&(isChild))
+						if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+						&&(isMonster)
+						&&(!isChild))
 						{
-
 							if(A.proficiency()>0)
 								A.setProficiency(100);
 							A.invoke(mob,mob,false,0);
@@ -433,7 +433,6 @@ public class StdRace implements Race
 								if(A!=null)
 									A.setProficiency(100);
 							}
-							break;
 						}
 					}
 				}
@@ -441,21 +440,16 @@ public class StdRace implements Race
 			if((racialAbilityNames()!=null)&&(racialAbilityProficiencies()!=null)
 			&&(racialAbilityNames().length==racialAbilityProficiencies().length))
 			{
-				final boolean isChild=CMLib.flags().isChild(mob);
 				for(int a=0;a<racialAbilityNames().length;a++)
 				{
 					final Ability A=CMClass.getAbility(racialAbilityNames()[a]);
-					if(A!=null)
+					if((A!=null)
+					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 					{
-						A.setProficiency(culturalAbilityProficiencies()[a]);
-						mob.addAbility(A);
+						A.setProficiency(racialAbilityProficiencies()[a]);
 						A.autoInvocation(mob);
-						if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-						&&(!isChild))
-						{
-							A.invoke(mob,mob,false,0);
-							break;
-						}
+						A.invoke(mob,mob,false,0);
+						break;
 					}
 				}
 			}
@@ -1273,13 +1267,13 @@ public class StdRace implements Race
 			for(int i=0;i<racialAbilityNames().length;i++)
 			{
 				CMLib.ableMapper().addDynaAbilityMapping(ID(),
-											 racialAbilityLevels()[i],
-											 racialAbilityNames()[i],
-											 racialAbilityProficiencies()[i],
-											 "",
-											 !racialAbilityQuals()[i],
-											 false,
-											 "");
+						 racialAbilityLevels()[i],
+						 racialAbilityNames()[i],
+						 racialAbilityProficiencies()[i],
+						 "",
+						 !racialAbilityQuals()[i],
+						 false,
+						 "");
 			}
 		}
 		if(racialAbilityMap==null)

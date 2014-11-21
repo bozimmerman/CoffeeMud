@@ -251,19 +251,21 @@ public class Say extends StdCommand
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
 		CMMsg msg=null;
-		if(CMLib.flags().isAnimalIntelligence(mob))
-			theWord="go(es)";
-		else
 		if((!theCommand.equals("ASK"))&&(target!=null))
-			theWord+="(s) to";
+			theWord=L(theWord+"(s) to");
 		else
-			theWord+="(s)";
-		final String fromSelf="^T^<SAY \""+CMStrings.removeColors((target!=null)?target.name():mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
-		final String toTarget="^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
+			theWord=L(theWord+"(s)");
+		if(CMLib.flags().isAnimalIntelligence(mob))
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^T^<SAY \"@x1\"^><S-NAME> go(es)@x2 '@x3'^</SAY^>^?",CMStrings.removeColors(mob.name()),theWordSuffix,combinedCommands));
+		else
 		if(target==null)
 			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^T^<SAY \"@x1\"^><S-NAME> @x2@x3 '@x4'^</SAY^>^?",CMStrings.removeColors(mob.name()),theWord.toLowerCase(),theWordSuffix,combinedCommands));
 		else
+		{
+			final String fromSelf="^T^<SAY \""+CMStrings.removeColors(target.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
+			final String toTarget="^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
+		}
 
 		gmcpSaySend("say", mob, target, msg);
 
