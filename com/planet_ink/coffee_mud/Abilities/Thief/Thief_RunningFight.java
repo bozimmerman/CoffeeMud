@@ -108,6 +108,8 @@ public class Thief_RunningFight extends ThiefSkill
 			{
 				M.setVictim(mob);
 				lastOpponent=M;
+				if(CMLib.dice().rollPercentage()<5)
+					super.helpProficiency(mob, 0);
 			}
 			else
 			{

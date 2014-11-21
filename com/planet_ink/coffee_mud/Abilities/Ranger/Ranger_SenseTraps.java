@@ -109,7 +109,10 @@ public class Ranger_SenseTraps extends StdAbility
 	{
 		final String here=trapHere(mob,mob.location());
 		if(here.length()>0)
+		{
 			mob.tell(here);
+			super.helpProficiency(mob, 0);
+		}
 	}
 
 	@Override

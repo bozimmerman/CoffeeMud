@@ -60,4 +60,17 @@ public class Skill_MountedCombat extends StdSkill
 			}
 		}
 	}
+	
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.source()==affected)
+		&&(msg.target() instanceof MOB)
+		&&(CMLib.dice().roll(1, 10, 0)==1)
+		&&(msg.source().riding()!=null)
+		&&(msg.source().riding().amRiding(msg.source())))
+			helpProficiency(msg.source(), 0);
+		return super.okMessage(myHost, msg);
+	}
 }

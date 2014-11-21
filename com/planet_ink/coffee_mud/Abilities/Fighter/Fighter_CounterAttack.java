@@ -68,7 +68,10 @@ public class Fighter_CounterAttack extends FighterSkill
 			}
 			else
 			if(msg.tool().ID().equals(ID()))
+			{
 				CMLib.combat().postAttack(mob,(MOB)msg.target(),mob.fetchWieldedItem());
+				super.helpProficiency(mob, 0);
+			}
 		}
 		return true;
 	}

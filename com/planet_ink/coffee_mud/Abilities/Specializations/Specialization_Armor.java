@@ -71,6 +71,8 @@ public class Specialization_Armor extends StdAbility
 					bonus+=1.0;
 				}
 			}
+			if((bonus>0)&&(CMLib.dice().rollPercentage()<5))
+				super.helpProficiency(mob, 0);
 		}
 	}
 

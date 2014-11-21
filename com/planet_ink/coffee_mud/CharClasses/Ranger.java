@@ -81,6 +81,7 @@ public class Ranger extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Ranger_FindWater",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Specialization_Bow",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Ranger_TrackAnimal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Parry",false);
@@ -97,12 +98,12 @@ public class Ranger extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_LocatePlants",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Ranger_FierceCompanions",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
-
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_RapidShot",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Fighter_TrueShot",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fighter_TrueShot",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Moonbeam",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_SenseLife",false);
@@ -120,6 +121,7 @@ public class Ranger extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_Hunger",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Ranger_HuntersEndurance",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_ControlFire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_PointBlank",false);

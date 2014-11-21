@@ -38,13 +38,6 @@ public class Skill_TwoDaggerFighting extends Skill_TwoWeaponFighting
 	@Override public String ID() { return "Skill_TwoDaggerFighting"; }
 	private final static String localizedName = CMLib.lang().L("Two Dagger Fighting");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
