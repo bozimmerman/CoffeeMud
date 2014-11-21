@@ -44,10 +44,14 @@ public class Ape extends Monkey
 	@Override public long forbiddenWornBits(){return 0;}
 	@Override public String racialCategory(){return "Primate";}
 	
-	private final String[]culturalAbilityNames={"ApeSpeak"};
-	private final int[]culturalAbilityProficiencies={100};
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	private final String[]racialAbilityNames={"ApeSpeak"};
+	private final int[]racialAbilityLevels={1};
+	private final int[]racialAbilityProficiencies={100};
+	private final boolean[]racialAbilityQuals={false};
+	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };

@@ -44,10 +44,10 @@ public class Frog extends StdRace
 	@Override public int weightVariance(){return 15;}
 	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
 	@Override public String racialCategory(){return "Amphibian";}
-	private final String[]racialAbilityNames={"Skill_Swim"};
-	private final int[]racialAbilityLevels={1};
-	private final int[]racialAbilityProficiencies={100};
-	private final boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"Skill_Swim","FrogSpeak"};
+	private final int[]racialAbilityLevels={1,1};
+	private final int[]racialAbilityProficiencies={100,100};
+	private final boolean[]racialAbilityQuals={false,false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}

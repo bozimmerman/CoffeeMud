@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -47,10 +45,10 @@ public class Bat extends StdRace
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	@Override public String racialCategory(){return "Pteropine";}
-	private final String[]racialAbilityNames={"WingFlying"};
-	private final int[]racialAbilityLevels={1};
-	private final int[]racialAbilityProficiencies={100};
-	private final boolean[]racialAbilityQuals={false};
+	private final String[]racialAbilityNames={"BatSpeak","WingFlying"};
+	private final int[]racialAbilityLevels={1,1};
+	private final int[]racialAbilityProficiencies={100,100};
+	private final boolean[]racialAbilityQuals={false,false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}

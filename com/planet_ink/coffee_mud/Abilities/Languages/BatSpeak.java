@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Races;
+package com.planet_ink.coffee_mud.Abilities.Languages;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +15,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.*;
+
 /*
-   Copyright 2004-2014 Bo Zimmerman
+   Copyright 2014-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -30,38 +32,18 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Crocodile extends GreatLizard
+
+public class BatSpeak extends AnimalSpeak
 {
-	@Override public String ID(){	return "Crocodile"; }
-	@Override public String name(){ return "Crocodile"; }
-	private final String[]racialAbilityNames={"Skill_Swim","AlligatorSpeak"};
-	private final int[]racialAbilityLevels={1,1};
-	private final int[]racialAbilityProficiencies={100,100};
-	private final boolean[]racialAbilityQuals={false,false};
-	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
-
-	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	@Override public String ID() { return "BatSpeak"; }
+	private final static String localizedName = CMLib.lang().L("Bat Speak");
+	@Override public String name() { return localizedName; }
+	
+	private final static String[] animalSounds=
 	{
-		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
-	}
-
-	@Override
-	public String makeMobName(char gender, int age)
-	{
-		switch(age)
-		{
-			case Race.AGE_INFANT:
-			case Race.AGE_TODDLER:
-				return name().toLowerCase()+" hatchling";
-			case Race.AGE_CHILD:
-				return "young "+name().toLowerCase();
-			default :
-				return super.makeMobName(gender, age);
-		}
+		"screech","screeech","screeeeech"
+	};
+	protected String[] getSounds() {
+		return animalSounds;
 	}
 }
