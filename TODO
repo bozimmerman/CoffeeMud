@@ -29,8 +29,6 @@ NON-TECH
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills:
-        *. Ranger        : +1
-                         :
         *. Paladin       : +6
                          : Shared Fate (Paladin and mount share bad effects instead of only Paladin)
                          : Shared Vision (can see through mounts eyes)
@@ -38,6 +36,9 @@ NON-TECH
                          : Resurrect Mount
                          : Heal Mount
                          : Abide (prevent death for few mins),
+        *. Fighter       : +2
+                         :
+                         :
    *. Wants and Needs engine - similar to slavery system
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
    *. Rideables with some portal you could enter for below decks, etc.
