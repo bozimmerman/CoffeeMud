@@ -59,26 +59,38 @@ public class Ranger_HuntersEndurance extends StdAbility
 		&&(affected instanceof MOB)
 		&&(((MOB)affected).location()!=null))
 		{
+			final MOB mob=(MOB)affected;
 			if((!CMLib.flags().canWorkOnSomething(affected))
-			&&(CMLib.flags().isTracking((MOB)affected))
-			&&(!((MOB)affected).isInCombat()))
+			&&(CMLib.flags().isTracking(mob))
+			&&(!mob.isInCombat()))
 			{
 				if(oldState==null)
-					oldState=(CharState)((MOB)affected).charStats().copyOf();
-				((MOB)affected).curState().setFatigue(0);
-				((MOB)affected).curState().setHunger(0);
-				((MOB)affected).curState().setThirst(0);
-				((MOB)affected).curState().setMovement(((MOB)affected).maxState().getMovement());
+					oldState=(CharState)mob.charStats().copyOf();
+				if(proficiency()>=99)
+				{
+					mob.curState().setFatigue(0);
+					mob.curState().setHunger(0);
+					mob.curState().setThirst(0);
+					mob.curState().setMovement(mob.maxState().getMovement());
+				}
+				else
+				if(proficiencyCheck(mob, 0, false))
+				{
+					mob.curState().adjFatigue(-proficiency(),mob.maxState());
+					mob.curState().adjHunger(-proficiency(),mob.maxState().maxHunger(mob.baseWeight()));
+					mob.curState().adjThirst(-proficiency(),mob.maxState().maxThirst(mob.baseWeight()));
+					mob.curState().adjMovement(-proficiency(),mob.maxState());
+				}
 				if(CMLib.dice().rollPercentage()==1)
 					super.helpProficiency((MOB)affected, 0);
 			}
 			else
 			if(oldState!=null)
 			{
-				((MOB)affected).curState().setFatigue(oldState.getFatigue());
-				((MOB)affected).curState().setHunger(oldState.getHunger());
-				((MOB)affected).curState().setThirst(oldState.getThirst());
-				((MOB)affected).curState().setMovement(oldState.getMovement());
+				mob.curState().setFatigue(oldState.getFatigue());
+				mob.curState().setHunger(oldState.getHunger());
+				mob.curState().setThirst(oldState.getThirst());
+				mob.curState().setMovement(oldState.getMovement());
 				oldState = null;
 			}
 		}
