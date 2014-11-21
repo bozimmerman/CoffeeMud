@@ -93,6 +93,38 @@ public class CMParms
 	}
 
 	/**
+	 * Combine two int arrays into a single one.
+	 * @param strs1 the first array
+	 * @param strs2 the second array
+	 * @return the combined array
+	 */
+	public final static int[] combine(final int[] strs1, final int[] strs2)
+	{
+		final int strs1Len = strs1.length;
+		final int strs2Len = strs2.length;
+		final int[] array= new int[strs1Len+strs2Len];
+		System.arraycopy(strs1, 0, array, 0, strs1Len);
+		System.arraycopy(strs2, 0, array, strs1Len, strs2Len);
+		return array;
+	}
+
+	/**
+	 * Combine two boolean arrays into a single one.
+	 * @param strs1 the first array
+	 * @param strs2 the second array
+	 * @return the combined array
+	 */
+	public final static boolean[] combine(final boolean[] strs1, final boolean[] strs2)
+	{
+		final int strs1Len = strs1.length;
+		final int strs2Len = strs2.length;
+		final boolean[] array= new boolean[strs1Len+strs2Len];
+		System.arraycopy(strs1, 0, array, 0, strs1Len);
+		System.arraycopy(strs2, 0, array, strs1Len, strs2Len);
+		return array;
+	}
+	
+	/**
 	 * Returns the given string, unless it contains a space, in which case
 	 * it returns the string with double-quotes around it.
 	 * @param str the string to check and return

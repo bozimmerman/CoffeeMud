@@ -44,10 +44,10 @@ public class WaterFowl extends StdRace
 	@Override public int weightVariance(){return 5;}
 	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
 	@Override public String racialCategory(){return "Avian";}
-	private final String[]racialAbilityNames={"WingFlying","Skill_Swim"};
-	private final int[]racialAbilityLevels={1,1};
-	private final int[]racialAbilityProficiencies={100,100};
-	private final boolean[]racialAbilityQuals={false,false};
+	private final String[]racialAbilityNames={"WingFlying","Skill_Swim","FowlSpeak"};
+	private final int[]racialAbilityLevels={1,1,1};
+	private final int[]racialAbilityProficiencies={100,100,100};
+	private final boolean[]racialAbilityQuals={false,false,false};
 	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
 	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}

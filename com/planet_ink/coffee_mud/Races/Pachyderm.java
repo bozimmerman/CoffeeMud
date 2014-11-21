@@ -45,6 +45,15 @@ public class Pachyderm extends StdRace
 	@Override public String racialCategory(){return "Pachyderm";}
 	@Override public boolean useRideClass() { return true; }
 
+	private final String[]racialAbilityNames={"ElephantSpeak"};
+	private final int[]racialAbilityLevels={1};
+	private final int[]racialAbilityProficiencies={100};
+	private final boolean[]racialAbilityQuals={false};
+	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
+	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
+	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	@Override public int[] bodyMask(){return parts;}
