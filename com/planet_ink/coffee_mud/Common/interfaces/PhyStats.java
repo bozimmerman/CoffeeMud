@@ -368,6 +368,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int CAN_NOT_AUTO_ATTACK=524288;
 	/** a bit setting, as from sensesMask(), flagging this mob as not respawning when being camped*/
 	public final static int CAN_NOT_BE_CAMPED=1048576;
+	/** a bit setting, as from sensesMask(), flagging this mob being able to grunt, when sufficiently stupid */
+	public final static int CAN_GRUNT_WHEN_STUPID=2097152;
 
 	/** STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks */
 	public static final String[] CAN_SEE_CODES={"CANNOTSEE",

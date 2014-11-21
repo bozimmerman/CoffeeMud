@@ -407,6 +407,9 @@ public class StdRace implements Race
 			if((culturalAbilityNames()!=null)&&(culturalAbilityProficiencies()!=null)
 			   &&(culturalAbilityNames().length==culturalAbilityProficiencies().length))
 			{
+				final boolean isChild=CMLib.flags().isChild(mob);
+				final boolean isAnimal=CMLib.flags().isAnimalIntelligence(mob);
+				final boolean isMonster=mob.isMonster();
 				for(int a=0;a<culturalAbilityNames().length;a++)
 				{
 					Ability A=CMClass.getAbility(culturalAbilityNames()[a]);
@@ -415,15 +418,15 @@ public class StdRace implements Race
 						A.setProficiency(culturalAbilityProficiencies()[a]);
 						mob.addAbility(A);
 						A.autoInvocation(mob);
-						if((mob.isMonster())
-						&&(!CMLib.flags().isChild(mob))
-						&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
+						if((isMonster)
+						&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+						&&(isChild))
 						{
 
 							if(A.proficiency()>0)
 								A.setProficiency(100);
 							A.invoke(mob,mob,false,0);
-							if(CMLib.flags().isChild(mob))
+							if(isChild && (!isAnimal))
 							{
 								A=mob.fetchAbility("Common");
 								if(A==null){ A=CMClass.getAbility("Common"); if(A!=null)mob.addAbility(A);}

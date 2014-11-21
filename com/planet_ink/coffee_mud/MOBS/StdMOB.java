@@ -2219,7 +2219,8 @@ public class StdMOB implements MOB
 								tell(L("You can't make sounds!"));
 								return false;
 							}
-							if (CMLib.flags().isAnimalIntelligence(this))
+							if ((CMLib.flags().isAnimalIntelligence(this))
+							&&(!CMath.bset(phyStats().sensesMask(), PhyStats.CAN_GRUNT_WHEN_STUPID)))
 							{
 								tell(L("You aren't smart enough to speak."));
 								return false;
