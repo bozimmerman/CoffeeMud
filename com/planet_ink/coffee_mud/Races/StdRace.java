@@ -405,7 +405,7 @@ public class StdRace implements Race
 			setHeightWeight(mob.basePhyStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 
 			if((culturalAbilityNames()!=null)&&(culturalAbilityProficiencies()!=null)
-			   &&(culturalAbilityNames().length==culturalAbilityProficiencies().length))
+			&&(culturalAbilityNames().length==culturalAbilityProficiencies().length))
 			{
 				final boolean isChild=CMLib.flags().isChild(mob);
 				final boolean isAnimal=CMLib.flags().isAnimalIntelligence(mob);
@@ -433,6 +433,27 @@ public class StdRace implements Race
 								if(A!=null)
 									A.setProficiency(100);
 							}
+							break;
+						}
+					}
+				}
+			}
+			if((racialAbilityNames()!=null)&&(racialAbilityProficiencies()!=null)
+			&&(racialAbilityNames().length==racialAbilityProficiencies().length))
+			{
+				final boolean isChild=CMLib.flags().isChild(mob);
+				for(int a=0;a<racialAbilityNames().length;a++)
+				{
+					final Ability A=CMClass.getAbility(racialAbilityNames()[a]);
+					if(A!=null)
+					{
+						A.setProficiency(culturalAbilityProficiencies()[a]);
+						mob.addAbility(A);
+						A.autoInvocation(mob);
+						if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+						&&(!isChild))
+						{
+							A.invoke(mob,mob,false,0);
 							break;
 						}
 					}
