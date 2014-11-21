@@ -22,6 +22,7 @@
   18. New Shaman spells: Refuge
   19. New Assassin skills: Two Dagger Fighting, Cut Throat, Dagger Defense, Deep Cut, Dagger Specialization
   20. New Ranger skills: Camouflage, Repel Vermin (chant), Delay Poison, Sense Snares and Pits, Set Snare, Air Wall
+  21. More Ranger skills: Speak with Animals
    *. Beyond new spells for some, all mage specialists have had their spell lists tinkered with to make them a bit better
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.

@@ -86,6 +86,7 @@ public class Beastmaster extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_Farsight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SenseAge",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SpeakWithAnimals",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Dodge",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_CalmAnimal",true);

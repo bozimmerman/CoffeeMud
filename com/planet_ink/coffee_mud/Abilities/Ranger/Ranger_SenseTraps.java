@@ -39,6 +39,7 @@ public class Ranger_SenseTraps extends StdAbility
 	@Override public String ID() { return "Ranger_SenseTraps"; }
 	private final static String localizedName = CMLib.lang().L("Sense Snares and Pits");
 	@Override public String name() { return localizedName; }
+	@Override public String displayText() { return ""; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

@@ -343,8 +343,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			if(x<0)
 				matchedCG=matchChatGroup(forMe,getParms(),chatGroups);
 			else
-			if(getParms().substring(x+1).trim().length()>0)
-				matchedCG=matchChatGroup(forMe,getParms().substring(x+1),chatGroups);
+				matchedCG=matchChatGroup(forMe,getParms().substring(x+1).trim(),chatGroups);
 		}
 		if(matchedCG!=null)
 			return matchedCG;

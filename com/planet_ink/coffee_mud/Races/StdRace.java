@@ -395,6 +395,16 @@ public class StdRace implements Race
 				CMLib.ableMapper().addCharAbilityMapping(ID(),0,culturalAbilityNames()[a],false);
 			mappedCulturalAbilities=true;
 		}
+		for(final Ability A : racialAbilities(mob))
+		{
+			if((A!=null)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
+			{
+				A.autoInvocation(mob);
+				A.invoke(mob,mob,false,0);
+				break;
+			}
+		}
 		if(!verifyOnly)
 		{
 			if(mob.basePhyStats().level()<=1)
@@ -434,22 +444,6 @@ public class StdRace implements Race
 									A.setProficiency(100);
 							}
 						}
-					}
-				}
-			}
-			if((racialAbilityNames()!=null)&&(racialAbilityProficiencies()!=null)
-			&&(racialAbilityNames().length==racialAbilityProficiencies().length))
-			{
-				for(int a=0;a<racialAbilityNames().length;a++)
-				{
-					final Ability A=CMClass.getAbility(racialAbilityNames()[a]);
-					if((A!=null)
-					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
-					{
-						A.setProficiency(racialAbilityProficiencies()[a]);
-						A.autoInvocation(mob);
-						A.invoke(mob,mob,false,0);
-						break;
 					}
 				}
 			}

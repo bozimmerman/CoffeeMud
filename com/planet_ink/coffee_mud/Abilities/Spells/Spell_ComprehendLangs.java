@@ -78,7 +78,8 @@ public class Spell_ComprehendLangs extends Spell
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
 			&&(msg.sourceMessage()!=null)
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-			&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
+			&&(((MOB)affected).fetchEffect(msg.tool().ID())==null)
+			&&(msg.source().charStats().getMyRace().racialAbilities(msg.source()).find(msg.tool().ID())==null))
 			{
 				final String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if(str!=null)

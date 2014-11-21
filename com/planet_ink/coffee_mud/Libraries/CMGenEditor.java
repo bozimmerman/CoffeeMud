@@ -568,7 +568,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		||((!(E instanceof MOB))&&(!(E instanceof Item)))
 		||(!CMLib.flags().isCataloged(E)))
 		{
+			final String oldName=E.Name();
 			E.setName(newName);
+			if(E.displayText().equalsIgnoreCase(oldName+" stands here."))
+				E.setDisplayText(newName+" stands here.");
 			return;
 		}
 		if((E instanceof Physical)&&(CMLib.flags().isCataloged(E)))
