@@ -126,7 +126,8 @@ public class Ranger_SenseTraps extends StdAbility
 		   &&((lastRoom==null)||(((MOB)affected).location()!=lastRoom)))
 		{
 			lastRoom=((MOB)affected).location();
-			messageTo((MOB)affected);
+			if(proficiencyCheck((MOB)affected,0,false))
+				messageTo((MOB)affected);
 		}
 		return true;
 	}
