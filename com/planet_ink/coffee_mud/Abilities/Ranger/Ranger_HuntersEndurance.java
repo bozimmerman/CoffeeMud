@@ -65,7 +65,7 @@ public class Ranger_HuntersEndurance extends StdAbility
 			&&(!mob.isInCombat()))
 			{
 				if(oldState==null)
-					oldState=(CharState)mob.charStats().copyOf();
+					oldState=(CharState)mob.curState().copyOf();
 				if(proficiency()>=99)
 				{
 					mob.curState().setFatigue(0);
