@@ -49,6 +49,17 @@ public class PaladinSkill extends StdAbility
 	protected final List<MOB> removeFromGroup=new LinkedList<MOB>();
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL;}
 
+	@Override public CMObject copyOf()
+	{
+		if(paladinsGroup==null)
+			return super.copyOf();
+		final PaladinSkill P=(PaladinSkill)super.copyOf();
+		if(P==null)
+			return super.copyOf();
+		P.paladinsGroup=new HashSet<MOB>(paladinsGroup);
+		return P;
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -78,7 +89,7 @@ public class PaladinSkill extends StdAbility
 	@Override
 	public boolean autoInvocation(MOB mob)
 	{
-		if(mob.charStats().getCurrentClass().ID().equals("Archon"))
+		if(CMSecurity.isASysOp(mob) || CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.ALLSKILLS))
 			return false;
 		return super.autoInvocation(mob);
 	}

@@ -650,12 +650,12 @@ public class StdAbility implements Ability
 		return false;
 	}
 
-	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget)
+	public MOB getTarget(MOB mob, List commands, Environmental givenTarget)
 	{
 		return getTarget(mob,commands,givenTarget,false,false);
 	}
 
-	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet, boolean alreadyAffOk)
+	public MOB getTarget(MOB mob, List commands, Environmental givenTarget, boolean quiet, boolean alreadyAffOk)
 	{
 		String targetName=CMParms.combine(commands,0);
 		MOB target=null;
@@ -1691,6 +1691,16 @@ public class StdAbility implements Ability
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
 			affectType=CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL;
+		if(auto)
+			affectType=affectType|CMMsg.MASK_ALWAYS;
+		return affectType;
+	}
+
+	protected int verbalSpeakCode(MOB mob, Physical target, boolean auto)
+	{
+		int affectType=CMMsg.MSG_NOISE|CMMsg.MASK_MOUTH;
+		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
+			affectType=CMMsg.MSG_NOISE|CMMsg.MASK_MOUTH|CMMsg.MASK_MALICIOUS;
 		if(auto)
 			affectType=affectType|CMMsg.MASK_ALWAYS;
 		return affectType;

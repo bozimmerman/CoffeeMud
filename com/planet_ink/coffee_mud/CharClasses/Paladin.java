@@ -85,6 +85,7 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Fighter_ArmorTweaking",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Bash",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Paladin_HolyStrike",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Paladin_SummonMount",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureLight",false);
@@ -96,6 +97,7 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_WandUse",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Paladin_DiseaseImmunity",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Paladin_PaladinsMount",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtEvil",false);
@@ -104,6 +106,7 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_CureDeafness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CureSerious",false,CMParms.parseSemicolons("Prayer_CureLight",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_HealMount",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Paladin_Defend",true);
@@ -143,6 +146,7 @@ public class Paladin extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BladeBarrier",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CureFatigue",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Paladin_CommandHorse",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LightHammer",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Sweep",true);

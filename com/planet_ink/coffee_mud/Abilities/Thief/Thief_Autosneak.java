@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_Autosneak extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Autosneak"; }
-	@Override public String displayText() {return "(AutoSneak)";}
+	@Override public String displayText() {return L("(AutoSneak)");}
 	private final static String localizedName = CMLib.lang().L("AutoSneak");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}

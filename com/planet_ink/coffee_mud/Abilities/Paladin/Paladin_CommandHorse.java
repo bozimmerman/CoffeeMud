@@ -1,4 +1,5 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Paladin;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,11 +16,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
-   Copyright 2001-2014 Bo Zimmerman
+   Copyright 2014-2014 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,18 +33,28 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Spell_Command extends Spell
+public class Paladin_CommandHorse extends StdAbility
 {
-	@Override public String ID() { return "Spell_Command"; }
-	private final static String localizedName = CMLib.lang().L("Command");
+	@Override public String ID() { return "Paladin_CommandHorse"; }
+	private final static String localizedName = CMLib.lang().L("Command Horse");
 	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	private static final String[] triggerStrings =I(new String[] {"COMMANDHORSE"});
+	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override protected int canTargetCode(){return CAN_MOBS;}
+	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
 
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if((!auto)&&(!(CMLib.flags().isGood(mob))))
+		{
+			mob.tell(L("Your alignment has alienated you from your god."));
+			return false;
+		}
 		final List<String> V=new Vector<String>();
 		if(commands.size()>0)
 		{
@@ -68,39 +78,10 @@ public class Spell_Command extends Spell
 			}
 		}
 
-		if((!target.mayIFight(mob))||(!target.isMonster()))
+		if(!target.charStats().getMyRace().racialCategory().equals("Equine"))
 		{
-			mob.tell(L("You can't command @x1.",target.name(mob)));
+			mob.tell(L("@x1 is not a horse!",target.name(mob)));
 			return false;
-		}
-
-		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
-		{
-			mob.tell(L("You can't command someone to follow."));
-			return false;
-		}
-
-		CMObject O=CMLib.english().findCommand(target,(Vector)commands.clone());
-		if(O instanceof Command)
-		{
-			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
-			{
-				mob.tell(L("You can't command someone to doing that."));
-				return false;
-			}
-		}
-		else
-		{
-			if(O instanceof Ability)
-				O=CMLib.english().getToEvoke(target,(Vector)commands.clone());
-			if(O instanceof Ability)
-			{
-				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
-				{
-					mob.tell(L("You can't command @x1 to do that.",target.name(mob)));
-					return false;
-				}
-			}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -110,8 +91,8 @@ public class Spell_Command extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> command(s) <T-NAMESELF> to '@x1'.^?",CMParms.combine(commands,0)));
-			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalSpeakCode(mob,target,auto),auto?"":L("^S<S-NAME> command(s) <T-NAMESELF> to '@x1'.^?",CMParms.combine(commands,0)));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_SOUND|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
 			if((mob.location().okMessage(mob,msg))
 			&&((mob.location().okMessage(mob,msg2)))

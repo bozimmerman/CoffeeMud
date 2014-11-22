@@ -37,7 +37,7 @@ import java.util.*;
 public class Thief_AutoMarkTraps extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_AutoMarkTraps"; }
-	@Override public String displayText() {return "(Automarking traps)";}
+	@Override public String displayText() {return L("(Automarking traps)");}
 	private final static String localizedName = CMLib.lang().L("AutoMark Traps");
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =I(new String[] {"AUTOMARKTRAPS"});

@@ -40,7 +40,7 @@ public class Paladin_SummonMount extends StdAbility
 	@Override public String ID() { return "Paladin_SummonMount"; }
 	private final static String localizedName = CMLib.lang().L("Call Mount");
 	@Override public String name() { return localizedName; }
-	@Override public String displayText() {return "(Mount)";}
+	@Override public String displayText() {return L("(Mount)");}
 	private static final String[] triggerStrings =I(new String[] {"CALLMOUNT"});
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}

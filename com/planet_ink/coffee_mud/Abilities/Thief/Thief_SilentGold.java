@@ -38,7 +38,7 @@ import java.util.*;
 public class Thief_SilentGold extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SilentGold"; }
-	@Override public String displayText() {return "(Silent AutoGold)";}
+	@Override public String displayText() {return L("(Silent AutoGold)");}
 	private final static String localizedName = CMLib.lang().L("Silent AutoGold");
 	@Override public String name() { return localizedName; }
 	@Override protected int canAffectCode(){return CAN_MOBS;}
