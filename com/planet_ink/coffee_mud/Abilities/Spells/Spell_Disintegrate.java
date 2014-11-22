@@ -55,8 +55,8 @@ public class Spell_Disintegrate extends Spell
 		for(int v=0;v<DBs.size();v++)
 		{
 			final DeadBody DB=DBs.get(v);
-			if(DB.playerCorpse()
-			&&(!DB.mobName().equals(mob.Name())))
+			if(DB.isPlayerCorpse()
+			&&(!DB.getMobName().equals(mob.Name())))
 			{
 				mob.tell(L("You are not allowed to destroy a player corpse."));
 				return false;
@@ -124,7 +124,7 @@ public class Spell_Disintegrate extends Spell
 							if((I instanceof DeadBody)
 							&&(I.container()==null)
 							&&(!oldBodies.contains(I))
-							&&(!((DeadBody)I).playerCorpse()))
+							&&(!((DeadBody)I).isPlayerCorpse()))
 							{
 								I.destroy();
 								break;

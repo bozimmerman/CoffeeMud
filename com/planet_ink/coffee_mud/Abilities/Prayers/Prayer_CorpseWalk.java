@@ -51,7 +51,7 @@ public class Prayer_CorpseWalk extends Prayer
 		for(int m=0;m<candidates.size();m++)
 		{
 			final Item item = candidates.get(m);
-			if((item instanceof DeadBody)&&(((DeadBody)item).playerCorpse()))
+			if((item instanceof DeadBody)&&(((DeadBody)item).isPlayerCorpse()))
 			{
 				Room newRoom=CMLib.map().roomLocation(item);
 				if(newRoom != null)

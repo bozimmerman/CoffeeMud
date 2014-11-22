@@ -508,7 +508,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				final Item I=R.getItem(i);
 				if((I.expirationDate()!=0)
 				&&((I.isSavable())||(I.Name().equalsIgnoreCase("id")))
-				&&((!(I instanceof DeadBody))||(((DeadBody)I).playerCorpse())))
+				&&((!(I instanceof DeadBody))||(((DeadBody)I).isPlayerCorpse())))
 				{
 					I.setExpirationDate(0);
 					updateItems=true;

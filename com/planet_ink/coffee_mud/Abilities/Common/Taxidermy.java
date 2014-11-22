@@ -157,7 +157,7 @@ public class Taxidermy extends CraftingSkill
 			return false;
 		}
 		foundShortName=I.Name();
-		if((!(I instanceof DeadBody))||(((DeadBody)I).playerCorpse())||(((DeadBody)I).mobName().length()==0))
+		if((!(I instanceof DeadBody))||(((DeadBody)I).isPlayerCorpse())||(((DeadBody)I).getMobName().length()==0))
 		{
 			commonTell(mob,L("You don't know how to stuff @x1.",I.name(mob)));
 			return false;
@@ -197,8 +197,8 @@ public class Taxidermy extends CraftingSkill
 		duration=getDuration(duration,mob,1,10);
 		buildingI=CMClass.getItem("GenItem");
 		buildingI.basePhyStats().setWeight(woodRequired);
-		final String name=((DeadBody)I).mobName();
-		final String desc=((DeadBody)I).mobDescription();
+		final String name=((DeadBody)I).getMobName();
+		final String desc=((DeadBody)I).geteMobDescription();
 		I.setMaterial(data[0][FOUND_CODE]);
 		buildingI.setName(L("the stuffed body of @x1",name));
 		final CharStats C=(I instanceof DeadBody)?((DeadBody)I).charStats():null;

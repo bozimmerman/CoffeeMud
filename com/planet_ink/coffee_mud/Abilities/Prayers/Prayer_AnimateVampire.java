@@ -83,7 +83,7 @@ public class Prayer_AnimateVampire extends Prayer
 		}
 
 		final DeadBody body=(DeadBody)target;
-		if(body.playerCorpse()||(body.mobName().length()==0)
+		if(body.isPlayerCorpse()||(body.getMobName().length()==0)
 		||((body.charStats()!=null)&&(body.charStats().getMyRace()!=null)&&(body.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))))
 		{
 			mob.tell(L("You can't animate that."));
@@ -92,7 +92,7 @@ public class Prayer_AnimateVampire extends Prayer
 		String race="a";
 		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
 			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
-		String description=body.mobDescription();
+		String description=body.geteMobDescription();
 		if(description.trim().length()==0)
 			description="It looks dead.";
 		else

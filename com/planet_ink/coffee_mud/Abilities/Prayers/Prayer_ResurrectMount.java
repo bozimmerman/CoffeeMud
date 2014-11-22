@@ -33,64 +33,43 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
-public class Prayer_TrueResurrection extends Prayer_Resurrect
+public class Prayer_ResurrectMount extends Prayer_Resurrect
 {
-	@Override public String ID() { return "Prayer_TrueResurrection"; }
-	private final static String localizedName = CMLib.lang().L("True Resurrection");
+	@Override public String ID() { return "Prayer_ResurrectMount"; }
+	private final static String localizedName = CMLib.lang().L("Resurrect Mount");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
-	@Override protected int canTargetCode(){return 0;}
+	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override public boolean isAutoInvoked() { return true; }
+	@Override public boolean canBeUninvoked() { return false; }
+	protected Set<Rideable> ridden=new HashSet<Rideable>();
 
-	public Item findCorpseRoom(List<Item> candidates)
-	{
-		for(int m=0;m<candidates.size();m++)
-		{
-			final Item item = candidates.get(m);
-			if((item instanceof DeadBody)&&(((DeadBody)item).isPlayerCorpse()))
-			{
-				Room newRoom=CMLib.map().roomLocation(item);
-				if(newRoom != null)
-					return item;
-			}
-		}
-		return null;
-	}
-	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean supportsMending(Physical item)
 	{
-		if(givenTarget == null)
+		
+		if(item instanceof DeadBody)
 		{
-			if(commands.size()<1)
-			{
-				mob.tell(L("You must specify the name of a corpse within range of this magic."));
-				return false;
-			}
-			final String corpseName=CMParms.combine(commands,0).trim().toUpperCase();
-
-			List<Item> candidates=CMLib.map().findRoomItems(mob.location().getArea().getProperMap(), mob, corpseName, false, 5);
-			Item corpseItem=this.findCorpseRoom(candidates);
-			Room newRoom = null;
-			if(corpseItem != null)
-				newRoom=CMLib.map().roomLocation(corpseItem);
-			if(newRoom == null)
-			{
-				candidates=CMLib.map().findRoomItems(CMLib.map().rooms(), mob, corpseName, false, 5);
-				corpseItem=this.findCorpseRoom(candidates);
-				if(corpseItem != null)
-					newRoom=CMLib.map().roomLocation(corpseItem);
-			}
-			candidates.clear();
-			if(newRoom==null)
-			{
-				mob.tell(L("You can't seem to fixate on a corpse called '@x1', perhaps it has decayed?",corpseName));
-				return false;
-			}
-			givenTarget = corpseItem;
+			MOB M=((DeadBody)item).getMOB();
+			return (M!=null) && ridden.contains(M);
 		}
-		return super.invoke(mob,commands,givenTarget,auto,asLevel);
+		return false;
 	}
+
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((affected instanceof MOB)
+		&&(((MOB)affected).riding()!=null)
+		&&(!ridden.contains(((MOB)affected).riding())))
+			ridden.add(((MOB)affected).riding());
+		return true;
+	}
+
+
+
 }

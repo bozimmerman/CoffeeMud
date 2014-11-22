@@ -67,7 +67,7 @@ public class Prayer_SpeakWithDead extends Prayer
 			return false;
 		}
 		
-		if((((DeadBody)target).savedMOB()!=null)&&(CMLib.flags().isAnimalIntelligence(((DeadBody)target).savedMOB())))
+		if((((DeadBody)target).getMOB()!=null)&&(CMLib.flags().isAnimalIntelligence(((DeadBody)target).getMOB())))
 		{
 			mob.tell(L("That poor creature, @x1 was never able to speak.",target.name()));
 			return false;
@@ -89,10 +89,10 @@ public class Prayer_SpeakWithDead extends Prayer
 				mob.location().showOthers(mob, target, CMMsg.MSG_OK_ACTION, L("<T-NAME> whisper(s) to <S-NAME>."));
 				StringBuilder knowledge=new StringBuilder("");
 				knowledge.append(L("I was @x1, killed on @x2 by @x3 with @x4.",
-						body.mobName(),
-						mob.location().getArea().getTimeObj().deriveClock(body.timeOfDeath()).getShortTimeDescription(),
-						body.killerName(),
-						(body.killingTool()==null) ? L("a weapon") : body.killingTool().Name()));
+						body.getMobName(),
+						mob.location().getArea().getTimeObj().deriveClock(body.getTimeOfDeath()).getShortTimeDescription(),
+						body.getKillerName(),
+						(body.getKillerTool()==null) ? L("a weapon") : body.getKillerTool().Name()));
 				mob.tell(mob,target,null,L("<T-NAME> whisper(s) to you '@x1'.",knowledge.toString()));
 				target.recoverPhyStats();
 				mob.recoverPhyStats();

@@ -302,8 +302,8 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 											final Item I=R.getItem(i);
 											if((I instanceof DeadBody)
 											&&(I.container()==null)
-											&&(((DeadBody)I).mobName().equals(targ.Name()))
-											&&(!((DeadBody)I).playerCorpse()))
+											&&(((DeadBody)I).getMobName().equals(targ.Name()))
+											&&(!((DeadBody)I).isPlayerCorpse()))
 											{
 												corpseI=(DeadBody)I;
 												break;
@@ -317,7 +317,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 								}
 								else
 								if((targ instanceof Item)
-								&&((!(targ instanceof DeadBody)||(!((DeadBody)targ).playerCorpse()))))
+								&&((!(targ instanceof DeadBody)||(!((DeadBody)targ).isPlayerCorpse()))))
 								{
 									((MOB)targ).location().show(mob,targ,CMMsg.MSG_OK_ACTION,L("^S<S-NAME> fire(s) <O-NAME> at <T-NAME> and it disintegrates!^?"));
 									((Item)targ).destroy();
@@ -353,7 +353,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 								}
 								else
 								if((targ instanceof Item)
-								&&((!(targ instanceof DeadBody)||(!((DeadBody)targ).playerCorpse()))))
+								&&((!(targ instanceof DeadBody)||(!((DeadBody)targ).isPlayerCorpse()))))
 								{
 									((MOB)targ).location().show(mob,targ,CMMsg.MSG_OK_ACTION,L("^S<S-NAME> fire(s) <O-NAME> at <T-NAME> and it explodes!^?"));
 									((Item)targ).destroy();

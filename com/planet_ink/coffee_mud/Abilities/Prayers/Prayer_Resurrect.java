@@ -110,13 +110,13 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		{
 			if(body==null)
 				return false;
-			if((!(body instanceof DeadBody))
-			||(((DeadBody)body).mobName().length()==0))
+			if((!supportsMending(body))
+			||(((DeadBody)body).getMobName().length()==0))
 			{
 				mob.tell(L("You can't resurrect that."));
 				return false;
 			}
-			playerCorpse=((DeadBody)body).playerCorpse();
+			playerCorpse=((DeadBody)body).isPlayerCorpse();
 			if(!playerCorpse)
 			{
 				final Ability AGE=body.fetchEffect("Age");

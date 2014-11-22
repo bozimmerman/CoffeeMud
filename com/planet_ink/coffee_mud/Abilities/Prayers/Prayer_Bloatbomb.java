@@ -157,7 +157,7 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 				for(Enumeration<Item> i=mob.location().items();i.hasMoreElements();)
 				{
 					final Item I=i.nextElement();
-					if((I instanceof DeadBody)&&(((DeadBody)I).mobName().equals(target.Name())))
+					if((I instanceof DeadBody)&&(((DeadBody)I).getMobName().equals(target.Name())))
 						body=(DeadBody)I;
 				}
 				if(body==null)

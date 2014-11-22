@@ -1099,10 +1099,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if((source!=null)&&(body!=null))
 			{
 				body.setKillerName(source.Name());
-				body.setKillerPlayer(!source.isMonster());
-				body.setKillingTool(source.fetchWieldedItem());
-				if(body.killingTool()==null)
-					body.setKillingTool(source.getNaturalWeapon());
+				body.setIsKillerPlayer(!source.isMonster());
+				body.setKillerTool(source.fetchWieldedItem());
+				if(body.getKillerTool()==null)
+					body.setKillerTool(source.getNaturalWeapon());
 			}
 
 			if((!target.isMonster())&&(CMLib.dice().rollPercentage()==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
@@ -1142,11 +1142,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					if((item!=null)
 					&&(item.container()==body)
 					&&(CMLib.flags().canBeSeenBy(body,source))
-					&&((!body.destroyAfterLooting())||(!(item instanceof RawMaterial)))
+					&&((!body.isDestroyedAfterLooting())||(!(item instanceof RawMaterial)))
 					&&(CMLib.flags().canBeSeenBy(item,source)))
 						CMLib.commands().postGet(source,body,item,false);
 				}
-				if(body.destroyAfterLooting())
+				if(body.isDestroyedAfterLooting())
 					bodyRoom.recoverRoomStats();
 			}
 
@@ -1178,7 +1178,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if((source != null)&&(source.getVictim()==target))
 				source.setVictim(null);
 			target.setVictim(null);
-			if((body!=null)&&(bodyRoom!=null)&&(body.destroyAfterLooting()))
+			if((body!=null)&&(bodyRoom!=null)&&(body.isDestroyedAfterLooting()))
 			{
 				for(int i=bodyRoom.numItems()-1;i>=0;i--)
 				{

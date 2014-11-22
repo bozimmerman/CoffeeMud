@@ -113,46 +113,46 @@ public class Corpse extends GenContainer implements DeadBody
 		savedMOB=null;
 	}
 
-	@Override public String mobName(){ return mobName;}
+	@Override public String getMobName(){ return mobName;}
 	@Override public void setMobName(String newName){mobName=newName;}
-	@Override public String mobDescription(){return mobDescription;}
+	@Override public String geteMobDescription(){return mobDescription;}
 	@Override public void setMobDescription(String newDescription){mobDescription=newDescription;}
-	@Override public boolean mobPKFlag(){return mobPKFlag;}
+	@Override public boolean getMobPKFlag(){return mobPKFlag;}
 	@Override public void setMobPKFlag(boolean truefalse){mobPKFlag=truefalse;}
-	@Override public String killerName(){return killerName;}
+	@Override public String getKillerName(){return killerName;}
 	@Override public void setKillerName(String newName){killerName=newName;}
-	@Override public boolean killerPlayer(){return killerPlayer;}
-	@Override public void setKillerPlayer(boolean trueFalse){killerPlayer=trueFalse;}
-	@Override public boolean playerCorpse(){return playerCorpse;}
-	@Override public void setPlayerCorpse(boolean truefalse){playerCorpse=truefalse;}
-	@Override public String lastMessage(){return lastMessage;}
+	@Override public boolean isKillerPlayer(){return killerPlayer;}
+	@Override public void setIsKillerPlayer(boolean trueFalse){killerPlayer=trueFalse;}
+	@Override public boolean isPlayerCorpse(){return playerCorpse;}
+	@Override public void setIsPlayerCorpse(boolean truefalse){playerCorpse=truefalse;}
+	@Override public String getLastMessage(){return lastMessage;}
 	@Override public void setLastMessage(String lastMsg){lastMessage=lastMsg;}
-	@Override public Environmental killingTool(){return killingTool;}
-	@Override public void setKillingTool(Environmental tool){killingTool=tool;}
-	@Override public boolean destroyAfterLooting(){return destroyAfterLooting;}
-	@Override public void setDestroyAfterLooting(boolean truefalse){destroyAfterLooting=truefalse;}
-	@Override public long timeOfDeath(){return timeOfDeath;}
+	@Override public Environmental getKillerTool(){return killingTool;}
+	@Override public void setKillerTool(Environmental tool){killingTool=tool;}
+	@Override public boolean isDestroyedAfterLooting(){return destroyAfterLooting;}
+	@Override public void setIsDestroyAfterLooting(boolean truefalse){destroyAfterLooting=truefalse;}
+	@Override public long getTimeOfDeath(){return timeOfDeath;}
 	@Override public void setTimeOfDeath(long time){timeOfDeath=time;}
 	@Override public void setSavedMOB(MOB mob){savedMOB=mob;}
-	@Override public MOB savedMOB(){return savedMOB;}
+	@Override public MOB getMOB(){return savedMOB;}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_SIT)
-		&&(msg.source().Name().equalsIgnoreCase(mobName()))
+		&&(msg.source().Name().equalsIgnoreCase(getMobName()))
 		&&(msg.amITarget(this)||(msg.tool()==this))
 		&&(CMLib.flags().isGolem(msg.source()))
 		&&(msg.source().phyStats().height()<0)
 		&&(msg.source().phyStats().weight()<=0)
-		&&(playerCorpse())
-		&&(mobName().length()>0))
+		&&(isPlayerCorpse())
+		&&(getMobName().length()>0))
 		{
 			CMLib.utensils().resurrect(msg.source(),msg.source().location(),this,-1);
 			return;
 		}
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
-		&&((System.currentTimeMillis()-timeOfDeath())>(TimeManager.MILI_HOUR/2)))
+		&&((System.currentTimeMillis()-getTimeOfDeath())>(TimeManager.MILI_HOUR/2)))
 			msg.source().tell(L("@x1 has definitely started to decay.",name()));
 		super.executeMsg(myHost, msg);
 
@@ -162,11 +162,11 @@ public class Corpse extends GenContainer implements DeadBody
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.tool()==this))
-		&&(playerCorpse())
-		&&(mobName().length()>0))
+		&&(isPlayerCorpse())
+		&&(getMobName().length()>0))
 		{
 			if((msg.targetMinor()==CMMsg.TYP_SIT)
-			&&(msg.source().name().equalsIgnoreCase(mobName()))
+			&&(msg.source().name().equalsIgnoreCase(getMobName()))
 			&&(CMLib.flags().isGolem(msg.source()))
 			&&(msg.source().phyStats().height()<0)
 			&&(msg.source().phyStats().weight()<=0))
@@ -192,7 +192,7 @@ public class Corpse extends GenContainer implements DeadBody
 					return true;
 				if(CMProps.getVar(CMProps.Str.CORPSEGUARD).equalsIgnoreCase("ANY"))
 					return true;
-				if (mobName().equalsIgnoreCase(msg.source().Name()))
+				if (getMobName().equalsIgnoreCase(msg.source().Name()))
 					return true;
 				else
 				if(CMProps.getVar(CMProps.Str.CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
@@ -209,9 +209,9 @@ public class Corpse extends GenContainer implements DeadBody
 						return false;
 					}
 					else
-					if(mobPKFlag())
+					if(getMobPKFlag())
 					{
-						msg.source().tell(L("You can not get that.  @x1 was not a player killer.",mobName()));
+						msg.source().tell(L("You can not get that.  @x1 was not a player killer.",getMobName()));
 						return false;
 					}
 				}

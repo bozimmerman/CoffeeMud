@@ -662,46 +662,46 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.tell(L("@x1. Corpse Data: '@x2/@x3'.",""+showNumber,I.mobName(),I.killerName()));
+		mob.tell(L("@x1. Corpse Data: '@x2/@x3'.",""+showNumber,I.getMobName(),I.getKillerName()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		mob.tell(L("Dead MOB name: '@x1'.",I.mobName()));
+		mob.tell(L("Dead MOB name: '@x1'.",I.getMobName()));
 		String newName=mob.session().prompt(L("Enter a new name\n\r:"),"");
 		if(newName.length()>0)
 			I.setMobName(newName);
 		else mob.tell(L("(no change)"));
-		mob.tell(L("Dead MOB Description: '@x1'.",I.mobDescription()));
+		mob.tell(L("Dead MOB Description: '@x1'.",I.geteMobDescription()));
 		newName=mob.session().prompt(L("Enter a new description\n\r:"),"");
 		if(newName.length()>0)
 			I.setMobDescription(newName);
 		else mob.tell(L("(no change)"));
-		mob.tell(L("Is a Players corpse: @x1",""+I.playerCorpse()));
+		mob.tell(L("Is a Players corpse: @x1",""+I.isPlayerCorpse()));
 		newName=mob.session().prompt(L("Enter a new true/false\n\r:"),"");
 		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
-			I.setPlayerCorpse(Boolean.valueOf(newName.toLowerCase()).booleanValue());
+			I.setIsPlayerCorpse(Boolean.valueOf(newName.toLowerCase()).booleanValue());
 		else mob.tell(L("(no change)"));
-		mob.tell(L("Dead mobs PK flag: @x1",""+I.mobPKFlag()));
+		mob.tell(L("Dead mobs PK flag: @x1",""+I.getMobPKFlag()));
 		newName=mob.session().prompt(L("Enter a new true/false\n\r:"),"");
 		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
 			I.setMobPKFlag(Boolean.valueOf(newName.toLowerCase()).booleanValue());
 		else mob.tell(L("(no change)"));
 		genCharStats(mob,I.charStats());
-		mob.tell(L("Killers Name: '@x1'.",I.killerName()));
+		mob.tell(L("Killers Name: '@x1'.",I.getKillerName()));
 		newName=mob.session().prompt(L("Enter a new killer\n\r:"),"");
 		if(newName.length()>0)
 			I.setKillerName(newName);
 		else mob.tell(L("(no change)"));
-		mob.tell(L("Killer is a player: @x1",""+I.killerPlayer()));
+		mob.tell(L("Killer is a player: @x1",""+I.isKillerPlayer()));
 		newName=mob.session().prompt(L("Enter a new true/false\n\r:"),"");
 		if((newName.length()>0)&&(newName.equalsIgnoreCase("true")||newName.equalsIgnoreCase("false")))
-			I.setKillerPlayer(Boolean.valueOf(newName.toLowerCase()).booleanValue());
+			I.setIsKillerPlayer(Boolean.valueOf(newName.toLowerCase()).booleanValue());
 		else mob.tell(L("(no change)"));
-		mob.tell(L("Time of death: @x1",CMLib.time().date2String(I.timeOfDeath())));
+		mob.tell(L("Time of death: @x1",CMLib.time().date2String(I.getTimeOfDeath())));
 		newName=mob.session().prompt(L("Enter a new value\n\r:"),"");
 		if(newName.length()>0)
 			I.setTimeOfDeath(CMLib.time().string2Millis(newName));
 		else mob.tell(L("(no change)"));
-		mob.tell(L("Last message string: @x1",I.lastMessage()));
+		mob.tell(L("Last message string: @x1",I.getLastMessage()));
 		newName=mob.session().prompt(L("Enter a new value\n\r:"),"");
 		if(newName.length()>0)
 			I.setLastMessage(newName);

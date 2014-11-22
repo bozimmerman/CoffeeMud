@@ -564,14 +564,17 @@ public class StdRace implements Race
 			room=mob.location();
 
 		final DeadBody bodyI=(DeadBody)CMClass.getItem("Corpse");
-		if((mob.amFollowing()!=null)
-		&&(mob.isMonster())
-		&&((!mob.amFollowing().isMonster())||(!mob.amUltimatelyFollowing().isMonster())))
-			bodyI.setSavedMOB((MOB)mob.copyOf());
+		if(mob.isMonster())
+		{
+			if((mob.amFollowing()!=null)
+			&&((!mob.amFollowing().isMonster())||(!mob.amUltimatelyFollowing().isMonster())))
+				bodyI.setSavedMOB((MOB)mob.copyOf());
+		}
+		
 		bodyI.setCharStats((CharStats)mob.baseCharStats().copyOf());
 		bodyI.basePhyStats().setLevel(mob.basePhyStats().level());
 		bodyI.basePhyStats().setWeight(mob.basePhyStats().weight());
-		bodyI.setPlayerCorpse(!mob.isMonster());
+		bodyI.setIsPlayerCorpse(!mob.isMonster());
 		bodyI.setTimeOfDeath(System.currentTimeMillis());
 		bodyI.setMobPKFlag(mob.isAttribute(MOB.Attrib.PLAYERKILL));
 		bodyI.setName(L("the body of @x1",mob.Name().replace('\'','`')));
@@ -590,7 +593,7 @@ public class StdRace implements Race
 				expireCode=ItemPossessor.Expire.Player_Body;
 			room.addItem(bodyI,expireCode);
 		}
-		bodyI.setDestroyAfterLooting(destroyBodyAfterUse());
+		bodyI.setIsDestroyAfterLooting(destroyBodyAfterUse());
 		bodyI.recoverPhyStats();
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{

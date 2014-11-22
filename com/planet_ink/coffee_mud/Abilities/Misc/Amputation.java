@@ -495,7 +495,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				if((aff.length>1)||(aff[0]>=0))
 					for (final int element : aff)
 						if(((affected instanceof MOB)&&(((MOB)affected).charStats().getBodyPart(element)>0))
-						||((affected instanceof DeadBody)&&(((DeadBody)affected).savedMOB() != null)&&(((DeadBody)affected).savedMOB().charStats().getBodyPart(element)>0)))
+						||((affected instanceof DeadBody)&&(((DeadBody)affected).getMOB() != null)&&(((DeadBody)affected).getMOB().charStats().getBodyPart(element)>0)))
 						{
 							String r=Race.BODYPARTSTR[element].toLowerCase();
 							if(gone.startsWith("left "))

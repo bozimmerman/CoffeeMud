@@ -110,8 +110,8 @@ public class Spell_MassDisintegrate extends Spell
 					boolean ok=true;
 					for(final DeadBody DB : DBs)
 					{
-						if(DB.playerCorpse()
-						&&(!((DeadBody)I).mobName().equals(mob.Name())))
+						if(DB.isPlayerCorpse()
+						&&(!((DeadBody)I).getMobName().equals(mob.Name())))
 							ok=false;
 					}
 					if(ok)
@@ -122,8 +122,8 @@ public class Spell_MassDisintegrate extends Spell
 			{
 				final Item I=(Item)V.elementAt(i);
 				if((!(I instanceof DeadBody))
-				||(!((DeadBody)I).playerCorpse())
-				||(((DeadBody)I).mobName().equals(mob.Name())))
+				||(!((DeadBody)I).isPlayerCorpse())
+				||(((DeadBody)I).getMobName().equals(mob.Name())))
 				{
 					final CMMsg msg=CMClass.getMsg(mob,I,this,somanticCastCode(mob,I,auto),L("@x1 disintegrates!",I.name()));
 					if(mob.location().okMessage(mob,msg))

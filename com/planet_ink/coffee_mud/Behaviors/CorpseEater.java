@@ -102,7 +102,7 @@ public class CorpseEater extends ActiveTicker
 				{
 					if(getParms().length()>0)
 					{
-						if(((DeadBody)I).playerCorpse())
+						if(((DeadBody)I).isPlayerCorpse())
 						{
 							if(getParms().toUpperCase().indexOf("+PLAYER")<0)
 								continue;
@@ -120,7 +120,7 @@ public class CorpseEater extends ActiveTicker
 						mob2.destroy();
 					}
 					else
-					if(((DeadBody)I).playerCorpse())
+					if(((DeadBody)I).isPlayerCorpse())
 						continue;
 
 					if((I instanceof Container)&&(!EatItems))

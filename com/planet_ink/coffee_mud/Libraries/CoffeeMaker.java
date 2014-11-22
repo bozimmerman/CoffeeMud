@@ -534,24 +534,24 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.STAT_GENDER)));
 				text.append(CMLib.xml().convertXMLtoTag("MRACE",""+((DeadBody)E).charStats().getMyRace().ID()));
-				text.append(CMLib.xml().convertXMLtoTag("MDNAME",""+((DeadBody)E).mobName()));
-				text.append(CMLib.xml().convertXMLtoTag("MDDESC",""+((DeadBody)E).mobDescription()));
-				text.append(CMLib.xml().convertXMLtoTag("MKNAME",""+((DeadBody)E).killerName()));
-				text.append(CMLib.xml().convertXMLtoTag("MTOD",""+((DeadBody)E).timeOfDeath()));
-				text.append(CMLib.xml().convertXMLtoTag("MKPLAY",""+((DeadBody)E).killerPlayer()));
-				text.append(CMLib.xml().convertXMLtoTag("MDLMSG",""+((DeadBody)E).lastMessage()));
-				text.append(CMLib.xml().convertXMLtoTag("MBREAL",""+((DeadBody)E).destroyAfterLooting()));
-				text.append(CMLib.xml().convertXMLtoTag("MPLAYR",""+((DeadBody)E).playerCorpse()));
-				text.append(CMLib.xml().convertXMLtoTag("MPKILL",""+((DeadBody)E).mobPKFlag()));
-				if(((DeadBody)E).savedMOB()!=null)
-					text.append("<MOBS>"+getMobXML(((DeadBody)E).savedMOB())+"</MOBS>");
-				if(((DeadBody)E).killingTool()==null) 
+				text.append(CMLib.xml().convertXMLtoTag("MDNAME",""+((DeadBody)E).getMobName()));
+				text.append(CMLib.xml().convertXMLtoTag("MDDESC",""+((DeadBody)E).geteMobDescription()));
+				text.append(CMLib.xml().convertXMLtoTag("MKNAME",""+((DeadBody)E).getKillerName()));
+				text.append(CMLib.xml().convertXMLtoTag("MTOD",""+((DeadBody)E).getTimeOfDeath()));
+				text.append(CMLib.xml().convertXMLtoTag("MKPLAY",""+((DeadBody)E).isKillerPlayer()));
+				text.append(CMLib.xml().convertXMLtoTag("MDLMSG",""+((DeadBody)E).getLastMessage()));
+				text.append(CMLib.xml().convertXMLtoTag("MBREAL",""+((DeadBody)E).isDestroyedAfterLooting()));
+				text.append(CMLib.xml().convertXMLtoTag("MPLAYR",""+((DeadBody)E).isPlayerCorpse()));
+				text.append(CMLib.xml().convertXMLtoTag("MPKILL",""+((DeadBody)E).getMobPKFlag()));
+				if(((DeadBody)E).getMOB()!=null)
+					text.append("<MOBS>"+getMobXML(((DeadBody)E).getMOB())+"</MOBS>");
+				if(((DeadBody)E).getKillerTool()==null) 
 					text.append("<KLTOOL />");
 				else
 				{
 					text.append("<KLTOOL>");
-					text.append(CMLib.xml().convertXMLtoTag("KLCLASS",CMClass.classID(((DeadBody)E).killingTool())));
-					text.append(CMLib.xml().convertXMLtoTag("KLDATA",getPropertiesStr(((DeadBody)E).killingTool(),true)));
+					text.append(CMLib.xml().convertXMLtoTag("KLCLASS",CMClass.classID(((DeadBody)E).getKillerTool())));
+					text.append(CMLib.xml().convertXMLtoTag("KLDATA",getPropertiesStr(((DeadBody)E).getKillerTool(),true)));
 					text.append("</KLTOOL>");
 				}
 			}
@@ -2851,7 +2851,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			try
 			{
 				((DeadBody)E).charStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
-				((DeadBody)E).setPlayerCorpse(CMLib.xml().getBoolFromPieces(buf,"MPLAYR"));
+				((DeadBody)E).setIsPlayerCorpse(CMLib.xml().getBoolFromPieces(buf,"MPLAYR"));
 				final String mobName=CMLib.xml().getValFromPieces(buf,"MDNAME");
 				if(mobName.length()>0)
 				{
@@ -2859,9 +2859,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					((DeadBody)E).setMobDescription(CMLib.xml().getValFromPieces(buf,"MDDESC"));
 					((DeadBody)E).setTimeOfDeath(CMLib.xml().getLongFromPieces(buf,"MTOD"));
 					((DeadBody)E).setKillerName(CMLib.xml().getValFromPieces(buf,"MKNAME"));
-					((DeadBody)E).setKillerPlayer(CMLib.xml().getBoolFromPieces(buf,"MKPLAY"));
+					((DeadBody)E).setIsKillerPlayer(CMLib.xml().getBoolFromPieces(buf,"MKPLAY"));
 					((DeadBody)E).setMobPKFlag(CMLib.xml().getBoolFromPieces(buf,"MPKILL"));
-					((DeadBody)E).setDestroyAfterLooting(CMLib.xml().getBoolFromPieces(buf,"MBREAL"));
+					((DeadBody)E).setIsDestroyAfterLooting(CMLib.xml().getBoolFromPieces(buf,"MBREAL"));
 					((DeadBody)E).setLastMessage(CMLib.xml().getValFromPieces(buf,"MDLMSG"));
 					final String mobsXML=CMLib.xml().getValFromPieces(buf,"MOBS");
 					if((mobsXML!=null)&&(mobsXML.length()>0))
@@ -2883,11 +2883,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						else
 						{
 							setPropertiesStr(newOne,idat,true);
-							((DeadBody)E).setKillingTool(newOne);
+							((DeadBody)E).setKillerTool(newOne);
 						}
 					}
 					else
-						((DeadBody)E).setKillingTool(null);
+						((DeadBody)E).setKillerTool(null);
 				}
 			}
 			catch(final Exception e){}

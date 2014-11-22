@@ -76,8 +76,8 @@ public class Prayer_BoneMoon extends Prayer
 				final Item I=R.getItem(i);
 				if((I instanceof DeadBody)
 				&&(I.container()==null)
-				&&(!((DeadBody)I).playerCorpse())
-				&&(((DeadBody)I).mobName().length()>0))
+				&&(!((DeadBody)I).isPlayerCorpse())
+				&&(((DeadBody)I).getMobName().length()>0))
 				{
 					B=(DeadBody)I;
 					break;

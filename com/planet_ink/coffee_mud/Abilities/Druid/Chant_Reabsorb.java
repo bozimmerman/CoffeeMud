@@ -85,8 +85,8 @@ public class Chant_Reabsorb extends Chant
 		{
 			final DeadBody D=V.get(v);
 			if((D!=null)
-			&&(D.playerCorpse())
-			&&(!D.mobName().equals(mob.Name())))
+			&&(D.isPlayerCorpse())
+			&&(!D.getMobName().equals(mob.Name())))
 			{
 				mob.tell(L("You are not allowed to reabsorb a player corpse."));
 				return false;

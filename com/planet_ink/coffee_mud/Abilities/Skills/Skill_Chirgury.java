@@ -236,13 +236,13 @@ public class Skill_Chirgury extends StdSkill
 						baby.setName(L("@x1's bloody fetus",target.Name()));
 						baby.setDisplayText(L("@x1's bloody fetus is lying here.",target.Name()));
 						baby.setTimeOfDeath(System.currentTimeMillis());
-						baby.setDestroyAfterLooting(false);
+						baby.setIsDestroyAfterLooting(false);
 						baby.setKillerName(mob.Name());
-						baby.setKillingTool(ww);
-						baby.setKillerPlayer(!mob.isMonster());
+						baby.setKillerTool(ww);
+						baby.setIsKillerPlayer(!mob.isMonster());
 						baby.setMobPKFlag(false);
 						baby.setMobName(baby.Name());
-						baby.setPlayerCorpse(false);
+						baby.setIsPlayerCorpse(false);
 						baby.basePhyStats().setWeight(1);
 						baby.charStats().setStat(CharStats.STAT_GENDER,(CMLib.dice().rollPercentage()>50)?'F':'M');
 						for(final int i: CharStats.CODES.BASECODES())

@@ -947,15 +947,15 @@ public class StdRoom implements Room
 					@Override public final void apply(final Item I)
 					{
 						if((I instanceof DeadBody)
-						&&(((DeadBody)I).playerCorpse()))
+						&&(((DeadBody)I).isPlayerCorpse()))
 							deadBodies.add((DeadBody)I);
 					} 
 				});
 				for(final DeadBody D : deadBodies)
 				{
-					MOB M=CMLib.players().getLoadPlayer(D.mobName());
+					MOB M=CMLib.players().getLoadPlayer(D.getMobName());
 					if(M==null)
-						M=D.savedMOB();
+						M=D.getMOB();
 					if((M!=null)&&(M.getStartRoom()!=null))
 					{
 						final Room startRoom=CMLib.map().getRoom(M.getStartRoom());

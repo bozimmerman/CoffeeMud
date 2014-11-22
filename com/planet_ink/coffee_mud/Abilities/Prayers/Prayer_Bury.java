@@ -63,7 +63,7 @@ public class Prayer_Bury extends Prayer
 			mob.tell(L("You may only bury the dead."));
 			return false;
 		}
-		if((((DeadBody)target).playerCorpse())&&(!((DeadBody)target).mobName().equals(mob.Name())))
+		if((((DeadBody)target).isPlayerCorpse())&&(!((DeadBody)target).getMobName().equals(mob.Name())))
 		{
 			mob.tell(L("You are not allowed to bury a players corpse."));
 			return false;

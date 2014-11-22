@@ -64,9 +64,9 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 	public boolean supportsMending(Physical item)
 	{
 		return (item instanceof DeadBody)
-				&&(((DeadBody)item).savedMOB()!=null)
-				&&(!((DeadBody)item).playerCorpse())
-				&&(CMLib.flags().isAnimalIntelligence(((DeadBody)item).savedMOB()));
+				&&(((DeadBody)item).getMOB()!=null)
+				&&(!((DeadBody)item).isPlayerCorpse())
+				&&(CMLib.flags().isAnimalIntelligence(((DeadBody)item).getMOB()));
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 								{
 									final Item I=room.getItem(i);
 									if((I instanceof DeadBody)
-									&&(((DeadBody)I).mobName().equals(aniM.Name()))
+									&&(((DeadBody)I).getMobName().equals(aniM.Name()))
 									&&(!isCompanionBody((DeadBody)I)))
 									{
 										final List<WeakReference<DeadBody>> companionMobs=A.companionMobs;
@@ -132,13 +132,13 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 		if(body==null) 
 			return false;
 		if((!(body instanceof DeadBody))
-		||(((DeadBody)body).mobName().length()==0)
-		||(((DeadBody)body).savedMOB()==null))
+		||(((DeadBody)body).getMobName().length()==0)
+		||(((DeadBody)body).getMOB()==null))
 		{
 			mob.tell(L("@x1 can not be resuscitated.",body.Name()));
 			return false;
 		}
-		boolean playerCorpse=((DeadBody)body).playerCorpse();
+		boolean playerCorpse=((DeadBody)body).isPlayerCorpse();
 		if(playerCorpse)
 		{
 			mob.tell(L("You can't resuscitate @x1.",((DeadBody)body).charStats().himher()));
@@ -146,7 +146,7 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 		}
 		if(!isCompanionBody((DeadBody)body))
 		{
-			mob.tell(L("@x1 was either not your companion, or you were not present at the time of death.",((DeadBody)body).mobName()));
+			mob.tell(L("@x1 was either not your companion, or you were not present at the time of death.",((DeadBody)body).getMobName()));
 			return false;
 		}
 
@@ -171,7 +171,7 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 					success = CMLib.utensils().resurrect(mob,mob.location(), (DeadBody)body, super.getXPCOSTLevel(mob));
 				else
 				{
-					final MOB rejuvedMOB=((DeadBody)body).savedMOB();
+					final MOB rejuvedMOB=((DeadBody)body).getMOB();
 					for(Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
 					{
 						WeakReference<DeadBody> wM=m.next();

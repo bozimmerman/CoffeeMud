@@ -51,8 +51,8 @@ public class Prayer_Sacrifice extends Prayer
 		{
 			final Item I=R.getItem(i);
 			if((I instanceof DeadBody)
-			&&(!((DeadBody)I).playerCorpse())
-			&&(((DeadBody)I).mobName().length()>0))
+			&&(!((DeadBody)I).isPlayerCorpse())
+			&&(((DeadBody)I).getMobName().length()>0))
 				return I;
 		}
 		return null;
@@ -77,8 +77,8 @@ public class Prayer_Sacrifice extends Prayer
 			return false;
 		}
 
-		if((((DeadBody)target).playerCorpse())
-		&&(!((DeadBody)target).mobName().equals(mob.Name()))
+		if((((DeadBody)target).isPlayerCorpse())
+		&&(!((DeadBody)target).getMobName().equals(mob.Name()))
 		&&(((DeadBody)target).hasContent()))
 		{
 			mob.tell(L("You are not allowed to sacrifice that corpse."));

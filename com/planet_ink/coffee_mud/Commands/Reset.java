@@ -256,7 +256,7 @@ public class Reset extends StdCommand
 		{
 			I=R.getItem(i);
 			if((I instanceof DeadBody)
-			&&(((DeadBody)I).playerCorpse()))
+			&&(((DeadBody)I).isPlayerCorpse()))
 				warning.append("A player corpse, '"+I.Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
 		}
 		if(R instanceof GridLocale)

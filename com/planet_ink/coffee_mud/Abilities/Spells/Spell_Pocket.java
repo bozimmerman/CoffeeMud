@@ -75,8 +75,8 @@ public class Spell_Pocket extends Spell
 		for(int v=0;v<DBs.size();v++)
 		{
 			final DeadBody DB=DBs.get(v);
-			if(DB.playerCorpse()
-			&&(!DB.mobName().equals(mob.Name())))
+			if(DB.isPlayerCorpse()
+			&&(!DB.getMobName().equals(mob.Name())))
 			{
 				mob.tell(L("You are not allowed to pocket a player corpse."));
 				return false;

@@ -46,7 +46,8 @@ public class AutoInvoke extends StdCommand
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final Vector<String> abilities=new Vector<String>();
+		final List<Ability> abilities=new Vector<Ability>();
+		final Set<String> abilityids=new TreeSet<String>();
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			final Ability A=mob.fetchAbility(a);
@@ -54,24 +55,45 @@ public class AutoInvoke extends StdCommand
 			&&(A.isAutoInvoked())
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PROPERTY))
-				abilities.addElement(A.ID());
+			{
+				abilities.add(A);
+				abilityids.add(A.ID());
+			}
 		}
 
-		final Vector<String> effects=new Vector<String>();
+		final Set<String> effects=new TreeSet<String>();
 		for(int a=0;a<mob.numEffects();a++)
 		{
 			final Ability A=mob.fetchEffect(a);
 			if((A!=null)
-			&&(abilities.contains(A.ID()))
+			&&(abilityids.contains(A.ID()))
 			&&(!A.isSavable()))
-				effects.addElement(A.ID());
+				effects.add(A.ID());
 		}
+		abilityids.clear();
 
+		Collections.sort(abilities,new Comparator<Ability>(){
+			@Override
+			public int compare(Ability o1, Ability o2)
+			{
+				if(o1==null)
+				{
+					if(o2==null)
+						return 0;
+					return -1;
+				}
+				else
+				if(o2==null)
+					return 1;
+				else
+					return o1.name().compareToIgnoreCase(o2.name());
+			}
+			
+		});
 		final StringBuffer str=new StringBuffer(L("^xAuto-invoking abilities:^?^.\n\r^N"));
 		int col=0;
-		for(int a=0;a<abilities.size();a++)
+		for(Ability A : abilities)
 		{
-			final Ability A=mob.fetchAbility(abilities.elementAt(a));
 			if(A!=null)
 			{
 				if(effects.contains(A.ID()))
@@ -104,19 +126,17 @@ public class AutoInvoke extends StdCommand
 					Ability foundA=null;
 					if(s.length()>0)
 					{
-						for(int a=0;a<abilities.size();a++)
+						for(Ability A : abilities)
 						{
-							final Ability A=mob.fetchAbility(abilities.elementAt(a));
 							if((A!=null)&&(A.name().equalsIgnoreCase(s)))
 							{ foundA=A; break;}
 						}
 						if(foundA==null)
-						for(int a=0;a<abilities.size();a++)
-						{
-							final Ability A=mob.fetchAbility(abilities.elementAt(a));
-							if((A!=null)&&(CMLib.english().containsString(A.name(),s)))
-							{ foundA=A; break;}
-						}
+							for(Ability A : abilities)
+							{
+								if((A!=null)&&(CMLib.english().containsString(A.name(),s)))
+								{ foundA=A; break;}
+							}
 						if(foundA==null)
 							mob.tell(L("'@x1' is invalid.",s));
 						else

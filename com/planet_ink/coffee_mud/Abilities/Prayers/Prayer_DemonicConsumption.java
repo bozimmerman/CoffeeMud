@@ -112,7 +112,7 @@ public class Prayer_DemonicConsumption extends Prayer
 							if((I instanceof DeadBody)
 							&&(I.container()==null)
 							&&(!oldBodies.contains(I))
-							&&(!((DeadBody)I).playerCorpse()))
+							&&(!((DeadBody)I).isPlayerCorpse()))
 							{
 								I.destroy();
 								break;
