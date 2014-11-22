@@ -67,22 +67,27 @@ public class PaladinSkill extends StdAbility
 			return false;
 		if(!(affected instanceof MOB))
 			return false;
-		if(invoker==null)
-			invoker=(MOB)affected;
-		if(!(CMLib.flags().isGood(invoker)))
+		final MOB paladinMob=(invoker == null) ? (MOB)affected : invoker;
+		if(paladinMob==null)
 			return false;
+		if(!(CMLib.flags().isGood(paladinMob)))
+			return false;
+		final Set<MOB> paladinsGroup=this.paladinsGroup;
 		if(paladinsGroup!=null)
 		{
-			paladinsGroup.clear();
-			((MOB)affected).getGroupMembers(paladinsGroup);
-			removeFromGroup.clear();
-			for(final MOB M : paladinsGroup)
-				if(M.location()!=invoker.location())
-					removeFromGroup.add(M);
-			paladinsGroup.removeAll(removeFromGroup);
+			synchronized(paladinsGroup)
+			{
+				paladinsGroup.clear();
+				paladinMob.getGroupMembers(paladinsGroup);
+				removeFromGroup.clear();
+				for(final MOB M : paladinsGroup)
+					if(M.location()!=paladinMob.location())
+						removeFromGroup.add(M);
+				paladinsGroup.removeAll(removeFromGroup);
+			}
 		}
 		if((CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()<10))
-			helpProficiency(invoker, 0);
+			helpProficiency(paladinMob, 0);
 		return true;
 	}
 
