@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
 public class Paladin_Courage extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_Courage"; }
@@ -43,7 +42,7 @@ public class Paladin_Courage extends PaladinSkill
 	public Paladin_Courage()
 	{
 		super();
-		paladinsGroup=new Vector();
+		paladinsGroup=new HashSet<MOB>();
 	}
 
 	@Override
@@ -59,9 +58,10 @@ public class Paladin_Courage extends PaladinSkill
 			return true;
 
 		if((msg.target() instanceof MOB)
-		   &&(paladinsGroup.contains(msg.target()))
-		   &&(!paladinsGroup.contains(msg.source()))
-		   &&(msg.source()!=invoker))
+		&&(paladinsGroup.contains(msg.target()))
+		&&(!paladinsGroup.contains(msg.source()))
+		&&(msg.source()!=invoker)
+		&&(((MOB)msg.target()).location()==invoker.location()))
 		{
 			if((CMLib.flags().isGood(invoker))
 			&&(msg.tool() instanceof Ability)

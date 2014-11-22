@@ -29,13 +29,11 @@ NON-TECH
    *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
    *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills:
-        *. Paladin       : +6
+        *. Paladin       : +4
                          : Shared Fate (Paladin and mount share bad effects instead of only Paladin)
                          : Shared Vision (can see through mounts eyes)
                          : Death Ward (negative energy ward)
-                         : Resurrect Mount
                          : Heal Mount
-                         : Abide (prevent death for few mins),
         *. Fighter       : +2
                          :
                          :

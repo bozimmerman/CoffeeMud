@@ -105,7 +105,6 @@ public class Druid_PackCall extends StdAbility
 	{
 		if(mob!=null)
 		{
-			final Room R=mob.location();
 			if(!CMLib.flags().isInWilderness(mob))
 				return Ability.QUALITY_INDIFFERENT;
 			if(target instanceof MOB)

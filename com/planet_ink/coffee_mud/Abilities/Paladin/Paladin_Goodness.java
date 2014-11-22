@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
 public class Paladin_Goodness extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_Goodness"; }
@@ -44,7 +43,7 @@ public class Paladin_Goodness extends PaladinSkill
 	public Paladin_Goodness()
 	{
 		super();
-		paladinsGroup=new Vector();
+		paladinsGroup=new HashSet<MOB>();
 	}
 
 	@Override

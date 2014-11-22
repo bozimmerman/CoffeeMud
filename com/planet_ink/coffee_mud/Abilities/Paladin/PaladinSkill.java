@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class PaladinSkill extends StdAbility
 {
 	@Override public String ID() { return "PaladinSkill"; }
@@ -46,7 +45,8 @@ public class PaladinSkill extends StdAbility
 	@Override public boolean canBeUninvoked(){return false;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
-	protected Vector paladinsGroup=null;
+	protected Set<MOB> paladinsGroup=null;
+	protected final List<MOB> removeFromGroup=new LinkedList<MOB>();
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL;}
 
 	@Override
@@ -62,28 +62,15 @@ public class PaladinSkill extends StdAbility
 			return false;
 		if(paladinsGroup!=null)
 		{
-			final Set<MOB> H=((MOB)affected).getGroupMembers(new HashSet<MOB>());
-			for (final Object element : H)
-			{
-				final MOB mob=(MOB)element;
-				if(!paladinsGroup.contains(mob))
-					paladinsGroup.addElement(mob);
-			}
-			for(int i=paladinsGroup.size()-1;i>=0;i--)
-			{
-				try
-				{
-					final MOB mob=(MOB)paladinsGroup.elementAt(i);
-					if((!H.contains(mob))
-					||(mob.location()!=invoker.location()))
-						paladinsGroup.removeElement(mob);
-				}
-				catch(final java.lang.ArrayIndexOutOfBoundsException e)
-				{
-				}
-			}
+			paladinsGroup.clear();
+			((MOB)affected).getGroupMembers(paladinsGroup);
+			removeFromGroup.clear();
+			for(final MOB M : paladinsGroup)
+				if(M.location()!=invoker.location())
+					removeFromGroup.add(M);
+			paladinsGroup.removeAll(removeFromGroup);
 		}
-		if(CMLib.dice().rollPercentage()==1)
+		if((CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()<10))
 			helpProficiency(invoker, 0);
 		return true;
 	}

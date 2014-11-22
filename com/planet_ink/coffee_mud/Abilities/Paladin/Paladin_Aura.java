@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
 public class Paladin_Aura extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_Aura"; }
@@ -44,7 +43,7 @@ public class Paladin_Aura extends PaladinSkill
 	public Paladin_Aura()
 	{
 		super();
-		paladinsGroup=new Vector();
+		paladinsGroup=new HashSet<MOB>();
 	}
 	protected boolean pass=false;
 
@@ -55,20 +54,15 @@ public class Paladin_Aura extends PaladinSkill
 			return false;
 		pass=(invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false);
 		if(pass)
-		for(int i=paladinsGroup.size()-1;i>=0;i--)
 		{
-			try
+			for(final MOB mob : paladinsGroup)
 			{
-				final MOB mob=(MOB)paladinsGroup.elementAt(i);
-				if(CMLib.flags().isEvil(mob))
+				if(CMLib.flags().isEvil(mob) && (mob.location()==invoker.location()))
 				{
 					final int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*getXLEVELLevel(invoker)),3.0));
 					final MOB invoker=(invoker()!=null) ? invoker() : mob;
 					CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,L("^SThe aura around <S-NAME> <DAMAGES> <T-NAME>!^?"));
 				}
-			}
-			catch(final java.lang.ArrayIndexOutOfBoundsException e)
-			{
 			}
 		}
 		return true;
