@@ -551,6 +551,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(!super.invoke(mob, commands, target, auto, asLevel))
 			return false;
 		StdTrap T=(StdTrap)copyOf();
+		T.setInvoker(mob);
 		T.spring(target);
 		return true;
 	}
