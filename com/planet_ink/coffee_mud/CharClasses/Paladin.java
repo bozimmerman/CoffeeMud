@@ -144,7 +144,7 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BladeBarrier",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CureFatigue",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_Godstrike",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LightHammer",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Sweep",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_MassFreedom",false,CMParms.parseSemicolons("Prayer_Freedom",true));

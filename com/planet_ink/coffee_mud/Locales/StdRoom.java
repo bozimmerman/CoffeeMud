@@ -955,7 +955,7 @@ public class StdRoom implements Room
 				{
 					MOB M=CMLib.players().getLoadPlayer(D.getMobName());
 					if(M==null)
-						M=D.getMOB();
+						M=D.getSavedMOB();
 					if((M!=null)&&(M.getStartRoom()!=null))
 					{
 						final Room startRoom=CMLib.map().getRoom(M.getStartRoom());

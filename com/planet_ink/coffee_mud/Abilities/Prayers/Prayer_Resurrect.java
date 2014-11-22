@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
@@ -44,6 +44,11 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	
+	protected boolean canResurrectNormalMobs() 
+	{ 
+		return false; 
+	}
 
 	@Override
 	public boolean supportsMending(Physical item)
@@ -119,8 +124,8 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			playerCorpse=((DeadBody)body).isPlayerCorpse();
 			if(!playerCorpse)
 			{
-				final Ability AGE=body.fetchEffect("Age");
-				if((AGE!=null)&&(CMath.isLong(AGE.text()))&&(CMath.s_long(AGE.text())>Short.MAX_VALUE))
+				final Ability ageA=body.fetchEffect("Age");
+				if((ageA!=null)&&(CMath.isLong(ageA.text()))&&(CMath.s_long(ageA.text())>Short.MAX_VALUE))
 				{
 					MOB M=null;
 					for(int i=0;i<mob.location().numInhabitants();i++)
@@ -128,7 +133,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 						M=mob.location().fetchInhabitant(i);
 						if((M!=null)&&(!M.isMonster()))
 						{
-							final List<PlayerData> V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+AGE.text());
+							final List<PlayerData> V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+ageA.text());
 							if((V!=null)&&(V.size()>0))
 							{
 								nonPlayerData=V.get(0);
@@ -143,6 +148,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					}
 				}
 				else
+				if(!canResurrectNormalMobs())
 				{
 					mob.tell(L("You can't resurrect @x1.",((DeadBody)body).charStats().himher()));
 					return false;
@@ -192,6 +198,19 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					}
 					mob.location().recoverRoomStats();
 				}
+				else
+				if(this.canResurrectNormalMobs() && (body instanceof DeadBody) && (((DeadBody)body).getSavedMOB()!=null))
+				{
+					final MOB rejuvedMOB=((DeadBody)body).getSavedMOB();
+					rejuvedMOB.recoverCharStats();
+					rejuvedMOB.recoverMaxState();
+					body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
+					body.destroy();
+					rejuvedMOB.bringToLife(mob.location(),true);
+					rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> get(s) up!"));
+				}
+				else
+					mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,L("<T-NAME> jerk(s) for a moment, but the spirit is too far gone."));
 			}
 		}
 		else

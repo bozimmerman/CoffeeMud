@@ -35,6 +35,8 @@ public interface DeadBody extends Container
 	public void setCharStats(CharStats newStats);
 	public String getMobName();
 	public void setMobName(String newName);
+	public int getMobHash();
+	public void setMobHash(int newHash);
 	public String geteMobDescription();
 	public void setMobDescription(String newDescription);
 	public String getKillerName();
@@ -54,6 +56,6 @@ public interface DeadBody extends Container
 	public long getTimeOfDeath();
 	public void setTimeOfDeath(long time);
 	public void setSavedMOB(MOB mob);
-	public MOB getMOB();
+	public MOB getSavedMOB();
 }
 

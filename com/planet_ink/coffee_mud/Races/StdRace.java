@@ -579,6 +579,7 @@ public class StdRace implements Race
 		bodyI.setMobPKFlag(mob.isAttribute(MOB.Attrib.PLAYERKILL));
 		bodyI.setName(L("the body of @x1",mob.Name().replace('\'','`')));
 		bodyI.setMobName(mob.Name().replace('\'','`'));
+		bodyI.setMobHash(mob.hashCode());
 		bodyI.setMobDescription(mob.description().replace('\'','`'));
 		bodyI.setDisplayText(L("the body of @x1 lies here.",mob.Name().replace('\'','`')));
 		final Ability ageA=mob.fetchEffect("Age");

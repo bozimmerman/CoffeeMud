@@ -36,18 +36,19 @@ import java.util.*;
 public class Corpse extends GenContainer implements DeadBody
 {
 	@Override public String ID(){	return "Corpse";}
-	protected CharStats charStats=null;
-	protected String mobName="";
-	protected String mobDescription="";
-	protected String killerName="";
-	protected boolean killerPlayer=false;
-	protected String lastMessage="";
-	protected Environmental killingTool=null;
-	protected boolean destroyAfterLooting=false;
-	protected boolean playerCorpse=false;
-	protected long timeOfDeath=System.currentTimeMillis();
-	protected boolean mobPKFlag=false;
-	protected MOB savedMOB=null;
+	protected CharStats 	charStats	= null;
+	protected String 		mobName		= "";
+	protected String 		mobDesc		= "";
+	protected String 		killerName	= "";
+	protected boolean 		killerPlayer= false;
+	protected String 		lastMessage	= "";
+	protected Environmental killingTool	= null;
+	protected boolean 		playerCorpse= false;
+	protected long 			timeOfDeath	= System.currentTimeMillis();
+	protected boolean 		mobPKFlag	= false;
+	protected MOB 			savedMOB	= null;
+	protected int 			deadMobHash = 0;
+	protected boolean 		lootDestroy = false;
 
 	public Corpse()
 	{
@@ -96,7 +97,7 @@ public class Corpse extends GenContainer implements DeadBody
 			if(x>=0)
 			{
 				mobName=newIdentity.substring(0,x);
-				mobDescription=newIdentity.substring(x+1);
+				mobDesc=newIdentity.substring(x+1);
 				playerCorpse=true;
 			}
 		}
@@ -115,10 +116,12 @@ public class Corpse extends GenContainer implements DeadBody
 
 	@Override public String getMobName(){ return mobName;}
 	@Override public void setMobName(String newName){mobName=newName;}
-	@Override public String geteMobDescription(){return mobDescription;}
-	@Override public void setMobDescription(String newDescription){mobDescription=newDescription;}
+	@Override public String geteMobDescription(){return mobDesc;}
+	@Override public void setMobDescription(String newDescription){mobDesc=newDescription;}
 	@Override public boolean getMobPKFlag(){return mobPKFlag;}
 	@Override public void setMobPKFlag(boolean truefalse){mobPKFlag=truefalse;}
+	@Override public int getMobHash() { return deadMobHash; }
+	@Override public void setMobHash(int newHash) { deadMobHash = newHash; }
 	@Override public String getKillerName(){return killerName;}
 	@Override public void setKillerName(String newName){killerName=newName;}
 	@Override public boolean isKillerPlayer(){return killerPlayer;}
@@ -129,12 +132,12 @@ public class Corpse extends GenContainer implements DeadBody
 	@Override public void setLastMessage(String lastMsg){lastMessage=lastMsg;}
 	@Override public Environmental getKillerTool(){return killingTool;}
 	@Override public void setKillerTool(Environmental tool){killingTool=tool;}
-	@Override public boolean isDestroyedAfterLooting(){return destroyAfterLooting;}
-	@Override public void setIsDestroyAfterLooting(boolean truefalse){destroyAfterLooting=truefalse;}
+	@Override public boolean isDestroyedAfterLooting(){return lootDestroy;}
+	@Override public void setIsDestroyAfterLooting(boolean truefalse){lootDestroy=truefalse;}
 	@Override public long getTimeOfDeath(){return timeOfDeath;}
 	@Override public void setTimeOfDeath(long time){timeOfDeath=time;}
 	@Override public void setSavedMOB(MOB mob){savedMOB=mob;}
-	@Override public MOB getMOB(){return savedMOB;}
+	@Override public MOB getSavedMOB(){return savedMOB;}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

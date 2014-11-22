@@ -67,7 +67,7 @@ public class Prayer_SpeakWithDead extends Prayer
 			return false;
 		}
 		
-		if((((DeadBody)target).getMOB()!=null)&&(CMLib.flags().isAnimalIntelligence(((DeadBody)target).getMOB())))
+		if((((DeadBody)target).getSavedMOB()!=null)&&(CMLib.flags().isAnimalIntelligence(((DeadBody)target).getSavedMOB())))
 		{
 			mob.tell(L("That poor creature, @x1 was never able to speak.",target.name()));
 			return false;

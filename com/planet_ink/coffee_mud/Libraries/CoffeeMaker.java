@@ -539,12 +539,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append(CMLib.xml().convertXMLtoTag("MKNAME",""+((DeadBody)E).getKillerName()));
 				text.append(CMLib.xml().convertXMLtoTag("MTOD",""+((DeadBody)E).getTimeOfDeath()));
 				text.append(CMLib.xml().convertXMLtoTag("MKPLAY",""+((DeadBody)E).isKillerPlayer()));
+				text.append(CMLib.xml().convertXMLtoTag("MHASH",""+((DeadBody)E).getMobHash()));
 				text.append(CMLib.xml().convertXMLtoTag("MDLMSG",""+((DeadBody)E).getLastMessage()));
 				text.append(CMLib.xml().convertXMLtoTag("MBREAL",""+((DeadBody)E).isDestroyedAfterLooting()));
 				text.append(CMLib.xml().convertXMLtoTag("MPLAYR",""+((DeadBody)E).isPlayerCorpse()));
 				text.append(CMLib.xml().convertXMLtoTag("MPKILL",""+((DeadBody)E).getMobPKFlag()));
-				if(((DeadBody)E).getMOB()!=null)
-					text.append("<MOBS>"+getMobXML(((DeadBody)E).getMOB())+"</MOBS>");
+				if(((DeadBody)E).getSavedMOB()!=null)
+					text.append("<MOBS>"+getMobXML(((DeadBody)E).getSavedMOB())+"</MOBS>");
 				if(((DeadBody)E).getKillerTool()==null) 
 					text.append("<KLTOOL />");
 				else
@@ -2860,6 +2861,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					((DeadBody)E).setTimeOfDeath(CMLib.xml().getLongFromPieces(buf,"MTOD"));
 					((DeadBody)E).setKillerName(CMLib.xml().getValFromPieces(buf,"MKNAME"));
 					((DeadBody)E).setIsKillerPlayer(CMLib.xml().getBoolFromPieces(buf,"MKPLAY"));
+					((DeadBody)E).setMobHash(CMLib.xml().getIntFromPieces(buf,"MHASH"));
 					((DeadBody)E).setMobPKFlag(CMLib.xml().getBoolFromPieces(buf,"MPKILL"));
 					((DeadBody)E).setIsDestroyAfterLooting(CMLib.xml().getBoolFromPieces(buf,"MBREAL"));
 					((DeadBody)E).setLastMessage(CMLib.xml().getValFromPieces(buf,"MDLMSG"));

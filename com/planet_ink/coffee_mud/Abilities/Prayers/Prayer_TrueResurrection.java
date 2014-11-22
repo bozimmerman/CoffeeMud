@@ -43,6 +43,7 @@ public class Prayer_TrueResurrection extends Prayer_Resurrect
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 	@Override protected int canTargetCode(){return 0;}
+	@Override protected boolean canResurrectNormalMobs() { return true; }
 
 	public Item findCorpseRoom(List<Item> candidates)
 	{

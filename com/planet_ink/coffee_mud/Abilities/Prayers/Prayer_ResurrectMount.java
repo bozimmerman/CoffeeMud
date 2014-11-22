@@ -44,7 +44,9 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	@Override public boolean isAutoInvoked() { return true; }
 	@Override public boolean canBeUninvoked() { return false; }
-	protected Set<Rideable> ridden=new HashSet<Rideable>();
+	@Override protected boolean canResurrectNormalMobs() { return true; }
+	protected volatile CMObject lastRider = null;
+	protected PairList<Integer,Rideable> ridden=new PairVector<Integer,Rideable>();
 
 	@Override
 	public boolean supportsMending(Physical item)
@@ -52,8 +54,21 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 		
 		if(item instanceof DeadBody)
 		{
-			MOB M=((DeadBody)item).getMOB();
-			return (M!=null) && ridden.contains(M);
+			DeadBody bodyI=(DeadBody)item;
+			MOB M=bodyI.getSavedMOB();
+			if(M==null)
+			{
+				int x=ridden.indexOfFirst(Integer.valueOf(bodyI.getMobHash()));
+				if(x>=0)
+				{
+					M=(MOB)ridden.getSecond(x);
+					bodyI.setSavedMOB(M);
+					ridden.remove(x); // because it`s a copy anyway...
+				}
+				return (M!=null);
+			}
+			else
+				return ridden.containsFirst(Integer.valueOf(bodyI.getMobHash()));
 		}
 		return false;
 	}
@@ -63,10 +78,24 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if((affected instanceof MOB)
-		&&(((MOB)affected).riding()!=null)
-		&&(!ridden.contains(((MOB)affected).riding())))
-			ridden.add(((MOB)affected).riding());
+		if(affected instanceof MOB)
+		{
+			final MOB M=(MOB)affected;
+			if((M.riding()!=null)
+			&& (M.riding() != lastRider))
+			{
+				lastRider=M.riding();
+				int x=ridden.indexOfFirst(Integer.valueOf(M.riding().hashCode()));
+				final Pair<Integer,Rideable> addMe;
+				if(x>0)
+					addMe=ridden.remove(x);
+				else
+					addMe=new Pair<Integer,Rideable>(Integer.valueOf(M.riding().hashCode()),(Rideable)M.riding().copyOf());
+				ridden.add(addMe);
+				if(ridden.size()>5)
+					ridden.remove(0);
+			}
+		}
 		return true;
 	}
 
