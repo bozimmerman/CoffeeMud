@@ -26,15 +26,15 @@ TECH
 
 NON-TECH
    *. Test and Fix all those damn new skills.
-   *. Fighter - Weapons Training (or Karate Training for Monks) -- non-kill way to gain xp, makes mobs slightly harder, 1 level up max.
-   *. Fighter -- AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
+   *. All Fighters - Combat Training - takes time, transfers weapon specializations to target temporarily and 1 level up max +XP
+   *. All Fighters - Guard Duty Auto invoked by AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Classes with insufficient unique skills:
         *. Fighter       : +2
-                         :
-                         :
+                         : 
+                         : 
+   *. Rideables with some portal you could enter for below decks, etc.
    *. Wants and Needs engine - similar to slavery system
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
-   *. Rideables with some portal you could enter for below decks, etc.
    *. Create Magi Robes(or whatever you wanted to call them) that would enhance his/her magic of their chosen field.
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
