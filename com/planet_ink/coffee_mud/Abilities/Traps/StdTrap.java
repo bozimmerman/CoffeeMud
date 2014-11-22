@@ -552,6 +552,7 @@ public class StdTrap extends StdAbility implements Trap
 			return false;
 		StdTrap T=(StdTrap)copyOf();
 		T.setInvoker(mob);
+		T.setAffectedOne(mob);
 		T.spring(target);
 		return true;
 	}
