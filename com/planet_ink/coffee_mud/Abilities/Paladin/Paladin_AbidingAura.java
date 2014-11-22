@@ -53,9 +53,10 @@ public class Paladin_AbidingAura extends PaladinSkill
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if((super.paladinsGroup.contains(msg.source()))
-		&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
-		&&((invoker!=null)&&(CMLib.flags().isGood(invoker))))
+		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
+		&&(invoker!=null)
+		&&(CMLib.flags().isGood(invoker))
+		&&(super.paladinsGroup.contains(msg.source())))
 		{
 			final MOB mob=msg.source();
 			final Room startRoom=mob.getStartRoom();
