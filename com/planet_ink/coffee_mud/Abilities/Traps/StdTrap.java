@@ -38,7 +38,8 @@ public class StdTrap extends StdAbility implements Trap
 	@Override public String ID() { return "StdTrap"; }
 	private final static String localizedName = CMLib.lang().L("standard trap");
 	@Override public String name() { return localizedName; }
-
+	public static final String[] TRIGGER={"SPRING"};
+	@Override public String[] triggerStrings(){return TRIGGER;}
 	protected boolean sprung=false;
 	protected int reset=60; // 5 minute reset is standard
 	protected int ableCode=0;
