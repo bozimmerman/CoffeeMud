@@ -24,6 +24,7 @@
   20. Tons of new animal noise languages added, and tacked onto various races as racial abilities. New MudChat possibilities for animals!
   21. New Ranger skills: Camouflage, Repel Vermin (chant), Delay Poison, Sense Snares and Pits, Set Snare, Air Wall
   22. More Ranger skills: Speak with Animals, Hunters Endurance, Bow Specialization, Fierce Companions
+  23. Trap and Bombs can now be utilities as useable Abilities -- weird, but there ya go.
    *. Beyond new spells for some, all mage specialists have had their spell lists tinkered with to make them a bit better
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.
