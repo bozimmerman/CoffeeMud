@@ -538,4 +538,20 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		return CMLib.materials().findNumberOfResource(room, resource);
 	}
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		final MOB target=super.getTarget(mob, commands, givenTarget);
+		if(target == null)
+			return false;
+		if(!super.proficiencyCheck(mob, 0, auto))
+			return true;
+		if(!super.invoke(mob, commands, target, auto, asLevel))
+			return false;
+		StdTrap T=(StdTrap)copyOf();
+		T.spring(target);
+		return true;
+	}
 }

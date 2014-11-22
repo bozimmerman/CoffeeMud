@@ -39,7 +39,7 @@ public class Prayer_CorpseWalk extends Prayer
 	@Override public String ID() { return "Prayer_CorpseWalk"; }
 	private final static String localizedName = CMLib.lang().L("Corpse Walk");
 	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEATHLORE;}
+	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_DEATHLORE;}
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return 0;}
