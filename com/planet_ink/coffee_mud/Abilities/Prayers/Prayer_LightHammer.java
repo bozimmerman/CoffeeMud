@@ -73,8 +73,7 @@ public class Prayer_LightHammer extends Prayer
 
 		if((success)&&(CMLib.flags().isEvil(target)))
 		{
-			final Prayer_Godstrike newOne=(Prayer_Godstrike)this.copyOf();
-			final CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,L(auto?"<T-NAME> is filled with holy light!":"^S<S-NAME> "+prayWord(mob)+" for a hammer of light to strike <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,L(auto?"<T-NAME> is filled with holy light!":"^S<S-NAME> "+prayWord(mob)+" for a hammer of light to strike <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
