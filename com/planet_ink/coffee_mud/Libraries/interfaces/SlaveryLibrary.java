@@ -699,6 +699,8 @@ public interface SlaveryLibrary extends CMLibrary
 			{"what %*","say You want me to answer what? I don't know what!"},
 			{"why %*","say You want me to answer why? I don't know why!"},
 			// other miscellaneous commands
-			{"%k *","%k *"}
+			{"%k 2 times","%k;%k"}, // expand this smartly
+			{"%k *","%k *"},
+			{"%k","%k"}
 		};
 }

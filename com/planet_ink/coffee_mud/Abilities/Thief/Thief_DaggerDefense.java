@@ -78,11 +78,7 @@ public class Thief_DaggerDefense extends ThiefSkill
 				&&(myWeapon instanceof Weapon)
 				&&(attackerWeapon instanceof Weapon)
 				&&(CMLib.flags().canBeSeenBy(msg.source(),mob))
-				&&(((Weapon)myWeapon).weaponClassification()==Weapon.CLASS_DAGGER)
-				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)
-				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_NATURAL)
-				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
-				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
+				&&(((Weapon)myWeapon).weaponClassification()==Weapon.CLASS_DAGGER))
 				{
 					final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> deflect(s) @x1 attack from <T-NAME>!",attackerWeapon.name()));
 					if((proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(getXLEVELLevel(mob)),false))

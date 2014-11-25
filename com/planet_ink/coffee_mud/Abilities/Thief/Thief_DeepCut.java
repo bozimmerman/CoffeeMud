@@ -50,7 +50,7 @@ public class Thief_DeepCut extends ThiefSkill
 
 	protected String gone="";
 	protected MOB target=null;
-	protected int hpReq=9;
+	protected int hpReq=8; // ends up around 5%
 
 	protected boolean injure()
 	{
@@ -86,7 +86,8 @@ public class Thief_DeepCut extends ThiefSkill
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			int hurtAmount=msg.value();
-			final int reqDivisor=hpReq+getXLEVELLevel(invoker());
+			
+			final int reqDivisor=hpReq-getXLEVELLevel(invoker());
 			if(hurtAmount>=(target.baseState().getHitPoints()/reqDivisor))
 			{
 				hurtAmount=(target.baseState().getHitPoints()/reqDivisor);

@@ -100,14 +100,14 @@ public class Prayer_PietyCurse extends Prayer
 		super.executeMsg(myHost, msg);
 		if(msg.source()==affected)
 		{
-			boolean someThingBad=false;
+			int damageToDo=0;
 			final String filterPatternStart=CMProps.getFilterPattern().substring(0,3);
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.sourceMessage()!=null))
 			{
 				final String sayMessage = CMStrings.getSayFromMessage(msg.sourceMessage());
 				if(CMProps.isAnyINIFiltered(sayMessage))
-					someThingBad=true;
+					damageToDo=(int)Math.round(1.0+(5+(invoker.phyStats().level()/20)))+msg.source().phyStats().level();
 				else
 				for(String s : CMLib.english().parseWords(sayMessage))
 				{
@@ -115,7 +115,7 @@ public class Prayer_PietyCurse extends Prayer
 					if(UNPIOS_SET.contains(s)
 					||s.startsWith(filterPatternStart))
 					{
-						someThingBad=true;
+						damageToDo=(int)Math.round(1.0+(5+(invoker.phyStats().level()/20)))+msg.source().phyStats().level();
 						break;
 					}
 				}
@@ -125,17 +125,17 @@ public class Prayer_PietyCurse extends Prayer
 			{
 				if((msg.tool() instanceof Social)
 				&&(UNPIOS_SET.contains(((Social)msg.tool()).baseName().toUpperCase().trim())))
-					someThingBad = true;
+					damageToDo=(int)Math.round(1.0+(5+(invoker.phyStats().level()/20)))+msg.source().phyStats().level();
 				else
 				if((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK)
 				&& (msg.target() instanceof MOB))
-					someThingBad = true;
+					damageToDo=CMLib.dice().roll(1,(int)Math.round(1.0+(5+(invoker.phyStats().level()/20))/((MOB)msg.target()).phyStats().speed()),0);
 			}
-			if(someThingBad)
+			if(damageToDo>0)
 			{
-				final MOB M=(MOB)msg.target();
+				final MOB M=msg.source();
 				final MOB invoker=(invoker()!=null) ? invoker() : M;
-				final int damage=CMLib.dice().roll(1,(int)Math.round(1.0+(5+(invoker.phyStats().level()/20))/M.phyStats().speed()),0);
+				final int damage=damageToDo;
 				CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_STRIKING,L("The piety curse <DAMAGE> <T-NAME>!"));
 				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
 					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
