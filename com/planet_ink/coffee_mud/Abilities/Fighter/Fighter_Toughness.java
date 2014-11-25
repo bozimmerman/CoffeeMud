@@ -50,6 +50,25 @@ public class Fighter_Toughness extends FighterSkill
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
-		affectableState.setHitPoints(30 + (2*adjustedLevel(invoker,0)));
+		affectableState.setHitPoints(30 + (int)Math.round(2.0*adjustedLevel(invoker,0)*CMath.div(proficiency(), 100.0)));
+	}
+	
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+
+		if((tickID==Tickable.TICKID_MOB)
+		&&(affected instanceof MOB)
+		&&(((MOB)affected).location()!=null))
+		{
+			final MOB mob=(MOB)affected;
+			if(mob.isInCombat() && (CMLib.dice().rollPercentage()<5))
+			{
+				super.helpProficiency((MOB)affected, 0);
+			}
+		}
+		return true;
 	}
 }
