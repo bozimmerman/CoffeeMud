@@ -100,6 +100,7 @@ public class Fighter extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Fighter_ShieldBlock",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_BlindFighting",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_Toughness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Dirt",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
@@ -118,6 +119,7 @@ public class Fighter extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_CriticalShot",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_Whomp",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_DesperateMoves",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_Attack3",true,CMParms.parseSemicolons("Skill_Attack2",true));
 

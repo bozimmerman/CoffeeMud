@@ -26,7 +26,8 @@
   22. More Ranger skills: Speak with Animals, Hunters Endurance, Bow Specialization, Fierce Companions
   23. Trap and Bombs can now be utilized as useable Abilities -- weird, but there ya go.
   24. New Paladin skills/prayers: Resurrect Mount, Hammer of Light, Abiding Aura, Paladin's Mount, Command Horse, Heal Mount, Holy Strike
-  25. Beyond new skills, mage specialists and some clerics have had their spell lists tinkered with to make them a bit better
+  25. New Fighter skills: Toughness, Desperate Moves
+  26. Beyond new skills, mage specialists and some clerics have had their spell lists tinkered with to make them a bit better
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.
    1. (FakeDB): DBUpgrade is now application independent, and can handle big tables better.  See installation guide for new recommended usage.
