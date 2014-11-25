@@ -119,7 +119,7 @@ public class Prayer_SenseInjury extends Prayer
 					didSomething=true;
 					if(last.length()>0)
 						dirs+=", "+last;
-					last=E.name();
+					last="in "+E.name();
 				}
 			}
 			if(!didSomething)
@@ -178,7 +178,6 @@ public class Prayer_SenseInjury extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,null,L("<S-NAME> listen(s) to @x1 for a message, but there is no answer.",hisHerDiety(mob)));
-
 
 		// return whether it worked
 		return success;
