@@ -94,6 +94,11 @@ public class Spell_AntiPlantShell extends Spell
 					}
 					else
 						plantMOB.setRangeToTarget(R.maxRange());
+					if((--pointsRemaining) < 0)
+					{
+						unInvoke();
+						return true;
+					}
 					R.show(plantMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-plant shell."));
 					return false;
 				}
@@ -103,6 +108,11 @@ public class Spell_AntiPlantShell extends Spell
 					plantMOB.setRangeToTarget(R.maxRange());
 					if(mob.getVictim()==plantMOB)
 						mob.setRangeToTarget(R.maxRange());
+					if((--pointsRemaining) < 0)
+					{
+						unInvoke();
+						return true;
+					}
 					R.show(plantMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-plant shell."));
 					return false;
 				}
@@ -110,6 +120,11 @@ public class Spell_AntiPlantShell extends Spell
 				if((mob.getVictim()==plantMOB)&&(mob.rangeToTarget() <= 0))
 				{
 					mob.setRangeToTarget(R.maxRange());
+					if((--pointsRemaining) < 0)
+					{
+						unInvoke();
+						return true;
+					}
 					R.show(plantMOB, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-plant shell."));
 					return false;
 				}

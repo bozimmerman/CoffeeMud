@@ -114,7 +114,7 @@ public class Spell_InvisibilitySphere extends Spell
 			affected.delEffect(this);
 			this.setAffectedOne(invoker);
 			if(affected instanceof MOB)
-				((MOB)affected).tell(L("<S-YOUPOSS> are outside the invisibility sphere."));
+				((MOB)affected).tell((MOB)affected,null,null,L("<S-NAME> <S-IS-ARE> outside the invisibility sphere."));
 			affected.recoverPhyStats();
 		}
 	}
@@ -129,7 +129,7 @@ public class Spell_InvisibilitySphere extends Spell
 					invoker=(MOB)affecting();
 				final Physical invoker = (invoker() != null) ? invoker() : affecting();
 				if(affected instanceof MOB)
-					((MOB)affected).tell(L("<S-YOUPOSS> are now inside the invisibility sphere."));
+					((MOB)affected).tell((MOB)affected,null,null,L("<S-NAME> <S-IS-ARE> now inside the invisibility sphere."));
 				affected.addEffect(this);
 				this.setAffectedOne(invoker);
 				affected.recoverPhyStats();

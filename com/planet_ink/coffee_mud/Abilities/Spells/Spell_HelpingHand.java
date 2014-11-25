@@ -229,7 +229,7 @@ public class Spell_HelpingHand extends Spell
 		
 		MOB target=null;
 		final String whomName=CMParms.combine(commands);
-		MOB M=CMLib.players().getLoadPlayer(whomName);
+		MOB M=CMLib.players().getPlayer(whomName);
 		if((M!=null)&&(CMLib.flags().isInTheGame(M,true)))
 			target=M;
 		else

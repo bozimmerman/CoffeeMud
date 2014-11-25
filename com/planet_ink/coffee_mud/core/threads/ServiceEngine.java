@@ -54,9 +54,8 @@ public class ServiceEngine implements ThreadEngine
 	private volatile long			globalTickID		= 0;
 	private final long 				globalStartTime		= System.currentTimeMillis();
 	private volatile CMRunnable[]	unsuspendedRunnables= null;
-
-	private volatile long			schedWaitAt			= 0;
-	private final List<CMRunnable>		schedTicks			= new LinkedList<CMRunnable>();
+	private volatile long			nextWakeAtTime			= 0;
+	private final List<CMRunnable>	schedTicks				= new LinkedList<CMRunnable>();
 
 	@Override public String ID(){return "ServiceEngine";}
 	@Override public String name() { return ID();}
@@ -173,9 +172,9 @@ public class ServiceEngine implements ThreadEngine
 					@Override public long getStartTime() { return myNextTime; }
 					@Override public int getGroupID() { return currentThreadId; }
 				});
-				if((this.schedWaitAt == 0) || (myNextTime < this.schedWaitAt))
+				if((this.nextWakeAtTime == 0) || (myNextTime < this.nextWakeAtTime))
 				{
-					this.schedWaitAt = myNextTime;
+					this.nextWakeAtTime = myNextTime;
 					if(drivingThread!=null)
 						drivingThread.interrupt();
 				}
@@ -1369,12 +1368,12 @@ public class ServiceEngine implements ThreadEngine
 				final long now=System.currentTimeMillis();
 				globalTickID = (now - globalStartTime) / CMProps.getTickMillis();
 				long nextWake=System.currentTimeMillis() + 3600000;
-				if((this.schedTicks.size() > 0) && (now > this.schedWaitAt))
+				if(this.schedTicks.size() > 0)
 				{
 					final List<CMRunnable> runThese = new LinkedList<CMRunnable>();
 					synchronized(this.schedTicks)
 					{
-						if((this.schedTicks.size() > 0) && (now > this.schedWaitAt))
+						if(this.schedTicks.size() > 0)
 						{
 							for(Iterator<CMRunnable> r=this.schedTicks.iterator(); r.hasNext();) 
 							{
@@ -1418,7 +1417,7 @@ public class ServiceEngine implements ThreadEngine
 				}
 				if(nextWake > now)
 				{
-					schedWaitAt = nextWake;
+					nextWakeAtTime = nextWake;
 					Thread.sleep(nextWake-now);
 				}
 			}

@@ -94,6 +94,11 @@ public class Chant_RepelVermin extends Chant
 					}
 					else
 						verminM.setRangeToTarget(R.maxRange());
+					if((--pointsRemaining) < 0)
+					{
+						unInvoke();
+						return true;
+					}
 					R.show(verminM, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-vermin field."));
 					return false;
 				}
@@ -103,6 +108,11 @@ public class Chant_RepelVermin extends Chant
 					verminM.setRangeToTarget(R.maxRange());
 					if(mob.getVictim()==verminM)
 						mob.setRangeToTarget(R.maxRange());
+					if((--pointsRemaining) < 0)
+					{
+						unInvoke();
+						return true;
+					}
 					R.show(verminM, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-vermin field."));
 					return false;
 				}
@@ -110,6 +120,11 @@ public class Chant_RepelVermin extends Chant
 				if((mob.getVictim()==verminM)&&(mob.rangeToTarget() <= 0))
 				{
 					mob.setRangeToTarget(R.maxRange());
+					if((--pointsRemaining) < 0)
+					{
+						unInvoke();
+						return true;
+					}
 					R.show(verminM, affected, CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> repelled by <T-YOUPOSS> anti-vermin field."));
 					return false;
 				}
