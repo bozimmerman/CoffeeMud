@@ -287,9 +287,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			for (final String currency : currencies)
 			{
 				if(worldCurrency)
-					help.append("\n\r"+CMStrings.padRight(L("Currency"),20)+":");
+					help.append("\n\r"+CMStrings.padRight(L("Currency"),20)+": ");
 				else
-					help.append("\n\r"+CMStrings.padRight(L("Local Currency"),20)+":");
+					help.append("\n\r"+CMStrings.padRight(L("Local Currency"),20)+": ");
 				if(currency.length()==0)
 					help.append("default");
 				else
