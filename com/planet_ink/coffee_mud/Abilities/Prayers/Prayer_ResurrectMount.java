@@ -82,7 +82,8 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 		{
 			final MOB M=(MOB)affected;
 			if((M.riding()!=null)
-			&& (M.riding() != lastRider))
+			&& (M.riding() != lastRider)
+			&& (M.riding() instanceof MOB))
 			{
 				lastRider=M.riding();
 				int x=ridden.indexOfFirst(Integer.valueOf(M.riding().hashCode()));
@@ -90,7 +91,11 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 				if(x>0)
 					addMe=ridden.remove(x);
 				else
-					addMe=new Pair<Integer,Rideable>(Integer.valueOf(M.riding().hashCode()),(Rideable)M.riding().copyOf());
+				{
+					final Rideable copyR=(Rideable)M.riding().copyOf();
+					addMe=new Pair<Integer,Rideable>(Integer.valueOf(M.riding().hashCode()),copyR);
+					((MOB)copyR).location().delInhabitant((MOB)copyR);
+				}
 				ridden.add(addMe);
 				if(ridden.size()>5)
 					ridden.remove(0);

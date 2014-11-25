@@ -26,6 +26,92 @@ TECH
 
 NON-TECH
    *. Test and Fix all those damn new skills.
+		New Alterer spells: 
+			Polymorph Object, 
+			Magic Bullet, 
+			Flame Arrow, 
+			Shape Object, 
+			Keen Edge, 
+			Fabricate
+		New Illusionist spells: 
+			Color Spray, 
+			Disguise Undead, 
+			Disguise Self, 
+			Disguise Other, 
+			Simulacrum, 
+			Invisibility Sphere
+		New Abjurer spell: 
+			Anti-Plant Shell
+		New Evoker spells: 
+			Purge Invisibility, 
+			Helping Hand, 
+			Produce Flame, 
+			Forceful Hand, 
+			Pocket
+		New Conjurer spells: 
+			Watchful Hound, 
+			Insect Plague
+		New Cleric spells: 
+			Death Guard, 
+			Death Knell, 
+			Sense Injury, 
+			Anti Undead Field, 
+			Hold Undead, 
+			Incite the Dead
+		More Cleric spells: 
+			Mercy, 
+			Awaken, 
+			Dream Feast, 
+			Corpse Walk, 
+			True Resurrection, 
+			Devourer Curse, 
+			Snake Staff
+		Even More Cleric spells: 
+			Protection from Outsiders, 
+			Unholy Portent, 
+			Joyous Rapture, 
+			Protection from Curses, 
+			Bloatbomb
+		New Oracle spells: 
+			Sense Faithful, 
+			Speak with Dead
+		New Purist spells: 
+			Judgement, 
+			Piety Curse, 
+			Sanctimonious
+		New Shaman spells: 
+			Refuge
+		New Assassin skills: 
+			Two Dagger Fighting, 
+			Cut Throat, 
+			Dagger Defense, 
+			Deep Cut, 
+			Dagger Specialization
+		New Ranger skills: 
+			Camouflage, 
+			Repel Vermin (chant), 
+			Delay Poison, 
+			Sense Snares and Pits, 
+			Set Snare, 
+			Air Wall
+		More Ranger skills: 
+			Speak with Animals, 
+			Hunters Endurance, 
+			Bow Specialization, 
+			Fierce Companions
+		New Paladin skills/prayers: 
+			Resurrect Mount, 
+			Hammer of Light, 
+			Abiding Aura, 
+			Paladin's Mount, 
+			Command Horse, 
+			Heal Mount, 
+			Holy Strike
+		New Fighter skills: 
+			Toughness, 
+			Toughness II, 
+			Toughness III, 
+			Desperate Moves
    *. All Fighters - Combat Training - takes time, transfers weapon specializations to target temporarily and 1 level up max +XP
    *. All Fighters - Guard Duty Auto invoked by AUTOGUARD can start a little "Guarding" prog for, say, 10 rl minutes.
    *. Rideables with some portal you could enter for below decks, etc.

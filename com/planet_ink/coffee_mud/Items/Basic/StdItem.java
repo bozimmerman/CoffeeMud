@@ -1434,7 +1434,6 @@ public class StdItem implements Item
 					final Item thisItem = mob.getItem(r);
 					if((thisItem!=null)
 					&&(!thisItem.amDestroyed())
-					&&(thisItem.container()!=null)
 					&&(thisItem.container()==this))
 						thisItem.destroy();
 				}

@@ -287,10 +287,16 @@ public class Spell_PolymorphObject extends Spell
 					A.previousItems = items;
 					ItemPossessor possessor = targetI.owner();
 					if(possessor != null)
+					{
 						for(Item I : items)
 							possessor.delItem(I);
+						possessor.addItem(intoI);
+					}
+					else
+						mob.addItem(intoI);
 				}
-				mob.addItem(intoI);
+				else
+					mob.addItem(intoI);
 				mob.location().recoverRoomStats();
 			}
 		}
