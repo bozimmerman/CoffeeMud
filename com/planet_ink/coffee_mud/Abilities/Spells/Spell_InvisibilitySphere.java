@@ -63,7 +63,7 @@ public class Spell_InvisibilitySphere extends Spell
 		{
 			final Room centerR=mob.location();
 			if((centerR!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> are outside the invisibility sphere."));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> outside the invisibility sphere."));
 			if(centerR!=null)
 			{
 				for(Enumeration<MOB> m=centerR.inhabitants();m.hasMoreElements();)
