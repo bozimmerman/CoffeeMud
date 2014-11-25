@@ -111,6 +111,7 @@ public class Fighter extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Fighter_DualParry",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_Trip",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_Toughness2",false,CMParms.parseSemicolons("Fighter_Toughness",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_Sweep",false);
@@ -122,6 +123,7 @@ public class Fighter extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_DesperateMoves",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_Attack3",true,CMParms.parseSemicolons("Skill_Attack2",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fighter_Toughness3",false,CMParms.parseSemicolons("Fighter_Toughness2",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_Endurance",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Fighter_PointBlank",false);
