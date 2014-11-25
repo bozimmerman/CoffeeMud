@@ -58,6 +58,6 @@ public class Natural extends StdWeapon
 	@Override
 	public String hitString(int damageAmount)
 	{
-		return "<S-NAME> "+CMLib.combat().standardHitWord(weaponType,damageAmount)+" <T-NAMESELF>";
+		return "<S-NAME> <DAMAGE> <T-NAMESELF>";
 	}
 }

@@ -39,6 +39,8 @@ public class Prayer_DreamFeast extends Prayer
 	@Override public String ID() { return "Prayer_DreamFeast"; }
 	private final static String localizedName = CMLib.lang().L("Dream Feast");
 	@Override public String name() { return localizedName; }
+	private final static String localizedDisplayText = CMLib.lang().L("(Dream Feast)");
+	@Override public String displayText() { return localizedDisplayText; }
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
@@ -60,8 +62,8 @@ public class Prayer_DreamFeast extends Prayer
 			return false;
 		if(CMLib.flags().isSleeping(affected))
 		{
-			ticksSleeping = 5;
-			if(ticksSleeping >= 8)
+			ticksSleeping++;
+			if(ticksSleeping > 8)
 			{
 				if(affected instanceof MOB)
 					((MOB)affected).tell(L("You have wonderful dreams of an abundant feasts and overflowing wines."));
@@ -74,8 +76,8 @@ public class Prayer_DreamFeast extends Prayer
 			if(affected instanceof MOB)
 			{
 				((MOB)affected).tell(L("You wake up feeling full and content."));
-				((MOB)affected).curState().setHunger(0);
-				((MOB)affected).curState().setThirst(0);
+				((MOB)affected).curState().setHunger(CharState.DEFAULT_HUNGER_FULL);
+				((MOB)affected).curState().setThirst(CharState.DEFAULT_THIRST_FULL);
 			}
 			unInvoke();
 		}

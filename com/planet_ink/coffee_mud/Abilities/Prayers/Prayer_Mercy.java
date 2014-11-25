@@ -77,6 +77,17 @@ public class Prayer_Mercy extends Prayer
 	}
 	
 	@Override
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.value() > 0))
+		{
+			msg.setValue(0);
+		}
+	}
+	
+	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();

@@ -1089,7 +1089,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(!isKnockedOutUponDeath(target,source)))
 			body=target.killMeDead(true);
 
-		handleConsequences(target,source,cmds,expLost,L("^*You lose @x1 experience points.^?^.",""+expLost));
+		handleConsequences(target,source,cmds,expLost,L("^*You lose @x1 experience points.^?^.",""+expLost[0]));
 
 		if(!isKnockedOutUponDeath(target,source))
 		{

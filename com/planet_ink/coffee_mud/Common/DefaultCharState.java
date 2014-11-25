@@ -35,7 +35,7 @@ public class DefaultCharState implements CharState
 {
 	@Override public String ID(){return "DefaultCharState";}
 	@Override public String name() { return ID();}
-	protected final static int[] DEFAULT_STATES={10,100,50,1000,500,0,0};
+	protected final static int[] DEFAULT_STATES={10,100,50,DEFAULT_HUNGER_FULL,DEFAULT_THIRST_FULL,0,0};
 	protected int[] states=DEFAULT_STATES.clone();
 	protected long Fatigue=0;
 

@@ -141,7 +141,7 @@ public class Mood extends StdAbility
 	{
 		super.affectPhyStats(affected,stats);
 		if(moodCode>=0)
-			stats.addAmbiance(MOODS[moodCode][2].toLowerCase());
+			stats.addAmbiance(MOODS[moodCode][2].toLowerCase()+"^?");
 	}
 
 	private String changeSay(String msg, String to)

@@ -90,7 +90,7 @@ public class Prayer_JoyousRapture extends Prayer
 				if((moodA!=null)&&(affected instanceof MOB))
 				{
 					final MOB mob=(MOB)affected;
-					final Vector V=new XVector<String>("NORMAL");
+					final Vector V=new XVector<String>(text());
 					moodA.invoke(mob,V,mob,true,0);
 				}
 			}

@@ -116,7 +116,7 @@ public class Prayer_Awaken extends Prayer implements MendingSkill
 				{
 					final MOB target=room.fetchInhabitant(i);
 					if((target==null)||(!CMLib.flags().isSleeping(target)))
-						break;
+						continue;
 
 					final List<Ability> offensiveAffects=returnOffensiveAffects(mob,target);
 
