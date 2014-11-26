@@ -3550,9 +3550,22 @@ public class Import extends StdCommand
 			String objectDescription="";
 			if((nextLine(objV).indexOf('~')>=0)||((nextLine(objV).length()>0)&&(!Character.isDigit(nextLine(objV).charAt(0)))))
 				objectDescription=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
-			final String codeStr1=eatNextLine(objV);
+			
+			String codeStr1=eatNextLine(objV);
 			String codeStr2=eatNextLine(objV);
-			final String codeStr3=eatNextLine(objV);
+			String codeStr3=eatNextLine(objV);
+			
+			boolean wierdModifiedROMForm = false;
+			if((CMParms.numBits(codeStr1)==1)
+			&&CMath.isNumber(codeStr1)
+			&&(CMParms.numBits(codeStr2)==1)
+			&&CMath.isNumber(codeStr2))
+			{
+				//TODO: BZ: Figure out what codeStr1 & 2 are
+				codeStr1=codeStr3;
+				codeStr2=eatNextLine(objV);
+				codeStr3=eatNextLine(objV);
+			}
 
 			if((!objectID.startsWith("#"))
 			||((objectName.length()==0)
@@ -5597,8 +5610,7 @@ public class Import extends StdCommand
 				if((!R.roomID().startsWith("#"))
 				||(R.displayText().length()==0)
 				||(CMParms.numBits(codeLine)<2)
-				||((CMParms.numBits(codeLine)>6)&&(!zonFormat))
-				||((CMParms.numBits(codeLine)==4)&&(!zonFormat)))
+				||((CMParms.numBits(codeLine)>6)&&(!zonFormat)))
 				{
 					returnAnError(session,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName,compileErrors,commands);
 					continue;
@@ -5856,14 +5868,19 @@ public class Import extends StdCommand
 							if((CMParms.numBits(nextStr)==2)&&(CMath.isInteger(CMParms.getCleanBit(nextStr,0))))
 								codeStr+=" "+eatLine(roomV);
 						}
-						final int exitFlag=( CMath.s_int(CMParms.getCleanBit(codeStr,0).trim()) & 31);
-						final int doorState=CMath.s_int(CMParms.getCleanBit(codeStr,1).trim());
-						final int linkRoomID=CMath.s_int(CMParms.getCleanBit(codeStr,2).trim());
+						final long exitFlag=getBitMask(codeStr,0) & 31;
+						final long doorState=getBitMask(codeStr,1);
+						final long linkRoomID=getBitMask(codeStr,2);
 						if(CMParms.numBits(codeStr)==11) // wierd circle format
 						{ /* all is well */}
 						else
 						if(CMParms.numBits(codeStr)==4)
 						{ /* all is still well -- from the wld format I guess. */ }
+						else
+						if(CMParms.numBits(codeStr)==5)
+						{
+							/*TODO:BZ all is still well -- from wierd modified rom. */ 
+						}
 						else
 						if(CMParms.numBits(codeStr)!=3)
 						{
@@ -5879,7 +5896,9 @@ public class Import extends StdCommand
 							boolean defaultsClosed=false;
 							boolean defaultsLocked=false;
 
-							if((exitFlag==1)||(exitFlag==6))
+							if((exitFlag==1)
+							||(exitFlag==6)
+							||((exitFlag==3)&&(CMParms.numBits(codeStr)==5)))
 							{
 								hasDoor=true;
 								defaultsClosed=true;
