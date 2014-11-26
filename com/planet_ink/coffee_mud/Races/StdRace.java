@@ -400,7 +400,7 @@ public class StdRace implements Race
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 			{
-				A.autoInvocation(mob);
+				A.autoInvocation(mob, false);
 				A.invoke(mob,mob,false,0);
 				break;
 			}
@@ -428,7 +428,7 @@ public class StdRace implements Race
 					{
 						A.setProficiency(culturalAbilityProficiencies()[a]);
 						mob.addAbility(A);
-						A.autoInvocation(mob);
+						A.autoInvocation(mob, false);
 						if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 						&&(isMonster)
 						&&(!isChild))

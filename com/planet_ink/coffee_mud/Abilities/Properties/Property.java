@@ -92,7 +92,7 @@ public class Property implements Ability
 	@Override public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel){return false;}
 	@Override public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel){return false;}
 	@Override public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
-	@Override public boolean autoInvocation(MOB mob){return false;}
+	@Override public boolean autoInvocation(MOB mob, boolean force){return false;}
 	@Override public void unInvoke(){}
 	@Override public boolean canBeUninvoked(){return false;}
 	@Override public boolean isAutoInvoked(){return true;}

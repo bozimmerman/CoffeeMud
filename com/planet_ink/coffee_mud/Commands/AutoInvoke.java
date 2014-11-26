@@ -73,7 +73,7 @@ public class AutoInvoke extends StdCommand
 		{
 			if((cmd == AutoInvokeCommand.INVOKE) || (cmd == AutoInvokeCommand.TOGGLE))
 			{
-				foundA.autoInvocation(mob);
+				foundA.autoInvocation(mob, true);
 				if(mob.fetchEffect(foundA.ID())!=null)
 					mob.tell(L("@x1 successfully invoked.",foundA.name()));
 				else

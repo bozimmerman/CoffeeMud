@@ -1488,7 +1488,7 @@ public class StdAbility implements Ability
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob)
+	public boolean autoInvocation(MOB mob, boolean force)
 	{
 		if(isAutoInvoked())
 		{
@@ -1822,7 +1822,7 @@ public class StdAbility implements Ability
 			if((defProficiency>0)&&(defProficiency>newAbility.proficiency()))
 				newAbility.setProficiency(defProficiency);
 			student.addAbility(newAbility);
-			newAbility.autoInvocation(student);
+			newAbility.autoInvocation(student, false);
 		}
 		student.recoverCharStats();
 		student.recoverPhyStats();

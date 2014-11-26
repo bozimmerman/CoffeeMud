@@ -133,9 +133,9 @@ public class Fighter_AutoBash extends FighterSkill
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob)
+	public boolean autoInvocation(MOB mob, boolean force)
 	{
 		numberOfShields=-1;
-		return super.autoInvocation(mob);
+		return super.autoInvocation(mob, force);
 	}
 }

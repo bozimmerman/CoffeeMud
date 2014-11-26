@@ -49,9 +49,9 @@ public class Skill_Spellcraft extends StdSkill
 	public int craftType(){return Ability.ACODE_SPELL;}
 
 	@Override
-	public boolean autoInvocation(MOB mob)
+	public boolean autoInvocation(MOB mob, boolean force)
 	{
-		if(!super.autoInvocation(mob))
+		if(!super.autoInvocation(mob, force))
 			return false;
 		if(text().length()>0)
 		{

@@ -2230,7 +2230,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(M.fetchAbility(newOne.ID())==null)
 			{
 				M.addAbility(newOne);
-				newOne.autoInvocation(M);
+				newOne.autoInvocation(M, false);
 			}
 		}
 	}

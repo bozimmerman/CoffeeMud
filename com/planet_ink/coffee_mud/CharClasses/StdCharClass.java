@@ -598,7 +598,7 @@ public class StdCharClass implements CharClass
 			A.setMiscText(defaultParm);
 			mob.addAbility(A);
 			if(autoInvoke)
-				A.autoInvocation(mob);
+				A.autoInvocation(mob, false);
 			return true;
 		}
 		return false;
@@ -635,7 +635,7 @@ public class StdCharClass implements CharClass
 					if(A2!=null)
 						A2.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
 					else
-						A.autoInvocation(mob);
+						A.autoInvocation(mob, false);
 					alreadyAble.put(A.ID(),A);
 				}
 			}

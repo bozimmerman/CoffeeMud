@@ -132,7 +132,7 @@ public class GrinderMobs
 							B.setMiscText(txt);
 						}
 						M.addAbility(B);
-						B.autoInvocation(M);
+						B.autoInvocation(M, false);
 					}
 				}
 				num++;

@@ -75,7 +75,7 @@ public class Paladin_PaladinsMount extends PaladinSkill
 		else
 		if((affected == invoker)
 		&&(invoker!=null)
-		&&(CMLib.flags().isGood(invoker.riding()))
+		&&(CMLib.flags().isGood(invoker))
 		&&(invoker.riding()!=null)
 		&&(invoker.riding() instanceof MOB)
 		&&(((MOB)invoker.riding()).charStats().getMyRace().racialCategory().equals("Equine"))

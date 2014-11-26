@@ -92,10 +92,10 @@ public class PaladinSkill extends StdAbility
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob)
+	public boolean autoInvocation(MOB mob, boolean force)
 	{
-		if(CMSecurity.isASysOp(mob) || CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.ALLSKILLS))
+		if((!force) && (CMSecurity.isASysOp(mob) || CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.ALLSKILLS)))
 			return false;
-		return super.autoInvocation(mob);
+		return super.autoInvocation(mob, force);
 	}
 }

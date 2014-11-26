@@ -66,19 +66,17 @@ public class Ranger_HuntersEndurance extends StdAbility
 			{
 				if(oldState==null)
 					oldState=(CharState)mob.curState().copyOf();
+				mob.curState().setHunger(CharState.DEFAULT_HUNGER_FULL);
+				mob.curState().setThirst(CharState.DEFAULT_THIRST_FULL);
 				if(proficiency()>=99)
 				{
 					mob.curState().setFatigue(0);
-					mob.curState().setHunger(0);
-					mob.curState().setThirst(0);
 					mob.curState().setMovement(mob.maxState().getMovement());
 				}
 				else
 				if(proficiencyCheck(mob, 0, false))
 				{
 					mob.curState().adjFatigue(-proficiency(),mob.maxState());
-					mob.curState().adjHunger(-proficiency(),mob.maxState().maxHunger(mob.baseWeight()));
-					mob.curState().adjThirst(-proficiency(),mob.maxState().maxThirst(mob.baseWeight()));
 					mob.curState().adjMovement(-proficiency(),mob.maxState());
 				}
 				if(CMLib.dice().rollPercentage()==1)

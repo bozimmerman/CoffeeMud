@@ -531,7 +531,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			{
 				final Ability eA=mob.fetchEffect(A.ID());
 				if((eA==null)||(!eA.isNowAnAutoEffect()))
-					A.autoInvocation(mob);
+					A.autoInvocation(mob, false);
 			}
 		}
 

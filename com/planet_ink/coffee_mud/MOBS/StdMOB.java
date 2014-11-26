@@ -1209,7 +1209,7 @@ public class StdMOB implements MOB
 		{
 			A = fetchAbility(a);
 			if (A != null)
-				A.autoInvocation(this);
+				A.autoInvocation(this, false);
 		}
 		if (location() == null)
 		{

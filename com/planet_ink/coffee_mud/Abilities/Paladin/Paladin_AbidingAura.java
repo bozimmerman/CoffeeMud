@@ -37,7 +37,7 @@ import java.util.*;
 public class Paladin_AbidingAura extends PaladinSkill
 {
 	@Override public String ID() { return "Paladin_AbidingAura"; }
-	private final static String localizedName = CMLib.lang().L("Abding Aura");
+	private final static String localizedName = CMLib.lang().L("Abiding Aura");
 	@Override public String name() { return localizedName; }
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;}
 	

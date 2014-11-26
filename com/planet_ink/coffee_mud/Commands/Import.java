@@ -3363,7 +3363,7 @@ public class Import extends StdCommand
 			{
 				final Ability A=M.fetchAbility(a);
 				if(A!=null)
-					A.autoInvocation(M);
+					A.autoInvocation(M, false);
 			}
 			long rejuv=CMProps.getTicksPerMinute()+CMProps.getTicksPerMinute()+(CMProps.getTicksPerMinute()*M.basePhyStats().level()/2);
 			if(rejuv>(30*CMProps.getTicksPerMinute()))

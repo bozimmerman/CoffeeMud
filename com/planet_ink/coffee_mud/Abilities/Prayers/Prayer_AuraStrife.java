@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -159,10 +158,10 @@ public class Prayer_AuraStrife extends Prayer
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob)
+	public boolean autoInvocation(MOB mob, boolean force)
 	{
-		if(mob.charStats().getCurrentClass().ID().equals("Archon"))
+		if((!force) && (CMSecurity.isASysOp(mob) || CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.ALLSKILLS)))
 			return false;
-		return super.autoInvocation(mob);
+		return super.autoInvocation(mob, force);
 	}
 }

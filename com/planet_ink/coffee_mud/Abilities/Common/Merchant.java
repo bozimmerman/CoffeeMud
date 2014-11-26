@@ -613,10 +613,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob)
+	public boolean autoInvocation(MOB mob, boolean force)
 	{
 		if(mob instanceof ShopKeeper)
 			return false;
-		return super.autoInvocation(mob);
+		return super.autoInvocation(mob, force);
 	}
 }

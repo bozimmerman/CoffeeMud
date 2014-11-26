@@ -176,6 +176,7 @@ public class Chant_SpeakWithAnimals extends Chant
 				&&(msg.tool() instanceof Ability)
 				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 				&&(CMLib.flags().isAnimalIntelligence(msg.source()))
+				&&(mob.fetchEffect(msg.tool().ID())==null)
 				&&(msg.source().charStats().getMyRace().racialAbilities(msg.source()).find(msg.tool().ID())!=null))
 				{
 					final String str=CMStrings.getSayFromMessage(msg.sourceMessage());

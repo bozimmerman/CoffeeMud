@@ -61,9 +61,9 @@ public class Fighter_DesperateMoves extends FighterSkill
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(affected==invoker)
 		&&(msg.value()>0)
-		&&(invoker.curState().getHitPoints()<(int)Math.round(CMath.div(invoker.maxState().getHitPoints(),10.0))))
+		&&(invoker.curState().getHitPoints()<=(int)Math.round(CMath.div(invoker.maxState().getHitPoints(),10.0))))
 		{
-			msg.setValue((int)Math.round(Math.ceil(CMath.div(msg.value(),2.0 * CMath.div(proficiency()+super.getXLEVELLevel(invoker),100.0)))));
+			msg.setValue((int)Math.round(Math.ceil(CMath.div(msg.value(),1.0 + (1.0 * CMath.div(proficiency()+(10.0*super.getXLEVELLevel(invoker)),100.0))))));
 			super.helpProficiency(invoker, 0);
 		}
 		return true;

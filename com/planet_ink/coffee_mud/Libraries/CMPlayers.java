@@ -218,7 +218,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 				A=M.fetchAbility(a);
 				if(A!=null)
-					A.autoInvocation(M);
+					A.autoInvocation(M, false);
 			}
 		}
 		return M;

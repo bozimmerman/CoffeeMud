@@ -100,7 +100,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 				A.setProficiency(proff);
 				newMOB.addAbility(A);
 				A.setSavable(makeLongLasting);
-				A.autoInvocation(newMOB);
+				A.autoInvocation(newMOB, false);
 				if(!clearedYet)
 				{
 					lastMOBeffected.clear();

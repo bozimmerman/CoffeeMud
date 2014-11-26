@@ -314,9 +314,10 @@ public interface Ability extends Environmental
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#isAutoInvoked()
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#isNowAnAutoEffect()
 	 * @param mob the player or npc mob who has this ability
+	 * @param force if the skill has default-off settings, this overrides to ON
 	 * @return whether the ability autoinvoked correctly
 	 */
-	public boolean autoInvocation(MOB mob);
+	public boolean autoInvocation(MOB mob, boolean force);
 
 	/**
 	 * An autoinvocating ability is an ability which affects the

@@ -51,7 +51,7 @@ public class Prop_AstralSpirit extends Property
 		return race;
 	}
 	@Override
-	public boolean autoInvocation(MOB mob)
+	public boolean autoInvocation(MOB mob, boolean force)
 	{
 		if((mob!=null)&&(mob.fetchEffect(ID())==null))
 		{

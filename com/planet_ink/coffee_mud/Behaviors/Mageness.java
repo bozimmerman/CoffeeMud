@@ -67,7 +67,7 @@ public class Mageness extends CombatAbilities
 				addThis.setSavable(false);
 				addThis.setProficiency(CMLib.ableMapper().getMaxProficiency(addThis.ID())/2);
 				mob.addAbility(addThis);
-				addThis.autoInvocation(mob);
+				addThis.autoInvocation(mob, false);
 			}
 		}
 	}

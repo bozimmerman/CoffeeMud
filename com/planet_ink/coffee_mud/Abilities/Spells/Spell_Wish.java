@@ -983,7 +983,7 @@ public class Spell_Wish extends Spell
 						}
 						A=tm.fetchAbility(A.ID());
 						A.setProficiency(100);
-						A.autoInvocation(tm);
+						A.autoInvocation(tm, false);
 						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 now knows @x2!",target.name(),A.name()));
 						final Ability A2=tm.fetchEffect(A.ID());
 						if(A2!=null)

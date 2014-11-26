@@ -2107,7 +2107,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					else
 						mob.tell(L("^HFind your corpse have someone resurrect it.^N"));
 					mob.addAbility(A);
-					A.autoInvocation(mob);
+					A.autoInvocation(mob, false);
 				}
 			}
 			else

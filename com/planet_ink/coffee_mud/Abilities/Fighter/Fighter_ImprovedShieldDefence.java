@@ -100,9 +100,9 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob)
+	public boolean autoInvocation(MOB mob, boolean force)
 	{
 		amountOfShieldArmor=-1;
-		return super.autoInvocation(mob);
+		return super.autoInvocation(mob, force);
 	}
 }

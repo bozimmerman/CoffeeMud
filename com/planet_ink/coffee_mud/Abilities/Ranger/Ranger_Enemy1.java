@@ -128,10 +128,10 @@ public class Ranger_Enemy1 extends StdAbility
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob)
+	public boolean autoInvocation(MOB mob, boolean force)
 	{
-		if(mob.charStats().getCurrentClass().ID().equals("Archon"))
+		if((!force) && (CMSecurity.isASysOp(mob) || CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.ALLSKILLS)))
 			return false;
-		return super.autoInvocation(mob);
+		return super.autoInvocation(mob, force);
 	}
 }

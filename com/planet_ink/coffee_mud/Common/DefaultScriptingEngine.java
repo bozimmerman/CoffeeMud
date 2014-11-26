@@ -8549,7 +8549,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((A instanceof Language)&&(newTarget instanceof MOB))
 				{
 					((Language)A).setProficiency(100);
-					((Language)A).autoInvocation((MOB)newTarget);
+					((Language)A).autoInvocation((MOB)newTarget, false);
 					final Ability langA=((MOB)newTarget).fetchEffect(A.ID());
 					if(langA!=null)
 					{
