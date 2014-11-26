@@ -375,7 +375,7 @@ public class Emoter extends ActiveTicker
 					final Exit E=room.getExitInDir(d);
 					if((R!=null)&&(E!=null)&&(E.isOpen()))
 					{
-						final String inDir=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
+						final String inDir=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
 								Directions.getShipInDirectionName(Directions.getOpDirectionCode(d)):
 									Directions.getInDirectionName(Directions.getOpDirectionCode(d));
 						emoter.setName(L("something @x1",inDir));

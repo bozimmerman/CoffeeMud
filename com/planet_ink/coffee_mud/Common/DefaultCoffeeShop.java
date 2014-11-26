@@ -116,7 +116,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 
 	protected void stopTicking(Environmental E)
 	{
-		if((E instanceof SpaceShip)&&(E instanceof Item))
+		if((E instanceof BoardableShip)&&(E instanceof Item))
 		{
 			((Item)E).stopTicking();
 		}

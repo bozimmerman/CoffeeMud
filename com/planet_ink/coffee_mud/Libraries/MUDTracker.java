@@ -731,7 +731,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in."));
 			else
 			{
-				final String inDir=((toHere instanceof SpaceShip)||(toHere.getArea() instanceof SpaceShip))?
+				final String inDir=((toHere instanceof BoardableShip)||(toHere.getArea() instanceof BoardableShip))?
 						Directions.getShipDirectionName(dir):Directions.getDirectionName(dir);
 				toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
 			}
@@ -755,7 +755,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in."));
 		else
 		{
-			final String inDir=((toHere instanceof SpaceShip)||(toHere.getArea() instanceof SpaceShip))?
+			final String inDir=((toHere instanceof BoardableShip)||(toHere.getArea() instanceof BoardableShip))?
 					Directions.getShipDirectionName(dir):Directions.getDirectionName(dir);
 			toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
 		}
@@ -778,7 +778,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					{
 						if(rMOB.riding()!=null)
 						{
-							final String inDir=((sourceRoom instanceof SpaceShip)||(sourceRoom.getArea() instanceof SpaceShip))?
+							final String inDir=((sourceRoom instanceof BoardableShip)||(sourceRoom.getArea() instanceof BoardableShip))?
 									Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
 							rMOB.tell(L("You ride @x1 @x2.",rMOB.riding().name(),inDir));
 						}
@@ -863,7 +863,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if((riding instanceof MOB)
 			&&((sourceRoom).isInhabitant((MOB)riding)))
 			{
-				final String inDir=((sourceRoom instanceof SpaceShip)||(sourceRoom.getArea() instanceof SpaceShip))?
+				final String inDir=((sourceRoom instanceof BoardableShip)||(sourceRoom.getArea() instanceof BoardableShip))?
 						Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
 				((MOB)riding).tell(L("You are ridden @x1.",inDir));
 				if(!move(((MOB)riding),directionCode,false,false,true,false,running))
@@ -934,7 +934,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 
 		final Exit opExit=thisRoom.getReverseExit(directionCode);
-		final boolean useShipDirs=((thisRoom instanceof SpaceShip)||(thisRoom.getArea() instanceof SpaceShip));
+		final boolean useShipDirs=((thisRoom instanceof BoardableShip)||(thisRoom.getArea() instanceof BoardableShip));
 		final int opDir=Directions.getOpDirectionCode(directionCode);
 		final String dirName=useShipDirs?Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
 		final String fromDir=useShipDirs?Directions.getShipFromDirectionName(opDir):Directions.getFromDirectionName(opDir);
@@ -1080,7 +1080,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 							thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> remain(s) on guard here."));
 						else
 						{
-							final String inDir=((thisRoom instanceof SpaceShip)||(thisRoom.getArea() instanceof SpaceShip))?
+							final String inDir=((thisRoom instanceof BoardableShip)||(thisRoom.getArea() instanceof BoardableShip))?
 									Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
 							follower.tell(L("You follow @x1 @x2.",mob.name(follower),inDir));
 							boolean tryStand=false;

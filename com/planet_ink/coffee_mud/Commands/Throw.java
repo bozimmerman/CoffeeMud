@@ -130,7 +130,7 @@ public class Throw extends StdCommand
 		}
 		else
 		{
-			final boolean useShipDirs=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip));
+			final boolean useShipDirs=((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip));
 			final int opDir=Directions.getOpDirectionCode(dir);
 			final String inDir=useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir);
 			final String fromDir=useShipDirs?Directions.getShipFromDirectionName(opDir):Directions.getFromDirectionName(opDir);

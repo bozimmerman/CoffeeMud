@@ -249,7 +249,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			str.append(getGenScripts((Area)E,false));
 			str.append(CMLib.xml().convertXMLtoTag("AUTHOR",myArea.getAuthorID()));
 			str.append(CMLib.xml().convertXMLtoTag("CURRENCY",myArea.getCurrency()));
-			if(myArea instanceof SpaceShip)
+			if(myArea instanceof BoardableShip)
 				str.append(CMLib.xml().convertXMLtoTag("DISP",CMLib.xml().parseOutAngleBrackets(myArea.displayText())));
 			final Vector<String> V=new Vector<String>();
 			String flag=null;
@@ -416,9 +416,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof AmmunitionWeapon)
 				text.append(CMLib.xml().convertXMLtoTag("CAPA",((AmmunitionWeapon)item).ammunitionCapacity()));
 
+			if(E instanceof BoardableShip)
+				text.append(CMLib.xml().convertXMLtoTag("SSAREA",CMLib.xml().parseOutAngleBrackets(getAreaObjectXML(((BoardableShip)item).getShipArea(), null, null, null, true).toString())));
 			if(E instanceof SpaceShip)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("SSAREA",CMLib.xml().parseOutAngleBrackets(getAreaObjectXML(((SpaceShip)item).getShipArea(), null, null, null, true).toString())));
 				text.append(CMLib.xml().convertXMLtoTag("SSOML",((SpaceShip)item).getOMLCoeff()+""));
 				text.append(CMLib.xml().convertXMLtoTag("SSFACE", CMParms.toStringList(((SpaceShip)item).facing())));
 			}
@@ -2100,7 +2101,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Area)
 		{
 			((Area)E).setArchivePath(CMLib.xml().getValFromPieces(V,"ARCHP"));
-			if(E instanceof SpaceShip)
+			if(E instanceof BoardableShip)
 				((Area)E).setDisplayText(CMLib.xml().getValFromPieces(V,"DISP"));
 			((Area)E).setAuthorID(CMLib.xml().getValFromPieces(V,"AUTHOR"));
 			((Area)E).setCurrency(CMLib.xml().getValFromPieces(V,"CURRENCY"));
@@ -2405,6 +2406,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				final String key=CMLib.tech().getElectronicsKey(((SpaceShip)newOne).getShipArea());
 				if(key != null)
 					CMLib.tech().unregisterAllElectronics(key);
+			}
+			if(newOne instanceof BoardableShip)
+			{
 				if(newOne instanceof LandTitle)
 					((LandTitle)newOne).setOwnerName("");
 			}
@@ -2710,9 +2714,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			item.setRawLogicalAnd(CMLib.xml().getBoolFromPieces(buf,"WORNL"));
 			item.setRawProperLocationBitmap(CMLib.xml().getLongFromPieces(buf,"WORNB"));
 			item.setReadableText(CMLib.xml().getValFromPieces(buf,"READ"));
+			if(item instanceof BoardableShip)
+				((BoardableShip)item).setShipArea(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(buf,"SSAREA")));
 			if(item instanceof SpaceShip)
 			{
-				((SpaceShip)item).setShipArea(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(buf,"SSAREA")));
 				((SpaceShip)item).setOMLCoeff(CMLib.xml().getDoubleFromPieces(buf,"SSOML"));
 				double[] facing=CMParms.toDoubleArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(buf,"SSFACE"),true));
 				if((facing!=null)&&(facing.length==2))

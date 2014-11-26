@@ -848,7 +848,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			if((R.getExitInDir(d)!=null)&&(R.getExitInDir(d).keyName().equals(keyNum)))
 			{
-				final String dirName=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
+				final String dirName=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
 						Directions.getShipDirectionName(d):Directions.getDirectionName(d);
 				if(addThis.length()>0)
 					return addThis+" and to the "+dirName.toLowerCase();
@@ -1376,7 +1376,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					&&(!(E instanceof Ammunition))
 					&&(!(E instanceof MOB))
 					&&(!(E instanceof LandTitle))
-					&&(!(E instanceof SpaceShip))
+					&&(!(E instanceof BoardableShip))
 					&&(!(E instanceof RawMaterial))
 					&&(!(E instanceof Ability)));
 		case ShopKeeper.DEAL_LEATHER:
@@ -1409,7 +1409,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return (E instanceof LandTitle);
 		case ShopKeeper.DEAL_SHIPSELLER:
 		case ShopKeeper.DEAL_CSHIPSELLER:
-			return (E instanceof SpaceShip);
+			return (E instanceof BoardableShip);
 		case ShopKeeper.DEAL_ANYTECHNOLOGY:
 			return (E instanceof Electronics);
 		case ShopKeeper.DEAL_BUTCHER:

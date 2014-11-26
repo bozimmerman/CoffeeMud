@@ -57,6 +57,6 @@ public class West extends Go
 	public boolean securityCheck(MOB mob)
 	{
 		return (mob==null) || (mob.isMonster()) || (mob.location()==null)
-				|| ((!(mob.location() instanceof SpaceShip)) && (!(mob.location().getArea() instanceof SpaceShip)));
+				|| ((!(mob.location() instanceof BoardableShip)) && (!(mob.location().getArea() instanceof BoardableShip)));
 	}
 }

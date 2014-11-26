@@ -229,7 +229,7 @@ public class Every extends StdCommand
 					break;
 				case EXIT:
 				{
-					final boolean inAShip =(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
+					final boolean inAShip =(R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip);
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
 						final Exit E=R.getExitInDir(d);

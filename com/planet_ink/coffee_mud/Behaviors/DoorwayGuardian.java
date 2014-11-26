@@ -41,9 +41,9 @@ public class DoorwayGuardian extends StdBehavior
 	private boolean always=false;
 	private String mask=null;
 	private static final String DEFAULT_MESSAGE="<S-NAME> won't let <T-NAME> through there.";
-	private static final String CHALLENGE_SAY="Halt! Who goes there?!";
+	//private static final String CHALLENGE_SAY="Halt! Who goes there?!";
 	private String message=DEFAULT_MESSAGE;
-	private String challenge=CHALLENGE_SAY;
+	//private String challenge=CHALLENGE_SAY;
 	Vector<Integer> dirs=new Vector<Integer>();
 
 	@Override
@@ -60,14 +60,14 @@ public class DoorwayGuardian extends StdBehavior
 		if(parts.length>1)
 		{
 			message=CMStrings.replaceAll(parts[1],"\\;",";");
-			if(parts.length>2)
-				challenge=CMStrings.replaceAll(parts[2],"\\;",";");
+			//if(parts.length>2)
+			//	challenge=CMStrings.replaceAll(parts[2],"\\;",";");
 			parms=CMStrings.replaceAll(parts[0],"\\;",";");
 		}
 		else
 		{
 			message=DEFAULT_MESSAGE;
-			challenge=CHALLENGE_SAY;
+			//challenge=CHALLENGE_SAY;
 		}
 		final Vector<String> V=CMParms.parse(parms);
 		nosneak=false;

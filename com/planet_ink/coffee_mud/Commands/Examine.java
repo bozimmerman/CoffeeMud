@@ -100,7 +100,7 @@ public class Examine extends StdCommand
 						name="around";
 					else
 					if(dirCode>=0)
-						name=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
+						name=((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip))?
 							Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
 				}
 				final CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,L("@x1@x2 closely.",textMsg,name));

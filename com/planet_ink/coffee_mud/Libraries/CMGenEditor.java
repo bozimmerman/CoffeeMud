@@ -9204,7 +9204,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(showFlag<0)
 				mob.tell(L("*. Class: @x1",myArea.ID()));
 			genName(mob,myArea,++showNumber,showFlag);
-			if(myArea instanceof SpaceShip)
+			if(myArea instanceof BoardableShip)
 				genDisplayText(mob,myArea,++showNumber,showFlag);
 			genDescription(mob,myArea,++showNumber,showFlag);
 			genAuthor(mob,myArea,++showNumber,showFlag);

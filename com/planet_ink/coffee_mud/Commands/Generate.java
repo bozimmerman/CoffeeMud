@@ -72,7 +72,7 @@ public class Generate extends StdCommand
 			R.rawDoors()[opDir]=oldR;
 		}
 		CMLib.database().DBUpdateExits(oldR);
-		final String dirName=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
+		final String dirName=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
 				Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
 		oldR.showHappens(CMMsg.MSG_OK_VISUAL,L("A new place materializes to the @x1",dirName));
 	}
@@ -137,7 +137,7 @@ public class Generate extends StdCommand
 			}
 			if(mob.location().getRoomInDir(direction)!=null)
 			{
-				final String dirName=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
+				final String dirName=((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip))?
 						Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
 				mob.tell(L("A room already exists in direction @x1. Action aborted.",dirName));
 				return false;

@@ -2166,7 +2166,7 @@ public class StdRoom implements Room
 		{
 			for(int e=0;e<exits.length;e++)
 				if(exits[e]==E)
-					if((this instanceof SpaceShip)||(this.getArea() instanceof SpaceShip))
+					if((this instanceof BoardableShip)||(this.getArea() instanceof BoardableShip))
 						return Directions.getShipDirectionName(e);
 					else
 						return Directions.getDirectionName(e);
@@ -2442,7 +2442,7 @@ public class StdRoom implements Room
 			found=mob.fetchItem(goodLocation,filter,thingName);
 		if(found==null)
 		{
-			final boolean inShip=(this instanceof SpaceShip)||(this.getArea() instanceof SpaceShip);
+			final boolean inShip=(this instanceof BoardableShip)||(this.getArea() instanceof BoardableShip);
 			for(int d=0;d<exits.length;d++)
 				if((exits[d]!=null)
 				&&(thingName.equalsIgnoreCase(inShip?Directions.getShipDirectionName(d):Directions.getDirectionName(d))))

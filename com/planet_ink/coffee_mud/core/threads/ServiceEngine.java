@@ -745,8 +745,8 @@ public class ServiceEngine implements ThreadEngine
 		{
 			final Item I=(Item)O;
 			suspendResumeTicking(I, -1, suspend);
-			if((I instanceof SpaceShip)&&(!skipEmbeddedAreas))
-				suspendResumeRecurse(((SpaceShip)I).getShipArea(),true,suspend);
+			if((I instanceof BoardableShip)&&(!skipEmbeddedAreas))
+				suspendResumeRecurse(((BoardableShip)I).getShipArea(),true,suspend);
 		}
 		else
 		if(O instanceof MOB)

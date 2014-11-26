@@ -244,7 +244,7 @@ public class Copy extends StdCommand
 				}
 				if(room.getRoomInDir(dirCode)!=null)
 				{
-					final boolean useShipDirs=(room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip);
+					final boolean useShipDirs=(room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip);
 					mob.tell(L("A room already exists @x1!",(useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode))));
 					return false;
 				}
@@ -280,7 +280,7 @@ public class Copy extends StdCommand
 					if(newRoom.numItems()>0)
 						CMLib.database().DBUpdateItems(newRoom);
 					newRoom.getArea().fillInAreaRoom(newRoom);
-					final boolean useShipDirs=(room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip);
+					final boolean useShipDirs=(room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip);
 					final String inDirName=useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode);
 					if(i==0)
 					{
@@ -322,7 +322,7 @@ public class Copy extends StdCommand
 						editRoom.setRawExit(dirCode, E);
 						CMLib.database().DBUpdateExits(editRoom);
 					}
-					final boolean useShipDirs=(editRoom instanceof SpaceShip)||(editRoom.getArea() instanceof SpaceShip);
+					final boolean useShipDirs=(editRoom instanceof BoardableShip)||(editRoom.getArea() instanceof BoardableShip);
 					final String inDirName=useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode);
 					room.showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 falls @x2.",E.name(),inDirName));
 				}

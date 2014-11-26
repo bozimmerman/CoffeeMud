@@ -62,7 +62,7 @@ public class Pull extends Go
 					return false;
 				}
 				E=mob.location().getRoomInDir(dirCode);
-				dir=" "+(((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
+				dir=" "+(((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip))?
 						Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode));
 				commands.removeElementAt(commands.size()-1);
 			}

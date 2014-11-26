@@ -276,7 +276,7 @@ public class Say extends StdCommand
 			if(langSwap[0]!=null)
 				langSwap[0].setBeingSpoken(langSwap[0].ID(), true);
 		}
-		final boolean useShipDirs=(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
+		final boolean useShipDirs=(R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip);
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);

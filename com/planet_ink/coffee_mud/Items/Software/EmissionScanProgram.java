@@ -130,7 +130,7 @@ public class EmissionScanProgram extends GenSoftware
 			return 0;
 		roomsDone.add(R);
 		int numFound=0;
-		final boolean useShipDirs=(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
+		final boolean useShipDirs=(R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip);
 		for(int m=0;m<R.numInhabitants();m++)
 		{
 			final MOB M=R.fetchInhabitant(m);
