@@ -50,6 +50,10 @@ public class Fighter extends StdCharClass
 	@Override public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?2))"; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	@Override public String getMovementFormula(){return "12*((@x2<@x3)/18)"; }
+	
+	protected static final long MILLIS_BETWEEN_DUEL_WINS = 30 * 60000;
+	protected static volatile long lastDuelWinner = 0;
+	protected static TreeMap<String,long[]> duelWinners = new TreeMap<String,long[]>();
 
 	public Fighter()
 	{
@@ -207,8 +211,26 @@ public class Fighter extends StdCharClass
 			||(((MOB)host).playerStats().getAccount()!=msg.source().playerStats().getAccount()))
 		)
 		{
+			synchronized(duelWinners)
+			{
+				final long now=System.currentTimeMillis();
+				if(lastDuelWinner < (now - MILLIS_BETWEEN_DUEL_WINS))
+				{
+					for(final Iterator<String> m = duelWinners.keySet().iterator(); m.hasNext(); )
+						if(duelWinners.get(m.next())[0] < (now - MILLIS_BETWEEN_DUEL_WINS))
+							m.remove();
+				}
+				final long[] lastTime=duelWinners.get(host.Name());
+				if((lastTime != null) && (lastTime[0] > (now - MILLIS_BETWEEN_DUEL_WINS)))
+					return;
+				if(lastTime == null)
+					duelWinners.put(host.Name(), new long[]{now});
+				else
+					lastTime[0] = now;
+				lastDuelWinner = now;
+			}
 			((MOB)host).tell(CMLib.lang().L("^YVictory!!^N"));
-			CMLib.leveler().postExperience((MOB)host,null,null,150,false);
+			CMLib.leveler().postExperience((MOB)host,null,null,300,false);
 		}
 	}
 
@@ -221,6 +243,7 @@ public class Fighter extends StdCharClass
 		&&(host instanceof MOB)
 		&&(((MOB)host).charStats().getCurrentClass().ID().equals(C.ID()))
 		&&(((MOB)host).getClanRole(msg.source().Name())!=null)
+		&&(!((MOB)host).isMonster())
 		)
 		{
 			final Area A=(Area)msg.target();
