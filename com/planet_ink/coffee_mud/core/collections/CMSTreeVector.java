@@ -23,27 +23,28 @@ limitations under the License.
 /*
  * A version of the Vector class that provides to "safe" adds
  * and removes by copying the underlying vector whenever those
- * operations are done.
+ * operations are done.  Also maintains a tree, using the CMObject
+ * ID() of the stored object as sort key.
  */
-public class STreeVector<T extends CMObject> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess
+public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess
 {
 	private static final long serialVersionUID = 6687178785122561992L;
 	private volatile Vector<T> V;
 	private final    TreeMap<String,T> S;
 
-	public STreeVector()
+	public CMSTreeVector()
 	{
 		V=new Vector<T>();
 		S=new TreeMap<String,T>();
 	}
 
-	public STreeVector(int size)
+	public CMSTreeVector(int size)
 	{
 		V=new Vector<T>(size);
 		S=new TreeMap<String,T>();
 	}
 
-	public STreeVector(List<T> E)
+	public CMSTreeVector(List<T> E)
 	{
 		V=new Vector<T>();
 		S=new TreeMap<String,T>();
@@ -51,7 +52,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 			addAll(E);
 	}
 
-	public STreeVector(T[] E)
+	public CMSTreeVector(T[] E)
 	{
 		V=new Vector<T>();
 		S=new TreeMap<String,T>();
@@ -62,7 +63,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		}
 	}
 
-	public STreeVector(Enumeration<T> E)
+	public CMSTreeVector(Enumeration<T> E)
 	{
 		V=new Vector<T>();
 		S=new TreeMap<String,T>();
@@ -73,7 +74,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 		}
 	}
 
-	public STreeVector(Iterator<T> E)
+	public CMSTreeVector(Iterator<T> E)
 	{
 		V=new Vector<T>();
 		S=new TreeMap<String,T>();
@@ -81,7 +82,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 			addBoth(E.next());
 	}
 
-	public STreeVector(Set<T> E)
+	public CMSTreeVector(Set<T> E)
 	{
 		V=new Vector<T>();
 		S=new TreeMap<String,T>();
@@ -167,9 +168,9 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized STreeVector<T> copyOf()
+	public synchronized CMSTreeVector<T> copyOf()
 	{
-		final STreeVector<T> SV=new STreeVector<T>();
+		final CMSTreeVector<T> SV=new CMSTreeVector<T>();
 		SV.V=(Vector<T>)V.clone();
 		SV.S.putAll(S);
 		return SV;
