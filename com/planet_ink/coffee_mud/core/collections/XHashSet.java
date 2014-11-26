@@ -120,11 +120,4 @@ public class XHashSet<T> extends HashSet<T>
 			for(final T o : E)
 				remove(o);
 	}
-
-	public synchronized void sort()
-	{
-		final Vector<T> V2=new Vector<T>(new TreeSet<T>(this));
-		clear();
-		addAll(V2);
-	}
 }
