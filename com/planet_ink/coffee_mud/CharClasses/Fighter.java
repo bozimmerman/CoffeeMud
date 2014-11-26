@@ -214,14 +214,15 @@ public class Fighter extends StdCharClass
 			synchronized(duelWinners)
 			{
 				final long now=System.currentTimeMillis();
-				if(lastDuelWinner < (now - MILLIS_BETWEEN_DUEL_WINS))
+				final long timeout=now - (now - MILLIS_BETWEEN_DUEL_WINS);
+				if(lastDuelWinner < timeout)
 				{
 					for(final Iterator<String> m = duelWinners.keySet().iterator(); m.hasNext(); )
-						if(duelWinners.get(m.next())[0] < (now - MILLIS_BETWEEN_DUEL_WINS))
+						if(duelWinners.get(m.next())[0] < timeout)
 							m.remove();
 				}
 				final long[] lastTime=duelWinners.get(host.Name());
-				if((lastTime != null) && (lastTime[0] > (now - MILLIS_BETWEEN_DUEL_WINS)))
+				if((lastTime != null) && (lastTime[0] > timeout))
 					return;
 				if(lastTime == null)
 					duelWinners.put(host.Name(), new long[]{now});
