@@ -1117,6 +1117,7 @@ public class DefaultClan implements Clan
 					}
 					else
 					{
+						Log.warnOut("Clan "+clanID()+" removed member '"+member.name+"' due to being nonexistant!");
 						CMLib.database().DBUpdateClanMembership(member.name, clanID(), -1);
 					}
 				}

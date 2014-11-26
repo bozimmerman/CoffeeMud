@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -67,6 +68,8 @@ public class GrinderClans
 					final MOB M=CMLib.players().getLoadPlayer(member.name);
 					if(M!=null)
 						C.delMember(M);
+					else
+						CMLib.database().DBUpdateClanMembership(member.name, C.clanID(), -1);
 				}
 			}
 		}
