@@ -463,15 +463,39 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		{
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
+					.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR)
 					.plus(TrackingLibrary.TrackingFlag.NOHOMES)
 					.plus(TrackingLibrary.TrackingFlag.UNLOCKEDONLY);
 			final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
-			if(docks.size()==0)
-				for(final Room R2 : rooms)
-					if(R2.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-						docks.add(R2);
+			for(final Room R2 : rooms)
+			{
+				if(R2.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+				{
+					final Room underWaterR=R.getRoomInDir(Directions.DOWN);
+					if((underWaterR!=null)
+					&&(R2.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+					&&(R.getExitInDir(Directions.DOWN)!=null)
+					&&(R.getExitInDir(Directions.DOWN).isOpen()))
+					{
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						{
+							final Room adjacentR = underWaterR.getRoomInDir(d);
+							final Exit adjacentE = underWaterR.getExitInDir(d);
+							if((adjacentR!=null)
+							&&(adjacentE!=null)
+							&&(adjacentE.isOpen())
+							&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+							&&(R2.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
+							&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+							&&(R2.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+							&&(!docks.contains(adjacentR)))
+								docks.add(adjacentR);
+						}
+					}
+				}
+			}
 		}
 		if(docks.size()==0)
 			return null;
