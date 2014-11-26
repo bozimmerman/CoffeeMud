@@ -162,17 +162,19 @@ public class Monk extends StdCharClass
 		return (mob.fetchWieldedItem()!=null) || (mob.fetchHeldItem()!=null);
 	}
 
-	@Override
+	@Override 
 	public void executeMsg(Environmental host, CMMsg msg)
-	{
-		super.executeMsg(host,msg);
+	{ 
+		super.executeMsg(host,msg); 
 		Fighter.conquestExperience(this,host,msg);
+		Fighter.duelExperience(this, host, msg);
 	}
+	
 
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return "Receives defensive bonus for high dexterity.  Receives unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives trap avoidance.  Receives bonus conquest experience.";
+		return "Receives defensive bonus for high dexterity.  Receives unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives trap avoidance.  Receives bonus conquest and duel experience.";
 	}
 
 	@Override

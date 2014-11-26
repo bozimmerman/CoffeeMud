@@ -134,9 +134,9 @@ public class Dueler extends StdAbility
 			final Room deathRoom=target.location();
 			final String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
 			final CMMsg msg2=CMClass.getMsg(target,null,otherDuelPartner,
-					CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
-					CMMsg.MSG_OK_VISUAL,null,
-					CMMsg.MSG_OK_VISUAL,L("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
+					CMMsg.MSG_DUELLOSS,L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
+					CMMsg.MSG_DUELLOSS,null,
+					CMMsg.MSG_DUELLOSS,L("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
 			deathRoom.send(target, msg2);
 			CMLib.combat().doDeathPostProcessing(msg);
 			target.makePeace();

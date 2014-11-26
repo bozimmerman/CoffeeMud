@@ -185,9 +185,22 @@ public class Ranger extends StdCharClass
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	@Override public String getOtherLimitsDesc(){return "Must remain Neutral to avoid chant failure chances.";}
-	@Override public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest experience.  Benefits from animal followers leveling.";}
-	@Override public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
-
+	
+	@Override 
+	public String getOtherBonusDesc()
+	{
+		return "When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest and duel experience.  Benefits from animal followers leveling.";
+	}
+	
+	@Override 
+	public void executeMsg(Environmental host, CMMsg msg)
+	{ 
+		super.executeMsg(host,msg); 
+		Fighter.conquestExperience(this,host,msg);
+		Fighter.duelExperience(this, host, msg);
+		Druid.doAnimalFollowerLevelingCheck(this,host,msg);
+	}
+	
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Troll-kin","Elf","Centaur"
 	};

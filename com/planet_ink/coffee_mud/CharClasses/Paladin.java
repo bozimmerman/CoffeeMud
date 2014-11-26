@@ -184,9 +184,22 @@ public class Paladin extends StdCharClass
 		}
 	}
 
-	@Override public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
+	@Override 
+	public void executeMsg(Environmental host, CMMsg msg)
+	{ 
+		super.executeMsg(host,msg); 
+		Fighter.conquestExperience(this,host,msg);
+		Fighter.duelExperience(this, host, msg);
+	}
+	
 	@Override public String getOtherLimitsDesc(){return "Must remain good to avoid spell/skill failure chance.";}
-	@Override public String getOtherBonusDesc(){return "Receives bonus conquest experience.";}
+
+	@Override 
+	public String getOtherBonusDesc()
+	{
+		return "Receives bonus conquest and duel experience.";
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -205,6 +218,7 @@ public class Paladin extends StdCharClass
 		}
 		return super.okMessage(myChar, msg);
 	}
+
 	private final String[] raceRequiredList=new String[]{"Human"};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 

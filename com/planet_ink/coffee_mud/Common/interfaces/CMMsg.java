@@ -1028,6 +1028,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_COLLISION=116;
 	/** MINOR_MASK minor action code type, denoting a general unknown action*/
 	public static final int TYP_AROMA=118;
+	/** MINOR_MASK minor action code type, denoting a loss in a duel*/
+	public static final int TYP_DUELLOSS=119;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1054,7 +1056,7 @@ public interface CMMsg extends CMCommon
 		"FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "ORDER","EXPIRE","BORROW","HUH",
 		"LIFE", "BID", "CLANEVENT", "UNLOAD", "DUELCHALLENGE", "LEGALWARRANT", "DIG",
 		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT","CONTEMPLATE","POUR","LOOKEXITS",
-		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA"
+		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA","DUELLOSS"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1354,5 +1356,6 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_INSTALL=MASK_HANDS|TYP_INSTALL;
 	/** combined MAJOR and MINOR codes for useful event message type for a collision*/
 	public static final int MSG_COLLISION=MASK_MOVE|MASK_SOUND|TYP_COLLISION;
-	
+	/** combined MAJOR and MINOR codes for useful event message type for a loss in a duel*/
+	public static final int MSG_DUELLOSS=MASK_MOVE|MASK_SOUND|MASK_ALWAYS|TYP_DUELLOSS;
 }

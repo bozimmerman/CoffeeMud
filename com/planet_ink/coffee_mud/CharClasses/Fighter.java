@@ -181,9 +181,37 @@ public class Fighter extends StdCharClass
 		}
 	}
 
-	@Override public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
-	@Override public String getOtherBonusDesc(){return "Receives bonus conquest experience.";}
+	@Override 
+	public void executeMsg(Environmental host, CMMsg msg)
+	{ 
+		super.executeMsg(host,msg); 
+		Fighter.conquestExperience(this,host,msg);
+		Fighter.duelExperience(this, host, msg);
+	}
 	
+	@Override 
+	public String getOtherBonusDesc()
+	{
+		return "Receives bonus conquest experience and bonus duel experience.";
+	}
+	
+	public static void duelExperience(CharClass C, Environmental host, CMMsg msg)
+	{
+		if((msg.targetMinor()==CMMsg.TYP_DUELLOSS)
+		&&(msg.target()!=msg.tool())
+		&&(msg.target()!=host)
+		&&(host instanceof MOB)
+		&&(msg.tool()==host)
+		&&((msg.source().playerStats().getAccount()==null)
+			||(((MOB)host).playerStats().getAccount()==null)
+			||(((MOB)host).playerStats().getAccount()!=msg.source().playerStats().getAccount()))
+		)
+		{
+			((MOB)host).tell(CMLib.lang().L("^YVictory!!^N"));
+			CMLib.leveler().postExperience((MOB)host,null,null,150,false);
+		}
+	}
+
 	public static void conquestExperience(CharClass C, Environmental host, CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_AREAAFFECT)

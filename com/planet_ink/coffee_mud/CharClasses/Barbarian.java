@@ -149,9 +149,20 @@ public class Barbarian extends StdCharClass
 
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	@Override public String getOtherBonusDesc(){return "Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.  Receives bonus conquest experience.";}
-	@Override public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
-
+	@Override 
+	public String getOtherBonusDesc()
+	{
+		return "Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.  Receives bonus conquest and duel experience.";
+	}
+	
+	@Override 
+	public void executeMsg(Environmental host, CMMsg msg)
+	{ 
+		super.executeMsg(host,msg); 
+		Fighter.conquestExperience(this,host,msg);
+		Fighter.duelExperience(this, host, msg);
+	}
+	
 	private final String[] raceRequiredList=new String[]{"All"};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
