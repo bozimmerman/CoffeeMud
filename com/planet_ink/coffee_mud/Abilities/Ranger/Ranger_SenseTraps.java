@@ -83,7 +83,6 @@ public class Ranger_SenseTraps extends StdAbility
 					msg.append(trapHere(mob,E));
 					msg.append(trapHere(mob,E2));
 					msg.append(trapCheck(mob,R2,d));
-					break;
 				}
 			}
 			if(CMLib.flags().isInWilderness(R))

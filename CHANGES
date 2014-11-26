@@ -28,6 +28,8 @@
   24. New Paladin skills/prayers: Resurrect Mount, Hammer of Light, Abiding Aura, Paladin's Mount, Command Horse, Heal Mount, Holy Strike
   25. New Fighter skills: Toughness, Toughness II, Toughness III, Desperate Moves
   26. Beyond new skills, mage specialists and some clerics have had their spell lists tinkered with to make them a bit better
+  27. STAT command now allows CHARSTATS for some number table happiness.
+  28. AUTOINVOKE command now allows masks for multiple skills
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.
    1. (FakeDB): DBUpgrade is now application independent, and can handle big tables better.  See installation guide for new recommended usage.

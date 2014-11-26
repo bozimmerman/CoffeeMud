@@ -324,6 +324,10 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int STAT_HEIGHT=9;
 	/** the size of the internal stats integer array */
 	public final static int NUM_STATS=10;
+	
+	/** Descriptions for the above */
+	public final static String[] STAT_DESCS={"LEVEL","SENSESMASK","ARMOR","DAMAGE","ATTACK",
+											"DISPOSITIONMASK","REJUV","WEIGHT","ABILITY","HEIGHT"};
 
 	// sensemask stuff
 	/** a bit setting, as from sensesMask(), flagging this mob as unable to see */

@@ -51,6 +51,7 @@ public class Stat  extends Skills
 	public static final int ABLETYPE_AREASEXPLORED=-10;
 	public static final int ABLETYPE_WORLDEXPLORED=-11;
 	public static final int ABLETYPE_FACTIONS=-12;
+	public static final int ABLETYPE_CHARSTATS=-13;
 
 	public static final String[][] ABLETYPE_DESCS={
 		{"EQUIPMENT","EQ","EQUIP"},
@@ -64,6 +65,7 @@ public class Stat  extends Skills
 		{"AREASEXPLORED"},
 		{"WORLDEXPLORED"},
 		{"FACTIONS","FACTION"},
+		{"CHARSTATISTICS","CSTAT","CHARSTATS"},
 	};
 
 	public MOB getTarget(MOB mob, String targetName, boolean quiet)
@@ -344,6 +346,63 @@ public class Stat  extends Skills
 		return (int)(total / 1000);
 	}
 
+	protected void addCharStatsChars(CharStats cstats, int headerWidth, int numberWidth, int[] col, StringBuilder str)
+	{
+		for(int i=0;i<cstats.getStatCodes().length;i++)
+		{
+			str.append("^g"+CMStrings.padRight(cstats.getStatCodes()[i]+"^w", headerWidth));
+			str.append(" ");
+			str.append(CMStrings.padRight(""+cstats.getStat(cstats.getStatCodes()[i]), numberWidth));
+			col[0]++;
+			if(col[0]==4)
+				str.append("\n\r");
+		}
+	}
+
+	protected void addCharStatsState(CharState cstats, int headerWidth, int numberWidth, int[] col, StringBuilder str)
+	{
+		for(int i=0;i<cstats.getStatCodes().length;i++)
+		{
+			str.append("^y"+CMStrings.padRight(cstats.getStatCodes()[i]+"^w", headerWidth));
+			str.append(" ");
+			str.append(CMStrings.padRight(""+cstats.getStat(cstats.getStatCodes()[i]), numberWidth));
+			col[0]++;
+			if(col[0]==4)
+				str.append("\n\r");
+		}
+	}
+
+	protected void addCharStatsPhys(PhyStats pstats, int headerWidth, int numberWidth, int[] col, StringBuilder str)
+	{
+		for(int i=0;i<pstats.getStatCodes().length;i++)
+		{
+			str.append("^c"+CMStrings.padRight(pstats.getStatCodes()[i]+"^w", headerWidth));
+			str.append(" ");
+			str.append(CMStrings.padRight(""+pstats.getStat(pstats.getStatCodes()[i]), numberWidth));
+			col[0]++;
+			if(col[0]==4)
+				str.append("\n\r");
+		}
+		for(int i=0;i<PhyStats.CAN_SEE_CODES.length;i++)
+		{
+			str.append("^c"+CMStrings.padRight(PhyStats.CAN_SEE_CODES[i]+"^w", headerWidth));
+			str.append(" ");
+			str.append(CMStrings.padRight(""+CMath.isSet(pstats.sensesMask(), i), numberWidth));
+			col[0]++;
+			if(col[0]==4)
+				str.append("\n\r");
+		}
+		for(int i=0;i<PhyStats.IS_CODES.length;i++)
+		{
+			str.append("^c"+CMStrings.padRight(PhyStats.IS_CODES[i]+"^w", headerWidth));
+			str.append(" ");
+			str.append(CMStrings.padRight(""+CMath.isSet(pstats.disposition(), i), numberWidth));
+			col[0]++;
+			if(col[0]==4)
+				str.append("\n\r");
+		}
+	}
+	
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -538,6 +597,28 @@ public class Stat  extends Skills
 				if(F!=null)
 					str.append("^W[^H"+F.name()+"^N("+F.factionID()+"): "+target.fetchFaction(F.factionID())+"^W]^N, ");
 			}
+			str.append("\n\r");
+		}
+		else
+		if(ableTypes==ABLETYPE_CHARSTATS)
+		{
+			str.append(L("^XCurrent Character Statistics:^.^N\n\r"));
+			int[] col={0};
+			int headerWidth=ListingLibrary.ColFixer.fixColWidth(12, mob);
+			int numberWidth=ListingLibrary.ColFixer.fixColWidth(6, mob);
+			addCharStatsChars(target.charStats(), headerWidth, numberWidth, col, str);
+			addCharStatsPhys(target.phyStats(), headerWidth, numberWidth, col, str);
+			addCharStatsState(target.curState(), headerWidth, numberWidth, col, str);
+			str.append("\n\r\n\r");
+			str.append(L("^XBase Character Statistics:^.^N\n\r"));
+			col[0]=0;
+			addCharStatsChars(target.baseCharStats(), headerWidth, numberWidth, col, str);
+			addCharStatsPhys(target.basePhyStats(), headerWidth, numberWidth, col, str);
+			addCharStatsState(target.baseState(), headerWidth, numberWidth, col, str);
+			str.append("\n\r\n\r");
+			str.append(L("^XMax Character State:^.^N\n\r"));
+			col[0]=0;
+			addCharStatsState(target.maxState(), headerWidth, numberWidth, col, str);
 			str.append("\n\r");
 		}
 		else

@@ -87,14 +87,14 @@ public class Spell_WallOfAir extends Spell
 				CMLib.combat().postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
 				M.setLocation(null);
 				M.setVictim(null);
-				if(mob.isMonster() && (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STAT_WISDOM)))
-					CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
 				M.destroy();
 			}
 			else
 			{
 				mob.location().show(mob,invoker,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile is lost in a wall of air."));
 			}
+			if(mob.isMonster() && (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STAT_WISDOM)))
+				CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
 			return false;
 		}
 

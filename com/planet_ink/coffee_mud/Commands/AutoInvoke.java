@@ -41,6 +41,46 @@ public class AutoInvoke extends StdCommand
 
 	private final String[] access=I(new String[]{"AUTOINVOKE"});
 	@Override public String[] getAccessWords(){return access;}
+	
+	protected enum AutoInvokeCommand
+	{
+		TOGGLE,
+		INVOKE,
+		UNINVOKE
+	}
+	
+	protected void autoInvoke(MOB mob, Ability foundA, String s, Set<String> effects, AutoInvokeCommand cmd)
+	{
+		if(foundA==null)
+			mob.tell(L("'@x1' is invalid.",s));
+		else
+		if(effects.contains(foundA.ID()))
+		{
+			if((cmd == AutoInvokeCommand.UNINVOKE) || (cmd == AutoInvokeCommand.TOGGLE))
+			{
+				foundA=mob.fetchEffect(foundA.ID());
+				if(foundA!=null)
+				{
+					mob.delEffect(foundA);
+					if(mob.fetchEffect(foundA.ID())!=null)
+						mob.tell(L("@x1 failed to successfully deactivate.",foundA.name()));
+					else
+						mob.tell(L("@x1 successfully deactivated.",foundA.name()));
+				}
+			}
+		}
+		else
+		{
+			if((cmd == AutoInvokeCommand.INVOKE) || (cmd == AutoInvokeCommand.TOGGLE))
+			{
+				foundA.autoInvocation(mob);
+				if(mob.fetchEffect(foundA.ID())!=null)
+					mob.tell(L("@x1 successfully invoked.",foundA.name()));
+				else
+					mob.tell(L("@x1 failed to successfully invoke.",foundA.name()));
+			}
+		}
+	}
 
 	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
@@ -116,19 +156,55 @@ public class AutoInvoke extends StdCommand
 		final Session session=mob.session();
 		if(session!=null)
 		{
+			final AutoInvoke me=this;
 			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 			{
 				@Override public void showPrompt() { session.promptPrint(L("Enter one to toggle or RETURN: "));}
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
-					final String s=this.input;
-					Ability foundA=null;
-					if(s.length()>0)
+					String s=this.input;
+					AutoInvokeCommand cmd=AutoInvokeCommand.TOGGLE;
+					if(s.toUpperCase().startsWith("INVOKE "))
+					{
+						s=s.substring(7).trim();
+						cmd=AutoInvokeCommand.INVOKE;
+					}
+					else
+					if(s.toUpperCase().startsWith("UNINVOKE "))
+					{
+						s=s.substring(9).trim();
+						cmd=AutoInvokeCommand.UNINVOKE;
+					}
+					boolean startsWith=s.endsWith("*");
+					if(startsWith)
+						s=s.substring(0,s.length()-1).toLowerCase();
+					boolean endsWith=s.startsWith("*");
+					if(endsWith)
+						s=s.substring(1).toLowerCase();
+					if(startsWith || endsWith)
 					{
 						for(Ability A : abilities)
 						{
-							if((A!=null)&&(A.name().equalsIgnoreCase(s)))
+							if((A!=null)
+							&&(A.name().equalsIgnoreCase(s) 
+								|| (startsWith && A.name().toLowerCase().startsWith(s))
+								|| (endsWith && A.name().toLowerCase().endsWith(s))))
+							{
+								me.autoInvoke(mob, A, s, effects, cmd);
+							}
+						}
+					}
+					else
+					if(s.length()>0)
+					{
+						Ability foundA=null;
+						for(Ability A : abilities)
+						{
+							if((A!=null)
+							&&(A.name().equalsIgnoreCase(s) 
+								|| (startsWith && A.name().toLowerCase().startsWith(s))
+								|| (endsWith && A.name().toLowerCase().endsWith(s))))
 							{ foundA=A; break;}
 						}
 						if(foundA==null)
@@ -137,30 +213,16 @@ public class AutoInvoke extends StdCommand
 								if((A!=null)&&(CMLib.english().containsString(A.name(),s)))
 								{ foundA=A; break;}
 							}
-						if(foundA==null)
-							mob.tell(L("'@x1' is invalid.",s));
-						else
-						if(effects.contains(foundA.ID()))
-						{
-							foundA=mob.fetchEffect(foundA.ID());
-							if(foundA!=null)
-							{
-								mob.delEffect(foundA);
-								if(mob.fetchEffect(foundA.ID())!=null)
-									mob.tell(L("@x1 failed to successfully deactivate.",foundA.name()));
-								else
-									mob.tell(L("@x1 successfully deactivated.",foundA.name()));
-							}
-						}
-						else
-						{
-							foundA.autoInvocation(mob);
-							if(mob.fetchEffect(foundA.ID())!=null)
-								mob.tell(L("@x1 successfully invoked.",foundA.name()));
-							else
-								mob.tell(L("@x1 failed to successfully invoke.",foundA.name()));
-						}
+						me.autoInvoke(mob, foundA, s, effects, cmd);
 					}
+					mob.recoverCharStats();
+					mob.recoverPhyStats();
+					mob.recoverMaxState();
+					if(mob.location()!=null)
+						mob.location().recoverRoomStats();
+					mob.recoverCharStats();
+					mob.recoverPhyStats();
+					mob.recoverMaxState();
 				}
 			});
 		}
