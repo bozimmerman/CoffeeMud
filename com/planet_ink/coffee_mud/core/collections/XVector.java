@@ -148,8 +148,29 @@ public class XVector<T> extends Vector<T>
 
 	public synchronized void sort()
 	{
-		final Vector<T> V2=new Vector<T>(new TreeSet<T>(this));
-		clear();
-		addAll(V2);
+		Collections.sort(this, new Comparator<T>(){
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			@Override
+			public int compare(T arg0, T arg1) 
+			{
+				if(arg0 == null)
+				{
+					if(arg1 == null)
+						return 0;
+					return -1;
+				}
+				else
+				if(arg1 == null)
+				{
+					return 1;
+				}
+				else
+				if(arg0 instanceof Comparable)
+					return ((Comparable)arg0).compareTo(arg1);
+				else
+					return arg0.toString().compareTo(arg1.toString());
+			}
+			
+		});
 	}
 }
