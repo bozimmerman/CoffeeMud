@@ -116,13 +116,13 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			}
 			else
 			{
-				Log.warnOut("Failed to unpack a space ship area for the space ship");
+				Log.warnOut("Failed to unpack a sailing ship area for the sailing ship");
 				getShipArea();
 			}
 		}
 		catch (final CMException e)
 		{
-			Log.warnOut("Unable to parse space ship xml for some reason.");
+			Log.warnOut("Unable to parse sailing ship xml for some reason.");
 		}
 	}
 
@@ -158,8 +158,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	{
 		if (area instanceof BoardableShip)
 			return ((BoardableShip)area).getIsDocked();
-		if(owner() instanceof LocationRoom)
-			return ((LocationRoom)owner());
+		if(owner() instanceof Room)
+			return ((Room)owner());
 		return null;
 	}
 
@@ -209,18 +209,6 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		s.setOwnerName("");
 		final String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		s.setShipArea(xml);
-		CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(s.getShipArea()));
-		/*
-		if(s.getShipArea().Name().startsWith("UNNAMED_"))
-		{
-			String num=Double.toString(Math.random());
-			String oldName=s.Name();
-			String oldDisplay=s.displayText();
-			s.renameSpaceShip("UNNAMED_"+num.substring(num.indexOf('.')+1));
-			s.setName(oldName);
-			s.setDisplayText(oldDisplay);
-		}
-		*/
 		return s;
 	}
 
@@ -230,8 +218,6 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		if(area!=null)
 		{
 			CMLib.threads().deleteAllTicks(area);
-			final String key=CMLib.tech().getElectronicsKey(area);
-			CMLib.tech().unregisterAllElectronics(key);
 		}
 		super.stopTicking();
 		this.destroyed=false; // undo the weird thing
@@ -304,12 +290,10 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		if(area instanceof BoardableShip)
 		{
 			final Room oldEntry=getDestinationRoom();
-			final String oldName=area.Name();
 			String registryNum=area.getBlurbFlag("REGISTRY");
 			if(registryNum==null) 
 				registryNum="";
 			((BoardableShip)area).renameShip(newName);
-			CMLib.tech().unregisterElectronics(null, oldName+registryNum);
 			registryNum=Double.toString(Math.random());
 			area.addBlurbFlag("REGISTRY Registry#"+registryNum.substring(registryNum.indexOf('.')+1));
 			setReadableText(oldEntry.roomID());
@@ -425,29 +409,6 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		}
 	}
 	
-	protected void sendComputerMessage(final MOB mob, final CMMsg msg)
-	{
-		final Area ship=getShipArea();
-		if(ship!=null)
-		{
-			List<Electronics> electronics = CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(ship));
-			for(final Electronics E : electronics)
-			{
-				if(E instanceof Electronics.Computer)
-				{
-					if(E.owner() instanceof Room)
-					{
-						if(((Room)E.owner()).okMessage(mob, msg))
-							((Room)E.owner()).send(mob, msg);
-					}
-					else
-					if(E.okMessage(mob, msg))
-						E.executeMsg(mob, msg);
-				}
-			}
-		}
-	}
-	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -495,9 +456,9 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			transferOwnership((MOB)msg.target());
 	}
 
-	protected LocationRoom findNearestDocks(Room R)
+	protected Room findNearestDocks(Room R)
 	{
-		final List<LocationRoom> docks=new XVector<LocationRoom>();
+		final List<Room> docks=new XVector<Room>();
 		if(R!=null)
 		{
 			TrackingLibrary.TrackingFlags flags;
@@ -505,27 +466,12 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR)
 					.plus(TrackingLibrary.TrackingFlag.NOHOMES)
-					.plus(TrackingLibrary.TrackingFlag.UNLOCKEDONLY)
-					.plus(TrackingLibrary.TrackingFlag.NOWATER);
+					.plus(TrackingLibrary.TrackingFlag.UNLOCKEDONLY);
 			final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
-			for(final Room R2 : rooms)
-				if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-				&&(R2 instanceof LocationRoom)
-				&&(R.getArea().inMyMetroArea(R2.getArea())))
-					docks.add((LocationRoom)R2);
-			if(docks.size()==0)
-				for(final Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
-				{
-					final Room R2=r.nextElement();
-					if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-					&&(R2 instanceof LocationRoom))
-						docks.add((LocationRoom)R2);
-				}
 			if(docks.size()==0)
 				for(final Room R2 : rooms)
-					if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-					&&(R2 instanceof LocationRoom))
-						docks.add((LocationRoom)R2);
+					if(R2.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+						docks.add(R2);
 		}
 		if(docks.size()==0)
 			return null;
@@ -545,9 +491,6 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		else
 			setOwnerName(buyer.Name());
 		recoverPhyStats();
-		//String registryNum=Double.toString(Math.random());
-		//String randNum=CMStrings.limit(registryNum.substring(registryNum.indexOf('.')+1), 4);
-		//renameSpaceShip("SS "+buyer.Name()+", Reg "+randNum);
 		final Session session=buyer.session();
 		final Room R=CMLib.map().roomLocation(this);
 		if(session!=null)
@@ -561,8 +504,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				@Override public void callBack()
 				{
 					if((this.input.trim().length()==0)
-					||(!CMLib.login().isOkName(this.input.trim(),true))
-					||(CMLib.tech().getMakeRegisteredKeys().contains(this.input.trim())))
+					||(!CMLib.login().isOkName(this.input.trim(),true)))
 					{
 						session.println(L("^ZThat is not a permitted name.^N"));
 						session.prompt(namer[0].reset());
@@ -570,10 +512,10 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					}
 					me.renameShip(this.input.trim());
 					buyer.tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
-					final LocationRoom finalR=findNearestDocks(R);
+					final Room finalR=findNearestDocks(R);
 					if(finalR==null)
 					{
-						Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of spaceport.");
+						Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of water surface.");
 						buyer.tell(L("Nowhere was found to dock your ship.  Please contact the administrators!."));
 					}
 					else
@@ -592,9 +534,9 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			buyer.tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
 			if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(this)))
 				buyer.playerStats().getExtItems().addItem(this);
-			final LocationRoom finalR=findNearestDocks(R);
+			final Room finalR=findNearestDocks(R);
 			if(finalR==null)
-				Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of spaceport.");
+				Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of water surface.");
 			else
 				dockHere(finalR);
 		}
