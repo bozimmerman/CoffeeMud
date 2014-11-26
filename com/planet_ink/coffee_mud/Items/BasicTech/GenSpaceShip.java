@@ -876,6 +876,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		{
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
+					.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR)
 					.plus(TrackingLibrary.TrackingFlag.NOHOMES)
