@@ -4108,7 +4108,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	@Override
 	public boolean isObjectInUse(Environmental E)
 	{
-		if(questState.worldObjects!=null)
+		if((questState.worldObjects!=null)&&(E!=null))
 			for(final PreservedQuestObject PO : questState.worldObjects)
 				if(PO.obj==E)
 					return true;
