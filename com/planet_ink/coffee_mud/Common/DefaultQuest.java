@@ -431,6 +431,26 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			V.remove(CMLib.dice().roll(1,V.size(),-1));
 	}
 
+	protected void filterOutThoseInUse(final List<? extends Environmental> choices, final String choicesStr, final QuestState q, final boolean isQuiet, final boolean reselect)
+	{
+		if((choices!=null)&&(choices.size()>0))
+		{
+			List<String> inUseByWhom=new ArrayList<String>(1);
+			for(int c=choices.size()-1;c>=0;c--)
+				if((!reselect)||(!q.reselectable.contains(choices.get(c))))
+				{
+					final Quest Q=CMLib.quests().objectInUse(choices.get(c));
+					if(Q!=null)
+					{
+						choices.remove(c);
+						inUseByWhom.add(Q.name());
+					}
+				}
+			if((choices.size()==0)&&(!isQuiet))
+				errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+choicesStr+"' by: "+CMParms.toStringList(inUseByWhom)+".");
+		}
+	}
+	
 	public void parseQuestScript(Vector script, List args, int startLine)
 	{
 		final Vector finalScript=new Vector();
@@ -789,15 +809,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									}
 								}
 							}
-							if(choices.size()>0)
-							{
-								for(int c=choices.size()-1;c>=0;c--)
-									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
-										choices.remove(c);
-								if((choices.size()==0)&&(!isQuiet))
-									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
-							}
+							this.filterOutThoseInUse(choices, p.toString(), q, isQuiet, reselect);
 							if(choices.size()>0)
 								q.mob=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 						}
@@ -882,15 +894,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								}
 							}catch(final NoSuchElementException e){}
 
-							if((choices!=null)&&(choices.size()>0))
-							{
-								for(int c=choices.size()-1;c>=0;c--)
-									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
-										choices.remove(c);
-								if((choices.size()==0)&&(!isQuiet))
-									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
-							}
+							this.filterOutThoseInUse(choices, p.toString(), q, isQuiet, reselect);
 						}
 						if((choices!=null)&&(choices.size()>0))
 						{
@@ -959,15 +963,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									}
 								}
 							}catch(final NoSuchElementException e){}
-							if((choices!=null)&&(choices.size()>0))
-							{
-								for(int c=choices.size()-1;c>=0;c--)
-									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
-										choices.remove(c);
-								if((choices.size()==0)&&(!isQuiet))
-									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
-							}
+							this.filterOutThoseInUse(choices, p.toString(), q, isQuiet, reselect);
 						}
 						if((choices!=null)&&(choices.size()>0))
 						{
@@ -1064,15 +1060,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 										choices.remove(I2);
 								}
 							}
-							if(choices.size()>0)
-							{
-								for(int c=choices.size()-1;c>=0;c--)
-									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
-										choices.remove(c);
-								if((choices.size()==0)&&(!isQuiet))
-									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
-							}
+							this.filterOutThoseInUse(choices, p.toString(), q, isQuiet, reselect);
 							if(choices.size()>0)
 								q.item=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 						}
@@ -1438,16 +1426,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									}
 								}catch(final NoSuchElementException e){}
 							}
-							if((choices!=null)
-							&&(choices.size()>0))
-							{
-								for(int c=choices.size()-1;c>=0;c--)
-									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
-										choices.remove(c);
-								if((choices.size()==0)&&(!isQuiet))
-									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
-							}
+							this.filterOutThoseInUse(choices, p.toString(), q, isQuiet, reselect);
 							if((choices!=null)&&(choices.size()>0))
 								q.mob=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 						}
@@ -1536,15 +1515,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								}
 							}
 							}catch(final NoSuchElementException e){}
-							if((choices!=null)&&(choices.size()>0))
-							{
-								for(int c=choices.size()-1;c>=0;c--)
-									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
-										choices.remove(c);
-								if((choices.size()==0)&&(!isQuiet))
-									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
-							}
+							this.filterOutThoseInUse(choices, p.toString(), q, isQuiet, reselect);
 							if((choices!=null)&&(choices.size()>0))
 								q.item=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 						}
