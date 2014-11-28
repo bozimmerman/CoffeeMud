@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -2892,6 +2893,24 @@ public class CMClass extends ClassLoader
 		{
 			return getMOB("StdFactoryMOB");
 		}
+	}
+
+	/**
+	 * Returns either a StdFactoryMOB object from the cache, if one is available, or makes
+	 * a new one, giving him the name, level, and room location given.
+	 * @param name the name to give the mob
+	 * @param level the level to give the mob
+	 * @param room the room to set the mobs location at
+	 * @return a StdFactoryMOB object, ready to use.
+	 */
+	public final static MOB getFactoryMOB(final String name, final int level, final Room room)
+	{
+		final MOB mob2=CMClass.getFactoryMOB();
+		mob2.setName(name);
+		mob2.basePhyStats().setLevel(level);
+		mob2.phyStats().setLevel(level);
+		mob2.setLocation(room);
+		return mob2;
 	}
 
 	/**

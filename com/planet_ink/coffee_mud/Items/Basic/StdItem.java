@@ -1826,6 +1826,7 @@ public class StdItem implements Item
 		}
 	}
 	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	protected String I(final String str) { return CMLib.lang().commandWordTranslation(str); }
 	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	@Override public String[] getStatCodes(){return CODES;}
 	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}

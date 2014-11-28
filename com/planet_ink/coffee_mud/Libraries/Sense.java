@@ -1184,7 +1184,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(P==null)
 			return false;
-		if(isSwimming(P))
+		if(isSwimming(P)
+		&&((!(P instanceof Item))||(!((Item)P).subjectToWearAndTear())||(((Item)P).usesRemaining()>0)))
 			return true;
 		if((P instanceof Rider)&&(((Rider)P).riding()!=null))
 			return isWaterWorthy(((Rider)P).riding());

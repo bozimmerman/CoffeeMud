@@ -128,6 +128,7 @@ public class Addictions extends StdAbility
 				&&(msg.target() instanceof Item)
 				&&(CMLib.english().containsString(msg.target().Name(),text())))
 					lastFix=System.currentTimeMillis();
+
 				if((msg.amISource((MOB)affected))
 				&&(msg.targetMinor()==CMMsg.TYP_HANDS)
 				&&(msg.target() instanceof Light)

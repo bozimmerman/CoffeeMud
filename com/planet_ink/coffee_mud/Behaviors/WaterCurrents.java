@@ -100,10 +100,11 @@ public class WaterCurrents extends ActiveTicker
 				if((I!=null)
 				&&(I.container()==null)
 				&&((!(I instanceof Rideable))
-						||(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_WATER)
-						||(((Rideable)I).numRiders()==0))
+					||(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_WATER)
+					||(((Rideable)I).numRiders()==0))
 				&&(!CMLib.flags().isInFlight(I))
 				&&(!CMLib.flags().isMobile(I))
+				&&(!(I instanceof Exit))
 				&&(!done.contains(I)))
 				{
 					todo.addElement(I);

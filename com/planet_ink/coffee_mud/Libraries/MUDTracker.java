@@ -912,7 +912,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	{
 		return move(mob,directionCode,flee,nolook,noriders,always,true);
 	}
-
+	
 	public boolean move(final MOB mob, final int directionCode, final boolean flee, final boolean nolook, final boolean noriders, final boolean always, final boolean running)
 	{
 		if(directionCode<0)
