@@ -41,10 +41,10 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenSailingShip extends StdPortal implements PrivateProperty, BoardableShip
 {
 	@Override public String ID(){	return "GenSailingShip";}
-	protected String 		readableText	= "";
-	protected String 		owner 			= "";
-	protected int 			price 			= 1000;
-	protected Area 			area			= null;
+	protected String 	readableText	= "";
+	protected String 	owner 			= "";
+	protected int 		price 			= 1000;
+	protected Area 		area			= null;
 
 	public GenSailingShip()
 	{
@@ -55,10 +55,9 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		setDescription("");
 		myUses=100;
 		basePhyStats().setWeight(10000);
-		basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOTGET);
 		setUsesRemaining(100);
 		recoverPhyStats();
-		//CMLib.flags().setGettable(this, false);
+		CMLib.flags().setGettable(this, false);
 		CMLib.flags().setSavable(this, false);
 	}
 
@@ -90,7 +89,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		else
 		if(area==null)
 		{
-			area=CMClass.getAreaType("StdSailingShip");
+			area=CMClass.getAreaType("StdBoardableShip");
 			final String num=Double.toString(Math.random());
 			area.setName(L("UNNAMED_@x1",num.substring(num.indexOf('.')+1)));
 			area.setSavable(false);
@@ -357,6 +356,19 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		return true;
 	}
 
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(tickID == Tickable.TICKID_AREA)
+		{
+			if(amDestroyed())
+				return false;
+			
+			return true;
+		}
+		return super.tick(ticking, tickID);
+	}
+	
 	protected synchronized void destroyThisShip()
 	{
 		if(this.getOwnerName().length()>0)

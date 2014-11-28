@@ -38,7 +38,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdSpaceShip extends StdSailingShip implements SpaceShip
+public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 {
 	private static final long STALE_AIR_INTERVAL = 5 * 60 * 1000;
 
@@ -187,7 +187,7 @@ public class StdSpaceShip extends StdSailingShip implements SpaceShip
 	@Override public boolean isGeneric(){return false;}
 	
 	@Override
-	protected void cloneFix(StdSailingShip ship)
+	protected void cloneFix(StdBoardableShip ship)
 	{
 		super.cloneFix(ship);
 		setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
@@ -215,6 +215,7 @@ public class StdSpaceShip extends StdSailingShip implements SpaceShip
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
+
 		if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.sourceMinor()==CMMsg.TYP_GET))
 			mass=-1;
 

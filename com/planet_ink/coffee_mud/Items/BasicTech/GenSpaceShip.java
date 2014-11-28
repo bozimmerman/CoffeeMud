@@ -254,6 +254,19 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override public void setPowerRemaining(long remaining){}
 	@Override public void activate(boolean truefalse){}
 	
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(tickID == Tickable.TICKID_AREA)
+		{
+			if(amDestroyed())
+				return false;
+			
+			return true;
+		}
+		return super.tick(ticking, tickID);
+	}
+	
 	@Override 
 	public boolean activated()
 	{

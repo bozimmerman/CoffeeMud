@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.Places;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.Area.State;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -35,7 +36,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class StdSailingShip implements Area, BoardableShip
+public class StdBoardableShip implements Area, BoardableShip
 {
 	protected String[]  	xtraValues  	= null;
 	protected String		imageName   	= "";
@@ -57,14 +58,14 @@ public class StdSailingShip implements Area, BoardableShip
 	protected Area 			me			 	= this;
 	protected BoardableShip	shipItem		= null;
 
-	protected SVector<Ability>  		affects			= new SVector<Ability>(1);
+	protected SVector<Ability>			affects			= new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors		= new SVector<Behavior>(1);
-	protected SVector<ScriptingEngine>  scripts			= new SVector<ScriptingEngine>(1);
-	protected SLinkedList<Area> 		parents			= new SLinkedList<Area>();
-	protected STreeMap<String,String>   blurbFlags		= new STreeMap<String,String>();
+	protected SVector<ScriptingEngine>	scripts			= new SVector<ScriptingEngine>(1);
+	protected SLinkedList<Area>			parents			= new SLinkedList<Area>();
+	protected STreeMap<String,String>	blurbFlags		= new STreeMap<String,String>();
 	protected List<Pair<Room,Integer>>	shipExitCache	= new SLinkedList<Pair<Room,Integer>>();
 
-	@Override public String ID(){    return "StdSailingShip";}
+	@Override public String ID(){ return "StdBoardableShip"; }
 
 	@Override public void initializeClass(){}
 	@Override public Room getIsDocked(){ return CMLib.map().getRoom(savedDock);}
@@ -167,7 +168,7 @@ public class StdSailingShip implements Area, BoardableShip
 	
 	@Override public void setClimateType(int newClimateType){}
 
-	public StdSailingShip()
+	public StdBoardableShip()
 	{
 		super();
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);
@@ -281,11 +282,11 @@ public class StdSailingShip implements Area, BoardableShip
 		{
 			Log.errOut(ID(),e);
 		}
-		return new StdSailingShip();
+		return new StdBoardableShip();
 	}
 	@Override public boolean isGeneric(){return false;}
 	
-	protected void cloneFix(StdSailingShip ship)
+	protected void cloneFix(StdBoardableShip ship)
 	{
 		me=this;
 		basePhyStats=(PhyStats)ship.basePhyStats().copyOf();
@@ -322,7 +323,7 @@ public class StdSailingShip implements Area, BoardableShip
 	{
 		try
 		{
-			final StdSailingShip E=(StdSailingShip)this.clone();
+			final StdBoardableShip E=(StdBoardableShip)this.clone();
 			//CMClass.bumpCounter(E,CMClass.CMObjectType.AREA);//removed for mem & perf
 			E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
@@ -510,15 +511,30 @@ public class StdSailingShip implements Area, BoardableShip
 					A.executeMsg(me,msg);
 				}
 			});
-		if((msg.target() instanceof Room)
-		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-		&&((((Room)msg.target()).domainType()&Room.INDOORS)==0)
-		&&(this.shipItem!=null))
+		if(this.shipItem != null)
 		{
-			final Room R=CMLib.map().roomLocation(this.shipItem);
-			if(R!=null)
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), L("\n\r^HOff the bow you see: ^N\n\r"), msg.targetCode(), null, msg.othersCode(), null));
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
+				if((msg.target() instanceof Room)
+				&&((((Room)msg.target()).domainType()&Room.INDOORS)==0))
+				{
+					final Room R=CMLib.map().roomLocation(this.shipItem);
+					if(R!=null)
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), L("\n\r^HOff the bow you see: ^N\n\r"), msg.targetCode(), null, msg.othersCode(), null));
+				}
+				break;
+			}
+			switch(msg.sourceMinor())
+			{
+			case CMMsg.TYP_HUH:
+			case CMMsg.TYP_COMMANDFAIL:
+				this.shipItem.executeMsg(myHost, msg);
+				break;
+			}
 		}
+		
 	}
 
 	@Override public Enumeration<Room> getCompleteMap(){return getProperMap();}
@@ -529,7 +545,7 @@ public class StdSailingShip implements Area, BoardableShip
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if(flag==State.STOPPED)
+		if((flag==State.STOPPED)||(amDestroyed()))
 			return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_AREA)
@@ -562,6 +578,10 @@ public class StdSailingShip implements Area, BoardableShip
 							A.unInvoke();
 					}
 				});
+			if(shipItem != null)
+				shipItem.tick(ticking, tickID);
+			//TODO: movement happens here, so long as anchor is up, make sure to ok movement 
+			// -- somehow the item has to check if anchor is up
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
@@ -1364,7 +1384,7 @@ public class StdSailingShip implements Area, BoardableShip
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdSailingShip))
+		if(!(E instanceof StdBoardableShip))
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
