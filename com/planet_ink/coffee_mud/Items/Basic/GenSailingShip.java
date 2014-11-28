@@ -446,7 +446,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			{
 				//TODO: MOVE THE SHIP
 				// never really undock -- just redock somewhere else over and over, really!
-				
+				// consider the consequences of doing a player move of the whole crew from room to room.
 			}
 			return true;
 		}
