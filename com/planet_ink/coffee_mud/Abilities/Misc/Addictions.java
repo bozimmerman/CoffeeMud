@@ -105,8 +105,12 @@ public class Addictions extends StdAbility
 			&&(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_MOUTH)))
 			{
 				final List<Item> contents=((Container)msg.target()).getContents();
-				if(CMLib.english().containsString(((Environmental)contents.get(0)).Name(),text()))
-					puffCredit=(Item)msg.target();
+				if(contents.size()>0)
+				{
+					final Environmental content=contents.get(0);
+					if(CMLib.english().containsString(content.Name(),text()))
+						puffCredit=(Item)msg.target();
+				}
 			}
 		}
 		return true;
