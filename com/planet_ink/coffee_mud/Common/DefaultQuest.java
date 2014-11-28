@@ -435,7 +435,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		if((choices!=null)&&(choices.size()>0))
 		{
-			List<String> inUseByWhom=new ArrayList<String>(1);
+			Set<String> inUseByWhom=new TreeSet<String>();
 			for(int c=choices.size()-1;c>=0;c--)
 				if((!reselect)||(!q.reselectable.contains(choices.get(c))))
 				{
