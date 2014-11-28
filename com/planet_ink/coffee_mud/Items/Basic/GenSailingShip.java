@@ -397,8 +397,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) coarse, steering @x1 @x2.",name(msg.source()),Directions.getDirectionName(dir)));
 				if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
 				{
-					R.send(msg.source(), msg2);
-					this.sendAreaMessage(msg2, true);
+					R.send(msg.source(), msg2); // this lets the source know, i guess
+					this.sendAreaMessage(msg2, true); // this just sends to "others"
 				}
 				this.directionFacing=dir;
 				return false;
@@ -564,6 +564,16 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		&&(!(msg.target() instanceof Auctioneer))
 		&&(!(msg.target() instanceof PostOffice)))
 			transferOwnership((MOB)msg.target());
+		else
+		if((msg.target() instanceof Room)
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+		&&(msg.target() == owner())
+		&&(CMLib.map().areaLocation(msg.source())==area))
+		{
+			//TODO: say something about the anchor, perhaps?
+		}
+		
+		//TODO: consider letting people on deck know what's going on out here?
 	}
 
 	protected Room findNearestDocks(Room R)

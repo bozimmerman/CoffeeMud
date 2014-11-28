@@ -591,8 +591,6 @@ public class StdBoardableShip implements Area, BoardableShip
 				});
 			if(shipItem != null)
 				shipItem.tick(ticking, tickID);
-			//TODO: movement happens here, so long as anchor is up, make sure to ok movement 
-			// -- somehow the item has to check if anchor is up
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
