@@ -154,10 +154,7 @@ public class Spell_Fabricate extends Spell
 		}
 		
 		if((intoI instanceof ArchonOnly)
-		||(!CMLib.flags().isGettable(intoI))
-		||(intoI instanceof ClanItem)
-		||(intoI.basePhyStats().weight() > mob.maxCarry())
-		||(CMath.bset(intoI.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH)))
+		||(!CMLib.utensils().canBePlayerDestroyed(mob,intoI,false)))
 		{
 			mob.tell(L("You can't fabricate @x1!",intoI.Name()));
 			return false;

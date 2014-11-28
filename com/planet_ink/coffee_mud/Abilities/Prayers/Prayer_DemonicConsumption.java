@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -52,6 +51,15 @@ public class Prayer_DemonicConsumption extends Prayer
 		if(target==null)
 			return false;
 
+		if(target instanceof Item)
+		{
+			if(!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,false))
+			{
+				mob.tell(L("You can't have @x1 consumed.",target.name(mob)));
+				return false;
+			}
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

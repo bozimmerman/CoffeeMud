@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -100,7 +99,7 @@ public class Spell_FloatingDisc extends Spell
 		if(target==null)
 			return false;
 		if((!(target instanceof Item))
-		||(!CMLib.flags().isGettable(((Item)target))))
+		||(!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,false)))
 		{
 			mob.tell(L("You cannot float @x1!",target.name(mob)));
 			return false;

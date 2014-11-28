@@ -71,7 +71,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		else
 			msgStr=L("Huh?");
-		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,CMParms.combine(command,0),null);
+		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,CMParms.combineQuoted(command,0),null);
 		if(!R.okMessage(mob,msg))
 			return false;
 		R.send(mob,msg);

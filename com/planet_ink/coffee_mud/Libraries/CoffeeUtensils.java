@@ -704,6 +704,30 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return new Vector<DeadBody>();
 	}
+	
+	@Override
+	public boolean canBePlayerDestroyed(final MOB mob, final Item I, final boolean ignoreBodies)
+	{
+		if((!ignoreBodies)
+		&&(I instanceof DeadBody)
+		&&(((DeadBody)I).isPlayerCorpse()))
+			return false;
+		if((!CMLib.flags().isGettable(I))
+		||((I instanceof ClanItem)&&(mob.getClanRole(((ClanItem)I).clanID())==null))
+		||(I.basePhyStats().weight() > mob.maxCarry())
+		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH)))
+		{
+			mob.tell(L("@x1 can not be reabsorbed.",I.name(mob)));
+			return false;
+		}
+		if(I instanceof Container)
+		{
+			for (final Item I2 : ((Container)I).getContents())
+				if(!canBePlayerDestroyed(mob, I2,ignoreBodies))
+					return false;
+		}
+		return true;
+	}
 
 
 	protected TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> parseLootPolicyFor(MOB mob)

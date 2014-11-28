@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -62,14 +61,16 @@ public class Spell_DestroyObject extends Spell
 			}
 		}
 
+		if(!CMLib.utensils().canBePlayerDestroyed(mob,target,true))
+		{
+			mob.tell(L("You are not powerful enough to destroy @x1.",target.name(mob)));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
 
 		boolean success=proficiencyCheck(mob,(((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*25),auto);
-
-		if((target instanceof ClanItem)
-		&&(mob.getClanRole(((ClanItem)target).clanID())==null))
-			success=false;
 
 		if(success)
 		{

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -97,6 +96,12 @@ public class Chant_Reabsorb extends Chant
 			mob.tell(L("You need to put @x1 on the ground first.",target.name(mob)));
 			return false;
 		}
+		if(!CMLib.utensils().canBePlayerDestroyed(mob,target,true))
+		{
+			mob.tell(L("@x1 can not be reabsorbed.",target.name(mob)));
+			return false;
+		}
+		
 		final int type=mob.location().domainType();
 		if((type==Room.DOMAIN_INDOORS_STONE)
 			||(type==Room.DOMAIN_INDOORS_WOOD)

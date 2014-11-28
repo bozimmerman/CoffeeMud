@@ -74,6 +74,8 @@ public interface CMMiscUtils extends CMLibrary
 	public void swapRaces(Race newR, Race oldR);
 	public void reloadCharClasses(CharClass oldC);
 
+	public boolean canBePlayerDestroyed(final MOB mob, final Item I, final boolean ignoreBodies);
+	
 	public boolean disInvokeEffects(Environmental E);
 	public int disenchantItem(Item target);
 }

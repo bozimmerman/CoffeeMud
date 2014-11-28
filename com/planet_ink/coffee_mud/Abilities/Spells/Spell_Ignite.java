@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -93,6 +92,11 @@ public class Spell_Ignite extends Spell
 			return false;
 		}
 
+		if((target instanceof Item) && (!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,false)))
+		{
+			mob.tell(L("You can't ignite '@x1'!",target.name(mob)));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

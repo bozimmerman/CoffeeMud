@@ -68,7 +68,7 @@ public class Spell_Pocket extends Spell
 		}
 		if((target instanceof MOB)&&(((MOB)target).isPlayer()))
 		{
-			mob.tell(L("You can't pocket @x1.",target.name()));
+			mob.tell(L("You can't pocket @x1.",target.name(mob)));
 			return false;
 		}
 		final List<DeadBody> DBs=CMLib.utensils().getDeadBodies(target);
@@ -81,6 +81,12 @@ public class Spell_Pocket extends Spell
 				mob.tell(L("You are not allowed to pocket a player corpse."));
 				return false;
 			}
+		}
+		
+		if(!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,true))
+		{
+			mob.tell(L("You can't pocket @x1.",target.name(mob)));
+			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

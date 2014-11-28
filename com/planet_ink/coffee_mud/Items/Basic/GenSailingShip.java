@@ -55,6 +55,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		setDescription("");
 		myUses=100;
 		basePhyStats().setWeight(10000);
+		basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOTGET);
 		setUsesRemaining(100);
 		recoverPhyStats();
 		//CMLib.flags().setGettable(this, false);

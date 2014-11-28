@@ -510,6 +510,15 @@ public class StdSailingShip implements Area, BoardableShip
 					A.executeMsg(me,msg);
 				}
 			});
+		if((msg.target() instanceof Room)
+		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+		&&((((Room)msg.target()).domainType()&Room.INDOORS)==0)
+		&&(this.shipItem!=null))
+		{
+			final Room R=CMLib.map().roomLocation(this.shipItem);
+			if(R!=null)
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), L("\n\r^HOff the bow you see: ^N\n\r"), msg.targetCode(), null, msg.othersCode(), null));
+		}
 	}
 
 	@Override public Enumeration<Room> getCompleteMap(){return getProperMap();}

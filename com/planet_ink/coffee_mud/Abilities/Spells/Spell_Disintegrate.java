@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -63,6 +62,14 @@ public class Spell_Disintegrate extends Spell
 			}
 		}
 
+		
+		if((target instanceof Item) && (!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,true)))
+		{
+			mob.tell(L("You are not powerful enough to disintegrate @x1.",target.name(mob)));
+			return false;
+		}
+		
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

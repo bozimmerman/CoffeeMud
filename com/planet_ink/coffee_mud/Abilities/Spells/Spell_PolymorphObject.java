@@ -138,11 +138,7 @@ public class Spell_PolymorphObject extends Spell
 			return false;
 		}
 		if((targetI instanceof DeadBody)
-		||(!CMLib.flags().isGettable(targetI))
-		||(targetI instanceof ClanItem)
-		||(targetI.basePhyStats().weight() > mob.maxCarry())
-		||(CMath.bset(targetI.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH))
-		)
+		||(!CMLib.utensils().canBePlayerDestroyed(mob,targetI,false)))
 		{
 			mob.tell(L("You can't polymorph that."));
 			return false;
