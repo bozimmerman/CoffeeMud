@@ -887,9 +887,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		final List<LocationRoom> docks=new XVector<LocationRoom>();
 		if(R!=null)
 		{
+			if((R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+			&&(R instanceof LocationRoom))
+				return (LocationRoom)R;
+			
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
-					.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR)
 					.plus(TrackingLibrary.TrackingFlag.NOHOMES)

@@ -417,6 +417,17 @@ public class StdBoardableShip implements Area, BoardableShip
 				return false;
 			}
 		}
+		if(this.shipItem != null)
+		{
+			switch(msg.sourceMinor())
+			{
+			case CMMsg.TYP_HUH:
+			case CMMsg.TYP_COMMANDFAIL:
+				if(!this.shipItem.okMessage(myHost, msg))
+					return false;
+				break;
+			}
+		}
 		return true;
 	}
 
@@ -724,35 +735,38 @@ public class StdBoardableShip implements Area, BoardableShip
 		{
 			final Room R=r.nextElement();
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-				if((R.getRawExit(d)!=null)
-				&&((R.rawDoors()[d]==null)||(R.rawDoors()[d].getArea()!=this)))
+			{
+				final Room nextR=R.rawDoors()[d];
+				final Exit nextE=R.getRawExit(d);
+				if((nextE!=null)
+				&&((nextR==null)||(nextR.getArea()!=this)))
 				{
 					R.rawDoors()[d]=roomR;
 					shipExitCache.add(new Pair<Room,Integer>(R,Integer.valueOf(d)));
 				}
+
+			}
 		}
 	}
 
 	@Override
 	public void unDock(boolean moveToOutside)
 	{
-		if(getIsDocked()==null)
-			return;
 		final Room dock=getIsDocked();
-		for(int i=0;i<dock.numItems();i++)
-		{
-			final Item I=dock.getItem(i);
-			if(I.Name().equals(Name()))
-				I.destroy();
-		}
+		if(dock==null)
+			return;
 		for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
 			final Room R=e.nextElement();
 			if(R!=null)
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				if(R.rawDoors()[d]==dock)
-					R.rawDoors()[d]=null;
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
+					final Room nextR=R.rawDoors()[d];
+					if((nextR!=null)
+					&&((nextR==dock)||(nextR.getArea()!=this)))
+						R.rawDoors()[d]=null;
+				}
 			}
 		}
 		shipExitCache.clear();

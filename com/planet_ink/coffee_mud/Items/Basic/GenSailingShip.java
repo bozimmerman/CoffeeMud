@@ -41,10 +41,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenSailingShip extends StdPortal implements PrivateProperty, BoardableShip
 {
 	@Override public String ID(){	return "GenSailingShip";}
-	protected String 	readableText	= "";
-	protected String 	owner 			= "";
-	protected int 		price 			= 1000;
-	protected Area 		area			= null;
+	protected String 			readableText	= "";
+	protected String 			owner 			= "";
+	protected int 				price 			= 1000;
+	protected Area 				area			= null;
+	protected volatile int		directionFacing	= -1;
+	protected volatile boolean	anchorDown		= true;
 
 	public GenSailingShip()
 	{
@@ -326,6 +328,83 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if((msg.sourceMinor()==CMMsg.TYP_HUH)
+		&&(msg.targetMessage()!=null)
+		&&(area == CMLib.map().areaLocation(msg.source())))
+		{
+			List<String> cmds=CMParms.parse(msg.targetMessage());
+			if(cmds.size()==0)
+				return true;
+			final String word=cmds.get(0).toUpperCase();
+			final String secondWord=CMParms.combine(cmds,1).toUpperCase();
+			if(word.equals("RAISE") && secondWord.equals("ANCHOR"))
+			{
+				final Room R=CMLib.map().roomLocation(this);
+				if(!anchorDown)
+					msg.source().tell(L("The anchor is already up."));
+				else
+				if(R!=null)
+				{
+					CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, "<S-NAME> raise(s) anchor.");
+					if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
+					{
+						R.send(msg.source(), msg2);
+						this.sendAreaMessage(msg2, true);
+					}
+				}
+				return false;
+			}
+			else
+			if(word.equals("LOWER")  && secondWord.equals("ANCHOR"))
+			{
+				final Room R=CMLib.map().roomLocation(this);
+				if(anchorDown)
+					msg.source().tell(L("The anchor is already down."));
+				else
+				if(R!=null)
+				{
+					CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, "<S-NAME> lower(s) anchor.");
+					if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
+					{
+						R.send(msg.source(), msg2);
+						this.sendAreaMessage(msg2, true);
+					}
+				}
+				return false;
+			}
+			else
+			if(word.equals("STEER"))
+			{
+				int dir=Directions.getCompassDirectionCode(secondWord);
+				if(dir<0)
+				{
+					msg.source().tell(L("Steer the ship which direction?"));
+					return false;
+				}
+				final Room R=CMLib.map().roomLocation(this);
+				if((anchorDown)||(R==null))
+				{
+					msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
+					return false;
+				}
+				final Room targetRoom=R.getRoomInDir(dir);
+				final Exit targetExit=R.getExitInDir(dir);
+				if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+				{
+					msg.source().tell(L("There doesn't look to be anything in that direction."));
+					return false;
+				}
+				CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) coarse, steering @x1 @x2.",name(msg.source()),Directions.getDirectionName(dir)));
+				if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
+				{
+					R.send(msg.source(), msg2);
+					this.sendAreaMessage(msg2, true);
+				}
+				this.directionFacing=dir;
+				return false;
+			}
+			return true;
+		}
 		if(!super.okMessage(myHost, msg))
 			return false;
 		if(msg.amITarget(this))
@@ -347,7 +426,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			}
 			case CMMsg.TYP_WEAPONATTACK:
 			{
-				if((msg.value() < 2) || (!okAreaMessage(msg)))
+				if((msg.value() < 2) || (!okAreaMessage(msg,false)))
 					return false;
 				break;
 			}
@@ -363,7 +442,12 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		{
 			if(amDestroyed())
 				return false;
-			
+			if((!this.anchorDown) && (directionFacing != -1))
+			{
+				//TODO: MOVE THE SHIP
+				// never really undock -- just redock somewhere else over and over, really!
+				
+			}
 			return true;
 		}
 		return super.tick(ticking, tickID);
@@ -401,7 +485,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		destroy();
 	}
 	
-	protected boolean okAreaMessage(final CMMsg msg)
+	protected boolean okAreaMessage(final CMMsg msg, boolean deckOnly)
 	{
 		boolean failed = false;
 		final Area ship=getShipArea();
@@ -410,15 +494,18 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			for(final Enumeration<Room> r = ship.getProperMap(); r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
-				failed = failed || R.okMessage(R, msg);
-				if(failed)
-					break;
+				if((!deckOnly)||((R.domainType()&Room.INDOORS)==0))
+				{
+					failed = failed || R.okMessage(R, msg);
+					if(failed)
+						break;
+				}
 			}
 		}
 		return failed;
 	}
 	
-	protected void sendAreaMessage(final CMMsg msg)
+	protected void sendAreaMessage(final CMMsg msg, boolean deckOnly)
 	{
 		final Area ship=getShipArea();
 		if(ship!=null)
@@ -426,7 +513,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			for(final Enumeration<Room> r = ship.getProperMap(); r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
-				R.sendOthers(msg.source(), msg);
+				if((!deckOnly)||((R.domainType()&Room.INDOORS)==0))
+					R.sendOthers(msg.source(), msg);
 			}
 		}
 	}
@@ -444,7 +532,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				if(msg.tool() instanceof ShopKeeper)
 					transferOwnership(msg.source());
 				break;
-			case CMMsg.TYP_WEAPONATTACK: // kinetic damage taken
+			case CMMsg.TYP_WEAPONATTACK: // damage taken
 			{
 				break;
 			}
@@ -480,9 +568,10 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 
 	protected Room findNearestDocks(Room R)
 	{
-		final List<Room> docks=new XVector<Room>();
 		if(R!=null)
 		{
+			if(R.domainType()==Room.DOMAIN_OUTDOORS_SEAPORT)
+				return R;
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
 					.plus(TrackingLibrary.TrackingFlag.AREAONLY)
@@ -494,42 +583,36 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			for(final Room R2 : rooms)
 			{
 				if(R2.domainType()==Room.DOMAIN_OUTDOORS_SEAPORT)
-					docks.add(R2);
+					return R2;
 			}
-			if(docks.size()==0)
-				for(final Room R2 : rooms)
+			for(final Room R2 : rooms)
+			{
+				if(R2.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 				{
-					if(R2.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+					final Room underWaterR=R.getRoomInDir(Directions.DOWN);
+					if((underWaterR!=null)
+					&&(R2.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+					&&(R.getExitInDir(Directions.DOWN)!=null)
+					&&(R.getExitInDir(Directions.DOWN).isOpen()))
 					{
-						final Room underWaterR=R.getRoomInDir(Directions.DOWN);
-						if((underWaterR!=null)
-						&&(R2.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-						&&(R.getExitInDir(Directions.DOWN)!=null)
-						&&(R.getExitInDir(Directions.DOWN).isOpen()))
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 						{
-							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-							{
-								final Room adjacentR = underWaterR.getRoomInDir(d);
-								final Exit adjacentE = underWaterR.getExitInDir(d);
-								if((adjacentR!=null)
-								&&(adjacentE!=null)
-								&&(adjacentE.isOpen())
-								&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-								&&(R2.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-								&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-								&&(R2.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-								&&(!docks.contains(adjacentR)))
-									docks.add(adjacentR);
-							}
+							final Room adjacentR = underWaterR.getRoomInDir(d);
+							final Exit adjacentE = underWaterR.getExitInDir(d);
+							if((adjacentR!=null)
+							&&(adjacentE!=null)
+							&&(adjacentE.isOpen())
+							&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+							&&(R2.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
+							&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+							&&(R2.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
+								return adjacentR;
 						}
 					}
 				}
-			if(docks.size()==0)
-				docks.add(R);
+			}
 		}
-		if(docks.size()==0)
-			return null;
-		return docks.get(CMLib.dice().roll(1, docks.size(), -1));
+		return null;
 	}
 
 	protected void transferOwnership(final MOB buyer)
