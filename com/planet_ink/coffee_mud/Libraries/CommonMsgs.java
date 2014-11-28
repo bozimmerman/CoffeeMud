@@ -1047,6 +1047,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
 			smell.append("It smells very WET here. ");
 			break;
+		case Room.DOMAIN_OUTDOORS_SEAPORT:
+			smell.append("It smells clean, wet, and breezy here. ");
+			break;
 		case Room.DOMAIN_INDOORS_CAVE:
 			smell.append("It smells very dank and mildewy here. ");
 			break;

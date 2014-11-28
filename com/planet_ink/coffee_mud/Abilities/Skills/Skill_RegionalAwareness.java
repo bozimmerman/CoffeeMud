@@ -62,6 +62,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		case Room.DOMAIN_OUTDOORS_AIR:return ' ';
 		case Room.DOMAIN_OUTDOORS_WATERSURFACE:return 'b';
 		case Room.DOMAIN_OUTDOORS_JUNGLE:return 'R';
+		case Room.DOMAIN_OUTDOORS_SEAPORT:return 'y';
 		case Room.DOMAIN_OUTDOORS_SWAMP:return 'r';
 		case Room.DOMAIN_OUTDOORS_DESERT:return 'y';
 		case Room.DOMAIN_OUTDOORS_HILLS:return 'g';
@@ -95,6 +96,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		case Room.DOMAIN_OUTDOORS_AIR:return ' ';
 		case Room.DOMAIN_OUTDOORS_WATERSURFACE:return '~';
 		case Room.DOMAIN_OUTDOORS_JUNGLE:return 'J';
+		case Room.DOMAIN_OUTDOORS_SEAPORT:return 'P';
 		case Room.DOMAIN_OUTDOORS_SWAMP:return 'x';
 		case Room.DOMAIN_OUTDOORS_DESERT:return '.';
 		case Room.DOMAIN_OUTDOORS_HILLS:return 'h';

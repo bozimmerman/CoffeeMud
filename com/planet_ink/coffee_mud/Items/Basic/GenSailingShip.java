@@ -55,7 +55,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		setDescription("");
 		myUses=100;
 		basePhyStats().setWeight(10000);
-		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+		setUsesRemaining(100);
 		recoverPhyStats();
 		//CMLib.flags().setGettable(this, false);
 		CMLib.flags().setSavable(this, false);
@@ -67,6 +67,14 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		return true;
 	}
 
+	@Override
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
+		if(usesRemaining()>0)
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
+	}
+	
 	@Override 
 	public boolean subjectToWearAndTear()
 	{
@@ -472,31 +480,39 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
 			for(final Room R2 : rooms)
 			{
-				if(R2.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+				if(R2.domainType()==Room.DOMAIN_OUTDOORS_SEAPORT)
+					docks.add(R2);
+			}
+			if(docks.size()==0)
+				for(final Room R2 : rooms)
 				{
-					final Room underWaterR=R.getRoomInDir(Directions.DOWN);
-					if((underWaterR!=null)
-					&&(R2.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-					&&(R.getExitInDir(Directions.DOWN)!=null)
-					&&(R.getExitInDir(Directions.DOWN).isOpen()))
+					if(R2.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 					{
-						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						final Room underWaterR=R.getRoomInDir(Directions.DOWN);
+						if((underWaterR!=null)
+						&&(R2.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+						&&(R.getExitInDir(Directions.DOWN)!=null)
+						&&(R.getExitInDir(Directions.DOWN).isOpen()))
 						{
-							final Room adjacentR = underWaterR.getRoomInDir(d);
-							final Exit adjacentE = underWaterR.getExitInDir(d);
-							if((adjacentR!=null)
-							&&(adjacentE!=null)
-							&&(adjacentE.isOpen())
-							&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-							&&(R2.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-							&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-							&&(R2.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-							&&(!docks.contains(adjacentR)))
-								docks.add(adjacentR);
+							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
+								final Room adjacentR = underWaterR.getRoomInDir(d);
+								final Exit adjacentE = underWaterR.getExitInDir(d);
+								if((adjacentR!=null)
+								&&(adjacentE!=null)
+								&&(adjacentE.isOpen())
+								&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+								&&(R2.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
+								&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+								&&(R2.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+								&&(!docks.contains(adjacentR)))
+									docks.add(adjacentR);
+							}
 						}
 					}
 				}
-			}
+			if(docks.size()==0)
+				docks.add(R);
 		}
 		if(docks.size()==0)
 			return null;

@@ -769,6 +769,8 @@ public class GrinderFlatMap
 			return ("BGCOLOR=\"#CCCCCC\"");
 		case Room.DOMAIN_OUTDOORS_DESERT:
 			return ("BGCOLOR=\"#FFFF66\"");
+		case Room.DOMAIN_OUTDOORS_SEAPORT:
+			return ("BGCOLOR=\"#FFFF66\"");
 		case Room.DOMAIN_OUTDOORS_HILLS:
 			return ("BGCOLOR=\"#99CC33\"");
 		case Room.DOMAIN_OUTDOORS_JUNGLE:

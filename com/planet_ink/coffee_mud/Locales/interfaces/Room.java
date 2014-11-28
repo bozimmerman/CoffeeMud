@@ -53,6 +53,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public final static int DOMAIN_OUTDOORS_HILLS=10;
 	public final static int DOMAIN_OUTDOORS_MOUNTAINS=11;
 	public final static int DOMAIN_OUTDOORS_SPACEPORT=12;
+	public final static int DOMAIN_OUTDOORS_SEAPORT=13;
 	public final static String[] outdoorDomainDescs={
 		"CITY",
 		"WOODS",
@@ -66,7 +67,8 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		"DESERT",
 		"HILLS",
 		"MOUNTAINS",
-		"SPACEPORT"};
+		"SPACEPORT",
+		"SEAPORT"};
 
 	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
 	public final static int DOMAIN_INDOORS_WOOD=INDOORS+1;

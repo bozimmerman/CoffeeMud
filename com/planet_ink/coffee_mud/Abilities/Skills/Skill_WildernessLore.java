@@ -95,6 +95,9 @@ public class Skill_WildernessLore extends StdSkill
 			case Room.DOMAIN_OUTDOORS_JUNGLE:
 				mob.tell(L("You are in a jungle."));
 				break;
+			case Room.DOMAIN_OUTDOORS_SEAPORT:
+				mob.tell(L("You are at a seaport."));
+				break;
 			case Room.DOMAIN_OUTDOORS_SWAMP:
 				mob.tell(L("You are in a swamp."));
 				break;
