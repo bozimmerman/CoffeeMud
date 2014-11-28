@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class SeaPort extends Shore
 {
-	@Override public String ID(){return "Shore";}
+	@Override public String ID(){return "SeaPort";}
 	public SeaPort()
 	{
 		super();
