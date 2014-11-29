@@ -894,11 +894,11 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		case 7: return (area==null)?"":CMLib.coffeeMaker().getAreaXML(area, null, null, null, true).toString();
 		case 8: return getOwnerName();
 		case 9: return ""+getPrice();
-		case 10: return ""+defaultsClosed();
-		case 11: return ""+defaultsLocked();
-		case 12: return putString;
-		case 13: return mountString;
-		case 14: return dismountString;
+		case 10: return putString;
+		case 11: return mountString;
+		case 12: return dismountString;
+		case 13: return ""+defaultsClosed();
+		case 14: return ""+defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -921,11 +921,11 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		case 7: setShipArea(val); break;
 		case 8: setOwnerName(val); break;
 		case 9: setPrice(CMath.s_int(val)); break;
-		case 10: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
-		case 11: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
-		case 12: putString=val; break;
-		case 13: mountString=val; break;
-		case 14: dismountString=val; break;
+		case 10: putString=val; break;
+		case 11: mountString=val; break;
+		case 12: dismountString=val; break;
+		case 13: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
+		case 14: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
