@@ -1872,15 +1872,19 @@ public class CMMap extends StdLibrary implements WorldMap
 				resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
 			resetMsg.setTarget(room);
 			room.executeMsg(room,resetMsg);
-			emptyRoom(room,null,false);
+			if(room.isSavable())
+				emptyRoom(room,null,false);
 			for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)&&(A.canBeUninvoked()))
 					A.unInvoke();
 			}
-			CMLib.database().DBReReadRoomObject(room);
-			CMLib.database().DBReadContent(room.roomID(),room,true);
+			if(room.isSavable())
+			{
+				CMLib.database().DBReReadRoomObject(room);
+				CMLib.database().DBReadContent(room.roomID(),room,true);
+			}
 			room.startItemRejuv();
 			room.setResource(-1);
 			room.toggleMobility(mobile);

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.net.URLEncoder;
 import java.util.*;
 
@@ -95,7 +96,7 @@ public class DeityData extends StdWebMacro
 						Room R=(Room)httpReq.getRequestObjects().get(roomID);
 						if(R==null)
 						{
-							R=CMLib.map().getRoom(roomID);
+							R=MUDGrinder.getRoomObject(httpReq, roomID);
 							if(R==null)
 								return "No Room?!";
 							final Vector restoreDeities = new Vector();
@@ -107,7 +108,7 @@ public class DeityData extends StdWebMacro
 									restoreDeities.addElement(D2);
 							}
 							CMLib.map().resetRoom(R);
-							R=CMLib.map().getRoom(roomID);
+							R=MUDGrinder.getRoomObject(httpReq, roomID);
 							for(int d=restoreDeities.size()-1;d>=0;d--)
 							{
 								final Deity D2=(Deity)restoreDeities.elementAt(d);

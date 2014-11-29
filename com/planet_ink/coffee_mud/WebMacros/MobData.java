@@ -1019,7 +1019,7 @@ public class MobData extends StdWebMacro
 		{
 			if(!last.equalsIgnoreCase("ANY"))
 			{
-				R=CMLib.map().getRoom(last);
+				R=MUDGrinder.getRoomObject(httpReq, last);
 				if(R==null)
 					return "No Room?!";
 				CMLib.map().resetRoom(R);

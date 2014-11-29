@@ -16,7 +16,9 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
+
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 
 /*
@@ -70,11 +72,7 @@ public class AreaXML extends StdWebMacro
 	protected Area getLoggedArea(HTTPRequest httpReq, MOB mob)
 	{
 		final String AREA=httpReq.getUrlParameter("AREA");
-		if(AREA==null)
-			return null;
-		if(AREA.length()==0)
-			return null;
-		final Area A=CMLib.map().getArea(AREA);
+		final Area A=MUDGrinder.getAreaObject(AREA);
 		if(A==null)
 			return null;
 		if(CMSecurity.isASysOp(mob)||A.amISubOp(mob.Name()))

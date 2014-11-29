@@ -1039,13 +1039,13 @@ public class StdBoardableShip implements Area, BoardableShip
 	{
 		if(R==null)
 			return;
+		if(!CMLib.flags().isSavable(this))
+			CMLib.flags().setSavable(R,false);
 		if(R.getArea()!=this)
 		{
 			R.setArea(this);
 			return;
 		}
-		if(!CMLib.flags().isSavable(this))
-			CMLib.flags().setSavable(R,false);
 		synchronized(myRooms)
 		{
 			if(!myRooms.contains(R))

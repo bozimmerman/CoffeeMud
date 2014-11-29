@@ -43,6 +43,54 @@ public class MUDGrinder extends StdWebMacro
 	@Override public String name() { return "MUDGrinder"; }
 	@Override public boolean isAdminMacro()	{return true;}
 
+	public static Area getAreaObject(String ID)
+	{
+		if(ID==null)
+			return null;
+		if(ID.length()==0)
+			return null;
+		final Area A=CMLib.map().getArea(ID);
+		if(A!=null)
+			return A;
+		if(ID.startsWith("ITEM#"))
+		{
+			String itemCode=ID.substring(5);
+			Item I=RoomData.getItemFromCode((MOB)null,itemCode);
+			if(I==null)
+				I=RoomData.getItemFromCode((Room)null,itemCode);
+			if(I instanceof BoardableShip)
+				return ((BoardableShip)I).getShipArea();
+		}
+		return null;
+	}
+	
+	public static Room getRoomObject(String AREA, String ID)
+	{
+		if(ID==null)
+			return null;
+		if(ID.length()==0)
+			return null;
+		final Room R=CMLib.map().getRoom(ID);
+		if(R!=null)
+			return R;
+		final Area A=getAreaObject(AREA);
+		if(A!=null)
+			return A.getRoom(ID);
+		return null;
+	}
+	
+	public static Room getRoomObject(HTTPRequest req, String ID)
+	{
+		if(ID==null)
+			return null;
+		if(ID.length()==0)
+			return null;
+		final Room R=CMLib.map().getRoom(ID);
+		if(R!=null)
+			return R;
+		return (req==null) ? null : getRoomObject(req.getUrlParameter("AREA"), ID);
+	}
+	
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
@@ -54,11 +102,7 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("AREAMAP"))
 		{
 			final String AREA=httpReq.getUrlParameter("AREA");
-			if(AREA==null)
-				return "";
-			if(AREA.length()==0)
-				return "";
-			final Area A=CMLib.map().getArea(AREA);
+			final Area A=getAreaObject(AREA);
 			if(A==null)
 				return "";
 			if((A.properSize()==0)&&(A.getRandomProperRoom()==null))
@@ -80,9 +124,7 @@ public class MUDGrinder extends StdWebMacro
 			try
 			{
 				final String AREA = httpReq.getUrlParameter("AREA");
-				if (AREA == null) return "";
-				if (AREA.length() == 0) return "";
-				final Area A = CMLib.map().getArea(AREA);
+				final Area A=getAreaObject(AREA);
 				if (A == null)  return "";
 				if((A.properSize()==0)&&(A.getRandomProperRoom()==null))
 					GrinderRooms.createLonelyRoom(A, null, 0, false);
@@ -499,7 +541,7 @@ public class MUDGrinder extends StdWebMacro
 				return "false";
 			if(AREA.length()==0)
 				return "false";
-			Area A=CMLib.map().getArea(AREA);
+			Area A=getAreaObject(AREA);
 			if(A==null)
 			{
 				final String areaClass=httpReq.getUrlParameter("AREATYPE");
@@ -521,11 +563,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			String AREA=httpReq.getUrlParameter("AREA");
-			if(AREA==null)
-				return "";
-			if(AREA.length()==0)
-				return "";
-			final Area A=CMLib.map().getArea(AREA);
+			final Area A=getAreaObject(AREA);
 			if(A==null)
 				return "";
 			GrinderAreas.modifyArea(httpReq,parms);
@@ -538,7 +576,7 @@ public class MUDGrinder extends StdWebMacro
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null)
 				return "@break@";
-			final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
+			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 			if(R==null)
 				return "@break@";
 			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
@@ -554,7 +592,7 @@ public class MUDGrinder extends StdWebMacro
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null)
 				return "@break@";
-			final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
+			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 			if(R==null)
 				return "@break@";
 			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
@@ -571,11 +609,7 @@ public class MUDGrinder extends StdWebMacro
 			if(find==null)
 				return "@break@";
 			final String AREA=httpReq.getUrlParameter("AREA");
-			if(AREA==null)
-				return "";
-			if(AREA.length()==0)
-				return "";
-			final Area A=CMLib.map().getArea(AREA);
+			final Area A=getAreaObject(AREA);
 			if(A==null)
 				return "";
 			final String roomID=quickfind(A,find.toUpperCase());
@@ -589,13 +623,13 @@ public class MUDGrinder extends StdWebMacro
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null)
 				return "@break@";
-			final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
+			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 			if(R==null)
 				return "@break@";
 			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
 			if(dir<0)
 				return "@break@";
-			final Room R2=CMLib.map().getRoom(httpReq.getUrlParameter("OLDROOM"));
+			final Room R2=getRoomObject(httpReq,httpReq.getUrlParameter("OLDROOM"));
 			if(R2==null)
 				return "@break@";
 			final int dir2=Directions.getGoodDirectionCode(httpReq.getUrlParameter("OLDLINK"));
@@ -611,7 +645,7 @@ public class MUDGrinder extends StdWebMacro
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null)
 				return "@break@";
-			final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
+			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 			if(R==null)
 				return "@break@";
 			final int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
@@ -620,7 +654,7 @@ public class MUDGrinder extends StdWebMacro
 			String oldroom=httpReq.getUrlParameter("OLDROOM");
 			if(oldroom==null)
 				oldroom="";
-			final Room R2=CMLib.map().getRoom(oldroom);
+			final Room R2=getRoomObject(httpReq,oldroom);
 			String errMsg="";
 			if(R2==null)
 				errMsg="No external room with ID '"+oldroom+"' found.";
@@ -637,7 +671,7 @@ public class MUDGrinder extends StdWebMacro
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null)
 				return "@break@";
-			Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
+			Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 			if(R==null)
 				return "@break@";
 			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
@@ -647,12 +681,12 @@ public class MUDGrinder extends StdWebMacro
 			if((multiFlag)&&(multiRoomList.size()>0))
 			{
 				errMsg="";
-				final Pair<String,String> setPairs[]=RoomData.makeMergableRoomFields(R, multiRoomList);
+				final Pair<String,String> setPairs[]=RoomData.makeMergableRoomFields(httpReq, R, multiRoomList);
 				for(final String id : multiRoomList)
 				{
 					if(id.length()==0)
 						continue;
-					R=CMLib.map().getRoom(id);
+					R=getRoomObject(httpReq,id);
 					if(R==null)
 						return "@break@";
 					final HTTPRequest mergeReq=RoomData.mergeRoomFields(httpReq, setPairs, R);
@@ -962,7 +996,7 @@ public class MUDGrinder extends StdWebMacro
 			final String player=httpReq.getUrlParameter("PLAYER");
 			final MOB playerM=(player!=null)?CMLib.players().getLoadPlayer(player):null;
 			final String roomID=httpReq.getUrlParameter("ROOM");
-			final Room R=CMLib.map().getRoom(roomID);
+			final Room R=getRoomObject(httpReq,roomID);
 			if((R==null)&&(playerM==null)&&((roomID==null)||(!roomID.equalsIgnoreCase("ANY"))))
 				return "@break@";
 			final String errMsg=GrinderItems.editItem(httpReq,parms,mob,R,playerM);
@@ -975,7 +1009,7 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null)
 				return "@break@";
 			final String roomID=httpReq.getUrlParameter("ROOM");
-			final Room R=CMLib.map().getRoom(roomID);
+			final Room R=getRoomObject(httpReq,roomID);
 			if((R==null)&&((roomID==null)||(!roomID.equalsIgnoreCase("ANY"))))
 				return "@break@";
 			final String errMsg=GrinderMobs.editMob(httpReq,parms,mob,R);
@@ -1009,7 +1043,7 @@ public class MUDGrinder extends StdWebMacro
 				{
 					if(id.length()==0)
 						continue;
-					final Room R=CMLib.map().getRoom(id);
+					final Room R=getRoomObject(httpReq,id);
 					if(R==null)
 						return "@break@";
 					rooms.add(R);
@@ -1017,7 +1051,7 @@ public class MUDGrinder extends StdWebMacro
 			}
 			else
 			{
-				final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
+				final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 				if(R==null)
 					return "@break@";
 				rooms.add(R);
@@ -1056,7 +1090,7 @@ public class MUDGrinder extends StdWebMacro
 				{
 					if(id.length()==0)
 						continue;
-					final Room R=CMLib.map().getRoom(id);
+					final Room R=getRoomObject(httpReq,id);
 					if(R==null)
 						return "@break@";
 					rooms.add(R);
@@ -1064,7 +1098,7 @@ public class MUDGrinder extends StdWebMacro
 			}
 			else
 			{
-				final Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
+				final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 				if(R==null)
 					return "@break@";
 				rooms.add(R);
@@ -1084,7 +1118,7 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null)
 				return "@break@";
 			final String link=httpReq.getUrlParameter("LINK");
-			Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
+			Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
 			if(R==null)
 				return "@break@";
 			final int dir=Directions.getGoodDirectionCode(link);
@@ -1209,7 +1243,7 @@ public class MUDGrinder extends StdWebMacro
 			final String AREA=httpReq.getUrlParameter("AREA");
 			if(AREA==null)
 				return "@break@";
-			final Area A=CMLib.map().getArea(AREA);
+			final Area A=getAreaObject(AREA);
 			if(A==null)
 				return "@break@";
 			String like=httpReq.getUrlParameter("ROOM");
@@ -1221,7 +1255,7 @@ public class MUDGrinder extends StdWebMacro
 				final String roomID=quickfind(A,like.toUpperCase());
 				Room R=null;
 				if(roomID!=null)
-					R=CMLib.map().getRoom(roomID);
+					R=getRoomObject(httpReq,roomID);
 				R=CMLib.map().getRoom(R);
 				if(R==null)
 					return "The room you entered ("+like+") could not be found.";
@@ -1286,7 +1320,7 @@ public class MUDGrinder extends StdWebMacro
 				}
 			for(final Enumeration e=deferredExitSaves.getRoomIDs();e.hasMoreElements();)
 			{
-				R=CMLib.map().getRoom((String)e.nextElement());
+				R=getRoomObject(httpReq,(String)e.nextElement());
 				CMLib.database().DBUpdateExits(R);
 			}
 			Log.sysOut("Grinder",mob.name()+" updated "+deferredExitSaves.roomCountAllAreas()+" rooms exits.");
@@ -1301,16 +1335,16 @@ public class MUDGrinder extends StdWebMacro
 			final String AREA=httpReq.getUrlParameter("AREA");
 			if(AREA==null)
 				return "false";
-			final Area A=CMLib.map().getArea(AREA);
+			final Area A=getAreaObject(AREA);
 			if(A==null)
 				return "@break@";
 			final String roomID=httpReq.getUrlParameter("ROOM");
 			final String link=httpReq.getUrlParameter("AUTOLINK");
-			final Room R=CMLib.map().getRoom(roomID);
+			final Room R=getRoomObject(httpReq,roomID);
 			if((roomID==null)||(R!=null)||(roomID.length()==0))
 				return "@break@";
 			final String copyThisOne=httpReq.getUrlParameter("COPYROOM");
-			final Room copyRoom=CMLib.map().getRoom(copyThisOne);
+			final Room copyRoom=getRoomObject(httpReq,copyThisOne);
 			final Room newRoom=GrinderRooms.createGridRoom(A,roomID,copyRoom,null,((link!=null)&&(link.length()>0)));
 			if(newRoom==null)
 				httpReq.addFakeUrlParameter("ERRMSG","An error occurred trying to create your room.");
@@ -1369,11 +1403,7 @@ public class MUDGrinder extends StdWebMacro
 	protected Area getLoggedArea(HTTPRequest httpReq, MOB mob)
 	{
 		final String AREA=httpReq.getUrlParameter("AREA");
-		if(AREA==null)
-			return null;
-		if(AREA.length()==0)
-			return null;
-		final Area A=CMLib.map().getArea(AREA);
+		final Area A=getAreaObject(AREA);
 		if(A==null)
 			return null;
 		if(CMSecurity.isASysOp(mob)||A.amISubOp(mob.Name()))

@@ -72,7 +72,7 @@ public class ItemData extends StdWebMacro
 		{
 			if(!last.equalsIgnoreCase("ANY"))
 			{
-				R=CMLib.map().getRoom(last);
+				R=MUDGrinder.getRoomObject(httpReq,last);
 				if(R==null)
 					return "No Room?!";
 				CMLib.map().resetRoom(R);
@@ -124,7 +124,7 @@ public class ItemData extends StdWebMacro
 						{
 							final MOB M2=R.fetchInhabitant(m);
 							if((M2!=null)&&(M2.isSavable()))
-							   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+								str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 						}
 						return clearWebMacros(str);
 					}
@@ -142,7 +142,11 @@ public class ItemData extends StdWebMacro
 					if(itemCode.equals("NEW"))
 						I=CMClass.getItem("GenItem");
 					else
+					{
 						I=RoomData.getItemFromCode(M,itemCode);
+						if(I==null)
+							I=RoomData.getItemFromCode((MOB)null,itemCode);
+					}
 					if(I!=null)
 					{
 						if(R!=null)
@@ -161,7 +165,11 @@ public class ItemData extends StdWebMacro
 					if(itemCode.equals("NEW"))
 						I=CMClass.getItem("GenItem");
 					else
+					{
 						I=RoomData.getItemFromCode(R,itemCode);
+						if(I==null)
+							I=RoomData.getItemFromCode((Room)null,itemCode);
+					}
 					if(I!=null)
 						httpReq.getRequestObjects().put(R.roomID()+"/"+itemCode,I);
 				}
@@ -1062,6 +1070,9 @@ public class ItemData extends StdWebMacro
 						if(old.equals("on"))
 							old="checked";
 						str.append(old);
+						break;
+					case ISBOARDABLEITEM:
+						str.append(I instanceof BoardableShip);
 						break;
 					}
 					if(firstTime)

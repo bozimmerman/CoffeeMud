@@ -47,7 +47,7 @@ public class AreaNameEncoded extends StdWebMacro
 			return "";
 		if(last.length()>0)
 		{
-			final Area A=CMLib.map().getArea(last);
+			final Area A=MUDGrinder.getAreaObject(last);
 			if(A!=null)
 			{
 				try

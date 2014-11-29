@@ -26,6 +26,11 @@
             w=window.open("/"+file+"?HELPTOPIC="+named,
                         "Help",strFeatures, false);
         }
+        function OpenClick(file,named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open(file+"?AUTH=@Authenticate?AUTH@&AREA=ITEM%23@RequestParameterEncoded?ITEM@","Map",strFeatures, false);
+        }
 		function EditBehavior(ME)
 		{
 			if(ME.selectedIndex==0)
@@ -109,7 +114,7 @@
 		<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/@if?!CheckReqParm?MOB=@editmobitemdone.cmvp@else@editroomitemdone.cmvp@endif@">
 		<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
 		<INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">
-		<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+		<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaID@">
 		<INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
 		<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
 	@endif@
@@ -644,6 +649,12 @@
         <TD WIDTH=150><FONT COLOR="#66FFFF"><B>'Dismount' String:</B></FONT></TD>
         <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DISMOUNTSTR SIZE=20  MAXLENGTH=255 VALUE="@ItemData?DISMOUNTSTR@">
     </TR>
+	@if?ItemData?ISBOARDABLEITEM@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Inner Rooms:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=BUTTON NAME="EDITROOMS" VALUE="Edit Rooms" ONCLICK="OpenClick('/grinder/possmodarea.cmvp');"></TD>
+	</TR>
+	@endif@
 	@endif@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Solid Capacity:</B></FONT></TD>

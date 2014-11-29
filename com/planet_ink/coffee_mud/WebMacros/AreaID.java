@@ -33,9 +33,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class AreaName extends StdWebMacro
+public class AreaID extends StdWebMacro
 {
-	@Override public String name() { return "AreaName"; }
+	@Override public String name() { return "AreaID"; }
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
@@ -47,7 +47,7 @@ public class AreaName extends StdWebMacro
 		{
 			final Area A=MUDGrinder.getAreaObject(last);
 			if(A!=null)
-				return clearWebMacros(A.Name());
+				return clearWebMacros(last);
 		}
 		return "";
 	}

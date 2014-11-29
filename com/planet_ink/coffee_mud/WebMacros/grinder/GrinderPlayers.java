@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.WebMacros.grinder;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.AreaData;
 import com.planet_ink.coffee_mud.WebMacros.ExitData;
+import com.planet_ink.coffee_mud.WebMacros.MUDGrinder;
 import com.planet_ink.coffee_mud.WebMacros.MobData;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -187,10 +188,10 @@ public class GrinderPlayers extends GrinderMobs
 				break;
 			}
 			case 26: M.setWimpHitPoint(CMath.s_int(old)); break;
-			case 27: if(CMLib.map().getRoom(old)!=null) M.setStartRoom(CMLib.map().getRoom(old)); break;
-			case 28: if(CMLib.map().getRoom(old)!=null) M.setLocation(CMLib.map().getRoom(old)); break;
-			case 29: if(CMLib.map().getRoom(old)!=null) M.setStartRoom(CMLib.map().getRoom(old)); break;
-			case 30: if(CMLib.map().getRoom(old)!=null) M.setLocation(CMLib.map().getRoom(old)); break;
+			case 27: { final Room R = MUDGrinder.getRoomObject(httpReq,old); if(R!=null) M.setStartRoom(R); break; }
+			case 28: { final Room R = MUDGrinder.getRoomObject(httpReq,old); if(R!=null)  M.setLocation(R); break; }
+			case 29: { final Room R = MUDGrinder.getRoomObject(httpReq,old); if(R!=null)  M.setStartRoom(R); break; }
+			case 30: { final Room R = MUDGrinder.getRoomObject(httpReq,old); if(R!=null)  M.setLocation(R); break; }
 			case 31: break; // dont set inv list here
 			case 32: M.basePhyStats().setWeight(CMath.s_int(old)); break;
 			case 33: M.phyStats().setWeight(CMath.s_int(old)); break;

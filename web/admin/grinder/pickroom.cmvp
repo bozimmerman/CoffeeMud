@@ -45,7 +45,7 @@
 		@AreaNext?RESET@
 		@loop@
 			@AreaNext@
-			<OPTION VALUE="@AreaName@" @if?CheckReqParm?OLDAREA=@@AreaName@@ @SELECTED@endif@>@AreaName@
+			<OPTION VALUE="@AreaID@" @if?CheckReqParm?OLDAREA=@@AreaID@@ @SELECTED@endif@>@AreaName@
 		@back@
 		</SELECT>
 		@AddRequestParameter?AREA=@@RequestParameter?OLDAREA@@ @

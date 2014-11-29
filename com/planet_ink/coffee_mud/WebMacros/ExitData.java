@@ -77,7 +77,7 @@ public class ExitData extends StdWebMacro
 		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
 		{
-			R=CMLib.map().getRoom(last);
+			R=MUDGrinder.getRoomObject(httpReq, last);
 			if(R==null)
 				return "No Room?!";
 			httpReq.getRequestObjects().put(last,R);

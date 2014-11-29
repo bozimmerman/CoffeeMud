@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -44,7 +45,7 @@ public class RoomName extends StdWebMacro
 			return " @break@";
 		if(last.length()>0)
 		{
-			final Room R=CMLib.map().getRoom(last);
+			final Room R=MUDGrinder.getRoomObject(httpReq, last);
 			if(R!=null)
 				return clearWebMacros(R.displayText());
 		}

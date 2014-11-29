@@ -55,10 +55,10 @@
 				if (navigator.appName=="Netscape" && parseInt(navigator.appVersion)==4) 
 				{
 					var mString =(e.modifiers+32).toString(2).substring(3,6);
-				    shiftDown=(mString.charAt(1)=="1");
+					shiftDown=(mString.charAt(1)=="1");
 				}
-  				else 
-  				{
+				else 
+				{
 					shiftDown=evt.ctrlKey;
 				}
 			 }
@@ -290,7 +290,7 @@
 
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=SELECTAREA METHOD=POST ACTION="" TARGET=MENU>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaID@">
 <INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
 <INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="">
 <INPUT TYPE=HIDDEN NAME=ROOM VALUE="">
@@ -300,6 +300,7 @@
 <INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="">
 <INPUT TYPE=HIDDEN NAME=MULTIROOMFLAG VALUE="">
 <INPUT TYPE=HIDDEN NAME=MULTIROOMLIST VALUE="">
+<INPUT TYPE=HIDDEN NAME=ACTION VALUE="@RequestParameter?ACTION@">
 @MUDGrinder?AREAMAP@
 </FORM>
 

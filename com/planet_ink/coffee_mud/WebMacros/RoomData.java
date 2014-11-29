@@ -597,7 +597,7 @@ public class RoomData extends StdWebMacro
 		return fixtures.toArray(new Pair[0]);
 	}
 
-	public static Pair<String,String>[] makeMergableRoomFields(Room R, List<String> multiRoomList)
+	public static Pair<String,String>[] makeMergableRoomFields(HTTPRequest httpReq, Room R, List<String> multiRoomList)
 	{
 		final List<Pair<String,String>> fixtures=new Vector<Pair<String,String>>();
 		R=(Room)R.copyOf();
@@ -605,7 +605,7 @@ public class RoomData extends StdWebMacro
 		for(final String roomID : multiRoomList)
 			if(!roomID.equalsIgnoreCase(R.roomID()))
 			{
-				final Room R2=CMLib.map().getRoom(roomID);
+				final Room R2=MUDGrinder.getRoomObject(httpReq, roomID);
 				if(R2!=null)
 				{
 					CMLib.map().resetRoom(R2);
@@ -919,7 +919,7 @@ public class RoomData extends StdWebMacro
 		boolean useRoomItems=true;
 		if(R==null)
 		{
-			R=CMLib.map().getRoom(last);
+			R=MUDGrinder.getRoomObject(httpReq, last);
 			if(R==null)
 				return "No Room?!";
 			CMLib.map().resetRoom(R);
@@ -928,7 +928,7 @@ public class RoomData extends StdWebMacro
 			&&(httpReq.getUrlParameter("MOB1")==null)
 			&&(httpReq.getUrlParameter("ITEM1")==null))
 			{
-				final Pair<String,String> pairs[]=makeMergableRoomFields(R,multiRoomList);
+				final Pair<String,String> pairs[]=makeMergableRoomFields(httpReq, R,multiRoomList);
 				if(pairs!=null)
 					for(final Pair<String,String> p : pairs)
 					{

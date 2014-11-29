@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -42,9 +43,11 @@ public class RoomNext extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String area=httpReq.getUrlParameter("AREA");
-		if((area==null)||(CMLib.map().getArea(area)==null))
+		if(area==null)
 			return " @break@";
-		final Area A=CMLib.map().getArea(area);
+		final Area A=MUDGrinder.getAreaObject(area);
+		if(A==null)
+			return " @break@";
 		final String last=httpReq.getUrlParameter("ROOM");
 		if(parms.containsKey("RESET"))
 		{

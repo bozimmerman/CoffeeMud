@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.MUDGrinder;
 
 import java.util.*;
 
@@ -118,14 +119,14 @@ public class GrinderClans
 				str=httpReq.getUrlParameter("RECALLID");
 				if(str!=null)
 				{
-					final Room R=CMLib.map().getRoom(str);
+					final Room R=MUDGrinder.getRoomObject(httpReq, str);
 					if(R!=null)
 						C.setRecall(CMLib.map().getExtendedRoomID(R));
 				}
 				str=httpReq.getUrlParameter("MORGUEID");
 				if(str!=null)
 				{
-					final Room R=CMLib.map().getRoom(str);
+					final Room R=MUDGrinder.getRoomObject(httpReq, str);
 					if(R!=null)
 						C.setMorgue(CMLib.map().getExtendedRoomID(R));
 				}
@@ -135,7 +136,7 @@ public class GrinderClans
 				str=httpReq.getUrlParameter("DONATIONID");
 				if(str!=null)
 				{
-					final Room R=CMLib.map().getRoom(str);
+					final Room R=MUDGrinder.getRoomObject(httpReq, str);
 					if(R!=null)
 						C.setDonation(CMLib.map().getExtendedRoomID(R));
 				}
