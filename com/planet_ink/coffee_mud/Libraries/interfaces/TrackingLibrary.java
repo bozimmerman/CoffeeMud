@@ -126,7 +126,7 @@ public interface TrackingLibrary extends CMLibrary
 			@Override
 			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
 			{
-				return !E.hasALock();
+				return E.hasALock();
 			}
 		}),
 		AREAONLY(new RFilter(){ 

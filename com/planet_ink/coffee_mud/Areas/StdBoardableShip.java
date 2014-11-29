@@ -527,13 +527,19 @@ public class StdBoardableShip implements Area, BoardableShip
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_LOOK_EXITS:
 			case CMMsg.TYP_EXAMINE:
 				if((msg.target() instanceof Room)
 				&&((((Room)msg.target()).domainType()&Room.INDOORS)==0))
 				{
-					final Room R=CMLib.map().roomLocation(this.shipItem);
-					if(R!=null)
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), L("\n\r^HOff the bow you see: ^N\n\r"), msg.targetCode(), null, msg.othersCode(), null));
+					if(((Room)msg.target()).getArea()==this)
+					{
+						final Room R=CMLib.map().roomLocation(this.shipItem);
+						if(R!=null)
+							msg.addTrailerMsg(CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), L("\n\r^HOff the bow you see: ^N\n\r"), msg.targetCode(), null, msg.othersCode(), null));
+					}
+					else
+						((Room)msg.target()).executeMsg(msg.source(), msg);
 				}
 				break;
 			}

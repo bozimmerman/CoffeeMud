@@ -100,7 +100,8 @@ public class UnderWater extends StdRoom implements Drink
 				mob.tell(CMLib.lang().L("You have drunk all you can."));
 		}
 
-		CMLib.commands().handleHygienicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
+		if(msg.source().location()==room)
+			CMLib.commands().handleHygienicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
 
 		if(CMLib.flags().isSleeping(room))
 			return;

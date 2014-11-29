@@ -171,6 +171,9 @@ public class Transfer extends At
 		if(cmd.toString().equalsIgnoreCase("here")||cmd.toString().equalsIgnoreCase("."))
 			room=mob.location();
 		else
+		if(CMLib.map().getRoom(cmd.toString())!=null)
+			room=CMLib.map().getRoom(cmd.toString());
+		else
 		if(Directions.getDirectionCode(cmd.toString())>=0)
 			room=mob.location().getRoomInDir(Directions.getDirectionCode(cmd.toString()));
 		else

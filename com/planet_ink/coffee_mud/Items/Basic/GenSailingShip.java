@@ -244,7 +244,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		getShipArea();
 		Room R=null;
 		final List<String> V=CMParms.parseSemicolons(readableText(),true);
-		if(V.size()>0)
+		if((V.size()>0)&&(getShipArea()!=null))
 			R=getShipArea().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
 	}
@@ -305,12 +305,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		if(area instanceof BoardableShip)
 		{
 			final Room oldEntry=getDestinationRoom();
-			String registryNum=area.getBlurbFlag("REGISTRY");
-			if(registryNum==null) 
-				registryNum="";
 			((BoardableShip)area).renameShip(newName);
-			registryNum=Double.toString(Math.random());
-			area.addBlurbFlag("REGISTRY Registry#"+registryNum.substring(registryNum.indexOf('.')+1));
 			setReadableText(oldEntry.roomID());
 			setShipArea(CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true).toString());
 		}
@@ -373,6 +368,14 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if((msg.target()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_GET)
+		&&(msg.tool() instanceof ShopKeeper))
+		{
+			transferOwnership(msg.source());
+			return false;
+		}
+		else
 		if((msg.sourceMinor()==CMMsg.TYP_HUH)
 		&&(msg.targetMessage()!=null)
 		&&(area == CMLib.map().areaLocation(msg.source())))
@@ -400,6 +403,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					{
 						R.send(msg.source(), msg2);
 						this.sendAreaMessage(msg2, true);
+						anchorDown=false;
 					}
 				}
 				return false;
@@ -423,6 +427,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					{
 						R.send(msg.source(), msg2);
 						this.sendAreaMessage(msg2, true);
+						anchorDown=true;
 					}
 				}
 				return false;
@@ -566,12 +571,14 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 						final String otherDirectionName=Directions.getDirectionName(oppositeDirectionFacing);
 						final Exit opExit=thisRoom.getExitInDir(oppositeDirectionFacing);
 						final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
+						mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+						mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 						try
 						{
 							final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> sail(s) in from @x1.",otherDirectionName));
-							final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,L("<S-NAME> sails(s) @x1.",directionName));
+							final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,L("<S-NAME> sail(s) @x1.",directionName));
 							if((exit.okMessage(mob,enterMsg))
-							&&(!leaveMsg.target().okMessage(mob,leaveMsg))
+							&&(leaveMsg.target().okMessage(mob,leaveMsg))
 							&&((opExit==null)||(opExit.okMessage(mob,leaveMsg)))
 							&&(enterMsg.target().okMessage(mob,enterMsg)))
 							{
@@ -688,27 +695,6 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	{
 		super.executeMsg(myHost,msg);
 
-		if(msg.amITarget(this))
-		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_GET:
-				if(msg.tool() instanceof ShopKeeper)
-					transferOwnership(msg.source());
-				break;
-			case CMMsg.TYP_WEAPONATTACK: // damage taken
-			{
-				break;
-			}
-			case CMMsg.TYP_COLLISION:
-			{
-				break;
-			}
-			default:
-				break;
-			}
-		}
-		else
 		if((msg.targetMinor()==CMMsg.TYP_SELL)
 		&&(msg.tool()==this)
 		&&(msg.target() instanceof ShopKeeper))
