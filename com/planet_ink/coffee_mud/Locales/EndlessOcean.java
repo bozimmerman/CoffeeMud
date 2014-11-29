@@ -41,7 +41,7 @@ public class EndlessOcean extends StdGrid
 		name="the ocean";
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
-		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
+		climask=CLIMASK_WET;
 	}
 	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 

@@ -48,6 +48,9 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	protected volatile int		 directionFacing = -1;
 	protected volatile boolean	 anchorDown		 = true;
 	protected final List<Integer>courseDirections= new Vector<Integer>();
+	protected String 			 putString		 = "load(s)";
+	protected String 			 mountString	 = "board(s)";
+	protected String 			 dismountString	 = "disembark(s) from";
 
 	public GenSailingShip()
 	{
@@ -853,8 +856,26 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		}
 	}
 
+	@Override 
+	public String putString(Rider R)
+	{ 
+		return putString;
+	}
+	
+	@Override 
+	public String mountString(int commandType, Rider R)
+	{ 
+		return mountString;
+	}
+	
+	@Override 
+	public String dismountString(Rider R)
+	{	
+		return dismountString;
+	}
+	
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
-											"AREA","OWNER","PRICE","DEFCLOSED","DEFLOCKED"
+											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED"
 										  };
 	@Override
 	public String getStat(String code)
@@ -875,6 +896,9 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		case 9: return ""+getPrice();
 		case 10: return ""+defaultsClosed();
 		case 11: return ""+defaultsLocked();
+		case 12: return putString;
+		case 13: return mountString;
+		case 14: return dismountString;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -899,6 +923,9 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		case 9: setPrice(CMath.s_int(val)); break;
 		case 10: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
 		case 11: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
+		case 12: putString=val; break;
+		case 13: mountString=val; break;
+		case 14: dismountString=val; break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

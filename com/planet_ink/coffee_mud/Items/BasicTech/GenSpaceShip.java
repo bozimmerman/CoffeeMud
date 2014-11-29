@@ -58,6 +58,9 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	protected SpaceObject	spaceTarget 	= null;
 	protected double[]		facing			= new double[2];
 	protected Boolean		inAirFlag		= Boolean.FALSE;
+	protected String 		putString		= "load(s)";
+	protected String 		mountString		= "board(s)";
+	protected String 		dismountString	= "disembark(s) from";
 
 	public GenSpaceShip()
 	{
@@ -525,11 +528,30 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return CMLib.players().getLoadPlayer(owner);
 	}
 	
-	@Override public String getTitleID() 
+	@Override 
+	public String getTitleID() 
 	{ 
 		return this.toString(); 
 	}
 
+	@Override 
+	public String putString(Rider R)
+	{ 
+		return putString;
+	}
+	
+	@Override 
+	public String mountString(int commandType, Rider R)
+	{ 
+		return mountString;
+	}
+	
+	@Override 
+	public String dismountString(Rider R)
+	{	
+		return dismountString;
+	}
+	
 	@Override
 	public void renameShip(String newName)
 	{
@@ -999,7 +1021,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","AREA","COORDS","RADIUS",
-											"ROLL","DIRECTION","SPEED","FACING","OWNER","PRICE","DEFCLOSED","DEFLOCKED"
+											"ROLL","DIRECTION","SPEED","FACING","OWNER","PRICE","DEFCLOSED","DEFLOCKED",
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR"
 										  };
 	@Override
 	public String getStat(String code)
@@ -1030,6 +1053,9 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 19: return ""+getPrice();
 		case 20: return ""+defaultsClosed();
 		case 21: return ""+defaultsLocked();
+		case 22: return putString;
+		case 23: return mountString;
+		case 24: return dismountString;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1064,6 +1090,9 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 19: setPrice(CMath.s_int(val)); break;
 		case 20: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
 		case 21: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
+		case 22: putString=val; break;
+		case 23: mountString=val; break;
+		case 24: dismountString=val; break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
