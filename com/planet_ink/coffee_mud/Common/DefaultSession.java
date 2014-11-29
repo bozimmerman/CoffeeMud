@@ -501,6 +501,10 @@ public class DefaultSession implements Session
 		{
 			killFlag=true;
 		}
+		catch(final Exception e)
+		{
+			Log.errOut(e);
+		}
 	}
 
 	// this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary
