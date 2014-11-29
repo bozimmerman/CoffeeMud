@@ -211,4 +211,16 @@ CMINDX integer KEY
 CMDATE long NULL
 CMDATA string NULL
 
+CMCLIT
+CMCLID string KEY
+CMITNM string KEY
+CMITID string NULL
+CMITTX string NULL
+CMITLO string NULL
+CMITWO integer NULL
+CMITUR integer NULL
+CMITLV integer NULL
+CMITAB integer NULL
+CMHEIT integer NULL
+
 #CONVERTER=com.planet_ink.coffee_mud.core.database.DBUpgradeConversions

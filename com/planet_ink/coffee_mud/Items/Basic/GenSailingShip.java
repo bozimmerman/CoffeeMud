@@ -465,6 +465,41 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				return false;
 			}
 			else
+			if(word.equals("SAIL"))
+			{
+				if(!securityCheck(msg.source()))
+				{
+					msg.source().tell(L("The captain does not permit you."));
+					return false;
+				}
+				int dir=Directions.getCompassDirectionCode(secondWord);
+				if(dir<0)
+				{
+					msg.source().tell(L("Sail the ship which direction?"));
+					return false;
+				}
+				final Room R=CMLib.map().roomLocation(this);
+				if(R==null)
+				{
+					msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
+					return false;
+				}
+				final Room targetRoom=R.getRoomInDir(dir);
+				final Exit targetExit=R.getExitInDir(dir);
+				if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+				{
+					msg.source().tell(L("There doesn't look to be anything in that direction."));
+					return false;
+				}
+				if(anchorDown)
+				{
+					msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
+					return false;
+				}
+				sail(dir);
+				return false;
+			}
+			else
 			if(word.equals("COURSE") || (word.equals("SET") && word.equals("COURSE")))
 			{
 				if(!securityCheck(msg.source()))
@@ -546,6 +581,71 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		return true;
 	}
 
+	protected int sail(final int direction)
+	{
+		final Room thisRoom=CMLib.map().roomLocation(this);
+		if(thisRoom != null)
+		{
+			final Room destRoom=thisRoom.getRoomInDir(direction);
+			final Exit exit=thisRoom.getExitInDir(direction);
+			if((destRoom!=null)&&(exit!=null))
+			{
+				if((destRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+				&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT))
+				{
+					announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(direction)));
+					courseDirections.clear();
+					return -1;
+				}
+				final int oppositeDirectionFacing=Directions.getOpDirectionCode(direction);
+				final String directionName=Directions.getDirectionName(direction);
+				final String otherDirectionName=Directions.getDirectionName(oppositeDirectionFacing);
+				final Exit opExit=thisRoom.getExitInDir(oppositeDirectionFacing);
+				final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
+				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+				try
+				{
+					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> sail(s) in from @x1.",otherDirectionName));
+					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,L("<S-NAME> sail(s) @x1.",directionName));
+					if((exit.okMessage(mob,enterMsg))
+					&&(leaveMsg.target().okMessage(mob,leaveMsg))
+					&&((opExit==null)||(opExit.okMessage(mob,leaveMsg)))
+					&&(enterMsg.target().okMessage(mob,enterMsg)))
+					{
+						exit.executeMsg(mob,enterMsg);
+						thisRoom.sendOthers(mob, leaveMsg);
+						destRoom.moveItemTo(this);
+						this.dockHere(destRoom);
+						this.sendAreaMessage(leaveMsg, true);
+						if(opExit!=null)
+							opExit.executeMsg(mob,leaveMsg);
+						destRoom.send(mob, enterMsg);
+						return direction;
+					}
+					else
+					{
+						announceToShip(L("<S-NAME> can not seem to travel @x1.",Directions.getInDirectionName(direction)));
+						courseDirections.clear();
+						return -1;
+					}
+						
+				}
+				finally
+				{
+					mob.destroy();
+				}
+			}
+			else
+			{
+				announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(direction)));
+				courseDirections.clear();
+				return -1;
+			}
+		}
+		return -1;
+	}
+	
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -555,71 +655,12 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				return false;
 			if((!this.anchorDown) && (area != null) && (directionFacing != -1))
 			{
-				final Room thisRoom=CMLib.map().roomLocation(this);
-				if(thisRoom != null)
+				if(sail(directionFacing)!=-1)
 				{
-					final Room destRoom=thisRoom.getRoomInDir(directionFacing);
-					final Exit exit=thisRoom.getExitInDir(directionFacing);
-					if((destRoom!=null)&&(exit!=null))
+					if(this.courseDirections.size()>0)
 					{
-						if((destRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-						&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT))
-						{
-							announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(directionFacing)));
-							directionFacing = -1;
-							courseDirections.clear();
-							return true;
-						}
-						final int oppositeDirectionFacing=Directions.getOpDirectionCode(directionFacing);
-						final String directionName=Directions.getDirectionName(directionFacing);
-						final String otherDirectionName=Directions.getDirectionName(oppositeDirectionFacing);
-						final Exit opExit=thisRoom.getExitInDir(oppositeDirectionFacing);
-						final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
-						mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-						mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
-						try
-						{
-							final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> sail(s) in from @x1.",otherDirectionName));
-							final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,L("<S-NAME> sail(s) @x1.",directionName));
-							if((exit.okMessage(mob,enterMsg))
-							&&(leaveMsg.target().okMessage(mob,leaveMsg))
-							&&((opExit==null)||(opExit.okMessage(mob,leaveMsg)))
-							&&(enterMsg.target().okMessage(mob,enterMsg)))
-							{
-								exit.executeMsg(mob,enterMsg);
-								thisRoom.sendOthers(mob, leaveMsg);
-								destRoom.moveItemTo(this);
-								this.dockHere(destRoom);
-								this.sendAreaMessage(leaveMsg, true);
-								if(opExit!=null)
-									opExit.executeMsg(mob,leaveMsg);
-								destRoom.send(mob, enterMsg);
-								if(this.courseDirections.size()>0)
-								{
-									final Integer newDir=this.courseDirections.remove(0);
-									directionFacing = newDir.intValue();
-								}
-							}
-							else
-							{
-								announceToShip(L("<S-NAME> can not seem to travel @x1.",Directions.getInDirectionName(directionFacing)));
-								directionFacing = -1;
-								courseDirections.clear();
-								return true;
-							}
-								
-						}
-						finally
-						{
-							mob.destroy();
-						}
-					}
-					else
-					{
-						announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(directionFacing)));
-						directionFacing = -1;
-						courseDirections.clear();
-						return true;
+						final Integer newDir=this.courseDirections.remove(0);
+						directionFacing = newDir.intValue();
 					}
 				}
 			}
@@ -727,10 +768,10 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			if(this.anchorDown)
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("^XThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
 			else
-			if(this.directionFacing < 0)
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("^X@x1 meanders in the waves.  Perhaps you should steer it somewhere?^.^?",name(msg.source())), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+			if(this.directionFacing >= 0)
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("^X@x1 is under full sail, traveling @x2^.^?",name(msg.source()), Directions.getDirectionName(directionFacing)), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
 		}
-		//TODO: consider letting people on deck know what's going on out here? Perhaps another time?
+		//consider letting people on deck know what's going on out here? Perhaps another time?
 	}
 
 	protected Room findNearestDocks(Room R)
@@ -836,11 +877,27 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		else
 		{
 			buyer.tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
-			if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(this)))
-				buyer.playerStats().getExtItems().addItem(this);
+			if((this.getOwnerName().equals(buyer.Name()) && (buyer.playerStats() != null)))
+			{
+				if(!buyer.playerStats().getExtItems().isContent(this))
+					buyer.playerStats().getExtItems().addItem(this);
+			}
+			else
+			{
+				final Clan C=CMLib.clans().getClan(getOwnerName());
+				if(C!=null)
+				{
+					if(!C.getExtItems().isContent(this))
+						C.getExtItems().addItem(this);
+				}
+				else
+				{
+					buyer.tell(L("However, there is no entity to actually take ownership.  Wierd."));
+				}
+			}
 			final Room finalR=findNearestDocks(R);
 			if(finalR==null)
-				Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of water surface.");
+				Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of SeaDock or water surface.");
 			else
 				dockHere(finalR);
 		}

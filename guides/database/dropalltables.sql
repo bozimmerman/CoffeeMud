@@ -20,3 +20,4 @@ drop table cmccac;
 drop table cmgaac;
 drop table cmacct;
 drop table cmbklg;
+drop table cmclit;

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.database.DBConnector.DBPreparedBatchEntry;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -102,6 +103,72 @@ public class ClanLoader
 		DB.updateWithClobs(sql, C.getPolitics());
 	}
 
+	protected String getDBItemUpdateString(final Clan C, final Item thisItem)
+	{
+		CMLib.catalog().updateCatalogIntegrity(thisItem);
+		final String container=((thisItem.container()!=null)?(""+thisItem.container()):"");
+		return "INSERT INTO CMCLIT (CMCLID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
+		+"CMITUR, CMITLV, CMITAB, CMHEIT"
+		+") values ('"+C.clanID()+"','"+(thisItem)+"','"+thisItem.ID()+"',?,'"+container+"',"+thisItem.rawWornCode()+","
+		+thisItem.usesRemaining()+","+thisItem.basePhyStats().level()+","+thisItem.basePhyStats().ability()+","
+		+thisItem.basePhyStats().height()+")";
+	}
+
+	private List<DBPreparedBatchEntry> getDBItemUpdateStrings(final Clan C)
+	{
+		final HashSet<String> done=new HashSet<String>();
+		final List<DBPreparedBatchEntry> strings=new LinkedList<DBPreparedBatchEntry>();
+		final ItemCollection coll=C.getExtItems();
+		final List<Item> finalCollection=new LinkedList<Item>();
+		final List<Item> extraItems=new LinkedList<Item>();
+		for(int i=coll.numItems()-1;i>=0;i--)
+		{
+			final Item thisItem=coll.getItem(i);
+			if((thisItem!=null)&&(!thisItem.amDestroyed()))
+			{
+				final Item cont=thisItem.ultimateContainer(null);
+				if(cont.owner() instanceof Room)
+					finalCollection.add(thisItem);
+			}
+		}
+		for(final Item thisItem : finalCollection)
+		{
+			if(thisItem instanceof Container)
+			{
+				final List<Item> contents=((Container)thisItem).getDeepContents();
+				for(final Item I : contents)
+					if(!finalCollection.contains(I))
+						extraItems.add(I);
+			}
+		}
+		finalCollection.addAll(extraItems);
+		for(final Item thisItem : finalCollection)
+		{
+			if(!done.contains(""+thisItem))
+			{
+				CMLib.catalog().updateCatalogIntegrity(thisItem);
+				final Item cont=thisItem.ultimateContainer(null);
+				final String sql=getDBItemUpdateString(C,thisItem);
+				final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))?
+						("SPACE."+CMParms.toStringList(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
+				final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
+				strings.add(new DBPreparedBatchEntry(sql,text));
+				done.add(""+thisItem);
+			}
+		}
+		return strings;
+	}
+
+	public void DBUpdateItems(final Clan C)
+	{
+		if((C==null)||(C.clanID()==null)||(C.clanID().length()==0))
+			return;
+		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
+		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCLIT WHERE CMCLID='"+C.clanID()+"'"));
+		statements.addAll(getDBItemUpdateStrings(C));
+		DB.updateWithClobs(statements);
+	}
+
 	public void DBCreate(Clan C)
 	{
 		if(C.clanID().length()==0)
@@ -134,7 +201,21 @@ public class ClanLoader
 
 	public void DBDelete(Clan C)
 	{
-		DB.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.clanID()+"'");
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			D.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.clanID()+"'",0);
+			D.update("DELETE FROM CMCLIT WHERE CMCLID='"+C.clanID()+"'",0);
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("Clan",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
 	}
 
 }

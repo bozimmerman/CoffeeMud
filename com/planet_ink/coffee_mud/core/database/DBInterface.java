@@ -140,6 +140,10 @@ public class DBInterface implements DatabaseEngine
 	{ ClanLoader.DBUpdate(C);}
 
 	@Override
+	public void DBUpdateClanItems(final Clan C)
+	{ ClanLoader.DBUpdateItems(C); }
+
+	@Override
 	public void DBDeleteClan(Clan C)
 	{ ClanLoader.DBDelete(C);}
 

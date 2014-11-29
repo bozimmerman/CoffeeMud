@@ -182,6 +182,23 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		}
 		return null;
 	}
+	
+	@Override
+	public PrivateProperty getPropertyRecord(Area area)
+	{
+		if(area==null)
+			return null;
+		if(area instanceof PrivateProperty)
+			return (PrivateProperty)area;
+		for(final Enumeration<Ability> a=area.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((A!=null)&&(A instanceof PrivateProperty))
+				return (PrivateProperty)A;
+		}
+		return null;
+	}
+	
 	@Override
 	public LandTitle getLandTitle(Room room)
 	{
@@ -195,6 +212,25 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof LandTitle))
 				return (LandTitle)A;
+		}
+		return null;
+	}
+
+	@Override
+	public PrivateProperty getPropertyRecord(Room room)
+	{
+		if(room==null)
+			return null;
+		if(room instanceof PrivateProperty)
+			return (PrivateProperty)room;
+		final PrivateProperty record=getPropertyRecord(room.getArea());
+		if(record!=null)
+			return record;
+		for(final Enumeration<Ability> a=room.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((A!=null)&&(A instanceof PrivateProperty))
+				return (PrivateProperty)A;
 		}
 		return null;
 	}
@@ -433,6 +469,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return false;
 		return B.isAnyOfficer(A, mob);
 	}
+
 	@Override
 	public boolean isLegalJudgeHere(MOB mob)
 	{

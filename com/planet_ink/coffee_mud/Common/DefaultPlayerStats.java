@@ -1188,7 +1188,6 @@ public class DefaultPlayerStats implements PlayerStats
 		return extItems;
 	}
 
-
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",
 									 "ALIAS","LASTIP","LASTDATETIME",
 									 "CHANNELMASK",

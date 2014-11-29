@@ -733,6 +733,18 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public void create();
 
 	/**
+	 * Gets external items belonging to this clan, which should be destroyed with the
+	 * clan, but can still be transient.  These are items like artifacts, or ships, 
+	 * vehicles, etc.
+	 *
+	 * @see com.planet_ink.coffee_mud.core.interfaces.ItemCollection
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.Item
+	 *
+	 * @return an item collection
+	 */
+	public ItemCollection getExtItems();
+	
+	/**
 	 * Returns whether the given user can be assigned the given role
 	 * @param mob the mob to check
 	 * @param role the role to check for

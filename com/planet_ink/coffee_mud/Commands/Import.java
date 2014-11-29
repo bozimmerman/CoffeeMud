@@ -3555,7 +3555,6 @@ public class Import extends StdCommand
 			String codeStr2=eatNextLine(objV);
 			String codeStr3=eatNextLine(objV);
 			
-			boolean wierdModifiedROMForm = false;
 			if((CMParms.numBits(codeStr1)==1)
 			&&CMath.isNumber(codeStr1)
 			&&(CMParms.numBits(codeStr2)==1)

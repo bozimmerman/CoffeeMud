@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2007-2014 Bo Zimmerman
@@ -40,6 +41,8 @@ public interface LegalLibrary extends CMLibrary
 
 	public LandTitle getLandTitle(Area area);
 	public LandTitle getLandTitle(Room room);
+	public PrivateProperty getPropertyRecord(Area area);
+	public PrivateProperty getPropertyRecord(Room room);
 	public boolean isRoomSimilarlyTitled(LandTitle title, Room R);
 	public Set<Room> getHomePeersOnThisFloor(Room room, Set<Room> doneRooms);
 	public boolean isHomeRoomDownstairs(Room room);

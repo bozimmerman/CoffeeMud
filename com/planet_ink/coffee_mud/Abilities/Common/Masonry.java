@@ -783,6 +783,12 @@ public class Masonry extends CraftingSkill
 			commonTell(mob,L("'@x1' is not a valid masonry project.  Try LIST.",firstWord));
 			return false;
 		}
+		if((mob.location()!=null)
+		&&((mob.location() instanceof BoardableShip) || (mob.location().getArea() instanceof BoardableShip)))
+		{
+			commonTell(mob,L("You may not do masonry projects here."));
+			return false;
+		}
 		final String dirName=(String)commands.lastElement();
 		dir=Directions.getGoodDirectionCode(dirName);
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("roof"))||(dirName.equalsIgnoreCase("ceiling")))

@@ -1540,6 +1540,8 @@ public class Clans extends StdLibrary implements ClanManager
 		{
 			final Clan C=e.nextElement();
 			CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
+			CMLib.database().DBUpdateClan(C);
+			CMLib.database().DBUpdateClanItems(C);
 		}
 		all.clear();
 		all2.clear();

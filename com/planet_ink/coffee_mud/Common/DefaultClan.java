@@ -67,6 +67,7 @@ public class DefaultClan implements Clan
 	protected List<Long> 		clanKills=new Vector<Long>();
 	protected Integer			overrideMinClanMembers=null;
 	protected long				lastPropsReload=System.currentTimeMillis();
+	protected ItemCollection	extItems = (ItemCollection)CMClass.getCommon("WeakItemCollection");
 
 	//*****************
 	public Hashtable<String,long[]> relations=new Hashtable<String,long[]>();
@@ -88,7 +89,9 @@ public class DefaultClan implements Clan
 	{
 		try
 		{
-			return (Clan)this.clone();
+			final DefaultClan C=(DefaultClan)this.clone();
+			C.extItems=(ItemCollection)extItems.copyOf();
+			return C;
 		}
 		catch(final CloneNotSupportedException e)
 		{
@@ -1575,6 +1578,7 @@ public class DefaultClan implements Clan
 			}
 
 			update(); // also saves exp, and trophies
+			CMLib.database().DBUpdateClanItems(this);
 		}
 		catch(final Exception x2)
 		{
@@ -1717,6 +1721,12 @@ public class DefaultClan implements Clan
 		if(memberName != null)
 			return CMLib.players().getLoadPlayer(memberName);
 		return null;
+	}
+
+	@Override
+	public ItemCollection getExtItems()
+	{
+		return extItems;
 	}
 
 	@Override public String[] getStatCodes(){ return CLAN_STATS;}

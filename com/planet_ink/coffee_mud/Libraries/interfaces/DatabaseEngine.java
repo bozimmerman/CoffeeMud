@@ -118,6 +118,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBUpdateClanMembership(String name, String clan, int role);
 	public void DBReadAllClans();
 	public void DBUpdateClan(Clan C);
+	public void DBUpdateClanItems(Clan C);
 	public void DBDeleteClan(Clan C);
 	public void DBCreateClan(Clan C);
 	public void DBUpdateEmail(MOB mob);
