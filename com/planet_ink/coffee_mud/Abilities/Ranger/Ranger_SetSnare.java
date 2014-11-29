@@ -121,7 +121,7 @@ public class Ranger_SetSnare extends StdAbility
 			{
 				mob.tell(L("You have set the snare."));
 				boolean permanent=false;
-				if(CMLib.law().doesOwnThisProperty(mob,trapThis))
+				if(CMLib.law().doesOwnThisLand(mob,trapThis))
 					permanent=true;
 				theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),permanent);
 				if(permanent)

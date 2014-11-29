@@ -38,6 +38,7 @@ public interface LegalLibrary extends CMLibrary
 	public Area getLegalObject(Area A);
 	public Area getLegalObject(Room R);
 	public String getLandOwnerName(Room room);
+	public String getPropertyOwnerName(Room room);
 
 	public LandTitle getLandTitle(Area area);
 	public LandTitle getLandTitle(Room room);
@@ -50,9 +51,11 @@ public interface LegalLibrary extends CMLibrary
 	public boolean doesHavePriviledgesHere(MOB mob, Room room);
 	public boolean doesAnyoneHavePrivilegesHere(MOB mob, String overrideID, Room R);
 	public boolean doesHavePriviledgesInThisDirection(MOB mob, Room room, Exit exit);
+	public boolean doesOwnThisLand(String name, Room room);
+	public boolean doesOwnThisLand(MOB mob, Room room);
 	public boolean doesOwnThisProperty(String name, Room room);
 	public boolean doesOwnThisProperty(MOB mob, Room room);
-	public List<LandTitle> getAllUniqueTitles(Enumeration<Room> e, String owner, boolean includeRentals);
+	public List<LandTitle> getAllUniqueLandTitles(Enumeration<Room> e, String owner, boolean includeRentals);
 	public Ability getClericInfusion(Physical room);
 	public Deity getClericInfused(Room room);
 

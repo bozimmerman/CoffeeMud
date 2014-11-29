@@ -179,8 +179,8 @@ public class Spell_WizardLock extends Spell
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						if(R.getExitInDir(d)==target)
 						{ R2=R.getRoomInDir(d); break;}
-					if((CMLib.law().doesOwnThisProperty(mob,R))
-					||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
+					if((CMLib.law().doesOwnThisLand(mob,R))
+					||((R2!=null)&&(CMLib.law().doesOwnThisLand(mob,R2))))
 					{
 						target.addNonUninvokableEffect((Ability)copyOf());
 						CMLib.database().DBUpdateExits(R);

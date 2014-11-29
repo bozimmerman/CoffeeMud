@@ -92,7 +92,7 @@ public class Spell_Permanency extends Spell
 				else
 				if(((target instanceof Room)||(target instanceof Exit))
 				&&(theOne.enchantQuality()==Ability.QUALITY_MALICIOUS)
-				&&(!CMLib.law().doesOwnThisProperty(mob,mob.location())))
+				&&(!CMLib.law().doesOwnThisLand(mob,mob.location())))
 				{
 					mob.tell(L("You can not make @x1 permanent here.",theOne.name()));
 					return false;
@@ -105,7 +105,7 @@ public class Spell_Permanency extends Spell
 					mob.maxState().setMana(mob.maxState().getMana()-100);
 					target.text();
 					if((target instanceof Room)
-					&&(CMLib.law().doesOwnThisProperty(mob,(Room)target)))
+					&&(CMLib.law().doesOwnThisLand(mob,(Room)target)))
 						CMLib.database().DBUpdateRoom((Room)target);
 					else
 					if(target instanceof Exit)
@@ -115,8 +115,8 @@ public class Spell_Permanency extends Spell
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 							if(R.getExitInDir(d)==target)
 							{ R2=R.getRoomInDir(d); break;}
-						if((CMLib.law().doesOwnThisProperty(mob,R))
-						||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
+						if((CMLib.law().doesOwnThisLand(mob,R))
+						||((R2!=null)&&(CMLib.law().doesOwnThisLand(mob,R2))))
 							CMLib.database().DBUpdateExits(R);
 					}
 					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("The quality of @x1 inside <T-NAME> glows!",theOne.name()));

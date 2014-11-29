@@ -80,7 +80,7 @@ public class Prayer_BloodHearth extends Prayer
 	{
 		if((mob!=null)&&(target instanceof Room))
 		{
-			if(!CMLib.law().doesOwnThisProperty(mob,mob.location()))
+			if(!CMLib.law().doesOwnThisLand(mob,mob.location()))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -112,7 +112,7 @@ public class Prayer_BloodHearth extends Prayer
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					final String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					final String landOwnerName=CMLib.law().getPropertyOwnerName((Room)target);
 					if(CMLib.clans().getClan(landOwnerName)!=null)
 						setMiscText(landOwnerName);
 					target.addNonUninvokableEffect((Ability)this.copyOf());

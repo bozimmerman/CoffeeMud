@@ -149,7 +149,7 @@ public class Spell_SummoningWard extends Spell
 			{
 				mob.location().send(mob,msg);
 				if((target instanceof Room)
-				&&((CMLib.law().doesOwnThisProperty(mob,((Room)target)))))
+				&&((CMLib.law().doesOwnThisLand(mob,((Room)target)))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom((Room)target);

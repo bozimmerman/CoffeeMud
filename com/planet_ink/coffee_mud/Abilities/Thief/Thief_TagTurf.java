@@ -122,7 +122,7 @@ public class Thief_TagTurf extends ThiefSkill
 			mob.tell(L("A place like this can't get your turf."));
 			return false;
 		}
-		if((!CMLib.law().doesOwnThisProperty(mob,mob.location()))
+		if((!CMLib.law().doesOwnThisLand(mob,mob.location()))
 		&&(CMLib.law().getLandTitle(mob.location())!=null)
 		&&(CMLib.law().getLandTitle(mob.location()).getOwnerName().length()>0))
 		{

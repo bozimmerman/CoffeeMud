@@ -113,7 +113,7 @@ public class Thief_ConcealItem extends ThiefSkill
 				A.setInvoker(mob);
 				A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-item.phyStats().level());
 				final Room R=mob.location();
-				if(CMLib.law().doesOwnThisProperty(mob,R))
+				if(CMLib.law().doesOwnThisLand(mob,R))
 					item.addNonUninvokableEffect(A);
 				else
 					A.startTickDown(mob,item,15*(adjustedLevel(mob,asLevel)));

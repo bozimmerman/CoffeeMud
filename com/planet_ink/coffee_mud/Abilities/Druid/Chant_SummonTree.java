@@ -69,7 +69,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		room.recoverPhyStats();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
-		if(CMLib.law().doesOwnThisProperty(mob,room))
+		if(CMLib.law().doesOwnThisLand(mob,room))
 		{
 			newChant.setInvoker(mob);
 			newChant.setMiscText(mob.Name());

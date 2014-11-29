@@ -92,7 +92,7 @@ public class Prayer_ConsecrateLand extends Prayer
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((target instanceof Room)
-				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
+				&&(CMLib.law().doesOwnThisLand(mob,((Room)target))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom((Room)target);

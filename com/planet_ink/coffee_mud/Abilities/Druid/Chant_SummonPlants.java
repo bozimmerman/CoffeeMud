@@ -129,7 +129,7 @@ public class Chant_SummonPlants extends Chant
 		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprout(s) up here.",newItem.name()));
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
-		if(CMLib.law().doesOwnThisProperty(mob,room))
+		if(CMLib.law().doesOwnThisLand(mob,room))
 		{
 			newChant.setInvoker(mob);
 			newChant.setMiscText(mob.Name());

@@ -307,7 +307,7 @@ public class TaxCollector extends StdBehavior
 				peopleWhoOwe.clear();
 				if((taxs!=null)&&(taxs.length()>0)&&(CMath.s_double(taxs)>0))
 				{
-					taxableProperties=CMLib.law().getAllUniqueTitles(A2.getMetroMap(),"*",false);
+					taxableProperties=CMLib.law().getAllUniqueLandTitles(A2.getMetroMap(),"*",false);
 					for(int v=0;v<taxableProperties.size();v++)
 					{
 						T=taxableProperties.get(v);

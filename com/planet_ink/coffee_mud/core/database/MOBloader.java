@@ -701,8 +701,8 @@ public class MOBloader
 			if((newMOB.getStartRoom()!=null)
 			&&(CMLib.law().doesHavePriviledgesHere(mob,newMOB.getStartRoom()))
 			&&((newMOB.location()==null)
-					||(!CMLib.law().doesHavePriviledgesHere(mob,newMOB.location()))))
-				newMOB.setLocation(newMOB.getStartRoom());
+				||(!CMLib.law().doesHavePriviledgesHere(mob,newMOB.location()))))
+					newMOB.setLocation(newMOB.getStartRoom());
 			if(bringToLife)
 			{
 				newMOB.bringToLife(mob.location(),true);

@@ -126,7 +126,7 @@ public class Prayer_SanctifyRoom extends Prayer
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					final String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					final String landOwnerName=CMLib.law().getPropertyOwnerName((Room)target);
 					if((CMLib.clans().getClan(landOwnerName)!=null)
 					&&(!CMLib.clans().getClan(landOwnerName).getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
 					{

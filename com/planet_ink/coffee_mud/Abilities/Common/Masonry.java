@@ -117,7 +117,7 @@ public class Masonry extends CraftingSkill
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
 			final Room R=room.getRoomInDir(d);
-			if(CMLib.law().doesOwnThisProperty(mob, R))
+			if(CMLib.law().doesOwnThisLand(mob, R))
 			{
 				returnToRoom=R;
 				break;
@@ -769,7 +769,7 @@ public class Masonry extends CraftingSkill
 			return true;
 		}
 
-		boolean canBuild=CMLib.law().doesOwnThisProperty(mob,mob.location());
+		boolean canBuild=CMLib.law().doesOwnThisLand(mob,mob.location());
 		for(int r=0;r<data.length;r++)
 		{
 			if((r!=BUILD_MONUMENT)
@@ -821,7 +821,7 @@ public class Masonry extends CraftingSkill
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("room")))
 		{
 			final LandTitle title=CMLib.law().getLandTitle(mob.location());
-			if((!CMLib.law().doesOwnThisProperty(mob, mob.location()))
+			if((!CMLib.law().doesOwnThisLand(mob, mob.location()))
 			&&(title!=null)
 			&&(title.getOwnerName().length()>0))
 			{
@@ -1026,7 +1026,7 @@ public class Masonry extends CraftingSkill
 			&&((data[doingCode][DAT_REQDIR].equals("1")||(workingOn==dir))))
 			{
 				final Room R=mob.location().getRoomInDir(dir);
-				if((R!=null)&&(CMLib.law().doesOwnThisProperty(mob,R)))
+				if((R!=null)&&(CMLib.law().doesOwnThisLand(mob,R)))
 					canBuild=true;
 			}
 		}

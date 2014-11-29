@@ -204,7 +204,7 @@ public class DefaultLawSet implements Law
 			if(tax==0.0)
 				return;
 			tax=CMath.div(tax,100.0);
-			List<LandTitle> titles=CMLib.law().getAllUniqueTitles(A.getMetroMap(),"*",false);
+			List<LandTitle> titles=CMLib.law().getAllUniqueLandTitles(A.getMetroMap(),"*",false);
 			final Hashtable<String,Vector<LandTitle>> owners=new Hashtable<String,Vector<LandTitle>>();
 			for(final LandTitle T : titles)
 			{

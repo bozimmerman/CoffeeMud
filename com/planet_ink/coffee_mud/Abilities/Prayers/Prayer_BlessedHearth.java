@@ -120,7 +120,7 @@ public class Prayer_BlessedHearth extends Prayer
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					final String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					final String landOwnerName=CMLib.law().getPropertyOwnerName((Room)target);
 					if(CMLib.clans().getClan(landOwnerName)!=null)
 						setMiscText(landOwnerName);
 					target.addNonUninvokableEffect((Ability)this.copyOf());

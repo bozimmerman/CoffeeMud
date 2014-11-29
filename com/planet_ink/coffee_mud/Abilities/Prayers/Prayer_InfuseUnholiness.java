@@ -168,7 +168,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 				if(D!=null)
 					setMiscText(D.Name());
 				if((target instanceof Room)
-				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
+				&&(CMLib.law().doesOwnThisLand(mob,((Room)target))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom((Room)target);

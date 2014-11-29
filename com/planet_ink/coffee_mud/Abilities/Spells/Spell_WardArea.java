@@ -230,7 +230,7 @@ public class Spell_WardArea extends Spell implements Trap
 			{
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
-				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
+				if(CMLib.law().doesOwnThisLand(mob,mob.location()))
 				{
 					mob.location().addNonUninvokableEffect((Ability)copyOf());
 					CMLib.database().DBUpdateRoom(mob.location());

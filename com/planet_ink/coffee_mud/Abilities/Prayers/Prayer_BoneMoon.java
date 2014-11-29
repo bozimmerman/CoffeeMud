@@ -150,7 +150,7 @@ public int castingQuality(MOB mob, Physical target)
 				mob.location().send(mob,msg);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The Bone Moon rises over <S-NAME>."));
 				level=1;
-				if(CMLib.law().doesOwnThisProperty(mob,target))
+				if(CMLib.law().doesOwnThisLand(mob,target))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom(target);

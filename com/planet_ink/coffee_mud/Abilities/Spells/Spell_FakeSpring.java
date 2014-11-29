@@ -115,7 +115,7 @@ public class Spell_FakeSpring extends Spell
 				W.recoverPhyStats();
 				mob.location().addItem((Item)W);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 starts flowing here.",newItem.name()));
-				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
+				if(CMLib.law().doesOwnThisLand(mob,mob.location()))
 				{
 					final Ability A=(Ability)copyOf();
 					A.setInvoker(mob);

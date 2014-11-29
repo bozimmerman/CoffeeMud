@@ -141,7 +141,8 @@ public class LockSmith extends CraftingSkill
 										((DoorKey)buildingI).setKey(keyCode);
 									((Exit)workingOn).setKeyName(((DoorKey)buildingI).getKey());
 								}
-								CMLib.database().DBUpdateExits(mob.location());
+								if(CMLib.map().getRoom(mob.location().roomID())==mob.location()) // ensures not an instance or ship
+									CMLib.database().DBUpdateExits(mob.location());
 								if((exit2!=null)
 								&&(!boltlock)
 								&&(exit2.hasADoor())
@@ -152,7 +153,8 @@ public class LockSmith extends CraftingSkill
 									exit2.setDoorsNLocks(true,false,true,!delock,!delock,!delock);
 									if(buildingI instanceof DoorKey)
 										exit2.setKeyName(((DoorKey)buildingI).getKey());
-									CMLib.database().DBUpdateExits(room2);
+									if(CMLib.map().getRoom(room2.roomID())==room2) // ensures not an instance or ship
+										CMLib.database().DBUpdateExits(room2);
 								}
 							}
 						}

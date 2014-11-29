@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
@@ -134,7 +133,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public List<LandTitle> getAllUniqueTitles(Enumeration<Room> e, String owner, boolean includeRentals)
+	public List<LandTitle> getAllUniqueLandTitles(Enumeration<Room> e, String owner, boolean includeRentals)
 	{
 		final Vector<LandTitle> V=new Vector<LandTitle>();
 		final HashSet<Room> roomsDone=new HashSet<Room>();
@@ -339,18 +338,18 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean doesHavePriviledgesHere(MOB mob, Room room)
 	{
-		final LandTitle title=getLandTitle(room);
-		if(title==null)
+		final PrivateProperty record=getPropertyRecord(room);
+		if(record==null)
 			return false;
-		if(title.getOwnerName()==null)
+		if(record.getOwnerName()==null)
 			return false;
-		if(title.getOwnerName().length()==0)
+		if(record.getOwnerName().length()==0)
 			return false;
-		if(title.getOwnerName().equals(mob.Name()))
+		if(record.getOwnerName().equals(mob.Name()))
 			return true;
-		if((title.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
+		if((record.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
-		final Pair<Clan,Integer> clanRole=mob.getClanRole(title.getOwnerName());
+		final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());
 		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
 			return true;
 		if(mob.amFollowing()!=null)
@@ -387,6 +386,17 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
+	public String getPropertyOwnerName(Room room)
+	{
+		final PrivateProperty record=getPropertyRecord(room);
+		if(record==null)
+			return "";
+		if(record.getOwnerName()==null)
+			return "";
+		return record.getOwnerName();
+	}
+
+	@Override
 	public String getLandOwnerName(Room room)
 	{
 		final LandTitle title=getLandTitle(room);
@@ -398,7 +408,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesOwnThisProperty(String name, Room room)
+	public boolean doesOwnThisLand(String name, Room room)
 	{
 		final LandTitle title=getLandTitle(room);
 		if(title==null)
@@ -412,6 +422,43 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return false;
 	}
 
+	@Override
+	public boolean doesOwnThisProperty(String name, Room room)
+	{
+		final PrivateProperty record=getPropertyRecord(room);
+		if(record==null)
+			return false;
+		if(record.getOwnerName()==null)
+			return false;
+		if(record.getOwnerName().length()==0)
+			return false;
+		if(record.getOwnerName().equals(name))
+			return true;
+		return false;
+	}
+	
+	@Override
+	public boolean doesOwnThisProperty(MOB mob, Room room)
+	{
+		final PrivateProperty record=getPropertyRecord(room);
+		if(record==null)
+			return false;
+		if(record.getOwnerName()==null)
+			return false;
+		if(record.getOwnerName().length()==0)
+			return false;
+		if(record.getOwnerName().equals(mob.Name()))
+			return true;
+		if((record.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
+			return true;
+		final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());
+		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
+			return true;
+		if(mob.amFollowing()!=null)
+			return doesOwnThisProperty(mob.amFollowing(),room);
+		return false;
+	}
+	
 	@Override
 	public Ability getClericInfusion(Physical room)
 	{
@@ -435,7 +482,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesOwnThisProperty(MOB mob, Room room)
+	public boolean doesOwnThisLand(MOB mob, Room room)
 	{
 		final LandTitle title=getLandTitle(room);
 		if(title==null)
@@ -452,7 +499,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
 			return true;
 		if(mob.amFollowing()!=null)
-			return doesOwnThisProperty(mob.amFollowing(),room);
+			return doesOwnThisLand(mob.amFollowing(),room);
 		return false;
 	}
 

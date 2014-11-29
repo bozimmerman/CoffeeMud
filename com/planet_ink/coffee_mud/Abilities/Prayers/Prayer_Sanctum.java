@@ -148,7 +148,7 @@ public class Prayer_Sanctum extends Prayer
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					final String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					final String landOwnerName=CMLib.law().getPropertyOwnerName((Room)target);
 					if(CMLib.clans().getClan(landOwnerName)!=null)
 					{
 						setMiscText(landOwnerName);

@@ -110,7 +110,7 @@ public class Prayer_Mercy extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The Blessing of mercy rises over <S-NAME>."));
-				if(CMLib.law().doesOwnThisProperty(mob,target))
+				if(CMLib.law().doesOwnThisLand(mob,target))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom(target);
