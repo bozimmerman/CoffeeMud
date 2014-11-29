@@ -461,10 +461,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				}
 				steer(msg.source(),R, dir);
 				if(anchorDown)
-				{
 					msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
-					return false;
-				}
 				return false;
 			}
 			else
@@ -476,9 +473,9 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					return false;
 				}
 				final Room R=CMLib.map().roomLocation(this);
-				if((anchorDown)||(R==null))
+				if(R==null)
 				{
-					msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
+					msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 					return false;
 				}
 				int dirIndex = 1;
@@ -513,6 +510,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					return false;
 				}
 				steer(msg.source(),R, firstDir);
+				if(anchorDown)
+					msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
 				return false;
 			}
 			return true;
