@@ -61,10 +61,10 @@ limitations under the License.
  */
 public class HTTPReqProcessor implements HTTPFileGetter
 {
-	private final CWConfig			config; // the mini web configuration
-	private int							lastHttpStatusCode	= HTTPStatus.S500_INTERNAL_ERROR.getStatusCode();
+	private final CWConfig		config; // the mini web configuration
+	private int					lastHttpStatusCode	= HTTPStatus.S500_INTERNAL_ERROR.getStatusCode();
 	
-	private final static String			EOLN	= HTTPIOHandler.EOLN;
+	private final static String	EOLN	= HTTPIOHandler.EOLN;
 	
 	
 	public HTTPReqProcessor(CWConfig config)
@@ -472,6 +472,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			}
 			catch(final ParseException e) { }
 			catch(final NumberFormatException e) { }
+			catch(final ArrayIndexOutOfBoundsException e) { }
 		}
 	}
 	
