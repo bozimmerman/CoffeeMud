@@ -1968,6 +1968,7 @@ public class DefaultSession implements Session
 					catch(final IOException e)
 					{
 					}
+					catch(final java.lang.ArrayIndexOutOfBoundsException e) { }
 					finally
 					{
 						rawin=null;
