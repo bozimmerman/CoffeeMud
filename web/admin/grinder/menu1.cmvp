@@ -41,18 +41,23 @@
 	<INPUT TYPE=SUBMIT NAME=FINDIT VALUE="Quick Find" ONCLICK="Clicked('/grinder/quickfind.cmvp');">
 	</TD>
 	<TD WIDTH=40% ALIGN=RIGHT>
-		@if?AreaData?ISGRID@
-		<INPUT TYPE=BUTTON NAMEMOVEAREA VALUE="Move" ONCLICK="Clicked('/grinder/maparea.cmvp');">
+		@if?!AreaData?AREAISBOARDABLE@
+			@if?AreaData?ISGRID@
+			<INPUT TYPE=BUTTON NAMEMOVEAREA VALUE="Move" ONCLICK="Clicked('/grinder/maparea.cmvp');">
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDAREAS=true@
+			<INPUT TYPE=BUTTON NAME=EDITAREA VALUE="Edit Area" ONCLICK="Clicked('/grinder/editarea.cmvp');">
+			@endif@
+			@if?CheckAuthCode?AUTH_EXPORT=true@
+			<INPUT TYPE=BUTTON NAME=EXPORT VALUE="Export Data" ONCLICK="Clicked('/AreaXML');">
+			@endif@
+			<INPUT TYPE=BUTTON NAME=SCRIPTS VALUE="Scripts" ONCLICK="Clicked('/grinder/editareascripts.cmvp');">
+			<P>
+			<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Main Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+		@else@
+			<P>
+			<INPUT TYPE=BUTTON NAME=CLOSE VALUE="Close" ONCLICK="window.close();">
 		@endif@
-		@if?CheckAuthCode?AUTH_CMDAREAS=true@
-		<INPUT TYPE=BUTTON NAME=EDITAREA VALUE="Edit Area" ONCLICK="Clicked('/grinder/editarea.cmvp');">
-		@endif@
-		@if?CheckAuthCode?AUTH_EXPORT=true@
-		<INPUT TYPE=BUTTON NAME=EXPORT VALUE="Export Data" ONCLICK="Clicked('/AreaXML');">
-		@endif@
-		<INPUT TYPE=BUTTON NAME=SCRIPTS VALUE="Scripts" ONCLICK="Clicked('/grinder/editareascripts.cmvp');">
-		<P>
-		<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Main Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
 	</TD>
 </TR>
 </TABLE>

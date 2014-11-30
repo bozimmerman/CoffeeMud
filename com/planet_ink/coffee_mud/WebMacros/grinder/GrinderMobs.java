@@ -310,6 +310,7 @@ public class GrinderMobs
 						I2=(Item)I2.copyOf();
 					if(I2!=null)
 					{
+						CMLib.flags().setSavable(I2, true);
 						final boolean worn=((WORN!=null)&&(WORN.equalsIgnoreCase("on")));
 						I2.setContainer(null);
 						I2.unWear();

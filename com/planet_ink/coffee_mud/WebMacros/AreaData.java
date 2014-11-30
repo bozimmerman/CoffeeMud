@@ -227,6 +227,10 @@ public class AreaData extends StdWebMacro
 			if(A!=null)
 			{
 				final StringBuffer str=new StringBuffer("");
+				if(parms.containsKey("AREAISBOARDABLE"))
+				{
+					return ""+(A instanceof BoardableShip);
+				}
 				if(parms.containsKey("HELP"))
 				{
 					StringBuilder s=CMLib.help().getHelpText("AREA_"+A.Name(),null,false);

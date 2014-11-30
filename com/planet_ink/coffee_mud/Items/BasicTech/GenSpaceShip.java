@@ -192,6 +192,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public CMObject copyOf()
 	{
 		final GenSpaceShip s=(GenSpaceShip)super.copyOf();
+		CMLib.flags().setSavable(s, false);
 		s.destroyed=false;
 		s.setOwnerName("");
 		final String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();

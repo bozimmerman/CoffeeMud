@@ -1235,7 +1235,7 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Created mob "+thisMOB.name()+" for room "+roomID);
 
 		if((CMProps.getBoolVar(CMProps.Bool.MOBNOCACHE))&&(!catalog))
-		   thisMOB.setMiscText("%DBID>"+roomID+mobID.substring(mobID.indexOf('@')));
+			thisMOB.setMiscText("%DBID>"+roomID+mobID.substring(mobID.indexOf('@')));
 
 		String text=thisMOB.text();
 		if(catalog)
