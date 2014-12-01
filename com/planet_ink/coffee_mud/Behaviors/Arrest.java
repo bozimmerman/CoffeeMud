@@ -983,6 +983,24 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return null;
 	}
 
+	protected String trackingModifiers(MOB officer)
+	{
+		final StringBuilder modifiers=new StringBuilder("");
+		if(officer!=null)
+		{
+			if((!CMLib.flags().isFlying(officer))&&(!CMLib.flags().isSwimming(officer)))
+				modifiers.append(" LANDONLY");
+			else
+			{
+				if(!CMLib.flags().isFlying(officer))
+					modifiers.append(" NOAIR");
+				if(!CMLib.flags().isSwimming(officer))
+					modifiers.append(" NOWATER");
+			}
+		}
+		return modifiers.toString();
+	}
+	
 	public boolean trackTheJudge(MOB officer, Area myArea, Law laws)
 	{
 		CMLib.tracking().stopTracking(officer);
@@ -992,7 +1010,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			final Room R=findTheJudge(laws,myArea);
 			if(R!=null)
 			{
-				A.invoke(officer,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
+				A.invoke(officer,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\" "+trackingModifiers(officer)),R,true,0);
 				return true;
 			}
 		}
@@ -2675,7 +2693,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						{
 							W.setTravelAttemptTime(System.currentTimeMillis());
 							A.setAbilityCode(1);
-							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(jail)),jail,true,0);
+							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(jail)+trackingModifiers(officer)),jail,true,0);
 						}
 						if(officer.fetchEffect("Skill_Track")==null)
 						{
@@ -2749,7 +2767,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						{
 							W.setTravelAttemptTime(System.currentTimeMillis());
 							A.setAbilityCode(1);
-							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(jail)),jail,true,0);
+							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(jail)+trackingModifiers(officer)),jail,true,0);
 						}
 						if(officer.fetchEffect("Skill_Track")==null)
 						{
@@ -2900,7 +2918,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						{
 							CMLib.tracking().stopTracking(officer);
 							A.setAbilityCode(1); // tells track to cache the path
-							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.jail())),W.jail(),true,0);
+							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.jail())+trackingModifiers(officer)),W.jail(),true,0);
 						}
 						if(officer.fetchEffect("Skill_Track")==null)
 						{
@@ -2969,7 +2987,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						{
 							CMLib.tracking().stopTracking(officer);
 							A.setAbilityCode(1); // tells track to cache the path
-							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.jail())),W.jail(),true,0);
+							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.jail())+trackingModifiers(officer)),W.jail(),true,0);
 						}
 						if(officer.fetchEffect("Skill_Track")==null)
 						{
@@ -3048,7 +3066,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(A!=null)
 						{
 							W.setTravelAttemptTime(System.currentTimeMillis());
-							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true,0);
+							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.releaseRoom())+trackingModifiers(officer)),W.releaseRoom(),true,0);
 						}
 						if(officer.fetchEffect("Skill_Track")==null)
 						{
@@ -3095,7 +3113,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 									CMLib.tracking().stopTracking(officer);
 									final Ability A=CMClass.getAbility("Skill_Track");
 									if(A!=null)
-										A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true,0);
+										A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.releaseRoom())+trackingModifiers(officer)),W.releaseRoom(),true,0);
 									if(W.arrestingOfficer().fetchEffect("Skill_Track")==null)
 									{
 										W.setTravelAttemptTime(0);
