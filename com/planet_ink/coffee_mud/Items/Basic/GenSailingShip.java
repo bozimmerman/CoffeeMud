@@ -762,17 +762,29 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			transferOwnership((MOB)msg.target());
 		else
 		if((msg.target() instanceof Room)
-		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-		&&(msg.target() == owner())
-		&&(CMLib.map().areaLocation(msg.source())==area))
+		&&(msg.target() == owner()))
 		{
-			if(this.anchorDown)
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("^XThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
-			else
-			if(this.directionFacing >= 0)
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("^X@x1 is under full sail, traveling @x2^.^?",name(msg.source()), Directions.getDirectionName(directionFacing)), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
+				if((CMLib.map().areaLocation(msg.source())==area))
+				{
+					if(this.anchorDown)
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("\n\r^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+					else
+					if(this.directionFacing >= 0)
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), Directions.getDirectionName(directionFacing)), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
+				}
+				break;
+			case CMMsg.TYP_LEAVE:
+			case CMMsg.TYP_ENTER:
+			{
+				sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, msg.sourceMessage(), msg.targetMessage(), msg.othersMessage()), true);
+				break;
+			}
+			}
 		}
-		//consider letting people on deck know what's going on out here? Perhaps another time?
 	}
 
 	protected Room findNearestDocks(Room R)

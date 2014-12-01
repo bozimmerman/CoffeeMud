@@ -53,17 +53,17 @@ public class ClanLoader
 	public void DBRead()
 	{
 		DBConnection D=null;
-		Clan C=null;
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMCLAN");
+			ResultSet R=D.query("SELECT * FROM CMCLAN");
 			recordCount=DB.getRecordCount(D,R);
+			final Map<String,Clan> clans=new Hashtable<String,Clan>();
 			while(R.next())
 			{
 				currentRecordPos=R.getRow();
 				final String name=DBConnections.getRes(R,"CMCLID");
-				C=(Clan)CMClass.getCommon("DefaultClan");
+				final Clan C=(Clan)CMClass.getCommon("DefaultClan");
 				C.setName(name);
 				C.setPremise(DBConnections.getRes(R,"CMDESC"));
 				C.setAcceptanceSettings(DBConnections.getRes(R,"CMACPT"));
@@ -74,7 +74,67 @@ public class ClanLoader
 				C.setMorgue(DBConnections.getRes(R,"CMMORG"));
 				C.setTrophies(CMath.s_int(DBConnections.getRes(R, "CMTROP")));
 				CMLib.clans().addClan(C);
+				clans.put(C.clanID(), C);
 				updateBootStatus("Clans");
+			}
+			R.close();
+			R=D.query("SELECT * FROM CMCLIT");
+			while(R.next())
+			{
+				final String clanID=DBConnections.getRes(R,"CMCLID");
+				final Clan C=clans.get(clanID);
+				if(C==null)
+					Log.errOut("Clan","Couldn't find clan '"+clanID+"'");
+				else
+				{
+					final String itemID=DBConnections.getRes(R,"CMITID");
+					final Item newItem=CMClass.getItem(itemID);
+					if(newItem==null)
+						Log.errOut("Clan","Couldn't find item '"+itemID+"'");
+					else
+					{
+						String text=DBConnections.getResQuietly(R,"CMITTX");
+						int roomX;
+						if(text.startsWith("<ROOM") && ((roomX=text.indexOf("/>"))>=0))
+						{
+							final String roomXML=text.substring(0,roomX+2);
+							text=text.substring(roomX+2);
+							newItem.setMiscText(text);
+							final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(roomXML);
+							if((xml!=null)&&(xml.size()>0))
+							{
+								final String roomID=xml.get(0).parms.get("ID");
+								final long expirationDate=CMath.s_long(xml.get(0).parms.get("EXPIRE"));
+								if(roomID.startsWith("SPACE.") && (newItem instanceof SpaceObject))
+									CMLib.map().addObjectToSpace((SpaceObject)newItem,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
+								else
+								{
+									final Room itemR=CMLib.map().getRoom(roomID);
+									if(itemR!=null)
+									{
+										if(newItem instanceof BoardableShip)
+											((BoardableShip)newItem).dockHere(itemR);
+										else
+											itemR.addItem(newItem);
+										newItem.setExpirationDate(expirationDate);
+									}
+								}
+							}
+						}
+						else
+						{
+							newItem.setMiscText(text);
+						}
+						newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
+						newItem.basePhyStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
+						newItem.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
+						newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
+						newItem.recoverPhyStats();
+						CMLib.map().registerWorldObjectLoaded(null, null, newItem);
+						C.getExtItems().addItem(newItem);
+					}
+				}
+				updateBootStatus("Clan Items");
 			}
 		}
 		catch(final Exception sqle)

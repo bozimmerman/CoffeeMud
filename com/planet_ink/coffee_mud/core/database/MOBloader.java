@@ -319,7 +319,10 @@ public class MOBloader
 					if(addToMOB)
 						mob.addItem(newItem);
 					else
+					{
+						CMLib.map().registerWorldObjectLoaded(null, null, newItem);
 						mob.playerStats().getExtItems().addItem(newItem);
+					}
 				}
 			}
 			for(final Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)

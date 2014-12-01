@@ -26,6 +26,11 @@ public class MultiEnumeration<K> implements Enumeration<K>
 	private volatile int dex=0;
 	private volatile Enumeration<K> enumer=null;
 
+	public static interface MultiEnumeratorBuilder<K>
+	{
+		public MultiEnumeration<K> getList();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public MultiEnumeration(Enumeration<K>[] esets)
 	{

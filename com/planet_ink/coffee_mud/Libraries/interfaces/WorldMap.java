@@ -131,6 +131,8 @@ public interface WorldMap extends CMLibrary
 	public Iterator<String> bankChains(Area AreaOrNull);
 	public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch);
 	public Enumeration<Auctioneer> auctionHouses();
+	public BoardableShip getShip(String calledThis);
+	public Enumeration<BoardableShip> ships();
 
 	/************************************************************************/
 	/**							 SPACE METHODS 								*/

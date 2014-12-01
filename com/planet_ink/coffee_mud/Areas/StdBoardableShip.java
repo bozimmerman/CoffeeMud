@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.ref.WeakReference;
@@ -495,6 +496,23 @@ public class StdBoardableShip implements Area, BoardableShip
 		blurbFlags.remove(flagOnly);
 	}
 
+	protected void lookOverBow(final Room R, final CMMsg msg)
+	{
+		msg.addTrailerRunnable(new Runnable(){
+			@Override
+			public void run()
+			{
+				if(CMLib.flags().canBeSeenBy(R, msg.source()) && (msg.source().session()!=null))
+					msg.source().session().print(L("^HOff the bow you see: ^N"));
+				final CMMsg msg2=CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), null, msg.targetCode(), null, msg.othersCode(), null);
+				if((msg.source().isAttribute(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
+					msg2.addTrailerMsg(CMClass.getMsg(msg.source(),R,null,CMMsg.MSG_LOOK_EXITS,null).setValue(CMMsg.MASK_OPTIMIZE));
+				if(R.okMessage(msg.source(), msg))
+					R.send(msg.source(),msg2);
+			}
+		});
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -527,19 +545,31 @@ public class StdBoardableShip implements Area, BoardableShip
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_LOOK:
-			case CMMsg.TYP_LOOK_EXITS:
 			case CMMsg.TYP_EXAMINE:
-				if((msg.target() instanceof Room)
-				&&((((Room)msg.target()).domainType()&Room.INDOORS)==0))
+				if((msg.target() instanceof Exit)&&(((Exit)msg.target()).isOpen()))
 				{
-					if(((Room)msg.target()).getArea()==this)
+					final Room hereR=msg.source().location();
+					if((hereR!=null)
+					&&((hereR.domainType()&Room.INDOORS)==0)
+					&&(hereR.getArea()==this))
+					{
+						final Room lookingR=hereR.getRoomInDir(CMLib.map().getExitDir(hereR, (Exit)msg.target()));
+						final Room R=CMLib.map().roomLocation(this.shipItem);
+						if(lookingR==R)
+							lookOverBow(R,msg);
+					}
+				}
+				else
+				if((msg.target() instanceof Room)
+				&&((((Room)msg.target()).domainType()&Room.INDOORS)==0)
+				&&(((Room)msg.target()).getArea()==this))
+				{
+					if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
 					{
 						final Room R=CMLib.map().roomLocation(this.shipItem);
-						if(R!=null)
-							msg.addTrailerMsg(CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), L("\n\r^HOff the bow you see: ^N\n\r"), msg.targetCode(), null, msg.othersCode(), null));
+						if((R!=null)&&(!((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=msg.source().isAttribute(MOB.Attrib.BRIEF))))
+							lookOverBow(R,msg);
 					}
-					else
-						((Room)msg.target()).executeMsg(msg.source(), msg);
 				}
 				break;
 			}
