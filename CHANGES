@@ -1,4 +1,4 @@
-# Build 5.8.4 Released 11/?/2014
+# Build 5.8.4 Released 12/01/2014
    *. Database Schema Updated for CMBKLG and CMCLIT.  See the Installation Guide about running DBUpgrade.
    1. Channels now save their back messages to the database for perpetual enjoyment. See DISABLE,CHANNELBACKLOG in coffeemud.ini.
    2. Bit geeky, but exposed the Cross Class skill analysis and Recovery Rates analysis from MUDGrinder (char class and control panel respec)
@@ -31,7 +31,8 @@
   27. STAT command now allows CHARSTATS for some number table happiness.
   28. AUTOINVOKE command now allows masks for multiple skills
   29. All Fighter classes now get a nice little XP bonus for winning duels (and not between two chars on same account!).
-  30. New Locale-type: Sea Port -- for Sailing Ship sales locations
+  30. Although somewhat Beta-ish, there are now GenSailingShip items for large multi-room sailing ships.  See Archon's Guide.
+  31. New Locale-type: Sea Port -- for Sailing Ship sales locations
 # Build 5.8.3 Release 10/27/2014
    *. Database Schema Updated for CMCHAR.CMDESC and CMCHAR.CMCHID.  See the Installation Guide about running DBUpgrade.
    1. (FakeDB): DBUpgrade is now application independent, and can handle big tables better.  See installation guide for new recommended usage.

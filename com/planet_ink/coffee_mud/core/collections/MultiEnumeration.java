@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.collections;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -22,8 +23,7 @@ limitations under the License.
 */
 public class MultiEnumeration<K> implements Enumeration<K>
 {
-	private final List<Enumeration<K>> enums=new Vector<Enumeration<K>>(3);
-	private volatile int dex=0;
+	private final LinkedList<Enumeration<K>> enums=new LinkedList<Enumeration<K>>();
 	private volatile Enumeration<K> enumer=null;
 
 	public static interface MultiEnumeratorBuilder<K>
@@ -31,46 +31,40 @@ public class MultiEnumeration<K> implements Enumeration<K>
 		public MultiEnumeration<K> getList();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public MultiEnumeration(Enumeration<K>[] esets)
 	{
-		if((esets==null)||(esets.length==0))
-			enums.add(EmptyEnumeration.INSTANCE);
-		else
-		for(final Enumeration<K> E : esets)
-			if(E!=null)
-				enums.add(E);
-		setup();
+		if((esets!=null)&&(esets.length>0))
+			for(final Enumeration<K> E : esets)
+				if(E!=null)
+					enums.add(E);
+	}
+
+	public MultiEnumeration(Collection<Enumeration<K>> esets)
+	{
+		if(esets!=null)
+			enums.addAll(esets);
 	}
 
 	public MultiEnumeration(Enumeration<K> eset)
 	{
 		enums.add(eset);
-		setup();
 	}
 
 	public void addEnumeration(Enumeration<K> set)
 	{
 		if(set != null)
 			enums.add(set);
-		setup();
-	}
-
-	private void setup()
-	{
-		if((enumer==null)&&(dex<enums.size()))
-			enumer=enums.get(dex);
-		while((enumer!=null)&&(!enumer.hasMoreElements())&&(++dex<enums.size()))
-			enumer=enums.get(dex);
 	}
 
 	@Override
 	public boolean hasMoreElements()
 	{
-		if(enumer.hasMoreElements())
-			return true;
-		while((!enumer.hasMoreElements())&&(++dex<enums.size()))
-			enumer=enums.get(dex);
+		while((enumer==null)||(!enumer.hasMoreElements()))
+		{
+			if(enums.size()==0)
+				return false;
+			enumer=enums.removeFirst();
+		}
 		return enumer.hasMoreElements();
 	}
 

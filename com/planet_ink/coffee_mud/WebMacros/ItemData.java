@@ -1074,6 +1074,14 @@ public class ItemData extends StdWebMacro
 					case ISBOARDABLEITEM:
 						str.append(I instanceof BoardableShip);
 						break;
+					case ISPRIVATEPROPERTY:
+						str.append(I instanceof PrivateProperty);
+						break;
+					case OWNER:
+						if((firstTime)&&(I instanceof PrivateProperty))
+							old=((PrivateProperty)I).getOwnerName();
+						str.append(old);
+						break;
 					}
 					if(firstTime)
 						httpReq.addFakeUrlParameter(parmName,old.equals("checked")?"on":old);

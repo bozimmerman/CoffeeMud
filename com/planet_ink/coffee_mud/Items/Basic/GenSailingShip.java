@@ -64,7 +64,6 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		setUsesRemaining(100);
 		recoverPhyStats();
 		CMLib.flags().setGettable(this, false);
-		CMLib.flags().setSavable(this, false);
 	}
 
 	@Override 
@@ -98,7 +97,6 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			area=CMClass.getAreaType("StdBoardableShip");
 			final String num=Double.toString(Math.random());
 			area.setName(L("UNNAMED_@x1",num.substring(num.indexOf('.')+1)));
-			area.setSavable(false);
 			area.setTheme(Area.THEME_FANTASY);
 			final Room R=CMClass.getLocale("WoodRoom");
 			R.setRoomID(area.Name()+"#0");
@@ -373,7 +371,12 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		&&(msg.targetMinor()==CMMsg.TYP_GET)
 		&&(msg.tool() instanceof ShopKeeper))
 		{
-			transferOwnership(msg.source());
+			final ShopKeeper shop=(ShopKeeper)msg.tool();
+			final boolean clanSale = 
+					   shop.isSold(ShopKeeper.DEAL_CLANPOSTMAN) 
+					|| shop.isSold(ShopKeeper.DEAL_CSHIPSELLER) 
+					|| shop.isSold(ShopKeeper.DEAL_CLANDSELLER);
+			transferOwnership(msg.source(),clanSale);
 			return false;
 		}
 		else
@@ -441,6 +444,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					msg.source().tell(L("The captain does not permit you."));
 					return false;
 				}
+				this.directionFacing=-1;
 				int dir=Directions.getCompassDirectionCode(secondWord);
 				if(dir<0)
 				{
@@ -498,6 +502,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					return false;
 				}
 				sail(dir);
+				this.directionFacing=-1;
 				return false;
 			}
 			else
@@ -508,6 +513,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					msg.source().tell(L("The captain does not permit you."));
 					return false;
 				}
+				this.directionFacing=-1;
 				final Room R=CMLib.map().roomLocation(this);
 				if(R==null)
 				{
@@ -759,7 +765,10 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		&&(!(msg.target() instanceof Banker))
 		&&(!(msg.target() instanceof Auctioneer))
 		&&(!(msg.target() instanceof PostOffice)))
-			transferOwnership((MOB)msg.target());
+		{
+			final boolean clanSale = CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER);
+			transferOwnership((MOB)msg.target(), clanSale);
+		}
 		else
 		if((msg.target() instanceof Room)
 		&&(msg.target() == owner()))
@@ -780,7 +789,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			case CMMsg.TYP_LEAVE:
 			case CMMsg.TYP_ENTER:
 			{
-				sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, msg.sourceMessage(), msg.targetMessage(), msg.othersMessage()), true);
+				if(!msg.source().Name().equals(Name()))
+					sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, msg.sourceMessage(), msg.targetMessage(), msg.othersMessage()), true);
 				break;
 			}
 			}
@@ -836,9 +846,28 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		return null;
 	}
 
-	protected void transferOwnership(final MOB buyer)
+	protected void transferOwnership(final MOB buyer, boolean clanSale)
 	{
-		if(CMLib.clans().checkClanPrivilege(buyer, getOwnerName(), Clan.Function.PROPERTY_OWNER))
+		if(getOwnerName().length()>0)
+		{
+			final MOB M=CMLib.players().getLoadPlayer(getOwnerName());
+			if((M!=null)&&(M.playerStats()!=null))
+			{
+				M.playerStats().getExtItems().delItem(this);
+				M.playerStats().setLastUpdated(0);
+			}
+			else
+			{
+				final Clan C=CMLib.clans().getClan(getOwnerName());
+				if(C!=null)
+				{
+					C.getExtItems().delItem(this);
+					CMLib.database().DBUpdateClanItems(C);
+				}
+			}
+			setOwnerName("");
+		}
+		if(clanSale)
 		{
 			final Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
 			if(targetClan!=null)

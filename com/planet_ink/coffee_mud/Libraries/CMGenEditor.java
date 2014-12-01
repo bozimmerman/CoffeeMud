@@ -8150,6 +8150,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genMountText(mob,me,++showNumber,showFlag);
 			}
+			//if(me instanceof PrivateProperty)
+			//	me.setStat("OWNER",prompt(mob,((PrivateProperty)me).getOwnerName(),++showNumber,showFlag,CMStrings.capitalizeAndLower("Property Owner")));
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));

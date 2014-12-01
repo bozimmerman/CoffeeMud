@@ -61,7 +61,7 @@ public class GrinderItems
 		CATALIVE,CATAMASK,BITE,MAXUSES,ISELECTRONIC,
 		CATACAT,ISPORTAL,PUTSTR,MOUNTSTR,DISMOUNTSTR,
 		DEFAULTSCLOSED,DEFAULTSLOCKED,ISWEARANDTEAR,
-		ISBOARDABLEITEM;
+		ISBOARDABLEITEM, ISPRIVATEPROPERTY, OWNER;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
 		{
@@ -627,6 +627,13 @@ public class GrinderItems
 				case ISCOIN:
 					break;
 				case ISWEARANDTEAR:
+					break;
+				case ISBOARDABLEITEM:
+				case ISPRIVATEPROPERTY:
+					break;
+				case OWNER:
+					if(I instanceof PrivateProperty)
+						((PrivateProperty)I).setOwnerName(old);
 					break;
 				case ISELECTRONIC:
 					break;

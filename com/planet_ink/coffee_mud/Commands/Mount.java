@@ -48,7 +48,8 @@ public class Mount extends StdCommand
 			mob.tell(L("@x1 what?",((String)commands.elementAt(0))));
 			return false;
 		}
-		commands.removeElementAt(0);
+		Vector origCommands=(Vector)commands.clone();
+		String cmd=commands.remove(0).toString();
 		Environmental recipient=null;
 		final Vector possRecipients=new Vector();
 		for(int m=0;m<mob.location().numInhabitants();m++)
@@ -104,6 +105,18 @@ public class Mount extends StdCommand
 			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,0)));
 			return false;
 		}
+		if((recipient instanceof BoardableShip)
+		&&(cmd.toUpperCase().startsWith("B")))
+		{
+			Command C=CMClass.getCommand("Enter");
+			if(C!=null)
+			{
+				commands=(Vector)origCommands.clone();
+				commands.set(0,"ENTER");
+				return C.execute(mob, commands, metaFlags);
+			}
+		}
+		
 		String mountStr=null;
 		if(recipient instanceof Rideable)
 		{

@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.collections;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -21,8 +22,7 @@ limitations under the License.
 */
 public class MultiIterator<K> implements Iterator<K>
 {
-	private final Vector<Iterator<K>> iters=new Vector<Iterator<K>>();
-	private volatile int dex=0;
+	private final LinkedList<Iterator<K>> iters=new LinkedList<Iterator<K>>();
 	private volatile Iterator<K> iter=null;
 
 	public MultiIterator(Iterator<K>[] esets)
@@ -31,7 +31,15 @@ public class MultiIterator<K> implements Iterator<K>
 			return;
 		for(final Iterator<K> I : esets)
 			iters.add(I);
-		setup();
+	}
+
+	public MultiIterator(Collection<Iterator<K>> esets)
+	{
+		if((esets==null)||(esets.size()==0))
+			return;
+		iters.addAll(esets);
+		for(final Iterator<K> I : esets)
+			iters.add(I);
 	}
 
 	public MultiIterator(Iterable<K>[] esets)
@@ -40,7 +48,6 @@ public class MultiIterator<K> implements Iterator<K>
 			return;
 		for(final Iterable<K> I : esets)
 			iters.add(I.iterator());
-		setup();
 	}
 
 	public MultiIterator(Iterable<? extends Iterable<K>> esets)
@@ -49,7 +56,6 @@ public class MultiIterator<K> implements Iterator<K>
 			return;
 		for(final Iterable<K> I : esets)
 			iters.add(I.iterator());
-		setup();
 	}
 
 
@@ -61,24 +67,17 @@ public class MultiIterator<K> implements Iterator<K>
 	public void add(Iterator<K> eset)
 	{
 		iters.add(eset);
-		setup();
-	}
-
-	private void setup()
-	{
-		if((iter==null)&&(dex<iters.size()))
-			iter=iters.get(dex);
-		while((iter!=null)&&(!iter.hasNext())&&(++dex<iters.size()))
-			iter=iters.get(dex);
 	}
 
 	@Override
 	public boolean hasNext()
 	{
-		if(iter.hasNext())
-			return true;
-		while((!iter.hasNext())&&(++dex<iters.size()))
-			iter=iters.get(dex);
+		while((iter==null)||(!iter.hasNext()))
+		{
+			if(iters.size()==0)
+				return false;
+			iter=iters.removeFirst();
+		}
 		return iter.hasNext();
 	}
 
@@ -87,14 +86,13 @@ public class MultiIterator<K> implements Iterator<K>
 	{
 		if(!hasNext())
 			throw new NoSuchElementException();
-		return iters.get(dex).next();
+		return iter.next();
 	}
 
 	@Override
 	public void remove()
 	{
-		if(dex>=iters.size())
-			throw new NoSuchElementException();
-		iters.get(dex).remove();
+		if(iter != null)
+			iter.remove();
 	}
 }

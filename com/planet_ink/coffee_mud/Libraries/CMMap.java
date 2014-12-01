@@ -202,6 +202,13 @@ public class CMMap extends StdLibrary implements WorldMap
 		return new IteratorEnumeration<Area>(areasList.iterator());
 	}
 	
+	public Enumeration<Area> areasPlusShips() 
+	{
+		final MultiEnumeration<Area> m=new MultiEnumeration<Area>(new IteratorEnumeration<Area>(areasList.iterator()));
+		m.addEnumeration(shipAreaEnumerator(null));
+		return m;
+	}
+	
 	@Override 
 	public Enumeration<Area> mundaneAreas() 
 	{
@@ -772,15 +779,15 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(R!=null)
 						return R;
 				}
-				for(final Enumeration<Area> e=areas();e.hasMoreElements();)
+				for(final Enumeration<Area> e=this.areas();e.hasMoreElements();)
 				{
 					R = e.nextElement().getRoom(calledThis);
 					if(R!=null)
 						return R;
 				}
-				for(final Enumeration<BoardableShip> e=ships();e.hasMoreElements();)
+				for(final Enumeration<Area> e=shipAreaEnumerator(null);e.hasMoreElements();)
 				{
-					R = e.nextElement().getShipArea().getRoom(calledThis);
+					R = e.nextElement().getRoom(calledThis);
 					if(R!=null)
 						return R;
 				}
@@ -1236,9 +1243,24 @@ public class CMMap extends StdLibrary implements WorldMap
 		return room;
 	}
 
-	@Override public Room getRoom(String calledThis){ return getRoom(null,calledThis); }
-	@Override public Enumeration<Room> rooms(){ return new AreaEnumerator(false); }
-	@Override public Enumeration<Room> roomsFilled(){ return new AreaEnumerator(true); }
+	@Override 
+	public Room getRoom(String calledThis)
+	{
+		return getRoom(null,calledThis);
+	}
+
+	@Override 
+	public Enumeration<Room> rooms()
+	{
+		return new AllAreasRoomEnumerator(false); 
+	}
+
+	@Override 
+	public Enumeration<Room> roomsFilled()
+	{
+		return new AllAreasRoomEnumerator(true); 
+	}
+
 	@Override
 	public Room getRandomRoom()
 	{
@@ -1283,9 +1305,17 @@ public class CMMap extends StdLibrary implements WorldMap
 				return D;
 		return null;
 	}
-	@Override public Enumeration<Deity> deities() { return new IteratorEnumeration<Deity>(deitiesList.iterator()); }
+	
+	@Override 
+	public Enumeration<Deity> deities() 
+	{
+		return new IteratorEnumeration<Deity>(deitiesList.iterator()); 
+	}
 
-	public int numShips() { return shipList.size(); }
+	public int numShips() 
+	{ 
+		return shipList.size(); 
+	}
 
 	protected void addShip(BoardableShip newOne)
 	{
@@ -1306,7 +1336,76 @@ public class CMMap extends StdLibrary implements WorldMap
 				return S;
 		return null;
 	}
-	@Override public Enumeration<BoardableShip> ships() { return new IteratorEnumeration<BoardableShip>(shipList.iterator()); }
+	
+	@Override 
+	public Enumeration<BoardableShip> ships() 
+	{ 
+		return new IteratorEnumeration<BoardableShip>(shipList.iterator()); 
+	}
+	
+	public Enumeration<Room> shipsRoomEnumerator(final Area inA)
+	{
+		
+		return new Enumeration<Room>() 
+		{
+			private Enumeration<Room> cur = null;
+			private final Enumeration<Area> cA = shipAreaEnumerator(inA);
+			@Override
+			public boolean hasMoreElements()
+			{
+				while((cur == null) || (!cur.hasMoreElements()))
+				{
+					if(!cA.hasMoreElements())
+						return false;
+					cur = cA.nextElement().getProperMap();
+				}
+				return cur.hasMoreElements();
+			}
+			@Override
+			public Room nextElement()
+			{
+				if(!hasMoreElements())
+					throw new NoSuchElementException();
+				return cur.nextElement();
+			}
+		};
+	}
+	
+	public Enumeration<Area> shipAreaEnumerator(final Area inA)
+	{
+		final Enumeration<BoardableShip> s=ships();
+		return new Enumeration<Area>() 
+		{
+			private Area nextArea=null;
+			@Override
+			public boolean hasMoreElements()
+			{
+				if(!s.hasMoreElements())
+					return false;
+				while(nextArea == null)
+				{
+					if(!s.hasMoreElements())
+						return false;
+					final BoardableShip ship=s.nextElement();
+					if((ship!=null)&&(ship.getShipArea()!=null))
+					{
+						if((inA==null)||(areaLocation(ship)==inA))
+							nextArea=ship.getShipArea();
+					}
+				}
+				return (nextArea != null);
+			}
+			@Override
+			public Area nextElement()
+			{
+				if(!hasMoreElements())
+					throw new NoSuchElementException();
+				final Area A=nextArea;
+				this.nextArea=null;
+				return A;
+			}
+		};
+	}
 
 	public int numPostOffices() { return postOfficeList.size(); }
 	protected void addPostOffice(PostOffice newOne)
@@ -1547,8 +1646,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			I=R.getItem(i);
 			if((I!=null)
 			&&((I.expirationDate()!=0)
-				||((I instanceof DeadBody)&&(((DeadBody)I).isPlayerCorpse()))))
-				return false;
+				||((I instanceof DeadBody)&&(((DeadBody)I).isPlayerCorpse()))
+				||((I instanceof PrivateProperty)&&(((PrivateProperty)I).getOwnerName().length()>0))))
+					return false;
 		}
 		for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 		{
@@ -1569,12 +1669,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		return false;
 	}
 
-	public static class AreaEnumerator implements Enumeration<Room>
+	public class AllAreasRoomEnumerator implements Enumeration<Room>
 	{
 		private Enumeration<Area> curAreaEnumeration=null;
 		private Enumeration<Room> curRoomEnumeration=null;
 		private boolean addSkys = false;
-		public AreaEnumerator(boolean includeSkys)
+		public AllAreasRoomEnumerator(boolean includeSkys)
 		{
 			addSkys = includeSkys;
 		}
@@ -1582,7 +1682,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		public boolean hasMoreElements()
 		{
 			if(curAreaEnumeration==null)
-				curAreaEnumeration=CMLib.map().areas();
+				curAreaEnumeration=areasPlusShips();
 			while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
 			{
 				if(!curAreaEnumeration.hasMoreElements())
@@ -1837,8 +1937,10 @@ public class CMMap extends StdLibrary implements WorldMap
 			for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
 			{
 				I=i.nextElement();
-				if(I!=null)
-					I.destroy();
+				if((I!=null)
+				&&((!(I instanceof PrivateProperty)
+					||(((PrivateProperty)I).getOwnerName().length()==0))))
+						I.destroy();
 			}
 		}
 		room.clearSky();
@@ -2194,33 +2296,16 @@ public class CMMap extends StdLibrary implements WorldMap
 					return returnResponse(rooms,room);
 
 				final Area A=area;
-				final List<Area> shipAreas=new LinkedList<Area>();
-				if(A==null)
-				{
-					for(final Enumeration<BoardableShip> e=ships(); e.hasMoreElements();)
-						shipAreas.add(e.nextElement().getShipArea());
-				}
-				else
-				for(final Enumeration<BoardableShip> e=ships(); e.hasMoreElements();)
-				{
-					final BoardableShip ship=e.nextElement();
-					if((ship instanceof Item)
-					&&(((Item)ship).owner() instanceof Room)
-					&&(((Room)((Item)ship).owner()).getArea() == A))
-						shipAreas.add(ship.getShipArea());
-				}
 				final MultiEnumeratorBuilder<Room> roomer = new MultiEnumeratorBuilder<Room>()
 				{
 					@SuppressWarnings("unchecked")
 					@Override
 					public MultiEnumeration<Room> getList()
 					{
-						final Enumeration<Room>[] enums=new Enumeration[shipAreas.size()+1];
-						enums[0] = (A==null) ? roomsFilled() : A.getProperMap();
-						int i=1;
-						for(Area A : shipAreas)
-							enums[i++] = A.getProperMap();
-						return new MultiEnumeration<Room>(enums);
+						if(A==null)
+							return new MultiEnumeration<Room>(roomsFilled());
+						else
+							return new MultiEnumeration<Room>(new Enumeration[]{A.getProperMap(),shipsRoomEnumerator(A)});
 					}
 				};
 

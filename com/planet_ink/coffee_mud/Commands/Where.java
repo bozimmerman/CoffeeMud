@@ -201,7 +201,10 @@ public class Where extends StdCommand
 
 				MultiEnumeration<Room> r=new MultiEnumeration<Room>((roomOnly||exitOnly)?CMLib.map().rooms():CMLib.map().roomsFilled());
 				if(who.toUpperCase().startsWith("AREA ")||areaFlag)
+				{
 					r=new MultiEnumeration<Room>((roomOnly||exitOnly)?mob.location().getArea().getProperMap():mob.location().getArea().getFilledProperMap());
+					areaFlag=true;
+				}
 				if(who.toUpperCase().startsWith("AREA "))
 					who=who.substring(5).trim();
 				Room R = null;
@@ -244,7 +247,7 @@ public class Where extends StdCommand
 								for(int i=0;i<R.numItems();i++)
 								{
 									final Item I=R.getItem(i);
-									if(I instanceof BoardableShip)
+									if((areaFlag)&&(I instanceof BoardableShip))
 										r.addEnumeration(((BoardableShip)I).getShipArea().getProperMap());
 									if((zapperMask)&&(itemOnly))
 									{
@@ -322,7 +325,7 @@ public class Where extends StdCommand
 										for(int i=0;i<M.numItems();i++)
 										{
 											final Item I=M.getItem(i);
-											if(I instanceof BoardableShip)
+											if((areaFlag)&&(I instanceof BoardableShip))
 												r.addEnumeration(((BoardableShip)I).getShipArea().getProperMap());
 											if((zapperMask)&&(itemOnly))
 											{
@@ -362,7 +365,7 @@ public class Where extends StdCommand
 										for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 										{
 											final Environmental E=i.next();
-											if(E instanceof BoardableShip)
+											if((areaFlag)&&(E instanceof BoardableShip))
 												r.addEnumeration(((BoardableShip)E).getShipArea().getProperMap());
 											if((zapperMask)&&(E instanceof Item)&&(itemOnly))
 											{

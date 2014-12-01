@@ -100,7 +100,29 @@ public class Chant_Farsight extends Chant
 				while(commands.size()>0)
 				{
 					final String whatToOpen=(String)commands.elementAt(0);
-					final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+					int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+					final Exit exit;
+					final Room room;
+					if(dirCode < 0)
+					{
+						Item I=thatRoom.findItem(null, whatToOpen);
+						if((I instanceof Exit)&&(CMLib.flags().canBeSeenBy(I, mob)))
+						{
+							exit=(Exit)I;
+							room=((Exit)I).lastRoomUsedFrom();
+							dirCode=Directions.GATE;
+						}
+						else
+						{
+							exit=null;
+							room=null;
+						}
+					}
+					else
+					{
+						exit=thatRoom.getExitInDir(dirCode);
+						room=thatRoom.getRoomInDir(dirCode);
+					}
 					if(limit<=0)
 					{
 						mob.tell(L("Your sight has reached its limit."));
@@ -116,9 +138,6 @@ public class Chant_Farsight extends Chant
 					}
 					else
 					{
-						final Exit exit=thatRoom.getExitInDir(dirCode);
-						final Room room=thatRoom.getRoomInDir(dirCode);
-
 						if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob))||(!exit.isOpen()))
 						{
 							mob.tell(L("\n\rSomething has obstructed your vision."));

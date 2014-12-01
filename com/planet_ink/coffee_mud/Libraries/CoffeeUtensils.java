@@ -712,6 +712,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		&&(I instanceof DeadBody)
 		&&(((DeadBody)I).isPlayerCorpse()))
 			return false;
+		if((I instanceof PrivateProperty)
+		&&((!((PrivateProperty)I).getOwnerName().equals(mob.Name()))
+			||(mob.getClanRole(((PrivateProperty)I).getOwnerName())==null)))
+			return false;
 		if((!CMLib.flags().isGettable(I))
 		||((I instanceof ClanItem)&&(mob.getClanRole(((ClanItem)I).clanID())==null))
 		||(I.basePhyStats().weight() > mob.maxCarry())

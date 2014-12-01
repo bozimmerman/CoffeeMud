@@ -258,6 +258,10 @@ public class Reset extends StdCommand
 			if((I instanceof DeadBody)
 			&&(((DeadBody)I).isPlayerCorpse()))
 				warning.append("A player corpse, '"+I.Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
+			else
+			if((I instanceof PrivateProperty)
+			&&(((PrivateProperty)I).getOwnerName().length()>0))
+				warning.append("A private property, '"+I.Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
 		}
 		if(R instanceof GridLocale)
 		{

@@ -730,7 +730,14 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			{
 			case CMMsg.TYP_GET:
 				if(msg.tool() instanceof ShopKeeper)
-					transferOwnership(msg.source());
+				{
+					final ShopKeeper shop=(ShopKeeper)msg.tool();
+					final boolean clanSale = 
+							   shop.isSold(ShopKeeper.DEAL_CLANPOSTMAN) 
+							|| shop.isSold(ShopKeeper.DEAL_CSHIPSELLER) 
+							|| shop.isSold(ShopKeeper.DEAL_CLANDSELLER);
+					transferOwnership(msg.source(),clanSale);
+				}
 				break;
 			case CMMsg.TYP_ACTIVATE:
 				if((CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))&&(msg.targetMessage()!=null))
@@ -902,7 +909,10 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		&&(!(msg.target() instanceof Banker))
 		&&(!(msg.target() instanceof Auctioneer))
 		&&(!(msg.target() instanceof PostOffice)))
-			transferOwnership((MOB)msg.target());
+		{
+			final boolean clanSale = CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER);
+			transferOwnership((MOB)msg.target(),clanSale);
+		}
 	}
 
 	protected LocationRoom findNearestDocks(Room R)
@@ -946,9 +956,28 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return docks.get(CMLib.dice().roll(1, docks.size(), -1));
 	}
 
-	protected void transferOwnership(final MOB buyer)
+	protected void transferOwnership(final MOB buyer, boolean clanSale)
 	{
-		if(CMLib.clans().checkClanPrivilege(buyer, getOwnerName(), Clan.Function.PROPERTY_OWNER))
+		if(getOwnerName().length()>0)
+		{
+			final MOB M=CMLib.players().getLoadPlayer(getOwnerName());
+			if((M!=null)&&(M.playerStats()!=null))
+			{
+				M.playerStats().getExtItems().delItem(this);
+				M.playerStats().setLastUpdated(0);
+			}
+			else
+			{
+				final Clan C=CMLib.clans().getClan(getOwnerName());
+				if(C!=null)
+				{
+					C.getExtItems().delItem(this);
+					CMLib.database().DBUpdateClanItems(C);
+				}
+			}
+			setOwnerName("");
+		}
+		if(clanSale)
 		{
 			final Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
 			if(targetClan!=null)
