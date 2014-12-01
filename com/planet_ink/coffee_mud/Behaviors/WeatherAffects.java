@@ -778,14 +778,14 @@ public class WeatherAffects extends PuddleMaker
 				case Climate.WEATHER_BLIZZARD:
 				case Climate.WEATHER_SLEET:
 				case Climate.WEATHER_SNOW:
-					rustChance=5;
+					rustChance=3;
 					break;
 				case Climate.WEATHER_HAIL:
-					rustChance=5;
+					rustChance=3;
 					break;
 				case Climate.WEATHER_THUNDERSTORM:
 				case Climate.WEATHER_RAIN:
-					rustChance=5;
+					rustChance=4;
 					break;
 				}
 
@@ -797,10 +797,13 @@ public class WeatherAffects extends PuddleMaker
 				switch(R.domainType())
 				{
 				case Room.DOMAIN_INDOORS_UNDERWATER:
-				case Room.DOMAIN_INDOORS_WATERSURFACE:
-				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
 				case Room.DOMAIN_OUTDOORS_UNDERWATER:
 					rustChance+=5;
+					break;
+				case Room.DOMAIN_INDOORS_WATERSURFACE:
+				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+					if(!CMLib.flags().isFlying(M))
+						rustChance+=3;
 					break;
 				default:
 					break;

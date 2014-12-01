@@ -100,7 +100,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			final String num=Double.toString(Math.random());
 			area.setName(L("UNNAMED_@x1",num.substring(num.indexOf('.')+1)));
 			area.setTheme(Area.THEME_FANTASY);
-			final Room R=CMClass.getLocale("WoodRoom");
+			final Room R=CMClass.getLocale("WoodenDeck");
 			R.setRoomID(area.Name()+"#0");
 			R.setSavable(false);
 			area.addProperRoom(R);
