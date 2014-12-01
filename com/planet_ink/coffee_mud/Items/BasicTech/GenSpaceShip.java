@@ -69,6 +69,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		setDisplayText("a space ship is here.");
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setDescription("");
+		this.doorName="hatch";
 		myUses=100;
 		basePhyStats().setWeight(10000);
 		recoverPhyStats();
@@ -600,12 +601,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_UNLOCK:
 			{
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("a hatch on <T-NAME>")));
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("a hatch on <T-NAME>")));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("a hatch on <T-NAME>")));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
 				break;
 			}
 			case CMMsg.TYP_WEAPONATTACK:
@@ -1052,7 +1053,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","AREA","COORDS","RADIUS",
 											"ROLL","DIRECTION","SPEED","FACING","OWNER","PRICE","DEFCLOSED","DEFLOCKED",
-											"PUTSTR","MOUNTSTR","DISMOUNTSTR"
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","EXITNAME"
 										  };
 	@Override
 	public String getStat(String code)
@@ -1086,6 +1087,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 22: return putString;
 		case 23: return mountString;
 		case 24: return dismountString;
+		case 25: return ""+doorName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1123,6 +1125,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 22: putString=val; break;
 		case 23: mountString=val; break;
 		case 24: dismountString=val; break;
+		case 25: doorName = val; break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

@@ -60,6 +60,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		setDescription("");
 		myUses=100;
+		this.doorName="hatch";
 		basePhyStats().setWeight(10000);
 		setUsesRemaining(100);
 		recoverPhyStats();
@@ -569,12 +570,12 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_UNLOCK:
 			{
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("a hatch on <T-NAME>")));
-				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("a hatch on <T-NAME>")));
-				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("a hatch on <T-NAME>")));
-				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("a hatch on <T-NAMESELF>")));
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", L("@x1 on <T-NAME>",CMLib.english().startWithAorAn(doorName()))));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", L("@x1 on <T-NAMESELF>",CMLib.english().startWithAorAn(doorName()))));
 				break;
 			}
 			case CMMsg.TYP_WEAPONATTACK:
@@ -787,9 +788,18 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				}
 				break;
 			case CMMsg.TYP_LEAVE:
+				if((!msg.source().Name().equals(Name()))
+				&&(owner() instanceof Room)
+				&&(msg.target() instanceof Room)
+				&&(((Room)msg.target()).getArea()!=area))
+					sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, msg.sourceMessage(), msg.targetMessage(), msg.othersMessage()), true);
+				break;
 			case CMMsg.TYP_ENTER:
 			{
-				if(!msg.source().Name().equals(Name()))
+				if((!msg.source().Name().equals(Name()))
+				&&(owner() instanceof Room)
+				&&(msg.target() instanceof Room)
+				&&(((Room)msg.target()).getArea()!=area))
 					sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, msg.sourceMessage(), msg.targetMessage(), msg.othersMessage()), true);
 				break;
 			}
@@ -964,7 +974,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	}
 	
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
-											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED"
+											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
+											"EXITNAME"
 										  };
 	@Override
 	public String getStat(String code)
@@ -988,6 +999,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		case 12: return dismountString;
 		case 13: return ""+defaultsClosed();
 		case 14: return ""+defaultsLocked();
+		case 15: return ""+doorName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1015,6 +1027,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		case 12: dismountString=val; break;
 		case 13: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
 		case 14: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
+		case 15: this.doorName = val; break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
