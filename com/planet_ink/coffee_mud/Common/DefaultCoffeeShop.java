@@ -215,6 +215,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 		stopTicking(E);
 		if(E instanceof Electronics)
 			CMLib.tech().fixItemTechLevel((Electronics)E);
+		if(E instanceof PrivateProperty)
+			((PrivateProperty)E).setOwnerName("");
 		return E;
 	}
 

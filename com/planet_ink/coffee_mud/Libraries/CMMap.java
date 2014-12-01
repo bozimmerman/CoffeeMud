@@ -1958,8 +1958,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			{
 				I=i.nextElement();
 				if((I!=null)
-				&&((!(I instanceof PrivateProperty)
-					||(((PrivateProperty)I).getOwnerName().length()==0))))
+				&&((!(I instanceof PrivateProperty))
+				  ||((((PrivateProperty)I).getOwnerName().length()==0))))
 						I.destroy();
 			}
 		}
