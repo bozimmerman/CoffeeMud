@@ -1235,19 +1235,27 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 		}
 
-		final Vector<Item> viewItems=new Vector<Item>();
+		final Item notItem;
+		if((mob.location()!=room)
+		&&(mob.location()!=null)
+		&&(mob.location().getArea() instanceof BoardableShip))
+			notItem=((BoardableShip)mob.location().getArea()).getShipItem();
+		else
+			notItem=null;
+		
+		final List<Item> viewItems=new ArrayList<Item>(room.numItems());
 		int itemsInTheDarkness=0;
 		for(int c=0;c<room.numItems();c++)
 		{
 			final Item item=room.getItem(c);
-			if(item==null)
+			if((item==null)||(item==notItem))
 				continue;
 
 			if(item.container()==null)
 			{
 				if(CMLib.flags().canBarelyBeSeenBy(item,mob))
 					itemsInTheDarkness++;
-				viewItems.addElement(item);
+				viewItems.add(item);
 			}
 		}
 

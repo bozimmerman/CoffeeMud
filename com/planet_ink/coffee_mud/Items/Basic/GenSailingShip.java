@@ -51,6 +51,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	protected String 			 putString		 = "load(s)";
 	protected String 			 mountString	 = "board(s)";
 	protected String 			 dismountString	 = "disembark(s) from";
+	protected String			 homePortID		 = "";
 
 	public GenSailingShip()
 	{
@@ -116,6 +117,12 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	}
 
 	@Override
+	public Item getShipItem()
+	{
+		return this;
+	}
+	
+	@Override
 	public void setShipArea(String xml)
 	{
 		try
@@ -150,6 +157,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			else
 				R.moveItemTo(me, Expire.Never, Move.Followers);
 		}
+		if(this.homePortID.length()==0)
+			this.homePortID=CMLib.map().getExtendedRoomID(R);
 		if (area instanceof BoardableShip)
 			((BoardableShip)area).dockHere(R);
 	}
@@ -177,6 +186,18 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		return null;
 	}
 
+	@Override 
+	public String getHomePortID() 
+	{ 
+		return this.homePortID; 
+	}
+	
+	@Override 
+	public void setHomePortID(String portID) 
+	{ 
+		this.homePortID = portID;
+	}
+	
 	@Override 
 	public String keyName() 
 	{ 
@@ -282,6 +303,17 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	}
 	
 	@Override
+	public long expirationDate()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setExpirationDate(long time)
+	{
+	}
+	
+	@Override
 	public CMObject getOwnerObject()
 	{
 		final String owner=getOwnerName();
@@ -352,6 +384,37 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		}
 	}
 	
+	protected void haveEveryoneLookOverBow()
+	{
+		if((area != null)&&(owner() instanceof Room))
+		{
+			final Room targetR=(Room)owner();
+			for(final Enumeration<Room> r=area.getProperMap(); r.hasMoreElements(); )
+			{
+				final Room R=r.nextElement();
+				if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
+				{
+					final Set<MOB> mobs=CMLib.players().getPlayersHere(R);
+					for(final MOB mob : mobs)
+					{
+						if(mob == null)
+							continue;
+						final CMMsg lookMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK,null);
+						final CMMsg lookExitMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK_EXITS,null);
+						if((mob.isAttribute(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(targetR,mob)))
+						{
+							if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttribute(MOB.Attrib.BRIEF))
+								lookExitMsg.setValue(CMMsg.MASK_OPTIMIZE);
+							lookMsg.addTrailerMsg(lookExitMsg);
+						}
+						if(targetR.okMessage(mob,lookMsg))
+							targetR.send(mob,lookMsg);
+					}
+				}
+			}
+		}
+	}
+	
 	protected boolean steer(final MOB mob, final Room R, final int dir)
 	{
 		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) coarse, steering @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
@@ -360,6 +423,56 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			R.send(mob, msg2); // this lets the source know, i guess
 			this.sendAreaMessage(msg2, true); // this just sends to "others"
 			this.directionFacing=dir;
+			return true;
+		}
+		return false;
+	}
+	
+	protected int getAnyExitDir(Room R)
+	{
+		if(R==null)
+			return -1;
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			Room R2=R.getRoomInDir(d);
+			Exit E2=R.getExitInDir(d);
+			if((R2!=null)&&(E2!=null)&&(CMLib.map().getExtendedRoomID(R2).length()>0))
+				return d;
+		}
+		return -1;
+	}
+	
+	protected Room findOceanRoom(Area A)
+	{
+		if(A==null)
+			return null;
+		for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			if((R!=null)&&(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(CMLib.map().getExtendedRoomID(R).length()>0))
+				return R;
+		}
+		return null;
+	}
+	
+	protected boolean safetyMove()
+	{
+		final Room R=CMLib.map().roomLocation(this);
+		if((R==null)|| R.amDestroyed() || (getAnyExitDir(R)<0))
+		{
+			Room R2=CMLib.map().getRoom(getHomePortID());
+			if((R2==null)&&(R.getArea()!=null))
+				R2=findOceanRoom(R.getArea());
+			if(R2==null)
+				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+				{
+					R2=findOceanRoom(a.nextElement());
+					if(R2!=null)
+						break;
+				}
+			if(R2==null)
+				return false;
+			R2.moveItemTo(this);
 			return true;
 		}
 		return false;
@@ -397,6 +510,11 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					msg.source().tell(L("The captain does not permit you."));
 					return false;
 				}
+				if(safetyMove())
+				{
+					msg.source().tell(L("The ship has moved!"));
+					return false;
+				}
 				final Room R=CMLib.map().roomLocation(this);
 				if(!anchorDown)
 					msg.source().tell(L("The anchor is already up."));
@@ -421,6 +539,11 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					msg.source().tell(L("The captain does not permit you."));
 					return false;
 				}
+				if(safetyMove())
+				{
+					msg.source().tell(L("The ship has moved!"));
+					return false;
+				}
 				final Room R=CMLib.map().roomLocation(this);
 				if(anchorDown)
 					msg.source().tell(L("The anchor is already down."));
@@ -443,6 +566,11 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				if(!securityCheck(msg.source()))
 				{
 					msg.source().tell(L("The captain does not permit you."));
+					return false;
+				}
+				if(safetyMove())
+				{
+					msg.source().tell(L("The ship has moved!"));
 					return false;
 				}
 				this.directionFacing=-1;
@@ -476,6 +604,11 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				if(!securityCheck(msg.source()))
 				{
 					msg.source().tell(L("The captain does not permit you."));
+					return false;
+				}
+				if(safetyMove())
+				{
+					msg.source().tell(L("The ship has moved!"));
 					return false;
 				}
 				int dir=Directions.getCompassDirectionCode(secondWord);
@@ -512,6 +645,11 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				if(!securityCheck(msg.source()))
 				{
 					msg.source().tell(L("The captain does not permit you."));
+					return false;
+				}
+				if(safetyMove())
+				{
+					msg.source().tell(L("The ship has moved!"));
 					return false;
 				}
 				this.directionFacing=-1;
@@ -629,6 +767,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 						if(opExit!=null)
 							opExit.executeMsg(mob,leaveMsg);
 						destRoom.send(mob, enterMsg);
+						haveEveryoneLookOverBow();
 						return direction;
 					}
 					else
@@ -902,6 +1041,17 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
+					for(final Enumeration<BoardableShip> s=CMLib.map().ships();s.hasMoreElements();)
+					{
+						final BoardableShip ship=s.nextElement();
+						if((ship!=null)&&(!ship.amDestroyed())&&(ship.getShipArea()!=null)&&(ship.getShipArea().Name().equalsIgnoreCase(this.input.trim())))
+						{
+							this.input="";
+							break;
+						}
+					}
+					if(CMLib.map().getArea(this.input.trim())!=null)
+						this.input="";
 					if((this.input.trim().length()==0)
 					||(!CMLib.login().isOkName(this.input.trim(),true)))
 					{

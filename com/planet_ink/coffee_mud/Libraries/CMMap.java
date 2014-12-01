@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.core.collections.MultiEnumeration.MultiEnumerat
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.interfaces.MsgListener;
+import com.planet_ink.coffee_mud.core.interfaces.PrivateProperty;
 import com.planet_ink.coffee_mud.core.interfaces.SpaceObject;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -1957,10 +1958,20 @@ public class CMMap extends StdLibrary implements WorldMap
 			for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
 			{
 				I=i.nextElement();
-				if((I!=null)
-				&&((!(I instanceof PrivateProperty))
-				  ||((((PrivateProperty)I).getOwnerName().length()==0))))
+				if(I != null)
+				{
+					if(I instanceof BoardableShip)
+					{
+						final Room R=getRoom(((BoardableShip)I).getHomePortID());
+						if((R!=null)&&(R!=room))
+						{
+							R.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
+							continue;
+						}
+					}
+					if((!(I instanceof PrivateProperty))||((((PrivateProperty)I).getOwnerName().length()==0)))
 						I.destroy();
+				}
 			}
 		}
 		room.clearSky();
@@ -2549,12 +2560,28 @@ public class CMMap extends StdLibrary implements WorldMap
 		final Area.State oldFlag=area.getAreaState();
 		area.setAreaState(Area.State.FROZEN);
 		final PairVector<MOB,String> playersHere=getAllPlayersHere(area,true);
+		final PairVector<PrivateProperty, String> propertyHere=new PairVector<PrivateProperty, String>();
 		for(int p=0;p<playersHere.size();p++)
 		{
 			final MOB M=playersHere.elementAt(p).first;
 			final Room R=M.location();
 			R.delInhabitant(M);
 		}
+		for(final Enumeration<BoardableShip> b=ships();b.hasMoreElements();)
+		{
+			final BoardableShip ship=b.nextElement();
+			final Room R=roomLocation(ship);
+			if((R!=null)
+			&&(R.getArea()==area)
+			&&(ship instanceof PrivateProperty)
+			&&(((PrivateProperty)ship).getOwnerName().length()>0)
+			&&(ship instanceof Item))
+			{
+				R.delItem((Item)ship);
+				propertyHere.add((PrivateProperty)ship,CMLib.map().getExtendedRoomID(R));
+			}
+		}
+			
 		for(final Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
 			resetRoom(r.nextElement());
 		area.fillInAreaRooms();
@@ -2569,6 +2596,19 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(R!=null)
 				R.bringMobHere(M,false);
 		}
+		for(int p=0;p<propertyHere.size();p++)
+		{
+			final PrivateProperty P=propertyHere.elementAt(p).first;
+			Room R=getRoom(propertyHere.elementAt(p).second);
+			if((R==null)&&(P instanceof BoardableShip))
+				R=getRoom(((BoardableShip)P).getHomePortID());
+			if(R==null)
+				R=area.getRandomProperRoom();
+			if(R==null)
+				R=this.getRandomRoom();
+			if(R!=null)
+				R.moveItemTo((Item)P);
+		}
 		CMLib.database().DBReadArea(area);
 		area.setAreaState(oldFlag);
 	}
@@ -2582,7 +2622,6 @@ public class CMMap extends StdLibrary implements WorldMap
 			return false;
 		return true;
 	}
-
 
 	@Override
 	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o)

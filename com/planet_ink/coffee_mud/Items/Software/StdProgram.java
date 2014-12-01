@@ -201,7 +201,7 @@ public class StdProgram extends StdItem implements Software
 				onActivate(msg.source(),msg.targetMessage());
 				break;
 			case CMMsg.TYP_DEACTIVATE:
-				onDeactivate(msg.source(),msg.targetMessage());
+				onDeactivate(msg.source(),L("Computer shutting down."));
 				break;
 			case CMMsg.TYP_WRITE:
 				onTyping(msg.source(),msg.targetMessage());

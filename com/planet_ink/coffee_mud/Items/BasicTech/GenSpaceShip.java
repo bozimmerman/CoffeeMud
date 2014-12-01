@@ -61,6 +61,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	protected String 		putString		= "load(s)";
 	protected String 		mountString		= "board(s)";
 	protected String 		dismountString	= "disembark(s) from";
+	protected String		homePortID		= "";
 
 	public GenSpaceShip()
 	{
@@ -93,6 +94,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public boolean subjectToWearAndTear()
 	{
 		return true;
+	}
+	
+	@Override
+	public Item getShipItem()
+	{
+		return this;
 	}
 	
 	@Override
@@ -233,6 +240,18 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			((SpaceShip)area).setDockableItem(dockableItem);
 	}
 
+	@Override 
+	public String getHomePortID() 
+	{ 
+		return this.homePortID; 
+	}
+	
+	@Override 
+	public void setHomePortID(String portID) 
+	{ 
+		this.homePortID = portID;
+	}
+	
 	@Override
 	protected Room getDestinationRoom()
 	{
@@ -448,6 +467,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 		if(R instanceof LocationRoom)
 			setCoords(((LocationRoom)R).coordinates());
+		if(this.homePortID.length()==0)
+			this.homePortID=CMLib.map().getExtendedRoomID(R);
 		CMLib.map().delObjectInSpace(getShipSpaceObject());
 		if (area instanceof SpaceShip)
 			((SpaceShip)area).dockHere(R);
@@ -957,6 +978,17 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return docks.get(CMLib.dice().roll(1, docks.size(), -1));
 	}
 
+	@Override
+	public long expirationDate()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setExpirationDate(long time)
+	{
+	}
+	
 	protected void transferOwnership(final MOB buyer, boolean clanSale)
 	{
 		if(getOwnerName().length()>0)
@@ -1012,6 +1044,17 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 						session.prompt(namer[0].reset());
 						return;
 					}
+					for(final Enumeration<BoardableShip> s=CMLib.map().ships();s.hasMoreElements();)
+					{
+						final BoardableShip ship=s.nextElement();
+						if((ship!=null)&&(!ship.amDestroyed())&&(ship.getShipArea()!=null)&&(ship.getShipArea().Name().equalsIgnoreCase(this.input.trim())))
+						{
+							this.input="";
+							break;
+						}
+					}
+					if(CMLib.map().getArea(this.input.trim())!=null)
+						this.input="";
 					me.renameShip(this.input.trim());
 					buyer.tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
 					final LocationRoom finalR=findNearestDocks(R);

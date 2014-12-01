@@ -86,4 +86,23 @@ public interface BoardableShip extends Environmental
 	 * @param newName the new ship name
 	 */
 	public void renameShip(String newName);
+
+	/**
+	 * Returns the room ID of the ships home port.
+	 * @return the ships home port
+	 */
+	public String getHomePortID();
+
+	/**
+	 * Sets the room ID of the ships home port
+	 * @param portID the ships home port
+	 */
+	public void setHomePortID(String portID);
+
+	/**
+	 * Ships are unique in having an Item stand-in for port-side access,
+	 * as well as an Area object.  This method returns that Item.
+	 * @return the official space version of this ship
+	 */
+	public Item getShipItem();
 }

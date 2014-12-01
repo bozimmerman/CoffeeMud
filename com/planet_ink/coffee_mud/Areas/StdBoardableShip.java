@@ -115,6 +115,12 @@ public class StdBoardableShip implements Area, BoardableShip
 	
 	@Override public void setAtmosphere(int resourceCode) { }
 	
+	@Override
+	public Item getShipItem()
+	{
+		return (shipItem instanceof Item) ? (Item)shipItem : null;
+	}
+	
 	@Override 
 	public int getAtmosphere()
 	{
@@ -255,6 +261,18 @@ public class StdBoardableShip implements Area, BoardableShip
 	@Override public String rawImage(){return imageName;}
 	@Override public void setImage(String newImage){imageName=newImage;}
 
+	@Override 
+	public String getHomePortID() 
+	{ 
+		return this.shipItem != null ? shipItem.getHomePortID() : ""; 
+	}
+	@Override 
+	public void setHomePortID(String portID) 
+	{ 
+		if(this.shipItem != null)
+			this.shipItem.setHomePortID(portID);
+	}
+	
 	@Override public String getArchivePath(){return "";}
 	@Override public void setArchivePath(String pathFile){}
 
