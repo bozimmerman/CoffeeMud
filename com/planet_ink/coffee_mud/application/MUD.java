@@ -67,7 +67,6 @@ public class MUD extends Thread implements MudHost
 	private static final int	  HOST_VERSION_MINOR	= 4;
 	private static enum MudState {STARTING,WAITING,ACCEPTING,STOPPED}
 
-
 	private volatile MudState state		 = MudState.STOPPED;
 	private ServerSocket	  servsock	 = null;
 	private boolean			  acceptConns= false;
