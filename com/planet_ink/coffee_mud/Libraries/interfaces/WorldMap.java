@@ -74,6 +74,8 @@ public interface WorldMap extends CMLibrary
 	public Room findConnectingRoom(Room room);
 	public int getRoomDir(Room from, Room to);
 	public int getExitDir(Room from, Exit to);
+	public Area getTargetArea(Room from, Exit to);
+	public Room getTargetRoom(Room from, Exit to);
 
 	/************************************************************************/
 	/**								SEARCH TOOLS 							*/

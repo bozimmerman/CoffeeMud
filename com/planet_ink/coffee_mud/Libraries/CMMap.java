@@ -1568,6 +1568,26 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public Area getTargetArea(Room from, Exit to)
+	{
+		final Room R=getTargetRoom(from, to);
+		if(R==null)
+			return null;
+		return R.getArea();
+	}
+	
+	@Override
+	public Room getTargetRoom(Room from, Exit to)
+	{
+		if((from==null)||(to==null))
+			return null;
+		final int d=getExitDir(from, to);
+		if(d<0)
+			return null;
+		return from.getRoomInDir(d);
+	}
+	
+	@Override
 	public int getExitDir(Room from, Exit to)
 	{
 		if((from==null)||(to==null))

@@ -791,7 +791,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				if((!msg.source().Name().equals(Name()))
 				&&(owner() instanceof Room)
 				&&(msg.target() instanceof Room)
-				&&(((Room)msg.target()).getArea()!=area))
+				&&(((Room)msg.target()).getArea()!=area)
+				&&(!getDestinationRoom().isHere(msg.tool())))
 					sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, msg.sourceMessage(), msg.targetMessage(), msg.othersMessage()), true);
 				break;
 			case CMMsg.TYP_ENTER:
@@ -799,7 +800,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				if((!msg.source().Name().equals(Name()))
 				&&(owner() instanceof Room)
 				&&(msg.target() instanceof Room)
-				&&(((Room)msg.target()).getArea()!=area))
+				&&(((Room)msg.target()).getArea()!=area)
+				&&(!getDestinationRoom().isHere(msg.tool())))
 					sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, msg.sourceMessage(), msg.targetMessage(), msg.othersMessage()), true);
 				break;
 			}
