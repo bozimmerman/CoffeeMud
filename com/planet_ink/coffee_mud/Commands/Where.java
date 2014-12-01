@@ -199,9 +199,9 @@ public class Where extends StdCommand
 					who=who.substring(10).trim();
 				}
 
-				Enumeration<Room> r=(roomOnly||exitOnly)?CMLib.map().rooms():CMLib.map().roomsFilled();
+				MultiEnumeration<Room> r=new MultiEnumeration<Room>((roomOnly||exitOnly)?CMLib.map().rooms():CMLib.map().roomsFilled());
 				if(who.toUpperCase().startsWith("AREA ")||areaFlag)
-					r=(roomOnly||exitOnly)?mob.location().getArea().getProperMap():mob.location().getArea().getFilledProperMap();
+					r=new MultiEnumeration<Room>((roomOnly||exitOnly)?mob.location().getArea().getProperMap():mob.location().getArea().getFilledProperMap());
 				if(who.toUpperCase().startsWith("AREA "))
 					who=who.substring(5).trim();
 				Room R = null;
@@ -244,6 +244,8 @@ public class Where extends StdCommand
 								for(int i=0;i<R.numItems();i++)
 								{
 									final Item I=R.getItem(i);
+									if(I instanceof BoardableShip)
+										r.addEnumeration(((BoardableShip)I).getShipArea().getProperMap());
 									if((zapperMask)&&(itemOnly))
 									{
 										if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
@@ -320,6 +322,8 @@ public class Where extends StdCommand
 										for(int i=0;i<M.numItems();i++)
 										{
 											final Item I=M.getItem(i);
+											if(I instanceof BoardableShip)
+												r.addEnumeration(((BoardableShip)I).getShipArea().getProperMap());
 											if((zapperMask)&&(itemOnly))
 											{
 												if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
@@ -358,6 +362,8 @@ public class Where extends StdCommand
 										for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 										{
 											final Environmental E=i.next();
+											if(E instanceof BoardableShip)
+												r.addEnumeration(((BoardableShip)E).getShipArea().getProperMap());
 											if((zapperMask)&&(E instanceof Item)&&(itemOnly))
 											{
 												if(CMLib.masking().maskCheck(compiledZapperMask,E,true))
