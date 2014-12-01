@@ -1050,6 +1050,14 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return new BoundedObject.BoundedCube(coordinates(),radius());
 	}
 
+	@Override
+	public boolean isSavable()
+	{
+		if(!super.isSavable())
+			return false;
+		return (getOwnerName().length()==0);
+	}
+
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","AREA","COORDS","RADIUS",
 											"ROLL","DIRECTION","SPEED","FACING","OWNER","PRICE","DEFCLOSED","DEFLOCKED",

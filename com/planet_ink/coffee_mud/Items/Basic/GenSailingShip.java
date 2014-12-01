@@ -975,6 +975,14 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		return dismountString;
 	}
 	
+	@Override
+	public boolean isSavable()
+	{
+		if(!super.isSavable())
+			return false;
+		return (getOwnerName().length()==0);
+	}
+
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
 											"EXITNAME"
