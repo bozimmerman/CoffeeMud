@@ -1,5 +1,6 @@
 BUGS
   *. new ships, editing old ships, timestamps in mudgrinder stock inventory, everything is broken
+  *. close button on sailing area editor.
 
 TECH
    *. test and debug launch and landing
