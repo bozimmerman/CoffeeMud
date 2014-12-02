@@ -487,7 +487,8 @@ public class StdArea implements Area
 		{
 			for(int i=0;i<Integer.MAX_VALUE;i++)
 			{
-				if((CMLib.map().getRoom(Name()+"#"+i))==null)
+				if(((CMLib.map().getRoom(Name()+"#"+i))==null)
+				&&(getRoom(Name()+"#"+i)==null))
 					return Name()+"#"+i;
 			}
 		}
@@ -498,7 +499,8 @@ public class StdArea implements Area
 		for(int i=lowest;i<=highest+1000;i++)
 		{
 			if((!set.contains(i))
-			&&(CMLib.map().getRoom(Name()+"#"+i)==null))
+			&&(CMLib.map().getRoom(Name()+"#"+i)==null)
+			&&(getRoom(Name()+"#"+i)==null))
 				return Name()+"#"+i;
 		}
 		return Name()+"#"+(int)Math.round(Math.random()*Integer.MAX_VALUE);

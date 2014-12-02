@@ -1531,7 +1531,9 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					if(R.roomID().toUpperCase().startsWith(oldName.toUpperCase()+"#"))
 					{
-						final Room R2=getRoom(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
+						Room R2=A.getRoom(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
+						if(R2 == null)
+							R2=getRoom(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
 						if((R2==null)||(!R2.roomID().startsWith(A.Name()+"#")))
 						{
 							final String oldID=R.roomID();
