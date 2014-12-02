@@ -50,34 +50,34 @@ public class Transfer extends At
 			return false;
 		}
 		commands.removeElementAt(0);
-		String mobname=(String)commands.elementAt(0);
+		String searchName=(String)commands.elementAt(0);
 		final Room curRoom=mob.location();
 		final Vector V=new Vector();
 		boolean allFlag=false;
-		if(mobname.equalsIgnoreCase("ALL"))
+		if(searchName.equalsIgnoreCase("ALL"))
 		{
 			allFlag=true;
 			if(commands.size()>2)
 			{
 				commands.removeElementAt(0);
-				mobname=(String)commands.elementAt(0);
+				searchName=(String)commands.elementAt(0);
 			}
 			else
-				mobname="";
+				searchName="";
 		}
 		boolean itemFlag=false;
-		if((mobname.equalsIgnoreCase("item")||(mobname.equalsIgnoreCase("items"))))
+		if((searchName.equalsIgnoreCase("item")||(searchName.equalsIgnoreCase("items"))))
 		{
 			itemFlag=true;
 			if(commands.size()>2)
 			{
 				commands.removeElementAt(0);
-				mobname=(String)commands.elementAt(0);
+				searchName=(String)commands.elementAt(0);
 			}
 			else
-				mobname="";
+				searchName="";
 		}
-		if((mobname.length()==0)&&(allFlag))
+		if((searchName.length()==0)&&(allFlag))
 		{
 			if(itemFlag)
 				for(int i=0;i<curRoom.numItems();i++)
@@ -95,17 +95,17 @@ public class Transfer extends At
 		{
 			if(!allFlag)
 			{
-				final Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,mobname,Wearable.FILTER_UNWORNONLY);
+				final Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,searchName,Wearable.FILTER_UNWORNONLY);
 				if(E instanceof Item)
 					V.addElement(E);
 			}
 			else
-			if(mobname.length()>0)
+			if(searchName.length()>0)
 			{
 				for(int i=0;i<curRoom.numItems();i++)
 				{
 					final Item I=curRoom.getItem(i);
-					if((I!=null)&&(CMLib.english().containsString(I.name(),mobname)))
+					if((I!=null)&&(CMLib.english().containsString(I.name(),searchName)))
 						V.addElement(I);
 				}
 			}
@@ -114,7 +114,7 @@ public class Transfer extends At
 		{
 			if(!allFlag)
 			{
-				final MOB M=CMLib.sessions().findPlayerOnline(mobname,true);
+				final MOB M=CMLib.sessions().findPlayerOnline(searchName,true);
 				if(M!=null)
 					V.add(M);
 			}
@@ -126,7 +126,7 @@ public class Transfer extends At
 					int num=1;
 					while((num<=1)||(M!=null))
 					{
-						M=R.fetchInhabitant(mobname+"."+num);
+						M=R.fetchInhabitant(searchName+"."+num);
 						if((M!=null)&&(!V.contains(M)))
 							V.addElement(M);
 						num++;
@@ -147,7 +147,7 @@ public class Transfer extends At
 						int num=1;
 						while((num<=1)||(M!=null))
 						{
-							M=R.fetchInhabitant(mobname+"."+num);
+							M=R.fetchInhabitant(searchName+"."+num);
 							if((M!=null)&&(!V.contains(M)))
 								V.addElement(M);
 							num++;
@@ -163,7 +163,7 @@ public class Transfer extends At
 
 		if(V.size()==0)
 		{
-			mob.tell(L("Transfer what?  '@x1' is unknown to you.",mobname));
+			mob.tell(L("Transfer what?  '@x1' is unknown to you.",searchName));
 			return false;
 		}
 
