@@ -97,6 +97,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		if(area==null)
 		{
 			area=CMClass.getAreaType("StdBoardableShip");
+			CMLib.flags().setSavable(area, false);
 			final String num=Double.toString(Math.random());
 			area.setName(L("UNNAMED_@x1",num.substring(num.indexOf('.')+1)));
 			area.setTheme(Area.THEME_FANTASY);

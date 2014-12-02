@@ -140,6 +140,7 @@ public interface WorldMap extends CMLibrary
 	/************************************************************************/
 	/**							 SPACE METHODS 								*/
 	/************************************************************************/
+	public Enumeration<Area> areasPlusShips();
 	public long getRelativeSpeed(SpaceObject O1, SpaceObject O2);
 	public int numSpaceObjects();
 	public boolean isObjectInSpace(SpaceObject O);
@@ -227,7 +228,10 @@ public interface WorldMap extends CMLibrary
 	{
 		Enumeration<String> roomIDEnumerator=null;
 		Enumeration<Area> areaEnumerator=null;
-		public CompleteRoomIDEnumerator(WorldMap map){areaEnumerator=map.areas();}
+		public CompleteRoomIDEnumerator(WorldMap map)
+		{
+			areaEnumerator=map.areasPlusShips();
+		}
 		@Override
 		public boolean hasMoreElements()
 		{
