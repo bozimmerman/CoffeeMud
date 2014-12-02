@@ -757,11 +757,12 @@ public class StdGrid extends StdRoom implements GridLocale
 									if(backHere!=null)
 										backHere.moveItemTo(I,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 									else
-									if((I instanceof BoardableShip)&&(CMLib.map().getRoom(((BoardableShip)I).getHomePortID())!=null))
-										CMLib.map().getRoom(((BoardableShip)I).getHomePortID()).moveItemTo(I);
-									else
 									if((I instanceof PrivateProperty)&&(((PrivateProperty)I).getOwnerName().length()>0))
-										room.delItem(I);
+									{
+										final Room R=CMLib.map().getSafeRoomToMovePropertyTo(room, (PrivateProperty)I);
+										if((R!=null)&&(R!=room))
+											R.moveItemTo(I);
+									}
 									else
 										I.destroy();
 									if(room.isContent(I))

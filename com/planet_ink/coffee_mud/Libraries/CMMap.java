@@ -1900,6 +1900,59 @@ public class CMMap extends StdLibrary implements WorldMap
 			return areaLocation(((Exit)E).lastRoomUsedFrom());
 		return null;
 	}
+	
+	@Override
+	public Room getSafeRoomToMovePropertyTo(Room room, PrivateProperty I)
+	{
+		if(I instanceof BoardableShip)
+		{
+			final Room R=getRoom(((BoardableShip)I).getHomePortID());
+			if((R!=null)&&(R!=room)&&(!R.amDestroyed()))
+				return R;
+		}
+		if(room != null)
+		{
+			Room R=null;
+			if(room.getGridParent()!=null)
+			{
+				R=getRoom(room.getGridParent());
+				if((R!=null)&&(R!=room)&&(!R.amDestroyed())&&(R.roomID().length()>0))
+					return R;
+			}
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			{
+				R=getRoom(room.getRoomInDir(d));
+				if((R!=null)&&(R!=room)&&(!R.amDestroyed())&&(R.roomID().length()>0))
+					return R;
+			}
+			if(room.getGridParent()!=null)
+			{
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				{
+					R=getRoom(room.getGridParent().getRoomInDir(d));
+					if((R!=null)&&(R!=room)&&(!R.amDestroyed())&&(R.roomID().length()>0))
+						return R;
+				}
+			}
+			final Area A=room.getArea();
+			if(A!=null)
+			{
+				for(int i=0;i<A.numberOfProperIDedRooms();i++)
+				{
+					R=getRoom(A.getRandomProperRoom());
+					if((R!=null)&&(R!=room)&&(!R.amDestroyed())&&(R.roomID().length()>0))
+						return R;
+				}
+			}
+		}
+		for(int i=0;i<100;i++)
+		{
+			final Room R=getRoom(this.getRandomRoom());
+			if((R!=null)&&(R!=room)&&(!R.amDestroyed())&&(R.roomID().length()>0))
+				return R;
+		}
+		return null;
+	}
 
 	@Override
 	public void emptyRoom(Room room, Room toRoom, boolean clearPlayers)
@@ -1960,16 +2013,13 @@ public class CMMap extends StdLibrary implements WorldMap
 				I=i.nextElement();
 				if(I != null)
 				{
-					if(I instanceof BoardableShip)
+					if((I instanceof PrivateProperty)&&((((PrivateProperty)I).getOwnerName().length()>0)))
 					{
-						final Room R=getRoom(((BoardableShip)I).getHomePortID());
+						final Room R=this.getSafeRoomToMovePropertyTo(room, (PrivateProperty)I);
 						if((R!=null)&&(R!=room))
-						{
 							R.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
-							continue;
-						}
 					}
-					if((!(I instanceof PrivateProperty))||((((PrivateProperty)I).getOwnerName().length()==0)))
+					else
 						I.destroy();
 				}
 			}
@@ -2600,12 +2650,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			final PrivateProperty P=propertyHere.elementAt(p).first;
 			Room R=getRoom(propertyHere.elementAt(p).second);
-			if((R==null)&&(P instanceof BoardableShip))
-				R=getRoom(((BoardableShip)P).getHomePortID());
-			if(R==null)
-				R=area.getRandomProperRoom();
-			if(R==null)
-				R=this.getRandomRoom();
+			if((R==null)||(R.amDestroyed()))
+				R=getSafeRoomToMovePropertyTo((R==null)?area.getRandomProperRoom():R,P);
 			if(R!=null)
 				R.moveItemTo((Item)P);
 		}
