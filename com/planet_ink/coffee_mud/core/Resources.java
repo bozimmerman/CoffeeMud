@@ -321,6 +321,8 @@ public class Resources
 
 	public final Object _submitResource(final String ID, final Object obj)
 	{
+		if(ID==null)
+			Log.errOut("Resources",new Exception("Null ID"));
 		final Object prepared=prepareObject(obj);
 		if(prepared != obj)
 			resources.put(ID,new CompressedResource((byte[])prepared));
