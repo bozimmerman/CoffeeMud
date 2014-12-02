@@ -482,7 +482,16 @@ public class MUD extends Thread implements MudHost
 		{
 			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
 			for(final Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
-				e.nextElement().shutdown();
+			{
+				try
+				{
+					e.nextElement().shutdown();
+				}
+				catch(Throwable t)
+				{
+					Log.errOut(t);
+				}
+			}
 		}
 
 		if(S!=null)
