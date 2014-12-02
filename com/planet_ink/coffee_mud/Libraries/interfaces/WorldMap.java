@@ -223,42 +223,4 @@ public interface WorldMap extends CMLibrary
 			return EX;
 		}
 	}
-
-	public class CompleteRoomIDEnumerator implements Enumeration<String>
-	{
-		Enumeration<String> roomIDEnumerator=null;
-		Enumeration<Area> areaEnumerator=null;
-		public CompleteRoomIDEnumerator(WorldMap map)
-		{
-			areaEnumerator=map.areasPlusShips();
-		}
-		@Override
-		public boolean hasMoreElements()
-		{
-			if((roomIDEnumerator==null)||(!roomIDEnumerator.hasMoreElements()))
-				while(areaEnumerator.hasMoreElements())
-				{
-					final Area A=areaEnumerator.nextElement();
-					roomIDEnumerator=A.getProperRoomnumbers().getRoomIDs();
-					if(roomIDEnumerator.hasMoreElements())
-						return true;
-				}
-			return ((roomIDEnumerator!=null)&&(roomIDEnumerator.hasMoreElements()));
-		}
-		@Override public String nextElement(){ return hasMoreElements()?(String)roomIDEnumerator.nextElement():null;}
-	}
-
-	public static class MapCacheEntry implements CMObject
-	{
-		public final List<Room> rooms;
-		public final String ID;
-		public volatile long lastAccessed=System.currentTimeMillis();
-		public MapCacheEntry(final String ID, final List<Room> rooms) {this.ID=ID; this.rooms=rooms;}
-		@Override public String ID() { return ID;}
-		@Override public String name() { return ID();}
-		@Override public CMObject copyOf() { return this;}
-		@Override public void initializeClass() {}
-		@Override public CMObject newInstance() { return this;}
-		@Override public int compareTo(CMObject o) { return ID.compareTo(o.ID()); }
-	}
 }

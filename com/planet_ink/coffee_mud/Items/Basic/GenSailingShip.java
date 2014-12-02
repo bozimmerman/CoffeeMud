@@ -462,7 +462,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		if((R==null)|| R.amDestroyed() || (getAnyExitDir(R)<0))
 		{
 			Room R2=CMLib.map().getRoom(getHomePortID());
-			if((R2==null)&&(R.getArea()!=null))
+			if((R2==null)&&(R!=null)&&(R.getArea()!=null))
 				R2=findOceanRoom(R.getArea());
 			if(R2==null)
 				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)

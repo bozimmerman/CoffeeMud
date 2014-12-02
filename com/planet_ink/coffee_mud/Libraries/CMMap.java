@@ -222,9 +222,28 @@ public class CMMap extends StdLibrary implements WorldMap
 		return new FilteredEnumeration<Area>(areas(),planetsAreaFilter);
 	}
 
-	@Override public Enumeration<String> roomIDs()
+	@Override 
+	public Enumeration<String> roomIDs()
 	{
-		return new WorldMap.CompleteRoomIDEnumerator(this);
+		final Enumeration<Area> areaEnumerator=areasPlusShips();
+		return new Enumeration<String>()
+		{
+			Enumeration<String> roomIDEnumerator=null;
+			@Override
+			public boolean hasMoreElements()
+			{
+				if((roomIDEnumerator==null)||(!roomIDEnumerator.hasMoreElements()))
+					while(areaEnumerator.hasMoreElements())
+					{
+						final Area A=areaEnumerator.nextElement();
+						roomIDEnumerator=A.getProperRoomnumbers().getRoomIDs();
+						if(roomIDEnumerator.hasMoreElements())
+							return true;
+					}
+				return ((roomIDEnumerator!=null)&&(roomIDEnumerator.hasMoreElements()));
+			}
+			@Override public String nextElement(){ return hasMoreElements()?(String)roomIDEnumerator.nextElement():null;}
+		};
 	}
 	
 	@Override

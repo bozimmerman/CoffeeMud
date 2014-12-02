@@ -96,7 +96,7 @@ public class FactionList extends StdCommand
 			numTotal+=1.0;
 		}
 		final Faction.FRange FR=F.fetchRange(faction);
-		if((FR!=null)&&(FR.high() > FR.low()));
+		if((FR!=null)&&(FR.high() > FR.low()))
 			pctThisFaction = (faction - FR.low()) / (FR.high() - FR.low());
 		final double fillBit=(25.0 / numTotal);
 		final double fill = (fillBit * (numTotal - numLower)) + (fillBit * pctThisFaction); 
