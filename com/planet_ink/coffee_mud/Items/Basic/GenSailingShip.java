@@ -490,6 +490,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					   shop.isSold(ShopKeeper.DEAL_CLANPOSTMAN) 
 					|| shop.isSold(ShopKeeper.DEAL_CSHIPSELLER) 
 					|| shop.isSold(ShopKeeper.DEAL_CLANDSELLER);
+			CMLib.map().registerWorldObjectLoaded(null, null, this);
 			transferOwnership(msg.source(),clanSale);
 			return false;
 		}

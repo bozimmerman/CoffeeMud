@@ -288,7 +288,7 @@ public class Resources
 			@Override
 			public boolean passesFilter(String obj)
 			{
-				return (allOfThem) || (obj.toLowerCase().indexOf(lowerSrch)>=0);
+				return (allOfThem) || ((obj != null) && (obj.toLowerCase().indexOf(lowerSrch)>=0));
 			}
 		});
 	}

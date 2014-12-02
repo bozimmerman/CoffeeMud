@@ -61,32 +61,36 @@ public class Goto extends At
 		if(stack.size()>10)
 			stack.remove(0);
 		final Room curRoom=mob.location();
-		if("PARENT".startsWith(cmd.toString().toUpperCase()))
+		room=CMLib.map().getRoom(cmd.toString());
+		if(room == null)
 		{
-			if(mob.location().getGridParent()!=null)
-				room=mob.location().getGridParent();
-			else
-				mob.tell(L("This room is not a grid child."));
-		}
-		else
-		if("PREVIOUS".startsWith(cmd.toString().toUpperCase()))
-		{
-			if(stack.size()==0)
-				mob.tell(L("Your previous room stack is empty."));
-			else
+			if("PARENT".startsWith(cmd.toString().toUpperCase()))
 			{
-				room=CMLib.map().getRoom(stack.get(stack.size()-1));
-				stack.remove(stack.size()-1);
+				if(mob.location().getGridParent()!=null)
+					room=mob.location().getGridParent();
+				else
+					mob.tell(L("This room is not a grid child."));
 			}
+			else
+			if("PREVIOUS".startsWith(cmd.toString().toUpperCase()))
+			{
+				if(stack.size()==0)
+					mob.tell(L("Your previous room stack is empty."));
+				else
+				{
+					room=CMLib.map().getRoom(stack.get(stack.size()-1));
+					stack.remove(stack.size()-1);
+				}
+			}
+			else
+			if(CMLib.map().findArea(cmd.toString())!=null)
+				room=CMLib.map().findArea(cmd.toString()).getRandomProperRoom();
+			else
+			if(cmd.toString().toUpperCase().startsWith("AREA "))
+				room=CMLib.map().findAreaRoomLiberally(mob,curRoom.getArea(),CMParms.combine(commands,1),"RIPM",100);
+			else
+				room=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPMA",100,120000);
 		}
-		else
-		if(CMLib.map().findArea(cmd.toString())!=null)
-			room=CMLib.map().findArea(cmd.toString()).getRandomProperRoom();
-		else
-		if(cmd.toString().toUpperCase().startsWith("AREA "))
-			room=CMLib.map().findAreaRoomLiberally(mob,curRoom.getArea(),CMParms.combine(commands,1),"RIPM",100);
-		else
-			room=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPMA",100,120000);
 
 		if(room==null)
 		{

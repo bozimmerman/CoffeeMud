@@ -758,6 +758,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 							   shop.isSold(ShopKeeper.DEAL_CLANPOSTMAN) 
 							|| shop.isSold(ShopKeeper.DEAL_CSHIPSELLER) 
 							|| shop.isSold(ShopKeeper.DEAL_CLANDSELLER);
+					CMLib.map().registerWorldObjectLoaded(null, null, this);
 					transferOwnership(msg.source(),clanSale);
 				}
 				break;
