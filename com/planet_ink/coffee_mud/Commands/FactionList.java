@@ -82,11 +82,26 @@ public class FactionList extends StdCommand
 	public String calcRangeBar(String factionID, int faction)
 	{
 		final StringBuffer bar=new StringBuffer();
-		final Double fill=Double.valueOf(CMath.div(CMLib.factions().getRangePercent(factionID,faction),4));
-		for(int i=0;i<fill.intValue();i++)
+		final Faction F=CMLib.factions().getFaction(factionID);
+		if(F==null)
+			return bar.toString();
+		double numLower=0;
+		double numTotal=0;
+		double pctThisFaction = 0;
+		for(final Enumeration<Faction.FRange> r=F.ranges(); r.hasMoreElements();)
 		{
-			bar.append("*");
+			Faction.FRange range=r.nextElement();
+			if(range.low() > faction)
+				numLower+=1.0;
+			numTotal+=1.0;
 		}
+		final Faction.FRange FR=F.fetchRange(faction);
+		if((FR!=null)&&(FR.high() > FR.low()));
+			pctThisFaction = (faction - FR.low()) / (FR.high() - FR.low());
+		final double fillBit=(25.0 / numTotal);
+		final double fill = (fillBit * (numTotal - numLower)) + (fillBit * pctThisFaction); 
+		for(int i=0;i<fill;i++)
+			bar.append("*");
 		return bar.toString();
 	}
 
