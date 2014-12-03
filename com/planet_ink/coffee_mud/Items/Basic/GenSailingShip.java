@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.Items.Basic.StdPortal;
-import com.planet_ink.coffee_mud.Items.BasicTech.GenSpaceShip;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
@@ -124,7 +123,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			R.setRoomID(area.Name()+"#0");
 			R.setSavable(false);
 			area.addProperRoom(R);
-			((SpaceShip)area).setDockableItem(this);
+			((BoardableShip)area).setDockableItem(this);
 			readableText=R.roomID();
 		}
 		return area;
