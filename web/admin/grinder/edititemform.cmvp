@@ -161,13 +161,13 @@
 </TR>
 @if?ItemData?ISELECTRONIC@
 	<TR>
-		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Magic Level:</B></FONT></TD>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Tech Level:</B></FONT></TD>
 	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ABILITY SIZE=5 VALUE="@ItemData?ABILITY@">
 	    </TD>
 	</TR>
 @else@
 	<TR>
-		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Tech Level:</B></FONT></TD>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Magic Level:</B></FONT></TD>
 	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ABILITY SIZE=5 VALUE="@ItemData?ABILITY@">
 	    </TD>
 	</TR>
@@ -670,6 +670,13 @@
 	    	@endif@
 	    </TD>
 	</TR>
+	@if?!ItemData?ISELECTRONIC@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Moves per Tick:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ABILITY SIZE=5 VALUE="@ItemData?ABILITY@">
+	    </TD>
+	</TR>
+	@endif@
 	@endif@
 	@endif@
 	<TR>

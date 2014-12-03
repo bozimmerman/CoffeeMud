@@ -37,7 +37,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class StdBoardableShip implements Area, BoardableShip
+public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 {
 	protected String[]  	xtraValues  	= null;
 	protected String		imageName   	= "";
@@ -442,6 +442,7 @@ public class StdBoardableShip implements Area, BoardableShip
 			{
 			case CMMsg.TYP_HUH:
 			case CMMsg.TYP_COMMANDFAIL:
+			case CMMsg.TYP_COMMAND:
 				if(!this.shipItem.okMessage(myHost, msg))
 					return false;
 				break;
@@ -595,6 +596,7 @@ public class StdBoardableShip implements Area, BoardableShip
 			{
 			case CMMsg.TYP_HUH:
 			case CMMsg.TYP_COMMANDFAIL:
+			case CMMsg.TYP_COMMAND:
 				this.shipItem.executeMsg(myHost, msg);
 				break;
 			}
@@ -1457,5 +1459,51 @@ public class StdBoardableShip implements Area, BoardableShip
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
 		return true;
+	}
+
+	@Override
+	public int getPrice() 
+	{
+		if( getShipItem() instanceof PrivateProperty)
+			return ((PrivateProperty)getShipItem()).getPrice();
+		return 0;
+	}
+
+	@Override
+	public void setPrice(int price) 
+	{
+		if( getShipItem() instanceof PrivateProperty)
+			((PrivateProperty)getShipItem()).setPrice(price);
+	}
+
+	@Override
+	public String getOwnerName() 
+	{
+		if( getShipItem() instanceof PrivateProperty)
+			return ((PrivateProperty)getShipItem()).getOwnerName();
+		return "";
+	}
+
+	@Override
+	public void setOwnerName(String owner) 
+	{
+		if( getShipItem() instanceof PrivateProperty)
+			((PrivateProperty)getShipItem()).setOwnerName(owner);
+	}
+
+	@Override
+	public CMObject getOwnerObject() 
+	{
+		if( getShipItem() instanceof PrivateProperty)
+			return ((PrivateProperty)getShipItem()).getOwnerObject();
+		return null;
+	}
+
+	@Override
+	public String getTitleID() 
+	{
+		if( getShipItem() instanceof PrivateProperty)
+			return ((PrivateProperty)getShipItem()).getTitleID();
+		return null;
 	}
 }

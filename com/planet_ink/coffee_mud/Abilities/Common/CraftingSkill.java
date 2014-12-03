@@ -46,7 +46,7 @@ public class CraftingSkill extends GatheringSkill
 	protected Item buildingI=null;
 	protected Recipe recipeHolder = null;
 	protected boolean fireRequired=true;
-	protected enum CraftingActivity { CRAFTING, MENDING, LEARNING, REFITTING }
+	protected enum CraftingActivity { CRAFTING, MENDING, LEARNING, REFITTING, RETITLING }
 	protected CraftingActivity activity = CraftingActivity.CRAFTING;
 	protected boolean messedUp=false;
 

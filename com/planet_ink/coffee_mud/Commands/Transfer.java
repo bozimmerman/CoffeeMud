@@ -109,6 +109,47 @@ public class Transfer extends At
 						V.addElement(I);
 				}
 			}
+			if(V.size()==0)
+				for(final Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					Item I=null;
+					int num=1;
+					while((num<=1)||(I!=null))
+					{
+						I=R.findItem(searchName+"."+num);
+						if((I!=null)&&(!V.contains(I)))
+							V.addElement(I);
+						num++;
+						if((!allFlag)&&(V.size()>0))
+							break;
+					}
+					if((!allFlag)&&(V.size()>0))
+						break;
+				}
+			if(V.size()==0)
+			{
+				try
+				{
+					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					{
+						final Room R=(Room)r.nextElement();
+						Item I=null;
+						int num=1;
+						while((num<=1)||(I!=null))
+						{
+							I=R.findItem(searchName+"."+num);
+							if((I!=null)&&(!V.contains(I)))
+								V.addElement(I);
+							num++;
+							if((!allFlag)&&(V.size()>0))
+								break;
+						}
+						if((!allFlag)&&(V.size()>0))
+							break;
+					}
+				}catch(final NoSuchElementException nse){}
+			}
 		}
 		else
 		{

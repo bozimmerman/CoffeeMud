@@ -7787,7 +7787,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof ShipComponent)
 			{
 				final ShipComponent E=(ShipComponent)me;
-				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, "Installed Factor"));
+				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, L("Installed Factor")));
 			}
 			if(me instanceof PackagedItems)
 				((PackagedItems)me).setNumberOfItemsInPackage(prompt(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,"Number of items in the package"));
@@ -7801,6 +7801,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genRejuv(mob,me,++showNumber,showFlag);
 			if(me instanceof Coins)
 				genCoinStuff(mob,(Coins)me,++showNumber,showFlag);
+			else
+			if((me instanceof BoardableShip)&&(!(me instanceof SpaceObject)))
+				genAbility(mob,me,++showNumber,showFlag,L("Moves per Tick"));
 			else
 				genAbility(mob,me,++showNumber,showFlag);
 			genUses(mob,me,++showNumber,showFlag);
@@ -8154,6 +8157,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genMountText(mob,me,++showNumber,showFlag);
 			}
+			if((me instanceof BoardableShip)&&(!(me instanceof SpaceObject)))
+				genAbility(mob,me,++showNumber,showFlag,L("Moves per Tick"));
 			//if(me instanceof PrivateProperty)
 			//	me.setStat("OWNER",prompt(mob,((PrivateProperty)me).getOwnerName(),++showNumber,showFlag,CMStrings.capitalizeAndLower("Property Owner")));
 			genImage(mob,me,++showNumber,showFlag);

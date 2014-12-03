@@ -51,6 +51,8 @@ public class GenSailingShip extends StdBoardable
 		setName("a sailing ship [NEWNAME]");
 		setDisplayText("a sailing ship [NEWNAME] is here.");
 		setMaterial(RawMaterial.RESOURCE_OAK);
+		basePhyStats().setAbility(2);
+		this.recoverPhyStats();
 	}
 
 	@Override 
@@ -119,6 +121,16 @@ public class GenSailingShip extends StdBoardable
 			}
 		}
 	}
+
+	private enum SailingCommand
+	{
+		RAISE_ANCHOR,
+		LOWER_ANCHOR,
+		STEER,
+		SAIL,
+		COURSE,
+		SET_COURSE
+	}
 	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -127,204 +139,249 @@ public class GenSailingShip extends StdBoardable
 		&&(msg.targetMessage()!=null)
 		&&(area == CMLib.map().areaLocation(msg.source())))
 		{
-			List<String> cmds=CMParms.parse(msg.targetMessage());
+			final List<String> cmds=CMParms.parse(msg.targetMessage());
 			if(cmds.size()==0)
 				return true;
 			final String word=cmds.get(0).toUpperCase();
 			final String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
-			if(word.equals("RAISE") && secondWord.equals("ANCHOR"))
+			SailingCommand cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word);
+			if((cmd == null)&&(secondWord.length()>0))
+				cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word+"_"+secondWord);
+			if(cmd != null)
 			{
-				if(!securityCheck(msg.source()))
+				switch(cmd)
 				{
-					msg.source().tell(L("The captain does not permit you."));
-					return false;
-				}
-				if(safetyMove())
+				case RAISE_ANCHOR:
 				{
-					msg.source().tell(L("The ship has moved!"));
-					return false;
-				}
-				final Room R=CMLib.map().roomLocation(this);
-				if(!anchorDown)
-					msg.source().tell(L("The anchor is already up."));
-				else
-				if(R!=null)
-				{
-					CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, "<S-NAME> raise(s) anchor.");
-					if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
+					if(!securityCheck(msg.source()))
 					{
-						R.send(msg.source(), msg2);
-						this.sendAreaMessage(msg2, true);
-						anchorDown=false;
+						msg.source().tell(L("The captain does not permit you."));
+						return false;
 					}
+					if(safetyMove())
+					{
+						msg.source().tell(L("The ship has moved!"));
+						return false;
+					}
+					final Room R=CMLib.map().roomLocation(this);
+					if(!anchorDown)
+						msg.source().tell(L("The anchor is already up."));
+					else
+					if(R!=null)
+					{
+						CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, "<S-NAME> raise(s) anchor.");
+						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
+						{
+							R.send(msg.source(), msg2);
+							this.sendAreaMessage(msg2, true);
+							anchorDown=false;
+						}
+					}
+					return false;
 				}
+				case LOWER_ANCHOR:
+				{
+					if(!securityCheck(msg.source()))
+					{
+						msg.source().tell(L("The captain does not permit you."));
+						return false;
+					}
+					if(safetyMove())
+					{
+						msg.source().tell(L("The ship has moved!"));
+						return false;
+					}
+					final Room R=CMLib.map().roomLocation(this);
+					if(anchorDown)
+						msg.source().tell(L("The anchor is already down."));
+					else
+					if(R!=null)
+					{
+						CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, "<S-NAME> lower(s) anchor.");
+						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
+						{
+							R.send(msg.source(), msg2);
+							this.sendAreaMessage(msg2, true);
+							anchorDown=true;
+						}
+					}
+					return false;
+				}
+				case STEER:
+				{
+					if(!securityCheck(msg.source()))
+					{
+						msg.source().tell(L("The captain does not permit you."));
+						return false;
+					}
+					if(safetyMove())
+					{
+						msg.source().tell(L("The ship has moved!"));
+						return false;
+					}
+					this.directionFacing=-1;
+					int dir=Directions.getCompassDirectionCode(secondWord);
+					if(dir<0)
+					{
+						msg.source().tell(L("Steer the ship which direction?"));
+						return false;
+					}
+					final Room R=CMLib.map().roomLocation(this);
+					if(R==null)
+					{
+						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
+						return false;
+					}
+					final Room targetRoom=R.getRoomInDir(dir);
+					final Exit targetExit=R.getExitInDir(dir);
+					if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+					{
+						msg.source().tell(L("There doesn't look to be anything in that direction."));
+						return false;
+					}
+					steer(msg.source(),R, dir);
+					if(anchorDown)
+						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
+					return false;
+				}
+				case SAIL:
+				{
+					if(!securityCheck(msg.source()))
+					{
+						msg.source().tell(L("The captain does not permit you."));
+						return false;
+					}
+					if(safetyMove())
+					{
+						msg.source().tell(L("The ship has moved!"));
+						return false;
+					}
+					int dir=Directions.getCompassDirectionCode(secondWord);
+					if(dir<0)
+					{
+						msg.source().tell(L("Sail the ship which direction?"));
+						return false;
+					}
+					final Room R=CMLib.map().roomLocation(this);
+					if(R==null)
+					{
+						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
+						return false;
+					}
+					final Room targetRoom=R.getRoomInDir(dir);
+					final Exit targetExit=R.getExitInDir(dir);
+					if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+					{
+						msg.source().tell(L("There doesn't look to be anything in that direction."));
+						return false;
+					}
+					if(anchorDown)
+					{
+						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
+						return false;
+					}
+					break;
+				}
+				case COURSE:
+				case SET_COURSE:
+				{
+					if(!securityCheck(msg.source()))
+					{
+						msg.source().tell(L("The captain does not permit you."));
+						return false;
+					}
+					if(safetyMove())
+					{
+						msg.source().tell(L("The ship has moved!"));
+						return false;
+					}
+					this.directionFacing=-1;
+					final Room R=CMLib.map().roomLocation(this);
+					if(R==null)
+					{
+						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
+						return false;
+					}
+					int dirIndex = 1;
+					if(word.equals("SET"))
+						dirIndex = 2;
+					if(dirIndex >= cmds.size())
+					{
+						msg.source().tell(L("To set a course, you must specify some directions of travel, separated by spaces."));
+						return false;
+					}
+					int firstDir = -1;
+					this.courseDirections.clear();
+					for(;dirIndex<cmds.size();dirIndex++)
+					{
+						final String dirWord=cmds.get(dirIndex);
+						int dir=Directions.getCompassDirectionCode(dirWord);
+						if(dir<0)
+						{
+							msg.source().tell(L("@x1 is not a valid direction.",dirWord));
+							return false;
+						}
+						if(firstDir < 0)
+							firstDir = dir;
+						else
+							this.courseDirections.add(Integer.valueOf(dir));
+					}
+					final Room targetRoom=R.getRoomInDir(firstDir);
+					final Exit targetExit=R.getExitInDir(firstDir);
+					if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+					{
+						msg.source().tell(L("There doesn't look to be anything in that direction."));
+						return false;
+					}
+					steer(msg.source(),R, firstDir);
+					if(anchorDown)
+						msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
+					return false;
+				}
+				}
+			}
+			if(cmd != null)
+			{
+				cmds.add(0, "METAMSGCOMMAND");
+				double speed = (phyStats().ability()<=0) ? 1.0 : (double)phyStats().ability();
+				speed = msg.source().phyStats().speed() / speed;
+				msg.source().enqueCommand(cmds, Command.METAFLAG_ASMESSAGE, speed);
 				return false;
 			}
-			else
-			if(word.equals("LOWER")  && secondWord.equals("ANCHOR"))
+		}
+		else
+		if((msg.sourceMinor()==CMMsg.TYP_COMMAND)
+		&&(msg.sourceMessage()!=null)
+		&&(area == CMLib.map().areaLocation(msg.source())))
+		{
+			final List<String> cmds=CMParms.parse(msg.sourceMessage());
+			if(cmds.size()==0)
+				return true;
+			final String word=cmds.get(0).toUpperCase();
+			final String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
+			SailingCommand cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word);
+			if((cmd == null)&&(secondWord.length()>0))
+				cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word+"_"+secondWord);
+			if(cmd == null)
+				return true;
+			switch(cmd)
 			{
-				if(!securityCheck(msg.source()))
-				{
-					msg.source().tell(L("The captain does not permit you."));
-					return false;
-				}
-				if(safetyMove())
-				{
-					msg.source().tell(L("The ship has moved!"));
-					return false;
-				}
-				final Room R=CMLib.map().roomLocation(this);
-				if(anchorDown)
-					msg.source().tell(L("The anchor is already down."));
-				else
-				if(R!=null)
-				{
-					CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, "<S-NAME> lower(s) anchor.");
-					if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
-					{
-						R.send(msg.source(), msg2);
-						this.sendAreaMessage(msg2, true);
-						anchorDown=true;
-					}
-				}
-				return false;
-			}
-			else
-			if(word.equals("STEER"))
+			case SAIL:
 			{
-				if(!securityCheck(msg.source()))
-				{
-					msg.source().tell(L("The captain does not permit you."));
-					return false;
-				}
-				if(safetyMove())
-				{
-					msg.source().tell(L("The ship has moved!"));
-					return false;
-				}
-				this.directionFacing=-1;
 				int dir=Directions.getCompassDirectionCode(secondWord);
 				if(dir<0)
-				{
-					msg.source().tell(L("Steer the ship which direction?"));
 					return false;
-				}
 				final Room R=CMLib.map().roomLocation(this);
 				if(R==null)
-				{
-					msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
 					return false;
-				}
-				final Room targetRoom=R.getRoomInDir(dir);
-				final Exit targetExit=R.getExitInDir(dir);
-				if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
-				{
-					msg.source().tell(L("There doesn't look to be anything in that direction."));
-					return false;
-				}
-				steer(msg.source(),R, dir);
-				if(anchorDown)
-					msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
-				return false;
-			}
-			else
-			if(word.equals("SAIL"))
-			{
-				if(!securityCheck(msg.source()))
-				{
-					msg.source().tell(L("The captain does not permit you."));
-					return false;
-				}
-				if(safetyMove())
-				{
-					msg.source().tell(L("The ship has moved!"));
-					return false;
-				}
-				int dir=Directions.getCompassDirectionCode(secondWord);
-				if(dir<0)
-				{
-					msg.source().tell(L("Sail the ship which direction?"));
-					return false;
-				}
-				final Room R=CMLib.map().roomLocation(this);
-				if(R==null)
-				{
-					msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
-					return false;
-				}
-				final Room targetRoom=R.getRoomInDir(dir);
-				final Exit targetExit=R.getExitInDir(dir);
-				if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
-				{
-					msg.source().tell(L("There doesn't look to be anything in that direction."));
-					return false;
-				}
-				if(anchorDown)
-				{
-					msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
-					return false;
-				}
 				sail(dir);
 				this.directionFacing=-1;
 				return false;
 			}
-			else
-			if(word.equals("COURSE") || (word.equals("SET") && word.equals("COURSE")))
-			{
-				if(!securityCheck(msg.source()))
-				{
-					msg.source().tell(L("The captain does not permit you."));
-					return false;
-				}
-				if(safetyMove())
-				{
-					msg.source().tell(L("The ship has moved!"));
-					return false;
-				}
-				this.directionFacing=-1;
-				final Room R=CMLib.map().roomLocation(this);
-				if(R==null)
-				{
-					msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
-					return false;
-				}
-				int dirIndex = 1;
-				if(word.equals("SET"))
-					dirIndex = 2;
-				if(dirIndex >= cmds.size())
-				{
-					msg.source().tell(L("To set a course, you must specify some directions of travel, separated by spaces."));
-					return false;
-				}
-				int firstDir = -1;
-				this.courseDirections.clear();
-				for(;dirIndex<cmds.size();dirIndex++)
-				{
-					final String dirWord=cmds.get(dirIndex);
-					int dir=Directions.getCompassDirectionCode(dirWord);
-					if(dir<0)
-					{
-						msg.source().tell(L("@x1 is not a valid direction.",dirWord));
-						return false;
-					}
-					if(firstDir < 0)
-						firstDir = dir;
-					else
-						this.courseDirections.add(Integer.valueOf(dir));
-				}
-				final Room targetRoom=R.getRoomInDir(firstDir);
-				final Exit targetExit=R.getExitInDir(firstDir);
-				if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
-				{
-					msg.source().tell(L("There doesn't look to be anything in that direction."));
-					return false;
-				}
-				steer(msg.source(),R, firstDir);
-				if(anchorDown)
-					msg.source().tell(L("The anchor is down, so you won`t be moving anywhere."));
+			default:
+				// already done...
 				return false;
 			}
-			return true;
 		}
 		if(!super.okMessage(myHost, msg))
 			return false;
@@ -340,12 +397,23 @@ public class GenSailingShip extends StdBoardable
 				return false;
 			if((!this.anchorDown) && (area != null) && (directionFacing != -1))
 			{
-				if(sail(directionFacing)!=-1)
+				int speed=phyStats().ability();
+				if(speed <= 0)
+					speed=1;
+				for(int s=0;s<speed;s++)
 				{
-					if(this.courseDirections.size()>0)
+					if(sail(directionFacing)!=-1)
 					{
-						final Integer newDir=this.courseDirections.remove(0);
-						directionFacing = newDir.intValue();
+						if(this.courseDirections.size()>0)
+						{
+							final Integer newDir=this.courseDirections.remove(0);
+							directionFacing = newDir.intValue();
+						}
+					}
+					else
+					{
+						directionFacing=-1;
+						break;
 					}
 				}
 			}

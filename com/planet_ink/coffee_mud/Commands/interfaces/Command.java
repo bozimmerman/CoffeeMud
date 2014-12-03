@@ -154,4 +154,6 @@ public interface Command extends CMObject
 	public static final int METAFLAG_AS=16;
 	/** constant mask for the metaflags parameter for execute and preexecute, means being forced with spells*/
 	public static final int METAFLAG_FORCED=32;
+	/** constant mask for the metaflags parameter for execute and preexecute, means being a meta-command*/
+	public static final int METAFLAG_ASMESSAGE=64;
 }

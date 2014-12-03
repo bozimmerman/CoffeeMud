@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -51,6 +52,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		+"ITEM_CLASS_ID\tRIDE_BASIS\tCONTAINER_CAPACITY||RIDE_CAPACITY\tCONTAINER_TYPE\t"
 		+"CODED_SPELL_LIST";}
 
+	private String reTitle=null;
+	private String reDesc=null;
+	
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
@@ -69,7 +73,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(buildingI==null)
+			if((buildingI==null)&&(activity != CraftingActivity.RETITLING))
 				unInvoke();
 		}
 		return super.tick(ticking,tickID);
@@ -86,6 +90,19 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
+				if((activity == CraftingActivity.RETITLING)&&(!aborted))
+				{
+					if((messedUp)||(mob.location()!=activityRoom))
+						commonEmote(mob,L("<S-NAME> mess(es) up <S-HIS-HER> work on @x1.",activityRoom.displayText()));
+					else
+					{
+						activityRoom.setDisplayText(reTitle);
+						activityRoom.setDescription(reDesc);
+						reTitle=null;
+						reDesc=null;
+					}
+				}
+				else
 				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
@@ -192,7 +209,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item>\", \"shipwright mend <item>\", \"shipwright desc <text>\", or \"shipwright stop\" to cancel."));
+			commonTell(mob,L("Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item>\", \"shipwright mend <item>\", \"shipwright title <text>\", \"shipwright desc <text>\", or \"shipwright stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -266,6 +283,89 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
 			displayText=L("You are mending @x1",buildingI.name());
 			verb=L("mending @x1",buildingI.name());
+		}
+		else
+		if(str.equalsIgnoreCase("title"))
+		{
+			buildingI=null;
+			activity = CraftingActivity.CRAFTING;
+			key=null;
+			messedUp=false;
+			aborted=false;
+			final Room R=mob.location();
+			if((R==null)
+			||(!CMLib.law().doesOwnThisProperty(mob,R)))
+			{
+				commonTell(mob,L("You are not permitted to do that here."));
+				return false;
+			}
+			if(!(R.getArea() instanceof BoardableShip))
+			{
+				commonTell(mob,L("You don't know how to do that here."));
+				return false;
+			}
+
+			final String title=CMParms.combine(commands,1);
+			if(title.length()==0)
+			{
+				commonTell(mob,L("A title must be specified."));
+				return false;
+			}
+			final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+			final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
+			for (final Room room2 : checkSet)
+			{
+				final Room R2=CMLib.map().getRoom(room2);
+				if(R2.displayText(mob).equalsIgnoreCase(title))
+				{
+					commonTell(mob,L("That title has already been taken.  Choose another."));
+					return false;
+				}
+			}
+			reTitle=title;
+			reDesc=R.description();
+			activity = CraftingActivity.RETITLING;
+			activityRoom=R;
+			duration=getDuration(10,mob,mob.phyStats().level(),3);
+		}
+		else
+		if(str.equalsIgnoreCase("desc"))
+		{
+			buildingI=null;
+			activity = CraftingActivity.CRAFTING;
+			key=null;
+			messedUp=false;
+			aborted=false;
+			final Room R=mob.location();
+			if((R==null)
+			||(!CMLib.law().doesOwnThisProperty(mob,R)))
+			{
+				commonTell(mob,L("You are not permitted to do that here."));
+				return false;
+			}
+			if(!(R.getArea() instanceof BoardableShip))
+			{
+				commonTell(mob,L("You don't know how to do that here."));
+				return false;
+			}
+
+			if(commands.size()<2)
+			{
+				commonTell(mob,L("You must specify a description for it."));
+				return false;
+			}
+
+			final String newDescription=CMParms.combine(commands,1);
+			if(newDescription.length()==0)
+			{
+				commonTell(mob,L("A description must be specified."));
+				return false;
+			}
+			reTitle=R.displayText();
+			reDesc=newDescription;
+			activity = CraftingActivity.RETITLING;
+			activityRoom=R;
+			duration=getDuration(40,mob,mob.phyStats().level(),10);
 		}
 		else
 		{
@@ -390,8 +490,16 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			startStr=L("<S-NAME> start(s) @x1.",verb);
 			displayText=L("You are @x1",verb);
 		}
+		else
+		if(activity == CraftingActivity.RETITLING)
+		{
+			messedUp=false;
+			verb=L("working on @x1",mob.location().displayText());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
+		}
 
-		if(parsedVars.autoGenerate>0)
+		if((parsedVars.autoGenerate>0) && (activity != CraftingActivity.RETITLING))
 		{
 			commands.addElement(buildingI);
 			return true;
