@@ -5,6 +5,14 @@
 <HTML>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
+ 	<script language=JavaScript>
+ 	<!--
+ 		function closeThisWindow()
+ 		{
+ 			window.close();
+ 		}
+ 	//-->
+ 	</script>
 </head>
 <FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
 	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/map.cmvp?@RequestParametersEncoded@&@if?!CheckReqParm?ROOM=@ROOM=@RequestParameterEncoded?ROOM@&BLAH#@RequestParameterEncoded?ROOM@ @endif@" NAME=MAP>

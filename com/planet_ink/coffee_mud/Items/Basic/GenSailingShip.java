@@ -233,7 +233,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	@Override 
 	public void setReadableText(String text)
 	{
-		readableText=text;
+		if((text!=null)&&(text.length()>0))
+			readableText=text;
 	}
 
 	@Override
@@ -351,7 +352,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	@Override
 	public void renameShip(String newName)
 	{
-		final Area area=this.area;
+		final Area area=getShipArea();
 		if(area instanceof BoardableShip)
 		{
 			final Room oldEntry=getDestinationRoom();

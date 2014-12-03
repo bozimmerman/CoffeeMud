@@ -188,7 +188,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override 
 	public void setReadableText(String text)
 	{
-		readableText=text;
+		if((text!=null)&&(text.length()>0))
+			readableText=text;
 	}
 
 	@Override

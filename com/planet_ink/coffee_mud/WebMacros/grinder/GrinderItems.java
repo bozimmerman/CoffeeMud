@@ -224,7 +224,7 @@ public class GrinderItems
 					CMLib.flags().setReadable(I,old.equals("on"));
 					break;
 				case READABLETEXT: // readable text
-					if(!(I instanceof Ammunition))
+					if((!(I instanceof Ammunition))&&(old!=null))
 						I.setReadableText(old);
 					break;
 				case ISDRINK: // is drink
