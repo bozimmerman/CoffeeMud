@@ -2133,36 +2133,40 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected MOB rideableMOBTypeSwitch(final LoginSession loginObj, final Session session)
+	protected MOB setMOBClass(final String classID, final LoginSession loginObj, final Session session)
 	{
 		MOB mob=loginObj.mob;
-		MOB rideableM = CMClass.getMOB("StdRideable");
-		final PlayerStats playerStats=mob.playerStats();
-		PlayerAccount account=null;
-		if(playerStats!=null)
-			account=playerStats.getAccount();
-		rideableM.setName(mob.Name());
-		rideableM.setAttributesBitmap(mob.getAttributesBitmap());
-		rideableM.setDisplayText(mob.displayText());
-		rideableM.setDescription(mob.description());
-		rideableM.setPlayerStats(playerStats);
-		rideableM.setBaseCharStats(mob.baseCharStats());
-		rideableM.setBasePhyStats(mob.basePhyStats());
-		rideableM.setBaseState(mob.baseState());
-		rideableM.recoverCharStats();
-		rideableM.recoverPhyStats();
-		rideableM.recoverMaxState();
-		loginObj.mob=rideableM;
-		session.setMob(rideableM);
-		rideableM.setSession(session);
-		mob.setSession(null);
-		mob.destroy();
-		if(account!=null)
+		if(!mob.ID().equalsIgnoreCase(classID))
 		{
-			account.delPlayer(mob);
-			account.addNewPlayer(rideableM);
+			MOB newM = CMClass.getMOB(classID);
+			final PlayerStats playerStats=mob.playerStats();
+			PlayerAccount account=null;
+			if(playerStats!=null)
+				account=playerStats.getAccount();
+			newM.setName(mob.Name());
+			newM.setAttributesBitmap(mob.getAttributesBitmap());
+			newM.setDisplayText(mob.displayText());
+			newM.setDescription(mob.description());
+			newM.setPlayerStats(playerStats);
+			newM.setBaseCharStats(mob.baseCharStats());
+			newM.setBasePhyStats(mob.basePhyStats());
+			newM.setBaseState(mob.baseState());
+			newM.recoverCharStats();
+			newM.recoverPhyStats();
+			newM.recoverMaxState();
+			loginObj.mob=newM;
+			session.setMob(newM);
+			newM.setSession(session);
+			mob.setSession(null);
+			mob.destroy();
+			if(account!=null)
+			{
+				account.delPlayer(mob);
+				account.addNewPlayer(newM);
+			}
+			return newM;
 		}
-		return rideableM;
+		return mob;
 	}
 	
 	protected LoginResult charcrRaceStart(final LoginSession loginObj, final Session session)
@@ -2176,8 +2180,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				newRace=CMClass.getRace("StdRace");
 			if(newRace != null)
 			{
-				if(newRace.useRideClass())
-					mob=rideableMOBTypeSwitch(loginObj,session);
+				mob=setMOBClass(newRace.useRideClass() ? "StdRideable" : "StdMOB", loginObj,session);
 				mob.baseCharStats().setMyRace(newRace);
 				loginObj.state=LoginState.CHARCR_RACEDONE;
 				return null;
@@ -2262,8 +2265,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if(str!=null) 
 					session.println("\n\r^N"+str.toString()+"\n\r");
 				session.promptPrint(L("^!Is ^H@x1^N^! correct (Y/n)?^N",newRace.name()));
-				if(newRace.useRideClass())
-					mob=rideableMOBTypeSwitch(loginObj,session);
+				mob=setMOBClass(newRace.useRideClass() ? "StdRideable" : "StdMOB", loginObj, session);
 				mob.baseCharStats().setMyRace(newRace);
 				loginObj.state=LoginState.CHARCR_RACECONFIRMED;
 				return LoginResult.INPUT_REQUIRED;
