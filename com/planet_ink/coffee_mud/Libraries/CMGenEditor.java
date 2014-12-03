@@ -1450,8 +1450,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			final StringBuilder str=new StringBuilder("");
 			if(defaultParentArea!=A)
-			for(final Enumeration<Area> a = A.getChildren(); a.hasMoreElements(); )
-				str.append(a.nextElement().Name()).append(";");
+			{
+				for(final Enumeration<Area> a = A.getChildren(); a.hasMoreElements(); )
+					str.append(a.nextElement().Name()).append(";");
+			}
+			else
+				str.append("* This is the Default parent area *");
 			mob.tell(L("@x1. Children areas: @x2",""+showNumber,str.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;

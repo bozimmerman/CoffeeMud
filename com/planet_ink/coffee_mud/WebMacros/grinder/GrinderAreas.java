@@ -379,8 +379,11 @@ public class GrinderAreas
 		for(int i=0;i<areasNeedingUpdates.size();i++) // will always include A
 		{
 			final Area A2=(Area)areasNeedingUpdates.elementAt(i);
-			CMLib.database().DBUpdateArea(A2.Name(),A2);
-			CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A2);
+			if(CMLib.flags().isSavable(A2))
+			{
+				CMLib.database().DBUpdateArea(A2.Name(),A2);
+				CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A2);
+			}
 		}
 		return "";
 	}
