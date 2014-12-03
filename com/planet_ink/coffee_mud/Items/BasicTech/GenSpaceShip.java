@@ -46,7 +46,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 {
 	@Override public String ID(){	return "GenSpaceShip";}
 	protected String 		readableText	= "";
-	protected String 		owner 			= "";
+	protected String 		ownerName		= "";
 	protected int 			price 			= 1000;
 	protected Area 			area			= null;
 	protected Manufacturer	cachedManufact  = null;
@@ -66,16 +66,16 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public GenSpaceShip()
 	{
 		super();
-		setName("a space ship");
-		setDisplayText("a space ship is here.");
+		setName("the space ship [NEWNAME]");
+		setDisplayText("the space ship [NEWNAME] is here.");
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setDescription("");
-		this.doorName="hatch";
 		myUses=100;
+		this.doorName="hatch";
 		basePhyStats().setWeight(10000);
+		setUsesRemaining(100);
 		recoverPhyStats();
-		//CMLib.flags().setGettable(this, false);
-		CMLib.flags().setSavable(this, false);
+		CMLib.flags().setGettable(this, false);
 	}
 
 	@Override
@@ -93,12 +93,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return true;
 	}
 
-	@Override 
-	public TechType getTechType() 
-	{ 
-		return TechType.SHIP_SPACESHIP; 
+	@Override
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
 	}
-
+	
 	@Override 
 	public boolean subjectToWearAndTear()
 	{
@@ -122,37 +122,38 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			area=CMClass.getAreaType("StdSpaceShip");
 			CMLib.flags().setSavable(area, false);
 			final String num=Double.toString(Math.random());
-			area.setName(L("UNNAMED_@x1",num.substring(num.indexOf('.')+1)));
-			area.setSavable(false);
+			final int x=num.indexOf('.')+1;
+			final int len=((num.length()-x)/2)+1;
+			area.setName(L("UNNAMED_@x1",num.substring(x,x+len)));
 			area.setTheme(Area.THEME_TECHNOLOGY);
 			final Room R=CMClass.getLocale("MetalRoom");
+			R.setDisplayText("The Cockpit");
 			R.setRoomID(area.Name()+"#0");
 			R.setSavable(false);
 			area.addProperRoom(R);
-			((SpaceShip)area).setKnownSource(this);
+			((SpaceShip)area).setDockableItem(this);
 			readableText=R.roomID();
 		}
 		return area;
 	}
 
 	@Override
-	public Boolean getSetAirFlag(final Boolean setInAirFlag)
+	public void setDockableItem(Item dockableItem)
 	{
-		if((setInAirFlag != null) && (setInAirFlag != this.inAirFlag))
-			this.inAirFlag = setInAirFlag;
-		return this.inAirFlag;
+		if(area instanceof BoardableShip)
+			((BoardableShip)area).setDockableItem(dockableItem);
 	}
-	
+
 	@Override
 	public void setShipArea(String xml)
 	{
 		try
 		{
 			area=CMLib.coffeeMaker().unpackAreaObjectFromXML(xml);
-			if(area instanceof SpaceShip)
+			if(area instanceof BoardableShip)
 			{
 				area.setSavable(false);
-				((SpaceShip)area).setDockableItem(this);
+				((BoardableShip)area).setDockableItem(this);
 				for(final Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
 					CMLib.flags().setSavable(r.nextElement(), false);
 			}
@@ -168,6 +169,72 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 	}
 
+	@Override
+	public void dockHere(Room R)
+	{
+		if(!R.isContent(this))
+		{
+			if(owner()==null)
+				R.addItem(this,Expire.Never);
+			else
+				R.moveItemTo(me, Expire.Never, Move.Followers);
+		}
+		if(R instanceof LocationRoom)
+			setCoords(((LocationRoom)R).coordinates());
+		if(this.homePortID.length()==0)
+			this.homePortID=CMLib.map().getExtendedRoomID(R);
+		CMLib.map().delObjectInSpace(getShipSpaceObject());
+		if (area instanceof SpaceShip)
+			((SpaceShip)area).dockHere(R);
+		setSpeed(0);
+	}
+
+	@Override
+	public void unDock(boolean moveToOutside)
+	{
+		final Room R=getIsDocked();
+		if(R!=null)
+		{
+			R.delItem(this);
+			setOwner(null);
+		}
+		if (area instanceof BoardableShip)
+			((BoardableShip)area).unDock(moveToOutside);
+		if(R instanceof LocationRoom)
+		{
+			setDirection(((LocationRoom)R).getDirectionFromCore());
+			setFacing(((LocationRoom)R).getDirectionFromCore());
+		}
+		if(moveToOutside)
+		{
+			final SpaceObject o = getShipSpaceObject();
+			if((o != null)&&(R instanceof LocationRoom))
+				CMLib.map().addObjectToSpace(o,((LocationRoom)R).coordinates());
+		}
+	}
+
+	@Override
+	public Room getIsDocked()
+	{
+		if (area instanceof BoardableShip)
+			return ((BoardableShip)area).getIsDocked();
+		if(owner() instanceof LocationRoom)
+			return ((LocationRoom)owner());
+		return null;
+	}
+
+	@Override 
+	public String getHomePortID() 
+	{ 
+		return this.homePortID; 
+	}
+	
+	@Override 
+	public void setHomePortID(String portID) 
+	{ 
+		this.homePortID = portID;
+	}
+
 	@Override 
 	public String keyName() 
 	{ 
@@ -177,6 +244,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override 
 	public void setKeyName(String newKeyName) 
 	{ 
+		// don't do this, as MUDGrinder mucks it up
 	}
 
 	@Override 
@@ -216,17 +284,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		s.setShipArea(xml);
 		s.setReadableText(readableText()); // in case this was first call to getShipArea()
 		CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(s.getShipArea()));
-		/*
-		if(s.getShipArea().Name().startsWith("UNNAMED_"))
-		{
-			String num=Double.toString(Math.random());
-			String oldName=s.Name();
-			String oldDisplay=s.displayText();
-			s.renameSpaceShip("UNNAMED_"+num.substring(num.indexOf('.')+1));
-			s.setName(oldName);
-			s.setDisplayText(oldDisplay);
-		}
-		*/
 		return s;
 	}
 
@@ -244,31 +301,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 
 	@Override
-	public void setDockableItem(Item dockableItem)
-	{
-		if(area instanceof SpaceShip)
-			((SpaceShip)area).setDockableItem(dockableItem);
-	}
-
-	@Override 
-	public String getHomePortID() 
-	{ 
-		return this.homePortID; 
-	}
-	
-	@Override 
-	public void setHomePortID(String portID) 
-	{ 
-		this.homePortID = portID;
-	}
-	
-	@Override
 	protected Room getDestinationRoom()
 	{
 		getShipArea();
 		Room R=null;
 		final List<String> V=CMParms.parseSemicolons(readableText(),true);
-		if(V.size()>0)
+		if((V.size()>0)&&(getShipArea()!=null))
 			R=getShipArea().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
 	}
@@ -279,250 +317,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		if(area!=null)
 			CMLib.map().obliterateArea(area);
 		super.destroy();
-	}
-
-	@Override public long powerCapacity(){return 0;}
-	@Override public void setPowerCapacity(long capacity){}
-	@Override public long powerRemaining(){return 0;}
-	@Override public int powerNeeds(){return 0;}
-	@Override public void setPowerRemaining(long remaining){}
-	@Override public void activate(boolean truefalse){}
-	
-	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
-	{
-		if(tickID == Tickable.TICKID_AREA)
-		{
-			if(amDestroyed())
-				return false;
-			
-			return true;
-		}
-		return super.tick(ticking, tickID);
-	}
-	
-	@Override 
-	public boolean activated()
-	{
-		return true;
-	}
-	
-	@Override 
-	public int techLevel() 
-	{ 
-		return phyStats().ability();
-	}
-	
-	@Override 
-	public void setTechLevel(int lvl) 
-	{ 
-		basePhyStats.setAbility(lvl); recoverPhyStats(); 
-	}
-	
-	@Override 
-	public String getManufacturerName() 
-	{ 
-		return manufacturer; 
-	}
-	
-	@Override 
-	public void setManufacturerName(String name) 
-	{ 
-		cachedManufact=null; 
-		if(name!=null) 
-			manufacturer=name; 
-	}
-
-	@Override public long getMass()
-	{
-		return basePhyStats().weight()+((area instanceof SpaceShip)?((SpaceShip)area).getMass(): 1000);
-	}
-
-	@Override
-	public Manufacturer getFinalManufacturer()
-	{
-		if(cachedManufact==null)
-		{
-			cachedManufact=CMLib.tech().getManufacturerOf(this,getManufacturerName().toUpperCase().trim());
-			if(cachedManufact==null)
-				cachedManufact=CMLib.tech().getDefaultManufacturer();
-		}
-		return cachedManufact;
-	}
-
-	@Override 
-	public long[] coordinates()
-	{
-		return coordinates;
-	}
-	
-	@Override 
-	public double[] direction()
-	{
-		return direction;
-	}
-	
-	@Override 
-	public double roll() 
-	{ 
-		return roll; 
-	}
-	
-	@Override 
-	public void setRoll(double dir) 
-	{ 
-		roll =dir; 
-	}
-	
-	@Override 
-	public double[] facing() 
-	{ 
-		return facing; 
-	}
-	
-	@Override 
-	public void setFacing(double[] dir) 
-	{ 
-		if(dir!=null) 
-			this.facing=dir; 
-	}
-	
-	@Override 
-	public SpaceObject knownTarget()
-	{
-		return spaceTarget;
-	}
-	
-	@Override 
-	public void setKnownTarget(SpaceObject O)
-	{
-		spaceTarget=O;
-	}
-	
-	@Override 
-	public void setCoords(long[] coords)
-	{
-		if((coords!=null)&&(coords.length==3))
-			CMLib.map().moveSpaceObject(this,coords);
-	}
-	
-	@Override 
-	public void setDirection(double[] dir)
-	{
-		if(dir!=null) 
-			direction=dir;
-	}
-	
-	@Override 
-	public long speed()
-	{
-		return speed;
-	}
-	
-	@Override 
-	public void setSpeed(long v)
-	{
-		speed=v;
-	}
-
-	@Override
-	public SpaceObject knownSource()
-	{
-		return (area instanceof SpaceObject)?((SpaceObject)area).knownSource():null;
-	}
-
-	@Override
-	public void setKnownSource(SpaceObject O)
-	{
-		if (area instanceof SpaceObject)
-			((SpaceObject)area).setKnownSource(O);
-	}
-
-	@Override
-	public long radius()
-	{
-		return (area instanceof SpaceObject)?((SpaceObject)area).radius():50;
-	}
-
-	@Override
-	public void setRadius(long radius)
-	{
-		if (area instanceof SpaceObject)
-			((SpaceObject)area).setRadius(radius);
-	}
-
-	@Override
-	public double getOMLCoeff()
-	{
-		return (area instanceof SpaceShip)?((SpaceShip)area).getOMLCoeff()
-				:SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE + ((SpaceObject.ATMOSPHERIC_DRAG_BRICK-SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE)/2.0);
-	}
-
-	@Override
-	public void setOMLCoeff(double coeff)
-	{
-		if (area instanceof SpaceShip)
-			((SpaceShip)area).setOMLCoeff(coeff);
-	}
-
-	@Override
-	public void dockHere(Room R)
-	{
-		if(!R.isContent(this))
-		{
-			if(owner()==null)
-				R.addItem(this,Expire.Never);
-			else
-				R.moveItemTo(me, Expire.Never, Move.Followers);
-		}
-		if(R instanceof LocationRoom)
-			setCoords(((LocationRoom)R).coordinates());
-		if(this.homePortID.length()==0)
-			this.homePortID=CMLib.map().getExtendedRoomID(R);
-		CMLib.map().delObjectInSpace(getShipSpaceObject());
-		if (area instanceof SpaceShip)
-			((SpaceShip)area).dockHere(R);
-		setSpeed(0);
-	}
-
-	@Override
-	public void unDock(boolean moveToOutside)
-	{
-		final Room R=getIsDocked();
-		if(R!=null)
-		{
-			R.delItem(this);
-			setOwner(null);
-		}
-		if (area instanceof SpaceShip)
-			((SpaceShip)area).unDock(moveToOutside);
-		if(R instanceof LocationRoom)
-		{
-			setDirection(((LocationRoom)R).getDirectionFromCore());
-			setFacing(((LocationRoom)R).getDirectionFromCore());
-		}
-		if(moveToOutside)
-		{
-			final SpaceObject o = getShipSpaceObject();
-			if((o != null)&&(R instanceof LocationRoom))
-				CMLib.map().addObjectToSpace(o,((LocationRoom)R).coordinates());
-		}
-	}
-
-	@Override
-	public SpaceObject getShipSpaceObject()
-	{
-		return this;
-	}
-
-	@Override
-	public Room getIsDocked()
-	{
-		if (area instanceof SpaceShip)
-			return ((SpaceShip)area).getIsDocked();
-		if(owner() instanceof LocationRoom)
-			return ((LocationRoom)owner());
-		return null;
 	}
 
 	@Override 
@@ -536,19 +330,34 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	{ 
 		this.price=price; 
 	}
-	
+
 	@Override 
 	public String getOwnerName() 
 	{ 
-		return owner; 
+		return ownerName; 
 	}
 	
 	@Override 
 	public void setOwnerName(String owner) 
 	{ 
-		this.owner=owner;
+		this.ownerName=owner;
 	}
-	
+
+	@Override
+	public long expirationDate()
+	{
+		return super.expirationDate();
+	}
+
+	@Override
+	public void setExpirationDate(long time)
+	{
+		if((time>0)&&(owner() instanceof Room))
+			super.setExpirationDate(0);
+		else
+			super.setExpirationDate(time);
+	}
+		
 	@Override
 	public CMObject getOwnerObject()
 	{
@@ -567,24 +376,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return this.toString(); 
 	}
 
-	@Override 
-	public String putString(Rider R)
-	{ 
-		return putString;
-	}
-	
-	@Override 
-	public String mountString(int commandType, Rider R)
-	{ 
-		return mountString;
-	}
-	
-	@Override 
-	public String dismountString(Rider R)
-	{	
-		return dismountString;
-	}
-	
 	@Override
 	public void renameShip(String newName)
 	{
@@ -651,6 +442,19 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return true;
 	}
 
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(tickID == Tickable.TICKID_AREA)
+		{
+			if(amDestroyed())
+				return false;
+			
+			return true;
+		}
+		return super.tick(ticking, tickID);
+	}
+
 	protected synchronized void destroyThisShip()
 	{
 		if(this.getOwnerName().length()>0)
@@ -683,21 +487,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		destroy();
 	}
 	
-	protected void stopThisShip(MOB mob)
-	{
-		setSpeed(0); // if you collide with something massive, your speed ENDS
-		final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getShipArea()));
-		for(final Electronics E : electronics)
-		{
-			if(E instanceof ShipComponent.ShipEngine)
-			{
-				final CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
-				if(E.okMessage(mob, msg))
-					E.executeMsg(mob, msg);
-			}
-		}
-	}
-
 	protected boolean okAreaMessage(final CMMsg msg)
 	{
 		boolean failed = false;
@@ -724,29 +513,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			{
 				final Room R=r.nextElement();
 				R.sendOthers(msg.source(), msg);
-			}
-		}
-	}
-	
-	protected void sendComputerMessage(final MOB mob, final CMMsg msg)
-	{
-		final Area ship=getShipArea();
-		if(ship!=null)
-		{
-			List<Electronics> electronics = CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(ship));
-			for(final Electronics E : electronics)
-			{
-				if(E instanceof Electronics.Computer)
-				{
-					if(E.owner() instanceof Room)
-					{
-						if(((Room)E.owner()).okMessage(mob, msg))
-							((Room)E.owner()).send(mob, msg);
-					}
-					else
-					if(E.okMessage(mob, msg))
-						E.executeMsg(mob, msg);
-				}
 			}
 		}
 	}
@@ -989,17 +755,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return docks.get(CMLib.dice().roll(1, docks.size(), -1));
 	}
 
-	@Override
-	public long expirationDate()
-	{
-		return 0;
-	}
-
-	@Override
-	public void setExpirationDate(long time)
-	{
-	}
-	
 	protected void transferOwnership(final MOB buyer, boolean clanSale)
 	{
 		if(getOwnerName().length()>0)
@@ -1047,14 +802,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 				@Override public void timedOut() { }
 				@Override public void callBack()
 				{
-					if((this.input.trim().length()==0)
-					||(!CMLib.login().isOkName(this.input.trim(),true))
-					||(CMLib.tech().getMakeRegisteredKeys().contains(this.input.trim())))
-					{
-						session.println(L("^ZThat is not a permitted name.^N"));
-						session.prompt(namer[0].reset());
-						return;
-					}
 					for(final Enumeration<BoardableShip> s=CMLib.map().ships();s.hasMoreElements();)
 					{
 						final BoardableShip ship=s.nextElement();
@@ -1066,6 +813,15 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					}
 					if(CMLib.map().getArea(this.input.trim())!=null)
 						this.input="";
+
+					if((this.input.trim().length()==0)
+					||(!CMLib.login().isOkName(this.input.trim(),true))
+					||(CMLib.tech().getMakeRegisteredKeys().contains(this.input.trim())))
+					{
+						session.println(L("^ZThat is not a permitted name.^N"));
+						session.prompt(namer[0].reset());
+						return;
+					}
 					me.renameShip(this.input.trim());
 					buyer.tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
 					final LocationRoom finalR=findNearestDocks(R);
@@ -1088,13 +844,70 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		else
 		{
 			buyer.tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
-			if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(this)))
-				buyer.playerStats().getExtItems().addItem(this);
+			if((this.getOwnerName().equals(buyer.Name()) && (buyer.playerStats() != null)))
+			{
+				if(!buyer.playerStats().getExtItems().isContent(this))
+					buyer.playerStats().getExtItems().addItem(this);
+			}
+			else
+			{
+				final Clan C=CMLib.clans().getClan(getOwnerName());
+				if(C!=null)
+				{
+					if(!C.getExtItems().isContent(this))
+						C.getExtItems().addItem(this);
+				}
+				else
+				{
+					buyer.tell(L("However, there is no entity to actually take ownership.  Wierd."));
+				}
+			}
 			final LocationRoom finalR=findNearestDocks(R);
 			if(finalR==null)
 				Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of spaceport.");
 			else
 				dockHere(finalR);
+		}
+	}
+
+	@Override 
+	public String putString(Rider R)
+	{ 
+		return putString;
+	}
+	
+	@Override 
+	public String mountString(int commandType, Rider R)
+	{ 
+		return mountString;
+	}
+	
+	@Override 
+	public String dismountString(Rider R)
+	{	
+		return dismountString;
+	}
+	
+	@Override
+	public boolean isSavable()
+	{
+		if(!super.isSavable())
+			return false;
+		return (getOwnerName().length()==0);
+	}
+
+	protected void stopThisShip(MOB mob)
+	{
+		setSpeed(0); // if you collide with something massive, your speed ENDS
+		final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getShipArea()));
+		for(final Electronics E : electronics)
+		{
+			if(E instanceof ShipComponent.ShipEngine)
+			{
+				final CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
+				if(E.okMessage(mob, msg))
+					E.executeMsg(mob, msg);
+			}
 		}
 	}
 
@@ -1104,12 +917,218 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return new BoundedObject.BoundedCube(coordinates(),radius());
 	}
 
-	@Override
-	public boolean isSavable()
+	@Override public long powerCapacity(){return 0;}
+	@Override public void setPowerCapacity(long capacity){}
+	@Override public long powerRemaining(){return 0;}
+	@Override public int powerNeeds(){return 0;}
+	@Override public void setPowerRemaining(long remaining){}
+	@Override public void activate(boolean truefalse){}
+	
+	protected void sendComputerMessage(final MOB mob, final CMMsg msg)
 	{
-		if(!super.isSavable())
-			return false;
-		return (getOwnerName().length()==0);
+		final Area ship=getShipArea();
+		if(ship!=null)
+		{
+			List<Electronics> electronics = CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(ship));
+			for(final Electronics E : electronics)
+			{
+				if(E instanceof Electronics.Computer)
+				{
+					if(E.owner() instanceof Room)
+					{
+						if(((Room)E.owner()).okMessage(mob, msg))
+							((Room)E.owner()).send(mob, msg);
+					}
+					else
+					if(E.okMessage(mob, msg))
+						E.executeMsg(mob, msg);
+				}
+			}
+		}
+	}
+	
+	@Override 
+	public TechType getTechType() 
+	{ 
+		return TechType.SHIP_SPACESHIP; 
+	}
+
+	@Override
+	public Boolean getSetAirFlag(final Boolean setInAirFlag)
+	{
+		if((setInAirFlag != null) && (setInAirFlag != this.inAirFlag))
+			this.inAirFlag = setInAirFlag;
+		return this.inAirFlag;
+	}
+
+	@Override
+	public SpaceObject getShipSpaceObject()
+	{
+		return this;
+	}
+
+	@Override 
+	public boolean activated()
+	{
+		return true;
+	}
+	
+	@Override 
+	public int techLevel() 
+	{ 
+		return phyStats().ability();
+	}
+	
+	@Override 
+	public void setTechLevel(int lvl) 
+	{ 
+		basePhyStats.setAbility(lvl); recoverPhyStats(); 
+	}
+	
+	@Override 
+	public String getManufacturerName() 
+	{ 
+		return manufacturer; 
+	}
+	
+	@Override 
+	public void setManufacturerName(String name) 
+	{ 
+		cachedManufact=null; 
+		if(name!=null) 
+			manufacturer=name; 
+	}
+
+	@Override public long getMass()
+	{
+		return basePhyStats().weight()+((area instanceof SpaceShip)?((SpaceShip)area).getMass(): 1000);
+	}
+
+	@Override
+	public Manufacturer getFinalManufacturer()
+	{
+		if(cachedManufact==null)
+		{
+			cachedManufact=CMLib.tech().getManufacturerOf(this,getManufacturerName().toUpperCase().trim());
+			if(cachedManufact==null)
+				cachedManufact=CMLib.tech().getDefaultManufacturer();
+		}
+		return cachedManufact;
+	}
+
+	@Override 
+	public long[] coordinates()
+	{
+		return coordinates;
+	}
+	
+	@Override 
+	public double[] direction()
+	{
+		return direction;
+	}
+	
+	@Override 
+	public double roll() 
+	{ 
+		return roll; 
+	}
+	
+	@Override 
+	public void setRoll(double dir) 
+	{ 
+		roll =dir; 
+	}
+	
+	@Override 
+	public double[] facing() 
+	{ 
+		return facing; 
+	}
+	
+	@Override 
+	public void setFacing(double[] dir) 
+	{ 
+		if(dir!=null) 
+			this.facing=dir; 
+	}
+	
+	@Override 
+	public SpaceObject knownTarget()
+	{
+		return spaceTarget;
+	}
+	
+	@Override 
+	public void setKnownTarget(SpaceObject O)
+	{
+		spaceTarget=O;
+	}
+	
+	@Override 
+	public void setCoords(long[] coords)
+	{
+		if((coords!=null)&&(coords.length==3))
+			CMLib.map().moveSpaceObject(this,coords);
+	}
+	
+	@Override 
+	public void setDirection(double[] dir)
+	{
+		if(dir!=null) 
+			direction=dir;
+	}
+	
+	@Override 
+	public long speed()
+	{
+		return speed;
+	}
+	
+	@Override 
+	public void setSpeed(long v)
+	{
+		speed=v;
+	}
+
+	@Override
+	public SpaceObject knownSource()
+	{
+		return (area instanceof SpaceObject)?((SpaceObject)area).knownSource():null;
+	}
+
+	@Override
+	public void setKnownSource(SpaceObject O)
+	{
+		if (area instanceof SpaceObject)
+			((SpaceObject)area).setKnownSource(O);
+	}
+
+	@Override
+	public long radius()
+	{
+		return (area instanceof SpaceObject)?((SpaceObject)area).radius():50;
+	}
+
+	@Override
+	public void setRadius(long radius)
+	{
+		if (area instanceof SpaceObject)
+			((SpaceObject)area).setRadius(radius);
+	}
+
+	@Override
+	public double getOMLCoeff()
+	{
+		return (area instanceof SpaceShip)?((SpaceShip)area).getOMLCoeff()
+				:SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE + ((SpaceObject.ATMOSPHERIC_DRAG_BRICK-SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE)/2.0);
+	}
+
+	@Override
+	public void setOMLCoeff(double coeff)
+	{
+		if (area instanceof SpaceShip)
+			((SpaceShip)area).setOMLCoeff(coeff);
 	}
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",

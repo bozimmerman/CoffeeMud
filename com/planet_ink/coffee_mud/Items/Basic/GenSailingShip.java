@@ -99,6 +99,12 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	}
 	
 	@Override
+	public Item getShipItem()
+	{
+		return this;
+	}
+	
+	@Override
 	public Area getShipArea()
 	{
 		if(destroyed)
@@ -118,6 +124,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			R.setRoomID(area.Name()+"#0");
 			R.setSavable(false);
 			area.addProperRoom(R);
+			((SpaceShip)area).setDockableItem(this);
 			readableText=R.roomID();
 		}
 		return area;
@@ -130,12 +137,6 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			((BoardableShip)area).setDockableItem(dockableItem);
 	}
 
-	@Override
-	public Item getShipItem()
-	{
-		return this;
-	}
-	
 	@Override
 	public void setShipArea(String xml)
 	{
@@ -344,7 +345,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		return CMLib.players().getLoadPlayer(owner);
 	}
 	
-	@Override public String getTitleID() 
+	@Override 
+	public String getTitleID() 
 	{ 
 		return this.toString(); 
 	}
@@ -373,128 +375,6 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					setDisplayText(CMStrings.replaceAll(displayText(), rubs.charAt(0)+word+rubs.charAt(1), newName));
 			}
 		}
-	}
-	
-	protected boolean securityCheck(final MOB mob)
-	{
-		return (getOwnerName().length()>0)
-			 &&(mob!=null)
-			 &&((mob.Name().equals(getOwnerName()))
-				||(mob.getLiegeID().equals(getOwnerName())&mob.isMarriedToLiege())
-				||(CMLib.clans().checkClanPrivilege(mob, getOwnerName(), Clan.Function.PROPERTY_OWNER)));
-	}
-
-	protected void announceToShip(final String msgStr)
-	{
-		final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
-		try
-		{
-			final CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_OK_ACTION, msgStr);
-			final Room R=CMLib.map().roomLocation(this);
-			if((R!=null) && (R.okMessage(mob, msg2) && this.okAreaMessage(msg2, false)))
-			{
-				R.send(mob, msg2); // this lets the source know, i guess
-				this.sendAreaMessage(msg2, false); // this just sends to "others"
-			}
-		}
-		finally
-		{
-			mob.destroy();
-		}
-	}
-	
-	protected void haveEveryoneLookOverBow()
-	{
-		if((area != null)&&(owner() instanceof Room))
-		{
-			final Room targetR=(Room)owner();
-			for(final Enumeration<Room> r=area.getProperMap(); r.hasMoreElements(); )
-			{
-				final Room R=r.nextElement();
-				if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
-				{
-					final Set<MOB> mobs=CMLib.players().getPlayersHere(R);
-					for(final MOB mob : mobs)
-					{
-						if(mob == null)
-							continue;
-						final CMMsg lookMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK,null);
-						final CMMsg lookExitMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK_EXITS,null);
-						if((mob.isAttribute(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(targetR,mob)))
-						{
-							if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttribute(MOB.Attrib.BRIEF))
-								lookExitMsg.setValue(CMMsg.MASK_OPTIMIZE);
-							lookMsg.addTrailerMsg(lookExitMsg);
-						}
-						if(targetR.okMessage(mob,lookMsg))
-							targetR.send(mob,lookMsg);
-					}
-				}
-			}
-		}
-	}
-	
-	protected boolean steer(final MOB mob, final Room R, final int dir)
-	{
-		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) coarse, steering @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
-		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
-		{
-			R.send(mob, msg2); // this lets the source know, i guess
-			this.sendAreaMessage(msg2, true); // this just sends to "others"
-			this.directionFacing=dir;
-			return true;
-		}
-		return false;
-	}
-	
-	protected int getAnyExitDir(Room R)
-	{
-		if(R==null)
-			return -1;
-		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-		{
-			Room R2=R.getRoomInDir(d);
-			Exit E2=R.getExitInDir(d);
-			if((R2!=null)&&(E2!=null)&&(CMLib.map().getExtendedRoomID(R2).length()>0))
-				return d;
-		}
-		return -1;
-	}
-	
-	protected Room findOceanRoom(Area A)
-	{
-		if(A==null)
-			return null;
-		for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-		{
-			final Room R=r.nextElement();
-			if((R!=null)&&(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(CMLib.map().getExtendedRoomID(R).length()>0))
-				return R;
-		}
-		return null;
-	}
-	
-	protected boolean safetyMove()
-	{
-		final Room R=CMLib.map().roomLocation(this);
-		if((R==null)|| R.amDestroyed() || (getAnyExitDir(R)<0))
-		{
-			Room R2=CMLib.map().getRoom(getHomePortID());
-			if((R2==null)&&(R!=null)&&(R.getArea()!=null))
-				R2=findOceanRoom(R.getArea());
-			if(R2==null)
-				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
-				{
-					R2=findOceanRoom(a.nextElement());
-					if(R2!=null)
-						break;
-				}
-			if(R2==null)
-				return false;
-			R2.moveItemTo(this);
-			return true;
-		}
-		return false;
 	}
 	
 	@Override
@@ -747,72 +627,6 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		return true;
 	}
 
-	protected int sail(final int direction)
-	{
-		final Room thisRoom=CMLib.map().roomLocation(this);
-		if(thisRoom != null)
-		{
-			final Room destRoom=thisRoom.getRoomInDir(direction);
-			final Exit exit=thisRoom.getExitInDir(direction);
-			if((destRoom!=null)&&(exit!=null))
-			{
-				if((destRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-				&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT))
-				{
-					announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(direction)));
-					courseDirections.clear();
-					return -1;
-				}
-				final int oppositeDirectionFacing=Directions.getOpDirectionCode(direction);
-				final String directionName=Directions.getDirectionName(direction);
-				final String otherDirectionName=Directions.getDirectionName(oppositeDirectionFacing);
-				final Exit opExit=thisRoom.getExitInDir(oppositeDirectionFacing);
-				final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
-				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
-				try
-				{
-					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> sail(s) in from @x1.",otherDirectionName));
-					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,L("<S-NAME> sail(s) @x1.",directionName));
-					if((exit.okMessage(mob,enterMsg))
-					&&(leaveMsg.target().okMessage(mob,leaveMsg))
-					&&((opExit==null)||(opExit.okMessage(mob,leaveMsg)))
-					&&(enterMsg.target().okMessage(mob,enterMsg)))
-					{
-						exit.executeMsg(mob,enterMsg);
-						thisRoom.sendOthers(mob, leaveMsg);
-						destRoom.moveItemTo(this);
-						this.dockHere(destRoom);
-						this.sendAreaMessage(leaveMsg, true);
-						if(opExit!=null)
-							opExit.executeMsg(mob,leaveMsg);
-						destRoom.send(mob, enterMsg);
-						haveEveryoneLookOverBow();
-						return direction;
-					}
-					else
-					{
-						announceToShip(L("<S-NAME> can not seem to travel @x1.",Directions.getInDirectionName(direction)));
-						courseDirections.clear();
-						return -1;
-					}
-						
-				}
-				finally
-				{
-					mob.destroy();
-				}
-			}
-			else
-			{
-				announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(direction)));
-				courseDirections.clear();
-				return -1;
-			}
-		}
-		return -1;
-	}
-	
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -1063,6 +877,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 					}
 					if(CMLib.map().getArea(this.input.trim())!=null)
 						this.input="";
+
 					if((this.input.trim().length()==0)
 					||(!CMLib.login().isOkName(this.input.trim(),true)))
 					{
@@ -1144,6 +959,194 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		return (getOwnerName().length()==0);
 	}
 
+	protected int sail(final int direction)
+	{
+		final Room thisRoom=CMLib.map().roomLocation(this);
+		if(thisRoom != null)
+		{
+			final Room destRoom=thisRoom.getRoomInDir(direction);
+			final Exit exit=thisRoom.getExitInDir(direction);
+			if((destRoom!=null)&&(exit!=null))
+			{
+				if((destRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+				&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT))
+				{
+					announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(direction)));
+					courseDirections.clear();
+					return -1;
+				}
+				final int oppositeDirectionFacing=Directions.getOpDirectionCode(direction);
+				final String directionName=Directions.getDirectionName(direction);
+				final String otherDirectionName=Directions.getDirectionName(oppositeDirectionFacing);
+				final Exit opExit=thisRoom.getExitInDir(oppositeDirectionFacing);
+				final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
+				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+				try
+				{
+					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> sail(s) in from @x1.",otherDirectionName));
+					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,L("<S-NAME> sail(s) @x1.",directionName));
+					if((exit.okMessage(mob,enterMsg))
+					&&(leaveMsg.target().okMessage(mob,leaveMsg))
+					&&((opExit==null)||(opExit.okMessage(mob,leaveMsg)))
+					&&(enterMsg.target().okMessage(mob,enterMsg)))
+					{
+						exit.executeMsg(mob,enterMsg);
+						thisRoom.sendOthers(mob, leaveMsg);
+						destRoom.moveItemTo(this);
+						this.dockHere(destRoom);
+						this.sendAreaMessage(leaveMsg, true);
+						if(opExit!=null)
+							opExit.executeMsg(mob,leaveMsg);
+						destRoom.send(mob, enterMsg);
+						haveEveryoneLookOverBow();
+						return direction;
+					}
+					else
+					{
+						announceToShip(L("<S-NAME> can not seem to travel @x1.",Directions.getInDirectionName(direction)));
+						courseDirections.clear();
+						return -1;
+					}
+						
+				}
+				finally
+				{
+					mob.destroy();
+				}
+			}
+			else
+			{
+				announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",Directions.getInDirectionName(direction)));
+				courseDirections.clear();
+				return -1;
+			}
+		}
+		return -1;
+	}
+	
+	protected boolean securityCheck(final MOB mob)
+	{
+		return (getOwnerName().length()>0)
+			 &&(mob!=null)
+			 &&((mob.Name().equals(getOwnerName()))
+				||(mob.getLiegeID().equals(getOwnerName())&mob.isMarriedToLiege())
+				||(CMLib.clans().checkClanPrivilege(mob, getOwnerName(), Clan.Function.PROPERTY_OWNER)));
+	}
+
+	protected void announceToShip(final String msgStr)
+	{
+		final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
+		try
+		{
+			final CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_OK_ACTION, msgStr);
+			final Room R=CMLib.map().roomLocation(this);
+			if((R!=null) && (R.okMessage(mob, msg2) && this.okAreaMessage(msg2, false)))
+			{
+				R.send(mob, msg2); // this lets the source know, i guess
+				this.sendAreaMessage(msg2, false); // this just sends to "others"
+			}
+		}
+		finally
+		{
+			mob.destroy();
+		}
+	}
+	
+	protected void haveEveryoneLookOverBow()
+	{
+		if((area != null)&&(owner() instanceof Room))
+		{
+			final Room targetR=(Room)owner();
+			for(final Enumeration<Room> r=area.getProperMap(); r.hasMoreElements(); )
+			{
+				final Room R=r.nextElement();
+				if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
+				{
+					final Set<MOB> mobs=CMLib.players().getPlayersHere(R);
+					for(final MOB mob : mobs)
+					{
+						if(mob == null)
+							continue;
+						final CMMsg lookMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK,null);
+						final CMMsg lookExitMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK_EXITS,null);
+						if((mob.isAttribute(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(targetR,mob)))
+						{
+							if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttribute(MOB.Attrib.BRIEF))
+								lookExitMsg.setValue(CMMsg.MASK_OPTIMIZE);
+							lookMsg.addTrailerMsg(lookExitMsg);
+						}
+						if(targetR.okMessage(mob,lookMsg))
+							targetR.send(mob,lookMsg);
+					}
+				}
+			}
+		}
+	}
+	
+	protected boolean steer(final MOB mob, final Room R, final int dir)
+	{
+		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) coarse, steering @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
+		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
+		{
+			R.send(mob, msg2); // this lets the source know, i guess
+			this.sendAreaMessage(msg2, true); // this just sends to "others"
+			this.directionFacing=dir;
+			return true;
+		}
+		return false;
+	}
+	
+	protected int getAnyExitDir(Room R)
+	{
+		if(R==null)
+			return -1;
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			Room R2=R.getRoomInDir(d);
+			Exit E2=R.getExitInDir(d);
+			if((R2!=null)&&(E2!=null)&&(CMLib.map().getExtendedRoomID(R2).length()>0))
+				return d;
+		}
+		return -1;
+	}
+	
+	protected Room findOceanRoom(Area A)
+	{
+		if(A==null)
+			return null;
+		for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			if((R!=null)&&(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(CMLib.map().getExtendedRoomID(R).length()>0))
+				return R;
+		}
+		return null;
+	}
+	
+	protected boolean safetyMove()
+	{
+		final Room R=CMLib.map().roomLocation(this);
+		if((R==null)|| R.amDestroyed() || (getAnyExitDir(R)<0))
+		{
+			Room R2=CMLib.map().getRoom(getHomePortID());
+			if((R2==null)&&(R!=null)&&(R.getArea()!=null))
+				R2=findOceanRoom(R.getArea());
+			if(R2==null)
+				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+				{
+					R2=findOceanRoom(a.nextElement());
+					if(R2!=null)
+						break;
+				}
+			if(R2==null)
+				return false;
+			R2.moveItemTo(this);
+			return true;
+		}
+		return false;
+	}
+	
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
 											"EXITNAME"
