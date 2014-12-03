@@ -3698,7 +3698,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((PhysicalAgent)E).addBehavior(newOne);
 			}
 		}
-		if(E instanceof Area)
+		if((E instanceof Area)&&(((Area)E).isSavable()))
 			addAutoPropsToAreaIfNecessary((Area)E);
 
 		if(E instanceof Physical)
