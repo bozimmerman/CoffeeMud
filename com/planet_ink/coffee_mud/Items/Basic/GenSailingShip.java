@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.Items.Basic.StdPortal;
+import com.planet_ink.coffee_mud.Items.BasicTech.GenSpaceShip;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
@@ -56,8 +57,8 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	public GenSailingShip()
 	{
 		super();
-		setName("a sailing ship");
-		setDisplayText("a sailing ship is here.");
+		setName("a sailing ship [NEWNAME]");
+		setDisplayText("a sailing ship [NEWNAME] is here.");
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		setDescription("");
 		myUses=100;
@@ -68,6 +69,15 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		CMLib.flags().setGettable(this, false);
 	}
 
+	@Override
+	public CMObject newInstance()
+	{
+		final GenSailingShip ship = (GenSailingShip)super.newInstance();
+		ship.area=null;
+		ship.getShipArea();
+		return ship;
+	}
+	
 	@Override 
 	public boolean isGeneric()
 	{
@@ -99,9 +109,12 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 			area=CMClass.getAreaType("StdBoardableShip");
 			CMLib.flags().setSavable(area, false);
 			final String num=Double.toString(Math.random());
-			area.setName(L("UNNAMED_@x1",num.substring(num.indexOf('.')+1)));
+			final int x=num.indexOf('.')+1;
+			final int len=((num.length()-x)/2)+1;
+			area.setName(L("UNNAMED_@x1",num.substring(x,x+len)));
 			area.setTheme(Area.THEME_FANTASY);
 			final Room R=CMClass.getLocale("WoodenDeck");
+			R.setDisplayText("The Deck");
 			R.setRoomID(area.Name()+"#0");
 			R.setSavable(false);
 			area.addProperRoom(R);
@@ -208,7 +221,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	@Override 
 	public void setKeyName(String newKeyName) 
 	{ 
-		readableText=newKeyName;
+		// don't do this, as MUDGrinder mucks it up
 	}
 
 	@Override 
@@ -241,11 +254,11 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	public CMObject copyOf()
 	{
 		final GenSailingShip s=(GenSailingShip)super.copyOf();
-		CMLib.flags().setSavable(s, false);
 		s.destroyed=false;
 		s.setOwnerName("");
 		final String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		s.setShipArea(xml);
+		s.setReadableText(readableText()); // in case this was first call to getShipArea()
 		return s;
 	}
 
@@ -306,12 +319,16 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 	@Override
 	public long expirationDate()
 	{
-		return 0;
+		return super.expirationDate();
 	}
 
 	@Override
 	public void setExpirationDate(long time)
 	{
+		if((time>0)&&(owner() instanceof Room))
+			super.setExpirationDate(0);
+		else
+			super.setExpirationDate(time);
 	}
 	
 	@Override
@@ -929,23 +946,14 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 				}
 				break;
 			case CMMsg.TYP_LEAVE:
-				if((!msg.source().Name().equals(Name()))
-				&&(owner() instanceof Room)
-				&&(msg.target() instanceof Room)
-				&&(((Room)msg.target()).getArea()!=area)
-				&&(!getDestinationRoom().isHere(msg.tool())))
-					sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, msg.sourceMessage(), msg.targetMessage(), msg.othersMessage()), true);
-				break;
 			case CMMsg.TYP_ENTER:
-			{
 				if((!msg.source().Name().equals(Name()))
 				&&(owner() instanceof Room)
 				&&(msg.target() instanceof Room)
 				&&(((Room)msg.target()).getArea()!=area)
 				&&(!getDestinationRoom().isHere(msg.tool())))
-					sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, msg.sourceMessage(), msg.targetMessage(), msg.othersMessage()), true);
+					sendAreaMessage(CMClass.getMsg(msg.source(), msg.target(), msg.tool(), CMMsg.MSG_OK_VISUAL, null, null, L("^HOff the deck you see: ^N")+msg.othersMessage()), true);
 				break;
-			}
 			}
 		}
 	}
@@ -1153,7 +1161,7 @@ public class GenSailingShip extends StdPortal implements PrivateProperty, Boarda
 		case 4: return ""+openDelayTicks();
 		case 5: return ""+rideBasis();
 		case 6: return ""+riderCapacity();
-		case 7: return (area==null)?"":CMLib.coffeeMaker().getAreaXML(area, null, null, null, true).toString();
+		case 7: return CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		case 8: return getOwnerName();
 		case 9: return ""+getPrice();
 		case 10: return putString;

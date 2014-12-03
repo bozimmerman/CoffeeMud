@@ -79,7 +79,7 @@ public class GrinderItems
 								  Room R,
 								  MOB playerM)
 	{
-		final String itemCode=httpReq.getUrlParameter("ITEM");
+		String itemCode=httpReq.getUrlParameter("ITEM");
 		if(itemCode==null)
 			return "@break@";
 
@@ -121,7 +121,10 @@ public class GrinderItems
 					return str.toString();
 				}
 			}
-			if(itemCode.equals("NEW")||itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+			if(itemCode.equals("NEW"))
+				I=CMClass.getItem(newClassID);
+			else
+			if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 				I=CMClass.getItem(newClassID);
 			else
 			if(M!=null)

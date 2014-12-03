@@ -78,6 +78,15 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		CMLib.flags().setSavable(this, false);
 	}
 
+	@Override
+	public CMObject newInstance()
+	{
+		final GenSpaceShip ship = (GenSpaceShip)super.newInstance();
+		ship.area=null;
+		ship.getShipArea();
+		return ship;
+	}
+	
 	@Override 
 	public boolean isGeneric()
 	{
@@ -168,7 +177,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override 
 	public void setKeyName(String newKeyName) 
 	{ 
-		readableText=newKeyName;
 	}
 
 	@Override 
@@ -201,11 +209,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public CMObject copyOf()
 	{
 		final GenSpaceShip s=(GenSpaceShip)super.copyOf();
-		CMLib.flags().setSavable(s, false);
 		s.destroyed=false;
 		s.setOwnerName("");
 		final String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		s.setShipArea(xml);
+		s.setReadableText(readableText()); // in case this was first call to getShipArea()
 		CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(s.getShipArea()));
 		/*
 		if(s.getShipArea().Name().startsWith("UNNAMED_"))
@@ -1126,7 +1134,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 8: return ""+activated();
 		case 9: return ""+powerRemaining();
 		case 10: return getManufacturerName();
-		case 11: return (area==null)?"":CMLib.coffeeMaker().getAreaXML(area, null, null, null, true).toString();
+		case 11: return CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		case 12: return CMParms.toStringList(coordinates());
 		case 13: return ""+radius();
 		case 14: return ""+roll();

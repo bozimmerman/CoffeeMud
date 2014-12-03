@@ -373,6 +373,7 @@ public class RoomData extends StdWebMacro
 				if(!found)
 				{
 					final Item I2=(Item)I.copyOf();
+					I.sameAs(I2);
 					I2.setContainer(null);
 					I2.wearAt(Wearable.IN_INVENTORY);
 					I2.setExpirationDate(System.currentTimeMillis());

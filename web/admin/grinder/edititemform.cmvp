@@ -29,7 +29,7 @@
         function OpenClick(file,named)
         {
             var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open(file+"?AUTH=@Authenticate?AUTH@&AREA=ITEM%23@RequestParameterEncoded?ITEM@","Map",strFeatures, false);
+            w=window.open(file+"?AUTH=@Authenticate?AUTH@&AREA=ITEM%23@RequestParameterEncoded?ITEM@","Map",strFeatures);
         }
 		function EditBehavior(ME)
 		{
@@ -652,7 +652,13 @@
 	@if?ItemData?ISBOARDABLEITEM@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Inner Rooms:</B></FONT></TD>
-	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=BUTTON NAME="EDITROOMS" VALUE="Edit Rooms" ONCLICK="OpenClick('/grinder/possmodarea.cmvp');"></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+	    	@if?CheckReqParm?ITEM=NEW@
+	    	<font color=red>*ONLY WHEN EDITING -- HIT FINISHED FIRST *</font>
+	    	@else@
+	    	<INPUT TYPE=BUTTON NAME="EDITROOMS" VALUE="Edit Rooms" ONCLICK="OpenClick('/grinder/possmodarea.cmvp');">
+	    	@endif@
+	    </TD>
 	</TR>
 	@endif@
 	@endif@

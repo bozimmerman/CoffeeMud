@@ -1,6 +1,7 @@
 BUGS
-  *. new ships, editing old ships, timestamps in mudgrinder stock inventory, everything is broken
-  *. close button on sailing area editor.
+  *. editing old ships
+  *. buying newly shopkeepered ship is losing rooms along the way
+  *. close button on sailing area editor. -- still not working
 
 TECH
    *. test and debug launch and landing

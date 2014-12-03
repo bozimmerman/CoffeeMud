@@ -3,7 +3,6 @@
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
   
   <title>Scripting in CoffeeMud 5.8</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
-
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -3500,8 +3499,7 @@ over endlessly, or something equally abusable.<br />
       <p>Usage:</p>
       <span style="font-family: monospace;">mpprompt
 [pc name]
-[variable]</span><span style="font-family: monospace;"> [default value]
-[prompt string]</span>
+[variable]</span><span style="font-family: monospace;"> [prompt string]</span>
       <p>This
 command blocks the current coffeemud thread and waits for the player
 character denoted by the pc name variable to enter either a string
@@ -3511,13 +3509,7 @@ of the given name under the pc name's
 context. &nbsp;If the pc name variable does not denote an online
 player,
 this command is skipped.</p>
-      <p>The
-default value will be selected if the player simply hits ENTER instead
-of
-entering something. &nbsp;The entered value is then stored in the
-variable of the
-given name as if the script command MPSETVAR [pc name] [variable]
-[result] was executed (see MPSETVAR).</p>
+      
       <p>** WARNING ** This
 command
 BLOCKS its current thread. &nbsp;It is therefore NOT appropriate to
@@ -3533,7 +3525,7 @@ trigger leading to this prompt came from a command entered by a
 player-user (as opposed to a MOB generated event, which ultimate comes
 from tick threads). &nbsp;In short, BE CAREFUL!</p>
       <p>EXAMPLES:</p>
-      <pre>mpprompt $n MYVALUE 'N/A' 'Why are you smiling?'</pre>
+      <pre>mpprompt $n MYVALUE 'Why are you smiling?'</pre>
       <pre>mpechoat $n You said $&lt;$n MYVALUE&gt;.</pre>
       <h3><a name="mppurge">mppurge</a></h3>
       <p>Usage:</p>
