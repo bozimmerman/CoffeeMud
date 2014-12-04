@@ -169,7 +169,7 @@ public class ConvertingList<L,K> implements List<K>
 	public Object[] toArray()
 	{
 		final Object[] obj=new Object[size()];
-		for(int x=0;x<size();x++)
+		for(int x=obj.length-1;x>=0;x--)
 			obj[x]=get(x);
 		return obj;
 	}
@@ -179,7 +179,7 @@ public class ConvertingList<L,K> implements List<K>
 	public <T> T[] toArray(T[] arg0)
 	{
 		final T[] objs= list.toArray(arg0);
-		for(int x=0;x<size();x++)
+		for(int x=objs.length-1;x>=0;x++)
 			objs[x] = (T) get(x);
 		return objs;
 	}
