@@ -1271,7 +1271,8 @@ public class CMSecurity
 		CLANS("clan maint"), 
 		BINOUT("binary telnet input"), 
 		BININ("binary telnet output"),
-		BOOTSTRAPPER("Bootstrapper")
+		BOOTSTRAPPER("Bootstrapper"),
+		CLANMEMBERS("Clan Membership")
 		;
 		private final String desc;
 		DbgFlag(final String description){this.desc=description;}

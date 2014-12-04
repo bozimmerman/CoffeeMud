@@ -267,6 +267,7 @@ public class ClanLoader
 			D=DB.DBFetch();
 			D.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.clanID()+"'",0);
 			D.update("DELETE FROM CMCLIT WHERE CMCLID='"+C.clanID()+"'",0);
+			D.update("DELETE FROM CMCHCL WHERE CMCLID='"+C.clanID()+"'",0);
 		}
 		catch(final Exception sqle)
 		{

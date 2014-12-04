@@ -804,7 +804,11 @@ public class MOBloader
 		{
 			D=DB.DBFetch();
 			if(role<0)
+			{
 				DB.update("DELETE FROM CMCHCL WHERE CMUSERID='"+name+"' AND CMCLAN='"+clan+"'");
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
+					Log.debugOut("User '"+name+"' was deleted from clan '"+clan+"'");
+			}
 			else
 			{
 				final ResultSet R=D.query("SELECT * FROM CMCHCL where CMCLAN='"+clan+"' and CMUSERID='"+name+"'");
@@ -815,10 +819,14 @@ public class MOBloader
 					if(clanRole == role)
 						return;
 					D.update("UPDATE CMCHCL SET CMCLRO="+role+" where CMCLAN='"+clan+"' and CMUSERID='"+name+"'", 0);
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
+						Log.debugOut("User '"+name+"' had role in clan '"+clan+"' changed from "+clanRole+" to "+role);
 				}
 				else
 				{
 					D.update("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO, CMCLSTS) values ('"+name+"','"+clan+"',"+role+",'0;0')",0);
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
+						Log.debugOut("User '"+name+"' was inserted into clan '"+clan+"' as role "+role);
 				}
 			}
 		}
@@ -1012,12 +1020,20 @@ public class MOBloader
 					final String clanID=DB.getRes(R,"CMCLAN");
 					final Pair<Clan,Integer> role=mob.getClanRole(clanID);
 					if(role==null)
+					{
 						clanStatements.add("DELETE FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"' AND CMCLAN='"+clanID+"'");
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
+							Log.debugOut("User '"+mob.Name()+"' was deleted from clan '"+clanID+"'");
+					}
 					else
 					{
 						final MemberRecord M=BuildClanMemberRecord(R);
 						if(role.second.intValue()!=M.role)
+						{
 							clanStatements.add("UPDATE CMCHCL SET CMCLRO="+role+" where CMCLAN='"+clanID+"' and CMUSERID='"+mob.Name()+"'");
+							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
+								Log.debugOut("User '"+mob.Name()+"' had role in clan '"+clanID+"' changed from "+M.role+" to role "+role.second.intValue());
+						}
 					}
 					savedClans.add(clanID.toUpperCase());
 				}
@@ -1025,7 +1041,11 @@ public class MOBloader
 			}
 			for(final Pair<Clan,Integer> p : mob.clans())
 				if(!savedClans.contains(p.first.clanID().toUpperCase()))
+				{
 					clanStatements.add("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO, CMCLSTS) values ('"+mob.Name()+"','"+p.first.clanID()+"',"+p.second.intValue()+",'0;0')");
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
+						Log.debugOut("User '"+mob.Name()+"' was added to clan '"+p.first.clanID()+"' as role "+p.second.intValue());
+				}
 		}
 		catch(final Exception sqle)
 		{

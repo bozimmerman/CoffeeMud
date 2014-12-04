@@ -4113,6 +4113,8 @@ public class StdMOB implements MOB
 			{
 				clans.remove(clanID);
 				clanAffects=null;
+				if((isPlayer()) && CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
+					Log.debugOut("User '"+Name()+"' had membership in '"+clanID+"' negated");
 			}
 		}
 		else
@@ -4128,12 +4130,18 @@ public class StdMOB implements MOB
 					p=new Pair<Clan,Integer>(C,Integer.valueOf(role));
 					clans.put(clanID, p);
 					clanAffects=null;
+					if((isPlayer()) && CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
+						Log.debugOut("User '"+Name()+"' had membership in '"+clanID+"' added with role "+role);
 				}
 			}
 			else
 			{
 				if(p.second.intValue()!=role)
+				{
+					if((isPlayer()) && CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
+						Log.debugOut("User '"+Name()+"' had membership in '"+clanID+"' changed from "+p.second.toString()+" to role "+role);
 					p.second=Integer.valueOf(role);
+				}
 				clans.put(clanID, p);
 			}
 		}
