@@ -168,20 +168,21 @@ public class ConvertingList<L,K> implements List<K>
 	@Override
 	public Object[] toArray()
 	{
-		final Object[] obj=new Object[size()];
+		final Object[] obj=new Object[list.size()];
 		for(int x=obj.length-1;x>=0;x--)
-			obj[x]=get(x);
+			obj[x]=converter.convert(list.get(x));
 		return obj;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T[] toArray(T[] arg0)
+	public <T> T[] toArray(T[] a) 
 	{
-		final T[] objs= list.toArray(arg0);
-		for(int x=objs.length-1;x>=0;x++)
-			objs[x] = (T) get(x);
-		return objs;
+		if (a.length < list.size())
+			return (T[]) Arrays.copyOf(toArray(), list.size(), a.getClass());
+		System.arraycopy(toArray(), 0, a, 0, list.size());
+		if (a.length > list.size())
+			a[list.size()] = null;
+		return a;
 	}
-
 }
