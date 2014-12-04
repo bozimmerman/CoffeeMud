@@ -8,14 +8,14 @@
 <!--
 	function EditArea()
 	{
-		document.location.href='/grinder/editareaform.cmvp?AREA=@AreaNameEncoded@&AUTH=@Authenticate?AUTH@';
+		document.location.href='/grinder/editareaform.cmvp?AREA=@AreaIDEncoded@&AUTH=@Authenticate?AUTH@';
 	}
 	function EditRoom(room)
 	{
     	var w;
     	room=encodeURI(room);
     	room=room.replace("#","%23");
-		document.location.href='/grinder/editroomform.cmvp?AREA=@AreaNameEncoded@&BESTFILEBROWSE=/&OLDROOM=&AUTH=@Authenticate?AUTH@&LINKSTO=&LINK=&MAPLEVEL=&MAPSTYLE=&OLDLINK=&ROOM='+room;
+		document.location.href='/grinder/editroomform.cmvp?AREA=@AreaIDEncoded@&BESTFILEBROWSE=/&OLDROOM=&AUTH=@Authenticate?AUTH@&LINKSTO=&LINK=&MAPLEVEL=&MAPSTYLE=&OLDLINK=&ROOM='+room;
 	}
     function EditMOB(room,mobcode)
     {
@@ -23,7 +23,7 @@
     	room=encodeURI(room);
     	mobcode=encodeURI(mobcode);
     	room=room.replace("#","%23");
-        document.location.href="/grinder/editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true";
+        document.location.href="/grinder/editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true";
     }
     function EditRoomItem(room,mobcode,itemcode)
     {
@@ -32,7 +32,7 @@
     	itemcode=encodeURI(itemcode);
     	mobcode=encodeURI(mobcode);
     	room=room.replace("#","%23");
-        document.location.href="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&ROOM="+room+"&MOB="+mobcode+"&ITEM="+itemcode+"&SINGLEITEM=true";
+        document.location.href="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&ROOM="+room+"&MOB="+mobcode+"&ITEM="+itemcode+"&SINGLEITEM=true";
     }
     function EditRoomMOBItem(room,itemcode)
     {
@@ -40,7 +40,7 @@
     	room=encodeURI(room);
     	itemcode=encodeURI(itemcode);
     	room=room.replace("#","%23");
-        document.location.href="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&ROOM="+room+"&ITEM="+itemcode+"&SINGLEITEM=true";
+        document.location.href="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&ROOM="+room+"&ITEM="+itemcode+"&SINGLEITEM=true";
     }
 //-->
 </SCRIPT>

@@ -11,19 +11,19 @@
 		function AreaScriptCustom(path, rsc)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("areascripthoststable.cmvp?AREA=@AreaNameEncoded@&AUTH=@Authenticate?AUTH@&AREASCRIPT="+path,"Script",strFeatures, false);
+			w=window.open("areascripthoststable.cmvp?AREA=@AreaIDEncoded@&AUTH=@Authenticate?AUTH@&AREASCRIPT="+path,"Script",strFeatures, false);
 		}
 		
 		function AreaHosts(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("areascripthoststable.cmvp?AREA=@AreaNameEncoded@&AUTH=@Authenticate?AUTH@&AREASCRIPT="+action,"Script",strFeatures, false);
+			w=window.open("areascripthoststable.cmvp?AREA=@AreaIDEncoded@&AUTH=@Authenticate?AUTH@&AREASCRIPT="+action,"Script",strFeatures, false);
 		}
 		
 		function AreaScript(path, file, rsc)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
-			w=window.open("browsefile.cmvp?AREA=@AreaNameEncoded@&AUTH=@Authenticate?AUTH@&PATH="+path+"&FILE="+file+"&RESOURCE="+rsc,"Script",strFeatures, false);
+			w=window.open("browsefile.cmvp?AREA=@AreaIDEncoded@&AUTH=@Authenticate?AUTH@&PATH="+path+"&FILE="+file+"&RESOURCE="+rsc,"Script",strFeatures, false);
 		}
 		
 		function Clicked(action)

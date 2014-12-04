@@ -34,13 +34,13 @@
 </head>
 @if?RequestParameter?SINGLEMOB@
 	<FRAMESET ROWS=1%,99% FRAMEBORDER=NO FRAMESPACING=0>
-		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editroomform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&SINGLEMOB=@RequestParameterEncoded?SINGLEMOB@&DELMOB=@RequestParameterEncoded?DELMOB@" NAME=MAP>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editroomform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&SINGLEMOB=@RequestParameterEncoded?SINGLEMOB@&DELMOB=@RequestParameterEncoded?DELMOB@" NAME=MAP>
 		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/empty.cmvp" NAME=MENU>
 	</FRAMESET>
 @else@
 	<FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
-		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editroomform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@" NAME=MAP>
-		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@" NAME=MENU>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editroomform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@" NAME=MAP>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@" NAME=MENU>
 	</FRAMESET>
 @endif@
 </HTML>
