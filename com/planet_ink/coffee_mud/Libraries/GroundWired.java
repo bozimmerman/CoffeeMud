@@ -97,7 +97,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.TECHLEVEL)) && (I.getManufacturerName().equalsIgnoreCase("RANDOM")))
 		{
-			I.getFinalManufacturer();
+			I.setManufacturerName(I.getFinalManufacturer().name());
 			I.setTechLevel(getRandomGlobalTechLevel());
 			final String oldName=I.Name();
 			String newName=CMLib.english().startWithAorAn(I.getFinalManufacturer().name()+" "+CMLib.english().cleanArticles(oldName));

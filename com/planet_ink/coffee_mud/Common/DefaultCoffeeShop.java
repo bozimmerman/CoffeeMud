@@ -191,6 +191,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	{
 		return new ConvertingIterator<ShelfProduct,Environmental>(storeInventory.iterator(),converter);
 	}
+
 	@Override
 	public Iterator<Environmental> getStoreInventory(String srchStr)
 	{
@@ -203,6 +204,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			return V.iterator();
 		return new Vector<Environmental>(1).iterator();
 	}
+
 	@Override
 	public Iterator<Environmental> getEnumerableInventory()
 	{
