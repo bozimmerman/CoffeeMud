@@ -91,6 +91,26 @@ public class CMParms
 		System.arraycopy(strs2, 0, array, strs1Len, strs2Len);
 		return array;
 	}
+	
+	/**
+	 * Combine object arrays into a single one.
+	 * @param objs the arrays
+	 * @return the combined array
+	 */
+	public final static Object[] combine(final Object[]... objs)
+	{
+		int len=0;
+		for(Object[] obj : objs)
+			len+=obj.length;
+		final Object[] array= new Object[len];
+		int x=0;
+		for(Object[] obj : objs)
+		{
+			System.arraycopy(obj, 0, array, x, obj.length);
+			x+=obj.length;
+		}
+		return array;
+	}
 
 	/**
 	 * Combine two int arrays into a single one.
@@ -501,7 +521,7 @@ public class CMParms
 	 */
 	public final static List<String> parseCommandFlags(final String s, final String[] flags)
 	{
-		if((s==null)||(s.length()==0)) 
+		if((s==null)||(s.isEmpty())) 
 			return new Vector<String>(1);
 		final List<String> V=parseCommas(s,true);
 		final Vector<String> finalV=new Vector<String>(V.size());
@@ -536,9 +556,9 @@ public class CMParms
 	public final static List<String> parseAny(final String s, final String delimeter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.length()==0)) 
+		if((s==null)||(s.isEmpty())) 
 			return V;
-		if((delimeter==null)||(delimeter.length()==0))
+		if((delimeter==null)||(delimeter.isEmpty()))
 		{
 			V.add(s.trim());
 			return V;
@@ -574,9 +594,9 @@ public class CMParms
 	public final static List<String> parseAnyIgnoreCase(final String s, final String delimeter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.length()==0)) 
+		if((s==null)||(s.isEmpty())) 
 			return V;
-		if((delimeter==null)||(delimeter.length()==0))
+		if((delimeter==null)||(delimeter.isEmpty()))
 		{
 			V.add(s.trim());
 			return V;
@@ -615,7 +635,7 @@ public class CMParms
 	public final static List<String> parseAny(final String s, final char delimiter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.length()==0)) 
+		if((s==null)||(s.isEmpty())) 
 			return V;
 		int last=0;
 		String sub;
@@ -653,7 +673,7 @@ public class CMParms
 	public final static List<String> parseSentences(final String s)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.length()==0)) 
+		if((s==null)||(s.isEmpty())) 
 			return V;
 		int last=0;
 		String sub;
@@ -665,7 +685,7 @@ public class CMParms
 				V.add(sub);
 			}
 		sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
-		if(sub.length()>0)
+		if(sub.isEmpty())
 			V.add(sub);
 		return V;
 	}
@@ -724,7 +744,7 @@ public class CMParms
 	 */
 	public final static String cleanBit(String s)
 	{
-		if(s.length()==0)
+		if(s.isEmpty())
 			return s;
 		if((s.charAt(0)==' ')||(s.charAt(s.length()-1)==' '))
 			s=s.trim();
@@ -1194,7 +1214,7 @@ public class CMParms
 				if(c=='=')
 				{
 					final String value=str.substring(start,x).trim();
-					if(value.length()==0)
+					if(value.isEmpty())
 						state=2;
 					else
 					{

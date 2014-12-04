@@ -122,7 +122,7 @@ public class StdItem implements Item
 	@Override
 	public void setImage(String newImage)
 	{
-		if((newImage==null)||(newImage.trim().length()==0))
+		if((newImage==null)||(newImage.trim().isEmpty()))
 			rawImageName=null;
 		else
 			rawImageName=newImage;
@@ -518,7 +518,7 @@ public class StdItem implements Item
 				affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
 		}
 		final List<Ability> affects=this.affects;
-		if((affects!=null)&&(affects.size()>0))
+		if((affects!=null)&&(!affects.isEmpty()))
 		try
 		{
 			for(int a=0;a<affects.size();a++)
@@ -535,7 +535,7 @@ public class StdItem implements Item
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		final List<Ability> affects=this.affects;
-		if((affects!=null)&&(affects.size()>0))
+		if((affects!=null)&&(!affects.isEmpty()))
 		try
 		{
 			for(int a=0;a<affects.size();a++)
@@ -552,7 +552,7 @@ public class StdItem implements Item
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		final List<Ability> affects=this.affects;
-		if((affects!=null)&&(affects.size()>0))
+		if((affects!=null)&&(!affects.isEmpty()))
 		try
 		{
 			for(int a=0;a<affects.size();a++)
@@ -665,7 +665,7 @@ public class StdItem implements Item
 	{
 		if((newIdentity==null)
 		||(newIdentity.trim().equalsIgnoreCase(description()))
-		||(newIdentity.length()==0))
+		||(newIdentity.isEmpty()))
 			secretIdentity=null;
 		else
 			secretIdentity=newIdentity;
@@ -712,7 +712,7 @@ public class StdItem implements Item
 	@Override
 	public void setDescription(String newDescription)
 	{
-		if(newDescription.length()==0)
+		if(newDescription.isEmpty())
 			description=null;
 		else
 		if(CMProps.getBoolVar(CMProps.Bool.ITEMDCOMPRESS))
@@ -811,7 +811,7 @@ public class StdItem implements Item
 			else
 			if(wearWhere!=0)
 			{
-				final StringBuffer locs=new StringBuffer("");
+				final StringBuilder locs=new StringBuilder("");
 				for(int i=0;i<codes.total();i++)
 					if((codes.get(i)&wearWhere)>0)
 						locs.append(", " + codes.name(i));
@@ -920,7 +920,7 @@ public class StdItem implements Item
 		else
 		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		&&(!CMLib.flags().isGettable(this))
-		&&((displayText().length()==0)
+		&&((displayText().isEmpty())
 		   ||((msg.tool() instanceof Ability)
 			&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS))))
 		{
@@ -994,12 +994,12 @@ public class StdItem implements Item
 		case CMMsg.TYP_HOLD:
 			if((!fitsOn(Wearable.WORN_HELD))||(properWornBitmap==0))
 			{
-				final StringBuffer str=new StringBuffer("You can't hold "+name()+".");
+				final StringBuilder str=new StringBuilder(L("You can't hold @x1.",name()));
 				if(fitsOn(Wearable.WORN_WIELD))
-					str.append("Try WIELDing it.");
+					str.append(L("Try WIELDing it."));
 				else
 				if(properWornBitmap>0)
-					str.append("Try WEARing it.");
+					str.append(L("Try WEARing it."));
 				mob.tell(str.toString());
 				return false;
 			}
@@ -1275,7 +1275,7 @@ public class StdItem implements Item
 			||(this instanceof Electronics.ElecPanel)
 			||(this instanceof Software))
 			{
-				if(msg.targetMessage().trim().length()==0)
+				if(msg.targetMessage().trim().isEmpty())
 				{
 					if(this instanceof Electronics)
 						mob.tell(L("Enter what into @x1?",name()));
@@ -1526,7 +1526,7 @@ public class StdItem implements Item
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
 		final List<Ability> affects=this.affects;
-		if((affects!=null)&&(affects.size()>0))
+		if((affects!=null)&&(!affects.isEmpty()))
 		try
 		{
 			for(int a=0;a<affects.size();a++)
@@ -1624,7 +1624,7 @@ public class StdItem implements Item
 				return;
 
 		// first one! so start ticking...
-		if(behaviors.size()==0)
+		if(behaviors.isEmpty())
 			CMLib.threads().startTickDown(this,Tickable.TICKID_ITEM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
@@ -1633,11 +1633,11 @@ public class StdItem implements Item
 	@Override
 	public void delAllBehaviors()
 	{
-		final boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
+		final boolean didSomething=(behaviors!=null)&&(!behaviors.isEmpty());
 		if(didSomething)
 			behaviors.clear();
 		behaviors=null;
-		if(didSomething && ((scripts==null)||(scripts.size()==0)))
+		if(didSomething && ((scripts==null)||(scripts.isEmpty())))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
 
@@ -1648,7 +1648,7 @@ public class StdItem implements Item
 			return;
 		if(behaviors.remove(to))
 		{
-			if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
+			if(((behaviors==null)||(behaviors.isEmpty()))&&((scripts==null)||(scripts.isEmpty())))
 				CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 		}
 	}
@@ -1725,7 +1725,7 @@ public class StdItem implements Item
 				if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
 					return;
 			}
-			if(scripts.size()==0)
+			if(scripts.isEmpty())
 				CMLib.threads().startTickDown(this,Tickable.TICKID_ITEM_BEHAVIOR,1);
 			scripts.addElement(S);
 		}
@@ -1738,9 +1738,9 @@ public class StdItem implements Item
 		{
 			if(scripts.remove(S))
 			{
-				if(scripts.size()==0)
+				if(scripts.isEmpty())
 					scripts=new SVector(1);
-				if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
+				if(((behaviors==null)||(behaviors.isEmpty()))&&((scripts==null)||(scripts.isEmpty())))
 					CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 			}
 		}
@@ -1749,11 +1749,11 @@ public class StdItem implements Item
 	@Override
 	public void delAllScripts()
 	{
-		final boolean didSomething=(scripts!=null)&&(scripts.size()>0);
+		final boolean didSomething=(scripts!=null)&&(!scripts.isEmpty());
 		if(didSomething)
 			scripts.clear();
 		scripts=null;
-		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
+		if(didSomething && ((behaviors==null)||(behaviors.isEmpty())))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
 

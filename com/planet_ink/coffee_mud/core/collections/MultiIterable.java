@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core.collections;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -32,6 +33,14 @@ public class MultiIterable<K> implements Iterable<K>, SizedIterable<K>
 		if((esets==null)||(esets.length==0))
 			return;
 		iters=esets.clone();
+		size=newSize;
+	}
+
+	public MultiIterable(Collection<? extends Iterable<? extends K>> esets, int newSize)
+	{
+		if((esets==null)||(esets.size()==0))
+			return;
+		iters=esets.toArray(iters);
 		size=newSize;
 	}
 

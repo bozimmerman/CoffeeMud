@@ -1002,7 +1002,7 @@ public class StdRoom implements Room
 									shopmobs.addElement(M);
 							} 
 						});
-						if(shopmobs.size()>0)
+						if(!shopmobs.isEmpty())
 							CMLib.database().DBUpdateTheseMOBs(this,shopmobs);
 					}
 					if(CMSecurity.isSaveFlag("ROOMITEMS"))
@@ -1853,7 +1853,7 @@ public class StdRoom implements Room
 	@Override
 	public MOB fetchRandomInhabitant()
 	{
-		if(inhabitants.size()==0)
+		if(inhabitants.isEmpty())
 			return null;
 		return fetchInhabitant(CMLib.dice().roll(1,numInhabitants(),-1));
 	}
@@ -1861,7 +1861,7 @@ public class StdRoom implements Room
 	@Override
 	public MOB fetchInhabitant(String inhabitantID)
 	{
-		if(inhabitants.size()==0)
+		if(inhabitants.isEmpty())
 			return null;
 		MOB mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID,true);
 		if(mob==null)
@@ -1874,10 +1874,10 @@ public class StdRoom implements Room
 	@Override
 	public List<MOB> fetchInhabitants(String inhabitantID)
 	{
-		if(inhabitants.size()==0)
+		if(inhabitants.isEmpty())
 			return emptyMOBV;
 		List inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID,true);
-		if(inhabs.size()==0)
+		if(inhabs.isEmpty())
 			inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID, false);
 		return inhabs;
 	}
@@ -1904,7 +1904,7 @@ public class StdRoom implements Room
 	public int numPCInhabitants()
 	{
 		final Set<MOB> playerInhabitants=CMLib.players().getPlayersHere(this);
-		if(playerInhabitants.size()==0)
+		if(playerInhabitants.isEmpty())
 			return 0;
 		int num=0;
 		for(final MOB M : playerInhabitants)
@@ -1934,7 +1934,7 @@ public class StdRoom implements Room
 	public void eachInhabitant(final EachApplicable<MOB> applier)
 	{
 		final List<MOB> inhabitants=this.inhabitants;
-		if((inhabitants!=null)&&(inhabitants.size()>0))
+		if((inhabitants!=null)&&(!inhabitants.isEmpty()))
 		try
 		{
 			for(int a=0;a<inhabitants.size();a++)
@@ -1976,7 +1976,7 @@ public class StdRoom implements Room
 	@Override
 	public Item findItem(String itemID)
 	{
-		if(contents.size()==0)
+		if(contents.isEmpty())
 			return null;
 		Item item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,true);
 		if(item==null)
@@ -1993,7 +1993,7 @@ public class StdRoom implements Room
 	@Override
 	public Item findItem(Item goodLocation, String itemID)
 	{
-		if(contents.size()==0)
+		if(contents.isEmpty())
 			return null;
 		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
 		if(item==null)
@@ -2004,10 +2004,10 @@ public class StdRoom implements Room
 	@Override
 	public List<Item> findItems(Item goodLocation, String itemID)
 	{
-		if(contents.size()==0)
+		if(contents.isEmpty())
 			return new Vector<Item>(1);
 		List<Item> items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
-		if(items.size()==0)
+		if(items.isEmpty())
 			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return items;
 	}
@@ -2015,10 +2015,10 @@ public class StdRoom implements Room
 	@Override
 	public List<Item> findItems(String itemID)
 	{
-		if(contents.size()==0)
+		if(contents.isEmpty())
 			return new Vector<Item>(1);
 		List items=CMLib.english().fetchEnvironmentals(contents,itemID,true);
-		if(items.size()==0)
+		if(items.isEmpty())
 			items=CMLib.english().fetchEnvironmentals(contents,itemID, false);
 		return items;
 	}
@@ -2068,7 +2068,7 @@ public class StdRoom implements Room
 		if((item!=null)&&(!item.amDestroyed()))
 		{
 			item.setOwner(this);
-			if(contents.size()>0)
+			if(!contents.isEmpty())
 				contents.add(0,item);
 			else
 				contents.add(item);
@@ -2138,7 +2138,7 @@ public class StdRoom implements Room
 	public void eachItem(final EachApplicable<Item> applier)
 	{
 		final List<Item> contents=this.contents;
-		if((contents!=null)&&(contents.size()>0))
+		if((contents!=null)&&(!contents.isEmpty()))
 		try
 		{
 			for(int a=0;a<contents.size();a++)
@@ -2274,17 +2274,17 @@ public class StdRoom implements Room
 		if(newThingName!=null)
 			thingName=newThingName;
 		PhysicalAgent found=null;
-		if(contents.size()>0)
+		if(!contents.isEmpty())
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
 		if(found==null)
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(inhabitants.size()>0))
+		if((found==null)&&(!inhabitants.isEmpty()))
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(contents.size()>0))
+		if((found==null)&&(!contents.isEmpty()))
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
 		if(found==null)
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
-		if((found==null)&&(inhabitants.size()>0))
+		if((found==null)&&(!inhabitants.isEmpty()))
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
 
 		if((found!=null) // the smurfy well exception
@@ -2319,15 +2319,15 @@ public class StdRoom implements Room
 			found=getRoomInDir(dirCode);
 		if(found==null)
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(contents.size()>0))
+		if((found==null)&&(!contents.isEmpty()))
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(inhabitants.size()>0))
+		if((found==null)&&(!inhabitants.isEmpty()))
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
 		if(found==null)
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
-		if((found==null)&&(contents.size()>0))
+		if((found==null)&&(!contents.isEmpty()))
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
-		if((found==null)&&(inhabitants.size()>0))
+		if((found==null)&&(!inhabitants.isEmpty()))
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
 		if(found==null)
 		{
@@ -2346,15 +2346,15 @@ public class StdRoom implements Room
 		if(newThingName!=null)
 			thingName=newThingName;
 		PhysicalAgent found=null;
-		if(inhabitants.size()>0)
+		if(!inhabitants.isEmpty())
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(contents.size()>0))
+		if((found==null)&&(!contents.isEmpty()))
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
 		if(found==null)
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
-		if((found==null)&&(inhabitants.size()>0))
+		if((found==null)&&(!inhabitants.isEmpty()))
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
-		if((found==null)&&(contents.size()>0))
+		if((found==null)&&(!contents.isEmpty()))
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
 		if(found==null)
 			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
@@ -2536,7 +2536,7 @@ public class StdRoom implements Room
 		if(affects.remove(to))
 		{
 			to.setAffectedOne(null);
-			if(affects.size()==0)
+			if(affects.isEmpty())
 				affects=new SVector(1);
 		}
 	}
@@ -2545,7 +2545,7 @@ public class StdRoom implements Room
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
 		final List<Ability> affects=this.affects;
-		if((affects!=null)&&(affects.size()>0))
+		if((affects!=null)&&(!affects.isEmpty()))
 		try
 		{
 			for(int a=0;a<affects.size();a++)
@@ -2629,7 +2629,7 @@ public class StdRoom implements Room
 		for(final Behavior B : behaviors)
 			if(B.ID().equals(to.ID()))
 			   return;
-		if(behaviors.size()==0)
+		if(behaviors.isEmpty())
 			CMLib.threads().startTickDown(this,Tickable.TICKID_ROOM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
@@ -2642,9 +2642,9 @@ public class StdRoom implements Room
 			return;
 		if(behaviors.remove(to))
 		{
-			if(behaviors.size()==0)
+			if(behaviors.isEmpty())
 				behaviors=new SVector(1);
-			if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
+			if(((behaviors==null)||(behaviors.isEmpty()))&&((scripts==null)||(scripts.isEmpty())))
 				CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 		}
 	}
@@ -2652,11 +2652,11 @@ public class StdRoom implements Room
 	@Override
 	public void delAllBehaviors()
 	{
-		final boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
+		final boolean didSomething=(behaviors!=null)&&(!behaviors.isEmpty());
 		if(didSomething)
 			behaviors.clear();
 		behaviors=null;
-		if(didSomething && ((scripts==null)||(scripts.size()==0)))
+		if(didSomething && ((scripts==null)||(scripts.isEmpty())))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 	}
 
@@ -2702,7 +2702,7 @@ public class StdRoom implements Room
 	public void eachBehavior(final EachApplicable<Behavior> applier)
 	{
 		final List<Behavior> behaviors=this.behaviors;
-		if((behaviors!=null)&&(behaviors.size()>0))
+		if((behaviors!=null)&&(!behaviors.isEmpty()))
 		try
 		{
 			for(int a=0;a<behaviors.size();a++)
@@ -2731,7 +2731,7 @@ public class StdRoom implements Room
 				if(S2.getScript().equalsIgnoreCase(S.getScript()))
 					return;
 			}
-			if(scripts.size()==0)
+			if(scripts.isEmpty())
 				CMLib.threads().startTickDown(this,Tickable.TICKID_ROOM_BEHAVIOR,1);
 			scripts.addElement(S);
 		}
@@ -2744,9 +2744,9 @@ public class StdRoom implements Room
 		{
 			if(scripts.remove(S))
 			{
-				if(scripts.size()==0)
+				if(scripts.isEmpty())
 					scripts=new SVector(1);
-				if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
+				if(((behaviors==null)||(behaviors.isEmpty()))&&((scripts==null)||(scripts.isEmpty())))
 					CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 			}
 		}
@@ -2755,11 +2755,11 @@ public class StdRoom implements Room
 	@Override
 	public void delAllScripts()
 	{
-		final boolean didSomething=(scripts!=null)&&(scripts.size()>0);
+		final boolean didSomething=(scripts!=null)&&(!scripts.isEmpty());
 		if(didSomething)
 			scripts.clear();
 		scripts=null;
-		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
+		if(didSomething && ((behaviors==null)||(behaviors.isEmpty())))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 	}
 
@@ -2790,7 +2790,7 @@ public class StdRoom implements Room
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
-		if((scripts!=null)&&(scripts.size()>0))
+		if((scripts!=null)&&(!scripts.isEmpty()))
 		try
 		{
 			for(int a=0;a<scripts.size();a++)

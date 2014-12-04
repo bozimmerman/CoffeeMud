@@ -70,7 +70,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public String toEnglishStringList(final Collection<? extends Object> V)
 	{
-		if((V==null)||(V.size()==0))
+		if((V==null)||(V.isEmpty()))
 		{
 			return "";
 		}
@@ -369,7 +369,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if((mob==null)
 		||(commands==null)
 		||(mob.location()==null)
-		||(commands.size()==0))
+		||(commands.isEmpty()))
 			return null;
 
 		String firstWord=commands.get(0).toUpperCase();
@@ -1079,7 +1079,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error)
 	{
-		if(commands.size()==0)
+		if(commands.isEmpty())
 		{
 			if(error.length()>0)
 				mob.tell(error);
@@ -1088,7 +1088,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		commands.remove(0);
 
 		final List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
-		if(V.size()==0)
+		if(V.isEmpty())
 		{
 			if(error.length()>0)
 				mob.tell(error);
@@ -1152,7 +1152,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 
 		String name=CMParms.combine(commands,0);
-		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
+		boolean allFlag=(!commands.isEmpty())?commands.get(0).equalsIgnoreCase("all"):false;
 		if(name.toUpperCase().startsWith("ALL.")){ allFlag=true; name="ALL "+name.substring(4);}
 		if(name.toUpperCase().endsWith(".ALL")){ allFlag=true; name="ALL "+name.substring(0,name.length()-4);}
 		boolean doBugFix = true;
@@ -1183,13 +1183,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			addendumStr="."+(++addendum);
 		}
 
-		if(wornOnly && (V.size()>0))
+		if(wornOnly && (!V.isEmpty()))
 		{
 			final Vector<Item> V2=new Vector<Item>();
 			short topLayer=0;
 			short curLayer=0;
 			int which=-1;
-			while(V.size()>0)
+			while(!V.isEmpty())
 			{
 				Item I=V.get(0);
 				topLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
@@ -1207,13 +1207,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			V=V2;
 		}
 		else
-		if(unwornOnly && (V.size()>0))
+		if(unwornOnly && (!V.isEmpty()))
 		{
 			final Vector<Item> V2=new Vector<Item>();
 			short topLayer=0;
 			short curLayer=0;
 			int which=-1;
-			while(V.size()>0)
+			while(!V.isEmpty())
 			{
 				Item I=V.get(0);
 				topLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
@@ -1281,7 +1281,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		}
 		else
-		if((V.size()>0)&&(matchAnyCurrencySet(CMParms.combine(V,0))!=null))
+		if((!V.isEmpty())&&(matchAnyCurrencySet(CMParms.combine(V,0))!=null))
 			return 1;
 		return 0;
 	}
@@ -1313,7 +1313,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if((V.size()>1)&&(V.firstElement().equalsIgnoreCase("all")))
 			return matchAnyCurrencySet(CMParms.combine(V,1));
 		else
-		if(V.size()>0)
+		if(!V.isEmpty())
 			return matchAnyCurrencySet(CMParms.combine(V,0));
 		return CMLib.beanCounter().getCurrency(mine);
 	}
@@ -1367,7 +1367,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if((V.size()>1)&&(V.firstElement().equalsIgnoreCase("all")))
 			return matchAnyDenomination(currency,CMParms.combine(V,1));
 		else
-		if(V.size()>0)
+		if(!V.isEmpty())
 			return matchAnyDenomination(currency,CMParms.combine(V,0));
 		return 0;
 	}
@@ -1948,7 +1948,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
 		final Vector<Environmental> matches=new Vector<Environmental>(1);
-		if(list.size()==0)
+		if(list.isEmpty())
 			return matches;
 		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null)
@@ -1984,7 +1984,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						if((--myOccurrance)<=0)
 							matches.addElement(E);
 				}
-				if(matches.size()==0)
+				if(matches.isEmpty())
 				{
 					myOccurrance=flags.occurrance;
 					for (final Environmental E : list)
@@ -2006,7 +2006,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly)
 	{
-		if(list.size()==0)
+		if(list.isEmpty())
 			return null;
 		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null)
@@ -2063,7 +2063,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
-		if(list.size()==0)
+		if(list.isEmpty())
 			return null;
 		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null)
@@ -2131,7 +2131,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
 		final Vector<Item> matches=new Vector<Item>(1);
-		if(list.size()==0)
+		if(list.isEmpty())
 			return matches;
 		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null)
@@ -2172,7 +2172,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						if((--myOccurrance)<=0)
 							matches.addElement(I);
 				}
-				if(matches.size()==0)
+				if(matches.isEmpty())
 				{
 					myOccurrance=flags.occurrance;
 					for (final Item I : list)
@@ -2195,7 +2195,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
-		if(list.size()==0)
+		if(list.isEmpty())
 			return null;
 		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null)

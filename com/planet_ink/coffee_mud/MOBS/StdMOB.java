@@ -513,7 +513,7 @@ public class StdMOB implements MOB
 	@Override
 	public String titledName()
 	{
-		if ((playerStats == null) || (playerStats.getTitles().size() == 0))
+		if ((playerStats == null) || (playerStats.getTitles().isEmpty()))
 			return name();
 		return CMStrings.replaceAll(playerStats.getActiveTitle(), "*", Name());
 	}
@@ -1715,7 +1715,7 @@ public class StdMOB implements MOB
 			if ((amFollowing() != null) && (amFollowing().fetchFollowerOrder(this) > 0))
 			{
 				final List<MOB> whoseAhead = CMLib.combat().getFormationFollowed(this);
-				if ((whoseAhead != null) && (whoseAhead.size() > 0))
+				if ((whoseAhead != null) && (!whoseAhead.isEmpty()))
 				{
 					sendBack.append(L(", behind "));
 					for (int v = 0; v < whoseAhead.size(); v++)
@@ -1873,7 +1873,7 @@ public class StdMOB implements MOB
 			QMCommand doCommand = null;
 			synchronized (commandQue)
 			{
-				if (commandQue.size() == 0)
+				if (commandQue.isEmpty())
 					return false;
 				QMCommand cmd = commandQue.getFirst();
 				final double diff = actions() - cmd.actionDelay;
@@ -1893,7 +1893,7 @@ public class StdMOB implements MOB
 				doCommand(doCommand.commandObj, doCommand.commandVector, doCommand.metaFlags);
 				synchronized (commandQue)
 				{
-					if (commandQue.size() > 0)
+					if (!commandQue.isEmpty())
 					{
 						final QMCommand cmd = commandQue.getFirst();
 						final Object O = cmd.commandObj;
@@ -1908,7 +1908,7 @@ public class StdMOB implements MOB
 			QMCommand cmd = null;
 			synchronized (commandQue)
 			{
-				if (commandQue.size() == 0)
+				if (commandQue.isEmpty())
 					return false;
 				cmd = commandQue.getFirst();
 				if ((cmd == null) || (System.currentTimeMillis() < cmd.nextCheck))
@@ -3583,11 +3583,11 @@ public class StdMOB implements MOB
 	@Override
 	public List<Item> findItems(Item goodLocation, String itemName)
 	{
-		if (inventory.size() == 0)
+		if (inventory.isEmpty())
 			return new Vector<Item>(1);
 		List<Item> items = CMLib.english().fetchAvailableItems(inventory, itemName, goodLocation, Wearable.FILTER_ANY,
 				true);
-		if (items.size() == 0)
+		if (items.isEmpty())
 			items = CMLib.english().fetchAvailableItems(inventory, itemName, goodLocation, Wearable.FILTER_ANY, false);
 		return items;
 	}
@@ -3630,7 +3630,7 @@ public class StdMOB implements MOB
 
 	public Item fetchFromInventory(Item goodLocation, String itemName, Filterer<Environmental> filter, boolean respectLocationAndWornCode)
 	{
-		if (inventory.size() == 0)
+		if (inventory.isEmpty())
 			return null;
 		final SVector inv = inventory;
 		Item item = null;
@@ -3670,10 +3670,10 @@ public class StdMOB implements MOB
 	@Override
 	public List<Item> findItems(final String itemName)
 	{
-		if (inventory.size() > 0)
+		if (!inventory.isEmpty())
 		{
 			List V = CMLib.english().fetchEnvironmentals(inventory, itemName, true);
-			if ((V != null) && (V.size() > 0))
+			if ((V != null) && (!V.isEmpty()))
 				return V;
 			V = CMLib.english().fetchEnvironmentals(inventory, itemName, false);
 			if (V != null)
@@ -4159,7 +4159,7 @@ public class StdMOB implements MOB
 			return;
 		if (fetchEffect(to.ID()) != null)
 			return;
-		if (affects.size() == 0)
+		if (affects.isEmpty())
 			affects.addElement(to);
 		else
 			affects.insertElementAt(to, 0);
@@ -4198,7 +4198,7 @@ public class StdMOB implements MOB
 		final List<Ability> racialEffects = racialEffects();
 		try
 		{
-			if (racialEffects.size() > 0)
+			if (!racialEffects.isEmpty())
 				for (final Ability A : racialEffects)
 					applier.apply(A);
 		}
@@ -4421,7 +4421,7 @@ public class StdMOB implements MOB
 
 	@Override public void delAllExpertises()
 	{
-		if(expertises.size()>0)
+		if(!expertises.isEmpty())
 		{
 			expertises.clear();
 			clearAbilityUsageCache();
