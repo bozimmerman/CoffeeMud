@@ -53,11 +53,13 @@ public class Paladin_Aura extends PaladinSkill
 		if(!super.tick(ticking,tickID))
 			return false;
 		pass=(invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false);
-		if(pass)
+		final Room R=CMLib.map().roomLocation(invoker != null ? invoker : (affected != null ? affected : (ticking instanceof Physical ? (Physical)ticking : null)));
+		if(pass && (R!=null))
 		{
-			for(final MOB mob : paladinsGroup)
+			for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 			{
-				if(CMLib.flags().isEvil(mob) && (mob.location()==invoker.location()))
+				final MOB mob=m.nextElement();
+				if(paladinsGroup.contains(mob) && CMLib.flags().isEvil(mob))
 				{
 					final int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*getXLEVELLevel(invoker)),3.0));
 					final MOB invoker=(invoker()!=null) ? invoker() : mob;
