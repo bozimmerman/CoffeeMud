@@ -86,7 +86,7 @@ public class ItemData extends StdWebMacro
 		{
 			if(R!=null)
 				R=CMLib.map().getRoom(R);
-
+			
 			if((playerM!=null)&&(R==null))
 			{
 				I=(Item)httpReq.getRequestObjects().get("PLAYER/"+player+"/"+itemCode);
@@ -224,6 +224,8 @@ public class ItemData extends StdWebMacro
 			return clearWebMacros(str);
 		}
 
+		final int theme = (R!=null) ? R.getArea().getTheme() : CMProps.getIntVar(CMProps.Int.MUDTHEME);
+		
 		final Item oldI=I;
 		// important generic<->non generic swap!
 		final String newClassID=httpReq.getUrlParameter("CLASSES");
@@ -324,7 +326,7 @@ public class ItemData extends StdWebMacro
 							if(sorted==null)
 							{
 								final Vector sortMe=new Vector();
-								CMClass.addAllItemClassNames(sortMe,true,false,parms.containsKey("GENERICONLY"));
+								CMClass.addAllItemClassNames(sortMe,true,false,parms.containsKey("GENERICONLY"),theme);
 								sorted=(new TreeSet(sortMe)).toArray();
 								Resources.submitResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"),sorted);
 							}

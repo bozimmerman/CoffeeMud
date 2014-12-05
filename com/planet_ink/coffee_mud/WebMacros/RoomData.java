@@ -945,6 +945,7 @@ public class RoomData extends StdWebMacro
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
+			final int theme = (R!=null) ? R.getArea().getTheme() : CMProps.getIntVar(CMProps.Int.MUDTHEME);
 
 			final StringBuffer str=new StringBuffer("");
 			if(parms.containsKey("NAME"))
@@ -1276,7 +1277,7 @@ public class RoomData extends StdWebMacro
 				{
 					ilist=new StringBuffer("");
 					final Vector sortMe=new Vector();
-					CMClass.addAllItemClassNames(sortMe,true,true,false);
+					CMClass.addAllItemClassNames(sortMe,true,true,false,theme);
 					final Object[] sorted=(new TreeSet(sortMe)).toArray();
 					for (final Object element : sorted)
 						ilist.append("<OPTION VALUE=\""+(String)element+"\">"+(String)element);

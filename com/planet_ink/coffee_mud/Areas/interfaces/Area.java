@@ -577,6 +577,8 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public final static int THEME_TECHNOLOGY=2;
 	/**	Bitmap flag meaning that the object supports super powers.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
 	public final static int THEME_HEROIC=4;
+	/**	Bitmap flag meaning that the object supports ALL themes.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
+	public final static int THEME_ALLTHEMES=THEME_FANTASY|THEME_TECHNOLOGY|THEME_HEROIC;
 	/**	Bitmap flag meaning that the object only supports usage of above in Skills.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
 	public final static int THEME_SKILLONLYMASK=8;
 	/** Indexed description of the THEME_ bitmap constants in all possible combinations -- in upper/single word format */

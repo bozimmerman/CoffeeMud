@@ -325,7 +325,7 @@ public class RaceData extends StdWebMacro
 		if(one)
 		{
 			final Vector sortMe=new Vector();
-			CMClass.addAllItemClassNames(sortMe,true,true,false);
+			CMClass.addAllItemClassNames(sortMe,true,true,false,CMProps.getIntVar(CMProps.Int.MUDTHEME));
 			final Object[] sorted=(new TreeSet(sortMe)).toArray();
 			for (final Object element : sorted)
 			{
@@ -343,7 +343,7 @@ public class RaceData extends StdWebMacro
 			{
 				mposs=new StringBuffer("");
 				final Vector sortMe=new Vector();
-				CMClass.addAllItemClassNames(sortMe,true,true,false);
+				CMClass.addAllItemClassNames(sortMe,true,true,false,CMProps.getIntVar(CMProps.Int.MUDTHEME));
 				final Object[] sorted=(new TreeSet(sortMe)).toArray();
 				for (final Object element : sorted)
 					mposs.append("<OPTION VALUE=\""+(String)element+"\">"+(String)element);

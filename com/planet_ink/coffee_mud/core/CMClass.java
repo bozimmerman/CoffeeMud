@@ -722,15 +722,21 @@ public class CMClass extends ClassLoader
 	 * @param NonArchon true to not include Archon items
 	 * @param NonGeneric true to not include Gen items
 	 * @param NonStandard true to not include Standard items
+	 * @param themeCode the theme mask to respect, sortof
 	 */
 	public static final void addAllItemClassNames(final List<String> namesList, final boolean NonArchon,
-												  final boolean NonGeneric, final boolean NonStandard)
+												  final boolean NonGeneric, final boolean NonStandard,
+												  final int themeCode)
 	{
 		namesList.addAll(getAllItemClassNames(basicItems(),NonArchon,NonGeneric,NonStandard));
 		namesList.addAll(getAllItemClassNames(weapons(),NonArchon,NonGeneric,NonStandard));
-		namesList.addAll(getAllItemClassNames(armor(),NonArchon,NonGeneric,NonStandard));
-		namesList.addAll(getAllItemClassNames(miscMagic(),NonArchon,NonGeneric,NonStandard));
-		namesList.addAll(getAllItemClassNames(tech(),NonArchon,NonGeneric,NonStandard));
+		if(CMath.bset(themeCode,Area.THEME_FANTASY))
+		{
+			namesList.addAll(getAllItemClassNames(armor(),NonArchon,NonGeneric,NonStandard));
+			namesList.addAll(getAllItemClassNames(miscMagic(),NonArchon,NonGeneric,NonStandard));
+		}
+		if(CMath.bset(themeCode,Area.THEME_TECHNOLOGY))
+			namesList.addAll(getAllItemClassNames(tech(),NonArchon,NonGeneric,NonStandard));
 		namesList.addAll(getAllItemClassNames(clanItems(),NonArchon,NonGeneric,NonStandard));
 	}
 

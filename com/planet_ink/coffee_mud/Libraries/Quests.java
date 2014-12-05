@@ -1583,7 +1583,7 @@ public class Quests extends StdLibrary implements QuestManager
 			}
 		}
 		final List<String> allItemNames=new Vector<String>();
-		CMClass.addAllItemClassNames(allItemNames,true,false,false);
+		CMClass.addAllItemClassNames(allItemNames,true,false,false,CMProps.getIntVar(CMProps.Int.MUDTHEME));
 		final List<Item> newItems=new Vector<Item>();
 		for(int a=0;a<allItemNames.size();a++)
 		{

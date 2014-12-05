@@ -705,8 +705,9 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer shopkeeper(ShopKeeper E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer shopkeeper(Room R, ShopKeeper E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
+		final int theme = (R!=null) ? R.getArea().getTheme() : CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		final StringBuffer str=new StringBuffer("");
 		str.append(priceFactors(E,httpReq,parms,borderSize));
 		if(parms.containsKey("SHOPINVENTORY"))
@@ -852,7 +853,7 @@ public class MobData extends StdWebMacro
 					sortMeA.addElement(CMClass.classID(a.nextElement()));
 				for(final Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 					sortMeA.addElement(CMClass.classID(m.nextElement()));
-				CMClass.addAllItemClassNames(sortMeA,true,true,false);
+				CMClass.addAllItemClassNames(sortMeA,true,true,false,theme);
 				final Object[] sortedA=(new TreeSet(sortMeA)).toArray();
 				for (final Object element : sortedA)
 				{
@@ -879,8 +880,9 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer itemList(MOB oldM, MOB M, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer itemList(Room R, MOB oldM, MOB M, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
+		final int theme = (R!=null) ? R.getArea().getTheme() : CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ITEMLIST"))
 		{
@@ -980,7 +982,7 @@ public class MobData extends StdWebMacro
 			{
 				mposs=new StringBuffer("");
 				final Vector sortMe=new Vector();
-				CMClass.addAllItemClassNames(sortMe,true,true,false);
+				CMClass.addAllItemClassNames(sortMe,true,true,false,theme);
 				final Object[] sorted=(new TreeSet(sortMe)).toArray();
 				for (final Object element : sorted)
 					mposs.append("<OPTION VALUE=\""+(String)element+"\">"+(String)element);
@@ -1656,9 +1658,9 @@ public class MobData extends StdWebMacro
 			str.append(MobData.powers((Deity)M,httpReq,parms,1));
 		}
 		if(M instanceof ShopKeeper)
-			str.append(MobData.shopkeeper((ShopKeeper)M,httpReq,parms,1));
+			str.append(MobData.shopkeeper(R,(ShopKeeper)M,httpReq,parms,1));
 
-		str.append(itemList(oldM,M,httpReq,parms,1));
+		str.append(itemList(R,oldM,M,httpReq,parms,1));
 
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))

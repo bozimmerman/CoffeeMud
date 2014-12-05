@@ -542,7 +542,7 @@ public class PlayerData extends StdWebMacro
 			}
 			str.append(MobData.expertiseList(M,httpReq,parms));
 			str.append(MobData.classList(M,httpReq,parms));
-			str.append(MobData.itemList(M,M,httpReq,parms,0));
+			str.append(MobData.itemList(null,M,M,httpReq,parms,0));
 			str.append(MobData.abilities(M,httpReq,parms,0));
 			str.append(MobData.factions(M,httpReq,parms,0));
 			str.append(AreaData.affects(M,httpReq,parms,0));
