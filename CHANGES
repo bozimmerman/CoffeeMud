@@ -4,6 +4,7 @@
    3. Sailing Ships now properly count as Property for the purposes of certain spells and skills.
    4. Shipwright can retitle/redescribe sailing ship rooms now.
    5. Improvement to context-usage when targeting items, mobs, or exits, e.g.: look item.3
+   6. MUDGrinder item adder/editor will now only show options appropriate to the area theme -- keep this in mind! 
 # Build 5.8.4 Released 12/01/2014
    *. Database Schema Updated for CMBKLG and CMCLIT.  See the Installation Guide about running DBUpgrade.
    1. Channels now save their back messages to the database for perpetual enjoyment. See DISABLE,CHANNELBACKLOG in coffeemud.ini.

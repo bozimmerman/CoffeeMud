@@ -114,6 +114,26 @@ public class Modify extends StdCommand
 			if(E instanceof Item)
 				modItem=(Item)E;
 		}
+		if(modItem == null)
+		{
+			ShopKeeper S=CMLib.coffeeShops().getShopKeeper(srchMob);
+			if(S!=null)
+			{
+				Environmental E=S.getShop().getStock(itemID,mob);
+				if(E instanceof Item)
+					modItem=(Item)E;
+			}
+			if(modItem == null)
+			{
+				S=CMLib.coffeeShops().getShopKeeper(srchRoom);
+				if(S!=null)
+				{
+					Environmental E=S.getShop().getStock(itemID,mob);
+					if(E instanceof Item)
+						modItem=(Item)E;
+				}
+			}
+		}
 		if(modItem==null)
 		{
 			mob.tell(L("I don't see '@x1 here.\n\r",itemID));

@@ -334,14 +334,22 @@ public class ItemData extends StdWebMacro
 							if(parms.containsKey("CLASSESID"))
 								str.append(old);
 							else
+							{
+								boolean found=false;
 								for (final Object element : sorted)
 								{
 									final String cnam=(String)element;
 									str.append("<OPTION VALUE=\""+cnam+"\"");
 									if(old.equals(cnam))
+									{
 										str.append(" SELECTED");
+										found=true;
+									}
 									str.append(">"+cnam);
 								}
+								if(!found)
+									str.append("<OPTION SELECTED VALUE=\""+old+"\">"+old);
+							}
 						}
 						break;
 					case DISPLAYTEXT: // displaytext

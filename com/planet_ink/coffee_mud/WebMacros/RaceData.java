@@ -327,14 +327,22 @@ public class RaceData extends StdWebMacro
 			final List<String> sortMe=new ArrayList();
 			CMClass.addAllItemClassNames(sortMe,true,true,false,CMProps.getIntVar(CMProps.Int.MUDTHEME));
 			Collections.sort(sortMe);
+			Set<String> found=new TreeSet<String>();
 			for (final Object element : sortMe)
 			{
 				boolean selected=false;
 				for(int x=0;x<classes.size();x++)
 					if(((Item)classes.elementAt(x)).ID().equals(element))
-					{ selected=true; break;}
+					{ 
+						selected=true;
+						found.add(((Item)classes.elementAt(x)).ID());
+						break;
+					}
 				str.append("<OPTION "+(selected?"SELECTED":"")+" VALUE=\""+(String)element+"\">"+(String)element);
 			}
+			for(int x=0;x<classes.size();x++)
+				if(!found.contains(((Item)classes.elementAt(x)).ID()))
+					str.append("<OPTION SELECTED VALUE=\""+((Item)classes.elementAt(x)).ID()+"\">"+((Item)classes.elementAt(x)).ID());
 		}
 		else
 		{
