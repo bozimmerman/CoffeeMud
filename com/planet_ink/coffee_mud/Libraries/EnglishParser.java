@@ -2193,6 +2193,97 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
+	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly, int[] counterSlap)
+	{
+		if(list.isEmpty())
+			return null;
+		final FetchFlags flags=fetchFlags(srchStr);
+		if(flags==null)
+			return null;
+
+		srchStr=flags.srchStr;
+		int myOccurrance=flags.occurrance - counterSlap[0];
+		final boolean allFlag=flags.allFlag;
+
+		Item I=null;
+		try
+		{
+			if(exactOnly)
+			{
+				srchStr=cleanExtraneousDollarMarkers(srchStr);
+				for (final Environmental E : list)
+				{
+					if(E instanceof Item)
+					{
+						I=(Item)E;
+						if((I.container()==goodLocation)
+						&&(filter.passesFilter(I))
+						&&(I.ID().equalsIgnoreCase(srchStr)
+						   ||(I.Name().equalsIgnoreCase(srchStr))
+						   ||(I.name().equalsIgnoreCase(srchStr))))
+							if((!allFlag)||(E instanceof Ability)||((I.displayText()!=null)&&(I.displayText().length()>0)))
+								if((--myOccurrance)<=0)
+									return I;
+					}
+					else
+					if(E!=null)
+						if(E.ID().equalsIgnoreCase(srchStr)
+						||E.Name().equalsIgnoreCase(srchStr)
+						||E.name().equalsIgnoreCase(srchStr))
+							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+								if((--myOccurrance)<=0)
+									return E;
+				}
+			}
+			else
+			{
+				for (final Environmental E : list)
+				{
+					if(E instanceof Item)
+					{
+						I=(Item)E;
+						if((I.container()==goodLocation)
+						&&(filter.passesFilter(I))
+						&&(containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
+						&&((!allFlag)||(E instanceof Ability)||((I.displayText()!=null)&&(I.displayText().length()>0))))
+							if((--myOccurrance)<=0)
+								return I;
+					}
+					else
+					if((E!=null)
+					&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+					&&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+						if((--myOccurrance)<=0)
+							return E;
+				}
+
+				myOccurrance=flags.occurrance - counterSlap[0];
+				for (final Environmental E : list)
+				{
+					if(E instanceof Item)
+					{
+						I=(Item)E;
+						if((I.container()==goodLocation)
+						&&(filter.passesFilter(I))
+						&&(containsString(I.displayText(),srchStr)))
+							if((--myOccurrance)<=0)
+								return I;
+					}
+					else
+					if(E!=null)
+						if((containsString(E.displayText(),srchStr))
+						||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+							if((--myOccurrance)<=0)
+								return E;
+				}
+			}
+		}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		counterSlap[0]+=(flags.occurrance-myOccurrance);
+		return null;
+	}
+	
+	@Override
 	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
 		if(list.isEmpty())

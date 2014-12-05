@@ -76,6 +76,7 @@ public interface EnglishParsing extends CMLibrary
 	public String getContextSameName(Environmental[] list, Environmental E);
 	public String getContextSameName(ItemCollection cont, Environmental E);
 	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
+	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly, int[] counterSlap);
 	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error);
 	public List<Item> fetchItemList(Environmental from, MOB mob, Item container, List<String> commands, Filterer<Environmental> filter, boolean visionMatters);
 	public long numPossibleGold(Environmental mine, String itemID);

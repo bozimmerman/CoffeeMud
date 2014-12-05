@@ -2274,18 +2274,20 @@ public class StdRoom implements Room
 		if(newThingName!=null)
 			thingName=newThingName;
 		PhysicalAgent found=null;
+		final int[] contextNumber=new int[]{0};
 		if(!contents.isEmpty())
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true,contextNumber);
 		if(found==null)
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true,contextNumber);
 		if((found==null)&&(!inhabitants.isEmpty()))
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true,contextNumber);
+		contextNumber[0]=0;
 		if((found==null)&&(!contents.isEmpty()))
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false,contextNumber);
 		if(found==null)
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false,contextNumber);
 		if((found==null)&&(!inhabitants.isEmpty()))
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false,contextNumber);
 
 		if((found!=null) // the smurfy well exception
 		&&(found instanceof Item)
@@ -2315,20 +2317,22 @@ public class StdRoom implements Room
 		final Item goodLocation=null;
 		PhysicalAgent found=null;
 		final int dirCode = Directions.getGoodDirectionCode(thingName);
+		final int[] contextNumber=new int[]{0};
 		if(dirCode>=0)
 			found=getRoomInDir(dirCode);
 		if(found==null)
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true,contextNumber);
 		if((found==null)&&(!contents.isEmpty()))
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true,contextNumber);
 		if((found==null)&&(!inhabitants.isEmpty()))
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true,contextNumber);
+		contextNumber[0]=0;
 		if(found==null)
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false,contextNumber);
 		if((found==null)&&(!contents.isEmpty()))
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false,contextNumber);
 		if((found==null)&&(!inhabitants.isEmpty()))
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false,contextNumber);
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
@@ -2345,19 +2349,21 @@ public class StdRoom implements Room
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null)
 			thingName=newThingName;
+		final int[] contextNumber = new int[]{0};
 		PhysicalAgent found=null;
 		if(!inhabitants.isEmpty())
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,true,contextNumber);
 		if((found==null)&&(!contents.isEmpty()))
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,true,contextNumber);
 		if(found==null)
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,true,contextNumber);
+		contextNumber[0]=0;
 		if((found==null)&&(!inhabitants.isEmpty()))
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(inhabitants,thingName,goodLocation,Wearable.FILTER_ANY,false,contextNumber);
 		if((found==null)&&(!contents.isEmpty()))
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(contents,thingName,goodLocation,Wearable.FILTER_ANY,false,contextNumber);
 		if(found==null)
-			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false);
+			found=(PhysicalAgent)CMLib.english().fetchAvailable(Arrays.asList(exits),thingName,goodLocation,Wearable.FILTER_ANY,false,contextNumber);
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
