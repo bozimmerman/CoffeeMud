@@ -77,7 +77,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	}
 
 
-	public boolean okRoomForMe(MOB mob, Room currentRoom, Room newRoom)
+	public boolean okRoomForMe(MOB mob, Room currentRoom, Room newRoom, boolean ignoreAtmosphere)
 	{
 		if(newRoom==null)
 			return false;
@@ -108,7 +108,9 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			if(DISTLATER.intValue()>leash)
 				return false;
 		}
-		if((mob.charStats().getBreathables().length>0) && (Arrays.binarySearch(mob.charStats().getBreathables(), newRoom.getAtmosphere())<0))
+		if((!ignoreAtmosphere)
+		&&(mob.charStats().getBreathables().length>0) 
+		&& (Arrays.binarySearch(mob.charStats().getBreathables(), newRoom.getAtmosphere())<0))
 			return false;
 		if(restrictedLocales==null)
 			return true;
@@ -189,22 +191,33 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 
 	public boolean emergencyMove(MOB mob, Room room)
 	{
-		if(!CMLib.flags().canBreatheHere(mob, room)) // the fish exception
+		int tries=30;
+		while((--tries>0)&&(!CMLib.flags().canBreatheHere(mob, room))) // the fish exception
 		{
-			int dir=-1;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				final Room R=room.getRoomInDir(d);
-				if((R!=null)&&(okRoomForMe(mob,room,R)))
+				if((R!=null)&&(okRoomForMe(mob,room,R,false)))
 				{
-					dir=d;
-					CMLib.tracking().walk(mob, dir, true, true);
+					CMLib.tracking().walk(mob, d, true, true);
 					if(mob.location()!=room)
 					{
 						return true;
 					}
 				}
 			}
+			int dir=-1;
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
+				final Room R=room.getRoomInDir(d);
+				if((R!=null)&&(okRoomForMe(mob,room,R,true)))
+				{
+					dir=d;
+					break;
+				}
+			}
+			if(dir>=0)
+				CMLib.tracking().walk(mob, dir, true, true);
 		}
 		return false;
 	}
@@ -227,7 +240,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			final Room room=mob.location();
 			if(firstRun)
 			{
-				firstRun=true;
+				firstRun=false;
 				emergencyMove(mob,room);
 			}
 			if(canAct(ticking,tickID))
@@ -248,7 +261,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					final Room R=room.getRoomInDir(d);
-					if((R!=null)&&(!okRoomForMe(mob,room,R)))
+					if((R!=null)&&(!okRoomForMe(mob,room,R,false)))
 					{
 						if(objections==null)
 							objections=new HashSet<Room>();
