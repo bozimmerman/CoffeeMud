@@ -1033,10 +1033,10 @@ public class Factions extends StdLibrary implements FactionManager
 				mob.tell(list.toString());
 				if((showFlag!=showNumber)&&(showFlag>-999))
 					break;
-				String which=mob.session().prompt(L("Select a ID to add, remove, or modify:"),"");
+				String which=mob.session().prompt(L("Select an ID to add, remove, or modify:"),"");
 				which=which.toUpperCase().trim();
 				if(which.length()==0)
-					continue;
+					break;
 				Faction.FactionChangeEvent CE=(which.length()>0)?choicesHashed.get(Character.valueOf(which.charAt(0))):null;
 				if(CE==null)
 				{
