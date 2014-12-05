@@ -324,10 +324,10 @@ public class RaceData extends StdWebMacro
 		}
 		if(one)
 		{
-			final Vector sortMe=new Vector();
+			final List<String> sortMe=new ArrayList();
 			CMClass.addAllItemClassNames(sortMe,true,true,false,CMProps.getIntVar(CMProps.Int.MUDTHEME));
-			final Object[] sorted=(new TreeSet(sortMe)).toArray();
-			for (final Object element : sorted)
+			Collections.sort(sortMe);
+			for (final Object element : sortMe)
 			{
 				boolean selected=false;
 				for(int x=0;x<classes.size();x++)
@@ -342,10 +342,10 @@ public class RaceData extends StdWebMacro
 			if(mposs==null)
 			{
 				mposs=new StringBuffer("");
-				final Vector sortMe=new Vector();
+				final List<String> sortMe=new ArrayList<String>();
 				CMClass.addAllItemClassNames(sortMe,true,true,false,CMProps.getIntVar(CMProps.Int.MUDTHEME));
-				final Object[] sorted=(new TreeSet(sortMe)).toArray();
-				for (final Object element : sorted)
+				Collections.sort(sortMe);
+				for (final Object element : sortMe)
 					mposs.append("<OPTION VALUE=\""+(String)element+"\">"+(String)element);
 				Resources.submitResource("MUDGRINDER-OTHERPOSS",mposs);
 			}

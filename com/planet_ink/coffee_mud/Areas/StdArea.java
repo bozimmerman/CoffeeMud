@@ -369,7 +369,7 @@ public class StdArea implements Area
 			for(final Enumeration<Area> a=A.getParents();a.hasMoreElements();)
 				areasToDo.push(a.nextElement());
 		}
-		derivedTheme=Area.THEME_FANTASY;
+		derivedTheme=CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		return derivedTheme;
 	}
 	

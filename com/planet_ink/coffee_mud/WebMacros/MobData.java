@@ -844,23 +844,23 @@ public class MobData extends StdWebMacro
 			{
 				str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+RoomData.getObjIDSuffix(M));
 			}
-			StringBuffer bufA=(StringBuffer)Resources.getResource("MUDGRINDER-STORESTUFF");
+			StringBuffer bufA=(StringBuffer)Resources.getResource("MUDGRINDER-STORESTUFF"+theme);
 			if(bufA==null)
 			{
 				bufA=new StringBuffer("");
-				final Vector sortMeA=new Vector();
+				final List<String> sortMeA=new ArrayList();
 				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
-					sortMeA.addElement(CMClass.classID(a.nextElement()));
+					sortMeA.add(CMClass.classID(a.nextElement()));
 				for(final Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
-					sortMeA.addElement(CMClass.classID(m.nextElement()));
+					sortMeA.add(CMClass.classID(m.nextElement()));
 				CMClass.addAllItemClassNames(sortMeA,true,true,false,theme);
-				final Object[] sortedA=(new TreeSet(sortMeA)).toArray();
-				for (final Object element : sortedA)
+				Collections.sort(sortMeA);
+				for (final Object element : sortMeA)
 				{
 					final String cnam=(String)element;
 					bufA.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 				}
-				Resources.submitResource("MUDGRINDER-STORESTUFF",bufA);
+				Resources.submitResource("MUDGRINDER-STORESTUFF"+theme,bufA);
 			}
 			str.append(bufA);
 			str.append("<OPTION VALUE=\"\">------ CATALOGED -------");
@@ -977,16 +977,16 @@ public class MobData extends StdWebMacro
 			{
 				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+RoomData.getObjIDSuffix(I));
 			}
-			StringBuffer mposs=(StringBuffer)Resources.getResource("MUDGRINDER-MOBPOSS");
+			StringBuffer mposs=(StringBuffer)Resources.getResource("MUDGRINDER-MOBPOSS"+theme);
 			if(mposs==null)
 			{
 				mposs=new StringBuffer("");
-				final Vector sortMe=new Vector();
+				final List<String> sortMe=new ArrayList<String>();
 				CMClass.addAllItemClassNames(sortMe,true,true,false,theme);
-				final Object[] sorted=(new TreeSet(sortMe)).toArray();
-				for (final Object element : sorted)
+				Collections.sort(sortMe);
+				for (final Object element : sortMe)
 					mposs.append("<OPTION VALUE=\""+(String)element+"\">"+(String)element);
-				Resources.submitResource("MUDGRINDER-MOBPOSS",mposs);
+				Resources.submitResource("MUDGRINDER-MOBPOSS"+theme,mposs);
 			}
 			str.append(mposs);
 			str.append("<OPTION VALUE=\"\">------ CATALOGED -------");

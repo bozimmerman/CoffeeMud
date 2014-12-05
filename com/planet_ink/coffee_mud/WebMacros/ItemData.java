@@ -322,13 +322,14 @@ public class ItemData extends StdWebMacro
 						{
 							if(firstTime)
 								old=CMClass.classID(I);
-							Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"));
+							Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY")+theme);
 							if(sorted==null)
 							{
-								final Vector sortMe=new Vector();
+								final List<String> sortMe=new ArrayList();
 								CMClass.addAllItemClassNames(sortMe,true,false,parms.containsKey("GENERICONLY"),theme);
-								sorted=(new TreeSet(sortMe)).toArray();
-								Resources.submitResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"),sorted);
+								Collections.sort(sortMe);
+								sorted=sortMe.toArray();
+								Resources.submitResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY")+theme,sorted);
 							}
 							if(parms.containsKey("CLASSESID"))
 								str.append(old);

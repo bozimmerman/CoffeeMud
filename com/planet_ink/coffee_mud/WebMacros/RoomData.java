@@ -945,7 +945,7 @@ public class RoomData extends StdWebMacro
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-			final int theme = (R!=null) ? R.getArea().getTheme() : CMProps.getIntVar(CMProps.Int.MUDTHEME);
+			final int theme = R.getArea().getTheme();
 
 			final StringBuffer str=new StringBuffer("");
 			if(parms.containsKey("NAME"))
@@ -1272,16 +1272,16 @@ public class RoomData extends StdWebMacro
 				{
 					str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+getObjIDSuffix(I));
 				}
-				StringBuffer ilist=(StringBuffer)Resources.getResource("MUDGRINDER-ITEMLIST");
+				StringBuffer ilist=(StringBuffer)Resources.getResource("MUDGRINDER-ITEMLIST"+theme);
 				if(ilist==null)
 				{
 					ilist=new StringBuffer("");
-					final Vector sortMe=new Vector();
+					final List<String> sortMe=new Vector();
 					CMClass.addAllItemClassNames(sortMe,true,true,false,theme);
-					final Object[] sorted=(new TreeSet(sortMe)).toArray();
-					for (final Object element : sorted)
+					Collections.sort(sortMe);
+					for (final Object element : sortMe)
 						ilist.append("<OPTION VALUE=\""+(String)element+"\">"+(String)element);
-					Resources.submitResource("MUDGRINDER-ITEMLIST",ilist);
+					Resources.submitResource("MUDGRINDER-ITEMLIST"+theme,ilist);
 				}
 				str.append(ilist);
 				str.append("<OPTION VALUE=\"\">------ CATALOGED -------");
