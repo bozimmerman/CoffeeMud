@@ -106,6 +106,7 @@ public class DefaultSession implements Session
 	protected boolean   	 connectionComplete	 = false;
 	protected ReentrantLock  writeLock 			 = new ReentrantLock(true);
 	protected LoginSession	 loginSession 		 = null;
+	protected boolean[]		 loggingOutObj		 = new boolean[]{false};
 
 	protected ColorState	 currentColor		 = ColorLibrary.COLORSTATE_NORMAL;
 	protected ColorState	 lastColor			 = ColorLibrary.COLORSTATE_NORMAL;
@@ -1998,54 +1999,67 @@ public class DefaultSession implements Session
 	{
 		if(M==null)
 			return;
-		final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
-		if(inTheGame 
-		&& (M.location()!=null)
-		&&((!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
-			||(CMLib.sessions().getCountAll()>1)))
+		synchronized(loggingOutObj)
 		{
-			List<Room> rooms=new ArrayList<Room>(1);
-			rooms.add(M.location());
-			for(MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
-				if((M2.location()!=null)&&(!rooms.contains(M2.location())))
-					rooms.add(M2.location());
-			for(Room R : rooms)
+			if(loggingOutObj[0])
+				return;
+			try
 			{
-				try
+				loggingOutObj[0]=true;
+				final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
+				if(inTheGame 
+				&& (M.location()!=null)
+				&&((!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+					||(CMLib.sessions().getCountAll()>1)))
 				{
-					R.send(M, CMClass.getMsg(mob, CMMsg.MSG_QUIT, null));
+					List<Room> rooms=new ArrayList<Room>(1);
+					rooms.add(M.location());
+					for(MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
+						if((M2.location()!=null)&&(!rooms.contains(M2.location())))
+							rooms.add(M2.location());
+					for(Room R : rooms)
+					{
+						try
+						{
+							R.send(M, CMClass.getMsg(mob, CMMsg.MSG_QUIT, null));
+						}
+						catch(Throwable t) { /* and eat it */ }
+					}
 				}
-				catch(Throwable t) { /* and eat it */ }
+		
+				while((getLastPKFight()>0)
+				&&((System.currentTimeMillis()-getLastPKFight())<(2*60*1000))
+				&&(mob!=null))
+				{ try{Thread.sleep(1000);}catch(final Exception e){}}
+				String name=M.Name();
+				if(name.trim().length()==0)
+					name="Unknown";
+				if((M.isInCombat())&&(M.location()!=null))
+				{
+					CMLib.commands().postFlee(mob,"NOWHERE");
+					M.makePeace();
+				}
+				if(!CMLib.flags().isCloaked(M))
+				{
+					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
+					for(int i=0;i<channels.size();i++)
+						CMLib.commands().postChannel(channels.get(i),M.clans(),name+" has logged out",true);
+				}
+				CMLib.login().notifyFriends(M,"^X"+M.Name()+" has logged off.^.^?");
+		
+				// the player quit message!
+				CMLib.threads().executeRunnable(groupName,new LoginLogoutThread(M,CMMsg.MSG_QUIT));
+				if(M.playerStats()!=null)
+					M.playerStats().setLastDateTime(System.currentTimeMillis());
+				Log.sysOut("Logout: "+name+" ("+CMLib.time().date2SmartEllapsedTime(System.currentTimeMillis()-userLoginTime,true)+")");
+				if(inTheGame)
+					CMLib.database().DBUpdateFollowers(M);
+			}
+			finally
+			{
+				loggingOutObj[0]=false;
 			}
 		}
-
-		while((getLastPKFight()>0)
-		&&((System.currentTimeMillis()-getLastPKFight())<(2*60*1000))
-		&&(mob!=null))
-		{ try{Thread.sleep(1000);}catch(final Exception e){}}
-		String name=M.Name();
-		if(name.trim().length()==0)
-			name="Unknown";
-		if((M.isInCombat())&&(M.location()!=null))
-		{
-			CMLib.commands().postFlee(mob,"NOWHERE");
-			M.makePeace();
-		}
-		if(!CMLib.flags().isCloaked(M))
-		{
-			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
-			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel(channels.get(i),M.clans(),name+" has logged out",true);
-		}
-		CMLib.login().notifyFriends(M,"^X"+M.Name()+" has logged off.^.^?");
-
-		// the player quit message!
-		CMLib.threads().executeRunnable(groupName,new LoginLogoutThread(M,CMMsg.MSG_QUIT));
-		if(M.playerStats()!=null)
-			M.playerStats().setLastDateTime(System.currentTimeMillis());
-		Log.sysOut("Logout: "+name+" ("+CMLib.time().date2SmartEllapsedTime(System.currentTimeMillis()-userLoginTime,true)+")");
-		if(inTheGame)
-			CMLib.database().DBUpdateFollowers(M);
 	}
 
 	private void removeMOBFromGame(boolean killSession)
