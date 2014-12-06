@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class StdCompBattery extends StdElecCompItem implements Electronics.PowerSource
 {
-	@Override public String ID(){	return "StdBattery";}
+	@Override public String ID(){	return "StdCompBattery";}
 
 	public StdCompBattery()
 	{
