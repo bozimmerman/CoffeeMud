@@ -1924,7 +1924,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					done.add(R.roomID());
 					final Set<String> oldStrs=new HashSet<String>();
-					for(final Iterator<WorldMap.CrossExit> i2=((GridLocale)room).outerExits();i.hasNext();)
+					for(final Iterator<WorldMap.CrossExit> i2=((GridLocale)room).outerExits();i2.hasNext();)
 					{
 						final WorldMap.CrossExit CE2=i2.next();
 						if((CE2.destRoomID.equals(R.roomID())
