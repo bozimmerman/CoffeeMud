@@ -238,7 +238,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		{
 			final MOB mob=(MOB)ticking;
 			final Room room=mob.location();
-			if(firstRun)
+			if((firstRun)&&(CMLib.flags().canMove(mob)))
 			{
 				firstRun=false;
 				emergencyMove(mob,room);

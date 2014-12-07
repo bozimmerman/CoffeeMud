@@ -118,7 +118,8 @@ public class Fish extends StdRace
 		&&(msg.source().isMonster())
 		&&(msg.target() instanceof Room)
 		&&(msg.tool() instanceof Exit)
-		&&(Arrays.binarySearch(getBreathables(), ((Room)msg.target()).getAtmosphere())<0))
+		&&(Arrays.binarySearch(getBreathables(), ((Room)msg.target()).getAtmosphere())<0)
+		&&(CMLib.flags().canBreatheHere(msg.source(), msg.source().location()))) // it's ok to flee if you can't breathe here
 		{
 			((MOB)affected).tell(L("That way looks too dry."));
 			return false;

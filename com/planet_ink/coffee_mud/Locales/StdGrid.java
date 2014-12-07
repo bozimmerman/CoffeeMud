@@ -189,9 +189,24 @@ public class StdGrid extends StdRoom implements GridLocale
 		this.displayTexts=displayTexts.toArray(new String[0]);
 	}
 
-	@Override public Iterator<WorldMap.CrossExit> outerExits(){return gridexits.iterator();}
-	@Override public void addOuterExit(WorldMap.CrossExit x){gridexits.addElement(x);}
-	@Override public void delOuterExit(WorldMap.CrossExit x){gridexits.remove(x);}
+	@Override 
+	public Iterator<WorldMap.CrossExit> outerExits()
+	{
+		return gridexits.iterator();
+	}
+	
+	@Override 
+	public void addOuterExit(WorldMap.CrossExit x)
+	{
+		if(x!=null)
+			gridexits.addElement(x);
+	}
+	
+	@Override 
+	public void delOuterExit(WorldMap.CrossExit x)
+	{
+		gridexits.remove(x);
+	}
 
 	public Room getAltRoomFrom(Room loc, int direction)
 	{
