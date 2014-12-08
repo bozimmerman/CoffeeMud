@@ -119,7 +119,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean canBreatheThis(MOB M, int atmoResource)
 	{
 		return (canBreathe(M)
-				&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_BREATHE)==0)
 				&&((atmoResource<0)
 					||(M.charStats().getBreathables().length==0)
 					||(Arrays.binarySearch(M.charStats().getBreathables(), atmoResource)>=0)));
