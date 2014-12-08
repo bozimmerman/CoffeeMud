@@ -608,7 +608,7 @@ public class DefaultFaction implements Faction, MsgListener
 			return abilityChangesCache.get(key.ID().toUpperCase());
 		if(changes.containsKey(key.ID().toUpperCase()))
 		{
-			abilityChangesCache.put(key.ID().toUpperCase(), abilityChangesCache.get(key.ID().toUpperCase()));
+			abilityChangesCache.put(key.ID().toUpperCase(), changes.get(key.ID().toUpperCase()));
 			return abilityChangesCache.get(key.ID().toUpperCase());
 		}
 		// By TYPE or FLAGS
