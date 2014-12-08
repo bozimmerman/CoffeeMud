@@ -330,7 +330,12 @@ public class MOBTeacher extends CombatAbilities
 			{
 				final int start=msg.sourceMessage().indexOf('\'');
 				if(start>0)
+				{
 					sayMsg=msg.sourceMessage().substring(start+1);
+					int x=sayMsg.lastIndexOf("\'");
+					if(x>0)
+						sayMsg=sayMsg.substring(0,x);
+				}
 				else
 					sayMsg=msg.sourceMessage();
 			}
@@ -341,16 +346,6 @@ public class MOBTeacher extends CombatAbilities
 			{
 				boolean giveABonus=false;
 				String s=sayMsg.substring(x+5).trim();
-				x=s.lastIndexOf("\'");
-				if(x>0)
-					s=s.substring(0,x);
-				else
-				{
-					x=s.lastIndexOf('`');
-					if(x>0)
-						s=s.substring(0,x);
-				}
-
 				if(s.startsWith("\""))
 					s=s.substring(1).trim();
 				if(s.endsWith("\""))
