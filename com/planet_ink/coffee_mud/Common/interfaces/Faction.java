@@ -1335,7 +1335,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param abilities a vector of abilities
 		 * @param behaviors a vector of behaviors
 		 */
-		public void addHandlers(Vector<Ability> abilities, Vector<Behavior> behaviors);
+		public void addHandlers(List<Ability> abilities, List<Behavior> behaviors);
 	}
 
 	/**

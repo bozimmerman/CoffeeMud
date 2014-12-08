@@ -468,8 +468,8 @@ public class DefaultFaction implements Faction, MsgListener
 	public void updateFactionData(MOB mob, FData data)
 	{
 		data.resetFactionData(this);
-		final Vector<Ability> aV=new Vector<Ability>();
-		final Vector<Behavior> bV=new Vector<Behavior>();
+		final List<Ability> aV=new ArrayList<Ability>();
+		final List<Behavior> bV=new ArrayList<Behavior>();
 		String ID=null;
 		String[] stuff=null;
 		if(mob.isMonster())
@@ -483,14 +483,14 @@ public class DefaultFaction implements Faction, MsgListener
 					if(B!=null)
 					{
 						B.setParms(stuff[0]);
-						bV.addElement(B);
+						bV.add(B);
 					}
 					else
 					{
 						final Ability A=CMClass.getAbility(ID);
 						A.setMiscText(stuff[0]);
 						A.setAffectedOne(mob);
-						aV.addElement(A);
+						aV.add(A);
 					}
 				}
 			}
@@ -1732,7 +1732,7 @@ public class DefaultFaction implements Faction, MsgListener
 				for(final Ability A : myEffects) A.affectCharState(affectedMob, affectableMaxState);
 		}
 		@Override
-		public void addHandlers(Vector<Ability> listeners, Vector<Behavior> tickers)
+		public void addHandlers(List<Ability> listeners, List<Behavior> tickers)
 		{
 			this.myEffects=listeners.toArray(new Ability[0]);
 			this.myBehaviors=tickers.toArray(new Behavior[0]);
