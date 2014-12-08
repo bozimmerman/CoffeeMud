@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -110,6 +109,21 @@ public class Fish extends StdRace
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
 
+	protected boolean canBreatheThis(final MOB mob, final int atmoResource)
+	{
+		return ((atmoResource<0)
+			||(mob.charStats().getBreathables().length==0)
+			||(Arrays.binarySearch(mob.charStats().getBreathables(), atmoResource)>=0)
+			||(Arrays.binarySearch(getBreathables(),atmoResource)>=0));
+	}
+
+	protected boolean canBreatheHere(final MOB mob, final Room R)
+	{
+		if((R!=null)&&(mob!=null)&&(mob.charStats()!=null))
+			return canBreatheThis(mob,R.getAtmosphere());
+		return false;
+	}
+
 	@Override
 	public boolean okMessage(Environmental affected, CMMsg msg)
 	{
@@ -118,8 +132,8 @@ public class Fish extends StdRace
 		&&(msg.source().isMonster())
 		&&(msg.target() instanceof Room)
 		&&(msg.tool() instanceof Exit)
-		&&(Arrays.binarySearch(getBreathables(), ((Room)msg.target()).getAtmosphere())<0)
-		&&(CMLib.flags().canBreatheHere(msg.source(), msg.source().location()))) // it's ok to flee if you can't breathe here
+		&&(!canBreatheHere(msg.source(), (Room)msg.target()))
+		&&(canBreatheHere(msg.source(), msg.source().location()))) // it's ok to flee if you can't breathe here
 		{
 			((MOB)affected).tell(L("That way looks too dry."));
 			return false;
