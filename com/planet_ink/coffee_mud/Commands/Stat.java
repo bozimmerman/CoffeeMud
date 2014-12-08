@@ -633,7 +633,7 @@ public class Stat  extends Skills
 				if(ableTypes==ABLETYPE_WORLDEXPLORED)
 				{
 					if(target.playerStats()!=null)
-						str.append(L("@x1 has explored @x2% of the world.\n\r",target.name(),""+mob.playerStats().percentVisited(mob,null)));
+						str.append(L("@x1 has explored @x2% of the world.\n\r",target.name(),""+target.playerStats().percentVisited(target,null)));
 					else
 						str.append(L("Exploration data is not kept on mobs.\n\r"));
 				}
@@ -645,7 +645,7 @@ public class Stat  extends Skills
 						for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 						{
 							final Area A=(Area)e.nextElement();
-							final int pct=mob.playerStats().percentVisited(target, A);
+							final int pct=target.playerStats().percentVisited(target, A);
 							if(pct>0)
 								str.append("^H"+A.name()+"^N: "+pct+"%, ");
 						}
@@ -662,7 +662,7 @@ public class Stat  extends Skills
 						for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 						{
 							final Room R=(Room)e.nextElement();
-							if((R.roomID().length()>0)&&(mob.playerStats().hasVisited(R)))
+							if((R.roomID().length()>0)&&(target.playerStats().hasVisited(R)))
 								str.append("^H"+R.roomID()+"^N, ");
 						}
 						str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
