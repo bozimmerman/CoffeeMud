@@ -68,13 +68,10 @@ public class DefaultClan implements Clan
 	protected Integer			overrideMinClanMembers=null;
 	protected long				lastPropsReload=System.currentTimeMillis();
 	protected ItemCollection	extItems = (ItemCollection)CMClass.getCommon("WeakItemCollection");
-
-	//*****************
-	public Hashtable<String,long[]> relations=new Hashtable<String,long[]>();
-	public int government=0;
-	public long lastGovernmentLoadTime=-1;
-	public ClanGovernment govt = null;
-	//*****************
+	protected Map<String,long[]>relations=new Hashtable<String,long[]>();
+	protected int 				government=0;
+	protected long 				lastGovernmentLoadTime=-1;
+	protected ClanGovernment 	govt = null;
 
 	protected final static List<Ability> empty=new XVector<Ability>(1,true);
 
@@ -931,7 +928,11 @@ public class DefaultClan implements Clan
 		return members;
 	}
 
-	@Override public int getSize() { return CMLib.database().DBClanMembers(clanID()).size(); }
+	@Override 
+	public int getSize() 
+	{ 
+		return CMLib.database().DBClanMembers(clanID()).size(); 
+	}
 
 	@Override public String name() {return clanName;}
 	@Override public String getName() {return clanName;}
@@ -942,6 +943,7 @@ public class DefaultClan implements Clan
 	@Override public void setPremise(String newPremise){ clanPremise = newPremise;}
 
 	@Override public int getClanLevel() {return clanLevel;}
+	
 	@Override
 	public void setClanLevel(int newClanLevel)
 	{
@@ -979,9 +981,9 @@ public class DefaultClan implements Clan
 		else
 		{
 			str.append("<RELATIONS>");
-			for(final Enumeration<String> e=relations.keys();e.hasMoreElements();)
+			for(final Iterator<String> e=relations.keySet().iterator();e.hasNext();)
 			{
-				final String key=e.nextElement();
+				final String key=e.next();
 				str.append("<RELATION>");
 				str.append(CMLib.xml().convertXMLtoTag("CLAN",key));
 				final long[] i=relations.get(key);
@@ -1106,17 +1108,19 @@ public class DefaultClan implements Clan
 				final MOB M=CMLib.players().getPlayer(member.name);
 				if(M!=null)
 				{
+					final boolean isAdmin=CMSecurity.isASysOp(M) || M.phyStats().level() > CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
 					if(M.lastTickedDateTime()>0)
-						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.lastTickedDateTime(),member.mobpvps,member.playerpvps));
+						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.lastTickedDateTime(),member.mobpvps,member.playerpvps,isAdmin));
 					else
-						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.playerStats().getLastDateTime(),member.mobpvps,member.playerpvps));
+						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.playerStats().getLastDateTime(),member.mobpvps,member.playerpvps,isAdmin));
 				}
 				else
 				{
 					final PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(member.name);
 					if(tP != null)
 					{
-						members.add(new FullMemberRecord(member.name,tP.level,member.role,tP.last,member.mobpvps,member.playerpvps));
+						final boolean isAdmin=CMSecurity.isASysOp(tP) || tP.level > CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
+						members.add(new FullMemberRecord(member.name,tP.level,member.role,tP.last,member.mobpvps,member.playerpvps,isAdmin));
 					}
 					else
 					{

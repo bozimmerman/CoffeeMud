@@ -20,9 +20,8 @@ limitations under the License.
 */
 public class MultiCollection<T> implements Collection<T>
 {
-	private Vector<Collection<? extends T>> collections = new Vector<Collection<? extends T>>();
+	private final Vector<Collection<? extends T>> collections = new Vector<Collection<? extends T>>();
 	
-	@SuppressWarnings("unchecked")
 	public MultiCollection(Collection<T>... colls)
 	{
 		super();

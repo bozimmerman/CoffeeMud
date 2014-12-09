@@ -1271,16 +1271,25 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 		for(int i=0;i<channels.size();i++)
+		{
 			CMLib.commands().postChannel(mob,channels.get(i),msg,true);
+		}
 	}
 
 	protected int filterMedianLevel(List<FullMemberRecord> members)
 	{
 		final List<Integer> lvls=new SortedListWrap<Integer>(new XVector<Integer>());
 		for(final FullMemberRecord r : members)
-			lvls.add(Integer.valueOf(r.level));
+		{
+			if(!r.isAdmin)
+			{
+				lvls.add(Integer.valueOf(r.level));
+			}
+		}
 		if(lvls.size()>0)
+		{
 			return lvls.get(lvls.size()/2).intValue();
+		}
 		return 0;
 	}
 
@@ -1290,7 +1299,9 @@ public class Clans extends StdLibrary implements ClanManager
 		{
 			final Clan C=e.nextElement();
 			if(CMath.bset(C.getTrophies(),trophy.flagNum()))
+			{
 				return C;
+			}
 		}
 		return null;
 	}
@@ -1371,7 +1382,9 @@ public class Clans extends StdLibrary implements ClanManager
 				Clan winnerC=getTrophyWinner(Trophy.Experience);
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					final Clan C=e.nextElement(); if(C==winnerC) continue;
+					final Clan C=e.nextElement(); 
+					if(C==winnerC) 
+						continue;
 					if((winnerC==null)||(C.getExp()>winnerC.getExp()))
 						winnerC=C;
 				}
@@ -1399,7 +1412,9 @@ public class Clans extends StdLibrary implements ClanManager
 				Clan winnerC=getTrophyWinner(Trophy.PlayerKills);
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					final Clan C=e.nextElement(); if(C==winnerC) continue;
+					final Clan C=e.nextElement(); 
+					if(C==winnerC) 
+						continue;
 					if((winnerC==null)||(C.getCurrentClanKills(null)>winnerC.getCurrentClanKills(null)))
 						winnerC=C;
 				}

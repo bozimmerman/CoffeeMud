@@ -815,9 +815,13 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	{
 		public int level;
 		public long timestamp;
-		public FullMemberRecord(String name, int level, int role, long timestamp, int mobpvps, int playerpvps)
+		public boolean isAdmin;
+		public FullMemberRecord(String name, int level, int role, long timestamp, int mobpvps, int playerpvps, boolean isAdmin)
 		{
-			super(name,role,mobpvps,playerpvps); this.level=level; this.timestamp=timestamp;
+			super(name,role,mobpvps,playerpvps); 
+			this.level=level; 
+			this.timestamp=timestamp;
+			this.isAdmin=isAdmin;
 		}
 	}
 
