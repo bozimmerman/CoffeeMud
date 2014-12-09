@@ -40,6 +40,7 @@ coffeemud.ini     : main coffeemud server configuration file
 changelog.txt     : high-level list of changes per version
 
 Directories in this directory:
+
 com               : coffeemud source and "binaries"
 guides            : html manuals and help
 lib               : external java libraries
