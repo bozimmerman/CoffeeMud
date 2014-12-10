@@ -118,7 +118,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			final String num=Double.toString(Math.random());
 			final int x=num.indexOf('.')+1;
 			final int len=((num.length()-x)/2)+1;
-			area.setName(L("UNNAMED_@x1",num.substring(x,x+len)));
+			area.setName("UNNAMED_"+num.substring(x,x+len));
 
 			final Room R=createFirstRoom();
 			R.setRoomID(area.Name()+"#0");
@@ -254,6 +254,20 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		s.setShipArea(xml);
 		s.setReadableText(readableText()); // in case this was first call to getShipArea()
+		
+		final Area A=s.getShipArea();
+		final String num=Double.toString(Math.random());
+		final int x=num.indexOf('.')+1;
+		final int len=((num.length()-x)/2)+1;
+		String oldName=A.Name();
+		A.setName("UNNAMED_"+num.substring(x,x+len));
+		for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			if((R!=null)&&(R.roomID().startsWith(oldName)))
+				R.setRoomID(A.Name()+R.roomID().substring(oldName.length()));
+		}
+		renameDestinationRooms(oldName,A.Name());
 		CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(s.getShipArea()));
 		return s;
 	}
@@ -280,6 +294,19 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		if((V.size()>0)&&(getShipArea()!=null))
 			R=getShipArea().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
+	}
+	
+	protected void renameDestinationRooms(String from, String to)
+	{
+		final List<String> V=CMParms.parseSemicolons(readableText().toUpperCase(),true);
+		final List<String> nV=new ArrayList<String>();
+		from=from.toUpperCase();
+		for(String s : V)
+			if(s.startsWith(from))
+				nV.add(to+s.substring(from.length()));
+			else
+				nV.add(s);
+		setReadableText(CMParms.toSemicolonList(nV));
 	}
 
 	@Override
