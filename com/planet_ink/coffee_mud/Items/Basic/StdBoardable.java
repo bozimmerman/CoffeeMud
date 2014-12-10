@@ -254,7 +254,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		s.setShipArea(xml);
 		s.setReadableText(readableText()); // in case this was first call to getShipArea()
-		
+		/* Should we rename?
 		final Area A=s.getShipArea();
 		final String num=Double.toString(Math.random());
 		final int x=num.indexOf('.')+1;
@@ -267,7 +267,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			if((R!=null)&&(R.roomID().startsWith(oldName)))
 				R.setRoomID(A.Name()+R.roomID().substring(oldName.length()));
 		}
-		renameDestinationRooms(oldName,A.Name());
+		s.renameDestinationRooms(oldName,A.Name());
+		*/
 		CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(s.getShipArea()));
 		return s;
 	}
@@ -298,14 +299,19 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	
 	protected void renameDestinationRooms(String from, String to)
 	{
+		getShipArea();
 		final List<String> V=CMParms.parseSemicolons(readableText().toUpperCase(),true);
 		final List<String> nV=new ArrayList<String>();
 		from=from.toUpperCase();
 		for(String s : V)
+		{
 			if(s.startsWith(from))
-				nV.add(to+s.substring(from.length()));
-			else
+				s=to+s.substring(from.length());
+			if(getShipArea().getRoom(s)!=null)
 				nV.add(s);
+		}
+		if((nV.size()==0)&&(getShipArea().getProperMap().hasMoreElements()))
+			nV.add(getShipArea().getProperMap().nextElement().roomID());
 		setReadableText(CMParms.toSemicolonList(nV));
 	}
 
