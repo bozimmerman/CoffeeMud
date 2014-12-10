@@ -130,7 +130,7 @@ public class GenCompGenerator extends StdCompGenerator
 				break;
 			   }
 		case 7: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 8: setGenerationAmountPerTick(CMath.s_parseIntExpression(val)); break;
+		case 8: setGeneratedAmountPerTick(CMath.s_parseIntExpression(val)); break;
 		case 9: activate(CMath.s_bool(val)); break;
 		case 10: setManufacturerName(val); break;
 		case 11: setInstalledFactor(CMath.s_float(val)); break;

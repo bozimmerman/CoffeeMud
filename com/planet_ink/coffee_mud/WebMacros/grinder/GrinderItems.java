@@ -13,9 +13,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -61,7 +63,11 @@ public class GrinderItems
 		CATALIVE,CATAMASK,BITE,MAXUSES,ISELECTRONIC,
 		CATACAT,ISPORTAL,PUTSTR,MOUNTSTR,DISMOUNTSTR,
 		DEFAULTSCLOSED,DEFAULTSLOCKED,ISWEARANDTEAR,
-		ISBOARDABLEITEM, ISPRIVATEPROPERTY, OWNER;
+		ISBOARDABLEITEM, ISPRIVATEPROPERTY, OWNER, 
+		ISSHIPCOMPONENT,ISSHIPENGINE,ISPANEL,ISFUELCONSUMER,ISPOWERGENERATION,
+		MANUFACTURER,POWCAPACITY,POWREMAINING,ACTIVATED,
+		MAXTHRUST,SPECIMPULSE,FUELEFFICIENCY,INSTALLFACTOR,
+		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
 		{
@@ -656,7 +662,75 @@ public class GrinderItems
 					if(I instanceof Container)
 						((Container)I).setDoorsNLocks(((Container)I).hasADoor(),((Container)I).isOpen(),((Container)I).defaultsClosed(),((Container)I).hasALock(),((Container)I).hasALock(),old.equals("on"));
 					break;
-				default:
+				case ISSHIPCOMPONENT:
+				case ISSHIPENGINE:
+				case ISPANEL:
+				case ISFUELCONSUMER:
+				case ISPOWERGENERATION:
+					break;
+				case MANUFACTURER:
+					if(I instanceof Electronics)
+						((Electronics)I).setManufacturerName(old);
+					break;
+				case POWCAPACITY:
+					if(I instanceof Electronics)
+						((Electronics)I).setPowerCapacity(CMath.s_long(old));
+					break;
+				case POWREMAINING:
+					if(I instanceof Electronics)
+						((Electronics)I).setPowerRemaining(CMath.s_long(old));
+					break;
+				case ACTIVATED:
+					if(I instanceof Electronics)
+						((Electronics)I).activate(old.equalsIgnoreCase("on"));
+					break;
+				case MAXTHRUST:
+					if(I instanceof ShipComponent.ShipEngine)
+						((ShipComponent.ShipEngine)I).setMaxThrust(CMath.s_int(old));
+					break;
+				case SPECIMPULSE:
+					if(I instanceof ShipComponent.ShipEngine)
+						((ShipComponent.ShipEngine)I).setSpecificImpulse(CMath.s_long(old));
+					break;
+				case FUELEFFICIENCY:
+					if(I instanceof ShipComponent.ShipEngine)
+						((ShipComponent.ShipEngine)I).setFuelEfficiency(CMath.s_pct(old));
+					break;
+				case INSTALLFACTOR:
+					if(I instanceof ShipComponent)
+						((ShipComponent)I).setInstalledFactor((float)CMath.s_pct(old));
+					break;
+				case PANELTYPE:
+					if(I instanceof Electronics.ElecPanel)
+					{
+						TechType type=(TechType)CMath.s_valueOf(TechType.class,httpReq.getUrlParameter("PANELTYPE"));
+						if(type != null)
+							((Electronics.ElecPanel)I).setPanelType(type);
+					}
+					break;
+				case GENAMTPERTICK:
+					if(I instanceof Electronics.PowerGenerator)
+						((Electronics.PowerGenerator)I).setGeneratedAmountPerTick(CMath.s_int(old));
+					break;
+				case CONSUMEDMATS:
+					if(I instanceof Electronics.FuelConsumer)
+					{
+						final Set<Integer> consumedFuel=new TreeSet<Integer>(); 
+						if(httpReq.isUrlParameter("CONSUMEDMATS"))
+						{
+							consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"))));
+							for(int i=1;;i++)
+								if(httpReq.isUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))
+									consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))));
+								else
+									break;
+						}
+						final int[] mats=new int[consumedFuel.size()];
+						final Integer[] MATS=consumedFuel.toArray(new Integer[0]);
+						for(int i=0;i<mats.length;i++)
+							mats[i]=MATS[i].intValue();
+						((Electronics.FuelConsumer)I).setConsumedFuelType(mats);
+					}
 					break;
 				}
 			}

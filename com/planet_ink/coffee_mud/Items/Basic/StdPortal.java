@@ -222,11 +222,11 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?name():closedText()));
 		}
 		else
-		if(((CMLib.flags().canBeSeenBy(this,mob))||(isOpen()&&hasADoor()))
+		if(( CMLib.flags().canBeSeenBy(this,mob)|| (isOpen()&&hasADoor()))
 		&&(CMLib.flags().isSeen(this)))
 			if(isOpen())
 			{
-			  if(!CMLib.flags().canBeSeenBy(room,mob))
+				if(!CMLib.flags().canBeSeenBy(room,mob))
 					Say.append("darkness");
 				else
 					Say.append(name()+CMLib.flags().colorCodes(this,mob));

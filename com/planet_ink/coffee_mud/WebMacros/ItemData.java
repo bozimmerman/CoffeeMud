@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomina
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -1092,6 +1093,123 @@ public class ItemData extends StdWebMacro
 						if((firstTime)&&(I instanceof PrivateProperty))
 							old=((PrivateProperty)I).getOwnerName();
 						str.append(old);
+						break;
+					case ISSHIPCOMPONENT:
+						str.append(I instanceof ShipComponent);
+						break;
+					case ISSHIPENGINE:
+						str.append(I instanceof ShipComponent.ShipEngine);
+						break;
+					case ISPANEL:
+						str.append((I instanceof Electronics.ElecPanel)&&(!(I instanceof Electronics.Computer)));
+						break;
+					case ISFUELCONSUMER:
+						str.append(I instanceof Electronics.FuelConsumer);
+						break;
+					case ISPOWERGENERATION:
+						str.append(I instanceof Electronics.PowerGenerator);
+						break;
+					case MANUFACTURER:
+						if(I instanceof Electronics)
+						{
+							if(firstTime)
+								old=((Electronics)I).getManufacturerName();
+							str.append("<OPTION VALUE=\"RANDOM");
+							if(old.equalsIgnoreCase("RANDOM"))
+								str.append("\" SELECTED>Random");
+							else
+								str.append("\">Random");
+							for(Iterator<Manufacturer> m = CMLib.tech().manufacterers(); m.hasNext(); )
+							{
+								Manufacturer M1=m.next();
+								if(M1.isManufactureredType((Technical)I) || (old.equalsIgnoreCase(M1.name())))
+								{
+									str.append("<OPTION VALUE=\""+M1.name());
+									if(old.equalsIgnoreCase(M1.name()))
+										str.append("\" SELECTED>"+M1.name());
+									else
+										str.append("\">"+M1.name());
+								}
+							}
+						}
+						break;
+					case POWCAPACITY:
+						if(I instanceof Electronics)
+							str.append((firstTime) ? (""+((Electronics)I).powerCapacity()) : old).append(", ");
+						break;
+					case POWREMAINING:
+						if(I instanceof Electronics)
+							str.append((firstTime) ? (""+((Electronics)I).powerRemaining()) : old).append(", ");
+						break;
+					case ACTIVATED:
+						if(I instanceof Electronics)
+							str.append((firstTime) ? (((Electronics)I).activated()?"CHECKED":"") : (old.equalsIgnoreCase("on")?"CHECKED":"")).append(", ");
+						break;
+					case MAXTHRUST:
+						if(I instanceof ShipComponent.ShipEngine)
+							str.append((firstTime) ? (""+((ShipComponent.ShipEngine)I).getMaxThrust()) : old).append(", ");
+						break;
+					case SPECIMPULSE:
+						if(I instanceof ShipComponent.ShipEngine)
+							str.append((firstTime) ? (""+((ShipComponent.ShipEngine)I).getSpecificImpulse()) : old).append(", ");
+						break;
+					case FUELEFFICIENCY:
+						if(I instanceof ShipComponent.ShipEngine)
+							str.append((firstTime) ? CMath.toPct(((ShipComponent.ShipEngine)I).getFuelEfficiency()) : old).append(", ");
+						break;
+					case INSTALLFACTOR:
+						if(I instanceof ShipComponent)
+							str.append((firstTime) ? CMath.toPct(((ShipComponent)I).getInstalledFactor()) : old).append(", ");
+						break;
+					case PANELTYPE:
+						if(I instanceof Electronics.ElecPanel)
+						{
+							TechType type=((Electronics.ElecPanel)I).panelType();
+							if(httpReq.isUrlParameter("PANELTYPE"))
+								type=(TechType)CMath.s_valueOf(TechType.class,httpReq.getUrlParameter("PANELTYPE"));
+							for(TechType t : TechType.values())
+							{
+								str.append("<OPTION VALUE="+t.toString());
+								if(t==type)
+									str.append(" SELECTED");
+								str.append(">"+t.getDisplayName());
+							}
+						}
+						str.append(", ");
+						break;
+					case GENAMTPERTICK:
+						if(I instanceof Electronics.PowerGenerator)
+							str.append((firstTime) ? (""+((Electronics.PowerGenerator)I).getGeneratedAmountPerTick()) : old).append(", ");
+						break;
+					case CONSUMEDMATS:
+						if(I instanceof Electronics.FuelConsumer)
+						{
+							final Set<Integer> consumedFuel=new TreeSet<Integer>(); 
+							if(firstTime)
+							{
+								for(int mat : ((Electronics.FuelConsumer)I).getConsumedFuelTypes())
+									consumedFuel.add(Integer.valueOf(mat));
+							}
+							else
+							{
+								if(httpReq.isUrlParameter("CONSUMEDMATS"))
+								{
+									consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"))));
+									for(int i=1;;i++)
+										if(httpReq.isUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))
+											consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"+(Integer.toString(i))))));
+										else
+											break;
+								}
+							}
+							for(final int r : RawMaterial.CODES.ALL_SBN())
+							{
+								str.append("<OPTION VALUE=\""+r+"\"");
+								if(consumedFuel.contains(Integer.valueOf(r)))
+									str.append(" SELECTED");
+								str.append(">"+RawMaterial.CODES.NAME(r));
+							}
+						}
 						break;
 					}
 					if(firstTime)

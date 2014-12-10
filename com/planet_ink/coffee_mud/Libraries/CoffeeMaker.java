@@ -2768,7 +2768,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{
-			((Electronics.PowerGenerator)E).setGenerationAmountPerTick(CMLib.xml().getIntFromPieces(buf,"EGENAMT"));
+			((Electronics.PowerGenerator)E).setGeneratedAmountPerTick(CMLib.xml().getIntFromPieces(buf,"EGENAMT"));
 		}
 		if(E instanceof Electronics.FuelConsumer)
 		{

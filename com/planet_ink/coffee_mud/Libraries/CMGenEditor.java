@@ -7777,13 +7777,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
 				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
 			}
-			if(me instanceof ShipComponent.ShipEngine)
-			{
-				final ShipComponent.ShipEngine E=(ShipComponent.ShipEngine)me;
-				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
-				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Max velocity"));
-				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
-			}
 			if(me instanceof ShipComponent)
 			{
 				final ShipComponent E=(ShipComponent)me;
@@ -8100,7 +8093,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Electronics.PowerGenerator)
 			{
 				final Electronics.PowerGenerator E=(Electronics.PowerGenerator)me;
-				E.setGenerationAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), ++showNumber, showFlag, "Gen Amt/Tick"));
+				E.setGeneratedAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), ++showNumber, showFlag, "Gen Amt/Tick"));
 			}
 			if(me instanceof Electronics.FuelConsumer)
 			{

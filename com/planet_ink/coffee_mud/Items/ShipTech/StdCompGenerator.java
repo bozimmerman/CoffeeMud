@@ -56,7 +56,7 @@ public class StdCompGenerator extends StdCompFuelConsumer implements Electronics
 
 	@Override public int getGeneratedAmountPerTick() { return generatedAmtPerTick; }
 	@Override
-	public void setGenerationAmountPerTick(int amt)
+	public void setGeneratedAmountPerTick(int amt)
 	{
 		generatedAmtPerTick=amt;
 	}

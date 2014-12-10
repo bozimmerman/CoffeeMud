@@ -54,7 +54,7 @@ public interface Electronics extends Item, Technical
 	{
 	}
 
-	public interface FuelConsumer extends Electronics
+	public interface FuelConsumer extends Electronics, Container
 	{
 		public int[] getConsumedFuelTypes();
 		public void setConsumedFuelType(int[] resources);
@@ -68,7 +68,7 @@ public interface Electronics extends Item, Technical
 	public interface PowerGenerator extends PowerSource, FuelConsumer
 	{
 		public int getGeneratedAmountPerTick();
-		public void setGenerationAmountPerTick(int amt);
+		public void setGeneratedAmountPerTick(int amt);
 	}
 
 	public interface ElecPanel extends Electronics, Container
