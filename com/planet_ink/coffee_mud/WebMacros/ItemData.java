@@ -722,7 +722,9 @@ public class ItemData extends StdWebMacro
 						if(I instanceof BoardableShip)
 						{
 							final BoardableShip ship=(BoardableShip)I;
-							if((ship.getShipArea()!=null)&&(ship.getShipArea().getRoom(old)==null)&&(ship.getShipArea().getProperMap().hasMoreElements()))
+							if((ship.getShipArea()!=null)
+							&&(ship.getShipArea().getRoom(old)==null)
+							&&(ship.getShipArea().getProperMap().hasMoreElements()))
 								old=ship.getShipArea().getProperMap().nextElement().roomID();
 						}
 						str.append(old);
