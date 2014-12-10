@@ -719,6 +719,12 @@ public class ItemData extends StdWebMacro
 					case READABLETEXT: // readabletext
 						if(firstTime)
 							old=""+I.readableText();
+						if(I instanceof BoardableShip)
+						{
+							final BoardableShip ship=(BoardableShip)I;
+							if((ship.getShipArea()!=null)&&(ship.getShipArea().getRoom(old)==null)&&(ship.getShipArea().getProperMap().hasMoreElements()))
+								old=ship.getShipArea().getProperMap().nextElement().roomID();
+						}
 						str.append(old);
 						break;
 					case CONTAINER:
