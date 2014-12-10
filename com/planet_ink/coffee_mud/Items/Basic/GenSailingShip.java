@@ -96,32 +96,6 @@ public class GenSailingShip extends StdBoardable
 		return super.getShipArea();
 	}
 
-	@Override
-	public void renameShip(String newName)
-	{
-		final Area area=getShipArea();
-		if(area instanceof BoardableShip)
-		{
-			final Room oldEntry=getDestinationRoom();
-			((BoardableShip)area).renameShip(newName);
-			setReadableText(oldEntry.roomID());
-			setShipArea(CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true).toString());
-		}
-		for(final String word : new String[]{"NAME","NEWNAME","SHIPNAME","SHIP"})
-		{
-			for(final String rubs : new String[]{"<>","[]","{}","()"})
-			{
-				if(Name().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
-					setName(CMStrings.replaceAll(Name(), rubs.charAt(0)+word+rubs.charAt(1), newName));
-			}
-			for(final String rubs : new String[]{"<>","[]","{}","()"})
-			{
-				if(displayText().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
-					setDisplayText(CMStrings.replaceAll(displayText(), rubs.charAt(0)+word+rubs.charAt(1), newName));
-			}
-		}
-	}
-
 	private enum SailingCommand
 	{
 		RAISE_ANCHOR,
@@ -457,7 +431,8 @@ public class GenSailingShip extends StdBoardable
 		}
 	}
 
-	protected Room findNearestDocks(Room R)
+	@Override
+    protected Room findNearestDocks(Room R)
 	{
 		if(R!=null)
 		{

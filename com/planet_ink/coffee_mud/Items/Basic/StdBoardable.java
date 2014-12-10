@@ -386,9 +386,9 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final Area area=getShipArea();
 		if(area instanceof BoardableShip)
 		{
-			final Room oldEntry=getDestinationRoom();
+			String oldName=area.Name();
 			((BoardableShip)area).renameShip(newName);
-			setReadableText(oldEntry.roomID());
+			renameDestinationRooms(oldName,area.Name());
 			setShipArea(CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true).toString());
 		}
 		for(final String word : new String[]{"NAME","NEWNAME","SHIPNAME","SHIP"})
