@@ -67,7 +67,7 @@ public class GrinderItems
 		ISSHIPCOMPONENT,ISSHIPENGINE,ISPANEL,ISFUELCONSUMER,ISPOWERGENERATION,
 		MANUFACTURER,POWCAPACITY,POWREMAINING,ACTIVATED,
 		MAXTHRUST,SPECIMPULSE,FUELEFFICIENCY,INSTALLFACTOR,
-		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS;
+		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
 		{
@@ -731,6 +731,10 @@ public class GrinderItems
 							mats[i]=MATS[i].intValue();
 						((Electronics.FuelConsumer)I).setConsumedFuelType(mats);
 					}
+					break;
+				case AREAXML:
+					if((I instanceof BoardableShip)&&(old.trim().length()>0))
+						((BoardableShip)I).setShipArea(CMLib.xml().restoreAngleBrackets(old));
 					break;
 				}
 			}

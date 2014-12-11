@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<BODY>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/player.cmvp">
+<INPUT TYPE=HIDDEN NAME="AREAXML" VALUE="@AreaData?AREAXML@">
+<CENTER>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" BORDER="0"><P>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+if(opener.document.AREAEDIT.AREAXML && opener.document.AREAEDIT.AREAXML.value && (opener != top))
+{
+	opener.document.AREAEDIT.AREAXML.value = document.AREAEDIT.AREAXML.value;
+	window.close();
+}
+else
+{
+	window.alert(opener);
+}
+//-->
+</SCRIPT>
+</FORM>
+</BODY>
+@endif@
+@endif@

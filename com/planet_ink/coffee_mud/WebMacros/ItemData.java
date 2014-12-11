@@ -1219,6 +1219,12 @@ public class ItemData extends StdWebMacro
 							}
 						}
 						break;
+					case AREAXML:
+						if(I instanceof BoardableShip)
+							str.append((firstTime) ? 
+								CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((BoardableShip)I).getShipArea(), null, null, null, true).toString()) :
+								old).append(", ");
+						break;
 					}
 					if(firstTime)
 						httpReq.addFakeUrlParameter(parmName,old.equals("checked")?"on":old);

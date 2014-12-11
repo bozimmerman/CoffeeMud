@@ -49,17 +49,106 @@ public class MUDGrinder extends StdWebMacro
 			return null;
 		if(ID.length()==0)
 			return null;
-		final Area A=CMLib.map().getArea(ID);
-		if(A!=null)
-			return A;
-		if(ID.startsWith("ITEM#"))
+		if(ID.startsWith("ITEM#<")&&(ID.endsWith(">")))
 		{
-			String itemCode=ID.substring(5);
-			Item I=RoomData.getItemFromCode((MOB)null,itemCode);
-			if(I==null)
-				I=RoomData.getItemFromCode((Room)null,itemCode);
+			String xmlIsh=ID.substring(5);
+			String playerCode=null;
+			String roomCode=null;
+			String mobCode=null;
+			String itemCode=null;
+			int x=xmlIsh.indexOf(">");
+			while(x>=0)
+			{
+				xmlIsh=xmlIsh.substring(1);
+				x--;
+				while((x<xmlIsh.length()-1)&&(xmlIsh.charAt(x+1)!='<'))
+					x=xmlIsh.indexOf(">",x+1);
+				if(x>=0)
+				{
+					String thing=xmlIsh.substring(0,x);
+					if(thing.startsWith("P=")&&(x>2))
+						playerCode=thing.substring(2);
+					else
+					if(thing.startsWith("I=")&&(x>2))
+						itemCode=thing.substring(2);
+					else
+					if(thing.startsWith("R=")&&(x>2))
+						roomCode=thing.substring(2);
+					else
+					if(thing.startsWith("M=")&&(x>2))
+						mobCode=thing.substring(2);
+				}
+				if((x>=0)&&(x<xmlIsh.length()-1))
+					xmlIsh=xmlIsh.substring(x+1);
+				else
+					break;
+				x=xmlIsh.indexOf(">",x+1);
+			}
+			MOB playerM=null;
+			Room R=null;
+			if(playerCode!=null)
+				playerM=CMLib.players().getLoadPlayer(playerCode);
+			if((playerCode==null)&&(roomCode!=null))
+			{
+				if(!roomCode.equalsIgnoreCase("ANY"))
+					R=getRoomObject((HTTPRequest)null,roomCode);
+			}
+			Item I=null;
+			MOB M=null;
+			final String sync=("SYNC"+((R!=null)?R.roomID():playerCode));
+			synchronized(sync.intern())
+			{
+				if(R!=null)
+					R=CMLib.map().getRoom(R);
+				
+				if((playerM!=null)&&(R==null))
+				{
+					I=RoomData.getItemFromCode(playerM,itemCode);
+					M=playerM;
+				}
+				else
+				if((mobCode!=null)&&(mobCode.length()>0))
+				{
+					if(R!=null)
+						M=RoomData.getMOBFromCode(R,mobCode);
+					else
+						M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobCode);
+					if(M!=null)
+					{
+						I=RoomData.getItemFromCode(M,itemCode);
+						if(I==null)
+							I=RoomData.getItemFromCode((MOB)null,itemCode);
+					}
+				}
+				else
+				if(R!=null)
+				{
+					I=RoomData.getItemFromCode(R,itemCode);
+					if(I==null)
+						I=RoomData.getItemFromCode((Room)null,itemCode);
+				}
+				if(I==null)
+				{
+					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+					{
+						I=CMLib.catalog().getCatalogItem(itemCode.substring(8));
+						if(I==null)
+							I=CMClass.getItem("GenItem");
+						else
+							I=(Item)I.copyOf();
+					}
+					else
+						I=RoomData.getItemFromAnywhere(RoomData.getItemCache(),itemCode);
+				}
+			}
 			if(I instanceof BoardableShip)
+			{
 				return ((BoardableShip)I).getShipArea();
+			}
+		}
+		else
+		{
+			return CMLib.map().getArea(ID);
 		}
 		return null;
 	}
@@ -70,6 +159,12 @@ public class MUDGrinder extends StdWebMacro
 			return null;
 		if(ID.length()==0)
 			return null;
+		if((AREA!=null)&&(AREA.startsWith("ITEM#<"))&&(AREA.endsWith(">")))
+		{
+			final Area A=getAreaObject(AREA);
+			if(A!=null)
+				return A.getRoom(ID);
+		}
 		final Room R=CMLib.map().getRoom(ID);
 		if(R!=null)
 			return R;
@@ -85,6 +180,12 @@ public class MUDGrinder extends StdWebMacro
 			return null;
 		if(ID.length()==0)
 			return null;
+		if(req != null)
+		{
+			String areaID=req.getUrlParameter("AREA");
+			if((areaID!=null)&&(areaID.startsWith("ITEM#<"))&&(areaID.endsWith(">")))
+				return getRoomObject(areaID, ID);
+		}
 		final Room R=CMLib.map().getRoom(ID);
 		if(R!=null)
 			return R;

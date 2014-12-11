@@ -214,7 +214,7 @@ public class AreaData extends StdWebMacro
 		}
 		if(parms.containsKey("AREAISGRID"))
 		{
-			final Area A=CMLib.map().getArea(""+parms.get("AREAISGRID"));
+			final Area A=MUDGrinder.getAreaObject(""+parms.get("AREAISGRID"));
 			return ""+(A instanceof GridZones);
 		}
 		final String last=httpReq.getUrlParameter("AREA");
@@ -223,13 +223,17 @@ public class AreaData extends StdWebMacro
 
 		if(last.length()>0)
 		{
-			final Area A=CMLib.map().getArea(last);
+			final Area A=MUDGrinder.getAreaObject(last);
 			if(A!=null)
 			{
 				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("AREAISBOARDABLE"))
 				{
 					return ""+(A instanceof BoardableShip);
+				}
+				if(parms.containsKey("AREAXML"))
+				{
+					return this.clearWebMacros(CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(A, null, null, null, true).toString()));
 				}
 				if(parms.containsKey("HELP"))
 				{

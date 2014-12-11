@@ -56,7 +56,9 @@
 			<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Main Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
 		@else@
 			<P>
-			<INPUT TYPE=BUTTON NAME=CLOSE VALUE="Close" ONCLICK="window.close(); top.closeThisWindow(); parent.closeThisWindow();">
+			<INPUT TYPE=BUTTON NAME=CLOSE VALUE="Save" ONCLICK="Clicked('/grinder/saveboardablearea.cmvp');">
+			<P>
+			<INPUT TYPE=BUTTON NAME=CANCELCLOSE VALUE="Cancel" ONCLICK="window.close(); top.closeThisWindow(); parent.closeThisWindow();">
 		@endif@
 	</TD>
 </TR>
