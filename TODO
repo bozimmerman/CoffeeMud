@@ -1,5 +1,7 @@
 BUGS
   *. Editing boats and ships is really broken -- has something to do with areas being shared everywhere
+     Problem happens during map editing, when you click finished on the item, the map you edited is not on the Object modified by GrinderItems
+     So it does not get mixed into the resulting xml.
   *. Shutting down really does wipe out my clan status -- why?
 
 TECH
