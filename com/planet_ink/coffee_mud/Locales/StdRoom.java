@@ -490,6 +490,9 @@ public class StdRoom implements Room
 		&&(getGridParent()!=null)
 		&&(getGridParent().roomID().length()==0))
 			return;
+		
+		if(getArea() instanceof BoardableShip)
+			return;
 
 		if((rawDoors()[Directions.UP]==null)
 		&&((domainType()&Room.INDOORS)==0)
