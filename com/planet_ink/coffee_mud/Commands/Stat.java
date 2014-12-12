@@ -88,6 +88,28 @@ public class Stat  extends Skills
 		return target;
 	}
 
+	public String doSenses(int senseMask)
+	{
+		StringBuilder str=new StringBuilder("");
+		for(int i=0;i<PhyStats.CAN_SEE_DESCS.length;i++)
+			if(CMath.isSet(senseMask, i))
+				str.append(PhyStats.CAN_SEE_DESCS[i].replace(' ','_')).append(" ");
+		if(str.length()==0)
+			str.append("NONE");
+		return str.toString().trim();
+	}
+	
+	public String doDisposition(int dispositionMask)
+	{
+		StringBuilder str=new StringBuilder("");
+		for(int i=0;i<PhyStats.IS_DESCS.length;i++)
+			if(CMath.isSet(dispositionMask, i))
+				str.append(PhyStats.IS_DESCS[i].replace(' ','_')).append(" ");
+		if(str.length()==0)
+			str.append("NONE");
+		return str.toString().trim();
+	}
+	
 	public boolean showTableStats(MOB mob, int days, int scale, String rest)
 	{
 		final Calendar ENDQ=Calendar.getInstance();
@@ -443,6 +465,8 @@ public class Stat  extends Skills
 			for(String stat : mob.curState().getStatCodes())
 				msg.append("MAX"+stat).append(", ");
 			for(String stat : mob.charStats().getStatCodes())
+				msg.append(stat).append(", ");
+			for(String stat : mob.phyStats().getStatCodes())
 				msg.append(stat).append(", ");
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
 			{
@@ -838,21 +862,35 @@ public class Stat  extends Skills
 							break;
 						}
 				if(!found)
-				for(String stat : M.curState().getStatCodes())
-					if(stat.startsWith(thisStat))
-					{
-						str.append(M.curState().getStat(stat)).append(" ");
-						found=true;
-						break;
-					}
+					for(String stat : M.phyStats().getStatCodes())
+						if(stat.equals(thisStat))
+						{
+							if(stat.equals("SENSES"))
+								str.append(doSenses(CMath.s_int(M.phyStats().getStat(stat))));
+							else
+							if(stat.equals("DISPOSITION"))
+								str.append(doDisposition(CMath.s_int(M.phyStats().getStat(stat))));
+							else
+								str.append(M.phyStats().getStat(stat)).append(" ");
+							found=true;
+							break;
+						}
+				if(!found)
+					for(String stat : M.curState().getStatCodes())
+						if(stat.startsWith(thisStat))
+						{
+							str.append(M.curState().getStat(stat)).append(" ");
+							found=true;
+							break;
+						}
 				if((!found)&&(thisStat.startsWith("MAX")))
-				for(String stat : M.maxState().getStatCodes())
-					if(stat.startsWith(thisStat))
-					{
-						str.append(M.maxState().getStat(stat)).append(" ");
-						found=true;
-						break;
-					}
+					for(String stat : M.maxState().getStatCodes())
+						if(stat.startsWith(thisStat))
+						{
+							str.append(M.maxState().getStat(stat)).append(" ");
+							found=true;
+							break;
+						}
 				if(!found)
 					for(String stat : M.charStats().getStatCodes())
 						if(stat.startsWith(thisStat))
@@ -861,6 +899,20 @@ public class Stat  extends Skills
 								str.append(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+CMath.s_int(M.charStats().getStat(stat))).append(" ");
 							else
 								str.append(M.charStats().getStat(stat)).append(" ");
+							found=true;
+							break;
+						}
+				if(!found)
+					for(String stat : M.phyStats().getStatCodes())
+						if(stat.startsWith(thisStat))
+						{
+							if(stat.equals("SENSES"))
+								str.append(doSenses(CMath.s_int(M.phyStats().getStat(stat))));
+							else
+							if(stat.equals("DISPOSITION"))
+								str.append(doDisposition(CMath.s_int(M.phyStats().getStat(stat))));
+							else
+								str.append(M.phyStats().getStat(stat)).append(" ");
 							found=true;
 							break;
 						}

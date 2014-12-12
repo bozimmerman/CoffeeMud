@@ -157,32 +157,74 @@ public class WillQualify  extends Skills
 		while(commands.size()>0)
 		{
 			final String str=((String)commands.firstElement()).toUpperCase().trim();
+			final String bothStr=(commands.size()<2) ? str : 
+				((String)commands.firstElement()).toUpperCase().trim() + " " + ((String)commands.get(1)).toUpperCase().trim();
 			int x=CMParms.indexOf(Ability.ACODE_DESCS,str);
 			if(x<0)
 				x=CMParms.indexOf(Ability.ACODE_DESCS,str.replace(' ','_'));
 			if(x>=0)
+			{
+				commands.removeElementAt(0);
 				types.add(Integer.valueOf(x));
+				continue;
+			}
 			else
 			{
-				x=CMParms.indexOf(Ability.DOMAIN_DESCS,str);
+				x=CMParms.indexOf(Ability.ACODE_DESCS,bothStr);
 				if(x<0)
-					x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.replace(' ','_'));
-				if(x<0)
+					x=CMParms.indexOf(Ability.ACODE_DESCS,bothStr.replace(' ','_'));
+				if(x>=0)
 				{
-					if((CMLib.expertises().findDefinition(str,false)==null)
-					&&!str.equalsIgnoreCase("EXPERTISE")
-					&&!str.equalsIgnoreCase("EXPERTISES"))
-					{
-						mob.tell(L("'@x1' is not a valid skill type, domain, expertise, or character class.",str));
-						mob.tell(willQualErr);
-						return false;
-					}
-					types.add(str.toUpperCase().trim());
+					
+					commands.removeElementAt(0);
+					commands.removeElementAt(0);
+					types.add(Integer.valueOf(x));
+					continue;
 				}
-				else
-					types.add(Integer.valueOf(x<<5));
 			}
-			commands.removeElementAt(0);
+			
+			x=CMParms.indexOf(Ability.DOMAIN_DESCS,str);
+			if(x<0)
+				x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.replace(' ','_'));
+			if(x>=0)
+			{
+				commands.removeElementAt(0);
+				types.add(Integer.valueOf(x<<5));
+				continue;
+			}
+			else
+			{
+				x=CMParms.indexOf(Ability.DOMAIN_DESCS,bothStr);
+				if(x<0)
+					x=CMParms.indexOf(Ability.DOMAIN_DESCS,bothStr.replace(' ','_'));
+				if(x>=0)
+				{
+					commands.removeElementAt(0);
+					commands.removeElementAt(0);
+					types.add(Integer.valueOf(x<<5));
+					continue;
+				}
+			}
+				
+			if((CMLib.expertises().findDefinition(str,false)!=null)
+			||str.equalsIgnoreCase("EXPERTISE")
+			||str.equalsIgnoreCase("EXPERTISES"))
+			{
+				commands.removeElementAt(0);
+				types.add(str.toUpperCase().trim());
+				continue;
+			}
+			else
+			if((CMLib.expertises().findDefinition(bothStr,false)!=null))
+			{
+				commands.removeElementAt(0);
+				commands.removeElementAt(0);
+				types.add(bothStr.toUpperCase().trim());
+				continue;
+			}
+			mob.tell(L("'@x1' is not a valid skill type, domain, expertise, or character class.",str));
+			mob.tell(willQualErr);
+			return false;
 		}
 
 		msg.append(L("At level @x1 of class '@x2', you could qualify for:\n\r",""+level,C.name()));
