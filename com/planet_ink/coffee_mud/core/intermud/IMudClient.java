@@ -704,6 +704,8 @@ public class IMudClient implements I3Interface
 		final StringBuffer buf=new StringBuffer("\n\rI3 Mud List:\n\r");
 		final MudList list=Intermud.getAllMudsList();
 		final Vector V=new Vector();
+		int col1Width=ListingLibrary.ColFixer.fixColWidth(25, mob);
+		int col2Width=ListingLibrary.ColFixer.fixColWidth(25, mob);
 		if(list!=null)
 		{
 			for(final I3Mud m : list.getMuds().values())
@@ -728,7 +730,11 @@ public class IMudClient implements I3Interface
 			for(int v=0;v<V.size();v++)
 			{
 				final I3Mud m=(I3Mud)V.elementAt(v);
-				buf.append("["+CMStrings.padRight(m.mud_name,20)+"]["+CMStrings.padRight(m.base_mudlib,20)+"] "+m.address+" ("+m.player_port+")\n\r");
+				if((m!=null)&&(m.base_mudlib!=null))
+				{
+					final String mudlib = m.base_mudlib.startsWith("CoffeeMud") ? "^H"+m.base_mudlib+"^?" : m.base_mudlib;
+					buf.append("["+CMStrings.padRight(m.mud_name,col1Width)+"]["+CMStrings.padRight(mudlib,col2Width)+"] "+m.address+" ("+m.player_port+")\n\r");
+				}
 			}
 		}
 		mob.session().wraplessPrintln(buf.toString());
