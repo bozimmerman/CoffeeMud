@@ -755,7 +755,7 @@ public class MUDGrinder extends StdWebMacro
 			String oldroom=httpReq.getUrlParameter("OLDROOM");
 			if(oldroom==null)
 				oldroom="";
-			final Room R2=getRoomObject(httpReq,oldroom);
+			final Room R2=CMLib.map().getRoom(oldroom);
 			String errMsg="";
 			if(R2==null)
 				errMsg="No external room with ID '"+oldroom+"' found.";
