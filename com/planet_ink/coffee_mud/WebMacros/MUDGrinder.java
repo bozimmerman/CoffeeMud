@@ -84,6 +84,10 @@ public class MUDGrinder extends StdWebMacro
 					break;
 				x=xmlIsh.indexOf(">",x+1);
 			}
+			if(itemCode == null)
+			{
+				return null;
+			}
 			MOB playerM=null;
 			Room R=null;
 			if(playerCode!=null)
