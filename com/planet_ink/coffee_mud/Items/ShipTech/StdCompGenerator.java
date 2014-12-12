@@ -78,11 +78,13 @@ public class StdCompGenerator extends StdCompFuelConsumer implements Electronics
 				clearFuelCache();
 				break;
 			case CMMsg.TYP_ACTIVATE:
+				clearFuelCache();
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> power(s) up <T-NAME>."));
 				this.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
+				clearFuelCache();
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> shut(s) down <T-NAME>."));
 				this.activate(false);

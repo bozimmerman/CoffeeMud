@@ -40,8 +40,8 @@ public class GenResource extends GenItem implements RawMaterial
 	public GenResource()
 	{
 		super();
-		setName("a pile of resource thing");
-		setDisplayText("a pile of resource sits here.");
+		setName("a pile of resources");
+		setDisplayText("a pile of resources sits here.");
 		setDescription("");
 		setMaterial(RawMaterial.RESOURCE_IRON);
 		basePhyStats().setWeight(0);

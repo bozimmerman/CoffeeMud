@@ -2756,7 +2756,8 @@ public class ListCmd extends StdCommand
 		TECHSKILLS("TECHSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		SOFTWARE("SOFTWARE",new SecFlag[]{SecFlag.CMDITEMS}),
 		EXPIRED("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS}),
-		SQL("SQL",new SecFlag[]{SecFlag.CMDDATABASE})
+		SQL("SQL",new SecFlag[]{SecFlag.CMDDATABASE}),
+		SHIPS("SHIPS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDPLAYERS})
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -2929,6 +2930,36 @@ public class ListCmd extends StdCommand
 		}
 		if(str.length()==0)
 			str.append(L("No electronics found.\n\r"));
+		if(mob.session()!=null)
+			mob.session().rawPrint(str.toString());
+	}
+
+	public void listShips(MOB mob, Vector commands)
+	{
+		final Session viewerS = mob.session();
+		final StringBuffer str=new StringBuffer("");
+		str.append(CMStrings.padRight(L("Name"), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
+		str.append(CMStrings.padRight(L("Location"), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
+		str.append(CMStrings.padRight(L("Reg."), ListingLibrary.ColFixer.fixColWidth(15.0,viewerS))).append(" ");
+		str.append("\n\r");
+		str.append(CMStrings.repeat('-', ListingLibrary.ColFixer.fixColWidth(75.0,viewerS))).append("\n\r");
+		for(final Enumeration<BoardableShip> s=CMLib.map().ships(); s.hasMoreElements();)
+		{
+			final BoardableShip S=s.nextElement();
+			str.append(CMStrings.padRight(S.Name(), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
+			if((S instanceof SpaceObject)&&(((SpaceShip)S).getIsDocked()==null))
+				str.append(CMStrings.padRight(CMParms.toStringList(((SpaceObject)S).coordinates()), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
+			else
+				str.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(S)), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
+			if(S instanceof SpaceObject)
+				str.append(CMLib.tech().getElectronicsKey(S));
+			else
+				str.append("N/A");
+			
+			str.append("\n\r");
+		}
+		if(str.length()==0)
+			str.append(L("No ships found.\n\r"));
 		if(mob.session()!=null)
 			mob.session().rawPrint(str.toString());
 	}
@@ -3306,9 +3337,7 @@ public class ListCmd extends StdCommand
 		case SPACE: s.wraplessPrintln(listSpace(mob,commands).toString()); 
 				break;
 		case SQL: listSql(mob,rest); break;
-		default:
-			s.println("List broke?!");
-			break;
+		case SHIPS: listShips(mob, commands); break;
 		}
 	}
 

@@ -155,9 +155,11 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 				clearFuelCache();
 				break;
 			case CMMsg.TYP_ACTIVATE:
+				clearFuelCache();
 				this.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
+				clearFuelCache();
 				this.activate(false);
 				break;
 			case CMMsg.TYP_LOOK:
