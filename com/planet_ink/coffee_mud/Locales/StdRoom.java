@@ -491,9 +491,6 @@ public class StdRoom implements Room
 		&&(getGridParent().roomID().length()==0))
 			return;
 		
-		if(getArea() instanceof BoardableShip)
-			return;
-
 		if((rawDoors()[Directions.UP]==null)
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -514,39 +511,45 @@ public class StdRoom implements Room
 			setRawExit(Directions.UP,upE);
 			sky.rawDoors()[Directions.DOWN]=this;
 			sky.setRawExit(Directions.DOWN,dnE);
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				if((d!=Directions.UP)&&(d!=Directions.DOWN))
+			
+			if(!(getArea() instanceof BoardableShip))
+			{
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					final Room thatRoom=rawDoors()[d];
-					if((thatRoom!=null)&&(getRawExit(d)!=null))
+					if((d!=Directions.UP)&&(d!=Directions.DOWN))
 					{
-						thatRoom.giveASky(depth+1);
-						final Room thatSky=thatRoom.rawDoors()[Directions.UP];
-						if((thatSky!=null)
-						&&(thatSky.roomID().length()==0)
-						&&((thatSky instanceof EndlessThinSky)||(thatSky instanceof EndlessSky)))
+						final Room thatRoom=rawDoors()[d];
+						if((thatRoom!=null)&&(getRawExit(d)!=null))
 						{
-							Exit xo=getRawExit(d);
-							if(xo!=null)
+							thatRoom.giveASky(depth+1);
+							final Room thatSky=thatRoom.rawDoors()[Directions.UP];
+							if((thatSky!=null)
+							&&(thatSky.roomID().length()==0)
+							&&((thatSky instanceof EndlessThinSky)||(thatSky instanceof EndlessSky)))
 							{
-								if(xo.hasADoor())
-									xo=dnE;
-								sky.rawDoors()[d]=thatSky;
-								sky.setRawExit(d,xo);
+								Exit xo=getRawExit(d);
+								if(xo!=null)
+								{
+									if(xo.hasADoor())
+										xo=dnE;
+									sky.rawDoors()[d]=thatSky;
+									sky.setRawExit(d,xo);
+								}
+								final int opDir=Directions.getOpDirectionCode(d);
+								xo=thatRoom.getRawExit(opDir);
+								if(xo!=null)
+								{
+									if(xo.hasADoor())
+										xo=dnE;
+									thatSky.rawDoors()[opDir]=sky;
+									thatSky.setRawExit(opDir,xo);
+								}
+								((GridLocale)thatSky).clearGrid(null);
 							}
-							final int opDir=Directions.getOpDirectionCode(d);
-							xo=thatRoom.getRawExit(opDir);
-							if(xo!=null)
-							{
-								if(xo.hasADoor())
-									xo=dnE;
-								thatSky.rawDoors()[opDir]=sky;
-								thatSky.setRawExit(opDir,xo);
-							}
-							((GridLocale)thatSky).clearGrid(null);
 						}
 					}
 				}
+			}
 			sky.clearGrid(null);
 		}
 	}
