@@ -634,7 +634,7 @@ public class StdMOB implements MOB
 		factions = new SHashtable<String, FData>(1);
 		possWieldedItem= null;
 		possHeldItem = null;
-		clans.clear();
+		clans = new OrderedMap<String,Pair<Clan,Integer>>(); 
 
 		for(final Pair<Clan,Integer> p : M.clans())
 		{
