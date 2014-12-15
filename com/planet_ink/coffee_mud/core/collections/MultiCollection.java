@@ -22,7 +22,7 @@ public class MultiCollection<T> implements Collection<T>
 {
 	private final Vector<Collection<? extends T>> collections = new Vector<Collection<? extends T>>();
 	
-	public MultiCollection(Collection<T>... colls)
+	public MultiCollection(@SuppressWarnings("unchecked") Collection<T>... colls)
 	{
 		super();
 		if(colls==null)
