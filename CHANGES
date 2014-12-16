@@ -1,4 +1,4 @@
-# Build 5.8.4.1 Released 12/??/2014
+# Build 5.8.4.3 Released 12/??/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)
    3. Sailing Ships now properly count as Property for the purposes of certain spells and skills.
