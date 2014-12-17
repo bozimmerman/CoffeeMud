@@ -53,9 +53,17 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 	@Override
 	public boolean supportsMending(Physical item)
 	{
-		return ((item instanceof DeadBody)
-				&&((!((DeadBody)item).isPlayerCorpse())
-					||(CMLib.players().playerExists(((DeadBody)item).getMobName()))));
+		if (item instanceof DeadBody)
+		{
+			final DeadBody body=(DeadBody)item;
+			if((body.getMobName()==null)||(body.getMobName().length()==0))
+				return false;
+			if(!body.isPlayerCorpse())
+				return true;
+			if(CMLib.players().playerExists(body.getMobName()))
+				return true;
+		}
+		return false;
 	}
 
 	@Override
