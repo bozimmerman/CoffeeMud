@@ -58,7 +58,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		setDescription("");
 		myUses=100;
-		this.doorName="hatch";
+		this.doorName="gangplank";
 		basePhyStats().setWeight(10000);
 		setUsesRemaining(100);
 		recoverPhyStats();

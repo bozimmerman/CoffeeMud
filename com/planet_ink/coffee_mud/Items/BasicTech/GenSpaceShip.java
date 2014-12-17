@@ -62,6 +62,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		setName("the space ship [NEWNAME]");
 		setDisplayText("the space ship [NEWNAME] is here.");
 		setMaterial(RawMaterial.RESOURCE_STEEL);
+		this.doorName="hatch";
 	}
 
 	@Override 
