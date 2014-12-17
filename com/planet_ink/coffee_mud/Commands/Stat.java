@@ -844,7 +844,7 @@ public class Stat  extends Skills
 					}
 				if((!found)&&(thisStat.startsWith("MAX")))
 				for(String stat : M.maxState().getStatCodes())
-					if(stat.equals(thisStat))
+					if(stat.equals(thisStat.substring(3)))
 					{
 						str.append(M.maxState().getStat(stat)).append(" ");
 						found=true;
@@ -885,7 +885,7 @@ public class Stat  extends Skills
 						}
 				if((!found)&&(thisStat.startsWith("MAX")))
 					for(String stat : M.maxState().getStatCodes())
-						if(stat.startsWith(thisStat))
+						if(stat.startsWith(thisStat.substring(3)))
 						{
 							str.append(M.maxState().getStat(stat)).append(" ");
 							found=true;
