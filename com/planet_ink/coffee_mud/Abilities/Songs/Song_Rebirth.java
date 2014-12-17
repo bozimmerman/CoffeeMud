@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -86,7 +85,8 @@ public class Song_Rebirth extends Song
 						final Item body=R.getItem(i);
 						if((body instanceof DeadBody)
 						&&(((DeadBody)body).isPlayerCorpse())
-						&&(((DeadBody)body).getMobName().length()>0))
+						&&(((DeadBody)body).getMobName().length()>0)
+						&&(CMLib.players().playerExists(((DeadBody)body).getMobName())))
 						{
 							if(!CMLib.utensils().resurrect(mob,R, (DeadBody)body, -1))
 								i++;
