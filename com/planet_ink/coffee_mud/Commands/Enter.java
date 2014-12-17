@@ -51,9 +51,12 @@ public class Enter extends Go
 		Environmental enterThis=null;
 		final String enterWhat=CMParms.combine(commands,1);
 		int dir=Directions.getGoodDirectionCode(enterWhat.toUpperCase());
+		final Room R=mob.location();
 		if(dir<0)
 		{
-			enterThis=mob.location().fetchFromRoomFavorItems(null,enterWhat.toUpperCase());
+			enterThis=R.fetchFromRoomFavorItems(null,enterWhat.toUpperCase());
+			if(enterThis == null)
+				enterThis = R.fetchExit(enterWhat);
 			if(enterThis!=null)
 			{
 				if(enterThis instanceof Rideable)
@@ -74,7 +77,7 @@ public class Enter extends Go
 					return true;
 				}
 			}
-			dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
+			dir=CMLib.tracking().findExitDir(mob,R,enterWhat);
 			if(dir<0)
 			{
 				mob.tell(L("You don't see '@x1' here.",enterWhat.toLowerCase()));

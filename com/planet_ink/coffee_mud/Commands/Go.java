@@ -42,7 +42,6 @@ public class Go extends StdCommand
 
 	protected Command stander=null;
 	protected Vector ifneccvec=null;
-	
 
 	public boolean standIfNecessary(MOB mob, int metaFlags, boolean giveMsg)
 		throws java.io.IOException
@@ -80,16 +79,7 @@ public class Go extends StdCommand
 	{
 		if(!standIfNecessary(mob,metaFlags, true))
 			return false;
-		if((commands.size()>3)
-		&&(commands.firstElement() instanceof Integer))
-		{
-			return CMLib.tracking().walk(mob,
-						((Integer)commands.elementAt(0)).intValue(),
-						((Boolean)commands.elementAt(1)).booleanValue(),
-						((Boolean)commands.elementAt(2)).booleanValue(),
-						((Boolean)commands.elementAt(3)).booleanValue(),false);
 
-		}
 		final String whereStr=CMParms.combine(commands,1);
 		final Room R=mob.location();
 		if(R==null)
@@ -145,8 +135,13 @@ public class Go extends StdCommand
 			if(E instanceof Exit)
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
 					if(R.getExitInDir(d)==E)
-					{ direction=d; break;}
+					{ 
+						direction=d; 
+						break;
+					}
+				}
 			}
 		}
 		final String doing=(String)commands.elementAt(0);
@@ -154,6 +149,10 @@ public class Go extends StdCommand
 			CMLib.tracking().walk(mob,direction,false,false,false,false);
 		else
 		{
+			Exit E=R.fetchExit(whereStr);
+			if(E != null)
+				return CMLib.commands().forceStandardCommand(mob, "Enter", commands);
+
 			boolean doneAnything=false;
 			for(int v=1;v<commands.size();v++)
 			{
@@ -200,7 +199,13 @@ public class Go extends StdCommand
 					}
 				}
 				else
-					break;
+				{
+					E=R.fetchExit(s);
+					if(E!=null)
+						CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<Object>("ENTER",s));
+					else
+						break;
+				}
 			}
 			if(!doneAnything)
 				mob.tell(L("@x1 which direction?\n\rTry @x2.",CMStrings.capitalizeAndLower(doing),validDirs.toLowerCase()));

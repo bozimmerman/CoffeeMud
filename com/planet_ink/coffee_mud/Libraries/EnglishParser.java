@@ -1897,6 +1897,62 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
+	public Exit fetchExit(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly)
+	{
+		final FetchFlags flags=fetchFlags(srchStr);
+		if(flags==null)
+			return null;
+
+		srchStr=flags.srchStr;
+		int myOccurrance=flags.occurrance;
+		final boolean allFlag=flags.allFlag;
+		try
+		{
+			if(exactOnly)
+			{
+				srchStr=cleanExtraneousDollarMarkers(srchStr);
+				for (final Environmental E : list)
+				{
+					if(E instanceof Exit)
+						if(E.ID().equalsIgnoreCase(srchStr)
+						||E.name().equalsIgnoreCase(srchStr)
+						||E.Name().equalsIgnoreCase(srchStr)
+						||((Exit)E).doorName().equalsIgnoreCase(srchStr)
+						||((Exit)E).closedText().equalsIgnoreCase(srchStr))
+							if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+								if((--myOccurrance)<=0)
+									return (Exit)E;
+				}
+			}
+			else
+			{
+				myOccurrance=flags.occurrance;
+				for (final Environmental E : list)
+				{
+					if((E instanceof Exit)
+					&&(containsString(E.name(),srchStr)
+						||containsString(E.Name(),srchStr)
+						||containsString(((Exit)E).doorName(),srchStr)
+						||containsString(((Exit)E).closedText(),srchStr))
+					&&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+						if((--myOccurrance)<=0)
+							return (Exit)E;
+				}
+				myOccurrance=flags.occurrance;
+				for (final Environmental E : list)
+				{
+					if((E instanceof Exit)
+					&&(containsString(E.displayText(),srchStr)))
+						if((--myOccurrance)<=0)
+							return (Exit)E;
+				}
+			}
+		}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		return null;
+	}
+
+	@Override
 	public Environmental fetchEnvironmental(Iterator<? extends Environmental> iter, String srchStr, boolean exactOnly)
 	{
 		final FetchFlags flags=fetchFlags(srchStr);

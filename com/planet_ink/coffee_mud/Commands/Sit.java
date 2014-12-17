@@ -48,6 +48,7 @@ public class Sit extends StdCommand
 			mob.tell(L("You are already sitting!"));
 			return false;
 		}
+		final Room R=mob.location();
 		if(commands.size()<=1)
 		{
 			CMMsg msg;
@@ -55,15 +56,17 @@ public class Sit extends StdCommand
 				msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,L("<S-NAME> awake(s) and sit(s) up."));
 			else
 				msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,L("<S-NAME> sit(s) down and take(s) a rest."));
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+			if(R.okMessage(mob,msg))
+				R.send(mob,msg);
 			return false;
 		}
 		final String possibleRideable=CMParms.combine(commands,1);
 		Environmental E=null;
 		if(possibleRideable.length()>0)
 		{
-			E=mob.location().fetchFromRoomFavorItems(null,possibleRideable);
+			E=R.fetchFromRoomFavorItems(null,possibleRideable);
+			if(E==null)
+				E=R.fetchExit(possibleRideable);
 			if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 			{
 				mob.tell(L("You don't see '@x1' here.",possibleRideable));
@@ -82,8 +85,8 @@ public class Sit extends StdCommand
 		else
 			mountStr=L("<S-NAME> sit(s) on <T-NAME>.");
 		final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SIT,mountStr);
-		if(mob.location().okMessage(mob,msg))
-			mob.location().send(mob,msg);
+		if(R.okMessage(mob,msg))
+			R.send(mob,msg);
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}

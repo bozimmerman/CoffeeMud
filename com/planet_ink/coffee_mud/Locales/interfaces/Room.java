@@ -200,6 +200,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 
 	public String getContextName(Environmental E);
 
+	public Exit fetchExit(String itemID);
 	public PhysicalAgent fetchFromRoomFavorExits(String thingName);
 	public PhysicalAgent fetchFromRoomFavorItems(Item goodLocation, String thingName);
 	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter);

@@ -1980,6 +1980,27 @@ public class StdRoom implements Room
 	}
 
 	@Override
+	public Exit fetchExit(String itemID)
+	{
+		int dir=Directions.getGoodDirectionCode(itemID);
+		Exit E=null;
+		if(dir >= 0)
+			E=getExitInDir(dir);
+		final List<Exit> exitList=Arrays.asList(exits);
+		if(E==null)
+			E=CMLib.english().fetchExit(exitList, itemID, true);
+		if(E==null)
+			E=CMLib.english().fetchExit(exitList, itemID, false);
+		if(contents.isEmpty())
+			return E;
+		if(E==null)
+			E=CMLib.english().fetchExit(contents, itemID, true);
+		if(E==null)
+			E=CMLib.english().fetchExit(contents, itemID, false);
+		return E;
+	}
+
+	@Override
 	public Item findItem(String itemID)
 	{
 		if(contents.isEmpty())
