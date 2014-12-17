@@ -1603,7 +1603,7 @@ public class CMProps extends Properties
 						{
 							if(newMsg==null)
 								newMsg=new StringBuffer(msg);
-							newMsg.setCharAt(fdex,FILTER_CHARS[fpIndex % FILTER_CHARS.length]);
+							newMsg.setCharAt(fdex,FILTER_CHARS[fdex % FILTER_CHARS.length]);
 							upp=newMsg.toString().toUpperCase();
 						}
 						else
