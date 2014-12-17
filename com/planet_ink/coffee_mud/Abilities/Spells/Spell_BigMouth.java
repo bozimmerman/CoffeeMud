@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -313,8 +312,18 @@ public class Spell_BigMouth extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) <S-HIS-HER> mouth grow to an enormous size!"));
-				beneficialAffect(mob,target,asLevel,4);
+				final Ability A=target.fetchEffect("Spell_ShrinkMouth");
+				boolean isJustUnInvoking=false;
+				if((A!=null)&&(A.canBeUninvoked()))
+				{
+					A.unInvoke();
+					isJustUnInvoking=true;
+				}
+				if((!isJustUnInvoking)&&(msg.value()<=0))
+				{
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) <S-HIS-HER> mouth grow to an enormous size!"));
+					beneficialAffect(mob,target,asLevel,4);
+				}
 			}
 		}
 		else
