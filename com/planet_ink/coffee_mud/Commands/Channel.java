@@ -63,8 +63,8 @@ public class Channel extends StdCommand
 	public boolean channel(MOB mob, Vector commands, boolean systemMsg)
 	{
 		final PlayerStats pstats=mob.playerStats();
-		final String channelName=((String)commands.elementAt(0)).toUpperCase().trim();
-		commands.removeElementAt(0);
+		final String channelName=((String)commands.get(0)).toUpperCase().trim();
+		commands.remove(0);
 		final int channelInt=CMLib.channels().getChannelIndex(channelName);
 		final int channelNum=CMLib.channels().getChannelCodeNumber(channelName);
 
@@ -101,7 +101,7 @@ public class Channel extends StdCommand
 
 		for(int i=0;i<commands.size();i++)
 		{
-			final String s=(String)commands.elementAt(i);
+			final String s=(String)commands.get(i);
 			if(s.indexOf(' ')>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
@@ -124,7 +124,7 @@ public class Channel extends StdCommand
 
 		if((commands.size()==2)
 		&&(mob.session()!=null)
-		&&(((String)commands.firstElement()).equalsIgnoreCase("last"))
+		&&(((String)commands.get(0)).equalsIgnoreCase("last"))
 		&&(CMath.isNumber((String)commands.lastElement())))
 		{
 			int num=CMath.s_int((String)commands.lastElement());

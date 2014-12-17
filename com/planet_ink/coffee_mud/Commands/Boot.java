@@ -43,7 +43,7 @@ public class Boot extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(mob.session()==null)
 			return false;
 		if(commands.size()==0)

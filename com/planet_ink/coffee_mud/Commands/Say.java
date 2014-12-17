@@ -89,7 +89,7 @@ public class Say extends StdCommand
 	{
 		String theWord="Say";
 		boolean toFlag=false;
-		final String theCommand=((String)commands.elementAt(0)).toUpperCase();
+		final String theCommand=((String)commands.get(0)).toUpperCase();
 		if(theCommand.equals("ASK"))
 			theWord="Ask";
 		else
@@ -129,7 +129,7 @@ public class Say extends StdCommand
 		Physical langTarget=null;
 		if(commands.size()>2)
 		{
-			whom=((String)commands.elementAt(1)).toUpperCase();
+			whom=((String)commands.get(1)).toUpperCase();
 			if(!toFlag)
 				for (final String impossibleTarget : impossibleTargets)
 					if(impossibleTarget.startsWith(whom))
@@ -157,7 +157,7 @@ public class Say extends StdCommand
 
 				if(target!=null)
 				{
-					commands.removeElementAt(1);
+					commands.remove(1);
 					if(target instanceof Physical)
 						langTarget=(Physical)target;
 				}
@@ -168,7 +168,7 @@ public class Say extends StdCommand
 						final int dir=Directions.getGoodCompassDirectionCode(whom);
 						if(dir >=0)
 						{
-							commands.removeElementAt(1);
+							commands.remove(1);
 							yellRooms=new Vector<Room>();
 							if(theCommand.equals("YELL"))
 							{

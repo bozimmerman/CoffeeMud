@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -49,7 +48,7 @@ public class Display extends StdCommand
 			mob.tell(L("Show what to whom?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()<2)
 		{
 			mob.tell(L("To whom should I show that?"));
@@ -62,9 +61,9 @@ public class Display extends StdCommand
 			mob.tell(L("I don't see anyone called @x1 here.",(String)commands.lastElement()));
 			return false;
 		}
-		commands.removeElementAt(commands.size()-1);
+		commands.remove(commands.size()-1);
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("to")))
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 
 		final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToGive<0)
@@ -74,7 +73,7 @@ public class Display extends StdCommand
 		int addendum=1;
 		String addendumStr="";
 		final Vector V=new Vector();
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
 		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
 		boolean doBugFix = true;
@@ -97,7 +96,7 @@ public class Display extends StdCommand
 			if(giveThis==null)
 				break;
 			if(CMLib.flags().canBeSeenBy(giveThis,mob))
-				V.addElement(giveThis);
+				V.add(giveThis);
 			addendumStr="."+(++addendum);
 		}
 
@@ -106,7 +105,7 @@ public class Display extends StdCommand
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			final Environmental giveThis=(Environmental)V.elementAt(i);
+			final Environmental giveThis=(Environmental)V.get(i);
 			final CMMsg newMsg=CMClass.getMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,L("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));
 			if(mob.location().okMessage(recipient,newMsg))
 			{

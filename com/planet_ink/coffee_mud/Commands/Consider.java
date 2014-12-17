@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -169,11 +168,11 @@ public class Consider extends StdCommand
 		{
 			final Ability A=a.nextElement();
 			if((A instanceof MendingSkill)&&(((MendingSkill)A).supportsMending((target))))
-				mendors.addElement(A);
+				mendors.add(A);
 		}
 		for(int m=0;m<mendors.size();m++)
 		{
-			final Ability A=(Ability)mendors.elementAt(m);
+			final Ability A=(Ability)mendors.get(m);
 			if(m==0)
 				withWhat.append(L("You could probably help @x1 out with your @x2 skill",target.name(mob),A.name()));
 			else
@@ -201,7 +200,7 @@ public class Consider extends StdCommand
 			mob.tell(L("Consider whom or what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final String targetName=CMParms.combine(commands,0);
 		if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 			target=mob;

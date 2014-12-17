@@ -59,7 +59,7 @@ public class Destroy extends StdCommand
 		}
 
 		String mobID=CMParms.combine(commands,2);
-		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
+		boolean allFlag=((String)commands.get(2)).equalsIgnoreCase("all");
 		if(mobID.toUpperCase().startsWith("ALL.")){ allFlag=true; mobID="ALL "+mobID.substring(4);}
 		if(mobID.toUpperCase().endsWith(".ALL")){ allFlag=true; mobID="ALL "+mobID.substring(0,mobID.length()-4);}
 		MOB deadMOB=mob.location().fetchInhabitant(mobID);
@@ -253,7 +253,7 @@ public class Destroy extends StdCommand
 	public void rooms(MOB mob, Vector commands)
 		throws IOException
 	{
-		final String thecmd=((String)commands.elementAt(0)).toLowerCase();
+		final String thecmd=((String)commands.get(0)).toLowerCase();
 		if(commands.size()<3)
 		{
 			if(thecmd.equalsIgnoreCase("UNLINK"))
@@ -268,7 +268,7 @@ public class Destroy extends StdCommand
 		{
 			if(((String)commands.lastElement()).equalsIgnoreCase("CONFIRMED"))
 			{
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				confirmed=true;
 			}
 		}
@@ -389,7 +389,7 @@ public class Destroy extends StdCommand
 			return;
 		}
 
-		final int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
+		final int direction=Directions.getGoodDirectionCode(((String)commands.get(2)));
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
@@ -475,7 +475,7 @@ public class Destroy extends StdCommand
 		}
 
 		int max=Integer.MAX_VALUE;
-		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
+		boolean allFlag=((String)commands.get(2)).equalsIgnoreCase("all");
 		if(itemID.toUpperCase().startsWith("ALL.")){ allFlag=true; itemID="ALL "+itemID.substring(4);}
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
 		boolean doneSomething=false;
@@ -560,7 +560,7 @@ public class Destroy extends StdCommand
 		{
 			if(((String)commands.lastElement()).equalsIgnoreCase("CONFIRMED"))
 			{
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				confirmed=true;
 			}
 		}
@@ -577,10 +577,10 @@ public class Destroy extends StdCommand
 				{
 					for(int i=4;i<commands.size();i++)
 					{
-						final Area A=CMLib.map().getArea((String)commands.elementAt(i));
+						final Area A=CMLib.map().getArea((String)commands.get(i));
 						if(A==null)
 						{
-							mob.tell(L("There is no such area as '@x1'",((String)commands.elementAt(i))));
+							mob.tell(L("There is no such area as '@x1'",((String)commands.get(i))));
 							mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a thunderous spell."));
 							return;
 						}
@@ -923,7 +923,7 @@ public class Destroy extends StdCommand
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BAN))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NOPURGE)))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			if(commands.size()==0)
 			{
 				mob.tell(L("Destroy what?"));
@@ -942,14 +942,14 @@ public class Destroy extends StdCommand
 			int maxToDrop=Integer.MAX_VALUE;
 
 			if((commands.size()>1)
-			&&(CMath.s_int((String)commands.firstElement())>0))
+			&&(CMath.s_int((String)commands.get(0))>0))
 			{
-				maxToDrop=CMath.s_int((String)commands.firstElement());
+				maxToDrop=CMath.s_int((String)commands.get(0));
 				commands.setElementAt("all",0);
 			}
 
 			String whatToDrop=CMParms.combine(commands,0);
-			boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+			boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
 			if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
 			if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
 			int addendum=1;
@@ -995,21 +995,21 @@ public class Destroy extends StdCommand
 					break;
 				if((CMLib.flags().canBeSeenBy(dropThis,mob))
 				&&(!V.contains(dropThis)))
-					V.addElement(dropThis);
+					V.add(dropThis);
 				addendumStr="."+(++addendum);
 			}
 
 			boolean didAnything=false;
 			for(int i=0;i<V.size();i++)
 			{
-				if(destroyItem(mob,(Item)V.elementAt(i),false,true))
+				if(destroyItem(mob,(Item)V.get(i),false,true))
 					didAnything=true;
 				else
-				if(V.elementAt(i) instanceof Coins)
-					((Coins)V.elementAt(i)).putCoinsBack();
+				if(V.get(i) instanceof Coins)
+					((Coins)V.get(i)).putCoinsBack();
 				else
-				if(V.elementAt(i) instanceof RawMaterial)
-					((RawMaterial)V.elementAt(i)).rebundle();
+				if(V.get(i) instanceof RawMaterial)
+					((RawMaterial)V.get(i)).rebundle();
 			}
 			if(!didAnything)
 			{
@@ -1027,7 +1027,7 @@ public class Destroy extends StdCommand
 
 		if(commands.size()>1)
 		{
-			commandType=((String)commands.elementAt(1)).toUpperCase();
+			commandType=((String)commands.get(1)).toUpperCase();
 		}
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
@@ -1037,7 +1037,7 @@ public class Destroy extends StdCommand
 			{
 				int which=-1;
 				if(commands.size()>2)
-					which=CMath.s_int((String)commands.elementAt(2));
+					which=CMath.s_int((String)commands.get(2));
 				final List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
 
 				if((which<=0)||(which>entries.size()))
@@ -1202,7 +1202,7 @@ public class Destroy extends StdCommand
 				return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
-				which=CMath.s_int((String)commands.elementAt(2));
+				which=CMath.s_int((String)commands.get(2));
 			if(which<=0)
 				mob.tell(L("Please enter a valid player number to delete.  Use List nopurge for more information."));
 			else
@@ -1277,7 +1277,7 @@ public class Destroy extends StdCommand
 				return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
-				which=CMath.s_int((String)commands.elementAt(2));
+				which=CMath.s_int((String)commands.get(2));
 			if(which<=0)
 				mob.tell(L("Please enter a valid ban number to delete.  Use List Banned for more information."));
 			else
@@ -1311,7 +1311,7 @@ public class Destroy extends StdCommand
 				return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
-				which=CMath.s_int((String)commands.elementAt(2));
+				which=CMath.s_int((String)commands.get(2));
 			final Session S=CMLib.sessions().getAllSessionAt(which);
 			if(S==null)
 				mob.tell(L("Please enter a valid session number to delete.  Use SESSIONS for more information."));
@@ -1564,9 +1564,9 @@ public class Destroy extends StdCommand
 				if(theRoom!=null)
 				{
 					commands=new Vector();
-					commands.addElement("DESTROY");
-					commands.addElement("ROOM");
-					commands.addElement(theRoom.roomID());
+					commands.add("DESTROY");
+					commands.add("ROOM");
+					commands.add(theRoom.roomID());
 					execute(mob,commands,metaFlags);
 				}
 				else
@@ -1574,15 +1574,15 @@ public class Destroy extends StdCommand
 					if(Directions.getGoodDirectionCode(allWord)>=0)
 					{
 						commands=new Vector();
-						commands.addElement("DESTROY");
-						commands.addElement("ROOM");
-						commands.addElement(allWord);
+						commands.add("DESTROY");
+						commands.add("ROOM");
+						commands.add(allWord);
 						execute(mob,commands,metaFlags);
 
 						commands=new Vector();
-						commands.addElement("DESTROY");
-						commands.addElement("EXIT");
-						commands.addElement(allWord);
+						commands.add("DESTROY");
+						commands.add("EXIT");
+						commands.add(allWord);
 						execute(mob,commands,metaFlags);
 					}
 					else
@@ -1595,13 +1595,13 @@ public class Destroy extends StdCommand
 					if((thang=CMLib.map().findSpaceObject(allWord,true))!=null)
 					{
 						commands=new Vector();
-						commands.addElement("DESTROY");
+						commands.add("DESTROY");
 						if(thang instanceof Area)
-							commands.addElement("AREA");
+							commands.add("AREA");
 						else
 						if(thang instanceof Item)
-							commands.addElement("ITEM");
-						commands.addElement(allWord);
+							commands.add("ITEM");
+						commands.add(allWord);
 						execute(mob,commands,metaFlags);
 					}
 					else

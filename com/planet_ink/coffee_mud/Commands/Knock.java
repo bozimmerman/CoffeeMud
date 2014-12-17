@@ -87,7 +87,7 @@ public class Knock extends StdCommand
 				&&((R.domainType()&Room.INDOORS)==Room.INDOORS))
 				{
 					final Vector V=new Vector();
-					V.addElement(mob.location());
+					V.add(mob.location());
 					TrackingLibrary.TrackingFlags flags;
 					flags = new TrackingLibrary.TrackingFlags()
 							.plus(TrackingLibrary.TrackingFlag.OPENONLY);
@@ -95,7 +95,7 @@ public class Knock extends StdCommand
 					V.removeElement(mob.location());
 					for(int v=0;v<V.size();v++)
 					{
-						final Room R2=(Room)V.elementAt(v);
+						final Room R2=(Room)V.get(v);
 						final int dir2=CMLib.tracking().radiatesFromDir(R2,V);
 						if((dir2>=0)&&((R2.domainType()&Room.INDOORS)==Room.INDOORS))
 						{

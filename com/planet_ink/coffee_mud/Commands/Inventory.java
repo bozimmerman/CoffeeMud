@@ -67,7 +67,7 @@ public class Inventory extends StdCommand
 				else
 					lst.foundButUnseen=true;
 				if((!(thisItem instanceof Coins))||(((Coins)thisItem).getDenomination()==0.0))
-					lst.viewItems.addElement(thisItem);
+					lst.viewItems.add(thisItem);
 				else
 				{
 					coinsV=lst.moneyItems.get(((Coins)thisItem).getCurrency());
@@ -77,10 +77,10 @@ public class Inventory extends StdCommand
 						lst.moneyItems.put(((Coins)thisItem).getCurrency(),coinsV);
 					}
 					for(insertAt=0;insertAt<coinsV.size();insertAt++)
-						if(coinsV.elementAt(insertAt).getDenomination()>((Coins)thisItem).getDenomination())
+						if(coinsV.get(insertAt).getDenomination()>((Coins)thisItem).getDenomination())
 							break;
 					if(insertAt>=coinsV.size())
-						coinsV.addElement((Coins)thisItem);
+						coinsV.add((Coins)thisItem);
 					else
 						coinsV.insertElementAt((Coins)thisItem,insertAt);
 				}
@@ -103,7 +103,7 @@ public class Inventory extends StdCommand
 				double totalValue=0.0;
 				for(int v=0;v<V.size();v++)
 				{
-					I=V.elementAt(v);
+					I=V.get(v);
 					if(I!=null)
 					{
 						if(v>0)
@@ -140,13 +140,13 @@ public class Inventory extends StdCommand
 				mask="all "+mask;
 			final Vector<Item> V=(Vector<Item>)list.viewItems.clone();
 			list.viewItems.clear();
-			Item I=(V.size()>0)?(Item)V.firstElement():null;
+			Item I=(V.size()>0)?(Item)V.get(0):null;
 			while(I!=null)
 			{
 				I=(Item)CMLib.english().fetchEnvironmental(V,mask,false);
 				if(I!=null)
 				{
-					list.viewItems.addElement(I);
+					list.viewItems.add(I);
 					V.remove(I);
 				}
 			}
@@ -175,9 +175,9 @@ public class Inventory extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()==1)&&(commands.firstElement() instanceof MOB))
+		if((commands.size()==1)&&(commands.get(0) instanceof MOB))
 		{
-			commands.addElement(getInventory((MOB)commands.firstElement(),mob,null));
+			commands.add(getInventory((MOB)commands.get(0),mob,null));
 			return true;
 		}
 		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));

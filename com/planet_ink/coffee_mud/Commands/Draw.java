@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -58,7 +57,7 @@ public class Draw extends Get
 				for(int c=0;c<contents.size();c++)
 					if(contents.get(c) instanceof Weapon)
 					{
-						sheaths.addElement(I);
+						sheaths.add(I);
 						break;
 					}
 			}
@@ -77,11 +76,11 @@ public class Draw extends Get
 		{
 			quiet=true;
 			noerrors=true;
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			if((commands.size()>0)
 			&&(((String)commands.lastElement()).equalsIgnoreCase("HELD")))
 			{
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				if(mob.fetchHeldItem()!=null)
 					return false;
 			}
@@ -93,13 +92,13 @@ public class Draw extends Get
 		{
 			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
 			{
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				quiet=true;
 			}
 			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")))
 			{
 				ifNecessary=true;
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				noerrors=true;
 			}
 		}
@@ -111,11 +110,11 @@ public class Draw extends Get
 		int c=0;
 		final Vector sheaths=getSheaths(mob);
 		if(commands.size()>0)
-			commands.removeElementAt(0);
+			commands.remove(0);
 		if(commands.size()==0)
 		{
 			if(sheaths.size()>0)
-				containerName=((Item)sheaths.elementAt(0)).name();
+				containerName=((Item)sheaths.get(0)).name();
 			else
 				containerName="a weapon";
 			for(int i=0;i<mob.numItems();i++)
@@ -149,7 +148,7 @@ public class Draw extends Get
 			if(containers.size()==0)
 				containers=sheaths;
 			whatToGet=CMParms.combine(commands,0);
-			allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+			allFlag=((String)commands.get(0)).equalsIgnoreCase("all");
 			if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 			if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
 		}
@@ -172,13 +171,13 @@ public class Draw extends Get
 				if(getThis==null)
 					break;
 				if(getThis instanceof Weapon)
-					V.addElement(getThis);
+					V.add(getThis);
 				addendumStr="."+(++addendum);
 			}
 
 			for(int i=0;i<V.size();i++)
 			{
-				final Item getThis=(Item)V.elementAt(i);
+				final Item getThis=(Item)V.get(i);
 				long wearCode=0;
 				if(container!=null)
 					wearCode=container.rawWornCode();

@@ -51,32 +51,32 @@ public class Pour extends StdCommand
 			mob.tell(L("Pour what, into/onto what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		Environmental fillFromThis=null;
-		final String thingToFillFrom=(String)commands.elementAt(0);
+		final String thingToFillFrom=(String)commands.get(0);
 		fillFromThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToFillFrom);
 		if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 		{
 			mob.tell(L("You don't seem to have '@x1'.",thingToFillFrom));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		PourVerb verb=PourVerb.DEFAULT;
 		if(commands.size()>1)
 		{
-			if((((String)commands.firstElement())).equalsIgnoreCase("into"))
-				commands.removeElementAt(0);
+			if((((String)commands.get(0))).equalsIgnoreCase("into"))
+				commands.remove(0);
 			else
-			if((((String)commands.firstElement())).equalsIgnoreCase("onto"))
+			if((((String)commands.get(0))).equalsIgnoreCase("onto"))
 			{
-				commands.removeElementAt(0);
+				commands.remove(0);
 				verb=PourVerb.ONTO;
 			}
 			else
-			if((((String)commands.firstElement())).equalsIgnoreCase("out"))
+			if((((String)commands.get(0))).equalsIgnoreCase("out"))
 			{
-				commands.removeElementAt(0);
+				commands.remove(0);
 				verb=PourVerb.OUT;
 			}
 		}

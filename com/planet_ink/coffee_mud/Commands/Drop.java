@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.IOException;
 import java.util.*;
 
@@ -97,13 +96,13 @@ public class Drop extends StdCommand
 
 		//this is probably unnecessary and can be removed
 		if((commands.size()>=3)
-		&&(commands.firstElement() instanceof Item)
-		&&(commands.elementAt(1) instanceof Boolean)
-		&&(commands.elementAt(2) instanceof Boolean))
+		&&(commands.get(0) instanceof Item)
+		&&(commands.get(1) instanceof Boolean)
+		&&(commands.get(2) instanceof Boolean))
 		{
-			return drop(mob,(Item)commands.firstElement(),
-						((Boolean)commands.elementAt(1)).booleanValue(),
-						((Boolean)commands.elementAt(2)).booleanValue(),
+			return drop(mob,(Item)commands.get(0),
+						((Boolean)commands.get(1)).booleanValue(),
+						((Boolean)commands.get(2)).booleanValue(),
 						false);
 		}
 
@@ -112,7 +111,7 @@ public class Drop extends StdCommand
 			mob.tell(L("Drop what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		// uncommenting this allows dropping directly from containers
 		// "drop all sack" will no longer drop all of your "sack", but will drop
@@ -125,7 +124,7 @@ public class Drop extends StdCommand
 			return false;
 
 		whatToDrop=CMParms.combine(commands,0);
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
 		if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
 		if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
 		int addendum=1;
@@ -137,7 +136,7 @@ public class Drop extends StdCommand
 			if(((Coins)dropThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,whatToDrop+addendumStr))
 				return false;
 			if(CMLib.flags().canBeSeenBy(dropThis,mob))
-				V.addElement(dropThis);
+				V.add(dropThis);
 		}
 		boolean doBugFix = true;
 		if(V.size()==0)
@@ -173,7 +172,7 @@ public class Drop extends StdCommand
 					break;
 				if((CMLib.flags().canBeSeenBy(dropThis,mob)||(dropThis instanceof Light))
 				&&(!V.contains(dropThis)))
-					V.addElement(dropThis);
+					V.add(dropThis);
 			}
 			addendumStr="."+(++addendum);
 		}
@@ -182,7 +181,7 @@ public class Drop extends StdCommand
 			mob.tell(L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
-			drop(mob,(Item)V.elementAt(i),false,true,false);
+			drop(mob,(Item)V.get(i),false,true,false);
 		mob.location().recoverRoomStats();
 		mob.location().recoverRoomStats();
 		return false;

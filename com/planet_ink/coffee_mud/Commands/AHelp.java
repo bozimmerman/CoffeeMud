@@ -66,7 +66,7 @@ public class AHelp extends StdCommand
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY))
-							V.addElement(A.ID());
+							V.add(A.ID());
 					}
 					if(V.size()>0)
 					{
@@ -79,7 +79,7 @@ public class AHelp extends StdCommand
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE))
-							V.addElement(A.ID());
+							V.add(A.ID());
 					}
 					if(V.size()>0)
 					{
@@ -92,7 +92,7 @@ public class AHelp extends StdCommand
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
-							V.addElement(A.ID());
+							V.add(A.ID());
 					}
 					if(V.size()>0)
 					{
@@ -105,7 +105,7 @@ public class AHelp extends StdCommand
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SUPERPOWER))
-							V.addElement(A.ID());
+							V.add(A.ID());
 					}
 					if(V.size()>0)
 					{
@@ -118,7 +118,7 @@ public class AHelp extends StdCommand
 					{
 						final Ability A=a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_TECH))
-							V.addElement(A.ID());
+							V.add(A.ID());
 					}
 					if(V.size()>0)
 					{
@@ -131,7 +131,7 @@ public class AHelp extends StdCommand
 					{
 						final Behavior B=(Behavior)b.nextElement();
 						if(B!=null)
-							V.addElement(B.ID());
+							V.add(B.ID());
 					}
 					if(V.size()>0)
 					{

@@ -44,14 +44,14 @@ public class As extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()<2)
 		{
 			mob.tell(L("As whom do what?"));
 			return false;
 		}
-		final String cmd=(String)commands.firstElement();
-		commands.removeElementAt(0);
+		final String cmd=(String)commands.get(0);
+		commands.remove(0);
 		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AS))||(mob.isMonster()))
 		{
 			mob.tell(L("You aren't powerful enough to do that."));
@@ -96,10 +96,10 @@ public class As extends StdCommand
 		}
 		if(M==mob)
 		{
-			if(((String)commands.firstElement()).equalsIgnoreCase("here")
-			   ||((String)commands.firstElement()).equalsIgnoreCase("."))
+			if(((String)commands.get(0)).equalsIgnoreCase("here")
+			   ||((String)commands.get(0)).equalsIgnoreCase("."))
 			{
-				commands.removeElementAt(0);
+				commands.remove(0);
 			}
 			M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
 			return false;
@@ -116,12 +116,12 @@ public class As extends StdCommand
 			mySession.setMob(M);
 			M.setSoulMate(mob);
 			//mySession.initTelnetMode(oldBitmap);
-			if(((String)commands.firstElement()).equalsIgnoreCase("here")
-			   ||((String)commands.firstElement()).equalsIgnoreCase("."))
+			if(((String)commands.get(0)).equalsIgnoreCase("here")
+			   ||((String)commands.get(0)).equalsIgnoreCase("."))
 			{
 				if((M.location()!=mob.location())&&(!mob.location().isInhabitant(M)))
 					mob.location().bringMobHere(M,false);
-				commands.removeElementAt(0);
+				commands.remove(0);
 			}
 			if(dead)
 				M.bringToLife();

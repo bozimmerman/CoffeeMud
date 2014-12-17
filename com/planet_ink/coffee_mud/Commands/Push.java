@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -63,7 +62,7 @@ public class Push extends Go
 				E=mob.location().getRoomInDir(dirCode);
 				dir=" "+(((mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip))?
 						Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode));
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 			}
 		}
 		if(dir.length()==0)

@@ -46,7 +46,7 @@ public class Examine extends StdCommand
 		boolean quiet=false;
 		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			quiet=true;
 		}
 		final String textMsg="<S-NAME> examine(s) ";

@@ -70,7 +70,7 @@ public class Unload extends StdCommand
 		}
 		if(!tryArchon)
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
 			final List<AmmunitionWeapon> items=new XVector<AmmunitionWeapon>();
 			for (Item I : baseItems)
@@ -94,7 +94,7 @@ public class Unload extends StdCommand
 		}
 		else
 		{
-			String what=(String)commands.elementAt(1);
+			String what=(String)commands.get(1);
 			if((what.equalsIgnoreCase("CLASS")||(CMClass.findObjectType(what)!=null))
 			&&(CMSecurity.isASysOp(mob)))
 			{
@@ -105,7 +105,7 @@ public class Unload extends StdCommand
 				}
 				if(what.equalsIgnoreCase("CLASS"))
 				{
-					final Object O=CMClass.getObjectOrPrototype((String)commands.elementAt(2));
+					final Object O=CMClass.getObjectOrPrototype((String)commands.get(2));
 					if(O!=null)
 					{
 						final CMClass.CMObjectType x=CMClass.getObjectType(O);
@@ -118,11 +118,11 @@ public class Unload extends StdCommand
 					mob.tell(L("Don't know how to load a '@x1'.  Try one of the following: @x2",what,CMParms.toStringList(ARCHON_LIST)));
 				else
 				{
-					commands.removeElementAt(0);
-					commands.removeElementAt(0);
+					commands.remove(0);
+					commands.remove(0);
 					for(int i=0;i<commands.size();i++)
 					{
-						final String name=(String)commands.elementAt(0);
+						final String name=(String)commands.get(0);
 						final Object O=CMClass.getObjectOrPrototype(name);
 						if(!(O instanceof CMObject))
 							mob.tell(L("Class '@x1' was not found in the class loader.",name));
@@ -166,7 +166,7 @@ public class Unload extends StdCommand
 			}
 			else
 			// User Unloading
-			if((((String)commands.elementAt(1)).equalsIgnoreCase("USER"))
+			if((((String)commands.get(1)).equalsIgnoreCase("USER"))
 			&&(mob.session()!=null)
 			&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)))
 			{
@@ -174,7 +174,7 @@ public class Unload extends StdCommand
 				final Vector users=new Vector();
 				if(which.equalsIgnoreCase("all"))
 					for(final Enumeration e=CMLib.players().players();e.hasMoreElements();)
-						users.addElement(e.nextElement());
+						users.add(e.nextElement());
 				else
 				{
 					final MOB M=CMLib.players().getPlayer(which);
@@ -183,12 +183,12 @@ public class Unload extends StdCommand
 						mob.tell(L("No such user as '@x1'!",which));
 						return false;
 					}
-					users.addElement(M);
+					users.add(M);
 				}
 				final boolean saveFirst=mob.session().confirm(L("Save first (Y/n)?"),L("Y"));
 				for(int u=0;u<users.size();u++)
 				{
-					final MOB M=(MOB)users.elementAt(u);
+					final MOB M=(MOB)users.get(u);
 					if(M.session()!=null)
 					{
 						if(M!=mob)
@@ -213,7 +213,7 @@ public class Unload extends StdCommand
 				int done=0;
 				for(int u=0;u<users.size();u++)
 				{
-					final MOB M=(MOB)users.elementAt(u);
+					final MOB M=(MOB)users.get(u);
 					if(M!=mob)
 					{
 						done++;
@@ -229,7 +229,7 @@ public class Unload extends StdCommand
 			}
 			else
 			// Faction Unloading
-			if((((String)commands.elementAt(1)).equalsIgnoreCase("FACTION"))
+			if((((String)commands.get(1)).equalsIgnoreCase("FACTION"))
 			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDFACTIONS)))
 			{
 				final String which=CMParms.combine(commands,2);
@@ -251,7 +251,7 @@ public class Unload extends StdCommand
 			}
 			else
 			// Area Unloading
-			if((((String)commands.elementAt(1)).equalsIgnoreCase("AREA"))
+			if((((String)commands.get(1)).equalsIgnoreCase("AREA"))
 			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDAREAS)))
 			{
 				final String which=CMParms.combine(commands,2);
@@ -266,7 +266,7 @@ public class Unload extends StdCommand
 				}
 			}
 			else
-			if(("EXPERTISE".startsWith(((String)commands.elementAt(1)).toUpperCase()))
+			if(("EXPERTISE".startsWith(((String)commands.get(1)).toUpperCase()))
 			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.EXPERTISE)))
 			{
 				Resources.removeResource("skills/expertises.txt");
@@ -275,7 +275,7 @@ public class Unload extends StdCommand
 				return false;
 			}
 			else
-			if(((String)commands.elementAt(1)).equalsIgnoreCase("RESOURCE"))
+			if(((String)commands.get(1)).equalsIgnoreCase("RESOURCE"))
 			{
 				final String which=CMParms.combine(commands,2);
 				final Iterator<String> k=Resources.findResourceKeys(which);
@@ -292,7 +292,7 @@ public class Unload extends StdCommand
 				}
 			}
 			else
-			if(((String)commands.elementAt(1)).equalsIgnoreCase("FILE"))
+			if(((String)commands.get(1)).equalsIgnoreCase("FILE"))
 			{
 				final String which=CMParms.combine(commands,2);
 				CMFile F1=new CMFile(which,mob,CMFile.FLAG_FORCEALLOW);
@@ -385,7 +385,7 @@ public class Unload extends StdCommand
 					}
 				}
 				else
-					mob.tell(L("Unknown resource type '@x1. Try @x2.",((String)commands.elementAt(1)),CMParms.toStringList(ARCHON_LIST)));
+					mob.tell(L("Unknown resource type '@x1. Try @x2.",((String)commands.get(1)),CMParms.toStringList(ARCHON_LIST)));
 			}
 		}
 		return false;

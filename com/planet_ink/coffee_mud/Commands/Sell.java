@@ -59,7 +59,7 @@ public class Sell extends StdCommand
 
 		String whatName=CMParms.combine(commands,0);
 		final Vector V=new Vector();
-		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		boolean allFlag=((String)commands.get(0)).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
 		int addendum=1;
@@ -73,7 +73,7 @@ public class Sell extends StdCommand
 				break;
 			if((CMLib.flags().canBeSeenBy(itemToDo,mob))
 			&&(!V.contains(itemToDo)))
-				V.addElement(itemToDo);
+				V.add(itemToDo);
 			addendumStr="."+(++addendum);
 		}
 
@@ -82,7 +82,7 @@ public class Sell extends StdCommand
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			final Item thisThang=(Item)V.elementAt(v);
+			final Item thisThang=(Item)V.get(v);
 			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,L("<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);

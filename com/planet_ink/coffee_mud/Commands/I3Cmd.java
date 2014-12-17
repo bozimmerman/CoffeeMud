@@ -53,7 +53,7 @@ public class I3Cmd extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()<1)
 		{
 			if(!CMLib.intermud().i3online())
@@ -64,7 +64,7 @@ public class I3Cmd extends StdCommand
 			i3Error(mob);
 			return false;
 		}
-		final String str=(String)commands.firstElement();
+		final String str=(String)commands.get(0);
 		if((!CMLib.intermud().i3online())&&(!str.equalsIgnoreCase("restart")))
 			mob.tell(L("I3 is unavailable."));
 		else

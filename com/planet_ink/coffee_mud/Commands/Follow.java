@@ -70,11 +70,11 @@ public class Follow extends StdCommand
 		{
 			final MOB F=mob.fetchFollower(f);
 			if(F!=null)
-				V.addElement(F);
+				V.add(F);
 		}
 		for(int v=0;v<V.size();v++)
 		{
-			final MOB F=(MOB)V.elementAt(v);
+			final MOB F=(MOB)V.get(v);
 			nofollow(F,false,quiet);
 		}
 	}
@@ -130,11 +130,11 @@ public class Follow extends StdCommand
 		&&(commands.lastElement() instanceof String)
 		&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			quiet=true;
 		}
-		if((commands.size()>1)&&(commands.elementAt(1) instanceof MOB))
-			return processFollow(mob,(MOB)commands.elementAt(1),quiet);
+		if((commands.size()>1)&&(commands.get(1) instanceof MOB))
+			return processFollow(mob,(MOB)commands.get(1),quiet);
 
 		if(commands.size()<2)
 		{

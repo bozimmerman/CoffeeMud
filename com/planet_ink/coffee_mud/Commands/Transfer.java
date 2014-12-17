@@ -49,8 +49,8 @@ public class Transfer extends At
 			mob.tell(L("Transfer whom where? Try all or a mob name, followerd by a Room ID, target player name, area name, or room text!"));
 			return false;
 		}
-		commands.removeElementAt(0);
-		String searchName=(String)commands.elementAt(0);
+		commands.remove(0);
+		String searchName=(String)commands.get(0);
 		final Room curRoom=mob.location();
 		final Vector V=new Vector();
 		boolean allFlag=false;
@@ -59,8 +59,8 @@ public class Transfer extends At
 			allFlag=true;
 			if(commands.size()>2)
 			{
-				commands.removeElementAt(0);
-				searchName=(String)commands.elementAt(0);
+				commands.remove(0);
+				searchName=(String)commands.get(0);
 			}
 			else
 				searchName="";
@@ -71,8 +71,8 @@ public class Transfer extends At
 			itemFlag=true;
 			if(commands.size()>2)
 			{
-				commands.removeElementAt(0);
-				searchName=(String)commands.elementAt(0);
+				commands.remove(0);
+				searchName=(String)commands.get(0);
 			}
 			else
 				searchName="";
@@ -81,13 +81,13 @@ public class Transfer extends At
 		{
 			if(itemFlag)
 				for(int i=0;i<curRoom.numItems();i++)
-					V.addElement(curRoom.getItem(i));
+					V.add(curRoom.getItem(i));
 			else
 			for(int i=0;i<curRoom.numInhabitants();i++)
 			{
 				final MOB M=curRoom.fetchInhabitant(i);
 				if(M!=null)
-					V.addElement(M);
+					V.add(M);
 			}
 		}
 		else
@@ -97,7 +97,7 @@ public class Transfer extends At
 			{
 				final Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,searchName,Wearable.FILTER_UNWORNONLY);
 				if(E instanceof Item)
-					V.addElement(E);
+					V.add(E);
 			}
 			else
 			if(searchName.length()>0)
@@ -106,7 +106,7 @@ public class Transfer extends At
 				{
 					final Item I=curRoom.getItem(i);
 					if((I!=null)&&(CMLib.english().containsString(I.name(),searchName)))
-						V.addElement(I);
+						V.add(I);
 				}
 			}
 			if(V.size()==0)
@@ -119,7 +119,7 @@ public class Transfer extends At
 					{
 						I=R.findItem(searchName+"."+num);
 						if((I!=null)&&(!V.contains(I)))
-							V.addElement(I);
+							V.add(I);
 						num++;
 						if((!allFlag)&&(V.size()>0))
 							break;
@@ -140,7 +140,7 @@ public class Transfer extends At
 						{
 							I=R.findItem(searchName+"."+num);
 							if((I!=null)&&(!V.contains(I)))
-								V.addElement(I);
+								V.add(I);
 							num++;
 							if((!allFlag)&&(V.size()>0))
 								break;
@@ -169,7 +169,7 @@ public class Transfer extends At
 					{
 						M=R.fetchInhabitant(searchName+"."+num);
 						if((M!=null)&&(!V.contains(M)))
-							V.addElement(M);
+							V.add(M);
 						num++;
 						if((!allFlag)&&(V.size()>0))
 							break;
@@ -190,7 +190,7 @@ public class Transfer extends At
 						{
 							M=R.fetchInhabitant(searchName+"."+num);
 							if((M!=null)&&(!V.contains(M)))
-								V.addElement(M);
+								V.add(M);
 							num++;
 							if((!allFlag)&&(V.size()>0))
 								break;
@@ -226,9 +226,9 @@ public class Transfer extends At
 			return false;
 		}
 		for(int i=0;i<V.size();i++)
-		if(V.elementAt(i) instanceof Item)
+		if(V.get(i) instanceof Item)
 		{
-			final Item I=(Item)V.elementAt(i);
+			final Item I=(Item)V.get(i);
 			final Room itemRoom=CMLib.map().roomLocation(I);
 			if((itemRoom!=null)
 			&&(!room.isContent(I))
@@ -237,9 +237,9 @@ public class Transfer extends At
 				room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 		}
 		else
-		if(V.elementAt(i) instanceof MOB)
+		if(V.get(i) instanceof MOB)
 		{
-			final MOB M=(MOB)V.elementAt(i);
+			final MOB M=(MOB)V.get(i);
 			final Room mobRoom=CMLib.map().roomLocation(M);
 			if((mobRoom!=null)
 			&&(!room.isInhabitant(M))

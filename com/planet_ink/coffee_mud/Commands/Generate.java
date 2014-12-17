@@ -88,11 +88,11 @@ public class Generate extends StdCommand
 		}
 		final String finalLog = mob.Name()+" called generate command with parms: " + CMParms.combine(commands, 1);
 		CMFile file = null;
-		if((commands.size()>3)&&((String)commands.elementAt(3)).equalsIgnoreCase("FROM"))
+		if((commands.size()>3)&&((String)commands.get(3)).equalsIgnoreCase("FROM"))
 		{
-			file = new CMFile(Resources.buildResourcePath((String)commands.elementAt(4)),mob);
-			commands.removeElementAt(3);
-			commands.removeElementAt(3);
+			file = new CMFile(Resources.buildResourcePath((String)commands.get(4)),mob);
+			commands.remove(3);
+			commands.remove(3);
 		}
 		else
 			file = new CMFile(Resources.buildResourcePath("randareas/example.xml"),mob);
@@ -105,7 +105,7 @@ public class Generate extends StdCommand
 		final List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
 		final Hashtable definedIDs = new Hashtable();
 		CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
-		final String typeName = (String)commands.elementAt(1);
+		final String typeName = (String)commands.get(1);
 		String objectType = typeName.toUpperCase().trim();
 		CMClass.CMObjectType codeI=OBJECT_TYPES.get(objectType);
 		if(codeI==null)
@@ -143,7 +143,7 @@ public class Generate extends StdCommand
 				return false;
 			}
 		}
-		final String idName = ((String)commands.elementAt(2)).toUpperCase().trim();
+		final String idName = ((String)commands.get(2)).toUpperCase().trim();
 		if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
 		||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase(objectType)))
 		{
@@ -159,7 +159,7 @@ public class Generate extends StdCommand
 					final String key=(String)keys.nextElement();
 					if((definedIDs.get(key) instanceof XMLLibrary.XMLpiece)
 					&&(((XMLLibrary.XMLpiece)definedIDs.get(key)).tag.equalsIgnoreCase(tKey)))
-						xmlTagsV.addElement(key.toLowerCase());
+						xmlTagsV.add(key.toLowerCase());
 				}
 				foundIDs.append(CMParms.toStringList(xmlTagsV)+"\n\r");
 			}
@@ -189,7 +189,7 @@ public class Generate extends StdCommand
 				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
 				final String s=CMLib.percolator().findString("STRING", piece, definedIDs);
 				if(s!=null)
-					V.addElement(s);
+					V.add(s);
 				break;
 			}
 			case AREA:
@@ -199,7 +199,7 @@ public class Generate extends StdCommand
 				definedIDs.put("ROOMTAG_GATEEXITROOM", mob.location());
 				final Area A=CMLib.percolator().findArea(piece, definedIDs, direction);
 				if(A!=null)
-					V.addElement(A);
+					V.add(A);
 				break;
 			case MOB:
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
@@ -215,7 +215,7 @@ public class Generate extends StdCommand
 				definedIDs.put("ROOMTAG_GATEEXITROOM", mob.location());
 				final Room R=CMLib.percolator().buildRoom(piece, definedIDs, exits, direction);
 				if(R!=null)
-					V.addElement(R);
+					V.add(R);
 				break;
 			}
 			case ITEM:
@@ -231,31 +231,31 @@ public class Generate extends StdCommand
 			else
 			for(int v=0;v<V.size();v++)
 			{
-				if(V.elementAt(v) instanceof MOB)
+				if(V.get(v) instanceof MOB)
 				{
-					((MOB)V.elementAt(v)).bringToLife(mob.location(),true);
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 appears.",((MOB)V.elementAt(v)).name()));
+					((MOB)V.get(v)).bringToLife(mob.location(),true);
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 appears.",((MOB)V.get(v)).name()));
 					CMLib.percolator().postProcess(definedIDs);
-					Log.sysOut("Generate",mob.Name()+" generated mob "+((MOB)V.elementAt(v)).name());
+					Log.sysOut("Generate",mob.Name()+" generated mob "+((MOB)V.get(v)).name());
 				}
 				else
-				if(V.elementAt(v) instanceof Item)
+				if(V.get(v) instanceof Item)
 				{
-					mob.location().addItem((Item)V.elementAt(v));
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 appears.",((Item)V.elementAt(v)).name()));
+					mob.location().addItem((Item)V.get(v));
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 appears.",((Item)V.get(v)).name()));
 					CMLib.percolator().postProcess(definedIDs);
-					Log.sysOut("Generate",mob.Name()+" generated item "+((Item)V.elementAt(v)).name());
+					Log.sysOut("Generate",mob.Name()+" generated item "+((Item)V.get(v)).name());
 				}
 				else
-				if(V.elementAt(v) instanceof String)
+				if(V.get(v) instanceof String)
 				{
 					CMLib.percolator().postProcess(definedIDs);
-					mob.tell((String)V.elementAt(v));
+					mob.tell((String)V.get(v));
 				}
 				else
-				if(V.elementAt(v) instanceof Room)
+				if(V.get(v) instanceof Room)
 				{
-					final Room R=(Room)V.elementAt(v);
+					final Room R=(Room)V.get(v);
 					createNewPlace(mob,mob.location(),R,direction);
 					CMLib.percolator().postProcess(definedIDs);
 					CMLib.database().DBCreateRoom(R);
@@ -265,9 +265,9 @@ public class Generate extends StdCommand
 					Log.sysOut("Generate",mob.Name()+" generated room "+R.roomID());
 				}
 				else
-				if(V.elementAt(v) instanceof Area)
+				if(V.get(v) instanceof Area)
 				{
-					final Area A=(Area)V.elementAt(v);
+					final Area A=(Area)V.get(v);
 					CMLib.map().addArea(A);
 					CMLib.database().DBCreateArea(A);
 					Room R=A.getRoom(A.Name()+"#0");

@@ -84,7 +84,7 @@ public class GConsider extends StdCommand
 			mob.tell(L("Consider whom?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final String targetName=CMParms.combine(commands,0);
 		final MOB target=mob.location().fetchInhabitant(targetName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))

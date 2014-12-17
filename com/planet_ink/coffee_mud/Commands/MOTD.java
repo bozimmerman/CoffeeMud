@@ -53,13 +53,13 @@ public class MOTD extends StdCommand
 		String what="MOTD";
 		if((commands!=null)&&(commands.size()>0))
 		{
-			final String firstWord=((String)commands.firstElement()).toUpperCase();
+			final String firstWord=((String)commands.get(0)).toUpperCase();
 			if(CMParms.indexOf(this.getAccessWords(), firstWord)>0)
 				what=firstWord;
 			if((((String)commands.lastElement()).equalsIgnoreCase("PAUSE")))
 			{
 				pause = true;
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 			}
 			if(commands.size()==1)
 			{
@@ -120,9 +120,9 @@ public class MOTD extends StdCommand
 				{
 					P=(PostOffice)e.nextElement();
 					if(!postalChains.contains(P.postalChain()))
-						postalChains.addElement(P.postalChain());
+						postalChains.add(P.postalChain());
 					if(!postalBranches.contains(P.postalBranch()))
-						postalBranches.addElement(P.postalBranch());
+						postalBranches.add(P.postalBranch());
 				}
 				if((postalChains.size()>0)&&(P!=null))
 				{
@@ -167,12 +167,12 @@ public class MOTD extends StdCommand
 					if((CMJ.getFlag(JournalsLibrary.CommandJournalFlags.ADMINECHO)!=null)
 					&&((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
 						||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)))
-							myEchoableCommandJournals.addElement(CMJ);
+							myEchoableCommandJournals.add(CMJ);
 				}
 				boolean CJseparator=false;
 				for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
 				{
-					final JournalsLibrary.CommandJournal CMJ=myEchoableCommandJournals.elementAt(cj);
+					final JournalsLibrary.CommandJournal CMJ=myEchoableCommandJournals.get(cj);
 					final List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S");
 					if(items!=null)
 					for(int i=0;i<items.size();i++)

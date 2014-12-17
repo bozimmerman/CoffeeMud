@@ -77,7 +77,7 @@ public class Load extends StdCommand
 				mob.tell(L("Load what where?"));
 			return false;
 		}
-		String what=(String)commands.elementAt(1);
+		String what=(String)commands.get(1);
 		String name=CMParms.combine(commands,2);
 		if(tryArchon)
 		{
@@ -90,7 +90,7 @@ public class Load extends StdCommand
 		}
 		if(!tryArchon)
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			final XVector ammoV=new XVector(what);
 			final List<Item> baseAmmoItems=CMLib.english().fetchItemList(mob,mob,null,ammoV,Wearable.FILTER_UNWORNONLY,false);
 			final List<Ammunition> ammos=new XVector<Ammunition>();
@@ -108,7 +108,7 @@ public class Load extends StdCommand
 				mob.tell(L("You can't seem to use that as ammunition."));
 			else
 			{
-				commands.removeElementAt(0);
+				commands.remove(0);
 				final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
 				final List<AmmunitionWeapon> items=new XVector<AmmunitionWeapon>();
 				for (Item I : baseItems)

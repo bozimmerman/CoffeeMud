@@ -52,16 +52,16 @@ public class Teach extends StdCommand
 			mob.tell(L("Teach who what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 
-		final MOB student=mob.location().fetchInhabitant((String)commands.elementAt(0));
+		final MOB student=mob.location().fetchInhabitant((String)commands.get(0));
 		if((student==null)||(!CMLib.flags().canBeSeenBy(student,mob)))
 		{
 			mob.tell(L("That person doesn't seem to be here."));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 
 		final String abilityName=CMParms.combine(commands,0);

@@ -48,35 +48,35 @@ public class DumpFile extends StdCommand
 			mob.tell(L("dumpfile {raw} username|all {filename1 ...}"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		int numFiles = 0;
 		int numSessions = 0;
 		boolean rawMode=false;
 
-		if(((String)commands.elementAt(0)).equalsIgnoreCase("raw"))
+		if(((String)commands.get(0)).equalsIgnoreCase("raw"))
 		{
 			rawMode = true;
-			commands.removeElementAt(0);
+			commands.remove(0);
 		}
 
-		final String targetName = (String)commands.elementAt(0);
+		final String targetName = (String)commands.get(0);
 		final boolean allFlag=(targetName.equalsIgnoreCase("all"));
 
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		// so they can do dumpfile (username) RAW filename too
-		if(!rawMode && ( ((String)commands.elementAt(0)).equalsIgnoreCase("raw")) )
+		if(!rawMode && ( ((String)commands.get(0)).equalsIgnoreCase("raw")) )
 		{
 			rawMode = true;
-			commands.removeElementAt(0);
+			commands.remove(0);
 		}
 
 		final StringBuffer fileText = new StringBuffer("");
 		while (commands.size() > 0)
 		{
 			boolean wipeAfter = true;
-			final String fn = (String)commands.elementAt(0);
+			final String fn = (String)commands.get(0);
 
 			if (Resources.getResource(fn) != null)
 				wipeAfter = false;
@@ -91,7 +91,7 @@ public class DumpFile extends StdCommand
 
 			if (wipeAfter)
 				Resources.removeResource(fn);
-			commands.removeElementAt(0);
+			commands.remove(0);
 
 		}
 		if (fileText.length() > 0)

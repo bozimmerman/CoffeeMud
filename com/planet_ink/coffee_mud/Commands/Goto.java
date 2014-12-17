@@ -49,7 +49,7 @@ public class Goto extends At
 			mob.tell(L("Go where? Try a Room ID, player name, area name, or room text!"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final StringBuffer cmd = new StringBuffer(CMParms.combine(commands,0));
 		List<String> stack=(List<String>)Resources.getResource("GOTOS_FOR_"+mob.Name().toUpperCase());
 		if(stack==null)

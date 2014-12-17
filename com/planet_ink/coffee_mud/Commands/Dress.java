@@ -53,7 +53,7 @@ public class Dress extends StdCommand
 			mob.tell(L("Not while you are in combat!"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final String what=(String)commands.lastElement();
 		commands.removeElement(what);
 		final String whom=CMParms.combine(commands,0);

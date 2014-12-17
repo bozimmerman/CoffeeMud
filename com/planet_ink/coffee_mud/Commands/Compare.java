@@ -48,8 +48,8 @@ public class Compare extends StdCommand
 			mob.tell(L("Compare what to what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
-		Item compareThis=mob.findItem(null,(String)commands.elementAt(0));
+		commands.remove(0);
+		Item compareThis=mob.findItem(null,(String)commands.get(0));
 		if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 		{
 			final List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
@@ -59,7 +59,7 @@ public class Compare extends StdCommand
 				{
 					final Environmental shopkeeper=V.get(i);
 					final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-					final Environmental itemToDo=SK.getShop().getStock((String)commands.elementAt(0),mob);
+					final Environmental itemToDo=SK.getShop().getStock((String)commands.get(0),mob);
 					if((itemToDo==null)||(!(itemToDo instanceof Item)))
 					{
 						continue; // next shopkeeper
@@ -68,13 +68,13 @@ public class Compare extends StdCommand
 				}
 				if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 				{
-					mob.tell(L("You don't have a @x1.",( (String) commands.elementAt(0))));
+					mob.tell(L("You don't have a @x1.",( (String) commands.get(0))));
 					return false;
 				}
 			}
 			else
 			{
-				mob.tell(L("You don't have a @x1.",( (String) commands.elementAt(0))));
+				mob.tell(L("You don't have a @x1.",( (String) commands.get(0))));
 				return false;
 			}
 		}
@@ -120,7 +120,7 @@ public class Compare extends StdCommand
 			toThis=mob.findItem(null,CMParms.combine(commands,1));
 		if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 		{
-			mob.tell(L("You don't have a @x1.",((String)commands.elementAt(1))));
+			mob.tell(L("You don't have a @x1.",((String)commands.get(1))));
 			return false;
 		}
 

@@ -87,27 +87,27 @@ public class Auction extends Channel implements Tickable
 			}
 			setLiveAuctionState(liveData.state+1);
 			final Vector V=new Vector();
-			V.addElement("AUCTION");
-			V.addElement("CHANNEL");
+			V.add("AUCTION");
+			V.add("CHANNEL");
 			switch(liveData.state)
 			{
 			case STATE_RUNOUT:
-				V.addElement("The live auction for "+liveData.auctioningI.name()+" is almost done. The current bid is "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
+				V.add("The live auction for "+liveData.auctioningI.name()+" is almost done. The current bid is "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
 				break;
 			case STATE_ONCE:
-				V.addElement(CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+" for "+liveData.auctioningI.name()+" going ONCE!");
+				V.add(CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+" for "+liveData.auctioningI.name()+" going ONCE!");
 				break;
 			case STATE_TWICE:
-				V.addElement(CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+" for "+liveData.auctioningI.name()+" going TWICE!");
+				V.add(CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+" for "+liveData.auctioningI.name()+" going TWICE!");
 				break;
 			case STATE_THREE:
-				V.addElement(liveData.auctioningI.name()+" going for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+"! Last chance!");
+				V.add(liveData.auctioningI.name()+" going for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+"! Last chance!");
 				break;
 			case STATE_CLOSED:
 				{
 					if((winnerM!=null)&&(winnerM!=liveData.auctioningM))
 					{
-						V.addElement(liveData.auctioningI.name()+" SOLD to "+winnerM.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
+						V.add(liveData.auctioningI.name()+" SOLD to "+winnerM.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
 						auctioneerM.doCommand(V,Command.METAFLAG_FORCED);
 						if(liveData.auctioningI != null)
 						{
@@ -159,8 +159,8 @@ public class Auction extends Channel implements Tickable
 	public boolean doLiveAuction(MOB mob, Vector commands, Environmental target)
 	{
 		final Vector V=new Vector();
-		V.addElement("AUCTION");
-		V.addElement("CHANNEL");
+		V.add("AUCTION");
+		V.add("CHANNEL");
 		if(target!=null)
 		{
 			if(!(target instanceof Item))
@@ -181,7 +181,7 @@ public class Auction extends Channel implements Tickable
 			final String bidWords=CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid);
 			if(target instanceof Item)
 				mob.delItem((Item)target);
-			V.addElement("New live auction: "+liveData.auctioningI.name()+".  The opening bid is "+bidWords+".");
+			V.add("New live auction: "+liveData.auctioningI.name()+".  The opening bid is "+bidWords+".");
 			if(liveData.auctioningM!=null)
 				liveData.auctioningM.doCommand(V,Command.METAFLAG_FORCED);
 		}
@@ -248,15 +248,15 @@ public class Auction extends Channel implements Tickable
 		}
 
 		String cmd=null;
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()<1)
 			cmd="";
 		else
-			cmd=((String)commands.elementAt(0)).toUpperCase();
+			cmd=((String)commands.get(0)).toUpperCase();
 
 		if(cmd.equals("LIST"))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			final StringBuffer buf=new StringBuffer("");
 			if((liveData.auctioningI!=null)&&(liveData.auctioningM!=null))
 			{
@@ -271,7 +271,7 @@ public class Auction extends Channel implements Tickable
 		else
 		if(cmd.equals("UP"))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			if((liveData.auctioningI!=null)&&(liveData.auctioningM!=null))
 			{
 				mob.tell(L("A live auction is already underway.  Do AUCTION LIST to see it."));
@@ -281,11 +281,11 @@ public class Auction extends Channel implements Tickable
 			if((commands.size()>=2)
 			&&((CMLib.english().numPossibleGold(mob,(String)commands.lastElement())>0)||(((String)commands.lastElement()).equals("0"))))
 			{
-				V.addElement(commands.lastElement());
-				commands.removeElementAt(commands.size()-1);
+				V.add(commands.lastElement());
+				commands.remove(commands.size()-1);
 			}
 			else
-				V.addElement("0");
+				V.add("0");
 
 			final String s=CMParms.combine(commands,0);
 			final Environmental E=mob.findItem(null,s);
@@ -316,7 +316,7 @@ public class Auction extends Channel implements Tickable
 			}
 			else
 			if((mob.isMonster())
-			||(!mob.session().confirm(L("Auction @x1 live, with a starting bid of @x2 (Y/n)?",E.name(),((String)V.firstElement())),L("Y"))))
+			||(!mob.session().confirm(L("Auction @x1 live, with a starting bid of @x2 (Y/n)?",E.name(),((String)V.get(0))),L("Y"))))
 				return false;
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,CMLib.beanCounter().getCurrency(mob))<deposit)
 			{
@@ -332,7 +332,7 @@ public class Auction extends Channel implements Tickable
 		else
 		if(cmd.equals("BID"))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			if((liveData.auctioningI==null)||(liveData.auctioningM==null))
 			{
 				mob.tell(MESSAGE_NOAUCTION());
@@ -350,7 +350,7 @@ public class Auction extends Channel implements Tickable
 		else
 		if(cmd.equals("CLOSE"))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			if((liveData.auctioningI==null)||(liveData.auctioningM==null))
 			{
 				mob.tell(MESSAGE_NOAUCTION());
@@ -362,8 +362,8 @@ public class Auction extends Channel implements Tickable
 				return false;
 			}
 			final Vector V=new Vector();
-			V.addElement("AUCTION");
-			V.addElement("The auction has been closed.");
+			V.add("AUCTION");
+			V.add("The auction has been closed.");
 			CMLib.threads().deleteTick(this,Tickable.TICKID_LIVEAUCTION);
 			liveData.auctioningM.moveItemTo(liveData.auctioningI);
 			if((liveData.highBid>0.0)&&(liveData.highBidderM!=null))
@@ -376,7 +376,7 @@ public class Auction extends Channel implements Tickable
 		else
 		if(cmd.equals("INFO"))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			if((liveData.auctioningI==null)||(liveData.auctioningM==null))
 			{
 				mob.tell(MESSAGE_NOAUCTION());
@@ -392,7 +392,7 @@ public class Auction extends Channel implements Tickable
 		else
 		if(cmd.equals("CHANNEL"))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			if(commands.size()==0)
 			{
 				mob.tell(L("Channel what?"));

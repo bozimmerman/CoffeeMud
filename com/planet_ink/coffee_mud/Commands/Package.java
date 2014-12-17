@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -50,7 +49,7 @@ public class Package extends StdCommand
 			mob.tell(L("Package what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		String whatName="";
 		if(commands.size()>0)
 			whatName=(String)commands.lastElement();
@@ -59,7 +58,7 @@ public class Package extends StdCommand
 			return false;
 
 		String whatToGet=CMParms.combine(commands,0);
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
 		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
 		final Vector<Item> V=new Vector<Item>();
@@ -75,7 +74,7 @@ public class Package extends StdCommand
 			&&(CMLib.flags().canBeSeenBy(getThis,mob))
 			&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
 			&&(!V.contains(getThis)))
-				V.addElement((Item)getThis);
+				V.add((Item)getThis);
 			addendumStr="."+(++addendum);
 		}
 		while((allFlag)&&(addendum<=maxToGet))
@@ -109,7 +108,7 @@ public class Package extends StdCommand
 		Item getThis=null;
 		for(int i=0;i<V.size();i++)
 		{
-			getThis=V.elementAt(i);
+			getThis=V.get(i);
 			if((!mob.isMine(getThis))&&(!Get.get(mob,null,getThis,true,"get",true)))
 				return false;
 		}
@@ -124,7 +123,7 @@ public class Package extends StdCommand
 			if(thePackage.packageMe(getThis,V.size()))
 			{
 				for(int i=0;i<V.size();i++)
-					V.elementAt(i).destroy();
+					V.get(i).destroy();
 				mob.location().addItem(thePackage,ItemPossessor.Expire.Player_Drop);
 				mob.location().recoverRoomStats();
 				mob.location().recoverRoomStats();

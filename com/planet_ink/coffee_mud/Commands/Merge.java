@@ -117,7 +117,7 @@ public class Merge extends StdCommand
 					fieldsToCheck=new Vector();
 					for(int v=0;v<onfields.size();v++)
 						if(efields.contains(onfields.get(v)))
-							fieldsToCheck.addElement(onfields.get(v));
+							fieldsToCheck.add(onfields.get(v));
 				}
 				else
 					fieldsToCheck=new XVector<String>(efields);
@@ -128,7 +128,7 @@ public class Merge extends StdCommand
 				if(checkedOut)
 				for(int i=0;i<fieldsToCheck.size();i++)
 				{
-					final String field=(String)fieldsToCheck.elementAt(i);
+					final String field=(String)fieldsToCheck.get(i);
 					if(noisy)
 						mergedebugtell(mob,field+"/"+getStat(E,field)+"/"+getStat(E2,field)+"/"+getStat(E,field).equals(getStat(E2,field)));
 					if(!getStat(E,field).equals(getStat(E2,field)))
@@ -198,7 +198,7 @@ public class Merge extends StdCommand
 	{
 		final boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.MERGE);
 		Vector placesToDo=new Vector();
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()==0)
 		{
 			mob.tell(L("Merge what? Try DATABASE or a filename"));
@@ -210,11 +210,11 @@ public class Merge extends StdCommand
 			return false;
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.elementAt(0)).equalsIgnoreCase("noprompt"))
-			commands.removeElementAt(0);
+		   ((String)commands.get(0)).equalsIgnoreCase("noprompt"))
+			commands.remove(0);
 
 		if((commands.size()>0)&&
-		   ((String)commands.elementAt(0)).equalsIgnoreCase("?"))
+		   ((String)commands.get(0)).equalsIgnoreCase("?"))
 		{
 			final StringBuffer allFieldsMsg=new StringBuffer("");
 			final Vector allKnownFields=new Vector();
@@ -230,38 +230,38 @@ public class Merge extends StdCommand
 		}
 		String scope="WORLD";
 		if((commands.size()>0)&&
-		   ((String)commands.elementAt(0)).equalsIgnoreCase("room"))
+		   ((String)commands.get(0)).equalsIgnoreCase("room"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.MERGE))
 			{
 				mob.tell(L("You are not allowed to do that here."));
 				return false;
 			}
-			commands.removeElementAt(0);
-			placesToDo.addElement(mob.location());
+			commands.remove(0);
+			placesToDo.add(mob.location());
 			scope="ROOM";
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.elementAt(0)).equalsIgnoreCase("area"))
+		   ((String)commands.get(0)).equalsIgnoreCase("area"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.MERGE))
 			{
 				mob.tell(L("You are not allowed to do that here."));
 				return false;
 			}
-			commands.removeElementAt(0);
-			placesToDo.addElement(mob.location().getArea());
+			commands.remove(0);
+			placesToDo.add(mob.location().getArea());
 			scope="AREA";
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.elementAt(0)).equalsIgnoreCase("world"))
+		   ((String)commands.get(0)).equalsIgnoreCase("world"))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.MERGE))
 			{
 				mob.tell(L("You are not allowed to do that."));
 				return false;
 			}
-			commands.removeElementAt(0);
+			commands.remove(0);
 			placesToDo=new Vector();
 			scope="WORLD";
 		}
@@ -270,16 +270,16 @@ public class Merge extends StdCommand
 			mob.tell(L("Merge what? DATABASE or filename"));
 			return false;
 		}
-		String firstWord=(String)commands.firstElement();
+		String firstWord=(String)commands.get(0);
 		if(firstWord.equalsIgnoreCase("DATABASE"))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			if(commands.size()==0)
 			{
 				mob.tell(L("Merge parameters missing: DBCLASS, DBSERVICE, DBUSER, DBPASS"));
 				return false;
 			}
-			firstWord=(String)commands.firstElement();
+			firstWord=(String)commands.get(0);
 			return doArchonDBCompare(mob, scope, firstWord, commands);
 		}
 		final String filename=(String)commands.lastElement();
@@ -356,7 +356,7 @@ public class Merge extends StdCommand
 
 		for(int i=0;i<commands.size();i++)
 		{
-			String str=((String)commands.elementAt(i)).toUpperCase();
+			String str=((String)commands.get(i)).toUpperCase();
 			if(str.startsWith("CHANGE="))
 			{
 				use=changes;
@@ -421,7 +421,7 @@ public class Merge extends StdCommand
 			final Area A=(Area)a.nextElement();
 			if(A.getCompleteMap().hasMoreElements()
 			&&CMSecurity.isAllowed(mob,(A.getCompleteMap().nextElement()),CMSecurity.SecFlag.MERGE))
-				placesToDo.addElement(A);
+				placesToDo.add(A);
 		}
 		if(placesToDo.size()==0)
 		{
@@ -430,19 +430,19 @@ public class Merge extends StdCommand
 		}
 		for(int i=placesToDo.size()-1;i>=0;i--)
 		{
-			if(placesToDo.elementAt(i) instanceof Area)
+			if(placesToDo.get(i) instanceof Area)
 			{
-				final Area A=(Area)placesToDo.elementAt(i);
+				final Area A=(Area)placesToDo.get(i);
 				placesToDo.removeElement(A);
 				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					final Room R=(Room)r.nextElement();
 					if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.MERGE))
-						placesToDo.addElement(R);
+						placesToDo.add(R);
 				}
 			}
 			else
-			if(placesToDo.elementAt(i) instanceof Room)
+			if(placesToDo.get(i) instanceof Room)
 				if(mob.session()!=null)
 					mob.session().rawPrint(".");
 			else
@@ -464,7 +464,7 @@ public class Merge extends StdCommand
 		Log.sysOut("Import",mob.Name()+" merge '"+filename+"'.");
 		for(int r=0;r<placesToDo.size();r++)
 		{
-			Room R=(Room)placesToDo.elementAt(r);
+			Room R=(Room)placesToDo.get(r);
 			if(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.MERGE))
 				continue;
 			if(R.roomID().length()==0)
@@ -538,7 +538,7 @@ public class Merge extends StdCommand
 		Area A=null;
 		for(int i=0;i<placesToDo.size();i++)
 		{
-			A=((Room)placesToDo.elementAt(i)).getArea();
+			A=((Room)placesToDo.get(i)).getArea();
 			if((A!=null)&&(A.getAreaState()!=Area.State.ACTIVE))
 				A.setAreaState(Area.State.ACTIVE);
 		}

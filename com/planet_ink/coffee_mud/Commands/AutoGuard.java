@@ -47,7 +47,7 @@ public class AutoGuard extends StdCommand
 		throws java.io.IOException
 	{
 		if((!mob.isAttribute(MOB.Attrib.AUTOGUARD))
-		   ||((commands.size()>0)&&(((String)commands.firstElement()).toUpperCase().startsWith("G"))))
+		   ||((commands.size()>0)&&(((String)commands.get(0)).toUpperCase().startsWith("G"))))
 		{
 			mob.setAttribute(MOB.Attrib.AUTOGUARD,true);
 			mob.tell(L("You are now on guard. You will no longer follow group leaders."));

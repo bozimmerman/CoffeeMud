@@ -44,14 +44,14 @@ public class At extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()==0)
 		{
 			mob.tell(L("At where do what?"));
 			return false;
 		}
-		final String cmd=(String)commands.firstElement();
-		commands.removeElementAt(0);
+		final String cmd=(String)commands.get(0);
+		commands.remove(0);
 		Room room=CMLib.map().getRoom(cmd.toString());
 		if(room == null)
 			room=CMLib.map().findWorldRoomLiberally(mob,cmd,"APMIR",100,120000);

@@ -52,7 +52,7 @@ public class Areas extends StdCommand
 
 		for(int i=1;i<commands.size();i++)
 		{
-			final String s=(String)commands.elementAt(i);
+			final String s=(String)commands.get(i);
 			if(s.toUpperCase().startsWith("SORT=NA"))
 			{
 				append = " (sorted by name)";
@@ -201,7 +201,7 @@ public class Areas extends StdCommand
 						}
 					}
 				}
-				areasVec.addElement(name);
+				areasVec.add(name);
 			}
 		}
 		int col=0;
@@ -212,7 +212,7 @@ public class Areas extends StdCommand
 				msg.append("\n\r");
 				col=1;
 			}
-			msg.append(CMStrings.padRight((String)areasVec.elementAt(i),colWidth)+"^N");
+			msg.append(CMStrings.padRight((String)areasVec.get(i),colWidth)+"^N");
 		}
 		msg.append(L("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));
 		if((mob!=null)&&(!mob.isMonster()))

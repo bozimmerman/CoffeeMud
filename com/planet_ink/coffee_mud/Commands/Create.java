@@ -57,7 +57,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
+		final int direction=Directions.getGoodDirectionCode(((String)commands.get(2)));
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
@@ -65,7 +65,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final String Locale=(String)commands.elementAt(3);
+		final String Locale=(String)commands.get(3);
 		Exit thisExit=CMClass.getExit(Locale);
 		if(thisExit==null)
 		{
@@ -412,7 +412,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
+		final int direction=Directions.getGoodDirectionCode(((String)commands.get(2)));
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
@@ -421,7 +421,7 @@ public class Create extends StdCommand
 		}
 
 		Room thisRoom=null;
-		final String Locale=(String)commands.elementAt(3);
+		final String Locale=(String)commands.get(3);
 		thisRoom=CMClass.getLocale(Locale);
 		if(thisRoom==null)
 		{
@@ -462,7 +462,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final String AcctName=CMStrings.capitalizeAndLower((String)commands.elementAt(2));
+		final String AcctName=CMStrings.capitalizeAndLower((String)commands.get(2));
 		final String password=CMParms.combine(commands,3).toLowerCase();
 		if(CMLib.players().accountExists(AcctName))
 		{
@@ -1029,7 +1029,7 @@ public class Create extends StdCommand
 	{
 		String commandType="";
 		if(commands.size()>1)
-			commandType=((String)commands.elementAt(1)).toUpperCase();
+			commandType=((String)commands.get(1)).toUpperCase();
 
 		if(commandType.equals("EXIT"))
 		{
@@ -1456,7 +1456,7 @@ public class Create extends StdCommand
 				else
 				if((lastWord!=null)&&(Directions.getGoodDirectionCode(lastWord)>=0))
 				{
-					commands.removeElementAt(commands.size()-1);
+					commands.remove(commands.size()-1);
 					allWord=CMParms.combine(commands,1);
 
 					E=CMClass.getLocale(allWord);
@@ -1467,30 +1467,30 @@ public class Create extends StdCommand
 					if((E!=null)&&(E instanceof Room))
 					{
 						commands=new Vector();
-						commands.addElement("CREATE");
-						commands.addElement("ROOM");
-						commands.addElement(lastWord);
-						commands.addElement(allWord);
+						commands.add("CREATE");
+						commands.add("ROOM");
+						commands.add(lastWord);
+						commands.add(allWord);
 						execute(mob,commands,metaFlags);
 					}
 					else
 					if((E!=null)&&(E instanceof Exit))
 					{
 						commands=new Vector();
-						commands.addElement("CREATE");
-						commands.addElement("EXIT");
-						commands.addElement(lastWord);
-						commands.addElement(allWord);
+						commands.add("CREATE");
+						commands.add("EXIT");
+						commands.add(lastWord);
+						commands.add(allWord);
 						execute(mob,commands,metaFlags);
 					}
 					else
 					if((E!=null)&&(E instanceof Area))
 					{
 						commands=new Vector();
-						commands.addElement("CREATE");
-						commands.addElement("AREA");
-						commands.addElement(lastWord);
-						commands.addElement(allWord);
+						commands.add("CREATE");
+						commands.add("AREA");
+						commands.add(lastWord);
+						commands.add(allWord);
 						execute(mob,commands,metaFlags);
 					}
 					else

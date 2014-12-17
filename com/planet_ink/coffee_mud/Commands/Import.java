@@ -394,10 +394,10 @@ public class Import extends StdCommand
 		if(reLinkTable!=null)
 			for(int r=0;r<reLinkTable.size();r++)
 			{
-				final String link=(String)reLinkTable.elementAt(r);
+				final String link=(String)reLinkTable.get(r);
 				String nextLink="";
 				if(r<(reLinkTable.size()-1))
-					nextLink=(String)reLinkTable.elementAt(r+1);
+					nextLink=(String)reLinkTable.get(r+1);
 				final int s1=link.indexOf('/');
 				final int s2=link.lastIndexOf('/');
 				final String sourceRoomID=link.substring(0,s1);
@@ -438,7 +438,7 @@ public class Import extends StdCommand
 					{
 						final Room dirR=R.rawDoors()[d];
 						if((dirR!=null)&&(dirR.getArea().Name().equalsIgnoreCase(areaName)))
-							reLinkTable.addElement(R.roomID()+"/"+d+"/"+dirR.roomID());
+							reLinkTable.add(R.roomID()+"/"+d+"/"+dirR.roomID());
 					}
 			}
 		}catch(final NoSuchElementException e){}
@@ -555,9 +555,9 @@ public class Import extends StdCommand
 				}
 				else
 				if((CMParms.parse(s).size()>2)
-				&&(CMath.isNumber(CMParms.parse(s).elementAt(0)))
-				&&(CMath.isNumber(CMParms.parse(s).elementAt(1))))
-					s=CMParms.parse(s).elementAt(2);
+				&&(CMath.isNumber(CMParms.parse(s).get(0)))
+				&&(CMath.isNumber(CMParms.parse(s).get(1))))
+					s=CMParms.parse(s).get(2);
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
 				final int x=s.indexOf(' ');
@@ -911,7 +911,7 @@ public class Import extends StdCommand
 		if(sess!=null)
 			sess.println(str);
 		if(compileErrors&&(commands!=null))
-			commands.addElement(str);
+			commands.add(str);
 		return false;
 	}
 
@@ -4633,11 +4633,11 @@ public class Import extends StdCommand
 		final Set<String> customBotherChecker=new HashSet();
 		boolean compileErrors=false;
 		String areaType=null;
-		commands.removeElementAt(0);
+		commands.remove(0);
 		for(int i=0;i<commands.size();i++)
-			if(commands.elementAt(i) instanceof String)
+			if(commands.get(i) instanceof String)
 			{
-				String s=(String)commands.elementAt(i);
+				String s=(String)commands.get(i);
 				if(s.equalsIgnoreCase("nodelete"))
 				{
 					commands.remove(i);
@@ -4685,14 +4685,14 @@ public class Import extends StdCommand
 			// continue pre-processing
 			for(int areaFile=commands.size()-1;areaFile>=0;areaFile--)
 			{
-				final String areaFileName=(String)commands.elementAt(areaFile);
+				final String areaFileName=(String)commands.get(areaFile);
 				final CMFile F=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
 				final CMFile[] FF=F.listFiles();
 				if((FF!=null)&&(FF.length>0))
 				{
 					for (final CMFile element : FF)
-						commands.addElement(element.getAbsolutePath());
-					commands.removeElementAt(areaFile);
+						commands.add(element.getAbsolutePath());
+					commands.remove(areaFile);
 				}
 			}
 		}
@@ -4860,7 +4860,7 @@ public class Import extends StdCommand
 					case '\n':
 					case '\r':
 						if((fn.length()>0)&&(!fn.startsWith("#"))&&(!fn.startsWith("$")))
-							commands.addElement(filePrefix+fn);
+							commands.add(filePrefix+fn);
 						buf.delete(0,c+1);
 						c=0;
 						fn="";
@@ -4872,7 +4872,7 @@ public class Import extends StdCommand
 					}
 				}
 				if((fn.length()>0)&&(!fn.startsWith("#"))&&(!fn.startsWith("$")))
-					commands.addElement(filePrefix+fn);
+					commands.add(filePrefix+fn);
 				continue;
 			}
 			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<AREAS>")>=0))
@@ -5048,7 +5048,7 @@ public class Import extends StdCommand
 								{
 									final Room dirR=R2.rawDoors()[d];
 									if((dirR!=null)&&(dirR==R))
-										reLinkTable.addElement(R2.roomID()+"/"+d+"/"+dirR.roomID());
+										reLinkTable.add(R2.roomID()+"/"+d+"/"+dirR.roomID());
 								}
 							}
 						}catch(final NoSuchElementException e){}
@@ -5093,7 +5093,7 @@ public class Import extends StdCommand
 					return returnAnError(session,"You must be in a room to import mobs.",compileErrors,commands);
 				for(int m=0;m<mobs.size();m++)
 				{
-					final MOB M=(MOB)mobs.elementAt(m);
+					final MOB M=(MOB)mobs.get(m);
 					M.setStartRoom(mob.location());
 					M.setLocation(mob.location());
 					M.bringToLife(mob.location(),true);
@@ -5139,12 +5139,12 @@ public class Import extends StdCommand
 					{
 						final PlayerAccount A=accounts.get(m);
 						for(int af=0;af<commands.size();af++)
-							if((commands.elementAt(af) instanceof String)
-							&&(A.getAccountName().equalsIgnoreCase((String)commands.elementAt(af))))
+							if((commands.get(af) instanceof String)
+							&&(A.getAccountName().equalsIgnoreCase((String)commands.get(af))))
 							{
 								if(names==null)
 									names=new Vector();
-								names.addElement(commands.elementAt(af));
+								names.add(commands.get(af));
 							}
 					}
 				}
@@ -5153,17 +5153,17 @@ public class Import extends StdCommand
 				{
 					final MOB M=mobs.get(m);
 					for(int af=0;af<commands.size();af++)
-						if((commands.elementAt(af) instanceof String)
-						&&(M.Name().equalsIgnoreCase((String)commands.elementAt(af))))
+						if((commands.get(af) instanceof String)
+						&&(M.Name().equalsIgnoreCase((String)commands.get(af))))
 						{
 							if(names==null)
 								names=new Vector();
-							names.addElement(commands.elementAt(af));
+							names.add(commands.get(af));
 						}
 				}
 				if(names!=null)
 				for(int n=0;n<names.size();n++)
-					commands.removeElement(names.elementAt(n));
+					commands.removeElement(names.get(n));
 				for(int m=0;m<accounts.size();m++)
 				{
 					final PlayerAccount A=accounts.get(m);
@@ -5192,7 +5192,7 @@ public class Import extends StdCommand
 					{
 						boolean found=false;
 						for(int n=0;n<names.size();n++)
-							if(M.Name().equalsIgnoreCase((String)names.elementAt(n)))
+							if(M.Name().equalsIgnoreCase((String)names.get(n)))
 								found=true;
 						if(!found)
 							continue;
@@ -5266,7 +5266,7 @@ public class Import extends StdCommand
 					return returnAnError(session,"You must be in a room to import items.",compileErrors,commands);
 				for(int i=0;i<items.size();i++)
 				{
-					final Item I=(Item)items.elementAt(i);
+					final Item I=(Item)items.get(i);
 					mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
 				}
 				mob.location().recoverRoomStats();
@@ -5540,19 +5540,19 @@ public class Import extends StdCommand
 			for(int r=0;r<roomData.size();r++)
 			{
 				List<String> roomV=null;
-				if(roomData.elementAt(r) instanceof List)
+				if(roomData.get(r) instanceof List)
 				{
-					roomV=(List)roomData.elementAt(r);
+					roomV=(List)roomData.get(r);
 					if((roomV.size()==1)
 					&&(roomV.get(1).toUpperCase().trim().startsWith("#ROOM")))
 						continue;
 				}
 				else
-				if(roomData.elementAt(r) instanceof String)
+				if(roomData.get(r) instanceof String)
 				{
-					final String s=(String)roomData.elementAt(r);
+					final String s=(String)roomData.get(r);
 					if(!s.toUpperCase().trim().startsWith("#ROOM"))
-						returnAnError(session,"Eating immaterial line: "+roomData.elementAt(r)+", area="+areaName,compileErrors,commands);
+						returnAnError(session,"Eating immaterial line: "+roomData.get(r)+", area="+areaName,compileErrors,commands);
 					continue;
 				}
 				else
@@ -5738,7 +5738,7 @@ public class Import extends StdCommand
 				R=applyRoomCodeBits(R,lastRoom,petShops,codeBits,circleFormat);
 
 				roomV.add(0,R.roomID());
-				newRooms.addElement(R);
+				newRooms.add(R);
 				if(plainRoomID.startsWith("#"))
 				{
 					while(plainRoomID.startsWith("#0")&&(plainRoomID.length()>2))
@@ -5766,8 +5766,8 @@ public class Import extends StdCommand
 			for(int r=0;r<roomData.size();r++)
 			{
 				List<String> roomV=null;
-				if(roomData.elementAt(r) instanceof List)
-					roomV=(List)roomData.elementAt(r);
+				if(roomData.get(r) instanceof List)
+					roomV=(List)roomData.get(r);
 				else
 					continue;
 				final String roomID=eatLine(roomV);
@@ -6089,7 +6089,7 @@ public class Import extends StdCommand
 			MOB M=null;
 			Room R=null;
 			for(int nrd=0;nrd<nextResetData.size();nrd++)
-				resetData.addElement(nextResetData.elementAt(nrd));
+				resetData.add(nextResetData.get(nrd));
 			nextResetData.clear();
 			while(resetData.size()>0)
 			{
@@ -6108,7 +6108,7 @@ public class Import extends StdCommand
 					if(R==null)
 					{
 						if(multiArea)
-							nextResetData.addElement(s);
+							nextResetData.add(s);
 						else
 							returnAnError(session,"Reset error (no room) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
@@ -6118,7 +6118,7 @@ public class Import extends StdCommand
 						if(M==null)
 						{
 							if(multiArea)
-								nextResetData.addElement(s);
+								nextResetData.add(s);
 							else
 								returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
 						}
@@ -6132,7 +6132,7 @@ public class Import extends StdCommand
 					if(M==null)
 					{
 						if(multiArea)
-							nextResetData.addElement(s);
+							nextResetData.add(s);
 						else
 							returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
@@ -6143,7 +6143,7 @@ public class Import extends StdCommand
 						if(I==null)
 						{
 							if(multiArea)
-								nextResetData.addElement(s);
+								nextResetData.add(s);
 							else
 							returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
 						}
@@ -6227,7 +6227,7 @@ public class Import extends StdCommand
 					if((R2==null)||(M2==null))
 					{
 						if(multiArea)
-							nextResetData.addElement(s);
+							nextResetData.add(s);
 						else
 							returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
@@ -6238,7 +6238,7 @@ public class Import extends StdCommand
 						if(I==null)
 						{
 							if(multiArea)
-								nextResetData.addElement(s);
+								nextResetData.add(s);
 							else
 								returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
 						}
@@ -6264,7 +6264,7 @@ public class Import extends StdCommand
 					if(M==null)
 					{
 						if(multiArea)
-							nextResetData.addElement(s);
+							nextResetData.add(s);
 						else
 						returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
@@ -6277,9 +6277,9 @@ public class Import extends StdCommand
 							if(multiArea)
 							{
 								if(M.location()!=null)
-									nextResetData.addElement("EC '"+M.location().roomID()+"' '"+M.Name()+"' "+s);
+									nextResetData.add("EC '"+M.location().roomID()+"' '"+M.Name()+"' "+s);
 								else
-									nextResetData.addElement(s);
+									nextResetData.add(s);
 							}
 							else
 								returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
@@ -6309,7 +6309,7 @@ public class Import extends StdCommand
 					if(R==null)
 					{
 						if(multiArea)
-							nextResetData.addElement(s);
+							nextResetData.add(s);
 						else
 						returnAnError(session,"Reset error (no room) on line: "+s+"/"+roomID+"/"+roomID.length()+", area="+areaName,compileErrors,commands);
 					}
@@ -6319,7 +6319,7 @@ public class Import extends StdCommand
 						if(I==null)
 						{
 							if(multiArea)
-								nextResetData.addElement(s);
+								nextResetData.add(s);
 							else
 							returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
 						}
@@ -6352,7 +6352,7 @@ public class Import extends StdCommand
 					if(I==null)
 					{
 						if(multiArea)
-							nextResetData.addElement(s);
+							nextResetData.add(s);
 						else
 						returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
@@ -6360,7 +6360,7 @@ public class Import extends StdCommand
 					if(C==null)
 					{
 						if(multiArea)
-							nextResetData.addElement(s);
+							nextResetData.add(s);
 						else
 						returnAnError(session,"Reset error (no container) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
@@ -6368,7 +6368,7 @@ public class Import extends StdCommand
 					if(C.owner()==null)
 					{
 						if(multiArea)
-							nextResetData.addElement(s);
+							nextResetData.add(s);
 						else
 						returnAnError(session,"Reset error (no container owner) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
@@ -6409,7 +6409,7 @@ public class Import extends StdCommand
 					if(R==null)
 					{
 						if(multiArea)
-							nextResetData.addElement(s);
+							nextResetData.add(s);
 						else
 						returnAnError(session,"Reset error (no room) on line: "+s+", area="+areaName,compileErrors,commands);
 					}
@@ -6539,7 +6539,7 @@ public class Import extends StdCommand
 			// now fix the smurfy wells
 			for(int r=0;r<newRooms.size();r++)
 			{
-				final Room smurfRoom=(Room)newRooms.elementAt(r);
+				final Room smurfRoom=(Room)newRooms.get(r);
 				for(int ei=0;ei<smurfRoom.numItems();ei++)
 				{
 					final Item lookItem=smurfRoom.getItem(ei);
@@ -6581,7 +6581,7 @@ public class Import extends StdCommand
 			if(!multiArea)
 			{
 				if(session!=null)
-					session.println(L("\nDone!!!!!!  A good room to look at would be @x1\n\r",((Room)newRooms.elementAt(0)).roomID()));
+					session.println(L("\nDone!!!!!!  A good room to look at would be @x1\n\r",((Room)newRooms.get(0)).roomID()));
 			}
 			else
 			{
@@ -6600,7 +6600,7 @@ public class Import extends StdCommand
 		{
 			final StringBuffer nrf=new StringBuffer("Import bad resets:\n\r");
 			for(int nrd=0;nrd<nextResetData.size();nrd++)
-				nrf.append(((String)nextResetData.elementAt(nrd))+"\n\r");
+				nrf.append(((String)nextResetData.get(nrd))+"\n\r");
 			returnAnError(session,nrf.toString(),compileErrors,commands);
 			Log.errOut("Import",nrf.toString());
 		}

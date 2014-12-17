@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -50,14 +49,14 @@ public class Wield extends StdCommand
 			mob.tell(L("Wield what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		List<Item> items=null;
-		if(commands.elementAt(0) instanceof Item)
+		if(commands.get(0) instanceof Item)
 		{
 			items=new Vector();
 			for(int i=0;i<commands.size();i++)
-				if(commands.elementAt(i) instanceof Item)
-					items.add((Item)commands.elementAt(i));
+				if(commands.get(i) instanceof Item)
+					items.add((Item)commands.get(i));
 		}
 		else
 			items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);

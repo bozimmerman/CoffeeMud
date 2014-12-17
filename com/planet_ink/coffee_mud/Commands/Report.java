@@ -92,15 +92,15 @@ public class Report extends Skills
 			{
 
 				final Vector V=new Vector();
-				V.addElement(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
-				V.addElement(Integer.valueOf(Ability.ACODE_SKILL));
-				V.addElement(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
-				V.addElement(Integer.valueOf(Ability.ACODE_SPELL));
-				V.addElement(Integer.valueOf(Ability.ACODE_PRAYER));
-				V.addElement(Integer.valueOf(Ability.ACODE_SUPERPOWER));
-				V.addElement(Integer.valueOf(Ability.ACODE_TECH));
-				V.addElement(Integer.valueOf(Ability.ACODE_CHANT));
-				V.addElement(Integer.valueOf(Ability.ACODE_SONG));
+				V.add(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
+				V.add(Integer.valueOf(Ability.ACODE_SKILL));
+				V.add(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
+				V.add(Integer.valueOf(Ability.ACODE_SPELL));
+				V.add(Integer.valueOf(Ability.ACODE_PRAYER));
+				V.add(Integer.valueOf(Ability.ACODE_SUPERPOWER));
+				V.add(Integer.valueOf(Ability.ACODE_TECH));
+				V.add(Integer.valueOf(Ability.ACODE_CHANT));
+				V.add(Integer.valueOf(Ability.ACODE_SONG));
 				say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,level));
 			}
 			else
@@ -110,10 +110,10 @@ public class Report extends Skills
 			if("SKILLS".startsWith(s))
 			{
 				final Vector V=new Vector();
-				V.addElement(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
-				V.addElement(Integer.valueOf(Ability.ACODE_SKILL));
-				V.addElement(Integer.valueOf(Ability.ACODE_TECH));
-				V.addElement(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
+				V.add(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
+				V.add(Integer.valueOf(Ability.ACODE_SKILL));
+				V.add(Integer.valueOf(Ability.ACODE_TECH));
+				V.add(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
 				say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,level));
 			}
 			else

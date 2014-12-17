@@ -70,7 +70,7 @@ public class Experience extends StdCommand
 		final StringBuffer msg=getScore(mob);
 		if(commands.size()==0)
 		{
-			commands.addElement(msg);
+			commands.add(msg);
 			return false;
 		}
 		if(!mob.isMonster())

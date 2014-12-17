@@ -43,7 +43,7 @@ public class Ban extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
+		commands.remove(0);
 		String banMe=CMParms.combine(commands,0);
 		if(banMe.length()==0)
 		{

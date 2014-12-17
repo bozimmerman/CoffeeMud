@@ -81,10 +81,10 @@ public class Read extends StdCommand
 			mob.tell(L("Read what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
-		if(commands.firstElement() instanceof Environmental)
+		commands.remove(0);
+		if(commands.get(0) instanceof Environmental)
 		{
-			read(mob,(Environmental)commands.firstElement(),CMParms.combine(commands,1), false);
+			read(mob,(Environmental)commands.get(0),CMParms.combine(commands,1), false);
 			return false;
 		}
 
@@ -100,7 +100,7 @@ public class Read extends StdCommand
 			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Wearable.FILTER_ANY);
 		else
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			theRest=CMParms.combine(commands,0);
 		}
 		read(mob,thisThang, theRest, false);

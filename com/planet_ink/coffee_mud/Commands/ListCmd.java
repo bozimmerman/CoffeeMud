@@ -718,10 +718,10 @@ public class ListCmd extends StdCommand
 				final java.util.List<String> files=B.externalFiles();
 				if(files != null)
 					for(int f=0;f<files.size();f++)
-						DV.addElement(files.get(f),E,R,M,I,B);
+						DV.add(files.get(f),E,R,M,I,B);
 				final String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 				if(nonFiles.trim().length()>0)
-					DV.addElement("*Custom*"+nonFiles.trim(),E,R,M,I,B);
+					DV.add("*Custom*"+nonFiles.trim(),E,R,M,I,B);
 			}
 		}
 		for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
@@ -730,10 +730,10 @@ public class ListCmd extends StdCommand
 			final java.util.List<String> files=SE.externalFiles();
 			if(files != null)
 				for(int f=0;f<files.size();f++)
-					DV.addElement(files.get(f),E,R,M,I,SE);
+					DV.add(files.get(f),E,R,M,I,SE);
 			final String nonFiles=SE.getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 			if(nonFiles.trim().length()>0)
-				DV.addElement("*Custom*"+nonFiles.trim(),E,R,M,I,SE);
+				DV.add("*Custom*"+nonFiles.trim(),E,R,M,I,SE);
 		}
 	}
 
@@ -757,7 +757,7 @@ public class ListCmd extends StdCommand
 	{
 		if(cmds.size()==0)
 			return new StringBuilder("");
-		cmds.removeElementAt(0);
+		cmds.remove(0);
 		if(cmds.size()==0)
 			return new StringBuilder("List what script details? Try LIST SCRIPTS (COUNT/DETAILS/CUSTOM)");
 		final String rest=CMParms.combine(cmds,0);
@@ -824,13 +824,13 @@ public class ListCmd extends StdCommand
 			scriptTree.sortBy(1);
 			if(scriptTree.size()>0)
 			{
-				String lastOne=(String)scriptTree.elementAt(0,1);
+				String lastOne=(String)scriptTree.get(0,1);
 				if(lastOne.startsWith("*Custom*"))
 					lastOne="*Custom*";
 				int counter=1;
 				for(int d=1;d<scriptTree.size();d++)
 				{
-					String scriptFilename=(String)scriptTree.elementAt(d,1);
+					String scriptFilename=(String)scriptTree.get(d,1);
 					if(scriptFilename.startsWith("*Custom*"))
 						scriptFilename="*Custom*";
 					if(lastOne.equalsIgnoreCase(scriptFilename))
@@ -865,9 +865,9 @@ public class ListCmd extends StdCommand
 			{
 				for(int d=0;d<scriptTree.size();d++)
 				{
-					final String scriptFilename=(String)scriptTree.elementAt(d,1);
-					final Environmental host=(Environmental)scriptTree.elementAt(d,2);
-					final Room room=(Room)scriptTree.elementAt(d,3);
+					final String scriptFilename=(String)scriptTree.get(d,1);
+					final Environmental host=(Environmental)scriptTree.get(d,2);
+					final Room room=(Room)scriptTree.get(d,3);
 					lines.append(CMStrings.padRight(scriptFilename,COL_LEN1));
 					lines.append(CMStrings.padRight(host.Name(),COL_LEN2));
 					lines.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(room),COL_LEN3));
@@ -885,11 +885,11 @@ public class ListCmd extends StdCommand
 			{
 				for(int d=0;d<scriptTree.size();d++)
 				{
-					final String scriptFilename=(String)scriptTree.elementAt(d,1);
+					final String scriptFilename=(String)scriptTree.get(d,1);
 					if(scriptFilename.startsWith("*Custom*"))
 					{
-						final Environmental host=(Environmental)scriptTree.elementAt(d,2);
-						final Room room=(Room)scriptTree.elementAt(d,3);
+						final Environmental host=(Environmental)scriptTree.get(d,2);
+						final Room room=(Room)scriptTree.get(d,3);
 						lines.append("^xHost: ^.^N").append(host.Name())
 							 .append(", ^xLocation: ^.^N").append(CMLib.map().getExtendedRoomID(room));
 						lines.append("^.^N\n\r");
@@ -1198,7 +1198,7 @@ public class ListCmd extends StdCommand
 	{
 		if(commands.size()==0)
 			return;
-		commands.removeElementAt(0);
+		commands.remove(0);
 		int sortBy=-1;
 		if(commands.size()>0)
 		{
@@ -1297,7 +1297,7 @@ public class ListCmd extends StdCommand
 	{
 		if(commands.size()==0)
 			return;
-		commands.removeElementAt(0);
+		commands.remove(0);
 		int sortBy=-1;
 		if(commands.size()>0)
 		{
@@ -1402,7 +1402,7 @@ public class ListCmd extends StdCommand
 					if(x<0)
 						x=24;
 				}
-				pListsV.addElement(players.substring(0,x));
+				pListsV.add(players.substring(0,x));
 				players=players.substring(x).trim();
 				if(players.startsWith(","))
 					players=players.substring(1).trim();
@@ -1453,7 +1453,7 @@ public class ListCmd extends StdCommand
 				||(CMLib.english().containsString(R.ID(), restRest))
 				||(CMLib.english().containsString(R.name(), restRest))
 				||(CMLib.english().containsString(R.racialCategory(), restRest)))
-					raceNames.addElement(R.ID());
+					raceNames.add(R.ID());
 			}
 			lines.append(CMParms.toStringList(raceNames));
 		}
@@ -1490,7 +1490,7 @@ public class ListCmd extends StdCommand
 		{
 			final Vector classNames=new Vector();
 			for(final Enumeration e=these;e.hasMoreElements();)
-				classNames.addElement(((CharClass)e.nextElement()).ID());
+				classNames.add(((CharClass)e.nextElement()).ID());
 			lines.append(CMParms.toStringList(classNames));
 		}
 		else
@@ -1522,7 +1522,7 @@ public class ListCmd extends StdCommand
 		{
 			R=(Race)e.nextElement();
 			if(!raceCats.contains(R.racialCategory()))
-				raceCats.addElement(R.racialCategory());
+				raceCats.add(R.racialCategory());
 		}
 		final Object[] sortedB=(new TreeSet(raceCats)).toArray();
 		if(shortList)
@@ -1894,9 +1894,9 @@ public class ListCmd extends StdCommand
 		sightingsDV.sortBy(2);
 		final StringBuilder str=new StringBuilder("^HHelp entries, sorted by popularity: ^N\n\r");
 		for(int d=0;d<sightingsDV.size();d++)
-			str.append("^w"+CMStrings.padRight(sightingsDV.elementAt(d,2).toString(),4))
+			str.append("^w"+CMStrings.padRight(sightingsDV.get(d,2).toString(),4))
 			   .append(" ")
-			   .append(sightingsDV.elementAt(d,1).toString())
+			   .append(sightingsDV.get(d,1).toString())
 			   .append("\n\r");
 		return str.toString()+"^N";
 	}
@@ -2338,14 +2338,14 @@ public class ListCmd extends StdCommand
 		{
 			if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
 			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
-				V.addElement(cmd.cmd[0]);
+				V.add(cmd.cmd[0]);
 		}
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
 			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
 			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
-				V.addElement(CMJ.NAME()+"S");
+				V.add(CMJ.NAME()+"S");
 		}
 		return V;
 	}
@@ -2474,7 +2474,7 @@ public class ListCmd extends StdCommand
 
 	public StringBuilder listContent(MOB mob, Vector commands)
 	{
-		commands.removeElementAt(0);
+		commands.remove(0);
 		Enumeration roomsToDo=null;
 		final String rest=CMParms.combine(commands,0);
 		if(rest.equalsIgnoreCase("area"))
@@ -2604,11 +2604,11 @@ public class ListCmd extends StdCommand
 
 		for(int i=1;i<commands.size();i++)
 		{
-			String s=(String)commands.elementAt(i);
+			String s=(String)commands.get(i);
 			if((s.equalsIgnoreCase("front")||(s.equalsIgnoreCase("first"))||(s.equalsIgnoreCase("head")))
 			&&(i<(commands.size()-1)))
 			{
-				s=(String)commands.elementAt(i+1);
+				s=(String)commands.get(i+1);
 				if(CMath.isInteger(s))
 				{
 					i++;
@@ -2624,7 +2624,7 @@ public class ListCmd extends StdCommand
 			if((s.equalsIgnoreCase("back")||(s.equalsIgnoreCase("last"))||(s.equalsIgnoreCase("tail")))
 			&&(i<(commands.size()-1)))
 			{
-				s=(String)commands.elementAt(i+1);
+				s=(String)commands.get(i+1);
 				if(CMath.isInteger(s))
 				{
 					i++;
@@ -2640,7 +2640,7 @@ public class ListCmd extends StdCommand
 			if(s.equalsIgnoreCase("skip")
 			&&(i<(commands.size()-1)))
 			{
-				s=(String)commands.elementAt(i+1);
+				s=(String)commands.get(i+1);
 				if(CMath.isInteger(s))
 				{
 					i++;
@@ -3148,7 +3148,7 @@ public class ListCmd extends StdCommand
 			}
 			set[4]=CMStrings.padRight(S.getAddress(),17)+"| ";
 			set[5]=CMStrings.padRight(CMLib.english().returnTime(S.getIdleMillis(),0)+"",17);
-			broken.addElement(set);
+			broken.add(set);
 		}
 		Vector sorted=null;
 		int sortNum=-1;
@@ -3179,17 +3179,17 @@ public class ListCmd extends StdCommand
 				int selected=0;
 				for(int s=1;s<broken.size();s++)
 				{
-					final String[] S=(String[])broken.elementAt(s);
-					if(S[sortNum].compareToIgnoreCase(((String[])broken.elementAt(selected))[sortNum])<0)
+					final String[] S=(String[])broken.get(s);
+					if(S[sortNum].compareToIgnoreCase(((String[])broken.get(selected))[sortNum])<0)
 					   selected=s;
 				}
-				sorted.addElement(broken.elementAt(selected));
-				broken.removeElementAt(selected);
+				sorted.add(broken.get(selected));
+				broken.remove(selected);
 			}
 		}
 		for(int s=0;s<sorted.size();s++)
 		{
-			final String[] S=(String[])sorted.elementAt(s);
+			final String[] S=(String[])sorted.get(s);
 			for (final String element : S)
 				lines.append(element);
 			lines.append("\n\r");
@@ -3210,7 +3210,7 @@ public class ListCmd extends StdCommand
 		if(s==null)
 			return;
 
-		final String listWord=((String)commands.firstElement()).toUpperCase();
+		final String listWord=((String)commands.get(0)).toUpperCase();
 		String rest=(commands.size()>1)?rest=CMParms.combine(commands,1):"";
 		ListCmdEntry code=getMyCmd(mob, listWord);
 		if((code==null)||(listWord.length()==0))
@@ -3346,7 +3346,7 @@ public class ListCmd extends StdCommand
 		throws java.io.IOException
 	{
 		List<Environmental> V=new Vector();
-		commands.removeElementAt(0);
+		commands.remove(0);
 		String forWhat=null;
 		if(commands.size()==0)
 		{
@@ -3362,11 +3362,11 @@ public class ListCmd extends StdCommand
 			final Vector origCommands=new XVector(commands);
 			for(int c=commands.size()-2;c>=0;c--)
 			{
-				if(((String)commands.elementAt(c)).equalsIgnoreCase("for"))
+				if(((String)commands.get(c)).equalsIgnoreCase("for"))
 				{
 					forWhat=CMParms.combine(commands,c+1);
 					for(int c1=commands.size()-1;c1>=c;c1--)
-						commands.removeElementAt(c1);
+						commands.remove(c1);
 					break;
 				}
 			}

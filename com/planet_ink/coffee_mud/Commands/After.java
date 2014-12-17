@@ -59,18 +59,18 @@ public class After extends StdCommand implements Tickable
 		throws java.io.IOException
 	{
 		boolean every=false;
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		final String afterErr="format: after (every) [X] [TICKS/MINUTES/SECONDS/HOURS] [COMMAND]";
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
-		if(((String)commands.elementAt(0)).equalsIgnoreCase("stop"))
+		if(((String)commands.get(0)).equalsIgnoreCase("stop"))
 		{
 			afterCmds.clear();
 			CMLib.threads().deleteTick(this,Tickable.TICKID_AREA);
 			mob.tell(L("Ok."));
 			return false;
 		}
-		if(((String)commands.elementAt(0)).equalsIgnoreCase("list"))
+		if(((String)commands.get(0)).equalsIgnoreCase("list"))
 		{
 			//afterCmds.clear();
 			int s=0;
@@ -89,14 +89,14 @@ public class After extends StdCommand implements Tickable
 			mob.tell(str.toString());
 			return false;
 		}
-		if(((String)commands.elementAt(0)).equalsIgnoreCase("every"))
-		{ every=true; commands.removeElementAt(0);}
+		if(((String)commands.get(0)).equalsIgnoreCase("every"))
+		{ every=true; commands.remove(0);}
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
-		long time=CMath.s_long((String)commands.elementAt(0));
+		long time=CMath.s_long((String)commands.get(0));
 		if(time==0) { mob.tell(L("Time may not be 0.@x1",afterErr)); return false;}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
-		final String s=(String)commands.elementAt(0);
+		final String s=(String)commands.get(0);
 		final long multiplier=CMLib.english().getMillisMultiplierByName(s);
 		if(multiplier<0)
 		{
@@ -105,7 +105,7 @@ public class After extends StdCommand implements Tickable
 		}
 		else
 			time=time*multiplier;
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		final AfterCommand V=new AfterCommand();
 		V.start=System.currentTimeMillis();

@@ -54,9 +54,9 @@ public class Tell extends StdCommand
 			mob.tell(L("Tell whom what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 
-		if(((String)commands.firstElement()).equalsIgnoreCase("last")
+		if(((String)commands.get(0)).equalsIgnoreCase("last")
 		   &&(CMath.isNumber(CMParms.combine(commands,1)))
 		   &&(mob.playerStats()!=null))
 		{
@@ -88,7 +88,7 @@ public class Tell extends StdCommand
 		}
 
 		MOB targetM=null;
-		String targetName=((String)commands.elementAt(0)).toUpperCase();
+		String targetName=((String)commands.get(0)).toUpperCase();
 		targetM=CMLib.sessions().findPlayerOnline(targetName,true);
 		if(targetM==null)
 			targetM=CMLib.sessions().findPlayerOnline(targetName,false);
@@ -111,7 +111,7 @@ public class Tell extends StdCommand
 		}
 		for(int i=1;i<commands.size();i++)
 		{
-			final String s=(String)commands.elementAt(i);
+			final String s=(String)commands.get(i);
 			if(s.indexOf(' ')>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}

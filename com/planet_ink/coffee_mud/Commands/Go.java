@@ -52,8 +52,8 @@ public class Go extends StdCommand
 		if((ifneccvec==null)||(ifneccvec.size()!=2))
 		{
 			ifneccvec=new Vector();
-			ifneccvec.addElement("STAND");
-			ifneccvec.addElement("IFNECESSARY");
+			ifneccvec.add("STAND");
+			ifneccvec.add("IFNECESSARY");
 		}
 		if(stander==null)
 			stander=CMClass.getCommand("Stand");
@@ -144,7 +144,7 @@ public class Go extends StdCommand
 				}
 			}
 		}
-		final String doing=(String)commands.elementAt(0);
+		final String doing=(String)commands.get(0);
 		if(direction>=0)
 			CMLib.tracking().walk(mob,direction,false,false,false,false);
 		else
@@ -157,13 +157,13 @@ public class Go extends StdCommand
 			for(int v=1;v<commands.size();v++)
 			{
 				int num=1;
-				String s=(String)commands.elementAt(v);
+				String s=(String)commands.get(v);
 				if(CMath.s_int(s)>0)
 				{
 					num=CMath.s_int(s);
 					v++;
 					if(v<commands.size())
-						s=(String)commands.elementAt(v);
+						s=(String)commands.get(v);
 				}
 				else
 				if((s.length()>0) && (Character.isDigit(s.charAt(0))))
@@ -192,8 +192,8 @@ public class Go extends StdCommand
 						else
 						{
 							final Vector V=new Vector();
-							V.addElement(doing);
-							V.addElement(inAShip?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction));
+							V.add(doing);
+							V.add(inAShip?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction));
 							mob.enqueCommand(V,metaFlags,0);
 						}
 					}

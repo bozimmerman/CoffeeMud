@@ -48,7 +48,7 @@ public class Serve extends StdCommand
 			mob.tell(L("Serve whom?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final MOB recipient=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((recipient!=null)&&(recipient.isMonster())&&(!(recipient instanceof Deity)))
 		{

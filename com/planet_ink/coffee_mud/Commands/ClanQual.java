@@ -117,8 +117,8 @@ public class ClanQual extends StdCommand
 							return;
 						}
 						final Vector cmds=new Vector();
-						cmds.addElement(getAccessWords()[0]);
-						cmds.addElement(qualMask);
+						cmds.add(getAccessWords()[0]);
+						cmds.add(qualMask);
 						if(skipChecks||CMLib.clans().goForward(mob,C,cmds,Clan.Function.PREMISE,true))
 						{
 							setClanQualMask(mob,C,qualMask);

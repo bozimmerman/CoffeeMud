@@ -61,8 +61,8 @@ public class ClanExile extends StdCommand
 			{	C=c.first; break; }
 
 		commands.clear();
-		commands.addElement(getAccessWords()[0]);
-		commands.addElement(memberStr);
+		commands.add(getAccessWords()[0]);
+		commands.add(memberStr);
 
 		final StringBuffer msg=new StringBuffer("");
 		boolean found=false;

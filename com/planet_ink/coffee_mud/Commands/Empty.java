@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -53,7 +52,7 @@ public class Empty extends Drop
 			mob.tell(L("Empty what where?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()>1)
 		{
 			final String s=(String)commands.lastElement();
@@ -80,10 +79,10 @@ public class Empty extends Drop
 				if(target==null)
 					target=mob.location().fetchFromRoomFavorItems(null,s);
 				else
-					commands.addElement("delme");
+					commands.add("delme");
 			}
 			if(target!=null)
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 		}
 
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
@@ -97,7 +96,7 @@ public class Empty extends Drop
 			return false;
 
 		whatToDrop=CMParms.combine(commands,0);
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
 		if(whatToDrop.toUpperCase().startsWith("ALL."))
 		{ 
 			allFlag=true; 
@@ -143,7 +142,7 @@ public class Empty extends Drop
 			if((CMLib.flags().canBeSeenBy(dropThis,mob))
 			&&(dropThis instanceof Container)
 			&&(!V.contains(dropThis)))
-				V.addElement(dropThis);
+				V.add(dropThis);
 			addendumStr="."+(++addendum);
 		}
 
@@ -164,18 +163,18 @@ public class Empty extends Drop
 		if(V.size()==0)
 			mob.tell(L("You don't seem to be carrying that."));
 		else
-		if((V.size()==1)&&(V.firstElement()==target))
+		if((V.size()==1)&&(V.get(0)==target))
 			mob.tell(L("You can't empty something into itself!"));
 		else
 		if((V.size()==1)
-		&&(V.firstElement() instanceof Drink)
-		&&(!((Drink)V.firstElement()).containsDrink())
+		&&(V.get(0) instanceof Drink)
+		&&(!((Drink)V.get(0)).containsDrink())
 		)
-			mob.tell(mob,(Drink)V.firstElement(),null,L("<T-NAME> is already empty."));
+			mob.tell(mob,(Drink)V.get(0),null,L("<T-NAME> is already empty."));
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			final Container C=(Container)V.elementAt(v);
+			final Container C=(Container)V.get(v);
 			if(C==target) 
 				continue;
 

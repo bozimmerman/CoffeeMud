@@ -224,7 +224,7 @@ public class Score extends Affect
 		final StringBuilder msg=getScore(mob,parm);
 		if(commands.size()==0)
 		{
-			commands.addElement(msg);
+			commands.add(msg);
 			return false;
 		}
 		if(!mob.isMonster())

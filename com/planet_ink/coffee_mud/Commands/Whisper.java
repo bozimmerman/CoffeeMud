@@ -52,7 +52,7 @@ public class Whisper extends StdCommand
 		final Room R = mob.location();
 		if(commands.size()>2)
 		{
-			final String possibleTarget=(String)commands.elementAt(1);
+			final String possibleTarget=(String)commands.get(1);
 			target=R.fetchFromRoomFavorMOBs(null,possibleTarget);
 			if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
 			   target=null;
@@ -60,13 +60,13 @@ public class Whisper extends StdCommand
 			&&(CMLib.flags().canBeSeenBy(target,mob))
 			&&((!(target instanceof Rider))
 			   ||(((Rider)target).riding()==mob.riding())))
-				commands.removeElementAt(1);
+				commands.remove(1);
 			else
 				target=null;
 		}
 		for(int i=1;i<commands.size();i++)
 		{
-			final String s=(String)commands.elementAt(i);
+			final String s=(String)commands.get(i);
 			if(s.indexOf(' ')>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
@@ -99,7 +99,7 @@ public class Whisper extends StdCommand
 					R.send(mob,msg);
 					final Vector<Environmental> targets = new Vector<Environmental>();
 					for(int i=0;i<R.numInhabitants();i++)
-						targets.addElement(R.fetchInhabitant(i));
+						targets.add(R.fetchInhabitant(i));
 					for (final Environmental E : targets)
 					{
 						if(E!=null)

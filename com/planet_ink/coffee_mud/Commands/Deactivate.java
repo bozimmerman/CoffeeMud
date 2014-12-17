@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -50,7 +49,7 @@ public class Deactivate extends StdCommand
 			mob.tell(L("Deactivate what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final String what=(String)commands.lastElement();
 		final String whole=CMParms.combine(commands,0);
 		Item item=null;
@@ -102,7 +101,7 @@ public class Deactivate extends StdCommand
 			}
 			else
 			{
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				item=(Item)E;
 			}
 		}

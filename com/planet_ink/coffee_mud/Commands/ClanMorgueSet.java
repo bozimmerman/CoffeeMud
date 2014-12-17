@@ -66,8 +66,8 @@ public class ClanMorgueSet extends StdCommand
 		else
 		{
 			commands.clear();
-			commands.addElement(getAccessWords()[0]);
-			commands.addElement(CMLib.map().getExtendedRoomID(R));
+			commands.add(getAccessWords()[0]);
+			commands.add(CMLib.map().getExtendedRoomID(R));
 		}
 
 		if((C==null)||(R==null))

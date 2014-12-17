@@ -202,8 +202,8 @@ public class JConsole extends StdCommand
 								else
 									strb.append(" ").append("'"+String.valueOf(args[i])+"'");
 							final DVector DV=new DVector(2);
-							DV.addElement("JS_PROG",null);
-							DV.addElement(strb.toString(),null);
+							DV.add("JS_PROG",null);
+							DV.add(strb.toString(),null);
 							return c.execute(mob,mob,null,mob,null,null,DV,"",objs);
 						}
 						if(name.endsWith("$"))

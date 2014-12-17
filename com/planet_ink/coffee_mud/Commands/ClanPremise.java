@@ -94,8 +94,8 @@ public class ClanPremise extends StdCommand
 					return;
 				}
 				final Vector cmds=new Vector();
-				cmds.addElement(getAccessWords()[0]);
-				cmds.addElement(premise);
+				cmds.add(getAccessWords()[0]);
+				cmds.add(premise);
 				if(skipChecks||CMLib.clans().goForward(mob,C,cmds,Clan.Function.PREMISE,true))
 				{
 					setClanPremise(mob,C,premise);

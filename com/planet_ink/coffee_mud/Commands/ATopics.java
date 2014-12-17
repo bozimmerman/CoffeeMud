@@ -54,7 +54,7 @@ public class ATopics extends StdCommand
 				final String thisTag=rHelpFile.getProperty(ptop);
 				if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
 					|| (rHelpFile.getProperty(thisTag)== null) )
-						reverseList.addElement(ptop);
+						reverseList.add(ptop);
 			}
 
 			Collections.sort(reverseList);

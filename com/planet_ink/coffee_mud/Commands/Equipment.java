@@ -320,9 +320,9 @@ public class Equipment extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()==1)&&(commands.firstElement() instanceof MOB))
+		if((commands.size()==1)&&(commands.get(0) instanceof MOB))
 		{
-			commands.addElement(getEquipment((MOB)commands.firstElement(),mob,false));
+			commands.add(getEquipment((MOB)commands.get(0),mob,false));
 			return true;
 		}
 		viewEquipment(mob,(commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase("long")));

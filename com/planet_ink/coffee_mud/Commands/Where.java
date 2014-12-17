@@ -47,13 +47,13 @@ public class Where extends StdCommand
 
 		for(int v=0;v<V.size();v++)
 		{
-			if(((Integer)V.elementAt(v,2)).intValue()>i)
+			if(((Integer)V.get(v,2)).intValue()>i)
 			{
 				V.insertElementAt(v,area,Integer.valueOf(i));
 				return;
 			}
 		}
-		V.addElement(area,Integer.valueOf(i));
+		V.add(area,Integer.valueOf(i));
 	}
 
 	public boolean canShowTo(MOB showTo, MOB show)
@@ -82,8 +82,8 @@ public class Where extends StdCommand
 		throws java.io.IOException
 	{
 		boolean overrideSet = false;
-		if((commands.size()>1)&&(commands.elementAt(1).equals("!")))
-			overrideSet=commands.remove(commands.elementAt(1));
+		if((commands.size()>1)&&(commands.get(1).equals("!")))
+			overrideSet=commands.remove(commands.get(1));
 		if((CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.WHERE))
 		&&(!overrideSet))
 		{
@@ -436,23 +436,23 @@ public class Where extends StdCommand
 			int alignment=mob.fetchFaction(CMLib.factions().AlignID());
 			for(int i=commands.size()-1;i>=0;i--)
 			{
-				final String s=(String)commands.elementAt(i);
+				final String s=(String)commands.get(i);
 				if(s.equalsIgnoreCase("good"))
 				{
 					alignment=CMLib.factions().getAlignMedianFacValue(Faction.Align.GOOD);
-					commands.removeElementAt(i);
+					commands.remove(i);
 				}
 				else
 				if(s.equalsIgnoreCase("neutral"))
 				{
 					alignment=CMLib.factions().getAlignMedianFacValue(Faction.Align.NEUTRAL);
-					commands.removeElementAt(i);
+					commands.remove(i);
 				}
 				else
 				if(s.equalsIgnoreCase("evil"))
 				{
 					alignment=CMLib.factions().getAlignMedianFacValue(Faction.Align.EVIL);
-					commands.removeElementAt(i);
+					commands.remove(i);
 				}
 			}
 
@@ -500,7 +500,7 @@ public class Where extends StdCommand
 					int index=levelsVec.indexOf(A);
 					if(index>=0)
 					{
-						final Integer I=(Integer)levelsVec.elementAt(index,2);
+						final Integer I=(Integer)levelsVec.get(index,2);
 						if((I!=null)&&(I.intValue()!=0))
 						{
 							int score=(index+1);
@@ -520,7 +520,7 @@ public class Where extends StdCommand
 			msg.append("^x"+CMStrings.padRight(L("Area Name"),35)+CMStrings.padRight(L("Level"),6)+CMStrings.padRight(L("Alignment"),20)+CMStrings.padRight(L("Pop"),10)+"^.^?\n\r");
 			final List<Area> finalScoreList = new ArrayList<Area>();
 			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
-				finalScoreList.add((Area)scores.elementAt(i,1));
+				finalScoreList.add((Area)scores.get(i,1));
 			final int mobLevel=mob.phyStats().level();
 			Collections.sort(finalScoreList,new Comparator<Area>(){
 				@Override

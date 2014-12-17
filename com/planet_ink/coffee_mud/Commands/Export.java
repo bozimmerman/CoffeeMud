@@ -119,11 +119,11 @@ public class Export extends StdCommand
 		final Area area=(room!=null)?room.getArea():null;
 		final Session S=mob.session();
 		if(commands.size()>0)
-			commands.removeElementAt(0);
+			commands.remove(0);
 		if(commands.size()>0)
 		{
-			commandType=((String)commands.elementAt(0)).toUpperCase();
-			commands.removeElementAt(0);
+			commandType=((String)commands.get(0)).toUpperCase();
+			commands.remove(0);
 		}
 		if((!commandType.equalsIgnoreCase("ROOM"))
 		&&(!commandType.equalsIgnoreCase("WORLD"))
@@ -160,7 +160,7 @@ public class Export extends StdCommand
 		String subType="DATA";
 		if(commands.size()>0)
 		{
-			final String sub=((String)commands.firstElement()).toUpperCase().trim();
+			final String sub=((String)commands.get(0)).toUpperCase().trim();
 			if((sub.equalsIgnoreCase("ITEMS")
 				||sub.equalsIgnoreCase("MOBS")
 				||sub.equalsIgnoreCase("WEAPONS")
@@ -169,24 +169,24 @@ public class Export extends StdCommand
 			&&(!commandType.equalsIgnoreCase("ACCOUNT")))
 			{
 				subType=sub;
-				commands.removeElementAt(0);
+				commands.remove(0);
 			}
 			else
 			if(sub.equalsIgnoreCase("data"))
-				commands.removeElementAt(0);
+				commands.remove(0);
 			else
 			if((commandType.equalsIgnoreCase("PLAYER"))
 			&&(CMLib.players().getLoadPlayer(sub)!=null))
 			{
 				subType=sub;
-				commands.removeElementAt(0);
+				commands.remove(0);
 			}
 			else
 			if((commandType.equalsIgnoreCase("ACCOUNT"))
 			&&(CMLib.players().getLoadAccount(sub)!=null))
 			{
 				subType=sub;
-				commands.removeElementAt(0);
+				commands.remove(0);
 			}
 
 			if(commands.size()==0)

@@ -45,7 +45,7 @@ public class Copy extends StdCommand
 		throws java.io.IOException
 	{
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
-		commands.removeElementAt(0); // copy
+		commands.remove(0); // copy
 		if(commands.size()<1)
 		{
 			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is COPY (NUMBER) ([ITEM NAME]/[MOB NAME][ROOM ID] [DIRECTIONS]/[DIRECTIONS])\n\r"));
@@ -55,11 +55,11 @@ public class Copy extends StdCommand
 		int number=1;
 		if(commands.size()>1)
 		{
-			number=CMath.s_int((String)commands.firstElement());
+			number=CMath.s_int((String)commands.get(0));
 			if(number<1)
 				number=1;
 			else
-				commands.removeElementAt(0);
+				commands.remove(0);
 		}
 		String name=CMParms.combine(commands,0);
 		Environmental dest=mob.location();
@@ -99,7 +99,7 @@ public class Copy extends StdCommand
 			dirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
 			if(dirCode>=0)
 			{
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				name=CMParms.combine(commands,0);
 				E=CMLib.map().getRoom(name);
 				if(E==null)
@@ -109,7 +109,7 @@ public class Copy extends StdCommand
 						final int subDirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
 						if(subDirCode>=0)
 						{
-							commands.removeElementAt(commands.size()-1);
+							commands.remove(commands.size()-1);
 							name=CMParms.combine(commands,0);
 							if(name.equalsIgnoreCase("exit"))
 							{

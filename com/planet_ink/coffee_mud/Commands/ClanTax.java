@@ -115,8 +115,8 @@ public class ClanTax extends StdCommand
 			return;
 		}
 		final Vector commands=new Vector();
-		commands.addElement(getAccessWords()[0]);
-		commands.addElement(t);
+		commands.add(getAccessWords()[0]);
+		commands.add(t);
 		setClanTaxRate(mob, C, skipChecks,commands,CMath.div(CMath.s_int(t),100));
 	}
 

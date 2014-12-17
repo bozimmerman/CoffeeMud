@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -53,10 +52,10 @@ public class Take extends StdCommand
 				mob.tell(L("Take what from whom?"));
 				return false;
 			}
-			commands.removeElementAt(0);
+			commands.remove(0);
 			if(commands.size()<2)
 			{
-				mob.tell(L("From whom should I take the @x1",(String)commands.elementAt(0)));
+				mob.tell(L("From whom should I take the @x1",(String)commands.get(0)));
 				return false;
 			}
 
@@ -71,9 +70,9 @@ public class Take extends StdCommand
 				mob.tell(L("@x1 is a player!",victim.Name()));
 				return false;
 			}
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("from")))
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 
 			final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,victim,false);
 			if(maxToGive<0)
@@ -83,7 +82,7 @@ public class Take extends StdCommand
 			int addendum=1;
 			String addendumStr="";
 			final Vector V=new Vector();
-			boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+			boolean allFlag=((String)commands.get(0)).equalsIgnoreCase("all");
 			if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 			if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
 
@@ -134,7 +133,7 @@ public class Take extends StdCommand
 				{
 					((Item)giveThis).unWear();
 					((Item)giveThis).setContainer(null);
-					V.addElement(giveThis);
+					V.add(giveThis);
 				}
 				addendumStr="."+(++addendum);
 			}
@@ -144,7 +143,7 @@ public class Take extends StdCommand
 			else
 			for(int i=0;i<V.size();i++)
 			{
-				final Item giveThis=(Item)V.elementAt(i);
+				final Item giveThis=(Item)V.get(i);
 				final CMMsg newMsg=CMClass.getMsg(victim,mob,giveThis,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,L("<T-NAME> take(s) <O-NAME> from <S-NAMESELF>."));
 				if(victim.location().okMessage(victim,newMsg))
 					victim.location().send(victim,newMsg);
@@ -160,15 +159,15 @@ public class Take extends StdCommand
 		{
 			if(((String)commands.lastElement()).equalsIgnoreCase("off"))
 			{
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				final Command C=CMClass.getCommand("Remove");
 				if(C!=null)
 					C.execute(mob,commands,metaFlags);
 			}
 			else
-			if((commands.size()>1)&&(((String)commands.elementAt(1)).equalsIgnoreCase("off")))
+			if((commands.size()>1)&&(((String)commands.get(1)).equalsIgnoreCase("off")))
 			{
-				commands.removeElementAt(1);
+				commands.remove(1);
 				final Command C=CMClass.getCommand("Remove");
 				if(C!=null)
 					C.execute(mob,commands,metaFlags);

@@ -49,9 +49,9 @@ public class Wealth extends Inventory
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()==1)&&(commands.firstElement() instanceof MOB))
+		if((commands.size()==1)&&(commands.get(0) instanceof MOB))
 		{
-			commands.addElement(getInventory((MOB)commands.firstElement(),mob,null));
+			commands.add(getInventory((MOB)commands.get(0),mob,null));
 			return true;
 		}
 		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));

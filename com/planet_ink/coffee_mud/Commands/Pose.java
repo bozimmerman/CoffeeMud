@@ -43,7 +43,7 @@ public class Pose extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()>0)&&(commands.firstElement().toString().equalsIgnoreCase("NOPOSE")))
+		if((commands.size()>0)&&(commands.get(0).toString().equalsIgnoreCase("NOPOSE")))
 		{
 			final PlayerStats pstats = mob.playerStats();
 			if(pstats != null)

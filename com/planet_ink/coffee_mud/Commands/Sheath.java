@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -54,7 +53,7 @@ public class Sheath extends StdCommand
 			&&(!(I instanceof Drink))
 			&&(((Container)I).capacity()>0)
 			&&(((Container)I).containTypes()!=Container.CONTAIN_ANYTHING))
-				sheaths.addElement(I);
+				sheaths.add(I);
 		}
 		return sheaths;
 	}
@@ -67,19 +66,19 @@ public class Sheath extends StdCommand
 		boolean noerrors=false;
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			quiet=true;
 		}
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("IFPOSSIBLE")))
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			noerrors=true;
 		}
 
 		Item item1=null;
 		Item item2=null;
 		if(commands.size()>0)
-			commands.removeElementAt(0);
+			commands.remove(0);
 		if(commands.size()==0)
 		{
 			for(int i=0;i<mob.numItems();i++)
@@ -109,32 +108,32 @@ public class Sheath extends StdCommand
 				item2=null;
 			for(int i=0;i<sheaths.size();i++)
 			{
-				final Container sheath=(Container)sheaths.elementAt(i);
+				final Container sheath=(Container)sheaths.get(i);
 				if((item1!=null)
 				&&(!items.contains(item1))
 				&&(sheath.canContain(item1)))
 				{
-					items.addElement(item1);
-					containers.addElement(sheath);
+					items.add(item1);
+					containers.add(sheath);
 				}
 				else
 				if((item2!=null)
 				&&(!items.contains(item2))
 				&&(sheath.canContain(item2)))
 				{
-					items.addElement(item2);
-					containers.addElement(sheath);
+					items.add(item2);
+					containers.add(sheath);
 				}
 			}
 			if(item2!=null)
 			for(int i=0;i<sheaths.size();i++)
 			{
-				final Container sheath=(Container)sheaths.elementAt(i);
+				final Container sheath=(Container)sheaths.get(i);
 				if((sheath.canContain(item2))
 				&&(!items.contains(item2)))
 				{
-					items.addElement(item2);
-					containers.addElement(sheath);
+					items.add(item2);
+					containers.add(sheath);
 				}
 			}
 			if(item1!=null)
@@ -150,7 +149,7 @@ public class Sheath extends StdCommand
 			String thingToPut=CMParms.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";
-			boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+			boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
 			if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 			if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
 			boolean doBugFix = true;
@@ -167,22 +166,22 @@ public class Sheath extends StdCommand
 					if(CMLib.flags().canBeSeenBy(putThis,mob)&&(!items.contains(putThis)))
 					{
 						sheathable=putThis;
-						items.addElement(putThis);
+						items.add(putThis);
 						if((container!=null)&&(container.canContain(putThis)))
-							containers.addElement(container);
+							containers.add(container);
 						else
 						{
 							Container tempContainer=null;
 							for(int i=0;i<sheaths.size();i++)
 							{
-								final Container sheath=(Container)sheaths.elementAt(i);
+								final Container sheath=(Container)sheaths.get(i);
 								if(sheath.canContain(putThis))
 								{tempContainer=sheath; break;}
 							}
 							if(tempContainer==null)
 								items.remove(putThis);
 							else
-								containers.addElement(tempContainer);
+								containers.add(tempContainer);
 						}
 					}
 				}
@@ -207,8 +206,8 @@ public class Sheath extends StdCommand
 		else
 		for(int i=0;i<items.size();i++)
 		{
-			final Item putThis=(Item)items.elementAt(i);
-			final Container container=(Container)containers.elementAt(i);
+			final Item putThis=(Item)items.get(i);
+			final Container container=(Container)containers.get(i);
 			if(CMLib.commands().postRemove(mob,putThis,true))
 			{
 				final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MSG_PUT,((quiet?null:"<S-NAME> sheath(s) <O-NAME> in <T-NAME>.")));

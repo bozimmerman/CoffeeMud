@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -81,28 +80,28 @@ public class Wear extends StdCommand
 			return false;
 		}
 		final Wearable.CODES codes = Wearable.CODES.instance();
-		commands.removeElementAt(0);
-		if(commands.firstElement() instanceof Item)
+		commands.remove(0);
+		if(commands.get(0) instanceof Item)
 		{
-			final Item wearWhat = (Item)commands.firstElement();
+			final Item wearWhat = (Item)commands.get(0);
 			boolean quietly = false;
 			int wearLocationIndex = 0;
-			commands.removeElementAt(0);
+			commands.remove(0);
 			if(commands.size()>0)
 			{
-				if(commands.firstElement() instanceof Integer)
+				if(commands.get(0) instanceof Integer)
 				{
-					wearLocationIndex=((Integer)commands.firstElement()).intValue();
-					commands.removeElementAt(0);
+					wearLocationIndex=((Integer)commands.get(0)).intValue();
+					commands.remove(0);
 				}
 				else
-				if(commands.firstElement() instanceof String)
+				if(commands.get(0) instanceof String)
 				{
-					final int newDex = codes.findDex_ignoreCase((String)commands.firstElement());
+					final int newDex = codes.findDex_ignoreCase((String)commands.get(0));
 					if(newDex>0)
 					{
 						wearLocationIndex=newDex;
-						commands.removeElementAt(0);
+						commands.remove(0);
 					}
 				}
 				if((commands.size()>0)
@@ -116,10 +115,10 @@ public class Wear extends StdCommand
 		// discover if a wear location was specified
 		int wearLocationIndex=0;
 		for(int i=commands.size()-2;i>0;i--)
-			if(((String)commands.elementAt(i)).equalsIgnoreCase("on"))
+			if(((String)commands.get(i)).equalsIgnoreCase("on"))
 			{
-				if((i<commands.size()-2)&&((String)commands.elementAt(i+1)).equalsIgnoreCase("my"))
-					commands.removeElementAt(i+1);
+				if((i<commands.size()-2)&&((String)commands.get(i+1)).equalsIgnoreCase("my"))
+					commands.remove(i+1);
 				final String possibleWearLocation = CMParms.combine(commands, i+1).toLowerCase().trim();
 				int possIndex = CMParms.indexOfIgnoreCase(Wearable.CODES.NAMES(), possibleWearLocation);
 				if(possIndex<0)
@@ -128,7 +127,7 @@ public class Wear extends StdCommand
 				{
 					wearLocationIndex=possIndex;
 					while(commands.size()>i)
-						commands.removeElementAt(commands.size()-1);
+						commands.remove(commands.size()-1);
 					break;
 				}
 				else

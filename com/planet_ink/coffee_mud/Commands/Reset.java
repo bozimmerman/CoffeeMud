@@ -320,7 +320,7 @@ public class Reset extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()<1)
 		{
 			if(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDPLAYERS))
@@ -329,17 +329,17 @@ public class Reset extends StdCommand
 				mob.tell(L("Reset this ROOM, the whole AREA, or REJUV?"));
 			return false;
 		}
-		String s=(String)commands.elementAt(0);
+		String s=(String)commands.get(0);
 		String rest=(commands.size()>1)?CMParms.combine(commands,1):"";
 		if(s.equalsIgnoreCase("rejuv"))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			if(commands.size()<1)
 			{
 				mob.tell(L("Rejuv this ROOM, or the whole AREA?  You can also specify ITEMS or MOBS after ROOM/AREA."));
 				return false;
 			}
-			s=(String)commands.elementAt(0);
+			s=(String)commands.get(0);
 			rest=(commands.size()>1)?CMParms.combine(commands,1):"";
 			int tickID=0;
 			if(rest.startsWith("MOB"))
@@ -384,7 +384,7 @@ public class Reset extends StdCommand
 		if(s.equalsIgnoreCase("password") 
 		&&(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDPLAYERS)))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			if(commands.size()<1)
 			{
 				mob.tell(L("Reset password for what character/account?."));
@@ -718,14 +718,14 @@ public class Reset extends StdCommand
 					}
 					final StringBuffer answer=new StringBuffer(R.ID()+": ");
 					for(int i=0;i<racesToBaseFrom.size();i++)
-						answer.append(((Race)racesToBaseFrom.elementAt(i)).ID()+" ");
+						answer.append(((Race)racesToBaseFrom.get(i)).ID()+" ");
 					mob.tell(answer.toString());
 					if(racesToBaseFrom.size()>0)
 					{
 						final long[] ageChart=new long[Race.AGE_ANCIENT+1];
 						for(int i=0;i<racesToBaseFrom.size();i++)
 						{
-							final Race R2=(Race)racesToBaseFrom.elementAt(i);
+							final Race R2=(Race)racesToBaseFrom.get(i);
 							int lastVal=0;
 							for(int x=0;x<ageChart.length;x++)
 							{
@@ -784,27 +784,27 @@ public class Reset extends StdCommand
 		{
 			s="room";
 			if(commands.size()>1)
-				s=(String)commands.elementAt(1);
+				s=(String)commands.get(1);
 			if(mob.session()==null)
 				return false;
 			mob.session().print(L("working..."));
 			StringBuffer recordedChanges=null;
 			for(int i=1;i<commands.size();i++)
-				if(((String)commands.elementAt(i)).equalsIgnoreCase("NOSAVE"))
+				if(((String)commands.get(i)).equalsIgnoreCase("NOSAVE"))
 				{
 					recordedChanges=new StringBuffer("");
 					break;
 				}
 			final Vector rooms=new Vector();
 			if(s.toUpperCase().startsWith("ROOM"))
-				rooms.addElement(mob.location());
+				rooms.add(mob.location());
 			else
 			if(s.toUpperCase().startsWith("AREA"))
 			{
 				try
 				{
 					for(final Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
-						rooms.addElement(e.nextElement());
+						rooms.add(e.nextElement());
 				}catch(final NoSuchElementException nse){}
 			}
 			else
@@ -833,7 +833,7 @@ public class Reset extends StdCommand
 						final Area A=(Area)e.nextElement();
 						boolean skip=false;
 						for(int i=1;i<commands.size();i++)
-							if(((String)commands.elementAt(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
+							if(((String)commands.get(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
 							{
 								skip=true;
 								break;
@@ -841,7 +841,7 @@ public class Reset extends StdCommand
 						if(skip)
 							continue;
 						for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
-							rooms.addElement(r.nextElement());
+							rooms.add(r.nextElement());
 					}
 				}catch(final NoSuchElementException nse){}
 			}
@@ -1023,7 +1023,7 @@ public class Reset extends StdCommand
 				mob.tell(L("You need to specify a property or behavior to install."));
 				return false;
 			}
-			final String ID=(String)commands.elementAt(1);
+			final String ID=(String)commands.get(1);
 			Object O=CMClass.getAbility(ID);
 			if(O==null)
 				O=CMClass.getBehavior(ID);
@@ -1154,14 +1154,14 @@ public class Reset extends StdCommand
 		{
 			s="room";
 			if(commands.size()>1)
-				s=(String)commands.elementAt(1);
+				s=(String)commands.get(1);
 
 			if(mob.session()==null)
 				return false;
 			mob.session().print(L("working..."));
 			StringBuffer recordedChanges=null;
 			for(int i=1;i<commands.size();i++)
-				if(((String)commands.elementAt(i)).equalsIgnoreCase("NOSAVE"))
+				if(((String)commands.get(i)).equalsIgnoreCase("NOSAVE"))
 				{
 					recordedChanges=new StringBuffer("");
 					break;
@@ -1169,14 +1169,14 @@ public class Reset extends StdCommand
 
 			final Vector rooms=new Vector();
 			if(s.toUpperCase().startsWith("ROOM"))
-				rooms.addElement(mob.location());
+				rooms.add(mob.location());
 			else
 			if(s.toUpperCase().startsWith("AREA"))
 			{
 				try
 				{
 					for(final Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
-						rooms.addElement(e.nextElement());
+						rooms.add(e.nextElement());
 				}catch(final NoSuchElementException nse){}
 			}
 			else
@@ -1205,16 +1205,16 @@ public class Reset extends StdCommand
 						final Area A=(Area)e.nextElement();
 						boolean skip=false;
 						for(int i=1;i<commands.size();i++)
-							if(((String)commands.elementAt(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
+							if(((String)commands.get(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
 							{
 								skip=true;
-								commands.removeElementAt(i);
+								commands.remove(i);
 								break;
 							}
 						if(skip)
 							continue;
 						for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
-							rooms.addElement(r.nextElement());
+							rooms.add(r.nextElement());
 					}
 				}catch(final NoSuchElementException nse){}
 			}
@@ -1319,13 +1319,13 @@ public class Reset extends StdCommand
 			try
 			{
 				if(commands.size()>1)
-					s=(String)commands.elementAt(1);
+					s=(String)commands.get(1);
 				boolean area=false;
 				if(s.equalsIgnoreCase("AREA"))
 				{
 					area=true;
 					if(commands.size()>2)
-						s=(String)commands.elementAt(2);
+						s=(String)commands.get(2);
 				}
 				final MOB M=CMLib.players().getLoadPlayer(s);
 				if((M!=null)&&(M.playerStats()!=null))

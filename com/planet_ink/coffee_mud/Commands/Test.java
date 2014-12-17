@@ -27,6 +27,8 @@ import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
 
 
+
+
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -264,7 +266,7 @@ public class Test extends StdCommand
 	{
 		if(commands.size()>1)
 		{
-			final String what=((String)commands.elementAt(1)).toUpperCase().trim();
+			final String what=((String)commands.get(1)).toUpperCase().trim();
 			//String rest=CMParms.combine(commands,2);
 			if(what.equalsIgnoreCase("levelxptest"))
 			{

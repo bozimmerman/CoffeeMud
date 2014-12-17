@@ -138,33 +138,33 @@ public class WillQualify  extends Skills
 		CharClass C=mob.charStats().getCurrentClass();
 		final HashSet<Object> types=new HashSet<Object>();
 		if(commands.size()>0)
-			commands.removeElementAt(0);
-		if((commands.size()>0)&&(CMath.isNumber((String)commands.firstElement())))
+			commands.remove(0);
+		if((commands.size()>0)&&(CMath.isNumber((String)commands.get(0))))
 		{
-			level=CMath.s_int((String)commands.firstElement());
+			level=CMath.s_int((String)commands.get(0));
 			if(level<0)
 			{
 				mob.tell(willQualErr);
 				return false;
 			}
-			commands.removeElementAt(0);
+			commands.remove(0);
 		}
 		if(commands.size()>0)
 		{
-			final CharClass C2=CMClass.findCharClass((String)commands.firstElement());
-			if(C2!=null){ C=C2;commands.removeElementAt(0);}
+			final CharClass C2=CMClass.findCharClass((String)commands.get(0));
+			if(C2!=null){ C=C2;commands.remove(0);}
 		}
 		while(commands.size()>0)
 		{
-			final String str=((String)commands.firstElement()).toUpperCase().trim();
+			final String str=((String)commands.get(0)).toUpperCase().trim();
 			final String bothStr=(commands.size()<2) ? str : 
-				((String)commands.firstElement()).toUpperCase().trim() + " " + ((String)commands.get(1)).toUpperCase().trim();
+				((String)commands.get(0)).toUpperCase().trim() + " " + ((String)commands.get(1)).toUpperCase().trim();
 			int x=CMParms.indexOf(Ability.ACODE_DESCS,str);
 			if(x<0)
 				x=CMParms.indexOf(Ability.ACODE_DESCS,str.replace(' ','_'));
 			if(x>=0)
 			{
-				commands.removeElementAt(0);
+				commands.remove(0);
 				types.add(Integer.valueOf(x));
 				continue;
 			}
@@ -176,8 +176,8 @@ public class WillQualify  extends Skills
 				if(x>=0)
 				{
 					
-					commands.removeElementAt(0);
-					commands.removeElementAt(0);
+					commands.remove(0);
+					commands.remove(0);
 					types.add(Integer.valueOf(x));
 					continue;
 				}
@@ -188,7 +188,7 @@ public class WillQualify  extends Skills
 				x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.replace(' ','_'));
 			if(x>=0)
 			{
-				commands.removeElementAt(0);
+				commands.remove(0);
 				types.add(Integer.valueOf(x<<5));
 				continue;
 			}
@@ -199,8 +199,8 @@ public class WillQualify  extends Skills
 					x=CMParms.indexOf(Ability.DOMAIN_DESCS,bothStr.replace(' ','_'));
 				if(x>=0)
 				{
-					commands.removeElementAt(0);
-					commands.removeElementAt(0);
+					commands.remove(0);
+					commands.remove(0);
 					types.add(Integer.valueOf(x<<5));
 					continue;
 				}
@@ -210,15 +210,15 @@ public class WillQualify  extends Skills
 			||str.equalsIgnoreCase("EXPERTISE")
 			||str.equalsIgnoreCase("EXPERTISES"))
 			{
-				commands.removeElementAt(0);
+				commands.remove(0);
 				types.add(str.toUpperCase().trim());
 				continue;
 			}
 			else
 			if((CMLib.expertises().findDefinition(bothStr,false)!=null))
 			{
-				commands.removeElementAt(0);
-				commands.removeElementAt(0);
+				commands.remove(0);
+				commands.remove(0);
 				types.add(bothStr.toUpperCase().trim());
 				continue;
 			}

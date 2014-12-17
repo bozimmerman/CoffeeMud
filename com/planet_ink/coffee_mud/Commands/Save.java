@@ -77,7 +77,7 @@ public class Save extends StdCommand
 		String lastCommand = "";
 		if(commands.size()>1)
 		{
-			firstCommand=((String)commands.elementAt(1)).toUpperCase();
+			firstCommand=((String)commands.get(1)).toUpperCase();
 			lastCommand=((String)commands.lastElement()).toUpperCase();
 		}
 

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -52,11 +51,11 @@ public class Remove extends StdCommand
 			mob.tell(L("Remove what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
-		if(commands.firstElement() instanceof Item)
+		commands.remove(0);
+		if(commands.get(0) instanceof Item)
 		{
 			final boolean quiet=((commands.size()>1)&&(commands.lastElement() instanceof String)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")));
-			final Item item=(Item)commands.firstElement();
+			final Item item=(Item)commands.get(0);
 			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,quiet?null:L("<S-NAME> remove(s) <T-NAME>."));
 			if(mob.location().okMessage(mob,newMsg))
 			{

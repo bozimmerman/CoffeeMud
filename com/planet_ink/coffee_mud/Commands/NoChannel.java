@@ -46,8 +46,8 @@ public class NoChannel extends StdCommand
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
 			return false;
-		String channelName=((String)commands.elementAt(0)).toUpperCase().trim().substring(2);
-		commands.removeElementAt(0);
+		String channelName=((String)commands.get(0)).toUpperCase().trim().substring(2);
+		commands.remove(0);
 		int channelNum=-1;
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{

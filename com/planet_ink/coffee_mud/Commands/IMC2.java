@@ -57,13 +57,13 @@ public class IMC2 extends StdCommand
 			mob.tell(L("IMC2 is unavailable."));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()<1)
 		{
 			IMC2Error(mob);
 			return false;
 		}
-		final String str=(String)commands.firstElement();
+		final String str=(String)commands.get(0);
 		if(!(CMLib.intermud().imc2online()))
 			mob.tell(L("IMC2 is unavailable."));
 		else

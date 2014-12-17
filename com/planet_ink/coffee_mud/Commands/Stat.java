@@ -184,7 +184,7 @@ public class Stat  extends Skills
 			final CharClass CharC=CMClass.getCharClass(rest);
 			final Vector allSkills=new Vector();
 			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-				allSkills.addElement(e.nextElement());
+				allSkills.add(e.nextElement());
 			final long[][] totals=new long[allSkills.size()][CoffeeTableRow.STAT_TOTAL];
 			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 			{
@@ -204,15 +204,15 @@ public class Stat  extends Skills
 					final CoffeeTableRow T=V.get(v);
 					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 					{
-						set.addElement(T);
+						set.add(T);
 						V.remove(v);
 					}
 				}
 				for(int s=0;s<set.size();s++)
 				{
-					final CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
+					final CoffeeTableRow T=(CoffeeTableRow)set.get(s);
 					for(int x=0;x<allSkills.size();x++)
-						T.totalUp("A"+((Ability)allSkills.elementAt(x)).ID().toUpperCase(),totals[x]);
+						T.totalUp("A"+((Ability)allSkills.get(x)).ID().toUpperCase(),totals[x]);
 				}
 				if(scale==0)
 					break;
@@ -220,7 +220,7 @@ public class Stat  extends Skills
 			boolean cr=false;
 			for(int x=0;x<allSkills.size();x++)
 			{
-				Ability A=(Ability)allSkills.elementAt(x);
+				Ability A=(Ability)allSkills.get(x);
 				if((CharC==null)||(CMLib.ableMapper().getQualifyingLevel(CharC.ID(),true,A.ID())<0))
 					continue;
 				if(totals[x][CoffeeTableRow.STAT_SKILLUSE]>0)
@@ -234,7 +234,7 @@ public class Stat  extends Skills
 				x++;
 				if(x<allSkills.size())
 				{
-					A=(Ability)allSkills.elementAt(x);
+					A=(Ability)allSkills.get(x);
 					if(totals[x][CoffeeTableRow.STAT_SKILLUSE]>0)
 					{
 
@@ -271,14 +271,14 @@ public class Stat  extends Skills
 					final CoffeeTableRow T=V.get(v);
 					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 					{
-						set.addElement(T);
+						set.add(T);
 						V.remove(v);
 					}
 				}
 				if(set.size()==0){ set.addAll(V); V.clear();}
 				for(int s=0;s<set.size();s++)
 				{
-					final CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
+					final CoffeeTableRow T=(CoffeeTableRow)set.get(s);
 					for(int x=0;x<CMLib.quests().numQuests();x++)
 						T.totalUp("U"+T.tagFix(CMLib.quests().fetchQuest(x).name()),totals[x]);
 				}
@@ -322,7 +322,7 @@ public class Stat  extends Skills
 				final CoffeeTableRow T=V.get(v);
 				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 				{
-					set.addElement(T);
+					set.add(T);
 					V.remove(v);
 				}
 			}
@@ -332,7 +332,7 @@ public class Stat  extends Skills
 			long numberOnlineCounter=0;
 			for(int s=0;s<set.size();s++)
 			{
-				final CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
+				final CoffeeTableRow T=(CoffeeTableRow)set.get(s);
 				T.totalUp(code,totals);
 				if(T.highestOnline()>highestOnline)
 					highestOnline=T.highestOnline();
@@ -455,8 +455,8 @@ public class Stat  extends Skills
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
-		if(((commands.size()>0)&&(commands.firstElement() instanceof String)&&((String)commands.firstElement()).equals("?"))
+		commands.remove(0);
+		if(((commands.size()>0)&&(commands.get(0) instanceof String)&&((String)commands.get(0)).equals("?"))
 		||((commands.size()==0)&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT)))))
 		{
 			final StringBuilder msg = new StringBuilder("STAT allows the following options: \n\r");
@@ -482,9 +482,9 @@ public class Stat  extends Skills
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
 		{
 			if(commands.size()==0)
-				commands.addElement("TODAY");
-			final String s1=(commands.size()>0)?((String)commands.elementAt(0)).toUpperCase():"";
-			final String s2=(commands.size()>1)?((String)commands.elementAt(1)).toUpperCase():"";
+				commands.add("TODAY");
+			final String s1=(commands.size()>0)?((String)commands.get(0)).toUpperCase():"";
+			final String s2=(commands.size()>1)?((String)commands.get(1)).toUpperCase():"";
 			if(s1.equalsIgnoreCase("TODAY"))
 				return showTableStats(mob,1,1,CMParms.combine(commands,1));
 			else
@@ -519,13 +519,13 @@ public class Stat  extends Skills
 			int ableTypes=-1;
 			if(commands.size()>1)
 			{
-				final String s=((String)commands.elementAt(0)).toUpperCase();
+				final String s=((String)commands.get(0)).toUpperCase();
 				for(int i=0;i<ABLETYPE_DESCS.length;i++)
 					for(int is=0;is<ABLETYPE_DESCS[i].length;is++)
 						if(s.equals(ABLETYPE_DESCS[i][is]))
 						{
 							ableTypes=-2 -i;
-							commands.removeElementAt(0);
+							commands.remove(0);
 							break;
 						}
 				if(ableTypes==-1)
@@ -534,7 +534,7 @@ public class Stat  extends Skills
 					if((Ability.ACODE_DESCS[a]+"S").equals(s)||(Ability.ACODE_DESCS[a]).equals(s))
 					{
 						ableTypes=a;
-						commands.removeElementAt(0);
+						commands.remove(0);
 						break;
 					}
 				}
@@ -549,7 +549,7 @@ public class Stat  extends Skills
 				{
 					final Vector V=new Vector();
 					final int mask=Ability.ALL_ACODES;
-					V.addElement(Integer.valueOf(ableTypes));
+					V.add(Integer.valueOf(ableTypes));
 					str=getAbilities(mob,target,V,mask,false,-1);
 				}
 				else

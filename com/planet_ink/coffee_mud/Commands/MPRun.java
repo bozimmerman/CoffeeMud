@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 import org.mozilla.javascript.*;
@@ -52,7 +51,7 @@ public class MPRun extends StdCommand
 		MOB checkMOB=mob;
 		if(commands.size()>1)
 		{
-			final String firstParm=(String)commands.elementAt(1);
+			final String firstParm=(String)commands.get(1);
 			final int x=firstParm.indexOf(':');
 			if(x>0)
 			{
@@ -68,7 +67,7 @@ public class MPRun extends StdCommand
 					mob.addTattoo(new MOB.Tattoo("SYSTEM_MPRUNDOWN",(int)(2 * CMProps.getTicksPerMinute())));
 					return CMLib.commands().handleUnknownCommand(mob, commands);
 				}
-				commands.removeElementAt(1);
+				commands.remove(1);
 			}
 		}
 		if(!CMSecurity.isAllowed(checkMOB,mob.location(),CMSecurity.SecFlag.JSCRIPTS))
@@ -78,7 +77,7 @@ public class MPRun extends StdCommand
 			mob.tell(L("mprun (user:password) [script]"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		final String cmd = CMParms.combineQuoted(commands, 0);
 		executeScript(mob, cmd);

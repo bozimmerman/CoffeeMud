@@ -57,7 +57,7 @@ public class Bid extends StdCommand
 			return false;
 		}
 
-		String bidStr=(String)commands.firstElement();
+		String bidStr=(String)commands.get(0);
 		if(CMLib.english().numPossibleGold(mob,bidStr)<=0)
 		{
 			mob.tell(L("It does not look like '@x1' is enough to offer.",bidStr));
@@ -65,19 +65,19 @@ public class Bid extends StdCommand
 		}
 		final Object[] bidThang=CMLib.english().parseMoneyStringSDL(mob,bidStr,null);
 		bidStr=CMLib.beanCounter().nameCurrencyShort((String)bidThang[0],CMath.mul(((Double)bidThang[1]).doubleValue(),((Long)bidThang[2]).longValue()));
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		int maxToDo=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(CMath.s_int((String)commands.firstElement())>0))
+		&&(CMath.s_int((String)commands.get(0))>0))
 		{
-			maxToDo=CMath.s_int((String)commands.firstElement());
+			maxToDo=CMath.s_int((String)commands.get(0));
 			commands.setElementAt("all",0);
 		}
 
 		String whatName=CMParms.combine(commands,0);
 		final Vector V=new Vector();
-		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		boolean allFlag=((String)commands.get(0)).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
 		int addendum=1;
@@ -90,7 +90,7 @@ public class Bid extends StdCommand
 			if(itemToDo==null)
 				break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
-				V.addElement(itemToDo);
+				V.add(itemToDo);
 			if(addendum>=CMLib.coffeeShops().getShopKeeper(shopkeeper).getShop().numberInStock(itemToDo))
 				break;
 			++addendum;
@@ -100,7 +100,7 @@ public class Bid extends StdCommand
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			final Environmental thisThang=(Environmental)V.elementAt(v);
+			final Environmental thisThang=(Environmental)V.get(v);
 			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,
 					CMMsg.MSG_BID,L("<S-NAME> bid(s) @x1 on <O-NAME> with <T-NAMESELF>.",bidStr),
 					CMMsg.MSG_BID,L("<S-NAME> bid(s) '@x1' on <O-NAME> with <T-NAMESELF>.",bidStr),

@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -66,8 +65,8 @@ public class ClanHomeSet extends StdCommand
 		else
 		{
 			commands.clear();
-			commands.addElement(getAccessWords()[0]);
-			commands.addElement(CMLib.map().getExtendedRoomID(R));
+			commands.add(getAccessWords()[0]);
+			commands.add(CMLib.map().getExtendedRoomID(R));
 		}
 
 		if(C==null)

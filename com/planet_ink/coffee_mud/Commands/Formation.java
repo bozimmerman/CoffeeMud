@@ -44,7 +44,7 @@ public class Formation extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final MOB leader=CMLib.combat().getFollowedLeader(mob);
 		final List<MOB>[] done=CMLib.combat().getFormation(mob);
 		if(commands.size()==0)
@@ -74,7 +74,7 @@ public class Formation extends StdCommand
 			String row=(String)commands.lastElement();
 			if("FRONT".startsWith(row.toUpperCase()))
 				row="0";
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			final String name=CMParms.combine(commands,0);
 			MOB who=null;
 			if(CMLib.english().containsString(mob.name(),name)

@@ -52,7 +52,7 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		String itemID=((String)commands.elementAt(2));
+		String itemID=((String)commands.get(2));
 		MOB srchMob=mob;
 		Item srchContainer=null;
 		Room srchRoom=mob.location();
@@ -88,7 +88,7 @@ public class Modify extends StdCommand
 		}
 		String command="";
 		if(commands.size()>3)
-			command=((String)commands.elementAt(3)).toUpperCase();
+			command=((String)commands.get(3)).toUpperCase();
 		String restStr="";
 		if(commands.size()>4)
 			restStr=CMParms.combine(commands,4);
@@ -275,7 +275,7 @@ public class Modify extends StdCommand
 		}
 		if(commands.size()<3) { flunkRoomCmd(mob); return;}
 
-		final String command=((String)commands.elementAt(2)).toUpperCase();
+		final String command=((String)commands.get(2)).toUpperCase();
 		String restStr="";
 		if(commands.size()>=3)
 			restStr=CMParms.combine(commands,3);
@@ -492,7 +492,7 @@ public class Modify extends StdCommand
 				final String playerName=es.nextElement();
 				final MOB playerM=CMLib.players().getLoadPlayer(playerName);
 				if((playerM!=null)&&(!CMLib.flags().isInTheGame(playerM,true)))
-					V.addElement(playerM);
+					V.add(playerM);
 			}
 			final PlayerAccount acc = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
 			acc.setAccountName(oldName);
@@ -516,16 +516,16 @@ public class Modify extends StdCommand
 		String oldName=myArea.Name();
 		final Vector allMyDamnRooms=new Vector();
 		for(final Enumeration e=myArea.getCompleteMap();e.hasMoreElements();)
-			allMyDamnRooms.addElement(e.nextElement());
+			allMyDamnRooms.add(e.nextElement());
 
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around wildly."));
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
 		if(commands.size()==2)
 			CMLib.genEd().modifyArea(mob,myArea);
 		else
-		if((commands.size()==3)&&(CMLib.map().getArea((String)commands.elementAt(2))!=null))
+		if((commands.size()==3)&&(CMLib.map().getArea((String)commands.get(2))!=null))
 		{
-			myArea=CMLib.map().getArea((String)commands.elementAt(2));
+			myArea=CMLib.map().getArea((String)commands.get(2));
 			oldName=myArea.Name();
 			CMLib.genEd().modifyArea(mob,myArea);
 		}
@@ -533,7 +533,7 @@ public class Modify extends StdCommand
 		{
 			if(commands.size()<3) { flunkAreaCmd(mob); return;}
 
-			String command=((String)commands.elementAt(2)).toUpperCase();
+			String command=((String)commands.get(2)).toUpperCase();
 			final STreeSet<String> helpSet=new STreeSet<String>();
 			helpSet.addAll(CMParms.parseCommas("NAME,DESCRIPTION,CLIMATE,FILE,AFFECTS,BEHAVIORS,ADDSUB,DELSUB,XGRID,YGRID,PASSIVE,ACTIVE,FROZEN,STOPPED",true));
 			helpSet.addAll(CMLib.coffeeMaker().getAllGenStats(myArea));
@@ -545,7 +545,7 @@ public class Modify extends StdCommand
 					myArea=possibleArea;
 					oldName=possibleArea.Name();
 					commands.remove(2);
-					command=((String)commands.elementAt(2)).toUpperCase();
+					command=((String)commands.get(2)).toUpperCase();
 				}
 			}
 			String restStr="";
@@ -734,7 +734,7 @@ public class Modify extends StdCommand
 			{
 				cmdDex=CMParms.indexOf(CMDS,((String)commands.lastElement()).toUpperCase());
 				if(cmdDex>=0)
-					commands.removeElementAt(commands.size()-1);
+					commands.remove(commands.size()-1);
 			}
 			String name=CMParms.combine(commands,2);
 			Quest Q=null;
@@ -926,7 +926,7 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		final int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
+		final int direction=Directions.getGoodDirectionCode(((String)commands.get(2)));
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
@@ -937,7 +937,7 @@ public class Modify extends StdCommand
 		final Exit thisExit=mob.location().getRawExit(direction);
 		if(thisExit==null)
 		{
-			mob.tell(L("You have failed to specify a valid exit '@x1'.\n\r",((String)commands.elementAt(2))));
+			mob.tell(L("You have failed to specify a valid exit '@x1'.\n\r",((String)commands.get(2))));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -959,7 +959,7 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		final String command=((String)commands.elementAt(3)).toUpperCase();
+		final String command=((String)commands.get(3)).toUpperCase();
 		final String restStr=CMParms.combine(commands,4);
 
 		if(command.equalsIgnoreCase("text"))
@@ -1272,7 +1272,7 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
-		final String name=((String)commands.elementAt(2)).toUpperCase();
+		final String name=((String)commands.get(2)).toUpperCase();
 		String stuff="";
 		if(commands.size()>3)
 			stuff=CMParms.combine(commands,3).toUpperCase().trim();
@@ -1334,7 +1334,7 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		final String mobID=(String)commands.elementAt(2);
+		final String mobID=(String)commands.get(2);
 		final MOB M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
 		{
@@ -1360,7 +1360,7 @@ public class Modify extends StdCommand
 		}
 		else
 		{
-			final String command=((String)commands.elementAt(3)).toUpperCase();
+			final String command=((String)commands.get(3)).toUpperCase();
 			final String restStr=CMParms.combine(commands,4);
 			if(command.equalsIgnoreCase("PROFICIENCIES")||command.equalsIgnoreCase("PROFICIENCY"))
 			{
@@ -1459,8 +1459,8 @@ public class Modify extends StdCommand
 			return;
 		}
 
-		final String mobID=((String)commands.elementAt(2));
-		final String command=((String)commands.elementAt(3)).toUpperCase();
+		final String mobID=((String)commands.get(2));
+		final String command=((String)commands.get(3)).toUpperCase();
 		String restStr="";
 		if(commands.size()>4)
 			restStr=CMParms.combine(commands,4);
@@ -1559,7 +1559,7 @@ public class Modify extends StdCommand
 		String commandType="";
 		if(commands.size()>1)
 		{
-			final Object O = commands.elementAt(1);
+			final Object O = commands.get(1);
 			if(O instanceof Environmental)
 			{
 				CMLib.genEd().genMiscSet(mob,(Environmental)O);
@@ -1568,7 +1568,7 @@ public class Modify extends StdCommand
 				((Environmental)O).text();
 				return true;
 			}
-			commandType=((String)commands.elementAt(1)).toUpperCase();
+			commandType=((String)commands.get(1)).toUpperCase();
 		}
 		if(commandType.equals("ITEM"))
 		{
@@ -2154,22 +2154,22 @@ public class Modify extends StdCommand
 			if((thang=CMLib.map().findSpaceObject(allWord,true))!=null)
 			{
 				commands=new Vector();
-				commands.addElement("MODIFY");
+				commands.add("MODIFY");
 				if(thang instanceof Area)
-					commands.addElement("AREA");
+					commands.add("AREA");
 				else
 				if(thang instanceof Item)
-					commands.addElement("ITEM");
-				commands.addElement(allWord);
+					commands.add("ITEM");
+				commands.add(allWord);
 				execute(mob,commands,metaFlags);
 			}
 			else
 			if((thang=CMLib.map().findArea(allWord))!=null)
 			{
 				commands=new Vector();
-				commands.addElement("MODIFY");
-				commands.addElement("AREA");
-				commands.addElement(allWord);
+				commands.add("MODIFY");
+				commands.add("AREA");
+				commands.add(allWord);
 				execute(mob,commands,metaFlags);
 			}
 			else

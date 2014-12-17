@@ -43,7 +43,7 @@ public class Beacon extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()==0)
 		{
 			if(mob.getStartRoom()==mob.location())

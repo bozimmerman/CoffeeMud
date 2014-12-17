@@ -48,7 +48,7 @@ public class Eat extends StdCommand
 			mob.tell(L("Eat what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		Environmental thisThang=null;
 		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Wearable.FILTER_ANY);

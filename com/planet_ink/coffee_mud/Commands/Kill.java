@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -75,7 +74,7 @@ public class Kill extends StdCommand
 		{
 			if(((String)commands.lastElement()).equalsIgnoreCase("DEAD"))
 			{
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				whomToKill=CMParms.combine(commands,1);
 				reallyKill=true;
 			}

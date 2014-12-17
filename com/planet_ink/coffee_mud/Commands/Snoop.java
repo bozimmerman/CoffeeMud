@@ -54,7 +54,7 @@ public class Snoop extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(mob.session()==null)
 			return false;
 		boolean doneSomething=false;
@@ -99,20 +99,20 @@ public class Snoop extends StdCommand
 		else
 		{
 			final Vector snoop=new Vector();
-			snoop.addElement(SnoopOn);
+			snoop.add(SnoopOn);
 			for(int v=0;v<snoop.size();v++)
 			{
-				if(snoop.elementAt(v)==mob.session())
+				if(snoop.get(v)==mob.session())
 				{
 					mob.tell(L("This would create a snoop loop!"));
 					return false;
 				}
-				final List<Session> V=snoopingOn((Session)snoop.elementAt(v));
+				final List<Session> V=snoopingOn((Session)snoop.get(v));
 				for(int v2=0;v2<V.size();v2++)
 				{
 					final Session S2=V.get(v2);
 					if(!snoop.contains(S2))
-						snoop.addElement(S2);
+						snoop.add(S2);
 				}
 			}
 			mob.tell(L("You start snooping on @x1.",SnoopOn.mob().name()));

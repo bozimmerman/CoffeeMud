@@ -44,11 +44,11 @@ public class NoFollow extends Follow
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()>1)&&(commands.elementAt(0) instanceof String))
+		if((commands.size()>1)&&(commands.get(0) instanceof String))
 		{
-			if(((String)commands.elementAt(0)).equalsIgnoreCase("UNFOLLOW"))
+			if(((String)commands.get(0)).equalsIgnoreCase("UNFOLLOW"))
 			{
-				unfollow(mob,((commands.size()>1)&&(commands.elementAt(1) instanceof String)&&(((String)commands.elementAt(1)).equalsIgnoreCase("QUIETLY"))));
+				unfollow(mob,((commands.size()>1)&&(commands.get(1) instanceof String)&&(((String)commands.get(1)).equalsIgnoreCase("QUIETLY"))));
 				return false;
 			}
 			MOB M=mob.fetchFollower(CMParms.combine(commands,1));

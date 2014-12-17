@@ -54,15 +54,15 @@ public class Value extends StdCommand
 
 		int maxToDo=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(CMath.s_int((String)commands.firstElement())>0))
+		&&(CMath.s_int((String)commands.get(0))>0))
 		{
-			maxToDo=CMath.s_int((String)commands.firstElement());
+			maxToDo=CMath.s_int((String)commands.get(0));
 			commands.setElementAt("all",0);
 		}
 
 		String whatName=CMParms.combine(commands,0);
 		final Vector V=new Vector();
-		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		boolean allFlag=((String)commands.get(0)).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
 		int addendum=1;
@@ -76,7 +76,7 @@ public class Value extends StdCommand
 				break;
 			if((CMLib.flags().canBeSeenBy(itemToDo,mob))
 			&&(!V.contains(itemToDo)))
-				V.addElement(itemToDo);
+				V.add(itemToDo);
 			addendumStr="."+(++addendum);
 		}
 
@@ -85,7 +85,7 @@ public class Value extends StdCommand
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			final Item thisThang=(Item)V.elementAt(v);
+			final Item thisThang=(Item)V.get(v);
 			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_VALUE,null);
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);

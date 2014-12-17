@@ -69,12 +69,12 @@ public class Shutdown extends StdCommand implements Tickable
 		boolean keepItDown=true;
 		for(int i=commands.size()-1;i>=1;i--)
 		{
-			final String s=(String)commands.elementAt(i);
+			final String s=(String)commands.get(i);
 			if(s.equalsIgnoreCase("RESTART"))
-			{ keepItDown=false; commands.removeElementAt(i);}
+			{ keepItDown=false; commands.remove(i);}
 			else
 			if(s.equalsIgnoreCase("NOPROMPT"))
-			{ noPrompt=true; commands.removeElementAt(i); }
+			{ noPrompt=true; commands.remove(i); }
 			else
 			if(s.equalsIgnoreCase("CANCEL"))
 			{
@@ -90,11 +90,11 @@ public class Shutdown extends StdCommand implements Tickable
 			if((s.equalsIgnoreCase("IN"))&&(i==commands.size()-3))
 			{
 				noPrompt=true;
-				commands.removeElementAt(i);
+				commands.remove(i);
 				final long wait=CMath.s_int((String)commands.get(i));
-				commands.removeElementAt(i);
+				commands.remove(i);
 				final String multiplier=(String)commands.get(i);
-				commands.removeElementAt(i);
+				commands.remove(i);
 				final long timeMultiplier=CMLib.english().getMillisMultiplierByName(multiplier);
 				if((timeMultiplier<0)||(wait<=0))
 				{

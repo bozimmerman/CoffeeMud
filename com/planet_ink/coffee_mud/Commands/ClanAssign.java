@@ -123,7 +123,7 @@ public class ClanAssign extends StdCommand
 						final Vector currentMembersInNewPosV=new Vector();
 						for(final MemberRecord member : members)
 							if(member.role==newPos)
-								currentMembersInNewPosV.addElement(member.name);
+								currentMembersInNewPosV.add(member.name);
 						final List<Integer> topRoleIDs=C.getTopRankedRoles(Function.ASSIGN);
 						if(topRoleIDs.contains(Integer.valueOf(oldPos)))
 						{ // If you WERE already the highest order.. you must be being demoted.
@@ -144,8 +144,8 @@ public class ClanAssign extends StdCommand
 							// if there are too many in the new position, demote some of them.
 							while(currentMembersInNewPosV.size()>=maxInNewPos)
 							{
-								final String s=(String)currentMembersInNewPosV.elementAt(0);
-								currentMembersInNewPosV.removeElementAt(0);
+								final String s=(String)currentMembersInNewPosV.get(0);
+								currentMembersInNewPosV.remove(0);
 								CMLib.clans().clanAnnounce(mob,L(" @x1 of the @x2 @x3 is now a @x4.",s,C.getGovernmentName(),C.clanID(),C.getRoleName(C.getGovernment().getAcceptPos(),true,false)));
 								final MOB M2=CMLib.players().getPlayer(s);
 								if(M2!=null)

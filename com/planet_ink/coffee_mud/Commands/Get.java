@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -90,20 +89,20 @@ public class Get extends StdCommand
 		throws java.io.IOException
 	{
 		final Room R=mob.location();
-		if((commands.size()>1)&&(commands.firstElement() instanceof Item))
+		if((commands.size()>1)&&(commands.get(0) instanceof Item))
 		{
-			final Item item=(Item)commands.firstElement();
+			final Item item=(Item)commands.get(0);
 			Item container=null;
 			boolean quiet=false;
-			if(commands.elementAt(1) instanceof Item)
+			if(commands.get(1) instanceof Item)
 			{
-				container=(Item)commands.elementAt(1);
-				if((commands.size()>2)&&(commands.elementAt(2) instanceof Boolean))
-					quiet=((Boolean)commands.elementAt(2)).booleanValue();
+				container=(Item)commands.get(1);
+				if((commands.size()>2)&&(commands.get(2) instanceof Boolean))
+					quiet=((Boolean)commands.get(2)).booleanValue();
 			}
 			else
-			if(commands.elementAt(1) instanceof Boolean)
-				quiet=((Boolean)commands.elementAt(1)).booleanValue();
+			if(commands.get(1) instanceof Boolean)
+				quiet=((Boolean)commands.get(1)).booleanValue();
 			final boolean success=get(mob,container,item,quiet);
 			if(item instanceof Coins)
 				((Coins)item).putCoinsBack();
@@ -117,12 +116,12 @@ public class Get extends StdCommand
 			mob.tell(L("Get what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		boolean quiet=false;
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
 			quiet=true;
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 		}
 
 		String containerName="";
@@ -138,7 +137,7 @@ public class Get extends StdCommand
 
 		String whatToGet=CMParms.combine(commands,0);
 		final String unmodifiedWhatToGet=whatToGet;
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
 		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
 		boolean doneSomething=false;
@@ -183,14 +182,14 @@ public class Get extends StdCommand
 				&&((CMLib.flags().canBeSeenBy(getThis,mob)||(getThis instanceof Light)))
 				&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
 				&&(!V.contains(getThis)))
-					V.addElement(getThis);
+					V.add(getThis);
 
 				addendumStr="."+(++addendum);
 			}
 
 			for(int i=0;i<V.size();i++)
 			{
-				final Item getThis=(Item)V.elementAt(i);
+				final Item getThis=(Item)V.get(i);
 				get(mob,container,getThis,quiet,"get",true);
 				if(getThis instanceof Coins)
 					((Coins)getThis).putCoinsBack();

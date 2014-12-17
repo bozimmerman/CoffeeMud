@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -49,7 +48,7 @@ public class Fill extends StdCommand
 			mob.tell(L("Fill what, from what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final String testFill=CMParms.combine(commands,0);
 		final Environmental fillThisItem=mob.location().fetchFromRoomFavorItems(null,testFill);
 		if((fillThisItem instanceof Container)
@@ -65,7 +64,7 @@ public class Fill extends StdCommand
 
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			mob.tell(L("From what should I fill the @x1?",(String)commands.elementAt(0)));
+			mob.tell(L("From what should I fill the @x1?",(String)commands.get(0)));
 			return false;
 		}
 		Environmental fillFromThis=null;
@@ -75,10 +74,10 @@ public class Fill extends StdCommand
 		{
 			int fromDex=commands.size()-1;
 			for(int i=commands.size()-2;i>=1;i--)
-				if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
+				if(((String)commands.get(i)).equalsIgnoreCase("from"))
 				{
 					fromDex=i;
-					commands.removeElementAt(i);
+					commands.remove(i);
 				}
 			final String thingToFillFrom=CMParms.combine(commands,fromDex);
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
@@ -88,7 +87,7 @@ public class Fill extends StdCommand
 				return false;
 			}
 			while(commands.size()>=(fromDex+1))
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 		}
 
 		final int maxToFill=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
@@ -99,7 +98,7 @@ public class Fill extends StdCommand
 		int addendum=1;
 		String addendumStr="";
 		final Vector V=new Vector();
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
 		if(thingToFill.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(4);}
 		if(thingToFill.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);}
 		boolean doBugFix = true;
@@ -111,7 +110,7 @@ public class Fill extends StdCommand
 				break;
 			if((CMLib.flags().canBeSeenBy(fillThis,mob))
 			&&(!V.contains(fillThis)))
-				V.addElement(fillThis);
+				V.add(fillThis);
 			addendumStr="."+(++addendum);
 		}
 
@@ -120,7 +119,7 @@ public class Fill extends StdCommand
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			final Environmental fillThis=(Environmental)V.elementAt(i);
+			final Environmental fillThis=(Environmental)V.get(i);
 			final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,L("<S-NAME> fill(s) <T-NAME> from <O-NAME>."));
 			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
 			{

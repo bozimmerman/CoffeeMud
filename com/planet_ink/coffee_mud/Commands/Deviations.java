@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -83,7 +82,7 @@ public class Deviations extends StdCommand
 	public boolean alreadyDone(Environmental E, Vector itemsDone)
 	{
 		for(int i=0;i<itemsDone.size();i++)
-			if(((Environmental)itemsDone.elementAt(i)).sameAs(E))
+			if(((Environmental)itemsDone.get(i)).sameAs(E))
 				return true;
 		return false;
 	}
@@ -96,7 +95,7 @@ public class Deviations extends StdCommand
 			{
 				final MOB M=R.fetchInhabitant(m);
 				if((M!=null)&&(M.isSavable())&&(!alreadyDone(M,check)))
-					check.addElement(M);
+					check.add(M);
 			}
 		}
 		if(type.equalsIgnoreCase("items")||type.equalsIgnoreCase("both"))
@@ -107,7 +106,7 @@ public class Deviations extends StdCommand
 				if((I!=null)
 				&&((I instanceof Armor)||(I instanceof Weapon))
 				&&(!alreadyDone(I,check)))
-					check.addElement(I);
+					check.add(I);
 			}
 			for(int m=0;m<R.numInhabitants();m++)
 			{
@@ -120,7 +119,7 @@ public class Deviations extends StdCommand
 						if((I!=null)
 						&&((I instanceof Armor)||(I instanceof Weapon))
 						&&(!alreadyDone(I,check)))
-							check.addElement(I);
+							check.add(I);
 					}
 					final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 					if(SK!=null)
@@ -133,7 +132,7 @@ public class Deviations extends StdCommand
 								final Item I=(Item)E2;
 								if(((I instanceof Armor)||(I instanceof Weapon))
 								&&(!alreadyDone(I,check)))
-									check.addElement(I);
+									check.add(I);
 							}
 						}
 					}
@@ -166,12 +165,12 @@ public class Deviations extends StdCommand
 	{
 		final Vector<String> V=CMParms.parse(rest);
 		if((V.size()==0)
-		||((!V.firstElement().equalsIgnoreCase("mobs"))
-		   &&(!V.firstElement().equalsIgnoreCase("items"))
-		   &&(!V.firstElement().equalsIgnoreCase("both"))))
+		||((!V.get(0).equalsIgnoreCase("mobs"))
+		   &&(!V.get(0).equalsIgnoreCase("items"))
+		   &&(!V.get(0).equalsIgnoreCase("both"))))
 			return new StringBuffer("You must specify whether you want deviations on MOBS, ITEMS, or BOTH.");
 
-		final String type=V.firstElement().toLowerCase();
+		final String type=V.get(0).toLowerCase();
 		if(V.size()==1)
 			return new StringBuffer("You must also specify a mob or item name, or the word room, or the word area.");
 
@@ -183,7 +182,7 @@ public class Deviations extends StdCommand
 				useFaction=F;
 
 		}
-		final String where=V.elementAt(1).toLowerCase();
+		final String where=V.get(1).toLowerCase();
 		final Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
 		final Vector check=new Vector();
 		if(where.equalsIgnoreCase("room"))
@@ -224,16 +223,16 @@ public class Deviations extends StdCommand
 		&&(!(E instanceof MOB)))
 			return new StringBuffer("'"+where+"' is not a MOB, or Weapon, or Item.");
 		else
-			check.addElement(E);
+			check.add(E);
 		final StringBuffer str=new StringBuffer("");
 		str.append(L("Deviations Report:\n\r"));
 		final StringBuffer itemResults = new StringBuffer();
 		final StringBuffer mobResults = new StringBuffer();
 		for(int c=0;c<check.size();c++)
 		{
-			if(check.elementAt(c) instanceof Item)
+			if(check.get(c) instanceof Item)
 			{
-				final Item I=(Item)check.elementAt(c);
+				final Item I=(Item)check.get(c);
 				Weapon W=null;
 				if(I instanceof Weapon)
 					W=(Weapon)I;
@@ -273,7 +272,7 @@ public class Deviations extends StdCommand
 			}
 			else
 			{
-				final MOB M=(MOB)check.elementAt(c);
+				final MOB M=(MOB)check.get(c);
 				mobResults.append(CMStrings.padRight(M.name(),20)+" ");
 				mobResults.append(CMStrings.padRight(""+M.phyStats().level(),4)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(

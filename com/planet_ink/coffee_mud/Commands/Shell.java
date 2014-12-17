@@ -69,7 +69,7 @@ public class Shell extends StdCommand
 		{
 			for(int c=cmds.size()-1;c>=0;c--)
 			{
-				final String s=(String)cmds.elementAt(c);
+				final String s=(String)cmds.get(c);
 				if(s.startsWith("-"))
 				{
 					for(int c2=1;c2<s.length();c2++)
@@ -88,7 +88,7 @@ public class Shell extends StdCommand
 						preservePaths=true;
 						break;
 					}
-					cmds.removeElementAt(c);
+					cmds.remove(c);
 				}
 			}
 		}
@@ -109,11 +109,11 @@ public class Shell extends StdCommand
 				{
 					if(x==dirs.size())
 					{
-						dirs.addElement(CF);
+						dirs.add(CF);
 						break;
 					}
 					else
-					if(dirs.elementAt(x).getVFSPathAndName().length()<CF.getVFSPathAndName().length())
+					if(dirs.get(x).getVFSPathAndName().length()<CF.getVFSPathAndName().length())
 						x++;
 					else
 					{
@@ -145,12 +145,12 @@ public class Shell extends StdCommand
 				{
 					if(x==dirs.size())
 					{
-						dirs.addElement(CF);
+						dirs.add(CF);
 						dirsH.add(CF);
 						break;
 					}
 					else
-					if(dirs.elementAt(x).getVFSPathAndName().length()>CF.getVFSPathAndName().length())
+					if(dirs.get(x).getVFSPathAndName().length()>CF.getVFSPathAndName().length())
 						x++;
 					else
 					{
@@ -163,7 +163,7 @@ public class Shell extends StdCommand
 		}
 		for(final CMFile F : files)
 			if(!dirsH.contains(F))
-				dirs.addElement(F);
+				dirs.add(F);
 		return dirs;
 	}
 
@@ -212,15 +212,15 @@ public class Shell extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String pwd=(pwds.contains(mob))?(String)pwds.elementAt(pwds.indexOf(mob),2):"";
-		commands.removeElementAt(0);
+		String pwd=(pwds.contains(mob))?(String)pwds.get(pwds.indexOf(mob),2):"";
+		commands.remove(0);
 		if(commands.size()==0)
 		{
 			mob.tell(L("Current directory: /@x1",pwd));
 			return false;
 		}
 		int cmd=-1;
-		String first=((String)commands.firstElement()).toUpperCase();
+		String first=((String)commands.get(0)).toUpperCase();
 		final StringBuffer allcmds=new StringBuffer("");
 		for(int i=0;i<SUB_CMDS.length;i++)
 		{
@@ -233,7 +233,7 @@ public class Shell extends StdCommand
 					if(commands.size()>1)
 						commands.setElementAt(first,1);
 					else
-						commands.addElement(first);
+						commands.add(first);
 				}
 				cmd=i;
 				break;
@@ -319,7 +319,7 @@ public class Shell extends StdCommand
 		{
 			final cp_options opts=new cp_options(commands);
 			if(commands.size()==2)
-				commands.addElement(".");
+				commands.add(".");
 			if(commands.size()<3)
 			{
 				mob.tell(L("^xError  : source and destination must be specified!^N"));
@@ -327,7 +327,7 @@ public class Shell extends StdCommand
 				mob.tell(L("^x       : -p = preserve paths.^N"));
 				return false;
 			}
-			final String source=(String)commands.elementAt(1);
+			final String source=(String)commands.get(1);
 			String target=CMParms.combine(commands,2);
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
 			if(dirs==null)
@@ -427,7 +427,7 @@ public class Shell extends StdCommand
 			pwd=changeTo;
 			mob.tell(L("Directory is now: /@x1",pwd));
 			pwds.removeElement(mob);
-			pwds.addElement(mob,pwd);
+			pwds.add(mob,pwd);
 			return true;
 		}
 		case 3: // delete
@@ -585,7 +585,7 @@ public class Shell extends StdCommand
 					{
 						final StringBuffer text=entry.textUnformatted();
 						if(text.toString().toUpperCase().indexOf(substring)>=0)
-							dirs2.addElement(entry);
+							dirs2.add(entry);
 					}
 				}
 			}
@@ -597,7 +597,7 @@ public class Shell extends StdCommand
 			final StringBuffer msg=new StringBuffer("\n\r");
 			for(int d=0;d<dirs2.size();d++)
 			{
-				final CMFile entry=(CMFile)dirs2.elementAt(d);
+				final CMFile entry=(CMFile)dirs2.get(d);
 				if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
 					msg.append(" ");
 				else
@@ -652,7 +652,7 @@ public class Shell extends StdCommand
 		{
 			final cp_options opts=new cp_options(commands);
 			if(commands.size()==2)
-				commands.addElement(".");
+				commands.add(".");
 			if(commands.size()<3)
 			{
 				mob.tell(L("^xError  : source and destination must be specified!^N"));
@@ -661,7 +661,7 @@ public class Shell extends StdCommand
 				mob.tell(L("^x       : -p = preserve paths.^N"));
 				return false;
 			}
-			final String source=(String)commands.elementAt(1);
+			final String source=(String)commands.get(1);
 			String target=CMParms.combine(commands,2);
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
 			if(dirs==null)
@@ -765,13 +765,13 @@ public class Shell extends StdCommand
 		case 10: // compare files
 		{
 			if(commands.size()==2)
-				commands.addElement(".");
+				commands.add(".");
 			if(commands.size()<3)
 			{
 				mob.tell(L("^xError  : first and second files be specified!^N"));
 				return false;
 			}
-			final String firstFilename=(String)commands.elementAt(1);
+			final String firstFilename=(String)commands.get(1);
 			String secondFilename=CMParms.combine(commands,2);
 			final CMFile file1=new CMFile(incorporateBaseDir(pwd,firstFilename),mob);
 			if((!file1.canRead())

@@ -43,7 +43,7 @@ public class NoPurge extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final String protectMe=CMParms.combine(commands,0);
 		if(protectMe.length()==0)
 		{

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -49,7 +48,7 @@ public class Feed extends StdCommand
 			mob.tell(L("Feed who what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final String what=(String)commands.lastElement();
 		commands.removeElement(what);
 		final String whom=CMParms.combine(commands,0);

@@ -43,11 +43,11 @@ public class Train extends StdCommand
 	public static Vector getAllPossibleThingsToTrainFor()
 	{
 		final Vector V=new Vector();
-		V.addElement("HIT POINTS");
-		V.addElement("MANA");
-		V.addElement("MOVEMENT");
-		V.addElement("GAIN");
-		V.addElement("PRACTICES");
+		V.add("HIT POINTS");
+		V.add("MANA");
+		V.add("MOVEMENT");
+		V.add("GAIN");
+		V.add("PRACTICES");
 		for(final int i: CharStats.CODES.BASECODES())
 			V.add(CharStats.CODES.DESC(i));
 		for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
@@ -69,13 +69,13 @@ public class Train extends StdCommand
 			mob.tell(L("You have @x1 training sessions. Enter HELP TRAIN for more information.",""+mob.getTrains()));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		String teacherName=null;
 		if(commands.size()>1)
 		{
 			teacherName=(String)commands.lastElement();
 			if(teacherName.length()>1)
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 			else
 				teacherName=null;
 		}

@@ -75,7 +75,7 @@ public class Announce extends StdCommand
 		throws java.io.IOException
 	{
 
-		String cmd=((String)commands.firstElement()).toUpperCase();
+		String cmd=((String)commands.get(0)).toUpperCase();
 		if((!cmd.equalsIgnoreCase("ANNOUNCEMSG"))
 		&&(!cmd.equalsIgnoreCase("ANNOUNCETO"))
 		&&(!cmd.equalsIgnoreCase("ANNOUNCE")))
@@ -108,7 +108,7 @@ public class Announce extends StdCommand
 		if(commands.size()>1)
 		{
 			if((!cmd.equalsIgnoreCase("ANNOUNCETO"))
-			||(((String)commands.elementAt(1)).toUpperCase().equals("ALL")))
+			||(((String)commands.get(1)).toUpperCase().equals("ALL")))
 			{
 				String text=null;
 				if(cmd.equalsIgnoreCase("ANNOUNCETO"))
@@ -127,7 +127,7 @@ public class Announce extends StdCommand
 			else
 			{
 				boolean found=false;
-				final String name=(String)commands.elementAt(1);
+				final String name=(String)commands.get(1);
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)

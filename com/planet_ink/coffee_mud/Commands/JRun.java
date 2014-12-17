@@ -15,8 +15,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
+
 import org.mozilla.javascript.*;
 
 /*
@@ -50,16 +50,16 @@ public class JRun extends StdCommand
 			mob.tell(L("jrun filename1 parm1 parm2 ..."));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 
-		final String fn = (String)commands.elementAt(0);
+		final String fn = (String)commands.get(0);
 		final StringBuffer ft = new CMFile(fn,mob,CMFile.FLAG_LOGERRORS).text();
 		if((ft==null)||(ft.length()==0))
 		{
 			mob.tell(L("File '@x1' could not be found.",fn));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final Context cx = Context.enter();
 		try
 		{
@@ -92,7 +92,7 @@ public class JRun extends StdCommand
 				return "";
 			if((i<0)||(i>=v.size()))
 				return "";
-			return (String)v.elementAt(i);
+			return (String)v.get(i);
 		}
 		public static String[] functions = { "mob", "numParms", "getParm", "getParms", "toJavaString"};
 		public String getParms(){return (v==null)?"":CMParms.combineQuoted(v,0);}

@@ -86,7 +86,7 @@ public class Possess extends StdCommand
 			mob.tell(L("You are already possessing someone.  Quit back to your body first!"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		final String MOBname=CMParms.combine(commands,0);
 		MOB target=getTarget(mob,commands,true);
 		if((target==null)||(!target.isMonster()))

@@ -49,7 +49,7 @@ public class Order extends StdCommand
 			mob.tell(L("Order who do to what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()<2)
 		{
 			mob.tell(L("Order them to do what?"));
@@ -63,7 +63,7 @@ public class Order extends StdCommand
 			return false;
 		}
 
-		String whomToOrder=(String)commands.elementAt(0);
+		String whomToOrder=(String)commands.get(0);
 		final Vector V=new Vector();
 		boolean allFlag=whomToOrder.equalsIgnoreCase("all");
 		if(whomToOrder.toUpperCase().startsWith("ALL.")){ allFlag=true; whomToOrder="ALL "+whomToOrder.substring(4);}
@@ -80,7 +80,7 @@ public class Order extends StdCommand
 			if((CMLib.flags().canBeSeenBy(target,mob))
 			&&(target!=mob)
 			&&(!V.contains(target)))
-				V.addElement(target);
+				V.add(target);
 			addendumStr="."+(++addendum);
 		}
 
@@ -96,7 +96,7 @@ public class Order extends StdCommand
 		MOB target=null;
 		if(V.size()==1)
 		{
-			target=(MOB)V.firstElement();
+			target=(MOB)V.get(0);
 			if((!CMLib.flags().canBeSeenBy(target,mob))
 			||(!CMLib.flags().canBeHeardSpeakingBy(mob,target))
 			||(target.location()!=mob.location()))
@@ -111,7 +111,7 @@ public class Order extends StdCommand
 			}
 		}
 
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		CMObject O=CMLib.english().findCommand(mob,commands);
 		final String order=CMParms.combine(commands,0);
@@ -127,7 +127,7 @@ public class Order extends StdCommand
 		final Vector doV=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
-			target=(MOB)V.elementAt(v);
+			target=(MOB)V.get(v);
 			O=CMLib.english().findCommand(target,(Vector)commands.clone());
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 			{
@@ -162,13 +162,13 @@ public class Order extends StdCommand
 				{
 					mob.location().send(mob,msg);
 					if((msg.targetMinor()==CMMsg.TYP_ORDER)&&(msg.target()==target))
-						doV.addElement(target);
+						doV.add(target);
 				}
 			}
 		}
 		for(int v=0;v<doV.size();v++)
 		{
-			target=(MOB)doV.elementAt(v);
+			target=(MOB)doV.get(v);
 			target.enqueCommand((List)commands.clone(),metaFlags|Command.METAFLAG_ORDER,0);
 		}
 		return false;

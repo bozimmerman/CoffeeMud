@@ -52,7 +52,7 @@ public class GTell extends StdCommand
 		text=CMProps.applyINIFilter(text,CMProps.Str.SAYFILTER);
 
 		if((commands.size()>2)
-		&&((((String)commands.elementAt(1)).equalsIgnoreCase("last"))
+		&&((((String)commands.get(1)).equalsIgnoreCase("last"))
 		&&(CMath.isNumber(CMParms.combine(commands,2))))
 		&&(mob.playerStats()!=null))
 		{

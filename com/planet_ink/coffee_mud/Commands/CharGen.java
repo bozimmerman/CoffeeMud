@@ -335,7 +335,7 @@ public class CharGen extends StdCommand
 				for (final String[] element : CAMATCH)
 					if(C.baseClass().equalsIgnoreCase(element[0]))
 						behav=element[1];
-				c.classSet.addElement(C,behav);
+				c.classSet.add(C,behav);
 			}
 		}
 
@@ -346,7 +346,7 @@ public class CharGen extends StdCommand
 		MOB tempBadGuyM=null;
 		for(int i=0;i<commands.size();i++)
 		{
-			String s=(String)commands.elementAt(i);
+			String s=(String)commands.get(i);
 			if(CMath.isInteger(s))
 			{
 				final int x=CMath.s_int(s);
@@ -418,7 +418,7 @@ public class CharGen extends StdCommand
 				for (final String[] element : CAMATCH)
 					if(C.baseClass().equalsIgnoreCase(element[0]))
 						behav=element[1];
-				c.classSet.addElement(C,behav);
+				c.classSet.add(C,behav);
 			}
 			else
 			if(s.endsWith("s"))
@@ -442,7 +442,7 @@ public class CharGen extends StdCommand
 						for (final String[] element : CAMATCH)
 							if(C.baseClass().equalsIgnoreCase(element[0]))
 								behav=element[1];
-						c.classSet.addElement(C,behav);
+						c.classSet.add(C,behav);
 					}
 				}
 			}
@@ -523,7 +523,7 @@ public class CharGen extends StdCommand
 					final int levelStart=c.levelStart;
 					for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
 					{
-						final CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
+						final CharClass C=(CharClass)c.classSet.get(charClassDex,1);
 						mob.tell(C.ID()+": "+level);
 						int roomRobin=0;
 						Room R=null;
@@ -562,7 +562,7 @@ public class CharGen extends StdCommand
 								if(mob.session()!=null)
 									mob.session().print(".");
 							}
-							final Behavior B1=CMClass.getBehavior((String)classSet.elementAt(charClassDex,2));
+							final Behavior B1=CMClass.getBehavior((String)classSet.get(charClassDex,2));
 							B1.setParms(C.ID()+" NOSTAT NOCOMBATSTAT");
 							switch(roomRobin)
 							{
@@ -810,17 +810,17 @@ public class CharGen extends StdCommand
 							{
 								if(M1.amDead()||M1.amDestroyed())
 									losses[0]++;
-								medScore.addElement(Integer.valueOf(cumScore));
-								medPhysDone.addElement(Integer.valueOf(CMath.s_int(B2.getStat("PHYSDAMTAKEN"))));
-								medPhysTaken.addElement(Integer.valueOf(CMath.s_int(B1.getStat("PHYSDAMTAKEN"))));
-								medHitPct.addElement(Double.valueOf((CMath.div(hits,iterations)*100)));
-								medIsHitPct.addElement(Double.valueOf((CMath.div(ishits,iterations)*100)));
-								medPlayerDamPct.addElement(Double.valueOf(100-(CMath.div(M1.curState().getHitPoints(),H1)*100.0)));
-								medPlayerManaPct.addElement(Double.valueOf(100-(CMath.div(M1.curState().getMana(),M1.maxState().getMana())*100.0)));
+								medScore.add(Integer.valueOf(cumScore));
+								medPhysDone.add(Integer.valueOf(CMath.s_int(B2.getStat("PHYSDAMTAKEN"))));
+								medPhysTaken.add(Integer.valueOf(CMath.s_int(B1.getStat("PHYSDAMTAKEN"))));
+								medHitPct.add(Double.valueOf((CMath.div(hits,iterations)*100)));
+								medIsHitPct.add(Double.valueOf((CMath.div(ishits,iterations)*100)));
+								medPlayerDamPct.add(Double.valueOf(100-(CMath.div(M1.curState().getHitPoints(),H1)*100.0)));
+								medPlayerManaPct.add(Double.valueOf(100-(CMath.div(M1.curState().getMana(),M1.maxState().getMana())*100.0)));
 								if(M1.amDead())
-									medLossIters.addElement(Integer.valueOf(iterations));
+									medLossIters.add(Integer.valueOf(iterations));
 								else
-									medWinIters.addElement(Integer.valueOf(iterations));
+									medWinIters.add(Integer.valueOf(iterations));
 								if(cumScore>bestHitScore[0])
 								{
 									bestHitScore[0]=cumScore;
@@ -882,26 +882,26 @@ public class CharGen extends StdCommand
 						allData[charClassDex][level-levelStart][3]=bestSingleHitPhys[0];
 						allData[charClassDex][level-levelStart][4]=losses[0];
 						if(medScore.size()>0)
-							allData[charClassDex][level-levelStart][5]=medScore.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medScore.size())))).intValue();
+							allData[charClassDex][level-levelStart][5]=medScore.get((int)Math.round(Math.floor(CMath.mul(0.5,medScore.size())))).intValue();
 						if(medHitPct.size()>0)
-							allData[charClassDex][level-levelStart][6]=medHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medHitPct.size())))).intValue();
+							allData[charClassDex][level-levelStart][6]=medHitPct.get((int)Math.round(Math.floor(CMath.mul(0.5,medHitPct.size())))).intValue();
 						if(medLossIters.size()>0)
-							allData[charClassDex][level-levelStart][7]=medLossIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.75,medLossIters.size())))).intValue();
+							allData[charClassDex][level-levelStart][7]=medLossIters.get((int)Math.round(Math.floor(CMath.mul(0.75,medLossIters.size())))).intValue();
 						if(medWinIters.size()>0)
-							allData[charClassDex][level-levelStart][8]=medWinIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.25,medWinIters.size())))).intValue();
+							allData[charClassDex][level-levelStart][8]=medWinIters.get((int)Math.round(Math.floor(CMath.mul(0.25,medWinIters.size())))).intValue();
 						if(medPhysDone.size()>0)
-							allData[charClassDex][level-levelStart][9]=medPhysDone.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysDone.size())))).intValue();
+							allData[charClassDex][level-levelStart][9]=medPhysDone.get((int)Math.round(Math.floor(CMath.mul(0.5,medPhysDone.size())))).intValue();
 						if(medPhysTaken.size()>0)
-							allData[charClassDex][level-levelStart][10]=medPhysTaken.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysTaken.size())))).intValue();
+							allData[charClassDex][level-levelStart][10]=medPhysTaken.get((int)Math.round(Math.floor(CMath.mul(0.5,medPhysTaken.size())))).intValue();
 						if(medIsHitPct.size()>0)
-							allData[charClassDex][level-levelStart][11]=medIsHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medIsHitPct.size())))).intValue();
+							allData[charClassDex][level-levelStart][11]=medIsHitPct.get((int)Math.round(Math.floor(CMath.mul(0.5,medIsHitPct.size())))).intValue();
 						allData[charClassDex][level-levelStart][12]=losses[0];
 						allData[charClassDex][level-levelStart][13]=playerArmor;
 						allData[charClassDex][level-levelStart][14]=playerAttack;
 						if(medPlayerDamPct.size()>0)
-							allData[charClassDex][level-levelStart][15]=medPlayerDamPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerDamPct.size())))).intValue();
+							allData[charClassDex][level-levelStart][15]=medPlayerDamPct.get((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerDamPct.size())))).intValue();
 						if(medPlayerManaPct.size()>0)
-							allData[charClassDex][level-levelStart][16]=medPlayerManaPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerManaPct.size())))).intValue();
+							allData[charClassDex][level-levelStart][16]=medPlayerManaPct.get((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerManaPct.size())))).intValue();
 
 						allSkills[charClassDex][level-levelStart][0]=bestIterSkill[0];
 						allSkills[charClassDex][level-levelStart][1]=bestHitSkill[0];
@@ -963,9 +963,9 @@ public class CharGen extends StdCommand
 				final Vector baseClasses=new Vector();
 				for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 				{
-					final CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
+					final CharClass C=(CharClass)c.classSet.get(charClassDex,1);
 					if(!baseClasses.contains(C.baseClass()))
-						baseClasses.addElement(C.baseClass());
+						baseClasses.add(C.baseClass());
 				}
 				for(int d=0;d<c.allData[0][0].length;d++)
 				{
@@ -975,7 +975,7 @@ public class CharGen extends StdCommand
 					buf.append("\n\r");
 					for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 					{
-						final CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
+						final CharClass C=(CharClass)c.classSet.get(charClassDex,1);
 						buf.append(C.ID()).append("\t").append(C.baseClass()).append("\t");
 						for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
 						{
@@ -992,11 +992,11 @@ public class CharGen extends StdCommand
 					buf.append("\n\r");
 					for(int b=0;b<baseClasses.size();b++)
 					{
-						final String baseClass=(String)baseClasses.elementAt(b);
+						final String baseClass=(String)baseClasses.get(b);
 						final int[] levels=new int[c.levelEnd+1];
 						double ct=0;
 						for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
-							if(((CharClass)c.classSet.elementAt(charClassDex,1)).baseClass().equalsIgnoreCase(baseClass))
+							if(((CharClass)c.classSet.get(charClassDex,1)).baseClass().equalsIgnoreCase(baseClass))
 							{
 								ct+=1.0;
 								for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
@@ -1025,27 +1025,27 @@ public class CharGen extends StdCommand
 	{
 		if(mob.isMonster())
 			return false;
-		commands.removeElementAt(0);
+		commands.remove(0);
 		boolean createNewOnly=false;
 		boolean createPlayer=false;
 		if(commands.size()>0)
 		{
-			if(((String)commands.firstElement()).equalsIgnoreCase("COMBAT"))
+			if(((String)commands.get(0)).equalsIgnoreCase("COMBAT"))
 			{
-				commands.removeElementAt(0);
+				commands.remove(0);
 				combatRun(mob,commands);
 				return true;
 			}
 
-			if(((String)commands.firstElement()).equalsIgnoreCase("NEW"))
+			if(((String)commands.get(0)).equalsIgnoreCase("NEW"))
 			{
-				commands.removeElementAt(0);
+				commands.remove(0);
 				createNewOnly=true;
 			}
 
-			if(((String)commands.firstElement()).equalsIgnoreCase("PLAYER"))
+			if(((String)commands.get(0)).equalsIgnoreCase("PLAYER"))
 			{
-				commands.removeElementAt(0);
+				commands.remove(0);
 				createPlayer=true;
 			}
 		}
@@ -1054,7 +1054,7 @@ public class CharGen extends StdCommand
 		String ClassName="";
 		if(commands.size()>0)
 		{
-			ClassName=(String)commands.elementAt(0);
+			ClassName=(String)commands.get(0);
 			C=CMClass.findCharClass(ClassName);
 			level=CMath.s_int(CMParms.combine(commands,1));
 		}

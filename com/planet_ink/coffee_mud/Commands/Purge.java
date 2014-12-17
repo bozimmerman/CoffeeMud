@@ -57,7 +57,7 @@ public class Purge extends StdCommand
 		}
 
 		String mobID=CMParms.combine(commands,2);
-		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
+		boolean allFlag=((String)commands.get(2)).equalsIgnoreCase("all");
 		if(mobID.toUpperCase().startsWith("ALL.")){ allFlag=true; mobID="ALL "+mobID.substring(4);}
 		if(mobID.toUpperCase().endsWith(".ALL")){ allFlag=true; mobID="ALL "+mobID.substring(0,mobID.length()-4);}
 		MOB deadMOB=mob.location().fetchInhabitant(mobID);
@@ -132,7 +132,7 @@ public class Purge extends StdCommand
 			}
 		}
 
-		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
+		boolean allFlag=((String)commands.get(2)).equalsIgnoreCase("all");
 		if(itemID.toUpperCase().startsWith("ALL.")){ allFlag=true; itemID="ALL "+itemID.substring(4);}
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
 		boolean doneSomething=false;
@@ -173,7 +173,7 @@ public class Purge extends StdCommand
 
 		if(commands.size()>1)
 		{
-			commandType=((String)commands.elementAt(1)).toUpperCase();
+			commandType=((String)commands.get(1)).toUpperCase();
 		}
 		if(commandType.equals("ITEM"))
 		{

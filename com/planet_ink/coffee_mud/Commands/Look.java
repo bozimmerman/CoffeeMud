@@ -48,7 +48,7 @@ public class Look extends StdCommand
 		boolean quiet=false;
 		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			quiet=true;
 		}
 		final String textMsg="<S-NAME> look(s) ";
@@ -58,11 +58,11 @@ public class Look extends StdCommand
 		{
 			Environmental thisThang=null;
 
-			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("at")))
-			   commands.removeElementAt(1);
+			if((commands.size()>2)&&(((String)commands.get(1)).equalsIgnoreCase("at")))
+			   commands.remove(1);
 			else
-			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("to")))
-			   commands.removeElementAt(1);
+			if((commands.size()>2)&&(((String)commands.get(1)).equalsIgnoreCase("to")))
+			   commands.remove(1);
 			final String ID=CMParms.combine(commands,1);
 
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
@@ -83,9 +83,9 @@ public class Look extends StdCommand
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
 			if((thisThang==null)
 			&&(commands.size()>2)
-			&&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
+			&&(((String)commands.get(1)).equalsIgnoreCase("in")))
 			{
-				commands.removeElementAt(1);
+				commands.remove(1);
 				final String ID2=CMParms.combine(commands,1);
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID2,Wearable.FILTER_ANY);
 				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
@@ -144,7 +144,7 @@ public class Look extends StdCommand
 		else
 		{
 			if((commands!=null)&&(commands.size()>0))
-				if(((String)commands.elementAt(0)).toUpperCase().startsWith("E"))
+				if(((String)commands.get(0)).toUpperCase().startsWith("E"))
 				{
 					mob.tell(L("Examine what?"));
 					return false;

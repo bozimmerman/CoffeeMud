@@ -48,7 +48,7 @@ public class Practice extends StdCommand
 			mob.tell(L("You have @x1 practice points.  Enter HELP PRACTICE for more information.",""+mob.getPractices()));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		MOB teacher=null;
 		boolean triedTeacher=false;
@@ -58,7 +58,7 @@ public class Practice extends StdCommand
 			if(teacher!=null)
 			{
 				triedTeacher=true;
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 			}
 		}
 

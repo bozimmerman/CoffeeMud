@@ -53,7 +53,7 @@ public class Link extends At
 			return false;
 		}
 		final String dirStr=(String)commands.lastElement();
-		commands.removeElementAt(commands.size()-1);
+		commands.remove(commands.size()-1);
 		final int direction=Directions.getGoodDirectionCode(dirStr);
 		if(direction<0)
 		{

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -49,7 +48,7 @@ public class Give extends StdCommand
 			mob.tell(L("Give what to whom?"));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()<2)
 		{
 			mob.tell(L("To whom should I give that?"));
@@ -62,9 +61,9 @@ public class Give extends StdCommand
 			mob.tell(L("I don't see anyone called @x1 here.",(String)commands.lastElement()));
 			return false;
 		}
-		commands.removeElementAt(commands.size()-1);
+		commands.remove(commands.size()-1);
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("to")))
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 
 		final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToGive<0)
@@ -74,7 +73,7 @@ public class Give extends StdCommand
 		int addendum=1;
 		String addendumStr="";
 		final Vector V=new Vector();
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
 		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
 		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
@@ -84,7 +83,7 @@ public class Give extends StdCommand
 			if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToGive))
 				return false;
 			if(CMLib.flags().canBeSeenBy(giveThis,mob))
-				V.addElement(giveThis);
+				V.add(giveThis);
 		}
 		boolean doBugFix = true;
 		if(V.size()==0)
@@ -119,7 +118,7 @@ public class Give extends StdCommand
 				if(giveThis==null)
 					break;
 				if(CMLib.flags().canBeSeenBy(giveThis,mob))
-					V.addElement(giveThis);
+					V.add(giveThis);
 			}
 			addendumStr="."+(++addendum);
 		}
@@ -129,7 +128,7 @@ public class Give extends StdCommand
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			giveThis=(Item)V.elementAt(i);
+			giveThis=(Item)V.get(i);
 			final CMMsg newMsg=CMClass.getMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,L("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);

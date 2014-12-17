@@ -163,6 +163,12 @@ public class DVector implements Cloneable, java.io.Serializable
 			throw new java.lang.IndexOutOfBoundsException();
 		stuff.addElement(Os);
 	}
+	public synchronized void add(Object... Os)
+	{
+		if(dimensions!=Os.length)
+			throw new java.lang.IndexOutOfBoundsException();
+		stuff.addElement(Os);
+	}
 	public boolean contains(Object O)
 	{
 		return indexOf(O)>=0;
@@ -181,6 +187,11 @@ public class DVector implements Cloneable, java.io.Serializable
 		return stuff.size();
 	}
 	public synchronized void removeElementAt(int i)
+	{
+		if(i>=0)
+			stuff.removeElementAt(i);
+	}
+	public synchronized void remove(int i)
 	{
 		if(i>=0)
 			stuff.removeElementAt(i);
@@ -213,6 +224,13 @@ public class DVector implements Cloneable, java.io.Serializable
 		return (stuff.elementAt(i))[dim-1];
 	}
 
+	public synchronized Object get(int i, int dim)
+	{
+		if(dimensions<dim)
+			throw new java.lang.IndexOutOfBoundsException();
+		return (stuff.elementAt(i))[dim-1];
+	}
+
 	public synchronized void setElementAt(int index, int dim, Object O)
 	{
 		if(dimensions<dim)
@@ -220,7 +238,21 @@ public class DVector implements Cloneable, java.io.Serializable
 		stuff.elementAt(index)[dim-1]=O;
 	}
 
+	public synchronized void set(int index, int dim, Object O)
+	{
+		if(dimensions<dim)
+			throw new java.lang.IndexOutOfBoundsException();
+		stuff.elementAt(index)[dim-1]=O;
+	}
+
 	public synchronized void insertElementAt(int here, Object... Os)
+	{
+		if(dimensions!=Os.length)
+			throw new java.lang.IndexOutOfBoundsException();
+		stuff.insertElementAt(Os,here);
+	}
+	
+	public synchronized void add(int here, Object... Os)
 	{
 		if(dimensions!=Os.length)
 			throw new java.lang.IndexOutOfBoundsException();

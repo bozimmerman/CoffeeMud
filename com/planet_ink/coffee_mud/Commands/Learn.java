@@ -54,7 +54,7 @@ public class Learn extends StdCommand
 			mob.tell(L("Learn what?  Enter QUALIFY or TRAIN to see what you can learn."));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		String teacherName="";
 		String sayTo="SAY";
 		if(commands.size()>1)
@@ -63,9 +63,9 @@ public class Learn extends StdCommand
 			if((teacherName.length()>1)&&(mob.location().fetchFromRoomFavorMOBs(null, (String)commands.lastElement()) instanceof MOB))
 			{
 				sayTo="SAYTO";
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("FROM")))
-					commands.removeElementAt(commands.size()-1);
+					commands.remove(commands.size()-1);
 			}
 			else
 				teacherName="";
@@ -114,7 +114,7 @@ public class Learn extends StdCommand
 		}
 
 		for(int v=0;v<V.size();v++)
-			if(((String)V.elementAt(v)).startsWith(what.toUpperCase().trim()))
+			if(((String)V.get(v)).startsWith(what.toUpperCase().trim()))
 			{
 				final Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like to be trained in "+what);
 				mob.doCommand(CC,metaFlags);

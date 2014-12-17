@@ -48,9 +48,9 @@ public class DrinkCmd extends StdCommand
 			mob.tell(L("Drink what?"));
 			return false;
 		}
-		commands.removeElementAt(0);
-		if((commands.size()>1)&&(((String)commands.firstElement()).equalsIgnoreCase("from")))
-			commands.removeElementAt(0);
+		commands.remove(0);
+		if((commands.size()>1)&&(((String)commands.get(0)).equalsIgnoreCase("from")))
+			commands.remove(0);
 
 		Environmental thisThang=null;
 		if((commands.size()==0)&&(mob.location() instanceof Drink))

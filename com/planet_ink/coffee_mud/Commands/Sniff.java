@@ -46,7 +46,7 @@ public class Sniff extends StdCommand
 		boolean quiet=false;
 		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			quiet=true;
 		}
 		final String textMsg="<S-NAME> sniff(s)";
@@ -81,7 +81,7 @@ public class Sniff extends StdCommand
 		else
 		{
 			if((commands!=null)&&(commands.size()>0))
-				if(((String)commands.elementAt(0)).toUpperCase().startsWith("E"))
+				if(((String)commands.get(0)).toUpperCase().startsWith("E"))
 				{
 					mob.tell(L("Sniff what?"));
 					return false;

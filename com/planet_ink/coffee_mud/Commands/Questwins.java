@@ -50,13 +50,13 @@ public class Questwins extends StdCommand
 			{
 				final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
 				if(!qVec.contains(name))
-					qVec.addElement(name);
+					qVec.add(name);
 			}
 		}
 		Collections.sort(qVec);
 		final StringBuffer msg=new StringBuffer(L("^HQuests @x1 listed as having won:^?^N\n\r",pronoun));
 		for(int i=0;i<qVec.size();i++)
-			msg.append(((String)qVec.elementAt(i))+"^N\n\r");
+			msg.append(((String)qVec.get(i))+"^N\n\r");
 		return msg.toString();
 	}
 
@@ -68,12 +68,12 @@ public class Questwins extends StdCommand
 		{
 			final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
 			if(!qVec.contains(name))
-				qVec.addElement(name);
+				qVec.add(name);
 		}
 		Collections.sort(qVec);
 		final StringBuffer msg=new StringBuffer(L("^HQuests @x1 listed as having accepted:^?^N\n\r",pronoun));
 		for(int i=0;i<qVec.size();i++)
-			msg.append((qVec.elementAt(i))+"^N\n\r");
+			msg.append((qVec.get(i))+"^N\n\r");
 		return msg.toString();
 	}
 	
@@ -81,8 +81,8 @@ public class Questwins extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(((String)commands.firstElement()).toUpperCase().startsWith("QUESTW"))
-			commands.addElement("WON");
+		if(((String)commands.get(0)).toUpperCase().startsWith("QUESTW"))
+			commands.add("WON");
 
 		if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("WON")))
 		{
@@ -91,7 +91,7 @@ public class Questwins extends StdCommand
 				mob.tell(msg);
 		}
 		else
-		if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("DROP")))
+		if((commands.size()>2)&&(((String)commands.get(1)).equalsIgnoreCase("DROP")))
 		{
 			ScriptingEngine foundS=null;
 			for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)

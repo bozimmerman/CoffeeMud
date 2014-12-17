@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -55,7 +54,7 @@ public class Email extends StdCommand
 
 		if((commands!=null)
 		&&(commands.size()>1)
-		&&(commands.elementAt(1) instanceof String))
+		&&(commands.get(1) instanceof String))
 		{
 
 			if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
@@ -86,7 +85,7 @@ public class Email extends StdCommand
 						||to.equalsIgnoreCase(mob.Name())
 						||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
 						{
-							mymsgs.addElement(thismsg);
+							mymsgs.add(thismsg);
 							messages.append(CMStrings.padRight(""+mymsgs.size(),4)
 									+CMStrings.padRight((thismsg.from),cols[1])+" "
 									+CMStrings.padRight(CMLib.time().date2String(thismsg.date),cols[2])+" "
@@ -127,7 +126,7 @@ public class Email extends StdCommand
 					else
 					while((mob.session()!=null)&&(!mob.session().isStopped()))
 					{
-						final JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)mymsgs.elementAt(num-1);
+						final JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)mymsgs.get(num-1);
 						final String key=thismsg.key;
 						final String from=thismsg.from;
 						final String date=CMLib.time().date2String(thismsg.date);

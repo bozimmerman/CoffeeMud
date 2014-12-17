@@ -69,26 +69,26 @@ public class AutoAffects extends StdCommand
 		throws java.io.IOException
 	{
 		Session S=mob.session();
-		if((commands!=null)&&(commands.size()>0)&&(!(commands.firstElement() instanceof String)))
+		if((commands!=null)&&(commands.size()>0)&&(!(commands.get(0) instanceof String)))
 		{
-			if(commands.firstElement() instanceof MOB)
-				S=((MOB)commands.firstElement()).session();
+			if(commands.get(0) instanceof MOB)
+				S=((MOB)commands.get(0)).session();
 			else
-			if(commands.firstElement() instanceof StringBuffer)
+			if(commands.get(0) instanceof StringBuffer)
 			{
-				((StringBuffer)commands.firstElement()).append(getAutoAffects(mob,mob));
+				((StringBuffer)commands.get(0)).append(getAutoAffects(mob,mob));
 				return false;
 			}
 			else
-			if(commands.firstElement() instanceof List)
+			if(commands.get(0) instanceof List)
 			{
-				((List)commands.firstElement()).add(getAutoAffects(mob,mob));
+				((List)commands.get(0)).add(getAutoAffects(mob,mob));
 				return false;
 			}
 			else
 			{
 				commands.clear();
-				commands.addElement(getAutoAffects(mob,mob));
+				commands.add(getAutoAffects(mob,mob));
 				return false;
 			}
 		}

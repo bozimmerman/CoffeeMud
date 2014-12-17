@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -68,8 +67,8 @@ public class CommandJournal extends StdCommand
 							Vector commands,
 							String security)
 	{
-		final String first=(String)commands.elementAt(1);
-		final String second=(commands.size()>2)?(String)commands.elementAt(2):"";
+		final String first=(String)commands.get(1);
+		final String second=(commands.size()>2)?(String)commands.get(2):"";
 		final String rest=(commands.size()>3)?CMParms.combine(commands,3):"";
 		if(!("TRANSFER".startsWith(first.toUpperCase().trim())))
 		   return false;
@@ -140,7 +139,7 @@ public class CommandJournal extends StdCommand
 						  Vector commands,
 						  String security)
 	{
-		final String first=(String)commands.elementAt(1);
+		final String first=(String)commands.get(1);
 		final String second=(commands.size()>2)?CMParms.combine(commands,2):"";
 		if(!("REVIEW".startsWith(first.toUpperCase().trim())))
 		   return false;
@@ -198,7 +197,7 @@ public class CommandJournal extends StdCommand
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
 			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
-			if(CMJ.NAME().equals(((String)commands.firstElement()).toUpperCase().trim()))
+			if(CMJ.NAME().equals(((String)commands.get(0)).toUpperCase().trim()))
 			{
 				journal=CMJ;
 				break;
@@ -208,7 +207,7 @@ public class CommandJournal extends StdCommand
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
 			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
-			if(CMJ.NAME().startsWith(((String)commands.firstElement()).toUpperCase().trim()))
+			if(CMJ.NAME().startsWith(((String)commands.get(0)).toUpperCase().trim()))
 			{
 				journal=CMJ;
 				break;

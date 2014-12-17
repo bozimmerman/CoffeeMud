@@ -44,7 +44,7 @@ public class Wake extends StdCommand
 		throws java.io.IOException
 	{
 		if(commands!=null)
-			commands.removeElementAt(0);
+			commands.remove(0);
 		if((commands==null)||(commands.size()==0))
 		{
 			if(!CMLib.flags().isSleeping(mob))

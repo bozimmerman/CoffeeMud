@@ -65,7 +65,7 @@ public class Expire extends StdCommand
 			return false;
 		AccountStats stats = null;
 		MOB M=null;
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()<1)
 		{
 			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
@@ -77,7 +77,7 @@ public class Expire extends StdCommand
 		else
 		if(commands.size()==1)
 		{
-			final String playerName=CMStrings.capitalizeAndLower((String)commands.elementAt(0));
+			final String playerName=CMStrings.capitalizeAndLower((String)commands.get(0));
 			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				stats = CMLib.players().getLoadAccount(playerName);
 			else
@@ -103,7 +103,7 @@ public class Expire extends StdCommand
 		else
 		{
 			long days;
-			final String howLong=(String)commands.elementAt(1);
+			final String howLong=(String)commands.get(1);
 			if(howLong.equalsIgnoreCase("never"))
 				days=Long.MAX_VALUE;
 			else
@@ -117,7 +117,7 @@ public class Expire extends StdCommand
 			}
 			else
 				days=CMath.s_long(howLong)*1000*60*60*24;
-			final String playerName=CMStrings.capitalizeAndLower((String)commands.elementAt(0));
+			final String playerName=CMStrings.capitalizeAndLower((String)commands.get(0));
 			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				stats = CMLib.players().getLoadAccount(playerName);
 			else

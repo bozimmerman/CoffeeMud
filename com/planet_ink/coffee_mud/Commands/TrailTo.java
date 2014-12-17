@@ -48,14 +48,14 @@ public class TrailTo extends StdCommand
 		final TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags();
 		for(int c=0;c<commands.size();c++)
 		{
-			String s=(String)commands.elementAt(c);
+			String s=(String)commands.get(c);
 			if(s.toUpperCase().startsWith("RADIUS"))
 			{
 				s=s.substring(("RADIUS").length()).trim();
 				if(!s.startsWith("="))
 					continue;
 				s=s.substring(1);
-				commands.removeElementAt(c);
+				commands.remove(c);
 				radius=CMath.s_int(s);
 			}
 			else
@@ -65,7 +65,7 @@ public class TrailTo extends StdCommand
 				if(!s.startsWith("="))
 					continue;
 				s=s.substring(1);
-				commands.removeElementAt(c);
+				commands.remove(c);
 				final List<String> roomList=CMParms.parseCommas(s,true);
 				ignoreRooms=new HashSet<Room>();
 				for(int v=0;v<roomList.size();v++)
@@ -79,7 +79,7 @@ public class TrailTo extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("NOHOME"))
 			{
-				commands.removeElementAt(c);
+				commands.remove(c);
 				flags.plus(TrackingLibrary.TrackingFlag.NOHOMES);
 			}
 		}
@@ -161,7 +161,7 @@ public class TrailTo extends StdCommand
 	{
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			commands.setElementAt(trailTo(mob.location(),commands),0);
 		}
 		else

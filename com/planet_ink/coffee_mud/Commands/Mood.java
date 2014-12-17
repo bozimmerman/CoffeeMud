@@ -47,7 +47,7 @@ public class Mood extends StdCommand
 		if(A!=null)
 		{
 			final Vector V=new XVector(commands);
-			V.removeElementAt(0);
+			V.remove(0);
 			A.invoke(mob,V,mob,true,0);
 		}
 		else

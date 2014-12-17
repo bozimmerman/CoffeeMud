@@ -43,10 +43,10 @@ public class WizInv extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String str=(String)commands.firstElement();
+		String str=(String)commands.get(0);
 		if(Character.toUpperCase(str.charAt(0))!='W')
 			commands.insertElementAt("OFF",1);
-		commands.removeElementAt(0);
+		commands.remove(0);
 		int abilityCode=PhyStats.IS_NOT_SEEN|PhyStats.IS_CLOAKED;
 		str=L("Prop_WizInvis");
 		Ability A=mob.fetchEffect(str);

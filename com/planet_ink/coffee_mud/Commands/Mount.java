@@ -45,7 +45,7 @@ public class Mount extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(L("@x1 what?",((String)commands.elementAt(0))));
+			mob.tell(L("@x1 what?",((String)commands.get(0))));
 			return false;
 		}
 		Vector origCommands=(Vector)commands.clone();
@@ -56,32 +56,32 @@ public class Mount extends StdCommand
 		{
 			final MOB M=mob.location().fetchInhabitant(m);
 			if((M!=null)&&(M instanceof Rideable))
-				possRecipients.addElement(M);
+				possRecipients.add(M);
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I instanceof Rideable))
-				possRecipients.addElement(I);
+				possRecipients.add(I);
 		}
 		Rider RI=null;
 		if(commands.size()>1)
 		{
-			final Item I=mob.location().findItem(null,(String)commands.firstElement());
+			final Item I=mob.location().findItem(null,(String)commands.get(0));
 			if(I!=null)
 			{
-				commands.removeElementAt(0);
+				commands.remove(0);
 				I.setRiding(null);
 				RI=I;
 			}
 			if(RI==null)
 			{
-				final MOB M=mob.location().fetchInhabitant((String)commands.firstElement());
+				final MOB M=mob.location().fetchInhabitant((String)commands.get(0));
 				if(M!=null)
 				{
 					if(!CMLib.flags().canBeSeenBy(M,mob))
 					{
-						mob.tell(L("You don't see @x1 here.",((String)commands.firstElement())));
+						mob.tell(L("You don't see @x1 here.",((String)commands.get(0))));
 						return false;
 					}
 					if((!CMLib.flags().isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
@@ -91,7 +91,7 @@ public class Mount extends StdCommand
 					}
 					RI=M;
 					RI.setRiding(null);
-					commands.removeElementAt(0);
+					commands.remove(0);
 				}
 			}
 		}

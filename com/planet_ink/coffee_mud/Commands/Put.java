@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -48,8 +47,8 @@ public class Put extends StdCommand
 			mob.tell(L("Put out what?"));
 			return;
 		}
-		commands.removeElementAt(1);
-		commands.removeElementAt(0);
+		commands.remove(1);
+		commands.remove(0);
 
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
 		if(items.size()==0)
@@ -79,7 +78,7 @@ public class Put extends StdCommand
 
 		if(((String)commands.lastElement()).equalsIgnoreCase("on"))
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			final Command C=CMClass.getCommand("Wear");
 			if(C!=null)
 				C.execute(mob,commands,metaFlags);
@@ -100,25 +99,25 @@ public class Put extends StdCommand
 				}
 		}
 
-		if(((String)commands.elementAt(1)).equalsIgnoreCase("on"))
+		if(((String)commands.get(1)).equalsIgnoreCase("on"))
 		{
-			commands.removeElementAt(1);
+			commands.remove(1);
 			final Command C=CMClass.getCommand("Wear");
 			if(C!=null)
 				C.execute(mob,commands,metaFlags);
 			return false;
 		}
 
-		if(((String)commands.elementAt(1)).equalsIgnoreCase("out"))
+		if(((String)commands.get(1)).equalsIgnoreCase("out"))
 		{
 			putout(mob,commands,false);
 			return false;
 		}
 
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Where should I put the @x1",(String)commands.elementAt(0)));
+			mob.tell(L("Where should I put the @x1",(String)commands.get(0)));
 			return false;
 		}
 
@@ -137,7 +136,7 @@ public class Put extends StdCommand
 		int addendum=1;
 		String addendumStr="";
 		final Vector V=new Vector();
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
 		if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
 		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
@@ -147,7 +146,7 @@ public class Put extends StdCommand
 			if(((Coins)putThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToPut))
 				return false;
 			if(CMLib.flags().canBeSeenBy(putThis,mob))
-				V.addElement(putThis);
+				V.add(putThis);
 		}
 		boolean doBugFix = true;
 		if(V.size()==0)
@@ -163,7 +162,7 @@ public class Put extends StdCommand
 					break;
 				if((CMLib.flags().canBeSeenBy(putThis,mob))
 				&&(!V.contains(putThis)))
-					V.addElement(putThis);
+					V.add(putThis);
 			}
 			addendumStr="."+(++addendum);
 		}
@@ -176,7 +175,7 @@ public class Put extends StdCommand
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			putThis=(Item)V.elementAt(i);
+			putThis=(Item)V.get(i);
 			final String putWord=(container instanceof Rideable)?((Rideable)container).putString(mob):"in";
 			final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,L("<S-NAME> put(s) <O-NAME> @x1 <T-NAME>.",putWord));
 			if(mob.location().okMessage(mob,putMsg))

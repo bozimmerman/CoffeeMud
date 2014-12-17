@@ -78,7 +78,7 @@ public class ClanVote extends StdCommand
 					&&(C.getAuthority(clanRole.intValue(),Clan.Function.VOTE_ASSIGN)!=Clan.Authority.CAN_NOT_DO))
 				||((CV.function!=Clan.Function.ASSIGN.ordinal())
 					&&(C.getAuthority(clanRole.intValue(),Clan.Function.VOTE_OTHER)!=Clan.Authority.CAN_NOT_DO)))
-						votesForYou.addElement(CV);
+						votesForYou.add(CV);
 			}
 			if(voteNumStr.length()==0)
 			{
@@ -89,7 +89,7 @@ public class ClanVote extends StdCommand
 					msg.append(L(" @x1@x2Command to execute\n\r",CMStrings.padRight("#",3),CMStrings.padRight(L("Status"),15)));
 					for(int v=0;v<votesForYou.size();v++)
 					{
-						final Clan.ClanVote CV=(Clan.ClanVote)votesForYou.elementAt(v);
+						final Clan.ClanVote CV=(Clan.ClanVote)votesForYou.get(v);
 						final boolean ivoted=((CV.votes!=null)&&(CV.votes.containsFirst(mob.Name())));
 						final int votesCast=(CV.votes!=null)?CV.votes.size():0;
 						msg.append((ivoted?"*":" ")
@@ -105,7 +105,7 @@ public class ClanVote extends StdCommand
 				final int which=CMath.s_int(voteNumStr)-1;
 				Clan.ClanVote CV=null;
 				if((which>=0)&&(which<votesForYou.size()))
-					CV=(Clan.ClanVote)votesForYou.elementAt(which);
+					CV=(Clan.ClanVote)votesForYou.get(which);
 				if(CV==null)
 					msg.append(L("That vote does not exist.  Use CLANVOTE to see a list."));
 				else
@@ -171,12 +171,12 @@ public class ClanVote extends StdCommand
 							{
 							case 'Y':
 								msg.append(L("Your YEA vote is recorded."));
-								CV.votes.addElement(mob.Name(),Boolean.TRUE);
+								CV.votes.add(mob.Name(),Boolean.TRUE);
 								updateVote=true;
 								yeas++;
 								break;
 							case 'N':
-								CV.votes.addElement(mob.Name(),Boolean.FALSE);
+								CV.votes.add(mob.Name(),Boolean.FALSE);
 								msg.append(L("Your NAY vote is recorded."));
 								updateVote=true;
 								nays++;

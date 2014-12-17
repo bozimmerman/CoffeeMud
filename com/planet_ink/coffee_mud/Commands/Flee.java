@@ -94,14 +94,14 @@ public class Flee extends Go
 					final Exit thisExit=R.getExitInDir(d);
 					final Room thisRoom=R.getRoomInDir(d);
 					if((thisRoom!=null)&&(thisExit!=null)&&(thisExit.isOpen()))
-						directions.addElement(Integer.valueOf(d));
+						directions.add(Integer.valueOf(d));
 				}
 				// up is last resort
 				if(directions.size()>1)
 					directions.removeElement(Integer.valueOf(Directions.UP));
 				if(directions.size()>0)
 				{
-					directionCode=((Integer)directions.elementAt(CMLib.dice().roll(1,directions.size(),-1))).intValue();
+					directionCode=((Integer)directions.get(CMLib.dice().roll(1,directions.size(),-1))).intValue();
 					direction=Directions.getDirectionName(directionCode);
 				}
 			}

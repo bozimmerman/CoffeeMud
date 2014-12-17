@@ -45,7 +45,7 @@ public class WizEmote extends StdCommand
 	{
 		if(commands.size()>2)
 		{
-			final String who=(String)commands.elementAt(1);
+			final String who=(String)commands.get(1);
 			final String msg=CMParms.combineQuoted(commands,2);
 			Room R=CMLib.map().getRoom(who);
 			if(who.toUpperCase().equals("HERE"))

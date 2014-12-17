@@ -89,7 +89,7 @@ public class Skills extends StdCommand
 		&&(CMath.isNumber((String)commands.lastElement())))
 		{
 			final int x=CMath.s_int((String)commands.lastElement());
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			return x;
 		}
 		return -1;
@@ -118,7 +118,7 @@ public class Skills extends StdCommand
 			{
 				boolean found=false;
 				for(int a=0;a<acodes.size();a++)
-					found=found||CMLib.ableMapper().isDomainIncludedInAnyAbility(i<<5,((Integer)acodes.elementAt(a)).intValue());
+					found=found||CMLib.ableMapper().isDomainIncludedInAnyAbility(i<<5,((Integer)acodes.get(a)).intValue());
 				if(found)
 					domains.append(Ability.DOMAIN_DESCS[i].toLowerCase().replace('_',' ')+", ");
 			}
@@ -142,7 +142,7 @@ public class Skills extends StdCommand
 			mask=Ability.ALL_ACODES|Ability.ALL_DOMAINS;
 			ofType=ofType|ofDomain;
 		}
-		V.addElement(Integer.valueOf(ofType));
+		V.add(Integer.valueOf(ofType));
 		return getAbilities(viewerM,ableM,V,mask,addQualLine,maxLevel);
 	}
 
@@ -212,9 +212,9 @@ public class Skills extends StdCommand
 	{
 		final StringBuilder msg=new StringBuilder("");
 		final Vector V=new Vector();
-		V.addElement(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
-		V.addElement(Integer.valueOf(Ability.ACODE_SKILL));
-		V.addElement(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
+		V.add(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
+		V.add(Integer.valueOf(Ability.ACODE_SKILL));
+		V.add(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
 		final String qual=CMParms.combine(commands,1).toUpperCase();
 		if(parsedOutIndividualSkill(mob,qual,V))
 			return true;
@@ -229,7 +229,7 @@ public class Skills extends StdCommand
 		{
 			mask=mask|Ability.ALL_DOMAINS;
 			for(int v=0;v<V.size();v++)
-				V.setElementAt(Integer.valueOf(((Integer)V.elementAt(v)).intValue()+domain[0]),v);
+				V.setElementAt(Integer.valueOf(((Integer)V.get(v)).intValue()+domain[0]),v);
 		}
 		if((domain[0]>=0)||(qual.length()==0))
 			msg.append(L("\n\r^HYour @x1skills:^? @x2",domainName[0].replace('_',' '),getAbilities(mob,mob,V,mask,true,level[0]).toString()));
