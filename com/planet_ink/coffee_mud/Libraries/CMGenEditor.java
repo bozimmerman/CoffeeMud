@@ -1417,7 +1417,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						// they must want it removed
 						A.removeParent(lookedUp);
 						lookedUp.removeChild(A);
-						mob.tell(L("Enter an area name to add or remove\n\r:"));
+						mob.tell(L("Area '@x1' removed.",lookedUp.Name()));
 					}
 					else
 					{
@@ -1479,7 +1479,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						// this area is already a child to A, they must want it removed
 						A.removeChild(lookedUp);
 						lookedUp.removeParent(A);
-						mob.tell(L("Enter an area name to add or remove\n\r:"));
+						mob.tell(L("Area '@x1' removed.",lookedUp.Name()));
 					}
 					else
 					{

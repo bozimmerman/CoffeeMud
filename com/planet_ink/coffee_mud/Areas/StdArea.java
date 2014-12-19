@@ -1854,7 +1854,7 @@ public class StdArea implements Area
 	{
 		for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();)
 			if(i.next().equals(area))
-			   return true;
+				return true;
 		return false;
 	}
 
@@ -1940,7 +1940,7 @@ public class StdArea implements Area
 			final Area A=a.next();
 			if((A.name().equalsIgnoreCase(named))
 			||(A.Name().equalsIgnoreCase(named)))
-			   return A;
+				return A;
 		}
 		return null;
 	}
@@ -1952,7 +1952,7 @@ public class StdArea implements Area
 		{
 			final Area A=a.next();
 			if(A == area)
-			   return true;
+				return true;
 		}
 		return false;
 	}
