@@ -1382,7 +1382,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genParentAreas(MOB mob, Area A, int showNumber, int showFlag)
+	protected void genParentAreas(MOB mob, Area A, int showNumber, int showFlag, Set<Area> alsoUpdateAreas)
 			throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -1417,6 +1417,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						// they must want it removed
 						A.removeParent(lookedUp);
 						lookedUp.removeChild(A);
+						alsoUpdateAreas.add(lookedUp);
 						mob.tell(L("Area '@x1' removed.",lookedUp.Name()));
 					}
 					else
@@ -1425,6 +1426,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						{
 							A.addParent(lookedUp);
 							lookedUp.addChild(A);
+							alsoUpdateAreas.add(lookedUp);
 							mob.tell(L("Area '@x1' added.",lookedUp.Name()));
 						}
 						else
@@ -1439,7 +1441,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genChildAreas(MOB mob, Area A, int showNumber, int showFlag)
+	protected void genChildAreas(MOB mob, Area A, int showNumber, int showFlag, Set<Area> alsoUpdateAreas)
 			throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -1479,6 +1481,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						// this area is already a child to A, they must want it removed
 						A.removeChild(lookedUp);
 						lookedUp.removeParent(A);
+						alsoUpdateAreas.add(lookedUp);
 						mob.tell(L("Area '@x1' removed.",lookedUp.Name()));
 					}
 					else
@@ -1487,6 +1490,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						{
 							A.addChild(lookedUp);
 							lookedUp.addParent(A);
+							alsoUpdateAreas.add(lookedUp);
 							mob.tell(L("Area '@x1' added.",lookedUp.Name()));
 						}
 						else
@@ -9196,7 +9200,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public void modifyArea(MOB mob, Area myArea) throws IOException
+	public void modifyArea(MOB mob, Area myArea, Set<Area> alsoUpdateAreas) throws IOException
 	{
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
@@ -9216,8 +9220,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genClimateType(mob,myArea,++showNumber,showFlag);
 			myArea.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",myArea.getAtmosphereCode(),true,++showNumber,showFlag));
 			genTimeClock(mob,myArea,++showNumber,showFlag);
-			genParentAreas(mob,myArea,++showNumber,showFlag);
-			genChildAreas(mob,myArea,++showNumber,showFlag);
+			genParentAreas(mob,myArea,++showNumber,showFlag,alsoUpdateAreas);
+			genChildAreas(mob,myArea,++showNumber,showFlag,alsoUpdateAreas);
 			genSubOps(mob,myArea,++showNumber,showFlag);
 			genAreaBlurbs(mob,myArea,++showNumber,showFlag);
 			if(myArea instanceof GridZones)

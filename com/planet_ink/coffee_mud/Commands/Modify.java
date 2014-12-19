@@ -520,14 +520,15 @@ public class Modify extends StdCommand
 
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around wildly."));
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
+		final Set<Area> alsoUpdateAreas=new HashSet<Area>();
 		if(commands.size()==2)
-			CMLib.genEd().modifyArea(mob,myArea);
+			CMLib.genEd().modifyArea(mob,myArea,alsoUpdateAreas);
 		else
 		if((commands.size()==3)&&(CMLib.map().getArea((String)commands.get(2))!=null))
 		{
 			myArea=CMLib.map().getArea((String)commands.get(2));
 			oldName=myArea.Name();
-			CMLib.genEd().modifyArea(mob,myArea);
+			CMLib.genEd().modifyArea(mob,myArea,alsoUpdateAreas);
 		}
 		else
 		{
@@ -718,6 +719,9 @@ public class Modify extends StdCommand
 			CMLib.database().DBUpdateArea(oldName,myArea);
 			CMLib.map().renameRooms(myArea,oldName,allMyDamnRooms);
 		}
+		for(Area A : alsoUpdateAreas)
+			if((A!=myArea)&&(!A.Name().equals(myArea.Name())))
+				CMLib.database().DBUpdateArea(A.Name(),A);
 		Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
 	}
 
