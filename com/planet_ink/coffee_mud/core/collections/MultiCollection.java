@@ -18,11 +18,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class MultiCollection<T> implements Collection<T>
 {
 	private final Vector<Collection<? extends T>> collections = new Vector<Collection<? extends T>>();
 	
-	public MultiCollection(@SuppressWarnings("unchecked") Collection<T>... colls)
+	public MultiCollection(Collection<T>... colls)
 	{
 		super();
 		if(colls==null)
@@ -31,7 +32,6 @@ public class MultiCollection<T> implements Collection<T>
 		collections.trimToSize();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean add(T arg0) 
 	{
@@ -186,7 +186,7 @@ public class MultiCollection<T> implements Collection<T>
 		return CMParms.combine(arrays);
 	}
 
-	@SuppressWarnings({ "unchecked", "hiding" })
+	@SuppressWarnings("hiding")
 	@Override
 	public <T> T[] toArray(T[] arg0) 
 	{
