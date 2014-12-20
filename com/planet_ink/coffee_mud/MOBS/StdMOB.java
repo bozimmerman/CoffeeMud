@@ -2306,21 +2306,25 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_REMOVE:
 				case CMMsg.TYP_OPEN:
 				case CMMsg.TYP_CLOSE:
-					if (charStats().getBodyPart(Race.BODY_ARM) == 0)
+					if ((charStats().getBodyPart(Race.BODY_ARM) == 0)
+					&&(baseCharStats().getMyRace().bodyMask()[Race.BODY_ARM] > 0))
 					{
 						tell(L("You need arms to do that."));
 						return false;
 					}
 					break;
 				case CMMsg.TYP_DELICATE_HANDS_ACT:
-					if ((charStats().getBodyPart(Race.BODY_HAND) == 0) && (msg.othersMinor() != CMMsg.NO_EFFECT))
+					if ((charStats().getBodyPart(Race.BODY_HAND) == 0) 
+					&& (msg.othersMinor() != CMMsg.NO_EFFECT))
 					{
 						tell(L("You need hands to do that."));
 						return false;
 					}
 					break;
 				case CMMsg.TYP_JUSTICE:
-					if ((charStats().getBodyPart(Race.BODY_HAND) == 0) && (msg.target() instanceof Item))
+					if ((charStats().getBodyPart(Race.BODY_HAND) == 0) 
+					&&(baseCharStats().getMyRace().bodyMask()[Race.BODY_HAND] > 0)
+					&& (msg.target() instanceof Item))
 					{
 						tell(L("You need hands to do that."));
 						return false;
@@ -2328,9 +2332,16 @@ public class StdMOB implements MOB
 					break;
 				case CMMsg.TYP_FILL:
 				case CMMsg.TYP_GIVE:
-				case CMMsg.TYP_HANDS:
 				case CMMsg.TYP_LOCK:
 				case CMMsg.TYP_PUT:
+					if ((charStats().getBodyPart(Race.BODY_HAND) == 0)
+					&&(baseCharStats().getMyRace().bodyMask()[Race.BODY_HAND] > 0))
+					{
+						tell(L("You need hands to do that."));
+						return false;
+					}
+					break;
+				case CMMsg.TYP_HANDS:
 				case CMMsg.TYP_INSTALL:
 				case CMMsg.TYP_REPAIR:
 				case CMMsg.TYP_ENHANCE:
@@ -2343,7 +2354,8 @@ public class StdMOB implements MOB
 					}
 					break;
 				case CMMsg.TYP_DRINK:
-					if (charStats().getBodyPart(Race.BODY_HAND) == 0)
+					if((charStats().getBodyPart(Race.BODY_HAND) == 0)
+					&&(baseCharStats().getMyRace().bodyMask()[Race.BODY_HAND] > 0))
 					{
 						if ((msg.target() != null) && (isMine(msg.target())))
 						{
