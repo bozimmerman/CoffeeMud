@@ -1246,14 +1246,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		final int armor = -adjustedArmor(mob);
 		final int ARMOR_CEILING=CMProps.getListFileFirstInt(CMProps.ListFile.ARMOR_DESCS_CEILING);
-		final int numArmorDescs = CMProps.getListFileSize(CMProps.ListFile.ARMOR_DESCS);
-		return (armor<0)?CMProps.getListFileValue(CMProps.ListFile.ARMOR_DESCS,0):(
+		final int numArmorDescs = CMProps.getListFileIndexedListSize(CMProps.ListFile.ARMOR_DESCS);
+		return (armor<0)?CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_DESCS,0):(
 			   (armor>=ARMOR_CEILING)?
-					   CMProps.getListFileValue(CMProps.ListFile.ARMOR_DESCS,numArmorDescs-1)
+					   CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_DESCS,numArmorDescs-1)
 					   +(CMStrings.repeatWithLimit('!',((armor-ARMOR_CEILING)/100),10))
 					   +"^. ("+armor+")"
 					:
-					   (CMProps.getListFileValue(CMProps.ListFile.ARMOR_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),numArmorDescs))))
+					   (CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),numArmorDescs))))
 					   +"^. ("+armor+")"));
 	}
 
@@ -1262,14 +1262,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		final int prowess = adjustedAttackBonus(mob,null) - ATTACK_ADJUSTMENT;
 		final int PROWESS_CEILING=CMProps.getListFileFirstInt(CMProps.ListFile.PROWESS_DESCS_CEILING);
-		final int numProwessDescs = CMProps.getListFileSize(CMProps.ListFile.PROWESS_DESCS);
-		return (prowess<0)?CMProps.getListFileValue(CMProps.ListFile.PROWESS_DESCS,0):(
+		final int numProwessDescs = CMProps.getListFileIndexedListSize(CMProps.ListFile.PROWESS_DESCS);
+		return (prowess<0)?CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.PROWESS_DESCS,0):(
 			   (prowess>=PROWESS_CEILING)
 										 ?
-								 CMProps.getListFileValue(CMProps.ListFile.PROWESS_DESCS,numProwessDescs-1)
+								 CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.PROWESS_DESCS,numProwessDescs-1)
 								 +(CMStrings.repeatWithLimit('!',((prowess-PROWESS_CEILING)/100),10)+"^. ("+prowess+")")
 										 :
-								 (CMProps.getListFileValue(CMProps.ListFile.PROWESS_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),numProwessDescs))))
+								 (CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.PROWESS_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),numProwessDescs))))
 								 +"^. ("+prowess+")"));
 	}
 
@@ -1302,8 +1302,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		final int listIndex = getWeaponAttackIndex(weaponType, weaponClassification);
 		if(!useExtendedMissString)
-			return CMProps.getListFileValue(CMProps.ListFile.MISS_DESCS,listIndex);
-		return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.ListFile.WEAPON_MISS_DESCS,listIndex),"<TOOLNAME>",weaponName)+CMLib.protocol().msp("missed.wav",20);
+			return CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.MISS_DESCS,listIndex);
+		return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_MISS_DESCS,listIndex),"<TOOLNAME>",weaponName)+CMLib.protocol().msp("missed.wav",20);
 	}
 
 
@@ -1315,7 +1315,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			listIndex = getWeaponAttackIndex(weaponType, Weapon.CLASS_NATURAL);
 		else
 			listIndex = getWeaponAttackIndex(weaponType, weaponClass);
-		final StringBuilder str=new StringBuilder(CMStrings.replaceAll(CMProps.getListFileValue(CMProps.ListFile.WEAPON_HIT_DESCS,listIndex),"<TOOLNAME>",weaponName));
+		final StringBuilder str=new StringBuilder(CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_HIT_DESCS,listIndex),"<TOOLNAME>",weaponName));
 		switch(weaponClass)
 		{
 		case Weapon.CLASS_RANGED:
@@ -1333,10 +1333,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		int pct=(int)Math.round(Math.floor((CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10));
 		if(pct<0)
 			pct=0;
-		final int numHealthDescs=CMProps.getListFileSize(CMProps.ListFile.HEALTH_CHART);
+		final int numHealthDescs=CMProps.getListFileIndexedListSize(CMProps.ListFile.HEALTH_CHART);
 		if(pct>=numHealthDescs)
 			pct=numHealthDescs-1;
-		return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.ListFile.HEALTH_CHART,pct),"<MOB>",mob.name(viewer));
+		return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.HEALTH_CHART,pct),"<MOB>",mob.name(viewer));
 	}
 
 	@Override

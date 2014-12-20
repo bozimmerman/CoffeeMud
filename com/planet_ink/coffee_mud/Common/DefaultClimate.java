@@ -161,7 +161,7 @@ public class DefaultClimate implements Climate
 	public String weatherDescription(Room room)
 	{
 		if(!CMLib.map().hasASky(room))
-			return CMProps.getListFileValue(CMProps.ListFile.WEATHER_NONE, 0);
+			return CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEATHER_NONE, 0);
 		return getWeatherDescription(room.getArea());
 	}
 	@Override
@@ -225,7 +225,7 @@ public class DefaultClimate implements Climate
 	protected String getWeatherStop(int weatherCode)
 	{
 		if((weatherCode>=0)&&(weatherCode<Climate.NUM_WEATHER))
-			return CMProps.getListFileValue(CMProps.ListFile.WEATHER_ENDS, weatherCode);
+			return CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEATHER_ENDS, weatherCode);
 		return "";
 	}
 
@@ -411,23 +411,23 @@ public class DefaultClimate implements Climate
 		//#    NORMAL, WET, COLD (WINTER), HOT (SUMMER), DRY
 		final int derivedClimate=A.getClimateType();
 		if(((derivedClimate&Places.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.Season.WINTER))
-			prefix=CMProps.getListFileValue(listFileEnum, 2);
+			prefix=CMProps.getListFileChoiceFromIndexedList(listFileEnum, 2);
 		else
 		if(((derivedClimate&Places.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.Season.SUMMER))
-			prefix=CMProps.getListFileValue(listFileEnum, 3);
+			prefix=CMProps.getListFileChoiceFromIndexedList(listFileEnum, 3);
 		else
 		if((derivedClimate&Places.CLIMASK_WET)>0)
-			prefix=CMProps.getListFileValue(listFileEnum, 1);
+			prefix=CMProps.getListFileChoiceFromIndexedList(listFileEnum, 1);
 		else
 		if((derivedClimate&Places.CLIMASK_DRY)>0)
-			prefix=CMProps.getListFileValue(listFileEnum, 4);
+			prefix=CMProps.getListFileChoiceFromIndexedList(listFileEnum, 4);
 		else
-			prefix=CMProps.getListFileValue(listFileEnum, 0);
+			prefix=CMProps.getListFileChoiceFromIndexedList(listFileEnum, 0);
 		final String suffix;
 		if((derivedClimate&Places.CLIMASK_WINDY)>0)
-			suffix=CMProps.getListFileValue(listFileEnum, 5);
+			suffix=CMProps.getListFileChoiceFromIndexedList(listFileEnum, 5);
 		else
-			suffix=CMProps.getListFileValue(listFileEnum, 6);
+			suffix=CMProps.getListFileChoiceFromIndexedList(listFileEnum, 6);
 		desc.append((suffix.trim().length()>0) ? prefix + " " + suffix : prefix);
 		switch(weather)
 		{

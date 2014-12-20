@@ -246,7 +246,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		{
 			hash=hash*-1;
 		}
-		return CMProps.getListFileValueByHash(CMProps.ListFile.MAGIC_WORDS,hash);
+		return CMProps.getListFileChoiceFromIndexedListByHash(CMProps.ListFile.MAGIC_WORDS,hash);
 	}
 
 	public boolean checkWave(MOB mob, String message, Wand me)

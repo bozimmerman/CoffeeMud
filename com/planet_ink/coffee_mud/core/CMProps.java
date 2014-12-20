@@ -83,7 +83,8 @@ public class CMProps extends Properties
 	 */
 	public static enum Str 
 	{
-		PKILL,
+		/** BLAH BLAH BLAH */
+		PKILL, 
 		MULTICLASS,
 		PLAYERDEATH,
 		PLAYERFLEE,
@@ -1364,15 +1365,19 @@ public class CMProps extends Properties
 			return 0;
 		set.clear();
 		final List<String> V=CMParms.parseCommas(val,true);
-		String s=null;
 		double endVal=0;
-		for(int v=0;v<V.size();v++)
+		for(String s : V)
 		{
-			s=V.get(v);
-			if(CMath.isNumber(s)){ endVal=CMath.s_double(s); continue;}
-			final int x=s.indexOf(' ');
-			if(CMath.isDouble(s.substring(x+1).trim()))
-				set.put(s.substring(0,x).trim().toUpperCase(),Double.valueOf(CMath.s_double(s.substring(x+1).trim())));
+			if(CMath.isNumber(s))
+			{ 
+				endVal=CMath.s_double(s); 
+			}
+			else
+			{
+				final int x=s.indexOf(' ');
+				if(CMath.isDouble(s.substring(x+1).trim()))
+					set.put(s.substring(0,x).trim().toUpperCase(),Double.valueOf(CMath.s_double(s.substring(x+1).trim())));
+			}
 		}
 		return endVal;
 	}
@@ -1412,44 +1417,60 @@ public class CMProps extends Properties
 		return val;
 	}
 
+	/**
+	 * Returns the first integer in the integer array from the lists.ini file of
+	 * the given ListFile entry, for the callers thread group.
+	 * @param var the ListFile entry to return the first integer from
+	 * @return the first int in the given entry
+	 */
 	public static final int getListFileFirstInt(final ListFile var)
 	{
 		if(var==null)
 			return -1;
-		if(p().sysLstFileLists[var.ordinal()]==null)
-			p().sysLstFileLists[var.ordinal()]=new int[]{(CMath.s_int(getRawListFileEntry(var.getKey())))};
-		return ((int[])p().sysLstFileLists[var.ordinal()])[0];
+		return getListFileIntList(var)[0];
 	}
 
+	/**
+	 * Returns the entire string list from the lists.ini file of the
+	 * given ListFile entry, for the callers thread group.
+	 * @param var the ListFile entry to return the string list from
+	 * @return the string list from the lists.ini file
+	 */
 	public static final String[] getListFileStringList(final ListFile var)
 	{
 		if(var==null)
 			return new String[0];
-		if(p().sysLstFileLists[var.ordinal()]==null)
-			p().sysLstFileLists[var.ordinal()]=CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),true));
-		return ((String[])p().sysLstFileLists[var.ordinal()]);
+		final Object[] objs=p().sysLstFileLists;
+		if(objs[var.ordinal()]==null)
+			objs[var.ordinal()]=CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),true));
+		return ((String[])objs[var.ordinal()]);
 	}
 
+	/**
+	 * Returns the entire int list from the lists.ini file of the
+	 * given ListFile entry, for the callers thread group.
+	 * @param var the ListFile entry to return the int list from
+	 * @return the int list from the lists.ini file
+	 */
 	public static final int[] getListFileIntList(final ListFile var)
 	{
 		if(var==null)
 			return new int[0];
-		if(p().sysLstFileLists[var.ordinal()]==null)
+		final Object[] objs=p().sysLstFileLists;
+		if(objs[var.ordinal()]==null)
 		{
-			final List<String> V=CMParms.parseCommas(getRawListFileEntry(var.getKey()), true);
-			final int[] set=new int[V.size()];
-			for(int v=0;v<V.size();v++)
-				set[v]=CMath.s_int(V.get(v));
-			p().sysLstFileLists[var.ordinal()]=set;
+			if(objs[var.ordinal()]==null)
+				objs[var.ordinal()]=CMParms.toIntArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),true));
 		}
-		return ((int[])p().sysLstFileLists[var.ordinal()]);
+		return ((int[])objs[var.ordinal()]);
 	}
 
-	private static final Object[][] getSLstFileVar(final ListFile var)
+	private static final Object[][] getListFileStringChoices(final ListFile var)
 	{
 		if(var==null)
 			return new Object[0][];
-		if(p().sysLstFileLists[var.ordinal()]==null)
+		final Object[] objs=p().sysLstFileLists;
+		if(objs[var.ordinal()]==null)
 		{
 			final String[] baseArray = CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),false));
 			final Object[][] finalArray=new Object[baseArray.length][];
@@ -1458,16 +1479,23 @@ public class CMProps extends Properties
 					finalArray[s]=new Object[]{""};
 				else
 					finalArray[s]=CMParms.toStringArray(CMParms.parseAny(baseArray[s], '|', false));
-			p().sysLstFileLists[var.ordinal()]=finalArray;
+			objs[var.ordinal()]=finalArray;
 		}
-		return (Object[][])p().sysLstFileLists[var.ordinal()];
+		return (Object[][])objs[var.ordinal()];
 	}
 
+	/**
+	 * Returns the entire object grid from the lists.ini file of the
+	 * given ListFile entry, for the callers thread group.
+	 * @param var the ListFile entry to return the object grid from
+	 * @return the object grid from the lists.ini file
+	 */
 	public static final Object[][][] getListFileGrid(final ListFile var)
 	{
 		if(var==null)
 			return new String[0][0][];
-		if(p().sysLstFileLists[var.ordinal()]==null)
+		final Object[] objs=p().sysLstFileLists;
+		if(objs[var.ordinal()]==null)
 		{
 			final List<String> V=CMParms.parseSemicolons(getRawListFileEntry(var.getKey()),true);
 			final Object[][] subSet=new Object[V.size()][];
@@ -1483,43 +1511,82 @@ public class CMProps extends Properties
 					else
 						finalSet[s][s1]=CMParms.toStringArray(CMParms.parseAny((String)subSet[s][s1], '|', false));
 			}
-			p().sysLstFileLists[var.ordinal()]=finalSet;
+			objs[var.ordinal()]=finalSet;
 		}
-		return (Object[][][])p().sysLstFileLists[var.ordinal()];
+		return (Object[][][])objs[var.ordinal()];
 	}
 
-	public static final String getListFileValue(final ListFile varCode, final int listIndex)
+	/**
+	 * Given the specific lists.ini entry, grabs the indexed string list, and then returns a random string from
+	 * that choices available at the given index in the string list.
+	 * @param varCode the lists.ini string list entry
+	 * @param listIndex the index into the string list, to determine which choices to use
+	 * @return a random string from the indexed string list
+	 */
+	public static final String getListFileChoiceFromIndexedList(final ListFile varCode, final int listIndex)
 	{
-		final Object[] set = getSLstFileVar(varCode)[listIndex];
+		final Object[] set = getListFileStringChoices(varCode)[listIndex];
 		if(set.length==1)
 			return (String)set[0];
 		return (String)CMLib.dice().pick(set);
 	}
 
-	public static final String getListFileValueByHash(final ListFile varCode, final int hash)
+	/**
+	 * Given the specific lists.ini entry, grabs the indexed string list, and then returns a random string from
+	 * that choices available at the hash index in the string list.
+	 * @param varCode the lists.ini string list entry
+	 * @param hash the hash to use to determine the index in the list to use.
+	 * @return a random string from the indexed string list
+	 */
+	public static final String getListFileChoiceFromIndexedListByHash(final ListFile varCode, final int hash)
 	{
-		final Object[][] allVars = getSLstFileVar(varCode);
+		final Object[][] allVars = getListFileStringChoices(varCode);
 		final Object[] set = allVars[hash % allVars.length];
 		if(set.length==1)
 			return (String)set[0];
 		return (String)CMLib.dice().pick(set);
 	}
 
-	public static final int getListFileSize(final ListFile varCode)
+	/**
+	 * Given the specific lists.ini entry, grabs the indexed string list, and it's size.
+	 * @param varCode the lists.ini string list entry
+	 * @return size of the indexed string list
+	 */
+	public static final int getListFileIndexedListSize(final ListFile varCode)
 	{
-		return getSLstFileVar(varCode).length;
+		return getListFileStringChoices(varCode).length;
 	}
 
+	/**
+	 * Given the specific lists.ini entry, grabs the indexed string list, returns a random 
+	 * string choice from a random index in the list.
+	 * @param varCode the lists.ini string list entry
+	 * @return the completely random choice
+	 */
 	public static final String getAnyListFileValue(final ListFile varCode)
 	{
-		return (String)CMLib.dice().doublePick(getSLstFileVar(varCode));
+		return (String)CMLib.dice().doublePick(getListFileStringChoices(varCode));
 	}
 
+	/**
+	 * Returns true if the given property name is private to the callers thread group,
+	 * and false if it is shared with the base thread group.  If the caller is the base
+	 * thread group, it always returns false.
+	 * @param s the name of the coffeemud.ini file property
+	 * @return true of false
+	 */
 	public static boolean isPrivateToMe(final String s)
 	{
 		return p().privateSet.containsKey(s.toUpperCase().trim());
 	}
 
+
+	/**
+	 * Returns the set of properties that are private to the callers thread group.  The base
+	 * thread group always returns all of them.
+	 * @param mask a regular expression mask to limit the set
+	 * @return the set of private local properties
+	 */
 	public static Set<String> getPrivateSubSet(final String mask)
 	{
 		final Set<String> newSet=new HashSet<String>();
@@ -1529,6 +1596,12 @@ public class CMProps extends Properties
 		return newSet;
 	}
 
+	/**
+	 * Returns the first thread group available that privately owns the given property,
+	 * excepting the base group.
+	 * @param s the name of the property to look for
+	 * @return the first thread group that privately owns the property
+	 */
 	public static ThreadGroup getPrivateOwner(final String s)
 	{
 		final String tag=s.toUpperCase().trim();
@@ -2168,7 +2241,6 @@ public class CMProps extends Properties
 		return "";
 	}
 
-
 	/**
 	 * This method searches the given codes array for an entry matching the given code, and set the value
 	 * in xtraValues when found.
@@ -2184,7 +2256,7 @@ public class CMProps extends Properties
 					xtraValues[xtraValues.length-x-1]=val;
 	}
 
-	public static final List<String> getStatCodeExtensions(Class<?> C, final String ID)
+	private static final List<String> getStatCodeExtensions(Class<?> C, final String ID)
 	{
 		final String[][] statCodeExtensions = p().statCodeExtensions;
 		if( statCodeExtensions == null) 
@@ -2213,7 +2285,7 @@ public class CMProps extends Properties
 		return null;
 	}
 
-	public static final List<String> getStatCodeExtentions(final CMObject O)
+	private static final List<String> getStatCodeExtentions(final CMObject O)
 	{
 		String name;
 		try
@@ -2226,6 +2298,14 @@ public class CMProps extends Properties
 		return getStatCodeExtensions(O.getClass(), name);
 	}
 
+	/**
+	 * Checks the properties for any "extra" properties attached to an object of
+	 * the given object type, and if found, constructs a string array to hold
+	 * all of the extra values to go with the extra properties, and returns it.
+	 * The object should save this array for its use.
+	 * @param O the object to find extra properties for
+	 * @return a string array to hold any extra values, or null if not applicable
+	 */
 	public static final String[] getExtraStatCodesHolder(final CMObject O)
 	{
 		final List<String> addedStatCodesV = getStatCodeExtentions(O);
@@ -2237,6 +2317,15 @@ public class CMProps extends Properties
 		return statHolder;
 	}
 
+	/**
+	 * Checks the properties for any "extra" properties attached to an object of
+	 * the given object type, and if found, constructs a string array to hold
+	 * all of the object "base" stat codes, and the extra stat codes, and returns it.
+	 * The object should save this array for its use.
+	 * @param baseStatCodes the base set of stat codes that apply to this object
+	 * @param O the object to find extra properties for
+	 * @return a string array to hold all applicable stat codes, or just the base ones given if N/A
+	 */
 	public static final String[] getStatCodesList(final String[] baseStatCodes, final CMObject O)
 	{
 		final List<String> addedStatCodesV = getStatCodeExtentions(O);

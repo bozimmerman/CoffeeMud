@@ -96,7 +96,7 @@ public class StdWand extends StdItem implements Wand
 		int hash=from.hashCode();
 		if(hash<0)
 			hash=hash*-1;
-		return CMProps.getListFileValueByHash(CMProps.ListFile.MAGIC_WORDS,hash);
+		return CMProps.getListFileChoiceFromIndexedListByHash(CMProps.ListFile.MAGIC_WORDS,hash);
 	}
 
 	@Override
