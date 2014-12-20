@@ -46,7 +46,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "MISC";}
 	@Override public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getNormalSkillGainCost(ID()); }
 
 	String oldName="";
 	protected Ability theSpell=null;

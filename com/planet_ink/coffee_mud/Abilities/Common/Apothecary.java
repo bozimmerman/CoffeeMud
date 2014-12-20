@@ -46,7 +46,7 @@ public class Apothecary extends Cooking
 	@Override public String cookWordShort(){return "mix";}
 	@Override public String cookWord(){return "mixing";}
 	@Override public boolean honorHerbs(){return false;}
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getNormalSkillGainCost(ID()); }
 
 	@Override public String parametersFile(){ return "poisons.txt";}
 	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}

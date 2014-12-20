@@ -49,7 +49,7 @@ public class StdLanguage extends StdAbility implements Language
 	@Override protected int canTargetCode(){return 0;}
 	@Override public boolean isAutoInvoked(){return true;}
 	@Override public boolean canBeUninvoked(){return false;}
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getLangTrainCostFormula(ID()); }
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getLangSkillGainCost(ID()); }
 	@Override public int classificationCode(){return Ability.ACODE_LANGUAGE;}
 	protected static final String CANCEL_WORD="CANCEL";
 

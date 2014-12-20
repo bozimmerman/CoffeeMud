@@ -392,25 +392,25 @@ public class CMProps extends Properties
 		NEWPLAYERS
 	}
 
-	protected final String[]	sysVars=new String[Str.values().length];
-	protected final Integer[]   sysInts=new Integer[Int.values().length];
-	protected final Boolean[]   sysBools=new Boolean[Bool.values().length];
-	protected final String[][]  sysLists=new String[StrList.values().length][];
-	protected final Object[]	sysLstFileLists=new Object[ListFile.values().length];
-	protected final List<String>sayFilter=new Vector<String>();
-	protected final List<String>channelFilter=new Vector<String>();
-	protected final List<String>emoteFilter=new Vector<String>();
-	protected final List<String>poseFilter=new Vector<String>();
-	protected String[][]		statCodeExtensions = null;
-	protected int   			pkillLevelDiff=26;
-	protected boolean   		loaded=false;
-	protected long				lastReset=System.currentTimeMillis();
-	protected long  			TIME_TICK=4000;
-	protected long  			MILLIS_PER_MUDHOUR=600000;
-	protected long  			TICKS_PER_RLMIN=(int)Math.round(60000.0/TIME_TICK);
-	protected long  			TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
-	protected long  			TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
-	protected double			TIME_TICK_DOUBLE=TIME_TICK;
+	protected final String[]	sysVars				= new String[Str.values().length];
+	protected final Integer[]   sysInts				= new Integer[Int.values().length];
+	protected final Boolean[]   sysBools			= new Boolean[Bool.values().length];
+	protected final String[][]  sysLists			= new String[StrList.values().length][];
+	protected final Object[]	sysLstFileLists		= new Object[ListFile.values().length];
+	protected final List<String>sayFilter			= new Vector<String>();
+	protected final List<String>channelFilter		= new Vector<String>();
+	protected final List<String>emoteFilter			= new Vector<String>();
+	protected final List<String>poseFilter			= new Vector<String>();
+	protected String[][]		statCodeExtensions 	= null;
+	protected int   			pkillLevelDiff		= 26;
+	protected boolean   		loaded				= false;
+	protected long				lastReset			= System.currentTimeMillis();
+	protected long  			TIME_TICK			= 4000;
+	protected long  			MILLIS_PER_MUDHOUR	= 600000;
+	protected long  			TICKS_PER_RLMIN		= (int)Math.round(60000.0/TIME_TICK);
+	protected long  			TICKS_PER_RLHOUR	= TICKS_PER_RLMIN * 60;
+	protected long  			TICKS_PER_RLDAY		=TICKS_PER_RLHOUR * 24;
+	protected double			TIME_TICK_DOUBLE	= TIME_TICK;
 	protected final Map<String,Integer>	maxClanCatsMap				= new HashMap<String,Integer>();
 	protected final Set<String>			publicClanCats				= new HashSet<String>();
 	protected final Map<String,Double>	skillMaxManaExceptions		= new HashMap<String,Double>();
@@ -428,6 +428,11 @@ public class CMProps extends Properties
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> skillsCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> languageCost=new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 
+	/**
+	 * Creates a properties object for the callers thread group using the given input stream 
+	 * as input for the properties.
+	 * @param in a stream from which to draw the properties.
+	 */
 	public CMProps(InputStream in)
 	{
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -444,6 +449,11 @@ public class CMProps extends Properties
 		}
 	}
 
+	/**
+	 * Creates a properties object for the callers thread group using the given file path 
+	 * as input for the properties.
+	 * @param filename a file from which to draw the properties.
+	 */
 	public CMProps(String filename)
 	{
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -466,20 +476,12 @@ public class CMProps extends Properties
 		}
 	}
 
-	public final boolean load(String filename)
-	{
-		try
-		{
-			this.load(new ByteArrayInputStream(new CMFile(filename,null).raw()));
-			loaded=true;
-		}
-		catch(final IOException e)
-		{
-			loaded=false;
-		}
-		return loaded;
-	}
-
+	/**
+	 * Creates a properties object for the callers thread group using the given file path 
+	 * as input for the properties and the given properties as a baseline.
+	 * @param p loads these properties into this object first
+	 * @param filename a file from which to draw the rest of the properties.
+	 */
 	public CMProps(final Properties p, final String filename)
 	{
 		super(p);
@@ -498,6 +500,12 @@ public class CMProps extends Properties
 		}
 	}
 
+	/**
+	 * Creates a new properties object for the callers thread group
+	 * and loads the given ini file.
+	 * @param iniFile the path and name of the ini file to load
+	 * @return the new properties object
+	 */
 	public static final CMProps loadPropPage(final String iniFile)
 	{
 		final CMProps page=new CMProps(iniFile);
@@ -506,11 +514,20 @@ public class CMProps extends Properties
 		return page;
 	}
 
+	/**
+	 * Returns true if this properties object has been loaded from
+	 * a stream or ini file, and false otherwise.
+	 * @return true or false, depending
+	 */
 	public boolean isLoaded()
 	{
 		return loaded;
 	}
-	
+
+	/**
+	 * Returns the dirty word filter pattern
+	 * @return the dirty word filter pattern
+	 */
 	public static String getFilterPattern()
 	{
 		return FILTER_PATTERN;
@@ -673,6 +690,13 @@ public class CMProps extends Properties
 		}
 	}
 
+	/**
+	 * Return the action cost associated with a specific Command ID(), or the default value if
+	 * no exception is found for that command.
+	 * @param ID the commands ID()
+	 * @param defaultValue the default action cost to use
+	 * @return the action cost
+	 */
 	public static final double getCommandActionCost(final String ID, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().cmdActionCostExceptions;
@@ -682,6 +706,13 @@ public class CMProps extends Properties
 		return defaultValue;
 	}
 
+	/**
+	 * Return the action cost associated with a specific Command ID() during combat, or 
+	 * the default value if no exception is found for that command.
+	 * @param ID the commands ID()
+	 * @param defaultValue the default action cost to use
+	 * @return the action cost
+	 */
 	public static final double getCommandCombatActionCost(final String ID, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().cmdComActionCostExceptions;
@@ -691,16 +722,35 @@ public class CMProps extends Properties
 		return defaultValue;
 	}
 
+	/**
+	 * Return the action cost associated with a specific Command ID(), or the default value if
+	 * no exception is found for that command.
+	 * @param ID the commands ID()
+	 * @return the action cost
+	 */
 	public static final double getCommandActionCost(final String ID)
 	{
 		return getCommandActionCost(ID,CMath.div(getIntVar(Int.DEFCMDTIME),100.0));
 	}
 
+	/**
+	 * Return the action cost associated with a specific Command ID() during combat, or 
+	 * the default value if no exception is found for that command.
+	 * @param ID the commands ID()
+	 * @return the action cost
+	 */
 	public static final double getCommandCombatActionCost(final String ID)
 	{
 		return getCommandCombatActionCost(ID,CMath.div(getIntVar(Int.DEFCOMCMDTIME),100.0));
 	}
 
+	/**
+	 * Return the action cost associated with a specific Ability ID(), or the default value if
+	 * no exception is found for that Ability.
+	 * @param ID the Ability ID()
+	 * @param defaultValue the default action cost to use
+	 * @return the action cost
+	 */
 	public static final double getSkillActionCost(final String ID, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().skillActionCostExceptions;
@@ -710,6 +760,13 @@ public class CMProps extends Properties
 		return defaultValue;
 	}
 
+	/**
+	 * Return the action cost associated with a specific Ability ID() during combat, or 
+	 * the default value if no exception is found for that Ability.
+	 * @param ID the Ability ID()
+	 * @param defaultValue the default action cost to use
+	 * @return the action cost
+	 */
 	public static final double getSkillCombatActionCost(final String ID, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().skillComActionCostExceptions;
@@ -719,16 +776,35 @@ public class CMProps extends Properties
 		return defaultValue;
 	}
 
+	/**
+	 * Return the action cost associated with a specific Ability ID(), or the default value if
+	 * no exception is found for that Ability.
+	 * @param ID the Ability ID()
+	 * @return the action cost
+	 */
 	public static final double getSkillActionCost(final String ID)
 	{
 		return getSkillActionCost(ID,CMath.div(getIntVar(Int.DEFABLETIME),100.0));
 	}
 
+	/**
+	 * Return the action cost associated with a specific Ability ID() during combat, or 
+	 * the default value if no exception is found for that Ability.
+	 * @param ID the Ability ID()
+	 * @return the action cost
+	 */
 	public static final double getSkillCombatActionCost(final String ID)
 	{
 		return getSkillCombatActionCost(ID,CMath.div(getIntVar(Int.DEFCOMABLETIME),100.0));
 	}
 
+	/**
+	 * Return the action cost associated with a specific Social base name, or 
+	 * the default value if no exception is found for that Social.
+	 * @param baseName the Social Base Name
+	 * @param defaultValue the default action cost to use
+	 * @return the action cost
+	 */
 	private static final double getSocialActionCost(final String baseName, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().socActionCostExceptions;
@@ -738,6 +814,13 @@ public class CMProps extends Properties
 		return defaultValue;
 	}
 
+	/**
+	 * Return the action cost associated with a specific Social base name during combat, or 
+	 * the default value if no exception is found for that Social.
+	 * @param baseName the Social Base Name
+	 * @param defaultValue the default action cost to use
+	 * @return the action cost
+	 */
 	private static final double getSocialCombatActionCost(final String baseName, final double defaultValue)
 	{
 		final Map<String,Double> overrides=p().socComActionCostExceptions;
@@ -747,42 +830,107 @@ public class CMProps extends Properties
 		return defaultValue;
 	}
 
+	/**
+	 * Return the action cost associated with a specific Social base name, or 
+	 * the default value if no exception is found for that Social.
+	 * @param baseName the Social Base Name
+	 * @return the action cost
+	 */
 	public static final double getSocialActionCost(final String baseName)
 	{
 		return getSocialActionCost(baseName,CMath.div(getIntVar(Int.DEFSOCTIME),100.0));
 	}
 
+	/**
+	 * Return the action cost associated with a specific Social base name during combat, or 
+	 * the default value if no exception is found for that Social.
+	 * @param baseName the Social Base Name
+	 * @return the action cost
+	 */
 	public static final double getSocialCombatActionCost(final String baseName)
 	{
 		return getSocialCombatActionCost(baseName,CMath.div(getIntVar(Int.DEFCOMSOCTIME),100.0));
 	}
 
-	public static final int getPKillLevelDiff(){return p().pkillLevelDiff;}
+	/**
+	 * Returns the maximum level difference between players who want to PVP each other.
+	 * @return the maximum level difference between players who want to PVP each other.
+	 */
+	public static final int getPKillLevelDiff()
+	{
+		return p().pkillLevelDiff;
+	}
 
+	/**
+	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group.
+	 * @param varNum the Str enum of the entry to get
+	 * @return the value of the property.
+	 */
 	public static final String getVar(final Str varNum)
 	{
-		try { return p().sysVars[varNum.ordinal()];}
-		catch(final Exception t) { return ""; }
+		try 
+		{ 
+			return p().sysVars[varNum.ordinal()];
+		}
+		catch(final Exception t) 
+		{ return ""; }
 	}
 
+	/**
+	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group.
+	 * @param varNum the Int enum of the entry to get
+	 * @return the value of the property.
+	 */
 	public static final int getIntVar(final Int varNum)
 	{
-		try { return p().sysInts[varNum.ordinal()].intValue(); }
-		catch(final Exception t) { return -1; }
+		try 
+		{ 
+			return p().sysInts[varNum.ordinal()].intValue(); 
+		}
+		catch(final Exception t) 
+		{ return -1; }
 	}
 
+	/**
+	 * Retreive one of the pre-processed coffeemud.ini lists for
+	 * the callers thread group.
+	 * @param varNum the StrList enum of the list to get
+	 * @return the list from the properties.
+	 */
 	public static final String[] getListVar(final StrList varType)
 	{
-		try { return p().sysLists[varType.ordinal()]; }
-		catch(final Exception t) { return new String[0]; }
+		try 
+		{
+			return p().sysLists[varType.ordinal()]; 
+		}
+		catch(final Exception t) 
+		{ return new String[0]; }
 	}
 
+	/**
+	 * Retreive one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group.
+	 * @param varNum the Bool enum of the entry to get
+	 * @return the value of the property.
+	 */
 	public static final boolean getBoolVar(final Bool varNum)
 	{
-		try { return p().sysBools[varNum.ordinal()].booleanValue(); }
-		catch(final Exception t) { return false; }
+		try 
+		{ 
+			return p().sysBools[varNum.ordinal()].booleanValue(); 
+		}
+		catch(final Exception t) 
+		{ return false; }
 	}
 
+	/**
+	 * Sets one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group.
+	 * @param varNum the Bool enum of the entry to set
+	 * @param val the new value of the entry
+	 */
 	public static final void setBoolVar(final Bool varNum, final boolean val)
 	{
 		if(varNum==null)
@@ -790,6 +938,12 @@ public class CMProps extends Properties
 		p().sysBools[varNum.ordinal()]=Boolean.valueOf(val);
 	}
 
+	/**
+	 * Sets one of the pre-processed coffeemud.ini entries for
+	 * all thread groups.
+	 * @param varNum the Bool enum of the entries to set
+	 * @param val the new value of the entries
+	 */
 	public static final void setBoolAllVar(final Bool varNum, final boolean val)
 	{
 		if(varNum==null)
@@ -799,6 +953,12 @@ public class CMProps extends Properties
 				p.sysBools[varNum.ordinal()]=Boolean.valueOf(val);
 	}
 
+	/**
+	 * Sets one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group.
+	 * @param varNum the Int enum of the entry to set
+	 * @param val the new value of the entry
+	 */
 	public static final void setIntVar(final Int varNum, final int val)
 	{
 		if(varNum==null)
@@ -806,6 +966,13 @@ public class CMProps extends Properties
 		p().sysInts[varNum.ordinal()]=Integer.valueOf(val);
 	}
 
+	/**
+	 * Sets one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group, only in this case, the entry
+	 * needs to be converted to an int first.
+	 * @param varNum the Int enum of the entry to set
+	 * @param val the new value of the entry, as a string.
+	 */
 	public static final void setIntVar(final Int varNum, String val)
 	{
 		if(varNum==null)
@@ -815,6 +982,15 @@ public class CMProps extends Properties
 		p().sysInts[varNum.ordinal()]=Integer.valueOf(CMath.s_int(val.trim()));
 	}
 
+	/**
+	 * Sets one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group, only in this case, the entry
+	 * needs to be converted to an int first, if it can.  If it
+	 * cannot, the defaultValue is used.
+	 * @param varNum the Int enum of the entry to set
+	 * @param val the new value of the entry, as a string.
+	 * @param defaultValue 
+	 */
 	public static final void setIntVar(final Int varNum, String val, final int defaultValue)
 	{
 		if(varNum==null)
@@ -824,6 +1000,12 @@ public class CMProps extends Properties
 		p().sysInts[varNum.ordinal()]=Integer.valueOf(CMath.s_int(val.trim()));
 	}
 
+	/**
+	 * Sets one of the pre-processed coffeemud.ini list entries for
+	 * the callers thread group.
+	 * @param varNum the StrList enum of the entry to set
+	 * @param val the new value of the entry list
+	 */
 	public static final void setListVar(final StrList varType, String[] var)
 	{
 		if(varType==null)
@@ -833,6 +1015,12 @@ public class CMProps extends Properties
 		p().sysLists[varType.ordinal()]=var;
 	}
 
+	/**
+	 * Add to the end of one of the pre-processed coffeemud.ini list entries for
+	 * the callers thread group.
+	 * @param varNum the StrList enum of the entry to add to
+	 * @param val the value to add to the entry list
+	 */
 	public static final void addListVar(final StrList varType, String var)
 	{
 		if(varType==null)
@@ -847,6 +1035,13 @@ public class CMProps extends Properties
 		list[list.length-1]=var;
 	}
 
+	/**
+	 * Sets one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group.
+	 * @param varNum the Str enum of the entry to set
+	 * @param val the new value of the entry
+	 * @param upperfy true to make the value uppercase first, false otherwise
+	 */
 	public static final void setVar(final Str varNum, String val, final boolean upperFy)
 	{
 		if(val==null)
@@ -854,6 +1049,12 @@ public class CMProps extends Properties
 		setUpLowVar(varNum,upperFy?val.toUpperCase():val);
 	}
 
+	/**
+	 * Sets one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group, forcing the value to uppercase.
+	 * @param varNum the Str enum of the entry to set
+	 * @param val the new value of the entry
+	 */
 	public static final void setVar(final Str varNum, String val)
 	{
 		if(val==null)
@@ -861,6 +1062,13 @@ public class CMProps extends Properties
 		setUpLowVar(varNum,val.toUpperCase());
 	}
 
+	/**
+	 * Sets one of the pre-processed coffeemud.ini entries for
+	 * the given properties object.
+	 * @param props the properties object to set the value on
+	 * @param varNum the Str enum of the entry to set
+	 * @param val the new value of the entry
+	 */
 	private static final void setUpLowVar(final CMProps props, final Str varNum, String val)
 	{
 		if(varNum==null)
@@ -876,18 +1084,37 @@ public class CMProps extends Properties
 		}
 	}
 
+	/**
+	 * Sets one of the pre-processed coffeemud.ini entries for
+	 * the callers thread group, without making the value uppercase.
+	 * @param varNum the Str enum of the entry to set
+	 * @param val the new value of the entry
+	 */
 	public static final void setUpLowVar(final Str varNum, final String val)
 	{
 		setUpLowVar(p(),varNum,val);
 	}
 
+	/**
+	 * Sets one of the pre-processed coffeemud.ini entries for
+	 * all thread groups.
+	 * @param varNum the Str enum of the entries to set
+	 * @param val the new value of the entries
+	 */
 	public static final void setUpAllLowVar(final Str varNum, final String val)
 	{
 		for (final CMProps prop : props)
 			if(prop!=null)
-			   setUpLowVar(prop,varNum,val);
+				setUpLowVar(prop,varNum,val);
 	}
 
+	/**
+	 * Parses and sets one of the properties whitelist entries by parsing the given string by commands,
+	 * and compiling them into Patterns.
+	 * @param props the properties object to set the whitelist on
+	 * @param listType the WhiteList type to set
+	 * @param list the unparsed whitelist entries 
+	 */
 	public static final void setWhitelist(final CMProps props, final WhiteList listType, final String list)
 	{
 		if(listType == null)
@@ -905,11 +1132,25 @@ public class CMProps extends Properties
 		props.whiteLists.put(listType, partsCompiled.toArray(new Pattern[0]));
 	}
 
+	/**
+	 * Parses and sets one of the properties whitelist entries by parsing the given string by commands,
+	 * and compiling them into Patterns, all for the callers thread group.
+	 * @param listType the WhiteList type to set
+	 * @param list the unparsed whitelist entries 
+	 */
 	public static final void setWhitelist(final WhiteList listType, final String list)
 	{
 		setWhitelist(p(), listType, list);
 	}
 
+	/**
+	 * Retrurns true if the given chk string matches one of the entries in the given WhiteList type for the
+	 * given properties object.
+	 * @param props the properties to check the whitelist on
+	 * @param listType the WhiteList type
+	 * @param chk the string to search for
+	 * @return true if the chk string is found, false otherwise
+	 */
 	public static final boolean isOnWhiteList(final CMProps props, final WhiteList listType, final String chk)
 	{
 		if(listType == null)
@@ -929,11 +1170,27 @@ public class CMProps extends Properties
 		return false;
 	}
 
+
+	/**
+	 * Retrurns true if the given chk string matches one of the entries in the given WhiteList type for the
+	 * callers thread group.
+	 * @param listType the WhiteList type
+	 * @param chk the string to search for
+	 * @return true if the chk string is found, false otherwise
+	 */
 	public static final boolean isOnWhiteList(final WhiteList listType, final String chk)
 	{
 		return isOnWhiteList(p(), listType, chk);
 	}
 
+	/**
+	 * Given the list of skill cost definitions, this method will parse 
+	 * out the ID and the data, build a cost definition object
+	 * and store the cost definition in the given map.
+	 * @param fieldName the name of the field being parsed, for error messages
+	 * @param map the map to store the cost definitions in
+	 * @param fields the pre-separated list of cost definitions to finish parsing
+	 */
 	public static final void setUpCosts(final String fieldName, final Map<String,ExpertiseLibrary.SkillCostDefinition> map, final List<String> fields)
 	{
 		final double[] doubleChecker=new double[10];
@@ -983,7 +1240,13 @@ public class CMProps extends Properties
 		}
 	}
 
-	public static final ExpertiseLibrary.SkillCostDefinition getSkillTrainCostFormula(final String id)
+	/**
+	 * Returns the cost of gaining the given skill, by Ability id, for the callers
+	 * thread group.
+	 * @param id the Ability id to find a cost for
+	 * @return the cost definition object for the given Ability.
+	 */
+	public static final ExpertiseLibrary.SkillCostDefinition getNormalSkillGainCost(final String id)
 	{
 		final CMProps p=p();
 		ExpertiseLibrary.SkillCostDefinition pair=p.skillsCost.get(id.toUpperCase());
@@ -994,7 +1257,13 @@ public class CMProps extends Properties
 		return pair;
 	}
 
-	public static final ExpertiseLibrary.SkillCostDefinition getCommonTrainCostFormula(final String id)
+	/**
+	 * Returns the cost of gaining the given common skill, by Ability id, for the callers
+	 * thread group.
+	 * @param id the common skill Ability id to find a cost for
+	 * @return the cost definition object for the given common skill Ability.
+	 */
+	public static final ExpertiseLibrary.SkillCostDefinition getCommonSkillGainCost(final String id)
 	{
 		final CMProps p=p();
 		ExpertiseLibrary.SkillCostDefinition pair=p.commonCost.get(id.toUpperCase());
@@ -1005,7 +1274,13 @@ public class CMProps extends Properties
 		return pair;
 	}
 
-	public static final ExpertiseLibrary.SkillCostDefinition getLangTrainCostFormula(final String id)
+	/**
+	 * Returns the cost of gaining the given language skill, by Ability id, for the callers
+	 * thread group.
+	 * @param id the language skill Ability id to find a cost for
+	 * @return the cost definition object for the given language skill Ability.
+	 */
+	public static final ExpertiseLibrary.SkillCostDefinition getLangSkillGainCost(final String id)
 	{
 		final CMProps p=p();
 		ExpertiseLibrary.SkillCostDefinition pair=p.languageCost.get(id.toUpperCase());
@@ -1016,6 +1291,12 @@ public class CMProps extends Properties
 		return pair;
 	}
 
+	/**
+	 * Returns the number of times the given ip address has created a new user in the callers
+	 * thread group properties, within a given amount of time.
+	 * @param address the address to look for.
+	 * @return the number of new users created.
+	 */
 	public static final int getCountNewUserByIP(final String address)
 	{
 		int count=0;
@@ -1033,6 +1314,12 @@ public class CMProps extends Properties
 		}
 		return count;
 	}
+
+	/**
+	 * Adds a new new user entry for the callers thread group, and the given address.
+	 * These are tracked to make sure a given address doesn't create too many new users.
+	 * @param address the address to register a new user for
+	 */
 	public static final void addNewUserByIP(final String address)
 	{
 		final PairVector<String,Long> DV=p().newusersByIP;
@@ -1049,6 +1336,7 @@ public class CMProps extends Properties
 			return DV.get(skillID.toUpperCase()).intValue();
 		return Integer.MIN_VALUE;
 	}
+
 	public static final int getMaxManaException(final String skillID)
 	{
 		final Map<String,Double> DV=p().skillMaxManaExceptions;
@@ -1716,11 +2004,19 @@ public class CMProps extends Properties
 		return p().MILLIS_PER_MUDHOUR;
 	}
 
+	/**
+	 * Returns the number of game ticks that occur every in-game "hour"
+	 * @return the number of game ticks that occur every in-game "hour"
+	 */
 	public static final long getTicksPerMudHour()
 	{
 		return p().MILLIS_PER_MUDHOUR / p().TIME_TICK;
 	}
 
+	/**
+	 * Returns the number of game ticks that occur every real life minute
+	 * @return the number of game ticks that occur every real life minute
+	 */
 	public static final long getTicksPerMinute()
 	{
 		return p().TICKS_PER_RLMIN;
@@ -1735,6 +2031,10 @@ public class CMProps extends Properties
 		return p().TICKS_PER_RLHOUR;
 	}
 
+	/**
+	 * Returns the number of game ticks that occur every real life day
+	 * @return the number of game ticks that occur every real life day
+	 */
 	public static final long getTicksPerDay()
 	{
 		return p().TICKS_PER_RLDAY;

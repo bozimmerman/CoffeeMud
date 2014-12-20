@@ -42,7 +42,7 @@ public class Scrapping extends CommonSkill
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =I(new String[] {"SCRAP","SCRAPPING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getSkillTrainCostFormula(ID()); }
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getNormalSkillGainCost(ID()); }
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
 
 	protected Item found=null;

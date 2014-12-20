@@ -62,7 +62,7 @@ public class CommonSkill extends StdAbility
 	protected String displayText=L("(Doing something productive)");
 	@Override public String displayText(){return displayText;}
 
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getCommonTrainCostFormula(ID()); }
+	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getCommonSkillGainCost(ID()); }
 	@Override protected int iniPracticesToPractice(){return 1;}
 
 	protected boolean allowedWhileMounted(){return true;}

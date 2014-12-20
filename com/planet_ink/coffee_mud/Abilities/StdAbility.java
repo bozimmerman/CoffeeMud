@@ -153,7 +153,7 @@ public class StdAbility implements Ability
 
 	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
 	{
-		return CMProps.getSkillTrainCostFormula(ID());
+		return CMProps.getNormalSkillGainCost(ID());
 	}
 
 	@Override
