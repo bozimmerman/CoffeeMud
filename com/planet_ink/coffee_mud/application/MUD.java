@@ -146,7 +146,7 @@ public class MUD extends Thread implements MudHost
 					final int maxAtThisAddress=6;
 					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONNSPAMBLOCK))
 					{
-						if(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_CONNS, address))
+						if(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, address))
 						{
 							synchronized(accessed)
 							{

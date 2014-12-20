@@ -26,15 +26,26 @@ import java.io.InputStreamReader;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The source class for thread-group-based and global mud properties.
+ * Acts as a singleton for the purposes of access to properties, parsed
+ * into Str(ing), Int(eger), and Bool(ean).  The singleton maintains 
+ * instances of itself for thread-group access, and fills in any gaps
+ * with the base-thread-group values.
+ * @author BZ
+ */
 public class CMProps extends Properties
 {
 	private static final long serialVersionUID = -6592429720705457521L;
 	private static final CMProps[] props	   = new CMProps[256];
+	private static final CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 
 	protected static final String FILTER_PATTERN="%#@*!$&?";
 	protected static final char[] FILTER_CHARS=FILTER_PATTERN.toCharArray();
 
-	
+	/**
+	 * Constructor for a property object that applies only to this thread group.
+	 */
 	public CMProps()
 	{
 		super();
@@ -42,6 +53,11 @@ public class CMProps extends Properties
 		if(props[c]==null)
 			props[c]=this;
 	}
+	
+	/**
+	 * Returns the property object that applies to the callers thread group.
+	 * @return the property object that applies to the callers thread group.
+	 */
 	public static final CMProps instance()
 	{
 		final CMProps p=p();
@@ -49,10 +65,23 @@ public class CMProps extends Properties
 			return new CMProps();
 		return p;
 	}
-	public static final CMProps instance(char c){ return props[c];}
-	private static final CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-
-	public static enum Str {
+	
+	/**
+	 * Returns the property object that applies to the given thread group.
+	 * @param c thread group code to return properties for. Base = '0'.
+	 * @return the property object that applies to the given thread group.
+	 */
+	public static final CMProps instance(char c)
+	{
+		return props[c];
+	}
+	
+	/**
+	 * Enums for String entries in the coffeemud.ini file
+	 * @author BZ
+	 */
+	public static enum Str 
+	{
 		PKILL,
 		MULTICLASS,
 		PLAYERDEATH,
@@ -157,7 +186,13 @@ public class CMProps extends Properties
 		CHANNELBACKLOG
 	}
 
-	public static enum Int {
+	/**
+	 * Enums for Integer entries in the coffeemud.ini file
+	 * @author BZ
+	 *
+	 */
+	public static enum Int 
+	{
 		EXPRATE,
 		SKYSIZE,
 		MAXSTAT,
@@ -239,7 +274,13 @@ public class CMProps extends Properties
 		DEFCOMSOCTIME,
 	}
 
-	public static enum Bool {
+	/**
+	 * Enums for Boolean entries in the coffeemud.ini file
+	 * @author BZ
+	 *
+	 */
+	public static enum Bool 
+	{
 		MOBCOMPRESS,
 		ITEMDCOMPRESS,
 		ROOMDCOMPRESS,
@@ -259,6 +300,10 @@ public class CMProps extends Properties
 		PLAYERSNOCACHE
 	}
 
+	/**
+	 * Enums for String list entries
+	 * @author BZ
+	 */
 	public enum StrList
 	{
 		SUBSCRIPTION_STRS("SUBSCRIPTION_STRS")
@@ -268,10 +313,20 @@ public class CMProps extends Properties
 		{
 			str=toStr;
 		}
-		@Override public String toString() { return str; }
+		
+		@Override 
+		public String toString() 
+		{
+			return str; 
+		}
 	}
 
-	public static enum ListFile {
+	/**
+	 * Enums for localizeable string list entries in lists.ini
+	 * @author BZ
+	 */
+	public static enum ListFile 
+	{
 		DAMAGE_WORDS_THRESHOLDS,
 		DAMAGE_WORDS,
 		HEALTH_CHART,
@@ -309,21 +364,33 @@ public class CMProps extends Properties
 		WEATHER_NONE // try to always and forever keep these at the end...
 		;
 		private String key;
+		
 		private ListFile(String key)
 		{
 			this.key=key;
 		}
+		
 		private ListFile()
 		{
 			this.key=this.toString();
 		}
-		public String getKey() { return key; }
+		
+		public String getKey() 
+		{ 
+			return key; 
+		}
 	}
 
-	public static final int SYSTEMWL_CONNS=0;
-	public static final int SYSTEMWL_LOGINS=1;
-	public static final int SYSTEMWL_NEWPLAYERS=2;
-	public static final int NUMWL_SYSTEM=3;
+	/**
+	 * Enum for white lists for various purposes
+	 * @author BZ
+	 */
+	public static enum WhiteList 
+	{
+		CONNS,
+		LOGINS,
+		NEWPLAYERS
+	}
 
 	protected final String[]	sysVars=new String[Str.values().length];
 	protected final Integer[]   sysInts=new Integer[Int.values().length];
@@ -335,7 +402,6 @@ public class CMProps extends Properties
 	protected final List<String>emoteFilter=new Vector<String>();
 	protected final List<String>poseFilter=new Vector<String>();
 	protected String[][]		statCodeExtensions = null;
-	protected Pattern[][]		whiteLists = new Pattern[0][];
 	protected int   			pkillLevelDiff=26;
 	protected boolean   		loaded=false;
 	protected long				lastReset=System.currentTimeMillis();
@@ -345,18 +411,19 @@ public class CMProps extends Properties
 	protected long  			TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
 	protected long  			TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
 	protected double			TIME_TICK_DOUBLE=TIME_TICK;
-	protected final Map<String,Integer>	maxClanCatsMap				=new HashMap<String,Integer>();
-	protected final Set<String>			publicClanCats				=new HashSet<String>();
-	protected final Map<String,Double>	skillMaxManaExceptions		=new HashMap<String,Double>();
-	protected final Map<String,Double>	skillMinManaExceptions		=new HashMap<String,Double>();
-	protected final Map<String,Double>	skillActionCostExceptions	=new HashMap<String,Double>();
-	protected final Map<String,Double>	skillComActionCostExceptions=new HashMap<String,Double>();
-	protected final Map<String,Double>	cmdActionCostExceptions		=new HashMap<String,Double>();
-	protected final Map<String,Double>	cmdComActionCostExceptions	=new HashMap<String,Double>();
-	protected final Map<String,Double>	socActionCostExceptions		=new HashMap<String,Double>();
-	protected final Map<String,Double>	socComActionCostExceptions	=new HashMap<String,Double>();
-	protected final PairVector<String,Long> newusersByIP=new PairVector<String,Long>();
-	protected final Map<String,ThreadGroup> privateSet=new HashMap<String,ThreadGroup>();
+	protected final Map<String,Integer>	maxClanCatsMap				= new HashMap<String,Integer>();
+	protected final Set<String>			publicClanCats				= new HashSet<String>();
+	protected final Map<String,Double>	skillMaxManaExceptions		= new HashMap<String,Double>();
+	protected final Map<String,Double>	skillMinManaExceptions		= new HashMap<String,Double>();
+	protected final Map<String,Double>	skillActionCostExceptions	= new HashMap<String,Double>();
+	protected final Map<String,Double>	skillComActionCostExceptions= new HashMap<String,Double>();
+	protected final Map<String,Double>	cmdActionCostExceptions		= new HashMap<String,Double>();
+	protected final Map<String,Double>	cmdComActionCostExceptions	= new HashMap<String,Double>();
+	protected final Map<String,Double>	socActionCostExceptions		= new HashMap<String,Double>();
+	protected final Map<String,Double>	socComActionCostExceptions	= new HashMap<String,Double>();
+	protected final Map<WhiteList,Pattern[]>whiteLists				= new HashMap<WhiteList,Pattern[]>();
+	protected final PairVector<String,Long> newusersByIP			= new PairVector<String,Long>();
+	protected final Map<String,ThreadGroup> privateSet				= new HashMap<String,ThreadGroup>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> commonCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> skillsCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> languageCost=new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
@@ -821,39 +888,37 @@ public class CMProps extends Properties
 			   setUpLowVar(prop,varNum,val);
 	}
 
-	public static final void setWhitelist(final CMProps props, final int listNum, final String list)
+	public static final void setWhitelist(final CMProps props, final WhiteList listType, final String list)
 	{
-		if((listNum<0)||(listNum>=NUMWL_SYSTEM))
+		if(listType == null)
 			return ;
-		if(props.whiteLists.length<=listNum)
-			props.whiteLists=Arrays.copyOf(props.whiteLists, listNum+1);
-		props.whiteLists[listNum]=new Pattern[0];
 		if((list==null)||(list.trim().length()==0))
 			return;
 		final List<String> parts=CMParms.parseCommas(list.trim(),true);
+		final List<Pattern> partsCompiled = new ArrayList<Pattern>();
 		for(final String part : parts)
 		{
 			if(part.trim().length()==0)
 				continue;
-			props.whiteLists[listNum]=Arrays.copyOf(props.whiteLists[listNum], props.whiteLists[listNum].length+1);
-			props.whiteLists[listNum][props.whiteLists[listNum].length-1]=Pattern.compile(part.trim(),Pattern.CASE_INSENSITIVE|Pattern.DOTALL|Pattern.CANON_EQ);
+			partsCompiled.add(Pattern.compile(part.trim(),Pattern.CASE_INSENSITIVE|Pattern.DOTALL|Pattern.CANON_EQ));
 		}
+		props.whiteLists.put(listType, partsCompiled.toArray(new Pattern[0]));
 	}
 
-	public static final void setWhitelist(final int listNum, final String list)
+	public static final void setWhitelist(final WhiteList listType, final String list)
 	{
-		setWhitelist(p(), listNum, list);
+		setWhitelist(p(), listType, list);
 	}
 
-	public static final boolean isOnWhiteList(final CMProps props, final int listNum, final String chk)
+	public static final boolean isOnWhiteList(final CMProps props, final WhiteList listType, final String chk)
 	{
-		if((listNum<0)||(listNum>=NUMWL_SYSTEM))
-			return false;
-		if(props.whiteLists.length<=listNum)
+		if(listType == null)
 			return false;
 		if((chk==null)||(chk.trim().length()==0))
 			return false;
-		final Pattern[] patts=props.whiteLists[listNum];
+		final Pattern[] patts=props.whiteLists.get(listType);
+		if(patts == null)
+			return false;
 		final String chkTrim=chk.trim();
 		final CharSequence seq=chkTrim.subSequence(0, chkTrim.length());
 		for(final Pattern p : patts)
@@ -864,9 +929,9 @@ public class CMProps extends Properties
 		return false;
 	}
 
-	public static final boolean isOnWhiteList(final int listNum, final String chk)
+	public static final boolean isOnWhiteList(final WhiteList listType, final String chk)
 	{
-		return isOnWhiteList(p(), listNum, chk);
+		return isOnWhiteList(p(), listType, chk);
 	}
 
 	public static final void setUpCosts(final String fieldName, final Map<String,ExpertiseLibrary.SkillCostDefinition> map, final List<String> fields)
@@ -1277,9 +1342,9 @@ public class CMProps extends Properties
 		setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
 		setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICE"),true));
 
-		setWhitelist(CMProps.SYSTEMWL_CONNS,getStr("WHITELISTIPSCONN"));
-		setWhitelist(CMProps.SYSTEMWL_LOGINS,getStr("WHITELISTLOGINS"));
-		setWhitelist(CMProps.SYSTEMWL_NEWPLAYERS,getStr("WHITELISTIPSNEWPLAYERS"));
+		setWhitelist(CMProps.WhiteList.CONNS,getStr("WHITELISTIPSCONN"));
+		setWhitelist(CMProps.WhiteList.LOGINS,getStr("WHITELISTLOGINS"));
+		setWhitelist(CMProps.WhiteList.NEWPLAYERS,getStr("WHITELISTIPSNEWPLAYERS"));
 
 		for(final StrList strListVar : StrList.values())
 		{
@@ -1580,7 +1645,6 @@ public class CMProps extends Properties
 		int len=0;
 		StringBuffer newMsg=null;
 		String upp=msg.toUpperCase();
-		int fpIndex=0;
 		for(final String filterStr : filter)
 		{
 			if(filterStr.length()==0)
@@ -1606,8 +1670,6 @@ public class CMProps extends Properties
 							newMsg.setCharAt(fdex,FILTER_CHARS[fdex % FILTER_CHARS.length]);
 							upp=newMsg.toString().toUpperCase();
 						}
-						else
-							fpIndex=0;
 					}
 					fdex=upp.indexOf(filterStr);
 				}
