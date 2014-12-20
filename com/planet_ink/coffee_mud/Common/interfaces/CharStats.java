@@ -778,7 +778,7 @@ public interface CharStats extends CMCommon, Modifiable
 
 	/**
 	 * Global character stat code data collector
-	 * @author bzimmerman
+	 * @author Bo Zimmermanimmerman
 	 */
 	public class CODES
 	{

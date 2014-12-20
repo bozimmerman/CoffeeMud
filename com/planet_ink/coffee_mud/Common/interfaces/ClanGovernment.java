@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 /**
  * A class defining the characteristics of a clan government,
  * and its membership.
- * @author bzimmerman
+ * @author Bo Zimmermanimmerman
  */
 public interface ClanGovernment extends Modifiable, CMCommon
 {

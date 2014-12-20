@@ -574,7 +574,7 @@ public interface Law extends CMCommon
 	/**
 	 * For the getTreasuryNSafe, this class stores
 	 * the location of the treasury, for taxing purposes.
-	 * @author bzimmerman
+	 * @author Bo Zimmermanimmerman
 	 *
 	 */
 	public class TreasurySet

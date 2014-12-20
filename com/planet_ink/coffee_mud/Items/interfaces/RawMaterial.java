@@ -538,7 +538,7 @@ public interface RawMaterial extends Item
 
 	/**
 	 * Global resource/raw material code data collector
-	 * @author bzimmerman
+	 * @author Bo Zimmermanimmerman
 	 */
 	public class CODES
 	{

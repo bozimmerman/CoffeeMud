@@ -96,7 +96,7 @@ public class CMLib
 
 	/**
 	 * Collection of all the different official CoffeeMud libraries
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 */
 	public static enum Library
 	{

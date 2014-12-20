@@ -138,7 +138,7 @@ public interface ItemCraftor extends Ability
 	/**
 	 * For auto-crafting, this object represents an item,
 	 * and (optionally) a key to go with it.
-	 * @author bzimmerman
+	 * @author Bo Zimmermanimmerman
 	 */
 	public class ItemKeyPair
 	{

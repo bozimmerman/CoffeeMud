@@ -1150,7 +1150,7 @@ public class Backend
 
    /**
 	* For prepared statements, an abstract way into things
-	* @author bzimmerman
+	* @author Bo Zimmermanimmerman
 	*/
    public static abstract class ImplAbstractStatement
    {
@@ -1162,7 +1162,7 @@ public class Backend
 
    /**
 	* Parameters to execute an insert statement
-	* @author bzimmerman
+	* @author Bo Zimmermanimmerman
 	*/
    public static class ImplInsertStatement extends ImplAbstractStatement
    {
@@ -1185,7 +1185,7 @@ public class Backend
 
    /**
 	* Parameters to execute an update statement
-	* @author bzimmerman
+	* @author Bo Zimmermanimmerman
 	*/
    public static class ImplUpdateStatement extends ImplAbstractStatement
    {
@@ -1214,7 +1214,7 @@ public class Backend
 
    /**
 	* Parameters to execute an select statement
-	* @author bzimmerman
+	* @author Bo Zimmermanimmerman
 	*/
    public static class ImplSelectStatement extends ImplAbstractStatement
    {
@@ -1248,7 +1248,7 @@ public class Backend
 
    /**
 	* Parameters to execute an delete statement
-	* @author bzimmerman
+	* @author Bo Zimmermanimmerman
 	*/
    public static class ImplDeleteStatement extends ImplAbstractStatement
    {

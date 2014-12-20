@@ -372,7 +372,7 @@ public class CMFile extends File
 
 	/**
 	 * A class to represent a VFS/database directory.  An extension of CMVFSFile
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static class CMVFSDir extends CMVFSFile

@@ -193,7 +193,7 @@ public interface HttpClient extends Tickable, CMCommon
 
 	/**
 	 * HTTP Methods that are acceptable
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 */
 	public enum Method { GET, POST, HEAD }
 }

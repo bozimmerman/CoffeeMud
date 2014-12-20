@@ -57,7 +57,7 @@ public class Log extends java.util.logging.Logger
 
 	/**
 	 * The internally used targets for a log
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 */
 	private static enum Target { ON, OFF, BOTH, FILE, OWNFILE }
 
@@ -75,7 +75,7 @@ public class Log extends java.util.logging.Logger
 	 * as separate channels that can be independenly directed.  When using the java Logger, they are
 	 * arbitrarily assigned.  Typically info, warning, debug, and error are most used, with the others
 	 * being for special cases.
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static enum Type 
@@ -558,7 +558,7 @@ public class Log extends java.util.logging.Logger
 
 	/**
 	 * A rolling log reader interface for streaming in a log a line at a time.
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static interface LogReader

@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.core.interfaces.Environmental;
  * parseable user input from previously parsed input.  It is: the Parameter 
  * Parsing Library for CoffeeMud.
  * 
- * @author BZ
+ * @author Bo Zimmerman
  */
 public class CMParms
 {
@@ -42,7 +42,7 @@ public class CMParms
 	 * An overrideable class for supplying a delimiter determination tool
 	 * @see CMParms#createDelimiter(char[])
 	 * @see CMParms#parseEQParms(String, DelimiterChecker)
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static class DelimiterChecker

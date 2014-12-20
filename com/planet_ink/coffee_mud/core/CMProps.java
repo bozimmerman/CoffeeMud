@@ -32,7 +32,7 @@ import java.io.InputStreamReader;
  * into Str(ing), Int(eger), and Bool(ean).  The singleton maintains 
  * instances of itself for thread-group access, and fills in any gaps
  * with the base-thread-group values.
- * @author BZ
+ * @author Bo Zimmerman
  */
 public class CMProps extends Properties
 {
@@ -78,7 +78,7 @@ public class CMProps extends Properties
 	
 	/**
 	 * Enums for String entries in the coffeemud.ini file
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 */
 	public static enum Str 
 	{
@@ -188,7 +188,7 @@ public class CMProps extends Properties
 
 	/**
 	 * Enums for Integer entries in the coffeemud.ini file
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static enum Int 
@@ -276,7 +276,7 @@ public class CMProps extends Properties
 
 	/**
 	 * Enums for Boolean entries in the coffeemud.ini file
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static enum Bool 
@@ -302,7 +302,7 @@ public class CMProps extends Properties
 
 	/**
 	 * Enums for String list entries
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 */
 	public enum StrList
 	{
@@ -323,7 +323,7 @@ public class CMProps extends Properties
 
 	/**
 	 * Enums for localizeable string list entries in lists.ini
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 */
 	public static enum ListFile 
 	{
@@ -383,7 +383,7 @@ public class CMProps extends Properties
 
 	/**
 	 * Enum for white lists for various purposes
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 */
 	public static enum WhiteList 
 	{
@@ -1329,6 +1329,12 @@ public class CMProps extends Properties
 		}
 	}
 
+	/**
+	 * Returns the minimum amount of usage cost (mana) for the given ability ID().
+	 * All for the callers thread group.  If no cost is found, returns MIN_VALUE.
+	 * @param skillID the Ability ID to find a minimum cost for.
+	 * @return the minimim cost of usage (mana) for the ability.
+	 */
 	public static final int getMinManaException(final String skillID)
 	{
 		final Map<String,Double> DV=p().skillMinManaExceptions;
@@ -1337,6 +1343,12 @@ public class CMProps extends Properties
 		return Integer.MIN_VALUE;
 	}
 
+	/**
+	 * Returns the maximum amount of usage cost (mana) for the given ability ID().
+	 * All for the callers thread group.  If no cost is found, returns MIN_VALUE.
+	 * @param skillID the Ability ID to find a maximum cost for.
+	 * @return the maximum cost of usage (mana) for the ability.
+	 */
 	public static final int getMaxManaException(final String skillID)
 	{
 		final Map<String,Double> DV=p().skillMaxManaExceptions;
@@ -1525,6 +1537,10 @@ public class CMProps extends Properties
 		return null;
 	}
 
+	/**
+	 * Reads this properties objects and sets ALL internal variables.  Can be re-called if
+	 * any properties are changed.
+	 */
 	public final void resetSystemVars()
 	{
 		if(CMLib.lang()!=null)
@@ -1839,11 +1855,20 @@ public class CMProps extends Properties
 		this.lastReset=System.currentTimeMillis();
 	}
 
+	/**
+	 * Returns the last time the properties for the callers thread group has
+	 * been loaded.
+	 * @return the time in ms when the callers properties were last parsed.
+	 */
 	public static long getLastResetTime()
 	{
 		return p().lastReset;
 	}
 
+	/**
+	 * Reads this properties objects and sets security variables.  Can be re-called if
+	 * any properties are changed.
+	 */
 	public final void resetSecurityVars()
 	{
 		String disable=getStr("DISABLE");
@@ -1854,6 +1879,12 @@ public class CMProps extends Properties
 		CMSecurity.setSaveFlags(getStr("SAVE"));
 	}
 
+	/**
+	 * Returns true if the given msg contains words which would be filtered out by any of the filters, for
+	 * the callers thread group.  Applicable filters are EMOTEFILTER, POSEFILTER, SAYFILTER, or CHANNELFILTER.
+	 * @param msg the message to apply the filter to
+	 * @return true if any filter would alter the string in any way
+	 */
 	public static boolean isAnyINIFiltered(String msg)
 	{
 		final Str[] filters = new Str[] {Str.EMOTEFILTER,Str.POSEFILTER,Str.SAYFILTER,Str.CHANNELFILTER};
@@ -1863,6 +1894,13 @@ public class CMProps extends Properties
 		return false;
 	}
 	
+	/**
+	 * Returns true if the given msg contains words which would be filtered out by the given filter for
+	 * the callers thread group.
+	 * @param msg the message to apply the filter to
+	 * @param whichFilter the filter to apply, such as EMOTEFILTER, POSEFILTER, SAYFILTER, or CHANNELFILTER
+	 * @return true if the filter would alter the string in any way
+	 */
 	public static boolean isINIFiltered(String msg, Str whichFilter)
 	{
 		List<String> filter=null;
@@ -1914,9 +1952,16 @@ public class CMProps extends Properties
 		return false;
 	}
 	
-	public static String applyINIFilter(String msg, Str whichFilter)
+	/**
+	 * Alters the given message according to the given filter, by replacing any words
+	 * found in the given filter with garbage characters.  
+	 * @param msg the message to apply the filter to
+	 * @param whichFilter the filter to apply, such as EMOTEFILTER, POSEFILTER, SAYFILTER, or CHANNELFILTER
+	 * @return the altered msg
+	 */
+	public static String applyINIFilter(final String msg, final Str whichFilter)
 	{
-		List<String> filter=null;
+		final List<String> filter;
 		switch(whichFilter)
 		{
 		case EMOTEFILTER: filter=p().emoteFilter; break;
@@ -1973,6 +2018,12 @@ public class CMProps extends Properties
 		return msg;
 	}
 
+	/**
+	 * Returns true if, according to the callers properties, the given clan category
+	 * makes it classified as a "Public Clan".
+	 * @param clanCategory the category to check data for
+	 * @return true if the category makes it a public category, false otherwise
+	 */
 	public static final boolean isPublicClanGvtCategory(final String clanCategory)
 	{
 		if((clanCategory==null)||(clanCategory.trim().length()==0))
@@ -1980,6 +2031,13 @@ public class CMProps extends Properties
 		final String upperClanCategory=clanCategory.toUpperCase().trim();
 		return p().publicClanCats.contains(upperClanCategory);
 	}
+
+	/**
+	 * Returns maximum  the maximum number of clans of this category a player 
+	 * can belong to according to the callers properties.
+	 * @param clanCategory the category to check data for
+	 * @return the maximum number of clans of this category a player can belong to
+	 */
 	public static final int getMaxClansThisCategory(final String clanCategory)
 	{
 		if(clanCategory==null)
@@ -1989,16 +2047,29 @@ public class CMProps extends Properties
 			return p().maxClanCatsMap.get(upperClanCategory).intValue();
 		return p().maxClanCatsMap.get("").intValue();
 	}
+
+	/**
+	 * Returns the amount of milliseconds per mud tick.
+	 * @return the amount of milliseconds per mud tick.
+	 */
 	public static final long getTickMillis()
 	{
 		return p().TIME_TICK;
 	}
 
+	/**
+	 * Returns the amount of milliseconds per mud tick, as a double.
+	 * @return the amount of milliseconds per mud tick, as a double.
+	 */
 	public static final double getTickMillisD()
 	{
 		return p().TIME_TICK_DOUBLE;
 	}
 
+	/**
+	 * Returns the number of real milliseconds that occur every in-game "hour"
+	 * @return the number of real milliseconds that occur every in-game "hour"
+	 */
 	public static final long getMillisPerMudHour()
 	{
 		return p().MILLIS_PER_MUDHOUR;
@@ -2040,11 +2111,23 @@ public class CMProps extends Properties
 		return p().TICKS_PER_RLDAY;
 	}
 
-	public static final boolean isTheme(final int i)
+	/**
+	 * Returns true if the global mud theme includes the them given
+	 * by the themeMask passed in.
+	 * @param themeMask the theme mask to check for
+	 * @return true if the given mask matches is included in muds preference, false otherwise.
+	 */
+	public static final boolean isTheme(final int themeMask)
 	{
-		return (getIntVar(Int.MUDTHEME)&i)>0;
+		return (getIntVar(Int.MUDTHEME)&themeMask)>0;
 	}
 
+	/**
+	 * Loads the given iniFile by mud path, combines any multi-line entries, and returns all the 
+	 * lines in the file in a list.
+	 * @param iniFile the file to load
+	 * @return the list of useful entries
+	 */
 	public static final List<String> loadEnumerablePage(final String iniFile)
 	{
 		final StringBuffer str=new CMFile(iniFile,null,CMFile.FLAG_LOGERRORS).text();
@@ -2067,6 +2150,14 @@ public class CMProps extends Properties
 		return page;
 	}
 
+	/**
+	 * This method searches the given codes array for an entry matching the given code, and returns the value
+	 * in xtraValues, or "" if not found.
+	 * @param codes the code names to search
+	 * @param xtraValues the values matching the codes, or null if unsupported
+	 * @param code the code to search for
+	 * @return the value from xtraValues, or ""
+	 */
 	public static final String getStatCodeExtensionValue(final String[] codes, final String[] xtraValues, final String code)
 	{
 		if(xtraValues!=null)
@@ -2076,6 +2167,14 @@ public class CMProps extends Properties
 		return "";
 	}
 
+
+	/**
+	 * This method searches the given codes array for an entry matching the given code, and set the value
+	 * in xtraValues when found.
+	 * @param codes the code names to search
+	 * @param xtraValues the values matching the codes, or null if unsupported
+	 * @param code the code to search for
+	 */
 	public static void setStatCodeExtensionValue(final String[] codes, final String[] xtraValues, final String code, final String val)
 	{
 		if(xtraValues!=null)

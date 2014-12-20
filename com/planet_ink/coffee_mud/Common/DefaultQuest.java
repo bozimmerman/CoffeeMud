@@ -4510,7 +4510,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	 * Objects selected for use by a quest can be preserved or released from
 	 * quest-state to quest-state.  This object maps a world object in use
 	 * to its quest-states remaining.
-	 * @author bzimmerman
+	 * @author Bo Zimmermanimmerman
 	 */
 	public static class PreservedQuestObject
 	{
@@ -4532,7 +4532,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	/**
 	 * A quest state class maps the parse-state of a quest, since quest parsing
 	 * is highly state dependent, but the state is not explicit in the script itself.
-	 * @author bzimmerman
+	 * @author Bo Zimmermanimmerman
 	 *
 	 */
 	public static class QuestState implements Cloneable
@@ -4634,7 +4634,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	 * state variables for the parsing of quests that make use of the
 	 * "mystery" variables (mystery as in Sherlock Holmes, not as in
 	 * unknown).
-	 * @author bzimmerman
+	 * @author Bo Zimmermanimmerman
 	 */
 	public static class MysteryData implements Cloneable
 	{

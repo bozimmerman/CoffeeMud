@@ -1304,7 +1304,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 
 	/**
 	 * The status of the session, from opening handshake, to final goodbyes
-	 * @author BZ
+	 * @author Bo Zimmerman
 	 */
 	public static enum SessionStatus
 	{

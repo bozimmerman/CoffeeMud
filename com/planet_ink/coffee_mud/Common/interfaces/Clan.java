@@ -939,7 +939,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/**
 	 * An enumeration of relationships between a clan position and a
 	 * particular power of clans.
-	 * @author bzimmerman
+	 * @author Bo Zimmermanimmerman
 	 */
 	public static enum Authority
 	{
@@ -950,7 +950,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 
 	/**
 	 * An enumeration of ways auto-promotion can work in a clan
-	 * @author bzimmerman
+	 * @author Bo Zimmermanimmerman
 	 */
 	public static enum AutoPromoteFlag
 	{
@@ -964,7 +964,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/**
 	 * An enumation of all the major clan functions gated
 	 * by internal security
-	 * @author bzimmerman
+	 * @author Bo Zimmermanimmerman
 	 */
 	public static enum Function
 	{

@@ -344,7 +344,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	/**
 	 * An object that holds the information about an event until it is
 	 * time to execute its associated script.
-	 * @author bzimmerman
+	 * @author Bo Zimmermanimmerman
 	 */
 	public static class ScriptableResponse
 	{
