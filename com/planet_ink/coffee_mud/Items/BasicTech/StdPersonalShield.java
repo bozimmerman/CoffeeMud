@@ -152,7 +152,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 						successFactor+=(0.05)*techDiff;
 					if(doesShield(mob, msg, successFactor))
 					{
-						final long powerConsumed=Math.round(msg.value()*m.getEfficiencyPct());
+						final long powerConsumed=Math.round(msg.value()*Math.max(.33, Math.abs(2.0-m.getEfficiencyPct())));
 						if(powerRemaining()>=powerConsumed)
 						{
 							setPowerRemaining(powerRemaining()-powerConsumed);

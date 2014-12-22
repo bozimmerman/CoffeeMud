@@ -155,7 +155,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust(thrust);
-		final int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*manufacturer.getEfficiencyPct()));
+		final int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))));
 		final long accelleration=thrust/ship.getMass();
 		if(amount > 1)
 			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a rumble and hear the blast of @x1.",me.name(mob)));
@@ -222,7 +222,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 			case CMMsg.TYP_POWERCURRENT:
 			{
 				final Manufacturer manufacturer=me.getFinalManufacturer();
-				final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*manufacturer.getEfficiencyPct()));
+				final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))));
 				if(me.consumeFuel(fuelToConsume))
 				{
 					final SpaceObject obj=CMLib.map().getSpaceObject(me, true);

@@ -427,7 +427,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 					double successFactor=0.5;
 					final Manufacturer m=getFinalManufacturer();
 					successFactor=m.getReliabilityPct()*successFactor;
-					final long powerConsumed=Math.round(phyStats().damage()*m.getEfficiencyPct());
+					final long powerConsumed=Math.round(phyStats().damage()*Math.max(.33, Math.abs(2.0-m.getEfficiencyPct())));
 					if(powerRemaining()>=powerConsumed)
 					{
 						setPowerRemaining(powerRemaining()-powerConsumed);
