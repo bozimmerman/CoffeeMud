@@ -44,6 +44,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	protected String 	readableText	= "";
 	protected String 	ownerName 		= "";
 	protected int 		price 			= 1000;
+	protected int		internalPrice	= 0;
 	protected Area 		area			= null;
 	protected String 	putString		= "load(s)";
 	protected String 	mountString		= "board(s)";
@@ -135,13 +136,26 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	{
 		try
 		{
+			internalPrice = 0;
 			area=CMLib.coffeeMaker().unpackAreaObjectFromXML(xml);
 			if(area instanceof BoardableShip)
 			{
 				area.setSavable(false);
 				((BoardableShip)area).setDockableItem(this);
 				for(final Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
-					CMLib.flags().setSavable(r.nextElement(), false);
+				{
+					final Room R=r.nextElement();
+					if(R!=null)
+					{
+						CMLib.flags().setSavable(R, false);
+						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+						{
+							final Item I=i.nextElement();
+							if(I!=null)
+								internalPrice += I.value();
+						}
+					}
+				}
 			}
 			else
 			{
@@ -335,6 +349,16 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		this.price=price; 
 	}
 
+	@Override 
+	public int value() 
+	{ 
+		int value = baseGoldValue();
+		if(price > 0)
+			value += price;
+		getShipArea();
+		return value + internalPrice;
+	}
+	
 	@Override 
 	public String getOwnerName() 
 	{ 
