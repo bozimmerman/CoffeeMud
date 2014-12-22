@@ -82,7 +82,7 @@ public class MUDGrinder extends StdWebMacro
 					xmlIsh=xmlIsh.substring(x+1);
 				else
 					break;
-				x=xmlIsh.indexOf(">",x+1);
+				x=xmlIsh.indexOf(">");
 			}
 			if(itemCode == null)
 			{
