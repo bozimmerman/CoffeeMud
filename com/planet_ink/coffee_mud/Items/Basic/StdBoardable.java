@@ -41,14 +41,14 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class StdBoardable extends StdPortal implements PrivateProperty, BoardableShip
 {
 	@Override public String ID(){	return "StdBoardable";}
-	protected String 			 readableText	 = "";
-	protected String 			 ownerName 		 = "";
-	protected int 				 price 			 = 1000;
-	protected Area 				 area			 = null;
-	protected String 			 putString		 = "load(s)";
-	protected String 			 mountString	 = "board(s)";
-	protected String 			 dismountString	 = "disembark(s) from";
-	protected String			 homePortID		 = "";
+	protected String 	readableText	= "";
+	protected String 	ownerName 		= "";
+	protected int 		price 			= 1000;
+	protected Area 		area			= null;
+	protected String 	putString		= "load(s)";
+	protected String 	mountString		= "board(s)";
+	protected String 	dismountString	= "disembark(s) from";
+	protected String	homePortID		= "";
 
 	public StdBoardable()
 	{

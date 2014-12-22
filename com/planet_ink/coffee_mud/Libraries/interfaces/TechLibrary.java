@@ -186,6 +186,7 @@ public interface TechLibrary extends CMLibrary
 	 * tech level within the valid range, and modifying its name
 	 * and displaytext to reflect the new tech level
 	 * @param I An electronics item that needs fixing
+	 * @param newTechLevel TODO
 	 */
-	public void fixItemTechLevel(Electronics I);
+	public void fixItemTechLevel(Electronics I, int newTechLevel);
 }

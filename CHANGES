@@ -7,6 +7,7 @@
    6. MUDGrinder item adder/editor will now only show options appropriate to the area theme -- keep this in mind! 
    7. There is now a mundane/player version of the STAT command for -- wait for it -- viewing character stats
    8. Several electronic/tech/space editor fields finally added to MUDGrinder item editor.
+   9. ShopKeeper view now shows more useful information about ships for sale.
 # Build 5.8.4 Released 12/01/2014
    *. Database Schema Updated for CMBKLG and CMCLIT.  See the Installation Guide about running DBUpgrade.
    1. Channels now save their back messages to the database for perpetual enjoyment. See DISABLE,CHANNELBACKLOG in coffeemud.ini.

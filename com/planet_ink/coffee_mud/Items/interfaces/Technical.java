@@ -44,25 +44,31 @@ public interface Technical
 	 */
 	public static enum TechType
 	{
-		ANY("Any"), GIZMO("Gizmo"),
-		PERSONAL_WEAPON("Personal Weapon"), PERSONAL_SENSOR("Portable Sensor"),
-		PERSONAL_SHIELD("Personal Shield"), PERSONAL_SOFTWARE("Micro Software"),
-		PERSONAL_TRACTOR("Personal Tractor"), PERSONAL_ATMOSUIT("Personal Atmosphere Suit"),
-		SHIP_SPACESHIP("Space Ship"),SHIP_PANEL("Ship Panel"),
-		SHIP_WEAPON("Ship Weapon"),SHIP_SHIELD("Ship Shield"),SHIP_ENGINE("Ship Engine"),
-		SHIP_SENSOR("Ship Sensor"),SHIP_POWER("Ship Power System"),SHIP_COMPUTER("Ship Computer"),
-		SHIP_SOFTWARE("Ship Software"),SHIP_ENVIRO_CONTROL("Ship Environmental System"),
-		SHIP_GENERATOR("Ship Power Generator"),SHIP_DAMPENER("Ship Inertial Dampener"),
-		SHIP_TRACTOR("Ship Tractor"),SHIP_REPLICATOR("Ship Food Replicator")
+		ANY("Any","Tech"), GIZMO("Gizmo","Gizmo"),
+		PERSONAL_WEAPON("Personal Weapon","Weapon"), PERSONAL_SENSOR("Portable Sensor","Sensor"),
+		PERSONAL_SHIELD("Personal Shield","Shield"), PERSONAL_SOFTWARE("Micro Software","Software"),
+		PERSONAL_TRACTOR("Personal Tractor","Tractor"), PERSONAL_ATMOSUIT("Personal Atmosphere Suit","Atmo. Suit"),
+		SHIP_SPACESHIP("Space Ship","Ship"),SHIP_PANEL("Ship Panel","Panel"),
+		SHIP_WEAPON("Ship Weapon","Weapon"),SHIP_SHIELD("Ship Shield","Shield"),SHIP_ENGINE("Ship Engine","Engine"),
+		SHIP_SENSOR("Ship Sensor","Sensor"),SHIP_POWER("Ship Power System","Power"),SHIP_COMPUTER("Ship Computer","Computer"),
+		SHIP_SOFTWARE("Ship Software","Software"),SHIP_ENVIRO_CONTROL("Ship Environmental System","Env. System"),
+		SHIP_GENERATOR("Ship Power Generator","Generator"),SHIP_DAMPENER("Ship Inertial Dampener","Inertial"),
+		SHIP_TRACTOR("Ship Tractor","Tractor"),SHIP_REPLICATOR("Ship Food Replicator","Replicat.")
 		;
 		private final String friendlyName;
-		private TechType(String name)
+		private final String shortFriendlyName;
+		private TechType(String name, String shorter)
 		{
 			this.friendlyName=name;
+			this.shortFriendlyName=shorter;
 		}
 		public String getDisplayName()
 		{
 			return this.friendlyName;
+		}
+		public String getShortDisplayName()
+		{
+			return this.shortFriendlyName;
 		}
 	}
 

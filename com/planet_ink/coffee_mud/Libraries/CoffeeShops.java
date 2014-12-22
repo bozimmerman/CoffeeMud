@@ -114,6 +114,17 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return V;
 	}
 
+	protected String getSellableElectronicsName(MOB viewerM, Electronics E)
+	{
+		String baseName=E.name(viewerM);
+		final String[] marks=CMProps.getListFileStringList(CMProps.ListFile.TECH_LEVEL_NAMES);
+		if(baseName.indexOf(E.getFinalManufacturer().name())<0)
+			baseName+= "("+E.getFinalManufacturer().name()+")";
+		if(marks.length>0)
+			baseName+=" "+marks[E.techLevel()%marks.length];
+		return baseName;
+	}
+	
 	@Override
 	public String getViewDescription(MOB viewerM, Environmental E)
 	{
@@ -127,38 +138,74 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(E instanceof Item)
 		{
 			final Item I=(Item)E;
-			str.append("\n\rMaterial   : "+CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(I.material()).toLowerCase()));
+			str.append(L("\n\rMaterial   : @x1",L(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(I.material()).toLowerCase()))));
 			str.append(L("\n\rWeight     : @x1 pounds",""+I.phyStats().weight()));
+			if(I instanceof Electronics)
+			{
+				str.append(L("\n\rMake       : @x1",""+((Electronics)I).getFinalManufacturer().name()));
+				str.append(L("\n\rType       : @x1",""+((Electronics)I).getTechType().getDisplayName()));
+			}
+			if(I instanceof Technical)
+			{
+				str.append(L("\n\rModel Num. : @x1",""+((Technical)I).techLevel()));
+			}
+			if(I instanceof BoardableShip)
+			{
+				final Area A=((BoardableShip)I).getShipArea();
+				if(A!=null)
+				{
+					str.append(L("\n\rRooms      : @x1",""+A.numberOfProperIDedRooms()));
+				}
+				final List<String> miscItems=new ArrayList<String>();
+				for(final Enumeration<Room> r= A.getProperMap(); r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if(R==null)
+						continue;
+					for(final Enumeration<Item> i = R.items();i.hasMoreElements();)
+					{
+						final Item I2=i.nextElement();
+						if(I2.displayText().length()>0)
+						{
+							if(I2 instanceof ShipComponent)
+								str.append(L("\n\r"+CMStrings.padRight(((ShipComponent)I2).getTechType().getShortDisplayName(),11)+": @x1",getSellableElectronicsName(viewerM,(Electronics)I2)));
+							else
+								miscItems.add(I2.name(viewerM));
+						}
+					}
+				}
+				if(miscItems.size()>0)
+				{
+					str.append(L("\n\rMisc Items : "));
+					str.append(CMParms.toStringList(miscItems));
+				}
+			}
+			else
 			if(I instanceof Weapon)
 			{
-				str.append("\n\rWeap. Type : "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponType()]));
-				str.append("\n\rWeap. Class: "+CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()]));
+				str.append(L("\n\rWeap. Type : @x1",L(CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponType()]))));
+				str.append(L("\n\rWeap. Class: @x1",L(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()]))));
 			}
 			else
 			if(I instanceof Armor)
 			{
 				str.append(L("\n\rWear Info  : Worn on "));
 				final Wearable.CODES codes = Wearable.CODES.instance();
+				final List<String> locs = new ArrayList<String>();
 				for(final long wornCode : codes.all())
+				{
 					if(wornCode != Wearable.IN_INVENTORY)
 					{
 						if(codes.name(wornCode).length()>0)
 						{
 							if(((I.rawProperLocationBitmap()&wornCode)==wornCode))
 							{
-								str.append(CMStrings.capitalizeAndLower(codes.name(wornCode))+" ");
-								if(I.rawLogicalAnd())
-									str.append("and ");
-								else
-									str.append("or ");
+								locs.add(CMStrings.capitalizeAndLower(codes.name(wornCode)));
 							}
 						}
 					}
-				if(str.toString().endsWith(" and "))
-					str.delete(str.length()-5,str.length());
-				else
-				if(str.toString().endsWith(" or "))
-					str.delete(str.length()-4,str.length());
+				}
+				str.append(CMParms.combineWith(locs, L(I.rawLogicalAnd() ? " and " : " or ")));
 				if(I.phyStats().height()>0)
 				{
 					Armor.SizeDeviation deviation=((Armor) I).getSizingDeviation(viewerM);
@@ -167,7 +214,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				}
 			}
 		}
-		str.append("\n\rDescription: "+E.description());
+		str.append(L("\n\rDescription: @x1",E.description()));
 		return str.toString();
 	}
 
