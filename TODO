@@ -1,8 +1,9 @@
 BUGS
-  *. Shutting down really does wipe out my clan status -- why?
+  *. 
 
 TECH
    *. test and debug launch and landing
+   *. ShopKeeper VIEW should give more information about tech items
    *. interacting items of diff tech level might damage each other
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
@@ -24,6 +25,7 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
+   *. ShopKeeper VIEW should give more information about boats
    *. Wants and Needs engine - similar to slavery system
    *. Start on Spells
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
