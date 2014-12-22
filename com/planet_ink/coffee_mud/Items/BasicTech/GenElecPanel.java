@@ -45,6 +45,7 @@ public class GenElecPanel extends StdElecPanel
 		setDisplayText("a generic electric panel is mounted here.");
 		setDescription("");
 		baseGoldValue=5;
+		setCapacity(25000);
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
