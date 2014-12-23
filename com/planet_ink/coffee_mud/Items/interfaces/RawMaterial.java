@@ -325,6 +325,7 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_FLOURINE=MATERIAL_GAS|184;
 	public final static int RESOURCE_NITROGEN=MATERIAL_GAS|185;
 	public final static int RESOURCE_CHLORINE=MATERIAL_GAS|186;
+	public final static int RESOURCE_ALUMINUM=MATERIAL_METAL|187;
 	public final static int RESOURCE_MASK=255;
 
 
@@ -374,6 +375,9 @@ public interface RawMaterial extends Item
 		BRONZE(RESOURCE_BRONZE,10,10,5,8100,"","",null),
 		SILVER(RESOURCE_SILVER,30,2,5,10500,"","",null),
 		GOLD(RESOURCE_GOLD,150,1,5,19320,"","",null),
+		WHITE_GOLD(RESOURCE_WHITE_GOLD,150,1,5,1450,"","",null),
+		PLATINUM(RESOURCE_PLATINUM,750,1,6,21450,"","",null),
+		ALUMINUM(RESOURCE_ALUMINUM,15000,0,2,7300,"","",null),
 		ZINC(RESOURCE_ZINC,10,5,5,7100,"","",null),
 		COPPER(RESOURCE_COPPER,10,10,5,8900,"","",null),
 		TIN(RESOURCE_TIN,10,10,4,7300,"","",null),
@@ -407,7 +411,6 @@ public interface RawMaterial extends Item
 		CRYSTAL(RESOURCE_CRYSTAL,10,5,3,2200,"","",null),
 		GEM(RESOURCE_GEM,100,1,3,3500,"","",null),
 		PEARL(RESOURCE_PEARL,380,1,4,2000,"","",null),
-		PLATINUM(RESOURCE_PLATINUM,80,1,6,21450,"","",null),
 		MILK(RESOURCE_MILK,2,10,0,1020,"mild milky","",null),
 		EGGS(RESOURCE_EGGS,2,10,0,1120,"","",null),
 		HOPS(RESOURCE_HOPS,2,20,1,340,"mild grainy","",null),
@@ -511,7 +514,6 @@ public interface RawMaterial extends Item
 		REED(RESOURCE_REED,1,50,3,830,"","",null),
 		ALABASTER(RESOURCE_ALABASTER,5,10,4,1550,"","",null),
 		CHROMIUM(RESOURCE_CHROMIUM,80,1,6,1550,"","",null),
-		WHITE_GOLD(RESOURCE_WHITE_GOLD,150,1,5,1450,"","",null),
 		DRAGONSCALES(RESOURCE_DRAGONSCALES,50,1,6,800,"","",null),
 		PLASMA(RESOURCE_PLASMA,100,0,0,0,"","",null),
 		ELECTRICITY(RESOURCE_ELECTRICITY,100,0,0,0,"","",null),
