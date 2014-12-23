@@ -67,7 +67,7 @@ public class RocketShipProgram extends GenShipProgram
 	protected String buildActivationMenu(List<ShipEngine> engines)
 	{
 		final StringBuilder str=new StringBuilder();
-		str.append("^X").append(CMStrings.centerPreserve(L(" -- Fight Status -- "),60)).append("^.^N\n\r");
+		str.append("^X").append(CMStrings.centerPreserve(L(" -- Flight Status -- "),60)).append("^.^N\n\r");
 		final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
 		final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 		final SpaceObject shipSpaceObject=(ship==null)?null:ship.getShipSpaceObject();
@@ -111,6 +111,7 @@ public class RocketShipProgram extends GenShipProgram
 				str.append("^N").append(CMStrings.padRight(L("orbiting @x1",orbitingPlanet.name()),50));
 			else
 				str.append("^N").append(CMStrings.padRight(CMParms.toStringList(shipSpaceObject.coordinates()),50));
+			str.append("\n\r");
 			str.append("^H").append(CMStrings.padRight(L("Facing"),10));
 			final String facStr=display(ship.facing());
 			str.append("^N").append(CMStrings.padRight(facStr,20));
