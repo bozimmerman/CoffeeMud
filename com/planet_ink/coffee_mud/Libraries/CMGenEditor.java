@@ -4884,7 +4884,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(L("Unknown speed/sec: '@x1', valid units include: @x2.",val,SpaceObject.Distance.getAbbrList()));
 			else
 			{
-				E.setSpeed(newValue.longValue());
+				E.setSpeed(newValue.doubleValue());
 				break;
 			}
 		}

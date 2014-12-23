@@ -101,7 +101,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 
 			str.append("^H").append(CMStrings.padRight(L("Speed"),10));
-			str.append("^N").append(CMStrings.padRight(displayPerSec(ship.speed()),20));
+			str.append("^N").append(CMStrings.padRight(displayPerSec(Math.round(ship.speed())),20));
 			str.append("^H").append(CMStrings.padRight(L("Direction"),10));
 			final String dirStr=display(ship.direction());
 			str.append("^N").append(CMStrings.padRight(dirStr,20));

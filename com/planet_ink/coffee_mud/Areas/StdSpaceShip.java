@@ -91,8 +91,8 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	@Override public void setDirection(double[] dir) { if (shipItem instanceof SpaceShip) ((SpaceShip)shipItem).setDirection(dir); }
 	@Override public double[] facing() { return (shipItem instanceof SpaceShip)?((SpaceShip)shipItem).facing():new double[2]; }
 	@Override public void setFacing(double[] dir) { if (shipItem instanceof SpaceShip) ((SpaceShip)shipItem).setFacing(dir); }
-	@Override public long speed() { return (shipItem instanceof SpaceShip)?((SpaceShip)shipItem).speed():0; }
-	@Override public void setSpeed(long v) { if (shipItem instanceof SpaceShip) ((SpaceShip)shipItem).setSpeed(v); }
+	@Override public double speed() { return (shipItem instanceof SpaceShip)?((SpaceShip)shipItem).speed():0; }
+	@Override public void setSpeed(double v) { if (shipItem instanceof SpaceShip) ((SpaceShip)shipItem).setSpeed(v); }
 	@Override public SpaceObject knownTarget() { return (shipItem instanceof SpaceShip)?((SpaceShip)shipItem).knownTarget():null; }
 	@Override public void setKnownTarget(SpaceObject O) { if (shipItem instanceof SpaceShip) ((SpaceShip)shipItem).setKnownTarget(O); }
 	@Override public Boolean getSetAirFlag(final Boolean setInAirFlag) { return (shipItem instanceof SpaceShip) ? ((SpaceShip)shipItem).getSetAirFlag(setInAirFlag) : Boolean.FALSE; }

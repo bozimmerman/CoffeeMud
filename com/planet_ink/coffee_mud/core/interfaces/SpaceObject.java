@@ -72,12 +72,12 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * The speed of the object through space
 	 * @return the speed
 	 */
-	public long speed();
+	public double speed();
 	/**
 	 * Sets the speed of the object through space
 	 * @param v the speed
 	 */
-	public void setSpeed(long v);
+	public void setSpeed(double v);
 	/**
 	 * If this object is targeting another space object as a destination, this will return it
 	 * @return the target destination

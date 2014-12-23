@@ -148,15 +148,15 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		final SpaceShip ship=(SpaceShip)obj;
 		if((portDir==null)||(amount<0))
 			return reportError(me, controlI, mob, lang.L("@x1 rumbles loudly, but accomplishes nothing.",me.name(mob)), lang.L("Failure: @x1: exhaust control.",me.name(mob)));
-		int thrust=Math.round(me.getInstalledFactor() * (amount + ship.getMass()));
+		double thrust=Math.round(me.getInstalledFactor() * (amount + ship.getMass()));
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
 		thrust=(int)Math.round(manufacturer.getReliabilityPct() * thrust);
 
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
-			me.setThrust(thrust);
+			me.setThrust((int)Math.round(thrust));
 		final int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/100.0));
-		final long accelleration=thrust/ship.getMass();
+		final long accelleration=Math.round(Math.ceil(CMath.div(thrust,ship.getMass())));
 		if(amount > 1)
 			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a rumble and hear the blast of @x1.",me.name(mob)));
 		if(accelleration == 0)
@@ -205,7 +205,6 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 
 	public static void executeThrusterMsg(ShipEngine me, Environmental myHost, String circuitKey, CMMsg msg)
 	{
-
 		if(msg.amITarget(me))
 		{
 			switch(msg.targetMinor())
@@ -229,7 +228,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 					if(obj instanceof SpaceShip)
 					{
 						final SpaceShip ship=(SpaceShip)obj;
-						final long accelleration=me.getThrust()/ship.getMass();
+						final long accelleration=Math.round(Math.ceil(CMath.div((double)me.getThrust(),(double)ship.getMass())));
 						final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(ThrustPort.AFT,Integer.valueOf((int)accelleration),Long.valueOf(me.getSpecificImpulse()));
 						final CMMsg msg2=CMClass.getMsg(msg.source(), ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 						if(ship.okMessage(msg.source(), msg2))

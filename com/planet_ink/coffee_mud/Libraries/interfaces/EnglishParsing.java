@@ -95,7 +95,7 @@ public interface EnglishParsing extends CMLibrary
 	public int calculateMaxToGive(MOB mob, List<String> commands, boolean breakPackages, Environmental checkWhat, boolean getOnly);
 	public String sizeDescShort(long size);
 	public String coordDescShort(long[] coords);
-	public String speedDescShort(long speed);
+	public String speedDescShort(double speed);
 	public String directionDescShort(double[] dir);
 	public Long parseSpaceDistance(String dist);
 }

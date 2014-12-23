@@ -183,7 +183,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			str.append(CMLib.xml().convertXMLtoTag("SSRADIUS",((SpaceObject)E).radius()));
 			str.append(CMLib.xml().convertXMLtoTag("SSCOORDS",CMParms.toStringList(((SpaceObject)E).coordinates())));
 			str.append(CMLib.xml().convertXMLtoTag("SSDIR",CMParms.toStringList(((SpaceObject)E).direction())));
-			str.append(CMLib.xml().convertXMLtoTag("SSSPEED",((SpaceObject)E).speed()));
+			str.append(CMLib.xml().convertXMLtoTag("SSSPEED",Math.round(((SpaceObject)E).speed())));
 			return str.append((E.isGeneric()?getGenPropertiesStr(E):"") + (fromTop?getOrdPropertiesStr(E):"")).toString();
 		}
 		else
@@ -2068,7 +2068,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				final long[] coords=CMParms.toLongArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"SSCOORDS"), true));
 				if((coords!=null)&&(coords.length==3))
 					((SpaceObject)E).setCoords(coords);
-				((SpaceObject)E).setSpeed(CMLib.xml().getLongFromPieces(V,"SSSPEED"));
+				((SpaceObject)E).setSpeed(CMLib.xml().getDoubleFromPieces(V,"SSSPEED"));
 				final double[] dir=CMParms.toDoubleArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"SSDIR"), true));
 				if((dir!=null)&&(dir.length==2))
 					((SpaceObject)E).setDirection(dir);

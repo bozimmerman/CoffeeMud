@@ -90,7 +90,7 @@ public class GenSpaceBody extends StdSpaceBody
 		switch(getCodeNum(code))
 		{
 		case 0: setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true))); break;
-		case 1: setSpeed(CMath.s_parseLongExpression(val)); break;
+		case 1: setSpeed(CMath.s_parseMathExpression(val)); break;
 		case 2: setRadius(CMath.s_parseLongExpression(val)); break;
 		case 3: setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true))); break;
 		default:

@@ -2173,7 +2173,7 @@ public class ListCmd extends StdCommand
 						case 3: Collections.sort(objs, new Comparator<SpaceObject>(){
 							@Override public int compare(SpaceObject o1, SpaceObject o2)
 							{
-								return Long.valueOf(o1==null?0:o1.speed()).compareTo(Long.valueOf(o2==null?0:o2.speed()));
+								return Double.valueOf(o1==null?0:o1.speed()).compareTo(Double.valueOf(o2==null?0:o2.speed()));
 							}});
 							break;
 						case 4: Collections.sort(objs, new Comparator<SpaceObject>(){

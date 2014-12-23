@@ -1822,4 +1822,15 @@ public class CMath
 		return BigInteger.valueOf(l1).multiply(BigInteger.valueOf(l2));
 	}
 	
+	
+	/**
+	 * Generates a big integer from multiply two numbers, rounding when necessary
+	 * @param l1 the first number
+	 * @param l2 the second number
+	 * @return the big big integer
+	 */
+	public final static BigInteger bigMultiply(double l1, long l2)
+	{
+		return BigInteger.valueOf(Math.round(l1)).multiply(BigInteger.valueOf(l2));
+	}
 }

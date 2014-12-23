@@ -82,8 +82,8 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 	}
 	@Override public double[] direction(){return direction;}
 	@Override public void setDirection(double[] dir){direction=dir;}
-	@Override public long speed(){return 0;}
-	@Override public void setSpeed(long v){}
+	@Override public double speed(){return 0;}
+	@Override public void setSpeed(double v){}
 	@Override public long radius() { return radius; }
 	@Override public void setRadius(long radius) { this.radius=radius; }
 	@Override public void setName(String newName)

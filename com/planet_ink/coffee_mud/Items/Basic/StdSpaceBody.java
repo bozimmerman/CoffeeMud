@@ -40,7 +40,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	protected long[]		coordinates	= new long[3];
 	protected long			radius;
 	protected double[]		direction	= new double[2];
-	protected long 			speed		= 0;
+	protected double		speed		= 0;
 	protected SpaceObject	spaceSource = null;
 	protected SpaceObject	spaceTarget = null;
 
@@ -108,13 +108,13 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	}
 
 	@Override
-	public long speed()
+	public double speed()
 	{
 		return speed;
 	}
 
 	@Override
-	public void setSpeed(long v)
+	public void setSpeed(double v)
 	{
 		speed=v;
 	}

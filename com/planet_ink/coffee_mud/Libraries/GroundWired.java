@@ -344,11 +344,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				&&(S.getShipArea().getAreaState()!=Area.State.ACTIVE))
 					continue;
 				BoundedCube cube=O.getBounds();
-				final long speed=O.speed();
-				if(speed>0)
+				final double speed=O.speed();
+				if(speed>=1)
 				{
 					CMLib.map().moveSpaceObject(O);
-					cube=cube.expand(O.direction(),speed);
+					cube=cube.expand(O.direction(),(long)speed);
 				}
 				Boolean inAirFlag = Boolean.FALSE;
 				final List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.Distance.LightMinute.dm);

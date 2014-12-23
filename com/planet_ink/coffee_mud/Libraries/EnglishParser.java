@@ -226,9 +226,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 	
 	@Override
-	public String speedDescShort(long speed)
+	public String speedDescShort(double speed)
 	{
-		return getBestDistance(speed)+"/sec";
+		return getBestDistance(Math.round(speed))+"/sec";
 	}
 	
 	@Override

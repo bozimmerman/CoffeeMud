@@ -51,7 +51,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	public long[]   		coordinates 	= new long[3];
 	public double[] 		direction   	= new double[2];
 	public double			roll			= 0.0;
-	public long 			speed			= 0;
+	public double 			speed			= 0;
 	protected SpaceObject	spaceTarget 	= null;
 	protected double[]		facing			= new double[2];
 	protected Boolean		inAirFlag		= Boolean.FALSE;
@@ -291,7 +291,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				if(msg.tool() instanceof SpaceObject)
 				{
 					SpaceObject O=(SpaceObject)msg.tool();
-					final long relSpeed = CMath.abs(speed() - O.speed());
+					final double relSpeed = CMath.abs(speed() - O.speed());
 					if((hitSomethingMassive) || (relSpeed > SpaceObject.VELOCITY_LIGHT)) // you hit a planet, or something moving too fast
 					{
 						destroyThisShip();
@@ -299,10 +299,10 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					else
 					{
 						final long myMass=getMass();
-						final long dmgSpeed = CMath.abs(speed() - O.speed()) % SpaceObject.VELOCITY_LIGHT;
+						final double dmgSpeed = CMath.abs(speed() - O.speed()) % SpaceObject.VELOCITY_LIGHT;
 						final long relMass = CMath.abs(myMass - O.getMass())  % (100 * SpaceObject.Distance.Kilometer.dm);
 						final int hardness = (int)(RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm);
-						final int kineticDamage = (hardness > 0) ? Math.round((dmgSpeed * relMass) / hardness ) : 0;
+						final int kineticDamage = (int)((hardness > 0) ? Math.round((dmgSpeed * relMass) / hardness ) : 0);
 						if(kineticDamage > 1)
 						{
 							// we've been -- hit? It's up to the item itself to see to it's own explosion or whatever
@@ -558,13 +558,13 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	}
 	
 	@Override 
-	public long speed()
+	public double speed()
 	{
 		return speed;
 	}
 	
 	@Override 
-	public void setSpeed(long v)
+	public void setSpeed(double v)
 	{
 		speed=v;
 	}
@@ -675,7 +675,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		case 13: setRadius(CMath.s_long(val)); break;
 		case 14: setRoll(CMath.s_double(val)); break;
 		case 15: setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val,true))); break;
-		case 16: setSpeed(CMath.s_long(val)); break;
+		case 16: setSpeed(CMath.s_double(val)); break;
 		case 17: setFacing(CMParms.toDoubleArray(CMParms.parseCommas(val,true))); break;
 		case 18: setOwnerName(val); break;
 		case 19: setPrice(CMath.s_int(val)); break;

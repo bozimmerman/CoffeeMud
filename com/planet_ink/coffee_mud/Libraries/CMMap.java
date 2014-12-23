@@ -432,7 +432,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		if (newDirectionPitch < 0.0)
 			newDirectionPitch = (Math.PI * 2.0) + newDirectionPitch;
 
-		double newSpeed = currentSpeed + Math.round(acceleration * Math.cos(anglesDelta));
+		double newSpeed = currentSpeed + (acceleration * Math.cos(anglesDelta));
 		if(newSpeed < 0)
 		{
 			newSpeed = -newSpeed;
@@ -445,7 +445,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			O.direction()[1]=Math.PI+newDirectionPitch;
 		else
 			O.direction()[1]=newDirectionPitch;
-		O.setSpeed(Math.round(newSpeed));
+		O.setSpeed(newSpeed);
 	}
 
 	@Override
