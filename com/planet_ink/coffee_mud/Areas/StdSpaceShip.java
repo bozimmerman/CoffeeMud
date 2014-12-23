@@ -348,7 +348,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 						if((M!=null)
 						&&(!M.isMonster())
 						&&(!CMLib.flags().canBreatheThis(M,RawMaterial.RESOURCE_NOTHING)))
-							M.tell(L("The @x1 is seaming a bit stale.",RawMaterial.CODES.NAME(atmo).toLowerCase()));
+							M.tell(L("The @x1 is seeming a bit stale.",RawMaterial.CODES.NAME(atmo).toLowerCase()));
 					}
 				}
 			}

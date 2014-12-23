@@ -557,7 +557,18 @@ public interface RawMaterial extends Item
 				final String[][] addExtra = CMProps.instance().getStrsStarting("ADDMATERIAL_");
 				final String[][] repExtra = CMProps.instance().getStrsStarting("REPLACEMATERIAL_");
 
-				for(final DefResource d : DefResource.values())
+				final DefResource[] defaults = Arrays.copyOf(DefResource.values(),DefResource.values().length);
+				Arrays.sort(defaults,new Comparator<DefResource>(){
+					@Override
+					public int compare(DefResource o1, DefResource o2)
+					{
+						final int o1c=o1.code&255;
+						final int o2c=o2.code&255;
+						return o1c > o2c ? 1 : (o1c < o2c ? -1 : 0);
+					}
+					
+				});
+				for(final DefResource d :defaults)
 				{
 					final int material= d.code & MATERIAL_MASK;
 					add(material, d.desc, d.smell, d.value, d.frequency, d.hardness, d.bouancy,
@@ -777,7 +788,10 @@ public interface RawMaterial extends Item
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public static String NAME(int code) { return c().descs[code&RESOURCE_MASK];}
+		public static String NAME(int code) 
+		{ 
+			return c().descs[code&RESOURCE_MASK];
+		}
 		/**
 		 * Returns the name of the code
 		 * @param code the code
