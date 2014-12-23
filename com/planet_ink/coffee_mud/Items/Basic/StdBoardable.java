@@ -284,7 +284,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		s.renameDestinationRooms(oldName,A.Name());
 		*/
 		//TODO: when you buy a ship, none of its electronics is registered.  This is bad.
-		CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(s.getShipArea()));
+		//CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(s.getShipArea()));
 		return s;
 	}
 
@@ -690,6 +690,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 						session.prompt(namer[0].reset());
 						return;
 					}
+					CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(me.getShipArea()));
 					me.renameShip(this.input.trim());
 					buyer.tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
 					final Room finalR=findNearestDocks(R);
