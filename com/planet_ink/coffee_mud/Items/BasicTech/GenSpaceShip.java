@@ -215,7 +215,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										unDock(true);
 									// this will move it, but will also update speed and direction -- all good!
 									final double inAirFactor=inAirFlag.booleanValue()?(1.0-getOMLCoeff()):1.0;
-									CMLib.map().moveSpaceObject(this,facing(),Math.round((((double)amount/(double)getMass())-1.0)*inAirFactor));
+									CMLib.map().moveSpaceObject(this,facing(),Math.round((amount-1.0)*inAirFactor));
 									break;
 								}
 								}
@@ -331,7 +331,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		}
 	}
 
-	protected LocationRoom findNearestDocks(Room R)
+	@Override
+    protected LocationRoom findNearestDocks(Room R)
 	{
 		final List<LocationRoom> docks=new XVector<LocationRoom>();
 		if(R!=null)
