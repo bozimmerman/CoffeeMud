@@ -207,27 +207,24 @@ public class StdCompPanel extends StdElecCompContainer implements Electronics.El
 					if((I instanceof Electronics)&&(!(I instanceof Electronics.PowerSource))&&(!(I instanceof Electronics.PowerGenerator)))
 						totalPowerReq+=((((Electronics)I).powerNeeds()<=0)?1.0:((Electronics)I).powerNeeds());
 				}
-				if(totalPowerReq>0.0)
+				for(int i=contents.size()-1;i>=0;i--)
 				{
-					for(int i=contents.size()-1;i>=0;i--)
+					final Item I=contents.get(i);
+					if((I instanceof Electronics)&&(!(I instanceof Electronics.PowerSource))&&(!(I instanceof Electronics.PowerGenerator)))
 					{
-						final Item I=contents.get(i);
-						if((I instanceof Electronics)&&(!(I instanceof Electronics.PowerSource))&&(!(I instanceof Electronics.PowerGenerator)))
+						int powerToTake=0;
+						if(powerRemaining>0)
 						{
-							int powerToTake=0;
-							if(powerRemaining>0)
-							{
-								final double pctToTake=CMath.div(((((Electronics)I).powerNeeds()<=0)?1:((Electronics)I).powerNeeds()),totalPowerReq);
-								powerToTake=(int)Math.round(pctToTake * powerRemaining);
-								if(powerToTake<1)
-									powerToTake=1;
-							}
-							powerMsg.setValue(powerToTake);
-							powerMsg.setTarget(I);
-							if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
-								R.send(powerMsg.source(), powerMsg);
-							powerRemaining-=(powerMsg.value()<0)?powerToTake:(powerToTake-powerMsg.value());
+							final double pctToTake=CMath.div(((((Electronics)I).powerNeeds()<=0)?1:((Electronics)I).powerNeeds()),totalPowerReq);
+							powerToTake=(int)Math.round(pctToTake * powerRemaining);
+							if(powerToTake<1)
+								powerToTake=1;
 						}
+						powerMsg.setValue(powerToTake);
+						powerMsg.setTarget(I);
+						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+							R.send(powerMsg.source(), powerMsg);
+						powerRemaining-=(powerMsg.value()<0)?powerToTake:(powerToTake-powerMsg.value());
 					}
 				}
 				powerNeeds=(int)Math.round(totalPowerReq);

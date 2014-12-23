@@ -239,7 +239,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 					final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 					if(obj instanceof SpaceShip)
 					{
-						final SpaceShip ship=(SpaceShip)obj;
+						final SpaceObject ship=((SpaceShip)obj).getShipSpaceObject();
 						final long accelleration=Math.round(Math.ceil(CMath.div(me.getThrust()*getThrustFactor(),(double)ship.getMass())));
 						final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(ThrustPort.AFT,Integer.valueOf((int)accelleration),Long.valueOf(me.getSpecificImpulse()));
 						final CMMsg msg2=CMClass.getMsg(msg.source(), ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
