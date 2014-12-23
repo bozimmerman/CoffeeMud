@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.BasicTech;
+package com.planet_ink.coffee_mud.Items.ShipTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -34,17 +34,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdElecPanel extends StdElecContainer implements Electronics.ElecPanel
+public class StdCompPanel extends StdElecCompContainer implements Electronics.ElecPanel, ShipComponent
 {
-	@Override public String ID(){	return "StdElecPanel";}
+	@Override public String ID(){	return "StdCompPanel";}
 
 	protected volatile int powerNeeds=0;
 	protected volatile String circuitKey=null;
 
-	public StdElecPanel()
+	public StdCompPanel()
 	{
 		super();
-		setName("an electronics panel");
+		setName("an engineering panel");
 		setDisplayText("");
 		setDescription("Usually seemless with the wall, these panels can be opened to install new equipment.");
 		super.setDoorsNLocks(true, true, true,false, false,false);
@@ -179,7 +179,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> connect(s) <T-NAME>."));
 				this.activate(true);
-				break;
+				return; // don't let comp container do its thing
 			case CMMsg.TYP_DEACTIVATE:
 			{
 				final Room locR=CMLib.map().roomLocation(this);
@@ -192,7 +192,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 						if(locR.okMessage(M, deactivateMsg))
 							locR.send(M, deactivateMsg);
 					}
-				break;
+				return; // don't let comp container do its thing
 			}
 			case CMMsg.TYP_POWERCURRENT:
 			{
@@ -233,7 +233,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				powerNeeds=(int)Math.round(totalPowerReq);
 				CMClass.returnMsg(powerMsg);
 				msg.setValue(powerRemaining);
-				break;
+				return; // don't let comp container do its thing
 			}
 			}
 			super.executeMsg(myHost, msg);

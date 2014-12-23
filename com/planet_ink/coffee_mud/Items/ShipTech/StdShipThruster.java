@@ -37,7 +37,7 @@ import java.util.*;
 public class StdShipThruster extends StdCompFuelConsumer implements ShipComponent.ShipEngine
 {
 	@Override public String ID(){	return "StdShipThruster";}
-
+	
 	protected float 	installedFactor	= 1.0F;
 	protected int		maxThrust		= 900000;
 	protected int		thrust			= 0;
@@ -64,6 +64,17 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 			return false;
 		return super.sameAs(E);
 	}
+	
+	protected static double getThrustFactor() 
+	{ 
+		return 100.0; 
+	}
+
+	protected static double getFuelDivisor() 
+	{ 
+		return 100.0; 
+	}
+
 	@Override public double getFuelEfficiency() { return fuelEfficiency; }
 	@Override public void setFuelEfficiency(double amt) { fuelEfficiency=amt; }
 	@Override public float getInstalledFactor() { return installedFactor; }
@@ -155,8 +166,9 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust((int)Math.round(thrust));
-		final int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/100.0));
-		final long accelleration=Math.round(Math.ceil(CMath.div(thrust,ship.getMass())));
+		
+		final int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
+		final long accelleration=Math.round(Math.ceil(CMath.div(thrust*getThrustFactor(),ship.getMass())));
 		if(amount > 1)
 			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a rumble and hear the blast of @x1.",me.name(mob)));
 		if(accelleration == 0)
@@ -221,14 +233,14 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 			case CMMsg.TYP_POWERCURRENT:
 			{
 				final Manufacturer manufacturer=me.getFinalManufacturer();
-				final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/100.0));
+				final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
 				if(me.consumeFuel(fuelToConsume))
 				{
 					final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 					if(obj instanceof SpaceShip)
 					{
 						final SpaceShip ship=(SpaceShip)obj;
-						final long accelleration=Math.round(Math.ceil(CMath.div((double)me.getThrust(),(double)ship.getMass())));
+						final long accelleration=Math.round(Math.ceil(CMath.div(me.getThrust()*getThrustFactor(),(double)ship.getMass())));
 						final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(ThrustPort.AFT,Integer.valueOf((int)accelleration),Long.valueOf(me.getSpecificImpulse()));
 						final CMMsg msg2=CMClass.getMsg(msg.source(), ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 						if(ship.okMessage(msg.source(), msg2))

@@ -38,6 +38,7 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 	@Override public String ID(){	return "StdElecCompContainer";}
 
 	protected float installedFactor = 1.0f;
+	protected volatile String circuitKey=null;
 
 	public StdElecCompContainer()
 	{
@@ -69,8 +70,6 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 			return false;
 		return super.sameAs(E);
 	}
-
-	protected volatile String circuitKey=null;
 
 	@Override
 	public void destroy()
