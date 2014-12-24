@@ -596,7 +596,7 @@ public class StdContainer extends StdItem implements Container
 		}
 	}
 	@Override
-	public boolean isInside(Item I)
+	public boolean isInside(final Item I)
 	{
 		if((I.container()==null)
 		||(I.container()==I))
@@ -652,10 +652,11 @@ public class StdContainer extends StdItem implements Container
 			for(final Enumeration<Item> e = owner().items(); e.hasMoreElements();)
 			{
 				I=e.nextElement();
-				if(I==null)
-					continue;
-				if(isInside(I))
-					V.add(I);
+				if(I!=null)
+				{
+					if(isInside(I))
+						V.add(I);
+				}
 			}
 		}
 		return new ReadOnlyList<Item>(V);
