@@ -277,6 +277,8 @@ public class DefaultSession implements Session
 										rawout=zOut;
 										zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
 										out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
+										if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+											Log.debugOut("MCCP compression started");
 									}
 								}
 								setStatus(SessionStatus.HANDSHAKE_MXP);
@@ -384,6 +386,8 @@ public class DefaultSession implements Session
 		out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 		try{Thread.sleep(50);}catch(final Exception e){}
 		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+			Log.debugOut("MCCP compression stopped");
 	}
 
 	@Override
@@ -1458,6 +1462,8 @@ public class DefaultSession implements Session
 										rawout=zOut;
 										zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
 										out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
+										if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+											Log.debugOut("MCCP compression started");
 									}
 									break;
 								}
