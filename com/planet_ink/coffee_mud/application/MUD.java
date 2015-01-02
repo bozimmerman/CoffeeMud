@@ -46,7 +46,7 @@ import java.sql.*;
 
 
 /*
-   Copyright 2000-2014 Bo Zimmerman
+   Copyright 2000-2015 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1511,7 +1511,7 @@ public class MUD extends Thread implements MudHost
 			System.err.println("*** Please give your mud a unique name in mud.bat or mudUNIX.sh!! ***");
 		}
 		else
-		if(nameID.equalsIgnoreCase( "TheRealCoffeeMudCopyright2000-2014ByBoZimmerman" ))
+		if(nameID.equalsIgnoreCase( "TheRealCoffeeMudCopyright2000-2015ByBoZimmerman" ))
 			nameID="CoffeeMud";
 		String iniFile=iniFiles.firstElement();
 		final CMProps page=CMProps.loadPropPage("//"+iniFile);
@@ -1559,7 +1559,7 @@ public class MUD extends Thread implements MudHost
 			System.out.println();
 			grpid=0;
 			Log.sysOut(Thread.currentThread().getName(),"CoffeeMud v"+HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
-			Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2014 Bo Zimmerman");
+			Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2015 Bo Zimmerman");
 			Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
 			CMLib.hosts().clear();
 			final LinkedList<HostGroup> myGroups=new LinkedList<HostGroup>();

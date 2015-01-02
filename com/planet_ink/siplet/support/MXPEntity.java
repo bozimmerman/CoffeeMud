@@ -1,6 +1,6 @@
 package com.planet_ink.siplet.support;
 /*
-Copyright 2008-2014 Bo Zimmerman
+Copyright 2008-2015 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
