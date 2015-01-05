@@ -87,11 +87,11 @@ public class CWConfig implements Cloneable
 	private static final Integer  ALL_PORTS						= Integer.valueOf(-1);
 	private static final String   ALL_HOSTS						= "";
 	
-	private Map<String,String> 	  servlets 						= new HashMap<String,String>();
-	private Map<String,String>    fileConverts					= new HashMap<String,String>();
+	private Map<String,String>	 	 servlets					= new HashMap<String,String>();
+	private Map<String,String>	  	 fileConverts				= new HashMap<String,String>();
 	
-	private final Map<String,String> 	  miscFlags						= new HashMap<String,String>();
-	private final Set<DisableFlag>	  disableFlags					= new HashSet<DisableFlag>();
+	private final Map<String,String> miscFlags					= new HashMap<String,String>();
+	private final Set<DisableFlag>	 disableFlags				= new HashSet<DisableFlag>();
 	
 	private SimpleServletManager  servletMan					= null;
 	private ServletSessionManager sessions						= null;

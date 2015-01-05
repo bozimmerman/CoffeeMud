@@ -646,7 +646,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				final Class<? extends SimpleServlet> servletClass = config.getServletMan().findServlet(request.getUrlPath().substring(1));
 				if(servletClass != null)
 				{
-						buffers=executeServlet(request,servletClass);
+					return executeServlet(request,servletClass);
 				}
 			}
 		
