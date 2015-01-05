@@ -41,7 +41,7 @@ public class ServerInfoServlet implements SimpleServlet
 	{
 		try
 		{
-			response.setMimeType(MIMEType.html.getType());
+			response.setMimeType(MIMEType.All.html.getType());
 			response.getOutputStream().write("<html><body>".getBytes());
 			if(Thread.currentThread() instanceof CWThread)
 			{

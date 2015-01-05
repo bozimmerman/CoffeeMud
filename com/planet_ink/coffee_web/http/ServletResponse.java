@@ -8,7 +8,6 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import com.planet_ink.coffee_web.http.HTTPException;
-import com.planet_ink.coffee_web.http.HTTPHeader;
 import com.planet_ink.coffee_web.http.HTTPStatus;
 import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.DataBuffers;
@@ -86,7 +85,7 @@ public class ServletResponse implements SimpleServletResponse
 	@Override
 	public void setMimeType(String mimeType)
 	{
-		headers.put(HTTPHeader.CONTENT_TYPE.toString(), mimeType);
+		headers.put(HTTPHeader.Common.CONTENT_TYPE.toString(), mimeType);
 	}
 
 	@Override
@@ -122,23 +121,23 @@ public class ServletResponse implements SimpleServletResponse
 		// our own.
 		if(bout.size()>0)
 		{
-			if(!normalizedHeaders.contains(HTTPHeader.CONTENT_TYPE.lowerCaseName()))
-				str.append(HTTPHeader.CONTENT_TYPE.makeLine(MIMEType.html.getType()));
-			if(!normalizedHeaders.contains(HTTPHeader.CONTENT_LENGTH.lowerCaseName()))
-				str.append(HTTPHeader.CONTENT_LENGTH.makeLine(bout.size()));
+			if(!normalizedHeaders.contains(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()))
+				str.append(HTTPHeader.Common.CONTENT_TYPE.makeLine(MIMEType.All.html.getType()));
+			if(!normalizedHeaders.contains(HTTPHeader.Common.CONTENT_LENGTH.lowerCaseName()))
+				str.append(HTTPHeader.Common.CONTENT_LENGTH.makeLine(bout.size()));
 		}
 		if((Thread.currentThread() instanceof CWThread) && ((CWThread)Thread.currentThread()).getConfig().isDebugging())
 			((CWThread)Thread.currentThread()).getConfig().getLogger().finer("Response Servlet: "+str.toString().replace('\r', ' ').replace('\n', ' '));
-		if(!normalizedHeaders.contains(HTTPHeader.SERVER.lowerCaseName()))
+		if(!normalizedHeaders.contains(HTTPHeader.Common.SERVER.lowerCaseName()))
 			str.append(HTTPIOHandler.SERVER_HEADER);
-		if(!normalizedHeaders.contains(HTTPHeader.CONNECTION.lowerCaseName()))
+		if(!normalizedHeaders.contains(HTTPHeader.Common.CONNECTION.lowerCaseName()))
 			str.append(HTTPIOHandler.CONN_HEADER);
-		if(!normalizedHeaders.contains(HTTPHeader.KEEP_ALIVE.lowerCaseName()))
-			str.append(HTTPHeader.getKeepAliveHeader());
-		if(!normalizedHeaders.contains(HTTPHeader.DATE.lowerCaseName()))
-			str.append(HTTPHeader.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
+		if(!normalizedHeaders.contains(HTTPHeader.Common.KEEP_ALIVE.lowerCaseName()))
+			str.append(HTTPHeader.Common.getKeepAliveHeader());
+		if(!normalizedHeaders.contains(HTTPHeader.Common.DATE.lowerCaseName()))
+			str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
 		for(String key : cookies.keySet())
-			str.append(HTTPHeader.SET_COOKIE.makeLine(key+"="+cookies.get(key)));
+			str.append(HTTPHeader.Common.SET_COOKIE.makeLine(key+"="+cookies.get(key)));
 		str.append(EOLN);
 		CWDataBuffers bufs=new CWDataBuffers(str.toString().getBytes(), System.currentTimeMillis(),false);
 		if(bout.size()>0)

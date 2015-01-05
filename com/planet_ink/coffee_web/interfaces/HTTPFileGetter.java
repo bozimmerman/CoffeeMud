@@ -57,7 +57,17 @@ public interface HTTPFileGetter
 	 * If you wish to add a special directory root for html docs, this would
 	 * be the appropriate place to do it.
 	 * @param request the request being processed
-	 * @return the full assembled file
+	 * @return the full assembled file path
 	 */
-	public File assembleFileRequest(HTTPRequest request);
+	public String assembleFilePath(HTTPRequest request);
+	
+	/**
+	 * After a final file path is assembled, this method
+	 * returns a file object appropriate to accessing the
+	 * given path.
+	 * @param request the request being processed
+	 * @param filePath the path being accessed
+	 * @return the File object
+	 */
+	public File createFile(final HTTPRequest request, final String filePath);
 }

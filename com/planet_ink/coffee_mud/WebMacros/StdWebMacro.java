@@ -79,7 +79,7 @@ public class StdWebMacro implements WebMacro
 	@Override
 	public void setServletResponse(SimpleServletResponse response, final String filename)
 	{
-		response.setHeader("Content-Type", MIMEType.getMIMEType(filename).getType());
+		response.setHeader("Content-Type", MIMEType.All.getMIMEType(filename).getType());
 	}
 
 	protected StringBuffer colorwebifyOnly(StringBuffer s)
@@ -472,6 +472,7 @@ public class StdWebMacro implements WebMacro
 				@Override public void removeUrlParameter(String name) { params.remove(name.toLowerCase()); }
 				@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
 				@Override public float getHttpVer() { return httpReq.getHttpVer(); }
+				@Override public String getQueryString() { return httpReq.getQueryString(); }
 			};
 
 			final DataBuffers data=config.getFileGetter().getFileData(newReq);
@@ -513,9 +514,10 @@ public class StdWebMacro implements WebMacro
 				@Override public void removeUrlParameter(String name) { params.remove(name.toUpperCase()); }
 				@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
 				@Override public float getHttpVer() { return httpReq.getHttpVer(); }
+				@Override public String getQueryString() { return httpReq.getQueryString(); }
 			};
 
-			return config.getFileGetter().assembleFileRequest(newReq);
+			return config.getFileGetter().createFile(newReq,config.getFileGetter().assembleFilePath(newReq));
 		}
 		return null;
 	}

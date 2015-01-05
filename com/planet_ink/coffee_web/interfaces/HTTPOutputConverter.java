@@ -42,9 +42,9 @@ public interface HTTPOutputConverter
 	 * Call generateOutput() to get the new output.
 	 * @param config the http configuration
 	 * @param request the http request bring processed
+	 * @param pageFile the file whose data is being converted
 	 * @param status the status of the request (so far)
 	 * @param buffer the input buffer
-	 * @param pageFile the file whose data is being converted
 	 * @return the output buffer
 	 * @throws HTTPException
 	 */

@@ -48,7 +48,6 @@ public interface ServletSessionManager
 	/**
 	 * A maintence method forcing the manager to examine all sessions
 	 * for any that have timed out and remove them, if so.
-	 * @return the list of servlet classes
 	 */
 	public void cleanUpSessions();
 }

@@ -26,7 +26,7 @@ limitations under the License.
 */
 
 /**
- * Manages a relatively static set of servlet classes 
+ * Manages a relatively static set of converter classes 
  * and the root contexts needed to access them.
  * 
  * @author Bo Zimmerman
@@ -34,12 +34,12 @@ limitations under the License.
  */
 public class MimeConverter implements MimeConverterManager
 {
-	private final Map<MIMEType,Class<? extends HTTPOutputConverter>> 	  	converters; 	// map of registered servlets by context
-	private final Map<Class<? extends HTTPOutputConverter>, RequestStats> requestStats; // stats about each servlet
+	private final Map<MIMEType,Class<? extends HTTPOutputConverter>> 	  converters; 	// map of registered converters by context
+	private final Map<Class<? extends HTTPOutputConverter>, RequestStats> requestStats; // stats about each converter
 	
 	/**
 	 * Construct a mime config manager, loading the converters from the config given
-	 * @param config
+	 * @param config the configuration for the web server
 	 */
 	public MimeConverter(CWConfig config)
 	{
@@ -47,7 +47,7 @@ public class MimeConverter implements MimeConverterManager
 		requestStats = new Hashtable<Class<? extends HTTPOutputConverter>, RequestStats>();
 		for(final String mimeTypeName : config.getFileConverts().keySet())
 		{
-			final MIMEType mimeType=MIMEType.valueOf(mimeTypeName);
+			final MIMEType mimeType=MIMEType.All.getValueOf(mimeTypeName);
 			String className=config.getFileConverts().get(mimeTypeName);
 			if(className.indexOf('.')<0)
 				className="com.planet_ink.coffee_web.converters."+className;
@@ -73,7 +73,7 @@ public class MimeConverter implements MimeConverterManager
 	/**
 	 * Internal method to register a servlets existence, and its context.
 	 * This will go away when a config file is permitted
-	 * @param context the uri context the servlet responds to
+	 * @param mime the mime type to register the converter to
 	 * @param converterClass the class of the converter
 	 */
 	@Override

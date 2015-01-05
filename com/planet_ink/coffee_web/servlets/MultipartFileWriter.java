@@ -78,7 +78,7 @@ public class MultipartFileWriter implements SimpleServlet
 		try
 		{
 			final StringBuilder filesList=new StringBuilder("");
-			response.setMimeType(MIMEType.html.getType());
+			response.setMimeType(MIMEType.All.html.getType());
 			writeFilesFromParts(request.getMultiParts(), filesList);
 			response.getOutputStream().write(("<html><body><h1>Done</h1><br>"+filesList.toString()+"</body></html>").getBytes());
 		}

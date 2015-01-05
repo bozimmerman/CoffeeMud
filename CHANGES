@@ -1,3 +1,5 @@
+# Build 5.8.6 Released ??/??/2015
+   1. Web Server upgraded to 2.3
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)

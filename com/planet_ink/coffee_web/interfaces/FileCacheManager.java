@@ -46,9 +46,10 @@ public interface FileCacheManager
 	/**
 	 * The publically accessible method for either compressing file data, or
 	 * potentially from the cache. 
-	 * @param filename the name of the file that is being compressed
+	 * @param pageFile the file that is being compressed
 	 * @param type the type of compression to look for
-	 * @return the byte[] buffer of the file to compress
+	 * @param uncompressedBytes the uncompressed file bytes
+	 * @return the byte[] buffer of the file after compression
 	 * @throws HTTPException either 304 or 404
 	 */
 	public DataBuffers compressFileData(final File pageFile, final CompressionType type, final DataBuffers uncompressedBytes) throws HTTPException;

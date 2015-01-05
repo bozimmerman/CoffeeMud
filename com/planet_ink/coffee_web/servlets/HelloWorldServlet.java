@@ -46,7 +46,7 @@ public class HelloWorldServlet implements SimpleServlet
 	{
 		try
 		{
-			response.setMimeType(MIMEType.html.getType());
+			response.setMimeType(MIMEType.All.html.getType());
 			response.getOutputStream().write(helloResponseStart.getBytes());
 			response.getOutputStream().write(defaultResponseBody.getBytes());
 			response.getOutputStream().write(helloResponseEnd.getBytes());
@@ -61,7 +61,7 @@ public class HelloWorldServlet implements SimpleServlet
 	{
 		try
 		{
-			response.setMimeType(MIMEType.html.getType());
+			response.setMimeType(MIMEType.All.html.getType());
 			response.getOutputStream().write(helloResponseStart.getBytes());
 			final InputStream in = request.getBody();
 			final ByteArrayOutputStream bout=new ByteArrayOutputStream();

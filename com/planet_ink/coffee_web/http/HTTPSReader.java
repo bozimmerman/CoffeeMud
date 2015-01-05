@@ -88,7 +88,7 @@ public class HTTPSReader extends HTTPReader
 	/**
 	 * Returns a descriptive string for whether this is 
 	 * an ssl or http reader
-	 * @return
+	 * @return the word https
 	 */
 	@Override
 	protected String getReaderType()
@@ -213,7 +213,6 @@ public class HTTPSReader extends HTTPReader
 	/**
 	 * Reads bytes from the given buffer into the local channel.
 	 * This code is parsed out here so that it can be overridden by HTTPSReader
-	 * @param key the section key for this channel, in case we need to register for write notifies
 	 * @param buffers source buffer for the data write
 	 * @throws IOException
 	 */

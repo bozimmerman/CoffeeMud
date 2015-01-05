@@ -66,6 +66,7 @@ public class CWHTMLConverter implements HTTPOutputConverter
 	 * Call generateOutput() to get the new output.
 	 * @param config the http configuration (optional, may be null)
 	 * @param request the http request bring processed  (optional, may be null)
+	 * @param pageFile the file whose data is being converted
 	 * @param status the status of the request (so far)
 	 * @param buffer the input buffer
 	 * @throws HTTPException

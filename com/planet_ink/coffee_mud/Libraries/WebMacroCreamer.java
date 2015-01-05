@@ -128,6 +128,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			@Override public void removeUrlParameter(String name) { params.remove(name.toLowerCase()); }
 			@Override public Map<String,Object> getRequestObjects() { return objects; }
 			@Override public float getHttpVer() { return (float)1.1; }
+			@Override public String getQueryString() { return ""; }
 		},new Hashtable<String,Object>(), new long[]{System.currentTimeMillis()}, new String[]{""}, s);
 	}
 

@@ -31,9 +31,8 @@ limitations under the License.
 public interface MimeConverterManager
 {
 	/**
-	 * Internal method to register a servlets existence, and its context.
-	 * This will go away when a config file is permitted
-	 * @param context the uri context the servlet responds to
+	 * Internal method to register a converters existence, and its context.
+	 * @param mime the mime type the converter responds to
 	 * @param converterClass the class of the converter
 	 */
 	public void registerConverter(MIMEType mime, Class<? extends HTTPOutputConverter> converterClass);
@@ -49,7 +48,7 @@ public interface MimeConverterManager
 	 * Returns a converter (if any) that handles the given mime type.
 	 * if none is found, NULL is returned.
 	 * @param mime the mime type
-	 * @return the servlet class, if any, or null
+	 * @return the converter class, if any, or null
 	 */
 	public Class<? extends HTTPOutputConverter> findConverter(MIMEType mime);
 

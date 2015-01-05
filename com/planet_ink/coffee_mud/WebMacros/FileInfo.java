@@ -86,7 +86,7 @@ public class FileInfo extends StdWebMacro
 				final int x=F.getName().lastIndexOf('.');
 				if(x<0)
 					return "false";
-				final String mime=MIMEType.getMIMEType(F.getName().substring(x)).getType();
+				final String mime=MIMEType.All.getMIMEType(F.getName().substring(x)).getType();
 				if(mime.toUpperCase().startsWith("TEXT"))
 					return "true";
 				return "false";
@@ -96,7 +96,7 @@ public class FileInfo extends StdWebMacro
 				final int x=F.getName().lastIndexOf('.');
 				if(x<0)
 					return "true";
-				final String mime=MIMEType.getMIMEType(F.getName().substring(x)).getType();
+				final String mime=MIMEType.All.getMIMEType(F.getName().substring(x)).getType();
 				if(mime.toUpperCase().startsWith("TEXT"))
 					return "false";
 				return "true";

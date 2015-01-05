@@ -53,7 +53,7 @@ limitations under the License.
 public class WebServer extends Thread
 {
 	public static final	String	  NAME				= "CoffeeWebServer";
-	public static final String	  POMVERSION		= "2.2";
+	public static final String	  POMVERSION		= "2.3";
 	public static 		double	  VERSION;
 	static { try { VERSION=Double.parseDouble(POMVERSION); } catch(final Exception e){ VERSION=0.0;} }
 	
@@ -409,7 +409,7 @@ public class WebServer extends Thread
 	/**
 	 * Enqueue a new socket channel to be registered for read notifications.
 	 * Does not do the action at once, but will, soon.
-	 * @param chan the socket channel to register
+	 * @param channel the socket channel to register
 	 * @param handler the handler to handle it.
 	 */
 	public void registerNewHandler(final SocketChannel channel, final HTTPIOHandler handler)
@@ -445,7 +445,7 @@ public class WebServer extends Thread
 	/**
 	 * Enqueue a new socket channel to be registered for read notifications.
 	 * Does not do the action at once, but will, soon.
-	 * @param chan the socket channel to register
+	 * @param channel the socket channel to register
 	 * @param newOp the new operations for this channel
 	 */
 	public void registerChannelInterest(final SocketChannel channel, final int newOp)
@@ -518,10 +518,10 @@ public class WebServer extends Thread
 		config.setConverters(mimeConverterManager);
 		config.setFileGetter(fileGetter);
 		
-		HTTPHeader.setKeepAliveHeader(HTTPHeader.KEEP_ALIVE.makeLine(
-										String.format(HTTPHeader.KEEP_ALIVE_FMT, 
-										Integer.valueOf(config.getRequestMaxAliveSecs()),
-										Integer.valueOf(config.getRequestMaxPerConn()))));
+		HTTPHeader.Common.setKeepAliveHeader(HTTPHeader.Common.KEEP_ALIVE.makeLine(
+											 String.format(HTTPHeader.Common.KEEP_ALIVE_FMT, 
+											 Integer.valueOf(config.getRequestMaxAliveSecs()),
+											 Integer.valueOf(config.getRequestMaxPerConn()))));
 		return config;
 	}
 	

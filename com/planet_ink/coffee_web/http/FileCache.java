@@ -192,9 +192,10 @@ public class FileCache implements FileCacheManager
 	/**
 	 * The publically accessible method for either compressing file data, or
 	 * potentially from the cache. 
-	 * @param filename the name of the file that is being compressed
+	 * @param pageFile the file that is being compressed, for reference
 	 * @param type the type of compression to look for
-	 * @return the byte[] buffer of the file to compress
+	 * @param uncompressedData the data before compression
+	 * @return the byte[] buffer of the file, compressed
 	 * @throws HTTPException either 304 or 404
 	 */
 	@Override

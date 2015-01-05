@@ -18,6 +18,7 @@ import com.planet_ink.coffee_web.interfaces.MimeConverterManager;
 import com.planet_ink.coffee_web.interfaces.ServletSessionManager;
 import com.planet_ink.coffee_web.interfaces.SimpleServletManager;
 import com.planet_ink.coffee_web.server.WebServer;
+import com.planet_ink.coffee_mud.core.collections.KeyPairWildSearchTree;
 import com.planet_ink.coffee_mud.core.collections.Pair;
 import com.planet_ink.coffee_mud.core.collections.Triad;
 import com.planet_ink.coffee_mud.core.collections.KeyPairSearchTree;
@@ -89,8 +90,8 @@ public class CWConfig implements Cloneable
 	private Map<String,String> 	  servlets 						= new HashMap<String,String>();
 	private Map<String,String>    fileConverts					= new HashMap<String,String>();
 	
-	private Map<String,String> 	  miscFlags						= new HashMap<String,String>();
-	private Set<DisableFlag>	  disableFlags					= new HashSet<DisableFlag>();
+	private final Map<String,String> 	  miscFlags						= new HashMap<String,String>();
+	private final Set<DisableFlag>	  disableFlags					= new HashSet<DisableFlag>();
 	
 	private SimpleServletManager  servletMan					= null;
 	private ServletSessionManager sessions						= null;
@@ -144,6 +145,7 @@ public class CWConfig implements Cloneable
 	private Map<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>>outs	= new HashMap<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<ChunkSpec>>>	chunks	= new HashMap<String,Map<Integer,KeyPairSearchTree<ChunkSpec>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<String>>> 		browse	= new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
+	private Map<String,Map<Integer,KeyPairSearchTree<String>>> 		cgimnts	= new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
 	
 	public enum DupPolicy { ENUMERATE, OVERWRITE }
 	
@@ -314,6 +316,7 @@ public class CWConfig implements Cloneable
 	{
 		return fileGetter;
 	}
+	
 	/**
 	 * @param fileGetter the fileGetter to set
 	 */
@@ -321,6 +324,7 @@ public class CWConfig implements Cloneable
 	{
 		this.fileGetter = fileGetter;
 	}
+	
 	/**
 	 * @return the coffeeWebServer
 	 */
@@ -328,6 +332,7 @@ public class CWConfig implements Cloneable
 	{
 		return coffeeWebServer;
 	}
+	
 	/**
 	 * @param coffeeWebServer the coffeeWebServer to set
 	 */
@@ -405,6 +410,7 @@ public class CWConfig implements Cloneable
 	{
 		this.converters = converters;
 	}
+	
 	/**
 	 * @return the bindAddress
 	 */
@@ -412,6 +418,7 @@ public class CWConfig implements Cloneable
 	{
 		return bindAddress;
 	}
+	
 	/**
 	 * @param bindAddress the bindAddress to set
 	 */
@@ -470,7 +477,6 @@ public class CWConfig implements Cloneable
 		return null;
 	}
 
-	
 	/**
 	 * return the proper mount for the given host and context and port
 	 * @param host the host name to search for, or "" for all hosts
@@ -481,6 +487,18 @@ public class CWConfig implements Cloneable
 	public final Pair<String,String> getMount(final String host, final int port, final String context)
 	{
 		return this.getContextPair(mounts, host, port, context);
+	}
+
+	/**
+	 * return the proper cgi-enabled mount for the given host and context and port
+	 * @param host the host name to search for, or "" for all hosts
+	 * @param port the port to search for, or -1 for all ports
+	 * @param context the context to search for -- NOT OPTIONAL!
+	 * @return the proper mount for the given host and context and port
+	 */
+	public final Pair<String,String> getCGIMount(final String host, final int port, final String context)
+	{
+		return this.getContextPair(cgimnts, host, port, context);
 	}
 
 	/**
@@ -932,6 +950,7 @@ public class CWConfig implements Cloneable
 	{
 		return requestMaxPerConn;
 	}
+	
 	/**
 	 * @param requestMaxPerConn the requestMaxPerConn to set
 	 */
@@ -939,6 +958,7 @@ public class CWConfig implements Cloneable
 	{
 		this.requestMaxPerConn = requestMaxPerConn;
 	}
+	
 	/**
 	 * @return the servlets
 	 */
@@ -946,6 +966,7 @@ public class CWConfig implements Cloneable
 	{
 		return servlets;
 	}
+	
 	/**
 	 * @return the fileConverts
 	 */
@@ -1009,8 +1030,8 @@ public class CWConfig implements Cloneable
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns a copy of this configuration
+	 * @return a copy of this object
 	 */
 	public CWConfig copyOf()
 	{
@@ -1188,7 +1209,7 @@ public class CWConfig implements Cloneable
 			for(String type : typesSet)
 			{
 				MIMEType mtype = null;
-				for(MIMEType m : MIMEType.values())
+				for(MIMEType m : MIMEType.All.getValues())
 					if((m.name().equals(type))
 					||(type.endsWith("*") && m.name().startsWith(type.substring(0,type.length()-1)))
 					||(type.startsWith("*") && m.name().endsWith(type.substring(1)))
@@ -1201,7 +1222,7 @@ public class CWConfig implements Cloneable
 					}
 				if(mtype == null)
 				{
-					for(MIMEType m : MIMEType.values())
+					for(MIMEType m : MIMEType.All.getValues())
 						if((m.getExt().equals(type))
 						||(type.endsWith("*") && m.getExt().startsWith(type.substring(0,type.length()-1)))
 						||(type.startsWith("*") && m.getExt().endsWith(type.substring(1))))
@@ -1280,7 +1301,8 @@ public class CWConfig implements Cloneable
 		return null;
 	}
 	
-	public Map<String,Map<Integer,KeyPairSearchTree<String>>> getContextMap(final String prefix, final Properties props)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Map<String,Map<Integer,KeyPairSearchTree<String>>> getContextMap(final String prefix, final Properties props, final Class<? extends KeyPairSearchTree> treeClass)
 	{
 		Map<String,Map<Integer,KeyPairSearchTree<String>>> map = null;
 		final Map<String,String> pairs=getPrefixedPairs(props,prefix,'/');
@@ -1301,10 +1323,20 @@ public class CWConfig implements Cloneable
 				KeyPairSearchTree<String> tree=portMap.get(from.second);
 				if(tree == null)
 				{
-					tree=new KeyPairSearchTree<String>();
-					portMap.put(from.second, tree);
+					try 
+					{
+						tree=treeClass.newInstance();
+						portMap.put(from.second, tree);
+					} 
+					catch (Exception e) 
+					{
+						e.printStackTrace();
+					}
 				}
-				tree.addEntry(from.third, p.getValue());
+				if(tree != null)
+				{
+					tree.addEntry(from.third, p.getValue());
+				}
 			}
 		}
 		return map;
@@ -1379,14 +1411,26 @@ public class CWConfig implements Cloneable
 		final Map<String,String> newConverts=getPrefixedPairs(props,"MIMECONVERT",'.');
 		if(newConverts != null)
 			fileConverts=newConverts;
-		final Map<String,Map<Integer,KeyPairSearchTree<String>>> newMounts = getContextMap("MOUNT",props);
+		final Map<String,Map<Integer,KeyPairSearchTree<String>>> newMounts = getContextMap("MOUNT",props,KeyPairSearchTree.class);
 		if(newMounts != null)
 			mounts = newMounts;
+		final Map<String,Map<Integer,KeyPairSearchTree<String>>> newCGIMounts = getContextMap("CGIMOUNT",props,KeyPairWildSearchTree.class);
+		if(newCGIMounts != null)
+			cgimnts = newCGIMounts;
 		
-		final Map<String,Map<Integer,KeyPairSearchTree<String>>> newBrowse = getContextMap("BROWSE",props);
+		final Map<String,Map<Integer,KeyPairSearchTree<String>>> newBrowse = getContextMap("BROWSE",props,KeyPairSearchTree.class);
 		if(newBrowse != null)
 			browse = newBrowse;
 		
+		final Map<String,String> extraMimeTypes=getPrefixedPairs(props,"MIME",'.');
+		if(extraMimeTypes != null)
+			for(String key : extraMimeTypes.keySet())
+			{
+				final String type=extraMimeTypes.get(key);
+				if(type.indexOf('/')>0)
+					MIMEType.All.addMIMEType(key.toLowerCase(), type);
+			}
+
 		final Map<String,String> newForwards=getPrefixedPairs(props,"FORWARD",'/');
 		if(newForwards != null)
 		{

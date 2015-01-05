@@ -50,7 +50,7 @@ public class FormLoggerServlet implements SimpleServlet
 			request.getLogger().info("Url Field \""+field+"\": "+request.getUrlParameter(field));
 		int contentLength = 0;
 		try {
-			contentLength = Integer.parseInt(request.getHeader(HTTPHeader.CONTENT_LENGTH.lowerCaseName()));
+			contentLength = Integer.parseInt(request.getHeader(HTTPHeader.Common.CONTENT_LENGTH.lowerCaseName()));
 		} catch (Exception e) { }
 		if(contentLength > 0) {
 			try {

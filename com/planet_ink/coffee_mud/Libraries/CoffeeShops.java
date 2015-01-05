@@ -155,29 +155,29 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if(A!=null)
 				{
 					str.append(L("\n\rRooms      : @x1",""+A.numberOfProperIDedRooms()));
-				}
-				final List<String> miscItems=new ArrayList<String>();
-				for(final Enumeration<Room> r= A.getProperMap(); r.hasMoreElements();)
-				{
-					final Room R=r.nextElement();
-					if(R==null)
-						continue;
-					for(final Enumeration<Item> i = R.items();i.hasMoreElements();)
+					final List<String> miscItems=new ArrayList<String>();
+					for(final Enumeration<Room> r= A.getProperMap(); r.hasMoreElements();)
 					{
-						final Item I2=i.nextElement();
-						if(I2.displayText().length()>0)
+						final Room R=r.nextElement();
+						if(R==null)
+							continue;
+						for(final Enumeration<Item> i = R.items();i.hasMoreElements();)
 						{
-							if(I2 instanceof ShipComponent)
-								str.append(L("\n\r"+CMStrings.padRight(((ShipComponent)I2).getTechType().getShortDisplayName(),11)+": @x1",getSellableElectronicsName(viewerM,(Electronics)I2)));
-							else
-								miscItems.add(I2.name(viewerM));
+							final Item I2=i.nextElement();
+							if(I2.displayText().length()>0)
+							{
+								if(I2 instanceof ShipComponent)
+									str.append(L("\n\r"+CMStrings.padRight(((ShipComponent)I2).getTechType().getShortDisplayName(),11)+": @x1",getSellableElectronicsName(viewerM,(Electronics)I2)));
+								else
+									miscItems.add(I2.name(viewerM));
+							}
 						}
 					}
-				}
-				if(miscItems.size()>0)
-				{
-					str.append(L("\n\rMisc Items : "));
-					str.append(CMParms.toStringList(miscItems));
+					if(miscItems.size()>0)
+					{
+						str.append(L("\n\rMisc Items : "));
+						str.append(CMParms.toStringList(miscItems));
+					}
 				}
 			}
 			else

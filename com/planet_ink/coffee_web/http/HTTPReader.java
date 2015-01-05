@@ -7,6 +7,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +16,6 @@ import java.io.*;
 import com.planet_ink.coffee_web.interfaces.DataBuffers;
 import com.planet_ink.coffee_web.interfaces.HTTPIOHandler;
 import com.planet_ink.coffee_web.server.WebServer;
-import com.planet_ink.coffee_web.util.ChunkSpec;
 import com.planet_ink.coffee_web.util.CWDataBuffers;
 import com.planet_ink.coffee_web.util.ThrottleSpec;
 import com.planet_ink.coffee_web.util.WebAddress;
@@ -103,7 +103,6 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	 * Constructor takes the server managing this request, and the channel to read from and write to.
 	 * @param server the web server managing this runner, a place to get the config and register new ops
 	 * @param chan the channel to read from and write to
-	 * @param registerOps a list to add to when you need the server to make channel changes
 	 * @throws IOException
 	 */
 	public HTTPReader(WebServer server, SocketChannel chan) throws IOException
@@ -128,7 +127,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	/**
 	 * Returns a descriptive string for whether this is 
 	 * an ssl or http reader
-	 * @return
+	 * @return the reader type, http or https
 	 */
 	protected String getReaderType()
 	{
@@ -275,8 +274,8 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				final StringBuilder s=new StringBuilder(currentReq.getMethod().toString()).append(' ').append(urlPage)
 							.append(" HTTP/").append(currentReq.getHttpVer()).append(EOLN);
 				for(final String headerKey : currentReq.getAllHeaderReferences(true))
-					if(headerKey.equalsIgnoreCase(HTTPHeader.HOST.name()))
-						s.append(HTTPHeader.HOST.name()).append(": ").append(address.getHost()).append(':').append(address.getPort()).append(EOLN);
+					if(headerKey.equalsIgnoreCase(HTTPHeader.Common.HOST.name()))
+						s.append(HTTPHeader.Common.HOST.name()).append(": ").append(address.getHost()).append(':').append(address.getPort()).append(EOLN);
 					else
 						s.append(headerKey).append(": ").append(currentReq.getHeader(headerKey.toLowerCase().trim())).append(EOLN);
 				if(config.isDebugging())
@@ -505,7 +504,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 									state=ParseState.DONE;
 								}
 								else
-								if("chunked".equalsIgnoreCase(currentReq.getHeader(HTTPHeader.TRANSFER_ENCODING.lowerCaseName())))
+								if("chunked".equalsIgnoreCase(currentReq.getHeader(HTTPHeader.Common.TRANSFER_ENCODING.lowerCaseName())))
 								{
 									state=ParseState.CHUNKED_HEADER_INLINE;
 									buffer = currentReq.setToReceiveContentChunkedBody(0); // prepare for chunk length/headers
@@ -515,7 +514,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 								else
 								{
 									//the headers will tell you what to do next "BODY" is too vague
-									final String contentLengthStr=currentReq.getHeader(HTTPHeader.CONTENT_LENGTH.lowerCaseName());
+									final String contentLengthStr=currentReq.getHeader(HTTPHeader.Common.CONTENT_LENGTH.lowerCaseName());
 									if(contentLengthStr!=null)
 									{
 										try
@@ -708,6 +707,61 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	}
 	
 	/**
+	 * Parses CGI Input content, populating the given header map, and returning the content body
+	 * as a bytebuffer ready for reading.
+	 * @param inputBuffer the input buffer to read content from
+	 * @param headerOutput the map to put headers into
+	 * @return the bytebuffer with the content body, or null if the impossible occurs
+	 */
+	public static final ByteBuffer parseCGIContent(final ByteBuffer inputBuffer, final Map<HTTPHeader,String> headerOutput)
+	{
+		char c;	// current character being HDR_INLINE
+		ParseState state = ParseState.HDR_INLINE;
+		int lastEOLIndex = 0;
+		final int origPosition = inputBuffer.position();
+		while(inputBuffer.position() < inputBuffer.limit())
+		{
+			c=(char)inputBuffer.get();
+			switch(state)
+			{
+			case HDR_INLINE:
+				if(c=='\r')
+					state=ParseState.HDR_EOLN;
+				break;
+			case HDR_EOLN:
+			{
+				if (c=='\n')
+				{
+					final String headerLine = new String(Arrays.copyOfRange(inputBuffer.array(), lastEOLIndex, inputBuffer.position()-2),utf8);
+					lastEOLIndex=inputBuffer.position();
+					if(headerLine.length()>0) 
+					{
+						if(headerOutput != null)
+							CWHTTPRequest.parseHeaderLine(headerLine, headerOutput);
+						state=ParseState.HDR_INLINE;
+					}
+					else // a blank line means the end of the header section!!!
+					{
+						inputBuffer.compact();
+						inputBuffer.flip();
+						return inputBuffer;
+					}
+				}
+				else // an error!
+				{
+					inputBuffer.position(origPosition);
+					return inputBuffer;
+				}
+				break;
+			}
+			default:
+				return null; // this can't happen
+			}
+		}
+		return ByteBuffer.wrap(new byte[0]);
+	}
+	
+	/**
 	 * Reads bytes from the given buffer into the local channel.
 	 * This code is parsed out here so that it can be overridden by HTTPSReader
 	 * @param buffers source buffer for the data write
@@ -802,11 +856,11 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 							if(accessLog != null)
 								accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
 									currentReq.getClientAddress().getHostAddress()
-									+" "+currentReq.getHost()
+									+" "+currentReq.getHost()+":"+currentReq.getClientPort()
 									+" \""+currentReq.getFullRequest()+" \" "+processor.getLastHttpStatusCode()+" "+bufs.getLength())).append("\n");
 							writeBytesToChannel(bufs);
 							// after output, prepare for a second request on this channel
-							final String closeHeader = currentReq.getHeader(HTTPHeader.CONNECTION.lowerCaseName()); 
+							final String closeHeader = currentReq.getHeader(HTTPHeader.Common.CONNECTION.lowerCaseName()); 
 							if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
 								closeRequested = true;
 							else
@@ -824,13 +878,13 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					if(accessLog != null)
 						accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
 							currentReq.getClientAddress().getHostAddress()
-							+" "+currentReq.getHost()
+							+" "+currentReq.getHost()+":"+currentReq.getClientPort()
 							+" \""+currentReq.getFullRequest()+"\" "+me.getStatus().getStatusCode()+" "+bufs.getLength())).append("\n");
 					// have to assume any exception caused
 					// before a finish is malformed and needs a closed connection.
 					if(currentReq.isFinished())
 					{
-						final String closeHeader = currentReq.getHeader(HTTPHeader.CONNECTION.lowerCaseName()); 
+						final String closeHeader = currentReq.getHeader(HTTPHeader.Common.CONNECTION.lowerCaseName()); 
 						if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
 							closeRequested = true;
 						else

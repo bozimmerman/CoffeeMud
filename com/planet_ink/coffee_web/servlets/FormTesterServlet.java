@@ -44,7 +44,7 @@ public class FormTesterServlet implements SimpleServlet
 	{
 		try
 		{
-			response.setMimeType(MIMEType.html.getType());
+			response.setMimeType(MIMEType.All.html.getType());
 			response.getOutputStream().write("<html><body><h1>Form Field Values</h1><br>".getBytes());
 			for(final String cookieName : request.getCookieNames())
 				response.getOutputStream().write(("Cookie \""+cookieName+"\": "+request.getCookie(cookieName)+"<br>").getBytes());

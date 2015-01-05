@@ -134,8 +134,8 @@ public class HTTPException extends Exception
 		final Map<HTTPHeader,String> headers=getErrorHeaders();
 		str.append(HTTPIOHandler.SERVER_HEADER);
 		str.append(HTTPIOHandler.CONN_HEADER);
-		str.append(HTTPHeader.getKeepAliveHeader());
-		str.append(HTTPHeader.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
+		str.append(HTTPHeader.Common.getKeepAliveHeader());
+		str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
 		
 		DataBuffers finalBody=null;
 		if((body.length()==0)
@@ -148,10 +148,10 @@ public class HTTPException extends Exception
 			try
 			{
 				fileBytes=config.getFileCache().getFileData(errorFile, null);
-				final MIMEType mimeType=MIMEType.getMIMEType(config.getErrorPage());
+				final MIMEType mimeType=MIMEType.All.getMIMEType(config.getErrorPage());
 				if(mimeType!=null)
 				{
-					headers.put(HTTPHeader.CONTENT_TYPE, mimeType.getType());
+					headers.put(HTTPHeader.Common.CONTENT_TYPE, mimeType.getType());
 					final Class<? extends HTTPOutputConverter> converterClass=config.getConverters().findConverter(mimeType);
 					if(converterClass != null)
 					{
@@ -180,12 +180,12 @@ public class HTTPException extends Exception
 		}
 		if(finalBody.getLength()>0)
 		{
-			if(!headers.containsKey(HTTPHeader.CONTENT_TYPE.lowerCaseName()))
-				str.append(HTTPHeader.CONTENT_TYPE.makeLine(MIMEType.html.getType()));
-			str.append(HTTPHeader.CONTENT_LENGTH.makeLine(finalBody.getLength()));
+			if(!headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()))
+				str.append(HTTPHeader.Common.CONTENT_TYPE.makeLine(MIMEType.All.html.getType()));
+			str.append(HTTPHeader.Common.CONTENT_LENGTH.makeLine(finalBody.getLength()));
 		}
 		else
-			str.append(HTTPHeader.CONTENT_LENGTH.makeLine(0));
+			str.append(HTTPHeader.Common.CONTENT_LENGTH.makeLine(0));
 		str.append(EOLN);
 		finalBody.insertTop(str.toString().getBytes(), 0, false);
 		return finalBody;

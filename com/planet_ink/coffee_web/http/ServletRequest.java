@@ -144,6 +144,12 @@ public class ServletRequest implements SimpleServletRequest
 		return request.getUrlParameters();
 	}
 	
+	@Override
+	public String getQueryString()
+	{
+		return request.getQueryString();
+	}
+	
 	@Override 
 	public void removeUrlParameter(String name)
 	{

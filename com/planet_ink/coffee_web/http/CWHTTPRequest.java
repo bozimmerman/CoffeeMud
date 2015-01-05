@@ -70,9 +70,11 @@ public class CWHTTPRequest implements HTTPRequest
 	private String 	 			 	requestString	= null;		// full request line, including method, path, etc..
 	private final Map<String,String>headers	  		= new Hashtable<String,String>(); // all the base headers received for this request
 	private Map<String,String>   	urlParameters	= null;   	// holds url parameters, urlencoded variables, and form-data variables
+	private String					queryString		= null; 	// holds url parameters pre-parsed -- the stuff after the ?
 	private ByteBuffer	 		 	buffer;	  					// acts as both the line buffer and data buffer
 	private int					 	bodyLength		= 0;		// length of the data buffer, and flag that a body was received
 	private float				 	httpVer	  		= 1.0f;		// version of this http request (1.0, 1.1, etc)
+	private String					simpleHost		= null;
 	private InputStream			 	bodyStream		= null;		// the input stream for the main data body
 	private String				 	uriPage	  		= null;		// portion of the request without urlparameters
 	private boolean				 	isFinished		= false;	// flag as to whether finishRequest and processing is ready
@@ -230,7 +232,20 @@ public class CWHTTPRequest implements HTTPRequest
 	@Override
 	public String getHost()
 	{
-		return headers.get(HTTPHeader.HOST.toString().toLowerCase());
+		if(simpleHost == null)
+		{
+			String newSimpleHost = headers.get(HTTPHeader.Common.HOST.toString().toLowerCase());
+			if(newSimpleHost != null)
+			{
+				int x=newSimpleHost.indexOf(':');
+				if(x>=0)
+					newSimpleHost=newSimpleHost.substring(0,x);
+			}
+			else
+				newSimpleHost = "";
+			this.simpleHost = newSimpleHost;
+		}
+		return simpleHost;
 	}
 	
 	/**
@@ -253,7 +268,7 @@ public class CWHTTPRequest implements HTTPRequest
 	public String getFullHost()
 	{
 		final StringBuilder host=new StringBuilder(isHttps?"https://":"http://");
-		host.append(headers.get(HTTPHeader.HOST.toString().toLowerCase()));
+		host.append(headers.get(HTTPHeader.Common.HOST.toString().toLowerCase()));
 		if(((isHttps)&&(requestPort != CWConfig.DEFAULT_SSL_PORT))
 		||((!isHttps)&&(requestPort != CWConfig.DEFAULT_HTP_LISTEN_PORT)))
 			host.append(":").append(requestPort);
@@ -638,10 +653,10 @@ public class CWHTTPRequest implements HTTPRequest
 							{
 								if((headerParts[1].length()>0)&&(headerParts[1].charAt(0)==' '))
 									headerParts[1]=headerParts[1].substring(1);
-								if(headerKey.equals(HTTPHeader.CONTENT_TYPE.lowerCaseName()))
+								if(headerKey.equals(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()))
 									currentPart.setContentType(headerParts[1]);
 								else
-								if(headerKey.equals(HTTPHeader.CONTENT_DISPOSITION.lowerCaseName()))
+								if(headerKey.equals(HTTPHeader.Common.CONTENT_DISPOSITION.lowerCaseName()))
 									currentPart.setDisposition(headerParts[1]);
 								else
 									currentPart.getHeaders().put(headerKey, headerParts[1]);
@@ -748,14 +763,14 @@ public class CWHTTPRequest implements HTTPRequest
 	public void finishRequest() throws HTTPException
 	{
 		// first, a final error if no host header found
-		if(!headers.containsKey(HTTPHeader.HOST.lowerCaseName()))
+		if(!headers.containsKey(HTTPHeader.Common.HOST.lowerCaseName()))
 			throw new HTTPException(HTTPStatus.S400_BAD_REQUEST, "<html><body><h2>No Host: header received</h2>HTTP 1.1 requests must include the Host: header.</body></html>");
 		
 		// if this is a range request, get the byte ranges ready for the One Who Will Generate Output
-		if(headers.containsKey(HTTPHeader.RANGE.lowerCaseName()) && (!disableFlags.contains(CWConfig.DisableFlag.RANGED)))
+		if(headers.containsKey(HTTPHeader.Common.RANGE.lowerCaseName()) && (!disableFlags.contains(CWConfig.DisableFlag.RANGED)))
 		{
 			if (isDebugging) debugLogger.finest("Got range request!");
-			byteRanges=parseRangeRequest(headers.get(HTTPHeader.RANGE.lowerCaseName()));
+			byteRanges=parseRangeRequest(headers.get(HTTPHeader.Common.RANGE.lowerCaseName()));
 		}
 		
 		if(chunkBytes != null)
@@ -771,31 +786,31 @@ public class CWHTTPRequest implements HTTPRequest
 			bodyStream = emptyInput;
 		}
 		else // if this entire body is one url-encoded string, parse it into the urlParameters and clear the body
-		if(headers.containsKey(HTTPHeader.CONTENT_TYPE.lowerCaseName()) 
-		&&(headers.get(HTTPHeader.CONTENT_TYPE.lowerCaseName()).startsWith("application/x-www-form-urlencoded")))
 		{
-			bodyStream = emptyInput;
-			final String byteStr=new String(buffer.array(),utf8);
-			parseUrlEncodedKeypairs(byteStr);
-			if (isDebugging) debugLogger.finest("Urlencoded data: "+byteStr);
-			buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
-		}
-		else // if this is some sort of multi-part thing, then the entire body is forfeit and MultiPartDatas are generated
-		if(headers.containsKey(HTTPHeader.CONTENT_TYPE.lowerCaseName()) 
-		&&(headers.get(HTTPHeader.CONTENT_TYPE.lowerCaseName()).startsWith("multipart/")))
-		{
-			bodyStream = emptyInput;
-			if (isDebugging) debugLogger.finest("Got multipart request");
-			final String boundaryDefStr=headers.get(HTTPHeader.CONTENT_TYPE.lowerCaseName());
-			parts = parseMultipartContent(boundaryDefStr, new int[]{0});
-			buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
-		}
-		else // otherwise, this is an unhandled or generic body of data.. prepare the input bodystream
-		{
-			if (isDebugging) debugLogger.finest("Got generic body");
-			buffer.position(0);
-			buffer.limit(buffer.capacity());
 			bodyStream = new ByteArrayInputStream(buffer.array());
+			if(headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()) 
+			&&(headers.get(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()).startsWith("application/x-www-form-urlencoded")))
+			{
+				final String byteStr=new String(buffer.array(),utf8);
+				parseUrlEncodedKeypairs(byteStr);
+				if (isDebugging) debugLogger.finest("Urlencoded data: "+byteStr);
+				buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
+			}
+			else // if this is some sort of multi-part thing, then the entire body is forfeit and MultiPartDatas are generated
+				if(headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()) 
+				&&(headers.get(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()).startsWith("multipart/")))
+			{
+				if (isDebugging) debugLogger.finest("Got multipart request");
+					final String boundaryDefStr=headers.get(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName());
+				parts = parseMultipartContent(boundaryDefStr, new int[]{0});
+				buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
+			}
+			else // otherwise, this is an unhandled or generic body of data.. prepare the input bodystream
+			{
+				if (isDebugging) debugLogger.finest("Got generic body");
+				buffer.position(0);
+				buffer.limit(buffer.capacity());
+			}
 		}
 		isFinished = true; // by setting this flag, we signal our doneness.
 	}
@@ -837,6 +852,31 @@ public class CWHTTPRequest implements HTTPRequest
 	}
 	
 	/**
+	 * A simple static method for parsing a header line and adding it to the given map.
+	 * @param headerLine the unparsed raw line of headerness
+	 * @param headers the map to put the header in, if it was valid
+	 * @return the name of the header, or null if bad parse
+	 */
+	public static HTTPHeader parseHeaderLine(final String headerLine, final Map<HTTPHeader,String> headers)
+	{
+		final int x = headerLine.indexOf(':'); // first : is the right :
+		if(x > 0)
+		{
+			final String headerRawKey=headerLine.substring(0,x);
+			final String headerKey = headerRawKey.toLowerCase().trim(); // lowercase is normalized!!!
+			final String headerValue = headerLine.substring(x+1).trim();
+			HTTPHeader header = HTTPHeader.Common.find(headerKey);
+			if(header == null)
+			{
+				header = HTTPHeader.Common.createNew(headerKey);
+			}
+			headers.put(header , headerValue);
+			return header;
+		}
+		return null;
+	}
+	
+	/**
 	 * When a line of the header is received, we need to find out if its a cookie
 	 * and parse it elsewhere.  Otherwise, the header is put into our headers
 	 * map, with the name of the  header normalized to lowercase for quick
@@ -856,16 +896,16 @@ public class CWHTTPRequest implements HTTPRequest
 			final String headerKey = headerRawKey.toLowerCase().trim(); // lowercase is normalized!!!
 			final String headerValue = headerLine.substring(x+1).trim();
 			headers.put(headerKey , headerValue);
-			if(headerKey.equals(HTTPHeader.HOST.lowerCaseName())) // special case!
+			if(headerKey.equals(HTTPHeader.Common.HOST.lowerCaseName())) // special case!
 				return headerValue;
 			else
-			if(headerKey.equals(HTTPHeader.COOKIE.lowerCaseName())) // special case!
+			if(headerKey.equals(HTTPHeader.Common.COOKIE.lowerCaseName())) // special case!
 				parseCookieData(headerValue);
 			else
-			if(headerKey.equals(HTTPHeader.EXPECT.lowerCaseName())) // special case!
+			if(headerKey.equals(HTTPHeader.Common.EXPECT.lowerCaseName())) // special case!
 				expects.addAll(Arrays.asList(headerValue.toLowerCase().split(";")));
 			else
-			if(headerKey.equals(HTTPHeader.ACCEPT_ENCODING.lowerCaseName())) // special case!
+			if(headerKey.equals(HTTPHeader.Common.ACCEPT_ENCODING.lowerCaseName())) // special case!
 				acceptEnc=parseAcceptEncodingRequest(headerValue);
 			if (isDebugging) debugLogger.finer("Header received: "+headerLine);
 			return null;
@@ -986,7 +1026,7 @@ public class CWHTTPRequest implements HTTPRequest
 		if(requestType == null)
 		{
 			final HTTPException exception = new HTTPException(HTTPStatus.S405_METHOD_NOT_ALLOWED);
-			exception.getErrorHeaders().put(HTTPHeader.ALLOW, HTTPMethod.getAllowedList());
+			exception.getErrorHeaders().put(HTTPHeader.Common.ALLOW, HTTPMethod.getAllowedList());
 			throw exception;
 		}
 		
@@ -1001,7 +1041,7 @@ public class CWHTTPRequest implements HTTPRequest
 				final int endOfUrl = url.indexOf('/');
 				if(endOfUrl > 0)
 				{
-					headers.put(HTTPHeader.HOST.lowerCaseName(), url.substring(0, endOfUrl));
+					headers.put(HTTPHeader.Common.HOST.lowerCaseName(), url.substring(0, endOfUrl));
 					url = url.substring(endOfUrl);
 				}
 				else
@@ -1011,10 +1051,14 @@ public class CWHTTPRequest implements HTTPRequest
 			if(urlEncodeSeparator >= 0)
 			{
 				uriPage = URLDecoder.decode(url.substring(0,urlEncodeSeparator),"UTF-8");
-				parseUrlEncodedKeypairs(url.substring(urlEncodeSeparator+1));
+				queryString = url.substring(urlEncodeSeparator+1);
+				parseUrlEncodedKeypairs(queryString);
 			}
 			else
+			{
 				uriPage = URLDecoder.decode(url,"UTF-8");
+				queryString = "";
+			}
 		}
 		catch(final UnsupportedEncodingException e)
 		{
@@ -1068,6 +1112,16 @@ public class CWHTTPRequest implements HTTPRequest
 	public String getCookie(String name)
 	{
 		return cookies.get(name);
+	}
+
+	/**
+	 * Return the query string, all the stuff in the request after the ?
+	 * @return the query string
+	 */
+	@Override
+	public String getQueryString()
+	{
+		return queryString;
 	}
 
 	/**

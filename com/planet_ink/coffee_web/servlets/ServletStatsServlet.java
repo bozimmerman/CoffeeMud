@@ -46,7 +46,7 @@ public class ServletStatsServlet implements SimpleServlet
 	{
 		try
 		{
-			response.setMimeType(MIMEType.html.getType());
+			response.setMimeType(MIMEType.All.html.getType());
 			final StringBuilder str = new StringBuilder("");
 			str.append("<html><body>");
 			

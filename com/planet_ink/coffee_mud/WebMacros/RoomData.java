@@ -867,6 +867,7 @@ public class RoomData extends StdWebMacro
 			@Override public void removeUrlParameter(String name) { params.remove(name.toLowerCase()); }
 			@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
 			@Override public float getHttpVer() { return httpReq.getHttpVer(); }
+			@Override public String getQueryString() { return httpReq.getQueryString(); }
 		};
 		for(final String[] pair : STAT_CHECKS)
 			if(mergeReq.isUrlParameter(pair[1]) && (mergeReq.getUrlParameter(pair[1]).length()==0))

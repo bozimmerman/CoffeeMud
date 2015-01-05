@@ -84,7 +84,7 @@ public class ThrottleSpec
 	/**
 	 * Called to report to the throttle object how many bytes were
 	 * actually transmitted in a given instance.
-	 * @param written bytes written
+	 * @param bytesWritten bytes written
 	 */
 	public synchronized void registerWritten(final long bytesWritten)
 	{

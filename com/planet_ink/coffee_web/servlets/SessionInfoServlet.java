@@ -41,7 +41,7 @@ public class SessionInfoServlet implements SimpleServlet
 	{
 		try
 		{
-			response.setMimeType(MIMEType.html.getType());
+			response.setMimeType(MIMEType.All.html.getType());
 			final SimpleServletSession session = request.getSession();
 			response.getOutputStream().write("<html><body>".getBytes());
 			response.getOutputStream().write(("<h1>Hello Session#"+session.getSessionId()+"</h1>").getBytes());

@@ -114,8 +114,6 @@ public interface HTTPRequest
 	
 	/**
 	 * Access the body of the request as an input stream
-	 * The body will be unavailable is already processed
-	 * (ie urlencoded parameters)
 	 * @return the body of the request as an input stream.
 	 */
 	public InputStream getBody();
@@ -125,6 +123,12 @@ public interface HTTPRequest
 	 * @return the cookie value
 	 */
 	public String getCookie(String name);
+
+	/**
+	 * Return the query string, all the stuff in the request after the ?
+	 * @return the query string
+	 */
+	public String getQueryString();
 	
 	/**
 	 * Gets the key cookie names

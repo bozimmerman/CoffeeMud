@@ -26,8 +26,9 @@ limitations under the License.
  */
 public class KeyPairSearchTree<V>
 {
-	private KeyPairNode<String,V> root=new KeyPairNode<String,V>();
-	private class KeyPairNode<K,T>
+	protected KeyPairNode<String,V> root=new KeyPairNode<String,V>();
+
+	protected class KeyPairNode<K,T>
 	{
 		@SuppressWarnings("unchecked")
 		public KeyPairNode<K,T>[] limbs=new KeyPairNode[127];
