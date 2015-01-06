@@ -880,6 +880,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			I2.setDisplayText(I.displayText());
 			I2.setDescription(I2.description());
 			I2.recoverPhyStats();
+			I2.setRawLogicalAnd(I.rawLogicalAnd());
+			I2.setRawProperLocationBitmap(I.rawProperLocationBitmap());
 			I2.setMaterial(I.material());
 			String ruinDescAdder=null;
 			switch(I2.material()&RawMaterial.MATERIAL_MASK)
