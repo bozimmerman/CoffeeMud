@@ -1487,8 +1487,16 @@ public class CMParms
 						x++;
 					if(x<text.length())
 					{
-						text=text.substring(x);
-						x=0;
+						if((x>0)&&(text.charAt(x-1)=='-'))
+						{
+							text=text.substring(x-1);
+							x=1;
+						}
+						else
+						{
+							text=text.substring(x);
+							x=0;
+						}
 						while((x<text.length())
 						&&((Character.isDigit(text.charAt(x)))||(text.charAt(x)=='.')))
 							x++;
@@ -1541,8 +1549,16 @@ public class CMParms
 						x++;
 					if(x<text.length())
 					{
-						text=text.substring(x);
-						x=0;
+						if((x>0)&&(text.charAt(x-1)=='-'))
+						{
+							text=text.substring(x-1);
+							x=1;
+						}
+						else
+						{
+							text=text.substring(x);
+							x=0;
+						}
 						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
 							x++;
 						return CMath.s_int(text.substring(0,x));
