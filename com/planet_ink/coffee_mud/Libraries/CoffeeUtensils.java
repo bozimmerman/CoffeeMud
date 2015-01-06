@@ -856,7 +856,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
 		||(I instanceof Coins))
 			return I;
-		if(I.name().toLowerCase().indexOf("ruined ")>=0)
+		if(I.ID().equals("GenRuinedItem"))
 			return I;
 		final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=parseLootPolicyFor(mob);
 		for(int d=0;d<policies.size();d++)
@@ -874,7 +874,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				continue;
 			if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_LOSS))
 				return null;
-			final Item I2=CMClass.getItem("GenItem");
+			final Item I2=CMClass.getItem("GenRuinedItem");
 			I2.basePhyStats().setWeight(I.basePhyStats().weight());
 			I2.setName(I.Name());
 			I2.setDisplayText(I.displayText());
