@@ -79,7 +79,7 @@ public class GenSailingShip extends StdBoardable
 	protected Room createFirstRoom()
 	{
 		final Room R=CMClass.getLocale("WoodenDeck");
-		R.setDisplayText("The Deck");
+		R.setDisplayText(L("The Deck"));
 		return R;
 	}
 	
@@ -143,7 +143,7 @@ public class GenSailingShip extends StdBoardable
 					else
 					if(R!=null)
 					{
-						CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, "<S-NAME> raise(s) anchor.");
+						CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> raise(s) anchor."));
 						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
 						{
 							R.send(msg.source(), msg2);
@@ -171,7 +171,7 @@ public class GenSailingShip extends StdBoardable
 					else
 					if(R!=null)
 					{
-						CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, "<S-NAME> lower(s) anchor.");
+						CMMsg msg2=CMClass.getMsg(msg.source(), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> lower(s) anchor."));
 						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
 						{
 							R.send(msg.source(), msg2);

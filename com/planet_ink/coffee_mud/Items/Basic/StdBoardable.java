@@ -95,7 +95,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	protected Room createFirstRoom()
 	{
 		final Room R=CMClass.getLocale("StdRoom");
-		R.setDisplayText("The First Room");
+		R.setDisplayText(L("The First Room"));
 		return R;
 	}
 	
@@ -119,7 +119,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			final String num=Double.toString(Math.random());
 			final int x=num.indexOf('.')+1;
 			final int len=((num.length()-x)/2)+1;
-			area.setName("UNNAMED_"+num.substring(x,x+len));
+			area.setName(L("UNNAMED_@x1",num.substring(x,x+len)));
 
 			final Room R=createFirstRoom();
 			R.setRoomID(area.Name()+"#0");
@@ -274,7 +274,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final int x=num.indexOf('.')+1;
 		final int len=((num.length()-x)/2)+1;
 		String oldName=A.Name();
-		A.setName("UNNAMED_"+num.substring(x,x+len));
+		A.setName(L("UNNAMED_@x1",num.substring(x,x+len)));
 		for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();

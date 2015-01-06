@@ -87,7 +87,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	protected Room createFirstRoom()
 	{
 		final Room R=CMClass.getLocale("MetalRoom");
-		R.setDisplayText("The Cockpit");
+		R.setDisplayText(L("The Cockpit"));
 		return R;
 	}
 	

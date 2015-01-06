@@ -891,32 +891,32 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case RawMaterial.MATERIAL_VEGETATION:
 				case RawMaterial.MATERIAL_FLESH:
 				case RawMaterial.MATERIAL_PAPER:
-					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is torn and ruined beyond repair.";
+					ruinDescAdder=L("@x1  is torn and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
 					break;
 				case RawMaterial.MATERIAL_METAL:
 				case RawMaterial.MATERIAL_MITHRIL:
 				case RawMaterial.MATERIAL_WOODEN:
-					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is battered and ruined beyond repair.";
+					ruinDescAdder=L("@x1  is battered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
 					break;
 				case RawMaterial.MATERIAL_GLASS:
-					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is shattered and ruined beyond repair.";
+					ruinDescAdder=L("@x1  is shattered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
 					break;
 				case RawMaterial.MATERIAL_ROCK:
 				case RawMaterial.MATERIAL_PRECIOUS:
 				case RawMaterial.MATERIAL_SYNTHETIC:
-					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is cracked and ruined beyond repair.";
+					ruinDescAdder=L("@x1  is cracked and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
 					break;
 				case RawMaterial.MATERIAL_UNKNOWN:
 				case RawMaterial.MATERIAL_ENERGY:
 				case RawMaterial.MATERIAL_GAS:
 				case RawMaterial.MATERIAL_LIQUID:
 				default:
-					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is ruined beyond repair.";
+					ruinDescAdder=L("@x1  is ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
 					break;
 			}
 			I2.setDescription(CMStrings.endWithAPeriod(I2.description())+" "+ruinDescAdder);
 			final String oldName=I2.Name();
-			I2.setName(CMLib.english().insertUnColoredAdjective(I2.Name(),"ruined"));
+			I2.setName(CMLib.english().insertUnColoredAdjective(I2.Name(),L("ruined")));
 			final int x=I2.displayText().toUpperCase().indexOf(oldName.toUpperCase());
 			I2.setBaseValue(0);
 			if(x>=0)

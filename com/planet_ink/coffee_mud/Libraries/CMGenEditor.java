@@ -571,7 +571,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final String oldName=E.Name();
 			E.setName(newName);
 			if(E.displayText().equalsIgnoreCase(oldName+" stands here."))
-				E.setDisplayText(newName+" stands here.");
+				E.setDisplayText(L("@x1 stands here.",newName));
 			return;
 		}
 		if((E instanceof Physical)&&(CMLib.flags().isCataloged(E)))
@@ -1457,7 +1457,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					str.append(a.nextElement().Name()).append(";");
 			}
 			else
-				str.append("* This is the Default parent area *");
+				str.append(L("* This is the Default parent area *"));
 			mob.tell(L("@x1. Children areas: @x2",""+showNumber,str.toString()));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;

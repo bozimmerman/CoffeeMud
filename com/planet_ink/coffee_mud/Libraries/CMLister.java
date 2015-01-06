@@ -98,9 +98,9 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		if(!item.name().equals(item.Name()))
 		{
 			if(item instanceof Physical)
-				return CMStrings.capitalizeFirstLetter(((Physical)item).name(viewerM)+" is here.")+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+				return CMStrings.capitalizeFirstLetter(L("@x1 is here.",((Physical)item).name(viewerM)))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 			else
-				return CMStrings.capitalizeFirstLetter(item.name()+" is here.")+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+				return CMStrings.capitalizeFirstLetter(L("@x1 is here.",item.name()))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 		}
 		else
 		if(item.displayText().length()>0)
