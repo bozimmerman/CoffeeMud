@@ -896,22 +896,22 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case RawMaterial.MATERIAL_METAL:
 				case RawMaterial.MATERIAL_MITHRIL:
 				case RawMaterial.MATERIAL_WOODEN:
-					ruinDescAdder=L("@x1  is battered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+					ruinDescAdder=L("@x1 is battered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
 					break;
 				case RawMaterial.MATERIAL_GLASS:
-					ruinDescAdder=L("@x1  is shattered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+					ruinDescAdder=L("@x1 is shattered and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
 					break;
 				case RawMaterial.MATERIAL_ROCK:
 				case RawMaterial.MATERIAL_PRECIOUS:
 				case RawMaterial.MATERIAL_SYNTHETIC:
-					ruinDescAdder=L("@x1  is cracked and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+					ruinDescAdder=L("@x1 is cracked and ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
 					break;
 				case RawMaterial.MATERIAL_UNKNOWN:
 				case RawMaterial.MATERIAL_ENERGY:
 				case RawMaterial.MATERIAL_GAS:
 				case RawMaterial.MATERIAL_LIQUID:
 				default:
-					ruinDescAdder=L("@x1  is ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
+					ruinDescAdder=L("@x1 is ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
 					break;
 			}
 			I2.setDescription(CMStrings.endWithAPeriod(I2.description())+" "+ruinDescAdder);
