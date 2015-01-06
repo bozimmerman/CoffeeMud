@@ -169,12 +169,12 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <item id="level_weighted_gemstones" select="repeat-20" predefine="random_sum_max=($level_range*5),random_sum_sum=0,last_gem_value=99999,last_material=''">
 	<item define="last_material=$level_weighted_gems,random_sum_sum+=$last_gem_value">
-		<item validate="$random_sum_sum &lt; $random_sum_max" class="GenResource" name="(a(n)) $item_material gemstone" display="$item_name sits here" material="$last_material" basegold="$last_gem_value"/>
+		<item validate="$random_sum_sum &lt; $random_sum_max" class="GenResource" name="(a(n)) $item_material gemstone" display="$item_name sits here" material="$last_material" basegold="$last_gem_value" weight="1"/>
 	</item>
 </item>
 
 <item id="level_weighted_gem_baubles" select="repeat-20" predefine="random_sum_max=($level_range*5),random_sum_sum=0,last_gem_value=99999,last_material=''">
-	<item define="last_material=$level_weighted_gems,random_sum_sum+=$last_gem_value"><item validate="$random_sum_sum &lt; $random_sum_max" class="GenResource" name="(a(n)) $item_material $bauble_shapes" display="$item_name sits here" material="$last_material" basegold="$last_gem_value"/></item>
+	<item define="last_material=$level_weighted_gems,random_sum_sum+=$last_gem_value"><item validate="$random_sum_sum &lt; $random_sum_max" class="GenResource" name="(a(n)) $item_material $bauble_shapes" display="$item_name sits here" material="$last_material" basegold="$last_gem_value"  weight="1"/></item>
 </item>
 
 <string id="level_weighted_metals" select="any-1" predefine="weighted_metal_chance=($level_range*7)" required="level_range=int">
@@ -196,13 +196,13 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <item id="level_weighted_bars" select="repeat-20" predefine="random_sum_max=($level_range*5),random_sum_sum=0,last_metal_value=99999,last_material=''">
 	<item define="last_material=$level_weighted_metals,random_sum_sum+=$last_metal_value">
-		<item validate="$random_sum_sum &lt; $random_sum_max" class="GenResource" name="(a(n)) $item_material bar" display="$item_name sits here" material="$last_material" basegold="$last_metal_value"/>
+		<item validate="$random_sum_sum &lt; $random_sum_max" class="GenResource" name="(a(n)) $item_material bar" display="$item_name sits here" material="$last_material" basegold="$last_metal_value" weight="1"/>
 	</item>
 </item>
 
 <item id="level_weighted_metal_baubles" select="repeat-20" predefine="random_sum_max=($level_range*5),random_sum_sum=0,last_metal_value=99999,last_material=''">
 	<item define="last_material=$level_weighted_metals,random_sum_sum+=$last_metal_value">
-		<item validate="$random_sum_sum &lt; $random_sum_max" class="GenResource" name="(a(n)) $item_material $metal_bauble_shapes" display="$item_name sits here" material="$last_material" basegold="$last_metal_value"/>
+		<item validate="$random_sum_sum &lt; $random_sum_max" class="GenResource" name="(a(n)) $item_material $metal_bauble_shapes" display="$item_name sits here" material="$last_material" basegold="$last_metal_value" weight="1"/>
 	</item>
 </item>
 
