@@ -47,23 +47,21 @@ public class GenRuinedItem extends GenItem
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost, msg))
-			return false;
 		if(msg.target()==this)
 		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_WEAR:
 				msg.source().tell(msg.source(),this,null,L("<T-NAME> is ruined and can not be worn."));
-				break;
+				return false;
 			case CMMsg.TYP_WIELD:
 				msg.source().tell(msg.source(),this,null,L("<T-NAME> is ruined and can not be wielded."));
-				break;
+				return false;
 			default:
 				break;
 			}
 		}
-		return true;
+		return super.okMessage(myHost, msg);
 	}
 	
 }
