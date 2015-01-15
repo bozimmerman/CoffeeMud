@@ -1500,7 +1500,8 @@ public class Create extends StdCommand
 					}
 				}
 				else
-				if(CMath.isInteger(firstWord)&&(lastWord!=null))
+				if(CMath.isInteger(firstWord)
+				&&(lastWord!=null))
 				{
 					final int num=CMath.s_int(firstWord);
 					final String theRest=CMParms.combine(commands,2);
@@ -1512,6 +1513,12 @@ public class Create extends StdCommand
 						for(int i=0;i<num;i++)
 							mob.location().addItem(CMLib.materials().makeItemResource(matCode),ItemPossessor.Expire.Player_Drop);
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL, L("Suddenly @x1 @x2 fall from the sky.",""+num,RawMaterial.CODES.NAME(matCode)));
+					}
+					else 
+					if(CMLib.english().numPossibleGold(null,firstWord+" "+theRest)>0)
+					{
+						commands.insertElementAt("ITEM",1);
+						return execute(mob,commands,metaFlags);
 					}
 					else
 					{
