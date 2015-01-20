@@ -214,12 +214,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			return true;
 		final Item I=(Item)E;
 		final Rideable R=mob.riding();
+		final ItemPossessor owner=I.owner();
 		if((mob.isMine(I))
 		||((mob.riding()!=null)&&((I==mob.riding())
-								  ||(I.owner()==R)
+								  ||(owner==R)
 								  ||(I.ultimateContainer(R)==R)))
-		||(I.owner()==null)
-		||((I.owner() instanceof Room)&&(!((Room)I.owner()).isContent(I))))
+		||(owner==null)
+		||((owner instanceof Room)&&(!((Room)owner).isContent(I))))
 		   return true;
 		return false;
 	}
