@@ -750,11 +750,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	}
 
-	protected boolean simpleEvalStr(Environmental scripted,
-									String arg1,
-									String arg2,
-									String cmp,
-									String cmdName)
+	protected boolean simpleEvalStr(Environmental scripted, String arg1, String arg2, String cmp, String cmdName)
 	{
 		final int x=arg1.compareToIgnoreCase(arg2);
 		final Integer SIGN=signH.get(cmp);
