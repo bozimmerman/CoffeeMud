@@ -487,7 +487,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return varVal;
 		if((this.defaultQuestName!=null)&&(this.defaultQuestName.length()>0))
 		{
-			Resources questResources=(Resources)Resources.getResource("VARSCOPE-"+this.defaultQuestName);
+			final Resources questResources=(Resources)Resources.getResource("VARSCOPE-"+this.defaultQuestName);
 			if((questResources != null)&&(resources!=questResources))
 			{
 				varVal = getVar(questResources,host,var,null);
