@@ -119,7 +119,7 @@ public class Flee extends Go
 			if(XPloss&&(fighting!=null))
 			{
 				final String whatToDo=CMProps.getVar(CMProps.Str.PLAYERFLEE);
-				if(whatToDo==null)
+				if((whatToDo==null)||(whatToDo.length()==0))
 					return false;
 				final int[] expLost={10+((mob.phyStats().level()-fighting.phyStats().level()))*5};
 				if(expLost[0]<10)

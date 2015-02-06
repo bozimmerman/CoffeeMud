@@ -2407,8 +2407,12 @@ public class StdMOB implements MOB
 						for (final Enumeration<MOB> m = location().inhabitants(); m.hasMoreElements();)
 						{
 							final MOB M = m.nextElement();
-							if ((M != this) && (M.getVictim() == this) && (CMLib.flags().aliveAwakeMobile(M, true))
-									&& (CMLib.flags().canSenseEnteringLeaving(srcM, M)))
+							if((M != this) 
+							&&(M.getVictim() == this)
+							&&(CMLib.flags().aliveAwakeMobile(M, true))
+							&&(CMLib.flags().canSenseEnteringLeaving(srcM, M))
+							&&(CMProps.getVar(CMProps.Str.PLAYERFLEE)!=null)
+							&&(CMProps.getVar(CMProps.Str.PLAYERFLEE).length()>0))
 							{
 								tell(L("Not while you are fighting!"));
 								return false;
