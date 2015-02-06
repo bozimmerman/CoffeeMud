@@ -482,9 +482,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	@Override
 	public String getVar(String host, String var)
 	{
-		final String varVal = getVar(resources,host,var,null);
+		String varVal = getVar(resources,host,var,null);
 		if(varVal != null)
 			return varVal;
+		if((this.defaultQuestName!=null)&&(this.defaultQuestName.length()>0))
+		{
+			Resources questResources=(Resources)Resources.getResource("VARSCOPE-"+this.defaultQuestName);
+			if((questResources != null)&&(resources!=questResources))
+			{
+				varVal = getVar(questResources,host,var,null);
+				if(varVal != null)
+					return varVal;
+			}
+		}
 		if(resources == Resources.instance())
 			return "";
 		return getVar(Resources.instance(),host,var,"");
