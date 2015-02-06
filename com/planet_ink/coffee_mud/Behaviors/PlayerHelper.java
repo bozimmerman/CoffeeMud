@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -50,7 +49,14 @@ public class PlayerHelper extends StdBehavior
 		if((msg.target()==null)||(!(msg.target() instanceof MOB)))
 			return;
 		final MOB mob=msg.source();
-		final MOB monster=(MOB)affecting;
+		final MOB monster;
+		if(affecting instanceof MOB)
+			monster=(MOB)affecting;
+		else
+		if((affecting instanceof Item)&&(((Item)affecting).owner() instanceof MOB))
+			monster=(MOB)((Item)affecting).owner();
+		else
+			return;
 		final MOB target=(MOB)msg.target();
 
 		if((mob!=monster)
