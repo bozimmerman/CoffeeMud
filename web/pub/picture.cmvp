@@ -28,27 +28,28 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 @if?CheckReqParm?PLAYER=@
-<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
+	<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
 @endif@
 @if?IsAccountSystem@
-<INPUT TYPE=HIDDEN NAME=AUTHACCOUNT VALUE="@Authenticate?SETACCOUNT@">
-<CENTER>
-@AddRequestParameter?OLDPLAYER=@@RequestParameter?PLAYER@@ @
-<SELECT NAME=PLAYER ONCHANGE="Clicked('picture.cmvp');">
-@AccountPlayerNext?RESET@
-@loop@
-@AccountPlayerNext@
-<OPTION VALUE="@RequestParameter?PLAYER@"  @if?CheckReqParm?PLAYER=@@RequestParameter?OLDPLAYER@@ @SELECTED@endif@ >@RequestParameter?PLAYER@
-@back@
-@AddRequestParameter?PLAYER=@@RequestParameter?OLDPLAYER@@ @
-</SELECT>
-@AddRequestParameter?OLDPLAYER=@@RequestParameter?PLAYER@@ @
+	<INPUT TYPE=HIDDEN NAME=AUTHACCOUNT VALUE="@Authenticate?SETACCOUNT@">
+	<CENTER>
+	@AddRequestParameter?OLDPLAYER=@@RequestParameter?PLAYER@@ @
+	<SELECT NAME=PLAYER ONCHANGE="Clicked('picture.cmvp');">
+	@AccountPlayerNext?RESET@
+	@loop@
+		@AccountPlayerNext@
+		<OPTION VALUE="@RequestParameter?PLAYER@"  @if?CheckReqParm?PLAYER=@@RequestParameter?OLDPLAYER@@ @SELECTED@endif@ >@RequestParameter?PLAYER@
+	@back@
+	</SELECT>
+	@AddRequestParameter?PLAYER=@@RequestParameter?OLDPLAYER@@ @
 @else@
     <INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME">
 @endif@
 </FORM>
 <CENTER>
-@if?CheckReqParm?FUNCTION=NEWIMAGE@ <FONT COLOR=RED><B>@PlayerOnline?NEWIMAGE@</B></FONT><P> @endif@ 
+@if?CheckReqParm?FUNCTION=NEWIMAGE@
+	<FONT COLOR=RED><B>@PlayerOnline?NEWIMAGE@</B></FONT><P> 
+@endif@ 
 <TR>
 <FONT COLOR=BLUE>Name: </FONT><FONT COLOR=BLACK><B>@PlayerData?NAME@</B></FONT>@if?PlayerOnline?=true@<FONT COLOR=BLUE>&nbsp;&nbsp;&nbsp; *ONLINE*</FONT>@endif@
 <BR>
@@ -56,7 +57,7 @@
 <BR>
 <FONT COLOR=BLUE><B>Your Current Portrait:</B><BR>
 @if?PlayerData?HASIMG@
-<IMG HEIGHT=70 WIDTH=70 SRC="@PlayerData?IMGURL@">
+	<IMG HEIGHT=70 WIDTH=70 SRC="@PlayerData?IMGURL@">
 @endif@
 <BR CLEAR=RIGHT>
 <BR CLEAR=LEFT>
@@ -64,7 +65,9 @@
 <FONT COLOR=BLACK><B>Images may be in JPEG, GIF, or BMP format, but no images over 50 kilobytes will be accepted.</B><BR>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=picture.cmvp METHOD=POST>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
+@if?CheckReqParm?PLAYER=@
+	<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
+@endif@
 <INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
