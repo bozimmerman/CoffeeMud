@@ -147,7 +147,8 @@ public class Generate extends StdCommand
 		if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
 		||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase(objectType)))
 		{
-			mob.tell(L("The @x1 id '@x2' has not been defined in the data file.",objectType,idName));
+			if(!idName.equalsIgnoreCase("LIST"))
+				mob.tell(L("The @x1 id '@x2' has not been defined in the data file.",objectType,idName));
 			final StringBuffer foundIDs=new StringBuffer("");
 			for(final Enumeration tkeye=OBJECT_TYPES.keys();tkeye.hasMoreElements();)
 			{
