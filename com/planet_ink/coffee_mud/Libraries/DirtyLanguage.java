@@ -66,6 +66,12 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		clear();
 	}
 
+	@Override
+	public void propertiesLoaded()
+	{
+		setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
+	}
+
 	public String replaceWithDefinitions(DVector global, DVector local, String str)
 	{
 		for(int v=0;v<local.size();v++)
