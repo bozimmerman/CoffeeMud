@@ -98,18 +98,15 @@ public class Spell_GraceOfTheCat extends Spell
 
 		// now see if it worked
 		final boolean success=proficiencyCheck(mob,0,auto);
-
-		if(success)
+		Room R=target.location();
+		if((success)&&(R!=null))
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?"));
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				if(target.location()==mob.location())
-				{
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> move(s) more gracefully!"));
-					beneficialAffect(mob,target,asLevel,0);
-				}
+				R.send(mob,msg);
+				R.show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> move(s) more gracefully!"));
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
