@@ -123,7 +123,11 @@ public class Prayer_AnimateZombie extends Prayer
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Spell_CauseStink"));
 				final Behavior B=CMClass.getBehavior("Aggressive");
-				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
+				if(B!=null)
+				{ 
+					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>="+newMOB.phyStats().level()); 
+					newMOB.addBehavior(B);
+				}
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();

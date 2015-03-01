@@ -129,7 +129,11 @@ public class Prayer_AnimateMummy extends Prayer
 				Behavior B=CMClass.getBehavior("CombatAbilities");
 				newMOB.addBehavior(B);
 				B=CMClass.getBehavior("Aggressive");
-				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
+				if(B!=null)
+				{ 
+					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>="+newMOB.phyStats().level()); 
+					newMOB.addBehavior(B);
+				}
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
 				CMLib.beanCounter().clearZeroMoney(newMOB,null);

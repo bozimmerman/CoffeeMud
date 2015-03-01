@@ -114,7 +114,11 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.baseState().setMana(0);
 				final Behavior B=CMClass.getBehavior("Aggressive");
-				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
+				if(B!=null)
+				{ 
+					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>="+newMOB.phyStats().level()); 
+					newMOB.addBehavior(B);
+				}
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();

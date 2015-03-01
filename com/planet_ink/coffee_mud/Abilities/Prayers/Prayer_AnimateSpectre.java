@@ -123,7 +123,11 @@ public class Prayer_AnimateSpectre extends Prayer
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.baseState().setMana(100);
 				Behavior B=CMClass.getBehavior("Aggressive");
-				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
+				if(B!=null)
+				{ 
+					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>="+newMOB.phyStats().level()); 
+					newMOB.addBehavior(B);
+				}
 				newMOB.recoverCharStats();
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
