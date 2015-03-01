@@ -84,7 +84,7 @@ public class UnderWater extends StdRoom implements Drink
 			}
 	}
 
-	public static void sinkAffects(Room room, CMMsg msg)
+	public static void sinkAffects(final Room room, final CMMsg msg)
 	{
 		if(msg.amITarget(room)
 		&&(msg.targetMinor()==CMMsg.TYP_DRINK)

@@ -1415,9 +1415,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	public boolean isHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene)
 	{
 		if((msg.sourceMajor(CMMsg.MASK_MOVE)
+			&&((msg.tool()==null)
+			  ||(!(msg.tool() instanceof Ability))
+			  ||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)))
 		||((msg.tool() instanceof Social)
 			&&((msg.tool().Name().toUpperCase().startsWith("BATHE"))
-			||(msg.tool().Name().toUpperCase().startsWith("WASH"))))))
+			||(msg.tool().Name().toUpperCase().startsWith("WASH")))))
 				return (msg.source().playerStats()!=null)&&(msg.source().soulMate()==null);
 		return false;
 	}
