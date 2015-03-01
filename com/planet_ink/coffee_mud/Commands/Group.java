@@ -94,8 +94,21 @@ public class Group extends StdCommand
 	{
 		mob.tell(L("@x1's group:\n\r",mob.name()));
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
+		final List<MOB> orderedGroup = new LinkedList<MOB>();
+		final Room R=mob.location();
+		for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if(group.contains(M))
+			{
+				orderedGroup.add(M);
+				group.remove(M);
+			}
+		}
+		orderedGroup.addAll(group);
+		group.clear();
 		final StringBuffer msg=new StringBuffer("");
-		for (final Object element : group)
+		for (final Object element : orderedGroup)
 		{
 			final MOB follower=(MOB)element;
 			msg.append(showWhoLong(mob,follower));
