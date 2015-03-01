@@ -131,7 +131,7 @@ public class Prayer_AnimateGhoul extends Prayer
 				B=CMClass.getBehavior("Aggressive");
 				if(B!=null)
 				{ 
-					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>="+newMOB.phyStats().level()); 
+					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>"+newMOB.basePhyStats().level()); 
 					newMOB.addBehavior(B);
 				}
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Spell_CauseStink"));
