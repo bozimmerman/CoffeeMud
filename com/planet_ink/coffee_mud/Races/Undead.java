@@ -62,9 +62,9 @@ public class Undead extends StdRace
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
 		super.affectCharState(affectedMOB, affectableState);
-		affectableState.setHunger((Integer.MAX_VALUE/2)+10);
+		affectableState.setHunger(CharState.DEFAULT_HUNGER_FULL+10);
 		affectedMOB.curState().setHunger(affectableState.getHunger());
-		affectableState.setThirst((Integer.MAX_VALUE/2)+10);
+		affectableState.setThirst(CharState.DEFAULT_THIRST_FULL+10);
 		affectedMOB.curState().setThirst(affectableState.getThirst());
 	}
 	@Override
@@ -85,6 +85,19 @@ public class Undead extends StdRace
 			msg.source().tell(L("@x1 stinks of grime and decay.",name()));
 	}
 
+	@Override 
+	public boolean tick(Tickable myChar, int tickID)
+	{
+		if(myChar instanceof MOB)
+		{
+			final MOB myM=(MOB)myChar;
+			myM.curState().setHunger(myM.maxState().getHunger());
+			myM.curState().setThirst(myM.maxState().getThirst());
+		}
+		return true;
+	}
+
+	
 	@Override
 	public String makeMobName(char gender, int age)
 	{
