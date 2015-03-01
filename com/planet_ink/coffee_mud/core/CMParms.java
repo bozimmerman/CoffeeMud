@@ -2079,6 +2079,20 @@ public class CMParms
 		return s.toString();
 	}
 
+	/**
+	 * Maps all the objects by to a name/value map, by calling toString()
+	 * on each object.
+	 * @param c the list of objects
+	 * @return the map of object toString()s to ojects.
+	 */
+	public final static Map<String,Object> toObjectStringMap(final Object[] c)
+	{
+		final Hashtable<String,Object> nameHash = new Hashtable<String,Object>();
+		for(Object o : c)
+			nameHash.put(o.toString(), o);
+		return nameHash;
+	}
+	
 	/** 
 	 * Converts the given Array of CMObjects to a comma-delimited list, with
 	 * spaces after each comma by calling ID() on each object.

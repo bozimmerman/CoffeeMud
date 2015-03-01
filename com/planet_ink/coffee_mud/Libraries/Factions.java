@@ -404,18 +404,18 @@ public class Factions extends StdLibrary implements FactionManager
 		return addFaction(F) ? F : null;
 	}
 
-	public Faction[] getSpecialFactions(MOB mob, Room R)
+	public Faction[] getSpecialFactions(final MOB mob, final Room R)
 	{
 		if((mob==null)||(R==null))
 			return null;
 		Faction F=null;
-		final String SPECIALTYPE=CMProps.getVar(CMProps.Str.AUTOREACTION).toUpperCase().trim();
-		if((SPECIALTYPE==null)||(SPECIALTYPE.length()==0))
+		final String autoReactionTypeStr=CMProps.getVar(CMProps.Str.AUTOREACTION).toUpperCase().trim();
+		if((autoReactionTypeStr==null)||(autoReactionTypeStr.length()==0))
 			return null;
-		if(SPECIALTYPE.equals("AREA"))
+		if(autoReactionTypeStr.equals("AREA"))
 		{
 			final Area A=R.getArea();
-			if(A!=null)
+			if((A!=null)&&(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD)))
 			{
 				final String areaCode = A.Name().toUpperCase().trim().replace(' ','_');
 				F=getFaction("AREA_"+areaCode);
@@ -427,7 +427,7 @@ public class Factions extends StdLibrary implements FactionManager
 			}
 		}
 		else
-		if(SPECIALTYPE.equals("NAME"))
+		if(autoReactionTypeStr.equals("NAME"))
 		{
 			final Vector<Faction> Fs=new Vector<Faction>();
 			for(int i=0;i<R.numInhabitants();i++)
@@ -448,7 +448,7 @@ public class Factions extends StdLibrary implements FactionManager
 			return Fs.toArray(new Faction[0]);
 		}
 		else
-		if(SPECIALTYPE.equals("RACE"))
+		if(autoReactionTypeStr.equals("RACE"))
 		{
 			final Vector<Faction> Fs=new Vector<Faction>();
 			final HashSet<Race> done=new HashSet<Race>(2);
