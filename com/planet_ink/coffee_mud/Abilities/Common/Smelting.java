@@ -161,7 +161,7 @@ public class Smelting extends CraftingSkill
 		buildingI=null;
 		messedUp=false;
 		String recipeName=CMParms.combine(commands,0);
-		int maxAmount=0;
+		int maxAmount=1;
 		if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 		{
 			maxAmount=CMath.s_int((String)commands.lastElement());
