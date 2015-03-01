@@ -190,12 +190,15 @@ public class Get extends StdCommand
 			for(int i=0;i<V.size();i++)
 			{
 				final Item getThis=(Item)V.get(i);
-				get(mob,container,getThis,quiet,"get",true);
-				if(getThis instanceof Coins)
-					((Coins)getThis).putCoinsBack();
-				if(getThis instanceof RawMaterial)
-					((RawMaterial)getThis).rebundle();
-				doneSomething=true;
+				if(!getThis.amDestroyed())
+				{
+					get(mob,container,getThis,quiet,"get",true);
+					if(getThis instanceof Coins)
+						((Coins)getThis).putCoinsBack();
+					if(getThis instanceof RawMaterial)
+						((RawMaterial)getThis).rebundle();
+					doneSomething=true;
+				}
 			}
 			R.recoverRoomStats();
 			R.recoverRoomStats();

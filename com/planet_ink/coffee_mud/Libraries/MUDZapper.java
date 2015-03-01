@@ -3465,6 +3465,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					final int level=actual?P.basePhyStats().level():P.phyStats().level();
 					boolean found=false;
 					for(int v=0;v<entry.parms.length-1;v+=2)
+					{
 						switch(((Integer)entry.parms[v]).intValue())
 						{
 							case 37: // +lvlgr
@@ -3488,6 +3489,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								   found=true;
 								break;
 						}
+					}
 					if(!found)
 						return false;
 				}
@@ -3498,6 +3500,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					final int cl=actual?mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())
 								 :mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 					for(int v=0;v<entry.parms.length-1;v+=2)
+					{
 						switch(((Integer)entry.parms[v]).intValue())
 						{
 							case 37: // +lvlgr
@@ -3521,6 +3524,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								   found=true;
 								break;
 						}
+					}
 					if(!found)
 						return false;
 				}

@@ -181,7 +181,11 @@ public class Drop extends StdCommand
 			mob.tell(L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
-			drop(mob,(Item)V.get(i),false,true,false);
+		{
+			final Item I=(Item)V.get(i);
+			if(!I.amDestroyed())
+				drop(mob,I,false,true,false);
+		}
 		mob.location().recoverRoomStats();
 		mob.location().recoverRoomStats();
 		return false;
