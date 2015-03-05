@@ -1095,15 +1095,15 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					setThreadStatus(serviceClient,"expiring top metrics");
 					final long now=System.currentTimeMillis();
 					List<Pair<String,Integer>> top;
-					for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
+					for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 					{
-						for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+						if(period == TimeClock.TimePeriod.ALLTIME)
+							continue;
+						if(now > topPrideExpiration[period.ordinal()])
 						{
-							if(period == TimeClock.TimePeriod.ALLTIME)
-								continue;
-							if(now > topPrideExpiration[period.ordinal()])
+							topPrideExpiration[period.ordinal()] = period.nextPeriod();
+							for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
 							{
-								topPrideExpiration[period.ordinal()] = period.nextPeriod();
 								top=topAccounts[period.ordinal()][stat.ordinal()];
 								if(top!=null)
 								{
