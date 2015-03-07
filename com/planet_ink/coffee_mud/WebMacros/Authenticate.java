@@ -93,12 +93,18 @@ public class Authenticate extends StdWebMacro
 				if(email.length()>0)
 					for(int i=0;i<256;i++)
 						FILTER[i]^=email.charAt(i % email.length());
-				final NetworkInterface ni = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
-				final byte[] mac = ni.getHardwareAddress();
-				if((mac != null) && (mac.length > 0))
+				for(final Enumeration<NetworkInterface> nie = NetworkInterface.getNetworkInterfaces(); nie.hasMoreElements();)
 				{
-					for(int i=0;i<256;i++)
-						FILTER[i]^=Math.abs(mac[i % mac.length]);
+					final NetworkInterface ni = nie.nextElement();
+					if(ni != null)
+					{
+						final byte[] mac = ni.getHardwareAddress();
+						if((mac != null) && (mac.length > 0))
+						{
+							for(int i=0;i<256;i++)
+								FILTER[i]^=Math.abs(mac[i % mac.length]);
+						}
+					}
 				}
 			}
 			catch(final Exception e)
