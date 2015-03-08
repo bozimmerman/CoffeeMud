@@ -96,7 +96,7 @@ public class Hireling extends StdBehavior
 			else
 			{
 				setPrice(newParms.substring(0,dex));
-				setMinutes(newParms.substring(dex));
+				setMinutes(newParms.substring(dex+1));
 			}
 		}
 		else
