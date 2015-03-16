@@ -2267,6 +2267,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				session.promptPrint(L("^!Is ^H@x1^N^! correct (Y/n)?^N",newRace.name()));
 				mob=setMOBClass(newRace.useRideClass() ? "StdRideable" : "StdMOB", loginObj, session);
 				mob.baseCharStats().setMyRace(newRace);
+				mob.charStats().setMyRace(newRace);
 				loginObj.state=LoginState.CHARCR_RACECONFIRMED;
 				return LoginResult.INPUT_REQUIRED;
 			}
