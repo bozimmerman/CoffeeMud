@@ -2323,6 +2323,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return null;
 		}
 		mob.baseCharStats().setStat(CharStats.STAT_GENDER,gender.toUpperCase().charAt(0));
+		mob.charStats().setStat(CharStats.STAT_GENDER,gender.toUpperCase().charAt(0));
 
 		mob.baseCharStats().getMyRace().startRacing(mob,false);
 
@@ -2652,6 +2653,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			else
 			{
 				mob.baseCharStats().setCurrentClass(newClass);
+				mob.charStats().setCurrentClass(newClass);
 				loginObj.state=LoginState.CHARCR_CLASSDONE;
 			}
 			return null;
@@ -2677,6 +2679,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			else
 			{
 				mob.baseCharStats().setCurrentClass(newClass);
+				mob.charStats().setCurrentClass(newClass);
 				loginObj.state=LoginState.CHARCR_CLASSDONE;
 			}
 			return null;
@@ -2685,6 +2688,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((qualClassesV.size()==1)||(session==null)||(session.isStopped()))
 		{
 			mob.baseCharStats().setCurrentClass(qualClassesV.get(0));
+			mob.charStats().setCurrentClass(qualClassesV.get(0));
 			loginObj.state=LoginState.CHARCR_CLASSDONE;
 			return null;
 		}
@@ -2752,6 +2756,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			session.promptPrint(L("^NIs ^H@x1^N correct (Y/n)?",newClass.name()));
 			mob.baseCharStats().setCurrentClass(newClass);
+			mob.charStats().setCurrentClass(newClass);
 			loginObj.state=LoginState.CHARCR_CLASSCONFIRM;
 			return LoginResult.INPUT_REQUIRED;
 		}
