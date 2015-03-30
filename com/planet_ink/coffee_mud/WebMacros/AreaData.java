@@ -204,11 +204,17 @@ public class AreaData extends StdWebMacro
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("AREATYPES"))
 		{
+			String selected="";
+			if(parms.containsKey("SELECTED"))
+				selected=parms.get("SELECTED");
 			final StringBuffer str=new StringBuffer("");
 			for(final Enumeration e=CMClass.areaTypes();e.hasMoreElements();)
 			{
 				final Area A=(Area)e.nextElement();
-				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
+				if(A.ID().equalsIgnoreCase(selected))
+					str.append("<OPTION SELECTED VALUE=\""+A.ID()+"\">"+A.ID());
+				else
+					str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
 			}
 			return str.toString();
 		}
