@@ -1166,8 +1166,11 @@ public class MOBloader
 				final String userID=DB.getRes(R, players?"CMUSERID":"CMANAM");
 				String pxml;
 				final MOB M=CMLib.players().getPlayer(userID);
-				if((M!=null)&&(M.playerStats()!=null))
+				if((M!=null)&&(M.playerStats()!=null)&&(players))
 					pxml=M.playerStats().getXML();
+				else
+				if((M!=null)&&(M.playerStats()!=null)&&(!players)&&(M.playerStats().getAccount()!=null))
+					pxml=M.playerStats().getAccount().getXML();
 				else
 				if(players)
 					pxml=DB.getRes(R, "CMPFIL");
