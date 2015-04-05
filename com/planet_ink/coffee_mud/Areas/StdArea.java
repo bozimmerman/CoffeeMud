@@ -1901,6 +1901,8 @@ public class StdArea implements Area
 	@Override
 	public boolean canChild(Area area)
 	{
+		if(area instanceof BoardableShip)
+			return false;
 		if(parents != null)
 			for (Area A : parents)
 			{
@@ -2003,6 +2005,8 @@ public class StdArea implements Area
 	@Override
 	public boolean canParent(Area area)
 	{
+		if(this instanceof BoardableShip)
+			return false;
 		if(children != null)
 			for (Area A : children)
 			{
