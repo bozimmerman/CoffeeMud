@@ -2399,6 +2399,7 @@ public class DefaultSession implements Session
 		try
 		{
 			final MOB M=mob();
+			final PlayerAccount acct=this.acct;
 			final String finalMsg;
 			if(M!=null)
 				finalMsg=M.Name()+": ";
@@ -2446,7 +2447,7 @@ public class DefaultSession implements Session
 			setKillFlag(true);
 			waiting=false;
 			needPrompt=false;
-			acct=null;
+			this.acct=null;
 			snoops.clear();
 
 			closeSocks(finalMsg);
