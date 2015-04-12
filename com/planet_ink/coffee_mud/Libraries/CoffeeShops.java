@@ -1291,17 +1291,21 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 			else
 			{
-
 				int lowest=CMath.s_int(L.landPropertyID().substring(x+1).trim());
+				int chk=0;
 				for(int v=1;v<V.size();v++)
 					if(V.get(v) instanceof LandTitle)
 					{
 						L2=(LandTitle)V.get(v);
 						x2=L2.landPropertyID().lastIndexOf('#');
-						if((x2>0)&&(CMath.s_int(L2.landPropertyID().substring(x+1).trim())<lowest))
+						if(x2>0)
 						{
-							lowest=CMath.s_int(L2.landPropertyID().substring(x+1).trim());
-							L=L2;
+							chk=CMath.s_int(L2.landPropertyID().substring(x2+1).trim());
+							if(chk<lowest)
+							{
+								lowest=chk;
+								L=L2;
+							}
 						}
 					}
 				V.remove(L);
