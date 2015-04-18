@@ -2,6 +2,7 @@
    1. Web Server upgraded to 2.3
    2. coffeemud.ini entry FLEE has new (blank) option to basically disable fleeing and break a bunch of skills.
    3. Scriptable: When reading script vars, scopes local->quest bound->global will be checked in order.
+   4. New DEBUG flag -- INPUT, for debugging ALL user input in string form
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)

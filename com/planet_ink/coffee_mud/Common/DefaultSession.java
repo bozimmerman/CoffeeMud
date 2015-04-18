@@ -126,9 +126,10 @@ public class DefaultSession implements Session
 	protected long			 lastIACIn		 	 = System.currentTimeMillis();
 	protected long			 promptLastShown	 = 0;
 	protected volatile long  lastWriteTime		 = System.currentTimeMillis();
-	protected boolean   	 debugOutput		 = false;
-	protected boolean   	 debugInput			 = false;
-	protected StringBuffer   debugInputBuf		 = new StringBuffer("");
+	protected boolean   	 debugStrInput		 = true;
+	protected boolean   	 debugBinOutput		 = false;
+	protected boolean   	 debugBinInput		 = false;
+	protected StringBuffer   debugBinInputBuf	 = new StringBuffer("");
 
 	protected volatile InputCallback inputCallback  = null;
 
@@ -179,9 +180,10 @@ public class DefaultSession implements Session
 		try
 		{
 			setStatus(SessionStatus.HANDSHAKE_OPEN);
-			debugOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BINOUT);
-			debugInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BININ);
-			if(debugInput)
+			debugStrInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.INPUT);
+			debugBinOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BINOUT);
+			debugBinInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BININ);
+			if(debugBinInput)
 				CMLib.threads().startTickDown(new Tickable()
 				{
 					@Override public String ID() { return "SessionTicker";}
@@ -193,10 +195,10 @@ public class DefaultSession implements Session
 					@Override public int getTickStatus() { return 0; }
 					@Override public boolean tick(Tickable ticking, int tickID)
 					{
-						if(debugInputBuf.length()>0)
+						if(debugBinInputBuf.length()>0)
 						{
-							Log.sysOut("INPUT: '"+debugInputBuf.toString()+"'");
-							debugInputBuf.setLength(0);
+							Log.sysOut("BINPUT: "+(mob==null?"":mob.Name())+": '"+debugBinInputBuf.toString()+"'");
+							debugBinInputBuf.setLength(0);
 						}
 						return !killFlag;
 					} }, 0, 100, 1);
@@ -751,7 +753,7 @@ public class DefaultSession implements Session
 	{
 		try
 		{
-			if(debugOutput && Log.debugChannelOn())
+			if(debugBinOutput && Log.debugChannelOn())
 			{
 				final StringBuilder str=new StringBuilder("OUTPUT: '");
 				for(final byte c : bytes)
@@ -784,7 +786,7 @@ public class DefaultSession implements Session
 				{
 					writeThread=Thread.currentThread();
 					writeStartTime=System.currentTimeMillis();
-					if(debugOutput && Log.debugChannelOn())
+					if(debugBinOutput && Log.debugChannelOn())
 					{
 						final StringBuilder str=new StringBuilder("OUTPUT: '");
 						for(final char c : chars)
@@ -1558,8 +1560,8 @@ public class DefaultSession implements Session
 			final int read = rawin.read();
 			if(read==-1)
 				throw new java.io.InterruptedIOException(".");
-			if(debugInput && Log.debugChannelOn())
-				debugInputBuf.append(read).append(" ");
+			if(debugBinInput && Log.debugChannelOn())
+				debugBinInputBuf.append(read).append(" ");
 			return read;
 		}
 		throw new java.io.InterruptedIOException(".");
@@ -1767,6 +1769,8 @@ public class DefaultSession implements Session
 			if(str==null)
 				return null;
 			snoopSupportPrint(str+"\n\r",true);
+			if(debugStrInput)
+				Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
 			return str;
 		}
 		finally
@@ -1814,6 +1818,8 @@ public class DefaultSession implements Session
 		if(str==null)
 			return null;
 		snoopSupportPrint(str+"\n\r",true);
+		if(debugStrInput)
+			Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
 		return str;
 	}
 
