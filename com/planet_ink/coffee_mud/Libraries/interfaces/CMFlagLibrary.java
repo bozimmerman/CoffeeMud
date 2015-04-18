@@ -103,6 +103,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isInWilderness(Physical P);
 	public boolean isSwimming(Physical P);
 	public boolean isSwimmingInWater(Physical P);
+	public boolean isWatery(Environmental E);
 	public boolean isFalling(Physical P);
 	public boolean isBusy(Physical P);
 	public boolean isUndead(MOB mob);

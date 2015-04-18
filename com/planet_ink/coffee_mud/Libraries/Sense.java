@@ -641,18 +641,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(!isSwimming(P))
 			return false;
-		final Room R=CMLib.map().roomLocation(P);
-		if(R==null)
-			return false;
-		switch(R.domainType())
-		{
-		case Room.DOMAIN_INDOORS_UNDERWATER:
-		case Room.DOMAIN_INDOORS_WATERSURFACE:
-		case Room.DOMAIN_OUTDOORS_UNDERWATER:
-		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-			return true;
-		}
-		return false;
+		return isWatery(CMLib.map().roomLocation(P));
 	}
 	
 	@Override
@@ -1413,6 +1402,35 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
+	@Override
+	public boolean isWatery(Environmental E)
+	{
+		if(E instanceof Room)
+		{
+			final Room R=(Room)E;
+			switch(R.domainType())
+			{
+			case Room.DOMAIN_INDOORS_UNDERWATER:
+			case Room.DOMAIN_OUTDOORS_UNDERWATER:
+			case Room.DOMAIN_INDOORS_WATERSURFACE:
+			case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+				return true;
+			}
+			return false;
+		}
+		else
+		if(E instanceof Item)
+		{
+			return CMath.bset(((Item)E).material(),RawMaterial.MATERIAL_LIQUID);
+		}
+		else
+		if(E instanceof MOB)
+		{
+			final Race R=((MOB)E).charStats().getMyRace();
+			return R!=null && ((R.ID().equals("WaterElemental")));
+		}
+		return false;
+	}
 
 	@Override
 	public int burnStatus(Environmental E)

@@ -1446,6 +1446,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(adjHygiene==0)
 				mob.tell(L("You are already perfectly clean."));
 			else
+			if((msg.sourceMinor()!=CMMsg.TYP_NOISYMOVEMENT)
+			||(mob.riding()!=null)
+			||(!CMLib.flags().isWatery(mob.location())))
 				mob.tell(L("You can't get any cleaner here."));
 		}
 	}
