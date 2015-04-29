@@ -48,23 +48,23 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.amITarget(littlePlants))
+		if((msg.amITarget(littlePlantsI))
 		&&(!processing)
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
 			processing=true;
-			final Ability A=littlePlants.fetchEffect(ID());
+			final Ability A=littlePlantsI.fetchEffect(ID());
 			if(A!=null)
 			{
 				CMLib.threads().deleteTick(A,-1);
-				littlePlants.delEffect(A);
-				littlePlants.setSecretIdentity("");
+				littlePlantsI.delEffect(A);
+				littlePlantsI.setSecretIdentity("");
 			}
-			if(littlePlants.fetchBehavior("Decay")==null)
+			if(littlePlantsI.fetchBehavior("Decay")==null)
 			{
 				final Behavior B=CMClass.getBehavior("Decay");
 				B.setParms("min="+CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)+" max="+CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)+" chance=100");
-				littlePlants.addBehavior(B);
+				littlePlantsI.addBehavior(B);
 				B.executeMsg(myHost,msg);
 			}
 			processing=false;
@@ -128,8 +128,8 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		newItem.setExpirationDate(0);
 		CMLib.materials().addEffectsToResource(newItem);
 		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprouts up here.",newItem.name()));
-		newChant.PlantsLocation=room;
-		newChant.littlePlants=newItem;
+		newChant.plantsLocationR=room;
+		newChant.littlePlantsI=newItem;
 		if(CMLib.law().doesOwnThisLand(mob,room))
 		{
 			newChant.setInvoker(mob);

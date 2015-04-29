@@ -67,8 +67,8 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,L("a tall, healthy @x1 tree sprouts up.",RawMaterial.CODES.NAME(code).toLowerCase()));
 		room.recoverPhyStats();
-		newChant.PlantsLocation=room;
-		newChant.littlePlants=newItem;
+		newChant.plantsLocationR=room;
+		newChant.littlePlantsI=newItem;
 		if(CMLib.law().doesOwnThisLand(mob,room))
 		{
 			newChant.setInvoker(mob);
@@ -86,16 +86,16 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((PlantsLocation==null)||(littlePlants==null))
+		if((plantsLocationR==null)||(littlePlantsI==null))
 			return false;
-		if(PlantsLocation.myResource()!=littlePlants.material())
+		if(plantsLocationR.myResource()!=littlePlantsI.material())
 		{
-			oldMaterial=PlantsLocation.myResource();
-			PlantsLocation.setResource(littlePlants.material());
+			oldMaterial=plantsLocationR.myResource();
+			plantsLocationR.setResource(littlePlantsI.material());
 		}
-		for(int i=0;i<PlantsLocation.numInhabitants();i++)
+		for(int i=0;i<plantsLocationR.numInhabitants();i++)
 		{
-			final MOB M=PlantsLocation.fetchInhabitant(i);
+			final MOB M=plantsLocationR.fetchInhabitant(i);
 			if(M.fetchEffect("Chopping")!=null)
 			{
 				unInvoke();
@@ -108,8 +108,8 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	@Override
 	public void unInvoke()
 	{
-		if((canBeUninvoked())&&(PlantsLocation!=null)&&(oldMaterial>=0))
-			PlantsLocation.setResource(oldMaterial);
+		if((canBeUninvoked())&&(plantsLocationR!=null)&&(oldMaterial>=0))
+			plantsLocationR.setResource(oldMaterial);
 		super.unInvoke();
 	}
 

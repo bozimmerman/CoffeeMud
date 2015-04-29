@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Chant_SummonPlants extends Chant
 {
 	@Override public String ID() { return "Chant_SummonPlants"; }
@@ -43,30 +43,28 @@ public class Chant_SummonPlants extends Chant
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
-	protected Room PlantsLocation=null;
-	protected Item littlePlants=null;
-	protected static Hashtable plantBonuses=new Hashtable();
+	protected Room plantsLocationR=null;
+	protected Item littlePlantsI=null;
+	protected static Map<String,long[]> plantBonuses=new Hashtable<String,long[]>();
 
 	@Override
 	public void unInvoke()
 	{
-		if(PlantsLocation==null)
+		final Room plantsR=plantsLocationR;
+		final Item plantsI=littlePlantsI;
+		if(plantsR==null)
 			return;
-		if(littlePlants==null)
+		if(plantsI==null)
 			return;
 		if(canBeUninvoked())
-			PlantsLocation.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 wither@x2 away.",littlePlants.name(),(littlePlants.name().startsWith("s")?"":"s")));
+			plantsR.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 wither@x2 away.",plantsI.name(),(plantsI.name().startsWith("s")?"":"s")));
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			final Item plants=littlePlants; // protects against uninvoke loops!
-			if(plants!=null)
-			{
-				littlePlants=null;
-				plants.destroy();
-				PlantsLocation.recoverRoomStats();
-				PlantsLocation=null;
-			}
+			this.littlePlantsI=null;
+			plantsI.destroy();
+			plantsR.recoverRoomStats();
+			this.plantsLocationR=null;
 		}
 	}
 
@@ -82,9 +80,9 @@ public class Chant_SummonPlants extends Chant
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.amITarget(littlePlants))
+		if((msg.amITarget(littlePlantsI))
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),littlePlants,null,CMMsg.MSG_OK_VISUAL,CMMsg.MASK_ALWAYS|CMMsg.MSG_DEATH,CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),littlePlantsI,null,CMMsg.MSG_OK_VISUAL,CMMsg.MASK_ALWAYS|CMMsg.MSG_DEATH,CMMsg.NO_EFFECT,null));
 	}
 
 	public Item buildPlant(MOB mob, Room room)
@@ -127,8 +125,8 @@ public class Chant_SummonPlants extends Chant
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprout(s) up here.",newItem.name()));
-		newChant.PlantsLocation=room;
-		newChant.littlePlants=newItem;
+		newChant.plantsLocationR=room;
+		newChant.littlePlantsI=newItem;
 		if(CMLib.law().doesOwnThisLand(mob,room))
 		{
 			newChant.setInvoker(mob);
@@ -169,7 +167,7 @@ public class Chant_SummonPlants extends Chant
 			else
 			if((bonusWorthy)&&(!mob.isMonster()))
 			{
-				long[] num=(long[])plantBonuses.get(mob.Name()+"/"+room.getArea().Name());
+				long[] num=plantBonuses.get(mob.Name()+"/"+room.getArea().Name());
 				if((num==null)||(System.currentTimeMillis()-num[1]>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*CMProps.getMillisPerMudHour())))
 				{
 					num=new long[2];

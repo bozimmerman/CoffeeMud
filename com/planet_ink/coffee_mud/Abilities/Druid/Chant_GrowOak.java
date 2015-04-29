@@ -70,9 +70,9 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,L("a tall, healthy @x1 tree sprouts up.",RawMaterial.CODES.NAME(code).toLowerCase()));
 		room.recoverPhyStats();
-		newChant.PlantsLocation=room;
+		newChant.plantsLocationR=room;
 		newChant.hpRemaining=100*(mob.phyStats().level()+(2*newChant.getXLEVELLevel(mob))+(10*newChant.getX1Level(mob)));
-		newChant.littlePlants=newItem;
+		newChant.littlePlantsI=newItem;
 		newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
 		room.recoverPhyStats();
 		return newItem;
@@ -83,9 +83,9 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		final Room plantsLocation = PlantsLocation;
+		final Room plantsLocation = plantsLocationR;
 		final MOB invoker = invoker();
-		if((plantsLocation==null)||(littlePlants==null))
+		if((plantsLocation==null)||(littlePlantsI==null))
 			return false;
 		if(invoker!=null)
 		{

@@ -652,87 +652,84 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		
 			final Map<HTTPHeader,String> extraHeaders=new HashMap<HTTPHeader, String>();
 			HTTPStatus responseStatus = HTTPStatus.S200_OK;
+			// not a servlet, so it must be a file path
+			final String reqPath = assembleFilePath(request);
+			buffers = checkAndExecuteCGI(reqPath,request,extraHeaders);
 			if(buffers == null)
 			{
-				// not a servlet, so it must be a file path
-				final String reqPath = assembleFilePath(request);
-				buffers = checkAndExecuteCGI(reqPath,request,extraHeaders);
-				if(buffers == null)
+				final File pageFile;
+				final File pathFile;
+				pathFile = createFile(request, reqPath);
+				if(pathFile.isDirectory())
 				{
-					final File pageFile;
-					final File pathFile;
-					pathFile = createFile(request, reqPath);
-					if(pathFile.isDirectory())
+					if(!request.getUrlPath().endsWith("/"))
 					{
-						if(!request.getUrlPath().endsWith("/"))
+						final HTTPException movedException=HTTPException.standardException(HTTPStatus.S301_MOVED_PERMANENTLY);
+										movedException.getErrorHeaders().put(HTTPHeader.Common.LOCATION, request.getFullHost() + request.getUrlPath() + "/");
+						throw movedException;
+					}
+					pageFile=config.getFileManager().createFileFromPath(config.getBrowsePage());
+				}
+				else
+				{
+					pageFile = pathFile;
+				}
+				buffers = new CWDataBuffers(); // before forming output, process range request
+				switch(request.getMethod())
+				{
+				case HEAD:
+				case GET:
+				case POST:
+				{
+					final MIMEType mimeType = MIMEType.All.getMIMEType(pageFile.getName());
+					extraHeaders.put(HTTPHeader.Common.CONTENT_TYPE, mimeType.getType());
+					confirmMimeType(request,mimeType);
+					
+					final Class<? extends HTTPOutputConverter> converterClass=config.getConverters().findConverter(mimeType);
+					if(converterClass != null)
+					{
+						buffers=config.getFileCache().getFileData(pageFile, null);
+						//checkIfModifiedSince(request,buffers); this is RETARDED!!!
+						try
 						{
-							final HTTPException movedException=HTTPException.standardException(HTTPStatus.S301_MOVED_PERMANENTLY);
-											movedException.getErrorHeaders().put(HTTPHeader.Common.LOCATION, request.getFullHost() + request.getUrlPath() + "/");
-							throw movedException;
+							HTTPOutputConverter converter;
+							converter = converterClass.newInstance();
+									extraHeaders.put(HTTPHeader.Common.CACHE_CONTROL, "no-cache");
+							final long dateTime=System.currentTimeMillis();
+									extraHeaders.put(HTTPHeader.Common.EXPIRES, HTTPIOHandler.DATE_FORMAT.format(Long.valueOf(dateTime)));
+							buffers=new CWDataBuffers(converter.convertOutput(config, request, pathFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), dateTime, true);
+							buffers = handleEncodingRequest(request, null, buffers, extraHeaders);
 						}
-						pageFile=config.getFileManager().createFileFromPath(config.getBrowsePage());
+						catch (final Exception e)
+						{
+							config.getLogger().throwing("", "", e);
+							throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
+						}
 					}
 					else
 					{
-						pageFile = pathFile;
+						final String[] eTagMarker =generateETagMarker(request);
+						buffers=config.getFileCache().getFileData(pageFile, eTagMarker);
+						if((eTagMarker[0]!=null)&&(eTagMarker[0].length()>0))
+									extraHeaders.put(HTTPHeader.Common.ETAG, eTagMarker[0]);
+						checkIfModifiedSince(request,buffers);
+						buffers = handleEncodingRequest(request, pageFile, buffers, extraHeaders);
 					}
-					buffers = new CWDataBuffers(); // before forming output, process range request
-					switch(request.getMethod())
+					if(buffers == null)
 					{
-					case HEAD:
-					case GET:
-					case POST:
+						throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
+					}
+					final long fullSize = buffers.getLength();
+					final long[] fullRange = setRangeRequests(request, buffers);
+					if(fullRange != null)
 					{
-						final MIMEType mimeType = MIMEType.All.getMIMEType(pageFile.getName());
-						extraHeaders.put(HTTPHeader.Common.CONTENT_TYPE, mimeType.getType());
-						confirmMimeType(request,mimeType);
-						
-						final Class<? extends HTTPOutputConverter> converterClass=config.getConverters().findConverter(mimeType);
-						if(converterClass != null)
-						{
-							buffers=config.getFileCache().getFileData(pageFile, null);
-							//checkIfModifiedSince(request,buffers); this is RETARDED!!!
-							try
-							{
-								HTTPOutputConverter converter;
-								converter = converterClass.newInstance();
-										extraHeaders.put(HTTPHeader.Common.CACHE_CONTROL, "no-cache");
-								final long dateTime=System.currentTimeMillis();
-										extraHeaders.put(HTTPHeader.Common.EXPIRES, HTTPIOHandler.DATE_FORMAT.format(Long.valueOf(dateTime)));
-								buffers=new CWDataBuffers(converter.convertOutput(config, request, pathFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), dateTime, true);
-								buffers = handleEncodingRequest(request, null, buffers, extraHeaders);
-							}
-							catch (final Exception e)
-							{
-								config.getLogger().throwing("", "", e);
-								throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
-							}
-						}
-						else
-						{
-							final String[] eTagMarker =generateETagMarker(request);
-							buffers=config.getFileCache().getFileData(pageFile, eTagMarker);
-							if((eTagMarker[0]!=null)&&(eTagMarker[0].length()>0))
-										extraHeaders.put(HTTPHeader.Common.ETAG, eTagMarker[0]);
-							checkIfModifiedSince(request,buffers);
-							buffers = handleEncodingRequest(request, pageFile, buffers, extraHeaders);
-						}
-						if(buffers == null)
-						{
-							throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
-						}
-						final long fullSize = buffers.getLength();
-						final long[] fullRange = setRangeRequests(request, buffers);
-						if(fullRange != null)
-						{
-							responseStatus = HTTPStatus.S206_PARTIAL_CONTENT;
-									extraHeaders.put(HTTPHeader.Common.CONTENT_RANGE, "bytes "+fullRange[0]+"-"+fullRange[1]+"/"+fullSize);
-						}
-						break;
+						responseStatus = HTTPStatus.S206_PARTIAL_CONTENT;
+								extraHeaders.put(HTTPHeader.Common.CONTENT_RANGE, "bytes "+fullRange[0]+"-"+fullRange[1]+"/"+fullSize);
 					}
-					default:
-						break;
-					}
+					break;
+				}
+				default:
+					break;
 				}
 			}
 

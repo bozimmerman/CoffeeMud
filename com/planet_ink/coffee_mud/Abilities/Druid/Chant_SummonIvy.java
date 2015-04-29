@@ -77,8 +77,8 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprout(s) up here.",newItem.name()));
-		newChant.PlantsLocation=room;
-		newChant.littlePlants=newItem;
+		newChant.plantsLocationR=room;
+		newChant.littlePlantsI=newItem;
 		if(CMLib.law().doesOwnThisLand(mob,room))
 		{
 			newChant.setInvoker(mob);
