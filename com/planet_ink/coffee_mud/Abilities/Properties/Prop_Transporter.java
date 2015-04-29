@@ -37,8 +37,29 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 	@Override public String ID() { return "Prop_Transporter"; }
 	@Override public String name(){ return "Room entering adjuster";}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	int transCode=-1;
+	protected int transCode=-1;
+	protected String roomID = "START";
+	protected boolean sendEnter = false; 
 
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		roomID = "START";
+		sendEnter = false;
+		super.setMiscText(newMiscText);
+		int x=newMiscText.indexOf(';');
+		if(x<0)
+		{
+			roomID=newMiscText;
+		}
+		else
+		{
+			roomID=newMiscText.substring(0,x);
+			String vars=newMiscText.substring(x+1);
+			sendEnter = CMParms.getParmBool(vars, "SENDENTER", false);
+		}
+	}
+	
 	@Override
 	public String accountForYourself()
 	{ return "Zap them elsewhere";	}
@@ -99,22 +120,35 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 		return transCode;
 	}
 
+	protected Exit getAnyExit(final Room R)
+	{
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			Exit E2=R.getExitInDir(d);
+			if(E2 != null)
+				return E2;
+		}
+		return null;
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((transCode()>=0)
 		   &&((msg.targetMinor()==transCode())||(msg.sourceMinor()==transCode()))
 		   &&(msg.amITarget(affected)||(msg.tool()==affected))
-		   &&(text().length()>0))
+		   &&(roomID.length()>0))
 		{
 			final Room prevRoom=msg.source().location();
-			final Room otherRoom=CMLib.map().getRoom(text());
+			final Room otherRoom=CMLib.map().getRoom(roomID);
 			if(otherRoom==null)
-				msg.source().tell(L("You are whisked nowhere at all, since '@x1' is nowhere to be found.",text()));
+				msg.source().tell(L("You are whisked nowhere at all, since '@x1' is nowhere to be found.",roomID));
 			else
 			if(prevRoom!=otherRoom)
 			{
 				otherRoom.bringMobHere(msg.source(),true);
+				if(sendEnter && (CMLib.map().getRoom(msg.source().location()) == CMLib.map().getRoom(otherRoom)))
+					otherRoom.send(msg.source(), CMClass.getMsg(msg.source(),otherRoom,getAnyExit(otherRoom),CMMsg.MSG_ENTER,null));
 				CMLib.commands().postLook(msg.source(),true);
 				if(affected instanceof Rideable)
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,CMMsg.TYP_DISMOUNT,null));
