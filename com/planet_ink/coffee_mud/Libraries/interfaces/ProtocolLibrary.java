@@ -69,6 +69,10 @@ public interface ProtocolLibrary extends CMLibrary
 		room_info, // means they want room.wrongdir
 		comm_channel,
 		comm_channel_players,
-		ire_composer_setbuffer
+		ire_composer_setbuffer,
+		request_room,
+		request_area,
+		request_char,
+		request_sectors
 	}
 }

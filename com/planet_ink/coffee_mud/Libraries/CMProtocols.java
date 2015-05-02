@@ -1484,6 +1484,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						return doc.toString();
 					}
 					break;
+				case request_char:
 				case char_base:
 					if(mob != null)
 					{
@@ -1594,6 +1595,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						return doc.toString();
 					}
 					break;
+				case request_area:
+				case request_sectors:
+				case request_room:
 				case room_info:
 					if(mob!=null)
 					{
