@@ -1206,7 +1206,7 @@ public class DefaultSession implements Session
 					if(terminalType.equalsIgnoreCase("ANSI"))
 						changeTelnetMode(rawout,TELNET_ECHO,true);
 					else
-					if(terminalType.startsWith("WINTIN.NET"))
+					if(terminalType.startsWith("GIVE-WINTIN.NET-A-CHANCE"))
 					{
 						rawOut("\n\r\n\r**** Your MUD Client is Broken! Please use another!!****\n\r\n\r");
 						rawout.flush();
