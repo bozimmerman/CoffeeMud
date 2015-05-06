@@ -391,6 +391,11 @@ public class StdRideable extends StdMOB implements Rideable
 					// msg.source().tell(L("No more can fit on @x1.",name(msg.source())));
 					return false;
 				}
+				if(msg.source()==this)
+				{
+					msg.source().tell(L("You can not ride yourself!"));
+					return false;
+				}
 				if(this.playerStats!=null)
 				{
 					if((!charStats().getMyRace().useRideClass())

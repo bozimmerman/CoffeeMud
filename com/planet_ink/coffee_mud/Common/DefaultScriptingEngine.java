@@ -3909,57 +3909,64 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tt=parseSpecial3PartEval(eval,t);
 				String comp="==";
 				Environmental E=monster;
-				String arg2;
+				String arg3;
 				if(signH.containsKey(tt[t+1]))
 				{
 					E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 					comp=tt[t+1];
-					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
 				}
 				else
-					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				Room R=null;
-				if(arg2.startsWith("$"))
-					R=CMLib.map().roomLocation(this.getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+				if(arg3.startsWith("$"))
+					R=CMLib.map().roomLocation(this.getArgumentItem(arg3,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
 				if(R==null)
-				try
 				{
-					if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equalsIgnoreCase(arg2)))
-						R=lastKnownLocation;
-					if(R==null)
-					for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+					try
 					{
-						final Area A=(Area)a.nextElement();
-						if((A!=null)&&(A.Name().equalsIgnoreCase(arg2)))
+						if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equalsIgnoreCase(arg3)))
+							R=lastKnownLocation;
+						if(R==null)
 						{
-							if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
-								R=lastKnownLocation;
-							else
-							if(!A.isProperlyEmpty())
-								R=A.getRandomProperRoom();
+							for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+							{
+								final Area A=(Area)a.nextElement();
+								if((A!=null)&&(A.Name().equalsIgnoreCase(arg3)))
+								{
+									if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
+										R=lastKnownLocation;
+									else
+									if(!A.isProperlyEmpty())
+										R=A.getRandomProperRoom();
+								}
+							}
 						}
-					}
-					for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
-					{
-						final Area A=(Area)a.nextElement();
-						if((A!=null)&&(CMLib.english().containsString(A.Name(),arg2)))
+						if(R==null)
 						{
-							if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
-								R=lastKnownLocation;
-							else
-							if(!A.isProperlyEmpty())
-								R=A.getRandomProperRoom();
+							for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+							{
+								final Area A=(Area)a.nextElement();
+								if((A!=null)&&(CMLib.english().containsString(A.Name(),arg3)))
+								{
+									if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
+										R=lastKnownLocation;
+									else
+									if(!A.isProperlyEmpty())
+										R=A.getRandomProperRoom();
+								}
+							}
 						}
-					}
-				}catch(final NoSuchElementException nse){}
+					}catch(final NoSuchElementException nse){}
+				}
 				if(R==null)
-					R=getRoom(arg2,lastKnownLocation);
+					R=getRoom(arg3,lastKnownLocation);
 				if(E==null)
 					returnable=false;
 				else
 				{
 					final Room R2=CMLib.map().roomLocation(E);
-					if((R==null)&&((arg2.length()==0)||(R2==null)))
+					if((R==null)&&((arg3.length()==0)||(R2==null)))
 						returnable=true;
 					else
 					if((R==null)||(R2==null))

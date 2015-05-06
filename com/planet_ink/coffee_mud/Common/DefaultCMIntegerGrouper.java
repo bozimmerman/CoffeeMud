@@ -215,7 +215,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	@Override
 	public boolean isEmpty()
 	{
-		return xs.length > 0 || ys.length > 0;
+		return xs.length == 0 && ys.length == 0;
 	}
 
 	@Override
