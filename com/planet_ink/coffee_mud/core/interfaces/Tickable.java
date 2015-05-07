@@ -95,7 +95,7 @@ public interface Tickable extends CMObject
 	public final static int TICKID_ROOM_BEHAVIOR=8;
 	/** the tickid representing the standard tick of an area*/
 	public final static int TICKID_AREA=9;
-	/** the tickid representing the resetting of an item that rejuvinates*/
+	/** the tickid representing the resetting of an item that rejuvenates*/
 	public final static int TICKID_ROOM_ITEM_REJUV=10;
 	/** the tickid representing the ticking of a behavior on an exit*/
 	public final static int TICKID_EXIT_BEHAVIOR=11;

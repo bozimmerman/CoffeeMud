@@ -44,7 +44,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface PhyStats extends CMCommon, Modifiable
 {
-	/** Constant shortcut for setting the rejuvination rate on a mob so that it will NOT rejuv. */
+	/** Constant shortcut for setting the rejuvenation rate on a mob so that it will NOT rejuv. */
 	public static final int NO_REJUV=Integer.MAX_VALUE;
 
 	/**

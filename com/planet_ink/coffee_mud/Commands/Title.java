@@ -85,7 +85,7 @@ public class Title extends StdCommand
 					final String which=ps.getTitles().get(num-1);
 					ps.getTitles().remove(num-1);
 					ps.getTitles().add(0,which);
-					mob.tell(L("Title changed accepted."));
+					mob.tell(L("Title change accepted."));
 				}
 				else
 					mob.tell(L("No change"));

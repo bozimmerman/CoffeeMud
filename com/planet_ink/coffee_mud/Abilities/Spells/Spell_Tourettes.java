@@ -124,7 +124,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				case 20: say="Toe jam eater!"; break;
 				case 21: say="Partial excrement!"; break;
 				case 22: say="Female dog!"; break;
-				case 23: say="Illigitimate offspring!"; break;
+				case 23: say="Illegitimate offspring!"; break;
 				case 24: say="You are overweight!"; break;
 				case 25: say="You smell funny!"; break;
 				case 26: say="You aren't very smart!"; break;

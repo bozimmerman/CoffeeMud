@@ -686,7 +686,7 @@ endif
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
-	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 is far too silly a motive for $ARG3.
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 is far too silly a motive for $ARG2.
 	give affect Spell_LedFoot
 </OPTION>
 </DATA></FILE>

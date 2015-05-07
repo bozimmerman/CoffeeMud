@@ -5,7 +5,7 @@ a pair of Maracas	2	30	4	38	GenInstrument	HELD&&WIELD	WOOD		WOODS
 Kazoo	2	30	6	42	GenInstrument	HELD&&MOUTH	WOOD		CLARINETS
 Cowbell	3	20	2	60	GenInstrument	HELD&&WIELD	METAL		CYMBALS
 Fife	3	50	3	56	GenInstrument	HELD&&MOUTH	WOOD		FLUTES
-Tamborine	3	30	6	42	GenInstrument	HELD&&WIELD	WOOD		DRUMS
+Tambourine	3	30	6	42	GenInstrument	HELD&&WIELD	WOOD		DRUMS
 Lyre	3	40	8	56	GenInstrument	HELD&&WIELD	WOOD		HARPS
 Hunting Horn	4	50	6	160	GenInstrument	HELD&&MOUTH	METAL		HORNS
 Shawm	4	60	6	72	GenInstrument	HELD&&MOUTH	WOOD		OBOES

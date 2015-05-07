@@ -110,7 +110,7 @@ public class Chant_FindPlant extends Chant
 			else
 			if(nextDirection>=0)
 			{
-				mob.tell(L("Your sense @x1 @x2.",lookingFor,Directions.getInDirectionName(nextDirection)));
+				mob.tell(L("You sense @x1 @x2.",lookingFor,Directions.getInDirectionName(nextDirection)));
 				nextDirection=-2;
 			}
 

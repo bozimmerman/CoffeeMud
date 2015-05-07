@@ -743,7 +743,7 @@ public interface Law extends CMCommon
 		"EXECUTEMSG="+CMLib.lang().L("You are hereby sentenced to a brutal death.  Sentence to be carried out IMMEDIATELY!")+"\n"+
 		"LAWFREE="+CMLib.lang().L("You are free to go.")+"\n"+
 		"CHITCHAT="+CMLib.lang().L("\"You didn't really think you could get away with it did you?\" \"You are REALLY in for it!\" \"Convicts like you are a dime a dozen.\" \"MAKE WAY! DEAD MAN WALKING!\" \"You are gonna GET it.\" \"I love my job.\"")+"\n"+
-		"CHITCHAT2="+CMLib.lang().L("\"You didn't really think you would get away with it did you?\" \"I hope you aren't claustrophobic!\" \"Remember not to drop your soap in there.\" \"MAKE WAY! DEAD MAN WALKING!\" \"I recommend you hold your breathe while you're in there -- I always do.  It stinks!\" \"Putting away scum like you makes it all worthwhile\"")+"\n"+
+		"CHITCHAT2="+CMLib.lang().L("\"You didn't really think you would get away with it did you?\" \"I hope you aren't claustrophobic!\" \"Remember not to drop your soap in there.\" \"MAKE WAY! DEAD MAN WALKING!\" \"I recommend you hold your breath while you're in there -- I always do.  It stinks!\" \"Putting away scum like you makes it all worthwhile\"")+"\n"+
 		"CHITCHAT3="+CMLib.lang().L("\"This is for your own good, so please don't resist.\" \"You understand that your detention is mandatory I hope.\" \"Just doing my job.\" \"Been a nice day, don't ya think?\" \"We're almost there, don't worry.\" \"Not much farther now.\"")+"\n"+
 		"RESISTWARNMSG="+CMLib.lang().L("I said SIT DOWN! NOW!")+"\n"+
 		"NORESISTMSG="+CMLib.lang().L("Good.  Now hold still.")+"\n"+

@@ -59,7 +59,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	public void unLevel(MOB mob);
 
 	/**
-	 * This method fills in combat and rejuvination related stats for the given
+	 * This method fills in combat and rejuvenation related stats for the given
 	 * mob of their current base class at the given level.  This method should create a mob
 	 * for the caller if mob==null.
 	 * @param mob the mob to fill out, or null
@@ -69,7 +69,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	public MOB fillOutMOB(MOB mob, int level);
 
 	/**
-	 * This method fills in combat and rejuvination related stats for the given
+	 * This method fills in combat and rejuvenation related stats for the given
 	 * mob of the given class at the given level.  This method should create a mob
 	 * for the caller.
 	 * @param C the class to use.

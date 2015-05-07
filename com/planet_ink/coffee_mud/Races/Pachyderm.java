@@ -153,7 +153,7 @@ public class Pachyderm extends StdRace
 			return L("^g@x1^g has some minor cuts and bruises.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return L("^g@x1^g has a few bruises and scratched scales.^N",mob.name(viewer));
+			return L("^g@x1^g has a few bruises and scratched parts.^N",mob.name(viewer));
 		else
 		if(pct<.99)
 			return L("^g@x1^g has a few small bruises.^N",mob.name(viewer));

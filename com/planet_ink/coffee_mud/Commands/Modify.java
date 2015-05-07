@@ -183,7 +183,7 @@ public class Modify extends StdCommand
 			{
 				modItem.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				modItem.recoverPhyStats();
-				mob.tell(L("@x1 will now never rejuvinate.",modItem.name()));
+				mob.tell(L("@x1 will now never rejuvenate.",modItem.name()));
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 shake(s) under the transforming power.",modItem.name()));
 			}
 		}
@@ -1518,7 +1518,7 @@ public class Modify extends StdCommand
 			{
 				modMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				modMOB.recoverPhyStats();
-				mob.tell(L("@x1 will now never rejuvinate.",modMOB.name()));
+				mob.tell(L("@x1 will now never rejuvenate.",modMOB.name()));
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 shakes under the transforming power.",modMOB.name()));
 			}
 		}
