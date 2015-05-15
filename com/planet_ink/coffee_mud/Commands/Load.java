@@ -208,6 +208,7 @@ public class Load extends StdCommand
 							final Object returnVal=M.invoke(CO,new Object[]{args,pout});
 							if((returnVal instanceof Integer)&&(((Integer)returnVal).intValue()!=0))
 							{
+								pout.flush();
 								mob.tell(L("Compile failed:"));
 								if(mob.session()!=null)
 									mob.session().rawOut(bout.toString());
