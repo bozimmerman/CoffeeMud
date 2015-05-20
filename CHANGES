@@ -4,6 +4,7 @@
    3. Scriptable: When reading script vars, scopes local->quest bound->global will be checked in order.
    4. New DEBUG flag -- INPUT, for debugging ALL user input in string form
    5. New Property: Prop_RestrictSkills - for limiting skill use by location, or as a curse affect.
+   6. New package application: VFShell, a command line tool for access full coffeemud file system without the mud.
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)
