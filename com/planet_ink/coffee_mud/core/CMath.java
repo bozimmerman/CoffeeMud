@@ -1054,7 +1054,12 @@ public class CMath
 	 * @throws ArithmeticException
 	 */
 	public final static LinkedList<CompiledOperation> compileMathExpression(final String formula)
-	{return compileMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false);}
+	{
+		if(formula != null)
+			return compileMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false);
+		else
+			return new LinkedList<CompiledOperation>();
+	}
 
 	/**
 	 * Pre-compiles an expression for faster evaluation later on.

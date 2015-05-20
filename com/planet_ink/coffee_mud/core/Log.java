@@ -537,6 +537,11 @@ public class Log extends java.util.logging.Logger
 	*/
 	public final void configureLogFile(final String logFilePath, final int numberOfLogs)
 	{
+		if(logFilePath == null)
+		{
+			fileOutWriter=new PrintWriter[]{null};
+			return;
+		}
 		final File F=new File(logFilePath);
 		final File parentFile=F.getParentFile();
 		if(parentFile!=null)

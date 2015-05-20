@@ -209,6 +209,15 @@ public class Shell extends StdCommand
 	}
 
 	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		String pwd=(pwds.contains(mob))?(String)pwds.get(pwds.indexOf(mob),2):"";
+		if((args.length>0)&&(args[0].equals(".")))
+			return pwd;
+		return null;
+	}
+
+	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
