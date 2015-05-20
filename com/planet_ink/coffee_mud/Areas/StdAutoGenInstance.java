@@ -196,70 +196,78 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		if(CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD)
-		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
-		&&(msg.sourceMessage()!=null)
-		&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
+		if(CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 		{
-			final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
-			if("RESET INSTANCE".equalsIgnoreCase(said))
+			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			&&(msg.sourceMessage()!=null)
+			&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
 			{
-				Room returnToRoom=null;
-				final Room thisRoom=msg.source().location();
-				if(thisRoom.getArea()==this)
+				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
+				if("RESET INSTANCE".equalsIgnoreCase(said))
 				{
-					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					Room returnToRoom=null;
+					final Room thisRoom=msg.source().location();
+					if(thisRoom.getArea()==this)
 					{
-						final Room R=thisRoom.getRoomInDir(d);
-						if((R!=null)&&(R.getArea()!=null)&&(R.getArea()!=this))
-							returnToRoom=R;
-					}
-				}
-				if(returnToRoom==null)
-				{
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, L("You must be at an entrance to reset the area.")));
-					return;
-				}
-				final Area A=this.getParentArea();
-				if(A instanceof StdAutoGenInstance)
-				{
-					final StdAutoGenInstance parentA=(StdAutoGenInstance)A;
-					synchronized(parentA.instanceChildren)
-					{
-						for(int i=parentA.instanceChildren.size()-1;i>=0;i--)
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 						{
-							final List<WeakReference<MOB>> V=parentA.instanceChildren.elementAt(i).mobs;
-							if(parentA.instanceChildren.elementAt(i).A==this)
+							final Room R=thisRoom.getRoomInDir(d);
+							if((R!=null)&&(R.getArea()!=null)&&(R.getArea()!=this))
+								returnToRoom=R;
+						}
+					}
+					if(returnToRoom==null)
+					{
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, L("You must be at an entrance to reset the area.")));
+						return;
+					}
+					final Area A=this.getParentArea();
+					if(A instanceof StdAutoGenInstance)
+					{
+						final StdAutoGenInstance parentA=(StdAutoGenInstance)A;
+						synchronized(parentA.instanceChildren)
+						{
+							for(int i=parentA.instanceChildren.size()-1;i>=0;i--)
 							{
-								for(final WeakReference<MOB> wM : V)
+								final List<WeakReference<MOB>> V=parentA.instanceChildren.elementAt(i).mobs;
+								if(parentA.instanceChildren.elementAt(i).A==this)
 								{
-									final MOB M=wM.get();
-									if((M!=null)
-									&&CMLib.flags().isInTheGame(M,true)
-									&&(M.location()!=null)
-									&&(M.location()!=returnToRoom)
-									&&(M.location().getArea()==this))
+									for(final WeakReference<MOB> wM : V)
 									{
-										returnToRoom.bringMobHere(M, true);
-										CMLib.commands().postLook(M, true);
+										final MOB M=wM.get();
+										if((M!=null)
+										&&CMLib.flags().isInTheGame(M,true)
+										&&(M.location()!=null)
+										&&(M.location()!=returnToRoom)
+										&&(M.location().getArea()==this))
+										{
+											returnToRoom.bringMobHere(M, true);
+											CMLib.commands().postLook(M, true);
+										}
 									}
+									parentA.instanceChildren.remove(i);
+									final MOB mob=CMClass.sampleMOB();
+									for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
+									{
+										final Room R=e.nextElement();
+										R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
+									}
+									msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));
+									CMLib.map().delArea(this);
+									destroy();
+									return;
 								}
-								parentA.instanceChildren.remove(i);
-								final MOB mob=CMClass.sampleMOB();
-								for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
-								{
-									final Room R=e.nextElement();
-									R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
-								}
-								msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));
-								CMLib.map().delArea(this);
-								destroy();
-								return;
 							}
 						}
 					}
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance failed to reset.")));
 				}
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance failed to reset.")));
+			}
+			else
+			if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(CMLib.map().isHere(msg.source(), this)))
+			{
+				final MOB mob = msg.source();
+				CMLib.tracking().forceRecall(mob);
 			}
 		}
 	}

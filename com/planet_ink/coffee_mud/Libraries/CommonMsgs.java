@@ -1964,5 +1964,4 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		mob.tell(buf.toString().trim()+"]^.^N");
 	}
-
 }

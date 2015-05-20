@@ -3827,7 +3827,7 @@ public class StdMOB implements MOB
 		MOB following = amFollowing;
 		if (following == null)
 			return null;
-		final HashSet seen = new HashSet();
+		final HashSet<MOB> seen = new HashSet<MOB>();
 		while ((following != null) && (following.amFollowing() != null) && (!seen.contains(following)))
 		{
 			seen.add(following);

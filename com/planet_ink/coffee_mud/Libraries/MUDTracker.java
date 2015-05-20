@@ -1565,4 +1565,32 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return false;
 	}
+	
+	@Override
+	public void forceRecall(final MOB mob)
+	{
+		if(mob == null)
+			return;
+		final Room currentRoom=mob.location();
+		Room recallRoom=CMLib.map().getStartRoom(mob);
+		if((recallRoom==null)&&(!mob.isMonster()))
+		{
+			mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
+			recallRoom=CMLib.map().getStartRoom(mob);
+		}
+		if((currentRoom == recallRoom)
+		||(recallRoom == null))
+			return;
+		if(mob.isInCombat())
+			CMLib.commands().postFlee(mob,("NOWHERE"));
+		if(currentRoom != null)
+		{
+			final CMMsg msg=CMClass.getMsg(mob,currentRoom,null,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,L("<S-NAME> disappear(s) into the Java Plane!"));
+			currentRoom.send(mob,msg);
+			final CMMsg msg2=CMClass.getMsg(mob,recallRoom,null,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
+			recallRoom.send(mob,msg2);
+			if(currentRoom.isInhabitant(mob))
+				recallRoom.bringMobHere(mob,mob.isMonster());
+		}
+	}
 }

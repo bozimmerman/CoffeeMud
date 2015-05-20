@@ -108,6 +108,7 @@ public class Chant_DruidicConnection extends Chant
 	public void unInvoke()
 	{
 		final MOB invoker=this.invoker;
+		final Physical affected=this.affected;
 		if((canBeUninvoked())&&(invoker!=null)&&(affected instanceof Area))
 		{
 			final Vector V=Druid_MyPlants.myAreaPlantRooms(invoker,(Area)affected);
