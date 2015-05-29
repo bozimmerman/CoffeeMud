@@ -2950,6 +2950,41 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public boolean shutdown()
 	{
+		final boolean debugMem = CMSecurity.isDebugging(CMSecurity.DbgFlag.SHUTDOWN);
+		for(Enumeration<Area> a=areasList.elements();a.hasMoreElements();)
+		{
+			try {
+				final Area A = a.nextElement();
+				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				{
+					try {
+						final Room R=r.nextElement();
+						A.delProperRoom(R);
+						R.destroy();
+					} catch(Exception e) {}
+				}
+				if(debugMem)
+				{
+					try
+					{
+						Object obj = new Object();
+						WeakReference<Object> ref = new WeakReference<Object>(obj);
+						obj = null;
+						System.gc();
+						System.runFinalization();
+						while(ref.get() != null) 
+						{
+							System.gc();
+						}
+						Thread.sleep(3000);
+					}
+					catch(final Exception e){}
+					final long free=Runtime.getRuntime().freeMemory()/1024;
+					final long total=Runtime.getRuntime().totalMemory()/1024;
+					Log.debugOut("Memory: CMMap: "+A.Name()+": "+(total-free)+"/"+total);
+				}
+			} catch(Exception e) {}
+		}
 		areasList.clear();
 		deitiesList.clear();
 		shipList.clear();

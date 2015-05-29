@@ -1273,7 +1273,8 @@ public class CMSecurity
 		BININ("binary telnet output"),
 		BOOTSTRAPPER("Bootstrapper"),
 		CLANMEMBERS("Clan Membership"),
-		INPUT("All user input")
+		INPUT("All user input"),
+		SHUTDOWN("System Shutdown")
 		;
 		private final String desc;
 		DbgFlag(final String description){this.desc=description;}
