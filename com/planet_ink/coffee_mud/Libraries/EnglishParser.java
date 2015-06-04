@@ -188,6 +188,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	protected String getBestDistance(long d)
 	{
 		String min=null;
+		final long sign=(long)Math.signum(d);
+		d=Math.abs(d);
 		for(SpaceObject.Distance distance : SpaceObject.DISTANCES)
 		{
 			if(distance.dm < d)
@@ -199,7 +201,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					val=Math.round(val);
 				if(val!=0.0)
 				{
-					String s=Double.toString(val);
+					String s=Double.toString(sign*val);
 					if(s.endsWith(".0"))
 						s=s.substring(0,s.length()-2);
 					s+=distance.abbr;
@@ -209,7 +211,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		}
 		if(min==null)
-			return d+"dm";
+			return (sign*d)+"dm";
 		return min;
 	}
 	
