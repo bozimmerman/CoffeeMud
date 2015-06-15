@@ -58,6 +58,229 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
 	}
 
+	/* http://www.moo.mud.org/mcp/mcp2.html
+<message-line> ::= '#$#' <message> EOL
+
+<message> ::= <message-start>
+           | <message-continue>
+           | <message-end>
+
+<message-start> ::= <message-name> <space> <auth-key> <keyvals>
+<message-continue> ::= '*' <space> <datatag> <space> <simple-key> ':' ' ' <line>
+<message-end> ::= ':' <space> <datatag>
+
+<message-name> ::= <ident>
+<auth-key> ::= <unquoted-string>
+<datatag> ::= <unquoted-string>
+
+<keyvals> ::= '' |  <space> <keyval> <keyvals>
+<keyval> ::= <key> ':' <space> <value>
+<key> ::= <simple-key> | <multiline-key>
+<simple-key> ::= <ident> 
+<multiline-key> ::= <ident> '*'
+<value> ::= <unquoted-string> | <quoted-string>
+
+<ident> ::= <alpha> <ident-chars>
+<unquoted-string> ::= <simple-char> | <simple-char> <unquoted-string>
+<quoted-string> ::= '"' <string-chars> '"'
+
+<ident-chars> ::= '' | <ident-char> <ident-chars>
+<string-chars> ::= '' | <string-char> <string-chars>
+<line> ::= '' | <line-char> <line>
+
+<space> ::= ' ' | ' '<space>
+
+<ident-char> ::= <alpha> | <digit> | '-'
+<string-char> ::= <simple-char> | <space> | '\' <quote-char> | ':' | '*'
+<line-char> ::= <simple-char> | <quote-char> | <space> | ':' | '*'
+<quote-char> ::= '"' | '\'
+<simple-char> ::= <alpha> | <digit> | <other-simple>
+<other-simple> ::= '-' | '~' | '`' | '!' | '@' | '#' | '$' | '%' | '^'
+        | '&' | '(' | ')' | '=' | '+' | '{' | '}' | '[' | ']' | '|'
+        | ''' | ';' | '?' | '/' | '>' | '<' | '.' | ','
+<digit> ::= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+<alpha> ::= 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j'
+        | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't'
+        | 'u' | 'v' | 'w' | 'x' | 'y' | 'z'
+        | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J'
+        | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T'
+        | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | '_'
+        	 */
+	private enum McpParseState{
+		START,
+		IN_COMMAND,
+		FINISH_COMMAND,
+		IN_MCPKEY,
+		FINISH_MCPKEY,
+		IN_KEY,
+		FINISH_KEY,
+		IN_VAL,
+		IN_QUOTEVAL,
+		FINISH_VAL
+	}
+	
+	protected boolean parseMcpStart(final String s, String[] cmd, String[] mcpKeySent, boolean[] exec, Map<String,String> keyValuePairs)
+	{
+		McpParseState state = McpParseState.START;
+		String lastKey = "";
+		int startIndex = 0;
+		for(int i=0;i<s.length();i++)
+		{
+			char c=s.charAt(i);
+			switch(state)
+			{
+			case FINISH_COMMAND:
+				if(!Character.isWhitespace(c))
+				{
+					startIndex=i;
+					state=McpParseState.IN_MCPKEY;
+				}
+				else
+				{
+					Log.errOut("Invalid MCP "+state.toString()+": "+c+": "+s);
+					return false;
+				}
+				break;
+			case FINISH_KEY:
+				if(!Character.isWhitespace(c))
+				{
+					if(c=='\"')
+					{
+						startIndex = i+1;
+						state = McpParseState.IN_QUOTEVAL;
+					}
+					else
+					{
+						startIndex = i;
+						state = McpParseState.IN_VAL;
+					}
+				}
+				break;
+			case FINISH_MCPKEY:
+				if(!Character.isWhitespace(c))
+				{
+					startIndex = i;
+					state = McpParseState.IN_KEY;
+				}
+				exec[0]=true;
+				break;
+			case FINISH_VAL:
+				if(!Character.isWhitespace(c))
+				{
+					startIndex = i;
+					state = McpParseState.IN_KEY;
+				}
+				break;
+			case IN_COMMAND:
+				if(Character.isWhitespace(c))
+				{
+					cmd[0] = s.substring(startIndex,i);
+					state = McpParseState.FINISH_COMMAND;
+				}
+				break;
+			case IN_KEY:
+				if(Character.isWhitespace(c))
+				{
+					Log.errOut("Invalid MCP "+state.toString()+": "+c+": "+s);
+					return false;
+				}
+				else
+				if(c==':')
+				{
+					lastKey = s.substring(startIndex,i);
+					if(lastKey.trim().endsWith("*"))
+					{
+						exec[0]=false;
+					}
+					state = McpParseState.FINISH_KEY;
+				}
+				break;
+			case IN_MCPKEY:
+				if(Character.isWhitespace(c))
+				{
+					mcpKeySent[0] = s.substring(startIndex,i);
+					state = McpParseState.FINISH_MCPKEY;
+				}
+				break;
+			case IN_QUOTEVAL:
+				if((c=='\"')&&(s.charAt(i-1)!='\\'))
+				{
+					keyValuePairs.put(lastKey, s.substring(startIndex,i));
+					state = McpParseState.FINISH_VAL;
+				}
+				break;
+			case IN_VAL:
+				if(Character.isWhitespace(c))
+				{
+					keyValuePairs.put(lastKey, s.substring(startIndex,i));
+					state = McpParseState.FINISH_VAL;
+				}
+				break;
+			case START:
+				if(!Character.isWhitespace(c))
+				{
+					startIndex=i;
+					state=McpParseState.IN_COMMAND;
+				}
+				else
+				{
+					Log.errOut("Invalid MCP "+state.toString()+": "+c+": "+s);
+					return false;
+				}
+				break;
+			}
+		}
+		switch(state)
+		{
+		case IN_VAL:
+			keyValuePairs.put(lastKey, s.substring(startIndex));
+			break;
+		case FINISH_VAL:
+			break;
+		default:
+			Log.errOut("Invalid MCP END "+state.toString()+": " + s);
+			return false;
+		}
+		if((cmd[0] == null)||(mcpKeySent[0] == null))
+		{
+			Log.errOut("Invalid MCP: " + s);
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean mcp(final StringBuilder str, Long mcpKey, final Map<String,String> keyValuePairs)
+	{
+		String s = str.substring(3).trim();
+		String[] cmd = new String[1];
+		String[] mcpKeySent = new String[1];
+		boolean[] execute = new boolean[1];
+		if(s.length()==0)
+			return false;
+		if(s.charAt(0)=='*')
+		{
+			//TODO: msg continue
+		}
+		else
+		if(s.charAt(0)==':')
+		{
+			//TODO: msg end
+		}
+		else
+		{
+			if(!parseMcpStart(s,cmd,mcpKeySent,execute,keyValuePairs))
+			{
+				return false;
+			}
+		}
+		if(execute[0])
+		{
+			//TODO: check the damn command and do something?
+		}
+		return true;
+	}
+
 	@Override
 	public String[] mxpImagePath(String fileName)
 	{

@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -60,7 +61,11 @@ public class DefaultSession implements Session
 	protected final Map<Object, Object> msdpReportables = new TreeMap<Object,Object>();
 	protected final Map<String, Double> gmcpSupports	= new TreeMap<String,Double>();
 	protected final Map<String, Long> 	gmcpPings		= new TreeMap<String,Long>();
-
+	
+	protected final Long				mcpKey			= new Long(Math.abs(new Random(System.currentTimeMillis()).nextLong()));
+	protected final Map<String,String>	mcpKeyPairs		= new TreeMap<String,String>();
+	protected final boolean		 		mcpDisabled		= CMSecurity.isDisabled(DisFlag.MCP);
+	
 	private static final String		TIMEOUT_MSG		= "Timed Out.";
 
 	private volatile Thread  runThread 			 = null;
@@ -206,6 +211,10 @@ public class DefaultSession implements Session
 			sock[0].setSoTimeout(SOTIMEOUT);
 			rawout=new BufferedOutputStream(sock[0].getOutputStream());
 			rawin=new BufferedInputStream(sock[0].getInputStream());
+			if(!mcpDisabled)
+			{
+				rawBytesOut(rawout,("\n\r#$#mcp authentication-key: "+mcpKey+" version: 2.1 to: 2.1\n\r").getBytes("US-ASCII"));
+			}
 			rawBytesOut(rawout,("\n\rConnecting to "+CMProps.getVar(CMProps.Str.MUDNAME)+"...\n\r").getBytes("US-ASCII"));
 			rawout.flush();
 
@@ -331,9 +340,11 @@ public class DefaultSession implements Session
 											final CMFile[] files=introDir.listFiles();
 											final Vector choices=new Vector();
 											for (final CMFile file : files)
+											{
 												if(file.getName().toLowerCase().startsWith("intro")
 												&&file.getName().toLowerCase().endsWith(".jpg"))
 													choices.addElement(file.getName());
+											}
 											if(choices.size()>0)
 												introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 										}
@@ -456,16 +467,27 @@ public class DefaultSession implements Session
 
 	@Override
 	public void setServerTelnetMode(int telnetCode, boolean onOff)
-	{ serverTelnetCodes[telnetCode]=onOff; }
+	{ 
+		serverTelnetCodes[telnetCode]=onOff; 
+	}
+	
 	@Override
 	public boolean getServerTelnetMode(int telnetCode)
-	{ return serverTelnetCodes[telnetCode]; }
+	{ 
+		return serverTelnetCodes[telnetCode]; 
+	}
+	
 	@Override
 	public void setClientTelnetMode(int telnetCode, boolean onOff)
-	{ clientTelnetCodes[telnetCode]=onOff; }
+	{ 
+		clientTelnetCodes[telnetCode]=onOff; 
+	}
+	
 	@Override
 	public boolean getClientTelnetMode(int telnetCode)
-	{ return clientTelnetCodes[telnetCode]; }
+	{ 
+		return clientTelnetCodes[telnetCode]; 
+	}
 	private void changeTelnetMode(OutputStream out, int telnetCode, boolean onOff) throws IOException
 	{
 		final byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
@@ -530,6 +552,7 @@ public class DefaultSession implements Session
 			Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
+	
 	public void changeTelnetModeBackwards(int telnetCode, boolean onOff) throws IOException
 	{
 		final byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
@@ -580,21 +603,43 @@ public class DefaultSession implements Session
 		boolean changedSomething=false;
 		final boolean mxpSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))&&CMath.bset(attributesBitmap,MOB.Attrib.MXP.getBitCode());
 		if(mxpSet!=getClientTelnetMode(TELNET_MXP))
-		{ changeTelnetMode(TELNET_MXP,!getClientTelnetMode(TELNET_MXP)); changedSomething=true;}
+		{ 
+			changeTelnetMode(TELNET_MXP,!getClientTelnetMode(TELNET_MXP)); 
+			changedSomething=true;
+		}
 		final boolean mspSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))&&CMath.bset(attributesBitmap,MOB.Attrib.SOUND.getBitCode());
 		if(mspSet!=getClientTelnetMode(TELNET_MSP))
-		{ changeTelnetMode(TELNET_MSP,!getClientTelnetMode(TELNET_MSP)); changedSomething=true;}
-		try{if(changedSomething) blockingIn(500);}catch(final Exception e){}
+		{ 
+			changeTelnetMode(TELNET_MSP,!getClientTelnetMode(TELNET_MSP)); 
+			changedSomething=true;
+		}
+		try
+		{
+			if(changedSomething) 
+				blockingIn(500);
+		}
+		catch(final Exception e){}
 	}
 
-	@Override public ColorState getCurrentColor() { return currentColor; }
+	@Override 
+	public ColorState getCurrentColor() 
+	{ 
+		return currentColor; 
+	}
+	
 	@Override
 	public void setCurrentColor(final ColorState newColor)
 	{
 		if(newColor!=null)
 			currentColor=newColor;
 	}
-	@Override public ColorState getLastColor() { return lastColor; }
+	
+	@Override 
+	public ColorState getLastColor() 
+	{ 
+		return lastColor; 
+	}
+	
 	@Override
 	public void setLastColor(final ColorState newColor)
 	{
@@ -617,16 +662,19 @@ public class DefaultSession implements Session
 
 	@Override public String getTerminalType(){ return terminalType;}
 	@Override public MOB mob(){return mob;}
+	
 	@Override
 	public void setMob(MOB newmob)
 	{
 		mob=newmob;
 	}
+	
 	@Override
 	public void setAccount(PlayerAccount account)
 	{
 		acct=account;
 	}
+	
 	@Override
 	public int getWrap()
 	{
@@ -876,7 +924,10 @@ public class DefaultSession implements Session
 			&&(msg.equals(lastStr))
 			&&(msg.length()>2)
 			&&(msg.indexOf("\n")==(msg.length()-2)))
-			{ spamStack++; return; }
+			{ 
+				spamStack++; 
+				return; 
+			}
 			else
 			if(spamStack>0)
 			{
@@ -1779,17 +1830,14 @@ public class DefaultSession implements Session
 		}
 	}
 
-	public String blockingIn()
-		throws IOException
+	public String blockingIn() throws IOException
 	{
 		return blockingIn(-1);
 	}
 
 	@Override
-	public String readlineContinue()
-		throws IOException, SocketException
+	public String readlineContinue() throws IOException, SocketException
 	{
-
 		if((in==null)||(out==null))
 			return "";
 		int code=-1;
@@ -1814,6 +1862,19 @@ public class DefaultSession implements Session
 
 		final StringBuilder inStr=new StringBuilder(input);
 		input.setLength(0);
+		if((inStr.length()>3)&&(inStr.substring(0, 2).equals("#$")))
+		{
+			if(inStr.substring(0, 3).equals("#$#"))
+			{
+				if(debugStrInput)
+					Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
+				if(CMLib.protocol().mcp(inStr,mcpKey,mcpKeyPairs))
+					return null;
+			}
+			else
+			if(inStr.substring(0, 3).equals("#$\""))
+				inStr.delete(0, 3);
+		}
 		final String str=CMLib.coffeeFilter().simpleInFilter(inStr,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
 		if(str==null)
 			return null;
@@ -1824,8 +1885,7 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public boolean confirm(final String Message, String Default, long maxTime)
-	throws IOException
+	public boolean confirm(final String Message, String Default, long maxTime) throws IOException
 	{
 		if(Default.toUpperCase().startsWith("T"))
 			Default="Y";
@@ -1834,9 +1894,9 @@ public class DefaultSession implements Session
 			return true;
 		return false;
 	}
+
 	@Override
-	public boolean confirm(final String Message, String Default)
-	throws IOException
+	public boolean confirm(final String Message, String Default) throws IOException
 	{
 		if(Default.toUpperCase().startsWith("T"))
 			Default="Y";
@@ -1847,22 +1907,19 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public String choose(final String Message, final String Choices, String Default)
-	throws IOException
+	public String choose(final String Message, final String Choices, String Default) throws IOException
 	{
 		return choose(Message,Choices,Default,-1,null);
 	}
 
 	@Override
-	public String choose(final String Message, final String Choices, final String Default, long maxTime)
-	throws IOException
+	public String choose(final String Message, final String Choices, final String Default, long maxTime) throws IOException
 	{
 		return choose(Message,Choices,Default,maxTime,null);
 	}
 
 	@Override
-	public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut)
-	throws IOException
+	public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut) throws IOException
 	{
 		String YN="";
 		String rest=null;
@@ -2042,7 +2099,7 @@ public class DefaultSession implements Session
 				while((getLastPKFight()>0)
 				&&((System.currentTimeMillis()-getLastPKFight())<(2*60*1000))
 				&&(mob!=null))
-				{ try{Thread.sleep(1000);}catch(final Exception e){}}
+					CMLib.s_sleep(1000);
 				String name=M.Name();
 				if(name.trim().length()==0)
 					name="Unknown";
@@ -2093,16 +2150,19 @@ public class DefaultSession implements Session
 			}
 		}
 	}
+
 	@Override
 	public SessionStatus getStatus()
 	{
 		return status;
 	}
+
 	@Override
 	public boolean isWaitingForInput()
 	{
 		return (inputCallback!=null);
 	}
+
 	@Override
 	public void logout(boolean removeMOB)
 	{

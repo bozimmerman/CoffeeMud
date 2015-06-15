@@ -1362,7 +1362,8 @@ public class CMSecurity
 		IMC2("intermud2"),
 		SLOW_AGEING("real ageing"),
 		ALL_AGEING("age system"),
-		CHANNELBACKLOGS("channel backlog system")
+		CHANNELBACKLOGS("channel backlog system"),
+		MCP("mcp protocol")
 		;
 		private final String desc;
 		DisFlag(final String description){this.desc=description;}

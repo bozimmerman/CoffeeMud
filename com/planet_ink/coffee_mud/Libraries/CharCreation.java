@@ -1328,7 +1328,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult acctmenuPrompt(final LoginSession loginObj, final Session session)
 	{
 		session.setStatus(Session.SessionStatus.ACCOUNT_MENU);
-		session.promptPrint(L("\n\r^wCommand or Name ^H(?)^w: ^N"));
+		session.promptPrint(L("\n\r^wCommand or Name ^H(?)^w: ^N "));
 		loginObj.state=LoginState.ACCTMENU_COMMAND;
 		loginObj.savedInput="";
 		return LoginResult.INPUT_REQUIRED;

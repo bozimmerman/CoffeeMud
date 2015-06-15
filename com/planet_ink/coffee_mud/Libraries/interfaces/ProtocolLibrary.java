@@ -35,6 +35,8 @@ public interface ProtocolLibrary extends CMLibrary
 {
 	public String msp(final String soundName, final int priority);
 
+	public boolean mcp(final StringBuilder str, final Long mcpKey, final Map<String,String> keyValuePairs);
+	
 	public String[] mxpImagePath(String fileName);
 	public String mxpImage(final Environmental E, final String parms);
 	public String mxpImage(final Environmental E, final String parms, final String pre, final String post);
