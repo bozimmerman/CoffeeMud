@@ -62,9 +62,10 @@ public class DefaultSession implements Session
 	protected final Map<String, Double> gmcpSupports	= new TreeMap<String,Double>();
 	protected final Map<String, Long> 	gmcpPings		= new TreeMap<String,Long>();
 	
-	protected final String[]			mcpKey			= new String[0];
+	protected final String[]			mcpKey			= new String[1];
 	protected final Map<String,String>	mcpKeyPairs		= new TreeMap<String,String>();
 	protected final boolean		 		mcpDisabled		= CMSecurity.isDisabled(DisFlag.MCP);
+	protected final Map<String,float[]>	mcpSupported	= new TreeMap<String,float[]>();
 	
 	private static final String		TIMEOUT_MSG		= "Timed Out.";
 
@@ -1868,7 +1869,7 @@ public class DefaultSession implements Session
 			{
 				if(debugStrInput)
 					Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
-				if(CMLib.protocol().mcp(this,inStr,mcpKey,mcpKeyPairs))
+				if(CMLib.protocol().mcp(this,inStr,mcpKey,mcpSupported,mcpKeyPairs))
 					return null;
 			}
 			else

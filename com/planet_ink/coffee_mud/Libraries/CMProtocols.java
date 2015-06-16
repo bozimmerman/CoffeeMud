@@ -160,9 +160,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				{
 					keyValuePairs.put(MCP_COMMAND_KEY(), s.substring(startIndex,i));
 					if(s.substring(startIndex,i).equals("mcp"))
-						state = McpParseStartState.FINISH_COMMAND;
-					else
 						state = McpParseStartState.FINISH_MCPKEY;
+					else
+						state = McpParseStartState.FINISH_COMMAND;
 				}
 				break;
 			case IN_KEY:
@@ -228,9 +228,11 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			Log.errOut("Invalid MCP END "+state.toString()+": " + s);
 			return false;
 		}
-		if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))||(!keyValuePairs.containsKey(MCP_KEYSENT_KEY())))
+		if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))
+		||((!keyValuePairs.get(MCP_COMMAND_KEY()).equals("mcp"))
+			&&(!keyValuePairs.containsKey(MCP_KEYSENT_KEY()))))
 		{
-			Log.errOut("Invalid MCP: " + s);
+			Log.errOut("Invalid MCP -- missing Command or Key: " + s);
 			return false;
 		}
 		if((!exec[0]) && (!keyValuePairs.containsKey(MCP_DATA_TAG())))
@@ -348,8 +350,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	protected boolean parseMcpEnd(final String s, boolean[] exec, Map<String,String> keyValuePairs)
 	{
 		String endKey = s.trim();
-		if((!keyValuePairs.containsKey(MCP_DATA_TAG()))
-		||(!endKey.equals(keyValuePairs.get(MCP_DATA_TAG()))))
+		if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))
+		||((!keyValuePairs.get(MCP_COMMAND_KEY()).equals("mcp"))
+			&&(!keyValuePairs.containsKey(MCP_KEYSENT_KEY()))))
 		{
 			Log.errOut("Unknown/Invalid CONT MCP KEY: "+endKey+": "+s);
 			return false;
@@ -365,26 +368,27 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public boolean mcp(final Session session, final StringBuilder str, String[] mcpKey, final Map<String,String> keyValuePairs)
+	public boolean mcp(final Session session, final StringBuilder str, String[] mcpKey, 
+					   final Map<String,float[]> clientSupported, final Map<String,String> keyValuePairs)
 	{
-		Map<String,MCPPackage> extPackages = (Map<String,MCPPackage>)Resources.getResource("MCP_COMPILED_PACKAGES");
-		if(extPackages == null)
+		Map<String,MCPPackage> mcpPackages = (Map<String,MCPPackage>)Resources.getResource("MCP_COMPILED_PACKAGES");
+		if(mcpPackages == null)
 		{
 			synchronized(this)
 			{
-				extPackages = (Map<String,MCPPackage>)Resources.getResource("MCP_COMPILED_PACKAGES");
-				if(extPackages == null)
+				mcpPackages = (Map<String,MCPPackage>)Resources.getResource("MCP_COMPILED_PACKAGES");
+				if(mcpPackages == null)
 				{
-					extPackages = new Hashtable<String,MCPPackage>();
+					mcpPackages = new Hashtable<String,MCPPackage>();
 					List<MCPPackage> pkgs = new ArrayList<MCPPackage>();
-					if(CMClass.loadObjectListToObj((Object)pkgs, "com/planet_ink/coffee_mud/Libraries/mcppkgs/", CMProps.instance().getStr("MCPPACKAGES"), "com.planet_ink.coffee_mud.Libraries.ProtocolLibrary.MCPPackage"))
+					if(CMClass.loadObjectListToObj((Object)pkgs, "com/planet_ink/coffee_mud/Libraries/mcppkgs/", CMProps.instance().getStr("MCPPACKAGES"), "com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary$MCPPackage"))
 					{
 						for(MCPPackage pkg : pkgs )
 						{
-							extPackages.put(pkg.packageName(), pkg);
+							mcpPackages.put(pkg.packageName(), pkg);
 						}
 					}
-					Resources.submitResource("MCP_COMPILED_PACKAGES", extPackages);
+					Resources.submitResource("MCP_COMPILED_PACKAGES", mcpPackages);
 				}
 			}
 		}
@@ -417,7 +421,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		if(execute[0])
 		{
-			if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))||(!keyValuePairs.containsKey(MCP_KEYSENT_KEY())))
+			if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))
+			||((!keyValuePairs.get(MCP_COMMAND_KEY()).equals("mcp"))
+				&&(!keyValuePairs.containsKey(MCP_KEYSENT_KEY()))))
 			{
 				Log.errOut("Invalid MCP PROCESS -- no command or key sent: " + s);
 				return false;
@@ -441,12 +447,31 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					Log.errOut("Invalid MCP PROCESS -- NO key Sent: "+s);
 					return false;
 				}
-				session.rawPrintln("#$#mcp-negotiate-can "+mcpKey[0]+" package: mcp-negotiate min-version: 1.0 max-version: 2.0");
-				
+				for(String commandKey : mcpPackages.keySet())
+				{
+					MCPPackage pkg = mcpPackages.get(commandKey);
+					session.rawPrintln("#$#mcp-negotiate-can "+mcpKey[0]+" package: "+pkg.packageName()+" min-version: "+pkg.minVersion()+" max-version: "+pkg.maxVersion());
+				}
 				session.rawPrintln("#$#mcp-negotiate-end "+mcpKey[0]);
 			}
 			else
 			{
+				MCPPackage pkg = mcpPackages.get(pkgCmd);
+				if(pkg == null)
+				{
+					for(String commandKey : mcpPackages.keySet())
+					{
+						if(pkgCmd.startsWith(commandKey+"-"))
+						{
+							pkg = mcpPackages.get(commandKey);
+							break;
+						}
+					}
+				}
+				if(pkg != null)
+				{
+					pkg.executePackage(session, pkgCmd, clientSupported, keyValuePairs);
+				}
 			}
 			keyValuePairs.clear();
 		}

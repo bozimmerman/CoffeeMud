@@ -35,7 +35,7 @@ public interface ProtocolLibrary extends CMLibrary
 {
 	public String msp(final String soundName, final int priority);
 
-	public boolean mcp(final Session session, final StringBuilder str, final String[] mcpKey, final Map<String,String> keyValuePairs);
+	public boolean mcp(final Session session, final StringBuilder str, final String[] mcpKey, Map<String,float[]> clientSupported, final Map<String,String> keyValuePairs);
 	
 	public String[] mxpImagePath(String fileName);
 	public String mxpImage(final Environmental E, final String parms);
@@ -87,17 +87,30 @@ public interface ProtocolLibrary extends CMLibrary
 	public interface MCPPackage
 	{
 		/**
-		 * Return the name of the plugin
-		 * @return the name of the plugin
+		 * Return the name of the overall package
+		 * @return the name of the overall package
 		 */
 		public String packageName();
+
+		/**
+		 * Returns the minimum version supported here.
+		 * @return the minimum version supported here.
+		 */
+		public float minVersion();
+		
+		/**
+		 * Returns the maximum version supported here.
+		 * @return the maximum version supported here.
+		 */
+		public float maxVersion();
 		
 		/**
 		 * Execute the package
 		 * @param session the session for which the package is being executed
+		 * @param command the actual command being executed by this package
+		 * @param clientSuported map of client packages supported followed by min-maxes
 		 * @param variables key/value pairs for this package
 		 */
-		public void executePackage(Session session, Map<String,String> variables);
-		
+		public void executePackage(Session session, String command, Map<String,float[]> clientSupported, Map<String,String> variables);
 	}
 }
