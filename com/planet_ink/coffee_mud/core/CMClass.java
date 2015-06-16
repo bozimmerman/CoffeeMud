@@ -271,27 +271,48 @@ public class CMClass extends ClassLoader
 	{
 		switch(type)
 		{
-			case RACE: return O instanceof Race;
-			case CHARCLASS: return O instanceof CharClass;
-			case MOB: return O instanceof MOB;
-			case ABILITY: return O instanceof Ability;
-			case LOCALE: return O instanceof Room;
-			case EXIT: return O instanceof Exit;
-			case ITEM: return O instanceof Item;
-			case BEHAVIOR: return O instanceof Behavior;
-			case CLAN: return O instanceof Clan;
-			case WEAPON: return O instanceof Weapon;
-			case ARMOR: return O instanceof Armor;
-			case MISCMAGIC: return O instanceof MiscMagic;
-			case AREA: return O instanceof Area;
-			case COMMAND: return O instanceof Command;
-			case CLANITEM: return O instanceof ClanItem;
-			case TECH: return O instanceof Electronics;
-			case WEBMACRO: return O instanceof WebMacro;
-			case COMMON: return O instanceof CMCommon;
-			case LIBRARY: return O instanceof CMLibrary;
-			case SOFTWARE: return O instanceof Software;
-			case SHIPTECH: return O instanceof ShipComponent;
+			case RACE: 
+				return O instanceof Race;
+			case CHARCLASS: 
+				return O instanceof CharClass;
+			case MOB: 
+				return O instanceof MOB;
+			case ABILITY: 
+				return O instanceof Ability;
+			case LOCALE: 
+				return O instanceof Room;
+			case EXIT: 
+				return O instanceof Exit;
+			case ITEM: 
+				return O instanceof Item;
+			case BEHAVIOR: 
+				return O instanceof Behavior;
+			case CLAN: 
+				return O instanceof Clan;
+			case WEAPON: 
+				return O instanceof Weapon;
+			case ARMOR: 
+				return O instanceof Armor;
+			case MISCMAGIC: 
+				return O instanceof MiscMagic;
+			case AREA: 
+				return O instanceof Area;
+			case COMMAND: 
+				return O instanceof Command;
+			case CLANITEM: 
+				return O instanceof ClanItem;
+			case TECH: 
+				return O instanceof Electronics;
+			case WEBMACRO: 
+				return O instanceof WebMacro;
+			case COMMON: 
+				return O instanceof CMCommon;
+			case LIBRARY: 
+				return O instanceof CMLibrary;
+			case SOFTWARE: 
+				return O instanceof Software;
+			case SHIPTECH: 
+				return O instanceof ShipComponent;
 		}
 		return false;
 	}
@@ -307,27 +328,48 @@ public class CMClass extends ClassLoader
 	{
 		switch(type)
 		{
-			case RACE: return CMClass.getRace(ID);
-			case CHARCLASS: return CMClass.getCharClass(ID);
-			case MOB: return CMClass.getMOB(ID);
-			case ABILITY: return CMClass.getAbility(ID);
-			case LOCALE: return CMClass.getLocale(ID);
-			case EXIT: return CMClass.getExit(ID);
-			case ITEM: return CMClass.getBasicItem(ID);
-			case BEHAVIOR: return CMClass.getBehavior(ID);
-			case CLAN: return CMClass.getCommon(ID);
-			case WEAPON: return CMClass.getWeapon(ID);
-			case ARMOR: return CMClass.getAreaType(ID);
-			case MISCMAGIC: return CMClass.getMiscMagic(ID);
-			case AREA: return CMClass.getAreaType(ID);
-			case COMMAND: return CMClass.getCommand(ID);
-			case CLANITEM: return CMClass.getClanItem(ID);
-			case TECH: return CMClass.getTech(ID);
-			case WEBMACRO: return CMClass.getWebMacro(ID);
-			case COMMON: return CMClass.getCommon(ID);
-			case LIBRARY: return CMClass.getLibrary(ID);
-			case SHIPTECH: return CMClass.getTech(ID);
-			case SOFTWARE: return CMClass.getTech(ID);
+			case RACE: 
+				return CMClass.getRace(ID);
+			case CHARCLASS: 
+				return CMClass.getCharClass(ID);
+			case MOB: 
+				return CMClass.getMOB(ID);
+			case ABILITY: 
+				return CMClass.getAbility(ID);
+			case LOCALE: 
+				return CMClass.getLocale(ID);
+			case EXIT: 
+				return CMClass.getExit(ID);
+			case ITEM: 
+				return CMClass.getBasicItem(ID);
+			case BEHAVIOR: 
+				return CMClass.getBehavior(ID);
+			case CLAN: 
+				return CMClass.getCommon(ID);
+			case WEAPON: 
+				return CMClass.getWeapon(ID);
+			case ARMOR: 
+				return CMClass.getAreaType(ID);
+			case MISCMAGIC: 
+				return CMClass.getMiscMagic(ID);
+			case AREA: 
+				return CMClass.getAreaType(ID);
+			case COMMAND: 
+				return CMClass.getCommand(ID);
+			case CLANITEM: 
+				return CMClass.getClanItem(ID);
+			case TECH: 
+				return CMClass.getTech(ID);
+			case WEBMACRO: 
+				return CMClass.getWebMacro(ID);
+			case COMMON: 
+				return CMClass.getCommon(ID);
+			case LIBRARY: 
+				return CMClass.getLibrary(ID);
+			case SHIPTECH: 
+				return CMClass.getTech(ID);
+			case SOFTWARE: 
+				return CMClass.getTech(ID);
 		}
 		return null;
 	}
@@ -436,27 +478,48 @@ public class CMClass extends ClassLoader
 	{
 		switch(code)
 		{
-		case RACE: return c().races;
-		case CHARCLASS: return c().charClasses;
-		case MOB: return c().MOBs;
-		case ABILITY: return c().abilities;
-		case LOCALE: return c().locales;
-		case EXIT: return c().exits;
-		case ITEM: return c().items;
-		case BEHAVIOR: return c().behaviors;
-		case CLAN: return null;
-		case WEAPON: return c().weapons;
-		case ARMOR: return c().armor;
-		case MISCMAGIC: return c().miscMagic;
-		case AREA: return c().areaTypes;
-		case COMMAND: return c().commands;
-		case CLANITEM: return c().clanItems;
-		case TECH: return c().tech;
-		case WEBMACRO: return c().webMacros;
-		case COMMON: return c().common;
-		case LIBRARY: return c().libraries;
-		case SHIPTECH: return c().tech;
-		case SOFTWARE: return c().tech;
+		case RACE: 
+			return c().races;
+		case CHARCLASS: 
+			return c().charClasses;
+		case MOB: 
+			return c().MOBs;
+		case ABILITY: 
+			return c().abilities;
+		case LOCALE: 
+			return c().locales;
+		case EXIT: 
+			return c().exits;
+		case ITEM: 
+			return c().items;
+		case BEHAVIOR: 
+			return c().behaviors;
+		case CLAN: 
+			return null;
+		case WEAPON: 
+			return c().weapons;
+		case ARMOR: 
+			return c().armor;
+		case MISCMAGIC: 
+			return c().miscMagic;
+		case AREA: 
+			return c().areaTypes;
+		case COMMAND: 
+			return c().commands;
+		case CLANITEM: 
+			return c().clanItems;
+		case TECH: 
+			return c().tech;
+		case WEBMACRO: 
+			return c().webMacros;
+		case COMMON: 
+			return c().common;
+		case LIBRARY: 
+			return c().libraries;
+		case SHIPTECH: 
+			return c().tech;
+		case SOFTWARE: 
+			return c().tech;
 		}
 		return null;
 	}

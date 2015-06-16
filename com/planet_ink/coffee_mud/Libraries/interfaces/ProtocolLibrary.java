@@ -35,7 +35,7 @@ public interface ProtocolLibrary extends CMLibrary
 {
 	public String msp(final String soundName, final int priority);
 
-	public boolean mcp(final StringBuilder str, final Long mcpKey, final Map<String,String> keyValuePairs);
+	public boolean mcp(final Session session, final StringBuilder str, final String[] mcpKey, final Map<String,String> keyValuePairs);
 	
 	public String[] mxpImagePath(String fileName);
 	public String mxpImage(final Environmental E, final String parms);
@@ -49,7 +49,7 @@ public interface ProtocolLibrary extends CMLibrary
 	public byte[] buildGmcpResponse(String json);
 	public byte[] pingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables);
 	
-	public enum gmcpCommand
+	public enum GMCPCommand
 	{
 		core_hello,
 		core_supports_set,
@@ -76,5 +76,28 @@ public interface ProtocolLibrary extends CMLibrary
 		request_area,
 		request_char,
 		request_sectors
+	}
+	
+	
+	/**
+	 * Interface allowing java or javascript plugins to the MCP protocol
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface MCPPackage
+	{
+		/**
+		 * Return the name of the plugin
+		 * @return the name of the plugin
+		 */
+		public String packageName();
+		
+		/**
+		 * Execute the package
+		 * @param session the session for which the package is being executed
+		 * @param variables key/value pairs for this package
+		 */
+		public void executePackage(Session session, Map<String,String> variables);
+		
 	}
 }

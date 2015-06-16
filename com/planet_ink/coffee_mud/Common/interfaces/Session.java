@@ -1313,26 +1313,4 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		LOGOUT, LOGOUT1, LOGOUT2, LOGOUT3, LOGOUT4, LOGOUT5, LOGOUT6, LOGOUT7, LOGOUT8,
 		LOGOUT9, LOGOUT10, LOGOUT11, LOGOUT12, LOGOUTFINAL
 	}
-	
-	/**
-	 * Interface allowing java or javascript plugins to the MCP protocol
-	 * @author Bo Zimmerman
-	 *
-	 */
-	public interface MCPlugin
-	{
-		/**
-		 * Return the name of the plugin
-		 * @return the name of the plugin
-		 */
-		public String packageName();
-		
-		/**
-		 * Execute the package
-		 * @param session the session for which the package is being executed
-		 * @param variables key/value pairs for this package
-		 */
-		public void executePackage(Session session, Map<String,String> variables);
-		
-	}
 }

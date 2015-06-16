@@ -62,7 +62,7 @@ public class DefaultSession implements Session
 	protected final Map<String, Double> gmcpSupports	= new TreeMap<String,Double>();
 	protected final Map<String, Long> 	gmcpPings		= new TreeMap<String,Long>();
 	
-	protected final Long				mcpKey			= new Long(Math.abs(new Random(System.currentTimeMillis()).nextLong()));
+	protected final String[]			mcpKey			= new String[0];
 	protected final Map<String,String>	mcpKeyPairs		= new TreeMap<String,String>();
 	protected final boolean		 		mcpDisabled		= CMSecurity.isDisabled(DisFlag.MCP);
 	
@@ -213,7 +213,7 @@ public class DefaultSession implements Session
 			rawin=new BufferedInputStream(sock[0].getInputStream());
 			if(!mcpDisabled)
 			{
-				rawBytesOut(rawout,("\n\r#$#mcp authentication-key: "+mcpKey+" version: 2.1 to: 2.1\n\r").getBytes("US-ASCII"));
+				rawBytesOut(rawout,("\n\r#$#mcp version: 2.1 to: 2.1\n\r").getBytes(CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 			}
 			rawBytesOut(rawout,("\n\rConnecting to "+CMProps.getVar(CMProps.Str.MUDNAME)+"...\n\r").getBytes("US-ASCII"));
 			rawout.flush();
@@ -1868,7 +1868,7 @@ public class DefaultSession implements Session
 			{
 				if(debugStrInput)
 					Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
-				if(CMLib.protocol().mcp(inStr,mcpKey,mcpKeyPairs))
+				if(CMLib.protocol().mcp(this,inStr,mcpKey,mcpKeyPairs))
 					return null;
 			}
 			else

@@ -26,6 +26,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.Map.Entry;
+
+import org.mozilla.javascript.*;
+import org.mozilla.javascript.optimizer.*;
 /*
    Copyright 2013-2015 Bo Zimmerman
 
@@ -45,6 +48,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 {
 	@Override public String ID(){return "CMProtocols";}
 
+	
 	// this is the sound support method.
 	// it builds a valid MSP sound code from built-in web server
 	// info, and the info provided.
@@ -58,55 +62,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
 	}
 
-	/* http://www.moo.mud.org/mcp/mcp2.html
-<message-line> ::= '#$#' <message> EOL
-
-<message> ::= <message-start>
-           | <message-continue>
-           | <message-end>
-
-<message-start> ::= <message-name> <space> <auth-key> <keyvals>
-<message-continue> ::= '*' <space> <datatag> <space> <simple-key> ':' ' ' <line>
-<message-end> ::= ':' <space> <datatag>
-
-<message-name> ::= <ident>
-<auth-key> ::= <unquoted-string>
-<datatag> ::= <unquoted-string>
-
-<keyvals> ::= '' |  <space> <keyval> <keyvals>
-<keyval> ::= <key> ':' <space> <value>
-<key> ::= <simple-key> | <multiline-key>
-<simple-key> ::= <ident> 
-<multiline-key> ::= <ident> '*'
-<value> ::= <unquoted-string> | <quoted-string>
-
-<ident> ::= <alpha> <ident-chars>
-<unquoted-string> ::= <simple-char> | <simple-char> <unquoted-string>
-<quoted-string> ::= '"' <string-chars> '"'
-
-<ident-chars> ::= '' | <ident-char> <ident-chars>
-<string-chars> ::= '' | <string-char> <string-chars>
-<line> ::= '' | <line-char> <line>
-
-<space> ::= ' ' | ' '<space>
-
-<ident-char> ::= <alpha> | <digit> | '-'
-<string-char> ::= <simple-char> | <space> | '\' <quote-char> | ':' | '*'
-<line-char> ::= <simple-char> | <quote-char> | <space> | ':' | '*'
-<quote-char> ::= '"' | '\'
-<simple-char> ::= <alpha> | <digit> | <other-simple>
-<other-simple> ::= '-' | '~' | '`' | '!' | '@' | '#' | '$' | '%' | '^'
-        | '&' | '(' | ')' | '=' | '+' | '{' | '}' | '[' | ']' | '|'
-        | ''' | ';' | '?' | '/' | '>' | '<' | '.' | ','
-<digit> ::= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
-<alpha> ::= 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j'
-        | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't'
-        | 'u' | 'v' | 'w' | 'x' | 'y' | 'z'
-        | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J'
-        | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T'
-        | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' | '_'
-        	 */
-	private enum McpParseState{
+	private enum McpParseStartState
+	{
 		START,
 		IN_COMMAND,
 		FINISH_COMMAND,
@@ -118,10 +75,37 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		IN_QUOTEVAL,
 		FINISH_VAL
 	}
+
+	protected static String MCP_KEYSENT_KEY() 
+	{ 
+		return "_CMMCP_KEYSENT";
+	}
 	
-	protected boolean parseMcpStart(final String s, String[] cmd, String[] mcpKeySent, boolean[] exec, Map<String,String> keyValuePairs)
+	protected static String MCP_COMMAND_KEY() 
+	{ 
+		return "_CMMCP_COMMAND";
+	}
+	
+	protected static String MCP_DATA_TAG()
 	{
-		McpParseState state = McpParseState.START;
+		return "_data-tag";
+	}
+
+	protected boolean containsMcpStarTag(Map<String,String> keyValuePairs)
+	{
+		for(String k : keyValuePairs.keySet())
+		{
+			if(k.endsWith("*"))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	protected boolean parseMcpStart(final String s, boolean[] exec, Map<String,String> keyValuePairs)
+	{
+		McpParseStartState state = McpParseStartState.START;
 		String lastKey = "";
 		int startIndex = 0;
 		for(int i=0;i<s.length();i++)
@@ -133,7 +117,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				if(!Character.isWhitespace(c))
 				{
 					startIndex=i;
-					state=McpParseState.IN_MCPKEY;
+					state=McpParseStartState.IN_MCPKEY;
 				}
 				else
 				{
@@ -147,12 +131,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					if(c=='\"')
 					{
 						startIndex = i+1;
-						state = McpParseState.IN_QUOTEVAL;
+						state = McpParseStartState.IN_QUOTEVAL;
 					}
 					else
 					{
 						startIndex = i;
-						state = McpParseState.IN_VAL;
+						state = McpParseStartState.IN_VAL;
 					}
 				}
 				break;
@@ -160,7 +144,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				if(!Character.isWhitespace(c))
 				{
 					startIndex = i;
-					state = McpParseState.IN_KEY;
+					state = McpParseStartState.IN_KEY;
 				}
 				exec[0]=true;
 				break;
@@ -168,14 +152,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				if(!Character.isWhitespace(c))
 				{
 					startIndex = i;
-					state = McpParseState.IN_KEY;
+					state = McpParseStartState.IN_KEY;
 				}
 				break;
 			case IN_COMMAND:
 				if(Character.isWhitespace(c))
 				{
-					cmd[0] = s.substring(startIndex,i);
-					state = McpParseState.FINISH_COMMAND;
+					keyValuePairs.put(MCP_COMMAND_KEY(), s.substring(startIndex,i));
+					if(s.substring(startIndex,i).equals("mcp"))
+						state = McpParseStartState.FINISH_COMMAND;
+					else
+						state = McpParseStartState.FINISH_MCPKEY;
 				}
 				break;
 			case IN_KEY:
@@ -192,35 +179,35 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					{
 						exec[0]=false;
 					}
-					state = McpParseState.FINISH_KEY;
+					state = McpParseStartState.FINISH_KEY;
 				}
 				break;
 			case IN_MCPKEY:
 				if(Character.isWhitespace(c))
 				{
-					mcpKeySent[0] = s.substring(startIndex,i);
-					state = McpParseState.FINISH_MCPKEY;
+					keyValuePairs.put(MCP_KEYSENT_KEY(), s.substring(startIndex,i));
+					state = McpParseStartState.FINISH_MCPKEY;
 				}
 				break;
 			case IN_QUOTEVAL:
 				if((c=='\"')&&(s.charAt(i-1)!='\\'))
 				{
 					keyValuePairs.put(lastKey, s.substring(startIndex,i));
-					state = McpParseState.FINISH_VAL;
+					state = McpParseStartState.FINISH_VAL;
 				}
 				break;
 			case IN_VAL:
 				if(Character.isWhitespace(c))
 				{
 					keyValuePairs.put(lastKey, s.substring(startIndex,i));
-					state = McpParseState.FINISH_VAL;
+					state = McpParseStartState.FINISH_VAL;
 				}
 				break;
 			case START:
 				if(!Character.isWhitespace(c))
 				{
 					startIndex=i;
-					state=McpParseState.IN_COMMAND;
+					state=McpParseStartState.IN_COMMAND;
 				}
 				else
 				{
@@ -241,42 +228,227 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			Log.errOut("Invalid MCP END "+state.toString()+": " + s);
 			return false;
 		}
-		if((cmd[0] == null)||(mcpKeySent[0] == null))
+		if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))||(!keyValuePairs.containsKey(MCP_KEYSENT_KEY())))
 		{
 			Log.errOut("Invalid MCP: " + s);
+			return false;
+		}
+		if((!exec[0]) && (!keyValuePairs.containsKey(MCP_DATA_TAG())))
+		{
+			Log.errOut("Missing MCP Data Tag: " + s);
+			return false;
+		}
+		if((!exec[0]) && (!containsMcpStarTag(keyValuePairs)))
+		{
+			Log.errOut("Missing MCP Data Tag: " + s);
 			return false;
 		}
 		return true;
 	}
 	
-	@Override
-	public boolean mcp(final StringBuilder str, Long mcpKey, final Map<String,String> keyValuePairs)
+	private enum McpParseContState
 	{
+		START,
+		IN_CONTMCPKEY,
+		FINISH_CONTMCPKEY,
+		IN_CONTKEY,
+		FINISH_CONTKEY,
+		IN_LINE
+	}
+
+	protected boolean parseMcpCont(final String s, boolean[] exec, Map<String,String> keyValuePairs)
+	{
+		McpParseContState state = McpParseContState.START;
+		String lastKey = "";
+		int startIndex = 0;
+		exec[0] = false; // never end on a continue tag
+		for(int i=0;i<s.length();i++)
+		{
+			char c=s.charAt(i);
+			switch(state)
+			{
+			case FINISH_CONTKEY:
+				if(!Character.isWhitespace(c))
+				{
+					startIndex = i;
+					state = McpParseContState.IN_LINE;
+				}
+				break;
+			case FINISH_CONTMCPKEY:
+				if(!Character.isWhitespace(c))
+				{
+					startIndex = i;
+					state = McpParseContState.IN_CONTKEY;
+				}
+				exec[0]=true;
+				break;
+			case IN_CONTKEY:
+				if(Character.isWhitespace(c))
+				{
+					Log.errOut("Invalid MCPC "+state.toString()+": "+c+": "+s);
+					return false;
+				}
+				else
+				if(c==':')
+				{
+					lastKey = s.substring(startIndex,i);
+					if(!keyValuePairs.containsKey(lastKey+"*"))
+					{
+						Log.errOut("Unknown CONT KEY: "+lastKey+": "+state.toString()+": "+c+": "+s);
+						return false;
+					}
+					state = McpParseContState.FINISH_CONTKEY;
+				}
+				break;
+			case IN_CONTMCPKEY:
+				if(Character.isWhitespace(c))
+				{
+					if((!keyValuePairs.containsKey(MCP_DATA_TAG()))
+					||(!s.substring(startIndex,i).equals(keyValuePairs.get(MCP_DATA_TAG()))))
+					{
+						Log.errOut("Unknown/Invalid CONT MCP KEY: "+s.substring(startIndex,i)+": "+state.toString()+": "+c+": "+s);
+						return false;
+					}
+					state = McpParseContState.FINISH_CONTMCPKEY;
+				}
+				break;
+			case START:
+				if(!Character.isWhitespace(c))
+				{
+					startIndex=i;
+					state=McpParseContState.IN_CONTMCPKEY;
+				}
+				else
+				{
+					Log.errOut("Invalid MCPC "+state.toString()+": "+c+": "+s);
+					return false;
+				}
+				break;
+			case IN_LINE:
+				break;
+			default:
+				break;
+			}
+		}
+		switch(state)
+		{
+		case IN_LINE:
+			if(keyValuePairs.containsKey(lastKey))
+				keyValuePairs.put(lastKey, keyValuePairs.get(lastKey)+"\n\r"+s.substring(startIndex));
+			else
+				keyValuePairs.put(lastKey, s.substring(startIndex));
+			break;
+		default:
+			Log.errOut("Invalid MCP CONT "+state.toString()+": " + s);
+			return false;
+		}
+		return true;
+	}
+	
+	protected boolean parseMcpEnd(final String s, boolean[] exec, Map<String,String> keyValuePairs)
+	{
+		String endKey = s.trim();
+		if((!keyValuePairs.containsKey(MCP_DATA_TAG()))
+		||(!endKey.equals(keyValuePairs.get(MCP_DATA_TAG()))))
+		{
+			Log.errOut("Unknown/Invalid CONT MCP KEY: "+endKey+": "+s);
+			return false;
+		}
+		if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))||(!keyValuePairs.containsKey(MCP_KEYSENT_KEY())))
+		{
+			Log.errOut("Invalid MCP END -- no command or key sent: " + s);
+			return false;
+		}
+		exec[0] = true;
+		return true;
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public boolean mcp(final Session session, final StringBuilder str, String[] mcpKey, final Map<String,String> keyValuePairs)
+	{
+		Map<String,MCPPackage> extPackages = (Map<String,MCPPackage>)Resources.getResource("MCP_COMPILED_PACKAGES");
+		if(extPackages == null)
+		{
+			synchronized(this)
+			{
+				extPackages = (Map<String,MCPPackage>)Resources.getResource("MCP_COMPILED_PACKAGES");
+				if(extPackages == null)
+				{
+					extPackages = new Hashtable<String,MCPPackage>();
+					List<MCPPackage> pkgs = new ArrayList<MCPPackage>();
+					if(CMClass.loadObjectListToObj((Object)pkgs, "com/planet_ink/coffee_mud/Libraries/mcppkgs/", CMProps.instance().getStr("MCPPACKAGES"), "com.planet_ink.coffee_mud.Libraries.ProtocolLibrary.MCPPackage"))
+					{
+						for(MCPPackage pkg : pkgs )
+						{
+							extPackages.put(pkg.packageName(), pkg);
+						}
+					}
+					Resources.submitResource("MCP_COMPILED_PACKAGES", extPackages);
+				}
+			}
+		}
+		
 		String s = str.substring(3).trim();
-		String[] cmd = new String[1];
-		String[] mcpKeySent = new String[1];
 		boolean[] execute = new boolean[1];
 		if(s.length()==0)
 			return false;
 		if(s.charAt(0)=='*')
 		{
-			//TODO: msg continue
+			if(!parseMcpCont(s,execute,keyValuePairs))
+			{
+				return false;
+			}
 		}
 		else
 		if(s.charAt(0)==':')
 		{
-			//TODO: msg end
+			if(!parseMcpEnd(s,execute,keyValuePairs))
+			{
+				return false;
+			}
 		}
 		else
 		{
-			if(!parseMcpStart(s,cmd,mcpKeySent,execute,keyValuePairs))
+			if(!parseMcpStart(s,execute,keyValuePairs))
 			{
 				return false;
 			}
 		}
 		if(execute[0])
 		{
-			//TODO: check the damn command and do something?
+			if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))||(!keyValuePairs.containsKey(MCP_KEYSENT_KEY())))
+			{
+				Log.errOut("Invalid MCP PROCESS -- no command or key sent: " + s);
+				return false;
+			}
+			String pkgCmd = keyValuePairs.get(MCP_COMMAND_KEY());
+			String keySent = keyValuePairs.get(MCP_KEYSENT_KEY());
+			if((keySent != null)&&(mcpKey[0]!=null)&&(!keySent.equals(mcpKey[0])))
+			{
+				Log.errOut("Invalid MCP PROCESS -- invalid key sent: " + keySent+": "+mcpKey[0]+": "+s);
+				return false;
+			}
+			else
+			if(pkgCmd.equals("mcp"))
+			{
+				if(keyValuePairs.containsKey("authentication-key"))
+				{
+					mcpKey[0] = keyValuePairs.get("authentication-key");
+				}
+				else
+				{
+					Log.errOut("Invalid MCP PROCESS -- NO key Sent: "+s);
+					return false;
+				}
+				session.rawPrintln("#$#mcp-negotiate-can "+mcpKey[0]+" package: mcp-negotiate min-version: 1.0 max-version: 2.0");
+				
+				session.rawPrintln("#$#mcp-negotiate-end "+mcpKey[0]);
+			}
+			else
+			{
+			}
+			keyValuePairs.clear();
 		}
 		return true;
 	}
@@ -1508,10 +1680,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				pkg=allDoc;
 				json=null;
 			}
-			gmcpCommand cmd;
+			GMCPCommand cmd;
 			try
 			{
-				cmd=gmcpCommand.valueOf(pkg.toLowerCase().replace('.','_'));
+				cmd=GMCPCommand.valueOf(pkg.toLowerCase().replace('.','_'));
 				switch(cmd)
 				{
 				case core_hello:
