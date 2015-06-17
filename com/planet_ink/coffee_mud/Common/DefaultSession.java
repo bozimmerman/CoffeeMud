@@ -182,13 +182,23 @@ public class DefaultSession implements Session
 	public boolean isAllowedMcp(String packageName, float version)
 	{
 		float[] chk = mcpSupported.get(packageName);
-		if((chk == null)||(version < chk[0])||(version>chk[1]))
+		if((chk == null)||(version < chk[0])||(version>chk[1])||(mcpKey[0] == null))
 		{
 			return false;
 		}
 		return true;
 	}
 
+	@Override 
+	public boolean sendMcpCommand(String packageCommand, String parms)
+	{
+		if(mcpKey[0] != null)
+		{
+			rawPrintln("#$#"+packageCommand+" "+mcpKey[0]+" "+parms);
+			return true;
+		}
+		return false;
+	}
 	
 	@Override
 	public void initializeSession(final Socket s, final String groupName, final String introTextStr)

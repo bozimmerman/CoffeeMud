@@ -883,6 +883,14 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public boolean isAllowedMcp(String packageName, float version);
 	
 	/**
+	 * Sends a properly formatted MCP command to the session, if it or its package is supported.
+	 * @param packageCommand the fully formed command
+	 * @param parms the variable parameters, already well formed
+	 * @return true if it was sent, false otherwise
+	 */
+	public boolean sendMcpCommand(String packageCommand, String parms);
+	
+	/**
 	 * Potentially sends the GMCP event of the given name with the given json
 	 * doc.
 	 * @param eventName the event name, like comm.channel

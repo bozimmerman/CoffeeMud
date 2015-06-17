@@ -246,4 +246,6 @@ public class FakeSession implements Session
 	@Override public void setStat(String code, String val){}
 	@Override public long activeTimeMillis() { return 0;}
 	@Override public boolean isAllowedMcp(String packageName, float version) { return false; }
+	@Override public boolean sendMcpCommand(String packageCommand, String parms) { return false; }
+
 }
