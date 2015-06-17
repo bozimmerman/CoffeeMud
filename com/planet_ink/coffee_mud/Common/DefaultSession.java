@@ -178,6 +178,18 @@ public class DefaultSession implements Session
 		return this.threadGroupChar;
 	}
 	
+	@Override 
+	public boolean isAllowedMcp(String packageName, float version)
+	{
+		float[] chk = mcpSupported.get(packageName);
+		if((chk == null)||(version < chk[0])||(version>chk[1]))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	
 	@Override
 	public void initializeSession(final Socket s, final String groupName, final String introTextStr)
 	{

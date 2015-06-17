@@ -874,6 +874,15 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public boolean isAllowedMxp(String tag);
 
 	/**
+	 * Returns true if this client supports the given package at the
+	 * given version.
+	 * @param packageName the package to check
+	 * @param version the version of the package to check
+	 * @return true if there's support, false otherwise
+	 */
+	public boolean isAllowedMcp(String packageName, float version);
+	
+	/**
 	 * Potentially sends the GMCP event of the given name with the given json
 	 * doc.
 	 * @param eventName the event name, like comm.channel

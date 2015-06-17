@@ -211,6 +211,7 @@ public class VFShell
 					@Override public void setIdleTimers(){}
 					@Override public void sendGMCPEvent(final String eventName, final String json){}
 					@Override public void setFakeInput(String input){ }
+					@Override public boolean isAllowedMcp(String packageName, float version) { return false; }
 
 					@Override public String[] getColorCodes(){return new String[255];}
 
