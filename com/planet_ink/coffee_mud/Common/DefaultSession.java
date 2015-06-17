@@ -1812,12 +1812,12 @@ public class DefaultSession implements Session
 		final long start=System.currentTimeMillis();
 		final long timeoutTime= (maxTime<=0) ? Long.MAX_VALUE : (start + maxTime);
 		long nextPingAtTime=start + PINGTIMEOUT;
-		StringBuilder inStr = null;
 		try
 		{
 			suspendCommandLine=true;
 			long now;
 			long lastC;
+			StringBuilder inStr = null;
 			while((!killFlag)
 			&&((now=System.currentTimeMillis())<timeoutTime))
 			{
