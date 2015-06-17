@@ -258,19 +258,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return oldVal;
 		String newName="?";
 		boolean mcp =mob.session().isAllowedMcp("dns-org-mud-moo-simpleedit", (float)1.0);
-		final String promptStr=L("Enter a new value@x1@x2@x3\n\r:",(emptyOK?" (or NULL)":""),(mcp?" (or #$\")":""),(help!=null?" (?)":""));
+		final String promptStr=L("Enter a new value@x1@x2@x3\n\r:",(emptyOK?" (or NULL)":""),(mcp?" (or \\#$#)":""),(help!=null?" (?)":""));
 		while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			newName=mob.session().prompt(promptStr,"");
-			if(mcp && newName.equals("#$\""))
+			if(mcp && newName.equals("\\#$#"))
 			{
 				int tag=Math.abs(new Random(System.currentTimeMillis()).nextInt());
 				mob.session().sendMcpCommand("dns-org-mud-moo-simpleedit-content", 
-						" reference: prompt name: Data type: string content*: \"\" _data-tag: "+tag);
+						" reference: #64.name name: Data type: string content*: \"\" _data-tag: "+tag);
 				List<String> strs = Resources.getFileLineVector(new StringBuffer(oldVal));
 				for(String s : strs)
 					mob.session().rawPrintln("#$#* "+tag+" content: "+s);
 				mob.session().rawPrintln("#$#: "+tag);
+				newName = "?";
 			}
 			else
 			if(newName.equals("?")&&((help!=null)||((choices!=null)&&(choices.length>0))))

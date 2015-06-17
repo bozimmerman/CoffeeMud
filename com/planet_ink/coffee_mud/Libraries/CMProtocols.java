@@ -70,6 +70,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		IN_MCPKEY,
 		FINISH_MCPKEY,
 		IN_KEY,
+		FINISH_IN_KEY,
 		FINISH_KEY,
 		IN_VAL,
 		IN_QUOTEVAL,
@@ -126,7 +127,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				break;
 			case FINISH_KEY:
-				if(!Character.isWhitespace(c))
+				if(Character.isWhitespace(c))
+				{
+					keyValuePairs.put(lastKey, "");
+					state = McpParseStartState.FINISH_VAL;
+				}
+				else
 				{
 					if(c=='\"')
 					{
@@ -159,10 +165,21 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				if(Character.isWhitespace(c))
 				{
 					keyValuePairs.put(MCP_COMMAND_KEY(), s.substring(startIndex,i));
-					if(s.substring(startIndex,i).equals("mcp"))
+					if(s.substring(startIndex,i).equalsIgnoreCase("mcp"))
 						state = McpParseStartState.FINISH_MCPKEY;
 					else
 						state = McpParseStartState.FINISH_COMMAND;
+				}
+				break;
+			case FINISH_IN_KEY:
+				if(!Character.isWhitespace(c))
+				{
+					Log.errOut("Invalid MCP "+state.toString()+": "+c+": "+s);
+					return false;
+				}
+				else
+				{
+					state = McpParseStartState.FINISH_KEY;
 				}
 				break;
 			case IN_KEY:
@@ -179,7 +196,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					{
 						exec[0]=false;
 					}
-					state = McpParseStartState.FINISH_KEY;
+					state = McpParseStartState.FINISH_IN_KEY;
 				}
 				break;
 			case IN_MCPKEY:
@@ -222,14 +239,19 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		case IN_VAL:
 			keyValuePairs.put(lastKey, s.substring(startIndex));
 			break;
-		case FINISH_VAL:
+		case FINISH_KEY:
+			keyValuePairs.put(lastKey, "");
+			break;
+		case IN_MCPKEY:
+			keyValuePairs.put(MCP_KEYSENT_KEY(), s.substring(startIndex));
+			exec[0]=true;
 			break;
 		default:
 			Log.errOut("Invalid MCP END "+state.toString()+": " + s);
 			return false;
 		}
 		if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))
-		||((!keyValuePairs.get(MCP_COMMAND_KEY()).equals("mcp"))
+		||((!keyValuePairs.get(MCP_COMMAND_KEY()).equalsIgnoreCase("mcp"))
 			&&(!keyValuePairs.containsKey(MCP_KEYSENT_KEY()))))
 		{
 			Log.errOut("Invalid MCP -- missing Command or Key: " + s);
@@ -242,7 +264,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		if((!exec[0]) && (!containsMcpStarTag(keyValuePairs)))
 		{
-			Log.errOut("Missing MCP Data Tag: " + s);
+			Log.errOut("Missing MCP Star Tag: " + s);
 			return false;
 		}
 		return true;
@@ -254,6 +276,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		IN_CONTMCPKEY,
 		FINISH_CONTMCPKEY,
 		IN_CONTKEY,
+		FINISH_IN_CONTKEY,
 		FINISH_CONTKEY,
 		IN_LINE
 	}
@@ -264,17 +287,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		String lastKey = "";
 		int startIndex = 0;
 		exec[0] = false; // never end on a continue tag
-		for(int i=0;i<s.length();i++)
+		for(int i=1;i<s.length();i++)
 		{
 			char c=s.charAt(i);
 			switch(state)
 			{
 			case FINISH_CONTKEY:
-				if(!Character.isWhitespace(c))
-				{
-					startIndex = i;
-					state = McpParseContState.IN_LINE;
-				}
+				startIndex = i;
+				state = McpParseContState.IN_LINE;
 				break;
 			case FINISH_CONTMCPKEY:
 				if(!Character.isWhitespace(c))
@@ -282,7 +302,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					startIndex = i;
 					state = McpParseContState.IN_CONTKEY;
 				}
-				exec[0]=true;
 				break;
 			case IN_CONTKEY:
 				if(Character.isWhitespace(c))
@@ -299,8 +318,16 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						Log.errOut("Unknown CONT KEY: "+lastKey+": "+state.toString()+": "+c+": "+s);
 						return false;
 					}
-					state = McpParseContState.FINISH_CONTKEY;
+					state = McpParseContState.FINISH_IN_CONTKEY;
 				}
+				break;
+			case FINISH_IN_CONTKEY:
+				if(!Character.isWhitespace(c))
+				{
+					Log.errOut("Unknown/Invalid/Bad MCP: "+state.toString()+": "+c+": "+s);
+					return false;
+				}
+				state = McpParseContState.FINISH_CONTKEY;
 				break;
 			case IN_CONTMCPKEY:
 				if(Character.isWhitespace(c))
@@ -320,11 +347,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					startIndex=i;
 					state=McpParseContState.IN_CONTMCPKEY;
 				}
-				else
-				{
-					Log.errOut("Invalid MCPC "+state.toString()+": "+c+": "+s);
-					return false;
-				}
 				break;
 			case IN_LINE:
 				break;
@@ -340,6 +362,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			else
 				keyValuePairs.put(lastKey, s.substring(startIndex));
 			break;
+		case FINISH_IN_CONTKEY:
+		case FINISH_CONTKEY:
+			if(keyValuePairs.containsKey(lastKey))
+				keyValuePairs.put(lastKey, keyValuePairs.get(lastKey)+"\n\r");
+			else
+				keyValuePairs.put(lastKey, "");
+			break;
 		default:
 			Log.errOut("Invalid MCP CONT "+state.toString()+": " + s);
 			return false;
@@ -349,17 +378,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	
 	protected boolean parseMcpEnd(final String s, boolean[] exec, Map<String,String> keyValuePairs)
 	{
-		String endKey = s.trim();
+		String endKey = s.substring(1).trim();
 		if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))
-		||((!keyValuePairs.get(MCP_COMMAND_KEY()).equals("mcp"))
-			&&(!keyValuePairs.containsKey(MCP_KEYSENT_KEY()))))
+		||((!keyValuePairs.get(MCP_COMMAND_KEY()).equalsIgnoreCase("mcp"))
+			&&(!endKey.equalsIgnoreCase(keyValuePairs.get(MCP_DATA_TAG())))))
 		{
 			Log.errOut("Unknown/Invalid CONT MCP KEY: "+endKey+": "+s);
-			return false;
-		}
-		if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))||(!keyValuePairs.containsKey(MCP_KEYSENT_KEY())))
-		{
-			Log.errOut("Invalid MCP END -- no command or key sent: " + s);
 			return false;
 		}
 		exec[0] = true;

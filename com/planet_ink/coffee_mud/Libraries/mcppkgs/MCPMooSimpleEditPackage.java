@@ -49,11 +49,8 @@ public class MCPMooSimpleEditPackage implements MCPPackage
 	@Override
 	public void executePackage(Session session, String command, Map<String, float[]> clientSupported, Map<String, String> variables)
 	{
-		if(command.equals("dns-org-mud-moo-simpleedit-set"))
+		if(command.equalsIgnoreCase("dns-org-mud-moo-simpleedit-set"))
 		{
-			String reference = variables.get("reference");
-			if(!"prompt".equals(reference))
-				return;
 			String content = variables.get("content");
 			if(content == null)
 				return;

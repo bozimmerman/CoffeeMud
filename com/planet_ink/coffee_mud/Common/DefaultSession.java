@@ -1812,6 +1812,7 @@ public class DefaultSession implements Session
 		final long start=System.currentTimeMillis();
 		final long timeoutTime= (maxTime<=0) ? Long.MAX_VALUE : (start + maxTime);
 		long nextPingAtTime=start + PINGTIMEOUT;
+		StringBuilder inStr = null;
 		try
 		{
 			suspendCommandLine=true;
@@ -1821,7 +1822,12 @@ public class DefaultSession implements Session
 			&&((now=System.currentTimeMillis())<timeoutTime))
 			{
 				if((lastC=nonBlockingIn(true))==0)
-					break;
+				{
+					inStr=new StringBuilder(input);
+					this.input.setLength(0);
+					if(sessionMCPCheck(inStr))
+						break;
+				}
 				else
 				if(lastC == -1)
 				{
@@ -1833,12 +1839,12 @@ public class DefaultSession implements Session
 					CMLib.s_sleep(100); // if they entered nothing, make sure we dont do a busy poll
 				}
 			}
+			if(inStr == null)
+				inStr = new StringBuilder();
 			suspendCommandLine=false;
 			if(System.currentTimeMillis()>=timeoutTime)
 				throw new java.io.InterruptedIOException(TIMEOUT_MSG);
 
-			final StringBuilder inStr=new StringBuilder(input);
-			this.input.setLength(0);
 			final String str=CMLib.coffeeFilter().simpleInFilter(inStr,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
 			if(str==null)
 				return null;
@@ -1858,6 +1864,24 @@ public class DefaultSession implements Session
 		return blockingIn(-1);
 	}
 
+	protected boolean sessionMCPCheck(final StringBuilder inStr)
+	{
+		if((inStr.length()>3)&&(inStr.substring(0, 2).equals("#$")))
+		{
+			if(inStr.substring(0, 3).equals("#$#"))
+			{
+				if(debugStrInput)
+					Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
+				if(CMLib.protocol().mcp(this,inStr,mcpKey,mcpSupported,mcpKeyPairs))
+					return false;
+			}
+			else
+			if(inStr.substring(0, 3).equals("#$\""))
+				inStr.delete(0, 3);
+		}
+		return true;
+	}
+	
 	@Override
 	public String readlineContinue() throws IOException, SocketException
 	{
@@ -1885,19 +1909,8 @@ public class DefaultSession implements Session
 
 		final StringBuilder inStr=new StringBuilder(input);
 		input.setLength(0);
-		if((inStr.length()>3)&&(inStr.substring(0, 2).equals("#$")))
-		{
-			if(inStr.substring(0, 3).equals("#$#"))
-			{
-				if(debugStrInput)
-					Log.sysOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
-				if(CMLib.protocol().mcp(this,inStr,mcpKey,mcpSupported,mcpKeyPairs))
-					return null;
-			}
-			else
-			if(inStr.substring(0, 3).equals("#$\""))
-				inStr.delete(0, 3);
-		}
+		if(!sessionMCPCheck(inStr))
+			return null;
 		final String str=CMLib.coffeeFilter().simpleInFilter(inStr,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
 		if(str==null)
 			return null;

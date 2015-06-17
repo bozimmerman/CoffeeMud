@@ -46,13 +46,13 @@ public class MCPNegotiatePackage implements MCPPackage
 	@Override
 	public void executePackage(Session session, String command, Map<String, float[]> clientSupported, Map<String, String> variables)
 	{
-		if(command.equals("mcp-negotiate-end"))
+		if(command.equalsIgnoreCase("mcp-negotiate-end"))
 		{
 			// nothing to do, really
 			return;
 		}
 		else
-		if(command.equals("mcp-negotiate-can"))
+		if(command.equalsIgnoreCase("mcp-negotiate-can"))
 		{
 			String packageName = variables.get("package");
 			String minVersion = variables.get("min-version");
