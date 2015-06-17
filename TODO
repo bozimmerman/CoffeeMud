@@ -3,6 +3,7 @@ BUGS
 
 TECH
    *. shopkeeper ships and tech: variables should persist for archons and grinder until player lists 
+   *. make sure shopkeeper item techlevels watch the master tech level
    *. test and debug launch and landing
    *. make ship sensor systems -- important for debugging
    *. ShopKeeper VIEW should give more information about tech items
@@ -10,7 +11,6 @@ TECH
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
    *. work on automatic component values ??
-   *. make sure shopkeeper item techlevels watch the master tech level
    *. make tractor beam system -- esp important for pirates!
    *. make ship shield systems murder motel again -- some good against phasers, some torpedos, some lasers
    *. make ship phaser, laser systems murder motel again
