@@ -44,7 +44,9 @@ public class Affect extends StdCommand
 	public String getMOBState(final MOB mob)
 	{
 		final StringBuffer msg=new StringBuffer("");
-		if((mob.playerStats()!=null)&&(mob.soulMate()==null)&&(mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
+		if((mob.playerStats()!=null)
+		&&(mob.soulMate()==null)
+		&&(mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
 		{
 			if(CMSecurity.isASysOp(mob))
 				mob.playerStats().setHygiene(0);

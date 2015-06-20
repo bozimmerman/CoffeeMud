@@ -1005,7 +1005,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				mob.tell(L("You are too tired."));
 				return false;
 			}
-			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.riding()==null)&&(mob.location()!=null))
+			if((mob.soulMate()==null)
+			&&(mob.playerStats()!=null)
+			&&(mob.riding()==null)
+			&&(mob.location()!=null)
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE)))
 				mob.playerStats().adjHygiene(mob.location().pointsPerMove(mob));
 		}
 

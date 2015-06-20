@@ -231,7 +231,10 @@ public class AstroEngineering extends TechSkill
 						L("<S-NAME> continue(s) @x1 <T-NAME> (@x2% completed).",verb,""+pct),
 						null,L("<S-NAME> continue(s) @x1 <T-NAME>.",verb));
 			}
-			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))
+			if((mob.soulMate()==null)
+			&&(mob.playerStats()!=null)
+			&&(mob.location()!=null)
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE)))
 				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
 		}
 

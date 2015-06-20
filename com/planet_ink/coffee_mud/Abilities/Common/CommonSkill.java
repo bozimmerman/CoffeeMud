@@ -128,7 +128,10 @@ public class CommonSkill extends StdAbility
 			&&(helpingAbility.affecting() instanceof MOB)
 			&&(((MOB)helpingAbility.affecting()).isMine(helpingAbility)))
 				helpingAbility.tick(helpingAbility.affecting(),tickID);
-			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))
+			if((mob.soulMate()==null)
+			&&(mob.playerStats()!=null)
+			&&(mob.location()!=null)
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE)))
 				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
 		}
 

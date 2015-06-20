@@ -75,7 +75,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 						for(int g=0;g<theGroup.size();g++)
 						{
 							final MOB M=(MOB)theGroup.elementAt(g);
-							if(M.playerStats()!=null)
+							if((M.playerStats()!=null)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE)))
 								M.playerStats().adjHygiene(hygieneLoss);
 							switch(CMLib.dice().roll(1,10,0))
 							{

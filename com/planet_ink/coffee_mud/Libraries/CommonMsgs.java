@@ -1414,6 +1414,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public boolean isHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene)
 	{
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE))
+			return false;
 		if((msg.sourceMajor(CMMsg.MASK_MOVE)
 			&&((msg.tool()==null)
 			  ||(!(msg.tool() instanceof Ability))

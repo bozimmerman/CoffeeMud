@@ -6,6 +6,7 @@
    5. New Property: Prop_RestrictSkills - for limiting skill use by location, or as a curse affect.
    6. New package application: VFShell, a command line tool for access full coffeemud file system without the mud.
    7. Basic MCP support added to CoffeeMud.  ZMUD Editor package supported. mcppkgs directory for others.
+   8. New DISABLE flag: MYGEINE, for disabling the natural hygenic system -- the magic version left intact.
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)
