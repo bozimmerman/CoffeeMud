@@ -190,7 +190,11 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	 * Returns true if this request is currently reading/processing the request
 	 * @return true if in progress
 	 */
-	@Override public boolean isRunning() { return isRunning && ((forwarder==null) || forwarder.isRunning());}
+	@Override 
+	public boolean isRunning() 
+	{ 
+		return isRunning && ((forwarder==null) || forwarder.isRunning());
+	}
 
 	/**
 	 * Returns true if this handler is either closed, or needs to be

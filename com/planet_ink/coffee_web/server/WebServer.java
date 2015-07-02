@@ -247,6 +247,11 @@ public class WebServer extends Thread
 				key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
 				executor.execute(handler);
 			}
+			else
+			{
+				key.cancel();
+				handlers.remove(handler);
+			}
 		}
 		else
 		if(key.attachment() instanceof HTTPIOHandler)
@@ -520,7 +525,7 @@ public class WebServer extends Thread
 		
 		HTTPHeader.Common.setKeepAliveHeader(HTTPHeader.Common.KEEP_ALIVE.makeLine(
 											 String.format(HTTPHeader.Common.KEEP_ALIVE_FMT, 
-											 Integer.valueOf(config.getRequestMaxAliveSecs()),
+											 Integer.valueOf((int)(config.getRequestMaxIdleMs()/1000)),
 											 Integer.valueOf(config.getRequestMaxPerConn()))));
 		return config;
 	}

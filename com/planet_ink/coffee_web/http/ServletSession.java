@@ -124,7 +124,10 @@ public class ServletSession implements SimpleServletSession
 		{
 			return;
 		}
-		objects.put(name,  obj);
+		if(obj == null)
+			objects.remove(name);
+		else
+			objects.put(name,  obj);
 	}
 	/**
 	 * Marks this session as having been access by the client at this time
