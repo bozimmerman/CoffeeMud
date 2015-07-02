@@ -101,9 +101,11 @@ public class Avariel extends StdRace
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			final Armor s1=CMClass.getArmor("GenShirt");
+			if(s1 == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector();
 			s1.setName(L("a delicate green shirt"));
 			s1.setDisplayText(L("a delicate green shirt sits gracefully here."));
 			s1.setDescription(L("Obviously fine craftmenship, with sharp folds and intricate designs."));

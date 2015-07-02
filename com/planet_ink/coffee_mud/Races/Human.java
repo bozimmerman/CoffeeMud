@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -72,9 +71,11 @@ public class Human extends StdRace
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			final Armor s1=CMClass.getArmor("GenShirt");
+			if(s1 == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector();
 			outfitChoices.add(s1);
 			final Armor s2=CMClass.getArmor("GenShoes");
 			outfitChoices.add(s2);

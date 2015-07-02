@@ -101,13 +101,15 @@ public class Drow extends Elf
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			final Armor s1=CMClass.getArmor("GenShirt");
+			if(s1 == null)
+				return new Vector<Item>();
 			s1.setName(L("a delicate black shirt"));
 			s1.setDisplayText(L("a delicate black shirt sits gracefully here."));
 			s1.setDescription(L("Obviously fine craftmenship, with sharp folds and intricate designs."));
 			s1.text();
+			outfitChoices=new Vector();
 			outfitChoices.add(s1);
 
 			final Armor s2=CMClass.getArmor("GenShoes");

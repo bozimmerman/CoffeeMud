@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -81,9 +80,11 @@ public class Dwarf extends StdRace
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			final Armor s1=CMClass.getArmor("GenShirt");
+			if(s1 == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector();
 			s1.setName(L("a grey work tunic"));
 			s1.setDisplayText(L("a grey work tunic has been left here."));
 			s1.setDescription(L("There are lots of little loops and folks for hanging tools about it."));

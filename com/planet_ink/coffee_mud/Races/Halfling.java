@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -83,9 +82,11 @@ public class Halfling extends StdRace
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			final Armor s1=CMClass.getArmor("GenShirt");
+			if(s1 == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector();
 			s1.setName(L("a small tunic"));
 			s1.setDisplayText(L("a small tunic is folded neatly here."));
 			s1.setDescription(L("It is a small but nicely made button-up tunic."));

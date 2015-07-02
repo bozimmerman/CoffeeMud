@@ -392,8 +392,10 @@ public class Mage extends StdCharClass
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
 			final Weapon w=CMClass.getWeapon("Quarterstaff");
+			if(w == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

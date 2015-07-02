@@ -242,8 +242,10 @@ public class Healer extends Cleric
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
 			final Weapon w=CMClass.getWeapon("SmallMace");
+			if(w == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;
