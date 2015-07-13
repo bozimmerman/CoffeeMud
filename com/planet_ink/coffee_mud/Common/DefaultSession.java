@@ -2202,15 +2202,16 @@ public class DefaultSession implements Session
 	@Override
 	public void logout(boolean removeMOB)
 	{
-		if((mob==null)||(mob.playerStats()==null))
+		final MOB M = this.mob;
+		if((M==null)||(M.playerStats()==null))
 			stopSession(false,false,false);
 		else
 		{
-			preLogout(mob);
+			preLogout(M);
 			if(removeMOB)
 				removeMOBFromGame(false);
-			mob.setSession(null);
-			mob=null;
+			M.setSession(null);
+			this.mob=null;
 		}
 	}
 
