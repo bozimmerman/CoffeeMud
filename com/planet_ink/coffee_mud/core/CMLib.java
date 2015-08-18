@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import java.lang.reflect.Modifier;
+//import java.lang.reflect.Modifier;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;

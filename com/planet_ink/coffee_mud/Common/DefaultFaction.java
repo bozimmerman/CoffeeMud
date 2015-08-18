@@ -22,7 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.lang.reflect.*;
+//import java.lang.reflect.*;
 /**
  * Portions Copyright (c) 2003 Jeremy Vyska
  * Portions Copyright (c) 2004-2015 Bo Zimmerman
