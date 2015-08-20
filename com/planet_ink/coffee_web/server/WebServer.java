@@ -405,7 +405,10 @@ public class WebServer extends Thread
 		{
 			for(final HTTPIOHandler handler : handlers)
 			{
-				handler.closeAndWait();
+				try
+				{
+					handler.closeAndWait();
+				}catch(final Exception e){}
 			}
 			handlers.clear();
 		}
