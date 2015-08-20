@@ -498,6 +498,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender)
 	{
 		final MOB M=ses.mob();
+		if(M==null)
+			return false;
 		final Room R=M.location();
 		boolean didIt=false;
 		if(mayReadThisChannel(sender,areareq,ses,channelInt)

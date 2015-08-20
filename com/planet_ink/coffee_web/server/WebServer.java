@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_web.server;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.logging.Level;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -242,15 +243,22 @@ public class WebServer extends Thread
 		{
 			final HTTPIOHandler handler = (HTTPIOHandler)key.attachment();
 			//config.getLogger().finer("Read/Write: "+handler.getName());
-			if(!handler.isCloseable())
+			try
 			{
-				key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
-				executor.execute(handler);
+				if(!handler.isCloseable())
+				{
+					key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
+					executor.execute(handler);
+				}
+				else
+				{
+					key.cancel();
+					handlers.remove(handler);
+				}
 			}
-			else
+			catch(Exception e)
 			{
-				key.cancel();
-				handlers.remove(handler);
+				config.getLogger().log(Level.SEVERE, e.getMessage(), e);
 			}
 		}
 		else
@@ -276,14 +284,25 @@ public class WebServer extends Thread
 			for(final Iterator<HTTPIOHandler> i = handlers.iterator(); i.hasNext(); )
 			{
 				final HTTPIOHandler handler=i.next();
-				if(handler.isCloseable())
+				try
 				{
-					if(handlersToShutDown == null)
+					if(handler.isCloseable())
 					{
-						handlersToShutDown = new LinkedList<HTTPIOHandler>();
+						if(handlersToShutDown == null)
+						{
+							handlersToShutDown = new LinkedList<HTTPIOHandler>();
+						}
+						handlersToShutDown.add(handler);
+						i.remove();
 					}
-					handlersToShutDown.add(handler);
-					i.remove();
+				}
+				catch(NullPointerException e)
+				{
+					try
+					{
+						i.remove();
+					}
+					catch(Exception xe){ }
 				}
 			}
 		}
