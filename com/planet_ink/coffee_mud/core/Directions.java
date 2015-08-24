@@ -54,6 +54,8 @@ public class Directions
 	public static final int SOUTHEAST=9;
 	public static final int SOUTHWEST=10;
 
+	/* Display order directions.  Include up, down, and gate.  Include -1 to insert the other 4/8 */
+	private final static int[] DIRECTIONS_DISPLAY_ORDER_BASE={UP,-1,DOWN,GATE};
 	private final static int[] DIRECTIONS_7_BASE={NORTH,SOUTH,EAST,WEST};
 	private final static int[] DIRECTIONS_11_BASE={NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST};
 	private final static String DIRECTION_7_LETTERS="N, S, E, W, U, D, or V";
@@ -64,6 +66,7 @@ public class Directions
 	private final static String DIRECTION_11_SHIPNAMES="Foreward, Aft, Starboard, Port, Foreward Starboard, Foreward Port, Aft Starboard, Aft Port, Above, or Below";
 
 	private int[] DIRECTIONS_CODES={NORTH,SOUTH,EAST,WEST};
+	private int[] DIRECTIONS_DISPLAY={UP,DOWN,NORTH,SOUTH,EAST,WEST,GATE};
 	private String DIRECTION_LETTERS=DIRECTION_7_LETTERS;
 	private String DIRECTION_NAMES=DIRECTION_7_NAMES;
 	private String DIRECTION_SHIPNAMES=DIRECTION_7_SHIPNAMES;
@@ -134,6 +137,11 @@ public class Directions
 		return d().DIRECTIONS_CODES;
 	}
 
+	public static final int[] DISPLAY_CODES()
+	{
+		return d().DIRECTIONS_DISPLAY;
+	}
+
 	public static final String LETTERS()
 	{
 		return d().DIRECTION_LETTERS;
@@ -171,6 +179,23 @@ public class Directions
 			DIRECTION_NAMES=DIRECTION_11_NAMES;
 			DIRECTION_SHIPNAMES=DIRECTION_11_SHIPNAMES;
 		}
+		DIRECTIONS_DISPLAY = new int[100];
+		int index=0;
+		for(int i=0;i<Directions.DIRECTIONS_DISPLAY_ORDER_BASE.length;i++)
+		{
+			if(Directions.DIRECTIONS_DISPLAY_ORDER_BASE[i] >= 0)
+			{
+				DIRECTIONS_DISPLAY[index++] = Directions.DIRECTIONS_DISPLAY_ORDER_BASE[i];
+			}
+			else
+			{
+				for(int dir : DIRECTIONS_CODES)
+				{
+					DIRECTIONS_DISPLAY[index++]= dir;
+				}
+			}
+		}
+		DIRECTIONS_DISPLAY = Arrays.copyOf(DIRECTIONS_DISPLAY, index);
 	}
 
 	public static final String getDirectionName(final int code)

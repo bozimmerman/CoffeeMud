@@ -1787,6 +1787,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(CMLib.flags().isCataloged(item))
 			CMLib.catalog().bumpDeathPickup(item);
 	}
+
 	@Override
 	public void handleBeingDropped(CMMsg msg)
 	{
@@ -1819,6 +1820,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				((RawMaterial)item).rebundle();
 		}
 	}
+
 	@Override
 	public void handleBeingRemoved(CMMsg msg)
 	{
@@ -1835,6 +1837,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 			mob.location().recoverRoomStats();
 	}
+
 	@Override
 	public void handleBeingWorn(CMMsg msg)
 	{
@@ -1854,6 +1857,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			mob.recoverMaxState();
 		}
 	}
+
 	@Override
 	public void handleBeingWielded(CMMsg msg)
 	{
@@ -1868,6 +1872,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			mob.recoverMaxState();
 		}
 	}
+
 	@Override
 	public void handleBeingHeld(CMMsg msg)
 	{
@@ -1900,7 +1905,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final boolean useShipNames=((room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip));
 		final StringBuilder buf=new StringBuilder("^DObvious exits:^.^N\n\r");
 		String Dir=null;
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		for(int d : Directions.DISPLAY_CODES())
 		{
 			final Exit exit=room.getExitInDir(d);
 			final Room room2=room.getRoomInDir(d);
@@ -1951,7 +1956,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 		final boolean useShipNames=((room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip));
 		final StringBuilder buf=new StringBuilder("^D[Exits: ");
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		for(int d : Directions.DISPLAY_CODES())
 		{
 			final Exit exit=room.getExitInDir(d);
 			if((exit!=null)&&(exit.viewableText(mob, room.getRoomInDir(d)).length()>0))
