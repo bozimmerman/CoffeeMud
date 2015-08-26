@@ -1053,9 +1053,17 @@ public class CMFile extends File
 			return buf;
 		}
 
+		if(CMFile.OpenLocalFiles.get() >= 256)
+		{
+			Log.errOut("CMFile","Local File '"+getVFSPathAndName()+"' not be opened.");
+			Log.errOut("CMFile",new Exception());
+			return buf;
+		}
+		
 		Reader F = null;
 		try
 		{
+			CMFile.OpenLocalFiles.addAndGet(1);
 			String charSet=CMProps.getVar(CMProps.Str.CHARSETINPUT);
 			if((charSet==null)||(charSet.length()==0))
 				charSet=inCharSet;
@@ -1079,6 +1087,7 @@ public class CMFile extends File
 		}
 		finally
 		{
+			CMFile.OpenLocalFiles.addAndGet(-1);
 			try
 			{
 				if ( F != null )
@@ -1141,9 +1150,17 @@ public class CMFile extends File
 			return buf;
 		}
 
+		if(CMFile.OpenLocalFiles.get() >= 256)
+		{
+			Log.errOut("CMFile","Local File '"+getVFSPathAndName()+"' not be opened.");
+			Log.errOut("CMFile",new Exception());
+			return buf;
+		}
+		
 		DataInputStream fileIn = null;
 		try
 		{
+			CMFile.OpenLocalFiles.addAndGet(1);
 			fileIn = new DataInputStream( new BufferedInputStream( new FileInputStream(getIOReadableLocalPathAndName()) ) );
 			buf = new byte [ fileIn.available() ];
 			fileIn.readFully(buf);
@@ -1156,6 +1173,7 @@ public class CMFile extends File
 		}
 		finally
 		{
+			CMFile.OpenLocalFiles.addAndGet(-1);
 			try
 			{
 				if ( fileIn != null )
