@@ -14,6 +14,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.concurrent.atomic.*;
 
 /*
 Copyright 2000-2015 Bo Zimmerman
@@ -39,6 +40,8 @@ limitations under the License.
  */
 public class CMFile extends File
 {
+	private static volatile AtomicLong OpenLocalFiles = new AtomicLong(0);
+	
 	private static final long serialVersionUID = -3965083655590304708L;
 
 	/** Flag for a CMVFSDir object, allowing you to open it */
@@ -65,7 +68,7 @@ public class CMFile extends File
 	private static final String outCharSet = Charset.defaultCharset().name();
 
 	private static CMVFSDir[] vfs=new CMVFSDir[256];
-
+	
 	private static CatalogLibrary catalogPluginAdded=null;
 	private static WorldMap mapPluginAdded=null;
 
@@ -946,9 +949,17 @@ public class CMFile extends File
 			return buf;
 		}
 
+		if(CMFile.OpenLocalFiles.get() >= 256)
+		{
+			Log.errOut("CMFile","Local File '"+getVFSPathAndName()+"' not be opened.");
+			Log.errOut("CMFile",new Exception());
+			return buf;
+		}
+		
 		BufferedReader reader = null;
 		try
 		{
+			CMFile.OpenLocalFiles.addAndGet(1);
 			String charSet=CMProps.getVar(CMProps.Str.CHARSETINPUT);
 			if((charSet==null)||(charSet.length()==0))
 				charSet=inCharSet;
@@ -976,6 +987,7 @@ public class CMFile extends File
 		}
 		finally
 		{
+			CMFile.OpenLocalFiles.addAndGet(-1);
 			try
 			{
 				if ( reader != null )
