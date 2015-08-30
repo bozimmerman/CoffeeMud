@@ -4,7 +4,17 @@
    This product includes software developed by
    Bo Zimmerman 
    http://www.coffeemud.org
+   
+   JZLIB 
+   Copyright (c) 2000,2001,2002,2003,2004 ymnk, JCraft,Inc. 
+   All rights reserved.
+   see lib/JZLIB.LICENSE
+   
+   RHINO
+    * Copyright 1997, 1998 Sun Microsystems, Inc.  All Rights Reserved.
+   see lib/RHINO.LICENSE
 
+   ---------------------------------------------------------------------------
    Bo would like to acknowledge and thank the following 
    people for contributing, both directly and indirectly 
    to the development of CoffeeMud.
