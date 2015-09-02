@@ -197,8 +197,15 @@ public class WebServer extends Thread
 					while(!shutdownRequested)
 					{
 						Thread.sleep(1000);
-						timeOutStrayHandlers();
-						config.getSessions().cleanUpSessions();
+						try
+						{
+							timeOutStrayHandlers();
+							config.getSessions().cleanUpSessions();
+						}
+						catch(Exception e)
+						{
+							config.getLogger().severe(e.toString());
+						}
 					}
 				}
 				catch(final InterruptedException e) {}
