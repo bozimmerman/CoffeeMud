@@ -1,0 +1,7 @@
+# Permanent Blocked IP List
+# Use this list to block ranges from undesired locales or countries.
+# Disabling the entire CONNSPAMBLOCK system, or adding an ip to the whitelist will disable.
+# The format is as follows:
+#   Each line may contain a IP4 address or host name, OR contain a range separated by a "-" character.
+# For example:
+#  1.0.32.0 - 1.0.63.255

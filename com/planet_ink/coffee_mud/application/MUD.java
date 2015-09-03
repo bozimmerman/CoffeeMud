@@ -65,7 +65,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.8;
-	private static final float	  HOST_VERSION_MINOR	= (float)5.3;
+	private static final float	  HOST_VERSION_MINOR	= (float)5.4;
 	private static enum MudState {STARTING,WAITING,ACCEPTING,STOPPED}
 
 	private volatile MudState state		 = MudState.STOPPED;
@@ -137,7 +137,12 @@ public class MUD extends Thread implements MudHost
 				if (acceptConns)
 				{
 					String address="unknown";
-					try{address=sock.getInetAddress().getHostAddress().trim();}catch(final Exception e){}
+					try
+					{
+						address=sock.getInetAddress().getHostAddress().trim();
+					}
+					catch(final Exception e)
+					{}
 					int proceed=0;
 					if(CMSecurity.isBanned(address))
 						proceed=1;
@@ -149,24 +154,31 @@ public class MUD extends Thread implements MudHost
 					{
 						if(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, address))
 						{
-							synchronized(accessed)
+							if(CMSecurity.isIPBlocked(address))
 							{
-								for(final Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
+								proceed = 1;
+							}
+							else
+							{
+								synchronized(accessed)
 								{
-									final Triad<String,Long,Integer> triad=i.next();
-									if((triad.second.longValue()+LastConnectionDelay)<System.currentTimeMillis())
-										i.remove();
-									else
-									if(triad.first.trim().equalsIgnoreCase(address))
+									for(final Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
 									{
-										anyAtThisAddress=true;
-										triad.second=Long.valueOf(System.currentTimeMillis());
-										numAtThisAddress=triad.third.intValue()+1;
-										triad.third=Integer.valueOf(numAtThisAddress);
+										final Triad<String,Long,Integer> triad=i.next();
+										if((triad.second.longValue()+LastConnectionDelay)<System.currentTimeMillis())
+											i.remove();
+										else
+										if(triad.first.trim().equalsIgnoreCase(address))
+										{
+											anyAtThisAddress=true;
+											triad.second=Long.valueOf(System.currentTimeMillis());
+											numAtThisAddress=triad.third.intValue()+1;
+											triad.third=Integer.valueOf(numAtThisAddress);
+										}
 									}
+									if(!anyAtThisAddress)
+										accessed.add(new Triad<String,Long,Integer>(address,Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
 								}
-								if(!anyAtThisAddress)
-									accessed.add(new Triad<String,Long,Integer>(address,Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
 							}
 							if(autoblocked.contains(address.toUpperCase()))
 							{

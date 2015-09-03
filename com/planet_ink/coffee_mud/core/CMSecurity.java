@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.File; // does some cmfile type stuff
+import java.net.*;
 import java.util.*;
 
 /*
@@ -833,6 +834,77 @@ public class CMSecurity
 		return i().startTime;
 	}
 
+	private static long makeIPNumFromInetAddress(InetAddress addr)
+	{
+		return ((long)(addr.getAddress()[0] & 0xFF) << 24) 
+			| ((long)(addr.getAddress()[0] & 0xFF) << 16) 
+			| ((long)(addr.getAddress()[0] & 0xFF) << 8) 
+			| (addr.getAddress()[0] & 0xFF);
+	}
+	
+	private static long makeIPNumFromInetAddress(String s)
+	{
+		try 
+		{
+			return makeIPNumFromInetAddress(InetAddress.getByName(s.trim()));
+		} 
+		catch (UnknownHostException e) 
+		{
+			return 0;
+		}
+	}
+	
+	public static boolean isIPBlocked(String ipAddress)
+	{
+		final CMIntegerGrouper group = CMSecurity.getIPBlocks();
+		return ((group != null) && (group.contains(makeIPNumFromInetAddress(ipAddress))));
+	}
+	
+	private static CMIntegerGrouper getIPBlocks()
+	{
+		CMIntegerGrouper group = (CMIntegerGrouper)Resources.getResource("SYSTEM_IP_BLOCKS");
+		if(group == null)
+		{
+			group = (CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper");
+			if(group != null)
+			{
+				final String filename = "ipblock.txt";
+				final List<String> ipList = Resources.getFileLineVector(Resources.getFileResource(filename, false));
+				for(String ip : ipList)
+				{
+					if(ip.trim().startsWith("#"))
+					{
+						continue;
+					}
+					final int x=ip.indexOf('-');
+					if(x<0)
+					{
+						final long num = makeIPNumFromInetAddress(ip.trim());
+						if(num > 0)
+						{
+							group.add(num);
+						}
+					}
+					else
+					{
+						final long ipFrom = makeIPNumFromInetAddress(ip.substring(0,x).trim());
+						final long ipTo = makeIPNumFromInetAddress(ip.substring(x+1).trim());
+						if((ipFrom > 0) && (ipTo >= ipFrom))
+						{
+							for(long num = ipFrom; num <= ipTo; num++)
+							{
+								group.add(num);
+							}
+						}
+					}
+				}
+				Resources.submitResource("SYSTEM_IP_BLOCKS", group);
+				Resources.removeResource(filename);
+			}
+		}
+		return group;
+	}
+	
 	public static final boolean isBanned(final String login)
 	{
 		if((login==null)||(login.length()<=0))

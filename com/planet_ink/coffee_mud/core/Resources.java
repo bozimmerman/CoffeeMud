@@ -91,21 +91,61 @@ public class Resources
 
 	public static final Resources newResources(){ return new Resources();}
 
-	public static final void clearResources(){r()._clearResources();}
+	public static final void clearResources()
+	{
+		r()._clearResources();
+	}
+	
 	public static final void shutdown()
 	{
 		Resources.savePropResources();
 		r()._clearResources();
 	}
-	public static final void removeResource(final String ID){ r()._removeResource(ID);}
-	public static final Iterator<String> findResourceKeys(final String srch){return r()._findResourceKeys(srch);}
-	public static final Object getResource(final String ID){return r()._getResource(ID);}
-	public static final void submitResource(final String ID, final Object obj){r()._submitResource(ID,obj);}
-	public static final boolean isFileResource(final String filename){return r()._isFileResource(filename);}
-	public static final StringBuffer getFileResource(final String filename, final boolean reportErrors){return r()._getFileResource(filename,reportErrors);}
-	public static final boolean saveFileResource(final String filename, final MOB whom, final StringBuffer myRsc){return r()._saveFileResource(filename,whom,myRsc);}
-	public static final boolean updateFileResource(final String filename, final Object obj){return r()._updateFileResource(filename,obj);}
-	public static final boolean findRemoveProperty(final CMFile F, final String match){return r()._findRemoveProperty(F,match);}
+	
+	public static final void removeResource(final String ID)
+	{ 	
+		r()._removeResource(ID);
+	}
+	
+	public static final Iterator<String> findResourceKeys(final String srch)
+	{
+		return r()._findResourceKeys(srch);
+	}
+	
+	public static final Object getResource(final String ID)
+	{
+		return r()._getResource(ID);
+	}
+	
+	public static final void submitResource(final String ID, final Object obj)
+	{
+		r()._submitResource(ID,obj);
+	}
+	
+	public static final boolean isFileResource(final String filename)
+	{
+		return r()._isFileResource(filename);
+	}
+	
+	public static final StringBuffer getFileResource(final String filename, final boolean reportErrors)
+	{
+		return r()._getFileResource(filename,reportErrors);
+	}
+	
+	public static final boolean saveFileResource(final String filename, final MOB whom, final StringBuffer myRsc)
+	{
+		return r()._saveFileResource(filename,whom,myRsc);
+	}
+	
+	public static final boolean updateFileResource(final String filename, final Object obj)
+	{
+		return r()._updateFileResource(filename,obj);
+	}
+	
+	public static final boolean findRemoveProperty(final CMFile F, final String match)
+	{
+		return r()._findRemoveProperty(F,match);
+	}
 
 	public static final String getLineMarker(final StringBuffer buf)
 	{
