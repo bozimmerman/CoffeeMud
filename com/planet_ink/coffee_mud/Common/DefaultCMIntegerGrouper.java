@@ -411,6 +411,219 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		return this;
 	}
 
+	public void addy(long x1, long x2)
+	{
+		if(x1 == x2)
+		{
+			addy(x1);
+			return;
+		}
+		
+		if(x2 < x1)
+		{
+			throw new IllegalArgumentException("x2 < x1");
+		}
+		
+		int index1=getYindex(x1);
+		int index2=getYindex(x2);
+		if((index1>0)&&((ys[index1-1]&NEXT_FLAGL)>0))
+			index1--;
+		if((index2>0)&&((ys[index2-1]&NEXT_FLAGL)>0))
+			index2--;
+		if((index1 >=0) && (index2 == index1)) // this means x1->x2 is contained in index1/index2
+		{
+			return;
+		}
+		else
+		if((index1 >=0) && (index2>index1))
+		{
+			if((ys[index1]&NEXT_FLAGL)>0)
+			{
+				if((x1>=(ys[index1]&NEXT_BITSL))&&(x2<=ys[index1+1])) // a double check of the above
+				{
+					return;
+				}
+				
+				if((ys[index2]&NEXT_FLAGL)>0) // then x2 must be <= ys[index2+1]
+				{
+					ys[index1+1] = x2;
+					this.shrinkarrayy(index1+2,index2-(index1+2)+1);
+					consolodatey();
+					return;
+				}
+				
+				ys[index1+1] = x2;
+				this.shrinkarrayy(index1+2,index2-(index1+2));
+				consolodatey();
+				return;
+			}
+			else
+			if((ys[index2]&NEXT_FLAGL)>0) // then x2 must be <= ys[index2+1]
+			{
+				ys[index2] = x1;
+				this.shrinkarrayy(index1,index2-index1);
+				consolodatey();
+				return;
+			}
+			else
+			{
+				this.growarrayx(index1, 1);
+				ys[index1]=x1|NEXT_FLAG;
+				ys[index1+1]=x2;
+				this.shrinkarrayy(index1+2,index2-(index1+2)+1);
+				consolodatey();
+				return;
+			}
+		}
+		else
+		{
+			if(index1 >= 0)
+			{
+				int index=index1;
+				if((index&NEXT_FLAG)>0)
+					index++;
+				for(;index<ys.length;index++)
+				{
+					if(x2<(ys[index]&NEXT_BITSL))
+					{
+						index2=index-1;
+						break;
+					}
+				}
+				if(index2 >= ys.length)
+					index2=ys.length-1;
+				if(index2>index1+1)
+				{
+					shrinkarrayy(index1+2,index2-index1-1);
+				}
+				ys[index1]=ys[index1]|NEXT_FLAG;
+				if(index1 == ys.length-1)
+				{
+					this.growarrayy(index1+1, 1);
+				}
+				ys[index1+1]=x2;
+				consolodatey();
+				return;
+			}
+			else
+			if(index2 >= 0)
+			{
+				int index=index2;
+				for(;index>=0;index--)
+				{
+					if(((ys[index]&NEXT_FLAG)>0)&&(x1>(ys[index+1]&NEXT_BITSL)))
+					{
+						index1=index+2;
+						break;
+					}
+					else
+					if(((index==0)||((ys[index-1]&NEXT_FLAG)==0))&&(x1>ys[index]))
+					{
+						index1=index+1;
+						break;
+					}
+				}
+				if(index1 < 0)
+					index1=0;
+				ys[index1]=x1|NEXT_FLAG;
+				if(index2>index1+1)
+				{
+					shrinkarrayy(index1+2,index2-index1-1);
+				}
+				if(index1 == ys.length-1)
+				{
+					growarrayy(index1+1, 1);
+				}
+				if(ys[index1+1]<x2)
+				{
+					ys[index1+1]=x2;
+				}
+				consolodatey();
+				return;
+			}
+			else
+			{
+				int index=(index1+1)*-1;
+				if((index>0)&&((ys[index-1]&NEXT_FLAGL)>0))
+					index--;
+				int end=index+2;
+				if(end>ys.length)
+					end=ys.length;
+				for(int i=index;i<end;i++)
+				{
+					if((ys[i]&NEXT_FLAGL)>0)
+					{
+						if((x1>=(ys[i]&NEXT_BITSL))&&(x2<=ys[i+1]))
+							return;
+						else
+						if(x1>=(ys[i]&NEXT_BITSL))
+						{
+							ys[i=1]=x2;
+							consolodatey();
+							return;
+						}
+						else
+						if(x2<=ys[i+1])
+						{
+							ys[i]=x1|NEXT_FLAGL;
+							consolodatey();
+							return;
+						}
+					}
+					else
+					if(x1==ys[i])
+					{
+						growarrayy(i,1);
+						ys[i]=x1|NEXT_FLAGL;
+						ys[i+1]=x2;
+						consolodatey();
+						return;
+					}
+					else
+					if(x2==ys[i])
+					{
+						growarrayy(i,1);
+						ys[i]=x1|NEXT_FLAGL;
+						ys[i+1]=x2;
+						consolodatey();
+						return;
+					}
+					else
+					if(x2==ys[i]-1)
+					{
+						growarrayy(i,1);
+						ys[i]=x1|NEXT_FLAGL;
+						consolodatey();
+						return;
+					}
+					else
+					if(x1==ys[i]+1)
+					{
+						growarrayy(i+1,1);
+						ys[i]=ys[i]|NEXT_FLAGL;
+						ys[i+1]=x2;
+						consolodatey();
+						return;
+					}
+					else
+					if(x1<ys[i])
+					{
+						growarrayy(i,2);
+						ys[i]=x1|NEXT_FLAGL;
+						ys[i+1]=x2;
+						consolodatey();
+						return;
+					}
+				}
+				growarrayy(ys.length,2);
+				ys[ys.length-2]=x1;
+				ys[ys.length-1]=x2;
+				consolodatey();
+				return;
+			}
+		}
+	}
+	
 	@Override
 	public void addy(long x)
 	{
@@ -424,6 +637,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		if(end>ys.length)
 			end=ys.length;
 		for(int i=index;i<end;i++)
+		{
 			if((ys[i]&NEXT_FLAGL)>0)
 			{
 				if((x>=(ys[i]&NEXT_BITSL))&&(x<=ys[i+1]))
@@ -477,6 +691,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 				consolodatey();
 				return;
 			}
+		}
 		growarrayy(ys.length,1);
 		ys[ys.length-1]=x;
 		consolodatey();

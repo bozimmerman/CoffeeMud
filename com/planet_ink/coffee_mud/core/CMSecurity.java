@@ -837,9 +837,9 @@ public class CMSecurity
 	private static long makeIPNumFromInetAddress(InetAddress addr)
 	{
 		return ((long)(addr.getAddress()[0] & 0xFF) << 24) 
-			| ((long)(addr.getAddress()[0] & 0xFF) << 16) 
-			| ((long)(addr.getAddress()[0] & 0xFF) << 8) 
-			| (addr.getAddress()[0] & 0xFF);
+			| ((long)(addr.getAddress()[1] & 0xFF) << 16) 
+			| ((long)(addr.getAddress()[2] & 0xFF) << 8) 
+			| (addr.getAddress()[3] & 0xFF);
 	}
 	
 	private static long makeIPNumFromInetAddress(String s)
@@ -857,6 +857,9 @@ public class CMSecurity
 	public static boolean isIPBlocked(String ipAddress)
 	{
 		final CMIntegerGrouper group = CMSecurity.getIPBlocks();
+		System.out.println(ipAddress+": "+((group != null) && (group.contains(makeIPNumFromInetAddress(ipAddress)))));
+		System.out.println("192.168.1.10: "+((group != null) && (group.contains(makeIPNumFromInetAddress("192.168.1.10")))));
+		System.out.println("250.0.0.1: "+makeIPNumFromInetAddress("250.0.0.1")+": "+((group != null) && (group.contains(makeIPNumFromInetAddress("250.0.0.1")))));
 		return ((group != null) && (group.contains(makeIPNumFromInetAddress(ipAddress))));
 	}
 	
