@@ -39,8 +39,8 @@ import java.util.*;
  * 5,6,7,8,9,10, but as 5,10), but sorts them for quick
  * reads.
  *
- * Stores the internal numbers using CMIntegerGrouper
- * @see com.planet_ink.coffee_mud.Common.interfaces.CMIntegerGrouper
+ * Stores the internal numbers using LongSet
+ * @see com.planet_ink.coffee_mud.Common.interfaces.LongSet
  */
 public interface RoomnumberSet extends CMCommon
 {
@@ -124,9 +124,9 @@ public interface RoomnumberSet extends CMCommon
 	/**
 	 * Returns the number parts of the room ids stored in this
 	 * object for a given area.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMIntegerGrouper
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.LongSet
 	 * @param areaName the area name to look for
 	 * @return a set of numbers.
 	 */
-	public CMIntegerGrouper getGrouper(String areaName);
+	public LongSet getGrouper(String areaName);
 }

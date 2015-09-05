@@ -1920,10 +1920,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				Dir=CMStrings.padRightPreserve(useShipNames?Directions.getShipDirectionName(d):Directions.getDirectionName(d),5);
 				if((mob.playerStats()!=null)
 				&&(room2!=null)
-				&&(!mob.playerStats().hasVisited(room2)))
-					buf.append("^U^<EX^>" + Dir+"^</EX^>:^.^N ^u"+Say+"^.^N\n\r");
-				else
+				&&(mob.playerStats().hasVisited(room2)))
 					buf.append("^D^<EX^>" + Dir+"^</EX^>:^.^N ^d"+Say+"^.^N\n\r");
+				else
+					buf.append("^U^<EX^>" + Dir+"^</EX^>:^.^N ^u"+Say+"^.^N\n\r");
 			}
 		}
 		Item I=null;

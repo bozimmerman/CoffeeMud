@@ -856,7 +856,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		int highest=Integer.MIN_VALUE;
 		int lowest=Integer.MAX_VALUE;
-		final CMIntegerGrouper set=(CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper");
+		final LongSet set=new LongSet();
 		try
 		{
 			String roomID=null;
@@ -879,7 +879,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 									highest=newnum;
 								if(newnum<=lowest)
 									lowest=newnum;
-								set.addx(newnum);
+								set.add(Long.valueOf(newnum));
 							}
 						}
 					}
@@ -900,7 +900,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 								highest=newnum;
 							if(newnum<=lowest)
 								lowest=newnum;
-							set.addx(newnum);
+							set.add(Long.valueOf(newnum));
 						}
 					}
 				}

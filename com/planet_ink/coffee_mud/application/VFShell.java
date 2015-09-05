@@ -176,7 +176,6 @@ public class VFShell
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.XMLManager());
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.MUDZapper());
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CoffeeTime());
-				CMClass.addClass(CMObjectType.COMMON, new com.planet_ink.coffee_mud.Common.DefaultCMIntegerGrouper());
 				CMClass.addClass(CMObjectType.COMMON, new com.planet_ink.coffee_mud.Common.DefaultCharState());
 				CMClass.addClass(CMObjectType.COMMON, new com.planet_ink.coffee_mud.Common.DefaultCharStats());
 				CMClass.addClass(CMObjectType.COMMON, new com.planet_ink.coffee_mud.Common.DefaultPhyStats());

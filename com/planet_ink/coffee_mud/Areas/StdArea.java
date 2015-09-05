@@ -456,7 +456,7 @@ public class StdArea implements Area
 	{
 		int highest=Integer.MIN_VALUE;
 		int lowest=Integer.MAX_VALUE;
-		final CMIntegerGrouper set=(CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper");
+		final LongSet set=new LongSet();
 		try
 		{
 			String roomID=null;
@@ -477,7 +477,7 @@ public class StdArea implements Area
 								highest=newnum;
 							if(newnum<=lowest)
 								lowest=newnum;
-							set.addx(newnum);
+							set.add(Long.valueOf(newnum));
 						}
 					}
 				}
