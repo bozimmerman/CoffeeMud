@@ -1,6 +1,7 @@
-# Permanent Blocked IP List
+# Example Permanent Blocked IP List
 # Use this list to block ranges from undesired locales or countries.
-# Disabling the entire CONNSPAMBLOCK system, or adding an ip to the whitelist will disable.
+# Disabling the entire CONNSPAMBLOCK system, or adding an ip to the WHITELISTIPSCONN will disable.
+# See BLACKLISTFILE in coffeemud.ini to change the path.
 # The format is as follows:
 #   Each line may contain a IP4 address or host name, OR contain a range separated by a "-" character.
 # For example:

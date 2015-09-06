@@ -857,9 +857,6 @@ public class CMSecurity
 	public static boolean isIPBlocked(String ipAddress)
 	{
 		final LongSet group = CMSecurity.getIPBlocks();
-		System.out.println(ipAddress+": "+((group != null) && (group.contains(makeIPNumFromInetAddress(ipAddress)))));
-		System.out.println("192.168.1.10: "+((group != null) && (group.contains(makeIPNumFromInetAddress("192.168.1.10")))));
-		System.out.println("250.0.0.1: "+makeIPNumFromInetAddress("250.0.0.1")+": "+((group != null) && (group.contains(makeIPNumFromInetAddress("250.0.0.1")))));
 		return ((group != null) && (group.contains(makeIPNumFromInetAddress(ipAddress))));
 	}
 	
@@ -871,7 +868,7 @@ public class CMSecurity
 			group = new LongSet();
 			if(group != null)
 			{
-				final String filename = "ipblock.txt";
+				final String filename = CMProps.getVar(CMProps.Str.BLACKLISTFILE);
 				final List<String> ipList = Resources.getFileLineVector(Resources.getFileResource(filename, false));
 				for(String ip : ipList)
 				{
@@ -894,10 +891,7 @@ public class CMSecurity
 						final long ipTo = makeIPNumFromInetAddress(ip.substring(x+1).trim());
 						if((ipFrom > 0) && (ipTo >= ipFrom))
 						{
-							for(long num = ipFrom; num <= ipTo; num++)
-							{
-								group.add(num);
-							}
+							group.add(ipFrom,ipTo);
 						}
 					}
 				}
