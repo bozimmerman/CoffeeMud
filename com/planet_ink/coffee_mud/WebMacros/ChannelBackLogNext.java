@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -76,6 +77,8 @@ public class ChannelBackLogNext extends StdWebMacro
 				}
 				httpReq.addFakeUrlParameter("CHANNELBACKLOGNEXTPAGE", Boolean.toString(que.size()>=pageSize));
 
+				final long now=System.currentTimeMillis();
+				long elapsedTime;
 				while(true)
 				{
 					final int num=CMath.s_int(last);
@@ -105,7 +108,14 @@ public class ChannelBackLogNext extends StdWebMacro
 					else
 						str="";
 					str=CMStrings.removeColors(str);
-					str += " ("+CMLib.time().date2SmartEllapsedTime(Math.round((System.currentTimeMillis()-cmsg.ts)/1000)*1000,false)+" ago)";
+					elapsedTime=now-cmsg.ts;
+					elapsedTime=Math.round(elapsedTime/1000L)*1000L;
+					if(elapsedTime<0)
+					{
+						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+cmsg.ts);
+						elapsedTime=0;
+					}
+					str += " ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";
 					if(CMLib.channels().mayReadThisChannel(msg.source(),areareq,mob,channelInt,true))
 						return clearWebMacros(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,msg.source(),msg.target(),msg.tool(),CMStrings.removeColors(str),false));
 				}
