@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -226,7 +224,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 						&&((M.basePhyStats().rejuv()==0)||(M.basePhyStats().rejuv()==PhyStats.NO_REJUV)))
 							mobs.addElement(M);
 					}
-					if(!CMSecurity.isSaveFlag("NOPROPERTYMOBS"))
+					if(!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPROPERTYMOBS))
 						CMLib.database().DBUpdateTheseMOBs(R,mobs);
 				}
 			}

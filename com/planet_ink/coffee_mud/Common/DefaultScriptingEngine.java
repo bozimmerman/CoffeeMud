@@ -6690,7 +6690,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					Context.exit();
 				}
 				else
-				if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==1)
+				if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==CMSecurity.JSCRIPT_REQ_APPROVAL)
 				{
 					if(lastKnownLocation!=null)
 						lastKnownLocation.showHappens(CMMsg.MSG_OK_ACTION,L("A Javascript was not authorized.  Contact an Admin to use MODIFY JSCRIPT to authorize this script."));

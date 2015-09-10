@@ -203,7 +203,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		return new IteratorEnumeration<Area>(areasList.iterator());
 	}
 	
-	public Enumeration<Area> areasPlusShips() 
+	@Override
+    public Enumeration<Area> areasPlusShips() 
 	{
 		final MultiEnumeration<Area> m=new MultiEnumeration<Area>(new IteratorEnumeration<Area>(areasList.iterator()));
 		m.addEnumeration(shipAreaEnumerator(null));
@@ -3000,8 +3001,8 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public void roomMaintSweep()
 	{
-		final boolean corpsesOnly=CMSecurity.isSaveFlag("ROOMITEMS");
-		final boolean noMobs=CMSecurity.isSaveFlag("ROOMMOBS");
+		final boolean corpsesOnly=CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMITEMS);
+		final boolean noMobs=CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMMOBS);
 		setThreadStatus(serviceClient,"expiration sweep");
 		final long currentTime=System.currentTimeMillis();
 		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.VACUUM);

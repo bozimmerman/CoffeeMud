@@ -358,7 +358,6 @@ public class CMParms
 		return combined.toString().trim();
 	}
 
-
 	/**
 	 * Returns a string containing the given objects, with toString()
 	 * called, and now delimited by the given X character.
@@ -678,12 +677,14 @@ public class CMParms
 		int last=0;
 		String sub;
 		for(int i=0;i<s.length();i++)
+		{
 			if(s.charAt(i)=='.')
 			{
 				sub=s.substring(last,i+1).trim();
 				last=i+1;
 				V.add(sub);
 			}
+		}
 		sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
 		if(sub.isEmpty())
 			V.add(sub);
@@ -1306,6 +1307,7 @@ public class CMParms
 				y=-1;
 				int yy=0;
 				while(yy<s.length())
+				{
 					if((s.charAt(yy)==delim2)
 					&&((yy<=0)||(s.charAt(yy-1)!='\\'))) 
 					{
@@ -1320,6 +1322,7 @@ public class CMParms
 					}
 					else 
 						yy++;
+				}
 				String cmd="";
 				if(y<0)
 				{
@@ -1831,6 +1834,7 @@ public class CMParms
 		{
 			s=new StringBuilder(list[l].toString());
 			for(int i=0;i<s.length();i++)
+			{
 				switch(s.charAt(i))
 				{
 				case '\\':
@@ -1839,6 +1843,7 @@ public class CMParms
 					i++;
 					break;
 				}
+			}
 			buf1.append(s.toString());
 			if(l<list.length-1)
 				buf1.append(';');
@@ -2860,8 +2865,10 @@ public class CMParms
 	public final static boolean compareRange(final ByteBuffer buf, final byte[] bytes, final int pos)
 	{
 		for(int i=0;i<bytes.length && (i+pos)<buf.limit();i++)
+		{
 			if(buf.get(pos+i)!=bytes[i])
 				return false;
+		}
 		return true;
 	}
 
@@ -2877,8 +2884,10 @@ public class CMParms
 	public final static int containIndex(final ByteBuffer buf, final byte[][] bytes, final int pos)
 	{
 		for(int x=0;x<bytes.length;x++)
+		{
 			if(compareRange(buf,bytes[x],pos))
 				return x;
+		}
 		return -1;
 	}
 
@@ -2896,8 +2905,10 @@ public class CMParms
 		if(str==null) 
 			return -1;
 		for(int i=0;i<theList.length;i++)
+		{
 			if(theList[i].startsWith(str))
 				return i;
+		}
 		return -1;
 	}
 
@@ -2915,8 +2926,10 @@ public class CMParms
 		if(str==null) 
 			return -1;
 		for(int i=0;i<theList.length;i++)
+		{
 			if(theList[i].toUpperCase().startsWith(str.toUpperCase()))
 				return i;
+		}
 		return -1;
 	}
 
@@ -2958,8 +2971,10 @@ public class CMParms
 		if(str==null) 
 			return -1;
 		for(int i=0;i<theList.length;i++)
+		{
 			if(theList[i].endsWith(str))
 				return i;
+		}
 		return -1;
 	}
 
@@ -2977,8 +2992,10 @@ public class CMParms
 		if(str==null) 
 			return -1;
 		for(int i=0;i<theList.length;i++)
+		{
 			if(theList[i].toUpperCase().endsWith(str.toUpperCase()))
 				return i;
+		}
 		return -1;
 	}
 

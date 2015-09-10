@@ -1156,12 +1156,12 @@ public class Create extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				return errorOut(mob);
 			final String named=CMParms.combine(commands,2);
-			if(CMSecurity.isDisabledSearch(named.toUpperCase()))
+			if(CMSecurity.isAnyFlagDisabled(named.toUpperCase()))
 				mob.tell(L("'@x1' is already disabled",named));
 			else
 			{
 				mob.tell(L("'@x1' is now disabled",named));
-				CMSecurity.setDisableVar(named.toUpperCase().trim(), false);
+				CMSecurity.setAnyDisableVar(named.toUpperCase().trim());
 			}
 			return true;
 		}
@@ -1182,8 +1182,7 @@ public class Create extends StdCommand
 			else
 			{
 				mob.tell(L("'@x1' is now debugging",named));
-
-				CMSecurity.setDebugVar(flag, false);
+				CMSecurity.setDebugVar(flag);
 			}
 			return true;
 		}

@@ -599,7 +599,7 @@ public class DefaultClan implements Clan
 				}
 			}
 		}
-		if((did)&&(!CMSecurity.isSaveFlag("NOPLAYERS")))
+		if((did)&&(!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS)))
 			CMLib.database().DBUpdatePlayer(M);
 		return did;
 	}

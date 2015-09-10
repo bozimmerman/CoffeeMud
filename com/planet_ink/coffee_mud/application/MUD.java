@@ -428,7 +428,7 @@ public class MUD extends Thread implements MudHost
 		if(S!=null)
 			S.println(CMLib.lang().L("Done."));
 
-		if(!CMSecurity.isSaveFlag("NOPLAYERS"))
+		if(!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS))
 		{
 			if(S!=null)
 				S.print(CMLib.lang().L("Saving players..."));
@@ -537,9 +537,9 @@ public class MUD extends Thread implements MudHost
 		if(S!=null)
 			S.println(CMLib.lang().L("Save thread stopped"));
 
-		if(CMSecurity.isSaveFlag("ROOMMOBS")
-		||CMSecurity.isSaveFlag("ROOMITEMS")
-		||CMSecurity.isSaveFlag("ROOMSHOPS"))
+		if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMMOBS)
+		||CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMITEMS)
+		||CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMSHOPS))
 		{
 			if(S!=null)
 				S.print(CMLib.lang().L("Saving room data..."));

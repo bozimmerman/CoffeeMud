@@ -918,7 +918,7 @@ public class Destroy extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((!CMSecurity.isAllowedContainsAny(mob,CMSecurity.SECURITY_CMD_GROUP))
+		if((!CMSecurity.isAllowedAnywhereContainsAny(mob,CMSecurity.SECURITY_CMD_GROUP))
 		&&(!CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_KILL_GROUP))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BAN))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NOPURGE)))
@@ -1165,12 +1165,12 @@ public class Destroy extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				return errorOut(mob);
 			final String named=CMParms.combine(commands,2);
-			if(!CMSecurity.isDisabledSearch(named.toUpperCase()))
+			if(!CMSecurity.isAnyFlagDisabled(named.toUpperCase()))
 				mob.tell(L("'@x1' is not disabled",named));
 			else
 			{
 				mob.tell(L("'@x1' is no longer disabled",named));
-				CMSecurity.setDisableVar(named.toUpperCase().trim(), true);
+				CMSecurity.removeAnyDisableVar(named.toUpperCase().trim());
 			}
 			return false;
 		}
@@ -1191,7 +1191,7 @@ public class Destroy extends StdCommand
 			else
 			{
 				mob.tell(L("'@x1' is no longer debugging",named));
-				CMSecurity.setDebugVar(flag, true);
+				CMSecurity.removeDebugVar(flag);
 			}
 			return false;
 		}

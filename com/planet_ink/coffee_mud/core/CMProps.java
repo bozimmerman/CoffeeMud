@@ -1950,7 +1950,7 @@ public class CMProps extends Properties
 		String disable=getStr("DISABLE");
 		if(getVar(Str.MULTICLASS).equalsIgnoreCase("DISABLED"))
 			disable+=", CLASSES";
-		CMSecurity.setDisableVars(disable);
+		CMSecurity.setAnyDisableVars(disable);
 		CMSecurity.setDebugVars(getStr("DEBUG"));
 		CMSecurity.setSaveFlags(getStr("SAVE"));
 	}
@@ -2237,9 +2237,15 @@ public class CMProps extends Properties
 	public static final String getStatCodeExtensionValue(final String[] codes, final String[] xtraValues, final String code)
 	{
 		if(xtraValues!=null)
+		{
 			for(int x=0;x<xtraValues.length;x++)
+			{
 				if(codes[codes.length-x-1].equalsIgnoreCase(code))
+				{
 					return xtraValues[xtraValues.length-x-1];
+				}
+			}
+		}
 		return "";
 	}
 
@@ -2253,9 +2259,15 @@ public class CMProps extends Properties
 	public static void setStatCodeExtensionValue(final String[] codes, final String[] xtraValues, final String code, final String val)
 	{
 		if(xtraValues!=null)
+		{
 			for(int x=0;x<xtraValues.length;x++)
+			{
 				if(codes[codes.length-x-1].equalsIgnoreCase(code))
+				{
 					xtraValues[xtraValues.length-x-1]=val;
+				}
+			}
+		}
 	}
 
 	private static final List<String> getStatCodeExtensions(Class<?> C, final String ID)
@@ -2281,8 +2293,12 @@ public class CMProps extends Properties
 		{
 			myClassName = v.next();
 			for (final String[] statCodeExtension : statCodeExtensions)
+			{
 				if(statCodeExtension[0].equals(myClassName))
+				{
 					return CMParms.parseCommas(statCodeExtension[1],true);
+				}
+			}
 		}
 		return null;
 	}

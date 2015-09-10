@@ -6705,7 +6705,7 @@ public class Import extends StdCommand
 	}
 
 	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,CMSecurity.SECURITY_IMPORT_GROUP);}
+	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhereContainsAny(mob,CMSecurity.SECURITY_IMPORT_GROUP);}
 
 
 }

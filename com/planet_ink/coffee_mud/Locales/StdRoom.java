@@ -911,7 +911,7 @@ public class StdRoom implements Room
 		{
 			try
 			{
-				if(CMSecurity.isSaveFlag("ROOMMOBS"))
+				if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMMOBS))
 				{
 					if(roomID().length()==0)
 						eachInhabitant(new EachApplicable<MOB>(){ 
@@ -927,7 +927,7 @@ public class StdRoom implements Room
 						});
 				}
 				else
-				if(CMSecurity.isSaveFlag("ROOMSHOPS"))
+				if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMSHOPS))
 				{
 					eachInhabitant(new EachApplicable<MOB>(){ 
 						@Override
@@ -974,13 +974,13 @@ public class StdRoom implements Room
 				else
 				if((roomID().length()>0)
 				&&((getArea()==null)||(!CMath.bset(getArea().flags(), Area.FLAG_INSTANCE_CHILD)))
-				&&(CMSecurity.isSaveFlag("ROOMMOBS")
-					||CMSecurity.isSaveFlag("ROOMITEMS")
-					||CMSecurity.isSaveFlag("ROOMSHOPS")))
+				&&(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMMOBS)
+					||CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMITEMS)
+					||CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMSHOPS)))
 				{
 					final Vector shopmobs=new Vector(1);
 					final Vector bodies=new Vector(1);
-					if(CMSecurity.isSaveFlag("ROOMMOBS"))
+					if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMMOBS))
 					{
 						eachInhabitant(new EachApplicable<MOB>(){ 
 							@Override
@@ -996,7 +996,7 @@ public class StdRoom implements Room
 						CMLib.database().DBUpdateMOBs(this);
 					}
 					else
-					if(CMSecurity.isSaveFlag("ROOMSHOPS"))
+					if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMSHOPS))
 					{
 						eachInhabitant(new EachApplicable<MOB>(){ 
 							@Override
@@ -1011,7 +1011,7 @@ public class StdRoom implements Room
 						if(!shopmobs.isEmpty())
 							CMLib.database().DBUpdateTheseMOBs(this,shopmobs);
 					}
-					if(CMSecurity.isSaveFlag("ROOMITEMS"))
+					if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMITEMS))
 					{
 						eachItem(new EachApplicable<Item>(){ 
 							@Override public final void apply(final Item I)

@@ -61,7 +61,7 @@ public class Save extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()==1)&&CMSecurity.isSaveFlag("NOPLAYERS"))
+		if((commands.size()==1)&&CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS))
 		{
 			if(!mob.isMonster())
 			{
@@ -237,7 +237,7 @@ public class Save extends StdCommand
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)
 												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)
 												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)
-												 ||CMSecurity.isSaveFlag("NOPLAYERS");}
+												 ||CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS);}
 
 
 }

@@ -291,7 +291,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 							mobs.addElement(M);
 						}
 					}
-					if(!CMSecurity.isSaveFlag("NOPROPERTYMOBS"))
+					if(!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPROPERTYMOBS))
 						CMLib.database().DBUpdateTheseMOBs(R,mobs);
 				}
 			}
@@ -525,7 +525,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 			}
 			lastNumItems=R.numItems();
-			if((!CMSecurity.isSaveFlag("NOPROPERTYITEMS"))
+			if((!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPROPERTYITEMS))
 			&&(updateItems))
 				CMLib.database().DBUpdateItems(R);
 		}

@@ -399,7 +399,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			return "Error: Expertise skill mask ("+skillMask+") malformed: "+ID+"="+row;
 		skillsToRegister=CMLib.masking().getAbilityEduReqs(skillMask);
 		if(skillsToRegister.size()==0)
+		{
+			skillsToRegister=CMLib.masking().getAbilityEduReqs(skillMask);
 			return "Error: Expertise no skills ("+skillMask+") found: "+ID+"="+row;
+		}
 		listMask=skillMask+" "+(parts.get(4));
 		finalMask=((parts.get(5)));
 		for(int i=6;i<11;i++)

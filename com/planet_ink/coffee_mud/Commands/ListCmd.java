@@ -2336,7 +2336,7 @@ public class ListCmd extends StdCommand
 		final Vector<String> V=new Vector<String>();
 		for (final ListCmdEntry cmd : ListCmdEntry.values())
 		{
-			if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
+			if((CMSecurity.isAllowedAnywhereContainsAny(mob, cmd.flags))
 			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				V.add(cmd.cmd[0]);
 		}
@@ -2359,7 +2359,7 @@ public class ListCmd extends StdCommand
 			{
 				if(cmd.cmd[i2].startsWith(s))
 				{
-					if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
+					if((CMSecurity.isAllowedAnywhereContainsAny(mob, cmd.flags))
 					||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 					{
 						return cmd;
@@ -2382,7 +2382,7 @@ public class ListCmd extends StdCommand
 	{
 		for(final ListCmdEntry cmd : ListCmdEntry.values())
 		{
-			if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
+			if((CMSecurity.isAllowedAnywhereContainsAny(mob, cmd.flags))
 			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 			{
 				return cmd;

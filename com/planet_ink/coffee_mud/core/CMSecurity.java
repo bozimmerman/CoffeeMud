@@ -37,31 +37,44 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
 /**
- *
-Supported: (see SecFlag)
-ORDER includes TAKE, GIVE, DRESS, mob passivity, all follow
-ABOVELAW (also law books),
-WIZINV (includes see WIZINV),
-CMDMOBS (also prevents walkaways)
-SUPERSKILL (never fails skills),
-IMMORT (never dies),
-KILL* for deleting journal entries
-FS:relative path from /coffeemud/ -- read/write access to regular file sys
-VFS:relative path from /coffeemud/ -- read/write access to virtual file sys
-LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
-	   cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat)
-*/
+ * CMSecurity is the singleton that handles all security checks for all manner
+ * of resource access by users.  It also handles certain flag systems, such
+ * as debug flags, resource re-save flags, and system disabling flags.
+ * 
+ * Supported: (see SecFlag)
+ * ORDER includes TAKE, GIVE, DRESS, mob passivity, all follow
+ * ABOVELAW (also law books),
+ * WIZINV (includes see WIZINV),
+ * CMDMOBS (also prevents walkaways)
+ * SUPERSKILL (never fails skills),
+ * IMMORT (never dies),
+ * KILL* for deleting journal entries
+ * FS:relative path from /coffeemud/ -- read/write access to regular file sys
+ * VFS:relative path from /coffeemud/ -- read/write access to virtual file sys
+ * LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
+ *   cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat)
+ * 
+ * Like many similar systems, this class is thread-group-sensitive on some
+ * or all resources, allowing different security views to be presented to 
+ * different "muds" according to the thread group the calling thread belongs to.
+ * @author Bo Zimmerman
+ */
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CMSecurity
 {
+	public static final int JSCRIPT__NO_APPROVAL = 0;
+	public static final int JSCRIPT_REQ_APPROVAL = 1;
+	public static final int JSCRIPT_ALL_APPROVAL = 2;
+	
 	protected final static Set<DisFlag>		disVars		 = new HashSet<DisFlag>();
 	protected final static Set<String>		cmdDisVars	 = new HashSet<String>();
 	protected final static Set<String>		facDisVars	 = new HashSet<String>();
 	protected final static Set<String>		ablDisVars	 = new HashSet<String>();
 	protected final static Set<String>		expDisVars	 = new HashSet<String>();
 	protected final static Set<DbgFlag>		dbgVars		 = new HashSet<DbgFlag>();
-	protected final static Set<String>		saveFlags 	 = new HashSet<String>();
+	protected final static Set<SaveFlag>	saveFlags 	 = new HashSet<SaveFlag>();
 	protected final static Set<String>		journalFlags = new HashSet<String>(); // global, because of cross-library issues
 
 	protected final long					startTime	 = System.currentTimeMillis();
@@ -73,6 +86,9 @@ public class CMSecurity
 	private final static CMSecurity[]		secs		 = new CMSecurity[256];
 	private final static Iterator<SecFlag>	EMPTYSECFLAGS= new EnumerationIterator<SecFlag>(new EmptyEnumeration<SecFlag>());
 
+	/**
+	 * Creates a new thread-group sensitive CMSecurity reference object.
+	 */
 	public CMSecurity()
 	{
 		super();
@@ -81,6 +97,10 @@ public class CMSecurity
 			secs[c]=this;
 	}
 
+	/**
+	 * Returns the CMSecurity instance tied to this particular thread group, or creates a new one.
+	 * @return the CMSecurity instance tied to this particular thread group, or creates a new one.
+	 */
 	public static final CMSecurity instance()
 	{
 		final CMSecurity p=i();
@@ -89,10 +109,29 @@ public class CMSecurity
 		return p;
 	}
 
-	public static final CMSecurity instance(char c){ return secs[c];}
+	/**
+	 * Returns the CMSecurity instance tied to this particular thread group, or null if not yet created.
+	 * @param c the thread group to check
+	 * @return the CMSecurity instance tied to this particular thread group, or null if not yet created.
+	 */
+	public static final CMSecurity instance(char c)
+	{ 
+		return secs[c];
+	}
 
-	private static final CMSecurity i(){ return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+	/**
+	 * Returns the CMSecurity instance tied to this particular thread group, or null if not yet created.
+	 * @return the CMSecurity instance tied to this particular thread group, or null if not yet created.
+	 */
+	private static final CMSecurity i()
+	{
+		return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+	}
 
+	/**
+	 * Designates that the thread which called this method should instead use the security system
+	 * of the MAIN_HOST, sharing it.
+	 */
 	public final void markShared()
 	{
 		final char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -104,6 +143,12 @@ public class CMSecurity
 			secs[threadCode]=secs[MudHost.MAIN_HOST];
 	}
 
+	/**
+	 * Redefines the ZapperMask that defines what an All Powerful Super Admin of the
+	 * entire mud player looks like.  God help anyone that calls this method and doesn't
+	 * know what they are doing.
+	 * @param zapCheck the zapper mask identifying an "archon" (a SysOp Admin)
+	 */
 	public static final void setSysOp(String zapCheck)
 	{
 		if((zapCheck==null)||(zapCheck.trim().length()==0))
@@ -112,17 +157,30 @@ public class CMSecurity
 	}
 
 
+	/**
+	 * Registers a new journal security flag, which is typically just its name
+	 * @param journalName the journal security flag, or just the name/ID of the journal
+	 */
 	public static final void registerJournal(String journalName)
 	{
 		journalName=journalName.toUpperCase().trim();
 		journalFlags.add(journalName);
 	}
 
+	/**
+	 * Removes all registered security groups.
+	 */
 	public static final void clearGroups()
 	{
 		instance().groups.clear();
 	}
 
+	/**
+	 * Iterates through all the properties on the given property page, finding
+	 * any security group definitions and, when found, registering them with 
+	 * the security system.
+	 * @param page the properties page to go through.
+	 */
 	public static final void parseGroups(final Properties page)
 	{
 		clearGroups();
@@ -145,6 +203,13 @@ public class CMSecurity
 		}
 	}
 
+	/**
+	 * Accepts a string representing a security flag, or another group name, or a filesystem path,
+	 * or some other security designation, and returns the appropriate object, such as
+	 * a SecGroup, SecPath, SecFlag, or String, that it represents.
+	 * @param s the security thing to parse and identify
+	 * @return the internal security object that the string represents
+	 */
 	public Object parseSecurityFlag(String s)
 	{
 		final SecGroup group=groups.get(s);
@@ -208,6 +273,12 @@ public class CMSecurity
 		}
 	}
 
+	/**
+	 * Create a new security group object with the given name, and the given
+	 * set of security flags/group names as a string list.  
+	 * @param name the new security group name
+	 * @param set the string list of flags/group names
+	 */
 	public final SecGroup createGroup(String name, final List<String> set)
 	{
 		final Set<SecFlag> 	 newFlags=new HashSet<SecFlag>();
@@ -238,16 +309,32 @@ public class CMSecurity
 		return new SecGroup(name,newFlags,newGroups,newPaths,newJFlags);
 	}
 
+	/**
+	 * Returns an enumeration of all existing Security Groups
+	 * @return an enumeration of all existing Security Groups
+	 */
 	public static Enumeration<SecGroup> getSecurityGroups()
 	{
 		return new IteratorEnumeration<SecGroup>(instance().groups.values().iterator());
 	}
 
+	/**
+	 * Returns an enumeration of all journal security flags, which are usually just
+	 * a bunch of journal id names.
+	 * @return  an enumeration of all journal security flags
+	 */
 	public static Enumeration<String> getJournalSecurityFlags()
 	{
 		return new IteratorEnumeration<String>(journalFlags.iterator());
 	}
 
+	/**
+	 * Internal method to create a new security group of the given name, with the given
+	 * set of security flags/group names as a comma-delimited list.  If the group
+	 * with the given name already exists, it will be modified with the given flags.
+	 * @param name the new security group name
+	 * @param set the comma-delimited list of flags/group names
+	 */
 	private static final void addGroup(String name, final String set)
 	{
 		final SecGroup newGroup=instance().createGroup(name,CMParms.parseCommas(set,true));
@@ -258,6 +345,12 @@ public class CMSecurity
 			group.reset(newGroup.flags,newGroup.groups,newGroup.paths,newGroup.jFlags);
 	}
 
+	/**
+	 * Checks whether the given user/player MOB is a full-on Archon, an
+	 * admin of the entire mud, having all the power the system offers.
+	 * @param mob the user/player to check
+	 * @return true if the MOB represents a SysOp (Archon), false otherwise.
+	 */
 	public static final boolean isASysOp(final MOB mob)
 	{
 		return CMLib.masking().maskCheck(i().compiledSysop,mob,true)
@@ -267,11 +360,23 @@ public class CMSecurity
 					&&(isASysOp(mob.soulMate())));
 	}
 
+	/**
+	 * Checks whether the given user/player ThinPlayer object is a full-on
+	 * admin of the entire mud, having all the power the system offers.
+	 * @param mob the user/player to check, as a ThinPlayer object
+	 * @return true if the ThinPlayer represents a SysOp (Archon), false otherwise.
+	 */
 	public static final boolean isASysOp(final PlayerLibrary.ThinPlayer mob)
 	{
 		return CMLib.masking().maskCheck(i().compiledSysop,mob);
 	}
 
+	/**
+	 * Checks to see if the given user/player mob has any special security flags at all.
+	 * This would encompass subops (area) as well as regular admins.
+	 * @param mob the user/player to check
+	 * @return true if the user/player has at least one security flag, false otherwise
+	 */
 	public static final boolean isStaff(final MOB mob)
 	{
 		if(isASysOp(mob))
@@ -287,6 +392,13 @@ public class CMSecurity
 		return true;
 	}
 
+	/**
+	 * Returns a comprehensive list of all filesystem directories which the given user/player, in the given room
+	 * location, may access
+	 * @param mob the user/player to check
+	 * @param room the room location of the above user/player
+	 * @return the list of all directories this user/player can access
+	 */
 	public static final List<String> getAccessibleDirs(final MOB mob, final Room room)
 	{
 		final List<String> DIRSV=new Vector<String>();
@@ -337,6 +449,7 @@ public class CMSecurity
 					{
 						final String[] files=F.list();
 						for (final String file : files)
+						{
 							if(file.equalsIgnoreCase(subPath))
 							{
 								if(path.length()>0)
@@ -344,6 +457,7 @@ public class CMSecurity
 								path+=file;
 								break;
 							}
+						}
 					}
 				}
 				DIRSV.set(d,"//"+path);
@@ -352,6 +466,13 @@ public class CMSecurity
 		return DIRSV;
 	}
 
+	/**
+	 * Checks whether the given user/player mob, in the given room location, can see ANY filesystem files.
+	 * The room location allows subop (area) permissions to kick in.
+	 * @param mob the user/player to check
+	 * @param room the room location of the above user/player
+	 * @return true if the user/player has permission to use any files in the filesystem, and false otherwise
+	 */
 	public static final boolean hasAccessibleDir(final MOB mob, final Room room)
 	{
 		if(isASysOp(mob))
@@ -373,6 +494,15 @@ public class CMSecurity
 		return false;
 	}
 
+
+	/**
+	 * Checks whether the given user/player mob, in the given room location, can see a directory at the given
+	 * path. The room location allows subop (area) permissions to kick in.
+	 * @param mob the user/player to check
+	 * @param room the room location of the above user/player
+	 * @param path the path of the file to check permissions on
+	 * @return true if the user/player has permission to see and CD into the given directory, false otherwise.
+	 */
 	public static final boolean canTraverseDir(MOB mob, Room room, String path)
 	{
 		if(isASysOp(mob))
@@ -403,6 +533,16 @@ public class CMSecurity
 		return false;
 	}
 
+	/**
+	 * Checks whether the given user/player mob, in the given room location, can access a file at the given
+	 * path, with the given VFS (database) status.  The room location allows subop (area) permissions to 
+	 * kick in.
+	 * @param mob the user/player to check
+	 * @param room the room location of the above user/player
+	 * @param path the path of the file to check permissions on
+	 * @param isVFS whether the file denoted by the above path is in the database (VFS) or not
+	 * @return true if the user/player has permission to access the given file, false otherwise.
+	 */
 	public static final boolean canAccessFile(final MOB mob, final Room room, String path, final boolean isVFS)
 	{
 		if(mob==null)
@@ -431,6 +571,14 @@ public class CMSecurity
 		return false;
 	}
 
+	/**
+	 * Returns an iterator of all security flags that apply to the given user/player mob
+	 * for their given room location, which allows subop (area) flags to also be included,
+	 * if the mob is in their subop area.
+	 * @param mob the user/player to check
+	 * @param room the room location of the above user/player
+	 * @return an iterator of all applicable security flags
+	 */
 	public static final Iterator<SecFlag> getSecurityCodes(final MOB mob, final Room room)
 	{
 		if((mob==null)||(mob.playerStats()==null))
@@ -449,7 +597,12 @@ public class CMSecurity
 		return flags.iterator();
 	}
 
-
+	/**
+	 * Checks whether the given user/player mob has admin privileges on the given journal
+	 * @param mob the user/player to check
+	 * @param journalFlagName the journal flag, almost always the journal ID
+	 * @return true if the mob is an admin, and false otherwise
+	 */
 	public static boolean isJournalAccessAllowed(MOB mob, String journalFlagName)
 	{
 		journalFlagName=journalFlagName.trim().toUpperCase();
@@ -460,13 +613,21 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!mob.soulMate().isAttribute(MOB.Attrib.SYSOPMSGS))))
 			return false;
-		if(mob.playerStats().getSecurityFlags().contains(journalFlagName))
+		if(mob.playerStats().getSecurityFlags().containsJournal(journalFlagName))
 			return true;
-		if(mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).contains(journalFlagName))
+		if(mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).containsJournal(journalFlagName))
 			return true;
 		return false;
 	}
 
+	/**
+	 * Checks whether the given mob, currently in the given room, has any of the security flags 
+	 * denoted by the given security group.
+	 * @param mob the user/player to check security settings on
+	 * @param room the user/players current room location, for subop (area) permission checks
+	 * @param secGroup the security group whose flags are cross-referenced against the players security settings
+	 * @return true if any of the security group flags are permitted by this user, false otherwise
+	 */
 	public static final boolean isAllowedContainsAny(final MOB mob, final Room room, final SecGroup secGroup)
 	{
 		if(mob==null)
@@ -484,6 +645,16 @@ public class CMSecurity
 		return false;
 	}
 
+	/**
+	 * A Security System check method.  Checks whether the given user/player mob, who is presently
+	 * in the given room, is permitted to perform the function denoted by the given security flag.
+	 * The room check allows subop/area based security to come into play.
+	 * This is the most commonly used security method
+	 * @param mob the user/player to check security permissions on
+	 * @param room the current room location of the above user/player
+	 * @param flag the security flag to check for
+	 * @return true if the user/player is permitted, and false otherwise
+	 */
 	public static final boolean isAllowed(final MOB mob, final Room room, final SecFlag flag)
 	{
 		if(mob==null)
@@ -501,7 +672,15 @@ public class CMSecurity
 		return false;
 	}
 
-	public static final boolean isAllowedContainsAny(final MOB mob, final SecGroup secGroup)
+	/**
+	 * Checks whether the given mob has any of the security flags denoted by the given security group.
+	 * This method checks all locations, allowing subops to be triggered based on their area permissions,
+	 * even if they are not presently in that area.
+	 * @param mob the user/player to check security settings on
+	 * @param secGroup the security group whose flags are cross-referenced against the players security settings
+	 * @return true if any of the security group flags are permitted by this user, false otherwise
+	 */
+	public static final boolean isAllowedAnywhereContainsAny(final MOB mob, final SecGroup secGroup)
 	{
 		if(mob==null)
 			return false;
@@ -529,6 +708,14 @@ public class CMSecurity
 		return false;
 	}
 
+	/**
+	 * A Security system check method.  Returns whether the given player mob object is
+	 * permitted to perform the function denoted by the given flag everywhere in the mud.
+	 * This tends to discount subop/area based permissions.
+	 * @param mob the player to check
+	 * @param flag the flag to look for
+	 * @return true if the player is permitted, and false otherwise
+	 */
 	public static final boolean isAllowedEverywhere(final MOB mob, final SecFlag flag)
 	{
 		if(mob==null)
@@ -545,6 +732,15 @@ public class CMSecurity
 		return false;
 	}
 
+	/**
+	 * A Security system check method.  Returns whether the given player mob object is
+	 * permitted to perform the function denoted by the given flag anywhere in the mud.
+	 * This tends to favor subop/area based permissions, since it checks for subop
+	 * security even when the player is not currently in their area.
+	 * @param mob the player to check
+	 * @param flag the flag to look for
+	 * @return true if the player is permitted, and false otherwise
+	 */
 	public static final boolean isAllowedAnywhere(final MOB mob, final SecFlag flag)
 	{
 		if(mob==null)
@@ -557,6 +753,7 @@ public class CMSecurity
 		if(isAllowedEverywhere(mob,flag.getRegularAlias()))
 			return true;
 		if(flag.areaAlias!=flag)
+		{
 			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 			{
 				final boolean subop=e.nextElement().amISubOp(mob.Name());
@@ -569,18 +766,33 @@ public class CMSecurity
 					break;
 				}
 			}
+		}
 		return isAllowedEverywhere(mob,flag.getRegularAlias());
 	}
 
 
-	public static final boolean isSaveFlag(final String key)
+	/**
+	 * Returns whether the given save flag is set, denoting something
+	 * that should not be saved but normally is, or something that
+	 * should be saved, but normally isn't
+	 * @param key the SaveFlag enum object to check for
+	 * @return true if the SaveFlag was found, false otherwise.
+	 */
+	public static final boolean isSaveFlag(final SaveFlag key)
 	{
 		return (saveFlags.size()>0) && saveFlags.contains(key);
 	}
 
+	/**
+	 * For muds using the JavaScript approval system, as specified in the coffeemud.ini
+	 * file, this method approves a JavaScript as being permitted to run, and saves
+	 * the record of the approval.
+	 * @param approver the name of the player approving the script
+	 * @param hashCode the hash value of the script being approved
+	 */
 	public static final void approveJScript(final String approver, final long hashCode)
 	{
-		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)!=1)
+		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)!=JSCRIPT_REQ_APPROVAL)
 			return;
 		final Map<Long,String> approved=CMSecurity.getApprovedJScriptTable();
 		if(approved.containsKey(Long.valueOf(hashCode)))
@@ -596,6 +808,11 @@ public class CMSecurity
 		Resources.saveFileResource("::jscripts.ini",null,newApproved);
 	}
 
+	/**
+	 * For muds using the JavaScript approval system, this method returns 
+	 * the list of approval script approver names and their script hash value keys.
+	 * @return the list of approved scripts and their approvers, keyed by their script hash values
+	 */
 	public static final Map<Long,String> getApprovedJScriptTable()
 	{
 		Map<Long,String> approved=(Map<Long, String>)Resources.getResource("APPROVEDJSCRIPTS");
@@ -618,15 +835,21 @@ public class CMSecurity
 		return approved;
 	}
 
+	/**
+	 * Checks whether the given specific javascript is allowed to run, given the javascript
+	 * security settings.
+	 * @param script the script to check
+	 * @return true if it can run right now, false otherwise.
+	 */
 	public static final boolean isApprovedJScript(final StringBuffer script)
 	{
-		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==2)
+		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==CMSecurity.JSCRIPT_ALL_APPROVAL)
 			return true;
-		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==0)
+		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==CMSecurity.JSCRIPT__NO_APPROVAL)
 			return false;
 		final Map<Long,String> approved=CMSecurity.getApprovedJScriptTable();
 		final Long hashCode=Long.valueOf(script.toString().hashCode());
-		final Object approver=approved.get(hashCode);
+		final String approver=approved.get(hashCode);
 		if(approver==null)
 		{
 			approved.put(hashCode,script.toString());
@@ -635,16 +858,32 @@ public class CMSecurity
 		return approver instanceof String;
 	}
 
+	/**
+	 * An enumeration of all system currently being debugged.
+	 * @return enumeration of all system currently being debugged.
+	 */
 	public static Enumeration<DbgFlag> getDebugEnum()
 	{
 		return new IteratorEnumeration<DbgFlag>(dbgVars.iterator());
 	}
 
+	/**
+	 * Checks if the given key system is being debugged.
+	 * @param key the DbgFlag debug system to check
+	 * @return true if the given system is being debugged, false otherwise
+	 */
 	public static final boolean isDebugging(final DbgFlag key)
 	{
 		return ((dbgVars.size()>0)&&dbgVars.contains(key))||debuggingEverything;
 	}
 
+	/**
+	 * Checks if the given key system is being debugged by finding the DbgFlag object
+	 * that corresponds to the key name, and seeing if it is on the list of debugged
+	 * systems.
+	 * @param key the name of the debug flag to look for.
+	 * @return true if the key was found and is being debugged, false otherwise
+	 */
 	public static final boolean isDebuggingSearch(final String key)
 	{
 		final DbgFlag flag=(DbgFlag)CMath.s_valueOf(DbgFlag.values(),key.toUpperCase().trim());
@@ -653,28 +892,71 @@ public class CMSecurity
 		return isDebugging(flag);
 	}
 
-	public static final DbgFlag setDebugVar(final DbgFlag var, final boolean delete)
+	/**
+	 * Sets the given debug flag by adding it to the list of debug flags.
+	 * @param var the debug flag
+	 * @return true if the flag was not already set, false otherwise
+	 */
+	public static final boolean setDebugVar(final DbgFlag var)
 	{
-		if((var!=null)&&(delete)&&(dbgVars.size()>0))
-			dbgVars.remove(var);
-		else
-		if((var!=null)&&(!delete))
+		if((var!=null)&&(!dbgVars.contains(var)))
+		{
 			dbgVars.add(var);
-		return var;
+			return true;
+		}
+		return false;
 	}
 
-	public static final DbgFlag setDebugVar(final String anyFlag, final boolean delete)
+	/**
+	 * Removes the given debug flag by removing it from the list of debug flags.
+	 * @param var the debug flag
+	 * @return true if the flag needed removing, false otherwise
+	 */
+	public static final boolean removeDebugVar(final DbgFlag var)
+	{
+		if((var!=null)&&(dbgVars.size()>0))
+			return dbgVars.remove(var);
+		return false;
+	}
+
+	/**
+	 * Sets the given debug flag by finding the flag that corresponds to the given
+	 * string and adding it to the list of debug flags.
+	 * @param anyFlag the name of the debug flag
+	 * @return true if the flag was found but not already set, false otherwise
+	 */
+	public static final boolean setDebugVar(final String anyFlag)
 	{
 		final String flag = anyFlag.toUpperCase().trim();
 		final DbgFlag dbgFlag = (DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), flag);
 		if(dbgFlag!=null)
-			return setDebugVar(dbgFlag,delete);
-		return null;
+			return setDebugVar(dbgFlag);
+		return false;
 	}
 
-	public static final void setDebugVars(final String vars)
+	/**
+	 * Removes the given debug flag by finding the flag that corresponds to the given
+	 * string and removing it from the list of debug flags.
+	 * @param anyFlag the name of the debug flag
+	 * @return true if the flag was found and needed removing, false otherwise
+	 */
+	public static final boolean removeDebugVar(final String anyFlag)
 	{
-		final List<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
+		final String flag = anyFlag.toUpperCase().trim();
+		final DbgFlag dbgFlag = (DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), flag);
+		if(dbgFlag!=null)
+			return removeDebugVar(dbgFlag);
+		return false;
+	}
+
+	/**
+	 * Sets all DbgFlag debug flags given a comma-delimited list of debug
+	 * flag names.  
+	 * @param varList the comma-delimited list of debug flags to set.
+	 */
+	public static final void setDebugVars(final String varList)
+	{
+		final List<String> V=CMParms.parseCommas(varList.toUpperCase(),true);
 		dbgVars.clear();
 		for(final String var : V)
 		{
@@ -687,153 +969,333 @@ public class CMSecurity
 		debuggingEverything = dbgVars.contains(DbgFlag.EVERYTHING);
 	}
 
-	public static Enumeration<DisFlag> getDisablesEnum() { return new IteratorEnumeration<DisFlag>(disVars.iterator());}
-
-	public static final boolean isDisabled(final DisFlag ID)
-	{
-		return disVars.contains(ID);
+	/**
+	 * Returns an enumeration of all basic DisFlags that are currently set,
+	 * meaning all the systems returned are disabled presently.
+	 * @return an enumeration of all basic DisFlags that are currently set
+	 */
+	public static Enumeration<DisFlag> getDisablesEnum() 
+	{ 
+		return new IteratorEnumeration<DisFlag>(disVars.iterator());
 	}
 
+	/**
+	 * Checks to see if the given feature denoted by the given DisFlag
+	 * is disabled.
+	 * @param flag the DisFlag to check for
+	 * @return true if it is disabled, and false otherwise
+	 */
+	public static final boolean isDisabled(final DisFlag flag)
+	{
+		return disVars.contains(flag);
+	}
+
+	/**
+	 * Check to see if the given Command is disabled.
+	 * @param ID the official Command ID
+	 * @return true if it is disabled, false otherwise
+	 */
 	public static final boolean isCommandDisabled(final String ID)
 	{
 		return cmdDisVars.contains(ID);
 	}
 
+	/**
+	 * Check to see if the given Ability is disabled.
+	 * @param ID the official Ability ID
+	 * @return true if it is disabled, false otherwise
+	 */
 	public static final boolean isAbilityDisabled(final String ID)
 	{
 		return ablDisVars.contains(ID);
 	}
 
+	/**
+	 * Check to see if the given Faction is disabled.
+	 * @param ID the official Faction ID
+	 * @return true if it is disabled, false otherwise
+	 */
 	public static final boolean isFactionDisabled(final String ID)
 	{
 		return facDisVars.contains(ID);
 	}
 
+	/**
+	 * Check to see if the given expertise is disabled.
+	 * @param ID the official expertise ID
+	 * @return true if it is disabled, false otherwise
+	 */
 	public static final boolean isExpertiseDisabled(final String ID)
 	{
 		return expDisVars.contains(ID);
 	}
 
-	public static final boolean isDisabledSearch(final String anyFlag)
+	/**
+	 * Returns whether the feature described by the given anyFlag is disabled.
+	 * Since there are several different kinds of disable flags, this method
+	 * will check the prefix of each flag to determine which kind it is.
+	 * @param anyFlag the flag to check for
+	 * @return true if it's already disabled, and false otherwise
+	 */
+	public static final boolean isAnyFlagDisabled(final String anyFlag)
 	{
-		final Set<String> set;
-		String flag = anyFlag.toUpperCase().trim();
-		if(flag.startsWith("ABILITY_")||flag.startsWith("EXPERTISE_")||flag.startsWith("COMMAND_")||flag.startsWith("FACTION_"))
-			flag=flag.substring(flag.indexOf('_')+1);
-		else
+		final Set<String> set = getSpecialDisableSet(anyFlag);
+		if(set == null)
 		{
+			String flag = anyFlag.toUpperCase().trim();
 			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
 			if(disFlag!=null)
+			{
 				return isDisabled(disFlag);
+			}
 		}
-		if(CMClass.getCommand(flag)!=null)
-			set=cmdDisVars;
 		else
-		if(CMClass.getAbility(flag)!=null)
-			set=ablDisVars;
-		else
-		if(CMLib.expertises().getDefinition(flag)!=null)
-			set=expDisVars;
-		else
-			set=facDisVars;
-		return set.contains(flag);
+		if(set.size()>0)
+		{
+			final String flag = anyFlag.toUpperCase().trim();
+			final int underIndex=flag.indexOf('_')+1;
+			final String flagName = getFinalSpecialDisableFlagName(flag.substring(underIndex));
+			return set.contains(flagName);
+		}
+		return false;
 	}
 
-	public static final void setDisableVars(final String vars)
+	/**
+	 * Sets all disable flags of all types given a list of comma-delimited
+	 * flag names in a string.
+	 * Since there are several different kinds of disable flags, this method
+	 * will check the prefix of each flag to determine which kind it is. It
+	 * will log an error if any flag is unrecognized. 
+	 * @param commaDelimFlagList the list of flags, comma delimited
+	 */
+	public static final void setAnyDisableVars(final String commaDelimFlagList)
 	{
-		final List<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
+		final List<String> V=CMParms.parseCommas(commaDelimFlagList.toUpperCase(),true);
 		disVars.clear();
 		for(final String var : V)
 		{
-			if(var.startsWith("COMMAND_"))
-				cmdDisVars.add(var.substring(8));
-			else
-			if(var.startsWith("ABILITY_"))
-				ablDisVars.add(var.substring(8));
-			else
-			if(var.startsWith("FACTION_"))
-				facDisVars.add(var.substring(8));
-			else
-			if(var.startsWith("EXPERTISE_"))
-				expDisVars.add(var.substring(10));
-			else
+			if(!setAnyDisableVar(var))
 			{
-				final DisFlag flag=(DisFlag)CMath.s_valueOf(DisFlag.values(), var);
-				if(flag==null)
-					Log.errOut("CMSecurity","Unknown disable flag: "+var);
-				else
-					disVars.add(flag);
+				Log.errOut("CMSecurity","Unknown or duplicate disable flag: "+var);
 			}
 		}
 	}
 
-	public static final boolean setDisableVar(final String anyFlag, final boolean delete)
+	
+	/**
+	 * Since there are several different kinds of disable flags, this method
+	 * will check the prefix of the flag to determine which kind it is, 
+	 * and return the remaining portion, which is the important definition
+	 * of the flag.
+	 * @param anyFlag the full undetermined flag name
+	 * @return null if its not a special flag, and the sub-portion otherwise 
+	 */
+	private static final String getFinalSpecialDisableFlagName(final String anyFlag)
 	{
-		final Set<String> set;
-		String flag = anyFlag.toUpperCase().trim();
-		if(flag.startsWith("ABILITY_")||flag.startsWith("EXPERTISE_")||flag.startsWith("COMMAND_")||flag.startsWith("FACTION_"))
-			flag=flag.substring(flag.indexOf('_')+1);
-		else
+		final String flag = anyFlag.toUpperCase().trim();
+		if(flag.startsWith("ABILITY_") || flag.startsWith("EXPERTISE_") || flag.startsWith("COMMAND_") ||flag.startsWith("FACTION_"))
 		{
+			final int underIndex=flag.indexOf('_')+1;
+			return flag.substring(underIndex);
+		}
+		return null;
+	}
+	
+	/**
+	 * Since there are several different kinds of disable flags, this method
+	 * will check the prefix of the flag to determine which kind it is, 
+	 * returning the string set that corresponds to one of the special
+	 * ones, such as for abilities, expertises, commands, or factions.
+	 * A return of null means it's probably a normal disable flag.
+	 * @param anyFlag the flag for the thing to disable or re-enable
+	 * @return the correct set that this flag will end up belonging in
+	 */
+	private static final Set<String> getSpecialDisableSet(final String anyFlag)
+	{
+		final String flag = anyFlag.toUpperCase().trim();
+		if(flag.startsWith("ABILITY_"))
+		{
+			if(CMClass.getAbility(getFinalSpecialDisableFlagName(flag))!=null)
+			{
+				return ablDisVars;
+			}
+		}
+		else
+		if(flag.startsWith("EXPERTISE_"))
+		{
+			if(CMLib.expertises().getDefinition(getFinalSpecialDisableFlagName(flag))!=null)
+			{
+				return expDisVars;
+			}
+		}
+		else
+		if(flag.startsWith("COMMAND_"))
+		{
+			if(CMClass.getCommand(getFinalSpecialDisableFlagName(flag))!=null)
+			{
+				return cmdDisVars;
+			}
+		}
+		else
+		if(flag.startsWith("FACTION_"))
+		{
+			return facDisVars;
+		}
+		return null;
+	}
+
+	/**
+	 * Since there are several different kinds of disable flags, this method
+	 * allows of the different kinds to be removed/un-set simply by sending the string.
+	 * The DisFlag objects are covered by this, but so are command disablings,
+	 * abilities, expertises, etc.. 
+	 * @param anyFlag the thing to re-enable
+	 * @return true if anyFlag was a valid thing to re-enable, and false otherwise
+	 */
+	public static final boolean removeAnyDisableVar(final String anyFlag)
+	{
+		final Set<String> set = getSpecialDisableSet(anyFlag);
+		if(set == null)
+		{
+			String flag = anyFlag.toUpperCase().trim();
 			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
 			if(disFlag!=null)
 			{
-				setDisableVar(disFlag,delete);
+				removeDisableVar(disFlag);
 				return true;
 			}
 		}
-		if(CMClass.getCommand(flag)!=null)
-			set=cmdDisVars;
 		else
-		if(CMClass.getAbility(flag)!=null)
-			set=ablDisVars;
-		else
-		if(CMLib.expertises().getDefinition(flag)!=null)
-			set=expDisVars;
-		else
-		if((flag != null)&&(flag.length()>0))
-			set=facDisVars;
-		else
-			return false;
-		if((flag!=null)&&(delete)&&(set.size()>0))
+		if(set.size()>0)
+		{
+			final String flag = getFinalSpecialDisableFlagName(anyFlag);
 			set.remove(flag);
-		else
-		if((flag!=null)&&(!delete))
-			set.add(flag);
+		}
 		return true;
 	}
 
-	public static final void setDisableVar(final DisFlag flag, final boolean delete)
+	/**
+	 * Since there are several different kinds of disable flags, this method
+	 * allows of the different kinds to be set simply by sending the string.
+	 * The DisFlag objects are covered by this, but so are command disablings,
+	 * abilities, expertises, etc.. 
+	 * @param anyFlag the thing to disable
+	 * @return true if anyFlag was a valid thing to disable, and false otherwise
+	 */
+	public static final boolean setAnyDisableVar(final String anyFlag)
 	{
-		if((flag!=null)&&(delete)&&(disVars.size()>0))
-			disVars.remove(flag);
+		final Set<String> set = getSpecialDisableSet(anyFlag);
+		if(set == null)
+		{
+			String flag = anyFlag.toUpperCase().trim();
+			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
+			if(disFlag!=null)
+			{
+				return setDisableVar(disFlag);
+			}
+		}
 		else
-		if((flag!=null)&&(!delete))
+		if(set.size()>0)
+		{
+			final String flag = getFinalSpecialDisableFlagName(anyFlag);
+			if(!set.contains(flag))
+			{
+				set.add(flag);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Adds the given disable flag, activating it
+	 * @param flag the DisFlag to add.
+	 */
+	public static final boolean setDisableVar(final DisFlag flag)
+	{
+		if((flag!=null)&&(!disVars.contains(flag)))
+		{
 			disVars.add(flag);
+			return true;
+		}
+		return false;
 	}
 
-	public static final void setSaveFlags(final String flags)
+	/**
+	 * Removes the given disable flag, deactivating it
+	 * @param flag the DisFlag to remove.
+	 */
+	public static final boolean removeDisableVar(final DisFlag flag)
 	{
-		final List<String> V=CMParms.parseCommas(flags.toUpperCase(),true);
+		if((flag!=null)&&(disVars.size()>0))
+		{
+			return disVars.remove(flag);
+		}
+		return false;
+	}
+
+	/**
+	 * Sets all the SaveFlags from a comma-delimited list, activating them.  
+	 * @param flagsListStr a comma-delimited list of SaveFlag names
+	 */
+	public static final void setSaveFlags(final String flagsListStr)
+	{
+		final List<String> flagsList=CMParms.parseCommas(flagsListStr.toUpperCase(),true);
 		saveFlags.clear();
-		for(int v=0;v<V.size();v++)
-			saveFlags.add(V.get(v));
+		for(final String flag : flagsList)
+		{
+			SaveFlag flagObj = (SaveFlag)CMath.s_valueOf(CMSecurity.SaveFlag.class, flag);
+			if(flagObj != null)
+			{
+				saveFlags.add(flagObj);
+			}
+		}
 	}
 
-	public static final void setSaveFlag(final String flag, final boolean delete)
+	/**
+	 * Adds the given save flag, activating it
+	 * @param flag the SaveFlag to add.
+	 */
+	public static final void setSaveFlag(final SaveFlag flag)
 	{
-		if((flag!=null)&&(delete)&&(saveFlags.size()>0))
-			saveFlags.remove(flag);
-		else
-		if((flag!=null)&&(!delete))
-			saveFlags.add(flag);
+		if(flag != null)
+		{
+			if(!saveFlags.contains(flag))
+			{
+				saveFlags.add(flag);
+			}
+		}
 	}
 
+	/**
+	 * Removes the given save flag, deactivating it
+	 * @param flag the SaveFlag to remove.
+	 */
+	public static final void removeSaveFlag(final SaveFlag flag)
+	{
+		if(flag != null)
+		{
+			if(saveFlags.size()>0)
+			{
+				saveFlags.remove(flag);
+			}
+		}
+	}
+
+	/**
+	 * How long the system has bee running, in milliseconds, I guess.
+	 * @return how long the system has bee running, in milliseconds, I guess.
+	 */
 	public static final long getStartTime()
 	{
 		return i().startTime;
 	}
 
+	/**
+	 * Converts the given InetAddress into a long int
+	 * @param addr an InetAddress representing the address to convert
+	 * @return the ip address of the given as a long int
+	 */
 	private static long makeIPNumFromInetAddress(InetAddress addr)
 	{
 		return ((long)(addr.getAddress()[0] & 0xFF) << 24) 
@@ -842,6 +1304,11 @@ public class CMSecurity
 			| (addr.getAddress()[3] & 0xFF);
 	}
 	
+	/**
+	 * Converts the given string ipaddress or host name into a long int
+	 * @param s an ipaddress or host name
+	 * @return the ip address of the given as a long int
+	 */
 	private static long makeIPNumFromInetAddress(String s)
 	{
 		try 
@@ -854,12 +1321,21 @@ public class CMSecurity
 		}
 	}
 	
+	/**
+	 * Returns true if the given IP4 address is blocked, and false otherwise
+	 * @param ipAddress the IP4 address to look for
+	 * @return true if the given IP4 address is blocked, and false otherwise
+	 */
 	public static boolean isIPBlocked(String ipAddress)
 	{
 		final LongSet group = CMSecurity.getIPBlocks();
 		return ((group != null) && (group.contains(makeIPNumFromInetAddress(ipAddress))));
 	}
 	
+	/**
+	 * Returns all blocked IP4 addresses
+	 * @return all blocked IP4 addresses
+	 */
 	private static LongSet getIPBlocks()
 	{
 		LongSet group = (LongSet)Resources.getResource("SYSTEM_IP_BLOCKS");
@@ -902,6 +1378,13 @@ public class CMSecurity
 		return group;
 	}
 	
+	/**
+	 * Returns true if the given name or ip address or whatever is found in the official ::/resources/banned.ini
+	 * file, which is cached in a list for quick access.  The search is case insensitive, and any entry may
+	 * start with *, end with *, or both.
+	 * @param login the string to look for
+	 * @return true if there was a match, and false otherwise.
+	 */
 	public static final boolean isBanned(final String login)
 	{
 		if((login==null)||(login.length()<=0))
@@ -909,28 +1392,35 @@ public class CMSecurity
 		final String uplogin=login.toUpperCase();
 		final List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 		if((banned!=null)&&(banned.size()>0))
-		for(int b=0;b<banned.size();b++)
 		{
-			final String str=banned.get(b);
-			if(str.length()>0)
+			for(int b=0;b<banned.size();b++)
 			{
-				if(str.equals("*")||((str.indexOf('*')<0))&&(str.equals(uplogin)))
-					return true;
-				else
-				if(str.startsWith("*")&&str.endsWith("*")&&(uplogin.indexOf(str.substring(1,str.length()-1))>=0))
-					return true;
-				else
-				if(str.startsWith("*")&&(uplogin.endsWith(str.substring(1))))
-					return true;
-				else
-				if(str.endsWith("*")&&(uplogin.startsWith(str.substring(0,str.length()-1))))
-					return true;
+				final String str=banned.get(b);
+				if(str.length()>0)
+				{
+					if(str.equals("*")||((str.indexOf('*')<0))&&(str.equals(uplogin)))
+						return true;
+					else
+					if(str.startsWith("*")&&str.endsWith("*")&&(uplogin.indexOf(str.substring(1,str.length()-1))>=0))
+						return true;
+					else
+					if(str.startsWith("*")&&(uplogin.endsWith(str.substring(1))))
+						return true;
+					else
+					if(str.endsWith("*")&&(uplogin.startsWith(str.substring(0,str.length()-1))))
+						return true;
+				}
 			}
 		}
 		return false;
 	}
 
 
+	/**
+	 * Removes the given player name, account name, or ip address  from the official ::/resources/banned.ini file. 
+	 * It also removes it from the cached ban list.
+	 * @param unBanMe the player name, account name, or ip address to remove
+	 */
 	public static final void unban(final String unBanMe)
 	{
 		if((unBanMe==null)||(unBanMe.length()<=0))
@@ -949,6 +1439,11 @@ public class CMSecurity
 		}
 	}
 
+	/**
+	 * Removes the given player name, account name, or ip address that can be found at the given index
+	 * from the official ::/resources/banned.ini file. It also removes it from the cached ban list.
+	 * @param unBanMe the player name, account name, or ip address index in the banned.ini file to remove
+	 */
 	public static final void unban(final int unBanMe)
 	{
 		final StringBuffer newBanned=new StringBuffer("");
@@ -965,6 +1460,12 @@ public class CMSecurity
 		}
 	}
 
+	/**
+	 * Adds the given player name, account name, or ip address to the official ::/resources/banned.ini file
+	 * It also adds it to the cached ban list.
+	 * @param banMe the player name, account name, or ip address to add
+	 * @return -1 if the new entry was added, and an index >=0 if it was already on the list beforehand
+	 */
 	public static final int ban(final String banMe)
 	{
 		if((banMe==null)||(banMe.length()<=0))
@@ -984,6 +1485,15 @@ public class CMSecurity
 		return -1;
 	}
 
+	/**
+	 * This enum represents all of the base security flags in the system.  Each flag
+	 * represents a command, feature, or subsystem that normal players may not normally
+	 * have access to, which is why these flags exist to grant it.  Many flags also
+	 * include a subop (area) version, which means the user must be in the area that
+	 * they are a subop of in order to have the security flag.
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static enum SecFlag
 	{
 		ABILITIES, ABOVELAW, AFTER, AHELP, ALLSKILLS, ANNOUNCE, AS, AT, BAN, 
@@ -1021,9 +1531,14 @@ public class CMSecurity
 		;
 		private SecFlag regularAlias=null;
 		private SecFlag areaAlias=null;
+		
 		private SecFlag()
 		{
 		}
+		
+		/**
+		 * Fixes all the flags to make sure there is a regular and area (subop) version
+		 */
 		private void fixAliases()
 		{
 			if(regularAlias==null)
@@ -1040,11 +1555,21 @@ public class CMSecurity
 				}
 			}
 		}
+		
+		/**
+		 * Returns the regular (non-subop) (non-area) version of this security flag
+		 * @return the regular (non-subop) (non-area) version of this security flag
+		 */
 		public SecFlag getRegularAlias()
 		{
 			fixAliases();
 			return regularAlias;
 		}
+		
+		/**
+		 * Returns the subop (area) version of this security flag, if there is one
+		 * @return the subop (area) version of this security flag, if there is one
+		 */
 		public SecFlag getAreaAlias()
 		{
 			fixAliases();
@@ -1052,12 +1577,26 @@ public class CMSecurity
 		}
 	}
 
+	/**
+	 * A class representing a file path, either local or virtual, that
+	 * a user can be given special access to.  The path can also be
+	 * flagged for subop (area) access only, though the usefulness of
+	 * that has never been determined.
+	 * @author Bo Zimmerman
+	 */
 	public static class SecPath
 	{
 		private final String	path;
-		private String  slashPath;
+		private final String	slashPath;
 		private final boolean	isVfs;
 		private final boolean	isAreaOnly;
+		
+		/**
+		 * Constructs a path object
+		 * @param path the unix-like file path to give acesss to
+		 * @param isVfs true if the path is virtual (db) only
+		 * @param isAreaOnly true if the access is for subops only
+		 */
 		public SecPath(String path, boolean isVfs, boolean isAreaOnly)
 		{
 			this.path=path.trim();
@@ -1068,6 +1607,11 @@ public class CMSecurity
 			this.isVfs=isVfs;
 			this.isAreaOnly=isAreaOnly;
 		}
+		
+		/**
+		 * Converts this SecPath object back into the string path flag
+		 * @return  this SecPath object back into the string path flag
+		 */
 		@Override
 		public String toString()
 		{
@@ -1075,33 +1619,71 @@ public class CMSecurity
 		}
 	}
 
+	/**
+	 * Internal security class for a group of security flags, and which
+	 * may also containing other groups.
+	 * @author Bo Zimmerman
+	 */
 	public static class SecGroup
 	{
-		private final String				name;
+		private final String		name;
 		private Set<SecFlag> 		flags;
 		private List<SecGroup>		groups;
 		private List<SecPath>		paths;
 		private Set<String> 		jFlags;
 		private int					numAllFlags;
+
+		/**
+		 * Constructor from existing security flag data.
+		 * @param name the name of the group
+		 * @param flags the basic security flags in this group
+		 * @param groups other groups allowed by this group
+		 * @param paths filesystem paths that this group grants access to
+		 * @param jFlags names of journal that administrative rights are given to
+		 */
 		public SecGroup(String name, Set<SecFlag> flags, List<SecGroup> groups, List<SecPath> paths, Set<String> jFlags)
 		{
 			this.name=name;
 			reset(flags, groups, paths, jFlags);
 		}
+		
+		/**
+		 * Constructor from existing security flag data.
+		 * @param name the name of the group
+		 * @param flags the basic security flags in this group
+		 */
 		public SecGroup(String name, Set<SecFlag> flags)
 		{
 			this.name=name;
 			reset(flags,new ArrayList<SecGroup>(1),new ArrayList<SecPath>(1),new SHashSet<String>());
 		}
+		
+		/**
+		 * Constructor from existing security flag data.
+		 * @param flags the basic security flags in this group
+		 */
 		public SecGroup(SecFlag[] flags)
 		{
 			this.name="";
 			reset(new SHashSet<SecFlag>(flags),new ArrayList<SecGroup>(1),new ArrayList<SecPath>(1),new SHashSet<String>());
 		}
+		
+		/**
+		 * Returns the name of this security group.
+		 * @return the name of this security group.
+		 */
 		public String getName()
 		{
 			return name;
 		}
+		
+		/**
+		 * Re-populates this group from new security flag data.
+		 * @param flags the basic security flags in this group
+		 * @param groups other groups allowed by this group
+		 * @param paths filesystem paths that this group grants access to
+		 * @param jFlags names of journal that administrative rights are given to
+		 */
 		public void reset(Set<SecFlag> flags, List<SecGroup> groups, List<SecPath> paths, Set<String> jFlags)
 		{
 			this.flags=flags;
@@ -1110,18 +1692,36 @@ public class CMSecurity
 			this.paths=paths;
 			this.jFlags=jFlags;
 			numAllFlags+=paths.size();
-			for(final SecGroup g : groups) this.numAllFlags+= g.size();
+			for(final SecGroup g : groups) 
+				this.numAllFlags+= g.size();
 		}
+		
 		//public SecGroup copyOf() // NOT ALLOWED -- flags are ok, but groups MUST be unmutable for internal changes!!
-		public boolean contains(String journalFlag)
+		
+		/**
+		 * Checks the given group and all subgroups for access to a journal of the given name
+		 * @param journalFlag the name of the journal
+		 * @return true if this group grants access, and false otherwise.
+		 */
+		public boolean containsJournal(String journalFlag)
 		{
 			if(jFlags.contains(journalFlag))
 				return true;
 			for(final SecGroup group : groups)
-				if(group.contains(journalFlag))
+			{
+				if(group.containsJournal(journalFlag))
 					return true;
+			}
 			return false;
 		}
+		
+		/**
+		 * Checks this group and all subgroups for access to the given security flag, also checking
+		 * for subop (area) access if the isSubOp flag is sent.
+		 * @param flag the security flag to look for
+		 * @param isSubOp true if this should also check for equivalent subop (area) flags
+		 * @return true if this group contains the security, false otherwise
+		 */
 		public boolean contains(SecFlag flag, boolean isSubOp)
 		{
 			if(flags.contains(flag.getRegularAlias()))
@@ -1129,36 +1729,74 @@ public class CMSecurity
 			if(isSubOp && flags.contains(flag.getAreaAlias()))
 				return true;
 			for(final SecGroup group : groups)
+			{
 				if(group.contains(flag, isSubOp))
 					return true;
+			}
 			return false;
 		}
+		
+		/**
+		 * Checks this group and all subgroups for access to any of the security flags or journal flags
+		 * in the given group.  It also checks for subop (area) access if the isSubOp flag is set.
+		 * @param group the group containing flags to look for in this class
+		 * @param isSubOp true if this should also check for equivalent subop (area) flags
+		 * @return true if this group contains any of the security, false otherwise
+		 */
 		public boolean containsAny(SecGroup group, boolean isSubOp)
 		{
 			for(final SecFlag flag : group.flags)
+			{
 				if(contains(flag, isSubOp))
 					return true;
+			}
 			for(final String jflag : group.jFlags)
-				if(contains(jflag))
+			{
+				if(containsJournal(jflag))
 					return true;
+			}
 			for(final SecGroup g : group.groups)
+			{
 				if(g.containsAny(group, isSubOp))
 					return true;
+			}
 			return false;
 		}
+
+		/**
+		 * The number of all flags that this group was created with
+		 * @return number of all flags that this group was created with
+		 */
 		public int size()
 		{
 			return numAllFlags;
 		}
+		
+		
+		/**
+		 * Converts this object to a ; delimited string
+		 * @return a ; delimited representation of this object.
+		 */
 		@Override
 		public String toString()
 		{
 			return toString(';');
 		}
+		
+		/**
+		 * Returns an exact copy of this object.
+		 * @return an exact copy of this object.
+		 */
 		public SecGroup copyOf()
 		{
 			return new SecGroup(name,new SHashSet<SecFlag>(flags),new SVector<SecGroup>(groups),new SVector<SecPath>(paths),new SHashSet<String>(jFlags));
 		}
+		
+		/**
+		 * Converts this group object to a delimited string
+		 * @param separatorChar the delimiter
+		 * @return  this group object to a delimited string
+		 */
 		public String toString(char separatorChar)
 		{
 			final StringBuilder str=new StringBuilder("");
@@ -1174,7 +1812,15 @@ public class CMSecurity
 				return str.toString().substring(0,str.length()-1);
 			return "";
 		}
-		public Iterator<SecPath> paths(){return new Iterator<SecPath>()
+		
+		/**
+		 * Returns an iterator of all file paths that this group
+		 * has special access to, including those of subgroups.
+		 * @return an iterator of all file paths
+		 */
+		public Iterator<SecPath> paths()
+		{
+			return new Iterator<SecPath>()
 			{
 				Iterator<SecPath>  p=null;
 				Iterator<SecGroup> g=null;
@@ -1211,7 +1857,15 @@ public class CMSecurity
 				@Override public void remove() {}
 			};
 		}
-		public Iterator<SecFlag> flags(){return new Iterator<SecFlag>()
+		
+		/**
+		 * Returns an iterator through all the security flags that this group
+		 * has access to, including all subgroups.
+		 * @return an iterator through all the security flags in this group
+		 */
+		public Iterator<SecFlag> flags()
+		{
+			return new Iterator<SecFlag>()
 			{
 				Iterator<SecFlag>  p=null;
 				Iterator<SecGroup> g=null;
@@ -1250,49 +1904,94 @@ public class CMSecurity
 		}
 	}
 
+	/**
+	 * Predefined security group set containing security flags related to the ability
+	 * to copy existing mobs, items, and rooms around when building rooms and areas.
+	 */
 	public static final SecGroup SECURITY_COPY_GROUP=new SecGroup(new SecFlag[]{
-			SecFlag.COPY, SecFlag.COPYITEMS, SecFlag.COPYMOBS, SecFlag.COPYROOMS,
+		SecFlag.COPY, SecFlag.COPYITEMS, SecFlag.COPYMOBS, SecFlag.COPYROOMS,
 
-			SecFlag.AREA_COPY, SecFlag.AREA_COPYITEMS, SecFlag.AREA_COPYMOBS, SecFlag.AREA_COPYROOMS
+		SecFlag.AREA_COPY, SecFlag.AREA_COPYITEMS, SecFlag.AREA_COPYMOBS, SecFlag.AREA_COPYROOMS
 	});
 
+	/**
+	 * Predefined security group set containing security flags related to the ability to jump
+	 * around on the map freely.
+	 */
 	public static final SecGroup SECURITY_GOTO_GROUP=new SecGroup(new SecFlag[]{
-			SecFlag.GOTO,
+		SecFlag.GOTO,
 
-			SecFlag.AREA_GOTO
+		SecFlag.AREA_GOTO
 	});
 
+	/**
+	 * Predefined security group set containing security flags related to the ability to
+	 * instantly kill other mobs and players.
+	 */
 	public static final SecGroup SECURITY_KILL_GROUP=new SecGroup(new SecFlag[]{
-			SecFlag.KILL, SecFlag.KILLDEAD,
+		SecFlag.KILL, SecFlag.KILLDEAD,
 
-			SecFlag.AREA_KILL, SecFlag.AREA_KILLDEAD,
+		SecFlag.AREA_KILL, SecFlag.AREA_KILLDEAD,
 	});
 
+	/**
+	 * Predefined security group set containing security flags related to the ability to import
+	 * mobs, items, players, and rooms from local files into the map.
+	 */
 	public static final SecGroup SECURITY_IMPORT_GROUP=new SecGroup(new SecFlag[]{
-			SecFlag.IMPORT, SecFlag.IMPORTITEMS, SecFlag.IMPORTMOBS, SecFlag.IMPORTPLAYERS,
-			SecFlag.IMPORTROOMS,
+		SecFlag.IMPORT, SecFlag.IMPORTITEMS, SecFlag.IMPORTMOBS, SecFlag.IMPORTPLAYERS,
+		SecFlag.IMPORTROOMS,
 
-			SecFlag.AREA_IMPORT, SecFlag.AREA_IMPORTITEMS, SecFlag.AREA_IMPORTMOBS,
-			SecFlag.AREA_IMPORTPLAYERS,	SecFlag.AREA_IMPORTROOMS,
+		SecFlag.AREA_IMPORT, SecFlag.AREA_IMPORTITEMS, SecFlag.AREA_IMPORTMOBS,
+		SecFlag.AREA_IMPORTPLAYERS,	SecFlag.AREA_IMPORTROOMS,
 	});
 
+	/**
+	 * Predefined security group set containing security flags related to the ability to export 
+	 * mobs, items, players, and rooms to a local file.
+	 */
 	public static final SecGroup SECURITY_EXPORT_GROUP=new SecGroup(new SecFlag[]{
-			SecFlag.EXPORT, SecFlag.EXPORTFILE, SecFlag.EXPORTPLAYERS,
+		SecFlag.EXPORT, SecFlag.EXPORTFILE, SecFlag.EXPORTPLAYERS,
 
-			SecFlag.AREA_EXPORT, SecFlag.AREA_EXPORTFILE, SecFlag.AREA_EXPORTPLAYERS
+		SecFlag.AREA_EXPORT, SecFlag.AREA_EXPORTFILE, SecFlag.AREA_EXPORTPLAYERS
 	});
 
+	/**
+	 * Predefined security group set containing security flags related to the creation, 
+	 * modification, and destruction of most subsystems, including basic map editing abilities.
+	 */
 	public static final SecGroup SECURITY_CMD_GROUP=new SecGroup(new SecFlag[]{
-			SecFlag.CMD, SecFlag.CMDABILITIES, SecFlag.CMDAREAS, SecFlag.CMDCLANS, SecFlag.CMDCLASSES,
-			SecFlag.CMDEXITS, SecFlag.CMDFACTIONS, SecFlag.CMDITEMS, SecFlag.CMDMOBS, SecFlag.CMDPLAYERS,
-			SecFlag.CMDQUESTS, SecFlag.CMDRACES, SecFlag.CMDRECIPES, SecFlag.CMDROOMS, SecFlag.CMDSOCIALS,
+		SecFlag.CMD, SecFlag.CMDABILITIES, SecFlag.CMDAREAS, SecFlag.CMDCLANS, SecFlag.CMDCLASSES,
+		SecFlag.CMDEXITS, SecFlag.CMDFACTIONS, SecFlag.CMDITEMS, SecFlag.CMDMOBS, SecFlag.CMDPLAYERS,
+		SecFlag.CMDQUESTS, SecFlag.CMDRACES, SecFlag.CMDRECIPES, SecFlag.CMDROOMS, SecFlag.CMDSOCIALS,
 
-			SecFlag.AREA_CMD, SecFlag.AREA_CMDABILITIES, SecFlag.AREA_CMDAREAS, SecFlag.AREA_CMDCLANS,
-			SecFlag.AREA_CMDCLASSES, SecFlag.AREA_CMDEXITS, SecFlag.AREA_CMDFACTIONS, SecFlag.AREA_CMDITEMS,
-			SecFlag.AREA_CMDMOBS, SecFlag.AREA_CMDPLAYERS, SecFlag.AREA_CMDQUESTS, SecFlag.AREA_CMDRACES,
-			SecFlag.AREA_CMDRECIPES, SecFlag.AREA_CMDROOMS, SecFlag.AREA_CMDSOCIALS
+		SecFlag.AREA_CMD, SecFlag.AREA_CMDABILITIES, SecFlag.AREA_CMDAREAS, SecFlag.AREA_CMDCLANS,
+		SecFlag.AREA_CMDCLASSES, SecFlag.AREA_CMDEXITS, SecFlag.AREA_CMDFACTIONS, SecFlag.AREA_CMDITEMS,
+		SecFlag.AREA_CMDMOBS, SecFlag.AREA_CMDPLAYERS, SecFlag.AREA_CMDQUESTS, SecFlag.AREA_CMDRACES,
+		SecFlag.AREA_CMDRECIPES, SecFlag.AREA_CMDROOMS, SecFlag.AREA_CMDSOCIALS
 	});
+	
+	/**
+	 * Save flags enum, for either turning off things that are normally saved to the database periodically, or
+	 * turning on things that are not normally saved so that they do so.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum SaveFlag
+	{
+		NOPLAYERS,
+		NOPROPERTYMOBS,
+		NOPROPERTYITEMS,
+		ROOMMOBS,
+		ROOMSHOPS,
+		ROOMITEMS
+	}
 
+	/**
+	 * This enum represents all permitted DEBUG flags.  Each flag represents a feature or 
+	 * subsystem which can generate extra logging, typically on the DEBUG logging channel.
+	 * @author Bo Zimmerman
+	 */
 	public static enum DbgFlag
 	{
 		PROPERTY("room ownership"), 
@@ -1350,6 +2049,12 @@ public class CMSecurity
 		public String description() { return desc;}
 	}
 
+	/**
+	 * The enum that represents all the defined DISABLE flags.  These typically represents 
+	 * features or subsystems that are allowed to be "turned off" in configuration. 
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static enum DisFlag
 	{
 		LEVELS("player leveling"), 

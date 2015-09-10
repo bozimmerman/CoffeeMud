@@ -163,7 +163,10 @@ public class ControlPanel extends StdWebMacro
 			if((field==null)||(field.length()==0))
 				return "";
 			final String value=parms.get("VALUE");
-			CMSecurity.setDisableVar(field,((value!=null)&&(value.equalsIgnoreCase("on"))));
+			if((value!=null)&&(value.equalsIgnoreCase("on"))) // on means remove?!
+				CMSecurity.removeAnyDisableVar(field);
+			else
+				CMSecurity.setAnyDisableVar(field);
 			return "";
 		}
 		else
@@ -173,7 +176,22 @@ public class ControlPanel extends StdWebMacro
 			if((field==null)||(field.length()==0))
 				return "";
 			final String value=parms.get("VALUE");
-			final DbgFlag flag = CMSecurity.setDebugVar(field,((value!=null)&&(value.equalsIgnoreCase("on"))));
+			DbgFlag flag = null;
+			if((value!=null)&&(value.equalsIgnoreCase("on")))
+			{
+				if(CMSecurity.removeDebugVar(field))
+				{
+					flag=(DbgFlag)CMath.s_valueOf(DbgFlag.class, field.toUpperCase().trim());
+				}
+			}
+			else
+			{
+				if(CMSecurity.setDebugVar(field))
+				{
+					flag=(DbgFlag)CMath.s_valueOf(DbgFlag.class, field.toUpperCase().trim());
+				}
+			}
+			
 			if((Thread.currentThread() instanceof CWThread)
 			&&((flag==DbgFlag.HTTPACCESS)||(flag==DbgFlag.HTTPREQ)))
 			{

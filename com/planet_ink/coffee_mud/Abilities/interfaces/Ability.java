@@ -663,7 +663,7 @@ public interface Ability extends Environmental
 		"TECH SKILL"
 	};
 	/** array of string describtions for the ACODE_* constants, indexed by their values, with _ where spaces would be */
-	public static final String[] ACODE_DESCS_= CMStrings.replaceInAll(ACODE_DESCS," ","_");
+	public static final String[] ACODE_DESCS_= CMStrings.replaceInAll(ACODE_DESCS.clone()," ","_");
 
 	/** constant mask returned by classificationCode() designating this ability as being Divination @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int DOMAIN_DIVINATION=1<<5;

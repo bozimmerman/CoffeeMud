@@ -1088,7 +1088,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 									CMLib.database().DBUpdatePlayerMOBOnly(M);
 							}
 						autoPurge();
-						if(!CMSecurity.isSaveFlag("NOPLAYERS"))
+						if(!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS))
 							savePlayers();
 						setThreadStatus(serviceClient,"not saving players");
 					}
