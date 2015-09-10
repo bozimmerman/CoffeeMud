@@ -30,7 +30,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 */
 /**
  * A singleton of String utilities, string searchers, string builders,
- * and comparers.
+ * comparers, and alterers.
  * Also includes my String comparison expression parser and evaluator.
  * Also includes an adaptation of google's string differencer.
  * @author Bo Zimmerman
@@ -39,13 +39,35 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 public class CMStrings
 {
 	private CMStrings(){super();}
+	
+	/**
+	 * A string array with 0 entries
+	 */
 	public final static String[] emptyStringArray=new String[0];
 
 	private static CMStrings inst=new CMStrings();
-	public final static CMStrings instance(){return inst;}
+	
+	/**
+	 * Returns a static instance of this singleton
+	 * @return a static instance of this singleton
+	 */
+	public final static CMStrings instance()
+	{
+		return inst;
+	}
 
+	/**
+	 * 1024 spaces
+	 */
 	public final static String SPACES=repeat(' ',1024);
 
+	/**
+	 * Builds a string consisting entirely of the given String,
+	 * the given number of times in a row.
+	 * @param str1 the String to repeat
+	 * @param times the size of the string
+	 * @return a string of those Strings
+	 */
 	public final static String repeat(final String str1, final int times)
 	{
 		if(times<=0)
@@ -56,6 +78,13 @@ public class CMStrings
 		return str.toString();
 	}
 
+	/**
+	 * Builds a string consisting entirely of the given character,
+	 * the given number of times in a row.
+	 * @param chr1 the character to repeat
+	 * @param times the size of the string
+	 * @return a string of those characters
+	 */
 	public final static String repeat(final char chr1, final int times)
 	{
 		if(times<=0)
@@ -67,6 +96,15 @@ public class CMStrings
 		return new String(buf);
 	}
 
+	/**
+	 * Builds a string consisting entirely of the given character,
+	 * the given number of times in a row.  If the number of times
+	 * is higher than a given limit, then an "x" and a number of extra
+	 * times over the limit is added.
+	 * @param chr1 the character to repeat
+	 * @param times the size of the string
+	 * @return a string of those characters
+	 */
 	public final static String repeatWithLimit(final char chr1, final int times, final int limit)
 	{
 		if(times<=0)
@@ -80,6 +118,12 @@ public class CMStrings
 		return new String(buf);
 	}
 
+	/**
+	 * Returns true if the given string is in uppercase, meaning it
+	 * has no lowercase characters.
+	 * @param str the string to check
+	 * @return true if the string is in uppercase, false otherwise
+	 */
 	public final static boolean isUpperCase(final String str)
 	{
 		if(str==null)
@@ -90,6 +134,12 @@ public class CMStrings
 		return true;
 	}
 
+	/**
+	 * Returns true if the given string is in lowercase, meaning it
+	 * has no uppercase characters.
+	 * @param str the string to check
+	 * @return true if the string is in lowercase, false otherwise
+	 */
 	public final static boolean isLowerCase(final String str)
 	{
 		if(str==null)
@@ -100,6 +150,12 @@ public class CMStrings
 		return true;
 	}
 
+	/**
+	 * Returns the given string in uppercase, or "" if the string
+	 * was null.
+	 * @param str the string, or null
+	 * @return the string in uppercase, or "" if null
+	 */
 	public final static String s_uppercase(final String str)
 	{
 		if(str==null)
@@ -107,6 +163,12 @@ public class CMStrings
 		return str.toUpperCase();
 	}
 
+	/**
+	 * Returns the given string in lowercase, or "" if the string
+	 * was null.
+	 * @param str the string, or null
+	 * @return the string in lowercase, or "" if null
+	 */
 	public final static String s_lowercase(final String str)
 	{
 		if(str==null)
@@ -114,6 +176,13 @@ public class CMStrings
 		return str.toLowerCase();
 	}
 
+	/**
+	 * Puts a period at the end of the last viewable character in this string,
+	 * assuming there isn't already punctuation at the end.  Preserves any
+	 * trailing special color codes.
+	 * @param str the string to end with a period.
+	 * @return the string, with a period at the end.
+	 */
 	public final static String endWithAPeriod(final String str)
 	{
 		if((str==null)||(str.length()==0))
@@ -132,6 +201,16 @@ public class CMStrings
 		return str.substring(0,x+1)+". "+str.substring(x+1).trim();
 	}
 
+	/**
+	 * Converts the given object to a string by the following method:
+	 * 1. If it's a string, returns the string
+	 * 2. If it's a byte array, returns it as a string decoded using
+	 *    the current threads CHARSETINPUT from the system properties
+	 * 3. If it's non-null, it calls toString()
+	 * 4. Returns ""
+	 * @param b the object to inspect
+	 * @return the string
+	 */
 	public final static String bytesToStr(final Object b)
 	{
 		if(b instanceof String)
@@ -145,6 +224,12 @@ public class CMStrings
 		return "";
 	}
 
+	/**
+	 * Converts the given byte array back into a string using the current
+	 * threads CHARSETINPUT string encoding from the system properties. 
+	 * @param b the byte array to decode
+	 * @return the string representation of the byte array
+	 */
 	public final static String bytesToStr(final byte[] b)
 	{
 		if(b==null)
@@ -159,6 +244,12 @@ public class CMStrings
 		}
 	}
 
+	/**
+	 * Converts the given string to bytes using the current threads CHARSETINPUT
+	 * string encoding from the system properties.
+	 * @param str the string to encode
+	 * @return the string, encoded into bytes from the 
+	 */
 	public final static byte[] strToBytes(final String str)
 	{
 		try
@@ -171,11 +262,24 @@ public class CMStrings
 		}
 	}
 
+	/**
+	 * Returns true if the given character is a vowel AEIOU, or false otherwise.
+	 * This check is case-insensitive
+	 * @param c the character to look at
+	 * @return true if the character is a vowel, false otherwise
+	 */
 	public final static boolean isVowel(final char c)
 	{
-		return (("aeiou").indexOf(Character.toLowerCase(c))>=0);
+		return (("aeiouAEIOU").indexOf(c)>=0);
 	}
 
+	/**
+	 * Returns the next index in the given string of an end-of-word character,
+	 * such as space,.;? or !.  It returns that index. 
+	 * @param s the string to look inside of
+	 * @param startWith the starting index for the search
+	 * @return the index of the end-of-word char, or string length for no more
+	 */
 	public final static int indexOfEndOfWord(String s, int startWith)
 	{
 		if((s==null)||(startWith>=s.length())||(startWith<0))
@@ -191,6 +295,11 @@ public class CMStrings
 		return s.length();
 	}
 
+	/**
+	 * Returns the character index of the last vowel in this string
+	 * @param s the string to look in
+	 * @return the index of the last vowel
+	 */
 	public final static int indexOfLastVowel(final String s)
 	{
 		if(s==null)
@@ -203,6 +312,16 @@ public class CMStrings
 		return -1;
 	}
 
+	/**
+	 * Attempts to make the given string only as long as the given length
+	 * by first removing all spaces, and then removing all vowels, and
+	 * finally just truncating it at the end.  No special accomodations
+	 * are made about these strings -- they are assumed to be uncoded ascii.
+	 * @param s the string to scrunch
+	 * @param len the maximum length of the string
+	 * @return the scrunches string, or the whole string, if < len
+	 */
+	
 	public final static String scrunchWord(String s, final int len)
 	{
 		if(s.length()<=len)
@@ -225,6 +344,12 @@ public class CMStrings
 		return s;
 	}
 
+	/**
+	 * Returns the value of any digits at the end of the given string.
+	 * If no digits are found, returns -1.
+	 * @param s the string to look for digits at the end of
+	 * @return the value of any trailing digits, or -1
+	 */
 	public final static int finalDigits(String s)
 	{
 		if((s==null)||(s.length()==0))
@@ -240,6 +365,15 @@ public class CMStrings
 			return Integer.parseInt(s.substring(x));
 	}
 
+	/**
+	 * This strange method parses the given string for one of the characters in the given
+	 * array.  Whenever one of the characters is encountered, a Map Entry where the splitter
+	 * is the key and the preceding characters are the split string is added to a final array
+	 * of map entries.
+	 * @param str the string to parse
+	 * @param splitters the delimiters, and also the keys to the map.entry
+	 * @return an array of all key/delimiters and the preceiding characters.
+	 */
 	@SuppressWarnings("unchecked")
 	public final static Map.Entry<Character,String>[] splitMulti(final String str, char[] splitters)
 	{
@@ -275,6 +409,14 @@ public class CMStrings
 		return list.toArray(new Map.Entry[0]);
 	}
 
+	/**
+	 * Returns whether the given string contains the second string, without any following
+	 * letter, which is the CMStrings definition of a "word".  This check is case
+	 * in-sensitive.
+	 * @param thisStr the string to look in
+	 * @param word the string/word to look for
+	 * @return true if the word is in the string, and false otherwise
+	 */
 	public final static boolean containsWordIgnoreCase(final String thisStr, final String word)
 	{
 		if((thisStr==null)
@@ -285,6 +427,14 @@ public class CMStrings
 		return containsWord(thisStr.toLowerCase(),word.toLowerCase());
 	}
 
+	/**
+	 * Returns whether the given string contains the second string, without any following
+	 * letter, which is the CMStrings definition of a "word".  This check is case
+	 * sensitive.
+	 * @param thisStr the string to look in
+	 * @param word the string/word to look for
+	 * @return true if the word is in the string, and false otherwise
+	 */
 	public final static boolean containsWord(final String thisStr, final String word)
 	{
 		if((thisStr==null)
@@ -297,7 +447,7 @@ public class CMStrings
 			if((thisStr.charAt(i)==word.charAt(0))
 			&&((i==0)||(!Character.isLetter(thisStr.charAt(i-1)))))
 			{
-				if((thisStr.substring(i).startsWith(word.toLowerCase()))
+				if((thisStr.substring(i).startsWith(word))
 				&&((thisStr.length()==i+word.length())||(!Character.isLetter(thisStr.charAt(i+word.length())))))
 				{
 					return true;
@@ -307,6 +457,14 @@ public class CMStrings
 		return false;
 	}
 
+	/**
+	 * Rebuilds the given string by replacing any instances of any of the characters
+	 * in the given array with the given character.  The search is case-sensitive.
+	 * @param str the string to rebuild without those characters
+	 * @param theseChars the characters to remove from the string
+	 * @param with the character to replace all the array characters with.
+	 * @return the rebuilt string, with all those characters replaced
+	 */
 	public final static String replaceAllofAny(final String str, final char[] theseChars, final char with)
 	{
 		if((str==null)
@@ -325,6 +483,13 @@ public class CMStrings
 		return new String(newChars);
 	}
 
+	/**
+	 * Rebuilds the given string by deleting any instances of any of the characters
+	 * in the given array.  The search is case-sensitive.
+	 * @param str the string to rebuild without those characters
+	 * @param theseChars the characters to remove from the string
+	 * @return the rebuilt string, without the characters
+	 */
 	public final static String deleteAllofAny(final String str, final char[] theseChars)
 	{
 		if((str==null)
@@ -343,6 +508,15 @@ public class CMStrings
 		return buf.toString();
 	}
 
+	/**
+	 * Finds all instances of the second parameter string in the first string,
+	 * replaces them with the third word.  Returns the string with or without changes. 
+	 * The search is case sensitive
+	 * @param str the string to look inside of
+	 * @param thisStr the string to look for inside the first string
+	 * @param withThisStr the string to replace the second string with, where found.
+	 * @return the string modified, or not modified if no replacements were made.
+	 */
 	public final static String replaceAll(String str, final String thisStr, final String withThisStr)
 	{
 		if((str==null)
@@ -366,6 +540,15 @@ public class CMStrings
 		return str;
 	}
 
+	/**
+	 * Finds all instances of the second parameter string in each of the strings in the array,
+	 * replaces them with the third word.  Returns the string array with or without changes. 
+	 * The search is case sensitive
+	 * @param strs the string array to look inside of
+	 * @param thisStr the string to look for inside the array strings
+	 * @param withThisStr the string to replace the second string with, where found.
+	 * @return the string array modified, or not modified if no replacements were made.
+	 */
 	public final static String[] replaceInAll(String[] strs, final String thisStr, final String withThisStr)
 	{
 		if((strs==null)
