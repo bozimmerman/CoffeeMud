@@ -101,37 +101,148 @@ public class DefaultLawSet implements Law
 		resetLaw(laws);
 	}
 
-	@Override public List<List<String>> otherCrimes() { return otherCrimes;}
-	@Override public List<String[]> otherBits() { return otherBits;}
-	@Override public List<List<String>> bannedSubstances() { return bannedSubstances;}
-	@Override public List<String[]> bannedBits() { return bannedBits;}
-	@Override public Map<String,String[]> abilityCrimes(){ return abilityCrimes;}
-	@Override public Map<String,String[]> basicCrimes(){ return basicCrimes;}
-	@Override public Map<String, Object> taxLaws(){return taxLaws;}
+	@Override 
+	public List<List<String>> otherCrimes() 
+	{ 
+		return otherCrimes;
+	}
+	
+	@Override 
+	public List<String[]> otherBits() 
+	{ 
+		return otherBits;
+	}
+	
+	@Override 
+	public List<List<String>> bannedSubstances() 
+	{ 
+		return bannedSubstances;
+	}
+	
+	@Override 
+	public List<String[]> bannedBits() 
+	{ 
+		return bannedBits;
+	}
+	
+	@Override 
+	public Map<String,String[]> abilityCrimes()
+	{ 
+		return abilityCrimes;
+	}
+	
+	@Override 
+	public Map<String,String[]> basicCrimes()
+	{ 
+		return basicCrimes;
+	}
+	
+	@Override 
+	public Map<String, Object> taxLaws()
+	{
+		return taxLaws;
+	}
 
-	@Override public boolean hasModifiableNames(){return namesModifiable;}
-	@Override public boolean hasModifiableLaws(){return lawsModifiable;}
+	@Override
+	public boolean hasModifiableNames()
+	{
+		return namesModifiable;
+	}
+	
+	@Override 
+	public boolean hasModifiableLaws()
+	{
+		return lawsModifiable;
+	}
 
-	@Override public List<String> chitChat(){ return chitChat;}
-	@Override public List<String> chitChat2(){ return chitChat2;}
-	@Override public List<String> chitChat3(){ return chitChat3;}
-	@Override public List<String> jailRooms(){ return jailRooms;}
-	@Override public List<String> releaseRooms(){ return releaseRooms;}
-	@Override public List<String> officerNames(){ return officerNames;}
-	@Override public List<String> judgeNames(){ return judgeNames;}
-	@Override public String[] messages(){ return messages;}
+	@Override 
+	public List<String> chitChat()
+	{ 
+		return chitChat;
+	}
+	
+	@Override 
+	public List<String> chitChat2()
+	{ 
+		return chitChat2;
+	}
+	
+	@Override 
+	public List<String> chitChat3()
+	{ 
+		return chitChat3;
+	}
+	
+	@Override 
+	public List<String> jailRooms()
+	{ 
+		return jailRooms;
+	}
+	
+	@Override 
+	public List<String> releaseRooms()
+	{ 
+		return releaseRooms;
+	}
+	
+	@Override 
+	public List<String> officerNames()
+	{ 
+		return officerNames;
+	}
+	
+	@Override 
+	public List<String> judgeNames()
+	{ 
+		return judgeNames;
+	}
+	
+	@Override 
+	public String[] messages()
+	{ 
+		return messages;
+	}
 
-	@Override public List<LegalWarrant> oldWarrants(){ return oldWarrants;}
-	@Override public List<LegalWarrant> warrants(){ return warrants;}
+	@Override 
+	public List<LegalWarrant> oldWarrants()
+	{ 
+		return oldWarrants;
+	}
+	
+	@Override 
+	public List<LegalWarrant> warrants()
+	{ 
+		return warrants;
+	}
 
-	@Override public boolean arrestMobs(){ return arrestMobs;}
+	@Override public boolean arrestMobs()
+	{ 
+		return arrestMobs;
+	}
 
-	@Override public String[] paroleMessages(){ return paroleMessages;}
-	@Override public Integer[] paroleTimes(){ return paroleTimes;}
+	@Override 
+	public String[] paroleMessages()
+	{ 
+		return paroleMessages;
+	}
+	
+	@Override 
+	public Integer[] paroleTimes()
+	{ 
+		return paroleTimes;
+	}
 
-	@Override public String[] jailMessages(){ return jailMessages;}
-	@Override public Integer[] jailTimes(){ return jailTimes;}
-
+	@Override 
+	public String[] jailMessages()
+	{ 
+		return jailMessages;
+	}
+	
+	@Override 
+	public Integer[] jailTimes()
+	{ 
+		return jailTimes;
+	}
 
 	@Override
 	public void changeStates(LegalWarrant W, int state)
@@ -323,6 +434,7 @@ public class DefaultLawSet implements Law
 						&&(evasionBits!=null)
 						&&(evasionBits[Law.BIT_CRIMENAME].length()>0)
 						&&(responsibleMob!=null))
+						{
 							legalDetails.fillOutWarrant(responsibleMob,
 													   this,
 													   A,
@@ -332,6 +444,7 @@ public class DefaultLawSet implements Law
 													   evasionBits[Law.BIT_CRIMENAME],
 													   evasionBits[Law.BIT_SENTENCE],
 													   evasionBits[Law.BIT_WARNMSG]);
+						}
 					}
 					else
 					{
@@ -373,7 +486,7 @@ public class DefaultLawSet implements Law
 	public String getMessage(int which)
 	{
 		if((which>=0)&&(which<messages.length)&&(messages[which]!=null))
-		   return messages[which];
+			return messages[which];
 		return "";
 	}
 	@Override
@@ -382,7 +495,7 @@ public class DefaultLawSet implements Law
 		if((which>=0)
 		&&(which<paroleMessages.length)
 		&&(paroleMessages[which]!=null))
-		   return paroleMessages[which];
+			return paroleMessages[which];
 		return "";
 	}
 	@Override
@@ -391,7 +504,7 @@ public class DefaultLawSet implements Law
 		if((which>=0)
 		&&(which<paroleTimes.length)
 		&&(paroleTimes[which]!=null))
-		   return paroleTimes[which].intValue();
+			return paroleTimes[which].intValue();
 		return 0;
 	}
 	@Override
@@ -400,7 +513,7 @@ public class DefaultLawSet implements Law
 		if((which>=0)
 		&&(which<jailMessages.length)
 		&&(jailMessages[which]!=null))
-		   return jailMessages[which];
+			return jailMessages[which];
 		return "";
 	}
 	@Override
@@ -409,7 +522,7 @@ public class DefaultLawSet implements Law
 		if((which>=0)
 		&&(which<jailTimes.length)
 		&&(jailTimes[which]!=null))
-		   return jailTimes[which].intValue();
+			return jailTimes[which].intValue();
 		return 0;
 	}
 
@@ -551,10 +664,16 @@ public class DefaultLawSet implements Law
 					final String[] bits=new String[Law.BIT_NUMBITS];
 					final List<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
 					for(int i=0;i<Law.BIT_NUMBITS;i++)
+					{
 						if(i<parsed.size())
+						{
 							bits[i]=parsed.get(i);
+						}
 						else
+						{
 							bits[i]="";
+						}
+					}
 					otherBits.add(bits);
 				}
 				else
@@ -564,16 +683,28 @@ public class DefaultLawSet implements Law
 					final String[] bits=new String[Law.BIT_NUMBITS];
 					final List<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
 					for(int i=0;i<Law.BIT_NUMBITS;i++)
+					{
 						if(i<parsed.size())
+						{
 							bits[i]=parsed.get(i);
+						}
 						else
+						{
 							bits[i]="";
+						}
+					}
 					bannedBits.add(bits);
 				}
 				else
 				if((key.startsWith("$")&&(CMClass.getAbility(key.substring(1))!=null))
-				||(CMClass.getAbility(key)!=null))
+				||(CMClass.getAbility(key)!=null)
+				||(CMParms.containsIgnoreCase(Ability.ACODE_DESCS_,key))
+				||(key.startsWith("$")&&CMParms.containsIgnoreCase(Ability.ACODE_DESCS_,key.substring(1)))
+				||(CMParms.containsIgnoreCase(Ability.DOMAIN_DESCS,key))
+				||(key.startsWith("$")&&CMParms.containsIgnoreCase(Ability.DOMAIN_DESCS,key.substring(1))))
+				{
 					abilityCrimes.put(key.toUpperCase(),getInternalBits(words));
+				}
 			}
 		}
 	}
@@ -600,10 +731,12 @@ public class DefaultLawSet implements Law
 		final String[] bits=new String[Law.BIT_NUMBITS];
 		final List<String> parsed=CMParms.parseSemicolons(bitStr,false);
 		for(int i=0;i<Law.BIT_NUMBITS;i++)
+		{
 			if(i<parsed.size())
 				bits[i]=parsed.get(i);
 			else
 				bits[i]="";
+		}
 		return bits;
 	}
 

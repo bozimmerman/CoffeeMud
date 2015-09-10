@@ -352,13 +352,22 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				for (final String brokenLaw : acquittableLaws)
 				{
 					if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) !=null))
-					{   info=laws.basicCrimes().get(brokenLaw);   break; }
+					{
+						info=laws.basicCrimes().get(brokenLaw);
+						break; 
+					}
 					else
 					if((laws.taxLaws().containsKey(brokenLaw))&&(laws.taxLaws().get(brokenLaw) instanceof String[]))
-					{   info=(String[])laws.taxLaws().get(brokenLaw);   break; }
+					{
+						info=(String[])laws.taxLaws().get(brokenLaw);
+						break; 
+					}
 					else
 					if((laws.abilityCrimes().containsKey(brokenLaw))&&(laws.abilityCrimes().get(brokenLaw) !=null))
-					{   info=laws.abilityCrimes().get(brokenLaw);   break; }
+					{
+						info=laws.abilityCrimes().get(brokenLaw);
+						break; 
+					}
 				}
 				if(info==null)
 					return false;
@@ -441,7 +450,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		loadAttempt=false;
 	}
 
-	protected boolean defaultModifiableNames(){return true;}
+	protected boolean defaultModifiableNames()
+	{
+		return true;
+	}
 
 	@Override
 	public List<String> externalFiles()
@@ -1842,12 +1854,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if((msg.tool() instanceof Ability)
 		&&(msg.othersMessage()!=null)
 		&&((laws.abilityCrimes().containsKey(msg.tool().ID().toUpperCase()))
-			||(laws.abilityCrimes().containsKey(CMLib.flags().getAbilityType((Ability)msg.tool())))
+			||(laws.abilityCrimes().containsKey(CMLib.flags().getAbilityType_((Ability)msg.tool())))
 			||(laws.abilityCrimes().containsKey(CMLib.flags().getAbilityDomain((Ability)msg.tool())))))
 		{
 			String[] info=laws.abilityCrimes().get(msg.tool().ID().toUpperCase());
 			if(info==null)
-				info=laws.abilityCrimes().get(CMLib.flags().getAbilityType((Ability)msg.tool()));
+				info=laws.abilityCrimes().get(CMLib.flags().getAbilityType_((Ability)msg.tool()));
 			if(info==null)
 				info=laws.abilityCrimes().get(CMLib.flags().getAbilityDomain((Ability)msg.tool()));
 			fillOutWarrant(msg.source(),
@@ -1868,12 +1880,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			&&(!A.isAutoInvoked())
 			&&((A.canBeUninvoked()||(!msg.source().isMonster())))
 			&&((laws.abilityCrimes().containsKey("$"+A.ID().toUpperCase()))
-				||(laws.abilityCrimes().containsKey("$"+CMLib.flags().getAbilityType(A)))
+				||(laws.abilityCrimes().containsKey("$"+CMLib.flags().getAbilityType_(A)))
 				||(laws.abilityCrimes().containsKey("$"+CMLib.flags().getAbilityDomain(A)))))
 			{
 				String[] info=laws.abilityCrimes().get("$"+A.ID().toUpperCase());
 				if(info==null)
-					info=laws.abilityCrimes().get("$"+CMLib.flags().getAbilityType(A));
+					info=laws.abilityCrimes().get("$"+CMLib.flags().getAbilityType_(A));
 				if(info==null)
 					info=laws.abilityCrimes().get("$"+CMLib.flags().getAbilityDomain(A));
 				fillOutWarrant(msg.source(),

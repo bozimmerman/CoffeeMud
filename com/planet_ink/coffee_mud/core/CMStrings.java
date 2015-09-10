@@ -332,12 +332,47 @@ public class CMStrings
 		||(withThisStr==null)
 		||(str.length()==0)
 		||(thisStr.length()==0))
+		{
 			return str;
+		}
 		for(int i=str.length()-1;i>=0;i--)
+		{
 			if(str.charAt(i)==thisStr.charAt(0))
+			{
 				if(str.substring(i).startsWith(thisStr))
+				{
 					str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+				}
+			}
+		}
 		return str;
+	}
+
+	public final static String[] replaceInAll(String[] strs, final String thisStr, final String withThisStr)
+	{
+		if((strs==null)
+		||(thisStr==null)
+		||(withThisStr==null)
+		||(strs.length==0)
+		||(thisStr.length()==0))
+		{
+			return strs;
+		}
+		for(int s=0;s<strs.length;s++)
+		{
+			final String str=strs[s];
+			for(int i=str.length()-1;i>=0;i--)
+			{
+				if(str.charAt(i)==thisStr.charAt(0))
+				{
+					if(str.substring(i).startsWith(thisStr))
+					{
+						strs[s]=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+					}
+				}
+			}
+		}
+		return strs;
 	}
 
 	public final static String replaceAlls(String str, final String pairs[][])

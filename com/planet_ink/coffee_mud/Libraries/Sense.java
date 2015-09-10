@@ -1504,11 +1504,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isInTheGame(final Item E, final boolean reqInhabitation)
 	{
 		if(E.owner() instanceof MOB)
+		{
 			return isInTheGame((MOB)E.owner(),reqInhabitation);
+		}
 		else
 		if(E.owner() instanceof Room)
+		{
 			return ((!E.amDestroyed())
 					&&((!reqInhabitation)||(((Room)E.owner()).isContent(E))));
+		}
 		return false;
 	}
 
@@ -1551,8 +1555,17 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	@Override public boolean isChild(Environmental E){ return isBaby(E)||((E instanceof MOB)&&(((MOB)E).isMonster())&&(isAgingThing((MOB)E)));}
-	@Override public boolean isBaby(Environmental E){ return ((E instanceof CagedAnimal)&&(isAgingThing((CagedAnimal)E)));}
+	@Override 
+	public boolean isChild(Environmental E)
+	{ 
+		return isBaby(E)||((E instanceof MOB)&&(((MOB)E).isMonster())&&(isAgingThing((MOB)E)));
+	}
+	
+	@Override 
+	public boolean isBaby(Environmental E)
+	{ 
+		return ((E instanceof CagedAnimal)&&(isAgingThing((CagedAnimal)E)));
+	}
 
 	@Override
 	public boolean stillAffectedBy(Physical obj, List<Ability> oneOf, boolean anyTallF)
@@ -1583,8 +1596,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		else
 		for(int i=0;i<PhyStats.IS_CODES.length;i++)
+		{
 			if(CMath.isSet(disposition,i))
 				buf.append(PhyStats.IS_CODES[i]+", ");
+		}
 		String buff=buf.toString();
 		if(buff.endsWith(", "))
 			buff=buff.substring(0,buff.length()-2).trim();
@@ -1603,8 +1618,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		else
 		for(int i=0;i<PhyStats.CAN_SEE_CODES.length;i++)
+		{
 			if(CMath.isSet(disposition,i))
 				buf.append(PhyStats.CAN_SEE_CODES[i]+", ");
+		}
 		String buff=buf.toString();
 		if(buff.endsWith(", "))
 			buff=buff.substring(0,buff.length()-2).trim();
@@ -1616,8 +1633,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		name=name.toUpperCase().trim();
 		for(int code=0;code<PhyStats.IS_CODES.length-1;code++)
+		{
 			if(PhyStats.IS_CODES[code].endsWith(name))
+			{
 				return code;
+			}
+		}
 		return -1;
 	}
 
@@ -1626,8 +1647,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		name=name.toUpperCase().trim();
 		for(int code=0;code<PhyStats.CAN_SEE_CODES.length-1;code++)
+		{
 			if(PhyStats.CAN_SEE_CODES[code].endsWith(name))
+			{
 				return code;
+			}
+		}
 		return -1;
 	}
 
@@ -1638,6 +1663,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return "";
 		return Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES];
 	}
+	
+	@Override
+	public String getAbilityType_(Ability A)
+	{
+		if(A==null)
+			return "";
+		return Ability.ACODE_DESCS_[A.classificationCode()&Ability.ALL_ACODES];
+	}
+	
 	@Override
 	public String getAbilityDomain(Ability A)
 	{
@@ -1645,6 +1679,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return "";
 		return Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5];
 	}
+	
 	@Override
 	public int getAbilityType(String name)
 	{
@@ -1653,6 +1688,16 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				return i;
 		return -1;
 	}
+	
+	@Override
+	public int getAbilityType_(String name)
+	{
+		for(int i=0;i<Ability.ACODE_DESCS_.length;i++)
+			if(name.equalsIgnoreCase(Ability.ACODE_DESCS_[i]))
+				return i;
+		return -1;
+	}
+	
 	@Override
 	public int getAbilityDomain(String name)
 	{

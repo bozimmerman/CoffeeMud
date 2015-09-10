@@ -655,12 +655,15 @@ public interface Ability extends Environmental
 	/** constant returned by classificationCode() designating this ability as a Tech-Only Skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int ALL_ACODES=31;
 	/** array of string describtions for the ACODE_* constants, indexed by their values */
-	public static final String[] ACODE_DESCS={
+	public static final String[] ACODE_DESCS=
+	{
 		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY",
 		"THIEF SKILL","LANGUAGE","CHANT","COMMON SKILL",
 		"DISEASE","POISON","SUPERPOWER","ARCHON SKILL",
 		"TECH SKILL"
 	};
+	/** array of string describtions for the ACODE_* constants, indexed by their values, with _ where spaces would be */
+	public static final String[] ACODE_DESCS_= CMStrings.replaceInAll(ACODE_DESCS," ","_");
 
 	/** constant mask returned by classificationCode() designating this ability as being Divination @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int DOMAIN_DIVINATION=1<<5;

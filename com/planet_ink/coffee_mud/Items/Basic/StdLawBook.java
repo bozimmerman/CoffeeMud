@@ -746,7 +746,7 @@ public class StdLawBook extends StdItem
 					continue;
 				final Ability AB=CMClass.getAbility(key);
 				if(((AB==null)
-					&&(CMLib.flags().getAbilityType(key)<0)
+					&&(CMLib.flags().getAbilityType_(key)<0)
 					&&(CMLib.flags().getAbilityDomain(key)<0))
 				||(set==null)
 				||(set.length<Law.BIT_NUMBITS))
@@ -780,7 +780,7 @@ public class StdLawBook extends StdItem
 					if(AB!=null)
 						s=AB.ID();
 					if((AB==null)
-					&&(CMLib.flags().getAbilityType(s)<0)
+					&&(CMLib.flags().getAbilityType_(s)<0)
 					&&(CMLib.flags().getAbilityDomain(s)<0))
 						mob.tell(L("That skill name or skill class is unknown."));
 					else
@@ -974,10 +974,11 @@ public class StdLawBook extends StdItem
 					continue;
 				final Ability AB=CMClass.getAbility(key.substring(1));
 				if(((AB==null)
-					&&(CMLib.flags().getAbilityType(key.substring(1))<0)
+					&&(CMLib.flags().getAbilityType_(key.substring(1))<0)
 					&&(CMLib.flags().getAbilityDomain(key.substring(1))<0))
 				||(set==null)
-				||(set.length<Law.BIT_NUMBITS)) continue;
+				||(set.length<Law.BIT_NUMBITS)) 
+					continue;
 				filteredTable.put(key,set);
 			}
 			int highest=0;
@@ -1007,7 +1008,7 @@ public class StdLawBook extends StdItem
 					if(AB!=null)
 						s=AB.ID();
 					if((AB==null)
-					&&(CMLib.flags().getAbilityType(s)<0)
+					&&(CMLib.flags().getAbilityType_(s)<0)
 					&&(CMLib.flags().getAbilityDomain(s)<0))
 						mob.tell(L("That skill name or skill class is unknown."));
 					else

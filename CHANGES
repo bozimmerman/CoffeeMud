@@ -8,6 +8,7 @@
    7. Basic MCP support added to CoffeeMud.  ZMUD Editor package supported. mcppkgs directory for others.
    8. New DISABLE flag: HYGEINE, for disabling the natural hygenic system -- the magic version left intact.
    9. New support for a permanent ip blocking system.  See BLACKLISTFILE in coffeemud.ini
+  10. Ability-crimes in the legal system now supports skill types and skill domains.  See laws.ini.
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)
