@@ -1092,7 +1092,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(canSeeMetal(seer)&&(seen1 instanceof Item)&&(seen2 instanceof Item)
 			&&((((Item)seen1).material()&RawMaterial.MATERIAL_MASK)!=(((Item)seen2).material()&RawMaterial.MATERIAL_MASK)))
 		   return false;
-		if(!CMStrings.compareStringArrays(seen1.phyStats().ambiances(),seen2.phyStats().ambiances()))
+		if(!CMStrings.compareStringArraysIgnoreCase(seen1.phyStats().ambiances(),seen2.phyStats().ambiances()))
 			return false;
 		return true;
 	}

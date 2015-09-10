@@ -855,7 +855,7 @@ public class CMSecurity
 			approved.put(hashCode,script.toString());
 			return false;
 		}
-		return approver instanceof String;
+		return true;
 	}
 
 	/**
@@ -1342,33 +1342,30 @@ public class CMSecurity
 		if(group == null)
 		{
 			group = new LongSet();
-			if(group != null)
+			final String filename = CMProps.getVar(CMProps.Str.BLACKLISTFILE);
+			final List<String> ipList = Resources.getFileLineVector(Resources.getFileResource(filename, false));
+			for(String ip : ipList)
 			{
-				final String filename = CMProps.getVar(CMProps.Str.BLACKLISTFILE);
-				final List<String> ipList = Resources.getFileLineVector(Resources.getFileResource(filename, false));
-				for(String ip : ipList)
+				if(ip.trim().startsWith("#"))
 				{
-					if(ip.trim().startsWith("#"))
+					continue;
+				}
+				final int x=ip.indexOf('-');
+				if(x<0)
+				{
+					final long num = makeIPNumFromInetAddress(ip.trim());
+					if(num > 0)
 					{
-						continue;
+						group.add(num);
 					}
-					final int x=ip.indexOf('-');
-					if(x<0)
+				}
+				else
+				{
+					final long ipFrom = makeIPNumFromInetAddress(ip.substring(0,x).trim());
+					final long ipTo = makeIPNumFromInetAddress(ip.substring(x+1).trim());
+					if((ipFrom > 0) && (ipTo >= ipFrom))
 					{
-						final long num = makeIPNumFromInetAddress(ip.trim());
-						if(num > 0)
-						{
-							group.add(num);
-						}
-					}
-					else
-					{
-						final long ipFrom = makeIPNumFromInetAddress(ip.substring(0,x).trim());
-						final long ipTo = makeIPNumFromInetAddress(ip.substring(x+1).trim());
-						if((ipFrom > 0) && (ipTo >= ipFrom))
-						{
-							group.add(ipFrom,ipTo);
-						}
+						group.add(ipFrom,ipTo);
 					}
 				}
 				Resources.submitResource("SYSTEM_IP_BLOCKS", group);

@@ -445,9 +445,9 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	public final static String[] BODYPARTSTR={
 		"ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 		"NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
-
 	/** constant hash of BODYPARTSTR */
-	public final static Hashtable<Object,Integer> BODYPARTHASH=CMStrings.makeNumericHash(BODYPARTSTR);
+	public final static Map<Object,Integer> BODYPARTHASH=CMStrings.makeNumericHash(BODYPARTSTR);
+	
 	/** constant used to set and check the classless flag on generic races */
 	public final static int GENFLAG_NOCLASS=1;
 	/** constant used to set and check the levelless flag on generic races */
