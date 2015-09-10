@@ -114,7 +114,9 @@ public class CMStrings
 		while((x>=0)
 		&&((Character.isWhitespace(str.charAt(x))) // possible #~ color concerns, but normally catches ^? at the end.
 			||((x>0)&&((str.charAt(x)!='^')&&(str.charAt(x-1)=='^')&&((--x)>=0)))))
+		{
 				x--;
+		}
 		if(x<0)
 			return str;
 		if((str.charAt(x)=='.')||(str.charAt(x)=='!')||(str.charAt(x)=='?'))
@@ -237,6 +239,7 @@ public class CMStrings
 		char curC='\0';
 		final StringBuilder curStr=new StringBuilder("");
 		for(int i=0;i<str.length();i++)
+		{
 			if(contains(splitters,str.charAt(i)))
 			{
 				final Character finalC=Character.valueOf(curC);
@@ -252,6 +255,7 @@ public class CMStrings
 			}
 			else
 				curStr.append(str.charAt(i));
+		}
 		final Character finalC=Character.valueOf(curC);
 		final String finalStr=curStr.toString();
 		list.add(new Map.Entry<Character,String>()
@@ -284,11 +288,13 @@ public class CMStrings
 		{
 			if((thisStr.charAt(i)==word.charAt(0))
 			&&((i==0)||(!Character.isLetter(thisStr.charAt(i-1)))))
+			{
 				if((thisStr.substring(i).startsWith(word.toLowerCase()))
 				&&((thisStr.length()==i+word.length())||(!Character.isLetter(thisStr.charAt(i+word.length())))))
 				{
 					return true;
 				}
+			}
 		}
 		return false;
 	}
@@ -302,10 +308,12 @@ public class CMStrings
 			return str;
 		final char[] newChars = str.toCharArray();
 		for(int i=str.length()-1;i>=0;i--)
+		{
 			if(contains(theseChars,str.charAt(i)))
 			{
 				newChars[i]=with;
 			}
+		}
 		return new String(newChars);
 	}
 
@@ -318,10 +326,12 @@ public class CMStrings
 			return str;
 		final StringBuilder buf=new StringBuilder(str);
 		for(int i=buf.length()-1;i>=0;i--)
+		{
 			if(contains(theseChars,buf.charAt(i)))
 			{
 				buf.deleteCharAt(i);
 			}
+		}
 		return buf.toString();
 	}
 
@@ -388,6 +398,7 @@ public class CMStrings
 		{
 			changed=false;
 			for (final String[] pair : pairs)
+			{
 				if((str.charAt(i)==pair[0].charAt(0))
 				&&(str.substring(i).startsWith(pair[0])))
 				{
@@ -396,6 +407,7 @@ public class CMStrings
 					i=i+pair[0].length()-1;
 					break;
 				}
+			}
 			if(!changed)
 				newStr.append(str.charAt(i));
 		}
@@ -415,6 +427,7 @@ public class CMStrings
 		{
 			if((str.charAt(i)==thisStr.charAt(0))
 			&&((i==0)||(!Character.isLetter(str.charAt(i-1)))))
+			{
 				if((str.substring(i).toLowerCase().startsWith(thisStr.toLowerCase()))
 				&&((str.length()==i+thisStr.length())||(!Character.isLetter(str.charAt(i+thisStr.length())))))
 				{
@@ -430,6 +443,7 @@ public class CMStrings
 					else
 						str=str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
 				}
+			}
 		}
 		return str;
 	}
@@ -447,6 +461,7 @@ public class CMStrings
 		{
 			if((str.charAt(i)==thisStr.charAt(0))
 			&&((i==0)||(!Character.isLetter(str.charAt(i-1)))))
+			{
 				if((str.substring(i).toLowerCase().startsWith(thisStr.toLowerCase()))
 				&&((str.length()==i+thisStr.length())||(!Character.isLetter(str.charAt(i+thisStr.length())))))
 				{
@@ -462,6 +477,7 @@ public class CMStrings
 					else
 						return str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
 				}
+			}
 		}
 		return str;
 	}
@@ -475,12 +491,16 @@ public class CMStrings
 		||(thisStr.length()==0))
 			return str;
 		for(int i=str.length()-1;i>=0;i--)
+		{
 			if(str.charAt(i)==thisStr.charAt(0))
+			{
 				if(str.substring(i).startsWith(thisStr))
 				{
 					str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
 					return str;
 				}
+			}
+		}
 		return str;
 	}
 
@@ -497,33 +517,33 @@ public class CMStrings
 				i++;
 				if(i<c.length)
 				{
-				  switch(c[i])
-				  {
-				  case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
-				  case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
-				  case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
-				  case '<':
-					while(i<c.length-1)
+					switch(c[i])
 					{
-						if((c[i]!='^')||(c[i+1]!='>'))
-							i++;
-						else
+					case ColorLibrary.COLORCODE_FANSI256: i+=3; break;
+					case ColorLibrary.COLORCODE_BANSI256: i+=3; break;
+					case ColorLibrary.COLORCODE_BACKGROUND: i++; break;
+					case '<':
+						while(i<c.length-1)
 						{
-							i++;
-							break;
+							if((c[i]!='^')||(c[i+1]!='>'))
+								i++;
+							else
+							{
+								i++;
+								break;
+							}
 						}
+						break;
+					case '&':
+						while(i<c.length)
+						{
+							if(c[i]!=';')
+								i++;
+							else
+								break;
+						}
+						break;
 					}
-					break;
-				  case '&':
-					while(i<c.length)
-					{
-						if(c[i]!=';')
-							i++;
-						else
-							break;
-					}
-					break;
-				  }
 				}
 			}
 			else
@@ -608,6 +628,7 @@ public class CMStrings
 		final char[] c=name.toCharArray();
 		int i=0;
 		for(;i<c.length;i++)
+		{
 			if(c[i]=='^')
 			{
 				i++;
@@ -645,6 +666,7 @@ public class CMStrings
 			else
 			if(Character.isLetter(c[i]))
 				break;
+		}
 		if(i<c.length)
 			c[i]=Character.toUpperCase(c[i]);
 		return new String(c).trim();
@@ -1322,6 +1344,7 @@ public class CMStrings
 			rest=0;
 		return SPACES.substring(0,size)+thisStr+SPACES.substring(0,rest);
 	}
+	
 	public final static String padLeft(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1329,6 +1352,7 @@ public class CMStrings
 			return removeColors(thisStr).substring(0,thisMuch);
 		return SPACES.substring(0,thisMuch-lenMinusColors)+thisStr;
 	}
+	
 	public final static String padLeftWith(final String thisStr, final char c, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1340,6 +1364,7 @@ public class CMStrings
 		str.append(thisStr);
 		return str.toString();
 	}
+	
 	public final static String padLeft(final String thisStr, final String colorPrefix, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1347,18 +1372,21 @@ public class CMStrings
 			return colorPrefix+removeColors(thisStr).substring(0,thisMuch);
 		return SPACES.substring(0,thisMuch-lenMinusColors)+colorPrefix+thisStr;
 	}
+	
 	public final static String safeLeft(final String thisStr, final int thisMuch)
 	{
 		if(thisStr.length()<=thisMuch)
 			return thisStr;
 		return thisStr.substring(0,thisMuch);
 	}
+	
 	public final static String trimQuotes(final String thisStr)
 	{
 		if(thisStr.startsWith("\"")&&thisStr.endsWith("\""))
 			return thisStr.substring(1,thisStr.length()-1);
 		return thisStr;
 	}
+	
 	public final static String padRight(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1370,6 +1398,7 @@ public class CMStrings
 			return thisStr+SPACES;
 		return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
 	}
+	
 	public final static String padRightWith(final String thisStr, final char c, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1382,6 +1411,7 @@ public class CMStrings
 			str.append(c);
 		return str.toString();
 	}
+	
 	public final static String limit(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1389,6 +1419,7 @@ public class CMStrings
 			return removeColors(thisStr).substring(0,thisMuch);
 		return thisStr;
 	}
+	
 	public final static String ellipse(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1396,6 +1427,7 @@ public class CMStrings
 			return removeColors(thisStr).substring(0,thisMuch)+"...";
 		return thisStr;
 	}
+	
 	public final static String padRight(final String thisStr, final String colorSuffix, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1405,6 +1437,7 @@ public class CMStrings
 			return thisStr+colorSuffix+SPACES;
 		return thisStr+colorSuffix+SPACES.substring(0,thisMuch-lenMinusColors);
 	}
+	
 	public final static String padRightPreserve(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1414,6 +1447,7 @@ public class CMStrings
 			return thisStr+SPACES;
 		return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
 	}
+	
 	public final static String centerPreserve(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1425,6 +1459,7 @@ public class CMStrings
 			return thisStr+SPACES;
 		return SPACES.substring(0,left)+thisStr+SPACES.substring(0,right);
 	}
+	
 	public final static String padLeftPreserve(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1620,11 +1655,13 @@ public class CMStrings
 		}
 		int finalState = stateBlock[stateBlock.length - 1];
 		for (int x = 0; x < stateBlock.length - 1; x += 2)
+		{
 			if (stateBlock[x] == 255)
 			{
 				finalState = stateBlock[x + 1];
 				break;
 			}
+		}
 		switch (finalState)
 		{
 			case -99:
@@ -1992,12 +2029,14 @@ public class CMStrings
 			return 0;
 		int total=0;
 		for(final String longString : set)
+		{
 			for(final String subString : things)
 			{
 				int x=0;
 				while((x=longString.indexOf( subString, x ))>=x)
 					total++;
 			}
+		}
 		return total;
 	}
 
@@ -2005,6 +2044,7 @@ public class CMStrings
 	{
 		if(str!=null)
 		for(int i=0;i<str.length();i++)
+		{
 			if(str.charAt(i)=='\n')
 			{
 				if((i<str.length()-1)&&(str.charAt(i+1)=='\r'))
@@ -2018,6 +2058,7 @@ public class CMStrings
 					return "\r\n";
 				return "\r";
 			}
+		}
 		return ""+((char)0x0a);
 	}
 
@@ -2039,14 +2080,14 @@ public class CMStrings
 	 * Other less paranoid languages just use a three-element array.
 	 * @author fraser@google.com (Neil Fraser)
 	 */
-	private static class LinesToCharsResult {
+	private static class LinesToCharsResult 
+	{
 		protected String chars1;
 		protected String chars2;
 		protected List<String> lineArray;
 
-		protected LinesToCharsResult(String chars1, String chars2,
-				List<String> lineArray)
-				{
+		protected LinesToCharsResult(String chars1, String chars2, List<String> lineArray)
+		{
 			this.chars1 = chars1;
 			this.chars2 = chars2;
 			this.lineArray = lineArray;
@@ -2201,8 +2242,7 @@ public class CMStrings
 		if (i != -1)
 		{
 			// Shorter text is inside the longer text (speedup).
-			final DiffOperation op = (text1.length() > text2.length()) ?
-										 DiffOperation.DELETE : DiffOperation.INSERT;
+			final DiffOperation op = (text1.length() > text2.length()) ? DiffOperation.DELETE : DiffOperation.INSERT;
 			diffs.add(new Diff(op, longtext.substring(0, i)));
 			diffs.add(new Diff(DiffOperation.EQUAL, shorttext));
 			diffs.add(new Diff(op, longtext.substring(i + shorttext.length())));
@@ -2229,10 +2269,8 @@ public class CMStrings
 			final String text2_b = hm[3];
 			final String mid_common = hm[4];
 			// Send both pairs off for separate processing.
-			final LinkedList<Diff> diffs_a = diff_main(text1_a, text2_a,
-																					 checklines, deadline);
-			final LinkedList<Diff> diffs_b = diff_main(text1_b, text2_b,
-																					 checklines, deadline);
+			final LinkedList<Diff> diffs_a = diff_main(text1_a, text2_a, checklines, deadline);
+			final LinkedList<Diff> diffs_b = diff_main(text1_b, text2_b, checklines, deadline);
 			// Merge the results.
 			diffs = diffs_a;
 			diffs.add(new Diff(DiffOperation.EQUAL, mid_common));
@@ -2305,9 +2343,8 @@ public class CMStrings
 						pointer.previous();
 						pointer.remove();
 					}
-					for (final Diff newDiff : diff_main(text_delete, text_insert, false,
-							deadline))
-							{
+					for (final Diff newDiff : diff_main(text_delete, text_insert, false, deadline))
+					{
 						pointer.add(newDiff);
 					}
 				}
@@ -2334,9 +2371,8 @@ public class CMStrings
 	 * @param deadline Time at which to bail if not yet complete.
 	 * @return LinkedList of Diff objects.
 	 */
-	private static LinkedList<Diff> diff_bisect(String text1, String text2,
-			long deadline)
-			{
+	private static LinkedList<Diff> diff_bisect(String text1, String text2, long deadline)
+	{
 		// Cache the text lengths to prevent multiple calls.
 		final int text1_length = text1.length();
 		final int text2_length = text2.length();
@@ -2385,8 +2421,8 @@ public class CMStrings
 				}
 				int y1 = x1 - k1;
 				while (x1 < text1_length && y1 < text2_length
-							 && text1.charAt(x1) == text2.charAt(y1))
-							 {
+				&& text1.charAt(x1) == text2.charAt(y1))
+				{
 					x1++;
 					y1++;
 				}
@@ -2432,9 +2468,8 @@ public class CMStrings
 				}
 				int y2 = x2 - k2;
 				while (x2 < text1_length && y2 < text2_length
-							 && text1.charAt(text1_length - x2 - 1)
-							 == text2.charAt(text2_length - y2 - 1))
-							 {
+				&& text1.charAt(text1_length - x2 - 1) == text2.charAt(text2_length - y2 - 1))
+				{
 					x2++;
 					y2++;
 				}
@@ -2682,9 +2717,8 @@ public class CMStrings
 				return best;
 			}
 			length += found;
-			if (found == 0 || text1.substring(text_length - length).equals(
-					text2.substring(0, length)))
-					{
+			if (found == 0 || text1.substring(text_length - length).equals(text2.substring(0, length)))
+			{
 				best = length;
 				length++;
 			}
@@ -2717,11 +2751,9 @@ public class CMStrings
 		}
 
 		// First check if the second quarter is the seed for a half-match.
-		final String[] hm1 = diff_halfMatchI(longtext, shorttext,
-																	 (longtext.length() + 3) / 4);
+		final String[] hm1 = diff_halfMatchI(longtext, shorttext, (longtext.length() + 3) / 4);
 		// Check again based on the third quarter.
-		final String[] hm2 = diff_halfMatchI(longtext, shorttext,
-																	 (longtext.length() + 1) / 2);
+		final String[] hm2 = diff_halfMatchI(longtext, shorttext, (longtext.length() + 1) / 2);
 		String[] hm;
 		if (hm1 == null && hm2 == null)
 		{
@@ -2778,14 +2810,11 @@ public class CMStrings
 		String best_shorttext_a = "", best_shorttext_b = "";
 		while ((j = shorttext.indexOf(seed, j + 1)) != -1)
 		{
-			final int prefixLength = diff_commonPrefix(longtext.substring(i),
-																					 shorttext.substring(j));
-			final int suffixLength = diff_commonSuffix(longtext.substring(0, i),
-																					 shorttext.substring(0, j));
+			final int prefixLength = diff_commonPrefix(longtext.substring(i), shorttext.substring(j));
+			final int suffixLength = diff_commonSuffix(longtext.substring(0, i), shorttext.substring(0, j));
 			if (best_common.length() < suffixLength + prefixLength)
 			{
-				best_common = shorttext.substring(j - suffixLength, j)
-						+ shorttext.substring(j, j + prefixLength);
+				best_common = shorttext.substring(j - suffixLength, j) + shorttext.substring(j, j + prefixLength);
 				best_longtext_a = longtext.substring(0, i - suffixLength);
 				best_longtext_b = longtext.substring(i + prefixLength);
 				best_shorttext_a = shorttext.substring(0, j - suffixLength);
@@ -2850,11 +2879,9 @@ public class CMStrings
 				}
 				// Eliminate an equality that is smaller or equal to the edits on both
 				// sides of it.
-				if (lastequality != null && (lastequality.length()
-						<= Math.max(length_insertions1, length_deletions1))
-						&& (lastequality.length()
-								<= Math.max(length_insertions2, length_deletions2)))
-								{
+				if (lastequality != null && (lastequality.length() <= Math.max(length_insertions1, length_deletions1))
+				&& (lastequality.length() <= Math.max(length_insertions2, length_deletions2)))
+				{
 					//System.out.println("Splitting: '" + lastequality + "'");
 					// Walk back to offending equality.
 					while (thisDiff != equalities.lastElement())
@@ -2929,18 +2956,16 @@ public class CMStrings
 		}
 		while (thisDiff != null)
 		{
-			if ((prevDiff!=null)&&(prevDiff.operation == DiffOperation.DELETE &&
-					thisDiff.operation == DiffOperation.INSERT))
-					{
+			if ((prevDiff!=null)&&(prevDiff.operation == DiffOperation.DELETE && thisDiff.operation == DiffOperation.INSERT))
+			{
 				final String deletion = prevDiff.text;
 				final String insertion = thisDiff.text;
 				final int overlap_length1 = diff_commonOverlap(deletion, insertion);
 				final int overlap_length2 = diff_commonOverlap(insertion, deletion);
 				if (overlap_length1 >= overlap_length2)
 				{
-					if (overlap_length1 >= deletion.length() / 2.0 ||
-							overlap_length1 >= insertion.length() / 2.0)
-							{
+					if (overlap_length1 >= deletion.length() / 2.0 || overlap_length1 >= insertion.length() / 2.0)
+					{
 						// Overlap found. Insert an equality and trim the surrounding edits.
 						pointer.previous();
 						pointer.add(new Diff(DiffOperation.EQUAL,
@@ -2954,9 +2979,8 @@ public class CMStrings
 				}
 				else
 				{
-					if (overlap_length2 >= deletion.length() / 2.0 ||
-							overlap_length2 >= insertion.length() / 2.0)
-							{
+					if (overlap_length2 >= deletion.length() / 2.0 || overlap_length2 >= insertion.length() / 2.0)
+					{
 						// Reverse overlap found.
 						// Insert an equality and swap and trim the surrounding edits.
 						pointer.previous();
@@ -3000,9 +3024,8 @@ public class CMStrings
 		// Intentionally ignore the first and last element (don't need checking).
 		while (nextDiff != null)
 		{
-			if ((prevDiff!=null)&&(thisDiff!=null)&&(prevDiff.operation == DiffOperation.EQUAL &&
-					nextDiff.operation == DiffOperation.EQUAL))
-					{
+			if ((prevDiff!=null)&&(thisDiff!=null)&&(prevDiff.operation == DiffOperation.EQUAL && nextDiff.operation == DiffOperation.EQUAL))
+			{
 				// This is a single edit surrounded by equalities.
 				equality1 = prevDiff.text;
 				edit = thisDiff.text;
@@ -3320,7 +3343,8 @@ public class CMStrings
 	/**
 	 * Class representing one diff operation.
 	 */
-	public static class Diff {
+	public static class Diff 
+	{
 		/**
 		 * One of: INSERT, DELETE or EQUAL.
 		 */
