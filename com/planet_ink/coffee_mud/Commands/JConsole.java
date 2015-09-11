@@ -254,6 +254,7 @@ public class JConsole extends StdCommand
 		public JScriptEvent(MOB mob)
 		{
 			c=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+			c.setScript("");
 			this.mob=mob;
 			c.tick(mob, Tickable.TICKID_MOB); // this sets lastknownlocation
 		}
