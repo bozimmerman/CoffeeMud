@@ -99,7 +99,7 @@ public class Chant_SensePlants extends Chant
 				{
 					if(last.length()>0)
 						dirs+=", "+last;
-					last=Directions.getFromDirectionName(d);
+					last=Directions.getFromCompassDirectionName(d);
 				}
 			}
 			if((dirs.length()==0)&&(last.length()>0))

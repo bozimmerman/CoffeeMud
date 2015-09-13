@@ -90,7 +90,7 @@ public class Chant_SenseLife extends Chant
 			{
 				if(last.length()>0)
 					dirs+=", "+last;
-				last=Directions.getFromDirectionName(d);
+				last=Directions.getFromCompassDirectionName(d);
 			}
 		}
 		if(inhabitated(mob,mob.location()))

@@ -107,10 +107,10 @@ public class SoundEcho extends StdAbility
 						if(CMLib.dice().rollPercentage()<50)
 						{
 							final int direction=CMLib.tracking().radiatesFromDir(room,rooms);
-							echoMsg.setOthersMessage("You hear an echo coming from "+Directions.getFromDirectionName(direction)+": "+str);
+							echoMsg.setOthersMessage("You hear an echo coming from "+Directions.getFromCompassDirectionName(direction)+": "+str);
 						}
 						else
-							echoMsg.setOthersMessage("You hear an echo coming from "+Directions.getFromDirectionName(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1))+": "+str);
+							echoMsg.setOthersMessage("You hear an echo coming from "+Directions.getFromCompassDirectionName(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1))+": "+str);
 						room.sendOthers(msg.source(),echoMsg);
 					}
 				}
@@ -127,7 +127,7 @@ public class SoundEcho extends StdAbility
 							if(CMLib.dice().rollPercentage()<50)
 							{
 								final int direction=CMLib.tracking().radiatesFromDir(room,rooms);
-								echoMsg.setOthersMessage("You hear a faint echo coming from "+Directions.getFromDirectionName(direction)+".");
+								echoMsg.setOthersMessage("You hear a faint echo coming from "+Directions.getFromCompassDirectionName(direction)+".");
 							}
 							else
 								echoMsg.setOthersMessage("You hear a faint echo coming from "+Directions.getDirectionName(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1))+".");

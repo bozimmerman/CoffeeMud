@@ -464,7 +464,7 @@ public class Patroller extends ActiveTicker
 				if((I.owner()==thatRoom)&&(thatRoom!=null))
 				{
 					tickStatus=Tickable.STATUS_MISC+20;
-					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))));
+					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(direction))));
 					tickStatus=Tickable.STATUS_MISC+21;
 					if(riders!=null)
 					for(int i=0;i<riders.size();i++)

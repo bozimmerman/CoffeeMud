@@ -93,7 +93,7 @@ public class Prayer_SenseLife extends Prayer
 			{
 				if(last.length()>0)
 					dirs+=", "+last;
-				last=Directions.getFromDirectionName(d);
+				last=Directions.getFromCompassDirectionName(d);
 			}
 		}
 		if(inhabitated(mob,mob.location()))

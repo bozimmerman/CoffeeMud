@@ -150,7 +150,7 @@ public class WaterCurrents extends ActiveTicker
 						{
 							R.send(M,themsg);
 							R2.bringMobHere(M,false);
-							R2.showOthers(M,null,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> swept in from @x1 by the current.",Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
+							R2.showOthers(M,null,new AWaterCurrent(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> swept in from @x1 by the current.",Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
 							CMLib.commands().postLook(M,true);
 						}
 					}
@@ -160,7 +160,7 @@ public class WaterCurrents extends ActiveTicker
 						I=(Item)todo.elementAt(m);
 						R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is swept @x2 by the current.",I.name(),Directions.getDirectionName(dir).toLowerCase()));
 						R2.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
-						R2.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is swept in from @x2 by the current.",I.name(),Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
+						R2.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 is swept in from @x2 by the current.",I.name(),Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
 					}
 				}
 			}

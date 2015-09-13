@@ -937,7 +937,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final boolean useShipDirs=((thisRoom instanceof BoardableShip)||(thisRoom.getArea() instanceof BoardableShip));
 		final int opDir=Directions.getOpDirectionCode(directionCode);
 		final String dirName=useShipDirs?Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
-		final String fromDir=useShipDirs?Directions.getShipFromDirectionName(opDir):Directions.getFromDirectionName(opDir);
+		final String fromDir=useShipDirs?Directions.getFromShipDirectionName(opDir):Directions.getFromCompassDirectionName(opDir);
 		final String directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():dirName;
 		final String otherDirectionName=(Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():fromDir;
 
@@ -1187,7 +1187,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		thatRoom.moveItemTo(I);
 		if(I.owner()==thatRoom)
 		{
-			thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode))));
+			thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> arrives from @x1.",Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(directionCode))));
 			if(riders!=null)
 			{
 				for(int i=0;i<riders.size();i++)

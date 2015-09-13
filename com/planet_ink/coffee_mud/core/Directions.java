@@ -330,6 +330,12 @@ public class Directions
 		return "";
 	}
 
+	/**
+	 * Given the numeric direction code, this method returns the 1 or 2 char
+	 * "code" that represents that direction, such as N, S, E, W, NW, SW, etc..
+	 * @param code the direction code
+	 * @return the direction character or characters
+	 */
 	public static final String getDirectionChar(final int code)
 	{
 		if(code<NUM_DIRECTIONS())
@@ -337,6 +343,15 @@ public class Directions
 		return " ";
 	}
 
+	/**
+	 * Given a string which is supposed to be a direction name of any type,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It gives
+	 * preference to actual direction names, such as north, aft, below, up, but
+	 * if all fail, it will try prefixes, such as nor, por, or just N, S, etc.
+	 * @param theDir the direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
 	public static final int getDirectionCode(final String theDir)
 	{
 		final int code=getGoodDirectionCode(theDir);
@@ -350,11 +365,29 @@ public class Directions
 		return code;
 	}
 
+	/**
+	 * Given a string which is technically supposed to be a ship-talk direction name,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It gives
+	 * preference to actual direction names, such as port and aft, but
+	 * if all fail, it will try prefixes, such as por, for, etc.
+	 * @param theDir the ship-talk direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
 	public static final int getShipDirectionCode(final String theDir)
 	{
 		return getGoodShipDirectionCode(theDir);
 	}
 
+	/**
+	 * Given a string which is supposed to be a compass direction name,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It gives
+	 * preference to actual direction names, such as north, south, etc, but
+	 * if all fail, it will try prefixes, such as nor, sou, or just N, S, etc.
+	 * @param theDir the direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
 	public static final int getCompassDirectionCode(final String theDir)
 	{
 		final int code=getGoodCompassDirectionCode(theDir);
@@ -368,6 +401,15 @@ public class Directions
 		return code;
 	}
 
+	/**
+	 * Given a string which is supposed to be a direction name of any type,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It gives
+	 * preference to actual direction names, such as north, aft, below, up, but
+	 * if all fail, it will try prefixes, such as nor, por, etc.
+	 * @param theDir the direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
 	public static final int getGoodDirectionCode(final String theDir)
 	{
 		if(theDir.length()==0)
@@ -380,6 +422,15 @@ public class Directions
 		return -1;
 	}
 
+	/**
+	 * Given a string which is supposed to be a compass direction name,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It gives
+	 * preference to actual direction names, such as north, south, etc, but
+	 * if all fail, it will try prefixes, such as nor, sou, etc.
+	 * @param theDir the direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
 	public static final int getGoodCompassDirectionCode(final String theDir)
 	{
 		if(theDir.length()==0)
@@ -392,6 +443,15 @@ public class Directions
 		return -1;
 	}
 
+	/**
+	 * Given a string which is technically supposed to be a ship-talk direction name,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction it probably represents.  It gives
+	 * preference to actual direction names, such as port and aft, but
+	 * if all fail, it will try prefixes, such as por, for, etc.
+	 * @param theDir the ship-talk direction search string
+	 * @return the direction code it represents, or -1 if no match at ALL
+	 */
 	public static final int getGoodShipDirectionCode(final String theDir)
 	{
 		if(theDir.length()==0)
@@ -404,6 +464,15 @@ public class Directions
 		return -1;
 	}
 
+	/**
+	 * Given an x and y coordinate, and a direction code, this method will return
+	 * an int array with 2 entries x, and y, representing the changes to the given
+	 * x and y after moving in that direction.
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @param direction the direction code being travelled
+	 * @return the 2 dimensional int array with the new x and y
+	 */
 	public static final int[] adjustXYByDirections(int x, int y, final int direction)
 	{
 		switch(direction)
@@ -423,7 +492,14 @@ public class Directions
 		return xy;
 	}
 
-	public static final String getFromDirectionName(final int code)
+	/**
+	 * Returns the proper english compass direction name to follow the preposition 
+	 * "from" when talking about something or someone coming FROM the given direction 
+	 * code.  Completes the following sentence: "Joe arrived from ..."
+	 * @param code the direction code
+	 * @return the name of the direction phrase
+	 */
+	public static final String getFromCompassDirectionName(final int code)
 	{
 		switch(code)
 		{
@@ -453,7 +529,14 @@ public class Directions
 		return "";
 	}
 
-	public static final String getShipFromDirectionName(final int code)
+	/**
+	 * Returns the proper english ship direction name to follow the preposition 
+	 * "from" when talking about something or someone coming FROM the given direction 
+	 * code on a ship.  Completes the following sentence: "Joe arrived from ..."
+	 * @param code the direction code
+	 * @return the name of the direction phrase
+	 */
+	public static final String getFromShipDirectionName(final int code)
 	{
 		switch(code)
 		{
@@ -483,6 +566,14 @@ public class Directions
 		return "";
 	}
 
+	/**
+	 * Returns the proper english compass direction name to follow the preposition 
+	 * "happens" when talking about something happening in the given direction 
+	 * code.  Completes the following sentence: "You hear something happen ..."
+	 * Usually begins with "to the", such as "to the north", "to the northeast", etc.
+	 * @param code the direction code the direction the thing is happening in
+	 * @return the name of the direction completion phrase
+	 */
 	public static final String getInDirectionName(final int code)
 	{
 		switch(code)
@@ -513,6 +604,14 @@ public class Directions
 		return "";
 	}
 
+	/**
+	 * Returns the proper english ship-talk direction name to follow the preposition 
+	 * "happens" when talking about something happening in the given direction 
+	 * code on a ship.  Completes the following sentence: "You hear something happen ..."
+	 * Usually begins with "to", such as "to foreward", "to portside", etc.
+	 * @param code the direction code the direction the thing is happening in
+	 * @return the name of the direction completion phrase
+	 */
 	public static final String getShipInDirectionName(final int code)
 	{
 		switch(code)
@@ -543,6 +642,12 @@ public class Directions
 		return "";
 	}
 
+	/**
+	 * Returns the direction code opposite to the given code.
+	 * E.G. Returns North for South, Northwest for Southeast, etc.
+	 * @param code the direction code
+	 * @return the opposite direction code
+	 */
 	public static final int getOpDirectionCode(final int code)
 	{
 		switch(code)
@@ -573,6 +678,15 @@ public class Directions
 		return -1;
 	}
 
+	/**
+	 * Given a string which is supposed to be a direction name of any type,
+	 * this method will make a case-insensitive check against the given
+	 * string and return the direction opposite to what it probably represents.  It gives
+	 * preference to actual direction names, such as north, aft, below, up, but
+	 * if all fail, it will try prefixes, such as nor, por, or just N, S, etc.
+	 * @param theDir the direction search string
+	 * @return the direction code opposite to the one it represents, or -1 if no match at ALL
+	 */
 	public static final int getOpDirectionCode(final String theDir)
 	{
 		final int code=getDirectionCode(theDir);

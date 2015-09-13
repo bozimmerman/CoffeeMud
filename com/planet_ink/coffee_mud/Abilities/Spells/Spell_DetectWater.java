@@ -189,7 +189,7 @@ public class Spell_DetectWater extends Spell
 					if(d>=Directions.NUM_DIRECTIONS())
 						last="here";
 					else
-						last=Directions.getFromDirectionName(d);
+						last=Directions.getFromCompassDirectionName(d);
 				}
 			}
 		}

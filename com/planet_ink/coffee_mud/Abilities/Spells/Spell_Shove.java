@@ -102,7 +102,7 @@ public class Spell_Shove extends Spell
 					target.makePeace();
 					final Room newRoom=mob.location().getRoomInDir(dir);
 					final Room thisRoom=mob.location();
-					final CMMsg enterMsg=CMClass.getMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> fly(s) in from @x1.",Directions.getFromDirectionName(Directions.getOpDirectionCode(dir))));
+					final CMMsg enterMsg=CMClass.getMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> fly(s) in from @x1.",Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(dir))));
 					final CMMsg leaveMsg=CMClass.getMsg(target,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> <S-IS-ARE> shoved forcefully into the air and out @x1.",Directions.getInDirectionName(dir)));
 					if(thisRoom.okMessage(target,leaveMsg)&&newRoom.okMessage(target,enterMsg))
 					{

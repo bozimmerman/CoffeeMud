@@ -158,7 +158,7 @@ public class Prayer_SenseTraps extends Prayer
 				{
 					if(last.length()>0)
 						dirs+=", "+last;
-					last=Directions.getFromDirectionName(d);
+					last=Directions.getFromCompassDirectionName(d);
 				}
 			}
 			if((dirs.length()==0)&&(last.length()>0))

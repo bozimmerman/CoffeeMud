@@ -120,7 +120,7 @@ public class Prayer_SenseDisease extends Prayer
 			{
 				if(last.length()>0)
 					dirs+=", "+last;
-				last=Directions.getFromDirectionName(d);
+				last=Directions.getFromCompassDirectionName(d);
 			}
 		}
 		final Vector V=diseased(mob,mob.location());
