@@ -256,6 +256,7 @@ public class Resources
 	public static final String getLineMarker(final StringBuffer buf)
 	{
 		for(int i=0;i<buf.length()-1;i++)
+		{
 			switch(buf.charAt(i))
 			{
 			case '\n':
@@ -267,6 +268,7 @@ public class Resources
 					return "\r\n";
 				return "\r";
 			}
+		}
 		return "\n\r";
 	}
 
