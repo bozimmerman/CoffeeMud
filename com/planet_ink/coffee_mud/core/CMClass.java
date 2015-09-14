@@ -69,24 +69,43 @@ public class CMClass extends ClassLoader
 		if(clss[c]==null)
 			clss[c]=this;
 	}
-	public static final CMClass initialize(){ return new CMClass(); }
+	
+	/**
+	 * Creates and returns a new CMClass object for the current calling thread
+	 * @return a new CMClass object for the current calling thread
+	 */
+	public static final CMClass initialize()
+	{ 
+		return new CMClass(); 
+	}
 
 	/**
 	 * Returns the CMClass instance tied to this particular thread group, or null if not yet created.
 	 * @return the CMClass instance tied to this particular thread group, or null if not yet created.
 	 */
-	private static CMClass c(){ return clss[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+	private static CMClass c()
+	{ 
+		return clss[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+	}
+	
 	/**
 	 * Returns the CMClass instance tied to the given thread group, or null if not yet created.
 	 * @param c the code for the thread group to return (0-255)
 	 * @return the CMClass instance tied to the given thread group, or null if not yet created.
 	 */
-	public static CMClass c(byte c){return clss[c];}
+	public static CMClass c(byte c)
+	{
+		return clss[c];
+	}
+	
 	/**
 	 * Returns the CMClass instance tied to this particular thread group, or null if not yet created.
 	 * @return the CMClass instance tied to this particular thread group, or null if not yet created.
 	 */
-	public static CMClass instance(){return c();}
+	public static CMClass instance()
+	{
+		return c();
+	}
 
 	private static boolean[] classLoaderSync={false};
 

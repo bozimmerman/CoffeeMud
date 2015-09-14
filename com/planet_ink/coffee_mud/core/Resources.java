@@ -31,6 +31,9 @@ public class Resources
 	private static Object propResourceSync=new Object();
 	private static Map<String,Map<String,String>> propResources;
 
+	/**
+	 * Internal tree map that uses case-insensitive string keys.
+	 */
 	private final Map<String,Object> resources=new STreeMap<String,Object>(new Comparator<String>()
 	{
 		@Override
@@ -49,12 +52,29 @@ public class Resources
 		}
 	});
 
+	/**
+	 * Internal class that serves the purpose of both identifying
+	 * a compressed text resource, and holding the bytes of that compression.
+	 * @author Bo Zimmerman
+	 *
+	 */
 	private static class CompressedResource
 	{
 		public byte[] data;
-		public CompressedResource(byte[] d) { data=d;}
+		
+		/**
+		 * Constructs a CompressedResource object from the given bytes
+		 * @param d
+		 */
+		public CompressedResource(byte[] d) 
+		{ 
+			data=d;
+		}
 	}
 
+	/**
+	 * Constructs a new CMLib object for the current thread group.
+	 */
 	public Resources()
 	{
 		super();
@@ -63,6 +83,12 @@ public class Resources
 			rscs[c]=this;
 	}
 
+	/**
+	 * Forces the current thread group to share a Resources object with the one at the given
+	 * threadcode.  The one at the threadcode should already have been created before
+	 * calling.
+	 * @param threadCode the threadcode with an existing Resources
+	 */
 	public static void shareWith(char code)
 	{
 		if(Thread.currentThread().getThreadGroup().getName().charAt(0)==code)
@@ -78,7 +104,19 @@ public class Resources
 		}
 	}
 
-	public static final Resources initialize() { return new Resources(); }
+	/**
+	 * Creates and returns a new Resources object for the current calling thread
+	 * @return a new Resources object for the current calling thread
+	 */
+	public static final Resources initialize() 
+	{ 
+		return new Resources(); 
+	}
+	
+	/**
+	 * Returns the Resources instance tied to this particular thread group, or a new one if not yet created.
+	 * @return the Resources instance tied to this particular thread group, or a new one if if not yet created.
+	 */
 	public static final Resources instance()
 	{
 		final Resources r=r();
@@ -86,47 +124,115 @@ public class Resources
 			return new Resources();
 		return r;
 	}
-	public static final Resources instance(final char c){ return rscs[c];}
-	private static final Resources r(){ return rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+	
+	/**
+	 * Returns the Resources instance tied to the given thread group, or null if not yet created.
+	 * @param c the code for the thread group to return (0-255)
+	 * @return the Resources instance tied to the given thread group, or null if not yet created.
+	 */
+	public static final Resources instance(final char c)
+	{ 
+		return rscs[c];
+	}
+	
+	/**
+	 * Returns the Resources instance tied to this particular thread group, or null if not yet created.
+	 * @return the Resources instance tied to this particular thread group, or null if not yet created.
+	 */
+	private static final Resources r()
+	{ 
+		return rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+	}
 
-	public static final Resources newResources(){ return new Resources();}
+	/**
+	 * Creates and returns a new Resources object for the current calling thread
+	 * @return a new Resources object for the current calling thread
+	 */
+	public static final Resources newResources()
+	{ 
+		return new Resources();
+	}
 
+	/**
+	 * Removes all resources for the current calling thread group
+	 */
 	public static final void clearResources()
 	{
 		r()._clearResources();
 	}
 	
+	/**
+	 * Saves any cached resource properties for the current calling thread group.
+	 * Removes all resources for the current calling thread group.
+	 */
 	public static final void shutdown()
 	{
 		Resources.savePropResources();
 		r()._clearResources();
 	}
-	
+
+	/**
+	 * Removes the current resources for the current calling thread group.
+	 * @param ID the resource ID to remove, case insensitive as always
+	 */
 	public static final void removeResource(final String ID)
 	{ 	
 		r()._removeResource(ID);
 	}
 	
+	/**
+	 * Does a case-insensitive instring search of all resources for the
+	 * current calling thread group and returns an iterator of all FULL keys
+	 * that match.
+	 * @param srch the instring string to search for
+	 * @return an iterator of all matching full keys
+	 */
 	public static final Iterator<String> findResourceKeys(final String srch)
 	{
 		return r()._findResourceKeys(srch);
 	}
 	
+	/**
+	 * Returns the raw resource object for the given case-insensitive ID, from
+	 * the resources for the current calling thread group.
+	 * @param ID the resource ID to return
+	 * @return the raw object at that resource ID, or null of not found
+	 */
 	public static final Object getResource(final String ID)
 	{
 		return r()._getResource(ID);
 	}
 	
+	/**
+	 * Adds or replaces a raw resource object at the given case-insensitive ID, into
+	 * the resources for the current calling thread group.
+	 * @param ID the resource ID to store the given object at
+	 * @param obj the object to store at the given ID
+	 */
 	public static final void submitResource(final String ID, final Object obj)
 	{
 		r()._submitResource(ID,obj);
 	}
 	
+	/**
+	 * Checks the resources for the current calling thread group for a file resource
+	 * of the given name.
+	 * @param filename the resource filename to check for (/resources/<filename>)
+	 * @return true if the file exists as a current resource, and false otherwise
+	 */
 	public static final boolean isFileResource(final String filename)
 	{
 		return r()._isFileResource(filename);
 	}
-	
+
+	/**
+	 * Returns the stringbuffer content for the given resource filename, from
+	 * the resources for the current calling thread group.
+	 * @param ID the resource ID to return
+	 * @param filename the resource filename to return (/resources/<filename>)
+	 * @param reportErrors if true, file errors will be logged
+	 * @return the StringBuffer of the file at that resource ID, or null of not found
+	 */
 	public static final StringBuffer getFileResource(final String filename, final boolean reportErrors)
 	{
 		return r()._getFileResource(filename,reportErrors);
@@ -173,15 +279,14 @@ public class Resources
 		for(int i=0;i<buf.length();i++)
 		{
 			if(((buf.charAt(i)=='\n')&&(i<buf.length()-1)&&(buf.charAt(i+1)=='\r'))
-			   ||((buf.charAt(i)=='\r')&&(i<buf.length()-1)&&(buf.charAt(i+1)=='\n')))
+			||((buf.charAt(i)=='\r')&&(i<buf.length()-1)&&(buf.charAt(i+1)=='\n')))
 			{
 				i++;
 				V.addElement(str.toString());
 				str.setLength(0);
 			}
 			else
-			if(((buf.charAt(i)=='\r'))
-			||((buf.charAt(i)=='\n')))
+			if((buf.charAt(i)=='\r')||(buf.charAt(i)=='\n'))
 			{
 				V.addElement(str.toString());
 				str.setLength(0);
@@ -210,8 +315,10 @@ public class Resources
 			final List<String> V=lists.get(ml);
 			str.append(ml+"\r\n");
 			if(V!=null)
-			for(int v=0;v<V.size();v++)
-				str.append((V.get(v))+"\r\n");
+			{
+				for(int v=0;v<V.size();v++)
+					str.append((V.get(v))+"\r\n");
+			}
 			str.append("\r\n");
 		}
 		String prefix="";
@@ -274,7 +381,9 @@ public class Resources
 				filename=filename.substring(2);
 			}
 			V=getFileLineVector(new CMFile(prefix+"resources/"+filename,null).text());
-		}catch(final Exception e){}
+		}
+		catch(final Exception e){}
+		
 		if((V!=null)&&(V.size()>0))
 		{
 			String journal="";
@@ -310,9 +419,14 @@ public class Resources
 	}
 
 	public static final void setCompression(final boolean truefalse)
-	{   compress=truefalse;}
+	{   
+		compress=truefalse;
+	}
 
-	public static final boolean _compressed(){return compress;}
+	public static final boolean _compressed()
+	{
+		return compress;
+	}
 
 	public final void _clearResources()
 	{
@@ -323,6 +437,7 @@ public class Resources
 	{
 		final String lowerSrch=srch.toLowerCase();
 		final boolean allOfThem=(lowerSrch.length()==0);
+		
 		return new FilteredIterator<String>(resources.keySet().iterator(), new Filterer<String>()
 		{
 			@Override

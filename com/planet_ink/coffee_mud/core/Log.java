@@ -10,7 +10,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /*
-   Copyright 2001-2015 Bo Zimmerman
+   Copyright 2000-2015 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -61,13 +61,24 @@ public class Log extends java.util.logging.Logger
 	 */
 	private static enum Target { ON, OFF, BOTH, FILE, OWNFILE }
 
+	/**
+	 * Internal configuration object.
+	 * @author Bo Zimmerman
+	 */
 	private static class Conf
 	{
 		public final Target target;
 		public int maxLevel, maxLogs, maxLines, maxBytes;
 		public final PrintWriter[][] writers = new PrintWriter[10][];
+
 		public Conf(Target target, int maxLevel, int maxLogs, int maxLines, int maxBytes)
-		{ this.target=target; this.maxLevel=maxLevel; this.maxLogs=maxLogs; this.maxLines=maxLines; this.maxBytes=maxBytes;}
+		{ 
+			this.target=target; 
+			this.maxLevel=maxLevel; 
+			this.maxLogs=maxLogs; 
+			this.maxLines=maxLines; 
+			this.maxBytes=maxBytes;
+		}
 	}
 
 	/**
@@ -89,8 +100,16 @@ public class Log extends java.util.logging.Logger
 		combat, 
 		access;
 		final String sixChars;
-		private Type() { sixChars=(this.toString()+SPACES).substring(0,5)+" "; }
-		public final String getSixChars() { return sixChars; }
+		
+		private Type() 
+		{ 
+			sixChars=(this.toString()+SPACES).substring(0,5)+" "; 
+		}
+		
+		public final String getSixChars() 
+		{ 
+			return sixChars; 
+		}
 	}
 
 	static
@@ -197,8 +216,10 @@ public class Log extends java.util.logging.Logger
 			return false;
 		final String upstr=str.toLowerCase();
 		for (final String maskErrMsg : maskErrMsgs)
+		{
 			if(upstr.indexOf(maskErrMsg)>=0)
 				return true;
+		}
 		return false;
 	}
 
@@ -245,6 +266,13 @@ public class Log extends java.util.logging.Logger
 		}
 	}
 
+	/**
+	 * When a log is determined to be full, this method closes out the old one,
+	 * opens the new one, and designates the new one as ready to be written to
+	 * @param writer the writer to close
+	 * @return the new writer
+	 * @throws IOException typically some sort of file creation exception
+	 */
 	private final PrintWriter rollLog(final PrintWriter writer) throws IOException
 	{
 		if(writer==this.fileOutWriter[0])
@@ -258,24 +286,34 @@ public class Log extends java.util.logging.Logger
 			return newPW;
 		}
 		else
-		for(final Type type : Type.values())
 		{
-			final Conf config=getConfig(type);
-			if((config.target==Target.OWNFILE)&&(config.writers[0][0]==writer))
+			for(final Type type : Type.values())
 			{
-				WRITTEN.remove(writer);
-				writer.close();
-				final FileOutputStream fileOut=this.openLogFile(getLogFilename(type), false, config.maxLogs);
-				final PrintWriter newPW=new PrintWriter(fileOut,true);
-				config.writers[0][0]=newPW;
-				WRITTEN.put(newPW, new long[]{0,0});
-				return newPW;
+				final Conf config=getConfig(type);
+				if((config.target==Target.OWNFILE)&&(config.writers[0][0]==writer))
+				{
+					WRITTEN.remove(writer);
+					writer.close();
+					final FileOutputStream fileOut=this.openLogFile(getLogFilename(type), false, config.maxLogs);
+					final PrintWriter newPW=new PrintWriter(fileOut,true);
+					config.writers[0][0]=newPW;
+					WRITTEN.put(newPW, new long[]{0,0});
+					return newPW;
+				}
 			}
 		}
 		return writer;
 	}
 
-	private final PrintWriter writeBytes(final Type type, final Conf config, final PrintWriter writer, final String str)
+	/**
+	 * Writes the given full log string to the given writer.  If the number of lines in the
+	 * given config warrants a log-role, then it is done.
+	 * @param config the configuration being worked with
+	 * @param writer the writer to write to
+	 * @param str the log message
+	 * @return the new writer, if there is one, or the current writer
+	 */
+	private final PrintWriter writeBytes(final Conf config, final PrintWriter writer, final String str)
 	{
 		try
 		{
@@ -394,7 +432,10 @@ public class Log extends java.util.logging.Logger
 			if(Character.isDigit(numStr.charAt(0)))
 			{
 				x=0;
-				while((x<numStr.length())&&(Character.isDigit(numStr.charAt(x)))) {x++;}
+				while((x<numStr.length())&&(Character.isDigit(numStr.charAt(x)))) 
+				{
+					x++;
+				}
 				final int num=s_int(numStr.substring(0,x));
 				numStr=numStr.substring(x).trim().toLowerCase();
 				if(numStr.startsWith("b"))
@@ -506,7 +547,9 @@ public class Log extends java.util.logging.Logger
 				final File f=new File(logPath,name);
 				if(f.exists())
 					f.delete();
-			}catch(final Exception e){}
+			}
+			catch(final Exception e){}
+			
 			for(int i=numberOfLogs-1;i>0;i--)
 			{
 				final String inum=(i>0)?(""+i):"";
@@ -592,7 +635,10 @@ public class Log extends java.util.logging.Logger
 			final BufferedReader reader = new BufferedReader(F);
 			String line="";
 			while((line!=null)&&(reader.ready()))
-			{ line=reader.readLine(); num++;}
+			{ 
+				line=reader.readLine(); 
+				num++;
+			}
 			reader.close();
 		}
 		catch(final Exception e)
@@ -642,17 +688,15 @@ public class Log extends java.util.logging.Logger
 			@Override
 			public void close()
 			{
+				try
 				{
-					try
+					if ( reader != null )
 					{
-						if ( reader != null )
-						{
-							reader.close();
-							reader = null;
-						}
+						reader.close();
+						reader = null;
 					}
-					catch ( final IOException ignore ){}
 				}
+				catch ( final IOException ignore ){}
 			}
 		};
 	}
@@ -669,7 +713,9 @@ public class Log extends java.util.logging.Logger
 		final LogReader reader = getLogReader();
 		String line;
 		while((line = reader.nextLine()) != null)
+		{
 			buf.append(line+"\n\r");
+		}
 		return buf;
 	}
 
@@ -696,7 +742,8 @@ public class Log extends java.util.logging.Logger
 	*/
 	public final static String makeLogEntry(final Type type, final String module, final String message)
 	{
-		final StringBuilder header=new StringBuilder(dateFormat.format(Long.valueOf(System.currentTimeMillis()))).append(" ");
+		final StringBuilder header=new StringBuilder(dateFormat.format(Long.valueOf(System.currentTimeMillis())));
+		header.append(" ");
 		header.append(type.getSixChars());
 		if(module.length()>=14)
 			header.append(module.substring(0,14));
@@ -1277,7 +1324,7 @@ public class Log extends java.util.logging.Logger
 			{
 				final String msg=(e!=null)?e.getMessage():"Null/Unknown error occurred.";
 				final String firstLine=makeLogEntry(type,module,msg);
-				outWriter=writeBytes(type,conf,outWriter, firstLine);
+				outWriter=writeBytes(conf,outWriter, firstLine);
 				if(conf.target==Target.BOTH)
 					System.out.println(firstLine);
 				if(e!=null)
@@ -1308,7 +1355,7 @@ public class Log extends java.util.logging.Logger
 			synchronized(outWriter)
 			{
 				final String line=makeLogEntry(type,module,e.getMessage());
-				writeBytes(type, conf, outWriter, line);
+				writeBytes( conf, outWriter, line);
 				e.printStackTrace(outWriter);
 				if(conf.target==Target.BOTH)
 				{
@@ -1337,7 +1384,7 @@ public class Log extends java.util.logging.Logger
 		{
 			synchronized(outWriter)
 			{
-				writeBytes(type, conf, outWriter, line);
+				writeBytes(conf, outWriter, line);
 				if(conf.target==Target.BOTH)
 					System.out.println(line);
 			}
@@ -1363,7 +1410,7 @@ public class Log extends java.util.logging.Logger
 			synchronized(outWriter)
 			{
 				final String line=makeLogEntry(type,module,msg);
-				writeBytes(type, conf, outWriter, line);
+				writeBytes(conf, outWriter, line);
 				if(conf.target==Target.BOTH)
 					System.out.println(line);
 			}
@@ -1390,7 +1437,7 @@ public class Log extends java.util.logging.Logger
 			{
 				final Calendar C=Calendar.getInstance();
 				final String line=makeLogEntry(type,module,C.get(Calendar.MINUTE)+":"+C.get(Calendar.SECOND)+":"+C.get(Calendar.MILLISECOND)+": "+msg);
-				writeBytes(type, conf, outWriter, line);
+				writeBytes(conf, outWriter, line);
 				if(getTarget(type)==Target.BOTH)
 					System.out.println(line);
 			}
@@ -1697,9 +1744,17 @@ public class Log extends java.util.logging.Logger
 		l().standardOut(Type.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
 	//Get the current filter for this Logger.
-	@Override public Filter	getFilter(){ return null;}
+	@Override 
+	public Filter	getFilter()
+	{ 
+		return null;
+	}
 	//Get the Handlers associated with this logger.
-	@Override public synchronized Handler[]	getHandlers() { return new Handler[0];}
+	@Override
+	public synchronized Handler[]	getHandlers() 
+	{ 
+		return new Handler[0];
+	}
 	//Get the log Level that has been specified for this Logger.
 	@Override
 	public Level	getLevel()
@@ -1726,13 +1781,29 @@ public class Log extends java.util.logging.Logger
 		return logName;
 	}
 	//Return the parent for this Logger.
-	@Override public Logger	getParent(){ return null; }
+	@Override
+	public Logger	getParent()
+	{ 
+		return null; 
+	}
 	//Retrieve the localization resource bundle for this logger for the current default locale.
-	@Override public ResourceBundle	getResourceBundle() { return null; }
+	@Override
+	public ResourceBundle	getResourceBundle() 
+	{ 
+		return null; 
+	}
 	//Retrieve the localization resource bundle name for this logger.
-	@Override public String	getResourceBundleName(){ return ""; }
+	@Override
+	public String	getResourceBundleName()
+	{ 
+		return ""; 
+	}
 	//Discover whether or not this logger is sending its output to its parent logger.
-	@Override public synchronized boolean	getUseParentHandlers(){ return false; }
+	@Override
+	public synchronized boolean	getUseParentHandlers()
+	{ 
+		return false; 
+	}
 	//Log an INFO message.
 	@Override
 	public void	info(final String msg)
@@ -1828,15 +1899,30 @@ public class Log extends java.util.logging.Logger
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, thrown);
 	}
 	//Remove a log Handler.
-	@Override public synchronized void	removeHandler(Handler handler){}
+	@Override
+	public synchronized void	removeHandler(Handler handler)
+	{
+	}
 	//Set a filter to control output on this Logger.
-	@Override public void	setFilter(Filter newFilter){}
+	@Override
+	public void	setFilter(Filter newFilter)
+	{
+	}
 	//Set the log level specifying which message levels will be logged by this logger.
-	@Override public void	setLevel(Level newLevel){}
+	@Override
+	public void	setLevel(Level newLevel)
+	{
+	}
 	//Set the parent for this Logger.
-	@Override public void	setParent(Logger parent){}
+	@Override
+	public void	setParent(Logger parent)
+	{
+	}
 	//Specify whether or not this logger should send its output to it's parent Logger.
-	@Override public synchronized void	setUseParentHandlers(boolean useParentHandlers){}
+	@Override
+	public synchronized void	setUseParentHandlers(boolean useParentHandlers)
+	{
+	} 
 	//Log a SEVERE message.
 	@Override
 	public void	severe(final String msg)
