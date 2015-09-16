@@ -238,22 +238,55 @@ public class Resources
 		return r()._getFileResource(filename,reportErrors);
 	}
 	
+	/**
+	 * Saves the given stringbuffer of data to the given resource filename, to 
+	 * the filesystem on behalf of the given user/player, without touching the cache.
+	 * Returns false if the user was not permitted to save files at that location.
+	 * @param filename the resource filename to save to (/resources/<filename>)
+	 * @param whom the mob whose permissions to check, or null to always save
+	 * @param myRsc the string data to store in the file
+	 * @return true if the file was saved, or false if there were permission or other problems
+	 */
 	public static final boolean saveFileResource(final String filename, final MOB whom, final StringBuffer myRsc)
 	{
 		return r()._saveFileResource(filename,whom,myRsc);
 	}
 	
+	/**
+	 * Saves the given stringbuffer of data to the given resource filename, to 
+	 * the filesystem while also updating the internal cache for the resources 
+	 * of the calling threads thread group.
+	 * Returns false if there was a filesystem error.
+	 * @param filename the resource filename to save to (/resources/<filename>)
+	 * @param obj the string data to store in the file, stringbuffer, byte array, etc
+	 * @return true if the file was saved, or false if there were problems
+	 */
 	public static final boolean updateFileResource(final String filename, final Object obj)
 	{
 		return r()._updateFileResource(filename,obj);
 	}
 	
+	/**
+	 * Opens the given CMFile as a properties type file, ignoring comment lines, and looking
+	 * for a property entry that matches <match>=<whatever>, removing it if found, and if found,
+	 * re-saving the file.
+	 * @param F the properties file to potentially modify
+	 * @param match the property file entry to remove
+	 * @return true if the property was removed, and false if nothing was done
+	 */
 	public static final boolean findRemoveProperty(final CMFile F, final String match)
 	{
 		return r()._findRemoveProperty(F,match);
 	}
 
-	public static final String getLineMarker(final StringBuffer buf)
+	/**
+	 * Scans the given stringbuffer for the first occurrence of an end-of-line and
+	 * returns the end of line character(s) encountered.  This could be \n, \r, \n\r, 
+	 * or \r\n
+	 * @param buf the stringbuffer to scan
+	 * @return the end of line market
+	 */
+	public static final String getEOLineMarker(final StringBuffer buf)
 	{
 		for(int i=0;i<buf.length()-1;i++)
 		{
@@ -272,6 +305,12 @@ public class Resources
 		return "\n\r";
 	}
 
+	/**
+	 * Scans the given stringbuffer for end of line markers, and adds each line
+	 * encountered to a string list, returning that list object.
+	 * @param buf the stringbuffer to scan for lines
+	 * @return a list of all the lines in the buffer
+	 */
 	public static final List<String> getFileLineVector(final StringBuffer buf)
 	{
 		final Vector<String> V=new Vector<String>();
@@ -302,6 +341,11 @@ public class Resources
 		return V;
 	}
 
+	/**
+	 * Adds resources/ before the given path, and always adds a / at the end.
+	 * @param path a path string
+	 * @return resources/ before the given path, and always adds a / at the end
+	 */
 	public static final String buildResourcePath(final String path)
 	{
 		if((path==null)||(path.length()==0))

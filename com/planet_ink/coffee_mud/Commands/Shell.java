@@ -632,7 +632,7 @@ public class Shell extends StdCommand
 				return false;
 			}
 			StringBuffer buf=file.textUnformatted();
-			final String CR=Resources.getLineMarker(buf);
+			final String CR=Resources.getEOLineMarker(buf);
 			final List<String> vbuf=Resources.getFileLineVector(buf);
 			buf=null;
 			mob.tell(L("@x1 has been loaded.\n\r\n\r",desc(file)));
