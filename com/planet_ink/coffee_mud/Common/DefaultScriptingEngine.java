@@ -10127,14 +10127,74 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(x>0)
 						{
 							chk=true;
+							boolean minorOnly = false;
+							boolean majorOnly = false;
 							for(int i=0;i<x;i++)
+							{
 								switch(command.charAt(i))
 								{
-									case 'S': chk=chk&&msg.isSource(command.substring(x+1)); break;
-									case 'T': chk=chk&&msg.isTarget(command.substring(x+1)); break;
-									case 'O': chk=chk&&msg.isOthers(command.substring(x+1)); break;
-									default: chk=false; break;
+								case 'S':
+									if(majorOnly)
+										chk=chk&&msg.isSourceMajor(command.substring(x+1)); 
+									else
+									if(minorOnly)
+										chk=chk&&msg.isSourceMinor(command.substring(x+1)); 
+									else
+										chk=chk&&msg.isSource(command.substring(x+1)); 
+									break;
+								case 'T': 
+									if(majorOnly)
+										chk=chk&&msg.isTargetMajor(command.substring(x+1)); 
+									else
+									if(minorOnly)
+										chk=chk&&msg.isTargetMinor(command.substring(x+1)); 
+									else
+										chk=chk&&msg.isTarget(command.substring(x+1)); 
+									break;
+								case 'O': 
+									if(majorOnly)
+										chk=chk&&msg.isOthersMajor(command.substring(x+1)); 
+									else
+									if(minorOnly)
+										chk=chk&&msg.isOthersMinor(command.substring(x+1)); 
+									else
+										chk=chk&&msg.isOthers(command.substring(x+1)); 
+									break;
+								case '<':
+									minorOnly=true;
+									majorOnly=false;
+									break;
+								case '>':
+									majorOnly=true;
+									minorOnly=false;
+									break;
+								case '?':
+									majorOnly=false;
+									minorOnly=false;
+									break;
+								default: 
+									chk=false; 
+									break;
 								}
+							}
+						}
+						else
+						if(command.startsWith(">"))
+						{
+							String cmd=command.substring(1);
+							chk=msg.isSourceMajor(cmd)||msg.isTargetMajor(cmd)||msg.isOthersMajor(cmd);
+						}
+						else
+						if(command.startsWith("<"))
+						{
+							String cmd=command.substring(1);
+							chk=msg.isSourceMinor(cmd)||msg.isTargetMinor(cmd)||msg.isOthersMinor(cmd);
+						}
+						else
+						if(command.startsWith("?"))
+						{
+							String cmd=command.substring(1);
+							chk=msg.isSource(cmd)||msg.isTarget(cmd)||msg.isOthers(cmd);
 						}
 						else
 							chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
@@ -10422,14 +10482,74 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(x>0)
 						{
 							chk=true;
+							boolean minorOnly = false;
+							boolean majorOnly = false;
 							for(int i=0;i<x;i++)
+							{
 								switch(command.charAt(i))
 								{
-									case 'S': chk=chk&&msg.isSource(command.substring(x+1)); break;
-									case 'T': chk=chk&&msg.isTarget(command.substring(x+1)); break;
-									case 'O': chk=chk&&msg.isOthers(command.substring(x+1)); break;
-									default: chk=false; break;
+									case 'S':
+										if(majorOnly)
+											chk=chk&&msg.isSourceMajor(command.substring(x+1)); 
+										else
+										if(minorOnly)
+											chk=chk&&msg.isSourceMinor(command.substring(x+1)); 
+										else
+											chk=chk&&msg.isSource(command.substring(x+1)); 
+										break;
+									case 'T': 
+										if(majorOnly)
+											chk=chk&&msg.isTargetMajor(command.substring(x+1)); 
+										else
+										if(minorOnly)
+											chk=chk&&msg.isTargetMinor(command.substring(x+1)); 
+										else
+											chk=chk&&msg.isTarget(command.substring(x+1)); 
+										break;
+									case 'O': 
+										if(majorOnly)
+											chk=chk&&msg.isOthersMajor(command.substring(x+1)); 
+										else
+										if(minorOnly)
+											chk=chk&&msg.isOthersMinor(command.substring(x+1)); 
+										else
+											chk=chk&&msg.isOthers(command.substring(x+1)); 
+										break;
+									case '<':
+										minorOnly=true;
+										majorOnly=false;
+										break;
+									case '>':
+										majorOnly=true;
+										minorOnly=false;
+										break;
+									case '?':
+										majorOnly=false;
+										minorOnly=false;
+										break;
+									default: 
+										chk=false; 
+										break;
 								}
+							}
+						}
+						else
+						if(command.startsWith(">"))
+						{
+							String cmd=command.substring(1);
+							chk=msg.isSourceMajor(cmd)||msg.isTargetMajor(cmd)||msg.isOthersMajor(cmd);
+						}
+						else
+						if(command.startsWith("<"))
+						{
+							String cmd=command.substring(1);
+							chk=msg.isSourceMinor(cmd)||msg.isTargetMinor(cmd)||msg.isOthersMinor(cmd);
+						}
+						else
+						if(command.startsWith("?"))
+						{
+							String cmd=command.substring(1);
+							chk=msg.isSource(cmd)||msg.isTarget(cmd)||msg.isOthers(cmd);
 						}
 						else
 							chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);

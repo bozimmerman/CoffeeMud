@@ -208,6 +208,27 @@ public interface CMMsg extends CMCommon
 	public boolean isTarget(final String codeOrMaskDesc);
 
 	/**
+	 * Returns whether the given code or mask string matches
+	 * a part of the major code of the targetCode.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYPE_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
+	 * @param codeOrMaskDesc the target action code string, or mask string
+	 * @return whether there is a match
+	 */
+	public boolean isTargetMajor(final String codeOrMaskDesc);
+
+	/**
+	 * Returns whether the given code or mask string matches the minor sourceCode
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYPE_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
+	 * @param codeOrMaskDesc the target action code string, or mask string
+	 * @return whether there is a match
+	 */
+	public boolean isTargetMinor(final String codeOrMaskDesc);
+
+	/**
 	 * Returns whether the given Environmental object is, in fact, the target
 	 * of this message.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
@@ -289,6 +310,27 @@ public interface CMMsg extends CMCommon
 	 * @return whether there is a match
 	 */
 	public boolean isSource(final String codeOrMaskDesc);
+
+	/**
+	 * Returns whether the given code or mask string matches
+	 * a part of the major code of the sourceCode.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYPE_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @param codeOrMaskDesc the source action code string, or mask string
+	 * @return whether there is a match
+	 */
+	public boolean isSourceMajor(final String codeOrMaskDesc);
+
+	/**
+	 * Returns whether the given code or mask string matches the minor sourceCode
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYPE_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @param codeOrMaskDesc the source action code string, or mask string
+	 * @return whether there is a match
+	 */
+	public boolean isSourceMinor(final String codeOrMaskDesc);
 
 	/**
 	 * Returns whether the given Environmental object is, in fact, the source
@@ -412,6 +454,29 @@ public interface CMMsg extends CMCommon
 	 * @return whether there is a match
 	 */
 	public boolean isOthers(final String codeOrMaskDesc);
+
+	/**
+	 * Returns whether the given code or mask string matches
+	 * a part of the major code of the othersCode.  (Others are everyone
+	 * not source, not target)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYPE_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
+	 * @param codeOrMaskDesc the others action code string, or mask string
+	 * @return whether there is a match
+	 */
+	public boolean isOthersMajor(final String codeOrMaskDesc);
+
+	/**
+	 * Returns whether the given code or mask string matches the minor sourceCode
+	 * (Others are everyone not source, not target)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYPE_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
+	 * @param codeOrMaskDesc the others action code string, or mask string
+	 * @return whether there is a match
+	 */
+	public boolean isOthersMinor(final String codeOrMaskDesc);
 
 	/**
 	 * A combination bitmask, action type integer that describes information

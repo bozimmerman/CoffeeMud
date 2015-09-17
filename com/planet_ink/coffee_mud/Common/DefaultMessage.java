@@ -487,6 +487,18 @@ public class DefaultMessage implements CMMsg
 	}
 
 	@Override  
+	public final boolean isTargetMajor(final String codeOrMaskDesc)
+	{
+		return matches(targetMajorMask, -1,codeOrMaskDesc);
+	}
+
+	@Override  
+	public final boolean isTargetMinor(final String codeOrMaskDesc)
+	{
+		return matches(0, targetMinorType,codeOrMaskDesc);
+	}
+
+	@Override  
 	public final boolean isSource(final Environmental E)
 	{
 		return (E instanceof MOB)?amISource((MOB)E):false;
@@ -502,6 +514,18 @@ public class DefaultMessage implements CMMsg
 	public final boolean isSource(final String codeOrMaskDesc)
 	{
 		return matches(sourceMajorMask, sourceMinorType,codeOrMaskDesc);
+	}
+
+	@Override  
+	public final boolean isSourceMajor(final String codeOrMaskDesc)
+	{
+		return matches(sourceMajorMask, -1,codeOrMaskDesc);
+	}
+
+	@Override  
+	public final boolean isSourceMinor(final String codeOrMaskDesc)
+	{
+		return matches(0, sourceMinorType,codeOrMaskDesc);
 	}
 
 	@Override  
@@ -522,6 +546,18 @@ public class DefaultMessage implements CMMsg
 		return matches(othersMajorMask, othersMinorType, codeOrMaskDesc);
 	}
 
+	@Override  
+	public final boolean isOthersMajor(final String codeOrMaskDesc)
+	{
+		return matches(othersMajorMask, -1, codeOrMaskDesc);
+	}
+
+	@Override  
+	public final boolean isOthersMinor(final String codeOrMaskDesc)
+	{
+		return matches(0, othersMinorType, codeOrMaskDesc);
+	}
+
 	protected static final boolean matches(final int major, final int minor, final int code)
 	{
 		return ((major & code)==code) || (minor == code);
@@ -529,33 +565,81 @@ public class DefaultMessage implements CMMsg
 	
 	protected static final boolean matches(final int major, final int minor, String code2)
 	{
-		Integer I=Desc.getMSGTYPE_DESCS().get(code2.toUpperCase());
+		Integer I;
+		if(major <= 0)
+		{
+			int i=CMParms.indexOf(TYPE_DESCS, code2.toUpperCase());
+			I=(i<0)?null:Integer.valueOf(i);
+		}
+		else
+		if(minor < 0)
+		{
+			int i=CMParms.indexOf(MASK_DESCS, code2.toUpperCase());
+			I=(i<0)?null:Integer.valueOf((int)CMath.pow(2,11+i));
+		}
+		else
+			I=Desc.getMSGTYPE_DESCS().get(code2.toUpperCase());
 		if(I==null)
 		{
 			code2=code2.toUpperCase();
-			for(int i=0;i<TYPE_DESCS.length;i++)
-				if(code2.startsWith(TYPE_DESCS[i]))
-				{ I=Integer.valueOf(i); break;}
+			if((I==null)&&(minor >= 0))
+			{
+				for(int i=0;i<TYPE_DESCS.length;i++)
+				{
+					if(code2.startsWith(TYPE_DESCS[i]))
+					{ 
+						I=Integer.valueOf(i); 
+						break;
+					}
+				}
+			}
+			if((I==null)&&(minor >= 0))
+			{
+				for(int i=0;i<TYPE_DESCS.length;i++)
+					if(TYPE_DESCS[i].startsWith(code2))
+					{ 
+						I=Integer.valueOf(i); 
+						break;
+					}
+			}
+			if((I==null)&&(major > 0))
+			{
+				for(int i=0;i<MASK_DESCS.length;i++)
+				{
+					if(code2.startsWith(MASK_DESCS[i]))
+					{ 
+						I=Integer.valueOf((int)CMath.pow(2,11+i)); 
+						break;
+					}
+				}
+			}
+			if((I==null)&&(major > 0))
+			{
+				for(int i=0;i<MASK_DESCS.length;i++)
+					if(MASK_DESCS[i].startsWith(code2))
+					{ 
+						I=Integer.valueOf((int)CMath.pow(2,11+i)); 
+						break;
+					}
+			}
 			if(I==null)
-			for(int i=0;i<TYPE_DESCS.length;i++)
-				if(TYPE_DESCS[i].startsWith(code2))
-				{ I=Integer.valueOf(i); break;}
-			if(I==null)
-			for(int i=0;i<MASK_DESCS.length;i++)
-				if(code2.startsWith(MASK_DESCS[i]))
-				{ I=Integer.valueOf((int)CMath.pow(2,11+i)); break;}
-			if(I==null)
-			for(int i=0;i<MASK_DESCS.length;i++)
-				if(MASK_DESCS[i].startsWith(code2))
-				{ I=Integer.valueOf((int)CMath.pow(2,11+i)); break;}
-			if(I==null)
+			{
 				for (final Object[] element : MISC_DESCS)
 					if(code2.startsWith((String)element[0]))
-					{ I=(Integer)element[1]; break;}
+					{ 
+						I=(Integer)element[1]; 
+						break;
+					}
+			}
 			if(I==null)
+			{
 				for (final Object[] element : MISC_DESCS)
 					if(((String)element[0]).startsWith(code2))
-					{ I=(Integer)element[1]; break;}
+					{ 
+						I=(Integer)element[1]; 
+						break;
+					}
+			}
 			if(I==null)
 				return false;
 		}
