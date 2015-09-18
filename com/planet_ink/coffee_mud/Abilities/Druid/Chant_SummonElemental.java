@@ -141,7 +141,7 @@ public class Chant_SummonElemental extends Chant
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");
 		newMOB.basePhyStats().setLevel(adjustedLevel(caster,0));
-		switch(CMLib.dice().roll(1,4,0))
+		switch(1)//CMLib.dice().roll(1,4,0))
 		{
 		case 1:
 			newMOB.setName(L("a fire elemental"));

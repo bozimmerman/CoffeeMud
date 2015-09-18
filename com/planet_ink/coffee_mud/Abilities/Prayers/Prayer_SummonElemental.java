@@ -158,8 +158,10 @@ public class Prayer_SummonElemental extends Prayer
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		int type=-1;
 		for(int i=0;i<types.length;i++)
+		{
 			if(text().toUpperCase().indexOf(types[i])>=0)
 				type=i;
+		}
 		if(type<0)
 			type=CMLib.dice().roll(1,types.length,-1);
 		switch(type)

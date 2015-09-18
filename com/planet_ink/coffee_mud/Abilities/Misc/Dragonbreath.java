@@ -109,7 +109,7 @@ public class Dragonbreath extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final boolean success=proficiencyCheck(mob,0,auto);
+		boolean success=proficiencyCheck(mob,0,auto);
 
 		String puffPhrase="<S-NAME> puff(s) smoke from <S-HIS-HER> mouth.";
 		String autoPhrase="A blast of flames erupts!";
@@ -147,17 +147,18 @@ public class Dragonbreath extends StdAbility
 				strikeType=CMMsg.TYP_ACID;
 				break;
 		case 'g':
+				puffPhrase="<S-NAME> puff(s) gas harmlessly from <S-HIS-HER> mouth.";
 				if(CMLib.dice().rollPercentage()>50)
 				{
-					puffPhrase="<S-NAME> puff(s) gas harmlessly from <S-HIS-HER> mouth.";
 					autoPhrase="A cloud of deadly gas descends!";
 					stuffWord="gas";
 					castPhrase="<S-NAME> blow(s) deadly gas from <S-HIS-HER> mouth!";
 					WeaponType=Weapon.TYPE_GASSING;
 					strikeType=CMMsg.TYP_GAS;
 				}
+				else
+					success = false;
 				break;
-
 		}
 		final Room R=mob.location();
 		if((success)&&(R!=null))

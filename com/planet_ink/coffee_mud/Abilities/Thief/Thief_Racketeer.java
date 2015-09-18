@@ -1,14 +1,22 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
 
-import java.util.*;
-
-import com.planet_ink.coffee_mud.Abilities.interfaces.Ability;
-import com.planet_ink.coffee_mud.Common.interfaces.CMMsg;
-import com.planet_ink.coffee_mud.Items.interfaces.Coins;
-import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.*;
 
 /*
  * Copyright 2000-2015 Bo Zimmerman, Lee Fox Licensed under the Apache License,
@@ -145,9 +153,11 @@ public class Thief_Racketeer extends ThiefSkill
 			mob.tell(L("You are too busy to racketeer right now."));
 			return false;
 		}
-		if((CMLib.coffeeShops().getShopKeeper(target)==null)&&(target.fetchBehavior("MoneyChanger")==null)
-				&&(target.fetchBehavior("ItemMender")==null)&&(target.fetchBehavior("ItemIdentifier")==null)
-				&&(target.fetchBehavior("ItemRefitter")==null))
+		if((CMLib.coffeeShops().getShopKeeper(target)==null)
+		&&(target.fetchBehavior("MoneyChanger")==null)
+		&&(target.fetchBehavior("ItemMender")==null)
+		&&(target.fetchBehavior("ItemIdentifier")==null)
+		&&(target.fetchBehavior("ItemRefitter")==null))
 		{
 			mob.tell(L("You can't get protection money from @x1.",target.name(mob)));
 			return false;
@@ -174,23 +184,21 @@ public class Thief_Racketeer extends ThiefSkill
 			return false;
 		final double amount=CMLib.dice().roll(proficiency(),target.phyStats().level(),0);
 		final boolean success=proficiencyCheck(mob,-(levelDiff),auto);
-		if(success)
+		final Room R=mob.location();
+		if((success)&&(R!=null))
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,L("<S-NAME> extract(s) @x1 of protection money from <T-NAME>.",CMLib.beanCounter().nameCurrencyShort(target,amount)));
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				beneficialAffect( mob,
-								  target,
-								  asLevel,
-								  (int)(((CMProps.getMillisPerMudHour()) *
-										 (mob.location().getArea().getTimeObj().getHoursInDay()) *
-										 (mob.location().getArea().getTimeObj().getDaysInMonth()) ) /
-											 (CMProps.getTickMillis()) ));
-				final Coins C=CMLib.beanCounter().makeBestCurrency(mob,amount);
+				R.send(mob,msg);
+				final TimeClock timeObj = R.getArea().getTimeObj();
+				final int hoursInMonth =  timeObj.getHoursInDay() * timeObj.getDaysInMonth();
+				final int tickDown = (int)(((CMProps.getMillisPerMudHour()) * hoursInMonth) / (CMProps.getTickMillis()) );
+				beneficialAffect( mob, target, asLevel, tickDown);
+				final Coins C=CMLib.beanCounter().makeBestCurrency(target,amount);
 				if(C!=null)
 				{
-					mob.location().addItem(C,ItemPossessor.Expire.Player_Drop);
+					R.addItem(C,ItemPossessor.Expire.Player_Drop);
 					CMLib.commands().postGet(mob,null,C,true);
 				}
 			}
