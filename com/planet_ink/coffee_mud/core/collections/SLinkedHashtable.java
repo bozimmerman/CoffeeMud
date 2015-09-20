@@ -1,70 +1,82 @@
 package com.planet_ink.coffee_mud.core.collections;
+
 import java.util.*;
+
 /*
-Copyright 2000-2015 Bo Zimmerman
+ Copyright 2000-2015 Bo Zimmerman
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-	http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serializable
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializable
 {
-	private static final long serialVersionUID = 6687178785122561993L;
-	private volatile LinkedHashMap<K,F> H;
+	private static final long	         serialVersionUID	= 6687178785122561993L;
+	private volatile LinkedHashMap<K, F>	H;
+
 	public SLinkedHashtable()
 	{
 		super();
-		H=new LinkedHashMap<K,F>();
+		H = new LinkedHashMap<K, F>();
 	}
+
 	public SLinkedHashtable(int size)
 	{
 		super();
-		H=new LinkedHashMap<K,F>(size);
+		H = new LinkedHashMap<K, F>(size);
 	}
-	public SLinkedHashtable(Map<K,F> H)
+
+	public SLinkedHashtable(Map<K, F> H)
 	{
 		super();
-		this.H=new LinkedHashMap<K,F>();
-		if(H!=null)
-			for(final K o : H.keySet())
-				put(o,H.get(o));
+		this.H = new LinkedHashMap<K, F>();
+		if (H != null)
+		{
+			for (final K o : H.keySet())
+				put(o, H.get(o));
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public SLinkedHashtable(Object[][] H)
 	{
 		super();
-		this.H=new LinkedHashMap<K,F>();
-		if(H!=null)
-			for(final Object[] o : H)
-				this.H.put((K) o[0],(F) o[1]);
+		this.H = new LinkedHashMap<K, F>();
+		if (H != null)
+		{
+			for (final Object[] o : H)
+				this.H.put((K) o[0], (F) o[1]);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized Hashtable<K,F> toHashtable()
+	public synchronized Hashtable<K, F> toHashtable()
 	{
-		return (Hashtable<K,F>)H.clone();
+		return (Hashtable<K, F>) H.clone();
 	}
+
 	public synchronized Vector<String> toStringVector(String divider)
 	{
-		final Vector<String> V=new Vector<String>(size());
-		for(final Object S : keySet())
-			if(S!=null)
+		final Vector<String> V = new Vector<String>(size());
+		for (final Object S : keySet())
+		{
+			if (S != null)
 			{
 				final Object O = get(S);
-				if(O==null)
+				if (O == null)
 					V.add(S.toString() + divider);
 				else
 					V.add(S.toString() + divider + O.toString());
 			}
+		}
 		return V;
 	}
 
@@ -72,15 +84,15 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 	@Override
 	public synchronized void clear()
 	{
-		H=(LinkedHashMap<K,F>)H.clone();
+		H = (LinkedHashMap<K, F>) H.clone();
 		H.clear();
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized SLinkedHashtable<K,F> copyOf()
+	public synchronized SLinkedHashtable<K, F> copyOf()
 	{
-		final SLinkedHashtable<K,F> SH=new SLinkedHashtable<K,F>();
-		SH.H=(LinkedHashMap<K,F>)H.clone();
+		final SLinkedHashtable<K, F> SH = new SLinkedHashtable<K, F>();
+		SH.H = (LinkedHashMap<K, F>) H.clone();
 		return SH;
 	}
 
@@ -106,9 +118,9 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 		return new IteratorEnumeration<F>(H.values().iterator());
 	}
 
-	public synchronized Enumeration<Map.Entry<K,F>>entries()
+	public synchronized Enumeration<Map.Entry<K, F>> entries()
 	{
-		return new IteratorEnumeration<Map.Entry<K,F>>(H.entrySet().iterator());
+		return new IteratorEnumeration<Map.Entry<K, F>>(H.entrySet().iterator());
 	}
 
 	@Override
@@ -120,7 +132,7 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 	@Override
 	public boolean equals(Object arg0)
 	{
-		return this==arg0;
+		return this == arg0;
 	}
 
 	@Override
@@ -156,7 +168,7 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 	@Override
 	public synchronized F put(K arg0, F arg1)
 	{
-		H=(LinkedHashMap<K,F>)H.clone();
+		H = (LinkedHashMap<K, F>) H.clone();
 		return H.put(arg0, arg1);
 	}
 
@@ -164,7 +176,7 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 	@Override
 	public synchronized F remove(Object arg0)
 	{
-		H=(LinkedHashMap<K,F>)H.clone();
+		H = (LinkedHashMap<K, F>) H.clone();
 		return H.remove(arg0);
 	}
 
@@ -185,11 +197,12 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 	{
 		return new ReadOnlyCollection<F>(H.values());
 	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized void putAll(Map<? extends K, ? extends F> arg0)
 	{
-		H=(LinkedHashMap<K,F>)H.clone();
+		H = (LinkedHashMap<K, F>) H.clone();
 		H.putAll(arg0);
 	}
 

@@ -21,15 +21,15 @@ import java.util.*;
 public class LongSet implements Set<Long>
 {
 	/**  Whether this number denotes the beginning of a grouping.*/
-	protected static final int NEXT_FLAG=(Integer.MAX_VALUE/2)+1;
+	protected static final int 	NEXT_FLAG		= (Integer.MAX_VALUE/2)+1;
 	/**  a mask for int number values */
-	public static final int INT_BITS=NEXT_FLAG-1;
+	public static final int 	INT_BITS		= NEXT_FLAG-1;
 	/**  Whether this number denotes the beginning of a grouping.*/
-	protected static final long NEXT_FLAGL=(Long.MAX_VALUE/2)+1;
+	protected static final long NEXT_FLAGL		= (Long.MAX_VALUE/2)+1;
 	/**  a mask for int number values */
-	public static final long LONG_BITS=NEXT_FLAGL-1;
+	public static final long 	LONG_BITS		= NEXT_FLAGL-1;
 	/** a secondary mask value for marking numbers */
-	public static final long OPTION_FLAG_LONG=(LongSet.LONG_BITS+1)/2;
+	public static final long 	OPTION_FLAG_LONG= (LongSet.LONG_BITS+1)/2;
 
 	protected volatile int[] intArray=new int[0];
 	protected volatile long[] longArray=new long[0];
@@ -120,6 +120,7 @@ public class LongSet implements Set<Long>
 	{
 		int count=0;
 		for(int i=0;i<intArray.length;i++)
+		{
 			if((intArray[i]&NEXT_FLAG)>0)
 			{
 				count=count+1+(intArray[i+1]-(intArray[i]&INT_BITS));
@@ -127,6 +128,7 @@ public class LongSet implements Set<Long>
 			}
 			else
 				count++;
+		}
 		final int[] nums=new int[count];
 		int dex=0;
 		for(int i=0;i<intArray.length;i++)
@@ -160,6 +162,7 @@ public class LongSet implements Set<Long>
 				nums[dex++]=intArray[i];
 		}
 		for(int i=0;i<longArray.length;i++)
+		{
 			if((longArray[i]&NEXT_FLAGL)>0)
 			{
 				for(long y=(longArray[i]&LONG_BITS);y<=longArray[i+1];y++)
@@ -168,31 +171,36 @@ public class LongSet implements Set<Long>
 			}
 			else
 				nums[dex++]=longArray[i];
+		}
 		return nums;
 	}
 
 	
 	@Override
-    public boolean isEmpty()
+	public boolean isEmpty()
 	{
 		return intArray.length == 0 && longArray.length == 0;
 	}
 
 	
 	@Override
-    public int size()
+	public int size()
 	{
 		int count=0;
 		for(int i=0;i<intArray.length;i++)
+		{
 			if((intArray[i]&NEXT_FLAG)>0)
 				count=count+1+(intArray[i+1]-(intArray[i++]&INT_BITS));
 			else
 				count++;
+		}
 		for(int i=0;i<longArray.length;i++)
+		{
 			if((longArray[i]&NEXT_FLAGL)>0)
 				count=count+1+(int)(longArray[i+1]-(longArray[i++]&LONG_BITS));
 			else
 				count++;
+		}
 		return count;
 	}
 
@@ -1200,5 +1208,4 @@ public class LongSet implements Set<Long>
 		}
 		return -1;
 	}
-	
 }

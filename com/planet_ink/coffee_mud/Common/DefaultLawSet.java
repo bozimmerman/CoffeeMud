@@ -63,8 +63,8 @@ public class DefaultLawSet implements Law
 	private final List<String[]> 		otherBits=new Vector<String[]>();
 	private final List<List<String>> 	bannedSubstances=new Vector<List<String>>();
 	private final List<String[]> 		bannedBits=new Vector<String[]>();
-	private final Map<String,String[]>abilityCrimes=new Hashtable<String,String[]>();
-	private final Map<String,String[]>basicCrimes=new Hashtable<String,String[]>();
+	private final Map<String,String[]>	abilityCrimes=new Hashtable<String,String[]>();
+	private final Map<String,String[]>	basicCrimes=new Hashtable<String,String[]>();
 	private final Map<String, Object>	taxLaws=new Hashtable<String, Object>();
 
 	private List<String> chitChat=new Vector<String>();
@@ -550,7 +550,11 @@ public class DefaultLawSet implements Law
 			theLaws.put(tag,value);
 		}
 	}
-	@Override public boolean lawIsActivated(){ return activated;}
+	@Override 
+	public boolean lawIsActivated()
+	{ 
+		return activated;
+	}
 
 	@Override
 	public void resetLaw()

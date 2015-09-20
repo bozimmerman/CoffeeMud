@@ -1,41 +1,48 @@
 package com.planet_ink.coffee_mud.core.collections;
+
 import java.util.*;
+
 /*
-Copyright 2000-2015 Bo Zimmerman
+ Copyright 2000-2015 Bo Zimmerman
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-	http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 public class ReadOnlySet<K> implements Set<K>
 {
-	private final Set<K> set;
+	private final Set<K>	set;
+
 	public ReadOnlySet()
 	{
-		set=new HashSet<K>();
+		set = new HashSet<K>();
 	}
+
 	public ReadOnlySet(Set<K> s)
 	{
-		set=s;
+		set = s;
 	}
+
 	@Override
 	public boolean add(K e)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
+
 	@Override
 	public boolean addAll(Collection<? extends K> c)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
+
 	@Override
 	public void clear()
 	{
@@ -65,21 +72,25 @@ public class ReadOnlySet<K> implements Set<K>
 	{
 		return new ReadOnlyIterator<K>(set.iterator());
 	}
+
 	@Override
 	public boolean remove(Object o)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
+
 	@Override
 	public boolean removeAll(Collection<?> c)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
+
 	@Override
 	public boolean retainAll(Collection<?> c)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
+
 	@Override
 	public int size()
 	{

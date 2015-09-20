@@ -56,7 +56,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	protected static final Map<String,Pattern>	patterns= new Hashtable<String,Pattern>();
 
-	protected boolean 				noDelay			= CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLEDELAY);
+	protected boolean 				noDelay			 = CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLEDELAY);
 
 	protected String				scope			 = "";
 	protected int					tickStatus		 = Tickable.STATUS_NOT;

@@ -49,7 +49,6 @@ public class XHashSet<T> extends HashSet<T>
 			add(E);
 	}
 
-
 	public XHashSet()
 	{
 		super();
@@ -59,65 +58,83 @@ public class XHashSet<T> extends HashSet<T>
 	{
 		super();
 		if(E!=null)
+		{
 			for(final T o : E)
 				add(o);
+		}
 	}
 
 	public XHashSet(Enumeration<T> E)
 	{
 		super();
 		if(E!=null)
+		{
 			for(;E.hasMoreElements();)
 				add(E.nextElement());
+		}
 	}
 
 	public XHashSet(Iterator<T> E)
 	{
 		super();
 		if(E!=null)
+		{
 			for(;E.hasNext();)
 				add(E.next());
+		}
 	}
 
 	public synchronized void addAll(Enumeration<T> E)
 	{
 		if(E!=null)
+		{
 			for(;E.hasMoreElements();)
 				add(E.nextElement());
+		}
 	}
 
 	public synchronized void addAll(T[] E)
 	{
 		if(E!=null)
+		{
 			for(final T e : E)
 				add(e);
+		}
 	}
 
 	public synchronized void addAll(Iterator<T> E)
 	{
 		if(E!=null)
+		{
 			for(;E.hasNext();)
 				add(E.next());
+		}
 	}
 
 	public synchronized void removeAll(Enumeration<T> E)
 	{
 		if(E!=null)
+		{
 			for(;E.hasMoreElements();)
 				remove(E.nextElement());
+		}
 	}
 
 	public synchronized void removeAll(Iterator<T> E)
 	{
 		if(E!=null)
+		{
 			for(;E.hasNext();)
 				remove(E.next());
+		}
 	}
 
 	public synchronized void removeAll(List<T> E)
 	{
 		if(E!=null)
+		{
 			for(final T o : E)
 				remove(o);
+		}
 	}
 }

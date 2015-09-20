@@ -20,15 +20,16 @@ import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
  * https://github.com/pruby/xppylons/blob/master/src/com/untamedears/xppylons/rtree/AABB.java
  * (No license found)
  */
-public class RTree<T extends BoundedObject> {
+public class RTree<T extends BoundedObject> 
+{
 	private RTreeNode root;
 	private int maxSize;
 	private int minSize;
 	private SLinkedHashtable<T,List<WeakReference<TrackingVector<T>>>> trackMap;
 	private QuadraticNodeSplitter splitter;
 
-
-	public class RTreeNode implements BoundedObject {
+	public class RTreeNode implements BoundedObject 
+	{
 		RTreeNode parent;
 		BoundedCube box;
 		Vector<RTreeNode> children;
