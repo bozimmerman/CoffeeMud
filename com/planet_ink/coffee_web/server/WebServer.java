@@ -254,8 +254,11 @@ public class WebServer extends Thread
 			{
 				if(!handler.isCloseable())
 				{
-					key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
-					executor.execute(handler);
+					if(key.isValid())
+					{
+						key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
+						executor.execute(handler);
+					}
 				}
 				else
 				{
