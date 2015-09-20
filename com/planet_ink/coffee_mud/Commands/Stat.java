@@ -52,6 +52,7 @@ public class Stat  extends Skills
 	public static final int ABLETYPE_WORLDEXPLORED=-11;
 	public static final int ABLETYPE_FACTIONS=-12;
 	public static final int ABLETYPE_CHARSTATS=-13;
+	public static final int ABLETYPE_LEVELTIMES=-14;
 
 	public static final String[][] ABLETYPE_DESCS={
 		{"EQUIPMENT","EQ","EQUIP"},
@@ -66,6 +67,7 @@ public class Stat  extends Skills
 		{"WORLDEXPLORED"},
 		{"FACTIONS","FACTION"},
 		{"CHARSTATISTICS","CSTAT","CHARSTATS"},
+		{"LEVELTIMES","LVLS"}
 	};
 
 	public MOB getTarget(MOB mob, String targetName, boolean quiet)
@@ -521,21 +523,27 @@ public class Stat  extends Skills
 			{
 				final String s=((String)commands.get(0)).toUpperCase();
 				for(int i=0;i<ABLETYPE_DESCS.length;i++)
+				{
 					for(int is=0;is<ABLETYPE_DESCS[i].length;is++)
+					{
 						if(s.equals(ABLETYPE_DESCS[i][is]))
 						{
 							ableTypes=-2 -i;
 							commands.remove(0);
 							break;
 						}
+					}
+				}
 				if(ableTypes==-1)
-				for(int a=0;a<Ability.ACODE_DESCS.length;a++)
 				{
-					if((Ability.ACODE_DESCS[a]+"S").equals(s)||(Ability.ACODE_DESCS[a]).equals(s))
+					for(int a=0;a<Ability.ACODE_DESCS.length;a++)
 					{
-						ableTypes=a;
-						commands.remove(0);
-						break;
+						if((Ability.ACODE_DESCS[a]+"S").equals(s)||(Ability.ACODE_DESCS[a]).equals(s))
+						{
+							ableTypes=a;
+							commands.remove(0);
+							break;
+						}
 					}
 				}
 			}
@@ -561,13 +569,16 @@ public class Stat  extends Skills
 				else
 				if(ableTypes==ABLETYPE_QUESTWINS)
 				{
-					str.append(L("Quests won:"));
+					str.append(L("Quests won by "+target.Name()+": "));
 					final StringBuffer won=new StringBuffer("");
 					for(int q=0;q<CMLib.quests().numQuests();q++)
 					{
 						final Quest Q=CMLib.quests().fetchQuest(q);
 						if(Q.wasWinner(target.Name()))
-							won.append(" "+Q.name()+",");
+						{
+							final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
+							won.append(" "+name+",");
+						}
 					}
 					if(won.length()==0)
 						won.append(" None!");
@@ -628,6 +639,29 @@ public class Stat  extends Skills
 						final Faction F=CMLib.factions().getFaction(f.nextElement());
 						if(F!=null)
 							str.append("^W[^H"+F.name()+"^N("+F.factionID()+"): "+target.fetchFaction(F.factionID())+"^W]^N, ");
+					}
+					str.append("\n\r");
+				}
+				else
+				if(ableTypes == ABLETYPE_LEVELTIMES)
+				{
+					if(target.playerStats() != null)
+					{
+						long lastDateTime=-1;
+						for(int level=0;level<=target.phyStats().level();level++)
+						{
+							final long dateTime=target.playerStats().leveledDateTime(level);
+							if((dateTime>1529122205)&&(dateTime!=lastDateTime))
+							{
+								lastDateTime = dateTime;
+								if(level==0)
+								 	str.append(CMStrings.padRight("Created",8));
+								else
+								 	str.append(CMStrings.padRight(""+level,8));
+								str.append(CMLib.time().date2String(dateTime));
+								str.append("\n\r");
+							}
+						}
 					}
 					str.append("\n\r");
 				}
