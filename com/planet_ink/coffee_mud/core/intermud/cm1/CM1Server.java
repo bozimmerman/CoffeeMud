@@ -40,19 +40,17 @@ import java.nio.channels.*;
 */
 public class CM1Server extends Thread
 {
-	private String		name = "";
-	private int 		port = 27755;
-	private boolean 	shutdownRequested = false;
-	private boolean 	isShutdown = false;
-	private Selector	servSelector = null;
+	private String		 name = "";
+	private int 		 port = 27755;
+	private boolean 	 shutdownRequested = false;
+	private boolean 	 isShutdown = false;
+	private Selector	 servSelector = null;
+	private final String iniFile;
+	private CMProps 	 page;
 	private ServerSocketChannel
-						servChan = null;
+						 servChan = null;
 	private final SHashtable<SocketChannel,RequestHandler>
-						handlers = new SHashtable<SocketChannel,RequestHandler>();
-	private final String		iniFile;
-	private CMProps 	page;
-
-
+						 handlers = new SHashtable<SocketChannel,RequestHandler>();
 
 	public CM1Server(String serverName, String iniFile)
 	{
@@ -67,7 +65,10 @@ public class CM1Server extends Thread
 		shutdownRequested = false;
 	}
 
-	public String getINIFilename() { return iniFile;}
+	public String getINIFilename() 
+	{ 
+		return iniFile;
+	}
 
 	protected boolean loadPropPage(String iniFile)
 	{
@@ -116,7 +117,8 @@ public class CM1Server extends Thread
 					try
 					{
 						final int n = servSelector.select();
-						if (n == 0) continue;
+						if (n == 0) 
+							continue;
 
 						final Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
 						while (it.hasNext())
@@ -151,13 +153,17 @@ public class CM1Server extends Thread
 							}
 						}
 						for(final SocketChannel schan : handlers.keySet())
+						{
 							try
 							{
 								final RequestHandler handler=handlers.get(schan);
 								if((handler!=null)&&(handler.needsClosing()))
 									handler.shutdown();
 							}
-							catch(final Exception e){}
+							catch(final Exception e)
+							{
+							}
+						}
 					}
 					catch(final CancelledKeyException t)
 					{
@@ -176,13 +182,17 @@ public class CM1Server extends Thread
 				if(servChan != null)
 					try {servChan.close();}catch(final Exception e){}
 				for(final SocketChannel schan : handlers.keySet())
+				{
 					try
 					{
 						final RequestHandler handler=handlers.get(schan);
 						if(handler!=null)
 							handler.shutdown();
 					}
-					catch(final Exception e){}
+					catch(final Exception e)
+					{
+					}
+				}
 				handlers.clear();
 				Log.sysOut("CM1Server","Shutdown complete");
 			}
@@ -196,13 +206,29 @@ public class CM1Server extends Thread
 		final long time = System.currentTimeMillis();
 		while((System.currentTimeMillis()-time<30000) && (!isShutdown))
 		{
-			try {Thread.sleep(1000);}catch(final Exception e){}
+			CMLib.s_sleep(1000);
 			if(servSelector != null)
-				try {servSelector.close();}catch(final Exception e){}
-			try {Thread.sleep(1000);}catch(final Exception e){}
+			{
+				try 
+				{
+					servSelector.close();
+				}
+				catch(final Exception e)
+				{
+				}
+			}
+			CMLib.s_sleep(1000);
 			if((servChan != null)&&(!isShutdown))
-				try {servChan.close();}catch(final Exception e){}
-			try {Thread.sleep(1000);}catch(final Exception e){}
+			{
+				try 
+				{
+					servChan.close();
+				}
+				catch(final Exception e)
+				{
+				}
+			}
+			CMLib.s_sleep(1000);
 			this.interrupt();
 		}
 	}

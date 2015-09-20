@@ -40,11 +40,11 @@ import java.nio.channels.*;
 */
 public class CM1Client
 {
-	private final String 			host;
-	private final int 			port;
-	private Socket 			sock=null;
-	private BufferedReader	br=null;
-	private BufferedWriter 	bw=null;
+	private final String 	host;
+	private final int 		port;
+	private Socket 			sock	= null;
+	private BufferedReader	br		= null;
+	private BufferedWriter 	bw		= null;
 
 	public CM1Client(String host, int port)
 	{
@@ -54,8 +54,14 @@ public class CM1Client
 
 	public final static int s_int(final String INT)
 	{
-		try{ return Integer.parseInt(INT); }
-		catch(final Exception e){ return 0;}
+		try
+		{ 
+			return Integer.parseInt(INT); 
+		}
+		catch(final Exception e)
+		{ 
+			return 0;
+		}
 	}
 
 	public synchronized List<String> transactMessages(String command)

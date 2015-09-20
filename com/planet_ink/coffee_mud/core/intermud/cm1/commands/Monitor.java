@@ -43,7 +43,11 @@ import java.util.concurrent.atomic.*;
 */
 public class Monitor extends Listen
 {
-	@Override public String getCommandWord(){ return "MONITOR";}
+	@Override 
+	public String getCommandWord()
+	{ 
+		return "MONITOR";
+	}
 
 	public Monitor(RequestHandler req, String parameters)
 	{
@@ -90,6 +94,7 @@ public class Monitor extends Listen
 			{
 				final List<String> msgs=new LinkedList<String>();
 				for(final Listener l : listeners)
+				{
 					if(l.channelName.equalsIgnoreCase(name))
 					{
 						synchronized(l)
@@ -102,6 +107,7 @@ public class Monitor extends Listen
 							}
 						}
 					}
+				}
 				if(msgs.size()==0)
 					req.sendMsg("[FAIL NONE]");
 				else

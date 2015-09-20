@@ -41,7 +41,12 @@ import java.util.concurrent.atomic.*;
 */
 public class MUDInfo extends CM1Command
 {
-	@Override public String getCommandWord(){ return "MUDINFO";}
+	@Override 
+	public String getCommandWord()
+	{ 
+		return "MUDINFO";
+	}
+	
 	public MUDInfo(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
@@ -75,7 +80,13 @@ public class MUDInfo extends CM1Command
 			req.close();
 		}
 	}
-	@Override public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	
+	@Override 
+	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	{
+		return true;
+	}
+	
 	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{

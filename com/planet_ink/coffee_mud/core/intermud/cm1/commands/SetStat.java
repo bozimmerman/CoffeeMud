@@ -42,7 +42,11 @@ import java.util.concurrent.atomic.*;
 */
 public class SetStat extends GetStat
 {
-	@Override public String getCommandWord(){ return "SETSTAT";}
+	@Override 
+	public String getCommandWord()
+	{ 
+		return "SETSTAT";
+	}
 
 	public SetStat(RequestHandler req, String parameters)
 	{
@@ -110,9 +114,11 @@ public class SetStat extends GetStat
 			}
 
 			if(mod instanceof Physical)
+			{
 				switch(CMParms.indexOf(PHYSSTATS, stat))
 				{
-					case -1: break;
+					case -1: 
+						break;
 					case 0:
 					{
 						if(adjuster=='-')
@@ -150,10 +156,13 @@ public class SetStat extends GetStat
 						return;
 					}
 				}
+			}
 			if(mod instanceof PhysicalAgent)
+			{
 				switch(CMParms.indexOf(PHYASTATS, stat))
 				{
-					case -1: break;
+					case -1: 
+						break;
 					case 0:
 					{
 						if(adjuster=='-')
@@ -181,10 +190,13 @@ public class SetStat extends GetStat
 						return;
 					}
 				}
+			}
 			if(mod instanceof MOB)
+			{
 				switch(CMParms.indexOf(MOBASTATS, stat))
 				{
-					case -1: break;
+					case -1: 
+						break;
 					case 0:
 					{
 						if(adjuster=='-')
@@ -292,10 +304,13 @@ public class SetStat extends GetStat
 						return;
 					}
 				}
+			}
 			if(mod instanceof ItemPossessor)
+			{
 				switch(CMParms.indexOf(ITEMSTATS, stat))
 				{
-					case -1: break;
+					case -1: 
+						break;
 					case 0:
 					{
 						if(adjuster=='-')
@@ -330,10 +345,13 @@ public class SetStat extends GetStat
 						return;
 					}
 				}
+			}
 			if(mod instanceof Room)
+			{
 				switch(CMParms.indexOf(ROOMSTATS, stat))
 				{
-					case -1: break;
+					case -1: 
+						break;
 					case 0:
 					{
 						if(adjuster=='-')
@@ -368,6 +386,7 @@ public class SetStat extends GetStat
 						return;
 					}
 				}
+			}
 
 			if(!UseGenBuilder(P,mod))
 				mod.setStat(stat, value);
@@ -375,13 +394,16 @@ public class SetStat extends GetStat
 			{
 				final String[] codes = this.getStatCodes(P, mod);
 				for (final String code : codes)
+				{
 					if(code.equalsIgnoreCase(stat))
+					{
 						if(P instanceof MOB)
 							CMLib.coffeeMaker().setGenMobStat((MOB)P, stat, value);
 						else
 						if(P instanceof Item)
 							CMLib.coffeeMaker().setGenItemStat((Item)P, stat, value);
-
+					}
+				}
 			}
 			req.sendMsg("[OK]");
 		}

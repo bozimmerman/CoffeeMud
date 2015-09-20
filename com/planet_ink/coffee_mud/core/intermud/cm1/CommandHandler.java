@@ -45,7 +45,9 @@ public class CommandHandler implements Runnable
 	private String cmd;
 	private String rest;
 	private final RequestHandler req;
+
 	private static final Map<String,Class<? extends CM1Command>> commandList=new Hashtable<String,Class<? extends CM1Command>>();
+	
 	private static final void AddCommand(Class<? extends CM1Command> c) throws InstantiationException, IllegalAccessException
 	{
 		final CM1Command c1 = CM1Command.newInstance(c,null,"");
@@ -68,32 +70,36 @@ public class CommandHandler implements Runnable
 		final URL classUrl = CommandHandler.class.getClass().getResource(className);
 		if (classUrl != null)
 		{
-		   String temp = classUrl.getFile();
-		   if (temp.startsWith("file:"))
-		   {
+			String temp = classUrl.getFile();
+			if (temp.startsWith("file:"))
+			{
 			  temp=temp.substring(5);
-		   }
-		   x=temp.lastIndexOf('/');
-		   if(x>0)
-		   {
-			   final File dir=new File(temp.substring(0,x)+"/commands");
-			   if((dir.exists())&&(dir.isDirectory()))
-				   for(final File F : dir.listFiles())
-					   if(F.getName().endsWith(".class")
-					   &&(!F.getName().equals("CM1Command.class"))
-					   &&(F.getName().indexOf('$')<0))
-					   {
-						   final String name=packageName + F.getName().substring(0,F.getName().length()-6);
-						   try
-						   {
-							   AddCommand((Class<? extends CM1Command>)CMClass.instance().loadClass(name,true));
-						   }
-						   catch(final Exception e)
-						   {
-							   e.printStackTrace();
-						   }
-					   }
-		   }
+			}
+			x=temp.lastIndexOf('/');
+			if(x>0)
+			{
+				final File dir=new File(temp.substring(0,x)+"/commands");
+				if((dir.exists())&&(dir.isDirectory()))
+				{
+					for(final File F : dir.listFiles())
+					{
+						if(F.getName().endsWith(".class")
+						&&(!F.getName().equals("CM1Command.class"))
+						&&(F.getName().indexOf('$')<0))
+						{
+							final String name=packageName + F.getName().substring(0,F.getName().length()-6);
+							try
+							{
+								AddCommand((Class<? extends CM1Command>)CMClass.instance().loadClass(name,true));
+							}
+							catch(final Exception e)
+							{
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -111,7 +117,6 @@ public class CommandHandler implements Runnable
 			cmd=command.substring(0,x).trim();
 			rest=command.substring(x+1).trim();
 		}
-
 	}
 
 	@Override
@@ -160,6 +165,4 @@ public class CommandHandler implements Runnable
 			}
 		}
 	}
-
-
 }

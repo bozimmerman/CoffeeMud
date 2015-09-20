@@ -42,7 +42,11 @@ import java.util.concurrent.atomic.*;
 */
 public class FileCmd extends CM1Command
 {
-	@Override public String getCommandWord(){ return "FILE";}
+	@Override 
+	public String getCommandWord()
+	{ 
+		return "FILE";
+	}
 
 	public FileCmd(RequestHandler req, String parameters)
 	{

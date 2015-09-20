@@ -43,7 +43,12 @@ import java.util.concurrent.atomic.*;
 */
 public class GetStat extends CM1Command
 {
-	@Override public String getCommandWord(){ return "GETSTAT";}
+	@Override 
+	public String getCommandWord()
+	{ 
+		return "GETSTAT";
+	}
+	
 	public GetStat(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
@@ -237,6 +242,7 @@ public class GetStat extends CM1Command
 				return;
 			}
 			if(mod instanceof Physical)
+			{
 				switch(CMParms.indexOf(PHYSSTATS, stat))
 				{
 					case -1: break;
@@ -255,7 +261,9 @@ public class GetStat extends CM1Command
 						return;
 					}
 				}
+			}
 			if(mod instanceof PhysicalAgent)
+			{
 				switch(CMParms.indexOf(PHYASTATS, stat))
 				{
 					case -1: break;
@@ -274,7 +282,9 @@ public class GetStat extends CM1Command
 						return;
 					}
 				}
+			}
 			if(mod instanceof MOB)
+			{
 				switch(CMParms.indexOf(MOBASTATS, stat))
 				{
 					case -1: break;
@@ -358,7 +368,9 @@ public class GetStat extends CM1Command
 						return;
 					}
 				}
+			}
 			if(mod instanceof ItemPossessor)
+			{
 				switch(CMParms.indexOf(ITEMSTATS, stat))
 				{
 					case -1: break;
@@ -377,7 +389,9 @@ public class GetStat extends CM1Command
 						return;
 					}
 				}
+			}
 			if(mod instanceof Room)
+			{
 				switch(CMParms.indexOf(ROOMSTATS, stat))
 				{
 					case -1: break;
@@ -396,20 +410,25 @@ public class GetStat extends CM1Command
 						return;
 					}
 				}
-
+			}
 			if(!UseGenBuilder(P,mod))
+			{
 				req.sendMsg("[OK "+mod.getStat(stat)+"]");
+			}
 			else
 			{
 				final String[] codes = this.getStatCodes(P, mod);
 				for (final String code : codes)
+				{
 					if(code.equalsIgnoreCase(stat))
+					{
 						if(P instanceof MOB)
 							req.sendMsg("[OK "+CMLib.coffeeMaker().getGenMobStat((MOB)P, stat)+"]");
 						else
 						if(P instanceof Item)
 							req.sendMsg("[OK "+CMLib.coffeeMaker().getGenItemStat((Item)P, stat)+"]");
-
+					}
+				}
 			}
 		}
 		catch(final Exception ioe)
@@ -442,6 +461,5 @@ public class GetStat extends CM1Command
 			return "USAGE: "+getCommandWord()+" "+rest.toUpperCase().trim()+" "+CMParms.toStringList(getStatCodes(target,mod));
 		else
 			return "USAGE: "+getCommandWord()+" "+CMParms.toStringList(getStatCodes(target,mod));
-
 	}
 }

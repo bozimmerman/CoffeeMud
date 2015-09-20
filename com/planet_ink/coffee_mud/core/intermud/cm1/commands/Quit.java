@@ -41,7 +41,12 @@ import java.util.concurrent.atomic.*;
 */
 public class Quit extends CM1Command
 {
-	@Override public String getCommandWord(){ return "QUIT";}
+	@Override 
+	public String getCommandWord()
+	{ 
+		return "QUIT";
+	}
+	
 	public Quit(RequestHandler req, String parameters)
 	{
 		super(req, parameters);
@@ -61,7 +66,13 @@ public class Quit extends CM1Command
 			req.close();
 		}
 	}
-	@Override public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	
+	@Override 
+	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	{
+		return true;
+	}
+	
 	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{

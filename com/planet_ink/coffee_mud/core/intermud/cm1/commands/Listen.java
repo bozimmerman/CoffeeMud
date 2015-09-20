@@ -41,9 +41,34 @@ import java.util.concurrent.atomic.*;
 */
 public class Listen extends CM1Command
 {
-	@Override public String getCommandWord(){ return "LISTEN";}
-	protected static enum STATTYPE {CHANNEL,LOGINS,MOB,ROOM,PLAYER,ABILITY,ITEM,TARGET,SOURCE,TOOL,TARGETCODE,SOURCECODE,OTHERSCODE,AREA,TARGETMASK,SOURCEMASK,OTHERSMASK}
+	@Override 
+	public String getCommandWord()
+	{ 
+		return "LISTEN";
+	}
+	
 	protected static SLinkedList<Listener> listeners=new SLinkedList<Listener>();
+
+	protected static enum STATTYPE 
+	{
+		CHANNEL,
+		LOGINS,
+		MOB,
+		ROOM,
+		PLAYER,
+		ABILITY,
+		ITEM,
+		TARGET,
+		SOURCE,
+		TOOL,
+		TARGETCODE,
+		SOURCECODE,
+		OTHERSCODE,
+		AREA,
+		TARGETMASK,
+		SOURCEMASK,
+		OTHERSMASK
+	}
 
 	public Listen(RequestHandler req, String parameters)
 	{
@@ -119,22 +144,38 @@ public class Listen extends CM1Command
 			case CHANNEL:
 				return (msg.othersMajor(CMMsg.MASK_CHANNEL))
 					&& (crit.parmInt==(msg.othersMinor()-CMMsg.TYP_CHANNEL));
-			case LOGINS: return (msg.othersMinor()==CMMsg.TYP_LOGIN)||(msg.othersMinor()==CMMsg.TYP_QUIT);
-			case MOB: return msg.source()==crit.obj;
-			case ROOM: return room==crit.obj;
-			case AREA: return room.getArea()==crit.obj;
-			case PLAYER: return ((MOB)crit.obj).location()==room;
-			case ABILITY: return msg.tool()==crit.obj;
-			case ITEM: return (msg.target()==crit.obj);
-			case TARGET: return (msg.target()==crit.obj);
-			case SOURCE: return (msg.source()==crit.obj);
-			case TOOL: return (msg.tool()==crit.obj);
-			case SOURCECODE: return msg.sourceMinor()==crit.parmInt;
-			case TARGETCODE: return msg.targetMinor()==crit.parmInt;
-			case OTHERSCODE: return msg.othersMinor()==crit.parmInt;
-			case SOURCEMASK: return msg.sourceMajor(crit.parmInt);
-			case TARGETMASK: return msg.targetMajor(crit.parmInt);
-			case OTHERSMASK: return msg.othersMajor(crit.parmInt);
+			case LOGINS: 
+				return (msg.othersMinor()==CMMsg.TYP_LOGIN)||(msg.othersMinor()==CMMsg.TYP_QUIT);
+			case MOB: 
+				return msg.source()==crit.obj;
+			case ROOM: 
+				return room==crit.obj;
+			case AREA: 
+				return room.getArea()==crit.obj;
+			case PLAYER: 
+				return ((MOB)crit.obj).location()==room;
+			case ABILITY: 
+				return msg.tool()==crit.obj;
+			case ITEM: 
+				return (msg.target()==crit.obj);
+			case TARGET: 
+				return (msg.target()==crit.obj);
+			case SOURCE: 
+				return (msg.source()==crit.obj);
+			case TOOL: 
+				return (msg.tool()==crit.obj);
+			case SOURCECODE: 
+				return msg.sourceMinor()==crit.parmInt;
+			case TARGETCODE: 
+				return msg.targetMinor()==crit.parmInt;
+			case OTHERSCODE: 
+				return msg.othersMinor()==crit.parmInt;
+			case SOURCEMASK: 
+				return msg.sourceMajor(crit.parmInt);
+			case TARGETMASK: 
+				return msg.targetMajor(crit.parmInt);
+			case OTHERSMASK: 
+				return msg.othersMajor(crit.parmInt);
 			}
 			return false;
 		}
@@ -142,8 +183,10 @@ public class Listen extends CM1Command
 		public boolean doesMonitor(final Room room, final CMMsg msg)
 		{
 			for(final ListenCriterium crit : crits)
+			{
 				if(!doesMonitor(crit,room,msg))
 					return false;
+			}
 			return true;
 		}
 
@@ -153,7 +196,6 @@ public class Listen extends CM1Command
 			if(desc==null)
 				desc = "?";
 			return desc;
-
 		}
 
 		public String messageToString(final CMMsg msg)
@@ -231,7 +273,8 @@ public class Listen extends CM1Command
 			if(crit.parmInt<0)
 				return false;
 			return true;
-		case PLAYER:  return CMSecurity.isAllowedEverywhere(user, CMSecurity.SecFlag.CMDPLAYERS);
+		case PLAYER:  
+			return CMSecurity.isAllowedEverywhere(user, CMSecurity.SecFlag.CMDPLAYERS);
 		case MOB:
 		case ROOM:
 		case AREA:
@@ -264,15 +307,24 @@ public class Listen extends CM1Command
 			if(crit.parmInt<0)
 				return false;
 			return true;
-		case MOB: return (crit.obj instanceof MOB)&&(!CMLib.players().playerExists(crit.obj.Name()));
-		case ROOM:  return crit.obj instanceof Room;
-		case AREA:  return crit.obj instanceof Area;
-		case PLAYER:  return (crit.obj instanceof MOB)&&(CMLib.players().playerExists(crit.obj.Name()));
-		case ABILITY: return crit.obj instanceof Ability;
-		case ITEM:  return crit.obj instanceof Item;
-		case TARGET: return crit.obj != null;
-		case SOURCE:  return (crit.obj instanceof MOB)&&(!CMLib.players().playerExists(crit.obj.Name()));
-		case TOOL:  return crit.obj != null;
+		case MOB: 
+			return (crit.obj instanceof MOB)&&(!CMLib.players().playerExists(crit.obj.Name()));
+		case ROOM:  
+			return crit.obj instanceof Room;
+		case AREA:  
+			return crit.obj instanceof Area;
+		case PLAYER:  
+			return (crit.obj instanceof MOB)&&(CMLib.players().playerExists(crit.obj.Name()));
+		case ABILITY: 
+			return crit.obj instanceof Ability;
+		case ITEM:  
+			return crit.obj instanceof Item;
+		case TARGET: 
+			return crit.obj != null;
+		case SOURCE:  
+			return (crit.obj instanceof MOB)&&(!CMLib.players().playerExists(crit.obj.Name()));
+		case TOOL:  
+			return crit.obj != null;
 		default:
 			return true;
 		}
@@ -319,7 +371,8 @@ public class Listen extends CM1Command
 				{
 					STATTYPE.valueOf(parm.toUpperCase().trim());
 					parm="";
-				}catch(final java.lang.IllegalArgumentException ix)
+				}
+				catch(final java.lang.IllegalArgumentException ix)
 				{
 					rest=rest.substring(x+1).trim();
 				}
@@ -331,7 +384,8 @@ public class Listen extends CM1Command
 				{
 					STATTYPE.valueOf(rest.toUpperCase().trim());
 					parm="";
-				}catch(final java.lang.IllegalArgumentException ix)
+				}
+				catch(final java.lang.IllegalArgumentException ix)
 				{
 					parm=rest;
 					rest="";
