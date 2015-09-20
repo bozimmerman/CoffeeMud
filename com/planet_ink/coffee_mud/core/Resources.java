@@ -26,9 +26,10 @@ import java.util.*;
 */
 public class Resources
 {
-	private static final Resources[] rscs=new Resources[256];
-	private static boolean 	 compress=false;
-	private static Object propResourceSync=new Object();
+	private static final Resources[] rscs			 =new Resources[256];
+	private static boolean 	 		 compress		 =false;
+	private static Object 			 propResourceSync=new Object();
+	
 	private static Map<String,Map<String,String>> propResources;
 
 	/**
@@ -353,17 +354,34 @@ public class Resources
 		return "resources/"+path+"/";
 	}
 
-	public static final void updateMultiList(String filename, final Map<String, List<String>> lists)
+	/**
+	 * A multi-list is, in code, a string-key map of string lists.  In a file, it is represented
+	 * by a string key on one line, followed by the list entries, followed by a blank line.
+	 * Obviously, no blank list entries are permitted.
+	 * 
+	 * This method will build a stringbuffer from the multi-list object, and then save it to
+	 * the given resource filename.  This method does nothing to the cache.
+	 * 
+	 * @param filename the resource filename to save to 
+	 * @param lists the multi-list
+	 */
+	public static final void updateMultiListFile(String filename, final Map<String, List<String>> lists)
 	{
-		final StringBuffer str=new StringBuffer("");
+		final StringBuilder str=new StringBuilder("");
 		for(final String ml : lists.keySet())
 		{
-			final List<String> V=lists.get(ml);
+			final List<String> subList=lists.get(ml);
 			str.append(ml+"\r\n");
-			if(V!=null)
+			if(subList!=null)
 			{
-				for(int v=0;v<V.size();v++)
-					str.append((V.get(v))+"\r\n");
+				for(int v=0;v<subList.size();v++)
+				{
+					final String listEntry = subList.get(v);
+					if((listEntry != null) && (listEntry.length()>0))
+					{
+						str.append(listEntry).append("\r\n");
+					}
+				}
 			}
 			str.append("\r\n");
 		}
@@ -373,7 +391,7 @@ public class Resources
 			prefix=filename.substring(0,2);
 			filename=filename.substring(2);
 		}
-		new CMFile(prefix+buildResourcePath(filename),null).saveText(str);
+		new CMFile(prefix+makeFileResourceName(filename),null).saveText(str);
 	}
 
 	public static final boolean removeMultiLists(final String filename)
@@ -410,7 +428,7 @@ public class Resources
 		final Map<String,List<String>> H=(Map<String,List<String>>)getResource(key);
 		if(H==null)
 			return false;
-		updateMultiList(filename, H);
+		updateMultiListFile(filename, H);
 		return true;
 	}
 
@@ -428,7 +446,9 @@ public class Resources
 			}
 			V=getFileLineVector(new CMFile(prefix+"resources/"+filename,null).text());
 		}
-		catch(final Exception e){}
+		catch(final Exception e)
+		{
+		}
 		
 		if((V!=null)&&(V.size()>0))
 		{
@@ -453,6 +473,12 @@ public class Resources
 		return oldH;
 	}
 
+	/**
+	 * Adds resources/ to the beginning of the given filename.  Just a way
+	 * to normalize all resource filenames.
+	 * @param filename the filename to resource normalize
+	 * @return the filename, resource normalized
+	 */
 	public static final String makeFileResourceName(final String filename)
 	{
 		if(filename==null)
@@ -464,8 +490,12 @@ public class Resources
 		return "resources/"+filename;
 	}
 
+	/**
+	 * Turn on or off resource compression.
+	 * @param truefalse true to turn on compression, false to turn it off
+	 */
 	public static final void setCompression(final boolean truefalse)
-	{   
+	{
 		compress=truefalse;
 	}
 

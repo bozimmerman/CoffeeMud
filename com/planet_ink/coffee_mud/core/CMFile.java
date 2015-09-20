@@ -1316,7 +1316,10 @@ public class CMFile extends File
 	 * @param data string, stringbuffer, byte[], or string convertable
 	 * @return true if happened without errors, false otherwise
 	 */
-	public boolean saveText(Object data){ return saveText(data,false); }
+	public boolean saveText(Object data)
+	{ 
+		return saveText(data,false); 
+	}
 
 	/**
 	 * Saves the given text data to local file if demanded, or vfs
