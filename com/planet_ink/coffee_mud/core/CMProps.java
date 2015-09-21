@@ -899,7 +899,7 @@ public class CMProps extends Properties
 	/**
 	 * Retreive one of the pre-processed coffeemud.ini lists for
 	 * the callers thread group.
-	 * @param varNum the StrList enum of the list to get
+	 * @param varType the StrList enum of the list to get
 	 * @return the list from the properties.
 	 */
 	public static final String[] getListVar(final StrList varType)
@@ -1006,8 +1006,8 @@ public class CMProps extends Properties
 	/**
 	 * Sets one of the pre-processed coffeemud.ini list entries for
 	 * the callers thread group.
-	 * @param varNum the StrList enum of the entry to set
-	 * @param val the new value of the entry list
+	 * @param varType the StrList enum of the entry to set
+	 * @param var the new value of the entry list
 	 */
 	public static final void setListVar(final StrList varType, String[] var)
 	{
@@ -1021,8 +1021,8 @@ public class CMProps extends Properties
 	/**
 	 * Add to the end of one of the pre-processed coffeemud.ini list entries for
 	 * the callers thread group.
-	 * @param varNum the StrList enum of the entry to add to
-	 * @param val the value to add to the entry list
+	 * @param varType the StrList enum of the entry to add to
+	 * @param var the value to add to the entry list
 	 */
 	public static final void addListVar(final StrList varType, String var)
 	{
@@ -1043,7 +1043,7 @@ public class CMProps extends Properties
 	 * the callers thread group.
 	 * @param varNum the Str enum of the entry to set
 	 * @param val the new value of the entry
-	 * @param upperfy true to make the value uppercase first, false otherwise
+	 * @param upperFy true to make the value uppercase first, false otherwise
 	 */
 	public static final void setVar(final Str varNum, String val, final boolean upperFy)
 	{

@@ -88,7 +88,7 @@ public class Resources
 	 * Forces the current thread group to share a Resources object with the one at the given
 	 * threadcode.  The one at the threadcode should already have been created before
 	 * calling.
-	 * @param threadCode the threadcode with an existing Resources
+	 * @param code the threadcode with an existing Resources
 	 */
 	public static void shareWith(char code)
 	{
@@ -229,10 +229,9 @@ public class Resources
 	/**
 	 * Returns the stringbuffer content for the given resource filename, from
 	 * the resources for the current calling thread group.
-	 * @param ID the resource ID to return
-	 * @param filename the resource filename to return (/resources/<filename>)
+	 * @param filename the resource filename (/resources/<filename>)
 	 * @param reportErrors if true, file errors will be logged
-	 * @return the StringBuffer of the file at that resource ID, or null of not found
+	 * @return the StringBuffer of the file at that resource filename, or null of not found
 	 */
 	public static final StringBuffer getFileResource(final String filename, final boolean reportErrors)
 	{
@@ -624,7 +623,7 @@ public class Resources
 	 * 
 	 * @param ID the key to store the resource as
 	 * @param obj the object to store
-	 * @returnthe object as stored.
+	 * @return the object as stored.
 	 */
 	public final Object _submitResource(final String ID, final Object obj)
 	{
@@ -699,10 +698,9 @@ public class Resources
 
 	/**
 	 * Returns the stringbuffer content for the given resource filename.
-	 * @param ID the resource ID to return
-	 * @param filename the resource filename to return (/resources/<filename>)
+	 * @param filename the resource filename (/resources/<filename>)
 	 * @param reportErrors if true, file errors will be logged
-	 * @return the StringBuffer of the file at that resource ID, or null of not found
+	 * @return the StringBuffer of the file at that resource filename, or null of not found
 	 */
 	public final StringBuffer _getFileResource(final String filename, final boolean reportErrors)
 	{

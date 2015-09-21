@@ -1750,7 +1750,7 @@ public class CMStrings
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
 	 * length.
 	 * @param thisStr the string to pad or truncate
-	 * @param colorSuffix the string to always add to the beginning of the given string before spaces
+	 * @param colorPrefix the string to always add to the beginning of the given string before spaces
 	 * @param thisMuch the final minimum length of the string.
 	 * @return the string padded, or unchanged if already too long
 	 */

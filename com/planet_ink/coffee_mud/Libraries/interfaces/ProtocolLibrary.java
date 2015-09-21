@@ -108,7 +108,7 @@ public interface ProtocolLibrary extends CMLibrary
 		 * Execute the package
 		 * @param session the session for which the package is being executed
 		 * @param command the actual command being executed by this package
-		 * @param clientSuported map of client packages supported followed by min-maxes
+		 * @param clientSupported map of client packages supported followed by min-maxes
 		 * @param variables key/value pairs for this package
 		 */
 		public void executePackage(Session session, String command, Map<String,float[]> clientSupported, Map<String,String> variables);

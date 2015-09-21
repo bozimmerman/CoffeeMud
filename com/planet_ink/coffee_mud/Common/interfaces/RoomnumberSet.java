@@ -40,7 +40,7 @@ import java.util.*;
  * reads.
  *
  * Stores the internal numbers using LongSet
- * @see com.planet_ink.coffee_mud.Common.interfaces.LongSet
+ * @see com.planet_ink.coffee_mud.core.collections.LongSet
  */
 public interface RoomnumberSet extends CMCommon
 {
@@ -124,7 +124,7 @@ public interface RoomnumberSet extends CMCommon
 	/**
 	 * Returns the number parts of the room ids stored in this
 	 * object for a given area.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.LongSet
+	 * @see com.planet_ink.coffee_mud.core.collections.LongSet
 	 * @param areaName the area name to look for
 	 * @return a set of numbers.
 	 */
