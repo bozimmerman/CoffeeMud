@@ -2440,7 +2440,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genUses(MOB mob, Item I, int showNumber, int showFlag) throws IOException
-	{ I.setUsesRemaining(prompt(mob,I.usesRemaining(),showNumber,showFlag,"Uses Remaining")); }
+	{
+		if(I instanceof Ammunition)
+			I.setUsesRemaining(prompt(mob,((Ammunition)I).ammunitionRemaining(),showNumber,showFlag,"Ammo Remaining")); 
+		else
+			I.setUsesRemaining(prompt(mob,I.usesRemaining(),showNumber,showFlag,"Uses Remaining")); 
+	}
 
 	protected void genMaxUses(MOB mob, Wand W, int showNumber, int showFlag) throws IOException
 	{ W.setMaxUses(prompt(mob,W.maxUses(),showNumber,showFlag,"Maximum Uses")); }

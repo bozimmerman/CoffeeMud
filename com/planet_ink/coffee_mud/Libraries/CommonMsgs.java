@@ -876,7 +876,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((item instanceof Recipe)&&((Recipe)item).getTotalRecipePages()>1)
 				response.append( L("There are @x1 blank pages/entries remaining.  ",""+((Recipe)item).getTotalRecipePages()));
 			if(item instanceof Ammunition)
-				response.append(L("It is @x1 ammunition of type '@x2'.  ",""+((Ammunition)item).usesRemaining(),((Ammunition)item).ammunitionType()));
+				response.append(L("It is @x1 ammunition of type '@x2'.  ",""+((Ammunition)item).ammunitionRemaining(),((Ammunition)item).ammunitionType()));
 			else
 			if(item instanceof Weapon)
 			{

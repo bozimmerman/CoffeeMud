@@ -130,10 +130,10 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 					boolean recover=false;
 					final Ammunition I=(Ammunition)msg.tool();
 					int howMuchToTake=ammunitionCapacity();
-					if(I.usesRemaining()<howMuchToTake)
-						howMuchToTake=I.usesRemaining();
+					if(I.ammunitionRemaining()<howMuchToTake)
+						howMuchToTake=I.ammunitionRemaining();
 					setAmmoRemaining(howMuchToTake);
-					I.setUsesRemaining(I.usesRemaining()-howMuchToTake);
+					I.setAmmunitionRemaining(I.ammunitionRemaining()-howMuchToTake);
 					final LinkedList<Ability> removeThese=new LinkedList<Ability>();
 					for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 					{
@@ -155,7 +155,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 							recover=true;
 						}
 					}
-					if(I.usesRemaining()<=0)
+					if(I.ammunitionRemaining()<=0)
 						I.destroy();
 					if(recover)
 						recoverOwner();

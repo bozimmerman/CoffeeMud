@@ -2281,7 +2281,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof Ammunition)
-							return ""+((Ammunition)I).usesRemaining();
+							return ""+((Ammunition)I).ammunitionRemaining();
 						if((I instanceof AmmunitionWeapon)&&(((AmmunitionWeapon)I).requiresAmmunition()))
 							return ""+((AmmunitionWeapon)I).ammunitionCapacity();
 						return "";

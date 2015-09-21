@@ -57,8 +57,10 @@ public class Load extends StdCommand
 	public final Ammunition getNextAmmunition(String type, List<Ammunition> ammos)
 	{
 		for(final Ammunition ammo : ammos)
-			if((!ammo.amDestroyed())&&(ammo.usesRemaining() > 0)&&(ammo.ammunitionType().equalsIgnoreCase(type)))
+		{
+			if((!ammo.amDestroyed())&&(ammo.ammunitionRemaining() > 0)&&(ammo.ammunitionType().equalsIgnoreCase(type)))
 				return ammo;
+		}
 		return null;
 	}
 

@@ -30,8 +30,17 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * Class for ammunition used in weapons.
+ * @author BZ
+ */
 public interface Ammunition extends Item
 {
 	public String ammunitionType();
+	
 	public void setAmmunitionType(String type);
+	
+	public int ammunitionRemaining();
+	
+	public void setAmmunitionRemaining(int amount);
 }

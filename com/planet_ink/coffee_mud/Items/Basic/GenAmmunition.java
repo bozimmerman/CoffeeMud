@@ -36,7 +36,9 @@ import java.util.*;
 public class GenAmmunition extends StdItem implements Ammunition
 {
 	@Override public String ID(){	return "GenAmmunition";}
+	
 	protected String	readableText="";
+	
 	public GenAmmunition()
 	{
 		super();
@@ -69,6 +71,18 @@ public class GenAmmunition extends StdItem implements Ammunition
 	@Override public String ammunitionType(){return readableText;}
 	@Override public void setAmmunitionType(String text){readableText=text;}
 
+	@Override
+	public int ammunitionRemaining()
+	{
+		return usesRemaining();
+	}
+	
+	@Override
+	public void setAmmunitionRemaining(int amount)
+	{
+		this.setUsesRemaining(amount);
+	}
+	
 	@Override
 	public void setMiscText(String newText)
 	{
