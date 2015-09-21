@@ -333,7 +333,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							babe.resetToMaxState();
 							final Item I=CMClass.getItem("GenCaged");
 							((CagedAnimal)I).cageMe(babe);
-							I.basePhyStats().setAbility(CagedAnimal.ABILITY_MOBPROGRAMMATICALLY);
+							((CagedAnimal)I).setCageFlagsBitmap(CagedAnimal.CAGEFLAG_TO_MOB_PROGRAMMATICALLY);
 							if(AGE != null)
 								I.addNonUninvokableEffect((Ability)AGE.copyOf());
 							name=CMLib.english().startWithAorAn(R.makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 1)).toLowerCase();

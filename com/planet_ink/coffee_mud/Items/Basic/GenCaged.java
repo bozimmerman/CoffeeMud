@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -89,7 +88,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 	{
 		if((msg.amITarget(this)
 			||((msg.tool()==this)&&(msg.target()==container())&&(container()!=null)))
-		&&((basePhyStats().ability()&ABILITY_MOBPROGRAMMATICALLY)==0)
+		&&((getCageFlagsBitmap()&CagedAnimal.CAGEFLAG_TO_MOB_PROGRAMMATICALLY)==0)
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_DROP)))
 		{
 			final MOB M=unCageMe();
@@ -147,5 +146,18 @@ public class GenCaged extends GenItem implements CagedAnimal
 	{
 		setReadableText(CMLib.xml().parseOutAngleBrackets(text));
 		CMLib.flags().setReadable(this,false);
+	}
+	
+	@Override
+	public int getCageFlagsBitmap()
+	{
+		return basePhyStats().ability();
+	}
+
+	@Override
+	public void setCageFlagsBitmap(int bitmap)
+	{
+		basePhyStats.setAbility(bitmap);
+		phyStats.setAbility(bitmap);
 	}
 }
