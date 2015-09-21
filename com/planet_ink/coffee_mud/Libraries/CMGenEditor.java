@@ -2448,10 +2448,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genMaxUses(MOB mob, Wand W, int showNumber, int showFlag) throws IOException
-	{ W.setMaxUses(prompt(mob,W.maxUses(),showNumber,showFlag,"Maximum Uses")); }
+	{ 
+		W.setMaxUses(prompt(mob,W.maxUses(),showNumber,showFlag,"Maximum Uses")); 
+	}
 
 	protected void genCondition(MOB mob, Item I, int showNumber, int showFlag) throws IOException
-	{ I.setUsesRemaining(prompt(mob,I.usesRemaining(),showNumber,showFlag,"Condition")); }
+	{ 
+		I.setUsesRemaining(prompt(mob,I.usesRemaining(),showNumber,showFlag,"Condition")); 
+	}
 
 	@Override
 	public void genMiscSet(MOB mob, Environmental E)
