@@ -30,9 +30,20 @@ limitations under the License.
  */
 public class MiniJSON
 {
-	private enum ObjectParseState { INITIAL, NEEDKEY, GOTKEY, NEEDOBJECT, GOTOBJECT }
-	private enum NumberParseState { INITIAL, NEEDN0DIGIT, HAVEDIGIT , NEEDDOT, NEEDDOTDIGIT, HAVEDOTDIGIT, HAVEE, HAVEEDIGIT }
-	private enum ArrayParseState { INITIAL, EXPECTOBJECT, NEEDOBJECT, GOTOBJECT }
+	private enum ObjectParseState
+	{
+		INITIAL, NEEDKEY, GOTKEY, NEEDOBJECT, GOTOBJECT
+	}
+
+	private enum NumberParseState
+	{
+		INITIAL, NEEDN0DIGIT, HAVEDIGIT, NEEDDOT, NEEDDOTDIGIT, HAVEDOTDIGIT, HAVEE, HAVEEDIGIT
+	}
+
+	private enum ArrayParseState
+	{
+		INITIAL, EXPECTOBJECT, NEEDOBJECT, GOTOBJECT
+	}
 
 	/**
 	 * The official definition of "null" for a JSON object
@@ -589,8 +600,17 @@ public class MiniJSON
 			return parseArray(doc,index);
 		case '{':
 			return parseObject(doc,index);
-		case '-': case '0': case '1': case '2': case '3': case '4':
-		case '5': case '6': case '7': case '8': case '9':
+		case '-':
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
 			return parseNumber(doc,index);
 		case 't':
 			if((index[0] < doc.length-5) && (new String(doc,index[0],4).equals("true")))
