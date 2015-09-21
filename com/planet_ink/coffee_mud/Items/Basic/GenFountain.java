@@ -41,8 +41,8 @@ public class GenFountain extends GenWater
 		super();
 		setName("a fountain");
 		amountOfThirstQuenched=250;
-		amountOfLiquidHeld=999999;
-		amountOfLiquidRemaining=999999;
+		amountOfLiquidHeld=9999999;
+		amountOfLiquidRemaining=9999999;
 		basePhyStats().setWeight(5);
 		capacity=0;
 		setDisplayText("a little fountain flows here.");
