@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -298,9 +297,9 @@ public class Spell_Wish extends Spell
 				}
 				else
 				if((foundThang instanceof Item)
-				   &&(!(foundThang instanceof ArchonOnly))
-				   &&(!(foundThang instanceof ClanItem))
-				   &&(!CMath.bset(foundThang.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH)))
+				&&(!(foundThang instanceof ArchonOnly))
+				&&(!(foundThang instanceof ClanItem))
+				&&(!CMath.bset(foundThang.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH)))
 				{
 					final Item newItem=(Item)foundThang.copyOf();
 					experienceRequired+=newItem.value();

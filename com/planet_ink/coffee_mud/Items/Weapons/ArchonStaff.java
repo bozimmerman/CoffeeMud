@@ -75,6 +75,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		super.setSpell(theSpell);
 		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
 	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -102,10 +103,12 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 			return false;
 		final List<String> parms=CMParms.cleanParameterList(message.toUpperCase());
 		for (final String element : MAGIC_WORDS)
+		{
 			if(parms.contains(element))
 			{
 				return (mob.isMine(this)) && (!amWearingAt(Wearable.IN_INVENTORY));
 			}
+		}
 		return super.checkWave(mob, message);
 	}
 
@@ -113,7 +116,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 	public void waveIfAble(MOB mob, Physical afftarget, String message)
 	{
 		if((mob.isMine(this))
-		   &&(!this.amWearingAt(Wearable.IN_INVENTORY)))
+		&&(!this.amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB))
 			{
@@ -134,14 +137,16 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 						mob.tell(L("The wand will not work on such as @x1.",target.name(mob)));
 					else
-					while(target.basePhyStats().level()<destLevel)
 					{
-						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
-						||(target.charStats().getCurrentClass().expless())
-						||(target.charStats().getMyRace().expless()))
-							CMLib.leveler().level(target);
-						else
-							CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+						while(target.basePhyStats().level()<destLevel)
+						{
+							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+							||(target.charStats().getCurrentClass().expless())
+							||(target.charStats().getMyRace().expless()))
+								CMLib.leveler().level(target);
+							else
+								CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+						}
 					}
 				}
 				else
@@ -161,14 +166,16 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 						mob.tell(L("The wand will not work on such as @x1.",target.name(mob)));
 					else
-					for(int i=0;i<num;i++)
 					{
-						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
-						||(target.charStats().getCurrentClass().expless())
-						||(target.charStats().getMyRace().expless()))
-							CMLib.leveler().level(target);
-						else
-							CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+						for(int i=0;i<num;i++)
+						{
+							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+							||(target.charStats().getCurrentClass().expless())
+							||(target.charStats().getMyRace().expless()))
+								CMLib.leveler().level(target);
+							else
+								CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
+						}
 					}
 					return;
 				}

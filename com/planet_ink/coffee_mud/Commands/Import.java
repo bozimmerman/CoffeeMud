@@ -6184,7 +6184,7 @@ public class Import extends StdCommand
 									final Item arrows=CMClass.getBasicItem("GenAmmunition");
 									((Ammunition)arrows).setAmmunitionType("arrows");
 									arrows.setName(L("a pack of 20 arrows"));
-									((Ammunition)arrows).setAmmunitionRemaining(20);
+									((Ammunition)arrows).setAmmoRemaining(20);
 									arrows.setBaseValue(50);
 									arrows.setDescription(L("They are sturdy and wooden, but probably not much use without a bow."));
 									arrows.setDisplayText(L("Some arrows have been left here."));

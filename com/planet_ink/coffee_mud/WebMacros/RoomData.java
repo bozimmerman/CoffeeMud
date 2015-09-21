@@ -294,7 +294,8 @@ public class RoomData extends StdWebMacro
 		else
 		{
 			final Item I=CMClass.getItem(MATCHING);
-			if((I!=null)&&(!(I instanceof ArchonOnly)))
+			if((I!=null)
+			&&(!(I instanceof ArchonOnly)))
 				return I;
 		}
 		return null;

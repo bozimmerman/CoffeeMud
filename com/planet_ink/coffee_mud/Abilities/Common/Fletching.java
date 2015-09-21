@@ -401,7 +401,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if((ammotype.length()>0)&&(buildingI instanceof Ammunition))
 			{
 				((Ammunition)buildingI).setAmmunitionType(ammotype);
-				((Ammunition)buildingI).setAmmunitionRemaining(capacity);
+				((Ammunition)buildingI).setAmmoRemaining(capacity);
 			}
 			buildingI.recoverPhyStats();
 			buildingI.text();

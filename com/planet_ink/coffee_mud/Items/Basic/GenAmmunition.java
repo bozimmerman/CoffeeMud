@@ -78,7 +78,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 	}
 	
 	@Override
-	public void setAmmunitionRemaining(int amount)
+	public void setAmmoRemaining(int amount)
 	{
 		this.setUsesRemaining(amount);
 	}

@@ -582,7 +582,7 @@ public class DefaultMessage implements CMMsg
 		if(I==null)
 		{
 			code2=code2.toUpperCase();
-			if((I==null)&&(minor >= 0))
+			if(minor >= 0)
 			{
 				for(int i=0;i<TYPE_DESCS.length;i++)
 				{

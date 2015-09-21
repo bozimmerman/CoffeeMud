@@ -8052,7 +8052,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(Is.elementAt(i) instanceof Item)
 							{
 								m=(Item)Is.elementAt(i);
-								if((m!=null)&&(!(m instanceof ArchonOnly)))
+								if((m!=null)
+								&&(!(m instanceof ArchonOnly)))
 								{
 									m=(Item)m.copyOf();
 									m.recoverPhyStats();
@@ -8131,7 +8132,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(Is.elementAt(i) instanceof Item)
 						{
 							Item I=(Item)Is.elementAt(i);
-							if((I!=null)&&(!(I instanceof ArchonOnly)))
+							if((I!=null)
+							&&(!(I instanceof ArchonOnly)))
 							{
 								I=(Item)I.copyOf();
 								I.recoverPhyStats();

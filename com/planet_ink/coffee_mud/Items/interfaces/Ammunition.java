@@ -31,16 +31,41 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 /**
- * Class for ammunition used in weapons.
- * @author BZ
+ * Class for ammunition items used in weapons that require ammunition
+ * @see AmmunitionWeapon
+ * @author Bo Zimmerman
  */
 public interface Ammunition extends Item
 {
+	/**
+	 * The type/class of ammunition.  This must match the ammunition type of the weapon
+	 * in order to be used.  This can be an arbitrary string.
+	 * @see AmmunitionWeapon#ammunitionType()
+	 * @return the ammunition type string
+	 */
 	public String ammunitionType();
 	
+	/**
+	 * Set the type/class of ammunition.  This must match the ammunition type of the weapon
+	 * in order to be used.  This can be an arbitrary string.
+	 * @see AmmunitionWeapon#setAmmunitionType(String)
+	 * @param type the ammunition type string
+	 */
 	public void setAmmunitionType(String type);
-	
+
+	/**
+	 * The amount of Units of ammunition represented by this Ammunition item.  If this is,
+	 * for example, a bunch of arrows, or a clip of bullets, how many are in the clip or
+	 * bunch.
+	 * @return the number of units of ammunition
+	 */
 	public int ammunitionRemaining();
 	
-	public void setAmmunitionRemaining(int amount);
+	/**
+	 * Sets the amount of Units of ammunition represented by this Ammunition item.  If this is,
+	 * for example, a bunch of arrows, or a clip of bullets, how many are in the clip or
+	 * bunch.
+	 * @param amount the number of units of ammunition
+	 */
+	public void setAmmoRemaining(int amount);
 }

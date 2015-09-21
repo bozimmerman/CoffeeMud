@@ -30,6 +30,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An empty interface designating an item which can only be used by Archons.
+ * This is not a method on an item because anything which can be created using
+ * Gen builder tools better not be archon-only.
+ * @author Bo Zimmerman
+ */
 public interface ArchonOnly
 {
 }

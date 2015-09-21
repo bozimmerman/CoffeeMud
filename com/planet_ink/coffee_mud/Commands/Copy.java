@@ -201,7 +201,9 @@ public class Copy extends StdCommand
 				}
 			}
 			else
-			if((E instanceof Item)&&((!(E instanceof ArchonOnly))||(CMSecurity.isASysOp(mob)&&(CMProps.getVar(CMProps.Str.MUDNAME).toLowerCase().indexOf("coffeemud")>=0))))
+			if((E instanceof Item)
+			&&((!(E instanceof ArchonOnly))
+				||(CMSecurity.isASysOp(mob)&&(CMProps.getVar(CMProps.Str.MUDNAME).toLowerCase().indexOf("coffeemud")>=0))))
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYITEMS))
 				{
@@ -388,7 +390,9 @@ public class Copy extends StdCommand
 				break;
 			}
 		}
-		if((E instanceof Item)&&(!(E instanceof ArchonOnly))&&(room!=null))
+		if((E instanceof Item)
+		&&(!(E instanceof ArchonOnly))
+		&&(room!=null))
 			room.recoverRoomStats();
 		return false;
 	}

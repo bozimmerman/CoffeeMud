@@ -4049,7 +4049,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 									item=null;
 							}
 						}
-						if((item!=null)&&((!(item instanceof ArchonOnly))||(CMSecurity.isASysOp(mob))))
+						if((item!=null)
+						&&((!(item instanceof ArchonOnly))
+							||(CMSecurity.isASysOp(mob))))
 						{
 							item=(Environmental)item.copyOf();
 							if(item !=null)
