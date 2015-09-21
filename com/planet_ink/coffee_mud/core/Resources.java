@@ -394,6 +394,17 @@ public class Resources
 		new CMFile(prefix+makeFileResourceName(filename),null).saveText(str);
 	}
 
+	/**
+	 * A multi-list is, in code, a string-key map of string lists.  In a file, it is represented
+	 * by a string key on one line, followed by the list entries, followed by a blank line.
+	 * Obviously, no blank list entries are permitted.
+	 * 
+	 * This method Removes the parsed multi-list object from the memory cache for this thread
+	 * group.
+	 * 
+	 * @param filename the filename of the parsed multi-list file
+	 * @return true
+	 */
 	public static final boolean removeMultiLists(final String filename)
 	{
 		final String key = "PARSED_MULTI: "+filename.toUpperCase();
@@ -401,6 +412,18 @@ public class Resources
 		return true;
 	}
 
+	/**
+	 * A multi-list is, in code, a string-key map of string lists.  In a file, it is represented
+	 * by a string key on one line, followed by the list entries, followed by a blank line.
+	 * Obviously, no blank list entries are permitted.
+	 * 
+	 * This method retrieves the parsed multi-list object from the memory cache of this thread
+	 * group if found. If not found, it attempts to load it from the given resource filename.
+	 * 
+	 * @param filename the filename of the parsed multi-list file
+	 * @param createIfNot true to create a multilist object if not loaded, false if not
+	 * @return the multi-list map object
+	 */
 	@SuppressWarnings("unchecked")
 	public static final Map<String, List<String>> getCachedMultiLists(final String filename, boolean createIfNot)
 	{
@@ -417,6 +440,17 @@ public class Resources
 		return H;
 	}
 
+	/**
+	 * A multi-list is, in code, a string-key map of string lists.  In a file, it is represented
+	 * by a string key on one line, followed by the list entries, followed by a blank line.
+	 * Obviously, no blank list entries are permitted.
+	 * 
+	 * This method re-saves the cached multi-list object in this thread groups resource 
+	 * cache to the given resource filename.
+	 * 
+	 * @param filename the filename of the parsed multi-list file
+	 * @return the multi-list map object, full or empty
+	 */
 	@SuppressWarnings("unchecked")
 	public static final boolean updateCachedMultiLists(final String filename)
 	{
@@ -432,6 +466,16 @@ public class Resources
 		return true;
 	}
 
+	/**
+	 * A multi-list is, in code, a string-key map of string lists.  In a file, it is represented
+	 * by a string key on one line, followed by the list entries, followed by a blank line.
+	 * Obviously, no blank list entries are permitted.
+	 * 
+	 * This method retrieves the parsed multi-list object from the given resource filename.
+	 * 
+	 * @param filename the filename of the parsed multi-list file
+	 * @return the multi-list map object, full or empty
+	 */
 	public static final Map<String, List<String>> getMultiLists(String filename)
 	{
 		final Hashtable<String,List<String>> oldH=new Hashtable<String,List<String>>();
@@ -499,16 +543,29 @@ public class Resources
 		compress=truefalse;
 	}
 
+	/**
+	 * Returns whether resource objects are being compressed
+	 * @return true if they are being compressed, false otherwise
+	 */
 	public static final boolean _compressed()
 	{
 		return compress;
 	}
 
+	/**
+	 * Instantly and permanently removes all resources.
+	 */
 	public final void _clearResources()
 	{
 		resources.clear();
 	}
 
+	/**
+	 * Returns an iterator of all resource keys that pass a substring
+	 * search of the given srch string.
+	 * @param srch the substring srch string
+	 * @return an iterator of the resource keys that pass the search
+	 */
 	public final Iterator<String> _findResourceKeys(final String srch)
 	{
 		final String lowerSrch=srch.toLowerCase();
@@ -524,6 +581,12 @@ public class Resources
 		});
 	}
 
+	/**
+	 * Returns the resource object with the given case insensitive ID.
+	 * If the stringbuffer resource is compressed, it uncompresses it first.
+	 * @param ID the key of the object to return 
+	 * @return the object found, or null
+	 */
 	public final Object _getResource(final String ID)
 	{
 		final Object O = resources.get(ID);
@@ -536,6 +599,12 @@ public class Resources
 		return null;
 	}
 
+	/**
+	 * Prepares an object for storage in resources by trimming any vectors,
+	 * and compressing any stringbuffers, if necessary.
+	 * @param obj the object to prepare for storage
+	 * @return the prepared object
+	 */
 	@SuppressWarnings("rawtypes")
 	public static final Object prepareObject(final Object obj)
 	{
@@ -550,6 +619,13 @@ public class Resources
 		return obj;
 	}
 
+	/**
+	 * Adds or updates the given resource object at the given resource id/key.
+	 * 
+	 * @param ID the key to store the resource as
+	 * @param obj the object to store
+	 * @returnthe object as stored.
+	 */
 	public final Object _submitResource(final String ID, final Object obj)
 	{
 		if(ID==null)
@@ -562,16 +638,35 @@ public class Resources
 		return prepared;
 	}
 
+	/**
+	 * Adds or updates the given resource object at the given resource id/key.
+	 * 
+	 * @param ID the key to store the resource as
+	 * @param obj the object to store
+	 * @returnthe object as stored.
+	 */
 	private final Object _updateResource(final String ID, final Object obj)
 	{
 		return _submitResource(ID, obj);
 	}
 
+	/**
+	 * Removes the given resource with the given ID, if found.
+	 * 
+	 * @param ID the key the resource is stored as
+	 */
 	public final void _removeResource(final String ID)
 	{
 		resources.remove(ID);
 	}
 
+	/**
+	 * Returns true if there is a resource file object stored under the
+	 * given filename OR if there exists a file with the given filename 
+	 * (and is thus potentially a file resource).
+	 * @param filename the filename to look in the cache or filesystem for
+	 * @return true if the cache entry or file is found, false otherwise
+	 */
 	public final boolean _isFileResource(final String filename)
 	{
 		if(_getResource(filename)!=null)
@@ -581,6 +676,11 @@ public class Resources
 		return false;
 	}
 
+	/**
+	 * Returns the string-like object given as a StringBuffer.
+	 * @param o the string, stringbuffer, or stringbuilder to convert to stringbuffer
+	 * @return the stringbuffer, or null if it could not be converted.
+	 */
 	public final StringBuffer _toStringBuffer(final Object o)
 	{
 		if(o!=null)
@@ -597,6 +697,13 @@ public class Resources
 		return null;
 	}
 
+	/**
+	 * Returns the stringbuffer content for the given resource filename.
+	 * @param ID the resource ID to return
+	 * @param filename the resource filename to return (/resources/<filename>)
+	 * @param reportErrors if true, file errors will be logged
+	 * @return the StringBuffer of the file at that resource ID, or null of not found
+	 */
 	public final StringBuffer _getFileResource(final String filename, final boolean reportErrors)
 	{
 		final Object rsc=_getResource(filename);
@@ -608,6 +715,14 @@ public class Resources
 		return buf;
 	}
 
+	/**
+	 * Saves the given stringbuffer of data to the given resource filename, to 
+	 * the filesystem while also updating the internal cache for the resources.
+	 * Returns false if there was a filesystem error.
+	 * @param filename the resource filename to save to (/resources/<filename>)
+	 * @param obj the string data to store in the file, stringbuffer, byte array, etc
+	 * @return true if the file was saved, or false if there were problems
+	 */
 	public final boolean _updateFileResource(final String filename, final Object obj)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
@@ -615,6 +730,15 @@ public class Resources
 		return _saveFileResource(filename,null,_toStringBuffer(obj));
 	}
 
+	/**
+	 * Saves the given stringbuffer of data to the given resource filename, to 
+	 * the filesystem on behalf of the given user/player, without touching the cache.
+	 * Returns false if the user was not permitted to save files at that location.
+	 * @param filename the resource filename to save to (/resources/<filename>)
+	 * @param whoM the mob whose permissions to check, or null to always save
+	 * @param myRsc the string data to store in the file
+	 * @return true if the file was saved, or false if there were permission or other problems
+	 */
 	public final boolean _saveFileResource(String filename, final MOB whoM, final StringBuffer myRsc)
 	{
 		final boolean vfsFile=filename.trim().startsWith("::");
@@ -626,6 +750,14 @@ public class Resources
 		return new CMFile(filename,whoM).saveRaw(myRsc);
 	}
 
+	/**
+	 * Opens the given CMFile as a properties type file, ignoring comment lines, and looking
+	 * for a property entry that matches <match>=<whatever>, removing it if found, and if found,
+	 * re-saving the file.
+	 * @param F the properties file to potentially modify
+	 * @param match the property file entry to remove
+	 * @return true if the property was removed, and false if nothing was done
+	 */
 	public final boolean _findRemoveProperty(final CMFile F, final String match)
 	{
 		boolean removed=false;
@@ -665,6 +797,18 @@ public class Resources
 		return removed;
 	}
 
+	/**
+	 * The "Resource Properties" is a special VFS file containing normal properties divided into
+	 * sections headed by a bracketed [BLOCK].  The filename is ::/coffeemud_properties.ini.  These
+	 * properties tend to be internal data maintained by the system for internal use, and resaved
+	 * as necessary.
+	 * 
+	 * This method retreives all properties in a given section into a string map.  If they are
+	 * not cached, this method will cache all properties of all sections.
+	 * 
+	 * @param section the section in the resource properties to get entries from
+	 * @return a map of the entries in the given section
+	 */
 	public static final Map<String,String> getAllPropResources(String section)
 	{
 		if(propResources==null)
@@ -706,7 +850,9 @@ public class Resources
 									final String value=URLDecoder.decode(line.substring(eqSepIndex+1),"UTF-8");
 									currSecMap.put(key.toUpperCase().trim(), value);
 								}
-								catch(final UnsupportedEncodingException e) { }
+								catch(final UnsupportedEncodingException e) 
+								{
+								}
 							}
 						}
 					}
@@ -725,6 +871,19 @@ public class Resources
 		}
 	}
 
+	/**
+	 * The "Resource Properties" is a special VFS file containing normal properties divided into
+	 * sections headed by a bracketed [BLOCK].  The filename is ::/coffeemud_properties.ini.  These
+	 * properties tend to be internal data maintained by the system for internal use, and resaved
+	 * as necessary.
+	 * 
+	 * This method checks for a given property key in a given section and returns whether it was
+	 * found.
+	 * 
+	 * @param section the section to look in
+	 * @param key the property key to look for in that section
+	 * @return true if the key was found, false otherwise
+	 */
 	public static final boolean isPropResource(String section, String key)
 	{
 		final Map<String,String> secMap = getAllPropResources(section);
@@ -735,6 +894,19 @@ public class Resources
 		}
 	}
 
+	/**
+	 * The "Resource Properties" is a special VFS file containing normal properties divided into
+	 * sections headed by a bracketed [BLOCK].  The filename is ::/coffeemud_properties.ini.  These
+	 * properties tend to be internal data maintained by the system for internal use, and resaved
+	 * as necessary.
+	 * 
+	 * This method returns the value of the given property key in the given section, or "" if it 
+	 * was not found.
+	 * 
+	 * @param section the section of the resource properties to look in
+	 * @param key the key in the section to look for
+	 * @return the value of the property key, or ""
+	 */
 	public static final String getPropResource(String section, String key)
 	{
 		final Map<String,String> secMap = getAllPropResources(section);
@@ -747,6 +919,19 @@ public class Resources
 		}
 	}
 
+	/**
+	 * The "Resource Properties" is a special VFS file containing normal properties divided into
+	 * sections headed by a bracketed [BLOCK].  The filename is ::/coffeemud_properties.ini.  These
+	 * properties tend to be internal data maintained by the system for internal use, and resaved
+	 * as necessary.
+	 * 
+	 * This method sets or removes the value of the given property key in the given section.  
+	 * It does not re-save.  If the value is null or "", the property key is removed.
+	 * 
+	 * @param section the section of the resource properties to add the key to
+	 * @param key the key in the section to set
+	 * @param value the new value of the key, or "" to remove
+	 */
 	public static final void setPropResource(String section, String key, String value)
 	{
 		final Map<String,String> secMap = getAllPropResources(section);
@@ -760,6 +945,14 @@ public class Resources
 		}
 	}
 
+	/**
+	 * The "Resource Properties" is a special VFS file containing normal properties divided into
+	 * sections headed by a bracketed [BLOCK].  The filename is ::/coffeemud_properties.ini.  These
+	 * properties tend to be internal data maintained by the system for internal use, and resaved
+	 * as necessary.
+	 * 
+	 * This method re-saves the cached resource properties object back to the filesystem.
+	 */
 	public static final void savePropResources()
 	{
 		if(propResources!=null)
@@ -784,7 +977,9 @@ public class Resources
 								final String value=URLEncoder.encode(secMap.get(key),"UTF-8");
 								str.append(key).append("=").append(value).append("\n");
 							}
-							catch (final UnsupportedEncodingException e) { }
+							catch (final UnsupportedEncodingException e) 
+							{
+							}
 						}
 					}
 					final CMFile file=new CMFile("::/coffeemud_properties.ini",null,CMFile.FLAG_FORCEALLOW);
