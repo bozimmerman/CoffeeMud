@@ -8594,12 +8594,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((newTarget instanceof MOB)&&(C!=null))
 				{
 					int role=Integer.MIN_VALUE;
-					if(!CMath.isInteger(roleStr))
+					if(CMath.isInteger(roleStr))
 						role=CMath.s_int(roleStr);
 					else
 					for(int i=0;i<C.getRolesList().length;i++)
+					{
 						if(roleStr.equalsIgnoreCase(C.getRolesList()[i]))
 							role=i;
+					}
 					if(role!=Integer.MIN_VALUE)
 					{
 						if(((MOB)newTarget).isPlayer())
