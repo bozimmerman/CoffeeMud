@@ -568,9 +568,9 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// that we are allowed to ONLY put playing cards in the
 	// container.
 	@Override
-	public boolean canContain(Environmental E)
+	public boolean canContain(Item I)
 	{
-		if (!(E instanceof PlayingCard)) return false;
+		if (!(I instanceof PlayingCard)) return false;
 		return true;
 	}
 

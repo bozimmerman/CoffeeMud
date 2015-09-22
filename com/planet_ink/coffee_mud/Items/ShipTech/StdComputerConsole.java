@@ -105,9 +105,9 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	@Override public void setPanelType(TechType type){ }
 
 	@Override
-	public boolean canContain(Environmental E)
+	public boolean canContain(Item I)
 	{
-		return (E instanceof Software) && (((Software)E).getTechType()==TechType.SHIP_SOFTWARE);
+		return (I instanceof Software) && (((Software)I).getTechType()==TechType.SHIP_SOFTWARE);
 	}
 
 

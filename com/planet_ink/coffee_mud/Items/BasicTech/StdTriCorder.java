@@ -72,9 +72,9 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 	@Override public TechType getTechType() { return TechType.PERSONAL_SENSOR; }
 
 	@Override
-	public boolean canContain(Environmental E)
+	public boolean canContain(Item I)
 	{
-		return (E instanceof Software) && (((Software)E).getTechType()==TechType.PERSONAL_SOFTWARE);
+		return (I instanceof Software) && (((Software)I).getTechType()==TechType.PERSONAL_SOFTWARE);
 	}
 
 	@Override

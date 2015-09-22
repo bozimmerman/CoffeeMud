@@ -30,20 +30,102 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A container is an item that contains other items, including other containers.
+ * Next to the Item interface, the Container interface is probably the most basic.
+ * @author Bo Zimmerman
+ *
+ */
 public interface Container extends Item, CloseableLockable
 {
+	/**
+	 * Returns all the items in this container, including other
+	 * containers and THEIR contents, recursively.
+	 * @see Container#getContents()
+	 * @return all the items in this container, recursively
+	 */
 	public ReadOnlyList<Item> getDeepContents();
+	
+	/**
+	 * Returns all the immediate items in this container, including
+	 * other containers, but not the contents of those innner containers.
+	 * Just the first level contents of this container.
+	 * @see Container#getDeepContents()
+	 * @return all the immediate items in this container
+	 */
 	public ReadOnlyList<Item> getContents();
+	
+	/**
+	 * Returns the maximum weight that can fit inside this container.  Weight
+	 * is used as a proxy for volume in CoffeeMud.
+	 * @see Container#setCapacity(int)
+	 * @return the maximum weight that can fit inside this container
+	 */
 	public int capacity();
+	
+	/**
+	 * Sets the maximum weight that can fit inside this container.  Weight
+	 * is used as a proxy for volume in CoffeeMud.
+	 * @see Container#capacity()
+	 * @param newValue the maximum weight that can fit inside this container
+	 */
 	public void setCapacity(int newValue);
+	
+	/**
+	 * Returns whether there is anything at all in this container.
+	 * @return true if there is anything in this container, false if it is empty
+	 */
 	public boolean hasContent();
-	public boolean canContain(Environmental E);
+	
+	/**
+	 * Returns whether this container is allowed to contain the given object.
+	 * @see Container#setContainTypes(long)
+	 * @see Container#containTypes()
+	 * @param I the item to check against the allowed content
+	 * @return true if the given item can go in this container, false otherwise
+	 */
+	public boolean canContain(Item I);
+	
+	/**
+	 * Returns whether the given item is, in fact, inside this container, even
+	 * recursively.  So if the given item is in a container, and that container
+	 * is in THIS container, it would still be inside.
+	 * @param I the item to check against the content
+	 * @return true if the item is somewhere inside, false otherwise
+	 */
 	public boolean isInside(Item I);
+	
+	/**
+	 * Returns a bitmap of the types of things that this container can hold.
+	 * @see Container#setContainTypes(long)
+	 * @see Container#CONTAIN_ANYTHING
+	 * @see Container#CONTAIN_DESCS
+	 * @return a bitmap of the types of things that this container can hold
+	 */
 	public long containTypes();
+	
+	/**
+	 * Sets a bitmap of the types of things that this container can hold.
+	 * @see Container#containTypes()
+	 * @see Container#CONTAIN_ANYTHING
+	 * @see Container#CONTAIN_DESCS
+	 * @param containTypes a bitmap of the types of things that this container can hold.
+	 */
 	public void setContainTypes(long containTypes);
+	
+	/**
+	 * Empties this container into its owner.
+	 * @param flatten if true, will also remove all recursive items from their containers
+	 */
 	public void emptyPlease(boolean flatten);
 	
+	/**
+	 * Container type that overrides all others -- the container can hold anything!
+	 * @see Container#setContainTypes(long)
+	 * @see Container#containTypes()
+	 */
 	public static final int CONTAIN_ANYTHING=0;
+	
 	public static final int CONTAIN_LIQUID=1;
 	public static final int CONTAIN_COINS=2;
 	public static final int CONTAIN_SWORDS=4;
@@ -61,6 +143,13 @@ public interface Container extends Item, CloseableLockable
 	public static final int CONTAIN_SSCOMPONENTS=16384;
 	public static final int CONTAIN_FOOTWEAR=32768;
 	public static final int CONTAIN_RAWMATERIALS=65536;
+	
+	
+	/**
+	 * Ordinal list of the names of all the container bitmask types.
+	 * @see Container#setContainTypes(long)
+	 * @see Container#containTypes()
+	 */
 	public static final String[] CONTAIN_DESCS={"ANYTHING",
 												"LIQUID",
 												"COINS",

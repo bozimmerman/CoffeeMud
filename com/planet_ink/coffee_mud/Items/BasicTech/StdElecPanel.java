@@ -69,11 +69,11 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		return "";
 	}
 	@Override
-	public boolean canContain(Environmental E)
+	public boolean canContain(Item I)
 	{
-		if(!super.canContain(E))
+		if(!super.canContain(I))
 			return false;
-		if((E instanceof Technical)&&(panelType()==((Technical)E).getTechType()))
+		if((I instanceof Technical)&&(panelType()==((Technical)I).getTechType()))
 			return true;
 		return true;
 	}

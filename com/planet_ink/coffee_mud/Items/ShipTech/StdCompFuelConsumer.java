@@ -88,12 +88,12 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 	}
 
 	@Override
-	public boolean canContain(Environmental E)
+	public boolean canContain(Item I)
 	{
-		if(!super.canContain(E))
+		if(!super.canContain(I))
 			return false;
-		if(E instanceof RawMaterial)
-			return CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)E).material());
+		if(I instanceof RawMaterial)
+			return CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)I).material());
 		return false;
 	}
 

@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -437,9 +435,9 @@ public class StdContainer extends StdItem implements Container
 	@Override public void setContainTypes(long containTypes){containType=containTypes;}
 
 	@Override
-	public boolean canContain(Environmental E)
+	public boolean canContain(Item I)
 	{
-		if (!(E instanceof Item)) return false;
+		if (!(I instanceof Item)) return false;
 		if(containType==0)
 			return true;
 		for(int i=0;i<Container.CONTAIN_DESCS.length;i++)
@@ -447,86 +445,86 @@ public class StdContainer extends StdItem implements Container
 				switch((int)CMath.pow(2,i))
 				{
 				case CONTAIN_LIQUID:
-					if((((Item)E).material()&RawMaterial.MATERIAL_LIQUID)>0)
+					if((((Item)I).material()&RawMaterial.MATERIAL_LIQUID)>0)
 						return true;
 					break;
 				case CONTAIN_COINS:
-					if(E instanceof Coins)
+					if(I instanceof Coins)
 						return true;
 					break;
 				case CONTAIN_SWORDS:
-					if((E instanceof Weapon)
-					&&(((Weapon)E).weaponClassification()==Weapon.CLASS_SWORD))
+					if((I instanceof Weapon)
+					&&(((Weapon)I).weaponClassification()==Weapon.CLASS_SWORD))
 						return true;
 					break;
 				case CONTAIN_DAGGERS:
-					if((E instanceof Weapon)
-					&&(((Weapon)E).weaponClassification()==Weapon.CLASS_DAGGER))
+					if((I instanceof Weapon)
+					&&(((Weapon)I).weaponClassification()==Weapon.CLASS_DAGGER))
 						return true;
 					break;
 				case CONTAIN_KEYS:
-					if(E instanceof DoorKey)
+					if(I instanceof DoorKey)
 						return true;
 					break;
 				case CONTAIN_DRINKABLES:
-					if((E instanceof Drink)&&(E instanceof Item))
+					if((I instanceof Drink)&&(I instanceof Item))
 						return true;
 					break;
 				case CONTAIN_CLOTHES:
-					if((E instanceof Armor)
-					&&(((Armor)E).fitsOn(Wearable.WORN_ABOUT_BODY)
-					   ||((Armor)E).fitsOn(Wearable.WORN_ARMS)
-					   ||((Armor)E).fitsOn(Wearable.WORN_LEGS)
-					   ||((Armor)E).fitsOn(Wearable.WORN_HEAD)
-					   ||((Armor)E).fitsOn(Wearable.WORN_TORSO)
-					   ||((Armor)E).fitsOn(Wearable.WORN_WAIST)))
+					if((I instanceof Armor)
+					&&(((Armor)I).fitsOn(Wearable.WORN_ABOUT_BODY)
+					   ||((Armor)I).fitsOn(Wearable.WORN_ARMS)
+					   ||((Armor)I).fitsOn(Wearable.WORN_LEGS)
+					   ||((Armor)I).fitsOn(Wearable.WORN_HEAD)
+					   ||((Armor)I).fitsOn(Wearable.WORN_TORSO)
+					   ||((Armor)I).fitsOn(Wearable.WORN_WAIST)))
 						return true;
 					break;
 				case CONTAIN_FOOTWEAR:
-					if((E instanceof Armor)
-					&&(((Armor)E).fitsOn(Wearable.WORN_FEET)))
+					if((I instanceof Armor)
+					&&(((Armor)I).fitsOn(Wearable.WORN_FEET)))
 						return true;
 					break;
 				case CONTAIN_RAWMATERIALS:
-					return (E instanceof RawMaterial);
+					return (I instanceof RawMaterial);
 				case CONTAIN_OTHERWEAPONS:
-					if((E instanceof Weapon)
-					&&(((Weapon)E).weaponClassification()!=Weapon.CLASS_SWORD)
-					&&(((Weapon)E).weaponClassification()!=Weapon.CLASS_DAGGER))
+					if((I instanceof Weapon)
+					&&(((Weapon)I).weaponClassification()!=Weapon.CLASS_SWORD)
+					&&(((Weapon)I).weaponClassification()!=Weapon.CLASS_DAGGER))
 						return true;
 					break;
 				case CONTAIN_ONEHANDWEAPONS:
-					if((E instanceof Weapon)
-					&&(((Weapon)E).rawLogicalAnd()==false))
+					if((I instanceof Weapon)
+					&&(((Weapon)I).rawLogicalAnd()==false))
 						return true;
 					break;
 				case CONTAIN_BODIES:
-					if(E instanceof DeadBody)
+					if(I instanceof DeadBody)
 						return true;
 					break;
 				case CONTAIN_SMOKEABLES:
-					if(E instanceof Item)
+					if(I instanceof Item)
 					{
-						if((((Item)E).material()==RawMaterial.RESOURCE_PIPEWEED)
-						||(((Item)E).material()==RawMaterial.RESOURCE_HERBS))
+						if((((Item)I).material()==RawMaterial.RESOURCE_PIPEWEED)
+						||(((Item)I).material()==RawMaterial.RESOURCE_HERBS))
 							return true;
 					}
 					break;
 				case CONTAIN_CAGED:
-					if(E instanceof CagedAnimal)
+					if(I instanceof CagedAnimal)
 						return true;
 					break;
 				case CONTAIN_READABLES:
-					if((E instanceof Item)
-					&&(((Item)E).isReadable()))
+					if((I instanceof Item)
+					&&(((Item)I).isReadable()))
 						return true;
 					break;
 				case CONTAIN_SCROLLS:
-					if(E instanceof Scroll)
+					if(I instanceof Scroll)
 						return true;
 					break;
 				case CONTAIN_SSCOMPONENTS:
-					if(E instanceof ShipComponent)
+					if(I instanceof ShipComponent)
 						return true;
 					break;
 				}
