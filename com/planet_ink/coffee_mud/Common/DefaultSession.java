@@ -1053,7 +1053,13 @@ public class DefaultSession implements Session
 	{
 		print(msg);
 		if((!getClientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) && (!killFlag) && mightSupportTelnetMode(TELNET_GA))
-			try { rawBytesOut(rawout, TELNETGABYTES); } catch(final Exception e){}
+		{
+			try 
+			{ 
+				rawBytesOut(rawout, TELNETGABYTES); 
+			} 
+			catch(final Exception e){}
+		}
 	}
 
 	@Override
