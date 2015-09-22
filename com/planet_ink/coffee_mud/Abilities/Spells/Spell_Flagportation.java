@@ -85,7 +85,7 @@ public class Spell_Flagportation extends Spell
 						if((I!=null)
 						&&(I instanceof ClanItem)
 						&&(((ClanItem)I).clanID().equals(C.clanID()))
-						&&(((ClanItem)I).ciType()==ClanItem.CI_FLAG))
+						&&(((ClanItem)I).getClanItemType()==ClanItem.ClanItemType.FLAG))
 						{
 							candidates.addElement(R);
 							break;

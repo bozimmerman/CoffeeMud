@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class StdClanApron extends StdClanItem
 {
-	@Override public String ID(){ return "StdClanApron";}
+	@Override 
+	public String ID()
+	{ 
+		return "StdClanApron";
+	}
 
 	public StdClanApron()
 	{
@@ -47,7 +51,7 @@ public class StdClanApron extends StdClanItem
 		setDescription("");
 		secretIdentity="";
 		baseGoldValue=1;
-		setCIType(ClanItem.CI_SPECIALAPRON);
+		setClanItemType(ClanItem.ClanItemType.SPECIALAPRON);
 		material=RawMaterial.RESOURCE_COTTON;
 		setRawProperLocationBitmap(Wearable.WORN_WAIST|Wearable.WORN_ABOUT_BODY);
 		setRawLogicalAnd(false);

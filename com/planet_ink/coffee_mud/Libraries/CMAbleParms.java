@@ -1976,13 +1976,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("CLAN_ITEM_CODENUMBER","Typ.",PARMTYPE_CHOICES)
 				{
 					@Override public int appliesToClass(Object o) { return (o instanceof ClanItem)?10:-1;}
-					@Override public void createChoices() { createNumberedChoices(ClanItem.CI_DESC);}
+					@Override public void createChoices() { createNumberedChoices(ClanItem.ClanItemType.ALL);}
 					@Override public String defaultValue(){ return "1";}
 					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof ClanItem)
-							return ""+((ClanItem)I).ciType();
+							return ""+((ClanItem)I).getClanItemType().ordinal();
 						return "";
 					}
 				},
@@ -3116,5 +3116,4 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		@Override public DVector choices() { return choices; }
 		@Override public int appliesToClass(Object o) { return 0;}
 	}
-
 }

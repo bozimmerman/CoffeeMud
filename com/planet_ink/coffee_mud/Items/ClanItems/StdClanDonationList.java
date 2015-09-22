@@ -49,7 +49,7 @@ public class StdClanDonationList extends StdClanItem
 		basePhyStats.setWeight(1);
 		setDisplayText("an list is setting here.");
 		setDescription("");
-		setCIType(ClanItem.CI_DONATEJOURNAL);
+		setClanItemType(ClanItem.ClanItemType.DONATIONJOURNAL);
 		CMLib.flags().setReadable(this,true);
 		secretIdentity="";
 		baseGoldValue=1;
@@ -77,7 +77,29 @@ public class StdClanDonationList extends StdClanItem
 		}
 		return super.okMessage(myHost,msg);
 	}
+	
+	private String makeDonationDescription(final MOB source, final Environmental target, final String verb)
+	{
+		if(source != null)
+		{
+			final Room R=source.location();
+			if((R!=null)&&(R.getArea() != null))
+			{
+				return source.name()+" "+verb+" "+target.name()+" at "+R.getArea().getTimeObj().getShortTimeDescription()+".";
+			}
+		}
+		return "";
+	}
 
+	private String getDonationKey(final MOB source)
+	{
+		if(source != null)
+		{
+			return System.currentTimeMillis()+"/"+source.Name()+"/"+Math.random();
+		}
+		return System.currentTimeMillis()+"/UNK/"+Math.random();
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -106,6 +128,7 @@ public class StdClanDonationList extends StdClanItem
 							val=CMath.s_long(key.substring(0,x));
 							boolean did=false;
 							for(int i=0;i<sorted.size();i++)
+							{
 								if(((Long)((Object[])sorted.elementAt(i))[0]).longValue()>val)
 								{
 									did=true;
@@ -114,6 +137,7 @@ public class StdClanDonationList extends StdClanItem
 									O[1]=set.xml;
 									sorted.insertElementAt(O,i);
 								}
+							}
 							if(!did)
 							{
 								final Object[] O=new Object[2];
@@ -126,6 +150,7 @@ public class StdClanDonationList extends StdClanItem
 					}
 					for(int i=0;i<sorted.size();i++)
 						text.append(((String)((Object[])sorted.elementAt(i))[1])+"\n\r");
+
 					if(text.length()>0)
 						mob.tell(L("It says '@x1'.",text.toString()));
 					else
@@ -142,23 +167,23 @@ public class StdClanDonationList extends StdClanItem
 			&&(msg.tool().ID().equalsIgnoreCase("Spell_ClanDonate")))
 			{
 				lastItem=(Item)msg.target();
-				CMLib.database().DBCreateData(clanID(),"DONATIONS",System.currentTimeMillis()+"/"+msg.source().Name()+"/"+Math.random(),msg.source().name()+" donated "+msg.target().name()+" at "+msg.source().location().getArea().getTimeObj().getShortTimeDescription()+".");
+				CMLib.database().DBCreateData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"donated"));
 			}
 			else
 			if((msg.targetMinor()==CMMsg.TYP_GET)
 			&&(msg.target() instanceof Item)
 			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
-				CMLib.database().DBCreateData(clanID(),"DONATIONS",System.currentTimeMillis()+"/"+msg.source().Name()+"/"+Math.random(),msg.source().name()+" gets "+msg.target().name()+" at "+msg.source().location().getArea().getTimeObj().getShortTimeDescription()+".");
+				CMLib.database().DBCreateData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"gets"));
 			else
 			if(((msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 			&&(msg.target() instanceof Item)
 			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
-				CMLib.database().DBCreateData(clanID(),"DONATIONS",System.currentTimeMillis()+"/"+msg.source().Name()+"/"+Math.random(),msg.source().name()+" moves "+msg.target().name()+" at "+msg.source().location().getArea().getTimeObj().getShortTimeDescription()+".");
+				CMLib.database().DBCreateData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"moves"));
 			else
 			if((msg.targetMinor()==CMMsg.TYP_DROP)
 			&&(msg.target() instanceof Item)
 			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
-				CMLib.database().DBCreateData(clanID(),"DONATIONS",System.currentTimeMillis()+"/"+msg.source().Name()+"/"+Math.random(),msg.source().name()+" drops "+msg.target().name()+" at "+msg.source().location().getArea().getTimeObj().getShortTimeDescription()+".");
+				CMLib.database().DBCreateData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"drops"));
 		}
 		super.executeMsg(myHost,msg);
 	}

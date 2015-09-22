@@ -35,8 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdClanCommonContainer extends StdClanContainer
 {
-	@Override public String ID(){	return "StdClanCommonContainer";}
+	@Override 
+	public String ID()
+	{
+		return "StdClanCommonContainer";
+	}
+	
 	protected int workDown=0;
+	
 	public StdClanCommonContainer()
 	{
 		super();
@@ -48,7 +54,7 @@ public class StdClanCommonContainer extends StdClanContainer
 		secretIdentity="";
 		baseGoldValue=1;
 		capacity=100;
-		setCIType(ClanItem.CI_GATHERITEM);
+		setClanItemType(ClanItem.ClanItemType.GATHERITEM);
 		material=RawMaterial.RESOURCE_OAK;
 		recoverPhyStats();
 	}
@@ -81,7 +87,8 @@ public class StdClanCommonContainer extends StdClanContainer
 						while((I==null)&&((++tries)<20))
 						{
 							I=M.getRandomItem();
-							if((I==null)||(I==this)||(!I.amWearingAt(Wearable.IN_INVENTORY)))
+							if((I==null)
+							||(I==this)||(!I.amWearingAt(Wearable.IN_INVENTORY)))
 								I=null;
 						}
 						final Vector V=new Vector();
@@ -92,7 +99,6 @@ public class StdClanCommonContainer extends StdClanContainer
 					else
 						A.invoke(M,new Vector(),null,false,phyStats().level());
 				}
-
 			}
 		}
 		return true;

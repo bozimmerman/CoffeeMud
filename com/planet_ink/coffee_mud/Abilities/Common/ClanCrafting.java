@@ -385,8 +385,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			else
 			if(CMLib.clans().numClans()>0)
 				((ClanItem)buildingI).setClanID(CMLib.clans().clans().nextElement().clanID());
-			((ClanItem)buildingI).setCIType(CMath.s_int(foundRecipe.get(RCP_CITYPE)));
-			if(((ClanItem)buildingI).ciType()==ClanItem.CI_PROPAGANDA)
+			((ClanItem)buildingI).setClanItemType(ClanItem.ClanItemType.values()[CMath.s_int(foundRecipe.get(RCP_CITYPE))]);
+			if(((ClanItem)buildingI).getClanItemType()==ClanItem.ClanItemType.PROPAGANDA)
 			{
 				buildingI.setMaterial(RawMaterial.RESOURCE_PAPER);
 				CMLib.flags().setReadable(buildingI,true);

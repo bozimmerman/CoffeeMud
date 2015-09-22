@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Items.ClanItems;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,25 +19,30 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2015 Bo Zimmerman
+ Copyright 2004-2015 Bo Zimmerman
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-	   http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 public class StdClanSpecialItem extends StdClanItem
 {
-	@Override public String ID(){	return "StdClanSpecialItem";}
-	private Behavior B=null;
-	private String flag="";
+	@Override
+	public String ID()
+	{
+		return "StdClanSpecialItem";
+	}
+
+	private Behavior	B		= null;
+	private String		flag	= "";
 
 	public StdClanSpecialItem()
 	{
@@ -46,19 +52,18 @@ public class StdClanSpecialItem extends StdClanItem
 		basePhyStats.setWeight(1);
 		setDisplayText("an item belonging to a clan is here.");
 		setDescription("");
-		secretIdentity="";
-		baseGoldValue=1;
-		setCIType(ClanItem.CI_SPECIALOTHER);
-		material=RawMaterial.RESOURCE_PINE;
+		secretIdentity = "";
+		baseGoldValue = 1;
+		setClanItemType(ClanItem.ClanItemType.SPECIALOTHER);
+		material = RawMaterial.RESOURCE_PINE;
 		recoverPhyStats();
 	}
 
 	@Override
 	public void setReadableText(String text)
 	{
-		if((text.equalsIgnoreCase("GOOD"))
-		||(text.equalsIgnoreCase("EVIL")))
-			flag=text;
+		if ((text.equalsIgnoreCase("GOOD")) || (text.equalsIgnoreCase("EVIL")))
+			flag = text;
 		else
 			super.setReadableText(text);
 	}
@@ -66,77 +71,81 @@ public class StdClanSpecialItem extends StdClanItem
 	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
-		super.executeMsg(affecting,msg);
-		if(((ciType()==ClanItem.CI_SPECIALSCALES)||(ciType()==ClanItem.CI_SPECIALTAXER))
-		&&(owner() instanceof MOB)
-		&&(clanID().length()>0)
-		&&(((MOB)owner()).isMonster())
-		&&((((MOB)owner()).getClanRole(clanID())!=null)
-		&&(CMLib.flags().aliveAwakeMobile((MOB)owner(),true))
-		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner())))
-		&&(B!=null))
-			B.executeMsg(owner(),msg);
+		super.executeMsg(affecting, msg);
+		if (((getClanItemType() == ClanItem.ClanItemType.SPECIALSCALES) 
+			|| (getClanItemType() == ClanItem.ClanItemType.SPECIALTAXER)) 
+		&& (owner() instanceof MOB) 
+		&& (clanID().length() > 0) 
+		&& (((MOB) owner()).isMonster())
+		&& ((((MOB) owner()).getClanRole(clanID()) != null) 
+		&& (CMLib.flags().aliveAwakeMobile((MOB) owner(), true)) 
+		&& (!CMLib.flags().isAnimalIntelligence((MOB) owner()))) 
+		&& (B != null))
+			B.executeMsg(owner(), msg);
 	}
+
 	@Override
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
-		if(!super.okMessage(affecting,msg))
+		if (!super.okMessage(affecting, msg))
 			return false;
-		if((ciType()==ClanItem.CI_SPECIALTAXER)
-		&&(B!=null)
-		&&(owner() instanceof MOB))
-			return B.okMessage(owner(),msg);
+		if ((getClanItemType() == ClanItem.ClanItemType.SPECIALTAXER) && (B != null) && (owner() instanceof MOB))
+			return B.okMessage(owner(), msg);
 		return true;
 	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))
+		if (!super.tick(ticking, tickID))
 			return false;
-		if((tickID==Tickable.TICKID_CLANITEM)
-		&&(owner() instanceof MOB)
-		&&(clanID().length()>0)
-		&&(((MOB)owner()).isMonster())
-		&&((((MOB)owner()).getClanRole(clanID())!=null)
-		&&(CMLib.flags().aliveAwakeMobileUnbound((MOB)owner(),true))
-		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner()))))
+		if ((tickID == Tickable.TICKID_CLANITEM) 
+		&& (owner() instanceof MOB) 
+		&& (clanID().length() > 0) 
+		&& (((MOB) owner()).isMonster())
+		&& (((MOB) owner()).getClanRole(clanID()) != null)
+		&& (CMLib.flags().aliveAwakeMobileUnbound((MOB) owner(), true))
+		&& (!CMLib.flags().isAnimalIntelligence((MOB) owner())))
 		{
-			switch(ciType())
+			switch (getClanItemType())
 			{
-			case ClanItem.CI_SPECIALSCAVENGER:
+			case SPECIALSCAVENGER:
+			{
+				final MOB mob = (MOB) owner();
+				final Room R = ((MOB) owner()).location();
+				if (R != null)
 				{
-					final MOB mob=(MOB)owner();
-					final Room R=((MOB)owner()).location();
-					if(R!=null)
-					{
-						final Item I=R.getRandomItem();
-						if((I!=null)&&(I.container()==null))
-							CMLib.commands().postGet(mob,null,I,false);
-					}
-					break;
+					final Item I = R.getRandomItem();
+					if ((I != null) && (I.container() == null))
+						CMLib.commands().postGet(mob, null, I, false);
 				}
-			case ClanItem.CI_SPECIALSCALES:
+				break;
+			}
+			case SPECIALSCALES:
+			{
+				if (((B == null)) 
+				|| (!flag.equalsIgnoreCase("EVIL") 
+					&& (!B.ID().equals("GoodExecutioner"))) 
+				|| (flag.equalsIgnoreCase("EVIL") 
+					&& (!B.ID().equals("EvilExecutioner"))))
 				{
-					if(((B==null))
-					||(!flag.equalsIgnoreCase("EVIL")&&(!B.ID().equals("GoodExecutioner")))
-					||(flag.equalsIgnoreCase("EVIL")&&(!B.ID().equals("EvilExecutioner"))))
-					{
-						if(flag.equalsIgnoreCase("EVIL"))
-							B=CMClass.getBehavior("EvilExecutioner");
-						else
-							B=CMClass.getBehavior("GoodExecutioner");
-					}
-					break;
+					if (flag.equalsIgnoreCase("EVIL"))
+						B = CMClass.getBehavior("EvilExecutioner");
+					else
+						B = CMClass.getBehavior("GoodExecutioner");
 				}
-			case ClanItem.CI_SPECIALTAXER:
-				{
-					if((B==null)||(!B.ID().equals("TaxCollector")))
-						B=CMClass.getBehavior("TaxCollector");
-					if(B!=null)
-						B.tick(owner(),Tickable.TICKID_MOB);
-					break;
-				}
+				break;
+			}
+			case SPECIALTAXER:
+			{
+				if ((B == null) || (!B.ID().equals("TaxCollector")))
+					B = CMClass.getBehavior("TaxCollector");
+				if (B != null)
+					B.tick(owner(), Tickable.TICKID_MOB);
+				break;
+			}
+			default:
+				break;
 			}
 		}
 		return true;

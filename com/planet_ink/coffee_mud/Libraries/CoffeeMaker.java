@@ -393,7 +393,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof ClanItem)
 		{
 			text.append(CMLib.xml().convertXMLtoTag("CLANID",""+((ClanItem)E).clanID()));
-			text.append(CMLib.xml().convertXMLtoTag("CITYPE",""+((ClanItem)E).ciType()));
+			text.append(CMLib.xml().convertXMLtoTag("CITYPE",""+((ClanItem)E).getClanItemType().ordinal()));
 		}
 
 		if(E instanceof Item)
@@ -2693,7 +2693,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof ClanItem)
 		{
 			((ClanItem)E).setClanID(CMLib.xml().getValFromPieces(buf,"CLANID"));
-			((ClanItem)E).setCIType(CMLib.xml().getIntFromPieces(buf,"CITYPE"));
+			((ClanItem)E).setClanItemType(ClanItem.ClanItemType.values()[CMLib.xml().getIntFromPieces(buf,"CITYPE")]);
 		}
 
 		if(E instanceof Item)

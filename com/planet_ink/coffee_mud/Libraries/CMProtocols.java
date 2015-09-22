@@ -713,7 +713,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			image=getHashedMXPImage(H,"CLAN_"+((ClanItem)O).ID().toUpperCase());
 			if(image==null)
-				image=getHashedMXPImage(H,"CLAN_"+ClanItem.CI_DESC[((ClanItem)O).ciType()].toUpperCase());
+				image=getHashedMXPImage(H,"CLAN_"+((ClanItem)O).getClanItemType().toString().toUpperCase());
 			if(image==null)
 				image=getHashedMXPImage(H,"CLAN_*");
 		}

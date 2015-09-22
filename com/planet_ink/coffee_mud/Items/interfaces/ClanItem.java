@@ -30,46 +30,132 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * Clan Items are variations on normal items that behave uniquely for members of clans.
+ * They exploit the rivalry between clans, as well as providing benefits to clans.
+ * @author Bo Zimmerman
+ */
 public interface ClanItem extends Item
 {
-	public final static int CI_FLAG=0;
-	public final static int CI_BANNER=1;
-	public final static int CI_GAVEL=2;
-	public final static int CI_PROPAGANDA=3;
-	public final static int CI_GATHERITEM=4;
-	public final static int CI_CRAFTITEM=5;
-	public final static int CI_SPECIALSCALES=6;
-	public final static int CI_SPECIALSCAVENGER=7;
-	public final static int CI_SPECIALOTHER=8;
-	public final static int CI_SPECIALTAXER=9;
-	public final static int CI_DONATEJOURNAL=10;
-	public final static int CI_ANTIPROPAGANDA=11;
-	public final static int CI_SPECIALAPRON=12;
-	public final static int CI_LEGALBADGE=13;
-
-	public final static String[] CI_DESC={
-		"FLAG",
-		"BANNER",
-		"GAVEL",
-		"PROPAGANDA",
-		"GATHERITEM",
-		"CRAFTITEM",
-		"SPECIALSCALES",
-		"SPECIALSCAVENGER",
-		"SPECIALOTHER",
-		"SPECIALTAXER",
-		"DONATIONJOURNAL",
-		"ANTI-PROPAGANDA",
-		"SPECIALAPRON",
-		"LEGALBADGE"
-	};
-
+	/**
+	 * The type of clan item this is.  Used mostly for cross-identification between
+	 * items without resorting to class name analysis.
+	 * 
+	 * @see ClanItem#getClanItemType();
+	 * @see ClanItem#setClanItemType(ClanItemType)
+	 * @author Bo Zimmerman
+	 */
+	public enum ClanItemType
+	{
+		FLAG,
+		BANNER,
+		GAVEL,
+		PROPAGANDA,
+		GATHERITEM,
+		CRAFTITEM,
+		SPECIALSCALES,
+		SPECIALSCAVENGER,
+		SPECIALOTHER,
+		SPECIALTAXER,
+		DONATIONJOURNAL,
+		ANTI_PROPAGANDA,
+		SPECIALAPRON,
+		LEGALBADGE
+		;
+		private final String ID;
+		
+		public final static String[] ALL=new String[ClanItemType.values().length];
+		static
+		{
+			int x=0;
+			for(ClanItemType type : ClanItemType.values())
+			{
+				ALL[x++] = type.toString();
+			}
+		}
+		
+		private ClanItemType()
+		{
+			ID = this.name().replace('_', '-');
+		}
+		
+		@Override
+		public String toString()
+		{
+			return ID;
+		}
+		
+		/**
+		 * Returns the clanitemtype associated with the given string.  The
+		 * string may be a numeric ordinal of a clanitemtype, or a string
+		 * name, with "_" characters replaced by "-".
+		 * @param name the name or ordinal integer value
+		 * @return the clanitemtype found, or null
+		 */
+		public static ClanItemType getValueOf(final String name)
+		{
+			try
+			{
+				final int index = Integer.parseInt(name);
+				return ClanItemType.values()[index]; 
+			}
+			catch(Exception e)
+			{
+				final ClanItemType type = ClanItemType.valueOf(name.toUpperCase().trim().replace('-','_'));
+				return type;
+			}
+		}
+	}
+	
+	/**
+	 * Returns the identifier for the specific Clan that this item serves.  There can be only one.
+	 * @see ClanItem#setClanID(String)
+	 * @return the identifier for the specific Clan that this item serves.  There can be only one.
+	 */
 	public String clanID();
+	
+	/**
+	 * Sets the specific clan that this item serves.
+	 * @see ClanItem#clanID()
+	 * @param IDs the specific clan that this item serves.
+	 */
 	public void setClanID(String ID);
 
-	public int ciType();
-	public void setCIType(int type);
+	/**
+	 * Returns the type of clan item this is
+	 * @see ClanItem.ClanItemType
+	 * @see ClanItem#setClanItemType(ClanItemType)
+	 * @return the type of clan item this is
+	 */
+	public ClanItemType getClanItemType();
+	
+	/**
+	 * Sets the type of clan item this is
+	 * @see ClanItem.ClanItemType
+	 * @see ClanItem#getClanItemType()
+	 * @param type the type of clan item this is
+	 */
+	public void setClanItemType(ClanItemType type);
 
+	/**
+	 * Clan Items have their mob owners tracked.  This is so that sneaky mechanisms for getting items
+	 * away from clan member mobs can be thwarted by having them automatically returned.  Only conquest
+	 * can end an items usefulness...
+	 * 
+	 * This method returns the room or mob owner that this item should remain with.
+	 * 
+	 * @return the room or mob owner that this item should remain with.
+	 */
 	public Environmental rightfulOwner();
+	
+	/**
+	 * Clan Items have their mob owners tracked.  This is so that sneaky mechanisms for getting items
+	 * away from clan member mobs can be thwarted by having them automatically returned.  Only conquest
+	 * can end an items usefulness...
+	 * 
+	 * This method sets the room or mob owner that this item should remain with.
+	 * 
+	 * @param E the room or mob owner that this item should remain with.
+	 */
 	public void setRightfulOwner(Environmental E);
 }

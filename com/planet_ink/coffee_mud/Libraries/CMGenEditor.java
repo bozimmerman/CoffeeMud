@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ClanItem.ClanItemType;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -1598,9 +1599,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		 ||(E instanceof Container)
 		 ||(E instanceof Ammunition)
 		 ||((E instanceof ClanItem)
-			 &&((((ClanItem)E).ciType()==ClanItem.CI_GATHERITEM)
-				 ||(((ClanItem)E).ciType()==ClanItem.CI_CRAFTITEM)
-				 ||(((ClanItem)E).ciType()==ClanItem.CI_SPECIALAPRON)))
+			 &&((((ClanItem)E).getClanItemType()==ClanItem.ClanItemType.GATHERITEM)
+				 ||(((ClanItem)E).getClanItemType()==ClanItem.ClanItemType.CRAFTITEM)
+				 ||(((ClanItem)E).getClanItemType()==ClanItem.ClanItemType.SPECIALAPRON)))
 		 ||(E instanceof DoorKey))
 			CMLib.flags().setReadable(E,false);
 		else
@@ -2660,30 +2661,34 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genValue(MOB mob, Item I, int showNumber, int showFlag) throws IOException
-	{ I.setBaseValue(prompt(mob,I.baseGoldValue(),showNumber,showFlag,"Base Value")); }
+	{ 
+		I.setBaseValue(prompt(mob,I.baseGoldValue(),showNumber,showFlag,"Base Value")); 
+	}
 
 	protected void genWeight(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
-	{ P.basePhyStats().setWeight(prompt(mob,P.basePhyStats().weight(),showNumber,showFlag,"Weight")); }
+	{ 
+		P.basePhyStats().setWeight(prompt(mob,P.basePhyStats().weight(),showNumber,showFlag,"Weight")); 
+	}
 
 	protected void genClanItem(MOB mob, ClanItem I, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.tell(L("@x1. Clan: '@x2', Type: @x3.",""+showNumber,I.clanID(),ClanItem.CI_DESC[I.ciType()]));
+		mob.tell(L("@x1. Clan: '@x2', Type: @x3.",""+showNumber,I.clanID(),I.getClanItemType().toString()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		final String clanID=I.clanID();
 		I.setClanID(mob.session().prompt(L("Enter a new clan\n\r:"),clanID));
 		if(I.clanID().equals(clanID))
 			mob.tell(L("(no change)"));
-		final String clanType=ClanItem.CI_DESC[I.ciType()];
+		final String clanType=I.getClanItemType().toString();
 		String s="?";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(s.equals("?")))
 		{
 			s=mob.session().prompt(L("Enter a new type (?)\n\r:"),clanType);
 			if(s.equalsIgnoreCase("?"))
-				mob.tell(L("Types: @x1",CMParms.toStringList(ClanItem.CI_DESC)));
+				mob.tell(L("Types: @x1",CMParms.toStringList(ClanItem.ClanItemType.ALL)));
 			else
 			if(s.equalsIgnoreCase(clanType))
 			{
@@ -2692,11 +2697,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 			{
-				boolean found=false;
-				for(int i=0;i<ClanItem.CI_DESC.length;i++)
-					if(ClanItem.CI_DESC[i].equalsIgnoreCase(s))
-					{ found=true; I.setCIType(i); break;}
-				if(!found)
+				ClanItemType type = ClanItemType.getValueOf(s);
+				if(type != null)
+				{
+					I.setClanItemType(type);
+				}
+				else
 				{
 					mob.tell(L("'@x1' is unknown.  Try '?'",s));
 					s="?";

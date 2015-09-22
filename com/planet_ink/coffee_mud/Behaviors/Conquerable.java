@@ -231,7 +231,7 @@ public class Conquerable extends Arrest
 				if((I!=null)
 				&&(I instanceof ClanItem)
 				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
-				&&(((ClanItem)I).ciType()==ClanItem.CI_BANNER))
+				&&(((ClanItem)I).getClanItemType()==ClanItem.ClanItemType.BANNER))
 					return true;
 			}
 		return false;
@@ -252,7 +252,7 @@ public class Conquerable extends Arrest
 				if((I!=null)
 				&&(I instanceof ClanItem)
 				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
-				&&(((ClanItem)I).ciType()==ClanItem.CI_GAVEL))
+				&&(((ClanItem)I).getClanItemType()==ClanItem.ClanItemType.GAVEL))
 					return true;
 			}
 		return false;
@@ -345,7 +345,7 @@ public class Conquerable extends Arrest
 						clanItems.removeElementAt(c);
 					}
 					else
-					if(item.ciType()!=ClanItem.CI_FLAG)
+					if(item.getClanItemType()!=ClanItem.ClanItemType.FLAG)
 						deRegisterClanItem((ClanItem)clanItems.elementAt(c));
 				}
 			}catch(final ArrayIndexOutOfBoundsException x){}
@@ -370,7 +370,7 @@ public class Conquerable extends Arrest
 				&&(CMLib.flags().isInTheGame((MOB)I.owner(),true))
 				&&(A.inMyMetroArea(((MOB)I.owner()).getStartRoom().getArea()))
 				&&((holdingClan.length()==0)||(I.clanID().equals(holdingClan)))
-				&&(I.ciType()!=ClanItem.CI_PROPAGANDA))
+				&&(I.getClanItemType()!=ClanItem.ClanItemType.PROPAGANDA))
 					itemControlPoints+=((MOB)((Item)I).owner()).phyStats().level();
 			}
 		}
@@ -589,7 +589,7 @@ public class Conquerable extends Arrest
 						if(I.amDestroyed())
 							deRegisterClanItem(I);
 						else
-						if((I.ciType()==ClanItem.CI_FLAG)&&(!R.isContent(I)))
+						if((I.getClanItemType()==ClanItem.ClanItemType.FLAG)&&(!R.isContent(I)))
 							deRegisterClanItem(I);
 						else
 						{
@@ -772,7 +772,7 @@ public class Conquerable extends Arrest
 					final Room R=CMLib.map().roomLocation(I);
 					if((R==msg.target())
 					&&(!((Item)I).amDestroyed())
-					&&((I.ciType()!=ClanItem.CI_FLAG)||(R.isContent(I))))
+					&&((I.getClanItemType()!=ClanItem.ClanItemType.FLAG)||(R.isContent(I))))
 						return false;
 				}
 			}
@@ -820,8 +820,11 @@ public class Conquerable extends Arrest
 					if(I instanceof ClanItem)
 					{
 						CI=(ClanItem)I;
-						if(CI.ciType()==ClanItem.CI_LEGALBADGE)
-						{ badge=CI; break;}
+						if(CI.getClanItemType()==ClanItem.ClanItemType.LEGALBADGE)
+						{ 
+							badge=CI; 
+							break;
+						}
 					}
 				}
 				if(badge==null)
@@ -990,7 +993,7 @@ public class Conquerable extends Arrest
 				final ClanItem I=(ClanItem)clanItems.elementAt(i);
 				if((I.clanID().equals(C.clanID()))
 				&&(!I.amDestroyed())
-				&&(I.ciType()==ClanItem.CI_FLAG))
+				&&(I.getClanItemType()==ClanItem.ClanItemType.FLAG))
 				{
 					final Room R=CMLib.map().roomLocation(I);
 					if((R!=null)&&((A==null)||(A.inMyMetroArea(R.getArea()))))
@@ -1010,7 +1013,7 @@ public class Conquerable extends Arrest
 				{
 					I=R.getItem(i);
 					if((I instanceof ClanItem)
-					&&(((ClanItem)I).ciType()==ClanItem.CI_FLAG)
+					&&(((ClanItem)I).getClanItemType()==ClanItem.ClanItemType.FLAG)
 					&&(((ClanItem)I).clanID().equals(C.clanID()))
 					&&(!I.amDestroyed()))
 					{
@@ -1344,7 +1347,7 @@ public class Conquerable extends Arrest
 						&&(((Area)myHost).inMyMetroArea(R.getArea()))
 						&&(!((Item)I).amDestroyed())
 						&&((!(I.owner() instanceof MOB))||(((MOB)I.owner()).isMonster()))
-						&&((I.ciType()!=ClanItem.CI_FLAG)||(R.isContent(I))))
+						&&((I.getClanItemType()!=ClanItem.ClanItemType.FLAG)||(R.isContent(I))))
 						{
 							data.append("<ACITEM>");
 							if(((Item)I).owner() instanceof Room)

@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class StdClanCard extends StdClanItem
 {
-	@Override public String ID(){ return "StdClanCard";}
+	@Override 
+	public String ID()
+	{
+		return "StdClanCard";
+	}
 
 	public StdClanCard()
 	{
@@ -47,7 +51,7 @@ public class StdClanCard extends StdClanItem
 		setDescription("");
 		secretIdentity="";
 		baseGoldValue=1;
-		setCIType(ClanItem.CI_ANTIPROPAGANDA);
+		setClanItemType(ClanItem.ClanItemType.ANTI_PROPAGANDA);
 		material=RawMaterial.RESOURCE_PAPER;
 		recoverPhyStats();
 	}
@@ -59,7 +63,7 @@ public class StdClanCard extends StdClanItem
 		&&(msg.tool() instanceof ClanItem)
 		&&(owner() instanceof MOB)
 		&&(((MOB)owner()).isMonster())
-		&&(((ClanItem)msg.tool()).ciType()==ClanItem.CI_PROPAGANDA)
+		&&(((ClanItem)msg.tool()).getClanItemType()==ClanItem.ClanItemType.PROPAGANDA)
 		&&(!((ClanItem)msg.tool()).clanID().equals(clanID()))
 		&&(CMLib.flags().isInTheGame((MOB)owner(),true))
 		&&(msg.source()!=owner())
