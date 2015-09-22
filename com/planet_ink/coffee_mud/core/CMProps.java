@@ -143,6 +143,7 @@ public class CMProps extends Properties
 		ITEMLOOTPOLICY,
 		AUCTIONRATES,
 		DEFAULTPROMPT,
+		PROMPTBEHAVIOR,
 		CHARCREATIONSCRIPTS,
 		CHARSETINPUT,
 		CHARSETOUTPUT,
@@ -1682,6 +1683,7 @@ public class CMProps extends Properties
 		setVar(Str.INVRESETRATE,getStr("INVRESETRATE"));
 		setVar(Str.AUCTIONRATES,getStr("AUCTIONRATES","0,10,0.1%,10%,5%,1,168"));
 		setUpLowVar(Str.DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
+		setVar(Str.PROMPTBEHAVIOR, getStr("PROMPTBEHAVIOR","NORMAL").toUpperCase());
 		for(final ListFile lfVar : ListFile.values())
 			sysLstFileLists[lfVar.ordinal()]=null;
 		setVar(Str.EMOTEFILTER,getStr("EMOTEFILTER"));

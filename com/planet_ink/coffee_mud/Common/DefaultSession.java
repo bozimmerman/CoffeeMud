@@ -87,6 +87,7 @@ public class DefaultSession implements Session
 	protected boolean   	 killFlag			 = false;
 	protected boolean   	 needPrompt			 = false;
 	protected boolean   	 afkFlag			 = false;
+	protected boolean		 sendExtraEOLN		 = false;
 	protected String		 afkMessage			 = null;
 	protected StringBuffer   input				 = new StringBuffer("");
 	protected StringBuffer   fakeInput			 = null;
@@ -95,21 +96,21 @@ public class DefaultSession implements Session
 	protected String[]  	 clookup			 = null;
 	protected String		 lastColorStr		 = "";
 	protected String		 lastStr			 = null;
-	protected int   		 spamStack			 = 0;
-	protected List  		 snoops				 = new Vector();
-	protected List<String>   prevMsgs			 = new Vector<String>();
-	protected StringBuffer   curPrevMsg			 = null;
-	protected boolean   	 lastWasCR			 = false;
-	protected boolean   	 lastWasLF			 = false;
-	protected boolean   	 suspendCommandLine	 = false;
+	protected int			 spamStack			 = 0;
+	protected List			 snoops				 = new Vector();
+	protected List<String>	 prevMsgs			 = new Vector<String>();
+	protected StringBuffer	 curPrevMsg			 = null;
+	protected boolean		 lastWasCR			 = false;
+	protected boolean		 lastWasLF			 = false;
+	protected boolean		 suspendCommandLine	 = false;
 	protected boolean[] 	 serverTelnetCodes	 = new boolean[256];
-	protected boolean[] 	 clientTelnetCodes	 = new boolean[256];
+	protected boolean[]		 clientTelnetCodes	 = new boolean[256];
 	protected String		 terminalType		 = "UNKNOWN";
-	protected int   		 terminalWidth		 = -1;
-	protected int   		 terminalHeight		 = -1;
-	protected long  		 writeStartTime		 = 0;
-	protected boolean   	 bNextByteIs255		 = false;
-	protected boolean   	 connectionComplete	 = false;
+	protected int			 terminalWidth		 = -1;
+	protected int			 terminalHeight		 = -1;
+	protected long			 writeStartTime		 = 0;
+	protected boolean		 bNextByteIs255		 = false;
+	protected boolean		 connectionComplete	 = false;
 	protected ReentrantLock  writeLock 			 = new ReentrantLock(true);
 	protected LoginSession	 loginSession 		 = null;
 	protected boolean[]		 loggingOutObj		 = new boolean[]{false};
@@ -132,9 +133,9 @@ public class DefaultSession implements Session
 	protected long			 lastIACIn		 	 = System.currentTimeMillis();
 	protected long			 promptLastShown	 = 0;
 	protected volatile long  lastWriteTime		 = System.currentTimeMillis();
-	protected boolean   	 debugStrInput		 = true;
-	protected boolean   	 debugBinOutput		 = false;
-	protected boolean   	 debugBinInput		 = false;
+	protected boolean		 debugStrInput		 = true;
+	protected boolean		 debugBinOutput		 = false;
+	protected boolean		 debugBinInput		 = false;
 	protected StringBuffer   debugBinInputBuf	 = new StringBuffer("");
 
 	protected volatile InputCallback inputCallback  = null;
@@ -151,6 +152,21 @@ public class DefaultSession implements Session
 	public DefaultSession()
 	{
 		threadGroupChar=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		final String promptBehavior = CMProps.getVar(CMProps.Str.PROMPTBEHAVIOR);
+		if(!promptBehavior.equals("NORMAL"))
+		{
+			if(promptBehavior.indexOf("GA")>=0)
+			{
+				if(!mightSupportTelnetMode(TELNET_GA))
+				{
+					telnetSupportSet.add(Integer.valueOf(TELNET_GA));
+				}
+			}
+			if(promptBehavior.indexOf("CRLF")>=0)
+			{
+				sendExtraEOLN = true;
+			}
+		}
 	}
 
 	@Override
@@ -212,6 +228,7 @@ public class DefaultSession implements Session
 			debugBinOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BINOUT);
 			debugBinInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BININ);
 			if(debugBinInput)
+			{
 				CMLib.threads().startTickDown(new Tickable()
 				{
 					@Override public String ID() { return "SessionTicker";}
@@ -229,7 +246,9 @@ public class DefaultSession implements Session
 							debugBinInputBuf.setLength(0);
 						}
 						return !killFlag;
-					} }, 0, 100, 1);
+					} 
+				}, 0, 100, 1);
+			}
 
 			sock[0].setSoTimeout(SOTIMEOUT);
 			rawout=new BufferedOutputStream(sock[0].getOutputStream());
@@ -1051,7 +1070,10 @@ public class DefaultSession implements Session
 	@Override
 	public void promptPrint(String msg)
 	{
-		print(msg);
+		if(sendExtraEOLN)
+			println(msg);
+		else
+			print(msg);
 		if((!getClientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) && (!killFlag) && mightSupportTelnetMode(TELNET_GA))
 		{
 			try 
@@ -1296,6 +1318,15 @@ public class DefaultSession implements Session
 					else
 					if(terminalType.toLowerCase().startsWith("mushclient")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 						negotiateTelnetMode(rawout,TELNET_MXP);
+					else
+					if(terminalType.toLowerCase().equals("simplemu"))
+					{
+						sendExtraEOLN = true;
+						if(!mightSupportTelnetMode(TELNET_GA))
+						{
+							telnetSupportSet.add(Integer.valueOf(TELNET_GA));
+						}
+					}
 				}
 				else
 				if (suboptionData[0] == 1) // Request for data.
@@ -1563,7 +1594,6 @@ public class DefaultSession implements Session
 							}
 							return false;
 						}
-
 					});
 				}
 			}
