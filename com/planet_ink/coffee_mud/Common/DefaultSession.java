@@ -1056,6 +1056,16 @@ public class DefaultSession implements Session
 	public void promptPrint(String msg)
 	{
 		print(msg);
+		if(promptSuffix.length>0)
+		{
+			try
+			{
+				rawBytesOut(rawout, promptSuffix);
+			}
+			catch (IOException e)
+			{
+			}
+		}
 		if((!getClientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) && (!killFlag) && mightSupportTelnetMode(TELNET_GA))
 		{
 			try 
