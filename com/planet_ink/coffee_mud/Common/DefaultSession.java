@@ -52,7 +52,6 @@ public class DefaultSession implements Session
 	protected static final int		SOTIMEOUT		= 300;
 	protected static final int		PINGTIMEOUT  	= 30000;
 	protected static final int		MSDPPINGINTERVAL= 1000;
-	protected static final byte[]	TELNETGABYTES	= {(byte)TELNET_IAC,(byte)TELNET_GA};
 	protected static final char[]	PINGCHARS		= {0};
 
 	protected final Set<Integer>		telnetSupportSet= new HashSet<Integer>();
@@ -87,7 +86,6 @@ public class DefaultSession implements Session
 	protected boolean   	 killFlag			 = false;
 	protected boolean   	 needPrompt			 = false;
 	protected boolean   	 afkFlag			 = false;
-	protected boolean		 sendExtraEOLN		 = false;
 	protected String		 afkMessage			 = null;
 	protected StringBuffer   input				 = new StringBuffer("");
 	protected StringBuffer   fakeInput			 = null;
@@ -115,6 +113,7 @@ public class DefaultSession implements Session
 	protected LoginSession	 loginSession 		 = null;
 	protected boolean[]		 loggingOutObj		 = new boolean[]{false};
 
+	protected byte[]		 promptSuffix		 = new byte[0];
 	protected ColorState	 currentColor		 = ColorLibrary.COLORSTATE_NORMAL;
 	protected ColorState	 lastColor			 = ColorLibrary.COLORSTATE_NORMAL;
 	protected long			 lastStart			 = System.currentTimeMillis();
@@ -152,21 +151,6 @@ public class DefaultSession implements Session
 	public DefaultSession()
 	{
 		threadGroupChar=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		final String promptBehavior = CMProps.getVar(CMProps.Str.PROMPTBEHAVIOR);
-		if(!promptBehavior.equals("NORMAL"))
-		{
-			if(promptBehavior.indexOf("GA")>=0)
-			{
-				if(!mightSupportTelnetMode(TELNET_GA))
-				{
-					telnetSupportSet.add(Integer.valueOf(TELNET_GA));
-				}
-			}
-			if(promptBehavior.indexOf("CRLF")>=0)
-			{
-				sendExtraEOLN = true;
-			}
-		}
 	}
 
 	@Override
@@ -221,6 +205,7 @@ public class DefaultSession implements Session
 	{
 		this.groupName=groupName;
 		sock[0]=s;
+		promptSuffix = CMProps.getPromptSuffix();
 		try
 		{
 			setStatus(SessionStatus.HANDSHAKE_OPEN);
@@ -1070,10 +1055,7 @@ public class DefaultSession implements Session
 	@Override
 	public void promptPrint(String msg)
 	{
-		if(sendExtraEOLN)
-			println(msg);
-		else
-			print(msg);
+		print(msg);
 		if((!getClientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) && (!killFlag) && mightSupportTelnetMode(TELNET_GA))
 		{
 			try 
@@ -1321,10 +1303,22 @@ public class DefaultSession implements Session
 					else
 					if(terminalType.toLowerCase().equals("simplemu"))
 					{
-						sendExtraEOLN = true;
-						if(!mightSupportTelnetMode(TELNET_GA))
+						if(CMParms.indexOf(this.promptSuffix, (byte)'\n')<0)
 						{
-							telnetSupportSet.add(Integer.valueOf(TELNET_GA));
+							promptSuffix = Arrays.copyOf(promptSuffix, promptSuffix.length+1);
+							promptSuffix[promptSuffix.length-1] = (byte)'\n';
+						}
+						if(CMParms.indexOf(this.promptSuffix, (byte)'\r')<0)
+						{
+							promptSuffix = Arrays.copyOf(promptSuffix, promptSuffix.length+1);
+							promptSuffix[promptSuffix.length-1] = (byte)'\r';
+						}
+						if((!this.mightSupportTelnetMode(Session.TELNET_GA))
+						&&(CMParms.indexOf(this.promptSuffix, Session.TELNETGABYTES)<0))
+						{
+							final int pos = promptSuffix.length;
+							promptSuffix = Arrays.copyOf(promptSuffix, promptSuffix.length + Session.TELNETGABYTES.length);
+							System.arraycopy(Session.TELNETGABYTES, 0, promptSuffix, pos, Session.TELNETGABYTES.length);
 						}
 					}
 				}

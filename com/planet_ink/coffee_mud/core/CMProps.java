@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core;
 
+import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 /*
    Copyright 2005-2015 Bo Zimmerman
@@ -143,7 +145,6 @@ public class CMProps extends Properties
 		ITEMLOOTPOLICY,
 		AUCTIONRATES,
 		DEFAULTPROMPT,
-		PROMPTBEHAVIOR,
 		CHARCREATIONSCRIPTS,
 		CHARSETINPUT,
 		CHARSETOUTPUT,
@@ -406,8 +407,9 @@ public class CMProps extends Properties
 	protected final List<String>emoteFilter			= new Vector<String>();
 	protected final List<String>poseFilter			= new Vector<String>();
 	protected String[][]		statCodeExtensions 	= null;
-	protected int   			pkillLevelDiff		= 26;
-	protected boolean   		loaded				= false;
+	protected int				pkillLevelDiff		= 26;
+	protected boolean			loaded				= false;
+	protected byte[]			promptSuffix		= new byte[0];
 	protected long				lastReset			= System.currentTimeMillis();
 	protected long  			TIME_TICK			= 4000;
 	protected long  			MILLIS_PER_MUDHOUR	= 600000;
@@ -1683,7 +1685,47 @@ public class CMProps extends Properties
 		setVar(Str.INVRESETRATE,getStr("INVRESETRATE"));
 		setVar(Str.AUCTIONRATES,getStr("AUCTIONRATES","0,10,0.1%,10%,5%,1,168"));
 		setUpLowVar(Str.DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
-		setVar(Str.PROMPTBEHAVIOR, getStr("PROMPTBEHAVIOR","NORMAL").toUpperCase());
+		String promptBehavior = getStr("PROMPTBEHAVIOR","NORMAL");
+		promptSuffix = new byte[0];
+		if(!promptBehavior.equalsIgnoreCase("NORMAL") && promptBehavior.length()>0)
+		{
+			for(int i=0;i<promptBehavior.length()-1;i+=2)
+			{
+				final String cStr = promptBehavior.substring(i,i+2);
+				if(cStr.equalsIgnoreCase("CR"))
+				{
+					promptSuffix = Arrays.copyOf(promptSuffix, promptSuffix.length+1);
+					promptSuffix[promptSuffix.length-1] = (byte)'\n';
+				}
+				else
+				if(cStr.equalsIgnoreCase("LF"))
+				{
+					promptSuffix = Arrays.copyOf(promptSuffix, promptSuffix.length+1);
+					promptSuffix[promptSuffix.length-1] = (byte)'\r';
+				}
+				else
+				if(cStr.equalsIgnoreCase("GA"))
+				{
+					final int pos = promptSuffix.length;
+					promptSuffix = Arrays.copyOf(promptSuffix, promptSuffix.length + Session.TELNETGABYTES.length);
+					System.arraycopy(Session.TELNETGABYTES, 0, promptSuffix, pos, Session.TELNETGABYTES.length);
+				}
+				else
+				{
+					final int pos = promptSuffix.length;
+					byte[] bytes;
+					try
+					{
+						bytes = cStr.trim().getBytes(getVar(Str.CHARSETINPUT));
+						promptSuffix = Arrays.copyOf(promptSuffix, promptSuffix.length + bytes.length);
+						System.arraycopy(bytes, 0, promptSuffix, pos, bytes.length);
+					}
+					catch (UnsupportedEncodingException e)
+					{
+					}
+				}
+			}
+		}
 		for(final ListFile lfVar : ListFile.values())
 			sysLstFileLists[lfVar.ordinal()]=null;
 		setVar(Str.EMOTEFILTER,getStr("EMOTEFILTER"));
@@ -1933,6 +1975,16 @@ public class CMProps extends Properties
 		this.lastReset=System.currentTimeMillis();
 	}
 
+	/**
+	 * Returns the array of bytes that must be sent after every prompt.
+	 * Defined, in part, by PROMPTBEHAVIOR in coffeemud.ini file
+	 * @return the array of bytes that must be sent after every prompt.
+	 */
+	public static byte[] getPromptSuffix()
+	{
+		return p().promptSuffix;
+	}
+	
 	/**
 	 * Returns the last time the properties for the callers thread group has
 	 * been loaded.

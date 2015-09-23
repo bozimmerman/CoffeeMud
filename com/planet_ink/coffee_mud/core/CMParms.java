@@ -2591,14 +2591,16 @@ public class CMParms
 		if(str==null) 
 			return -1;
 		for(int i=0;i<stringList.length;i++)
+		{
 			if(stringList[i].equalsIgnoreCase(str))
 				return i;
+		}
 		return -1;
 	}
 
 	/**
 	 * Returns the index of the given number in the given array.
-	 * @param theList the string array
+	 * @param theList the int array
 	 * @param x the number to search for
 	 * @return the index of the number in the list, or -1 if not found
 	 */
@@ -2607,8 +2609,68 @@ public class CMParms
 		if(theList==null) 
 			return -1;
 		for(int i=0;i<theList.length;i++)
+		{
 			if(theList[i]==x)
 				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the index of the given byte in the given array.
+	 * @param theList the byte array
+	 * @param x the byte to search for
+	 * @return the index of the byte in the list, or -1 if not found
+	 */
+	public final static int indexOf(final byte[] theList, final byte x)
+	{
+		if(theList==null) 
+			return -1;
+		for(int i=0;i<theList.length;i++)
+		{
+			if(theList[i]==x)
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns whether given bytes in the given array at the given index
+	 * are the same as the bytes in the other given array
+	 * @param x the first byte array
+	 * @param i the starting index in the first byte array
+	 * @param y the bytes to compare to
+	 * @return true if there was a match, false otherwise
+	 */
+	public final static boolean equals(final byte[] x, int i, final byte[] y)
+	{
+		if((x==null)||(y==null)) 
+			return false;
+		for(int j=0;i<x.length && j<y.length;i++,j++)
+		{
+			if(x[i]!=y[j])
+				return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns the index of the given bytes in the given array.
+	 * @param theList the byte array
+	 * @param x the bytes to search for
+	 * @return the index of the bytes in the list, or -1 if not found
+	 */
+	public final static int indexOf(final byte[] theList, final byte[] x)
+	{
+		if(theList==null) 
+			return -1;
+		if(x.length==0)
+			return 0;
+		for(int i=0;i<theList.length;i++)
+		{
+			if(equals(theList,i,x))
+				return i;
+		}
 		return -1;
 	}
 

@@ -997,9 +997,11 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public final static String MSDP_CHARSET = "US-ASCII";
 
 	/** How to start a GMCP subnegotiation */
-	public final static byte[] TELNETBYTES_GMCP_HEAD=new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SB,(byte)Session.TELNET_GMCP};
+	public final static byte[] TELNETBYTES_GMCP_HEAD= new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SB,(byte)Session.TELNET_GMCP};
 	/** How to end a telnet subnegotiation */
-	public final static byte[] TELNETBYTES_END_SB=new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SE};
+	public final static byte[] TELNETBYTES_END_SB	= new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SE};
+	/** Go ahead bytes */
+	public final static byte[] TELNETGABYTES		= {(byte)TELNET_IAC,(byte)TELNET_GA};
 
 	/**
 	 * The internal class to managing asynchronous user input.
