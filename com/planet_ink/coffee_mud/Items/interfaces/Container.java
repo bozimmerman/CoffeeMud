@@ -125,23 +125,39 @@ public interface Container extends Item, CloseableLockable
 	 * @see Container#containTypes()
 	 */
 	public static final int CONTAIN_ANYTHING=0;
-	
+	/** Container Type flag that means the container can hold liquids */
 	public static final int CONTAIN_LIQUID=1;
+	/** Container Type flag that means the container can hold coins */
 	public static final int CONTAIN_COINS=2;
+	/** Container Type flag that means the container can hold swords */
 	public static final int CONTAIN_SWORDS=4;
+	/** Container Type flag that means the container can hold daggers */
 	public static final int CONTAIN_DAGGERS=8;
+	/** Container Type flag that means the container can hold other weapons */
 	public static final int CONTAIN_OTHERWEAPONS=16;
+	/** Container Type flag that means the container can hold one handed weapons */
 	public static final int CONTAIN_ONEHANDWEAPONS=32;
+	/** Container Type flag that means the container can hold corpses */
 	public static final int CONTAIN_BODIES=64;
+	/** Container Type flag that means the container can hold books and such */
 	public static final int CONTAIN_READABLES=128;
+	/** Container Type flag that means the container can hold scrolls */
 	public static final int CONTAIN_SCROLLS=256;
+	/** Container Type flag that means the container can hold caged animals */
 	public static final int CONTAIN_CAGED=512;
+	/** Container Type flag that means the container can hold keys */
 	public static final int CONTAIN_KEYS=1024;
+	/** Container Type flag that means the container can hold drinkables */
 	public static final int CONTAIN_DRINKABLES=2048;
+	/** Container Type flag that means the container can hold clothing */
 	public static final int CONTAIN_CLOTHES=4096;
+	/** Container Type flag that means the container can hold smokeables */
 	public static final int CONTAIN_SMOKEABLES=8192;
+	/** Container Type flag that means the container can hold space ship components */
 	public static final int CONTAIN_SSCOMPONENTS=16384;
+	/** Container Type flag that means the container can hold shoes */
 	public static final int CONTAIN_FOOTWEAR=32768;
+	/** Container Type flag that means the container can hold raw resources */
 	public static final int CONTAIN_RAWMATERIALS=65536;
 	
 	
