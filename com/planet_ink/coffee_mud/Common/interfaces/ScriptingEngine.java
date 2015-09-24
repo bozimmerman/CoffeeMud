@@ -112,8 +112,9 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 
 	/**
 	 * Creates a mob from the Tickable object sent, possibly saving it
-	 * locally to this object for use later.
-	 * @param ticking
+	 * locally to this object for use later.  If the object is a mob,
+	 * it returns the mob.  Otherwise, it makes a fake one.
+	 * @param ticking the scripted object to make a fake mob out of
 	 * @return a mob from a tickable
 	 */
 	public MOB getMakeMOB(Tickable ticking);
@@ -123,6 +124,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * it as the first element in the given 2 dimensional string array.
 	 * @param evaluable the eval expression
 	 * @return EVAL the 1 dimensional array to hold the compiled eval
+	 * @throws ScriptParseException a parse error
 	 */
 	public String[] parseEval(String evaluable) throws ScriptParseException;
 
@@ -664,22 +666,22 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	/** a list of the different parts of a time clock */
 	public final static String[] DATETIME_ARGS={"HOUR","TIME","DAY","DATE","MONTH","YEAR"};
 
-	/** List of evaluation signs ==, !=, >, etc.*/
+	/** List of evaluation signs ==, !=, &gt;, etc.*/
 	public final static String[] SIGNS={"==",">=",">","<","<=","=>","=<","!="};
 
 	/** Index and equate for == */
 	public final static int SIGN_EQUL=0;
-	/** Index and equate for >= */
+	/** Index and equate for &gt;= */
 	public final static int SIGN_GTEQ=1;
-	/** Index and equate for > */
+	/** Index and equate for &gt; */
 	public final static int SIGN_GRAT=2;
-	/** Index and equate for < */
+	/** Index and equate for &lt; */
 	public final static int SIGN_LEST=3;
-	/** Index and equate for <= */
+	/** Index and equate for &lt;= */
 	public final static int SIGN_LTEQ=4;
-	/** Index and equate for => */
+	/** Index and equate for =&gt; */
 	public final static int SIGN_EQGT=5;
-	/** Index and equate for =< */
+	/** Index and equate for =&lt; */
 	public final static int SIGN_EQLT=6;
 	/** Index and equate for != */
 	public final static int SIGN_NTEQ=7;

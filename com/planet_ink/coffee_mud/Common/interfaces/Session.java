@@ -585,6 +585,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * string only if the user happens to have hit enter.
 	 * @return a string entered by the user
 	 * @throws IOException exceptions thrown, typically a timeout
+	 * @throws SocketException exceptions thrown, typically socket error
 	 */
 	public String readlineContinue()
 		throws IOException, SocketException;
@@ -1202,12 +1203,14 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 * this method is called again before more input.
 		 */
 		public abstract void showPrompt();
+
 		/**
 		 * This method is call by InputCallback if a timeout
-		 * value > 0 is given and that amount of time has
+		 * value greater than 0 is given and that amount of time has
 		 * been exceeded.
 		 */
 		public abstract void timedOut();
+
 		/**
 		 * This method is called if the user hits ENTER, and
 		 * their input data is valid (one of the choices for

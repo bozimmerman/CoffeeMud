@@ -686,7 +686,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(newName.length()>0)
 			I.setMobName(newName);
 		else mob.tell(L("(no change)"));
-		mob.tell(L("Dead MOB Description: '@x1'.",I.geteMobDescription()));
+		mob.tell(L("Dead MOB Description: '@x1'.",I.getMobDescription()));
 		newName=mob.session().prompt(L("Enter a new description\n\r:"),"");
 		if(newName.length()>0)
 			I.setMobDescription(newName);

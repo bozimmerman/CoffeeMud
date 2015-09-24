@@ -437,7 +437,6 @@ public class StdContainer extends StdItem implements Container
 	@Override
 	public boolean canContain(Item I)
 	{
-		if (!(I instanceof Item)) return false;
 		if(containType==0)
 			return true;
 		for(int i=0;i<Container.CONTAIN_DESCS.length;i++)
@@ -445,7 +444,7 @@ public class StdContainer extends StdItem implements Container
 				switch((int)CMath.pow(2,i))
 				{
 				case CONTAIN_LIQUID:
-					if((((Item)I).material()&RawMaterial.MATERIAL_LIQUID)>0)
+					if((I.material()&RawMaterial.MATERIAL_LIQUID)>0)
 						return true;
 					break;
 				case CONTAIN_COINS:
@@ -467,7 +466,7 @@ public class StdContainer extends StdItem implements Container
 						return true;
 					break;
 				case CONTAIN_DRINKABLES:
-					if((I instanceof Drink)&&(I instanceof Item))
+					if(I instanceof Drink)
 						return true;
 					break;
 				case CONTAIN_CLOTHES:
@@ -503,20 +502,16 @@ public class StdContainer extends StdItem implements Container
 						return true;
 					break;
 				case CONTAIN_SMOKEABLES:
-					if(I instanceof Item)
-					{
-						if((((Item)I).material()==RawMaterial.RESOURCE_PIPEWEED)
-						||(((Item)I).material()==RawMaterial.RESOURCE_HERBS))
-							return true;
-					}
+					if((I.material()==RawMaterial.RESOURCE_PIPEWEED)
+					||(I.material()==RawMaterial.RESOURCE_HERBS))
+						return true;
 					break;
 				case CONTAIN_CAGED:
 					if(I instanceof CagedAnimal)
 						return true;
 					break;
 				case CONTAIN_READABLES:
-					if((I instanceof Item)
-					&&(((Item)I).isReadable()))
+					if(I.isReadable())
 						return true;
 					break;
 				case CONTAIN_SCROLLS:

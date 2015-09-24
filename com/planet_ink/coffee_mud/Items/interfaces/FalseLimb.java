@@ -30,11 +30,25 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A False, or Fake Limb is an item that re-provides a wear location,
+ * and the personal functionality that goes with that limb, to 
+ * someone who is missing that limb due to amputation.  These include
+ * things like peg legs.
+ * @author BZ
+ *
+ */
 public interface FalseLimb extends Armor
 {
-	public int partNum();
-	public void setPartNum(int partNum);
+	/**
+	 * Gets the racial body part code that corresponds with the
+	 * part of the body that this false limb replaces.
+	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race#BODYPARTSTR
+	 * @return the racial body part code
+	 */
+	public int getBodyPartCode();
+	public void setBodyPartCode(int partNum);
 
-	public long wearPlace();
-	public void setWearPlace(long wearPlace);
+	public long getWearLocations();
+	public void setWearLocations(long wearPlace);
 }

@@ -72,7 +72,7 @@ public class DBConnections
 	 * Initialize this class.  Must be called at first,
 	 * and after any killConnections() calls.
 	 *
-	 * <br><br><b>Usage:</b> Initialize("ODBCSERVICE","USER","PASSWORD",10);
+	 * Usage: Initialize("ODBCSERVICE","USER","PASSWORD",10);
 	 * @param NEWDBClass	the odbc service
 	 * @param NEWDBService    the odbc service
 	 * @param NEWDBUser    the odbc user login
@@ -100,7 +100,7 @@ public class DBConnections
 	}
 
 	/**
-	 * <br><br><b>Usage: update("UPDATE...");</b>
+	 * Usage: update("UPDATE...");
 	 * @param updateStrings    the update SQL commands
 	 * @return int    the responseCode, or -1
 	 */
@@ -153,7 +153,7 @@ public class DBConnections
 	}
 
 	/**
-	 * <br><br><b>Usage: updateWithClobs("UPDATE...");</b>
+	 * Usage: updateWithClobs("UPDATE...");
 	 * @param entries    the update SQL commands
 	 * @return int    the responseCode, or -1
 	 */
@@ -216,7 +216,7 @@ public class DBConnections
 	}
 
 	/**
-	 * <br><br><b>Usage: updateWithClobs("UPDATE...");</b>
+	 * Usage: updateWithClobs("UPDATE...");
 	 * @param updateStrings    the update SQL commands
 	 * @param values	the update SQL command values
 	 * @return int    the responseCode, or -1
@@ -230,7 +230,7 @@ public class DBConnections
 	}
 
 	/**
-	 * <br><br><b>Usage: updateWithClobs("UPDATE...");</b>
+	 * Usage: updateWithClobs("UPDATE...");
 	 * @param updateString    the update SQL commands
 	 * @param values	the update SQL values
 	 * @return int    the responseCode, or -1
@@ -243,7 +243,7 @@ public class DBConnections
 	/**
 	 * Return the number of connections made.
 	 *
-	 * <br><br><b>Usage: n=numConnectionsMade();</b>
+	 * Usage: n=numConnectionsMade();
 	 * @return numConnectionsMade    The number of connections
 	 */
 	public int numConnectionsMade()
@@ -272,6 +272,8 @@ public class DBConnections
 	/**
 	 * Pings all connections not currently in use.
 	 * @param querySql the query to use as a ping
+	 * @param usageTimeoutMillis the idle time to use to decide which connections to ping.
+	 * @return the number of connections actually pinged
 	 */
 	public int pingAllConnections(final String querySql, final long usageTimeoutMillis)
 	{
@@ -307,7 +309,7 @@ public class DBConnections
 	 * You can then call DBConnection.query and DBConnection.update on this object.
 	 * The user must ALWAYS call DBDone when done with the object.
 	 *
-	 * <br><br><b>Usage: DB=DBFetch();</b>
+	 * Usage: DB=DBFetch();
 	 * @return DBConnection    The DBConnection to use
 	 */
 	public DBConnection DBFetch()
@@ -320,7 +322,7 @@ public class DBConnections
 	 * You can then call DBConnection.query and DBConnection.update on this object.
 	 * The user must ALWAYS call DBDone when done with the object.
 	 *
-	 * <br><br><b>Usage: DB=DBFetchPrepared();</b>
+	 * Usage: DB=DBFetchPrepared();
 	 * @param SQL    The prepared statement SQL
 	 * @param type    the type of fetching to do
 	 * @return DBConnection    The DBConnection to use
@@ -502,7 +504,7 @@ public class DBConnections
 	/**
 	 * Return a DBConnection object fetched with DBFetch()
 	 *
-	 * <br><br><b>Usage:</b>
+	 * Usage:
 	 * @param D    The Database connection to return to the pool
 	 */
 	public void DBDone(DBConnection D)
@@ -520,7 +522,7 @@ public class DBConnections
 	 * the given Field NAME, returning the value.  The value
 	 * will be trim()ed, and will not be NULL.
 	 *
-	 * <br><br><b>Usage:</b> str=getRes(R,"FIELD");
+	 * Usage: str=getRes(R,"FIELD");
 	 * @param Results    The ResultSet object to use
 	 * @param Field 	   Field name to return
 	 * @return String    The value of the field being returned
@@ -546,7 +548,7 @@ public class DBConnections
 	 * the given Field NAME, returning the value.  The value
 	 * will be trim()ed, and will not be NULL.
 	 *
-	 * <br><br><b>Usage:</b> str=getLongRes(R,"FIELD");
+	 * Usage: str=getLongRes(R,"FIELD");
 	 * @param Results    The ResultSet object to use
 	 * @param Field 	   Field name to return
 	 * @return String    The value of the field being returned
@@ -577,7 +579,7 @@ public class DBConnections
 	 * the given One index number, returning the value.  The value
 	 * will be trim()ed, and will not be NULL.
 	 *
-	 * <br><br><b>Usage:</b> str=getRes(R,1);
+	 * Usage: str=getRes(R,1);
 	 * @param Results    The ResultSet object to use
 	 * @param One   	 Field number to return
 	 * @return String    The value of the field being returned
@@ -638,7 +640,7 @@ public class DBConnections
 	 * Destroy all database connections, effectively
 	 * shutting down this class.
 	 *
-	 * <br><br><b>Usage:</b> killConnections();
+	 * Usage: killConnections();
 	 */
 	public void killConnections()
 	{
@@ -662,7 +664,7 @@ public class DBConnections
 
 	/**
 	 * Return the happiness level of the connections
-	 * <br><br><b>Usage:</b> amIOk()
+	 * Usage: amIOk()
 	 * @return boolean    true if ok, false if not ok
 	 */
 	public boolean amIOk()
@@ -673,7 +675,7 @@ public class DBConnections
 	/**
 	 * Queue up a failed write/update for later processing.
 	 *
-	 * <br><br><b>Usage:</b> enQueueError("UPDATE SQL","error string");
+	 * Usage: enQueueError("UPDATE SQL","error string");
 	 * @param SQLString    UPDATE style SQL statement
 	 * @param SQLError    The error message being reported
 	 * @param tries    The number of tries to redo it so far
@@ -712,7 +714,7 @@ public class DBConnections
 	/**
 	 * Queue up a failed write/update for later processing.
 	 *
-	 * <br><br><b>Usage:</b> RetryQueuedErrors();
+	 * Usage: RetryQueuedErrors();
 	 */
 	public void retryQueuedErrors()
 	{
@@ -842,7 +844,7 @@ public class DBConnections
 
 	/**
 	 *
-	 * <br><br><b>Usage: update("UPDATE...");</b>
+	 * Usage: update("UPDATE...");
 	 * @param queryString    the update SQL command
 	 * @return int    the responseCode, or -1
 	 */
@@ -888,7 +890,7 @@ public class DBConnections
 
 	/** list the connections
 	 *
-	 * <br><br><b>Usage:</b> listConnections(out);
+	 * Usage: listConnections(out);
 	 * @param out    place to send the list out to
 	 */
 	public void listConnections(PrintStream out)
@@ -939,7 +941,7 @@ public class DBConnections
 
 	/** return a status string, or "" if everything is ok.
 	 *
-	 * <br><br><b>Usage:</b> errorStatus();
+	 * Usage: errorStatus();
 	 * @return StringBuffer    complete error status
 	 */
 	public StringBuffer errorStatus()

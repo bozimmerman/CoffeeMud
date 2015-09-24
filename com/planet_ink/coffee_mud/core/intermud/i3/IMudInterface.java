@@ -61,7 +61,7 @@ public class IMudInterface implements ImudServices, Serializable
 		/*
 		 * Conversion Format Below:
 		 *
-		 * { "<MUD TRANSLATION>", "PINKFISH", "ANSI TRANSLATION" }
+		 * { "&lt;MUD TRANSLATION&gt;", "PINKFISH", "ANSI TRANSLATION" }
 		 *
 		 * Foreground Standard Colors
 		 */
@@ -671,9 +671,9 @@ public class IMudInterface implements ImudServices, Serializable
 	 * Given a I3 channel name, this method should provide
 	 * the local name for that channel.
 	 * Example:
-	 * <PRE>
+	 * 
 	 * if( str.equals("imud_code") ) return "intercre";
-	 * </PRE>
+	 *
 	 * @param str the remote name of the desired channel
 	 * @return the local channel name for a remote channel
 	 * @see #getRemoteChannel
@@ -691,9 +691,9 @@ public class IMudInterface implements ImudServices, Serializable
 	 * Given a local channel name, this method should provide
 	 * the local mask for that channel.
 	 * Example:
-	 * <PRE>
+	 * 
 	 * if( str.equals("ICODE") ) return "";
-	 * </PRE>
+	 *
 	 * @param str the local name of the desired channel
 	 * @return the local channel mask for a remote channel
 	 * @see #getLocalMask
@@ -747,9 +747,9 @@ public class IMudInterface implements ImudServices, Serializable
 	 * Given a remote channel name, returns the mask
 	 * required.
 	 * Example:
-	 * <PRE>
+	 * 
 	 * if( str.equals("intercre") ) return "";
-	 * </PRE>
+	 *
 	 * @param str the remote name of the desired channel
 	 * @return the remote mask of the specified local channel
 	 */
@@ -766,9 +766,9 @@ public class IMudInterface implements ImudServices, Serializable
 	 * Given a local channel name, returns the remote
 	 * channel name.
 	 * Example:
-	 * <PRE>
+	 * 
 	 * if( str.equals("intercre") ) return "imud_code";
-	 * </PRE>
+	 *
 	 * @param str the local name of the desired channel
 	 * @return the remote name of the specified local channel
 	 */

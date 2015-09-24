@@ -250,7 +250,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.COMMON);}//removed for mem & perf
 
-	/**
+	/*
 	 * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
 	 */
 	protected String[] parseBits(DVector script, int row, String instructions)
@@ -281,7 +281,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return tt;
 	}
 
-	/**
+	/*
 	 * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
 	 */
 	protected String[] parseBits(String line, String instructions)
@@ -355,7 +355,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return newLine;
 	}
 
-	/**
+	/*
 	 * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
 	 */
 	protected String[] parseBits(String[][] oldBits, int start, String instructions)
@@ -2444,13 +2444,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	 * If the combiner is '&', the first index of the given stringbuffer in the string list is returned (or -1).  
 	 * If the combiner is '|', the previous index is returned if it was found, otherwise the first index 
 	 * of the given stringbuffer in the string list is returned (or -1).
-	 * If the combiner is '>', then the previous index is returned if it was not found (-1), otherwise the
+	 * If the combiner is '&gt;', then the previous index is returned if it was not found (-1), otherwise the
 	 * next highest found stringbuffer since the last string list search is returned, or (-1) if no more found.
-	 * If the combiner is '<', then the previous index is returned if it was not found (-1), otherwise the
+	 * If the combiner is '&lt;', then the previous index is returned if it was not found (-1), otherwise the
 	 * first found stringbuffer index is returned if it is lower than the previously found index.
 	 * Other combiners return -1.
 	 * @param V the string list to search
-	 * @param combiner the combiner, either &,|,<,or >.
+	 * @param combiner the combiner, either &,|,&lt;,or &gt;.
 	 * @param buf the stringbuffer to search for, which is always cleared
 	 * @param lastIndex the previously found index
 	 * @return the result of the search

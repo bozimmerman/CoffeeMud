@@ -48,7 +48,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * check if an object is destructed before using it in
  * code and it will remove references to destructed objects.
  * For example:
- * <PRE>
+ * 
  * MudObject some_object;
  *
  * public void doSomething()
@@ -60,10 +60,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  *   }
  *   some_object.getSomethingDoneTo();
  * }
- * </PRE>
+ *
  * For people used to LPC, the above code would be roughly
  * the same as doing:
- * <PRE>
+ * 
  * object some_object;
  *
  * void do_something()
@@ -72,10 +72,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  {
  *     return;
  *   }
- *   some_object->get_something_done_to();
+ *   some_object-&gt;get_something_done_to();
  * }
- * </PRE>
- * Created: 27 September 1996<BR>
+ *
+ * Created: 27 September 1996
  * Last modified: 27 September 1996
  * @author George Reese
  * @version 1.0
@@ -121,7 +121,7 @@ public interface ServerObject {
 	  * object id which the object should be keeping track of.
 	  * Make sure that this can only get set once.  The proper
 	  * code for this method probably should be something like:
-	  * <PRE>
+	  * 
 	  * public final void setObjectId(String id)
 	  {
 	  *   if( object_id != null )
@@ -130,7 +130,7 @@ public interface ServerObject {
 	  *   }
 	  *   object_id = id;
 	  * }
-	  * </PRE>
+	  *
 	  * @param id the unique value to which the id is being set
 	  * @see #getObjectId
 	  */

@@ -278,6 +278,7 @@ public class CMSecurity
 	 * set of security flags/group names as a string list.  
 	 * @param name the new security group name
 	 * @param set the string list of flags/group names
+	 * @return the new security group object
 	 */
 	public final SecGroup createGroup(String name, final List<String> set)
 	{
@@ -1210,6 +1211,7 @@ public class CMSecurity
 	/**
 	 * Adds the given disable flag, activating it
 	 * @param flag the DisFlag to add.
+	 * @return true if the flag was changed, false if it was already set
 	 */
 	public static final boolean setDisableVar(final DisFlag flag)
 	{
@@ -1224,6 +1226,7 @@ public class CMSecurity
 	/**
 	 * Removes the given disable flag, deactivating it
 	 * @param flag the DisFlag to remove.
+	 * @return true if the flag was removed, false if it was not set
 	 */
 	public static final boolean removeDisableVar(final DisFlag flag)
 	{
@@ -1461,7 +1464,7 @@ public class CMSecurity
 	 * Adds the given player name, account name, or ip address to the official ::/resources/banned.ini file
 	 * It also adds it to the cached ban list.
 	 * @param banMe the player name, account name, or ip address to add
-	 * @return -1 if the new entry was added, and an index >=0 if it was already on the list beforehand
+	 * @return -1 if the new entry was added, and an index &gt;=0 if it was already on the list beforehand
 	 */
 	public static final int ban(final String banMe)
 	{

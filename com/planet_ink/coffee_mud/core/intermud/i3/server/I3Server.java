@@ -43,22 +43,23 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author George Reese
  * @version 1.0
  */
-public class I3Server {
+public class I3Server 
+{
 	static private ServerThread serverClient = null;
 	static private boolean started = false;
 
 	/**
 	 * Creates a server thread if one has not yet been
 	 * created.
-	 * @exception DatabaseException thrown if the database is unreachable
-	 * for some reason
-	 * @exception ServerSecurityException thrown if an attempt to call start()
+	 * @throws ServerSecurityException thrown if an attempt to call start()
 	 * is made once the server is running.
 	 * @param mud the name of the mud being started
+	 * @param port the port of the server
+	 * @param imud a library for interaction with base system
 	 */
 	static public void start(String mud,
 							 int port,
-							 ImudServices imud)
+							 ImudServices imud) throws ServerSecurityException
 	{
 		try
 		{
@@ -80,13 +81,20 @@ public class I3Server {
 
 	/**
 	 * Returns a distinct copy of the class identified.
-	 * @exception ObjectLoadException thrown when a problem occurs loading the object
+	 * @throws ObjectLoadException thrown when a problem occurs loading the object
 	 * @param file the name of the class being loaded
+	 * @return a distinct copy of the class identified
 	 */
 	static public ServerObject copyObject(String file) throws ObjectLoadException {
 		return serverClient.copyObject(file);
 	}
 
+	/**
+	 * Returns original of the class identified.
+	 * @throws ObjectLoadException thrown when a problem occurs loading the object
+	 * @param file the name of the class being loaded
+	 * @return original of the class identified
+	 */
 	static public ServerObject findObject(String file) throws ObjectLoadException {
 		return serverClient.findObject(file);
 	}

@@ -108,7 +108,7 @@ public interface AccountStats extends CMCommon
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#setPassword(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#getPasswordStr()
-	 *
+	 * @param str the password to compare reality to
 	 * @return the players password.
 	 */
 	public boolean matchesPassword(String str);
@@ -213,6 +213,7 @@ public interface AccountStats extends CMCommon
 	 * @see PrideStat
 	 * @param period the time period to get the number for
 	 * @param stat which pride stat to get
+	 * @return the pride stat value/count/whatever
 	 */
 	public int getPrideStat(TimeClock.TimePeriod period, PrideStat stat);
 

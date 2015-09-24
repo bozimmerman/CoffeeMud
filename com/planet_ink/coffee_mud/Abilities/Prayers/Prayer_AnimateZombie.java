@@ -74,7 +74,7 @@ public class Prayer_AnimateZombie extends Prayer
 		String race="a";
 		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
 			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
-		String description=body.geteMobDescription();
+		String description=body.getMobDescription();
 		if(description.trim().length()==0)
 			description="It looks dead.";
 		else

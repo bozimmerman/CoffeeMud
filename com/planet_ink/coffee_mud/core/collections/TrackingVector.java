@@ -28,7 +28,7 @@ import java.util.*;
  * 
  * @author Bo Zimmerman
  * 
- * @param <T>
+ * @param <T> the type, or something?
  */
 public class TrackingVector<T> extends Vector<T>
 {

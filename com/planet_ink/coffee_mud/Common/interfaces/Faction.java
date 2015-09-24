@@ -245,7 +245,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * changes from killing another faction holder affect his own faction value.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#EXPAFFECT_NAMES
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#EXPAFFECT_DESCS
-	 * @return the string code for xp changes->faction changes
+	 * @return the string code for xp changes to faction changes
 	 */
 	public String experienceFlag();
 
@@ -254,7 +254,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * changes from killing another faction holder affect his own faction value.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#EXPAFFECT_NAMES
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#EXPAFFECT_DESCS
-	 * @param newStr the new string code for xp changes->faction changes
+	 * @param newStr the new string code for xp changes to faction changes
 	 */
 	public void setExperienceFlag(String newStr);
 
@@ -752,6 +752,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * added to mobs in the presence of one with this faction.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String, String, String, String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delReaction(Faction.FReactionItem)
+	 * @param rangeCode the range code to filter by
 	 * @return an enumeration of Faction.FactionReaction items
 	 */
 	public Enumeration<Faction.FReactionItem> reactions(String rangeCode);
@@ -1053,7 +1054,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * the amount of this faction changed by this event, in accordance with the given direction.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#direction()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#factor()
-		 * @param newVal
+		 * @param newVal the new faction change factor amount
 		 */
 		public void setFactor(double newVal);
 
@@ -1103,6 +1104,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/**
 		 * Returns the named trigger parameters defined
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setTriggerParameters(String)
+		 * @param parmName the name of the trigger parm to look for
 		 * @return the specific named trigger parameter
 		 */
 		public String getTriggerParm(String parmName);
@@ -1308,6 +1310,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.core.interfaces.Tickable
 		 * @param ticking the ticking object
 		 * @param tickID the id code of the tick being done
+		 * @return true to keep ticking, false to stop ticking
 		 */
 		public boolean tick(Tickable ticking, int tickID);
 

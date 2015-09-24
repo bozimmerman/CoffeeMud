@@ -218,7 +218,7 @@ public class Resources
 	/**
 	 * Checks the resources for the current calling thread group for a file resource
 	 * of the given name.
-	 * @param filename the resource filename to check for (/resources/<filename>)
+	 * @param filename the resource filename to check for (/resources/[FILENAME])
 	 * @return true if the file exists as a current resource, and false otherwise
 	 */
 	public static final boolean isFileResource(final String filename)
@@ -229,7 +229,7 @@ public class Resources
 	/**
 	 * Returns the stringbuffer content for the given resource filename, from
 	 * the resources for the current calling thread group.
-	 * @param filename the resource filename (/resources/<filename>)
+	 * @param filename the resource filename (/resources/[FILENAME])
 	 * @param reportErrors if true, file errors will be logged
 	 * @return the StringBuffer of the file at that resource filename, or null of not found
 	 */
@@ -242,7 +242,7 @@ public class Resources
 	 * Saves the given stringbuffer of data to the given resource filename, to 
 	 * the filesystem on behalf of the given user/player, without touching the cache.
 	 * Returns false if the user was not permitted to save files at that location.
-	 * @param filename the resource filename to save to (/resources/<filename>)
+	 * @param filename the resource filename to save to (/resources/[FILENAME])
 	 * @param whom the mob whose permissions to check, or null to always save
 	 * @param myRsc the string data to store in the file
 	 * @return true if the file was saved, or false if there were permission or other problems
@@ -257,7 +257,7 @@ public class Resources
 	 * the filesystem while also updating the internal cache for the resources 
 	 * of the calling threads thread group.
 	 * Returns false if there was a filesystem error.
-	 * @param filename the resource filename to save to (/resources/<filename>)
+	 * @param filename the resource filename to save to (/resources/[FILENAME])
 	 * @param obj the string data to store in the file, stringbuffer, byte array, etc
 	 * @return true if the file was saved, or false if there were problems
 	 */
@@ -268,7 +268,7 @@ public class Resources
 	
 	/**
 	 * Opens the given CMFile as a properties type file, ignoring comment lines, and looking
-	 * for a property entry that matches <match>=<whatever>, removing it if found, and if found,
+	 * for a property entry that matches [match]=[whatever], removing it if found, and if found,
 	 * re-saving the file.
 	 * @param F the properties file to potentially modify
 	 * @param match the property file entry to remove
@@ -698,7 +698,7 @@ public class Resources
 
 	/**
 	 * Returns the stringbuffer content for the given resource filename.
-	 * @param filename the resource filename (/resources/<filename>)
+	 * @param filename the resource filename (/resources/[FILENAME])
 	 * @param reportErrors if true, file errors will be logged
 	 * @return the StringBuffer of the file at that resource filename, or null of not found
 	 */
@@ -717,7 +717,7 @@ public class Resources
 	 * Saves the given stringbuffer of data to the given resource filename, to 
 	 * the filesystem while also updating the internal cache for the resources.
 	 * Returns false if there was a filesystem error.
-	 * @param filename the resource filename to save to (/resources/<filename>)
+	 * @param filename the resource filename to save to (/resources/[FILENAME])
 	 * @param obj the string data to store in the file, stringbuffer, byte array, etc
 	 * @return true if the file was saved, or false if there were problems
 	 */
@@ -732,7 +732,7 @@ public class Resources
 	 * Saves the given stringbuffer of data to the given resource filename, to 
 	 * the filesystem on behalf of the given user/player, without touching the cache.
 	 * Returns false if the user was not permitted to save files at that location.
-	 * @param filename the resource filename to save to (/resources/<filename>)
+	 * @param filename the resource filename to save to (/resources/[FILENAME])
 	 * @param whoM the mob whose permissions to check, or null to always save
 	 * @param myRsc the string data to store in the file
 	 * @return true if the file was saved, or false if there were permission or other problems
@@ -750,7 +750,7 @@ public class Resources
 
 	/**
 	 * Opens the given CMFile as a properties type file, ignoring comment lines, and looking
-	 * for a property entry that matches <match>=<whatever>, removing it if found, and if found,
+	 * for a property entry that matches [match]=[whatever], removing it if found, and if found,
 	 * re-saving the file.
 	 * @param F the properties file to potentially modify
 	 * @param match the property file entry to remove

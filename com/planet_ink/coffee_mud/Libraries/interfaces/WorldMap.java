@@ -38,9 +38,9 @@ public interface WorldMap extends CMLibrary
 {
 	public final static long ROOM_EXPIRATION_MILLIS=2500000;
 
-	/************************************************************************/
-	/**							 AREAS										*/
-	/************************************************************************/
+	/* ***********************************************************************/
+	/* *							 AREAS										*/
+	/* ***********************************************************************/
 	public int numAreas();
 	public void addArea(Area newOne);
 	public void delArea(Area oneToDel);
@@ -56,9 +56,9 @@ public interface WorldMap extends CMLibrary
 	public void obliterateArea(Area theOne);
 	public void renamedArea(Area theA);
 
-	/************************************************************************/
-	/**							 ROOMS										*/
-	/************************************************************************/
+	/* ***********************************************************************/
+	/* *							 ROOMS										*/
+	/* ***********************************************************************/
 	public int numRooms();
 	public Enumeration<String> roomIDs();
 	public String getExtendedRoomID(final Room R);
@@ -77,9 +77,9 @@ public interface WorldMap extends CMLibrary
 	public Area getTargetArea(Room from, Exit to);
 	public Room getTargetRoom(Room from, Exit to);
 
-	/************************************************************************/
-	/**								SEARCH TOOLS 							*/
-	/************************************************************************/
+	/* ***********************************************************************/
+	/* *								SEARCH TOOLS 							*/
+	/* ***********************************************************************/
 	public List<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, long maxMillis);
 	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, long maxMillis);
 	public List<Room> findAreaRoomsLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
@@ -99,9 +99,9 @@ public interface WorldMap extends CMLibrary
 	public boolean isHere(CMObject E2, Area here);
 	public boolean isHere(CMObject E2, Room here);
 
-	/************************************************************************/
-	/**							 ROOM-AREA-UTILITIES						*/
-	/************************************************************************/
+	/* ***********************************************************************/
+	/* *							 ROOM-AREA-UTILITIES						*/
+	/* ***********************************************************************/
 	public void resetArea(Area area);
 	public void resetRoom(Room room);
 	public void resetRoom(Room room, boolean rebuildGrids);
@@ -118,9 +118,9 @@ public interface WorldMap extends CMLibrary
 	public boolean explored(Room R);
 	public CMFile.CMVFSDir getMapRoot(final CMFile.CMVFSDir root);
 
-	/************************************************************************/
-	/**						WORLD OBJECT INDEXES							*/
-	/************************************************************************/
+	/* ***********************************************************************/
+	/* *						WORLD OBJECT INDEXES							*/
+	/* ***********************************************************************/
 	public void registerWorldObjectLoaded(Area area, Room room, CMObject o);
 	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o);
 	public Enumeration<LocatedPair> scriptHosts(Area area);
@@ -137,9 +137,9 @@ public interface WorldMap extends CMLibrary
 	public Enumeration<BoardableShip> ships();
 	public Room getSafeRoomToMovePropertyTo(Room room, PrivateProperty I);
 
-	/************************************************************************/
-	/**							 SPACE METHODS 								*/
-	/************************************************************************/
+	/* ***********************************************************************/
+	/* *							 SPACE METHODS 								*/
+	/* ***********************************************************************/
 	public Enumeration<Area> areasPlusShips();
 	public long getRelativeSpeed(SpaceObject O1, SpaceObject O2);
 	public int numSpaceObjects();
@@ -160,9 +160,9 @@ public interface WorldMap extends CMLibrary
 	public List<SpaceObject> getSpaceObjectsWithin(final long[] centerCoordinates, long minDistance, long maxDistance);
 	public SpaceObject findSpaceObject(String s, boolean exactOnly);
 
-	/************************************************************************/
-	/**							 MESSAGES	 								*/
-	/************************************************************************/
+	/* ***********************************************************************/
+	/* *							 MESSAGES	 								*/
+	/* ***********************************************************************/
 	public void addGlobalHandler(MsgListener E, int category);
 	public void delGlobalHandler(MsgListener E, int category);
 	public MOB deity();
@@ -170,9 +170,9 @@ public interface WorldMap extends CMLibrary
 	public MOB getFactoryMOB(Room R);
 	public boolean sendGlobalMessage(MOB host, int category, CMMsg msg);
 
-	/************************************************************************/
-	/**							 HELPER CLASSES								*/
-	/************************************************************************/
+	/* ***********************************************************************/
+	/* *							 HELPER CLASSES								*/
+	/* ***********************************************************************/
 	public static class LocatedPair
 	{
 		private final WeakReference<Room> roomW;

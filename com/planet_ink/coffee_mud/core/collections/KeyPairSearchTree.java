@@ -37,8 +37,8 @@ public class KeyPairSearchTree<V>
 	
 	/**
 	 * Store a new key/value pair
-	 * @param key 
-	 * @param value
+	 * @param key the key to add
+	 * @param value the value of the key
 	 */
 	public void addEntry(String key, V value)
 	{

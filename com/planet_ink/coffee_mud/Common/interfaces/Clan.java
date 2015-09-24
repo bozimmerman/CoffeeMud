@@ -227,12 +227,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 
 	/**
 	 * Sets this Clan's basic story.
+	 * @param newPremise the new premise text
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getPremise()
 	 */
 	public void setPremise(String newPremise);
 
 	/**
 	 * Sets this Clan's enforced character class.
+	 * @param newClass the new enforced character class
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getClanClass()
 	 */
 	public void setClanClass(String newClass);
@@ -442,6 +444,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * on the tax rate.  Will automatically adjust the exp of
 	 * the clan and save it.
 	 * @param exp the old experience
+	 * @return the exp adjusted by the clan, if at all.
 	 */
 	public int applyExpMods(int exp);
 
@@ -577,7 +580,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * Will filter by the given POS_* constant.
 	 * @see Clan
 	 * @see MemberRecord
-	 * @param PosFilter
+	 * @param PosFilter the position filter
 	 * @return the membership
 	 */
 	public List<MemberRecord> getMemberList(int PosFilter);

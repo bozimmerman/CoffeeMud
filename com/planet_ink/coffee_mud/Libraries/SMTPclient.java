@@ -100,8 +100,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	 *   Create a SMTP object pointing to the specified host
 	 *   @param SMTPServerInfo the host to connect to.
 	 *   @param port the port to connect to.
-	 *   @exception UnknownHostException
-	 *   @exception IOException
+	 *   @throws UnknownHostException the host was unknown
+	 *   @throws IOException a socket error
 	 */
 	public SMTPclient( String SMTPServerInfo, int port) throws UnknownHostException,IOException
 	{
@@ -347,7 +347,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	/**
 	* Send a message
 	*
-	* <br><br><b>Usage:</b>  Mailer.sendmsg(S, From, To, Subject, Message);
+	* Usage:  Mailer.sendmsg(S, From, To, Subject, Message);
 	* @param froaddress  Address sending from
 	* @param reply_address Address reply to
 	* @param to_address Address sending to
@@ -497,14 +497,16 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
 	/**
 	* return members of a list on an email server.
-	* 250-First Last <emailaddress>\r
+	* 250-First Last [emailaddress]\r
 	*
-	* <br><br><b>Usage:</b>  List=Mailer.getListMembers(List);
+	* Usage:  List=Mailer.getListMembers(List);
 	* @param list member list
 	* @return String List of members
+	* @throws IOException a socket error
+	* @throws ProtocolException an internal error
 	*/
-	public synchronized String getListMembers( String list)
-						 throws IOException, ProtocolException {
+	public synchronized String getListMembers( String list) throws IOException, ProtocolException 
+	{
 
 		String sendString;
 
@@ -548,7 +550,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	/**
 	* close this socket
 	*
-	* <br><br><b>Usage:</b>  this.close();
+	* Usage:  this.close();
 	*/
 	public void close()
 	{
@@ -568,10 +570,11 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	/**
 	* close this socket
 	*
-	* <br><br><b>Usage:</b>  finalize();
+	* Usage:  finalize();
 	*/
 	@Override
-	protected void finalize() throws Throwable {
+	protected void finalize() throws Throwable 
+	{
 		this.close();
 		super.finalize();
 	}

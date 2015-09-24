@@ -41,7 +41,7 @@ public interface ClanItem extends Item
 	 * The type of clan item this is.  Used mostly for cross-identification between
 	 * items without resorting to class name analysis.
 	 * 
-	 * @see ClanItem#getClanItemType();
+	 * @see ClanItem#getClanItemType()
 	 * @see ClanItem#setClanItemType(ClanItemType)
 	 * @author Bo Zimmerman
 	 */
@@ -117,7 +117,7 @@ public interface ClanItem extends Item
 	/**
 	 * Sets the specific clan that this item serves.
 	 * @see ClanItem#clanID()
-	 * @param IDs the specific clan that this item serves.
+	 * @param ID the specific clan that this item serves.
 	 */
 	public void setClanID(String ID);
 

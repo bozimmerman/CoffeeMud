@@ -146,6 +146,9 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * Converts this race to a generic race (if it isn't already)
 	 * and mixes its attributes with the race passed it.  A new
 	 * race ID and a new race name must also be provided.
+	 * @param race the race to use as a baseline
+	 * @param newRaceID the id of the new race
+	 * @param newRaceName the name of the new race
 	 * @return the generic race.
 	 */
 	public Race mixRace(Race race, String newRaceID, String newRaceName);
@@ -163,6 +166,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * consulting the mobs curState().getHitPoints method.
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#curState()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharState#getHitPoints()
+	 * @param viewer the mob observing the health of this one
 	 * @param mob the mob whose health to check
 	 * @return a string describing his health
 	 */

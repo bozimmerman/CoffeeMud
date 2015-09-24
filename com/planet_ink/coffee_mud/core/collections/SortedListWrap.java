@@ -9,7 +9,7 @@ import java.util.ListIterator;
  * List wrapper for an existing List that turns it into a sorted one.
  * @author Bo Zimmerman
  *
- * @param <T>
+ * @param <T> the type?
  */
 public class SortedListWrap<T extends Comparable<T>> implements List<T>
 {

@@ -262,6 +262,8 @@ public interface CoffeeShop extends CMCommon
 
 	/**
 	 * Returns whether the whatIsSold code applies to the shopkeeper hosting this shop.
+	 * @see ShopKeeper#DEAL_DESCS
+	 * @param code the whatIsSold code
 	 * @return whether the whatIsSold code applies to the shopkeeper hosting this shop.
 	 */
 	public boolean isSold(int code);

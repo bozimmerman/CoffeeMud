@@ -90,7 +90,7 @@ public interface CagedAnimal extends Item
 	 * Sets the flag bitmap describing how this item behaves.
 	 * @see CagedAnimal#CAGEFLAG_TO_MOB_PROGRAMMATICALLY
 	 * @see CagedAnimal#getCageFlagsBitmap()
-	 * @return  the flag bitmap describing how this item behaves.
+	 * @param bitmap the flag bitmap describing how this item behaves.
 	 */
 	public void setCageFlagsBitmap(int bitmap);
 }

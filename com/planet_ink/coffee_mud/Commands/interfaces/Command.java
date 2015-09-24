@@ -46,6 +46,7 @@ public interface Command extends CMObject
 	 * @return the set of command words that the user enters
 	 */
 	public String[] getAccessWords();
+
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this command. A value of 0.0 means perform
@@ -58,6 +59,7 @@ public interface Command extends CMObject
 	 * @return the number of player free actions required to do this
 	 */
 	public double actionsCost(final MOB mob, final List<String> cmds);
+
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this command. A value of 0.0 means perform
@@ -70,6 +72,7 @@ public interface Command extends CMObject
 	 * @return the number of player free actions required to do this
 	 */
 	public double combatActionsCost(final MOB mob, final List<String> cmds);
+
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this command. A value of 0.0 means perform
@@ -82,18 +85,21 @@ public interface Command extends CMObject
 	 * @return the number of player free actions required to do this
 	 */
 	public double checkedActionsCost(final MOB mob, final List<String> cmds);
+
 	/**
 	 * Whether the a group leader or charmer can order their followers
 	 * to do this command.
 	 * @return whether this command can be ordered.
 	 */
 	public boolean canBeOrdered();
+
 	/**
 	 * Whether this command is available to the given player
 	 * @param mob the player mob who might not even know about this command
 	 * @return true if the command is available, and false if it is unknown
 	 */
 	public boolean securityCheck(MOB mob);
+
 	/**
 	 * This method actually performs the command, when the given parsed
 	 * set of command-line words.  The commands list is almost always the
@@ -112,6 +118,7 @@ public interface Command extends CMObject
 	 */
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException;
+
 	/**
 	 * This method is only called when the mob invoking this command
 	 * does not have enough actions to complete it immediately.  The
@@ -125,6 +132,7 @@ public interface Command extends CMObject
 	 * @param secondsElapsed 0 at first, and increments every second
 	 * @param actionsRemaining number of free actions the player is defficient.
 	 * @return whether the command should be allowed to go forward. false cancels altogether.
+	 * @throws java.io.IOException usually means the player has dropped carrier
 	 */
 	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 		throws java.io.IOException;

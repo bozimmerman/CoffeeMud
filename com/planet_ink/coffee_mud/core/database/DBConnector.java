@@ -151,7 +151,7 @@ public class DBConnector
 	 * You can then call DBConnection.query and DBConnection.update on this object.
 	 * The user must ALWAYS call DBDone when done with the object.
 	 *
-	 * <br><br><b>Usage: DB=DBFetch();</b>
+	 * Usage: DB=DBFetch();
 	 * @return DBConnection    The DBConnection to use
 	 */
 	public DBConnection DBFetch(){return (dbConnections!=null)?dbConnections.DBFetch():null;}
@@ -162,7 +162,7 @@ public class DBConnector
 	 * You can then call DBConnection.query and DBConnection.update on this object.
 	 * The user must ALWAYS call DBDone when done with the object.
 	 *
-	 * <br><br><b>Usage: DB=DBFetchEmpty();</b>
+	 * Usage: DB=DBFetchEmpty();
 	 * @return DBConnection    The DBConnection to use
 	 */
 	public DBConnection DBFetchEmpty(){return (dbConnections!=null)?dbConnections.DBFetchEmpty():null;}
@@ -175,7 +175,7 @@ public class DBConnector
 	 * You can then call DBConnection.query and DBConnection.update on this object.
 	 * The user must ALWAYS call DBDone when done with the object.
 	 *
-	 * <br><br><b>Usage: DB=DBFetchPrepared();</b>
+	 * Usage: DB=DBFetchPrepared();
 	 * @param SQL    The prepared statement SQL
 	 * @return DBConnection    The DBConnection to use
 	 */
@@ -183,7 +183,7 @@ public class DBConnector
 	/**
 	 * Return a DBConnection object fetched with DBFetch()
 	 *
-	 * <br><br><b>Usage:</b>
+	 * Usage:
 	 * @param D    The Database connection to return to the pool
 	 */
 	public void DBDone(DBConnection D){ if(dbConnections!=null) dbConnections.DBDone(D);}
@@ -193,7 +193,7 @@ public class DBConnector
 	 * the given Field NAME, returning the value.  The value
 	 * will be trim()ed, and will not be NULL.
 	 *
-	 * <br><br><b>Usage:</b> str=getLongRes(R,"FIELD");
+	 * Usage: str=getLongRes(R,"FIELD");
 	 * @param Results    The ResultSet object to use
 	 * @param Field 	   Field name to return
 	 * @return String    The value of the field being returned
@@ -216,7 +216,7 @@ public class DBConnector
 	 * the given Field NAME, returning the value.  The value
 	 * will be trim()ed, and will not be NULL.
 	 *
-	 * <br><br><b>Usage:</b> str=getLongRes(R,"FIELD");
+	 * Usage: str=getLongRes(R,"FIELD");
 	 * @param Results    The ResultSet object to use
 	 * @param Field 	   Field name to return
 	 * @return String    The value of the field being returned
@@ -229,7 +229,7 @@ public class DBConnector
 	 * the given One index number, returning the value.  The value
 	 * will be trim()ed, and will not be NULL.
 	 *
-	 * <br><br><b>Usage:</b> str=getRes(R,1);
+	 * Usage: str=getRes(R,1);
 	 * @param Results    The ResultSet object to use
 	 * @param One   	 Field number to return
 	 * @return String    The value of the field being returned
@@ -241,13 +241,13 @@ public class DBConnector
 	 * Destroy all database connections, effectively
 	 * shutting down this class.
 	 *
-	 * <br><br><b>Usage:</b> killConnections();
+	 * Usage: killConnections();
 	 */
 	public void killConnections(){ if(dbConnections!=null) dbConnections.killConnections();}
 
 	/**
 	 * Return the happiness level of the connections
-	 * <br><br><b>Usage:</b> amIOk()
+	 * Usage: amIOk()
 	 * @return boolean    true if ok, false if not ok
 	 */
 	public boolean amIOk(){ return (dbConnections!=null)?dbConnections.amIOk():false;}
@@ -276,7 +276,7 @@ public class DBConnector
 	/**
 	 * Queue up a failed write/update for later processing.
 	 *
-	 * <br><br><b>Usage:</b> enQueueError("UPDATE SQL","error string");
+	 * Usage: enQueueError("UPDATE SQL","error string");
 	 * @param SQLString    UPDATE style SQL statement
 	 * @param SQLError    The error message being reported
 	 * @param count    The number of tries so far
@@ -288,14 +288,14 @@ public class DBConnector
 	/**
 	 * Queue up a failed write/update for later processing.
 	 *
-	 * <br><br><b>Usage:</b> RetryQueuedErrors();
+	 * Usage: RetryQueuedErrors();
 	 */
 	public void retryQueuedErrors()
 	{ if(dbConnections!=null)dbConnections.retryQueuedErrors();}
 
 	/** list the connections
 	 *
-	 * <br><br><b>Usage:</b> listConnections(out);
+	 * Usage: listConnections(out);
 	 * @param out    place to send the list out to
 	 */
 	public void listConnections(PrintStream out)
@@ -303,7 +303,7 @@ public class DBConnector
 
 	/** return a status string, or "" if everything is ok.
 	 *
-	 * <br><br><b>Usage:</b> errorStatus();
+	 * Usage: errorStatus();
 	 * @return StringBuffer    complete error status
 	 */
 	public StringBuffer errorStatus()

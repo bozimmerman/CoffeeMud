@@ -217,7 +217,7 @@ public interface ClanManager extends CMLibrary
 	 * Returns the Clan object associated with the given clan name, or
 	 * if the name is not found, the name that most closely matches it.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
-	 * @param id
+	 * @param id the clan name
 	 * @return the Clan object associated with the given clan name
 	 */
 	public Clan findClan(String id);
@@ -397,6 +397,7 @@ public interface ClanManager extends CMLibrary
 	 * Deletes the stock government.. confusing all the clans that
 	 * currently use it.
 	 * @param government the government to delete
+	 * @return true if it was there to remove, false otherwise
 	 */
 	public boolean removeGovernment(ClanGovernment government);
 

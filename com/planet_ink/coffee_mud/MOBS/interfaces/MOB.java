@@ -50,7 +50,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public String titledName();
 	public String genericName();
 
-	/** Some general statistics about MOBs.  See the
+	/* Some general statistics about MOBs.  See the
 	 * CharStats class (in interfaces) for more info. */
 	public PlayerStats playerStats();
 	public void setPlayerStats(PlayerStats newStats);
@@ -63,7 +63,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public int baseWeight();
 	public String healthText(MOB viewer);
 
-	/** Combat and death */
+	/* Combat and death */
 	public boolean amDead();
 	public DeadBody killMeDead(boolean createBody);
 	public boolean isInCombat();
@@ -81,7 +81,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public boolean mayIFight(MOB mob);
 	public boolean mayPhysicallyAttack(MOB mob);
 
-	/** Primary mob communication */
+	/* Primary mob communication */
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);
 	public void tell(String msg);
 	public void enqueCommand(List<String> commands, int metaFlags, double tickDelay);
@@ -93,7 +93,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public double actions();
 	public void setActions(double remain);
 
-	/** Whether a sessiob object is attached to this MOB */
+	/* Whether a sessiob object is attached to this MOB */
 	public Session session();
 	public void setSession(Session newSession);
 	public boolean isMonster();
@@ -158,7 +158,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public Room location();
 	public void setLocation(Room newRoom);
 
-	/** Manipulation of inventory, which includes held,
+	/* Manipulation of inventory, which includes held,
 	 * worn, wielded, and contained items */
 	public void flagVariableEq();
 	public Item fetchItem(Item goodLocation, Filterer<Environmental> filter, String itemName);
@@ -176,7 +176,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void addPriorityEffect(Ability to);
 	public Enumeration<Ability> personalEffects();
 
-	/** Manipulation of followers */
+	/* Manipulation of followers */
 	public void addFollower(MOB follower, int order);
 	public void delFollower(MOB follower);
 	public int numFollowers();
@@ -194,7 +194,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public int maxFollowers();
 	public int totalFollowers();
 
-	/** Extra functions on ability objects, which includes
+	/* Extra functions on ability objects, which includes
 	 * spells, traits, skills, etc.*/
 	public Ability findAbility(String name);
 	public int[][] getAbilityUsageCache(final String abilityID);
@@ -233,13 +233,13 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 */
 	public Enumeration<String> expertises();
 
-	/** Manipulation of the tatoo list */
+	/* Manipulation of the tatoo list */
 	public void addTattoo(Tattoo of);
 	public void delTattoo(Tattoo of);
 	public Enumeration<Tattoo> tattoos();
 	public Tattoo findTattoo(String of);
 
-	/** Manipulation of the factions list */
+	/* Manipulation of the factions list */
 	public void addFaction(String of, int start);
 	public void adjustFaction(String of, int amount);
 	public Enumeration<String> fetchFactions();

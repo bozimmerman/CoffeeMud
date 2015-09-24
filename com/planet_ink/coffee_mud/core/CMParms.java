@@ -956,15 +956,15 @@ public class CMParms
 	}
 
 	/**
-	 * This method is a sloppy, forgiving method doing KEY>=[VALUE] value searches in a string.
+	 * This method is a sloppy, forgiving method doing KEY&gt;=[VALUE] value searches in a string.
 	 * Searches and finds the numeric value of the given key when the parameter is formatted in the given text
-	 * in the format [KEY]=[VALUE] where = may be ==,=,!=,>,>=,<,or <=.  The key is case insensitive, 
+	 * in the format [KEY]=[VALUE] where = may be ==,=,!=,&gt;,&gt;=,&lt;,or &lt;=.  The key is case insensitive, 
 	 * and start-partial.  For example, a key of NAME will match NAMEY or NAME12.
 	 * It will then do the given comparison against the value passed in, populate the comparator found array
 	 * with the comparator found, and the method returns the result of the compare.
 	 * No assumptions are made about the given text.  It could have other garbage data of
 	 * any format around it.  For example, if BOB is the key, and the value is 3, then a text string like:
-	 * 'joe larry bibob=2 moe="uiuiui bob>7 lou", bob=5' will return a comparator of > and the compare result of false.
+	 * 'joe larry bibob=2 moe="uiuiui bob&gt;7 lou", bob=5' will return a comparator of &gt; and the compare result of false.
 	 * @param text the string to search
 	 * @param key the key to search for, case insensitive
 	 * @param value the value to compare the found value against

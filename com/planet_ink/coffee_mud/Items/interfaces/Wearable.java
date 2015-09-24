@@ -571,12 +571,14 @@ public interface Wearable extends Environmental
 		public long get(int x) { return allCodes[x];}
 		/**
 		 * Returns the index of the names locations, or -1
+		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
 		public static int FINDDEX_ignoreCase(String rsc) { return c().findDex_ignoreCase(rsc);}
 
 		/**
 		 * Returns the index of the names locations, or -1
+		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
 		public int findDex_ignoreCase(String rsc)
@@ -590,12 +592,14 @@ public interface Wearable extends Environmental
 		}
 		/**
 		 * Returns the index of the names locations, or -1
+		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
 		public static long FIND_ignoreCase(String rsc) { return c().find_ignoreCase(rsc);}
 
 		/**
 		 * Returns the index of the names locations, or -1
+		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
 		public long find_ignoreCase(String rsc)
@@ -609,12 +613,17 @@ public interface Wearable extends Environmental
 		}
 		/**
 		 * Returns the index of the names locations, or -1
+		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
-		public static int FINDDEX_endsWith(String rsc) { return c().findDex_endsWith(rsc);}
+		public static int FINDDEX_endsWith(String rsc) 
+		{ 
+			return c().findDex_endsWith(rsc);
+		}
 
 		/**
 		 * Returns the index of the names locations, or -1
+		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
 		public int findDex_endsWith(String rsc)
@@ -628,12 +637,14 @@ public interface Wearable extends Environmental
 		}
 		/**
 		 * Returns the index of the names locations, or -1
+		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
 		public static long FIND_endsWith(String rsc) { return c().find_endsWith(rsc);}
 
 		/**
 		 * Returns the index of the names locations, or -1
+		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
 		public long find_endsWith(String rsc)
@@ -648,14 +659,18 @@ public interface Wearable extends Environmental
 		/**
 		 * Returns a comma-delimited list of location names
 		 * represented by the given worn code.
-		 * @param wornCode
+		 * @param wornCode the worn code
 		 * @return the list of names
 		 */
-		public static String LISTED_CODES(long wornCode) { return c().listedCodes(wornCode);}
+		public static String LISTED_CODES(long wornCode) 
+		{ 
+			return c().listedCodes(wornCode);
+		}
+		
 		/**
 		 * Returns a comma-delimited list of location names
 		 * represented by the given worn code.
-		 * @param wornCode
+		 * @param wornCode the worn code
 		 * @return the list of names
 		 */
 		public String listedCodes(long wornCode)
@@ -674,6 +689,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns whether the code is valid
+		 * @param code the resource code
 		 * @return whether the code is valid
 		 */
 		public static boolean IS_VALID(int code)
@@ -741,7 +757,8 @@ public interface Wearable extends Environmental
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String name(long code) {
+		public String name(long code) 
+		{
 			final int x=CMParms.indexOf(allCodes, code);
 			if(x>=0)
 				return descs[x];
@@ -752,7 +769,8 @@ public interface Wearable extends Environmental
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String nameup(long code) {
+		public String nameup(long code) 
+		{
 			final int x=CMParms.indexOf(allCodes, code);
 			if(x>=0)
 				return updescs[x];

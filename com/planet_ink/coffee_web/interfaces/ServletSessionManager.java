@@ -18,7 +18,7 @@ limitations under the License.
 
 /**
  * Interface for session managers for the web server.  Maintains a cache
- * of sessionID->session object map, and includes a method for periodic
+ * of sessionID-&gt;session object map, and includes a method for periodic
  * timeout/cleanup which should be called from time to time for memory
  * purposes.
  * @author Bo Zimmerman

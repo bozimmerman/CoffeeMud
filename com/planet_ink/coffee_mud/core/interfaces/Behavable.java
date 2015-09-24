@@ -70,6 +70,7 @@ public interface Behavable
 	 * be the one with the same ID() string as passed in.
 	 * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
 	 * @see CMObject#ID()
+	 * @param ID the Behavior ID to look for
 	 * @return the behavior object
 	 */
 	public Behavior fetchBehavior(String ID);

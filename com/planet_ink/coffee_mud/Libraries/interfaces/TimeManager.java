@@ -38,7 +38,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Returns the numeric representation of the month
 	 *
-	 * <br><br><b>Usage:</b> month2MM("January");
+	 * Usage: month2MM("January");
 	 * @param monthName The month name
 	 * @return String The number of the month as a string
 	 */
@@ -46,7 +46,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Return the name of the month, given a number
 	 *
-	 * <br><br><b>Usage:</b> String Mnth=getMonthName(m,GiveShort).charStats();
+	 * Usage: String Mnth=getMonthName(m,GiveShort).charStats();
 	 * @param monthNum Month number to convert
 	 * @param giveShort Give abbreviation if true
 	 * @return String Month name
@@ -65,7 +65,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Converts a string of some form into a Calendar object.
 	 *
-	 * <br><br><b>Usage:</b> string2Millis(GetRes(Results,"StartDateTime"));
+	 * Usage: string2Millis(GetRes(Results,"StartDateTime"));
 	 * @param dateTimeStr The string to retrieve from
 	 * @return Calendar Calendar object
 	 */
@@ -74,7 +74,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Converts a string of some form into a Calendar object.
 	 *
-	 * <br><br><b>Usage:</b> Calendar.string2Date(GetRes(Results,"StartDateTime"));
+	 * Usage: Calendar.string2Date(GetRes(Results,"StartDateTime"));
 	 * @param dateTimeStr The string to retrieve from
 	 * @return Calendar Calendar object
 	 */
@@ -91,7 +91,7 @@ public interface TimeManager extends CMLibrary
 	 * Returns the regular Hours given the hours in the
 	 * international format (military time)
 	 *
-	 * <br><br><b>Usage:</b> ConvertHour(GetIn(req, "ENDHR"))
+	 * Usage: ConvertHour(GetIn(req, "ENDHR"))
 	 * @param hours24 Hours in military format
 	 * @return String Hours in regular format
 	 **/
@@ -100,7 +100,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Returns the AMPM stamp given the international Hours portion the Time
 	 *
-	 * <br><br><b>Usage:</b> getAMPM(GetIn(req, "ENDHR"))
+	 * Usage: getAMPM(GetIn(req, "ENDHR"))
 	 * @param TheHour Hours in military format
 	 * @return String AM or PM stamp
 	 **/
@@ -109,7 +109,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Get the zone id given the timezone string
 	 *
-	 * <br><br><b>Usage:</b> GetTheZoneID(MeetTZ.getRawOffset())+"\n";
+	 * Usage: GetTheZoneID(MeetTZ.getRawOffset())+"\n";
 	 * @param theRawOffset The time zone's raw offset to convert
 	 * @return String The time zone ID
 	 */
@@ -118,7 +118,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 *  Returns the time zone of the given ID
 	 *
-	 * <br><br><b>Usage:</b> MEETZN = GetTheTimeZone(ID);
+	 * Usage: MEETZN = GetTheTimeZone(ID);
 	 * @param theID The ID of the abbreviated time zone.
 	 * @return String The time zone name
 	 */
@@ -128,7 +128,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Returns the month for a given date
 	 *
-	 * <br><br><b>Usage:</b> String ENDMM=date2MonthString(time,true);
+	 * Usage: String ENDMM=date2MonthString(time,true);
 	 * @param time The time in miliseconds
 	 * @param shortName true to use shortened months
 	 * @return String The month name
@@ -139,7 +139,7 @@ public interface TimeManager extends CMLibrary
 	 * Returns time in HH:MMap format, unless the day is other
 	 * than today, in which case it prepends yy/m/d.
 	 *
-	 * <br><br><b>Usage:</b> String ENDMM=date2BriefString(time,true);
+	 * Usage: String ENDMM=date2BriefString(time,true);
 	 * @param time The time in miliseconds
 	 * @return String The date string
 	 **/
@@ -148,7 +148,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Returns the month/day for a given date
 	 *
-	 * <br><br><b>Usage:</b> String ENDMM=date2MonthDateString();
+	 * Usage: String ENDMM=date2MonthDateString();
 	 * @param time The time in miliseconds
 	 * @param shortName true to use shortened months
 	 * @return String the month/day name
@@ -165,7 +165,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Returns the DD portion of a given date
 	 *
-	 * <br><br><b>Usage:</b> String ENDDD=date2DayOfMonthString();
+	 * Usage: String ENDDD=date2DayOfMonthString();
 	 * @param time The time in miliseconds
 	 * @return String The day
 	 **/
@@ -175,7 +175,7 @@ public interface TimeManager extends CMLibrary
 	* Returns the YYYY portion of a given date
 	* Returns the DD portion of a given date
 	*
-	* <br><br><b>Usage:</b> String ENDYYYY=date2YYYYString();
+	* Usage: String ENDYYYY=date2YYYYString();
 	 * @param time The time in miliseconds
 	* @return String The year
 	**/
@@ -184,7 +184,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	* Returns the Hours portion of a given Time
 	*
-	* <br><br><b>Usage:</b> String ENDHR=date2HRString();
+	* Usage: String ENDHR=date2HRString();
 	* @param time time used
 	* @return String The hour
 	**/
@@ -194,7 +194,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	* Returns the Minutes portion of a given Time
 	*
-	* <br><br><b>Usage:</b> String ENDMIN=date2MINString();
+	* Usage: String ENDMIN=date2MINString();
 	* @param time The time in miliseconds
 	* @return String The minutes
 	**/
@@ -203,7 +203,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * format the date for an smtp message
 	 *
-	 * <br><br><b>Usage:</b>  smtpDateFormat(98374987234)
+	 * Usage:  smtpDateFormat(98374987234)
 	* @param time The time in miliseconds
 	* @return String The minutes
 	 */
@@ -212,7 +212,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 *  Returns the time zone of the server
 	 *
-	 * <br><br><b>Usage:</b> MEETZN = T2ZoneString();
+	 * Usage: MEETZN = T2ZoneString();
 	 * @param time The time in miliseconds
 	 * @return String The time zone
 	 */
@@ -220,7 +220,7 @@ public interface TimeManager extends CMLibrary
 	/**
 	 * Returns the Minutes portion of a given Time
 	 *
-	 * <br><br><b>Usage:</b> String ST_AMPM=date2AMPMString(time);
+	 * Usage: String ST_AMPM=date2AMPMString(time);
 	 * @param time The time in miliseconds
 	 * @return String AM or PM stamp
 	 **/
@@ -229,7 +229,7 @@ public interface TimeManager extends CMLibrary
 	 * Converts a given date into a string of form:
 	 * MM/DD/YYYY HH:MM AP
 	 *
-	 * <br><br><b>Usage:</b> date2String()
+	 * Usage: date2String()
 	 * @param C The time in calendar
 	 * @return String Formatted date/time
 	 */
@@ -238,7 +238,7 @@ public interface TimeManager extends CMLibrary
 	 * Converts a given date into a string of form:
 	 * MM/DD/YYYY HH:MM AP
 	 *
-	 * <br><br><b>Usage:</b> date2String(time)
+	 * Usage: date2String(time)
 	 * @param time The time in miliseconds
 	 * @return String Formatted date/time
 	 */
@@ -249,7 +249,7 @@ public interface TimeManager extends CMLibrary
 	 * hours, minutes, and seconds.  If in short form,
 	 * returns y, m, d, h, m, and s.
 	 *
-	 * <br><br><b>Usage:</b> date2EllapsedTime(time)
+	 * Usage: date2EllapsedTime(time)
 	 * @param time The time in miliseconds
 	 * @param minUnit The smallest unit to round down to
 	 * @param shortest true for short form, false otherwise
@@ -273,7 +273,7 @@ public interface TimeManager extends CMLibrary
 	 * will automatically determine the smallest reasonable
 	 * unit of time to show.
 	 *
-	 * <br><br><b>Usage:</b> date2SmartEllapsedTime(time)
+	 * Usage: date2SmartEllapsedTime(time)
 	 * @param time The time in miliseconds
 	 * @param shortest true for short form, false otherwise
 	 * @return String Formatted ellapsed time
@@ -284,7 +284,7 @@ public interface TimeManager extends CMLibrary
 	 * Converts a given date into a string of form:
 	 * MM/DD/YYYY HH:MM AP
 	 *
-	 * <br><br><b>Usage:</b> date2SecondsString(time)
+	 * Usage: date2SecondsString(time)
 	 * @param time The time in miliseconds
 	 * @return String Formatted date/time
 	 */
@@ -293,7 +293,7 @@ public interface TimeManager extends CMLibrary
 	 * Converts a given date into a string of form:
 	 * MM/DD/YYYY
 	 *
-	 * <br><br><b>Usage:</b> date2DateString(time)
+	 * Usage: date2DateString(time)
 	 * @param time The time in miliseconds
 	 * @return String Formatted date
 	 */
@@ -302,7 +302,7 @@ public interface TimeManager extends CMLibrary
 	 * Converts a given date into a string of form:
 	 * MM/DD/YY
 	 *
-	 * <br><br><b>Usage:</b> date2Date2String(time)
+	 * Usage: date2Date2String(time)
 	 * @param time The time in miliseconds
 	 * @return String Formatted date
 	 */

@@ -40,8 +40,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * must be defined by any user connection used with
  * the Imaginary JavaMud Server.  Specifically, it
  * requires that the user connection be able to handle
- * user input somehow.<BR>
- * Created: 27 September 1996<BR>
+ * user input somehow.
+ * Created: 27 September 1996
  * Last modified: 27 Septembet 1996
  * @author George Reese (borg@imaginary.com)
  * @version 1.0

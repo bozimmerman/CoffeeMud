@@ -104,7 +104,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public int partNum()
+	public int getBodyPartCode()
 	{
 		if(partnum>=0)
 			return partnum;
@@ -119,17 +119,17 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public void setPartNum(int partNumber)
+	public void setBodyPartCode(int partNumber)
 	{
 		partnum=partNumber;
 	}
 
 	@Override
-	public long wearPlace()
+	public long getWearLocations()
 	{
 		if(wearplace>=0)
 			return wearplace;
-		final int num=partNum();
+		final int num=getBodyPartCode();
 		if(num<0)
 			wearplace=0;
 		else
@@ -138,7 +138,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public void setWearPlace(long wearPlace)
+	public void setWearLocations(long wearPlace)
 	{
 		wearplace=wearPlace;
 	}
@@ -159,8 +159,8 @@ public class StdLimb extends StdItem implements FalseLimb
 		&&(!amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 		&&(!amWearingAt(Wearable.WORN_WIELD)))
 		{
-			if(affected.charStats().getBodyPart(partNum())<affected.charStats().getMyRace().bodyMask()[partNum()])
-				affectableStats.alterBodypart(partNum(),phyStats().ability());
+			if(affected.charStats().getBodyPart(getBodyPartCode())<affected.charStats().getMyRace().bodyMask()[getBodyPartCode()])
+				affectableStats.alterBodypart(getBodyPartCode(),phyStats().ability());
 			else
 				setRawWornCode(0);
 		}
@@ -173,20 +173,20 @@ public class StdLimb extends StdItem implements FalseLimb
 			return super.canWear(mob,where);
 		if(where==Wearable.WORN_FLOATING_NEARBY)
 			return false;
-		if(partNum()<0)
+		if(getBodyPartCode()<0)
 			return false;
-		if((where!=0)&&(where!=wearPlace()))
+		if((where!=0)&&(where!=getWearLocations()))
 			return false;
-		final int numRacialTotal=mob.charStats().getMyRace().bodyMask()[partNum()];
-		int numWorkingParts=mob.charStats().getBodyPart(partNum());
+		final int numRacialTotal=mob.charStats().getMyRace().bodyMask()[getBodyPartCode()];
+		int numWorkingParts=mob.charStats().getBodyPart(getBodyPartCode());
 		// now add in other NON-FUNCTIONAL limb things worn
 		// FUNCTIONAL limbs are already included in numWorkingParts
 		for(int i=0;i<mob.numItems();i++)
 		{
 			final Item I=mob.getItem(i);
 			if((I instanceof StdLimb)
-			&&(((StdLimb)I).partNum()==partNum())
-			&&(I.amWearingAt(wearPlace()))
+			&&(((StdLimb)I).getBodyPartCode()==getBodyPartCode())
+			&&(I.amWearingAt(getWearLocations()))
 			&&(I.container()==null))
 				numWorkingParts++;
 		}
@@ -204,12 +204,12 @@ public class StdLimb extends StdItem implements FalseLimb
 			return false;
 		if(wornCode<=0)
 			return true;
-		return wearPlace()==wornCode;
+		return getWearLocations()==wornCode;
 	}
 
 	protected boolean canWearComplete(MOB mob)
 	{
-		if(partNum()<0)
+		if(getBodyPartCode()<0)
 		{
 			mob.tell(L("This limb looks malformed."));
 			return false;

@@ -34,12 +34,14 @@ public interface AbilityContainer
 	 * @param to the Ability to add.
 	 */
 	public void addAbility(Ability to);
+
 	/**
 	 * Removes the exact given ability object from here.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @param to the exact Ability to remove
 	 */
 	public void delAbility(Ability to);
+
 	/**
 	 * Returns the number of abilities contained herein this object.
 	 * Any extraneous abilities bestowed from other sources will NOT
@@ -48,15 +50,17 @@ public interface AbilityContainer
 	 * @return the number of owned abilities
 	 */
 	public int numAbilities();
+
 	/**
 	 * Returns the Ability object at that index in this container.
 	 * Any extraneous abilities bestowed from other sources MAY
-	 * be returned, so long as index > numAbilities.
+	 * be returned, so long as index &gt; numAbilities.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @param index the index of the Ability object to return
 	 * @return the Ability object
 	 */
 	public Ability fetchAbility(int index);
+
 	/**
 	 * If contained herein, this will return the ability from this
 	 * container of the given ID.
@@ -67,6 +71,7 @@ public interface AbilityContainer
 	 * @return the Ability object
 	 */
 	public Ability fetchAbility(String ID);
+
 	/**
 	 * Returns a random ability from this container.
 	 * Any extraneous abilities bestowed from other sources MAY
@@ -75,6 +80,7 @@ public interface AbilityContainer
 	 * @return a random Ability
 	 */
 	public Ability fetchRandomAbility();
+
 	/**
 	 * Returns an enumerator of the Ability objects in this container.
 	 * Any extraneous abilities bestowed from other sources will NOT
@@ -82,18 +88,22 @@ public interface AbilityContainer
 	 * @return An enumerator for abilities
 	 */
 	public Enumeration<Ability> abilities();
+
 	/**
 	 * Removes all owned abilities from this container.
 	 * Any extraneous abilities bestowed from other sources will NOT
 	 * be removed.
 	 */
 	public void delAllAbilities();
+
 	/**
 	 * Returns the number of all abilities in this container.
 	 * Any extraneous abilities bestowed from other sources WILL
 	 * be counted by this.
+	 * @return the number of all abilities in this container
 	 */
 	public int numAllAbilities();
+
 	/**
 	 * Returns an enumerator of the Ability objects in this container.
 	 * Any extraneous abilities bestowed from other sources WILL ALSO

@@ -183,6 +183,8 @@ public interface Rideable extends PhysicalAgent
 	 * they are mounting this Rideable
 	 * @see Rider
 	 * @see Rideable
+	 * @see Rideable#RIDEABLE_DESCS
+	 * @param commandType one of the RIDEABLE_ constants as a type
 	 * @param R The rider object to make grammatically correct.
 	 * @return a string describing the riders state of mounting this Rideable
 	 */

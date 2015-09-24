@@ -157,6 +157,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#script()
 	 * @param parm the actual quest script
 	 * @param showErrors true to report file errors, false otherwise
+	 * @return true
 	 */
 	public boolean setScript(String parm, boolean showErrors);
 
@@ -247,12 +248,14 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param truefalse true if this quest object is a spawned copy
 	 */
 	public void setCopy(boolean truefalse);
+
 	/**
 	 * Returns whether this quest object is a spawned copy
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setCopy(boolean)
 	 * @return whether this quest object is a spawned copy
 	 */
 	public boolean isCopy();
+
 	/**
 	 * Sets the flag denoting whether this quest spawns new ones
 	 * from its several steps and if so, by what method.
@@ -264,6 +267,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param spawnFlag the quest spawn flag info
 	 */
 	public void setSpawn(int spawnFlag);
+
 	/**
 	 * Returns the flag denoting whether this quest spawns new ones
 	 * from its several steps and if so, by what method.
@@ -275,6 +279,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the quest spawn flag info
 	 */
 	public int getSpawn();
+
 	/**
 	 * Quest scripts can have files of various sorts embedded
 	 * in them.  This method will return the text of any such
@@ -287,6 +292,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the text of the file, if found.
 	 */
 	public StringBuffer getResourceFileData(String named, boolean showErrors);
+
 	/**
 	 * Returns the index of a room, mob, or item of the given name
 	 * in use by this quest.
@@ -295,6 +301,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the index of a room, mob, or item of the given name
 	 */
 	public int getObjectInUseIndex(String name);
+
 	/**
 	 * Returns whether the exact given object is in use by this quest.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getObjectInUseIndex(String)
@@ -302,6 +309,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return true if its in use, false otherwise
 	 */
 	public boolean isObjectInUse(Environmental E);
+
 	/**
 	 * From the given official quest variable name, it derives
 	 * either an object or a vector of objects that reflect it.
@@ -310,6 +318,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return a string, mob, item, room, vector, etc..
 	 */
 	public Object getDesignatedObject(String named);
+
 	/**
 	 * Returns the index of a mob of the given name in use by this quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestMobName(int)
@@ -318,6 +327,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the index of a mob of the given name in use by this quest
 	 */
 	public int getQuestMobIndex(String name);
+
 	/**
 	 * Returns the mob in use by this quest at the given index
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestMobName(int)
@@ -326,6 +336,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the mob in use by this quest at the given index
 	 */
 	public MOB getQuestMob(int i);
+
 	/**
 	 * Returns the name of the mob in use by this quest at the given index
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestMob(int)
@@ -334,6 +345,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the name of the mob in use by this quest at the given index
 	 */
 	public String getQuestMobName(int i);
+
 	/**
 	 * Returns the index of a item of the given name in use by this quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestItem(int)
@@ -342,6 +354,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the index of a item of the given name in use by this quest
 	 */
 	public int getQuestItemIndex(String name);
+
 	/**
 	 * Returns the item in use by this quest at the given index
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestItemIndex(String)
@@ -350,6 +363,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the item in use by this quest at the given index
 	 */
 	public Item getQuestItem(int i);
+
 	/**
 	 * Returns the name of the item in use by this quest at the given index
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestItem(int)
@@ -358,6 +372,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the name of the item in use by this quest at the given index
 	 */
 	public String getQuestItemName(int i);
+
 	/**
 	 * Returns the index of a room of the given id in use by this quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestRoom(int)
@@ -366,6 +381,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the index of a room of the given id in use by this quest
 	 */
 	public int getQuestRoomIndex(String roomID);
+
 	/**
 	 * Returns the room in use by this quest at the given index
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestRoomIndex(String)
@@ -374,6 +390,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the room in use by this quest at the given index
 	 */
 	public Room getQuestRoom(int i);
+
 	/**
 	 * Returns the id of the room in use by this quest at the given index
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestRoom(int)
@@ -397,6 +414,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param give false to remove this ability, true to replace an existing one
 	 */
 	public void runtimeRegisterAbility(MOB mob, String abilityID, String parms, boolean give);
+
 	/**
 	 * Called when you want the quest engine to be aware of a quest specific object
 	 * that is being added to the map, so that it can be cleaned up later.
@@ -408,6 +426,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param P the object added to the map
 	 */
 	public void runtimeRegisterObject(PhysicalAgent P);
+
 	/**
 	 * Called when you want the quest engine to be aware of a quest specific object
 	 * that is being added to the map, so that it can be cleaned up later.  This is
@@ -422,6 +441,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param give false to remove this effect, true to replace an existing one
 	 */
 	public void runtimeRegisterEffect(PhysicalAgent affected, String abilityID, String parms, boolean give);
+
 	/**
 	 * Called when you want the quest engine to be aware of a quest specific object
 	 * that is being added to the map, so that it can be cleaned up later.  This is
@@ -447,6 +467,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param mobName the player name
 	 */
 	public void declareWinner(String mobName);
+
 	/**
 	 * Returns the names of all the winners of this quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)
@@ -456,6 +477,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the names of all the winners of this quest
 	 */
 	public List<String> getWinners();
+
 	/**
 	 * Returns a semicolon delimited string of all the winners of this quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)
@@ -465,6 +487,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return a semicolon delimited string of all the winners of this quest
 	 */
 	public String getWinnerStr();
+
 	/**
 	 * Returns whether a player of the given name has won this quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)
@@ -475,6 +498,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return true if a player of the given name has won this quest
 	 */
 	public boolean wasWinner(String name);
+
 	/**
 	 * Sets the list of player names that have won this quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)
@@ -484,6 +508,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param list a semicolon delimtied list of player names
 	 */
 	public void setWinners(String list);
+
 	/**
 	 * The minimum number of players matching player criteria required before
 	 * this quest will start
@@ -493,6 +518,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return minimum number of players matching player criteria required
 	 */
 	public int minPlayers();
+
 	/**
 	 * Sets minimum number of players matching player criteria required before
 	 * this quest will start
@@ -502,6 +528,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param players minimum number of players matching player criteria required
 	 */
 	public void setMinPlayers(int players);
+
 	/**
 	 * Returns the run level. -1 means runs always, otherwise,
 	 * this quest will always defer to running quests of equal
@@ -510,6 +537,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the run level. -1 means runs always
 	 */
 	public int runLevel();
+
 	/**
 	 * Sets the run level. -1 means runs always, otherwise,
 	 * this quest will always defer to running quests of equal
@@ -518,6 +546,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param level the run level. -1 means runs always
 	 */
 	public void setRunLevel(int level);
+
 	/**
 	 * Returns the zappermask that determines who counts as an
 	 * elligible player for the purposes of the minPlayer setting.
@@ -528,6 +557,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the zappermask that determines who counts as a player
 	 */
 	public String playerMask();
+
 	/**
 	 * Sets the zappermask that determines who counts as an
 	 * elligible player for the purposes of the minPlayer setting.
@@ -538,6 +568,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param mask the zappermask that determines who counts as a player
 	 */
 	public void setPlayerMask(String mask);
+
 	/**
 	 * Returns the minimum number of ticks between attempts to run this quest.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setMinWait(int)
@@ -546,6 +577,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the minimum number of ticks between attempts to run this quest.
 	 */
 	public int minWait();
+
 	/**
 	 * Sets the minimum number of ticks between attempts to run this quest.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#minWait()
@@ -554,6 +586,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param wait the minimum number of ticks between attempts to run this quest.
 	 */
 	public void setMinWait(int wait);
+
 	/**
 	 * Returns the maximum ticks, above the minimum wait, that must go by
 	 * before an attempt to run a quest.  This is therefore, the random part.
@@ -563,6 +596,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the maximum ticks, above the minimum wait, that must go by
 	 */
 	public int waitInterval();
+
 	/**
 	 * Sets the maximum ticks, above the minimum wait, that must go by
 	 * before an attempt to run a quest.  This is therefore, the random part.
@@ -572,6 +606,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param wait the maximum ticks, above the minimum wait, that must go by
 	 */
 	public void setWaitInterval(int wait);
+
 	/**
 	 * After a quest is added to the list of quests, this method is
 	 * called to put the quest into its initial wait state, and get
@@ -587,6 +622,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return true if the quest is running, false if stopped
 	 */
 	public boolean running();
+
 	/**
 	 * Returns whether this quest is in a midway stopping state
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#suspended()
@@ -596,6 +632,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return true if the quest is in the processess of stopping
 	 */
 	public boolean stopping();
+
 	/**
 	 * Returns whether this quest is in a wait state between runs
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#suspended()
@@ -605,6 +642,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return true if this quest is in a wait state between runs
 	 */
 	public boolean waiting();
+
 	/**
 	 * Returns the number of ticks before this quest will go from
 	 * a running state to a stopped state.
@@ -613,6 +651,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the numer of ticks the quest will keep running
 	 */
 	public int ticksRemaining();
+
 	/**
 	 * Returns the number of minutes before this quest will go from
 	 * a running state to a stopped state.
@@ -621,27 +660,31 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return the numer of minutes the quest will keep running
 	 */
 	public int minsRemaining();
+
 	/**
 	 * Returns the number of ticks before this quest will attempt to start.
-	 * A number >=0 means the quest is currently in a stopped state.
+	 * A number greater than or equal to 0 means the quest is currently in a stopped state.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#resetWaitRemaining(long)
 	 * @return the number of ticks before this quest will attempt to start.
 	 */
 	public int waitRemaining();
+
 	/**
 	 * Sets the number of ticks before this quest will attempt to start.
-	 * A number >=0 means the quest is currently in a stopped state.
+	 * A number greater than or equal to 0 means the quest is currently in a stopped state.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#waitRemaining()
 	 * @param minusEllapsed the number of miliseconds already ellapsed before wait began
 	 * @return true if the quest is successfully put into a non-running wait state
 	 */
 	public boolean resetWaitRemaining(long minusEllapsed);
+
 	/**
 	 * Returns flag bitmap
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#FLAG_SUSPENDED
 	 * @return the flag bitmap
 	 */
 	public long getFlags();
+
 	/**
 	 * Sets the flag bitmap
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#FLAG_SUSPENDED

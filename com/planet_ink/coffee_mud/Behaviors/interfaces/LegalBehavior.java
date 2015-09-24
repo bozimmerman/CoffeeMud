@@ -78,7 +78,7 @@ public interface LegalBehavior extends Behavior
 	 * @param target the victim of a crime, if any
 	 * @param crimeLocs string of location flags, e.g. !indoors !home keyword !keyword
 	 * @param crimeFlags string of crime situation flags, e.g. !recently !combat
-	 * @param crime string description of the crime, e.g. robbing <T-NAME>
+	 * @param crime string description of the crime, e.g. robbing T-NAME
 	 * @param sentence string sentence action, e.g. warn, parole1, jail1, death
 	 * @param warnMsg string the officer will say to explain the seriousness of the crime
 	 * @return whether or not the warrant was successfully issued
@@ -288,7 +288,7 @@ public interface LegalBehavior extends Behavior
 	 * @param victim the victim of a crime, if any
 	 * @param crimeLocs string of location flags, e.g. !indoors !home keyword !keyword
 	 * @param crimeFlags string of crime situation flags, e.g. !recently !combat
-	 * @param crime string description of the crime, e.g. robbing <T-NAME>
+	 * @param crime string description of the crime, e.g. robbing T-NAME
 	 * @param sentence string sentence action, e.g. warn, parole1, jail1, death
 	 * @param warnMsg string the officer will say to explain the seriousness of the crime
 	 * @return whether or not the warrant was successfully issued

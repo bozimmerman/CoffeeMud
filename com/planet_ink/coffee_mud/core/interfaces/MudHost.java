@@ -98,7 +98,7 @@ public interface MudHost
 	 * Commands to be defined later, or now, or whatever.
 	 * @param cmd space-delimited (parsable) command/parm list
 	 * @return any return variables
-	 * @throws any exceptions
+	 * @throws java.lang.Exception any exceptions
 	 */
 	public String executeCommand(String cmd)
 		throws Exception;
@@ -120,13 +120,15 @@ public interface MudHost
 	/**
 	 * Handles a connection from a user, and internal states
 	 * @param sock the socket the connection was made on
+	 * @throws java.net.SocketException socket exceptions
+	 * @throws java.io.IOException io exceptions
 	 */
 	public void acceptConnection(Socket sock) throws SocketException, IOException;
 
 	/**
 	 * Sets whether this mud is accepting connections
 	 * @see com.planet_ink.coffee_mud.core.interfaces.MudHost#setAcceptConnections(boolean)
-	 * return true/false whether it is accepting connections
+	 * @return true/false whether it is accepting connections
 	 */
 	public boolean isAcceptingConnections();
 }

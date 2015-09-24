@@ -176,7 +176,7 @@ public class CMath
 	 * Returns the absolute difference between two numbers
 	 * @param x the first number
 	 * @param y the second number
-	 * @return the absolute difference (x-y)*(-1 if <)
+	 * @return the absolute difference (x-y)*(-1 if less than 0)
 	 */
 	public final static long absDiff(final long x, final long y)
 	{
@@ -772,9 +772,9 @@ public class CMath
 
 	/**
 	 * Converts the given string to a floating
-	 * point number, 1>=N>=0, representing
+	 * point number, 1&gt;=N&gt;=0, representing
 	 * the whole percentage of the string.  The
-	 * string format is either X or X%, where 100>=X>=0
+	 * string format is either X or X%, where 100&gt;=X&gt;=0
 	 * If the format is bad, 0.0 is returned.
 	 * @param s the string to convert
 	 * @return the string converted to a real number
@@ -789,7 +789,7 @@ public class CMath
 	}
 
 	/**
-	 * Converts a percentage 1>d>0 to a string.
+	 * Converts a percentage 1&gt;d&gt;0 to a string.
 	 * @param d the number to convert
 	 * @return the percentage string.
 	 */
@@ -859,7 +859,7 @@ public class CMath
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variable @xx will refer to current computed value.
 	 * Returns 0.0 on any parsing error
 	 * @param st a full math expression string
@@ -870,7 +870,7 @@ public class CMath
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variables are included as @x1, etc.. The given
 	 * variable values list is 0 based, so @x1 = vars[0].
 	 * Variable @xx will refer to current computed value.
@@ -884,7 +884,7 @@ public class CMath
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variable @xx will refer to current computed value.
 	 * Rounds the result to a long.
 	 * Returns 0 on any parsing error
@@ -896,7 +896,7 @@ public class CMath
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variables are included as @x1, etc.. The given
 	 * variable values list is 0 based, so @x1 = vars[0].
 	 * Variable @xx will refer to current computed value.
@@ -911,7 +911,7 @@ public class CMath
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variable @xx will refer to current computed value.
 	 * Round the result to an integer.
 	 * Returns 0 on any parsing error
@@ -923,7 +923,7 @@ public class CMath
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variables are included as @x1, etc.. The given
 	 * variable values list is 0 based, so @x1 = vars[0].
 	 * Variable @xx will refer to current computed value.
@@ -936,6 +936,17 @@ public class CMath
 	public final static int s_parseIntExpression(final String st, final double[] vars)
 	{ try{ return parseIntExpression(st,vars);}catch(final Exception e){ return 0;}}
 
+	/**
+	 * Parse a pre-compiled expression.  Requires a vars variable of at least 10 entries
+	 * to ensure NO exceptions (other than /0).
+	 * @see CMath#compileMathExpression(StreamTokenizer, boolean)
+	 * @param st the tokenizer
+	 * @param inParen true if the parse is in the middle of the parenthesis
+	 * @param vars the variable values
+	 * @param previous the previous value, for operators that require it
+	 * @return the final value
+	 * @throws ArithmeticException  a parse error, typically arithmetic
+	 */
 	private final static double parseMathExpression(final StreamTokenizer st, final boolean inParen, final double[] vars, final double previous)
 		throws ArithmeticException
 	{
@@ -1051,7 +1062,7 @@ public class CMath
 	 * @see CMath#parseMathExpression(LinkedList, double[], double)
 	 * @param formula the math expression as a string
 	 * @return the pre-compiled expression
-	 * @throws ArithmeticException
+	 * @throws ArithmeticException a parse error, typically arithmetic
 	 */
 	public final static LinkedList<CompiledOperation> compileMathExpression(final String formula)
 	{
@@ -1067,7 +1078,7 @@ public class CMath
 	 * @param st the tokenized expression
 	 * @param inParen whether or not you are in parenthesis mode
 	 * @return the pre-compiled expression
-	 * @throws ArithmeticException
+	 * @throws ArithmeticException a parse error, typically arithmetic
 	 */
 	private final static LinkedList<CompiledOperation> compileMathExpression(final StreamTokenizer st, final boolean inParen)
 		throws ArithmeticException
@@ -1164,6 +1175,7 @@ public class CMath
 	 * @see CMath#compileMathExpression(StreamTokenizer, boolean)
 	 * @param list the pre-compiled expression
 	 * @param vars the variable values
+	 * @param previous the previous value, for operators that require it
 	 * @return the final value
 	 */
 	public final static double parseMathExpression(final LinkedList<CompiledOperation> list, final double[] vars, final double previous)
@@ -1204,7 +1216,7 @@ public class CMath
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variable @xx will refer to current computed value.
 	 * Rounds the result to a long
 	 * Throws an exception on any parsing error
@@ -1216,7 +1228,7 @@ public class CMath
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variables are included as @x1, etc.. The given
 	 * variable values list is 0 based, so @x1 = vars[0].
 	 * Variable @xx will refer to current computed value.
@@ -1232,21 +1244,23 @@ public class CMath
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variable @xx will refer to current computed value.
 	 * Rounds the result to an integer.
 	 * Throws an exception on any parsing error
 	 * @param formula a full math expression string
 	 * @return the result of the expression
+	 * @throws ArithmeticException  a parse error, typically arithmetic
 	 */
 	public final static int parseIntExpression(final String formula) throws ArithmeticException
 	{
 		return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null,0));
 	}
+
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variables are included as @x1, etc.. The given
 	 * variable values list is 0 based, so @x1 = vars[0].
 	 * Variable @xx will refer to current computed value.
@@ -1255,24 +1269,28 @@ public class CMath
 	 * @param formula a full math expression string
 	 * @param vars the 0 based variables
 	 * @return the result of the expression
+	 * @throws ArithmeticException  a parse error, typically arithmetic
 	 */
 	public final static int parseIntExpression(final String formula, final double[] vars) throws ArithmeticException
 	{return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars,0));}
+
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variable @xx will refer to current computed value.
 	 * Throws an exception on any parsing error
 	 * @param formula a full math expression string
 	 * @return the result of the expression
+	 * @throws ArithmeticException a parsing error
 	 */
 	public final static double parseMathExpression(String formula) throws ArithmeticException
 	{return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null,0);}
+
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
-	 * number, or a full expression using ()+-/*?<>.
+	 * number, or a full expression using ()+-/*?&lt;&gt;.
 	 * Variables are included as @x1, etc.. The given
 	 * variable values list is 0 based, so @x1 = vars[0].
 	 * Variable @xx will refer to current computed value.
@@ -1280,6 +1298,7 @@ public class CMath
 	 * @param formula a full math expression string
 	 * @param vars the 0 based variables
 	 * @return the result of the expression
+	 * @throws ArithmeticException a parsing error
 	 */
 	public final static double parseMathExpression(final String formula, final double[] vars) throws ArithmeticException
 	{return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars,0);}
@@ -1288,7 +1307,7 @@ public class CMath
 	/**
 	 * Returns the long value of a string without crashing
 	 *
-	 * <br><br><b>Usage:</b> lSize = WebIQBase.s_long(WebIQBase.getRes(AttStatsRes,"BlobSize"));
+	 * Usage: lSize = WebIQBase.s_long(WebIQBase.getRes(AttStatsRes,"BlobSize"));
 	 * @param LONG String to convert
 	 * @return long Long value of the string
 	 */
@@ -1301,7 +1320,7 @@ public class CMath
 	/**
 	 * Returns the floating point value of a string without crashing
 	 *
-	 * <br><br><b>Usage:</b> lSize = WebIQBase.s_float(WebIQBase.getRes(AttStatsRes,"BlobSize"));
+	 * Usage: lSize = WebIQBase.s_float(WebIQBase.getRes(AttStatsRes,"BlobSize"));
 	 * @param FLOAT String to convert
 	 * @return Float value of the string
 	 */
@@ -1314,7 +1333,7 @@ public class CMath
 	/**
 	 * Returns the double value of a string without crashing
 	 *
-	 * <br><br><b>Usage:</b> dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
+	 * Usage: dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
 	 * @param DOUBLE String to convert
 	 * @return double Double value of the string
 	 */
@@ -1326,7 +1345,7 @@ public class CMath
 
 
 	/**
-	 * Returns the absolute value (X>=0) of the
+	 * Returns the absolute value (X&gt;=0) of the
 	 * given number
 	 * @param val the number
 	 * @return the absolute value of the number
@@ -1354,7 +1373,7 @@ public class CMath
 	}
 
 	/**
-	 * Returns the absolute value (X>=0) of the
+	 * Returns the absolute value (X&gt;=0) of the
 	 * given number
 	 * @param val the number
 	 * @return the absolute value of the number
@@ -1369,7 +1388,7 @@ public class CMath
 	/**
 	 * Returns the boolean value of a string without crashing
 	 *
-	 * <br><br><b>Usage:</b> int num=s_bool(CMD.substring(14));
+	 * Usage: int num=s_bool(CMD.substring(14));
 	 * @param BOOL Boolean value of string
 	 * @return int Boolean value of the string
 	 */
@@ -1383,7 +1402,7 @@ public class CMath
 	/**
 	 * Returns whether the given string is a boolean value
 	 *
-	 * <br><br><b>Usage:</b> if(isBool(CMD.substring(14)));
+	 * Usage: if(isBool(CMD.substring(14)));
 	 * @param BOOL Boolean value of string
 	 * @return whether it is a boolean
 	 */
@@ -1395,7 +1414,7 @@ public class CMath
 	/**
 	 * Returns the integer value of a string without crashing
 	 *
-	 * <br><br><b>Usage:</b> int num=s_int(CMD.substring(14));
+	 * Usage: int num=s_int(CMD.substring(14));
 	 * @param INT Integer value of string
 	 * @return int Integer value of the string
 	 */
@@ -1424,7 +1443,7 @@ public class CMath
 	/**
 	 * Returns the integer value of a string without crashing
 	 *
-	 * <br><br><b>Usage:</b> int num=s_int(CMD.substring(14));
+	 * Usage: int num=s_int(CMD.substring(14));
 	 * @param INT Integer value of string
 	 * @param def default value if the given string is not an int
 	 * @return int Integer value of the string
@@ -1438,7 +1457,7 @@ public class CMath
 	/**
 	 * Returns the short value of a string without crashing
 	 *
-	 * <br><br><b>Usage:</b> int num=s_short(CMD.substring(14));
+	 * Usage: int num=s_short(CMD.substring(14));
 	 * @param SHORT Short value of string
 	 * @return short Short value of the string
 	 */
@@ -1451,7 +1470,7 @@ public class CMath
 	/**
 	 * Returns whether the given string is a long value
 	 *
-	 * <br><br><b>Usage:</b> if(isLong(CMD.substring(14)));
+	 * Usage: if(isLong(CMD.substring(14)));
 	 * @param LONG Long value of string
 	 * @return whether it is a long
 	 */
@@ -1460,7 +1479,7 @@ public class CMath
 	/**
 	 * Returns whether the given string is a int value
 	 *
-	 * <br><br><b>Usage:</b> if(isInteger(CMD.substring(14)));
+	 * Usage: if(isInteger(CMD.substring(14)));
 	 * @param INT Integer value of string
 	 * @return whether it is a int
 	 */
@@ -1485,7 +1504,7 @@ public class CMath
 	/**
 	 * Returns whether the given string is a float value
 	 *
-	 * <br><br><b>Usage:</b> if(isFloat(CMD.substring(14)));
+	 * Usage: if(isFloat(CMD.substring(14)));
 	 * @param DBL float value of string
 	 * @return whether it is a float
 	 */
@@ -1496,7 +1515,7 @@ public class CMath
 	 * the 2^ power of the comma separated values in the order
 	 * they appear in the given string list.
 	 *
-	 * <br><br><b>Usage:</b> if(s_parseBitIntExpression(CMDS,CMD.substring(14)));
+	 * Usage: if(s_parseBitIntExpression(CMDS,CMD.substring(14)));
 	 * @param bits the ordered string values from 0-whatever.
 	 * @param val the expression, or list of string values
 	 * @return the int value, or 0
@@ -1511,7 +1530,7 @@ public class CMath
 	 * the 2^ power of the comma separated values in the order
 	 * they appear in the given string list.
 	 *
-	 * <br><br><b>Usage:</b> if(s_parseBitLongExpression(CMDS,CMD.substring(14)));
+	 * Usage: if(s_parseBitLongExpression(CMDS,CMD.substring(14)));
 	 * @param bits the ordered string values from 0-whatever.
 	 * @param val the expression, or list of string values
 	 * @return the long value, or 0
@@ -1554,7 +1573,7 @@ public class CMath
 	 * the index of the value in the order
 	 * they appear in the given string list.
 	 *
-	 * <br><br><b>Usage:</b> if(s_parseListLongExpression(CMDS,CMD.substring(14)));
+	 * Usage: if(s_parseListLongExpression(CMDS,CMD.substring(14)));
 	 * @param descs the ordered string values from 0-whatever.
 	 * @param val the expression, or list of string values
 	 * @return the long value, or 0
@@ -1574,7 +1593,7 @@ public class CMath
 	 * the index of the value in the order
 	 * they appear in the given string list.
 	 *
-	 * <br><br><b>Usage:</b> if(s_parseListIntExpression(CMDS,CMD.substring(14)));
+	 * Usage: if(s_parseListIntExpression(CMDS,CMD.substring(14)));
 	 * @param descs the ordered string values from 0-whatever.
 	 * @param val the expression, or list of string values
 	 * @return the int value, or 0
@@ -1585,7 +1604,7 @@ public class CMath
 	/**
 	 * Returns whether the given string is a double value
 	 *
-	 * <br><br><b>Usage:</b> if(isDouble(CMD.substring(14)));
+	 * Usage: if(isDouble(CMD.substring(14)));
 	 * @param DBL double value of string
 	 * @return whether it is a double
 	 */

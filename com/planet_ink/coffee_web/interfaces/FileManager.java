@@ -50,6 +50,8 @@ public interface FileManager
 	 * Read the data out out of the given file
 	 * @param file the file to read
 	 * @return all the byte data from the file
+	 * @throws IOException a read error
+	 * @throws FileNotFoundException the file was not found
 	 */
 	public byte[] readFile(File file) throws IOException, FileNotFoundException;
 	
@@ -57,11 +59,14 @@ public interface FileManager
 	 * Return a readable input stream of the given files data
 	 * @param file the file to read
 	 * @return an open input stream for reading.
+	 * @throws IOException a read error
+	 * @throws FileNotFoundException the file was not found
 	 */
 	public InputStream getFileStream(File file) throws IOException, FileNotFoundException;
 	
 	/**
 	 * Returns whether the given file can be randomly accessed
+	 * @param file the filemanager file to check for random access support.
 	 * @return true if it can, or false otherwise
 	 */
 	public boolean supportsRandomAccess(File file);
@@ -70,6 +75,8 @@ public interface FileManager
 	 * Return a readable input stream of the given files data
 	 * @param file the file to read
 	 * @return an open input stream for reading.
+	 * @throws IOException a read error
+	 * @throws FileNotFoundException the file was not found
 	 */
 	public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException;
 	

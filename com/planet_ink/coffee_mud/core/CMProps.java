@@ -541,7 +541,7 @@ public class CMProps extends Properties
 
 	/** retrieve a local .ini file entry as a string
 	*
-	* <br><br><b>Usage:</b>  String s=getPrivateStr("TAG");
+	* Usage:  String s=getPrivateStr("TAG");
 	* @param tagToGet   the property tag to retreive.
 	* @return String   the value of the .ini file tag
 	*/
@@ -555,7 +555,7 @@ public class CMProps extends Properties
 
 	/** retrieve raw local .ini file entry as a string
 	*
-	* <br><br><b>Usage:</b>  String s=getRawPrivateStr("TAG");
+	* Usage:  String s=getRawPrivateStr("TAG");
 	* @param tagToGet   the property tag to retreive.
 	* @return String   the value of the .ini file tag
 	*/
@@ -566,7 +566,7 @@ public class CMProps extends Properties
 
 	/** retrieve a particular .ini file entry as a string
 	*
-	* <br><br><b>Usage:</b>  String s=getStr(p,"TAG");
+	* Usage:  String s=getStr(p,"TAG");
 	* @param tagToGet    the property tag to retreive.
 	* @return String	the value of the .ini file tag
 	*/
@@ -582,8 +582,9 @@ public class CMProps extends Properties
 
 	/** retrieve a particular .ini file entry as a string, or use a default
 	*
-	* <br><br><b>Usage:</b>  String s=getStr(p,"TAG");
+	* Usage:  String s=getStr(p,"TAG");
 	* @param tagToGet    the property tag to retreive.
+	* @param defaultVal the value to return if the property does not exist
 	* @return String	the value of the .ini file tag
 	*/
 	public final String getStr(final String tagToGet, final String defaultVal)
@@ -598,7 +599,7 @@ public class CMProps extends Properties
 
 	/** retrieve particular .ini file entrys as a string array
 	*
-	* <br><br><b>Usage:</b>  String s=getStrsStarting(p,"TAG");
+	* Usage:  String s=getStrsStarting(p,"TAG");
 	* @param tagStartersToGet    the property tag to retreive.
 	* @return String	the value of the .ini file tag
 	*/
@@ -630,7 +631,7 @@ public class CMProps extends Properties
 
 	/** retrieve a particular .ini file entry as a boolean
 	*
-	* <br><br><b>Usage:</b>  boolean i=getBoolean("TAG");
+	* Usage:  boolean i=getBoolean("TAG");
 	* @param tagToGet   the property tag to retreive.
 	* @return int   the value of the .ini file tag
 	*/
@@ -644,7 +645,7 @@ public class CMProps extends Properties
 
 	/** retrieve a particular .ini file entry as a double
 	*
-	* <br><br><b>Usage:</b>  double i=getDouble("TAG");
+	* Usage:  double i=getDouble("TAG");
 	* @param tagToGet    the property tag to retreive.
 	* @return int    the value of the .ini file tag
 	*/
@@ -662,7 +663,7 @@ public class CMProps extends Properties
 
 	/** retrieve a particular .ini file entry as an integer
 	*
-	* <br><br><b>Usage:</b>  int i=getInt("TAG");
+	* Usage:  int i=getInt("TAG");
 	* @param tagToGet    the property tag to retreive.
 	* @return int    the value of the .ini file tag
 	*/
@@ -680,7 +681,7 @@ public class CMProps extends Properties
 
 	/** retrieve a particular .ini file entry as a long
 	*
-	* <br><br><b>Usage:</b>  long i=getInt("TAG");
+	* Usage:  long i=getInt("TAG");
 	* @param tagToGet    the property tag to retreive.
 	* @return long the value of the .ini file tag
 	*/
@@ -700,7 +701,7 @@ public class CMProps extends Properties
 	 * Return the action cost associated with a specific Command ID(), or the default value if
 	 * no exception is found for that command.
 	 * @param ID the commands ID()
-	 * @param defaultValue the default action cost to use
+	 * @param defaultValue the value to return if the override does not exist
 	 * @return the action cost
 	 */
 	public static final double getCommandActionCost(final String ID, final double defaultValue)
@@ -995,7 +996,7 @@ public class CMProps extends Properties
 	 * cannot, the defaultValue is used.
 	 * @param varNum the Int enum of the entry to set
 	 * @param val the new value of the entry, as a string.
-	 * @param defaultValue 
+	 * @param defaultValue the default value to use when the property doesn't exist
 	 */
 	public static final void setIntVar(final Int varNum, String val, final int defaultValue)
 	{
@@ -2309,6 +2310,7 @@ public class CMProps extends Properties
 	 * @param codes the code names to search
 	 * @param xtraValues the values matching the codes, or null if unsupported
 	 * @param code the code to search for
+	 * @param val the value to set the stat to
 	 */
 	public static void setStatCodeExtensionValue(final String[] codes, final String[] xtraValues, final String code, final String val)
 	{

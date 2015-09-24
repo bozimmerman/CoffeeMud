@@ -81,7 +81,7 @@ public interface Armor extends Item
 	 * larger than 0 is things like coats and shawls, where less than 0 are things
 	 * like underwear and hose.
 	 * @see Armor#getClothingLayer()
-	 * @return the layer at which this item is worn.
+	 * @param newLayer the layer at which this item is worn.
 	 */
 	public void setClothingLayer(short newLayer);
 	

@@ -23,7 +23,7 @@ limitations under the License.
  * A searchable list, usually sorted or otherwise made worth searching.
  * @author Bo Zimmerman
  *
- * @param <T>
+ * @param <T> the type?
  */
 public interface SearchIDList<T> extends List<T>
 {

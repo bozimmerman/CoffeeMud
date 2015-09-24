@@ -54,7 +54,7 @@ public interface ItemTicker extends Ability
 	 * Removes the rejuvenating ticker from an item.  This
 	 * is done when a room is resetting its content, and this
 	 * item is no longer to be used as a source for rejuvenation.
-	 * @param item
+	 * @param item the item to remove from tracking
 	 */
 	public void unloadIfNecessary(Item item);
 

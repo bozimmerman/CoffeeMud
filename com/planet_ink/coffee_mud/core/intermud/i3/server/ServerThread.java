@@ -136,12 +136,12 @@ public class ServerThread implements Tickable
 	/**
 	 * While the mud is running, this method repeats the following
 	 * steps over and over:
-	 * <ul>
-	 * <LI> Check for pending user input and trigger user commands
-	 * <LI> Check for pending object events and execute them
-	 * <LI> Check for incoming user connections and create an
+	 * 
+	 * Check for pending user input and trigger user commands
+	 * Check for pending object events and execute them
+	 * Check for incoming user connections and create an
 	 *  	interactive object for each.
-	 * </ul>
+	 * 
 	 */
 	public void start()
 	{

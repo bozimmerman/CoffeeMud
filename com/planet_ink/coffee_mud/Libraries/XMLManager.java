@@ -185,7 +185,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	/**
 	 * Returns the double value of a string without crashing
  	 *
-	 * <br><br><b>Usage:</b> dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
+	 * Usage: dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
 	 * @param DOUBLE String to convert
 	 * @return double Double value of the string
 	 */
@@ -200,7 +200,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	/**
 	 * Returns the integer value of a string without crashing
  	 *
-	 * <br><br><b>Usage:</b> int num=s_int(CMD.substring(14));
+	 * Usage: int num=s_int(CMD.substring(14));
 	 * @param INT Integer value of string
 	 * @return int Integer value of the string
 	 */
@@ -215,7 +215,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	/**
 	 * Returns the short value of a string without crashing
  	 *
-	 * <br><br><b>Usage:</b> int num=s_short(CMD.substring(14));
+	 * Usage: int num=s_short(CMD.substring(14));
 	 * @param SHORT Short value of string
 	 * @return short Short value of the string
 	 */
@@ -230,7 +230,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	/**
 	 * Returns the long value of a string without crashing
  	 *
-	 * <br><br><b>Usage:</b> int num=s_long(CMD.substring(14));
+	 * Usage: int num=s_long(CMD.substring(14));
 	 * @param LONG Long value of string
 	 * @return long Long value of the string
 	 */
@@ -243,9 +243,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 	/**
-	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
+	 * Return the outer wrapper and contents of an XML tag &lt;TNAME&gt;Data&lt;/TNAME&gt;
 	 *
-  	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
+  	 * Usage: Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data to embed
 	 * @return String Information corresponding to the tname
@@ -259,9 +259,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 	/**
-	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
+	 * Return the outer wrapper and contents of an XML tag &lt;TNAME&gt;Data&lt;/TNAME&gt;
 	 *
-  	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
+  	 * Usage: Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data to embed
 	 * @return String Information corresponding to the tname
@@ -273,9 +273,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 	/**
-	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
+	 * Return the outer wrapper and contents of an XML tag &lt;TNAME&gt;Data&lt;/TNAME&gt;
 	 *
-  	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
+  	 * Usage: Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data to embed
 	 * @return String Information corresponding to the tname
@@ -287,9 +287,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 	/**
-	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
+	 * Return the outer wrapper and contents of an XML tag &lt;TNAME&gt;Data&lt;/TNAME&gt;
 	 *
-  	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
+  	 * Usage: Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data to embed
 	 * @return String Information corresponding to the tname
@@ -301,9 +301,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 	/**
-	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
+	 * Return the outer wrapper and contents of an XML tag &lt;TNAME&gt;Data&lt;/TNAME&gt;
 	 *
-  	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
+  	 * Usage: Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
 	 * @param TName Tag name to use
 	 * @param Data the data to embed
 	 * @return String Information corresponding to the tname
@@ -317,7 +317,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	/**
 	 * Return the contents of an XML tag, given the tag to search for
 	 *
-  	 * <br><br><b>Usage:</b> String XML=returnXMLBlock(Response,"PDIModelErrors");
+  	 * Usage: String XML=returnXMLBlock(Response,"PDIModelErrors");
 	 * @param Blob String to searh
 	 * @param Tag Tag name to search for
 	 * @return String Information corresponding to the tname

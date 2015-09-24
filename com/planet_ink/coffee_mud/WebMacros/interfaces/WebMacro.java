@@ -74,7 +74,7 @@ public interface WebMacro extends CMObject
 	/**
 	 * Whether this macro substitutes as an aspect of the web path instead
 	 * of a standard web macro.  If true is returned, URLs such as:
-	 * http://mydomain.com/mymacroname?firstparm=value&secondparm=value
+	 * http://mydomain.com/mymacroname?firstparm=value&amp;secondparm=value
 	 * might succeeed
 	 * @see WebMacro#getFilename(HTTPRequest, String)
 	 * @return whether this is a wierd URL macro
@@ -100,7 +100,7 @@ public interface WebMacro extends CMObject
 	 * @param httpReq the external requests object
 	 * @param parm any parameter strigs given to the macro
 	 * @return the binary stream result of running this macro
-	 * @throws HTTPServerException
+	 * @throws HTTPServerException a http error to pass to the user
 	 */
 	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException;
 	/**
@@ -112,7 +112,7 @@ public interface WebMacro extends CMObject
 	 * @param httpReq the external requests object
 	 * @param parm any parameter strigs given to the macro
 	 * @return the string result of running this macro
-	 * @throws HTTPServerException
+	 * @throws HTTPServerException a http error to pass to the user
 	 */
 	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException;
 }

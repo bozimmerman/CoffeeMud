@@ -41,58 +41,69 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * @return 3 dimensional array of the coordinates
 	 */
 	public long[] coordinates();
+
 	/**
 	 * Sets the current absolute coordinates of the object
 	 * @param coords 3  dimensional array of the coordinates in space
 	 */
 	public void setCoords(long[] coords);
+
 	/**
 	 * The current radius of  the object
 	 * @return the radius, in decameters
 	 */
 	public long radius();
+
 	/**
 	 * Set the current radius of  the object
 	 * @param radius the current radius of  the object
 	 */
 	public void setRadius(long radius);
+
 	/**
 	 * The direction of travel of this object in radians.
 	 * @return 2 dimensional array for the direction of movement
 	 */
 	public double[] direction();
+
 	/**
 	 * Sets the direction of travel of this object in radians.
-	 * direction[0] <= PI
-	 * direction[1] <= 2PI
+	 * direction[0] less than or equal to PI
+	 * direction[1] less than or equal to 2PI
 	 * @param dir 2 dimensional array for the direction of movement
 	 */
 	public void setDirection(double[] dir);
+
 	/**
 	 * The speed of the object through space
 	 * @return the speed
 	 */
 	public double speed();
+
 	/**
 	 * Sets the speed of the object through space
 	 * @param v the speed
 	 */
 	public void setSpeed(double v);
+
 	/**
 	 * If this object is targeting another space object as a destination, this will return it
 	 * @return the target destination
 	 */
 	public SpaceObject knownTarget();
+
 	/**
 	 * If this object is targeting another space object as a destination, this will set it
 	 * @param O the target destination
 	 */
 	public void setKnownTarget(SpaceObject O);
+
 	/**
 	 * The source object from which this space object is travelling from
 	 * @return the source of  this object
 	 */
 	public SpaceObject knownSource();
+
 	/**
 	 * Sets the source object from which this space object is travelling from
 	 * @param O the source of  this object
@@ -141,11 +152,13 @@ public interface SpaceObject extends Environmental, BoundedObject
 		public final String abbr;
 		private static String abbrList="";
 		private static String fullList="";
+		
 		private Distance(String abbr, long distance)
 		{
 			this.abbr=abbr;
 			this.dm=distance;
 		}
+
 		public static String getAbbrList()
 		{
 			if(abbrList.length()==0)
@@ -156,6 +169,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 			}
 			return abbrList;
 		}
+
 		public static String getFullList()
 		{
 			if(fullList.length()==0)

@@ -463,6 +463,8 @@ public class RTree<T extends BoundedObject>
 	/**
 	 * Returns one item that intersects the query box, or null if nothing intersects
 	 * the query box.
+	 * @param box the area to look up
+	 * @return the first thing in that area
 	 */
 	public T queryOne(BoundedCube box)
 	{
@@ -501,6 +503,7 @@ public class RTree<T extends BoundedObject>
 	 * @param results A collection to store the query results.
 	 * @param px Point X coordinate
 	 * @param py Point Y coordinate
+	 * @param pz Point Z coordinate
 	 */
 	public void query(Collection<T> results, long px, long py, long pz)
 	{
@@ -533,11 +536,16 @@ public class RTree<T extends BoundedObject>
 
 	/**
 	 * Returns one item that intersects the query point, or null if no items intersect that point.
+	 * @param px Point X coordinate
+	 * @param py Point Y coordinate
+	 * @param pz Point Z coordinate
+	 * @return the first object in that area
 	 */
 	public T queryOne(long px, long py, long pz)
 	{
 		return queryOne(px, py, pz, root);
 	}
+	
 	private T queryOne(long px, long py, long pz, RTreeNode node)
 	{
 		if (node == null) return null;
@@ -568,7 +576,8 @@ public class RTree<T extends BoundedObject>
 
 	/**
 	 * Removes the specified object if it is in the tree.
-	 * @param o
+	 * @param o the object to remove
+	 * @return true if it was there to remove, false otherwise
 	 */
 	public boolean remove(T o)
 	{
@@ -601,6 +610,7 @@ public class RTree<T extends BoundedObject>
 	/**
 	 * Inserts object o into the tree. Note that if the value of o.getBounds() changes
 	 * while in the R-tree, the result is undefined.
+	 * @param o the object to insert into the tree
 	 * @throws NullPointerException If o == null
 	 */
 	public void insert(T o)
@@ -621,6 +631,11 @@ public class RTree<T extends BoundedObject>
 
 
 
+	/**
+	 * Returns whether the given object is in the tree
+	 * @param o the object to look for
+	 * @return true if it is in there, false otherwise
+	 */
 	public boolean contains(T o)
 	{
 		if (o == null)
@@ -652,12 +667,14 @@ public class RTree<T extends BoundedObject>
 
 	/**
 	 * Counts the number of items in the tree.
+	 * @return the number of items
 	 */
 	public int count()
 	{
 		if (root == null) return 0;
 		return count(root);
 	}
+
 	private int count(RTreeNode n)
 	{
 		assert(n != null);

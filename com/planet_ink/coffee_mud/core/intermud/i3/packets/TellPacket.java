@@ -42,8 +42,8 @@ import java.util.Vector;
  * outgoing intermud tells.  To use it in a services object,
  * simply grab the data out of its public members.  To use
  * it to send a tell, set all of its public data members
- * and call the send() method.<BR>
- * Created: 22 Spetember 1996<BR>
+ * and call the send() method.
+ * Created: 22 Spetember 1996
  * Last modified: 29 September 1996
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
@@ -121,8 +121,8 @@ public class TellPacket extends Packet {
 	/**
 	 * This method is used by the I3 system to turn the packet
 	 * into a mud mode string.  To see the proper format for
-	 * an I3 tell, see the <A HREF="http://www.imaginary.com/intermud/intermud3.html">
-	 * Intermud 3</A> documentation.
+	 * an I3 tell, see the http://www.imaginary.com/intermud/intermud3.html
+	 * Intermud 3 documentation.
 	 * @return the mud mode string for this packet
 	 */
 	@Override

@@ -126,7 +126,7 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * Reconfigure this databuffer to return chunks of the given
 	 * size (or smaller) from the body, but only from buffers marked
 	 * as chunkable.  Defaults 0.
-	 * @param chunkSize a number > 0 to on chunking, 0 to turn off.
+	 * @param chunkSize a number &gt; 0 to on chunking, 0 to turn off.
 	 */
 	public void setChunked(final int chunkSize);
 }

@@ -36,7 +36,7 @@ import java.util.*;
 /**
  * An Area is an abstract collection of rooms organized together under a single name
  * in order to share attributes or give some common functionality.  Areas can also
- * include other areas in a parent->child relationship.
+ * include other areas in a parent-child relationship.
  *
  * @author Bo Zimmerman, Jeremy Vyska
  *
@@ -49,6 +49,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return either 0, or a bitmap of FLAG_ constants
 	 */
 	public long flags();
+
 	/**
 	 * Returns the technology level supported by this area.  Activities within
 	 * rooms within this area will be affected by the results of this flag.
@@ -57,6 +58,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return a bitmap of the themes supported by this area.
 	 */
 	public int getThemeCode();
+
 	/**
 	 * Returns the technology level supported by this area.  Activities within
 	 * rooms within this area will be affected by the results of this flag.
@@ -65,6 +67,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return a bitmap of the themes supported by this area.
 	 */
 	public int getTheme();
+
 	/**
 	 * Sets the technology level supported by this area.  Activities within
 	 * rooms within this area will be affected by the results of this flag.
@@ -72,18 +75,21 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param level the bitmap representing the tech level
 	 */
 	public void setTheme(int level);
+
 	/**
 	 * Returns the coffeemud .cmare filename that will be used when the EXPORT command
 	 * is used in such a way as to auto-generate filenames.
 	 * @return the name of the .cmare filename to use
 	 */
 	public String getArchivePath();
+
 	/**
 	 * Sets the coffeemud .cmare filename that will be used when the EXPORT command
 	 * is used in such a way as to auto-generate filenames.
 	 * @param pathFile  the name of the .cmare filename to use
 	 */
 	public void setArchivePath(String pathFile);
+
 	/**
 	 * Returns a reference to the Climate object that represents the
 	 * current and future weather for this area.
@@ -91,6 +97,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return a com.planet_ink.coffee_mud.Common.interfaces.Climate object
 	 */
 	public Climate getClimateObj();
+
 	/**
 	 * Sets a reference to the Climate object that represents the
 	 * current and future weather for this area.
@@ -98,6 +105,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param obj a com.planet_ink.coffee_mud.Common.interfaces.Climate object
 	 */
 	public void setClimateObj(Climate obj);
+
 	/**
 	 * Returns a reference to the TimeClock object that represents the
 	 * calendar and date/time for this area.  May be shared by numerous
@@ -106,6 +114,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return a com.planet_ink.coffee_mud.Common.interfaces.TimeClock object
 	 */
 	public TimeClock getTimeObj();
+
 	/**
 	 * Sets a reference to the TimeClock object that represents the
 	 * calendar and date/time for this area.  May be shared by numerous
@@ -114,16 +123,19 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param obj a com.planet_ink.coffee_mud.Common.interfaces.TimeClock object
 	 */
 	public void setTimeObj(TimeClock obj);
+
 	/**
 	 * Sets the name of the author of this area, an arbitrary string
 	 * @param authorID the author of the area
 	 */
 	public void setAuthorID(String authorID);
+
 	/**
 	 * Returns the name of the author of this area, an arbitrary string
 	 * @return the author of the area
 	 */
 	public String getAuthorID();
+
 	/**
 	 * Sets the default currency for this area, which will be referenced by
 	 * shopkeepers, bankers, and other mobs.  See Archon's Guide for the proper
@@ -132,6 +144,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return a currency name/definition
 	 */
 	public String getCurrency();
+
 	/**
 	 * Returns the default currency for this area, which will be referenced by
 	 * shopkeepers, bankers, and other mobs.  See Archon's Guide for the proper
@@ -140,18 +153,21 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param currency  a currency name/definition
 	 */
 	public void setCurrency(String currency);
+
 	/**
 	 * A blurb flag is a run-time modifiable set of strings that can be added
 	 * to an area in order to display them in the HELP entry for an area.
 	 * @return the number of such strings defined
 	 */
 	public int numBlurbFlags();
+
 	/**
 	 * A blurb flag is a run-time modifiable set of strings that can be added
 	 * to an area in order to display them in the HELP entry for an area.
 	 * @return the number of such strings defined for this area AND parent areas
 	 */
 	public int numAllBlurbFlags();
+
 	/**
 	 * A blurb flag is a run-time modifiable set of strings that can be added
 	 * to an area in order to display them in the HELP entry for an area.
@@ -160,6 +176,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return the definition/string value of the flag
 	 */
 	public String getBlurbFlag(String flag);
+
 	/**
 	 * A blurb flag is a run-time modifiable set of strings that can be added
 	 * to an area in order to display them in the HELP entry for an area.
@@ -168,6 +185,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return enumeration of blurb flag keys, call getBlurbFlag(String) for the value
 	 */
 	public Enumeration<String> areaBlurbFlags();
+
 	/**
 	 * A blurb flag is a run-time modifiable set of strings that can be added
 	 * to an area in order to display them in the HELP entry for an area.
@@ -175,6 +193,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param flagPlusDesc the flag name, space, followed by definition
 	 */
 	public void addBlurbFlag(String flagPlusDesc);
+
 	/**
 	 * A blurb flag is a run-time modifiable set of strings that can be added
 	 * to an area in order to display them in the HELP entry for an area.
@@ -182,12 +201,14 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param flagOnly the name of the flag to remove.
 	 */
 	public void delBlurbFlag(String flagOnly);
+
 	/**
 	 * This method causes all proper rooms within this area to have their
 	 * run-time generated Skys to be re-generated.  It is called at boot-time
 	 * and when areas are reset or re-generated.
 	 */
 	public void fillInAreaRooms();
+
 	/**
 	 * This method causes a given room to have its run-time generated Skys to
 	 * be re-generated.
@@ -195,6 +216,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param R the Room object to "fill-in"
 	 */
 	public void fillInAreaRoom(Room R);
+
 	/**
 	 * This method adds a new Room to this area.  It is called by the Room.setArea(
 	 * method, and should rarely if ever be called directly.  It calls addMetroRoom
@@ -204,6 +226,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param R the Room to add.
 	 */
 	public void addProperRoom(Room R);
+
 	/**
 	 * This method removes an existing Room from this area.  It also removes it
 	 * from parent areas.
@@ -212,6 +235,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param R the Room to delete.
 	 */
 	public void delProperRoom(Room R);
+
 	/**
 	 * Returns a room of the given roomID, if it has already been added by calling
 	 * addProperRoom.
@@ -220,6 +244,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return a reference to the room that the id refers to, IF the room belongs here.
 	 */
 	public Room getRoom(String roomID);
+
 	/**
 	 * Returns whether the given Room object belongs to this Area, even if the
 	 * Room object properly has not been loaded yet (due to the area being thin).
@@ -228,12 +253,14 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return whether it belongs to this Area or no.
 	 */
 	public boolean isRoom(Room R);
+
 	/**
 	 * Returns a random room from this area, loading it if necessary.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return a reference to a random room from this area.
 	 */
 	public Room getRandomProperRoom();
+
 	/**
 	 * Returns an enumerator for all previously loaded rooms that
 	 * properly belongs to this area.
@@ -242,6 +269,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return an enumerator of Room objects
 	 */
 	public Enumeration<Room> getProperMap();
+
 	/**
 	 * Returns an enumerator for all previously loaded rooms that
 	 * properly belongs to this area, along with their skys or underwater
@@ -251,16 +279,19 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return an enumerator of Room objects
 	 */
 	public Enumeration<Room> getFilledProperMap();
+
 	/**
 	 * Designates that the given roomID belongs to this Area.
 	 * @param roomID the roomID of a room which should belong to this Area.
 	 */
 	public void addProperRoomnumber(String roomID);
+
 	/**
 	 * Designates that the given roomID no longer belongs to this Area.
 	 * @param roomID the roomID of a room which should no longer belong to this Area.
 	 */
 	public void delProperRoomnumber(String roomID);
+
 	/**
 	 * This method is the same as getProperMap, except that it will load any
 	 * Rooms that belong to the area but have not yet been loaded.  The
@@ -270,11 +301,13 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return an enumerator of Room objects
 	 */
 	public Enumeration<Room> getCompleteMap();
+
 	/**
 	 * Returns whether this area has any proper rooms at all, even if uncached.
 	 * @return true if there are no proper rooms, false otherwise
 	 */
 	public boolean isProperlyEmpty();
+
 	/**
 	 * Returns a RoomnumberSet for all rooms that properly belong to this area, including
 	 * those not yet loaded.
@@ -282,6 +315,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return a com.planet_ink.coffee_mud.Common.interfaces.RoomnumberSet object
 	 */
 	public RoomnumberSet getProperRoomnumbers();
+
 	/**
 	 * Sets the RoomnumberSet for all rooms that properly belong to this area, including
 	 * those not yet loaded.
@@ -289,24 +323,28 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param set a com.planet_ink.coffee_mud.Common.interfaces.RoomnumberSet object
 	 */
 	public void setProperRoomnumbers(RoomnumberSet set);
+
 	/**
 	 * Returns a RoomnumberSet for all rooms that properly belong to this area,
 	 * excluding those not yet loaded.
 	 * @return a com.planet_ink.coffee_mud.Common.interfaces.RoomnumberSet object
 	 */
 	public RoomnumberSet getCachedRoomnumbers();
+
 	/**
 	 * Returns a count of all cached rooms that belong to this area, excluding skys
 	 * and auto-generated rooms.
 	 * @return a count of the number of rooms that have an ID
 	 */
 	public int numberOfProperIDedRooms();
+
 	/**
 	 * Returns a count of all cached rooms that belong to this area, which have been
 	 * loaded.
 	 * @return the number of rooms loaded.
 	 */
 	public int properSize();
+
 	/**
 	 * Returns an enumerator for all previously loaded rooms that
 	 * properly belongs to this area AND to any child areas.
@@ -314,6 +352,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return an enumerator of Room objects
 	 */
 	public Enumeration<Room> getMetroMap();
+
 	/**
 	 * Designates that a given Room object belongs to one of this areas
 	 * children.
@@ -321,6 +360,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param R a Room object from one of this areas child areas.
 	 */
 	public void addMetroRoom(Room R);
+
 	/**
 	 * Designates that a given Room object no longer belongs to one of this areas
 	 * children.
@@ -328,24 +368,28 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param R a Room object formerly from one of this areas child areas.
 	 */
 	public void delMetroRoom(Room R);
+
 	/**
 	 * Designates that a given roomid represents a room which
 	 * belongs to one of this areas children.
 	 * @param roomID a roomid for a room
 	 */
 	public void addMetroRoomnumber(String roomID);
+
 	/**
 	 * Designates that a given roomid represents a room which no longer
 	 * belongs to one of this areas children.
 	 * @param roomID a roomid for a former room
 	 */
 	public void delMetroRoomnumber(String roomID);
+
 	/**
 	 * Returns a count of all cached rooms that belong to this area, or to a child
 	 * area, which have been loaded.
 	 * @return the count of rooms in this metro area
 	 */
 	public int metroSize();
+
 	/**
 	 * Returns whether the given Area object is either THIS area, a child of this
 	 * area, or a decendent.
@@ -353,12 +397,14 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return whether the Area is downward-kin
 	 */
 	public boolean inMyMetroArea(Area A);
+
 	/**
 	 * Returns a random room from this area, or one of its children, loading it if necessary.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return a random Room object from this or a child area
 	 */
 	public Room getRandomMetroRoom();
+
 	/**
 	 * Generates a new RoomID for a new Room in this area.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
@@ -367,14 +413,16 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return a generated new RoomID for the new Room
 	 */
 	public String getNewRoomID(Room startRoom, int direction);
+
 	/**
 	 * Area Flags, unlike flags, is a PURELY run-time set that changes depending
 	 * upon how the engine is operating on this area or its content.
 	 * This method changes the state.
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area.State
-	 * @param newState
+	 * @param newState the new state to put this entire area into
 	 */
 	public void setAreaState(State newState);
+
 	/**
 	 * Area Flags, unlike flags, is a PURELY run-time set that changes depending
 	 * upon how the engine is operating on this area or its content.
@@ -383,6 +431,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return a numeric state for this area
 	 */
 	public State getAreaState();
+
 	/**
 	 * Adds a SubOp to this area.  This must be a valid Player Name.  A Player with
 	 * this designation will have their AREA security flags activated when in this area.
@@ -390,12 +439,14 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param username a players Name
 	 */
 	public void addSubOp(String username);
+
 	/**
 	 * Removes a SubOp to this area.
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#addSubOp(String)
 	 * @param username a players Name
 	 */
 	public void delSubOp(String username);
+
 	/**
 	 * Returns whether the given player name is a SubOp to this area.  This must be
 	 * a valid Player Name.  A Player with this designation will have their
@@ -405,6 +456,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return whether the players name is on the subop list for this area
 	 */
 	public boolean amISubOp(String username);
+
 	/**
 	 * Returns a semicolon delimited list of player Names that represent the SubOp
 	 * list for this area.   A Player with this designation will have their
@@ -413,6 +465,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return a semicolon delimited list of player Names.
 	 */
 	public String getSubOpList();
+
 	/**
 	 * Sets the semicolon delimited list of player Names that represent the SubOp
 	 * list for this area.   A Player with this designation will have their
@@ -421,6 +474,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param list  a semicolon delimited list of player Names.
 	 */
 	public void setSubOpList(String list);
+
 	/**
 	 * Returns a enumeration of player Names that represent the SubOp
 	 * list for this area.   A Player with this designation will have their
@@ -428,6 +482,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return enumeration of player Names
 	 */
 	public Enumeration<String> subOps();
+
 	/**
 	 * Returns a descriptive list of statistics about this area based on a
 	 * snapshot from getAreaIStats(), which is cached after being generated.
@@ -436,6 +491,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return a user readable string describing stats about the area.
 	 */
 	public StringBuffer getAreaStats();
+
 	/**
 	 * Returns an integer array of statistics about this area based on
 	 * a snapshot generated the first time it is called.  This array is
@@ -446,6 +502,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return an array of integer statistics
 	 */
 	public int[] getAreaIStats();
+
 	/**
 	 * An enumerator list of Area objects representing the Children Areas of this
 	 * Area.
@@ -453,6 +510,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return an enumerator of Area objects
 	 */
 	public Enumeration<Area> getChildren();
+
 	/**
 	 * Returns the named Child Area object for this Area
 	 * A Child Area inherets certain behaviors and property effects from its Parents
@@ -460,6 +518,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return an Area Child object
 	 */
 	public Area getChild(String named);
+
 	/**
 	 * Returns whether the Area is a child of this Area
 	 * A Child Area inherets certain behaviors and property effects from its Parents
@@ -467,6 +526,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return whether the area is a child of this one
 	 */
 	public boolean isChild(Area area);
+
 	/**
 	 * Returns whether the Area named is a child of this Area
 	 * A Child Area inherets certain behaviors and property effects from its Parents
@@ -474,18 +534,21 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return whether the area named is a child of this one
 	 */
 	public boolean isChild(String named);
+
 	/**
 	 * Designates the given Area object as a Child of this one.
 	 * A Child Area inherets certain behaviors and property effects from its Parents
 	 * @param area an Area object
 	 */
 	public void addChild(Area area);
+
 	/**
 	 * Designates the given Area object as no longer being Child of this one.
 	 * A Child Area inherets certain behaviors and property effects from its Parents
 	 * @param area an Area object
 	 */
 	public void removeChild(Area area);
+
 	/**
 	 * Returns whether the Area named MAY BE designated as a child of this Area
 	 * A Child Area inherets certain behaviors and property effects from its Parents
@@ -493,6 +556,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return whether the Area named MAY BE designated as a child of this Area
 	 */
 	public boolean canChild(Area area);
+
 	/**
 	 * An enumerator list of Area objects representing the Parent Areas of this
 	 * Area.
@@ -500,6 +564,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return an enumerator of Area objects
 	 */
 	public Enumeration<Area> getParents();
+
 	/**
 	 * Returns the named Parent Area object for this Area
 	 * A Parent Area passes down certain behaviors and property effects to its children
@@ -507,12 +572,14 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return an Area Parent object
 	 */
 	public Area getParent(String named);
+
 	/**
 	 * Returns a Vector of all Parent Area objects to this one, recursively
 	 * A Parent Area passes down certain behaviors and property effects to its children
 	 * @return a Vector of Area objects
 	 */
 	public List<Area> getParentsRecurse();
+
 	/**
 	 * Returns whether the Area is a Parent of this Area
 	 * A Parent Area passes down certain behaviors and property effects to its children
@@ -520,6 +587,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return whether the area is a Parent of this one
 	 */
 	public boolean isParent(Area area);
+
 	/**
 	 * Returns whether the Area named is a Parent of this Area
 	 * A Parent Area passes down certain behaviors and property effects to its children
@@ -527,18 +595,21 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return whether the area named is a Parent of this one
 	 */
 	public boolean isParent(String named);
+
 	/**
 	 * Designates the given Area object as a Parent of this one.
 	 * A Parent Area passes down certain behaviors and property effects to its children
 	 * @param area an Area object
 	 */
 	public void addParent(Area area);
+
 	/**
 	 * Designates the given Area object as no longer being Parent of this one.
 	 * A Parent Area passes down certain behaviors and property effects to its children
 	 * @param area an Area object
 	 */
 	public void removeParent(Area area);
+
 	/**
 	 * Returns whether the Area named MAY BE designated as a parent of this Area
 	 * A Parent Area passes down certain behaviors and property effects to its children
@@ -670,7 +741,13 @@ public interface Area extends Economics, PhysicalAgent, Places
 			area=myArea;
 			roomIDEnumerator=area.getProperRoomnumbers().getRoomIDs();
 		}
-		@Override public boolean hasMoreElements(){return roomIDEnumerator.hasMoreElements();}
+		
+		@Override 
+		public boolean hasMoreElements()
+		{
+			return roomIDEnumerator.hasMoreElements();
+		}
+		
 		@Override
 		public Room nextElement()
 		{

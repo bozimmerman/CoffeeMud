@@ -539,7 +539,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.STAT_GENDER)));
 				text.append(CMLib.xml().convertXMLtoTag("MRACE",""+((DeadBody)E).charStats().getMyRace().ID()));
 				text.append(CMLib.xml().convertXMLtoTag("MDNAME",""+((DeadBody)E).getMobName()));
-				text.append(CMLib.xml().convertXMLtoTag("MDDESC",""+((DeadBody)E).geteMobDescription()));
+				text.append(CMLib.xml().convertXMLtoTag("MDDESC",""+((DeadBody)E).getMobDescription()));
 				text.append(CMLib.xml().convertXMLtoTag("MKNAME",""+((DeadBody)E).getKillerName()));
 				text.append(CMLib.xml().convertXMLtoTag("MTOD",""+((DeadBody)E).getTimeOfDeath()));
 				text.append(CMLib.xml().convertXMLtoTag("MKPLAY",""+((DeadBody)E).isKillerPlayer()));

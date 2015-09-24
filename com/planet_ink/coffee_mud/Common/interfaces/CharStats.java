@@ -883,8 +883,17 @@ public interface CharStats extends CMCommon, Modifiable
 					Log.errOut("CharStats","Bad coffeemud.ini charstat row, bad type: "+type);
 			}
 		}
-		private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-		public static CODES c(byte c){return insts[c];}
+		
+		private static CODES c()
+		{ 
+			return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+		}
+		
+		public static CODES c(byte c)
+		{
+			return insts[c];
+		}
+		
 		public static CODES instance()
 		{
 			CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
@@ -892,7 +901,9 @@ public interface CharStats extends CMCommon, Modifiable
 				c=new CODES();
 			return c;
 		}
-		public static void reset() {
+		
+		public static void reset() 
+		{
 			insts[Thread.currentThread().getThreadGroup().getName().charAt(0)]=null;
 			instance();
 		}
@@ -914,20 +925,26 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @return an array of the numeric codes for all base stats
 		 */
 		public int[] base() { return baseStatCodes;}
+
 		/**
 		 * Returns whether the given code is a base stat
+		 * @param code the STAT code to check
 		 * @return whether the given code is a base stat
 		 */
 		public static boolean isBASE(int code) { return c().isBaseStatCode[code];}
+
 		/**
 		 * Returns whether the given code is a base stat
+		 * @param code the STAT code to check
 		 * @return whether the given code is a base stat
 		 */
 		public boolean isBase(int code) { return isBaseStatCode[code];}
+
 		/**
 		 * Returns the code for the base code that matches the given max adj code
 		 * Returns the code for the max adj code that matches the given base code
 		 * Returns -1 if the code is not a max adj code.
+		 * @param max the MAX state adjustment code
 		 * @return the translated code
 		 */
 		public static int toMAXBASE(int max)
@@ -937,10 +954,12 @@ public interface CharStats extends CMCommon, Modifiable
 				return c.MaxBaseCrossCodes[max];
 			return -1;
 		}
+
 		/**
 		 * Returns the code for the base code that matches the given max adj code
 		 * Returns the code for the max adj code that matches the given base code
 		 * Returns -1 if the code is not a max adj code.
+		 * @param max the MAX state adjustment code
 		 * @return the translated code
 		 */
 		public int toMaxBase(int max)
@@ -1070,6 +1089,7 @@ public interface CharStats extends CMCommon, Modifiable
 		public static int[] CMMSGMAP() { return c().statCMMsgMapping;}
 		/**
 		 * Returns the CMMsg mapping of the stat
+		 * @param code the CMMsg mapping for the given stat code
 		 * @return the CMMsg mapping of the stat
 		 */
 		public static int CMMSGMAP(int code) { return c().statCMMsgMapping[code];}
@@ -1165,6 +1185,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param name space-free coded name of this stat
 		 * @param attDesc description of someone with this stat in abundance
 		 * @param cmmsgMap a CMMsg message code that saves with this stat
+		 * @param base true if the code is a base stat, false if a save or something else
 		 */
 		public void addAllStat(String abbr, String desc, String name, String attDesc, int cmmsgMap, boolean base)
 		{

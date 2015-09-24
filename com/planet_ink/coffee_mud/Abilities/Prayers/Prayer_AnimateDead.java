@@ -73,7 +73,7 @@ public class Prayer_AnimateDead extends Prayer
 			return false;
 		}
 		final String realName=body.getMobName();
-		String description=body.geteMobDescription();
+		String description=body.getMobDescription();
 		if(description.trim().length()==0)
 			description="It looks dead.";
 		else

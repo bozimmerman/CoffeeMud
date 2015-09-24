@@ -33,6 +33,7 @@ public interface ItemPossessor extends PhysicalAgent, ItemCollection
 	 * Duplicates will not be permitted.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire
 	 * @param item the item to add
+	 * @param expire the expiration argument to decide when it will get cleaned up
 	 */
 	public void addItem(Item item, Expire expire);
 

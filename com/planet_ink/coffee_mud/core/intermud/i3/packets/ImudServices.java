@@ -60,9 +60,9 @@ public interface ImudServices {
 	 * Given a I3 channel name, this method should provide
 	 * the local name for that channel.
 	 * Example:
-	 * <PRE>
+	 * 
 	 * if( cmd.equals("imud_code") ) return "intercre";
-	 * </PRE>
+	 *
 	 * @param cmd the remote name of the desired channel
 	 * @return the local channel name for a remote channel
 	 * @see #getRemoteChannel
@@ -122,9 +122,9 @@ public interface ImudServices {
 	 * Given a local channel name, returns the remote
 	 * channel name.
 	 * Example:
-	 * <PRE>
+	 * 
 	 * if( cmd.equals("intercre") ) return "imud_code";
-	 * </PRE>
+	 *
 	 * @param cmd the local name of the desired channel
 	 * @return the remote name of the specified local channel
 	 */

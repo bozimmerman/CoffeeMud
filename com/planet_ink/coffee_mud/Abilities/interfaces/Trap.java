@@ -52,6 +52,7 @@ public interface Trap extends Ability
 	 * @return true if its a bomb, false otherwise
 	 */
 	public boolean isABomb();
+
 	/**
 	 * When called, this will cause the bomb to begin its countdown
 	 * to going off, which can differ from bomb-to-bomb.
@@ -64,12 +65,14 @@ public interface Trap extends Ability
 	 * @return true if disabled, false otherwise
 	 */
 	public boolean disabled();
+
 	/**
 	 * Causes the trap to become disabled and inert.  Called
 	 * usually by thief type skills.
 	 * @see Trap#disabled()
 	 */
 	public void disable();
+
 	/**
 	 * This method causes this trap to take affect against the
 	 * given target.  The type of effect can differ from trap
@@ -78,6 +81,7 @@ public interface Trap extends Ability
 	 * @param target the target of the effect
 	 */
 	public void spring(MOB target);
+
 	/**
 	 * Returns whether this trap has already been sprung (and is
 	 * not yet reset)
@@ -85,6 +89,7 @@ public interface Trap extends Ability
 	 * @return true if it has been sprung, false otherwise.
 	 */
 	public boolean sprung();
+
 	/**
 	 * Sets the number of ticks to wait after a trap has been sprung,
 	 * before it will automatically reset for another victim.  A reset
@@ -93,6 +98,7 @@ public interface Trap extends Ability
 	 * @param reset the number of ticks between uses
 	 */
 	public void setReset(int reset);
+
 	/**
 	 * Return the number of ticks after a trap has been sprung before it
 	 * will automatically reset itself for another victim.  A value of 0
@@ -113,11 +119,13 @@ public interface Trap extends Ability
 	 * @return true if the given trapper is allowed to set this trap, false otherwise
 	 */
 	public boolean maySetTrap(MOB mob, int asLevel);
+
 	/**
 	 * Returns a sample set of the components used to make this trap.
 	 * @return a vector of item objects
 	 */
 	public List<Item> getTrapComponents();
+
 	/**
 	 * Returns whether the given trapper is currently in a position to set this
 	 * trap on the specified object.  Error messages should be delivered to the
@@ -130,6 +138,7 @@ public interface Trap extends Ability
 	 * @return true if the trapper has everything he needs to proceed, false otherwise
 	 */
 	public boolean canSetTrapOn(MOB mob, Physical P);
+
 	/**
 	 * Completed the task of setting a trap on a given object. If any materials are
 	 * required, this method will consume them.  If it is a bomb, it will still
@@ -139,9 +148,11 @@ public interface Trap extends Ability
 	 * @param P the object to set the trap on
 	 * @param trapBonus any bonus to the traps effectiveness (0 is normal)
 	 * @param qualifyingClassLevel the class-level at which the trapper qualified for this trap
+	 * @param permanent true to make the trap reset after being triggered or disarmed, false to destroy
 	 * @return the Trap object denoting the trap just added to the target object
 	 */
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean permanent);
+
 	/**
 	 * A simple display string describing the conditions necesssary to get the canSetTrapOn
 	 * method to return true.

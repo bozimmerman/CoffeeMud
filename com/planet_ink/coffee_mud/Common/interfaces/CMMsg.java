@@ -798,7 +798,7 @@ public interface CMMsg extends CMCommon
 	/**
 	 * Unserializes this message as well as it reasonably can.
 	 * It skips any trailer messages and runnables.
-	 * @See {@link CMMsg#toFlatString()}
+	 * @see CMMsg#toFlatString()
 	 * @param flat the serialized message
 	 */
 	public void parseFlatString(final String flat);
@@ -806,7 +806,7 @@ public interface CMMsg extends CMCommon
 	/**
 	 * Serializes this message as well as it reasonably can.
 	 * It skips any trailer messages and runnables.
-	 * @See {@link CMMsg#parseFlatString(String)}
+	 * @see CMMsg#parseFlatString(String)
 	 * @return the serialized message
 	 */
 	public String toFlatString();

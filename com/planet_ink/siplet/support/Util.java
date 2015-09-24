@@ -655,9 +655,9 @@ public class Util
 	/**
 	 * Returns the boolean value of a string without crashing
 	 * 
-	 * <br>
-	 * <br>
-	 * <b>Usage:</b> int num=s_bool(CMD.substring(14));
+	 * 
+	 * 
+	 * Usage: int num=s_bool(CMD.substring(14));
 	 * 
 	 * @param INT
 	 *            Boolean value of string
@@ -671,9 +671,9 @@ public class Util
 	/**
 	 * Returns the integer value of a string without crashing
 	 * 
-	 * <br>
-	 * <br>
-	 * <b>Usage:</b> int num=s_int(CMD.substring(14));
+	 * 
+	 * 
+	 * Usage: int num=s_int(CMD.substring(14));
 	 * 
 	 * @param INT
 	 *            Integer value of string
@@ -696,9 +696,9 @@ public class Util
 	/**
 	 * Returns the integer value of a string without crashing
 	 * 
-	 * <br>
-	 * <br>
-	 * <b>Usage:</b> int num=s0_int(CMD.substring(14));
+	 * 
+	 * 
+	 * Usage: int num=s0_int(CMD.substring(14));
 	 * 
 	 * @param INT
 	 *            Integer value of string
@@ -998,9 +998,9 @@ public class Util
 	/**
 	 * Returns the long value of a string without crashing
 	 * 
-	 * <br>
-	 * <br>
-	 * <b>Usage:</b> lSize =
+	 * 
+	 * 
+	 * Usage: lSize =
 	 * WebIQBase.s_long(WebIQBase.getRes(AttStatsRes,"BlobSize"));
 	 * 
 	 * @param long String to convert
@@ -1023,9 +1023,9 @@ public class Util
 	/**
 	 * Returns the double value of a string without crashing
 	 * 
-	 * <br>
-	 * <br>
-	 * <b>Usage:</b> dSize =
+	 * 
+	 * 
+	 * Usage: dSize =
 	 * WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
 	 * 
 	 * @param double String to convert
@@ -1436,9 +1436,9 @@ public class Util
 	/**
 	 * Convert an integer to its Roman Numeral equivalent
 	 * 
-	 * <br>
-	 * <br>
-	 * <b>Usage:</b> Return=MiscFunc.convertToRoman(Number)+".";
+	 * 
+	 * 
+	 * Usage: Return=MiscFunc.convertToRoman(Number)+".";
 	 * 
 	 * @param i
 	 *            Integer to convert

@@ -82,12 +82,14 @@ public class DBConnection
 	/**
 	 * construction
 	 *
-	 * <br><br><b>Usage:</b> DBConnection("","","");
+	 * Usage: DBConnection("","","");
+	 * @param parent 	the parent connections object
 	 * @param DBClass    JDBC Class
 	 * @param DBService    ODBC SERVICE
 	 * @param DBUser	ODBC LOGIN USERNAME
 	 * @param DBPass	ODBC LOGIN PASSWORD
 	 * @param DBReuse   Whether the connection can be reused.
+	 * @throws SQLException a sql error
 	 */
 	public DBConnection(DBConnections parent,
 						String DBClass,
@@ -149,7 +151,7 @@ public class DBConnection
 	/**
 	 * shut down this connection totally
 	 *
-	 * <br><br><b>Usage:</b> close()
+	 * Usage: close()
 	 */
 	public void close()
 	{
@@ -157,17 +159,20 @@ public class DBConnection
 		{
 			if(myStatement!=null)
 				myStatement.close();
-		}catch(final SQLException e){}
+		}
+		catch(final SQLException e){}
 		try
 		{
 			if(myPreparedStatement!=null)
 				myPreparedStatement.close();
-		}catch(final SQLException e){}
+		}
+		catch(final SQLException e){}
 		try
 		{
 			if(myConnection!=null)
 				myConnection.close();
-		}catch(final SQLException e){}
+		}
+		catch(final SQLException e){}
 		myConnection=null;
 		myStatement=null;
 		myPreparedStatement=null;
@@ -177,7 +182,7 @@ public class DBConnection
 	/**
 	 * set up this connection for use
 	 *
-	 * <br><br><b>Usage:</b> use("begin transaction")
+	 * Usage: use("begin transaction")
 	 * @param openerSQL    Any SQL string you'd like to send
 	 * @return boolean    The connection being used
 	 */
@@ -227,7 +232,7 @@ public class DBConnection
 	/**
 	 * set up this connection for use
 	 *
-	 * <br><br><b>Usage:</b> useEmpty()
+	 * Usage: useEmpty()
 	 * @return boolean    The connection being used
 	 */
 	public synchronized boolean useEmpty()
@@ -249,7 +254,7 @@ public class DBConnection
 	/**
 	 * set up this connection for use as a prepared statement
 	 *
-	 * <br><br><b>Usage:</b> usePrepared("SQL String")
+	 * Usage: usePrepared("SQL String")
 	 * @param SQL    Any SQL string you'd like to use
 	 * @return boolean    The connection being used
 	 */
@@ -290,7 +295,7 @@ public class DBConnection
 	 * set up this connection for use as a prepared statement
 	 * Requires an already in use connection.
 	 *
-	 * <br><br><b>Usage:</b> rePrepare("SQL String")
+	 * Usage: rePrepare("SQL String")
 	 * @param SQL    Any SQL string you'd like to use
 	 * @return boolean    The connection being used
 	 */
@@ -364,7 +369,7 @@ public class DBConnection
 	/**
 	 * report this connection as being free
 	 *
-	 * <br><br><b>Usage:</b> doneUsing("roll back");
+	 * Usage: doneUsing("roll back");
 	 * @param Closer	Any SQL string you'd like to send
 	 */
 	protected void doneUsing(String Closer)
@@ -388,9 +393,10 @@ public class DBConnection
 	/**
 	 * execute a query, returning the resultset
 	 *
-	 * <br><br><b>Usage:</b> R=query("SELECT STATEMENT");
+	 * Usage: R=query("SELECT STATEMENT");
 	 * @param queryString    SQL query-style string
 	 * @return ResultSet	The results of the query
+	 * @throws SQLException a sql error
 	 */
 	public ResultSet query(String queryString)
 		throws SQLException
@@ -437,6 +443,11 @@ public class DBConnection
 		return R;
 	}
 
+	/**
+	 * Sets all the clobs in the prepared statement to the given strings
+	 * @param vals the strings, in order
+	 * @throws SQLException a sql error
+	 */
 	public void setPreparedClobs(String[] vals) throws SQLException
 	{
 		if(getPreparedStatement()==null)
@@ -453,10 +464,11 @@ public class DBConnection
 	/**
 	 * execute an sql update, returning the status
 	 *
-	 * <br><br><b>Usage:</b> update("UPDATE STATEMENT");
+	 * Usage: update("UPDATE STATEMENT");
 	 * @param updateString    SQL update-style string
 	 * @param retryNum    a retry number
 	 * @return int    The status of the update
+	 * @throws SQLException a sql error
 	 */
 	public int update(String updateString, int retryNum)
 		throws SQLException
@@ -509,7 +521,7 @@ public class DBConnection
 	/**
 	 * returns whether this connection is ready for use
 	 *
-	 * <br><br><b>Usage:</b> ready();
+	 * Usage: ready();
 	 * @return boolean    Whether this connection is ready
 	 */
 	public boolean ready()
@@ -520,7 +532,7 @@ public class DBConnection
 	/**
 	 * returns whether this connection is in use
 	 *
-	 * <br><br><b>Usage:</b> inUse();
+	 * Usage: inUse();
 	 * @return boolean    Whether this connection is in use
 	 */
 	public boolean inUse()
@@ -531,7 +543,7 @@ public class DBConnection
 	/**
 	 * known errors should not be a reason to report a dead state
 	 *
-	 * <br><br><b>Usage:</b> clearFailures();
+	 * Usage: clearFailures();
 	 */
 	public void clearFailures()
 	{
@@ -546,7 +558,7 @@ public class DBConnection
 	/**
 	 * returns whether this connection is *probably* dead
 	 *
-	 * <br><br><b>Usage:</b> isProbablyDead();
+	 * Usage: isProbablyDead();
 	 * @return boolean    Whether this connection is probably dead
 	 */
 	public boolean isProbablyDead()
@@ -566,7 +578,7 @@ public class DBConnection
 	/**
 	 * returns whether this connection is *probably* locked up
 	 *
-	 * <br><br><b>Usage:</b> isProbablyLockedUp();
+	 * Usage: isProbablyLockedUp();
 	 * @return boolean    Whether this connection is locked up
 	 */
 	public boolean isProbablyLockedUp()
@@ -580,7 +592,7 @@ public class DBConnection
 	/**
 	 * returns an error if there was one
 	 *
-	 * <br><br><b>Usage:</b> getLastError();
+	 * Usage: getLastError();
 	 * @return String    The last error SQL string, if any
 	 */
 	public String getLastError()
@@ -594,7 +606,7 @@ public class DBConnection
 	/**
 	 * returns the prepared statement, if creates
 	 *
-	 * <br><br><b>Usage:</b> getPreparedStatement();
+	 * Usage: getPreparedStatement();
 	 * @return PreparedStatement	the prepared statement
 	 */
 	public PreparedStatement getPreparedStatement()

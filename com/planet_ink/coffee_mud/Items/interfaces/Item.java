@@ -170,6 +170,7 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	 * The resource codes are composed of an integer where the highest order bits represent
 	 * the basic material type, and the lower order bits represent the specific material type.
 	 * These codes are defined in RawMaterial interface.
+	 * @param newValue the resource code
 	 * @see RawMaterial
 	 */
 	public void setMaterial(int newValue);

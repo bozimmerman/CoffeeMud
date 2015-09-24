@@ -116,7 +116,7 @@ public class Corpse extends GenContainer implements DeadBody
 
 	@Override public String getMobName(){ return mobName;}
 	@Override public void setMobName(String newName){mobName=newName;}
-	@Override public String geteMobDescription(){return mobDesc;}
+	@Override public String getMobDescription(){return mobDesc;}
 	@Override public void setMobDescription(String newDescription){mobDesc=newDescription;}
 	@Override public boolean getMobPKFlag(){return mobPKFlag;}
 	@Override public void setMobPKFlag(boolean truefalse){mobPKFlag=truefalse;}

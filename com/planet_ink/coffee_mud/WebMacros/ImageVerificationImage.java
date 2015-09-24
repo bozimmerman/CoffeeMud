@@ -45,9 +45,9 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
   * creating an image verification PNG file that will
   * allow you to make sure that only a human can read
   * the alphanumeric values and enter them into a text
-  * field during verification. <P>
+  * field during verification.
   *
-  * Make sure that when you can <tt>getVerificationCode</tt>
+  * Make sure that when you can getVerificationCode
   * you don't encode the value in the URL or inside the
   * HTML form - otherwise, this whole excerise is pointless
   * (dummy!).

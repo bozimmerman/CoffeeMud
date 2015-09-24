@@ -145,7 +145,7 @@ public interface ShopKeeper extends Environmental, Economics
 	 * Returns the ShopKeeper DEAL_* mask describing what is sold or bought by this ShopKeeper
 	 * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_DESCS
 	 * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#setWhatIsSoldMask(long)
-	 * return the dealer type constants to the 2nd power, shifted 8 bits left
+	 * @return the dealer type constants to the 2nd power, shifted 8 bits left
 	 */
 	public long getWhatIsSoldMask();
 	/**

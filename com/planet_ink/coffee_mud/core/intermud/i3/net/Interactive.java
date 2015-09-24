@@ -34,8 +34,8 @@ import java.util.Vector;
  * This class provides an implementation of the Imaginary server
  * interactive module.  It is responsible for handling the login
  * of an individual user and processing its input as directed
- * by the server.<BR>
- * Created: 27 September 1996<BR>
+ * by the server.
+ * Created: 27 September 1996
  * Last modified: 27 September 1996
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
@@ -52,8 +52,11 @@ public abstract class Interactive implements ServerUser {
 	 * lower case.
 	 * @exception InvalidNameException thrown if the name produces an unuseable key
 	 * @param nom the visual name to create a key from
+	 * @return the new key
+	 * @throws InvalidNameException an error telling you to pick a new name
 	 */
-	static public String createKeyName(String nom) throws InvalidNameException {
+	static public String createKeyName(String nom) throws InvalidNameException 
+	{
 		final StringBuffer buff = new StringBuffer(nom.toLowerCase());
 		String key = "";
 		int i;
@@ -321,6 +324,7 @@ public abstract class Interactive implements ServerUser {
 
 	/**
 	 * Validates a user password against a random string.
+	 * @param other the password to check
 	 * @return true if the two passwords match
 	 */
 	public final boolean validatePassword(String other)
@@ -444,15 +448,16 @@ public abstract class Interactive implements ServerUser {
 	 * Provides the key name for this user.  The key name is a
 	 * play on the user name to create a unique identifier for this
 	 * user that will always work.  For example, the following
-	 * command should work for a user:<BR>
-	 * <PRE>
+	 * command should work for a user:
+	 * 
 	 * tell descartes hi!
 	 * tell deScartes hi!
 	 * tell des cartes hi!
-	 * </PRE>
+	 *
 	 * The key name thus creates a common denomenator to which a name
 	 * can be reduced for comparison.
 	 * @see #createKeyName
+	 * @return the key name
 	 */
 	public final String getKeyName()
 	{
@@ -615,7 +620,7 @@ public abstract class Interactive implements ServerUser {
  * while the server is running.  You want, however, that a command
  * be executed in a specific order.  This class therefore stuffs commands
  * into a queue when they arrive.  When the user is ready, it pulls a
- * single command off to be executed.<BR>
+ * single command off to be executed.
  * Created: 27 September 1996
  * Last modified 27 September 1996
  * @author George Reese (borg@imaginary.com)

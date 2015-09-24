@@ -35,8 +35,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /**
  * This class is thrown whenever an attempt to create
- * a bad user name is made.<BR>
- * Created: 28 September 1996<BR>
+ * a bad user name is made.
+ * Created: 28 September 1996
  * Last modified: 28 September 1996
  * @author George Reese (borg@imaginary.com)
  * @version 1.0

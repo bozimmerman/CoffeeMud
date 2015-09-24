@@ -18,9 +18,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /**
- * <p>Title: False Realities Presents FieryRoom</p>
- * <p>Description: False Realities - Discover your true destiny and change history...</p>
- * <p>Company: http://www.falserealities.com</p>
+ * Title: False Realities Presents FieryRoom
+ * Description: False Realities - Discover your true destiny and change history...
+ * Company: http://www.falserealities.com
  * @author Tulath (a.k.a.) Jeremy Vyska
  */
 @SuppressWarnings({"unchecked","rawtypes"})

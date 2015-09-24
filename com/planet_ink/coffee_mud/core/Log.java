@@ -206,7 +206,7 @@ public class Log extends java.util.logging.Logger
 	 * Optional method to determine if message is a masked
 	 * out throwable message type.
  	 *
-	 * <br><br><b>Usage:</b> if(isMaskedErrMsg(errException.getMessage()))
+	 * Usage: if(isMaskedErrMsg(errException.getMessage()))
 	 * @param str the message
 	 * @return boolean TRUE if masked out.
 	 */
@@ -226,7 +226,7 @@ public class Log extends java.util.logging.Logger
 	/**
 	 * Returns the integer value of a string without exception
  	 *
-	 * <br><br><b>Usage:</b> int num=s_int(CMD.substring(14));
+	 * Usage: int num=s_int(CMD.substring(14));
 	 * @param INT Integer value of string
 	 * @return int Integer value of the string
 	 */
@@ -339,7 +339,7 @@ public class Log extends java.util.logging.Logger
 	/**
 	 * Returns an appropriate writer for the given ON, OFF, FILE, or OWNFILE
  	 *
-	 * <br><br><b>Usage:</b> PrintWriter W=getWriter("BOTH");
+	 * Usage: PrintWriter W=getWriter("BOTH");
 	 * @param type log type
 	 * @param config log config
 	 * @return PrintWriter the writer
@@ -401,7 +401,7 @@ public class Log extends java.util.logging.Logger
 	/**
 	 * Returns an appropriate writer for the given ON, OFF, FILE, or OWNFILE
  	 *
-	 * <br><br><b>Usage:</b> PrintWriter W=makeConfig("BOTH");
+	 * Usage: PrintWriter W=makeConfig("BOTH");
 	 * @param type LogType
 	 * @param code ON, OFF, BOTH, OWNFILE, FILE
 	 * @param defaultNumberOfLogs default number of log files
@@ -479,7 +479,7 @@ public class Log extends java.util.logging.Logger
 	/**
 	 * Returns an appropriate writer for the given ON, OFF, FILE, or OWNFILE
  	 *
-	 * <br><br><b>Usage:</b> PrintWriter W=getWriter("BOTH");
+	 * Usage: PrintWriter W=getWriter("BOTH");
 	 * @param type LogType
 	 * @return PrintWriter the writer
 	 */
@@ -497,7 +497,7 @@ public class Log extends java.util.logging.Logger
 	/**
 	 * Returns an appropriate writer for the given ON, OFF, FILE, or OWNFILE
  	 *
-	 * <br><br><b>Usage:</b> PrintWriter W=getWriter("BOTH");
+	 * Usage: PrintWriter W=getWriter("BOTH");
 	 * @param type LogType
 	 * @return PrintWriter the writer
 	 */
@@ -509,7 +509,7 @@ public class Log extends java.util.logging.Logger
 	/**
 	* Reset all of the log files
 	* ON, OFF, FILE, BOTH
-	* <br><br><b>Usage:</b>  CMProps.initLog(Log.LogType.info,"ON");
+	* Usage:  CMProps.initLog(Log.LogType.info,"ON");
 	* @param type the log to set the code for
 	* @param code the code
 	*/
@@ -522,7 +522,7 @@ public class Log extends java.util.logging.Logger
 	/**
 	* Reset all of the log files
 	* ON, OFF, FILE, BOTH
-	* <br><br><b>Usage:</b>  CMProps.initLog(Log.LogType.info,"OWNFILE",20);
+	* Usage:  CMProps.initLog(Log.LogType.info,"OWNFILE",20);
 	* @param type the log to set the code for
 	* @param code the code
 	* @param numberOfLogs if code = "OWNFILE", then how many back logs to keep
@@ -574,7 +574,7 @@ public class Log extends java.util.logging.Logger
 	/**
 	* Start all of the log files in the info temp directory
 	*
-	* <br><br><b>Usage:</b>  configureLogFile("mud",5);
+	* Usage:  configureLogFile("mud",5);
 	* @param logFilePath maximum name of files
 	* @param numberOfLogs maximum number of files
 	*/
@@ -624,7 +624,7 @@ public class Log extends java.util.logging.Logger
 
 	/**
 	 * Returns number of lines in the log file, if any.
-	 * @return a number >=0
+	 * @return a number &gt;=0
 	 */
 	public final int numLines()
 	{
@@ -722,7 +722,7 @@ public class Log extends java.util.logging.Logger
 	/**
 	* Start all of the log files
 	*
-	* <br><br><b>Usage:</b>  path = getLogLocation();
+	* Usage:  path = getLogLocation();
 	* @return the string representation of the file path
 	*/
 	public final String getLogLocation()
@@ -734,7 +734,7 @@ public class Log extends java.util.logging.Logger
 	/**
 	* Will be used to create a standardized log header for file logs
  	*
-	* <br><br><b>Usage:</b> SysOutWriter.println(getLogHeader(S,LogType.info,module, message));
+	* Usage: SysOutWriter.println(getLogHeader(S,LogType.info,module, message));
 	 * @param type type of information
 	 * @param module the module name
 	 * @param message the message to print
@@ -1309,9 +1309,10 @@ public class Log extends java.util.logging.Logger
 	* Handles long exception logging entries.  Sends them to System.out,
 	* the log file, or nowhere.
  	*
-	* <br><br><b>Usage:</b> standardExOut(Thread.currentThread().getName(),message);
+	* Usage: standardExOut(Thread.currentThread().getName(),message);
 	* @param type The channel to print to
 	* @param module The module to print
+	* @param priority the priority level to give to this message
 	* @param e	The exception whose string one wishes to print
 	*/
 	public final void standardExOut(final Type type, final String module, final int priority, final Throwable e)
@@ -1341,9 +1342,10 @@ public class Log extends java.util.logging.Logger
 	* Handles error logging entries.  Sends them to System.out,
 	* the log file, or nowhere.
  	*
-	* <br><br><b>Usage:</b> shortExOut(LogType.info,Thread.currentThread().getName(),message);
+	* Usage: shortExOut(LogType.info,Thread.currentThread().getName(),message);
 	* @param type The type of channel
 	* @param module The message to print
+	* @param priority the priority level to give to this message
 	* @param e	The exception whose string one wishes to print
 	*/
 	public final void shortExOut(final Type type, final String module, final int priority, final Throwable e)
@@ -1371,7 +1373,7 @@ public class Log extends java.util.logging.Logger
 	* Handles raw info logging entries.  Sends them to System.out,
 	* the log file, or nowhere.
  	*
-	* <br><br><b>Usage:</b> rawStandardOut(LogType.info,"REQ-OUT:"+REQ);
+	* Usage: rawStandardOut(LogType.info,"REQ-OUT:"+REQ);
 	* @param type The type of message
 	* @param line The message to print
 	* @param priority The priority of the message, high is less priority, 0=always
@@ -1395,7 +1397,7 @@ public class Log extends java.util.logging.Logger
 	* Handles debug logging entries.  Sends them to System.out,
 	* the log file, or nowhere.
  	*
-	* <br><br><b>Usage:</b> standardOut(LogType.info,Thread.currentThread().getName(),message);
+	* Usage: standardOut(LogType.info,Thread.currentThread().getName(),message);
 	* @param type The type of writer
 	* @param module The file name
 	* @param msg The message to print
@@ -1421,7 +1423,7 @@ public class Log extends java.util.logging.Logger
 	* Handles debug timing entries.  Sends them to System.out,
 	* the log file, or nowhere.
  	*
-	* <br><br><b>Usage:</b> timeOut(LogType.info,Thread.currentThread().getName(),message);
+	* Usage: timeOut(LogType.info,Thread.currentThread().getName(),message);
 	* @param type Channel name
 	* @param module The file name
 	* @param msg The message to print

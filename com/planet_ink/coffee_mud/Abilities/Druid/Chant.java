@@ -82,7 +82,7 @@ public class Chant extends StdAbility
 	}
 	@Override public int classificationCode()	{ return renderedMundane?Ability.ACODE_SKILL:Ability.ACODE_CHANT;}
 
-	/** codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm */
+	// codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm
 	public int weatherQue(Room R)
 	{
 		if(R==null)

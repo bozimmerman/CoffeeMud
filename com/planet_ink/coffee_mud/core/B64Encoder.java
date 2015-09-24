@@ -3,9 +3,8 @@ package com.planet_ink.coffee_mud.core;
 /**
  * Encodes and decodes to and from Base64 notation.
  *
- * <p>
+ * 
  * Change Log:
- * </p>
  * <ul>
  *  <li>v2.0.2 - Now specifies UTF-8 encoding in places where the code fails on systems
  *   with other encodings (like EBCDIC).</li>
@@ -33,13 +32,12 @@ package com.planet_ink.coffee_mud.core;
  *  <li>v1.3.3 - Fixed I/O streams which were totally messed up.</li>
  * </ul>
  *
- * <p>
+ * 
  * I am placing this code in the Public Domain. Do with it as you will.
  * This software comes with no guarantees or warranties but with
  * plenty of well-wishing instead!
  * Please visit <a href="http://iharder.net/xmlizable">http://iharder.net/base64</a>
  * periodically to check for updates or to contribute improvements.
- * </p>
  *
  * @author Robert Harder
  * @author rob@iharder.net

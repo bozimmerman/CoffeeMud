@@ -46,7 +46,7 @@ public interface HTTPOutputConverter
 	 * @param status the status of the request (so far)
 	 * @param buffer the input buffer
 	 * @return the output buffer
-	 * @throws HTTPException
+	 * @throws HTTPException a generated http error to pass to the user
 	 */
 	public ByteBuffer convertOutput(CWConfig config, HTTPRequest request, File pageFile, HTTPStatus status, ByteBuffer buffer) throws HTTPException;
 }

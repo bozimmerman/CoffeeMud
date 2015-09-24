@@ -54,6 +54,8 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * given class level.  Usually defers to name()
 	 * @see CharClass#name()
 	 * @see CharClass#nameSet()
+	 * @param classLevel the level to look up a name for
+	 * @return the displayable name of this class
 	 */
 	public String name(int classLevel);
 
@@ -61,6 +63,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * Returns all of the displayable names of this class.  Usually defers to name()
 	 * @see CharClass#name()
 	 * @see CharClass#name(int)
+	 * @return all of the displayable names of this class
 	 */
 	public String[] nameSet();
 

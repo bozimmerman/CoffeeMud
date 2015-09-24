@@ -103,6 +103,7 @@ public class CMStrings
 	 * times over the limit is added.
 	 * @param chr1 the character to repeat
 	 * @param times the size of the string
+	 * @param limit the maximum number of repeats before xNN
 	 * @return a string of those characters
 	 */
 	public final static String repeatWithLimit(final char chr1, final int times, final int limit)
@@ -319,7 +320,7 @@ public class CMStrings
 	 * are made about these strings -- they are assumed to be uncoded ascii.
 	 * @param s the string to scrunch
 	 * @param len the maximum length of the string
-	 * @return the scrunches string, or the whole string, if < len
+	 * @return the scrunches string, or the whole string, if &lt;= len
 	 */
 	
 	public final static String scrunchWord(String s, final int len)
@@ -1320,7 +1321,7 @@ public class CMStrings
 	 * This monstrous method converts an html document into a somewhat-readable text
 	 * document for display in, for example, the text portion of an email, or in the
 	 * mud command line.  It does things like remove scripts, convert &nbsp;-like tags
-	 * to their ascii values, and converts <P>, <BR>, and <DIV> tags to CRLF.
+	 * to their ascii values, and converts &lt;P&gt;, &lt;BR&gt;, and &lt;DIV&gt; tags to CRLF.
 	 * @param finalData the stringbuilder containing the html to convert.
 	 */
 	public static void convertHtmlToText(final StringBuilder finalData)
@@ -1562,7 +1563,7 @@ public class CMStrings
 	}
 
 	/**
-	 * Strips the leading and trailing <HTML>, <HEAD>, and <BODY> tags from
+	 * Strips the leading and trailing &lt;HTML&gt;, &lt;HEAD&gt;, and &lt;BODY&gt; tags from
 	 * the given StringBuilder.
 	 * @param finalData the StringBuilder to remove leading tags from.
 	 */
@@ -2090,7 +2091,7 @@ public class CMStrings
 	 * method as $ prefixed variables are identified.
 	 * @see CMStrings#parseStringExpression(String, Map, boolean)
 	 * @param token the token substring to evaluate
-	 * @param variables the string->string map of $variables for substitution
+	 * @param variables the string to string map of $variables for substitution
 	 * @param emptyVars true if missing variables are evaluated as "", or false to throw an exception
 	 * @return the valid token object
 	 * @throws Exception thrown if emptyVars is false and a $variable is referenced but not found 
@@ -2167,7 +2168,7 @@ public class CMStrings
 	 * @see CMStrings#parseStringExpression(String, Map, boolean)
 	 * @param expression the full string expression to tokenize
 	 * @param index the index into the expression to begin tokenizing.  Is modified.
-	 * @param variables the string -> string map of $variables to substitute.
+	 * @param variables the string to string map of $variables to substitute.
 	 * @param emptyVars true if missing variables are "", and false to generate an exception
 	 * @return the next token idenfied in the expression at the index
 	 * @throws Exception a parsing error occurred, typically a missing variable
@@ -2627,13 +2628,13 @@ public class CMStrings
 
 	/**
 	 * Parses a string comparison expression and returns the result of the evaluation.  
-	 * Basic comparison operators include = > < >= <= != and IN.  
+	 * Basic comparison operators include = &gt; &lt; &gt;= &lt;= != and IN.  
 	 * The IN operator is a substring check.
 	 * Comparisons may be between string literals/variables, or numeric literals/variables.
 	 * Numeric literals and variables may be combined using +, -, *, /, and ?, where ? is
 	 * a special operator for random-number generation, which separates the lowest and highest
 	 * number in a range, inclusive. 
-	 * Conjunctions include AND & OR | and XOR. Parenthesis () may be used to group expressions.
+	 * Conjunctions include AND &amp; OR | and XOR. Parenthesis () may be used to group expressions.
 	 * NOT is a valid prefix to negate an evaluation. All checks are always case-insensitive.
 	 * Variables may be included, which are substituted at evaluation time. Variables are 
 	 * designated in the expression by prefix with $.  Variables are checked case-sensitive
@@ -3657,7 +3658,7 @@ public class CMStrings
 	/**
 	 * Look for single edits surrounded on both sides by equalities
 	 * which can be shifted sideways to align the edit to a word boundary.
-	 * e.g: The c<ins>at c</ins>ame. -> The <ins>cat </ins>came.
+	 * e.g: The c at c ame. to The cat came.
 	 * @author fraser@google.com (Neil Fraser)
 	 * @param diffs LinkedList of Diff objects.
 	 */
@@ -3929,7 +3930,7 @@ public class CMStrings
 		/*
 		 * Second pass: look for single edits surrounded on both sides by equalities
 		 * which can be shifted sideways to eliminate an equality.
-		 * e.g: A<ins>BA</ins>C -> <ins>AB</ins>AC
+		 * e.g: A<ins>BA</ins>C to <ins>AB</ins>AC
 		 */
 		boolean changes = false;
 		// Create a new iterator at the start.

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /**
  * IMC2 version 0.10 - an inter-mud communications protocol
- * Copyright (C) 1996 & 1997 Oliver Jowett <oliver@randomly.org>
+ * Copyright (C) 1996 - 1997 Oliver Jowett: oliver@randomly.org
  *
  * IMC2 Gold versions 1.00 though 2.00 are developed by MudWorld.
  * Copyright (C) 1999 - 2002 Haslage Net Electronics (Anthony R. Haslage)

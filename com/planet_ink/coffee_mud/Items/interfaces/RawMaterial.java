@@ -725,6 +725,7 @@ public interface RawMaterial extends Item
 		public int get(int x) { return allCodes[x&RESOURCE_MASK];}
 		/**
 		 * Returns the code of the names resource, or -1
+		 * @param rsc the names resource
 		 * @return the code of the names resource, or -1
 		 */
 		public static int FIND_CaseSensitive(String rsc)
@@ -739,6 +740,7 @@ public interface RawMaterial extends Item
 		}
 		/**
 		 * Returns the code of the names resource, or -1
+		 * @param rsc the names resource
 		 * @return the code of the names resource, or -1
 		 */
 		public static int FIND_IgnoreCase(String rsc)
@@ -753,6 +755,7 @@ public interface RawMaterial extends Item
 		}
 		/**
 		 * Returns the code of the names resource, or -1
+		 * @param rsc the names resource
 		 * @return the code of the names resource, or -1
 		 */
 		public static int FIND_StartsWith(String rsc)
@@ -767,6 +770,7 @@ public interface RawMaterial extends Item
 		}
 		/**
 		 * Returns whether the code is valid
+		 * @param code the resource code
 		 * @return whether the code is valid
 		 */
 		public static boolean IS_VALID(int code)
@@ -834,41 +838,49 @@ public interface RawMaterial extends Item
 		public String effect(int code) { return effects[code&RESOURCE_MASK];}
 		/**
 		 * Returns the value of the resource
+		 * @param code the resource code
 		 * @return the value of the resource
 		 */
 		public static int VALUE(int code) { return c().data[code&RESOURCE_MASK][1];}
 		/**
 		 * Returns the value of the resource
+		 * @param code the resource code
 		 * @return the value of the resource
 		 */
 		public int value(int code) { return data[code&RESOURCE_MASK][1];}
 		/**
 		 * Returns the frequency of the resource, or how rare it is.
+		 * @param code the resource code
 		 * @return the frequency of the resource
 		 */
 		public static int FREQUENCY(int code) { return c().data[code&RESOURCE_MASK][2];}
 		/**
 		 * Returns the frequency of the resource, or how rare it is.
+		 * @param code the resource code
 		 * @return the frequency of the resource
 		 */
 		public int frequency(int code) { return data[code&RESOURCE_MASK][2];}
 		/**
 		 * Returns the hardness of the resource, from 1-10
+		 * @param code the resource code
 		 * @return the hardness of the resource
 		 */
 		public static int HARDNESS(int code) { return c().data[code&RESOURCE_MASK][3];}
 		/**
 		 * Returns the hardness of the resource, from 1-10
+		 * @param code the resource code
 		 * @return the hardness of the resource
 		 */
 		public int hardness(int code) { return data[code&RESOURCE_MASK][3];}
 		/**
 		 * Returns the bouancy of the resource, from 0-20000
+		 * @param code the resource code
 		 * @return the bouancy of the resource
 		 */
 		public static int BOUANCY(int code) { return c().data[code&RESOURCE_MASK][4];}
 		/**
 		 * Returns the bouancy of the resource, from 0-20000
+		 * @param code the resource code
 		 * @return the bouancy of the resource
 		 */
 		public int bouancy(int code) { return data[code&RESOURCE_MASK][4];}

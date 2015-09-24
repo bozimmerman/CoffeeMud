@@ -630,6 +630,7 @@ public class CMClass extends ClassLoader
 	public static final Enumeration<MiscMagic>  miscMagic(){return c().miscMagic.elements();}
 	/**
 	 * An enumeration of all the stored misc Magic in this classloader for this thread
+	 * @param f the filterer to help select which ones you want
 	 * @return an enumeration of all the stored misc Magic in this classloader for this thread
 	 */
 	public static final Enumeration<MiscMagic>  miscMagic(Filterer<MiscMagic> f){return new FilteredEnumeration<MiscMagic>(c().miscMagic.elements(),f);}
@@ -640,6 +641,7 @@ public class CMClass extends ClassLoader
 	public static final Enumeration<Electronics>tech(){return c().tech.elements();}
 	/**
 	 * An enumeration of all the stored misc Tech in this classloader for this thread
+	 * @param f the filterer to help select which ones you want
 	 * @return an enumeration of all the stored misc Tech in this classloader for this thread
 	 */
 	public static final Enumeration<Electronics>tech(Filterer<Electronics> f){return new FilteredEnumeration<Electronics>(c().tech.elements(),f);}
@@ -665,6 +667,7 @@ public class CMClass extends ClassLoader
 	public static final Enumeration<Ability>	abilities(){return c().abilities.elements();}
 	/**
 	 * An enumeration of all the stored abilities in this classloader for this thread
+	 * @param f the filterer to help select which ones you want
 	 * @return an enumeration of all the stored abilities in this classloader for this thread
 	 */
 	public static final Enumeration<Ability>	abilities(Filterer<Ability> f){return new FilteredEnumeration<Ability>(c().abilities.elements(),f);}
@@ -696,91 +699,109 @@ public class CMClass extends ClassLoader
 	public static final Area		randomArea(){return c().areaTypes.elementAt((int)Math.round(Math.floor(Math.random()*(c().areaTypes.size()))));}
 	/**
 	 * Returns a new instance of a locale object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a locale object of the given ID
 	 */
 	public static final Room		getLocale(final String calledThis){ return (Room)getNewGlobal(c().locales,calledThis); }
 	/**
 	 * Returns a reference to the prototype for the library of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a reference to the prototype for the library of the given ID
 	 */
 	public static final CMLibrary   getLibrary(final String calledThis) { return (CMLibrary)getGlobal(c().libraries,calledThis); }
 	/**
 	 * Returns a new instance of a area object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a area object of the given ID
 	 */
 	public static final Area		getAreaType(final String calledThis) { return (Area)getNewGlobal(c().areaTypes,calledThis); }
 	/**
 	 * Returns a new instance of a exit object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a exit object of the given ID
 	 */
 	public static final Exit		getExit(final String calledThis) { return (Exit)getNewGlobal(c().exits,calledThis);}
 	/**
 	 * Returns a new instance of a MOB object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a MOB object of the given ID
 	 */
 	public static final MOB 		getMOB(final String calledThis) { return (MOB)getNewGlobal(c().MOBs,calledThis); }
 	/**
 	 * Returns a new instance of a weapon object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a weapon object of the given ID
 	 */
 	public static final Weapon  	getWeapon(final String calledThis) { return (Weapon)getNewGlobal(c().weapons,calledThis); }
 	/**
 	 * Returns a new instance of a clan item object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a clan item object of the given ID
 	 */
 	public static final ClanItem	getClanItem(final String calledThis) { return (ClanItem)getNewGlobal(c().clanItems,calledThis); }
 	/**
 	 * Returns a new instance of a misc magic object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a misc magic object of the given ID
 	 */
 	public static final Item		getMiscMagic(final String calledThis) { return (Item)getNewGlobal(c().miscMagic,calledThis); }
 	/**
 	 * Returns a new instance of a misc tech object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a misc tech object of the given ID
 	 */
 	public static final Item		getTech(final String calledThis) { return (Item)getNewGlobal(c().tech,calledThis);}
 	/**
 	 * Returns a new instance of a armor object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a armor object of the given ID
 	 */
 	public static final Armor   	getArmor(final String calledThis) { return (Armor)getNewGlobal(c().armor,calledThis); }
 	/**
 	 * Returns a new instance of a basic item object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a basic item object of the given ID
 	 */
 	public static final Item		getBasicItem(final String calledThis) { return (Item)getNewGlobal(c().items,calledThis); }
 	/**
 	 * Returns a new instance of a behavior object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a behavior object of the given ID
 	 */
 	public static final Behavior	getBehavior(final String calledThis) { return (Behavior)getNewGlobal(c().behaviors,calledThis); }
 	/**
 	 * Returns a new instance of a ability object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a ability object of the given ID
 	 */
 	public static final Ability 	getAbility(final String calledThis) { return (Ability)getNewGlobal(c().abilities,calledThis); }
 	/**
 	 * Returns a reference to the prototype for the char class of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a reference to the prototype for the char class of the given ID
 	 */
 	public static final CharClass   getCharClass(final String calledThis){ return (CharClass)getGlobal(c().charClasses,calledThis);}
 	/**
 	 * Returns a new instance of a common object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a common object of the given ID
 	 */
 	public static final CMCommon	getCommon(final String calledThis){return (CMCommon)getNewGlobal(c().common,calledThis);}
 	/**
 	 * Returns a reference to the prototype for the command of the given ID from your classloader
+	 * @param word the ID() of the object to return
 	 * @return a reference to the prototype for the command of the given ID
 	 */
 	public static final Command 	getCommand(final String word){return (Command)getGlobal(c().commands,word);}
 	/**
 	 * Returns a reference to the prototype for the web macro of the given ID from your classloader
+	 * @param macroName the ID() of the object to return
 	 * @return a reference to the prototype for the web macro of the given ID
 	 */
 	public static final WebMacro	getWebMacro(final String macroName){return c().webMacros.get(macroName);}
 	/**
 	 * Returns a reference to the prototype for the race of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
 	 * @return a reference to the prototype for the race of the given ID
 	 */
 	public static final Race		getRace(final String calledThis){return (Race)getGlobal(c().races,calledThis);}
@@ -840,6 +861,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of an item object of the given ID from your classloader
 	 * Will search basic, armor, weapons, misc magic, clan items, and misc tech respectively
+	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of an item object of the given ID
 	 */
 	public static Item getItem(final String calledThis)
@@ -874,6 +896,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a reference to the prototype of an item object of the given ID from your classloader
 	 * Will search basic, armor, weapons, misc magic, clan items, and misc tech respectively
+	 * @param itemID the ID() of the object to return
 	 * @return a reference to the prototype of an item object of the given ID
 	 */
 	public static final Item getItemPrototype(final String itemID)
@@ -894,6 +917,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Returns a reference to the prototype of a mob object of the given ID from your classloader
+	 * @param mobID the ID() of the object to return
 	 * @return a reference to the prototype of an mob object of the given ID
 	 */
 	public static final MOB getMOBPrototype(final String mobID)
@@ -2221,8 +2245,8 @@ public class CMClass extends ClassLoader
 	 * Attempts to load the given class, by fully qualified name. This is fun
 	 * because it will also load javascript classes, if the className ends with
 	 * .js instead of .class
-	 * This is the required version of loadClass<?> which is called
-	 * both from loadClass<?> above and from the internal function
+	 * This is the required version of loadClass&lt;?&gt; which is called
+	 * both from loadClass&lt;?&gt; above and from the internal function
 	 * FindClassFromClass.
 	 * @param className the class name
 	 * @param resolveIt true to link the class, false if this is a drill
@@ -2859,9 +2883,12 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Creates and configures a CMMsg object for use in the game
-	 * @param source @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()}
-	 * @param newAllCode @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()}
-	 * @param allMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()}
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
+	 * @param source the agent source of the action 
+	 * @param newAllCode the source, target, and others code to use
+	 * @param allMessage the source, target, and others string msg to send
 	 * @return the CMMsg Object
 	 */
 	public static final CMMsg getMsg(final MOB source, final int newAllCode, final String allMessage)
@@ -2869,44 +2896,65 @@ public class CMClass extends ClassLoader
 	
 	/**
 	 * Creates and configures a CMMsg object for use in the game
-	 * @param source @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()}
-	 * @param newAllCode @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()}
-	 * @param allMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()}
-	 * @param newValue  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#value()}
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#value()
+	 * @param source the agent source of the action 
+	 * @param newAllCode the source, target, and others code to use
+	 * @param allMessage the source, target, and others string msg to send
+	 * @param newValue the value to set on the message
 	 * @return the CMMsg Object
 	 */
 	public static final CMMsg getMsg(final MOB source, final int newAllCode, final String allMessage, final int newValue)
 	{ final CMMsg M=getMsg(); M.modify(source,newAllCode,allMessage,newValue); return M;}
+
 	/**
 	 * Creates and configures a CMMsg object for use in the game
-	 * @param source @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()}
-	 * @param target  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()}
-	 * @param newAllCode @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()}
-	 * @param allMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()}
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
+	 * @param source the agent source of the action 
+	 * @param target the target of the action 
+	 * @param newAllCode the source, target, and others code to use
+	 * @param allMessage the source, target, and others string msg to send
 	 * @return the CMMsg Object
 	 */
 	public static final CMMsg getMsg(final MOB source, final Environmental target, final int newAllCode, final String allMessage)
 	{ final CMMsg M=getMsg(); M.modify(source,target,newAllCode,allMessage); return M;}
 	/**
 	 * Creates and configures a CMMsg object for use in the game
-	 * @param source @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()}
-	 * @param target  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()}
-	 * @param tool   @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()}
-	 * @param newAllCode @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()}
-	 * @param allMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()}
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
+	 * @param source the agent source of the action 
+	 * @param target the target of the action 
+	 * @param tool the tool used by the source to do the action
+	 * @param newAllCode the source, target, and others code to use
+	 * @param allMessage the source, target, and others string msg to send
 	 * @return the CMMsg Object
 	 */
 	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newAllCode, final String allMessage)
 	{ final CMMsg M=getMsg(); M.modify(source,target,tool,newAllCode,allMessage); return M;}
 	/**
 	 * Creates and configures a CMMsg object for use in the game
-	 * @param source @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()}
-	 * @param target  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()}
-	 * @param tool   @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()}
-	 * @param newSourceCode  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()}
-	 * @param newTargetCode  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()}
-	 * @param newOthersCode  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()}
-	 * @param allMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()}
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
+	 * @param source the agent source of the action 
+	 * @param target the target of the action 
+	 * @param tool the tool used by the source to do the action
+	 * @param newSourceCode the source code for this action
+	 * @param newTargetCode the target code for this action
+	 * @param newOthersCode the others/observed code for this action
+	 * @param allMessage the source, target, and others string msg to send
 	 * @return the CMMsg Object
 	 */
 	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final int newTargetCode,
@@ -2914,29 +2962,45 @@ public class CMClass extends ClassLoader
 	{ final CMMsg M=getMsg(); M.modify(source,target,tool,newSourceCode,newTargetCode,newOthersCode,allMessage); return M;}
 	/**
 	 * Creates and configures a CMMsg object for use in the game
-	 * @param source @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()}
-	 * @param target  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()}
-	 * @param tool   @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()}
-	 * @param newSourceCode @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()}
-	 * @param sourceMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()}
-	 * @param targetMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()}
-	 * @param othersMessage  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()}
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
+	 * @param source the agent source of the action 
+	 * @param target the target of the action 
+	 * @param tool the tool used by the source to do the action
+	 * @param newAllCode the source, target, and others code to use
+	 * @param sourceMessage the action/message as seen by the source
+	 * @param targetMessage the action/message as seen by the target
+	 * @param othersMessage  the action/message as seen by everyone else
 	 * @return the CMMsg Object
 	 */
-	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final String sourceMessage,
+	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newAllCode, final String sourceMessage,
 									 final String targetMessage, final String othersMessage)
-	{ final CMMsg M=getMsg(); M.modify(source,target,tool,newSourceCode,sourceMessage,newSourceCode,targetMessage,newSourceCode,othersMessage); return M;}
+	{ final CMMsg M=getMsg(); M.modify(source,target,tool,newAllCode,sourceMessage,newAllCode,targetMessage,newAllCode,othersMessage); return M;}
 	/**
 	 * Creates and configures a CMMsg object for use in the game
-	 * @param source @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()}
-	 * @param target  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()}
-	 * @param tool   @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()}
-	 * @param newSourceCode @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()}
-	 * @param sourceMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()}
-	 * @param newTargetCode  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()}
-	 * @param targetMessage @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()}
-	 * @param newOthersCode  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()}
-	 * @param othersMessage  @see {@link com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()}
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
+	 * @param source the agent source of the action 
+	 * @param target the target of the action 
+	 * @param tool the tool used by the source to do the action
+	 * @param newSourceCode the source code for this action
+	 * @param sourceMessage the action/message as seen by the source
+	 * @param newTargetCode the target code for this action
+	 * @param targetMessage the action/message as seen by the target
+	 * @param newOthersCode the others/observed code for this action
+	 * @param othersMessage  the action/message as seen by everyone else
 	 * @return the CMMsg Object
 	 */
 	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final String sourceMessage,

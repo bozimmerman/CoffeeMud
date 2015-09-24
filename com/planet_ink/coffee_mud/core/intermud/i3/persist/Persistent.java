@@ -33,7 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-public interface Persistent {
+public interface Persistent 
+{
 	/**
 	 * The Persistent has not yet been modified since last
 	 * save or restore.
@@ -58,7 +59,7 @@ public interface Persistent {
 	 * store.  An implementation will usually call the
 	 * object's PersistentPeer method to perform the
 	 * actual save.
-	 * @exception PersistenceException thrown when an error occurs in restoring
+	 * @throws PersistenceException thrown when an error occurs in restoring
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer
 	 */
 	public abstract void restore() throws PersistenceException;
@@ -69,7 +70,7 @@ public interface Persistent {
 	 * check to see if the object has been modified and
 	 * trigger the actual saving mechanism in its
 	 * PersistentPeer implementation.
-	 * @exception PersistentPeer thrown when an error occurs in saving
+	 * @throws PersistenceException thrown when an error occurs in saving
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer
 	 */
 	public abstract void save() throws PersistenceException;

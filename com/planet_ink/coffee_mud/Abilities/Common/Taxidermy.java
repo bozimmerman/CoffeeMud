@@ -198,7 +198,7 @@ public class Taxidermy extends CraftingSkill
 		buildingI=CMClass.getItem("GenItem");
 		buildingI.basePhyStats().setWeight(woodRequired);
 		final String name=((DeadBody)I).getMobName();
-		final String desc=((DeadBody)I).geteMobDescription();
+		final String desc=((DeadBody)I).getMobDescription();
 		I.setMaterial(data[0][FOUND_CODE]);
 		buildingI.setName(L("the stuffed body of @x1",name));
 		final CharStats C=(I instanceof DeadBody)?((DeadBody)I).charStats():null;
