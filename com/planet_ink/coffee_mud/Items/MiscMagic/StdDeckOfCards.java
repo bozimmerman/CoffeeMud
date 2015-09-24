@@ -208,8 +208,10 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	{
 		if(player!=null)
 		for(int i=0;i<hands.size();i++)
+		{
 			if(hands.elementAt(i,1)==player)
 				return (HandOfCards)hands.elementAt(i,2);
+		}
 		return null;
 	}
 

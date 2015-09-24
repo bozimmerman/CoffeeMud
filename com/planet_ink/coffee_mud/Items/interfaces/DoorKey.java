@@ -30,8 +30,28 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * Represents a key-like thing that opens a door, or a chest,
+ * or anything else locked.
+ * @author Bo Zimmerman
+ */
 public interface DoorKey extends Item
 {
+	/**
+	 * Sets the "key name", which is a unique string that specifies
+	 * what this key opens.  The lock must have a matching key
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#keyName()
+	 * @see DoorKey#getKey()
+	 * @param keyName the unique key string that identifies the lock
+	 */
 	public void setKey(String keyName);
+	
+	/**
+	 * Gets the "key name", which is a unique string that specifies
+	 * what this key opens.  The lock must have a matching key
+	 * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#keyName()
+	 * @see DoorKey#setKey(String)
+	 * @return the unique key string that identifies the lock
+	 */
 	public String getKey();
 }

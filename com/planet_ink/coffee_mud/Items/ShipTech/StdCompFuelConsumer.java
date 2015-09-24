@@ -66,7 +66,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 	@Override public long containTypes(){return Container.CONTAIN_RAWMATERIALS;}
 	@Override public void setContainTypes(long containTypes){containType=CONTAIN_RAWMATERIALS;}
 	@Override public int getTicksPerFuelConsume() { return ticksPerFuelConsume; }
-	@Override public void getTicksPerFuelConsume(int tick) { ticksPerFuelConsume=tick; }
+	@Override public void setTicksPerFuelConsume(int tick) { ticksPerFuelConsume=tick; }
 	@Override public int[] getConsumedFuelTypes() { return generatedFuelTypes; }
 	@Override
 	public void setConsumedFuelType(int[] resources) {
