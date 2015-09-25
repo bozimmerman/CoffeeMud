@@ -770,7 +770,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof MusicalInstrument)
 		{
-			image=getHashedMXPImage(H,"MUSINSTR_"+MusicalInstrument.TYPE_DESC[((MusicalInstrument)O).instrumentType()]);
+			image=getHashedMXPImage(H,"MUSINSTR_"+((MusicalInstrument)O).getInstrumentTypeName());
 			if(image==null)
 				image=getHashedMXPImage(H,"MUSINSTR_*");
 		}

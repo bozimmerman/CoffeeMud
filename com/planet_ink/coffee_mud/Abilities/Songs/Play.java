@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -49,7 +50,7 @@ public class Play extends StdAbility
 	protected boolean maliciousButNotAggressiveFlag(){return false;}
 	@Override public int maxRange(){return adjustedMaxInvokerRange(2);}
 
-	protected int requiredInstrumentType(){return -1;}
+	protected InstrumentType requiredInstrumentType(){return InstrumentType.OTHER_INSTRUMENT_TYPE;}
 	protected boolean skipStandardSongInvoke(){return false;}
 	protected boolean mindAttack(){return abstractQuality()==Ability.QUALITY_MALICIOUS;}
 	protected boolean skipStandardSongTick(){return false;}
@@ -261,7 +262,7 @@ public class Play extends StdAbility
 		return true;
 	}
 
-	public static MusicalInstrument getInstrument(MOB mob, int requiredInstrumentType, boolean noisy)
+	public static MusicalInstrument getInstrument(MOB mob, InstrumentType requiredInstrumentType, boolean noisy)
 	{
 		MusicalInstrument instrument=null;
 		if((mob.riding()!=null)&&(mob.riding() instanceof MusicalInstrument))
@@ -290,10 +291,11 @@ public class Play extends StdAbility
 				mob.tell(CMLib.lang().L("You need an instrument!"));
 			return null;
 		}
-		if((requiredInstrumentType>=0)&&(instrument.instrumentType()!=requiredInstrumentType))
+		if((requiredInstrumentType!=InstrumentType.OTHER_INSTRUMENT_TYPE)
+		&&(instrument.getInstrumentType()!=requiredInstrumentType))
 		{
 			if(noisy)
-				mob.tell(CMLib.lang().L("This song can only be played on @x1.",MusicalInstrument.TYPE_DESC[requiredInstrumentType].toLowerCase()));
+				mob.tell(CMLib.lang().L("This song can only be played on @x1.",requiredInstrumentType.name().toLowerCase()));
 			return null;
 		}
 		return instrument;
@@ -427,9 +429,10 @@ public class Play extends StdAbility
 				mob.tell(L("You need an instrument!"));
 				return false;
 			}
-			if((requiredInstrumentType()>=0)&&(instrument.instrumentType()!=requiredInstrumentType()))
+			if((requiredInstrumentType()!=InstrumentType.OTHER_INSTRUMENT_TYPE)
+			&&(instrument.getInstrumentType()!=requiredInstrumentType()))
 			{
-				mob.tell(L("This song can only be played on @x1.",MusicalInstrument.TYPE_DESC[requiredInstrumentType()].toLowerCase()));
+				mob.tell(L("This song can only be played on @x1.",requiredInstrumentType().name().toLowerCase()));
 				return false;
 			}
 		}

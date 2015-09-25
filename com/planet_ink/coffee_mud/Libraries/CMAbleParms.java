@@ -2513,14 +2513,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("INSTRUMENT_TYPE","Instrmnt",PARMTYPE_CHOICES)
 				{
-					@Override public void createChoices() { createChoices(MusicalInstrument.TYPE_DESC); }
+					@Override 
+					public void createChoices() 
+					{ 
+						createChoices(MusicalInstrument.InstrumentType.valueNames()); 
+					}
 					@Override public int appliesToClass(Object o) { return (o instanceof MusicalInstrument)?5:-1;}
 					@Override public String defaultValue(){ return "DRUMS";}
 					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
 					{
 						if(I instanceof MusicalInstrument)
-							return MusicalInstrument.TYPE_DESC[((MusicalInstrument)I).instrumentType()];
+							return ((MusicalInstrument)I).getInstrumentTypeName();
 						return "0";
 					}
 				},
@@ -3092,7 +3096,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			Collections.sort(X);
 			return createChoices(X.elements());
 		}
-		public DVector createBinaryChoices(String[] S) {
+		public DVector createBinaryChoices(String[] S) 
+		{
 			if(choices != null)
 				return choices;
 			choices = createChoices(new XVector<String>(S).elements());

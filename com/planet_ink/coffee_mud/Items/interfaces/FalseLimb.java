@@ -47,8 +47,30 @@ public interface FalseLimb extends Armor
 	 * @return the racial body part code
 	 */
 	public int getBodyPartCode();
+	
+	/**
+	 * Sets the racial body part code that corresponds with the
+	 * part of the body that this false limb replaces.
+	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race#BODYPARTSTR
+	 * @param partNum the racial body part code
+	 */
 	public void setBodyPartCode(int partNum);
 
+	/**
+	 * Gets the single wear location that this limb both helps to provide,
+	 * and appears to be worn underneath other clothing.  The number
+	 * is a bit value, but not a mask of worn location bits.
+	 * @see Wearable#DEFAULT_WORN_DESCS
+	 * @return  the single wear location bit value
+	 */
 	public long getWearLocations();
+
+	/**
+	 * Sets the single wear location that this limb both helps to provide,
+	 * and appears to be worn underneath other clothing.  The number
+	 * is a bit value, but not a mask of worn location bits.
+	 * @see Wearable#DEFAULT_WORN_DESCS
+	 * @param wearPlace  the single wear location bit value
+	 */
 	public void setWearLocations(long wearPlace);
 }

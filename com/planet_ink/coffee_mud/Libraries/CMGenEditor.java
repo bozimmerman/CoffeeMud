@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ClanItem.ClanItemType;
+import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -3127,29 +3128,29 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.tell(L("@x1. Instrument Type: '@x2'.",""+showNumber,MusicalInstrument.TYPE_DESC[E.instrumentType()]));
+		mob.tell(L("@x1. Instrument Type: '@x2'.",""+showNumber,E.getInstrumentTypeName()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		boolean q=false;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
 		{
-			final String newType=mob.session().prompt(L("Enter a new type (?)\n\r:"),MusicalInstrument.TYPE_DESC[E.instrumentType()]);
+			final String newType=mob.session().prompt(L("Enter a new type (?)\n\r:"),E.getInstrumentTypeName());
 			if(newType.equals("?"))
 			{
 				final StringBuffer say=new StringBuffer("");
-				for(int i=0;i<MusicalInstrument.TYPE_DESC.length-1;i++)
-					say.append(MusicalInstrument.TYPE_DESC[i]+", ");
+				for(InstrumentType type : MusicalInstrument.InstrumentType.values())
+					say.append(type.name()+", ");
 				mob.tell(say.toString().substring(0,say.length()-2));
 				q=false;
 			}
 			else
 			{
 				q=true;
-				int newValue=-1;
-				for(int i=0;i<MusicalInstrument.TYPE_DESC.length-1;i++)
-					if(newType.equalsIgnoreCase(MusicalInstrument.TYPE_DESC[i]))
-						newValue=i;
-				if(newValue>=0)
+				InstrumentType newValue=null;
+				for(InstrumentType type : MusicalInstrument.InstrumentType.values())
+					if(newType.equalsIgnoreCase(type.name()))
+						newValue=type;
+				if(newValue != null)
 					E.setInstrumentType(newValue);
 				else
 					mob.tell(L("(no change)"));

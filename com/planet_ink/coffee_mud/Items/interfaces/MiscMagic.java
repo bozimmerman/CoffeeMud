@@ -29,6 +29,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A MiscMagic item are magical items like Pills, Potions, Wands, Rings,
+ * Scrolls, Dust and so forth.  It's mildly deprecated, but still available.
+ * @author Bo Zimmerman
+ *
+ */
 public interface MiscMagic extends Item
 {
 }

@@ -29,7 +29,18 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An InnKey is a door key that can fly back into the inventory of its
+ * shopkeeper when its time is up.
+ * @see DoorKey
+ * @author Bo Zimmerman
+ *
+ */
 public interface InnKey extends DoorKey
 {
+	/**
+	 * Return this key to its shopkeeper
+	 * @param sk the shopkeeper to return this key to.
+	 */
 	public void hangOnRack(ShopKeeper sk);
 }

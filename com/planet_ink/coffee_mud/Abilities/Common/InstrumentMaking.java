@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -294,9 +295,11 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		if(buildingI.basePhyStats().level()<1)
 			buildingI.basePhyStats().setLevel(1);
 		final String type=foundRecipe.get(RCP_TYPE);
-		for(int i=0;i<MusicalInstrument.TYPE_DESC.length;i++)
-			if(type.equalsIgnoreCase(MusicalInstrument.TYPE_DESC[i]))
-				((MusicalInstrument)buildingI).setInstrumentType(i);
+		for(InstrumentType iType : InstrumentType.values())
+		{
+			if(type.equalsIgnoreCase(iType.name()))
+				((MusicalInstrument)buildingI).setInstrumentType(iType);
+		}
 		buildingI.setSecretIdentity(getBrand(mob));
 		if(buildingI instanceof Rideable)
 		{

@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
+import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -820,13 +821,13 @@ public class ItemData extends StdWebMacro
 						return "false";
 					case INSTRUMENTTYPE: // instrument types
 						if((firstTime)&&(I instanceof MusicalInstrument))
-							old=""+((MusicalInstrument)I).instrumentType();
-						for(int r=0;r<MusicalInstrument.TYPE_DESC.length;r++)
+							old=""+((MusicalInstrument)I).getInstrumentType().ordinal();
+						for(int r=0;r<InstrumentType.values().length;r++)
 						{
 							str.append("<OPTION VALUE=\""+r+"\"");
 							if(r==CMath.s_int(old))
 								str.append(" SELECTED");
-							str.append(">"+MusicalInstrument.TYPE_DESC[r]);
+							str.append(">"+InstrumentType.values()[r].name());
 						}
 						break;
 					case ISAMMO: // is ammunition

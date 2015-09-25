@@ -30,42 +30,106 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * Musical instruments are typically used by Bard types
+ * to make their magic.  Having hard coded types allows
+ * skills and such to do thing based on these types.
+ * @author Bo Zimmerman
+ */
 public interface MusicalInstrument extends Item
 {
-	public static final int TYPE_CLARINETS=0;
-	public static final int TYPE_CYMBALS=1;
-	public static final int TYPE_DRUMS=2;
-	public static final int TYPE_FLUTES=3;
-	public static final int TYPE_GUITARS=4;
-	public static final int TYPE_HARMONICAS=5;
-	public static final int TYPE_HARPS=6;
-	public static final int TYPE_HORNS=7;
-	public static final int TYPE_OBOES=8;
-	public static final int TYPE_ORGANS=9;
-	public static final int TYPE_PIANOS=10;
-	public static final int TYPE_TROMBONES=11;
-	public static final int TYPE_TRUMPETS=12;
-	public static final int TYPE_TUBAS=13;
-	public static final int TYPE_VIOLINS=14;
-	public static final int TYPE_WOODS=15;
-	public static final int TYPE_XYLOPHONES=16;
-	public static final String[] TYPE_DESC={"CLARINETS",
-											"CYMBALS",
-											"DRUMS",
-											"FLUTES",
-											"GUITARS",
-											"HARMONICAS",
-											"HARPS",
-											"HORNS",
-											"OBOES",
-											"ORGANS",
-											"PIANOS",
-											"TROMBONES",
-											"TRUMPETS",
-											"TUBAS",
-											"VIOLINS",
-											"WOODS",
-											"XYLOPHONES"};
-	public int instrumentType();
-	public void setInstrumentType(int type);
+	/**
+	 * The enum of instrument types.  These are general
+	 * categories of instruments, so hopefully nothing is
+	 * missing.  They are used by skills to identify an
+	 * instrument category.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum InstrumentType
+	{
+		CLARINETS,
+		CYMBALS,
+		DRUMS,
+		FLUTES,
+		GUITARS,
+		HARMONICAS,
+		HARPS,
+		HORNS,
+		OBOES,
+		ORGANS,
+		PIANOS,
+		TROMBONES,
+		TRUMPETS,
+		TUBAS,
+		VIOLINS,
+		WOODS,
+		XYLOPHONES,
+		OTHER_INSTRUMENT_TYPE
+		;
+		private static String[] valueNames = null;
+		public static String[] valueNames()
+		{
+			if(valueNames != null)
+			{
+				return valueNames;
+			}
+			valueNames = new String[InstrumentType.values().length];
+			int i=0;
+			for(InstrumentType type : InstrumentType.values())
+				valueNames[i++] = type.name();
+			return valueNames;
+		}
+	}
+	
+	/**
+	 * Returns the instrument type of this instrument
+	 * @see InstrumentType
+	 * @see MusicalInstrument#setInstrumentType(InstrumentType)
+	 * @see MusicalInstrument#setInstrumentType(String)
+	 * @see MusicalInstrument#setInstrumentType(int)
+	 * @return the instrument type enum object of this instrument
+	 */
+	public InstrumentType getInstrumentType();
+	
+	
+	/**
+	 * Returns the instrument type name of this instrument
+	 * @see InstrumentType
+	 * @see MusicalInstrument#setInstrumentType(InstrumentType)
+	 * @see MusicalInstrument#setInstrumentType(String)
+	 * @see MusicalInstrument#setInstrumentType(int)
+	 * @return the instrument type name of this instrument
+	 */
+	public String getInstrumentTypeName();
+	
+	/**
+	 * Sets the instrument type of this instrument
+	 * @see InstrumentType
+	 * @see MusicalInstrument#setInstrumentType(InstrumentType)
+	 * @see MusicalInstrument#setInstrumentType(String)
+	 * @see MusicalInstrument#setInstrumentType(int)
+	 * @param type the instrument type enum object of this instrument
+	 */
+	public void setInstrumentType(InstrumentType type);
+	
+	/**
+	 * Sets the instrument type of this instrument
+	 * @see InstrumentType
+	 * @see MusicalInstrument#setInstrumentType(InstrumentType)
+	 * @see MusicalInstrument#setInstrumentType(String)
+	 * @see MusicalInstrument#setInstrumentType(int)
+	 * @param typeName the instrument type name for this instrument
+	 */
+	public void setInstrumentType(String typeName);
+	
+	/**
+	 * Sets the instrument type of this instrument
+	 * @see InstrumentType
+	 * @see MusicalInstrument#setInstrumentType(InstrumentType)
+	 * @see MusicalInstrument#setInstrumentType(String)
+	 * @see MusicalInstrument#setInstrumentType(int)
+	 * @param typeOrdinal the instrument ordinal of this instrument
+	 */
+	public void setInstrumentType(int typeOrdinal);
 }

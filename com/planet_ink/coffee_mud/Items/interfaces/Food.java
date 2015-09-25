@@ -30,10 +30,46 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The food interface is for items for items that can be targeted with the
+ * EAT command, and which provide nourishment that reduces hunger. 
+ * @author Bo Zimmerman
+ */
 public interface Food extends Item, Decayable
 {
+	/**
+	 * Gets the total amount of nourishment contained in this food item.
+	 * These are divided by the eat command into bites.
+	 * @see Food#bite()
+	 * @see Food#setNourishment(int)
+	 * @return total amount of nourishment contained in this food item.
+	 */
 	public int nourishment();
+	
+	/**
+	 * Sets the total amount of nourishment contained in this food item.
+	 * These are divided by the eat command into bites.
+	 * @see Food#bite()
+	 * @see Food#setNourishment(int)
+	 * @param amount total amount of nourishment contained in this food item.
+	 */
 	public void setNourishment(int amount);
+	
+	/**
+	 * Gets the size of an individual bite, which is basically how my nourishment
+	 * you get from each eat command.  A food item generally disappears after
+	 * its nourishment is used by by bites.
+	 * @see Food#nourishment()
+	 * @return the size of an individual bite
+	 */
 	public int bite();
+	
+	/**
+	 * Sets the size of an individual bite, which is basically how my nourishment
+	 * you get from each eat command.  A food item generally disappears after
+	 * its nourishment is used by by bites.
+	 * @see Food#nourishment()
+	 * @param mount the size of an individual bite
+	 */
 	public void setBite(int amount);
 }

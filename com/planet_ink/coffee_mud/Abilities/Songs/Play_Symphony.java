@@ -77,9 +77,9 @@ public class Play_Symphony extends Play
 		if(toDoCode>0)
 			return toDoCode;
 		final int ilvl=instrument.phyStats().level();
-		switch(instrument.instrumentType())
+		switch(instrument.getInstrumentType())
 		{
-		case 0: //"CLARINETS",
+		case CLARINETS:
 		{
 			if(ilvl<=2)
 			{
@@ -117,7 +117,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 1: //"CYMBALS",
+		case CYMBALS:
 		{
 			if(ilvl<=2)
 			{
@@ -154,7 +154,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 2: //"DRUMS",
+		case DRUMS:
 		{
 			if(ilvl<=3)
 			{
@@ -198,7 +198,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 3: //"FLUTES",
+		case FLUTES:
 		{
 			if(ilvl<=1)
 			{
@@ -236,7 +236,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 4: //"GUITARS",
+		case GUITARS:
 		{
 			if(ilvl<=4)
 			{
@@ -280,13 +280,13 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 5: //"HARMONICAS",
+		case HARMONICAS:
 		{
 			toDoCode=CODE_UPENVPER5;
 			toDoString="D";
 			break;
 		}
-		case 6: //"HARPS",
+		case HARPS:
 		{
 			if(ilvl<=3)
 			{
@@ -300,7 +300,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 7: //"HORNS",
+		case HORNS:
 		{
 			if(ilvl<=4)
 			{
@@ -314,7 +314,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 8: //"OBOES",
+		case OBOES:
 		{
 			if(ilvl<=4)
 			{
@@ -358,7 +358,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 9: //"ORGANS",
+		case ORGANS:
 		{
 			if(ilvl<=22)
 			{
@@ -384,7 +384,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 10: //"PIANOS",
+		case PIANOS:
 		{
 			if(ilvl<=18)
 			{
@@ -410,7 +410,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 11: //"TROMBONES",
+		case TROMBONES:
 		{
 			if(ilvl<=8)
 			{
@@ -436,7 +436,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 12: //"TRUMPETS",
+		case TRUMPETS:
 		{
 			if(ilvl<=9)
 			{
@@ -456,7 +456,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 13: //"TUBAS",
+		case TUBAS:
 		{
 			if(ilvl<=7)
 			{
@@ -494,7 +494,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 14: //"VIOLINS",
+		case VIOLINS:
 		{
 			if(ilvl<=7)
 			{
@@ -532,7 +532,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 15: //"WOODS",
+		case WOODS:
 		{
 			if(ilvl<=1)
 			{
@@ -552,7 +552,7 @@ public class Play_Symphony extends Play
 			}
 			break;
 		}
-		case 16: //"XYLOPHONES"};
+		case XYLOPHONES:
 		{
 			if(ilvl<=11)
 			{

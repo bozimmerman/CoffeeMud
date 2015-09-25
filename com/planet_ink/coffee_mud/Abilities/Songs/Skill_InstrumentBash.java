@@ -10,11 +10,11 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.MusicalInstrument.InstrumentType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 
 import java.util.*;
 
@@ -52,7 +52,7 @@ public class Skill_InstrumentBash extends BardSkill
 	{
 		if(mob!=null)
 		{
-			final Item instrument=Play.getInstrument(mob,-1,true);
+			final Item instrument=Play.getInstrument(mob,InstrumentType.OTHER_INSTRUMENT_TYPE,true);
 			if(instrument==null)
 				return Ability.QUALITY_INDIFFERENT;
 			if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
@@ -68,7 +68,7 @@ public class Skill_InstrumentBash extends BardSkill
 		if(target==null)
 			return false;
 
-		final Item instrument=Play.getInstrument(mob,-1,true);
+		final Item instrument=Play.getInstrument(mob,InstrumentType.OTHER_INSTRUMENT_TYPE,true);
 		if(instrument==null)
 			return false;
 
