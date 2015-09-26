@@ -482,35 +482,35 @@ public class StdRace implements Race
 					case 2:
 					case 3:
 					naturalWeapon.setName(L("a quick punch"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 					case 4:
 					naturalWeapon.setName(L("fingernails and teeth"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
 					break;
 					case 5:
 					naturalWeapon.setName(L("an elbow"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 					case 6:
 					naturalWeapon.setName(L("a backhand"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 					case 7:
 					naturalWeapon.setName(L("a strong jab"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 					case 8:
 					naturalWeapon.setName(L("a stinging punch"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 					case 9:
 					naturalWeapon.setName(L("a knee"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 					case 10:
 					naturalWeapon.setName(L("a head butt"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 				}
 				naturalWeapon.setUsesRemaining(1000);
@@ -834,7 +834,7 @@ public class StdRace implements Race
 				final Weapon W2=CMClass.getWeapon("GenWeapon");
 				W2.setName(W.name());
 				W2.setWeaponClassification(W.weaponClassification());
-				W2.setWeaponType(W.weaponType());
+				W2.setWeaponDamageType(W.weaponDamageType());
 				W2.basePhyStats().setDamage(W.phyStats().damage());
 				W2.basePhyStats().setAttackAdjustment(W.phyStats().attackAdjustment());
 				W2.recoverPhyStats();

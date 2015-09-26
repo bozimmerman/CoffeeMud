@@ -31,7 +31,15 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A pill is a item that bestows some magic when eaten.
+ * @author Bo Zimmerman
+ */
 public interface Pill extends Food, MiscMagic, SpellHolder
 {
+	/**
+	 * Causes the pill to bestow its magic upon the given mob
+	 * @param mob the mob that has eaten the pill
+	 */
 	public void eatIfAble(MOB mob);
 }

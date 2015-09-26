@@ -158,15 +158,15 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 			else
 			{
 				final Weapon W=(Weapon)msg.tool();
-				if((W.weaponType()==Weapon.TYPE_BASHING)
+				if((W.weaponDamageType()==Weapon.TYPE_BASHING)
 				&&(checkProtection("blunt"))
 				&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
 					msg.setValue(weaponProtection("blunt",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
-				if((W.weaponType()==Weapon.TYPE_PIERCING)
+				if((W.weaponDamageType()==Weapon.TYPE_PIERCING)
 				&&(checkProtection("pierce"))
 				&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
 					msg.setValue(weaponProtection("pierce",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
-				if((W.weaponType()==Weapon.TYPE_SLASHING)
+				if((W.weaponDamageType()==Weapon.TYPE_SLASHING)
 				&&(checkProtection("slash"))
 				&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
 					msg.setValue(weaponProtection("slash",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));

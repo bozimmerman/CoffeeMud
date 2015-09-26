@@ -71,7 +71,7 @@ public class Fighter_Behead extends FighterSkill
 			if((w==null)||(!(w instanceof Weapon)))
 				return Ability.QUALITY_INDIFFERENT;
 			ww=(Weapon)w;
-			if(ww.weaponType()!=Weapon.TYPE_SLASHING)
+			if(ww.weaponDamageType()!=Weapon.TYPE_SLASHING)
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
@@ -116,7 +116,7 @@ public class Fighter_Behead extends FighterSkill
 				return false;
 			}
 			ww=(Weapon)w;
-			if(ww.weaponType()!=Weapon.TYPE_SLASHING)
+			if(ww.weaponDamageType()!=Weapon.TYPE_SLASHING)
 			{
 				mob.tell(L("You cannot behead with a @x1!",ww.name()));
 				return false;

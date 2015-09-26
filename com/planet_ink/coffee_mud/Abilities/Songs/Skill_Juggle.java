@@ -317,9 +317,9 @@ public class Skill_Juggle extends BardSkill
 								w.setWeaponClassification(Weapon.CLASS_THROWN);
 								w.setRanges(0,10);
 								if(I instanceof Weapon)
-									w.setWeaponType(((Weapon)I).weaponType());
+									w.setWeaponDamageType(((Weapon)I).weaponDamageType());
 								else
-									w.setWeaponType(Weapon.TYPE_BASHING);
+									w.setWeaponDamageType(Weapon.TYPE_BASHING);
 								w.basePhyStats().setDamage(CMLib.dice().roll(1,adjustedLevel(mob,0),0));
 								w.basePhyStats().setWeight(I.basePhyStats().weight());
 								w.recoverPhyStats();

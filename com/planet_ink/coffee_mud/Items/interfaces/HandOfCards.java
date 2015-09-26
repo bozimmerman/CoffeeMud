@@ -218,7 +218,7 @@ public interface HandOfCards extends Container
 	 * A bit code is as described in PlayingCard.java
 	 * @see PlayingCard#getBitEncodedValue()
 	 * @param cardBitCode the card bit code
-	 * @return
+	 * @return true if one was found, false otherwise
 	 */
 	public boolean containsAtLeastOneOfSuit(int cardBitCode);
 

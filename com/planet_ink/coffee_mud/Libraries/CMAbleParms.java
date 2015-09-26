@@ -2587,7 +2587,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					@Override public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
 					@Override public void createChoices() { createChoices(Weapon.TYPE_DESCS);}
-					@Override public String convertFromItem(final ItemCraftor A, final Item I){ return (I instanceof Weapon) ? Weapon.TYPE_DESCS[((Weapon)I).weaponType()] : ""; }
+					@Override public String convertFromItem(final ItemCraftor A, final Item I){ return (I instanceof Weapon) ? Weapon.TYPE_DESCS[((Weapon)I).weaponDamageType()] : ""; }
 					@Override public String defaultValue(){ return "BASHING";}
 				},
 				new AbilityParmEditorImpl("ATTACK_MODIFICATION","Att.",PARMTYPE_NUMBER)

@@ -87,7 +87,7 @@ public class GreatFish extends GiantFish
 			naturalWeapon.setName(L("a heat butt"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;
 	}

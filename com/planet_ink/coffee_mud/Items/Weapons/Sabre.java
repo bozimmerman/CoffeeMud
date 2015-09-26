@@ -49,7 +49,7 @@ public class Sabre extends StdWeapon
 		baseGoldValue=15;
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
-		weaponType=TYPE_SLASHING;//?????????
+		weaponDamageType=TYPE_SLASHING;//?????????
 		weaponClassification=Weapon.CLASS_SWORD;
 	}
 

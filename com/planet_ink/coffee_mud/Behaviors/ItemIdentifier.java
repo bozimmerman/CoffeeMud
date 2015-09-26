@@ -140,7 +140,7 @@ public class ItemIdentifier extends StdBehavior
 			{
 				final Weapon w=(Weapon)I;
 				up.append("It is a "+Weapon.CLASS_DESCS[w.weaponClassification()].toLowerCase()+" weapon.\n\r");
-				up.append("It does "+Weapon.TYPE_DESCS[w.weaponType()].toLowerCase()+" damage.\n\r");
+				up.append("It does "+Weapon.TYPE_DESCS[w.weaponDamageType()].toLowerCase()+" damage.\n\r");
 			}
 			up.append(I.secretIdentity());
 			newMsg=CMClass.getMsg(observer,null,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) '@x1'^?.",up.toString()));

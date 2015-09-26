@@ -49,7 +49,7 @@ public class Rapier extends Sword
 		basePhyStats().setDamage(7);
 		baseGoldValue=15;
 		recoverPhyStats();
-		weaponType=TYPE_PIERCING;
+		weaponDamageType=TYPE_PIERCING;
 	}
 
 

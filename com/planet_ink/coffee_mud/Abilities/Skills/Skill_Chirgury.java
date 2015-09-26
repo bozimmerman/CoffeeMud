@@ -153,7 +153,7 @@ public class Skill_Chirgury extends StdSkill
 		}
 
 		ww=(Weapon)w;
-		if((ww.weaponType()!=Weapon.TYPE_PIERCING)&&(ww.weaponType()!=Weapon.TYPE_SLASHING))
+		if((ww.weaponDamageType()!=Weapon.TYPE_PIERCING)&&(ww.weaponDamageType()!=Weapon.TYPE_SLASHING))
 		{
 			mob.tell(L("You cannot perform chirurgy with a @x1!",ww.name()));
 			return false;

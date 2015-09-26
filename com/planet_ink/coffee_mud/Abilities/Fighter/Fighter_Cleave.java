@@ -106,7 +106,7 @@ public class Fighter_Cleave extends FighterSkill
 			final int damAmount=msg.value();
 
 			if((damAmount>victim.curState().getHitPoints())
-			&&(w.weaponType()==Weapon.TYPE_SLASHING)
+			&&(w.weaponDamageType()==Weapon.TYPE_SLASHING)
 			&&(w.weaponClassification()!=Weapon.CLASS_NATURAL)
 			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))

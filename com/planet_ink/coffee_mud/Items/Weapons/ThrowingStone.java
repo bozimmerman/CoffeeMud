@@ -50,7 +50,7 @@ public class ThrowingStone extends StdWeapon
 		recoverPhyStats();
 		minRange=0;
 		maxRange=3;
-		weaponType=Weapon.TYPE_BASHING;
+		weaponDamageType=Weapon.TYPE_BASHING;
 		material=RawMaterial.RESOURCE_STONE;
 		weaponClassification=Weapon.CLASS_THROWN;
 		setRawLogicalAnd(false);

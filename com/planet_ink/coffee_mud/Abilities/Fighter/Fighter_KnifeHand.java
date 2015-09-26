@@ -71,7 +71,7 @@ public class Fighter_KnifeHand extends MonkSkill
 					naturalWeapon.setName(L("a knife hand"));
 					naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 					naturalWeapon.setUsesRemaining(1000);
-					naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
 					naturalWeapon.basePhyStats().setDamage(7);
 					naturalWeapon.recoverPhyStats();
 				}

@@ -73,7 +73,7 @@ public class Spell_ResistBludgeoning extends Spell
 		&&(msg.tool() instanceof Weapon)
 		&&(msg.source().getVictim()==mob)
 		&&(msg.source().rangeToTarget()==0)
-		&&(((Weapon)msg.tool()).weaponType()==Weapon.TYPE_BASHING)
+		&&(((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_BASHING)
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()<35))
 		{

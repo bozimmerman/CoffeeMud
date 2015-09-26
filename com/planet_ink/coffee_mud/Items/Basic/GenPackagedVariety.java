@@ -87,7 +87,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	{
 		if((msg.amITarget(this)
 			||((msg.tool()==this)&&(msg.target() instanceof Container)))
-		&&((basePhyStats().ability()&ABILITY_MOBPROGRAMMATICALLY)==0)
+		&&((getPackageFlagsBitmap()&PACKAGE_FLAG_TO_ITEMS_PROGRAMMATICALLY)==0)
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_DROP)))
 		{
 			ItemPossessor possessor = owner();
@@ -113,7 +113,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	}
 
 	@Override
-	public Item getFirstItem()
+	public Item peekFirstItem()
 	{
 		if(packageText().length()==0)
 			return null;
@@ -248,5 +248,19 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	public void setNumberOfItemsInPackage(int number)
 	{
 		numberOfItemsInPackage = number;
+	}
+	
+	
+	@Override
+	public int getPackageFlagsBitmap() 
+	{
+		return basePhyStats().ability();
+	}
+
+	@Override
+	public void setPackageFlagsBitmap(int bitmap)
+	{
+		basePhyStats().setAbility(bitmap);
+		phyStats().setAbility(bitmap);
 	}
 }

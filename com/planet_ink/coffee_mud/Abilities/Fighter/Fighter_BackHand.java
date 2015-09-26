@@ -87,7 +87,7 @@ public class Fighter_BackHand extends MonkSkill
 						naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 						naturalWeapon.setUsesRemaining(1000);
 						naturalWeapon.basePhyStats().setDamage(5);
-						naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 						naturalWeapon.recoverPhyStats();
 					}
 					if(CMLib.dice().rollPercentage()>95)

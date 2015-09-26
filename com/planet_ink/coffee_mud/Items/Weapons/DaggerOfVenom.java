@@ -51,7 +51,7 @@ public class DaggerOfVenom extends Dagger
 		basePhyStats().setDamage(4);
 		material=RawMaterial.RESOURCE_STEEL;
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
-		weaponType=Weapon.TYPE_PIERCING;
+		weaponDamageType=Weapon.TYPE_PIERCING;
 		weaponClassification=Weapon.CLASS_DAGGER;
 		recoverPhyStats();
 	}

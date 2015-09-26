@@ -121,7 +121,7 @@ public class Fighter_CalledStrike extends FighterSkill
 			return false;
 		}
 		final Weapon wp=(Weapon)w;
-		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
+		if(wp.weaponDamageType()!=Weapon.TYPE_SLASHING)
 		{
 			if(!quiet)
 			mob.tell(L("You cannot amputate with @x1!",wp.name()));

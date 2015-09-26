@@ -167,7 +167,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		case Weapon.CLASS_FLAILED:
 		case Weapon.CLASS_RANGED:
 		case Weapon.CLASS_THROWN:
-			switch(((Weapon)weapon).weaponType())
+			switch(((Weapon)weapon).weaponDamageType())
 			{
 			case Weapon.TYPE_PIERCING:
 			case Weapon.TYPE_SLASHING:

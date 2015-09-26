@@ -92,7 +92,7 @@ public class GenMutingField extends GenPersonalShield
 		if((msg.tool() instanceof Electronics)
 		&& (msg.tool() instanceof Weapon)
 		&& (Math.random() >= successFactor)
-		&& (((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SONICING))
+		&& (((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_SONICING))
 		{
 			return true;
 		}

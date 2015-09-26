@@ -46,7 +46,7 @@ public class ShieldWeapon extends StdWeapon implements Shield
 		basePhyStats().setWeight(0);
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(1);
-		weaponType=Weapon.TYPE_BASHING;
+		weaponDamageType=Weapon.TYPE_BASHING;
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponClassification=Weapon.CLASS_BLUNT;
 		recoverPhyStats();
@@ -63,7 +63,7 @@ public class ShieldWeapon extends StdWeapon implements Shield
 		basePhyStats().setLevel(0);
 		basePhyStats().setWeight(0);
 		basePhyStats().setAttackAdjustment(0);
-		weaponType=Weapon.TYPE_BASHING;
+		weaponDamageType=Weapon.TYPE_BASHING;
 		recoverPhyStats();
 	}
 	public ShieldWeapon(Item shield)

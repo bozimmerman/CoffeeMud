@@ -98,7 +98,7 @@ public class Owl extends StdRace
 			naturalWeapon.setName(L("a menacing beak"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
 		}
 		return naturalWeapon;
 	}

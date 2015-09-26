@@ -2867,7 +2867,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.tell(L("@x1. Weapon Attack Type: '@x2'.",""+showNumber,Weapon.TYPE_DESCS[W.weaponType()]));
+		mob.tell(L("@x1. Weapon Attack Type: '@x2'.",""+showNumber,Weapon.TYPE_DESCS[W.weaponDamageType()]));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		boolean q=false;
@@ -2888,7 +2888,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newType.length()>0)
 					newValue=sel.indexOf(newType.toUpperCase());
 				if(newValue>=0)
-					W.setWeaponType(newValue);
+					W.setWeaponDamageType(newValue);
 				else
 					mob.tell(L("(no change)"));
 			}

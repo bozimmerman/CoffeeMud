@@ -312,9 +312,9 @@ public class Spell_Meld extends Spell
 							((AmmunitionWeapon)gc).setAmmunitionType(((AmmunitionWeapon)itemTwo).ammunitionType());
 					}
 					if(itemOne instanceof Weapon)
-						gc.setWeaponType(((Weapon)itemOne).weaponType());
+						gc.setWeaponDamageType(((Weapon)itemOne).weaponDamageType());
 					else
-						gc.setWeaponType(((Weapon)itemTwo).weaponType());
+						gc.setWeaponDamageType(((Weapon)itemTwo).weaponDamageType());
 					if(itemTwo instanceof Weapon)
 						gc.setWeaponClassification(((Weapon)itemTwo).weaponClassification());
 					else

@@ -183,7 +183,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			else
 			if(I instanceof Weapon)
 			{
-				str.append(L("\n\rWeap. Type : @x1",L(CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponType()]))));
+				str.append(L("\n\rWeap. Type : @x1",L(CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponDamageType()]))));
 				str.append(L("\n\rWeap. Class: @x1",L(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()]))));
 			}
 			else
@@ -521,7 +521,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(product instanceof PackagedItems)
 		{
 			number=((PackagedItems)product).numberOfItemsInPackage();
-			product=((PackagedItems)product).getFirstItem();
+			product=((PackagedItems)product).peekFirstItem();
 		}
 		final ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
 		if(product==null)
@@ -936,7 +936,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		int number=1;
 		if(coreSoldItem instanceof PackagedItems)
 		{
-			coreSoldItem=((PackagedItems)rawSoldItem).getFirstItem();
+			coreSoldItem=((PackagedItems)rawSoldItem).peekFirstItem();
 			number=((PackagedItems)rawSoldItem).numberOfItemsInPackage();
 		}
 		if((coreSoldItem!=null)&&(shop.doISellThis(coreSoldItem)))
@@ -1498,7 +1498,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	public boolean doISellThis(Environmental thisThang, ShopKeeper shop)
 	{
 		if(thisThang instanceof PackagedItems)
-			thisThang=((PackagedItems)thisThang).getFirstItem();
+			thisThang=((PackagedItems)thisThang).peekFirstItem();
 		if(thisThang==null)
 			return false;
 		if((thisThang instanceof Coins)

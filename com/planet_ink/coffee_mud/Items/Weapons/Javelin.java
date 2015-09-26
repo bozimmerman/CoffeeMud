@@ -52,7 +52,7 @@ public class Javelin extends StdWeapon
 		setUsesRemaining(1);
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_OAK;
-		weaponType=TYPE_PIERCING;
+		weaponDamageType=TYPE_PIERCING;
 		weaponClassification=Weapon.CLASS_THROWN;
 	}
 

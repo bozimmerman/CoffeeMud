@@ -508,7 +508,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		if(E instanceof Weapon)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("TYPE",((Weapon)E).weaponType()));
+			text.append(CMLib.xml().convertXMLtoTag("TYPE",((Weapon)E).weaponDamageType()));
 			text.append(CMLib.xml().convertXMLtoTag("CLASS",((Weapon)E).weaponClassification()));
 			text.append(CMLib.xml().convertXMLtoTag("MINR",((Weapon)E).minRange()));
 			text.append(CMLib.xml().convertXMLtoTag("MAXR",((Weapon)E).maxRange()));
@@ -2847,7 +2847,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof Weapon)
 		{
-			((Weapon)E).setWeaponType(CMLib.xml().getIntFromPieces(buf,"TYPE"));
+			((Weapon)E).setWeaponDamageType(CMLib.xml().getIntFromPieces(buf,"TYPE"));
 			((Weapon)E).setWeaponClassification(CMLib.xml().getIntFromPieces(buf,"CLASS"));
 			((Weapon)E).setRanges(CMLib.xml().getIntFromPieces(buf,"MINR"),CMLib.xml().getIntFromPieces(buf,"MAXR"));
 		}

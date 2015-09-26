@@ -113,7 +113,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 				if(msg.tool() instanceof Weapon)
 				{
 					final Weapon W=(Weapon)msg.tool();
-					int x=text.indexOf(Weapon.TYPE_DESCS[W.weaponType()]);
+					int x=text.indexOf(Weapon.TYPE_DESCS[W.weaponDamageType()]);
 					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
 						hurts=true;
 					if(CMLib.flags().isABonusItems(W))

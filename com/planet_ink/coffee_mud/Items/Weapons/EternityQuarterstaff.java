@@ -53,7 +53,7 @@ public class EternityQuarterstaff extends Quarterstaff
 		wornLogicalAnd=true;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		material=RawMaterial.RESOURCE_OAK;
-		weaponType=TYPE_BASHING;
+		weaponDamageType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;
 		recoverPhyStats();
 

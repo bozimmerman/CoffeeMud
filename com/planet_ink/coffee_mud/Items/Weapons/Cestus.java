@@ -49,7 +49,7 @@ public class Cestus extends StdWeapon
 		material=RawMaterial.RESOURCE_LEATHER;
 		baseGoldValue=5;
 		recoverPhyStats();
-		weaponType=Weapon.TYPE_PIERCING;
+		weaponDamageType=Weapon.TYPE_PIERCING;
 		weaponClassification=Weapon.CLASS_EDGED;
 
 	}

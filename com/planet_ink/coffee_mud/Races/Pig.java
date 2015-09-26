@@ -80,7 +80,7 @@ public class Pig extends StdRace
 			naturalWeapon.setName(L("a dangerous snout"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
 		}
 		return naturalWeapon;
 	}

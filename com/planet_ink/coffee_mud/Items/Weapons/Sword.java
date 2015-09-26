@@ -50,7 +50,7 @@ public class Sword extends StdWeapon
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(8);
 		recoverPhyStats();
-		weaponType=TYPE_SLASHING;
+		weaponDamageType=TYPE_SLASHING;
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponClassification=Weapon.CLASS_SWORD;
 	}

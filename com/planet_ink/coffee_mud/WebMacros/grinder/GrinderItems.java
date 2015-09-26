@@ -279,7 +279,7 @@ public class GrinderItems
 					break;
 				case WEAPONTYPE: // weapon type
 					if(I instanceof Weapon)
-						((Weapon)I).setWeaponType(CMath.s_int(old));
+						((Weapon)I).setWeaponDamageType(CMath.s_int(old));
 					break;
 				case WEAPONCLASS: // weapon class
 					if(I instanceof Weapon)

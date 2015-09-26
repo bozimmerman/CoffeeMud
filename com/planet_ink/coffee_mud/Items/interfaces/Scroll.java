@@ -31,10 +31,51 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A scroll is a piece of paper upon which magical spells are written.
+ * Scrolls can be used to learn new spells, cast spells directly off
+ * them, and copy known spells onto.
+ * @author Bo Zimmerman
+ */
 public interface Scroll extends MiscMagic, Item, SpellHolder
 {
+	/**
+	 * Causes the given mob to cast the given spell/effect
+	 * through this scroll.  This will remove the spell
+	 * from the scroll.
+	 * @param A the spell on the scroll to cast
+	 * @param mob the person reading the spell on the scroll.
+	 * @return true if the spell was cast, false otherwise
+	 */
 	public boolean useTheScroll(Ability A, MOB mob);
+	
+	/**
+	 * Checks whether the given mob was the last one to 
+	 * decipher the runes on this scroll through the Read
+	 * Magic ability, allowing them to freely read the
+	 * contents of the scroll in the future.
+	 * @see Scroll#setReadableScrollBy(String)
+	 * @param name the name of the player to check
+	 * @return true if the player has already read, false otherwise
+	 */
 	public boolean isReadableScrollBy(String name);
+	
+	/**
+	 * Sets the given mob as the last one to 
+	 * decipher the runes on this scroll through the Read
+	 * Magic ability, allowing them to freely read the
+	 * contents of the scroll in the future.
+	 * @see Scroll#isReadableScrollBy(String)
+	 * @param name the name of the player to set
+	 */
 	public void setReadableScrollBy(String name);
-	public void readIfAble(MOB mob, Scroll me, String spellName);
+	
+	/**
+	 * Reads the given spell off this scroll for the
+	 * given mob, if they are able.  Any errors will
+	 * be messaged directly to the mob.
+	 * @param mob the mob who is trying to read
+	 * @param spellName the spell the mob is trying to read
+	 */
+	public void readIfAble(MOB mob, String spellName);
 }

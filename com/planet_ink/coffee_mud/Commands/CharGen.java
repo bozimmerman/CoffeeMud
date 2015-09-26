@@ -54,7 +54,7 @@ public class CharGen extends StdCommand
 			{
 				final Weapon W=CMClass.getWeapon("GenWeapon");
 				W.setWeaponClassification(Weapon.CLASS_SWORD);
-				W.setWeaponType(Weapon.TYPE_SLASHING);
+				W.setWeaponDamageType(Weapon.TYPE_SLASHING);
 				W.setMaterial(RawMaterial.RESOURCE_STEEL);
 				W.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				W.setRawLogicalAnd(true);
@@ -70,7 +70,7 @@ public class CharGen extends StdCommand
 					break;
 				case CharClass.WEAPONS_DAGGERONLY:
 					W.setWeaponClassification(Weapon.CLASS_DAGGER);
-					W.setWeaponType(Weapon.TYPE_PIERCING);
+					W.setWeaponDamageType(Weapon.TYPE_PIERCING);
 					break;
 				case CharClass.WEAPONS_NATURAL:
 					W.setMaterial(RawMaterial.RESOURCE_OAK);
@@ -84,19 +84,19 @@ public class CharGen extends StdCommand
 				case CharClass.WEAPONS_MAGELIKE:
 					W.setMaterial(RawMaterial.RESOURCE_OAK);
 					W.setWeaponClassification(Weapon.CLASS_STAFF);
-					W.setWeaponType(Weapon.TYPE_BASHING);
+					W.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 				case CharClass.WEAPONS_ALLCLERIC:
 					if(CMLib.flags().isGood(M))
 					{
 						W.setMaterial(RawMaterial.RESOURCE_OAK);
 						W.setWeaponClassification(Weapon.CLASS_STAFF);
-						W.setWeaponType(Weapon.TYPE_BASHING);
+						W.setWeaponDamageType(Weapon.TYPE_BASHING);
 					}
 					break;
 				case CharClass.WEAPONS_FLAILONLY:
 					W.setWeaponClassification(Weapon.CLASS_FLAILED);
-					W.setWeaponType(Weapon.TYPE_BASHING);
+					W.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 				}
 				W.basePhyStats().setLevel(level);

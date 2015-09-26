@@ -32,9 +32,37 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A spell holder is an item that can contain spells for use in some
+ * way, such as a scroll, staff, wand, pills, potions, etc.
+ * @author Bo Zimmerman
+ */
 public interface SpellHolder extends Item
 {
+	/**
+	 * Returns the list of ability objects that this item contains.
+	 * @see SpellHolder#getSpellList()
+	 * @see SpellHolder#setSpellList(String)
+	 * @return the list of ability objects that this item contains
+	 */
 	public List<Ability> getSpells();
+	
+	/**
+	 * Gets the list of abilities that this item contains as
+	 * a semicolon-delimited list, with any spell arguments
+	 * in parenthesis after the spell ID. 
+	 * @see SpellHolder#setSpellList(String)
+	 * @return the list of ability names semicolon delimited
+	 */
 	public String getSpellList();
+	
+	
+	/**
+	 * Sets the list of abilities that this item contains as
+	 * a semicolon-delimited list, with any spell arguments
+	 * in parenthesis after the spell ID. 
+	 * @see SpellHolder#getSpellList()
+	 * @param list the list of ability names semicolon delimited
+	 */
 	public void setSpellList(String list);
 }

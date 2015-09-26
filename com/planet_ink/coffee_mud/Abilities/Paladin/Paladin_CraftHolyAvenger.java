@@ -125,7 +125,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		buildingI.basePhyStats().setAbility(5);
 		final Weapon w=(Weapon)buildingI;
 		w.setWeaponClassification(Weapon.CLASS_SWORD);
-		w.setWeaponType(Weapon.TYPE_SLASHING);
+		w.setWeaponDamageType(Weapon.TYPE_SLASHING);
 		w.setRanges(w.minRange(),1);
 		buildingI.setRawLogicalAnd(true);
 		Ability A=CMClass.getAbility("Prop_HaveZapper");

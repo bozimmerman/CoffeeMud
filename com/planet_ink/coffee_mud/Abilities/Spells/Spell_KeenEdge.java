@@ -81,8 +81,8 @@ public class Spell_KeenEdge extends Spell
 				&&(((Weapon)target).weaponClassification()!=Weapon.CLASS_DAGGER)
 				&&(((Weapon)target).weaponClassification()!=Weapon.CLASS_EDGED)
 				&&(((Weapon)target).weaponClassification()!=Weapon.CLASS_SWORD)
-				&&(((Weapon)target).weaponType()!=Weapon.TYPE_PIERCING)
-				&&(((Weapon)target).weaponType()!=Weapon.TYPE_SLASHING)))
+				&&(((Weapon)target).weaponDamageType()!=Weapon.TYPE_PIERCING)
+				&&(((Weapon)target).weaponDamageType()!=Weapon.TYPE_SLASHING)))
 		{
 			mob.tell(mob,target,null,L("You can't enchant <T-NAME> with a Keen Edge spell!"));
 			return false;

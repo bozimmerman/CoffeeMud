@@ -88,7 +88,7 @@ public class GreatBird extends StdRace
 			naturalWeapon.setName(L("some sharp talons"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
 		}
 		return naturalWeapon;
 	}

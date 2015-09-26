@@ -103,7 +103,7 @@ public class Fighter_Sweep extends FighterSkill
 			return false;
 		}
 		final Weapon wp=(Weapon)w;
-		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
+		if(wp.weaponDamageType()!=Weapon.TYPE_SLASHING)
 		{
 			mob.tell(L("You cannot sweep with @x1!",wp.name()));
 			return false;

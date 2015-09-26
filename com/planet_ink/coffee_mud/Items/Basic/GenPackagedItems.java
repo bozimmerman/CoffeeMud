@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -101,7 +100,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	}
 
 	@Override
-	public Item getFirstItem()
+	public Item peekFirstItem()
 	{
 		if(packageText().length()==0)
 			return null;
@@ -139,7 +138,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 			return V;
 		final int itemWeight=basePhyStats().weight()/numberOfItemsInPackage();
 		final int itemValue=baseGoldValue()/numberOfItemsInPackage();
-		final Item I=getFirstItem();
+		final Item I=peekFirstItem();
 		if(I==null)
 			return V;
 		I.recoverPhyStats();
@@ -166,5 +165,16 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	{
 		setReadableText(CMLib.xml().parseOutAngleBrackets(text));
 		CMLib.flags().setReadable(this,false);
+	}
+	
+	@Override
+	public int getPackageFlagsBitmap() 
+	{
+		return 0;
+	}
+
+	@Override
+	public void setPackageFlagsBitmap(int bitmap)
+	{
 	}
 }

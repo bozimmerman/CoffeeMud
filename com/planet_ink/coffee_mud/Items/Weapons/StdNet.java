@@ -50,7 +50,7 @@ public class StdNet extends StdWeapon
 		recoverPhyStats();
 		minRange=1;
 		maxRange=1;
-		weaponType=Weapon.TYPE_NATURAL;
+		weaponDamageType=Weapon.TYPE_NATURAL;
 		material=RawMaterial.RESOURCE_HEMP;
 		weaponClassification=Weapon.CLASS_THROWN;
 		setRawLogicalAnd(true);

@@ -60,35 +60,35 @@ public class Spirit extends Undead
 					case 2:
 					case 3:
 					naturalWeapon.setName(L("an invisible punch"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
 					break;
 					case 4:
 					naturalWeapon.setName(L("an incorporal bite"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
 					break;
 					case 5:
 					naturalWeapon.setName(L("a fading elbow"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
 					break;
 					case 6:
 					naturalWeapon.setName(L("a translucent backhand"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
 					break;
 					case 7:
 					naturalWeapon.setName(L("a strong ghostly jab"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
 					break;
 					case 8:
 					naturalWeapon.setName(L("a ghostly punch"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
 					break;
 					case 9:
 					naturalWeapon.setName(L("a translucent knee"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
 					break;
 					case 10:
 					naturalWeapon.setName(L("an otherworldly slap"));
-					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
+					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
 					break;
 				}
 				naturalWeapon.setMaterial(RawMaterial.RESOURCE_PLASMA);

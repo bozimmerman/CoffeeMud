@@ -97,6 +97,7 @@ public interface Technical
 				return "";
 			final StringBuilder str=new StringBuilder(toString());
 			for(int i=0;i<parms.length;i++)
+			{
 				if(parts[i]==null)
 					return "";
 				else
@@ -111,6 +112,7 @@ public interface Technical
 					 return "";
 				else
 					str.append(" ").append(parts[i].toString());
+			}
 			return str.toString();
 		}
 
@@ -121,6 +123,7 @@ public interface Technical
 				return null;
 			final Object[] resp=new Object[parts.length-1];
 			for(int i=0;i<parms.length;i++)
+			{
 				if(parms[i].isEnum())
 				{
 					resp[i]=CMath.s_valueOf((Class<? extends Enum>)parms[i], parts[i+1]);
@@ -168,6 +171,7 @@ public interface Technical
 					resp[i]=rebuilt.toString();
 					return resp;
 				}
+			}
 			return resp;
 		}
 

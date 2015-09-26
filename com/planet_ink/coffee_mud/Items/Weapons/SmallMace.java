@@ -48,7 +48,7 @@ public class SmallMace extends StdWeapon
 		basePhyStats().setDamage(4);
 		baseGoldValue=8;
 		recoverPhyStats();
-		weaponType=TYPE_BASHING;
+		weaponDamageType=TYPE_BASHING;
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponClassification=Weapon.CLASS_BLUNT;
 	}

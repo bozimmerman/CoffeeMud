@@ -48,7 +48,7 @@ public class GenBoffWeapon extends StdBoffWeapon
 		baseGoldValue=5;
 		properWornBitmap=Wearable.WORN_WIELD|Wearable.WORN_HELD;
 		wornLogicalAnd=false;
-		weaponType=Weapon.TYPE_BASHING;
+		weaponDamageType=Weapon.TYPE_BASHING;
 		material=RawMaterial.RESOURCE_STEEL;
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(5);
@@ -85,7 +85,7 @@ public class GenBoffWeapon extends StdBoffWeapon
 		{
 		case 0: return ""+minRange();
 		case 1: return ""+maxRange();
-		case 2: return ""+weaponType();
+		case 2: return ""+weaponDamageType();
 		case 3: return ""+weaponClassification();
 		case 4: return ammunitionType();
 		case 5: return ""+ammunitionCapacity();
@@ -103,7 +103,7 @@ public class GenBoffWeapon extends StdBoffWeapon
 		{
 		case 0: setRanges(CMath.s_parseIntExpression(val),maxRange()); break;
 		case 1: setRanges(minRange(),CMath.s_parseIntExpression(val)); break;
-		case 2: setWeaponType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS,val)); break;
+		case 2: setWeaponDamageType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS,val)); break;
 		case 3: setWeaponClassification(CMath.s_parseListIntExpression(Weapon.CLASS_DESCS,val)); break;
 		case 4: setAmmunitionType(val); break;
 		case 5: setAmmoCapacity(CMath.s_parseIntExpression(val)); break;

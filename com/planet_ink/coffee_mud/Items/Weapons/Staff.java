@@ -57,7 +57,7 @@ public class Staff extends StdWeapon implements Wand
 		wornLogicalAnd=true;
 		material=RawMaterial.RESOURCE_OAK;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
-		weaponType=TYPE_BASHING;
+		weaponDamageType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;
 		setUsesRemaining(0);
 	}

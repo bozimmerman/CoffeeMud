@@ -189,7 +189,7 @@ public class TimsItemTable extends StdWebMacro
 				{
 					final Weapon W=CMClass.getWeapon("GenWeapon");
 					W.setWeaponClassification(Weapon.CLASS_SWORD);
-					W.setWeaponType(Weapon.TYPE_SLASHING);
+					W.setWeaponDamageType(Weapon.TYPE_SLASHING);
 					W.setMaterial(material);
 					W.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 					W.setRawLogicalAnd(false);

@@ -48,8 +48,8 @@ public class Skeleton extends Undead
 			if((msg.amITarget(mob))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.tool() instanceof Weapon)
-			&&((((Weapon)msg.tool()).weaponType()==Weapon.TYPE_PIERCING)
-				||(((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SLASHING))
+			&&((((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_PIERCING)
+				||(((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_SLASHING))
 			&&(!mob.amDead()))
 			{
 				final int recovery=(int)Math.round(CMath.div((msg.value()),2.0));

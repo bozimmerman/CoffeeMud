@@ -39,7 +39,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 {
 	@Override public String ID(){    return "StdElecWeapon";}
 
-	protected int		weaponType				= Weapon.TYPE_SHOOT;
+	protected int		weaponDamageType				= Weapon.TYPE_SHOOT;
 	protected int		weaponClassification	= Weapon.CLASS_RANGED;
 	protected boolean	useExtendedMissString	= false;
 	protected int		minRange				= 0;
@@ -74,7 +74,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	// this method is the reason not to make the types an editable field; the
 	// murder-motel-like interaction between shields and weapons is finely
 	// balanced based on what this does.
-	@Override public int weaponType()
+	@Override public int weaponDamageType()
 	{
 		switch(mode)
 		{
@@ -90,7 +90,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		case MAIM:
 			return Weapon.TYPE_SLASHING;
 		default:
-			return weaponType;
+			return weaponDamageType;
 		}
 	}
 
@@ -154,7 +154,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	}
 
 	@Override public int weaponClassification(){return weaponClassification;}
-	@Override public void setWeaponType(int newType){weaponType=newType;}
+	@Override public void setWeaponDamageType(int newType){weaponDamageType=newType;}
 	@Override public void setWeaponClassification(int newClassification){weaponClassification=newClassification;}
 	@Override public TechType getTechType() { return TechType.PERSONAL_WEAPON; }
 
@@ -460,12 +460,12 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	@Override
 	public String missString()
 	{
-		return CMLib.combat().standardMissString(weaponType,weaponClassification,name(),useExtendedMissString);
+		return CMLib.combat().standardMissString(weaponDamageType,weaponClassification,name(),useExtendedMissString);
 	}
 	@Override
 	public String hitString(int damageAmount)
 	{
-		return CMLib.combat().standardHitString(weaponType, weaponClassification,damageAmount,name());
+		return CMLib.combat().standardHitString(weaponDamageType, weaponClassification,damageAmount,name());
 	}
 	@Override
 	public int minRange()

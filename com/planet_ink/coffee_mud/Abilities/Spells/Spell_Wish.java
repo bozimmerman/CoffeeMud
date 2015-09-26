@@ -252,7 +252,7 @@ public class Spell_Wish extends Spell
 			}catch(final NoSuchElementException nse){}
 
 			if(foundThang instanceof PackagedItems)
-				foundThang = ((PackagedItems)foundThang).getFirstItem();
+				foundThang = ((PackagedItems)foundThang).peekFirstItem();
 
 			if((thangsFound.size()>0)&&(foundThang!=null))
 			{
@@ -357,7 +357,7 @@ public class Spell_Wish extends Spell
 			}
 
 			if(target instanceof PackagedItems)
-				target = ((PackagedItems)target).getFirstItem();
+				target = ((PackagedItems)target).peekFirstItem();
 
 			if((target instanceof ArchonOnly)
 			||(target instanceof ClanItem))

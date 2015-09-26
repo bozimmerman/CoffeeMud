@@ -553,9 +553,9 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 					return false;
 				}
 				ww=(Weapon)w;
-				if((ww.weaponType()==Weapon.TYPE_PIERCING)
-				&&(ww.weaponType()!=Weapon.TYPE_SLASHING)
-				&&(ww.weaponType()!=Weapon.TYPE_BASHING))
+				if((ww.weaponDamageType()==Weapon.TYPE_PIERCING)
+				&&(ww.weaponDamageType()!=Weapon.TYPE_SLASHING)
+				&&(ww.weaponDamageType()!=Weapon.TYPE_BASHING))
 				{
 					mob.tell(L("You cannot break a limb with a @x1!",ww.name()));
 					return false;

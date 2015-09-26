@@ -48,7 +48,7 @@ public class Natural extends StdWeapon
 		basePhyStats.setWeight(0);
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(0);
-		weaponType=TYPE_NATURAL;
+		weaponDamageType=TYPE_NATURAL;
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_SCALES;
 		weaponClassification=Weapon.CLASS_NATURAL;

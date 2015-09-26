@@ -48,7 +48,7 @@ public class DragonClaw extends Natural
 		basePhyStats().setDamage(8);
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
-		weaponType=TYPE_SLASHING;
+		weaponDamageType=TYPE_SLASHING;
 		weaponClassification=Weapon.CLASS_NATURAL;
 	}
 

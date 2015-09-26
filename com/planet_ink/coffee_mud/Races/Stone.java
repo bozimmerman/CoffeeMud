@@ -105,7 +105,7 @@ public class Stone extends StdRace
 			naturalWeapon.setRanges(0,3);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_STONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;
 	}

@@ -49,7 +49,7 @@ public class Mace extends StdWeapon
 		basePhyStats().setDamage(7);
 		baseGoldValue=8;
 		recoverPhyStats();
-		weaponType=TYPE_BASHING;
+		weaponDamageType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_BLUNT;
 	}
 

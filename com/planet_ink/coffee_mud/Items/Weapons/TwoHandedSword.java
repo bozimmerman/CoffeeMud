@@ -51,7 +51,7 @@ public class TwoHandedSword extends Sword
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
-		weaponType=TYPE_SLASHING;
+		weaponDamageType=TYPE_SLASHING;
 	}
 
 

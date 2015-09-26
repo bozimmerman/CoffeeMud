@@ -115,7 +115,7 @@ public class Wolf extends StdRace
 			naturalWeapon.setName(L("sharp teeth"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
 		}
 		return naturalWeapon;
 	}

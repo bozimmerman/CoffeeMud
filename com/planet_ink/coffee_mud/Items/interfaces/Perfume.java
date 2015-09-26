@@ -31,10 +31,39 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A perfume item is one that can be "worn", and when worn, causes
+ * smell-message emotes to issue forth for others in the same room.
+ * @author Bo Zimmerman
+ */
 public interface Perfume
 {
-	public List<String> getSmellEmotes(Perfume me);
+	/**
+	 * Retrieves a list of the possible smell emotes when worn.
+	 * @return a list of the possible smell emotes when worn.
+	 */
+	public List<String> getSmellEmotes();
+	
+	/**
+	 * Gets the list of possible smell emotes when worn as a 
+	 * semicolon delimited list of strings.
+	 * @see Perfume#setSmellList(String)
+	 * @return the list of possible smell emotes
+	 */
 	public String getSmellList();
+	
+	/**
+	 * Sets the list of possible smell emotes when worn as a 
+	 * semicolon delimited list of strings.
+	 * @see Perfume#getSmellList()
+	 * @param list the list of possible smell emotes
+	 */
 	public void setSmellList(String list);
-	public void wearIfAble(MOB mob, Perfume me);
+	
+	/**
+	 * Causes this perfume to be "worn" on the given mob.
+	 * They will, for a time, begin emotting the smells.
+	 * @param mob the mob to wear the perfume.
+	 */
+	public void wearIfAble(MOB mob);
 }

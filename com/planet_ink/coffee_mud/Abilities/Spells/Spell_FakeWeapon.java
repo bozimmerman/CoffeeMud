@@ -64,7 +64,7 @@ public class Spell_FakeWeapon extends Spell
 			{
 				int damageType=Weapon.TYPE_BURSTING;
 				if(affected instanceof Weapon)
-					damageType=((Weapon)affected).weaponType();
+					damageType=((Weapon)affected).weaponDamageType();
 				if(msg.sourceMessage()!=null)
 					msg.setSourceMessage(CMLib.combat().replaceDamageTag(msg.sourceMessage(), msg.value(), damageType, 'S'));
 				if(msg.targetMessage()!=null)
@@ -141,49 +141,49 @@ public class Spell_FakeWeapon extends Spell
 					weapon.setDisplayText(L("a fancy sword sits here"));
 					weapon.setDescription(L("looks fit to cut something up!"));
 					weapon.setWeaponClassification(Weapon.CLASS_SWORD);
-					weapon.setWeaponType(Weapon.TYPE_SLASHING);
+					weapon.setWeaponDamageType(Weapon.TYPE_SLASHING);
 					break;
 				case 1:
 					weapon.setName(L("a sharp dagger"));
 					weapon.setDisplayText(L("a sharp dagger sits here"));
 					weapon.setDescription(L("looks fit to cut something up!"));
 					weapon.setWeaponClassification(Weapon.CLASS_DAGGER);
-					weapon.setWeaponType(Weapon.TYPE_PIERCING);
+					weapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
 					break;
 				case 2:
 					weapon.setName(L("a large mace"));
 					weapon.setDisplayText(L("a large mace sits here"));
 					weapon.setDescription(L("looks fit to whomp on something with!"));
 					weapon.setWeaponClassification(Weapon.CLASS_BLUNT);
-					weapon.setWeaponType(Weapon.TYPE_BASHING);
+					weapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 				case 3:
 					weapon.setName(L("a quarterstaff"));
 					weapon.setDisplayText(L("a quarterstaff sits here"));
 					weapon.setDescription(L("looks like a reliable weapon"));
 					weapon.setWeaponClassification(Weapon.CLASS_STAFF);
-					weapon.setWeaponType(Weapon.TYPE_BASHING);
+					weapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 				case 4:
 					weapon.setName(L("a deadly axe"));
 					weapon.setDisplayText(L("a deadly axe sits here"));
 					weapon.setDescription(L("looks fit to shop something up!"));
 					weapon.setWeaponClassification(Weapon.CLASS_AXE);
-					weapon.setWeaponType(Weapon.TYPE_SLASHING);
+					weapon.setWeaponDamageType(Weapon.TYPE_SLASHING);
 					break;
 				case 5:
 					weapon.setName(L("a large hammer"));
 					weapon.setDisplayText(L("a large hammer sits here"));
 					weapon.setDescription(L("looks fit to pound something into a pulp!"));
 					weapon.setWeaponClassification(Weapon.CLASS_HAMMER);
-					weapon.setWeaponType(Weapon.TYPE_BASHING);
+					weapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 				case 6:
 					weapon.setName(L("a large flail"));
 					weapon.setDisplayText(L("a large flail sits here"));
 					weapon.setDescription(L("looks fit to pound something into a pulp!"));
 					weapon.setWeaponClassification(Weapon.CLASS_FLAILED);
-					weapon.setWeaponType(Weapon.TYPE_BASHING);
+					weapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 				}
 				weapon.basePhyStats().setWeight(0);

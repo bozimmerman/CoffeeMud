@@ -574,7 +574,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 												&&(mob.phyStats().level()>=CMProps.getIntVar(CMProps.Int.INJMINLEVEL));
 								if(msg.tool() instanceof Weapon)
 								{
-									switch(((Weapon)msg.tool()).weaponType())
+									switch(((Weapon)msg.tool()).weaponDamageType())
 									{
 									case Weapon.TYPE_FROSTING:
 									case Weapon.TYPE_GASSING:

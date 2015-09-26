@@ -120,7 +120,7 @@ public class Chant_GrowClub extends Chant
 				newItem.recoverPhyStats();
 				newItem.setBaseValue(0);
 				newItem.setWeaponClassification(Weapon.CLASS_BLUNT);
-				newItem.setWeaponType(Weapon.TYPE_BASHING);
+				newItem.setWeaponDamageType(Weapon.TYPE_BASHING);
 				newItem.setMiscText(newItem.text());
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A good looking club grows out of a tree and drops."));

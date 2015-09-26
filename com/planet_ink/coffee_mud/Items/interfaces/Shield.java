@@ -29,6 +29,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A shield is a large flat item useful for blocking melee attacks.
+ * It has its own interface due to skills that require a shield item being held.
+ * @author Bo Zimmerman
+ *
+ */
 public interface Shield extends Item
 {
 }

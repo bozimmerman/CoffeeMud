@@ -50,7 +50,7 @@ public class StdSpear extends StdWeapon
 		recoverPhyStats();
 		minRange=0;
 		maxRange=3;
-		weaponType=Weapon.TYPE_PIERCING;
+		weaponDamageType=Weapon.TYPE_PIERCING;
 		material=RawMaterial.RESOURCE_WOOD;
 		weaponClassification=Weapon.CLASS_THROWN;
 		setRawLogicalAnd(false);

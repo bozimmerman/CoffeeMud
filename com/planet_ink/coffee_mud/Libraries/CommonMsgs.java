@@ -887,7 +887,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						response.append(L("two handed "));
 					else
 						response.append(L("one handed "));
-					response.append(L("@x1 class weapon that does @x2 damage.  ",CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)item).weaponClassification()]),CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)item).weaponType()])));
+					response.append(L("@x1 class weapon that does @x2 damage.  ",CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)item).weaponClassification()]),CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)item).weaponDamageType()])));
 				}
 				if((item instanceof AmmunitionWeapon) && ((AmmunitionWeapon)item).requiresAmmunition())
 					response.append(L("It requires ammunition of type '@x1'.  ",((AmmunitionWeapon)item).ammunitionType()));

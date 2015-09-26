@@ -36,7 +36,7 @@ import java.util.*;
 public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 {
 	@Override public String ID(){    return "StdWeapon";}
-	protected int     weaponType=TYPE_NATURAL;
+	protected int     weaponDamageType=TYPE_NATURAL;
 	protected int     weaponClassification=CLASS_NATURAL;
 	protected boolean useExtendedMissString=false;
 	protected int     minRange=0;
@@ -63,9 +63,9 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	}
 
 
-	@Override public int weaponType(){return weaponType;}
+	@Override public int weaponDamageType(){return weaponDamageType;}
 	@Override public int weaponClassification(){return weaponClassification;}
-	@Override public void setWeaponType(int newType){weaponType=newType;}
+	@Override public void setWeaponDamageType(int newType){weaponDamageType=newType;}
 	@Override public void setWeaponClassification(int newClassification){weaponClassification=newClassification;}
 
 	@Override
@@ -189,7 +189,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 		&&(msg.tool()==this)
 		&&(amWearingAt(Wearable.WORN_WIELD))
 		&&(weaponClassification()!=Weapon.CLASS_NATURAL)
-		&&(weaponType()!=Weapon.TYPE_NATURAL)
+		&&(weaponDamageType()!=Weapon.TYPE_NATURAL)
 		&&(msg.target() instanceof MOB)
 		&&((msg.value())>0)
 		&&(owner() instanceof MOB)
@@ -354,12 +354,12 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	@Override
 	public String missString()
 	{
-		return CMLib.combat().standardMissString(weaponType,weaponClassification,name(),useExtendedMissString);
+		return CMLib.combat().standardMissString(weaponDamageType,weaponClassification,name(),useExtendedMissString);
 	}
 	@Override
 	public String hitString(int damageAmount)
 	{
-		return CMLib.combat().standardHitString(weaponType, weaponClassification,damageAmount,name());
+		return CMLib.combat().standardHitString(weaponDamageType, weaponClassification,damageAmount,name());
 	}
 	@Override
 	public int minRange()

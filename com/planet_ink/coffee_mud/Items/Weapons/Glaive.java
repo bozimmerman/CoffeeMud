@@ -46,7 +46,7 @@ public class Glaive extends StdWeapon
 		basePhyStats.setWeight(8);
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(6);
-		weaponType=TYPE_SLASHING;
+		weaponDamageType=TYPE_SLASHING;
 		baseGoldValue=6;
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;

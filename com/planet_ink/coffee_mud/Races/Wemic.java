@@ -68,7 +68,7 @@ public class Wemic extends StdRace
 			naturalWeapon.setName(L("a pair of claws"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_SLASHING);
 		}
 		return naturalWeapon;
 	}

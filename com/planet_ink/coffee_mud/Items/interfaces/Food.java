@@ -69,7 +69,7 @@ public interface Food extends Item, Decayable
 	 * you get from each eat command.  A food item generally disappears after
 	 * its nourishment is used by by bites.
 	 * @see Food#nourishment()
-	 * @param mount the size of an individual bite
+	 * @param amount the size of an individual bite
 	 */
 	public void setBite(int amount);
 }

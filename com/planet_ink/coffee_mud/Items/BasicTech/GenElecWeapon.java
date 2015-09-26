@@ -71,7 +71,7 @@ public class GenElecWeapon extends StdElecWeapon
 		{
 		case 0: return ""+minRange();
 		case 1: return ""+maxRange();
-		case 2: return ""+weaponType();
+		case 2: return ""+weaponDamageType();
 		case 3: return ""+weaponClassification();
 		case 4: return ""+powerCapacity();
 		case 5: return ""+activated();
@@ -91,7 +91,7 @@ public class GenElecWeapon extends StdElecWeapon
 		{
 		case 0: setRanges(CMath.s_parseIntExpression(val),maxRange()); break;
 		case 1: setRanges(minRange(),CMath.s_parseIntExpression(val)); break;
-		case 2: setWeaponType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS,val)); break;
+		case 2: setWeaponDamageType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS,val)); break;
 		case 3: setWeaponClassification(CMath.s_parseListIntExpression(Weapon.CLASS_DESCS, val)); break;
 		case 4: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
 		case 5: activate(CMath.s_bool(val)); break;

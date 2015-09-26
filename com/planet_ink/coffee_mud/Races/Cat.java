@@ -96,7 +96,7 @@ public class Cat extends StdRace
 			naturalWeapon.setName(L("sharp claws"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
 		}
 		return naturalWeapon;
 	}

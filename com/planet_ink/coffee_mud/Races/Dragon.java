@@ -93,7 +93,7 @@ public class Dragon extends StdRace
 			naturalWeapon.setName(L("huge talons"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
 		}
 		return naturalWeapon;
 	}

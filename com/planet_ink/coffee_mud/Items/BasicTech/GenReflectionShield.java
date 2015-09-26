@@ -91,7 +91,7 @@ public class GenReflectionShield extends GenPersonalShield
 		if((msg.tool() instanceof Electronics)
 		&& (msg.tool() instanceof Weapon)
 		&& (Math.random() >= successFactor)
-		&& (((Weapon)msg.tool()).weaponType()==Weapon.TYPE_LASERING))
+		&& (((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_LASERING))
 		{
 			return true;
 		}

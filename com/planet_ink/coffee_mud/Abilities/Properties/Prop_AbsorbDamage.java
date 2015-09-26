@@ -95,7 +95,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 			if((x<0)&&(msg.tool() instanceof Weapon))
 			{
 				final Weapon W=(Weapon)msg.tool();
-				x=text.indexOf(Weapon.TYPE_DESCS[W.weaponType()]);
+				x=text.indexOf(Weapon.TYPE_DESCS[W.weaponDamageType()]);
 				if(x<0)
 					x=(CMLib.flags().isABonusItems(W))?text.indexOf("MAGIC"):-1;
 				if(x<0)

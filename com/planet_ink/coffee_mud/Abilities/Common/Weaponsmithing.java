@@ -147,11 +147,11 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 		return -1;
 	}
-	protected int specType(String weaponType)
+	protected int specType(String weaponDamageType)
 	{
 		for(int i=0;i<Weapon.TYPE_DESCS.length;i++)
 		{
-			if(Weapon.TYPE_DESCS[i].equalsIgnoreCase(weaponType))
+			if(Weapon.TYPE_DESCS[i].equalsIgnoreCase(weaponDamageType))
 				return i;
 		}
 		return -1;
@@ -439,7 +439,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			{
 				final Weapon w=(Weapon)buildingI;
 				w.setWeaponClassification(specClass(foundRecipe.get(RCP_WEAPONCLASS)));
-				w.setWeaponType(specType(foundRecipe.get(RCP_WEAPONTYPE)));
+				w.setWeaponDamageType(specType(foundRecipe.get(RCP_WEAPONTYPE)));
 				w.setRanges(w.minRange(),CMath.s_int(foundRecipe.get(RCP_MAXRANGE)));
 			}
 			if(CMath.s_int(foundRecipe.get(RCP_HANDS))==2)

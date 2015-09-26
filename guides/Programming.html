@@ -1,11 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  <title>Programming for CoffeeMud 5.8</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors -->
-</head>
+  
+  <title>Programming for CoffeeMud 5.8</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head>
+
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -110,8 +108,7 @@ Modification</a></li>
         <li><a href="#LANGS">Languages</a></li>
       </ul>
       </td>
-      <td align="left" valign="top"> <img src="images/mug.jpg"
- alt="CoffeeMud logo" />
+      <td align="left" valign="top"> <img src="images/mug.jpg" alt="CoffeeMud logo" />
       <h2><a name="overview" id="overview">Overview</a></h2>
       <p>The purpose of this document is to assist those who wish to
 add custom Items, MOBs, Behaviors, Properties, or other objects to
@@ -120,9 +117,7 @@ should be experienced with writing and compiling Java classes. The
 object oriented notions of class inheritance and polymorphism, as well
 as the Java constructs of interfaces should be at least vaguely
 familiar to you before attempting to build classes for CoffeeMud. Also,
-it is expected that all of the ideas presented in the <a
- href="ArchonGuide.html">Archons Guide</a> and <a
- href="GameBuildersGuide.html">Game Builders Guide</a>
+it is expected that all of the ideas presented in the <a href="ArchonGuide.html">Archons Guide</a> and <a href="GameBuildersGuide.html">Game Builders Guide</a>
 are completely familiar. The difference between a GenItem and a
 StdItem, or a GenMob and a GenPostman will not be explained in this
 document.</p>
@@ -2040,8 +2035,7 @@ MOB to allow you to do this, some are old and bad, and some are new and
 better. &nbsp;Lets look at the old bad ones first, because it's
 important to understand them to know why they are bad:</p>
       <pre>if(mob.session()!=null) {<br />    String s=mob.session().prompt("Enter a message number (1): ","1");<br />    if ((s.length()&gt;0)&amp;&amp;(CMath.isInteger(s))) {<br />        if(mob.session().confirm("Are you sure you want to view message #"+s+" (Y/n)?","Y")) {<br />&nbsp;&nbsp;&nbsp;         mob.session().println("Here is message #"+s);<br />&nbsp;&nbsp;&nbsp;         // .... show them the message<br />            String choice=mob.session().choose("Would you like to D)elete or K)eep this message (d/K)?","DK","K");<br />            if(choice.equals("K")) {<br />                // .... delete the message<br />&nbsp;&nbsp;&nbsp;             mob.session().println("Message #"+s+" deleted.);<br />            }<br />&nbsp;&nbsp;&nbsp;     }<br />&nbsp;&nbsp;&nbsp; }<br />}<br /></pre>
-      <p>In the above example, we check to see if the <span
- style="font-family: monospace;">session()</span> method on the MOB
+      <p>In the above example, we check to see if the <span style="font-family: monospace;">session()</span> method on the MOB
 object is non-null. &nbsp;This is important! All NPCs in your game will
 have a null-<span style="font-family: monospace;">session()</span>.
 &nbsp;Only players, who are also the only ones capable of responding to
@@ -2051,8 +2045,7 @@ the user for a message number. &nbsp;The first parameter to this method
 is the prompt to display, while the second parameter is the default
 response should the user just hit ENTER by itself. &nbsp;Next we ask
 the user to<span style="font-family: monospace;"> confirm(...) </span>that
-they really want to view that message. &nbsp;The first parameter to <span
- style="font-family: monospace;">confirm(...)</span>
+they really want to view that message. &nbsp;The first parameter to <span style="font-family: monospace;">confirm(...)</span>
 is again the message to display, while the second is either "Y" or "N",
 meaning what the default is should the user just hit ENTER. &nbsp;Last
 we ask the user to <span style="font-family: monospace;">choose(...)</span>
@@ -2073,16 +2066,12 @@ almost everything in CoffeeMud shares threads with everything else,
 which helps prevent the system from using too many or from running out
 of them. &nbsp;Sharing is good; once a piece of CoffeeMud is finished
 running, it hands its thread off to other parts of CoffeeMud.
-&nbsp;However, the three methods shown above ( <span
- style="font-family: monospace;">prompt(String,String)</span>, <span
- style="font-family: monospace;">confirm(String,String)</span>, and <span
- style="font-family: monospace;">choose(String, String, String)</span>
+&nbsp;However, the three methods shown above ( <span style="font-family: monospace;">prompt(String,String)</span>, <span style="font-family: monospace;">confirm(String,String)</span>, and <span style="font-family: monospace;">choose(String, String, String)</span>
 ) do not share their thread with the rest of CoffeeMud. &nbsp;In fact,
 what happens when they execute is that the precious thread that is
 running that piece of code just sits around doing nothing until the
 user presses ENTER. &nbsp;This is *awful*. &nbsp;For this reason, a new
-method of prompting the user was added to the&nbsp;<span
- style="font-family: monospace;">session()</span> object to allow your
+method of prompting the user was added to the&nbsp;<span style="font-family: monospace;">session()</span> object to allow your
 Java to prompt the user without hogging the thread all to itself.
 &nbsp;So, let's look at a new example:</p>
       <pre>final Session session=mob.session();<br />if(session != null) {<br />    session.prompt(new InputCallback(InputCallback.Type.PROMPT,"1",0){<br />      public void showPrompt() { session.printPrompt("Enter a message number (1): ");}<br />      public void timedOut() { }<br />      public void callBack() <br />      {<br />          if ((this.input.length()&gt;0)&amp;&amp;(CMath.isInteger(this.input))) {<br />              final String messageNumber=this.input;<br />              session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"Y",0){<br />                public void showPrompt() { session.printPrompt("Are you sure you want to view message #"+messageNumber+" (Y/n)?");}<br />                public void timedOut() { }<br />                public void callBack() <br />                {<br />       &nbsp;&nbsp;&nbsp;          session.println("Here is message #"+messageNumber);<br />&nbsp;&nbsp;&nbsp;                 // .... show them the message<br />                    session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"K","DK",0){<br />                      public void showPrompt() { session.printPrompt("Would you like to D)elete or K)eep this message (d/K)?");}<br />                      public void timedOut() { }<br />                      public void callBack() <br />                      {<br />                          if(this.input.equals("K")) {<br />                              // .... delete the message<br />                &nbsp;&nbsp;&nbsp;           session.println("Message #"+messageNumber+" deleted.");<br />                          }<br />                   &nbsp;  }<br />                    });<br />                }<br />              });<br />          }<br />      }<br />    });<br />}</pre>
@@ -2099,16 +2088,13 @@ old methods did, and he last parameter is a time, in milliseconds,
 before the prompt will time-out (we use 0 to prevent timeouts).
 &nbsp;The <span style="font-family: monospace;">InputCallback.Type.CHOOSE</span>
 constructor also accepted, just before the timeout value, the letters
-to choose from, just like in the old <span
- style="font-family: monospace;">session().choose(..)</span> method.
-&nbsp;In every case, the first thing that happens is that the&nbsp;<span
- style="font-family: monospace;">InputCallback.showPrompt()&nbsp;</span>method
+to choose from, just like in the old <span style="font-family: monospace;">session().choose(..)</span> method.
+&nbsp;In every case, the first thing that happens is that the&nbsp;<span style="font-family: monospace;">InputCallback.showPrompt()&nbsp;</span>method
 is called to display any necessary messages to the user. &nbsp;Then,
 the new <span style="font-family: monospace;">session.prompt(...)&nbsp;</span>immediately
 returns, allowing any code afterwards to immediately execute.
 &nbsp;However, the user must now enter something as well. &nbsp;After
-the user enters something valid, the <span
- style="font-family: monospace;">InputCallback.callBack()</span> method
+the user enters something valid, the <span style="font-family: monospace;">InputCallback.callBack()</span> method
 is called, and <span style="font-family: monospace;">this.input</span>
 will contain the information the user entered. &nbsp;</p>
       <p>Two
@@ -2116,8 +2102,7 @@ things to bear in mind when working with these asynchronous user input
 prompts: one, any variables that are local to the surrounding method
 must either be final, or copied into final variables to be accessible
 in the <span style="font-family: monospace;">callBack() </span>methods
-below. &nbsp;Another thing is to always bear in mind that <span
- style="font-family: monospace;">session().prompt(InputCallback)</span>
+below. &nbsp;Another thing is to always bear in mind that <span style="font-family: monospace;">session().prompt(InputCallback)</span>
 displays a message and returns immediately -- it does not block the
 thread like the other methods did. &nbsp;This last fact will play with
 your mind and mess up your coding if you aren't careful.</p>
@@ -2372,12 +2357,12 @@ of the class. This is no accident -- this is required!</p>
       <pre>public class MyNewSword extends com.planet_ink.coffee_mud.Items.Weapons.StdWeapon<br />{<br />  public String ID(){ return "MyNewSword"; }<br /><br />  public MyNewSword()<br />  {<br />    super();<br />  }<br />}<br /></pre>
       <p>All of your customizing will be done inside the constructor:
 name, displayText, description, etc, etc.</p>
-      <pre>  public MyNewSword()<br />  {<br />    super();<br /><br />    setName( "a super sword" );<br />    setDescription( "A long super duper sword!" );<br />    setDisplayText( "Someone left their super sword here." );<br />    setSecretIdentity( "" );<br />    setMaterial( RawMaterial.RESOURCE_STEEL );<br />    setWeaponType( Weapon.TYPE_SLASHING );<br />    setWeaponClassification( Weapon.CLASS_SWORD );<br /><br />    setBaseValue( 500 );<br />    basePhyStats().setDisposition( PhyStats.IS_GLOWING );<br />    basePhyStats.setWeight( 25 );<br />    basePhyStats.setAttackAdjustment( 10 );<br />    basePhyStats.setDamage( 15 );<br />    recoverPhyStats();<br />  }<br /></pre>
+      <pre>  public MyNewSword()<br />  {<br />    super();<br /><br />    setName( "a super sword" );<br />    setDescription( "A long super duper sword!" );<br />    setDisplayText( "Someone left their super sword here." );<br />    setSecretIdentity( "" );<br />    setMaterial( RawMaterial.RESOURCE_STEEL );<br />    setWeaponDamageType( Weapon.TYPE_SLASHING );<br />    setWeaponClassification( Weapon.CLASS_SWORD );<br /><br />    setBaseValue( 500 );<br />    basePhyStats().setDisposition( PhyStats.IS_GLOWING );<br />    basePhyStats.setWeight( 25 );<br />    basePhyStats.setAttackAdjustment( 10 );<br />    basePhyStats.setDamage( 15 );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>What is shown above is entirely sufficient for the creation of
 a normal StdWeapon . The material, weight, attack and damage describe
 it completely. You'll even notice that by setting a disposition flag,
 we have made the sword glow! Now, what if we wanted a missile weapon?</p>
-      <pre>  public MyNewBow()<br />  {<br />    super();<br /><br />    setName( "a super bow" );<br />    setDescription( "A long super duper bow!" );<br />    setDisplayText( "Someone left their super bow here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_OAK );<br />    setBaseValue( 5000 );<br />    basePhyStats.setWeight( 15 );<br />    basePhyStats.setAttackAdjustment( 20 );<br />    basePhyStats.setDamage( 5 );<br />    setWeaponType( Weapon.TYPE_PIERCING );<br />    setWeaponClassification( Weapon.CLASS_RANGED );<br />    setRanges( 1, 5 );<br />    setAmmunitionType( "arrows" );<br />    recoverPhyStats();<br />  }<br />
+      <pre>  public MyNewBow()<br />  {<br />    super();<br /><br />    setName( "a super bow" );<br />    setDescription( "A long super duper bow!" );<br />    setDisplayText( "Someone left their super bow here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_OAK );<br />    setBaseValue( 5000 );<br />    basePhyStats.setWeight( 15 );<br />    basePhyStats.setAttackAdjustment( 20 );<br />    basePhyStats.setDamage( 5 );<br />    setWeaponDamageType( Weapon.TYPE_PIERCING );<br />    setWeaponClassification( Weapon.CLASS_RANGED );<br />    setRanges( 1, 5 );<br />    setAmmunitionType( "arrows" );<br />    recoverPhyStats();<br />  }<br />
   public void recoverPhyStats()
   {
     basePhyStats().setDamage(1 * basePhyStats().level());
@@ -2927,11 +2912,7 @@ integers, each of which is a RawMaterial code representing something
 like AIR, or FRESHWATER, or OXYGEN, etc. It tells the system what kind
 of atmospheres this race can breathe without dying. &nbsp;There are
 several pre-defined built-in static arrays in StdRace.java that you can
-use for common cases, such as&nbsp; <span
- style="font-family: monospace;">breatheAirArray</span>, <span
- style="font-family: monospace;">breatheWaterArray</span>, <span
- style="font-family: monospace;">breatheAirWaterArray</span>, or <span
- style="font-family: monospace;">breatheAnythingArray</span> (which is
+use for common cases, such as&nbsp; <span style="font-family: monospace;">breatheAirArray</span>, <span style="font-family: monospace;">breatheWaterArray</span>, <span style="font-family: monospace;">breatheAirWaterArray</span>, or <span style="font-family: monospace;">breatheAnythingArray</span> (which is
 empty). &nbsp;You can define your own also, of course. &nbsp;Remember
 that the RawMaterial codes you return will be the ONLY atmospheres the
 race can breathe. &nbsp;Returning an empty integer array int[0] will
@@ -3016,7 +2997,7 @@ of the mob or player which must be set due to their being this race,
 this would be the appropriate method in which to do so. This method is
 not called for Polymorph, Shape Shift, or similar changes in race, but
 only for those whose permanent race is this one.</p>
-      <pre>  public Weapon myNaturalWeapon()<br />  {<br />    if( naturalWeapon == null )<br />    {<br />      naturalWeapon = CMClass.getWeapon( "StdWeapon" );<br />      naturalWeapon.setName( "huge claws" );<br />      naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);<br />      naturalWeapon.setUsesRemaining(1000);<br />      naturalWeapon.setWeaponType( Weapon.TYPE_PIERCING );<br />    }<br /><br />    return naturalWeapon;<br />  }<br /></pre>
+      <pre>  public Weapon myNaturalWeapon()<br />  {<br />    if( naturalWeapon == null )<br />    {<br />      naturalWeapon = CMClass.getWeapon( "StdWeapon" );<br />      naturalWeapon.setName( "huge claws" );<br />      naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);<br />      naturalWeapon.setUsesRemaining(1000);<br />      naturalWeapon.setWeaponDamageType( Weapon.TYPE_PIERCING );<br />    }<br /><br />    return naturalWeapon;<br />  }<br /></pre>
       <p>This method allows you to create (see item creation above) a
 special weapon to serve the creature whenever they are not wielding
 something. Since our Grumbler cannot wield weapons anyway, it is
@@ -4282,7 +4263,7 @@ classes. For this reason, we save ourselves the trouble by having the
 language declare its qualifications itself by accessing the same
 CMLib.ableMapper()
 method we saw up in Character Class creation.</p>
-      <pre>  public static List&lt;String[]&gt; wordLists = null;<br />  public List&lt;String[]&gt; translationVector(String language)<br />  {<br />    if(wordLists==null)<br />    {<br />      String[] one = { "a", "e",<br />                      "i", "o",<br />                      "&iuml;&iquest;&frac12;", "&iuml;&iquest;&frac12;",<br />                      "&iuml;&iquest;&frac12;", "&iuml;&iquest;&frac12;"<br />                    };<br /><br />      String[] two = { "os", "vi",<br />                      "ne", "vo",<br />                      "li", "eh",<br />                      "no", "ai",<br />                      "by", "et",<br />                      "ce", "un",<br />                      "il"<br />                    };<br /><br />      String[] three = { "&iuml;&iquest;&frac12;na", "cil",<br />                        "sar", "tan",<br />                        "hel", "loa",<br />                        "sir", "hep",<br />                        "yur", "nol",<br />                        "hol", "qua",<br />                        "&iuml;&iquest;&frac12;th"<br />                      };<br /><br />      String[] four = { "s&iuml;&iquest;&frac12;ya", "qual", "quel",<br />                       "lara", "uqua", "sana",<br />                       "yava", "masse", "yanna",<br />                       "quettaparma", "manna", "manan",<br />                       "merme", "carma", "harno",<br />                       "harne", "varno", "essar",<br />                       "saira", "cilta", "veuma",<br />                       "norta", "turme", "saita"<br />                     };<br /><br />      String[] five = { "cuiva", "cuina", "nonwa",<br />                       "imire", "nauta", "cilta",<br />                       "entuc", "norta", "latin",<br />                       "l&iuml;&iquest;&frac12;tea", "veuya", "veuro",<br />                       "apama", "hampa", "nurta",<br />                       "firta", "saira", "holle",<br />                       "herwa", "uquen", "arcoa",<br />                       "calte", "cemma", "hanta",<br />                       "tanen"<br />                     };<br /><br />      String[] six = { "mahtale", "porisalque", "hairie",<br />                      "tararan", "ambarwa", "latina",<br />                      "ol&iuml;&iquest;&frac12;tie", "amawil", "apacen",<br />                      "yavinqua", "apalume", "linquilea",<br />                      "menelwa", "alassea", "nurmea",<br />                      "parmasse", "ceniril", "heldasse",<br />                      "imirin", "earina", "calatengew",<br />                      "lapselunga", "rianna", "eneques"<br />                    };<br /><br />      wordLists=new Vector();<br />      wordLists.add( one );<br />      wordLists.add( two );<br />      wordLists.add( three );<br />      wordLists.add( four );<br />      wordLists.add( five );<br />      wordLists.add( six );<br />    }<br />    return wordLists;<br />  }<br /></pre>
+      <pre>  public static List&lt;String[]&gt; wordLists = null;<br />  public List&lt;String[]&gt; translationVector(String language)<br />  {<br />    if(wordLists==null)<br />    {<br />      String[] one = { "a", "e",<br />                      "i", "o",<br />                      "�", "�",<br />                      "�", "�"<br />                    };<br /><br />      String[] two = { "os", "vi",<br />                      "ne", "vo",<br />                      "li", "eh",<br />                      "no", "ai",<br />                      "by", "et",<br />                      "ce", "un",<br />                      "il"<br />                    };<br /><br />      String[] three = { "�na", "cil",<br />                        "sar", "tan",<br />                        "hel", "loa",<br />                        "sir", "hep",<br />                        "yur", "nol",<br />                        "hol", "qua",<br />                        "�th"<br />                      };<br /><br />      String[] four = { "s�ya", "qual", "quel",<br />                       "lara", "uqua", "sana",<br />                       "yava", "masse", "yanna",<br />                       "quettaparma", "manna", "manan",<br />                       "merme", "carma", "harno",<br />                       "harne", "varno", "essar",<br />                       "saira", "cilta", "veuma",<br />                       "norta", "turme", "saita"<br />                     };<br /><br />      String[] five = { "cuiva", "cuina", "nonwa",<br />                       "imire", "nauta", "cilta",<br />                       "entuc", "norta", "latin",<br />                       "l�tea", "veuya", "veuro",<br />                       "apama", "hampa", "nurta",<br />                       "firta", "saira", "holle",<br />                       "herwa", "uquen", "arcoa",<br />                       "calte", "cemma", "hanta",<br />                       "tanen"<br />                     };<br /><br />      String[] six = { "mahtale", "porisalque", "hairie",<br />                      "tararan", "ambarwa", "latina",<br />                      "ol�tie", "amawil", "apacen",<br />                      "yavinqua", "apalume", "linquilea",<br />                      "menelwa", "alassea", "nurmea",<br />                      "parmasse", "ceniril", "heldasse",<br />                      "imirin", "earina", "calatengew",<br />                      "lapselunga", "rianna", "eneques"<br />                    };<br /><br />      wordLists=new Vector();<br />      wordLists.add( one );<br />      wordLists.add( two );<br />      wordLists.add( three );<br />      wordLists.add( four );<br />      wordLists.add( five );<br />      wordLists.add( six );<br />    }<br />    return wordLists;<br />  }<br /></pre>
       <p>The first, often only, and certainly most important Language
 method is <code>translationVector(String language)</code>,
 which returns a Vector object containing a set of String arrays for the
@@ -4299,7 +4280,7 @@ Keeping the number of letters close or the same as the Common word
 equivalent provides a certain symmetry, however, and makes it fun for
 the players who don't speak a language to try and guess what is being
 said by counting letters.</p>
-      <pre>  private static final Map&lt;String,String&gt; hashwords = new Hashtable();<br />  public Map&lt;String,String&gt; translationHash(String language)<br />  {<br />    if( ( hashwords != null ) &amp;&amp; ( hashwords.size() &gt; 0 ) )<br />    {<br />      return hashwords;<br />    }<br /><br />    hashwords.put( "ABANDON", "avarta" );<br />    hashwords.put( "ABLE", "pol" );<br />    hashwords.put( "ACCOMMODATE", "camta" );<br />    hashwords.put( "ACT", "car" );<br /><br />    ...<br /><br />    hashwords.put( "WRONG", "raic&iuml;&iquest;&frac12;" );<br />    hashwords.put( "YES", "y&iuml;&iquest;&frac12;" );<br />    hashwords.put( "YESTERDAY", "tellaur&iuml;&iquest;&frac12;" );<br />    return hashwords;<br />  }<br />}<br /></pre>
+      <pre>  private static final Map&lt;String,String&gt; hashwords = new Hashtable();<br />  public Map&lt;String,String&gt; translationHash(String language)<br />  {<br />    if( ( hashwords != null ) &amp;&amp; ( hashwords.size() &gt; 0 ) )<br />    {<br />      return hashwords;<br />    }<br /><br />    hashwords.put( "ABANDON", "avarta" );<br />    hashwords.put( "ABLE", "pol" );<br />    hashwords.put( "ACCOMMODATE", "camta" );<br />    hashwords.put( "ACT", "car" );<br /><br />    ...<br /><br />    hashwords.put( "WRONG", "raic�" );<br />    hashwords.put( "YES", "y�" );<br />    hashwords.put( "YESTERDAY", "tellaur�" );<br />    return hashwords;<br />  }<br />}<br /></pre>
       <p>The last Language method is <code>translationHash(String
 language)</code>.
 Like translationVector, it has a language parameter that can safely be
@@ -4315,5 +4296,4 @@ entry value. Correct casing is taken care of by the Language base class.</p>
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>

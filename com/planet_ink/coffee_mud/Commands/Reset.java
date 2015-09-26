@@ -61,7 +61,7 @@ public class Reset extends StdCommand
 						W.setAmmoCapacity(0);
 						W.setUsesRemaining(100);
 						str=mob.session().prompt(L("@x1@x2 new weapon type: ",lead,I.Name()));
-						W.setWeaponType(CMath.s_int(str));
+						W.setWeaponDamageType(CMath.s_int(str));
 					}
 					else
 						W.setAmmunitionType(str.trim());

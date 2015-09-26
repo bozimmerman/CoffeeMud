@@ -119,7 +119,7 @@ public class Spell_AnalyzeDweomer extends Spell
 				{
 					final Weapon w=(Weapon)target;
 					str.append(L("It is a @x1 weapon.  ",Weapon.CLASS_DESCS[w.weaponClassification()].toLowerCase()));
-					str.append(L("It does @x1 damage.  ",Weapon.TYPE_DESCS[w.weaponType()].toLowerCase()));
+					str.append(L("It does @x1 damage.  ",Weapon.TYPE_DESCS[w.weaponDamageType()].toLowerCase()));
 					if(w.minRange()>0)
 						str.append(L("It has a minimum range of @x1.  ",""+w.minRange()));
 					if(w.maxRange()>w.minRange())

@@ -610,7 +610,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 					return false;
 				}
 				ww=(Weapon)w;
-				if((ww.weaponType()!=Weapon.TYPE_PIERCING)&&(ww.weaponType()!=Weapon.TYPE_SLASHING))
+				if((ww.weaponDamageType()!=Weapon.TYPE_PIERCING)&&(ww.weaponDamageType()!=Weapon.TYPE_SLASHING))
 				{
 					mob.tell(L("You cannot amputate with a @x1!",ww.name()));
 					return false;

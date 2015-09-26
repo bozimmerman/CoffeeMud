@@ -37,7 +37,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 	@Override public String ID() { return "Prop_AddDamage"; }
 	@Override public String name(){ return "Additional Damage";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	protected int weaponType=Weapon.TYPE_NATURAL;
+	protected int weaponDamageType=Weapon.TYPE_NATURAL;
 	protected int typeOfEffect=CMMsg.TYP_WEAPONATTACK;
 	protected double pctDamage=0.0;
 	protected int bonusDamage=0;
@@ -78,7 +78,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 					final String type=Weapon.TYPE_DESCS[i];
 					if(type.equals(s))
 					{
-						weaponType=i;
+						weaponDamageType=i;
 						done=true;
 						break;
 					}
@@ -100,7 +100,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 					final String type=Weapon.TYPE_DESCS[i];
 					if(type.startsWith(s))
 					{
-						weaponType=i;
+						weaponDamageType=i;
 						done=true;
 						break;
 					}
@@ -180,7 +180,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 					if(msg2.value()<=0)
 					{
 						final int damage=getDamage(msg);
-						CMLib.combat().postDamage(mob,msg.source(),affected,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponType,
+						CMLib.combat().postDamage(mob,msg.source(),affected,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponDamageType,
 							 "^F^<FIGHT^><S-YOUPOSS> <O-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 					}
 				}
@@ -201,7 +201,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 						try
 						{
 							CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),affected,Math.round(damage),
-							CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponType,str);
+							CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponDamageType,str);
 						}
 						finally
 						{
@@ -220,7 +220,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 				final int damage=getDamage(msg);
 				final String str=L("^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 				CMLib.combat().postDamage(mob,(MOB)msg.target(),this,Math.round(damage),
-					  CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponType,str);
+					  CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponDamageType,str);
 			}
 		}
 	}

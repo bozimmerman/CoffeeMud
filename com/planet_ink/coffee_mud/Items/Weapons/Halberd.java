@@ -59,7 +59,7 @@ public class Halberd extends StdWeapon
 		recoverPhyStats();
 		wornLogicalAnd=true;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
-		weaponType=TYPE_SLASHING;
+		weaponDamageType=TYPE_SLASHING;
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponClassification=Weapon.CLASS_POLEARM;
 	}

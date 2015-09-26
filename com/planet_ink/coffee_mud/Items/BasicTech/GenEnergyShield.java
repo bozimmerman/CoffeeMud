@@ -91,7 +91,7 @@ public class GenEnergyShield extends GenPersonalShield
 		if((msg.tool() instanceof Electronics)
 		&& (msg.tool() instanceof Weapon)
 		&& (Math.random() >= successFactor)
-		&& (((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SHOOT))
+		&& (((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_SHOOT))
 		{
 			return true;
 		}

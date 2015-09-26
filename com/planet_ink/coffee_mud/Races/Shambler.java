@@ -97,7 +97,7 @@ public class Shambler extends StdRace
 			naturalWeapon.setRanges(0,1);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_OAK);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;
 	}

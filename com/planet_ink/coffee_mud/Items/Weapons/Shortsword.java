@@ -49,7 +49,7 @@ public class Shortsword extends Sword
 		baseGoldValue=10;
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
-		weaponType=TYPE_PIERCING;
+		weaponDamageType=TYPE_PIERCING;
 	}
 
 

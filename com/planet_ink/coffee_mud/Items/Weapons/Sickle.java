@@ -49,7 +49,7 @@ public class Sickle extends StdWeapon
 		baseGoldValue=1;
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_OAK;
-		weaponType=TYPE_PIERCING;
+		weaponDamageType=TYPE_PIERCING;
 		weaponClassification=Weapon.CLASS_EDGED;
 	}
 

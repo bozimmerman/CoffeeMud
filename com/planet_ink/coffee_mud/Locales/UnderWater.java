@@ -183,8 +183,8 @@ public class UnderWater extends StdRoom implements Drink
 		&&(msg.tool() instanceof Weapon))
 		{
 			final Weapon w=(Weapon)msg.tool();
-			if((w.weaponType()==Weapon.TYPE_SLASHING)
-			||(w.weaponType()==Weapon.TYPE_BASHING))
+			if((w.weaponDamageType()==Weapon.TYPE_SLASHING)
+			||(w.weaponDamageType()==Weapon.TYPE_BASHING))
 			{
 				int damage=msg.value();
 				damage=damage/3;

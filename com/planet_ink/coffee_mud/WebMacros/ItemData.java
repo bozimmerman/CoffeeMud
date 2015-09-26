@@ -478,7 +478,7 @@ public class ItemData extends StdWebMacro
 						return "false";
 					case WEAPONTYPE: // weapon type
 						if((firstTime)&&(I instanceof Weapon))
-							old=""+((Weapon)I).weaponType();
+							old=""+((Weapon)I).weaponDamageType();
 						for(int r=0;r<Weapon.TYPE_DESCS.length;r++)
 						{
 							str.append("<OPTION VALUE=\""+r+"\"");

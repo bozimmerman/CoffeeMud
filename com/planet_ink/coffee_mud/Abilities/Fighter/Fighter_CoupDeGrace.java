@@ -63,8 +63,8 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			if((w==null)||(!(w instanceof Weapon)))
 				return Ability.QUALITY_INDIFFERENT;
 			ww=(Weapon)w;
-			if((ww.weaponType()!=Weapon.TYPE_SLASHING)
-			&&(ww.weaponType()!=Weapon.TYPE_PIERCING))
+			if((ww.weaponDamageType()!=Weapon.TYPE_SLASHING)
+			&&(ww.weaponDamageType()!=Weapon.TYPE_PIERCING))
 				 return Ability.QUALITY_INDIFFERENT;
 			if(mob.curState().getMovement()<overrideMana())
 				return Ability.QUALITY_INDIFFERENT;
@@ -97,8 +97,8 @@ public class Fighter_CoupDeGrace extends FighterSkill
 				return false;
 			}
 			ww=(Weapon)w;
-			if((ww.weaponType()!=Weapon.TYPE_SLASHING)
-			&&(ww.weaponType()!=Weapon.TYPE_PIERCING))
+			if((ww.weaponDamageType()!=Weapon.TYPE_SLASHING)
+			&&(ww.weaponDamageType()!=Weapon.TYPE_PIERCING))
 			{
 				mob.tell(L("You cannot coup de grace with a @x1!",ww.name()));
 				return false;

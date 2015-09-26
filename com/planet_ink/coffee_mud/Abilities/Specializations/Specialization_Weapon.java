@@ -100,7 +100,7 @@ public class Specialization_Weapon extends StdAbility
 					if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 					&&(msg.value()>0)
 					&&(canDamage(msg.source(),w)))
-						msg.setValue(msg.value()+(this.getDamageBonus(msg.source(),w.weaponType())));
+						msg.setValue(msg.value()+(this.getDamageBonus(msg.source(),w.weaponDamageType())));
 				}
 			}
 		}

@@ -119,7 +119,7 @@ public class Thief_DeepCut extends ThiefSkill
 			return false;
 		}
 		final Weapon wp=(Weapon)w;
-		if((wp.weaponType()!=Weapon.TYPE_SLASHING)&&(wp.weaponType()!=Weapon.TYPE_PIERCING))
+		if((wp.weaponDamageType()!=Weapon.TYPE_SLASHING)&&(wp.weaponDamageType()!=Weapon.TYPE_PIERCING))
 		{
 			if(!quiet)
 			mob.tell(L("You cannot cut someone with @x1!",wp.name()));

@@ -91,7 +91,7 @@ public class GenIntegrityShield extends GenPersonalShield
 		if((msg.tool() instanceof Electronics)
 		&& (msg.tool() instanceof Weapon)
 		&& (Math.random() >= successFactor)
-		&& ((((Weapon)msg.tool()).weaponType()==Weapon.TYPE_MELTING)||(((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SLASHING)))
+		&& ((((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_MELTING)||(((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_SLASHING)))
 		{
 			return true;
 		}

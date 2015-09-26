@@ -51,7 +51,7 @@ public class DrowQuarterstaff extends Mace
 		baseGoldValue=2500;
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
-		weaponType=TYPE_BASHING;
+		weaponDamageType=TYPE_BASHING;
 	}
 
 

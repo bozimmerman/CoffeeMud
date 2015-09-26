@@ -52,7 +52,7 @@ public class StdBow extends StdWeapon
 		recoverPhyStats();
 		minRange=1;
 		maxRange=3;
-		weaponType=Weapon.TYPE_PIERCING;
+		weaponDamageType=Weapon.TYPE_PIERCING;
 		material=RawMaterial.RESOURCE_WOOD;
 		weaponClassification=Weapon.CLASS_RANGED;
 		setRawLogicalAnd(true);

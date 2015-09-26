@@ -288,49 +288,49 @@ public class StdArmor extends StdContainer implements Armor
 		&&(subjectToWearAndTear())
 		&&(CMLib.dice().rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.STAT_DEXTERITY))))
 		{
-			int weaponType=-1;
+			int weaponDamageType=-1;
 			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&((msg.value())>0))
 			{
 				if(msg.tool() instanceof Weapon)
-					weaponType=((Weapon)msg.tool()).weaponType();
+					weaponDamageType=((Weapon)msg.tool()).weaponDamageType();
 				else
 				switch(msg.sourceMinor())
 				{
 				case CMMsg.TYP_FIRE:
-					weaponType=Weapon.TYPE_BURNING;
+					weaponDamageType=Weapon.TYPE_BURNING;
 					break;
 				case CMMsg.TYP_WATER:
-					weaponType=Weapon.TYPE_FROSTING;
+					weaponDamageType=Weapon.TYPE_FROSTING;
 					break;
 				case CMMsg.TYP_ACID:
-					weaponType=Weapon.TYPE_MELTING;
+					weaponDamageType=Weapon.TYPE_MELTING;
 					break;
 				case CMMsg.TYP_COLD:
-					weaponType=Weapon.TYPE_FROSTING;
+					weaponDamageType=Weapon.TYPE_FROSTING;
 					break;
 				case CMMsg.TYP_GAS:
-					weaponType=Weapon.TYPE_GASSING;
+					weaponDamageType=Weapon.TYPE_GASSING;
 					break;
 				case CMMsg.TYP_ELECTRIC:
-					weaponType=Weapon.TYPE_STRIKING;
+					weaponDamageType=Weapon.TYPE_STRIKING;
 					break;
 				case CMMsg.TYP_SONIC:
-					weaponType=Weapon.TYPE_SONICING;
+					weaponDamageType=Weapon.TYPE_SONICING;
 					break;
 				case CMMsg.TYP_LASER:
-					weaponType=Weapon.TYPE_LASERING;
+					weaponDamageType=Weapon.TYPE_LASERING;
 					break;
 				}
 			}
 			final int oldUses=usesRemaining();
-			if(weaponType>=0)
+			if(weaponDamageType>=0)
 			{
 				switch(material()&RawMaterial.MATERIAL_MASK)
 				{
 				case RawMaterial.MATERIAL_CLOTH:
 				case RawMaterial.MATERIAL_PAPER:
-					switch(weaponType)
+					switch(weaponDamageType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
@@ -363,7 +363,7 @@ public class StdArmor extends StdContainer implements Armor
 					}
 					break;
 				case RawMaterial.MATERIAL_GLASS:
-					switch(weaponType)
+					switch(weaponDamageType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_GASSING:
@@ -394,7 +394,7 @@ public class StdArmor extends StdContainer implements Armor
 					}
 					break;
 				case RawMaterial.MATERIAL_LEATHER:
-					switch(weaponType)
+					switch(weaponDamageType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
@@ -435,7 +435,7 @@ public class StdArmor extends StdContainer implements Armor
 						setUsesRemaining(usesRemaining()-1);
 					break;
 				case RawMaterial.MATERIAL_METAL:
-					switch(weaponType)
+					switch(weaponDamageType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
@@ -482,7 +482,7 @@ public class StdArmor extends StdContainer implements Armor
 					}
 					break;
 				case RawMaterial.MATERIAL_SYNTHETIC:
-					switch(weaponType)
+					switch(weaponDamageType)
 					{
 					case Weapon.TYPE_FROSTING:
 					case Weapon.TYPE_GASSING:
@@ -518,7 +518,7 @@ public class StdArmor extends StdContainer implements Armor
 					break;
 				case RawMaterial.MATERIAL_ROCK:
 				case RawMaterial.MATERIAL_PRECIOUS:
-					switch(weaponType)
+					switch(weaponDamageType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
@@ -555,7 +555,7 @@ public class StdArmor extends StdContainer implements Armor
 					}
 					break;
 				case RawMaterial.MATERIAL_WOODEN:
-					switch(weaponType)
+					switch(weaponDamageType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:

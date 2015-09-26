@@ -513,7 +513,8 @@ public interface Wearable extends Environmental
 				c=new CODES();
 			return c;
 		}
-		public static void reset() {
+		public static void reset() 
+		{
 			insts[Thread.currentThread().getThreadGroup().getName().charAt(0)]=null;
 			instance();
 		}
@@ -813,6 +814,18 @@ public interface Wearable extends Environmental
 		 */
 		public double[] location_strength_points() { return armorWeights;}
 
+		/**
+		 * Adds a new wear location.  I suspect this stuff works.  I also suspect
+		 * it is not used, in favor of the hard coded stuff above.  
+		 * TODO: this isn't implemented fully!
+		 * @param desc the wear location description
+		 * @param dependencyMask the dependency locations
+		 * @param armorStrength armor strength factor
+		 * @param wornOrder the worn order
+		 * @param clothWeight the cloth weight factor
+		 * @param leatherWeight the leather weight factor
+		 * @param metalWeight the metal weight factor
+		 */
 		public synchronized void add(String desc, long dependencyMask, double armorStrength, int wornOrder,
 									 double clothWeight, double leatherWeight, double metalWeight)
 		{
@@ -837,6 +850,11 @@ public interface Wearable extends Environmental
 			insertInOrder(newCode,wornOrder);
 		}
 
+		/**
+		 * Insert the new code
+		 * @param newCode the worn code
+		 * @param wornOrder the worn orderr
+		 */
 		private void insertInOrder(long newCode, int wornOrder)
 		{
 			if(wornOrder<0)
@@ -855,6 +873,19 @@ public interface Wearable extends Environmental
 			allCodesInOrder=newCodesInOrder;
 		}
 
+		/**
+		 * replaces an existing wear location.  I suspect this stuff works.  I also suspect
+		 * it is not used, in favor of the hard coded stuff above.  
+		 * TODO: this isn't implemented fully!
+		 * @param codeIndex the index of the location to replace
+		 * @param desc the wear location description
+		 * @param dependencyMask the dependency locations
+		 * @param armorStrength armor strength factor
+		 * @param wornOrder the worn order
+		 * @param clothWeight the cloth weight factor
+		 * @param leatherWeight the leather weight factor
+		 * @param metalWeight the metal weight factor
+		 */
 		public synchronized void replace(int codeIndex, String desc, long dependencyMask, double armorStrength, int wornOrder,
 										  double clothWeight, double leatherWeight, double metalWeight)
 		{

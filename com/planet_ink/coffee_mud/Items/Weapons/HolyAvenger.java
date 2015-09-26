@@ -51,7 +51,7 @@ public class HolyAvenger extends TwoHandedSword
 		baseGoldValue=15500;
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_MITHRIL;
-		weaponType=TYPE_SLASHING;
+		weaponDamageType=TYPE_SLASHING;
 		setRawLogicalAnd(true);
 	}
 

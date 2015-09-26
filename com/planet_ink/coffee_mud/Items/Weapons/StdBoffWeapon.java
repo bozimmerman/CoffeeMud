@@ -48,7 +48,7 @@ public class StdBoffWeapon extends StdWeapon
 		basePhyStats().setDamage(0);
 		basePhyStats().setAbility(0);
 		baseGoldValue=15;
-		weaponType=Weapon.TYPE_BASHING;
+		weaponDamageType=Weapon.TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_BLUNT;
 		material=RawMaterial.RESOURCE_STEEL;
 		setUsesRemaining(100);

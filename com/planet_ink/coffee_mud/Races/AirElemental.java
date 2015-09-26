@@ -80,7 +80,7 @@ public class AirElemental extends StdRace
 			naturalWeapon.setName(L("a swirling gust"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_ASH);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_GASSING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_GASSING);
 		}
 		return naturalWeapon;
 	}

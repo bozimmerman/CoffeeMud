@@ -30,9 +30,32 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An item that, when read, shows you a graphical map
+ * of an area.
+ * @author Bo Zimmerman
+ */
 public interface RoomMap extends Item
 {
+	/**
+	 * Gets the name(s) of the area(s) being mapped,
+	 * semicolon delimited.
+	 * @see RoomMap#setMapArea(String)
+	 * @return the name(s) of the area(s) being mapped
+	 */
 	public String getMapArea();
+	
+	/**
+	 * Sets the name(s) of the area(s) being mapped,
+	 * semicolon delimited.
+	 * @see RoomMap#getMapArea()
+	 * @param mapName the name(s) of the area(s) being mapped
+	 */
 	public void setMapArea(String mapName);
+	
+	/**
+	 * Causes the area(s) to be re-mapped.  Area name(s)
+	 * must have been set before calling.
+	 */
 	public void doMapArea();
 }

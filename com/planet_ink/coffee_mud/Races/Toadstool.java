@@ -85,7 +85,7 @@ public class Toadstool extends StdRace
 			naturalWeapon.setName(L("the toadstool shuffle"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_MUSHROOMS);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
 		}
 		return naturalWeapon;
 	}

@@ -57,7 +57,7 @@ public class Python extends Snake
 			naturalWeapon.setName(L("a fearsome hug"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
 		}
 		return naturalWeapon;
 	}

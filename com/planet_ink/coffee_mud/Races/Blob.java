@@ -57,7 +57,7 @@ public class Blob extends Unique
 			naturalWeapon.setName(L("a body slam"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_SLIME);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;
 	}

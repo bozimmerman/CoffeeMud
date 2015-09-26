@@ -96,7 +96,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	@Override
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells(this));
+		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells());
 	}
 
 	public static String makeSecretIdentity(String thang, String id, String more, List<Ability> V)
@@ -124,23 +124,23 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	@Override
-	public void readIfAble(MOB mob, Scroll me, String spellName)
+	public void readIfAble(MOB mob, String spellName)
 	{
-		if(mob.isMine(me))
+		if(mob.isMine(this))
 		{
 			final boolean readingMagic=(mob.fetchEffect("Spell_ReadMagic")!=null);
 			if(readingMagic)
 			{
 				mob.tell(L("@x1 glows softly.",name()));
-				me.setReadableScrollBy(mob.Name());
+				setReadableScrollBy(mob.Name());
 			}
-			if(me.isReadableScrollBy(mob.Name()))
+			if(isReadableScrollBy(mob.Name()))
 			{
 				if(me.usesRemaining()<=0)
 					mob.tell(L("The markings have been read off the parchment, and are no longer discernable."));
 				else
 				{
-					List<Ability> Spells=me.getSpells();
+					List<Ability> Spells=getSpells();
 					if(Spells.size()==0)
 						mob.tell(L("The scroll appears to contain no discernable information."));
 					else
@@ -170,7 +170,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 							}
 						}
 
-						if((thisOne!=null)&&(me.useTheScroll(thisOne,mob)))
+						if((thisOne!=null)&&(useTheScroll(thisOne,mob)))
 						{
 							thisOne=(Ability)thisOne.copyOf();
 							int level=phyStats().level();
@@ -178,7 +178,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 							if(level<lowest)
 								level=lowest;
 							thisOne.invoke(mob,params,null,true,level);
-							me.setUsesRemaining(me.usesRemaining()-1);
+							setUsesRemaining(usesRemaining()-1);
 						}
 						else
 						if(spellName.length()>0)
@@ -187,7 +187,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						if(!mob.isMonster())
 						{
 							final StringBuffer theNews=new StringBuffer("The scroll contains the following spells:\n\r");
-							Spells=me.getSpells();
+							Spells=getSpells();
 							for(int u=0;u<Spells.size();u++)
 							{
 								final Ability A=Spells.get(u);
@@ -203,11 +203,12 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		}
 	}
 
-	public static Vector getSpells(SpellHolder me)
+	@Override
+	public List<Ability> getSpells()
 	{
 		int baseValue=200;
-		final Vector theSpells=new Vector();
-		final String names=me.getSpellList();
+		final List<Ability> theSpells=new Vector();
+		final String names=getSpellList();
 		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
 		for(String thisOne : parsedSpells)
 		{
@@ -225,15 +226,13 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 				A=(Ability)A.copyOf();
 				A.setMiscText(parms);
 				baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-				theSpells.addElement(A);
+				theSpells.add(A);
 			}
 		}
-		me.setBaseValue(baseValue);
-		me.recoverPhyStats();
+		setBaseValue(baseValue);
+		recoverPhyStats();
 		return theSpells;
 	}
-
-	@Override public List<Ability> getSpells(){ return getSpells(this);}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -245,7 +244,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			{
 			case CMMsg.TYP_READ:
 				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
-					readIfAble(mob,this,msg.targetMessage());
+					readIfAble(mob,msg.targetMessage());
 				else
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null));
 				return;

@@ -98,7 +98,7 @@ public class Prayer_UnholyArmament extends Prayer
 				I.setName(L("an unholy blade"));
 				I.setDisplayText(L("an wicked looking blade sits here."));
 				((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD);
-				((Weapon)I).setWeaponType(Weapon.TYPE_SLASHING);
+				((Weapon)I).setWeaponDamageType(Weapon.TYPE_SLASHING);
 				I.setDescription(L("Whatever made this sharp twisted thing couldn`t have been good.."));
 				I.basePhyStats().setLevel(mob.phyStats().level());
 				I.basePhyStats().setWeight(20);

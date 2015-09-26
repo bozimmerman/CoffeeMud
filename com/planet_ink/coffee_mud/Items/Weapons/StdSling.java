@@ -52,7 +52,7 @@ public class StdSling extends StdWeapon
 		recoverPhyStats();
 		minRange=1;
 		maxRange=2;
-		weaponType=Weapon.TYPE_BASHING;
+		weaponDamageType=Weapon.TYPE_BASHING;
 		material=RawMaterial.RESOURCE_LEATHER;
 		weaponClassification=Weapon.CLASS_RANGED;
 		setRawLogicalAnd(false);

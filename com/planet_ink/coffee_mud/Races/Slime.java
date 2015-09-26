@@ -106,7 +106,7 @@ public class Slime extends StdRace
 			naturalWeapon.setRanges(0,5);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_SLIME);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_MELTING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_MELTING);
 		}
 		return naturalWeapon;
 	}
@@ -167,7 +167,7 @@ public class Slime extends StdRace
 				&&(((Weapon)msg.tool()).subjectToWearAndTear())
 				&&(CMLib.dice().rollPercentage()<20))
 					CMLib.combat().postItemDamage(msg.source(), (Item)msg.tool(), null, 10, CMMsg.TYP_ACID,"<T-NAME> sizzle(s)!");
-				if(((((Weapon)msg.tool()).weaponType()==Weapon.TYPE_PIERCING)||(((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SHOOT))
+				if(((((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_PIERCING)||(((Weapon)msg.tool()).weaponDamageType()==Weapon.TYPE_SHOOT))
 				&&(msg.value()>0))
 					msg.setValue((int)Math.round((msg.value())*.85));
 			}

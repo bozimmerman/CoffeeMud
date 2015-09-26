@@ -774,7 +774,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			weapon=(Weapon)item;
 			damageInt=CMLib.combat().adjustedDamage(source,weapon,target,0,true);
-			damageType=weapon.weaponType();
+			damageType=weapon.weaponDamageType();
 		}
 		if(success)
 		{
@@ -1273,14 +1273,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 								 +"^. ("+prowess+")"));
 	}
 
-	protected int getWeaponAttackIndex(final int weaponType, final int weaponClassification)
+	protected int getWeaponAttackIndex(final int weaponDamageType, final int weaponClassification)
 	{
 		switch(weaponClassification)
 		{
-		case Weapon.CLASS_RANGED: return (weaponType==Weapon.TYPE_LASERING) ? 5 : 0;
-		case Weapon.CLASS_THROWN: return (weaponType==Weapon.TYPE_LASERING) ? 5 : 1;
+		case Weapon.CLASS_RANGED: return (weaponDamageType==Weapon.TYPE_LASERING) ? 5 : 0;
+		case Weapon.CLASS_THROWN: return (weaponDamageType==Weapon.TYPE_LASERING) ? 5 : 1;
 		default:
-			switch(weaponType)
+			switch(weaponDamageType)
 			{
 			case Weapon.TYPE_SLASHING:
 			case Weapon.TYPE_BASHING:
@@ -1298,9 +1298,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public String standardMissString(final int weaponType, final int weaponClassification, final String weaponName, final boolean useExtendedMissString)
+	public String standardMissString(final int weaponDamageType, final int weaponClassification, final String weaponName, final boolean useExtendedMissString)
 	{
-		final int listIndex = getWeaponAttackIndex(weaponType, weaponClassification);
+		final int listIndex = getWeaponAttackIndex(weaponDamageType, weaponClassification);
 		if(!useExtendedMissString)
 			return CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.MISS_DESCS,listIndex);
 		return CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_MISS_DESCS,listIndex),"<TOOLNAME>",weaponName)+CMLib.protocol().msp("missed.wav",20);
@@ -1308,13 +1308,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 
 	@Override
-	public String standardHitString(final int weaponType, final int weaponClass, final int damageAmount, final String weaponName)
+	public String standardHitString(final int weaponDamageType, final int weaponClass, final int damageAmount, final String weaponName)
 	{
 		final int listIndex;
 		if((weaponName==null)||(weaponName.length()==0))
-			listIndex = getWeaponAttackIndex(weaponType, Weapon.CLASS_NATURAL);
+			listIndex = getWeaponAttackIndex(weaponDamageType, Weapon.CLASS_NATURAL);
 		else
-			listIndex = getWeaponAttackIndex(weaponType, weaponClass);
+			listIndex = getWeaponAttackIndex(weaponDamageType, weaponClass);
 		final StringBuilder str=new StringBuilder(CMStrings.replaceAll(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_HIT_DESCS,listIndex),"<TOOLNAME>",weaponName));
 		switch(weaponClass)
 		{

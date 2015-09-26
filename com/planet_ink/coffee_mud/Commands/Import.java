@@ -2120,13 +2120,13 @@ public class Import extends StdCommand
 		str1=str1.toLowerCase().trim();
 		if(str1.startsWith("'"))
 			str1=str1.substring(1);
-		for (final String[] weaponType : weaponTypes)
-			if(str1.startsWith(weaponType[0]))
-			{ val1=CMath.s_int(weaponType[1]); break;}
+		for (final String[] weaponDamageType : weaponTypes)
+			if(str1.startsWith(weaponDamageType[0]))
+			{ val1=CMath.s_int(weaponDamageType[1]); break;}
 		if(val1==0)
-			for (final String[] weaponType : weaponTypes)
-				if(name.toLowerCase().indexOf(weaponType[0])>=0)
-				{ val1=CMath.s_int(weaponType[1]); break;}
+			for (final String[] weaponDamageType : weaponTypes)
+				if(name.toLowerCase().indexOf(weaponDamageType[0])>=0)
+				{ val1=CMath.s_int(weaponDamageType[1]); break;}
 		if((name.toUpperCase().endsWith("HAMMER"))&&(val1==4))
 			val1=11;
 		switch(val1)
@@ -2249,12 +2249,12 @@ public class Import extends StdCommand
 		case 7:
 		case 8:
 		case 27:
-				I.setWeaponType(Weapon.TYPE_BASHING); break;
+				I.setWeaponDamageType(Weapon.TYPE_BASHING); break;
 		case 29:
 		case 55:
 		case 56:
 		case 57:
-				I.setWeaponType(Weapon.TYPE_BURNING); break;
+				I.setWeaponDamageType(Weapon.TYPE_BURNING); break;
 		case 22:
 		case 5:
 		case 10:
@@ -2265,18 +2265,18 @@ public class Import extends StdCommand
 		case 16:
 		case 17:
 		case 24:
-				I.setWeaponType(Weapon.TYPE_NATURAL); break;
+				I.setWeaponDamageType(Weapon.TYPE_NATURAL); break;
 		case 2:
 		case 11:
-				I.setWeaponType(Weapon.TYPE_PIERCING); break;
+				I.setWeaponDamageType(Weapon.TYPE_PIERCING); break;
 		case 25:
 		case 21:
 		case 4:
 		case 3:
 		case 1:
-				I.setWeaponType(Weapon.TYPE_SLASHING); break;
+				I.setWeaponDamageType(Weapon.TYPE_SLASHING); break;
 
-		default: I.setWeaponType(Weapon.TYPE_BURSTING); break;
+		default: I.setWeaponDamageType(Weapon.TYPE_BURSTING); break;
 		}
 	}
 

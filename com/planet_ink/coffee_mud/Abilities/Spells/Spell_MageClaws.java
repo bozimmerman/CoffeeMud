@@ -74,7 +74,7 @@ public class Spell_MageClaws extends Spell
 				final int level=super.adjustedLevel(mob, 0);
 				naturalWeapon=(Weapon)CMClass.getItem("GenWeapon");
 				naturalWeapon.setName(L("a pair of jagged claws"));
-				naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);
+				naturalWeapon.setWeaponDamageType(Weapon.TYPE_SLASHING);
 				naturalWeapon.setWeaponClassification(Weapon.CLASS_NATURAL);
 				naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 				naturalWeapon.setUsesRemaining(1000);

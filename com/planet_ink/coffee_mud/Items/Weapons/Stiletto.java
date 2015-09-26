@@ -49,7 +49,7 @@ public class Stiletto extends Dagger
 		baseGoldValue=1;
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
-		weaponType=TYPE_PIERCING;
+		weaponDamageType=TYPE_PIERCING;
 	}
 
 

@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * and the personal functionality that goes with that limb, to 
  * someone who is missing that limb due to amputation.  These include
  * things like peg legs.
- * @author BZ
+ * @author Bo Zimmerman
  *
  */
 public interface FalseLimb extends Armor

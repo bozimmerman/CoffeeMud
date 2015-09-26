@@ -95,7 +95,7 @@ public class Fighter_ReturnProjectile extends FighterSkill
 				neww.setUsesRemaining(1);
 				neww.setMaterial(((Weapon)w).material());
 				neww.setWeaponClassification(Weapon.CLASS_THROWN);
-				neww.setWeaponType(((Weapon)w).weaponType());
+				neww.setWeaponDamageType(((Weapon)w).weaponDamageType());
 				neww.basePhyStats().setWeight(1);
 				neww.setBaseValue(0);
 				neww.setRanges(w.minRange(),w.maxRange());

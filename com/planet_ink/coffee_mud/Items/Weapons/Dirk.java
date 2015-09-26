@@ -47,7 +47,7 @@ public class Dirk extends Dagger
 		baseGoldValue=2;
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(4);
-		weaponType=TYPE_PIERCING;
+		weaponDamageType=TYPE_PIERCING;
 		material=RawMaterial.RESOURCE_STEEL;
 		recoverPhyStats();
 	}

@@ -1028,12 +1028,12 @@ public class CraftingSkill extends GatheringSkill
 
 	protected void setWeaponTypeClass(Weapon weapon, String weaponClass, int flailedType, int naturalType)
 	{
-		weapon.setWeaponType(Weapon.TYPE_BASHING);
+		weapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 		for(int cl=0;cl<Weapon.TYPE_DESCS.length;cl++)
 		{
 			if(weaponClass.equalsIgnoreCase(Weapon.TYPE_DESCS[cl]))
 			{
-				weapon.setWeaponType(cl);
+				weapon.setWeaponDamageType(cl);
 				return;
 			}
 		}
@@ -1045,7 +1045,7 @@ public class CraftingSkill extends GatheringSkill
 		switch(weapon.weaponClassification())
 		{
 		case Weapon.CLASS_AXE:
-			weapon.setWeaponType(Weapon.TYPE_SLASHING);
+			weapon.setWeaponDamageType(Weapon.TYPE_SLASHING);
 			break;
 		case Weapon.CLASS_SWORD:
 		case Weapon.CLASS_DAGGER:
@@ -1053,18 +1053,18 @@ public class CraftingSkill extends GatheringSkill
 		case Weapon.CLASS_POLEARM:
 		case Weapon.CLASS_RANGED:
 		case Weapon.CLASS_THROWN:
-			weapon.setWeaponType(Weapon.TYPE_PIERCING);
+			weapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
 			break;
 		case Weapon.CLASS_FLAILED:
-			weapon.setWeaponType(flailedType);
+			weapon.setWeaponDamageType(flailedType);
 			break;
 		case Weapon.CLASS_NATURAL:
-			weapon.setWeaponType(naturalType);
+			weapon.setWeaponDamageType(naturalType);
 			break;
 		case Weapon.CLASS_BLUNT:
 		case Weapon.CLASS_HAMMER:
 		case Weapon.CLASS_STAFF:
-			weapon.setWeaponType(Weapon.TYPE_BASHING);
+			weapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 			break;
 		}
 	}

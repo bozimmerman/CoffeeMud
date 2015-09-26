@@ -59,7 +59,7 @@ public class GenStaff extends GenWeapon implements Wand
 		wornLogicalAnd=true;
 		material=RawMaterial.RESOURCE_OAK;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
-		weaponType=TYPE_BASHING;
+		weaponDamageType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;
 		recoverPhyStats();
 	}

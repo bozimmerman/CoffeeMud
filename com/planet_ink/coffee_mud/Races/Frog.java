@@ -96,7 +96,7 @@ public class Frog extends StdRace
 			naturalWeapon.setName(L("a sticky tongue"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_SLASHING);
 		}
 		return naturalWeapon;
 	}

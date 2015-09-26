@@ -78,44 +78,44 @@ public class Spell_AchillesArmor extends Spell
 		&&((msg.value())>0)
 		&&(!mob.amDead()))
 		{
-			int weaponType=-1;
+			int weaponDamageType=-1;
 			if(msg.tool() instanceof Weapon)
-			   weaponType=((Weapon)msg.tool()).weaponType();
+			   weaponDamageType=((Weapon)msg.tool()).weaponDamageType();
 			else
 			switch(msg.sourceMinor())
 			{
 			case CMMsg.TYP_FIRE:
-				weaponType=Weapon.TYPE_BURNING;
+				weaponDamageType=Weapon.TYPE_BURNING;
 				break;
 			case CMMsg.TYP_WATER:
-				weaponType=Weapon.TYPE_FROSTING;
+				weaponDamageType=Weapon.TYPE_FROSTING;
 				break;
 			case CMMsg.TYP_ACID:
-				weaponType=Weapon.TYPE_MELTING;
+				weaponDamageType=Weapon.TYPE_MELTING;
 				break;
 			case CMMsg.TYP_COLD:
-				weaponType=Weapon.TYPE_FROSTING;
+				weaponDamageType=Weapon.TYPE_FROSTING;
 				break;
 			case CMMsg.TYP_GAS:
-				weaponType=Weapon.TYPE_GASSING;
+				weaponDamageType=Weapon.TYPE_GASSING;
 				break;
 			case CMMsg.TYP_ELECTRIC:
-				weaponType=Weapon.TYPE_STRIKING;
+				weaponDamageType=Weapon.TYPE_STRIKING;
 				break;
 			case CMMsg.TYP_DISEASE:
 			case CMMsg.TYP_POISON:
 			case CMMsg.TYP_UNDEAD:
 			case CMMsg.TYP_CAST_SPELL:
-				weaponType=Weapon.TYPE_BURSTING;
+				weaponDamageType=Weapon.TYPE_BURSTING;
 				break;
 			case CMMsg.TYP_JUSTICE:
-				weaponType=Weapon.TYPE_BASHING;
+				weaponDamageType=Weapon.TYPE_BASHING;
 				break;
 			}
-			if(weaponType<0)
+			if(weaponDamageType<0)
 				return super.okMessage(myHost,msg);
 
-			if(weaponType!=vulnerability)
+			if(weaponDamageType!=vulnerability)
 			{
 				String name=null;
 				if(msg.tool()==null)

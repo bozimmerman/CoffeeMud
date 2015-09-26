@@ -87,7 +87,7 @@ public class Fighter_SideKick extends MonkSkill
 						naturalWeapon.setName(L("a side kick"));
 						naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 						naturalWeapon.setUsesRemaining(1000);
-						naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 						naturalWeapon.basePhyStats().setDamage(5);
 						naturalWeapon.recoverPhyStats();
 					}

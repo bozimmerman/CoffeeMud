@@ -59,7 +59,7 @@ public class StdPerfume extends StdDrink implements Perfume
 	}
 
 	@Override
-	public List<String> getSmellEmotes(Perfume me)
+	public List<String> getSmellEmotes()
 	{	return smellList;}
 	@Override
 	public String getSmellList()
@@ -74,7 +74,7 @@ public class StdPerfume extends StdDrink implements Perfume
 	{smellList=CMParms.parseSemicolons(list,true);}
 
 	@Override
-	public void wearIfAble(MOB mob, Perfume me)
+	public void wearIfAble(MOB mob)
 	{
 		Ability E=mob.fetchEffect("Prop_MOBEmoter");
 		if(E!=null)
@@ -134,7 +134,7 @@ public class StdPerfume extends StdDrink implements Perfume
 						A.executeMsg(this,msg);
 				}
 				amountOfLiquidRemaining-=amountOfThirstQuenched;
-				wearIfAble(msg.source(),this);
+				wearIfAble(msg.source());
 				if(disappearsAfterDrinking)
 					destroy();
 				return;

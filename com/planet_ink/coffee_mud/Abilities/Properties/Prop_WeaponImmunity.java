@@ -127,7 +127,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 			if((foundPlusMinus==null)&&(msg.tool() instanceof Weapon))
 			{
 				final Weapon W=(Weapon)msg.tool();
-				foundPlusMinus=(Character)flags.get(Weapon.TYPE_DESCS[W.weaponType()]);
+				foundPlusMinus=(Character)flags.get(Weapon.TYPE_DESCS[W.weaponDamageType()]);
 				foundPlusMinus=(Character)flags.get(Weapon.CLASS_DESCS[W.weaponClassification()]);
 				foundPlusMinus=(Character)flags.get((CMLib.flags().isABonusItems(W))?"MAGIC":"NONMAGIC");
 				foundPlusMinus=(Character)flags.get(RawMaterial.CODES.NAME((W).material()));
