@@ -360,7 +360,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 					{
 						for(final Software S : software)
 						{
-							if(S.isActivationString(msg.targetMessage()))
+							if(S.isDeActivationString(msg.targetMessage()))
 							{
 								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
 							}

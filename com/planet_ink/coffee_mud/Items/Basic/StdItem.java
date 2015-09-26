@@ -1414,14 +1414,17 @@ public class StdItem implements Item
 			if (owner instanceof Room)
 			{
 				final Room thisRoom=(Room)owner;
-				for(int r=thisRoom.numItems()-1;r>=0;r--)
+				if(this instanceof Container)
 				{
-					final Item thisItem = thisRoom.getItem(r);
-					if((thisItem!=null)
-					&&(!thisItem.amDestroyed())
-					&&(thisItem.container()!=null)
-					&&(thisItem.container()==this))
-						thisItem.destroy();
+					for(int r=thisRoom.numItems()-1;r>=0;r--)
+					{
+						final Item thisItem = thisRoom.getItem(r);
+						if((thisItem!=null)
+						&&(!thisItem.amDestroyed())
+						&&(thisItem.container()!=null)
+						&&(thisItem.container()==this))
+							thisItem.destroy();
+					}
 				}
 				thisRoom.delItem(this);
 			}
@@ -1429,13 +1432,16 @@ public class StdItem implements Item
 			if (owner instanceof MOB)
 			{
 				final MOB mob=(MOB)owner;
-				for(int r=mob.numItems()-1;r>=0;r--)
+				if(this instanceof Container)
 				{
-					final Item thisItem = mob.getItem(r);
-					if((thisItem!=null)
-					&&(!thisItem.amDestroyed())
-					&&(thisItem.container()==this))
-						thisItem.destroy();
+					for(int r=mob.numItems()-1;r>=0;r--)
+					{
+						final Item thisItem = mob.getItem(r);
+						if((thisItem!=null)
+						&&(!thisItem.amDestroyed())
+						&&(thisItem.container()==this))
+							thisItem.destroy();
+					}
 				}
 				mob.delItem(this);
 			}
