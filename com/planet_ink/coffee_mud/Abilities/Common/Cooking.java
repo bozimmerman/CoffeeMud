@@ -428,32 +428,48 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public Item buildItem(MOB mob, List<String> finalRecipe, List<Item> contents)
 	{
 		String replaceName=(finalRecipe.get(RCP_MAININGR));
+		boolean rotten = false;
 		if(contents!=null)
-		for(int v=0;v<contents.size();v++)
 		{
-			final Item I=contents.get(v);
-			if((I instanceof RawMaterial)
-			&&(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(finalRecipe.get(RCP_MAININGR))))
+			for(int v=0;v<contents.size();v++)
 			{
-				if((((RawMaterial)I).domainSource()!=null)
-				&&(!CMath.isNumber(((RawMaterial)I).domainSource()))
-				&&(CMClass.getRace(((RawMaterial)I).domainSource()))!=null)
-					replaceName=CMClass.getRace(((RawMaterial)I).domainSource()).name().toLowerCase();
-				else
+				final Item I=contents.get(v);
+				if((I instanceof RawMaterial)
+				&&(I instanceof Decayable)
+				&&(I.fetchEffect("Poison_Rotten")!=null))
 				{
-					String name=I.Name();
-					if(name.endsWith(" meat"))
-						name=name.substring(0,name.length()-5);
-					if(name.endsWith(" flesh"))
-						name=name.substring(0,name.length()-6);
-					name=name.trim();
-					final int x=name.lastIndexOf(' ');
-					if((x>0)&&(!name.substring(x+1).trim().equalsIgnoreCase("of")))
-						replaceName=name.substring(x+1);
-					else
-						replaceName=name;
+					rotten=true;
+					break;
 				}
-				break;
+			}
+			for(int v=0;v<contents.size();v++)
+			{
+				final Item I=contents.get(v);
+				if(I instanceof RawMaterial)
+				{
+					if(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(finalRecipe.get(RCP_MAININGR)))
+					{
+						if((((RawMaterial)I).domainSource()!=null)
+						&&(!CMath.isNumber(((RawMaterial)I).domainSource()))
+						&&(CMClass.getRace(((RawMaterial)I).domainSource()))!=null)
+							replaceName=CMClass.getRace(((RawMaterial)I).domainSource()).name().toLowerCase();
+						else
+						{
+							String name=I.Name();
+							if(name.endsWith(" meat"))
+								name=name.substring(0,name.length()-5);
+							if(name.endsWith(" flesh"))
+								name=name.substring(0,name.length()-6);
+							name=name.trim();
+							final int x=name.lastIndexOf(' ');
+							if((x>0)&&(!name.substring(x+1).trim().equalsIgnoreCase("of")))
+								replaceName=name.substring(x+1);
+							else
+								replaceName=name;
+						}
+						break;
+					}
+				}
 			}
 		}
 		finalDishName=replacePercent(finalRecipe.get(RCP_FINALFOOD),
@@ -465,7 +481,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			final Food food=(Food)buildingI;
 			buildingI.setName(((messedUp)?"burnt ":"")+finalDishName);
 			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?"burnt ":""),finalDishName));
-			buildingI.setDescription(L("It looks @x1",((messedUp)?"burnt!":"good!")));
+			buildingI.setDescription(L("It looks @x1",((messedUp)?"burnt!":rotten?"rotten!":"good!")));
 			food.setNourishment(0);
 			if(!messedUp)
 			{
@@ -519,6 +535,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			}
 			int material=-1;
 			if(contents!=null)
+			{
 				for(int v=0;v<contents.size();v++)
 				{
 					final Item I=contents.get(v);
@@ -533,6 +550,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 							break;
 						}
 				}
+			}
 			if(material<0)
 			{
 				final String materialFoodName=replacePercent(finalRecipe.get(RCP_FINALFOOD),"").trim().toUpperCase();
@@ -554,9 +572,12 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				}
 			}
 			food.setMaterial(material<0?RawMaterial.RESOURCE_BEEF:material);
+			if((rotten)&&(food.nourishment()>1))
+				food.setNourishment(food.nourishment()/2/(finalAmount>0?finalAmount:1));
+			else
 			if(mob!=null)
 				food.setNourishment((food.nourishment()+homeCookValue(mob,10))/finalAmount);
-			if(!messedUp)
+			if((!messedUp)&&(!rotten))
 				CMLib.materials().addEffectsToResource(food);
 			food.basePhyStats().setWeight(food.basePhyStats().weight()/finalAmount);
 			playSound=defaultFoodSound;
@@ -567,9 +588,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			buildingI=CMClass.getItem("GenLiquidResource");
 			//building.setMiscText(cooking.text());
 			//building.recoverPhyStats();
-			buildingI.setName(((messedUp)?"spoiled ":"")+finalDishName);
+			buildingI.setName((messedUp?"spoiled ":"")+finalDishName);
 			buildingI.setDisplayText(L("some @x1@x2 is here.",((messedUp)?"spoiled ":""),finalDishName));
-			buildingI.setDescription(L("It looks @x1",((messedUp)?"spoiled!":"good!")));
+			buildingI.setDescription(L("It looks @x1",((messedUp)?"spoiled!":rotten?"rotten!":"good!")));
 			final Drink drink=(Drink)buildingI;
 			int liquidType=RawMaterial.RESOURCE_FRESHWATER;
 			if(contents!=null)
@@ -597,6 +618,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			drink.basePhyStats().setWeight(drink.basePhyStats().weight()/finalAmount);
 			if(messedUp)
 				drink.setThirstQuenched(1);
+			else
+			if(rotten && (drink.thirstQuenched() > 1))
+				drink.setThirstQuenched(drink.thirstQuenched()/2);
 			playSound=defaultDrinkSound;
 			buildingI.setMaterial(liquidType);
 			drink.setLiquidType(liquidType);
