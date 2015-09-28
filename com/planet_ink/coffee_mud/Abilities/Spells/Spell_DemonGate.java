@@ -46,9 +46,10 @@ public class Spell_DemonGate extends Spell
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int overrideMana(){return 100;}
-	MOB myTarget=null;
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	@Override public long flags(){return Ability.FLAG_SUMMONING;}
+
+	protected MOB myTarget=null;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -149,6 +150,7 @@ public class Spell_DemonGate extends Spell
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster, int level)
 	{
 		final MOB newMOB=CMClass.getMOB("GenRideable");

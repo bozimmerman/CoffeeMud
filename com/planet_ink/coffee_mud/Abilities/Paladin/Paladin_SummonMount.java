@@ -58,6 +58,9 @@ public class Paladin_SummonMount extends StdAbility
 		{
 			if(mob.amDead())
 				mob.setLocation(null);
+			else
+			if(mob.location()!=null)
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> gallop(s) away!"));
 			mob.destroy();
 		}
 	}
@@ -203,7 +206,5 @@ public class Paladin_SummonMount extends StdAbility
 		newMOB.resetToMaxState();
 		newMOB.text();
 		return(newMOB);
-
-
 	}
 }

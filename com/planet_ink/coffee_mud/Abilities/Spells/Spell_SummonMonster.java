@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -55,6 +54,9 @@ public class Spell_SummonMonster extends Spell
 		{
 			if(mob.amDead())
 				mob.setLocation(null);
+			else
+			if(mob.location()!=null)
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> vanish(es)!"));
 			mob.destroy();
 		}
 	}

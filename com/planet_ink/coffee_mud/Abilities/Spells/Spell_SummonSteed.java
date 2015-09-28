@@ -56,6 +56,9 @@ public class Spell_SummonSteed extends Spell
 		{
 			if(mob.amDead())
 				mob.setLocation(null);
+			else
+			if(mob.location()!=null)
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> gallop(s) away!"));
 			mob.destroy();
 		}
 	}
@@ -69,6 +72,7 @@ public class Spell_SummonSteed extends Spell
 			{
 				final MOB mob=(MOB)affected;
 				if(!mob.isInCombat())
+				{
 					if((mob.amFollowing()==null)
 					||(mob.location()==null)
 					||(mob.amDead())
@@ -91,6 +95,7 @@ public class Spell_SummonSteed extends Spell
 							mob.setLocation(null);
 						mob.destroy();
 					}
+				}
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -128,7 +133,7 @@ public class Spell_SummonSteed extends Spell
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, mob.phyStats().level()+((getXLEVELLevel(mob)+getX1Level(mob))/2));
 				final MOB squabble = checkPack(target, mob);
-				target.addNonUninvokableEffect( (Ability) copyOf());
+				beneficialAffect(mob,target,asLevel,0);
 				if(squabble==null)
 				{
 					if (target.isInCombat()) target.makePeace();

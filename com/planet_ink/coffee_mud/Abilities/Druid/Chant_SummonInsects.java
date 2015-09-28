@@ -69,6 +69,7 @@ public class Chant_SummonInsects extends Chant
 		}
 		return super.tick(ticking,tickID);
 	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -86,18 +87,18 @@ public class Chant_SummonInsects extends Chant
 	@Override
 	public int castingQuality(MOB mob, Physical target)
 	{
-		 if(mob!=null)
-		 {
-			 if(!mob.isInCombat())
+		if(mob!=null)
+		{
+			if(!mob.isInCombat())
 				 return Ability.QUALITY_INDIFFERENT;
-			 final Room R=mob.location();
-			 if(R!=null)
-			 {
-				 if((R.domainType()&Room.INDOORS)>0)
-					 return Ability.QUALITY_INDIFFERENT;
-			 }
-		 }
-		 return super.castingQuality(mob,target);
+			final Room R=mob.location();
+			if(R!=null)
+			{
+				if((R.domainType()&Room.INDOORS)>0)
+					return Ability.QUALITY_INDIFFERENT;
+			}
+		}
+		return super.castingQuality(mob,target);
 	}
 
 	@Override
@@ -124,13 +125,14 @@ public class Chant_SummonInsects extends Chant
 				return false;
 			}
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("A swarm of stinging insects appear, then flutter away!"):L("^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
 
 					final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 					if((mob.location().okMessage(mob,msg))
-					   &&(target.fetchEffect(this.ID())==null))
+					&&(target.fetchEffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);
 						if((msg.value()<=0)&&(target.location()==mob.location()))
@@ -141,6 +143,7 @@ public class Chant_SummonInsects extends Chant
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> chant(s), but the magic fizzles."));

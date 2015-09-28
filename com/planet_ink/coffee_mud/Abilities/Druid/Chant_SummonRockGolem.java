@@ -79,6 +79,9 @@ public class Chant_SummonRockGolem extends Chant
 		{
 			if(mob.amDead())
 				mob.setLocation(null);
+			else
+			if(mob.location()!=null)
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> crumble(s) away!"));
 			mob.destroy();
 		}
 	}
@@ -114,6 +117,7 @@ public class Chant_SummonRockGolem extends Chant
 		}
 		return super.castingQuality(mob,target);
 	}
+
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -143,7 +147,7 @@ public class Chant_SummonRockGolem extends Chant
 			{
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-				target.addNonUninvokableEffect((Ability)this.copyOf());
+				beneficialAffect(mob,target,0,asLevel);
 			}
 		}
 		else
@@ -152,6 +156,7 @@ public class Chant_SummonRockGolem extends Chant
 		// return whether it worked
 		return success;
 	}
+
 	public MOB determineMonster(MOB caster, int level)
 	{
 		final MOB newMOB=CMClass.getMOB("GenMOB");
@@ -201,7 +206,6 @@ public class Chant_SummonRockGolem extends Chant
 				newMOB.setVictim(victim);
 			newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}
-		newMOB.addNonUninvokableEffect(this);
 		return(newMOB);
 	}
 }

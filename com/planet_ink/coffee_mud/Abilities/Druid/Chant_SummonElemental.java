@@ -75,10 +75,13 @@ public class Chant_SummonElemental extends Chant
 	{
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked())&&(mob!=null))
+		if(canBeUninvoked()&&(mob!=null))
 		{
 			if(mob.amDead())
 				mob.setLocation(null);
+			else
+			if(mob.location()!=null)
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> vanish(es)!"));
 			mob.destroy();
 		}
 	}
@@ -134,7 +137,7 @@ public class Chant_SummonElemental extends Chant
 			{
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
-				target.addNonUninvokableEffect((Ability)this.copyOf());
+				beneficialAffect(mob,target,asLevel,0);
 				if(target.isInCombat())
 					target.makePeace();
 				CMLib.commands().postFollow(target,mob,true);
@@ -209,7 +212,6 @@ public class Chant_SummonElemental extends Chant
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 		newMOB.setStartRoom(null);
-		newMOB.addNonUninvokableEffect(this);
 		return(newMOB);
 	}
 }

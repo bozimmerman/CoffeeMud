@@ -57,6 +57,9 @@ public class Chant_SummonMount extends Chant
 			mob.setFollowing(null);
 			if(mob.amDead())
 				mob.setLocation(null);
+			else
+			if(mob.location()!=null)
+				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> gallop(s) away!"));
 			mob.destroy();
 		}
 	}
@@ -161,7 +164,7 @@ public class Chant_SummonMount extends Chant
 						mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));
 				}
 				invoker=mob;
-				target.addNonUninvokableEffect((Ability)copyOf());
+				beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else
@@ -198,7 +201,5 @@ public class Chant_SummonMount extends Chant
 		newMOB.resetToMaxState();
 		newMOB.text();
 		return(newMOB);
-
-
 	}
 }

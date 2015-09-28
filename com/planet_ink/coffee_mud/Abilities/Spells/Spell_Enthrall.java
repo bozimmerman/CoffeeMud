@@ -217,7 +217,6 @@ public class Spell_Enthrall extends Spell
 			return false;
 		}
 
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

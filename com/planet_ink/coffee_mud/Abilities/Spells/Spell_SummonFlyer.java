@@ -87,6 +87,7 @@ public class Spell_SummonFlyer extends Spell
 			{
 				final MOB mob=(MOB)affected;
 				if(!mob.isInCombat())
+				{
 					if((mob.amFollowing()==null)
 					||(mob.location()==null)
 					||(mob.amDead())
@@ -107,6 +108,7 @@ public class Spell_SummonFlyer extends Spell
 							mob.setLocation(null);
 						mob.destroy();
 					}
+				}
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -128,7 +130,7 @@ public class Spell_SummonFlyer extends Spell
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, mob.phyStats().level()+((getX1Level(mob)+getXLEVELLevel(mob))/2));
 				final MOB squabble = checkPack(target, mob);
-				target.addNonUninvokableEffect( (Ability) copyOf());
+				beneficialAffect(mob,target,0,asLevel);
 				if(squabble==null)
 				{
 					if (target.isInCombat()) target.makePeace();
