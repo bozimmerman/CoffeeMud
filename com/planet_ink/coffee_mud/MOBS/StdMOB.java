@@ -89,7 +89,7 @@ public class StdMOB implements MOB
 	protected int				attributesBitmap= MOB.Attrib.NOTEACH.getBitCode();
 	protected String			databaseID		= "";
 
-	protected int				tickCounter		= 0;
+	protected int				tickAgeCounter	= 0;
 	protected int				recoverTickCter = 1;
 	private long				expirationDate	= 0;
 	private int					manaConsumeCter = CMLib.dice().roll(1, 10, 0);
@@ -118,27 +118,27 @@ public class StdMOB implements MOB
 	protected int				tickStatus		= Tickable.STATUS_NOT;
 
 	/* containers of items and attributes */
-	protected 		   SVector<Item>		 	 inventory		= new SVector<Item>(1);
-	protected 		   CMUniqSortSVec<Ability>	 abilitys		= new CMUniqSortSVec<Ability>(1);
-	protected 		   int[]					 abilityUseTrig = new int[3];
-	protected 		   STreeMap<String,int[][]>	 abilityUseCache= new STreeMap<String,int[][]>();
-	protected 		   STreeMap<String,Integer>  expertises 	= new STreeMap<String,Integer>();
-	protected 		   SVector<Ability>		 	 affects		= new SVector<Ability>(1);
-	protected 		   CMUniqSortSVec<Behavior>	 behaviors		= new CMUniqSortSVec<Behavior>(1);
-	protected 		   CMUniqSortSVec<Tattoo>	 tattoos		= new CMUniqSortSVec<Tattoo>(1);
-	protected volatile SVector<Follower>	 	 followers		= null;
-	protected 		   LinkedList<QMCommand> 	 commandQue		= new LinkedList<QMCommand>();
-	protected 		   SVector<ScriptingEngine>	 scripts		= new SVector(1);
-	protected volatile List<Ability>			 racialAffects	= null;
-	protected volatile List<Ability>			 clanAffects	= null;
-	protected 		   SHashtable<String, FData> factions 		= new SHashtable<String, FData>(1);
-	protected volatile WeakReference<Item>		 possWieldedItem= null;
-	protected volatile WeakReference<Item>	 	 possHeldItem	= null;
+	protected 		   SVector<Item>			inventory		= new SVector<Item>(1);
+	protected 		   CMUniqSortSVec<Ability>	abilitys		= new CMUniqSortSVec<Ability>(1);
+	protected 		   int[]					abilityUseTrig = new int[3];
+	protected 		   STreeMap<String,int[][]>	abilityUseCache= new STreeMap<String,int[][]>();
+	protected 		   STreeMap<String,Integer> expertises 	= new STreeMap<String,Integer>();
+	protected 		   SVector<Ability>		 	affects		= new SVector<Ability>(1);
+	protected 		   CMUniqSortSVec<Behavior>	behaviors		= new CMUniqSortSVec<Behavior>(1);
+	protected 		   CMUniqSortSVec<Tattoo>	tattoos		= new CMUniqSortSVec<Tattoo>(1);
+	protected volatile SVector<Follower>	 	followers		= null;
+	protected 		   LinkedList<QMCommand> 	commandQue		= new LinkedList<QMCommand>();
+	protected 		   SVector<ScriptingEngine>	scripts		= new SVector(1);
+	protected volatile List<Ability>			racialAffects	= null;
+	protected volatile List<Ability>			clanAffects	= null;
+	protected 		   SHashtable<String, FData>factions 		= new SHashtable<String, FData>(1);
+	protected volatile WeakReference<Item>		possWieldedItem= null;
+	protected volatile WeakReference<Item>	 	possHeldItem	= null;
 
-	protected 		   ApplyAffectPhyStats	   	 affectPhyStats = new ApplyAffectPhyStats(this);
-	protected		   ApplyRecAffectPhyStats	 recoverAffectP	= new ApplyRecAffectPhyStats(this);
-	protected		   ApplyAffectCharStats      affectCharStats= new ApplyAffectCharStats(this);
-	protected		   ApplyAffectCharState      affectCharState= new ApplyAffectCharState(this);
+	protected 		   ApplyAffectPhyStats	   	affectPhyStats = new ApplyAffectPhyStats(this);
+	protected		   ApplyRecAffectPhyStats	recoverAffectP	= new ApplyRecAffectPhyStats(this);
+	protected		   ApplyAffectCharStats     affectCharStats= new ApplyAffectCharStats(this);
+	protected		   ApplyAffectCharState     affectCharState= new ApplyAffectCharState(this);
 	
 	protected		   OrderedMap<String,Pair<Clan,Integer>> 	clans = new OrderedMap<String,Pair<Clan,Integer>>();
 
@@ -667,6 +667,7 @@ public class StdMOB implements MOB
 			if ((I != null)
 			&& (I.container() != null)
 			&& (!isMine(I.container())))
+			{
 				for (final Enumeration<Item> e = M.items(); e.hasMoreElements();)
 				{
 					I2 = e.nextElement();
@@ -676,6 +677,7 @@ public class StdMOB implements MOB
 						break;
 					}
 				}
+			}
 		}
 		Ability A = null;
 		for (int i = 0; i < M.numAbilities(); i++)
@@ -1170,9 +1172,11 @@ public class StdMOB implements MOB
 		if ((miscText != null) && (resetStats) && (isGeneric()))
 		{
 			if (CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS) && (miscText instanceof byte[]))
+			{
 				CMLib.coffeeMaker().resetGenMOB(this,
 						CMLib.coffeeMaker().getGenMOBTextUnpacked(this,
 								CMLib.encoder().decompressString((byte[]) miscText)));
+			}
 			else
 			CMLib.coffeeMaker().resetGenMOB(this,
 					CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMStrings.bytesToStr(miscText)));
@@ -1324,15 +1328,19 @@ public class StdMOB implements MOB
 		{
 			final MOB fol = mob.amFollowing();
 			if ((fol != null) && (!isEitherOfUsDead(fol)))
+			{
 				if (!isPermissableToFight(fol))
 					return false;
+			}
 		}
 		if (iAmMonster)
 		{
 			final MOB fol = amFollowing();
 			if ((fol != null) && (!isEitherOfUsDead(fol)))
+			{
 				if (!fol.mayIFight(mob))
 					return false;
+			}
 		}
 		if (CMLib.flags().isUnattackable(mob))
 			return false;
@@ -1463,10 +1471,12 @@ public class StdMOB implements MOB
 		{
 			setRangeToTarget(-1);
 			if (victim != null)
+			{
 				synchronized (commandQue)
 				{
 					commandQue.clear();
 				}
+			}
 		}
 		if (victim == mob)
 			return;
@@ -1497,7 +1507,6 @@ public class StdMOB implements MOB
 							+ curState().getCombatStats() + ":" + ((I == null) ? "null" : I.name()) + ":" + mob.Name()
 							+ ":" + mob.phyStats().getCombatStats() + ":" + mob.curState().getCombatStats() + ":"
 							+ ((VI == null) ? "null" : VI.name()));
-
 				}
 				mob.recoverCharStats();
 				mob.recoverPhyStats();
@@ -2032,6 +2041,7 @@ public class StdMOB implements MOB
 		if (tickDelay == 0.0)
 			doCommand(O, commands, metaFlags);
 		else
+		{
 			synchronized (commandQue)
 			{
 				final QMCommand cmd = new QMCommand();
@@ -2044,6 +2054,7 @@ public class StdMOB implements MOB
 				cmd.commandVector = commands;
 				commandQue.addFirst(cmd);
 			}
+		}
 		dequeCommand();
 	}
 
@@ -2189,6 +2200,7 @@ public class StdMOB implements MOB
 						return false;
 					}
 					if (!(msg.target() instanceof Room))
+					{
 						if (!CMLib.flags().canBeSeenBy(msg.target(), this))
 						{
 							if (msg.target() instanceof Item)
@@ -2197,6 +2209,7 @@ public class StdMOB implements MOB
 								tell(L("You can't see that!"));
 							return false;
 						}
+					}
 				}
 				if (CMath.bset(srcCode, CMMsg.MASK_MOUTH))
 				{
@@ -2914,6 +2927,7 @@ public class StdMOB implements MOB
 
 		// first do special cases...
 		if (msg.amITarget(this) && (!amDead))
+		{
 			switch (msg.targetMinor())
 			{
 			case CMMsg.TYP_HEALING:
@@ -2932,6 +2946,7 @@ public class StdMOB implements MOB
 			default:
 				break;
 			}
+		}
 
 		// now go on to source activities
 		if ((msg.sourceCode() != CMMsg.NO_EFFECT) && (msg.amISource(this)))
@@ -3402,9 +3417,9 @@ public class StdMOB implements MOB
 				if ((!isMonster) && (soulMate() == null))
 				{
 					CMLib.coffeeTables().bump(this, CoffeeTableRow.STAT_TICKSONLINE);
-					if (((++tickCounter) * CMProps.getTickMillis()) >= AGE_MILLIS_THRESHOLD)
+					if (((++tickAgeCounter) * CMProps.getTickMillis()) >= AGE_MILLIS_THRESHOLD)
 					{
-						tickCounter = 0;
+						tickAgeCounter = 0;
 						if (inventory != null)
 							inventory.trimToSize();
 						if (affects != null)
@@ -3523,8 +3538,10 @@ public class StdMOB implements MOB
 		try
 		{
 			for (final Session S : CMLib.sessions().allIterable())
+			{
 				if ((S.mob() != null) && (S.mob().soulMate() == this))
 					return true;
+			}
 		}
 		catch (final Exception e){}
 		return false;
@@ -3564,6 +3581,7 @@ public class StdMOB implements MOB
 	public void delAllItems(boolean destroy)
 	{
 		if (destroy)
+		{
 			for (int i = numItems() - 1; i >= 0; i--)
 			{
 				final Item I = getItem(i);
@@ -3575,6 +3593,7 @@ public class StdMOB implements MOB
 					I.destroy();
 				}
 			}
+		}
 		inventory.clear();
 	}
 
@@ -3601,8 +3620,7 @@ public class StdMOB implements MOB
 	{
 		if (inventory.isEmpty())
 			return new Vector<Item>(1);
-		List<Item> items = CMLib.english().fetchAvailableItems(inventory, itemName, goodLocation, Wearable.FILTER_ANY,
-				true);
+		List<Item> items = CMLib.english().fetchAvailableItems(inventory, itemName, goodLocation, Wearable.FILTER_ANY, true);
 		if (items.isEmpty())
 			items = CMLib.english().fetchAvailableItems(inventory, itemName, goodLocation, Wearable.FILTER_ANY, false);
 		return items;
@@ -3624,6 +3642,7 @@ public class StdMOB implements MOB
 	{
 		final List<Item> contents = this.inventory;
 		if (contents != null)
+		{
 			try
 			{
 				for (int a = 0; a < contents.size(); a++)
@@ -3634,6 +3653,7 @@ public class StdMOB implements MOB
 				}
 			}
 			catch (final ArrayIndexOutOfBoundsException e){}
+		}
 	}
 
 	@Override
@@ -3706,12 +3726,16 @@ public class StdMOB implements MOB
 			if (followers == null)
 				followers = new SVector<Follower>();
 			else
+			{
 				for (final Follower F : followers)
+				{
 					if (F.follower == follower)
 					{
 						F.marchingOrder = order;
 						return;
 					}
+				}
+			}
 			followers.add(new Follower(follower, order));
 		}
 	}
@@ -3722,8 +3746,10 @@ public class StdMOB implements MOB
 		if ((follower != null) && (followers != null))
 		{
 			for (final Follower F : followers)
+			{
 				if (F.follower == follower)
 					followers.remove(F);
+			}
 		}
 	}
 
@@ -3906,8 +3932,10 @@ public class StdMOB implements MOB
 			return false;
 		final MOB followed = amFollowing();
 		if (followed != null)
+		{
 			if (!followed.isMonster())
 				return false;
+		}
 		return true;
 
 	}
@@ -3968,8 +3996,7 @@ public class StdMOB implements MOB
 	@Override
 	public Enumeration<Ability> allAbilities()
 	{
-		final MultiListEnumeration multi = new MultiListEnumeration(new List[] { abilitys,
-				charStats().getMyRace().racialAbilities(this) });
+		final MultiListEnumeration multi = new MultiListEnumeration(new List[] { abilitys, charStats().getMyRace().racialAbilities(this) });
 		for(final Pair<Clan,Integer> p : clans())
 			multi.addEnumeration(p.first.clanAbilities(this));
 		return multi;
@@ -4048,23 +4075,27 @@ public class StdMOB implements MOB
 		if (A == null)
 			A = (Ability) CMLib.english().fetchEnvironmental(R.racialAbilities(this), ID, true);
 		if (A == null)
+		{
 			for(final Pair<Clan,Integer> p : clans())
 			{
 				A = (Ability) CMLib.english().fetchEnvironmental(p.first.clanAbilities(this), ID, true);
 				if(A!=null)
 					return A;
 			}
+		}
 		if (A == null)
 			A = (Ability) CMLib.english().fetchEnvironmental(abilitys, ID, false);
 		if (A == null)
 			A = (Ability) CMLib.english().fetchEnvironmental(R.racialAbilities(this), ID, false);
 		if (A == null)
+		{
 			for(final Pair<Clan,Integer> p : clans())
 			{
 				A = (Ability) CMLib.english().fetchEnvironmental(p.first.clanAbilities(this), ID, false);
 				if(A!=null)
 					return A;
 			}
+		}
 		if (A == null)
 			A = fetchAbility(ID);
 		return A;
@@ -4213,18 +4244,22 @@ public class StdMOB implements MOB
 	{
 		final List<Ability> affects = this.affects;
 		if (affects != null)
+		{
 			try
 			{
 				for (int a = 0; a < affects.size(); a++)
 					applier.apply(affects.get(a));
 			}
 			catch (final ArrayIndexOutOfBoundsException e){}
+		}
 		final List<Ability> racialEffects = racialEffects();
 		try
 		{
 			if (!racialEffects.isEmpty())
+			{
 				for (final Ability A : racialEffects)
 					applier.apply(A);
+			}
 		}
 		catch (final ArrayIndexOutOfBoundsException e){}
 		try
@@ -4366,12 +4401,14 @@ public class StdMOB implements MOB
 	{
 		final List<Behavior> behaviors = this.behaviors;
 		if (behaviors != null)
+		{
 			try
 			{
 				for (int a = 0; a < behaviors.size(); a++)
 					applier.apply(behaviors.get(a));
 			}
 			catch (final ArrayIndexOutOfBoundsException e){}
+		}
 	}
 
 	@Override
@@ -4401,7 +4438,8 @@ public class StdMOB implements MOB
 		abilityUseCache.clear();
 	}
 
-	@Override public void addExpertise(String code)
+	@Override 
+	public void addExpertise(String code)
 	{
 		final Entry<String,Integer> p=CMath.getStringFollowedByNumber(code, true);
 		final String key=p.getKey().toUpperCase();
@@ -4413,7 +4451,8 @@ public class StdMOB implements MOB
 		}
 	}
 
-	@Override public void delExpertise(String baseCode)
+	@Override 
+	public void delExpertise(String baseCode)
 	{
 		if(baseCode==null)
 			return;
@@ -4427,7 +4466,8 @@ public class StdMOB implements MOB
 			clearAbilityUsageCache();
 	}
 
-	@Override public Pair<String, Integer> fetchExpertise(final String baseCode)
+	@Override 
+	public Pair<String, Integer> fetchExpertise(final String baseCode)
 	{
 		if(baseCode==null)
 			return null;
@@ -4443,7 +4483,8 @@ public class StdMOB implements MOB
 		return null;
 	}
 
-	@Override public void delAllExpertises()
+	@Override 
+	public void delAllExpertises()
 	{
 		if(!expertises.isEmpty())
 		{
@@ -4452,13 +4493,20 @@ public class StdMOB implements MOB
 		}
 	}
 
-	@Override public Enumeration<String> expertises()
+	@Override 
+	public Enumeration<String> expertises()
 	{
 		return new Enumeration<String>()
 		{
 			final Iterator<Entry<String,Integer>> i=expertises.entrySet().iterator();
-			@Override public boolean hasMoreElements() { return i.hasNext(); }
-			@Override public String nextElement()
+			@Override 
+			public boolean hasMoreElements() 
+			{ 
+				return i.hasNext(); 
+			}
+			
+			@Override 
+			public String nextElement()
 			{
 				final Entry<String,Integer> s=i.next();
 				if(s.getValue()==null)
@@ -4478,8 +4526,10 @@ public class StdMOB implements MOB
 		if (!scripts.contains(S))
 		{
 			for (final ScriptingEngine S2 : scripts)
+			{
 				if (S2.getScript().equalsIgnoreCase(S.getScript()))
 					return;
+			}
 			scripts.addElement(S);
 		}
 	}
@@ -4526,6 +4576,7 @@ public class StdMOB implements MOB
 	{
 		final List<ScriptingEngine> scripts = this.scripts;
 		if (scripts != null)
+		{
 			try
 			{
 				for (int a = 0; a < scripts.size(); a++)
@@ -4536,14 +4587,14 @@ public class StdMOB implements MOB
 				}
 			}
 			catch (final ArrayIndexOutOfBoundsException e){}
+		}
 	}
 
 	/** Manipulation of the tatoo list */
 	@Override
 	public void addTattoo(Tattoo of)
 	{
-		if ((of == null) || (of.tattooName == null) || (of.tattooName.length() == 0)
-				|| findTattoo(of.tattooName) != null)
+		if ((of == null) || (of.tattooName == null) || (of.tattooName.length() == 0) || findTattoo(of.tattooName) != null)
 			return;
 		tattoos.addElement(of);
 	}
@@ -4712,6 +4763,7 @@ public class StdMOB implements MOB
 					if (wornCode > Integer.MAX_VALUE)
 						add += total;
 					else
+					{
 						switch ((int) wornCode)
 						{
 						case (int) Wearable.WORN_HANDS:
@@ -4734,6 +4786,7 @@ public class StdMOB implements MOB
 							add += total;
 							break;
 						}
+					}
 				}
 				else
 				{
@@ -4815,8 +4868,7 @@ public class StdMOB implements MOB
 			final Item I = wieldRef.get();
 			if (I == null)
 				return null;
-			if ((I.owner() == this) && (I.amWearingAt(Wearable.WORN_WIELD)) && (!I.amDestroyed())
-					&& (I.container() == null))
+			if ((I.owner() == this) && (I.amWearingAt(Wearable.WORN_WIELD)) && (!I.amDestroyed()) && (I.container() == null))
 				return I;
 			possWieldedItem = null;
 		}
