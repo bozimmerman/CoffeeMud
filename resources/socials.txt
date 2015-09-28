@@ -463,8 +463,8 @@ mo	PISSED <T-NAME>	You turn a stoney gaze toward <T-NAMESELF>... you are SOOO pi
 mo	PISSED SELF	You are PISSED at yourself!	<S-NAME> is so pissed at <S-HIM-HERSELF>.  How could <S-HE-SHE> be so stupid???			
 ww	PLEAD	You beg and plead to anyone who will listen.	<S-NAME> pleads <S-HIS-HER> case to anyone who will listen... You ALMOST feel sorry for <S-HIS-HER>.			
 mv	POCKETS	You shove your hands into your pockets, look skyward and whistle a jaunty tune.	<S-NAME> shoves <S-HIS-HER> hands into <S-HIS-HER> pockets, looks skyward and whistles a jaunty tune.			
-mo	POINT	You point in every direction.	<S-NAME> points excitedly!			
-mo	POINT <T-NAME>	You point at <T-NAMESELF>.	<S-NAME> points excitedly at <T-NAMESELF>!	<S-NAME> points at you.  How rude!	You point at no one in particular.	
+mv	POINT	You point in every direction.	<S-NAME> points excitedly!			
+mv	POINT <T-NAME>	You point at <T-NAMESELF>.	<S-NAME> points excitedly at <T-NAMESELF>!	<S-NAME> points at you.  How rude!	You point at no one in particular.	
 mv	POINT DOWN	You point down.	<S-NAME> points down.			
 mv	POINT EAST	You point east.	<S-NAME> point(s) east.			
 mv	POINT NORTH	You point north.	<S-NAME> points north.			
@@ -690,9 +690,9 @@ ww	TOAST SELF	You grin evilly and toast yourself.	<S-NAME> grins evilly and toas
 mo	TONGUE	You slowly give your tongue a nice workout.				
 mt	TONGUE <T-NAME>	Mmmm... you give <T-NAMESELF> a good working over with your tongue...	<S-NAME> slides <S-HIS-HER> tongue over <T-NAMESELF>'s body...	<S-NAME> wraps <S-HIS-HER> tongue around you, moving it across your young, nubile flesh...	Never around when required...	
 mo	TONGUE SELF	You slowly tongue yourself.	<S-NAME> slowly tongues <S-HIM-HERSELF>... ICK.			
-ov	TOUCH <E-NAME>	You touch <T-NAME>.	<S-NAME> touch(es) <T-NAMESELF>.	<S-NAME> touchs you.	Touch Who?	
-ww	TOUCH <I-NAME>	You are touching <T-NAME>.	<S-NAME> touch(es) <T-NAMESELF>	<S-NAME> touchs you.	Room Touch	
-mv	TOUCH <T-NAME>	You touch <T-NAME>.	<S-NAME> touches <T-NAMESELF>.	<S-NAME> touches you.	Touch...?	
+ov	TOUCH <E-NAME>	You touch <T-NAME>.	<S-NAME> touch(es) <T-NAMESELF>.	<S-NAME> touches you.	Touch Who?	
+ww	TOUCH <I-NAME>	You are touching <T-NAME>.	<S-NAME> touch(es) <T-NAMESELF>	<S-NAME> touches you.	Room Touch	
+mt	TOUCH <T-NAME>	You touch <T-NAME>.	<S-NAME> touches <T-NAMESELF>.	<S-NAME> touches you.	Touch...?	
 mv	TOUT	You stick out your tongue.	<S-NAME> sticks out <S-HIS-HER> tongue.  How rude!			
 mv	TOUT <T-NAME>	You stick your tongue out at <T-NAME>.	<S-NAME> sticks <S-HIS-HER> tongue out at <T-NAME>.	<S-NAME> sticks <S-HIS-HER> tongue out at <T-NAME>.	Are you sure you wish to stick your tongue out without an audience?	
 mv	TOUT SELF	You stick your tongue out and wag it all about.	<S-NAME> sticks <S-HIS-HER> tongue out and wags it all about.			
