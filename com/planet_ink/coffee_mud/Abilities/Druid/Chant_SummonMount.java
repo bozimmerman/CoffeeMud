@@ -90,7 +90,9 @@ public class Chant_SummonMount extends Chant
 				if((mob.amFollowing()==null)
 				||(mob.amDead())
 				||((invoker!=null)
-					&&((mob.location()!=invoker.location())||(!CMLib.flags().isInTheGame(invoker, true))||(invoker.riding()!=affected))))
+					&&((mob.location()!=invoker.location())
+						||(!CMLib.flags().isInTheGame(invoker, true))
+						||((invoker.riding()!=null)&&(invoker.riding()!=affected)))))
 				{
 					mob.delEffect(this);
 					mob.setFollowing(null);

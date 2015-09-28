@@ -45,7 +45,7 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 	@Override public boolean isAutoInvoked() { return true; }
 	@Override public boolean canBeUninvoked() { return false; }
 	@Override protected boolean canResurrectNormalMobs() { return true; }
-	protected volatile CMObject lastRider = null;
+	protected volatile Rideable lastRider = null;
 	protected PairList<Integer,Rideable> ridden=new PairVector<Integer,Rideable>();
 
 	@Override
@@ -86,19 +86,26 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 			&& (M.riding() instanceof MOB))
 			{
 				lastRider=M.riding();
-				int x=ridden.indexOfFirst(Integer.valueOf(M.riding().hashCode()));
-				final Pair<Integer,Rideable> addMe;
-				if(x>0)
-					addMe=ridden.remove(x);
-				else
+				final Room R=((MOB)lastRider).location();
+				if((R != null)
+				&&(CMLib.flags().flaggedAffects(lastRider,Ability.FLAG_SUMMONING).size()==0))
 				{
-					final Rideable copyR=(Rideable)M.riding().copyOf();
-					addMe=new Pair<Integer,Rideable>(Integer.valueOf(M.riding().hashCode()),copyR);
-					((MOB)copyR).location().delInhabitant((MOB)copyR);
+					int x=ridden.indexOfFirst(Integer.valueOf(lastRider.hashCode()));
+					final Pair<Integer,Rideable> addMe;
+					if(x>0)
+						addMe=ridden.remove(x);
+					else
+					{
+						final Rideable copyR=(Rideable)lastRider.copyOf();
+						R.delInhabitant((MOB)copyR);
+						((MOB)copyR).setLocation(null);
+						CMLib.threads().deleteAllTicks(copyR);
+						addMe=new Pair<Integer,Rideable>(Integer.valueOf(lastRider.hashCode()),copyR);
+					}
+					ridden.add(addMe);
+					if(ridden.size()>5)
+						ridden.remove(0);
 				}
-				ridden.add(addMe);
-				if(ridden.size()>5)
-					ridden.remove(0);
 			}
 		}
 		return true;

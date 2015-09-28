@@ -92,7 +92,9 @@ public class Spell_SummonFlyer extends Spell
 					||(mob.location()==null)
 					||(mob.amDead())
 					||((invoker!=null)
-						&&((mob.location()!=invoker.location())||(!CMLib.flags().isInTheGame(invoker, true))||(invoker.riding()!=affected))))
+						&&((mob.location()!=invoker.location())
+							||(!CMLib.flags().isInTheGame(invoker, true))
+							||((invoker.riding()!=null)&&(invoker.riding()!=affected)))))
 					{
 						mob.delEffect(this);
 						if(mob.amDead())

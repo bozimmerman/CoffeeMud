@@ -77,7 +77,9 @@ public class Paladin_SummonMount extends StdAbility
 				||(mob.amDead())
 				||(mob.location()==null)
 				||((invoker!=null)
-					&&((mob.location()!=invoker.location())||(!CMLib.flags().isInTheGame(invoker, true))||(invoker.riding()!=affected))))
+					&&((mob.location()!=invoker.location())
+						||(!CMLib.flags().isInTheGame(invoker, true))
+						||((invoker.riding()!=null)&&(invoker.riding()!=affected)))))
 				{
 					mob.delEffect(this);
 					if(mob.amDead())
