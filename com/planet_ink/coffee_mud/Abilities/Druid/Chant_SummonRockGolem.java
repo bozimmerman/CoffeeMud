@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -70,6 +68,19 @@ public class Chant_SummonRockGolem extends Chant
 			}
 		}
 		return super.tick(ticking,tickID);
+	}
+
+	@Override
+	public void unInvoke()
+	{
+		final MOB mob=(MOB)affected;
+		super.unInvoke();
+		if((canBeUninvoked())&&(mob!=null))
+		{
+			if(mob.amDead())
+				mob.setLocation(null);
+			mob.destroy();
+		}
 	}
 
 	@Override
