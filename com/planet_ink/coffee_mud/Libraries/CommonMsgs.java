@@ -254,11 +254,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		return ((Boolean)forceInternalCommand(mob,"Drop",dropThis,Boolean.valueOf(quiet),Boolean.valueOf(optimized),Boolean.valueOf(intermediate))).booleanValue();
 	}
+
 	@Override
 	public boolean postOpen(MOB mob, Environmental openThis, boolean quiet)
 	{
 		return ((Boolean)forceInternalCommand(mob,"Open",openThis,Boolean.valueOf(quiet))).booleanValue();
 	}
+
 	@Override
 	public boolean postGet(MOB mob, Item container, Item getThis, boolean quiet)
 	{
@@ -358,11 +360,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		postSay(mob,target,text,false,false);
 	}
+
 	@Override
 	public void postSay(MOB mob, String text)
 	{
 		postSay(mob,null,text,false,false);
 	}
+
 	@Override
 	public void postSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag)
 	{
@@ -723,7 +727,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				{
 					birthDay[PlayerStats.BIRTHDEX_YEAR]++;
 				}
-				if(CMSecurity.isDisabled(CMSecurity.DisFlag.SLOW_AGEING)||(birthDay[3]==currYear))
+				if(CMSecurity.isDisabled(CMSecurity.DisFlag.SLOW_AGEING)||(birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]==currYear))
 					birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]++;
 				else
 					birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]=currYear;
@@ -762,12 +766,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				{
 					final int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 					for(final int i: CharStats.CODES.MAXCODES())
+					{
 						if((max+mob.charStats().getStat(i))<=0)
 						{
 							mob.tell(L("Your max @x1 has fallen below 1!",CharStats.CODES.DESC(CharStats.CODES.toMAXBASE(i)).toLowerCase()));
 							CMLib.combat().postDeath(null,mob,null);
 							break;
 						}
+					}
 				}
 			}
 		}
@@ -893,7 +899,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					response.append(L("It requires ammunition of type '@x1'.  ",((AmmunitionWeapon)item).ammunitionType()));
 			}
 			else
-			if((item instanceof Armor)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
+			if((item instanceof Armor)
+			&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
 			{
 				if(item.phyStats().height()>0)
 					response.append(L(" It is a size @x1, and is ",""+item.phyStats().height()));
@@ -904,6 +911,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 									 :new StringBuilder("worn on the "));
 				final Wearable.CODES codes = Wearable.CODES.instance();
 				for(final long wornCode : codes.all())
+				{
 					if((wornCode != Wearable.IN_INVENTORY)
 					&&(CMath.bset(item.rawProperLocationBitmap(),wornCode)))
 					{
@@ -917,6 +925,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 								response.append(L("or "));
 						}
 					}
+				}
 				if(response.toString().endsWith(" and "))
 					response.delete(response.length()-5,response.length());
 				else
@@ -1370,10 +1379,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			else
 			{
 				for(int i=0;i<continues.size()-1;i++)
+				{
 					if(useShipNames)
 						str.append(Directions.getShipDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
 					else
 						str.append(Directions.getDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
+				}
 				if(useShipNames)
 					str.append("and "+Directions.getShipInDirectionName(continues.lastElement().intValue()).trim()+".");
 				else
@@ -1417,12 +1428,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE))
 			return false;
 		if((msg.sourceMajor(CMMsg.MASK_MOVE)
-			&&((msg.tool()==null)
-			  ||(!(msg.tool() instanceof Ability))
-			  ||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)))
+		&&((msg.tool()==null)
+			||(!(msg.tool() instanceof Ability))
+			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)))
 		||((msg.tool() instanceof Social)
 			&&((msg.tool().Name().toUpperCase().startsWith("BATHE"))
-			||(msg.tool().Name().toUpperCase().startsWith("WASH")))))
+				||(msg.tool().Name().toUpperCase().startsWith("WASH")))))
 				return (msg.source().playerStats()!=null)&&(msg.source().soulMate()==null);
 		return false;
 	}
@@ -1498,16 +1509,20 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					room=(Room)msg.tool();
 				else
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
 					if(mob.location().getExitInDir(d)==exit)
 					{
 						room=mob.location().getRoomInDir(d);
 						break;
 					}
+				}
 				if(room!=null)
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
 					if((mob.location().getRoomInDir(d)==room)
 					&&((mob.location().getExitInDir(d)==exit)))
 						direction=d;
+				}
 				mob.tell(exit.viewableText(mob,room).toString());
 				if(isAClearExitView(mob,room,exit)&&(direction>=0)&&(room!=null))
 				{
@@ -1574,6 +1589,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(CMLib.flags().canBeSeenBy(viewedmob,viewermob))
 		{
 			if(viewermob.isAttribute(MOB.Attrib.SYSOPMSGS))
+			{
 				myDescription.append("\n\rType :"+viewedmob.ID()
 									+"\n\rRejuv:"+viewedmob.basePhyStats().rejuv()
 									+((!viewedmob.isMonster())?", Hunger="+viewedmob.curState().getHunger():"")
@@ -1584,6 +1600,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 									+"\n\rRoom :'"+((viewedmob.getStartRoom()==null)?"null":viewedmob.getStartRoom().roomID())
 									+"\n\rMisc : "+viewedmob.text()
 									+"\n\r");
+			}
 			if(!viewedmob.isMonster())
 			{
 				String levelStr=null;
@@ -1689,8 +1706,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					text=targetI.readableText();
 					if(((text==null)||(text.length()==0))
 					&&(targetI.description(mob).length()>0)
-					&&((targetI.displayText(mob).length()==0)
-					   ||(!CMLib.flags().isGettable(targetI))))
+					&&((targetI.displayText(mob).length()==0)||(!CMLib.flags().isGettable(targetI))))
 						text=targetI.description(mob);
 				}
 				if((text!=null)
