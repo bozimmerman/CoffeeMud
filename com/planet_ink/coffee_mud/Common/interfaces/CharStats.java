@@ -1133,7 +1133,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param desc longer description of this stat
 		 * @param name space-free coded name of this stat
 		 * @param attDesc description of someone with this stat in abundance
-		 * @param cmmsgMap a CMMsg message code that saves with this stat
+		 * @param cmmsgMap a CMMsg messf code that saves with this stat
 		 */
 		public void addBaseStat(String abbr, String desc, String name, String attDesc, int cmmsgMap)
 		{

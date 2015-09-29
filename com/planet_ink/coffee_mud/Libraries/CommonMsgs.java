@@ -714,7 +714,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			while((currYear>birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
 			||((currYear==birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])&&((month>bmonth)||((month==bmonth)&&(day>=bday)))))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
+				if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
+				{
+					birthDay[PlayerStats.BIRTHDEX_YEAR]++;
+				}
+				else
 				{
 					if((month==bmonth)&&(day==bday))
 						mob.tell(L("Happy Birthday!"));
@@ -723,11 +727,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					mob.recoverPhyStats();
 					mob.recoverMaxState();
 				}
-				else
-				{
-					birthDay[PlayerStats.BIRTHDEX_YEAR]++;
-				}
-				if(CMSecurity.isDisabled(CMSecurity.DisFlag.SLOW_AGEING)||(birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]==currYear))
+				if(CMSecurity.isDisabled(CMSecurity.DisFlag.SLOW_AGEING) || (birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]==currYear))
 					birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]++;
 				else
 					birthDay[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED]=currYear;
