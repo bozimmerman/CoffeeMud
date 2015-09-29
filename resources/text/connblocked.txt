@@ -1,0 +1,11 @@
+
+BLOCKED: TEMPORARY
+
+*************************************************
+***           TEMPORARILY BLOCKED             ***
+*** Your address has been blocked temporarily ***
+*** due to excessive invalid connections.     ***
+*** Please try back in @mins@ minutes.        *** 
+*************************************************
+
+

@@ -542,6 +542,39 @@ public class CMStrings
 	}
 
 	/**
+	 * Finds all instances of the second parameter string in the first StringBuffer,
+	 * replaces them with the third word.  Returns the StringBuffer with or without changes. 
+	 * The search is case sensitive
+	 * @param str the StringBuffer to look inside of
+	 * @param thisStr the string to look for inside the first string
+	 * @param withThisStr the string to replace the second string with, where found.
+	 * @return the StringBuffer modified, or not modified if no replacements were made.
+	 */
+	public final static StringBuffer replaceAll(StringBuffer str, final String thisStr, final String withThisStr)
+	{
+		if((str==null)
+		||(thisStr==null)
+		||(withThisStr==null)
+		||(str.length()==0)
+		||(thisStr.length()==0))
+		{
+			return str;
+		}
+		for(int i=str.length()-1;i>=0;i--)
+		{
+			if(str.charAt(i)==thisStr.charAt(0))
+			{
+				if(str.substring(i).startsWith(thisStr))
+				{
+					str.delete(i, i+thisStr.length());
+					str.insert(i, withThisStr);
+				}
+			}
+		}
+		return str;
+	}
+	
+	/**
 	 * Finds all instances of the second parameter string in each of the strings in the array,
 	 * replaces them with the third word.  Returns the string array with or without changes. 
 	 * The search is case sensitive

@@ -205,12 +205,18 @@ public class MUD extends Thread implements MudHost
 						try
 						{
 							final PrintWriter out = new PrintWriter(sock.getOutputStream());
-							out.println("\n\rOFFLINE: Blocked\n\r");
-							out.flush();
+							StringBuffer introText;
 							if(proceed==2)
-								out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in " + (LastConnectionDelay/60000) + " minutes, and not before.\n\r\n\r");
+							{
+								introText=new StringBuffer(Resources.getFileResource(Resources.makeFileResourceName("text/connblocked.txt"),true));
+								introText=CMStrings.replaceAll(introText, "@mins@", ""+(LastConnectionDelay/60000));
+							}
 							else
-								out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
+							{
+								introText=Resources.getFileResource(Resources.makeFileResourceName("text/blocked.txt"),true);
+							}
+							try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+							out.print(introText.toString());
 							out.flush();
 							try{Thread.sleep(250);}catch(final Exception e){}
 							out.close();

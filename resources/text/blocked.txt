@@ -1,0 +1,9 @@
+
+BLOCKED: PERMANENT
+
+*********************************************
+***       YOUR COMPUTER IS BLOCKED        ***
+***    If you believe this is an error,   ***
+***    please contact the system admins.  *** 
+*********************************************
+
