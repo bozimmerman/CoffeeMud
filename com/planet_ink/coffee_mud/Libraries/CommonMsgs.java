@@ -705,7 +705,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if((mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 		&&(birthDay!=null))
 		{
-			final TimeClock clock = CMLib.time().globalClock();
+			final TimeClock clock=CMLib.time().localClock(mob.getStartRoom());
 			final int currYear=clock.getYear();
 			final int month=clock.getMonth();
 			final int day=clock.getDayOfMonth();

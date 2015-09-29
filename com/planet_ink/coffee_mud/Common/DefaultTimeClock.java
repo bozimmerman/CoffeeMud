@@ -47,7 +47,7 @@ public class DefaultTimeClock implements TimeClock
 	protected boolean loaded=false;
 	protected String loadName=null;
 	@Override public void setLoadName(String name){loadName=name;}
-	protected int year=1;
+	protected int year=100;
 	protected int month=1;
 	protected int day=1;
 	protected int time=0;

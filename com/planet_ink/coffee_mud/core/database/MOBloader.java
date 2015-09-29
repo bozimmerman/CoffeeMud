@@ -151,10 +151,11 @@ public class MOBloader
 					stats.setStat(CharStats.STAT_AGE,
 						pstats.initializeBirthday(CMLib.time().localClock(mob.getStartRoom()),(int)Math.round(CMath.div(mob.getAgeMinutes(),60.0)),stats.getMyRace()));
 				
+				final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
 				// check for a messed up/reset birthday and fix it
-				if(pstats.getBirthday()[PlayerStats.BIRTHDEX_YEAR]==1)
+				if((pstats.getBirthday()[PlayerStats.BIRTHDEX_YEAR]==1)
+				||(pstats.getBirthday()[PlayerStats.BIRTHDEX_YEAR]>C.getYear()))
 				{
-					final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
 					final int age = mob.baseCharStats().getStat(CharStats.STAT_AGE);
 					if((pstats.getBirthday()[PlayerStats.BIRTHDEX_MONTH]==1)
 					&&(pstats.getBirthday()[PlayerStats.BIRTHDEX_DAY]==1))
