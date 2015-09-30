@@ -1362,6 +1362,7 @@ public class CMSecurity
 			group = new LongSet();
 			final String filename = CMProps.getVar(CMProps.Str.BLACKLISTFILE);
 			final List<String> ipList = Resources.getFileLineVector(Resources.getFileResource(filename, false));
+			boolean onceIsFine = false;
 			for(String ip : ipList)
 			{
 				if(ip.trim().startsWith("#"))
@@ -1386,9 +1387,15 @@ public class CMSecurity
 						group.add(ipFrom,ipTo);
 					}
 				}
-				Resources.submitResource("SYSTEM_IP_BLOCKS", group);
-				Resources.removeResource(filename);
+				if(isDebugging(DbgFlag.TEMPMISC) && group.contains(2130706433) && (!onceIsFine))
+				{
+					onceIsFine = true;
+					Log.debugOut("BOOM! Just added "+ip.trim()+"/"+x);
+					Log.debugOut(group.toString());
+				}
 			}
+			Resources.submitResource("SYSTEM_IP_BLOCKS", group);
+			Resources.removeResource(filename);
 		}
 		return group;
 	}
