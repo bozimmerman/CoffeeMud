@@ -1332,7 +1332,22 @@ public class CMSecurity
 	public static boolean isIPBlocked(String ipAddress)
 	{
 		final LongSet group = CMSecurity.getIPBlocks();
-		return ((group != null) && (group.contains(makeIPNumFromInetAddress(ipAddress))));
+		final boolean chk = ((group != null) && (group.contains(makeIPNumFromInetAddress(ipAddress))));
+		if(chk && isDebugging(DbgFlag.TEMPMISC))
+		{
+			Log.debugOut("Blocking "+ipAddress+": ("+makeIPNumFromInetAddress(ipAddress)+")");
+			try
+			{
+				InetAddress addr = InetAddress.getByName(ipAddress.trim());
+				Log.debugOut("Blocking "+ipAddress+": ("+addr.toString()+")");
+				Log.debugOut("Blocking "+ipAddress+": ("+CMParms.toStringList(addr.getAddress())+")");
+			}
+			catch (UnknownHostException e)
+			{
+				Log.errOut(e);
+			}
+		}
+		return chk;
 	}
 	
 	/**
@@ -2042,7 +2057,8 @@ public class CMSecurity
 		BOOTSTRAPPER("Bootstrapper"),
 		CLANMEMBERS("Clan Membership"),
 		INPUT("All user input"),
-		SHUTDOWN("System Shutdown")
+		SHUTDOWN("System Shutdown"),
+		TEMPMISC("Temporary Misc")
 		;
 		private final String desc;
 		DbgFlag(final String description){this.desc=description;}
