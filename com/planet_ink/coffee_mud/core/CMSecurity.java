@@ -1333,7 +1333,8 @@ public class CMSecurity
 	{
 		final LongSet group = CMSecurity.getIPBlocks();
 		final boolean chk = ((group != null) && (group.contains(makeIPNumFromInetAddress(ipAddress))));
-		if(chk && isDebugging(DbgFlag.TEMPMISC))
+		/*
+		 if(chk && isDebugging(DbgFlag.TEMPMISC))
 		{
 			Log.debugOut("Blocking "+ipAddress+": ("+makeIPNumFromInetAddress(ipAddress)+")");
 			try
@@ -1347,6 +1348,7 @@ public class CMSecurity
 				Log.errOut(e);
 			}
 		}
+		*/
 		return chk;
 	}
 	
@@ -1362,10 +1364,10 @@ public class CMSecurity
 			group = new LongSet();
 			final String filename = CMProps.getVar(CMProps.Str.BLACKLISTFILE);
 			final List<String> ipList = Resources.getFileLineVector(Resources.getFileResource(filename, false));
-			boolean onceIsFine = false;
+			//boolean onceIsFine = false;
 			for(String ip : ipList)
 			{
-				if(ip.trim().startsWith("#"))
+				if(ip.trim().startsWith("#")||(ip.trim().length()==0))
 				{
 					continue;
 				}
@@ -1387,12 +1389,14 @@ public class CMSecurity
 						group.add(ipFrom,ipTo);
 					}
 				}
+				/*
 				if(isDebugging(DbgFlag.TEMPMISC) && group.contains(2130706433) && (!onceIsFine))
 				{
 					onceIsFine = true;
 					Log.debugOut("BOOM! Just added "+ip.trim()+"/"+x);
 					Log.debugOut(group.toString());
 				}
+				*/
 			}
 			Resources.submitResource("SYSTEM_IP_BLOCKS", group);
 			Resources.removeResource(filename);
