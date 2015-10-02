@@ -1157,7 +1157,7 @@ public class LongSet implements Set<Long>
 			intArray=new int[strs.length];
 			for(int v=0;v<strs.length;v++)
 			{
-				intArray[v]=Integer.parseInt(strs[v]);
+				intArray[v]=Integer.parseInt(strs[v].trim());
 			}
 		}
 		if(x+3<txt.length()-1)
@@ -1166,7 +1166,7 @@ public class LongSet implements Set<Long>
 			longArray=new long[strs.length];
 			for(int v=0;v<strs.length;v++)
 			{
-				longArray[v]=Long.parseLong(strs[v]);
+				longArray[v]=Long.parseLong(strs[v].trim());
 			}
 		}
 		return this;
