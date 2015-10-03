@@ -1124,26 +1124,17 @@ public class CMSecurity
 		final String flag = anyFlag.toUpperCase().trim();
 		if(flag.startsWith(DISABLE_PREFIX_ABILITY))
 		{
-			if(CMClass.getAbility(getFinalSpecialDisableFlagName(flag))!=null)
-			{
-				return ablDisVars;
-			}
+			return ablDisVars;
 		}
 		else
 		if(flag.startsWith(DISABLE_PREFIX_EXPERTISE))
 		{
-			if(CMLib.expertises().getDefinition(getFinalSpecialDisableFlagName(flag))!=null)
-			{
-				return expDisVars;
-			}
+			return expDisVars;
 		}
 		else
 		if(flag.startsWith(DISABLE_PREFIX_COMMAND))
 		{
-			if(CMClass.getCommand(getFinalSpecialDisableFlagName(flag))!=null)
-			{
-				return cmdDisVars;
-			}
+			return cmdDisVars;
 		}
 		else
 		if(flag.startsWith(DISABLE_PREFIX_FACTION))
@@ -1204,7 +1195,6 @@ public class CMSecurity
 			}
 		}
 		else
-		if(set.size()>0)
 		{
 			final String flag = getFinalSpecialDisableFlagName(anyFlag);
 			if(!set.contains(flag))
@@ -1242,6 +1232,21 @@ public class CMSecurity
 				return null;
 			}
 		};
+	}
+	
+	/**
+	 * Returns an enumeration of the disabled ability IDs, command IDs, expertise IDs, and faction IDs 
+	 * complete with flag prefix, if requested.
+	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
+	 * @return an enumeration of the disabled ability, command, expertise, and faction IDs
+	 */
+	public static final Enumeration<String> getDisabledSpecialsEnum(final boolean addINIPrefix)
+	{
+		MultiEnumeration<String> menums = new MultiEnumeration<String>(getDisabledAbilitiesEnum(addINIPrefix));
+		menums.addEnumeration(getDisabledExpertisesEnum(true));
+		menums.addEnumeration(getDisabledCommandsEnum(true));
+		menums.addEnumeration(getDisabledFactionsEnum(true));
+		return menums;
 	}
 	
 	/**

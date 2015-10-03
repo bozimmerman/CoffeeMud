@@ -176,10 +176,20 @@ public class ControlPanel extends StdWebMacro
 			if((field==null)||(field.length()==0))
 				return "";
 			final String value=parms.get("VALUE");
-			if((value!=null)&&(value.equalsIgnoreCase("on"))) // on means remove?!
-				CMSecurity.removeAnyDisableVar(field);
+			if(field.equalsIgnoreCase("MISC") && (value != null))
+			{
+				for(Enumeration<String> s=CMSecurity.getDisabledSpecialsEnum(true);s.hasMoreElements();)
+					CMSecurity.removeAnyDisableVar(s.nextElement());
+				for(String s : CMParms.parseCommas(value,true))
+					CMSecurity.setAnyDisableVar(s);
+			}
 			else
-				CMSecurity.setAnyDisableVar(field);
+			{
+				if((value!=null)&&(value.equalsIgnoreCase("on"))) // on means remove?!
+					CMSecurity.removeAnyDisableVar(field);
+				else
+					CMSecurity.setAnyDisableVar(field);
+			}
 			return "";
 		}
 		else

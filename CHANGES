@@ -12,6 +12,7 @@
   11. Scriptable EXECMSG/CNCLMSG now supports specified major/minor codes.  See Scriptable Guide.
   12. STAT command now supports LEVELTIMES to view when a player leveled up from the command line.
   13. Tweek to prompts for SimpleMU, plus some prompt behavior settings.  See coffeemud.ini PROMPTBEHAVIOR.
+  14. Can now temp add/remove misc DISABLE flags from Control Panel "Switches" screen.
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)
