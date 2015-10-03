@@ -26,7 +26,6 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
-   *. Some way to disable skills and such from the MUDGrinder
    *. Slot system, for items. Two properties, one for a slot, one for a gem. Skill to produce slots and gems.
    *. Achievements system -- define things to track (KILLS, EXPLORES, QUESTS, etc), and rewards (TITLES and/or Achievements).
    *. Wants and Needs engine - similar to slavery system
