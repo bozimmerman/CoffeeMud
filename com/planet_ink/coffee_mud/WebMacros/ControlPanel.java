@@ -140,9 +140,22 @@ public class ControlPanel extends StdWebMacro
 			final String field=parms.get("FIELD");
 			if((field==null)||(field.length()==0))
 				return "";
-			final CMSecurity.DisFlag flag = (CMSecurity.DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), field.toUpperCase().trim());
-			if((flag!=null)&&(CMSecurity.isDisabled(flag)))
-				return " CHECKED ";
+			if(field.equalsIgnoreCase("MISC"))
+			{
+				StringBuilder str=new StringBuilder("");
+				final MultiEnumeration<String> enums = new MultiEnumeration<String>(CMSecurity.getDisabledAbilitiesEnum(true));
+				enums.addEnumeration(CMSecurity.getDisabledCommandsEnum(true)); 
+				enums.addEnumeration(CMSecurity.getDisabledExpertisesEnum(true)); 
+				enums.addEnumeration(CMSecurity.getDisabledFactionsEnum(true));
+				str.append(CMParms.toStringList(enums));
+				return str.toString();
+			}
+			else
+			{
+				final CMSecurity.DisFlag flag = (CMSecurity.DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), field.toUpperCase().trim());
+				if((flag!=null)&&(CMSecurity.isDisabled(flag)))
+					return " CHECKED ";
+			}
 			return "";
 		}
 		else

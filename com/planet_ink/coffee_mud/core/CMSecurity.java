@@ -85,6 +85,11 @@ public class CMSecurity
 
 	private final static CMSecurity[]		secs		 = new CMSecurity[256];
 	private final static Iterator<SecFlag>	EMPTYSECFLAGS= new EnumerationIterator<SecFlag>(new EmptyEnumeration<SecFlag>());
+	
+	private final static String				DISABLE_PREFIX_ABILITY = 	"ABILITY_";
+	private final static String				DISABLE_PREFIX_EXPERTISE = 	"EXPERTISE_";
+	private final static String				DISABLE_PREFIX_COMMAND = 	"COMMAND_";
+	private final static String				DISABLE_PREFIX_FACTION= 	"FACTION_";
 
 	/**
 	 * Creates a new thread-group sensitive CMSecurity reference object.
@@ -1094,7 +1099,10 @@ public class CMSecurity
 	private static final String getFinalSpecialDisableFlagName(final String anyFlag)
 	{
 		final String flag = anyFlag.toUpperCase().trim();
-		if(flag.startsWith("ABILITY_") || flag.startsWith("EXPERTISE_") || flag.startsWith("COMMAND_") ||flag.startsWith("FACTION_"))
+		if(flag.startsWith(DISABLE_PREFIX_ABILITY) 
+		|| flag.startsWith(DISABLE_PREFIX_EXPERTISE) 
+		|| flag.startsWith(DISABLE_PREFIX_COMMAND) 
+		|| flag.startsWith(DISABLE_PREFIX_FACTION))
 		{
 			final int underIndex=flag.indexOf('_')+1;
 			return flag.substring(underIndex);
@@ -1114,7 +1122,7 @@ public class CMSecurity
 	private static final Set<String> getSpecialDisableSet(final String anyFlag)
 	{
 		final String flag = anyFlag.toUpperCase().trim();
-		if(flag.startsWith("ABILITY_"))
+		if(flag.startsWith(DISABLE_PREFIX_ABILITY))
 		{
 			if(CMClass.getAbility(getFinalSpecialDisableFlagName(flag))!=null)
 			{
@@ -1122,7 +1130,7 @@ public class CMSecurity
 			}
 		}
 		else
-		if(flag.startsWith("EXPERTISE_"))
+		if(flag.startsWith(DISABLE_PREFIX_EXPERTISE))
 		{
 			if(CMLib.expertises().getDefinition(getFinalSpecialDisableFlagName(flag))!=null)
 			{
@@ -1130,7 +1138,7 @@ public class CMSecurity
 			}
 		}
 		else
-		if(flag.startsWith("COMMAND_"))
+		if(flag.startsWith(DISABLE_PREFIX_COMMAND))
 		{
 			if(CMClass.getCommand(getFinalSpecialDisableFlagName(flag))!=null)
 			{
@@ -1138,7 +1146,7 @@ public class CMSecurity
 			}
 		}
 		else
-		if(flag.startsWith("FACTION_"))
+		if(flag.startsWith(DISABLE_PREFIX_FACTION))
 		{
 			return facDisVars;
 		}
@@ -1206,6 +1214,78 @@ public class CMSecurity
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Internal method for returning an enumeration of a given iterator, where the strings
+	 * in the iterator have a prefix re-added to them before returning.
+	 * @param iter the iterator to enumerate on
+	 * @param prefix the prefix to add to all iterator strings
+	 * @return the enumeration of the iterator
+	 */
+	private static final Enumeration<String> getSpecialDisabledEnum(final Iterator<String> iter, final String prefix)
+	{
+		return new Enumeration<String>()
+		{
+			@Override
+			public boolean hasMoreElements() 
+			{
+				return iter.hasNext();
+			}
+
+			@Override
+			public String nextElement() 
+			{
+				final String ID = iter.next();
+				if(ID != null)
+					return prefix + ID;
+				return null;
+			}
+		};
+	}
+	
+	/**
+	 * Returns an enumeration of the disabled ability IDs, 
+	 * complete with flag prefix, if requested.
+	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
+	 * @return an enumeration of the disabled ability IDs
+	 */
+	public static final Enumeration<String> getDisabledAbilitiesEnum(final boolean addINIPrefix)
+	{
+		return getSpecialDisabledEnum(ablDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_ABILITY:"");
+	}
+
+	/**
+	 * Returns an enumeration of the disabled expertise IDs, 
+	 * complete with flag prefix, if requested.
+	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
+	 * @return an enumeration of the disabled expertise IDs
+	 */
+	public static final Enumeration<String> getDisabledExpertisesEnum(final boolean addINIPrefix)
+	{
+		return getSpecialDisabledEnum(expDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_EXPERTISE:"");
+	}
+
+	/**
+	 * Returns an enumeration of the disabled command IDs, 
+	 * complete with flag prefix, if requested.
+	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
+	 * @return an enumeration of the disabled command IDs
+	 */
+	public static final Enumeration<String> getDisabledCommandsEnum(final boolean addINIPrefix)
+	{
+		return getSpecialDisabledEnum(cmdDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_COMMAND:"");
+	}
+
+	/**
+	 * Returns an enumeration of the disabled faction IDs, 
+	 * complete with flag prefix, if requested.
+	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
+	 * @return an enumeration of the disabled faction IDs
+	 */
+	public static final Enumeration<String> getDisabledFactionsEnum(final boolean addINIPrefix)
+	{
+		return getSpecialDisabledEnum(facDisVars.iterator(), addINIPrefix?DISABLE_PREFIX_FACTION:"");
 	}
 
 	/**
