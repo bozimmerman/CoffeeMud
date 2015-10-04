@@ -13,6 +13,8 @@
   12. STAT command now supports LEVELTIMES to view when a player leveled up from the command line.
   13. Tweek to prompts for SimpleMU, plus some prompt behavior settings.  See coffeemud.ini PROMPTBEHAVIOR.
   14. Can now temp add/remove misc DISABLE flags from Control Panel "Switches" screen.
+  15. PUT can now target non-container items. Mentioned because such a low-lvl change requires watching.
+   
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)
