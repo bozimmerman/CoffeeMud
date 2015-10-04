@@ -121,10 +121,16 @@ public class Put extends StdCommand
 			return false;
 		}
 
-		final Environmental container=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_ANY);
+		String containerName = (String)commands.lastElement();
+		Environmental container=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_ANY);
+		if(container == null)
+		{
+			container = mob.location().fetchFromMOBRoomFavorsItems(mob,null, containerName, Wearable.FILTER_UNWORNONLY);
+			commands.remove(commands.size()-1);
+		}
 		if((container==null)||(!CMLib.flags().canBeSeenBy(container,mob)))
 		{
-			mob.tell(L("I don't see a @x1 here.",(String)commands.lastElement()));
+			mob.tell(L("I don't see a @x1 here.",containerName));
 			return false;
 		}
 

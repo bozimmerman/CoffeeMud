@@ -1231,12 +1231,16 @@ public class StdItem implements Item
 		case CMMsg.TYP_OPEN:
 		case CMMsg.TYP_CLOSE:
 		case CMMsg.TYP_LOCK:
-		case CMMsg.TYP_PUT:
 		case CMMsg.TYP_INSTALL:
 		case CMMsg.TYP_UNLOCK:
 			if(this instanceof Container)
 				return true;
 			break;
+		case CMMsg.TYP_PUT:
+			if(this instanceof Container)
+				return true;
+			mob.tell(mob,this,null,L("You can't put things inside <T-NAME>."));
+			return false;
 		case CMMsg.TYP_DELICATE_HANDS_ACT:
 		case CMMsg.TYP_JUSTICE:
 		case CMMsg.TYP_WAND_USE:
