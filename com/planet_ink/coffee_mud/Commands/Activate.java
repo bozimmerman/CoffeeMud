@@ -39,14 +39,16 @@ public class Activate extends StdCommand
 
 	private final String[] access=I(new String[]{"ACTIVATE","ACT","A",">"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		final Room R=mob.location();
 		if((commands.size()<2)||(R==null))
 		{
-			mob.tell(L("Activate what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Activate what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -107,13 +109,13 @@ public class Activate extends StdCommand
 		}
 		if(E==null)
 		{
-			mob.tell(L("You don't see anything called '@x1' or '@x2' here that you can activate.",what,whole));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anything called '@x1' or '@x2' here that you can activate.",what,whole));
 			return false;
 		}
 		else
 		if(item==null)
 		{
-			mob.tell(L("You can't activate @x1.",E.name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You can't activate @x1.",E.name()));
 			return false;
 		}
 

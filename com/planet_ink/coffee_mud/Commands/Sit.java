@@ -39,13 +39,15 @@ public class Sit extends StdCommand
 
 	private final String[] access=I(new String[]{"SIT","REST","R"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(CMLib.flags().isSitting(mob))
 		{
-			mob.tell(L("You are already sitting!"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You are already sitting!"));
 			return false;
 		}
 		final Room R=mob.location();
@@ -69,7 +71,7 @@ public class Sit extends StdCommand
 				E=R.fetchExit(possibleRideable);
 			if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 			{
-				mob.tell(L("You don't see '@x1' here.",possibleRideable));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",possibleRideable));
 				return false;
 			}
 			if(E instanceof MOB)

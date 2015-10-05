@@ -40,10 +40,12 @@ public class NoFollow extends Follow
 	private final String[] access=I(new String[]{"NOFOLLOW","NOFOL"});
 	@Override public String[] getAccessWords(){return access;}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if((commands.size()>1)&&(commands.get(0) instanceof String))
 		{
 			if(((String)commands.get(0)).equalsIgnoreCase("UNFOLLOW"))
@@ -56,9 +58,9 @@ public class NoFollow extends Follow
 			{
 				M=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 				if(M!=null)
-					mob.tell(L("@x1 is not following you!",M.name(mob)));
+					CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not following you!",M.name(mob)));
 				else
-					mob.tell(L("There is noone here called '@x1' following you!",CMParms.combine(commands,1)));
+					CMLib.commands().doCommandFail(mob,origCmds,L("There is noone here called '@x1' following you!",CMParms.combine(commands,1)));
 				return false;
 			}
 			if((mob.location()!=null)&&(M!=null)&&(M.amFollowing()==mob))
@@ -66,7 +68,7 @@ public class NoFollow extends Follow
 				nofollow(M,true,false);
 				return true;
 			}
-			mob.tell(L("There is noone called '@x1' following you!",CMParms.combine(commands,1)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("There is noone called '@x1' following you!",CMParms.combine(commands,1)));
 			return false;
 		}
 		if(!mob.isAttribute(MOB.Attrib.NOFOLLOW))

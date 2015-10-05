@@ -44,9 +44,10 @@ public class Wield extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Wield what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Wield what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -61,7 +62,7 @@ public class Wield extends StdCommand
 		else
 			items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
-			mob.tell(L("You don't seem to be carrying that."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
 			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_WIELD)))

@@ -194,10 +194,11 @@ public class Consider extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		Physical target=null;
 		if(commands.size()<2)
 		{
-			mob.tell(L("Consider whom or what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Consider whom or what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -208,7 +209,7 @@ public class Consider extends StdCommand
 			target=mob.location().fetchFromMOBRoomFavorsMOBs(mob,null,targetName,Wearable.FILTER_ANY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("I don't see '@x1' here.",targetName));
+			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see '@x1' here.",targetName));
 			return false;
 		}
 		doConsider(mob,target);

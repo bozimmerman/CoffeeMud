@@ -77,6 +77,7 @@ public class Go extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(!standIfNecessary(mob,metaFlags, true))
 			return false;
 
@@ -93,7 +94,7 @@ public class Go extends StdCommand
 		{
 			if(!CMath.bset(R.domainType(),Room.INDOORS))
 			{
-				mob.tell(L("You aren't indoors."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You aren't indoors."));
 				return false;
 			}
 
@@ -105,7 +106,7 @@ public class Go extends StdCommand
 				{
 					if(direction>=0)
 					{
-						mob.tell(L("Which way out?  Try @x1.",validDirs));
+						CMLib.commands().doCommandFail(mob,origCmds,L("Which way out?  Try @x1.",validDirs));
 						return false;
 					}
 					direction=d;
@@ -113,7 +114,7 @@ public class Go extends StdCommand
 			}
 			if(direction<0)
 			{
-				mob.tell(L("There is no direct way out of this place.  Try a direction."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("There is no direct way out of this place.  Try a direction."));
 				return false;
 			}
 		}

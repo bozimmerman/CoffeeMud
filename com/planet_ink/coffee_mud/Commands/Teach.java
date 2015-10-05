@@ -43,13 +43,15 @@ public class Teach extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<3)
 		{
-			mob.tell(L("Teach who what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Teach who what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -58,7 +60,7 @@ public class Teach extends StdCommand
 		final MOB student=mob.location().fetchInhabitant((String)commands.get(0));
 		if((student==null)||(!CMLib.flags().canBeSeenBy(student,mob)))
 		{
-			mob.tell(L("That person doesn't seem to be here."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("That person doesn't seem to be here."));
 			return false;
 		}
 		commands.remove(0);
@@ -108,7 +110,7 @@ public class Teach extends StdCommand
 			{
 				return CMLib.expertises().postTeach(mob,student,theExpertise);
 			}
-			mob.tell(L("You don't seem to know @x1.",abilityName));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to know @x1.",abilityName));
 			return false;
 		}
 		return CMLib.expertises().postTeach(mob,student,myAbility);

@@ -39,13 +39,15 @@ public class Eat extends StdCommand
 
 	private final String[] access=I(new String[]{"EAT"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Eat what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Eat what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -55,13 +57,13 @@ public class Eat extends StdCommand
 		if((thisThang==null)
 		||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,0)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",CMParms.combine(commands,0)));
 			return false;
 		}
 		final boolean hasHands=mob.charStats().getBodyPart(Race.BODY_HAND)>0;
 		if((thisThang instanceof Food)&&(!mob.isMine(thisThang))&&(hasHands))
 		{
-			mob.tell(L("You don't seem to have '@x1'.",CMParms.combine(commands,0)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 		final String eatSound=CMLib.protocol().msp("gulp.wav",10);

@@ -42,9 +42,10 @@ public class Put extends StdCommand
 
 	public void putout(MOB mob, Vector commands, boolean quiet)
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<3)
 		{
-			mob.tell(L("Put out what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Put out what?"));
 			return;
 		}
 		commands.remove(1);
@@ -52,7 +53,7 @@ public class Put extends StdCommand
 
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
 		if(items.size()==0)
-			mob.tell(L("You don't seem to be carrying that."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
 		{
@@ -70,9 +71,10 @@ public class Put extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Put what where?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Put what where?"));
 			return false;
 		}
 
@@ -117,7 +119,7 @@ public class Put extends StdCommand
 		commands.remove(0);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Where should I put the @x1",(String)commands.get(0)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Where should I put the @x1",(String)commands.get(0)));
 			return false;
 		}
 
@@ -130,7 +132,7 @@ public class Put extends StdCommand
 		}
 		if((container==null)||(!CMLib.flags().canBeSeenBy(container,mob)))
 		{
-			mob.tell(L("I don't see a @x1 here.",containerName));
+			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see a @x1 here.",containerName));
 			return false;
 		}
 
@@ -177,7 +179,7 @@ public class Put extends StdCommand
 			V.remove(container);
 
 		if(V.size()==0)
-			mob.tell(L("You don't seem to be carrying that."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{

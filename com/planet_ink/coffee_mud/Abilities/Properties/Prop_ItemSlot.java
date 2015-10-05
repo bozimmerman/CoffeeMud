@@ -115,7 +115,7 @@ public class Prop_ItemSlot extends Property
 			if((I != null)&&(!items.contains(I)))
 				items.add(I);
 		}
-		str.append(CMLib.coffeeMaker().getItemsXML(items, new Hashtable<String,List<Item>>(),new HashSet<String>(),0));
+		str.append("<ITEMS>"+CMLib.coffeeMaker().getItemsXML(items, new Hashtable<String,List<Item>>(),new HashSet<String>(),0)+"</ITEMS>");
 		return str.toString();
 	}
 	
@@ -164,6 +164,58 @@ public class Prop_ItemSlot extends Property
 			
 			msg.setTargetCode(CMMsg.TYP_WAND_USE | msg.targetMajor());
 		}
+		else
+		if(removeable
+		&&(msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
+		&&(msg.targetMessage()!=null)
+		&&(msg.targetMessage().length()>0)
+		&&(msg.targetMessage().startsWith("R")||msg.targetMessage().startsWith("r"))
+		&&(affected!=null))
+		{
+			Vector<String> V=CMParms.parse(msg.targetMessage().toUpperCase());
+			if((V.size()>2)&&("REMOVE".startsWith(V.get(0).toUpperCase())))
+			{
+				int x=V.lastIndexOf("FROM");
+				if((x>0)&&(x<V.size()-1))
+					V.remove(x);
+				else
+					x=V.size()-1;
+				String fromWhat = CMParms.combine(V,x);
+				String what=CMParms.combine(V,1,x);
+				if(CMLib.english().containsString(affected.name(), fromWhat)||CMLib.english().containsString(affected.displayText(), fromWhat))
+				{
+					List<Item> items=new ArrayList<Item>(slots.length);
+					for(Item I : slots)
+					{
+						if((I != null)&&(!items.contains(I)))
+							items.add(I);
+					}
+					Environmental E=CMLib.english().fetchEnvironmental(items, what, true);
+					if(E==null)
+						E=CMLib.english().fetchEnvironmental(items, what, false);
+					if(E==null)
+						msg.setSourceMessage(L("You don't see '@x1' in any of the slots in @x2.",what,fromWhat));
+					else
+					{
+						Item gemI=(Item)E;
+						Ability A=gemI.fetchEffect("Prop_ItemSlotFiller");
+						msg.modify(msg.source(),affected,gemI,CMMsg.MSG_GET,CMLib.lang().L("<S-NAME> removes(s) <O-NAME> from <T-NAME>."));
+						for(int i=0;i<slots.length;i++)
+						{
+							if(slots[i]==gemI)
+								slots[i]=null;
+						}
+						for(int i=0;i<slotProps.length;i++)
+						{
+							if(slotProps[i]==A)
+								slotProps[i]=null;
+						}
+						A.setAffectedOne(gemI);
+						msg.source().addItem(gemI);
+					}
+				}
+			}
+		}
 		for(Ability A : slotProps)
 		{
 			if((A!=null)&&(!A.okMessage(myHost, msg)))
@@ -175,6 +227,7 @@ public class Prop_ItemSlot extends Property
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
+		final Item affected = (this.affected instanceof Item)? (Item)this.affected : null;
 		if(msg.target() == affected)
 		{
 			if((msg.targetMinor() == CMMsg.TYP_WAND_USE) && (msg.tool() instanceof Item))
@@ -187,6 +240,7 @@ public class Prop_ItemSlot extends Property
 				{
 					if(slots[islot]==null)
 					{
+						slotItem.removeFromOwnerContainer();
 						slots[islot] = slotItem;
 						if((--aSlotNumbs) == 0)
 						{
@@ -243,13 +297,15 @@ public class Prop_ItemSlot extends Property
 			if(A!=null)
 			{
 				if(setAffected)
+				{
 					A.setAffectedOne(affected);
+				}
 				A.executeMsg(myHost, msg);
 			}
 		}
 		if(setAffected && (affected != null))
 		{
-			Item I=(Item)affected;
+			Item I=affected;
 			I.recoverPhyStats();
 			Room R=CMLib.map().roomLocation(I);
 			if(R!=null)
@@ -265,7 +321,9 @@ public class Prop_ItemSlot extends Property
 		for(Ability A : slotProps)
 		{
 			if(A!=null)
+			{
 				A.affectPhyStats(host, affectableStats);
+			}
 		}
 		super.affectPhyStats(host,affectableStats);
 	}

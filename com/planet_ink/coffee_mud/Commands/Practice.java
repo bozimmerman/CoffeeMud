@@ -39,13 +39,15 @@ public class Practice extends StdCommand
 
 	private final String[] access=I(new String[]{"PRACTICE","PRAC"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("You have @x1 practice points.  Enter HELP PRACTICE for more information.",""+mob.getPractices()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You have @x1 practice points.  Enter HELP PRACTICE for more information.",""+mob.getPractices()));
 			return false;
 		}
 		commands.remove(0);
@@ -78,29 +80,29 @@ public class Practice extends StdCommand
 		final Ability myAbility=mob.findAbility(abilityName);
 		if(myAbility==null)
 		{
-			mob.tell(L("You don't seem to know @x1.",abilityName));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to know @x1.",abilityName));
 			return false;
 		}
 		
 		if((teacher==null)||(!CMLib.flags().canBeSeenBy(teacher,mob)))
 		{
 			if(triedTeacher)
-				mob.tell(L("That person doesn't seem to be here."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("That person doesn't seem to be here."));
 			else
-				mob.tell(L("There doesn't seem to be a teacher to practice with here."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("There doesn't seem to be a teacher to practice with here."));
 			return false;
 		}
 
 		if(!myAbility.isSavable())
 		{
-			mob.tell(L("@x1 cannot be practiced, as it is a native skill.",myAbility.name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 cannot be practiced, as it is a native skill.",myAbility.name()));
 			return false;
 		}
 
 		final Ability teacherAbility=mob.findAbility(abilityName);
 		if(teacherAbility==null)
 		{
-			mob.tell(L("@x1 doesn't seem to know @x2.",teacher.name(),abilityName));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 doesn't seem to know @x2.",teacher.name(),abilityName));
 			return false;
 		}
 

@@ -43,15 +43,16 @@ public class Tell extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if((!mob.isMonster())&&mob.isAttribute(MOB.Attrib.QUIET))
 		{
-			mob.tell(L("You have QUIET mode on.  You must turn it off first."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You have QUIET mode on.  You must turn it off first."));
 			return false;
 		}
 
 		if(commands.size()<3)
 		{
-			mob.tell(L("Tell whom what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Tell whom what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -64,7 +65,7 @@ public class Tell extends StdCommand
 			if((V.size()==0)
 			||(CMath.bset(metaFlags,Command.METAFLAG_AS))
 			||(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED)))
-				mob.tell(L("No telling."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("No telling."));
 			else
 			{
 				int num=CMath.s_int(CMParms.combine(commands,1));
@@ -118,7 +119,7 @@ public class Tell extends StdCommand
 		String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			mob.tell(L("Tell them what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Tell them what?"));
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
@@ -131,16 +132,16 @@ public class Tell extends StdCommand
 				if(CMLib.intermud().i3online()||CMLib.intermud().imc2online())
 					CMLib.intermud().i3tell(mob,targetName,mudName,combinedCommands);
 				else
-					mob.tell(L("Intermud is unavailable."));
+					CMLib.commands().doCommandFail(mob,origCmds,L("Intermud is unavailable."));
 				return false;
 			}
-			mob.tell(L("That person doesn't appear to be online."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
 			return false;
 		}
 
 		if(targetM.isAttribute(MOB.Attrib.QUIET))
 		{
-			mob.tell(L("That person can not hear you."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("That person can not hear you."));
 			return false;
 		}
 

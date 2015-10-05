@@ -39,11 +39,12 @@ public class Pull extends Go
 
 	private final String[] access=I(new String[]{"PULL"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-
+		Vector origCmds=new XVector(commands);
 		Environmental openThis=null;
 		String dir="";
 		int dirCode=-1;
@@ -57,7 +58,7 @@ public class Pull extends Go
 				||(mob.location().getExitInDir(dirCode)==null)
 				||(!mob.location().getExitInDir(dirCode).isOpen()))
 				{
-					mob.tell(L("You can't pull anything that way."));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You can't pull anything that way."));
 					return false;
 				}
 				E=mob.location().getRoomInDir(dirCode);
@@ -79,7 +80,7 @@ public class Pull extends Go
 			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Wearable.FILTER_ANY);
 		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",itemName));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",itemName));
 			return false;
 		}
 		final CMMsg msg=CMClass.getMsg(mob,openThis,E,CMMsg.MSG_PULL,L("<S-NAME> pull(s) <T-NAME>@x1.",dir));

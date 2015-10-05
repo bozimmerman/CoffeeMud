@@ -42,13 +42,15 @@ public class Pour extends StdCommand
 
 	enum PourVerb{DEFAULT,INTO,ONTO,OUT}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Pour what, into/onto what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Pour what, into/onto what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -57,7 +59,7 @@ public class Pour extends StdCommand
 		fillFromThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToFillFrom);
 		if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 		{
-			mob.tell(L("You don't seem to have '@x1'.",thingToFillFrom));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",thingToFillFrom));
 			return false;
 		}
 		commands.remove(0);
@@ -98,14 +100,14 @@ public class Pour extends StdCommand
 		{
 			if(commands.size()<1)
 			{
-				mob.tell(L("@x1 what should I pour the @x2?",CMStrings.capitalizeAndLower(verb.name()),thingToFillFrom));
+				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 what should I pour the @x2?",CMStrings.capitalizeAndLower(verb.name()),thingToFillFrom));
 				return false;
 			}
 			final String thingToFill=CMParms.combine(commands,0);
 			fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill,Wearable.FILTER_ANY);
 			if((fillThis==null)||(!CMLib.flags().canBeSeenBy(fillThis,mob)))
 			{
-				mob.tell(L("I don't see '@x1' here.",thingToFill));
+				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see '@x1' here.",thingToFill));
 				return false;
 			}
 			if((verb==PourVerb.DEFAULT)&&(!(fillThis instanceof Drink)))

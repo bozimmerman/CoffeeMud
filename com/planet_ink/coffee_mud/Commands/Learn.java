@@ -44,14 +44,15 @@ public class Learn extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(mob.location().numInhabitants()==1)
 		{
-			mob.tell(L("You will need to find someone to teach you first."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You will need to find someone to teach you first."));
 			return false;
 		}
 		if(commands.size()==1)
 		{
-			mob.tell(L("Learn what?  Enter QUALIFY or TRAIN to see what you can learn."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Learn what?  Enter QUALIFY or TRAIN to see what you can learn."));
 			return false;
 		}
 		commands.remove(0);

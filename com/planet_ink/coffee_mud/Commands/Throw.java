@@ -43,11 +43,12 @@ public class Throw extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if((commands.size()==2)&&(mob.isInCombat()))
 			commands.add(mob.getVictim().location().getContextName(mob.getVictim()));
 		if(commands.size()<3)
 		{
-			mob.tell(L("Throw what, where or at whom?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Throw what, where or at whom?"));
 			return false;
 		}
 		commands.remove(0);
@@ -59,12 +60,12 @@ public class Throw extends StdCommand
 			item=mob.findItem(null,what);
 		if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 		{
-			mob.tell(L("You don't seem to have a '@x1'!",what));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have a '@x1'!",what));
 			return false;
 		}
 		if((!item.amWearingAt(Wearable.WORN_HELD))&&(!item.amWearingAt(Wearable.WORN_WIELD)))
 		{
-			mob.tell(L("You aren't holding or wielding @x1!",item.name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You aren't holding or wielding @x1!",item.name()));
 			return false;
 		}
 
@@ -79,7 +80,7 @@ public class Throw extends StdCommand
 			||(mob.location().getExitInDir(dir)==null)
 			||(!mob.location().getExitInDir(dir).isOpen()))
 			{
-				mob.tell(L("You can't throw anything that way!"));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You can't throw anything that way!"));
 				return false;
 			}
 			final boolean amOutside=((mob.location().domainType()&Room.INDOORS)==0);
@@ -90,13 +91,13 @@ public class Throw extends StdCommand
 			if(amOutside&&isOutside&&(!isUp)&&(!isDown)
 			&&((((Room)target).domainType()&Room.DOMAIN_OUTDOORS_AIR)==0))
 			{
-				mob.tell(L("That's too far to throw @x1.",item.name()));
+				CMLib.commands().doCommandFail(mob,origCmds,L("That's too far to throw @x1.",item.name()));
 				return false;
 			}
 		}
 		if((dir<0)&&((target==null)||((target!=mob.getVictim())&&(!CMLib.flags().canBeSeenBy(target,mob)))))
 		{
-			mob.tell(L("You can't target @x1 at '@x2'!",item.name(),str));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You can't target @x1 at '@x2'!",item.name(),str));
 			return false;
 		}
 

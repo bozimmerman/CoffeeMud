@@ -39,13 +39,15 @@ public class Compare extends StdCommand
 
 	private final String[] access=I(new String[]{"COMPARE","COMP"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Compare what to what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Compare what to what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -68,13 +70,13 @@ public class Compare extends StdCommand
 				}
 				if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 				{
-					mob.tell(L("You don't have a @x1.",( (String) commands.get(0))));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",( (String) commands.get(0))));
 					return false;
 				}
 			}
 			else
 			{
-				mob.tell(L("You don't have a @x1.",( (String) commands.get(0))));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",( (String) commands.get(0))));
 				return false;
 			}
 		}
@@ -112,7 +114,7 @@ public class Compare extends StdCommand
 				toThis=possible;
 			if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 			{
-				mob.tell(L("Compare a @x1 to what?",compareThis.name()));
+				CMLib.commands().doCommandFail(mob,origCmds,L("Compare a @x1 to what?",compareThis.name()));
 				return false;
 			}
 		}
@@ -120,7 +122,7 @@ public class Compare extends StdCommand
 			toThis=mob.findItem(null,CMParms.combine(commands,1));
 		if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 		{
-			mob.tell(L("You don't have a @x1.",((String)commands.get(1))));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",((String)commands.get(1))));
 			return false;
 		}
 
@@ -165,7 +167,7 @@ public class Compare extends StdCommand
 				mob.tell(L("@x1 looks like it holds less than @x2.",compareThis.name(),toThis.name()));
 		}
 		else
-			mob.tell(L("You can't compare @x1 and @x2.",compareThis.name(),toThis.name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You can't compare @x1 and @x2.",compareThis.name(),toThis.name()));
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}

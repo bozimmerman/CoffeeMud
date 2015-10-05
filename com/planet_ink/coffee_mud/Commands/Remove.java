@@ -46,9 +46,10 @@ public class Remove extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Remove what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Remove what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -67,7 +68,7 @@ public class Remove extends StdCommand
 
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_WORNONLY,false);
 		if(items.size()==0)
-			mob.tell(L("You don't seem to be wearing that."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be wearing that."));
 		else
 		for(int i=0;i<items.size();i++)
 		{

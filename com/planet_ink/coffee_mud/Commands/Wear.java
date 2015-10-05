@@ -74,9 +74,10 @@ public class Wear extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Wear what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Wear what?"));
 			return false;
 		}
 		final Wearable.CODES codes = Wearable.CODES.instance();
@@ -132,14 +133,14 @@ public class Wear extends StdCommand
 				}
 				else
 				{
-					mob.tell(L("You can't wear anything on your '@x1'",possibleWearLocation));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You can't wear anything on your '@x1'",possibleWearLocation));
 					return false;
 				}
 				// will always break out here, one way or the other.
 			}
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
-			mob.tell(L("You don't seem to be carrying that."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		{
 			// sort hold-onlys down.

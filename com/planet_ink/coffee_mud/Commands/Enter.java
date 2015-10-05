@@ -39,13 +39,15 @@ public class Enter extends Go
 
 	private final String[] access=I(new String[]{"ENTER","EN"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<=1)
 		{
-			mob.tell(L("Enter what or where? Try LOOK or EXITS."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Enter what or where? Try LOOK or EXITS."));
 			return false;
 		}
 		Environmental enterThis=null;
@@ -80,7 +82,7 @@ public class Enter extends Go
 			dir=CMLib.tracking().findExitDir(mob,R,enterWhat);
 			if(dir<0)
 			{
-				mob.tell(L("You don't see '@x1' here.",enterWhat.toLowerCase()));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",enterWhat.toLowerCase()));
 				return false;
 			}
 		}

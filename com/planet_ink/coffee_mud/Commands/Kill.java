@@ -53,12 +53,13 @@ public class Kill extends StdCommand
 			return false;
 		}
 
+		Vector origCmds=new XVector(commands);
 		MOB target=null;
 		if(commands.size()<2)
 		{
 			if(!mob.isInCombat())
 			{
-				mob.tell(L("Kill whom?"));
+				CMLib.commands().doCommandFail(mob,origCmds,L("Kill whom?"));
 				return false;
 			}
 			else
@@ -85,7 +86,7 @@ public class Kill extends StdCommand
 			target=mob.location().fetchInhabitant(whomToKill);
 			if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 			{
-				mob.tell(L("I don't see '@x1' here.",whomToKill));
+				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see '@x1' here.",whomToKill));
 				return false;
 			}
 		}
@@ -109,7 +110,7 @@ public class Kill extends StdCommand
 			if(((oldVictim!=null)&&(oldVictim==target)
 			&&(CMProps.getIntVar(CMProps.Int.COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)))
 			{
-				mob.tell(L("^f^<FIGHT^>You are already fighting @x1.^</FIGHT^>^?",mob.getVictim().name()));
+				CMLib.commands().doCommandFail(mob,origCmds,L("^f^<FIGHT^>You are already fighting @x1.^</FIGHT^>^?",mob.getVictim().name()));
 				return false;
 			}
 
@@ -127,7 +128,7 @@ public class Kill extends StdCommand
 					if(range>=0)
 						mob.setRangeToTarget(range);
 				}
-				mob.tell(L("^f^<FIGHT^>You are now targeting @x1.^</FIGHT^>^?",target.name(mob)));
+				CMLib.commands().doCommandFail(mob,origCmds,L("^f^<FIGHT^>You are now targeting @x1.^</FIGHT^>^?",target.name(mob)));
 				mob.setVictim(target);
 				return false;
 			}
@@ -139,7 +140,7 @@ public class Kill extends StdCommand
 			final CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,null);
 			final Room R=target.location();
 			if((R==null)||(R.okMessage(mob, msg)))
-				mob.tell(L("You are not allowed to attack @x1.",target.name(mob)));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You are not allowed to attack @x1.",target.name(mob)));
 		}
 		else
 		{

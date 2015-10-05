@@ -1015,6 +1015,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return 0;
 		int context=1;
 		for(final Object O : list)
+		{
 			if((((Environmental)O).Name().equalsIgnoreCase(E.Name()))
 			||(((Environmental)O).name().equalsIgnoreCase(E.name())))
 			{
@@ -1025,6 +1026,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				||(((Item)E).container()==((Item)O).container()))
 					context++;
 			}
+		}
 		return -1;
 	}
 	
@@ -1078,6 +1080,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return E.name()+"."+number;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error)
 	{
@@ -1115,7 +1118,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				commands.remove(commands.size()-1);
 			else
 			{
-				mob.tell(L("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
+				CMLib.commands().doCommandFail(mob,new XVector(commands),L("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
 				return null;
 			}
 			return shopkeeper;
@@ -1299,12 +1302,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{
 				List<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
 				for(int v=0;v<V.size();v++)
+				{
 					if(V.get(v).getNumberOfCoins()>=num)
 						return V.get(v).getCurrency();
+				}
 				V=CMLib.beanCounter().getStandardCurrency((MOB)mine,null);
 				for(int v=0;v<V.size();v++)
+				{
 					if(V.get(v).getNumberOfCoins()>=num)
 						return V.get(v).getCurrency();
+				}
 			}
 			return CMLib.beanCounter().getCurrency(mine);
 		}
@@ -1357,8 +1364,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{
 				final List<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,currency);
 				for(int v=0;v<V.size();v++)
+				{
 					if(V.get(v).getNumberOfCoins()>=num)
 						return V.get(v).getDenomination();
+				}
 			}
 			return CMLib.beanCounter().getLowestDenomination(currency);
 		}
@@ -1529,8 +1538,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			mob.tell(L("You don't have that much @x1.",CMLib.beanCounter().getDenominationName(currency,denomination)));
 			final List<Coins> V=CMLib.beanCounter().getStandardCurrency(mob,currency);
 			for(int v=0;v<V.size();v++)
+			{
 				if(V.get(v).getDenomination()==denomination)
 					return V.get(v);
+			}
 		}
 		return null;
 	}
@@ -1551,7 +1562,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				containerDex=i+1;
 				if(((containerDex+1)<commands.size())
 				&&((commands.get(containerDex).equalsIgnoreCase("all"))
-				||(CMath.s_int(commands.get(containerDex))>0)))
+					||(CMath.s_int(commands.get(containerDex))>0)))
 					containerDex++;
 				break;
 			}
@@ -1741,7 +1752,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						max=3000;
 					if(maxToGive>max)
 					{
-						mob.tell(L("You can only handle @x1 at a time.",""+max));
+						CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You can only handle @x1 at a time.",""+max));
 						return -1;
 					}
 					final Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
@@ -1749,7 +1760,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					{
 						if(throwError)
 						{
-							mob.tell(L("You can't get anything from @x1.",fromWhat.name()));
+							CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You can't get anything from @x1.",fromWhat.name()));
 							return -1;
 						}
 					}
@@ -1773,7 +1784,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				else
 				if(throwError)
 				{
-					mob.tell(L("You don't see '@x1' here.",packCheckName));
+					CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You don't see '@x1' here.",packCheckName));
 					return -1;
 				}
 			}

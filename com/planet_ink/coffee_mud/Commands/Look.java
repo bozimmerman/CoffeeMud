@@ -40,10 +40,12 @@ public class Look extends StdCommand
 	private final String[] access=I(new String[]{"LOOK","LOO","LO","L"});
 	@Override public String[] getAccessWords(){return access;}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		final Room R=mob.location();
 		boolean quiet=false;
 		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
@@ -90,7 +92,7 @@ public class Look extends StdCommand
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID2,Wearable.FILTER_ANY);
 				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
 				{
-					mob.tell(L("That's not a container."));
+					CMLib.commands().doCommandFail(mob,origCmds,L("That's not a container."));
 					return false;
 				}
 			}
@@ -110,7 +112,7 @@ public class Look extends StdCommand
 					}
 					else
 					{
-						mob.tell(L("You don't see anything that way."));
+						CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anything that way."));
 						return false;
 					}
 				}
@@ -139,14 +141,14 @@ public class Look extends StdCommand
 					R.send(mob,msg);
 			}
 			else
-				mob.tell(L("You don't see that here!"));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see that here!"));
 		}
 		else
 		{
 			if((commands!=null)&&(commands.size()>0))
 				if(((String)commands.get(0)).toUpperCase().startsWith("E"))
 				{
-					mob.tell(L("Examine what?"));
+					CMLib.commands().doCommandFail(mob,origCmds,L("Examine what?"));
 					return false;
 				}
 

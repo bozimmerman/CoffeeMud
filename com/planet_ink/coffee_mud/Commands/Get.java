@@ -89,6 +89,7 @@ public class Get extends StdCommand
 		throws java.io.IOException
 	{
 		final Room R=mob.location();
+		Vector origCmds=new XVector(commands);
 		if((commands.size()>1)&&(commands.get(0) instanceof Item))
 		{
 			final Item item=(Item)commands.get(0);
@@ -113,7 +114,7 @@ public class Get extends StdCommand
 
 		if(commands.size()<2)
 		{
-			mob.tell(L("Get what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Get what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -212,23 +213,23 @@ public class Get extends StdCommand
 			{
 				final Container container=containers.get(0);
 				if(container.isOpen())
-					mob.tell(mob,container,null,L("You don't see '@x1' in <T-NAME>.",unmodifiedWhatToGet));
+					CMLib.commands().doCommandFail(mob,container,null,commands,L("You don't see '@x1' in <T-NAME>.",unmodifiedWhatToGet));
 				else
-					mob.tell(L("@x1 is closed.",container.name()));
+					CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is closed.",container.name()));
 			}
 			else
 			if(containerName.equalsIgnoreCase("all"))
-				mob.tell(L("You don't see anything here."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anything here."));
 			else
 			{
 				final java.util.List<Container> V=CMLib.english().possibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);
 				if(V.size()==0)
-					mob.tell(L("You don't see '@x1' here.",containerName));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",containerName));
 				else
 				if(V.size()==1)
-					mob.tell(mob,V.get(0),null,L("You don't see '@x1' in <T-NAME> here.",unmodifiedWhatToGet));
+					CMLib.commands().doCommandFail(mob,V.get(0),null,commands,L("You don't see '@x1' in <T-NAME> here.",unmodifiedWhatToGet));
 				else
-					mob.tell(L("You don't see '@x1' in any '@x2'.",unmodifiedWhatToGet,containerName));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' in any '@x2'.",unmodifiedWhatToGet,containerName));
 			}
 		}
 		return false;

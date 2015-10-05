@@ -64,6 +64,7 @@ public class Sheath extends StdCommand
 	{
 		boolean quiet=false;
 		boolean noerrors=false;
+		Vector origCmds=new XVector(commands);
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
 		{
 			commands.remove(commands.size()-1);
@@ -193,15 +194,15 @@ public class Sheath extends StdCommand
 		{
 			if(!noerrors)
 				if(sheaths.size()==0)
-					mob.tell(L("You are not wearing an appropriate sheath."));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You are not wearing an appropriate sheath."));
 				else
 				if(sheathable!=null)
-					mob.tell(L("You aren't wearing anything you can sheath @x1 in.",sheathable.name()));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You aren't wearing anything you can sheath @x1 in.",sheathable.name()));
 				else
 				if(commands.size()==0)
-					mob.tell(L("You don't seem to be wielding anything you can sheath."));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be wielding anything you can sheath."));
 				else
-					mob.tell(L("You don't seem to be wielding that."));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be wielding that."));
 		}
 		else
 		for(int i=0;i<items.size();i++)
@@ -210,7 +211,7 @@ public class Sheath extends StdCommand
 			final Container container=(Container)containers.get(i);
 			if(CMLib.commands().postRemove(mob,putThis,true))
 			{
-				final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MSG_PUT,((quiet?null:"<S-NAME> sheath(s) <O-NAME> in <T-NAME>.")));
+				final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MSG_PUT,((quiet?null:L("<S-NAME> sheath(s) <O-NAME> in <T-NAME>."))));
 				if(mob.location().okMessage(mob,putMsg))
 					mob.location().send(mob,putMsg);
 			}

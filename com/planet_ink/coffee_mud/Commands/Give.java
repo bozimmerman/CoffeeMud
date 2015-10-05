@@ -43,22 +43,23 @@ public class Give extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Give what to whom?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Give what to whom?"));
 			return false;
 		}
 		commands.remove(0);
 		if(commands.size()<2)
 		{
-			mob.tell(L("To whom should I give that?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("To whom should I give that?"));
 			return false;
 		}
 
 		final MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			mob.tell(L("I don't see anyone called @x1 here.",(String)commands.lastElement()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",(String)commands.lastElement()));
 			return false;
 		}
 		commands.remove(commands.size()-1);
@@ -101,7 +102,7 @@ public class Give extends StdCommand
 				{
 					if((!(giveThis).amWearingAt(Wearable.WORN_HELD))&&(!(giveThis).amWearingAt(Wearable.WORN_WIELD)))
 					{
-						mob.tell(L("You must remove that first."));
+						CMLib.commands().doCommandFail(mob,origCmds,L("You must remove that first."));
 						return false;
 					}
 					final CMMsg newMsg=CMClass.getMsg(mob,giveThis,null,CMMsg.MSG_REMOVE,null);
@@ -124,7 +125,7 @@ public class Give extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(L("You don't seem to be carrying that."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{

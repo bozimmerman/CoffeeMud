@@ -49,7 +49,7 @@ public class Crawl extends Go
 			final int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
 			if(direction<0)
 			{
-				mob.tell(L("Crawl which way?\n\rTry north, south, east, west, up, or down."));
+				CMLib.commands().doCommandFail(mob,commands,L("Crawl which way?\n\rTry north, south, east, west, up, or down."));
 				return false;
 			}
 		}
@@ -72,7 +72,7 @@ public class Crawl extends Go
 		}
 		else
 		{
-			mob.tell(L("Crawl which way?\n\rTry north, south, east, west, up, or down."));
+			CMLib.commands().doCommandFail(mob,commands,L("Crawl which way?\n\rTry north, south, east, west, up, or down."));
 			return false;
 		}
 		return false;

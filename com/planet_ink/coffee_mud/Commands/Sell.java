@@ -43,12 +43,13 @@ public class Sell extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell what to whom?");
 		if(shopkeeper==null)
 			return false;
 		if(commands.size()==0)
 		{
-			mob.tell(L("Sell what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Sell what?"));
 			return false;
 		}
 
@@ -78,7 +79,7 @@ public class Sell extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(L("You don't seem to have '@x1'.",whatName));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",whatName));
 		else
 		for(int v=0;v<V.size();v++)
 		{

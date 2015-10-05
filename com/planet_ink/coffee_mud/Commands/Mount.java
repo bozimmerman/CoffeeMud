@@ -43,9 +43,10 @@ public class Mount extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("@x1 what?",((String)commands.get(0))));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 what?",((String)commands.get(0))));
 			return false;
 		}
 		Vector origCommands=(Vector)commands.clone();
@@ -81,12 +82,12 @@ public class Mount extends StdCommand
 				{
 					if(!CMLib.flags().canBeSeenBy(M,mob))
 					{
-						mob.tell(L("You don't see @x1 here.",((String)commands.get(0))));
+						CMLib.commands().doCommandFail(mob,origCmds,L("You don't see @x1 here.",((String)commands.get(0))));
 						return false;
 					}
 					if((!CMLib.flags().isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
 					{
-						mob.tell(L("Only the bound or servants can be mounted unwillingly."));
+						CMLib.commands().doCommandFail(mob,origCmds,L("Only the bound or servants can be mounted unwillingly."));
 						return false;
 					}
 					RI=M;
@@ -102,7 +103,7 @@ public class Mount extends StdCommand
 			recipient=mob.location().fetchFromRoomFavorMOBs(null,CMParms.combine(commands,0));
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,0)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",CMParms.combine(commands,0)));
 			return false;
 		}
 		if((recipient instanceof BoardableShip)

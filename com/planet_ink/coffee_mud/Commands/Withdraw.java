@@ -43,18 +43,19 @@ public class Withdraw extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Withdraw what or how much from whom?");
 		if(shopkeeper==null)
 			return false;
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
-			mob.tell(L("You can not withdraw anything from @x1.",shopkeeper.name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You can not withdraw anything from @x1.",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			mob.tell(L("Withdraw what or how much?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Withdraw what or how much?"));
 			return false;
 		}
 		String str=CMParms.combine(commands,0);
@@ -71,7 +72,7 @@ public class Withdraw extends StdCommand
 			{
 				if(denomination==0.0)
 				{
-					mob.tell(L("Withdraw how much?"));
+					CMLib.commands().doCommandFail(mob,origCmds,L("Withdraw how much?"));
 					return false;
 				}
 				thisThang=((Banker)SHOP).findDepositInventory(accountName,""+Integer.MAX_VALUE);
@@ -96,7 +97,7 @@ public class Withdraw extends StdCommand
 							thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
 						else
 						{
-							mob.tell(L("Withdraw how much?"));
+							CMLib.commands().doCommandFail(mob,origCmds,L("Withdraw how much?"));
 							return false;
 						}
 					}
@@ -125,7 +126,7 @@ public class Withdraw extends StdCommand
 
 		if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			mob.tell(L("That doesn't appear to be available.  Try LIST."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("That doesn't appear to be available.  Try LIST."));
 			return false;
 		}
 		String str2="<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.name()+".";

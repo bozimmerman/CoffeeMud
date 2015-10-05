@@ -43,9 +43,10 @@ public class Whisper extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()==1)
 		{
-			mob.tell(L("Whisper what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Whisper what?"));
 			return false;
 		}
 		Environmental target=null;
@@ -73,7 +74,7 @@ public class Whisper extends StdCommand
 		final String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			mob.tell(L("Whisper what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Whisper what?"));
 			return false;
 		}
 

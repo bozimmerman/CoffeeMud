@@ -39,13 +39,15 @@ public class Sleep extends StdCommand
 
 	private final String[] access=I(new String[]{"SLEEP","SL"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(CMLib.flags().isSleeping(mob))
 		{
-			mob.tell(L("You are already asleep!"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You are already asleep!"));
 			return false;
 		}
 		final Room R=mob.location();
@@ -62,7 +64,7 @@ public class Sleep extends StdCommand
 		final Environmental E=R.fetchFromRoomFavorItems(null,possibleRideable);
 		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",possibleRideable));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",possibleRideable));
 			return false;
 		}
 		String mountStr=null;

@@ -39,14 +39,16 @@ public class Lock extends StdCommand
 
 	private final String[] access=I(new String[]{"LOCK","LOC"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		final String whatTolock=CMParms.combine(commands,1);
 		if(whatTolock.length()==0)
 		{
-			mob.tell(L("Lock what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Lock what?"));
 			return false;
 		}
 		Environmental lockThis=null;
@@ -58,7 +60,7 @@ public class Lock extends StdCommand
 
 		if((lockThis==null)||(!CMLib.flags().canBeSeenBy(lockThis,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",whatTolock));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatTolock));
 			return false;
 		}
 		if(lockThis instanceof CloseableLockable)

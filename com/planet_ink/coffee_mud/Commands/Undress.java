@@ -39,18 +39,20 @@ public class Undress extends StdCommand
 
 	private final String[] access=I(new String[]{"UNDRESS"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<3)
 		{
-			mob.tell(L("Undress whom? What would you like to remove?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Undress whom? What would you like to remove?"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(L("Not while you are in combat!"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Not while you are in combat!"));
 			return false;
 		}
 		commands.remove(0);
@@ -60,7 +62,7 @@ public class Undress extends StdCommand
 		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("I don't see @x1 here.",whom));
+			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
 			return false;
 		}
 		if(target.willFollowOrdersOf(mob)||(CMLib.flags().isBoundOrHeld(target)))
@@ -70,12 +72,12 @@ public class Undress extends StdCommand
 			   ||(!CMLib.flags().canBeSeenBy(item,mob))
 			   ||(item.amWearingAt(Wearable.IN_INVENTORY)))
 			{
-				mob.tell(L("@x1 doesn't seem to be equipped with '@x2'.",target.name(mob),what));
+				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 doesn't seem to be equipped with '@x2'.",target.name(mob),what));
 				return false;
 			}
 			if(target.isInCombat())
 			{
-				mob.tell(L("Not while @x1 is in combat!",target.name(mob)));
+				CMLib.commands().doCommandFail(mob,origCmds,L("Not while @x1 is in combat!",target.name(mob)));
 				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
@@ -93,14 +95,14 @@ public class Undress extends StdCommand
 							mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> take(s) <O-NAME> off <T-NAMESELF>."));
 					}
 					else
-						mob.tell(L("You cannot seem to get @x1 off @x2.",item.name(),target.name(mob)));
+						CMLib.commands().doCommandFail(mob,origCmds,L("You cannot seem to get @x1 off @x2.",item.name(),target.name(mob)));
 				}
 				else
-					mob.tell(L("You cannot seem to get @x1 off of @x2.",item.name(),target.name(mob)));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You cannot seem to get @x1 off of @x2.",item.name(),target.name(mob)));
 			}
 		}
 		else
-			mob.tell(L("@x1 won't let you.",target.name(mob)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}

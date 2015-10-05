@@ -39,16 +39,18 @@ public class Wake extends StdCommand
 
 	private final String[] access=I(new String[]{"WAKE"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands!=null)
 			commands.remove(0);
 		if((commands==null)||(commands.size()==0))
 		{
 			if(!CMLib.flags().isSleeping(mob))
-				mob.tell(L("You aren't sleeping!?"));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You aren't sleeping!?"));
 			else
 			{
 				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,L("<S-NAME> awake(s) and get(s) up."));
@@ -68,12 +70,12 @@ public class Wake extends StdCommand
 			final MOB M=mob.location().fetchInhabitant(whom);
 			if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 			{
-				mob.tell(L("You don't see '@x1' here.",whom));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whom));
 				return false;
 			}
 			if(!CMLib.flags().isSleeping(M))
 			{
-				mob.tell(L("@x1 is awake!",M.name(mob)));
+				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is awake!",M.name(mob)));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,M,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> attempt(s) to wake <T-NAME> up."));

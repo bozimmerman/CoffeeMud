@@ -39,25 +39,27 @@ public class Serve extends StdCommand
 
 	private final String[] access=I(new String[]{"SERVE"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Serve whom?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Serve whom?"));
 			return false;
 		}
 		commands.remove(0);
 		final MOB recipient=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((recipient!=null)&&(recipient.isMonster())&&(!(recipient instanceof Deity)))
 		{
-			mob.tell(L("You may not serve @x1.",recipient.name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You may not serve @x1.",recipient.name()));
 			return false;
 		}
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			mob.tell(L("I don't see @x1 here.",CMParms.combine(commands,0)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see @x1 here.",CMParms.combine(commands,0)));
 			return false;
 		}
 		final CMMsg msg=CMClass.getMsg(mob,recipient,null,CMMsg.MSG_SERVE,L("<S-NAME> swear(s) fealty to <T-NAMESELF>."));

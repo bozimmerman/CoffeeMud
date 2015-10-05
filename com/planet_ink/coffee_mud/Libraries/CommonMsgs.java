@@ -78,14 +78,33 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return true;
 	}
 
-	@Override
 	public boolean handleCommandFail(final MOB mob, final List<String> commands, final String msgStr)
 	{
 		return handleCommandFail(mob, null, null, commands, msgStr);
 	}
 	
-	@Override
 	public boolean handleCommandFail(final MOB mob, Environmental target, Environmental tools, final List<String> command, final String msgStr)
+	{
+		if(mob==null)
+			return false;
+		final Room R=mob.location();
+		final CMMsg msg=CMClass.getMsg(mob,target,tools,CMMsg.MSG_COMMANDFAIL,msgStr,CMMsg.NO_EFFECT,CMParms.combineQuoted(command,0),CMMsg.NO_EFFECT,null);
+		if(!R.okMessage(mob,msg))
+			return false;
+		R.send(mob,msg);
+		return true;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public boolean doCommandFail(final MOB mob, final Vector commands, final String msgStr)
+	{
+		return doCommandFail(mob, null, null, commands, msgStr);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public boolean doCommandFail(final MOB mob, Environmental target, Environmental tools, final Vector command, final String msgStr)
 	{
 		if(mob==null)
 			return false;

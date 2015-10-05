@@ -83,10 +83,12 @@ public class Say extends StdCommand
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		String theWord="Say";
 		boolean toFlag=false;
 		final String theCommand=((String)commands.get(0)).toUpperCase();
@@ -106,7 +108,7 @@ public class Say extends StdCommand
 		final Room R=mob.location();
 		if((commands.size()==1)||(R==null))
 		{
-			mob.tell(L("@x1 what?",theWord));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 what?",theWord));
 			return false;
 		}
 
@@ -241,12 +243,12 @@ public class Say extends StdCommand
 			combinedCommands=CMParms.combineQuoted(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			mob.tell(L("@x1  what?",theWord));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1  what?",theWord));
 			return false;
 		}
 		if(toFlag&&((target==null)||(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			mob.tell(L("you don't see @x1 here to speak to.",whom));
+			CMLib.commands().doCommandFail(mob,origCmds,L("you don't see @x1 here to speak to.",whom));
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);

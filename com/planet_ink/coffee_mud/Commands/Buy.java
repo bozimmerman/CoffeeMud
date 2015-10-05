@@ -44,13 +44,14 @@ public class Buy extends StdCommand
 		throws java.io.IOException
 	{
 		MOB mobFor=null;
+		Vector origCmds=new XVector(commands);
 		if((commands.size()>2)
 		&&(((String)commands.get(commands.size()-2)).equalsIgnoreCase("for")))
 		{
 			final MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
 			if(M==null)
 			{
-				mob.tell(L("There is noone called '@x1' here.",((String)commands.lastElement())));
+				CMLib.commands().doCommandFail(mob,origCmds,L("There is noone called '@x1' here.",((String)commands.lastElement())));
 				return false;
 			}
 			commands.remove(commands.size()-1);
@@ -63,7 +64,7 @@ public class Buy extends StdCommand
 			return false;
 		if(commands.size()==0)
 		{
-			mob.tell(L("Buy what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Buy what?"));
 			return false;
 		}
 		if(CMLib.coffeeShops().getShopKeeper(shopkeeper)==null)

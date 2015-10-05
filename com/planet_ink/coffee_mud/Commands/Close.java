@@ -74,7 +74,7 @@ public class Close extends StdCommand
 					if((opE!=null)
 					&&(!opE.isOpen())
 					&&(!((Exit)closeThis).isOpen()))
-					   opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 closes.",opE.name(),(useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode))));
+						opR.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 @x2 closes.",opE.name(),(useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode))));
 				}
 				return true;
 			}
@@ -88,14 +88,16 @@ public class Close extends StdCommand
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		final String whatToClose=CMParms.combine(commands,1);
 		if(whatToClose.length()==0)
 		{
-			mob.tell(L("Close what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Close what?"));
 			return false;
 		}
 		Environmental closeThis=null;
@@ -107,7 +109,7 @@ public class Close extends StdCommand
 
 		if((closeThis==null)||(!CMLib.flags().canBeSeenBy(closeThis,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",whatToClose));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatToClose));
 			return false;
 		}
 		return closeMe(mob,closeThis,whatToClose,dirCode);

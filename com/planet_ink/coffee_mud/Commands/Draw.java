@@ -72,6 +72,7 @@ public class Draw extends Get
 		boolean quiet=false;
 		boolean noerrors=false;
 		boolean ifNecessary=false;
+		Vector origCmds=new XVector(commands);
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")))
 		{
 			quiet=true;
@@ -217,12 +218,12 @@ public class Draw extends Get
 			{
 				final Container container=containers.get(0);
 				if(container.isOpen())
-					mob.tell(L("You don't see that in @x1.",container.name()));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You don't see that in @x1.",container.name()));
 				else
-					mob.tell(L("@x1 is closed.",container.name()));
+					CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is closed.",container.name()));
 			}
 			else
-				mob.tell(L("You don't see @x1 here.",containerName));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see @x1 here.",containerName));
 		}
 		return false;
 	}

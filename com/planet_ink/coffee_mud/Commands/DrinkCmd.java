@@ -39,13 +39,15 @@ public class DrinkCmd extends StdCommand
 
 	private final String[] access=I(new String[]{"DRINK","DR","DRI"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			mob.tell(L("Drink what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Drink what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -62,7 +64,7 @@ public class DrinkCmd extends StdCommand
 			||((!mob.isMine(thisThang))
 			   &&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
 			{
-				mob.tell(L("You don't see '@x1' here.",CMParms.combine(commands,0)));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",CMParms.combine(commands,0)));
 				return false;
 			}
 		}

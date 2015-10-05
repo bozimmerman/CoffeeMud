@@ -47,7 +47,7 @@ public class Prop_ItemSlotFiller extends Property
 	@Override
 	public void setAffectedOne(Physical P)
 	{
-		if((P==null)||(P.fetchEffect("Prop_ItemSlot")==null))
+		if((P==this.affected)||(affected==null))
 		{
 			super.setAffectedOne(P);
 		}
@@ -64,7 +64,7 @@ public class Prop_ItemSlotFiller extends Property
 	
 	protected Physical getAffected()
 	{
-		if(affected2 != null)
+		if(affected2 instanceof Item)
 			return affected2;
 		if(fakeItem == null)
 		{
@@ -87,6 +87,7 @@ public class Prop_ItemSlotFiller extends Property
 					newAffects.add(A); // not the copy!
 				}
 			}
+			affects=newAffects.toArray(new Ability[0]);
 		}
 		return affects;
 	}

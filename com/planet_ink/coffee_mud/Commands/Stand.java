@@ -48,11 +48,11 @@ public class Stand extends StdCommand
 		if(CMLib.flags().isStanding(mob))
 		{
 			if(!ifnecessary)
-				mob.tell(L("You are already standing!"));
+				CMLib.commands().doCommandFail(mob,commands,L("You are already standing!"));
 		}
 		else
 		if((mob.session()!=null)&&(mob.session().isStopped()))
-			mob.tell(L("You may not stand up."));
+			CMLib.commands().doCommandFail(mob,commands,L("You may not stand up."));
 		else
 		if(room!=null)
 		{

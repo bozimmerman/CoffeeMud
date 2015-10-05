@@ -43,9 +43,10 @@ public class Knock extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<=1)
 		{
-			mob.tell(L("Knock on what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Knock on what?"));
 			return false;
 		}
 		final String knockWhat=CMParms.combine(commands,1).toUpperCase();
@@ -55,7 +56,7 @@ public class Knock extends StdCommand
 			final Environmental getThis=mob.location().fetchFromMOBRoomItemExit(mob,null,knockWhat,Wearable.FILTER_UNWORNONLY);
 			if(getThis==null)
 			{
-				mob.tell(L("You don't see '@x1' here.",knockWhat.toLowerCase()));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",knockWhat.toLowerCase()));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,L("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));
@@ -68,12 +69,12 @@ public class Knock extends StdCommand
 			Exit E=mob.location().getExitInDir(dir);
 			if(E==null)
 			{
-				mob.tell(L("Knock on what?"));
+				CMLib.commands().doCommandFail(mob,origCmds,L("Knock on what?"));
 				return false;
 			}
 			if(!E.hasADoor())
 			{
-				mob.tell(L("You can't knock on @x1!",E.name()));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You can't knock on @x1!",E.name()));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,L("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));

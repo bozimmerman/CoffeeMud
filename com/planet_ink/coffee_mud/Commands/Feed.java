@@ -39,13 +39,15 @@ public class Feed extends StdCommand
 
 	private final String[] access=I(new String[]{"FEED"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<3)
 		{
-			mob.tell(L("Feed who what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Feed who what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -55,12 +57,12 @@ public class Feed extends StdCommand
 		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("I don't see @x1 here.",whom));
+			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			mob.tell(L("Not while you are in combat!"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Not while you are in combat!"));
 			return false;
 		}
 		if(target.willFollowOrdersOf(mob)||(CMLib.flags().isBoundOrHeld(target)))
@@ -68,22 +70,22 @@ public class Feed extends StdCommand
 			final Item item=mob.findItem(null,what);
 			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 			{
-				mob.tell(L("I don't see @x1 here.",what));
+				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see @x1 here.",what));
 				return false;
 			}
 			if(!item.amWearingAt(Wearable.IN_INVENTORY))
 			{
-				mob.tell(L("You might want to remove that first."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You might want to remove that first."));
 				return false;
 			}
 			if((!(item instanceof Food))&&(!(item instanceof Drink)))
 			{
-				mob.tell(L("You might want to try feeding them something edibile or drinkable."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You might want to try feeding them something edibile or drinkable."));
 				return false;
 			}
 			if(target.isInCombat())
 			{
-				mob.tell(L("Not while @x1 is in combat!",target.name(mob)));
+				CMLib.commands().doCommandFail(mob,origCmds,L("Not while @x1 is in combat!",target.name(mob)));
 				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> feed(s) @x1 to <T-NAMESELF>.",item.name()));
@@ -117,7 +119,7 @@ public class Feed extends StdCommand
 			}
 		}
 		else
-			mob.tell(L("@x1 won't let you.",target.name(mob)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
 	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}

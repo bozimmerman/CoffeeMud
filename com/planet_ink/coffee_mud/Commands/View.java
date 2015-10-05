@@ -43,18 +43,19 @@ public class View extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"View what merchandise from whom?");
 		if(shopkeeper==null)
 			return false;
 		if(commands.size()==0)
 		{
-			mob.tell(L("View what merchandise?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("View what merchandise?"));
 			return false;
 		}
 
 		if(CMLib.coffeeShops().getShopKeeper(shopkeeper)==null)
 		{
-			mob.tell(L("@x1 is not a shopkeeper!",shopkeeper.name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not a shopkeeper!",shopkeeper.name()));
 			return false;
 		}
 

@@ -43,18 +43,19 @@ public class Borrow extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Borrow how much from whom?");
 		if(shopkeeper==null)
 			return false;
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if(!(SHOP instanceof Banker))
 		{
-			mob.tell(L("You can not borrow from @x1.",shopkeeper.name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You can not borrow from @x1.",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			mob.tell(L("Borrow how much?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Borrow how much?"));
 			return false;
 		}
 		String str=CMParms.combine(commands,0);
@@ -66,14 +67,14 @@ public class Borrow extends StdCommand
 		Item thisThang=null;
 		if((numCoins==0)||(denomination==0.0))
 		{
-			mob.tell(L("Borrow how much?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Borrow how much?"));
 			return false;
 		}
 		thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
 
 		if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			mob.tell(L("That doesn't appear to be available.  Try LIST."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("That doesn't appear to be available.  Try LIST."));
 			return false;
 		}
 		final String str2="<S-NAME> borrow(s) <O-NAME> from "+shopkeeper.name()+".";

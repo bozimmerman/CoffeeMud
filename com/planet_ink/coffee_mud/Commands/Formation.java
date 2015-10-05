@@ -40,10 +40,12 @@ public class Formation extends StdCommand
 	private final String[] access=I(new String[]{"FORMATION"});
 	@Override public String[] getAccessWords(){return access;}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		commands.remove(0);
 		final MOB leader=CMLib.combat().getFollowedLeader(mob);
 		final List<MOB>[] done=CMLib.combat().getFormation(mob);
@@ -65,10 +67,10 @@ public class Formation extends StdCommand
 		}
 		else
 		if(commands.size()==1)
-			mob.tell(L("Put whom in what row?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Put whom in what row?"));
 		else
 		if(mob.numFollowers()==0)
-			mob.tell(L("Noone is following you!"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Noone is following you!"));
 		else
 		{
 			String row=(String)commands.lastElement();
@@ -80,7 +82,7 @@ public class Formation extends StdCommand
 			if(CMLib.english().containsString(mob.name(),name)
 			   ||CMLib.english().containsString(mob.Name(),name))
 			{
-				mob.tell(L("You can not move your own position.  You are always the leader of your party."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You can not move your own position.  You are always the leader of your party."));
 				return false;
 			}
 			for(int f=0;f<mob.numFollowers();f++)
@@ -94,11 +96,11 @@ public class Formation extends StdCommand
 			}
 			if(who==null)
 			{
-				mob.tell(L("There is noone following you called @x1.",name));
+				CMLib.commands().doCommandFail(mob,origCmds,L("There is noone following you called @x1.",name));
 				return false;
 			}
 			if((!CMath.isNumber(row))||(CMath.s_int(row)<0))
-				mob.tell(L("'@x1' is not a valid row in which to put @x2.  Try number greater than 0.",row,who.name()));
+				CMLib.commands().doCommandFail(mob,origCmds,L("'@x1' is not a valid row in which to put @x2.  Try number greater than 0.",row,who.name()));
 			else
 			{
 				int leaderRow=-1;
@@ -109,10 +111,10 @@ public class Formation extends StdCommand
 						break;
 					}
 				if(leaderRow<0)
-					mob.tell(L("You do not exist."));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You do not exist."));
 				else
 				if(CMath.s_int(row)<leaderRow)
-					mob.tell(L("You can not place @x1 behind your own position, which is @x2.",who.name(),""+leaderRow));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You can not place @x1 behind your own position, which is @x2.",who.name(),""+leaderRow));
 				else
 				{
 					mob.addFollower(who,CMath.s_int(row)-leaderRow);

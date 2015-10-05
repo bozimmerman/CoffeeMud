@@ -44,22 +44,23 @@ public class Order extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<3)
 		{
-			mob.tell(L("Order who do to what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Order who do to what?"));
 			return false;
 		}
 		commands.remove(0);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Order them to do what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Order them to do what?"));
 			return false;
 		}
 		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 		&&(!mob.isMonster())
 		&&(mob.isAttribute(MOB.Attrib.AUTOASSIST)))
 		{
-			mob.tell(L("You may not order someone around with your AUTOASSIST flag off."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You may not order someone around with your AUTOASSIST flag off."));
 			return false;
 		}
 
@@ -87,9 +88,9 @@ public class Order extends StdCommand
 		if(V.size()==0)
 		{
 			if(whomToOrder.equalsIgnoreCase("ALL"))
-				mob.tell(L("You don't see anyone called '@x1' here.",whomToOrder));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anyone called '@x1' here.",whomToOrder));
 			else
-				mob.tell(L("You don't see anyone here."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anyone here."));
 			return false;
 		}
 
@@ -101,12 +102,12 @@ public class Order extends StdCommand
 			||(!CMLib.flags().canBeHeardSpeakingBy(mob,target))
 			||(target.location()!=mob.location()))
 			{
-				mob.tell(L("'@x1' doesn't seem to be listening.",whomToOrder));
+				CMLib.commands().doCommandFail(mob,origCmds,L("'@x1' doesn't seem to be listening.",whomToOrder));
 				return false;
 			}
 			if(!target.willFollowOrdersOf(mob))
 			{
-				mob.tell(L("You can't order '@x1' around.",target.name(mob)));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You can't order '@x1' around.",target.name(mob)));
 				return false;
 			}
 		}
@@ -119,7 +120,7 @@ public class Order extends StdCommand
 		{
 			if((O instanceof Command)&&(!((Command)O).canBeOrdered()))
 			{
-				mob.tell(L("You can't order anyone to '@x1'.",order));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You can't order anyone to '@x1'.",order));
 				return false;
 			}
 		}
@@ -134,7 +135,7 @@ public class Order extends StdCommand
 				if((O instanceof Command)
 				&&((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))))
 				{
-					mob.tell(L("You can't order @x1 to '@x2'.",target.name(mob),order));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You can't order @x1 to '@x2'.",target.name(mob),order));
 					continue;
 				}
 				if(O instanceof Ability)
@@ -143,7 +144,7 @@ public class Order extends StdCommand
 				{
 					if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
 					{
-						mob.tell(L("You can't order @x1 to '@x2'.",target.name(mob),order));
+						CMLib.commands().doCommandFail(mob,origCmds,L("You can't order @x1 to '@x2'.",target.name(mob),order));
 						continue;
 					}
 				}
@@ -151,10 +152,10 @@ public class Order extends StdCommand
 			if((!CMLib.flags().canBeSeenBy(target,mob))
 			||(!CMLib.flags().canBeHeardSpeakingBy(mob,target))
 			||(target.location()!=mob.location()))
-				mob.tell(L("'@x1' doesn't seem to be listening.",whomToOrder));
+				CMLib.commands().doCommandFail(mob,origCmds,L("'@x1' doesn't seem to be listening.",whomToOrder));
 			else
 			if(!target.willFollowOrdersOf(mob))
-				mob.tell(L("You can't order '@x1' around.",target.name(mob)));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You can't order '@x1' around.",target.name(mob)));
 			else
 			{
 				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,CMMsg.MSG_ORDER,CMMsg.MSG_SPEAK,L("^T<S-NAME> order(s) <T-NAMESELF> to '@x1'^?.",order));

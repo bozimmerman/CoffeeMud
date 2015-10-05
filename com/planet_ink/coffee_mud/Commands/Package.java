@@ -44,9 +44,10 @@ public class Package extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Package what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Package what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -82,7 +83,7 @@ public class Package extends StdCommand
 
 		if(V.size()==0)
 		{
-			mob.tell(L("You don't see '@x1' here.",whatName));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatName));
 			return false;
 		}
 
@@ -93,7 +94,7 @@ public class Package extends StdCommand
 			||(CMLib.flags().isEnspelled(I))
 			||(CMLib.flags().isOnFire(I)))
 			{
-				mob.tell(L("Items such as @x1 may not be packaged.",I.name(mob)));
+				CMLib.commands().doCommandFail(mob,origCmds,L("Items such as @x1 may not be packaged.",I.name(mob)));
 				return false;
 			}
 		}
@@ -102,7 +103,7 @@ public class Package extends StdCommand
 			return false;
 		if(!thePackage.isPackagable(V))
 		{
-			mob.tell(L("All items in a package must be absolutely identical.  Some here are not."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("All items in a package must be absolutely identical.  Some here are not."));
 			return false;
 		}
 		Item getThis=null;

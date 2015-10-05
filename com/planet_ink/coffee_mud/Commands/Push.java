@@ -39,10 +39,12 @@ public class Push extends Go
 
 	private final String[] access=I(new String[]{"PUSH"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		Environmental pushThis=null;
 		String dir="";
 		int dirCode=-1;
@@ -56,7 +58,7 @@ public class Push extends Go
 				||(mob.location().getExitInDir(dirCode)==null)
 				||(!mob.location().getExitInDir(dirCode).isOpen()))
 				{
-					mob.tell(L("You can't push anything that way."));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You can't push anything that way."));
 					return false;
 				}
 				E=mob.location().getRoomInDir(dirCode);
@@ -79,7 +81,7 @@ public class Push extends Go
 
 		if((pushThis==null)||(!CMLib.flags().canBeSeenBy(pushThis,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",itemName));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",itemName));
 			return false;
 		}
 		final int malmask=(pushThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;

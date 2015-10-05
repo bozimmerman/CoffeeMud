@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("rawtypes")
 public interface CommonCommands extends CMLibrary
 {
 	public void tickAging(MOB mob, long millisSinceLast);
@@ -81,8 +82,8 @@ public interface CommonCommands extends CMLibrary
 	public boolean isHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene);
 	public void handleObserveComesToLife(MOB observer, MOB lifer, CMMsg msg);
 	public boolean handleUnknownCommand(MOB mob, List<String> command);
-	public boolean handleCommandFail(final MOB mob, final List<String> command, final String msgStr);
-	public boolean handleCommandFail(final MOB mob, Environmental target, Environmental tool, final List<String> command, final String msgStr);
+	public boolean doCommandFail(final MOB mob, final Vector commands, final String msgStr);
+	public boolean doCommandFail(final MOB mob, Environmental target, Environmental tools, final Vector command, final String msgStr);
 	public void handleIntroductions(MOB speaker, MOB me, String said);
 	public void handleComeToLife(MOB mob, CMMsg msg);
 }

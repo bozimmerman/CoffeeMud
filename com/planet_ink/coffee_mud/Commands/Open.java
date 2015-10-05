@@ -88,14 +88,16 @@ public class Open extends StdCommand
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		final String whatToOpen=CMParms.combine(commands,1);
 		if(whatToOpen.length()==0)
 		{
-			mob.tell(L("Open what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Open what?"));
 			return false;
 		}
 		Environmental openThis=null;
@@ -107,7 +109,7 @@ public class Open extends StdCommand
 
 		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",whatToOpen));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatToOpen));
 			return false;
 		}
 		open(mob,openThis,whatToOpen,dirCode,false);

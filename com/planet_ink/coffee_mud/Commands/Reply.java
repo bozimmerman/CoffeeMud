@@ -45,12 +45,13 @@ public class Reply extends StdCommand
 	{
 		if(mob==null)
 			return false;
+		Vector origCmds=new XVector(commands);
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
 			return false;
 		if(pstats.getReplyToMOB()==null)
 		{
-			mob.tell(L("No one has told you anything yet!"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("No one has told you anything yet!"));
 			return false;
 		}
 		if((pstats.getReplyToMOB().Name().indexOf('@')<0)
@@ -58,12 +59,12 @@ public class Reply extends StdCommand
 			||(pstats.getReplyToMOB().isMonster())
 			||(!CMLib.flags().isInTheGame(pstats.getReplyToMOB(),true))))
 		{
-			mob.tell(L("@x1 is no longer logged in.",pstats.getReplyToMOB().Name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is no longer logged in.",pstats.getReplyToMOB().Name()));
 			return false;
 		}
 		if(CMParms.combine(commands,1).length()==0)
 		{
-			mob.tell(L("Tell '@x1' what?",pstats.getReplyToMOB().Name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Tell '@x1' what?",pstats.getReplyToMOB().Name()));
 			return false;
 		}
 		final int replyType=pstats.getReplyType();
@@ -74,7 +75,7 @@ public class Reply extends StdCommand
 			if((pstats.getReplyToMOB().Name().indexOf('@')<0)
 			&&((mob.location()==null)||(!mob.location().isInhabitant(pstats.getReplyToMOB()))))
 			{
-				mob.tell(L("@x1 is no longer in the room.",pstats.getReplyToMOB().Name()));
+				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is no longer in the room.",pstats.getReplyToMOB().Name()));
 				return false;
 			}
 			CMLib.commands().postSay(mob,pstats.getReplyToMOB(),CMParms.combine(commands,1),false,false);

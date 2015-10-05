@@ -43,22 +43,23 @@ public class Display extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Show what to whom?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Show what to whom?"));
 			return false;
 		}
 		commands.remove(0);
 		if(commands.size()<2)
 		{
-			mob.tell(L("To whom should I show that?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("To whom should I show that?"));
 			return false;
 		}
 
 		final MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			mob.tell(L("I don't see anyone called @x1 here.",(String)commands.lastElement()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",(String)commands.lastElement()));
 			return false;
 		}
 		commands.remove(commands.size()-1);
@@ -101,7 +102,7 @@ public class Display extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(L("You don't seem to be carrying that."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{

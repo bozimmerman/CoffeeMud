@@ -43,6 +43,7 @@ public class Flee extends Go
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		String direction="";
 		if(commands.size()>1)
 			direction=CMParms.combine(commands,1);
@@ -55,7 +56,7 @@ public class Flee extends Go
 		{
 			if(!mob.isInCombat())
 			{
-				mob.tell(L("You can only flee while in combat."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You can only flee while in combat."));
 				return false;
 			}
 		}
@@ -109,7 +110,7 @@ public class Flee extends Go
 				directionCode=Directions.getGoodDirectionCode(direction);
 			if(directionCode<0)
 			{
-				mob.tell(L("Flee where?!"));
+				CMLib.commands().doCommandFail(mob,origCmds,L("Flee where?!"));
 				return false;
 			}
 		}

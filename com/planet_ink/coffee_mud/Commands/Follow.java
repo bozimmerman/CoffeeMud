@@ -120,9 +120,9 @@ public class Follow extends StdCommand
 		throws java.io.IOException
 	{
 		boolean quiet=false;
-
 		if(mob==null)
 			return false;
+		Vector origCmds=new XVector(commands);
 		final Room R=mob.location();
 		if(R==null)
 			return false;
@@ -138,7 +138,7 @@ public class Follow extends StdCommand
 
 		if(commands.size()<2)
 		{
-			mob.tell(L("Follow whom?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Follow whom?"));
 			return false;
 		}
 
@@ -152,23 +152,23 @@ public class Follow extends StdCommand
 		final MOB target=R.fetchInhabitant(whomToFollow);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("I don't see them here."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see them here."));
 			return false;
 		}
 		if((target.isMonster())&&(!mob.isMonster()))
 		{
-			mob.tell(L("You cannot follow '@x1'.",target.name(mob)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You cannot follow '@x1'.",target.name(mob)));
 			return false;
 		}
 		if(target.isAttribute(MOB.Attrib.NOFOLLOW))
 		{
-			mob.tell(L("@x1 is not accepting followers.",target.name(mob)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not accepting followers.",target.name(mob)));
 			return false;
 		}
 		final MOB ultiTarget=target.amUltimatelyFollowing();
 		if((ultiTarget!=null)&&(ultiTarget.isAttribute(MOB.Attrib.NOFOLLOW)))
 		{
-			mob.tell(L("@x1 is not accepting followers.",ultiTarget.name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not accepting followers.",ultiTarget.name()));
 			return false;
 		}
 		processFollow(mob,target,quiet);

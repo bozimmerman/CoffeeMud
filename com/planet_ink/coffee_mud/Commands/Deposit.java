@@ -43,18 +43,19 @@ public class Deposit extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Deposit how much with whom?");
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if(shopkeeper==null)
 			return false;
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
-			mob.tell(L("You can not deposit anything with @x1.",shopkeeper.name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You can not deposit anything with @x1.",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			mob.tell(L("Deposit what or how much?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Deposit what or how much?"));
 			return false;
 		}
 		final String thisName=CMParms.combine(commands,0);
@@ -64,7 +65,7 @@ public class Deposit extends StdCommand
 			thisThang=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thisName);
 			if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 			{
-				mob.tell(L("You don't seem to be carrying that."));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 				return false;
 			}
 		}

@@ -43,9 +43,10 @@ public class Fill extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Fill what, from what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Fill what, from what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -64,7 +65,7 @@ public class Fill extends StdCommand
 
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			mob.tell(L("From what should I fill the @x1?",(String)commands.get(0)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("From what should I fill the @x1?",(String)commands.get(0)));
 			return false;
 		}
 		Environmental fillFromThis=null;
@@ -83,7 +84,7 @@ public class Fill extends StdCommand
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
 			if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 			{
-				mob.tell(L("I don't see @x1 here.",thingToFillFrom));
+				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see @x1 here.",thingToFillFrom));
 				return false;
 			}
 			while(commands.size()>=(fromDex+1))
@@ -115,7 +116,7 @@ public class Fill extends StdCommand
 		}
 
 		if(V.size()==0)
-			mob.tell(L("You don't seem to have '@x1'.",thingToFill));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",thingToFill));
 		else
 		for(int i=0;i<V.size();i++)
 		{

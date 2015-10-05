@@ -39,11 +39,13 @@ public class Examine extends StdCommand
 
 	private final String[] access=I(new String[]{"EXAMINE","EXAM","EXA","LONGLOOK","LLOOK","LL"});
 	@Override public String[] getAccessWords(){return access;}
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
+		Vector origCmds=new XVector(commands);
 		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
 			commands.remove(commands.size()-1);
@@ -86,7 +88,7 @@ public class Examine extends StdCommand
 						thisThang=exit;
 					else
 					{
-						mob.tell(L("You don't see anything that way."));
+						CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anything that way."));
 						return false;
 					}
 				}
@@ -110,7 +112,7 @@ public class Examine extends StdCommand
 					msg.addTrailerMsg(CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null));
 			}
 			else
-				mob.tell(L("You don't see that here!"));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see that here!"));
 		}
 		else
 		{

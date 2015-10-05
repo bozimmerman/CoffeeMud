@@ -43,24 +43,25 @@ public class Bid extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Bid how much, on what, with whom?");
 		if(shopkeeper==null)
 			return false;
 		if(commands.size()<2)
 		{
-			mob.tell(L("Bid how much on what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Bid how much on what?"));
 			return false;
 		}
 		if(!(CMLib.coffeeShops().getShopKeeper(shopkeeper) instanceof Auctioneer))
 		{
-			mob.tell(L("@x1 is not an auctioneer!",shopkeeper.name()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not an auctioneer!",shopkeeper.name()));
 			return false;
 		}
 
 		String bidStr=(String)commands.get(0);
 		if(CMLib.english().numPossibleGold(mob,bidStr)<=0)
 		{
-			mob.tell(L("It does not look like '@x1' is enough to offer.",bidStr));
+			CMLib.commands().doCommandFail(mob,origCmds,L("It does not look like '@x1' is enough to offer.",bidStr));
 			return false;
 		}
 		final Object[] bidThang=CMLib.english().parseMoneyStringSDL(mob,bidStr,null);

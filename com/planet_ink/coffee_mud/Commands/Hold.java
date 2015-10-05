@@ -43,15 +43,16 @@ public class Hold extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		Vector origCmds=new XVector(commands);
 		if(commands.size()<2)
 		{
-			mob.tell(L("Hold what?"));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Hold what?"));
 			return false;
 		}
 		commands.remove(0);
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
-			mob.tell(L("You don't seem to be carrying that."));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
 			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_HELD)))
