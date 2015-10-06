@@ -143,8 +143,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(accountsList.contains(acct))
 			return;
 		for(final PlayerAccount A : accountsList) // dont consolodate this.
+		{
 			if(A.getAccountName().equals(acct.getAccountName()))
 				return;
+		}
 		accountsList.add(acct);
 	}
 
@@ -173,10 +175,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		calledThis=CMStrings.capitalizeAndLower(calledThis);
 		for(final PlayerAccount A : accountsList)
+		{
 			if(A.getAccountName().equals(calledThis))
 				return A;
+		}
 
 		for (final MOB M : playersList)
+		{
 			if((M.playerStats()!=null)
 			&&(M.playerStats().getAccount()!=null)
 			&&(M.playerStats().getAccount().getAccountName().equals(calledThis)))
@@ -184,6 +189,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				addAccount(M.playerStats().getAccount());
 				return M.playerStats().getAccount();
 			}
+		}
 		return null;
 	}
 
@@ -192,8 +198,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		calledThis=CMStrings.capitalizeAndLower(calledThis);
 		for (final MOB M : playersList)
+		{
 			if (M.Name().equals(calledThis))
 				return M;
+		}
 		return null;
 	}
 
@@ -240,8 +248,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return false;
 		name=CMStrings.capitalizeAndLower(name);
 		for(final MOB M: playersList)
+		{
 			if(M.Name().equals(name))
 				return true;
+		}
 		return CMLib.database().DBUserSearch(name)!=null;
 	}
 
@@ -278,11 +288,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	private void removePrideStat(List<Pair<String,Integer>> top, String name, int start)
 	{
 		for(int i=start;i<top.size();i++)
+		{
 			if(top.get(i).first.equals(name))
 			{
 				top.remove(i);
 				break;
 			}
+		}
 	}
 
 	@Override
@@ -432,8 +444,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return;
 		if(getPlayer(deadMOB.Name())!=null)
 		{
-		   deadMOB=getPlayer(deadMOB.Name());
-		   delPlayer(deadMOB);
+			deadMOB=getPlayer(deadMOB.Name());
+			delPlayer(deadMOB);
 		}
 		for(final Session S : CMLib.sessions().allIterable())
 			if((!S.isStopped())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
@@ -619,13 +631,21 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(!loose)
 			return x;
 		if(x<0)
+		{
 			for(int s=0;s<CHAR_THIN_SORT_CODES.length;s++)
+			{
 				if(CHAR_THIN_SORT_CODES[s].startsWith(codeName))
 					x=s;
+			}
+		}
 		if(x<0)
+		{
 			for(int s=0;s<CHAR_THIN_SORT_CODES2.length;s++)
+			{
 				if(CHAR_THIN_SORT_CODES2[s].startsWith(codeName))
 					x=s;
+			}
+		}
 		return x;
 	}
 
@@ -637,9 +657,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(!loose)
 			return x;
 		if(x<0)
+		{
 			for(int s=0;s<ACCOUNT_THIN_SORT_CODES.length;s++)
+			{
 				if(ACCOUNT_THIN_SORT_CODES[s].startsWith(codeName))
 					x=s;
+			}
+		}
 		return x;
 	}
 
@@ -714,12 +738,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 				final String[] prides=prideStats[period.ordinal()].split(",");
 				for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
+				{
 					if(prides.length > stat.ordinal())
 					{
 						final String statVal=prides[stat.ordinal()];
 						if(statVal.length()>0)
 							p.second[stat.ordinal()]=CMath.s_int(statVal);
 					}
+				}
 			}
 			finalStats.add(p);
 		}
@@ -900,6 +926,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				long foundWarningDateTime=-1;
 				final StringBuffer warnStr=new StringBuffer("");
 				if((warnedOnes!=null)&&(warnedOnes.size()>0))
+				{
 					for(int b=0;b<warnedOnes.size();b++)
 					{
 						final String B=warnedOnes.get(b).trim();
@@ -914,6 +941,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 								foundWarningDateTime=warningDateTime;
 						}
 					}
+				}
 				if((foundWarningDateTime<0)
 				&&(System.currentTimeMillis()>warnDateTime))
 				{
@@ -945,6 +973,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 		// accounts!
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.PURGEACCOUNTS))&&(CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS)>0))
+		{
 			for(final Enumeration<PlayerAccount> pe=CMLib.players().accounts("",null); pe.hasMoreElements();)
 			{
 				final PlayerAccount PA=pe.nextElement();
@@ -965,6 +994,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					CMLib.players().obliterateAccountOnly(PA);
 				}
 			}
+		}
 		return true;
 	}
 
@@ -1080,13 +1110,17 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD)))
 					{
-						setThreadStatus(serviceClient,"checking player titles.");
+						setThreadStatus(serviceClient,"checking player titles/achievements.");
 						for(final MOB M : playersList)
+						{
 							if(M.playerStats()!=null)
 							{
-								if((CMLib.titles().evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))
+								boolean didSomething = CMLib.titles().evaluateAutoTitles(M);
+								didSomething = CMLib.achievements().evaluateAchievements(M) || didSomething;
+								if((didSomething)&&(!CMLib.flags().isInTheGame(M,true)))
 									CMLib.database().DBUpdatePlayerMOBOnly(M);
 							}
+						}
 						autoPurge();
 						if(!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS))
 							savePlayers();

@@ -1,0 +1,75 @@
+# This file contains definitions for automatically checked and gained achievements.
+# Achievements can be seen with the Achievements command, can give rewards, and 
+# are tracked on players using the Tattoo internal system.
+# The format of this file is one title definition per line.  
+# An achievement definition is of the following form:
+# [TATTOONAME]= EVENT="[EVENT]" DISPLAY="[DISPLAY]" TITLE="[TITLE]" REWARDS="[REWARDS]" ...
+# 
+# [TATTOONAME] is the name of the tattoo that marks the player when they reach
+# this achievement.  It should be unique, and it should not end with a number,
+# which would only make it temporary.
+# [TITLE] is optional.  If filled in, it is a title awarded to the player who
+# achieves this event.
+# [REWARDS] is also an optional list of other awards, separated by spaces.  
+# Each entry can be an amount of game money (e.g. 10 gold coins), an amount of 
+# experience (10 xp), or an amount of quest points (e.g. 10 qp).  Note the spaces!
+# [DISPLAY] is a friendly display name of this achievement.
+# [EVENT] is the type of achievement event.  Each type determines the other
+# parameters.  The format of each achievement event type is as follows:
+
+# ... EVENT="KILLS" NUM=[NUMBER] ZAPPERMASK="[ZAPPERMASK]" ...
+#     [NUM] is the number of kills required to get the achievement.
+#     [ZAPPERMASK] is a standard mask denoting mobs whos death gains the 
+#     player a kill count towards this achievement. See archon help on 
+#     Zapper Masks (AHELP ZAPPERMASKS) from the command line for 
+#     syntax on zapper-masks.
+# 
+# ... EVENT="STATATVALUE" STAT="[STAT] VALUE=[VALUE] ...
+#     [STAT] is the name of the player stat to check.  These are things like
+#     BASE STRENGTH, MAXSTRENGTH, WEIGHT, BASE ARMOR, MANA, MAX MANA,
+#     QUESTPOINTS
+#     [VALUE] is the numeric value that the stat must be at or above when
+#     the achievement is checked in order to gain.
+# 
+# ... EVENT="FACTION" ID="[ID]" ABOVEBELOW="[ABOVE/BELOW]" VALUE=[VALUE] ...
+#     [ID] is the ID of the faction to check 
+#     [VALUE] is the numeric value that the faction must be above or below when
+#     the achievement is checked in order to gain.
+#     [ABOVE/BELOW] is either ABOVE if the faction must be above the value, or 
+#     BELOW if the faction must be below the value.
+#
+# ... EVENT="EXPLORE" AREA="[AREA]" PERCENT=[PERCENT] ...
+#     [AREA] is the name of the area whose player exploration percent should be checked. 
+#     [PERCENT] is the percent of the area which must be explored to gain this 
+#     achievement.
+#
+# ... EVENT="CRAFTING" ABILITYID="[ABILITYID]" NUM=[NUM] ...
+#     [ABILITYID] is the ability ID of the crafting skill to track. 
+#     [NUM] is the number of times the skill must be used to create something
+#     successfully before the achievement is gained.
+#
+# ... EVENT="MENDER" ABILITYID="[ABILITYID]" NUM=[NUM] ...
+#     [ABILITYID] is the ability ID of the crafting skill to track mending with. 
+#     [NUM] is the number of times the skill must be used to mend something
+#     successfully before the achievement is gained.
+#
+# ... EVENT="QUESTOR" QUESTMASK="[QUESTMASK]" PLAYERMASK="[PLAYERMASK]" NUM=[NUM] ...
+#     [QUESTMASK] is optional, but may contain a regular expression to filter out
+#     quests according to their names.
+#     [NUM] is the number of quests that match the mask which must be completed in
+#     order to get this achievement.
+#     [PLAYERMASK] is a standard mask denoting which players may gain a point
+#     towards this achievement.  Can be used for area filtering. See archon help on 
+#     Zapper Masks (AHELP ZAPPERMASKS) from the command line for 
+#     syntax on zapper-masks.
+#
+# ... EVENT="ACHIEVER" ACHIEVEMENTLIST="[ACHIEVEMENTLIST]"
+#     [ACHIEVEMENTLIST] is a space delimited list of tattoo names referring to other
+#     defined achievements.  When all achievements on that list are gained, then this
+#     achievement is also gained.
+#
+# Some achievement events are updated every mud-hour (10 mins) automatically by 
+# the system for all players on-line and in memory.
+#
+# Example: 
+# ORCKILLER=EVENT="KILLS" NUM=10 ZAPPERMASK="-RACE \"+ORC\" " DISPLAY="Orc Killer!"

@@ -940,9 +940,9 @@ public class CMParms
 						text=text.substring(x);
 						x=0;
 						while((x<text.length())
-							&&(((!endWithQuote)&&(!Character.isWhitespace(text.charAt(x)))&&(text.charAt(x)!=';')&&(text.charAt(x)!=','))
-								||((endWithQuote)&&(text.charAt(x)!='\"'))))
-									x++;
+						&&(((!endWithQuote)&&(!Character.isWhitespace(text.charAt(x)))&&(text.charAt(x)!=';')&&(text.charAt(x)!=','))
+							||((endWithQuote)&&(text.charAt(x)!='\"'))))
+								x++;
 						return text.substring(0,x).trim();
 					}
 

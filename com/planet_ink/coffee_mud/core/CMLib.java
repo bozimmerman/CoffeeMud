@@ -149,7 +149,8 @@ public class CMLib
 		GENEDITOR(GenericEditor.class),
 		AREAGEN(AreaGenerationLibrary.class),
 		TECH(TechLibrary.class),
-		PROTOCOL(ProtocolLibrary.class)
+		PROTOCOL(ProtocolLibrary.class),
+		ACHIEVEMENTS(AchievementLibrary.class),
 		;
 
 		public final Class<?> ancestor;
@@ -454,6 +455,16 @@ public class CMLib
 	public static final CommonCommands commands()
 	{
 		return (CommonCommands)l().libraries[Library.COMMANDS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this threads achievement system library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary
+	 * @return a reference to this threads achievement library.
+	 */
+	public static final AchievementLibrary achievements()
+	{
+		return (AchievementLibrary)l().libraries[Library.ACHIEVEMENTS.ordinal()];
 	}
 	
 	/**
