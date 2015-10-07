@@ -38,7 +38,7 @@ public interface AchievementLibrary extends CMLibrary
 	public enum Event
 	{
 		KILLS,
-		STATATVALUE,
+		STATVALUE,
 		FACTION,
 		EXPLORE,
 		CRAFTING,
@@ -53,7 +53,7 @@ public interface AchievementLibrary extends CMLibrary
 		
 		public String getTattoo();
 		
-		public boolean isAchieved(MOB mob);
+		public Tracker getTracker(MOB mob, int oldCount);
 		
 		public String parseParms(String parms);
 		
@@ -62,6 +62,19 @@ public interface AchievementLibrary extends CMLibrary
 		public String getTitleAward();
 		
 		public String[] getRewards();
+	}
+	
+	public interface Tracker
+	{
+		public Achievement getAchievement();
+		
+		public boolean isAchieved();
+		
+		public void testBump(Object... parms);
+		
+		public int getCount();
+		
+		public boolean saveCount();
 	}
 	
 	public String evaluateAchievement(String row, boolean addIfPossible);

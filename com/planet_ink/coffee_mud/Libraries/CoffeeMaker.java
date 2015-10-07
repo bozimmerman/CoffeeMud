@@ -2487,15 +2487,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		if(P.isStat(stat))
 			return true;
+		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
+		if(current)
+			stat=stat.substring(8);
 		if(P.basePhyStats().isStat(stat))
 			return true;
 		if(P instanceof MOB)
 		{
 			if(((MOB)P).baseCharStats().isStat(stat))
 				return true;
+			if(((MOB)P).baseState().isStat(stat))
+				return true;
 			if(((MOB)P).playerStats()!=null)
 				return ((MOB)P).playerStats().isStat(stat);
 			if(getGenMobCodeNum(stat)>=0)
+				return true;
+			if(stat.equalsIgnoreCase("QUESTPOINTS"))
 				return true;
 		}
 		else
@@ -2510,16 +2517,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		if(P.isStat(stat))
 			return P.getStat(stat);
+		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
+		if(current)
+			stat=stat.substring(8);
 		if(P.basePhyStats().isStat(stat))
-			return P.basePhyStats().getStat(stat);
+			return (current)?P.phyStats().getStat(stat):P.basePhyStats().getStat(stat);
 		if(P instanceof MOB)
 		{
 			if(((MOB)P).baseCharStats().isStat(stat))
-				return ((MOB)P).baseCharStats().getStat(stat);
+				return current?((MOB)P).charStats().getStat(stat):((MOB)P).baseCharStats().getStat(stat);
+			if(((MOB)P).baseState().isStat(stat))
+				return current?((MOB)P).curState().getStat(stat):((MOB)P).baseState().getStat(stat);
 			if(((MOB)P).playerStats()!=null)
 				return ((MOB)P).playerStats().getStat(stat);
 			if(getGenMobCodeNum(stat)>=0)
 				return getGenMobStat((MOB)P, stat);
+			if(stat.equalsIgnoreCase("QUESTPOINTS"))
+			{
+				return ""+((MOB)P).getQuestPoint();
+			}
 		}
 		else
 		if(P instanceof Item)
@@ -2567,16 +2583,33 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			P.setStat(stat, value);
 			return;
 		}
+		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
+		if(current)
+			stat=stat.substring(8);
 		if(P.basePhyStats().isStat(stat))
 		{
-			P.basePhyStats().setStat(stat, value);
+			if(current)
+				P.phyStats().setStat(stat, value);
+			else
+				P.basePhyStats().setStat(stat, value);
 			return;
 		}
 		if(P instanceof MOB)
 		{
 			if(((MOB)P).baseCharStats().isStat(stat))
 			{
-				((MOB)P).baseCharStats().setStat(stat, value);
+				if(current)
+					((MOB)P).charStats().setStat(stat, value);
+				else
+					((MOB)P).baseCharStats().setStat(stat, value);
+				return;
+			}
+			if(((MOB)P).baseState().isStat(stat))
+			{
+				if(current)
+					((MOB)P).curState().setStat(stat, value);
+				else
+					((MOB)P).baseState().setStat(stat, value);
 				return;
 			}
 			if(((MOB)P).playerStats()!=null)
@@ -2587,6 +2620,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(getGenMobCodeNum(stat)>=0)
 			{
 				setGenMobStat((MOB)P, stat, value);
+				return;
+			}
+			if(stat.equalsIgnoreCase("QUESTPOINTS"))
+			{
+				((MOB)P).setQuestPoint(CMath.parseIntExpression(value));
 				return;
 			}
 		}
