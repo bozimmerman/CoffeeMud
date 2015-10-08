@@ -1006,6 +1006,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			mob.addTattoo(new Tattoo(A.getTattoo()));
 			StringBuilder awardMessage = new StringBuilder(L("^HYou have gained the '@x1' achievement!^?\n\r",A.getDisplayStr()));
 			String[] awardSet = A.getRewards();
+			if((A.getTitleAward() != null) && (A.getTitleAward().trim().length()>0))
+			{
+				final PlayerStats pStats = mob.playerStats();
+				if(pStats != null)
+				{
+					if(!pStats.getTitles().contains(A.getTitleAward()))
+					{
+						pStats.getTitles().add(A.getTitleAward());
+						awardMessage.append(L("^HYou are awarded the title: @x1!\n\r^?",A.getTitleAward()));
+					}
+				}
+			}
 			for(int a=0;a<awardSet.length;a++)
 			{
 				if(awardSet[a].length()>0)
