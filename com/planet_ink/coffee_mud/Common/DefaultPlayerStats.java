@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -82,6 +84,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected long[]	 	 prideExpireTime= new long[TimeClock.TimePeriod.values().length];
 	protected int[][]		 prideStats		= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	protected ItemCollection extItems;
+	protected List<Tracker>  achievementers	= new SLinkedList<Tracker>();
 
 	protected Map<String,String>	alias	= new STreeMap<String,String>();
 	protected Map<String,Integer>	legacy	= new STreeMap<String,Integer>();
@@ -907,6 +910,9 @@ public class DefaultPlayerStats implements PlayerStats
 			roomSet().parseXML("<AREAS>"+str+"</AREAS>");
 		else
 			roomSet().parseXML("<AREAS />");
+		//TODO:str = xmlLib.getValFromPieces(xml, "ACHIEVEMENTS");
+		//TODO:achievementers.clear();
+		
 		final String[] codes=getStatCodes();
 		for(int i=getSaveStatIndex();i<codes.length;i++)
 		{
@@ -1096,6 +1102,12 @@ public class DefaultPlayerStats implements PlayerStats
 		return (int)Math.round(100.0*pct);
 	}
 
+	@Override
+	public Enumeration<Tracker> getAchievementTrackers()
+	{
+		return new IteratorEnumeration<Tracker>(achievementers.iterator());
+	}
+	
 	@Override
 	public long leveledDateTime(int level)
 	{

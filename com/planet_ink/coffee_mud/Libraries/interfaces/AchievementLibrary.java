@@ -43,6 +43,7 @@ public interface AchievementLibrary extends CMLibrary
 		EXPLORE,
 		CRAFTING,
 		MENDER,
+		SKILLUSE,
 		QUESTOR,
 		ACHIEVER
 	}
@@ -62,6 +63,8 @@ public interface AchievementLibrary extends CMLibrary
 		public String getTitleAward();
 		
 		public String[] getRewards();
+		
+		public boolean isSavableTracker();
 	}
 	
 	public interface Tracker
@@ -70,11 +73,9 @@ public interface AchievementLibrary extends CMLibrary
 		
 		public boolean isAchieved();
 		
-		public void testBump(Object... parms);
+		public boolean testBump(Object... parms);
 		
 		public int getCount();
-		
-		public boolean saveCount();
 	}
 	
 	public String evaluateAchievement(String row, boolean addIfPossible);

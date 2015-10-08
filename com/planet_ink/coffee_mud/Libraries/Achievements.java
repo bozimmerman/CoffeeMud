@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
 
 import java.util.*;
 
@@ -129,22 +130,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public void testBump(Object... parms)
+						public boolean testBump(Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
 							&&((mask==null)||(CMLib.masking().maskCheck(mask, (MOB)parms[0], true))))
 							{
 								count++;
+								return true;
 							}
+							return false;
 						}
 						
-						@Override
-						public boolean saveCount()
-						{
-							return true;
-						}
 					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
 				}
 				
 				@Override
@@ -224,16 +228,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public void testBump(Object... parms) 
-						{
-						}
-						
-						@Override
-						public boolean saveCount()
+						public boolean testBump(Object... parms) 
 						{
 							return false;
 						}
 					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return false;
 				}
 				
 				@Override
@@ -318,16 +323,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public void testBump(Object... parms) 
-						{
-						}
-						
-						@Override
-						public boolean saveCount()
+						public boolean testBump(Object... parms) 
 						{
 							return false;
 						}
 					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return false;
 				}
 				
 				@Override
@@ -344,6 +350,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String factionID=CMParms.getParmStr(parms, "ID", "").toUpperCase().trim();
 					if(factionID.length()==0)
 						return "Error: Missing ID parameter: "+factionID+"!";
+					if(CMLib.factions().getFaction(factionID)==null)
+						return "Error: Unknown faction ID parameter: "+factionID+"!";
+					this.factionID=factionID;
 					return "";
 				}
 			};
@@ -415,16 +424,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public void testBump(Object... parms) 
-						{
-						}
-						
-						@Override
-						public boolean saveCount()
+						public boolean testBump(Object... parms) 
 						{
 							return false;
 						}
 					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return false;
 				}
 
 				@Override
@@ -437,11 +447,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String areaID=CMParms.getParmStr(parms, "AREA", "").toUpperCase().trim();
 					if(areaID.length()==0)
 						return "Error: Missing AREA parameter: "+areaID+"!";
+					if(CMLib.map().getArea(areaID)==null)
+						return "Error: Unknown AREA: "+areaID+"!";
+					this.areaID=areaID;
 					return "";
 				}
 			};
 			break;
 		case CRAFTING:
+		case MENDER:
 			A=new Achievement()
 			{
 				private int 	num 		= 0;
@@ -480,21 +494,88 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public Tracker getTracker(final MOB mob, final int oldCount)
 				{
-					// TODO Auto-generated method stub
-					return null;
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private int count = 0;
+						
+						@Override
+						public Achievement getAchievement() 
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved() 
+						{
+							return getCount() >= num;
+						}
+
+						@Override
+						public int getCount()
+						{
+							return count;
+						}
+
+						@Override
+						public boolean testBump(Object... parms) 
+						{
+							final Ability A;
+							if(parms.length>0)
+							{
+								if(parms[0] instanceof String)
+									A=CMClass.getAbility((String)parms[0]);
+								else
+								if(parms[0] instanceof Ability)
+									A=(Ability)parms[0];
+								else
+									A=null;
+								if((A!=null)&&(abilityID.equals("*")||(A.ID().equalsIgnoreCase(abilityID))))
+								{
+									count++;
+									return true;
+								}
+							}
+							return false;
+						}
+					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
 				}
 
 				@Override
 				public String parseParms(final String parms)
 				{
-					// TODO Auto-generated method stub
-					return null;
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					this.num=CMath.s_int(numStr);
+					final String abilityID=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
+					if(abilityID.length()==0)
+						return "Error: Missing ABILITYID parameter: "+abilityID+"!";
+					if(!abilityID.equalsIgnoreCase("*"))
+					{
+						final Ability A=CMClass.getAbility(abilityID);
+						if((A==null)
+						||((CMClass.getAbility(abilityID).classificationCode() & Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
+						||((CMClass.getAbility(abilityID).classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL))
+							return "Error: Unknown crafting ABILITYID: "+abilityID+"!";
+					}
+					this.abilityID=abilityID;
+					return "";
 				}
 			};
 			break;
-		case MENDER:
+		case SKILLUSE:
 			A=new Achievement()
 			{
+				private int 	num 		= 0;
+				private String	abilityID 	= "";
+				
 				@Override
 				public Event getEvent()
 				{
@@ -528,21 +609,88 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public Tracker getTracker(final MOB mob, final int oldCount)
 				{
-					// TODO Auto-generated method stub
-					return null;
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private int count = 0;
+						
+						@Override
+						public Achievement getAchievement() 
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved() 
+						{
+							return getCount() >= num;
+						}
+
+						@Override
+						public int getCount()
+						{
+							return count;
+						}
+
+						@Override
+						public boolean testBump(Object... parms) 
+						{
+							final Ability A;
+							if(parms.length>0)
+							{
+								if(parms[0] instanceof String)
+									A=CMClass.getAbility((String)parms[0]);
+								else
+								if(parms[0] instanceof Ability)
+									A=(Ability)parms[0];
+								else
+									A=null;
+								if((A!=null)
+								&&(A.ID().equalsIgnoreCase(abilityID)
+								||(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES].equalsIgnoreCase(abilityID))
+								||(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5].equalsIgnoreCase(abilityID))))
+								{
+									count++;
+									return true;
+								}
+							}
+							return false;
+						}
+					};
 				}
 				
 				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+
+				@Override
 				public String parseParms(final String parms)
 				{
-					// TODO Auto-generated method stub
-					return null;
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					this.num=CMath.s_int(numStr);
+					final String abilityID=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
+					if(abilityID.length()==0)
+						return "Error: Missing ABILITYID parameter: "+abilityID+"!";
+					if((CMClass.getAbility(abilityID)==null)
+					&&(!CMParms.contains(Ability.ACODE_DESCS,abilityID))
+					&&(!CMParms.contains(Ability.DOMAIN_DESCS,abilityID)))
+						return "Error: Unknown ABILITYID: "+abilityID+"!";
+					this.abilityID=abilityID;
+					return "";
 				}
 			};
 			break;
 		case QUESTOR:
 			A=new Achievement()
 			{
+				private int num = 0;
+				private MaskingLibrary.CompiledZapperMask mask = null;
+				private java.util.regex.Pattern questPattern = null;
+				
 				@Override
 				public Event getEvent()
 				{
@@ -576,21 +724,102 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public Tracker getTracker(final MOB mob, final int oldCount)
 				{
-					// TODO Auto-generated method stub
-					return null;
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private int count = 0;
+						
+						@Override
+						public Achievement getAchievement() 
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved() 
+						{
+							return getCount() >= num;
+						}
+
+						@Override
+						public int getCount()
+						{
+							return count;
+						}
+
+						@Override
+						public boolean testBump(Object... parms) 
+						{
+							if((mask!=null)&&(!CMLib.masking().maskCheck(mask, mob, true)))
+								return false;
+							if(parms.length>0)
+							{
+								boolean match=false;
+								if(parms[0] instanceof String)
+								{
+									match = questPattern.matcher((String)parms[0]).find();
+								}
+								else
+								if(parms[0] instanceof Quest)
+								{
+									Quest Q=(Quest)parms[0];
+									match = 
+										questPattern.matcher(Q.name()).find()
+										|| questPattern.matcher(Q.displayName()).find();
+								}
+								
+								if(match)
+								{
+									count++;
+									return true;
+								}
+							}
+							return false;
+						}
+					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
 				}
 
 				@Override
 				public String parseParms(final String parms)
 				{
-					// TODO Auto-generated method stub
-					return null;
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					num=CMath.s_int(numStr);
+					final String zapperMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "PLAYERMASK", ""),"\\\"","\""),"\\\\","\\");
+					if(zapperMask.trim().length()>0)
+						this.mask = CMLib.masking().getPreCompiledMask(zapperMask);
+					else
+						this.mask = null;
+					final String questMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "QUESTMASK", ""),"\\\"","\""),"\\\\","\\");
+					this.questPattern = null;
+					if(questMask.trim().length()>0)
+					{
+						try
+						{
+							java.util.regex.Pattern P = java.util.regex.Pattern.compile(questMask);
+							if(P!=null)
+								questPattern = P;
+						}
+						catch(Exception e)
+						{
+							return "Error: Invalid QUESTMASK regular expression parameter: "+questMask+": "+e.getMessage()+"!";
+						}
+					}
+					return "";
 				}
 			};
 			break;
 		case ACHIEVER:
 			A=new Achievement()
 			{
+				final Set<String> achievementList = new TreeSet<String>();
 				@Override
 				public Event getEvent()
 				{
@@ -624,15 +853,63 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public Tracker getTracker(final MOB mob, final int oldCount)
 				{
-					// TODO Auto-generated method stub
-					return null;
+					final Achievement me=this;
+					return new Tracker()
+					{
+						@Override
+						public Achievement getAchievement() 
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved() 
+						{
+							return getCount() >= achievementList.size();
+						}
+
+						@Override
+						public int getCount()
+						{
+							int count = 0;
+							for(String s : achievementList)
+							{
+								if(mob.findTattoo(s)!=null)
+									count++;
+							}
+							return count;
+						}
+
+						@Override
+						public boolean testBump(Object... parms) 
+						{
+							return false;
+						}
+					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
 				}
 
 				@Override
 				public String parseParms(final String parms)
 				{
-					// TODO Auto-generated method stub
-					return null;
+					final String list=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "ACHIEVEMENTLIST", ""),"\\\"","\""),"\\\\","\\");
+					if(list.trim().length()==0)
+						return "Error: Missing or invalid ACHIEVEMENTLIST parameter: "+list+"!";
+					final String[] listArray = list.toUpperCase().trim().split(" ");
+					achievementList.clear();
+					for(String s : listArray)
+					{
+						if(s.trim().length()>0)
+							achievementList.add(s.trim());
+					}
+					if(achievementList.size()==0)
+						return "Error: Missing or invalid ACHIEVEMENTLIST parameter: "+list+"!";
+					return "";
 				}
 			};
 			break;
@@ -644,6 +921,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(A==null)
 		{
 			return "Error: Unimplemented achievement type: "+eventStr+"!";
+		}
+		
+		final String err = A.parseParms(parms);
+		if((err!=null)&&(err.length()>0))
+		{
+			return err;
 		}
 		
 		if(addIfPossible)
@@ -668,6 +951,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return new IteratorEnumeration<Achievement>(achievements.iterator());
 	}
 
+	private boolean evaluateAchievement(final Achievement A, final MOB mob)
+	{
+		if(mob.findTattoo(A.getTattoo())==null)
+		{
+			
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean evaluateAchievements(final MOB mob)
 	{
@@ -680,6 +972,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(achievements==null)
 		{
 			reloadAchievements();
+		}
+		for(Enumeration<Achievement> a=achievements();a.hasMoreElements();)
+		{
+			Achievement A=a.nextElement();
+			if(evaluateAchievement(A,mob))
+				somethingDone = true;
 		}
 		return somethingDone;
 	}

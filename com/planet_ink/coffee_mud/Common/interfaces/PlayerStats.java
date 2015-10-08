@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -711,6 +712,12 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * @return the legacy levels for this player this category
 	 */
 	public int getLegacyLevel(String category);
+	
+	/**
+	 * Returns the trackers for the achievement system.
+	 * @see AchievementLibrary.Tracker
+	 */
+	public Enumeration<Tracker> getAchievementTrackers();
 
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;
