@@ -93,7 +93,10 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 						buildingI.destroy();
 					}
 					else
+					{
 						dropAWinner(mob,buildingI);
+						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, this);
+					}
 				}
 				buildingI=null;
 			}

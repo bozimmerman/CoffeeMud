@@ -36,7 +36,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.interfaces.RoomMap
 {
-	@Override public String ID(){	return "StdMap";}
+	@Override 
+	public String ID()
+	{	
+		return "StdMap";
+	}
+	
 	protected int oldLevel=0;
 
 	public StdMap()
@@ -51,8 +56,6 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		recoverPhyStats();
 	}
 
-
-
 	protected static class MapRoom
 	{
 		Room r=null;
@@ -61,10 +64,17 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		boolean positionedAlready=false;
 	}
 
-	@Override public String getMapArea(){return miscText;}
+	@Override 
+	public String getMapArea()
+	{
+		return miscText;
+	}
+	
 	@Override
 	public void setMapArea(String mapName)
-	{ super.setMiscText(mapName);	}
+	{ 
+		super.setMiscText(mapName);	
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -72,6 +82,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		super.setMiscText(newText);
 		doMapArea();
 	}
+	
 	@Override
 	public void doMapArea()
 	{
@@ -133,11 +144,11 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			grid[room.x][room.y]=room;
 		}
 
-
 		int numStragglers=0;
 		int somethingsLeft=0;
 		// now clear out stragglers.
 		for(int x=0;x<grid.length;x++)
+		{
 			for(int y=0;y<grid[0].length;y++)
 			{
 				final MapRoom room=grid[x][y];
@@ -162,6 +173,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 					}
 				}
 			}
+		}
 		if((numStragglers>0)&&(somethingsLeft>0))
 			return rebuildGrid(areaMap);
 
@@ -202,12 +214,14 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		{
 			final Area A=CMLib.map().getArea(mapAreas.get(a));
 			if(A!=null)
-			for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
-				final MapRoom mr=new MapRoom();
-				mr.r=R;
-				mapRooms.put(R,mr);
+				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				{
+					final Room R=(Room)r.nextElement();
+					final MapRoom mr=new MapRoom();
+					mr.r=R;
+					mapRooms.put(R,mr);
+				}
 			}
 		}
 		clearTheSkys(mapRooms);
@@ -296,9 +310,13 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			}
 		}
 		for(int x=0;x<map.length;x++)
+		{
 			for(int y=0;y<map[x].length;y++)
+			{
 				if(map[x][y]==null)
 					map[x][y]=new StringBuffer("");
+			}
+		}
 		return map;
 	}
 
@@ -351,8 +369,11 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 		MapRoom nextRoom=null;
 		try
-		{	nextRoom=grid[x][y];	}
-		catch(final Exception t){}
+		{	
+			nextRoom=grid[x][y];	
+		}
+		catch(final Exception t)
+		{}
 
 		if(nextRoom==null)
 		{
@@ -506,7 +527,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		if(phyStats().level()<2)
 		{
 			if((CMLib.flags().isHidden(exit)||CMLib.flags().isInvisible(exit)))
-			   return false;
+				return false;
 			if(exit.defaultsLocked())
 				return false;
 		}
@@ -580,7 +601,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 				&&(map!=null)
 				&&(map.length>0)
 				&&(map[0].length>0)
-				&&(!mob.isMonster()))
+				&&(!mob.isMonster())
+				&&(msg.targetMessage()!=null))
 				{
 					int x=0;
 					int y=0;
@@ -613,15 +635,19 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 						sec="A0";
 					}
 					if((map.length>1)||(map[0].length>1))
+					{
 						if(name().length()>0)
 							mob.session().rawPrintln(L("Section: @x1",sec));
+					}
 					mob.session().rawPrint(map[x][y].toString());
 					if((map.length>1)||(map[0].length>1))
 					{
 						String letsec="A";
 						if(map.length>25)
+						{
 							for(int l=0;l<map.length/26;l++)
 								letsec+='Z';
+						}
 						letsec=letsec.substring(0,letsec.length()-1)+((char)((('A')+map.length%26)-1));
 						if(name().length()>0)
 							mob.session().rawPrintln(L("(@x1) Use 'READ SEC MAPNAME' to read sections A0 through @x2@x3 (A-@x4, 0-@x5).",sec,letsec,""+(map[0].length-1),letsec,""+(map[0].length-1)));
@@ -655,10 +681,12 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		{
 			// maybe someone else will take care of it?
 			if(!doNotDefer)
+			{
 				for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
 				{
 					final MapRoom roomToBlame=(MapRoom)e.nextElement();
 					if(roomToBlame!=room)
+					{
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
 							final Room RD=roomToBlame.r.getRoomInDir(d);
@@ -669,7 +697,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 									return;
 							}
 						}
+					}
 				}
+			}
 			// nope; nobody can.  It's up to this!
 			final Vector XY=new Vector();
 			XY.addElement(Integer.valueOf(0));

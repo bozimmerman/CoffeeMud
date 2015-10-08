@@ -54,7 +54,7 @@ public interface AchievementLibrary extends CMLibrary
 		
 		public String getTattoo();
 		
-		public Tracker getTracker(MOB mob, int oldCount);
+		public Tracker getTracker(int oldCount);
 		
 		public String parseParms(String parms);
 		
@@ -71,15 +71,23 @@ public interface AchievementLibrary extends CMLibrary
 	{
 		public Achievement getAchievement();
 		
-		public boolean isAchieved();
+		public boolean isAchieved(MOB mob);
 		
-		public boolean testBump(Object... parms);
+		public boolean testBump(MOB mob, Object... parms);
 		
-		public int getCount();
+		/**
+		 * Returns the count/score to show for the given mob.  If the
+		 * achievement of this tracker is Savable, then the mob may be
+		 * null, since the count would then be internally stored.
+		 * @param mob the mob to get a count for -- required ONLY for unsavable
+		 * @return the score for this achievement and this mob
+		 */
+		public int getCount(MOB mob);
 	}
 	
 	public String evaluateAchievement(String row, boolean addIfPossible);
 	public void reloadAchievements();
 	public boolean evaluateAchievements(MOB mob);
 	public Enumeration<Achievement> achievements();
+	public void possiblyBumpAchievement(final MOB mob, final Event E, Object... parms);
 }

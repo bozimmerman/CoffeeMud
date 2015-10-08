@@ -1180,7 +1180,10 @@ public class StdAbility implements Ability
 			return;
 
 		if(!mob.isMonster())
+		{
 			CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SKILLUSE);
+			CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SKILLUSE, this);
+		}
 
 		if((System.currentTimeMillis()-((StdAbility)A).lastCastHelp)<300000)
 			return;

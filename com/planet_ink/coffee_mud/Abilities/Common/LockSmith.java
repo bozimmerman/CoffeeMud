@@ -16,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 
@@ -66,7 +64,10 @@ public class LockSmith extends CraftingSkill
 						commonTell(mob,L("You've ruined @x1!",buildingI.name(mob)));
 					else
 					if(!delock)
+					{
 						dropAWinner(mob,buildingI);
+						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, this);
+					}
 				}
 				buildingI=null;
 			}

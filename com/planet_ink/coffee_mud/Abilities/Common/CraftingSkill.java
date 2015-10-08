@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -250,8 +251,10 @@ public class CraftingSkill extends GatheringSkill
 			R.recoverRoomStats();
 			boolean foundIt=false;
 			for(int r=0;r<R.numItems();r++)
+			{
 				if(R.getItem(r)==building)
 					foundIt=true;
+			}
 			if(!foundIt)
 			{
 				commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));

@@ -9752,6 +9752,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Quest Q=getQuest(tt[2]);
 					if(Q!=null)
 					{
+						if(M!=null)
+							CMLib.achievements().possiblyBumpAchievement(M, AchievementLibrary.Event.QUESTOR, this);
 						Q.declareWinner(whoName);
 						CMLib.players().bumpPrideStat(M,AccountStats.PrideStat.QUESTS_COMPLETED, 1);
 					}

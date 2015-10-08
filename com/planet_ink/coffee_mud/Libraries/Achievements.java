@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Tattoo;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
 
@@ -37,7 +38,8 @@ import java.util.*;
 public class Achievements extends StdLibrary implements AchievementLibrary
 {
 	@Override public String ID(){return "Achievements";}
-	private List<Achievement> achievements=null;
+	private List<Achievement> 				achievements = null;
+	private final Map<Event,List<Achievement>> 	eventMap	 = null;
 
 	@Override
 	public String evaluateAchievement(String row, boolean addIfPossible)
@@ -104,7 +106,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 				
 				@Override
-				public Tracker getTracker(final MOB mob, final int oldCount)
+				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -118,19 +120,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved() 
+						public boolean isAchieved(MOB mob) 
 						{
-							return (getCount() >= num);
+							return (getCount(mob) >= num);
 						}
 
 						@Override
-						public int getCount()
+						public int getCount(MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(Object... parms)
+						public boolean testBump(MOB mob, Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -204,7 +206,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final MOB mob, final int oldCount)
+				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -216,19 +218,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved() 
+						public boolean isAchieved(MOB mob) 
 						{
-							return (abelo > 0) ? (getCount() > value) : (getCount() < value);
+							return (abelo > 0) ? (getCount(mob) > value) : (getCount(mob) < value);
 						}
 
 						@Override
-						public int getCount()
+						public int getCount(MOB mob)
 						{
 							return CMath.s_int(CMLib.coffeeMaker().getAnyGenStat(mob, statName));
 						}
 
 						@Override
-						public boolean testBump(Object... parms) 
+						public boolean testBump(MOB mob, Object... parms) 
 						{
 							return false;
 						}
@@ -299,7 +301,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final MOB mob, final int oldCount)
+				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -311,19 +313,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved() 
+						public boolean isAchieved(MOB mob) 
 						{
-							return (abelo > 0) ? (getCount() > value) : (getCount() < value);
+							return (abelo > 0) ? (getCount(mob) > value) : (getCount(mob) < value);
 						}
 
 						@Override
-						public int getCount()
+						public int getCount(MOB mob)
 						{
 							return mob.fetchFaction(factionID);
 						}
 
 						@Override
-						public boolean testBump(Object... parms) 
+						public boolean testBump(MOB mob, Object... parms) 
 						{
 							return false;
 						}
@@ -394,7 +396,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final MOB mob, final int oldCount)
+				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -406,13 +408,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved() 
+						public boolean isAchieved(MOB mob) 
 						{
-							return getCount() >= pct;
+							return getCount(mob) >= pct;
 						}
 
 						@Override
-						public int getCount()
+						public int getCount(MOB mob)
 						{
 							final PlayerStats pstats=mob.playerStats();
 							final Area A=CMLib.map().getArea(areaID);
@@ -424,7 +426,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean testBump(Object... parms) 
+						public boolean testBump(MOB mob, Object... parms) 
 						{
 							return false;
 						}
@@ -492,7 +494,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final MOB mob, final int oldCount)
+				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -506,19 +508,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved() 
+						public boolean isAchieved(MOB mob) 
 						{
-							return getCount() >= num;
+							return getCount(mob) >= num;
 						}
 
 						@Override
-						public int getCount()
+						public int getCount(MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(Object... parms) 
+						public boolean testBump(MOB mob, Object... parms) 
 						{
 							final Ability A;
 							if(parms.length>0)
@@ -607,7 +609,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final MOB mob, final int oldCount)
+				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -621,19 +623,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved() 
+						public boolean isAchieved(MOB mob) 
 						{
-							return getCount() >= num;
+							return getCount(mob) >= num;
 						}
 
 						@Override
-						public int getCount()
+						public int getCount(MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(Object... parms) 
+						public boolean testBump(MOB mob, Object... parms) 
 						{
 							final Ability A;
 							if(parms.length>0)
@@ -722,7 +724,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final MOB mob, final int oldCount)
+				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -736,19 +738,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved() 
+						public boolean isAchieved(MOB mob) 
 						{
-							return getCount() >= num;
+							return getCount(mob) >= num;
 						}
 
 						@Override
-						public int getCount()
+						public int getCount(MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(Object... parms) 
+						public boolean testBump(MOB mob, Object... parms) 
 						{
 							if((mask!=null)&&(!CMLib.masking().maskCheck(mask, mob, true)))
 								return false;
@@ -851,7 +853,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public Tracker getTracker(final MOB mob, final int oldCount)
+				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
 					return new Tracker()
@@ -863,13 +865,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved() 
+						public boolean isAchieved(MOB mob) 
 						{
-							return getCount() >= achievementList.size();
+							return getCount(mob) >= achievementList.size();
 						}
 
 						@Override
-						public int getCount()
+						public int getCount(MOB mob)
 						{
 							int count = 0;
 							for(String s : achievementList)
@@ -881,7 +883,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean testBump(Object... parms) 
+						public boolean testBump(MOB mob, Object... parms) 
 						{
 							return false;
 						}
@@ -891,7 +893,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public boolean isSavableTracker()
 				{
-					return true;
+					return false;
 				}
 
 				@Override
@@ -931,31 +933,142 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		
 		if(addIfPossible)
 		{
-			if(achievements==null)
-				reloadAchievements();
-			for(final Achievement A2 : achievements)
+			// the call to achievements below will ensure others are loaded.
+			for(final Enumeration<Achievement> a2  = achievements(); a2.hasMoreElements();)
 			{
+				final Achievement A2=a2.nextElement();
 				if(A2.getTattoo().equalsIgnoreCase(tattoo))
 					return "Error: Duplicate achievement: "+tattoo+"!";
 			}
 			achievements.add(A);
+			List<Achievement> eventList = eventMap.get(A.getEvent());
+			if(eventList == null)
+			{
+				eventList = new LinkedList<Achievement>();
+				eventMap.put(A.getEvent(), eventList);
+			}
+			eventList.add(A);
 		}
 		return null;
 	}
 	
+	private void ensureAchievementsLoaded()
+	{
+		if(achievements==null)
+		{
+			synchronized(this)
+			{
+				if(achievements==null)
+				{
+					reloadAchievements();
+				}
+			}
+		}
+	}
 	@Override
 	public Enumeration<Achievement> achievements()
 	{
-		if(achievements==null)
-			reloadAchievements();
+		ensureAchievementsLoaded();
 		return new IteratorEnumeration<Achievement>(achievements.iterator());
 	}
 
-	private boolean evaluateAchievement(final Achievement A, final MOB mob)
+	@Override
+	public void possiblyBumpAchievement(final MOB mob, final Event E, Object... parms)
+	{
+		if((mob != null)&&(E!=null))
+		{
+			ensureAchievementsLoaded();
+			final PlayerStats pStats = mob.playerStats();
+			if(eventMap.containsKey(E))
+			{
+				for(final Achievement A :  eventMap.get(E))
+				{
+					if(mob.findTattoo(A.getTattoo())==null)
+					{
+						final Tracker T=pStats.getAchievementTracker(A, mob);
+						if(T.testBump(mob, parms))
+						{
+							if(T.isAchieved(mob))
+							{
+								giveAwards(A,mob);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private boolean giveAwards(final Achievement A, final MOB mob)
 	{
 		if(mob.findTattoo(A.getTattoo())==null)
 		{
-			
+			mob.addTattoo(new Tattoo(A.getTattoo()));
+			StringBuilder awardMessage = new StringBuilder(L("^HYou have gained the '@x1' achievement!^?\n\r",A.getDisplayStr()));
+			String[] awardSet = A.getRewards();
+			for(int a=0;a<awardSet.length;a++)
+			{
+				if(awardSet[a].length()>0)
+				{
+					String thing = "";
+					if(CMath.isInteger(awardSet[a]))
+					{
+						int number = CMath.s_int(awardSet[a]);
+						a++;
+						while((a<awardSet.length)&&(awardSet[a].length()>0)&&(!CMath.isInteger(awardSet[a])))
+						{
+							thing += awardSet[a]+" ";
+							a++;
+						}
+						a--;
+						thing = thing.toUpperCase().trim();
+						if(thing.equals("XP") || thing.startsWith("EXPERIEN") || thing.equals("EXP"))
+						{
+							awardMessage.append(L("^HYou are awarded experience points!\n\r^?\n\r"));
+							CMLib.leveler().postExperience(mob, null, null, number, false);
+						}
+						else
+						if(thing.equals("QP") || thing.startsWith("QUEST"))
+						{
+							awardMessage.append(L("^HYou are awarded @x1 quest points!\n\r^?\n\r",""+number));
+							mob.setQuestPoint(mob.getQuestPoint() + number);
+						}
+						else
+						{
+							String currency = CMLib.english().matchAnyCurrencySet(thing);
+							if(currency == null)
+								Log.debugOut("Achievement", "Unknown award type: "+thing);
+							else
+							{
+								double denomination = CMLib.english().matchAnyDenomination(currency, thing);
+								if(denomination == 0.0)
+									Log.debugOut("Achievement", "Unknown award type: "+thing);
+								else
+								{
+									double money=CMath.mul(number,  denomination);
+									CMLib.beanCounter().giveSomeoneMoney(mob, money);
+									awardMessage.append(L("^HYou are awarded @x1!\n\r^?",CMLib.beanCounter().getDenominationName(currency, denomination, number)));
+								}
+							}
+						}
+					}
+				}
+			}
+			mob.tell(awardMessage.toString());
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean evaluateAchievement(final Achievement A, final PlayerStats pStats, final MOB mob)
+	{
+		if(mob.findTattoo(A.getTattoo())==null)
+		{
+			final Tracker T=pStats.getAchievementTracker(A, mob);
+			if(T.isAchieved(mob))
+			{
+				return giveAwards(A, mob);
+			}
 		}
 		return false;
 	}
@@ -969,21 +1082,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(P==null)
 			return false;
 		boolean somethingDone = false;
-		if(achievements==null)
-		{
-			reloadAchievements();
-		}
 		for(Enumeration<Achievement> a=achievements();a.hasMoreElements();)
 		{
-			Achievement A=a.nextElement();
-			if(evaluateAchievement(A,mob))
+			final Achievement A=a.nextElement();
+			if(evaluateAchievement(A,P,mob))
 				somethingDone = true;
 		}
 		return somethingDone;
 	}
 
 	@Override
-	public void reloadAchievements()
+	public synchronized void reloadAchievements()
 	{
 		achievements=new LinkedList<Achievement>();
 		final List<String> V=Resources.getFileLineVector(Resources.getFileResource("achievements.txt",true));

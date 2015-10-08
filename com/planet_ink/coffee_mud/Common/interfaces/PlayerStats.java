@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -714,10 +715,14 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	public int getLegacyLevel(String category);
 	
 	/**
-	 * Returns the trackers for the achievement system.
+	 * Returns the tracker for the given achievement, for the given mob, or
+	 * creates it if it does not exist.
+	 * @param A the achievement to get the tracker for
+	 * @param mob the mob to create a tracker for
 	 * @see AchievementLibrary.Tracker
+	 * @see AchievementLibrary.Achievement
 	 */
-	public Enumeration<Tracker> getAchievementTrackers();
+	public Tracker getAchievementTracker(final Achievement A, final MOB mob);
 
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;

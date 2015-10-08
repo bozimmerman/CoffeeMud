@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -43,11 +44,15 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	private static final String[] triggerStrings =I(new String[] {"ARMORSMITH","ARMORSMITHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
+	
 	@Override
-	public String parametersFormat(){ return
-		  "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
+	public String parametersFormat()
+	{ 
+		return
+		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+ "ITEM_BASE_VALUE\tITEM_CLASS_ID\tCODED_WEAR_LOCATION\tCONTAINER_CAPACITY\t"
-		+ "BASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
+		+ "BASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
@@ -61,7 +66,10 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
-	protected String primeMaterialDesc(){return "metal";}
+	protected String primeMaterialDesc()
+	{
+		return "metal";
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -79,8 +87,17 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "armorsmith.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override 
+	public String parametersFile()
+	{
+		return "armorsmith.txt";
+	}
+	
+	@Override 
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -118,7 +135,10 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 					else
 					{
 						if(activity == CraftingActivity.MENDING)
+						{
 							buildingI.setUsesRemaining(100);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, this);
+						}
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
@@ -132,7 +152,10 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 							buildingI.recoverPhyStats();
 						}
 						else
+						{
 							dropAWinner(mob,buildingI);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, this);
+						}
 					}
 				}
 				buildingI=null;

@@ -67,7 +67,10 @@ public class Taxidermy extends CraftingSkill
 					if(messedUp)
 						commonTell(mob,L("You've messed up stuffing @x1!",foundShortName));
 					else
+					{
 						dropAWinner(mob,buildingI);
+						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, this);
+					}
 				}
 			}
 		}

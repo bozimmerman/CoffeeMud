@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -108,7 +109,10 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 					else
 					{
 						if(activity == CraftingActivity.MENDING)
+						{
 							buildingI.setUsesRemaining(100);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, this);
+						}
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
@@ -122,7 +126,10 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 							buildingI.recoverPhyStats();
 						}
 						else
+						{
 							dropAWinner(mob,buildingI);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, this);
+						}
 					}
 				}
 				buildingI=null;

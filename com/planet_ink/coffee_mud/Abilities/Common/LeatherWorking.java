@@ -135,7 +135,10 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 					else
 					{
 						if(activity == CraftingActivity.MENDING)
+						{
 							buildingI.setUsesRemaining(100);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, this);
+						}
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
@@ -149,7 +152,10 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 							buildingI.recoverPhyStats();
 						}
 						else
+						{
 							dropAWinner(mob,buildingI);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, this);
+						}
 					}
 				}
 				buildingI=null;

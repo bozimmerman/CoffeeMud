@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -91,7 +92,10 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					if(messedUp)
 						commonTell(mob,L("<S-NAME> mess(es) up making @x1.",buildingI.name(mob)));
 					else
+					{
 						dropAWinner(mob,buildingI);
+						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, this);
+					}
 				}
 				buildingI=null;
 			}

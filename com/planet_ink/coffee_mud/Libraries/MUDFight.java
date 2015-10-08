@@ -397,24 +397,32 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(deadM.amDead())
 			return;
 		if((addHere!=null)&&(addHere.trailerMsgs()!=null))
+		{
 			for(final CMMsg msg : addHere.trailerMsgs())
+			{
 				if((msg.source()==deadM)
 				&&((msg.sourceMinor()==CMMsg.TYP_PANIC))
 				   ||(msg.sourceMinor()==CMMsg.TYP_DEATH))
 					return;
+			}
+		}
 
 		final String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
 		CMMsg msg=null;
 		if(isKnockedOutUponDeath(deadM,killerM))
+		{
 			msg=CMClass.getMsg(deadM,null,killerM,
 					CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
 					CMMsg.MSG_OK_VISUAL,null,
 					CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
+		}
 		else
+		{
 			msg=CMClass.getMsg(deadM,null,killerM,
 				CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
 				CMMsg.MSG_OK_VISUAL,null,
 				CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
+		}
 		CMLib.map().sendGlobalMessage(deadM,CMMsg.TYP_DEATH, CMClass.getMsg(deadM,null,killerM, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null));
 		final CMMsg msg2=CMClass.getMsg(deadM,null,killerM, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null);
 		if(addHere!=null)
@@ -448,11 +456,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final CMMsg msg=CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,null);
 		final Room R=target.location();
 		if(R!=null)
+		{
 			if(R.okMessage(attacker,msg))
 			{
 				R.send(attacker,msg);
 				return msg.value()>0;
 			}
+		}
 		return false;
 	}
 
@@ -472,8 +482,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		msg.setValue(healing);
 		final Room R=target.location();
 		if(R!=null)
+		{
 			if(R.okMessage(target,msg))
-			{ R.send(target,msg); return true;}
+			{ 
+				R.send(target,msg); 
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -565,9 +580,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		CMLib.color().fixSourceFightColor(msg);
 		final Room R=target.location();
 		if(R!=null)
+		{
 			if(R.okMessage(target,msg))
 			{
 				if(damageType>=0)
+				{
 					msg.modify(msg.source(),
 							   msg.target(),
 							   msg.tool(),
@@ -577,8 +594,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,'T'),
 							   msg.othersCode(),
 							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,'O'));
+				}
 				R.send(target,msg);
 			}
+		}
 	}
 
 	public int modifySpellDamage(MOB attacker, MOB target, int baseDamage)
@@ -645,7 +664,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					CMLib.flags().canBeSeenBy(target,mob)?0:1,
 					CMLib.flags().isSleeping(target)?1:0,
 					CMLib.flags().isSitting(target)?1:0
-				};
+			};
 			if(rangedAttack)
 				damageAmount = CMath.parseMathExpression(isPVP?pvpTargetedRangedDamageFormula:targetedRangedDamageFormula, vars, 0.0);
 			else
@@ -664,7 +683,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					0,
 					0,
 					0
-				};
+			};
 			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
 				damageAmount = CMath.parseMathExpression(staticRangedDamageFormula, vars, 0.0);
 			else
@@ -693,7 +712,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0,
 				mob.phyStats().level(),
 				(target==null)?0:target.phyStats().level()
-			};
+		};
 		if(allowCrits)
 		{
 			final int weaponCritChancePct = (int)Math.round(CMath.parseMathExpression(isPVP?pvpWeaponCritChanceFormula:weaponCritChanceFormula, vars, 0.0));
@@ -838,8 +857,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public void processFormation(List<MOB>[] done, MOB leader, int level)
 	{
 		for (final List<MOB> element : done)
+		{
 			if((element!=null)&&(element.contains(leader)))
 				return;
+		}
 		if(level>=done.length)
 			return;
 		if(done[level]==null)
@@ -1067,7 +1088,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&(M!=target)
 			&&(M.location()==deathRoom)
 			&&(deathRoom.isInhabitant(M)))
-			   goldLooters.addElement(M);
+				goldLooters.addElement(M);
 		}
 		if((goldLooters.size()>0)&&(deadMoney>0))
 		{
@@ -1541,6 +1562,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				final Item KI=killer.fetchWieldedItem();
 				Log.combatOut("KILL",killer.Name()+":"+killer.phyStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.phyStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
 			}
+			CMLib.achievements().possiblyBumpAchievement(killer, AchievementLibrary.Event.KILLS, deadmob);
 			if((deadmob!=null)&&(killer!=null)
 			&&(deadmob.soulMate()==null)
 			&&(killer!=deadmob)&&(!killer.isMonster()))

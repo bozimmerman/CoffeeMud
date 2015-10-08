@@ -3524,10 +3524,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			}
 		}
 		else
-		if(!Q.wasWinner(name))
 		{
-			Q.getWinners().add(name);
-			CMLib.database().DBUpdateQuest(Q);
+			if(!Q.wasWinner(name))
+			{
+				Q.getWinners().add(name);
+				CMLib.database().DBUpdateQuest(Q);
+			}
 		}
 	}
 

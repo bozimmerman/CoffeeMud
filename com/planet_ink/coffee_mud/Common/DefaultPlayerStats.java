@@ -84,10 +84,10 @@ public class DefaultPlayerStats implements PlayerStats
 	protected long[]	 	 prideExpireTime= new long[TimeClock.TimePeriod.values().length];
 	protected int[][]		 prideStats		= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
 	protected ItemCollection extItems;
-	protected List<Tracker>  achievementers	= new SLinkedList<Tracker>();
 
-	protected Map<String,String>	alias	= new STreeMap<String,String>();
-	protected Map<String,Integer>	legacy	= new STreeMap<String,Integer>();
+	protected Map<String,Tracker>	achievementers	= new STreeMap<String,Tracker>();
+	protected Map<String,String>	alias			= new STreeMap<String,String>();
+	protected Map<String,Integer>	legacy			= new STreeMap<String,Integer>();
 
 	protected TriadVector<Integer, Long, String>	levelInfo		= new TriadVector<Integer, Long, String>();
 	
@@ -645,9 +645,9 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public String getXML()
 	{
-		final String f=getPrivateList(getFriends());
-		final String i=getPrivateList(getIgnored());
-		final String t=getPrivateList(introductions);
+		final String friendsStr=getPrivateList(getFriends());
+		final String ignoredStr=getPrivateList(getIgnored());
+		final String privateListStr=getPrivateList(introductions);
 		final StringBuffer rest=new StringBuffer("");
 		final String[] codes=getStatCodes();
 		for(int x=getSaveStatIndex();x<codes.length;x++)
@@ -660,10 +660,20 @@ public class DefaultPlayerStats implements PlayerStats
 		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 			rest.append(CMParms.toTightStringList(prideStats[period.ordinal()])).append(";");
 		rest.append("</PRIDESTATS>");
+		
+		rest.append("<ACHIEVEMENTS");
+		for(Iterator<Tracker> i=achievementers.values().iterator();i.hasNext();)
+		{
+			final Tracker T = i.next();
+			if(T.getAchievement().isSavableTracker())
+				rest.append(" ").append(T.getAchievement().getTattoo()).append("=").append(T.getCount(null));
+			// getCount(null) should be ok, because it's only the un-savable trackers that need the mob obj
+		}
+		rest.append(" />");
 
-		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
-			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
-			+((t.length()>0)?"<INTROS>"+t+"</INTROS>":"")
+		return ((friendsStr.length()>0)?"<FRIENDS>"+friendsStr+"</FRIENDS>":"")
+			+((ignoredStr.length()>0)?"<IGNORED>"+ignoredStr+"</IGNORED>":"")
+			+((privateListStr.length()>0)?"<INTROS>"+privateListStr+"</INTROS>":"")
 			+"<WRAP>"+wrap+"</WRAP>"
 			+"<THEME>"+theme+"</THEME>"
 			+"<PAGEBREAK>"+pageBreak+"</PAGEBREAK>"
@@ -910,8 +920,16 @@ public class DefaultPlayerStats implements PlayerStats
 			roomSet().parseXML("<AREAS>"+str+"</AREAS>");
 		else
 			roomSet().parseXML("<AREAS />");
-		//TODO:str = xmlLib.getValFromPieces(xml, "ACHIEVEMENTS");
-		//TODO:achievementers.clear();
+		final XMLpiece achievePiece = xmlLib.getPieceFromPieces(xml, "ACHIEVEMENTS");
+		achievementers.clear();
+		for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
+		{
+			final Achievement A=a.nextElement();
+			if(achievePiece.parms.containsKey(A.getTattoo()))
+				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms.get(A.getTattoo()).trim())));
+			else
+				achievementers.put(A.getTattoo(), A.getTracker(0));
+		}
 		
 		final String[] codes=getStatCodes();
 		for(int i=getSaveStatIndex();i<codes.length;i++)
@@ -1103,9 +1121,19 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public Enumeration<Tracker> getAchievementTrackers()
+	public Tracker getAchievementTracker(final Achievement A, final MOB mob)
 	{
-		return new IteratorEnumeration<Tracker>(achievementers.iterator());
+		final Tracker T;
+		if(achievementers.containsKey(A.getTattoo()))
+		{
+			T=achievementers.get(A.getTattoo());
+		}
+		else
+		{
+			T=A.getTracker(0);
+			achievementers.put(A.getTattoo(), T);
+		}
+		return T;
 	}
 	
 	@Override
