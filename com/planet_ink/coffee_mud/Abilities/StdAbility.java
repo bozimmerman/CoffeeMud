@@ -1176,7 +1176,7 @@ public class StdAbility implements Ability
 		if(mob==null)
 			return;
 		final Ability A=mob.fetchAbility(ID());
-		if((A==null)||(!A.isSavable()))
+		if(A==null)
 			return;
 
 		if(!mob.isMonster())
@@ -1184,6 +1184,9 @@ public class StdAbility implements Ability
 			CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SKILLUSE);
 			CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SKILLUSE, this);
 		}
+		
+		if(!A.isSavable())
+			return;
 
 		if((System.currentTimeMillis()-((StdAbility)A).lastCastHelp)<300000)
 			return;

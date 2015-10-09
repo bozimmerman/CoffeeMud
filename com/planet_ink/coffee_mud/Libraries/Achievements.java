@@ -791,20 +791,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 						else
 						{
-							final Ability A=CMClass.getAbility(abilityID);
-							if((A==null)
-							&&(!CMParms.contains(Ability.ACODE_DESCS,abilityID))
-							&&(!CMParms.contains(Ability.DOMAIN_DESCS,abilityID)))
+							final Ability A;
+							if(CMParms.contains(Ability.ACODE_DESCS,abilityID)
+							||CMParms.contains(Ability.DOMAIN_DESCS,abilityID))
+								A=null;
+							else
 							{
-								if((i<strList.length-1)
-								&&(strList[i+1].equals("SKILL"))
-								&&(CMParms.contains(Ability.ACODE_DESCS,abilityID+" SKILL"))
-									||(CMParms.contains(Ability.DOMAIN_DESCS,abilityID+" SKILL")))
+								A=CMClass.getAbility(abilityID);
+								if(A==null)
 								{
-									i++;
+									if((i<strList.length-1)
+									&&(strList[i+1].equals("SKILL"))
+									&&(CMParms.contains(Ability.ACODE_DESCS,abilityID+" SKILL"))
+										||(CMParms.contains(Ability.DOMAIN_DESCS,abilityID+" SKILL")))
+									{
+										i++;
+									}
+									else
+										return "Error: Unknown ABILITYID: "+abilityID+"!";
 								}
-								else
-									return "Error: Unknown ABILITYID: "+abilityID+"!";
 							}
 							if(A!=null)
 								this.abilityIDs.add(A.ID());

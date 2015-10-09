@@ -58,6 +58,11 @@ public class Achievements extends StdCommand
 			return false;
 		}
 		
+		//TODO: ANNOUNCE
+		//TODO: a name to see the achievements of others.
+		//TODO: add a room entry achievement
+		//TODO: add channel flag for channel announces
+		
 		List<String> AchievedList = new Vector<String>();
 		if(rest.toUpperCase().startsWith("ALL"))
 		{
