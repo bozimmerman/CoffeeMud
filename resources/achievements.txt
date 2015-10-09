@@ -43,23 +43,27 @@
 #     BELOW if the faction must be below the value.
 #
 # ... EVENT="EXPLORE" AREA="[AREA]" PERCENT=[PERCENT] ...
-#     [AREA] is the name of the area whose player exploration percent should be checked. 
+#     [AREA] is the name of the area whose player exploration percent should be
+#     checked, or WORLD for the whole world.
 #     [PERCENT] is the percent of the area which must be explored to gain this 
 #     achievement.
 #
 # ... EVENT="CRAFTING" ABILITYID="[ABILITYID]" NUM=[NUM] ...
-#     [ABILITYID] is the ability ID of the crafting skill to track or * 
+#     [ABILITYID] is the ability ID of the crafting skill to track, or *, or a
+#     space-delimited list of ability IDs
 #     [NUM] is the number of times the skill must be used to create something
 #     successfully before the achievement is gained.
 #
 # ... EVENT="MENDER" ABILITYID="[ABILITYID]" NUM=[NUM] ...
-#     [ABILITYID] is the ability ID of the crafting skill to track mending with, or * 
+#     [ABILITYID] is the ability ID of the crafting skill to track mending with, or *,
+#     or a space-delimited list of ability IDs 
 #     [NUM] is the number of times the skill must be used to mend something
 #     successfully before the achievement is gained.
 #
 # ... EVENT="SKILLUSE" ABILITYID="[ABILITYID]" NUM=[NUM] ...
 #     [ABILITYID] is the ability ID of the skill to track, or a 
-      skill type (SPELL, etc..) or a domain name (CRAFTING) 
+#     skill type (SPELL, etc..) or a domain name (CRAFTING) 
+#     or a space-delimited list of ability IDs or types or domains.
 #     [NUM] is the number of times the skill must be used
 #     successfully before the achievement is gained.
 #
@@ -81,7 +85,69 @@
 # Some achievement events are updated every mud-hour (10 mins) automatically by 
 # the system for all players on-line and in memory.
 #
-# Example: 
+# Examples: 
 # ORCKILLER=EVENT="KILLS" NUM=10 ZAPPERMASK="-RACE \"+ORC\" " DISPLAY="Orc Killer!"
-EVENT="KILLS" DISPLAY="Slay 200 Dragons" TITLE="*, Dragon Slayer" REWARDS="" NUM=200 ZAPPERMASK="-RACE +Dragon"
-EVENT="KILLS" DISPLAY="End 1000 Cats" TITLE="*, Cat Hater" REWARDS="" NUM=100 ZAPPERMASK="-RACECAT +Feline"
+ACH_DRAGONSLAYR=EVENT="KILLS" DISPLAY="Slay 200 Dragons" TITLE="*, Dragon Slayer" REWARDS="" NUM=200 ZAPPERMASK="-RACE +Dragon"
+ACH_CATHATER=EVENT="KILLS" DISPLAY="End 1000 Cats" TITLE="*, Cat Hater" REWARDS="" NUM=1000 ZAPPERMASK="-RACECAT +Feline"
+ACH_EXTERMINATOR=EVENT="KILLS" DISPLAY="Exterminate 500 Bugs/Rats" TITLE="*, Exterminator" REWARDS="" NUM=500 ZAPPERMASK="-RACECAT +Insect +Arachnid +Rodent"
+
+ACH_1EXPLORER=EVENT="EXPLORE" DISPLAY="Explore half the world" TITLE="*, Explorer" AREA="WORLD" PERCENT=50
+ACH_2EXPLORER=EVENT="EXPLORE" DISPLAY="Explore 75% of the world" TITLE="*, Great Explorer" AREA="WORLD" PERCENT=75
+ACH_3EXPLORER=EVENT="EXPLORE" DISPLAY="Explore 95% of the world" TITLE="*, Master Explorer" AREA="WORLD" PERCENT=95
+
+ACH_SUPERSTRENGTH=EVENT="STATVALUE" DISPLAY="Have 25 base Strength" TITLE="*, the Powerful" ABOVEBELOW="ABOVE" STAT="STRENGTH" VALUE=24
+ACH_NOSTRENGTH=EVENT="STATVALUE" DISPLAY="Have 3 base Strength" TITLE="*, the Weakling" ABOVEBELOW="BELOW" STAT="STRENGTH" VALUE=4
+ACH_SUPERWISDOM=EVENT="STATVALUE" DISPLAY="Have 25 base Wisdom" TITLE="*, the Wise" ABOVEBELOW="ABOVE" STAT="WISDOM" VALUE=24
+ACH_NOWISDOM=EVENT="STATVALUE" DISPLAY="Have 3 base Wisdom" TITLE="*, the Naive" ABOVEBELOW="BELOW" STAT="WISDOM" VALUE=4
+ACH_SUPERINTELLIGENCE=EVENT="STATVALUE" DISPLAY="Have 25 base Intelligence" TITLE="*, the Brilliant" ABOVEBELOW="ABOVE" STAT="INTELLIGENCE" VALUE=24
+ACH_NOINTELLIGENCE=EVENT="STATVALUE" DISPLAY="Have 3 base Intelligence" TITLE="*, the Moron" ABOVEBELOW="BELOW" STAT="INTELLIGENCE" VALUE=4
+ACH_SUPERDEXTERITY=EVENT="STATVALUE" DISPLAY="Have 25 base Dexterity" TITLE="*, the Quick" ABOVEBELOW="ABOVE" STAT="DEXTERITY" VALUE=24
+ACH_NODEXTERITY=EVENT="STATVALUE" DISPLAY="Have 3 base Dexterity" TITLE="*, the Pokey" ABOVEBELOW="BELOW" STAT="DEXTERITY" VALUE=4
+ACH_SUPERCHARISMA=EVENT="STATVALUE" DISPLAY="Have 25 base Charisma" TITLE="*, the Charmer" ABOVEBELOW="ABOVE" STAT="CHARISMA" VALUE=24
+ACH_NOCHARISMA=EVENT="STATVALUE" DISPLAY="Have 3 base Charisma" TITLE="*, the Jerk" ABOVEBELOW="BELOW" STAT="CHARISMA" VALUE=4
+
+ACH_SAINTLY=EVENT="FACTION" DISPLAY="Have a perfectly Good alignment" TITLE="*, the Charmer" ABOVEBELOW="ABOVE" ID="ALIGNMENT.INI" VALUE=9999
+ACH_DEMONIC=EVENT="FACTION" DISPLAY="Have a perfectly Evil alignment" TITLE="*, the Demonic" ABOVEBELOW="BELOW" ID="ALIGNMENT.INI" VALUE=1
+
+ACH_EXPLORER=EVENT="EXPLORE" AREA="New Area" DISPLAY="Explore New Area" TITLE="*, the Explorer of New Area" PERCENT=50 AWARDS="1 QP 10 XP"
+
+ACH_ALLCRAFTOR=EVENT="CRAFTING" DISPLAY="Craft 3000 Items" TITLE="*, Master Craftsman" REWARDS="" NUM=3000 ABILITYID="*"
+ACH_ARMCRAFTOR=EVENT="CRAFTING" DISPLAY="Craft 1000 Armor" TITLE="*, Master Armorsmith" REWARDS="" NUM=1000 ABILITYID="Armorsmithing MasterArmorsmithing"
+ACH_BLACKCRAFTOR=EVENT="CRAFTING" DISPLAY="Blacksmith 500 Items" TITLE="*, Master Blacksmith" REWARDS="" NUM=500 ABILITYID="Blacksmithing"
+ACH_WOODCRAFTOR=EVENT="CRAFTING" DISPLAY="Carve 500 Carpentry Items" TITLE="*, Master Carpenter" REWARDS="" NUM=500 ABILITYID="Carpentry"
+ACH_COBBLECRAFTOR=EVENT="CRAFTING" DISPLAY="Cobble 500 Shoes" TITLE="*, Master Cobbler" REWARDS="" NUM=500 ABILITYID="Cobbling"
+ACH_COSTUMECRAFTOR=EVENT="CRAFTING" DISPLAY="Create 1000 Costumes" TITLE="*, Master Costumer" REWARDS="" NUM=1000 ABILITYID="Costuming MasterCostuming"
+ACH_FLETCHCRAFTOR=EVENT="CRAFTING" DISPLAY="Fletch 500 Items" TITLE="*, Master Fletcher" REWARDS="" NUM=500 ABILITYID="Fletching"
+ACH_JEWELCRAFTOR=EVENT="CRAFTING" DISPLAY="Cut 500 Jewelry" TITLE="*, Master Jeweler" REWARDS="" NUM=500 ABILITYID="JewelMaking"
+ACH_LEATHERCRAFTOR=EVENT="CRAFTING" DISPLAY="Craft 1000 Leather Items" TITLE="*, Master Leatherworker" REWARDS="" NUM=1000 ABILITYID="LeatherWorking MasterLeatherWorking"
+ACH_SCRIMCRAFTOR=EVENT="CRAFTING" DISPLAY="ScrimShaw 500 Items" TITLE="*, Master Scrimmer" REWARDS="" NUM=500 ABILITYID="ScrimShaw"
+ACH_SCULPTCRAFTOR=EVENT="CRAFTING" DISPLAY="Sculpt 500 Items" TITLE="*, Master Sculptor" REWARDS="" NUM=500 ABILITYID="Sculpting"
+ACH_TAILORCRAFTOR=EVENT="CRAFTING" DISPLAY="Tailor 1000 Items" TITLE="*, Master Tailor" REWARDS="" NUM=1000 ABILITYID="Tailoring MasterTailoring"
+ACH_WEAPONCRAFTOR=EVENT="CRAFTING" DISPLAY="Smith 1000 Weapons" TITLE="*, Master Weaponsmith" REWARDS="" NUM=1000 ABILITYID="WeaponSmithing MasterWeaponsmithing"
+ACH_WEAVECRAFTOR=EVENT="CRAFTING" DISPLAY="Weave 500 Things" TITLE="*, Master Weaver" REWARDS="" NUM=500 ABILITYID="Weaving"
+ACH_COOKCRAFTOR=EVENT="CRAFTING" DISPLAY="Cook 1000 Dishes" TITLE="*, Master Chef" REWARDS="" NUM=1000 ABILITYID="Cooking MasterCooking"
+ACH_BAKECRAFTOR=EVENT="CRAFTING" DISPLAY="Bake 1000 Dishes" TITLE="*, Master Chef" REWARDS="" NUM=1000 ABILITYID="Baking MasterBaking"
+ACH_PREPCRAFTOR=EVENT="CRAFTING" DISPLAY="Prep 1000 Dishes" TITLE="*, Master FoodPrepper" REWARDS="" NUM=1000 ABILITYID="FoodPrep MasterFoodPrep"
+ACH_DISTILCRAFTOR=EVENT="CRAFTING" DISPLAY="Distill 500 Drinks" TITLE="*, Master Brewer" REWARDS="" NUM=500 ABILITYID="Distilling"
+ACH_ALCHEMYCRAFTOR=EVENT="CRAFTING" DISPLAY="Brew 500 Potions" TITLE="*, Master Alchemist" REWARDS="" NUM=500 ABILITYID="Alchemy"
+ACH_POTTERCRAFTOR=EVENT="CRAFTING" DISPLAY="Make 500 Pottery" TITLE="*, Master Potter" REWARDS="" NUM=500 ABILITYID="Pottery"
+
+ACH_ALLMENDER=EVENT="MENDER" DISPLAY="Mend 3000 Items" TITLE="*, Master Mender" REWARDS="" NUM=3000 ABILITYID="*"
+
+ACH_DIVINATIONCASTER=EVENT="SKILLUSE" DISPLAY="Cast 2000 Divination Spells" TITLE="*, Master Diviner" REWARDS="" NUM=2000 ABILITYID="DIVINATION"
+ACH_ABJURATIONCASTER=EVENT="SKILLUSE" DISPLAY="Cast 2000 Abjuration Spells" TITLE="*, Master Abjurer" REWARDS="" NUM=2000 ABILITYID="ABJURATION"
+ACH_ILLUSIONCASTER=EVENT="SKILLUSE" DISPLAY="Cast 2000 Illusion Spells" TITLE="*, Master Illusionist" REWARDS="" NUM=2000 ABILITYID="ILLUSION"
+ACH_INVOCATIONCASTER=EVENT="SKILLUSE" DISPLAY="Cast 2000 Invocation Spells" TITLE="*, Master Invoker" REWARDS="" NUM=2000 ABILITYID="INVOCATION/EVOCATION"
+ACH_ALTERATIONCASTER=EVENT="SKILLUSE" DISPLAY="Cast 2000 Alteration Spells" TITLE="*, Master Alterer" REWARDS="" NUM=2000 ABILITYID="ALTERATION"
+ACH_TRANSMUTATIONCASTER=EVENT="SKILLUSE" DISPLAY="Cast 2000 Transmutation Spells" TITLE="*, Master Transmuter" REWARDS="" NUM=2000 ABILITYID="TRANSMUTATION"
+ACH_ENCHANTMENTCASTER=EVENT="SKILLUSE" DISPLAY="Cast 2000 Enchantment Spells" TITLE="*, Master Enchanter" REWARDS="" NUM=2000 ABILITYID="ENCHANTMENT/CHARM"
+ACH_CONJURATIONCASTER=EVENT="SKILLUSE" DISPLAY="Cast 2000 Conjuration Spells" TITLE="*, Master Conjurer" REWARDS="" NUM=2000 ABILITYID="CONJURATION"
+
+ACH_ALLCASTER=EVENT="SKILLUSE" DISPLAY="Cast 5000 Spells" TITLE="*, Master Spellcaster" REWARDS="" NUM=5000 ABILITYID="SPELL"
+ACH_ALLPRAYER=EVENT="SKILLUSE" DISPLAY="Pray 5000 Times" TITLE="*, Speaker to the Gods" REWARDS="" NUM=5000 ABILITYID="PRAYER"
+ACH_ALLSINGER=EVENT="SKILLUSE" DISPLAY="Sing/Play/Dance 1000 Times" TITLE="*, Master Entertainer" REWARDS="" NUM=1000 ABILITYID="SONG"
+ACH_ALLTHIEFER=EVENT="SKILLUSE" DISPLAY="Use 3000 Thief Skills" TITLE="*, Master Thief" REWARDS="" NUM=3000 ABILITYID="THIEF SKILL"
+
+ACH_ALLQUESTOR=EVENT="QUESTOR" DISPLAY="Complete 100 Quests" TITLE="*, Master Quester" REWARDS="" NUM=100 PLAYERMASK="" QUESTMASK=""
+
+ACH_1ACHIEVER=EVENT="ACHIEVER" DISPLAY="Complete Cat Killer and Exterminator" TITLE="*, Master Quester" REWARDS="" PLAYERMASK="" ACHIEVEMENTLIST="ACH_CATHATER ACH_EXTERMINATOR"

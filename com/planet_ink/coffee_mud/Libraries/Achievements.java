@@ -37,9 +37,14 @@ import java.util.*;
 */
 public class Achievements extends StdLibrary implements AchievementLibrary
 {
-	@Override public String ID(){return "Achievements";}
-	private List<Achievement> 				achievements = null;
-	private final Map<Event,List<Achievement>> 	eventMap	 = null;
+	@Override 
+	public String ID()
+	{
+		return "Achievements";
+	}
+	
+	private List<Achievement> 			achievements = null;
+	private Map<Event,List<Achievement>>eventMap	 = null;
 
 	@Override
 	public String evaluateAchievement(String row, boolean addIfPossible)
@@ -466,10 +471,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						public int getCount(MOB mob)
 						{
 							final PlayerStats pstats=mob.playerStats();
-							final Area A=CMLib.map().getArea(areaID);
-							if((pstats != null)&&(A!=null))
+							if(pstats != null)
 							{
-								return pstats.percentVisited(mob, A);
+								if(areaID.equals("WORLD"))
+								{
+									return pstats.percentVisited(mob,null);
+								}
+								else
+								{
+									final Area A=CMLib.map().getArea(areaID);
+									if(A!=null)
+									{
+										return pstats.percentVisited(mob, A);
+									}
+								}
 							}
 							return 0;
 						}
@@ -498,7 +513,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String areaID=CMParms.getParmStr(parms, "AREA", "").toUpperCase().trim();
 					if(areaID.length()==0)
 						return "Error: Missing AREA parameter: "+areaID+"!";
-					if(CMLib.map().getArea(areaID)==null)
+					if((CMLib.map().getArea(areaID)==null)&&(!areaID.equals("WORLD")))
 						return "Error: Unknown AREA: "+areaID+"!";
 					this.areaID=areaID;
 					return "";
@@ -509,8 +524,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case MENDER:
 			A=new Achievement()
 			{
-				private int 	num 		= 0;
-				private String	abilityID 	= "";
+				private int 				num 		= 0;
+				private final Set<String>	abilityIDs 	= new TreeSet<String>();
 				
 				@Override
 				public Event getEvent()
@@ -593,7 +608,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									A=(Ability)parms[0];
 								else
 									A=null;
-								if((A!=null)&&(abilityID.equals("*")||(A.ID().equalsIgnoreCase(abilityID))))
+								if((A!=null)&&(abilityIDs.contains("*")||abilityIDs.contains(A.ID())))
 								{
 									count++;
 									return true;
@@ -617,18 +632,31 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(!CMath.isInteger(numStr))
 						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
 					this.num=CMath.s_int(numStr);
-					final String abilityID=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
-					if(abilityID.length()==0)
-						return "Error: Missing ABILITYID parameter: "+abilityID+"!";
-					if(!abilityID.equalsIgnoreCase("*"))
+					final String abilityIDs=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
+					if(abilityIDs.length()==0)
+						return "Error: Missing ABILITYID parameter: "+abilityIDs+"!";
+					final String[] strList=abilityIDs.split(" ");
+					this.abilityIDs.clear();
+					for(int i=0;i<strList.length;i++)
 					{
-						final Ability A=CMClass.getAbility(abilityID);
-						if((A==null)
-						||((CMClass.getAbility(abilityID).classificationCode() & Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
-						||((CMClass.getAbility(abilityID).classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL))
-							return "Error: Unknown crafting ABILITYID: "+abilityID+"!";
+						String abilityID = strList[i];
+						if(abilityID.equals("*"))
+						{
+							this.abilityIDs.add(abilityID);
+							break;
+						}
+						else
+						{
+							final Ability A=CMClass.getAbility(abilityID);
+							if((A==null)
+							||((CMClass.getAbility(abilityID).classificationCode() & Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
+							||((CMClass.getAbility(abilityID).classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL))
+								return "Error: Unknown crafting ABILITYID: "+abilityID+"!";
+							this.abilityIDs.add(A.ID());
+						}
 					}
-					this.abilityID=abilityID;
+					if(this.abilityIDs.size()==0)
+						return "Error: Unknown crafting ABILITYIDs: "+abilityIDs+"!";
 					return "";
 				}
 			};
@@ -636,8 +664,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		case SKILLUSE:
 			A=new Achievement()
 			{
-				private int 	num 		= 0;
-				private String	abilityID 	= "";
+				private int 				num 		= 0;
+				private final Set<String>	abilityIDs 	= new TreeSet<String>();
 				
 				@Override
 				public Event getEvent()
@@ -721,9 +749,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								else
 									A=null;
 								if((A!=null)
-								&&(A.ID().equalsIgnoreCase(abilityID)
-								||(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES].equalsIgnoreCase(abilityID))
-								||(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5].equalsIgnoreCase(abilityID))))
+								&&(abilityIDs.contains("*")
+									||abilityIDs.contains(A.ID())
+									||(abilityIDs.contains(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]))
+									||(abilityIDs.contains(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))))
 								{
 									count++;
 									return true;
@@ -747,14 +776,44 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(!CMath.isInteger(numStr))
 						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
 					this.num=CMath.s_int(numStr);
-					final String abilityID=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
-					if(abilityID.length()==0)
-						return "Error: Missing ABILITYID parameter: "+abilityID+"!";
-					if((CMClass.getAbility(abilityID)==null)
-					&&(!CMParms.contains(Ability.ACODE_DESCS,abilityID))
-					&&(!CMParms.contains(Ability.DOMAIN_DESCS,abilityID)))
-						return "Error: Unknown ABILITYID: "+abilityID+"!";
-					this.abilityID=abilityID;
+					final String abilityIDs=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
+					if(abilityIDs.length()==0)
+						return "Error: Missing ABILITYID parameter: "+abilityIDs+"!";
+					final String[] strList=abilityIDs.split(" ");
+					this.abilityIDs.clear();
+					for(int i=0;i<strList.length;i++)
+					{
+						String abilityID = strList[i];
+						if(abilityID.equals("*"))
+						{
+							this.abilityIDs.add(abilityID);
+							break;
+						}
+						else
+						{
+							final Ability A=CMClass.getAbility(abilityID);
+							if((A==null)
+							&&(!CMParms.contains(Ability.ACODE_DESCS,abilityID))
+							&&(!CMParms.contains(Ability.DOMAIN_DESCS,abilityID)))
+							{
+								if((i<strList.length-1)
+								&&(strList[i+1].equals("SKILL"))
+								&&(CMParms.contains(Ability.ACODE_DESCS,abilityID+" SKILL"))
+									||(CMParms.contains(Ability.DOMAIN_DESCS,abilityID+" SKILL")))
+								{
+									i++;
+								}
+								else
+									return "Error: Unknown ABILITYID: "+abilityID+"!";
+							}
+							if(A!=null)
+								this.abilityIDs.add(A.ID());
+							else
+								this.abilityIDs.add(abilityID.toUpperCase());
+						}
+					}
+					if(this.abilityIDs.size()==0)
+						return "Error: Unknown crafting ABILITYIDs: "+abilityIDs+"!";
 					return "";
 				}
 			};
@@ -1072,22 +1131,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public void possiblyBumpAchievement(final MOB mob, final Event E, Object... parms)
 	{
-		if((mob != null)&&(E!=null))
+		if((mob != null)&&(E!=null)&&(!mob.isMonster()))
 		{
 			ensureAchievementsLoaded();
 			final PlayerStats pStats = mob.playerStats();
-			if(eventMap.containsKey(E))
+			if(pStats != null)
 			{
-				for(final Achievement A :  eventMap.get(E))
+				if(eventMap.containsKey(E))
 				{
-					if(mob.findTattoo(A.getTattoo())==null)
+					for(final Achievement A :  eventMap.get(E))
 					{
-						final Tracker T=pStats.getAchievementTracker(A, mob);
-						if(T.testBump(mob, parms))
+						if(mob.findTattoo(A.getTattoo())==null)
 						{
-							if(T.isAchieved(mob))
+							final Tracker T=pStats.getAchievementTracker(A, mob);
+							if(T.testBump(mob, parms))
 							{
-								giveAwards(A,mob);
+								if(T.isAchieved(mob))
+								{
+									giveAwards(A,mob);
+								}
 							}
 						}
 					}
@@ -1204,6 +1266,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	public synchronized void reloadAchievements()
 	{
 		achievements=new LinkedList<Achievement>();
+		eventMap=new TreeMap<Event,List<Achievement>>();
 		final List<String> V=Resources.getFileLineVector(Resources.getFileResource("achievements.txt",true));
 		String WKID=null;
 		for(int v=0;v<V.size();v++)

@@ -925,7 +925,7 @@ public class DefaultPlayerStats implements PlayerStats
 		for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
-			if(achievePiece.parms.containsKey(A.getTattoo()))
+			if((achievePiece != null) && achievePiece.parms.containsKey(A.getTattoo()))
 				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms.get(A.getTattoo()).trim())));
 			else
 				achievementers.put(A.getTattoo(), A.getTracker(0));

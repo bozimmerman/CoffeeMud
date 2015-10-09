@@ -914,7 +914,8 @@ public class CMParms
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
 		{
-			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			if(((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			&&((x+key.length()<text.length())&&(!Character.isLetterOrDigit(text.charAt(x+key.length())))))
 			{
 				while((x<text.length())&&(text.charAt(x)!='='))
 				{
@@ -996,7 +997,6 @@ public class CMParms
 					}
 					if(x<text.length()-1)
 					{
-						
 						while((x<text.length())&&(Character.isWhitespace(text.charAt(x))))
 							x++;
 						if((x<text.length())&&(Character.isDigit(text.charAt(x))))

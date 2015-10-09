@@ -87,7 +87,7 @@ public class Achievements extends StdCommand
 					AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, mob);
 					int score = (T==null) ? 0 : T.getCount(mob);
 					int targetScore = A.getTargetCount();
-					AchievedList.add(CMStrings.padRight(""+score+"/"+targetScore, padding)+": "+A.getDisplayStr());
+					AchievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
 				}
 			}
 			
