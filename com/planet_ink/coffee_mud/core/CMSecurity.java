@@ -2248,7 +2248,8 @@ public class CMSecurity
 		ALL_AGEING("age system"),
 		CHANNELBACKLOGS("channel backlog system"),
 		MCP("mcp protocol"),
-		HYGIENE("hygiene system")
+		HYGIENE("hygiene system"),
+		ANSIPROMPT("ANSI Y/N Prompt")
 		;
 		private final String desc;
 		DisFlag(final String description){this.desc=description;}

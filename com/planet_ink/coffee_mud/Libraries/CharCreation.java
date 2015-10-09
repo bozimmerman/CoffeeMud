@@ -933,8 +933,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		Log.sysOut("Creating account: "+loginObj.login);
 		loginObj.state=LoginState.ACCTCREATE_ANSICONFIRM;
-		session.promptPrint(L("\n\rDo you want ANSI colors (Y/n)?"));
-		return LoginResult.INPUT_REQUIRED;
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.ANSIPROMPT))
+		{
+			loginObj.lastInput = "Y";
+			return acctcreateANSIConfirm(loginObj, session);
+		}
+		else
+		{
+			session.promptPrint(L("\n\rDo you want ANSI colors (Y/n)?"));
+			return LoginResult.INPUT_REQUIRED;
+		}
 	}
 
 	protected LoginResult acctcreateANSIConfirm(final LoginSession loginObj, final Session session)

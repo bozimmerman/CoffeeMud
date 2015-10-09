@@ -16,6 +16,7 @@
   15. PUT can now target non-container items. Mentioned because such a low-lvl change requires watching.
   16. Internal/Scripting -- the COMMANDFAIL message type implemented for most basic player commands.
   17. Items can now have slots -- see help Prop_ItemSlot and Prop_ItemSlotFiller for more information.
+  18. New DISABLE flag: ANSIPROMPT for character creation tweaking.
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)
