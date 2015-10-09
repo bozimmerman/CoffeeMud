@@ -33,7 +33,7 @@
 #     [VALUE] is the numeric value that the stat must be at or above when
 #     the achievement is checked in order to gain.
 #     [ABOVE/BELOW] is either ABOVE if the faction must be above the value, or 
-#     BELOW if the faction must be below the value.
+#     BELOW if the stat must be below the value.
 # 
 # ... EVENT="FACTION" ID="[ID]" ABOVEBELOW="[ABOVE/BELOW]" VALUE=[VALUE] ...
 #     [ID] is the ID of the faction to check 
@@ -83,3 +83,5 @@
 #
 # Example: 
 # ORCKILLER=EVENT="KILLS" NUM=10 ZAPPERMASK="-RACE \"+ORC\" " DISPLAY="Orc Killer!"
+EVENT="KILLS" DISPLAY="Slay 200 Dragons" TITLE="*, Dragon Slayer" REWARDS="" NUM=200 ZAPPERMASK="-RACE +Dragon"
+EVENT="KILLS" DISPLAY="End 1000 Cats" TITLE="*, Cat Hater" REWARDS="" NUM=100 ZAPPERMASK="-RACECAT +Feline"

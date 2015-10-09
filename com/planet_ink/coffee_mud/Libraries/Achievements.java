@@ -88,6 +88,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
+				public int getTargetCount()
+				{
+					return num;
+					
+				}
+				
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+				
+				@Override
 				public String getDisplayStr()
 				{
 					return displayStr;
@@ -187,6 +200,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return tattoo;
 				}
 
+				@Override
+				public int getTargetCount()
+				{
+					return value;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return abelo > 0;
+				}
+				
 				@Override
 				public String getDisplayStr()
 				{
@@ -295,6 +320,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 				
 				@Override
+				public boolean isTargetFloor()
+				{
+					return abelo > 0;
+				}
+				
+				@Override
+				public int getTargetCount()
+				{
+					return value;
+				}
+
+				@Override
 				public String[] getRewards()
 				{
 					return rewardList;
@@ -390,11 +427,23 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 				
 				@Override
+				public int getTargetCount()
+				{
+					return pct;
+				}
+
+				@Override
 				public String[] getRewards()
 				{
 					return rewardList;
 				}
 
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+				
 				@Override
 				public Tracker getTracker(final int oldCount)
 				{
@@ -476,6 +525,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
+				public int getTargetCount()
+				{
+					return num;
+				}
+
+				@Override
 				public String getDisplayStr()
 				{
 					return displayStr;
@@ -493,6 +548,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return rewardList;
 				}
 
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+				
 				@Override
 				public Tracker getTracker(final int oldCount)
 				{
@@ -603,9 +664,21 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 				
 				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+				
+				@Override
 				public String[] getRewards()
 				{
 					return rewardList;
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
 				}
 
 				@Override
@@ -706,9 +779,21 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+				
+				@Override
 				public String getDisplayStr()
 				{
 					return displayStr;
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
 				}
 
 				@Override
@@ -840,6 +925,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return displayStr;
 				}
 
+				@Override
+				public int getTargetCount()
+				{
+					return achievementList.size();
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+				
 				@Override
 				public String getTitleAward()
 				{

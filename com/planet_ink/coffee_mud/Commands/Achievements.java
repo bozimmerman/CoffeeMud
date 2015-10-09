@@ -49,7 +49,8 @@ public class Achievements extends StdCommand
 	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags) throws java.io.IOException
 	{
-		//TODO: add achievements ALL (w/ progress)
+		String rest = CMParms.combine(commands,1);
+		String prefix = "";
 		final PlayerStats pStats = mob.playerStats();
 		if (pStats == null)
 		{
@@ -58,19 +59,55 @@ public class Achievements extends StdCommand
 		}
 		
 		List<String> AchievedList = new Vector<String>();
-		for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
+		if(rest.toUpperCase().startsWith("ALL"))
 		{
-			final Achievement A=a.nextElement();
-			if(mob.findTattoo(A.getTattoo()) != null)
+			prefix=L("All ");
+			String done=L("DONE!");
+			int padding=done.length()+1;
+			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
 			{
-				AchievedList.add(A.getDisplayStr());
+				final Achievement A=a.nextElement();
+				if(mob.findTattoo(A.getTattoo()) == null)
+				{
+					AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, mob);
+					final int score = (T==null) ? 0 : T.getCount(mob);
+					final int targetScore = A.getTargetCount();
+					final int len = (""+score+"/"+targetScore).length(); 
+					if(len >= padding)
+						padding = len+1;
+				}
+			}
+			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
+			{
+				final Achievement A=a.nextElement();
+				if(mob.findTattoo(A.getTattoo()) != null)
+					AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
+				else
+				{
+					AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, mob);
+					int score = (T==null) ? 0 : T.getCount(mob);
+					int targetScore = A.getTargetCount();
+					AchievedList.add(CMStrings.padRight(""+score+"/"+targetScore, padding)+": "+A.getDisplayStr());
+				}
+			}
+			
+		}
+		else
+		{
+			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
+			{
+				final Achievement A=a.nextElement();
+				if(mob.findTattoo(A.getTattoo()) != null)
+				{
+					AchievedList.add(A.getDisplayStr());
+				}
 			}
 		}
 		if(AchievedList.size()==0)
-			mob.tell("^HAchievements: ^NNone!");
+			mob.tell("^H"+prefix+L("Achievements: ^NNone!")+"\n\r");
 		else
 		{
-			mob.tell("^HAchievements:\n\r");
+			mob.tell("^H"+prefix+L("Achievements:")+"\n\r");
 			mob.tell(CMLib.lister().makeColumns(mob, AchievedList, null, 2).toString());
 		}
 		return false;

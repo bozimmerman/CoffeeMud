@@ -64,6 +64,10 @@ public interface AchievementLibrary extends CMLibrary
 		
 		public String[] getRewards();
 		
+		public int getTargetCount();
+		
+		public boolean isTargetFloor();
+		
 		public boolean isSavableTracker();
 	}
 	
