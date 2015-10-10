@@ -1434,7 +1434,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return A;
 	}
 	
-	private String getAchievementsHelp(Map<String,Map<String,String>> helpMap, Event E, String parmName)
+	@Override
+	public String getAchievementsHelpFromMap(Map<String,Map<String,String>> helpMap, Event E, String parmName)
 	{
 		Map<String,String> entryMap;
 		if(E==null)
@@ -1461,12 +1462,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		for(Map<String,String> map : helpMap.values())
 		{
 			if(map.containsKey(parmName))
-				return entryMap.get(parmName);
+				return map.get(parmName);
 		}
 		return null;
 	}
 	
-	private Map<String,Map<String,String>> getAchievementsHelp()
+	@Override
+	public Map<String,Map<String,String>> getAchievementsHelpMap()
 	{
 		final Map<String,Map<String,String>> help = new TreeMap<String,Map<String,String>>();
 		
@@ -1569,7 +1571,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			for(String s : E.getParameters())
 				parmTree.put(s,"");
 		}
-		final Map<String,Map<String,String>> helpMap = getAchievementsHelp();
+		final Map<String,Map<String,String>> helpMap = getAchievementsHelpMap();
 		Event E=Event.KILLS;
 		parmTree.put("TATTOO",tattoo.toUpperCase().trim());
 		if(A!=null)
@@ -1585,24 +1587,24 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				int showNumber=0;
 				String help;
 				
-				help=getAchievementsHelp(helpMap,null,"EVENT");
+				help=getAchievementsHelpFromMap(helpMap,null,"EVENT");
 				parmTree.put("EVENT",CMLib.genEd().prompt(mob, parmTree.get("EVENT"), ++showNumber, showFlag, "Event Type", false, false, help, CMEvalStrChoice.INSTANCE, Event.getEventChoices()));
 				E = (Event)CMath.s_valueOf(Event.class, parmTree.get("EVENT"));
 				
-				help=getAchievementsHelp(helpMap,null,"DISPLAY");
+				help=getAchievementsHelpFromMap(helpMap,null,"DISPLAY");
 				parmTree.put("DISPLAY",CMLib.genEd().prompt(mob, parmTree.get("DISPLAY"), ++showNumber, showFlag, "Display Desc", false, false, help, null, null));
 				
-				help=getAchievementsHelp(helpMap,null,"TITLE");
+				help=getAchievementsHelpFromMap(helpMap,null,"TITLE");
 				parmTree.put("TITLE",CMLib.genEd().prompt(mob, parmTree.get("TITLE"), ++showNumber, showFlag, "Title Award", true, false, help, null, null));
 				
-				help=getAchievementsHelp(helpMap,null,"REWARDS");
+				help=getAchievementsHelpFromMap(helpMap,null,"REWARDS");
 				parmTree.put("REWARDS",CMLib.genEd().prompt(mob, parmTree.get("REWARDS"), ++showNumber, showFlag, "Rewards List", true, false, help, null, null));
 				
 				for(final String parmName : E.getParameters())
 				{
 					if(!CMStrings.contains(BASE_ACHIEVEMENT_PARAMETERS, parmName))
 					{
-						help=getAchievementsHelp(helpMap,E,parmName);
+						help=getAchievementsHelpFromMap(helpMap,E,parmName);
 						parmTree.put(parmName,CMLib.genEd().prompt(mob, parmTree.get(parmName), ++showNumber, showFlag, CMStrings.capitalizeAndLower(parmName), false, false, help, null, null));
 					}
 				}

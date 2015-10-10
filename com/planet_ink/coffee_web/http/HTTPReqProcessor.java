@@ -694,9 +694,9 @@ public class HTTPReqProcessor implements HTTPFileGetter
 						{
 							HTTPOutputConverter converter;
 							converter = converterClass.newInstance();
-									extraHeaders.put(HTTPHeader.Common.CACHE_CONTROL, "no-cache");
+							extraHeaders.put(HTTPHeader.Common.CACHE_CONTROL, "no-cache");
 							final long dateTime=System.currentTimeMillis();
-									extraHeaders.put(HTTPHeader.Common.EXPIRES, HTTPIOHandler.DATE_FORMAT.format(Long.valueOf(dateTime)));
+							extraHeaders.put(HTTPHeader.Common.EXPIRES, HTTPIOHandler.DATE_FORMAT.format(Long.valueOf(dateTime)));
 							buffers=new CWDataBuffers(converter.convertOutput(config, request, pathFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), dateTime, true);
 							buffers = handleEncodingRequest(request, null, buffers, extraHeaders);
 						}

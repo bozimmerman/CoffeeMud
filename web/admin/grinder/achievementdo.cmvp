@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_ACHIEVEMENTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+</head>
+<body BGCOLOR=BLACK>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+@if?CheckReqParm?FUNCTION=DELACHIEVEMENT@
+    var v='@AchievementData?DELETE@';
+    if((v != '')&&(alert))
+        alert(v);
+    else
+    if(alert)
+        alert('Achievement deleted.');
+    opener.Refresh();
+    window.close();
+@endif@
+@if?CheckReqParm?FUNCTION=EDITACHIEVEMENT@
+    var v='@AchievementData?EDIT@';
+    if((v != '')&&(alert))
+    {
+        alert(v);
+        document.location.href='achievement.cmvp?@RequestParametersEncoded@';
+    }
+    else
+    if(alert)
+    {
+        alert('Achievement created/modified.');
+        opener.Refresh();
+        window.close();
+    }
+@endif@
+@if?CheckReqParm?FUNCTION=REACHIEVEMENT@
+    @if?CheckReqParm?TATTOO=@
+        document.location.href='achievement.cmvp?AUTH=@Authenticate?AUTH@&ACHIEVEMENT=@AchievementID@';
+    @else@
+        document.location.href='achievement.cmvp?AUTH=@Authenticate?AUTH@&ACHIEVEMENT=@RequestParameterEncoded?ACHIEVEMENT@';
+    @endif@
+@endif@
+//-->
+</SCRIPT>
+</BODY>
+</HTML>
+
+@endif@
+@endif@

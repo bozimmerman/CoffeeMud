@@ -5,7 +5,7 @@
 <html>
 <head>
     <link rel="grinder icon" href="/images/grinder.ico" >
-    <title>Titles List</title>
+    <title>Achievements / Auto-Titles</title>
     <script language=JavaScript>
     <!--
         function NewTitle()
@@ -27,14 +27,14 @@
         {
             if(confirm('Create a new achievement?'))
             {
-                var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
+                var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
                 w=window.open("achievement.cmvp?AUTH=@Authenticate?AUTH@&ACHIEVEMENT=",
                     "Achievement",strFeatures, false);
             }
         }
         function Achievement(achievementid,action)
         {
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
             w=window.open("achievement.cmvp?AUTH=@Authenticate?AUTH@&ACHIEVEMENT="+achievementid+action,
                 "Achievement",strFeatures, false);
         }

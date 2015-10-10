@@ -77,9 +77,9 @@ public class AchievementData extends StdWebMacro
 				return "[authentication error]";
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.ACHIEVEMENTS))
 				return "[authentication error]";
-			
+
 			String row = "";
-			
+
 			String newTattoo=httpReq.getUrlParameter("TATTOO");
 			if(newTattoo==null)
 				return "[missing TATTOO error]";
@@ -88,13 +88,13 @@ public class AchievementData extends StdWebMacro
 			{
 				return "[new achievement tattoo already exists!]";
 			}
-			
+
 			String newEvent=httpReq.getUrlParameter("EVENT");
 			if((newEvent==null)||(!CMStrings.contains(Event.getEventChoices(), newEvent)))
 				return "[missing EVENT error]";
 			final Event E=(Event)CMath.s_valueOf(Event.class, newEvent);
 			row+="EVENT=\""+newEvent+"\" ";
-			
+
 			String newDisplay=httpReq.getUrlParameter("DISPLAY");
 			if(newDisplay==null)
 				return "[missing DISPLAY error]";
@@ -103,11 +103,11 @@ public class AchievementData extends StdWebMacro
 			String newTitle=httpReq.getUrlParameter("TITLE");
 			if((newTitle != null)&&(newTitle.length()>0))
 				row+="TITLE=\""+CMStrings.replaceAll(CMStrings.replaceAll(newTitle,"\\\"","\""),"\\\\","\\")+"\" ";
-			
+
 			String newRewards=httpReq.getUrlParameter("REWARDS");
 			if((newRewards != null)&&(newRewards.length()>0))
 				row+="REWARDS=\""+CMStrings.replaceAll(CMStrings.replaceAll(newRewards,"\\\"","\""),"\\\\","\\")+"\" ";
-			
+
 			for(String s : E.getParameters())
 			{
 				if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, s))
@@ -122,19 +122,25 @@ public class AchievementData extends StdWebMacro
 			if(error!=null)
 				return "[error: "+error+"]";
 
-			if((last!=null)&&(CMLib.achievements().getAchievement(last)!=null))
+			if(!parms.containsKey("CHECKONLY"))
 			{
-				final String err=deleteAchievement(last);
-				if(err!=null)
+				if((last!=null)&&(CMLib.achievements().getAchievement(last)!=null))
 				{
-					return err;
+					final String err=deleteAchievement(last);
+					if((err!=null)&&(err.length()>0))
+					{
+						return err;
+					}
 				}
 			}
 
 			error=CMLib.achievements().evaluateAchievement(row,true);
-			if(error!=null)
+			if((error!=null)&&(error.length()>0))
 				return "[error: "+error+"]";
-			CMLib.achievements().resaveAchievements(last);
+			if(!parms.containsKey("CHECKONLY"))
+			{
+				CMLib.achievements().resaveAchievements(last);
+			}
 		}
 		else
 		if(parms.containsKey("DELETE"))
@@ -149,7 +155,7 @@ public class AchievementData extends StdWebMacro
 			if(CMLib.achievements().getAchievement(last)==null)
 				return "Unknown title!";
 			final String err=deleteAchievement(last);
-			if(err==null)
+			if((err==null)||(err.length()==0))
 				return "Achievement deleted.";
 			return err;
 		}
@@ -180,6 +186,20 @@ public class AchievementData extends StdWebMacro
 			if(eventName!=null)
 				str.append(CMStrings.replaceAll(eventName,"\"","&quot;")+", ");
 		}
+		if(parms.containsKey("HELP") && parms.containsKey("FIELD"))
+		{
+			String field=parms.get("FIELD");
+			@SuppressWarnings("unchecked")
+			Map<String,Map<String,String>> map=(Map<String,Map<String,String>>)httpReq.getRequestObjects().get("SYSTEM_ACHIEVEMENT_HELP_MAP");
+			if(map == null)
+			{
+				map = CMLib.achievements().getAchievementsHelpMap();
+				httpReq.getRequestObjects().put("SYSTEM_ACHIEVEMENT_HELP_MAP",map);
+			}
+			String help = CMLib.achievements().getAchievementsHelpFromMap(map, E, field);
+			if(help != null)
+				str.append(CMStrings.replaceAll(help,"\"","&quot;")+", ");
+		}
 		if(parms.containsKey("EVENTOPTIONS"))
 		{
 			StringBuilder s=new StringBuilder("");
@@ -188,7 +208,7 @@ public class AchievementData extends StdWebMacro
 				s.append("<OPTION VALUE="+E2.name()+" ");
 				if(E2==E)
 					s.append("SELECTED ");
-				s.append(">"+E.name());
+				s.append(">"+E2.name());
 			}
 			str.append(s.toString()+", ");
 		}
@@ -208,9 +228,9 @@ public class AchievementData extends StdWebMacro
 			if(value!=null)
 				str.append(CMStrings.replaceAll(value,"\"","&quot;")+", ");
 		}
-		if(parms.containsKey("REWARD"))
+		if(parms.containsKey("REWARDS"))
 		{
-			String value=httpReq.getUrlParameter("REWARD");
+			String value=httpReq.getUrlParameter("REWARDS");
 			if((value==null)&&(A!=null))
 				value=CMParms.combineWSpaces(A.getRewards());
 			if(value!=null)
@@ -258,6 +278,7 @@ public class AchievementData extends StdWebMacro
 					if((lastOtherParm==null)||((lastOtherParm.length()>0)&&(lastOtherParm.equals(lastOtherParmID))&&(!otherParmName.equals(lastOtherParmID))))
 					{
 						httpReq.addFakeUrlParameter("OTHERPARM",otherParmName);
+						httpReq.addFakeUrlParameter("OTHERPARMFIELD",CMStrings.capitalizeAndLower(otherParmName));
 						return "";
 					}
 					lastOtherParmID=otherParmName;

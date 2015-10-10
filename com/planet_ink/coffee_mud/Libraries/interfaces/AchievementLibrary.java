@@ -123,4 +123,6 @@ public interface AchievementLibrary extends CMLibrary
 	public void resaveAchievements(final String modifyTattoo);
 	public boolean addModifyAchievement(final MOB mob, final String tattoo, Achievement A);
 	public void possiblyBumpAchievement(final MOB mob, final Event E, Object... parms);
+	public Map<String,Map<String,String>> getAchievementsHelpMap();
+	public String getAchievementsHelpFromMap(Map<String,Map<String,String>> helpMap, Event E, String parmName);
 }

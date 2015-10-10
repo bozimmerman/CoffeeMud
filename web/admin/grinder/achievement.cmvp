@@ -29,17 +29,14 @@
         {
             if(confirm('Delete this achievement?! Confirm!'))
             {
-                if(confirm('Press OK to Delete this achievement!'))
-                {
-                    document.RESOURCES.action='achievementdo.cmvp';
-                    document.RESOURCES.FUNCTION.value='DELACHIEVEMENT';
-                    document.RESOURCES.submit();
-                }
+                document.RESOURCES.action='achievementdo.cmvp';
+                document.RESOURCES.FUNCTION.value='DELACHIEVEMENT';
+                document.RESOURCES.submit();
             }
         }
         function EditDone()
         {
-            @if?TitleData?ISNEWACHIEVEMENT@
+            @if?CheckReqParm?ACHIEVEMENT=@
                 if(confirm('Create this new achievement?'))
             @else@
                 if(confirm('Submit your changes to this achievement?'))
@@ -66,12 +63,6 @@
         {
             window.close();
         }
-        function OpenUp(file,named)
-        {
-            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("/"+file+"?HELPTOPIC="+named,
-                        "Help",strFeatures, false);
-        }
         function Clicked(action)
         {
             document.RESOURCES.action=action;
@@ -81,35 +72,83 @@
     </script>
 </head>
 <body BGCOLOR=BLACK>
-<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autotitle.cmvp">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="achievement.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-<INPUT TYPE=HIDDEN NAME=NEWAUTOTITLEID VALUE="">
-<INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=ACHIEVEMENT VALUE="@RequestParameter?ACHIEVEMENT@">
-<INPUT TYPE=HIDDEN NAME=NEWAUTOTITLE VALUE="@RequestParameter?NEWAUTOTITLE@">
 <CENTER>
 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
     <TR>
-        <TD>
-        	<FONT COLOR=YELLOW>Title: </FONT>
-        	<FONT COLOR=WHITE SIZE=-1></FONT>
+        <TD WIDTH=25%>
+            <FONT COLOR=YELLOW>Tattoo / ID: </FONT>
+            <FONT COLOR=WHITE SIZE=-1></FONT>
         </TD>
         <TD>
-        	<INPUT TYPE=TEXT SIZE=20 NAME=TITLE VALUE="@AutoTitleData?TITLE@">
-        	&nbsp;&nbsp;
-        	<INPUT TYPE=CHECKBOX NAME=ISREQUIRED @AutoTitleData?ISREQUIRED@><FONT SIZE=-1 COLOR=WHITE>is required</FONT>
+            <INPUT TYPE=TEXT SIZE=20 NAME=TATTOO VALUE="@AchievementData?TATTOO@">
+            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=TATTOONAME@</FONT>
         </TD>
     </TR>
     <TR>
-        <TD><FONT COLOR=YELLOW>Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a>: </FONT></TD>
-        <TD><INPUT TYPE=TEXT SIZE=40 NAME=MASK VALUE="@AutoTitleData?MASK@"></TD>
+        <TD>
+        	<FONT COLOR=YELLOW>Event Type: </FONT>
+        	<FONT COLOR=WHITE SIZE=-1></FONT>
+        </TD>
+        <TD>
+            <SELECT NAME=EVENT ONCHANGE="Refresh();">
+            @AchievementData?EVENTOPTIONS@
+            </SELECT>
+            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=EVENT@</FONT>
+        </TD>
     </TR>
+    <TR>
+        <TD>
+            <FONT COLOR=YELLOW>Display Desc: </FONT>
+            <FONT COLOR=WHITE SIZE=-1></FONT>
+        </TD>
+        <TD>
+            <INPUT TYPE=TEXT SIZE=40 NAME=DISPLAY VALUE="@AchievementData?DISPLAY@">
+            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=DISPLAY@</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD>
+            <FONT COLOR=YELLOW>Title Award: </FONT>
+            <FONT COLOR=WHITE SIZE=-1></FONT>
+        </TD>
+        <TD>
+            <INPUT TYPE=TEXT SIZE=40 NAME=TITLE VALUE="@AchievementData?TITLE@">
+            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=TITLE@</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD>
+            <FONT COLOR=YELLOW>Reward List: </FONT>
+            <FONT COLOR=WHITE SIZE=-1></FONT>
+        </TD>
+        <TD>
+            <INPUT TYPE=TEXT SIZE=60 NAME=REWARDS VALUE="@AchievementData?REWARDS@">
+            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=REWARDS@</FONT>
+        </TD>
+    </TR>
+    @AchievementData?OTHERPARMNEXT&RESET@
+    @loop@
+	    @AchievementData?OTHERPARMNEXT@
+	    <TR>
+	        <TD>
+	            <FONT COLOR=YELLOW>@RequestParameter?OTHERPARMFIELD@: </FONT>
+	            <FONT COLOR=WHITE SIZE=-1></FONT>
+	        </TD>
+	        <TD>
+	            <INPUT TYPE=TEXT SIZE=60 NAME=@RequestParameter?OTHERPARM@ VALUE="@AchievementData?@@RequestParameter?OTHERPARM@@ @">
+	            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=@@RequestParameter?OTHERPARM@@ @</FONT>
+	        </TD>
+	    </TR>
+    @back@
 </TABLE>
 <BR>
 <TABLE WIDTH=100% BORDER=0>
 <TR>
-    @if?CheckReqParm?AUTOTITLE=@
+    @if?CheckReqParm?ACHIEVEMENT=@
         <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
     @else@
         <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
