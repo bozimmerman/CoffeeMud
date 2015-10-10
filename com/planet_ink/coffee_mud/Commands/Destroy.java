@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 
 import java.util.*;
 import java.io.IOException;
@@ -110,7 +111,9 @@ public class Destroy extends StdCommand
 			return;
 		}
 
-		if(mob.session().confirm(L("This will complete OBLITERATE the manufacturer '@x1' forever.  This means all the stuff that is made by this manufacturer will get transferred to ACME. Are you SURE?! (y/N)?",manufacturerID),L("N")))
+		if(mob.session().confirm(L("This will complete OBLITERATE the manufacturer '@x1' forever.  "
+				+ "This means all the stuff that is made by this manufacturer will get transferred to ACME. "
+				+ "Are you SURE?! (y/N)?",manufacturerID),L("N")))
 		{
 			CMLib.tech().delManufacturer(manufacturer);
 			mob.location().recoverRoomStats();
@@ -409,7 +412,8 @@ public class Destroy extends StdCommand
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
 		final boolean useShipDirs=(mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A wall of inhibition falls @x1.",(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A wall of inhibition falls @x1.",
+				(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))));
 		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");
 	}
 
@@ -710,7 +714,8 @@ public class Destroy extends StdCommand
 	public boolean titles(MOB mob, Vector commands)
 	{
 		mob.tell(L("Destroying a title will not remove the title from all players who may have it."));
-		mob.tell(L("If this is important, you should destroy and then re-add the exact same title with an unreachable mask for a few days to allow the system to remove the title from the players as they log in.\n\r"));
+		mob.tell(L("If this is important, you should destroy and then re-add the exact same title with an unreachable mask "
+				+ "for a few days to allow the system to remove the title from the players as they log in.\n\r"));
 		if(commands.size()<3)
 		{
 			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is DESTROY TITLE [TITLE STRING]\n\r"));
@@ -808,6 +813,28 @@ public class Destroy extends StdCommand
 		CMClass.delClass(CMObjectType.ABILITY,(Ability)O);
 		CMLib.database().DBDeleteAbility(A.ID());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just decreased!"));
+		return true;
+	}
+
+	public boolean achievements(MOB mob, Vector commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is DESTROY ACHIEVEMENT [TATTOO]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+
+		final String tattoo=CMParms.combine(commands,2);
+		final Achievement A=CMLib.achievements().getAchievement(tattoo);
+		if(A==null)
+		{
+			mob.tell(L("An achievement with the TATTOO/ID '@x1' does not exist!",tattoo));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		CMLib.achievements().deleteAchievement(tattoo);
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The vanity of the world just decreased!"));
 		return true;
 	}
 
@@ -1102,6 +1129,14 @@ public class Destroy extends StdCommand
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			abilities(mob,commands);
+		}
+		else
+		if(commandType.equals("ACHIEVEMENT"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ACHIEVEMENTS))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			achievements(mob,commands);
 		}
 		else
 		if(commandType.equals("ALLQUALIFY"))
@@ -1606,7 +1641,10 @@ public class Destroy extends StdCommand
 					}
 					else
 					mob.tell(
-						L("\n\rYou cannot destroy a '@x1'. However, you might try an EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, MANUFACTURER, LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.",commandType));
+						L("\n\rYou cannot destroy a '@x1'. However, you might try an EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
+								+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
+								+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
+								+ "POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.",commandType));
 				}
 			}
 		}

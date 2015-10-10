@@ -9753,7 +9753,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(Q!=null)
 					{
 						if(M!=null)
-							CMLib.achievements().possiblyBumpAchievement(M, AchievementLibrary.Event.QUESTOR, this);
+							CMLib.achievements().possiblyBumpAchievement(M, AchievementLibrary.Event.QUESTOR, Q);
 						Q.declareWinner(whoName);
 						CMLib.players().bumpPrideStat(M,AccountStats.PrideStat.QUESTS_COMPLETED, 1);
 					}

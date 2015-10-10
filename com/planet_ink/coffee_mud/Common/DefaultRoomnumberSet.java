@@ -51,7 +51,10 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		for(final String area : root.keySet())
 		{
 			CI=root.get(area);
-			R.root.put(area,CI);
+			if(CI == null)
+				R.root.put(area,null);
+			else
+				R.root.put(area,CI.copyOf());
 		}
 		return R;
 	}

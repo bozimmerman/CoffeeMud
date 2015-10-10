@@ -1110,7 +1110,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD)))
 					{
-						setThreadStatus(serviceClient,"checking player titles/achievements.");
+						setThreadStatus(serviceClient,"checking player titles");
 						for(final MOB M : playersList)
 						{
 							if(M.playerStats()!=null)

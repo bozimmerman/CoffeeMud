@@ -50,7 +50,6 @@ public class Achievements extends StdCommand
 	public boolean execute(final MOB mob, Vector commands, int metaFlags) throws java.io.IOException
 	{
 		String rest = CMParms.combine(commands,1);
-		String prefix = "";
 		final PlayerStats pStats = mob.playerStats();
 		if (pStats == null)
 		{
@@ -58,13 +57,20 @@ public class Achievements extends StdCommand
 			return false;
 		}
 		
-		//TODO: ANNOUNCE
-		//TODO: a name to see the achievements of others.
-		//TODO: add a room entry achievement
-		//TODO: add channel flag for channel announces
+		if(CMLib.achievements().evaluateAchievements(mob))
+		{
+			CMLib.s_sleep(4000); 
+			// yes, I know, but if I call tick down, or some other
+			// async method, I'll get a freaking prompt.
+		}
 		
+		String prefix = "";
 		List<String> AchievedList = new Vector<String>();
-		if(rest.toUpperCase().startsWith("ALL"))
+		boolean announce=rest.toUpperCase().equals("ANNOUNCE");
+		if(announce)
+			rest="";
+			
+		if(rest.toUpperCase().equals("ALL"))
 		{
 			prefix=L("All ");
 			String done=L("DONE!");
@@ -98,6 +104,7 @@ public class Achievements extends StdCommand
 			
 		}
 		else
+		if(rest.length()==0)
 		{
 			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
 			{
@@ -108,13 +115,39 @@ public class Achievements extends StdCommand
 				}
 			}
 		}
-		if(AchievedList.size()==0)
-			mob.tell("^H"+prefix+L("Achievements: ^NNone!")+"\n\r");
 		else
 		{
-			mob.tell("^H"+prefix+L("Achievements:")+"\n\r");
-			mob.tell(CMLib.lister().makeColumns(mob, AchievedList, null, 2).toString());
+			MOB M=CMLib.players().getLoadPlayer(rest);
+			if(M==null)
+				mob.tell(L("There is no such player as '@x1'.",rest));
+			else
+			if(M.playerStats()!=null)
+			{
+				prefix=M.Name()+L("'s ");
+				for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
+				{
+					final Achievement A=a.nextElement();
+					if(M.findTattoo(A.getTattoo()) != null)
+					{
+						AchievedList.add(A.getDisplayStr());
+					}
+				}
+			}
+
 		}
+		String finalResponse;
+		if(AchievedList.size()==0)
+			finalResponse = "^H"+prefix+L("Achievements: ^NNone!")+"^w\n\r";
+		else
+		{
+			finalResponse = "^H"+prefix+L("Achievements:")+"^w\n\r";
+			finalResponse += CMLib.lister().makeColumns(mob, AchievedList, null, 2).toString();
+		}
+		if(announce)
+			CMLib.commands().postSay(mob, finalResponse);
+		else
+			mob.tell(finalResponse);
+		
 		return false;
 	}
 

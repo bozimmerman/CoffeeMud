@@ -3,7 +3,9 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEvalStrChoice;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -18,6 +20,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Tattoo;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -61,15 +64,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			return "Error: Blank achievement tattoo: "+tattoo+"!";
 		if(Character.isDigit(tattoo.charAt(tattoo.length()-1)))
 			return "Error: Invalid achievement tattoo: "+tattoo+"!";
-		String parms=row.substring(x+1).trim();
+		final String params=row.substring(x+1).trim();
 		
-		String eventStr=CMParms.getParmStr(parms, "EVENT", "");
+		String eventStr=CMParms.getParmStr(params, "EVENT", "");
 		final Event eventType = (Event)CMath.s_valueOf(Event.class, eventStr.toUpperCase().trim());
 		if(eventType == null)
 			return "Error: Blank or unknown achievement type: "+eventStr+"!";
-		final String displayStr=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "DISPLAY", ""),"\\\"","\""),"\\\\","\\");
-		final String titleStr=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "TITLE", ""),"\\\"","\""),"\\\\","\\");
-		String rewardStr=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "REWARDS", ""),"\\\"","\""),"\\\\","\\");
+		final String displayStr=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(params, "DISPLAY", ""),"\\\"","\""),"\\\\","\\");
+		final String titleStr=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(params, "TITLE", ""),"\\\"","\""),"\\\\","\\");
+		String rewardStr=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(params, "REWARDS", ""),"\\\"","\""),"\\\\","\\");
 		final String[] rewardList = rewardStr.split(" ");
 		Achievement A;
 		switch(eventType)
@@ -123,6 +126,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return rewardList;
 				}
 				
+				@Override
+				public String[] getAllParms()
+				{
+					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"NUM","ZAPPERMASK"});
+				}
+				
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
 				@Override
 				public Tracker getTracker(final int oldCount)
 				{
@@ -236,6 +251,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
+				public String[] getAllParms()
+				{
+					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"VALUE","ABOVEBELOW","STAT"});
+				}
+				
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
 				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
@@ -343,6 +370,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
+				public String[] getAllParms()
+				{
+					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"VALUE","ABOVEBELOW","ID"});
+				}
+				
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
 				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
@@ -447,6 +486,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				public boolean isTargetFloor()
 				{
 					return true;
+				}
+
+				@Override
+				public String[] getAllParms()
+				{
+					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"PERCENT","AREA"});
+				}
+				
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
 				}
 				
 				@Override
@@ -568,6 +619,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return true;
 				}
+
+				@Override
+				public String[] getAllParms()
+				{
+					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"NUM","ABILITYID"});
+				}
+				
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
 				
 				@Override
 				public Tracker getTracker(final int oldCount)
@@ -635,11 +698,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String abilityIDs=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
 					if(abilityIDs.length()==0)
 						return "Error: Missing ABILITYID parameter: "+abilityIDs+"!";
-					final String[] strList=abilityIDs.split(" ");
+					final String[] strList=abilityIDs.split(",");
 					this.abilityIDs.clear();
 					for(int i=0;i<strList.length;i++)
 					{
-						String abilityID = strList[i];
+						String abilityID = strList[i].trim();
 						if(abilityID.equals("*"))
 						{
 							this.abilityIDs.add(abilityID);
@@ -707,6 +770,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				public int getTargetCount()
 				{
 					return num;
+				}
+
+				@Override
+				public String[] getAllParms()
+				{
+					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"NUM","ABILITYID"});
+				}
+				
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
 				}
 
 				@Override
@@ -779,11 +854,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String abilityIDs=CMParms.getParmStr(parms, "ABILITYID", "").toUpperCase().trim();
 					if(abilityIDs.length()==0)
 						return "Error: Missing ABILITYID parameter: "+abilityIDs+"!";
-					final String[] strList=abilityIDs.split(" ");
+					final String[] strList=abilityIDs.split(",");
 					this.abilityIDs.clear();
 					for(int i=0;i<strList.length;i++)
 					{
-						String abilityID = strList[i];
+						String abilityID = strList[i].trim();
 						if(abilityID.equals("*"))
 						{
 							this.abilityIDs.add(abilityID);
@@ -799,17 +874,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								A=CMClass.getAbility(abilityID);
 								if(A==null)
-								{
-									if((i<strList.length-1)
-									&&(strList[i+1].equals("SKILL"))
-									&&(CMParms.contains(Ability.ACODE_DESCS,abilityID+" SKILL"))
-										||(CMParms.contains(Ability.DOMAIN_DESCS,abilityID+" SKILL")))
-									{
-										i++;
-									}
-									else
-										return "Error: Unknown ABILITYID: "+abilityID+"!";
-								}
+									return "Error: Unknown ABILITYID: "+abilityID+"!";
 							}
 							if(A!=null)
 								this.abilityIDs.add(A.ID());
@@ -873,6 +938,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
+				public String[] getAllParms()
+				{
+					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"NUM","PLAYERMASK","QUESTMASK"});
+				}
+				
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
 				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
@@ -905,20 +982,22 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								return false;
 							if(parms.length>0)
 							{
-								boolean match=false;
-								if(parms[0] instanceof String)
+								boolean match=questPattern == null;
+								if(!match)
 								{
-									match = questPattern.matcher((String)parms[0]).find();
+									if(parms[0] instanceof String)
+									{
+										match = questPattern.matcher((String)parms[0]).find();
+									}
+									else
+									if(parms[0] instanceof Quest)
+									{
+										Quest Q=(Quest)parms[0];
+										match = 
+											questPattern.matcher(Q.name()).find()
+											|| questPattern.matcher(Q.displayName()).find();
+									}
 								}
-								else
-								if(parms[0] instanceof Quest)
-								{
-									Quest Q=(Quest)parms[0];
-									match = 
-										questPattern.matcher(Q.name()).find()
-										|| questPattern.matcher(Q.displayName()).find();
-								}
-								
 								if(match)
 								{
 									count++;
@@ -1014,6 +1093,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
+				public String[] getAllParms()
+				{
+					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"ACHIEVEMENTLIST"});
+				}
+				
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
 				public Tracker getTracker(final int oldCount)
 				{
 					final Achievement me=this;
@@ -1063,7 +1154,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String list=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "ACHIEVEMENTLIST", ""),"\\\"","\""),"\\\\","\\");
 					if(list.trim().length()==0)
 						return "Error: Missing or invalid ACHIEVEMENTLIST parameter: "+list+"!";
-					final String[] listArray = list.toUpperCase().trim().split(" ");
+					final String[] listArray = list.toUpperCase().trim().split(",");
 					achievementList.clear();
 					for(String s : listArray)
 					{
@@ -1072,6 +1163,133 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					}
 					if(achievementList.size()==0)
 						return "Error: Missing or invalid ACHIEVEMENTLIST parameter: "+list+"!";
+					return "";
+				}
+			};
+			break;
+		case ROOMENTER:
+			A=new Achievement()
+			{
+				final Set<String> roomIDs = new TreeSet<String>();
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return roomIDs.size();
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+				
+				@Override
+				public String getTitleAward()
+				{
+					return titleStr;
+				}
+				
+				@Override
+				public String[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public String[] getAllParms()
+				{
+					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"ROOMID"});
+				}
+				
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						@Override
+						public Achievement getAchievement() 
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(MOB mob) 
+						{
+							return getCount(mob) >= roomIDs.size();
+						}
+
+						@Override
+						public int getCount(MOB mob)
+						{
+							int count = 0;
+							for(String s : roomIDs)
+							{
+								if(mob.playerStats().hasVisited(CMLib.map().getRoom(s)))
+									count++;
+							}
+							return count;
+						}
+
+						@Override
+						public boolean testBump(MOB mob, Object... parms) 
+						{
+							return false;
+						}
+					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return false;
+				}
+
+				@Override
+				public String parseParms(final String parms)
+				{
+					final String list=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "ROOMID", ""),"\\\"","\""),"\\\\","\\");
+					if(list.trim().length()==0)
+						return "Error: Missing or invalid ROOMID parameter: "+list+"!";
+					final String[] listArray = list.toUpperCase().trim().split(",");
+					roomIDs.clear();
+					for(String s : listArray)
+					{
+						s=s.trim();
+						if(s.length()>0)
+						{
+							Room R=CMLib.map().getRoom(s);
+							if(R==null)
+								return "Error: Missing or invalid ROOMID: "+s+"!";
+							roomIDs.add(R.ID());
+						}
+					}
+					if(roomIDs.size()==0)
+						return "Error: Missing or invalid ROOMID parameter: "+list+"!";
 					return "";
 				}
 			};
@@ -1086,7 +1304,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			return "Error: Unimplemented achievement type: "+eventStr+"!";
 		}
 		
-		final String err = A.parseParms(parms);
+		final String err = A.parseParms(params);
 		if((err!=null)&&(err.length()>0))
 		{
 			return err;
@@ -1168,7 +1386,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(mob.findTattoo(A.getTattoo())==null)
 		{
 			mob.addTattoo(new Tattoo(A.getTattoo()));
-			StringBuilder awardMessage = new StringBuilder(L("^HYou have gained the '@x1' achievement!^?\n\r",A.getDisplayStr()));
+			StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' achievement!^?\n\r",A.getDisplayStr()));
+			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACHIEVEMENTS);
+			if(!CMLib.flags().isCloaked(mob))
+			{
+				for(int i=0;i<channels.size();i++)
+					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has completed the '@x2' achievement!",mob.Name(),A.getDisplayStr()),true);
+			}
 			String[] awardSet = A.getRewards();
 			if((A.getTitleAward() != null) && (A.getTitleAward().trim().length()>0))
 			{
@@ -1236,6 +1460,92 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return false;
 	}
 	
+	@Override
+	public Achievement getAchievement(String named)
+	{
+		for(Enumeration<Achievement> a = achievements(); a.hasMoreElements();)
+		{
+			final Achievement A=a.nextElement();
+			if(A.getTattoo().equalsIgnoreCase(named))
+				return A;
+		}
+		return null;
+	}
+	
+	@Override
+	public Achievement deleteAchievement(String named)
+	{
+		final Achievement A=getAchievement(named);
+		if(A!=null)
+		{
+			achievements.remove(A);
+			final List<Achievement> list=eventMap.get(A.getEvent());
+			if(list != null)
+				list.remove(A);
+		}
+		return A;
+	}
+	
+	@Override
+	public void addModifyAchievement(final MOB mob, final String tattoo, Achievement A)
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		int showFlag=-1;
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
+			showFlag=-999;
+		TreeMap<String,String> parmTree=new TreeMap<String,String>();
+		if(A==null)
+		{
+			for(String s : BASE_ACHIEVEMENT_PARAMETERS)
+				parmTree.put(s,"");
+			parmTree.put("TATTOO",tattoo.toUpperCase().trim());
+			parmTree.put("EVENT","KILLS");
+		}
+		else
+		{
+			parmTree.put("TATTOO",A.getTattoo());
+			parmTree.put("EVENT", A.getEvent().name());
+			parmTree.put("DISPLAY", A.getDisplayStr());
+			parmTree.put("TITLE", A.getTitleAward());
+			parmTree.put("REWARDS", CMParms.combineWSpaces(A.getRewards()));
+			for(String s : A.getAllParms())
+			{
+				if(!CMParms.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, s))
+					parmTree.put(s, A.getRawParmVal(s));
+			}
+		}
+		try 
+		{
+			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
+			{
+				int showNumber=0;
+				String help;
+				
+				help=L("Enter the type of achievement event.");
+				CMLib.genEd().prompt(mob, parmTree.get("EVENT"), ++showNumber, showFlag, "Event", false, false, help, CMEvalStrChoice.INSTANCE, Event.getEventChoices());
+				//TODO: Finish, somehow
+				if(showFlag<-900){ ok=true; break;}
+				if(showFlag>0){ showFlag=-1; continue;}
+				showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+				if(showFlag<=0)
+				{
+					showFlag=-1;
+					ok=true;
+				}
+			}
+			if(A!=null)
+			{
+				this.deleteAchievement(A.getTattoo());
+			}
+		} 
+		catch (IOException e) 
+		{
+		}
+	}
+
+	
 	private boolean evaluateAchievement(final Achievement A, final PlayerStats pStats, final MOB mob)
 	{
 		if(mob.findTattoo(A.getTattoo())==null)
@@ -1294,4 +1604,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 
+	@Override
+	public boolean shutdown()
+	{
+		achievements=null;
+		eventMap=null;
+		return super.shutdown();
+	}
 }

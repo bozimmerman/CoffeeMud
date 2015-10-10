@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
@@ -2440,6 +2441,49 @@ public class ListCmd extends StdCommand
 		return buf.toString();
 	}
 
+	public String listAchievements(Session viewerS)
+	{
+		final StringBuilder str=new StringBuilder("^xAll Defined Achievements: ^N\n\r");
+		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(17.0,viewerS);
+		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(7.0,viewerS);
+		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(6.0,viewerS);
+		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
+		final int COL_LEN5=ListingLibrary.ColFixer.fixColWidth(11.0,viewerS);
+		final int COL_LEN6=ListingLibrary.ColFixer.fixColWidth(26.0,viewerS);
+		final int COL_LEN7=COL_LEN1+1+COL_LEN2+1+COL_LEN3+1+COL_LEN4+1+COL_LEN5+1;
+		str.append(CMStrings.padRight(L("Tattoo"),COL_LEN1)+" ");
+		str.append(CMStrings.padRight(L("Type"),COL_LEN2)+" ");
+		str.append(CMStrings.padRight(L("Awards"),COL_LEN3)+" ");
+		str.append(CMStrings.padRight(L("Count"),COL_LEN4)+" ");
+		str.append(CMStrings.padRight(L("Parm1"),COL_LEN5)+" ");
+		str.append(L("Display\n\r"));
+		str.append(CMStrings.repeat('-',COL_LEN7+COL_LEN6)).append("\n\r");
+		for(final Enumeration<Achievement> e=CMLib.achievements().achievements();e.hasMoreElements();)
+		{
+			final Achievement A=e.nextElement();
+			str.append(CMStrings.padRight(A.getTattoo(),COL_LEN1)+" ");
+			str.append(CMStrings.padRight(A.getEvent().name(),COL_LEN2)+" ");
+			str.append(CMStrings.padRight(CMParms.combineWSpaces(A.getRewards())+A.getTitleAward(),COL_LEN3)+" ");
+			str.append(CMStrings.padRight(A.getTargetCount()+"",COL_LEN4)+" ");
+			String miscVal = "";
+			for(String parmName : A.getAllParms())
+			{
+				if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS,parmName))
+				{
+					String val = A.getRawParmVal(parmName);
+					if((val.length()>0)&&(!CMath.isMathExpression(val)))
+						miscVal=val;
+				}
+			}
+			str.append(CMStrings.padRight(miscVal,COL_LEN5)+" ");
+			str.append(CMStrings.limit(A.getDisplayStr(),COL_LEN6));
+			str.append("\n\r");
+		}
+		if(str.length()==0)
+			return "None defined.";
+		return str.toString();
+	}
+
 	public String listClanGovernments(Session viewerS, List commands)
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Clan Governments: ^N\n\r");
@@ -2732,6 +2776,7 @@ public class ListCmd extends StdCommand
 		CONTENTS("CONTENTS",new SecFlag[]{SecFlag.CMDROOMS,SecFlag.CMDITEMS,SecFlag.CMDMOBS,SecFlag.CMDAREAS}),
 		EXPIRES("EXPIRES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
 		TITLES("TITLES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.TITLES}),
+		ACHIEVEMENTS("ACHIEVEMENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.ACHIEVEMENTS}),
 		AREARESOURCES("AREARESOURCES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
 		CONQUERED("CONQUERED",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
 		HOLIDAYS("HOLIDAYS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
@@ -3307,6 +3352,7 @@ public class ListCmd extends StdCommand
 		case CONTENTS: s.wraplessPrintln(listContent(mob,commands).toString()); break;
 		case EXPIRES: s.wraplessPrintln(roomExpires(mob.session(),mob.location().getArea().getProperMap(),mob.location()).toString()); break;
 		case TITLES: s.wraplessPrintln(listTitles(mob.session())); break;
+		case ACHIEVEMENTS: s.wraplessPrintln(listAchievements(mob.session())); break;
 		case AREARESOURCES: s.wraplessPrintln(roomResources(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
 		case CONQUERED: s.wraplessPrintln(areaConquests(mob.session(),CMLib.map().areas()).toString()); break;
 		case HOLIDAYS: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1))); break;

@@ -10,7 +10,7 @@
 # which would only make it temporary.
 # [TITLE] is optional.  If filled in, it is a title awarded to the player who
 # achieves this event.
-# [REWARDS] is also an optional list of other awards, separated by spaces.  
+# [REWARDS] is also an optional list of other awards, separated by >spaces<.  
 # Each entry can be an amount of game money (e.g. 10 gold coins), an amount of 
 # experience (10 xp), or an amount of quest points (e.g. 10 qp).  Note the spaces!
 # [DISPLAY] is a friendly display name of this achievement.
@@ -48,22 +48,26 @@
 #     [PERCENT] is the percent of the area which must be explored to gain this 
 #     achievement.
 #
+# ... EVENT="ROOMENTER" ROOMID="[ROOMID]"
+#     [ROOMID] is the fully qualified ID of the room entry to track, or a
+#     comma-delimited list of room IDs that all must be entered.
+#
 # ... EVENT="CRAFTING" ABILITYID="[ABILITYID]" NUM=[NUM] ...
 #     [ABILITYID] is the ability ID of the crafting skill to track, or *, or a
-#     space-delimited list of ability IDs
+#     comma-delimited list of ability IDs
 #     [NUM] is the number of times the skill must be used to create something
 #     successfully before the achievement is gained.
 #
 # ... EVENT="MENDER" ABILITYID="[ABILITYID]" NUM=[NUM] ...
 #     [ABILITYID] is the ability ID of the crafting skill to track mending with, or *,
-#     or a space-delimited list of ability IDs 
+#     or a comma-delimited list of ability IDs 
 #     [NUM] is the number of times the skill must be used to mend something
 #     successfully before the achievement is gained.
 #
 # ... EVENT="SKILLUSE" ABILITYID="[ABILITYID]" NUM=[NUM] ...
 #     [ABILITYID] is the ability ID of the skill to track, or a 
 #     skill type (SPELL, etc..) or a domain name (CRAFTING) 
-#     or a space-delimited list of ability IDs or types or domains.
+#     or a comma-delimited list of ability IDs or types or domains.
 #     [NUM] is the number of times the skill must be used
 #     successfully before the achievement is gained.
 #
@@ -109,25 +113,25 @@ ACH_NOCHARISMA=EVENT="STATVALUE" DISPLAY="Have 3 base Charisma" TITLE="*, the Je
 ACH_SAINTLY=EVENT="FACTION" DISPLAY="Have a perfectly Good alignment" TITLE="*, the Charmer" ABOVEBELOW="ABOVE" ID="ALIGNMENT.INI" VALUE=9999
 ACH_DEMONIC=EVENT="FACTION" DISPLAY="Have a perfectly Evil alignment" TITLE="*, the Demonic" ABOVEBELOW="BELOW" ID="ALIGNMENT.INI" VALUE=1
 
-ACH_EXPLORER=EVENT="EXPLORE" AREA="New Area" DISPLAY="Explore New Area" TITLE="*, the Explorer of New Area" PERCENT=50 AWARDS="1 QP 10 XP"
+ACH_EXPLORER=EVENT="EXPLORE" AREA="ThinInstanceTest" DISPLAY="Explore New Area" TITLE="*, the Explorer of ThinInstanceTest" PERCENT=50 REWARDS="1 QP 10 XP"
 
 ACH_ALLCRAFTOR=EVENT="CRAFTING" DISPLAY="Craft 3000 Items" TITLE="*, Master Craftsman" REWARDS="" NUM=3000 ABILITYID="*"
-ACH_ARMCRAFTOR=EVENT="CRAFTING" DISPLAY="Craft 1000 Armor" TITLE="*, Master Armorsmith" REWARDS="" NUM=1000 ABILITYID="Armorsmithing MasterArmorsmithing"
+ACH_ARMCRAFTOR=EVENT="CRAFTING" DISPLAY="Craft 1000 Armor" TITLE="*, Master Armorsmith" REWARDS="" NUM=1000 ABILITYID="Armorsmithing,MasterArmorsmithing"
 ACH_BLACKCRAFTOR=EVENT="CRAFTING" DISPLAY="Blacksmith 500 Items" TITLE="*, Master Blacksmith" REWARDS="" NUM=500 ABILITYID="Blacksmithing"
 ACH_WOODCRAFTOR=EVENT="CRAFTING" DISPLAY="Carve 500 Carpentry Items" TITLE="*, Master Carpenter" REWARDS="" NUM=500 ABILITYID="Carpentry"
 ACH_COBBLECRAFTOR=EVENT="CRAFTING" DISPLAY="Cobble 500 Shoes" TITLE="*, Master Cobbler" REWARDS="" NUM=500 ABILITYID="Cobbling"
-ACH_COSTUMECRAFTOR=EVENT="CRAFTING" DISPLAY="Create 1000 Costumes" TITLE="*, Master Costumer" REWARDS="" NUM=1000 ABILITYID="Costuming MasterCostuming"
+ACH_COSTUMECRAFTOR=EVENT="CRAFTING" DISPLAY="Create 1000 Costumes" TITLE="*, Master Costumer" REWARDS="" NUM=1000 ABILITYID="Costuming,MasterCostuming"
 ACH_FLETCHCRAFTOR=EVENT="CRAFTING" DISPLAY="Fletch 500 Items" TITLE="*, Master Fletcher" REWARDS="" NUM=500 ABILITYID="Fletching"
 ACH_JEWELCRAFTOR=EVENT="CRAFTING" DISPLAY="Cut 500 Jewelry" TITLE="*, Master Jeweler" REWARDS="" NUM=500 ABILITYID="JewelMaking"
-ACH_LEATHERCRAFTOR=EVENT="CRAFTING" DISPLAY="Craft 1000 Leather Items" TITLE="*, Master Leatherworker" REWARDS="" NUM=1000 ABILITYID="LeatherWorking MasterLeatherWorking"
+ACH_LEATHERCRAFTOR=EVENT="CRAFTING" DISPLAY="Craft 1000 Leather Items" TITLE="*, Master Leatherworker" REWARDS="" NUM=1000 ABILITYID="LeatherWorking,MasterLeatherWorking"
 ACH_SCRIMCRAFTOR=EVENT="CRAFTING" DISPLAY="ScrimShaw 500 Items" TITLE="*, Master Scrimmer" REWARDS="" NUM=500 ABILITYID="ScrimShaw"
 ACH_SCULPTCRAFTOR=EVENT="CRAFTING" DISPLAY="Sculpt 500 Items" TITLE="*, Master Sculptor" REWARDS="" NUM=500 ABILITYID="Sculpting"
-ACH_TAILORCRAFTOR=EVENT="CRAFTING" DISPLAY="Tailor 1000 Items" TITLE="*, Master Tailor" REWARDS="" NUM=1000 ABILITYID="Tailoring MasterTailoring"
-ACH_WEAPONCRAFTOR=EVENT="CRAFTING" DISPLAY="Smith 1000 Weapons" TITLE="*, Master Weaponsmith" REWARDS="" NUM=1000 ABILITYID="WeaponSmithing MasterWeaponsmithing"
+ACH_TAILORCRAFTOR=EVENT="CRAFTING" DISPLAY="Tailor 1000 Items" TITLE="*, Master Tailor" REWARDS="" NUM=1000 ABILITYID="Tailoring,MasterTailoring"
+ACH_WEAPONCRAFTOR=EVENT="CRAFTING" DISPLAY="Smith 1000 Weapons" TITLE="*, Master Weaponsmith" REWARDS="" NUM=1000 ABILITYID="WeaponSmithing,MasterWeaponsmithing"
 ACH_WEAVECRAFTOR=EVENT="CRAFTING" DISPLAY="Weave 500 Things" TITLE="*, Master Weaver" REWARDS="" NUM=500 ABILITYID="Weaving"
-ACH_COOKCRAFTOR=EVENT="CRAFTING" DISPLAY="Cook 1000 Dishes" TITLE="*, Master Chef" REWARDS="" NUM=1000 ABILITYID="Cooking MasterCooking"
-ACH_BAKECRAFTOR=EVENT="CRAFTING" DISPLAY="Bake 1000 Dishes" TITLE="*, Master Chef" REWARDS="" NUM=1000 ABILITYID="Baking MasterBaking"
-ACH_PREPCRAFTOR=EVENT="CRAFTING" DISPLAY="Prep 1000 Dishes" TITLE="*, Master FoodPrepper" REWARDS="" NUM=1000 ABILITYID="FoodPrep MasterFoodPrep"
+ACH_COOKCRAFTOR=EVENT="CRAFTING" DISPLAY="Cook 1000 Dishes" TITLE="*, Master Chef" REWARDS="" NUM=1000 ABILITYID="Cooking,MasterCooking"
+ACH_BAKECRAFTOR=EVENT="CRAFTING" DISPLAY="Bake 1000 Dishes" TITLE="*, Master Chef" REWARDS="" NUM=1000 ABILITYID="Baking,MasterBaking"
+ACH_PREPCRAFTOR=EVENT="CRAFTING" DISPLAY="Prep 1000 Dishes" TITLE="*, Master FoodPrepper" REWARDS="" NUM=1000 ABILITYID="FoodPrep,MasterFoodPrep"
 ACH_DISTILCRAFTOR=EVENT="CRAFTING" DISPLAY="Distill 500 Drinks" TITLE="*, Master Brewer" REWARDS="" NUM=500 ABILITYID="Distilling"
 ACH_ALCHEMYCRAFTOR=EVENT="CRAFTING" DISPLAY="Brew 500 Potions" TITLE="*, Master Alchemist" REWARDS="" NUM=500 ABILITYID="Alchemy"
 ACH_POTTERCRAFTOR=EVENT="CRAFTING" DISPLAY="Make 500 Pottery" TITLE="*, Master Potter" REWARDS="" NUM=500 ABILITYID="Pottery"
@@ -150,4 +154,6 @@ ACH_ALLTHIEFER=EVENT="SKILLUSE" DISPLAY="Use 3000 Thief Skills" TITLE="*, Master
 
 ACH_ALLQUESTOR=EVENT="QUESTOR" DISPLAY="Complete 100 Quests" TITLE="*, Master Quester" REWARDS="" NUM=100 PLAYERMASK="" QUESTMASK=""
 
-ACH_1ACHIEVER=EVENT="ACHIEVER" DISPLAY="Complete Cat Killer and Exterminator" TITLE="*, Master Quester" REWARDS="" PLAYERMASK="" ACHIEVEMENTLIST="ACH_CATHATER ACH_EXTERMINATOR"
+ACH_1ACHIEVER=EVENT="ACHIEVER" DISPLAY="Complete Cat Killer and Exterminator" TITLE="*, Master Quester" REWARDS="" PLAYERMASK="" ACHIEVEMENTLIST="ACH_CATHATER,ACH_EXTERMINATOR"
+
+ACH_1ROOMENTER=EVENT="ROOMENTER" DISPLAY="Enter the start room" TITLE="*, Enterer of Start" REWARDS="" PLAYERMASK="" ROOMID="START"

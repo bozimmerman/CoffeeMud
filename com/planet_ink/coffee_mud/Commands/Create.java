@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -94,7 +95,8 @@ public class Create extends StdCommand
 		mob.location().setRawExit(direction,thisExit);
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly a portal opens up @x1.\n\r",(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly a portal opens up @x1.\n\r",
+				(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))));
 		CMLib.database().DBUpdateExits(mob.location());
 		if((reverseExit!=null)&&(opExit!=null)&&(opRoom!=null))
 		{
@@ -156,7 +158,8 @@ public class Create extends StdCommand
 		List<String> valsL=CMParms.parseCommas(rest,true);
 		if(valsL.size()!=3)
 		{
-			mob.tell(L("Unknown location for space object @x1:",newItem.ID())+": '"+rest+"'. "+L("The format for coordinates is 3 distances from core, comma delimited, or [DISTANCE] FROM [PLACE]\n\r"+distErrorMsg));
+			mob.tell(L("Unknown location for space object @x1:",newItem.ID())+": '"+rest+"'. "
+					+L("The format for coordinates is 3 distances from core, comma delimited, or [DISTANCE] FROM [PLACE]\n\r"+distErrorMsg));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return null;
 		}
@@ -584,7 +587,11 @@ public class Create extends StdCommand
 		if((R!=null)&&(!R.isGeneric()))
 		{
 			if((mob.session()==null)
-			||(!mob.session().confirm(L("Currently, @x1 is a standard race.  This will convert the race to a GenRace so that you can modify it.  Be warned that special functionality of the race may be lost by doing this.  You can undo this action by destroying the same race ID after creating it.  Do you wish to continue (y/N)?",R.ID()), L("N"))))
+			||(!mob.session().confirm(L("Currently, @x1 is a standard race.  "
+					+ "This will convert the race to a GenRace so that you can modify it.  "
+					+ "Be warned that special functionality of the race may be lost by doing this.  "
+					+ "You can undo this action by destroying the same race ID after creating it.  "
+					+ "Do you wish to continue (y/N)?",R.ID()), L("N"))))
 				return;
 			GR=R.makeGenRace();
 			raceID=GR.ID();
@@ -850,6 +857,39 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
+	public void achievements(MOB mob, Vector commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE ACHIEVEMENT [TATTOO NAME]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final String tattoo=CMParms.combine(commands,2);
+		final Achievement A=CMLib.achievements().getAchievement(tattoo);
+		if(A!=null)
+		{
+			mob.tell(L("An achievement with the TATTOO/ID '@x1' already exists!",A.getTattoo()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		if(tattoo.indexOf(' ')>=0)
+		{
+			mob.tell(L("'@x1' is an invalid tattoo, because it contains a space.",tattoo));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		if(Character.isDigit(tattoo.charAt(tattoo.length()-1)))
+		{
+			mob.tell(L("'@x1' is an invalid tattoo, because it ends with a digit.",tattoo));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		CMLib.achievements().addModifyAchievement(mob, tattoo, null);
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The vanity of the world just increased!"));
+	}
+
 	public void languages(MOB mob, Vector commands)
 	throws IOException
 	{
@@ -971,7 +1011,11 @@ public class Create extends StdCommand
 		if((C!=null)&&(!C.isGeneric()))
 		{
 			if((mob.session()==null)
-			||(!mob.session().confirm(L("Currently, @x1 is a standard character class.  This will convert the class to a GenCharClass so that you can modify it.  Be warned that special functionality of the class may be lost by doing this.  You can undo this action by destroying the same class ID after creating it.  Do you wish to continue (y/N)?",C.ID()), L("N"))))
+			||(!mob.session().confirm(L("Currently, @x1 is a standard character class.  "
+					+ "This will convert the class to a GenCharClass so that you can modify it.  "
+					+ "Be warned that special functionality of the class may be lost by doing this.  "
+					+ "You can undo this action by destroying the same class ID after creating it.  "
+					+ "Do you wish to continue (y/N)?",C.ID()), L("N"))))
 				return;
 			CR=C.makeGenCharClass();
 			classD=CR.ID();
@@ -1061,6 +1105,14 @@ public class Create extends StdCommand
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			abilities(mob,commands);
+		}
+		else
+		if(commandType.equals("ACHIEVEMENT"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ACHIEVEMENTS))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			achievements(mob,commands);
 		}
 		else
 		if(commandType.equals("LANGUAGE"))
@@ -1283,7 +1335,9 @@ public class Create extends StdCommand
 			final Item I=CMClass.getItem("StdJournal");
 			I.setName(L("SYSTEM_NEWS"));
 			I.setDescription(L("Enter `LIST NEWS [NUMBER]` to read an entry.%0D%0AEnter CREATE NEWS to add new entries. "));
-			final CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
+			final CMMsg newMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null,
+					CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,CMParms.combine(commands,2),
+					CMMsg.MSG_WRITE|CMMsg.MASK_ALWAYS,null);
 			if(mob.location().okMessage(mob,newMsg)&&I.okMessage(mob, newMsg))
 			{
 				mob.location().send(mob,newMsg);
@@ -1494,7 +1548,9 @@ public class Create extends StdCommand
 					}
 					else
 					{
-						mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, DISABLEFLAG, NEWS, USER, or ROOM.",commandType));
+						mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, "
+								+ "CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ACHIEVEMENT, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, "
+								+ "DISABLEFLAG, NEWS, USER, or ROOM.",commandType));
 						return false;
 					}
 				}
@@ -1538,7 +1594,9 @@ public class Create extends StdCommand
 						commands.insertElementAt("ITEM",1);
 						return execute(mob,commands,metaFlags);
 					}
-					mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, MANUFACTURER, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, USER, DEBUGFLAG, NEWS, DISABLEFLAG, ROOM.",commandType));
+					mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, "
+							+ "MANUFACTURER, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, ACHIEVEMENT, CLASS, POLL, USER, "
+							+ "DEBUGFLAG, NEWS, DISABLEFLAG, ROOM.",commandType));
 					return false;
 				}
 			}

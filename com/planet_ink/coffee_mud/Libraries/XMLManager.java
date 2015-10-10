@@ -783,7 +783,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		{
 			final String value="";
 			final String parmName=buf.substring(beginDex[State.INATTRIB.ordinal()],endOfAttrib);
-			if((parmName.length()>15)||(parmName.length()==0))
+			if((parmName.length()>25)||(parmName.length()==0))
 				Log.warnOut("XMLManager","Suspicious attribute '"+parmName+"' for tag "+piece.tag);
 			piece.parms.put(parmName, value);
 		}
@@ -843,7 +843,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		{
 			final String parmName=buf.substring(beginDex[State.INATTRIB.ordinal()], endDex[State.INATTRIB.ordinal()]).toUpperCase().trim();
 			final String value=buf.substring(beginDex[state.ordinal()],endOfValue).trim();
-			if((parmName.length()>15)||(parmName.length()==0))
+			if((parmName.length()>25)||(parmName.length()==0))
 				Log.warnOut("XMLManager","Suspicious attribute '"+parmName+"' for tag "+piece.tag);
 			piece.parms.put(parmName, value);
 		}

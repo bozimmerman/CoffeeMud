@@ -34,7 +34,10 @@ public class CMParms
 {
 	private CMParms(){super();}
 	private static CMParms inst=new CMParms();
+	
 	public final static CMParms instance(){return inst;}
+	
+	public static boolean[] PUNCTUATION_TABLE=null;
 	
 	private static final DelimiterChecker spaceDelimiter=new DelimiterChecker();
 	
@@ -166,6 +169,23 @@ public class CMParms
 	 * @return the single string
 	 */
 	public final static String combine(final List<?> commands)
+	{
+		final StringBuilder combined=new StringBuilder("");
+		if(commands!=null)
+		{
+			for(final Object o : commands)
+				combined.append(o.toString()+" ");
+		}
+		return combined.toString().trim();
+	}
+
+	/**
+	 * Returns a string containing the given object, with toString()
+	 * called, and now space delimited.
+	 * @param commands the objects to combine into a single string
+	 * @return the single string
+	 */
+	public final static String combineWSpaces(final Object[] commands)
 	{
 		final StringBuilder combined=new StringBuilder("");
 		if(commands!=null)
@@ -892,6 +912,53 @@ public class CMParms
 		}
 	}
 
+	private static boolean[] PUNCTUATION_TABLE()
+	{
+		if(PUNCTUATION_TABLE==null)
+		{
+			final boolean[] PUNCTUATION_TEMP_TABLE=new boolean[255];
+			for(int c=0;c<255;c++)
+				switch(c)
+				{
+				case '`': case '~': case '!': case '@': case '#': case '$': case '%':
+				case '^': case '&': case '*': case '(': case ')': case '_': case '-':
+				case '+': case '=': case '[': case ']': case '{': case '}': case '\\':
+				case '|': case ';': case ':': case '\'': case '\"': case ',': case '<':
+				case '.': case '>': case '/': case '?':
+					PUNCTUATION_TEMP_TABLE[c]=true;
+					break;
+				default:
+					PUNCTUATION_TEMP_TABLE[c]=false;
+				}
+			PUNCTUATION_TABLE=PUNCTUATION_TEMP_TABLE;
+		}
+		return PUNCTUATION_TABLE;
+	}
+
+	private static boolean isPunctuation(final byte b)
+	{
+		if((b<0)||(b>255))
+			return false;
+		return PUNCTUATION_TABLE[b];
+	}
+
+	private static boolean hasPunctuation(String str)
+	{
+		if((str==null)||(str.length()==0))
+			return false;
+		boolean puncFound=false;
+		PUNCTUATION_TABLE();
+		for(int x=0;x<str.length();x++)
+		{
+			if(isPunctuation((byte)str.charAt(x)))
+			{
+				puncFound=true;
+				break;
+			}
+		}
+		return puncFound;
+	}
+	
 	/**
 	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
 	 * Returns the value of the given key when the parameter is formatted in the given text
@@ -914,8 +981,8 @@ public class CMParms
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
 		{
-			if(((x==0)||(!Character.isLetter(text.charAt(x-1))))
-			&&((x+key.length()<text.length())&&(!Character.isLetterOrDigit(text.charAt(x+key.length())))))
+			final int startx=x;
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
 			{
 				while((x<text.length())&&(text.charAt(x)!='='))
 				{
@@ -925,6 +992,11 @@ public class CMParms
 				}
 				if(x<text.length())
 				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
 					boolean endWithQuote=false;
 					while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
 					{
@@ -977,6 +1049,7 @@ public class CMParms
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
 		{
+			final int startx=x;
 			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
 			{
 				while((x<text.length())
@@ -988,6 +1061,11 @@ public class CMParms
 
 				if(x<text.length()-1)
 				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
 					final char comp=text.charAt(x);
 					boolean andEqual=(text.charAt(x)=='=');
 					if(text.charAt(x+1)=='=')
@@ -1365,6 +1443,7 @@ public class CMParms
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
 		{
+			final int startx=x;
 			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
 			{
 				while((x<text.length())&&(text.charAt(x)!='+')&&(text.charAt(x)!='-'))
@@ -1375,6 +1454,11 @@ public class CMParms
 				}
 				if(x<text.length())
 				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
 					final char pm=text.charAt(x);
 					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
 						x++;
@@ -1415,6 +1499,7 @@ public class CMParms
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
 		{
+			final int startx=x;
 			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
 			{
 				while((x<text.length())&&(text.charAt(x)!='+')&&(text.charAt(x)!='-'))
@@ -1425,6 +1510,11 @@ public class CMParms
 				}
 				if(x<text.length())
 				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
 					final char pm=text.charAt(x);
 					while((x<text.length())
 					&&(!Character.isDigit(text.charAt(x)))
@@ -1478,12 +1568,18 @@ public class CMParms
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
 		{
+			final int startx=x;
 			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
 			{
 				while((x<text.length())&&(text.charAt(x)!='='))
 					x++;
 				if(x<text.length())
 				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
 					while((x<text.length())
 					&&(!Character.isDigit(text.charAt(x)))
 					&&(text.charAt(x)!='.'))
@@ -1538,6 +1634,7 @@ public class CMParms
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
 		{
+			final int startx=x;
 			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
 			{
 				while((x<text.length())&&(text.charAt(x)!='=')&&(!Character.isDigit(text.charAt(x))))
@@ -1548,6 +1645,11 @@ public class CMParms
 				}
 				if((x<text.length())&&(text.charAt(x)=='='))
 				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
 					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
 						x++;
 					if(x<text.length())
@@ -1598,12 +1700,18 @@ public class CMParms
 		String s;
 		while(x>=0)
 		{
+			final int startx=x;
 			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
 			{
 				while((x<text.length())&&(text.charAt(x)!='='))
 					x++;
 				if((x<text.length())&&(text.charAt(x)=='='))
 				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
 					s=text.substring(x+1).trim();
 					if(Character.toUpperCase(s.charAt(0))=='T') 
 						return true;

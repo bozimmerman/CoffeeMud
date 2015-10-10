@@ -35,6 +35,8 @@ import java.util.*;
 */
 public interface AchievementLibrary extends CMLibrary
 {
+	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] { "EVENT", "DISPLAY", "TITLE", "REWARDS" };
+	
 	public enum Event
 	{
 		KILLS,
@@ -45,7 +47,16 @@ public interface AchievementLibrary extends CMLibrary
 		MENDER,
 		SKILLUSE,
 		QUESTOR,
-		ACHIEVER
+		ACHIEVER, 
+		ROOMENTER
+		;
+		public static String[] getEventChoices()
+		{
+			final List<String> choices=new ArrayList<String>(Event.values().length);
+			for(Event E : Event.values())
+				choices.add(E.name());
+			return choices.toArray(new String[0]);
+		}
 	}
 	
 	public interface Achievement
@@ -69,6 +80,10 @@ public interface AchievementLibrary extends CMLibrary
 		public boolean isTargetFloor();
 		
 		public boolean isSavableTracker();
+		
+		public String[] getAllParms();
+		
+		public String getRawParmVal(String str);
 	}
 	
 	public interface Tracker
@@ -93,5 +108,8 @@ public interface AchievementLibrary extends CMLibrary
 	public void reloadAchievements();
 	public boolean evaluateAchievements(MOB mob);
 	public Enumeration<Achievement> achievements();
+	public Achievement getAchievement(String named);
+	public Achievement deleteAchievement(String named);
+	public void addModifyAchievement(final MOB mob, final String tattoo, Achievement A);
 	public void possiblyBumpAchievement(final MOB mob, final Event E, Object... parms);
 }

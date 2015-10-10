@@ -711,7 +711,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		evokableAbility.invoke(mob,commands,null,false,0);
 	}
 
-	public boolean[] PUNCTUATION_TABLE()
+	private boolean[] PUNCTUATION_TABLE()
 	{
 		if(PUNCTUATION_TABLE==null)
 		{
@@ -734,30 +734,47 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return PUNCTUATION_TABLE;
 	}
 
+	private boolean isPunctuation(final byte b)
+	{
+		if((b<0)||(b>255))
+			return false;
+		return PUNCTUATION_TABLE[b];
+	}
+
 	@Override
-	public String stripPunctuation(String str)
+	public boolean hasPunctuation(String str)
 	{
 		if((str==null)||(str.length()==0))
-			return str;
+			return false;
 		boolean puncFound=false;
 		PUNCTUATION_TABLE();
 		for(int x=0;x<str.length();x++)
+		{
 			if(isPunctuation((byte)str.charAt(x)))
 			{
 				puncFound=true;
 				break;
 			}
-		if(!puncFound)
+		}
+		return puncFound;
+	}
+	
+	@Override
+	public String stripPunctuation(String str)
+	{
+		if(!hasPunctuation(str))
 			return str;
 		final char[] strc=str.toCharArray();
 		final char[] str2=new char[strc.length];
 		int s=0;
 		for(int x=0;x<strc.length;x++)
+		{
 			if(!isPunctuation((byte)strc[x]))
 			{
 				str2[s]=strc[x];
 				s++;
 			}
+		}
 		return new String(str2,0,s);
 	}
 
@@ -770,13 +787,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	
-	private boolean isPunctuation(final byte b)
-	{
-		if((b<0)||(b>255))
-			return false;
-		return PUNCTUATION_TABLE[b];
-	}
-
 	public boolean equalsPunctuationless(char[] strC, char[] str2C)
 	{
 		if((strC.length==0)&&(str2C.length==0))

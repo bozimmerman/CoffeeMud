@@ -40,6 +40,7 @@ public interface EnglishParsing extends CMLibrary
 	public String cleanArticles(String s);
 	public boolean startsWithAnArticle(String s);
 	public String stripPunctuation(String str);
+	public boolean hasPunctuation(String str);
 	public String makePlural(String str);
 	public String getFirstWord(final String str);
 	public String properIndefiniteArticle(String str);
