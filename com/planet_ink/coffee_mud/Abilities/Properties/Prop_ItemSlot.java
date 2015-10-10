@@ -79,6 +79,8 @@ public class Prop_ItemSlot extends Property
 		removeable = CMParms.getParmBool(text, "REMOVEABLE", true);
 		if(itemXml.length()>0)
 		{
+			if(itemXml.startsWith("<ITEM>"))
+				itemXml="<ITEMS>"+itemXml+"</ITEMS>";
 			final List<Item> items = new LinkedList<Item>();
 			CMLib.coffeeMaker().addItemsFromXML(itemXml, items, null);
 			int islot = 0;
