@@ -252,20 +252,20 @@
 			<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
 			<BR>
 			@endif@
+			@if?CheckAuthCode?AUTH_TITLES=true@
+			<A href="javascript:Clicked('autotitles.cmvp')"><FONT COLOR=WHITE>Achievements</FONT></a>
+			<BR>
+			@endif@
 			@if?CheckAuthCode?AUTH_CMDQUESTS=true@
 			<A href="javascript:Clicked('holidays.cmvp')"><FONT COLOR=WHITE>Holidays</FONT></a>
 			<BR>
 			@endif@
-			@if?CheckAuthCode?AUTH_TITLES=true@
-			<A href="javascript:Clicked('autotitles.cmvp')"><FONT COLOR=WHITE>Player Titles</FONT></a>
+			@if?CheckAuthCode?AUTH_CMDFACTIONS=true@
+			<A href="javascript:Clicked('factions.cmvp')"><FONT COLOR=WHITE>Factions</FONT></a>
 			<BR>
 			@endif@
 			@if?CheckAuthCode?AUTH_CMDSOCIALS=true@
 			<A href="javascript:Clicked('socials.cmvp')"><FONT COLOR=WHITE>Socials</FONT></a>
-			<BR>
-			@endif@
-			@if?CheckAuthCode?AUTH_CMDFACTIONS=true@
-			<A href="javascript:Clicked('factions.cmvp')"><FONT COLOR=WHITE>Factions</FONT></a>
 			<BR>
 			@endif@
 			@if?CheckAuthCode?ANYMODAREAS=true@

@@ -26,7 +26,7 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
-   *. Achievements system -- define things to track (KILLS, EXPLORES, QUESTS, etc), and rewards (TITLES and/or Achievements).
+   *. Auto-Packaging for rooms with more than a particular number of items. Also consider more efficient item saves.
    *. Wants and Needs engine - similar to slavery system
    *. Start on Spell Research?
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
