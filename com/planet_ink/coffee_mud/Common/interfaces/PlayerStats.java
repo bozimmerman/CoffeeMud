@@ -724,6 +724,16 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 */
 	public Tracker getAchievementTracker(final Achievement A, final MOB mob);
 
+	/**
+	 * If an Achievement is modified or removed, this method will update the
+	 * internal player tracker for that achievement.  It does not delete old
+	 * achievements per se, just their trackers!
+	 * @param mob the mob to modify the tracker for.
+	 * @param achievementTattoo the tattoo/id of the achievement
+	 */
+	public void rebuildAchievementTracker(final MOB mob, String achievementTattoo);
+
+	
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;
 	/** Constant for month of birthday, as from {@link PlayerStats#getBirthday()} */

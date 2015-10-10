@@ -2466,7 +2466,7 @@ public class ListCmd extends StdCommand
 			str.append(CMStrings.padRight(CMParms.combineWSpaces(A.getRewards())+A.getTitleAward(),COL_LEN3)+" ");
 			str.append(CMStrings.padRight(A.getTargetCount()+"",COL_LEN4)+" ");
 			String miscVal = "";
-			for(String parmName : A.getAllParms())
+			for(String parmName : A.getEvent().getParameters())
 			{
 				if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS,parmName))
 				{

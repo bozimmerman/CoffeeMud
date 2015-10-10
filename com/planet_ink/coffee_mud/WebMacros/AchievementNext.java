@@ -9,12 +9,14 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -32,33 +34,33 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class AutoTitleNext extends StdWebMacro
+public class AchievementNext extends StdWebMacro
 {
-	@Override public String name() { return "AutoTitleNext"; }
+	@Override public String name() { return "AchievementNext"; }
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
-		final String last=httpReq.getUrlParameter("AUTOTITLE");
+		final String last=httpReq.getUrlParameter("ACHIEVEMENT");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null)
-				httpReq.removeUrlParameter("AUTOTITLE");
+				httpReq.removeUrlParameter("ACHIEVEMENT");
 			return "";
 		}
 		String lastID="";
-		for(final Enumeration<String> r=CMLib.titles().autoTitles();r.hasMoreElements();)
+		for(final Enumeration<Achievement> r=CMLib.achievements().achievements();r.hasMoreElements();)
 		{
-			final String title=r.nextElement();
+			final String title=r.nextElement().getTattoo();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!title.equals(lastID))))
 			{
-				httpReq.addFakeUrlParameter("AUTOTITLE",title);
+				httpReq.addFakeUrlParameter("ACHIEVEMENT",title);
 				return "";
 			}
 			lastID=title;
 		}
-		httpReq.addFakeUrlParameter("AUTOTITLE","");
+		httpReq.addFakeUrlParameter("ACHIEVEMENT","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

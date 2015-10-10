@@ -158,8 +158,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			final String str2=V2.get(v2);
 			if(str2.length()>0)
+			{
 				if(CMLib.english().containsString(login, str2))
 					return true;
+			}
 		}
 		return false;
 	}
@@ -188,8 +190,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return false;
 
 		for(int c=0;c<login.length();c++)
+		{
 			if((login.charAt(c)!=' ')&&(!Character.isLetter(login.charAt(c))))
 				return false;
+		}
+		
 		for(final Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
 		{
 			final MOB D=d.nextElement();
@@ -376,11 +381,21 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				code=s.substring(0,x).toUpperCase().trim();
 				boolean found=false;
 				for (final String element : VALID_SCRIPT_CODES)
+				{
 					if(element.equals(code))
-					{ code=element; found=true; break;}
+					{ 
+						code=element; 
+						found=true; 
+						break;
+					}
 					else
 					if(element.startsWith(code))
-					{ code=element; found=true; break;}
+					{ 
+						code=element; 
+						found=true; 
+						break;
+					}
+				}
 				if(!found)
 				{
 					Log.errOut("CharCreation","Error in CHARCREATIONSCRIPTS, invalid code: "+code);
@@ -389,7 +404,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				s=s.substring(x+1);
 			}
 			List<String> V=extraScripts.get(code);
-			if(V==null){ V=new Vector<String>(); extraScripts.put(code,V);}
+			if(V==null)
+			{ 
+				V=new Vector<String>(); 
+				extraScripts.put(code,V);
+			}
 			V.add(s.trim());
 		}
 		return extraScripts;
@@ -410,9 +429,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			acct.setPassword(password);
 			CMLib.database().DBCreateAccount(acct);
 			CMLib.players().addAccount(acct);
-			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), acct.getAccountName(), "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), acct.getAccountName(),
+			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), acct.getAccountName(), 
+				"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), acct.getAccountName(),
 				"Password for "+acct.getAccountName(),
-				"Your password for "+acct.getAccountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
+				"Your password for "+acct.getAccountName()+" is: "+password+"\n\r"
+				+ "You can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\r"
+				+ "After creating a character, you may use the PASSWORD command to change it once you are online.");
 			session.println(L("Your account has been created.  You will receive an email with your password shortly."));
 			try{Thread.sleep(2000);}catch(final Exception e){}
 			session.stopSession(false,false,false);
@@ -448,9 +470,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final StringBuilder list = new StringBuilder("");
 		int highestAttribute=-1;
 		for(final int attrib : CharStats.CODES.BASECODES())
+		{
 			if((highestAttribute<0)
 			||(mob.baseCharStats().getStat(attrib)>mob.baseCharStats().getStat(highestAttribute)))
 				highestAttribute=attrib;
+		}
 		for(final Iterator<CharClass> i=classes.iterator(); i.hasNext(); )
 		{
 			final CharClass C = i.next();
@@ -516,7 +540,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((CMSecurity.isDisabled(CMSecurity.DisFlag.LOGINS))
 		&&(!CMSecurity.isASysOp(mob))
 		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, mob.Name()))
-		&&(!((mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null)&&(CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, mob.playerStats().getAccount().getAccountName()))))
+		&&(!((mob.playerStats()!=null)
+			&&(mob.playerStats().getAccount()!=null)
+			&&(CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, mob.playerStats().getAccount().getAccountName()))))
 		&&(!((mob.session()!=null)&&(CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, mob.session().getAddress())))))
 		{
 			StringBuffer rejectText=Resources.getFileResource("text/nologins.txt",true);

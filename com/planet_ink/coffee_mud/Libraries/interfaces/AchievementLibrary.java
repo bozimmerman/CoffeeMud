@@ -39,17 +39,29 @@ public interface AchievementLibrary extends CMLibrary
 	
 	public enum Event
 	{
-		KILLS,
-		STATVALUE,
-		FACTION,
-		EXPLORE,
-		CRAFTING,
-		MENDER,
-		SKILLUSE,
-		QUESTOR,
-		ACHIEVER, 
-		ROOMENTER
+		KILLS(new String[]{"NUM","ZAPPERMASK"}),
+		STATVALUE(new String[]{"VALUE","ABOVEBELOW","STAT"}),
+		FACTION(new String[]{"VALUE","ABOVEBELOW","ID"}),
+		EXPLORE(new String[]{"PERCENT","AREA"}),
+		CRAFTING(new String[]{"NUM","ABILITYID"}),
+		MENDER(new String[]{"NUM","ABILITYID"}),
+		SKILLUSE(new String[]{"NUM","ABILITYID"}),
+		QUESTOR(new String[]{"NUM","PLAYERMASK","QUESTMASK"}),
+		ACHIEVER(new String[]{"ACHIEVEMENTLIST"}), 
+		ROOMENTER(new String[]{"ROOMID"})
 		;
+		private final String[] parameters;
+
+		private Event(final String[] extraParameters)
+		{
+			parameters = CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, extraParameters);
+		}
+
+		public String[] getParameters()
+		{
+			return parameters;
+		}
+
 		public static String[] getEventChoices()
 		{
 			final List<String> choices=new ArrayList<String>(Event.values().length);
@@ -62,38 +74,36 @@ public interface AchievementLibrary extends CMLibrary
 	public interface Achievement
 	{
 		public Event getEvent();
-		
+
 		public String getTattoo();
-		
+
 		public Tracker getTracker(int oldCount);
-		
+
 		public String parseParms(String parms);
-		
+
 		public String getDisplayStr();
-		
+
 		public String getTitleAward();
-		
+
 		public String[] getRewards();
-		
+
 		public int getTargetCount();
-		
+
 		public boolean isTargetFloor();
-		
+
 		public boolean isSavableTracker();
-		
-		public String[] getAllParms();
-		
+
 		public String getRawParmVal(String str);
 	}
 	
 	public interface Tracker
 	{
 		public Achievement getAchievement();
-		
+
 		public boolean isAchieved(MOB mob);
-		
+
 		public boolean testBump(MOB mob, Object... parms);
-		
+
 		/**
 		 * Returns the count/score to show for the given mob.  If the
 		 * achievement of this tracker is Savable, then the mob may be
@@ -110,6 +120,7 @@ public interface AchievementLibrary extends CMLibrary
 	public Enumeration<Achievement> achievements();
 	public Achievement getAchievement(String named);
 	public Achievement deleteAchievement(String named);
-	public void addModifyAchievement(final MOB mob, final String tattoo, Achievement A);
+	public void resaveAchievements(final String modifyTattoo);
+	public boolean addModifyAchievement(final MOB mob, final String tattoo, Achievement A);
 	public void possiblyBumpAchievement(final MOB mob, final Event E, Object... parms);
 }

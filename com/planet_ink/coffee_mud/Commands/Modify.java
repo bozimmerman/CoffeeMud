@@ -1448,8 +1448,8 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
-		CMLib.achievements().addModifyAchievement(mob, tattoo, A);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The vanity of the world just changed!"));
+		if(CMLib.achievements().addModifyAchievement(mob, A.getTattoo(), A))
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The vanity of the world just changed!"));
 		return true;
 	}
 

@@ -886,8 +886,8 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		CMLib.achievements().addModifyAchievement(mob, tattoo, null);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The vanity of the world just increased!"));
+		if(CMLib.achievements().addModifyAchievement(mob, tattoo, null))
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The vanity of the world just increased!"));
 	}
 
 	public void languages(MOB mob, Vector commands)

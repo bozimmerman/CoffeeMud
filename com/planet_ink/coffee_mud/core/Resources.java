@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.*;
 
 
@@ -228,7 +229,8 @@ public class Resources
 
 	/**
 	 * Returns the stringbuffer content for the given resource filename, from
-	 * the resources for the current calling thread group.
+	 * the resources for the current calling thread group.  This method
+	 * will normalize text data line endings for mud display. 
 	 * @param filename the resource filename (/resources/[FILENAME])
 	 * @param reportErrors if true, file errors will be logged
 	 * @return the StringBuffer of the file at that resource filename, or null of not found
@@ -236,6 +238,19 @@ public class Resources
 	public static final StringBuffer getFileResource(final String filename, final boolean reportErrors)
 	{
 		return r()._getFileResource(filename,reportErrors);
+	}
+
+	/**
+	 * Returns the stringbuffer content for the given resource filename, from
+	 * the resources for the current calling thread group. This method returns
+	 * the raw file text, with unnormalized line endings.
+	 * @param filename the resource filename (/resources/[FILENAME])
+	 * @param reportErrors if true, file errors will be logged
+	 * @return the StringBuffer of the file at that resource filename, or null of not found
+	 */
+	public static final StringBuffer getRawFileResource(final String filename, final boolean reportErrors)
+	{
+		return r()._getRawFileResource(filename,reportErrors);
 	}
 	
 	/**
@@ -698,6 +713,7 @@ public class Resources
 
 	/**
 	 * Returns the stringbuffer content for the given resource filename.
+	 * Will normalize line endings for mud display.
 	 * @param filename the resource filename (/resources/[FILENAME])
 	 * @param reportErrors if true, file errors will be logged
 	 * @return the StringBuffer of the file at that resource filename, or null of not found
@@ -708,6 +724,36 @@ public class Resources
 		if(rsc != null)
 			return _toStringBuffer(rsc);
 		final StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors?CMFile.FLAG_LOGERRORS:0).text();
+		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
+			_submitResource(filename,buf);
+		return buf;
+	}
+
+	/**
+	 * Returns the stringbuffer content for the given resource filename.
+	 * Will NOT normalize line endings for mud display.
+	 * @param filename the resource filename (/resources/[FILENAME])
+	 * @param reportErrors if true, file errors will be logged
+	 * @return the StringBuffer of the file at that resource filename, or null of not found
+	 */
+	public final StringBuffer _getRawFileResource(final String filename, final boolean reportErrors)
+	{
+		final Object rsc=_getResource(filename);
+		if(rsc != null)
+			return _toStringBuffer(rsc);
+		String charSet=CMProps.getVar(CMProps.Str.CHARSETINPUT);
+		if((charSet==null)||(charSet.length()==0))
+			charSet=Charset.defaultCharset().name();
+		StringBuffer buf;
+		try
+		{
+			buf = new StringBuffer(new String(new CMFile(makeFileResourceName(filename),null,reportErrors?CMFile.FLAG_LOGERRORS:0).raw(),charSet));
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			Log.errOut(e);
+			buf=new StringBuffer("");
+		}
 		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
 			_submitResource(filename,buf);
 		return buf;

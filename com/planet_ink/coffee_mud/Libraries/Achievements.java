@@ -48,6 +48,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	
 	private List<Achievement> 			achievements = null;
 	private Map<Event,List<Achievement>>eventMap	 = null;
+	
+	private final static String achievementFilename  = "achievements.txt";
 
 	@Override
 	public String evaluateAchievement(String row, boolean addIfPossible)
@@ -127,12 +129,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 				
 				@Override
-				public String[] getAllParms()
-				{
-					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"NUM","ZAPPERMASK"});
-				}
-				
-				@Override
 				public String getRawParmVal(String str)
 				{
 					return CMParms.getParmStr(params,str,"");
@@ -144,7 +140,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final Achievement me=this;
 					return new Tracker()
 					{
-						volatile int count = oldCount;
+						private volatile int count = oldCount;
 
 						@Override
 						public Achievement getAchievement() 
@@ -250,12 +246,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return rewardList;
 				}
 
-				@Override
-				public String[] getAllParms()
-				{
-					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"VALUE","ABOVEBELOW","STAT"});
-				}
-				
 				@Override
 				public String getRawParmVal(String str)
 				{
@@ -370,12 +360,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String[] getAllParms()
-				{
-					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"VALUE","ABOVEBELOW","ID"});
-				}
-				
-				@Override
 				public String getRawParmVal(String str)
 				{
 					return CMParms.getParmStr(params,str,"");
@@ -488,12 +472,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return true;
 				}
 
-				@Override
-				public String[] getAllParms()
-				{
-					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"PERCENT","AREA"});
-				}
-				
 				@Override
 				public String getRawParmVal(String str)
 				{
@@ -621,12 +599,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String[] getAllParms()
-				{
-					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"NUM","ABILITYID"});
-				}
-				
-				@Override
 				public String getRawParmVal(String str)
 				{
 					return CMParms.getParmStr(params,str,"");
@@ -638,7 +610,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private int count = 0;
+						private volatile int count = oldCount;
 						
 						@Override
 						public Achievement getAchievement() 
@@ -773,12 +745,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String[] getAllParms()
-				{
-					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"NUM","ABILITYID"});
-				}
-				
-				@Override
 				public String getRawParmVal(String str)
 				{
 					return CMParms.getParmStr(params,str,"");
@@ -790,7 +756,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private int count = 0;
+						private volatile int count = oldCount;
 						
 						@Override
 						public Achievement getAchievement() 
@@ -938,12 +904,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String[] getAllParms()
-				{
-					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"NUM","PLAYERMASK","QUESTMASK"});
-				}
-				
-				@Override
 				public String getRawParmVal(String str)
 				{
 					return CMParms.getParmStr(params,str,"");
@@ -955,7 +915,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private int count = 0;
+						private volatile int count = oldCount;
 						
 						@Override
 						public Achievement getAchievement() 
@@ -1093,12 +1053,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String[] getAllParms()
-				{
-					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"ACHIEVEMENTLIST"});
-				}
-				
-				@Override
 				public String getRawParmVal(String str)
 				{
 					return CMParms.getParmStr(params,str,"");
@@ -1213,12 +1167,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return rewardList;
 				}
 
-				@Override
-				public String[] getAllParms()
-				{
-					return CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, new String[]{"ROOMID"});
-				}
-				
 				@Override
 				public String getRawParmVal(String str)
 				{
@@ -1486,36 +1434,150 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return A;
 	}
 	
+	private String getAchievementsHelp(Map<String,Map<String,String>> helpMap, Event E, String parmName)
+	{
+		Map<String,String> entryMap;
+		if(E==null)
+			entryMap = helpMap.get("");
+		else
+			entryMap = helpMap.get(E.name());
+		if((entryMap == null) && (E!=null))
+			entryMap = helpMap.get("");
+		if(entryMap == null)
+		{
+			for(Map<String,String> map : helpMap.values())
+			{
+				if(map.containsKey(parmName))
+				{
+					entryMap = map;
+					break;
+				}
+			}
+		}
+		if(entryMap == null)
+			return null;
+		if(entryMap.containsKey(parmName))
+			return entryMap.get(parmName);
+		for(Map<String,String> map : helpMap.values())
+		{
+			if(map.containsKey(parmName))
+				return entryMap.get(parmName);
+		}
+		return null;
+	}
+	
+	private Map<String,Map<String,String>> getAchievementsHelp()
+	{
+		final Map<String,Map<String,String>> help = new TreeMap<String,Map<String,String>>();
+		
+		final List<String> V=Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename,true));
+		Resources.removeResource(achievementFilename);
+		String eventName = "";
+		String keyName = "";
+		for(String s : V)
+		{
+			s=s.trim();
+			if((s.length()==0)
+			||((!s.startsWith("#"))&&(!s.startsWith(";"))))
+				continue;
+			s=s.substring(1).trim();
+			int x=s.indexOf("EVENT=\"");
+			if(x>=0)
+			{
+				int y=s.indexOf("\"",x+7);
+				if(y>x)
+					eventName=s.substring(x+7,y);
+				if(CMath.s_valueOf(Event.class, eventName)==null)
+					eventName="";
+				continue;
+			}
+			Map<String,String> parmMap=help.get(eventName);
+			if(parmMap==null)
+			{
+				parmMap=new TreeMap<String,String>();
+				help.put(eventName, parmMap);
+			}
+			String value;
+			if(s.startsWith("["))
+			{
+				x=s.indexOf(']',1);
+				if(x>0)
+				{
+					keyName = s.substring(1,x);
+					value = s.substring(x+1).trim(); 
+				}
+				else
+					value="";
+			}
+			else
+				value = s;
+			if((keyName.length()>0)&&(value.length()>0))
+			{
+				String oldS=parmMap.containsKey(keyName) ? parmMap.get(keyName) : "";
+				value = oldS + " " + value;
+				parmMap.put(keyName, value.trim());
+			}
+			
+		}
+		return help;
+	}
+
+	public String buildRow(final Event E, Map<String,String> parmTree)
+	{
+		StringBuilder str=new StringBuilder(parmTree.get("TATTOO")+"=");
+		for(final String parmName : E.getParameters())
+		{
+			String value = parmTree.get(parmName);
+			if((value != null) && (value.trim().length()>0))
+			{
+				str.append(parmName+"=");
+				if(CMath.isMathExpression(value))
+					str.append(value).append(" ");
+				else
+					str.append("\"").append(CMStrings.replaceAll(CMStrings.replaceAll(value, "\\", "\\\\"), "\"", "\\\"")).append("\" ");
+			}
+		}
+		return str.toString();
+	}
+	
+	private void fillAchievementParmTree(final Map<String,String> parmTree, final Achievement A)
+	{
+		parmTree.put("TATTOO",A.getTattoo());
+		parmTree.put("EVENT", A.getEvent().name());
+		parmTree.put("DISPLAY", A.getDisplayStr());
+		parmTree.put("TITLE", A.getTitleAward());
+		parmTree.put("REWARDS", CMParms.combineWSpaces(A.getRewards()));
+		for(String s : A.getEvent().getParameters())
+		{
+			if(!CMParms.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, s))
+				parmTree.put(s, A.getRawParmVal(s));
+		}
+	}
+	
 	@Override
-	public void addModifyAchievement(final MOB mob, final String tattoo, Achievement A)
+	public boolean addModifyAchievement(final MOB mob, final String tattoo, Achievement A)
 	{
 		if(mob.isMonster())
-			return;
+			return false;
 		boolean ok=false;
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
-		TreeMap<String,String> parmTree=new TreeMap<String,String>();
-		if(A==null)
+		final TreeMap<String,String> parmTree=new TreeMap<String,String>();
+		for(final Event E : Event.values())
 		{
-			for(String s : BASE_ACHIEVEMENT_PARAMETERS)
+			for(String s : E.getParameters())
 				parmTree.put(s,"");
-			parmTree.put("TATTOO",tattoo.toUpperCase().trim());
-			parmTree.put("EVENT","KILLS");
 		}
-		else
+		final Map<String,Map<String,String>> helpMap = getAchievementsHelp();
+		Event E=Event.KILLS;
+		parmTree.put("TATTOO",tattoo.toUpperCase().trim());
+		if(A!=null)
 		{
-			parmTree.put("TATTOO",A.getTattoo());
-			parmTree.put("EVENT", A.getEvent().name());
-			parmTree.put("DISPLAY", A.getDisplayStr());
-			parmTree.put("TITLE", A.getTitleAward());
-			parmTree.put("REWARDS", CMParms.combineWSpaces(A.getRewards()));
-			for(String s : A.getAllParms())
-			{
-				if(!CMParms.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, s))
-					parmTree.put(s, A.getRawParmVal(s));
-			}
+			E=A.getEvent();
+			fillAchievementParmTree(parmTree,A);
 		}
+		parmTree.put("EVENT",E.name());
 		try 
 		{
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
@@ -1523,28 +1585,152 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				int showNumber=0;
 				String help;
 				
-				help=L("Enter the type of achievement event.");
-				CMLib.genEd().prompt(mob, parmTree.get("EVENT"), ++showNumber, showFlag, "Event", false, false, help, CMEvalStrChoice.INSTANCE, Event.getEventChoices());
-				//TODO: Finish, somehow
-				if(showFlag<-900){ ok=true; break;}
-				if(showFlag>0){ showFlag=-1; continue;}
-				showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+				help=getAchievementsHelp(helpMap,null,"EVENT");
+				parmTree.put("EVENT",CMLib.genEd().prompt(mob, parmTree.get("EVENT"), ++showNumber, showFlag, "Event Type", false, false, help, CMEvalStrChoice.INSTANCE, Event.getEventChoices()));
+				E = (Event)CMath.s_valueOf(Event.class, parmTree.get("EVENT"));
+				
+				help=getAchievementsHelp(helpMap,null,"DISPLAY");
+				parmTree.put("DISPLAY",CMLib.genEd().prompt(mob, parmTree.get("DISPLAY"), ++showNumber, showFlag, "Display Desc", false, false, help, null, null));
+				
+				help=getAchievementsHelp(helpMap,null,"TITLE");
+				parmTree.put("TITLE",CMLib.genEd().prompt(mob, parmTree.get("TITLE"), ++showNumber, showFlag, "Title Award", true, false, help, null, null));
+				
+				help=getAchievementsHelp(helpMap,null,"REWARDS");
+				parmTree.put("REWARDS",CMLib.genEd().prompt(mob, parmTree.get("REWARDS"), ++showNumber, showFlag, "Rewards List", true, false, help, null, null));
+				
+				for(final String parmName : E.getParameters())
+				{
+					if(!CMStrings.contains(BASE_ACHIEVEMENT_PARAMETERS, parmName))
+					{
+						help=getAchievementsHelp(helpMap,E,parmName);
+						parmTree.put(parmName,CMLib.genEd().prompt(mob, parmTree.get(parmName), ++showNumber, showFlag, CMStrings.capitalizeAndLower(parmName), false, false, help, null, null));
+					}
+				}
+				
+				for(final String parmName : parmTree.keySet())
+				{
+					if((!parmName.equals("TATTOO"))&&(!CMStrings.contains(E.getParameters(), parmName)))
+						parmTree.put(parmName, "");
+				}
+				
+				String achievementRow = buildRow(E,parmTree);
+				String err = evaluateAchievement(achievementRow, false);
+				if((err != null)&&(err.trim().length()>0)&&(mob.session()!=null))
+				{
+					mob.session().println("^HERRORS: ^r"+err+"^N");
+				}
+				else
+				if(showFlag<-900)
+				{ 
+					ok=true; 
+					break;
+				}
+				if(showFlag>0)
+				{ 
+					showFlag=-1; 
+					continue;
+				}
+				final String promptStr=mob.session().prompt(L("Edit which (or CANCEL)? "),"");
+				showFlag=CMath.s_int(promptStr);
 				if(showFlag<=0)
 				{
-					showFlag=-1;
-					ok=true;
+					if(promptStr.equalsIgnoreCase("CANCEL"))
+					{
+						mob.tell(L("Canceled."));
+						return false;
+					}
+					else
+					if((err != null)&&(err.trim().length()>0)&&(mob.session()!=null))
+					{
+						mob.session().println("^HCorrect errors first or enter CANCEL: ^r"+err+"^N");
+						showFlag=-1;
+						continue;
+					}
+					else
+					{
+						showFlag=-1;
+						ok=true;
+					}
 				}
 			}
 			if(A!=null)
 			{
 				this.deleteAchievement(A.getTattoo());
 			}
+			this.evaluateAchievement(buildRow(E,parmTree), true);
+			for(Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
+			{
+				final MOB M=m.nextElement();
+				if(M.playerStats()!=null)
+				{
+					M.playerStats().rebuildAchievementTracker(M, parmTree.get("TATTOO"));
+				}
+			}
+			this.resaveAchievements(parmTree.get("TATTOO"));
+			return true;
 		} 
 		catch (IOException e) 
 		{
+			return false;
 		}
 	}
 
+	@Override
+	public void resaveAchievements(final String modifyTattoo)
+	{
+		final StringBuffer buf = Resources.getRawFileResource(achievementFilename,true);
+		Resources.removeResource(achievementFilename);
+		final List<String> V=Resources.getFileLineVector(buf);
+		final StringBuffer newFileData = new StringBuffer("");
+		final Map<String,Achievement> map=new TreeMap<String,Achievement>();
+		for(final Enumeration<Achievement> a=achievements();a.hasMoreElements();)
+		{
+			final Achievement A=a.nextElement();
+			map.put(A.getTattoo(), A);
+		}
+		final String EOL= Resources.getEOLineMarker(buf);
+		final Set<String> added = new HashSet<String>();
+		for(String row : V)
+		{
+			if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
+				newFileData.append(row).append(EOL);
+			else
+			{
+				int x=row.indexOf('=');
+				if(x<=0)
+					newFileData.append(row).append(EOL);
+				else
+				{
+					final String tatt = row.substring(0,x).trim();
+					if(map.containsKey(tatt))
+					{
+						final Achievement A=map.get(tatt);
+						if((modifyTattoo != null)&&(modifyTattoo.equalsIgnoreCase(tatt)))
+						{
+							final Map<String,String> parmTree = new TreeMap<String,String>();
+							fillAchievementParmTree(parmTree,A);
+							newFileData.append(buildRow(A.getEvent(),parmTree)).append(EOL);
+						}
+						else
+							newFileData.append(row).append(EOL);
+						added.add(tatt);
+					}
+				}
+			}
+		}
+		for(final Enumeration<Achievement> a=achievements();a.hasMoreElements();)
+		{
+			final Achievement A=a.nextElement();
+			if(!added.contains(A.getTattoo()))
+			{
+				final Map<String,String> parmTree = new TreeMap<String,String>();
+				fillAchievementParmTree(parmTree,A);
+				newFileData.append(buildRow(A.getEvent(),parmTree)).append(EOL);
+			}
+		}
+		Resources.updateFileResource(achievementFilename, newFileData);
+		Resources.removeResource(achievementFilename);
+	}
 	
 	private boolean evaluateAchievement(final Achievement A, final PlayerStats pStats, final MOB mob)
 	{
@@ -1582,7 +1768,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	{
 		achievements=new LinkedList<Achievement>();
 		eventMap=new TreeMap<Event,List<Achievement>>();
-		final List<String> V=Resources.getFileLineVector(Resources.getFileResource("achievements.txt",true));
+		final List<String> V=Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename,true));
+		Resources.removeResource(achievementFilename);
 		String WKID=null;
 		for(int v=0;v<V.size();v++)
 		{

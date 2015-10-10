@@ -1135,6 +1135,21 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return T;
 	}
+
+	@Override
+	public void rebuildAchievementTracker(final MOB mob, String achievementTattoo)
+	{
+		Achievement A=CMLib.achievements().getAchievement(achievementTattoo);
+		if(A!=null)
+		{
+			if(achievementers.containsKey(A.getTattoo()))
+				achievementers.put(A.getTattoo(), A.getTracker(achievementers.get(A.getTattoo()).getCount(mob)));
+			else
+				achievementers.put(A.getTattoo(), A.getTracker(0));
+		}
+		else
+			achievementers.remove(achievementTattoo);
+	}
 	
 	@Override
 	public long leveledDateTime(int level)

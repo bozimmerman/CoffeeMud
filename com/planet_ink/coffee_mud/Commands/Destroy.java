@@ -825,7 +825,7 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-		final String tattoo=CMParms.combine(commands,2);
+		String tattoo=CMParms.combine(commands,2);
 		final Achievement A=CMLib.achievements().getAchievement(tattoo);
 		if(A==null)
 		{
@@ -833,7 +833,19 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
-		CMLib.achievements().deleteAchievement(tattoo);
+		tattoo = A.getTattoo();
+		if(CMLib.achievements().deleteAchievement(tattoo)!=null)
+		{
+			for(Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
+			{
+				final MOB M=m.nextElement();
+				if(M.playerStats()!=null)
+				{
+					M.playerStats().rebuildAchievementTracker(M, tattoo);
+				}
+			}
+			CMLib.achievements().resaveAchievements(tattoo);
+		}
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The vanity of the world just decreased!"));
 		return true;
 	}
