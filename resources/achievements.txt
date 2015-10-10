@@ -26,10 +26,11 @@
 # 
 # ... EVENT="STATVALUE" ABOVEBELOW="[ABOVE/BELOW]" STAT="[STAT] VALUE=[VALUE] ...
 #     [STAT] is the name of the player stat to check.  These are things like
-#     CURRENT STRENGTH, MAXSTRENGTH, WEIGHT, CURRENT ARMOR, MANA, CURRENT MANA.
-#     As you can see, stats that have a base (unmodified) value are entered 
-#     simply, where the modified score is accessed by prefixing with CURRENT.
-#     QUESTPOINTS
+#     CURRENT STRENGTH, MAXSTRENGTH, WEIGHT, CURRENT ARMOR, MANA, CURRENT MANA,
+#     QUESTPOINTS, etc. As you can see, stats that have a base (unmodified) value 
+#     are entered simply, where the modified score is accessed by prefixing with 
+#     CURRENT.
+
 #     [VALUE] is the numeric value that the stat must be at or above when
 #     the achievement is checked in order to gain.
 #     [ABOVE/BELOW] is either ABOVE if the faction must be above the value, or 
