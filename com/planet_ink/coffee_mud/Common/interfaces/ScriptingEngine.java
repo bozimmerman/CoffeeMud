@@ -19,9 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.ScriptableObject;
-
 /*
    Copyright 2005-2015 Bo Zimmerman
 

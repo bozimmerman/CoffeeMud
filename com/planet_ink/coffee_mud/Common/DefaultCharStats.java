@@ -21,9 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.*;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.ScriptableObject;
-
 /*
    Copyright 2001-2015 Bo Zimmerman
 

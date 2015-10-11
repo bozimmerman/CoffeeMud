@@ -18,11 +18,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-//import java.lang.reflect.Modifier;
-
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.ScriptableObject;
-
 
 /*
    Copyright 2005-2015 Bo Zimmerman
@@ -819,8 +814,10 @@ public class CMLib
 		if(O==null)
 			return null;
 		for(final Library lbry : Library.values())
+		{
 			if(CMClass.checkAncestry(O.getClass(),lbry.ancestor))
 				return lbry;
+		}
 		return null;
 	}
 
