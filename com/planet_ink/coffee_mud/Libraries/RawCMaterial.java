@@ -250,7 +250,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				I=parts.get(p);
 				if(bundleSize>1)
 				{
-					final PackagedItems thePackage=(PackagedItems)CMClass.getItem("GenPackagedItems");
+					final PackagedItems thePackage=(PackagedItems)CMClass.getItem(pkg.ID());
 					thePackage.packageMe(I, bundleSize);
 					for(int pp=p;(pp<p+bundleSize) && (pp<parts.size());pp++)
 						parts.get(pp).destroy();

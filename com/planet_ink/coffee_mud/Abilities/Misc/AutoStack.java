@@ -123,7 +123,8 @@ public class AutoStack extends StdAbility
 					winner = false;
 					for (final Pair<Item, List<Item>> trialList : sameItems)
 					{
-						if (trialList.first.sameAs(I))
+						if((I.container()==trialList.first.container())
+						&&(trialList.first.sameAs(I)))
 						{
 							winner = true;
 							trialList.second.add(I);
@@ -161,7 +162,8 @@ public class AutoStack extends StdAbility
 								boolean alreadyPacked = false;
 								for (Pair<Item, PackagedItems> oldPackPair : oldPackChecks)
 								{
-									if (set.first.name().equals(oldPackPair.first.name()))
+									if((set.first.name().equals(oldPackPair.first.name()))
+									&&(set.first.container() == oldPackPair.second.container()))
 									{
 										if (set.first.sameAs(oldPackPair.first))
 										{
@@ -189,6 +191,7 @@ public class AutoStack extends StdAbility
 										}
 									}
 									newPack.setExpirationDate(time);
+									newPack.setContainer(set.first.container());
 									newPackages.add(newPack);
 								}
 								for (final Item I : set.second)

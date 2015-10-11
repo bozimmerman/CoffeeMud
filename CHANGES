@@ -18,6 +18,7 @@
   17. Items can now have slots -- see help Prop_ItemSlot and Prop_ItemSlotFiller for more information.
   18. New DISABLE flag: ANSIPROMPT for character creation tweaking.
   19. New Achievements system: see /resources/achievements.txt, MUDGrinder, or the GameBuildersGuide for more info.
+  20. New Misc Property: AutoStack -- for automatically stacking/packaging identical items. 
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)
