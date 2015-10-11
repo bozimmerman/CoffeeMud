@@ -1559,7 +1559,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public List<Container> possibleContainers(MOB mob, List<String> commands, Filterer<Environmental> filter, boolean withContentOnly)
 	{
-		final Vector<Container> V=new Vector<Container>();
+		final Vector<Container> V=new Vector<Container>(1);
 		if(commands.size()==1)
 			return V;
 
@@ -1735,67 +1735,107 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		int maxToGive=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(CMLib.english().numPossibleGold(mob,CMParms.combine(commands,0))==0)
-		&&(CMath.s_int(commands.get(0))>0))
+		&&(CMLib.english().numPossibleGold(mob,CMParms.combine(commands,0))==0))
 		{
-			maxToGive=CMath.s_int(commands.get(0));
-			commands.set(0,"all");
-			if(breakPackages)
+			if(CMath.s_int(commands.get(0))>0)
 			{
-				boolean throwError=false;
-				if((commands.size()>2)&&("FROM".startsWith(commands.get(1).toUpperCase())))
+				maxToGive=CMath.s_int(commands.get(0));
+				commands.set(0,"all");
+				if(breakPackages)
 				{
-					throwError=true;
-					commands.remove(1);
-				}
-				final String packCheckName=CMParms.combine(commands,1);
-				Environmental fromWhat=null;
-				if(checkWhat instanceof MOB)
-					fromWhat=mob.findItem(null,packCheckName);
-				else
-				if(checkWhat instanceof Room)
-					fromWhat=((Room)checkWhat).fetchFromMOBRoomFavorsItems(mob,null,packCheckName,Wearable.FILTER_UNWORNONLY);
-				if(fromWhat instanceof Item)
-				{
-					int max=mob.maxCarry();
-					if(max>3000)
-						max=3000;
-					if(maxToGive>max)
+					boolean throwError=false;
+					if((commands.size()>2)&&("FROM".startsWith(commands.get(1).toUpperCase())))
 					{
-						CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You can only handle @x1 at a time.",""+max));
-						return -1;
+						throwError=true;
+						commands.remove(1);
 					}
-					final Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
-					if(toWhat==null)
+					final String packCheckName=CMParms.combine(commands,1);
+					Environmental fromWhat=null;
+					if(checkWhat instanceof MOB)
+						fromWhat=mob.findItem(null,packCheckName);
+					else
+					if(checkWhat instanceof Room)
+						fromWhat=((Room)checkWhat).fetchFromMOBRoomFavorsItems(mob,null,packCheckName,Wearable.FILTER_UNWORNONLY);
+					if(fromWhat instanceof Item)
 					{
-						if(throwError)
+						int max=mob.maxCarry();
+						if(max>3000)
+							max=3000;
+						if(maxToGive>max)
 						{
-							CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You can't get anything from @x1.",fromWhat.name()));
+							CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You can only handle @x1 at a time.",""+max));
 							return -1;
+						}
+						final Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
+						if(toWhat==null)
+						{
+							if(throwError)
+							{
+								CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You can't get anything from @x1.",fromWhat.name()));
+								return -1;
+							}
+						}
+						else
+						if(getOnly&&mob.isMine(fromWhat)&&mob.isMine(toWhat))
+						{
+							mob.tell(L("Ok"));
+							return -1;
+						}
+						else
+						if(commands.size()==1)
+							commands.add(toWhat.name());
+						else
+						{
+							final String O=commands.get(0);
+							commands.clear();
+							commands.add(O);
+							commands.add(toWhat.name());
 						}
 					}
 					else
-					if(getOnly&&mob.isMine(fromWhat)&&mob.isMine(toWhat))
+					if(throwError)
 					{
-						mob.tell(L("Ok"));
+						CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You don't see '@x1' here.",packCheckName));
 						return -1;
 					}
-					else
-					if(commands.size()==1)
-						commands.add(toWhat.name());
-					else
-					{
-						final String O=commands.get(0);
-						commands.clear();
-						commands.add(O);
-						commands.add(toWhat.name());
-					}
 				}
-				else
-				if(throwError)
+			}
+			else
+			if(!CMath.isInteger(commands.get(0)))
+			{
+				int x = CMParms.indexOfIgnoreCase(commands,"FROM");
+				if((x>0)&&(x<commands.size()-1))
 				{
-					CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You don't see '@x1' here.",packCheckName));
-					return -1;
+					final String packCheckName=CMParms.combine(commands,x+1);
+					final String getName = CMParms.combine(commands,0,x);
+					Environmental fromWhat=null;
+					if(checkWhat instanceof MOB)
+						fromWhat=mob.findItem(null,packCheckName);
+					else
+					if(checkWhat instanceof Room)
+						fromWhat=((Room)checkWhat).fetchFromMOBRoomFavorsItems(mob,null,packCheckName,Wearable.FILTER_UNWORNONLY);
+					if(fromWhat instanceof Item)
+					{
+						final Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,1,null);
+						if((toWhat==null)
+						||((!CMLib.english().containsString(toWhat.name(), getName))
+							&&(!CMLib.english().containsString(toWhat.displayText(), getName))))
+						{
+							return maxToGive;
+						}
+						else
+						if(getOnly&&mob.isMine(fromWhat)&&mob.isMine(toWhat))
+						{
+							mob.tell(L("Ok"));
+							return -1;
+						}
+						else
+						{
+							maxToGive = 1;
+							commands.clear();
+							commands.add(toWhat.name());
+						}
+					}
 				}
 			}
 		}

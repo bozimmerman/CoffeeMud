@@ -183,5 +183,6 @@ public interface Container extends Item, CloseableLockable
 												"SMOKEABLES",
 												"SS COMPONENTS",
 												"FOOTWEAR",
-												"RAWMATERIALS"};
+												"RAWMATERIALS"
+												};
 }

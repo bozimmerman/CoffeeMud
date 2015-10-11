@@ -34,7 +34,12 @@ import java.util.*;
 */
 public class StdContainer extends StdItem implements Container
 {
-	@Override public String ID(){	return "StdContainer";}
+	@Override 
+	public String ID()
+	{	
+		return "StdContainer";
+	}
+	
 	protected boolean isLocked=false;
 	protected boolean hasALock=false;
 	protected boolean isOpen=true;
@@ -430,9 +435,17 @@ public class StdContainer extends StdItem implements Container
 		super.executeMsg(myHost,msg);
 	}
 
-	@Override public long containTypes(){return containType;}
+	@Override 
+	public long containTypes()
+	{
+		return containType;
+	}
 
-	@Override public void setContainTypes(long containTypes){containType=containTypes;}
+	@Override 
+	public void setContainTypes(long containTypes)
+	{
+		containType=containTypes;
+	}
 
 	@Override
 	public boolean canContain(Item I)
@@ -440,7 +453,9 @@ public class StdContainer extends StdItem implements Container
 		if(containType==0)
 			return true;
 		for(int i=0;i<Container.CONTAIN_DESCS.length;i++)
+		{
 			if(CMath.isSet((int)containType,i))
+			{
 				switch((int)CMath.pow(2,i))
 				{
 				case CONTAIN_LIQUID:
@@ -523,15 +538,46 @@ public class StdContainer extends StdItem implements Container
 						return true;
 					break;
 				}
+			}
+		}
 		return false;
 	}
 
-	@Override public boolean isLocked(){return isLocked;}
-	@Override public boolean hasALock(){return hasALock;}
-	@Override public boolean isOpen(){return isOpen;}
-	@Override public boolean hasADoor(){return hasALid;}
-	@Override public boolean defaultsClosed(){return defaultsClosed;}
-	@Override public boolean defaultsLocked(){return defaultsLocked;}
+	@Override 
+	public boolean isLocked()
+	{
+		return isLocked;
+	}
+
+	@Override 
+	public boolean hasALock()
+	{
+		return hasALock;
+	}
+
+	@Override 
+	public boolean isOpen()
+	{
+		return isOpen;
+	}
+
+	@Override 
+	public boolean hasADoor()
+	{
+		return hasALid;
+	}
+
+	@Override 
+	public boolean defaultsClosed()
+	{
+		return defaultsClosed;
+	}
+
+	@Override 
+	public boolean defaultsLocked()
+	{
+		return defaultsLocked;
+	}
 
 	@Override
 	public void setDoorsNLocks(boolean newHasALid, boolean newIsOpen, boolean newDefaultsClosed, boolean newHasALock, boolean newIsLocked, boolean newDefaultsLocked)
@@ -551,16 +597,19 @@ public class StdContainer extends StdItem implements Container
 		if(!isGeneric())
 			setKeyName(miscText);
 	}
+
 	@Override
 	public String keyName()
 	{
 		return miscText;
 	}
+
 	@Override
 	public void setKeyName(String newKeyName)
 	{
 		miscText=newKeyName;
 	}
+
 	@Override
 	public void emptyPlease(boolean flatten)
 	{
@@ -588,6 +637,7 @@ public class StdContainer extends StdItem implements Container
 			}
 		}
 	}
+
 	@Override
 	public boolean isInside(final Item I)
 	{
@@ -687,5 +737,4 @@ public class StdContainer extends StdItem implements Container
 		}
 		return false;
 	}
-
 }
