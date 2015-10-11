@@ -979,7 +979,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final StringBuilder buf=new StringBuilder("");
 		if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
 		{
-			buf.append(L("@x1\n\rRejuv : @x2\n\rType  : @x3\n\rUses  : @x4\n\rHeight: @x5\n\rAbilty: @x6\n\rLevel : @x7\n\rExpire: @x8@x9\n\rMisc  : @x10\n\r@x11",
+			buf.append(L("@x1\n\r"
+					+ "Rejuv : @x2\n\r"
+					+ "Type  : @x3\n\r"
+					+ "Uses  : @x4\n\r"
+					+ "Height: @x5\n\r"
+					+ "Weight: @x12\n\r"
+					+ "Abilty: @x6\n\r"
+					+ "Level : @x7\n\r"
+					+ "Expire: @x8@x9\n\r"
+					+ "Misc  : @x10\n\r"
+					+ "@x11",
 					item.ID(),
 					""+item.basePhyStats().rejuv(),
 					item.ID(),
@@ -990,7 +1000,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					dispossessionTimeLeftString(item),
 					((item instanceof Container)?(L("\n\rCapac.: ")+((Container)item).capacity()):""),
 					""+item.text().length(),
-					item.text()));
+					item.text(),
+					""+item.basePhyStats().weight()));
 		}
 		if(item.description(mob).length()==0)
 			buf.append(L("You don't see anything special about @x1",item.name()));
