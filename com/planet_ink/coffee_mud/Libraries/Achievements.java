@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Tattoo;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Pattern;
 
 import java.io.IOException;
 import java.util.*;
