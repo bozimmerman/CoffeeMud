@@ -64,13 +64,13 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	@Override
 	public String name()
 	{
-		return "a package of " + numberOfItemsInPackage() + " " + Name().trim() + "(s)";
+		return L("a package of @x1 @x2(s)",""+numberOfItemsInPackage(), Name().trim());
 	}
 
 	@Override
 	public String displayText()
 	{
-		return "a package of " + numberOfItemsInPackage() + " " + Name().trim() + "(s) sit here.";
+		return L("a package of @x1 @x2(s) sit here.",""+numberOfItemsInPackage(), Name().trim());
 	}
 
 	@Override
@@ -109,7 +109,10 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 			return false;
 		name = CMLib.english().cleanArticles(I.Name());
 		displayText = "";
-		setDescription("The contents of the stack appears as follows:\n\r" + I.description());
+		if(I.description().trim().length()==0)
+			setDescription(L("The contents of the stack appears as follows: ") + I.name());
+		else
+			setDescription(L("The contents of the stack appears as follows: ") + "\n\r"+I.description());
 		basePhyStats().setLevel(I.basePhyStats().level());
 		basePhyStats().setWeight(I.basePhyStats().weight() * number);
 		basePhyStats().setHeight(I.basePhyStats().height());

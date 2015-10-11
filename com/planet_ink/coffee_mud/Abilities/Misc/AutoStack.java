@@ -97,7 +97,8 @@ public class AutoStack extends StdAbility
 			final Item I = i.nextElement();
 			if (I instanceof PackagedItems)
 				oldPackages.add((PackagedItems) I);
-			else if ((I != null) && (!(I instanceof RawMaterial)))
+			else 
+			if ((I != null) && (!(I instanceof RawMaterial)))
 			{
 				List<Item> itemList = groupedByName.get(I.name());
 				if (itemList == null)
@@ -168,7 +169,7 @@ public class AutoStack extends StdAbility
 										if (set.first.sameAs(oldPackPair.first))
 										{
 											alreadyPacked = true;
-											oldPackPair.second.setNumberOfItemsInPackage(oldPackPair.second.numberOfItems() + set.second.size());
+											oldPackPair.second.packageMe(oldPackPair.first, oldPackPair.second.numberOfItems() + set.second.size());
 										}
 									}
 								}
@@ -186,7 +187,8 @@ public class AutoStack extends StdAbility
 												time = 0;
 												break;
 											}
-											else if (I.expirationDate() > time)
+											else 
+											if (I.expirationDate() > time)
 												time = I.expirationDate();
 										}
 									}
