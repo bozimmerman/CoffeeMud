@@ -268,6 +268,13 @@
 	<TD WIDTH=100% COLSPAN=3><FONT COLOR=BLUE>Equipment: </FONT><FONT COLOR=BLACK>@PlayerData?INVENTORY@</FONT></TD>
 </TR>
 <TR>
+	<TD WIDTH=100% COLSPAN=3><FONT COLOR=BLUE>Achievements: </FONT>@AchievementNext?reset@ 
+	@loop@ @AchievementNext@ @if?AchievementData?ISPLAYERACHIEVED@<FONT COLOR=BLACK>@AchievementData?DISPLAY@</FONT> <FONT COLOR=BLACK>/</FONT>@endif@ @back@
+	<BR><FONT COLOR=BLUE>Achievement Progress: </FONT>@AchievementNext?reset@
+	@loop@ @AchievementNext@ @if?!AchievementData?ISPLAYERACHIEVED@ @if?AchievementData?ISPLAYERPROGRESS@<FONT COLOR=BLACK>@AchievementData?DISPLAY@ (@AchievementData?PLAYERPROGRESS@/@AchievementData?COUNT@)</FONT> <FONT COLOR=BLACK>/</FONT>@endif@ @endif@ @back@
+	</TD>
+</TR>
+<TR>
 	<TD WIDTH=100% COLSPAN=3><FONT COLOR=BLUE>Abilities: </FONT>@AbilityPlayerNext?reset@ @loop@ @AbilityPlayerNext@ <a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=BLACK>@AbilityName@</FONT></a> <FONT COLOR=BLACK>/</FONT> @back@</TD>
 </TR>
 <TR>

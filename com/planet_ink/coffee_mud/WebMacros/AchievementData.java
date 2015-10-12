@@ -289,6 +289,67 @@ public class AchievementData extends StdWebMacro
 				return "<!--EMPTY-->";
 			return " @break@";
 		}
+		if(parms.containsKey("PLAYERPROGRESS"))
+		{
+			if(A == null)
+				return "[no achievement error]";
+			final String playerID=httpReq.getUrlParameter("PLAYER");
+			if((playerID!=null)&&(playerID.length()>0))
+			{
+				final MOB M=CMLib.players().getLoadPlayer(playerID);
+				if(M!=null)
+				{
+					PlayerStats pStats = M.playerStats();
+					if(pStats!=null)
+					{
+						AchievementLibrary.Tracker T = pStats.getAchievementTracker(A, M);
+						str.append(""+T.getCount(M)).append(", ");
+					}
+					else
+						return "[bad player error]";
+				}
+				else
+					return "[unknown player error]";
+			}
+			else
+				return "[player reference error]";
+			
+		}
+		
+		if(parms.containsKey("ISPLAYERACHIEVED") || parms.containsKey("ISPLAYERPROGRESS"))
+		{
+			if(A == null)
+				return "[no achievement error]";
+			final String playerID=httpReq.getUrlParameter("PLAYER");
+			if((playerID!=null)&&(playerID.length()>0))
+			{
+				final MOB M=CMLib.players().getLoadPlayer(playerID);
+				if(M!=null)
+				{
+					PlayerStats pStats = M.playerStats();
+					if(pStats!=null)
+					{
+						AchievementLibrary.Tracker T = pStats.getAchievementTracker(A, M);
+						if(parms.containsKey("ISPLAYERACHIEVED"))
+						{
+							final boolean achieved = M.findTattoo(A.getTattoo()) != null;
+							if(parms.containsKey("ISPLAYERPROGRESS"))
+								str.append((achieved || (T.getCount(M) != 0)) ? "true" : "false").append(", ");
+							else
+								str.append(achieved ? "true" : "false").append(", ");
+						}
+						else
+							str.append(T.getCount(M) != 0 ? "true" : "false").append(", ");
+					}
+					else
+						return "[bad player error]";
+				}
+				else
+					return "[unknown player error]";
+			}
+			else
+				return "[player reference error]";
+		}
 		for(String otherParmName : E.getParameters())
 		{
 			if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, otherParmName))

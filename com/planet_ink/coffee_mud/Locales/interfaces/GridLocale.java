@@ -35,6 +35,13 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * Interface for a Room that virtually contains other rooms.  This is
+ * for producing substantially identical rooms in grid formations,
+ * or mazes, or other groupings where unique control of exits and
+ * content is not desired.
+ * @author Bo Zimmerman
+ */
 public interface GridLocale extends Room, GridZones
 {
 	public String getGridChildLocaleID();
@@ -51,7 +58,10 @@ public interface GridLocale extends Room, GridZones
 		public Room room;
 		public XYVector xy;
 		public ThinGridEntry(Room R, int x, int y)
-		{ room=R; xy=new XYVector(x,y);}
+		{ 
+			room=R; 
+			xy=new XYVector(x,y);
+		}
 	}
 	public static class ThinGridEntryConverter implements Converter<ThinGridEntry,Room>
 	{
