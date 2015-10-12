@@ -33,28 +33,82 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A Room, also known as a Locale, is the basic building blocks of a world
+ * map.  They represent abstract places where players, mobs, or items can
+ * be.  Rooms have titles, dynamic or static descriptions, automatic "skys", 
+ * domain codes to guide the engine on its physical makeup, gatherable resources,
+ * exits to other Rooms, and can each have their own behaviors and properties.
+ * 
+ * @author Bo Zimmerman
+ *
+ */
 public interface Room extends PhysicalAgent, ItemPossessor, Places
 {
+	/**
+	 * The room ID is the "address" of the room on the world map.  It
+	 * is generally of the format [AREA NAME]#[ID NUMBER] for primary
+	 * rooms.  All other rooms, such as GridLocale children, or temporary
+	 * or contingent rooms, have an empty string "" room ID.
+	 * GridLocale children (@see {@link GridLocale}) in particular may
+	 * have an address, if the GridLocale is, itself, a primary room, but
+	 * still have an empty roomID.  This is not related to the ID()
+	 * method.
+	 * @see Room#setRoomID(String)
+	 * @return room ID is the "address" of the primary room on the world map
+	 */
 	public String roomID();
+	
+	/**
+	 * Changes the room ID of this room.  This is not related to the ID()
+	 * method.
+	 * The room ID is the "address" of the room on the world map.  It
+	 * is generally of the format [AREA NAME]#[ID NUMBER] for primary
+	 * rooms.  All other rooms, such as GridLocale children, or temporary
+	 * or contingent rooms, have an empty string "" room ID.
+	 * GridLocale children (@see {@link GridLocale}) in particular may
+	 * have an address, if the GridLocale is, itself, a primary room, but
+	 * still have an empty roomID.
+	 * @see Room#roomID()
+	 * @param newRoomID the new room ID of this room
+	 */
 	public void setRoomID(String newRoomID);
 
+	/** Domain type mask denoting whether the room is indoor (has a roof) @see {@link Room#domainType()} */
 	public final static int INDOORS=128;
 
+	/** Domain type mask denoting whether the room is outdoors, in the city @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_CITY=0;
+	/** Domain type mask denoting whether the room is outdoors, in the woods @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_WOODS=1;
+	/** Domain type mask denoting whether the room is outdoors, in the rocky wastes @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_ROCKS=2;
+	/** Domain type mask denoting whether the room is outdoors, in the grassy plains @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_PLAINS=3;
+	/** Domain type mask denoting whether the room is outdoors, but underwater (think ocean) @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_UNDERWATER=4;
+	/** Domain type mask denoting whether the room is outdoors, up in the sky @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_AIR=5;
+	/** Domain type mask denoting whether the room is outdoors, on the surface of the water @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_WATERSURFACE=6;
+	/** Domain type mask denoting whether the room is outdoors, in the jungle @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_JUNGLE=7;
+	/** Domain type mask denoting whether the room is outdoors, in the swamp @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_SWAMP=8;
+	/** Domain type mask denoting whether the room is outdoors, in the desert @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_DESERT=9;
+	/** Domain type mask denoting whether the room is outdoors, in the hills @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_HILLS=10;
+	/** Domain type mask denoting whether the room is outdoors, in the mountains @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_MOUNTAINS=11;
+	/** Domain type mask denoting whether the room is outdoors, at a spaceport @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_SPACEPORT=12;
+	/** Domain type mask denoting whether the room is outdoors, at a seaport @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_SEAPORT=13;
-	public final static String[] outdoorDomainDescs={
+	
+	/** Domain description array indexed by the DOMAIN_OUTDOOR_* constants. @see {@link Room#DOMAIN_OUTDOORS_CITY} */
+	public final static String[] DOMAiN_OUTDOOR_DESCS=
+	{
 		"CITY",
 		"WOODS",
 		"ROCKY",
@@ -68,17 +122,29 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		"HILLS",
 		"MOUNTAINS",
 		"SPACEPORT",
-		"SEAPORT"};
+		"SEAPORT"
+	};
 
+	/** Domain type mask denoting whether the room is indoors, and made of worked stone @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
+	/** Domain type mask denoting whether the room is indoors, and made of wood @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_WOOD=INDOORS+1;
+	/** Domain type mask denoting whether the room is indoors, and made of unworked/natural stone @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_CAVE=INDOORS+2;
+	/** Domain type mask denoting whether the room is indoors, and made of maaaagic @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_MAGIC=INDOORS+3;
+	/** Domain type mask denoting whether the room is indoors, and underwater @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_UNDERWATER=INDOORS+4;
+	/** Domain type mask denoting whether the room is indoors, but in the air @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_AIR=INDOORS+5;
+	/** Domain type mask denoting whether the room is indoors, with a watery surface @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_WATERSURFACE=INDOORS+6;
+	/** Domain type mask denoting whether the room is indoors, and made of metal @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_METAL=INDOORS+7;
-	public final static String[] indoorDomainDescs={
+	
+	/** Domain description array indexed by the (DOMAIN_INDOORS_* - Room.INDOORS) constants. @see {@link Room#DOMAIN_INDOORS_STONE} */
+	public final static String[] DOMAIN_INDOORS_DESCS=
+	{
 		"STONE",
 		"WOODEN",
 		"CAVE",
@@ -86,15 +152,78 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		"UNDERWATER",
 		"AIR",
 		"WATERSURFACE",
-		"METAL"};
+		"METAL"
+	};
 
+	/**
+	 * Returns the domain-code for this room, which tells you something about its physical makeup,
+	 * such as whether it is outdoor, if it's in the woods or surrounded by stone, that sort of thing.
+	 * @see Room#INDOORS
+	 * @see Room#DOMAIN_INDOORS_CAVE
+	 * @see Room#DOMAIN_INDOORS_DESCS
+	 * @see Room#DOMAIN_OUTDOORS_CITY
+	 * @see Room#DOMAIN_OUTDOORS_DESCS
+	 * @return the domain-code for this room
+	 */
 	public int domainType();
+	
+	/**
+	 * Returns the full resource code for the current gatherable resource in this room.
+	 * The value of this method may change from time to time.
+	 * @see RawMaterial
+	 * @see RawMaterial.CODES
+	 * @see Room#setResource(int)
+	 * @see Room#resourceChoices()
+	 * @return the full resource code for the current gatherable resource in this room
+	 */
 	public int myResource();
+	
+	/**
+	 * Sets the full resource code for the current gatherable resource in this room.
+	 * The value set by this method may be changed automatically later on.
+	 * @see RawMaterial
+	 * @see RawMaterial.CODES
+	 * @see Room#myResource()
+	 * @see Room#resourceChoices()
+	 * @param resourceCode the full resource code for the current gatherable resource in this room
+	 */
 	public void setResource(int resourceCode);
+	
+	/**
+	 * Returns a list of all resource codes for potentially gatherable resources in this room.
+	 * This list is alterable for a given Room/Locale java class.  Changes to any instance will
+	 * affect the entire class.
+	 * @see RawMaterial
+	 * @see RawMaterial.CODES
+	 * @see Room#myResource()
+	 * @see Room#setResource(int)
+	 * @param resourceCode the full resource code for the current gatherable resource in this room
+	 */
 	public List<Integer> resourceChoices();
+	
+	/**
+	 * Sets or clears whether any mobs in this room may, in fact, leave it.  This applies
+	 * to player and npc mobs equally.
+	 * @param onoff true to allow mobility, false to disallow mobility
+	 */
 	public void toggleMobility(boolean onoff);
+	
+	/**
+	 * Gets whether any mobs in this room may, in fact, leave it.  This applies
+	 * to player and npc mobs equally.
+	 */
 	public boolean getMobility();
 
+	/**
+	 * Room titles and descriptions can be coded with xml/html-like tags that denote
+	 * different parts that are shown or hidden depending on the weather, the season,
+	 * the time of day, or even whether the player has been to the room before.
+	 * This enumerator is used to define those tags and give the engine clues
+	 * on how to quickly interpret them when building dynamic titles and descriptions.
+	 * @see Room#setDisplayText(String)
+	 * @see Room#setDescription(String)
+	 * @author Bo Zimmerman
+	 */
 	public enum VariationCode
 	{
 		SUMMER('S',TimeClock.Season.SUMMER.ordinal()),
@@ -136,8 +265,16 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		public final int num;
 		public final String openTag;
 		public final String closeTag;
-		VariationCode(char c, int num){this.c=c;this.num=num;openTag="<"+toString()+">";closeTag="</"+toString()+">";}
+
+		private VariationCode(char c, int num)
+		{
+			this.c=c;
+			this.num=num;
+			openTag="<"+toString()+">";
+			closeTag="</"+toString()+">";
+		}
 	}
+	
 	public void startItemRejuv();
 	public void recoverRoomStats();
 
@@ -178,6 +315,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public boolean showSource(MOB source, Environmental target, int allCode, String allMessage);
 	public boolean showOthers(MOB source, Environmental target, Environmental tool, int allCode, String allMessage);
 	public boolean showSource(MOB source, Environmental target, Environmental tool, int allCode, String allMessage);
+
 	public boolean isHere(Environmental E);
 
 	public MOB fetchInhabitant(String inhabitantID);
@@ -193,7 +331,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public int numPCInhabitants();
 	public void bringMobHere(MOB mob, boolean andFollowers);
 	/**
-	 * Applies the given code to each mob in this room
+	 * Applies the given applier Java code to each mob in this room
 	 * @param applier code to execute against each object
 	 */
 	public void eachInhabitant(final EachApplicable<MOB> applier);

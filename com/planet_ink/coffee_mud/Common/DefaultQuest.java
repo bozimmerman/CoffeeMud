@@ -1175,11 +1175,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 										final int dom=R2.domainType();
 										if((dom&Room.INDOORS)>0)
 										{
-											if(Room.indoorDomainDescs[dom-Room.INDOORS].indexOf(localeName)>=0)
+											if(Room.DOMAIN_INDOORS_DESCS[dom-Room.INDOORS].indexOf(localeName)>=0)
 												choices.add(R2);
 										}
 										else
-										if(Room.outdoorDomainDescs[dom].indexOf(localeName)>=0)
+										if(Room.DOMAiN_OUTDOOR_DESCS[dom].indexOf(localeName)>=0)
 											choices.add(R2);
 									}
 								}

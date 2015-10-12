@@ -87,12 +87,12 @@ public class ResourceOverride extends ActiveTicker
 			}
 			else
 			{
-				for(int i=0;i<Room.outdoorDomainDescs.length;i++)
-					if(which.equalsIgnoreCase(Room.outdoorDomainDescs[i]))
+				for(int i=0;i<Room.DOMAiN_OUTDOOR_DESCS.length;i++)
+					if(which.equalsIgnoreCase(Room.DOMAiN_OUTDOOR_DESCS[i]))
 					{ code=i; break;}
 				if(code<0)
-					for(int i=0;i<Room.indoorDomainDescs.length;i++)
-						if(which.equalsIgnoreCase(Room.indoorDomainDescs[i]))
+					for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
+						if(which.equalsIgnoreCase(Room.DOMAIN_INDOORS_DESCS[i]))
 						{ code=Room.INDOORS|i; break;}
 				if(code>=0)
 					roomTypes.add(Integer.valueOf(code));

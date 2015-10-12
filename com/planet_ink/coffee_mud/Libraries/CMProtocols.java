@@ -652,9 +652,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			image=getHashedMXPImage(H,"ROOM_"+((Room)O).ID().toUpperCase());
 			if(image==null)
 				if(CMath.bset(((Room)O).domainType(),Room.INDOORS))
-					image=getHashedMXPImage(H,"LOCALE_INDOOR_"+Room.indoorDomainDescs[((Room)O).domainType()-Room.INDOORS]);
+					image=getHashedMXPImage(H,"LOCALE_INDOOR_"+Room.DOMAIN_INDOORS_DESCS[((Room)O).domainType()-Room.INDOORS]);
 				else
-					image=getHashedMXPImage(H,"LOCALE_"+Room.outdoorDomainDescs[((Room)O).domainType()]);
+					image=getHashedMXPImage(H,"LOCALE_"+Room.DOMAiN_OUTDOOR_DESCS[((Room)O).domainType()]);
 			if(image==null)
 				image=getHashedMXPImage(H,"ROOM_*");
 			if(image==null)
@@ -1351,9 +1351,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				final Room R=M.location();
 				final String domType;
 				if((R.domainType()&Room.INDOORS)==0)
-					domType=Room.outdoorDomainDescs[R.domainType()];
+					domType=Room.DOMAiN_OUTDOOR_DESCS[R.domainType()];
 				else
-					domType=Room.indoorDomainDescs[CMath.unsetb(R.domainType(),Room.INDOORS)];
+					domType=Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(R.domainType(),Room.INDOORS)];
 				buf=new ByteArrayOutputStream();
 				buf.write(Session.MSDP_VAR);buf.write(type.toString().getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
@@ -1409,9 +1409,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				final Room R=M.location();
 				final String domType;
 				if((R.domainType()&Room.INDOORS)==0)
-					domType=Room.outdoorDomainDescs[R.domainType()];
+					domType=Room.DOMAiN_OUTDOOR_DESCS[R.domainType()];
 				else
-					domType=Room.indoorDomainDescs[CMath.unsetb(R.domainType(),Room.INDOORS)];
+					domType=Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(R.domainType(),Room.INDOORS)];
 				buf.write(domType.getBytes(Session.MSDP_CHARSET));
 			}
 			break;
@@ -2052,9 +2052,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							final String roomID=CMLib.map().getExtendedRoomID(room);
 							final String domType;
 							if((room.domainType()&Room.INDOORS)==0)
-								domType=Room.outdoorDomainDescs[room.domainType()];
+								domType=Room.DOMAiN_OUTDOOR_DESCS[room.domainType()];
 							else
-								domType=Room.indoorDomainDescs[CMath.unsetb(room.domainType(),Room.INDOORS)];
+								domType=Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(room.domainType(),Room.INDOORS)];
 							doc.append("\"num\":").append(roomID.hashCode()).append(",")
 								.append("\"id\":\"").append(roomID).append("\",")
 								.append("\"name\":\"").append(MiniJSON.toJSONString(room.displayText(mob))).append("\",")

@@ -53,7 +53,7 @@ public class Spell_NaturalCommunion extends Spell
 		{
 			try
 			{
-				final String desc=Room.outdoorDomainDescs[room.domainType()].toLowerCase();
+				final String desc=Room.DOMAiN_OUTDOOR_DESCS[room.domainType()].toLowerCase();
 				if(!stuff.contains(desc))
 					stuff.add(desc);
 			}

@@ -56,12 +56,12 @@ public class Prop_RestrictSkills extends Property
 		List<String> domainList=CMParms.parseCommas(domains, true);
 		for(String domain : domainList)
 		{
-			int x=CMParms.indexOf(Room.indoorDomainDescs, domain.toUpperCase().trim());
+			int x=CMParms.indexOf(Room.DOMAIN_INDOORS_DESCS, domain.toUpperCase().trim());
 			if(x>=0)
 				onlyRoomDomains.add(Integer.valueOf(Room.INDOORS+x));
 			else
 			{
-				x=CMParms.indexOf(Room.outdoorDomainDescs, domain.toUpperCase().trim());
+				x=CMParms.indexOf(Room.DOMAiN_OUTDOOR_DESCS, domain.toUpperCase().trim());
 				if(x>=0)
 					onlyRoomDomains.add(Integer.valueOf(x));
 			}
@@ -70,12 +70,12 @@ public class Prop_RestrictSkills extends Property
 		domainList=CMParms.parseCommas(domains, true);
 		for(String domain : domainList)
 		{
-			int x=CMParms.indexOf(Room.indoorDomainDescs, domain.toUpperCase().trim());
+			int x=CMParms.indexOf(Room.DOMAIN_INDOORS_DESCS, domain.toUpperCase().trim());
 			if(x>=0)
 				neverRoomDomains.add(Integer.valueOf(Room.INDOORS+x));
 			else
 			{
-				x=CMParms.indexOf(Room.outdoorDomainDescs, domain.toUpperCase().trim());
+				x=CMParms.indexOf(Room.DOMAiN_OUTDOOR_DESCS, domain.toUpperCase().trim());
 				if(x>=0)
 					neverRoomDomains.add(Integer.valueOf(x));
 			}

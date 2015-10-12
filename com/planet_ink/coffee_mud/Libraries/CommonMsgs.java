@@ -1191,9 +1191,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			final String domType;
 			final StringBuilder domCond=new StringBuilder("");
 			if((room.domainType()&Room.INDOORS)==0)
-				domType=Room.outdoorDomainDescs[room.domainType()];
+				domType=Room.DOMAiN_OUTDOOR_DESCS[room.domainType()];
 			else
-				domType=Room.indoorDomainDescs[CMath.unsetb(room.domainType(),Room.INDOORS)];
+				domType=Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(room.domainType(),Room.INDOORS)];
 			final int climateType=room.getClimateType();
 			if(CMath.bset(climateType, Places.CLIMASK_COLD))
 				domCond.append(" cold");
