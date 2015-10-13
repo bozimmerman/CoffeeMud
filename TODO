@@ -2,8 +2,6 @@ BUGS
   *. 
 
 TECH
-   *. shopkeeper ships and tech: variables should persist for archons and grinder until player lists 
-   *. make sure shopkeeper item techlevels watch the master tech level
    *. test and debug launch and landing
    *. make ship sensor systems -- important for debugging
    *. ShopKeeper VIEW should give more information about tech items

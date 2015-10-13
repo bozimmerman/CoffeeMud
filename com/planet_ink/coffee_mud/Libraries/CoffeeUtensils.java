@@ -221,7 +221,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								  ||(I.ultimateContainer(R)==R)))
 		||(owner==null)
 		||((owner instanceof Room)&&(!((Room)owner).isContent(I))))
-		   return true;
+			return true;
 		return false;
 	}
 
@@ -416,6 +416,31 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return !E.amDestroyed();
 	}
 
+	private void fixElectronicalItem(final Item E)
+	{
+		if(E instanceof Electronics)
+		{
+			CMLib.tech().fixItemTechLevel((Electronics)E, -1);
+			if(E instanceof BoardableShip)
+			{
+				final Area A=((BoardableShip)E).getShipArea();
+				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				{
+					final Room R=r.nextElement();
+					if(R!=null)
+					{
+						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+						{
+							final Item I=i.nextElement();
+							if(I instanceof Electronics)
+								CMLib.tech().fixItemTechLevel((Electronics)I, ((Electronics)E).techLevel());
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	@Override
 	public int processVariableEquipment(MOB mob)
 	{
@@ -429,7 +454,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				{
 					final MOB M=R.fetchInhabitant(i);
 					if((M!=null)&&(!M.isMonster())&&(CMSecurity.isAllowed(M,R,CMSecurity.SecFlag.CMDMOBS)))
-					{ newLastTickedDateTime=-1; break;}
+					{ 
+						newLastTickedDateTime=-1; 
+						break;
+					}
 				}
 				if(newLastTickedDateTime==0)
 				{
@@ -437,18 +465,29 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					for(int i=0;i<mob.numItems();i++)
 					{
 						final Item I=mob.getItem(i);
-						if((I!=null)&&(I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
+						if(I!=null)
 						{
-							List<Item> V=null;
-							for(int r=0;r<rivals.size();r++)
+							this.fixElectronicalItem(I);
+							if((I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
 							{
-								final List<Item> V2=rivals.get(r);
-								final Item I2=V2.get(0);
-								if(I2.rawWornCode()==I.rawWornCode())
-								{ V=V2; break;}
+								List<Item> V=null;
+								for(int r=0;r<rivals.size();r++)
+								{
+									final List<Item> V2=rivals.get(r);
+									final Item I2=V2.get(0);
+									if(I2.rawWornCode()==I.rawWornCode())
+									{ 
+										V=V2; 
+										break;
+									}
+								}
+								if(V==null)
+								{ 
+									V=new Vector<Item>(); 
+									rivals.add(V);
+								}
+								V.add(I);
 							}
-							if(V==null){ V=new Vector<Item>(); rivals.add(V);}
-							V.add(I);
 						}
 					}
 					for(int i=0;i<rivals.size();i++)
@@ -504,17 +543,20 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					}
 					if(mob instanceof ShopKeeper)
 					{
-						final List<Item> V=new Vector<Item>();
+						final List<Item> rivalItems=new Vector<Item>();
 						final CoffeeShop shop = ((ShopKeeper)mob).getShop();
 						for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 						{
 							final Environmental E=i.next();
-							if((E instanceof Item)
-							&&(((Item)E).basePhyStats().rejuv()>0)
-							&&(((Item)E).basePhyStats().rejuv()!=PhyStats.NO_REJUV))
-								V.add((Item)E);
+							if(E instanceof Item)
+							{
+								final Item I=(Item)E;
+								fixElectronicalItem(I);
+								if((I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
+									rivalItems.add((Item)E);
+							}
 						}
-						for(final Item I : V)
+						for(final Item I : rivalItems)
 						{
 							if(CMLib.dice().rollPercentage()>I.basePhyStats().rejuv())
 								shop.delAllStoreInventory(I);
@@ -535,10 +577,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public void recursiveDropMOB(MOB mob,
-								 Room room,
-								 Item thisContainer,
-								 boolean bodyFlag)
+	public void recursiveDropMOB(final MOB mob, final Room room, final Item thisContainer, boolean bodyFlag)
 	{
 		// caller is responsible for recovering any env
 		// stat changes!
@@ -571,7 +610,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					break;
 				}
 			}
-		}while(!nothingDone);
+		}
+		while(!nothingDone);
 	}
 
 
@@ -728,8 +768,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(I instanceof Container)
 		{
 			for (final Item I2 : ((Container)I).getContents())
+			{
 				if(!canBePlayerDestroyed(mob, I2,ignoreBodies))
 					return false;
+			}
 		}
 		return true;
 	}
@@ -761,11 +803,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				final Vector<String> parsed=CMParms.parse(s);
 				int pct=100;
 				for(int x=0;x<parsed.size();x++)
+				{
 					if(CMath.isInteger(parsed.elementAt(x)))
 						pct=CMath.s_int(parsed.elementAt(x));
 					else
 					if(CMath.isPct(parsed.elementAt(x)))
 						pct=(int)Math.round(CMath.s_pct(parsed.elementAt(x))*100.0);
+				}
 				int flags=0;
 				if(parsed.contains("RUIN"))
 					flags|=CMMiscUtils.LOOTFLAG_RUIN;
@@ -809,6 +853,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					final short layer=(item instanceof Armor)?((Armor)item).getClothingLayer():0;
 					int d=0;
 					for(;d<reWearSet.size();d++)
+					{
 						if(reWearSet.elementAt(d,1) instanceof Armor)
 						{
 							if(((Armor)reWearSet.elementAt(d,1)).getClothingLayer()>layer)
@@ -817,6 +862,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						else
 						if(0>layer)
 							break;
+					}
 					if(d>=reWearSet.size())
 						reWearSet.addElement(item,oldCode);
 					else
@@ -939,33 +985,41 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(M==null)
 					continue;
 				for(int c=0;c<M.baseCharStats().numClasses();c++)
+				{
 					if(M.baseCharStats().getMyClass(c)==oldC)
 					{
 						M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
 						break;
 					}
+				}
 				for(int c=0;c<M.charStats().numClasses();c++)
+				{
 					if(M.charStats().getMyClass(c)==oldC)
 					{
 						M.charStats().setMyClasses(M.charStats().getMyClassesStr());
 						break;
 					}
+				}
 			}
 			for(final Enumeration<MOB> e2=CMLib.players().players();e2.hasMoreElements();)
 			{
 				final MOB M=e2.nextElement();
 				for(int c=0;c<M.baseCharStats().numClasses();c++)
+				{
 					if(M.baseCharStats().getMyClass(c)==oldC)
 					{
 						M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
 						break;
 					}
+				}
 				for(int c=0;c<M.charStats().numClasses();c++)
+				{
 					if(M.charStats().getMyClass(c)==oldC)
 					{
 						M.charStats().setMyClasses(M.charStats().getMyClassesStr());
 						break;
 					}
+				}
 			}
 		}
 	}
@@ -1094,8 +1148,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				continue;
 			final long[] vals=new long[numDigits];
 			for(int i=0;i<numDigits;i++)
+			{
 				if(i+1<V.size())
 					vals[i]=CMath.s_long(V.elementAt(i+1));
+			}
 			cond=V.firstElement().trim();
 			int start=startOfRange;
 			int finish=endOfRange;
@@ -1174,6 +1230,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		String promptUp=null;
 		int c=0;
 		while(c<prompt.length())
+		{
 			if((prompt.charAt(c)=='%')&&(c<(prompt.length()-1)))
 			{
 				switch(prompt.charAt(++c))
@@ -1187,6 +1244,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						final Wearable.CODES wcodes = Wearable.CODES.instance();
 						boolean isFound=false;
 						for(final long code : wcodes.all())
+						{
 							if(promptSub.startsWith(wcodes.nameup(code)))
 							{
 								c+=1+wcodes.nameup(code).length();
@@ -1196,10 +1254,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								isFound=true;
 								break;
 							}
+						}
 						if(!isFound)
 						{
 							final CharStats.CODES ccodes = CharStats.CODES.instance();
 							for(final int code : ccodes.all())
+							{
 								if(promptSub.startsWith(ccodes.name(code)))
 								{
 									c+=1+ccodes.name(code).length();
@@ -1207,19 +1267,25 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									isFound=true;
 									break;
 								}
+							}
 							if(!isFound)
-							for(final int code : ccodes.all())
-								if(promptSub.startsWith("BASE "+ccodes.name(code)))
+							{
+								for(final int code : ccodes.all())
 								{
-									buf.append(mob.baseCharStats().getStat(code));
-									c+=6+ccodes.name(code).length();
-									isFound=true;
-									break;
+									if(promptSub.startsWith("BASE "+ccodes.name(code)))
+									{
+										buf.append(mob.baseCharStats().getStat(code));
+										c+=6+ccodes.name(code).length();
+										isFound=true;
+										break;
+									}
 								}
+							}
 						}
 						if(!isFound)
 						{
 							for(final String s : mob.phyStats().getStatCodes())
+							{
 								if(promptSub.startsWith(s))
 								{
 									c+=1+s.length();
@@ -1227,19 +1293,25 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									isFound=true;
 									break;
 								}
+							}
 							if(!isFound)
-							for(final String s : mob.basePhyStats().getStatCodes())
-								if(promptSub.startsWith("BASE "+s))
+							{
+								for(final String s : mob.basePhyStats().getStatCodes())
 								{
-									c+=6+s.length();
-									buf.append(mob.basePhyStats().getStat(s));
-									isFound=true;
-									break;
+									if(promptSub.startsWith("BASE "+s))
+									{
+										c+=6+s.length();
+										buf.append(mob.basePhyStats().getStat(s));
+										isFound=true;
+										break;
+									}
 								}
+							}
 						}
 						if(!isFound)
 						{
 							for(final String s : mob.curState().getStatCodes())
+							{
 								if(promptSub.startsWith(s))
 								{
 									c+=1+s.length();
@@ -1247,139 +1319,327 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									isFound=true;
 									break;
 								}
+							}
 							if(!isFound)
-							for(final String s : mob.maxState().getStatCodes())
-								if(promptSub.startsWith("MAX "+s))
+							{
+								for(final String s : mob.maxState().getStatCodes())
 								{
-									c+=5+s.length();
-									buf.append(mob.maxState().getStat(s));
-									isFound=true;
-									break;
+									if(promptSub.startsWith("MAX "+s))
+									{
+										c+=5+s.length();
+										buf.append(mob.maxState().getStat(s));
+										isFound=true;
+										break;
+									}
 								}
+							}
 							if(!isFound)
-							for(final String s : mob.baseState().getStatCodes())
-								if(promptSub.startsWith("BASE "+s))
+							{
+								for(final String s : mob.baseState().getStatCodes())
 								{
-									c+=6+s.length();
-									buf.append(mob.baseState().getStat(s));
-									isFound=true;
-									break;
+									if(promptSub.startsWith("BASE "+s))
+									{
+										c+=6+s.length();
+										buf.append(mob.baseState().getStat(s));
+										isFound=true;
+										break;
+									}
 								}
+							}
 						}
 					}
 					break;
-				case 'a': { buf.append(CMLib.factions().getRangePercent(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()))+"%"); c++; break; }
-				case 'A': { final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()));buf.append((FR!=null)?FR.name():""+mob.fetchFaction(CMLib.factions().AlignID())); c++; break;}
-				case 'B': { buf.append("\n\r"); c++; break;}
-				case 'c': { buf.append(mob.numItems()); c++; break;}
-				case 'C': { buf.append(mob.maxItems()); c++; break;}
-				case 'd': {   final MOB victim=mob.getVictim();
-							  if((mob.isInCombat())&&(victim!=null))
-								  buf.append(""+mob.rangeToTarget());
-							  c++; break; }
-				case 'D': {   final Item I=mob.fetchWieldedItem();
-							  if((I instanceof AmmunitionWeapon)&&(((AmmunitionWeapon)I).requiresAmmunition()))
-								  buf.append(""+((AmmunitionWeapon)I).ammunitionRemaining());
-							  break;
-						  }
-				case 'e': {   final MOB victim=mob.getVictim();
-							  if((mob.isInCombat())&&(victim!=null)&&(CMLib.flags().canBeSeenBy(victim,mob)))
-								  buf.append(victim.name(mob));
-							  c++; break; }
-				case 'E': {   final MOB victim=mob.getVictim();
-							  if((mob.isInCombat())&&(victim!=null)&&(!victim.amDead())&&(CMLib.flags().canBeSeenBy(victim,mob)))
-								  buf.append(victim.healthText(mob)+"\n\r");
-							  c++; break; }
-				case 'g': { buf.append((int)Math.round(Math.floor(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)/CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(mob))))); c++; break;}
-				case 'G': { buf.append(CMLib.beanCounter().nameCurrencyShort(mob,CMLib.beanCounter().getTotalAbsoluteNativeValue(mob))); c++; break;}
-				case 'h': { buf.append("^<Hp^>"+mob.curState().getHitPoints()+"^</Hp^>"); c++; break;}
-				case 'H': { buf.append("^<MaxHp^>"+mob.maxState().getHitPoints()+"^</MaxHp^>"); c++; break;}
-				case 'I': {   if((CMLib.flags().isCloaked(mob))
-							  &&(((mob.phyStats().disposition()&PhyStats.IS_NOT_SEEN)!=0)))
-								  buf.append(L("Wizinvisible"));
-							  else
-							  if(CMLib.flags().isCloaked(mob))
-								  buf.append("Cloaked");
-							  else
-							  if(!CMLib.flags().isSeen(mob))
-								  buf.append(L("Undetectable"));
-							  else
-							  if(CMLib.flags().isInvisible(mob)&&CMLib.flags().isHidden(mob))
-								  buf.append(L("Hidden/Invisible"));
-							  else
-							  if(CMLib.flags().isInvisible(mob))
-								  buf.append("Invisible");
-							  else
-							  if(CMLib.flags().isHidden(mob))
-								  buf.append("Hidden");
-							  c++; break;}
+				case 'a': 
+				{ 
+					buf.append(CMLib.factions().getRangePercent(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()))+"%"); 
+					c++; 
+					break; 
+				}
+				case 'A':
+				{
+					final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().AlignID(), mob.fetchFaction(CMLib.factions().AlignID()));
+					buf.append((FR != null) ? FR.name() : "" + mob.fetchFaction(CMLib.factions().AlignID()));
+					c++;
+					break;
+				}
+				case 'B':
+				{
+					buf.append("\n\r");
+					c++;
+					break;
+				}
+				case 'c':
+				{
+					buf.append(mob.numItems());
+					c++;
+					break;
+				}
+				case 'C':
+				{
+					buf.append(mob.maxItems());
+					c++;
+					break;
+				}
+				case 'd':
+				{
+					final MOB victim = mob.getVictim();
+					if ((mob.isInCombat()) && (victim != null))
+						buf.append("" + mob.rangeToTarget());
+					c++;
+					break;
+				}
+				case 'D':
+				{
+					final Item I = mob.fetchWieldedItem();
+					if ((I instanceof AmmunitionWeapon) && (((AmmunitionWeapon) I).requiresAmmunition()))
+						buf.append("" + ((AmmunitionWeapon) I).ammunitionRemaining());
+					break;
+				}
+				case 'e':
+				{
+					final MOB victim = mob.getVictim();
+					if ((mob.isInCombat()) && (victim != null) && (CMLib.flags().canBeSeenBy(victim, mob)))
+						buf.append(victim.name(mob));
+					c++;
+					break;
+				}
+				case 'E':
+				{
+					final MOB victim = mob.getVictim();
+					if ((mob.isInCombat()) && (victim != null) && (!victim.amDead()) && (CMLib.flags().canBeSeenBy(victim, mob)))
+						buf.append(victim.healthText(mob) + "\n\r");
+					c++;
+					break;
+				}
+				case 'g':
+				{
+					buf.append((int) Math.round(Math.floor(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob) 
+												/ CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(mob)))));
+					c++;
+					break;
+				}
+				case 'G':
+				{
+					buf.append(CMLib.beanCounter().nameCurrencyShort(mob, CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)));
+					c++;
+					break;
+				}
+				case 'h':
+				{
+					buf.append("^<Hp^>" + mob.curState().getHitPoints() + "^</Hp^>");
+					c++;
+					break;
+				}
+				case 'H':
+				{
+					buf.append("^<MaxHp^>" + mob.maxState().getHitPoints() + "^</MaxHp^>");
+					c++;
+					break;
+				}
+				case 'I':
+				{
+					if ((CMLib.flags().isCloaked(mob)) && (((mob.phyStats().disposition() & PhyStats.IS_NOT_SEEN) != 0)))
+						buf.append(L("Wizinvisible"));
+					else 
+					if (CMLib.flags().isCloaked(mob))
+						buf.append("Cloaked");
+					else 
+					if (!CMLib.flags().isSeen(mob))
+						buf.append(L("Undetectable"));
+					else 
+					if (CMLib.flags().isInvisible(mob) && CMLib.flags().isHidden(mob))
+						buf.append(L("Hidden/Invisible"));
+					else 
+					if (CMLib.flags().isInvisible(mob))
+						buf.append("Invisible");
+					else 
+					if (CMLib.flags().isHidden(mob))
+						buf.append("Hidden");
+					c++;
+					break;
+				}
 				case 'K':
-				case 'k': { MOB tank=mob;
-							if((tank.getVictim()!=null)
-							&&(tank.getVictim().getVictim()!=null)
-							&&(tank.getVictim().getVictim()!=mob))
-								tank=tank.getVictim().getVictim();
-							if(((c+1)<prompt.length())&&(tank!=null))
-								switch(prompt.charAt(c+1))
-								{
-									case 'h': { buf.append(tank.curState().getHitPoints()); c++; break;}
-									case 'H': { buf.append(tank.maxState().getHitPoints()); c++; break;}
-									case 'm': { buf.append(tank.curState().getMana()); c++; break;}
-									case 'M': { buf.append(tank.maxState().getMana()); c++; break;}
-									case 'v': { buf.append(tank.curState().getMovement()); c++; break;}
-									case 'V': { buf.append(tank.maxState().getMovement()); c++; break;}
-									case 'e': {   buf.append(tank.name(mob)); c++; break;}
-									case 'E': {   if((mob.isInCombat())&&(CMLib.flags().canBeSeenBy(tank,mob)))
-													  buf.append(tank.healthText(mob)+"\n\r");
-												  c++;
-												  break;
-											  }
-								}
+				case 'k':
+				{
+					MOB tank = mob;
+					if ((tank.getVictim() != null) 
+					&& (tank.getVictim().getVictim() != null) 
+					&& (tank.getVictim().getVictim() != mob))
+						tank = tank.getVictim().getVictim();
+					if (((c + 1) < prompt.length()) && (tank != null))
+					{
+						switch (prompt.charAt(c + 1))
+						{
+						case 'h':
+						{
+							buf.append(tank.curState().getHitPoints());
 							c++;
 							break;
-						  }
-				case 'm': { buf.append("^<Mana^>"+mob.curState().getMana()+"^</Mana^>"); c++; break;}
-				case 'M': { buf.append("^<MaxMana^>"+mob.maxState().getMana()+"^</MaxMana^>"); c++; break;}
-				case 'p': { buf.append("^<Point^>"+Math.round(Math.floor(mob.actions()))+"^</Point^>"); c++; break;}
-				case 'P': { buf.append("^<MaxPoint^>"+Math.round(Math.floor(mob.phyStats().speed()))+"^</MaxPoint^>"); c++; break;}
-				case 'r': {   if(mob.location()!=null)
-							  	buf.append(mob.location().displayText(mob));
-							  c++; break; }
-				case 'R': {   if((mob.location()!=null)&&CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))
-							  buf.append(mob.location().roomID());
-							  c++; break; }
-				case 't': { 	 if(mob.location()!=null)
-								  buf.append(CMStrings.capitalizeAndLower(mob.location().getArea().getTimeObj().getTODCode().getDesc().toLowerCase()));
-							  c++; break;
-						  }
-				case 'T': { 	 if(mob.location()!=null)
-								  buf.append(mob.location().getArea().getTimeObj().getHourOfDay());
-							  c++; break;
-						  }
-				case 'v': { buf.append("^<Move^>"+mob.curState().getMovement()+"^</Move^>"); c++; break;}
-				case 'V': { buf.append("^<MaxMove^>"+mob.maxState().getMovement()+"^</MaxMove^>"); c++; break;}
-				case 'w': { buf.append(mob.phyStats().weight()); c++; break;}
-				case 'W': { buf.append(mob.maxCarry()); c++; break;}
-				case 'x': { buf.append(mob.getExperience()); c++; break;}
-				case 'X': {
-							  if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
-								buf.append("N/A");
-							  else
-								buf.append(mob.getExpNeededLevel());
-							  c++; break;
-						  }
-				case 'z': {   if(mob.location()!=null)
-								  buf.append(mob.location().getArea().name());
-							  c++; break; }
-				case '@': { 	 if(mob.location()!=null)
-								  buf.append(mob.location().getArea().getClimateObj().weatherDescription(mob.location()));
-							  c++; break;
-						  }
-				default:{ buf.append("%"+prompt.charAt(c)); c++; break;}
+						}
+						case 'H':
+						{
+							buf.append(tank.maxState().getHitPoints());
+							c++;
+							break;
+						}
+						case 'm':
+						{
+							buf.append(tank.curState().getMana());
+							c++;
+							break;
+						}
+						case 'M':
+						{
+							buf.append(tank.maxState().getMana());
+							c++;
+							break;
+						}
+						case 'v':
+						{
+							buf.append(tank.curState().getMovement());
+							c++;
+							break;
+						}
+						case 'V':
+						{
+							buf.append(tank.maxState().getMovement());
+							c++;
+							break;
+						}
+						case 'e':
+						{
+							buf.append(tank.name(mob));
+							c++;
+							break;
+						}
+						case 'E':
+						{
+							if ((mob.isInCombat()) && (CMLib.flags().canBeSeenBy(tank, mob)))
+								buf.append(tank.healthText(mob) + "\n\r");
+							c++;
+							break;
+						}
+						}
+					}
+					c++;
+					break;
+				}
+				case 'm':
+				{
+					buf.append("^<Mana^>" + mob.curState().getMana() + "^</Mana^>");
+					c++;
+					break;
+				}
+				case 'M':
+				{
+					buf.append("^<MaxMana^>" + mob.maxState().getMana() + "^</MaxMana^>");
+					c++;
+					break;
+				}
+				case 'p':
+				{
+					buf.append("^<Point^>" + Math.round(Math.floor(mob.actions())) + "^</Point^>");
+					c++;
+					break;
+				}
+				case 'P':
+				{
+					buf.append("^<MaxPoint^>" + Math.round(Math.floor(mob.phyStats().speed())) + "^</MaxPoint^>");
+					c++;
+					break;
+				}
+				case 'r':
+				{
+					if (mob.location() != null)
+						buf.append(mob.location().displayText(mob));
+					c++;
+					break;
+				}
+				case 'R':
+				{
+					if ((mob.location() != null) && CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.SYSMSGS))
+						buf.append(mob.location().roomID());
+					c++;
+					break;
+				}
+				case 't':
+				{
+					if (mob.location() != null)
+						buf.append(CMStrings.capitalizeAndLower(mob.location().getArea().getTimeObj().getTODCode().getDesc().toLowerCase()));
+					c++;
+					break;
+				}
+				case 'T':
+				{
+					if (mob.location() != null)
+						buf.append(mob.location().getArea().getTimeObj().getHourOfDay());
+					c++;
+					break;
+				}
+				case 'v':
+				{
+					buf.append("^<Move^>" + mob.curState().getMovement() + "^</Move^>");
+					c++;
+					break;
+				}
+				case 'V':
+				{
+					buf.append("^<MaxMove^>" + mob.maxState().getMovement() + "^</MaxMove^>");
+					c++;
+					break;
+				}
+				case 'w':
+				{
+					buf.append(mob.phyStats().weight());
+					c++;
+					break;
+				}
+				case 'W':
+				{
+					buf.append(mob.maxCarry());
+					c++;
+					break;
+				}
+				case 'x':
+				{
+					buf.append(mob.getExperience());
+					c++;
+					break;
+				}
+				case 'X':
+				{
+					if (mob.getExpNeededLevel() == Integer.MAX_VALUE)
+						buf.append("N/A");
+					else
+						buf.append(mob.getExpNeededLevel());
+					c++;
+					break;
+				}
+				case 'z':
+				{
+					if (mob.location() != null)
+						buf.append(mob.location().getArea().name());
+					c++;
+					break;
+				}
+				case '@':
+				{
+					if (mob.location() != null)
+						buf.append(mob.location().getArea().getClimateObj().weatherDescription(mob.location()));
+					c++;
+					break;
+				}
+				default:
+				{
+					buf.append("%" + prompt.charAt(c));
+					c++;
+					break;
+				}
 				}
 			}
 			else
 				buf.append(prompt.charAt(c++));
+		}
 		return buf.toString();
 	}
 }

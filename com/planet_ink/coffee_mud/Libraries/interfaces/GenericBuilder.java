@@ -95,7 +95,7 @@ public interface GenericBuilder extends CMLibrary
 	public void setPropertiesStr(Environmental E, String buf, boolean fromTop);
 	public void setPropertiesStr(Environmental E, List<XMLpiece> V, boolean fromTop);
 	public void setGenScripts(PhysicalAgent E, List<XMLpiece> buf, boolean restoreVars);
-	public void populateShops(Environmental E, List<XMLpiece> buf);
+	public void populateShops(ShopKeeper shopKeep, List<XMLpiece> buf);
 	public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files);
 	public String getAccountXML(PlayerAccount account, Set<CMObject> custom, Set<String> files);
 	public String addPlayersAndAccountsFromXML(String xmlBuffer, List<PlayerAccount> addAccounts, List<MOB> addMobs, Session S);

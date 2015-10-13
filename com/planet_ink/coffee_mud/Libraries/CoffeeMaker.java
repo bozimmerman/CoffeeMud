@@ -2340,6 +2340,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(ILOC.length()>0)
 				LOCmap.put(newOne,ILOC);
 			setPropertiesStr(newOne,idat,true);
+			if(newOne instanceof Electronics)
+				variableEq=true;
+			else
 			if(newOne.basePhyStats().rejuv()>0&&newOne.basePhyStats().rejuv()!=PhyStats.NO_REJUV)
 				variableEq=true;
 			newOne.wearAt(wornCode);
@@ -2365,16 +2368,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public void populateShops(Environmental E, List<XMLpiece> buf)
+	public void populateShops(final ShopKeeper shopKeep, final List<XMLpiece> buf)
 	{
 		boolean variableEq=false;
-		final ShopKeeper shopmob=(ShopKeeper)E;
-		shopmob.setWhatIsSoldMask(CMLib.xml().getLongFromPieces(buf,"SELLCD"));
-		shopmob.getShop().emptyAllShelves();
+		shopKeep.setWhatIsSoldMask(CMLib.xml().getLongFromPieces(buf,"SELLCD"));
+		shopKeep.getShop().emptyAllShelves();
 		final List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"STORE");
 		if(V==null)
 		{
-			Log.errOut("CoffeeMaker","Error parsing 'STORE' of "+identifier(E,null)+".  Load aborted");
+			Log.errOut("CoffeeMaker","Error parsing 'STORE' of "+identifier(shopKeep,null)+".  Load aborted");
 			return;
 		}
 		final Hashtable<String,Container> IIDmap=new Hashtable<String,Container>();
@@ -2384,7 +2386,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final XMLLibrary.XMLpiece iblk=V.get(i);
 			if((!iblk.tag.equalsIgnoreCase("SHITEM"))||(iblk.contents==null))
 			{
-				Log.errOut("CoffeeMaker","Error parsing 'SHITEM' of "+identifier(E,null)+".  Load aborted");
+				Log.errOut("CoffeeMaker","Error parsing 'SHITEM' of "+identifier(shopKeep,null)+".  Load aborted");
 				continue;
 			}
 			final String itemi=CMLib.xml().getValFromPieces(iblk.contents,"SICLASS");
@@ -2405,12 +2407,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				newOne=CMClass.getUnknown(itemi);
 			if(newOne==null)
 			{
-				Log.errOut("CoffeeMaker","Unknown item "+itemi+" on "+identifier(E,null)+", skipping.");
+				Log.errOut("CoffeeMaker","Unknown item "+itemi+" on "+identifier(shopKeep,null)+", skipping.");
 				continue;
 			}
 			if(idat==null)
 			{
-				Log.errOut("CoffeeMaker","Error parsing 'SHOP DATA' of "+identifier(E,null)+".  Load aborted");
+				Log.errOut("CoffeeMaker","Error parsing 'SHOP DATA' of "+identifier(shopKeep,null)+".  Load aborted");
 				continue;
 			}
 			if(newOne instanceof Item)
@@ -2433,14 +2435,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if(newOne instanceof LandTitle)
 					((LandTitle)newOne).setOwnerName("");
 			}
+			if(newOne instanceof Electronics)
+				variableEq=true;
+			else 
 			if((newOne instanceof Physical)
 			&&(((Physical)newOne).basePhyStats().rejuv()>0)
 			&&(((Physical)newOne).basePhyStats().rejuv()!=PhyStats.NO_REJUV))
 				variableEq=true;
-			shopmob.getShop().addStoreInventory(newOne,numStock,stockPrice);
+			shopKeep.getShop().addStoreInventory(newOne,numStock,stockPrice);
 			newOne.destroy();
 		}
-		for(final Iterator<Environmental> i=shopmob.getShop().getStoreInventory();i.hasNext();)
+		for(final Iterator<Environmental> i=shopKeep.getShop().getStoreInventory();i.hasNext();)
 		{
 			final Environmental stE=i.next();
 			if(stE instanceof Item)
@@ -2452,7 +2457,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 		}
 		if(variableEq)
-			((MOB)E).flagVariableEq();
+			((MOB)shopKeep).flagVariableEq();
 	}
 
 	public boolean handleCatalogItem(Physical P, List<XMLpiece> buf, boolean fromTop)
@@ -3121,7 +3126,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((MOB)E).addExpertise(V9.get(v));
 
 			if(E instanceof ShopKeeper)
-				populateShops(E,buf);
+				populateShops((ShopKeeper)E,buf);
 		}
 	}
 

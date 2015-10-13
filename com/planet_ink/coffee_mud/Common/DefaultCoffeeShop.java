@@ -215,27 +215,6 @@ public class DefaultCoffeeShop implements CoffeeShop
 	{
 		final Environmental E=(Environmental)thisThang.copyOf();
 		stopTicking(E);
-		if(E instanceof Electronics)
-		{
-			CMLib.tech().fixItemTechLevel((Electronics)E, -1);
-			if(E instanceof BoardableShip)
-			{
-				final Area A=((BoardableShip)E).getShipArea();
-				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-				{
-					final Room R=r.nextElement();
-					if(R!=null)
-					{
-						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
-						{
-							final Item I=i.nextElement();
-							if(I instanceof Electronics)
-								CMLib.tech().fixItemTechLevel((Electronics)I, ((Electronics)E).techLevel());
-						}
-					}
-				}
-			}
-		}
 		if(E instanceof PrivateProperty)
 			((PrivateProperty)E).setOwnerName("");
 		return E;

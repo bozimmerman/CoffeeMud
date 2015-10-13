@@ -113,7 +113,7 @@ public class StdMOB implements MOB
 	protected int				atRange			= -1;
 	protected long				peaceTime		= 0;
 	protected boolean			kickFlag		= false;
-	protected MOB				me 				= this;
+	protected MOB				me				= this;
 
 	protected int				tickStatus		= Tickable.STATUS_NOT;
 
@@ -1632,8 +1632,11 @@ public class StdMOB implements MOB
 	@Override
 	public String name(MOB viewer)
 	{
-		if (CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM) && (playerStats() != null) && (viewer != null)
-		&& (viewer.playerStats() != null) && (!viewer.playerStats().isIntroducedTo(Name())))
+		if (CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM) 
+		&& (playerStats() != null) 
+		&& (viewer != null)
+		&& (viewer.playerStats() != null) 
+		&& (!viewer.playerStats().isIntroducedTo(Name())))
 			return CMLib.english().startWithAorAn(genericName()).toLowerCase();
 		return name();
 	}
@@ -1649,8 +1652,8 @@ public class StdMOB implements MOB
 		|| (riding() != null)
 		|| ((amFollowing() != null) && (amFollowing().fetchFollowerOrder(this) > 0))
 		|| ((this instanceof Rideable)
-				&& (((Rideable) this).numRiders() > 0)
-				&& CMLib.flags().hasSeenContents(this))
+			&& (((Rideable) this).numRiders() > 0)
+			&& CMLib.flags().hasSeenContents(this))
 		|| (isInCombat()))
 		{
 			StringBuffer sendBack = null;
@@ -1708,7 +1711,6 @@ public class StdMOB implements MOB
 						else
 							sendBack.append(rider.name());
 					}
-
 				}
 			}
 			if ((isInCombat()) && (CMLib.flags().canMove(this)) && (!CMLib.flags().isSleeping(this)))
@@ -2104,8 +2106,10 @@ public class StdMOB implements MOB
 		if (cStats != null)
 		{
 			for (int c = 0; c < cStats.numClasses(); c++)
+			{
 				if (!cStats.getMyClass(c).okMessage(this, msg))
 					return false;
+			}
 			if (!cStats.getMyRace().okMessage(this, msg))
 				return false;
 		}
@@ -2417,6 +2421,7 @@ public class StdMOB implements MOB
 					if ((isInCombat())
 					&& (location() != null)
 					&& (!msg.sourceMajor(CMMsg.MASK_MAGIC)))
+					{
 						for (final Enumeration<MOB> m = location().inhabitants(); m.hasMoreElements();)
 						{
 							final MOB M = m.nextElement();
@@ -2431,6 +2436,7 @@ public class StdMOB implements MOB
 								return false;
 							}
 						}
+					}
 					break;
 				case CMMsg.TYP_BUY:
 				case CMMsg.TYP_BID:
@@ -2511,7 +2517,7 @@ public class StdMOB implements MOB
 					if (msg.target() instanceof Deity)
 						break;
 					if ((msg.target() instanceof MOB)
-							&& (!CMLib.flags().canBeHeardSpeakingBy(this, (MOB) msg.target())))
+					&& (!CMLib.flags().canBeHeardSpeakingBy(this, (MOB) msg.target())))
 					{
 						tell(L("@x1 can't hear you!",((Physical)msg.target()).name(this)));
 						return false;
@@ -2702,11 +2708,13 @@ public class StdMOB implements MOB
 				{
 					int chanceToFail = Integer.MIN_VALUE;
 					for (final int c : CharStats.CODES.SAVING_THROWS())
+					{
 						if (msg.targetMinor() == CharStats.CODES.CMMSGMAP(c))
 						{
 							chanceToFail = charStats().getSave(c);
 							break;
 						}
+					}
 					if (chanceToFail > Integer.MIN_VALUE)
 					{
 						final int diff = (phyStats().level() - srcM.phyStats().level());
@@ -2899,6 +2907,7 @@ public class StdMOB implements MOB
 		}
 
 		if(numBehaviors()>0)
+		{
 			eachBehavior(new EachApplicable<Behavior>()
 			{
 				@Override
@@ -2907,7 +2916,9 @@ public class StdMOB implements MOB
 					B.executeMsg(me, msg);
 				}
 			});
+		}
 		if(numScripts()>0)
+		{
 			eachScript(new EachApplicable<ScriptingEngine>()
 			{
 				@Override
@@ -2916,6 +2927,7 @@ public class StdMOB implements MOB
 					S.executeMsg(me, msg);
 				}
 			});
+		}
 
 		final MOB srcM = msg.source();
 
@@ -2952,9 +2964,9 @@ public class StdMOB implements MOB
 		if ((msg.sourceCode() != CMMsg.NO_EFFECT) && (msg.amISource(this)))
 		{
 			if ((CMath.bset(msg.sourceMajor(), CMMsg.MASK_MALICIOUS))
-				&& (msg.target() instanceof MOB)
-				&& (getVictim() != msg.target())
-				&& ((!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS)) || (!(msg.tool() instanceof DiseaseAffect))))
+			&& (msg.target() instanceof MOB)
+			&& (getVictim() != msg.target())
+			&& ((!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS)) || (!(msg.tool() instanceof DiseaseAffect))))
 			{
 				CMLib.combat().establishRange(this, (MOB) msg.target(), msg.tool());
 				if ((msg.tool() instanceof Weapon)
@@ -3190,6 +3202,7 @@ public class StdMOB implements MOB
 
 		// the order here is significant (between eff and item -- see focus)
 		if(numItems()>0)
+		{
 			eachItem(new EachApplicable<Item>()
 			{
 				@Override
@@ -3198,8 +3211,10 @@ public class StdMOB implements MOB
 					I.executeMsg(me, msg);
 				}
 			});
+		}
 
 		if(numAllEffects()>0)
+		{
 			eachEffect(new EachApplicable<Ability>()
 			{
 				@Override
@@ -3208,6 +3223,7 @@ public class StdMOB implements MOB
 					A.executeMsg(me, msg);
 				}
 			});
+		}
 
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
 		{
@@ -3435,6 +3451,7 @@ public class StdMOB implements MOB
 
 			tickStatus = Tickable.STATUS_AFFECT;
 			if(numAllEffects()>0)
+			{
 				eachEffect(new EachApplicable<Ability>()
 				{
 					@Override
@@ -3444,11 +3461,13 @@ public class StdMOB implements MOB
 							A.unInvoke();
 					}
 				});
+			}
 
 			manaConsumeCter = CMLib.commands().tickManaConsumption(this, manaConsumeCter);
 
 			tickStatus = Tickable.STATUS_BEHAVIOR;
 			if(numBehaviors()>0)
+			{
 				eachBehavior(new EachApplicable<Behavior>()
 				{
 					@Override
@@ -3457,8 +3476,10 @@ public class StdMOB implements MOB
 						B.tick(ticking, tickID);
 					}
 				});
+			}
 			tickStatus = Tickable.STATUS_SCRIPT;
 			if(numScripts()>0)
+			{
 				eachScript(new EachApplicable<ScriptingEngine>()
 				{
 					@Override
@@ -3467,6 +3488,7 @@ public class StdMOB implements MOB
 						S.tick(ticking, tickID);
 					}
 				});
+			}
 			if (isMonster)
 			{
 				for (final Enumeration<Faction.FData> t = factions.elements(); t.hasMoreElements();)
@@ -3505,6 +3527,7 @@ public class StdMOB implements MOB
 			tickStatus = Tickable.STATUS_END;
 
 			for (final Tattoo tattoo : tattoos)
+			{
 				if ((tattoo != null) && (tattoo.tickDown > 0))
 				{
 					if (tattoo.tickDown == 1)
@@ -3512,6 +3535,7 @@ public class StdMOB implements MOB
 					else
 						tattoo.tickDown--;
 				}
+			}
 		}
 
 		if (lastTickedTime >= 0)
@@ -3633,7 +3657,8 @@ public class StdMOB implements MOB
 		{
 			return inventory.elementAt(index);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		{}
 		return null;
 	}
 
@@ -4038,7 +4063,8 @@ public class StdMOB implements MOB
 				index-=list.size();
 			}
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		{}
 		return null;
 	}
 
@@ -4386,7 +4412,8 @@ public class StdMOB implements MOB
 		{
 			return behaviors.elementAt(index);
 		}
-		catch (final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		{}
 		return null;
 	}
 
@@ -4567,7 +4594,8 @@ public class StdMOB implements MOB
 		{
 			return scripts.elementAt(x);
 		}
-		catch (final Exception e){}
+		catch (final Exception e)
+		{}
 		return null;
 	}
 
@@ -4586,7 +4614,8 @@ public class StdMOB implements MOB
 						applier.apply(S);
 				}
 			}
-			catch (final ArrayIndexOutOfBoundsException e){}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{}
 		}
 	}
 
@@ -5081,8 +5110,10 @@ public class StdMOB implements MOB
 	protected int getCodeNum(String code)
 	{
 		for (int i = 0; i < CODES.length; i++)
+		{
 			if (code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
 
@@ -5093,8 +5124,10 @@ public class StdMOB implements MOB
 			return false;
 		final String[] codes = getStatCodes();
 		for (int i = 0; i < codes.length; i++)
+		{
 			if (!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }
