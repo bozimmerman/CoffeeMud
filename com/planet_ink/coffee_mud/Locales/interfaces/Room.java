@@ -197,7 +197,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial.CODES
 	 * @see Room#myResource()
 	 * @see Room#setResource(int)
-	 * @param resourceCode the full resource code for the current gatherable resource in this room
+	 * @return the list of all possible resource codes for the current gatherable resources in this room
 	 */
 	public List<Integer> resourceChoices();
 	
