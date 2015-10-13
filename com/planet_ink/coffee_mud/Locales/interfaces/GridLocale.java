@@ -108,7 +108,7 @@ public interface GridLocale extends Room, GridZones
 	 * the same places as the gridlocale host.  Outer Exits are a way around
 	 * this by pre-defining exits from grid children to elsewhere on the 
 	 * map, including into other gridlocales.
-	 * @see WorldMap.CrossExit
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit
 	 * @see GridLocale#addOuterExit(com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit)
 	 * @see GridLocale#delOuterExit(com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit)
 	 * @return an iterator of cross ("outer") exits.
@@ -121,7 +121,7 @@ public interface GridLocale extends Room, GridZones
 	 * this by pre-defining exits from grid children to elsewhere on the 
 	 * map, including into other gridlocales.
 	 * This method will add a new one.
-	 * @see WorldMap.CrossExit
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.WorldMap.CrossExit
 	 * @see GridLocale#outerExits()
 	 * @see GridLocale#delOuterExit(com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit)
 	 * @param x the new cross ("outer") exit
@@ -134,7 +134,7 @@ public interface GridLocale extends Room, GridZones
 	 * this by pre-defining exits from grid children to elsewhere on the 
 	 * map, including into other gridlocales.
 	 * This method will remove an existing one
-	 * @see WorldMap.CrossExit
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.WorldMap.CrossExit
 	 * @see GridLocale#outerExits()
 	 * @see GridLocale#addOuterExit(com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit)
 	 * @param x the existing cross ("outer") exit to delete
