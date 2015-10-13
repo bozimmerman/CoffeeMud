@@ -212,7 +212,7 @@ public class Construction extends CraftingSkill
 		for(int d=0;d<R.rawDoors().length;d++)
 			R.rawDoors()[d]=room.rawDoors()[d];
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			R.setRawExit(d,room);
+			R.setRawExit(d,room.getExitInDir(d));
 		R.startItemRejuv();
 		try
 		{
@@ -344,7 +344,7 @@ public class Construction extends CraftingSkill
 							{
 								if((R.rawDoors()[d]==null)
 								||(R.rawDoors()[d].roomID().length()>0))
-									R.setRawExit(d,room);
+									R.setRawExit(d,room.getExitInDir(d));
 							}
 							R.clearSky();
 							R.startItemRejuv();

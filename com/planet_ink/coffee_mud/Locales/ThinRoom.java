@@ -76,7 +76,7 @@ public class ThinRoom implements Room
 	private boolean recurse=false;
 	@Override public boolean isHere(Environmental E){return false;}
 	@Override
-	public void setRawExit(int direction, Environmental E)
+	public void setRawExit(int direction, Exit E)
 	{
 		if(E instanceof Room)
 			exits[direction]=((Room)E).getRawExit(direction);
@@ -135,8 +135,7 @@ public class ThinRoom implements Room
 	@Override public void setExpirationDate(long time){}
 
 	@Override public void clearSky(){}
-	@Override public void giveASky(int zero){}
-	@Override public boolean isSameRoom(Object O){return this==O;}
+	@Override public void giveASky(int depth){}
 
 	@Override public Area getArea(){return myArea;}
 	@Override public void setArea(Area newArea){myArea=newArea;}

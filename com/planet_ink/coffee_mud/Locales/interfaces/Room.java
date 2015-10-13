@@ -107,7 +107,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public final static int DOMAIN_OUTDOORS_SEAPORT=13;
 	
 	/** Domain description array indexed by the DOMAIN_OUTDOOR_* constants. @see {@link Room#DOMAIN_OUTDOORS_CITY} */
-	public final static String[] DOMAiN_OUTDOOR_DESCS=
+	public final static String[] DOMAIN_OUTDOOR_DESCS=
 	{
 		"CITY",
 		"WOODS",
@@ -162,7 +162,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see Room#DOMAIN_INDOORS_CAVE
 	 * @see Room#DOMAIN_INDOORS_DESCS
 	 * @see Room#DOMAIN_OUTDOORS_CITY
-	 * @see Room#DOMAIN_OUTDOORS_DESCS
+	 * @see Room#DOMAIN_OUTDOOR_DESCS
 	 * @return the domain-code for this room
 	 */
 	public int domainType();
@@ -170,8 +170,8 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	/**
 	 * Returns the full resource code for the current gatherable resource in this room.
 	 * The value of this method may change from time to time.
-	 * @see RawMaterial
-	 * @see RawMaterial.CODES
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial.CODES
 	 * @see Room#setResource(int)
 	 * @see Room#resourceChoices()
 	 * @return the full resource code for the current gatherable resource in this room
@@ -181,8 +181,8 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	/**
 	 * Sets the full resource code for the current gatherable resource in this room.
 	 * The value set by this method may be changed automatically later on.
-	 * @see RawMaterial
-	 * @see RawMaterial.CODES
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial.CODES
 	 * @see Room#myResource()
 	 * @see Room#resourceChoices()
 	 * @param resourceCode the full resource code for the current gatherable resource in this room
@@ -193,8 +193,8 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * Returns a list of all resource codes for potentially gatherable resources in this room.
 	 * This list is alterable for a given Room/Locale java class.  Changes to any instance will
 	 * affect the entire class.
-	 * @see RawMaterial
-	 * @see RawMaterial.CODES
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial.CODES
 	 * @see Room#myResource()
 	 * @see Room#setResource(int)
 	 * @param resourceCode the full resource code for the current gatherable resource in this room
@@ -275,28 +275,194 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		}
 	}
 	
+	/**
+	 * When a room is created, this method is called to inspect the item contents
+	 * for any rejuvinating items and, if found, causes them to start being tracked.
+	 * Rejuvinating items are items that once, removed from a room, restore themselves
+	 * after the rejuv-time clears.
+	 */
 	public void startItemRejuv();
+	
+	/**
+	 * Causes the room stat affects to be reevaluated, as well as the stat affects
+	 * of every inhabitant, exit, and item in the room.
+	 * @see Physical#recoverPhyStats()
+	 * @see MOB#recoverCharStats()
+	 */
 	public void recoverRoomStats();
 
+	/**
+	 * If this room has attached temporary rooms, such as a sky in an outdoor room,
+	 * or underwater rooms in the ocean, this method will empty all of those rooms
+	 * of their content, and then destroy those rooms.
+	 * @see Room#giveASky(int)
+	 */
 	public void clearSky();
-	public void giveASky(int zero);
-	public boolean isSameRoom(Object O);
-
+	
+	/**
+	 * If this room requires attached temporary rooms, such as a sky in an outdoor
+	 * room, or underwater rooms in the ocean, this method will create those rooms
+	 * at the given left of depth.
+	 * @see Room#clearSky()
+	 * @param depth the diameter of the sky or underwater to create
+	 */
+	public void giveASky(int depth);
+	
+	/**
+	 * Returns the Area to which this room belongs.  Guarenteed to be non-null.
+	 * @see Room#setArea(Area)
+	 * @see Area
+	 * @return the Area to which this room belongs
+	 */
 	public Area getArea();
+	
+	/**
+	 * Sets the Area to which this room should belong, which also notifies the Area
+	 * object that this room is a new member, and removing itself from any previous
+	 * Area it belonged to in the past.
+	 * @see Area
+	 * @see Room#getArea()
+	 * @param newArea the new area that this room belongs ro
+	 */
 	public void setArea(Area newArea);
+	
+	/**
+	 * If this room is a grid-child room, this method is called to notify this child
+	 * as to the identity of its parent gridlocale room.
+	 * @see Room#getGridParent()
+	 * @see GridLocale
+	 * @param room the GridLocale parent room to this room
+	 */
 	public void setGridParent(GridLocale room);
+	
+	/**
+	 * If this room is a grid-child room, this method is called to return
+	 * the identity of its parent gridlocale room.
+	 * @see Room#setGridParent(GridLocale)
+	 * @see GridLocale
+	 * @return the GridLocale parent room to this room
+	 */
 	public GridLocale getGridParent();
 
+	/**
+	 * Returns array of the Raw room objects that this room connects to via
+	 * exits.  This array should only be used by low-level engine calls that
+	 * understand the implications of accessing rooms in this way.  This is 
+	 * because a Room returned by this method may be temporary, or even just
+	 * a stand-in for a real room that is instantiated later.
+	 * Always call {@link Room#getRoomInDir(int)} if you want a proper Room
+	 * object.
+	 * These rooms are indexed by Direction code.
+	 * @see Directions
+	 * @see Room#prepareRoomInDir(Room, int)
+	 * @see Room#getRawExit(int)
+	 * @return an array of Raw room objects that this room connects to
+	 */
 	public Room[] rawDoors();
-	public void setRawExit(int direction, Environmental E);
-	public Exit getRawExit(int direction);
-	public Exit getReverseExit(int direction);
-	public Exit getPairedExit(int direction);
+	
+	/**
+	 * Returns the room in the given direction from this room which, depending
+	 * on the exit, may be traveled to.  Returns null if there is no such room.
+	 * @param direction the Direction from this room to the next
+	 * @see Directions
+	 * @see Room#prepareRoomInDir(Room, int)
+	 * @see Room#getRawExit(int)
+	 * @return the room in the given direction, or null
+	 */
 	public Room getRoomInDir(int direction);
-	public Exit getExitInDir(int direction);
+	
+	/**
+	 * This method is called by an adjoining room to resolve this room to its
+	 * final object.  There's no reason to call it from the "outside".
+	 * @param fromRoom the room being traveled from
+	 * @param direction the direction from the fromRoom being travelled in
+	 * @return will either return this, or a resolved Rom object.
+	 */
 	public Room prepareRoomInDir(Room fromRoom, int direction);
+	
+	/**
+	 * Returns the raw unresolved exit found in this room in the given
+	 * direction.  This method should only be called by internal engine
+	 * systems, as it may return a temporary object.  Instead, you should
+	 * always call {@link Room#getExitInDir(int)} if you want the final
+	 * Exit object in the given direction.  This method returns null if 
+	 * there is no exit in the given direction.
+	 * @see Room#setRawExit(int, Exit)
+	 * @see Room#getExitInDir(int)
+	 * @see Room#getReverseExit(int)
+	 * @see Room#getPairedExit(int)
+	 * @see Directions
+	 * @param direction the direction in this room to look for an exit in
+	 * @return the raw Exit object in that direction, or null
+	 */
+	public Exit getRawExit(int direction);
+	
+	/**
+	 * Sets the Exit object found in this room in the given direction.  
+	 * @see Room#getRawExit(int)
+	 * @see Room#getExitInDir(int)
+	 * @see Room#getReverseExit(int)
+	 * @see Room#getPairedExit(int)
+	 * @see Directions
+	 * @param direction the direction in this room to look for an exit in
+	 * @param E the raw Exit object in that direction, or null
+	 */
+	public void setRawExit(int direction, Exit E);
+	
+	/**
+	 * Returns the Exit opposite this one, in the Room in the given direction.
+	 * For example, if the direction is east, this will return the west door
+	 * in the room to the east.
+	 * @see Room#getRawExit(int)
+	 * @see Room#getExitInDir(int)
+	 * @see Room#setRawExit(int, Exit)
+	 * @see Room#getPairedExit(int)
+	 * @see Directions
+	 * @param direction the direction from this room to get the reverse exit for
+	 * @return the reverse exit, or null if there is no room (or no reverse exit)
+	 */
+	public Exit getReverseExit(int direction);
+	
+	/**
+	 * Returns the Exit opposite this one, in the Room in the given direction,
+	 * but only if the two exits exist, and have the same Door status.
+	 * For example, if the direction is east, this will return the west door
+	 * in the room to the east, but only if this east exit also has a door.
+	 * @see Room#getRawExit(int)
+	 * @see Room#getExitInDir(int)
+	 * @see Room#setRawExit(int, Exit)
+	 * @see Room#getReverseExit(int)
+	 * @see Directions
+	 * @param direction the direction from this room to get the reverse exit for
+	 * @return the reverse exit, or null if there is no room (or no reverse exit)
+	 */
+	public Exit getPairedExit(int direction);
+	
+	/**
+	 * Returns the Exit in this room, in the given direction.
+	 * @see Room#getRawExit(int)
+	 * @see Room#getPairedExit(int)
+	 * @see Room#setRawExit(int, Exit)
+	 * @see Room#getReverseExit(int)
+	 * @param direction the direction from this room to get the exit for
+	 * @return the Exit in this room, in the given direction
+	 */
+	public Exit getExitInDir(int direction);
 
+	/**
+	 * Returns the index number which represents which mob's "turn" it is in combat.
+	 * This only applies when turn-based combat systems are being used.
+	 * The index is into the ordinal list of mobs in this room.
+	 * @return  the index number which represents which mob's "turn" it is in combat
+	 */
 	public int getCombatTurnMobIndex();
+	
+	/**
+	 * Sets the index number which represents which mob's "turn" it is in combat.
+	 * This only applies when turn-based combat systems are being used.
+	 * The index is into the ordinal list of mobs in this room.
+	 * @param index  the index number which represents which mob's "turn" it is in combat
+	 */
 	public void setCombatTurnMobIndex(final int index);
 
 	public int pointsPerMove(MOB mob);

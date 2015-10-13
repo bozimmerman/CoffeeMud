@@ -153,7 +153,7 @@ public interface Technical
 
 		/**
 		 * Returns the form of the parameters of this tech command
-		 * @return
+		 * @return  the form of the parameters of this tech command
 		 */
 		public Class<?>[] getParms()
 		{

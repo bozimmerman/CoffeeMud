@@ -212,7 +212,7 @@ public class Masonry extends CraftingSkill
 		for(int d=0;d<R.rawDoors().length;d++)
 			R.rawDoors()[d]=room.rawDoors()[d];
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			R.setRawExit(d,room);
+			R.setRawExit(d,room.getExitInDir(d));
 		R.startItemRejuv();
 		try
 		{

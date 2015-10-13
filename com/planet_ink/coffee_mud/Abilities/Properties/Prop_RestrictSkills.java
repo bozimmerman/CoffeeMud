@@ -61,7 +61,7 @@ public class Prop_RestrictSkills extends Property
 				onlyRoomDomains.add(Integer.valueOf(Room.INDOORS+x));
 			else
 			{
-				x=CMParms.indexOf(Room.DOMAiN_OUTDOOR_DESCS, domain.toUpperCase().trim());
+				x=CMParms.indexOf(Room.DOMAIN_OUTDOOR_DESCS, domain.toUpperCase().trim());
 				if(x>=0)
 					onlyRoomDomains.add(Integer.valueOf(x));
 			}
@@ -75,7 +75,7 @@ public class Prop_RestrictSkills extends Property
 				neverRoomDomains.add(Integer.valueOf(Room.INDOORS+x));
 			else
 			{
-				x=CMParms.indexOf(Room.DOMAiN_OUTDOOR_DESCS, domain.toUpperCase().trim());
+				x=CMParms.indexOf(Room.DOMAIN_OUTDOOR_DESCS, domain.toUpperCase().trim());
 				if(x>=0)
 					neverRoomDomains.add(Integer.valueOf(x));
 			}

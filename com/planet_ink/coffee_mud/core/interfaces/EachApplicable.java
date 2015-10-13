@@ -36,6 +36,7 @@ public interface EachApplicable<T>
 	public static class ApplyAffectPhyStats<T extends StatsAffecting> implements EachApplicable<T>
 	{
 		protected final Physical me;
+		
 		public ApplyAffectPhyStats(Physical me)
 		{
 			this.me=me;

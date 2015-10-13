@@ -87,8 +87,8 @@ public class ResourceOverride extends ActiveTicker
 			}
 			else
 			{
-				for(int i=0;i<Room.DOMAiN_OUTDOOR_DESCS.length;i++)
-					if(which.equalsIgnoreCase(Room.DOMAiN_OUTDOOR_DESCS[i]))
+				for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+					if(which.equalsIgnoreCase(Room.DOMAIN_OUTDOOR_DESCS[i]))
 					{ code=i; break;}
 				if(code<0)
 					for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)

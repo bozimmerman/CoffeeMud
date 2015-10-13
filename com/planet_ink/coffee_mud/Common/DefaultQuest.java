@@ -1179,7 +1179,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 												choices.add(R2);
 										}
 										else
-										if(Room.DOMAiN_OUTDOOR_DESCS[dom].indexOf(localeName)>=0)
+										if(Room.DOMAIN_OUTDOOR_DESCS[dom].indexOf(localeName)>=0)
 											choices.add(R2);
 									}
 								}

@@ -111,7 +111,7 @@ public class RandomMonsters extends ActiveTicker
 						restrictedLocales.clear();
 						for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
 							restrictedLocales.addElement(Integer.valueOf(Room.INDOORS+i));
-						for(int i=0;i<Room.DOMAiN_OUTDOOR_DESCS.length;i++)
+						for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
 							restrictedLocales.addElement(Integer.valueOf(i));
 					}
 					else
@@ -131,8 +131,8 @@ public class RandomMonsters extends ActiveTicker
 								restrictedLocales.addElement(Integer.valueOf(code));
 						}
 						code=-1;
-						for(int i=0;i<Room.DOMAiN_OUTDOOR_DESCS.length;i++)
-							if(Room.DOMAiN_OUTDOOR_DESCS[i].startsWith(s))
+						for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+							if(Room.DOMAIN_OUTDOOR_DESCS[i].startsWith(s))
 								code=i;
 						if(code>=0)
 						{

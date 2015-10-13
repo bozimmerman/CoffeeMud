@@ -321,7 +321,7 @@ public class Copy extends StdCommand
 					final Exit oldE=editRoom.getRawExit(dirCode);
 					if((oldE==null)||(oldE!=E))
 					{
-						editRoom.setRawExit(dirCode, E);
+						editRoom.setRawExit(dirCode, (Exit)E);
 						CMLib.database().DBUpdateExits(editRoom);
 					}
 					final boolean useShipDirs=(editRoom instanceof BoardableShip)||(editRoom.getArea() instanceof BoardableShip);
