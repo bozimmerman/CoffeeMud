@@ -39,16 +39,21 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdPostman extends StdShopKeeper implements PostOffice
 {
-	@Override public String ID(){return "StdPostman";}
+	@Override
+	public String ID()
+	{
+		return "StdPostman";
+	}
 
-	protected double minimumPostage=1.0;
-	protected double postagePerPound=1.0;
-	protected double holdFeePerPound=1.0;
-	protected double feeForNewBox=50.0;
-	protected int maxMudMonthsHeld=12;
-	protected static Hashtable postalTimes=new Hashtable();
-	private long postalWaitTime=-1;
+	protected double	minimumPostage		= 1.0;
+	protected double	postagePerPound		= 1.0;
+	protected double	holdFeePerPound		= 1.0;
+	protected double	feeForNewBox		= 50.0;
+	protected int		maxMudMonthsHeld	= 12;
+	private long		postalWaitTime		= -1;
 
+	protected static Map<String,Long>	postalTimes	= new Hashtable<String,Long>();
+	
 	public StdPostman()
 	{
 		super();
@@ -74,18 +79,72 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		recoverCharStats();
 	}
 
-	@Override public double minimumPostage(){return minimumPostage;}
-	@Override public void setMinimumPostage(double d){minimumPostage=d;}
-	@Override public double postagePerPound(){return postagePerPound;}
-	@Override public void setPostagePerPound(double d){postagePerPound=d;}
-	@Override public double holdFeePerPound(){return holdFeePerPound;}
-	@Override public void setHoldFeePerPound(double d){holdFeePerPound=d;}
-	@Override public double feeForNewBox(){return feeForNewBox;}
-	@Override public void setFeeForNewBox(double d){feeForNewBox=d;}
-	@Override public int maxMudMonthsHeld(){return maxMudMonthsHeld;}
-	@Override public void setMaxMudMonthsHeld(int months){maxMudMonthsHeld=months;}
+	@Override
+	public double minimumPostage()
+	{
+		return minimumPostage;
+	}
 
-	@Override public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
+	@Override
+	public void setMinimumPostage(double d)
+	{
+		minimumPostage = d;
+	}
+
+	@Override
+	public double postagePerPound()
+	{
+		return postagePerPound;
+	}
+
+	@Override
+	public void setPostagePerPound(double d)
+	{
+		postagePerPound = d;
+	}
+
+	@Override
+	public double holdFeePerPound()
+	{
+		return holdFeePerPound;
+	}
+
+	@Override
+	public void setHoldFeePerPound(double d)
+	{
+		holdFeePerPound = d;
+	}
+
+	@Override
+	public double feeForNewBox()
+	{
+		return feeForNewBox;
+	}
+
+	@Override
+	public void setFeeForNewBox(double d)
+	{
+		feeForNewBox = d;
+	}
+
+	@Override
+	public int maxMudMonthsHeld()
+	{
+		return maxMudMonthsHeld;
+	}
+
+	@Override
+	public void setMaxMudMonthsHeld(int months)
+	{
+		maxMudMonthsHeld = months;
+	}
+
+	@Override
+	public void addSoldType(int mask)
+	{
+		setWhatIsSoldMask(CMath.abs(mask));
+	}
+
 	@Override
 	public void setWhatIsSoldMask(long newSellCode)
 	{
@@ -96,9 +155,23 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			whatIsSoldMask=ShopKeeper.DEAL_CLANPOSTMAN;
 	}
 
-	@Override public String postalChain(){return text();}
-	@Override public void setPostalChain(String name){setMiscText(name);}
-	@Override public String postalBranch(){return CMLib.map().getExtendedRoomID(getStartRoom());}
+	@Override
+	public String postalChain()
+	{
+		return text();
+	}
+
+	@Override
+	public void setPostalChain(String name)
+	{
+		setMiscText(name);
+	}
+
+	@Override
+	public String postalBranch()
+	{
+		return CMLib.map().getExtendedRoomID(getStartRoom());
+	}
 
 	@Override
 	public String getSenderName(MOB mob, Clan.Function func, boolean checked)
@@ -171,6 +244,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	{
 		CMLib.database().DBDeleteData(boxName,postalChain());
 	}
+
 	@Override
 	public Map<String, String> getOurOpenBoxes(String boxName)
 	{
@@ -191,6 +265,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		}
 		return branches;
 	}
+
 	@Override
 	public void createBoxHere(String boxName, String forward)
 	{
@@ -202,6 +277,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					"50");
 		}
 	}
+
 	@Override
 	public void deleteBoxHere(String boxName)
 	{
@@ -218,6 +294,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			}
 		}
 	}
+
 	public Vector getAllLocalBoxPD(String boxName)
 	{
 		final List<PlayerData> V=getBoxRowPDData(boxName);
@@ -233,6 +310,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		}
 		return mine;
 	}
+
 	public List<PlayerData> getBoxRowPDData(String mob)
 	{
 		return CMLib.database().DBReadData(mob,postalChain());
@@ -351,7 +429,6 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return amt;
 	}
 
-
 	protected double getCODChargeForPiece(MailPiece data)
 	{
 		if(data==null)
@@ -461,7 +538,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			// handle interest by watching the days go by...
 			// each chain is handled by one branch,
 			// since pending mail all looks the same.
-			Long L=(Long)postalTimes.get(postalChain()+"/"+postalBranch());
+			Long L=postalTimes.get(postalChain()+"/"+postalBranch());
 			if((L==null)||(L.longValue()<System.currentTimeMillis()))
 			{
 				proceed=(L!=null);
@@ -832,7 +909,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					{
 						StringBuffer str=new StringBuffer("");
 						str.append(L("\n\rItems in your postal box here:\n\r"));
-						str.append("^x[COD     ][From           ][Sent           ][Item                        ]^.^N");
+						str.append(L("^x[COD     ][From           ][Sent           ][Item                        ]^.^N"));
 						mob.tell(str.toString());
 						for(int i=0;i<V.size();i++)
 						{

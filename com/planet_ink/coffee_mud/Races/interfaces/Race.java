@@ -404,7 +404,8 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	/** Age constant for the very very old*/
 	public final static int AGE_ANCIENT=8;
 	/** Constant string list for the names of the age constants, in their order of value */
-	public final static String[] AGE_DESCS=CMLib.lang().sessionTranslation(new String[]{
+	public final static String[] AGE_DESCS=CMLib.lang().sessionTranslation(new String[]
+	{
 			"Infant","Toddler","Child","Young adult","Adult", "Mature", "Old", "Venerable", "Ancient"
 	});
 
@@ -446,9 +447,11 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	/** the number of body part constants*/
 	public final static int BODY_PARTS=16;
 	/** constant string list naming each of the BODY_* constants in the order of their value*/
-	public final static String[] BODYPARTSTR={
+	public final static String[] BODYPARTSTR=
+	{
 		"ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
-		"NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
+		"NOSE","GILL","MOUTH","WAIST","TAIL","WING"
+	};
 	/** constant hash of BODYPARTSTR */
 	public final static Map<Object,Integer> BODYPARTHASH=CMStrings.makeNumericHash(BODYPARTSTR);
 	
@@ -467,25 +470,33 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 
 	public final static Map<String,Integer> BODYPARTHASH_RL_LOWER=new SHashtable<String,Integer>(new Enumeration<Pair<String,Integer>>()
 	{
-		private int index=0;
-		private final Stack<Pair<String,Integer>> others=new Stack<Pair<String,Integer>>(); 
-		@Override public boolean hasMoreElements() { return (others.size()>0) || (index < BODYPARTSTR.length); }
-		@Override public Pair<String, Integer> nextElement()
+		private int									index	= 0;
+		private final Stack<Pair<String, Integer>>	others	= new Stack<Pair<String, Integer>>();
+
+		@Override
+		public boolean hasMoreElements()
 		{
-			if(!hasMoreElements())
+			return (others.size() > 0) || (index < BODYPARTSTR.length);
+		}
+
+		@Override
+		public Pair<String, Integer> nextElement()
+		{
+			if (!hasMoreElements())
 				throw new NoSuchElementException();
-			if(others.size()>0)
+			if (others.size() > 0)
 				return others.pop();
-			others.push(new Pair<String,Integer>(BODYPARTSTR[index].toLowerCase(),Integer.valueOf(index)));
-			others.push(new Pair<String,Integer>("left "+BODYPARTSTR[index].toLowerCase(),Integer.valueOf(index)));
-			others.push(new Pair<String,Integer>("right "+BODYPARTSTR[index].toLowerCase(),Integer.valueOf(index)));
+			others.push(new Pair<String, Integer>(BODYPARTSTR[index].toLowerCase(), Integer.valueOf(index)));
+			others.push(new Pair<String, Integer>("left " + BODYPARTSTR[index].toLowerCase(), Integer.valueOf(index)));
+			others.push(new Pair<String, Integer>("right " + BODYPARTSTR[index].toLowerCase(), Integer.valueOf(index)));
 			index++;
 			return others.pop();
 		}
 	});
 
 	/** array mapping worn locations to body parts, indexed by body parts. */
-	public final static long[] BODY_WEARVECTOR={
+	public final static long[] BODY_WEARVECTOR=
+	{
 		Wearable.WORN_HEAD, // ANTENEA, having any of these removes that pos
 		Wearable.WORN_EYES, // EYES, having any of these adds this position
 		Wearable.WORN_EARS, // EARS, gains a wear position here for every 2
@@ -509,7 +520,8 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * by having or losing this body part, and then the number of such body parts
 	 * necessary to gain or lose one such wear location.  A value of -1 means N/A
 	 */
-	public final static long[][] BODY_WEARGRID={
+	public final static long[][] BODY_WEARGRID=
+	{
 		{Wearable.WORN_HEAD,-1}, // ANTENEA, having any of these removes that pos
 		{Wearable.WORN_EYES,2}, // EYES, having any of these adds this position
 		{Wearable.WORN_EARS,2}, // EARS, gains a wear position here for every 2

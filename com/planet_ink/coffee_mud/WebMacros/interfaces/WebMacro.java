@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.WebMacros.interfaces;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -19,52 +20,59 @@ import com.planet_ink.coffee_web.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2015 Bo Zimmerman
+ Copyright 2002-2015 Bo Zimmerman
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-	   http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 /**
- * Web Macros are special commands which can be inserted into coffeemud web
- * page (cmvp) files, and can have those command strings substituted with
- * calculated results.  They can include parameters, and can access the
- * other URL parameters.
+ * Web Macros are special commands which can be inserted into coffeemud web page
+ * (cmvp) files, and can have those command strings substituted with calculated
+ * results. They can include parameters, and can access the other URL
+ * parameters.
  */
 public interface WebMacro extends CMObject
 {
 	/**
 	 * The public name of this macro
+	 * 
 	 * @return The public name of this macro
 	 */
 	@Override
 	public String name();
+
 	/**
 	 * Whether the runMacro or runBinaryMacro executor should be called.
+	 * 
 	 * @see WebMacro#runBinaryMacro(HTTPRequest, String)
 	 * @see WebMacro#runMacro(HTTPRequest, String)
-	 * @return whether the runBinaryMacro executor should be called instead of runMacro
+	 * @return whether the runBinaryMacro executor should be called instead of
+	 *         runMacro
 	 */
 	public boolean preferBinary();
+
 	/**
 	 * Whether this macro is restricted to the admin web server.
+	 * 
 	 * @return true if the macro is restricted to the admin web server
 	 */
 	public boolean isAdminMacro();
 
 	/**
 	 * Whether this macro returns an attachment instead of something
-	 * displayable.  If true, the content-disposition will reflect
-	 * the filename parameter, and any other header or other response
-	 * settings may be embedded here.
+	 * displayable. If true, the content-disposition will reflect the filename
+	 * parameter, and any other header or other response settings may be
+	 * embedded here.
+	 * 
 	 * @see WebMacro#getFilename(HTTPRequest, String)
 	 * @param response the WebServer servlet response object
 	 * @param filename the filename from getFilename
@@ -72,18 +80,21 @@ public interface WebMacro extends CMObject
 	public void setServletResponse(SimpleServletResponse response, final String filename);
 
 	/**
-	 * Whether this macro substitutes as an aspect of the web path instead
-	 * of a standard web macro.  If true is returned, URLs such as:
+	 * Whether this macro substitutes as an aspect of the web path instead of a
+	 * standard web macro. If true is returned, URLs such as:
 	 * http://mydomain.com/mymacroname?firstparm=value&amp;secondparm=value
 	 * might succeeed
+	 * 
 	 * @see WebMacro#getFilename(HTTPRequest, String)
 	 * @return whether this is a wierd URL macro
 	 */
 	public boolean isAWebPath();
+
 	/**
 	 * If this macro returns true from isAWebPath(), this will be the substitute
-	 * filename to use as a page for returning to the caller.  It may simply
+	 * filename to use as a page for returning to the caller. It may simply
 	 * return what is given to it.
+	 * 
 	 * @see WebMacro#isAWebPath()
 	 * @see com.planet_ink.coffee_web.interfaces.HTTPRequest
 	 * @param httpReq the requests object
@@ -93,8 +104,10 @@ public interface WebMacro extends CMObject
 	public String getFilename(HTTPRequest httpReq, String filename);
 
 	/**
-	 * This method is executed only if this macro returns true for preferBinary().
-	 * It will execute the macro and return its results as a binary byte array.
+	 * This method is executed only if this macro returns true for
+	 * preferBinary(). It will execute the macro and return its results as a
+	 * binary byte array.
+	 * 
 	 * @see WebMacro#preferBinary()
 	 * @see com.planet_ink.coffee_web.interfaces.HTTPRequest
 	 * @param httpReq the external requests object
@@ -103,10 +116,13 @@ public interface WebMacro extends CMObject
 	 * @throws HTTPServerException a http error to pass to the user
 	 */
 	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException;
+
 	/**
-	 * This method is executed only if this macro returns false for preferBinary().
-	 * It will execute the macro and return its results as a string, which is then
-	 * substituted for the macro reference in the web page where the macro was found.
+	 * This method is executed only if this macro returns false for
+	 * preferBinary(). It will execute the macro and return its results as a
+	 * string, which is then substituted for the macro reference in the web page
+	 * where the macro was found.
+	 * 
 	 * @see WebMacro#preferBinary()
 	 * @see com.planet_ink.coffee_web.interfaces.HTTPRequest
 	 * @param httpReq the external requests object
