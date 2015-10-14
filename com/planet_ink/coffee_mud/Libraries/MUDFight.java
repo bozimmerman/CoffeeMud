@@ -2016,7 +2016,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final CharState maxState=mob.maxState();
 			if(expendMovement)
 			{
-				int move=-room.pointsPerMove(mob);
+				int move=-room.pointsPerMove();
 				if(mob.phyStats().weight()>mob.maxCarry())
 					move+=(int)Math.round(CMath.mul(move,10.0*CMath.div(mob.phyStats().weight()-mob.maxCarry(),mob.maxCarry())));
 				curState.adjMovement(move,maxState);
@@ -2029,7 +2029,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					factor=1;
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.THIRST))
 				&&(mob.maxState().getThirst() < (Integer.MAX_VALUE/2)))
-					curState.adjThirst(-(room.thirstPerRound(mob)*factor),maxState.maxThirst(mob.baseWeight()));
+					curState.adjThirst(-(room.thirstPerRound()*factor),maxState.maxThirst(mob.baseWeight()));
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.HUNGER))
 				&&(mob.maxState().getHunger() < (Integer.MAX_VALUE/2)))
 					curState.adjHunger(-factor,maxState.maxHunger(mob.baseWeight()));

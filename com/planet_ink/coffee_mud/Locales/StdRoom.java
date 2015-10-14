@@ -349,18 +349,14 @@ public class StdRoom implements Room
 		if((direction<0)||(direction>=exits.length))
 			return;
 		final Exit E=exits[direction];
-		if(to instanceof Room)
-			to=((Room)to).getRawExit(direction);
-
 		if(E==to)
 			return;
 		if(E!=null)
 			E.exitUsage((short)-1);
-
-		if(to instanceof Exit)
+		if(to !=null )
 		{
-			((Exit)to).exitUsage((short)1);
-			exits[direction]=(Exit)to;
+			to.exitUsage((short)1);
+			exits[direction]=to;
 		}
 		else
 			exits[direction]=null;
@@ -2591,9 +2587,9 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public int pointsPerMove(MOB mob)
+	public int pointsPerMove()
 	{
-		return getArea().getClimateObj().adjustMovement(phyStats().weight(),mob,this);
+		return getArea().getClimateObj().adjustMovement(phyStats().weight(),this);
 	}
 
 	protected int baseThirst()
@@ -2602,7 +2598,7 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public int thirstPerRound(MOB mob)
+	public int thirstPerRound()
 	{
 		final int derivedClimate=getClimateType();
 		int adjustment=0;
@@ -2615,7 +2611,7 @@ public class StdRoom implements Room
 		if(CMath.bset(derivedClimate, Places.CLIMASK_WINDY))
 			adjustment+=1;
 		if(getArea().getClimateObj()!=null)
-			return getArea().getClimateObj().adjustWaterConsumption(baseThirst()+adjustment,mob,this);
+			return getArea().getClimateObj().adjustWaterConsumption(baseThirst()+adjustment,this);
 		return 0;
 	}
 

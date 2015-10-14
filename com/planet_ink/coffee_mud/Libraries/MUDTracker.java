@@ -1010,7 +1010,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			&&(mob.riding()==null)
 			&&(mob.location()!=null)
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE)))
-				mob.playerStats().adjHygiene(mob.location().pointsPerMove(mob));
+				mob.playerStats().adjHygiene(mob.location().pointsPerMove());
 		}
 
 		List<Rider> riders=null;

@@ -144,21 +144,19 @@ public interface Climate extends Tickable, CMCommon
 	 * thirstiness of the given mob, modified up or down based
 	 * on the room given.
 	 * @param base the water thirst gain to start with
-	 * @param mob the mob getting thirsty
 	 * @param room the room the mob is in
 	 * @return the modified base thirst, after gain or loss
 	 */
-	public int adjustWaterConsumption(int base, MOB mob, Room room);
+	public int adjustWaterConsumption(int base, Room room);
 	/**
 	 * If applicable, thies method will return the base movement
 	 * cost of the given mob, modified up or down based
 	 * on the room given.
 	 * @param base the movement  loss to start with
-	 * @param mob the mob moving
 	 * @param room the room the mob is moving through
 	 * @return the modified movement, after gain or loss
 	 */
-	public int adjustMovement(int base, MOB mob, Room room);
+	public int adjustMovement(int base, Room room);
 	/** constant describing clear or no weather. @see Climate#weatherType(Room) */
 	public final static int WEATHER_CLEAR=0;
 	/** constant describing  cloudy weather. @see Climate#weatherType(Room) */

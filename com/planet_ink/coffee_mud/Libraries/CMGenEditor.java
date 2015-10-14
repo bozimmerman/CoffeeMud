@@ -1047,7 +1047,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(int d=0;d<R.rawDoors().length;d++)
 				R.rawDoors()[d]=oldR.rawDoors()[d];
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				R.setRawExit(d,oldR.getExitInDir(d));
+				R.setRawExit(d,oldR.getRawExit(d));
 			R.setDisplayText(oldR.displayText());
 			R.setDescription(oldR.description());
 			if(R.image().equalsIgnoreCase(CMLib.protocol().getDefaultMXPImage(oldR)))

@@ -455,7 +455,7 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public int adjustWaterConsumption(int base, MOB mob, Room room)
+	public int adjustWaterConsumption(int base, Room room)
 	{
 		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
 			return base;
@@ -482,7 +482,7 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public int adjustMovement(int base, MOB mob, Room room)
+	public int adjustMovement(int base, Room room)
 	{
 		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
 			return base;

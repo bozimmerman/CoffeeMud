@@ -114,7 +114,7 @@ public class Prayer_Cannibalism extends Prayer
 		final MOB M=(MOB)affected;
 		if((M.location()!=null)&&(!CMLib.flags().isSleeping(M)))
 		{
-			M.curState().adjThirst(-(M.location().thirstPerRound(M)*2),M.maxState().maxThirst(M.baseWeight()));
+			M.curState().adjThirst(-(M.location().thirstPerRound()*2),M.maxState().maxThirst(M.baseWeight()));
 			M.curState().adjHunger(-2,M.maxState().maxHunger(M.baseWeight()));
 			if((M.isMonster())
 			&&((M.curState().getThirst()<=0)||(M.curState().getHunger()<=0))

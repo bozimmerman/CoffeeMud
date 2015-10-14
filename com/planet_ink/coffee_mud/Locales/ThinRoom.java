@@ -78,11 +78,8 @@ public class ThinRoom implements Room
 	@Override
 	public void setRawExit(int direction, Exit E)
 	{
-		if(E instanceof Room)
-			exits[direction]=((Room)E).getRawExit(direction);
-		else
-		if(E instanceof Exit)
-			exits[direction]=(Exit)E;
+		if(E != null)
+			exits[direction]=E;
 		else
 			exits[direction]=null;
 	}
@@ -155,8 +152,8 @@ public class ThinRoom implements Room
 	@Override public Room getRoomInDir(int direction){return null;}
 	@Override public Exit getExitInDir(int direction){return null;}
 
-	@Override public int pointsPerMove(MOB mob){return 0;}
-	@Override public int thirstPerRound(MOB mob){return 0;}
+	@Override public int pointsPerMove(){return 0;}
+	@Override public int thirstPerRound(){return 0;}
 
 	@Override public void send(MOB source, CMMsg msg){}
 	@Override public void sendOthers(MOB source, CMMsg msg){}

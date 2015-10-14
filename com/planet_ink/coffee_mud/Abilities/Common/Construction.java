@@ -212,7 +212,7 @@ public class Construction extends CraftingSkill
 		for(int d=0;d<R.rawDoors().length;d++)
 			R.rawDoors()[d]=room.rawDoors()[d];
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			R.setRawExit(d,room.getExitInDir(d));
+			R.setRawExit(d,room.getRawExit(d));
 		R.startItemRejuv();
 		try
 		{
@@ -220,12 +220,14 @@ public class Construction extends CraftingSkill
 			{
 				final Room R2=(Room)r.nextElement();
 				for(int d=0;d<R2.rawDoors().length;d++)
+				{
 					if(R2.rawDoors()[d]==room)
 					{
 						R2.rawDoors()[d]=R;
 						if(R2 instanceof GridLocale)
 							((GridLocale)R2).buildGrid();
 					}
+				}
 			}
 		}catch(final NoSuchElementException e){}
 		R.getArea().fillInAreaRoom(R);
@@ -344,7 +346,7 @@ public class Construction extends CraftingSkill
 							{
 								if((R.rawDoors()[d]==null)
 								||(R.rawDoors()[d].roomID().length()>0))
-									R.setRawExit(d,room.getExitInDir(d));
+									R.setRawExit(d,room.getRawExit(d));
 							}
 							R.clearSky();
 							R.startItemRejuv();
