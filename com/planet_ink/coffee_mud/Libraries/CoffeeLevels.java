@@ -544,6 +544,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		for(int a=0;a<newAbilityIDs.size();a++)
+		{
 			if(!oldAbilities.contains(newAbilityIDs.get(a)))
 			{
 				final Ability A=mob.fetchAbility(newAbilityIDs.get(a));
@@ -553,6 +554,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					mob.tell(L("^NYou have learned the @x1 ^H@x2^?.^N",type,A.name()));
 				}
 			}
+		}
 
 		fixMobStatsIfNecessary(mob,1);
 
@@ -563,7 +565,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		curClass.level(mob,newAbilityIDs);
 		mob.charStats().getMyRace().level(mob,newAbilityIDs);
-
+		
+		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, 1, mob);
 	}
 
 	protected boolean fixMobStatsIfNecessary(MOB mob, int direction)

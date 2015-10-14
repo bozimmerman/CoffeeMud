@@ -116,7 +116,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						if(activity == CraftingActivity.MENDING)
 						{
 							buildingI.setUsesRemaining(100);
-							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, this);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, 1, this);
 						}
 						else
 						if(activity==CraftingActivity.LEARNING)
@@ -133,7 +133,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						else
 						{
 							dropAWinner(mob,buildingI);
-							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, this);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
 						}
 					}
 				}

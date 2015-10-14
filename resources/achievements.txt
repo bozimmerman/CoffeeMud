@@ -17,10 +17,14 @@
 # [EVENT] is the type of achievement event.  Each type determines the other
 # parameters.  The format of each achievement event type is as follows:
 
-# ... EVENT="KILLS" NUM=[NUMBER] ZAPPERMASK="[ZAPPERMASK]" ...
+# ... EVENT="KILLS" NUM=[NUMBER] ZAPPERMASK="[ZAPPERMASK]"  PLAYERMASK="[PLAYERMASK]" ...
 #     [NUM] is the number of kills required to get the achievement.
 #     [ZAPPERMASK] is a standard mask denoting mobs whos death gains the 
 #     player a kill count towards this achievement. See archon help on 
+#     Zapper Masks (AHELP ZAPPERMASKS) from the command line for 
+#     syntax on zapper-masks.
+#     [PLAYERMASK] is a standard mask denoting which players may gain a kill point
+#     towards this achievement.  Can be used for class filtering. See archon help on 
 #     Zapper Masks (AHELP ZAPPERMASKS) from the command line for 
 #     syntax on zapper-masks.
 # 
@@ -30,7 +34,6 @@
 #     QUESTPOINTS, etc. As you can see, stats that have a base (unmodified) value 
 #     are entered simply, where the modified score is accessed by prefixing with 
 #     CURRENT.
-
 #     [VALUE] is the numeric value that the stat must be at or above when
 #     the achievement is checked in order to gain.
 #     [ABOVE/BELOW] is either ABOVE if the faction must be above the value, or 
@@ -86,6 +89,20 @@
 #     [ACHIEVEMENTLIST] is a space delimited list of tattoo names referring to other
 #     defined achievements.  When all achievements on that list are gained, then this
 #     achievement is also gained.
+#
+# ... EVENT="LEVELSGAINED" NUM=[NUM] PLAYERMASK="[PLAYERMASK]"
+#     [NUM] is the number of levels gained to complete this achievement.
+#     [PLAYERMASK] is a standard mask denoting which players may gain a level point
+#     towards this achievement.  Can be used for CLASS filtering. See archon help on 
+#     Zapper Masks (AHELP ZAPPERMASKS) from the command line for 
+#     syntax on zapper-masks.
+#
+# ... EVENT="TIMEPLAYED" SECONDS=[SECONDS] PLAYERMASK="[PLAYERMASK]"
+#     [SECONDS] is the number of seconds played to complete this achievement.
+#     [PLAYERMASK] is a standard mask denoting which players may gain a seconds point
+#     towards this achievement.  Can be used for CLASS/AREA filtering. See archon help on 
+#     Zapper Masks (AHELP ZAPPERMASKS) from the command line for 
+#     syntax on zapper-masks.
 #
 # Some achievement events are updated every mud-hour (10 mins) automatically by 
 # the system for all players on-line and in memory.

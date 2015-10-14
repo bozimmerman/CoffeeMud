@@ -100,7 +100,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					else
 					{
 						dropAWinner(mob,buildingI);
-						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, this);
+						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
 						CMLib.commands().postGet(mob,null,buildingI,true);
 					}
 				}

@@ -128,12 +128,12 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 						if(activity == CraftingActivity.MENDING)
 						{
 							buildingI.setUsesRemaining(100);
-							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, this);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, 1, this);
 						}
 						else
 						{
 							dropAWinner(mob,buildingI);
-							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, this);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
 						}
 					}
 				}

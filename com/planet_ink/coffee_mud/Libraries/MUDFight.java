@@ -1562,7 +1562,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				final Item KI=killer.fetchWieldedItem();
 				Log.combatOut("KILL",killer.Name()+":"+killer.phyStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.phyStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
 			}
-			CMLib.achievements().possiblyBumpAchievement(killer, AchievementLibrary.Event.KILLS, deadmob);
+			CMLib.achievements().possiblyBumpAchievement(killer, AchievementLibrary.Event.KILLS, 1, deadmob);
 			if((deadmob!=null)&&(killer!=null)
 			&&(deadmob.soulMate()==null)
 			&&(killer!=deadmob)&&(!killer.isMonster()))

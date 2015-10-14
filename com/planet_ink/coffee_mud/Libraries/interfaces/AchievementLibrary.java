@@ -48,7 +48,9 @@ public interface AchievementLibrary extends CMLibrary
 		SKILLUSE(new String[]{"NUM","ABILITYID"}),
 		QUESTOR(new String[]{"NUM","PLAYERMASK","QUESTMASK"}),
 		ACHIEVER(new String[]{"ACHIEVEMENTLIST"}), 
-		ROOMENTER(new String[]{"ROOMID"})
+		ROOMENTER(new String[]{"ROOMID"}),
+		LEVELSGAINED(new String[]{"NUM","PLAYERMASK"}),
+		TIMEPLAYED(new String[]{"SECONDS","PLAYERMASK"}),
 		;
 		private final String[] parameters;
 
@@ -102,7 +104,7 @@ public interface AchievementLibrary extends CMLibrary
 
 		public boolean isAchieved(MOB mob);
 
-		public boolean testBump(MOB mob, Object... parms);
+		public boolean testBump(MOB mob, int bumpNum, Object... parms);
 
 		/**
 		 * Returns the count/score to show for the given mob.  If the
@@ -122,7 +124,7 @@ public interface AchievementLibrary extends CMLibrary
 	public Achievement deleteAchievement(String named);
 	public void resaveAchievements(final String modifyTattoo);
 	public boolean addModifyAchievement(final MOB mob, final String tattoo, Achievement A);
-	public void possiblyBumpAchievement(final MOB mob, final Event E, Object... parms);
+	public void possiblyBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms);
 	public Map<String,Map<String,String>> getAchievementsHelpMap();
 	public String getAchievementsHelpFromMap(Map<String,Map<String,String>> helpMap, Event E, String parmName);
 }

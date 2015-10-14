@@ -3435,6 +3435,8 @@ public class StdMOB implements MOB
 					CMLib.coffeeTables().bump(this, CoffeeTableRow.STAT_TICKSONLINE);
 					if (((++tickAgeCounter) * CMProps.getTickMillis()) >= AGE_MILLIS_THRESHOLD)
 					{
+						final long secondsPassed = (tickAgeCounter * CMProps.getTickMillis()) / 1000;
+						CMLib.achievements().possiblyBumpAchievement(this, AchievementLibrary.Event.TIMEPLAYED, (int)secondsPassed, this);
 						tickAgeCounter = 0;
 						if (inventory != null)
 							inventory.trimToSize();
