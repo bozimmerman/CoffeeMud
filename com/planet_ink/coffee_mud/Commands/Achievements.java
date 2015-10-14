@@ -104,6 +104,46 @@ public class Achievements extends StdCommand
 			
 		}
 		else
+		if(rest.toUpperCase().equals("NOW"))
+		{
+			prefix=L("Progress in ");
+			String done=L("DONE!");
+			int padding=done.length()+1;
+			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
+			{
+				final Achievement A=a.nextElement();
+				if(mob.findTattoo(A.getTattoo()) == null)
+				{
+					AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, mob);
+					final int score = (T==null) ? 0 : T.getCount(mob);
+					if(score != 0)
+					{
+						final int targetScore = A.getTargetCount();
+						final int len = (""+score+"/"+targetScore).length(); 
+						if(len >= padding)
+							padding = len+1;
+					}
+				}
+			}
+			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
+			{
+				final Achievement A=a.nextElement();
+				if(mob.findTattoo(A.getTattoo()) != null)
+					AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
+				else
+				{
+					AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, mob);
+					int score = (T==null) ? 0 : T.getCount(mob);
+					if(score != 0)
+					{
+						int targetScore = A.getTargetCount();
+						AchievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
+					}
+				}
+			}
+			
+		}
+		else
 		if(rest.length()==0)
 		{
 			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
