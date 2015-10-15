@@ -131,6 +131,12 @@ public class Prayer_Divorce extends Prayer
 											B.addDepositInventory(femaleName,oI,oI.container());
 									}
 								}
+								for(int v=0;v<allMaleItems.size();v++)
+								{
+									final Item I=allMaleItems.get(v);
+									if(I!=null)
+										I.destroy();
+								}
 							}
 						}
 					}

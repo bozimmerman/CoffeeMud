@@ -42,8 +42,25 @@ public class BankAccountInfo extends StdWebMacro
 		double balance=0.0;
 		MoneyLibrary.DebtItem debt=null;
 		List<Item> items=new Vector<Item>(1);
+		public void finalize() throws Throwable
+		{
+			if(items != null)
+			{
+				for(Item I : items)
+				{
+					I.destroy();
+				}
+			}
+			super.finalize();
+		}
 	}
 
+	public static double getAccountInfoBalance(HTTPRequest httpReq, Banker B, MOB playerM)
+	{
+		final BankAccountStuff stuff = getMakeAccountInfo(httpReq, B, playerM);
+		return stuff.balance;
+	}
+	
 	public static synchronized BankAccountStuff getMakeAccountInfo(HTTPRequest httpReq, Banker B, MOB playerM)
 	{
 		BankAccountStuff info=(BankAccountStuff)httpReq.getRequestObjects().get("BANKINFO: "+B.bankChain()+": "+playerM.Name());
@@ -165,7 +182,7 @@ public class BankAccountInfo extends StdWebMacro
 				return intRate;
 		}
 		if(parms.containsKey("NUMITEMS"))
-			return ""+(B.getDepositedItems(playerM.Name()).size()-1);
+			return ""+(B.numberDeposited(playerM.Name())-1);
 		if(parms.containsKey("ITEMSWORTH"))
 			return CMLib.beanCounter().nameCurrencyLong(playerM,B.totalItemsWorth(playerM.Name()));
 		if(parms.containsKey("ITEMSLIST"))
@@ -175,12 +192,14 @@ public class BankAccountInfo extends StdWebMacro
 			{
 				final StringBuffer list=new StringBuffer("");
 				for(int v=0;v<items.size();v++)
+				{
 					if(!(items.get(v) instanceof Coins))
 					{
 						list.append(((Environmental)items.get(v)).name());
 						if(v<(items.size()-1))
 							list.append(", ");
 					}
+				}
 				return list.toString();
 			}
 		}

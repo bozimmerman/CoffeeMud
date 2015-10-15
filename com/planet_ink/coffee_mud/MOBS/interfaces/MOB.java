@@ -252,34 +252,90 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 
 	public static class Follower
 	{
-		public MOB follower;
-		public int marchingOrder;
-		public Follower(MOB M, int order){follower=M; marchingOrder=order;}
-		public static final Converter<Follower,MOB> converter = new Converter<Follower,MOB>()
+		public MOB	follower;
+		public int	marchingOrder;
+
+		public Follower(MOB M, int order)
 		{
-			@Override public MOB convert(Follower obj) { return obj.follower;}
+			follower = M;
+			marchingOrder = order;
+		}
+
+		public static final Converter<Follower, MOB>	converter	= new Converter<Follower, MOB>()
+		{
+			@Override
+			public MOB convert(Follower obj)
+			{
+				return obj.follower;
+			}
 		};
 	}
 
 	public static class Tattoo implements Cloneable, CMObject
 	{
-		public int tickDown=0;
-		public String tattooName;
-		public Tattoo(String name) { tattooName = name.toUpperCase().trim(); }
-		public Tattoo(String name, int down) { tattooName = name.toUpperCase().trim(); tickDown=down;}
-		@Override public String toString() { return ((tickDown>0)?(tickDown+" "):"")+tattooName; }
-		@Override public Tattoo copyOf(){ try{ return (Tattoo)this.clone(); } catch(final Exception e){ return this; }}
+		public int		tickDown	= 0;
+		public String	tattooName;
+
+		public Tattoo(String name)
+		{
+			tattooName = name.toUpperCase().trim();
+		}
+
+		public Tattoo(String name, int down)
+		{
+			tattooName = name.toUpperCase().trim();
+			tickDown = down;
+		}
+
+		@Override
+		public String toString()
+		{
+			return ((tickDown > 0) ? (tickDown + " ") : "") + tattooName;
+		}
+
+		@Override
+		public Tattoo copyOf()
+		{
+			try
+			{
+				return (Tattoo) this.clone();
+			}
+			catch (final Exception e)
+			{
+				return this;
+			}
+		}
+
 		@Override
 		public int compareTo(CMObject o)
 		{
-			if(o==null)
+			if (o == null)
 				return 1;
-			return (this==o)?0:this.ID().compareTo(o.ID());
+			return (this == o) ? 0 : this.ID().compareTo(o.ID());
 		}
-		@Override public String ID() { return tattooName; }
-		@Override public String name() { return ID();}
-		@Override public CMObject newInstance() { return new Tattoo(tattooName); }
-		@Override public void initializeClass() {}
+
+		@Override
+		public String ID()
+		{
+			return tattooName;
+		}
+
+		@Override
+		public String name()
+		{
+			return ID();
+		}
+
+		@Override
+		public CMObject newInstance()
+		{
+			return new Tattoo(tattooName);
+		}
+
+		@Override
+		public void initializeClass()
+		{
+		}
 	}
 
 	public static class QMCommand

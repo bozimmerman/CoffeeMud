@@ -84,7 +84,7 @@ public class Disease_Cold extends Disease
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
 			if(mob.curState().getHitPoints()>((2*mob.phyStats().level())+1))
 			{
-				final int damage=CMLib.dice().roll(2,mob.phyStats().level(),1);
+				final int damage=CMLib.dice().roll(1,mob.phyStats().level(),1);
 				CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,null);
 			}
 			catchIt(mob);

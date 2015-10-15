@@ -618,21 +618,24 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("propertygarbage"))
 		{
-			Room R=null;
-			LandTitle T=null;
-			for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+			if(mob.session().confirm(L("Reset all unowned property to default room descriptions?"), "N"))
 			{
-				R=(Room)e.nextElement();
-				synchronized(("SYNC"+R.roomID()).intern())
+				Room R=null;
+				LandTitle T=null;
+				for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
 				{
-					R=CMLib.map().getRoom(R);
-					T=CMLib.law().getLandTitle(R);
-					if((T!=null)
-					&&(T.getOwnerName().length()==0))
+					R=(Room)e.nextElement();
+					synchronized(("SYNC"+R.roomID()).intern())
 					{
-						T.setOwnerName(mob.Name());
-						T.setOwnerName("");
-						T.updateLot(new XVector(mob.name()));
+						R=CMLib.map().getRoom(R);
+						T=CMLib.law().getLandTitle(R);
+						if((T!=null)
+						&&(T.getOwnerName().length()==0))
+						{
+							T.setOwnerName(mob.Name());
+							T.setOwnerName("");
+							T.updateLot(new XVector(mob.name()));
+						}
 					}
 				}
 			}
@@ -640,29 +643,32 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("racestatgains")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
-			for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+			if(mob.session().confirm(L("Alter the stat gains every generic race automatically?"), "N"))
 			{
-				final Race R=(Race)e.nextElement();
-				if(R.isGeneric())
+				for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 				{
-					final CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
-					ADJSTAT1.setAllValues(0);
-					CMLib.coffeeMaker().setCharStats(ADJSTAT1,R.getStat("ASTATS"));
-					boolean save=false;
-					for(final int i: CharStats.CODES.BASECODES())
+					final Race R=(Race)e.nextElement();
+					if(R.isGeneric())
 					{
-						if(ADJSTAT1.getStat(i)>5)
+						final CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
+						ADJSTAT1.setAllValues(0);
+						CMLib.coffeeMaker().setCharStats(ADJSTAT1,R.getStat("ASTATS"));
+						boolean save=false;
+						for(final int i: CharStats.CODES.BASECODES())
 						{
-							ADJSTAT1.setStat(i,5);
-							save=true;
+							if(ADJSTAT1.getStat(i)>5)
+							{
+								ADJSTAT1.setStat(i,5);
+								save=true;
+							}
 						}
-					}
-					if(save)
-					{
-						R.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT1));
-						mob.tell(L("Modified @x1",R.ID()));
-						CMLib.database().DBDeleteRace(R.ID());
-						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+						if(save)
+						{
+							R.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT1));
+							mob.tell(L("Modified @x1",R.ID()));
+							CMLib.database().DBDeleteRace(R.ID());
+							CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+						}
 					}
 				}
 			}
@@ -670,86 +676,89 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("genraceagingcharts")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
-			for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+			if(mob.session().confirm(L("Alter the aging charts of every race automatically?"), "N"))
 			{
-				final Race R=(Race)e.nextElement();
-				final Vector racesToBaseFrom=new Vector();
-				final Race human=CMClass.getRace("Human");
-				final Race halfling=CMClass.getRace("Halfling");
-				if((R.isGeneric())&&(R.ID().length()>1)&&(!R.ID().endsWith("Race"))&&(Character.isUpperCase(R.ID().charAt(0))))
+				for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 				{
-					int lastStart=0;
-					int c=1;
-					while(c<=R.ID().length())
+					final Race R=(Race)e.nextElement();
+					final Vector racesToBaseFrom=new Vector();
+					final Race human=CMClass.getRace("Human");
+					final Race halfling=CMClass.getRace("Halfling");
+					if((R.isGeneric())&&(R.ID().length()>1)&&(!R.ID().endsWith("Race"))&&(Character.isUpperCase(R.ID().charAt(0))))
 					{
-						if((c==R.ID().length())||(Character.isUpperCase(R.ID().charAt(c))))
+						int lastStart=0;
+						int c=1;
+						while(c<=R.ID().length())
 						{
-							if((lastStart==0)&&(c==R.ID().length())&&(!R.ID().endsWith("ling"))&&(!R.ID().startsWith("Half")))
-								break;
-							final String partial=R.ID().substring(lastStart,c);
-							if(partial.equals("Half")&&(!racesToBaseFrom.contains(human)))
+							if((c==R.ID().length())||(Character.isUpperCase(R.ID().charAt(c))))
 							{
-								racesToBaseFrom.add(human);
-								lastStart=c;
-							}
-							else
-							{
-								Race R2=CMClass.getRace(partial);
-								if((R2!=null)&&(R2!=R))
+								if((lastStart==0)&&(c==R.ID().length())&&(!R.ID().endsWith("ling"))&&(!R.ID().startsWith("Half")))
+									break;
+								final String partial=R.ID().substring(lastStart,c);
+								if(partial.equals("Half")&&(!racesToBaseFrom.contains(human)))
 								{
-									racesToBaseFrom.add(R2);
+									racesToBaseFrom.add(human);
 									lastStart=c;
 								}
 								else
-								if(partial.endsWith("ling"))
 								{
-									if(!racesToBaseFrom.contains(halfling))
-										racesToBaseFrom.add(halfling);
-									lastStart=c;
-									R2=CMClass.getRace(partial.substring(0,partial.length()-4));
-									if(R2!=null)
+									Race R2=CMClass.getRace(partial);
+									if((R2!=null)&&(R2!=R))
+									{
 										racesToBaseFrom.add(R2);
+										lastStart=c;
+									}
+									else
+									if(partial.endsWith("ling"))
+									{
+										if(!racesToBaseFrom.contains(halfling))
+											racesToBaseFrom.add(halfling);
+										lastStart=c;
+										R2=CMClass.getRace(partial.substring(0,partial.length()-4));
+										if(R2!=null)
+											racesToBaseFrom.add(R2);
+									}
+								}
+								if(c==R.ID().length())
+									break;
+							}
+							c++;
+						}
+						final StringBuffer answer=new StringBuffer(R.ID()+": ");
+						for(int i=0;i<racesToBaseFrom.size();i++)
+							answer.append(((Race)racesToBaseFrom.get(i)).ID()+" ");
+						mob.tell(answer.toString());
+						if(racesToBaseFrom.size()>0)
+						{
+							final long[] ageChart=new long[Race.AGE_ANCIENT+1];
+							for(int i=0;i<racesToBaseFrom.size();i++)
+							{
+								final Race R2=(Race)racesToBaseFrom.get(i);
+								int lastVal=0;
+								for(int x=0;x<ageChart.length;x++)
+								{
+									int val=R2.getAgingChart()[x];
+									if(val>=Integer.MAX_VALUE)
+										val=lastVal+(x*1000);
+									ageChart[x]+=val;
+									lastVal=val;
 								}
 							}
-							if(c==R.ID().length())
-								break;
-						}
-						c++;
-					}
-					final StringBuffer answer=new StringBuffer(R.ID()+": ");
-					for(int i=0;i<racesToBaseFrom.size();i++)
-						answer.append(((Race)racesToBaseFrom.get(i)).ID()+" ");
-					mob.tell(answer.toString());
-					if(racesToBaseFrom.size()>0)
-					{
-						final long[] ageChart=new long[Race.AGE_ANCIENT+1];
-						for(int i=0;i<racesToBaseFrom.size();i++)
-						{
-							final Race R2=(Race)racesToBaseFrom.get(i);
+							for(int x=0;x<ageChart.length;x++)
+								ageChart[x]=ageChart[x]/racesToBaseFrom.size();
 							int lastVal=0;
+							int thisVal=0;
 							for(int x=0;x<ageChart.length;x++)
 							{
-								int val=R2.getAgingChart()[x];
-								if(val>=Integer.MAX_VALUE)
-									val=lastVal+(x*1000);
-								ageChart[x]+=val;
-								lastVal=val;
+								lastVal=thisVal;
+								thisVal=(int)ageChart[x];
+								if(thisVal<lastVal)
+									thisVal+=lastVal;
+								R.getAgingChart()[x]=thisVal;
 							}
+							CMLib.database().DBDeleteRace(R.ID());
+							CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 						}
-						for(int x=0;x<ageChart.length;x++)
-							ageChart[x]=ageChart[x]/racesToBaseFrom.size();
-						int lastVal=0;
-						int thisVal=0;
-						for(int x=0;x<ageChart.length;x++)
-						{
-							lastVal=thisVal;
-							thisVal=(int)ageChart[x];
-							if(thisVal<lastVal)
-								thisVal+=lastVal;
-							R.getAgingChart()[x]=thisVal;
-						}
-						CMLib.database().DBDeleteRace(R.ID());
-						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 					}
 				}
 			}
@@ -763,21 +772,24 @@ public class Reset extends StdCommand
 				mob.tell(L("Which bank?"));
 				return false;
 			}
-			final List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
-			for(int v=0;v<V.size();v++)
+			if(mob.session().confirm(L("Inspect and update all COIN objects in player bank accounts?"), "N"))
 			{
-				final JournalsLibrary.JournalEntry V2=V.get(v);
-				final String name=V2.from;
-				final String ID=V2.subj;
-				String classID=V2.to;
-				final String data=V2.msg;
-				if(ID.equalsIgnoreCase("COINS"))
-					classID="COINS";
-				final Item I=(Item)CMClass.getItem("GenItem").copyOf();
-				CMLib.database().DBCreateData(name,bank,""+I,classID+";"+data);
+				final List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
+				for(int v=0;v<V.size();v++)
+				{
+					final JournalsLibrary.JournalEntry V2=V.get(v);
+					final String name=V2.from;
+					final String ID=V2.subj;
+					String classID=V2.to;
+					final String data=V2.msg;
+					if(ID.equalsIgnoreCase("COINS"))
+						classID="COINS";
+					final Item I=(Item)CMClass.getItem("GenItem").copyOf();
+					CMLib.database().DBCreateData(name,bank,""+I,classID+";"+data);
+				}
+				CMLib.database().DBDeleteJournal(bank,null); // banks are no longer journaled
+				mob.tell(L("@x1 records done.",""+V.size()));
 			}
-			CMLib.database().DBDeleteJournal(bank,null); // banks are no longer journaled
-			mob.tell(L("@x1 records done.",""+V.size()));
 		}
 		else
 		if(s.equalsIgnoreCase("mobstats")&&(CMSecurity.isASysOp(mob)))
@@ -787,231 +799,243 @@ public class Reset extends StdCommand
 				s=(String)commands.get(1);
 			if(mob.session()==null)
 				return false;
-			mob.session().print(L("working..."));
-			StringBuffer recordedChanges=null;
-			for(int i=1;i<commands.size();i++)
-				if(((String)commands.get(i)).equalsIgnoreCase("NOSAVE"))
-				{
-					recordedChanges=new StringBuffer("");
-					break;
-				}
-			final Vector rooms=new Vector();
-			if(s.toUpperCase().startsWith("ROOM"))
-				rooms.add(mob.location());
-			else
-			if(s.toUpperCase().startsWith("AREA"))
+			if(mob.session().confirm(L("Alter every mobs combat stats to system defaults?!"), "N"))
 			{
-				try
-				{
-					for(final Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
-						rooms.add(e.nextElement());
-				}catch(final NoSuchElementException nse){}
-			}
-			else
-			if(s.toUpperCase().startsWith("CATALOG"))
-			{
-				try
-				{
-					final MOB[] mobs=CMLib.catalog().getCatalogMobs();
-					for (final MOB M : mobs)
+				mob.session().print(L("working..."));
+				StringBuffer recordedChanges=null;
+				for(int i=1;i<commands.size();i++)
+					if(((String)commands.get(i)).equalsIgnoreCase("NOSAVE"))
 					{
-						if(fixMob(M,recordedChanges))
+						recordedChanges=new StringBuffer("");
+						break;
+					}
+				final Vector rooms=new Vector();
+				if(s.toUpperCase().startsWith("ROOM"))
+					rooms.add(mob.location());
+				else
+				if(s.toUpperCase().startsWith("AREA"))
+				{
+					try
+					{
+						for(final Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
+							rooms.add(e.nextElement());
+					}catch(final NoSuchElementException nse){}
+				}
+				else
+				if(s.toUpperCase().startsWith("CATALOG"))
+				{
+					try
+					{
+						final MOB[] mobs=CMLib.catalog().getCatalogMobs();
+						for (final MOB M : mobs)
 						{
-							mob.tell(L("Catalog mob @x1 done.",M.Name()));
-							CMLib.catalog().updateCatalog(M);
-						}
-					}
-				}catch(final NoSuchElementException nse){}
-			}
-			else
-			if(s.toUpperCase().startsWith("WORLD"))
-			{
-				try
-				{
-					for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-					{
-						final Area A=(Area)e.nextElement();
-						boolean skip=false;
-						for(int i=1;i<commands.size();i++)
-							if(((String)commands.get(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
+							if(fixMob(M,recordedChanges))
 							{
-								skip=true;
-								break;
+								mob.tell(L("Catalog mob @x1 done.",M.Name()));
+								CMLib.catalog().updateCatalog(M);
 							}
-						if(skip)
-							continue;
-						for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
-							rooms.add(r.nextElement());
-					}
-				}catch(final NoSuchElementException nse){}
-			}
-			else
-			{
-				mob.tell(L("Try ROOM, AREA, CATALOG, or WORLD."));
-				return false;
-			}
-			if(recordedChanges!=null)
-				mob.session().println(".");
-			for(final Enumeration r=rooms.elements();r.hasMoreElements();)
-			{
-				Room R=CMLib.map().getRoom((Room)r.nextElement());
-				if(R!=null)
-				synchronized(("SYNC"+R.roomID()).intern())
-				{
-					R=CMLib.map().getRoom(R);
-					if(R==null)
-						continue;
-					if((recordedChanges!=null)&&(recordedChanges.length()>0))
-					{
-						mob.session().rawOut(recordedChanges.toString());
-						recordedChanges.setLength(0);
-					}
-					R.getArea().setAreaState(Area.State.FROZEN);
-					CMLib.map().resetRoom(R, true);
-					boolean somethingDone=false;
-					for(int m=0;m<R.numInhabitants();m++)
-					{
-						final MOB M=R.fetchInhabitant(m);
-						if((M.isSavable())
-						&&(!CMLib.flags().isCataloged(M))
-						&&(M.getStartRoom()==R))
-							somethingDone=fixMob(M,recordedChanges) || somethingDone;
-					}
-					if(somethingDone)
-					{
-						mob.tell(L("Room @x1 done.",R.roomID()));
-						CMLib.database().DBUpdateMOBs(R);
-					}
-					if(R.getArea().getAreaState()!=Area.State.ACTIVE)
-						R.getArea().setAreaState(Area.State.ACTIVE);
+						}
+					}catch(final NoSuchElementException nse){}
 				}
-				if(recordedChanges==null)
-					mob.session().print(".");
+				else
+				if(s.toUpperCase().startsWith("WORLD"))
+				{
+					try
+					{
+						for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+						{
+							final Area A=(Area)e.nextElement();
+							boolean skip=false;
+							for(int i=1;i<commands.size();i++)
+								if(((String)commands.get(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
+								{
+									skip=true;
+									break;
+								}
+							if(skip)
+								continue;
+							for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+								rooms.add(r.nextElement());
+						}
+					}catch(final NoSuchElementException nse){}
+				}
+				else
+				{
+					mob.tell(L("Try ROOM, AREA, CATALOG, or WORLD."));
+					return false;
+				}
+				if(recordedChanges!=null)
+					mob.session().println(".");
+				for(final Enumeration r=rooms.elements();r.hasMoreElements();)
+				{
+					Room R=CMLib.map().getRoom((Room)r.nextElement());
+					if(R!=null)
+					synchronized(("SYNC"+R.roomID()).intern())
+					{
+						R=CMLib.map().getRoom(R);
+						if(R==null)
+							continue;
+						if((recordedChanges!=null)&&(recordedChanges.length()>0))
+						{
+							mob.session().rawOut(recordedChanges.toString());
+							recordedChanges.setLength(0);
+						}
+						R.getArea().setAreaState(Area.State.FROZEN);
+						CMLib.map().resetRoom(R, true);
+						boolean somethingDone=false;
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							final MOB M=R.fetchInhabitant(m);
+							if((M.isSavable())
+							&&(!CMLib.flags().isCataloged(M))
+							&&(M.getStartRoom()==R))
+								somethingDone=fixMob(M,recordedChanges) || somethingDone;
+						}
+						if(somethingDone)
+						{
+							mob.tell(L("Room @x1 done.",R.roomID()));
+							CMLib.database().DBUpdateMOBs(R);
+						}
+						if(R.getArea().getAreaState()!=Area.State.ACTIVE)
+							R.getArea().setAreaState(Area.State.ACTIVE);
+					}
+					if(recordedChanges==null)
+						mob.session().print(".");
+				}
+				if((recordedChanges!=null)&&(recordedChanges.length()>0))
+					mob.session().rawOut(recordedChanges.toString());
+				mob.session().println(L("done!"));
 			}
-			if((recordedChanges!=null)&&(recordedChanges.length()>0))
-				mob.session().rawOut(recordedChanges.toString());
-			mob.session().println(L("done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("groundlydoors")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null)
 				return false;
-			mob.session().print(L("working..."));
-			try
+			if(mob.session().confirm(L("Alter every door called 'the ground'?!"), "N"))
 			{
-				for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				mob.session().print(L("working..."));
+				try
 				{
-					final Room R=(Room)r.nextElement();
-					boolean changed=false;
-					if(R.roomID().length()>0)
-					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						final Exit E=R.getRawExit(d);
-						if((E!=null)&&E.hasADoor()&&E.name().equalsIgnoreCase("the ground"))
+						final Room R=(Room)r.nextElement();
+						boolean changed=false;
+						if(R.roomID().length()>0)
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
-							E.setName(L("a door"));
-							E.setExitParams("door","close","open","a door, closed.");
-							changed=true;
+							final Exit E=R.getRawExit(d);
+							if((E!=null)&&E.hasADoor()&&E.name().equalsIgnoreCase("the ground"))
+							{
+								E.setName(L("a door"));
+								E.setExitParams("door","close","open","a door, closed.");
+								changed=true;
+							}
 						}
+						if(changed)
+						{
+							Log.sysOut("Reset","Groundly doors in "+R.roomID()+" fixed.");
+							CMLib.database().DBUpdateExits(R);
+						}
+						mob.session().print(".");
 					}
-					if(changed)
-					{
-						Log.sysOut("Reset","Groundly doors in "+R.roomID()+" fixed.");
-						CMLib.database().DBUpdateExits(R);
-					}
-					mob.session().print(".");
-				}
-			}catch(final NoSuchElementException nse){}
-			mob.session().println(L("done!"));
+				}catch(final NoSuchElementException nse){}
+				mob.session().println(L("done!"));
+			}
 		}
 		else
 		if(s.equalsIgnoreCase("allmobarmorfix")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null)
 				return false;
-			mob.session().print(L("working..."));
-			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			if(mob.session().confirm(L("Change all mobs armor to the codebase defaults?"), "N"))
 			{
-				final Area A=(Area)a.nextElement();
-				A.setAreaState(Area.State.FROZEN);
-				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				mob.session().print(L("working..."));
+				for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
-					if(R.roomID().length()==0)
-						continue;
-					synchronized(("SYNC"+R.roomID()).intern())
+					final Area A=(Area)a.nextElement();
+					A.setAreaState(Area.State.FROZEN);
+					for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 					{
-						R=CMLib.map().getRoom(R);
-						CMLib.map().resetRoom(R, true);
-						boolean didSomething=false;
-						for(int i=0;i<R.numInhabitants();i++)
+						Room R=(Room)r.nextElement();
+						if(R.roomID().length()==0)
+							continue;
+						synchronized(("SYNC"+R.roomID()).intern())
 						{
-							final MOB M=R.fetchInhabitant(i);
-							if((M.isMonster())
-							&&(M.getStartRoom()==R)
-							&&(M.basePhyStats().armor()==((100-(M.basePhyStats().level()*7)))))
+							R=CMLib.map().getRoom(R);
+							CMLib.map().resetRoom(R, true);
+							boolean didSomething=false;
+							for(int i=0;i<R.numInhabitants();i++)
 							{
-								final int oldArmor=M.basePhyStats().armor();
-								M.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
-								M.recoverPhyStats();
-								Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+" from "+oldArmor+" to "+M.basePhyStats().armor()+".");
-								didSomething=true;
+								final MOB M=R.fetchInhabitant(i);
+								if((M.isMonster())
+								&&(M.getStartRoom()==R)
+								&&(M.basePhyStats().armor()==((100-(M.basePhyStats().level()*7)))))
+								{
+									final int oldArmor=M.basePhyStats().armor();
+									M.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
+									M.recoverPhyStats();
+									Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+" from "+oldArmor+" to "+M.basePhyStats().armor()+".");
+									didSomething=true;
+								}
+								else
+									Log.sysOut("Reset","Skipped "+M.name()+" in room "+R.roomID());
 							}
-							else
-								Log.sysOut("Reset","Skipped "+M.name()+" in room "+R.roomID());
+							mob.session().print(".");
+							if(didSomething)
+								CMLib.database().DBUpdateMOBs(R);
 						}
-						mob.session().print(".");
-						if(didSomething)
-							CMLib.database().DBUpdateMOBs(R);
 					}
+					if(A.getAreaState()!=Area.State.ACTIVE)
+						A.setAreaState(Area.State.ACTIVE);
 				}
-				if(A.getAreaState()!=Area.State.ACTIVE)
-					A.setAreaState(Area.State.ACTIVE);
+				mob.session().println(L("done!"));
 			}
-			mob.session().println(L("done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("goldceilingfixer")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null)
 				return false;
-			mob.session().print(L("working..."));
-			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			if(mob.session().confirm(L("Alter every mobs money to system defaults?!"), "N"))
 			{
-				final Area A=(Area)a.nextElement();
-				A.setAreaState(Area.State.FROZEN);
-				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				mob.session().print(L("working..."));
+				for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
-					if(R.roomID().length()==0)
-						continue;
-					synchronized(("SYNC"+R.roomID()).intern())
+					final Area A=(Area)a.nextElement();
+					A.setAreaState(Area.State.FROZEN);
+					for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 					{
-						R=CMLib.map().getRoom(R);
-						CMLib.map().resetRoom(R, true);
-						boolean didSomething=false;
-						for(int i=0;i<R.numInhabitants();i++)
+						Room R=(Room)r.nextElement();
+						if(R.roomID().length()==0)
+							continue;
+						synchronized(("SYNC"+R.roomID()).intern())
 						{
-							final MOB M=R.fetchInhabitant(i);
-							if((M.isMonster())
-							&&(M.getStartRoom()==R)
-							&&(CMLib.beanCounter().getMoney(M)>(M.basePhyStats().level()+1)))
+							R=CMLib.map().getRoom(R);
+							CMLib.map().resetRoom(R, true);
+							boolean didSomething=false;
+							for(int i=0;i<R.numInhabitants();i++)
 							{
-								CMLib.beanCounter().setMoney(M,CMLib.dice().roll(1,M.basePhyStats().level(),0)+CMLib.dice().roll(1,10,0));
-								Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+".");
-								didSomething=true;
+								final MOB M=R.fetchInhabitant(i);
+								if((M.isMonster())
+								&&(M.getStartRoom()==R)
+								&&(CMLib.beanCounter().getMoney(M)>(M.basePhyStats().level()+1)))
+								{
+									CMLib.beanCounter().setMoney(M,CMLib.dice().roll(1,M.basePhyStats().level(),0)+CMLib.dice().roll(1,10,0));
+									Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+".");
+									didSomething=true;
+								}
 							}
+							mob.session().print(".");
+							if(didSomething)
+								CMLib.database().DBUpdateMOBs(R);
 						}
-						mob.session().print(".");
-						if(didSomething)
-							CMLib.database().DBUpdateMOBs(R);
 					}
+					if(A.getAreaState()!=Area.State.ACTIVE)
+						A.setAreaState(Area.State.ACTIVE);
 				}
-				if(A.getAreaState()!=Area.State.ACTIVE)
-					A.setAreaState(Area.State.ACTIVE);
+				mob.session().println(L("done!"));
 			}
-			mob.session().println(L("done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("areainstall")&&(CMSecurity.isASysOp(mob)))
@@ -1033,121 +1057,127 @@ public class Reset extends StdCommand
 				return false;
 			}
 
-			mob.session().print(L("working..."));
-			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			if(mob.session().confirm(L("Add this behavior/property to every Area?"), "N"))
 			{
-				final Area A=(Area)a.nextElement();
-				boolean changed=false;
-				if((O instanceof Behavior))
+				mob.session().print(L("working..."));
+				for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				{
-					Behavior B=A.fetchBehavior(((Behavior)O).ID());
-					if(B==null)
+					final Area A=(Area)a.nextElement();
+					boolean changed=false;
+					if((O instanceof Behavior))
 					{
-						B=(Behavior)((Behavior)O).copyOf();
-						B.setParms(CMParms.combine(commands,2));
-						A.addBehavior(B);
-						changed=true;
+						Behavior B=A.fetchBehavior(((Behavior)O).ID());
+						if(B==null)
+						{
+							B=(Behavior)((Behavior)O).copyOf();
+							B.setParms(CMParms.combine(commands,2));
+							A.addBehavior(B);
+							changed=true;
+						}
+						else
+						if(!B.getParms().equals(CMParms.combine(commands,2)))
+						{
+							B.setParms(CMParms.combine(commands,2));
+							changed=true;
+						}
 					}
 					else
-					if(!B.getParms().equals(CMParms.combine(commands,2)))
+					if(O instanceof Ability)
 					{
-						B.setParms(CMParms.combine(commands,2));
-						changed=true;
+						Ability B=A.fetchEffect(((Ability)O).ID());
+						if(B==null)
+						{
+							B=(Ability)((Ability)O).copyOf();
+							B.setMiscText(CMParms.combine(commands,2));
+							A.addNonUninvokableEffect(B);
+							changed=true;
+						}
+						else
+						if(!B.text().equals(CMParms.combine(commands,2)))
+						{
+							B.setMiscText(CMParms.combine(commands,2));
+							changed=true;
+						}
+					}
+					if(changed)
+					{
+						CMLib.database().DBUpdateArea(A.Name(),A);
+						mob.session().print(".");
 					}
 				}
-				else
-				if(O instanceof Ability)
-				{
-					Ability B=A.fetchEffect(((Ability)O).ID());
-					if(B==null)
-					{
-						B=(Ability)((Ability)O).copyOf();
-						B.setMiscText(CMParms.combine(commands,2));
-						A.addNonUninvokableEffect(B);
-						changed=true;
-					}
-					else
-					if(!B.text().equals(CMParms.combine(commands,2)))
-					{
-						B.setMiscText(CMParms.combine(commands,2));
-						changed=true;
-					}
-				}
-				if(changed)
-				{
-					CMLib.database().DBUpdateArea(A.Name(),A);
-					mob.session().print(".");
-				}
+				mob.session().println(L("done!"));
 			}
-			mob.session().println(L("done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("worldmatconfirm")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null)
 				return false;
-			mob.session().print(L("working..."));
-			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			if(mob.session().confirm(L("Begin scanning and altering the material type of all items?"), "N"))
 			{
-				final Area A=(Area)a.nextElement();
-				A.setAreaState(Area.State.FROZEN);
-				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				mob.session().print(L("working..."));
+				for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
-					if(R.roomID().length()>0)
+					final Area A=(Area)a.nextElement();
+					A.setAreaState(Area.State.FROZEN);
+					for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 					{
-						synchronized(("SYNC"+R.roomID()).intern())
+						Room R=(Room)r.nextElement();
+						if(R.roomID().length()>0)
 						{
-							R=CMLib.map().getRoom(R);
-							CMLib.map().resetRoom(R, true);
-							boolean changedMOBS=false;
-							boolean changedItems=false;
-							for(int i=0;i<R.numItems();i++)
-								changedItems=changedItems||(rightImportMat(null,R.getItem(i),false)>=0);
-							for(int m=0;m<R.numInhabitants();m++)
+							synchronized(("SYNC"+R.roomID()).intern())
 							{
-								final MOB M=R.fetchInhabitant(m);
-								if(M==mob)
-									continue;
-								if(!M.isSavable())
-									continue;
-								for(int i=0;i<M.numItems();i++)
-									changedMOBS=changedMOBS||(rightImportMat(null,M.getItem(i),false)>=0);
-								final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
-								if(SK!=null)
+								R=CMLib.map().getRoom(R);
+								CMLib.map().resetRoom(R, true);
+								boolean changedMOBS=false;
+								boolean changedItems=false;
+								for(int i=0;i<R.numItems();i++)
+									changedItems=changedItems||(rightImportMat(null,R.getItem(i),false)>=0);
+								for(int m=0;m<R.numInhabitants();m++)
 								{
-									for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+									final MOB M=R.fetchInhabitant(m);
+									if(M==mob)
+										continue;
+									if(!M.isSavable())
+										continue;
+									for(int i=0;i<M.numItems();i++)
+										changedMOBS=changedMOBS||(rightImportMat(null,M.getItem(i),false)>=0);
+									final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+									if(SK!=null)
 									{
-										final Environmental E=i.next();
-										if(E instanceof Item)
+										for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 										{
-											final Item I=(Item)E;
-											boolean didSomething=false;
-											didSomething=rightImportMat(null,I,false)>=0;
-											changedMOBS=changedMOBS||didSomething;
-											if(didSomething)
+											final Environmental E=i.next();
+											if(E instanceof Item)
 											{
-												final int numInStock=SK.getShop().numberInStock(I);
-												final int stockPrice=SK.getShop().stockPrice(I);
-												SK.getShop().delAllStoreInventory(I);
-												SK.getShop().addStoreInventory(I,numInStock,stockPrice);
+												final Item I=(Item)E;
+												boolean didSomething=false;
+												didSomething=rightImportMat(null,I,false)>=0;
+												changedMOBS=changedMOBS||didSomething;
+												if(didSomething)
+												{
+													final int numInStock=SK.getShop().numberInStock(I);
+													final int stockPrice=SK.getShop().stockPrice(I);
+													SK.getShop().delAllStoreInventory(I);
+													SK.getShop().addStoreInventory(I,numInStock,stockPrice);
+												}
 											}
 										}
 									}
 								}
+								if(changedItems)
+									CMLib.database().DBUpdateItems(R);
+								if(changedMOBS)
+									CMLib.database().DBUpdateMOBs(R);
+								mob.session().print(".");
 							}
-							if(changedItems)
-								CMLib.database().DBUpdateItems(R);
-							if(changedMOBS)
-								CMLib.database().DBUpdateMOBs(R);
-							mob.session().print(".");
 						}
 					}
+					if(A.getAreaState()!=Area.State.ACTIVE)
+						A.setAreaState(Area.State.ACTIVE);
 				}
-				if(A.getAreaState()!=Area.State.ACTIVE)
-					A.setAreaState(Area.State.ACTIVE);
+				mob.session().println(L("done!"));
 			}
-			mob.session().println(L("done!"));
 		}
 		else
 		if(s.equalsIgnoreCase("itemstats")&&(CMSecurity.isASysOp(mob)))
@@ -1158,151 +1188,154 @@ public class Reset extends StdCommand
 
 			if(mob.session()==null)
 				return false;
-			mob.session().print(L("working..."));
-			StringBuffer recordedChanges=null;
-			for(int i=1;i<commands.size();i++)
-				if(((String)commands.get(i)).equalsIgnoreCase("NOSAVE"))
-				{
-					recordedChanges=new StringBuffer("");
-					break;
-				}
-
-			final Vector rooms=new Vector();
-			if(s.toUpperCase().startsWith("ROOM"))
-				rooms.add(mob.location());
-			else
-			if(s.toUpperCase().startsWith("AREA"))
+			if(mob.session().confirm(L("Begin scanning and altering all items to system defaults?"), "N"))
 			{
-				try
-				{
-					for(final Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
-						rooms.add(e.nextElement());
-				}catch(final NoSuchElementException nse){}
-			}
-			else
-			if(s.toUpperCase().startsWith("CATALOG"))
-			{
-				try
-				{
-					final Item[] items=CMLib.catalog().getCatalogItems();
-					for (final Item I : items)
+				mob.session().print(L("working..."));
+				StringBuffer recordedChanges=null;
+				for(int i=1;i<commands.size();i++)
+					if(((String)commands.get(i)).equalsIgnoreCase("NOSAVE"))
 					{
-						if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
-						{
-							mob.tell(L("Catalog item @x1 done.",I.Name()));
-							CMLib.catalog().updateCatalog(I);
-						}
+						recordedChanges=new StringBuffer("");
+						break;
 					}
-				}catch(final NoSuchElementException nse){}
-			}
-			else
-			if(s.toUpperCase().startsWith("WORLD"))
-			{
-				try
+	
+				final Vector rooms=new Vector();
+				if(s.toUpperCase().startsWith("ROOM"))
+					rooms.add(mob.location());
+				else
+				if(s.toUpperCase().startsWith("AREA"))
 				{
-					for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+					try
 					{
-						final Area A=(Area)e.nextElement();
-						boolean skip=false;
-						for(int i=1;i<commands.size();i++)
-							if(((String)commands.get(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
+						for(final Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
+							rooms.add(e.nextElement());
+					}catch(final NoSuchElementException nse){}
+				}
+				else
+				if(s.toUpperCase().startsWith("CATALOG"))
+				{
+					try
+					{
+						final Item[] items=CMLib.catalog().getCatalogItems();
+						for (final Item I : items)
+						{
+							if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
 							{
-								skip=true;
-								commands.remove(i);
-								break;
+								mob.tell(L("Catalog item @x1 done.",I.Name()));
+								CMLib.catalog().updateCatalog(I);
 							}
-						if(skip)
-							continue;
-						for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
-							rooms.add(r.nextElement());
-					}
-				}catch(final NoSuchElementException nse){}
-			}
-			else
-			{
-				mob.tell(L("Try ROOM, AREA, CATALOG, or WORLD."));
-				return false;
-			}
-			if(recordedChanges!=null)
-				mob.session().println(".");
-			for(final Enumeration r=rooms.elements();r.hasMoreElements();)
-			{
-				Room R=CMLib.map().getRoom((Room)r.nextElement());
-				if((R==null)||(R.getArea()==null)||(R.roomID().length()==0))
-					continue;
-				final Area A=R.getArea();
-				A.setAreaState(Area.State.FROZEN);
-				if((recordedChanges!=null)&&(recordedChanges.length()>0))
-				{
-					mob.session().rawOut(recordedChanges.toString());
-					recordedChanges.setLength(0);
-				}
-				synchronized(("SYNC"+R.roomID()).intern())
-				{
-
-					R=CMLib.map().getRoom(R);
-					CMLib.map().resetRoom(R, true);
-					boolean changedMOBS=false;
-					boolean changedItems=false;
-					for(int i=0;i<R.numItems();i++)
-					{
-						final Item I=R.getItem(i);
-						if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
-							changedItems=true;
-					}
-					for(int m=0;m<R.numInhabitants();m++)
-					{
-						final MOB M=R.fetchInhabitant(m);
-						if((M==mob)||(!M.isMonster()))
-							continue;
-						if(!M.isSavable())
-							continue;
-						for(int i=0;i<M.numItems();i++)
-						{
-							final Item I=M.getItem(i);
-							int lvl=-1;
-							if((I.basePhyStats().level()>M.basePhyStats().level())
-							||((I.basePhyStats().level()>91)&&((I.basePhyStats().level() + (I.basePhyStats().level()/10))<M.basePhyStats().level())))
-								lvl=M.basePhyStats().level();
-							if(CMLib.itemBuilder().itemFix(I,lvl,recordedChanges))
-								changedMOBS=true;
 						}
-						final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
-						if(SK!=null)
+					}catch(final NoSuchElementException nse){}
+				}
+				else
+				if(s.toUpperCase().startsWith("WORLD"))
+				{
+					try
+					{
+						for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 						{
-							for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
-							{
-								final Environmental E=i.next();
-								if(E instanceof Item)
+							final Area A=(Area)e.nextElement();
+							boolean skip=false;
+							for(int i=1;i<commands.size();i++)
+								if(((String)commands.get(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
 								{
-									final Item I=(Item)E;
-									boolean didSomething=false;
-									didSomething=CMLib.itemBuilder().itemFix(I,-1,recordedChanges);
-									changedMOBS=changedMOBS||didSomething;
-									if(didSomething)
+									skip=true;
+									commands.remove(i);
+									break;
+								}
+							if(skip)
+								continue;
+							for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+								rooms.add(r.nextElement());
+						}
+					}catch(final NoSuchElementException nse){}
+				}
+				else
+				{
+					mob.tell(L("Try ROOM, AREA, CATALOG, or WORLD."));
+					return false;
+				}
+				if(recordedChanges!=null)
+					mob.session().println(".");
+				for(final Enumeration r=rooms.elements();r.hasMoreElements();)
+				{
+					Room R=CMLib.map().getRoom((Room)r.nextElement());
+					if((R==null)||(R.getArea()==null)||(R.roomID().length()==0))
+						continue;
+					final Area A=R.getArea();
+					A.setAreaState(Area.State.FROZEN);
+					if((recordedChanges!=null)&&(recordedChanges.length()>0))
+					{
+						mob.session().rawOut(recordedChanges.toString());
+						recordedChanges.setLength(0);
+					}
+					synchronized(("SYNC"+R.roomID()).intern())
+					{
+	
+						R=CMLib.map().getRoom(R);
+						CMLib.map().resetRoom(R, true);
+						boolean changedMOBS=false;
+						boolean changedItems=false;
+						for(int i=0;i<R.numItems();i++)
+						{
+							final Item I=R.getItem(i);
+							if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
+								changedItems=true;
+						}
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							final MOB M=R.fetchInhabitant(m);
+							if((M==mob)||(!M.isMonster()))
+								continue;
+							if(!M.isSavable())
+								continue;
+							for(int i=0;i<M.numItems();i++)
+							{
+								final Item I=M.getItem(i);
+								int lvl=-1;
+								if((I.basePhyStats().level()>M.basePhyStats().level())
+								||((I.basePhyStats().level()>91)&&((I.basePhyStats().level() + (I.basePhyStats().level()/10))<M.basePhyStats().level())))
+									lvl=M.basePhyStats().level();
+								if(CMLib.itemBuilder().itemFix(I,lvl,recordedChanges))
+									changedMOBS=true;
+							}
+							final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+							if(SK!=null)
+							{
+								for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+								{
+									final Environmental E=i.next();
+									if(E instanceof Item)
 									{
-										final int numInStock=SK.getShop().numberInStock(I);
-										final int stockPrice=SK.getShop().stockPrice(I);
-										SK.getShop().delAllStoreInventory(I);
-										SK.getShop().addStoreInventory(I,numInStock,stockPrice);
+										final Item I=(Item)E;
+										boolean didSomething=false;
+										didSomething=CMLib.itemBuilder().itemFix(I,-1,recordedChanges);
+										changedMOBS=changedMOBS||didSomething;
+										if(didSomething)
+										{
+											final int numInStock=SK.getShop().numberInStock(I);
+											final int stockPrice=SK.getShop().stockPrice(I);
+											SK.getShop().delAllStoreInventory(I);
+											SK.getShop().addStoreInventory(I,numInStock,stockPrice);
+										}
 									}
 								}
 							}
 						}
+						if((changedItems)&&(recordedChanges==null))
+							CMLib.database().DBUpdateItems(R);
+						if((changedMOBS)&&(recordedChanges==null))
+							CMLib.database().DBUpdateMOBs(R);
+						if(recordedChanges==null)
+							mob.session().print(".");
 					}
-					if((changedItems)&&(recordedChanges==null))
-						CMLib.database().DBUpdateItems(R);
-					if((changedMOBS)&&(recordedChanges==null))
-						CMLib.database().DBUpdateMOBs(R);
-					if(recordedChanges==null)
-						mob.session().print(".");
+					if(A.getAreaState()!=Area.State.ACTIVE)
+						A.setAreaState(Area.State.ACTIVE);
 				}
-				if(A.getAreaState()!=Area.State.ACTIVE)
-					A.setAreaState(Area.State.ACTIVE);
+				if((recordedChanges!=null)&&(recordedChanges.length()>0))
+					mob.session().rawOut(recordedChanges.toString());
+				mob.session().println(L("done!"));
 			}
-			if((recordedChanges!=null)&&(recordedChanges.length()>0))
-				mob.session().rawOut(recordedChanges.toString());
-			mob.session().println(L("done!"));
 		}
 		else
 		if(s.startsWith("clantick"))
@@ -1340,358 +1373,364 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("arearacemat")&&(CMSecurity.isASysOp(mob)))
 		{
-			// this is just utility code and will change frequently
-			final Area A=mob.location().getArea();
-			CMLib.map().resetArea(A);
-			A.setAreaState(Area.State.FROZEN);
-			final Hashtable rememberI=new Hashtable();
-			final Hashtable rememberM=new Hashtable();
-			try
+			if(mob.session().confirm(L("Begin scanning and altering all item materials and mob races manually?"), "N"))
 			{
-			for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if(R.roomID().length()>0)
-				synchronized(("SYNC"+R.roomID()).intern())
+				// this is just utility code and will change frequently
+				final Area A=mob.location().getArea();
+				CMLib.map().resetArea(A);
+				A.setAreaState(Area.State.FROZEN);
+				final Hashtable rememberI=new Hashtable();
+				final Hashtable rememberM=new Hashtable();
+				try
 				{
-					R=CMLib.map().getRoom(R);
-					CMLib.map().resetRoom(R, true);
-					boolean somethingDone=false;
-					mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
-					for(int i=R.numItems()-1;i>=0;i--)
+				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(R.roomID().length()>0)
+					synchronized(("SYNC"+R.roomID()).intern())
 					{
-						final Item I=R.getItem(i);
-						if(I.ID().equalsIgnoreCase("GenWallpaper"))
-							continue;
-						final int returned=resetAreaOramaManaI(mob,I,rememberI," ");
-						if(returned<0)
+						R=CMLib.map().getRoom(R);
+						CMLib.map().resetRoom(R, true);
+						boolean somethingDone=false;
+						mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
+						for(int i=R.numItems()-1;i>=0;i--)
 						{
-							R.delItem(I);
-							somethingDone=true;
-							mob.tell(L(" deleted"));
-						}
-						else
-						if(returned>0)
-							somethingDone=true;
-					}
-					if(somethingDone)
-						CMLib.database().DBUpdateItems(R);
-					somethingDone=false;
-					for(int m=0;m<R.numInhabitants();m++)
-					{
-						final MOB M=R.fetchInhabitant(m);
-						if(M==mob)
-							continue;
-						if(!M.isSavable())
-							continue;
-						Race R2=(Race)rememberM.get(M.Name());
-						if(R2!=null)
-						{
-							if(M.charStats().getMyRace()==R2)
-								mob.tell(L(" @x1 still @x2",M.Name(),R2.name()));
-							else
-							{
-								M.baseCharStats().setMyRace(R2);
-								R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
-								M.recoverCharStats();
-								M.recoverPhyStats();
-								mob.tell(L(" @x1 Changed to @x2",M.Name(),R2.ID()));
-								somethingDone=true;
-							}
-						}
-						else
-						while(true)
-						{
-							final String str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
-							if(str.length()==0)
-							{
-								rememberM.put(M.name(),M.baseCharStats().getMyRace());
-								break;
-							}
-							if(str.equals("?"))
-								mob.tell(M.Name()+"/"+M.displayText()+"/"+M.description());
-							else
-							{
-								R2=CMClass.getRace(str);
-								if(R2==null)
-								{
-									String poss="";
-									if(poss.length()==0)
-									for(final Enumeration e=CMClass.races();e.hasMoreElements();)
-									{
-										final Race R3=(Race)e.nextElement();
-										if(R3.ID().toUpperCase().startsWith(str.toUpperCase()))
-										   poss=R3.name();
-									}
-									if(poss.length()==0)
-									for(final Enumeration e=CMClass.races();e.hasMoreElements();)
-									{
-										final Race R3=(Race)e.nextElement();
-										if(R3.ID().toUpperCase().indexOf(str.toUpperCase())>=0)
-										   poss=R3.name();
-									}
-									if(poss.length()==0)
-									for(final Enumeration e=CMClass.races();e.hasMoreElements();)
-									{
-										final Race R3=(Race)e.nextElement();
-										if(R3.name().toUpperCase().startsWith(str.toUpperCase()))
-										   poss=R3.name();
-									}
-									if(poss.length()==0)
-									for(final Enumeration e=CMClass.races();e.hasMoreElements();)
-									{
-										final Race R3=(Race)e.nextElement();
-										if(R3.name().toUpperCase().indexOf(str.toUpperCase())>=0)
-										   poss=R3.name();
-									}
-									mob.tell(L(" '@x1' is not a valid race.  Try '@x2'.",str,poss));
-									continue;
-								}
-								mob.tell(L(" Changed to @x1",R2.ID()));
-								M.baseCharStats().setMyRace(R2);
-								R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
-								M.recoverCharStats();
-								M.recoverPhyStats();
-								rememberM.put(M.name(),M.baseCharStats().getMyRace());
-								somethingDone=true;
-								break;
-							}
-						}
-						for(int i=M.numItems()-1;i>=0;i--)
-						{
-							final Item I=M.getItem(i);
-							final int returned=resetAreaOramaManaI(mob,I,rememberI,"   ");
+							final Item I=R.getItem(i);
+							if(I.ID().equalsIgnoreCase("GenWallpaper"))
+								continue;
+							final int returned=resetAreaOramaManaI(mob,I,rememberI," ");
 							if(returned<0)
 							{
-								M.delItem(I);
+								R.delItem(I);
 								somethingDone=true;
-								mob.tell(L("   deleted"));
+								mob.tell(L(" deleted"));
 							}
 							else
 							if(returned>0)
 								somethingDone=true;
 						}
-						final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
-						if(SK!=null)
+						if(somethingDone)
+							CMLib.database().DBUpdateItems(R);
+						somethingDone=false;
+						for(int m=0;m<R.numInhabitants();m++)
 						{
-							for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+							final MOB M=R.fetchInhabitant(m);
+							if(M==mob)
+								continue;
+							if(!M.isSavable())
+								continue;
+							Race R2=(Race)rememberM.get(M.Name());
+							if(R2!=null)
 							{
-								final Environmental E=i.next();
-								if(E instanceof Item)
+								if(M.charStats().getMyRace()==R2)
+									mob.tell(L(" @x1 still @x2",M.Name(),R2.name()));
+								else
 								{
-									final Item I=(Item)E;
-									final int returned=resetAreaOramaManaI(mob,I,rememberI," - ");
-									if(returned<0)
+									M.baseCharStats().setMyRace(R2);
+									R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+									M.recoverCharStats();
+									M.recoverPhyStats();
+									mob.tell(L(" @x1 Changed to @x2",M.Name(),R2.ID()));
+									somethingDone=true;
+								}
+							}
+							else
+							while(true)
+							{
+								final String str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
+								if(str.length()==0)
+								{
+									rememberM.put(M.name(),M.baseCharStats().getMyRace());
+									break;
+								}
+								if(str.equals("?"))
+									mob.tell(M.Name()+"/"+M.displayText()+"/"+M.description());
+								else
+								{
+									R2=CMClass.getRace(str);
+									if(R2==null)
 									{
-										SK.getShop().delAllStoreInventory(I);
-										somethingDone=true;
-										mob.tell(L("   deleted"));
+										String poss="";
+										if(poss.length()==0)
+										for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+										{
+											final Race R3=(Race)e.nextElement();
+											if(R3.ID().toUpperCase().startsWith(str.toUpperCase()))
+											   poss=R3.name();
+										}
+										if(poss.length()==0)
+										for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+										{
+											final Race R3=(Race)e.nextElement();
+											if(R3.ID().toUpperCase().indexOf(str.toUpperCase())>=0)
+											   poss=R3.name();
+										}
+										if(poss.length()==0)
+										for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+										{
+											final Race R3=(Race)e.nextElement();
+											if(R3.name().toUpperCase().startsWith(str.toUpperCase()))
+											   poss=R3.name();
+										}
+										if(poss.length()==0)
+										for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+										{
+											final Race R3=(Race)e.nextElement();
+											if(R3.name().toUpperCase().indexOf(str.toUpperCase())>=0)
+											   poss=R3.name();
+										}
+										mob.tell(L(" '@x1' is not a valid race.  Try '@x2'.",str,poss));
+										continue;
 									}
-									else
-									if(returned>0)
+									mob.tell(L(" Changed to @x1",R2.ID()));
+									M.baseCharStats().setMyRace(R2);
+									R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+									M.recoverCharStats();
+									M.recoverPhyStats();
+									rememberM.put(M.name(),M.baseCharStats().getMyRace());
+									somethingDone=true;
+									break;
+								}
+							}
+							for(int i=M.numItems()-1;i>=0;i--)
+							{
+								final Item I=M.getItem(i);
+								final int returned=resetAreaOramaManaI(mob,I,rememberI,"   ");
+								if(returned<0)
+								{
+									M.delItem(I);
+									somethingDone=true;
+									mob.tell(L("   deleted"));
+								}
+								else
+								if(returned>0)
+									somethingDone=true;
+							}
+							final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+							if(SK!=null)
+							{
+								for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+								{
+									final Environmental E=i.next();
+									if(E instanceof Item)
 									{
-										somethingDone=true;
-										final int numInStock=SK.getShop().numberInStock(I);
-										final int stockPrice=SK.getShop().stockPrice(I);
-										SK.getShop().delAllStoreInventory(I);
-										SK.getShop().addStoreInventory(I,numInStock,stockPrice);
+										final Item I=(Item)E;
+										final int returned=resetAreaOramaManaI(mob,I,rememberI," - ");
+										if(returned<0)
+										{
+											SK.getShop().delAllStoreInventory(I);
+											somethingDone=true;
+											mob.tell(L("   deleted"));
+										}
+										else
+										if(returned>0)
+										{
+											somethingDone=true;
+											final int numInStock=SK.getShop().numberInStock(I);
+											final int stockPrice=SK.getShop().stockPrice(I);
+											SK.getShop().delAllStoreInventory(I);
+											SK.getShop().addStoreInventory(I,numInStock,stockPrice);
+										}
 									}
 								}
 							}
-						}
-						if(M.fetchAbility("Chopping")!=null)
-						{
-							somethingDone=true;
-							M.delAbility(M.fetchAbility("Chopping"));
-						}
-						for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
-						{
-							final Behavior B=e.nextElement();
-							if((B.ID().equalsIgnoreCase("Mobile"))
-							&&(B.getParms().trim().length()>0))
+							if(M.fetchAbility("Chopping")!=null)
 							{
 								somethingDone=true;
-								B.setParms("");
+								M.delAbility(M.fetchAbility("Chopping"));
+							}
+							for(final Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+							{
+								final Behavior B=e.nextElement();
+								if((B.ID().equalsIgnoreCase("Mobile"))
+								&&(B.getParms().trim().length()>0))
+								{
+									somethingDone=true;
+									B.setParms("");
+								}
 							}
 						}
+						if(somethingDone)
+							CMLib.database().DBUpdateMOBs(R);
 					}
-					if(somethingDone)
-						CMLib.database().DBUpdateMOBs(R);
 				}
+				}
+				catch(final java.io.IOException e){}
+				if(A.getAreaState()!=Area.State.ACTIVE)
+					A.setAreaState(Area.State.ACTIVE);
+				mob.tell(L("Done."));
 			}
-			}
-			catch(final java.io.IOException e){}
-			if(A.getAreaState()!=Area.State.ACTIVE)
-				A.setAreaState(Area.State.ACTIVE);
-			mob.tell(L("Done."));
 		}
 		else
 		if(s.equalsIgnoreCase("manufacturers"))
 		{
 			TechType[] types;
 			String[] names;
-			final List<Manufacturer> m=new XVector<Manufacturer>(CMLib.tech().manufacterers());
-			for(final Manufacturer M : m)
-				CMLib.tech().delManufacturer(M);
-			types=new TechType[]{TechType.SHIP_SOFTWARE};
-			names=new String[]{
-			"Nanoapp",
-			"ExaSoft",
-			"Cryptosoft",
-			"M.S. Corp",
-			"AmLogic",
-			"InnovaSoft",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.SHIP_COMPUTER};
-			names=new String[]{
-			"IniProc",
-			"picoSystems",
-			"cybProc",
-			"GuthrieTronics",
-			"SolidCorp",
-			"DelCorp",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.SHIP_SPACESHIP};
-			names=new String[]{
-			"AtomiCorp",
-			"FrontierCorp",
-			"Vargas",
-			"JarviSys",
-			"Solar Corp",
-			"DynamiCorp",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.SHIP_ENGINE};
-			names=new String[]{
-			"Aczev Ltd",
-			"ItsukCorp",
-			"E.B.H. Ltd",
-			"Globomotors",
-			"Bowers Eng.",
-			"DynamiDrive",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.SHIP_SENSOR};
-			names=new String[]{
-			"BunovaCorp",
-			"Censys",
-			"Dering-Hao",
-			"ProgressTek",
-			"NetCorp",
-			"McNeil Ltd",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.SHIP_DAMPENER};
-			names=new String[]{
-			"S.H. Ltd",
-			"Malik-Ni",
-			"HsuiCorp",
-			"RiddleCorp",
-			"TotCorp",
-			"Apex Ltd",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.SHIP_ENVIRO_CONTROL};
-			names=new String[]{
-			"YehCorp",
-			"A.O.P. Ltd",
-			"Callahan",
-			"Innovatak",
-			"SharpeyTek",
-			"Holtz-Derkova",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.SHIP_POWER};
-			names=new String[]{
-			"Optcel",
-			"Shinacells",
-			"Choe Corp",
-			"hyDat Ltd",
-			"LumoDigital",
-			"Li-Lai Ltd",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.SHIP_WEAPON};
-			names=new String[]{
-			"A.S.U. Ltd",
-			"Mi-Gievora",
-			"A.T.F. Corp",
-			"Paragon Systems",
-			"Physionetics",
-			"DestructoCorp",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.SHIP_SHIELD};
-			names=new String[]{
-			"Lee-Lavanchy",
-			"Hsaio GmbH",
-			"Kikko-Thoran",
-			"LarsonTek",
-			"ElectriCorp",
-			"Grant DefCorp",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.SHIP_SHIELD,TechType.SHIP_WEAPON};
-			names=new String[]{
-			"Hsaio",
-			"Toy-Miyazu",
-			"Minova",
-			"DiversiCorp",
-			"Unidynamics",
-			"Nucleomatic",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.ANY};
-			names=new String[]{
-			"enTek",
-			"triNet",
-			"ReadyTek",
-			"GenTech",
-			"GeneralCorp",
-			"A.C.M.E.",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.PERSONAL_WEAPON};
-			names=new String[]{
-			"Chu",
-			"Asan",
-			"Noda",
-			"Ocano",
-			"PhaseCorp",
-			"Chao-Itsuk",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.PERSONAL_SHIELD};
-			names=new String[]{
-			"Xiu-Nova",
-			"I.B.B. Ltd",
-			"M.O.B. Corp",
-			"BoltonTek",
-			"Maddox",
-			"Digital Defense Corp",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.PERSONAL_SENSOR};
-			names=new String[]{
-			"cenApp",
-			"virGenCorp",
-			"Umin-Kahi Ltd",
-			"Tyrrell",
-			"ArcrSys",
-			"Tsaka Corp",
-			};
-			makeManufacturer(names, types);
-			types=new TechType[]{TechType.PERSONAL_WEAPON,TechType.PERSONAL_SENSOR,TechType.PERSONAL_SHIELD};
-			names=new String[]{
-			"MilSec",
-			"A.O.H. Corp",
-			"GenScience",
-			"PersoTek",
-			"StrateTek",
-			"Maynard",
-			};
+			if(mob.session().confirm(L("Re-create all the manufacturers?"), "N"))
+			{
+				final List<Manufacturer> m=new XVector<Manufacturer>(CMLib.tech().manufacterers());
+				for(final Manufacturer M : m)
+					CMLib.tech().delManufacturer(M);
+				types=new TechType[]{TechType.SHIP_SOFTWARE};
+				names=new String[]{
+				"Nanoapp",
+				"ExaSoft",
+				"Cryptosoft",
+				"M.S. Corp",
+				"AmLogic",
+				"InnovaSoft",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.SHIP_COMPUTER};
+				names=new String[]{
+				"IniProc",
+				"picoSystems",
+				"cybProc",
+				"GuthrieTronics",
+				"SolidCorp",
+				"DelCorp",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.SHIP_SPACESHIP};
+				names=new String[]{
+				"AtomiCorp",
+				"FrontierCorp",
+				"Vargas",
+				"JarviSys",
+				"Solar Corp",
+				"DynamiCorp",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.SHIP_ENGINE};
+				names=new String[]{
+				"Aczev Ltd",
+				"ItsukCorp",
+				"E.B.H. Ltd",
+				"Globomotors",
+				"Bowers Eng.",
+				"DynamiDrive",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.SHIP_SENSOR};
+				names=new String[]{
+				"BunovaCorp",
+				"Censys",
+				"Dering-Hao",
+				"ProgressTek",
+				"NetCorp",
+				"McNeil Ltd",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.SHIP_DAMPENER};
+				names=new String[]{
+				"S.H. Ltd",
+				"Malik-Ni",
+				"HsuiCorp",
+				"RiddleCorp",
+				"TotCorp",
+				"Apex Ltd",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.SHIP_ENVIRO_CONTROL};
+				names=new String[]{
+				"YehCorp",
+				"A.O.P. Ltd",
+				"Callahan",
+				"Innovatak",
+				"SharpeyTek",
+				"Holtz-Derkova",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.SHIP_POWER};
+				names=new String[]{
+				"Optcel",
+				"Shinacells",
+				"Choe Corp",
+				"hyDat Ltd",
+				"LumoDigital",
+				"Li-Lai Ltd",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.SHIP_WEAPON};
+				names=new String[]{
+				"A.S.U. Ltd",
+				"Mi-Gievora",
+				"A.T.F. Corp",
+				"Paragon Systems",
+				"Physionetics",
+				"DestructoCorp",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.SHIP_SHIELD};
+				names=new String[]{
+				"Lee-Lavanchy",
+				"Hsaio GmbH",
+				"Kikko-Thoran",
+				"LarsonTek",
+				"ElectriCorp",
+				"Grant DefCorp",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.SHIP_SHIELD,TechType.SHIP_WEAPON};
+				names=new String[]{
+				"Hsaio",
+				"Toy-Miyazu",
+				"Minova",
+				"DiversiCorp",
+				"Unidynamics",
+				"Nucleomatic",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.ANY};
+				names=new String[]{
+				"enTek",
+				"triNet",
+				"ReadyTek",
+				"GenTech",
+				"GeneralCorp",
+				"A.C.M.E.",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.PERSONAL_WEAPON};
+				names=new String[]{
+				"Chu",
+				"Asan",
+				"Noda",
+				"Ocano",
+				"PhaseCorp",
+				"Chao-Itsuk",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.PERSONAL_SHIELD};
+				names=new String[]{
+				"Xiu-Nova",
+				"I.B.B. Ltd",
+				"M.O.B. Corp",
+				"BoltonTek",
+				"Maddox",
+				"Digital Defense Corp",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.PERSONAL_SENSOR};
+				names=new String[]{
+				"cenApp",
+				"virGenCorp",
+				"Umin-Kahi Ltd",
+				"Tyrrell",
+				"ArcrSys",
+				"Tsaka Corp",
+				};
+				makeManufacturer(names, types);
+				types=new TechType[]{TechType.PERSONAL_WEAPON,TechType.PERSONAL_SENSOR,TechType.PERSONAL_SHIELD};
+				names=new String[]{
+				"MilSec",
+				"A.O.H. Corp",
+				"GenScience",
+				"PersoTek",
+				"StrateTek",
+				"Maynard",
+				};
+			}
 		}
 		else
 		{

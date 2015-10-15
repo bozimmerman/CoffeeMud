@@ -341,6 +341,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(CMLib.english().containsString(pair.first.Name(),itemName))
 						return pair.first;
 				}
+				pair.first.destroy();
 			}
 		}
 		return null;
@@ -353,12 +354,42 @@ public class StdBanker extends StdShopKeeper implements Banker
 				*location().getArea().getTimeObj().getDaysInMonth();
 	}
 
-	@Override public void setCoinInterest(double interest){coinInterest=interest;}
-	@Override public void setItemInterest(double interest){itemInterest=interest;}
-	@Override public double getCoinInterest(){return coinInterest;}
-	@Override public double getItemInterest(){return itemInterest;}
-	@Override public void setLoanInterest(double interest){loanInterest=interest;}
-	@Override public double getLoanInterest(){return loanInterest;}
+	@Override
+	public void setCoinInterest(double interest)
+	{
+		coinInterest = interest;
+	}
+
+	@Override
+	public void setItemInterest(double interest)
+	{
+		itemInterest = interest;
+	}
+
+	@Override
+	public double getCoinInterest()
+	{
+		return coinInterest;
+	}
+
+	@Override
+	public double getItemInterest()
+	{
+		return itemInterest;
+	}
+
+	@Override
+	public void setLoanInterest(double interest)
+	{
+		loanInterest = interest;
+	}
+
+	@Override
+	public double getLoanInterest()
+	{
+		return loanInterest;
+	}
+
 	@Override
 	public MoneyLibrary.DebtItem getDebtInfo(String depositorName)
 	{
@@ -506,6 +537,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 							if(coinItem!=null)
 								addDepositInventory(name,coinItem,null);
 						}
+						for(int v=0;v<items.size();v++)
+						{
+							final Item I=items.get(v);
+							if(I!=null)
+								I.destroy();
+						}
 					}
 					for(int d=debts.size()-1;d>=0;d--)
 						CMLib.beanCounter().delAllDebt(debts.elementAt(d).debtor,bankChain());
@@ -535,6 +572,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			final Item I=V.get(v);
 			if(!(I instanceof Coins))
 				min+=I.value();
+			I.destroy();
 		}
 		return min;
 	}
@@ -794,6 +832,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						}
 					}
 					for(int v=V.size()-1;v>=0;v--)
+					{
 						if(V.get(v) instanceof LandTitle)
 						{
 							final LandTitle L=(LandTitle)V.get(v);
@@ -803,6 +842,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 								V.remove(L);
 							}
 						}
+					}
 
 					final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(34.0,mob);
 					StringBuffer str=new StringBuffer("");
@@ -841,15 +881,17 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					final Vector<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebt(listerName,bankChain());
 					if(debts!=null)
-					for(int d=0;d<debts.size();d++)
 					{
-						final MoneyLibrary.DebtItem debt=debts.elementAt(d);
-						final long debtDueAt=debt.due;
-						final double intRate=debt.interest;
-						final double dueAmount=debt.amt;
-						final long timeRemaining=debtDueAt-System.currentTimeMillis();
-						if(timeRemaining>0)
-							str.append(L("\n\r@x1 owe ^H@x2^? in debt.\n\rMonthly interest is @x3%.  The loan must be paid in full in @x4 months.",((isSold(ShopKeeper.DEAL_CLANBANKER))?CMStrings.capitalizeFirstLetter(listerName):L("You")),CMLib.beanCounter().nameCurrencyLong(this,dueAmount),""+(intRate*100.0),""+(timeRemaining/timeInterval())));
+						for(int d=0;d<debts.size();d++)
+						{
+							final MoneyLibrary.DebtItem debt=debts.elementAt(d);
+							final long debtDueAt=debt.due;
+							final double intRate=debt.interest;
+							final double dueAmount=debt.amt;
+							final long timeRemaining=debtDueAt-System.currentTimeMillis();
+							if(timeRemaining>0)
+								str.append(L("\n\r@x1 owe ^H@x2^? in debt.\n\rMonthly interest is @x3%.  The loan must be paid in full in @x4 months.",((isSold(ShopKeeper.DEAL_CLANBANKER))?CMStrings.capitalizeFirstLetter(listerName):L("You")),CMLib.beanCounter().nameCurrencyLong(this,dueAmount),""+(intRate*100.0),""+(timeRemaining/timeInterval())));
+						}
 					}
 					if(coinInterest!=0.0)
 					{
@@ -864,6 +906,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 						str.append(L("\n\rThey @x1monthly on items deposited here.",ci));
 					}
 					mob.tell(str.toString()+"^T");
+					for(int i=0;i<V.size();i++)
+					{
+						final Item I=V.get(i);
+						if(I!=null)
+							I.destroy();
+					}
 				}
 				return;
 			}
@@ -920,7 +968,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						mob.tell(this,msg.tool(),null,L("<S-HE-SHE> refuses to accept <T-NAME> for deposit."));
 						return false;
 					}
-					final double minbalance=(totalItemsWorth(listerName)/MIN_ITEM_BALANCE_DIVIDEND)+CMath.div(((Item)msg.tool()).value(),MIN_ITEM_BALANCE_DIVIDEND);
+					final double minbalance=(totalItemsWorth(listerName)/MIN_ITEM_BALANCE_DIVISOR)+CMath.div(((Item)msg.tool()).value(),MIN_ITEM_BALANCE_DIVISOR);
 					if(balance<minbalance)
 					{
 						if(isSold(ShopKeeper.DEAL_CLANBANKER))
@@ -996,7 +1044,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							return false;
 						}
 					}
-					final double minbalance=(collateral/MIN_ITEM_BALANCE_DIVIDEND);
+					final double minbalance=(collateral/MIN_ITEM_BALANCE_DIVISOR);
 					if(msg.tool() instanceof Coins)
 					{
 						if(((Coins)msg.tool()).getTotalValue()>balance)
