@@ -54,8 +54,7 @@ public interface PostOffice extends ShopKeeper
 	 * or their clan, if they are (optionally) permitted by their rank.
 	 * If checked is true, and the mob does NOT have clan privileges, then an
 	 * error message is given to the mob and null is returned.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Function.DEPOSIT
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Function.WITHDRAW
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Function
 	 * @param mob the mob who is trying to send the package
 	 * @param func either Clan.Function.WITHDRAW or Clan.FUNCTION.DEPOSIT
 	 * @param checked true if the mob must have clan privileges, false if not.
@@ -155,7 +154,7 @@ public interface PostOffice extends ShopKeeper
 	 * Sets the postal chain, a string shared by all post 
 	 * offices that deal with the same postal boxes and
 	 * customers, able to send mail to each other.
-	 * @see PostOffice#postalChain()ost
+	 * @see PostOffice#postalChain()
 	 * @param name  the name of the postal chain
 	 */
 	public void setPostalChain(String name);

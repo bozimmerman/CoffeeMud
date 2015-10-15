@@ -133,8 +133,7 @@ public interface Banker extends ShopKeeper
 	 * or their clan, if they are (optionally) permitted by their rank.
 	 * If checked is true, and the mob does NOT have clan privileges, then an
 	 * error message is given to the mob and null is returned.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Function.DEPOSIT
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Function.WITHDRAW
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Function
 	 * @param mob the mob who is trying to deposit or withdraw or list or something
 	 * @param func either Clan.Function.WITHDRAW or Clan.FUNCTION.DEPOSIT or LIST
 	 * @param checked true if the mob must have clan privileges, false if not.
@@ -169,9 +168,9 @@ public interface Banker extends ShopKeeper
 	 * @see Banker#delAllDeposits(String)
 	 * @see Banker#addDepositInventory(String, Item, Item)
 	 * @see Banker#getBalance(String)
-	 * @param depositorName the account to deposit into, like mob or clan name 
-	 * @param item the item to deposit
-	 * @param container the container the item is in, which also needs depositing
+	 * @param depositorName the account to delete from, like mob or clan name 
+	 * @param likeItem the likeItem to delete
+	 * @return the collection of items deleted from the account
 	 */
 	public List<Item> delDepositInventory(String depositorName, Item likeItem);
 	
