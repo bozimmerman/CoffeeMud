@@ -57,6 +57,7 @@ public class Deviations extends StdCommand
 		str.append(CMStrings.padRight(L("Rejuv"),5)+" ");
 		if(useFaction!=null)
 			str.append(CMStrings.padRight(useFaction.name(),7)+" ");
+		str.append(CMStrings.padRight("Money",5)+" ");
 		str.append(CMStrings.padRight(L("Worn"),5));
 		str.append("\n\r");
 		return str.toString();
@@ -180,7 +181,6 @@ public class Deviations extends StdCommand
 			final Faction F=e.nextElement();
 			if(F.showInSpecialReported())
 				useFaction=F;
-
 		}
 		final String where=V.get(1).toLowerCase();
 		final Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
@@ -290,6 +290,15 @@ public class Deviations extends StdCommand
 				mobResults.append(CMStrings.padRight(""+((M.phyStats().rejuv()==PhyStats.NO_REJUV)?" MAX":""+M.phyStats().rejuv()) ,5)+" ");
 				if(useFaction!=null)
 					mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
+				double value = CMLib.beanCounter().getTotalAbsoluteNativeValue(M);
+				double[] range = CMLib.leveler().getLevelMoneyRange(M);
+				if(value < range[0])
+					mobResults.append(CMStrings.padRight(""+getDeviation(value,range[0]),5)+" ");
+				else
+				if(value > range[1])
+					mobResults.append(CMStrings.padRight(""+getDeviation(value,range[1]),5)+" ");
+				else
+					mobResults.append(CMStrings.padRight("0%",5)+" ");
 				int reallyWornCount = 0;
 				for(int j=0;j<M.numItems();j++)
 				{

@@ -221,6 +221,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.setExperience(CMLib.leveler().getLevelExperience(mob.phyStats().level()));
 		return mob;
 	}
+	
+	@Override
+	public double[] getLevelMoneyRange(MOB mob)
+	{
+		return new double[]{2,mob.basePhyStats().level()+10};
+	}
 
 	@Override
 	public StringBuffer baseLevelAdjuster(MOB mob, int adjuster)

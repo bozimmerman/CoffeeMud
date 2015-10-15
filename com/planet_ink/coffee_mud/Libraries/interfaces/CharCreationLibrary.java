@@ -61,6 +61,7 @@ public interface CharCreationLibrary extends CMLibrary
 	public Room getDefaultDeathRoom(MOB mob);
 	public Room getDefaultBodyRoom(MOB mob);
 	public String generateRandomName(int minSyllable, int maxSyllable);
+	public LoginResult completeLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException;
 
 	public enum LoginState {LOGIN_START, LOGIN_NAME, LOGIN_ACCTCHAR_PWORD, LOGIN_PASS_START, LOGIN_NEWACCOUNT_CONFIRM, LOGIN_NEWCHAR_CONFIRM,
 							LOGIN_PASS_RECEIVED, LOGIN_EMAIL_PASSWORD, LOGIN_ACCTCONV_CONFIRM,

@@ -2160,8 +2160,10 @@ public class DefaultSession implements Session
 					List<Room> rooms=new ArrayList<Room>(1);
 					rooms.add(M.location());
 					for(MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
+					{
 						if((M2.location()!=null)&&(!rooms.contains(M2.location())))
 							rooms.add(M2.location());
+					}
 					for(Room R : rooms)
 					{
 						try
@@ -2793,16 +2795,79 @@ public class DefaultSession implements Session
 	public static class LoginLogoutThread implements CMRunnable, Tickable
 	{
 		private final long startTime=System.currentTimeMillis();
-		@Override public String name(){return (theMOB==null)?"Dead LLThread":"LLThread for "+theMOB.Name();}
-		@Override public boolean tick(Tickable ticking, int tickID){return false;}
-		@Override public String ID(){return name();}
-		@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new LoginLogoutThread();}}
-		@Override public void initializeClass(){}
-		@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
-		@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-		@Override public int getTickStatus(){return 0;}
-		@Override public long getStartTime(){ return startTime; }
-		@Override public int getGroupID() { return '0'; }
+
+		@Override
+		public String name()
+		{
+			return (theMOB == null) ? "Dead LLThread" : "LLThread for " + theMOB.Name();
+		}
+
+		@Override
+		public boolean tick(Tickable ticking, int tickID)
+		{
+			return false;
+		}
+
+		@Override
+		public String ID()
+		{
+			return name();
+		}
+
+		@Override
+		public CMObject newInstance()
+		{
+			try
+			{
+				return getClass().newInstance();
+			}
+			catch (final Exception e)
+			{
+				return new LoginLogoutThread();
+			}
+		}
+
+		@Override
+		public void initializeClass()
+		{
+		}
+
+		@Override
+		public CMObject copyOf()
+		{
+			try
+			{
+				return (CMObject) this.clone();
+			}
+			catch (final Exception e)
+			{
+				return newInstance();
+			}
+		}
+
+		@Override
+		public int compareTo(CMObject o)
+		{
+			return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+		}
+
+		@Override
+		public int getTickStatus()
+		{
+			return 0;
+		}
+
+		@Override
+		public long getStartTime()
+		{
+			return startTime;
+		}
+
+		@Override
+		public int getGroupID()
+		{
+			return '0';
+		}
 		
 		private MOB theMOB=null;
 		private int msgCode=-1;
@@ -2865,7 +2930,9 @@ public class DefaultSession implements Session
 						if((!skipRooms.contains(R))&&(theMOB.location()!=null))
 							R.sendOthers(theMOB,msg);
 					}
-				}catch(final Exception e){}
+				}
+				catch(final Exception e)
+				{}
 				theMOB=null;
 			}
 		}
@@ -2886,55 +2953,125 @@ public class DefaultSession implements Session
 	private static enum SESS_STAT_CODES {PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
 										 LASTMSG,LASTNPCFIGHT,LASTPKFIGHT,TERMTYPE,
 										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME}
-	@Override public int getSaveStatIndex() { return SESS_STAT_CODES.values().length;}
-	@Override public String[] getStatCodes() { return CMParms.toStringArray(SESS_STAT_CODES.values());}
-	@Override public boolean isStat(String code) { return getStatIndex(code)!=null;}
-	private SESS_STAT_CODES getStatIndex(String code) { return (SESS_STAT_CODES)CMath.s_valueOf(SESS_STAT_CODES.values(),code); }
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return SESS_STAT_CODES.values().length;
+	}
+
+	@Override
+	public String[] getStatCodes()
+	{
+		return CMParms.toStringArray(SESS_STAT_CODES.values());
+	}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return getStatIndex(code) != null;
+	}
+
+	private SESS_STAT_CODES getStatIndex(String code)
+	{
+		return (SESS_STAT_CODES) CMath.s_valueOf(SESS_STAT_CODES.values(), code);
+	}
+
 	@Override
 	public String getStat(String code)
 	{
 		final SESS_STAT_CODES stat = getStatIndex(code);
-		if(stat==null){ return "";}
-		switch(stat)
+		if (stat == null)
 		{
-		case PREVCMD: return CMParms.combineQuoted(getPreviousCMD(),0);
-		case ISAFK: return ""+isAfk();
-		case AFKMESSAGE: return getAfkMessage();
-		case ADDRESS: return getAddress();
-		case IDLETIME: return CMLib.time().date2String(System.currentTimeMillis()-getIdleMillis());
-		case LASTMSG: return CMParms.combineQuoted(getLastMsgs(),0);
-		case LASTNPCFIGHT: return CMLib.time().date2String(getLastNPCFight());
-		case LASTPKFIGHT: return CMLib.time().date2String(getLastPKFight());
-		case TERMTYPE: return getTerminalType();
-		case TOTALMILLIS: return CMLib.time().date2String(System.currentTimeMillis()-getTotalMillis());
-		case TOTALTICKS: return ""+getTotalTicks();
-		case WRAP: return ""+getWrap();
-		case LASTLOOPTIME: return CMLib.time().date2String(getInputLoopTime());
-		default: Log.errOut("Session","getStat:Unhandled:"+stat.toString()); break;
+			return "";
+		}
+		switch (stat)
+		{
+		case PREVCMD:
+			return CMParms.combineQuoted(getPreviousCMD(), 0);
+		case ISAFK:
+			return "" + isAfk();
+		case AFKMESSAGE:
+			return getAfkMessage();
+		case ADDRESS:
+			return getAddress();
+		case IDLETIME:
+			return CMLib.time().date2String(System.currentTimeMillis() - getIdleMillis());
+		case LASTMSG:
+			return CMParms.combineQuoted(getLastMsgs(), 0);
+		case LASTNPCFIGHT:
+			return CMLib.time().date2String(getLastNPCFight());
+		case LASTPKFIGHT:
+			return CMLib.time().date2String(getLastPKFight());
+		case TERMTYPE:
+			return getTerminalType();
+		case TOTALMILLIS:
+			return CMLib.time().date2String(System.currentTimeMillis() - getTotalMillis());
+		case TOTALTICKS:
+			return "" + getTotalTicks();
+		case WRAP:
+			return "" + getWrap();
+		case LASTLOOPTIME:
+			return CMLib.time().date2String(getInputLoopTime());
+		default:
+			Log.errOut("Session", "getStat:Unhandled:" + stat.toString());
+			break;
 		}
 		return null;
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
 		final SESS_STAT_CODES stat = getStatIndex(code);
-		if(stat==null){ return;}
-		switch(stat)
+		if (stat == null)
 		{
-		case PREVCMD: previousCmd=CMParms.parse(val); break;
-		case ISAFK: afkFlag=CMath.s_bool(val); break;
-		case AFKMESSAGE: afkMessage=val; break;
-		case ADDRESS: return;
-		case IDLETIME: lastKeystroke=CMLib.time().string2Millis(val); break;
-		case LASTMSG: prevMsgs=CMParms.parse(val); break;
-		case LASTNPCFIGHT: lastNPCFight=CMLib.time().string2Millis(val); break;
-		case LASTPKFIGHT: lastPKFight=CMLib.time().string2Millis(val); break;
-		case TERMTYPE: terminalType=val; break;
-		case TOTALMILLIS: milliTotal = System.currentTimeMillis() - CMLib.time().string2Millis(val); break;
-		case TOTALTICKS: tickTotal= CMath.s_int(val); break;
-		case WRAP: if((mob!=null)&&(mob.playerStats()!=null)) mob.playerStats().setWrap(CMath.s_int(val)); break;
-		case LASTLOOPTIME: lastLoopTop=CMLib.time().string2Millis(val); break;
-		default: Log.errOut("Session","setStat:Unhandled:"+stat.toString()); break;
+			return;
+		}
+		switch (stat)
+		{
+		case PREVCMD:
+			previousCmd = CMParms.parse(val);
+			break;
+		case ISAFK:
+			afkFlag = CMath.s_bool(val);
+			break;
+		case AFKMESSAGE:
+			afkMessage = val;
+			break;
+		case ADDRESS:
+			return;
+		case IDLETIME:
+			lastKeystroke = CMLib.time().string2Millis(val);
+			break;
+		case LASTMSG:
+			prevMsgs = CMParms.parse(val);
+			break;
+		case LASTNPCFIGHT:
+			lastNPCFight = CMLib.time().string2Millis(val);
+			break;
+		case LASTPKFIGHT:
+			lastPKFight = CMLib.time().string2Millis(val);
+			break;
+		case TERMTYPE:
+			terminalType = val;
+			break;
+		case TOTALMILLIS:
+			milliTotal = System.currentTimeMillis() - CMLib.time().string2Millis(val);
+			break;
+		case TOTALTICKS:
+			tickTotal = CMath.s_int(val);
+			break;
+		case WRAP:
+			if ((mob != null) && (mob.playerStats() != null))
+				mob.playerStats().setWrap(CMath.s_int(val));
+			break;
+		case LASTLOOPTIME:
+			lastLoopTop = CMLib.time().string2Millis(val);
+			break;
+		default:
+			Log.errOut("Session", "setStat:Unhandled:" + stat.toString());
+			break;
 		}
 	}
 

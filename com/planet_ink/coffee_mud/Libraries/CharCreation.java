@@ -1818,10 +1818,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		int numAccountOnline=0;
 		for(final Session S : CMLib.sessions().allIterable())
+		{
 			if((S.mob()!=null)
 			&&(S.mob().playerStats()!=null)
 			&&(S.mob().playerStats().getAccount()==acct))
 				numAccountOnline++;
+		}
 		if((CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)>0)
 		&&(numAccountOnline>=CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
@@ -3169,91 +3171,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 	}
 
-	public LoginResult completeCharacterLogin(Session session, String login, boolean wiziFlag) throws IOException
+	public LoginResult completeLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException
 	{
-		// count number of multiplays
-		int numAtAddress=0;
-		try
-		{
-			for(final Session S : CMLib.sessions().allIterable())
-				if((S!=session)&&(session.getAddress().equalsIgnoreCase(S.getAddress())))
-					numAtAddress++;
-		}catch(final Exception e){}
-
-		if((CMProps.getIntVar(CMProps.Int.MAXCONNSPERIP)>0)
-		&&(numAtAddress>=CMProps.getIntVar(CMProps.Int.MAXCONNSPERIP))
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERIP))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, session.getAddress()))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, login)))
-		{
-			session.println(L("The maximum player limit has already been reached for your IP address."));
+		if(loginsDisabled(mob))
 			return LoginResult.NO_LOGIN;
-		}
-
-		MOB mob=CMLib.players().getPlayer(login);
-		if((mob!=null)&&(mob.session()!=null))
-		{
-			session.setMob(mob);
-			mob.setSession(session);
-			if(isExpired(mob.playerStats().getAccount(),session,mob))
-			{
-				return LoginResult.NO_LOGIN;
-			}
-			if(loginsDisabled(mob))
-				return LoginResult.NO_LOGIN;
-			if(wiziFlag)
-			{
-				final Command C=CMClass.getCommand("WizInv");
-				if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-					C.execute(mob,new XVector<Object>("WIZINV"),0);
-			}
-			showTheNews(mob);
-			Room startRoom = mob.location();
-			if(startRoom==null)
-			{
-				Log.errOut("CharCreation",mob.name()+" has no location.. sending to start room");
-				startRoom = mob.getStartRoom();
-				if(startRoom == null)
-					startRoom = CMLib.map().getStartRoom(mob);
-
-			}
-			mob.bringToLife(startRoom,false);
-			CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
-			startRoom.showOthers(mob,startRoom,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> appears!"));
-		}
-		else
-		{
-			final boolean resetStats=(mob==null);
-			if(resetStats)
-				mob=CMLib.players().getLoadPlayer(login);
-			if(mob == null)
-			{
-				Log.errOut("CharCreation",login+" does not exist! FAIL!");
-				return LoginResult.NO_LOGIN;
-			}
-			if(mob.playerStats()==null)
-			{
-				Log.errOut("CharCreation",login+" is not a player! FAIL!");
-				session.println(L("Error occurred trying to login as this player. Please contact your technical support."));
-				return LoginResult.NO_LOGIN;
-			}
-			mob.setSession(session);
-			session.setMob(mob);
-			if(isExpired(mob.playerStats().getAccount(),session,mob))
-				return LoginResult.NO_LOGIN;
-			if(loginsDisabled(mob))
-				return LoginResult.NO_LOGIN;
-			if(wiziFlag)
-			{
-				final Command C=CMClass.getCommand("WizInv");
-				if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-					C.execute(mob,new XVector<Object>("WIZINV"),0);
-			}
-			showTheNews(mob);
-			mob.bringToLife(mob.location(),resetStats);
-			CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
-			mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> appears!"));
-		}
+		mob.bringToLife(startRoom,resetStats);
+		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
+		mob.location().showOthers(mob,startRoom,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> appears!"));
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			final MOB follower=mob.fetchFollower(f);
@@ -3305,10 +3229,102 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.setAttribute(MOB.Attrib.PLAYERKILL,false);
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGINS);
 		if(!CMLib.flags().isCloaked(mob))
+		{
 			for(int i=0;i<channels.size();i++)
 				CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has logged on.",true);
+		}
 		setGlobalBitmaps(mob);
 		return LoginResult.NORMAL_LOGIN;
+	}
+	
+	public LoginResult completeCharacterLogin(Session session, String login, boolean wiziFlag) throws IOException
+	{
+		// count number of multiplays
+		int numAtAddress=0;
+		try
+		{
+			for(final Session S : CMLib.sessions().allIterable())
+			{
+				if((S!=session)&&(session.getAddress().equalsIgnoreCase(S.getAddress())))
+					numAtAddress++;
+			}
+		}
+		catch(final Exception e)
+		{}
+
+		if((CMProps.getIntVar(CMProps.Int.MAXCONNSPERIP)>0)
+		&&(numAtAddress>=CMProps.getIntVar(CMProps.Int.MAXCONNSPERIP))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERIP))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, session.getAddress()))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, login)))
+		{
+			session.println(L("The maximum player limit has already been reached for your IP address."));
+			return LoginResult.NO_LOGIN;
+		}
+
+		final boolean resetStats;
+		Room startRoom;
+		MOB mob=CMLib.players().getPlayer(login);
+		if((mob!=null)&&(mob.session()!=null))
+		{
+			session.setMob(mob);
+			mob.setSession(session);
+			if(isExpired(mob.playerStats().getAccount(),session,mob))
+			{
+				return LoginResult.NO_LOGIN;
+			}
+			if(loginsDisabled(mob))
+				return LoginResult.NO_LOGIN;
+			if(wiziFlag)
+			{
+				final Command C=CMClass.getCommand("WizInv");
+				if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
+					C.execute(mob,new XVector<Object>("WIZINV"),0);
+			}
+			showTheNews(mob);
+			startRoom = mob.location();
+			if(startRoom==null)
+			{
+				Log.errOut("CharCreation",mob.name()+" has no location.. sending to start room");
+				startRoom = mob.getStartRoom();
+				if(startRoom == null)
+					startRoom = CMLib.map().getStartRoom(mob);
+
+			}
+			resetStats = false;
+		}
+		else
+		{
+			resetStats=(mob==null);
+			if(resetStats)
+				mob=CMLib.players().getLoadPlayer(login);
+			if(mob == null)
+			{
+				Log.errOut("CharCreation",login+" does not exist! FAIL!");
+				return LoginResult.NO_LOGIN;
+			}
+			if(mob.playerStats()==null)
+			{
+				Log.errOut("CharCreation",login+" is not a player! FAIL!");
+				session.println(L("Error occurred trying to login as this player. Please contact your technical support."));
+				return LoginResult.NO_LOGIN;
+			}
+			mob.setSession(session);
+			session.setMob(mob);
+			if(isExpired(mob.playerStats().getAccount(),session,mob))
+				return LoginResult.NO_LOGIN;
+			if(loginsDisabled(mob))
+				return LoginResult.NO_LOGIN;
+			if(wiziFlag)
+			{
+				final Command C=CMClass.getCommand("WizInv");
+				if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
+					C.execute(mob,new XVector<Object>("WIZINV"),0);
+			}
+			showTheNews(mob);
+			startRoom = mob.location();
+		}
+		return this.completeLogin(session, mob, startRoom, resetStats);
 	}
 
 	@Override

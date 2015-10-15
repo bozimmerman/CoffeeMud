@@ -18,7 +18,11 @@
   17. Items can now have slots -- see help Prop_ItemSlot and Prop_ItemSlotFiller for more information.
   18. New DISABLE flag: ANSIPROMPT for character creation tweaking.
   19. New Achievements system: see /resources/achievements.txt, MUDGrinder, or the GameBuildersGuide for more info.
-  20. New Misc Property: AutoStack -- for automatically stacking/packaging identical items. 
+  20. New Misc Property: AutoStack -- for automatically stacking/packaging identical items.
+  21. New command for muds using the account system: SWITCH, for quickly switching between other players on the same acct.
+  22. The Deviations command now shows mob money deviations.
+  23. Mundane STAT command now support experience point stats. 
+  24. Made some of the weather effects spam slightly more frequent, and added a msg for cold and heat.
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)

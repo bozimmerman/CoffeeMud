@@ -61,6 +61,7 @@ public class Logoff extends StdCommand
 			try
 			{
 				if(session != null)
+				{
 					session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000)
 					{
 						@Override
@@ -86,6 +87,7 @@ public class Logoff extends StdCommand
 							}
 						}
 					});
+				}
 			}
 			catch(final Exception e)
 			{

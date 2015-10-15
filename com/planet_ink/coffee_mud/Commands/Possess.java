@@ -35,10 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Possess extends StdCommand
 {
-	public Possess(){}
+	public Possess()
+	{
+	}
 
-	private final String[] access=I(new String[]{"POSSESS","POSS"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "POSSESS", "POSS" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public MOB getTarget(MOB mob, Vector commands, boolean quiet)
 	{
@@ -83,7 +90,7 @@ public class Possess extends StdCommand
 	{
 		if(mob.soulMate()!=null)
 		{
-			mob.tell(L("You are already possessing someone.  Quit back to your body first!"));
+			mob.tell(L("You are possessing someone.  Quit back to your body first!"));
 			return false;
 		}
 		commands.remove(0);
@@ -111,12 +118,16 @@ public class Possess extends StdCommand
 			{
 				final List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
 				for(final MOB mob2 : inhabs)
+				{
 					if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),CMSecurity.SecFlag.POSSESS)))
 					{
 						target=mob2;
 						break;
 					}
-			}catch(final NoSuchElementException e){}
+				}
+			}
+			catch(final NoSuchElementException e)
+			{}
 		}
 		if((target==null)||(!target.isMonster())||(!CMLib.flags().isInTheGame(target,true)))
 		{
@@ -151,8 +162,15 @@ public class Possess extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POSSESS);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
-
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.POSSESS);
+	}
 }

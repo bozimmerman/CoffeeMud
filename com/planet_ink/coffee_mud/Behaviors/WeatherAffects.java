@@ -98,13 +98,13 @@ public class WeatherAffects extends PuddleMaker
 	}
 
 	private void resetBotherTicks(){botherDown=CMParms.getParmInt(parms,"botherticks",Climate.WEATHER_TICK_DOWN/3);}
-	private void resetDiseaseTicks(){diseaseDown=CMParms.getParmInt(parms,"diseaseticks",Climate.WEATHER_TICK_DOWN);}
+	private void resetDiseaseTicks(){diseaseDown=CMParms.getParmInt(parms,"diseaseticks",Climate.WEATHER_TICK_DOWN*2);}
 	private void resetRustTicks(){rustDown=CMParms.getParmInt(parms,"rustticks",30);}
-	private void resetLightningTicks(){lightningDown=CMParms.getParmInt(parms,"lightningticks",Climate.WEATHER_TICK_DOWN*4);}
+	private void resetLightningTicks(){lightningDown=CMParms.getParmInt(parms,"lightningticks",Climate.WEATHER_TICK_DOWN*8);}
 	private void resetRumbleTicks(){rumbleDown=CMParms.getParmInt(parms,"rumbleticks",Climate.WEATHER_TICK_DOWN/4);}
-	private void resetGustTicks(){gustDown=CMParms.getParmInt(parms,"gustticks",Climate.WEATHER_TICK_DOWN);}
-	private void resetTornadoTicks(){tornadoDown=CMParms.getParmInt(parms,"tornadoticks",Climate.WEATHER_TICK_DOWN*10);}
-	private void resetHailTicks(){hailDown=CMParms.getParmInt(parms,"hailticks",Climate.WEATHER_TICK_DOWN/2);}
+	private void resetGustTicks(){gustDown=CMParms.getParmInt(parms,"gustticks",Climate.WEATHER_TICK_DOWN*2);}
+	private void resetTornadoTicks(){tornadoDown=CMParms.getParmInt(parms,"tornadoticks",Climate.WEATHER_TICK_DOWN*15);}
+	private void resetHailTicks(){hailDown=CMParms.getParmInt(parms,"hailticks",Climate.WEATHER_TICK_DOWN);}
 	private void resetDustTicks(){dustDown=CMParms.getParmInt(parms,"dustticks",50);}
 
 	public Area area(Environmental host)
@@ -279,11 +279,13 @@ public class WeatherAffects extends PuddleMaker
 			case Climate.WEATHER_HAIL:
 			case Climate.WEATHER_THUNDERSTORM:
 			case Climate.WEATHER_RAIN:
+			{
 				final Enumeration<Room> r=(ticking instanceof Room)?new SingleEnumeration<Room>((Room)ticking):A.getProperMap();
 				for(;r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
 					if(CMLib.map().hasASky(R))
+					{
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							final MOB mob=R.fetchInhabitant(i);
@@ -293,7 +295,11 @@ public class WeatherAffects extends PuddleMaker
 							&&(mob.isAttribute(MOB.Attrib.AUTOWEATHER)))
 								mob.tell(C.getWeatherDescription(A));
 						}
+					}
 				}
+				break;
+			}
+			default:
 				break;
 			}
 		}
@@ -495,6 +501,15 @@ public class WeatherAffects extends PuddleMaker
 					case Climate.WEATHER_WINDY:
 						if(C.weatherType(R)==Climate.WEATHER_WINDY)
 							S.mob().tell(L("^JThe wind gusts around you.^?@x1",CMLib.protocol().msp("wind.wav",40)));
+						break;
+					case Climate.WEATHER_HEAT_WAVE:
+						if((C.weatherType(R)==Climate.WEATHER_HEAT_WAVE)
+						&&((S.mob().fetchWornItems(Item.WORN_TORSO,(short)0,(short)0).size()>0)||(S.mob().fetchWornItems(Item.WORN_ABOUT_BODY,(short)0,(short)0).size()>0)))
+							S.mob().tell(L("^JYou are sweating in the grueling heat.^?"));
+						break;
+					case Climate.WEATHER_WINTER_COLD:
+						if((C.weatherType(R)==Climate.WEATHER_WINTER_COLD)&&((CMLib.dice().rollPercentage()>S.mob().charStats().getStat(CharStats.STAT_SAVE_COLD))))
+							S.mob().tell(L("^JYou shiver in the cold.^?"));
 						break;
 					}
 				}

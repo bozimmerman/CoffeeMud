@@ -470,6 +470,7 @@ public class Stat  extends Skills
 				msg.append(stat).append(", ");
 			for(String stat : mob.phyStats().getStatCodes())
 				msg.append(stat).append(", ");
+			msg.append("XP, XPTNL, XPFNL, ");
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
 			{
 				msg.append(L("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
@@ -858,34 +859,64 @@ public class Stat  extends Skills
 			}
 			
 			for(int i=0;i<commands.size()-1;i++)
+			{
 				if(commands.get(i).toString().toUpperCase().equals("MAX"))
 				{
 					commands.remove(i);
 					commands.set(i,"MAX"+commands.get(i).toString());
 				}
+			}
 			for(int i=0;i<commands.size()-1;i++)
 				commands.set(i,CMStrings.replaceAll(commands.get(i).toString()," ",""));
 			for(int i=0;i<commands.size();i++)
 			{
 				String thisStat=commands.get(i).toString().toUpperCase().trim();
 				boolean found=false;
-				for(String stat : M.curState().getStatCodes())
-					if(stat.equals(thisStat))
-					{
-						str.append(M.curState().getStat(stat)).append(" ");
-						found=true;
-						break;
-					}
-				if((!found)&&(thisStat.startsWith("MAX")))
-				for(String stat : M.maxState().getStatCodes())
-					if(stat.equals(thisStat.substring(3)))
-					{
-						str.append(M.maxState().getStat(stat)).append(" ");
-						found=true;
-						break;
-					}
+				if(thisStat.equalsIgnoreCase("XP"))
+				{
+					str.append(M.getExperience()).append(" ");
+					found=true;
+				}
+				else
+				if(thisStat.equalsIgnoreCase("XPTNL"))
+				{
+					str.append(M.getExpNeededLevel()).append(" ");
+					found=true;
+				}
+				else
+				if(thisStat.equalsIgnoreCase("XPFNL"))
+				{
+					str.append(M.getExpNextLevel()).append(" ");
+					found=true;
+				}
 				if(!found)
+				{
+					for(String stat : M.curState().getStatCodes())
+					{
+						if(stat.equals(thisStat))
+						{
+							str.append(M.curState().getStat(stat)).append(" ");
+							found=true;
+							break;
+						}
+					}
+				}
+				if((!found)&&(thisStat.startsWith("MAX")))
+				{
+					for(String stat : M.maxState().getStatCodes())
+					{
+						if(stat.equals(thisStat.substring(3)))
+						{
+							str.append(M.maxState().getStat(stat)).append(" ");
+							found=true;
+							break;
+						}
+					}
+				}
+				if(!found)
+				{
 					for(String stat : M.charStats().getStatCodes())
+					{
 						if(stat.equals(thisStat))
 						{
 							if(stat.startsWith("MAX"))
@@ -895,8 +926,12 @@ public class Stat  extends Skills
 							found=true;
 							break;
 						}
+					}
+				}
 				if(!found)
+				{
 					for(String stat : M.phyStats().getStatCodes())
+					{
 						if(stat.equals(thisStat))
 						{
 							if(stat.equals("SENSES"))
@@ -909,24 +944,36 @@ public class Stat  extends Skills
 							found=true;
 							break;
 						}
+					}
+				}
 				if(!found)
+				{
 					for(String stat : M.curState().getStatCodes())
+					{
 						if(stat.startsWith(thisStat))
 						{
 							str.append(M.curState().getStat(stat)).append(" ");
 							found=true;
 							break;
 						}
+					}
+				}
 				if((!found)&&(thisStat.startsWith("MAX")))
+				{
 					for(String stat : M.maxState().getStatCodes())
+					{
 						if(stat.startsWith(thisStat.substring(3)))
 						{
 							str.append(M.maxState().getStat(stat)).append(" ");
 							found=true;
 							break;
 						}
+					}
+				}
 				if(!found)
+				{
 					for(String stat : M.charStats().getStatCodes())
+					{
 						if(stat.startsWith(thisStat))
 						{
 							if(stat.startsWith("MAX"))
@@ -936,8 +983,12 @@ public class Stat  extends Skills
 							found=true;
 							break;
 						}
+					}
+				}
 				if(!found)
+				{
 					for(String stat : M.phyStats().getStatCodes())
+					{
 						if(stat.startsWith(thisStat))
 						{
 							if(stat.equals("SENSES"))
@@ -950,6 +1001,8 @@ public class Stat  extends Skills
 							found=true;
 							break;
 						}
+					}
+				}
 				if(!found)
 					str.append(" *UKNOWN:"+thisStat+"* ");
 			}
