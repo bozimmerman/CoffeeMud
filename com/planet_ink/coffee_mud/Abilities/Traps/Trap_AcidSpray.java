@@ -40,8 +40,51 @@ public class Trap_AcidSpray extends StdTrap
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 15;}
-	@Override public String requiresToSet(){return "";}
+	@Override public String requiresToSet(){return "1 pound of lemons";}
 
+	@Override
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	{
+		if(P==null)
+			return null;
+		if(mob!=null)
+		{
+			Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LEMONS);
+			if(I==null)
+				I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
+			if(I!=null)
+				super.destroyResources(mob.location(),I.material(),1);
+		}
+		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
+	}
+
+	@Override
+	public List<Item> getTrapComponents()
+	{
+		final List<Item> V=new Vector<Item>();
+		V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_LEMONS));
+		return V;
+	}
+	@Override
+	public boolean canSetTrapOn(MOB mob, Physical P)
+	{
+		if(!super.canSetTrapOn(mob,P))
+			return false;
+		if(mob!=null)
+		{
+			Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LEMONS);
+			if(I==null)
+				I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
+			if((I==null)
+			||(super.findNumberOfResource(mob.location(),I.material())<1))
+			{
+				mob.tell(L("You'll need to set down at least a pound of lemons or limes first."));
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	@Override
 	public void spring(MOB target)
 	{
