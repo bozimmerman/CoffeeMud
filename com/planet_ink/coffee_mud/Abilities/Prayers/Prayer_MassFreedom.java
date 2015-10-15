@@ -78,7 +78,7 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 					if((A.invoker()==null)
 					||((clas!=Ability.ACODE_SPELL)&&(clas!=Ability.ACODE_CHANT)&&(clas!=Ability.ACODE_PRAYER)&&(clas!=Ability.ACODE_SONG))
 					||((A.invoker()!=null)
-					   &&(A.invoker().phyStats().level()<=(caster.phyStats().level()+1+(2*super.getXLEVELLevel(caster))))))
+					   &&(A.invoker().phyStats().level()<=(caster.phyStats().level()+1+(2*getXLEVELLevel(caster))))))
 					 	offenders.addElement(A);
 				}
 				catch(final Exception e)

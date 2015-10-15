@@ -180,7 +180,7 @@ public class Ranger_Camouflage extends StdAbility
 
 		final Collection<MOB> notList= (target instanceof MOB) ? new XVector<MOB>((MOB)target) : new XVector<MOB>();
 		final MOB highestMOB=Ranger_Hide.getHighestLevelMOB(mob,notList);
-		final int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-Ranger_Hide.getMOBLevel(highestMOB);
+		final int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-Ranger_Hide.getMOBLevel(highestMOB);
 
 		
 		final String str;

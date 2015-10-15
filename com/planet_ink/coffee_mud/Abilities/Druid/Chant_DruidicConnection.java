@@ -98,7 +98,7 @@ public class Chant_DruidicConnection extends Chant
 			||CMLib.flags().isAnimalIntelligence(mob)
 			||(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")))
 			{
-				stats.setAttackAdjustment((int)Math.round(CMath.mul(1.1+(0.05*super.getXLEVELLevel(invoker())),stats.attackAdjustment())));
+				stats.setAttackAdjustment((int)Math.round(CMath.mul(1.1+(0.05*getXLEVELLevel(invoker())),stats.attackAdjustment())));
 				stats.setArmor(stats.armor()-(2*stats.level())-(2*getXLEVELLevel(invoker())));
 			}
 		}

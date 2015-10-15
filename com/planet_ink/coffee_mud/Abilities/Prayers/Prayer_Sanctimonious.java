@@ -60,7 +60,7 @@ public class Prayer_Sanctimonious extends Prayer
 			if((CMLib.flags().isGood(victim) ||(CMLib.flags().isNeutral(victim) && (mob.fetchFaction(alignmentID)>0)))
 			&&(mob.fetchFaction(alignmentID) > victim.fetchFaction(alignmentID)))
 			{
-				affectableStats.setArmor(affectableStats.armor()-10-(2*super.getXLEVELLevel(invoker())));
+				affectableStats.setArmor(affectableStats.armor()-10-(2*getXLEVELLevel(invoker())));
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+5+(super.getXLEVELLevel(invoker()))/2);
 				affectableStats.setDamage(affectableStats.damage()+2+(super.getXLEVELLevel(invoker()))/3);
 			}

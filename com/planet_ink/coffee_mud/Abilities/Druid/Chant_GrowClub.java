@@ -113,7 +113,7 @@ public class Chant_GrowClub extends Chant
 				newItem.basePhyStats().setLevel(level);
 				newItem.basePhyStats().setAttackAdjustment(0);
 				int damage=6;
-				try{ damage=(((level+(2*super.getXLEVELLevel(mob)))-1)/2)+2;}catch(final Exception t){}
+				try{ damage=(((level+(2*getXLEVELLevel(mob)))-1)/2)+2;}catch(final Exception t){}
 				if(damage<6)
 					damage=6;
 				newItem.basePhyStats().setDamage(damage+super.getX1Level(mob));

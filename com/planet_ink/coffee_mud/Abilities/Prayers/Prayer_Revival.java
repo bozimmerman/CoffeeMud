@@ -73,7 +73,7 @@ public class Prayer_Revival extends Prayer
 			int levels=0;
 			final Vector inhabs=new Vector();
 			final Vector clerics=new Vector();
-			final int bonus=(2*super.getXLEVELLevel(invoker()));
+			final int bonus=(2*getXLEVELLevel(invoker()));
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				final MOB M=R.fetchInhabitant(i);

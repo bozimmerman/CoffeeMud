@@ -104,7 +104,7 @@ public class Chant_HoldAnimal extends Chant
 			return false;
 
 
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0)
 			levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);

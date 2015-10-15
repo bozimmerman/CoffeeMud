@@ -88,7 +88,6 @@ public class Spell_Hold extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-
 		boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);
 
 		if(success)

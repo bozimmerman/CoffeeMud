@@ -169,7 +169,7 @@ public class Thief_Con extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-target.phyStats().level())*10;
+		int levelDiff=((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*10;
 		if(levelDiff>0)
 			levelDiff=0;
 		final boolean success=proficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)+levelDiff,auto);

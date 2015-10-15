@@ -59,7 +59,7 @@ public class Prayer_ProtUndead extends Prayer
 
 		if(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 		{
-			final int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())),3.0));
+			final int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*getXLEVELLevel(invoker())),3.0));
 			final MOB invoker=(invoker()!=null) ? invoker() : mob;
 			CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,L("^S<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!^?"));
 		}

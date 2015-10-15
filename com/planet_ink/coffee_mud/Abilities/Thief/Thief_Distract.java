@@ -56,7 +56,7 @@ public class Thief_Distract extends ThiefSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		final float f=(float)0.05*super.getXLEVELLevel(invoker());
+		final float f=(float)0.05*getXLEVELLevel(invoker());
 		affectableStats.setArmor(affectableStats.armor()+super.getXLEVELLevel(invoker())+30+abilityCode());
 		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0-f)))-abilityCode());
 	}
@@ -143,7 +143,7 @@ public class Thief_Distract extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*getXLEVELLevel(mob)));
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else

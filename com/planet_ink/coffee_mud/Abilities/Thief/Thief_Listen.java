@@ -222,8 +222,8 @@ public class Thief_Listen extends ThiefSkill
 				if((inhab!=null)&&(!CMLib.flags().isSneaking(inhab))&&(!CMLib.flags().isHidden(inhab))&&(inhab!=mob))
 				{
 					numberHeard++;
-					if(inhab.phyStats().level()>(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))))
-						levelsHeard+=(inhab.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))));
+					if(inhab.phyStats().level()>(mob.phyStats().level()+(2*getXLEVELLevel(mob))))
+						levelsHeard+=(inhab.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob))));
 				}
 			}
 			if((success)&&(numberHeard>0))

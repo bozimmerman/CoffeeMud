@@ -116,7 +116,7 @@ public class Chant_Thorns extends Chant
 			return;
 		if(!(affected instanceof MOB))
 			return;
-		affectableStats.setArmor(affectableStats.armor()-10-(2*super.getXLEVELLevel(invoker())));
+		affectableStats.setArmor(affectableStats.armor()-10-(2*getXLEVELLevel(invoker())));
 	}
 
 	@Override

@@ -67,7 +67,7 @@ public class Prayer_Awaken extends Prayer implements MendingSkill
 			if((A!=null)
 			&&(A.canBeUninvoked())
 			&&((A.invoker()==null)
-				||(A.invoker().phyStats().level()<=(caster.phyStats().level()+1+(2*super.getXLEVELLevel(caster))))))
+				||(A.invoker().phyStats().level()<=(caster.phyStats().level()+1+(2*getXLEVELLevel(caster))))))
 			{
 				try
 				{

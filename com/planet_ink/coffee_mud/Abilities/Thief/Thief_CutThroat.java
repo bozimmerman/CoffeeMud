@@ -58,7 +58,7 @@ public class Thief_CutThroat extends ThiefSkill
 		super.affectPhyStats(affected,affectableStats);
 		final int factor=(int)Math.round(CMath.div(adjustedLevel((MOB)affected,0),6.0))+2+abilityCode();
 		affectableStats.setDamage(affectableStats.damage()*factor);
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100+(10*super.getXLEVELLevel(invoker())));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100+(10*getXLEVELLevel(invoker())));
 	}
 	
 	@Override

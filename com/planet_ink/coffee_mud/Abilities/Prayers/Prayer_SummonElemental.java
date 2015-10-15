@@ -121,7 +121,7 @@ public class Prayer_SummonElemental extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final MOB myMonster = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+				final MOB myMonster = determineMonster(mob, mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
 			}

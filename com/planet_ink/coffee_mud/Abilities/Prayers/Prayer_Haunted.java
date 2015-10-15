@@ -124,7 +124,7 @@ public class Prayer_Haunted extends Prayer
 				mob.location().send(mob,msg);
 				level=14;
 				numDone=0;
-				numMax=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))/8;
+				numMax=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))/8;
 				if(CMLib.law().doesOwnThisLand(mob,target))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());

@@ -178,7 +178,7 @@ public class Prayer_FleshRock extends Prayer
 			return false;
 
 
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0)
 			levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);
@@ -217,7 +217,7 @@ public class Prayer_FleshRock extends Prayer
 					statue.setMaterial(RawMaterial.RESOURCE_GRANITE);
 					statue.basePhyStats().setWeight(2000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> turn(s) into rock!!"));
-					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))),-1)!=null;
+					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*getXLEVELLevel(mob))),-1)!=null;
 					target.makePeace();
 					if(mob.getVictim()==target)
 						mob.setVictim(null);

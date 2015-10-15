@@ -53,7 +53,7 @@ public class Prayer_Weather extends Prayer
 			return false;
 
 		int size=mob.location().getArea().numberOfProperIDedRooms();
-		size=size-((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*20);
+		size=size-((mob.phyStats().level()+(2*getXLEVELLevel(mob)))*20);
 		if(size<0)
 			size=0;
 		final boolean success=proficiencyCheck(mob,-size,auto);

@@ -55,7 +55,7 @@ public class Prayer_DivineLuck extends Prayer
 		for(final int i : CharStats.CODES.SAVING_THROWS())
 			affectableStats.setStat(i,
 				affectableStats.getStat(i)
-					+1+((affectedMOB.phyStats().level()+(2*super.getXLEVELLevel(invoker())))/5));
+					+1+((affectedMOB.phyStats().level()+(2*getXLEVELLevel(invoker())))/5));
 	}
 
 	@Override

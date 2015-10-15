@@ -61,7 +61,7 @@ public class Prayer_ProtOutsiders extends Prayer
 		{
 			final MOB victim=mob.getVictim();
 			if(CMLib.flags().isOutsider(victim))
-				affectableStats.setArmor(affectableStats.armor()-20-(3*super.getXLEVELLevel(invoker())));
+				affectableStats.setArmor(affectableStats.armor()-20-(3*getXLEVELLevel(invoker())));
 		}
 	}
 

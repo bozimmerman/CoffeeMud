@@ -68,7 +68,7 @@ public class Prayer_Sober extends Prayer implements MendingSkill
 				if((CMath.bset(A.flags(),Ability.FLAG_INTOXICATING))
 				&&((A.invoker()==null)
 				   ||((A.invoker()!=null)
-					  &&(A.invoker().phyStats().level()<=(caster.phyStats().level()+20+(2*super.getXLEVELLevel(caster)))))))
+					  &&(A.invoker().phyStats().level()<=(caster.phyStats().level()+20+(2*getXLEVELLevel(caster)))))))
 						offenders.addElement(A);
 			}
 		}

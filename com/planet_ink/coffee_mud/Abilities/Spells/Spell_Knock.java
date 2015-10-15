@@ -106,7 +106,7 @@ public class Spell_Knock extends Spell
 			return false;
 
 
-		int levelDiff=openThis.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=openThis.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0)
 			levelDiff=0;
 		final boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);

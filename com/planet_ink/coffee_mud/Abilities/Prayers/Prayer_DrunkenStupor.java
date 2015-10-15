@@ -68,7 +68,7 @@ public class Prayer_DrunkenStupor extends Prayer
 		if(affected instanceof MOB)
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
 													-((MOB)affected).phyStats().level()
-													-(2*super.getXLEVELLevel(invoker())));
+													-(2*getXLEVELLevel(invoker())));
 	}
 
 

@@ -93,7 +93,7 @@ public class Thief_CarefulStep extends ThiefSkill
 			return false;
 
 		final MOB highestMOB=getHighestLevelMOB(mob,null);
-		int levelDiff=mob.phyStats().level()+(2*super.getXLEVELLevel(mob))-getMOBLevel(highestMOB);
+		int levelDiff=mob.phyStats().level()+(2*getXLEVELLevel(mob))-getMOBLevel(highestMOB);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

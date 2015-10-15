@@ -57,7 +57,7 @@ public class Chant_HardenSkin extends Chant
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		final int bonus=(2*super.getXLEVELLevel(invoker()));
+		final int bonus=(2*getXLEVELLevel(invoker()));
 		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+10+affected.phyStats().level()+bonus);
 		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+affected.phyStats().level()+bonus);
 		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+25+affected.phyStats().level()+bonus);

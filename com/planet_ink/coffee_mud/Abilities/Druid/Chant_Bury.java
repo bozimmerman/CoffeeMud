@@ -118,7 +118,7 @@ public class Chant_Bury extends Chant
 			{
 				mob.location().send(mob,msg);
 				if(CMLib.flags().isNeutral(mob))
-					mob.curState().adjMana(3*target.phyStats().level()+(3*target.phyStats().level()*super.getXLEVELLevel(mob)),mob.maxState());
+					mob.curState().adjMana(3*target.phyStats().level()+(3*target.phyStats().level()*getXLEVELLevel(mob)),mob.maxState());
 				if(hole==null)
 				{
 					final CMMsg holeMsg=CMClass.getMsg(mob, mob.location(),null,CMMsg.MSG_DIG|CMMsg.MASK_ALWAYS, null);

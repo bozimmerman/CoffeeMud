@@ -146,7 +146,7 @@ public class Chant_SummonRockGolem extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final MOB target = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+				final MOB target = determineMonster(mob, mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 				beneficialAffect(mob,target,0,asLevel);
 			}
 		}

@@ -61,7 +61,7 @@ public class Prayer_Nullification extends Prayer
 					   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 					   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
 					{
-						if((A.invoker()!=null)&&((A.invoker().phyStats().level()<=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))))))
+						if((A.invoker()!=null)&&((A.invoker().phyStats().level()<=(mob.phyStats().level()+(2*getXLEVELLevel(mob))))))
 							if((mob==target)&&(A.invoker()!=mob)&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS))
 								return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 							else
@@ -104,7 +104,7 @@ public class Prayer_Nullification extends Prayer
 						   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
 						{
 							foundSomethingAtLeast=true;
-							if((A.invoker()!=null)&&((A.invoker().phyStats().level()<=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))))))
+							if((A.invoker()!=null)&&((A.invoker().phyStats().level()<=(mob.phyStats().level()+(2*getXLEVELLevel(mob))))))
 								revokeThis=A;
 						}
 					}

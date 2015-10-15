@@ -120,7 +120,7 @@ public class Chant_WarpWood extends Chant
 					mob.location().send(mob,msg2);
 				if(msg.value()<=0)
 				{
-					int damage=100+(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-target.phyStats().level();
+					int damage=100+(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level();
 					if(CMLib.flags().isABonusItems(target))
 						damage=(int)Math.round(CMath.div(damage,2.0));
 					target.setUsesRemaining(target.usesRemaining()-damage);

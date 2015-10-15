@@ -84,8 +84,8 @@ public class Thief_ContractHit extends ThiefSkill
 				hitting=true;
 				final int num=CMLib.dice().roll(1,3,3);
 				int level=mob.phyStats().level();
-				if(level>(invoker.phyStats().level()+(2*super.getXLEVELLevel(invoker))))
-					level=(invoker.phyStats().level()+(2*super.getXLEVELLevel(invoker)));
+				if(level>(invoker.phyStats().level()+(2*getXLEVELLevel(invoker))))
+					level=(invoker.phyStats().level()+(2*getXLEVELLevel(invoker)));
 				CharClass C=CMClass.getCharClass("StdCharClass");
 				if(C==null)
 					C=mob.charStats().getCurrentClass();
@@ -237,8 +237,8 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 
 		int level=target.phyStats().level();
-		if(level>(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))))
-			level=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+		if(level>(mob.phyStats().level()+(2*getXLEVELLevel(mob))))
+			level=(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		final double goldRequired=100.0*level;
 		final String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
@@ -251,7 +251,7 @@ public class Thief_ContractHit extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0)
 			levelDiff=0;
 		levelDiff*=10;

@@ -57,7 +57,7 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOOD);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 		if(affected instanceof MOB)
-			affectableStats.setArmor((affectableStats.armor()-5)-((affected.phyStats().level()/10)+(2*super.getXLEVELLevel(invoker()))));
+			affectableStats.setArmor((affectableStats.armor()-5)-((affected.phyStats().level()/10)+(2*getXLEVELLevel(invoker()))));
 		else
 		if(affected instanceof Item)
 			affectableStats.setAbility(affectableStats.ability()+1);

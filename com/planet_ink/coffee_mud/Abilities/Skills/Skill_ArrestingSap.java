@@ -208,7 +208,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 				return false;
 			}
 		}
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff>0)
 			levelDiff=levelDiff*3;
 		else

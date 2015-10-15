@@ -58,7 +58,7 @@ public class Prayer_ProtGood extends Prayer
 
 		if((!CMLib.flags().isReallyEvil(mob))&&CMLib.flags().isGood(mob))
 		{
-			final int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())),3.0));
+			final int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*getXLEVELLevel(invoker())),3.0));
 			final MOB invoker=(invoker()!=null) ? invoker() : mob;
 			CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!"));
 		}
@@ -106,7 +106,7 @@ public class Prayer_ProtGood extends Prayer
 		{
 			final MOB victim=mob.getVictim();
 			if(CMLib.flags().isGood(victim))
-				affectableStats.setArmor(affectableStats.armor()-10-(2*super.getXLEVELLevel(invoker())));
+				affectableStats.setArmor(affectableStats.armor()-10-(2*getXLEVELLevel(invoker())));
 		}
 	}
 

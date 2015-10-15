@@ -107,7 +107,7 @@ public class Prayer_Gateway extends Prayer
 			final MOB t=newRoom.fetchInhabitant(i);
 			if(t!=null)
 			{
-				int adjustment=t.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
+				int adjustment=t.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 				if(t.isMonster())
 					adjustment=adjustment*3;
 				profNeg+=adjustment;

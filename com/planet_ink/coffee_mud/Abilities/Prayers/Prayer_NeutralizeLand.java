@@ -95,7 +95,7 @@ public class Prayer_NeutralizeLand extends Prayer
 					   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
 					{
 						foundSomethingAtLeast=true;
-						if((A.invoker()!=null)&&((A.invoker().phyStats().level()<=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))))))
+						if((A.invoker()!=null)&&((A.invoker().phyStats().level()<=(mob.phyStats().level()+(2*getXLEVELLevel(mob))))))
 							revokeThis=A;
 					}
 				}
