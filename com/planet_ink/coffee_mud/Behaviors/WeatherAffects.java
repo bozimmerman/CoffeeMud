@@ -443,13 +443,14 @@ public class WeatherAffects extends PuddleMaker
 			resetRumbleTicks();
 			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
-				if((S.mob()==null)
-				||(S.mob().location()==null)
-				||(S.mob().location().getArea()!=A)
-				||(S.mob().isMonster())
-				||(!S.mob().isAttribute(MOB.Attrib.AUTOWEATHER)))
+				final MOB mob=S.mob();
+				if((mob==null)
+				||(mob.location()==null)
+				||(mob.location().getArea()!=A)
+				||(mob.isMonster())
+				||(!mob.isAttribute(MOB.Attrib.AUTOWEATHER)))
 					continue;
-				final Room R=S.mob().location();
+				final Room R=mob.location();
 				if(R!=null)
 				{
 					switch(C.weatherType(null))
@@ -462,54 +463,54 @@ public class WeatherAffects extends PuddleMaker
 							{
 								if((R.getArea()!=null)
 								&& CMath.div(R.getArea().getAreaIStats()[Area.Stats.INDOOR_ROOMS.ordinal()],R.getArea().properSize())<0.90)
-									S.mob().tell(L("^JA thunderous rumble and CRACK of lightning can be heard outside.^?@x1",CMLib.protocol().msp("thunder.wav",40)));
+									mob.tell(L("^JA thunderous rumble and CRACK of lightning can be heard outside.^?@x1",CMLib.protocol().msp("thunder.wav",40)));
 							}
 							else
-								S.mob().tell(L("^JA thunderous rumble and CRACK of lightning can be heard.^?@x1",CMLib.protocol().msp("thunder.wav",40)));
+								mob.tell(L("^JA thunderous rumble and CRACK of lightning can be heard.^?@x1",CMLib.protocol().msp("thunder.wav",40)));
 						}
 						else
 						if(R.getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY)
-							S.mob().tell(L("^JA thunderous rumble and CRACK of lightning can be heard as the pounding rain soaks you.^?@x1",CMLib.protocol().msp("thunderandrain.wav",40)));
+							mob.tell(L("^JA thunderous rumble and CRACK of lightning can be heard as the pounding rain soaks you.^?@x1",CMLib.protocol().msp("thunderandrain.wav",40)));
 						else
-							S.mob().tell(L("^JA bolt of lightning streaks across the sky as the pounding rain soaks you!^?@x1",CMLib.protocol().msp("thunderandrain.wav",40)));
+							mob.tell(L("^JA bolt of lightning streaks across the sky as the pounding rain soaks you!^?@x1",CMLib.protocol().msp("thunderandrain.wav",40)));
 						break;
 					}
 					case Climate.WEATHER_BLIZZARD:
 						if(C.weatherType(R)==Climate.WEATHER_BLIZZARD)
-							S.mob().tell(L("^JSwirling clouds of snow buffet you.^?@x1",CMLib.protocol().msp("blizzard.wav",40)));
+							mob.tell(L("^JSwirling clouds of snow buffet you.^?@x1",CMLib.protocol().msp("blizzard.wav",40)));
 						break;
 					case Climate.WEATHER_SNOW:
 						if(C.weatherType(R)==Climate.WEATHER_SNOW)
-							S.mob().tell(L("^JSnowflakes fall lightly on you.^?"));
+							mob.tell(L("^JSnowflakes fall lightly on you.^?"));
 						break;
 					case Climate.WEATHER_DUSTSTORM:
 						if(C.weatherType(R)==Climate.WEATHER_DUSTSTORM)
-							S.mob().tell(L("^JSwirling clouds of dust assault you.^?@x1",CMLib.protocol().msp("windy.wav",40)));
+							mob.tell(L("^JSwirling clouds of dust assault you.^?@x1",CMLib.protocol().msp("windy.wav",40)));
 						break;
 					case Climate.WEATHER_HAIL:
 						if(C.weatherType(R)==Climate.WEATHER_HAIL)
-							S.mob().tell(L("^JYou are being pelleted by hail! Ouch!^?@x1",CMLib.protocol().msp("hail.wav",40)));
+							mob.tell(L("^JYou are being pelleted by hail! Ouch!^?@x1",CMLib.protocol().msp("hail.wav",40)));
 						break;
 					case Climate.WEATHER_RAIN:
 						if(C.weatherType(R)==Climate.WEATHER_RAIN)
-							S.mob().tell(L("^JThe rain is soaking you!^?@x1",CMLib.protocol().msp("rainlong.wav",40)));
+							mob.tell(L("^JThe rain is soaking you!^?@x1",CMLib.protocol().msp("rainlong.wav",40)));
 						break;
 					case Climate.WEATHER_SLEET:
 						if(C.weatherType(R)==Climate.WEATHER_SLEET)
-							S.mob().tell(L("^JCold and blistering sleet is soaking you numb!^?@x1",CMLib.protocol().msp("rain.wav",40)));
+							mob.tell(L("^JCold and blistering sleet is soaking you numb!^?@x1",CMLib.protocol().msp("rain.wav",40)));
 						break;
 					case Climate.WEATHER_WINDY:
 						if(C.weatherType(R)==Climate.WEATHER_WINDY)
-							S.mob().tell(L("^JThe wind gusts around you.^?@x1",CMLib.protocol().msp("wind.wav",40)));
+							mob.tell(L("^JThe wind gusts around you.^?@x1",CMLib.protocol().msp("wind.wav",40)));
 						break;
 					case Climate.WEATHER_HEAT_WAVE:
 						if((C.weatherType(R)==Climate.WEATHER_HEAT_WAVE)
-						&&((S.mob().fetchWornItems(Item.WORN_TORSO,(short)0,(short)0).size()>0)||(S.mob().fetchWornItems(Item.WORN_ABOUT_BODY,(short)0,(short)0).size()>0)))
-							S.mob().tell(L("^JYou are sweating in the grueling heat.^?"));
+						&&((mob.fetchWornItems(Item.WORN_TORSO,(short)0,(short)0).size()>0)||(mob.fetchWornItems(Item.WORN_ABOUT_BODY,(short)0,(short)0).size()>0)))
+							mob.tell(L("^JYou are sweating in the grueling heat.^?"));
 						break;
 					case Climate.WEATHER_WINTER_COLD:
-						if((C.weatherType(R)==Climate.WEATHER_WINTER_COLD)&&((CMLib.dice().rollPercentage()>S.mob().charStats().getStat(CharStats.STAT_SAVE_COLD))))
-							S.mob().tell(L("^JYou shiver in the cold.^?"));
+						if((C.weatherType(R)==Climate.WEATHER_WINTER_COLD)&&((CMLib.dice().rollPercentage()>mob.charStats().getStat(CharStats.STAT_SAVE_COLD))))
+							mob.tell(L("^JYou shiver in the cold.^?"));
 						break;
 					}
 				}
