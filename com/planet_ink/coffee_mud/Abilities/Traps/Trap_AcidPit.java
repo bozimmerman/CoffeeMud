@@ -40,7 +40,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 18;}
-	@Override public String requiresToSet(){return "1 pound of lemons";}
+	@Override public String requiresToSet(){return L("1 pound of lemons or limes");}
 	
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)

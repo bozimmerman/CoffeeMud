@@ -40,7 +40,7 @@ public class Trap_AcidSpray extends StdTrap
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override protected int trapLevel(){return 15;}
-	@Override public String requiresToSet(){return "1 pound of lemons";}
+	@Override public String requiresToSet(){return L("1 pound of lemons or limes");}
 
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
