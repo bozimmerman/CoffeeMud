@@ -193,40 +193,40 @@ public class StdDeity extends StdMOB implements Deity
 	public String getTriggerDesc(List<DeityTrigger> V)
 	{
 		if((V==null)||(V.size()==0))
-			return "Never";
+			return L("Never");
 		final StringBuffer buf=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
 		{
 			final DeityTrigger DT=V.get(v);
 			if(v>0)
-				buf.append(", "+((DT.previousConnect==CONNECT_AND)?"and ":"or "));
+				buf.append(", "+((DT.previousConnect==RitualConnector.AND)?L("and "):L("or ")));
 			switch(DT.triggerCode)
 			{
-			case TRIGGER_SAY:
+			case SAY:
 				buf.append(L("the player should say '@x1'",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_READING:
+			case READING:
 				if(DT.parm1.equals("0"))
 					buf.append(L("the player should read something"));
 				else
 					buf.append(L("the player should read '@x1'",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_TIME:
+			case TIME:
 				buf.append(L("the hour of the day is @x1",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_PUTTHING:
+			case PUTTHING:
 				buf.append(L("the player should put @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
 				break;
-			case TRIGGER_BURNTHING:
+			case BURNTHING:
 				buf.append(L("the player should burn @x1",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_DRINK:
+			case DRINK:
 				buf.append(L("the player should drink @x1",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_EAT:
+			case EAT:
 				buf.append(L("the player should eat @x1",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_INROOM:
+			case INROOM:
 				{
 				if(DT.parm1.equalsIgnoreCase("holy")
 				||DT.parm1.equalsIgnoreCase("unholy")
@@ -242,10 +242,10 @@ public class StdDeity extends StdMOB implements Deity
 				}
 				}
 				break;
-			case TRIGGER_RIDING:
+			case RIDING:
 				buf.append(L("the player should be on @x1",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_CAST:
+			case CAST:
 				{
 				final Ability A=CMClass.findAbility(DT.parm1);
 				if(A==null)
@@ -254,31 +254,31 @@ public class StdDeity extends StdMOB implements Deity
 					buf.append(L("the player should cast '@x1'",A.name()));
 				}
 				break;
-			case TRIGGER_EMOTE:
+			case EMOTE:
 				buf.append(L("the player should emote '@x1'",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_RANDOM:
+			case RANDOM:
 				buf.append(DT.parm1+"% of the time");
 				break;
-			case TRIGGER_WAIT:
+			case WAIT:
 				buf.append(L("wait @x1 seconds",""+((CMath.s_int(DT.parm1)*CMProps.getTickMillis())/1000)));
 				break;
-			case TRIGGER_YOUSAY:
+			case YOUSAY:
 				buf.append(L("then you will automatically say '@x1'",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_OTHERSAY:
+			case OTHERSAY:
 				buf.append(L("then all others will say '@x1'",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_ALLSAY:
+			case ALLSAY:
 				buf.append(L("then all will say '@x1'",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_CHECK:
+			case CHECK:
 				buf.append(CMLib.masking().maskDesc(DT.parm1));
 				break;
-			case TRIGGER_PUTVALUE:
+			case PUTVALUE:
 				buf.append(L("the player should put an item worth at least @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
 				break;
-			case TRIGGER_PUTMATERIAL:
+			case PUTMATERIAL:
 				{
 					String material="something";
 					final int t=CMath.s_int(DT.parm1);
@@ -292,7 +292,7 @@ public class StdDeity extends StdMOB implements Deity
 					buf.append(L("the player puts an item made of @x1 in @x2",material,DT.parm2.toLowerCase()));
 				}
 				break;
-			case TRIGGER_BURNMATERIAL:
+			case BURNMATERIAL:
 				{
 					String material="something";
 					final int t=CMath.s_int(DT.parm1);
@@ -306,16 +306,16 @@ public class StdDeity extends StdMOB implements Deity
 					buf.append(L("the player should burn an item made of @x1",material));
 				}
 				break;
-			case TRIGGER_BURNVALUE:
+			case BURNVALUE:
 				buf.append(L("the player should burn an item worth at least @x1",DT.parm1.toLowerCase()));
 				break;
-			case TRIGGER_SITTING:
+			case SITTING:
 				buf.append(L("the player should sit down"));
 				break;
-			case TRIGGER_STANDING:
+			case STANDING:
 				buf.append(L("the player should stand up"));
 				break;
-			case TRIGGER_SLEEPING:
+			case SLEEPING:
 				buf.append(L("the player should go to sleep"));
 				break;
 			}
@@ -326,32 +326,32 @@ public class StdDeity extends StdMOB implements Deity
 	@Override
 	public String getClericRequirementsDesc()
 	{
-		return "The following may be clerics of "+name()+": "+CMLib.masking().maskDesc(getClericRequirements());
+		return L("The following may be clerics of @x1: @x2",name(),CMLib.masking().maskDesc(getClericRequirements()));
 	}
 	@Override
 	public String getClericTriggerDesc()
 	{
 		if(numBlessings()>0)
-			return "The blessings of "+name()+" are bestowed to "+charStats().hisher()+" clerics whenever the cleric does the following: "+getTriggerDesc(clericTriggers)+".";
+			return L("The blessings of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",name(),charStats().hisher(),getTriggerDesc(clericTriggers));
 		return "";
 	}
 	@Override
 	public String getWorshipRequirementsDesc()
 	{
-		return "The following are acceptable worshipers of "+name()+": "+CMLib.masking().maskDesc(getWorshipRequirements());
+		return L("The following are acceptable worshipers of @x1: @x2",name(),CMLib.masking().maskDesc(getWorshipRequirements()));
 	}
 	@Override
 	public String getWorshipTriggerDesc()
 	{
 		if(numBlessings()>0)
-			return "The blessings of "+name()+" are bestowed to "+charStats().hisher()+" worshippers whenever they do the following: "+getTriggerDesc(worshipTriggers)+".";
+			return L("The blessings of @x1 are placed upon @x2 worshippers whenever they do the following: @x3.",name(),charStats().hisher(),getTriggerDesc(worshipTriggers));
 		return "";
 	}
 
 	@Override
 	public String getServiceTriggerDesc()
 	{
-		return "The services of "+name()+" are the following: "+getTriggerDesc(serviceTriggers)+".";
+		return L("The services of @x1 are the following: @x2.",name(),getTriggerDesc(serviceTriggers));
 	}
 
 	@Override
@@ -669,25 +669,25 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			boolean yup=false;
 			final DeityTrigger DT=V.get(v);
-			if((msg.sourceMinor()==TRIG_WATCH[DT.triggerCode])
-			||(TRIG_WATCH[DT.triggerCode]==-999))
+			if((msg.sourceMinor()==DT.triggerCode.getCMMsgCode())
+			||(DT.triggerCode.getCMMsgCode()==-999))
 			{
 				switch(DT.triggerCode)
 				{
-				case TRIGGER_SAY:
+				case SAY:
 					if((msg.sourceMessage()!=null)&&(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0))
 						yup=true;
 					break;
-				case TRIGGER_TIME:
+				case TIME:
 					if((msg.source().location()!=null)
 					&&(msg.source().location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(DT.parm1)))
 					   yup=true;
 					break;
-				case TRIGGER_RANDOM:
+				case RANDOM:
 					if(CMLib.dice().rollPercentage()<=CMath.s_int(DT.parm1))
 					   yup=true;
 					break;
-				case TRIGGER_YOUSAY:
+				case YOUSAY:
 					if(v<=0)
 						yup=true;
 					else
@@ -705,7 +705,7 @@ public class StdDeity extends StdMOB implements Deity
 							continue;
 					}
 					break;
-				case TRIGGER_ALLSAY:
+				case ALLSAY:
 					if(v<=0)
 						yup=true;
 					else
@@ -731,7 +731,7 @@ public class StdDeity extends StdMOB implements Deity
 							continue;
 					}
 					break;
-				case TRIGGER_OTHERSAY:
+				case OTHERSAY:
 					if(v<=0)
 						yup=true;
 					else
@@ -757,19 +757,24 @@ public class StdDeity extends StdMOB implements Deity
 							continue;
 					}
 					break;
-				case TRIGGER_WAIT:
+				case WAIT:
 				{
 					if(v<=0)
 						yup=true;
 					else
 					{
 						final boolean[] checks=trigParts.get(msg.source().Name());
-						if((checks!=null)&&(checks[v-1])&&(!checks[v])&&(trigTimes.get(msg.source().Name())!=null))
+						if((checks!=null)
+						&&(checks[v-1])
+						&&(!checks[v])
+						&&(trigTimes.get(msg.source().Name())!=null))
 						{
 							boolean proceed=true;
 							for(int t=v+1;t<checks.length;t++)
+							{
 								if(checks[t])
 									proceed=false;
+							}
 							if(proceed)
 							{
 								if(System.currentTimeMillis()>(trigTimes.get(msg.source().Name()).longValue()+(CMath.s_int(DT.parm1)*CMProps.getTickMillis())))
@@ -796,26 +801,26 @@ public class StdDeity extends StdMOB implements Deity
 					}
 					break;
 				}
-				case TRIGGER_CHECK:
+				case CHECK:
 					if(CMLib.masking().maskCheck(DT.parm1,msg.source(),true))
 					   yup=true;
 					break;
-				case TRIGGER_PUTTHING:
+				case PUTTHING:
 					if((msg.target() instanceof Container)
 					&&(msg.tool() instanceof Item)
 					&&(CMLib.english().containsString(msg.tool().name(),DT.parm1))
 					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
 						yup=true;
 					break;
-				case TRIGGER_BURNTHING:
-				case TRIGGER_READING:
-				case TRIGGER_DRINK:
-				case TRIGGER_EAT:
+				case BURNTHING:
+				case READING:
+				case DRINK:
+				case EAT:
 					if((msg.target()!=null)
 					&&(DT.parm1.equals("0")||CMLib.english().containsString(msg.target().name(),DT.parm1)))
 					   yup=true;
 					break;
-				case TRIGGER_INROOM:
+				case INROOM:
 					if(msg.source().location()!=null)
 					{
 						if(DT.parm1.equalsIgnoreCase("holy")||DT.parm1.equalsIgnoreCase("unholy")||DT.parm1.equalsIgnoreCase("balance"))
@@ -825,29 +830,29 @@ public class StdDeity extends StdMOB implements Deity
 							yup=true;
 					}
 					break;
-				case TRIGGER_RIDING:
+				case RIDING:
 					if((msg.source().riding()!=null)
 					&&(CMLib.english().containsString(msg.source().riding().name(),DT.parm1)))
 					   yup=true;
 					break;
-				case TRIGGER_CAST:
+				case CAST:
 					if((msg.tool()!=null)
 					&&((msg.tool().ID().equalsIgnoreCase(DT.parm1))
 					||(CMLib.english().containsString(msg.tool().name(),DT.parm1))))
 						yup=true;
 					break;
-				case TRIGGER_EMOTE:
+				case EMOTE:
 					if((msg.sourceMessage()!=null)&&(msg.sourceMessage().toUpperCase().indexOf(DT.parm1)>0))
 						yup=true;
 					break;
-				case TRIGGER_PUTVALUE:
+				case PUTVALUE:
 					if((msg.tool() instanceof Item)
 					&&(((Item)msg.tool()).baseGoldValue()>=CMath.s_int(DT.parm1))
 					&&(msg.target() instanceof Container)
 					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
 						yup=true;
 					break;
-				case TRIGGER_PUTMATERIAL:
+				case PUTMATERIAL:
 					if((msg.tool() instanceof Item)
 					&&(((((Item)msg.tool()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parm1))
 						||((((Item)msg.tool()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parm1)))
@@ -855,29 +860,29 @@ public class StdDeity extends StdMOB implements Deity
 					&&(CMLib.english().containsString(msg.target().name(),DT.parm2)))
 						yup=true;
 					break;
-				case TRIGGER_BURNMATERIAL:
+				case BURNMATERIAL:
 					if((msg.target() instanceof Item)
 					&&(((((Item)msg.target()).material()&RawMaterial.RESOURCE_MASK)==CMath.s_int(DT.parm1))
 						||((((Item)msg.target()).material()&RawMaterial.MATERIAL_MASK)==CMath.s_int(DT.parm1))))
 							yup=true;
 					break;
-				case TRIGGER_BURNVALUE:
+				case BURNVALUE:
 					if((msg.target() instanceof Item)
 					&&(((Item)msg.target()).baseGoldValue()>=CMath.s_int(DT.parm1)))
 						yup=true;
 					break;
-				case TRIGGER_SITTING:
+				case SITTING:
 					yup=CMLib.flags().isSitting(msg.source());
 					break;
-				case TRIGGER_STANDING:
+				case STANDING:
 					yup=(CMLib.flags().isStanding(msg.source()));
 					break;
-				case TRIGGER_SLEEPING:
+				case SLEEPING:
 					yup=CMLib.flags().isSleeping(msg.source());
 					break;
 				}
 			}
-			if((yup)||(TRIG_WATCH[DT.triggerCode]==-999))
+			if((yup)||(DT.triggerCode.getCMMsgCode()==-999))
 			{
 				boolean[] checks=trigParts.get(msg.source().Name());
 				if(yup)
@@ -954,7 +959,7 @@ public class StdDeity extends StdMOB implements Deity
 							for(int v=1;v<V.size();v++)
 							{
 								final DeityTrigger DT=V.get(v);
-								if(DT.previousConnect==CONNECT_AND)
+								if(DT.previousConnect==RitualConnector.AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
 									rollingTruth=rollingTruth||checks[v];
@@ -982,7 +987,7 @@ public class StdDeity extends StdMOB implements Deity
 							for(int v=1;v<V.size();v++)
 							{
 								final DeityTrigger DT=V.get(v);
-								if(DT.previousConnect==CONNECT_AND)
+								if(DT.previousConnect==RitualConnector.AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
 									rollingTruth=rollingTruth||checks[v];
@@ -1011,7 +1016,7 @@ public class StdDeity extends StdMOB implements Deity
 							for(int v=1;v<V.size();v++)
 							{
 								final DeityTrigger DT=V.get(v);
-								if(DT.previousConnect==CONNECT_AND)
+								if(DT.previousConnect==RitualConnector.AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
 									rollingTruth=rollingTruth||checks[v];
@@ -1043,7 +1048,7 @@ public class StdDeity extends StdMOB implements Deity
 								final DeityTrigger DT=V.get(v);
 								if(rollingTruth)
 									startServiceIfNecessary(msg.source(),msg.source().location());
-								if(DT.previousConnect==CONNECT_AND)
+								if(DT.previousConnect==RitualConnector.AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
 									rollingTruth=rollingTruth||checks[v];
@@ -1162,12 +1167,18 @@ public class StdDeity extends StdMOB implements Deity
 		synchronized(services)
 		{
 			for(final WorshipService s : services)
+			{
 				if((s.room==room) && (s.cleric == mob))
 					service = s;
+			}
 			if(service == null)
+			{
 				for(final WorshipService s : services)
+				{
 					if(s.room==room)
 						service = s;
+				}
+			}
 		}
 		if(service == null)
 			return false;
@@ -1342,6 +1353,7 @@ public class StdDeity extends StdMOB implements Deity
 					synchronized(services)
 					{
 						for(final WorshipService service : services)
+						{
 							if((service.cleric!=null)
 							&&(service.cleric.Name().equalsIgnoreCase(key))
 							&&(!service.serviceCompleted))
@@ -1350,10 +1362,13 @@ public class StdDeity extends StdMOB implements Deity
 									delThese = new LinkedList<WorshipService>();
 								delThese.add(service);
 							}
+						}
 					}
 					if(delThese != null)
+					{
 						for(final WorshipService w : delThese)
 							cancelService(w);
+					}
 				}
 			}
 		}
@@ -1377,7 +1392,9 @@ public class StdDeity extends StdMOB implements Deity
 					try
 					{
 						executeMsg(this,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
-					}catch(final Exception e){}
+					}
+					catch(final Exception e)
+					{}
 				}
 			}
 		}
@@ -1403,8 +1420,10 @@ public class StdDeity extends StdMOB implements Deity
 		if(blessings.size()==0)
 			return;
 		for(final DeityPower P : blessings)
+		{
 			if(P.power==to)
 				blessings.remove(P);
+		}
 	}
 	@Override
 	public int numBlessings()
@@ -1418,7 +1437,8 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return blessings.get(index).power;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		{}
 		return null;
 	}
 	@Override
@@ -1428,7 +1448,8 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return blessings.get(index).clericOnly;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		{}
 		return false;
 	}
 	@Override
@@ -1437,7 +1458,8 @@ public class StdDeity extends StdMOB implements Deity
 		for(int a=0;a<numBlessings();a++)
 		{
 			final Ability A=fetchBlessing(a);
-			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
+			if((A!=null)
+			&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return fetchBlessingCleric(a);
 		}
 		return false;
@@ -1448,12 +1470,17 @@ public class StdDeity extends StdMOB implements Deity
 		for(int a=0;a<numBlessings();a++)
 		{
 			final Ability A=fetchBlessing(a);
-			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
+			if((A!=null)
+			&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
 		return (Ability)CMLib.english().fetchEnvironmental(new ConvertingList<DeityPower,Ability>(blessings,new Converter<DeityPower,Ability>()
 		{
-			@Override public Ability convert(DeityPower obj) { return obj.power;}
+			@Override
+			public Ability convert(DeityPower obj)
+			{
+				return obj.power;
+			}
 		}),ID,false);
 	}
 
@@ -1461,8 +1488,10 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		putHere.clear();
 		trigger=trigger.toUpperCase().trim();
-		int previousConnector=CONNECT_AND;
-		if(!trigger.equals("-"))
+		RitualConnector previousConnector=RitualConnector.AND;
+		if(trigger.equals("-"))
+			return;
+		
 		while(trigger.length()>0)
 		{
 			final int div1=trigger.indexOf('&');
@@ -1488,88 +1517,122 @@ public class StdDeity extends StdMOB implements Deity
 				if(V.size()>1)
 				{
 					final String cmd=V.firstElement();
-					final DeityTrigger DT=new DeityTrigger();
+					DeityTrigger DT=new DeityTrigger();
+					RitualTrigger T = (RitualTrigger)CMath.s_valueOf(RitualTrigger.class, cmd);
+					if(T==null)
+					{
+						for(RitualTrigger RT : RitualTrigger.values())
+						{
+							if(RT.getShortName().equals(cmd))
+							{
+								T=RT;
+								break;
+							}
+						}
+					}
+					if(T==null)
+					{
+						for(RitualTrigger RT : RitualTrigger.values())
+						{
+							if(RT.name().startsWith(cmd))
+							{
+								T=RT;
+								break;
+							}
+						}
+					}
 					DT.previousConnect=previousConnector;
-					if(cmd.equals("SAY"))
+					if(T==null)
 					{
-						DT.triggerCode=TRIGGER_SAY;
-						DT.parm1=CMParms.combine(V,1);
+						Log.errOut("StdDeity",Name()+"- Illegal trigger: '"+cmd+"','"+trig+"'");
+						break;
 					}
 					else
-					if(cmd.equals("TIME"))
+					switch(T)
 					{
-						DT.triggerCode=TRIGGER_TIME;
+					case SAY:
+					{
+						DT.triggerCode=T;
+						DT.parm1=CMParms.combine(V,1);
+					}
+					break;
+					case TIME:
+					{
+						DT.triggerCode=T;
 						DT.parm1=""+CMath.s_int(CMParms.combine(V,1));
 					}
-					else
-					if(cmd.equals("WAIT"))
+					break;
+					case WAIT:
 					{
-						DT.triggerCode=TRIGGER_WAIT;
+						DT.triggerCode=T;
 						DT.parm1=""+CMath.s_int(CMParms.combine(V,1));
 					}
-					else
-					if(cmd.equals("YOUSAY"))
+					break;
+					case YOUSAY:
 					{
-						DT.triggerCode=TRIGGER_YOUSAY;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if(cmd.equals("OTHERSAY"))
+					break;
+					case OTHERSAY:
 					{
-						DT.triggerCode=TRIGGER_OTHERSAY;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if(cmd.equals("ALLSAY"))
+					break;
+					case ALLSAY:
 					{
-						DT.triggerCode=TRIGGER_ALLSAY;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if((cmd.equals("PUTTHING"))||(cmd.equals("PUT")))
+					break;
+					case PUTTHING:
 					{
-						DT.triggerCode=TRIGGER_PUTTHING;
+						DT.triggerCode=T;
 						if(V.size()<3)
 						{
 							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
+							DT=null;
 							break;
 						}
 						DT.parm1=CMParms.combine(V,1,V.size()-2);
 						DT.parm2=V.lastElement();
 					}
-					else
-					if(cmd.equals("BURNTHING"))
+					break;
+					case BURNTHING:
 					{
-						DT.triggerCode=TRIGGER_BURNTHING;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if(cmd.equals("PUTVALUE"))
+					break;
+					case PUTVALUE:
 					{
-						DT.triggerCode=TRIGGER_PUTVALUE;
+						DT.triggerCode=T;
 						if(V.size()<3)
 						{
 							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
+							DT=null;
 							break;
 						}
 						DT.parm1=""+CMath.s_int(V.elementAt(1));
 						DT.parm2=CMParms.combine(V,2);
 					}
-					else
-					if(cmd.equals("BURNVALUE"))
+					break;
+					case BURNVALUE:
 					{
-						DT.triggerCode=TRIGGER_BURNVALUE;
+						DT.triggerCode=T;
 						if(V.size()<3)
 						{
 							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
+							DT=null;
 							break;
 						}
 						DT.parm1=""+CMath.s_int(CMParms.combine(V,1));
 					}
-					else
-					if((cmd.equals("BURNMATERIAL"))||(cmd.equals("BURN")))
+					break;
+					case BURNMATERIAL:
 					{
-						DT.triggerCode=TRIGGER_BURNMATERIAL;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 						final int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
 						boolean found=cd>=0;
@@ -1587,16 +1650,18 @@ public class StdDeity extends StdMOB implements Deity
 						if(!found)
 						{
 							Log.errOut("StdDeity",Name()+"- Unknown material: "+trig);
+							DT=null;
 							break;
 						}
 					}
-					else
-					if(cmd.equals("PUTMATERIAL"))
+					break;
+					case PUTMATERIAL:
 					{
-						DT.triggerCode=TRIGGER_PUTMATERIAL;
+						DT.triggerCode=T;
 						if(V.size()<3)
 						{
 							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
+							DT=null;
 							break;
 						}
 						DT.parm1=V.elementAt(1);
@@ -1618,88 +1683,95 @@ public class StdDeity extends StdMOB implements Deity
 						if(!found)
 						{
 							Log.errOut("StdDeity",Name()+"- Unknown material: "+trig);
+							DT=null;
 							break;
 						}
 					}
-					else
-					if(cmd.equals("EAT"))
+					break;
+					case EAT:
 					{
-						DT.triggerCode=TRIGGER_EAT;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if(cmd.equals("READ"))
+					break;
+					case READING:
 					{
-						DT.triggerCode=TRIGGER_READING;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if(cmd.equals("RANDOM"))
+					break;
+					case RANDOM:
 					{
-						DT.triggerCode=TRIGGER_RANDOM;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if(cmd.equals("CHECK"))
+					break;
+					case CHECK:
 					{
-						DT.triggerCode=TRIGGER_CHECK;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if(cmd.equals("DRINK"))
+					break;
+					case DRINK:
 					{
-						DT.triggerCode=TRIGGER_DRINK;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if(cmd.equals("INROOM"))
+					break;
+					case INROOM:
 					{
-						DT.triggerCode=TRIGGER_INROOM;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if(cmd.equals("RIDING"))
+					break;
+					case RIDING:
 					{
-						DT.triggerCode=TRIGGER_RIDING;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if(cmd.equals("CAST"))
+					break;
+					case CAST:
 					{
-						DT.triggerCode=TRIGGER_CAST;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 						if(CMClass.findAbility(DT.parm1)==null)
 						{
 							Log.errOut("StdDeity",Name()+"- Illegal SPELL in: "+trig);
+							DT=null;
 							break;
 						}
 					}
-					else
-					if(cmd.equals("EMOTE"))
+					break;
+					case EMOTE:
 					{
-						DT.triggerCode=TRIGGER_EMOTE;
+						DT.triggerCode=T;
 						DT.parm1=CMParms.combine(V,1);
 					}
-					else
-					if(cmd.startsWith("SIT"))
+					break;
+					case SITTING:
 					{
-						DT.triggerCode=TRIGGER_SITTING;
+						DT.triggerCode=T;
 					}
-					else
-					if(cmd.startsWith("STAND"))
+					break;
+					case STANDING:
 					{
-						DT.triggerCode=TRIGGER_STANDING;
+						DT.triggerCode=T;
 					}
-					else
-					if(cmd.startsWith("SLEEP"))
+					break;
+					case SLEEPING:
 					{
-						DT.triggerCode=TRIGGER_SLEEPING;
+						DT.triggerCode=T;
 					}
-					else
+					break;
+					default:
 					{
 						Log.errOut("StdDeity",Name()+"- Illegal trigger: '"+cmd+"','"+trig+"'");
+						DT=null;
 						break;
 					}
+					}
+					if(DT==null)
+						break;
 					putHere.add(DT);
 				}
 				else
@@ -1709,70 +1781,16 @@ public class StdDeity extends StdMOB implements Deity
 				}
 			}
 			if(div==div1)
-				previousConnector=CONNECT_AND;
+				previousConnector=RitualConnector.AND;
 			else
-				previousConnector=CONNECT_OR;
+				previousConnector=RitualConnector.OR;
 		}
 	}
 
-	protected static final int TRIGGER_SAY=0;
-	protected static final int TRIGGER_TIME=1;
-	protected static final int TRIGGER_PUTTHING=2;
-	protected static final int TRIGGER_BURNTHING=3;
-	protected static final int TRIGGER_EAT=4;
-	protected static final int TRIGGER_DRINK=5;
-	protected static final int TRIGGER_INROOM=6;
-	protected static final int TRIGGER_RIDING=7;
-	protected static final int TRIGGER_CAST=8;
-	protected static final int TRIGGER_EMOTE=9;
-	protected static final int TRIGGER_PUTVALUE=10;
-	protected static final int TRIGGER_PUTMATERIAL=11;
-	protected static final int TRIGGER_BURNMATERIAL=12;
-	protected static final int TRIGGER_BURNVALUE=13;
-	protected static final int TRIGGER_SITTING=14;
-	protected static final int TRIGGER_STANDING=15;
-	protected static final int TRIGGER_SLEEPING=16;
-	protected static final int TRIGGER_READING=17;
-	protected static final int TRIGGER_RANDOM=18;
-	protected static final int TRIGGER_CHECK=19;
-	protected static final int TRIGGER_WAIT=20;
-	protected static final int TRIGGER_YOUSAY=21;
-	protected static final int TRIGGER_OTHERSAY=22;
-	protected static final int TRIGGER_ALLSAY=23;
-	protected static final int[] TRIG_WATCH={
-		CMMsg.TYP_SPEAK,		//0
-		-999,					//1
-		CMMsg.TYP_PUT,			//2
-		CMMsg.TYP_FIRE,		//3
-		CMMsg.TYP_EAT,			//4
-		CMMsg.TYP_DRINK,		//5
-		CMMsg.TYP_LOOK,		//6
-		-999,					//7
-		CMMsg.TYP_CAST_SPELL,  //8
-		CMMsg.TYP_EMOTE,		//9
-		CMMsg.TYP_PUT,			//10
-		CMMsg.TYP_PUT,			//11
-		CMMsg.TYP_FIRE,		//12
-		CMMsg.TYP_FIRE,		//13
-		-999,					//14
-		-999,					//15
-		-999,					//16
-		CMMsg.TYP_READ,//17
-		-999,					//18
-		-999,					//19
-		-999,   				//20
-		-999,   				//21
-		-999,   				//22
-		-999,   				//23
-	};
-
-	protected static final int CONNECT_AND=0;
-	protected static final int CONNECT_OR=1;
-
 	protected static class DeityTrigger
 	{
-		public int triggerCode=TRIGGER_SAY;
-		public int previousConnect=CONNECT_AND;
+		public RitualTrigger triggerCode=RitualTrigger.SAY;
+		public RitualConnector previousConnect=RitualConnector.AND;
 		public String parm1=null;
 		public String parm2=null;
 	}
@@ -1815,7 +1833,8 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return curses.get(index).power;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		{}
 		return null;
 	}
 	@Override
@@ -1829,7 +1848,11 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		return (Ability)CMLib.english().fetchEnvironmental(new ConvertingList<DeityPower,Ability>(curses,new Converter<DeityPower,Ability>()
 		{
-			@Override public Ability convert(DeityPower obj) { return obj.power;}
+			@Override
+			public Ability convert(DeityPower obj)
+			{
+				return obj.power;
+			}
 		}),ID,false);
 	}
 
@@ -1840,7 +1863,8 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return curses.get(index).clericOnly;
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		{}
 		return false;
 	}
 	@Override
@@ -1870,7 +1894,7 @@ public class StdDeity extends StdMOB implements Deity
 	public String getClericSinDesc()
 	{
 		if(numCurses()>0)
-			return "The curses of "+name()+" are placed upon "+charStats().hisher()+" clerics whenever the cleric does the following: "+getTriggerDesc(clericCurseTriggers)+".";
+			return L("The curses of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",name(),charStats().hisher(),getTriggerDesc(clericCurseTriggers));
 		return "";
 	}
 
@@ -1889,7 +1913,7 @@ public class StdDeity extends StdMOB implements Deity
 	public String getWorshipSinDesc()
 	{
 		if(numCurses()>0)
-			return "The curses of "+name()+" are placed upon "+charStats().hisher()+" worshippers whenever the worshipper does the following: "+getTriggerDesc(clericCurseTriggers)+".";
+			return L("The curses of @x1 are placed upon @x2 worshippers whenever the worshipper does the following: @x3.",name(),charStats().hisher(),getTriggerDesc(worshipCurseTriggers));
 		return "";
 	}
 
@@ -1926,7 +1950,8 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			return powers.get(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch(final java.lang.ArrayIndexOutOfBoundsException x)
+		{}
 		return null;
 	}
 	@Override
@@ -1956,7 +1981,7 @@ public class StdDeity extends StdMOB implements Deity
 	public String getClericPowerupDesc()
 	{
 		if(numPowers()>0)
-			return "Special powers of "+name()+" are bestowed to "+charStats().hisher()+" clerics whenever the cleric does the following: "+getTriggerDesc(clericPowerTriggers)+".";
+			return L("Special powers of @x1 are placed upon @x2 clerics whenever the cleric does the following: @x3.",name(),charStats().hisher(),getTriggerDesc(clericPowerTriggers));
 		return "";
 	}
 }
