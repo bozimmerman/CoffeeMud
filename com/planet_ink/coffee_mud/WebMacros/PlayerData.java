@@ -282,7 +282,7 @@ public class PlayerData extends StdWebMacro
 		}
 		case 58:
 		{
-			for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+			for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 			  str.append(e.nextElement().toString()+", ");
 			break;
 		}

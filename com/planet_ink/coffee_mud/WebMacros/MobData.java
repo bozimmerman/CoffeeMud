@@ -1463,7 +1463,7 @@ public class MobData extends StdWebMacro
 					if(firstTime)
 					{
 						old="";
-						for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+						for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 							str.append(e.nextElement().toString()).append(";");
 					}
 					else

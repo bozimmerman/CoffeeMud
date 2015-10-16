@@ -109,14 +109,14 @@ public class Prop_TattooAdder extends Property
 		if(subOnly)
 			tattooPlus=false;
 
-		final MOB.Tattoo pT=CMLib.database().parseTattoo(tattooName);
-		final MOB.Tattoo T = mob.findTattoo(pT.tattooName);
+		final Tattoo pT=CMLib.database().parseTattoo(tattooName);
+		final Tattoo T = mob.findTattoo(pT.getTattooName());
 		if(T!=null)
 		{
 			if(tattooMinus)
 			{
 				if(!silent)
-					mob.location().show(mob,affected,CMMsg.MSG_OK_ACTION,L("<T-NAME> takes away the @x1 tattoo from <S-NAME>.",pT.tattooName.toLowerCase()));
+					mob.location().show(mob,affected,CMMsg.MSG_OK_ACTION,L("<T-NAME> takes away the @x1 tattoo from <S-NAME>.",pT.getTattooName().toLowerCase()));
 				mob.delTattoo(T);
 			}
 		}
@@ -125,7 +125,7 @@ public class Prop_TattooAdder extends Property
 			if(tattooPlus)
 			{
 				if(!silent)
-					mob.location().show(mob,affected,CMMsg.MSG_OK_ACTION,L("<T-NAME> gives <S-NAME> the @x1 tattoo.",pT.tattooName.toLowerCase()));
+					mob.location().show(mob,affected,CMMsg.MSG_OK_ACTION,L("<T-NAME> gives <S-NAME> the @x1 tattoo.",pT.getTattooName().toLowerCase()));
 				mob.addTattoo(pT);
 			}
 		}

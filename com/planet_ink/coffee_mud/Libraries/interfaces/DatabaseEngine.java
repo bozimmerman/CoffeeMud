@@ -204,7 +204,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBCreateVFSFile(String filename, int bits, String creator, long updateTime, Object data);
 	public void DBUpSertVFSFile(String filename, int bits, String creator, long updateTime, Object data);
 	public void DBDeleteVFSFile(String filename);
-	public MOB.Tattoo parseTattoo(String tattoo);
+	public Tattoo parseTattoo(String tattoo);
 	public int DBRawExecute(String sql) throws CMException;
 	public List<String[]> DBRawQuery(String sql) throws CMException;
 	public void addBackLogEntry(String channelName, final String entry);

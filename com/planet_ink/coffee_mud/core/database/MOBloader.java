@@ -137,7 +137,7 @@ public class MOBloader
 				pstats.setXML(buf);
 				stats.setNonBaseStatsFromString(DBConnections.getRes(R,"CMSAVE"));
 				List<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
-				for(final Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
+				for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 					mob.delTattoo(e.nextElement());
 				for(int v=0;v<V9.size();v++)
 					mob.addTattoo(parseTattoo(V9.get(v)));
@@ -570,10 +570,10 @@ public class MOBloader
 		return allUsers;
 	}
 
-	public MOB.Tattoo parseTattoo(String tattoo)
+	public Tattoo parseTattoo(String tattoo)
 	{
 		if(tattoo==null)
-			return new MOB.Tattoo("");
+			return (Tattoo)CMClass.getCommon("DefaultTattoo");
 		int tickDown = 0;
 		if((tattoo.length()>0)
 		&&(Character.isDigit(tattoo.charAt(0))))
@@ -586,7 +586,8 @@ public class MOBloader
 				tattoo=tattoo.substring(x+1).trim();
 			}
 		}
-		return new MOB.Tattoo(tattoo, tickDown);
+		final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
+		return T.set(tattoo, tickDown);
 	}
 
 	public List<PlayerLibrary.ThinPlayer> vassals(MOB mob, String liegeID)
@@ -909,7 +910,7 @@ public class MOBloader
 		if(mob.tattoos().hasMoreElements())
 		{
 			pfxml.append("<TATTS>");
-			for(final Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
+			for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 				pfxml.append(e.nextElement().toString()+";");
 			pfxml.append("</TATTS>");
 		}

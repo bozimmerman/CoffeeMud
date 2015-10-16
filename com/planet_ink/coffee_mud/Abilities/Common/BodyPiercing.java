@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -65,7 +64,8 @@ public class BodyPiercing extends CommonSkill
 				else
 				{
 					commonEmote(mob,L("<S-NAME> complete(s) the piercing on @x1.",target.name(mob)));
-					target.addTattoo(new MOB.Tattoo(writing));
+					final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
+					target.addTattoo(T.set(writing));
 				}
 			}
 		}
@@ -172,10 +172,10 @@ public class BodyPiercing extends CommonSkill
 		}
 
 		int numTattsDone=0;
-		for(final Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
+		for(final Enumeration<Tattoo> e=target.tattoos();e.hasMoreElements();)
 		{
-			final MOB.Tattoo T=e.nextElement();
-			if(T.tattooName.startsWith(wearLocName+":"))
+			final Tattoo T=e.nextElement();
+			if(T.getTattooName().startsWith(wearLocName+":"))
 				numTattsDone++;
 		}
 		if("REMOVE".equals(command))

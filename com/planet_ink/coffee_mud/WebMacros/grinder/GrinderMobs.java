@@ -616,7 +616,7 @@ public class GrinderMobs
 				case TATTOOS: // tattoos
 					{
 						final List<String> V=CMParms.parseSemicolons(old,true);
-						for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+						for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 							M.delTattoo(e.nextElement());
 						for(int v=0;v<V.size();v++)
 							M.addTattoo(CMLib.database().parseTattoo(V.get(v)));

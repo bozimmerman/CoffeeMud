@@ -81,9 +81,9 @@ public class GenEarring extends GenThinArmor
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		final String wearLocName = codes.nameup(wornCode);
 		int availablePiercings=0;
-		for(final Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
+		for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 		{
-			final String tattooName=e.nextElement().tattooName.toUpperCase();
+			final String tattooName=e.nextElement().getTattooName().toUpperCase();
 			if(tattooName.startsWith(wearLocName+":") 
 			&& (tattooName.substring(wearLocName.length()+1).indexOf("PIERCE")>=0))
 				availablePiercings++;
@@ -180,9 +180,9 @@ public class GenEarring extends GenThinArmor
 						{
 							final List<String> availablePiercingsThisLoc = new ArrayList<String>(2);
 							final String wearLocName = codes.nameup(wornCode);
-							for(final Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
+							for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 							{
-								final String tattooName=e.nextElement().tattooName.toUpperCase();
+								final String tattooName=e.nextElement().getTattooName().toUpperCase();
 								if(tattooName.startsWith(wearLocName+":") 
 								&& (tattooName.substring(wearLocName.length()+1).indexOf("PIERCE")>=0))
 									availablePiercingsThisLoc.add(tattooName.substring(wearLocName.length()+1).toLowerCase());

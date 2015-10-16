@@ -3461,8 +3461,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
 			String tattoostr="";
-			for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
-				tattoostr+=e.nextElement().tattooName+", ";
+			for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
+				tattoostr+=e.nextElement().getTattooName()+", ";
 			if(tattoostr.length()>0)
 				tattoostr=tattoostr.substring(0,tattoostr.length()-2);
 			if((tattoostr.length()>60)&&((showFlag!=showNumber)&&(showFlag>-999)))
@@ -3473,11 +3473,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			behave=mob.session().prompt(L("Enter a tattoo to add/remove\n\r:"),"");
 			if(behave.length()>0)
 			{
-				final MOB.Tattoo pT=CMLib.database().parseTattoo(behave);
-				final MOB.Tattoo T=M.findTattoo(pT.tattooName);
+				final Tattoo pT=CMLib.database().parseTattoo(behave);
+				final Tattoo T=M.findTattoo(pT.getTattooName());
 				if(T!=null)
 				{
-					mob.tell(L("@x1 removed.",pT.tattooName.trim().toUpperCase()));
+					mob.tell(L("@x1 removed.",pT.getTattooName().trim().toUpperCase()));
 					M.delTattoo(T);
 				}
 				else

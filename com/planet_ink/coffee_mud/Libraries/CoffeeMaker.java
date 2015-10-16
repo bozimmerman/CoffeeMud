@@ -682,7 +682,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(((MOB)E).tattoos().hasMoreElements())
 			{
 				text.append("<TATTS>");
-				for(final Enumeration<MOB.Tattoo> e=((MOB)E).tattoos();e.hasMoreElements();)
+				for(final Enumeration<Tattoo> e=((MOB)E).tattoos();e.hasMoreElements();)
 					text.append(e.nextElement().toString()+";");
 				text.append("</TATTS>");
 			}
@@ -3115,7 +3115,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				}
 			}
 			List<String> V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
-			for(final Enumeration<MOB.Tattoo> e=((MOB)E).tattoos();e.hasMoreElements();)
+			for(final Enumeration<Tattoo> e=((MOB)E).tattoos();e.hasMoreElements();)
 				((MOB)E).delTattoo(e.nextElement());
 			for(int v=0;v<V9.size();v++)
 				((MOB)E).addTattoo(CMLib.database().parseTattoo(V9.get(v)));
@@ -3168,12 +3168,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(mob.tattoos().hasMoreElements())
 		{
 			pfxml.append("<TATTS>");
-			MOB.Tattoo T = null;
-			for(final Enumeration<MOB.Tattoo> e=mob.tattoos(); e.hasMoreElements();)
+			Tattoo T = null;
+			for(final Enumeration<Tattoo> e=mob.tattoos(); e.hasMoreElements();)
 			{
 				T=e.nextElement();
-				if(T.tattooName.startsWith("<TATTS>"))
-					T.tattooName=T.tattooName.substring(7);
+				if(T.getTattooName().startsWith("<TATTS>"))
+					T.set(T.getTattooName().substring(7));
 				pfxml.append(T.toString()+";");
 			}
 			pfxml.append("</TATTS>");
@@ -3338,7 +3338,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final String buf=CMLib.xml().getValFromPieces(mblk.contents,"CMPFIL");
 			mob.playerStats().setXML(buf);
 			List<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
-			for(final Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
+			for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 				mob.delTattoo(e.nextElement());
 			for(int v=0;v<V9.size();v++) mob.addTattoo(CMLib.database().parseTattoo(V9.get(v)));
 			V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
@@ -4030,7 +4030,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return str.toString();
 				}
 		case 18:{final StringBuilder str=new StringBuilder(""); // tatts
-				 for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+				 for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 					 str.append(e.nextElement().toString()+";");
 				 return str.toString();
 				}
@@ -4128,7 +4128,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case 18:
 			{
 				final List<String> V9=CMParms.parseSemicolons(val,true);
-				for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();) // tatts
+				for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();) // tatts
 					M.delTattoo(e.nextElement());
 				for(int v=0;v<V9.size();v++)
 					M.addTattoo(CMLib.database().parseTattoo(V9.get(v)));

@@ -8752,8 +8752,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final boolean tattooMinus=tattooName.startsWith("-");
 					if(tattooMinus)
 						tattooName=tattooName.substring(1);
-					final MOB.Tattoo pT=CMLib.database().parseTattoo(tattooName);
-					final MOB.Tattoo T=themob.findTattoo(pT.tattooName);
+					final Tattoo pT=CMLib.database().parseTattoo(tattooName);
+					final Tattoo T=themob.findTattoo(pT.getTattooName());
 					if(T!=null)
 					{
 						if(tattooMinus)

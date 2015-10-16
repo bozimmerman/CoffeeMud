@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Follower;
-import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Tattoo;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.ref.WeakReference;
@@ -150,6 +149,16 @@ public class StdMOB implements MOB
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		basePhyStats().setLevel(1);
 		xtraValues = CMProps.getExtraStatCodesHolder(this);
+	}
+
+	private static class QMCommand
+	{
+		public Object   	commandObj = null;
+		public double   	actionDelay = 0.0;
+		public long 		nextCheck=System.currentTimeMillis()-1;
+		public int  		seconds=-1;
+		public int  		metaFlags=0;
+		public List<String>	commandVector = null;
 	}
 
 	/**
@@ -648,7 +657,7 @@ public class StdMOB implements MOB
 		for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 		{
 			final Tattoo t=e.nextElement();
-			addTattoo(t.copyOf());
+			addTattoo((Tattoo)t.copyOf());
 		}
 		for(final Enumeration<String> s=M.expertises();s.hasMoreElements();)
 			addExpertise(s.nextElement());
@@ -2052,7 +2061,6 @@ public class StdMOB implements MOB
 				cmd.actionDelay = tickDelay;
 				cmd.metaFlags = metaFlags;
 				cmd.commandObj = O;
-				cmd.execTime = 0;
 				cmd.commandVector = commands;
 				commandQue.addFirst(cmd);
 			}
@@ -2087,7 +2095,6 @@ public class StdMOB implements MOB
 			cmd.seconds = -1;
 			cmd.actionDelay = tickDelay;
 			cmd.metaFlags = metaFlags;
-			cmd.execTime = 0;
 			cmd.commandObj = O;
 			cmd.commandVector = commands;
 			commandQue.addLast(cmd);
@@ -3530,12 +3537,10 @@ public class StdMOB implements MOB
 
 			for (final Tattoo tattoo : tattoos)
 			{
-				if ((tattoo != null) && (tattoo.tickDown > 0))
+				if ((tattoo != null) && (tattoo.getTickDown() > 0))
 				{
-					if (tattoo.tickDown == 1)
+					if (tattoo.tickDown() <= 0)
 						delTattoo(tattoo);
-					else
-						tattoo.tickDown--;
 				}
 			}
 		}
@@ -4625,7 +4630,7 @@ public class StdMOB implements MOB
 	@Override
 	public void addTattoo(Tattoo of)
 	{
-		if ((of == null) || (of.tattooName == null) || (of.tattooName.length() == 0) || findTattoo(of.tattooName) != null)
+		if ((of == null) || (of.getTattooName() == null) || (of.getTattooName().length() == 0) || findTattoo(of.getTattooName()) != null)
 			return;
 		tattoos.addElement(of);
 	}
@@ -4633,9 +4638,9 @@ public class StdMOB implements MOB
 	@Override
 	public void delTattoo(Tattoo of)
 	{
-		if ((of == null) || (of.tattooName == null) || (of.tattooName.length() == 0))
+		if ((of == null) || (of.getTattooName() == null) || (of.getTattooName().length() == 0))
 			return;
-		final Tattoo tat = findTattoo(of.tattooName);
+		final Tattoo tat = findTattoo(of.getTattooName());
 		if (tat == null)
 			return;
 		tattoos.remove(tat);

@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Tattoo;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
@@ -1568,7 +1567,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	{
 		if(mob.findTattoo(A.getTattoo())==null)
 		{
-			mob.addTattoo(new Tattoo(A.getTattoo()));
+			final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
+			mob.addTattoo(T.set(A.getTattoo()));
 			StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' achievement!^?\n\r",A.getDisplayStr()));
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACHIEVEMENTS);
 			if(!CMLib.flags().isCloaked(mob))

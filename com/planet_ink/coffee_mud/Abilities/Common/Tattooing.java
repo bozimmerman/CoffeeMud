@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -65,7 +64,8 @@ public class Tattooing extends CommonSkill
 				else
 				{
 					commonEmote(mob,L("<S-NAME> complete(s) the tattoo on @x1.",target.name()));
-					target.addTattoo(new MOB.Tattoo(writing));
+					final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
+					target.addTattoo(T.set(writing));
 				}
 			}
 		}
@@ -150,14 +150,14 @@ public class Tattooing extends CommonSkill
 		}
 
 		int numTattsDone=0;
-		MOB.Tattoo tatToRemove=null;
-		for(final Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
+		Tattoo tatToRemove=null;
+		for(final Enumeration<Tattoo> e=target.tattoos();e.hasMoreElements();)
 		{
-			final MOB.Tattoo T=e.nextElement();
-			if(T.tattooName.startsWith(wornName.toUpperCase()+":"))
+			final Tattoo T=e.nextElement();
+			if(T.getTattooName().startsWith(wornName.toUpperCase()+":"))
 			{
 				numTattsDone++;
-				if(T.tattooName.substring(wornName.length()+1).toUpperCase().startsWith("A TATTOO OF"))
+				if(T.getTattooName().substring(wornName.length()+1).toUpperCase().startsWith("A TATTOO OF"))
 					tatToRemove=T;
 			}
 		}

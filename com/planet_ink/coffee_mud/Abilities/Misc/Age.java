@@ -347,7 +347,7 @@ public class Age extends StdAbility
 						newMan.copyFactions(liege);
 					newMan.basePhyStats().setLevel(1);
 					newMan.setAttributesBitmap(babe.getAttributesBitmap());
-					for(final Enumeration<MOB.Tattoo> e=babe.tattoos();e.hasMoreElements();)
+					for(final Enumeration<Tattoo> e=babe.tattoos();e.hasMoreElements();)
 						newMan.addTattoo(e.nextElement());
 					String highestBaseClass="Orphan";
 					final int highestBaseLevel=0;
@@ -356,12 +356,12 @@ public class Age extends StdAbility
 						newMan.setClan(p.first.clanID(),p.second.intValue());
 					int theme=Area.THEME_FANTASY;
 					int highestLegacyLevel=0;
-					for(final Enumeration<MOB.Tattoo> e=newMan.tattoos();e.hasMoreElements();)
+					for(final Enumeration<Tattoo> e=newMan.tattoos();e.hasMoreElements();)
 					{
-						final MOB.Tattoo T=e.nextElement();
-						if(T.tattooName.startsWith("PARENT:"))
+						final Tattoo T=e.nextElement();
+						if(T.getTattooName().startsWith("PARENT:"))
 						{
-							final MOB M=CMLib.players().getLoadPlayer(T.tattooName.substring(7));
+							final MOB M=CMLib.players().getLoadPlayer(T.getTattooName().substring(7));
 							if(M!=null)
 							{
 								if(M.basePhyStats().level()>highestParentLevel)
@@ -384,12 +384,12 @@ public class Age extends StdAbility
 							}
 						}
 					}
-					for(final Enumeration<MOB.Tattoo> e=newMan.tattoos();e.hasMoreElements();)
+					for(final Enumeration<Tattoo> e=newMan.tattoos();e.hasMoreElements();)
 					{
-						final MOB.Tattoo T=e.nextElement();
-						if(T.tattooName.startsWith("PARENT:"))
+						final Tattoo T=e.nextElement();
+						if(T.getTattooName().startsWith("PARENT:"))
 						{
-							final MOB M=CMLib.players().getLoadPlayer(T.tattooName.substring(7));
+							final MOB M=CMLib.players().getLoadPlayer(T.getTattooName().substring(7));
 							if((M!=null)&&(M.playerStats()!=null))
 							{
 								final int legacyLevel=M.playerStats().getLegacyLevel(highestBaseClass);

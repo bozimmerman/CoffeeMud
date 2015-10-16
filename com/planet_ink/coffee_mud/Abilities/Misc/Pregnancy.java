@@ -235,7 +235,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								sondat="son";
 							}
 							String desc="The "+sondat+" of "+mob.Name();
-							babe.addTattoo(new MOB.Tattoo("PARENT:"+mob.Name()));
+							Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
+							babe.addTattoo(T.set("PARENT:"+mob.Name()));
 							String race2=mob.baseCharStats().getMyRace().ID();
 							MOB otherParentM=null;
 							if(z>y)
@@ -244,7 +245,10 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								otherParentM=CMLib.players().getLoadPlayer(text().substring(y+1,z));
 								desc+=" and "+text().substring(y+1,z);
 								if(otherParentM != null)
-									babe.addTattoo(new MOB.Tattoo("PARENT:"+otherParentM.Name()));
+								{
+									T=(Tattoo)CMClass.getCommon("DefaultTattoo");
+									babe.addTattoo(T.set("PARENT:"+otherParentM.Name()));
+								}
 							}
 							desc+=".";
 							mob.curState().setMovement(0);

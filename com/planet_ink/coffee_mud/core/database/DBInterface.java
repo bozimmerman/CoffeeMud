@@ -98,7 +98,7 @@ public class DBInterface implements DatabaseEngine
 	@Override public void propertiesLoaded(){}
 	@Override public TickClient getServiceClient() { return null;}
 	@Override
-	public MOB.Tattoo parseTattoo(String tattoo)
+	public Tattoo parseTattoo(String tattoo)
 	{return MOBloader.parseTattoo(tattoo);}
 
 	@Override

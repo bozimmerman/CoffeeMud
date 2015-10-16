@@ -13,7 +13,6 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Tattoo;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -73,8 +72,10 @@ public class Duel extends StdCommand
 			if((uiT==null)&&(iiT==null)&&(uuT==null)&&(iuT==null))
 			{
 				final int duelTicks=CMProps.getIntVar(CMProps.Int.DUELTICKDOWN);
-				mob.addTattoo(new Tattoo("IDUEL",duelTicks));
-				target.addTattoo(new Tattoo("UDUEL",duelTicks));
+				final Tattoo T1=(Tattoo)CMClass.getCommon("DefaultTattoo");
+				mob.addTattoo(T1.set("IDUEL",duelTicks));
+				final Tattoo T2=(Tattoo)CMClass.getCommon("DefaultTattoo");
+				target.addTattoo(T2.set("UDUEL",duelTicks));
 				final long time = CMProps.getTickMillis() * duelTicks;
 				mob.location().show(mob, target, CMMsg.MSG_DUELCHALLENGE, L("^X<S-NAME> <S-HAS-HAVE> challenged <T-NAME> to a duel, which <T-HE-SHE> <T-HAS-HAVE> @x1 seconds to consider.^.^N",""+(time/1000)));
 				target.tell(L("^NEnter ^HDUEL @x1^N to accept this challenge and begin fighting.",mob.name(target)));

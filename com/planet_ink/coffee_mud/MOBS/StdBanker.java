@@ -340,8 +340,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 				{
 					if(CMLib.english().containsString(pair.first.Name(),itemName))
 						return pair.first;
+					pair.first.destroy();
 				}
-				pair.first.destroy();
 			}
 		}
 		return null;

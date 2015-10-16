@@ -54,10 +54,12 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * CharStats class (in interfaces) for more info. */
 	public PlayerStats playerStats();
 	public void setPlayerStats(PlayerStats newStats);
+	
 	public CharStats baseCharStats();
 	public CharStats charStats();
 	public void recoverCharStats();
 	public void setBaseCharStats(CharStats newBaseCharStats);
+	
 	public int maxCarry();
 	public int maxItems();
 	public int baseWeight();
@@ -271,84 +273,6 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		};
 	}
 
-	public static class Tattoo implements Cloneable, CMObject
-	{
-		public int		tickDown	= 0;
-		public String	tattooName;
-
-		public Tattoo(String name)
-		{
-			tattooName = name.toUpperCase().trim();
-		}
-
-		public Tattoo(String name, int down)
-		{
-			tattooName = name.toUpperCase().trim();
-			tickDown = down;
-		}
-
-		@Override
-		public String toString()
-		{
-			return ((tickDown > 0) ? (tickDown + " ") : "") + tattooName;
-		}
-
-		@Override
-		public Tattoo copyOf()
-		{
-			try
-			{
-				return (Tattoo) this.clone();
-			}
-			catch (final Exception e)
-			{
-				return this;
-			}
-		}
-
-		@Override
-		public int compareTo(CMObject o)
-		{
-			if (o == null)
-				return 1;
-			return (this == o) ? 0 : this.ID().compareTo(o.ID());
-		}
-
-		@Override
-		public String ID()
-		{
-			return tattooName;
-		}
-
-		@Override
-		public String name()
-		{
-			return ID();
-		}
-
-		@Override
-		public CMObject newInstance()
-		{
-			return new Tattoo(tattooName);
-		}
-
-		@Override
-		public void initializeClass()
-		{
-		}
-	}
-
-	public static class QMCommand
-	{
-		public Object   	commandObj = null;
-		public double   	actionDelay = 0.0;
-		public long 		execTime = 0;
-		public long 		nextCheck=System.currentTimeMillis()-1;
-		public int  		seconds=-1;
-		public int  		metaFlags=0;
-		public List<String>	commandVector = null;
-	}
-
 	public static enum Attrib
 	{
 		AUTOGOLD(false),
@@ -403,9 +327,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		{
 			return desc;
 		}
-		
 	}
-
 
 	public static final long START_SHEATH_TIME=3*CMProps.getTickMillis();
 	public static final long END_SHEATH_TIME=6*CMProps.getTickMillis();

@@ -349,12 +349,12 @@ public class Clans extends StdLibrary implements ClanManager
 		&&(M.isMarriedToLiege())
 		&&(members.contains(M.getLiegeID())))
 			return true;
-		for(final Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+		for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 		{
-			final MOB.Tattoo T=e.nextElement();
-			if(T.tattooName.startsWith("PARENT:"))
+			final Tattoo T=e.nextElement();
+			if(T.getTattooName().startsWith("PARENT:"))
 			{
-				final String name=T.tattooName.substring("PARENT:".length());
+				final String name=T.getTattooName().substring("PARENT:".length());
 				final MOB M2=CMLib.players().getLoadPlayer(name.toLowerCase());
 				if((M2 != null)&&isFamilyOfMembership(M2,members))
 					return true;
