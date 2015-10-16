@@ -13,7 +13,6 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.Auctioneer.AuctionData;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.ref.WeakReference;
@@ -124,7 +123,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 		final Vector auctionItems=new Vector();
 		for(int a=0;a<auctions.size();a++)
 		{
-			final Item I=auctions.get(a).auctioningI;
+			final Item I=auctions.get(a).getAuctionedItem();
 			auctionItems.addElement(I);
 		}
 		for(int a=0;a<auctionItems.size();a++)

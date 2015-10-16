@@ -12,7 +12,6 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.Auctioneer.AuctionData;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
@@ -1527,43 +1526,43 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public String[] bid(MOB mob, double bid, String bidCurrency, Auctioneer.AuctionData auctionData, Item I, List<String> auctionAnnounces)
+	public String[] bid(MOB mob, double bid, String bidCurrency, AuctionData auctionData, Item I, List<String> auctionAnnounces)
 	{
-		String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
-		final String currencyName=CMLib.beanCounter().getDenominationName(auctionData.currency);
+		String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.getCurrency(),auctionData.getBid());
+		final String currencyName=CMLib.beanCounter().getDenominationName(auctionData.getCurrency());
 		if(bid==0.0)
 			return new String[]{"Up for auction: "+I.name()+".  The current bid is "+bidWords+".",null};
 
-		if(!bidCurrency.equals(auctionData.currency))
+		if(!bidCurrency.equals(auctionData.getCurrency()))
 			return new String[]{"This auction is being bid in "+currencyName+" only.",null};
 
-		if(bid>CMLib.beanCounter().getTotalAbsoluteValue(mob,auctionData.currency))
+		if(bid>CMLib.beanCounter().getTotalAbsoluteValue(mob,auctionData.getCurrency()))
 			return new String[]{"You don't have enough "+currencyName+" on hand to cover that bid.",null};
 
-		if((bid<auctionData.bid)||(bid==0))
+		if((bid<auctionData.getBid())||(bid==0))
 		{
 			final String bwords=CMLib.beanCounter().nameCurrencyShort(bidCurrency, bid);
-			return new String[]{"Your bid of "+bwords+" is insufficient."+((auctionData.bid>0)?" The current high bid is "+bidWords+".":""),null};
+			return new String[]{"Your bid of "+bwords+" is insufficient."+((auctionData.getBid()>0)?" The current high bid is "+bidWords+".":""),null};
 		}
 		else
-		if((bid>auctionData.highBid)||((bid>auctionData.bid)&&(auctionData.highBid==0)))
+		if((bid>auctionData.getHighBid())||((bid>auctionData.getBid())&&(auctionData.getHighBid()==0)))
 		{
-			final MOB oldHighBider=auctionData.highBidderM;
-			if(auctionData.highBidderM!=null)
-				returnMoney(auctionData.highBidderM,auctionData.currency,auctionData.highBid);
-			auctionData.highBidderM=mob;
-			if(auctionData.highBid<=0.0)
+			final MOB oldHighBider=auctionData.getHighBidderMob();
+			if(auctionData.getHighBidderMob()!=null)
+				returnMoney(auctionData.getHighBidderMob(),auctionData.getCurrency(),auctionData.getHighBid());
+			auctionData.setHighBidderMob(mob);
+			if(auctionData.getHighBid()<=0.0)
 			{
-				if(auctionData.bid>0)
-					auctionData.highBid=auctionData.bid;
+				if(auctionData.getBid()>0)
+					auctionData.setHighBid(auctionData.getBid());
 				else
-					auctionData.highBid=0.0;
+					auctionData.setHighBid(0.0);
 			}
-			auctionData.bid=auctionData.highBid+1.0;
-			auctionData.highBid=bid;
-			returnMoney(auctionData.highBidderM,auctionData.currency,-bid);
-			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
-			final String yourBidWords = CMLib.beanCounter().abbreviatedPrice(currencyName, auctionData.highBid);
+			auctionData.setBid(auctionData.getHighBid()+1.0);
+			auctionData.setHighBid(bid);
+			returnMoney(auctionData.getHighBidderMob(),auctionData.getCurrency(),-bid);
+			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.getCurrency(),auctionData.getBid());
+			final String yourBidWords = CMLib.beanCounter().abbreviatedPrice(currencyName, auctionData.getHighBid());
 			auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current high bid is "+bidWords+".");
 			if((oldHighBider!=null)&&(oldHighBider==mob))
 				return new String[]{"You have submitted a new high bid of "+yourBidWords+" for "+I.name()+".",null};
@@ -1574,25 +1573,25 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				return new String[]{"You have submitted a bid of "+yourBidWords+" for "+I.name()+".",null};
 		}
 		else
-		if((bid==auctionData.bid)&&(auctionData.highBidderM!=null))
+		if((bid==auctionData.getBid())&&(auctionData.getHighBidderMob()!=null))
 		{
 			return new String[]{"You must bid higher than "+bidWords+" to have your bid accepted.",null};
 		}
 		else
-		if((bid==auctionData.highBid)&&(auctionData.highBidderM!=null))
+		if((bid==auctionData.getHighBid())&&(auctionData.getHighBidderMob()!=null))
 		{
-			if((auctionData.highBidderM!=null)&&(auctionData.highBidderM!=mob))
+			if((auctionData.getHighBidderMob()!=null)&&(auctionData.getHighBidderMob()!=mob))
 			{
-				auctionData.bid=bid;
-				bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
+				auctionData.setBid(bid);
+				bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.getCurrency(),auctionData.getBid());
 				auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
 				return new String[]{"You have been outbid by proxy for "+I.name()+".","Your high bid for "+I.name()+" has been reached."};
 			}
 		}
 		else
 		{
-			auctionData.bid=bid;
-			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
+			auctionData.setBid(bid);
+			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.getCurrency(),auctionData.getBid());
 			auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
 			return new String[]{"You have been outbid by proxy for "+I.name()+".",null};
 		}
@@ -1600,47 +1599,47 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public Auctioneer.AuctionData getEnumeratedAuction(String named, String auctionHouse)
+	public AuctionData getEnumeratedAuction(String named, String auctionHouse)
 	{
 		final List<AuctionData> V=getAuctions(null,auctionHouse);
 		final Vector<Item> V2=new Vector<Item>();
 		for(int v=0;v<V.size();v++)
-			V2.addElement(V.get(v).auctioningI);
+			V2.addElement(V.get(v).getAuctionedItem());
 		Environmental E=CMLib.english().fetchEnvironmental(V2,named,true);
 		if(!(E instanceof Item))
 			E=CMLib.english().fetchEnvironmental(V2,named,false);
 		if(E!=null)
 		for(int v=0;v<V.size();v++)
-			if(V.get(v).auctioningI==E)
+			if(V.get(v).getAuctionedItem()==E)
 				return V.get(v);
 		return null;
 	}
 
 	@Override
-	public void saveAuction(Auctioneer.AuctionData data, String auctionHouse, boolean updateOnly)
+	public void saveAuction(AuctionData data, String auctionHouse, boolean updateOnly)
 	{
-		if(data.auctioningI instanceof Container)
-			((Container)data.auctioningI).emptyPlease(false);
+		if(data.getAuctionedItem() instanceof Container)
+			((Container)data.getAuctionedItem()).emptyPlease(false);
 		final StringBuffer xml=new StringBuffer("<AUCTION>");
-		xml.append("<PRICE>"+data.bid+"</PRICE>");
-		xml.append("<BUYOUT>"+data.buyOutPrice+"</BUYOUT>");
-		if(data.highBidderM!=null)
-			xml.append("<BIDDER>"+data.highBidderM.Name()+"</BIDDER>");
+		xml.append("<PRICE>"+data.getBid()+"</PRICE>");
+		xml.append("<BUYOUT>"+data.getBuyOutPrice()+"</BUYOUT>");
+		if(data.getHighBidderMob()!=null)
+			xml.append("<BIDDER>"+data.getHighBidderMob().Name()+"</BIDDER>");
 		else
 			xml.append("<BIDDER />");
-		xml.append("<MAXBID>"+data.highBid+"</MAXBID>");
+		xml.append("<MAXBID>"+data.getHighBid()+"</MAXBID>");
 		xml.append("<AUCTIONITEM>");
-		xml.append(CMLib.coffeeMaker().getItemXML(data.auctioningI).toString());
+		xml.append(CMLib.coffeeMaker().getItemXML(data.getAuctionedItem()).toString());
 		xml.append("</AUCTIONITEM>");
 		xml.append("</AUCTION>");
 		if(!updateOnly)
 			CMLib.database().DBWriteJournal("SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim(),
-											data.auctioningM.Name(),
-											""+data.tickDown,
-											CMStrings.limit(data.auctioningI.name(),38),
+											data.getAuctioningMob().Name(),
+											""+data.getAuctionTickDown(),
+											CMStrings.limit(data.getAuctionedItem().name(),38),
 											xml.toString());
 		else
-			CMLib.database().DBUpdateJournal(data.auctionDBKey, data.auctioningI.Name(),xml.toString(), 0);
+			CMLib.database().DBUpdateJournal(data.getAuctionDBKey(), data.getAuctionedItem().Name(),xml.toString(), 0);
 	}
 
 	@Override
@@ -1659,36 +1658,36 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				continue;
 			if((ofLike instanceof String)&&(!((String)ofLike).equals(key)))
 				continue;
-			final AuctionData data=new AuctionData();
-			data.start=auctionData.date;
-			data.tickDown=CMath.s_long(to);
+			final AuctionData data=(AuctionData)CMClass.getCommon("DefaultAuction");
+			data.setStartTime(auctionData.date);
+			data.setAuctionTickDown(CMath.s_long(to));
 			final String xml=auctionData.msg;
 			List<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(xml);
 			xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
 			final String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
 			final double oldBid=CMath.s_double(bid);
-			data.bid=oldBid;
+			data.setBid(oldBid);
 			final String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
 			if(highBidder.length()>0)
-				data.highBidderM=CMLib.players().getLoadPlayer(highBidder);
+				data.setHighBidderMob(CMLib.players().getLoadPlayer(highBidder));
 			final String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
 			final double oldMaxBid=CMath.s_double(maxBid);
-			data.highBid=oldMaxBid;
-			data.auctionDBKey=key;
+			data.setHighBid(oldMaxBid);
+			data.setAuctionDBKey(key);
 			final String buyOutPrice=CMLib.xml().getValFromPieces(xmlV,"BUYOUT");
-			data.buyOutPrice=CMath.s_double(buyOutPrice);
-			data.auctioningM=CMLib.players().getLoadPlayer(from);
-			data.currency=CMLib.beanCounter().getCurrency(data.auctioningM);
+			data.setBuyOutPrice(CMath.s_double(buyOutPrice));
+			data.setAuctioningMob(CMLib.players().getLoadPlayer(from));
+			data.setCurrency(CMLib.beanCounter().getCurrency(data.getAuctioningMob()));
 			for(int v=0;v<xmlV.size();v++)
 			{
 				final XMLLibrary.XMLpiece X=xmlV.get(v);
 				if(X.tag.equalsIgnoreCase("AUCTIONITEM"))
 				{
-					data.auctioningI=CMLib.coffeeMaker().getItemFromXML(X.value);
+					data.setAuctionedItem(CMLib.coffeeMaker().getItemFromXML(X.value));
 					break;
 				}
 			}
-			if((ofLike instanceof Item)&&(!((Item)ofLike).sameAs(data.auctioningI)))
+			if((ofLike instanceof Item)&&(!((Item)ofLike).sameAs(data.getAuctionedItem())))
 				continue;
 			auctions.addElement(data);
 		}
@@ -1721,32 +1720,32 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final List<AuctionData> auctions=getAuctions(null,auction.auctionHouse());
 		for(int v=0;v<auctions.size();v++)
 		{
-			final Auctioneer.AuctionData data=auctions.get(v);
-			if(shownInInventory(seller,buyer,data.auctioningI,auction))
+			final AuctionData data=auctions.get(v);
+			if(shownInInventory(seller,buyer,data.getAuctionedItem(),auction))
 			{
-				if(((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.auctioningI.name(),mask)))
-				&&((data.tickDown>System.currentTimeMillis())||(data.auctioningM==buyer)||(data.highBidderM==buyer)))
+				if(((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.getAuctionedItem().name(),mask)))
+				&&((data.getAuctionTickDown()>System.currentTimeMillis())||(data.getAuctioningMob()==buyer)||(data.getHighBidderMob()==buyer)))
 				{
 					Area area=CMLib.map().getStartArea(seller);
 					if(area==null)
 						area=CMLib.map().getStartArea(buyer);
-					str.append(CMStrings.padRight(""+data.auctioningI.phyStats().level(),3)+" ");
-					str.append(CMStrings.padRight(data.auctioningI.name(),50)+" ");
-					if(data.tickDown>System.currentTimeMillis())
+					str.append(CMStrings.padRight(""+data.getAuctionedItem().phyStats().level(),3)+" ");
+					str.append(CMStrings.padRight(data.getAuctionedItem().name(),50)+" ");
+					if(data.getAuctionTickDown()>System.currentTimeMillis())
 					{
 						final long days=data.daysRemaining(buyer,seller);
 						str.append(CMStrings.padRight(""+days,4)+" ");
 					}
 					else
-					if(data.auctioningM==buyer)
+					if(data.getAuctioningMob()==buyer)
 						str.append("DONE ");
 					else
 						str.append("WON! ");
-					str.append("["+CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.bid),6)+"] ");
-					if(data.buyOutPrice<=0.0)
+					str.append("["+CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.getBid()),6)+"] ");
+					if(data.getBuyOutPrice()<=0.0)
 						str.append(CMStrings.padRight("-",6));
 					else
-						str.append(CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.buyOutPrice),6));
+						str.append(CMStrings.padRight(CMLib.beanCounter().abbreviatedPrice(seller,data.getBuyOutPrice()),6));
 					str.append("\n\r");
 				}
 			}
@@ -1775,21 +1774,21 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public void cancelAuction(String auctionHouse, Auctioneer.AuctionData data)
+	public void cancelAuction(String auctionHouse, AuctionData data)
 	{
-		if(data.auctioningI!=null)
+		if(data.getAuctionedItem()!=null)
 		{
-			if(data.auctioningM!=null)
-				data.auctioningM.moveItemTo(data.auctioningI);
-			if(data.highBidderM!=null)
+			if(data.getAuctioningMob()!=null)
+				data.getAuctioningMob().moveItemTo(data.getAuctionedItem());
+			if(data.getHighBidderMob()!=null)
 			{
-				final MOB M=data.highBidderM;
-				auctionNotify(M,"The auction for "+data.auctioningI.Name()+" was closed early.  You have been refunded your max bid.",data.auctioningI.Name());
-				CMLib.coffeeShops().returnMoney(M,data.currency,data.highBid);
+				final MOB M=data.getHighBidderMob();
+				auctionNotify(M,"The auction for "+data.getAuctionedItem().Name()+" was closed early.  You have been refunded your max bid.",data.getAuctionedItem().Name());
+				CMLib.coffeeShops().returnMoney(M,data.getCurrency(),data.getHighBid());
 			}
 		}
-		CMLib.database().DBDeleteJournal(auctionHouse, data.auctionDBKey);
-		if(data.auctioningI!=null)
-			data.auctioningM.tell(L("Auction ended."));
+		CMLib.database().DBDeleteJournal(auctionHouse, data.getAuctionDBKey());
+		if(data.getAuctionedItem()!=null)
+			data.getAuctioningMob().tell(L("Auction ended."));
 	}
 }

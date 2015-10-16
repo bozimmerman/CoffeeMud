@@ -23,6 +23,7 @@
   22. The Deviations command now shows mob money deviations.
   23. Mundane STAT command now support experience point stats. 
   24. Made some of the weather effects spam slightly more frequent, and added a msg for cold and heat.
+  25. Mana/Health/Move recovery formulas tweaked with caps.  See coffeemud.ini
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)
