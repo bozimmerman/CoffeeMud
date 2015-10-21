@@ -51,7 +51,7 @@ public class Sounds extends StdCommand
 					if(o.toString().equalsIgnoreCase("force"))
 						force=true;
 			final Session session=mob.session();
-			if((!mob.isAttribute(MOB.Attrib.SOUND))
+			if((!mob.isAttributeSet(MOB.Attrib.SOUND))
 			||(!session.getClientTelnetMode(Session.TELNET_MSP)))
 			{
 				session.changeTelnetMode(Session.TELNET_MSP,true);

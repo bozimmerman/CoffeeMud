@@ -36,16 +36,57 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prayer_Bloatbomb extends Prayer implements Trap
 {
-	@Override public String ID() { return "Prayer_Bloatbomb"; }
-	private final static String localizedName = CMLib.lang().L("Bloat Bomb");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Bloat Bomb)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_Bloatbomb";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Bloat Bomb");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Bloat Bomb)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_VEXING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
 	
 	@Override
 	protected int overrideMana()
@@ -90,20 +131,88 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 		}
 	}
 
-	@Override public boolean isABomb(){return true;}
-	@Override public void activateBomb(){}
-	@Override public void setReset(int Reset){}
-	@Override public int getReset(){return 0;}
-	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	@Override public boolean canSetTrapOn(MOB mob, Physical P){return P instanceof DeadBody;}
-	@Override public List<Item> getTrapComponents() { return new Vector<Item>();}
-	@Override public String requiresToSet(){return "";}
+	@Override
+	public boolean isABomb()
+	{
+		return true;
+	}
+
+	@Override
+	public void activateBomb()
+	{
+	}
+
+	@Override
+	public void setReset(int Reset)
+	{
+	}
+
+	@Override
+	public int getReset()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean maySetTrap(MOB mob, int asLevel)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canSetTrapOn(MOB mob, Physical P)
+	{
+		return P instanceof DeadBody;
+	}
+
+	@Override
+	public boolean canReSetTrap(MOB mob)
+	{
+		return false;
+	}
+
+	@Override
+	public List<Item> getTrapComponents()
+	{
+		return new Vector<Item>();
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
+
+	@Override
+	public void resetTrap(MOB mob)
+	{
+	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
-	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0); return (Trap)P.fetchEffect(ID());}
-	@Override public boolean disabled(){return false;}
-	@Override public boolean sprung(){return false;}
-	@Override public void disable(){unInvoke();}
+	{
+		beneficialAffect(mob, P, qualifyingClassLevel + trapBonus, 0);
+		return (Trap) P.fetchEffect(ID());
+	}
+
+	@Override
+	public boolean disabled()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean sprung()
+	{
+		return false;
+	}
+
+	@Override
+	public void disable()
+	{
+		unInvoke();
+	}
+
 	@Override
 	public void spring(MOB mob)
 	{

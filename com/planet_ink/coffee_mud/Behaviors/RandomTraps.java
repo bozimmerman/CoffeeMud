@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class RandomTraps extends ActiveTicker
 {
 	@Override public String ID(){return "RandomTraps";}
@@ -50,7 +49,7 @@ public class RandomTraps extends ActiveTicker
 	protected boolean doAnyLockedDoors=false;
 	protected boolean doRooms=false;
 
-	protected Vector restrictedLocales=null;
+	protected Set<Integer> restrictedLocales=null;
 	private int tickStatus=Tickable.STATUS_NOT;
 
 	@Override public int getTickStatus(){return tickStatus;}
@@ -70,7 +69,7 @@ public class RandomTraps extends ActiveTicker
 	@Override
 	public void setParms(String newParms)
 	{
-		maintained=new Vector();
+		maintained=new Vector<Physical>();
 		doAnyItems=false;
 		doAnyContainers=false;
 		doDooredContainers=false;
@@ -155,7 +154,7 @@ public class RandomTraps extends ActiveTicker
 				if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
 				{
 					if(restrictedLocales==null)
-						restrictedLocales=new Vector();
+						restrictedLocales=new TreeSet<Integer>();
 					if(s.equalsIgnoreCase("+ALL"))
 						restrictedLocales.clear();
 					else
@@ -163,9 +162,9 @@ public class RandomTraps extends ActiveTicker
 					{
 						restrictedLocales.clear();
 						for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
-							restrictedLocales.addElement(Integer.valueOf(Room.INDOORS+i));
+							restrictedLocales.add(Integer.valueOf(Room.INDOORS+i));
 						for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
-							restrictedLocales.addElement(Integer.valueOf(i));
+							restrictedLocales.add(Integer.valueOf(i));
 					}
 					else
 					{
@@ -178,24 +177,25 @@ public class RandomTraps extends ActiveTicker
 						if(code>=0)
 						{
 							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.removeElement(Integer.valueOf(code));
+								restrictedLocales.remove(Integer.valueOf(code));
 							else
 							if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.addElement(Integer.valueOf(code));
+								restrictedLocales.add(Integer.valueOf(code));
 						}
 						code=-1;
 						for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+						{
 							if(Room.DOMAIN_OUTDOOR_DESCS[i].startsWith(s))
 								code=i;
+						}
 						if(code>=0)
 						{
 							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.removeElement(Integer.valueOf(code));
+								restrictedLocales.remove(Integer.valueOf(code));
 							else
 							if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.addElement(Integer.valueOf(code));
+								restrictedLocales.add(Integer.valueOf(code));
 						}
-
 					}
 				}
 			}
@@ -211,25 +211,25 @@ public class RandomTraps extends ActiveTicker
 			restrictedLocales=null;
 	}
 
-	protected void makeRoomElligible(Room R, Vector elligible)
+	protected void makeRoomElligible(Room R, List<Physical> elligible)
 	{
 		if(R==null)
 			return;
 		if((restrictedLocales!=null)
 		&&(restrictedLocales.contains(Integer.valueOf(R.domainType()))))
-		   return;
+			return;
 
 		if(R instanceof GridLocale)
 		{
 			final List<Room> map=((GridLocale)R).getAllRooms();
 			if(map.size()==0)
-				elligible.addElement(R);
+				elligible.add(R);
 			else
-				for (final Room room : ((GridLocale)R).getAllRooms())
-					elligible.addElement(room);
+			for (final Room room : ((GridLocale)R).getAllRooms())
+				elligible.add(room);
 		}
 		else
-			elligible.addElement(R);
+			elligible.add(R);
 	}
 
 	@Override
@@ -239,8 +239,10 @@ public class RandomTraps extends ActiveTicker
 		super.tick(ticking,tickID);
 		tickStatus=Tickable.STATUS_MISC+0;
 		for(int i=maintained.size()-1;i>=0;i--)
+		{
 			if(CMLib.utensils().fetchMyTrap(maintained.elementAt(i))==null)
 				maintained.removeElementAt(i);
+		}
 		if(maintained.size()>=maxTraps)
 		{
 			tickStatus=Tickable.STATUS_NOT;
@@ -250,20 +252,22 @@ public class RandomTraps extends ActiveTicker
 		if((canAct(ticking,tickID))||(maintained.size()<minTraps))
 		{
 			tickStatus=Tickable.STATUS_MISC+2;
-			final Vector allTraps=new Vector();
+			final List<Trap> allTraps=new ArrayList<Trap>();
 			if(maintained.size()<avgTraps)
+			{
 				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
 					final Ability A=e.nextElement();
 					if(A instanceof Trap)
-						allTraps.addElement(A);
+						allTraps.add((Trap)A);
 				}
+			}
 
 			tickStatus=Tickable.STATUS_MISC+3;
 
 			if(maintained.size()<avgTraps)
 			{
-				final Vector<Physical> elligible=new Vector<Physical>();
+				final List<Physical> elligible=new Vector<Physical>();
 				if(ticking instanceof Room)
 				{
 					tickStatus=Tickable.STATUS_MISC+4;
@@ -273,8 +277,8 @@ public class RandomTraps extends ActiveTicker
 				if((ticking instanceof Area)&&(((Area)ticking).metroSize()>0))
 				{
 					tickStatus=Tickable.STATUS_MISC+5;
-					for(final Enumeration m=((Area)ticking).getMetroMap();m.hasMoreElements();)
-						makeRoomElligible((Room)m.nextElement(),elligible);
+					for(final Enumeration<Room> m=((Area)ticking).getMetroMap();m.hasMoreElements();)
+						makeRoomElligible(m.nextElement(),elligible);
 				}
 				else
 					return true;
@@ -288,7 +292,14 @@ public class RandomTraps extends ActiveTicker
 				{
 					tickStatus=Tickable.STATUS_MISC+7;
 					Room R=null;
-					try{R=(Room)elligible.elementAt(r);}catch(final IndexOutOfBoundsException e){}
+					try
+					{
+						if(elligible.get(r) instanceof Room)
+							R = (Room)elligible.get(r);
+					}
+					catch (final IndexOutOfBoundsException e)
+					{
+					}
 					if(R==null)
 						continue;
 
@@ -311,10 +322,10 @@ public class RandomTraps extends ActiveTicker
 							{
 								tickStatus=Tickable.STATUS_MISC+9;
 								if(E.hasALock()&&(E.isLocked())&&(doAnyLockedDoors))
-									elligible.addElement(E);
+									elligible.add(E);
 								else
 								if(doAnyDoors)
-									elligible.addElement(E);
+									elligible.add(E);
 							}
 							tickStatus=Tickable.STATUS_MISC+10;
 						}
@@ -338,18 +349,18 @@ public class RandomTraps extends ActiveTicker
 								if(C.hasADoor()&&(!C.isOpen()))
 								{
 									if(C.hasALock()&&C.isLocked()&&(doLockedContainers))
-										elligible.addElement(I);
+										elligible.add(I);
 									else
 									if(doDooredContainers)
-										elligible.addElement(I);
+										elligible.add(I);
 								}
 								else
 								if(doAnyContainers)
-									elligible.addElement(I);
+									elligible.add(I);
 							}
 							else
 							if(doAnyItems)
-								elligible.addElement(I);
+								elligible.add(I);
 						}
 						tickStatus=Tickable.STATUS_MISC+25;
 					}
@@ -358,16 +369,16 @@ public class RandomTraps extends ActiveTicker
 
 				tickStatus=Tickable.STATUS_MISC+27;
 				if(!doRooms)
-				while((elligible.size()>0)&&(elligible.firstElement() instanceof Room))
-					elligible.removeElementAt(0);
+				while((elligible.size()>0)&&(elligible.get(0) instanceof Room))
+					elligible.remove(0);
 
 				tickStatus=Tickable.STATUS_MISC+28;
 				for(int e=elligible.size()-1;e>=0;e--)
 				{
 					tickStatus=Tickable.STATUS_MISC+29;
-					if((maintained.contains(elligible.elementAt(e)))
-					||(CMLib.utensils().fetchMyTrap(elligible.elementAt(e))!=null))
-						elligible.removeElementAt(e);
+					if((maintained.contains(elligible.get(e)))
+					||(CMLib.utensils().fetchMyTrap(elligible.get(e))!=null))
+						elligible.remove(e);
 					tickStatus=Tickable.STATUS_MISC+30;
 				}
 
@@ -375,18 +386,21 @@ public class RandomTraps extends ActiveTicker
 					return true;
 
 				tickStatus=Tickable.STATUS_MISC+31;
-				final Physical P=elligible.elementAt(CMLib.dice().roll(1,elligible.size(),-1));
+				final Physical P=elligible.get(CMLib.dice().roll(1,elligible.size(),-1));
 
-				final Vector elligibleTraps=new Vector();
+				final List<Trap> elligibleTraps=new Vector<Trap>();
 				for(int t=0;t<allTraps.size();t++)
-					if(((Trap)allTraps.elementAt(t)).canSetTrapOn(null,P))
-						elligibleTraps.addElement(allTraps.elementAt(t));
+				{
+					if(allTraps.get(t).canSetTrapOn(null,P)
+					&&(P.fetchEffect(allTraps.get(t).ID())==null))
+						elligibleTraps.add(allTraps.get(t));
+				}
 
 				if(elligibleTraps.size()==0)
 					return true;
 
 				tickStatus=Tickable.STATUS_MISC+32;
-				Trap T=(Trap)elligibleTraps.elementAt(CMLib.dice().roll(1,elligibleTraps.size(),-1));
+				Trap T=elligibleTraps.get(CMLib.dice().roll(1,elligibleTraps.size(),-1));
 				T=(Trap)T.copyOf();
 				T.setProficiency(100);
 				T.makeLongLasting();

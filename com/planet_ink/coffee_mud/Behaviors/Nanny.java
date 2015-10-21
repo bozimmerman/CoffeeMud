@@ -645,7 +645,7 @@ public class Nanny extends StdBehavior
 					if(P instanceof MOB)
 					{
 						CMLib.commands().postFollow((MOB)P,msg.source(),false);
-						if(((MOB)P).isAttribute(MOB.Attrib.AUTOGUARD))
+						if(((MOB)P).isAttributeSet(MOB.Attrib.AUTOGUARD))
 							((MOB)P).setAttribute(MOB.Attrib.AUTOGUARD,false);
 						if(((MOB)P).amFollowing()!=msg.source())
 						{

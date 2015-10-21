@@ -698,7 +698,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				if(R.delay<=0)
 				{
 					responseQue.remove(R);
-					((MOB)ticking).doCommand(R.parsedCommand,Command.METAFLAG_FORCED);
+					((MOB)ticking).doCommand(R.parsedCommand,MUDCmdProcessor.METAFLAG_FORCED);
 					lastReactedTo=null;
 					// you've done one, so get out before doing another!
 					break;

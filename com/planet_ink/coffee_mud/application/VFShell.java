@@ -297,7 +297,7 @@ public class VFShell
 					public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut)
 					throws IOException { return choose(Message,Choices,Default);}
 					@Override public String choose(String Message, String Choices, String Default, long maxTime) { return choose(Message,Choices,Default);}
-					@Override public String blockingIn(long timeoutMillis) { return readlineContinue();}
+					@Override public String blockingIn(long timeoutMillis, boolean filter) { return readlineContinue();}
 					@Override
 					public String readlineContinue()
 					{

@@ -574,10 +574,11 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * Blocks the current thread until the user attached to this session
 	 * hits ENTER, returning the characters they enter.  Completely filtered input.
 	 * @param timeoutMillis milliseconds before InterruptedIOException thrown
+	 * @param filter true to allow normal coffeemud input filtering
 	 * @return the string entered by the user
 	 * @throws IOException any exception generated during input
 	 */
-	public String blockingIn(long timeoutMillis)
+	public String blockingIn(long timeoutMillis, boolean filter)
 		throws IOException;
 
 	/**

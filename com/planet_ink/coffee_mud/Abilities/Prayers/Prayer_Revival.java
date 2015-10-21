@@ -116,9 +116,9 @@ public class Prayer_Revival extends Prayer
 			case 8:	CMLib.commands().postSay(mob,null,L("Holy is the name of @x1!",D.name()),false,false); break;
 			case 9:	CMLib.commands().postSay(mob,null,L("Do you BELIEVE?!? I BELIEVE!!!"),false,false); break;
 			case 10: CMLib.commands().postSay(mob,null,L("Halleluyah!"),false,false); break;
-			case 11: mob.enqueCommand(CMParms.parse("EMOTE do(es) a spirit-filled dance!"),Command.METAFLAG_FORCED,0); break;
-			case 12: mob.enqueCommand(CMParms.parse("EMOTE wave(s) <S-HIS-HER> hands in the air!"),Command.METAFLAG_FORCED,0);  break;
-			case 13: mob.enqueCommand(CMParms.parse("EMOTE catch(es) the spirit of "+D.name()+"!"),Command.METAFLAG_FORCED,0); break;
+			case 11: mob.enqueCommand(CMParms.parse("EMOTE do(es) a spirit-filled dance!"),MUDCmdProcessor.METAFLAG_FORCED,0); break;
+			case 12: mob.enqueCommand(CMParms.parse("EMOTE wave(s) <S-HIS-HER> hands in the air!"),MUDCmdProcessor.METAFLAG_FORCED,0);  break;
+			case 13: mob.enqueCommand(CMParms.parse("EMOTE catch(es) the spirit of "+D.name()+"!"),MUDCmdProcessor.METAFLAG_FORCED,0); break;
 			}
 			if((clerics.size()>2)&&(inhabs.size()>0))
 			{

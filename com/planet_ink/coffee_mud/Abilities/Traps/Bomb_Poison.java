@@ -32,36 +32,56 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Bomb_Poison extends StdBomb
 {
-	@Override public String ID() { return "Bomb_Poison"; }
-	private final static String localizedName = CMLib.lang().L("poison gas bomb");
-	@Override public String name() { return localizedName; }
-	@Override protected int trapLevel(){return 5;}
-	@Override public String requiresToSet(){return "some poison";}
+	@Override
+	public String ID()
+	{
+		return "Bomb_Poison";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("poison gas bomb");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 5;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "some poison";
+	}
 
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		final Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_POISON);
 		Ability A=CMClass.getAbility(text());
 		if(A==null)
 			A=CMClass.getAbility("Poison");
 		I.addNonUninvokableEffect(A);
-		V.addElement(I);
+		V.add(I);
 		return V;
 	}
+
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		final Vector offenders=new Vector();
+		final List<Ability> offenders=new Vector<Ability>();
 
 		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
-				offenders.addElement(A);
+				offenders.add(A);
 		}
 		return offenders;
 	}
@@ -80,6 +100,7 @@ public class Bomb_Poison extends StdBomb
 		}
 		return true;
 	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{

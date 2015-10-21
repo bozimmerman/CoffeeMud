@@ -58,7 +58,7 @@ public class Order extends StdCommand
 		}
 		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 		&&(!mob.isMonster())
-		&&(mob.isAttribute(MOB.Attrib.AUTOASSIST)))
+		&&(mob.isAttributeSet(MOB.Attrib.AUTOASSIST)))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("You may not order someone around with your AUTOASSIST flag off."));
 			return false;
@@ -170,7 +170,7 @@ public class Order extends StdCommand
 		for(int v=0;v<doV.size();v++)
 		{
 			target=(MOB)doV.get(v);
-			target.enqueCommand((List)commands.clone(),metaFlags|Command.METAFLAG_ORDER,0);
+			target.enqueCommand((List)commands.clone(),metaFlags|MUDCmdProcessor.METAFLAG_ORDER,0);
 		}
 		return false;
 	}

@@ -34,15 +34,49 @@ import java.util.*;
 */
 public class Trap_Darkfall extends StdTrap
 {
-	@Override public String ID() { return "Trap_Darkfall"; }
-	private final static String localizedName = CMLib.lang().L("darkfall");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 2;}
-	@Override public String requiresToSet(){return "";}
+	@Override
+	public String ID()
+	{
+		return "Trap_Darkfall";
+	}
 
-	@Override public int baseRejuvTime(int level){return 20;}
+	private final static String	localizedName	= CMLib.lang().L("darkfall");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
+
+	@Override
+	public int baseRejuvTime(int level)
+	{
+		return 20;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

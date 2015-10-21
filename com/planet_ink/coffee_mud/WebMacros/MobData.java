@@ -433,7 +433,7 @@ public class MobData extends StdWebMacro
 				}
 			}
 			else
-			for(final Enumeration e=E.fetchFactions();e.hasMoreElements();)
+			for(final Enumeration e=E.factions();e.hasMoreElements();)
 			{
 				final Faction f=CMLib.factions().getFaction((String)e.nextElement());
 				if(f!=null)

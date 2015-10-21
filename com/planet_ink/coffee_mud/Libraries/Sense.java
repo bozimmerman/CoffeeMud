@@ -379,7 +379,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FRange FR=null;
-			for(final Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
+			for(final Enumeration<String> e=((MOB)P).factions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
@@ -428,7 +428,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FRange FR=null;
-			for(final Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
+			for(final Enumeration<String> e=((MOB)P).factions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
@@ -550,7 +550,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FRange FR=null;
-			for(final Enumeration<String> e=((MOB)E).fetchFactions();e.hasMoreElements();)
+			for(final Enumeration<String> e=((MOB)E).factions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
@@ -576,7 +576,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			Faction F=null;
 			Faction.FRange FR=null;
-			for(final Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
+			for(final Enumeration<String> e=((MOB)P).factions();e.hasMoreElements();)
 			{
 				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
@@ -853,7 +853,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 
 		if((seer!=null)
-		&&(seer.isAttribute(MOB.Attrib.SYSOPMSGS)))
+		&&(seer.isAttributeSet(MOB.Attrib.SYSOPMSGS)))
 			return true;
 
 		if(!canSee(seer))

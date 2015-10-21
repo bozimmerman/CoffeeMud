@@ -56,7 +56,7 @@ public class Run extends Go
 	{
 		if(mob==null)
 			return super.execute(mob, commands,metaFlags);
-		final boolean wasSet = mob.isAttribute(MOB.Attrib.AUTORUN);
+		final boolean wasSet = mob.isAttributeSet(MOB.Attrib.AUTORUN);
 		mob.setAttribute(MOB.Attrib.AUTORUN,true);
 		final boolean returnValue = super.execute(mob, commands,metaFlags);
 		if(!wasSet)

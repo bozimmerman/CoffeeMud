@@ -43,11 +43,19 @@ public class SysMsgs extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
+		String parm = (commands.size() > 1) ? CMParms.combine(commands,1) : ""; 
+		if((!mob.isAttributeSet(MOB.Attrib.SYSOPMSGS) && (parm.length()==0))||(parm.equalsIgnoreCase("ON")))
+			mob.setAttribute(MOB.Attrib.SYSOPMSGS,true);
+		else
+		if((mob.isAttributeSet(MOB.Attrib.SYSOPMSGS) && (parm.length()==0))||(parm.equalsIgnoreCase("OFF")))
 			mob.setAttribute(MOB.Attrib.SYSOPMSGS,false);
 		else
-			mob.setAttribute(MOB.Attrib.SYSOPMSGS,true);
-		mob.tell(L("Extended messages are now : @x1",((mob.isAttribute(MOB.Attrib.SYSOPMSGS))?"ON":"OFF")));
+		if(parm.length() > 0)
+		{
+			mob.tell(L("Illegal @x1 argument: '@x2'.  Try ON or OFF, or nothing to toggle.",getAccessWords()[0],parm));
+			return false;
+		}
+		mob.tell(L("Extended messages are now : @x1",((mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))?"ON":"OFF")));
 		return false;
 	}
 

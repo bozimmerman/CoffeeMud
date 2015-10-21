@@ -1212,7 +1212,7 @@ public class StdAbility implements Ability
 					&&(effA.invoker()==mob)
 					&&(effA.proficiency()<maxProficiency))
 						effA.setProficiency(A.proficiency());
-					if(mob.isAttribute(MOB.Attrib.AUTOIMPROVE))
+					if(mob.isAttributeSet(MOB.Attrib.AUTOIMPROVE))
 						mob.tell(L("You become better at @x1.",A.name()));
 					((StdAbility)A).lastCastHelp=System.currentTimeMillis();
 				}
@@ -1545,7 +1545,7 @@ public class StdAbility implements Ability
 	@Override
 	public boolean canBeTaughtBy(MOB teacher, MOB student)
 	{
-		if(teacher.isAttribute(MOB.Attrib.NOTEACH))
+		if(teacher.isAttributeSet(MOB.Attrib.NOTEACH))
 		{
 			teacher.tell(L("You are refusing to teach right now."));
 			student.tell(L("@x1 is refusing to teach right now.",teacher.name()));
@@ -1598,7 +1598,7 @@ public class StdAbility implements Ability
 			student.tell(L("You do not have enough @x1.",ofWhat));
 			return false;
 		}
-		if((student.isAttribute(MOB.Attrib.NOTEACH))
+		if((student.isAttributeSet(MOB.Attrib.NOTEACH))
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			teacher.tell(L("@x1 is refusing training at this time.",student.name()));
@@ -1742,13 +1742,13 @@ public class StdAbility implements Ability
 			return false;
 		}
 
-		if(teacher.isAttribute(MOB.Attrib.NOTEACH))
+		if(teacher.isAttributeSet(MOB.Attrib.NOTEACH))
 		{
 			teacher.tell(L("You are refusing to teach right now."));
 			student.tell(L("@x1 is refusing to teach right now.",teacher.name()));
 			return false;
 		}
-		if((student.isAttribute(MOB.Attrib.NOTEACH))
+		if((student.isAttributeSet(MOB.Attrib.NOTEACH))
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			teacher.tell(L("@x1 is refusing training at this time.",student.name()));
@@ -1902,7 +1902,7 @@ public class StdAbility implements Ability
 	@Override
 	public boolean appropriateToMyFactions(MOB mob)
 	{
-		for(final Enumeration e=mob.fetchFactions();e.hasMoreElements();)
+		for(final Enumeration e=mob.factions();e.hasMoreElements();)
 		{
 			final String factionID=(String)e.nextElement();
 			final Faction F=CMLib.factions().getFaction(factionID);

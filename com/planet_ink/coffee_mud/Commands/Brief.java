@@ -43,15 +43,22 @@ public class Brief extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob.isAttribute(MOB.Attrib.BRIEF))
+		String parm = (commands.size() > 1) ? CMParms.combine(commands,1) : ""; 
+		if((!mob.isAttributeSet(MOB.Attrib.BRIEF) && (parm.length()==0))||(parm.equalsIgnoreCase("ON")))
+		{
+			mob.setAttribute(MOB.Attrib.BRIEF,true);
+			mob.tell(L("Brief room descriptions are now on."));
+		}
+		else
+		if((mob.isAttributeSet(MOB.Attrib.BRIEF) && (parm.length()==0))||(parm.equalsIgnoreCase("OFF")))
 		{
 			mob.setAttribute(MOB.Attrib.BRIEF,false);
 			mob.tell(L("Brief room descriptions are now off."));
 		}
 		else
+		if(parm.length() > 0)
 		{
-			mob.setAttribute(MOB.Attrib.BRIEF,true);
-			mob.tell(L("Brief room descriptions are now on."));
+			mob.tell(L("Illegal @x1 argument: '@x2'.  Try ON or OFF, or nothing to toggle.",getAccessWords()[0],parm));
 		}
 		return false;
 	}

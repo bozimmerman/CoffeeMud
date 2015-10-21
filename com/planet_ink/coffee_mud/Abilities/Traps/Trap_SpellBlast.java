@@ -32,16 +32,45 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_SpellBlast extends StdTrap
 {
-	@Override public String ID() { return "Trap_SpellBlast"; }
-	private final static String localizedName = CMLib.lang().L("spell blast");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 23;}
-	@Override public String requiresToSet(){return "a spell scroll";}
+	@Override
+	public String ID()
+	{
+		return "Trap_SpellBlast";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("spell blast");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS | Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 23;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "a spell scroll";
+	}
 
 	protected Item getPoison(MOB mob)
 	{
@@ -65,15 +94,16 @@ public class Trap_SpellBlast extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		final Scroll I=(Scroll)CMClass.getMiscMagic("StdScroll");
 		Ability A=CMClass.getAbility(text());
 		if(A==null)
 			A=CMClass.getAbility("Spell_Fireball");
 		I.setSpellList(A.ID());
-		V.addElement(I);
+		V.add(I);
 		return V;
 	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{

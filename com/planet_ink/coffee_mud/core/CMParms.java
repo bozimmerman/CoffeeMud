@@ -1010,15 +1010,31 @@ public class CMParms
 					}
 					if(x<text.length())
 					{
-						text=text.substring(x);
-						x=0;
-						while((x<text.length())
-						&&(((!endWithQuote)&&(!Character.isWhitespace(text.charAt(x)))&&(text.charAt(x)!=';')&&(text.charAt(x)!=','))
-							||((endWithQuote)&&(text.charAt(x)!='\"'))))
+						int valStart=x;
+						if(endWithQuote)
+						{
+							while(x<text.length())
+							{
+								if((text.charAt(x)=='\"')&&(text.charAt(x-1)!='\\'))
+									return text.substring(valStart,x);
 								x++;
-						return text.substring(0,x).trim();
+							}
+						}
+						else
+						{
+							while(x<text.length())
+							{
+								switch(text.charAt(x))
+								{
+								case ' ': case '\n': case '\r': case '\t':
+								case ':': case ';':
+									return text.substring(valStart,x);
+								}
+								x++;
+							}
+						}
+						return text.substring(valStart);
 					}
-
 				}
 				x=-1;
 			}

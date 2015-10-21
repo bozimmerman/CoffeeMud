@@ -64,8 +64,7 @@ public class BodyPiercing extends CommonSkill
 				else
 				{
 					commonEmote(mob,L("<S-NAME> complete(s) the piercing on @x1.",target.name(mob)));
-					final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
-					target.addTattoo(T.set(writing));
+					target.addTattoo(writing);
 				}
 			}
 		}

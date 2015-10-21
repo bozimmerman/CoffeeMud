@@ -35,13 +35,43 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_WeaponSwing extends StdTrap
 {
-	@Override public String ID() { return "Trap_WeaponSwing"; }
-	private final static String localizedName = CMLib.lang().L("weapon swing");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 9;}
-	@Override public String requiresToSet(){return "a melee weapon";}
+	@Override
+	public String ID()
+	{
+		return "Trap_WeaponSwing";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("weapon swing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS | Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 9;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "a melee weapon";
+	}
 
 	protected Item getPoison(MOB mob)
 	{
@@ -59,6 +89,7 @@ public class Trap_WeaponSwing extends StdTrap
 		}
 		return null;
 	}
+
 	@Override
 	public List<Item> getTrapComponents()
 	{
@@ -98,11 +129,12 @@ public class Trap_WeaponSwing extends StdTrap
 		}
 		return true;
 	}
+
 	@Override
 	public void spring(MOB target)
 	{
 		if((target!=invoker())
-		   &&(target.location()!=null))
+		&&(target.location()!=null))
 		{
 			final int x=text().indexOf('/');
 			int dam=3;

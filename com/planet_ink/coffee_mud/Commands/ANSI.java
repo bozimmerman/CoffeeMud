@@ -50,7 +50,7 @@ public class ANSI extends StdCommand
 				acct = mob.playerStats().getAccount();
 			if(acct != null)
 				acct.setFlag(PlayerAccount.FLAG_ANSI, true);
-			if(!mob.isAttribute(MOB.Attrib.ANSI))
+			if(!mob.isAttributeSet(MOB.Attrib.ANSI))
 			{
 				mob.setAttribute(MOB.Attrib.ANSI,true);
 				mob.tell(L("^!ANSI^N ^Hcolour^N enabled.\n\r"));

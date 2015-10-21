@@ -160,13 +160,13 @@ public class Follow extends StdCommand
 			CMLib.commands().doCommandFail(mob,origCmds,L("You cannot follow '@x1'.",target.name(mob)));
 			return false;
 		}
-		if(target.isAttribute(MOB.Attrib.NOFOLLOW))
+		if(target.isAttributeSet(MOB.Attrib.NOFOLLOW))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not accepting followers.",target.name(mob)));
 			return false;
 		}
 		final MOB ultiTarget=target.amUltimatelyFollowing();
-		if((ultiTarget!=null)&&(ultiTarget.isAttribute(MOB.Attrib.NOFOLLOW)))
+		if((ultiTarget!=null)&&(ultiTarget.isAttributeSet(MOB.Attrib.NOFOLLOW)))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not accepting followers.",ultiTarget.name()));
 			return false;

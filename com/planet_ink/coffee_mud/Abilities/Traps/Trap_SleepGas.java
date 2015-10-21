@@ -35,13 +35,43 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_SleepGas extends StdTrap
 {
-	@Override public String ID() { return "Trap_SleepGas"; }
-	private final static String localizedName = CMLib.lang().L("sleep gas");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 7;}
-	@Override public String requiresToSet(){return "some slumberall poison";}
+	@Override
+	public String ID()
+	{
+		return "Trap_SleepGas";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("sleep gas");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS | Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 7;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "some slumberall poison";
+	}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{

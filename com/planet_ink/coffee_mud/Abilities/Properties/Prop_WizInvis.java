@@ -153,7 +153,7 @@ public class Prop_WizInvis extends Property
 				disabled=true;
 			else
 			if((msg.amISource((MOB)affected))
-			&&(msg.source().isAttribute(MOB.Attrib.SYSOPMSGS))
+			&&(msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 			&&(msg.source().location()!=null)
 			&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.SYSMSGS)))
 				msg.source().setAttribute(MOB.Attrib.SYSOPMSGS,false);

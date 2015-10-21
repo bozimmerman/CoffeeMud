@@ -524,7 +524,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				if(CMLib.flags().canBeSeenBy(R, msg.source()) && (msg.source().session()!=null))
 					msg.source().session().print(L("^HOff the bow you see: ^N"));
 				final CMMsg msg2=CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), null, msg.targetCode(), null, msg.othersCode(), null);
-				if((msg.source().isAttribute(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
+				if((msg.source().isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
 					msg2.addTrailerMsg(CMClass.getMsg(msg.source(),R,null,CMMsg.MSG_LOOK_EXITS,null).setValue(CMMsg.MASK_OPTIMIZE));
 				if(R.okMessage(msg.source(), msg))
 					R.send(msg.source(),msg2);
@@ -586,7 +586,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
 					{
 						final Room R=CMLib.map().roomLocation(this.shipItem);
-						if((R!=null)&&(!((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=msg.source().isAttribute(MOB.Attrib.BRIEF))))
+						if((R!=null)&&(!((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=msg.source().isAttributeSet(MOB.Attrib.BRIEF))))
 							lookOverBow(R,msg);
 					}
 				}

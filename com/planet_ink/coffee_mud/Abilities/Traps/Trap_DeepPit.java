@@ -34,13 +34,43 @@ import java.util.*;
 */
 public class Trap_DeepPit extends Trap_RoomPit
 {
-	@Override public String ID() { return "Trap_DeepPit"; }
-	private final static String localizedName = CMLib.lang().L("deep pit");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 14;}
-	@Override public String requiresToSet(){return "";}
+	@Override
+	public String ID()
+	{
+		return "Trap_DeepPit";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("deep pit");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 14;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
 
 	@Override
 	public void finishSpringing(MOB target)

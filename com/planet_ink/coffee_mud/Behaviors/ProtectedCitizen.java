@@ -152,9 +152,9 @@ public class ProtectedCitizen extends ActiveTicker
 
 		final String claim=getClaims()[CMLib.dice().roll(1,getClaims().length,-1)].trim();
 		if(claim.startsWith(","))
-			mob.doCommand(CMParms.parse("EMOTE \""+claim.substring(1).trim()+"\""),Command.METAFLAG_FORCED);
+			mob.doCommand(CMParms.parse("EMOTE \""+claim.substring(1).trim()+"\""),MUDCmdProcessor.METAFLAG_FORCED);
 		else
-			mob.doCommand(CMParms.parse("YELL \""+claim+"\""),Command.METAFLAG_FORCED);
+			mob.doCommand(CMParms.parse("YELL \""+claim+"\""),MUDCmdProcessor.METAFLAG_FORCED);
 
 		final Room thisRoom=mob.location();
 		final Vector V=new Vector();

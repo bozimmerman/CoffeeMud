@@ -811,7 +811,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					final Command CMD=CMClass.getCommand("Deities");
 					try
 					{
-						thisTag=(String)CMD.executeInternal(forMOB, Command.METAFLAG_FORCED, D);
+						thisTag=(String)CMD.executeInternal(forMOB, MUDCmdProcessor.METAFLAG_FORCED, D);
 						helpStr = D.Name().toUpperCase();
 					}catch(final Exception e){}
 				}

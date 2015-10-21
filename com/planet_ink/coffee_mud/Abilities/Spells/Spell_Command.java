@@ -126,7 +126,7 @@ public class Spell_Command extends Spell
 					{
 						invoker=mob;
 						target.makePeace();
-						target.enqueCommand(commands,Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
+						target.enqueCommand(commands,MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
 					}
 				}
 			}

@@ -91,7 +91,7 @@ public class Loyalty extends StdAbility
 				if(CMLib.flags().canFreelyBehaveNormal(M) && (player != null))
 				{
 					watchForMaster = true;
-					if(CMLib.flags().isInTheGame(player, true) && (player.location()!=null) && (!M.isAttribute(Attrib.AUTOGUARD)) && teleport)
+					if(CMLib.flags().isInTheGame(player, true) && (player.location()!=null) && (!M.isAttributeSet(Attrib.AUTOGUARD)) && teleport)
 						CMLib.tracking().wanderCheckedFromTo(M, player.location(), true);
 				}
 			}

@@ -164,7 +164,7 @@ public class MassMailer implements Runnable
 					CMLib.database().DBDeleteJournal(journalName,key);
 					continue;
 				}
-				if(toM.isAttribute(MOB.Attrib.AUTOFORWARD)) // forwarding OFF
+				if(toM.isAttributeSet(MOB.Attrib.AUTOFORWARD)) // forwarding OFF
 					continue;
 				if((toM.playerStats()==null)
 				||(toM.playerStats().getEmail().length()==0)) // no email addy to forward TO

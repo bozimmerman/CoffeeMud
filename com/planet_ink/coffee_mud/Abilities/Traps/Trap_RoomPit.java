@@ -32,17 +32,47 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_RoomPit extends StdTrap
 {
-	@Override public String ID() { return "Trap_RoomPit"; }
-	private final static String localizedName = CMLib.lang().L("pit trap");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 1;}
-	@Override public String requiresToSet(){return "";}
-	protected Vector pit=null;
+	@Override
+	public String ID()
+	{
+		return "Trap_RoomPit";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("pit trap");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 1;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
+
+	protected List<Room> pit=null;
 
 	@Override
 	public void unInvoke()
@@ -51,8 +81,8 @@ public class Trap_RoomPit extends StdTrap
 		&&(canBeUninvoked())
 		&&(pit.size()>1))
 		{
-			final Room R1=(Room)pit.firstElement();
-			final Room R2=(Room)pit.lastElement();
+			final Room R1=pit.get(0);
+			final Room R2=pit.get(pit.size()-1);
 			while(R1.numInhabitants()>0)
 			{
 				final MOB M=R1.fetchInhabitant(0);
@@ -121,8 +151,8 @@ public class Trap_RoomPit extends StdTrap
 		&&(canBeUninvoked())
 		&&(pit!=null)
 		&&(pit.size()>1)
-		&&(((((Room)pit.firstElement()).numPCInhabitants()>0)
-			||(((Room)pit.lastElement()).numPCInhabitants()>0))))
+		&&(((pit.get(0).numPCInhabitants()>0)
+			||(pit.get(pit.size()-1).numPCInhabitants()>0))))
 			return true;
 		return super.tick(ticking,tickID);
 	}
@@ -131,7 +161,7 @@ public class Trap_RoomPit extends StdTrap
 	{
 		if((pit==null)||(pit.size()<2))
 		{
-			final Vector V=new Vector();
+			final List<Room> V=new Vector<Room>();
 			final Room myPitUp=CMClass.getLocale("ClimbableSurface");
 			myPitUp.setRoomID("");
 			myPitUp.setSavable(false);
@@ -154,8 +184,8 @@ public class Trap_RoomPit extends StdTrap
 			myPitUp.setRawExit(Directions.DOWN,exit);
 			myPitUp.rawDoors()[Directions.DOWN]=myPit;
 			myPitUp.recoverPhyStats();
-			V.addElement(myPit);
-			V.addElement(myPitUp);
+			V.add(myPit);
+			V.add(myPitUp);
 			pit=V;
 		}
 	}
@@ -215,17 +245,17 @@ public class Trap_RoomPit extends StdTrap
 				final Exit door=CMClass.getExit("StdClosedDoorway");
 				door.setSavable(false);
 				door.setOpenDelayTicks(10);
-				((Room)pit.lastElement()).setRawExit(Directions.UP,door);
-				((Room)pit.lastElement()).rawDoors()[Directions.UP]=target.location();
+				pit.get(pit.size()-1).setRawExit(Directions.UP,door);
+				pit.get(pit.size()-1).rawDoors()[Directions.UP]=target.location();
 				if((target.location().getRoomInDir(Directions.DOWN)==null)
 				&&(target.location().getExitInDir(Directions.DOWN)==null))
 				{
 					target.location().setRawExit(Directions.DOWN,door);
-					target.location().rawDoors()[Directions.DOWN]=((Room)pit.lastElement());
+					target.location().rawDoors()[Directions.DOWN]=(pit.get(pit.size()-1));
 				}
 				if((!door.isOpen())&&(affected instanceof Room))
 					door.executeMsg(target, CMClass.getMsg(target,door,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_OPEN,null));
-				((Room)pit.firstElement()).bringMobHere(target,false);
+				pit.get(0).bringMobHere(target,false);
 				finishSpringing(target);
 			}
 		}

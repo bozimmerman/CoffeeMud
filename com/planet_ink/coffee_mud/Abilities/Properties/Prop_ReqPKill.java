@@ -56,14 +56,14 @@ public class Prop_ReqPKill extends Property implements TriggeredAffect
 		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			if((!msg.source().isMonster())
-			   &&(!msg.source().isAttribute(MOB.Attrib.PLAYERKILL)))
+			   &&(!msg.source().isAttributeSet(MOB.Attrib.PLAYERKILL)))
 			{
 				msg.source().tell(L("You must have your playerkill flag set to enter here."));
 				return false;
 			}
 		}
 		if((!msg.source().isMonster())
- 		&&(!msg.source().isAttribute(MOB.Attrib.PLAYERKILL)))
+ 		&&(!msg.source().isAttributeSet(MOB.Attrib.PLAYERKILL)))
 		{
 			final Room R=CMLib.map().roomLocation(msg.source());
 			if((R!=null)&&((R==affected)||(R.getArea()==affected)||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(R.getArea())))))

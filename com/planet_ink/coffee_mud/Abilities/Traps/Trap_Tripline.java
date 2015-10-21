@@ -32,18 +32,51 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_Tripline extends StdTrap
 {
-	@Override public String ID() { return "Trap_Tripline"; }
-	private final static String localizedName = CMLib.lang().L("tripline");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 1;}
-	@Override public String requiresToSet(){return "a pound of cloth";}
+	@Override
+	public String ID()
+	{
+		return "Trap_Tripline";
+	}
 
-	@Override public int baseRejuvTime(int level){return 2;}
+	private final static String	localizedName	= CMLib.lang().L("tripline");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 1;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "a pound of cloth";
+	}
+
+	@Override
+	public int baseRejuvTime(int level)
+	{
+		return 2;
+	}
 
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
@@ -62,10 +95,11 @@ public class Trap_Tripline extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
-		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON));
+		final List<Item> V=new Vector<Item>();
+		V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON));
 		return V;
 	}
+
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{

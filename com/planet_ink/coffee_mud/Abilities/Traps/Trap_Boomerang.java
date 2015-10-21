@@ -34,13 +34,43 @@ import java.util.*;
 */
 public class Trap_Boomerang extends StdTrap
 {
-	@Override public String ID() { return "Trap_Boomerang"; }
-	private final static String localizedName = CMLib.lang().L("boomerang");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 24;}
-	@Override public String requiresToSet(){return "";}
+	@Override
+	public String ID()
+	{
+		return "Trap_Boomerang";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("boomerang");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 24;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

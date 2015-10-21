@@ -188,7 +188,7 @@ public class Dueler extends StdAbility
 
 	public void init(MOB mob)
 	{
-		oldPVPStatus=mob.isAttribute(MOB.Attrib.PLAYERKILL);
+		oldPVPStatus=mob.isAttributeSet(MOB.Attrib.PLAYERKILL);
 		mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
 		oldCurState=(CharState)mob.curState().copyOf();
 		oldEffects.clear();

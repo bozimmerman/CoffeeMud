@@ -24,7 +24,7 @@ import java.util.Vector;
  * They can automatically expire by setting a tick down, or a number of
  * ticks to live.
  */
-public interface Tattoo extends Cloneable, CMObject
+public interface Tattoo extends Cloneable, CMObject, CMCommon
 {
 	
 	/**

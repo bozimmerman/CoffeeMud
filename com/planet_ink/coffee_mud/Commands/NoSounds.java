@@ -45,7 +45,7 @@ public class NoSounds extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if((mob.isAttribute(MOB.Attrib.SOUND))
+			if((mob.isAttributeSet(MOB.Attrib.SOUND))
 			||(mob.session().getClientTelnetMode(Session.TELNET_MSP)))
 			{
 				mob.setAttribute(MOB.Attrib.SOUND,false);

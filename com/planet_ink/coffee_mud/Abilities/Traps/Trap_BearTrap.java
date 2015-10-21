@@ -32,17 +32,51 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_BearTrap extends StdTrap
 {
-	@Override public String ID() { return "Trap_BearTrap"; }
-	private final static String localizedName = CMLib.lang().L("bear trap");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 16;}
-	@Override public String requiresToSet(){return "30 pounds of metal";}
-	@Override public int baseRejuvTime(int level){ return 35;}
+	@Override
+	public String ID()
+	{
+		return "Trap_BearTrap";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("bear trap");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 16;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "30 pounds of metal";
+	}
+
+	@Override
+	public int baseRejuvTime(int level)
+	{
+		return 35;
+	}
 
 	protected int amountRemaining=250;
 	protected MOB trapped=null;
@@ -66,11 +100,12 @@ public class Trap_BearTrap extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		for(int i=0;i<30;i++)
-			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
+			V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
 		return V;
 	}
+	
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{

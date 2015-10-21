@@ -210,12 +210,12 @@ public class Train extends StdCommand
 			CMLib.commands().doCommandFail(mob,origCmds,L("You cannot train with yourself!"));
 			return false;
 		}
-		if(teacher.isAttribute(MOB.Attrib.NOTEACH))
+		if(teacher.isAttributeSet(MOB.Attrib.NOTEACH))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is refusing to teach right now.",teacher.name()));
 			return false;
 		}
-		if(mob.isAttribute(MOB.Attrib.NOTEACH))
+		if(mob.isAttributeSet(MOB.Attrib.NOTEACH))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("You are refusing training at this time."));
 			return false;

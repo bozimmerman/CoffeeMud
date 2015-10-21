@@ -32,16 +32,45 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_Boulders extends StdTrap
 {
-	@Override public String ID() { return "Trap_Boulders"; }
-	private final static String localizedName = CMLib.lang().L("boulders");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 20;}
-	@Override public String requiresToSet(){return "50 pounds of boulders";}
+	@Override
+	public String ID()
+	{
+		return "Trap_Boulders";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("boulders");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 20;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "50 pounds of boulders";
+	}
 
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
@@ -60,11 +89,12 @@ public class Trap_Boulders extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		for(int i=0;i<50;i++)
-			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
+			V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
 		return V;
 	}
+
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
@@ -83,9 +113,9 @@ public class Trap_Boulders extends StdTrap
 			{
 				final Room R=(Room)P;
 				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
-				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
-				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
-				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_HILLS))
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_HILLS))
 				{
 					mob.tell(L("You can only set this trap in caves, or by mountains or hills."));
 					return false;

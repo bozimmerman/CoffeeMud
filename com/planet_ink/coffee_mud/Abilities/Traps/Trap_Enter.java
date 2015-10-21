@@ -35,11 +35,31 @@ import java.util.*;
 */
 public class Trap_Enter extends Trap_Trap
 {
-	@Override public String ID() { return "Trap_Enter"; }
-	private final static String localizedName = CMLib.lang().L("Entry Trap");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Trap_Enter";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Entry Trap");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS | Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -49,8 +69,8 @@ public class Trap_Enter extends Trap_Trap
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		   if((msg.amITarget(affected))
- 			||((msg.tool()!=null)&&(msg.tool()==affected)))
+		if((msg.amITarget(affected))
+ 		||((msg.tool()!=null)&&(msg.tool()==affected)))
 		{
 			if((msg.targetMinor()==CMMsg.TYP_ENTER)
 			||(msg.targetMinor()==CMMsg.TYP_LEAVE)
@@ -64,6 +84,7 @@ public class Trap_Enter extends Trap_Trap
 		}
 		return true;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

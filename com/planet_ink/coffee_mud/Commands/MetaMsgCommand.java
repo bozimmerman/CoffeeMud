@@ -43,7 +43,7 @@ public class MetaMsgCommand extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(!CMath.bset(metaFlags,METAFLAG_ASMESSAGE))
+		if(!CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_ASMESSAGE))
 			return CMLib.commands().handleUnknownCommand(mob, commands);
 		else
 		{

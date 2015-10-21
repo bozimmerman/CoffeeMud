@@ -3296,7 +3296,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if((alignStr.length()>0)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
 				CMLib.factions().setAlignmentOldRange(mob,CMath.s_int(alignStr));
 			mob.setExperience(CMLib.xml().getIntFromPieces(mblk.contents,"EXP"));
-			mob.setExpNextLevel(CMLib.xml().getIntFromPieces(mblk.contents,"EXLV"));
+			//mob.setExpNextLevel(CMLib.xml().getIntFromPieces(mblk.contents,"EXLV"));
 			mob.setWorshipCharID(CMLib.xml().getValFromPieces(mblk.contents,"WORS"));
 			mob.setPractices(CMLib.xml().getIntFromPieces(mblk.contents,"PRAC"));
 			mob.setTrains(CMLib.xml().getIntFromPieces(mblk.contents,"TRAI"));
@@ -4247,7 +4247,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public String getFactionXML(MOB mob)
 	{
 		final StringBuilder facts=new StringBuilder();
-		for(final Enumeration<String> e=mob.fetchFactions();e.hasMoreElements();)
+		for(final Enumeration<String> e=mob.factions();e.hasMoreElements();)
 		{
 			final String name=e.nextElement();
 			final int val=mob.fetchFaction(name);

@@ -32,16 +32,45 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_Snare extends StdTrap
 {
-	@Override public String ID() { return "Trap_Snare"; }
-	private final static String localizedName = CMLib.lang().L("snare trap");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 5;}
-	@Override public String requiresToSet(){return "5 pounds of cloth";}
+	@Override
+	public String ID()
+	{
+		return "Trap_Snare";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("snare trap");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 5;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "5 pounds of cloth";
+	}
 
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
@@ -60,11 +89,12 @@ public class Trap_Snare extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		for(int i=0;i<5;i++)
-			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON));
+			V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON));
 		return V;
 	}
+
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{

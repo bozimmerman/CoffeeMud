@@ -52,7 +52,7 @@ public class Config extends StdCommand
 				continue;
 
 			msg.append(CMStrings.padRight(a.getName(),15)+": ");
-			boolean set=mob.isAttribute(a);
+			boolean set=mob.isAttributeSet(a);
 			if(a.isAutoReversed()) 
 				set=!set;
 			msg.append(set?L("ON"):L("OFF"));

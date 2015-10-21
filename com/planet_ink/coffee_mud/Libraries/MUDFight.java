@@ -448,7 +448,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((attacker==null)||(!attacker.mayPhysicallyAttack(target)))
 			return false;
 		if((weapon==null)
-		&&(attacker.isAttribute(MOB.Attrib.AUTODRAW)))
+		&&(attacker.isAttributeSet(MOB.Attrib.AUTODRAW)))
 		{
 			CMLib.commands().postDraw(attacker,false,true);
 			weapon=attacker.fetchWieldedItem();
@@ -1083,7 +1083,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final Vector<MOB> goldLooters=new Vector<MOB>();
 		for (final MOB M : beneficiaries)
 		{
-			if(((M.isAttribute(MOB.Attrib.AUTOGOLD))
+			if(((M.isAttributeSet(MOB.Attrib.AUTOGOLD))
 			&&(!goldLooters.contains(M)))
 			&&(M!=target)
 			&&(M.location()==deathRoom)
@@ -1149,7 +1149,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&(body!=null)
 			&&(source.location()==bodyRoom)
 			&&(bodyRoom.isInhabitant(source))
-			&&(source.isAttribute(MOB.Attrib.AUTOLOOT)))
+			&&(source.isAttributeSet(MOB.Attrib.AUTOLOOT)))
 			{
 				if((source.riding()!=null)&&(source.riding() instanceof MOB))
 					source.tell(L("You'll need to dismount to loot the body."));
@@ -1703,7 +1703,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			return;
 		if((target.location()!=observer.location())||(target.location()!=source.location()))
 			return;
-		if((observer.isAttribute(MOB.Attrib.AUTOASSIST)))
+		if((observer.isAttributeSet(MOB.Attrib.AUTOASSIST)))
 			return;
 		if(observer.isInCombat())
 			return;
@@ -1748,6 +1748,23 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return V;
 	}
 
+	private int maxRangeWith(final MOB mob, final Environmental tool)
+	{
+		int max = 0;
+		if (tool != null)
+			max = tool.maxRange();
+		if (mob.maxRange() < max)
+			max = mob.maxRange();
+		return max;
+	}
+
+	private int minRangeWith(final MOB mob, final Environmental tool)
+	{
+		if (tool != null)
+			return tool.minRange();
+		return mob.minRange();
+	}
+	
 	@Override
 	public void establishRange(MOB source, MOB target, Environmental tool)
 	{
@@ -1801,11 +1818,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					if(follow.rangeToTarget()>=0)
 					{
 						newRange=follow.rangeToTarget();
-						if(newRange<source.maxRange(tool))
-							newRange=source.maxRange(tool);
+						if(newRange<maxRangeWith(source,tool))
+							newRange=maxRangeWith(source,tool);
 					}
 					else
-						newRange=source.maxRange(tool);
+						newRange=maxRangeWith(source,tool);
 				}
 				else
 				{
@@ -1817,7 +1834,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				source.setRangeToTarget(newRange);
 			}
 			else
-				source.setRangeToTarget(source.maxRange(tool));
+				source.setRangeToTarget(maxRangeWith(source,tool));
 			source.recoverPhyStats();
 		}
 	}
@@ -1826,12 +1843,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		if((weapon!=null)&&(weapon.amWearingAt(Wearable.IN_INVENTORY)))
 			weapon=fighter.fetchWieldedItem();
-		if((!fighter.isAttribute(MOB.Attrib.AUTOMELEE)))
+		if((!fighter.isAttributeSet(MOB.Attrib.AUTOMELEE)))
 			postAttack(fighter,fighter.getVictim(),weapon);
 		else
 		{
-			boolean inminrange=(fighter.rangeToTarget()>=fighter.minRange(weapon));
-			boolean inmaxrange=(fighter.rangeToTarget()<=fighter.maxRange(weapon));
+			boolean inminrange=(fighter.rangeToTarget()>=minRangeWith(fighter, weapon));
+			boolean inmaxrange=(fighter.rangeToTarget()<=maxRangeWith(fighter, weapon));
 			if((folrange>=0)&&(fighter.rangeToTarget()>=0)&&(folrange!=fighter.rangeToTarget()))
 			{
 				if(fighter.rangeToTarget()<folrange)
@@ -1936,7 +1953,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		Item weapon=fighter.fetchWieldedItem();
 
-		if((fighter.isAttribute(MOB.Attrib.AUTODRAW))&&(weapon==null))
+		if((fighter.isAttributeSet(MOB.Attrib.AUTODRAW))&&(weapon==null))
 		{
 			CMLib.commands().postDraw(fighter,false,true);
 			weapon=fighter.fetchWieldedItem();
@@ -1946,7 +1963,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 		subtickBeforeAttack(fighter, combatSystem);
 
-		final int folrange=(fighter.isAttribute(MOB.Attrib.AUTOMELEE)
+		final int folrange=(fighter.isAttributeSet(MOB.Attrib.AUTOMELEE)
 						&&(fighter.amFollowing()!=null)
 						&&(fighter.amFollowing().getVictim()==fighter.getVictim())
 						&&(fighter.amFollowing().rangeToTarget()>=0)

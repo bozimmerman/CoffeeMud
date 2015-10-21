@@ -144,7 +144,7 @@ public class Thief_Bribe extends ThiefSkill
 				mob.location().send(mob,msg);
 				mob.location().send(mob,omsg);
 				if(omsg.sourceMinor()==CMMsg.TYP_ORDER)
-					target.doCommand(commands,Command.METAFLAG_FORCED|Command.METAFLAG_ORDER);
+					target.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER);
 			}
 			CMLib.beanCounter().addMoney(mob,currency,amountRequired);
 			target.recoverPhyStats();

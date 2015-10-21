@@ -32,16 +32,45 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_Ignition extends StdTrap
 {
-	@Override public String ID() { return "Trap_Ignition"; }
-	private final static String localizedName = CMLib.lang().L("ignition trap");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 8;}
-	@Override public String requiresToSet(){return "a container of lamp oil";}
+	@Override
+	public String ID()
+	{
+		return "Trap_Ignition";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("ignition trap");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 8;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "a container of lamp oil";
+	}
 
 	protected Item getPoison(MOB mob)
 	{
@@ -55,9 +84,9 @@ public class Trap_Ignition extends StdTrap
 			if((I!=null)
 			&&(I instanceof Drink)
 			&&(((((Drink)I).containsDrink())
-					&&(((Drink)I).liquidType()==RawMaterial.RESOURCE_LAMPOIL))
-						||(I.material()==RawMaterial.RESOURCE_LAMPOIL)))
-				return I;
+				&&(((Drink)I).liquidType()==RawMaterial.RESOURCE_LAMPOIL))
+					||(I.material()==RawMaterial.RESOURCE_LAMPOIL)))
+						return I;
 		}
 		return null;
 	}
@@ -75,11 +104,12 @@ public class Trap_Ignition extends StdTrap
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
+
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
-		V.addElement(CMClass.getBasicItem("OilFlask"));
+		final List<Item> V=new Vector<Item>();
+		V.add(CMClass.getBasicItem("OilFlask"));
 		return V;
 	}
 
@@ -97,6 +127,7 @@ public class Trap_Ignition extends StdTrap
 		}
 		return true;
 	}
+
 	@Override
 	public void spring(MOB target)
 	{

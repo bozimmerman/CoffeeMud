@@ -35,10 +35,35 @@ import java.util.*;
 */
 public class Trap_OpenNeedle extends Trap_Open
 {
-	@Override public String ID() { return "Trap_OpenNeedle"; }
-	private final static String localizedName = CMLib.lang().L("Open Needle Trap");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapType(){return TRAP_NEEDLE;}
+	@Override
+	public String ID()
+	{
+		return "Trap_OpenNeedle";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Open Needle Trap");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS | Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapType()
+	{
+		return TRAP_NEEDLE;
+	}
 }

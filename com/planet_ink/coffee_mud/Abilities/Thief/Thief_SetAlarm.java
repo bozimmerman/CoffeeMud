@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,37 +32,146 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_SetAlarm extends ThiefSkill implements Trap
 {
-	@Override public String ID() { return "Thief_SetAlarm"; }
-	private final static String localizedName = CMLib.lang().L("Set Alarm");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS;}
-	@Override protected int canTargetCode(){return Ability.CAN_EXITS;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"SETALARM"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	protected boolean sprung=false;
-	public Room room1=null;
-	public Room room2=null;
+	@Override
+	public String ID()
+	{
+		return "Thief_SetAlarm";
+	}
 
-	@Override public boolean isABomb(){return false;}
-	@Override public void activateBomb(){}
-	@Override public boolean sprung(){return sprung;}
-	@Override public boolean disabled(){return false;}
-	@Override public void disable(){ unInvoke();}
-	@Override public void setReset(int Reset){}
-	@Override public int getReset(){return 0;}
-	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	@Override public List<Item> getTrapComponents() { return new Vector(); }
-	@Override public String requiresToSet(){return "";}
+	private final static String	localizedName	= CMLib.lang().L("Set Alarm");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_EXITS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_TRAPPING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SETALARM" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	protected boolean	sprung	= false;
+	public Room			room1	= null;
+	public Room			room2	= null;
+
+	@Override
+	public boolean isABomb()
+	{
+		return false;
+	}
+
+	@Override
+	public void activateBomb()
+	{
+	}
+
+	@Override
+	public boolean sprung()
+	{
+		return sprung;
+	}
+
+	@Override
+	public boolean disabled()
+	{
+		return false;
+	}
+
+	@Override
+	public void disable()
+	{
+		unInvoke();
+	}
+
+	@Override
+	public void setReset(int Reset)
+	{
+	}
+
+	@Override
+	public int getReset()
+	{
+		return 0;
+	}
+
+	@Override
+	public void resetTrap(MOB mob)
+	{
+
+	}
+
+	@Override
+	public boolean maySetTrap(MOB mob, int asLevel)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canSetTrapOn(MOB mob, Physical P)
+	{
+		return false;
+	}
+
+	@Override
+	public List<Item> getTrapComponents()
+	{
+		return new Vector<Item>(1);
+	}
+
+	@Override
+	public boolean canReSetTrap(MOB mob)
+	{
+		return false;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
-	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0);return (Trap)P.fetchEffect(ID());}
+	{
+		beneficialAffect(mob, P, qualifyingClassLevel + trapBonus, 0);
+		return (Trap) P.fetchEffect(ID());
+	}
 
 	@Override
 	public void spring(MOB M)
@@ -94,19 +202,19 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			return false;
 		if(sprung)
 		{
-			final Vector rooms=new Vector();
+			final List<Room> rooms=new ArrayList<Room>();
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
 					.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 					.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 			CMLib.tracking().getRadiantRooms(room1,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
 			CMLib.tracking().getRadiantRooms(room2,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
-			final Vector mobsDone=new Vector();
+			final List<MOB> mobsDone=new ArrayList<MOB>();
 			room1.showHappens(CMMsg.MSG_NOISE,L("A horrible alarm is going off here."));
 			room2.showHappens(CMMsg.MSG_NOISE,L("A horrible alarm is going off here."));
 			for(int r=0;r<rooms.size();r++)
 			{
-				final Room R=(Room)rooms.elementAt(r);
+				final Room R=rooms.get(r);
 				if((R!=room1)&&(R!=room2))
 				{
 					final int dir=CMLib.tracking().radiatesFromDir(R,rooms);
@@ -125,7 +233,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 							&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
 							&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 							{
-								mobsDone.addElement(M);
+								mobsDone.add(M);
 								CMLib.tracking().walk(M,dir,false,false);
 							}
 						}
@@ -137,6 +245,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		return true;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

@@ -44,7 +44,7 @@ public class Tell extends StdCommand
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
-		if((!mob.isMonster())&&mob.isAttribute(MOB.Attrib.QUIET))
+		if((!mob.isMonster())&&mob.isAttributeSet(MOB.Attrib.QUIET))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("You have QUIET mode on.  You must turn it off first."));
 			return false;
@@ -63,8 +63,8 @@ public class Tell extends StdCommand
 		{
 			final java.util.List<String> V=mob.playerStats().getTellStack();
 			if((V.size()==0)
-			||(CMath.bset(metaFlags,Command.METAFLAG_AS))
-			||(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED)))
+			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS))
+			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED)))
 				CMLib.commands().doCommandFail(mob,origCmds,L("No telling."));
 			else
 			{
@@ -139,7 +139,7 @@ public class Tell extends StdCommand
 			return false;
 		}
 
-		if(targetM.isAttribute(MOB.Attrib.QUIET))
+		if(targetM.isAttributeSet(MOB.Attrib.QUIET))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("That person can not hear you."));
 			return false;

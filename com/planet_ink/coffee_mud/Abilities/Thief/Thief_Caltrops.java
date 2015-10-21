@@ -32,36 +32,147 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Caltrops extends ThiefSkill implements Trap
 {
-	@Override public String ID() { return "Thief_Caltrops"; }
-	private final static String localizedName = CMLib.lang().L("Caltrops");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_TRAPPING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"CALTROPS"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public String caltropTypeName(){return "";}
+	@Override
+	public String ID()
+	{
+		return "Thief_Caltrops";
+	}
 
-	@Override public boolean isABomb(){return false;}
-	@Override public void activateBomb(){}
-	@Override public boolean disabled(){return false;}
-	@Override public void disable(){ unInvoke();}
-	@Override public void setReset(int Reset){}
-	@Override public int getReset(){return 0;}
-	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	@Override public List<Item> getTrapComponents() { return new Vector(); }
-	@Override public String requiresToSet(){return "";}
+	private final static String	localizedName	= CMLib.lang().L("Caltrops");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_TRAPPING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "CALTROPS" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	public String caltropTypeName()
+	{
+		return "";
+	}
+
+	@Override
+	public boolean isABomb()
+	{
+		return false;
+	}
+
+	@Override
+	public void activateBomb()
+	{
+	}
+
+	@Override
+	public boolean disabled()
+	{
+		return false;
+	}
+
+	@Override
+	public void disable()
+	{
+		unInvoke();
+	}
+
+	@Override
+	public void setReset(int Reset)
+	{
+	}
+
+	@Override
+	public int getReset()
+	{
+		return 0;
+	}
+
+	@Override
+	public void resetTrap(MOB mob)
+	{
+	}
+
+	@Override
+	public boolean maySetTrap(MOB mob, int asLevel)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canSetTrapOn(MOB mob, Physical P)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canReSetTrap(MOB mob)
+	{
+		return false;
+	}
+
+	@Override
+	public List<Item> getTrapComponents()
+	{
+		return new Vector<Item>(1);
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
-	{maliciousAffect(mob,P,qualifyingClassLevel+trapBonus,0,-1); return (Trap)P.fetchEffect(ID());}
+	{
+		maliciousAffect(mob, P, qualifyingClassLevel + trapBonus, 0, -1);
+		return (Trap) P.fetchEffect(ID());
+	}
 
-	@Override public boolean sprung(){return false;}
+	@Override
+	public boolean sprung()
+	{
+		return false;
+	}
+
 	@Override
 	public void spring(MOB mob)
 	{
@@ -111,6 +222,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		return true;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

@@ -232,7 +232,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return;
 
 		S.initTelnetMode(mob.getAttributesBitmap());
-		if((mob.isAttribute(MOB.Attrib.MXP))
+		if((mob.isAttributeSet(MOB.Attrib.MXP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 		{
 			if(S.getClientTelnetMode(Session.TELNET_MXP))
@@ -251,7 +251,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			S.setClientTelnetMode(Session.TELNET_MXP,false);
 		}
 
-		if((mob.isAttribute(MOB.Attrib.SOUND))
+		if((mob.isAttributeSet(MOB.Attrib.SOUND))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)))
 		{
 			if(!S.getClientTelnetMode(Session.TELNET_MSP))
@@ -274,7 +274,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		if((mob.session()==null)
 		||(mob.isMonster())
-		||(mob.isAttribute(MOB.Attrib.DAILYMESSAGE)))
+		||(mob.isAttributeSet(MOB.Attrib.DAILYMESSAGE)))
 			return;
 
 		C=CMClass.getCommand("MOTD");
@@ -605,7 +605,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if((listenerM!=null)
 				&&(listenerM!=mob)
 				&&((!CMLib.flags().isCloaked(mob))||(CMSecurity.isASysOp(listenerM)))
-				&&(listenerM.isAttribute(MOB.Attrib.AUTONOTIFY)))
+				&&(listenerM.isAttributeSet(MOB.Attrib.AUTONOTIFY)))
 				{
 					final PlayerStats listenerPStats=listenerM.playerStats();
 					if((listenerPStats!=null)
@@ -3003,10 +3003,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CMProps.addNewUserByIP(session.getAddress());
 		notifyFriends(mob,"^X"+mob.Name()+" has just been created.^.^?");
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS"))
-		&&(!mob.isAttribute(MOB.Attrib.PLAYERKILL)))
+		&&(!mob.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 			mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("NEVER"))
-		&&(mob.isAttribute(MOB.Attrib.PLAYERKILL)))
+		&&(mob.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 			mob.setAttribute(MOB.Attrib.PLAYERKILL,false);
 		CMLib.database().DBUpdatePlayer(mob);
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
@@ -3222,10 +3222,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.playerStats().setLastIP(session.getAddress());
 		notifyFriends(mob,"^X"+mob.Name()+" has logged on.^.^?");
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS"))
-		&&(!mob.isAttribute(MOB.Attrib.PLAYERKILL)))
+		&&(!mob.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 			mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("NEVER"))
-		&&(mob.isAttribute(MOB.Attrib.PLAYERKILL)))
+		&&(mob.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 			mob.setAttribute(MOB.Attrib.PLAYERKILL,false);
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGINS);
 		if(!CMLib.flags().isCloaked(mob))
@@ -3543,7 +3543,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		while(!session.isStopped())
 		{
 			if(res==LoginResult.INPUT_REQUIRED)
-				loginObj.lastInput=session.blockingIn(90000);
+				loginObj.lastInput=session.blockingIn(90000, true);
 			if(loginObj.state==LoginState.CHARCR_STATDONE)
 				return;
 			if(loginObj.state.toString().startsWith("CHARCR_STAT"))
@@ -3566,7 +3566,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		while((session!=null)&&(!session.isStopped()))
 		{
 			if(res==LoginResult.INPUT_REQUIRED)
-				loginObj.lastInput=session.blockingIn(90000);
+				loginObj.lastInput=session.blockingIn(90000, true);
 			if(loginObj.state==LoginState.CHARCR_CLASSDONE)
 				return mob.baseCharStats().getCurrentClass();
 			if(loginObj.state.toString().startsWith("CHARCR_CLASS"))
@@ -3592,7 +3592,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			while(!session.isStopped())
 			{
 				if(res==LoginResult.INPUT_REQUIRED)
-					loginObj.lastInput=session.blockingIn(90000);
+					loginObj.lastInput=session.blockingIn(90000, true);
 				if((res==LoginResult.NORMAL_LOGIN)||(res==LoginResult.NO_LOGIN))
 					return res;
 				if(loginObj.state.toString().startsWith("CHARCR_"))

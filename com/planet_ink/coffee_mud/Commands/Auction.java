@@ -136,7 +136,7 @@ public class Auction extends Channel implements Tickable
 						if((winnerM!=null)&&(winnerM!=getLiveData().getAuctioningMob()))
 						{
 							V.add(getLiveData().getAuctionedItem().name()+" SOLD to "+winnerM.name()+" for "+CMLib.beanCounter().nameCurrencyShort(getLiveData().getCurrency(),getLiveData().getBid())+".");
-							auctioneerM.doCommand(V,Command.METAFLAG_FORCED);
+							auctioneerM.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 							if(getLiveData().getAuctionedItem() != null)
 							{
 								getLiveData().getAuctionedItem().unWear();
@@ -178,7 +178,7 @@ public class Auction extends Channel implements Tickable
 					}
 					return false;
 				}
-				auctioneerM.doCommand(V,Command.METAFLAG_FORCED);
+				auctioneerM.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 			}
 		}
 		return true;
@@ -212,7 +212,7 @@ public class Auction extends Channel implements Tickable
 				mob.delItem((Item)target);
 			V.add("New live auction: "+getLiveData().getAuctionedItem().name()+".  The opening bid is "+bidWords+".");
 			if(getLiveData().getAuctioningMob()!=null)
-				getLiveData().getAuctioningMob().doCommand(V,Command.METAFLAG_FORCED);
+				getLiveData().getAuctioningMob().doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 		}
 		else
 		{
@@ -235,7 +235,7 @@ public class Auction extends Channel implements Tickable
 			}
 			if((V.size()>2)
 			&&(getLiveData().getAuctioningMob()!=null))
-				getLiveData().getAuctioningMob().doCommand(V,Command.METAFLAG_FORCED);
+				getLiveData().getAuctioningMob().doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 		}
 		return true;
 	}

@@ -48,7 +48,7 @@ public class After extends StdCommand implements Tickable
 		long duration=0;
 		boolean every=false;
 		MOB M=null;
-		Vector command=null;
+		List<String> command=null;
 		int metaFlags=0;
 	}
 
@@ -112,7 +112,7 @@ public class After extends StdCommand implements Tickable
 		V.duration=time;
 		V.every=every;
 		V.M=mob;
-		V.command=commands;
+		V.command=new XVector<String>(CMParms.toStringArray(commands));
 		V.metaFlags=metaFlags;
 		afterCmds.add(V);
 		CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
@@ -120,10 +120,17 @@ public class After extends StdCommand implements Tickable
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AFTER);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
-
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.AFTER);
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -144,7 +151,7 @@ public class After extends StdCommand implements Tickable
 				}
 				else
 					afterCmds.remove(s);
-				cmd.M.doCommand((Vector)cmd.command.clone(),cmd.metaFlags);
+				cmd.M.doCommand(new XVector<String>(cmd.command),cmd.metaFlags);
 			}
 			else
 				s++;

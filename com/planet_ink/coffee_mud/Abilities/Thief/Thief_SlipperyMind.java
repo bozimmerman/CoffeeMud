@@ -62,7 +62,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 			if(oldFactions==null)
 			{
 				oldFactions=new LinkedList<Pair<Faction,Integer>>();
-				for(final Enumeration e=mob.fetchFactions();e.hasMoreElements();)
+				for(final Enumeration e=mob.factions();e.hasMoreElements();)
 				{
 					F=CMLib.factions().getFaction((String)e.nextElement());
 					if(F!=null)

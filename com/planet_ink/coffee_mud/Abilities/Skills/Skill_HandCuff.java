@@ -248,13 +248,13 @@ public class Skill_HandCuff extends StdSkill
 								if(auto)
 									A.makeLongLasting();
 							}
-							oldAssist=target.isAttribute(MOB.Attrib.AUTOASSIST);
+							oldAssist=target.isAttributeSet(MOB.Attrib.AUTOASSIST);
 							if(!oldAssist)
 								target.setAttribute(MOB.Attrib.AUTOASSIST,true);
-							oldGuard=target.isAttribute(MOB.Attrib.AUTOASSIST);
+							oldGuard=target.isAttributeSet(MOB.Attrib.AUTOASSIST);
 							if(oldGuard)
 								target.setAttribute(MOB.Attrib.AUTOGUARD,false);
-							final boolean oldNOFOL=target.isAttribute(MOB.Attrib.NOFOLLOW);
+							final boolean oldNOFOL=target.isAttributeSet(MOB.Attrib.NOFOLLOW);
 							if(target.numFollowers()>0)
 								CMLib.commands().forceStandardCommand(target,"NoFollow",new XVector("UNFOLLOW","QUIETLY"));
 							target.setAttribute(MOB.Attrib.NOFOLLOW,false);

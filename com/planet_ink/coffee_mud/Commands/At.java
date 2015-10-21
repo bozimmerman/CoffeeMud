@@ -71,7 +71,7 @@ public class At extends StdCommand
 		final Room R=mob.location();
 		if(R!=room)
 			room.bringMobHere(mob,false);
-		mob.doCommand(commands,metaFlags);
+		mob.doCommand(new XVector<String>(CMParms.toStringArray(commands)),metaFlags);
 		if(mob.location()!=R)
 			R.bringMobHere(mob,false);
 		return false;

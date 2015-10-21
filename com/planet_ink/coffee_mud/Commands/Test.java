@@ -928,17 +928,17 @@ public class Test extends StdCommand
 			if(what.equalsIgnoreCase("metaflags")||what.equalsIgnoreCase("all"))
 			{
 				final StringBuffer str=new StringBuffer("");
-				if(CMath.bset(metaFlags,Command.METAFLAG_AS))
+				if(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS))
 					str.append(L(" AS "));
-				if(CMath.bset(metaFlags,Command.METAFLAG_FORCED))
+				if(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_FORCED))
 					str.append(L(" FORCED "));
-				if(CMath.bset(metaFlags,Command.METAFLAG_MPFORCED))
+				if(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_MPFORCED))
 					str.append(L(" MPFORCED "));
-				if(CMath.bset(metaFlags,Command.METAFLAG_ORDER))
+				if(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_ORDER))
 					str.append(L(" ORDERED "));
-				if(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED))
+				if(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED))
 					str.append(L(" POSSESSED "));
-				if(CMath.bset(metaFlags,Command.METAFLAG_SNOOPED))
+				if(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_SNOOPED))
 					str.append(L(" SNOOPED "));
 				mob.tell(str.toString());
 			}

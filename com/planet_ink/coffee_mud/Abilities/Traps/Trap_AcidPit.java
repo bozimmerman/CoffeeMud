@@ -34,13 +34,43 @@ import java.util.*;
 */
 public class Trap_AcidPit extends Trap_RoomPit
 {
-	@Override public String ID() { return "Trap_AcidPit"; }
-	private final static String localizedName = CMLib.lang().L("acid pit");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 18;}
-	@Override public String requiresToSet(){return L("1 pound of lemons or limes");}
+	@Override
+	public String ID()
+	{
+		return "Trap_AcidPit";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("acid pit");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 18;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return L("some limes");
+	}
 	
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
@@ -49,9 +79,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 			return null;
 		if(mob!=null)
 		{
-			Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LEMONS);
-			if(I==null)
-				I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
+			Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),1);
 		}
@@ -62,9 +90,10 @@ public class Trap_AcidPit extends Trap_RoomPit
 	public List<Item> getTrapComponents()
 	{
 		final List<Item> V=new Vector<Item>();
-		V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_LEMONS));
+		V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_LIMES));
 		return V;
 	}
+
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
@@ -72,13 +101,11 @@ public class Trap_AcidPit extends Trap_RoomPit
 			return false;
 		if(mob!=null)
 		{
-			Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LEMONS);
-			if(I==null)
-				I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
+			Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<1))
 			{
-				mob.tell(L("You'll need to set down at least a pound of lemons or limes first."));
+				mob.tell(L("You'll need to set down some limes first."));
 				return false;
 			}
 		}
@@ -120,7 +147,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 			&&(pit.size()>1)
 			&&(!disabled()))
 			{
-				final Room R=(Room)pit.firstElement();
+				final Room R=pit.get(0);
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					final MOB M=R.fetchInhabitant(i);

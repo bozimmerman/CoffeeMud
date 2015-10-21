@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,36 +32,143 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_SetDecoys extends ThiefSkill implements Trap
 {
-	@Override public String ID() { return "Thief_SetDecoys"; }
-	private final static String localizedName = CMLib.lang().L("Set Decoys");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"SETDECOYS","DECOYS"});
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DECEPTIVE;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	@Override
+	public String ID()
+	{
+		return "Thief_SetDecoys";
+	}
 
-	@Override public boolean isABomb(){return false;}
-	@Override public void activateBomb(){}
-	@Override public boolean disabled(){return false;}
-	@Override public void disable(){ unInvoke();}
-	@Override public void setReset(int Reset){}
-	@Override public int getReset(){return 0;}
-	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	@Override public List<Item> getTrapComponents() { return new Vector(); }
-	@Override public String requiresToSet(){return "";}
+	private final static String	localizedName	= CMLib.lang().L("Set Decoys");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SETDECOYS", "DECOYS" });
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_DECEPTIVE;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	@Override
+	public boolean isABomb()
+	{
+		return false;
+	}
+
+	@Override
+	public void activateBomb()
+	{
+	}
+
+	@Override
+	public boolean disabled()
+	{
+		return false;
+	}
+
+	@Override
+	public void disable()
+	{
+		unInvoke();
+	}
+
+	@Override
+	public void resetTrap(MOB mob)
+	{
+	}
+
+	@Override
+	public int getReset()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setReset(int Reset)
+	{
+	}
+
+	@Override
+	public boolean maySetTrap(MOB mob, int asLevel)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canSetTrapOn(MOB mob, Physical P)
+	{
+		return false;
+	}
+
+	@Override
+	public List<Item> getTrapComponents()
+	{
+		return new Vector<Item>(1);
+	}
+
+	@Override
+	public boolean canReSetTrap(MOB mob)
+	{
+		return false;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
-	{maliciousAffect(mob,P,qualifyingClassLevel+trapBonus,0,-1); return (Trap)P.fetchEffect(ID());}
-	private int lastSet=0;
+	{
+		maliciousAffect(mob, P, qualifyingClassLevel + trapBonus, 0, -1);
+		return (Trap) P.fetchEffect(ID());
+	}
 
-	@Override public boolean sprung(){return false;}
+	private int	lastSet	= 0;
+
+	@Override
+	public boolean sprung()
+	{
+		return false;
+	}
 
 	@Override
 	public void spring(MOB mob)
@@ -158,6 +264,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 		return super.castingQuality(mob,target);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

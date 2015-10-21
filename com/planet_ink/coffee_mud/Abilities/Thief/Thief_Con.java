@@ -191,7 +191,7 @@ public class Thief_Con extends ThiefSkill
 				mob.location().send(mob,msg);
 				mob.location().send(mob,omsg);
 				if(omsg.sourceMinor()==CMMsg.TYP_ORDER)
-					target.enqueCommand(commands,Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
+					target.enqueCommand(commands,MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
 			}
 			target.recoverPhyStats();
 		}

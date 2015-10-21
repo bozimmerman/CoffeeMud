@@ -43,15 +43,22 @@ public class Compress extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob.isAttribute(MOB.Attrib.COMPRESS))
+		String parm = (commands.size() > 1) ? CMParms.combine(commands,1) : ""; 
+		if((!mob.isAttributeSet(MOB.Attrib.COMPRESS) && (parm.length()==0))||(parm.equalsIgnoreCase("ON")))
+		{
+			mob.setAttribute(MOB.Attrib.COMPRESS,true);
+			mob.tell(L("Compressed views are now active."));
+		}
+		else
+		if((!mob.isAttributeSet(MOB.Attrib.COMPRESS) && (parm.length()==0))||(parm.equalsIgnoreCase("OFF")))
 		{
 			mob.setAttribute(MOB.Attrib.COMPRESS,false);
 			mob.tell(L("Compressed views are now inactive."));
 		}
 		else
+		if(parm.length() > 0)
 		{
-			mob.setAttribute(MOB.Attrib.COMPRESS,true);
-			mob.tell(L("Compressed views are now active."));
+			mob.tell(L("Illegal @x1 argument: '@x2'.  Try ON or OFF, or nothing to toggle.",getAccessWords()[0],parm));
 		}
 		return false;
 	}

@@ -32,18 +32,47 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_SnakePit extends Trap_RoomPit
 {
-	@Override public String ID() { return "Trap_SnakePit"; }
-	private final static String localizedName = CMLib.lang().L("snake pit");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 10;}
-	@Override public String requiresToSet(){return "some caged snakes";}
+	@Override
+	public String ID()
+	{
+		return "Trap_SnakePit";
+	}
 
-	protected Vector monsters=null;
+	private final static String	localizedName	= CMLib.lang().L("snake pit");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 10;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "some caged snakes";
+	}
+
+	protected List<MOB> monsters=null;
 
 	protected Item getCagedAnimal(MOB mob)
 	{
@@ -86,12 +115,12 @@ public class Trap_SnakePit extends Trap_RoomPit
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		final Item I=CMClass.getItem("GenCaged");
 		((CagedAnimal)I).setCageText(text());
 		I.recoverPhyStats();
 		I.text();
-		V.addElement(I);
+		V.add(I);
 		return V;
 	}
 
@@ -119,7 +148,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 			{
 				for(int i=0;i<monsters.size();i++)
 				{
-					final MOB M=(MOB)monsters.elementAt(i);
+					final MOB M=monsters.get(i);
 					if(M.amDead()||(!M.isInCombat()))
 						M.destroy();
 				}
@@ -140,28 +169,28 @@ public class Trap_SnakePit extends Trap_RoomPit
 			final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 			CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}
-		final Vector snakes=new Vector();
+		final List<String> snakes=new Vector<String>();
 		String t=text();
 		int x=t.indexOf("</MOBITEM><MOBITEM>");
 		while(x>=0)
 		{
-			snakes.addElement(t.substring(0,x+10));
+			snakes.add(t.substring(0,x+10));
 			t=t.substring(x+10);
 			x=t.indexOf("</MOBITEM><MOBITEM>");
 		}
 		if(t.length()>0)
-			snakes.addElement(t);
+			snakes.add(t);
 		if(snakes.size()>0)
-			monsters=new Vector();
+			monsters=new Vector<MOB>();
 		for(int i=0;i<snakes.size();i++)
 		{
-			t=(String)snakes.elementAt(i);
+			t=snakes.get(i);
 			final Item I=CMClass.getItem("GenCaged");
 			((CagedAnimal)I).setCageText(t);
 			final MOB monster=((CagedAnimal)I).unCageMe();
 			if(monster!=null)
 			{
-				monsters.addElement(monster);
+				monsters.add(monster);
 				monster.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				monster.bringToLife(target.location(),true);
 				monster.setVictim(target);

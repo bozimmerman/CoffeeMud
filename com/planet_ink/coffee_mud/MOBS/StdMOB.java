@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Follower;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.ref.WeakReference;
@@ -27,19 +26,19 @@ import java.util.Map.Entry;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
- Copyright 2000-2015 Bo Zimmerman
+   Copyright 2000-2015 Bo Zimmerman
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
- http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, e\ither express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, e\ither express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
  */
 //STOP-ECLIPSE-FORMATTING
 // @formatter: off
@@ -101,13 +100,13 @@ public class StdMOB implements MOB
 	private long				lastTickedTime	= 0;
 	private long				lastCommandTime	= System.currentTimeMillis();
 
-	protected Room				possStartRoom   = null;
+	protected Room				possStartRoom	= null;
 	protected String			worshipCharID	= "";
 	protected String			liegeID			= "";
 	protected int				wimpHitPoint	= 0;
 	protected int				questPoint		= 0;
 	protected MOB				victim			= null;
-	protected MOB				amFollowing		= null;
+	protected Followable<MOB>	amFollowing		= null;
 	protected MOB				soulMate		= null;
 	protected int				atRange			= -1;
 	protected long				peaceTime		= 0;
@@ -117,31 +116,30 @@ public class StdMOB implements MOB
 	protected int				tickStatus		= Tickable.STATUS_NOT;
 
 	/* containers of items and attributes */
-	protected 		   SVector<Item>			inventory		= new SVector<Item>(1);
-	protected 		   CMUniqSortSVec<Ability>	abilitys		= new CMUniqSortSVec<Ability>(1);
-	protected 		   int[]					abilityUseTrig = new int[3];
-	protected 		   STreeMap<String,int[][]>	abilityUseCache= new STreeMap<String,int[][]>();
-	protected 		   STreeMap<String,Integer> expertises 	= new STreeMap<String,Integer>();
-	protected 		   SVector<Ability>		 	affects		= new SVector<Ability>(1);
-	protected 		   CMUniqSortSVec<Behavior>	behaviors		= new CMUniqSortSVec<Behavior>(1);
-	protected 		   CMUniqSortSVec<Tattoo>	tattoos		= new CMUniqSortSVec<Tattoo>(1);
-	protected volatile SVector<Follower>	 	followers		= null;
-	protected 		   LinkedList<QMCommand> 	commandQue		= new LinkedList<QMCommand>();
-	protected 		   SVector<ScriptingEngine>	scripts		= new SVector(1);
-	protected volatile List<Ability>			racialAffects	= null;
-	protected volatile List<Ability>			clanAffects	= null;
-	protected 		   SHashtable<String, FData>factions 		= new SHashtable<String, FData>(1);
-	protected volatile WeakReference<Item>		possWieldedItem= null;
-	protected volatile WeakReference<Item>	 	possHeldItem	= null;
+	protected SVector<Item>					inventory		= new SVector<Item>(1);
+	protected CMUniqSortSVec<Ability>		abilitys		= new CMUniqSortSVec<Ability>(1);
+	protected int[]							abilityUseTrig	= new int[3];
+	protected STreeMap<String, int[][]>		abilityUseCache	= new STreeMap<String, int[][]>();
+	protected STreeMap<String, Integer>		expertises		= new STreeMap<String, Integer>();
+	protected SVector<Ability>				affects			= new SVector<Ability>(1);
+	protected CMUniqSortSVec<Behavior>		behaviors		= new CMUniqSortSVec<Behavior>(1);
+	protected CMUniqNameSortSVec<Tattoo>	tattoos			= new CMUniqNameSortSVec<Tattoo>(1);
+	protected volatile PairList<MOB,Short>	followers		= null;
+	protected LinkedList<QMCommand>			commandQue		= new LinkedList<QMCommand>();
+	protected SVector<ScriptingEngine>		scripts			= new SVector(1);
+	protected volatile List<Ability>		racialAffects	= null;
+	protected volatile List<Ability>		clanAffects		= null;
+	protected SHashtable<String, FData>		factions		= new SHashtable<String, FData>(1);
+	protected volatile WeakReference<Item>	possWieldedItem	= null;
+	protected volatile WeakReference<Item>	possHeldItem	= null;
 
-	protected 		   ApplyAffectPhyStats	   	affectPhyStats = new ApplyAffectPhyStats(this);
-	protected		   ApplyRecAffectPhyStats	recoverAffectP	= new ApplyRecAffectPhyStats(this);
-	protected		   ApplyAffectCharStats     affectCharStats= new ApplyAffectCharStats(this);
-	protected		   ApplyAffectCharState     affectCharState= new ApplyAffectCharState(this);
+	protected	ApplyAffectPhyStats			affectPhyStats	= new ApplyAffectPhyStats(this);
+	protected	ApplyRecAffectPhyStats		recoverAffectP	= new ApplyRecAffectPhyStats(this);
+	protected	ApplyAffectCharStats		affectCharStats	= new ApplyAffectCharStats(this);
+	protected	ApplyAffectCharState		affectCharState	= new ApplyAffectCharState(this);
 	
-	protected		   OrderedMap<String,Pair<Clan,Integer>> 	clans = new OrderedMap<String,Pair<Clan,Integer>>();
+	protected	OrderedMap<String,Pair<Clan,Integer>>	clans = new OrderedMap<String,Pair<Clan,Integer>>();
 
-	
 	public StdMOB()
 	{
 		super();
@@ -154,13 +152,15 @@ public class StdMOB implements MOB
 	private static class QMCommand
 	{
 		public Object   	commandObj = null;
-		public double   	actionDelay = 0.0;
+		public double   	actionCost = 0.0;
 		public long 		nextCheck=System.currentTimeMillis()-1;
 		public int  		seconds=-1;
 		public int  		metaFlags=0;
 		public List<String>	commandVector = null;
 	}
 
+	private static final Converter<Pair<MOB,Short>,MOB> FollowerConverter = new Pair.FirstConverter<MOB, Short>();
+	
 	/**
 	 * EachApplicable class that recovers item and affect phyStats
 	 */
@@ -325,11 +325,6 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void setExpNextLevel(int newVal)
-	{
-	}
-
-	@Override
 	public void setPractices(int newVal)
 	{
 		practices = newVal;
@@ -373,7 +368,7 @@ public class StdMOB implements MOB
 	}
 	
 	@Override
-	public boolean isAttribute(MOB.Attrib attrib)
+	public boolean isAttributeSet(MOB.Attrib attrib)
 	{
 		return (attributesBitmap & attrib.getBitCode()) != 0;
 	}
@@ -382,7 +377,7 @@ public class StdMOB implements MOB
 	public String getFactionListing()
 	{
 		final StringBuffer msg = new StringBuffer();
-		for (final Enumeration e = fetchFactions(); e.hasMoreElements();)
+		for (final Enumeration e = factions(); e.hasMoreElements();)
 		{
 			final Faction F = CMLib.factions().getFaction((String) e.nextElement());
 			if(F!=null)
@@ -633,7 +628,7 @@ public class StdMOB implements MOB
 		abilityUseTrig = new int[3];
 		abilityUseCache= new STreeMap<String,int[][]>();
 		behaviors= new CMUniqSortSVec<Behavior>();
-		tattoos	= new CMUniqSortSVec<Tattoo>();
+		tattoos	= new CMUniqNameSortSVec<Tattoo>();
 		expertises = new STreeMap<String,Integer>();
 		followers = null;
 		commandQue = new LinkedList<QMCommand>();
@@ -649,7 +644,7 @@ public class StdMOB implements MOB
 		{
 			setClan(p.first.clanID(), p.second.intValue());
 		}
-		for(final Enumeration<String> e=M.fetchFactions();e.hasMoreElements();)
+		for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
 		{
 			final String fac=e.nextElement();
 			addFaction(fac, M.fetchFaction(fac));
@@ -789,9 +784,11 @@ public class StdMOB implements MOB
 		/* the follower light exception */
 		if (!CMLib.flags().isLightSource(this))
 		{
-			for (final Enumeration<Follower> f = followers(); f.hasMoreElements();)
-				if (CMLib.flags().isLightSource(f.nextElement().follower))
+			for (final Enumeration<Pair<MOB,Short>> f = followers(); f.hasMoreElements();)
+			{
+				if (CMLib.flags().isLightSource(f.nextElement().first))
 					phyStats.setDisposition(phyStats().disposition() | PhyStats.IS_LIGHTSOURCE);
+			}
 		}
 	}
 
@@ -841,8 +838,8 @@ public class StdMOB implements MOB
 		int total = 0;
 		try
 		{
-			for (final Enumeration<Follower> f = followers(); f.hasMoreElements();)
-				total += f.nextElement().follower.totalFollowers();
+			for (final Enumeration<Pair<MOB,Short>> f = followers(); f.hasMoreElements();)
+				total += f.nextElement().first.totalFollowers();
 		}
 		catch (final Exception t){}
 		return total;
@@ -1017,20 +1014,20 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void dispossess(boolean giveMsg)
+	public void dispossess(boolean forceLook)
 	{
 		final MOB mate = soulMate();
 		if (mate == null)
 			return;
 		if (mate.soulMate() != null)
-			mate.dispossess(giveMsg);
+			mate.dispossess(forceLook);
 		final Session s = session();
 		if (s != null)
 		{
 			s.setMob(mate);
 			mate.setSession(s);
 			setSession(null);
-			if (giveMsg)
+			if (forceLook)
 				CMLib.commands().postLook(mate, true);
 			setSoulMate(null);
 		}
@@ -1365,16 +1362,16 @@ public class StdMOB implements MOB
 			return false;
 		if (CMLib.clans().isAtClanWar(this, mob))
 			return true;
-		if (this.isAttribute(MOB.Attrib.PLAYERKILL))
+		if (this.isAttributeSet(MOB.Attrib.PLAYERKILL))
 		{
-			if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.PKILL) || (mob.isAttribute(MOB.Attrib.PLAYERKILL)))
+			if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.PKILL) || (mob.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 				return true;
 			return false;
 		}
 		else
-		if (mob.isAttribute(MOB.Attrib.PLAYERKILL))
+		if (mob.isAttributeSet(MOB.Attrib.PLAYERKILL))
 		{
-			if (CMSecurity.isAllowed(mob, location(), CMSecurity.SecFlag.PKILL) || (this.isAttribute(MOB.Attrib.PLAYERKILL)))
+			if (CMSecurity.isAllowed(mob, location(), CMSecurity.SecFlag.PKILL) || (this.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 				return true;
 			return false;
 		}
@@ -1418,32 +1415,30 @@ public class StdMOB implements MOB
 	@Override
 	public int maxRange()
 	{
-		return maxRange(null);
+		if (location() != null)
+			return location().maxRange();
+		return 10;
 	}
 
 	@Override
 	public int minRange()
 	{
-		return maxRange(null);
+		return 0;
 	}
 
-	@Override
-	public int maxRange(Environmental tool)
+	private int maxRangeWith(Environmental tool)
 	{
-		int max = 0;
-		if (tool != null)
-			max = tool.maxRange();
-		if ((location() != null) && (location().maxRange() < max))
-			max = location().maxRange();
+		final int max = maxRange();
+		if ((tool != null)&&(tool.maxRange() < max))
+			return tool.maxRange();
 		return max;
 	}
 
-	@Override
-	public int minRange(Environmental tool)
+	private int minRangeWith(Environmental tool)
 	{
 		if (tool != null)
 			return tool.minRange();
-		return 0;
+		return minRange();
 	}
 
 	@Override
@@ -1896,10 +1891,10 @@ public class StdMOB implements MOB
 				if (commandQue.isEmpty())
 					return false;
 				QMCommand cmd = commandQue.getFirst();
-				final double diff = actions() - cmd.actionDelay;
+				final double diff = actions() - cmd.actionCost;
 				if (diff >= 0.0)
 				{
-					final long nextTime = lastCommandTime + Math.round(cmd.actionDelay / phyStats().speed() * CMProps.getTickMillisD());
+					final long nextTime = lastCommandTime + Math.round(cmd.actionCost / phyStats().speed() * CMProps.getTickMillisD());
 					if ((System.currentTimeMillis() < nextTime) && (session() != null))
 						return false;
 					cmd = commandQue.removeFirst();
@@ -1917,7 +1912,7 @@ public class StdMOB implements MOB
 					{
 						final QMCommand cmd = commandQue.getFirst();
 						final Object O = cmd.commandObj;
-						cmd.actionDelay = calculateActionDelay(O, cmd.commandVector, 0.0);
+						cmd.actionCost = calculateActionCost(O, cmd.commandVector, 0.0);
 					}
 					else
 						return false;
@@ -1935,7 +1930,7 @@ public class StdMOB implements MOB
 					return false;
 			}
 
-			final double diff = actions() - cmd.actionDelay;
+			final double diff = actions() - cmd.actionCost;
 			final Object O = cmd.commandObj;
 			final Vector commands = new XVector(cmd.commandVector);
 			cmd.nextCheck = cmd.nextCheck + 1000;
@@ -2012,9 +2007,9 @@ public class StdMOB implements MOB
 		}
 	}
 
-	protected double calculateActionDelay(Object command, List<String> commands, double tickDelay)
+	protected double calculateActionCost(Object command, List<String> commands, double overrideActionCost)
 	{
-		if (tickDelay <= 0.0)
+		if (overrideActionCost <= 0.0)
 		{
 			if (command == null)
 			{
@@ -2022,21 +2017,20 @@ public class StdMOB implements MOB
 				return -1.0;
 			}
 			if (command instanceof Command)
-				tickDelay = ((Command) command).checkedActionsCost(this, commands);
+				overrideActionCost = ((Command) command).checkedActionsCost(this, commands);
 			else
 			if (command instanceof Ability)
-				tickDelay = ((Ability) command).checkedCastingCost(this, commands);
+				overrideActionCost = ((Ability) command).checkedCastingCost(this, commands);
 			else
 			if (command instanceof Social)
-				tickDelay = ((Social) command).checkedActionsCost(this, commands);
+				overrideActionCost = ((Social) command).checkedActionsCost(this, commands);
 			else
-				tickDelay = 1.0;
+				overrideActionCost = 1.0;
 		}
-		return tickDelay;
+		return overrideActionCost;
 	}
 
-	@Override
-	public void prequeCommand(Vector commands, int metaFlags, double tickDelay)
+	protected void prequeCommand(List<String> commands, int metaFlags, double actionCost)
 	{
 		if (commands == null)
 			return;
@@ -2046,10 +2040,10 @@ public class StdMOB implements MOB
 			CMLib.commands().handleUnknownCommand(this, commands);
 			return;
 		}
-		tickDelay = calculateActionDelay(O, commands, tickDelay);
-		if (tickDelay < 0.0)
+		actionCost = calculateActionCost(O, commands, actionCost);
+		if (actionCost < 0.0)
 			return;
-		if (tickDelay == 0.0)
+		if (actionCost == 0.0)
 			doCommand(O, commands, metaFlags);
 		else
 		{
@@ -2058,7 +2052,7 @@ public class StdMOB implements MOB
 				final QMCommand cmd = new QMCommand();
 				cmd.nextCheck = System.currentTimeMillis() - 1;
 				cmd.seconds = -1;
-				cmd.actionDelay = tickDelay;
+				cmd.actionCost = actionCost;
 				cmd.metaFlags = metaFlags;
 				cmd.commandObj = O;
 				cmd.commandVector = commands;
@@ -2069,23 +2063,23 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void enqueCommand(List<String> commands, int metaFlags, double tickDelay)
+	public void enqueCommand(List<String> commands, int metaFlags, double actionCost)
 	{
 		if (commands == null)
 			return;
 		final CMObject O = CMLib.english().findCommand(this, commands);
 		if((O == null)
 		||((O instanceof Ability)
-			&&CMath.bset(metaFlags, Command.METAFLAG_ORDER)
+			&&CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER)
 			&&CMath.bset(((Ability)O).flags(), Ability.FLAG_NOORDERING)))
 		{
 			CMLib.commands().handleUnknownCommand(this, commands);
 			return;
 		}
-		tickDelay = calculateActionDelay(O, commands, tickDelay);
-		if (tickDelay < 0.0)
+		actionCost = calculateActionCost(O, commands, actionCost);
+		if (actionCost < 0.0)
 			return;
-		if (tickDelay == 0.0)
+		if (actionCost == 0.0)
 			doCommand(commands, metaFlags);
 		else
 		synchronized (commandQue)
@@ -2093,7 +2087,7 @@ public class StdMOB implements MOB
 			final QMCommand cmd = new QMCommand();
 			cmd.nextCheck = System.currentTimeMillis() - 1;
 			cmd.seconds = -1;
-			cmd.actionDelay = tickDelay;
+			cmd.actionCost = actionCost;
 			cmd.metaFlags = metaFlags;
 			cmd.commandObj = O;
 			cmd.commandVector = commands;
@@ -2563,8 +2557,8 @@ public class StdMOB implements MOB
 		{
 			final MOB trgM = (MOB) msg.target();
 			// and now, the consequences of range
-			if (((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK) && (rangeToTarget() > maxRange(msg.tool())))
-			|| ((msg.sourceMinor() == CMMsg.TYP_THROW) && (rangeToTarget() > 2) && (maxRange(msg.tool()) <= 0)))
+			if (((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK) && (rangeToTarget() > maxRangeWith(msg.tool())))
+			|| ((msg.sourceMinor() == CMMsg.TYP_THROW) && (rangeToTarget() > 2) && (maxRangeWith(msg.tool()) <= 0)))
 			{
 				msg.modify(this, trgM, null, CMMsg.MSG_ADVANCE, L("<S-NAME> advance(s) at <T-NAME>."));
 				final boolean ok = location().okMessage(this, msg);
@@ -2622,16 +2616,16 @@ public class StdMOB implements MOB
 						if (trgM.getVictim() == this)
 							useRange = trgM.rangeToTarget();
 						else
-							useRange = maxRange(tool);
+							useRange = maxRangeWith(tool);
 					}
 				}
-				if ((useRange >= 0) && (maxRange(tool) < useRange))
+				if ((useRange >= 0) && (maxRangeWith(tool) < useRange))
 				{
 					srcM.tell(L("You are too far away from @x1 to use @x2.",trgM.name(srcM),tool.name()));
 					return false;
 				}
 				else
-				if ((useRange >= 0) && (minRange(tool) > useRange))
+				if ((useRange >= 0) && (minRangeWith(tool) > useRange))
 				{
 					srcM.tell(L("You are too close to @x1 to use @x2.",trgM.name(srcM),tool.name()));
 					if ((msg.targetMinor() == CMMsg.TYP_WEAPONATTACK)
@@ -2870,7 +2864,7 @@ public class StdMOB implements MOB
 			if ((msg.othersMinor() == CMMsg.TYP_DEATH) && (msg.sourceMinor() == CMMsg.TYP_DEATH))
 			{
 				if ((followers != null)
-				&& (followers.contains(srcM))
+				&& (followers.containsFirst(srcM))
 				&& (CMLib.dice().rollPercentage() == 1)
 				&& (fetchEffect("Disease_Depression") == null)
 				&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
@@ -3104,7 +3098,7 @@ public class StdMOB implements MOB
 				{
 					final int channelCode = msg.targetMinor() - CMMsg.TYP_CHANNEL;
 					if ((playerStats() != null)
-					&& (!this.isAttribute(MOB.Attrib.QUIET))
+					&& (!this.isAttributeSet(MOB.Attrib.QUIET))
 					&& (!CMath.isSet(playerStats().getChannelMask(), channelCode)))
 						tell(srcM, msg.target(), msg.tool(), msg.targetMessage());
 				}
@@ -3165,7 +3159,7 @@ public class StdMOB implements MOB
 			{
 				final int channelCode = ((msg.othersCode() - CMMsg.MASK_CHANNEL) - CMMsg.TYP_CHANNEL);
 				if ((playerStats() != null)
-				&& (!this.isAttribute(MOB.Attrib.QUIET))
+				&& (!this.isAttributeSet(MOB.Attrib.QUIET))
 				&& (!CMath.isSet(playerStats().getChannelMask(), channelCode)))
 					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 			}
@@ -3395,7 +3389,7 @@ public class StdMOB implements MOB
 				else
 				{
 					peaceTime += CMProps.getTickMillis();
-					if (this.isAttribute(MOB.Attrib.AUTODRAW)
+					if (this.isAttributeSet(MOB.Attrib.AUTODRAW)
 					&& (peaceTime >= START_SHEATH_TIME)
 					&& (peaceTime < END_SHEATH_TIME) && (CMLib.flags().aliveAwakeMobileUnbound(this, true)))
 						CMLib.commands().postSheath(this, true);
@@ -3451,8 +3445,6 @@ public class StdMOB implements MOB
 							affects.trimToSize();
 						if (abilitys != null)
 							abilitys.trimToSize();
-						if (followers != null)
-							followers.trimToSize();
 						CMLib.commands().tickAging(this, AGE_MILLIS_THRESHOLD);
 					}
 				}
@@ -3756,19 +3748,19 @@ public class StdMOB implements MOB
 		if (follower != null)
 		{
 			if (followers == null)
-				followers = new SVector<Follower>();
+				followers = new SPairList<MOB,Short>();
 			else
 			{
-				for (final Follower F : followers)
+				for (final Pair<MOB, Short> F : followers)
 				{
-					if (F.follower == follower)
+					if (F.first == follower)
 					{
-						F.marchingOrder = order;
+						F.second = Short.valueOf((short)order);
 						return;
 					}
 				}
 			}
-			followers.add(new Follower(follower, order));
+			followers.add(follower, Short.valueOf((short)order));
 		}
 	}
 
@@ -3777,9 +3769,9 @@ public class StdMOB implements MOB
 	{
 		if ((follower != null) && (followers != null))
 		{
-			for (final Follower F : followers)
+			for (final Pair<MOB, Short> F : followers)
 			{
-				if (F.follower == follower)
+				if (F.first == follower)
 					followers.remove(F);
 			}
 		}
@@ -3792,19 +3784,19 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public Enumeration<Follower> followers()
+	public Enumeration<Pair<MOB,Short>> followers()
 	{
-		return (followers == null) ? EmptyEnumeration.INSTANCE : followers.elements();
+		return (followers == null) ? EmptyEnumeration.INSTANCE : new IteratorEnumeration<Pair<MOB,Short>>(followers.iterator());
 	}
 
 	@Override
 	public int fetchFollowerOrder(final MOB thisOne)
 	{
-		for (final Enumeration<Follower> f = followers(); f.hasMoreElements();)
+		for (final Enumeration<Pair<MOB,Short>> f = followers(); f.hasMoreElements();)
 		{
-			final Follower F = f.nextElement();
-			if (F.follower == thisOne)
-				return F.marchingOrder;
+			final Pair<MOB,Short> F = f.nextElement();
+			if (F.first == thisOne)
+				return F.second.intValue();
 		}
 		return -1;
 	}
@@ -3814,7 +3806,7 @@ public class StdMOB implements MOB
 	{
 		if (followers == null)
 			return null;
-		final List<MOB> list = new ConvertingList<Follower, MOB>(followers, Follower.converter);
+		final List<MOB> list = new ConvertingList<Pair<MOB,Short>, MOB>(followers, FollowerConverter);
 		MOB mob = (MOB) CMLib.english().fetchEnvironmental(list, named, true);
 		if (mob == null)
 			mob = (MOB) CMLib.english().fetchEnvironmental(list, named, false);
@@ -3828,7 +3820,7 @@ public class StdMOB implements MOB
 		{
 			if (followers == null)
 				return null;
-			return followers.get(index).follower;
+			return followers.get(index).first;
 		}
 		catch (final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -3837,10 +3829,10 @@ public class StdMOB implements MOB
 	@Override
 	public boolean isFollowedBy(final MOB thisOne)
 	{
-		for (final Enumeration<Follower> f = followers(); f.hasMoreElements();)
+		for (final Enumeration<Pair<MOB,Short>> f = followers(); f.hasMoreElements();)
 		{
-			final Follower F = f.nextElement();
-			if (F.follower == thisOne)
+			final Pair<MOB,Short> F = f.nextElement();
+			if (F.first == thisOne)
 				return true;
 		}
 		return false;
@@ -3882,28 +3874,28 @@ public class StdMOB implements MOB
 	@Override
 	public MOB amUltimatelyFollowing()
 	{
-		MOB following = amFollowing;
+		Followable<MOB> following = amFollowing;
 		if (following == null)
 			return null;
-		final HashSet<MOB> seen = new HashSet<MOB>();
+		final HashSet<Followable> seen = new HashSet<Followable>();
 		while ((following != null) && (following.amFollowing() != null) && (!seen.contains(following)))
 		{
 			seen.add(following);
 			following = following.amFollowing();
 		}
-		return following;
+		return (MOB)following;
 	}
 
 	@Override
 	public MOB amFollowing()
 	{
-		final MOB following = amFollowing;
+		final Followable<MOB> following = amFollowing;
 		if (following != null)
 		{
 			if (!following.isFollowedBy(this))
 				amFollowing = null;
 		}
-		return amFollowing;
+		return (MOB)amFollowing;
 	}
 
 	@Override
@@ -3944,11 +3936,11 @@ public class StdMOB implements MOB
 		final MOB following = amFollowing();
 		if ((following != null) && (!list.contains(following)))
 			following.getGroupMembers(list);
-		for (final Enumeration<Follower> f = followers(); f.hasMoreElements();)
+		for (final Enumeration<Pair<MOB,Short>> f = followers(); f.hasMoreElements();)
 		{
-			final Follower F = f.nextElement();
-			if ((F.follower != null) && (!list.contains(F.follower)))
-				F.follower.getGroupMembers(list);
+			final Pair<MOB,Short> F = f.nextElement();
+			if ((F.first != null) && (!list.contains(F.first)))
+				F.first.getGroupMembers(list);
 		}
 		return list;
 	}
@@ -4628,6 +4620,28 @@ public class StdMOB implements MOB
 
 	/** Manipulation of the tatoo list */
 	@Override
+	public void addTattoo(String of)
+	{
+		final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
+		addTattoo(T.set(of));
+	}
+
+	@Override
+	public void addTattoo(String of, int tickDown)
+	{
+		final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
+		addTattoo(T.set(of,tickDown));
+	}
+
+	@Override
+	public void delTattoo(String of)
+	{
+		final Tattoo T=findTattoo(of);
+		if(T!=null)
+			tattoos.remove(T);
+	}
+	
+	@Override
 	public void addTattoo(Tattoo of)
 	{
 		if ((of == null) || (of.getTattooName() == null) || (of.getTattooName().length() == 0) || findTattoo(of.getTattooName()) != null)
@@ -4697,7 +4711,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public Enumeration<String> fetchFactions()
+	public Enumeration<String> factions()
 	{
 		return factions.keys();
 	}
@@ -4718,9 +4732,9 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void copyFactions(MOB source)
+	public void copyFactions(FactionMember source)
 	{
-		for (final Enumeration e = source.fetchFactions(); e.hasMoreElements();)
+		for (final Enumeration e = source.factions(); e.hasMoreElements();)
 		{
 			final String fID = (String) e.nextElement();
 			addFaction(fID, source.fetchFaction(fID));
@@ -4740,7 +4754,7 @@ public class StdMOB implements MOB
 	public List<String> fetchFactionRanges()
 	{
 		final Vector<String> V = new Vector<String>(factions.size());
-		for (final Enumeration e = fetchFactions(); e.hasMoreElements();)
+		for (final Enumeration e = factions(); e.hasMoreElements();)
 		{
 			final Faction F = CMLib.factions().getFaction((String) e.nextElement());
 			if (F == null)

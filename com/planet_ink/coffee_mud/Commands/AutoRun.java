@@ -44,15 +44,22 @@ public class AutoRun extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob.isAttribute(MOB.Attrib.AUTORUN))
+		String parm = (commands.size() > 1) ? CMParms.combine(commands,1) : ""; 
+		if((!mob.isAttributeSet(MOB.Attrib.AUTORUN) && (parm.length()==0))||(parm.equalsIgnoreCase("ON")))
+		{
+			mob.setAttribute(MOB.Attrib.AUTORUN,true);
+			mob.tell(L("Auto-Run has been turned on."));
+		}
+		else
+		if((mob.isAttributeSet(MOB.Attrib.AUTORUN) && (parm.length()==0))||(parm.equalsIgnoreCase("OFF")))
 		{
 			mob.setAttribute(MOB.Attrib.AUTORUN,false);
 			mob.tell(L("Auto-Run has been turned off."));
 		}
 		else
+		if(parm.length() > 0)
 		{
-			mob.setAttribute(MOB.Attrib.AUTORUN,true);
-			mob.tell(L("Auto-Run has been turned on."));
+			mob.tell(L("Illegal @x1 argument: '@x2'.  Try ON or OFF, or nothing to toggle.",getAccessWords()[0],parm));
 		}
 		return false;
 	}

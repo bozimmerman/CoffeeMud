@@ -191,7 +191,7 @@ public class Score extends Affect
 				msg.append(L("You have scored ^!@x1^? ^<HELP^>experience points^</HELP^>.\n\r",""+mob.getExperience()));
 		}
 		msg.append(L("You have been online for ^!@x1^? hours.\n\r",""+Math.round(CMath.div(mob.getAgeMinutes(),60.0))));
-		for(final Enumeration e=mob.fetchFactions();e.hasMoreElements();)
+		for(final Enumeration e=mob.factions();e.hasMoreElements();)
 		{
 			final String factionID=(String)e.nextElement();
 			final Faction F=CMLib.factions().getFaction(factionID);

@@ -141,7 +141,7 @@ public class Thief_Panhandling extends ThiefSkill
 							{
 								CMLib.beanCounter().subtractMoney(mob2,total);
 								mob2.addItem(C);
-								mob2.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+mob.Name()+"\""),Command.METAFLAG_FORCED);
+								mob2.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+mob.Name()+"\""),MUDCmdProcessor.METAFLAG_FORCED);
 								if(!C.amDestroyed())
 									C.putCoinsBack();
 							}

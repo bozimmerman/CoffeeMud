@@ -695,7 +695,7 @@ public class Conquerable extends Arrest
 								final Vector V=new Vector();
 								V.addElement("YELL");
 								V.addElement(warCrys()[CMLib.dice().roll(1,warCrys().length,-1)]);
-								M1.doCommand(V,Command.METAFLAG_FORCED);
+								M1.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 								CMLib.combat().postAttack(M1,M2,M1.fetchWieldedItem());
 							}
 							assaults.removeElementAt(0);

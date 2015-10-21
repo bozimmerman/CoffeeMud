@@ -64,11 +64,10 @@ public class Prop_Tattoo extends Property
 			{
 				final String s=V.get(v);
 				final int x=s.indexOf(' ');
-				final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
 				if((x>0)&&(CMath.isNumber(s.substring(0,x))))
-					M.addTattoo(T.set(s.substring(x+1).trim(),CMath.s_int(s.substring(0,x))));
+					M.addTattoo(s.substring(x+1).trim(),CMath.s_int(s.substring(0,x)));
 				else
-					M.addTattoo(T.set(s));
+					M.addTattoo(s);
 			}
 		}
 		savable=false;

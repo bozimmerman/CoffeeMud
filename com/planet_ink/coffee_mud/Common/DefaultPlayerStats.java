@@ -665,7 +665,7 @@ public class DefaultPlayerStats implements PlayerStats
 		for(Iterator<Tracker> i=achievementers.values().iterator();i.hasNext();)
 		{
 			final Tracker T = i.next();
-			if(T.getAchievement().isSavableTracker())
+			if(T.getAchievement().isSavableTracker() && (T.getCount(null) != 0))
 				rest.append(" ").append(T.getAchievement().getTattoo()).append("=").append(T.getCount(null));
 			// getCount(null) should be ok, because it's only the un-savable trackers that need the mob obj
 		}

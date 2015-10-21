@@ -30,8 +30,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- * something that is affected by, or affects
- * the environment around them.
+   * something that is affected by, or affects
+   * the environment around them.
  */
 /**
  * A Behavior is a pro-active modifier of Environmental objects.  Behaviors

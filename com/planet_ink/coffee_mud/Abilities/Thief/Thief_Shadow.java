@@ -130,7 +130,7 @@ public class Thief_Shadow extends ThiefSkill
 				final MOB mob=invoker;
 				lastRoom=msg.source().location();
 				if(!mob.isMonster())
-					mob.enqueCommand(CMParms.parse(directionWent),Command.METAFLAG_FORCED,0);
+					mob.enqueCommand(CMParms.parse(directionWent),MUDCmdProcessor.METAFLAG_FORCED,0);
 				else
 					CMLib.tracking().walk(mob,dir,false,false);
 			}

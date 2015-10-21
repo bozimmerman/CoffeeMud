@@ -32,17 +32,51 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_FloodRoom extends StdTrap
 {
-	@Override public String ID() { return "Trap_FloodRoom"; }
-	private final static String localizedName = CMLib.lang().L("flood room");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 29;}
-	@Override public String requiresToSet(){return "100 pounds of stone, 10 water containers";}
-	@Override public int baseRejuvTime(int level){ return 16;}
+	@Override
+	public String ID()
+	{
+		return "Trap_FloodRoom";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("flood room");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 29;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "100 pounds of stone, 10 water containers";
+	}
+
+	@Override
+	public int baseRejuvTime(int level)
+	{
+		return 16;
+	}
 
 	protected int numWaterskins(MOB mob)
 	{
@@ -63,11 +97,11 @@ public class Trap_FloodRoom extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		for(int i=0;i<100;i++)
-			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
+			V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
 		for(int i=0;i<10;i++)
-			V.addElement(CMClass.getBasicItem("Waterskin"));
+			V.add(CMClass.getBasicItem("Waterskin"));
 		return V;
 	}
 
@@ -177,14 +211,14 @@ public class Trap_FloodRoom extends StdTrap
 		{
 			if(((msg.targetMinor()==CMMsg.TYP_LEAVE)
 				||(msg.targetMinor()==CMMsg.TYP_FLEE))
-			   &&(msg.amITarget(affected)))
+			&&(msg.amITarget(affected)))
 			{
 				msg.source().tell(L("The exits are blocked! You can't get out!"));
 				return false;
 			}
 			else
 			if((msg.targetMinor()==CMMsg.TYP_ENTER)
-			   &&(msg.amITarget(affected)))
+			&&(msg.amITarget(affected)))
 			{
 				msg.source().tell(L("The entry to that room is blocked!"));
 				return false;

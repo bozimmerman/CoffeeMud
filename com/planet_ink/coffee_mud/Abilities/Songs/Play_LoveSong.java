@@ -77,7 +77,7 @@ public class Play_LoveSong extends Play
 					I=mob.fetchFirstWornItem(Wearable.WORN_LEGS);
 					if(I!=null)
 						CMLib.commands().postRemove(mob,I,false);
-					mob.doCommand(CMParms.parse("MATE "+M.Name()),Command.METAFLAG_FORCED);
+					mob.doCommand(CMParms.parse("MATE "+M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 				}
 				else
 				if(CMLib.dice().rollPercentage()>10)

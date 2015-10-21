@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.BasicTech.StdElecContainer;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -97,6 +98,21 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 				circuitKey=null;
 			}
 		}
+	}
+
+	protected static boolean reportError(final Electronics me, final Software controlI, final MOB mob, final String literalMessage, final String controlMessage)
+	{
+		if((mob!=null) && (mob.location()==CMLib.map().roomLocation(me)) && (literalMessage!=null))
+			mob.tell(literalMessage);
+		if(controlMessage!=null)
+		{
+			if(controlI!=null)
+				controlI.addScreenMessage(controlMessage);
+			else
+			if((mob!=null)&&(me!=null))
+				mob.tell(CMLib.lang().L("A panel on @x1 reports '@x2'.",me.name(mob),controlMessage));
+		}
+		return false;
 	}
 
 	protected static final boolean isThisPanelActivated(Electronics.ElecPanel E)

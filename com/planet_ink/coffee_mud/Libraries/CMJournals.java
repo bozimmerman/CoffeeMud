@@ -514,6 +514,15 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return true;
 	}
 
+	private String unsafePrompt(Session sess, String prompt, String defaultMsg) throws IOException
+	{
+		sess.promptPrint(prompt);
+		String line=sess.blockingIn(-1, false);
+		if(line == null)
+			return defaultMsg;
+		return line;
+	}
+	
 	@Override
 	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, boolean autoAdd) throws IOException
 	{
@@ -522,7 +531,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			return MsgMkrResolution.CANCELFILE;
 		final boolean canExtEdit=((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)));
 		final String help=
-			"^HCoffeeMud Message Maker Options:^N\n\r"+
+			L("^HCoffeeMud Message Maker Options:^N\n\r"+
 			"^XA)^.^Wdd new lines (go into ADD mode)\n\r"+
 			"^XD)^.^Welete one or more lines\n\r"+
 			"^XL)^.^Wist the entire text file\n\r"+
@@ -531,9 +540,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			"^XR)^.^Weplace text in the file\n\r"+
 			"^XS)^.^Wave the file\n\r"+
 			(canExtEdit?"^XW)^.^Write over using GMCP\n\r":"")+
-			"^XQ)^.^Wuit without saving";
+			"^XQ)^.^Wuit without saving");
 
-		final String addModeMessage="^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N";
+		final String addModeMessage=L("^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N");
 		mob.tell(L("^HCoffeeMud Message Maker^N"));
 		boolean menuMode=!autoAdd;
 		if(autoAdd)
@@ -543,7 +552,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			sess.setAfkFlag(false);
 			if(!menuMode)
 			{
-				final String line=sess.prompt("^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N ","");
+				final String line =unsafePrompt(sess,"^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N ",".");
 				if(line.trim().equals("."))
 					menuMode=true;
 				else
@@ -578,12 +587,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					{
 						String line=param1;
 						if(line==null)
-							line=sess.prompt(L("Text to search for (case sensitive): "),"");
+							line=unsafePrompt(sess,L("Text to search for (case sensitive): "),"");
 						if(line.length()>0)
 						{
 							String str=param2;
 							if(str==null)
-								str=sess.prompt(L("Text to replace it with: "),"");
+								str=unsafePrompt(sess,L("Text to replace it with: "),"");
 							for(int i=0;i<vbuf.size();i++)
 								vbuf.set(i,CMStrings.replaceAll(vbuf.get(i),line,str));
 						}
@@ -607,7 +616,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							mob.tell(L("Current: \n\r@x1) @x2",CMStrings.padRight(""+ln,3),vbuf.get(ln)));
 							String str=param2;
 							if(str==null)
-								str=sess.prompt(L("Rewrite: \n\r"));
+								str=unsafePrompt(sess,L("Rewrite: \n\r"),"");
 							if(str.length()==0)
 								mob.tell(L("(no change)"));
 							else
@@ -652,7 +661,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						vbuf.clear();
 						mob.session().sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
 						oldDoc=null;
-						final String newText=mob.session().prompt(L("Re-Enter the whole doc using your GMCP editor.\n\rIf the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\rProceed: "));
+						String newText=unsafePrompt(sess,L("Re-Enter the whole doc using your GMCP editor.\n\rIf the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\rProceed: "),"");
+						if((newText.length()>0)&&(newText.charAt(newText.length()-1)=='\\'))
+							newText = newText.substring(0,newText.length()-1);
 						final String[] newDoc=newText.split("\\\\n");
 						for(final String s : newDoc)
 							vbuf.add(s);
@@ -679,13 +690,13 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					{
 						String line=param1;
 						if(line==null)
-							line=sess.prompt(L("Line to insert before (0-@x1): ",""+(vbuf.size()-1)),"");
+							line=unsafePrompt(sess,L("Line to insert before (0-@x1): ",""+(vbuf.size()-1)),"");
 						if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
 						{
 							final int ln=CMath.s_int(line);
 							String str=param2;
 							if(str==null)
-								str=sess.prompt(L("Enter text to insert here.\n\r: "));
+								str=unsafePrompt(sess,L("Enter text to insert here.\n\r: "),"");
 							vbuf.add(ln,str);
 						}
 						else

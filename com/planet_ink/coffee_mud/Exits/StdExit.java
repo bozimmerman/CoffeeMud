@@ -466,7 +466,7 @@ public class StdExit implements Exit
 	public StringBuilder viewableText(MOB mob, Room room)
 	{
 		final StringBuilder viewMsg=new StringBuilder("");
-		if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
+		if(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 		{
 			if(room==null)
 				viewMsg.append("^Z(null)^.^? ");

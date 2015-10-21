@@ -191,7 +191,7 @@ public class MOTD extends StdCommand
 				if(CJseparator)
 					buf.append("\n\r--------------------------------------\n\r");
 
-				if((!mob.isAttribute(MOB.Attrib.AUTOFORWARD))
+				if((!mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{
 					final List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX));
@@ -241,7 +241,7 @@ public class MOTD extends StdCommand
 		}
 		if(parm.equalsIgnoreCase("ON"))
 		{
-			if(mob.isAttribute(MOB.Attrib.DAILYMESSAGE))
+			if(mob.isAttributeSet(MOB.Attrib.DAILYMESSAGE))
 			{
 				mob.setAttribute(MOB.Attrib.DAILYMESSAGE,false);
 				mob.tell(L("The daily messages have been turned on."));
@@ -254,7 +254,7 @@ public class MOTD extends StdCommand
 		else
 		if(parm.equalsIgnoreCase("OFF"))
 		{
-			if(!mob.isAttribute(MOB.Attrib.DAILYMESSAGE))
+			if(!mob.isAttributeSet(MOB.Attrib.DAILYMESSAGE))
 			{
 				mob.setAttribute(MOB.Attrib.DAILYMESSAGE,true);
 				mob.tell(L("The daily messages have been turned off."));

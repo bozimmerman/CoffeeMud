@@ -45,7 +45,7 @@ public class NOMXP extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if((mob.isAttribute(MOB.Attrib.MXP))
+			if((mob.isAttributeSet(MOB.Attrib.MXP))
 			||(mob.session().getClientTelnetMode(Session.TELNET_MXP)))
 			{
 				if(mob.session().getClientTelnetMode(Session.TELNET_MXP))

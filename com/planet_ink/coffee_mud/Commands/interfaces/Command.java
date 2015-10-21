@@ -149,19 +149,4 @@ public interface Command extends CMObject
 	 */
 	public Object executeInternal(MOB mob, int metaFlags, Object... args)
 		throws java.io.IOException;
-
-	/** constant mask for the metaflags parameter for execute and preexecute, means being mpforced*/
-	public static final int METAFLAG_MPFORCED=1;
-	/** constant mask for the metaflags parameter for execute and preexecute, means being ordered*/
-	public static final int METAFLAG_ORDER=2;
-	/** constant mask for the metaflags parameter for execute and preexecute, means being possessed*/
-	public static final int METAFLAG_POSSESSED=4;
-	/** constant mask for the metaflags parameter for execute and preexecute, means being snooped*/
-	public static final int METAFLAG_SNOOPED=8;
-	/** constant mask for the metaflags parameter for execute and preexecute, means being forced with AS*/
-	public static final int METAFLAG_AS=16;
-	/** constant mask for the metaflags parameter for execute and preexecute, means being forced with spells*/
-	public static final int METAFLAG_FORCED=32;
-	/** constant mask for the metaflags parameter for execute and preexecute, means being a meta-command*/
-	public static final int METAFLAG_ASMESSAGE=64;
 }

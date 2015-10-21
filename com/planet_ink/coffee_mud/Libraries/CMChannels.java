@@ -67,14 +67,17 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if((i>=0)&&(i<channelList.size()))
 		{
 			final CMChannel channel = channelList.get(i);
-			List<ChannelMsg> msgs = channel.queue;
-			if((numNewToSkip>0)&&(numNewToSkip >= msgs.size()))
+			LinkedList<ChannelMsg> msgs=new LinkedList<ChannelMsg>();
+			if(numNewToSkip < channel.queue.size())
 			{
-				List<ChannelMsg> msgs2=new Vector<ChannelMsg>(numToReturn);
-				for(int x=numNewToSkip;x<msgs.size();x++)
-					msgs2.add(msgs.get(x));
-				msgs=msgs2;
+				int skipNum=numNewToSkip;
+				for(ChannelMsg msg : channel.queue)
+				{
+					if((--skipNum < 0)&&(msgs.size() < numToReturn))
+						msgs.addFirst(msg);
+				}
 			}
+			
 			if(msgs.size()>=numToReturn)
 				return msgs;
 			if(channel.flags.contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
@@ -217,12 +220,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	{
 		CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
 		final CMChannel channel=getChannel(i);
-		final List<ChannelMsg> q=channel.queue;
+		final SLinkedList<ChannelMsg> q=channel.queue;
 		synchronized(q)
 		{
 			if(q.size()>=QUEUE_SIZE)
-				q.remove(0);
-			q.add(new ChannelMsg(msg));
+				q.removeLast();
+			q.addFirst(new ChannelMsg(msg));
 		}
 		if((!channel.flags.contains(ChannelsLibrary.ChannelFlag.NOBACKLOG))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELBACKLOGS))

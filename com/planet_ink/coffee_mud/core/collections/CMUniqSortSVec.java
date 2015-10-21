@@ -13,19 +13,19 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 
 	public CMUniqSortSVec(int size)
 	{
-		super();
+		super(size);
 	}
 
 	public CMUniqSortSVec()
 	{
 	}
 
-	private int compareTo(CMObject arg0, String arg1)
+	protected int compareTo(CMObject arg0, String arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
 
-	private int compareTo(CMObject arg0, CMObject arg1)
+	protected int compareTo(CMObject arg0, CMObject arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1.ID());
 	}

@@ -2065,20 +2065,20 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					mob.setVictim(officer);
 				else
 				if(!CMLib.flags().isAnimalIntelligence(mob))
-					mob.enqueCommand(CMParms.parse("FLEE"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,1);
+					mob.enqueCommand(CMParms.parse("FLEE"),MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,1);
 			}
 			else
 			if((good||neutral)
 			&&(!CMLib.flags().isAnimalIntelligence(mob)))
 			{
 				mob.makePeace();
-				mob.doCommand(CMParms.parse("SIT"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER);
+				mob.doCommand(CMParms.parse("SIT"),MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER);
 			}
 			else
 			if((CMLib.flags().isAnimalIntelligence(mob))&&(CMLib.dice().rollPercentage()>50))
 			{
 				mob.makePeace();
-				mob.doCommand(CMParms.parse("SIT"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER);
+				mob.doCommand(CMParms.parse("SIT"),MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER);
 			}
 		}
 	}
@@ -2845,10 +2845,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					{
 						dismissOfficer(officer);
 						CMLib.commands().postFollow(criminalM, null, true);
-						for(final Enumeration<MOB.Follower> f=criminalM.followers();f.hasMoreElements();)
+						for(final Enumeration<Pair<MOB,Short>> f=criminalM.followers();f.hasMoreElements();)
 						{
-							final MOB.Follower F=f.nextElement();
-							CMLib.commands().postFollow(F.follower, null, true);
+							final Pair<MOB,Short> F=f.nextElement();
+							CMLib.commands().postFollow(F.first, null, true);
 						}
 						Ability A=CMClass.getAbility("Prisoner");
 						A.startTickDown(judgeM,criminalM,100);

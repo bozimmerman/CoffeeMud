@@ -133,7 +133,7 @@ public class Thief_TurfWar extends ThiefSkill
 				{
 					defender=M;
 					R.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 arrives to defend this turf! Let the war begin!",M.name()));
-					defenderPKILLON=defender.isAttribute(MOB.Attrib.PLAYERKILL);
+					defenderPKILLON=defender.isAttributeSet(MOB.Attrib.PLAYERKILL);
 					defender.setAttribute(MOB.Attrib.PLAYERKILL,true);
 					attacker.setVictim(defender);
 					defender.setVictim(attacker);
@@ -203,7 +203,7 @@ public class Thief_TurfWar extends ThiefSkill
 			return false;
 		}
 
-		if(!mob.isAttribute(MOB.Attrib.PLAYERKILL))
+		if(!mob.isAttributeSet(MOB.Attrib.PLAYERKILL))
 		{
 			mob.tell(L("You must turn on your playerkill flag first."));
 			return false;

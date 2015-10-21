@@ -55,7 +55,7 @@ public class PlayerKill extends StdCommand
 			mob.tell(L("YOU CANNOT TOGGLE THIS FLAG WHILE IN COMBAT!"));
 			return false;
 		}
-		if(mob.isAttribute(MOB.Attrib.PLAYERKILL))
+		if(mob.isAttributeSet(MOB.Attrib.PLAYERKILL))
 		{
 			if(CMProps.getVar(CMProps.Str.PKILL).startsWith("ONEWAY"))
 			{

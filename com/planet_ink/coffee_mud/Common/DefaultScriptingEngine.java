@@ -3068,7 +3068,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-				if(((MOB)E).isAttribute(MOB.Attrib.PLAYERKILL))
+				if(((MOB)E).isAttributeSet(MOB.Attrib.PLAYERKILL))
 					returnable=true;
 				else
 					returnable=false;
@@ -5398,7 +5398,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((E==null)||(!(E instanceof MOB)))
 					results.append("false");
 				else
-				if(((MOB)E).isAttribute(MOB.Attrib.PLAYERKILL))
+				if(((MOB)E).isAttributeSet(MOB.Attrib.PLAYERKILL))
 					results.append("true");
 				else
 					results.append("false");
@@ -10027,7 +10027,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					final Vector<String> V=CMParms.parse(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
 					if((V.size()>0)&&(monster!=null))
-						monster.doCommand(V,Command.METAFLAG_MPFORCED);
+						monster.doCommand(V,MUDCmdProcessor.METAFLAG_MPFORCED);
 				}
 				break;
 			}

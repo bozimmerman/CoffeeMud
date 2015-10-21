@@ -64,8 +64,7 @@ public class Tattooing extends CommonSkill
 				else
 				{
 					commonEmote(mob,L("<S-NAME> complete(s) the tattoo on @x1.",target.name()));
-					final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
-					target.addTattoo(T.set(writing));
+					target.addTattoo(writing);
 				}
 			}
 		}

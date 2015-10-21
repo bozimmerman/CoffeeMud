@@ -58,15 +58,13 @@ public class MPRun extends StdCommand
 				checkMOB=CMLib.players().getLoadPlayer(firstParm.substring(0,x));
 				if(checkMOB==null)
 				{
-					final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
-					mob.addTattoo(T.set("SYSTEM_MPRUNDOWN",(int)CMProps.getTicksPerMinute()));
+					mob.addTattoo("SYSTEM_MPRUNDOWN",(int)CMProps.getTicksPerMinute());
 					return CMLib.commands().handleUnknownCommand(mob, commands);
 				}
 				final String pw=firstParm.substring(x+1);
 				if(!checkMOB.playerStats().matchesPassword(pw))
 				{
-					final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
-					mob.addTattoo(T.set("SYSTEM_MPRUNDOWN",(int)(2 * CMProps.getTicksPerMinute())));
+					mob.addTattoo("SYSTEM_MPRUNDOWN",(int)(2 * CMProps.getTicksPerMinute()));
 					return CMLib.commands().handleUnknownCommand(mob, commands);
 				}
 				commands.remove(1);

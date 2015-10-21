@@ -45,7 +45,7 @@ public class FactionList extends StdCommand
 	{
 		final StringBuffer msg=new StringBuffer(L("\n\r^HFaction Standings:^?^N\n\r"));
 		boolean none=true;
-		final XVector<String> list=new XVector<String>(mob.fetchFactions());
+		final XVector<String> list=new XVector<String>(mob.factions());
 		list.sort();
 		for (final String name : list)
 		{

@@ -1664,7 +1664,7 @@ public class MOBloader
 			if((M.Name().equalsIgnoreCase(name))&&(M.playerStats()!=null))
 			{
 				data[0]=M.playerStats().getEmail();
-				data[1]=""+M.isAttribute(MOB.Attrib.AUTOFORWARD);
+				data[1]=""+M.isAttributeSet(MOB.Attrib.AUTOFORWARD);
 				return data;
 			}
 		}

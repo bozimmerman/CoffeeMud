@@ -478,7 +478,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			try
 			{
 				if(C!=null)
-					C.execute(mob,new XVector<String>("GTELL",",<S-HAS-HAVE> gained a level."),Command.METAFLAG_FORCED);
+					C.execute(mob,new XVector<String>("GTELL",",<S-HAS-HAVE> gained a level."),MUDCmdProcessor.METAFLAG_FORCED);
 			}catch(final Exception e){}
 		}
 		final StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMLib.protocol().msp("level_gain.wav",60));

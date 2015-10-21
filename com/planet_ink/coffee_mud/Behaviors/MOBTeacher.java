@@ -302,7 +302,7 @@ public class MOBTeacher extends CombatAbilities
 	{
 		if(host instanceof MOB)
 		{
-			if(((MOB)host).isAttribute(MOB.Attrib.NOTEACH))
+			if(((MOB)host).isAttributeSet(MOB.Attrib.NOTEACH))
 				((MOB)host).setAttribute(MOB.Attrib.NOTEACH,false);
 		}
 		return super.okMessage(host,msg);

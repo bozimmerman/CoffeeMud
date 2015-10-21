@@ -125,6 +125,7 @@ public class Necromancer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseUnholiness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Designation",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true,CMParms.parseSemicolons("Prayer_Paralyze",true));
 
@@ -143,6 +144,8 @@ public class Necromancer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_AnimateVampire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Regeneration",true);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_MassGrave",false);
+		
 		if(!registeredAsListener)
 		{
 			synchronized(this)
@@ -218,7 +221,7 @@ public class Necromancer extends Cleric
 					&&(aChar!=M)
 					&&(M.baseCharStats().getClassLevel(this)>14)
 					&&(CMLib.flags().isInTheGame(M,true))
-					&&(!M.isAttribute(MOB.Attrib.QUIET)))
+					&&(!M.isAttributeSet(MOB.Attrib.QUIET)))
 					{
 						if(!aChar.isMonster())
 							M.tell(L("^RYou just felt the death of @x1.^N",aChar.Name()));

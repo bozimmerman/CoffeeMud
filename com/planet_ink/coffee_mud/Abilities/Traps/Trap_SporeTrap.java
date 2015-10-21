@@ -32,26 +32,55 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_SporeTrap extends StdTrap
 {
-	@Override public String ID() { return "Trap_SporeTrap"; }
-	private final static String localizedName = CMLib.lang().L("spore trap");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 13;}
-	@Override public String requiresToSet(){return "some diseased food";}
+	@Override
+	public String ID()
+	{
+		return "Trap_SporeTrap";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("spore trap");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS | Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 13;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "some diseased food";
+	}
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		final Vector offenders=new Vector();
+		final List<Ability> offenders=new Vector<Ability>();
 
 		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE))
-				offenders.addElement(A);
+				offenders.add(A);
 		}
 		return offenders;
 	}
@@ -98,15 +127,16 @@ public class Trap_SporeTrap extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		final Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_MEAT);
 		Ability A=CMClass.getAbility(text());
 		if(A==null)
 			A=CMClass.getAbility("Disease_Cold");
 		I.addNonUninvokableEffect(A);
-		V.addElement(I);
+		V.add(I);
 		return V;
 	}
+
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
@@ -121,6 +151,7 @@ public class Trap_SporeTrap extends StdTrap
 		}
 		return true;
 	}
+
 	@Override
 	public void spring(MOB target)
 	{

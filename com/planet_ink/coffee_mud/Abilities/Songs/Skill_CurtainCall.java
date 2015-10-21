@@ -81,7 +81,7 @@ public class Skill_CurtainCall extends BardSkill
 			&& CMLib.flags().aliveAwakeMobileUnbound(mob, false)
 			&& ((mob.curState().getHitPoints() < mob.maxState().getHitPoints())||(mob.curState().getMana() < mob.maxState().getMana())))
 			{
-				mob.doCommand(new XVector<String>("Bow"), Command.METAFLAG_FORCED);
+				mob.doCommand(new XVector<String>("Bow"), MUDCmdProcessor.METAFLAG_FORCED);
 				int hpGain = (int)Math.round(CMath.mul(mob.maxState().getHitPoints(), 0.10));
 				int manaGain = (int)Math.round(CMath.mul(mob.maxState().getMana(), 0.10));
 				int moveLoss = (int)Math.round(CMath.mul(mob.maxState().getMovement(), 0.06 - (super.getXLOWCOSTLevel(invoker()) * 0.005)));

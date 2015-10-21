@@ -31,69 +31,17 @@ import java.util.*;
    limitations under the License.
 */
 /**
- * @author Owner
+ * This enormous workhorse handles everything dealing with the relationship
+ * between players, races, etc and Abilities (Skills, Spells, Prayers, etc).
+ * The principle duty is to map the provider of player Abilities to those
+ * Abilities, along with any requirements for being provided the skills,
+ * and the condition the skill is in when it is received.
+ * 
+ * @author Bo Zimmerman
  *
  */
 public interface AbilityMapper extends CMLibrary
 {
-	public static class QualifyingID
-	{
-		public String ID;
-		public int qualifyingLevel;
-		public QualifyingID(String id, int level)
-		{ ID=id; qualifyingLevel=level;}
-	}
-
-	public static class AbilityPreReq
-	{
-		public String[] abilityIDs;
-		public int proficiency;
-		public AbilityPreReq(int prof, String[] ids)
-		{ abilityIDs=ids; proficiency=prof;}
-	}
-
-	public static class AbilityLimits
-	{
-		public int commonSkills;
-		public int craftingSkills;
-		public int nonCraftingSkills;
-		public int specificSkillLimit;
-	}
-
-	public static class AbilityMapping implements Cloneable
-	{
-		public static final int COST_PRAC=0;
-		public static final int COST_TRAIN=1;
-		public static final int COST_MANA=2;
-		public static final int COST_PRACPRAC=3;
-		public static final int COST_NUM=4;
-		public String ID="";
-		public String abilityID="";
-		public int qualLevel=-1;
-		public boolean autoGain=false;
-		public int defaultProficiency=0;
-		public int maxProficiency=100;
-		public String defaultParm="";
-		public boolean isSecret=false;
-		public boolean isAllQualified=false;
-		public DVector skillPreReqs=new DVector(2);
-		public String extraMask="";
-		public String originalSkillPreReqList="";
-		public Integer[] costOverrides=new Integer[COST_NUM];
-		public boolean allQualifyFlag=false;
-		public Map<String,String> extFields=new Hashtable<String,String>(1);
-		public AbilityMapping(String id){ ID=id;}
-		public AbilityMapping copyOf()
-		{
-			try {
-				final AbilityMapping A=(AbilityMapping)this.clone();
-				A.skillPreReqs = skillPreReqs.copyOf();
-				A.costOverrides = costOverrides.clone();
-				return A;
-			}catch(final Exception e) { return this;}
-		}
-	}
-
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain);
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, List<String> preReqSkillsList);
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, String extraMasks);
@@ -187,4 +135,69 @@ public interface AbilityMapper extends CMLibrary
 	public AbilityMapping makeAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, int maxProficiency, String defaultParam, boolean autoGain,
 			 boolean secret, boolean isAllQualified, List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
 	public Map<String, int[]> getHardOverrideManaCache();
+	
+	public static class QualifyingID
+	{
+		public String	ID;
+		public int		qualifyingLevel;
+
+		public QualifyingID(String id, int level)
+		{
+			ID = id;
+			qualifyingLevel = level;
+		}
+	}
+
+	public static class AbilityLimits
+	{
+		public int	commonSkills;
+		public int	craftingSkills;
+		public int	nonCraftingSkills;
+		public int	specificSkillLimit;
+	}
+
+	public static class AbilityMapping implements Cloneable
+	{
+		public static final int		COST_PRAC				= 0;
+		public static final int		COST_TRAIN				= 1;
+		public static final int		COST_MANA				= 2;
+		public static final int		COST_PRACPRAC			= 3;
+		public static final int		COST_NUM				= 4;
+		public String				ID						= "";
+		public String				abilityID				= "";
+		public int					qualLevel				= -1;
+		public boolean				autoGain				= false;
+		public int					defaultProficiency		= 0;
+		public int					maxProficiency			= 100;
+		public String				defaultParm				= "";
+		public boolean				isSecret				= false;
+		public boolean				isAllQualified			= false;
+		public DVector				skillPreReqs			= new DVector(2);
+		public String				extraMask				= "";
+		public String				originalSkillPreReqList	= "";
+		public Integer[]			costOverrides			= new Integer[COST_NUM];
+		public boolean				allQualifyFlag			= false;
+		public Map<String, String>	extFields				= new Hashtable<String, String>(1);
+
+		public AbilityMapping(String id)
+		{
+			ID = id;
+		}
+
+		public AbilityMapping copyOf()
+		{
+			try
+			{
+				final AbilityMapping A = (AbilityMapping) this.clone();
+				A.skillPreReqs = skillPreReqs.copyOf();
+				A.costOverrides = costOverrides.clone();
+				return A;
+			}
+			catch (final Exception e)
+			{
+				return this;
+			}
+		}
+	}
+
 }

@@ -35,13 +35,43 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Trap_Popper extends StdTrap
 {
-	@Override public String ID() { return "Trap_Popper"; }
-	private final static String localizedName = CMLib.lang().L("popping noise");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 1;}
-	@Override public String requiresToSet(){return "";}
+	@Override
+	public String ID()
+	{
+		return "Trap_Popper";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("popping noise");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 1;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
 
 	@Override
 	public void spring(MOB target)

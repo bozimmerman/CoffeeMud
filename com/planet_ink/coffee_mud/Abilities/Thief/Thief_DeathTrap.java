@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,40 +32,140 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_DeathTrap extends ThiefSkill implements Trap
 {
-	@Override public String ID() { return "Thief_DeathTrap"; }
-	private final static String localizedName = CMLib.lang().L("Death Trap");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"DEATHTRAP"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_TRAPPING; }
-	protected boolean sprung=false;
+	@Override
+	public String ID()
+	{
+		return "Thief_DeathTrap";
+	}
 
-	@Override public boolean disabled(){return false;}
-	@Override public void disable(){ unInvoke();}
-	@Override public boolean sprung(){return false;}
+	private final static String	localizedName	= CMLib.lang().L("Death Trap");
 
-	@Override public boolean isABomb(){return false;}
-	@Override public void activateBomb(){}
-	@Override public void setReset(int Reset){}
-	@Override public int getReset(){return 0;}
-	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	@Override public String requiresToSet(){return "";}
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "DEATHTRAP" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_TRAPPING;
+	}
+
+	protected boolean	sprung	= false;
+
+	@Override
+	public boolean disabled()
+	{
+		return false;
+	}
+
+	@Override
+	public void disable()
+	{
+		unInvoke();
+	}
+
+	@Override
+	public boolean sprung()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isABomb()
+	{
+		return false;
+	}
+
+	@Override
+	public void activateBomb()
+	{
+	}
+
+	@Override
+	public void setReset(int Reset)
+	{
+	}
+
+	@Override
+	public int getReset()
+	{
+		return 0;
+	}
+
+	@Override
+	public void resetTrap(MOB mob)
+	{
+	}
+
+	@Override
+	public boolean maySetTrap(MOB mob, int asLevel)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canSetTrapOn(MOB mob, Physical P)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canReSetTrap(MOB mob)
+	{
+		return false;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
+
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		for(int i=0;i<100;i++)
-		V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
+		V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
 		return V;
 	}
+	
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
@@ -149,6 +248,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return super.castingQuality(mob,target);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

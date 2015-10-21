@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -90,6 +91,25 @@ public interface Trap extends Ability
 	 */
 	public boolean sprung();
 
+	/**
+	 * Causes the trap to become reset and unsprung.  Called
+	 * usually by thief type skills.
+	 * @param mob the person resetting the trap
+	 * @see Trap#canReSetTrapOn(MOB, Physical)
+	 */
+	public void resetTrap(MOB mob);
+
+	/**
+	 * Returns whether the given mob, at the given level, is allowed
+	 * to re-set this trap.  This is where level restrictions are enforced,
+	 * though no messages should be given.
+	 * @see Trap#canSetTrapOn(MOB, Physical)
+	 * @see Trap#resetTrap(MOB)
+	 * @param mob the trap setter to check
+	 * @return true if the given trapper is allowed to reset this trap, false otherwise
+	 */
+	public boolean canReSetTrap(MOB mob);
+	
 	/**
 	 * Sets the number of ticks to wait after a trap has been sprung,
 	 * before it will automatically reset for another victim.  A reset

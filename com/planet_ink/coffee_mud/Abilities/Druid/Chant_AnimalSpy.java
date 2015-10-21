@@ -122,7 +122,7 @@ public class Chant_AnimalSpy extends Chant
 			{
 				final String msg2=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if((msg2!=null)&&(msg2.length()>0))
-					spy.enqueCommand(CMParms.parse(msg2.trim()),Command.METAFLAG_FORCED,0);
+					spy.enqueCommand(CMParms.parse(msg2.trim()),MUDCmdProcessor.METAFLAG_FORCED,0);
 			}
 		}
 		finally

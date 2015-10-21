@@ -59,7 +59,7 @@ public class Equipment extends StdCommand
 		String tat=null;
 		final boolean paragraphView=(CMProps.getIntVar(CMProps.Int.EQVIEW)>1)
 							||((seer!=mob)&&(CMProps.getIntVar(CMProps.Int.EQVIEW)>0))
-							||seer.isAttribute(MOB.Attrib.COMPRESS);
+							||seer.isAttributeSet(MOB.Attrib.COMPRESS);
 		final HashSet alreadyDone=new HashSet();
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		for(int l=0;l<codes.all_ordered().length;l++)

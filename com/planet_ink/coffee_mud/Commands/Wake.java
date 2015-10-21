@@ -82,7 +82,7 @@ public class Wake extends StdCommand
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				execute(M,null,metaFlags|Command.METAFLAG_ORDER);
+				execute(M,null,metaFlags|MUDCmdProcessor.METAFLAG_ORDER);
 			}
 		}
 		return false;

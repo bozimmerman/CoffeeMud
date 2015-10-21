@@ -500,13 +500,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	@Override
 	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg)
 	{
-		if(teacher.isAttribute(MOB.Attrib.NOTEACH))
+		if(teacher.isAttributeSet(MOB.Attrib.NOTEACH))
 		{
 			teacher.tell(L("You are refusing to teach right now."));
 			return false;
 		}
 
-		if((student.isAttribute(MOB.Attrib.NOTEACH))
+		if((student.isAttributeSet(MOB.Attrib.NOTEACH))
 		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			if(teacher.isMonster())

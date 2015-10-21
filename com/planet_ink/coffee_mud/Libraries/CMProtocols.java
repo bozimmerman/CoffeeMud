@@ -1998,10 +1998,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(mob.getVictim()!=null)
 							state=8;
 						else
-						if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
+						if(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 							state=6;
 						else
-						if(mob.isAttribute(MOB.Attrib.AUTORUN))
+						if(mob.isAttributeSet(MOB.Attrib.AUTORUN))
 							state=12;
 						doc.append("\"state\":").append(state).append(",");
 						doc.append("\"pos\":\"").append(

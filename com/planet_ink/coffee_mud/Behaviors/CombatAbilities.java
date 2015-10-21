@@ -796,7 +796,7 @@ public class CombatAbilities extends StdBehavior
 				final Vector V=new Vector();
 				V.addElement("hold");
 				V.addElement(weaponSet.offHandWand.name());
-				mob.doCommand(V,Command.METAFLAG_FORCED);
+				mob.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 			}
 			else
 			if(weaponSet.wand!=null)
@@ -821,7 +821,7 @@ public class CombatAbilities extends StdBehavior
 						V.addElement("sayto");
 						V.addElement(target.name());
 						V.addElement(((Wand)weaponSet.wand).magicWord());
-						mob.doCommand(V,Command.METAFLAG_FORCED);
+						mob.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 					}
 				}
 			}

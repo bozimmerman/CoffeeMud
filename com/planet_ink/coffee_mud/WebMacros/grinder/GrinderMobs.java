@@ -144,7 +144,7 @@ public class GrinderMobs
 
 	public static String factions(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
-		for(final Enumeration e=E.fetchFactions();e.hasMoreElements();)
+		for(final Enumeration e=E.factions();e.hasMoreElements();)
 		{
 			final String strip=(String)e.nextElement();
 			E.removeFaction(strip);

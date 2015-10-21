@@ -32,16 +32,46 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_Greasy extends StdTrap
 {
-	@Override public String ID() { return "Trap_Greasy"; }
-	private final static String localizedName = CMLib.lang().L("greasy");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 10;}
-	@Override public String requiresToSet(){return "a container of lamp oil";}
+	@Override
+	public String ID()
+	{
+		return "Trap_Greasy";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("greasy");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 10;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "a container of lamp oil";
+	}
+
 	int times=20;
 
 	protected Item getPoison(MOB mob)
@@ -65,8 +95,8 @@ public class Trap_Greasy extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
-		V.addElement(CMClass.getBasicItem("OilFlask"));
+		final List<Item> V=new Vector<Item>();
+		V.add(CMClass.getBasicItem("OilFlask"));
 		return V;
 	}
 	@Override

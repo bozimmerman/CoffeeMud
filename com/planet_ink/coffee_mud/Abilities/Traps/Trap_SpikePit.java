@@ -32,18 +32,47 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_SpikePit extends Trap_RoomPit
 {
-	@Override public String ID() { return "Trap_SpikePit"; }
-	private final static String localizedName = CMLib.lang().L("spike pit");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 8;}
-	@Override public String requiresToSet(){return "5 dagger-class weapons";}
+	@Override
+	public String ID()
+	{
+		return "Trap_SpikePit";
+	}
 
-	public Vector daggerDamages=null;
+	private final static String	localizedName	= CMLib.lang().L("spike pit");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 8;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "5 dagger-class weapons";
+	}
+
+	public List<Integer> daggerDamages=null;
 
 	protected Item getDagger(MOB mob)
 	{
@@ -71,8 +100,8 @@ public class Trap_SpikePit extends Trap_RoomPit
 		while((I!=null)&&((++num)<6))
 		{
 			if(daggerDamages==null)
-				daggerDamages=new Vector();
-			daggerDamages.addElement(Integer.valueOf(I.basePhyStats().damage()));
+				daggerDamages=new Vector<Integer>();
+			daggerDamages.add(Integer.valueOf(I.basePhyStats().damage()));
 			I.destroy();
 			I=getDagger(mob);
 		}
@@ -82,16 +111,16 @@ public class Trap_SpikePit extends Trap_RoomPit
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		if((daggerDamages==null)||(daggerDamages.size()==0))
-			V.addElement(CMClass.getWeapon("Dagger"));
+			V.add(CMClass.getWeapon("Dagger"));
 		else
 		for(int d=0;d<daggerDamages.size();d++)
 		{
 			final Item I=CMClass.getWeapon("Dagger");
-			I.basePhyStats().setDamage(((Integer)daggerDamages.elementAt(d)).intValue());
+			I.basePhyStats().setDamage(daggerDamages.get(d).intValue());
 			I.recoverPhyStats();
-			V.addElement(I);
+			V.add(I);
 		}
 		return V;
 	}
@@ -123,7 +152,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 			if((daggerDamages!=null)&&(daggerDamages.size()>0))
 			{
 				for(int i=0;i<daggerDamages.size();i++)
-					damage+=CMLib.dice().roll(1,((Integer)daggerDamages.elementAt(i)).intValue(),0);
+					damage+=CMLib.dice().roll(1,daggerDamages.get(i).intValue(),0);
 			}
 			else
 				damage+=CMLib.dice().roll(5,4,0);

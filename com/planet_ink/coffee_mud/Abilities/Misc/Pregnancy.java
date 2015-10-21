@@ -218,7 +218,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 					if(daysRemaining<7) // BIRTH!
 					{
 						if(CMLib.flags().isSleeping(mob))
-							mob.enqueCommand(CMParms.parse("WAKE"),Command.METAFLAG_FORCED,0);
+							mob.enqueCommand(CMParms.parse("WAKE"),MUDCmdProcessor.METAFLAG_FORCED,0);
 						if((CMLib.dice().rollPercentage()>50)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5))
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,L("<S-NAME> moan(s) and scream(s) in labor pain!!"));
 						ticksInLabor++;
@@ -235,8 +235,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								sondat="son";
 							}
 							String desc="The "+sondat+" of "+mob.Name();
-							Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
-							babe.addTattoo(T.set("PARENT:"+mob.Name()));
+							babe.addTattoo("PARENT:"+mob.Name());
 							String race2=mob.baseCharStats().getMyRace().ID();
 							MOB otherParentM=null;
 							if(z>y)
@@ -246,8 +245,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								desc+=" and "+text().substring(y+1,z);
 								if(otherParentM != null)
 								{
-									T=(Tattoo)CMClass.getCommon("DefaultTattoo");
-									babe.addTattoo(T.set("PARENT:"+otherParentM.Name()));
+									babe.addTattoo("PARENT:"+otherParentM.Name());
 								}
 							}
 							desc+=".";
@@ -383,7 +381,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						if((monthsRemaining<=1)&&(CMLib.dice().rollPercentage()==1))
 						{
 							if(CMLib.flags().isSleeping(mob))
-								mob.enqueCommand(CMParms.parse("WAKE"),Command.METAFLAG_FORCED,0);
+								mob.enqueCommand(CMParms.parse("WAKE"),MUDCmdProcessor.METAFLAG_FORCED,0);
 							mob.tell(L("Oh! You had a contraction!"));
 						}
 						else

@@ -216,7 +216,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		if(room==null)
 			return empty;
 		final StringBuilder Say=new StringBuilder("");
-		if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
+		if(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 		{
 			Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+CMLib.flags().colorCodes(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?name():closedText()));

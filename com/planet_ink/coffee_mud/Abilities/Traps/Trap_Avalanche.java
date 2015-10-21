@@ -32,16 +32,45 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_Avalanche extends StdTrap
 {
-	@Override public String ID() { return "Trap_Avalanche"; }
-	private final static String localizedName = CMLib.lang().L("avalanche");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 25;}
-	@Override public String requiresToSet(){return "100 pounds of stone";}
+	@Override
+	public String ID()
+	{
+		return "Trap_Avalanche";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("avalanche");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 25;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "100 pounds of stone";
+	}
 
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
@@ -60,9 +89,9 @@ public class Trap_Avalanche extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		for(int i=0;i<100;i++)
-			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
+			V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
 		return V;
 	}
 	@Override
@@ -113,11 +142,13 @@ public class Trap_Avalanche extends StdTrap
 					{
 						final MOB M=R.fetchInhabitant(i);
 						if((M!=null)&&(M!=invoker()))
+						{
 							if(invoker().mayIFight(M))
 							{
 								final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),20,1);
 								CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,L("The avalanche <DAMAGE> <T-NAME>!"));
 							}
+						}
 					}
 				}
 			}

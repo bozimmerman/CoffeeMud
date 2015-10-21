@@ -161,7 +161,7 @@ public class Inventory extends StdCommand
 		else
 		{
 			if(list.viewItems.size()>0)
-				msg.append(CMLib.lister().lister(seer,list.viewItems,true,"MItem","",false,seer.isAttribute(MOB.Attrib.COMPRESS)));
+				msg.append(CMLib.lister().lister(seer,list.viewItems,true,"MItem","",false,seer.isAttributeSet(MOB.Attrib.COMPRESS)));
 			if(list.foundButUnseen)
 				msg.append(L("(stuff you can't see right now)"));
 

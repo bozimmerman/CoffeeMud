@@ -80,13 +80,36 @@ public class Ranger_SetSnare extends StdAbility
 				mob.tell(L("You are too busy to be setting snares at the moment!"));
 				return false;
 			}
-			if((!auto)&&(!theTrap.canSetTrapOn(mob,trapThis)))
-				return false;
+			final Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
+			if(!auto)
+			{
+				if((theOldTrap!=null)
+				&&(theOldTrap.ID().equals(theTrap.ID()))
+				&&(theOldTrap.invoker()==mob))
+				{
+					if(!theOldTrap.canReSetTrap(mob))
+						return false;
+					theTrap=theOldTrap;
+				}
+				else
+				if(!theTrap.canSetTrapOn(mob,trapThis))
+					return false;
+				
+			}
 		}
 		
 		if((theTrap==null)||(trapThis==null))
 		{
 			mob.tell(L("Something went wrong."));
+			return false;
+		}
+		
+		final Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
+		if((theOldTrap!=null)
+		&&(theOldTrap.ID().equals(theTrap.ID()))
+		&&(theOldTrap.invoker() != mob))
+		{
+			mob.tell(L("A snare is already set here."));
 			return false;
 		}
 		
@@ -101,11 +124,16 @@ public class Ranger_SetSnare extends StdAbility
 
 		boolean success=proficiencyCheck(mob,+((mob.phyStats().level()+(getXLEVELLevel(mob)*2)
 											 -trapThis.phyStats().level())*3),auto);
-		final Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if(theOldTrap!=null)
 		{
 			if(theOldTrap.disabled())
 				success=false;
+			else
+			if(theOldTrap.sprung() && (theOldTrap.invoker() == mob))
+			{
+				success=true;
+				theTrap=theOldTrap;
+			}
 			else
 			{
 				theOldTrap.spring(mob);
@@ -119,11 +147,17 @@ public class Ranger_SetSnare extends StdAbility
 			mob.location().send(mob,msg);
 			if(success)
 			{
-				mob.tell(L("You have set the snare."));
+				if(theTrap.sprung())
+					mob.tell(L("You have reset the snare."));
+				else
+					mob.tell(L("You have set the snare."));
 				boolean permanent=false;
 				if(CMLib.law().doesOwnThisLand(mob,trapThis))
 					permanent=true;
-				theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),permanent);
+				if(theTrap.sprung())
+					theTrap.resetTrap(mob);
+				else
+					theTrap.setTrap(mob,trapThis,getXLEVELLevel(mob),adjustedLevel(mob,asLevel),permanent);
 				if(permanent)
 					CMLib.database().DBUpdateRoom(mob.location());
 			}

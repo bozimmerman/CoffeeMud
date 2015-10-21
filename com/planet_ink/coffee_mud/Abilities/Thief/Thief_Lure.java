@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,40 +32,162 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Lure extends ThiefSkill implements Trap
 {
-	@Override public String ID() { return "Thief_Lure"; }
-	private final static String localizedName = CMLib.lang().L("Lure");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DECEPTIVE;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"LURE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int code=0;
+	@Override
+	public String ID()
+	{
+		return "Thief_Lure";
+	}
 
-	@Override public int abilityCode(){return code;}
-	@Override public void setAbilityCode(int newCode){code=newCode;}
+	private final static String	localizedName	= CMLib.lang().L("Lure");
 
-	@Override public boolean isABomb(){return false;}
-	@Override public void activateBomb(){}
-	@Override public boolean disabled(){return false;}
-	@Override public boolean sprung(){return false;}
-	@Override public void disable(){ unInvoke();}
-	@Override public void setReset(int Reset){}
-	@Override public int getReset(){return 0;}
-	@Override public void spring(MOB M){}
-	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	@Override public List<Item> getTrapComponents() { return new Vector(); }
-	@Override public String requiresToSet(){return "";}
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_DECEPTIVE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "LURE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	public int	code	= 0;
+
+	@Override
+	public int abilityCode()
+	{
+		return code;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		code = newCode;
+	}
+
+	@Override
+	public boolean isABomb()
+	{
+		return false;
+	}
+
+	@Override
+	public void activateBomb()
+	{
+	}
+
+	@Override
+	public boolean disabled()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean sprung()
+	{
+		return false;
+	}
+
+	@Override
+	public void disable()
+	{
+		unInvoke();
+	}
+
+	@Override
+	public void setReset(int Reset)
+	{
+	}
+
+	@Override
+	public int getReset()
+	{
+		return 0;
+	}
+
+	@Override
+	public void resetTrap(MOB mob)
+	{
+
+	}
+
+	@Override
+	public void spring(MOB M)
+	{
+	}
+
+	@Override
+	public boolean maySetTrap(MOB mob, int asLevel)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canSetTrapOn(MOB mob, Physical P)
+	{
+		return false;
+	}
+
+	@Override
+	public List<Item> getTrapComponents()
+	{
+		return new Vector<Item>(1);
+	}
+
+	@Override
+	public boolean canReSetTrap(MOB mob)
+	{
+		return false;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
-	{return null;}
+	{
+		return null;
+	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

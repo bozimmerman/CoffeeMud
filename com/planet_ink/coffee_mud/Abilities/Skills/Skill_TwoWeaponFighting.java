@@ -99,7 +99,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 			final MOB mob=(MOB)affected;
 			if((mob!=null)&&(mob.isInCombat()))
 			{
-				if(mob.isAttribute(MOB.Attrib.AUTODRAW))
+				if(mob.isAttributeSet(MOB.Attrib.AUTODRAW))
 					CMLib.commands().postDraw(mob,true,true);
 
 				final Item primaryWeapon=getFirstWeapon(mob);

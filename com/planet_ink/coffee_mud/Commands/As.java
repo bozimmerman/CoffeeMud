@@ -101,7 +101,7 @@ public class As extends StdCommand
 			{
 				commands.remove(0);
 			}
-			M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
+			M.doCommand(new XVector<String>(CMParms.toStringArray(commands)),metaFlags|MUDCmdProcessor.METAFLAG_AS);
 			return false;
 		}
 		final Room oldRoom=M.location();
@@ -132,7 +132,7 @@ public class As extends StdCommand
 			}
 		}
 		CMLib.s_sleep(100);
-		M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
+		M.doCommand(new XVector<String>(CMParms.toStringArray(commands)),metaFlags|MUDCmdProcessor.METAFLAG_AS);
 		synchronized(mySession)
 		{
 			if(M.playerStats()!=null)

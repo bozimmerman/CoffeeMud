@@ -32,33 +32,134 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_PlantTrap extends Chant implements Trap
 {
-	@Override public String ID() { return "Chant_PlantTrap"; }
-	private final static String localizedName = CMLib.lang().L("Plant Trap");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int overrideMana(){return 100;}
+	@Override
+	public String ID()
+	{
+		return "Chant_PlantTrap";
+	}
 
-	@Override public boolean isABomb(){return false;}
-	@Override public void activateBomb(){}
-	@Override public void setReset(int Reset){}
-	@Override public int getReset(){return 0;}
-	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	@Override public List<Item> getTrapComponents() { return new Vector(); }
-	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	@Override public String requiresToSet(){return "";}
+	private final static String	localizedName	= CMLib.lang().L("Plant Trap");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
+	}
+
+	@Override
+	public boolean isABomb()
+	{
+		return false;
+	}
+
+	@Override
+	public void activateBomb()
+	{
+	}
+
+	@Override
+	public void setReset(int Reset)
+	{
+	}
+
+	@Override
+	public int getReset()
+	{
+		return 0;
+	}
+
+	@Override
+	public void resetTrap(MOB mob)
+	{
+	}
+
+	@Override
+	public boolean maySetTrap(MOB mob, int asLevel)
+	{
+		return false;
+	}
+
+	@Override
+	public List<Item> getTrapComponents()
+	{
+		return new Vector<Item>(1);
+	}
+
+	@Override
+	public boolean canSetTrapOn(MOB mob, Physical P)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canReSetTrap(MOB mob)
+	{
+		return false;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean permanent)
-	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0); return (Trap)P.fetchEffect(ID());}
+	{
+		beneficialAffect(mob, P, qualifyingClassLevel + trapBonus, 0);
+		return (Trap) P.fetchEffect(ID());
+	}
 
-	@Override public boolean disabled(){return false;}
-	@Override public boolean sprung(){return false;}
-	@Override public void disable(){unInvoke();}
+	@Override
+	public boolean disabled()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean sprung()
+	{
+		return false;
+	}
+
+	@Override
+	public void disable()
+	{
+		unInvoke();
+	}
+
 	@Override
 	public void spring(MOB M)
 	{
@@ -77,14 +178,16 @@ public class Chant_PlantTrap extends Chant implements Trap
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> <S-IS-ARE> assaulted by the plants!")))
 			{
-				final Vector them=new XVector<String>(choices);
+				final List<String> them=new XVector<String>(choices);
 				if(invoker()!=null)
+				{
 					for (final String choice : choices)
 						if(invoker().fetchAbility(choice)==null)
-							them.removeElement(choice);
+							them.remove(choice);
+				}
 				if(them.size()>0)
 				{
-					final String s=(String)them.elementAt(CMLib.dice().roll(1,them.size(),-1));
+					final String s=them.get(CMLib.dice().roll(1,them.size(),-1));
 					final Ability A=CMClass.getAbility(s);
 					A.invoke(target,target,true,0);
 				}
@@ -133,6 +236,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 		return super.castingQuality(mob,target);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

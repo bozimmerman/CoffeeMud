@@ -72,10 +72,8 @@ public class Duel extends StdCommand
 			if((uiT==null)&&(iiT==null)&&(uuT==null)&&(iuT==null))
 			{
 				final int duelTicks=CMProps.getIntVar(CMProps.Int.DUELTICKDOWN);
-				final Tattoo T1=(Tattoo)CMClass.getCommon("DefaultTattoo");
-				mob.addTattoo(T1.set("IDUEL",duelTicks));
-				final Tattoo T2=(Tattoo)CMClass.getCommon("DefaultTattoo");
-				target.addTattoo(T2.set("UDUEL",duelTicks));
+				mob.addTattoo("IDUEL",duelTicks);
+				target.addTattoo("UDUEL",duelTicks);
 				final long time = CMProps.getTickMillis() * duelTicks;
 				mob.location().show(mob, target, CMMsg.MSG_DUELCHALLENGE, L("^X<S-NAME> <S-HAS-HAVE> challenged <T-NAME> to a duel, which <T-HE-SHE> <T-HAS-HAVE> @x1 seconds to consider.^.^N",""+(time/1000)));
 				target.tell(L("^NEnter ^HDUEL @x1^N to accept this challenge and begin fighting.",mob.name(target)));

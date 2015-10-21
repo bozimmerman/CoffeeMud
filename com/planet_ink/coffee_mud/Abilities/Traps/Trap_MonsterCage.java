@@ -32,16 +32,45 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_MonsterCage extends StdTrap
 {
-	@Override public String ID() { return "Trap_MonsterCage"; }
-	private final static String localizedName = CMLib.lang().L("monster cage");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 10;}
-	@Override public String requiresToSet(){return "a caged monster";}
+	@Override
+	public String ID()
+	{
+		return "Trap_MonsterCage";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("monster cage");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 10;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "a caged monster";
+	}
 
 	protected MOB monster=null;
 
@@ -104,12 +133,12 @@ public class Trap_MonsterCage extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		final Item I=CMClass.getItem("GenCaged");
 		((CagedAnimal)I).setCageText(text());
 		I.recoverPhyStats();
 		I.text();
-		V.addElement(I);
+		V.add(I);
 		return V;
 	}
 

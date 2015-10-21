@@ -26,10 +26,10 @@
 			@loop@
 			@ChannelNext@
 			<TR>
-			<TD WIDTH=25%> @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
-			<TD WIDTH=25%> @ChannelNext?EMPTYOK@ @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
-			<TD WIDTH=25%> @ChannelNext?EMPTYOK@ @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
-			<TD WIDTH=25%> @ChannelNext?EMPTYOK@ @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
+			<TD WIDTH=25%> @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@&CHANNELBACKLOGPAGE=0">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
+			<TD WIDTH=25%> @ChannelNext?EMPTYOK@ @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@&CHANNELBACKLOGPAGE=0">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
+			<TD WIDTH=25%> @ChannelNext?EMPTYOK@ @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@&CHANNELBACKLOGPAGE=0">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
+			<TD WIDTH=25%> @ChannelNext?EMPTYOK@ @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@&CHANNELBACKLOGPAGE=0">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
 			</TR>
 			@back@
 	</TABLE>

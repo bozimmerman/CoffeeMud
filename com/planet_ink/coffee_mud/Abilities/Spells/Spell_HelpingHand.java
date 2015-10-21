@@ -184,7 +184,7 @@ public class Spell_HelpingHand extends Spell
 				if(!nextExit.isOpen())
 				{
 					final Vector<String> openCommandV=new ReadOnlyVector<String>(CMParms.parse("OPEN "+Directions.getDirectionName(nextDirection)));
-					doorOpenerM.doCommand(openCommandV,Command.METAFLAG_FORCED);
+					doorOpenerM.doCommand(openCommandV,MUDCmdProcessor.METAFLAG_FORCED);
 				}
 				doorOpenerM.destroy();
 			}

@@ -71,7 +71,7 @@ public class NoFollow extends Follow
 			CMLib.commands().doCommandFail(mob,origCmds,L("There is noone called '@x1' following you!",CMParms.combine(commands,1)));
 			return false;
 		}
-		if(!mob.isAttribute(MOB.Attrib.NOFOLLOW))
+		if(!mob.isAttributeSet(MOB.Attrib.NOFOLLOW))
 		{
 			mob.setAttribute(MOB.Attrib.NOFOLLOW,true);
 			//unfollow(mob,false);

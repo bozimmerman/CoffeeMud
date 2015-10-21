@@ -32,8 +32,8 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 
- * something that is affected by, or affects
- * the environment around them.
+   * something that is affected by, or affects
+   * the environment around them.
  */
 /**
  * The core of most object types in CoffeeMud. Much of the most common fields and

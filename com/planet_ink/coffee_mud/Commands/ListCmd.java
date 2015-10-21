@@ -2825,7 +2825,7 @@ public class ListCmd extends StdCommand
 		sess.rawCharsOut("<pause - enter>".toCharArray());
 		try
 		{
-			String s=sess.blockingIn(10 * 60 * 1000);
+			String s=sess.blockingIn(10 * 60 * 1000, true);
 			if(s!=null)
 			{
 				s=s.toLowerCase();

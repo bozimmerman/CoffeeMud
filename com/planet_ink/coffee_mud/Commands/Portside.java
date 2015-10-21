@@ -55,7 +55,7 @@ public class Portside extends Go
 		}
 		if(!standIfNecessary(mob,metaFlags, true))
 			return false;
-		if(mob.isAttribute(MOB.Attrib.AUTORUN))
+		if(mob.isAttributeSet(MOB.Attrib.AUTORUN))
 			CMLib.tracking().run(mob, direction, false,false,false);
 		else
 			CMLib.tracking().walk(mob, direction, false,false,false);

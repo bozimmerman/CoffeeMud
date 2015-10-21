@@ -43,7 +43,7 @@ public class NoTeach extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob.isAttribute(MOB.Attrib.NOTEACH))
+		if(mob.isAttributeSet(MOB.Attrib.NOTEACH))
 		{
 			mob.setAttribute(MOB.Attrib.NOTEACH,false);
 			mob.tell(L("You may now teach, train, or learn."));

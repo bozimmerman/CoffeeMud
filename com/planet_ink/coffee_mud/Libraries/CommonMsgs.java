@@ -139,7 +139,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			final Command C=CMClass.getCommand(command);
 			if(C!=null)
-				return C.executeInternal(mob,Command.METAFLAG_FORCED,parms);
+				return C.executeInternal(mob,MUDCmdProcessor.METAFLAG_FORCED,parms);
 		}
 		catch(final IOException e)
 		{
@@ -155,7 +155,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			final Command C=CMClass.getCommand(command);
 			if(C!=null)
-				return C.execute(mob,parms,Command.METAFLAG_FORCED);
+				return C.execute(mob,parms,MUDCmdProcessor.METAFLAG_FORCED);
 		}
 		catch(final IOException e)
 		{
@@ -977,7 +977,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 
 		final StringBuilder buf=new StringBuilder("");
-		if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
+		if(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 		{
 			buf.append(L("@x1\n\r"
 					+ "Rejuv : @x2\n\r"
@@ -1018,7 +1018,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				||(contitem.hasContent())
 				||((contitem instanceof Drink)&&(((Drink)contitem).liquidRemaining()>0))))
 			{
-				buf.append(item.name()+" contains:^<!ENTITY container \""+CMStrings.removeColors(item.name())+"\"^>"+(mob.isAttribute(MOB.Attrib.COMPRESS)?" ":"\n\r"));
+				buf.append(item.name()+" contains:^<!ENTITY container \""+CMStrings.removeColors(item.name())+"\"^>"+(mob.isAttributeSet(MOB.Attrib.COMPRESS)?" ":"\n\r"));
 				final Vector<Item> newItems=new Vector<Item>();
 				if((item instanceof Drink)&&(((Drink)item).liquidRemaining()>0))
 				{
@@ -1046,7 +1046,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						if((item2!=null)&&(item2.container()==item))
 							newItems.addElement(item2);
 					}
-					buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",false,mob.isAttribute(MOB.Attrib.COMPRESS)));
+					buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",false,mob.isAttributeSet(MOB.Attrib.COMPRESS)));
 				}
 				else
 				if(item.owner() instanceof Room)
@@ -1059,7 +1059,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						if((item2!=null)&&(item2.container()==item))
 							newItems.addElement(item2);
 					}
-					buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",false,mob.isAttribute(MOB.Attrib.COMPRESS)));
+					buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",false,mob.isAttributeSet(MOB.Attrib.COMPRESS)));
 				}
 			}
 			else
@@ -1176,8 +1176,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			lookCode=(msg.sourceMessage()==null)?LOOK_BRIEFOK:LOOK_NORMAL;
 
 		final StringBuilder Say=new StringBuilder("");
-		boolean sysmsgs=mob.isAttribute(MOB.Attrib.SYSOPMSGS);
-		final boolean compress=mob.isAttribute(MOB.Attrib.COMPRESS);
+		boolean sysmsgs=mob.isAttributeSet(MOB.Attrib.SYSOPMSGS);
+		final boolean compress=mob.isAttributeSet(MOB.Attrib.COMPRESS);
 		if(sysmsgs && (!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.SYSMSGS)))
 		{
 			mob.setAttribute(MOB.Attrib.SYSOPMSGS,false);
@@ -1210,7 +1210,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(CMLib.flags().canBeSeenBy(room,mob))
 		{
 			Say.append("^O^<RName^>" + room.displayText(mob)+"^</RName^>"+CMLib.flags().colorCodes(room,mob)+"^L\n\r");
-			if((lookCode!=LOOK_BRIEFOK)||(!mob.isAttribute(MOB.Attrib.BRIEF)))
+			if((lookCode!=LOOK_BRIEFOK)||(!mob.isAttributeSet(MOB.Attrib.BRIEF)))
 			{
 				String roomDesc=room.description(mob);
 				if(lookCode==LOOK_LONG)
@@ -1346,7 +1346,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				Say.append("\n\r");
 			mob.tell(Say.toString());
 			if((CMProps.getIntVar(CMProps.Int.AWARERANGE)>0)
-			&&(!mob.isAttribute(MOB.Attrib.AUTOMAP)))
+			&&(!mob.isAttributeSet(MOB.Attrib.AUTOMAP)))
 			{
 				if(awarenessA==null)
 					awarenessA=CMClass.getAbility("Skill_RegionalAwareness");
@@ -1597,7 +1597,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 			else
 				mob.tell(L("You don't see anything special."));
-			if(mob.isAttribute(MOB.Attrib.SYSOPMSGS))
+			if(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 			{
 				mob.tell(L("Type  : @x1",exit.ID()));
 				mob.tell(L("Misc   : @x1",exit.text()));
@@ -1618,7 +1618,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final StringBuilder myDescription=new StringBuilder("");
 		if(CMLib.flags().canBeSeenBy(viewedmob,viewermob))
 		{
-			if(viewermob.isAttribute(MOB.Attrib.SYSOPMSGS))
+			if(viewermob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 			{
 				myDescription.append("\n\rType :"+viewedmob.ID()
 									+"\n\rRejuv:"+viewedmob.basePhyStats().rejuv()
@@ -1959,7 +1959,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(exit!=null)
 				Say=exit.viewableText(mob, room2);
 			else
-			if((room2!=null)&&(mob.isAttribute(MOB.Attrib.SYSOPMSGS)))
+			if((room2!=null)&&(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS)))
 				Say.append(room2.roomID()+" via NULL");
 			if(Say.length()>0)
 			{

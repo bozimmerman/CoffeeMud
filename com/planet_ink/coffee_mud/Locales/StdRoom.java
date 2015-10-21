@@ -1363,9 +1363,9 @@ public class StdRoom implements Room
 
 		if((andFollowers)&&(oldRoom!=null))
 		{
-			for(final Enumeration<MOB.Follower> f=mob.followers();f.hasMoreElements();)
+			for(final Enumeration<Pair<MOB,Short>> f=mob.followers();f.hasMoreElements();)
 			{
-				final MOB folM=f.nextElement().follower;
+				final MOB folM=f.nextElement().first;
 				if(folM.location()==oldRoom)
 					bringMobHere(folM,true);
 			}

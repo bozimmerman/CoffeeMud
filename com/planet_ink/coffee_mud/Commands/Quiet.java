@@ -43,15 +43,22 @@ public class Quiet extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(!mob.isAttribute(MOB.Attrib.QUIET))
+		String parm = (commands.size() > 1) ? CMParms.combine(commands,1) : ""; 
+		if((!mob.isAttributeSet(MOB.Attrib.QUIET) && (parm.length()==0))||(parm.equalsIgnoreCase("ON")))
 		{
 			mob.setAttribute(MOB.Attrib.QUIET,true);
 			mob.tell(L("Quiet mode is now on.  You will no longer receive channel messages or tells."));
 		}
 		else
+		if((mob.isAttributeSet(MOB.Attrib.QUIET) && (parm.length()==0))||(parm.equalsIgnoreCase("OFF")))
 		{
 			mob.setAttribute(MOB.Attrib.QUIET,false);
 			mob.tell(L("Quiet mode is now off.  You may now receive channel messages and tells."));
+		}
+		else
+		if(parm.length() > 0)
+		{
+			mob.tell(L("Illegal @x1 argument: '@x2'.  Try ON or OFF, or nothing to toggle.",getAccessWords()[0],parm));
 		}
 		return false;
 	}

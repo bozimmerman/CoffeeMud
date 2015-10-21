@@ -111,8 +111,10 @@ public class Spell_KnowFate extends Spell
 					&&(!newVictiM.amDestroyed()))
 					{
 						if(newMOB.commandQueSize()==0)
+						{
 							for(final List<String> cmd : combatV)
 								newMOB.enqueCommand(cmd, 0, 0);
+						}
 						final int nowHp=newMOB.curState().getHitPoints();
 						final int hisHp=newVictiM.curState().getHitPoints();
 						try

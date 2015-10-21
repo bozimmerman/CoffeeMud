@@ -51,7 +51,7 @@ public class Prop_StatTrainer extends Property
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		if((!noteach)&&(affectedMOB.isAttribute(MOB.Attrib.NOTEACH)))
+		if((!noteach)&&(affectedMOB.isAttributeSet(MOB.Attrib.NOTEACH)))
 			affectedMOB.setAttribute(MOB.Attrib.NOTEACH,false);
 
 		for(final int i: CharStats.CODES.BASECODES())

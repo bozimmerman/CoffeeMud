@@ -115,7 +115,7 @@ public class Song_Thanks extends Song
 			{
 				CMLib.beanCounter().subtractMoney(mob,CMath.mul(1.0,super.getXLEVELLevel(invoker())));
 				mob.addItem(C);
-				mob.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+invoker.name()+"\""),Command.METAFLAG_FORCED);
+				mob.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+invoker.name()+"\""),MUDCmdProcessor.METAFLAG_FORCED);
 				if(!C.amDestroyed())
 					C.putCoinsBack();
 			}

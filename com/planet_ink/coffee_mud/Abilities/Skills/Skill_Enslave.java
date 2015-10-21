@@ -270,7 +270,7 @@ public class Skill_Enslave extends StdSkill
 					else
 					{
 						final Command C=CMClass.getCommand("Eat");
-						try{C.execute(mob,CMParms.parse("EAT \""+f.Name()+"$\""),Command.METAFLAG_ORDER);}catch(final Exception e){}
+						try{C.execute(mob,CMParms.parse("EAT \""+f.Name()+"$\""),MUDCmdProcessor.METAFLAG_ORDER);}catch(final Exception e){}
 					}
 				}
 				if(mob.curState().getThirst()<=0)
@@ -287,7 +287,7 @@ public class Skill_Enslave extends StdSkill
 					else
 					{
 						final Command C=CMClass.getCommand("Drink");
-						try{C.execute(mob,CMParms.parse("DRINK \""+d.Name()+"$\""),Command.METAFLAG_ORDER);}catch(final Exception e){}
+						try{C.execute(mob,CMParms.parse("DRINK \""+d.Name()+"$\""),MUDCmdProcessor.METAFLAG_ORDER);}catch(final Exception e){}
 					}
 				}
 			}

@@ -34,20 +34,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 
-  * Clan is the basis for clan objects.
-  * A Clan is basically a collection of {@link MOB} objects,
-  * including, but not limited to:
-  * <ul>
-  * <li> Ranks
-  * <li> Jobs/Positions
-  * <li> Clan Homes
-  * </ul>
-  * In this interface, we provide the common functions, including:
-  * <li> Add/remove member
-  * <li> Get/set Clan recall and donation room
-  * <li> Get average alignment
-  * </ul>
-  * @author=Bo Zimmerman, Jeremy Vyska
+   * Clan is the basis for clan objects.
+   * A Clan is basically a collection of {@link MOB} objects,
+   * including, but not limited to:
+   * <ul>
+   * <li> Ranks
+   * <li> Jobs/Positions
+   * <li> Clan Homes
+   * </ul>
+   * In this interface, we provide the common functions, including:
+   * <li> Add/remove member
+   * <li> Get/set Clan recall and donation room
+   * <li> Get average alignment
+   * </ul>
+   * @author=Bo Zimmerman, Jeremy Vyska
   */
 public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 {

@@ -313,7 +313,7 @@ public class PlayerData extends StdWebMacro
 		}
 		case 61:
 		{
-			for(final Enumeration e=M.fetchFactions();e.hasMoreElements();)
+			for(final Enumeration e=M.factions();e.hasMoreElements();)
 			{
 				final String FID=(String)e.nextElement();
 				final Faction F=CMLib.factions().getFaction(FID);
@@ -380,7 +380,7 @@ public class PlayerData extends StdWebMacro
 			{
 				if(parms.containsKey(a.getName()))
 				{
-					boolean set=M.isAttribute(a);
+					boolean set=M.isAttributeSet(a);
 					if(a.isAutoReversed()) 
 						set=!set;
 					str.append((set?"ON":"OFF")+",");

@@ -641,7 +641,7 @@ public class DefaultClan implements Clan
 		final boolean member=(mob!=null)
 							&&(mobClanRole!=null)
 							&&(getAuthority(mobClanRole.second.intValue(),Function.LIST_MEMBERS)!=Authority.CAN_NOT_DO);
-		final boolean sysmsgs=(mob!=null)&&mob.isAttribute(MOB.Attrib.SYSOPMSGS);
+		final boolean sysmsgs=(mob!=null)&&mob.isAttributeSet(MOB.Attrib.SYSOPMSGS);
 		final LinkedList<CMath.CompiledOperation> form = govt().getXPCalculationFormula();
 		final double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
 		msg.append(L("^x@x1 Profile   :^.^N @x2\n\r"
@@ -1562,7 +1562,7 @@ public class DefaultClan implements Clan
 											mob.setLocation(CMLib.map().getRandomRoom());
 									}
 									final Vector<String> V=CMParms.parse(CV.matter);
-									mob.doCommand(V,Command.METAFLAG_FORCED);
+									mob.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 									mob.destroy();
 								}
 							}

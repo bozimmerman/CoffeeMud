@@ -375,7 +375,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if((inhab.session()!=null)
 				&&(CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS))
 				&&(CMLib.flags().isInTheGame(inhab, true))
-				&&((!sysMsgsOnly) || inhab.isAttribute(MOB.Attrib.SYSOPMSGS)))
+				&&((!sysMsgsOnly) || inhab.isAttributeSet(MOB.Attrib.SYSOPMSGS)))
 					return true;
 			}
 		}
@@ -531,7 +531,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 			if(!nextExit.isOpen())
 			{
-				mob.doCommand(getOpenCommandSet(direction),Command.METAFLAG_FORCED);
+				mob.doCommand(getOpenCommandSet(direction),MUDCmdProcessor.METAFLAG_FORCED);
 				if(nextExit.isOpen())
 					reclose=true;
 			}
@@ -607,7 +607,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			&&(opExit.hasADoor())
 			&&(opExit.isOpen()))
 			{
-				mob.doCommand(getCloseCommandSet(opDirection),Command.METAFLAG_FORCED);
+				mob.doCommand(getCloseCommandSet(opDirection),MUDCmdProcessor.METAFLAG_FORCED);
 				if((opExit.hasALock())&&(relock))
 				{
 					CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
@@ -1057,7 +1057,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			CMLib.commands().postLook(mob,true);
 			if((!mob.isMonster())
-			&&(mob.isAttribute(MOB.Attrib.AUTOWEATHER))
+			&&(mob.isAttributeSet(MOB.Attrib.AUTOWEATHER))
 			&&(((Room)enterMsg.target())!=null)
 			&&((thisRoom.domainType()&Room.INDOORS)>0)
 			&&((((Room)enterMsg.target()).domainType()&Room.INDOORS)==0)
@@ -1080,7 +1080,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				{
 					if((follower.location()==thisRoom)&&(CMLib.flags().aliveAwakeMobile(follower,true)))
 					{
-						if(follower.isAttribute(MOB.Attrib.AUTOGUARD))
+						if(follower.isAttributeSet(MOB.Attrib.AUTOGUARD))
 							thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> remain(s) on guard here."));
 						else
 						{

@@ -643,7 +643,7 @@ public class DefaultSession implements Session
 		try
 		{
 			if(changedSomething) 
-				blockingIn(500);
+				blockingIn(500, true);
 		}
 		catch(final Exception e){}
 	}
@@ -763,8 +763,8 @@ public class DefaultSession implements Session
 
 	private int metaFlags()
 	{
-		return ((snoops.size()>0)?Command.METAFLAG_SNOOPED:0)
-			   |(((mob!=null)&&(mob.soulMate()!=null))?Command.METAFLAG_POSSESSED:0);
+		return ((snoops.size()>0)?MUDCmdProcessor.METAFLAG_SNOOPED:0)
+			   |(((mob!=null)&&(mob.soulMate()!=null))?MUDCmdProcessor.METAFLAG_POSSESSED:0);
 	}
 
 	public void setPreviousCmd(List cmds)
@@ -990,7 +990,7 @@ public class DefaultSession implements Session
 							rawCharsOut("<pause - enter>".toCharArray());
 							try
 							{
-								String s=blockingIn(-1);
+								String s=blockingIn(-1, true);
 								if(s!=null)
 								{
 									s=s.toLowerCase();
@@ -1212,7 +1212,7 @@ public class DefaultSession implements Session
 			throws IOException
 	{
 		promptPrint(Message);
-		final String input=blockingIn(maxTime);
+		final String input=blockingIn(maxTime, true);
 		if(input==null)
 			return "";
 		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
@@ -1225,7 +1225,7 @@ public class DefaultSession implements Session
 		throws IOException
 	{
 		promptPrint(Message);
-		final String input=blockingIn(-1);
+		final String input=blockingIn(-1, true);
 		if(input==null)
 			return "";
 		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
@@ -1843,7 +1843,7 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public String blockingIn(long maxTime)
+	public String blockingIn(long maxTime, boolean filter)
 		throws IOException
 	{
 		if((in==null)||(out==null))
@@ -1901,7 +1901,7 @@ public class DefaultSession implements Session
 
 	public String blockingIn() throws IOException
 	{
-		return blockingIn(-1);
+		return blockingIn(-1, true);
 	}
 
 	protected boolean sessionMCPCheck(final StringBuilder inStr)
@@ -2002,7 +2002,7 @@ public class DefaultSession implements Session
 		while((YN.equals(""))||(Choices.indexOf(YN)<0)&&(!killFlag))
 		{
 			promptPrint(Message);
-			YN=blockingIn(maxTime);
+			YN=blockingIn(maxTime, true);
 			if(YN==null){ return Default.toUpperCase(); }
 			YN=YN.trim();
 			if(YN.equals("")){ return Default.toUpperCase(); }
@@ -2478,12 +2478,12 @@ public class DefaultSession implements Session
 						userLoginTime=System.currentTimeMillis();
 						final StringBuilder loginMsg=new StringBuilder("");
 						loginMsg.append(getAddress()).append(" "+terminalType)
-						.append(((mob.isAttribute(MOB.Attrib.MXP)&&getClientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
+						.append(((mob.isAttributeSet(MOB.Attrib.MXP)&&getClientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
 						.append(getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
 						.append(getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
 						.append(getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
 						.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-						.append(((mob.isAttribute(MOB.Attrib.ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
+						.append(((mob.isAttributeSet(MOB.Attrib.ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
 						.append(", character login: "+mob.Name());
 						Log.sysOut(loginMsg.toString());
 						if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)

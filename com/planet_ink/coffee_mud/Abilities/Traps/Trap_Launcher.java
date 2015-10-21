@@ -32,16 +32,45 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_Launcher extends StdTrap
 {
-	@Override public String ID() { return "Trap_Launcher"; }
-	private final static String localizedName = CMLib.lang().L("launcher trap");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 6;}
-	@Override public String requiresToSet(){return "a ranged weapon";}
+	@Override
+	public String ID()
+	{
+		return "Trap_Launcher";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("launcher trap");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS | Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 6;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "a ranged weapon";
+	}
 
 	protected Item getPoison(MOB mob)
 	{
@@ -63,11 +92,12 @@ public class Trap_Launcher extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		final Item I=CMClass.getWeapon("StdBow");
-		V.addElement(I);
+		V.add(I);
 		return V;
 	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
@@ -97,6 +127,7 @@ public class Trap_Launcher extends StdTrap
 		}
 		return true;
 	}
+
 	@Override
 	public void spring(MOB target)
 	{

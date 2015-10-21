@@ -35,11 +35,28 @@ import java.util.*;
 */
 public class StdTrap extends StdAbility implements Trap
 {
-	@Override public String ID() { return "StdTrap"; }
-	private final static String localizedName = CMLib.lang().L("standard trap");
-	@Override public String name() { return localizedName; }
-	public static final String[] TRIGGER={"SPRING"};
-	@Override public String[] triggerStrings(){return TRIGGER;}
+	@Override
+	public String ID()
+	{
+		return "StdTrap";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("standard trap");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	public static final String[]	TRIGGER	= { "SPRING" };
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return TRIGGER;
+	}
+
 	protected boolean sprung=false;
 	protected int reset=60; // 5 minute reset is standard
 	protected int ableCode=0;
@@ -50,17 +67,58 @@ public class StdTrap extends StdAbility implements Trap
 		super();
 	}
 
-	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	protected int trapLevel(){return -1;}
-	@Override public void setAbilityCode(int code){ableCode=code;}
-	@Override public int abilityCode(){return ableCode;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
 
-	@Override public boolean isABomb(){return false;}
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
-	@Override public String requiresToSet(){return "";}
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	protected int trapLevel()
+	{
+		return -1;
+	}
+
+	@Override
+	public void setAbilityCode(int code)
+	{
+		ableCode = code;
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return ableCode;
+	}
+
+	@Override
+	public boolean isABomb()
+	{
+		return false;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
 
 	private String invokerName=null;
 
@@ -70,17 +128,21 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		if(level>=30)
 			level=29;
-		int time=((30-level)*30);
-		if(time<1)
-			time=1;
-		return time;
+		int ticks=(int)Math.round((30.0-(CMath.mul(level,.75)))*30.0);
+		if(ticks<1)
+			ticks=1;
+		return ticks;
 	}
+
 	public int baseDestructTime(int level)
 	{
 		return level*30;
 	}
 
-	public boolean getTravelThroughFlag() { return false; }
+	public boolean getTravelThroughFlag()
+	{
+		return false;
+	}
 
 	@Override
 	public boolean disabled()
@@ -136,8 +198,17 @@ public class StdTrap extends StdAbility implements Trap
 			unInvoke();
 	}
 
-	@Override public void setReset(int Reset){reset=Reset;}
-	@Override public int getReset(){return reset;}
+	@Override
+	public void setReset(int Reset)
+	{
+		reset = Reset;
+	}
+
+	@Override
+	public int getReset()
+	{
+		return reset;
+	}
 
 	@Override
 	public MOB invoker()
@@ -216,10 +287,10 @@ public class StdTrap extends StdAbility implements Trap
 		if((!disabled())&&(affected instanceof Item))
 		{
 			if((msg.tool()==affected)
-			   &&(msg.targetMinor()==CMMsg.TYP_GIVE)
-			   &&(msg.targetMessage()!=null)
-			   &&(msg.target() instanceof MOB)
-			   &&(!msg.source().getGroupMembers(new HashSet<MOB>()).contains(msg.target())))
+			&&(msg.targetMinor()==CMMsg.TYP_GIVE)
+			&&(msg.targetMessage()!=null)
+			&&(msg.target() instanceof MOB)
+			&&(!msg.source().getGroupMembers(new HashSet<MOB>()).contains(msg.target())))
 			{
 				msg.source().tell((MOB)msg.target(),msg.tool(),null,L("<S-NAME> can't accept <T-NAME>."));
 				return false;
@@ -374,9 +445,17 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canReSetTrap(MOB mob)
 	{
+		final Physical P=affected;
+		if(P==null)
+		{
+			if(mob!=null)
+				mob.tell(L("This trap is not presently set."));
+			return false;
+		}
 		if(mob!=null)
+		{
 			if((!maySetTrap(mob,mob.phyStats().level()))
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
@@ -384,6 +463,38 @@ public class StdTrap extends StdAbility implements Trap
 				mob.tell(L("You are not high enough level (@x1) to set that trap.",""+trapLevel()));
 				return false;
 			}
+		}
+		final Trap T=(Trap)P.fetchEffect(ID());
+		if(T!=this)
+		{
+			if(mob!=null)
+				mob.tell(L("This trap is not presently set on @x1.",P.name()));
+			return false;
+		}
+		
+		if(T.invoker() != mob)
+		{
+			if(mob!=null)
+				mob.tell(L("The trap was not set by you."));
+			return false;
+		}
+		
+		return true;
+	}
+
+	@Override
+	public boolean canSetTrapOn(MOB mob, Physical P)
+	{
+		if(mob!=null)
+		{
+			if((!maySetTrap(mob,mob.phyStats().level()))
+			&&(!mob.charStats().getCurrentClass().leveless())
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
+			{
+				mob.tell(L("You are not high enough level (@x1) to set that trap.",""+trapLevel()));
+				return false;
+			}
+		}
 		if(P.fetchEffect(ID())!=null)
 		{
 			if(mob!=null)
@@ -419,7 +530,13 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		return true;
 	}
-	@Override public List<Item> getTrapComponents() { return new Vector<Item>();}
+
+	@Override
+	public List<Item> getTrapComponents()
+	{
+		return new Vector<Item>(1);
+	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
@@ -500,7 +617,23 @@ public class StdTrap extends StdAbility implements Trap
 		return true;
 	}
 
-	@Override public boolean sprung(){return sprung&&(!disabled());}
+	@Override
+	public void resetTrap(MOB mob)
+	{
+		if(sprung())
+		{
+			sprung=false;
+			disabled=false;
+			if(!isABomb())
+				CMLib.threads().deleteTick(this, Tickable.TICKID_TRAP_RESET);
+		}
+	}
+	
+	@Override
+	public boolean sprung()
+	{
+		return sprung && (!disabled());
+	}
 
 	@Override
 	public void spring(MOB target)
@@ -514,15 +647,17 @@ public class StdTrap extends StdAbility implements Trap
 
 	protected Item findFirstResource(Room room, String other)
 	{
-		return CMLib.materials().findFirstResource(room,other);
+		return CMLib.materials().findFirstResource(room, other);
 	}
+
 	protected Item findFirstResource(Room room, int resource)
 	{
-		return CMLib.materials().findFirstResource(room,resource);
+		return CMLib.materials().findFirstResource(room, resource);
 	}
+
 	protected Item findMostOfMaterial(Room room, String other)
 	{
-		return CMLib.materials().findMostOfMaterial(room,other);
+		return CMLib.materials().findMostOfMaterial(room, other);
 	}
 
 	protected Item findMostOfMaterial(Room room, int material)

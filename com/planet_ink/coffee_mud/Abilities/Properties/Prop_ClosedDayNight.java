@@ -282,10 +282,10 @@ public class Prop_ClosedDayNight extends Property
 				}
 
 				if(sleepFlag)
-					mob.doCommand(CMParms.parse("SLEEP"),Command.METAFLAG_FORCED);
+					mob.doCommand(CMParms.parse("SLEEP"),MUDCmdProcessor.METAFLAG_FORCED);
 				else
 				if(sitFlag)
-					mob.doCommand(CMParms.parse("SIT"),Command.METAFLAG_FORCED);
+					mob.doCommand(CMParms.parse("SIT"),MUDCmdProcessor.METAFLAG_FORCED);
 				lastClosed=1;
 			}
 			else

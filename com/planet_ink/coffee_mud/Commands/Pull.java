@@ -37,7 +37,7 @@ public class Pull extends Go
 {
 	public Pull(){}
 
-	private final String[] access=I(new String[]{"PULL"});
+	private final String[] access=I(new String[]{"PULL","DRAG"});
 	@Override public String[] getAccessWords(){return access;}
 	@SuppressWarnings("unchecked")
 	@Override

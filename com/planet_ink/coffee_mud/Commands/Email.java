@@ -94,10 +94,10 @@ public class Email extends StdCommand
 						}
 					}
 					if((mymsgs.size()==0)
-					||(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED))
-					||(CMath.bset(metaFlags,Command.METAFLAG_AS)))
+					||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED))
+					||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS)))
 					{
-						if(mob.isAttribute(MOB.Attrib.AUTOFORWARD))
+						if(mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 							mob.tell(L("You have no email waiting, but then, it's probably been forwarded to you already."));
 						else
 							mob.tell(L("You have no email waiting."));
@@ -184,7 +184,7 @@ public class Email extends StdCommand
 					mob.tell(L("There is no player called '@x1' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.",name));
 					return false;
 				}
-				if(!M.isAttribute(MOB.Attrib.AUTOFORWARD))
+				if(!M.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 				{
 					if(!mob.session().confirm(L("Send email to '@x1' (Y/n)?",M.Name()),L("Y")))
 						return false;

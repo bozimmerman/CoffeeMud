@@ -307,7 +307,7 @@ public class GetStat extends CM1Command
 						if(rest.trim().length()==0)
 						{
 							final StringBuilder factions=new StringBuilder("");
-							for(final Enumeration<String> f=((MOB)mod).fetchFactions();f.hasMoreElements();)
+							for(final Enumeration<String> f=((MOB)mod).factions();f.hasMoreElements();)
 								factions.append(' ').append(f);
 							req.sendMsg("[OK"+factions.toString()+"]");
 						}

@@ -34,13 +34,43 @@ import java.util.*;
 */
 public class Trap_AcidSpray extends StdTrap
 {
-	@Override public String ID() { return "Trap_AcidSpray"; }
-	private final static String localizedName = CMLib.lang().L("acid spray");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 15;}
-	@Override public String requiresToSet(){return L("1 pound of lemons or limes");}
+	@Override
+	public String ID()
+	{
+		return "Trap_AcidSpray";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("acid spray");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS | Ability.CAN_EXITS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 15;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return L("some lemons or limes");
+	}
 
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
@@ -65,6 +95,7 @@ public class Trap_AcidSpray extends StdTrap
 		V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_LEMONS));
 		return V;
 	}
+
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
@@ -78,7 +109,7 @@ public class Trap_AcidSpray extends StdTrap
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I.material())<1))
 			{
-				mob.tell(L("You'll need to set down at least a pound of lemons or limes first."));
+				mob.tell(L("You'll need to set down some lemons or limes first."));
 				return false;
 			}
 		}

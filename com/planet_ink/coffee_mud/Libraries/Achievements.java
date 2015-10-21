@@ -194,7 +194,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						return "Error: Missing or invalid ZAPPERMASK parameter: "+zapperMask+"!";
 					this.npcMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					zapperMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "PLAYERMASK", ""),"\\\"","\""),"\\\\","\\");
-					this.npcMask = null;
+					this.playerMask = null;
 					if(zapperMask.trim().length()>0)
 						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					return "";
@@ -1237,7 +1237,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							Room R=CMLib.map().getRoom(s);
 							if(R==null)
 								return "Error: Missing or invalid ROOMID: "+s+"!";
-							roomIDs.add(R.ID());
+							roomIDs.add(CMLib.map().getExtendedRoomID(R));
 						}
 					}
 					if(roomIDs.size()==0)
@@ -1567,8 +1567,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	{
 		if(mob.findTattoo(A.getTattoo())==null)
 		{
-			final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
-			mob.addTattoo(T.set(A.getTattoo()));
+			mob.addTattoo(A.getTattoo());
 			StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' achievement!^?\n\r",A.getDisplayStr()));
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACHIEVEMENTS);
 			if(!CMLib.flags().isCloaked(mob))

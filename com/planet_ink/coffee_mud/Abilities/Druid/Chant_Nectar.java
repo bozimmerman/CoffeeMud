@@ -104,7 +104,7 @@ public class Chant_Nectar extends Chant
 			final Vector commands=new Vector();
 			commands.addElement("DRINK");
 			commands.addElement(R.getContextName(littleSpring));
-			M.enqueCommand(commands,Command.METAFLAG_FORCED,0);
+			M.enqueCommand(commands,MUDCmdProcessor.METAFLAG_FORCED,0);
 		}
 		return true;
 	}

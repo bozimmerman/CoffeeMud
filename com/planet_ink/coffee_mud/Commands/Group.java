@@ -43,8 +43,8 @@ public class Group extends StdCommand
 	public static StringBuffer showWhoLong(MOB seer, MOB who)
 	{
 
-		final StringBuffer msg=new StringBuffer("");
-		msg.append("[");
+		final StringBuffer msg=new StringBuffer("^N");
+		msg.append("[^w");
 		final int[] cols={
 				ListingLibrary.ColFixer.fixColWidth(7,seer.session()),
 				ListingLibrary.ColFixer.fixColWidth(7,seer.session()),
@@ -80,10 +80,16 @@ public class Group extends StdCommand
 			else
 				msg.append(CMStrings.padRight(levelStr,cols[2]));
 		}
-		msg.append("] "+CMStrings.padRight(who.name(),cols[3])+" ");
-		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("hp(@x1/@x2)",CMStrings.padRightPreserve(""+who.curState().getHitPoints(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getHitPoints(),cols[4])),cols[5]));
-		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("mn(@x1/@x2)",CMStrings.padRightPreserve(""+who.curState().getMana(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getMana(),cols[4])),cols[5]));
-		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("mv(@x1/@x2)",CMStrings.padRightPreserve(""+who.curState().getMovement(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getMovement(),cols[4])),cols[5]));
+		final double hpPct = CMath.div(who.curState().getHitPoints(), who.maxState().getHitPoints());
+		final double mnPct = CMath.div(who.curState().getMana(), who.maxState().getMana());
+		final double mvPct = CMath.div(who.curState().getMovement(), who.maxState().getMovement());
+		final String hpColor = (hpPct < .25) ? "^r" : (hpPct < .5) ? "^y" : "^w";
+		final String mnColor = (mnPct < .25) ? "^r" : (mnPct < .5) ? "^y" : "^w";
+		final String mvColor = (mvPct < .25) ? "^r" : (mvPct < .5) ? "^y" : "^w";
+		msg.append("^N] ^H" + CMStrings.padRight(who.name(),cols[3])+"^N ");
+		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("hp(@x1@x2^N/^w@x3^N)",hpColor,CMStrings.padRightPreserve(""+who.curState().getHitPoints(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getHitPoints(),cols[4])),cols[5]));
+		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("mn(@x1@x2^N/^w@x3^N)",mnColor,CMStrings.padRightPreserve(""+who.curState().getMana(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getMana(),cols[4])),cols[5]));
+		msg.append(CMStrings.padRightPreserve(CMLib.lang().L("mv(@x1@x2^N/^w@x3^N)",mvColor,CMStrings.padRightPreserve(""+who.curState().getMovement(),cols[4]),CMStrings.padRightPreserve(""+who.maxState().getMovement(),cols[4])),cols[5]));
 		msg.append("\n\r");
 		return msg;
 	}

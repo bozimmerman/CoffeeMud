@@ -319,7 +319,7 @@ public class GenSailingShip extends StdBoardable
 				cmds.add(0, "METAMSGCOMMAND");
 				double speed = (phyStats().ability()<=0) ? 1.0 : (double)phyStats().ability();
 				speed = msg.source().phyStats().speed() / speed;
-				msg.source().enqueCommand(cmds, Command.METAFLAG_ASMESSAGE, speed);
+				msg.source().enqueCommand(cmds, MUDCmdProcessor.METAFLAG_ASMESSAGE, speed);
 				return false;
 			}
 		}
@@ -565,9 +565,9 @@ public class GenSailingShip extends StdBoardable
 							continue;
 						final CMMsg lookMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK,null);
 						final CMMsg lookExitMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK_EXITS,null);
-						if((mob.isAttribute(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(targetR,mob)))
+						if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(targetR,mob)))
 						{
-							if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttribute(MOB.Attrib.BRIEF))
+							if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
 								lookExitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 							lookMsg.addTrailerMsg(lookExitMsg);
 						}

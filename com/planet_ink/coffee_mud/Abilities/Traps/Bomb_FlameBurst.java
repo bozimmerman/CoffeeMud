@@ -32,22 +32,42 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Bomb_FlameBurst extends StdBomb
 {
-	@Override public String ID() { return "Bomb_FlameBurst"; }
-	private final static String localizedName = CMLib.lang().L("flame burst bomb");
-	@Override public String name() { return localizedName; }
-	@Override protected int trapLevel(){return 17;}
-	@Override public String requiresToSet(){return "some lamp oil";}
+	@Override
+	public String ID()
+	{
+		return "Bomb_FlameBurst";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("flame burst bomb");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 17;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "some lamp oil";
+	}
 
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
-		V.addElement(CMClass.getBasicItem("OilFlask"));
+		final List<Item> V=new Vector<Item>();
+		V.add(CMClass.getBasicItem("OilFlask"));
 		return V;
 	}
+
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
@@ -64,6 +84,7 @@ public class Bomb_FlameBurst extends StdBomb
 		}
 		return true;
 	}
+
 	@Override
 	public void spring(MOB target)
 	{

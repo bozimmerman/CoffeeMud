@@ -13,7 +13,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Follower;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -142,14 +141,14 @@ public class Skill_Track extends StdSkill
 							{
 								// backup follower mover for handcuffed followers
 								final LinkedList<MOB> reMoveV=new LinkedList<MOB>();
-								for(final Enumeration<Follower> e=mob.followers(); e.hasMoreElements();)
+								for(final Enumeration<Pair<MOB,Short>> e=mob.followers(); e.hasMoreElements();)
 								{
-									final Follower F=e.nextElement();
-									if((F.follower != null)
-									&&(F.follower != mob)
-									&&(F.follower.location()==oldRoom)
-									&&(F.follower.location()!=nextRoom))
-										reMoveV.add(F.follower);
+									final Pair<MOB,Short> F=e.nextElement();
+									if((F.first != null)
+									&&(F.first != mob)
+									&&(F.first.location()==oldRoom)
+									&&(F.first.location()!=nextRoom))
+										reMoveV.add(F.first);
 								}
 								for(final MOB M : reMoveV)
 									if(CMLib.flags().isBoundOrHeld(M))

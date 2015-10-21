@@ -33,14 +33,33 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_Trap extends StdAbility implements Trap
 {
-	@Override public String ID() { return "Trap_Trap"; }
-	private final static String localizedName = CMLib.lang().L("a Trap!");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Trap_Trap";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("a Trap!");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_EXITS | Ability.CAN_ROOMS | Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	protected static MOB benefactor=CMClass.getMOB("StdMOB");
 	protected boolean sprung=false;
@@ -56,19 +75,78 @@ public class Trap_Trap extends StdAbility implements Trap
 			benefactor=CMClass.getMOB("StdMOB");
 	}
 
-	@Override public void activateBomb(){}
-	@Override public boolean isABomb(){return false;}
-	@Override public boolean sprung(){return sprung;}
-	@Override public boolean disabled(){return sprung;}
-	@Override public void disable(){ sprung=true;}
-	@Override public void setReset(int Reset){reset=Reset;}
-	@Override public int getReset(){return reset;}
+	@Override
+	public void activateBomb()
+	{
+	}
+
+	@Override
+	public boolean isABomb()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean sprung()
+	{
+		return sprung;
+	}
+
+	@Override
+	public boolean disabled()
+	{
+		return sprung;
+	}
+
+	@Override
+	public void disable()
+	{
+		sprung = true;
+	}
+
+	@Override
+	public void setReset(int Reset)
+	{
+		reset = Reset;
+	}
+
+	@Override
+	public int getReset()
+	{
+		return reset;
+	}
 
 	// as these are not standard traps, we return this!
-	@Override public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	@Override public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-	@Override public List<Item> getTrapComponents() { return new Vector(); }
-	@Override public String requiresToSet(){return "";}
+	@Override
+	public boolean maySetTrap(MOB mob, int asLevel)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canSetTrapOn(MOB mob, Physical P)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canReSetTrap(MOB mob)
+	{
+		return false;
+	}
+
+	@Override
+	public List<Item> getTrapComponents()
+	{
+		return new Vector<Item>(0);
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "";
+	}
+
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
@@ -98,6 +176,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 		return T;
 	}
+
 	public void gas(MOB mob)
 	{
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
@@ -195,12 +274,12 @@ public class Trap_Trap extends StdAbility implements Trap
 		{
 			String spell=text();
 			final int x=spell.indexOf(';');
-			Vector V=new Vector();
-			V.addElement(mob.name());
+			Vector<String> V=new Vector<String>();
+			V.add(mob.name());
 			if(x>0)
 			{
 				V=CMParms.parse(spell.substring(x+1));
-				V.insertElementAt(mob.name(),0);
+				V.add(0,mob.name());
 				spell=spell.substring(0,x);
 			}
 			final Ability A=CMClass.findAbility(spell);
@@ -323,6 +402,17 @@ public class Trap_Trap extends StdAbility implements Trap
 	}
 
 	@Override
+	public void resetTrap(MOB mob)
+	{
+		if(sprung())
+		{
+			sprung=false;
+			if(!isABomb())
+				CMLib.threads().deleteTick(this, Tickable.TICKID_TRAP_RESET);
+		}
+	}
+	
+	@Override
 	public void unInvoke()
 	{
 		if((trapType()==Trap.TRAP_PIT_BLADE)
@@ -372,5 +462,4 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 		return true;
 	}
-
 }

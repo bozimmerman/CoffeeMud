@@ -45,7 +45,7 @@ public class MXP extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if((!mob.isAttribute(MOB.Attrib.MXP))
+			if((!mob.isAttributeSet(MOB.Attrib.MXP))
 			||(!mob.session().getClientTelnetMode(Session.TELNET_MXP)))
 			{
 				mob.session().changeTelnetMode(Session.TELNET_MXP,true);

@@ -114,7 +114,7 @@ public class Prayer_AuraFear extends Prayer
 						if((!CMLib.flags().isMobile(M))||(!M.isInCombat()))
 						{
 							final Command C=CMClass.getCommand("Sit");
-							try{if(C!=null) C.execute(M,new XVector("Sit"),Command.METAFLAG_FORCED);}catch(final Exception e){}
+							try{if(C!=null) C.execute(M,new XVector("Sit"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
 							if(CMLib.flags().isSitting(M))
 							{
 								R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,L("<S-NAME> cringe(s) in fear at the sight of <O-NAME>."));
@@ -128,7 +128,7 @@ public class Prayer_AuraFear extends Prayer
 						{
 							R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>."));
 							final Command C=CMClass.getCommand("Flee");
-							try{if(C!=null) C.execute(M,new XVector("Flee"),Command.METAFLAG_FORCED);}catch(final Exception e){}
+							try{if(C!=null) C.execute(M,new XVector("Flee"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
 						}
 						else
 						{
@@ -142,7 +142,7 @@ public class Prayer_AuraFear extends Prayer
 						{
 							R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>."));
 							final Command C=CMClass.getCommand("Flee");
-							try{if(C!=null) C.execute(M,new XVector("Flee"),Command.METAFLAG_FORCED);}catch(final Exception e){}
+							try{if(C!=null) C.execute(M,new XVector("Flee"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
 						}
 						else
 						{

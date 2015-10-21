@@ -635,7 +635,7 @@ public class Stat  extends Skills
 				if(ableTypes==ABLETYPE_FACTIONS)
 				{
 					str.append(L("Factions:\n\r"));
-					for(final Enumeration<String> f=target.fetchFactions();f.hasMoreElements();)
+					for(final Enumeration<String> f=target.factions();f.hasMoreElements();)
 					{
 						final Faction F=CMLib.factions().getFaction(f.nextElement());
 						if(F!=null)

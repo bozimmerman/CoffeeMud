@@ -32,17 +32,51 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Trap_CrushingRoom extends StdTrap
 {
-	@Override public String ID() { return "Trap_CrushingRoom"; }
-	private final static String localizedName = CMLib.lang().L("crushing room");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int trapLevel(){return 24;}
-	@Override public String requiresToSet(){return "100 pounds of stone";}
-	@Override public int baseRejuvTime(int level){ return 16;}
+	@Override
+	public String ID()
+	{
+		return "Trap_CrushingRoom";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("crushing room");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int trapLevel()
+	{
+		return 24;
+	}
+
+	@Override
+	public String requiresToSet()
+	{
+		return "100 pounds of stone";
+	}
+
+	@Override
+	public int baseRejuvTime(int level)
+	{
+		return 16;
+	}
 
 	@Override
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
@@ -61,11 +95,12 @@ public class Trap_CrushingRoom extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector V=new Vector();
+		final List<Item> V=new Vector<Item>();
 		for(int i=0;i<100;i++)
-			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
+			V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
 		return V;
 	}
+
 	@Override
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{

@@ -90,9 +90,9 @@ public class Scavenger extends ActiveTicker
 						}
 					}
 					if(C!=null)
-						mob.doCommand(new XVector<String>("PUT","ALL",C.Name()),Command.METAFLAG_FORCED);
+						mob.doCommand(new XVector<String>("PUT","ALL",C.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 					else
-						mob.doCommand(new XVector<String>("DROP","ALL"),Command.METAFLAG_FORCED);
+						mob.doCommand(new XVector<String>("DROP","ALL"),MUDCmdProcessor.METAFLAG_FORCED);
 					CMLib.tracking().wanderAway(mob,false,true);
 				}
 				else
@@ -142,7 +142,7 @@ public class Scavenger extends ActiveTicker
 				return true;
 			final Item I=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			if(I!=null)
-				mob.doCommand(new XVector<String>("GET",I.Name()),Command.METAFLAG_FORCED);
+				mob.doCommand(new XVector<String>("GET",I.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 			choices.clear();
 			choices=null;
 		}
