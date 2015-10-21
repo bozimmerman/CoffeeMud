@@ -1268,7 +1268,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				public int getTargetCount()
 				{
 					return num;
-					
 				}
 				
 				@Override

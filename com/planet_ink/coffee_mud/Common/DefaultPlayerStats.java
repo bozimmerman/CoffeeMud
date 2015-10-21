@@ -1121,6 +1121,19 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
+	public void killAchievementTracker(final Achievement A, final MOB mob)
+	{
+		if(achievementers.containsKey(A.getTattoo()))
+		{
+			achievementers.remove(A.getTattoo());
+			if(mob != null)
+			{
+				mob.delTattoo(A.getTattoo());
+			}
+		}
+	}
+	
+	@Override
 	public Tracker getAchievementTracker(final Achievement A, final MOB mob)
 	{
 		final Tracker T;
