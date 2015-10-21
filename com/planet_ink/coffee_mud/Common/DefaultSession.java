@@ -1885,7 +1885,11 @@ public class DefaultSession implements Session
 			if(System.currentTimeMillis()>=timeoutTime)
 				throw new java.io.InterruptedIOException(TIMEOUT_MSG);
 
-			final String str=CMLib.coffeeFilter().simpleInFilter(inStr,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
+			final String str;
+			if(filter)
+				str=CMLib.coffeeFilter().simpleInFilter(inStr,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
+			else
+				str=inStr.toString();
 			if(str==null)
 				return null;
 			snoopSupportPrint(str+"\n\r",true);
