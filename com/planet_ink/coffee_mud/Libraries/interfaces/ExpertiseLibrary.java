@@ -45,39 +45,46 @@ public interface ExpertiseLibrary extends CMLibrary
 	public static final int XFLAG_XPCOST=9;
 	public static final int XFLAG_LOWFREECOST=10;
 	public static final int NUM_XFLAGS=11;
-	public static final String[] XFLAG_CODES={
+	
+	public static final String[] XFLAG_CODES=
+	{
 		"X1","X2","X3","X4","X5",
 		"LEVEL","TIME","MAXRANGE","LOWCOST",
 		"XPCOST","LOWFREECOST"
 	};
+	
 	public static class ExpertiseDefinition implements CMObject
 	{
-		public String 	ID="";
-		public String 	name="";
-		public String 	baseName="";
-		public String[] data=new String[0];
-		private String 	uncompiledListMask="";
-		private String 	uncompiledFinalMask="";
-		private int 	minLevel=Integer.MIN_VALUE+1;
-		private MaskingLibrary.CompiledZapperMask compiledListMask=null;
-		public ExpertiseDefinition parent=null;
-		private MaskingLibrary.CompiledZapperMask compiledFinalMask=null;
+		public String								ID					= "";
+		public String								name				= "";
+		public String								baseName			= "";
+		public String[]								data				= new String[0];
+		private String								uncompiledListMask	= "";
+		private String								uncompiledFinalMask	= "";
+		private int									minLevel			= Integer.MIN_VALUE + 1;
+		private MaskingLibrary.CompiledZapperMask	compiledListMask	= null;
+		public ExpertiseDefinition					parent				= null;
+		private MaskingLibrary.CompiledZapperMask	compiledFinalMask	= null;
+		private final List<SkillCost>				costs				= new LinkedList<SkillCost>();
 
 		@Override
 		public String name()
 		{
 			return name;
 		}
+		
 		public int getMinimumLevel()
 		{
 			if(minLevel==Integer.MIN_VALUE+1)
 				minLevel=CMLib.masking().minMaskLevel(allRequirements(),0);
 			return minLevel;
 		}
+		
 		public String[] getData()
 		{
 			return data;
 		}
+		
 		public MaskingLibrary.CompiledZapperMask compiledListMask()
 		{
 			if((this.compiledListMask==null)&&(uncompiledListMask.length()>0))
@@ -87,6 +94,7 @@ public interface ExpertiseLibrary extends CMLibrary
 			}
 			return this.compiledListMask;
 		}
+		
 		public MaskingLibrary.CompiledZapperMask compiledFinalMask()
 		{
 			if((this.compiledFinalMask==null)&&(uncompiledFinalMask.length()>0))
@@ -96,6 +104,7 @@ public interface ExpertiseLibrary extends CMLibrary
 			}
 			return this.compiledFinalMask;
 		}
+		
 		public String allRequirements()
 		{
 			String req=uncompiledListMask;
@@ -105,8 +114,17 @@ public interface ExpertiseLibrary extends CMLibrary
 				req=req+" "+uncompiledFinalMask;
 			return req.trim();
 		}
-		public String listRequirements(){return uncompiledListMask;}
-		public String finalRequirements(){return uncompiledFinalMask;}
+		
+		public String listRequirements()
+		{
+			return uncompiledListMask;
+		}
+
+		public String finalRequirements()
+		{
+			return uncompiledFinalMask;
+		}
+
 		public void addListMask(String mask)
 		{
 			if((mask==null)||(mask.length()==0))
@@ -117,6 +135,7 @@ public interface ExpertiseLibrary extends CMLibrary
 				uncompiledListMask+=mask;
 			compiledListMask=null;
 		}
+
 		public void addFinalMask(String mask)
 		{
 			if((mask==null)||(mask.length()==0))
@@ -129,11 +148,11 @@ public interface ExpertiseLibrary extends CMLibrary
 			CMLib.ableMapper().addPreRequisites(ID,new Vector<String>(),uncompiledFinalMask.trim());
 		}
 
-		private final List<SkillCost> costs=new LinkedList<SkillCost>();
 		public void addCost(CostType type, Double value)
 		{
 			costs.add(new SkillCost(type,value));
 		}
+		
 		public String costDescription()
 		{
 			final StringBuffer costStr=new StringBuffer("");
@@ -155,12 +174,40 @@ public interface ExpertiseLibrary extends CMLibrary
 			for(final SkillCost cost : costs)
 				cost.spendSkillCost(mob);
 		}
-		@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
-		@Override public String ID() { return ID; }
-		@Override public CMObject newInstance() { return this; }
-		@Override public CMObject copyOf() { return this; }
-		@Override public void initializeClass() {}
-		public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+		
+		@Override
+		public int compareTo(CMObject o)
+		{
+			return (o == this) ? 0 : 1;
+		}
+
+		@Override
+		public String ID()
+		{
+			return ID;
+		}
+
+		@Override
+		public CMObject newInstance()
+		{
+			return this;
+		}
+
+		@Override
+		public CMObject copyOf()
+		{
+			return this;
+		}
+
+		@Override
+		public void initializeClass()
+		{
+		}
+
+		public String L(final String str, final String... xs)
+		{
+			return CMLib.lang().fullSessionTranslation(str, xs);
+		}
 	}
 
 	/** Enumeration of the types of costs of gaining this ability */
@@ -195,8 +242,8 @@ public interface ExpertiseLibrary extends CMLibrary
 	 */
 	public class SkillCost
 	{
-		public final Double   value;
-		public final CostType costType;
+		private final Double   value;
+		private final CostType costType;
 
 		public SkillCost(final CostType costType, final Double value)
 		{
@@ -252,11 +299,16 @@ public interface ExpertiseLibrary extends CMLibrary
 		{
 			switch(costType)
 			{
-			case XP: return student.getExperience() >= value.intValue();
-			case GOLD: return CMLib.beanCounter().getTotalAbsoluteNativeValue(student) >= value.doubleValue();
-			case TRAIN: return student.getTrains() >= value.intValue();
-			case PRACTICE: return student.getPractices() >= value.intValue();
-			case QP: return student.getQuestPoint() >= value.intValue();
+			case XP:
+				return student.getExperience() >= value.intValue();
+			case GOLD:
+				return CMLib.beanCounter().getTotalAbsoluteNativeValue(student) >= value.doubleValue();
+			case TRAIN:
+				return student.getTrains() >= value.intValue();
+			case PRACTICE:
+				return student.getPractices() >= value.intValue();
+			case QP:
+				return student.getQuestPoint() >= value.intValue();
 			}
 			return false;
 		}

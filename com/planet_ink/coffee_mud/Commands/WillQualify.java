@@ -89,8 +89,8 @@ public class WillQualify  extends Skills
 			Integer qualLevel=null;
 			for(final AbilityMapper.QualifyingID qID : DV)
 			{
-				qualLevel=Integer.valueOf(qID.qualifyingLevel);
-				E=CMLib.expertises().getDefinition(qID.ID);
+				qualLevel=Integer.valueOf(qID.qualifyingLevel());
+				E=CMLib.expertises().getDefinition(qID.ID());
 				if(E!=null)
 				{
 					int minLevel=E.getMinimumLevel();
