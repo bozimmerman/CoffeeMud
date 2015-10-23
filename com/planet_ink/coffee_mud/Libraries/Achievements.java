@@ -508,7 +508,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								if(areaID.equals("WORLD"))
 								{
-									return pstats.percentVisited(mob,null);
+									final Room R=mob.location();
+									if((R!=null)&&(CMLib.map().getExtendedRoomID(CMLib.map().getRoom(R)).length()>0))
+										return pstats.percentVisited(mob,null);
+									else
+										return 0;
 								}
 								else
 								{
