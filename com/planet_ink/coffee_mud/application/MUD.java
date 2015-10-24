@@ -103,8 +103,25 @@ public class MUD extends Thread implements MudHost
 		serviceEngine.executeRunnable(threadGroup.getName(),new ConnectionAcceptor(sock));
 	}
 	
-	@Override public ThreadGroup threadGroup() { return threadGroup; }
+	@Override
+	public ThreadGroup threadGroup()
+	{
+		return threadGroup;
+	}
 
+	private static boolean checkedSleep(long millis)
+	{
+		try
+		{
+			Thread.sleep(millis);
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		return true;
+	}
+	
 	private class ConnectionAcceptor implements CMRunnable
 	{
 		Socket sock;
@@ -218,7 +235,7 @@ public class MUD extends Thread implements MudHost
 							try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
 							out.print(introText.toString());
 							out.flush();
-							try{Thread.sleep(250);}catch(final Exception e){}
+							checkedSleep(250);
 							out.close();
 						}
 						catch(final IOException e)
@@ -268,7 +285,7 @@ public class MUD extends Thread implements MudHost
 						out.println(rejectText);
 						out.flush();
 
-						try{Thread.sleep(1000);}catch(final Exception e){}
+						checkedSleep(1000);
 						out.close();
 					}
 					catch(final IOException e)
@@ -288,7 +305,12 @@ public class MUD extends Thread implements MudHost
 				startTime=0;
 			}
 		}
-		@Override public long activeTimeMillis() { return (startTime>0)?System.currentTimeMillis()-startTime:0;}
+
+		@Override
+		public long activeTimeMillis()
+		{
+			return (startTime > 0) ? System.currentTimeMillis() - startTime : 0;
+		}
 	}
 
 	@Override
@@ -411,7 +433,7 @@ public class MUD extends Thread implements MudHost
 			{
 				System.gc();
 			}
-			Thread.sleep(3000);
+			checkedSleep(3000);
 		}
 		catch(final Exception e){}
 		final long free=Runtime.getRuntime().freeMemory()/1024;
@@ -639,7 +661,8 @@ public class MUD extends Thread implements MudHost
 		}
 		if(S!=null)
 			S.println(CMLib.lang().L("All users logged off"));
-		try{Thread.sleep(3000);}catch(final Exception e){/* give sessions a few seconds to inform the map */}
+		checkedSleep(3000);
+		/* give sessions a few seconds to inform the map */
 		Log.sysOut(Thread.currentThread().getName(),"All users logged off.");
 		if(debugMem) shutdownMemReport("Sessions");
 
@@ -729,7 +752,7 @@ public class MUD extends Thread implements MudHost
 		if(debugMem) shutdownMemReport("Java Classes");
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 
-		try{Thread.sleep(500);}catch(final Exception i){}
+		checkedSleep(500);
 		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud shutdown complete.");
 		if(S!=null)
 			S.println(CMLib.lang().L("CoffeeMud shutdown complete."));
@@ -740,10 +763,10 @@ public class MUD extends Thread implements MudHost
 				S.println(CMLib.lang().L("Restarting..."));
 		if(S!=null)
 			S.stopSession(true,true,false);
-		try{Thread.sleep(500);}catch(final Exception i){}
+		checkedSleep(500);
 		System.gc();
 		System.runFinalization();
-		try{Thread.sleep(500);}catch(final Exception i){}
+		checkedSleep(500);
 		if(debugMem) shutdownMemReport("Complete");
 
 		execExternalCommand=externalCommand;
@@ -762,7 +785,60 @@ public class MUD extends Thread implements MudHost
 			CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,false);
 	}
 
-
+	private static boolean startWebServer(final CMProps page, String serverName)
+	{
+		try
+		{
+			final StringBuffer commonProps=new CMFile("web/common.ini", null, CMFile.FLAG_LOGERRORS).text();
+			final StringBuffer finalProps=new CMFile("web/"+serverName+".ini", null, CMFile.FLAG_LOGERRORS).text();
+			commonProps.append("\n").append(finalProps.toString());
+			final CWConfig config=new CWConfig();
+			config.setFileManager(new CMFile.CMFileManager());
+			WebServer.initConfig(config, Log.instance(), new ByteArrayInputStream(commonProps.toString().getBytes()));
+			if(CMSecurity.isDebugging(DbgFlag.HTTPREQ))
+				config.setDebugFlag(page.getStr("DBGMSGS"));
+			if(CMSecurity.isDebugging(DbgFlag.HTTPACCESS))
+				config.setAccessLogFlag(page.getStr("ACCMSGS"));
+			final WebServer webServer=new WebServer(serverName+Thread.currentThread().getThreadGroup().getName().charAt(0),config);
+			config.setCoffeeWebServer(webServer);
+			webServer.start();
+			webServers.add(webServer);
+			return true;
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("HTTP server "+serverName+" NOT started: "+e.getMessage());
+			return false;
+		}
+	}
+	
+	private static boolean stopWebServer(final String serverName)
+	{
+		try
+		{
+			for(int i=0;i<webServers.size();i++)
+			{
+				final WebServer webServerThread=webServers.get(i);
+				if((webServerThread.getName().length() < 1)||(webServerThread.getName().indexOf('-')<0))
+					continue;
+				final String name = webServerThread.getName().substring(webServerThread.getName().indexOf('-')+1,webServerThread.getName().length()-1);
+				if(name.equals(serverName))
+				{
+					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down web server "+webServerThread.getName()+"...");
+					webServerThread.close();
+					Log.sysOut(Thread.currentThread().getName(),"Web server "+webServerThread.getName()+" stopped.");
+					webServers.remove(webServerThread);
+					return true;
+				}
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("HTTP server "+serverName+" NOT stopped: "+e.getMessage());
+		}
+		return false;
+	}
+	
 	private static void startIntermud3()
 	{
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -1074,7 +1150,8 @@ public class MUD extends Thread implements MudHost
 				while((!MUD.bringDown)
 				&&((baseEngine==null)||(!baseEngine.isConnected())))
 				{
-					try {Thread.sleep(500);}catch(final Exception e){ break;}
+					if(!checkedSleep(500))
+						break;
 					baseEngine=(DatabaseEngine)CMLib.library(MAIN_HOST,CMLib.Library.DATABASE);
 				}
 				if(MUD.bringDown)
@@ -1152,27 +1229,7 @@ public class MUD extends Thread implements MudHost
 				for(int s=0;s<serverNames.size();s++)
 				{
 					final String serverName=serverNames.get(s);
-					try
-					{
-						final StringBuffer commonProps=new CMFile("web/common.ini", null, CMFile.FLAG_LOGERRORS).text();
-						final StringBuffer finalProps=new CMFile("web/"+serverName+".ini", null, CMFile.FLAG_LOGERRORS).text();
-						commonProps.append("\n").append(finalProps.toString());
-						final CWConfig config=new CWConfig();
-						config.setFileManager(new CMFile.CMFileManager());
-						WebServer.initConfig(config, Log.instance(), new ByteArrayInputStream(commonProps.toString().getBytes()));
-						if(CMSecurity.isDebugging(DbgFlag.HTTPREQ))
-							config.setDebugFlag(page.getStr("DBGMSGS"));
-						if(CMSecurity.isDebugging(DbgFlag.HTTPACCESS))
-							config.setAccessLogFlag(page.getStr("ACCMSGS"));
-						final WebServer webServer=new WebServer(serverName+Thread.currentThread().getThreadGroup().getName().charAt(0),config);
-						config.setCoffeeWebServer(webServer);
-						webServer.start();
-						webServers.add(webServer);
-					}
-					catch(final Exception e)
-					{
-						Log.errOut("HTTP server "+serverName+"NOT started: "+e.getMessage());
-					}
+					startWebServer(page, serverName);
 				}
 			}
 
@@ -1245,7 +1302,7 @@ public class MUD extends Thread implements MudHost
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting IMC2");
 			startIntermud2();
 
-			try{Thread.sleep(500);}catch(final Exception e){}
+			checkedSleep(500);
 
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CATALOG")))
 			{
@@ -1311,7 +1368,10 @@ public class MUD extends Thread implements MudHost
 				while((!MUD.bringDown)
 				&&(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 				&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
-					try{Thread.sleep(500);}catch(final Exception e){ break;}
+				{
+					if(!checkedSleep(500))
+						break;
+				}
 				if((MUD.bringDown)
 				||(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 				||(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
@@ -1358,7 +1418,8 @@ public class MUD extends Thread implements MudHost
 			{
 				while((CMLib.library(MAIN_HOST,CMLib.Library.INTERMUD)==null)&&(!MUD.bringDown))
 				{
-					try {Thread.sleep(500);}catch(final Exception e){ break;}
+					if(!checkedSleep(500))
+						break;
 				}
 				if(MUD.bringDown)
 					return;
@@ -1473,7 +1534,7 @@ public class MUD extends Thread implements MudHost
 						failedStart=true;
 						return;
 					}
-					try { Thread.sleep(100); }catch(final Exception e){}
+					checkedSleep(100);
 				}
 				if(!oneStarted)
 				{
@@ -1657,7 +1718,7 @@ public class MUD extends Thread implements MudHost
 							numPending++;
 					if(mainGroup.failedToStart())
 						break;
-					try { Thread.sleep(100); } catch(final Exception e) {}
+					checkedSleep(100);
 				}
 				if(mainGroup.failedToStart())
 				{
@@ -1677,15 +1738,15 @@ public class MUD extends Thread implements MudHost
 			}
 
 			System.gc();
-			try{Thread.sleep(1000);}catch(final Exception e){}
+			checkedSleep(1000);
 			System.runFinalization();
-			try{Thread.sleep(1000);}catch(final Exception e){}
+			checkedSleep(1000);
 
 			if(activeThreadCount(Thread.currentThread().getThreadGroup(),true)>1)
 			{
-				try{ Thread.sleep(1000);}catch(final Exception e){}
+				checkedSleep(1000);
 				killCount(Thread.currentThread().getThreadGroup(),true);
-				try{ Thread.sleep(1000);}catch(final Exception e){}
+				checkedSleep(1000);
 				if(activeThreadCount(Thread.currentThread().getThreadGroup(),true)>1)
 				{
 					Log.sysOut(Thread.currentThread().getName(),"WARNING: "
@@ -1746,6 +1807,30 @@ public class MUD extends Thread implements MudHost
 			{
 				startIntermud2();
 				return "Done";
+			}
+			else
+			if(what.equalsIgnoreCase("WEB"))
+			{
+				if(V.size()<3)
+					return "Need Server Name";
+				if(startWebServer(CMProps.instance(),V.elementAt(2)))
+					return "Done";
+				else
+					return "Failure";
+			}
+		}
+		else
+		if(word.equalsIgnoreCase("STOP")&&(V.size()>1))
+		{
+			final String what=V.elementAt(1);
+			if(what.equalsIgnoreCase("WEB"))
+			{
+				if(V.size()<3)
+					return "Need Server Name";
+				if(stopWebServer(V.elementAt(2)))
+					return "Done";
+				else
+					return "Failure";
 			}
 		}
 		throw new CMException("Unknown command: "+word);

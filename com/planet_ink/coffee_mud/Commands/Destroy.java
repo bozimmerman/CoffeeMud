@@ -1463,6 +1463,28 @@ public class Destroy extends StdCommand
 			manufacturer(mob,commands);
 		}
 		else
+		if(commandType.equals("WEBSERVER"))
+		{
+			if(!CMSecurity.isASysOp(mob))
+				return errorOut(mob);
+			if(commands.size()<3)
+			{
+				mob.tell(L("You must specify a web server name."));
+				return false;
+			}
+			else
+			{
+				try
+				{
+					mob.tell(CMLib.hosts().get(0).executeCommand("STOP WEB "+commands.get(2)));
+				}
+				catch (Exception e)
+				{
+					mob.tell("Failure: "+e.getMessage());
+				}
+			}
+		}
+		else
 		if(commandType.equals("POLL"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS))
@@ -1656,7 +1678,7 @@ public class Destroy extends StdCommand
 						L("\n\rYou cannot destroy a '@x1'. However, you might try an EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
 								+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
 								+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
-								+ "POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.",commandType));
+								+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.",commandType));
 				}
 			}
 		}

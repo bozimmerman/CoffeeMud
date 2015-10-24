@@ -1447,6 +1447,28 @@ public class Create extends StdCommand
 			}
 		}
 		else
+		if(commandType.equals("WEBSERVER"))
+		{
+			if(!CMSecurity.isASysOp(mob))
+				return errorOut(mob);
+			if(commands.size()<3)
+			{
+				mob.tell(L("You must specify a web server name."));
+				return false;
+			}
+			else
+			{
+				try
+				{
+					mob.tell(CMLib.hosts().get(0).executeCommand("START WEB "+commands.get(2)));
+				}
+				catch (Exception e)
+				{
+					mob.tell("Failure: "+e.getMessage());
+				}
+			}
+		}
+		else
 		if(commandType.equals("GOVERNMENT"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS))
@@ -1550,7 +1572,7 @@ public class Create extends StdCommand
 					{
 						mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, "
 								+ "CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ACHIEVEMENT, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, "
-								+ "DISABLEFLAG, NEWS, USER, or ROOM.",commandType));
+								+ "WEBSERVER, DISABLEFLAG, NEWS, USER, or ROOM.",commandType));
 						return false;
 					}
 				}
@@ -1596,7 +1618,7 @@ public class Create extends StdCommand
 					}
 					mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, "
 							+ "MANUFACTURER, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, ACHIEVEMENT, CLASS, POLL, USER, "
-							+ "DEBUGFLAG, NEWS, DISABLEFLAG, ROOM.",commandType));
+							+ "WEBSERVER, DEBUGFLAG, NEWS, DISABLEFLAG, ROOM.",commandType));
 					return false;
 				}
 			}

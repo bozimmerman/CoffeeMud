@@ -29,7 +29,7 @@
   28. When Lay Traps/Set Snare is used to set the same trap on the same object, and that trap is sprung, it will reset it.
   29. Added some color to the Group command so health/mana/moves can be monitored at a glance.
   30. New Necromancer prayers: Mass Grave, Designation.
-  
+  31. Web Servers can now be stopped/started at runtime with CREATE WEBSERVER [name] and DESTROY WEBSERVER [name]
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)
