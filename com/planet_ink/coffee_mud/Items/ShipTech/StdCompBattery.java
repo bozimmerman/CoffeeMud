@@ -88,7 +88,7 @@ public class StdCompBattery extends StdElecCompItem implements Electronics.Power
 				&& ((Math.random() > super.getInstalledFactor())
 					||(Math.random() > super.getFinalManufacturer().getReliabilityPct())
 					||((subjectToWearAndTear())&&(usesRemaining()<=100)&&(Math.random()>CMath.div(usesRemaining(), 100))))
-				&& (Math.random() > 0.9))
+				&& (Math.random() > 0.99))
 				{
 					final Room R=CMLib.map().roomLocation(this);
 					if(R!=null)
