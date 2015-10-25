@@ -34,6 +34,7 @@ public class CMath
 	private static final String[]		ROMAN_TENS		= {"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
 	private static final String[]		ROMAN_ONES		= {"I","II","III","IV","V","VI","VII","VIII","IX","X"};
 	private static final String			ROMAN_ALL		= "CDMPXLIV";
+	private static final String[]		LONG_ABBR		= {"","k", "M", "G", "T", "P","E"};
 	private static final DecimalFormat	TWO_PLACES		= new DecimalFormat("0.#####%");
 	private static final int[]			INTEGER_BITMASKS= new int[31];
 	private static final long[]			LONG_BITMASKS	= new long[63];
@@ -50,6 +51,23 @@ public class CMath
 		}
 	}
 
+	/**
+	 * Returns an abbreviation of the given long, giving 2 significant digits
+	 * after the decimal, and returning k, M, G, T, P, or E for the power base 1000.
+	 * @param l the long to abbreviate
+	 * @return the abbreviated long
+	 */
+	public static String abbreviateLong(final long l)
+	{
+		final String lStr = Long.toString(l);
+		if(lStr.length() < 4)
+			return lStr;
+		int llen = (lStr.length()-1) / 3;
+		if(llen >= LONG_ABBR.length)
+			llen = LONG_ABBR.length-1;
+		return Double.toString(Math.round(Math.pow(1000, llen) * 100.0)/100.0) + LONG_ABBR[llen];
+	}
+	
 	/** Convert an integer to its Roman Numeral equivalent
 	 *
 	 * Usage: Return=convertToRoman(Number)+".";

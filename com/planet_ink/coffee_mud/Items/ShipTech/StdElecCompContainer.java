@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class StdElecCompContainer extends StdElecContainer implements ShipComponent
 {
-	@Override public String ID(){	return "StdElecCompContainer";}
+	@Override
+	public String ID()
+	{
+		return "StdElecCompContainer";
+	}
 
 	protected float installedFactor = 1.0f;
 	protected volatile String circuitKey=null;
@@ -55,8 +59,17 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 
-	@Override public float getInstalledFactor() { return installedFactor; }
-	@Override public void setInstalledFactor(float pct) { installedFactor=pct; }
+	@Override
+	public float getInstalledFactor()
+	{
+		return installedFactor;
+	}
+
+	@Override
+	public void setInstalledFactor(float pct)
+	{
+		installedFactor = pct;
+	}
 
 	@Override
 	public boolean subjectToWearAndTear()
@@ -100,6 +113,12 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 		}
 	}
 
+	@Override
+	protected double getComputedEfficiency()
+	{
+		return super.getComputedEfficiency() * this.getInstalledFactor();
+	}
+	
 	protected static boolean reportError(final Electronics me, final Software controlI, final MOB mob, final String literalMessage, final String controlMessage)
 	{
 		if((mob!=null) && (mob.location()==CMLib.map().roomLocation(me)) && (literalMessage!=null))

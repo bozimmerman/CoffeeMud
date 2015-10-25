@@ -36,7 +36,11 @@ import java.util.*;
 */
 public class StdPlanet extends StdTimeZone implements SpaceObject
 {
-	@Override public String ID(){	return "StdPlanet";}
+	@Override
+	public String ID()
+	{
+		return "StdPlanet";
+	}
 
 	protected static double[]	emptyDirection	= new double[2];
 
@@ -53,30 +57,86 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		radius=SpaceObject.Distance.PlanetRadius.dm + (random.nextLong() % (SpaceObject.Distance.PlanetRadius.dm / 20));
 	}
 
-	@Override public long[] coordinates(){return coordinates;}
+	@Override
+	public long[] coordinates()
+	{
+		return coordinates;
+	}
+
 	@Override public void setCoords(long[] coords)
 	{
 		if((coords!=null)&&(coords.length==3))
 			CMLib.map().moveSpaceObject(this,coords);
 	}
-	@Override public double[] direction(){return emptyDirection;}
-	@Override public void setDirection(double[] dir){ }
-	@Override public double speed(){return 0;}
-	@Override public void setSpeed(double v){}
-	@Override public long radius() { return radius; }
-	@Override public void setRadius(long radius) { this.radius=radius; }
-	@Override public void setName(String newName)
+
+	@Override
+	public double[] direction()
+	{
+		return emptyDirection;
+	}
+
+	@Override
+	public void setDirection(double[] dir)
+	{
+	}
+
+	@Override
+	public double speed()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setSpeed(double v)
+	{
+	}
+
+	@Override
+	public long radius()
+	{
+		return radius;
+	}
+
+	@Override
+	public void setRadius(long radius)
+	{
+		this.radius = radius;
+	}
+
+	@Override
+	public void setName(String newName)
 	{
 		super.setName(newName);
 		myClock.setLoadName(newName);
 	}
 
-	@Override public SpaceObject knownTarget(){return null;}
-	@Override public void setKnownTarget(SpaceObject O){}
-	@Override public SpaceObject knownSource(){return null;}
-	@Override public void setKnownSource(SpaceObject O){}
+	@Override
+	public SpaceObject knownTarget()
+	{
+		return null;
+	}
 
-	@Override public long getMass() { return radius * MULTIPLIER_PLANET_MASS;}
+	@Override
+	public void setKnownTarget(SpaceObject O)
+	{
+	}
+
+	@Override
+	public SpaceObject knownSource()
+	{
+		return null;
+	}
+
+	@Override
+	public void setKnownSource(SpaceObject O)
+	{
+	}
+
+	@Override
+	public long getMass()
+	{
+		return radius * MULTIPLIER_PLANET_MASS;
+	}
 
 	@Override
 	public BoundedCube getBounds()
@@ -84,35 +144,50 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		return new BoundedObject.BoundedCube(coordinates(),radius());
 	}
 
-	private final static String[] MYCODES={"COORDS","RADIUS"};
+	private final static String[]	MYCODES	= { "COORDS", "RADIUS" };
+
 	@Override
 	public String getStat(String code)
 	{
 		switch(getLocCodeNum(code))
 		{
-		case 0: return CMParms.toStringList(this.coordinates());
-		case 1: return ""+radius();
-		default: return super.getStat(code);
+		case 0:
+			return CMParms.toStringList(this.coordinates());
+		case 1:
+			return "" + radius();
+		default:
+			return super.getStat(code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getLocCodeNum(code))
 		{
-		case 0: setCoords(CMParms.toLongArray(CMParms.parseCommas(val,true))); break;
-		case 1: setRadius(CMath.s_long(val)); break;
-		default: super.setStat(code, val); break;
+		case 0:
+			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
+			break;
+		case 1:
+			setRadius(CMath.s_long(val));
+			break;
+		default:
+			super.setStat(code, val);
+			break;
 		}
 	}
+	
 	protected int getLocCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
 	private static String[] codes=null;
+	
 	@Override
 	public String[] getStatCodes()
 	{

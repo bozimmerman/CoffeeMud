@@ -46,6 +46,7 @@ public class RocketShipProgram extends GenShipProgram
 	protected String noActivationMenu="^rNo engine systems found.\n\r";
 
 	protected volatile List<ShipEngine> engines=null;
+	protected volatile List<ShipComponent> sensors=null;
 
 	public RocketShipProgram()
 	{
@@ -60,11 +61,19 @@ public class RocketShipProgram extends GenShipProgram
 		recoverPhyStats();
 	}
 
-	@Override public String getParentMenu() { return ""; }
+	@Override
+	public String getParentMenu()
+	{
+		return "";
+	}
 
-	@Override public String getInternalName() { return "SHIP";}
+	@Override
+	public String getInternalName()
+	{
+		return "SHIP";
+	}
 
-	protected String buildActivationMenu(List<ShipEngine> engines)
+	protected String buildActivationMenu(List<ShipComponent> sensors, List<ShipEngine> engines)
 	{
 		final StringBuilder str=new StringBuilder();
 		str.append("^X").append(CMStrings.centerPreserve(L(" -- Flight Status -- "),60)).append("^.^N\n\r");
@@ -90,6 +99,7 @@ public class RocketShipProgram extends GenShipProgram
 			SpaceObject orbitingPlanet=null;
 			SpaceObject altitudePlanet=null;
 			for(final SpaceObject orb : orbs)
+			{
 				if(orb instanceof Area)
 				{
 					final long distance=CMLib.map().getDistanceFrom(shipSpaceObject, orb);
@@ -99,6 +109,7 @@ public class RocketShipProgram extends GenShipProgram
 						orbitingPlanet=orb; // since they are sorted, this would be the nearest.
 					break;
 				}
+			}
 
 			str.append("^H").append(CMStrings.padRight(L("Speed"),10));
 			str.append("^N").append(CMStrings.padRight(displayPerSec(Math.round(ship.speed())),20));
@@ -128,6 +139,48 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		str.append("^N\n\r");
 
+		if((sensors!=null)&&(sensors.size()>0))
+		{
+			str.append("^X").append(CMStrings.centerPreserve(L(" -- Sensor Reports -- "),60)).append("^.^N\n\r");
+			int sensorNumber=1;
+			for(final ShipComponent sensor : sensors)
+			{
+				str.append("^H").append(CMStrings.padRight(L("SENSOR@x1",""+sensorNumber),9));
+				str.append(CMStrings.padRight(sensor.activated()?L("^gACTIVE"):L("^rINACTIVE"),9));
+				str.append("^H").append(CMStrings.padRight(sensor.Name(),24));
+				str.append("^.^N\n\r");
+				List<CMObject> found = new LinkedList<CMObject>();
+				final String code=Technical.TechCommand.SENSE.makeCommand(found);
+				final MOB mob=CMClass.getFactoryMOB();
+				final CMMsg msg=CMClass.getMsg(mob, sensor, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				if(sensor.owner() instanceof Room)
+				{
+					if(((Room)sensor.owner()).okMessage(mob, msg))
+						((Room)sensor.owner()).send(mob, msg);
+				}
+				else
+				if(sensor.okMessage(mob, msg))
+					sensor.executeMsg(mob, msg);
+				mob.destroy();
+				if(found.size()==0)
+					str.append("^R").append(L("No Report"));
+				else
+				for(CMObject o : found)
+				{
+					if(o instanceof SpaceObject)
+					{
+						SpaceObject O=(SpaceObject)o;
+						str.append("^W").append(L("Found: ")).append("^N").append(O.displayText());
+					}
+					else
+						str.append("^W").append(L("Found: ")).append("^N").append(o.name());
+					str.append("^.^N\n\r");
+				}
+				str.append("^.^N\n\r");
+				sensorNumber++;
+			}
+		}
+		
 		if((engines==null)||(engines.size()==0))
 			str.append(noActivationMenu);
 		else
@@ -171,12 +224,34 @@ public class RocketShipProgram extends GenShipProgram
 				final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
 				engines=new Vector<ShipEngine>(1);
 				for(final Electronics E : electronics)
+				{
 					if(E instanceof ShipComponent.ShipEngine)
 						engines.add((ShipComponent.ShipEngine)E);
-
+				}
 			}
 		}
 		return engines;
+	}
+
+	protected synchronized List<ShipComponent> getShipSensors()
+	{
+		if(sensors == null)
+		{
+			if(circuitKey.length()==0)
+				sensors=new Vector<ShipComponent>(0);
+			else
+			{
+				final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
+				sensors=new Vector<ShipComponent>(1);
+				for(final Electronics E : electronics)
+				{
+					if((E instanceof ShipComponent)&&(E.getTechType()==TechType.SHIP_SENSOR))
+						sensors.add((ShipComponent.ShipEngine)E);
+				}
+
+			}
+		}
+		return sensors;
 	}
 
 	@Override public boolean isActivationString(String word)
@@ -222,32 +297,38 @@ public class RocketShipProgram extends GenShipProgram
 		return findEngineByName(uword)!=null;
 	}
 
-	@Override public String getActivationMenu()
+	@Override
+	public String getActivationMenu()
 	{
-		return buildActivationMenu(getEngines());
+		return buildActivationMenu(getShipSensors(), getEngines());
 	}
 
-	@Override public boolean checkActivate(MOB mob, String message)
-	{
-		return true;
-	}
-
-	@Override public boolean checkDeactivate(MOB mob, String message)
+	@Override
+	public boolean checkActivate(MOB mob, String message)
 	{
 		return true;
 	}
 
-	@Override public boolean checkTyping(MOB mob, String message)
+	@Override
+	public boolean checkDeactivate(MOB mob, String message)
 	{
 		return true;
 	}
 
-	@Override public boolean checkPowerCurrent(int value)
+	@Override
+	public boolean checkTyping(MOB mob, String message)
 	{
 		return true;
 	}
 
-	@Override public void onTyping(MOB mob, String message)
+	@Override
+	public boolean checkPowerCurrent(int value)
+	{
+		return true;
+	}
+
+	@Override
+	public void onTyping(MOB mob, String message)
 	{
 		synchronized(this)
 		{

@@ -66,7 +66,7 @@ public class StdCompBattery extends StdElecCompItem implements Electronics.Power
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenCompBattery))
+		if(!(E instanceof StdCompBattery))
 			return false;
 		return super.sameAs(E);
 	}

@@ -56,9 +56,24 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 
-	@Override public float getInstalledFactor() { return installedFactor; }
-	@Override public void setInstalledFactor(float pct) { installedFactor=pct; }
+	@Override
+	public float getInstalledFactor()
+	{
+		return installedFactor;
+	}
 
+	@Override
+	public void setInstalledFactor(float pct)
+	{
+		installedFactor = pct;
+	}
+
+	@Override
+	protected double getComputedEfficiency()
+	{
+		return super.getComputedEfficiency() * this.getInstalledFactor();
+	}
+	
 	@Override
 	public boolean sameAs(Environmental E)
 	{

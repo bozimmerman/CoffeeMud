@@ -49,4 +49,11 @@ public class Star extends GenSpaceBody
 		recoverPhyStats();
 		this.setMaterial(RawMaterial.RESOURCE_HYDROGEN);
 	}
+	
+	@Override
+	public long getMass()
+	{
+		return radius * MULTIPLIER_STAR_MASS;
+	}
+
 }

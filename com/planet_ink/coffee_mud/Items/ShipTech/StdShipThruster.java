@@ -57,6 +57,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setCapacity(basePhyStats.weight()+100000);
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -64,7 +65,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 			return false;
 		return super.sameAs(E);
 	}
-	
+
 	protected static double getThrustFactor() 
 	{ 
 		return 100.0; 
@@ -75,15 +76,67 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		return 100.0; 
 	}
 
-	@Override public double getFuelEfficiency() { return fuelEfficiency; }
-	@Override public void setFuelEfficiency(double amt) { fuelEfficiency=amt; }
-	@Override public float getInstalledFactor() { return installedFactor; }
-	@Override public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
-	@Override public int getMaxThrust(){return maxThrust;}
-	@Override public void setMaxThrust(int max){maxThrust=max;}
-	@Override public int getThrust(){return thrust;}
-	@Override public void setThrust(int current){thrust=current;}
-	@Override public long getSpecificImpulse() { return specificImpulse; }
+	@Override
+	public double getFuelEfficiency()
+	{
+		return fuelEfficiency;
+	}
+
+	@Override
+	public void setFuelEfficiency(double amt)
+	{
+		fuelEfficiency = amt;
+	}
+
+	@Override
+	public float getInstalledFactor()
+	{
+		return installedFactor;
+	}
+
+	@Override
+	public void setInstalledFactor(float pct)
+	{
+		if ((pct >= 0.0) && (pct <= 2.0))
+			installedFactor = pct;
+	}
+
+	@Override
+	public int getMaxThrust()
+	{
+		return maxThrust;
+	}
+
+	@Override
+	public void setMaxThrust(int max)
+	{
+		maxThrust = max;
+	}
+
+	@Override
+	public int getThrust()
+	{
+		return thrust;
+	}
+
+	@Override
+	public void setThrust(int current)
+	{
+		thrust = current;
+	}
+
+	@Override
+	public long getSpecificImpulse()
+	{
+		return specificImpulse;
+	}
+
+	@Override
+	protected double getComputedEfficiency()
+	{
+		return super.getComputedEfficiency() * this.getInstalledFactor();
+	}
+	
 	@Override
 	public void setSpecificImpulse(long amt)
 	{
@@ -91,8 +144,17 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 			specificImpulse = amt;
 	}
 
-	@Override public TechType getTechType() { return TechType.SHIP_ENGINE; }
-	@Override protected boolean willConsumeFuelIdle() { return getThrust()>0; }
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.SHIP_ENGINE;
+	}
+
+	@Override
+	protected boolean willConsumeFuelIdle()
+	{
+		return getThrust() > 0;
+	}
 
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -100,7 +162,6 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		super.executeMsg(myHost, msg);
 		executeThrusterMsg(this, myHost, circuitKey, msg);
 	}
-
 
 	public static boolean reportError(final ShipEngine me, final Software controlI, final MOB mob, final String literalMessage, final String controlMessage)
 	{

@@ -34,7 +34,11 @@ import java.util.*;
 */
 public class GenElecCompItem extends StdElecCompItem
 {
-	@Override public String ID(){	return "GenElecCompItem";}
+	@Override
+	public String ID()
+	{
+		return "GenElecCompItem";
+	}
 
 	public GenElecCompItem()
 	{
@@ -44,7 +48,11 @@ public class GenElecCompItem extends StdElecCompItem
 		setDescription("");
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -61,6 +69,7 @@ public class GenElecCompItem extends StdElecCompItem
 	}
 
 	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT"};
+	
 	@Override
 	public String getStat(String code)
 	{
@@ -68,11 +77,16 @@ public class GenElecCompItem extends StdElecCompItem
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+powerCapacity();
-		case 1: return ""+activated();
-		case 2: return ""+powerRemaining();
-		case 3: return ""+getManufacturerName();
-		case 4: return ""+getInstalledFactor();
+		case 0:
+			return "" + powerCapacity();
+		case 1:
+			return "" + activated();
+		case 2:
+			return "" + powerRemaining();
+		case 3:
+			return "" + getManufacturerName();
+		case 4:
+			return "" + getInstalledFactor();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -85,25 +99,40 @@ public class GenElecCompItem extends StdElecCompItem
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 1: activate(CMath.s_bool(val)); break;
-		case 2: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 3: setManufacturerName(val); break;
-		case 4: setInstalledFactor(CMath.s_float(val)); break;
+			case 0:
+				setPowerCapacity(CMath.s_parseLongExpression(val));
+				break;
+			case 1:
+				activate(CMath.s_bool(val));
+				break;
+			case 2:
+				setPowerRemaining(CMath.s_parseLongExpression(val));
+				break;
+			case 3:
+				setManufacturerName(val);
+				break;
+			case 4:
+				setInstalledFactor(CMath.s_float(val));
+				break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+	
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+	
 	private static String[] codes=null;
+	
 	@Override
 	public String[] getStatCodes()
 	{
@@ -119,6 +148,7 @@ public class GenElecCompItem extends StdElecCompItem
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -126,8 +156,10 @@ public class GenElecCompItem extends StdElecCompItem
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
+		{
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;
+		}
 		return true;
 	}
 }

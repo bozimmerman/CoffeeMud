@@ -129,7 +129,7 @@ public class GenThinArmor extends StdThinArmor
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenArmor))
+		if(!(E instanceof GenThinArmor))
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)

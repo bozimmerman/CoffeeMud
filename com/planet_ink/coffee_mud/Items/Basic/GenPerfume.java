@@ -157,7 +157,7 @@ public class GenPerfume extends StdPerfume
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenDrink))
+		if(!(E instanceof GenPerfume))
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)

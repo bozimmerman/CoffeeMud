@@ -34,8 +34,14 @@ import java.util.*;
 */
 public class GenShipEngine extends StdShipEngine
 {
-	@Override public String ID(){	return "GenShipEngine";}
-	protected String readableText="";
+	@Override
+	public String ID()
+	{
+		return "GenShipEngine";
+	}
+
+	protected String	readableText	= "";
+
 	public GenShipEngine()
 	{
 		super();
@@ -43,7 +49,12 @@ public class GenShipEngine extends StdShipEngine
 		setDisplayText("a generic ship engine sits here.");
 		setDescription("");
 	}
-	@Override public boolean isGeneric(){return true;}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -51,8 +62,18 @@ public class GenShipEngine extends StdShipEngine
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText = text;
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -72,12 +93,18 @@ public class GenShipEngine extends StdShipEngine
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+hasALock();
-		case 1: return ""+hasADoor();
-		case 2: return ""+capacity();
-		case 3: return ""+containTypes();
-		case 4: return ""+openDelayTicks();
-		case 5: return ""+powerCapacity();
+		case 0:
+			return "" + hasALock();
+		case 1:
+			return "" + hasADoor();
+		case 2:
+			return "" + capacity();
+		case 3:
+			return "" + containTypes();
+		case 4:
+			return "" + openDelayTicks();
+		case 5:
+			return "" + powerCapacity();
 		case 6:
 		{
 			final StringBuilder str=new StringBuilder("");
@@ -89,16 +116,26 @@ public class GenShipEngine extends StdShipEngine
 			}
 			return str.toString();
 		}
-		case 7: return ""+powerRemaining();
-		case 8: return ""+getGeneratedAmountPerTick();
-		case 9: return ""+activated();
-		case 10: return ""+getManufacturerName();
-		case 11: return ""+getInstalledFactor();
-		case 12: return ""+defaultsClosed();
-		case 13: return ""+defaultsLocked();
-		case 14: return ""+getMaxThrust();
-		case 15: return ""+getSpecificImpulse();
-		case 16: return ""+Math.round(getFuelEfficiency()*100);
+		case 7:
+			return "" + powerRemaining();
+		case 8:
+			return "" + getGeneratedAmountPerTick();
+		case 9:
+			return "" + activated();
+		case 10:
+			return "" + getManufacturerName();
+		case 11:
+			return "" + getInstalledFactor();
+		case 12:
+			return "" + defaultsClosed();
+		case 13:
+			return "" + defaultsLocked();
+		case 14:
+			return "" + getMaxThrust();
+		case 15:
+			return "" + getSpecificImpulse();
+		case 16:
+			return "" + Math.round(getFuelEfficiency() * 100);
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -111,12 +148,24 @@ public class GenShipEngine extends StdShipEngine
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),CMath.s_bool(val),false,CMath.s_bool(val)&&defaultsLocked()); break;
-		case 1: setDoorsNLocks(CMath.s_bool(val),isOpen(),CMath.s_bool(val)&&defaultsClosed(),hasALock(),isLocked(),defaultsLocked()); break;
-		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
-		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
-		case 5: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+			case 0:
+				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+				break;
+			case 1:
+				setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+				break;
+			case 2:
+				setCapacity(CMath.s_parseIntExpression(val));
+				break;
+			case 3:
+				setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+				break;
+			case 4:
+				setOpenDelayTicks(CMath.s_parseIntExpression(val));
+				break;
+			case 5:
+				setPowerCapacity(CMath.s_parseLongExpression(val));
+				break;
 		case 6:{
 				final List<String> mats = CMParms.parseCommas(val,true);
 				final int[] newMats = new int[mats.size()];
@@ -129,16 +178,36 @@ public class GenShipEngine extends StdShipEngine
 				super.setConsumedFuelType(newMats);
 				break;
 			   }
-		case 7: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 8: setGeneratedAmountPerTick(CMath.s_parseIntExpression(val)); break;
-		case 9: activate(CMath.s_bool(val)); break;
-		case 10: setManufacturerName(val); break;
-		case 11: setInstalledFactor(CMath.s_float(val)); break;
-		case 12: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
-		case 13: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
-		case 14: setMaxThrust(CMath.s_parseIntExpression(val)); break;
-		case 15: setSpecificImpulse(CMath.s_parseLongExpression(val)); break;
-		case 16: setFuelEfficiency(CMath.s_parseMathExpression(val)/100.0); break;
+			case 7:
+				setPowerCapacity(CMath.s_parseLongExpression(val));
+				break;
+			case 8:
+				setGeneratedAmountPerTick(CMath.s_parseIntExpression(val));
+				break;
+			case 9:
+				activate(CMath.s_bool(val));
+				break;
+			case 10:
+				setManufacturerName(val);
+				break;
+			case 11:
+				setInstalledFactor(CMath.s_float(val));
+				break;
+			case 12:
+				setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+				break;
+			case 13:
+				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+				break;
+			case 14:
+				setMaxThrust(CMath.s_parseIntExpression(val));
+				break;
+			case 15:
+				setSpecificImpulse(CMath.s_parseLongExpression(val));
+				break;
+			case 16:
+				setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
+				break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -148,11 +217,15 @@ public class GenShipEngine extends StdShipEngine
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
-	private static String[] codes=null;
+
+	private static String[]	codes	= null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -168,6 +241,7 @@ public class GenShipEngine extends StdShipEngine
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -175,8 +249,10 @@ public class GenShipEngine extends StdShipEngine
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
+		{
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;
+		}
 		return true;
 	}
 }

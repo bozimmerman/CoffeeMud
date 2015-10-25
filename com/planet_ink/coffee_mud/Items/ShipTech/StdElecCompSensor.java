@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2013-2015 Bo Zimmerman
+   Copyright 2015-2015 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -44,9 +44,87 @@ public class StdElecCompSensor extends StdElecCompItem implements ShipComponent
 	{
 		return Technical.TechType.SHIP_SENSOR;
 	}
+
+	private static final Filterer<SpaceObject> acceptEverythingFilter = new Filterer<SpaceObject>()
+	{
+		@Override
+		public boolean passesFilter(SpaceObject obj)
+		{
+			return true;
+		}
+	};
+	
+	private static final Converter<SpaceObject, CMObject> directConverter = new Converter<SpaceObject, CMObject>()
+	{
+		@Override
+		public CMObject convert(SpaceObject obj)
+		{
+			return obj;
+		}
+	};
+	
+	/**
+	 * The maximum range of objects that this sensor can detect
+	 * @return maximum range of objects that this sensor can detect
+	 */
+	protected long getSensorMaxRange()
+	{
+		return SpaceObject.Distance.Parsec.dm;
+	}
+	
+	/**
+	 * Filter to pick out which objects this sensor can actually pick up.
+	 * @see com.planet_ink.coffee_mud.core.collections.Filterer
+	 * @return a Filterer to pick out which objects this sensor can actually pick up.
+	 */
+	protected Filterer<SpaceObject> getSensedObjectFilter()
+	{
+		return acceptEverythingFilter;
+	}
+
+	/**
+	 * Converter to convert from the actual sensed object, to a CMObject, which may
+	 * or may not contain all the information of the actual one.
+	 * @see com.planet_ink.coffee_mud.core.collections.Converter
+	 * @return  to convert from the actual sensed object, to a CMObject
+	 */
+	protected Converter<SpaceObject, CMObject> getSensedObjectConverter()
+	{
+		return directConverter;
+	}
 	
 	protected boolean doSensing(MOB mob, Software controlI, List<CMObject> response)
 	{
+		final SpaceObject O=CMLib.map().getSpaceObject(this, true);
+		if((O!=null)&&(this.powerRemaining() > this.powerNeeds())) 
+		{
+			final long maxRange = Math.round(getSensorMaxRange() * this.getComputedEfficiency());
+			final List<SpaceObject> found = CMLib.map().getSpaceObjectsWithin(O.coordinates(), O.radius()+1, maxRange);
+			if(found.size() > 0)
+			{
+				if(CMLib.dice().rollPercentage() > this.getFinalManufacturer().getReliabilityPct())
+				{
+					//TODO: better to filter out the most distant!
+					int num = found.size() / 10; // failing reliability check always loses 10% of found things
+					if(num <= 0)
+						num = 1;
+					for(int i=0;i<num && (found.size() > 0);i++)
+					{
+						found.remove(CMLib.dice().roll(1, found.size(), -1));
+					}
+				}
+			}
+			if(found.size() > 0)
+			{
+				final Filterer<SpaceObject> filter = this.getSensedObjectFilter();
+				final Converter<SpaceObject, CMObject> converter = this.getSensedObjectConverter();
+				for(final SpaceObject obj : found)
+				{
+					if(filter.passesFilter(obj))
+						response.add(converter.convert(obj));
+				}
+			}
+		}
 		return true;
 	}
 

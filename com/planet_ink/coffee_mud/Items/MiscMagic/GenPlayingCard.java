@@ -86,7 +86,7 @@ public class GenPlayingCard extends StdPlayingCard
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenWand))
+		if(!(E instanceof GenPlayingCard))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))

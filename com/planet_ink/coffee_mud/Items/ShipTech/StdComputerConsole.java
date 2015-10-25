@@ -39,17 +39,17 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 {
 	@Override public String ID(){	return "StdComputerConsole";}
 
-	protected volatile String circuitKey		= null;
-	protected float 		  installedFactor	= 1.0F;
-	protected short 		  powerRemaining	= 0;
-	protected boolean 		  activated		 	= false;
-	protected volatile long   nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
-	protected MOB 			  lastReader		= null;
-	protected volatile long   nextSoftwareCheck = System.currentTimeMillis()+(10*1000);
-	protected List<Software>  software		 	= null;
-	protected String 		  currentMenu		= "";
-	protected String		  manufacturer 		= "RANDOM";
-	protected Manufacturer	  cachedManufact	= null;
+	protected volatile String	circuitKey			= null;
+	protected float				installedFactor		= 1.0F;
+	protected short				powerRemaining		= 0;
+	protected boolean			activated			= false;
+	protected volatile long		nextPowerCycleTmr	= System.currentTimeMillis() + (8 * 1000);
+	protected MOB				lastReader			= null;
+	protected volatile long		nextSoftwareCheck	= System.currentTimeMillis() + (10 * 1000);
+	protected List<Software>	software			= null;
+	protected String			currentMenu			= "";
+	protected String			manufacturer		= "RANDOM";
+	protected Manufacturer		cachedManufact		= null;
 
 	public StdComputerConsole()
 	{
@@ -72,23 +72,113 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		recoverPhyStats();
 	}
 
-	@Override public float getInstalledFactor() { return installedFactor; }
-	@Override public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
-	@Override public long powerCapacity(){return 1;}
-	@Override public void setPowerCapacity(long capacity){}
-	@Override public int powerNeeds(){return 1;}
-	@Override public long powerRemaining(){return powerRemaining;}
-	@Override public void setPowerRemaining(long remaining){ powerRemaining=(remaining>0)?(short)1:(short)0; }
-	@Override public boolean activated(){return activated;}
-	@Override public void activate(boolean truefalse){ activated=truefalse; }
-	@Override public void setActiveMenu(String internalName) { currentMenu=internalName; }
-	@Override public String getActiveMenu() { return currentMenu; }
-	@Override public int techLevel() { return phyStats().ability();}
-	@Override public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
-	@Override public String getManufacturerName() { return manufacturer; }
-	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
-	@Override public TechType getTechType() { return TechType.SHIP_COMPUTER; }
+	@Override
+	public float getInstalledFactor()
+	{
+		return installedFactor;
+	}
 
+	@Override
+	public void setInstalledFactor(float pct)
+	{
+		if ((pct >= 0.0) && (pct <= 2.0))
+			installedFactor = pct;
+	}
+
+	@Override
+	public long powerCapacity()
+	{
+		return 1;
+	}
+
+	@Override
+	public void setPowerCapacity(long capacity)
+	{
+	}
+
+	@Override
+	public int powerNeeds()
+	{
+		return 1;
+	}
+
+	@Override
+	public long powerRemaining()
+	{
+		return powerRemaining;
+	}
+
+	@Override
+	public void setPowerRemaining(long remaining)
+	{
+		powerRemaining = (remaining > 0) ? (short) 1 : (short) 0;
+	}
+
+	@Override
+	public boolean activated()
+	{
+		return activated;
+	}
+
+	@Override
+	public void activate(boolean truefalse)
+	{
+		activated = truefalse;
+	}
+
+	@Override
+	public void setActiveMenu(String internalName)
+	{
+		currentMenu = internalName;
+	}
+
+	@Override
+	public String getActiveMenu()
+	{
+		return currentMenu;
+	}
+
+	@Override
+	public int techLevel()
+	{
+		return phyStats().ability();
+	}
+
+	@Override
+	public void setTechLevel(int lvl)
+	{
+		basePhyStats.setAbility(lvl);
+		recoverPhyStats();
+	}
+
+	@Override
+	public String getManufacturerName()
+	{
+		return manufacturer;
+	}
+
+	@Override
+	public void setManufacturerName(String name)
+	{
+		cachedManufact = null;
+		if (name != null)
+			manufacturer = name;
+	}
+
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.SHIP_COMPUTER;
+	}
+
+	protected double getComputedEfficiency()
+	{
+		double generatedAmount = 1.0;
+		if(subjectToWearAndTear() && (usesRemaining()<=200))
+			generatedAmount *= CMath.div(usesRemaining(), 100.0);
+		return generatedAmount * this.getInstalledFactor();
+	}
+	
 	@Override
 	public Manufacturer getFinalManufacturer()
 	{

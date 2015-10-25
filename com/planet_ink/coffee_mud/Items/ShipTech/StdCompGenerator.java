@@ -101,10 +101,7 @@ public class StdCompGenerator extends StdCompFuelConsumer implements Electronics
 					&&(Math.random()<getFinalManufacturer().getReliabilityPct()))
 					{
 						double generatedAmount = getGeneratedAmountPerTick();
-						generatedAmount *= getFinalManufacturer().getEfficiencyPct();
-						generatedAmount *= getInstalledFactor();
-						if(subjectToWearAndTear() && (usesRemaining()<=200))
-							generatedAmount *= CMath.div(usesRemaining(), 100.0);
+						generatedAmount *= this.getComputedEfficiency() * this.getFinalManufacturer().getEfficiencyPct();
 						long newAmount=powerRemaining() + Math.round(generatedAmount);
 						if(newAmount > powerCapacity())
 							newAmount=powerCapacity();

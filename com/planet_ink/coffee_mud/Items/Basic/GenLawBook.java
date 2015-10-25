@@ -90,11 +90,13 @@ public class GenLawBook extends StdLawBook
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenItem))
+		if(!(E instanceof GenLawBook))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
+		{
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
+		}
 		return true;
 	}
 }

@@ -1947,8 +1947,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return getAbilityComponentMap().get(AID.toUpperCase().trim());
 	}
 
-	@Override
-	public List<DVector> getAbilityComponentDecodedDVectors(String AID)
+	protected List<DVector> getAbilityComponentDecodedDVectors(String AID)
 	{
 		return getAbilityComponentDecodedDVectors(getAbilityComponentDVector(AID));
 	}
@@ -2034,8 +2033,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		comp.setMask(s[5]);
 	}
 
-	@Override
-	public List<DVector> getAbilityComponentDecodedDVectors(List<AbilityComponent> req)
+	protected List<DVector> getAbilityComponentDecodedDVectors(List<AbilityComponent> req)
 	{
 		if(req==null)
 			return null;

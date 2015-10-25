@@ -165,4 +165,13 @@ public class StdElecItem extends StdItem implements Electronics
 		}
 		return cachedManufact;
 	}
+	
+	protected double getComputedEfficiency()
+	{
+		double generatedAmount = 1.0;
+		if(subjectToWearAndTear() && (usesRemaining()<=200))
+			generatedAmount *= CMath.div(usesRemaining(), 100.0);
+		return generatedAmount;
+	}
+	
 }

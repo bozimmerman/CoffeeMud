@@ -62,20 +62,86 @@ public class StdShipEngine extends StdCompGenerator implements ShipComponent.Shi
 			return false;
 		return super.sameAs(E);
 	}
-	@Override public double getFuelEfficiency() { return fuelEfficiency; }
-	@Override public void setFuelEfficiency(double amt) { fuelEfficiency=amt; }
-	@Override public float getInstalledFactor() { return installedFactor; }
-	@Override public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
-	@Override public int getMaxThrust(){return maxThrust;}
-	@Override public void setMaxThrust(int max){maxThrust=max;}
-	@Override public int getThrust(){return thrust;}
-	@Override public void setThrust(int current){thrust=current;}
-	@Override public long getSpecificImpulse() { return specificImpulse; }
-	@Override public void setSpecificImpulse(long amt) { specificImpulse = amt; }
-	@Override public TechType getTechType() { return TechType.SHIP_ENGINE; }
 
-	@Override protected boolean willConsumeFuelIdle() { return getThrust()>0; }
+	@Override
+	public double getFuelEfficiency()
+	{
+		return fuelEfficiency;
+	}
 
+	@Override
+	public void setFuelEfficiency(double amt)
+	{
+		fuelEfficiency = amt;
+	}
+
+	@Override
+	public float getInstalledFactor()
+	{
+		return installedFactor;
+	}
+
+	@Override
+	public void setInstalledFactor(float pct)
+	{
+		if ((pct >= 0.0) && (pct <= 2.0))
+			installedFactor = pct;
+	}
+
+	@Override
+	public int getMaxThrust()
+	{
+		return maxThrust;
+	}
+
+	@Override
+	public void setMaxThrust(int max)
+	{
+		maxThrust = max;
+	}
+
+	@Override
+	public int getThrust()
+	{
+		return thrust;
+	}
+
+	@Override
+	public void setThrust(int current)
+	{
+		thrust = current;
+	}
+
+	@Override
+	public long getSpecificImpulse()
+	{
+		return specificImpulse;
+	}
+
+	@Override
+	public void setSpecificImpulse(long amt)
+	{
+		specificImpulse = amt;
+	}
+
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.SHIP_ENGINE;
+	}
+
+	@Override
+	protected boolean willConsumeFuelIdle()
+	{
+		return getThrust() > 0;
+	}
+
+	@Override
+	protected double getComputedEfficiency()
+	{
+		return super.getComputedEfficiency() * this.getInstalledFactor();
+	}
+	
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

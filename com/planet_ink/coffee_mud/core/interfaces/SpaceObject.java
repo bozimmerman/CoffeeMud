@@ -208,6 +208,8 @@ public interface SpaceObject extends Environmental, BoundedObject
 
 	/** multiplier by radius to get planets mass -- only off by 15 zeroes or so 9333072865794100410 is the actual number*/
 	public static final long MULTIPLIER_PLANET_MASS=933L;
+	/** multiplier by radius to get stars mass -- only off by 15 zeroes or so 19890000000000000000000000 is the actual number*/
+	public static final long MULTIPLIER_STAR_MASS=1989000L;
 
 	/** accelleration at which you are happy, in decameters/s */
 	public static final long ACCELLERATION_G=1;

@@ -125,7 +125,7 @@ public class GenSpaceBody extends StdSpaceBody
 	@Override
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdSpaceBody))
+		if(!(E instanceof GenSpaceBody))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

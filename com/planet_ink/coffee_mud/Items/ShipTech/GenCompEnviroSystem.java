@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenCompEnviroSystem extends GenElecCompItem
 {
-	@Override public String ID(){	return "GenCompEnviroSystem";}
+	@Override
+	public String ID()
+	{
+		return "GenCompEnviroSystem";
+	}
 
 	protected final static int ENVIRO_TICKS=7;
 	protected int tickDown=ENVIRO_TICKS;
@@ -50,7 +54,11 @@ public class GenCompEnviroSystem extends GenElecCompItem
 		setDescription("");
 	}
 
-	@Override public TechType getTechType() { return TechType.SHIP_ENVIRO_CONTROL; }
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.SHIP_ENVIRO_CONTROL;
+	}
 
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)

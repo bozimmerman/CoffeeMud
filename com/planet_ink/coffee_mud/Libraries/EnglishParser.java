@@ -222,6 +222,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 	
 	@Override
+	public String distanceDescShort(long distance)
+	{
+		return getBestDistance(distance);
+	}
+	
+	@Override
 	public String coordDescShort(long[] coords)
 	{
 		return getBestDistance(coords[0])+","+getBestDistance(coords[1])+","+getBestDistance(coords[2]);
