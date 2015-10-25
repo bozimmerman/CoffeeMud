@@ -89,20 +89,6 @@ public interface PlayerLibrary extends CMLibrary
 		public String accountName="";
 		public String email="";
 		public MOB loadedMOB=null;
-		public Tickable toTickable()
-		{
-			return new Tickable()
-			{
-				@Override public int getTickStatus() {return 0;}
-				@Override public String name() { return name;}
-				@Override public boolean tick(Tickable ticking, int tickID) { return false;}
-				@Override public String ID() { return "StdMOB";}
-				@Override public CMObject copyOf() { return this;}
-				@Override public void initializeClass() {}
-				@Override public CMObject newInstance() { return this;}
-				@Override public int compareTo(CMObject o) {return (o==this)?0:-1;}
-			};
-		}
 		public boolean matchesPassword(String checkPass)
 		{
 			return CMLib.encoder().isARandomHashString(password)
