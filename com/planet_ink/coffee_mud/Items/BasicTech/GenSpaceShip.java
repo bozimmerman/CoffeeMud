@@ -193,34 +193,37 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 								final ThrustPort dir=(ThrustPort)parms[0];
 								final int amount=((Integer)parms[1]).intValue();
 								//long specificImpulse=((Long)parms[2]).longValue();
-								switch(dir)
+								if((amount != 0) || (speed() != 0))
 								{
-								case STARBOARD: 
-									facing[0]-=amount; 
-									break;
-								case PORT: 
-									facing[0]+=amount; 
-									break;
-								case DORSEL: 
-									facing[1]-=amount; 
-									break;
-								case VENTRAL: 
-									facing[1]+=amount; 
-									break;
-								case FORWARD: 
-									break;
-								case AFT:
-								{
-									if((getIsDocked()!=null) && (amount > SpaceObject.ACCELLERATION_G))
-										unDock(true);
-									// this will move it, but will also update speed and direction -- all good!
-									final double inAirFactor=inAirFlag.booleanValue()?(1.0-getOMLCoeff()):1.0;
-									CMLib.map().moveSpaceObject(this,facing(),Math.round((amount-1.0)*inAirFactor));
-									break;
+									switch(dir)
+									{
+									case STARBOARD: 
+										facing[0]-=amount; 
+										break;
+									case PORT: 
+										facing[0]+=amount; 
+										break;
+									case DORSEL: 
+										facing[1]-=amount; 
+										break;
+									case VENTRAL: 
+										facing[1]+=amount; 
+										break;
+									case FORWARD: 
+										break;
+									case AFT:
+									{
+										if((getIsDocked()!=null) && (amount > SpaceObject.ACCELLERATION_G))
+											unDock(true);
+										// this will move it, but will also update speed and direction -- all good!
+										final double inAirFactor=inAirFlag.booleanValue()?(1.0-getOMLCoeff()):1.0;
+										CMLib.map().moveSpaceObject(this,facing(),Math.round((amount-1.0)*inAirFactor));
+										break;
+									}
+									}
+									facing[0]=facing[0]%(2*Math.PI);
+									facing[1]=facing[1]%(2*Math.PI);
 								}
-								}
-								facing[0]=facing[0]%(2*Math.PI);
-								facing[1]=facing[1]%(2*Math.PI);
 							}
 						}
 					}
@@ -350,11 +353,14 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					.plus(TrackingLibrary.TrackingFlag.NOWATER);
 			final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
 			for(final Room R2 : rooms)
+			{
 				if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 				&&(R2 instanceof LocationRoom)
 				&&(R.getArea().inMyMetroArea(R2.getArea())))
 					docks.add((LocationRoom)R2);
+			}
 			if(docks.size()==0)
+			{
 				for(final Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
 				{
 					final Room R2=r.nextElement();
@@ -362,11 +368,16 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					&&(R2 instanceof LocationRoom))
 						docks.add((LocationRoom)R2);
 				}
+			}
 			if(docks.size()==0)
+			{
 				for(final Room R2 : rooms)
+				{
 					if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 					&&(R2 instanceof LocationRoom))
 						docks.add((LocationRoom)R2);
+				}
+			}
 		}
 		if(docks.size()==0)
 			return null;
@@ -395,12 +406,38 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		return new BoundedObject.BoundedCube(coordinates(),radius());
 	}
 
-	@Override public long powerCapacity(){return 0;}
-	@Override public void setPowerCapacity(long capacity){}
-	@Override public long powerRemaining(){return 0;}
-	@Override public int powerNeeds(){return 0;}
-	@Override public void setPowerRemaining(long remaining){}
-	@Override public void activate(boolean truefalse){}
+	@Override
+	public long powerCapacity()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setPowerCapacity(long capacity)
+	{
+	}
+
+	@Override
+	public long powerRemaining()
+	{
+		return 0;
+	}
+
+	@Override
+	public int powerNeeds()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setPowerRemaining(long remaining)
+	{
+	}
+
+	@Override
+	public void activate(boolean truefalse)
+	{
+	}
 	
 	protected void sendComputerMessage(final MOB mob, final CMMsg msg)
 	{
@@ -621,32 +658,58 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+hasALock();
-		case 1: return ""+hasADoor();
-		case 2: return ""+capacity();
-		case 3: return ""+containTypes();
-		case 4: return ""+openDelayTicks();
-		case 5: return ""+rideBasis();
-		case 6: return ""+riderCapacity();
-		case 7: return ""+powerCapacity();
-		case 8: return ""+activated();
-		case 9: return ""+powerRemaining();
-		case 10: return getManufacturerName();
-		case 11: return CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
-		case 12: return CMParms.toStringList(coordinates());
-		case 13: return ""+radius();
-		case 14: return ""+roll();
-		case 15: return CMParms.toStringList(direction());
-		case 16: return ""+speed();
-		case 17: return CMParms.toStringList(facing());
-		case 18: return getOwnerName();
-		case 19: return ""+getPrice();
-		case 20: return ""+defaultsClosed();
-		case 21: return ""+defaultsLocked();
-		case 22: return putString;
-		case 23: return mountString;
-		case 24: return dismountString;
-		case 25: return ""+doorName();
+		case 0:
+			return "" + hasALock();
+		case 1:
+			return "" + hasADoor();
+		case 2:
+			return "" + capacity();
+		case 3:
+			return "" + containTypes();
+		case 4:
+			return "" + openDelayTicks();
+		case 5:
+			return "" + rideBasis();
+		case 6:
+			return "" + riderCapacity();
+		case 7:
+			return "" + powerCapacity();
+		case 8:
+			return "" + activated();
+		case 9:
+			return "" + powerRemaining();
+		case 10:
+			return getManufacturerName();
+		case 11:
+			return CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
+		case 12:
+			return CMParms.toStringList(coordinates());
+		case 13:
+			return "" + radius();
+		case 14:
+			return "" + roll();
+		case 15:
+			return CMParms.toStringList(direction());
+		case 16:
+			return "" + speed();
+		case 17:
+			return CMParms.toStringList(facing());
+		case 18:
+			return getOwnerName();
+		case 19:
+			return "" + getPrice();
+		case 20:
+			return "" + defaultsClosed();
+		case 21:
+			return "" + defaultsLocked();
+		case 22:
+			return putString;
+		case 23:
+			return mountString;
+		case 24:
+			return dismountString;
+		case 25:
+			return "" + doorName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -659,32 +722,82 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),CMath.s_bool(val),false,CMath.s_bool(val)&&defaultsLocked()); break;
-		case 1: setDoorsNLocks(CMath.s_bool(val),isOpen(),CMath.s_bool(val)&&defaultsClosed(),hasALock(),isLocked(),defaultsLocked()); break;
-		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
-		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
-		case 5: break;
-		case 6: break;
-		case 7: setPowerCapacity(CMath.s_parseIntExpression(val)); break;
-		case 8: activate(CMath.s_bool(val)); break;
-		case 9: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 10: setManufacturerName(val); break;
-		case 11: setShipArea(val); break;
-		case 12: setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true))); break;
-		case 13: setRadius(CMath.s_long(val)); break;
-		case 14: setRoll(CMath.s_double(val)); break;
-		case 15: setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val,true))); break;
-		case 16: setSpeed(CMath.s_double(val)); break;
-		case 17: setFacing(CMParms.toDoubleArray(CMParms.parseCommas(val,true))); break;
-		case 18: setOwnerName(val); break;
-		case 19: setPrice(CMath.s_int(val)); break;
-		case 20: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
-		case 21: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
-		case 22: putString=val; break;
-		case 23: mountString=val; break;
-		case 24: dismountString=val; break;
-		case 25: doorName = val; break;
+			case 0:
+				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+				break;
+			case 1:
+				setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+				break;
+			case 2:
+				setCapacity(CMath.s_parseIntExpression(val));
+				break;
+			case 3:
+				setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+				break;
+			case 4:
+				setOpenDelayTicks(CMath.s_parseIntExpression(val));
+				break;
+			case 5:
+				break;
+			case 6:
+				break;
+			case 7:
+				setPowerCapacity(CMath.s_parseIntExpression(val));
+				break;
+			case 8:
+				activate(CMath.s_bool(val));
+				break;
+			case 9:
+				setPowerRemaining(CMath.s_parseLongExpression(val));
+				break;
+			case 10:
+				setManufacturerName(val);
+				break;
+			case 11:
+				setShipArea(val);
+				break;
+			case 12:
+				setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
+				break;
+			case 13:
+				setRadius(CMath.s_long(val));
+				break;
+			case 14:
+				setRoll(CMath.s_double(val));
+				break;
+			case 15:
+				setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+				break;
+			case 16:
+				setSpeed(CMath.s_double(val));
+				break;
+			case 17:
+				setFacing(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+				break;
+			case 18:
+				setOwnerName(val);
+				break;
+			case 19:
+				setPrice(CMath.s_int(val));
+				break;
+			case 20:
+				setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+				break;
+			case 21:
+				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+				break;
+			case 22:
+				putString = val;
+				break;
+			case 23:
+				mountString = val;
+				break;
+			case 24:
+				dismountString = val;
+				break;
+			case 25:
+				doorName = val;
+				break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

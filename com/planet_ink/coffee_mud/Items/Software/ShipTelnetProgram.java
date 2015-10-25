@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Items.Software;
+
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.TimeMs;
@@ -22,28 +23,32 @@ import java.io.*;
 import java.util.*;
 
 /*
-   Copyright 2013-2015 Bo Zimmerman
+ Copyright 2013-2015 Bo Zimmerman
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-	   http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 {
-	@Override public String ID(){	return "StdShipTelnetProgram";}
+	@Override
+	public String ID()
+	{
+		return "StdShipTelnetProgram";
+	}
 
-	protected Socket sock = null;
-	protected BufferedInputStream reader=null;
-	protected BufferedWriter writer=null;
-	protected volatile long nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
+	protected Socket				sock				= null;
+	protected BufferedInputStream	reader				= null;
+	protected BufferedWriter		writer				= null;
+	protected volatile long			nextPowerCycleTmr	= System.currentTimeMillis() + (8 * 1000);
 
 	public ShipTelnetProgram()
 	{
@@ -52,25 +57,33 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 		setDisplayText("a small disk sits here.");
 		setDescription("It appears to be a telnet program.");
 
-		material=RawMaterial.RESOURCE_STEEL;
-		baseGoldValue=1000;
+		material = RawMaterial.RESOURCE_STEEL;
+		baseGoldValue = 1000;
 		recoverPhyStats();
 	}
 
-	@Override public String getParentMenu() { return ""; }
+	@Override
+	public String getParentMenu()
+	{
+		return "";
+	}
 
-	@Override public String getInternalName() { return "TELNET";}
+	@Override
+	public String getInternalName()
+	{
+		return "TELNET";
+	}
 
 	@Override
 	public boolean isActivationString(String word)
 	{
-		return isCommandString(word,false);
+		return isCommandString(word, false);
 	}
 
 	@Override
 	public boolean isDeActivationString(String word)
 	{
-		return isCommandString(word,false);
+		return isCommandString(word, false);
 	}
 
 	@Override
@@ -83,10 +96,10 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	@Override
 	public boolean isCommandString(String word, boolean isActive)
 	{
-		if(!isActive)
+		if (!isActive)
 		{
-			word=word.toUpperCase();
-			return (word.startsWith("TELNET ")||word.equals("TELNET"));
+			word = word.toUpperCase();
+			return (word.startsWith("TELNET ") || word.equals("TELNET"));
 		}
 		else
 		{
@@ -102,35 +115,39 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 
 	protected void shutdown()
 	{
-		currentScreen="";
-		synchronized(this)
+		currentScreen = "";
+		synchronized (this)
 		{
 			try
 			{
 				try
 				{
-					if(sock!=null)
+					if (sock != null)
 					{
 						sock.shutdownInput();
 						sock.shutdownOutput();
 					}
-					if(reader!=null)
+					if (reader != null)
 						reader.close();
-					if(writer!=null)
+					if (writer != null)
 						writer.close();
 				}
-				catch(final Exception e) {}
+				catch (final Exception e)
+				{
+				}
 				finally
 				{
 					sock.close();
 				}
 			}
-			catch(final Exception e) {}
+			catch (final Exception e)
+			{
+			}
 			finally
 			{
-				sock=null;
-				reader=null;
-				writer=null;
+				sock = null;
+				reader = null;
+				writer = null;
 			}
 		}
 	}
@@ -138,8 +155,8 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	@Override
 	public boolean checkActivate(MOB mob, String message)
 	{
-		final List<String> parsed=CMParms.parse(message);
-		if(parsed.size()!=3)
+		final List<String> parsed = CMParms.parse(message);
+		if (parsed.size() != 3)
 		{
 			mob.tell(L("Incorrect usage, try: TELNET [HOST] [PORT]"));
 			return false;
@@ -147,20 +164,20 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 		try
 		{
 			shutdown();
-			synchronized(this)
+			synchronized (this)
 			{
-				sock=new Socket(parsed.get(1),CMath.s_int(parsed.get(2)));
+				sock = new Socket(parsed.get(1), CMath.s_int(parsed.get(2)));
 				sock.setSoTimeout(1);
-				reader=new BufferedInputStream(sock.getInputStream());
-				writer=new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+				reader = new BufferedInputStream(sock.getInputStream());
+				writer = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 			}
-			currentScreen="Connected to "+parsed.get(1)+" at port "+parsed.get(2);
+			currentScreen = "Connected to " + parsed.get(1) + " at port " + parsed.get(2);
 			fillWithData();
 			return true;
 		}
-		catch(final Exception e)
+		catch (final Exception e)
 		{
-			mob.tell(L("Telnet software failure: @x1",e.getMessage()));
+			mob.tell(L("Telnet software failure: @x1", e.getMessage()));
 			return false;
 		}
 	}
@@ -175,9 +192,9 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	@Override
 	public boolean checkTyping(MOB mob, String message)
 	{
-		synchronized(this)
+		synchronized (this)
 		{
-			if(sock!=null)
+			if (sock != null)
 				return true;
 		}
 		mob.tell(L("Software failure."));
@@ -189,7 +206,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	@Override
 	public boolean checkPowerCurrent(int value)
 	{
-		nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
+		nextPowerCycleTmr = System.currentTimeMillis() + (8 * 1000);
 		return true;
 	}
 
@@ -197,32 +214,32 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	{
 		try
 		{
-			synchronized(this)
+			synchronized (this)
 			{
-				if(reader!=null)
+				if (reader != null)
 				{
-					final ByteArrayOutputStream bout=new ByteArrayOutputStream();
-					while(reader.available()>0)
+					final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+					while (reader.available() > 0)
 					{
-						final int c=reader.read();
-						if(c==-1)
+						final int c = reader.read();
+						if (c == -1)
 							throw new IOException("Received EOF");
-						if(c!=0)
+						if (c != 0)
 							bout.write(c);
 					}
-					if(bout.size()>0)
-						super.addScreenMessage(new String(bout.toByteArray(),"UTF-8"));
+					if (bout.size() > 0)
+						super.addScreenMessage(new String(bout.toByteArray(), "UTF-8"));
 
 				}
 			}
 		}
-		catch(final java.net.SocketTimeoutException se)
+		catch (final java.net.SocketTimeoutException se)
 		{
 
 		}
-		catch(final Exception e)
+		catch (final Exception e)
 		{
-			super.addScreenMessage("*** Telnet disconnected: "+e.getMessage()+" ***");
+			super.addScreenMessage("*** Telnet disconnected: " + e.getMessage() + " ***");
 			super.forceNewMessageScan();
 			shutdown();
 			super.forceUpMenu();
@@ -233,18 +250,18 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	@Override
 	public void onTyping(MOB mob, String message)
 	{
-		synchronized(this)
+		synchronized (this)
 		{
-			if(writer!=null)
+			if (writer != null)
 			{
 				try
 				{
-					writer.write(message+"\n\r");
+					writer.write(message + "\n\r");
 					writer.flush();
 				}
 				catch (final IOException e)
 				{
-					super.addScreenMessage("*** Telnet disconnected: "+e.getMessage()+" ***");
+					super.addScreenMessage("*** Telnet disconnected: " + e.getMessage() + " ***");
 					super.forceNewMessageScan();
 					shutdown();
 					super.forceUpMenu();
@@ -257,15 +274,13 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	@Override
 	public void onPowerCurrent(int value)
 	{
-		if(value>0)
+		if (value > 0)
 			fillWithData();
-		if((container() instanceof Electronics.Computer)
-		&&(((Electronics.Computer)container()).getCurrentReaders().size()==0))
+		if ((container() instanceof Electronics.Computer) && (((Electronics.Computer) container()).getCurrentReaders().size() == 0))
 		{
 			this.shutdown();
 		}
-		else
-		if(System.currentTimeMillis()>nextPowerCycleTmr)
+		else if (System.currentTimeMillis() > nextPowerCycleTmr)
 		{
 			this.shutdown();
 		}

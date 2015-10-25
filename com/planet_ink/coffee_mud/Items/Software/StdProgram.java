@@ -58,20 +58,65 @@ public class StdProgram extends StdItem implements Software
 		recoverPhyStats();
 	}
 
-	@Override public void setCircuitKey(String key) {}
+	@Override
+	public void setCircuitKey(String key)
+	{
+	}
 
-	@Override public int techLevel() { return phyStats().ability();}
-	@Override public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
+	@Override
+	public int techLevel()
+	{
+		return phyStats().ability();
+	}
 
-	@Override public String getParentMenu() { return ""; }
-	@Override public String getInternalName() { return "";}
+	@Override
+	public void setTechLevel(int lvl)
+	{
+		basePhyStats.setAbility(lvl);
+		recoverPhyStats();
+	}
 
-	@Override public boolean isActivationString(String word) { return false; }
-	@Override public boolean isDeActivationString(String word) { return false; }
-	@Override public boolean isCommandString(String word, boolean isActive) { return false; }
-	@Override public TechType getTechType() { return TechType.PERSONAL_SOFTWARE; }
+	@Override
+	public String getParentMenu()
+	{
+		return "";
+	}
 
-	@Override public String getActivationMenu() { return ""; }
+	@Override
+	public String getInternalName()
+	{
+		return "";
+	}
+
+	@Override
+	public boolean isActivationString(String word)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isDeActivationString(String word)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isCommandString(String word, boolean isActive)
+	{
+		return false;
+	}
+
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.PERSONAL_SOFTWARE;
+	}
+
+	@Override
+	public String getActivationMenu()
+	{
+		return "";
+	}
 
 	@Override
 	public String getCurrentScreenDisplay()
@@ -201,7 +246,7 @@ public class StdProgram extends StdItem implements Software
 				onActivate(msg.source(),msg.targetMessage());
 				break;
 			case CMMsg.TYP_DEACTIVATE:
-				onDeactivate(msg.source(),L("Computer shutting down."));
+				onDeactivate(msg.source(),msg.targetMessage());
 				break;
 			case CMMsg.TYP_WRITE:
 				onTyping(msg.source(),msg.targetMessage());

@@ -55,47 +55,196 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 
 	protected Set<String> 				staleAirList	= new HashSet<String>();
 
-	@Override public String ID(){    return "StdSpaceShip";}
+	@Override
+	public String ID()
+	{
+		return "StdSpaceShip";
+	}
 
-	@Override public void initializeClass(){}
-	@Override public Room getIsDocked(){ return CMLib.map().getRoom(savedDock);}
-	@Override public void setClimateObj(Climate obj){climateObj=obj;}
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public Room getIsDocked()
+	{
+		return CMLib.map().getRoom(savedDock);
+	}
+
+	@Override
+	public void setClimateObj(Climate obj)
+	{
+		climateObj = obj;
+	}
+
 	@Override
 	public Climate getClimateObj()
 	{
-		if(climateObj==null)
+		if (climateObj == null)
 		{
-			climateObj=(Climate)CMClass.getCommon("DefaultClimate");
+			climateObj = (Climate) CMClass.getCommon("DefaultClimate");
 			climateObj.setCurrentWeatherType(Climate.WEATHER_CLEAR);
 			climateObj.setNextWeatherType(Climate.WEATHER_CLEAR);
 		}
 		return climateObj;
 	}
-	@Override public double getOMLCoeff() { return omlCoeff; }
-	@Override public void setOMLCoeff(double coeff) { omlCoeff=coeff; }
-	@Override public TimeClock getTimeObj(){return localClock;}
-	@Override public void setTimeObj(TimeClock obj){localClock=obj;}
-	@Override public int getAtmosphereCode() { return atmosphere; }
-	@Override public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
-	@Override public int getAtmosphere() { return atmosphere==ATMOSPHERE_INHERIT?RawMaterial.RESOURCE_AIR:atmosphere; }
-	@Override public long radius() { return radius; }
-	@Override public void setRadius(long radius) { this.radius=radius; }
-	@Override public long flags(){return 0;}
-	@Override public SpaceObject knownSource(){return spaceSource;}
-	@Override public void setKnownSource(SpaceObject O) { spaceSource=O; }
-	@Override public long[] coordinates()  { return (shipItem instanceof SpaceShip)?((SpaceShip)shipItem).coordinates():new long[3]; }
-	@Override public void setCoords(long[] coords) { if (shipItem instanceof SpaceShip) ((SpaceShip)shipItem).setCoords(coords); }
-	@Override public double[] direction() { return (shipItem instanceof SpaceShip)?((SpaceShip)shipItem).direction():new double[2]; }
-	@Override public double roll() { return (shipItem instanceof SpaceShip)?((SpaceShip)shipItem).roll():0; }
-	@Override public void setRoll(double dir) { if (shipItem instanceof SpaceShip) ((SpaceShip)shipItem).setRoll(dir); }
-	@Override public void setDirection(double[] dir) { if (shipItem instanceof SpaceShip) ((SpaceShip)shipItem).setDirection(dir); }
-	@Override public double[] facing() { return (shipItem instanceof SpaceShip)?((SpaceShip)shipItem).facing():new double[2]; }
-	@Override public void setFacing(double[] dir) { if (shipItem instanceof SpaceShip) ((SpaceShip)shipItem).setFacing(dir); }
-	@Override public double speed() { return (shipItem instanceof SpaceShip)?((SpaceShip)shipItem).speed():0; }
-	@Override public void setSpeed(double v) { if (shipItem instanceof SpaceShip) ((SpaceShip)shipItem).setSpeed(v); }
-	@Override public SpaceObject knownTarget() { return (shipItem instanceof SpaceShip)?((SpaceShip)shipItem).knownTarget():null; }
-	@Override public void setKnownTarget(SpaceObject O) { if (shipItem instanceof SpaceShip) ((SpaceShip)shipItem).setKnownTarget(O); }
-	@Override public Boolean getSetAirFlag(final Boolean setInAirFlag) { return (shipItem instanceof SpaceShip) ? ((SpaceShip)shipItem).getSetAirFlag(setInAirFlag) : Boolean.FALSE; }
+
+	@Override
+	public double getOMLCoeff()
+	{
+		return omlCoeff;
+	}
+
+	@Override
+	public void setOMLCoeff(double coeff)
+	{
+		omlCoeff = coeff;
+	}
+
+	@Override
+	public TimeClock getTimeObj()
+	{
+		return localClock;
+	}
+
+	@Override
+	public void setTimeObj(TimeClock obj)
+	{
+		localClock = obj;
+	}
+
+	@Override
+	public int getAtmosphereCode()
+	{
+		return atmosphere;
+	}
+
+	@Override
+	public void setAtmosphere(int resourceCode)
+	{
+		atmosphere = resourceCode;
+	}
+
+	@Override
+	public int getAtmosphere()
+	{
+		return atmosphere == ATMOSPHERE_INHERIT ? RawMaterial.RESOURCE_AIR : atmosphere;
+	}
+
+	@Override
+	public long radius()
+	{
+		return radius;
+	}
+
+	@Override
+	public void setRadius(long radius)
+	{
+		this.radius = radius;
+	}
+
+	@Override
+	public long flags()
+	{
+		return 0;
+	}
+
+	@Override
+	public SpaceObject knownSource()
+	{
+		return spaceSource;
+	}
+
+	@Override
+	public void setKnownSource(SpaceObject O)
+	{
+		spaceSource = O;
+	}
+
+	@Override
+	public long[] coordinates()
+	{
+		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).coordinates() : new long[3];
+	}
+
+	@Override
+	public void setCoords(long[] coords)
+	{
+		if (shipItem instanceof SpaceShip)
+			((SpaceShip) shipItem).setCoords(coords);
+	}
+
+	@Override
+	public double[] direction()
+	{
+		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).direction() : new double[2];
+	}
+
+	@Override
+	public double roll()
+	{
+		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).roll() : 0;
+	}
+
+	@Override
+	public void setRoll(double dir)
+	{
+		if (shipItem instanceof SpaceShip)
+			((SpaceShip) shipItem).setRoll(dir);
+	}
+
+	@Override
+	public void setDirection(double[] dir)
+	{
+		if (shipItem instanceof SpaceShip)
+			((SpaceShip) shipItem).setDirection(dir);
+	}
+
+	@Override
+	public double[] facing()
+	{
+		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).facing() : new double[2];
+	}
+
+	@Override
+	public void setFacing(double[] dir)
+	{
+		if (shipItem instanceof SpaceShip)
+			((SpaceShip) shipItem).setFacing(dir);
+	}
+
+	@Override
+	public double speed()
+	{
+		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).speed() : 0;
+	}
+
+	@Override
+	public void setSpeed(double v)
+	{
+		if (shipItem instanceof SpaceShip)
+			((SpaceShip) shipItem).setSpeed(v);
+	}
+
+	@Override
+	public SpaceObject knownTarget()
+	{
+		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).knownTarget() : null;
+	}
+
+	@Override
+	public void setKnownTarget(SpaceObject O)
+	{
+		if (shipItem instanceof SpaceShip)
+			((SpaceShip) shipItem).setKnownTarget(O);
+	}
+
+	@Override
+	public Boolean getSetAirFlag(final Boolean setInAirFlag)
+	{
+		return (shipItem instanceof SpaceShip) ? ((SpaceShip) shipItem).getSetAirFlag(setInAirFlag) : Boolean.FALSE;
+	}
 
 	@Override
 	public void setDockableItem(Item dockableItem)
