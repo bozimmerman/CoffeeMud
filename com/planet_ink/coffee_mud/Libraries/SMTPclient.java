@@ -413,17 +413,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		}
 		message=fixMsg.toString();
 
-		InetAddress local;
-		try
-		{
-		  local = InetAddress.getLocalHost();
-		}
-		catch (final UnknownHostException ioe)
-		{
-		  System.err.println("No local IP address found - is your network up?");
-		  throw ioe;
-		}
-		final String host = local.getHostName();
+		final String host = CMProps.getVar(CMProps.Str.MUDDOMAIN);
 		if((auth != null) && (auth.getAuthType().length()>0))
 			sendLine(debug,"EHLO " + host);
 		else
@@ -431,7 +421,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		rstr = reply.readLine();
 		if(debug)
 			Log.debugOut("SMTPclient",rstr);
-		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
+		if ((rstr==null)||(!rstr.startsWith("250"))) 
+			throw new ProtocolException(""+rstr);
 
 		if((auth != null) && (auth.getAuthType().length()>0))
 		{
@@ -452,23 +443,27 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			rstr = reply.readLine();
 			if(debug)
 				Log.debugOut("SMTPclient",rstr);
-			if ((rstr==null)||(!rstr.startsWith("235"))) throw new ProtocolException(""+rstr);
+			if ((rstr==null)||(!rstr.startsWith("235"))) 
+				throw new ProtocolException(""+rstr);
 		}
 		sendLine(debug,"MAIL FROM:<" + froaddress+">");
 		rstr = reply.readLine();
 		if(debug)
 			Log.debugOut("SMTPclient",rstr);
-		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
+		if ((rstr==null)||(!rstr.startsWith("250"))) 
+			throw new ProtocolException(""+rstr);
 		sendLine(debug,"RCPT TO:<" + to_address+">");
 		rstr = reply.readLine();
 		if(debug)
 			Log.debugOut("SMTPclient",rstr);
-		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
+		if ((rstr==null)||(!rstr.startsWith("250"))) 
+			throw new ProtocolException(""+rstr);
 		sendLine(debug,"DATA");
 		rstr = reply.readLine();
 		if(debug)
 			Log.debugOut("SMTPclient",rstr);
-		if ((rstr==null)||(!rstr.startsWith("354"))) throw new ProtocolException(""+rstr);
+		if ((rstr==null)||(!rstr.startsWith("354"))) 
+			throw new ProtocolException(""+rstr);
 		sendLine(debug,"MIME-Version: 1.0");
 		if((message.indexOf("<HTML>")>=0)&&(message.indexOf("</HTML>")>=0))
 			sendLine(debug,"Content-Type: text/html");
@@ -492,7 +487,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		rstr = reply.readLine();
 		if(debug)
 			Log.debugOut("SMTPclient",rstr);
-		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
+		if (!rstr.startsWith("250")) 
+			throw new ProtocolException(rstr);
 	}
 
 	/**
