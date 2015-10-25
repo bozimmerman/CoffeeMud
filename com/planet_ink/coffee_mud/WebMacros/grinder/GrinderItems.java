@@ -230,8 +230,11 @@ public class GrinderItems
 					CMLib.flags().setReadable(I,old.equals("on"));
 					break;
 				case READABLETEXT: // readable text
-					if(!(I instanceof Ammunition))
-						I.setReadableText(old);
+					if((!(I instanceof Ammunition))&&(!(I instanceof SpellHolder))&&(!(I instanceof Wand)))
+					{
+						if(httpReq.isUrlParameter(fieldName)) // must do this to keep special fields from being clobbered
+							I.setReadableText(old);
+					}
 					break;
 				case ISDRINK: // is drink
 					break;

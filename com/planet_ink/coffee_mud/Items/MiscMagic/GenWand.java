@@ -69,8 +69,18 @@ public class GenWand extends StdWand
 		return CMClass.getAbility(readableText);
 	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){ readableText=text;secretWord=StdWand.getWandWord(readableText);}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText = text;
+		secretWord = StdWand.getWandWord(readableText);
+	}
 
 	protected int maxUses=Integer.MAX_VALUE;
 	@Override public int maxUses(){return maxUses;}
