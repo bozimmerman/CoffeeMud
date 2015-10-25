@@ -43,8 +43,8 @@ public class GenGraviticSensor extends GenElecCompSensor
 	public GenGraviticSensor()
 	{
 		super();
-		setName("a gravitic ship sensor");
-		setDisplayText("a gravitic ship sensor sits here.");
+		setName("a gravitic sensor");
+		setDisplayText("a gravitic sensor sits here.");
 		setDescription("");
 	}
 	
