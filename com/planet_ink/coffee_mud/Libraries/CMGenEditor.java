@@ -434,14 +434,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public int promptMulti(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, DVector choices)
+	public int promptMulti(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices)
 	throws IOException
 	{
 		return CMath.s_int(promptMultiOrExtra(mob,""+oldVal,showNumber,showFlag,FieldDisp,choices));
 	}
 
 	@Override
-	public String promptMultiOrExtra(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, DVector choices)
+	public String promptMultiOrExtra(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -450,8 +450,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(CMath.s_int(oldVal) > 0)
 		{
 			for(int c=0;c<choices.size();c++)
-				if(CMath.bset(CMath.s_int(oldVal),CMath.s_int((String)choices.elementAt(c,1))))
-					oldVals.addElement((String)choices.elementAt(c,2));
+				if(CMath.bset(CMath.s_int(oldVal),CMath.s_int(choices.get(c).first)))
+					oldVals.addElement(choices.get(c).second);
 		}
 		else
 		if(choices.contains(oldVal.toUpperCase().trim()))
@@ -465,7 +465,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			thisVal=mob.session().prompt(L("Enter a new choice to add/remove (?):"),"").trim();
 			if(thisVal.equals("?"))
-				mob.tell(CMParms.toStringList(choices.getDimensionVector(2)));
+				mob.tell(CMParms.toStringList(choices.toArraySecond(new String[0])));
 			else
 			if(thisVal.length()==0)
 				newVal = oldVal;
@@ -484,10 +484,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				String foundChoice = null;
 				String foundVal = "";
 				for(int c=0;c<choices.size();c++)
-					if(((String)choices.elementAt(c,2)).equalsIgnoreCase(thisVal))
+					if(choices.get(c).second.equalsIgnoreCase(thisVal))
 					{
-						foundChoice = (String)choices.elementAt(c,2);
-						foundVal = choices.elementAt(c,1).toString();
+						foundChoice = choices.get(c).second;
+						foundVal = choices.get(c).first.toString();
 					}
 				if(foundChoice == null)
 				{
@@ -532,15 +532,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, DVector choices)
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return oldVal;
 		String oldShowVal = oldVal;
 		for(int c=0;c<choices.size();c++)
-			if(((String)choices.elementAt(c,1)).equalsIgnoreCase(oldVal))
-				oldShowVal = (String)choices.elementAt(c,2);
+			if(choices.get(c).first.equalsIgnoreCase(oldVal))
+				oldShowVal = choices.get(c).second;
 		mob.tell(showNumber+". "+FieldDisp+": '"+oldShowVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
@@ -549,7 +549,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			newVal=mob.session().prompt(L("Enter a new choice (? or NULL):"),"").trim();
 			if(newVal.equals("?"))
-				mob.tell(CMParms.toStringList(choices.getDimensionVector(2)));
+				mob.tell(CMParms.toStringList(choices.toArraySecond(new String[0])));
 			else
 			if(newVal.length()==0)
 				newVal = oldVal;
@@ -559,8 +559,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					newVal = "";
 				String foundChoice = null;
 				for(int c=0;c<choices.size();c++)
-					if(((String)choices.elementAt(c,2)).equalsIgnoreCase(newVal))
-						foundChoice = (String)choices.elementAt(c,1);
+					if(choices.get(c).second.equalsIgnoreCase(newVal))
+						foundChoice = choices.get(c).first;
 				if(foundChoice == null)
 					mob.tell(L("'@x1' is not an available choice.  Use ? for a list.",newVal));
 				else
@@ -7587,13 +7587,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected boolean genText(MOB mob, DVector set, String[] choices, String help, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected boolean genText(MOB mob, PairList<String,String> set, String[] choices, String help, int showNumber, int showFlag, String FieldDisp, String Field)
 	throws IOException
 	{
 		final int setDex=set.indexOf(Field);
 		if(((showFlag>0)&&(showFlag!=showNumber))||(setDex<0))
 			return true;
-		mob.tell(showNumber+". "+FieldDisp+": '"+((String)set.elementAt(setDex,2)+"'."));
+		mob.tell(showNumber+". "+FieldDisp+": '"+(set.get(setDex).second+"'."));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return true;
 		String newName=mob.session().prompt(L("Enter a new one\n\r:"),"");
@@ -7613,7 +7613,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			newName="";
 		if((choices==null)||(choices.length==0))
 		{
-			set.setElementAt(setDex,2,newName);
+			set.get(setDex).second = newName;
 			return true;
 		}
 		boolean found=false;
@@ -7629,14 +7629,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(help);
 			return genText(mob,set,choices,help,showNumber,showFlag,FieldDisp,Field);
 		}
-		set.setElementAt(setDex,2,newName);
+		set.get(setDex).second = newName;
 		return true;
 	}
 
 	protected boolean modifyComponent(MOB mob, AbilityComponent comp)
 	throws IOException
 	{
-		final DVector decoded=CMLib.ableMapper().getAbilityComponentDecodedDVector(comp);
+		final PairList<String,String> decoded=CMLib.ableMapper().getAbilityComponentCoded(comp);
 		if(mob.isMonster())
 			return true;
 		boolean ok=false;
@@ -7649,7 +7649,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			int showNumber=0;
 			genText(mob,decoded,(new String[]{"&&","||","X"}),choices+" &&, ||, X",++showNumber,showFlag,"Conjunction (X Deletes) (?)","ANDOR");
-			if(((String)decoded.elementAt(0,2)).equalsIgnoreCase("X"))
+			if(decoded.get(0).second.equalsIgnoreCase("X"))
 				return false;
 			genText(mob,decoded,(new String[]{"INVENTORY","HELD","WORN"}),choices+" INVENTORY, HELD, WORN",++showNumber,showFlag,"Component position (?)","DISPOSITION");
 			genText(mob,decoded,(new String[]{"KEPT","CONSUMED"}),choices+" KEPT, CONSUMED",++showNumber,showFlag,"Component fate (?)","FATE");
@@ -7665,7 +7665,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		CMLib.ableMapper().setAbilityComponentCodedFromDecodedDVector(decoded,comp);
+		CMLib.ableMapper().setAbilityComponentCodedFromCodedPairs(decoded,comp);
 		return true;
 	}
 
@@ -7678,7 +7678,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
-		final List<AbilityComponent> codedDV=CMLib.ableMapper().getAbilityComponentDVector(componentID);
+		final List<AbilityComponent> codedDV=CMLib.ableMapper().getAbilityComponents(componentID);
 		if(codedDV!=null)
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{

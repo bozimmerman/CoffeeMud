@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_web.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -46,10 +47,10 @@ public interface AbilityParameters extends CMLibrary
 	{
 		public String ID();
 		public int parmType();
-		public DVector createChoices(Enumeration<? extends Object> e);
-		public DVector createChoices(Vector<? extends Object> V);
-		public DVector createChoices(String[] S);
-		public DVector choices();
+		public PairList<String,String> createChoices(Enumeration<? extends Object> e);
+		public PairList<String,String> createChoices(Vector<? extends Object> V);
+		public PairList<String,String> createChoices(String[] S);
+		public PairList<String,String> choices();
 		public int appliesToClass(Object o);
 		public boolean confirmValue(String oldVal);
 		public String[] fakeUserInput(String oldVal);

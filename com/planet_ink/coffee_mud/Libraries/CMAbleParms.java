@@ -1633,9 +1633,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					@Override
 					public void createChoices() {
 						createBinaryChoices(Container.CONTAIN_DESCS);
-						choices().addElement("LID","Lid");
-						choices().addElement("LOCK","Lock");
-						choices().addElement("","");
+						choices().add("LID","Lid");
+						choices().add("LOCK","Lock");
+						choices().add("","");
 					}
 					@Override public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
 					@Override public String defaultValue(){ return "";}
@@ -2391,9 +2391,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					@Override
 					public void createChoices() {
 						createChoices(CMClass.races());
-						choices().addElement("","");
+						choices().add("","");
 						for(int x=0;x<choices().size();x++)
-							choices().setElementAt(x,1,((String)choices().elementAt(x,1)).toUpperCase());
+							choices().get(x).first = choices().get(x).first.toUpperCase();
 					}
 					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
@@ -2614,7 +2614,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					@Override
 					public void createChoices() {
 						createChoices(RawMaterial.CODES.NAMES());
-						choices().addElement("","");
+						choices().add("","");
 					}
 					@Override
 					public String convertFromItem(final ItemCraftor A, final Item I)
@@ -2672,7 +2672,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						final int x=oldVal.indexOf('/');
 						if(x<0)
 							return false;
-						if(!choices().getDimensionVector(1).contains(oldVal.substring(0,x)))
+						if(!CMStrings.contains(choices().toArrayFirst(new String[0]),oldVal.substring(0,x)))
 							return false;
 						if(!CMath.isInteger(oldVal.substring(x+1)))
 							return false;
@@ -2813,7 +2813,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	protected abstract class AbilityParmEditorImpl implements AbilityParmEditor
 	{
 		private final String ID;
-		private DVector choices = null;
+		private PairList<String,String> choices = null;
 		private final int fieldType;
 		private String prompt = null;
 		private String header = null;
@@ -2851,8 +2851,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			case PARMTYPE_NUMBER:
 				return CMath.isInteger(oldVal);
 			case PARMTYPE_CHOICES:
-				if(!choices.getDimensionVector(1).contains(oldVal))
-					return choices.getDimensionVector(1).contains(oldVal.toUpperCase().trim());
+				if(!CMStrings.contains(choices.toArrayFirst(new String[0]),oldVal))
+					return CMStrings.contains(choices.toArrayFirst(new String[0]),oldVal.toUpperCase().trim());
 				return true;
 			case PARMTYPE_MULTICHOICES:
 				return CMath.isInteger(oldVal)||choices().contains(oldVal);
@@ -2860,7 +2860,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return false;
 		}
 		@Override
-		@SuppressWarnings("unchecked")
 		public String[] fakeUserInput(String oldVal)
 		{
 			boolean emptyOK = false;
@@ -2881,29 +2880,29 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			case PARMTYPE_CHOICES:
 			{
 				if(oldVal.trim().length()==0) return new String[]{"NULL"};
-				final Vector<String> V = choices.getDimensionVector(1);
+				final Vector<String> V = new XVector<String>(choices.toArrayFirst(new String[0]));
 				for(int v=0;v<V.size();v++)
 					if(oldVal.equalsIgnoreCase(V.elementAt(v)))
-						return new String[]{(String)choices.elementAt(v,2)};
+						return new String[]{choices.get(v).second};
 				return new String[]{oldVal};
 			}
 			case PARMTYPE_MULTICHOICES:
 				if(oldVal.trim().length()==0) return new String[]{"NULL"};
 				if(!CMath.isInteger(oldVal))
 				{
-					final Vector<String> V = choices.getDimensionVector(1);
+					final Vector<String> V = new XVector<String>(choices.toArrayFirst(new String[0]));
 					for(int v=0;v<V.size();v++)
 						if(oldVal.equalsIgnoreCase(V.elementAt(v)))
-							return new String[]{(String)choices.elementAt(v,2),""};
+							return new String[]{choices.get(v).second,""};
 				}
 				else
 				{
 					final Vector<String> V = new Vector<String>();
 					for(int c=0;c<choices.size();c++)
-						if(CMath.bset(CMath.s_int(oldVal),CMath.s_int((String)choices.elementAt(c,1))))
+						if(CMath.bset(CMath.s_int(oldVal),CMath.s_int(choices.get(c).first)))
 						{
-							V.addElement((String)choices.elementAt(c,2));
-							V.addElement((String)choices.elementAt(c,2));
+							V.addElement(choices.get(c).second);
+							V.addElement(choices.get(c).second);
 						}
 					if(V.size()>0)
 					{
@@ -3026,9 +3025,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					final int bits = CMath.s_int(webValue);
 					for(int i=0;i<choices.size();i++)
 					{
-						final int bitVal =CMath.s_int((String)choices.elementAt(i,1));
+						final int bitVal =CMath.s_int(choices.get(i).first);
 						if((bitVal>0)&&(CMath.bset(bits,bitVal)))
-							choiceValues.addElement((String)choices.elementAt(i,1));
+							choiceValues.addElement(choices.get(i).first);
 					}
 				}
 			}
@@ -3046,12 +3045,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				str.append("\n\r<SELECT NAME="+fieldName+onChange+">");
 				for(int i=0;i<choices.size();i++)
 				{
-					final String option = ((String)choices.elementAt(i,1));
+					final String option = (choices.get(i).first);
 					str.append("<OPTION VALUE=\""+option+"\" ");
 					for(int c=0;c<choiceValues.size();c++)
 						if(option.equalsIgnoreCase(choiceValues.elementAt(c)))
 							str.append("SELECTED");
-					str.append(">"+((String)choices.elementAt(i,2)));
+					str.append(">"+(choices.get(i).second));
 				}
 				return str.toString()+"</SELECT>";
 			}
@@ -3061,42 +3060,42 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 		public abstract void createChoices();
 		@Override
-		public DVector createChoices(Enumeration<? extends Object> e)
+		public PairList<String,String> createChoices(Enumeration<? extends Object> e)
 		{
 			if(choices != null)
 				return choices;
-			choices = new DVector(2);
+			choices = new PairVector<String,String>();
 			Object o = null;
 			for(;e.hasMoreElements();)
 			{
 				o = e.nextElement();
 				if(o instanceof String)
-					choices.addElement(o,CMStrings.capitalizeAndLower((String)o));
+					choices.add((String)o,CMStrings.capitalizeAndLower((String)o));
 				else
 				if(o instanceof Ability)
-					choices.addElement(((Ability)o).ID(),((Ability)o).name());
+					choices.add(((Ability)o).ID(),((Ability)o).name());
 				else
 				if(o instanceof Race)
-					choices.addElement(((Race)o).ID(),((Race)o).name());
+					choices.add(((Race)o).ID(),((Race)o).name());
 				else
 				if(o instanceof Environmental)
-					choices.addElement(((Environmental)o).ID(),((Environmental)o).ID());
+					choices.add(((Environmental)o).ID(),((Environmental)o).ID());
 			}
 			return choices;
 		}
 		@Override
-		public DVector createChoices(Vector<? extends Object> V)
+		public PairList<String,String> createChoices(Vector<? extends Object> V)
 		{
 			return createChoices(V.elements());
 		}
 		@Override
-		public DVector createChoices(String[] S)
+		public PairList<String,String> createChoices(String[] S)
 		{
 			final XVector<String> X=new XVector<String>(S);
 			Collections.sort(X);
 			return createChoices(X.elements());
 		}
-		public DVector createBinaryChoices(String[] S) 
+		public PairList<String,String> createBinaryChoices(String[] S) 
 		{
 			if(choices != null)
 				return choices;
@@ -3104,21 +3103,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			for(int i=0;i<choices.size();i++)
 			{
 				if(i==0)
-					choices.setElementAt(i,1,Integer.toString(0));
+					choices.get(i).first =Integer.toString(0);
 				else
-					choices.setElementAt(i,1,Integer.toString(1<<(i-1)));
+					choices.get(i).first = Integer.toString(1<<(i-1));
 			}
 			return choices;
 		}
-		public DVector createNumberedChoices(String[] S) {
+		public PairList<String,String> createNumberedChoices(String[] S) {
 			if(choices != null)
 				return choices;
 			choices = createChoices(new XVector<String>(S).elements());
 			for(int i=0;i<choices.size();i++)
-				choices.setElementAt(i,1,Integer.toString(i));
+				choices.get(i).first = Integer.toString(i);
 			return choices;
 		}
-		@Override public DVector choices() { return choices; }
+		@Override public PairList<String,String> choices() { return choices; }
 		@Override public int appliesToClass(Object o) { return 0;}
 	}
 }

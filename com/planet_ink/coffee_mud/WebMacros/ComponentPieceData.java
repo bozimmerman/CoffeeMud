@@ -87,8 +87,8 @@ public class ComponentPieceData extends StdWebMacro
 					{
 						for(final RawMaterial.Material m : RawMaterial.Material.values())
 						{
-							str.append("<OPTION VALUE="+m.desc());
-							if(m.mask()==CMath.s_long(strType))
+							str.append("<OPTION VALUE="+m.mask());
+							if((m.mask()==CMath.s_long(strType))||(m.name().equals(strType)))
 								str.append(" SELECTED");
 							str.append(">"+m.noun());
 						}
@@ -99,7 +99,7 @@ public class ComponentPieceData extends StdWebMacro
 						for(int i=0;i<RawMaterial.CODES.TOTAL();i++)
 						{
 							str.append("<OPTION VALUE="+RawMaterial.CODES.GET(i));
-							if(RawMaterial.CODES.GET(i)==CMath.s_long(strType))
+							if((RawMaterial.CODES.GET(i)==CMath.s_long(strType))||(RawMaterial.CODES.NAME(i).equals(strType)))
 								str.append(" SELECTED");
 							str.append(">"+RawMaterial.CODES.NAME(i));
 						}
@@ -147,10 +147,13 @@ public class ComponentPieceData extends StdWebMacro
 				str.append(httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last));
 			if(parms.containsKey("TYPEEDIT"))
 			{
+				String currType = httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last);
+				if(currType == null)
+					currType = "STRING";
 				for(final AbilityComponent.CompType conn : AbilityComponent.CompType.values())
 				{
 					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
-					if(conn.toString().equalsIgnoreCase(httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last)))
+					if(conn.toString().equalsIgnoreCase(currType))
 						str.append("SELECTED ");
 					str.append(">"+CMStrings.capitalizeAndLower(conn.toString()));
 				}

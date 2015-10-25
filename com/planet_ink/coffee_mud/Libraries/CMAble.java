@@ -1942,42 +1942,42 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
-	public List<AbilityComponent> getAbilityComponentDVector(String AID)
+	public List<AbilityComponent> getAbilityComponents(String AID)
 	{
 		return getAbilityComponentMap().get(AID.toUpperCase().trim());
 	}
 
-	protected List<DVector> getAbilityComponentDecodedDVectors(String AID)
+	protected List<PairList<String,String>> getAbilityComponentCodedPairsList(String AID)
 	{
-		return getAbilityComponentDecodedDVectors(getAbilityComponentDVector(AID));
+		return getAbilityComponentCodedListLists(getAbilityComponents(AID));
 	}
 
 	@Override
-	public DVector getAbilityComponentDecodedDVector(AbilityComponent comp)
+	public PairList<String,String> getAbilityComponentCoded(AbilityComponent comp)
 	{
-		final DVector curr=new DVector(2);
+		final PairList<String,String> curr=new PairVector<String,String>();
 		String itemDesc=null;
-		curr.addElement("ANDOR",comp.getConnector()==AbilityComponent.CompConnector.AND?"&&":"||");
+		curr.add("ANDOR",comp.getConnector()==AbilityComponent.CompConnector.AND?"&&":"||");
 		if(comp.getLocation()==AbilityComponent.CompLocation.HELD)
-			curr.addElement("DISPOSITION","held");
+			curr.add("DISPOSITION","held");
 		else
 		if(comp.getLocation()==AbilityComponent.CompLocation.WORN)
-			curr.addElement("DISPOSITION","worn");
+			curr.add("DISPOSITION","worn");
 		else
 		if(comp.getLocation()==AbilityComponent.CompLocation.NEARBY)
-			curr.addElement("DISPOSITION","nearby");
+			curr.add("DISPOSITION","nearby");
 		else
 		if(comp.getLocation()==AbilityComponent.CompLocation.ONGROUND)
-			curr.addElement("DISPOSITION","onground");
+			curr.add("DISPOSITION","onground");
 		else
 		if(comp.getLocation()==AbilityComponent.CompLocation.INVENTORY)
-			curr.addElement("DISPOSITION","inventory");
+			curr.add("DISPOSITION","inventory");
 
 		if(comp.isConsumed())
-			curr.addElement("FATE","consumed");
+			curr.add("FATE","consumed");
 		else
-			curr.addElement("FATE","kept");
-		curr.addElement("AMOUNT",""+comp.getAmount());
+			curr.add("FATE","kept");
+		curr.add("AMOUNT",""+comp.getAmount());
 		if(comp.getType()==AbilityComponent.CompType.STRING)
 			itemDesc=comp.getStringType();
 		else
@@ -1986,17 +1986,17 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		else
 		if(comp.getType()==AbilityComponent.CompType.RESOURCE)
 			itemDesc=RawMaterial.CODES.NAME((int)comp.getLongType()).toUpperCase();
-		curr.addElement("COMPONENTID",itemDesc);
-		curr.addElement("MASK",comp.getMaskStr());
+		curr.add("COMPONENTID",itemDesc);
+		curr.add("MASK",comp.getMaskStr());
 		return curr;
 	}
 
 	@Override
-	public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, AbilityComponent comp)
+	public void setAbilityComponentCodedFromCodedPairs(PairList<String,String> decodedDV, AbilityComponent comp)
 	{
 		final String[] s=new String[6];
 		for(int i=0;i<6;i++)
-			s[i]=(String)decodedDV.elementAt(i,2);
+			s[i]=decodedDV.get(i).second;
 		if(s[0].equalsIgnoreCase("||"))
 			comp.setConnector(AbilityComponent.CompConnector.OR);
 		else
@@ -2033,13 +2033,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		comp.setMask(s[5]);
 	}
 
-	protected List<DVector> getAbilityComponentDecodedDVectors(List<AbilityComponent> req)
+	protected List<PairList<String,String>> getAbilityComponentCodedListLists(List<AbilityComponent> req)
 	{
 		if(req==null)
 			return null;
-		final List<DVector> V=new Vector<DVector>();
+		final List<PairList<String,String>> V=new Vector<PairList<String,String>>();
 		for(final AbilityComponent comp : req)
-			V.add(getAbilityComponentDecodedDVector(comp));
+			V.add(getAbilityComponentCoded(comp));
 		return V;
 	}
 
@@ -2059,30 +2059,30 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	@Override
 	public String getAbilityComponentCodedString(List<AbilityComponent> comps)
 	{
-		return getAbilityComponentCodedStringFromDVectors(getAbilityComponentDecodedDVectors(comps));
+		return getAbilityComponentCodedStringFromCodedList(getAbilityComponentCodedListLists(comps));
 	}
 
-	protected String getAbilityComponentCodedStringFromDVectors(List<DVector> comps)
+	protected String getAbilityComponentCodedStringFromCodedList(List<PairList<String,String>> comps)
 	{
 		final StringBuilder buf=new StringBuilder("");
-		DVector curr=null;
+		PairList<String,String> curr=null;
 		for(int c=0;c<comps.size();c++)
 		{
 			curr=comps.get(c);
 			if(curr==null)
 				continue;
 			if(c>0)
-				buf.append((String)curr.elementAt(0,2));
+				buf.append(curr.get(0).second);
 			buf.append("(");
-			buf.append((String)curr.elementAt(1,2));
+			buf.append(curr.get(1).second);
 			buf.append(":");
-			buf.append((String)curr.elementAt(2,2));
+			buf.append(curr.get(2).second);
 			buf.append(":");
-			buf.append((String)curr.elementAt(3,2));
+			buf.append(curr.get(3).second);
 			buf.append(":");
-			buf.append((String)curr.elementAt(4,2));
+			buf.append(curr.get(4).second);
 			buf.append(":");
-			buf.append((String)curr.elementAt(5,2));
+			buf.append(curr.get(5).second);
 			buf.append(")");
 		}
 		return buf.toString();
@@ -2092,8 +2092,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public String getAbilityComponentCodedString(String AID)
 	{
 		final StringBuffer buf=new StringBuffer("");
-		final List<DVector> comps=getAbilityComponentDecodedDVectors(AID);
-		buf.append(getAbilityComponentCodedStringFromDVectors(comps));
+		final List<PairList<String,String>> comps=getAbilityComponentCodedPairsList(AID);
+		buf.append(getAbilityComponentCodedStringFromCodedList(comps));
 		return AID+"="+buf.toString();
 	}
 
@@ -2144,7 +2144,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	@Override
 	public String getAbilityComponentDesc(MOB mob, String AID)
 	{
-		return getAbilityComponentDesc(mob,getAbilityComponentDVector(AID));
+		return getAbilityComponentDesc(mob,getAbilityComponents(AID));
 	}
 
 	@Override

@@ -22,4 +22,4 @@
 #   (the above requires an item with the characters "axe" in the name to do woodchopping)
 
 Thief_Autocaltrops=(inventory:consumed:10:metal:)||(inventory:consumed:10:mithril:)
-Bandaging=(inventory:consumed:1:CLOTH:)||(held:consumed:5:DUST:-race +elf)
+BANDAGING=(inventory:consumed:1:CLOTH:)||(held:consumed:5:DUST:-race +elf)

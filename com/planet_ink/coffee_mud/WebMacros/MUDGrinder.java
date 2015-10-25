@@ -410,7 +410,7 @@ public class MUDGrinder extends StdWebMacro
 				return "@break@";
 			if(last.length()==0)
 				return "@break@";
-			final List<AbilityComponent> list = CMLib.ableMapper().getAbilityComponentDVector(last);
+			final List<AbilityComponent> list = CMLib.ableMapper().getAbilityComponents(last);
 			if(list==null)
 				return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.COMPONENTS))
