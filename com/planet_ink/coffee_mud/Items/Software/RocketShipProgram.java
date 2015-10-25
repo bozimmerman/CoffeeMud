@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -47,6 +48,8 @@ public class RocketShipProgram extends GenShipProgram
 
 	protected volatile List<ShipEngine> engines=null;
 	protected volatile List<ShipComponent> sensors=null;
+	
+	protected final List<CMObject> sensorReport = new LinkedList<CMObject>();
 
 	public RocketShipProgram()
 	{
@@ -149,23 +152,36 @@ public class RocketShipProgram extends GenShipProgram
 				str.append(CMStrings.padRight(sensor.activated()?L("^gACTIVE"):L("^rINACTIVE"),9));
 				str.append("^H").append(CMStrings.padRight(sensor.Name(),24));
 				str.append("^.^N\n\r");
-				List<CMObject> found = new LinkedList<CMObject>();
-				final String code=Technical.TechCommand.SENSE.makeCommand(found);
-				final MOB mob=CMClass.getFactoryMOB();
-				final CMMsg msg=CMClass.getMsg(mob, sensor, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-				if(sensor.owner() instanceof Room)
+				final List<CMObject> localSensorReport;
+				synchronized(sensorReport)
 				{
-					if(((Room)sensor.owner()).okMessage(mob, msg))
-						((Room)sensor.owner()).send(mob, msg);
+					sensorReport.clear();
+					final String code=Technical.TechCommand.SENSE.makeCommand();
+					final MOB mob=CMClass.getFactoryMOB();
+					try
+					{
+						final CMMsg msg=CMClass.getMsg(mob, sensor, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+						if(sensor.owner() instanceof Room)
+						{
+							if(((Room)sensor.owner()).okMessage(mob, msg))
+								((Room)sensor.owner()).send(mob, msg);
+						}
+						else
+						if(sensor.okMessage(mob, msg))
+							sensor.executeMsg(mob, msg);
+					}
+					finally
+					{
+						mob.destroy();
+					}
+					localSensorReport = new SLinkedList<CMObject>(sensorReport.iterator());
+					sensorReport.clear();
 				}
-				else
-				if(sensor.okMessage(mob, msg))
-					sensor.executeMsg(mob, msg);
-				mob.destroy();
-				if(found.size()==0)
+				
+				if(localSensorReport.size()==0)
 					str.append("^R").append(L("No Report"));
 				else
-				for(CMObject o : found)
+				for(CMObject o : localSensorReport)
 				{
 					if(o instanceof SpaceObject)
 					{
@@ -246,7 +262,7 @@ public class RocketShipProgram extends GenShipProgram
 				for(final Electronics E : electronics)
 				{
 					if((E instanceof ShipComponent)&&(E.getTechType()==TechType.SHIP_SENSOR))
-						sensors.add((ShipComponent.ShipEngine)E);
+						sensors.add((ShipComponent)E);
 				}
 
 			}
@@ -476,6 +492,20 @@ public class RocketShipProgram extends GenShipProgram
 			case CMMsg.TYP_INSTALL:
 				engines=null;
 				break;
+			case CMMsg.TYP_ACTIVATE:
+			{
+				if(msg.isTarget(CMMsg.MASK_CNTRLMSG) && (msg.targetMessage()!=null))
+				{
+					final String[] parts=msg.targetMessage().split(" ");
+					final TechCommand command=TechCommand.findCommand(parts);
+					if((command == TechCommand.SENSE) && (msg.tool() != null)) // this is a sensor report
+					{
+						this.sensorReport.add(msg.tool());
+						return;
+					}
+				}
+				break;
+			}
 			}
 		}
 		super.executeMsg(host,msg);

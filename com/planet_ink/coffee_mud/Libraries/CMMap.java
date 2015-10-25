@@ -582,24 +582,23 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public List<SpaceObject> getSpaceObjectsWithin(final long[] centerCoordinates, long minDistance, long maxDistance)
+	public List<SpaceObject> getSpaceObjectsByCenterpointWithin(final long[] centerCoordinates, long minDistance, long maxDistance)
 	{
-		final List<SpaceObject> within=new Vector<SpaceObject>(1);
+		final List<SpaceObject> within=new ArrayList<SpaceObject>(1);
 		if((centerCoordinates==null)||(centerCoordinates.length!=3))
 			return within;
 		synchronized(space)
 		{
 			space.query(within, new BoundedObject.BoundedCube(centerCoordinates, maxDistance));
 		}
-		if(within.size()<=1)
+		if(within.size()<1)
 			return within;
-		for (final SpaceObject o : within)
+		for (final Iterator<SpaceObject> o=within.iterator();o.hasNext();)
 		{
-			final long dist=getDistanceFrom(o.coordinates(),centerCoordinates);
-			if((dist>=minDistance)&&(dist<=maxDistance))
-			{
-				within.add(o);
-			}
+			SpaceObject O=o.next();
+			final long dist=getDistanceFrom(O.coordinates(),centerCoordinates);
+			if((dist<minDistance)||(dist>maxDistance))
+				o.remove();
 		}
 		return within;
 	}
@@ -614,18 +613,18 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			space.query(within, new BoundedObject.BoundedCube(ofObj.coordinates(), maxDistance));
 		}
-		if(within.size()<=1)
-			return within;
 		for (final Iterator<SpaceObject> o=within.iterator();o.hasNext();)
 		{
 			SpaceObject O=o.next();
 			if(O!=ofObj)
 			{
-				final long dist=getDistanceFrom(O,ofObj);
-				if((dist>=minDistance)&&(dist>maxDistance))
+				final long dist=getDistanceFrom(O,ofObj) - O.radius() - ofObj.radius();
+				if((dist<minDistance)||(dist>maxDistance))
 					o.remove();
 			}
 		}
+		if(within.size()<=1)
+			return within;
 		Collections.sort(within, new Comparator<SpaceObject>()
 		{
 			@Override public int compare(SpaceObject o1, SpaceObject o2)

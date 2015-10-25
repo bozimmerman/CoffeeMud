@@ -54,10 +54,10 @@ public class StdElecCompSensor extends StdElecCompItem implements ShipComponent
 		}
 	};
 	
-	private static final Converter<SpaceObject, CMObject> directConverter = new Converter<SpaceObject, CMObject>()
+	private static final Converter<SpaceObject, Environmental> directConverter = new Converter<SpaceObject, Environmental>()
 	{
 		@Override
-		public CMObject convert(SpaceObject obj)
+		public Environmental convert(SpaceObject obj)
 		{
 			return obj;
 		}
@@ -88,19 +88,19 @@ public class StdElecCompSensor extends StdElecCompItem implements ShipComponent
 	 * @see com.planet_ink.coffee_mud.core.collections.Converter
 	 * @return  to convert from the actual sensed object, to a CMObject
 	 */
-	protected Converter<SpaceObject, CMObject> getSensedObjectConverter()
+	protected Converter<SpaceObject, Environmental> getSensedObjectConverter()
 	{
 		return directConverter;
 	}
 	
-	protected boolean doSensing(MOB mob, Software controlI, List<CMObject> response)
+	protected boolean doSensing(MOB mob, Software controlI)
 	{
 		final SpaceObject O=CMLib.map().getSpaceObject(this, true);
 		if((O!=null)&&(this.powerRemaining() > this.powerNeeds())) 
 		{
 			final long maxRange = Math.round(getSensorMaxRange() * this.getComputedEfficiency());
-			final List<SpaceObject> found = CMLib.map().getSpaceObjectsWithin(O.coordinates(), O.radius()+1, maxRange);
-			if(found.size() > 0)
+			final List<SpaceObject> found = CMLib.map().getSpaceObjectsWithin(O, O.radius()+1, maxRange);
+			if(found.size() > 1)
 			{
 				if(CMLib.dice().rollPercentage() > this.getFinalManufacturer().getReliabilityPct())
 				{
@@ -117,18 +117,29 @@ public class StdElecCompSensor extends StdElecCompItem implements ShipComponent
 			if(found.size() > 0)
 			{
 				final Filterer<SpaceObject> filter = this.getSensedObjectFilter();
-				final Converter<SpaceObject, CMObject> converter = this.getSensedObjectConverter();
+				final Converter<SpaceObject, Environmental> converter = this.getSensedObjectConverter();
 				for(final SpaceObject obj : found)
 				{
 					if(filter.passesFilter(obj))
-						response.add(converter.convert(obj));
+					{
+						Environmental sensedObject = converter.convert(obj);
+						final String code=Technical.TechCommand.SENSE.makeCommand();
+						final CMMsg msg=CMClass.getMsg(mob, controlI, sensedObject, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+						if(controlI.owner() instanceof Room)
+						{
+							if(((Room)controlI.owner()).okMessage(mob, msg))
+								((Room)controlI.owner()).send(mob, msg);
+						}
+						else
+						if(controlI.okMessage(mob, msg))
+							controlI.executeMsg(mob, msg);
+					}
 				}
 			}
 		}
 		return true;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -154,10 +165,12 @@ public class StdElecCompSensor extends StdElecCompItem implements ShipComponent
 					else
 					if(command == TechCommand.SENSE)
 					{
-						if(doSensing(mob, controlI, (List)parms[0]))
+						if(doSensing(mob, controlI))
 							this.activate(true);
+						
 					}
-					reportError(this, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
+					else
+						reportError(this, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
 				}
 				break;
 			}

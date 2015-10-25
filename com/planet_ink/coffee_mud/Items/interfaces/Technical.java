@@ -145,7 +145,7 @@ public interface Technical
 		THRUST(ShipEngine.ThrustPort.class, Integer.class),
 		ACCELLLERATION(ShipEngine.ThrustPort.class, Integer.class, Long.class),
 		COMPONENTFAILURE(Technical.TechType.class, String[].class),
-		SENSE(List.class),
+		SENSE(),
 		AIRREFRESH(Double.class, Integer.class), ;
 		private final Class<?>[]	parms;
 

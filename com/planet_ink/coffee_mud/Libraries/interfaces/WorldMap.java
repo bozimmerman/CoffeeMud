@@ -157,7 +157,7 @@ public interface WorldMap extends CMLibrary
 	public Enumeration<SpaceObject> getSpaceObjects();
 	public Enumeration<Entry<SpaceObject, List<WeakReference<TrackingVector<SpaceObject>>>>>  getSpaceObjectEntries();
 	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance);
-	public List<SpaceObject> getSpaceObjectsWithin(final long[] centerCoordinates, long minDistance, long maxDistance);
+	public List<SpaceObject> getSpaceObjectsByCenterpointWithin(final long[] centerCoordinates, long minDistance, long maxDistance);
 	public SpaceObject findSpaceObject(String s, boolean exactOnly);
 
 	/* ***********************************************************************/

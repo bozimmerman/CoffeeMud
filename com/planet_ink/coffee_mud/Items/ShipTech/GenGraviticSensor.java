@@ -55,22 +55,28 @@ public class GenGraviticSensor extends GenElecCompSensor
 	}
 
 	@Override
-	protected Converter<SpaceObject, CMObject> getSensedObjectConverter()
+	protected Converter<SpaceObject, Environmental> getSensedObjectConverter()
 	{
-		return new Converter<SpaceObject, CMObject>()
+		return new Converter<SpaceObject, Environmental>()
 		{
 			@Override
-			public CMObject convert(final SpaceObject obj)
+			public Environmental convert(final SpaceObject obj)
 			{
 				final SpaceObject spaceMe = CMLib.map().getSpaceObject(me, true);
 				final long distance = CMLib.map().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
 				final double[] direction = CMLib.map().getDirection(spaceMe, obj);
+				final String name = L("an object of mass @x1",CMath.abbreviateLong(obj.getMass()));
+				final String displayText = L("An object of mass @x1 at @x2, distance: @x3",
+											CMath.abbreviateLong(obj.getMass()),
+											CMLib.english().directionDescShort(direction),
+											CMLib.english().distanceDescShort(distance));
+				final String description = displayText + L(". The object has an approximate radius of @x1.", CMLib.english().sizeDescShort(obj.radius()));
 				return new SpaceObject() 
 				{
 					@Override
 					public String Name()
 					{
-						return L("an object of mass @x1",CMath.abbreviateLong(obj.getMass()));
+						return name;
 					}
 	
 					@Override
@@ -81,10 +87,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public String displayText()
 					{
-						return L("An object of mass @x1 at @x2, distance: @x3",
-								CMath.abbreviateLong(obj.getMass()),
-								CMLib.english().directionDescShort(direction),
-								CMLib.english().distanceDescShort(distance));
+						return displayText;
 					}
 	
 					@Override
@@ -95,7 +98,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public String description()
 					{
-						return displayText() + L(". The object has an approximate radius of @x1.", CMLib.english().sizeDescShort(obj.radius()));
+						return description;
 					}
 	
 					@Override

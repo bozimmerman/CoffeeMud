@@ -2228,7 +2228,7 @@ public class ListCmd extends StdCommand
 			}
 			if(withinDistance==null)
 				withinDistance=Long.valueOf(SpaceObject.Distance.SolarSystemRadius.dm+1000000);
-			final List<SpaceObject> objs2=CMLib.map().getSpaceObjectsWithin(centerPoint, 0, withinDistance.longValue());
+			final List<SpaceObject> objs2=CMLib.map().getSpaceObjectsByCenterpointWithin(centerPoint, 0, withinDistance.longValue());
 			for(final Iterator<SpaceObject> i=objs.iterator();i.hasNext();)
 			{
 				final SpaceObject obj=i.next();

@@ -288,7 +288,7 @@ public class Create extends StdCommand
 		if(newItem instanceof SpaceObject)
 		{
 			int i=21;
-			while((--i>0)&&(CMLib.map().getSpaceObjectsWithin(coordinates, 0, SpaceObject.Distance.SolarSystemDiameter.dm).size()>0))
+			while((--i>0)&&(CMLib.map().getSpaceObjectsByCenterpointWithin(coordinates, 0, SpaceObject.Distance.SolarSystemDiameter.dm).size()>0))
 			{
 				coordinates=new long[]{
 					CMLib.dice().getRandomizer().nextLong(),
