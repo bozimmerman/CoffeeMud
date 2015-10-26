@@ -149,6 +149,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 	public boolean consumeFuel(int amount)
 	{
 		final List<Item> fuel=getFuel();
+		boolean didSomething =false;
 		for(final Item I : fuel)
 		{
 			if((I instanceof RawMaterial)
@@ -156,12 +157,15 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 			&&CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)I).material()))
 			{
 				amount-=CMLib.materials().destroyResourcesAmt(fuel, amount, ((RawMaterial)I).material(),this);
+				didSomething=true;
 				if(amount<=0)
 					break;
 			}
 		}
 		if(amount>0)
 			engineShutdown();
+		if(didSomething)
+			clearFuelCache();
 		return amount<=0;
 	}
 
