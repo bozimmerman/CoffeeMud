@@ -132,8 +132,19 @@ public class Apprentice extends StdCharClass
 	}
 
 	@Override
-	public void endCharacter(MOB mob)
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
 	{
+		if((amount > 0)&&(!expless()))
+		{
+			if(mob.charStats().getCurrentClass() == this)
+			{
+				if(mob.getExperience() + amount > mob.getExpNextLevel())
+				{
+					amount = 0;
+				}
+			}
+		}
+		return amount;
 	}
 	
 	@Override
