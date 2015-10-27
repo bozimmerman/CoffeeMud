@@ -75,7 +75,7 @@ public class ObjectGuardian extends StdBehavior
 
 		if((mob!=monster)
 		&&(((msg.sourceMinor()==CMMsg.TYP_THROW)&&(monster.location()==CMLib.map().roomLocation(msg.target())))
-		||(msg.sourceMinor()==CMMsg.TYP_DROP)))
+			||(msg.sourceMinor()==CMMsg.TYP_DROP)))
 		{
 			final CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> won't let <T-NAME> drop that."));
 			if(monster.location().okMessage(monster,msgs))
@@ -86,7 +86,8 @@ public class ObjectGuardian extends StdBehavior
 		}
 		else
 		if((mob!=monster)
-		&&((msg.sourceMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
+		&&((msg.sourceMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
+		&&(!mob.isMine(msg.target())))
 		{
 			final CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> won't let <T-NAME> touch that."));
 			if(monster.location().okMessage(monster,msgs))
