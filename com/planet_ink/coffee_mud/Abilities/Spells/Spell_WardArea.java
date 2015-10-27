@@ -235,7 +235,10 @@ public class Spell_WardArea extends Spell implements Trap
 			{
 				shooter.invoke(newCaster,parameters,mob,true,0);
 			}
-			catch(final Exception e){Log.errOut("WARD/"+CMParms.combine(parameters,0),e);}
+			catch (final Exception e)
+			{
+				Log.errOut("WARD/" + CMParms.combine(parameters, 0), e);
+			}
 			newCaster.setLocation(null);
 			newCaster.destroy();
 		}
