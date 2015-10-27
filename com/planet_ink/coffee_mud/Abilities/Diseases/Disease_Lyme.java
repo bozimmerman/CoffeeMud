@@ -47,8 +47,8 @@ public class Disease_Lyme extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
 	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	@Override protected String DISEASE_DONE(){return "Your lyme disease goes away.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> get(s) lyme disease!^?";}
+	@Override protected String DISEASE_DONE(){return L("Your lyme disease goes away.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> get(s) lyme disease!^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
 	@Override public int difficultyLevel(){return 5;}

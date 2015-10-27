@@ -47,8 +47,8 @@ public class Disease_Tinnitus extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 100;}
 	@Override protected int DISEASE_DELAY(){return 1;}
-	@Override protected String DISEASE_DONE(){return "Your ears stop ringing.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> come(s) down with tinnitus.^?";}
+	@Override protected String DISEASE_DONE(){return L("Your ears stop ringing.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with tinnitus.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int abilityCode(){return 0;}
 	@Override public int difficultyLevel(){return 4;}

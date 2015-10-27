@@ -47,8 +47,8 @@ public class Disease_Amnesia extends Disease
 	@Override protected int DISEASE_TICKS(){return 34;}
 	@Override protected int DISEASE_DELAY(){return 5;}
 	protected int lastHP=Integer.MAX_VALUE;
-	@Override protected String DISEASE_DONE(){return "Your memory returns.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> feel(s) like <S-HE-SHE> <S-HAS-HAVE> forgotten something.^?";}
+	@Override protected String DISEASE_DONE(){return L("Your memory returns.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> feel(s) like <S-HE-SHE> <S-HAS-HAVE> forgotten something.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int abilityCode(){return 0;}
 

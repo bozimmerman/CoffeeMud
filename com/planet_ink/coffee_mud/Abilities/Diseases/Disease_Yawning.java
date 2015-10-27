@@ -47,9 +47,9 @@ public class Disease_Yawning extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 30;}
 	@Override protected int DISEASE_DELAY(){return 3;}
-	@Override protected String DISEASE_DONE(){return "You stop yawning.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> seem(s) really tired.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> stretch(es) and yawn(s).";}
+	@Override protected String DISEASE_DONE(){return L("You stop yawning.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> seem(s) really tired.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> stretch(es) and yawn(s).");}
 	@Override protected boolean DISEASE_REQSEE(){return true;}
 	@Override protected boolean DISEASE_MALICIOUS(){return false;}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}

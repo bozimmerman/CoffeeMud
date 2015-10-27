@@ -48,8 +48,8 @@ public class Disease_HeatExhaustion extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 300;}
 	@Override protected int DISEASE_DELAY(){return 3;}
-	@Override protected String DISEASE_DONE(){return "Your head stops spinning.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> overcome by the heat.^?";}
+	@Override protected String DISEASE_DONE(){return L("Your head stops spinning.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> <S-IS-ARE> overcome by the heat.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int abilityCode(){return 0;}
 	protected Room theRoom=null;

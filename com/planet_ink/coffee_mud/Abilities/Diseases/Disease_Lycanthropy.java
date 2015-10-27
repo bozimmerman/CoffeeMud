@@ -48,8 +48,8 @@ public class Disease_Lycanthropy extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 9999999;}
 	@Override protected int DISEASE_DELAY(){return 50;}
-	@Override protected String DISEASE_DONE(){return "Your lycanthropy is cured.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> feel(s) different.^?";}
+	@Override protected String DISEASE_DONE(){return L("Your lycanthropy is cured.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> feel(s) different.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	protected boolean DISEASE_STD(){return false;}
 	@Override public int difficultyLevel(){return 8;}

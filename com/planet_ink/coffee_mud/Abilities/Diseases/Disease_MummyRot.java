@@ -59,7 +59,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	@Override
 	public String getHealthConditionDesc()
 	{
-		return "Suffering the effects of "+name();
+		return L("Suffering the effects of @x1",name());
 	}
 
 	@Override

@@ -47,9 +47,9 @@ public class Disease_PoisonIvy extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 35;}
 	@Override protected int DISEASE_DELAY(){return 5;}
-	@Override protected String DISEASE_DONE(){return "Your poison ivy clears up.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> covered in poison ivy.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIM-HERSELF>.";}
+	@Override protected String DISEASE_DONE(){return L("Your poison ivy clears up.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> <S-IS-ARE> covered in poison ivy.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> scratch(es) <S-HIM-HERSELF>.");}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	@Override public int difficultyLevel(){return 3;}
 

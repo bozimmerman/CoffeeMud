@@ -48,9 +48,9 @@ public class Disease_Depression extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 900;}
 	@Override protected int DISEASE_DELAY(){return 20;}
-	@Override protected String DISEASE_DONE(){return "You feel better.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> seem(s) depressed.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> moap(s).";}
+	@Override protected String DISEASE_DONE(){return L("You feel better.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> seem(s) depressed.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> moap(s).");}
 	@Override public int abilityCode(){return 0;}
 
 	@Override

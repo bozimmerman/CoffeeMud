@@ -38,22 +38,66 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Chant_SensePlants extends Chant
 {
-	@Override public String ID() { return "Chant_SensePlants"; }
-	private final static String localizedName = CMLib.lang().L("Sense Plants");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Sensing Plants)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	Room lastRoom=null;
-	protected String word(){return "plants";}
-	private final int[] myMats={RawMaterial.MATERIAL_VEGETATION,
-						  RawMaterial.MATERIAL_WOODEN};
-	protected int[] okMaterials(){	return myMats;}
-	private final int[] myRscs={RawMaterial.RESOURCE_COTTON,
-						  RawMaterial.RESOURCE_HEMP};
-	protected int[] okResources(){	return myRscs;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SensePlants";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Sense Plants");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Sensing Plants)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	Room	lastRoom	= null;
+
+	protected String word()
+	{
+		return "plants";
+	}
+
+	private final int[]	myMats	= { RawMaterial.MATERIAL_VEGETATION, RawMaterial.MATERIAL_WOODEN };
+
+	protected int[] okMaterials()
+	{
+		return myMats;
+	}
+
+	private final int[]	myRscs	= { RawMaterial.RESOURCE_COTTON, RawMaterial.RESOURCE_HEMP };
+
+	protected int[] okResources()
+	{
+		return myRscs;
+	}
 
 	@Override
 	public void unInvoke()
@@ -67,18 +111,27 @@ public class Chant_SensePlants extends Chant
 		if(canBeUninvoked())
 			mob.tell(L("Your senses are no longer sensitive to @x1.",word()));
 	}
+
 	public String itsHere(MOB mob, Room R)
 	{
 		if(R==null)
 			return "";
 		if((okMaterials()!=null)&&(okMaterials().length>0))
+		{
 			for(int m=0;m<okMaterials().length;m++)
+			{
 				if((R.myResource()&RawMaterial.MATERIAL_MASK)==okMaterials()[m])
-					return "You sense "+RawMaterial.CODES.NAME(R.myResource()).toLowerCase()+" here.";
+					return L("You sense @x1 here.", RawMaterial.CODES.NAME(R.myResource()).toLowerCase());
+			}
+		}
 		if((okResources()!=null)&&(okResources().length>0))
+		{
 			for(int m=0;m<okResources().length;m++)
+			{
 				if(R.myResource()==okResources()[m])
-					return "You sense "+RawMaterial.CODES.NAME(R.myResource()).toLowerCase()+" here.";
+					return L("You sense @x1 here.",RawMaterial.CODES.NAME(R.myResource()).toLowerCase());
+			}
+		}
 		return "";
 	}
 

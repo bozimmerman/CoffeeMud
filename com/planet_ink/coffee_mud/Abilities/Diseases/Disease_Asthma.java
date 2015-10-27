@@ -48,9 +48,9 @@ public class Disease_Asthma extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 99999;}
 	@Override protected int DISEASE_DELAY(){return 5;}
-	@Override protected String DISEASE_DONE(){return "Your asthma clears up.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> start(s) wheezing.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> wheeze(s) loudly.";}
+	@Override protected String DISEASE_DONE(){return L("Your asthma clears up.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> start(s) wheezing.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> wheeze(s) loudly.");}
 	@Override public int abilityCode(){return 0;}
 
 	@Override

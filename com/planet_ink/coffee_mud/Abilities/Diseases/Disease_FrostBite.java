@@ -54,10 +54,10 @@ public class Disease_FrostBite extends Disease
 	protected String DISEASE_DONE()
 	{
 		if(tickDown>0)
-			return "Your frost bite heals.";
-		return "Your frost bite has cost you dearly.";
+			return L("Your frost bite heals.");
+		return L("Your frost bite has cost you dearly.");
 	}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> getting frost bite.^?";}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> <S-IS-ARE> getting frost bite.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int abilityCode(){return 0;}
 

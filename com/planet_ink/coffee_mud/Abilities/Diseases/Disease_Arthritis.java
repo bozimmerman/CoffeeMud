@@ -48,8 +48,8 @@ public class Disease_Arthritis extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 999999;}
 	@Override protected int DISEASE_DELAY(){return 50;}
-	@Override protected String DISEASE_DONE(){return "Your arthritis clears up.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-IS-ARE> in pain.^?";}
+	@Override protected String DISEASE_DONE(){return L("Your arthritis clears up.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-IS-ARE> in pain.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int abilityCode(){return 0;}
 

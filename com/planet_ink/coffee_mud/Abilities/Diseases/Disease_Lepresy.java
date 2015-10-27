@@ -48,8 +48,8 @@ public class Disease_Lepresy extends Disease
 	@Override protected int DISEASE_TICKS(){return 999999;}
 	@Override protected int DISEASE_DELAY(){return 10;}
 	protected int lastHP=Integer.MAX_VALUE;
-	@Override protected String DISEASE_DONE(){return "Your leprosy is cured!";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> look(s) pale!^?";}
+	@Override protected String DISEASE_DONE(){return L("Your leprosy is cured!");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> look(s) pale!^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 	@Override public int difficultyLevel(){return 4;}

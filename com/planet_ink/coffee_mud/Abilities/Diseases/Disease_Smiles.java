@@ -47,9 +47,9 @@ public class Disease_Smiles extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 10;}
 	@Override protected int DISEASE_DELAY(){return 2;}
-	@Override protected String DISEASE_DONE(){return "You feel more serious.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> start(s) smiling.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> smile(s) happily.";}
+	@Override protected String DISEASE_DONE(){return L("You feel more serious.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> start(s) smiling.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> smile(s) happily.");}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
 	@Override public int difficultyLevel(){return 2;}
 

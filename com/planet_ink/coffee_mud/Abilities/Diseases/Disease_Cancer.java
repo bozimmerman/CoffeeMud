@@ -47,9 +47,9 @@ public class Disease_Cancer extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 99999;}
 	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
-	@Override protected String DISEASE_DONE(){return "Your cancer is cured!";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sicker...";}
+	@Override protected String DISEASE_DONE(){return L("Your cancer is cured!");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> seem(s) ill.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> <S-IS-ARE> getting sicker...");}
 	@Override public int abilityCode(){return 0;}
 	protected int conDown=1;
 	private boolean norecurse=false;

@@ -47,9 +47,9 @@ public class Disease_Flu extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 30;}
 	@Override protected int DISEASE_DELAY(){return 5;}
-	@Override protected String DISEASE_DONE(){return "Your flu clears up.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a flu.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
+	@Override protected String DISEASE_DONE(){return L("Your flu clears up.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with a flu.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!");}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	@Override public int difficultyLevel(){return 1;}
 

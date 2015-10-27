@@ -48,8 +48,8 @@ public class Disease_Fever extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 15;}
 	@Override protected int DISEASE_DELAY(){return 3;}
-	@Override protected String DISEASE_DONE(){return "You head stops hurting.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a fever.^?";}
+	@Override protected String DISEASE_DONE(){return L("You head stops hurting.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with a fever.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int abilityCode(){return 0;}
 

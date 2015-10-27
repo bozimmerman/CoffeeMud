@@ -47,9 +47,9 @@ public class Disease_Giggles extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 15;}
 	@Override protected int DISEASE_DELAY(){return 3;}
-	@Override protected String DISEASE_DONE(){return "You feel more serious.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> start(s) giggling.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> giggle(s) and laugh(s) uncontrollably.";}
+	@Override protected String DISEASE_DONE(){return L("You feel more serious.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> start(s) giggling.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> giggle(s) and laugh(s) uncontrollably.");}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
 	@Override public int difficultyLevel(){return 3;}
 

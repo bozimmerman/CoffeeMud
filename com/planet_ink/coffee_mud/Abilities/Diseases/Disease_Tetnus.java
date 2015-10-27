@@ -47,9 +47,9 @@ public class Disease_Tetnus extends Disease
 
 	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*6;}
 	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	@Override protected String DISEASE_DONE(){return "Your tetnus clears up!";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting slower...";}
+	@Override protected String DISEASE_DONE(){return L("Your tetnus clears up!");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> seem(s) ill.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> <S-IS-ARE> getting slower...");}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 	@Override public int difficultyLevel(){return 0;}
 	protected int dexDown=1;

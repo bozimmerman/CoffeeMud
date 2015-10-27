@@ -47,9 +47,9 @@ public class Disease_Magepox extends Disease
 
 	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
 	@Override protected int DISEASE_DELAY(){return 15;}
-	@Override protected String DISEASE_DONE(){return "Your magepox clears up.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> come(s) down with the Magepox.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> watch(es) new mystical sores appear on <S-HIS-HER> body.";}
+	@Override protected String DISEASE_DONE(){return L("Your magepox clears up.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with the Magepox.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> watch(es) new mystical sores appear on <S-HIS-HER> body.");}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
 	@Override public int difficultyLevel(){return 9;}
 

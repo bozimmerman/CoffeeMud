@@ -48,9 +48,9 @@ public class Disease_Syphilis extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 99999;}
 	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
-	@Override protected String DISEASE_DONE(){return "Your syphilis clears up.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> get(s) some uncomfortable red sores on <S-HIS-HER> privates.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}
+	@Override protected String DISEASE_DONE(){return L("Your syphilis clears up.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> get(s) some uncomfortable red sores on <S-HIS-HER> privates.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> scratch(es) <S-HIS-HER> privates.");}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
 	@Override public int difficultyLevel(){return 0;}
 	protected int conDown=0;

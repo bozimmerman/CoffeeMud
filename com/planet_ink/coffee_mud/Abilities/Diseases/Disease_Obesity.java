@@ -64,8 +64,8 @@ public class Disease_Obesity extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 999999;}
 	@Override protected int DISEASE_DELAY(){return 50;}
-	@Override protected String DISEASE_DONE(){return "You've become fit and trim!";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> been gaining some weight.^?";}
+	@Override protected String DISEASE_DONE(){return L("You've become fit and trim!");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> been gaining some weight.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int abilityCode(){return 0;}
 	@Override public boolean canBeUninvoked(){canBeUninvoked=!(amountOfFat()>0);return super.canBeUninvoked();}

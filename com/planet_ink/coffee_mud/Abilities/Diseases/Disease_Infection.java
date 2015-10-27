@@ -49,9 +49,9 @@ public class Disease_Infection extends Disease
 	@Override protected int DISEASE_TICKS(){return 34;}
 	@Override protected int DISEASE_DELAY(){return 5;}
 	protected int lastHP=Integer.MAX_VALUE;
-	@Override protected String DISEASE_DONE(){return "Your infected wounds feel better.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> infected wounds.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> wince(s) in pain.";}
+	@Override protected String DISEASE_DONE(){return L("Your infected wounds feel better.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> infected wounds.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> wince(s) in pain.");}
 	@Override public int abilityCode(){return 0;}
 
 	@Override

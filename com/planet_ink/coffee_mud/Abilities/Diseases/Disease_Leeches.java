@@ -49,9 +49,9 @@ public class Disease_Leeches extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 35;}
 	@Override protected int DISEASE_DELAY(){return 7;}
-	@Override protected String DISEASE_DONE(){return "The leeches get full and fall off.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> <S-HAS-HAVE> leeches covering <S-HIM-HER>!^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> cringe(s) from the leeches.";}
+	@Override protected String DISEASE_DONE(){return L("The leeches get full and fall off.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> <S-HAS-HAVE> leeches covering <S-HIM-HER>!^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> cringe(s) from the leeches.");}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
 	@Override public int difficultyLevel(){return 0;}
 	protected int hp=Integer.MAX_VALUE;

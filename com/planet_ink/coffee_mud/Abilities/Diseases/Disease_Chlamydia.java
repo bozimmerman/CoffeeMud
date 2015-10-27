@@ -48,9 +48,9 @@ public class Disease_Chlamydia extends Disease
 
 	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*10;}
 	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	@Override protected String DISEASE_DONE(){return "Your chlamydia clears up.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> scratch(es) <S-HIS-HER> privates.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}
+	@Override protected String DISEASE_DONE(){return L("Your chlamydia clears up.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> scratch(es) <S-HIS-HER> privates.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> scratch(es) <S-HIS-HER> privates.");}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
 
 	@Override

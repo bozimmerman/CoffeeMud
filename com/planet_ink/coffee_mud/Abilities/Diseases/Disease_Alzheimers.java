@@ -49,8 +49,8 @@ public class Disease_Alzheimers extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 34;}
 	@Override protected int DISEASE_DELAY(){return 5;}
-	@Override protected String DISEASE_DONE(){return "Your alzheimers is cured!";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> feel(s) like <S-HE-SHE> <S-HAS-HAVE> forgotten something.^?";}
+	@Override protected String DISEASE_DONE(){return L("Your alzheimers is cured!");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> feel(s) like <S-HE-SHE> <S-HAS-HAVE> forgotten something.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int abilityCode(){return 0;}
 	protected int everyTick=0;

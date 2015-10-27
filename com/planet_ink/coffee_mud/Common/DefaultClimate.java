@@ -70,7 +70,7 @@ public class DefaultClimate implements Climate
 	public String nextWeatherDescription(Room room)
 	{
 		if(!CMLib.map().hasASky(room))
-			return "You can't tell much about the weather from here.";
+			return CMLib.lang().fullSessionTranslation("You can't tell much about the weather from here.");
 		return getNextWeatherDescription(room.getArea());
 	}
 	@Override

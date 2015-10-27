@@ -42,7 +42,7 @@ public class Prop_RestrictSkills extends Property
 	protected Set<Integer>	onlyRoomDomains		= new TreeSet<Integer>();
 	protected Set<Integer>	neverRoomDomains	= new TreeSet<Integer>();
 	protected Set<String>	skills		= new TreeSet<String>();
-	protected String		message				= "You can't do that here.";
+	protected String		message				= L("You can't do that here.");
 	
 	@Override
 	public void setMiscText(String newMiscText)

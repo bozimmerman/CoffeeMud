@@ -47,9 +47,9 @@ public class Disease_Malaria extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
 	@Override protected int DISEASE_DELAY(){return 5;}
-	@Override protected String DISEASE_DONE(){return "Your malaria clears up.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> come(s) down with malaria.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
+	@Override protected String DISEASE_DONE(){return L("Your malaria clears up.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> come(s) down with malaria.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> ache(s) and sneeze(s). AAAAAAAAAAAAAACHOOO!!!!");}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	@Override public int difficultyLevel(){return 1;}
 	private boolean norecurse=false;

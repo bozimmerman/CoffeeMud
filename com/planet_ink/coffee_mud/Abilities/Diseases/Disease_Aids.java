@@ -46,8 +46,8 @@ public class Disease_Aids extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 999999;}
 	@Override protected int DISEASE_DELAY(){return 50;}
-	@Override protected String DISEASE_DONE(){return "Your aids goes into remission.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-IS-ARE> sick.^?";}
+	@Override protected String DISEASE_DONE(){return L("Your aids goes into remission.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> look(s) like <S-HE-SHE> <S-IS-ARE> sick.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
 

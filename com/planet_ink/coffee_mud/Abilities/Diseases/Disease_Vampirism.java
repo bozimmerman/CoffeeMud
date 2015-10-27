@@ -47,8 +47,8 @@ public class Disease_Vampirism extends Disease
 
 	@Override protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*6;}
 	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
-	@Override protected String DISEASE_DONE(){return "Your vampirism lifts.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> seem(s) pale and cold.^?";}
+	@Override protected String DISEASE_DONE(){return L("Your vampirism lifts.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> seem(s) pale and cold.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 	@Override public int difficultyLevel(){return 9;}

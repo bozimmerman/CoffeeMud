@@ -48,9 +48,9 @@ public class Disease_Blahs extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 99999;}
 	@Override protected int DISEASE_DELAY(){return 20;}
-	@Override protected String DISEASE_DONE(){return "You feel a little better.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> get(s) the blahs.^?";}
-	@Override protected String DISEASE_AFFECT(){return "<S-NAME> sigh(s).";}
+	@Override protected String DISEASE_DONE(){return L("You feel a little better.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> get(s) the blahs.^?");}
+	@Override protected String DISEASE_AFFECT(){return L("<S-NAME> sigh(s).");}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 
 	@Override

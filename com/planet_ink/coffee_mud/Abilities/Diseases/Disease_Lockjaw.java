@@ -48,8 +48,8 @@ public class Disease_Lockjaw extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 9999999;}
 	@Override protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
-	@Override protected String DISEASE_DONE(){return "Your lockjaw is cured.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> get(s) lockjaw!^?";}
+	@Override protected String DISEASE_DONE(){return L("Your lockjaw is cured.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> get(s) lockjaw!^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 

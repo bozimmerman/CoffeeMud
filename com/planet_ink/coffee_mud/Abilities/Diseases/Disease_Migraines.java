@@ -47,8 +47,8 @@ public class Disease_Migraines extends Disease
 
 	@Override protected int DISEASE_TICKS(){return 99999;}
 	@Override protected int DISEASE_DELAY(){return 50;}
-	@Override protected String DISEASE_DONE(){return "Your headaches stop.";}
-	@Override protected String DISEASE_START(){return "^G<S-NAME> get(s) terrible headaches.^?";}
+	@Override protected String DISEASE_DONE(){return L("Your headaches stop.");}
+	@Override protected String DISEASE_START(){return L("^G<S-NAME> get(s) terrible headaches.^?");}
 	@Override protected String DISEASE_AFFECT(){return "";}
 	@Override public int abilityCode(){return 0;}
 	@Override public int difficultyLevel(){return 4;}
