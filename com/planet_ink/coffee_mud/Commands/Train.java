@@ -39,6 +39,13 @@ public class Train extends StdCommand
 	private final String[] access=I(new String[]{"TRAIN","TR","TRA"});
 	@Override public String[] getAccessWords(){return access;}
 
+	private static final int	TRAIN_HITPOINTS	= 101;
+	private static final int	TRAIN_MANA		= 102;
+	private static final int	TRAIN_MOVE		= 103;
+	private static final int	TRAIN_GAIN		= 104;
+	private static final int	TRAIN_PRACTICES	= 105;
+	private static final int	TRAIN_CCLASS	= 106;
+	
 	public static List<String> getAllPossibleThingsToTrainFor()
 	{
 		final List<String> V=new Vector<String>();
@@ -57,7 +64,6 @@ public class Train extends StdCommand
 		}
 		return V;
 	}
-
 
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -114,7 +120,7 @@ public class Train extends StdCommand
 					&&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))
 					&&(C.availabilityCode()!=0))
 					{
-						abilityCode=106;
+						abilityCode=TRAIN_CCLASS;
 						theClass=C;
 					}
 					break;
@@ -129,19 +135,19 @@ public class Train extends StdCommand
 		if(abilityCode<0)
 		{
 			if("HIT POINTS".startsWith(abilityName.toUpperCase()))
-				abilityCode=101;
+				abilityCode=TRAIN_HITPOINTS;
 			else
 			if("MANA".startsWith(abilityName.toUpperCase()))
-				abilityCode=102;
+				abilityCode=TRAIN_MANA;
 			else
 			if("MOVE".startsWith(abilityName.toUpperCase()))
-				abilityCode=103;
+				abilityCode=TRAIN_MOVE;
 			else
 			if("GAIN".startsWith(abilityName.toUpperCase()))
-				abilityCode=104;
+				abilityCode=TRAIN_GAIN;
 			else
 			if("PRACTICES".startsWith(abilityName.toUpperCase()))
-				abilityCode=105;
+				abilityCode=TRAIN_PRACTICES;
 			else
 			{
 				if(abilityCode<0)
@@ -152,7 +158,7 @@ public class Train extends StdCommand
 			}
 		}
 
-		if(abilityCode==104)
+		if(abilityCode==TRAIN_GAIN)
 		{
 			if(mob.getPractices()<7)
 			{
@@ -246,12 +252,14 @@ public class Train extends StdCommand
 			return false;
 		}
 
-		if(abilityCode==106)
+		if(abilityCode==TRAIN_CCLASS)
 		{
 			boolean canTeach=false;
 			for(int c=0;c<teacher.charStats().numClasses();c++)
+			{
 				if(teacher.charStats().getMyClass(c).baseClass().equals(mob.charStats().getCurrentClass().baseClass()))
 					canTeach=true;
+			}
 			if((!canTeach)
 			&&(teacher.charStats().getClassLevel(theClass)<1))
 			{
@@ -291,74 +299,83 @@ public class Train extends StdCommand
 		mob.location().send(mob,msg);
 		switch(abilityCode)
 		{
-		case 0:
+		case CharStats.STAT_STRENGTH:
 			mob.tell(L("You feel stronger!"));
 			mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
-		case 1:
+		case CharStats.STAT_INTELLIGENCE:
 			mob.tell(L("You feel smarter!"));
 			mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
-		case 2:
+		case CharStats.STAT_DEXTERITY:
 			mob.tell(L("You feel more dextrous!"));
 			mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
-		case 3:
+		case CharStats.STAT_CONSTITUTION:
 			mob.tell(L("You feel healthier!"));
 			mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
-		case 4:
+		case CharStats.STAT_CHARISMA:
 			mob.tell(L("You feel more charismatic!"));
 			mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
-		case 5:
+		case CharStats.STAT_WISDOM:
 			mob.tell(L("You feel wiser!"));
 			mob.baseCharStats().setStat(CharStats.STAT_WISDOM,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-trainsRequired);
 			break;
-		case 101:
+		case TRAIN_HITPOINTS:
 			mob.tell(L("You feel even healthier!"));
 			mob.baseState().setHitPoints(mob.baseState().getHitPoints()+10);
 			mob.maxState().setHitPoints(mob.maxState().getHitPoints()+10);
 			mob.curState().setHitPoints(mob.curState().getHitPoints()+10);
 			mob.setTrains(mob.getTrains()-1);
 			break;
-		case 102:
+		case TRAIN_MANA:
 			mob.tell(L("You feel more powerful!"));
 			mob.baseState().setMana(mob.baseState().getMana()+20);
 			mob.maxState().setMana(mob.maxState().getMana()+20);
 			mob.curState().setMana(mob.curState().getMana()+20);
 			mob.setTrains(mob.getTrains()-1);
 			break;
-		case 103:
+		case TRAIN_MOVE:
 			mob.tell(L("You feel more rested!"));
 			mob.baseState().setMovement(mob.baseState().getMovement()+20);
 			mob.maxState().setMovement(mob.maxState().getMovement()+20);
 			mob.curState().setMovement(mob.curState().getMovement()+20);
 			mob.setTrains(mob.getTrains()-1);
 			break;
-		case 104:
+		case TRAIN_GAIN:
 			mob.tell(L("You feel more trainable!"));
 			mob.setTrains(mob.getTrains()+1);
 			mob.setPractices(mob.getPractices()-7);
 			break;
-		case 105:
+		case TRAIN_PRACTICES:
 			mob.tell(L("You feel more educatable!"));
 			mob.setTrains(mob.getTrains()-1);
 			mob.setPractices(mob.getPractices()+5);
 			break;
-		case 106:
+		default:
+			if(CMParms.contains(CharStats.CODES.BASECODES(), abilityCode))
+			{
+				mob.tell(L("You feel more @x1!",CharStats.CODES.NAME(abilityCode)));
+				mob.baseCharStats().setStat(abilityCode,curStat+1);
+				mob.recoverCharStats();
+				mob.setTrains(mob.getTrains()-trainsRequired);
+			}
+			break;
+		case TRAIN_CCLASS:
 			if(theClass!=null)
 			{
 				int classLevel=mob.charStats().getClassLevel(theClass);
@@ -377,9 +394,22 @@ public class Train extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return false;}
+	
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 }

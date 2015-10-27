@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Minstrel extends StdCharClass
 {
 	@Override public String ID(){return "Minstrel";}
@@ -49,8 +48,8 @@ public class Minstrel extends StdCharClass
 	@Override protected String armorFailMessage(){return "<S-NAME> armor makes <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
-	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
+	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 	public Minstrel()
 	{
@@ -203,6 +202,7 @@ public class Minstrel extends StdCharClass
 	private final String[] raceRequiredList=new String[]{"All"};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
+	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9)),
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
@@ -230,7 +230,7 @@ public class Minstrel extends StdCharClass
 			final Weapon w=CMClass.getWeapon("Shortsword");
 			if(w == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

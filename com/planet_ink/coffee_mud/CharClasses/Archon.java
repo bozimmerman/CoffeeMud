@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Archon extends StdCharClass
 {
 	@Override public String ID(){return "Archon";}
@@ -118,7 +117,7 @@ public class Archon extends StdCharClass
 			final Weapon w=CMClass.getWeapon("ArchonStaff");
 			if(w == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

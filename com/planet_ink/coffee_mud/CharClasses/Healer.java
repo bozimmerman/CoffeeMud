@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Healer extends Cleric
 {
 	@Override public String ID(){return "Healer";}
@@ -42,8 +41,8 @@ public class Healer extends Cleric
 	@Override public String baseClass(){return "Cleric";}
 	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
-	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
+	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	@Override protected int alwaysFlunksThisQuality(){return 0;}
 	protected volatile long auraCheckTime = System.currentTimeMillis();
 
@@ -206,6 +205,7 @@ public class Healer extends Cleric
 	};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
+	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9))
@@ -245,7 +245,7 @@ public class Healer extends Cleric
 			final Weapon w=CMClass.getWeapon("SmallMace");
 			if(w == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Svirfneblin extends StdRace
 {
 	@Override public String ID(){	return "Svirfneblin"; }
@@ -88,7 +87,7 @@ public class Svirfneblin extends StdRace
 			final Armor s1=CMClass.getArmor("GenShirt");
 			if(s1 == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			s1.setName(L("a small patchy scale tunic"));
 			s1.setDisplayText(L("a small patchy scale tunic has been left here."));
 			s1.setDescription(L("This small tunic is made of bits and pieces of several scaley hides, it seems.  There are lots of tiny hidden compartments on it, and loops for hanging tools."));

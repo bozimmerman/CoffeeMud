@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Ranger extends StdCharClass
 {
 	@Override public String ID(){return "Ranger";}
@@ -206,6 +205,7 @@ public class Ranger extends StdCharClass
 	};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
+	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
@@ -281,7 +281,7 @@ public class Ranger extends StdCharClass
 			final Weapon w=CMClass.getWeapon("Shortsword");
 			if(w == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

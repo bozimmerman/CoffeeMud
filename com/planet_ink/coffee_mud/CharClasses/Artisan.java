@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Artisan extends StdCharClass
 {
 	@Override public String ID(){return "Artisan";}
@@ -48,8 +47,8 @@ public class Artisan extends StdCharClass
 	@Override public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
-	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
+	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
 
@@ -205,6 +204,7 @@ public class Artisan extends StdCharClass
 	private final String[] raceRequiredList=new String[]{"All"};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
+	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9))
@@ -219,7 +219,7 @@ public class Artisan extends StdCharClass
 			final Weapon w=CMClass.getWeapon("Dagger");
 			if(w == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

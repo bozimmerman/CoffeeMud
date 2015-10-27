@@ -52,8 +52,8 @@ public class Mage extends StdCharClass
 	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_MAGELIKE;}
-	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
+	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 	protected boolean grantSomeSpells(){return true;}
 
@@ -395,7 +395,7 @@ public class Mage extends StdCharClass
 			final Weapon w=CMClass.getWeapon("Quarterstaff");
 			if(w == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

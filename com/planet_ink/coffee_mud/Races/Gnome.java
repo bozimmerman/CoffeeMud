@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Gnome extends StdRace
 {
 	@Override public String ID(){	return "Gnome"; }
@@ -85,7 +84,7 @@ public class Gnome extends StdRace
 			final Armor s1=CMClass.getArmor("GenShirt");
 			if(s1 == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			s1.setName(L("a small patchy tunic"));
 			s1.setDisplayText(L("a small patchy tunic has been left here."));
 			s1.setDescription(L("This small tunic is made of bits and pieces of many other shirts, it seems.  There are lots of tiny hidden compartments on it, and loops for hanging tools."));

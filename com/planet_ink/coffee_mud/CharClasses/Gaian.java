@@ -312,7 +312,7 @@ public class Gaian extends StdCharClass
 			final Weapon w=CMClass.getWeapon("Quarterstaff");
 			if(w == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

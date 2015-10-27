@@ -48,11 +48,11 @@ public class Cleric extends StdCharClass
 	@Override public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ALLCLERIC;}
-	private final HashSet disallowedWeaponsG=buildDisallowedWeaponClasses(CharClass.WEAPONS_GOODCLERIC);
-	private final HashSet disallowedWeaponsN=buildDisallowedWeaponClasses(CharClass.WEAPONS_NEUTRALCLERIC);
-	private final HashSet disallowedWeaponsE=buildDisallowedWeaponClasses(CharClass.WEAPONS_EVILCLERIC);
+	private final Set<Integer> disallowedWeaponsG=buildDisallowedWeaponClasses(CharClass.WEAPONS_GOODCLERIC);
+	private final Set<Integer> disallowedWeaponsN=buildDisallowedWeaponClasses(CharClass.WEAPONS_NEUTRALCLERIC);
+	private final Set<Integer> disallowedWeaponsE=buildDisallowedWeaponClasses(CharClass.WEAPONS_EVILCLERIC);
 	@Override
-	protected HashSet disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
 	{
 		if(CMLib.flags().isEvil(mob))
 			return disallowedWeaponsE;
@@ -381,7 +381,7 @@ public class Cleric extends StdCharClass
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{
-		final Vector outfitChoices=new Vector();
+		final Vector outfitChoices=new Vector<Item>();
 		if(CMLib.flags().isEvil(myChar))
 		{
 			final Weapon w=CMClass.getWeapon("Shortsword");

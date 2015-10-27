@@ -48,8 +48,8 @@ public class Charlatan extends StdCharClass
 	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?6))"; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
-	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
+	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected volatile WeakReference<Ability> invokable=new WeakReference(null);
 
 	public Charlatan()
@@ -190,7 +190,7 @@ public class Charlatan extends StdCharClass
 			final Weapon w=CMClass.getWeapon("Shortsword");
 			if(w == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

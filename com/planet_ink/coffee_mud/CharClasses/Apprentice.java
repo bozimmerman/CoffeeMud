@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Apprentice extends StdCharClass
 {
 	@Override public String ID(){return "Apprentice";}
@@ -52,9 +51,9 @@ public class Apprentice extends StdCharClass
 	@Override public SubClassRule getSubClassRule() { return SubClassRule.ANY; }
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
-	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected HashSet currentApprentices=new HashSet();
+	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
+	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	protected Set<Tickable> currentApprentices=new HashSet<Tickable>();
 
 	@Override
 	public void initializeClass()
@@ -68,7 +67,11 @@ public class Apprentice extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ClanCrafting",false);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_HEROIC|Area.THEME_TECHNOLOGY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_HEROIC | Area.THEME_TECHNOLOGY;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -93,13 +96,26 @@ public class Apprentice extends StdCharClass
 		return super.tick(ticking,tickID);
 	}
 
-	private final String[] raceRequiredList=new String[]{"All"};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
-	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
-		new Pair<String,Integer>("Wisdom",Integer.valueOf(5)),
-		new Pair<String,Integer>("Intelligence",Integer.valueOf(5))
+	private final String[]	raceRequiredList	= new String[] { "All" };
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
+
+	@SuppressWarnings("unchecked")
+	private final Pair<String, Integer>[]	minimumStatRequirements	= new Pair[] 
+	{ 
+		new Pair<String, Integer>("Wisdom", Integer.valueOf(5)), 
+		new Pair<String, Integer>("Intelligence", Integer.valueOf(5)) 
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	@Override
 	public List<Item> outfit(MOB myChar)
@@ -109,11 +125,20 @@ public class Apprentice extends StdCharClass
 			final Weapon w=CMClass.getWeapon("Dagger");
 			if(w == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;
 	}
 
-	@Override public String getOtherBonusDesc(){return "Gains lots of xp for training to a new class.";}
+	@Override
+	public void endCharacter(MOB mob)
+	{
+	}
+	
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return "Gains lots of xp for training to a new class.";
+	}
 }

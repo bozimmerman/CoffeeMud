@@ -511,7 +511,7 @@ public class GenRace extends StdRace
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			for(int x=0;x<oV.size();x++)
 			{
 				final XMLLibrary.XMLpiece iblk=oV.get(x);
@@ -1012,7 +1012,7 @@ public class GenRace extends StdRace
 		case 32:
 		{
 			if(outfitChoices==null)
-				outfitChoices=new Vector();
+				outfitChoices=new Vector<Item>();
 			if(num>=outfitChoices.size())
 				outfitChoices.add(CMClass.getItem(val));
 			else

@@ -661,7 +661,7 @@ public class GenCharClass extends StdCharClass
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			for(int x=0;x<oV.size();x++)
 			{
 				final XMLLibrary.XMLpiece iblk=oV.get(x);
@@ -915,16 +915,16 @@ public class GenCharClass extends StdCharClass
 			break;
 		}
 		case 33: if(CMath.s_int(val)==0) outfitChoices=null; break;
-		case 34: {   if(outfitChoices==null) outfitChoices=new Vector();
+		case 34: {   if(outfitChoices==null) outfitChoices=new Vector<Item>();
 					 if(num>=outfitChoices.size())
 						outfitChoices.add(CMClass.getItem(val));
 					 else
-						outfitChoices.setElementAt(CMClass.getItem(val),num);
+						outfitChoices.set(num,CMClass.getItem(val));
 					 break;
 				 }
 		case 35: {   if((outfitChoices!=null)&&(num<outfitChoices.size()))
 					 {
-						final Item I=(Item)outfitChoices.elementAt(num);
+						final Item I=outfitChoices.get(num);
 						I.setMiscText(val);
 						I.recoverPhyStats();
 					 }

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Fighter extends StdCharClass
 {
 	@Override public String ID(){return "Fighter";}
@@ -159,6 +158,7 @@ public class Fighter extends StdCharClass
 	private final String[] raceRequiredList=new String[]{"All"};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
+	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9))
 	};
@@ -267,7 +267,7 @@ public class Fighter extends StdCharClass
 			final Weapon w=CMClass.getWeapon("Shortsword");
 			if(w == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(w);
 		}
 		return outfitChoices;

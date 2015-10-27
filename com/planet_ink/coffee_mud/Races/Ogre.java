@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Ogre extends Humanoid
 {
 	@Override public String ID(){	return "Ogre"; }
@@ -94,7 +93,7 @@ public class Ogre extends Humanoid
 			final Armor s1=CMClass.getArmor("GenShirt");
 			if(s1 == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			s1.setName(L("a large patchy tunic"));
 			s1.setDisplayText(L("a large patchy tunic is crumpled up here."));
 			s1.setDescription(L("It is a large ragged patchy nasty sweat-stained tunic."));

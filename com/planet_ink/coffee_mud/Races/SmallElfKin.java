@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class SmallElfKin extends StdRace
 {
 	@Override public String ID(){	return "SmallElfKin"; }
@@ -82,7 +81,7 @@ public class SmallElfKin extends StdRace
 			final Armor s1=CMClass.getArmor("GenShirt");
 			if(s1 == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			s1.setName(L("a delicate green shirt"));
 			s1.setDisplayText(L("a delicate green shirt sits gracefully here."));
 			s1.setDescription(L("Obviously fine craftmenship, with sharp folds and intricate designs."));

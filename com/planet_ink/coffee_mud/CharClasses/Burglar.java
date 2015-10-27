@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Burglar extends Thief
 {
 	@Override public String ID(){return "Burglar";}
@@ -40,8 +39,8 @@ public class Burglar extends Thief
 	@Override public String name() { return localizedStaticName; }
 	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_BURGLAR;}
-	private final HashSet disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
+	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 	public Burglar()
 	{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class HalfElf extends StdRace
 {
 	@Override public String ID(){	return "HalfElf"; }
@@ -81,7 +80,7 @@ public class HalfElf extends StdRace
 			final Armor s1=CMClass.getArmor("GenShirt");
 			if(s1 == null)
 				return new Vector<Item>();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(s1);
 			final Armor s2=CMClass.getArmor("GenShoes");
 			outfitChoices.add(s2);

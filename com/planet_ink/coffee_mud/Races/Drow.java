@@ -30,7 +30,6 @@ import com.planet_ink.coffee_mud.core.interfaces.Physical;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Drow extends Elf
 {
 	@Override public String ID(){    return "Drow"; }
@@ -109,7 +108,7 @@ public class Drow extends Elf
 			s1.setDisplayText(L("a delicate black shirt sits gracefully here."));
 			s1.setDescription(L("Obviously fine craftmenship, with sharp folds and intricate designs."));
 			s1.text();
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			outfitChoices.add(s1);
 
 			final Armor s2=CMClass.getArmor("GenShoes");
