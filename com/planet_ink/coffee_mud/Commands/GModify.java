@@ -646,9 +646,9 @@ public class GModify extends StdCommand
 		if(noisy)
 			gmodifydebugtell(mob,"Rooms to do: "+placesToDo.size());
 		if(noisy)
-			gmodifydebugtell(mob,"When fields="+CMParms.toStringList(onfields.getDimensionVector(1)));
+			gmodifydebugtell(mob,"When fields="+CMParms.toListString(onfields.getDimensionVector(1)));
 		if(noisy)
-			gmodifydebugtell(mob,"Change fields="+CMParms.toStringList(changes.getDimensionVector(1)));
+			gmodifydebugtell(mob,"Change fields="+CMParms.toListString(changes.getDimensionVector(1)));
 		Log.sysOut("GModify",mob.Name()+" "+whole+".");
 		for(int r=0;r<placesToDo.size();r++)
 		{

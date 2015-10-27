@@ -2575,7 +2575,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final int statCode = CharStats.CODES.findWhole(prompt, false);
 			if((statCode < 0)||(!validStats.contains(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)))))
 			{
-				session.println(L("^r'@x1' is an unknown code.  Try one of these: @x2^N",prompt,CMParms.toStringList(validStats)));
+				session.println(L("^r'@x1' is an unknown code.  Try one of these: @x2^N",prompt,CMParms.toListString(validStats)));
 				loginObj.state=LoginState.CHARCR_STATSTART;
 				return null;
 			}

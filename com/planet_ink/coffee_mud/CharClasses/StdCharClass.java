@@ -684,7 +684,7 @@ public class StdCharClass implements CharClass
 		CR.setStat("MANAFORMULA",""+getManaFormula());
 		CR.setStat("LVLPRAC",""+getBonusPracLevel());
 		CR.setStat("MOVEMENTFORMULA",""+getMovementFormula());
-		CR.setStat("RACQUAL", CMParms.toStringList(getRequiredRaceList()));
+		CR.setStat("RACQUAL", CMParms.toListString(getRequiredRaceList()));
 		CR.setStat("LVLATT",""+getBonusAttackLevel());
 		CR.setStat("ATTATT",""+getAttackAttribute());
 		CR.setStat("FSTTRAN",""+getTrainsFirstLevel());
@@ -795,7 +795,7 @@ public class StdCharClass implements CharClass
 		else
 		{
 			CR.setStat("NUMWEAP",""+H.size());
-			CR.setStat("GETWEAP",""+CMParms.toStringList(H));
+			CR.setStat("GETWEAP",""+CMParms.toListString(H));
 		}
 
 		List<Item> outfit=outfit(null);
@@ -871,7 +871,7 @@ public class StdCharClass implements CharClass
 		else
 		{
 			CR.setStat("NUMWMAT",""+H.size());
-			CR.setStat("GETWMAT",""+CMParms.toStringList(H));
+			CR.setStat("GETWMAT",""+CMParms.toListString(H));
 		}
 		H=disallowedWeaponClasses(fakeMOB);
 		if((H==null)||(H.size()==0))
@@ -879,7 +879,7 @@ public class StdCharClass implements CharClass
 		else
 		{
 			CR.setStat("NUMWEP",""+H.size());
-			CR.setStat("GETWEP",""+CMParms.toStringList(H));
+			CR.setStat("GETWEP",""+CMParms.toListString(H));
 		}
 
 		CR.setStat("ARMORMINOR",""+requiredArmorSourceMinor());

@@ -1392,7 +1392,7 @@ public class ListCmd extends StdCommand
 			line.append("[");
 			line.append(CMStrings.padRight(U.getAccountName(),COL_LEN1)+" ");
 			line.append(CMStrings.padRight(CMLib.time().date2String(U.getLastDateTime()),COL_LEN2)+" ");
-			String players = CMParms.toStringList(U.getPlayers());
+			String players = CMParms.toListString(U.getPlayers());
 			final Vector<String> pListsV = new Vector<String>();
 			while(players.length()>0)
 			{
@@ -1456,7 +1456,7 @@ public class ListCmd extends StdCommand
 				||(CMLib.english().containsString(R.racialCategory(), restRest)))
 					raceNames.add(R.ID());
 			}
-			lines.append(CMParms.toStringList(raceNames));
+			lines.append(CMParms.toListString(raceNames));
 		}
 		else
 		for(final Enumeration e=these;e.hasMoreElements();)
@@ -1492,7 +1492,7 @@ public class ListCmd extends StdCommand
 			final Vector classNames=new Vector();
 			for(final Enumeration e=these;e.hasMoreElements();)
 				classNames.add(((CharClass)e.nextElement()).ID());
-			lines.append(CMParms.toStringList(classNames));
+			lines.append(CMParms.toListString(classNames));
 		}
 		else
 		for(final Enumeration e=these;e.hasMoreElements();)
@@ -1531,7 +1531,7 @@ public class ListCmd extends StdCommand
 			final String[] sortedC=new String[sortedB.length];
 			for(int i=0;i<sortedB.length;i++)
 				sortedC[i]=(String)sortedB[i];
-			lines.append(CMParms.toStringList(sortedC));
+			lines.append(CMParms.toListString(sortedC));
 		} else
 			for (final Object element : sortedB)
 			{
@@ -1651,7 +1651,7 @@ public class ListCmd extends StdCommand
 					finalCol=lastWord;
 				}
 			if(!finalCol.equals(lastWord))
-				return new StringBuilder("Invalid column: '"+lastWord+"'.  Valid cols are: "+CMParms.toStringList(validCols));
+				return new StringBuilder("Invalid column: '"+lastWord+"'.  Valid cols are: "+CMParms.toListString(validCols));
 			else
 			{
 				whichGroupStr=whichGroupStr.substring(0,x).trim();
@@ -1817,33 +1817,33 @@ public class ListCmd extends StdCommand
 			final StringBuilder str=new StringBuilder("^x"+key+"^?\n\r");
 			final Object o=Resources.getResource(key);
 			if(o instanceof List)
-				str.append(CMParms.toStringList((List)o));
+				str.append(CMParms.toListString((List)o));
 			else
 			if(o instanceof Map)
-				str.append(CMParms.toKeyValueSlashList((Map)o));
+				str.append(CMParms.toKeyValueSlashListString((Map)o));
 			else
 			if(o instanceof Set)
-				str.append(CMParms.toStringList((Set)o));
+				str.append(CMParms.toListString((Set)o));
 			else
 			if(o instanceof String[])
-				str.append(CMParms.toStringList((String[])o));
+				str.append(CMParms.toListString((String[])o));
 			else
 			if(o instanceof boolean[])
-				str.append(CMParms.toStringList((boolean[])o));
+				str.append(CMParms.toListString((boolean[])o));
 			if(o instanceof byte[])
-				str.append(CMParms.toStringList((byte[])o));
+				str.append(CMParms.toListString((byte[])o));
 			else
 			if(o instanceof char[])
-				str.append(CMParms.toStringList((char[])o));
+				str.append(CMParms.toListString((char[])o));
 			else
 			if(o instanceof double[])
-				str.append(CMParms.toStringList((double[])o));
+				str.append(CMParms.toListString((double[])o));
 			else
 			if(o instanceof int[])
-				str.append(CMParms.toStringList((int[])o));
+				str.append(CMParms.toListString((int[])o));
 			else
 			if(o instanceof long[])
-				str.append(CMParms.toStringList((long[])o));
+				str.append(CMParms.toListString((long[])o));
 			else
 			if(o!=null)
 				str.append(o.toString());
@@ -1949,7 +1949,7 @@ public class ListCmd extends StdCommand
 	}
 	public String listMaterials()
 	{
-		return CMParms.toStringList(RawMaterial.Material.values());
+		return CMParms.toListString(RawMaterial.Material.values());
 	}
 	
 	private enum SpaceFilterCode {SPACE, BODIES, MOONS, STARS, SHIPS}
@@ -2151,7 +2151,7 @@ public class ListCmd extends StdCommand
 						end++;
 					if(end==i)
 					{
-						return L("\n\rBad ORDERBY parm: '@x1' ORDERBY -- no column specified.  Try @x2.\n\r",commands.get(i).toString(),CMParms.toStringList(sortcols));
+						return L("\n\rBad ORDERBY parm: '@x1' ORDERBY -- no column specified.  Try @x2.\n\r",commands.get(i).toString(),CMParms.toListString(sortcols));
 					}
 					for(int x=end-1;x>=i;x--)
 					{
@@ -2212,7 +2212,7 @@ public class ListCmd extends StdCommand
 				}
 				else
 				{
-					return L("\n\rBad ORDERBY parm: '@x1' ORDERBY -- no column specified.  Try @x2.\n\r","",CMParms.toStringList(sortcols));
+					return L("\n\rBad ORDERBY parm: '@x1' ORDERBY -- no column specified.  Try @x2.\n\r","",CMParms.toListString(sortcols));
 				}
 			}
 		}
@@ -2282,7 +2282,7 @@ public class ListCmd extends StdCommand
 		final List<String> parms=CMParms.parse(rest.toUpperCase());
 		final boolean shortList=parms.contains("SHORT");
 		if(shortList)
-			return CMParms.toStringList(RawMaterial.CODES.NAMES());
+			return CMParms.toListString(RawMaterial.CODES.NAMES());
 		final StringBuilder str=new StringBuilder("");
 		//for(String S : RawMaterial.CODES.NAMES())
 		//	str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(S.toLowerCase()),16));
@@ -2858,7 +2858,7 @@ public class ListCmd extends StdCommand
 			final List<String[]> rows=CMLib.database().DBRawQuery(rest.replace('`','\''));
 			final StringBuilder report=new StringBuilder("");
 			for(final String[] row : rows)
-				report.append(CMParms.toStringList(row)).append("\n\r");
+				report.append(CMParms.toListString(row)).append("\n\r");
 			if(mob.session()==null)
 				return;
 			mob.session().rawPrint(report.toString());
@@ -2993,7 +2993,7 @@ public class ListCmd extends StdCommand
 			final BoardableShip S=s.nextElement();
 			str.append(CMStrings.padRight(S.Name(), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
 			if((S instanceof SpaceObject)&&(((SpaceShip)S).getIsDocked()==null))
-				str.append(CMStrings.padRight(CMParms.toStringList(((SpaceObject)S).coordinates()), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
+				str.append(CMStrings.padRight(CMParms.toListString(((SpaceObject)S).coordinates()), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
 			else
 				str.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(S)), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
 			if(S instanceof SpaceObject)
@@ -3042,7 +3042,7 @@ public class ListCmd extends StdCommand
 					final Area.Stats as=(Area.Stats)CMath.s_valueOf(Area.Stats.class, stat);
 					if((ls==null)&&(as==null))
 					{
-						mob.tell(L("'@x1' is not recognized.  Try one of these: @x2, @x3",stat,CMParms.toStringList(ListAreaStats.values()),CMParms.toStringList(Area.Stats.values())));
+						mob.tell(L("'@x1' is not recognized.  Try one of these: @x2, @x3",stat,CMParms.toListString(ListAreaStats.values()),CMParms.toListString(Area.Stats.values())));
 						return;
 					}
 					addTos.add(stat);
@@ -3050,7 +3050,7 @@ public class ListCmd extends StdCommand
 				}
 				else
 				{
-					mob.tell(L("'@x1' is not recognized.  Try 'columns' or 'sortby' followed by one or more of these: @x2, @x3",commands.get(0).toString(),CMParms.toStringList(ListAreaStats.values()),CMParms.toStringList(Area.Stats.values())));
+					mob.tell(L("'@x1' is not recognized.  Try 'columns' or 'sortby' followed by one or more of these: @x2, @x3",commands.get(0).toString(),CMParms.toListString(ListAreaStats.values()),CMParms.toListString(Area.Stats.values())));
 					return;
 				}
 			}
@@ -3362,8 +3362,8 @@ public class ListCmd extends StdCommand
 		case ACCOUNTS: listAccounts(mob.session(),mob,commands); break;
 		case GOVERNMENTS: s.wraplessPrintln(listClanGovernments(mob.session(),commands)); break;
 		case CLANS: s.wraplessPrintln(listClans(mob.session(),commands)); break;
-		case DEBUGFLAG: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DbgFlag>(CMSecurity.getDebugEnum()))+"\n\r"); break;
-		case DISABLEFLAG: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
+		case DEBUGFLAG: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toListString(new XVector<CMSecurity.DbgFlag>(CMSecurity.getDebugEnum()))+"\n\r"); break;
+		case DISABLEFLAG: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toListString(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
 		case ALLQUALIFYS: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
 		case NEWS: listNews(mob,commands); break;
 		case AREAS: listAreas(mob, commands, WorldMap.mundaneAreaFilter); break;

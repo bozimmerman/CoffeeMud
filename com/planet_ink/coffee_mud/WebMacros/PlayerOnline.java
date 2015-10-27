@@ -114,7 +114,7 @@ public class PlayerOnline extends StdWebMacro
 								if(!secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 								{
 									secFlags.add(CMSecurity.SecFlag.NOEXPIRE.name());
-									P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+									P.getSetSecurityFlags(CMParms.toSemicolonListString(secFlags));
 								}
 							}
 							CMLib.database().DBUpdatePlayerMOBOnly(M);
@@ -128,7 +128,7 @@ public class PlayerOnline extends StdWebMacro
 								if(secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 								{
 									secFlags.remove(CMSecurity.SecFlag.NOEXPIRE.name());
-									P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+									P.getSetSecurityFlags(CMParms.toSemicolonListString(secFlags));
 								}
 								P.setAccountExpiration(System.currentTimeMillis());
 							}

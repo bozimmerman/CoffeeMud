@@ -139,7 +139,7 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
-		final String playerList = CMParms.toStringList(theAccount.getPlayers());
+		final String playerList = CMParms.toListString(theAccount.getPlayers());
 		if(mob.session().confirm(L("This will complete OBLITERATE the account '@x1' and players '@x2' forever.  Are you SURE?! (y/N)?",theAccount.getAccountName(),playerList),L("N")))
 		{
 			for(final Enumeration<String> p=theAccount.getPlayers();p.hasMoreElements();)
@@ -1230,7 +1230,7 @@ public class Destroy extends StdCommand
 			final CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
 			if(flag==null)
 			{
-				mob.tell(L("'@x1' is not a valid flag.  Try: @x2",named,CMParms.toStringList(CMSecurity.DbgFlag.values())));
+				mob.tell(L("'@x1' is not a valid flag.  Try: @x2",named,CMParms.toListString(CMSecurity.DbgFlag.values())));
 				return false;
 			}
 			if(!CMSecurity.isDebugging(flag))

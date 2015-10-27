@@ -649,7 +649,7 @@ public class GenAbility extends StdAbility
 		case 1: return text();
 		case 2: return (String)V(ID,V_NAME);
 		case 3: return (String)V(ID,V_DISP);
-		case 4: return CMParms.toStringList((String[])V(ID,V_TRIG));
+		case 4: return CMParms.toListString((String[])V(ID,V_TRIG));
 		case 5: return convert(Ability.RANGE_CHOICES,((Integer)V(ID,V_MAXR)).intValue(),false);
 		case 6: return convert(Ability.RANGE_CHOICES,((Integer)V(ID,V_MINR)).intValue(),false);
 		case 7: return ((Boolean)V(ID,V_AUTO)).toString();

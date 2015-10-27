@@ -47,7 +47,7 @@ public class WebServerPort extends StdWebMacro
 		if(Thread.currentThread() instanceof CWThread)
 		{
 			final CWConfig config=((CWThread)Thread.currentThread()).getConfig();
-			return CMParms.toStringList(config.getHttpListenPorts());
+			return CMParms.toListString(config.getHttpListenPorts());
 		}
 		return Integer.toString(httpReq.getClientPort());
 	}

@@ -43,7 +43,7 @@ public class Prop_ImproveGather extends Property
 
 	@Override
 	public String accountForYourself()
-	{ return "Improves common skills "+CMParms.toStringList(improves)+". Gain: "+improvement; }
+	{ return "Improves common skills "+CMParms.toListString(improves)+". Gain: "+improvement; }
 
 
 	@Override

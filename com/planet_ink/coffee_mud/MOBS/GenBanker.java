@@ -88,7 +88,7 @@ public class GenBanker extends StdBanker
 		case 4: return ""+getItemInterest();
 		case 5: return ignoreMask();
 		case 6: return ""+getLoanInterest();
-		case 7: return CMParms.toStringList(itemPricingAdjustments());
+		case 7: return CMParms.toListString(itemPricingAdjustments());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}

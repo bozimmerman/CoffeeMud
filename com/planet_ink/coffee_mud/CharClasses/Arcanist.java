@@ -235,7 +235,7 @@ public class Arcanist extends Thief
 				if(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.ALLSKILLS))
 				{
 					ables.remove(A.ID());
-					enabledA.setMiscText(CMParms.toStringList(ables));
+					enabledA.setMiscText(CMParms.toListString(ables));
 					mob.delAbility(A);
 				}
 			}

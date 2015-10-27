@@ -884,7 +884,7 @@ public class Clans extends StdLibrary implements ClanManager
 						if(P!=null)
 							posNames.add(P.getID());
 					}
-					addExt="ROLES=\""+CMParms.toStringList(posNames)+"\" ";
+					addExt="ROLES=\""+CMParms.toListString(posNames)+"\" ";
 				}
 				else
 					addExt="";
@@ -914,7 +914,7 @@ public class Clans extends StdLibrary implements ClanManager
 						if(P!=null)
 							posNames.add(P.getID());
 					}
-					addExt="ROLES=\""+CMParms.toStringList(posNames)+"\" ";
+					addExt="ROLES=\""+CMParms.toListString(posNames)+"\" ";
 				}
 				else
 					addExt="";

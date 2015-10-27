@@ -211,10 +211,10 @@ public class Thief_TapRoom extends ThiefSkill
 							if(p.size()>3)
 								roomsLeft=CMath.s_int(p.get(3));
 							p.set(3,(""+(roomsLeft-1)));
-							super.miscText=CMParms.toSemicolonList(p);
+							super.miscText=CMParms.toSemicolonListString(p);
 							final List<String> p2=pairA.getParsedText();
 							p2.set(1,CMLib.map().getExtendedRoomID(newRoom));
-							pairA.miscText=CMParms.toSemicolonList(p2);
+							pairA.miscText=CMParms.toSemicolonListString(p2);
 						}
 					}
 				}

@@ -153,7 +153,7 @@ public class Create extends StdCommand
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 				return null;
 			}
-			rest=CMParms.toStringList(CMLib.map().getLocation(O.coordinates(), direction, dist.longValue()));
+			rest=CMParms.toListString(CMLib.map().getLocation(O.coordinates(), direction, dist.longValue()));
 		}
 		List<String> valsL=CMParms.parseCommas(rest,true);
 		if(valsL.size()!=3)
@@ -1226,7 +1226,7 @@ public class Create extends StdCommand
 			final CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
 			if(flag==null)
 			{
-				mob.tell(L("'@x1' is not a valid flag.  Try: @x2",named,CMParms.toStringList(CMSecurity.DbgFlag.values())));
+				mob.tell(L("'@x1' is not a valid flag.  Try: @x2",named,CMParms.toListString(CMSecurity.DbgFlag.values())));
 				return false;
 			}
 			if(CMSecurity.isDebugging(flag))

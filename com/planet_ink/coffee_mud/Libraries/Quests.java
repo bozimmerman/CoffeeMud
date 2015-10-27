@@ -836,7 +836,7 @@ public class Quests extends StdLibrary implements QuestManager
 				String newVal="?";
 				while(newVal.equals("?")&&((mob.session()!=null)&&(!mob.session().isStopped())))
 				{
-					newVal=CMLib.genEd().prompt(mob,TYPES[typeIndex],showNumber,showFlag,L("Schedule type"),CMParms.toStringList(TYPES));
+					newVal=CMLib.genEd().prompt(mob,TYPES[typeIndex],showNumber,showFlag,L("Schedule type"),CMParms.toListString(TYPES));
 					if(CMParms.indexOf(TYPES,newVal.toUpperCase().trim())<0)
 					{
 						newVal="?";
@@ -1075,7 +1075,7 @@ public class Quests extends StdLibrary implements QuestManager
 			}
 			showNumber++;
 		}
-		final String newVal=CMParms.toStringList(priceV);
+		final String newVal=CMParms.toListString(priceV);
 		if(pndex>=0)
 			stats.setElementAt(pndex,2,newVal);
 		else

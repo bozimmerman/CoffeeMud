@@ -359,7 +359,7 @@ public class Listen extends CM1Command
 			}
 			catch(final Exception iox)
 			{
-				req.sendMsg("[FAIL "+codeStr+" NOT "+CMParms.toStringList(STATTYPE.values())+"]");
+				req.sendMsg("[FAIL "+codeStr+" NOT "+CMParms.toListString(STATTYPE.values())+"]");
 				return null;
 			}
 			String parm=null;
@@ -440,7 +440,7 @@ public class Listen extends CM1Command
 				return;
 			else
 			if(crit.size()==0)
-				req.sendMsg("[FAIL NOT "+CMParms.toStringList(STATTYPE.values())+"]");
+				req.sendMsg("[FAIL NOT "+CMParms.toListString(STATTYPE.values())+"]");
 			else
 			{
 				final Listener newListener = new Listener(name,crit.toArray(new ListenCriterium[0]));
@@ -467,6 +467,6 @@ public class Listen extends CM1Command
 	@Override
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
-		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> "+CMParms.toStringList(STATTYPE.values());
+		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> "+CMParms.toListString(STATTYPE.values());
 	}
 }

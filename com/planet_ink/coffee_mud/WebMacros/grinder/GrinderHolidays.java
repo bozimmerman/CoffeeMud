@@ -188,7 +188,7 @@ public class GrinderHolidays {
 		for(int i=1;httpReq.isUrlParameter("PRCFAC"+i);i++)
 			if(CMath.isPct(httpReq.getUrlParameter("PRCFAC"+i).trim()))
 				priceFV.add((CMath.s_pct(httpReq.getUrlParameter("PRCFAC"+i).trim())+" "+httpReq.getUrlParameter("PMASK"+i).trim()).trim());
-		setText(stats,"PRICEMASKS",CMParms.toStringList(priceFV));
+		setText(stats,"PRICEMASKS",CMParms.toListString(priceFV));
 
 		final String err=CMLib.quests().alterHoliday(holidayName, encodedData);
 		if(err.length()==0)

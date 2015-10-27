@@ -483,7 +483,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		itemstr.append(CMLib.xml().convertXMLtoTag("IBUDJ",shopKeeper().budget()));
 		itemstr.append(CMLib.xml().convertXMLtoTag("IDVAL",shopKeeper().devalueRate()));
 		itemstr.append(CMLib.xml().convertXMLtoTag("IGNOR",shopKeeper().ignoreMask()));
-		itemstr.append(CMLib.xml().convertXMLtoTag("PRICM",CMParms.toStringList(shopKeeper().itemPricingAdjustments())));
+		itemstr.append(CMLib.xml().convertXMLtoTag("PRICM",CMParms.toListString(shopKeeper().itemPricingAdjustments())));
 		itemstr.append("<INVS>");
 		for(final Iterator<Environmental> i=getStoreInventory();i.hasNext();)
 		{

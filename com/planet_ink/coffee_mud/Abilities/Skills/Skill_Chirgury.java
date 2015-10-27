@@ -69,7 +69,7 @@ public class Skill_Chirgury extends StdSkill
 	{
 		if(commands.size()==0)
 		{
-			mob.tell(L("Remove what from whom? Parts include: @x1",CMParms.toStringList(parts)));
+			mob.tell(L("Remove what from whom? Parts include: @x1",CMParms.toListString(parts)));
 			return false;
 
 		}

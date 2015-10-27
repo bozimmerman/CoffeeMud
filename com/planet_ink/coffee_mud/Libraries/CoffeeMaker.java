@@ -181,8 +181,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			final StringBuilder str=new StringBuilder("");
 			str.append(CMLib.xml().convertXMLtoTag("SSRADIUS",((SpaceObject)E).radius()));
-			str.append(CMLib.xml().convertXMLtoTag("SSCOORDS",CMParms.toStringList(((SpaceObject)E).coordinates())));
-			str.append(CMLib.xml().convertXMLtoTag("SSDIR",CMParms.toStringList(((SpaceObject)E).direction())));
+			str.append(CMLib.xml().convertXMLtoTag("SSCOORDS",CMParms.toListString(((SpaceObject)E).coordinates())));
+			str.append(CMLib.xml().convertXMLtoTag("SSDIR",CMParms.toListString(((SpaceObject)E).direction())));
 			str.append(CMLib.xml().convertXMLtoTag("SSSPEED",Math.round(((SpaceObject)E).speed())));
 			return str.append((E.isGeneric()?getGenPropertiesStr(E):"") + (fromTop?getOrdPropertiesStr(E):"")).toString();
 		}
@@ -214,7 +214,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				str.append(CMLib.xml().convertXMLtoTag("YGRID",((GridLocale)E).yGridSize()));
 			}
 			if(E instanceof LocationRoom)
-				str.append(CMLib.xml().convertXMLtoTag("COREDIR",CMParms.toStringList(((LocationRoom)E).getDirectionFromCore())));
+				str.append(CMLib.xml().convertXMLtoTag("COREDIR",CMParms.toListString(((LocationRoom)E).getDirectionFromCore())));
 			str.append(getExtraEnvPropertiesStr(E));
 			str.append(getGenScripts((Room)E,false));
 		}
@@ -266,7 +266,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof AutoGenArea)
 			{
 				str.append(CMLib.xml().convertXMLtoTag("AGXMLPATH",CMLib.xml().parseOutAngleBrackets(((AutoGenArea)E).getGeneratorXmlPath())));
-				str.append(CMLib.xml().convertXMLtoTag("AGAUTOVAR",CMLib.xml().parseOutAngleBrackets(CMParms.toStringEqList(((AutoGenArea)E).getAutoGenVariables()))));
+				str.append(CMLib.xml().convertXMLtoTag("AGAUTOVAR",CMLib.xml().parseOutAngleBrackets(CMParms.toEqListString(((AutoGenArea)E).getAutoGenVariables()))));
 			}
 		}
 		else
@@ -424,7 +424,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof SpaceShip)
 			{
 				text.append(CMLib.xml().convertXMLtoTag("SSOML",((SpaceShip)item).getOMLCoeff()+""));
-				text.append(CMLib.xml().convertXMLtoTag("SSFACE", CMParms.toStringList(((SpaceShip)item).facing())));
+				text.append(CMLib.xml().convertXMLtoTag("SSFACE", CMParms.toListString(((SpaceShip)item).facing())));
 			}
 		}
 
@@ -461,7 +461,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof Electronics.FuelConsumer)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("ECONSTYP",CMParms.toStringList(((Electronics.FuelConsumer)E).getConsumedFuelTypes())));
+			text.append(CMLib.xml().convertXMLtoTag("ECONSTYP",CMParms.toListString(((Electronics.FuelConsumer)E).getConsumedFuelTypes())));
 		}
 		if(E instanceof Recipe)
 		{

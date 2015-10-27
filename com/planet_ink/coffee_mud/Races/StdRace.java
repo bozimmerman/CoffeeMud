@@ -820,7 +820,7 @@ public class StdRace implements Race
 		GR.setStat("EVENTRACE",CMClass.classID(this));
 		GR.setStat("BODYKILL",""+destroyBodyAfterUse());
 		GR.setStat("HELP",""+CMLib.help().getHelpText(name(),null,false));
-		GR.setStat("AGING",CMParms.toStringList(getAgingChart()));
+		GR.setStat("AGING",CMParms.toListString(getAgingChart()));
 		GR.setStat("CANRIDE", ""+useRideClass());
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 				GR.bodyMask()[i]=bodyMask()[i];
@@ -1054,7 +1054,7 @@ public class StdRace implements Race
 
 		GR.setStat("BODYKILL",""+otherRace.getStat("BODYKILL"));
 		GR.setStat("CANRIDE",""+otherRace.getStat("CANRIDE"));
-		GR.setStat("AGING",CMParms.toStringList(aging));
+		GR.setStat("AGING",CMParms.toListString(aging));
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 			if((race1.bodyMask()[i]>0)&&(race2.bodyMask()[i]>0))
 				GR.bodyMask()[i]=((race1.bodyMask()[i]+race2.bodyMask()[i])/2);

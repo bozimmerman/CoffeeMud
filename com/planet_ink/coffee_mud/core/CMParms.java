@@ -1858,7 +1858,7 @@ public class CMParms
 	 * @param bytes the bytes to return
 	 * @return the semicolon delimited list
 	 */
-	public final static String toSemicolonList(final byte[] bytes)
+	public final static String toSemicolonListString(final byte[] bytes)
 	{
 		if((bytes==null)||(bytes.length==0))
 			return "";
@@ -1873,7 +1873,7 @@ public class CMParms
 	 * @param bytes the strings to return
 	 * @return the semicolon delimited list
 	 */
-	public final static String toSemicolonList(final String[] bytes)
+	public final static String toSemicolonListString(final String[] bytes)
 	{
 		if((bytes==null)||(bytes.length==0))
 			return "";
@@ -1889,7 +1889,7 @@ public class CMParms
 	 * @param bytes the objects as strings to return
 	 * @return the semicolon delimited list
 	 */
-	public final static String toSemicolonList(final Object[] bytes)
+	public final static String toSemicolonListString(final Object[] bytes)
 	{
 		if((bytes==null)||(bytes.length==0))
 			return "";
@@ -1905,7 +1905,7 @@ public class CMParms
 	 * @param bytes the objects as strings to return
 	 * @return the semicolon delimited list
 	 */
-	public final static String toSemicolonList(final Enumeration<?> bytes)
+	public final static String toSemicolonListString(final Enumeration<?> bytes)
 	{
 		if((bytes==null)||(!bytes.hasMoreElements()))
 			return "";
@@ -1921,7 +1921,7 @@ public class CMParms
 	 * @param bytes the objects as strings to return
 	 * @return the semicolon delimited list
 	 */
-	public final static String toSemicolonList(final List<?> bytes)
+	public final static String toSemicolonListString(final List<?> bytes)
 	{
 		if((bytes==null)||(bytes.size()==0)) 
 			return "";
@@ -1938,9 +1938,9 @@ public class CMParms
 	 * @param list the objects as strings to return
 	 * @return the semicolon delimited list
 	 */
-	public final static String toSafeSemicolonList(final List<?> list)
+	public final static String toSafeSemicolonListString(final List<?> list)
 	{
-		return toSafeSemicolonList(list.toArray());
+		return toSafeSemicolonListString(list.toArray());
 	}
 
 	/**
@@ -1950,7 +1950,7 @@ public class CMParms
 	 * @param list the objects as strings to return
 	 * @return the semicolon delimited list
 	 */
-	public final static String toSafeSemicolonList(final Object[] list)
+	public final static String toSafeSemicolonListString(final Object[] list)
 	{
 		final StringBuilder buf1=new StringBuilder("");
 		StringBuilder s=null;
@@ -2052,7 +2052,7 @@ public class CMParms
 	 * @param V the set to convert
 	 * @return a string list of the set
 	 */
-	public final static List<String> toNameVector(final Set<? extends Environmental> V)
+	public final static List<String> toNameList(final Set<? extends Environmental> V)
 	{
 		final Vector<String> s=new Vector<String>();
 		if((V==null)||(V.size()==0))
@@ -2068,7 +2068,7 @@ public class CMParms
 	 * @param V the enumeration to convert
 	 * @return a string list of the set
 	 */
-	public final static List<String> toNameVector(final Enumeration<? extends Environmental> V)
+	public final static List<String> toNameList(final Enumeration<? extends Environmental> V)
 	{
 		final Vector<String> s=new Vector<String>();
 		if(V==null) 
@@ -2094,13 +2094,13 @@ public class CMParms
 		if(o instanceof String) 
 			return (String)o;
 		if(o instanceof List) 
-			return toStringList((List)o);
+			return toListString((List)o);
 		if(o instanceof String[]) 
-			return toStringList((String[])o);
+			return toListString((String[])o);
 		if(o instanceof Enumeration) 
-			return toStringList((Enumeration)o);
+			return toListString((Enumeration)o);
 		if(o instanceof Iterator) 
-			return toStringList((Iterator)o);
+			return toListString((Iterator)o);
 		return o.toString();
 	}
 
@@ -2110,7 +2110,7 @@ public class CMParms
 	 * @param V the array to convert to a string
 	 * @return the array as a comma-delimited list
 	 */
-	public final static String toStringList(final String[] V)
+	public final static String toListString(final String[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2128,7 +2128,7 @@ public class CMParms
 	 * @param V the array to convert to a string
 	 * @return the array as a comma-delimited list
 	 */
-	public final static String toStringList(final Object[] V)
+	public final static String toListString(final Object[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2146,7 +2146,7 @@ public class CMParms
 	 * @param e the Iterator to convert objects in to a string
 	 * @return the objects as a comma-delimited list
 	 */
-	public final static String toStringList(final Iterator<?> e)
+	public final static String toListString(final Iterator<?> e)
 	{
 		if((e==null)||(!e.hasNext())) 
 			return "";
@@ -2163,7 +2163,7 @@ public class CMParms
 	 * @param e the Enumeration to convert objects in to a string
 	 * @return the objects as a comma-delimited list
 	 */
-	public final static String toStringList(final Enumeration<?> e)
+	public final static String toListString(final Enumeration<?> e)
 	{
 		if((e==null)||(!e.hasMoreElements())) 
 			return "";
@@ -2180,7 +2180,7 @@ public class CMParms
 	 * @param e the Enumeration to convert environmentals in to a string
 	 * @return the environmentals as a comma-delimited list
 	 */
-	public final static String toEnvironmentalStringList(final Enumeration<? extends Environmental> e)
+	public final static String toEnvironmentalListString(final Enumeration<? extends Environmental> e)
 	{
 		if((e==null)||(!e.hasMoreElements())) 
 			return "";
@@ -2197,7 +2197,7 @@ public class CMParms
 	 * @param e the Enumeration to convert CMObjects in to a string
 	 * @return the CMObjects as a comma-delimited list
 	 */
-	public final static String toCMObjectStringList(final Enumeration<? extends CMObject> e)
+	public final static String toCMObjectListString(final Enumeration<? extends CMObject> e)
 	{
 		if((e==null)||(!e.hasMoreElements())) 
 			return "";
@@ -2228,7 +2228,7 @@ public class CMParms
 	 * @param e the Array to convert CMObjects in to a string
 	 * @return the CMObjects as a comma-delimited list
 	 */
-	public final static String toCMObjectStringList(final CMObject[] e)
+	public final static String toCMObjectListString(final CMObject[] e)
 	{
 		if((e==null)||(e.length==0)) 
 			return "";
@@ -2244,7 +2244,7 @@ public class CMParms
 	 * @param e the Iterator to convert CMObjects in to a string
 	 * @return the CMObjects as a comma-delimited list
 	 */
-	public final static String toCMObjectStringList(final Iterator<? extends CMObject> e)
+	public final static String toCMObjectListString(final Iterator<? extends CMObject> e)
 	{
 		if((e==null)||(!e.hasNext())) 
 			return "";
@@ -2261,7 +2261,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toStringList(final long[] V)
+	public final static String toListString(final long[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2279,7 +2279,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toStringList(final short[] V)
+	public final static String toListString(final short[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2297,7 +2297,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the boolean values in a comma-delimited list
 	 */
-	public final static String toStringList(final boolean[] V)
+	public final static String toListString(final boolean[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2315,7 +2315,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toStringList(final byte[] V)
+	public final static String toListString(final byte[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2333,7 +2333,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toStringList(final char[] V)
+	public final static String toListString(final char[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2351,7 +2351,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toStringList(final int[] V)
+	public final static String toListString(final int[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2369,7 +2369,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toStringList(final double[] V)
+	public final static String toListString(final double[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2387,7 +2387,7 @@ public class CMParms
 	 * @param V the List to convert into a list string
 	 * @return the objects in a comma-delimited list
 	 */
-	public final static String toStringList(final List<?> V)
+	public final static String toListString(final List<?> V)
 	{
 		if((V==null)||(V.size()==0))
 		{
@@ -2405,7 +2405,7 @@ public class CMParms
 	 * @param V the Set to convert into a list string
 	 * @return the objects in a comma-delimited list
 	 */
-	public final static String toStringList(final Set<?> V)
+	public final static String toListString(final Set<?> V)
 	{
 		if((V==null)||(V.size()==0))
 		{
@@ -2423,7 +2423,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toTightStringList(final long[] V)
+	public final static String toTightListString(final long[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2440,7 +2440,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toTightStringList(final short[] V)
+	public final static String toTightListString(final short[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2457,7 +2457,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the boolean values in a comma-delimited list
 	 */
-	public final static String toTightStringList(final boolean[] V)
+	public final static String toTightListString(final boolean[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2474,7 +2474,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toTightStringList(final byte[] V)
+	public final static String toTightListString(final byte[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2492,7 +2492,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toTightStringList(final char[] V)
+	public final static String toTightListString(final char[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2509,7 +2509,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toTightStringList(final int[] V)
+	public final static String toTightListString(final int[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2526,7 +2526,7 @@ public class CMParms
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
 	 */
-	public final static String toTightStringList(final double[] V)
+	public final static String toTightListString(final double[] V)
 	{
 		if((V==null)||(V.length==0))
 		{
@@ -2544,7 +2544,7 @@ public class CMParms
 	 * @param V the List to convert into a list string
 	 * @return the objects in a comma-delimited list
 	 */
-	public final static String toTightStringList(final List<?> V)
+	public final static String toTightListString(final List<?> V)
 	{
 		if((V==null)||(V.size()==0))
 		{
@@ -2562,7 +2562,7 @@ public class CMParms
 	 * @param V the Set to convert into a list string
 	 * @return the objects in a comma-delimited list
 	 */
-	public final static String toTightStringList(final Set<?> V)
+	public final static String toTightListString(final Set<?> V)
 	{
 		if((V==null)||(V.size()==0))
 		{
@@ -2581,7 +2581,7 @@ public class CMParms
 	 * @param V the map to convert
 	 * @return the key=value slash string
 	 */
-	public final static String toKeyValueSlashList(final Map<String,?> V)
+	public final static String toKeyValueSlashListString(final Map<String,?> V)
 	{
 		if((V==null)||(V.size()==0))
 		{
@@ -2620,7 +2620,7 @@ public class CMParms
 	 * @param s the slash-keyvalue pairs
 	 * @return the map of the keys and values.
 	 */
-	public final static Map<String,String> parseKeyValueSlashList(final String s)
+	public final static Map<String,String> parseKeyValueSlashListString(final String s)
 	{
 		final Hashtable<String,String> h=new Hashtable<String,String>();
 		final String[] allWords = s.split("(?<!\\\\)" + Pattern.quote("/"));
@@ -2643,7 +2643,7 @@ public class CMParms
 	 * @param V the map of key/value pairs
 	 * @return a single string list of all the key=value pairs
 	 */
-	public final static String toStringEqList(final Map<String,?> V)
+	public final static String toEqListString(final Map<String,?> V)
 	{
 		if((V==null)||(V.size()==0))
 		{

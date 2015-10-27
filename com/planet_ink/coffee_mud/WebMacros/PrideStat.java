@@ -82,9 +82,9 @@ public class PrideStat extends StdWebMacro
 			}
 		}
 		if(period==null)
-			return " [error missing valid period, try "+CMParms.toStringList(TimeClock.TimePeriod.values())+"]";
+			return " [error missing valid period, try "+CMParms.toListString(TimeClock.TimePeriod.values())+"]";
 		if(stat==null)
-			return " [error missing valid stat, try "+CMParms.toStringList(AccountStats.PrideStat.values())+"]";
+			return " [error missing valid stat, try "+CMParms.toListString(AccountStats.PrideStat.values())+"]";
 		if(val==null)
 			return " [error missing value type, try name or value]";
 		if(which<1)

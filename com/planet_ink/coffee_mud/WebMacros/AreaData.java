@@ -557,12 +557,12 @@ public class AreaData extends StdWebMacro
 
 				if(parms.containsKey("PARENT"))
 				{
-					final List<String> V=CMParms.toNameVector(CMLib.map().areas());
+					final List<String> V=CMParms.toNameList(CMLib.map().areas());
 					final List<String> theAreas=new LinkedList<String>();
 					int num=1;
 					if(!httpReq.isUrlParameter("PARENT"+num))
 					{
-						final List<String> subV=CMParms.toNameVector(A.getParents());
+						final List<String> subV=CMParms.toNameList(A.getParents());
 						for(final String areaName : subV)
 						{
 							final Area findA=CMLib.map().getArea(areaName);
@@ -606,12 +606,12 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("CHILDREN"))
 				{
 					final Area defaultParentArea=CMLib.map().getDefaultParentArea();
-					final List<String> V=CMParms.toNameVector(CMLib.map().areas());
+					final List<String> V=CMParms.toNameList(CMLib.map().areas());
 					final List<String> theAreas=new LinkedList<String>();
 					int num=1;
 					if(!httpReq.isUrlParameter("CHILDREN"+num))
 					{
-						final List<String> subV=CMParms.toNameVector(A.getChildren());
+						final List<String> subV=CMParms.toNameList(A.getChildren());
 						if(defaultParentArea!=A)
 						for(final String areaName : subV)
 						{
@@ -661,7 +661,7 @@ public class AreaData extends StdWebMacro
 					{
 						String value=httpReq.getUrlParameter("AGAUTOVAR");
 						if((value==null)||(value.length()==0))
-							value=CMParms.toStringEqList(AG.getAutoGenVariables());
+							value=CMParms.toEqListString(AG.getAutoGenVariables());
 						str.append(value);
 					}
 					if(parms.containsKey("AGXMLPATH"))

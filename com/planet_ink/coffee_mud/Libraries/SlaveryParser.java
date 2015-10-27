@@ -224,7 +224,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				final Map<String,String> map=poss.get(i);
 				final List<String> all=CMParms.parseSemicolons(map.get("INSTR"),true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
-					Log.debugOut("GEAS",CMParms.toStringList(all));
+					Log.debugOut("GEAS",CMParms.toListString(all));
 				g.que=new Vector<List<String>>();
 				for(int a=0;a<all.size();a++)
 					g.que.add(CMParms.parse(all.get(a)));

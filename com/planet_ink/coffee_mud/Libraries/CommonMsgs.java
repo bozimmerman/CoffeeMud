@@ -95,16 +95,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return true;
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean doCommandFail(final MOB mob, final Vector commands, final String msgStr)
+	public boolean doCommandFail(final MOB mob, final List<String> commands, final String msgStr)
 	{
 		return doCommandFail(mob, null, null, commands, msgStr);
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean doCommandFail(final MOB mob, Environmental target, Environmental tools, final Vector command, final String msgStr)
+	public boolean doCommandFail(final MOB mob, Environmental target, Environmental tools, final List<String> command, final String msgStr)
 	{
 		if(mob==null)
 			return false;

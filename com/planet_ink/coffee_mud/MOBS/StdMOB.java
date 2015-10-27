@@ -1992,7 +1992,7 @@ public class StdMOB implements MOB
 		}
 		catch (final java.io.IOException io)
 		{
-			Log.errOut("StdMOB", CMParms.toStringList(commands));
+			Log.errOut("StdMOB", CMParms.toListString(commands));
 			if (io.getMessage() != null)
 				Log.errOut("StdMOB", io.getMessage());
 			else
@@ -2001,7 +2001,7 @@ public class StdMOB implements MOB
 		}
 		catch (final Exception e)
 		{
-			Log.errOut("StdMOB", CMParms.toStringList(commands));
+			Log.errOut("StdMOB", CMParms.toListString(commands));
 			Log.errOut("StdMOB", e);
 			tell(L("Oops!"));
 		}

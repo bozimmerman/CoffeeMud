@@ -249,7 +249,7 @@ public class GenRace extends StdRace
 		str.append(CMLib.xml().convertXMLtoTag("ARRIVE",arriveStr()));
 		str.append(CMLib.xml().convertXMLtoTag("LEAVE",leaveStr()));
 		str.append(CMLib.xml().convertXMLtoTag("HELP",CMLib.xml().parseOutAngleBrackets(helpEntry)));
-		str.append(CMLib.xml().convertXMLtoTag("AGING",CMParms.toStringList(getAgingChart())));
+		str.append(CMLib.xml().convertXMLtoTag("AGING",CMParms.toListString(getAgingChart())));
 		if(adjPStats==null)
 			str.append("<ESTATS/>");
 		else
@@ -326,7 +326,7 @@ public class GenRace extends StdRace
 			str.append("</RABILITIES>");
 		}
 
-		str.append("<BREATHELIST>").append(CMParms.toStringList(sortedBreathables)).append("</BREATHELIST>");
+		str.append("<BREATHELIST>").append(CMParms.toListString(sortedBreathables)).append("</BREATHELIST>");
 		if((racialEffectNames==null)||(racialEffectNames.length==0))
 			str.append("<REFFECTS/>");
 		else
@@ -682,13 +682,13 @@ public class GenRace extends StdRace
 		case 36: return (racialEffectNames==null)?"":(""+racialEffectNames[num]);
 		case 37: return (racialEffectParms==null)?"0":(""+racialEffectParms[num]);
 		case 38: return (racialEffectLevels==null)?"0":(""+racialEffectLevels[num]);
-		case 39: return CMParms.toStringList(getAgingChart());
+		case 39: return CMParms.toListString(getAgingChart());
 		case 40: return ""+disableFlags;
 		case 41: return (startAdjState==null)?"":CMLib.coffeeMaker().getCharStateStr(startAdjState);
 		case 42: return getRaceLocatorID(eventBuddy);
 		case 43: return getRaceLocatorID(weaponBuddy);
 		case 44: return helpEntry;
-		case 45: return CMParms.toStringList(sortedBreathables);
+		case 45: return CMParms.toListString(sortedBreathables);
 		case 46: return ""+isRideable;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);

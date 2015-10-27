@@ -327,7 +327,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		}
 		if((nV.size()==0)&&(getShipArea().getProperMap().hasMoreElements()))
 			nV.add(getShipArea().getProperMap().nextElement().roomID());
-		setReadableText(CMParms.toSemicolonList(nV));
+		setReadableText(CMParms.toSemicolonListString(nV));
 	}
 
 	@Override

@@ -241,7 +241,7 @@ public class GrinderPlayers extends GrinderMobs
 				if(M.playerStats()!=null)
 				{
 					final List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
-					M.playerStats().getSetSecurityFlags(CMParms.toSemicolonList(V));
+					M.playerStats().getSetSecurityFlags(CMParms.toSemicolonListString(V));
 				}
 				break;
 			}
@@ -259,7 +259,7 @@ public class GrinderPlayers extends GrinderMobs
 						if(!secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 						{
 							secFlags.add(CMSecurity.SecFlag.NOEXPIRE.name());
-							P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+							P.getSetSecurityFlags(CMParms.toSemicolonListString(secFlags));
 						}
 					}
 					else
@@ -269,7 +269,7 @@ public class GrinderPlayers extends GrinderMobs
 						if(secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 						{
 							secFlags.remove(CMSecurity.SecFlag.NOEXPIRE.name());
-							P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+							P.getSetSecurityFlags(CMParms.toSemicolonListString(secFlags));
 						}
 						if(old.equalsIgnoreCase("Now"))
 							M.playerStats().setAccountExpiration(System.currentTimeMillis());

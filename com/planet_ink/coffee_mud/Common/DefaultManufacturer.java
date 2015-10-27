@@ -159,7 +159,7 @@ public class DefaultManufacturer implements Manufacturer
 	@Override
 	public String getManufactureredTypesList()
 	{
-		return CMParms.toStringList(types);
+		return CMParms.toListString(types);
 	}
 
 	@Override

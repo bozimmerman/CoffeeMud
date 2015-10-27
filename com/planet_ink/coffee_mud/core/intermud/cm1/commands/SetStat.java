@@ -109,7 +109,7 @@ public class SetStat extends GetStat
 			}
 			if((stat.length()==0)||(!isAStat(P,mod,stat)))
 			{
-				req.sendMsg("[FAIL USAGE: SETSTAT "+type+" "+CMParms.toStringList(getStatCodes(P,mod))+"]");
+				req.sendMsg("[FAIL USAGE: SETSTAT "+type+" "+CMParms.toListString(getStatCodes(P,mod))+"]");
 				return;
 			}
 

@@ -175,7 +175,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					if(miscItems.size()>0)
 					{
 						str.append(L("\n\rMisc Items : "));
-						str.append(CMParms.toStringList(miscItems));
+						str.append(CMParms.toListString(miscItems));
 					}
 				}
 			}
@@ -1402,7 +1402,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		default:
 			V.addElement("... I have no idea WHAT I sell"); break;
 		}
-		return CMParms.toStringList(V);
+		return CMParms.toListString(V);
 	}
 
 	protected boolean shopKeeperItemTypeCheck(Environmental E, int dealCode, ShopKeeper shopKeeper)

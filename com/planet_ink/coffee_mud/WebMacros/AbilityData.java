@@ -150,7 +150,7 @@ public class AbilityData extends StdWebMacro
 						else
 						{
 							for(int i=wordLists.size()-1;i>=0;i--)
-								httpReq.addFakeUrlParameter("WORDLIST"+(i+1), CMParms.toStringList(wordLists.get(i)));
+								httpReq.addFakeUrlParameter("WORDLIST"+(i+1), CMParms.toListString(wordLists.get(i)));
 							httpReq.removeUrlParameter("WORDLIST"+(wordLists.size()+1));
 						}
 
@@ -302,7 +302,7 @@ public class AbilityData extends StdWebMacro
 				{
 					String old=httpReq.getUrlParameter("TRIGSTR");
 					if(old==null)
-						old=CMParms.toStringList(A.triggerStrings());
+						old=CMParms.toListString(A.triggerStrings());
 					// remember to sort by longest->shortest on put-back
 					str.append(old.toUpperCase().trim()+", ");
 				}

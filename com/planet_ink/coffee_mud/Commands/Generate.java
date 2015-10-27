@@ -121,7 +121,7 @@ public class Generate extends StdCommand
 			}
 			if(codeI==null)
 			{
-				mob.tell(L("'@x1' is an unknown object type.  Try: @x2",typeName,CMParms.toStringList(OBJECT_TYPES.keys())));
+				mob.tell(L("'@x1' is an unknown object type.  Try: @x2",typeName,CMParms.toListString(OBJECT_TYPES.keys())));
 				return false;
 			}
 		}
@@ -162,7 +162,7 @@ public class Generate extends StdCommand
 					&&(((XMLLibrary.XMLpiece)definedIDs.get(key)).tag.equalsIgnoreCase(tKey)))
 						xmlTagsV.add(key.toLowerCase());
 				}
-				foundIDs.append(CMParms.toStringList(xmlTagsV)+"\n\r");
+				foundIDs.append(CMParms.toListString(xmlTagsV)+"\n\r");
 			}
 			mob.tell(L("Found ids include: \n\r@x1",foundIDs.toString()));
 			return false;

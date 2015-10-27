@@ -152,7 +152,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		switch(getLocCodeNum(code))
 		{
 		case 0:
-			return CMParms.toStringList(this.coordinates());
+			return CMParms.toListString(this.coordinates());
 		case 1:
 			return "" + radius();
 		default:

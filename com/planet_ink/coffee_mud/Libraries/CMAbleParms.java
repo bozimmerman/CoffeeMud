@@ -1350,7 +1350,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						while(!mob.session().isStopped())
 						{
 							final String help="<AMOUNT>"
-								+"\n\rSkill Component: "+CMParms.toStringList(CMLib.ableMapper().getAbilityComponentMap().keySet())
+								+"\n\rSkill Component: "+CMParms.toListString(CMLib.ableMapper().getAbilityComponentMap().keySet())
 								+"\n\rCustom Component: ([DISPOSITION]:[FATE]:[AMOUNT]:[COMPONENT ID]:[MASK]) && ...";
 							str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,help).trim();
 							if(str.equals(oldVal))
@@ -2151,7 +2151,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						while(proceed&&(!mob.session().isStopped()))
 						{
 							proceed = false;
-							str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.CODES.NAMES())).trim();
+							str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toListString(RawMaterial.CODES.NAMES())).trim();
 							if(str.equals(oldVal))
 								return oldVal;
 							final int r=RawMaterial.CODES.FIND_IgnoreCase(str);
@@ -2235,7 +2235,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							proceed = false;
 							if(oldVal.trim().endsWith("$"))
 								oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
-							str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.CODES.NAMES())).trim();
+							str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toListString(RawMaterial.CODES.NAMES())).trim();
 							if(str.equals(orig))
 								return orig;
 							final int r=RawMaterial.CODES.FIND_IgnoreCase(str);

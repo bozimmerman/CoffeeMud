@@ -1350,7 +1350,7 @@ public final class IMC2Driver extends Thread {
 		}
 
 		d.name = imc_playerof(d.name);
-		tracef(8, "Received message was sent to " + d.name+", "+p.type+", "+CMParms.toStringList(p.value));
+		tracef(8, "Received message was sent to " + d.name+", "+p.type+", "+CMParms.toListString(p.value));
 
 		if (p.type.equals("who"))
 		{

@@ -395,7 +395,7 @@ public class GrinderRaces
 					break;
 			}
 		}
-		R.setStat("BREATHES", CMParms.toStringList(l));
+		R.setStat("BREATHES", CMParms.toListString(l));
 
 		DVector DV;
 		setDynAbilities(R,httpReq);

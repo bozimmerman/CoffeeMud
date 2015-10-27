@@ -596,12 +596,12 @@ public class DefaultClanGovernment implements ClanGovernment
 		case GETRABLEPROF: return (clanAbilityProficiencies==null)?"0":(""+clanAbilityProficiencies[num]);
 		case GETRABLEQUAL: return (clanAbilityQuals==null)?"false":(""+clanAbilityQuals[num]);
 		case GETRABLELVL: return (clanAbilityLevels==null)?"0":(""+clanAbilityLevels[num]);
-		case GETRABLEROLE: return (clanAbilityRoles==null)?"":(CMParms.toStringList(clanAbilityRoles[num]));
+		case GETRABLEROLE: return (clanAbilityRoles==null)?"":(CMParms.toListString(clanAbilityRoles[num]));
 		case NUMREFF: return (clanEffectNames==null)?"0":(""+clanEffectNames.length);
 		case GETREFF: return (clanEffectNames==null)?"":(""+clanEffectNames[num]);
 		case GETREFFPARM: return (clanEffectParms==null)?"0":(""+clanEffectParms[num]);
 		case GETREFFLVL: return (clanEffectLevels==null)?"0":(""+clanEffectLevels[num]);
-		case GETREFFROLE: return (clanEffectRoles==null)?"":(CMParms.toStringList(clanEffectRoles[num]));
+		case GETREFFROLE: return (clanEffectRoles==null)?"":(CMParms.toListString(clanEffectRoles[num]));
 		case CATEGORY: return category;
 		default: Log.errOut("Clan","getStat:Unhandled:"+stat.toString()); break;
 		}

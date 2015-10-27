@@ -447,7 +447,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					}
 				}
 			if((choices.size()==0)&&(!isQuiet))
-				errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+choicesStr+"' by: "+CMParms.toStringList(inUseByWhom)+".");
+				errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+choicesStr+"' by: "+CMParms.toListString(inUseByWhom)+".");
 		}
 	}
 	

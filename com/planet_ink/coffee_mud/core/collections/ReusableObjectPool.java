@@ -170,7 +170,7 @@ public class ReusableObjectPool<T extends CMObject>
 			myList.add((T) o.copyOf());
 		created++;
 		if (created == minEntries * 1000)
-			Log.errOut("ReuseOP", "Reusable Object Pool pass all reason: " + CMParms.toStringList(masterList));
+			Log.errOut("ReuseOP", "Reusable Object Pool pass all reason: " + CMParms.toListString(masterList));
 		return myList;
 	}
 

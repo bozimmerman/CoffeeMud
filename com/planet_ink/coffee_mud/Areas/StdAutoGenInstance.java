@@ -541,7 +541,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		switch(getCodeNum(code))
 		{
 		case 0: return this.getGeneratorXmlPath();
-		case 1: return CMParms.toStringEqList(this.getAutoGenVariables());
+		case 1: return CMParms.toEqListString(this.getAutoGenVariables());
 		default: break;
 		}
 		return "";

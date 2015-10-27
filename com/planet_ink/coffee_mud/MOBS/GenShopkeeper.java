@@ -122,7 +122,7 @@ public class GenShopkeeper extends StdShopKeeper
 		case 5:
 			return ignoreMask();
 		case 6:
-			return CMParms.toStringList(itemPricingAdjustments());
+			return CMParms.toListString(itemPricingAdjustments());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}

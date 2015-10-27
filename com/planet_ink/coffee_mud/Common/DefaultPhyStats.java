@@ -235,7 +235,7 @@ public class DefaultPhyStats implements PhyStats
 		case 7: return ""+armor();
 		case 8: return ""+damage();
 		case 9: return ""+attackAdjustment();
-		case 10: return CMParms.toStringList(ambiances());
+		case 10: return CMParms.toListString(ambiances());
 		default: return "";
 		}
 	}

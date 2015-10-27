@@ -2067,7 +2067,7 @@ public class StdArea implements Area
 		case 8: return devalueRate();
 		case 9: return ""+invResetRate();
 		case 10: return ignoreMask();
-		case 11: return CMParms.toStringList(itemPricingAdjustments());
+		case 11: return CMParms.toListString(itemPricingAdjustments());
 		case 12: return ""+getAtmosphereCode();
 		case 13: return getAuthorID();
 		case 14: return name();

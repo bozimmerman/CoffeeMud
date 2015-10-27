@@ -81,7 +81,7 @@ public class GrinderAbilities {
 			for(;httpReq.isUrlParameter("ABILITY_FLAGS"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("ABILITY_FLAGS"+id));
 		}
-		A.setStat("FLAGS",CMParms.toStringList(V));
+		A.setStat("FLAGS",CMParms.toListString(V));
 		old=httpReq.getUrlParameter("GENHELP");
 		A.setStat("HELP", old==null?"":old);
 		old=httpReq.getUrlParameter("OVERRIDEMANA");
@@ -97,7 +97,7 @@ public class GrinderAbilities {
 			for(;httpReq.isUrlParameter("USAGEMASK"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("USAGEMASK"+id));
 		}
-		A.setStat("USAGEMASK",CMParms.toStringList(V));
+		A.setStat("USAGEMASK",CMParms.toListString(V));
 		V.clear();
 		if(httpReq.isUrlParameter("MATLIST"))
 		{
@@ -106,7 +106,7 @@ public class GrinderAbilities {
 			for(;httpReq.isUrlParameter("MATLIST"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("MATLIST"+id));
 		}
-		A.setStat("MATLIST",CMParms.toStringList(V));
+		A.setStat("MATLIST",CMParms.toListString(V));
 		V.clear();
 		if(httpReq.isUrlParameter("CANAFFECTMASK"))
 		{
@@ -115,7 +115,7 @@ public class GrinderAbilities {
 			for(;httpReq.isUrlParameter("CANAFFECTMASK"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("CANAFFECTMASK"+id));
 		}
-		A.setStat("CANAFFECTMASK",CMParms.toStringList(V));
+		A.setStat("CANAFFECTMASK",CMParms.toListString(V));
 		V.clear();
 		if(httpReq.isUrlParameter("CANTARGETMASK"))
 		{
@@ -124,7 +124,7 @@ public class GrinderAbilities {
 			for(;httpReq.isUrlParameter("CANTARGETMASK"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("CANTARGETMASK"+id));
 		}
-		A.setStat("CANTARGETMASK",CMParms.toStringList(V));
+		A.setStat("CANTARGETMASK",CMParms.toListString(V));
 		old=httpReq.getUrlParameter("CANMEND");
 		A.setStat("CANMEND",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getUrlParameter("CANREFIT");
@@ -169,7 +169,7 @@ public class GrinderAbilities {
 			for(;httpReq.isUrlParameter("POSTCASTAFFECT"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("POSTCASTAFFECT"+id));
 		}
-		A.setStat("POSTCASTAFFECT",CMParms.toSemicolonList(V));
+		A.setStat("POSTCASTAFFECT",CMParms.toSemicolonListString(V));
 		V.clear();
 		if(httpReq.isUrlParameter("POSTCASTABILITY"))
 		{
@@ -178,7 +178,7 @@ public class GrinderAbilities {
 			for(;httpReq.isUrlParameter("POSTCASTABILITY"+id);id=""+(++num))
 				V.addElement(httpReq.getUrlParameter("POSTCASTABILITY"+id));
 		}
-		A.setStat("POSTCASTABILITY",CMParms.toSemicolonList(V));
+		A.setStat("POSTCASTABILITY",CMParms.toSemicolonListString(V));
 		if(A instanceof Language)
 		{
 			((Language)A).translationVector(A.ID()).clear();

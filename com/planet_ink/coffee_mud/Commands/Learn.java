@@ -73,7 +73,7 @@ public class Learn extends StdCommand
 		}
 
 		final String what=CMParms.combine(commands,0);
-		final Vector V=Train.getAllPossibleThingsToTrainFor();
+		final List<String> V=Train.getAllPossibleThingsToTrainFor();
 		if(V.contains(what.toUpperCase().trim()))
 		{
 			final Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like to be trained in "+what);
@@ -115,7 +115,7 @@ public class Learn extends StdCommand
 		}
 
 		for(int v=0;v<V.size();v++)
-			if(((String)V.get(v)).startsWith(what.toUpperCase().trim()))
+			if(V.get(v).startsWith(what.toUpperCase().trim()))
 			{
 				final Vector CC=CMParms.parse(sayTo+" "+teacherName+"I would like to be trained in "+what);
 				mob.doCommand(CC,metaFlags);

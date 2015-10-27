@@ -658,7 +658,7 @@ public class StdLawBook extends StdItem
 			{
 				s=mob.session().prompt(L("\n\rEnter item key words or resource types to make illegal (?)\n\r: "),"");
 				if(s.equals("?"))
-					mob.tell(L("Valid resources: @x1",CMParms.toStringList(RawMaterial.CODES.NAMES())));
+					mob.tell(L("Valid resources: @x1",CMParms.toListString(RawMaterial.CODES.NAMES())));
 				else
 				if(s.length()>0)
 				{

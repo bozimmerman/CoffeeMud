@@ -78,7 +78,7 @@ public class Read extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,commands,L("Read what?"));
+			CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("Read what?"));
 			return false;
 		}
 		commands.remove(0);

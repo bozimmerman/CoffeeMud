@@ -80,7 +80,7 @@ public class Prayer_SenseProfessions extends Prayer
 				if(professionsV.size()==0)
 					mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> has no @x1.",senseWhatStr()));
 				else
-					mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> understands the following @x1: @x2",senseWhatStr(),CMParms.toStringList(professionsV)));
+					mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> understands the following @x1: @x2",senseWhatStr(),CMParms.toListString(professionsV)));
 			}
 		}
 		else

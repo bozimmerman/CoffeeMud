@@ -74,7 +74,7 @@ public class Load extends StdCommand
 		if(commands.size()<3)
 		{
 			if(tryArchon)
-				mob.tell(L("LOAD what? Try @x1 [CLASSNAME]",CMParms.toStringList(ARCHON_LIST)));
+				mob.tell(L("LOAD what? Try @x1 [CLASSNAME]",CMParms.toListString(ARCHON_LIST)));
 			else
 				mob.tell(L("Load what where?"));
 			return false;
@@ -238,7 +238,7 @@ public class Load extends StdCommand
 					}
 					final CMObjectType whatType=CMClass.findObjectType(what);
 					if(whatType==null)
-						mob.tell(L("Don't know how to load a '@x1'.  Try one of the following: @x2",what,CMParms.toStringList(ARCHON_LIST)));
+						mob.tell(L("Don't know how to load a '@x1'.  Try one of the following: @x2",what,CMParms.toListString(ARCHON_LIST)));
 					else
 					{
 						final Object O=CMClass.getObjectOrPrototype(unloadClassName);

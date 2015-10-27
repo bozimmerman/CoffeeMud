@@ -753,10 +753,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			final Room R=CMLib.map().roomLocation(scripted);
 			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
 			if(R!=null)
-				R.showHappens(CMMsg.MSG_OK_VISUAL,L("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),CMParms.toStringList(externalFiles()),cmdName,errType,errMsg));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),CMParms.toListString(externalFiles()),cmdName,errType,errMsg));
 		}
 		else
-			Log.errOut("Scripting","*/*/"+CMParms.toStringList(externalFiles())+"/"+cmdName+"/"+errType+"/"+errMsg);
+			Log.errOut("Scripting","*/*/"+CMParms.toListString(externalFiles())+"/"+cmdName+"/"+errType+"/"+errMsg);
 
 	}
 
@@ -2631,7 +2631,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			||(stack.size()==1)
 			||(!(stack.elementAt(stack.size()-2)).equals("(")))
 			{
-				logError(scripted,"EVAL","SYNTAX",") Format error: "+CMParms.toStringList(tt));
+				logError(scripted,"EVAL","SYNTAX",") Format error: "+CMParms.toListString(tt));
 				return false;
 			}
 			final boolean b=((Boolean)stack.lastElement()).booleanValue();
@@ -2658,7 +2658,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if((t==tt.length-1)
 			||(!tt[t+1].equals("(")))
 			{
-				logError(scripted,"EVAL","SYNTAX","No ( for fuction "+tt[t]+": "+CMParms.toStringList(tt));
+				logError(scripted,"EVAL","SYNTAX","No ( for fuction "+tt[t]+": "+CMParms.toListString(tt));
 				return false;
 			}
 			t+=2;
@@ -2667,7 +2667,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				tlen++;
 			if((t+tlen)==tt.length)
 			{
-				logError(scripted,"EVAL","SYNTAX","No ) for fuction "+tt[t-1]+": "+CMParms.toStringList(tt));
+				logError(scripted,"EVAL","SYNTAX","No ) for fuction "+tt[t-1]+": "+CMParms.toListString(tt));
 				return false;
 			}
 			tickStatus=Tickable.STATUS_MISC+funcCode.intValue();
@@ -5017,7 +5017,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 			default:
-				logError(scripted,"EVAL","UNKNOWN",CMParms.toStringList(tt));
+				logError(scripted,"EVAL","UNKNOWN",CMParms.toListString(tt));
 				return false;
 			}
 			pushEvalBoolean(stack,returnable);
@@ -5026,12 +5026,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		else
 		{
-			logError(scripted,"EVAL","SYNTAX","BAD CONJUCTOR "+tt[t]+": "+CMParms.toStringList(tt));
+			logError(scripted,"EVAL","SYNTAX","BAD CONJUCTOR "+tt[t]+": "+CMParms.toListString(tt));
 			return false;
 		}
 		if((stack.size()!=1)||(!(stack.firstElement() instanceof Boolean)))
 		{
-			logError(scripted,"EVAL","SYNTAX","Unmatched (: "+CMParms.toStringList(tt));
+			logError(scripted,"EVAL","SYNTAX","Unmatched (: "+CMParms.toListString(tt));
 			return false;
 		}
 		return ((Boolean)stack.firstElement()).booleanValue();

@@ -123,7 +123,7 @@ public class Reset extends StdCommand
 	public void makeManufacturer(String[] names, TechType[] types)
 	{
 		if(names.length%3!=0)
-			Log.errOut("Test: Not /3 names: "+CMParms.toStringList(names));
+			Log.errOut("Test: Not /3 names: "+CMParms.toListString(names));
 		else
 		{
 			for(int i=0;i<6;i++)
@@ -155,7 +155,7 @@ public class Reset extends StdCommand
 				}
 				M.setEfficiencyPct(0.75+CMath.div(CMLib.dice().rollNormalDistribution(1, 50, 0),100.0));
 				M.setReliabilityPct(0.75+CMath.div(CMLib.dice().rollNormalDistribution(1, 50, 0),100.0));
-				M.setManufactureredTypesList(CMParms.toStringList(types));
+				M.setManufactureredTypesList(CMParms.toListString(types));
 				CMLib.tech().addManufacturer(M);
 			}
 		}

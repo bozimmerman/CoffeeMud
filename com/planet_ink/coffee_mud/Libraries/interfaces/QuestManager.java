@@ -174,7 +174,7 @@ public interface QuestManager extends CMLibrary
 			}
 			final int x=CMParms.indexOf(choices,((String)str).toUpperCase().trim());
 			if(x<0)
-				throw new CMException("That is not a valid option.  Choices include: "+CMParms.toStringList(choices));
+				throw new CMException("That is not a valid option.  Choices include: "+CMParms.toListString(choices));
 			return choices[x];
 		}},
 		new GenericEditor.CMEval(){ @Override
@@ -348,7 +348,7 @@ public interface QuestManager extends CMLibrary
 				throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			final Vector<String> errors=new Vector<String>(1);
 			if(!CMLib.masking().syntaxCheck((String)str,errors))
-				throw new CMException("Mask Error: "+CMParms.toStringList(errors));
+				throw new CMException("Mask Error: "+CMParms.toListString(errors));
 			return str;
 		}},
 		new GenericEditor.CMEval(){ @Override

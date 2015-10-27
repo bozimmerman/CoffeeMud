@@ -101,9 +101,9 @@ public class Merge extends StdCommand
 			if(efields.contains(changes.get(v)))
 				efields.remove(changes.get(v));
 		if(noisy)
-			mergedebugtell(mob,"AllMy-"+CMParms.toStringList(allMyFields));
+			mergedebugtell(mob,"AllMy-"+CMParms.toListString(allMyFields));
 		if(noisy)
-			mergedebugtell(mob,"efields-"+CMParms.toStringList(efields));
+			mergedebugtell(mob,"efields-"+CMParms.toListString(efields));
 		for(int t=0;t<things.size();t++)
 		{
 			final Environmental E2=(Environmental)things.get(t);
@@ -124,7 +124,7 @@ public class Merge extends StdCommand
 
 				boolean checkedOut=fieldsToCheck.size()>0;
 				if(noisy)
-					mergedebugtell(mob,"fieldsToCheck-"+CMParms.toStringList(fieldsToCheck));
+					mergedebugtell(mob,"fieldsToCheck-"+CMParms.toListString(fieldsToCheck));
 				if(checkedOut)
 				for(int i=0;i<fieldsToCheck.size();i++)
 				{
@@ -147,7 +147,7 @@ public class Merge extends StdCommand
 								fieldsToChange.add(changes.get(v));
 					}
 					if(noisy)
-						mergedebugtell(mob,"fieldsToChange-"+CMParms.toStringList(fieldsToChange));
+						mergedebugtell(mob,"fieldsToChange-"+CMParms.toListString(fieldsToChange));
 					for(int i=0;i<fieldsToChange.size();i++)
 					{
 						final String field=fieldsToChange.get(i);
@@ -456,11 +456,11 @@ public class Merge extends StdCommand
 		if(noisy)
 			mergedebugtell(mob,"Things loaded: "+things.size());
 		if(noisy)
-			mergedebugtell(mob,"On fields="+CMParms.toStringList(onfields));
+			mergedebugtell(mob,"On fields="+CMParms.toListString(onfields));
 		if(noisy)
-			mergedebugtell(mob,"Ignore fields="+CMParms.toStringList(ignore));
+			mergedebugtell(mob,"Ignore fields="+CMParms.toListString(ignore));
 		if(noisy)
-			mergedebugtell(mob,"Change fields="+CMParms.toStringList(changes));
+			mergedebugtell(mob,"Change fields="+CMParms.toListString(changes));
 		Log.sysOut("Import",mob.Name()+" merge '"+filename+"'.");
 		for(int r=0;r<placesToDo.size();r++)
 		{

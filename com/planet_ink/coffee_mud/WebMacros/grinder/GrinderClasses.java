@@ -196,7 +196,7 @@ public class GrinderClasses
 		List<String> V=new Vector();
 		for(int i=0;httpReq.isUrlParameter("NOWEAPS"+id);id=""+(++i))
 			V.add(httpReq.getUrlParameter("NOWEAPS"+id));
-		C.setStat("GETWEP",CMParms.toStringList(V));
+		C.setStat("GETWEP",CMParms.toListString(V));
 		int x=0;
 		final List<Pair<String,Integer>> minStats=new LinkedList<Pair<String,Integer>>();
 		while(httpReq.getUrlParameter("MINSTAT"+x)!=null)
@@ -267,7 +267,7 @@ public class GrinderClasses
 			if(CMath.isInteger(httpReq.getUrlParameter("WEAPMATS"+id)))
 				V.add(httpReq.getUrlParameter("WEAPMATS"+id));
 		C.setStat("NUMWMAT",""+V.size());
-		C.setStat("GETWMAT",CMParms.toStringList(V));
+		C.setStat("GETWMAT",CMParms.toListString(V));
 		old=httpReq.getUrlParameter("ARMORMINOR");
 		C.setStat("ARMORMINOR",(old==null)?"-1":old);
 		old=httpReq.getUrlParameter("STATCLASS");

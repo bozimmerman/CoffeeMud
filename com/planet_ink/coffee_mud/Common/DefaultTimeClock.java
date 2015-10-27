@@ -456,13 +456,13 @@ public class DefaultTimeClock implements TimeClock
 			CMLib.database().DBReCreateData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
 			"<DAY>"+getDayOfMonth()+"</DAY><MONTH>"+getMonth()+"</MONTH><YEAR>"+getYear()+"</YEAR>"
 			+"<HOURS>"+getHoursInDay()+"</HOURS><DAYS>"+getDaysInMonth()+"</DAYS>"
-			+"<MONTHS>"+CMParms.toStringList(getMonthNames())+"</MONTHS>"
+			+"<MONTHS>"+CMParms.toListString(getMonthNames())+"</MONTHS>"
 			+"<DAWNHR>"+getDawnToDusk()[TimeOfDay.DAWN.ordinal()]+"</DAWNHR>"
 			+"<DAYHR>"+getDawnToDusk()[TimeOfDay.DAY.ordinal()]+"</DAYHR>"
 			+"<DUSKHR>"+getDawnToDusk()[TimeOfDay.DUSK.ordinal()]+"</DUSKHR>"
 			+"<NIGHTHR>"+getDawnToDusk()[TimeOfDay.NIGHT.ordinal()]+"</NIGHTHR>"
-			+"<WEEK>"+CMParms.toStringList(getWeekNames())+"</WEEK>"
-			+"<YEARS>"+CMParms.toStringList(getYearNames())+"</YEARS>"
+			+"<WEEK>"+CMParms.toListString(getWeekNames())+"</WEEK>"
+			+"<YEARS>"+CMParms.toListString(getYearNames())+"</YEARS>"
 			);
 		}
 	}

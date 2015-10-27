@@ -94,7 +94,7 @@ public class GenAuctioneer extends StdAuctioneer
 		case 6: return ""+maxTimedAuctionDays();
 		case 7: return ""+minTimedAuctionDays();
 		case 8: return ignoreMask();
-		case 9: return CMParms.toStringList(itemPricingAdjustments());
+		case 9: return CMParms.toListString(itemPricingAdjustments());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}

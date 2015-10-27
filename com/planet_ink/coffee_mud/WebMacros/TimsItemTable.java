@@ -203,7 +203,7 @@ public class TimsItemTable extends StdWebMacro
 			}
 		}
 		else
-			str.append("<TR><TD><FONT COLOR=RED>Unknown parms: "+CMParms.toKeyValueSlashList(parms)+".  Try WORLD or ITEMS.</TD></TR>");
+			str.append("<TR><TD><FONT COLOR=RED>Unknown parms: "+CMParms.toKeyValueSlashListString(parms)+".  Try WORLD or ITEMS.</TD></TR>");
 		return clearWebMacros(str)+"</TABLE>";
 	}
 

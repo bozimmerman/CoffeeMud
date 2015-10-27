@@ -86,7 +86,7 @@ public class Dig extends StdCommand
 		{
 			if(isOccupiedWithOtherWork(mob))
 			{
-				CMLib.commands().doCommandFail(mob,commands,L("You are too busy to dig right now."));
+				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You are too busy to dig right now."));
 				return false;
 			}
 

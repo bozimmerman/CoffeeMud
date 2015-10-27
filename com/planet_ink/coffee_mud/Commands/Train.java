@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Train extends StdCommand
 {
 	public Train(){}
@@ -40,9 +39,9 @@ public class Train extends StdCommand
 	private final String[] access=I(new String[]{"TRAIN","TR","TRA"});
 	@Override public String[] getAccessWords(){return access;}
 
-	public static Vector getAllPossibleThingsToTrainFor()
+	public static List<String> getAllPossibleThingsToTrainFor()
 	{
-		final Vector V=new Vector();
+		final List<String> V=new Vector<String>();
 		V.add("HIT POINTS");
 		V.add("MANA");
 		V.add("MOVEMENT");
@@ -50,9 +49,9 @@ public class Train extends StdCommand
 		V.add("PRACTICES");
 		for(final int i: CharStats.CODES.BASECODES())
 			V.add(CharStats.CODES.DESC(i));
-		for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
-			final CharClass C=(CharClass)c.nextElement();
+			final CharClass C=c.nextElement();
 			if((!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))&&(C.availabilityCode()!=0))
 				V.add(C.name().toUpperCase().trim());
 		}
@@ -60,11 +59,12 @@ public class Train extends StdCommand
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		List<String> origCmds=new StringXVector(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("You have @x1 training sessions. Enter HELP TRAIN for more information.",""+mob.getTrains()));
@@ -101,9 +101,9 @@ public class Train extends StdCommand
 		CharClass theClass=null;
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSTRAINING))&&(abilityCode<0))
 		{
-			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				final CharClass C=(CharClass)c.nextElement();
+				final CharClass C=c.nextElement();
 				int classLevel=mob.charStats().getClassLevel(C);
 				if(classLevel<0)
 					classLevel=0;

@@ -53,7 +53,7 @@ public class Unload extends StdCommand
 		if(commands.size()<2)
 		{
 			if(tryArchon)
-				mob.tell(L("UNLOAD what? Try @x1",CMParms.toStringList(ARCHON_LIST)));
+				mob.tell(L("UNLOAD what? Try @x1",CMParms.toListString(ARCHON_LIST)));
 			else
 				mob.tell(L("Unload what?"));
 			return false;
@@ -115,7 +115,7 @@ public class Unload extends StdCommand
 				}
 				final CMObjectType whatType=CMClass.findObjectType(what);
 				if(whatType==null)
-					mob.tell(L("Don't know how to load a '@x1'.  Try one of the following: @x2",what,CMParms.toStringList(ARCHON_LIST)));
+					mob.tell(L("Don't know how to load a '@x1'.  Try one of the following: @x2",what,CMParms.toListString(ARCHON_LIST)));
 				else
 				{
 					commands.remove(0);
@@ -385,7 +385,7 @@ public class Unload extends StdCommand
 					}
 				}
 				else
-					mob.tell(L("Unknown resource type '@x1. Try @x2.",((String)commands.get(1)),CMParms.toStringList(ARCHON_LIST)));
+					mob.tell(L("Unknown resource type '@x1. Try @x2.",((String)commands.get(1)),CMParms.toListString(ARCHON_LIST)));
 			}
 		}
 		return false;

@@ -874,8 +874,8 @@ public class CombatAbilities extends StdBehavior
 		case 2: return lastSpell!=null?lastSpell:"";
 		case 3: return Integer.toString(preCastSet);
 		case 4: return Integer.toString(physicalDamageTaken);
-		case 5: return (skillsAlways==null)?"":CMParms.toSemicolonList(skillsAlways);
-		case 6: return (skillsAlways==null)?"":CMParms.toSemicolonList(skillsNever);
+		case 5: return (skillsAlways==null)?"":CMParms.toSemicolonListString(skillsAlways);
+		case 6: return (skillsAlways==null)?"":CMParms.toSemicolonListString(skillsNever);
 		case 7: return Integer.toString(combatMode);
 		}
 		return "";

@@ -349,10 +349,10 @@ public class DefaultFaction implements Faction, MsgListener
 		case TAG_SHOWINFACTIONSCMD: return Boolean.toString(showInFactionsCommand).toUpperCase();
 		case TAG_SPECIALREPORTED: return Boolean.toString(showInSpecialReported).toUpperCase();
 		case TAG_EDITALONE: return Boolean.toString(showInEditor).toUpperCase();
-		case TAG_DEFAULT: return CMParms.toSemicolonList(defaults);
-		case TAG_AUTODEFAULTS: return CMParms.toSemicolonList(autoDefaults);
+		case TAG_DEFAULT: return CMParms.toSemicolonListString(defaults);
+		case TAG_AUTODEFAULTS: return CMParms.toSemicolonListString(autoDefaults);
 		case TAG_CHOICEINTRO: return choiceIntro;
-		case TAG_AUTOCHOICES: return CMParms.toSemicolonList(choices);
+		case TAG_AUTOCHOICES: return CMParms.toSemicolonListString(choices);
 		case TAG_RATEMODIFIER: return ""+rateModifier;
 		case TAG_EXPERIENCE: return ""+experienceFlag;
 		case TAG_RANGE_:
@@ -426,7 +426,7 @@ public class DefaultFaction implements Faction, MsgListener
 				final String ID=e.nextElement();
 				final String[] data=affBehavs.get(ID);
 				if(i==numCall)
-					return ID+";"+CMParms.toSafeSemicolonList(data);
+					return ID+";"+CMParms.toSafeSemicolonListString(data);
 				i++;
 			}
 			return "";

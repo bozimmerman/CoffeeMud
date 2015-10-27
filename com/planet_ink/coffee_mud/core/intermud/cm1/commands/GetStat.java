@@ -238,7 +238,7 @@ public class GetStat extends CM1Command
 			}
 			if((stat.length()==0)||(!isAStat(P,mod,stat)))
 			{
-				req.sendMsg("[FAIL USAGE: GETSTAT "+type+" "+CMParms.toStringList(getStatCodes(P,mod))+"]");
+				req.sendMsg("[FAIL USAGE: GETSTAT "+type+" "+CMParms.toListString(getStatCodes(P,mod))+"]");
 				return;
 			}
 			if(mod instanceof Physical)
@@ -455,11 +455,11 @@ public class GetStat extends CM1Command
 				mod=getModifiable(rest.toUpperCase().trim(), target);
 		}
 		if(mod==null)
-			return "USAGE: "+getCommandWord()+" "+CMParms.toStringList(getApplicableStatCodes(target));
+			return "USAGE: "+getCommandWord()+" "+CMParms.toListString(getApplicableStatCodes(target));
 		else
 		if(rest != null)
-			return "USAGE: "+getCommandWord()+" "+rest.toUpperCase().trim()+" "+CMParms.toStringList(getStatCodes(target,mod));
+			return "USAGE: "+getCommandWord()+" "+rest.toUpperCase().trim()+" "+CMParms.toListString(getStatCodes(target,mod));
 		else
-			return "USAGE: "+getCommandWord()+" "+CMParms.toStringList(getStatCodes(target,mod));
+			return "USAGE: "+getCommandWord()+" "+CMParms.toListString(getStatCodes(target,mod));
 	}
 }

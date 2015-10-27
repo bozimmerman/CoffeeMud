@@ -337,7 +337,7 @@ public class MUDGrinder extends StdWebMacro
 				return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDPLAYERS))
 				return "@break@";
-			final String playerList = CMParms.toStringList(A.getPlayers());
+			final String playerList = CMParms.toListString(A.getPlayers());
 			for(final Enumeration<String> p=A.getPlayers();p.hasMoreElements();)
 			{
 				final MOB deadMOB=CMLib.players().getLoadPlayer(p.nextElement());

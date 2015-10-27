@@ -98,7 +98,7 @@ public class AccountData extends StdWebMacro
 				str.append(", ");
 			}
 			if(parms.containsKey("IGNORE"))
-				return ""+CMParms.toStringList(A.getIgnored());
+				return ""+CMParms.toListString(A.getIgnored());
 		}
 		return "";
 	}

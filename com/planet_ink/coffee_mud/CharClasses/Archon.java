@@ -144,7 +144,7 @@ public class Archon extends StdCharClass
 			if(!oldSet.contains(CMSecurity.SecFlag.ALLSKILLS.name()))
 			{
 				oldSet.add(CMSecurity.SecFlag.ALLSKILLS.name());
-				mob.playerStats().getSetSecurityFlags(CMParms.toSemicolonList(oldSet));
+				mob.playerStats().getSetSecurityFlags(CMParms.toSemicolonListString(oldSet));
 			}
 		}
 		super.grantAbilities(mob,isBorrowedClass);
@@ -154,7 +154,7 @@ public class Archon extends StdCharClass
 			if(oldSet.contains(CMSecurity.SecFlag.ALLSKILLS.name()))
 			{
 				oldSet.remove(CMSecurity.SecFlag.ALLSKILLS.name());
-				mob.playerStats().getSetSecurityFlags(CMParms.toSemicolonList(oldSet));
+				mob.playerStats().getSetSecurityFlags(CMParms.toSemicolonListString(oldSet));
 			}
 		}
 	}

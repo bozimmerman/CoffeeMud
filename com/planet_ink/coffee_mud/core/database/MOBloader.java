@@ -1122,7 +1122,7 @@ public class MOBloader
 					final Item cont=thisItem.ultimateContainer(null);
 					final String sql=getDBItemUpdateString(mob,thisItem);
 					final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))?
-							("SPACE."+CMParms.toStringList(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
+							("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
 					final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
 					strings.add(new DBPreparedBatchEntry(sql,text));
 					done.add(""+thisItem);
@@ -1451,7 +1451,7 @@ public class MOBloader
 	{
 		if(account == null)
 			return;
-		final String characters = CMParms.toSemicolonList(account.getPlayers());
+		final String characters = CMParms.toSemicolonListString(account.getPlayers());
 		DB.updateWithClobs("UPDATE CMACCT SET CMPASS='"+account.getPasswordStr()+"',  CMCHRS=?,  CMAXML=?  WHERE CMANAM='"+account.getAccountName()+"'",
 				new String[][]{{characters,account.getXML()}});
 	}
@@ -1468,7 +1468,7 @@ public class MOBloader
 		if(account == null)
 			return;
 		account.setAccountName(CMStrings.capitalizeAndLower(account.getAccountName()));
-		final String characters = CMParms.toSemicolonList(account.getPlayers());
+		final String characters = CMParms.toSemicolonListString(account.getPlayers());
 		DB.updateWithClobs("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) "
 				+"VALUES ('"+account.getAccountName()+"','"+account.getPasswordStr()+"',?,?)",new String[][]{{characters,account.getXML()}});
 	}

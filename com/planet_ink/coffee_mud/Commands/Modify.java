@@ -225,7 +225,7 @@ public class Modify extends StdCommand
 			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("LEVEL,ABILITY,HEIGHT,REJUV,USES,MISC",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(modItem));
-			mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(set)));
+			mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toListString(set)));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 		}
 		if(!copyItem.sameAs(modItem))
@@ -446,7 +446,7 @@ public class Modify extends StdCommand
 			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("NAME,AREA,DESCRIPTION,AFFECTS,BEHAVIORS,CLASS,XGRID,YGRID",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(mob.location()));
-			mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(set)));
+			mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toListString(set)));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -679,7 +679,7 @@ public class Modify extends StdCommand
 			}
 			else
 			{
-				mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(helpSet)));
+				mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toListString(helpSet)));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 				return;
 			}
@@ -988,7 +988,7 @@ public class Modify extends StdCommand
 			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("TEXT",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(thisExit));
-			mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(set)));
+			mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toListString(set)));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -1392,7 +1392,7 @@ public class Modify extends StdCommand
 				final Ability A=M.findAbility(ableName);
 				if(A==null)
 				{
-					mob.tell(L("...but failed to specify an valid ability name.  Try one of: @x1",CMParms.toCMObjectStringList(M.abilities())));
+					mob.tell(L("...but failed to specify an valid ability name.  Try one of: @x1",CMParms.toCMObjectListString(M.abilities())));
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 					return;
 				}
@@ -1419,7 +1419,7 @@ public class Modify extends StdCommand
 				set.addAll(CMLib.coffeeMaker().getAllGenStats(M));
 				set.add("PROFICIENCIES");
 				set.add("PROFICIENCY(ABILITY_ID)");
-				mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(set)));
+				mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toListString(set)));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			}
 			CMLib.database().DBUpdatePlayer(M);
@@ -1568,7 +1568,7 @@ public class Modify extends StdCommand
 			final STreeSet<String> set=new STreeSet<String>();
 			set.addAll(CMParms.parseCommas("LEVEL,ABILITY,REJUV,MISC",true));
 			set.addAll(CMLib.coffeeMaker().getAllGenStats(modMOB));
-			mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toStringList(set)));
+			mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toListString(set)));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 		}
 		if(!modMOB.sameAs(copyMOB))

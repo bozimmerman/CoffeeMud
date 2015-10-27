@@ -362,7 +362,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 						c.type = ((Integer)info.elementAt(1)).intValue();
 					else
 					if(info.elementAt(1) instanceof List)
-						Log.errOut("InterMud","Received unexpected channel-reply: " + CMParms.toStringList((List)info.elementAt(1)));
+						Log.errOut("InterMud","Received unexpected channel-reply: " + CMParms.toListString((List)info.elementAt(1)));
 					addChannel(c);
 				}
 			}

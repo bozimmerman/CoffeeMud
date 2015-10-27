@@ -549,7 +549,7 @@ public class CharClassData extends StdWebMacro
 				{
 					String old=httpReq.getUrlParameter("RACQUAL");
 					if(old==null)
-						old=""+CMParms.toStringList(C.getRequiredRaceList());
+						old=""+CMParms.toListString(C.getRequiredRaceList());
 					str.append(old+", ");
 				}
 				if(parms.containsKey("GENHELP"))
@@ -1335,13 +1335,13 @@ public class CharClassData extends StdWebMacro
 		str.append("<BR>Rule#1: Avg gained skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalgained,30)),(long)100));
 		str.append("<BR>Rule#2: Avg qualified skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalqualified,30)),(long)100));
 		str.append("<BR>Rule#3: Unique class skills gained: "+uniqueClassSkillsGained+"/"+uniqueClassSkills);
-		str.append("<BR><FONT COLOR=WHITE>Rule#3</FONT>: Unique class skills: "+CMParms.toStringList(uniqueClassSkillsV));
+		str.append("<BR><FONT COLOR=WHITE>Rule#3</FONT>: Unique class skills: "+CMParms.toListString(uniqueClassSkillsV));
 		str.append("<BR>Rule#4: Uncommon class skills gained: "+uncommonClassSkillsGained+"/"+uncommonClassSkills);
-		str.append("<BR><FONT COLOR=WHITE>Rule#4</FONT>: Uncommon class skills: "+CMParms.toStringList(uncommonClassSkillsV));
+		str.append("<BR><FONT COLOR=WHITE>Rule#4</FONT>: Uncommon class skills: "+CMParms.toListString(uncommonClassSkillsV));
 		str.append("<BR>Rule#5: Combat skills gained: "+(maliciousSkillsGained+beneficialSkillsGained)+"/"+(maliciousSkills+beneficialSkills));
 		str.append("<BR>Rule#6: Avg Unique class skill/level: "+CMath.div(Math.round(100.0*CMath.div(uniqueClassSkills,30)),(long)100));
 		str.append("<BR>Rule#7: CrossClass class skills diff: "+totalCrossClassLevelDiffs+"/"+totalCrossClassSkills);
-		str.append("<BR><FONT COLOR=WHITE>Rule#7</FONT>: CrossClass class skills: "+CMParms.toStringList(totalCrossClassSkillsV));
+		str.append("<BR><FONT COLOR=WHITE>Rule#7</FONT>: CrossClass class skills: "+CMParms.toListString(totalCrossClassSkillsV));
 		str.append("<BR>Rule#8: Avg Cross class skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalCrossClassSkills,30)),(long)100));
 		M.destroy();
 		return str.toString();

@@ -210,7 +210,7 @@ public class ClanLoader
 				final Item cont=thisItem.ultimateContainer(null);
 				final String sql=getDBItemUpdateString(C,thisItem);
 				final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))?
-						("SPACE."+CMParms.toStringList(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
+						("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
 				final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
 				strings.add(new DBPreparedBatchEntry(sql,text));
 				done.add(""+thisItem);

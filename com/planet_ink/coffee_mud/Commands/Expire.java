@@ -46,7 +46,7 @@ public class Expire extends StdCommand
 			if(secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 			{
 				secFlags.remove(CMSecurity.SecFlag.NOEXPIRE.name());
-				P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+				P.getSetSecurityFlags(CMParms.toSemicolonListString(secFlags));
 			}
 		}
 		else
@@ -142,7 +142,7 @@ public class Expire extends StdCommand
 					if(!secFlags.contains(CMSecurity.SecFlag.NOEXPIRE.name()))
 					{
 						secFlags.add(CMSecurity.SecFlag.NOEXPIRE.name());
-						P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+						P.getSetSecurityFlags(CMParms.toSemicolonListString(secFlags));
 					}
 				}
 				else

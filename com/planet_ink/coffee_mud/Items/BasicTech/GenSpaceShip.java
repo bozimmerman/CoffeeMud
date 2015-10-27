@@ -683,17 +683,17 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		case 11:
 			return CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		case 12:
-			return CMParms.toStringList(coordinates());
+			return CMParms.toListString(coordinates());
 		case 13:
 			return "" + radius();
 		case 14:
 			return "" + roll();
 		case 15:
-			return CMParms.toStringList(direction());
+			return CMParms.toListString(direction());
 		case 16:
 			return "" + speed();
 		case 17:
-			return CMParms.toStringList(facing());
+			return CMParms.toListString(facing());
 		case 18:
 			return getOwnerName();
 		case 19:

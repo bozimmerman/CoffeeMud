@@ -358,7 +358,7 @@ public class GenCharClass extends StdCharClass
 		str.append(CMLib.xml().convertXMLtoTag("MAXCMS",""+maxCommonSkills));
 		str.append(CMLib.xml().convertXMLtoTag("MAXLGS",""+maxLanguages));
 		str.append(CMLib.xml().convertXMLtoTag("SUBRUL",subClassRule.toString()));
-		str.append(CMLib.xml().convertXMLtoTag("RACQUAL",CMParms.toStringList(getRequiredRaceList())));
+		str.append(CMLib.xml().convertXMLtoTag("RACQUAL",CMParms.toListString(getRequiredRaceList())));
 		if(getMinimumStatRequirements().length==0)
 			str.append("<MINSTATS />");
 		else
@@ -770,7 +770,7 @@ public class GenCharClass extends StdCharClass
 		case 3: return ""+hitPointsFormula;
 		case 4: return subClassRule.toString();
 		case 5: return ""+bonusPracLevel;
-		case 6: return CMParms.toStringList(getRequiredRaceList());
+		case 6: return CMParms.toListString(getRequiredRaceList());
 		case 7: return ""+bonusAttackLevel;
 		case 8: return ""+attackAttribute;
 		case 9: return ""+trainsFirstLevel;
@@ -796,7 +796,7 @@ public class GenCharClass extends StdCharClass
 		case 29: return Boolean.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).isSecret);
 		case 30: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).defaultParm;
 		case 31: return ""+((disallowedWeaponSet!=null)?disallowedWeaponSet.size():0);
-		case 32: return CMParms.toStringList(disallowedWeaponSet);
+		case 32: return CMParms.toListString(disallowedWeaponSet);
 		case 33: return ""+((outfit(null)!=null)?outfit(null).size():0);
 		case 34: return ""+((outfit(null)!=null)?outfit(null).get(num).ID():"");
 		case 35: return ""+((outfit(null)!=null)?outfit(null).get(num).text():"");
@@ -817,7 +817,7 @@ public class GenCharClass extends StdCharClass
 					return ""+securityGroupLevels[num];
 				 break;
 		case 46: return ""+((requiredWeaponMaterials!=null)?requiredWeaponMaterials.size():0);
-		case 47: return CMParms.toStringList(requiredWeaponMaterials);
+		case 47: return CMParms.toListString(requiredWeaponMaterials);
 		case 48: return ""+requiredArmorSourceMinor();
 		case 49: return this.getCharClassLocatorID(statBuddy);
 		case 50: return this.getCharClassLocatorID(eventBuddy);

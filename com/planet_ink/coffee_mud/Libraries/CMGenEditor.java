@@ -208,7 +208,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					curSet.add(newName);
 					mob.tell(L("'@x1' added.",newName));
 				}
-				oldVal=CMParms.toStringList(curSet);
+				oldVal=CMParms.toListString(curSet);
 			}
 		}
 		mob.tell(L("(no change)"));
@@ -281,7 +281,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(help!=null)
 					mob.tell(help);
 				else
-					mob.tell(L("You choices are: @x1",CMParms.toStringList(choices)));
+					mob.tell(L("You choices are: @x1",CMParms.toListString(choices)));
 			}
 			else
 			{
@@ -302,7 +302,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				catch(final CMException e)
 				{
 					mob.tell(e.getMessage());
-					mob.tell(L("You choices are: @x1",CMParms.toStringList(choices)));
+					mob.tell(L("You choices are: @x1",CMParms.toListString(choices)));
 					newName="?";
 					continue;
 				}
@@ -456,7 +456,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 		if(choices.contains(oldVal.toUpperCase().trim()))
 			oldVals.addElement(oldVal);
-		mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toStringList(oldVals)+"'.");
+		mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toListString(oldVals)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newVal=oldVal;
@@ -465,7 +465,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			thisVal=mob.session().prompt(L("Enter a new choice to add/remove (?):"),"").trim();
 			if(thisVal.equals("?"))
-				mob.tell(CMParms.toStringList(choices.toArraySecond(new String[0])));
+				mob.tell(CMParms.toListString(choices.toArraySecond(new String[0])));
 			else
 			if(thisVal.length()==0)
 				newVal = oldVal;
@@ -549,7 +549,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			newVal=mob.session().prompt(L("Enter a new choice (? or NULL):"),"").trim();
 			if(newVal.equals("?"))
-				mob.tell(CMParms.toStringList(choices.toArraySecond(new String[0])));
+				mob.tell(CMParms.toListString(choices.toArraySecond(new String[0])));
 			else
 			if(newVal.length()==0)
 				newVal = oldVal;
@@ -746,7 +746,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				if(newName.equalsIgnoreCase("?"))
 				{
-					mob.tell(L("Component Types: @x1",CMParms.toStringList(Electronics.ElecPanel.PANELTYPES)));
+					mob.tell(L("Component Types: @x1",CMParms.toListString(Electronics.ElecPanel.PANELTYPES)));
 					continueThis=true;
 				}
 				else
@@ -788,7 +788,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((newName.indexOf('=')<0)&&(!CMLib.beanCounter().getAllCurrencies().contains(newName.trim().toUpperCase())))
 			{
 				final List<String> V=CMLib.beanCounter().getAllCurrencies();
-				mob.tell(L("'@x1' is not a known currency. Existing currencies include: DEFAULT@x2",newName.trim().toUpperCase(),CMParms.toStringList(V)));
+				mob.tell(L("'@x1' is not a known currency. Existing currencies include: DEFAULT@x2",newName.trim().toUpperCase(),CMParms.toListString(V)));
 			}
 			else
 			if(newName.indexOf('=')>=0)
@@ -830,9 +830,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			report.append("3. Day Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.DAY.ordinal()]+"\n\r");
 			report.append("4. Dusk Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.DUSK.ordinal()]+"\n\r");
 			report.append("5. Night Hour: "+TC.getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]+"\n\r");
-			report.append("6. Weekdays: "+CMParms.toStringList(TC.getWeekNames())+"\n\r");
-			report.append("7. Months: "+CMParms.toStringList(TC.getMonthNames())+"\n\r");
-			report.append("8. Year Title(s): "+CMParms.toStringList(TC.getYearNames()));
+			report.append("6. Weekdays: "+CMParms.toListString(TC.getWeekNames())+"\n\r");
+			report.append("7. Months: "+CMParms.toListString(TC.getMonthNames())+"\n\r");
+			report.append("8. Year Title(s): "+CMParms.toListString(TC.getYearNames()));
 			mob.tell(report.toString());
 			newName=mob.session().prompt(L("Enter one to change:"),"");
 			if(newName.length()==0)
@@ -943,7 +943,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							if(M.getClanRole(C.clanID())==null)
 							{
 								final String role=C.getRoleName(C.getGovernment().getAcceptPos(), false, false);
-								final String newRole=mob.session().prompt(L("Enter role [@x1]\n\r: (@x2):",CMParms.toStringList(C.getRolesList()),role),role);
+								final String newRole=mob.session().prompt(L("Enter role [@x1]\n\r: (@x2):",CMParms.toListString(C.getRolesList()),role),role);
 								if(newRole.trim().length()>0)
 								{
 									int roleID=-1;
@@ -2607,7 +2607,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				for(int v=0;v<V.size();v++)
 					if(V.get(v).length()==0)
 						V.set(v,"Default");
-				mob.tell(L("'@x1' is not a known currency. Existing currencies include: DEFAULT@x2",oldCurrency,CMParms.toStringList(V)));
+				mob.tell(L("'@x1' is not a known currency. Existing currencies include: DEFAULT@x2",oldCurrency,CMParms.toListString(V)));
 				gocontinue=true;
 			}
 			else
@@ -2689,7 +2689,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			s=mob.session().prompt(L("Enter a new type (?)\n\r:"),clanType);
 			if(s.equalsIgnoreCase("?"))
-				mob.tell(L("Types: @x1",CMParms.toStringList(ClanItem.ClanItemType.ALL)));
+				mob.tell(L("Types: @x1",CMParms.toListString(ClanItem.ClanItemType.ALL)));
 			else
 			if(s.equalsIgnoreCase(clanType))
 			{
@@ -3107,7 +3107,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					}
 					else
 					{
-						final StringBuilder str=new StringBuilder(CMParms.toStringList(me.getBreathables()));
+						final StringBuilder str=new StringBuilder(CMParms.toListString(me.getBreathables()));
 						if(str.length()>0)
 							str.append(", ").append(newValue);
 						else
@@ -3602,7 +3602,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
-			mob.tell(L("@x1. Security Groups: '@x2'.",""+showNumber,CMParms.toStringList(secFlags)));
+			mob.tell(L("@x1. Security Groups: '@x2'.",""+showNumber,CMParms.toListString(secFlags)));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 			behave=mob.session().prompt(L("Enter a group to add/remove\n\r:"),"");
@@ -3611,7 +3611,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(secFlags.contains(behave.trim().toUpperCase()))
 				{
 					secFlags.remove(behave.trim().toUpperCase());
-					P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+					P.getSetSecurityFlags(CMParms.toSemicolonListString(secFlags));
 					mob.tell(L("@x1 removed.",behave));
 				}
 				else
@@ -3632,9 +3632,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						for(final Enumeration<String> j=CMSecurity.getJournalSecurityFlags();j.hasMoreElements();)
 							jFlagNames.add(j.nextElement());
 						mob.tell(L("No such security flag: @x1.",behave));
-						mob.tell(L("Value flags include: @x1",CMParms.toStringList(CMSecurity.SecFlag.values())));
-						mob.tell(L("Valid groups include: @x1",CMParms.toStringList(grpNames)));
-						mob.tell(L("Value journal flags include: @x1",CMParms.toStringList(jFlagNames)));
+						mob.tell(L("Value flags include: @x1",CMParms.toListString(CMSecurity.SecFlag.values())));
+						mob.tell(L("Valid groups include: @x1",CMParms.toListString(grpNames)));
+						mob.tell(L("Value journal flags include: @x1",CMParms.toListString(jFlagNames)));
 					}
 					else
 					{
@@ -3670,7 +3670,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							continue;
 						}
 						secFlags.add(behave.trim().toUpperCase());
-						P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+						P.getSetSecurityFlags(CMParms.toSemicolonListString(secFlags));
 						mob.tell(L("@x1 added.",behave));
 					}
 				}
@@ -4445,7 +4445,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							final String newRoleStr=mob.session().prompt(L("Enter this members role (?) '@x1': ",E.getRoleName(members.get(index).role,true,false)),"");
 							newRole =E.getRoleFromName(newRoleStr);
 							if(newRole<0)
-								mob.tell(L("That role is invalid.  Valid roles include: @x1",CMParms.toStringList(E.getRolesList())));
+								mob.tell(L("That role is invalid.  Valid roles include: @x1",CMParms.toListString(E.getRolesList())));
 							else
 								break;
 						}
@@ -4867,7 +4867,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					mob.tell(L("Unknown relative space object")+" '"+objName+"'.\n\r"+coordHelp2);
 					continue;
 				}
-				val=CMParms.toStringList(CMLib.map().getLocation(O.coordinates(), direction, dist.longValue()));
+				val=CMParms.toListString(CMLib.map().getLocation(O.coordinates(), direction, dist.longValue()));
 			}
 			
 			List<String> valsL=CMParms.parseCommas(val,true);
@@ -5055,7 +5055,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		mob.tell(showNumber+". "+FieldDisp+": '"+CharClass.ARMOR_LONGDESC[CMath.s_int(E.getStat(Field))]+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		final String newName=mob.session().prompt(L("Enter (@x1)\n\r:",CMParms.toStringList(CharClass.ARMOR_DESCS)),"");
+		final String newName=mob.session().prompt(L("Enter (@x1)\n\r:",CMParms.toListString(CharClass.ARMOR_DESCS)),"");
 		String newStat="";
 		for(int i=0;i<CharClass.ARMOR_DESCS.length;i++)
 			if(newName.equalsIgnoreCase(CharClass.ARMOR_DESCS[i]))
@@ -5107,7 +5107,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			newName=mob.session().prompt(L("Enter a weapon class to add/remove (?)\n\r:"),"");
 			if(newName.equals("?"))
-				mob.tell(CMParms.toStringList(Weapon.CLASS_DESCS));
+				mob.tell(CMParms.toListString(Weapon.CLASS_DESCS));
 			else
 			if(newName.length()>0)
 			{
@@ -5141,7 +5141,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 		if(setChanged)
-			E.setStat(Field,CMParms.toStringList(set));
+			E.setStat(Field,CMParms.toListString(set));
 		else
 			mob.tell(L("(no change)"));
 	}
@@ -5165,7 +5165,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			newName=mob.session().prompt(L("Enter a material type to add/remove to requirements (?)\n\r:"),"");
 			if(newName.equals("?"))
-				mob.tell(CMParms.toStringList(RawMaterial.Material.values()));
+				mob.tell(CMParms.toListString(RawMaterial.Material.values()));
 			else
 			if(newName.length()>0)
 			{
@@ -5198,7 +5198,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 		if(setChanged)
-			E.setStat(Field,CMParms.toStringList(set));
+			E.setStat(Field,CMParms.toListString(set));
 		else
 			mob.tell(L("(no change)"));
 	}
@@ -5492,7 +5492,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final List<String> newRaces=new XVector<String>(CMParms.parseCommas(E.getStat(flag), true));
 		while((!mob.session().isStopped()) && (cont))
 		{
-			mob.tell(showNumber+". "+prompt+": '"+CMParms.toStringList(newRaces)+"'.");
+			mob.tell(showNumber+". "+prompt+": '"+CMParms.toListString(newRaces)+"'.");
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 			final String newName=mob.session().prompt(L("Enter a race to add or remove\n\r:"),"");
@@ -5540,7 +5540,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 				cont=false;
 		}
-		E.setStat(flag, CMParms.toStringList(newRaces));
+		E.setStat(flag, CMParms.toListString(newRaces));
 	}
 
 	protected void genBodyParts(MOB mob, Race E, int showNumber, int showFlag)
@@ -6300,7 +6300,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				boolean updateList=false;
 				if(statNum<0)
-					mob.tell(L("That is not a stat, like one of these: @x1",CMParms.toStringList(CharStats.CODES.BASENAMES())));
+					mob.tell(L("That is not a stat, like one of these: @x1",CMParms.toListString(CharStats.CODES.BASENAMES())));
 				else
 				{
 					int vNum=-1;
@@ -6398,7 +6398,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 
-		mob.tell(L("@x1. Aging Chart: @x2.",""+showNumber,CMParms.toStringList(E.getAgingChart())));
+		mob.tell(L("@x1. Aging Chart: @x2.",""+showNumber,CMParms.toListString(E.getAgingChart())));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
@@ -6507,7 +6507,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							if(P!=null)
 								roleNamesList.add(P.getID());
 						}
-						parts.append("/"+CMParms.toStringList(roleNamesList)+"), ");
+						parts.append("/"+CMParms.toListString(roleNamesList)+"), ");
 					}
 					else
 						parts.append("), ");
@@ -6567,7 +6567,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							{
 								final String s=mob.session().prompt(L("Enter one or more roles to restrict this to (?): "),"");
 								if(s.trim().equalsIgnoreCase("?"))
-									mob.tell(L("Roles: ")+CMParms.toCMObjectStringList(((ClanGovernment)E).getPositions()));
+									mob.tell(L("Roles: ")+CMParms.toCMObjectListString(((ClanGovernment)E).getPositions()));
 								else
 								if(s.trim().length()==0)
 									break;
@@ -6665,7 +6665,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							if(P!=null)
 								roleNamesList.add(P.getID());
 						}
-						roles.append(CMParms.toStringList(roleNamesList));
+						roles.append(CMParms.toListString(roleNamesList));
 					}
 					parts.append(roles.toString()+"), ");
 					ables.addElement(A);
@@ -6714,7 +6714,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							{
 								final String s=mob.session().prompt(L("Enter one or more roles to restrict this to (?): "),"");
 								if(s.trim().equalsIgnoreCase("?"))
-									mob.tell(L("Roles: ")+CMParms.toCMObjectStringList(((ClanGovernment)E).getPositions()));
+									mob.tell(L("Roles: ")+CMParms.toCMObjectListString(((ClanGovernment)E).getPositions()));
 								else
 								if(s.trim().length()==0)
 									break;
@@ -7254,7 +7254,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				me.setMax(Integer.MAX_VALUE);
 			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Position Mask","INNERMASK",false);
 			promptStatBool(mob, me,++showNumber, showFlag,"Is Shown", "ISPUBLIC");
-			promptStatCommaChoices(mob, me,CMParms.toStringList(Clan.Function.values()),++showNumber, showFlag,"Powers", "FUNCTIONS",Clan.Function.values());
+			promptStatCommaChoices(mob, me,CMParms.toListString(Clan.Function.values()),++showNumber, showFlag,"Powers", "FUNCTIONS",Clan.Function.values());
 
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
@@ -7271,7 +7271,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		String list = CMParms.toStringList(me.getPositions());
+		String list = CMParms.toListString(me.getPositions());
 		mob.tell(L("@x1. Positions: @x2",""+showNumber,list));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
@@ -7296,7 +7296,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						editMe=pos;
 				if(editMe == null)
 				{
-					list = CMParms.toStringList(me.getPositions());
+					list = CMParms.toListString(me.getPositions());
 					mob.tell(L("Position @x1 is not listed.  Try one of these: @x2",word,list));
 				}
 				else
@@ -7351,7 +7351,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				promptStatBool(mob, me,++showNumber, showFlag,"Clan Item Loyalty", "CONQUESTITEMLOYALTY");
 				promptStatBool(mob, me,++showNumber, showFlag,"Conq. by Worship", "CONQUESTDEITYBASIS");
 			}
-			promptStatCommaChoices(mob, me,CMParms.toStringList(Clan.Function.values()),++showNumber, showFlag,"Vote Approved", "VOTEFUNCS",Clan.Function.values());
+			promptStatCommaChoices(mob, me,CMParms.toListString(Clan.Function.values()),++showNumber, showFlag,"Vote Approved", "VOTEFUNCS",Clan.Function.values());
 			if(me.getStat("VOTEFUNCS").length()>0)
 			{
 				promptStatInt(mob, me,++showNumber, showFlag,"Max Vote Days", "MAXVOTEDAYS");
@@ -7361,9 +7361,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if((me.getVoteQuorumPct()<0)||(me.getVoteQuorumPct()>100))
 					me.setVoteQuorumPct(100);
 			}
-			promptStatChoices(mob,me,CMParms.toStringList(Clan.AutoPromoteFlag.values()),++showNumber,showFlag,"Auto-Promotion","AUTOPROMOTEBY",Clan.AutoPromoteFlag.values());
-			promptStatChoices(mob,me,CMParms.toStringList(me.getPositions()),++showNumber,showFlag,"Apply Position","AUTOROLE",me.getPositions());
-			promptStatChoices(mob,me,CMParms.toStringList(me.getPositions()),++showNumber,showFlag,"Accept Position","ACCEPTPOS",me.getPositions());
+			promptStatChoices(mob,me,CMParms.toListString(Clan.AutoPromoteFlag.values()),++showNumber,showFlag,"Auto-Promotion","AUTOPROMOTEBY",Clan.AutoPromoteFlag.values());
+			promptStatChoices(mob,me,CMParms.toListString(me.getPositions()),++showNumber,showFlag,"Apply Position","AUTOROLE",me.getPositions());
+			promptStatChoices(mob,me,CMParms.toListString(me.getPositions()),++showNumber,showFlag,"Accept Position","ACCEPTPOS",me.getPositions());
 			promptStatStr(mob,me,CMLib.help().getHelpText("SCRIPTABLE", mob, true).toString(),++showNumber,showFlag,"Entry Scriptable","ENTRYSCRIPT",true);
 			promptStatStr(mob,me,CMLib.help().getHelpText("SCRIPTABLE", mob, true).toString(),++showNumber,showFlag,"Exit Scriptable","EXITSCRIPT",true);
 			genDynamicAbilities(mob,me,"Clan & Char","clan",++showNumber,showFlag);
@@ -7395,21 +7395,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Ability/Skill name","NAME",false);
-			promptStatStr(mob,me,CMParms.toStringList(Ability.ACODE_DESCS)+","+CMParms.toStringList(Ability.DOMAIN_DESCS),++showNumber,showFlag,"Type, Domain","CLASSIFICATION",false);
+			promptStatStr(mob,me,CMParms.toListString(Ability.ACODE_DESCS)+","+CMParms.toListString(Ability.DOMAIN_DESCS),++showNumber,showFlag,"Type, Domain","CLASSIFICATION",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
-			promptStatStr(mob,me,CMParms.toStringList(Ability.RANGE_CHOICES),++showNumber,showFlag,"Minimum Range","MINRANGE",false);
-			promptStatStr(mob,me,CMParms.toStringList(Ability.RANGE_CHOICES),++showNumber,showFlag,"Maximum Range","MAXRANGE",false);
+			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,"Minimum Range","MINRANGE",false);
+			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,"Maximum Range","MAXRANGE",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Ticks Between Casts","TICKSBETWEENCASTS",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Duration Override (0=NO)","TICKSOVERRIDE",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Affect String","DISPLAY",true);
 			promptStatBool(mob,me,++showNumber,showFlag,"Is Auto-invoking","AUTOINVOKE");
-			promptStatStr(mob,me,"0,"+CMParms.toStringList(Ability.FLAG_DESCS),++showNumber,showFlag,"Skill Flags (comma sep)","FLAGS",true);
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.FLAG_DESCS),++showNumber,showFlag,"Skill Flags (comma sep)","FLAGS",true);
 			promptStatInt(mob,me,"-1,x,"+Integer.MAX_VALUE+","+Integer.MAX_VALUE+"-(1 to 100)",++showNumber,showFlag,"Override Cost","OVERRIDEMANA");
-			promptStatStr(mob,me,CMParms.toStringList(Ability.USAGE_DESCS),++showNumber,showFlag,"Cost Type","USAGEMASK",false);
-			promptStatStr(mob,me,"0,"+CMParms.toStringList(Ability.CAN_DESCS),++showNumber,showFlag,"Can Affect","CANAFFECTMASK",true);
+			promptStatStr(mob,me,CMParms.toListString(Ability.USAGE_DESCS),++showNumber,showFlag,"Cost Type","USAGEMASK",false);
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Affect","CANAFFECTMASK",true);
 			promptStatBool(mob,me,++showNumber,showFlag,"Tick/Periodic Affects","TICKAFFECTS");
-			promptStatStr(mob,me,"0,"+CMParms.toStringList(Ability.CAN_DESCS),++showNumber,showFlag,"Can Target","CANTARGETMASK",true);
-			promptStatStr(mob,me,CMParms.toStringList(Ability.QUALITY_DESCS),++showNumber,showFlag,"Quality Code","QUALITY",true);
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Target","CANTARGETMASK",true);
+			promptStatStr(mob,me,CMParms.toListString(Ability.QUALITY_DESCS),++showNumber,showFlag,"Quality Code","QUALITY",true);
 			promptStatStr(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
 					CMLib.help().getHelpText("Prop_HereAdjuster",mob,true).toString(),++showNumber,showFlag,"Affect Adjustments","HERESTATS",true);
 			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Caster Mask","CASTMASK",true);
@@ -7419,7 +7419,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Auto-Cast Message","AUTOCASTMSG",true);
 			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Normal-Cast Message","CASTMSG",true);
 			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Post-Cast Message","POSTCASTMSG",true);
-			promptStatStr(mob,me,CMParms.toStringList(CMMsg.TYPE_DESCS),++showNumber,showFlag,"Attack-Type","ATTACKCODE",true);
+			promptStatStr(mob,me,CMParms.toListString(CMMsg.TYPE_DESCS),++showNumber,showFlag,"Attack-Type","ATTACKCODE",true);
 			promptStatStr(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
 					CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString(),++showNumber,showFlag,"Silent affects","POSTCASTAFFECT",true);
 			promptStatStr(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
@@ -7541,8 +7541,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						}
 						if(word.equalsIgnoreCase("?"))
 						{
-							final StringBuilder str=new StringBuilder(CMParms.toStringList(RawMaterial.Material.values()));
-							str.append(", ").append(CMParms.toStringList(RawMaterial.CODES.NAMES()));
+							final StringBuilder str=new StringBuilder(CMParms.toListString(RawMaterial.Material.values()));
+							str.append(", ").append(CMParms.toListString(RawMaterial.CODES.NAMES()));
 							mob.tell(str.toString());
 							continue;
 						}
@@ -7550,7 +7550,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						if(curSet.contains(word.toUpperCase().trim()))
 						{
 							curSet.remove(word.toUpperCase().trim());
-							me.setStat("MATLIST", CMParms.toStringList(curSet.toArray(new String[0])));
+							me.setStat("MATLIST", CMParms.toListString(curSet.toArray(new String[0])));
 							mob.tell(L("Resource or Material '@x1' removed.",word));
 						}
 						else
@@ -7558,7 +7558,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						||CMParms.containsIgnoreCase(RawMaterial.CODES.NAMES(), word))
 						{
 							curSet.add(word.toUpperCase().trim());
-							me.setStat("MATLIST", CMParms.toStringList(curSet.toArray(new String[0])));
+							me.setStat("MATLIST", CMParms.toListString(curSet.toArray(new String[0])));
 							if(RawMaterial.Material.findIgnoreCase(word)!=null)
 								mob.tell(L("Material type '@x1' added.",word));
 							else
@@ -7644,7 +7644,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		final String choices="Your choices are: ";
-		final String allComponents=CMParms.toStringList(RawMaterial.Material.values())+","+CMParms.toStringList(RawMaterial.CODES.NAMES());
+		final String allComponents=CMParms.toListString(RawMaterial.Material.values())+","+CMParms.toListString(RawMaterial.CODES.NAMES());
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
@@ -9162,7 +9162,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genEmail(mob, A, ++showNumber, showFlag);
 			if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 				genAccountExpiration(mob,A,++showNumber,showFlag);
-			promptStatStr(mob,A,CMParms.toStringList(PlayerAccount.FLAG_DESCS),++showNumber,showFlag,"Flags (?)","FLAGS",true);
+			promptStatStr(mob,A,CMParms.toListString(PlayerAccount.FLAG_DESCS),++showNumber,showFlag,"Flags (?)","FLAGS",true);
 			promptStatStr(mob,A,++showNumber,showFlag,"Notes: ","NOTES");
 			for(int x=A.getSaveStatIndex();x<A.getStatCodes().length;x++)
 				A.setStat(A.getStatCodes()[x],prompt(mob,A.getStat(A.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(A.getStatCodes()[x])));
@@ -9358,7 +9358,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me.getMaxTechLevelDiff()<me.getMinTechLevelDiff())
 				me.setMaxTechLevelDiff(me.getMinTechLevelDiff());
 			me.setManufactureredTypesList(promptCommaList(mob,me.getManufactureredTypesList(),++showNumber,showFlag,"Manufact. Types: ",
-					"Choices: "+CMParms.toStringList(TechType.values()),CMEvalStrChoice.INSTANCE,TechType.values()));
+					"Choices: "+CMParms.toListString(TechType.values()),CMEvalStrChoice.INSTANCE,TechType.values()));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));

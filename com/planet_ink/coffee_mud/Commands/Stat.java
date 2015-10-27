@@ -476,7 +476,7 @@ public class Stat  extends Skills
 				msg.append(L("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
 				for (final String[] element : ABLETYPE_DESCS)
 					msg.append(element[0]+", ");
-				msg.append(CMParms.toStringList(Ability.ACODE_DESCS));
+				msg.append(CMParms.toListString(Ability.ACODE_DESCS));
 			}
 			mob.tell(msg.toString());
 			return false;

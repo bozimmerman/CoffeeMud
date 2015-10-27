@@ -125,7 +125,7 @@ public class RocketShipProgram extends GenShipProgram
 			if(orbitingPlanet!=null)
 				str.append("^N").append(CMStrings.padRight(L("orbiting @x1",orbitingPlanet.name()),50));
 			else
-				str.append("^N").append(CMStrings.padRight(CMParms.toStringList(shipSpaceObject.coordinates()),50));
+				str.append("^N").append(CMStrings.padRight(CMParms.toListString(shipSpaceObject.coordinates()),50));
 			str.append("\n\r");
 			str.append("^H").append(CMStrings.padRight(L("Facing"),10));
 			final String facStr=display(ship.facing());

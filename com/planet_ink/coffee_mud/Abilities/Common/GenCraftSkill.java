@@ -209,7 +209,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		case 1: return text();
 		case 2: return (String)V(ID,V_NAME);
 		case 3: return (String)V(ID,V_HELP);
-		case 4: return CMParms.toStringList((String[])V(ID,V_TRIG));
+		case 4: return CMParms.toListString((String[])V(ID,V_TRIG));
 		case 5: return (String)V(ID,V_FNAM);
 		case 6: return ((String)V(ID,V_RSCS)).replace('|',',');
 		case 7: return (String)V(ID,V_VERB);

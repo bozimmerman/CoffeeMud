@@ -73,10 +73,10 @@ public class GenSpaceBody extends StdSpaceBody
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+CMParms.toStringList(direction());
+		case 0: return ""+CMParms.toListString(direction());
 		case 1: return ""+speed();
 		case 2: return ""+radius();
-		case 3: return ""+CMParms.toStringList(coordinates());
+		case 3: return ""+CMParms.toListString(coordinates());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}

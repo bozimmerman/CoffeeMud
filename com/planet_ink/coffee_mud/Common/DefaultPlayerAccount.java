@@ -287,10 +287,10 @@ public class DefaultPlayerAccount implements PlayerAccount
 			else
 				rest.append("<"+code+">"+libXML.parseOutAngleBrackets(value)+"</"+code+">");
 		}
-		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightStringList(prideExpireTime)).append("</NEXTPRIDEPERIODS>");
+		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightListString(prideExpireTime)).append("</NEXTPRIDEPERIODS>");
 		rest.append("<PRIDESTATS>");
 		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-			rest.append(CMParms.toTightStringList(prideStats[period.ordinal()])).append(";");
+			rest.append(CMParms.toTightListString(prideStats[period.ordinal()])).append(";");
 		rest.append("</PRIDESTATS>");
 		return rest.toString();
 	}
@@ -491,7 +491,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 4: return ""+lastDateTime;
 		case 5: return notes;
 		case 6: return ""+accountExpiration;
-		case 7: return CMParms.toStringList(acctFlags);
+		case 7: return CMParms.toListString(acctFlags);
 		case 8: return email;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);

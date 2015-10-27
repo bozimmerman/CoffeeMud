@@ -73,7 +73,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 	{
 		switch(getLocCodeNum(code))
 		{
-		case 0: return CMParms.toStringList(this.getDirectionFromCore());
+		case 0: return CMParms.toListString(this.getDirectionFromCore());
 		default: return super.getStat(code);
 		}
 	}

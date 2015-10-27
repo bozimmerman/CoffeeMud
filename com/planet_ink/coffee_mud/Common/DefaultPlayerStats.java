@@ -655,10 +655,10 @@ public class DefaultPlayerStats implements PlayerStats
 			final String code=codes[x].toUpperCase();
 			rest.append("<"+code+">"+CMLib.xml().parseOutAngleBrackets(getStat(code))+"</"+code+">");
 		}
-		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightStringList(prideExpireTime)).append("</NEXTPRIDEPERIODS>");
+		rest.append("<NEXTPRIDEPERIODS>").append(CMParms.toTightListString(prideExpireTime)).append("</NEXTPRIDEPERIODS>");
 		rest.append("<PRIDESTATS>");
 		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-			rest.append(CMParms.toTightStringList(prideStats[period.ordinal()])).append(";");
+			rest.append(CMParms.toTightListString(prideStats[period.ordinal()])).append(";");
 		rest.append("</PRIDESTATS>");
 		
 		rest.append("<ACHIEVEMENTS");
@@ -682,7 +682,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+getAliasXML()
 			+getLegacyXML()
 			+"<ACCTEXP>"+accountExpires+"</ACCTEXP>"
-			+((birthday!=null)?"<BIRTHDAY>"+CMParms.toStringList(birthday)+"</BIRTHDAY>":"")
+			+((birthday!=null)?"<BIRTHDAY>"+CMParms.toListString(birthday)+"</BIRTHDAY>":"")
 			+((poofin.length()>0)?"<POOFIN>"+CMLib.xml().parseOutAngleBrackets(poofin)+"</POOFIN>":"")
 			+((notes.length()>0)?"<NOTES>"+CMLib.xml().parseOutAngleBrackets(notes)+"</NOTES>":"")
 			+((poofout.length()>0)?"<POOFOUT>"+CMLib.xml().parseOutAngleBrackets(poofout)+"</POOFOUT>":"")
@@ -1286,7 +1286,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 14: return announceMsg;
 		case 15: return notes;
 		case 16: return ""+wrap;
-		case 17: return CMParms.toStringList(birthday);
+		case 17: return CMParms.toListString(birthday);
 		case 18: return ""+accountExpires;
 		case 19: return getPrivateList(introductions);
 		case 20: return ""+pageBreak;

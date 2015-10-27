@@ -510,7 +510,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		able.maxProficiency=maxProficiency;
 		able.extraMask=extraMask==null?"":extraMask;
 		able.costOverrides=costOverrides;
-		able.originalSkillPreReqList=CMParms.toStringList(preReqSkillsList);
+		able.originalSkillPreReqList=CMParms.toListString(preReqSkillsList);
 
 		able.skillPreReqs=new DVector(2);
 		addPreRequisites(abilityID,preReqSkillsList,extraMask);

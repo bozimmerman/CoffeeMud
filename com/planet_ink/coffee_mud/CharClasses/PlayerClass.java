@@ -171,7 +171,7 @@ public class PlayerClass extends StdCharClass
 							}
 							List<String> reqSet=makeRequirements(prevSets,A);
 							if(reqSet.size()>0)
-								reqSet=new XVector<String>(CMParms.toStringList(reqSet));
+								reqSet=new XVector<String>(CMParms.toListString(reqSet));
 							int level=0;
 							if(!this.leveless() && (!CMSecurity.isDisabled(DisFlag.LEVELS)))
 								level=CMLib.ableMapper().lowestQualifyingLevel(A.ID());

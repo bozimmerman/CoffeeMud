@@ -383,7 +383,7 @@ public class GrinderItems
 								else
 									break;
 						}
-						old = CMParms.toSemicolonList(V);
+						old = CMParms.toSemicolonListString(V);
 						CMLib.flags().setReadable(I,false);
 						I.setReadableText(old);
 					}

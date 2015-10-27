@@ -93,7 +93,7 @@ public class GenPostman extends StdPostman
 		case 6: return ""+feeForNewBox();
 		case 7: return ""+maxMudMonthsHeld();
 		case 8: return ignoreMask();
-		case 9: return CMParms.toStringList(itemPricingAdjustments());
+		case 9: return CMParms.toListString(itemPricingAdjustments());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}

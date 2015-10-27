@@ -804,7 +804,7 @@ public class Factions extends StdLibrary implements FactionManager
 
 			// auto defaults
 			boolean error=true;
-			me.setAutoDefaults(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.autoDefaults()),++showNumber,showFlag,L("Optional automatic assigned values with zapper masks (semicolon delimited).\n\r    ")),true));
+			me.setAutoDefaults(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonListString(me.autoDefaults()),++showNumber,showFlag,L("Optional automatic assigned values with zapper masks (semicolon delimited).\n\r    ")),true));
 
 			// non-auto defaults
 			error=true;
@@ -814,7 +814,7 @@ public class Factions extends StdLibrary implements FactionManager
 			while(error&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
 				error=false;
-				final String newDefaults=CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.defaults()),showNumber,showFlag,L("Other default values with zapper masks (semicolon delimited).\n\r    "));
+				final String newDefaults=CMLib.genEd().prompt(mob,CMParms.toSemicolonListString(me.defaults()),showNumber,showFlag,L("Other default values with zapper masks (semicolon delimited).\n\r    "));
 				if((showFlag!=showNumber)&&(showFlag>-999))
 					break;
 				final List<String> V=CMParms.parseSemicolons(newDefaults,true);
@@ -827,7 +827,7 @@ public class Factions extends StdLibrary implements FactionManager
 			}
 
 			// choices and choice intro
-			me.setChoices(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.choices()),++showNumber,showFlag,L("Optional new player value choices (semicolon-delimited).\n\r    ")),true));
+			me.setChoices(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonListString(me.choices()),++showNumber,showFlag,L("Optional new player value choices (semicolon-delimited).\n\r    ")),true));
 			if(me.choices().hasMoreElements())
 				me.setChoiceIntro(CMLib.genEd().prompt(mob,me.choiceIntro(),++showNumber,showFlag,L("Optional choices introduction text. Filename")));
 
@@ -1106,7 +1106,7 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 				if(CE!=null)
 				{
-					mob.tell(L("Valid flags include: @x1\n\r",CMParms.toStringList(Faction.FactionChangeEvent.FLAG_DESCS)));
+					mob.tell(L("Valid flags include: @x1\n\r",CMParms.toListString(Faction.FactionChangeEvent.FLAG_DESCS)));
 					final String newFlags=mob.session().prompt(L("Enter new flag(s) (@x1): @x2",CE.flagCache(),CE.flagCache()),CE.flagCache());
 					if((newFlags.length()==0)||(newFlags.equals(CE.flagCache())))
 						mob.tell(L("(no change)"));
@@ -1217,7 +1217,7 @@ public class Factions extends StdLibrary implements FactionManager
 											unknowns.remove(i);
 								if(unknowns.size()>0)
 								{
-									mob.tell(L("The following are unknown masks: '@x1'.  Please correct them.",CMParms.toStringList(unknowns)));
+									mob.tell(L("The following are unknown masks: '@x1'.  Please correct them.",CMParms.toListString(unknowns)));
 									cont=false;
 								}
 							}
@@ -1299,8 +1299,8 @@ public class Factions extends StdLibrary implements FactionManager
 						if(ID.equalsIgnoreCase("?"))
 						{
 							final StringBuffer vals=new StringBuffer("Valid IDs: \n\r");
-							vals.append(CMParms.toCMObjectStringList(CMClass.abilities()));
-							vals.append(CMParms.toCMObjectStringList(CMClass.behaviors()));
+							vals.append(CMParms.toCMObjectListString(CMClass.abilities()));
+							vals.append(CMParms.toCMObjectListString(CMClass.behaviors()));
 							mob.tell(vals.toString());
 							cont=true;
 						}
@@ -1497,9 +1497,9 @@ public class Factions extends StdLibrary implements FactionManager
 					if(ID.equalsIgnoreCase("?"))
 					{
 						final StringBuffer vals=new StringBuffer("Valid IDs: \n\r");
-						vals.append(CMParms.toCMObjectStringList(CMClass.abilities()));
-						vals.append(CMParms.toCMObjectStringList(CMClass.behaviors()));
-						vals.append(CMParms.toCMObjectStringList(CMClass.commands()));
+						vals.append(CMParms.toCMObjectListString(CMClass.abilities()));
+						vals.append(CMParms.toCMObjectListString(CMClass.behaviors()));
+						vals.append(CMParms.toCMObjectListString(CMClass.commands()));
 						mob.tell(vals.toString());
 						cont=true;
 					}

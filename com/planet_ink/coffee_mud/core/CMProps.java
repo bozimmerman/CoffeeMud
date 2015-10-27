@@ -1218,7 +1218,7 @@ public class CMProps extends Properties
 			if(costType==null)
 			{
 				Log.errOut("CMProps","Error parsing coffeemud.ini field '"+fieldName+"', invalid type: "+type);
-				Log.errOut("CMProps","Valid values include "+CMParms.toStringList(ExpertiseLibrary.CostType.values()));
+				Log.errOut("CMProps","Valid values include "+CMParms.toListString(ExpertiseLibrary.CostType.values()));
 				continue;
 			}
 			String keyField="";
