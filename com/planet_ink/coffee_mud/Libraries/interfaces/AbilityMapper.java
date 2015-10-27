@@ -281,6 +281,14 @@ public interface AbilityMapper extends CMLibrary
 	 */
 	public void delCharMappings(String ID);
 	
+	/**
+	 * Adds to the list of allowed skills, expertises, etc that come from the requirements
+	 * listed for the given skill.  Used mostly by the Expertise system, but also used
+	 * by the class system to cross-reference skill requirements.
+	 * @param ID the Ability ID of the skill gaining pre-requisites
+	 * @param preReqSkillsList the formatted list of prereqs, typically Ability IDs.
+	 * @param extraMask a zappermask of other requirements that a person must have for the skill
+	 */
 	public void addPreRequisites(String ID, List<String> preReqSkillsList, String extraMask);
 	public Enumeration<AbilityMapping> getClassAbles(String ID, boolean addAll);
 	public boolean qualifiesByAnyCharClass(String abilityID);
