@@ -412,13 +412,13 @@ public class RaceData extends StdWebMacro
 				if((A!=null)&&(!cables.containsFirst(A.ID())))
 				{
 					AbilityMapper.AbilityMapping ableMap=CMLib.ableMapper().getAbleMap(ID, A.ID());
-					final boolean defaultGain = ableMap.autoGain;
-					final int qualifyingLevel = ableMap.qualLevel;
+					final boolean defaultGain = ableMap.autoGain();
+					final int qualifyingLevel = ableMap.qualLevel();
 					String roles=null;
 					if(supportsRoles && (obj instanceof ClanGovernment))
 					{
 						roles="";
-						for(String key : ableMap.extFields.keySet())
+						for(String key : ableMap.extFields().keySet())
 						{
 							ClanPosition P=((ClanGovernment)obj).findPositionRole(key);
 							if(P!=null)

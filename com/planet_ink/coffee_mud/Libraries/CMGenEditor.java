@@ -6806,17 +6806,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return null;
 		}
 
-		AbilityMapper.AbilityMapping aMAP=new AbilityMapper.AbilityMapping(ableID);
+		AbilityMapper.AbilityMapping aMAP=CMLib.ableMapper().newAbilityMapping().ID(ableID);
 		if(origLevelIndex<0)
 		{
-			aMAP.abilityID=ableID;
-			aMAP.defaultProficiency=0;
-			aMAP.maxProficiency=100;
-			aMAP.defaultParm="";
-			aMAP.originalSkillPreReqList="";
-			aMAP.extraMask="";
-			aMAP.autoGain=false;
-			aMAP.isSecret=false;
+			aMAP.abilityID(ableID);
+			aMAP.defaultProficiency(0);
+			aMAP.maxProficiency(100);
+			aMAP.defaultParm("");
+			aMAP.originalSkillPreReqList("");
+			aMAP.extraMask("");
+			aMAP.autoGain(false);
+			aMAP.isSecret(false);
 		}
 		else
 		{
@@ -6836,28 +6836,28 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		else
 			levelSet=(List<AbilityMapper.AbilityMapping>)sets.elementAt(newlevelIndex,2);
-		aMAP.defaultProficiency=CMath.s_int(mob.session().prompt(L("Enter the (default) proficiency level (@x1): ",""+aMAP.defaultProficiency),aMAP.defaultProficiency+""));
-		aMAP.maxProficiency=CMath.s_int(mob.session().prompt(L("Enter the (maximum) proficiency level (@x1): ",""+aMAP.maxProficiency),aMAP.maxProficiency+""));
-		aMAP.autoGain=mob.session().confirm(L("Is this skill automatically gained@x1?",(aMAP.autoGain?"(Y/n)":"(y/N)")),""+aMAP.autoGain);
-		aMAP.isSecret=mob.session().confirm(L("Is this skill secret @x1?",(aMAP.isSecret?"(Y/n)":"(y/N)")),""+aMAP.isSecret);
-		aMAP.defaultParm=mob.session().prompt(L("Enter any properties (@x1)\n\r: ",aMAP.defaultParm),aMAP.defaultParm);
+		aMAP.defaultProficiency(CMath.s_int(mob.session().prompt(L("Enter the (default) proficiency level (@x1): ",""+aMAP.defaultProficiency()),aMAP.defaultProficiency()+"")));
+		aMAP.maxProficiency(CMath.s_int(mob.session().prompt(L("Enter the (maximum) proficiency level (@x1): ",""+aMAP.maxProficiency()),aMAP.maxProficiency()+"")));
+		aMAP.autoGain(mob.session().confirm(L("Is this skill automatically gained@x1?",(aMAP.autoGain()?"(Y/n)":"(y/N)")),""+aMAP.autoGain()));
+		aMAP.isSecret(mob.session().confirm(L("Is this skill secret @x1?",(aMAP.isSecret()?"(Y/n)":"(y/N)")),""+aMAP.isSecret()));
+		aMAP.defaultParm(mob.session().prompt(L("Enter any properties (@x1)\n\r: ",aMAP.defaultParm()),aMAP.defaultParm()));
 		String s="?";
 		while(s.equalsIgnoreCase("?"))
 		{
-			s=mob.session().prompt(L("Enter any pre-requisites (@x1)\n\r(?) : ",aMAP.originalSkillPreReqList),aMAP.originalSkillPreReqList);
+			s=mob.session().prompt(L("Enter any pre-requisites (@x1)\n\r(?) : ",aMAP.originalSkillPreReqList()),aMAP.originalSkillPreReqList());
 			if(s.equalsIgnoreCase("?"))
 				mob.tell(""+CMLib.help().getHelpText("ABILITY_PREREQS",mob,true));
 			else
-				aMAP.originalSkillPreReqList=s;
+				aMAP.originalSkillPreReqList(s);
 		}
 		s="?";
 		while(s.equalsIgnoreCase("?"))
 		{
-			s=mob.session().prompt(L("Enter any requirement mask (@x1)\n\r(?) : ",aMAP.extraMask),aMAP.extraMask);
+			s=mob.session().prompt(L("Enter any requirement mask (@x1)\n\r(?) : ",aMAP.extraMask()),aMAP.extraMask());
 			if(s.equalsIgnoreCase("?"))
 				mob.tell(""+CMLib.help().getHelpText("MASKS",mob,true));
 			else
-				aMAP.extraMask=s;
+				aMAP.extraMask(s);
 		}
 		levelSet.add(aMAP);
 		return sets;
@@ -6885,24 +6885,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final Ability A=CMClass.getAbility(E.getStat("GETCABLE"+v));
 				if(A!=null)
 				{
-					final AbilityMapper.AbilityMapping aMAP=new AbilityMapper.AbilityMapping(A.ID());
-					aMAP.abilityID=A.ID();
-					aMAP.autoGain=CMath.s_bool(E.getStat("GETCABLEGAIN"+v));
-					aMAP.defaultProficiency=CMath.s_int(E.getStat("GETCABLEPROF"+v));
-					aMAP.qualLevel=CMath.s_int(E.getStat("GETCABLELVL"+v));
-					aMAP.isSecret=CMath.s_bool(E.getStat("GETCABLESECR"+v));
-					aMAP.maxProficiency=CMath.s_int(E.getStat("GETCABLEMAXP"+v));
-					aMAP.defaultParm=E.getStat("GETCABLEPARM"+v);
-					aMAP.originalSkillPreReqList=E.getStat("GETCABLEPREQ"+v);
-					aMAP.extraMask=E.getStat("GETCABLEMASK"+v);
-					final int lvlIndex=levelSets.indexOf(Integer.valueOf(aMAP.qualLevel));
+					final AbilityMapper.AbilityMapping aMAP=CMLib.ableMapper().newAbilityMapping().ID(A.ID());
+					aMAP.abilityID(A.ID());
+					aMAP.autoGain(CMath.s_bool(E.getStat("GETCABLEGAIN"+v)));
+					aMAP.defaultProficiency(CMath.s_int(E.getStat("GETCABLEPROF"+v)));
+					aMAP.qualLevel(CMath.s_int(E.getStat("GETCABLELVL"+v)));
+					aMAP.isSecret(CMath.s_bool(E.getStat("GETCABLESECR"+v)));
+					aMAP.maxProficiency(CMath.s_int(E.getStat("GETCABLEMAXP"+v)));
+					aMAP.defaultParm(E.getStat("GETCABLEPARM"+v));
+					aMAP.originalSkillPreReqList(E.getStat("GETCABLEPREQ"+v));
+					aMAP.extraMask(E.getStat("GETCABLEMASK"+v));
+					final int lvlIndex=levelSets.indexOf(Integer.valueOf(aMAP.qualLevel()));
 					Vector<AbilityMapper.AbilityMapping> set=null;
 					if(lvlIndex<0)
 					{
 						set=new Vector<AbilityMapper.AbilityMapping>();
-						levelSets.addElement(Integer.valueOf(aMAP.qualLevel),set);
-						if(aMAP.qualLevel>maxAbledLevel)
-							maxAbledLevel=aMAP.qualLevel;
+						levelSets.addElement(Integer.valueOf(aMAP.qualLevel()),set);
+						if(aMAP.qualLevel()>maxAbledLevel)
+							maxAbledLevel=aMAP.qualLevel();
 					}
 					else
 						set=(Vector<AbilityMapper.AbilityMapping>)levelSets.elementAt(lvlIndex,2);
@@ -6931,13 +6931,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					final AbilityMapper.AbilityMapping aMAP=set.get(s);
 					parts.append(spaces+CMStrings.padRight(""+i,3)+" "
-									   +CMStrings.padRight(""+aMAP.abilityID,25)+" "
-									   +CMStrings.padRight(""+aMAP.defaultProficiency,5)+" "
-									   +CMStrings.padRight(""+aMAP.autoGain,5)+" "
-									   +CMStrings.padRight(""+aMAP.isSecret,6)+" "
-									   +CMStrings.padRight(""+aMAP.defaultParm,7)+" "
-									   +CMStrings.padRight(""+aMAP.originalSkillPreReqList,7)+" "
-									   +CMStrings.padRight(""+aMAP.extraMask,6)+"\n\r"
+									   +CMStrings.padRight(""+aMAP.abilityID(),25)+" "
+									   +CMStrings.padRight(""+aMAP.defaultProficiency(),5)+" "
+									   +CMStrings.padRight(""+aMAP.autoGain(),5)+" "
+									   +CMStrings.padRight(""+aMAP.isSecret(),6)+" "
+									   +CMStrings.padRight(""+aMAP.defaultParm(),7)+" "
+									   +CMStrings.padRight(""+aMAP.originalSkillPreReqList(),7)+" "
+									   +CMStrings.padRight(""+aMAP.extraMask(),6)+"\n\r"
 									   );
 				}
 			}
@@ -6956,7 +6956,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					final List<AbilityMapper.AbilityMapping> lvls=(List<AbilityMapper.AbilityMapping>)levelSets.elementAt(s,2);
 					for(int l=0;l<lvls.size();l++)
-						if(CMLib.english().containsString(lvls.get(l).abilityID,newName))
+						if(CMLib.english().containsString(lvls.get(l).abilityID(),newName))
 						{
 							lvlIndex=s;
 							ableIndex=l;
@@ -6986,7 +6986,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 				if(myLevelSet!=null)
 				{
-					final String aID=myLevelSet.get(ableIndex).abilityID;
+					final String aID=myLevelSet.get(ableIndex).abilityID();
 					if(genClassAbleMod(mob,levelSets,aID,lvlIndex,ableIndex)!=null)
 						mob.tell(L("@x1 modified.",aID));
 					else
@@ -7012,15 +7012,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						{
 							final AbilityMapper.AbilityMapping aMAP=lvls.get(l);
 							E.setStat("GETCABLELVL"+dex,lvl.toString());
-							E.setStat("GETCABLEGAIN"+dex,""+aMAP.autoGain);
-							E.setStat("GETCABLEPROF"+dex,""+aMAP.defaultProficiency);
-							E.setStat("GETCABLESECR"+dex,""+aMAP.isSecret);
-							E.setStat("GETCABLEPARM"+dex,""+aMAP.defaultParm);
-							E.setStat("GETCABLEPREQ"+dex,aMAP.originalSkillPreReqList);
-							E.setStat("GETCABLEMASK"+dex,aMAP.extraMask);
-							E.setStat("GETCABLEMAXP"+dex,""+aMAP.maxProficiency);
+							E.setStat("GETCABLEGAIN"+dex,""+aMAP.autoGain());
+							E.setStat("GETCABLEPROF"+dex,""+aMAP.defaultProficiency());
+							E.setStat("GETCABLESECR"+dex,""+aMAP.isSecret());
+							E.setStat("GETCABLEPARM"+dex,""+aMAP.defaultParm());
+							E.setStat("GETCABLEPREQ"+dex,aMAP.originalSkillPreReqList());
+							E.setStat("GETCABLEMASK"+dex,aMAP.extraMask());
+							E.setStat("GETCABLEMAXP"+dex,""+aMAP.maxProficiency());
 							// CABLE MUST BE LAST
-							E.setStat("GETCABLE"+dex,aMAP.abilityID);
+							E.setStat("GETCABLE"+dex,aMAP.abilityID());
 							dex++;
 						}
 					}
@@ -9313,13 +9313,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			int showNumber=0;
 			mob.tell(L("* Ability Mapping for @x1",me.ID()));
-			mapped.qualLevel=prompt(mob,mapped.qualLevel,++showNumber,showFlag,"Qualifying Level: ");
-			mapped.autoGain=prompt(mob,mapped.autoGain,++showNumber,showFlag,"Auto-Gained: ");
-			mapped.defaultProficiency=prompt(mob,mapped.defaultProficiency,++showNumber,showFlag,"Def. Proficiency: ");
-			mapped.extraMask=prompt(mob,mapped.extraMask,++showNumber,showFlag,"Qualifying Mask (?): ", true, CMLib.masking().maskHelp("\n\r", "disallow"));
-			mapped.originalSkillPreReqList=prompt(mob,mapped.originalSkillPreReqList,++showNumber,showFlag,"Required Skills (?): ", true, "Space delimited list of Ability IDs.  " +
+			mapped.qualLevel(prompt(mob,mapped.qualLevel(),++showNumber,showFlag,"Qualifying Level: "));
+			mapped.autoGain(prompt(mob,mapped.autoGain(),++showNumber,showFlag,"Auto-Gained: "));
+			mapped.defaultProficiency(prompt(mob,mapped.defaultProficiency(),++showNumber,showFlag,"Def. Proficiency: "));
+			mapped.extraMask(prompt(mob,mapped.extraMask(),++showNumber,showFlag,"Qualifying Mask (?): ", true, CMLib.masking().maskHelp("\n\r", "disallow")));
+			mapped.originalSkillPreReqList(prompt(mob,mapped.originalSkillPreReqList(),++showNumber,showFlag,"Required Skills (?): ", true, "Space delimited list of Ability IDs.  " +
 					"Put a required proficiency level in parenthesis after the Ability ID if desired.  " +
-					"For example: Skill_Write Skill_Trip Skill_Dirt(25) Hunting");
+					"For example: Skill_Write Skill_Trip Skill_Dirt(25) Hunting"));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
@@ -9329,8 +9329,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		return CMLib.ableMapper().makeAbilityMapping(mapped.abilityID,mapped.qualLevel,mapped.abilityID,mapped.defaultProficiency,100,"",mapped.autoGain,false,true,
-				 CMParms.parseSpaces(mapped.originalSkillPreReqList.trim(), true), mapped.extraMask,null);
+		return CMLib.ableMapper().makeAbilityMapping(mapped.abilityID(), mapped.qualLevel(), mapped.abilityID(), mapped.defaultProficiency(), 100, "", mapped.autoGain(), false, true,
+				CMParms.parseSpaces(mapped.originalSkillPreReqList().trim(), true), mapped.extraMask(), null);
 	}
 
 	@Override

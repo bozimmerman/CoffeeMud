@@ -198,7 +198,7 @@ public class PlayerClass extends StdCharClass
 												false);
 			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				final Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID());
 				if((A!=null)
 				&&(!CMLib.ableMapper().getAllQualified(ID(),true,A.ID()))
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))

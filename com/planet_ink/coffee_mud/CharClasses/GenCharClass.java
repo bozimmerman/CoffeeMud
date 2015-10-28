@@ -401,15 +401,15 @@ public class GenCharClass extends StdCharClass
 			for(int r=0;r<ables.size();r++)
 			{
 				str.append("<CABILITY>");
-				str.append("<CACLASS>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).abilityID+"</CACLASS>");
-				str.append("<CALEVEL>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).qualLevel+"</CALEVEL>");
-				str.append("<CAPROFF>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).defaultProficiency+"</CAPROFF>");
-				str.append("<CAAGAIN>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).autoGain+"</CAAGAIN>");
-				str.append("<CASECR>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).isSecret+"</CASECR>");
-				str.append("<CAPARM>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).defaultParm+"</CAPARM>");
-				str.append("<CAPREQ>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).originalSkillPreReqList+"</CAPREQ>");
-				str.append("<CAMASK>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).extraMask+"</CAMASK>");
-				str.append("<CAMAXP>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).maxProficiency+"</CAMAXP>");
+				str.append("<CACLASS>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).abilityID()+"</CACLASS>");
+				str.append("<CALEVEL>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).qualLevel()+"</CALEVEL>");
+				str.append("<CAPROFF>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).defaultProficiency()+"</CAPROFF>");
+				str.append("<CAAGAIN>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).autoGain()+"</CAAGAIN>");
+				str.append("<CASECR>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).isSecret()+"</CASECR>");
+				str.append("<CAPARM>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).defaultParm()+"</CAPARM>");
+				str.append("<CAPREQ>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).originalSkillPreReqList()+"</CAPREQ>");
+				str.append("<CAMASK>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).extraMask()+"</CAMASK>");
+				str.append("<CAMAXP>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).maxProficiency()+"</CAMAXP>");
 				str.append("</CABILITY>");
 			}
 			str.append("</CABILITIES>");
@@ -717,17 +717,17 @@ public class GenCharClass extends StdCharClass
 		final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
 		for(final AbilityMapper.AbilityMapping able : V)
 		{
-			final String AID=able.abilityID;
-			final AbilityMapper.AbilityMapping newMAP=new AbilityMapper.AbilityMapping(ID());
-			newMAP.abilityID = AID;
-			newMAP.qualLevel = CMLib.ableMapper().getQualifyingLevel(ID(),false,AID);
-			newMAP.defaultProficiency = CMLib.ableMapper().getDefaultProficiency(ID(),false,AID);
-			newMAP.autoGain = CMLib.ableMapper().getDefaultGain(ID(),false,AID);
-			newMAP.isSecret = CMLib.ableMapper().getSecretSkill(ID(),false,AID);
-			newMAP.defaultParm = CMLib.ableMapper().getDefaultParm(ID(),false,AID);
-			newMAP.originalSkillPreReqList = CMLib.ableMapper().getPreReqStrings(ID(),false,AID);
-			newMAP.extraMask = CMLib.ableMapper().getExtraMask(ID(),false,AID);
-			newMAP.maxProficiency = CMLib.ableMapper().getMaxProficiency(ID(),false,AID);
+			final String AID=able.abilityID();
+			final AbilityMapper.AbilityMapping newMAP=CMLib.ableMapper().newAbilityMapping().ID(ID());
+			newMAP.abilityID(AID);
+			newMAP.qualLevel(CMLib.ableMapper().getQualifyingLevel(ID(),false,AID));
+			newMAP.defaultProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,AID));
+			newMAP.autoGain(CMLib.ableMapper().getDefaultGain(ID(),false,AID));
+			newMAP.isSecret(CMLib.ableMapper().getSecretSkill(ID(),false,AID));
+			newMAP.defaultParm(CMLib.ableMapper().getDefaultParm(ID(),false,AID));
+			newMAP.originalSkillPreReqList(CMLib.ableMapper().getPreReqStrings(ID(),false,AID));
+			newMAP.extraMask(CMLib.ableMapper().getExtraMask(ID(),false,AID));
+			newMAP.maxProficiency(CMLib.ableMapper().getMaxProficiency(ID(),false,AID));
 			VA.addElement(newMAP);
 		}
 		return VA;
@@ -789,12 +789,12 @@ public class GenCharClass extends StdCharClass
 		case 22: return (setStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(setStats);
 		case 23: return (adjState==null)?"":CMLib.coffeeMaker().getCharStateStr(adjState);
 		case 24: return Integer.toString(getAbleSet().size());
-		case 25: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).abilityID;
-		case 26: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).qualLevel);
-		case 27: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).defaultProficiency);
-		case 28: return Boolean.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).autoGain);
-		case 29: return Boolean.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).isSecret);
-		case 30: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).defaultParm;
+		case 25: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).abilityID();
+		case 26: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).qualLevel());
+		case 27: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).defaultProficiency());
+		case 28: return Boolean.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).autoGain());
+		case 29: return Boolean.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).isSecret());
+		case 30: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).defaultParm();
 		case 31: return ""+((disallowedWeaponSet!=null)?disallowedWeaponSet.size():0);
 		case 32: return CMParms.toListString(disallowedWeaponSet);
 		case 33: return ""+((outfit(null)!=null)?outfit(null).size():0);
@@ -821,11 +821,11 @@ public class GenCharClass extends StdCharClass
 		case 48: return ""+requiredArmorSourceMinor();
 		case 49: return this.getCharClassLocatorID(statBuddy);
 		case 50: return this.getCharClassLocatorID(eventBuddy);
-		case 51: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).originalSkillPreReqList;
-		case 52: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).extraMask;
+		case 51: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).originalSkillPreReqList();
+		case 52: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).extraMask();
 		case 53: return helpEntry;
 		case 54: return ""+levelCap;
-		case 55: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).maxProficiency);
+		case 55: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).maxProficiency());
 		case 56: return ""+maxNonCraftingSkills;
 		case 57: return ""+maxCraftingSkills;
 		case 58: return ""+maxCommonSkills;

@@ -261,7 +261,7 @@ public class Beastmaster extends StdCharClass
 												false);
 			for(final AbilityMapper.AbilityMapping able : V)
 			{
-				final Ability A=CMClass.getAbility(able.abilityID);
+				final Ability A=CMClass.getAbility(able.abilityID());
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))

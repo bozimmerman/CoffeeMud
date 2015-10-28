@@ -76,11 +76,11 @@ public class ListCmd extends StdCommand
 		str.append("\n\r");
 		for(final AbilityMapper.AbilityMapping mapped : subMap.values())
 		{
-			str.append(CMStrings.padRight(mapped.abilityID, ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
-			str.append(CMStrings.padRight(""+mapped.qualLevel, ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
-			str.append(CMStrings.padRight(mapped.autoGain?L("yes"):L("no"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-			str.append(CMStrings.padRight(""+mapped.defaultProficiency, ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-			str.append(CMStrings.padRight(mapped.extraMask, ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.abilityID(), ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.qualLevel(), ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.autoGain()?L("yes"):L("no"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.defaultProficiency(), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.extraMask(), ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
 			str.append("\n\r");
 		}
 		str.append("\n\r");
@@ -94,11 +94,11 @@ public class ListCmd extends StdCommand
 		str.append("\n\r");
 		for(final AbilityMapper.AbilityMapping mapped : subMap.values())
 		{
-			str.append(CMStrings.padRight(mapped.abilityID, ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
-			str.append(CMStrings.padRight(""+mapped.qualLevel, ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
-			str.append(CMStrings.padRight(mapped.autoGain?L("yes"):L("no"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-			str.append(CMStrings.padRight(""+mapped.defaultProficiency, ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-			str.append(CMStrings.padRight(mapped.extraMask, ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.abilityID(), ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.qualLevel(), ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.autoGain()?L("yes"):L("no"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.defaultProficiency(), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.extraMask(), ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
 			str.append("\n\r");
 		}
 		return str;

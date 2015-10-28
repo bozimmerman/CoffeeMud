@@ -42,7 +42,7 @@ import java.util.*;
  */
 public interface AbilityMapper extends CMLibrary
 {
-	//TODO: Create an AbilityMapBuilder class for all these methods, replace classes here with interfaces.  Maybe common?
+	//TODO: Just use AbilityMapping class for all these methods, replace classes here with interfaces.
 	
 	
 	/**
@@ -219,6 +219,7 @@ public interface AbilityMapper extends CMLibrary
 	 * Creates a raw Ability Mapping object.
 	 * @see AbilityMapping
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
+	 * @see AbilityMapper#newAbilityMapping()
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
 	 * @param abilityID the Ability ID()
@@ -236,6 +237,14 @@ public interface AbilityMapper extends CMLibrary
 	public AbilityMapping makeAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, int maxProficiency, String defaultParam, boolean autoGain,
 			 boolean secret, boolean isAllQualified, List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
 
+	/**
+	 * Creates a new, blank ability mapping object
+	 * @see AbilityMapping
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @return a new, blank ability mapping object
+	 */
+	public AbilityMapping newAbilityMapping();
+	
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
@@ -290,14 +299,83 @@ public interface AbilityMapper extends CMLibrary
 	 * @param extraMask a zappermask of other requirements that a person must have for the skill
 	 */
 	public void addPreRequisites(String ID, List<String> preReqSkillsList, String extraMask);
+	
+	/**
+	 * Returns an enumeration of all the AbilityMapping object for all the abilities the
+	 * given class, race, whatever qualifies for ever.  Will include common (all qualified)
+	 * abilities if specified.
+	 * @see AbilityMapper.AbilityMapping
+	 * @param ID the race ID(), charclass ID(), etc
+	 * @param addAll true to include all-qualified abilities, false for just class unique
+	 * @return an enumeration of AbilityMapping objects
+	 */
 	public Enumeration<AbilityMapping> getClassAbles(String ID, boolean addAll);
+	
+	/**
+	 * Returns whether the given Ability ID() represents a skill qualified for by
+	 * any existing character class, including All-Qualified abilities.
+	 * @param abilityID the ability ID()
+	 * @return true if a class qualifies for it, false otherwise
+	 */
 	public boolean qualifiesByAnyCharClass(String abilityID);
+	
+	/**
+	 * Returns the lowest class level at which any class qualifies for the
+	 * given ability, returning 0 if non found.
+	 * @param abilityID the ability ID()
+	 * @return the lowest qualifying level
+	 */
 	public int lowestQualifyingLevel(String abilityID);
+	
+	/**
+	 * Returns whether the given class qualifies for the given ability.
+	 * Does not check all-qualifies list, so this is only class (or race)
+	 * specific qualifications.
+	 * @see AbilityMapper#classOnly(MOB, String, String)
+	 * @param classID the class ID(), race ID() or whatever
+	 * @param abilityID the ability ID()
+	 * @return true if the class qualifies for this ability
+	 */
 	public boolean classOnly(String classID, String abilityID);
+	
+	/**
+	 * Returns whether the given class qualifies for the given ability.
+	 * Does not check all-qualifies list, so this is only class (or race)
+	 * specific qualifications.  Will also specifically check the given
+	 * mobs class object with the given ID, which is strange.
+	 * @see AbilityMapper#classOnly(String, String)
+	 * @param mob the mob whose classes to also check
+	 * @param classID the class ID(), race ID() or whatever to specifically check
+	 * @param abilityID the ability ID() to use
+	 * @return true if the class qualifies for this ability
+	 */
 	public boolean classOnly(MOB mob, String classID, String abilityID);
+	
+	/**
+	 * Discovers whether the given ability is qualified for by a class that
+	 * is available to the given theme id number.
+	 * @see Area#THEME_ALLTHEMES
+	 * @param abilityID the Ability ID()
+	 * @param theme the theme code
+	 * @param publicly true to disqualify skill-only masks, false to allow
+	 * @return true if the ability is qualifies for by a char class of the theme
+	 */
 	public boolean availableToTheme(String abilityID, int theme, boolean publicly);
+	
+	/**
+	 * Returns the total number of abilities mapped to a class or race or something.
+	 * @return the total number of abilities mapped to a class or race or something.
+	 */
 	public int numMappedAbilities();
+	
+	/**
+	 * Returns the median lowest qualifying level for all abilities, given you
+	 * an idea of the middle-skill-gaining levels, for some reason.
+	 * @return the median lowest qualifying level for all abilities
+	 */
 	public int getCalculatedMedianLowestQualifyingLevel();
+	
+	
 	public Iterator<String> getAbilityAllowsList(String ableID);
 	public List<QualifyingID> getClassAllowsList(String ID);
 	public List<String> getLevelListings(String ID, boolean checkAll, int level);
@@ -362,61 +440,72 @@ public interface AbilityMapper extends CMLibrary
 	
 	public static interface QualifyingID
 	{
-		public String	ID();
-		public int	qualifyingLevel();
-		public QualifyingID	qualifyingLevel(int newLevel);
+		public String ID();
+
+		public int qualifyingLevel();
+
+		public QualifyingID qualifyingLevel(int newLevel);
 	}
 
-	public static class AbilityLimits
+	public static interface AbilityLimits
 	{
-		public int	commonSkills;
-		public int	craftingSkills;
-		public int	nonCraftingSkills;
-		public int	specificSkillLimit;
+		public int commonSkills();
+
+		public AbilityLimits commonSkills(int newVal);
+
+		public int craftingSkills();
+
+		public AbilityLimits craftingSkills(int newVal);
+
+		public int nonCraftingSkills();
+
+		public AbilityLimits nonCraftingSkills(int newVal);
+
+		public int specificSkillLimit();
+
+		public AbilityLimits specificSkillLimit(int newVal);
 	}
 
-	public static class AbilityMapping implements Cloneable
+	public enum Cost
 	{
-		public static final int		COST_PRAC				= 0;
-		public static final int		COST_TRAIN				= 1;
-		public static final int		COST_MANA				= 2;
-		public static final int		COST_PRACPRAC			= 3;
-		public static final int		COST_NUM				= 4;
-		public String				ID						= "";
-		public String				abilityID				= "";
-		public int					qualLevel				= -1;
-		public boolean				autoGain				= false;
-		public int					defaultProficiency		= 0;
-		public int					maxProficiency			= 100;
-		public String				defaultParm				= "";
-		public boolean				isSecret				= false;
-		public boolean				isAllQualified			= false;
-		public DVector				skillPreReqs			= new DVector(2);
-		public String				extraMask				= "";
-		public String				originalSkillPreReqList	= "";
-		public Integer[]			costOverrides			= new Integer[COST_NUM];
-		public boolean				allQualifyFlag			= false;
-		public Map<String, String>	extFields				= new Hashtable<String, String>(1);
-
-		public AbilityMapping(String id)
-		{
-			ID = id;
-		}
-
-		public AbilityMapping copyOf()
-		{
-			try
-			{
-				final AbilityMapping A = (AbilityMapping) this.clone();
-				A.skillPreReqs = skillPreReqs.copyOf();
-				A.costOverrides = costOverrides.clone();
-				return A;
-			}
-			catch (final Exception e)
-			{
-				return this;
-			}
-		}
+		PRAC,
+		TRAIN,
+		MANA,
+		PRACPRAC
 	}
-
+	
+	public static interface AbilityMapping extends Cloneable
+	{
+		public String				ID();
+		public AbilityMapping		ID(String newValue);
+		public String				abilityID();
+		public AbilityMapping		abilityID(String newValue);
+		public int					qualLevel();
+		public AbilityMapping		qualLevel(int newValue);
+		public boolean				autoGain();
+		public AbilityMapping		autoGain(boolean newValue);
+		public int					defaultProficiency();
+		public AbilityMapping		defaultProficiency(int newValue);
+		public int					maxProficiency();
+		public AbilityMapping		maxProficiency(int newValue);
+		public String				defaultParm();
+		public AbilityMapping		defaultParm(String newValue);
+		public boolean				isSecret();
+		public AbilityMapping		isSecret(boolean newValue);
+		public boolean				isAllQualified();
+		public AbilityMapping		isAllQualified(boolean newValue);
+		public DVector				skillPreReqs();
+		public AbilityMapping		skillPreReqs(DVector newValue);
+		public String				extraMask();
+		public AbilityMapping		extraMask(String newValue);
+		public String				originalSkillPreReqList();
+		public AbilityMapping		originalSkillPreReqList(String newValue);
+		public Integer[]			costOverrides();
+		public AbilityMapping		costOverrides(Integer[] newValue);
+		public boolean				allQualifyFlag();
+		public AbilityMapping		allQualifyFlag(boolean newValue);
+		public Map<String, String>	extFields();
+		public AbilityMapping		extFields(Map<String, String> newValue);
+		public AbilityMapping		copyOf();
+	}
 }

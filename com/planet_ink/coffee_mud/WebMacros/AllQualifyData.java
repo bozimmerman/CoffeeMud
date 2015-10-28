@@ -73,7 +73,7 @@ public class AllQualifyData extends StdWebMacro
 		{
 			String lvl=httpReq.getUrlParameter("LEVEL");
 			if(lvl==null)
-				lvl=Integer.toString(mapped.qualLevel);
+				lvl=Integer.toString(mapped.qualLevel());
 			else
 				lvl=Integer.toString(CMath.s_int(lvl));
 			str.append(lvl).append(", ");
@@ -83,7 +83,7 @@ public class AllQualifyData extends StdWebMacro
 		{
 			String prof=httpReq.getUrlParameter("PROF");
 			if(prof==null)
-				prof=Integer.toString(mapped.defaultProficiency);
+				prof=Integer.toString(mapped.defaultProficiency());
 			else
 				prof=Integer.toString(CMath.s_int(prof));
 			str.append(prof).append(", ");
@@ -93,7 +93,7 @@ public class AllQualifyData extends StdWebMacro
 		{
 			String s=httpReq.getUrlParameter("MASK");
 			if(s==null)
-				s=mapped.extraMask;
+				s=mapped.extraMask();
 			str.append(s).append(", ");
 		}
 
@@ -101,7 +101,7 @@ public class AllQualifyData extends StdWebMacro
 		{
 			String s=httpReq.getUrlParameter("AUTOGAIN");
 			if(s==null)
-				s=mapped.autoGain?"on":"";
+				s=mapped.autoGain()?"on":"";
 			str.append(s.equalsIgnoreCase("on")?"true":"false").append(", ");
 		}
 
@@ -110,7 +110,7 @@ public class AllQualifyData extends StdWebMacro
 			if(!httpReq.isUrlParameter("REQABLE1"))
 			{
 				int pnum=1;
-				for(final String s : CMParms.parseCommas(mapped.originalSkillPreReqList,true))
+				for(final String s : CMParms.parseCommas(mapped.originalSkillPreReqList(),true))
 				{
 					String ableID=s;
 					String lvl="";

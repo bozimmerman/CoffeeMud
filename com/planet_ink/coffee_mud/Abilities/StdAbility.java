@@ -166,10 +166,10 @@ public class StdAbility implements Ability
 			final Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
 			if(O!=null)
 			{
-				Integer val=O[AbilityMapper.AbilityMapping.COST_TRAIN];
+				Integer val=O[AbilityMapper.Cost.TRAIN.ordinal()];
 				if(val!=null)
 					return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(val.intValue()));
-				val=O[AbilityMapper.AbilityMapping.COST_PRAC];
+				val=O[AbilityMapper.Cost.PRAC.ordinal()];
 				if(val!=null)
 					return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.PRACTICE,Double.valueOf(val.intValue()));
 			}
@@ -196,8 +196,8 @@ public class StdAbility implements Ability
 		if(mob!=null)
 		{
 			final Integer[] O=CMLib.ableMapper().getCostOverrides(mob,ID());
-			if((O!=null)&&(O[AbilityMapper.AbilityMapping.COST_PRACPRAC]!=null))
-				return O[AbilityMapper.AbilityMapping.COST_PRACPRAC].intValue();
+			if((O!=null)&&(O[AbilityMapper.Cost.PRACPRAC.ordinal()]!=null))
+				return O[AbilityMapper.Cost.PRACPRAC.ordinal()].intValue();
 		}
 		return iniPracticesToPractice();
 	}
@@ -1152,9 +1152,9 @@ public class StdAbility implements Ability
 				consumed=minimum;
 			if(overrideMana()>=0) 
 				consumed=overrideMana();
-			if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
+			if((costOverrides!=null)&&(costOverrides[AbilityMapper.Cost.MANA.ordinal()]!=null))
 			{
-				consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
+				consumed=costOverrides[AbilityMapper.Cost.MANA.ordinal()].intValue();
 				if((consumed<minimum)&&(consumed>=0)) 
 					minimum=consumed;
 			}

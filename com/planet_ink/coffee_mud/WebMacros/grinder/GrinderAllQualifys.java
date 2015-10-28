@@ -57,23 +57,23 @@ public class GrinderAllQualifys
 		AbilityMapper.AbilityMapping newMap=map.get(last.toUpperCase().trim());
 		if(newMap==null)
 		{
-			newMap=new AbilityMapper.AbilityMapping(last.toUpperCase().trim());
-			newMap.abilityID=last;
-			newMap.allQualifyFlag=true;
+			newMap=CMLib.ableMapper().newAbilityMapping().ID(last.toUpperCase().trim());
+			newMap.abilityID(last);
+			newMap.allQualifyFlag(true);
 		}
 		String s;
 		s=httpReq.getUrlParameter("LEVEL");
 		if(s!=null)
-			newMap.qualLevel=CMath.s_int(s);
+			newMap.qualLevel(CMath.s_int(s));
 		s=httpReq.getUrlParameter("PROF");
 		if(s!=null)
-			newMap.defaultProficiency=CMath.s_int(s);
+			newMap.defaultProficiency(CMath.s_int(s));
 		s=httpReq.getUrlParameter("MASK");
 		if(s!=null)
-			newMap.extraMask=s;
+			newMap.extraMask(s);
 		s=httpReq.getUrlParameter("AUTOGAIN");
 		if(s!=null)
-			newMap.autoGain=s.equalsIgnoreCase("on");
+			newMap.autoGain(s.equalsIgnoreCase("on"));
 		final StringBuilder preReqs=new StringBuilder("");
 		int curChkNum=1;
 		while(httpReq.isUrlParameter("REQABLE"+curChkNum))
@@ -93,8 +93,8 @@ public class GrinderAllQualifys
 			}
 			curChkNum++;
 		}
-		newMap=CMLib.ableMapper().makeAbilityMapping(newMap.abilityID,newMap.qualLevel,newMap.abilityID,newMap.defaultProficiency,100,"",newMap.autoGain,false,
-										 			 true,CMParms.parseSpaces(preReqs.toString().trim(), true), newMap.extraMask,null);
+		newMap=CMLib.ableMapper().makeAbilityMapping(newMap.abilityID(),newMap.qualLevel(),newMap.abilityID(),newMap.defaultProficiency(),100,"",newMap.autoGain(),false,
+										 			 true,CMParms.parseSpaces(preReqs.toString().trim(), true), newMap.extraMask(),null);
 		map.put(last.toUpperCase().trim(),newMap);
 		CMLib.ableMapper().saveAllQualifysFile(allQualMap);
 		return "";

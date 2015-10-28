@@ -106,7 +106,7 @@ public class MOBTeacher extends CombatAbilities
 			for(final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(G.getName(), false);m.hasMoreElements();)
 			{
 				final AbilityMapping M=m.nextElement();
-				final Ability A2=CMClass.getAbility(M.abilityID);
+				final Ability A2=CMClass.getAbility(M.abilityID());
 				addAbility(mob,A2,pct,myAbles);
 			}
 		}

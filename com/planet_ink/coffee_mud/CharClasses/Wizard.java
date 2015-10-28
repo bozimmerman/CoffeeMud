@@ -70,8 +70,8 @@ public class Wizard extends Mage
 					if((able!=null)
 					&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 					{
-						able.costOverrides=new Integer[]{Integer.valueOf(0),Integer.valueOf(0),Integer.valueOf(0),Integer.valueOf(0)};
-						able.defaultProficiency=100;
+						able.costOverrides(new Integer[]{Integer.valueOf(0),Integer.valueOf(0),Integer.valueOf(0),Integer.valueOf(0)});
+						able.defaultProficiency(100);
 					}
 				}
 			}

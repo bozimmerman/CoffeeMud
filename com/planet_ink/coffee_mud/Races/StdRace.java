@@ -1198,17 +1198,17 @@ public class StdRace implements Race
 			GR.setStat("NUMRABLE","");
 		for(int i=0;i<dvata1.size();i++)
 		{
-			GR.setStat("GETRABLE"+i,dvata1.get(i).abilityID);
-			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,dvata1.get(i).abilityID));
-			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,dvata1.get(i).abilityID)));
-			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,dvata1.get(i).abilityID));
+			GR.setStat("GETRABLE"+i,dvata1.get(i).abilityID());
+			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,dvata1.get(i).abilityID()));
+			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,dvata1.get(i).abilityID())));
+			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,dvata1.get(i).abilityID()));
 		}
 		for(int i=0;i<dvata2.size();i++)
 		{
-			GR.setStat("GETRABLE"+(i+dvata1.size()),dvata2.get(i).abilityID);
-			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,dvata2.get(i).abilityID));
-			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,dvata2.get(i).abilityID)));
-			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,dvata2.get(i).abilityID));
+			GR.setStat("GETRABLE"+(i+dvata1.size()),dvata2.get(i).abilityID());
+			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,dvata2.get(i).abilityID()));
+			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,dvata2.get(i).abilityID())));
+			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,dvata2.get(i).abilityID()));
 		}
 
 		final List<Ability> data=new Vector<Ability>();
@@ -1287,7 +1287,7 @@ public class StdRace implements Race
 		final CMUniqSortSVec<Ability> finalV=new CMUniqSortSVec<Ability>(V.size());
 		for(final AbilityMapper.AbilityMapping able : V)
 		{
-			final Ability A=CMClass.getAbility(able.abilityID);
+			final Ability A=CMClass.getAbility(able.abilityID());
 			if(A!=null)
 			{
 				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,A.ID()));

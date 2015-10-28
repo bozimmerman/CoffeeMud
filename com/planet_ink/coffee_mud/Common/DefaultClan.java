@@ -806,14 +806,14 @@ public class DefaultClan implements Clan
 				final List<String> names = new Vector<String>();
 				for(final AbilityMapper.AbilityMapping aMap : abilities)
 				{
-					final Ability A=CMClass.getAbility(aMap.abilityID);
+					final Ability A=CMClass.getAbility(aMap.abilityID());
 					if(A!=null)
 					{
-						if((aMap.extFields.size()==0)
+						if((aMap.extFields().size()==0)
 						||(mobClanRole==null)
 						||(sysmsgs)
-						||(aMap.extFields.containsKey(mobClanRole.second.toString())))
-							names.add(A.name()+(aMap.autoGain?"":"(q)")+((aMap.extFields.size()>0)?"*":""));
+						||(aMap.extFields().containsKey(mobClanRole.second.toString())))
+							names.add(A.name()+(aMap.autoGain()?"":"(q)")+((aMap.extFields().size()>0)?"*":""));
 					}
 				}
 				msg.append(CMLib.lister().makeColumns(mob,names,null,3));

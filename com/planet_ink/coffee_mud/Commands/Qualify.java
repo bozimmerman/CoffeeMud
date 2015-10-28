@@ -122,7 +122,7 @@ public class Qualify  extends Skills
 			&&(level>highestLevel)
 			&&(level<(CMLib.ableMapper().qualifyingClassLevel(ableM,A)+1))
 			&&(filter.passesFilter(A))
-			&&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit > 0)
+			&&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit() > 0)
 			&&(ableM.fetchAbility(A.ID())==null)
 			&&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
 				highestLevel=level;
@@ -143,7 +143,7 @@ public class Qualify  extends Skills
 				   &&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
 				   &&(ableM.fetchAbility(A.ID())==null)
 				   &&(filter.passesFilter(A))
-				   &&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit > 0)
+				   &&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit() > 0)
 				   &&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
 				{
 					if((++col)>2)
@@ -350,18 +350,18 @@ public class Qualify  extends Skills
 			if(!mob.isMonster())
 			{
 				final AbilityMapper.AbilityLimits limits = CMLib.ableMapper().getCommonSkillRemainders(mob);
-				if(limits.commonSkills<0)
-					limits.commonSkills=0;
-				if(limits.commonSkills < Integer.MAX_VALUE/2)
-					msg.append(L("\n\r^HYou may learn ^w@x1^H more common skills.^N",""+limits.commonSkills));
-				if(limits.craftingSkills<0)
-					limits.craftingSkills=0;
-				if(limits.craftingSkills < Integer.MAX_VALUE/2)
-					msg.append(L("\n\r^HYou may learn ^w@x1^H more crafting skills.^N",""+limits.craftingSkills));
-				if(limits.nonCraftingSkills<0)
-					limits.nonCraftingSkills=0;
-				if(limits.nonCraftingSkills < Integer.MAX_VALUE/2)
-					msg.append(L("\n\r^HYou may learn ^w@x1^H more non-crafting common skills.^N",""+limits.nonCraftingSkills));
+				if(limits.commonSkills()<0)
+					limits.commonSkills(0);
+				if(limits.commonSkills() < Integer.MAX_VALUE/2)
+					msg.append(L("\n\r^HYou may learn ^w@x1^H more common skills.^N",""+limits.commonSkills()));
+				if(limits.craftingSkills()<0)
+					limits.craftingSkills(0);
+				if(limits.craftingSkills() < Integer.MAX_VALUE/2)
+					msg.append(L("\n\r^HYou may learn ^w@x1^H more crafting skills.^N",""+limits.craftingSkills()));
+				if(limits.nonCraftingSkills()<0)
+					limits.nonCraftingSkills(0);
+				if(limits.nonCraftingSkills() < Integer.MAX_VALUE/2)
+					msg.append(L("\n\r^HYou may learn ^w@x1^H more non-crafting common skills.^N",""+limits.nonCraftingSkills()));
 				mob.session().wraplessPrintln(L("^!You now qualify for the following unknown abilities:^?@x1",msg.toString()));
 				mob.tell(L("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises."));
 				if(classesFound)

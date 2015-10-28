@@ -1006,7 +1006,7 @@ public class DefaultClanGovernment implements ClanGovernment
 					if(ableMap != null)
 					{
 						for(Integer I : clanAbilityRoles[i])
-							ableMap.extFields.put(I.toString(), I.toString());
+							ableMap.extFields().put(I.toString(), I.toString());
 					}
 				}
 			}
@@ -1038,12 +1038,12 @@ public class DefaultClanGovernment implements ClanGovernment
 		final CMUniqSortSVec<Ability> finalV=new CMUniqSortSVec<Ability>();
 		for(final AbilityMapper.AbilityMapping able : V)
 		{
-			final Ability A=CMClass.getAbility(able.abilityID);
+			final Ability A=CMClass.getAbility(able.abilityID());
 			if((A!=null)
 			&&((mobClanRole==null)
 			 ||(mobClanRole.intValue()==Integer.MAX_VALUE)
-			 ||(able.extFields.size()==0)
-			 ||(able.extFields.containsKey(mobClanRole.toString()))))
+			 ||(able.extFields().size()==0)
+			 ||(able.extFields().containsKey(mobClanRole.toString()))))
 			{
 				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(clanGvtID,false,A.ID()));
 				A.setSavable(false);

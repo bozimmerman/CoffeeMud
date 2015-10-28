@@ -875,10 +875,10 @@ public class Clans extends StdLibrary implements ClanManager
 			{
 				final AbilityMapping map=m.nextElement();
 				final String addExt;
-				if(map.extFields.size()>0)
+				if(map.extFields().size()>0)
 				{
 					final List<String> posNames=new ArrayList<String>();
-					for(String I : map.extFields.keySet())
+					for(String I : map.extFields().keySet())
 					{
 						final ClanPosition P=gvt.findPositionRole(I);
 						if(P!=null)
@@ -888,7 +888,7 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				else
 					addExt="";
-				str.append(indt(2)).append("<ABILITY ID=\""+map.abilityID+"\" PROFF="+map.defaultProficiency+" LEVEL="+map.qualLevel+" QUALIFYONLY="+(!map.autoGain)+" "+addExt+"/>\n");
+				str.append(indt(2)).append("<ABILITY ID=\""+map.abilityID()+"\" PROFF="+map.defaultProficiency()+" LEVEL="+map.qualLevel()+" QUALIFYONLY="+(!map.autoGain())+" "+addExt+"/>\n");
 			}
 			str.append(indt(1)).append("</ABILITIES>\n");
 		}

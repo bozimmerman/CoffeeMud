@@ -2068,30 +2068,30 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				if(A == null)
 					throw new CMException("Unable to build ability on classID '"+classID+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms)+":"+CMStrings.limit(piece.value,100));
 				defined.put(prefix+"CLASS", classID);
-				final AbilityMapping mapA=new AbilityMapping(classID);
+				final AbilityMapping mapA=CMLib.ableMapper().newAbilityMapping().ID(classID);
 				String value;
 				value=findOptionalStringNow(E, null, prefix, "PARMS", valPiece, defined);
 				if(value != null)
 				{
-					mapA.defaultParm = value;
+					mapA.defaultParm(value);
 					defined.put(prefix+"PARMS", value);
 				}
 				value=findOptionalStringNow(E, null, prefix, "PROFF", valPiece, defined);
 				if(value != null)
 				{
-					mapA.defaultProficiency = CMath.parseIntExpression(value);
-					defined.put(prefix+"PROFF", mapA.defaultParm);
+					mapA.defaultProficiency(CMath.parseIntExpression(value));
+					defined.put(prefix+"PROFF", Integer.valueOf(mapA.defaultProficiency()));
 				}
 				value=findOptionalStringNow(E, null, prefix, "LEVEL", valPiece, defined);
 				if(value != null)
 				{
-					mapA.qualLevel = CMath.parseIntExpression(value);
-					defined.put(prefix+"LEVEL", mapA.defaultParm);
+					mapA.qualLevel(CMath.parseIntExpression(value));
+					defined.put(prefix+"LEVEL", Integer.valueOf(mapA.qualLevel()));
 				}
 				value=findOptionalStringNow(E, null, prefix, "QUALIFY", valPiece, defined);
 				if(value != null)
 				{
-					mapA.autoGain = !CMath.s_bool(value);
+					mapA.autoGain(!CMath.s_bool(value));
 					defined.put(prefix+"QUALIFY", value);
 				}
 				V.add(mapA);
@@ -2187,10 +2187,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(int i=0;i<rables.size();i++)
 		{
 			final AbilityMapping ableMap=rables.get(i);
-			R.setStat("GETRABLE"+i, ableMap.abilityID);
-			R.setStat("GETRABLEPROF"+i, ""+ableMap.defaultProficiency);
-			R.setStat("GETRABLEQUAL"+i, ""+(!ableMap.autoGain));
-			R.setStat("GETRABLELVL"+i, ""+ableMap.qualLevel);
+			R.setStat("GETRABLE"+i, ableMap.abilityID());
+			R.setStat("GETRABLEPROF"+i, ""+ableMap.defaultProficiency());
+			R.setStat("GETRABLEQUAL"+i, ""+(!ableMap.autoGain()));
+			R.setStat("GETRABLELVL"+i, ""+ableMap.qualLevel());
 		}
 		ignoreStats.addAll(Arrays.asList(new String[]{"NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL"}));
 		final List<AbilityMapping> cables = findRaceAbles(E,"CULTUREABILITY","RACE_CULT_ABLE_",piece,defined);
@@ -2198,8 +2198,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(int i=0;i<cables.size();i++)
 		{
 			final AbilityMapping ableMap=cables.get(i);
-			R.setStat("GETCABLE"+i, ableMap.abilityID);
-			R.setStat("GETCABLEPROF"+i, ""+ableMap.defaultProficiency);
+			R.setStat("GETCABLE"+i, ableMap.abilityID());
+			R.setStat("GETCABLEPROF"+i, ""+ableMap.defaultProficiency());
 		}
 		ignoreStats.addAll(Arrays.asList(new String[]{"NUMCABLE","GETCABLE","GETCABLEPROF"}));
 		final List<AbilityMapping> reffs = findRaceAbles(E,"AFFECT","RACE_EFFECT_",piece,defined);
@@ -2207,9 +2207,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(int i=0;i<reffs.size();i++)
 		{
 			final AbilityMapping ableMap=reffs.get(i);
-			R.setStat("GETREFF"+i, ableMap.abilityID);
-			R.setStat("GETREFFPARM"+i, ""+ableMap.defaultParm);
-			R.setStat("GETREFFLVL"+i, ""+ableMap.qualLevel);
+			R.setStat("GETREFF"+i, ableMap.abilityID());
+			R.setStat("GETREFFPARM"+i, ""+ableMap.defaultParm());
+			R.setStat("GETREFFLVL"+i, ""+ableMap.qualLevel());
 		}
 		ignoreStats.addAll(Arrays.asList(new String[]{"NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL"}));
 		fillOutStatCodes(R,ignoreStats,"RACE_",piece,defined);

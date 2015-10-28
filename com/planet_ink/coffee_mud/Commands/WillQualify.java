@@ -65,14 +65,14 @@ public class WillQualify  extends Skills
 			for (final Enumeration a = CMLib.ableMapper().getClassAbles(classID,true); a.hasMoreElements(); )
 			{
 				final AbilityMapper.AbilityMapping cimable=(AbilityMapper.AbilityMapping)a.nextElement();
-				if((cimable.qualLevel ==l)&&(!cimable.isSecret))
+				if((cimable.qualLevel() ==l)&&(!cimable.isSecret()))
 				{
-					final Ability A=CMClass.getAbility(cimable.abilityID);
+					final Ability A=CMClass.getAbility(cimable.abilityID());
 					if((A!=null)
 					&&((types.size()==0)
 						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))
 						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS))))
-					&&(CMLib.ableMapper().getCommonSkillLimit(ableM, A).specificSkillLimit > 0))
+					&&(CMLib.ableMapper().getCommonSkillLimit(ableM, A).specificSkillLimit() > 0))
 					{
 						if ( (++col) > 2)
 						{
@@ -81,7 +81,7 @@ public class WillQualify  extends Skills
 						}
 						thisLine.append("^N[^H" + CMStrings.padRight("" + l, COL_LEN1) + "^?] "
 								+ CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>", COL_LEN2) + " "
-								+ CMStrings.padRight(A.requirements(viewerM)+(cimable.autoGain?" *":""), (col == 2) ? COL_LEN3 : COL_LEN4));
+								+ CMStrings.padRight(A.requirements(viewerM)+(cimable.autoGain()?" *":""), (col == 2) ? COL_LEN3 : COL_LEN4));
 					}
 				}
 			}

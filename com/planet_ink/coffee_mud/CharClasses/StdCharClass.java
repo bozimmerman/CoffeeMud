@@ -999,16 +999,16 @@ public class StdCharClass implements CharClass
 		for(int i=0;i<data1.size();i++)
 		{
 			final AbilityMapper.AbilityMapping able = data1.get(i);
-			CR.setStat("GETCABLELVL"+i,Integer.toString(able.qualLevel));
-			CR.setStat("GETCABLEPROF"+i,Integer.toString(able.defaultProficiency));
-			CR.setStat("GETCABLEGAIN"+i,Boolean.toString(able.autoGain));
-			CR.setStat("GETCABLESECR"+i,Boolean.toString(able.isSecret));
-			CR.setStat("GETCABLEPARM"+i,able.defaultParm);
-			CR.setStat("GETCABLEPREQ"+i,able.originalSkillPreReqList);
-			CR.setStat("GETCABLEMASK"+i,able.extraMask==null?"":able.extraMask);
-			CR.setStat("GETCABLEMAXP"+i,Integer.toString(able.maxProficiency));
+			CR.setStat("GETCABLELVL"+i,Integer.toString(able.qualLevel()));
+			CR.setStat("GETCABLEPROF"+i,Integer.toString(able.defaultProficiency()));
+			CR.setStat("GETCABLEGAIN"+i,Boolean.toString(able.autoGain()));
+			CR.setStat("GETCABLESECR"+i,Boolean.toString(able.isSecret()));
+			CR.setStat("GETCABLEPARM"+i,able.defaultParm());
+			CR.setStat("GETCABLEPREQ"+i,able.originalSkillPreReqList());
+			CR.setStat("GETCABLEMASK"+i,able.extraMask()==null?"":able.extraMask());
+			CR.setStat("GETCABLEMAXP"+i,Integer.toString(able.maxProficiency()));
 			// GETCABLE -- MUST BE LAST --
-			CR.setStat("GETCABLE"+i,able.abilityID);
+			CR.setStat("GETCABLE"+i,able.abilityID());
 		}
 
 		Set<Integer> H=disallowedWeaponClasses(null);

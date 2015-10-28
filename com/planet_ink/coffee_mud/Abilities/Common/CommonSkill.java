@@ -346,9 +346,9 @@ public class CommonSkill extends StdAbility
 			if(overrideMana()>=0) 
 				consumed=overrideMana();
 			minimum=5;
-			if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
+			if((costOverrides!=null)&&(costOverrides[AbilityMapper.Cost.MANA.ordinal()]!=null))
 			{
-				consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
+				consumed=costOverrides[AbilityMapper.Cost.MANA.ordinal()].intValue();
 				if((consumed<minimum)&&(consumed>=0)) 
 					minimum=consumed;
 			}
@@ -476,13 +476,13 @@ public class CommonSkill extends StdAbility
 			return true;
 		final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
 		final AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(studentM, this);
-		if(remainders.commonSkills<=0)
+		if(remainders.commonSkills()<=0)
 		{
 			teacherM.tell(L("@x1 can not learn any more common skills.",studentM.name(teacherM)));
 			studentM.tell(L("You have learned the maximum @x1 common skills, and may not learn any more.",""+C.maxCommonSkills()));
 			return false;
 		}
-		if(remainders.specificSkillLimit<=0)
+		if(remainders.specificSkillLimit()<=0)
 		{
 			teacherM.tell(L("@x1 can not learn any more @x2crafting common skills.",studentM.name(teacherM),(crafting?"":"non-")));
 			final int max = crafting ? C.maxCraftingSkills() : C.maxNonCraftingSkills();
@@ -503,16 +503,16 @@ public class CommonSkill extends StdAbility
 				return;
 			final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
 			final AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(student, this);
-			if(remainders.commonSkills<=0)
+			if(remainders.commonSkills()<=0)
 				student.tell(L("@x1 may not learn any more common skills.",student.name()));
 			else
-			if(remainders.commonSkills<=Integer.MAX_VALUE/2)
-				student.tell(L("@x1 may learn @x2 more common skills.",student.name(),""+remainders.commonSkills));
-			if(remainders.specificSkillLimit<=0)
+			if(remainders.commonSkills()<=Integer.MAX_VALUE/2)
+				student.tell(L("@x1 may learn @x2 more common skills.",student.name(),""+remainders.commonSkills()));
+			if(remainders.specificSkillLimit()<=0)
 				student.tell(L("@x1 may not learn any more @x2crafting common skills.",student.name(),(crafting?"":"non-")));
 			else
-			if(remainders.specificSkillLimit<=Integer.MAX_VALUE/2)
-				student.tell(L("@x1 may learn @x2 more @x3crafting common skills.",student.name(),""+remainders.specificSkillLimit,(crafting?"":"non-")));
+			if(remainders.specificSkillLimit()<=Integer.MAX_VALUE/2)
+				student.tell(L("@x1 may learn @x2 more @x3crafting common skills.",student.name(),""+remainders.specificSkillLimit(),(crafting?"":"non-")));
 		}
 	}
 
