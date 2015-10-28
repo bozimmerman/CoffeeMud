@@ -375,9 +375,24 @@ public interface AbilityMapper extends CMLibrary
 	 */
 	public int getCalculatedMedianLowestQualifyingLevel();
 	
-	
+	/**
+	 * Returns an iterator over the list of expertises and skills which having the given
+	 * skill will allow.
+	 * @param ableID the skill to get the allows list for
+	 * @return an iterator over the list of expertises and skills
+	 */
 	public Iterator<String> getAbilityAllowsList(String ableID);
+	
+	/**
+	 * Returns the list of things allowed by skill which the given class/race/whatever
+	 * qualifies over their life, along with qualifying levels.  This is intended entirely for
+	 * gathering expertises qualified for by class skills. 
+	 * @param ID the charclass ID(), race ID(), or whatever
+	 * @return the list of skill and skill qualifying information for that class
+	 */
 	public List<QualifyingID> getClassAllowsList(String ID);
+	
+	
 	public List<String> getLevelListings(String ID, boolean checkAll, int level);
 	public List<AbilityMapping> getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
 	public int getQualifyingLevel(String ID, boolean checkAll, String abilityID);

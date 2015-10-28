@@ -387,9 +387,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				if(Ix==null)
 				{
 					alreadyDone.put(s, Integer.valueOf(DV.size()));
-					final int[] qualifyingLevel = {able.qualLevel()};
 					DV.add(new QualifyingID()
 					{
+						private int qualifyingLevel = able.qualLevel();
+						
 						@Override
 						public String ID()
 						{
@@ -399,13 +400,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 						@Override
 						public int qualifyingLevel()
 						{
-							return qualifyingLevel[0];
+							return qualifyingLevel;
 						}
 
 						@Override
 						public QualifyingID qualifyingLevel(int newLevel)
 						{
-							qualifyingLevel[0] = newLevel;
+							qualifyingLevel = newLevel;
 							return this;
 						}
 					});
