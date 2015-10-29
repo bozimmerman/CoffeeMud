@@ -10406,35 +10406,39 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t!=null)
 					{
 						String str=null;
-						if(msg.othersMessage()!=null)
-							str=CMStrings.replaceAll(CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase()),"`","'");
+						if(msg.othersMessage() != null)
+							str=CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase());
 						else
-							str=CMStrings.replaceAll(CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase()),"`","'");
-						str=(" "+str+" ").toUpperCase();
-						str=CMStrings.removeColors(str);
-						str=CMStrings.replaceAll(str,"\n\r"," ");
-						if((t[1].length()==0)||(t[1].equals("ALL")))
+						if(msg.targetMessage() != null)
+							str=CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());
+						if(str != null)
 						{
-							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
-							return;
-						}
-						else
-						if((t[1].equals("P"))&&(t.length>2))
-						{
-							if(match(str.trim(),t[2]))
+							str=(" "+str.replaceAll("`","'")+" ").toUpperCase();
+							str=CMStrings.removeColors(str);
+							str=CMStrings.replaceAll(str,"\n\r"," ");
+							if((t[1].length()==0)||(t[1].equals("ALL")))
 							{
 								enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
 								return;
 							}
-						}
-						else
-						for(int i=1;i<t.length;i++)
-						{
-							final int x=str.indexOf(" "+t[i]+" ");
-							if(x>=0)
+							else
+							if((t[1].equals("P"))&&(t.length>2))
 							{
-								enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim());
-								return;
+								if(match(str.trim(),t[2]))
+								{
+									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
+									return;
+								}
+							}
+							else
+							for(int i=1;i<t.length;i++)
+							{
+								final int x=str.indexOf(" "+t[i]+" ");
+								if(x>=0)
+								{
+									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim());
+									return;
+								}
 							}
 						}
 					}

@@ -128,18 +128,23 @@ public class Spell_Spellbinding extends Spell
 		&&(msg.sourceMessage().length()>0))
 		{
 			final String s=CMStrings.getSayFromMessage(msg.sourceMessage());
-			for(int v=0;v<spellbindings.size();v++)
-				if(((String)spellbindings.elementAt(v,1)).equalsIgnoreCase(s))
+			if(s!=null)
+			{
+				for(int v=0;v<spellbindings.size();v++)
 				{
-					boolean alreadyWanding=false;
-					final List<CMMsg> trailers =msg.trailerMsgs();
-					if(trailers!=null)
-						for(final CMMsg msg2 : trailers)
-							if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
-								alreadyWanding=true;
-					if(!alreadyWanding)
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,L("The magic of '@x1' swells within you!",s),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					if(((String)spellbindings.elementAt(v,1)).equalsIgnoreCase(s))
+					{
+						boolean alreadyWanding=false;
+						final List<CMMsg> trailers =msg.trailerMsgs();
+						if(trailers!=null)
+							for(final CMMsg msg2 : trailers)
+								if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+									alreadyWanding=true;
+						if(!alreadyWanding)
+							msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,L("The magic of '@x1' swells within you!",s),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					}
 				}
+			}
 		}
 		else
 		if((msg.tool()==this)
@@ -149,24 +154,29 @@ public class Spell_Spellbinding extends Spell
 		&&(msg.sourceMessage().length()>0))
 		{
 			final String s=CMStrings.getSayFromMessage(msg.sourceMessage());
-			for(int v=spellbindings.size()-1;v>=0;v--)
-				if(((String)spellbindings.elementAt(v,1)).equalsIgnoreCase(s))
+			if(s!=null)
+			{
+				for(int v=spellbindings.size()-1;v>=0;v--)
 				{
-					final DVector V2=(DVector)spellbindings.elementAt(v,2);
-					for(int v2=0;v2<V2.size();v2++)
+					if(((String)spellbindings.elementAt(v,1)).equalsIgnoreCase(s))
 					{
-						final Ability A=msg.source().fetchAbility((String)V2.elementAt(v2,1));
-						final int curMana=msg.source().curState().getMana();
-						msg.source().curState().setMana(1000);
-						if(msg.target()!=null)
-							A.invoke(msg.source(),CMParms.parse(msg.target().Name()),null,false,0);
-						else
-							A.invoke(msg.source(),new Vector(),null,false,0);
-						msg.source().curState().setMana(curMana);
+						final DVector V2=(DVector)spellbindings.elementAt(v,2);
+						for(int v2=0;v2<V2.size();v2++)
+						{
+							final Ability A=msg.source().fetchAbility((String)V2.elementAt(v2,1));
+							final int curMana=msg.source().curState().getMana();
+							msg.source().curState().setMana(1000);
+							if(msg.target()!=null)
+								A.invoke(msg.source(),CMParms.parse(msg.target().Name()),null,false,0);
+							else
+								A.invoke(msg.source(),new Vector(),null,false,0);
+							msg.source().curState().setMana(curMana);
+						}
+						if(canBeUninvoked())
+							spellbindings.removeElementAt(v);
 					}
-					if(canBeUninvoked())
-						spellbindings.removeElementAt(v);
 				}
+			}
 		}
 		if((spellbindings.size()==0)&&(canBeUninvoked()))
 			unInvoke();

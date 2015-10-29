@@ -172,7 +172,8 @@ public class Spell_Simulacrum extends Spell
 							{
 								norecurse=true;
 								final String say = CMStrings.getSayFromMessage(msg.sourceMessage());
-								simulacruM.doCommand(CMParms.parse(say), MUDCmdProcessor.METAFLAG_ORDER);
+								if(say != null)
+									simulacruM.doCommand(CMParms.parse(say), MUDCmdProcessor.METAFLAG_ORDER);
 							}
 						}
 						finally

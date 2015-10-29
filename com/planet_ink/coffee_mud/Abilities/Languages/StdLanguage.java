@@ -225,17 +225,20 @@ public class StdLanguage extends StdAbility implements Language
 	protected boolean processSourceMessage(CMMsg msg, String str, int numToMess)
 	{
 		String smsg=CMStrings.getSayFromMessage(msg.sourceMessage());
-		if(numToMess>0)
-			smsg=messChars(ID(),smsg,numToMess);
-		msg.modify(msg.source(),
-					  msg.target(),
-					  this,
-					  msg.sourceCode(),
-					  CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
-					  msg.targetCode(),
-					  msg.targetMessage(),
-					  msg.othersCode(),
-					  msg.othersMessage());
+		if(smsg != null)
+		{
+			if(numToMess>0)
+				smsg=messChars(ID(),smsg,numToMess);
+			msg.modify(msg.source(),
+						  msg.target(),
+						  this,
+						  msg.sourceCode(),
+						  CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
+						  msg.targetCode(),
+						  msg.targetMessage(),
+						  msg.othersCode(),
+						  msg.othersMessage());
+		}
 		return true;
 	}
 

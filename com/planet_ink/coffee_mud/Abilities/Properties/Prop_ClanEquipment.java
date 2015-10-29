@@ -401,7 +401,9 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 							if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 								alreadyWanding=true;
 					final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
-					if((!alreadyWanding)&&(checkWave(mob,said,(Wand)affected)))
+					if((!alreadyWanding)
+					&&(said != null)
+					&&(checkWave(mob,said,(Wand)affected)))
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,CMMsg.NO_EFFECT,null));
 				}
 				break;

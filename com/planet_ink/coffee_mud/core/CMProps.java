@@ -2037,14 +2037,22 @@ public class CMProps extends Properties
 		List<String> filter=null;
 		switch(whichFilter)
 		{
-		case EMOTEFILTER: filter=p().emoteFilter; break;
-		case POSEFILTER: filter=p().poseFilter; break;
-		case SAYFILTER: filter=p().sayFilter; break;
-		case CHANNELFILTER: filter=p().channelFilter; break;
+		case EMOTEFILTER:
+			filter = p().emoteFilter;
+			break;
+		case POSEFILTER:
+			filter = p().poseFilter;
+			break;
+		case SAYFILTER:
+			filter = p().sayFilter;
+			break;
+		case CHANNELFILTER:
+			filter = p().channelFilter;
+			break;
 		default:
 			return false;
 		}
-		if((filter==null)||(filter.size()==0))
+		if((filter==null)||(filter.size()==0)||(msg==null))
 			return false;
 
 		int fdex=0;

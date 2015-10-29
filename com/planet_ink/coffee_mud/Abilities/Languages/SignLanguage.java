@@ -60,6 +60,8 @@ public class SignLanguage extends StdLanguage
 		if(wordStart<0)
 			return true;
 		String wordsSaid=CMStrings.getSayFromMessage(msg.sourceMessage());
+		if(wordsSaid == null)
+			return true;
 		if(numToMess>0)
 			wordsSaid=messChars(ID(),wordsSaid,numToMess);
 		final String fullMsgStr = CMStrings.substituteSayInMessage(msg.sourceMessage(),wordsSaid);

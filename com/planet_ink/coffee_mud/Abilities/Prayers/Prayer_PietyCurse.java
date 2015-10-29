@@ -106,17 +106,20 @@ public class Prayer_PietyCurse extends Prayer
 			&&(msg.sourceMessage()!=null))
 			{
 				final String sayMessage = CMStrings.getSayFromMessage(msg.sourceMessage());
-				if(CMProps.isAnyINIFiltered(sayMessage))
-					damageToDo=(int)Math.round(1.0+(5+(invoker.phyStats().level()/20)))+msg.source().phyStats().level();
-				else
-				for(String s : CMLib.english().parseWords(sayMessage))
+				if(sayMessage != null)
 				{
-					s=s.toUpperCase().trim();
-					if(UNPIOS_SET.contains(s)
-					||s.startsWith(filterPatternStart))
-					{
+					if(CMProps.isAnyINIFiltered(sayMessage))
 						damageToDo=(int)Math.round(1.0+(5+(invoker.phyStats().level()/20)))+msg.source().phyStats().level();
-						break;
+					else
+					for(String s : CMLib.english().parseWords(sayMessage))
+					{
+						s=s.toUpperCase().trim();
+						if(UNPIOS_SET.contains(s)
+						||s.startsWith(filterPatternStart))
+						{
+							damageToDo=(int)Math.round(1.0+(5+(invoker.phyStats().level()/20)))+msg.source().phyStats().level();
+							break;
+						}
 					}
 				}
 			}
