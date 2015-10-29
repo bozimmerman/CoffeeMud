@@ -148,8 +148,9 @@ public class DefaultLayoutNode implements LayoutNode
 	{
 		tags.put(LayoutTags.NODETYPE,type.toString());
 	}
+	
 	@Override
-	public String getColorRepresentation(int line)
+	public String getColorRepresentation(char roomChar, int line)
 	{
 
 		switch(line)
@@ -163,19 +164,20 @@ public class DefaultLayoutNode implements LayoutNode
 				if(links.containsKey(Integer.valueOf(Directions.EAST)))
 				{
 					if(links.containsKey(Integer.valueOf(Directions.WEST)))
-						return "<*>";
-					return " *>";
+						return "<"+roomChar+">";
+					return " "+roomChar+">";
 				}
 				else
 				if(links.containsKey(Integer.valueOf(Directions.WEST)))
-					return "<* ";
-				return " * ";
+					return "<"+roomChar+" ";
+				return " "+roomChar+" ";
 			}
 			case 2:
 				if(links.containsKey(Integer.valueOf(Directions.SOUTH)))
 					return " v ";
 				return "   ";
-			default: return "   ";
+			default: 
+				return "   ";
 		}
 	}
 }

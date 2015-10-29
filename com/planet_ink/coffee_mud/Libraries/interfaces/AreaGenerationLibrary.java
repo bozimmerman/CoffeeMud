@@ -73,7 +73,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		public LayoutTypes type();
 		public void setExits(int[] dirs);
 		public void reType(LayoutTypes type);
-		public String getColorRepresentation(int line);
+		public String getColorRepresentation(char roomChar, int line);
 		public Room room();
 		public void setRoom(Room room);
 	}

@@ -26,8 +26,9 @@ public class LayoutTester
 	public static void draw(LayoutManager layout, int size, int dir)
 	{
 		final List<LayoutNode> V=layout.generate(size, dir);
+		final LayoutNode firstNode = (V.size()==0) ? null : V.get(0);
 
-		System.out.println("Layout "+layout.name()+", size="+V.size()+": "+continuityCheck(V));
+		System.out.println("Layout "+layout.name()+", size="+V.size()+", dir="+Directions.getDirectionName(dir)+": "+continuityCheck(V));
 		long lowestX=Long.MAX_VALUE;
 		long lowestY=Long.MAX_VALUE;
 		long highestX=Long.MIN_VALUE;
@@ -54,14 +55,20 @@ public class LayoutTester
 			if(ys != null)
 			{
 				final Hashtable<Long,LayoutNode> H = new Hashtable<Long,LayoutNode>();
-				for(final LayoutNode xs : ys) H.put(Long.valueOf(xs.coord()[0]),xs);
+				for(final LayoutNode xs : ys) 
+					H.put(Long.valueOf(xs.coord()[0]),xs);
 				for(int i=0;i<3;i++)
 				{
 					for(long x=lowestX;x<=highestX;x++)
+					{
 						if(H.containsKey(Long.valueOf(x)))
-							System.out.print(H.get(Long.valueOf(x)).getColorRepresentation(i));
+						{
+							LayoutNode n = H.get(Long.valueOf(x));
+							System.out.print(n.getColorRepresentation((firstNode==n ? 'O':'*'),i));
+						}
 						else
 							System.out.print("   ");
+					}
 					System.out.println("");
 				}
 			}
@@ -84,6 +91,10 @@ public class LayoutTester
 		Directions.instance();
 		final int d=Directions.NORTH;
 		{
+			draw(new ApartmentLayout(), 10, d);
+			draw(new ApartmentLayout(), 25, d);
+			draw(new ApartmentLayout(), 50, d);
+			draw(new ApartmentLayout(), 100, d);
 			draw(new BoxCityLayout(),25, d);
 			draw(new BoxCityLayout(), 50, d);
 			draw(new BoxCityLayout(), 100, d);

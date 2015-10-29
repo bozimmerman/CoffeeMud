@@ -57,14 +57,42 @@ public class ApartmentLayout extends AbstractLayout
 		final int fullNumHallway = numHallways;
 		switch(dir)
 		{
-		case Directions.NORTH: n=new DefaultLayoutNode(new long[]{0,hallwayLength}); sidewayDirection=Directions.EAST; break;
-		case Directions.SOUTH: n=new DefaultLayoutNode(new long[]{fullNumHallway,0}); sidewayDirection=Directions.WEST; break;
-		case Directions.EAST: n=new DefaultLayoutNode(new long[]{0,0}); sidewayDirection=Directions.SOUTH; break;
-		case Directions.WEST: n=new DefaultLayoutNode(new long[]{fullNumHallway,hallwayLength}); sidewayDirection=Directions.NORTH; break;
-		case Directions.NORTHEAST: n=new DefaultLayoutNode(new long[]{0,hallwayLength}); sidewayDirection=Directions.EAST; hallwayDirection=Directions.NORTH; break;
-		case Directions.NORTHWEST: n=new DefaultLayoutNode(new long[]{fullNumHallway,hallwayLength}); sidewayDirection=Directions.WEST; hallwayDirection=Directions.NORTH; break;
-		case Directions.SOUTHEAST: n=new DefaultLayoutNode(new long[]{0,0}); sidewayDirection=Directions.SOUTH; hallwayDirection=Directions.EAST; break;
-		case Directions.SOUTHWEST: n=new DefaultLayoutNode(new long[]{fullNumHallway,0}); sidewayDirection=Directions.WEST; hallwayDirection=Directions.SOUTH; break;
+		case Directions.NORTH:
+			n = new DefaultLayoutNode(new long[] { 0, hallwayLength });
+			sidewayDirection = Directions.EAST;
+			break;
+		case Directions.SOUTH:
+			n = new DefaultLayoutNode(new long[] { fullNumHallway, 0 });
+			sidewayDirection = Directions.WEST;
+			break;
+		case Directions.EAST:
+			n = new DefaultLayoutNode(new long[] { 0, 0 });
+			sidewayDirection = Directions.SOUTH;
+			break;
+		case Directions.WEST:
+			n = new DefaultLayoutNode(new long[] { fullNumHallway, hallwayLength });
+			sidewayDirection = Directions.NORTH;
+			break;
+		case Directions.NORTHEAST:
+			n = new DefaultLayoutNode(new long[] { 0, hallwayLength });
+			sidewayDirection = Directions.EAST;
+			hallwayDirection = Directions.NORTH;
+			break;
+		case Directions.NORTHWEST:
+			n = new DefaultLayoutNode(new long[] { fullNumHallway, hallwayLength });
+			sidewayDirection = Directions.WEST;
+			hallwayDirection = Directions.NORTH;
+			break;
+		case Directions.SOUTHEAST:
+			n = new DefaultLayoutNode(new long[] { 0, 0 });
+			sidewayDirection = Directions.SOUTH;
+			hallwayDirection = Directions.EAST;
+			break;
+		case Directions.SOUTHWEST:
+			n = new DefaultLayoutNode(new long[] { fullNumHallway, 0 });
+			sidewayDirection = Directions.WEST;
+			hallwayDirection = Directions.SOUTH;
+			break;
 		}
 		if(n!=null)
 		{
