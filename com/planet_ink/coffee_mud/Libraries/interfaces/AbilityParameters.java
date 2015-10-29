@@ -131,7 +131,7 @@ public interface AbilityParameters extends CMLibrary
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFile()
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFormat()
 	 * @param mob the mob who is editing this recipe file
-	 * @param recipeFilename the unadorned regular filename of the recipe file to edit
+	 * @param recipeFilename the unpathed regular filename of the recipe file to edit
 	 * @param recipeFormat the recipe format from the crafting skill recipe format string
 	 * @throws java.io.IOException
 	 */
@@ -143,7 +143,7 @@ public interface AbilityParameters extends CMLibrary
 	 * editors, and then optionally re-saves.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFile()
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFormat()
-	 * @param recipeFilename the unadorned regular filename of the recipe data to start with
+	 * @param recipeFilename the unpathed regular filename of the recipe data to start with
 	 * @param recipeFormat the recipe format coded string from
 	 * @param save true to re-save the recipes file, false not to
 	 */
@@ -166,7 +166,7 @@ public interface AbilityParameters extends CMLibrary
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFile()
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFormat()
 	 * @see AbilityParameters.AbilityRecipeData
-	 * @param recipeFilename the unadorned regular filename of the recipe data to start with
+	 * @param recipeFilename the unpathed regular filename of the recipe data to start with
 	 * @param recipeFormat the recipe format coded string from
 	 * @return the parsed AbilityRecipeData
 	 */
@@ -179,11 +179,30 @@ public interface AbilityParameters extends CMLibrary
 	 */
 	public Map<String,AbilityParmEditor> getEditors();
 	
-	
+	/**
+	 * Resaves the given recipe file given the editor and data information, already parsed for easy
+	 * manipulation.
+	 * @see AbilityRecipeData
+	 * See also dev notes below
+	 * @param mob the mob doing the save, used only for logging
+	 * @param recipeFilename the plain unpathed 
+	 * @param rowsV the altered data rows
+	 * @param columnsV the recipe column information
+	 * @param saveVFS true to save to vfs, false for local hard drive
+	 */
 	public void resaveRecipeFile(MOB mob, String recipeFilename, List<DVector> rowsV, List<? extends Object> columnsV, boolean saveVFS);
 	public StringBuffer getRecipeList(ItemCraftor iA);
 	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException;
 
+	/**
+	 * 
+	 * DEV NOTES: Data rows are a DVector (editor ID, data).  However, it starts off as
+	 * (List of possible editor IDs, data), until the correct ID is determined.
+	 * The columns are always either a string, or a list of strings, for multi-use columns.
+	 * For data rows, the offender is blankRow() below, which returns the confused set. 
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static interface AbilityRecipeData
 	{
 		public String recipeFilename();
