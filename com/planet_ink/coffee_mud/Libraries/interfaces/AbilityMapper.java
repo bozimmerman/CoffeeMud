@@ -392,17 +392,75 @@ public interface AbilityMapper extends CMLibrary
 	 */
 	public List<QualifyingID> getClassAllowsList(String ID);
 	
-	
+	/**
+	 * Returns the AbilityIDs of all the skills qualified for by the given
+	 * char class or race or whatever, at the given level, and optionally
+	 * including the all-qualified skills.
+	 * @param ID the charclass ID(), race ID(), or whatever
+	 * @param checkAll true to check the All Qualifies list, or false otherwise
+	 * @param level the specific level to check.
+	 * @return the AbilityIDs of all the skills qualified for at that level
+	 */
 	public List<String> getLevelListings(String ID, boolean checkAll, int level);
+	
+	/**
+	 * Returns the full AbilityMappings of all the skills qualified for by the given
+	 * char class or race or whatever, at every level up to and including the 
+	 * given level, and optionally excluding the all-qualified skills and
+	 * non-gained skills.
+	 * @param ID the charclass ID(), race ID(), or whatever
+	 * @param level the specific level to check.
+	 * @param ignoreAll true to ignore the All Qualifies list, or false otherwise
+	 * @param gainedOnly true to only include the auto-gain-only skills, false otherwise  
+	 * @return the AbilityIDs of all the skills qualified for at that level
+	 */
 	public List<AbilityMapping> getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
+	
+	/**
+	 * Returns the level at which the given class or race qualifies for the given ability ID(),
+	 * optionally checking the All-Qualifies list or not.  Returns -1 for no match.
+	 * @param ID the charclass ID(), race ID(), or whatever
+	 * @param checkAll true to check the All Qualifies list, false to skip it
+	 * @param abilityID the Ability ID() to find a level for
+	 * @return the level at which the give class or race qualifies, or -1
+	 */
 	public int getQualifyingLevel(String ID, boolean checkAll, String abilityID);
+	/**
+	 * Returns the level at which the given mob (by race or class) qualifies for the 
+	 * given ability, Returns -1 for no match.
+	 * @param studentM the mob, whose charclass ID(), race ID() are checked
+	 * @param A the Ability to find a level for
+	 * @return the level at which the give class or race qualifies, or -1
+	 */
 	public int qualifyingLevel(MOB studentM, Ability A);
+	
+	/**
+	 * Returns the zapper mask that applies to the given class or race for the given 
+	 * ability ID(), optionally checking the All-Qualifies list or not.  Returns null 
+	 * for no match. The mask is checked against a potential learner of this skill.
+	 * @see MaskingLibrary
+	 * @param ID the charclass ID(), race ID(), or whatever
+	 * @param checkAll true to check the All Qualifies list, false to skip it
+	 * @param abilityID the Ability ID() to find a level for
+	 * @return the zapper mask that applies
+	 */
 	public String getExtraMask(String ID, boolean checkAll, String abilityID);
+
+	/**
+	 * Returns the first applicable zapper mask that applies to the given mob for 
+	 * the given ability. Returns null for nothing found. The mask is checked 
+	 * against a potential learner of this skill.
+	 * @see MaskingLibrary
+	 * @param studentM the mob, whose clans, charclass ID(), race ID() are checked
+	 * @param A the Ability to find a mask for
+	 * @return the zapper mask that applies
+	 */
 	public String getApplicableMask(MOB studentM, Ability A);
+	public String getCommonExtraMask(Ability A);
+	
 	public DVector getUnmetPreRequisites(MOB studentM, Ability A);
 	public DVector getCommonPreRequisites(Ability A);
 	public DVector getCommonPreRequisites(MOB mob, Ability A);
-	public String getCommonExtraMask(Ability A);
 	public String formatPreRequisites(DVector preReqs);
 	public int qualifyingClassLevel(MOB studentM, Ability A);
 	public boolean qualifiesOnlyByClan(MOB studentM, Ability A);
