@@ -199,10 +199,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Item[] getCatalogItems()
 	{
-		final Vector<Item> itemsV=icatalog.getDimensionVector(1);
+		final List<Item> itemsV=(List)icatalog.getDimensionList(1);
 		final Item[] items=new Item[itemsV.size()];
 		int x=0;
 		for (final Item item : itemsV)
@@ -210,10 +210,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		return items;
 	}
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public MOB[] getCatalogMobs()
 	{
-		final Vector<MOB> mobsV=mcatalog.getDimensionVector(1);
+		final List<MOB> mobsV=(List)mcatalog.getDimensionList(1);
 		final MOB[] mobs=new MOB[mobsV.size()];
 		int x=0;
 		for (final MOB mob : mobsV)

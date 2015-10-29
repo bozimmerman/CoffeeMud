@@ -32,8 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
-public class DVector implements Cloneable, java.io.Serializable
+public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 {
 	public static final long 	serialVersionUID=43353454350L;
 	protected int 				dimensions=1;
@@ -118,7 +117,7 @@ public class DVector implements Cloneable, java.io.Serializable
 		dim--;
 		if(stuff!=null)
 		{
-			final TreeSet sorted=new TreeSet();
+			final TreeSet<Object> sorted=new TreeSet<Object>();
 			Object O=null;
 			for (final Object[] name : stuff)
 			{
@@ -127,7 +126,7 @@ public class DVector implements Cloneable, java.io.Serializable
 					sorted.add(O);
 			}
 			final SVector<Object[]> newStuff = new SVector<Object[]>(stuff.size());
-			for(final Iterator i=sorted.iterator();i.hasNext();)
+			for(final Iterator<Object> i=sorted.iterator();i.hasNext();)
 			{
 				O=i.next();
 				for (final Object[] Os : stuff)
@@ -140,12 +139,11 @@ public class DVector implements Cloneable, java.io.Serializable
 		}
 	}
 
-	public static DVector toDVector(Hashtable h)
+	public static DVector toNVector(Map<? extends Object,? extends Object> h)
 	{
 		final DVector DV=new DVector(2);
-		for(final Enumeration e=h.keys();e.hasMoreElements();)
+		for(Object key : h.keySet())
 		{
-			final Object key=e.nextElement();
 			DV.addElement(key,h.get(key));
 		}
 		return DV;
@@ -200,18 +198,18 @@ public class DVector implements Cloneable, java.io.Serializable
 	{
 		removeElementAt(indexOf(O));
 	}
-	public synchronized Vector getDimensionVector(int dim)
+	public synchronized List<Object> getDimensionList(int dim)
 	{
-		final Vector V=new Vector<Object>(stuff.size());
+		final Vector<Object> V=new Vector<Object>(stuff.size());
 		if(dimensions<dim)
 			throw new java.lang.IndexOutOfBoundsException();
 		for (final Object[] name : stuff)
 			V.addElement(name[dim-1]);
 		return V;
 	}
-	public synchronized Vector getRowVector(int row)
+	public synchronized List<Object> getRowList(int row)
 	{
-		final Vector V=new Vector<Object>(dimensions);
+		final Vector<Object> V=new Vector<Object>(dimensions);
 		final Object[] O=elementsAt(row);
 		for (final Object element : O)
 			V.add(element);

@@ -73,7 +73,7 @@ public class Prop_LangTranslator extends Property implements Language
 	@Override
 	public List<String> languagesSupported()
 	{
-		return langs.getDimensionVector(1);
+		return (List)langs.getDimensionList(1);
 	}
 	@Override
 	public boolean translatesLanguage(String language)

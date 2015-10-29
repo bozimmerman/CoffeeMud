@@ -110,9 +110,9 @@ public class ExpertiseNext extends StdWebMacro
 					}
 			}
 		}
-		for(final Enumeration e=experts.getDimensionVector(2).elements();e.hasMoreElements();)
+		for(final Iterator<Object> e=experts.getDimensionList(2).iterator();e.hasNext();)
 		{
-			E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+			E=(ExpertiseLibrary.ExpertiseDefinition)e.next();
 			if(E!=null)
 			{
 				if(expertsAllows!=null)

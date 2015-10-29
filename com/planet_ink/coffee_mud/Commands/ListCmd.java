@@ -1891,7 +1891,7 @@ public class ListCmd extends StdCommand
 			final int[] val=(int[])entries.get(key);
 			readyEntries.put(key,Integer.valueOf(val[0]));
 		}
-		final DVector sightingsDV=DVector.toDVector(readyEntries);
+		final DVector sightingsDV=DVector.toNVector(readyEntries);
 		sightingsDV.sortBy(2);
 		final StringBuilder str=new StringBuilder("^HHelp entries, sorted by popularity: ^N\n\r");
 		for(int d=0;d<sightingsDV.size();d++)
