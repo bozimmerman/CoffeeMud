@@ -37,84 +37,158 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class Sense extends StdLibrary implements CMFlagLibrary
 {
-	@Override public String ID(){return "Sense";}
+	@Override
+	public String ID()
+	{
+		return "Sense";
+	}
+
 	@Override
 	public boolean canSee(MOB M)
-	{ return (M!=null)&&(!isSleeping(M))&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_SEE)==0); }
+	{
+		return (M != null) && (!isSleeping(M)) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_SEE) == 0);
+	}
+
 	@Override
 	public boolean canBeLocated(Physical P)
 	{
-		if ( (P!=null)&&(!isSleeping(P))&&((P.phyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)==0) )
+		if ((P != null) 
+		&& (!isSleeping(P)) 
+		&& ((P.phyStats().sensesMask() & PhyStats.SENSE_UNLOCATABLE) == 0))
 		{
-			if((P instanceof Item)&&(((Item)P).container()!=null))
-				return canBeLocated(((Item)P).container());
+			if ((P instanceof Item) && (((Item) P).container() != null))
+				return canBeLocated(((Item) P).container());
 			return true;
 		}
 		return false;
 	}
+
 	@Override
 	public boolean canSeeHidden(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_HIDDEN)==PhyStats.CAN_SEE_HIDDEN); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_HIDDEN) == PhyStats.CAN_SEE_HIDDEN);
+	}
+
 	@Override
 	public boolean canSeeInvisible(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_INVISIBLE)==PhyStats.CAN_SEE_INVISIBLE); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_INVISIBLE) == PhyStats.CAN_SEE_INVISIBLE);
+	}
+
 	@Override
 	public boolean canSeeEvil(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_EVIL)==PhyStats.CAN_SEE_EVIL); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_EVIL) == PhyStats.CAN_SEE_EVIL);
+	}
+
 	@Override
 	public boolean canSeeGood(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_GOOD)==PhyStats.CAN_SEE_GOOD); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_GOOD) == PhyStats.CAN_SEE_GOOD);
+	}
+
 	@Override
 	public boolean canSeeSneakers(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_SNEAKERS)==PhyStats.CAN_SEE_SNEAKERS); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_SNEAKERS) == PhyStats.CAN_SEE_SNEAKERS);
+	}
+
 	@Override
 	public boolean canSeeBonusItems(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_BONUS)==PhyStats.CAN_SEE_BONUS); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_BONUS) == PhyStats.CAN_SEE_BONUS);
+	}
+
 	@Override
 	public boolean canSeeInDark(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_DARK)==PhyStats.CAN_SEE_DARK); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_DARK) == PhyStats.CAN_SEE_DARK);
+	}
+
 	@Override
 	public boolean canSeeVictims(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_VICTIM)==PhyStats.CAN_SEE_VICTIM); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_VICTIM) == PhyStats.CAN_SEE_VICTIM);
+	}
+
 	@Override
 	public boolean canSeeInfrared(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_INFRARED)==PhyStats.CAN_SEE_INFRARED); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_INFRARED) == PhyStats.CAN_SEE_INFRARED);
+	}
+
 	@Override
 	public boolean canHear(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_HEAR)==0); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_HEAR) == 0);
+	}
+
 	@Override
 	public boolean canWorkOnSomething(Physical P)
-	{ return (P!=null)&&((P.phyStats().sensesMask()&PhyStats.CAN_NOT_WORK)==0); }
+	{
+		return (P != null) && ((P.phyStats().sensesMask() & PhyStats.CAN_NOT_WORK) == 0);
+	}
+
 	@Override
 	public boolean canAutoAttack(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_AUTO_ATTACK)==0); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_AUTO_ATTACK) == 0);
+	}
+
 	@Override
 	public boolean canConcentrate(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_THINK)==0); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_THINK) == 0);
+	}
+
 	@Override
 	public boolean canMove(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_MOVE)==0); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_MOVE) == 0);
+	}
+
 	@Override
 	public boolean allowsMovement(Room R)
-	{ return (R!=null)&&((R.phyStats().sensesMask()&PhyStats.SENSE_ROOMNOMOVEMENT)==0); }
+	{
+		return (R != null) && ((R.phyStats().sensesMask() & PhyStats.SENSE_ROOMNOMOVEMENT) == 0);
+	}
+
 	@Override
 	public boolean allowsMovement(Area A)
-	{ return (A!=null)&&((A.phyStats().sensesMask()&PhyStats.SENSE_ROOMNOMOVEMENT)==0); }
+	{
+		return (A != null) && ((A.phyStats().sensesMask() & PhyStats.SENSE_ROOMNOMOVEMENT) == 0);
+	}
+
 	@Override
 	public boolean canSmell(MOB M)
-	{ return canBreatheHere(M,M.location())&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_SMELL)==0); }
+	{
+		return canBreatheHere(M, M.location()) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_SMELL) == 0);
+	}
+
 	@Override
 	public boolean canTaste(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_TASTE)==0); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_TASTE) == 0);
+	}
+
 	@Override
 	public boolean canSpeak(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_SPEAK)==0); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_SPEAK) == 0);
+	}
+
 	@Override
 	public boolean canBreathe(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_BREATHE)==0); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_NOT_BREATHE) == 0);
+	}
+
 	@Override
 	public boolean canNotBeCamped(Physical P)
-	{ return (P!=null)&&((P.phyStats().sensesMask()&PhyStats.CAN_NOT_BE_CAMPED)!=0); }
+	{
+		return (P != null) && ((P.phyStats().sensesMask() & PhyStats.CAN_NOT_BE_CAMPED) != 0);
+	}
+
 	@Override
 	public boolean canBreatheThis(MOB M, int atmoResource)
 	{
@@ -123,30 +197,56 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					||(M.charStats().getBreathables().length==0)
 					||(Arrays.binarySearch(M.charStats().getBreathables(), atmoResource)>=0)));
 	}
+
 	@Override
 	public boolean canBreatheHere(MOB M, Room R)
-	{ return (M!=null)&&(canBreatheThis(M,(R==null)?-1:R.getAtmosphere())); }
+	{
+		return (M != null) && (canBreatheThis(M, (R == null) ? -1 : R.getAtmosphere()));
+	}
+
 	@Override
 	public boolean canSeeMetal(MOB M)
-	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_METAL)==PhyStats.CAN_SEE_METAL); }
+	{
+		return (M != null) && ((M.phyStats().sensesMask() & PhyStats.CAN_SEE_METAL) == PhyStats.CAN_SEE_METAL);
+	}
+
 	@Override
 	public boolean isReadable(Item I)
-	{ return (I!=null)&&((I.phyStats().sensesMask()&PhyStats.SENSE_ITEMREADABLE)==PhyStats.SENSE_ITEMREADABLE); }
+	{
+		return (I != null) && ((I.phyStats().sensesMask() & PhyStats.SENSE_ITEMREADABLE) == PhyStats.SENSE_ITEMREADABLE);
+	}
+
 	@Override
 	public boolean isGettable(Item I)
-	{ return (I!=null)&&((I.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOTGET)==0); }
+	{
+		return (I != null) && ((I.phyStats().sensesMask() & PhyStats.SENSE_ITEMNOTGET) == 0);
+	}
+
 	@Override
 	public boolean isDroppable(Item I)
-	{ return (I!=null)&&((I.phyStats().sensesMask()&PhyStats.SENSE_ITEMNODROP)==0); }
+	{
+		return (I != null) && ((I.phyStats().sensesMask() & PhyStats.SENSE_ITEMNODROP) == 0);
+	}
+
 	@Override
 	public boolean isRemovable(Item I)
-	{ return (I!=null)&&((I.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOREMOVE)==0); }
+	{
+		return (I != null) && ((I.phyStats().sensesMask() & PhyStats.SENSE_ITEMNOREMOVE) == 0);
+	}
+
 	@Override
 	public boolean isCataloged(Environmental E)
-	{ return (E instanceof Physical)&&((((Physical)E).basePhyStats().disposition()&PhyStats.IS_CATALOGED)==PhyStats.IS_CATALOGED); }
+	{
+		return (E instanceof Physical) 
+				&& ((((Physical) E).basePhyStats().disposition() & PhyStats.IS_CATALOGED) == PhyStats.IS_CATALOGED);
+	}
+
 	@Override
 	public boolean hasSeenContents(Physical P)
-	{ return (P!=null)&&((P.phyStats().sensesMask()&PhyStats.SENSE_CONTENTSUNSEEN)==0); }
+	{
+		return (P != null) && ((P.phyStats().sensesMask() & PhyStats.SENSE_CONTENTSUNSEEN) == 0);
+	}
+
 	@Override
 	public boolean isSavable(Physical P)
 	{
@@ -235,6 +335,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			I.phyStats().setSensesMask(CMath.unsetb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET));
 		}
 	}
+
 	@Override
 	public void setDroppable(Item I, boolean truefalse)
 	{
@@ -255,6 +356,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			I.phyStats().setSensesMask(CMath.unsetb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP));
 		}
 	}
+
 	@Override
 	public void setRemovable(Item I, boolean truefalse)
 	{
@@ -275,6 +377,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			I.phyStats().setSensesMask(CMath.unsetb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE));
 		}
 	}
+
 	@Override
 	public boolean isSeen(Physical P)
 	{ 
@@ -341,9 +444,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			final List<RawMaterial> mats = M.charStats().getMyRace().myResources();
 			for(final Item I : mats)
+			{
 				if(CMath.bset(I.material(), RawMaterial.MATERIAL_VEGETATION)
 				||CMath.bset(I.material(), RawMaterial.MATERIAL_WOODEN))
 					return true;
+			}
 			return false;
 		}
 		return false;
@@ -367,8 +472,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(I==null)
 			return false;
 		for(int i=0;i<I.numEffects();i++)
+		{
 			if(I.fetchEffect(i) instanceof ItemTicker)
 				return true;
+		}
 		return false;
 	}
 
@@ -455,9 +562,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		else
 		{
 			String s=A.displayText();
-			if(s.startsWith("(")) s=s.substring(1);
-			if(s.endsWith(")")
-				) s=s.substring(0,s.length()-1);
+			if(s.startsWith("(")) 
+				s=s.substring(1);
+			if(s.endsWith(")")) 
+				s=s.substring(0,s.length()-1);
 			return s;
 		}
 	}
@@ -530,8 +638,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if((V==null)||(V.size()==0))
 			return false;
 		for(final Behavior B : V)
+		{
 			if(B.grantsAggressivenessTo(toM))
 				return true;
+		}
 		return false;
 	}
 
@@ -585,10 +695,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					if(FR!=null)
 					switch(FR.alignEquiv())
 					{
-					case NEUTRAL: return true;
-					case EVIL: return false;
-					case GOOD: return false;
-					default: continue;
+						case NEUTRAL:
+							return true;
+						case EVIL:
+							return false;
+						case GOOD:
+							return false;
+						default:
+							continue;
 					}
 				}
 			}
@@ -598,43 +712,83 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 	@Override
 	public boolean isSneaking(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_SNEAKING)==PhyStats.IS_SNEAKING); }
+	{
+		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_SNEAKING) == PhyStats.IS_SNEAKING);
+	}
+
 	@Override
 	public boolean isABonusItems(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_BONUS)==PhyStats.IS_BONUS); }
+	{
+		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_BONUS) == PhyStats.IS_BONUS);
+	}
+
 	@Override
 	public boolean isInDark(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_DARK)==PhyStats.IS_DARK); }
+	{
+		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_DARK) == PhyStats.IS_DARK);
+	}
+
 	@Override
 	public boolean isLightSource(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_LIGHTSOURCE)==PhyStats.IS_LIGHTSOURCE); }
+	{
+		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_LIGHTSOURCE) == PhyStats.IS_LIGHTSOURCE);
+	}
+
 	@Override
 	public boolean isGlowing(Physical P)
-	{ return (P!=null)&&((isLightSource(P)||((P.phyStats().disposition()&PhyStats.IS_GLOWING)==PhyStats.IS_GLOWING))); }
+	{
+		return (P != null) && ((isLightSource(P) || ((P.phyStats().disposition() & PhyStats.IS_GLOWING) == PhyStats.IS_GLOWING)));
+	}
+
 	@Override
 	public boolean isGolem(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_GOLEM)==PhyStats.IS_GOLEM); }
+	{
+		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_GOLEM) == PhyStats.IS_GOLEM);
+	}
+
 	@Override
 	public boolean isSleeping(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_SLEEPING)==PhyStats.IS_SLEEPING); }
+	{
+		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_SLEEPING) == PhyStats.IS_SLEEPING);
+	}
+
 	@Override
 	public boolean isSitting(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_SITTING)==PhyStats.IS_SITTING); }
+	{
+		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_SITTING) == PhyStats.IS_SITTING);
+	}
+
 	@Override
 	public boolean isFlying(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_FLYING)==PhyStats.IS_FLYING); }
+	{
+		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_FLYING) == PhyStats.IS_FLYING);
+	}
+
 	@Override
 	public boolean isClimbing(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_CLIMBING)==PhyStats.IS_CLIMBING); }
+	{
+		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_CLIMBING) == PhyStats.IS_CLIMBING);
+	}
+
 	@Override
 	public boolean isSwimming(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_SWIMMING)==PhyStats.IS_SWIMMING); }
+	{
+		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_SWIMMING) == PhyStats.IS_SWIMMING);
+	}
+
 	@Override
 	public boolean isFalling(Physical P)
-	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_FALLING)==PhyStats.IS_FALLING); }
+	{
+		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_FALLING) == PhyStats.IS_FALLING);
+	}
+
 	@Override
 	public boolean isBusy(Physical P)
-	{ return (P instanceof MOB)&&(((MOB)P).session()!=null)&&((System.currentTimeMillis()-((MOB)P).session().getInputLoopTime())>30000);}
+	{
+		return (P instanceof MOB) 
+				&& (((MOB) P).session() != null) 
+				&& ((System.currentTimeMillis() - ((MOB) P).session().getInputLoopTime()) > 30000);
+	}
 
 	@Override
 	public boolean isSwimmingInWater(Physical P)
@@ -682,7 +836,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(!canHear(hearer))
 			return false;
 		if(isSneaking(heard)&&(!canSeeSneakers(hearer)))
-		   return false;
+			return false;
 		return true;
 	}
 
@@ -769,6 +923,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		return (!isSitting(mob))&&(!isSleeping(mob));
 	}
+
 	@Override
 	public boolean isBound(Physical P)
 	{
@@ -776,6 +931,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		return false;
 	}
+
 	@Override
 	public boolean isBoundOrHeld(Physical P)
 	{
@@ -785,6 +941,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		return flaggedAnyAffects(P,Ability.FLAG_BINDING|Ability.FLAG_PARALYZING).size()>0;
 	}
+
 	@Override
 	public boolean isOnFire(Physical seen)
 	{
@@ -797,8 +954,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(!(seen instanceof Light))
 			return false;
 		final Light light=(Light)seen;
-		if(light.goesOutInTheRain()
-		   &&light.isLit())
+		if(light.goesOutInTheRain() && light.isLit())
 			return true;
 		return false;
 	}
@@ -878,7 +1034,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if((isHidden(seenP))&&(!(seenP instanceof Room)))
 		{
 			if((!canSeeHidden(seer))||(seer==null))
-			   return false;
+				return false;
 			//if(this.getHideScore(seenP)>getDetectScore(seer))
 			//    return false;
 		}
@@ -898,7 +1054,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					return true;
 				if((R.getArea().getClimateObj().canSeeTheMoon(R,null))
 				&&(R.getArea().getTimeObj().getMoonPhase()==TimeClock.MoonPhase.FULL))
-						return true;
+					return true;
 				return false;
 			}
 			return true;
@@ -947,17 +1103,19 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			if((seen instanceof Room)
 			&&(((Room)seen).getArea().getClimateObj().canSeeTheMoon(((Room)seen),null)))
+			{
 				switch(((Room)seen).getArea().getTimeObj().getMoonPhase())
 				{
-				case FULL:
-				case WAXGIBBOUS:
-				case WANEGIBBOUS:
-					return false;
-				case NEW:
-					return false;
-				default:
-					return true;
+					case FULL:
+					case WAXGIBBOUS:
+					case WANEGIBBOUS:
+						return false;
+					case NEW:
+						return false;
+					default:
+						return true;
 				}
+			}
 		}
 		return false;
 	}
@@ -994,79 +1152,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
-	public StringBuffer colorCodes(Physical seen , MOB seer)
-	{
-		final PhyStats pStats=seen.phyStats();
-		final String[] ambiances=pStats.ambiances();
-		if(!pStats.isAmbiance("-ALL"))
-		{
-			final StringBuffer say=new StringBuffer("^N");
-			if(!pStats.isAmbiance("-MOST"))
-			{
-				if((isEvil(seen))&&(canSeeEvil(seer))&&(!pStats.isAmbiance("-EVIL")))
-					say.append(" (glowing ^rred^?)");
-				if((isGood(seen))&&(canSeeGood(seer))&&(!pStats.isAmbiance("-GOOD")))
-					say.append(" (glowing ^bblue^?)");
-				if((isInvisible(seen))&&(canSeeInvisible(seer))&&(!pStats.isAmbiance("-INVISIBLE")))
-					say.append(" (^yinvisible^?)");
-				if((isSneaking(seen))&&(canSeeSneakers(seer))&&(!pStats.isAmbiance("-SNEAKING")))
-					say.append(" (^ysneaking^?)");
-				if((isHidden(seen))&&(canSeeHidden(seer))&&(!pStats.isAmbiance("-HIDDEN")))
-					say.append(" (^yhidden^?)");
-				if((!isGolem(seen))&&(canSeeInfrared(seer))&&(seen instanceof MOB)&&(isInDark(seer.location()))&&(!pStats.isAmbiance("-HEAT")))
-					say.append(" (^rheat aura^?)");
-				if((isABonusItems(seen))&&(canSeeBonusItems(seer))&&(!pStats.isAmbiance("-MAGIC")))
-					say.append(" (^wmagical aura^?)");
-				if((canSeeMetal(seer))&&(seen instanceof Item)&&(!pStats.isAmbiance("-METAL")))
-					if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-						say.append(" (^wmetallic aura^?)");
-					else
-					if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
-						say.append(" (^wmithril aura^?)");
-				if((isGlowing(seen))&&(!(seen instanceof Room))&&(!pStats.isAmbiance("-GLOWING")))
-					say.append(" (^gglowing^?)");
-				if(isBusy(seen)&&(!pStats.isAmbiance("-BUSY")))
-					say.append(" (^gbusy^?)");
-				for(int i=0;i<ambiances.length;i++)
-					if(!ambiances[i].startsWith("-"))
-					{
-						if(ambiances[i].startsWith("(?)"))
-						{
-							final int x=ambiances[i].indexOf(':');
-							if(canBeHeardSpeakingBy(seen, seer))
-								say.append(" ("+ambiances[i].substring(3,(x>3)?x:ambiances[i].length())+")");
-							else
-							if(x>3)
-								say.append(" ("+ambiances[i].substring(x+1)+")");
-						}
-						else
-							say.append(" ("+ambiances[i]+")");
-					}
-			}
-			if(isBound(seen)&&(!pStats.isAmbiance("-BOUND")))
-				say.append(" (^Wbound^?)");
-			if(isFlying(seen)&&(!(seen instanceof Exit))&&(!pStats.isAmbiance("-FLYING")))
-				say.append(" (^pflying^?)");
-			if((isFalling(seen))&&(!pStats.isAmbiance("-FALLING"))
-			&&((!(seen instanceof MOB))
-				||(((MOB)seen).location()==null)
-				||((((MOB)seen).location().domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-					&&(((MOB)seen).location().domainType()!=Room.DOMAIN_INDOORS_AIR))))
-				say.append(" (^pfalling^?)");
-			if(say.length()>1)
-			{
-				say.append(" ");
-				return say;
-			}
-		}
-		return new StringBuffer("");
-	}
-
-	@Override
 	public boolean seenTheSameWay(MOB seer, Physical seen1, Physical seen2)
 	{
 		if(canBeSeenBy(seen1,seer)!=canBeSeenBy(seen2,seer))
-		   return false;
+			return false;
 		if((isEvil(seen1)!=isEvil(seen2))&&(canSeeEvil(seer)))
 			return false;
 		if((isGood(seen1)!=isGood(seen2))&&(canSeeGood(seer)))
@@ -1095,76 +1184,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(!CMStrings.compareStringArraysIgnoreCase(seen1.phyStats().ambiances(),seen2.phyStats().ambiances()))
 			return false;
 		return true;
-	}
-
-	public final static int flag_arrives=0;
-	public final static int flag_leaves=1;
-	public final static int flag_is=2;
-	@Override
-	public String dispositionString(Physical seen, int flag_msgType)
-	{
-		String type=null;
-		if(isFalling(seen))
-			type="falls";
-		else
-		if(isSleeping(seen))
-		{
-			if(flag_msgType!=flag_is)
-				type="floats";
-			else
-				type="sleeps";
-		}
-		else
-		if(isSneaking(seen))
-			type="sneaks";
-		else
-		if(isHidden(seen))
-			type="prowls";
-		else
-		if(isSitting(seen))
-		{
-			if(flag_msgType!=flag_is)
-				type="crawls";
-			else
-			if(seen instanceof MOB)
-				type="sits";
-			else
-				type="sits";
-		}
-		else
-		if(isFlying(seen))
-			type="flies";
-		else
-		if((isClimbing(seen))&&(flag_msgType!=flag_is))
-			type="climbs";
-		else
-		if(isSwimmingInWater(seen))
-			type="swims";
-		else
-		if((flag_msgType==flag_arrives)||(flag_msgType==flag_leaves))
-		{
-			if(seen instanceof MOB)
-			{
-				if(flag_msgType==flag_arrives)
-					return ((MOB)seen).charStats().getMyRace().arriveStr();
-				else
-				if(flag_msgType==flag_leaves)
-					return ((MOB)seen).charStats().getMyRace().leaveStr();
-			}
-			else
-			if(flag_msgType==flag_arrives)
-				return "arrives";
-			else
-			if(flag_msgType==flag_leaves)
-				return "leaves";
-		}
-		else
-			return "is";
-
-		if(flag_msgType==flag_arrives)
-			return type+" in";
-		return type;
-
 	}
 
 	@Override
@@ -1230,6 +1249,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		return (M!=null)&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)<2);
 	}
+
 	@Override
 	public boolean isVegetable(MOB M)
 	{
@@ -1240,12 +1260,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isMobile(PhysicalAgent P)
 	{
 		if(P!=null)
+		{
 			for(final Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
 				final Behavior B=e.nextElement();
 				if((B!=null)&&(CMath.bset(B.flags(),Behavior.FLAG_MOBILITY)))
 					return true;
 			}
+		}
 		return false;
 	}
 
@@ -1254,12 +1276,16 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		final Vector<Behavior> V=new Vector<Behavior>();
 		if(P!=null)
+		{
 			for(final Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
 				final Behavior B=e.nextElement();
 				if((B!=null)&&(CMath.bset(B.flags(),flag)))
-				{ V.addElement(B);}
+				{
+					V.addElement(B);
+				}
 			}
+		}
 		return V;
 	}
 
@@ -1282,6 +1308,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				});
 			}
 			else
+			{
 				P.eachEffect(new EachApplicable<Ability>()
 				{
 					@Override
@@ -1291,6 +1318,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 							V.addElement(A);
 					}
 				});
+			}
 		return V;
 	}
 
@@ -1305,6 +1333,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		final Vector<Ability> V=new Vector<Ability>(1);
 		if(M!=null)
+		{
 			if(domain>Ability.ALL_ACODES)
 			{
 				for(final Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
@@ -1325,6 +1354,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					V.addElement(A);
 				}
 			}
+		}
 		return V;
 	}
 	
@@ -1333,6 +1363,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		final Vector<Ability> V=new Vector<Ability>(1);
 		if(P!=null)
+		{
 			P.eachEffect(new EachApplicable<Ability>()
 			{
 				@Override
@@ -1342,6 +1373,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 						V.addElement(A);
 				}
 			});
+		}
 		return V;
 	}
 	@Override
@@ -1355,12 +1387,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		final Vector<Ability> V=new Vector<Ability>();
 		if(M!=null)
+		{
 			for(final Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)&&(CMath.bset(A.flags(),flag)))
 				{ V.addElement(A);}
 			}
+		}
 		return V;
 	}
 
@@ -1398,7 +1432,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(E instanceof Item)
 			return((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-			   ||((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL);
+				||((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL);
 		return false;
 	}
 
@@ -1492,6 +1526,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return isInTheGame((Area)E,reqInhabitation);
 		return true;
 	}
+	
 	@Override
 	public boolean isInTheGame(final MOB E, final boolean reqInhabitation)
 	{
@@ -1571,6 +1606,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean stillAffectedBy(Physical obj, List<Ability> oneOf, boolean anyTallF)
 	{
 		for(int a=oneOf.size()-1;a>=0;a--)
+		{
 			if(obj.fetchEffect(oneOf.get(a).ID())==null)
 			{
 				if(!anyTallF)
@@ -1581,6 +1617,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				if(anyTallF)
 					return true;
 			}
+		}
 		return !anyTallF;
 	}
 
@@ -1731,13 +1768,161 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(R==null)
 			return false;
 		for(int r=0;r<R.numInhabitants();r++)
+		{
 			if(isAControlledFollower(invoker, R.fetchInhabitant(r), A))
 				return true;
+		}
 		final Set<MOB> H = invoker.getGroupMembers(new HashSet<MOB>());
 		for (final MOB mob : H)
+		{
 			if(isAControlledFollower(invoker, mob, A))
 				return true;
+		}
 		return false;
+	}
+	
+	@Override
+	public StringBuffer colorCodes(Physical seen , MOB seer)
+	{
+		final PhyStats pStats=seen.phyStats();
+		final String[] ambiances=pStats.ambiances();
+		if(!pStats.isAmbiance("-ALL"))
+		{
+			final StringBuffer say=new StringBuffer("^N");
+			if(!pStats.isAmbiance("-MOST"))
+			{
+				if((isEvil(seen))&&(canSeeEvil(seer))&&(!pStats.isAmbiance("-EVIL")))
+					say.append(" (glowing ^rred^?)");
+				if((isGood(seen))&&(canSeeGood(seer))&&(!pStats.isAmbiance("-GOOD")))
+					say.append(" (glowing ^bblue^?)");
+				if((isInvisible(seen))&&(canSeeInvisible(seer))&&(!pStats.isAmbiance("-INVISIBLE")))
+					say.append(" (^yinvisible^?)");
+				if((isSneaking(seen))&&(canSeeSneakers(seer))&&(!pStats.isAmbiance("-SNEAKING")))
+					say.append(" (^ysneaking^?)");
+				if((isHidden(seen))&&(canSeeHidden(seer))&&(!pStats.isAmbiance("-HIDDEN")))
+					say.append(" (^yhidden^?)");
+				if((!isGolem(seen))&&(canSeeInfrared(seer))&&(seen instanceof MOB)&&(isInDark(seer.location()))&&(!pStats.isAmbiance("-HEAT")))
+					say.append(" (^rheat aura^?)");
+				if((isABonusItems(seen))&&(canSeeBonusItems(seer))&&(!pStats.isAmbiance("-MAGIC")))
+					say.append(" (^wmagical aura^?)");
+				if((canSeeMetal(seer))&&(seen instanceof Item)&&(!pStats.isAmbiance("-METAL")))
+				{
+					if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+						say.append(" (^wmetallic aura^?)");
+					else
+					if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
+						say.append(" (^wmithril aura^?)");
+				}
+				if((isGlowing(seen))&&(!(seen instanceof Room))&&(!pStats.isAmbiance("-GLOWING")))
+					say.append(" (^gglowing^?)");
+				if(isBusy(seen)&&(!pStats.isAmbiance("-BUSY")))
+					say.append(" (^gbusy^?)");
+				for(int i=0;i<ambiances.length;i++)
+				{
+					if(!ambiances[i].startsWith("-"))
+					{
+						if(ambiances[i].startsWith("(?)"))
+						{
+							final int x=ambiances[i].indexOf(':');
+							if(canBeHeardSpeakingBy(seen, seer))
+								say.append(" ("+ambiances[i].substring(3,(x>3)?x:ambiances[i].length())+")");
+							else
+							if(x>3)
+								say.append(" ("+ambiances[i].substring(x+1)+")");
+						}
+						else
+							say.append(" ("+ambiances[i]+")");
+					}
+				}
+			}
+			if(isBound(seen)&&(!pStats.isAmbiance("-BOUND")))
+				say.append(" (^Wbound^?)");
+			if(isFlying(seen)&&(!(seen instanceof Exit))&&(!pStats.isAmbiance("-FLYING")))
+				say.append(" (^pflying^?)");
+			if((isFalling(seen))&&(!pStats.isAmbiance("-FALLING"))
+			&&((!(seen instanceof MOB))
+				||(((MOB)seen).location()==null)
+				||((((MOB)seen).location().domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+					&&(((MOB)seen).location().domainType()!=Room.DOMAIN_INDOORS_AIR))))
+				say.append(" (^pfalling^?)");
+			if(say.length()>1)
+			{
+				say.append(" ");
+				return say;
+			}
+		}
+		return new StringBuffer("");
+	}
+
+	public final static int flag_arrives=0;
+	public final static int flag_leaves=1;
+	public final static int flag_is=2;
+	
+	@Override
+	public String dispositionString(Physical seen, int flag_msgType)
+	{
+		String type=null;
+		if(isFalling(seen))
+			type="falls";
+		else
+		if(isSleeping(seen))
+		{
+			if(flag_msgType!=flag_is)
+				type="floats";
+			else
+				type="sleeps";
+		}
+		else
+		if(isSneaking(seen))
+			type="sneaks";
+		else
+		if(isHidden(seen))
+			type="prowls";
+		else
+		if(isSitting(seen))
+		{
+			if(flag_msgType!=flag_is)
+				type="crawls";
+			else
+			if(seen instanceof MOB)
+				type="sits";
+			else
+				type="sits";
+		}
+		else
+		if(isFlying(seen))
+			type="flies";
+		else
+		if((isClimbing(seen))&&(flag_msgType!=flag_is))
+			type="climbs";
+		else
+		if(isSwimmingInWater(seen))
+			type="swims";
+		else
+		if((flag_msgType==flag_arrives)||(flag_msgType==flag_leaves))
+		{
+			if(seen instanceof MOB)
+			{
+				if(flag_msgType==flag_arrives)
+					return ((MOB)seen).charStats().getMyRace().arriveStr();
+				else
+				if(flag_msgType==flag_leaves)
+					return ((MOB)seen).charStats().getMyRace().leaveStr();
+			}
+			else
+			if(flag_msgType==flag_arrives)
+				return "arrives";
+			else
+			if(flag_msgType==flag_leaves)
+				return "leaves";
+		}
+		else
+			return "is";
+
+		if(flag_msgType==flag_arrives)
+			return type+" in";
+		return type;
+
 	}
 
 	@Override

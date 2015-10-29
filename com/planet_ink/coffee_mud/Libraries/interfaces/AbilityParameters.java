@@ -33,20 +33,46 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * Abilities, like common skills and others, have parameter definition strings that tell the
+ * system about any parameters that modify how the ability works.  In the case of common
+ * skills, these parameters come from files that give them "recipes" for crafting things.
+ * Well, this Library provides methods for accessing and using the web and command line
+ * editors that are appropriate to a particular ability's parameters.  It also provides
+ * accessors for common skills recipes and their data.
+ * 
+ * @author Bo Zimmerman
+ *
+ */
 public interface AbilityParameters extends CMLibrary
 {
-	public static final int PARMTYPE_CHOICES=0;
-	public static final int PARMTYPE_STRING=1;
-	public static final int PARMTYPE_NUMBER=2;
-	public static final int PARMTYPE_STRINGORNULL=3;
-	public static final int PARMTYPE_ONEWORD=4;
-	public static final int PARMTYPE_MULTICHOICES=5;
-	public static final int PARMTYPE_SPECIAL=6;
+	/**
+	 * The column or single parameter types
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum ParmType
+	{
+		CHOICES,
+		STRING,
+		NUMBER,
+		STRINGORNULL,
+		ONEWORD,
+		MULTICHOICES,
+		SPECIAL
+	}
 
+	/**
+	 * The main interface for the individual column editors.  It's methods reflect
+	 * both the different ways the parameters can be edited, and the different
+	 * kinds of editors necessary to make it work.
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static interface AbilityParmEditor
 	{
 		public String ID();
-		public int parmType();
+		public ParmType parmType();
 		public PairList<String,String> createChoices(Enumeration<? extends Object> e);
 		public PairList<String,String> createChoices(Vector<? extends Object> V);
 		public PairList<String,String> createChoices(String[] S);
@@ -64,9 +90,49 @@ public interface AbilityParameters extends CMLibrary
 		public String convertFromItem(final ItemCraftor A, final Item I);
 	}
 
+	/**
+	 * Returns all of the given effect Abilities on the given Affectable as a semicolon delimited 
+	 * string of Ability IDs.  If any of the abilities contain parameters, they come after the 
+	 * ability and another semicolon.  This method can't really capture all permutations and
+	 * combinations, but, well, it seemed like a good idea at the time.
+	 * @see Affectable#effects()
+	 * @see AbilityParameters#getCodedSpells(String)
+	 * @param I the Affectable one to look at the effects of
+	 * @return the coded string of those effects
+	 */
 	public String encodeCodedSpells(Affectable I);
+	
+	/**
+	 * Parses the coded effects available from an ability parameter column and generates
+	 * the Ability objects with any parameters of their own.
+	 * @param spells the coded ability parameter affectable effects string
+	 * @see Affectable#effects()
+	 * @see AbilityParameters#encodeCodedSpells(Affectable)
+	 * @return the list of ability which are the effects
+	 */
 	public List<Ability> getCodedSpells(String spells);
+	
+	/**
+	 * Parses a coded wear location, for armor-type items that have particular
+	 * wear locations, and fills in the given arrays with the information
+	 * contained therein.
+	 * @param layerAtt one dimensional array with the layer attributes
+	 * @param layers one dimensional array with the layer level
+	 * @param wornLoc one dimensional array with the wear location bitmap
+	 * @param logicalAnd one dimensional array with the boolean for whether the location bitmap is AND or OR
+	 * @param hardBonus one dimensional array with the hardness bonus (an armor bonus basically)
+	 * @param wearLocation The coded wear location string
+	 */
 	public void parseWearLocation(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus, String wearLocation);
+	
+	/**
+	 * Main method for altering a particular recipe list from any of the crafting common
+	 * skills, from the command line, for the given mob.
+	 * @param mob the mob who is editing this recipe file
+	 * @param recipeFilename the cmfs path and filename of the recipe file to edit
+	 * @param recipeFormat the recipe format from the crafting skill recipe format string
+	 * @throws java.io.IOException
+	 */
 	public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException;
 	public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save);
 	public void testRecipeParsing(StringBuffer recipesString, String recipeFormat) throws CMException;

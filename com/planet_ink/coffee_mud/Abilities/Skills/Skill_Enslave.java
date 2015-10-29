@@ -52,7 +52,7 @@ public class Skill_Enslave extends StdSkill
 	protected String oldLeige="";
 	protected List<Pair<Clan,Integer>> oldClans=null;
 	protected MOB masterMOB=null;
-	protected SlaveryLibrary.geasSteps STEPS=null;
+	protected SlaveryLibrary.GeasSteps STEPS=null;
 	protected int masterAnger=0;
 	protected int speedDown=0;
 	protected final static int HUNGERTICKMAX=4;
@@ -301,11 +301,11 @@ public class Skill_Enslave extends StdSkill
 						mob.setClan(p.first.clanID(),p.first.getGovernment().getAcceptPos());
 				}
 			}
-			if((STEPS==null)||(STEPS.size()==0)||(STEPS.done))
+			if((STEPS==null)||(STEPS.size()==0)||(STEPS.isDone()))
 			{
 				if(mob.isInCombat())
 					return true; // let them finish fighting.
-				if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.done)))
+				if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.isDone())))
 					mob.tell(L("You have completed your masters task."));
 				else
 					mob.tell(L("You have been released from your masters task."));

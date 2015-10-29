@@ -44,7 +44,7 @@ public class Spell_Geas extends Spell
 	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	public SlaveryLibrary.geasSteps STEPS=null;
+	public SlaveryLibrary.GeasSteps STEPS=null;
 
 	@Override
 	public void unInvoke()
@@ -56,7 +56,7 @@ public class Spell_Geas extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if((STEPS==null)||(STEPS.size()==0)||(STEPS.done))
+			if((STEPS==null)||(STEPS.size()==0)||(STEPS.isDone()))
 				mob.tell(L("You have completed your geas."));
 			else
 				mob.tell(L("You have been released from your geas."));
@@ -99,7 +99,7 @@ public class Spell_Geas extends Spell
 			return super.tick(ticking,tickID);
 		if((tickID==Tickable.TICKID_MOB)&&(STEPS!=null))
 		{
-			if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.done)))
+			if((STEPS!=null)&&((STEPS.size()==0)||(STEPS.isDone())))
 			{
 				if(((MOB)ticking).isInCombat())
 					return true; // let them finish fighting.
