@@ -128,17 +128,59 @@ public interface AbilityParameters extends CMLibrary
 	/**
 	 * Main method for altering a particular recipe list from any of the crafting common
 	 * skills, from the command line, for the given mob.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFile()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFormat()
 	 * @param mob the mob who is editing this recipe file
-	 * @param recipeFilename the cmfs path and filename of the recipe file to edit
+	 * @param recipeFilename the unadorned regular filename of the recipe file to edit
 	 * @param recipeFormat the recipe format from the crafting skill recipe format string
 	 * @throws java.io.IOException
 	 */
 	public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException;
+	
+	/**
+	 * Test method for the crafting common skill recipe parsers.  Basically it loads a recipe
+	 * file, parses it into the editors, re-generates the recipe file data from the
+	 * editors, and then optionally re-saves.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFile()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFormat()
+	 * @param recipeFilename the unadorned regular filename of the recipe data to start with
+	 * @param recipeFormat the recipe format coded string from
+	 * @param save true to re-save the recipes file, false not to
+	 */
 	public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save);
+	/**
+	 * Test method for the crafting common skill recipe parsers.  Basically it takes loaded
+	 * recipe file data, parses it into the editors, re-generates the recipe file data from the
+	 * editors, and then either returns, or throws an exception if there were parsing errors
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFile()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFormat()
+	 * @param recipesString the raw loaded recipe data
+	 * @param recipeFormat the recipe format coded string from
+	 * @throws CMException a parse error, if any
+	 */
 	public void testRecipeParsing(StringBuffer recipesString, String recipeFormat) throws CMException;
+	
+	/**
+	 * Mian parser for the crafting common skill recipe parsers.  It loads a recipe
+	 * file, parses it into the editors, and then returns the AbilityRecipeData.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFile()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFormat()
+	 * @see AbilityParameters.AbilityRecipeData
+	 * @param recipeFilename the unadorned regular filename of the recipe data to start with
+	 * @param recipeFormat the recipe format coded string from
+	 * @return the parsed AbilityRecipeData
+	 */
 	public AbilityRecipeData parseRecipe(String recipeFilename, String recipeFormat);
+	
+	/**
+	 * Map of all the Ability Parameter editor objects, keyed by their parameter
+	 * column ID.
+	 * @return map of all the Ability Parameter editor objects
+	 */
 	public Map<String,AbilityParmEditor> getEditors();
-	public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<? extends Object> columnsV, boolean saveVFS);
+	
+	
+	public void resaveRecipeFile(MOB mob, String recipeFilename, List<DVector> rowsV, List<? extends Object> columnsV, boolean saveVFS);
 	public StringBuffer getRecipeList(ItemCraftor iA);
 	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException;
 
@@ -146,9 +188,8 @@ public interface AbilityParameters extends CMLibrary
 	{
 		public String recipeFilename();
 		public String recipeFormat();
-		public Vector<DVector> dataRows();
-		@SuppressWarnings("rawtypes")
-		public Vector columns();
+		public List<DVector> dataRows();
+		public List<? extends Object> columns();
 		public int[] columnLengths();
 		public String[] columnHeaders();
 		public int numberOfDataColumns();

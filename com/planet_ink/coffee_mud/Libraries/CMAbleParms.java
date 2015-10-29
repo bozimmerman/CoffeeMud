@@ -693,7 +693,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		list.append("\n\r");
 		for(int r=0;r<recipe.dataRows().size();r++)
 		{
-			dataRow=recipe.dataRows().elementAt(r);
+			dataRow=recipe.dataRows().get(r);
 			list.append(CMStrings.padRight(""+(r+1),3)+" ");
 			for(int c=0;c<dataRow.size();c++)
 				list.append(CMStrings.padRight(CMStrings.limit((String)dataRow.elementAt(c,2),recipe.columnLengths()[c]),recipe.columnLengths()[c])+" ");
@@ -742,7 +742,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				editRow=recipe.newRow(classFieldData);
 				if(editRow==null)
 					continue;
-				recipe.dataRows().addElement(editRow);
+				recipe.dataRows().add(editRow);
 			}
 			else
 			if(CMath.isInteger(lineNum))
@@ -750,7 +750,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				final int line = CMath.s_int(lineNum);
 				if((line<1)||(line>recipe.dataRows().size()))
 					continue;
-				editRow = recipe.dataRows().elementAt(line-1);
+				editRow = recipe.dataRows().get(line-1);
 			}
 			else
 				break;
@@ -799,17 +799,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@Override
-	public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<? extends Object> columnsV, boolean saveToVFS)
+	public void resaveRecipeFile(MOB mob, String recipeFilename, List<DVector> rowsV, List<? extends Object> columnsV, boolean saveToVFS)
 	{
 		final StringBuffer saveBuf = new StringBuffer("");
 		for(int r=0;r<rowsV.size();r++)
 		{
-			final DVector dataRow = rowsV.elementAt(r);
+			final DVector dataRow = rowsV.get(r);
 			int dataDex = 0;
 			for(int c=0;c<columnsV.size();c++)
 			{
-				if(columnsV.elementAt(c) instanceof String)
-					saveBuf.append(columnsV.elementAt(c));
+				if(columnsV.get(c) instanceof String)
+					saveBuf.append(columnsV.get(c));
 				else
 					saveBuf.append(dataRow.elementAt(dataDex++,2));
 			}
@@ -830,7 +830,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					file.saveText(saveBuf);
 				}
 			}
-			Log.sysOut("CMAbleParms","User: "+mob.Name()+" modified "+(saveToVFS?"VFS":"Local")+" file "+recipeFilename);
+			if(mob != null)
+				Log.sysOut("CMAbleParms","User: "+mob.Name()+" modified "+(saveToVFS?"VFS":"Local")+" file "+recipeFilename);
 			Resources.removeResource("PARSED_RECIPE: "+recipeFilename);
 			Resources.removeMultiLists(recipeFilename);
 		}

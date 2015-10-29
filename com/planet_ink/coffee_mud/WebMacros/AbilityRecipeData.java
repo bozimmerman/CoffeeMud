@@ -104,7 +104,7 @@ public class AbilityRecipeData extends StdWebMacro
 					DVector dataRow = null;
 					final int classFieldIndex = recipeData.getClassFieldIndex();
 					if((row>0)&&((row-1)<recipeData.dataRows().size()))
-						dataRow = recipeData.dataRows().elementAt(row-1);
+						dataRow = recipeData.dataRows().get(row-1);
 					else
 						dataRow=recipeData.newRow(httpReq.getUrlParameter("CLASSFIELD"));
 					str.append("\n\r<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
@@ -142,8 +142,8 @@ public class AbilityRecipeData extends StdWebMacro
 					{
 						final DVector editRow = new DVector(2);
 						for(int c=0;c<recipeData.columns().size();c++)
-							if(recipeData.columns().elementAt(c) instanceof List)
-								editRow.addElement(recipeData.columns().elementAt(c),"");
+							if(recipeData.columns().get(c) instanceof List)
+								editRow.addElement(recipeData.columns().get(c),"");
 						final List<String> o=(List)editRow.elementAt(cfIndex,1);
 						classFieldEditor = CMLib.ableParms().getEditors().get(o.get(0).toString());
 					}
@@ -152,7 +152,7 @@ public class AbilityRecipeData extends StdWebMacro
 					{
 						if(cfIndex>=0)
 						{
-							final DVector dataRow = recipeData.dataRows().elementAt(row);
+							final DVector dataRow = recipeData.dataRows().get(row);
 							classFieldEditor = CMLib.ableParms().getEditors().get(dataRow.elementAt(cfIndex,1));
 						}
 					}
@@ -165,11 +165,11 @@ public class AbilityRecipeData extends StdWebMacro
 					DVector dataRow = null;
 					final int row = CMath.s_int(rownum);
 					if((row-1>=0)&&(row-1<recipeData.dataRows().size()))
-						dataRow = recipeData.dataRows().elementAt(row-1);
+						dataRow = recipeData.dataRows().get(row-1);
 					else
 					{
 						dataRow=recipeData.newRow(httpReq.getUrlParameter("CLASSFIELD"));
-						recipeData.dataRows().addElement(dataRow);
+						recipeData.dataRows().add(dataRow);
 					}
 					for(int c=0;c<dataRow.size();c++)
 					{
@@ -195,7 +195,7 @@ public class AbilityRecipeData extends StdWebMacro
 				{
 					final int row = CMath.s_int(rownum);
 					if((row-1>=0)&&(row-1<recipeData.dataRows().size()))
-						recipeData.dataRows().removeElementAt(row-1);
+						recipeData.dataRows().remove(row-1);
 					else
 						return " @break@";
 					final MOB M = Authenticate.getAuthenticatedMob(httpReq);
@@ -225,7 +225,7 @@ public class AbilityRecipeData extends StdWebMacro
 					str.append("</TR>");
 					for(int r=0;r<recipeData.dataRows().size();r++)
 					{
-						final DVector dataRow = recipeData.dataRows().elementAt(r);
+						final DVector dataRow = recipeData.dataRows().get(r);
 						str.append("\n\r<TR>");
 						str.append("<TD>");
 						str.append("<A HREF=\"javascript:Select("+(r+1)+")\">" + sfont + "<B><FONT COLOR=YELLOW>"+(r+1)+"</FONT></B>");
