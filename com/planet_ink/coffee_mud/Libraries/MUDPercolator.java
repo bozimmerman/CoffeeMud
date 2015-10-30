@@ -423,7 +423,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					continue;
 				final Map<String,Object> rDefined=new Hashtable<String,Object>();
 				rDefined.putAll(defined);
-				defineReward(null,null,null,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,rDefined,true);
+				defineReward(null,null,null,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,null,rDefined,true);
 				final Area A=buildArea(valPiece,rDefined,directions);
 				for (final String key : rDefined.keySet())
 				{
@@ -490,6 +490,26 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		throw new CMException("Unable to build area for some reason.");
 	}
 
+	protected void updateLayoutDefinitions(Map<String,Object> defined, Map<String,Object> groupDefined, 
+										   Map<List<LayoutNode>,Map<String,Object>> groupDefinitions, List<List<LayoutNode>> roomGroups)
+	{
+		for (final String key : groupDefined.keySet())
+		{
+			if(key.startsWith("__"))
+			{
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+					Log.debugOut("AREADEF:"+key+"="+CMStrings.limit(groupDefined.get(key).toString(), 10));
+				defined.put(key, groupDefined.get(key));
+				for(final List<LayoutNode> group2 : roomGroups)
+				{
+					final Map<String,Object> groupDefined2 = groupDefinitions.get(group2);
+					if(groupDefined2!=groupDefined)
+						groupDefined2.put(key, groupDefined.get(key));
+				}
+			}
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	protected Room layOutRooms(Area A, LayoutManager layoutManager, int size, int direction, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
@@ -668,6 +688,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			otherDefineds.remove("ROOMTAG_NODEGATEEXIT");
 			otherDefineds.remove("ROOMTAG_GATEEXITROOM");
 		}
+		updateLayoutDefinitions(defined,groupDefined,groupDefinitions,roomGroups);
 
 		//now generate the rooms and add them to the area
 		for(final List<LayoutNode> group : roomGroups)
@@ -677,21 +698,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			for(final LayoutNode node : group)
 				if(node!=magicRoomNode)
 					processRoom(A,direction,piece,node,groupDefined);
-			for (final String key : groupDefined.keySet())
-			{
-				if(key.startsWith("__"))
-				{
-					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-						Log.debugOut("AREADEF:"+key+"="+CMStrings.limit(groupDefined.get(key).toString(), 10));
-					defined.put(key, groupDefined.get(key));
-					for(final List<LayoutNode> group2 : roomGroups)
-					{
-						final Map<String,Object> groupDefined2 = groupDefinitions.get(group2);
-						if(groupDefined2!=groupDefined)
-							groupDefined2.put(key, groupDefined.get(key));
-					}
-				}
-			}
+			updateLayoutDefinitions(defined,groupDefined,groupDefinitions,roomGroups);
 		}
 
 		for(final Integer linkDir : magicRoomNode.links().keySet())
@@ -853,7 +860,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final XMLLibrary.XMLpiece valPiece = choices.get(c);
 				if(valPiece.parms.containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 					continue;
-				defineReward(E,null,null,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,defined,true);
+				defineReward(E,null,null,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,null,defined,true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MUDPercolator","Build Mob: "+CMStrings.limit(valPiece.value,80)+"...");
 				final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
@@ -889,7 +896,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					continue;
 				final Map<String,Object> rDefined=new Hashtable<String,Object>();
 				rDefined.putAll(defined);
-				defineReward(null,null,null,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,rDefined,true);
+				defineReward(null,null,null,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,null,rDefined,true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MUDPercolator","Build Room: "+CMStrings.limit(valPiece.value,80)+"...");
 				Room R;
@@ -946,7 +953,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final XMLLibrary.XMLpiece valPiece = choices.get(c);
 				if(valPiece.parms.containsKey("VALIDATE") && !testCondition(null,null,null,CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 					continue;
-				defineReward(null,null,null,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,defined,true);
+				defineReward(null,null,null,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,null,defined,true);
 				final Exit[] theseExits=exits.clone();
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MUDPercolator","Build Room: "+CMStrings.limit(valPiece.value,80)+"...");
@@ -975,7 +982,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final XMLLibrary.XMLpiece valPiece = choices.get(c);
 				if(valPiece.parms.containsKey("VALIDATE") && !testCondition(M,null,null,CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 					continue;
-				defineReward(M,null,null,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,defined,true);
+				defineReward(M,null,null,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,null,defined,true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(valPiece.value,80)+"...");
 				final Exit E=buildExit(valPiece,defined);
@@ -1371,7 +1378,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					continue;
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(valPiece.value,80)+"...");
-				defineReward(M,null,null,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,defined,true);
+				defineReward(M,null,null,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,null,defined,true);
 				final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 				final Exit E=buildExit(valPiece,defined);
 				if(callBack != null)
@@ -1518,7 +1525,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final XMLLibrary.XMLpiece valPiece = choices.get(c);
 				if(valPiece.parms.containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 					continue;
-				defineReward(E,null,null,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,defined,true);
+				defineReward(E,null,null,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,null,defined,true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MUDPercolator","Build Item: "+CMStrings.limit(valPiece.value,80)+"...");
 				final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
@@ -1937,7 +1944,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final XMLLibrary.XMLpiece valPiece = choices.get(c);
 				if(valPiece.parms.containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 					continue;
-				defineReward(E,null,null,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,defined,true);
+				defineReward(E,null,null,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,null,defined,true);
 				final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 				final Ability A=buildAbility(E,valPiece,defined);
 				if(callBack != null)
@@ -1967,7 +1974,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final XMLLibrary.XMLpiece valPiece = choices.get(c);
 				if(valPiece.parms.containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 					continue;
-				defineReward(E,null,null,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,defined,true);
+				defineReward(E,null,null,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,null,defined,true);
 				final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 				final Behavior B=buildBehavior(E,valPiece,defined);
 				V.add(B);
@@ -1993,7 +2000,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final XMLLibrary.XMLpiece valPiece = choices.get(c);
 			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 				continue;
-			defineReward(E,null,null,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,defined,true);
+			defineReward(E,null,null,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,null,defined,true);
 			final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 			final Race R=buildGenRace(E,valPiece,defined);
 			V.add(R);
@@ -2059,7 +2066,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final XMLLibrary.XMLpiece valPiece = choices.get(c);
 				if(valPiece.parms.containsKey("VALIDATE") && !testCondition(E,null,prefix,CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 					continue;
-				defineReward(E,null,prefix,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,null,defined,true);
+				defineReward(E,null,prefix,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,null,defined,true);
 				final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 				final String classID = findStringNow("CLASS",valPiece,defined);
 				Ability A=CMClass.getAbility(classID);
@@ -2321,8 +2328,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					Log.debugOut("MudPercolator","DEFINE:"+defVar.toUpperCase().trim()+"="+definition);
 			}
 		}
-		if((piece.parent!=null)&&(piece.parent.tag.equalsIgnoreCase(piece.tag))&&(recurseAllowed))
-			defineReward(E,ignoreStats,defPrefix,CMLib.xml().getParmValue(piece.parms,"DEFINE"),piece.parent,value,defined,recurseAllowed);
+		final XMLpiece parentPiece = piece.parent;
+		if((parentPiece!=null)&&(parentPiece.tag.equalsIgnoreCase(piece.tag))&&(recurseAllowed))
+			defineReward(E,ignoreStats,defPrefix,CMLib.xml().getParmValue(parentPiece.parms,"DEFINE"),parentPiece,value,defined,recurseAllowed);
 	}
 
 	protected String findStringNow(Modifiable E, List<String> ignoreStats, String defPrefix, String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
@@ -2396,9 +2404,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 				continue;
 
-			final String value=strFilter(E,ignoreStats,defPrefix,valPiece.value,piece, defined);
+			final String value=strFilter(E,ignoreStats,defPrefix,valPiece.value,valPiece, defined);
 			if(processDefined!=valPiece)
-				defineReward(E,ignoreStats,defPrefix,CMLib.xml().getParmValue(piece.parms,"DEFINE"),valPiece,value,defined,true);
+				defineReward(E,ignoreStats,defPrefix,CMLib.xml().getParmValue(valPiece.parms,"DEFINE"),valPiece,value,defined,true);
 
 			String action = CMLib.xml().getParmValue(valPiece.parms,"ACTION");
 			if(action==null) 
@@ -2972,7 +2980,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			else
 				val = defined.get(V.var.toUpperCase().trim());
 			if(val instanceof XMLLibrary.XMLpiece)
+			{
 				val = findString(E,ignoreStats,defPrefix,"STRING",(XMLLibrary.XMLpiece)val,defined);
+			}
 			if((val == null)&&(defPrefix!=null)&&(defPrefix.length()>0)&&(E!=null))
 			{
 				String preValue=V.var;

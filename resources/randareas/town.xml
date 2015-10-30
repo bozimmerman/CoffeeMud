@@ -354,7 +354,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					</SHOPINVENTORY>
 				</MOB>
 			</ROOM>
-			<ROOM class="WoodRoom"  condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+			<ROOM class="WoodRoom"  condition="($__towninndesk &gt;= 1) and ($roomtag_nodetype='street' or $roomtag_nodetype='surround')">
 				<TITLE>$a_streetprefix $roomrun_desc hallway</TITLE>
 				<DESCRIPTION>
 					<DESCRIPTION select="any-1" action="PREPEND">
@@ -369,7 +369,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				</DESCRIPTION>
 				<EXIT class="Open" />
 			</ROOM>
-			<ROOM class="WoodRoom"  condition="$roomtag_nodetype='leaf'" define="__innroomnumber+=1">
+			<ROOM class="WoodRoom"  condition="($__towninndesk &gt;= 1) and ($roomtag_nodetype='leaf')" define="__innroomnumber+=1">
 				<TITLE>Room number $__innroomnumber</TITLE>
 				<DESCRIPTION>$desc_exits</DESCRIPTION>
 				<EXIT class="GenDoor" hasalock="true" deflocked="true" level="$level_range" keyname="INN$__innroomnumber" />
