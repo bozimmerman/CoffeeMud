@@ -1468,20 +1468,6 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				theClass=C;
 			}
 		}
-		final int raceLevel=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
-		final int charLevel=studentM.basePhyStats().level();
-		if((raceLevel>=0)
-		&&(charLevel>=raceLevel)
-		&&((charLevel-raceLevel)>greatestDiff))
-			greatestDiff=charLevel-raceLevel;
-		for(final Pair<Clan,Integer> c : studentM.clans())
-		{
-			final int clanLevel=getQualifyingLevel(c.first.getGovernment().getName(),false,A.ID());
-			if((clanLevel>=0)
-			&&(c.first.getClanLevel()>=clanLevel)
-			&&((charLevel-clanLevel)>greatestDiff))
-				greatestDiff=charLevel-clanLevel;
-		}
 		if(theClass==null)
 			return studentM.charStats().getClassLevel(studentM.charStats().getCurrentClass());
 		return studentM.charStats().getClassLevel(theClass);
