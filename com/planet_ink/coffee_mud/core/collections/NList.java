@@ -25,10 +25,8 @@ public interface NList<T>
 
 	public void addSharedElements(T[] O);
 	
-	@SuppressWarnings("unchecked")
 	public void addElement(T... Os);
 	
-	@SuppressWarnings("unchecked")
 	public void add(T... Os);
 	
 	public boolean contains(T O);
@@ -55,9 +53,7 @@ public interface NList<T>
 
 	public void set(int index, int dim, T O);
 
-	@SuppressWarnings("unchecked")
 	public void insertElementAt(int here, T... Os);
 	
-	@SuppressWarnings("unchecked")
 	public void add(int here, T... Os);
 }
