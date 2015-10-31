@@ -2,8 +2,7 @@ BUGS
   *. 
 
 TECH
-   *. make ship sensor systems -- important for debugging
-   *. add targeting/tracking system to sensor software to help with ship testing
+   *. add air circulater and heat regulators
    *. test and debug launch and landing
    *. ShopKeeper VIEW should give more information about tech items
    *. interacting items of diff tech level might damage each other
