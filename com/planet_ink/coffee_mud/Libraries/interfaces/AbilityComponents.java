@@ -48,5 +48,29 @@ public interface AbilityComponents extends CMLibrary
 	public AbilityComponent createBlankAbilityComponent();
 	public void alterAbilityComponentFile(String compID, boolean delete);
 	
+	public AbilityLimits getCommonSkillLimit(MOB studentM);
+	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A);
+	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A);
+	public AbilityLimits getCommonSkillRemainders(MOB student);
+	
+	public static interface AbilityLimits
+	{
+		public int commonSkills();
 
+		public AbilityLimits commonSkills(int newVal);
+
+		public int craftingSkills();
+
+		public AbilityLimits craftingSkills(int newVal);
+
+		public int nonCraftingSkills();
+
+		public AbilityLimits nonCraftingSkills(int newVal);
+
+		public int specificSkillLimit();
+
+		public AbilityLimits specificSkillLimit(int newVal);
+	}
+
+	
 }

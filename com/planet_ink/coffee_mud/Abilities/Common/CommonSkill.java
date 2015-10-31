@@ -475,7 +475,7 @@ public class CommonSkill extends StdAbility
 		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 			return true;
 		final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
-		final AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(studentM, this);
+		final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getCommonSkillRemainder(studentM, this);
 		if(remainders.commonSkills()<=0)
 		{
 			teacherM.tell(L("@x1 can not learn any more common skills.",studentM.name(teacherM)));
@@ -502,7 +502,7 @@ public class CommonSkill extends StdAbility
 			if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 				return;
 			final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
-			final AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(student, this);
+			final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getCommonSkillRemainder(student, this);
 			if(remainders.commonSkills()<=0)
 				student.tell(L("@x1 may not learn any more common skills.",student.name()));
 			else

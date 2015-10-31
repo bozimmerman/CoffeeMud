@@ -742,11 +742,6 @@ public interface AbilityMapper extends CMLibrary
 	
 	public Map<String, int[]> getHardOverrideManaCache();
 	
-	public AbilityLimits getCommonSkillLimit(MOB studentM);
-	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A);
-	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A);
-	public AbilityLimits getCommonSkillRemainders(MOB student);
-	
 	public static interface QualifyingID
 	{
 		public String ID();
@@ -756,25 +751,6 @@ public interface AbilityMapper extends CMLibrary
 		public QualifyingID qualifyingLevel(int newLevel);
 	}
 
-	public static interface AbilityLimits
-	{
-		public int commonSkills();
-
-		public AbilityLimits commonSkills(int newVal);
-
-		public int craftingSkills();
-
-		public AbilityLimits craftingSkills(int newVal);
-
-		public int nonCraftingSkills();
-
-		public AbilityLimits nonCraftingSkills(int newVal);
-
-		public int specificSkillLimit();
-
-		public AbilityLimits specificSkillLimit(int newVal);
-	}
-
 	public enum Cost
 	{
 		PRAC,
@@ -782,7 +758,7 @@ public interface AbilityMapper extends CMLibrary
 		MANA,
 		PRACPRAC
 	}
-	
+
 	public static interface AbilityMapping extends Cloneable
 	{
 		public String				ID();

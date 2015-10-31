@@ -122,7 +122,7 @@ public class Qualify  extends Skills
 			&&(level>highestLevel)
 			&&(level<(CMLib.ableMapper().qualifyingClassLevel(ableM,A)+1))
 			&&(filter.passesFilter(A))
-			&&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit() > 0)
+			&&(CMLib.ableComponents().getCommonSkillRemainder(ableM, A).specificSkillLimit() > 0)
 			&&(ableM.fetchAbility(A.ID())==null)
 			&&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
 				highestLevel=level;
@@ -143,7 +143,7 @@ public class Qualify  extends Skills
 				   &&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
 				   &&(ableM.fetchAbility(A.ID())==null)
 				   &&(filter.passesFilter(A))
-				   &&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit() > 0)
+				   &&(CMLib.ableComponents().getCommonSkillRemainder(ableM, A).specificSkillLimit() > 0)
 				   &&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
 				{
 					if((++col)>2)
@@ -349,7 +349,7 @@ public class Qualify  extends Skills
 			else
 			if(!mob.isMonster())
 			{
-				final AbilityMapper.AbilityLimits limits = CMLib.ableMapper().getCommonSkillRemainders(mob);
+				final AbilityComponents.AbilityLimits limits = CMLib.ableComponents().getCommonSkillRemainders(mob);
 				if(limits.commonSkills()<0)
 					limits.commonSkills(0);
 				if(limits.commonSkills() < Integer.MAX_VALUE/2)

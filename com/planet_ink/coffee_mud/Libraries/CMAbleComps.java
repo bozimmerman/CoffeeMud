@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CommonSkill;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -679,4 +681,158 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		F.saveText(text.toString(),false);
 	}
 
+	@Override
+	public AbilityLimits getCommonSkillLimit(MOB studentM)
+	{
+		
+		final AbilityLimits aL = new AbilityLimits()
+		{
+			private int commonSkills = 0;
+			private int craftingSkills = 0;
+			private int nonCraftingSkills = 0;
+			private int specificSkillLimit = 0;
+			
+			@Override
+			public AbilityLimits commonSkills(int newVal)
+			{
+				commonSkills = newVal;
+				return this;
+			}
+
+			@Override
+			public AbilityLimits craftingSkills(int newVal)
+			{
+				craftingSkills = newVal;
+				return this;
+			}
+
+			@Override
+			public AbilityLimits nonCraftingSkills(int newVal)
+			{
+				nonCraftingSkills = newVal;
+				return this;
+			}
+
+			@Override
+			public AbilityLimits specificSkillLimit(int newVal)
+			{
+				specificSkillLimit = newVal;
+				return this;
+			}
+
+			@Override
+			public int commonSkills()
+			{
+				return commonSkills;
+			}
+
+			@Override
+			public int craftingSkills()
+			{
+				return craftingSkills;
+			}
+
+			@Override
+			public int nonCraftingSkills()
+			{
+				return nonCraftingSkills;
+			}
+
+			@Override
+			public int specificSkillLimit()
+			{
+				return specificSkillLimit;
+			}
+		};
+		CharClass C = null;
+		if(studentM!=null)
+		{
+			C=studentM.charStats().getCurrentClass();
+		}
+		if(C!=null)
+		{
+			if(C.maxCommonSkills() == 0)
+				aL.commonSkills(Integer.MAX_VALUE);
+			else
+				aL.commonSkills(C.maxCommonSkills());
+			if(C.maxCraftingSkills() == 0)
+				aL.craftingSkills(Integer.MAX_VALUE);
+			else
+				aL.craftingSkills(C.maxCraftingSkills());
+			if(C.maxNonCraftingSkills() == 0)
+				aL.nonCraftingSkills(Integer.MAX_VALUE);
+			else
+				aL.nonCraftingSkills(C.maxNonCraftingSkills());
+		}
+		return aL;
+	}
+
+	@Override
+	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A)
+	{
+		final AbilityLimits aL=getCommonSkillLimit(studentM);
+		aL.specificSkillLimit(Integer.MAX_VALUE);
+		if(A==null)
+			return aL;
+		if(A instanceof CommonSkill)
+		{
+			final boolean crafting = ((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+			aL.specificSkillLimit(crafting ? aL.craftingSkills() : aL.nonCraftingSkills());
+		}
+		return aL;
+	}
+
+	@Override
+	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A)
+	{
+		final AbilityLimits aL = getCommonSkillRemainders(studentM);
+		aL.specificSkillLimit(Integer.MAX_VALUE);
+		if(A==null)
+			return aL;
+		if(A instanceof CommonSkill)
+		{
+			final boolean crafting = ((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+			aL.specificSkillLimit(crafting ? aL.craftingSkills() : aL.nonCraftingSkills());
+		}
+		return aL;
+	}
+
+	@Override
+	public AbilityLimits getCommonSkillRemainders(MOB student)
+	{
+		final AbilityLimits aL = getCommonSkillLimit(student);
+		final CharStats CS=student.charStats();
+		if(CS.getCurrentClass()==null)
+			return aL;
+		final HashSet<String> culturalAbilities=new HashSet<String>();
+		final PairVector<String,Integer> culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
+		for(int i=0;i<culturalAbilitiesDV.size();i++)
+			culturalAbilities.add(culturalAbilitiesDV.getFirst(i).toLowerCase());
+		for(int a=0;a<student.numAbilities();a++)
+		{
+			final Ability A2=student.fetchAbility(a);
+			if(A2 instanceof CommonSkill)
+			{
+				if(culturalAbilities.contains(A2.ID().toLowerCase()))
+					continue;
+				boolean foundInAClass=false;
+				for(int c=0;c<CS.numClasses();c++)
+				{
+					if(CMLib.ableMapper().getQualifyingLevel(CS.getMyClass(c).ID(), false, A2.ID())>=0)
+					{
+						foundInAClass=true;
+						break;
+					}
+				}
+				if(foundInAClass)
+					continue;
+				aL.commonSkills(aL.commonSkills()-1);
+				if((A2.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+					aL.craftingSkills(aL.craftingSkills()-1);
+				else
+					aL.nonCraftingSkills(aL.nonCraftingSkills()-1);
+			}
+		}
+		return aL;
+	}
 }

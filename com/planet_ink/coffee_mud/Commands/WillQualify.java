@@ -72,7 +72,7 @@ public class WillQualify  extends Skills
 					&&((types.size()==0)
 						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))
 						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS))))
-					&&(CMLib.ableMapper().getCommonSkillLimit(ableM, A).specificSkillLimit() > 0))
+					&&(CMLib.ableComponents().getCommonSkillLimit(ableM, A).specificSkillLimit() > 0))
 					{
 						if ( (++col) > 2)
 						{
