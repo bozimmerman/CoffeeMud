@@ -156,7 +156,7 @@ public class VFShell
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.BeanCounter());
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CharCreation());
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.Clans());
-				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMAble());
+				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMAbleMap());
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMAbleParms());
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMCatalog());
 				CMLib.registerLibrary(new com.planet_ink.coffee_mud.Libraries.CMChannels());

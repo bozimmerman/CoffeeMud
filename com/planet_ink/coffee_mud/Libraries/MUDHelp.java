@@ -579,11 +579,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 					if(!A.isAutoInvoked())
 					{
-						final Vector<AbilityComponent> components=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase());
+						final Vector<AbilityComponent> components=(Vector<AbilityComponent>)CMLib.ableComponents().getAbilityComponentMap().get(A.ID().toUpperCase());
 						if(components!=null)
 						{
 							prepend.append(L("\n\rComponent: "));
-							prepend.append(CMLib.ableMapper().getAbilityComponentDesc(forMOB,A.ID()));
+							prepend.append(CMLib.ableComponents().getAbilityComponentDesc(forMOB,A.ID()));
 						}
 						prepend.append(L("\n\rUse Cost : "));
 						if(A.usageType()==Ability.USAGE_NADA)

@@ -50,7 +50,7 @@ public class ComponentNext extends StdWebMacro
 		}
 		String lastID="";
 		String componentID;
-		for(final Iterator<String> i=CMLib.ableMapper().getAbilityComponentMap().keySet().iterator();i.hasNext();)
+		for(final Iterator<String> i=CMLib.ableComponents().getAbilityComponentMap().keySet().iterator();i.hasNext();)
 		{
 			componentID=i.next();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!componentID.equalsIgnoreCase(lastID))))

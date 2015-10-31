@@ -1249,22 +1249,22 @@ public class Modify extends StdCommand
 			return;
 		}
 		skillID=A.ID();
-		if(CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase())==null)
+		if(CMLib.ableComponents().getAbilityComponentMap().get(A.ID().toUpperCase())==null)
 		{
 			mob.tell(L("A component definition for '@x1' doesn't exists, you'll need to create it first.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		CMLib.genEd().modifyComponents(mob,skillID);
-		final String parms=CMLib.ableMapper().getAbilityComponentCodedString(skillID);
-		final String error=CMLib.ableMapper().addAbilityComponent(parms,CMLib.ableMapper().getAbilityComponentMap());
+		final String parms=CMLib.ableComponents().getAbilityComponentCodedString(skillID);
+		final String error=CMLib.ableComponents().addAbilityComponent(parms,CMLib.ableComponents().getAbilityComponentMap());
 		if(error!=null)
 		{
 			mob.tell(error);
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		CMLib.ableMapper().alterAbilityComponentFile(skillID,false);
+		CMLib.ableComponents().alterAbilityComponentFile(skillID,false);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just increased!"));
 	}
 

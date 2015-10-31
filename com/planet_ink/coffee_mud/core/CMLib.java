@@ -146,6 +146,7 @@ public class CMLib
 		TECH(TechLibrary.class),
 		PROTOCOL(ProtocolLibrary.class),
 		ACHIEVEMENTS(AchievementLibrary.class),
+		ABLECOMP(AbilityComponents.class)
 		;
 
 		public final Class<?> ancestor;
@@ -620,6 +621,16 @@ public class CMLib
 	public static final AbilityMapper ableMapper()
 	{
 		return (AbilityMapper)l().libraries[Library.ABLEMAP.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this threads abilities components management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents
+	 * @return a reference to this threads abilities components management library.
+	 */
+	public static final AbilityComponents ableComponents()
+	{
+		return (AbilityComponents)l().libraries[Library.ABLECOMP.ordinal()];
 	}
 	
 	/**

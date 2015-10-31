@@ -1125,23 +1125,23 @@ public class CraftingSkill extends GatheringSkill
 		if(componentID.trim().startsWith("("))
 		{
 			final Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
-			final String error=CMLib.ableMapper().addAbilityComponent("ID="+componentID, H);
+			final String error=CMLib.ableComponents().addAbilityComponent("ID="+componentID, H);
 			if(error!=null)
 				Log.errOut(ID(),"Error parsing custom component: "+componentID);
 			componentsRequirements=H.get("ID");
 		}
 		else
-			componentsRequirements=CMLib.ableMapper().getAbilityComponentMap().get(componentID.toUpperCase());
+			componentsRequirements=CMLib.ableComponents().getAbilityComponentMap().get(componentID.toUpperCase());
 		if(componentsRequirements!=null)
 		{
-			final List<Object> components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
+			final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements);
 			if(components!=null)
 			{
 				return components;
 			}
 			final StringBuffer buf=new StringBuffer("");
 			for(int r=0;r<componentsRequirements.size();r++)
-				buf.append(CMLib.ableMapper().getAbilityComponentDesc(mob,componentsRequirements,r));
+				buf.append(CMLib.ableComponents().getAbilityComponentDesc(mob,componentsRequirements,r));
 			mob.tell(L("You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString()));
 			return null;
 		}
@@ -1169,15 +1169,15 @@ public class CraftingSkill extends GatheringSkill
 			if(woodStr.trim().startsWith("("))
 			{
 				final Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
-				final String error=CMLib.ableMapper().addAbilityComponent("ID="+ID, H);
+				final String error=CMLib.ableComponents().addAbilityComponent("ID="+ID, H);
 				if(error!=null)
 					return "Error parsing custom component: "+woodStr;
 				componentsRequirements=H.get("ID");
 			}
 			else
-				componentsRequirements=CMLib.ableMapper().getAbilityComponentMap().get(ID);
+				componentsRequirements=CMLib.ableComponents().getAbilityComponentMap().get(ID);
 			if(componentsRequirements!=null)
-				return CMLib.ableMapper().getAbilityComponentDesc(mob, componentsRequirements);
+				return CMLib.ableComponents().getAbilityComponentDesc(mob, componentsRequirements);
 		}
 		return "?";
 	}

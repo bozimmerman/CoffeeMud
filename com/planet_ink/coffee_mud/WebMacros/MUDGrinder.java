@@ -410,13 +410,13 @@ public class MUDGrinder extends StdWebMacro
 				return "@break@";
 			if(last.length()==0)
 				return "@break@";
-			final List<AbilityComponent> list = CMLib.ableMapper().getAbilityComponents(last);
+			final List<AbilityComponent> list = CMLib.ableComponents().getAbilityComponents(last);
 			if(list==null)
 				return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.COMPONENTS))
 				return "@break@";
-			CMLib.ableMapper().getAbilityComponentMap().remove(last.toUpperCase().trim());
-			CMLib.ableMapper().alterAbilityComponentFile(last, true);
+			CMLib.ableComponents().getAbilityComponentMap().remove(last.toUpperCase().trim());
+			CMLib.ableComponents().alterAbilityComponentFile(last, true);
 			Log.sysOut("Grinder",mob.Name()+" destroyed component "+last);
 			return "The component "+last+" has been successfully destroyed.";
 		}

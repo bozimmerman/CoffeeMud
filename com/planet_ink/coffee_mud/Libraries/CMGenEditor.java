@@ -7636,7 +7636,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected boolean modifyComponent(MOB mob, AbilityComponent comp)
 	throws IOException
 	{
-		final PairList<String,String> decoded=CMLib.ableMapper().getAbilityComponentCoded(comp);
+		final PairList<String,String> decoded=CMLib.ableComponents().getAbilityComponentCoded(comp);
 		if(mob.isMonster())
 			return true;
 		boolean ok=false;
@@ -7665,7 +7665,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		CMLib.ableMapper().setAbilityComponentCodedFromCodedPairs(decoded,comp);
+		CMLib.ableComponents().setAbilityComponentCodedFromCodedPairs(decoded,comp);
 		return true;
 	}
 
@@ -7678,7 +7678,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
-		final List<AbilityComponent> codedDV=CMLib.ableMapper().getAbilityComponents(componentID);
+		final List<AbilityComponent> codedDV=CMLib.ableComponents().getAbilityComponents(componentID);
 		if(codedDV!=null)
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7689,7 +7689,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					showNumber++;
 					if((showFlag>0)&&(showFlag!=showNumber))
 						continue;
-					mob.tell(showNumber+": '"+CMLib.ableMapper().getAbilityComponentDesc(null,codedDV,v)+"'.");
+					mob.tell(showNumber+": '"+CMLib.ableComponents().getAbilityComponentDesc(null,codedDV,v)+"'.");
 					if((showFlag!=showNumber)&&(showFlag>-999))
 						continue;
 					if(!modifyComponent(mob,codedDV.get(v)))
@@ -7704,7 +7704,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(L("@x1. Add new component requirement.",""+showNumber));
 				if((showFlag==showNumber)||(showFlag<=-999))
 				{
-					final AbilityComponent comp = CMLib.ableMapper().createBlankAbilityComponent();
+					final AbilityComponent comp = CMLib.ableComponents().createBlankAbilityComponent();
 					final boolean success=modifyComponent(mob,comp);
 					if(!success)
 					{

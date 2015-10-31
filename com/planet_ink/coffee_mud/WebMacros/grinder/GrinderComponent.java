@@ -73,15 +73,15 @@ public class GrinderComponent
 				posDex++;
 			}
 
-			if(CMLib.ableMapper().getAbilityComponentMap().containsKey(last.toUpperCase().trim()))
+			if(CMLib.ableComponents().getAbilityComponentMap().containsKey(last.toUpperCase().trim()))
 			{
-				final List<AbilityComponent> xset=CMLib.ableMapper().getAbilityComponentMap().get(last.toUpperCase().trim());
+				final List<AbilityComponent> xset=CMLib.ableComponents().getAbilityComponentMap().get(last.toUpperCase().trim());
 				xset.clear();
 				xset.addAll(set);
 			}
 			else
-				CMLib.ableMapper().getAbilityComponentMap().put(last.toUpperCase().trim(),set);
-			CMLib.ableMapper().alterAbilityComponentFile(last.toUpperCase().trim(),false);
+				CMLib.ableComponents().getAbilityComponentMap().put(last.toUpperCase().trim(),set);
+			CMLib.ableComponents().alterAbilityComponentFile(last.toUpperCase().trim(),false);
 		}
 		return "";
 	}

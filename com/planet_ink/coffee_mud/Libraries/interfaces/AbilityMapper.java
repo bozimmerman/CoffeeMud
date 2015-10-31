@@ -43,8 +43,7 @@ import java.util.*;
 public interface AbilityMapper extends CMLibrary
 {
 	//TODO: Just use AbilityMapping class for all these methods, replace classes here with interfaces.
-	
-	
+
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
@@ -59,7 +58,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain);
-	
+
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
@@ -76,7 +75,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, List<String> preReqSkillsList);
-	
+
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
@@ -93,7 +92,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, String extraMasks);
-	
+
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
@@ -111,7 +110,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, List<String> preReqSkillsList, String extraMasks);
-	
+
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
@@ -129,7 +128,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, String defaultParam, boolean autoGain);
-	
+
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
@@ -146,7 +145,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, boolean autoGain);
-	
+
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
@@ -189,7 +188,7 @@ public interface AbilityMapper extends CMLibrary
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
 									  String defaultParam, boolean autoGain, boolean secret,
 									  List<String> preReqSkillsList, String extraMask);
-	
+
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
@@ -244,7 +243,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return a new, blank ability mapping object
 	 */
 	public AbilityMapping newAbilityMapping();
-	
+
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.
@@ -266,7 +265,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addDynaAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
-			  						  String defaultParam, boolean autoGain, boolean secret, String extraMask);
+									  String defaultParam, boolean autoGain, boolean secret, String extraMask);
 
 	/**
 	 * Removes the specified mapping between charclass, race, or whatever, and an Ability, by String ability ID.
@@ -279,7 +278,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the mapping removed
 	 */
 	public AbilityMapping delCharAbilityMapping(String ID, String abilityID);
-	
+
 	/**
 	 * Removes all ability mappings for the given charclass, race, or whatever.
 	 * @see AbilityMapping
@@ -289,7 +288,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 */
 	public void delCharMappings(String ID);
-	
+
 	/**
 	 * Adds to the list of allowed skills, expertises, etc that come from the requirements
 	 * listed for the given skill.  Used mostly by the Expertise system, but also used
@@ -299,7 +298,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @param extraMask a zappermask of other requirements that a person must have for the skill
 	 */
 	public void addPreRequisites(String ID, List<String> preReqSkillsList, String extraMask);
-	
+
 	/**
 	 * Returns an enumeration of all the AbilityMapping object for all the abilities the
 	 * given class, race, whatever qualifies for ever.  Will include common (all qualified)
@@ -310,7 +309,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return an enumeration of AbilityMapping objects
 	 */
 	public Enumeration<AbilityMapping> getClassAbles(String ID, boolean addAll);
-	
+
 	/**
 	 * Returns the lowest class level at which any class qualifies for the
 	 * given ability, returning 0 if non found.
@@ -318,31 +317,32 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the lowest qualifying level
 	 */
 	public int lowestQualifyingLevel(String abilityID);
-	
-	
+
 	/**
 	 * Returns the median lowest qualifying level for all abilities, given you
 	 * an idea of the middle-skill-gaining levels, for some reason.
 	 * @return the median lowest qualifying level for all abilities
 	 */
 	public int getCalculatedMedianLowestQualifyingLevel();
-	
+
 	/**
 	 * Returns the AbilityIDs of all the skills qualified for by the given
 	 * char class or race or whatever, at the given level, and optionally
 	 * including the all-qualified skills.
+	 * @see AbilityMapper#getUpToLevelListings(String, int, boolean, boolean)
 	 * @param ID the charclass ID(), race ID(), or whatever
 	 * @param checkAll true to check the All Qualifies list, or false otherwise
 	 * @param level the specific level to check.
 	 * @return the AbilityIDs of all the skills qualified for at that level
 	 */
 	public List<String> getLevelListings(String ID, boolean checkAll, int level);
-	
+
 	/**
 	 * Returns the full AbilityMappings of all the skills qualified for by the given
 	 * char class or race or whatever, at every level up to and including the 
 	 * given level, and optionally excluding the all-qualified skills and
 	 * non-gained skills.
+	 * @see AbilityMapper#getLevelListings(String, boolean, int)
 	 * @param ID the charclass ID(), race ID(), or whatever
 	 * @param level the specific level to check.
 	 * @param ignoreAll true to ignore the All Qualifies list, or false otherwise
@@ -350,79 +350,180 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the AbilityIDs of all the skills qualified for at that level
 	 */
 	public List<AbilityMapping> getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
-	
+
 	/**
 	 * Returns the level at which the given class or race qualifies for the given ability ID(),
 	 * optionally checking the All-Qualifies list or not.  Returns -1 for no match.
+	 * @see AbilityMapper#qualifyingLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifyingClassLevel(MOB, Ability)
+	 * @see AbilityMapper#lowestQualifyingClassRaceGovt(MOB, Ability)
 	 * @param ID the charclass ID(), race ID(), or whatever
 	 * @param checkAll true to check the All Qualifies list, false to skip it
 	 * @param abilityID the Ability ID() to find a level for
 	 * @return the level at which the give class or race qualifies, or -1
 	 */
 	public int getQualifyingLevel(String ID, boolean checkAll, String abilityID);
-	
+
 	/**
 	 * Returns the lowest class or player level at which the given mob (by race or 
 	 * class) qualified for the given ability if any. Returns -1 for no match.
 	 * This method is called when you are trying to guage how powerful the player
 	 * is with the skill.
+	 * @see AbilityMapper#getQualifyingLevel(String, boolean, String)
+	 * @see AbilityMapper#qualifyingClassLevel(MOB, Ability)
+	 * @see AbilityMapper#lowestQualifyingClassRaceGovt(MOB, Ability)
 	 * @param studentM the mob, whose charclass ID(), race ID() are checked
 	 * @param A the Ability to find a level for
 	 * @return the best level at which the given mob qualified, or -1
 	 */
 	public int qualifyingLevel(MOB studentM, Ability A);
-	
+
 	/**
 	 * Returns the lowest char class level at which the given mob (by race or 
 	 * class) qualified for the given ability if any. Returns -1 for no match.
 	 * This method is called when you are trying to guage how powerful the player
 	 * is with the skill, and only care about class skills.
+	 * @see AbilityMapper#getQualifyingLevel(String, boolean, String)
+	 * @see AbilityMapper#qualifyingLevel(MOB, Ability)
+	 * @see AbilityMapper#lowestQualifyingClassRaceGovt(MOB, Ability)
 	 * @param studentM the mob, whose charclass ID() is checked
 	 * @param A the Ability to find a level for
 	 * @return the best char class level at which the given mob qualified, or -1
 	 */
 	public int qualifyingClassLevel(MOB studentM, Ability A);
-	
+
+	/**
+	 * Returns the class, race, or clan government object that qualifies
+	 * the given mob at the lowest level for the given ability.
+	 * @see AbilityMapper#getQualifyingLevel(String, boolean, String)
+	 * @see AbilityMapper#qualifyingLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifyingClassLevel(MOB, Ability)
+	 * @param studentM the mob whose class, race, etc to check
+	 * @param A the Ability to check
+	 * @return the char class, race, or clan government object.
+	 */
+	public CMObject lowestQualifyingClassRaceGovt(MOB studentM, Ability A);
+
+	/**
+	 * Returns whether the given mob qualifies for the given ability
+	 * only because of their clan affiliations.
+	 * @see AbilityMapper#qualifiesOnlyByRace(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, String)
+	 * @see AbilityMapper#qualifiesOnlyByACharClass(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByCurrentClassAndLevel(MOB, Ability)
+	 * @param studentM the mob to check
+	 * @param A the ability to check
+	 * @return true if the student only qualifies because of their clan
+	 */
+	public boolean qualifiesOnlyByClan(MOB studentM, Ability A);
+
+	/**
+	 * Returns whether the given mob qualifies for the given ability
+	 * only because of their race.
+	 * @see AbilityMapper#qualifiesOnlyByClan(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, String)
+	 * @see AbilityMapper#qualifiesOnlyByACharClass(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByCurrentClassAndLevel(MOB, Ability)
+	 * @param studentM the mob to check
+	 * @param A the ability to check
+	 * @return true if the student only qualifies because of their race
+	 */
+	public boolean qualifiesOnlyByRace(MOB studentM, Ability A);
+
+	/**
+	 * Returns whether the given mob qualifies for the given ability
+	 * only because of their current class at its current level.
+	 * @see AbilityMapper#qualifiesOnlyByClan(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, String)
+	 * @see AbilityMapper#qualifiesOnlyByACharClass(MOB, Ability)
+	 * @see AbilityMapper#qualifiesOnlyByRace(MOB, Ability)
+	 * @param studentM the mob to check
+	 * @param A the ability to check
+	 * @return true if the student only qualifies because of their current char class
+	 */
+	public boolean qualifiesByCurrentClassAndLevel(MOB studentM, Ability A);
+
+	/**
+	 * Returns whether the given mob qualifies for the given ability
+	 * only because of their a char class they have, at its current level.
+	 * @see AbilityMapper#qualifiesOnlyByClan(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, String)
+	 * @see AbilityMapper#qualifiesByCurrentClassAndLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifiesOnlyByRace(MOB, Ability)
+	 * @param studentM the mob to check
+	 * @param A the ability to check
+	 * @return true if the student only qualifies because of a char class they have
+	 */
+	public boolean qualifiesOnlyByACharClass(MOB studentM, Ability A);
+
+	/**
+	 * Returns whether the given mob qualifies for the given ability
+	 * because of any of their char classes at its current level, race, or clan.
+	 * @see AbilityMapper#qualifiesOnlyByClan(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, String)
+	 * @see AbilityMapper#qualifiesByCurrentClassAndLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifiesOnlyByRace(MOB, Ability)
+	 * @param studentM the mob to check
+	 * @param A the ability to check
+	 * @return true if the student qualifies because of their classes, race, etc
+	 */
+	public boolean qualifiesByLevel(MOB studentM, Ability A);
+
+	/**
+	 * Returns whether the given mob qualifies for the given ability
+	 * because of any of their char classes at its current level, race, or clan.
+	 * @see AbilityMapper#qualifiesOnlyByClan(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifiesByLevel(MOB, String)
+	 * @see AbilityMapper#qualifiesByCurrentClassAndLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifiesOnlyByRace(MOB, Ability)
+	 * @param studentM the mob to check
+	 * @param abilityID the Ability ID() to check
+	 * @return true if the student qualifies because of their classes, race, etc
+	 */
+	public boolean qualifiesByLevel(MOB studentM, String abilityID);
+
 	/**
 	 * Returns whether the given Ability ID() represents a skill qualified for by
 	 * any existing character class, including All-Qualified abilities.
+	 * @see AbilityMapper#classOnly(String, String)
+	 * @see AbilityMapper#classOnly(MOB, String, String)
 	 * @param abilityID the ability ID()
 	 * @return true if a class qualifies for it, false otherwise
 	 */
 	public boolean qualifiesByAnyCharClass(String abilityID);
-	
-	public boolean qualifiesOnlyByClan(MOB studentM, Ability A);
-	public boolean qualifiesOnlyByRace(MOB studentM, Ability A);
-	public CMObject lowestQualifyingClassRaceGovt(MOB studentM, Ability A);
-	public boolean qualifiesByCurrentClassAndLevel(MOB studentM, Ability A);
-	public boolean qualifiesOnlyByACharClass(MOB studentM, Ability A);
-	public boolean qualifiesByLevel(MOB studentM, Ability A);
-	public boolean qualifiesByLevel(MOB studentM, String abilityID);
-	
+
 	/**
 	 * Returns whether the given class qualifies for the given ability.
 	 * Does not check all-qualifies list, so this is only class (or race)
 	 * specific qualifications.
 	 * @see AbilityMapper#classOnly(MOB, String, String)
+	 * @see AbilityMapper#qualifiesByAnyCharClass(String)
 	 * @param classID the class ID(), race ID() or whatever
 	 * @param abilityID the ability ID()
 	 * @return true if the class qualifies for this ability
 	 */
 	public boolean classOnly(String classID, String abilityID);
-	
+
 	/**
 	 * Returns whether the given class qualifies for the given ability.
 	 * Does not check all-qualifies list, so this is only class (or race)
 	 * specific qualifications.  Will also specifically check the given
 	 * mobs class object with the given ID, which is strange.
 	 * @see AbilityMapper#classOnly(String, String)
+	 * @see AbilityMapper#qualifiesByAnyCharClass(String)
 	 * @param mob the mob whose classes to also check
 	 * @param classID the class ID(), race ID() or whatever to specifically check
 	 * @param abilityID the ability ID() to use
 	 * @return true if the class qualifies for this ability
 	 */
 	public boolean classOnly(MOB mob, String classID, String abilityID);
-	
+
 	/**
 	 * Discovers whether the given ability is qualified for by a class that
 	 * is available to the given theme id number.
@@ -433,30 +534,57 @@ public interface AbilityMapper extends CMLibrary
 	 * @return true if the ability is qualifies for by a char class of the theme
 	 */
 	public boolean availableToTheme(String abilityID, int theme, boolean publicly);
-	
+
 	/**
 	 * Returns the total number of abilities mapped to a class or race or something.
+	 * @see AbilityMapper#getAllAbleMap(String)
+	 * @see AbilityMapper#getAbleMap(String, String)
 	 * @return the total number of abilities mapped to a class or race or something.
 	 */
 	public int numMappedAbilities();
-	
+
+	/**
+	 * Returns the ability mapping that is defined by the All Qualifies list for
+	 * the given Ability ID(), or null.
+	 * @see AbilityMapper.AbilityMapping
+	 * @see AbilityMapper#numMappedAbilities()
+	 * @see AbilityMapper#getAbleMap(String, String)
+	 * @param abilityID the Ability ID() 
+	 * @return the ability mapping that is defined, or null
+	 */
+	public AbilityMapping getAllAbleMap(String abilityID);
+
+	/**
+	 * Returns the ability mapping that is defined by the given char class, race, or 
+	 * clan ID for the given Ability ID(), or null.
+	 * @see AbilityMapper.AbilityMapping
+	 * @see AbilityMapper#numMappedAbilities()
+	 * @see AbilityMapper#getAllAbleMap(String)
+	 * @param ID the CharClass ID(), Race ID(), or clan ID 
+	 * @param abilityID the Ability ID() 
+	 * @return the ability mapping that is defined, or null
+	 */
+	public AbilityMapping getAbleMap(String ID, String abilityID);
+
 	/**
 	 * Returns an iterator over the list of expertises and skills which having the given
 	 * skill will allow.
+	 * @see AbilityMapper#getClassAllowsList(String)
 	 * @param ableID the skill to get the allows list for
 	 * @return an iterator over the list of expertises and skills
 	 */
 	public Iterator<String> getAbilityAllowsList(String ableID);
-	
+
 	/**
 	 * Returns the list of things allowed by skill which the given class/race/whatever
 	 * qualifies over their life, along with qualifying levels.  This is intended entirely for
 	 * gathering expertises qualified for by class skills. 
+	 * @see AbilityMapper#getAbilityAllowsList(String)
 	 * @param ID the charclass ID(), race ID(), or whatever
 	 * @return the list of skill and skill qualifying information for that class
 	 */
 	public List<QualifyingID> getClassAllowsList(String ID);
-	
+
 	/**
 	 * Returns the zapper mask that applies to the given class or race for the given 
 	 * ability ID(), optionally checking the All-Qualifies list or not.  Returns null 
@@ -479,7 +607,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the zapper mask that applies
 	 */
 	public String getApplicableMask(MOB studentM, Ability A);
-	
+
 	/**
 	 * Returns the general zapper mask that defines the requirements to learn
 	 * the given ability, by ID.  The mask is applied to the learner mob.
@@ -488,7 +616,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the zapper mask, or ""
 	 */
 	public String getCommonExtraMask(Ability A);
-	
+
 	/**
 	 * Given a mob who wants to learn the given Ability skill, this
 	 * method will check the mob (by race/class/whatever) against the
@@ -500,7 +628,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return any pre-requisites, or null for none.
 	 */
 	public DVector getUnmetPreRequisites(MOB studentM, Ability A);
-	
+
 	/**
 	 * Returns the coded form of the skill prerequisites for the
 	 * given ability.  Skill prerequisites are typically other
@@ -513,7 +641,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the coded skill prerequisites
 	 */
 	public DVector getCommonPreRequisites(Ability A);
-	
+
 	/**
 	 * Returns the coded form of the skill prerequisites for the
 	 * given ability that apply to the given mob by race or class.  
@@ -527,7 +655,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the coded skill prerequisites
 	 */
 	public DVector getCommonPreRequisites(MOB mob, Ability A);
-	
+
 	/**
 	 * Given a set of common Ability/skill pre-requisites
 	 * for learning, coded, this method will return those
@@ -539,18 +667,64 @@ public interface AbilityMapper extends CMLibrary
 	 * @return a friendly readable description of those pre-reqs
 	 */
 	public String formatPreRequisites(DVector preReqs);
+
+	/**
+	 * Returns whether the given ability, for the given charclass, race, or clan
+	 * government ID, and optionally checking the All Qualifies list, is gained
+	 * by default or must be trained.
+	 * @param ID the charclass, race, or clan ID()
+	 * @param checkAll true to check the All Qualifies list, or false not to
+	 * @param abilityID the ability ID() to check
+	 * @return true if its gained automatically, or false if it must be trained
+	 */
 	public boolean getDefaultGain(String ID, boolean checkAll, String abilityID);
+
+	/**
+	 * Returns whether the given ability, for the given charclass, race, or clan
+	 * government ID, and optionally checking the All Qualifies list, is part
+	 * of the All Qualified list.
+	 * @param ID the charclass, race, or clan ID()
+	 * @param checkAll true to check the All Qualifies list, or false not to
+	 * @param abilityID the ability ID() to check
+	 * @return true if the ability is part of the all qualifies list, false otherwise
+	 */
 	public boolean getAllQualified(String ID, boolean checkAll, String abilityID);
-	public AbilityMapping getAllAbleMap(String abilityID);
-	public AbilityMapping getAbleMap(String ID, String abilityID);
+
+	/**
+	 * Returns whether the given ability, for the given charclass, race, or clan
+	 * government ID, and optionally checking the All Qualifies list, is a
+	 * secret skill, or whether it can be seen and known about.
+	 * @param ID the charclass, race, or clan ID()
+	 * @param checkAll true to check the All Qualifies list, or false not to
+	 * @param abilityID the ability ID() to check
+	 * @return true if its secret, false otherwise
+	 */
 	public boolean getSecretSkill(String ID, boolean checkAll, String abilityID);
+
+	/**
+	 * Returns whether the given Ability ID() is both mapped on the All Qualifies
+	 * list AND is a secret skill.
+	 * @param abilityID the ability ID() to check
+	 * @return true if its secret, false otherwise
+	 */
 	public boolean getAllSecretSkill(String abilityID);
+	
+	/**
+	 * Returns whether the given ability ID() represents a skill that is secret to
+	 * the given mob, by whatever class, race, or clan they qualify for it by.
+	 * @param mob the mob to check
+	 * @param abilityID the ability ID() to check
+	 * @return true if the ability is secret for this mob, false otherwise
+	 */
 	public boolean getSecretSkill(MOB mob, String abilityID);
+	
+	/**
+	 * Returns whether the given Ability ID() is secret in every mapping (race, class,
+	 * govt clan id, all qualifies) or not.
+	 * @param abilityID the ability ID() to check
+	 * @return true if its secret everywhere, false otherwise
+	 */
 	public boolean getSecretSkill(String abilityID);
-	public AbilityLimits getCommonSkillLimit(MOB studentM);
-	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A);
-	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A);
-	public AbilityLimits getCommonSkillRemainders(MOB student);
 	public Integer[] getCostOverrides(String ID, boolean checkAll, String abilityID);
 	public Integer[] getAllCostOverrides(String abilityID);
 	public Integer[] getCostOverrides(MOB mob, String abilityID);
@@ -561,24 +735,17 @@ public interface AbilityMapper extends CMLibrary
 	public int getMaxProficiency(String ID, boolean checkAll, String abilityID);
 	public int getMaxProficiency(String abilityID);
 	public int getMaxProficiency(MOB mob, boolean checkAll, String abilityID);
-	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req);
-	public int destroyAbilityComponents(List<Object> found);
-	public String getAbilityComponentDesc(MOB mob, String AID);
-	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req);
-	public Map<String, List<AbilityComponent>> getAbilityComponentMap();
-	public String addAbilityComponent(String s, Map<String, List<AbilityComponent>> H);
-	public String getAbilityComponentCodedString(String AID);
-	public List<AbilityComponent> getAbilityComponents(String AID);
-	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req, int r);
-	public void setAbilityComponentCodedFromCodedPairs(PairList<String,String> decodedDV, AbilityComponent comp);
-	public PairList<String,String> getAbilityComponentCoded(AbilityComponent comp);
-	public String getAbilityComponentCodedString(List<AbilityComponent> comps);
-	public AbilityComponent createBlankAbilityComponent();
+	
 	public boolean isDomainIncludedInAnyAbility(int domain, int acode);
-	public void alterAbilityComponentFile(String compID, boolean delete);
 	public void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap);
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache);
+	
 	public Map<String, int[]> getHardOverrideManaCache();
+	
+	public AbilityLimits getCommonSkillLimit(MOB studentM);
+	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A);
+	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A);
+	public AbilityLimits getCommonSkillRemainders(MOB student);
 	
 	public static interface QualifyingID
 	{

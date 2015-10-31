@@ -1334,16 +1334,18 @@ public class StdAbility implements Ability
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS))
 		)
 		{
-			final Vector<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(ID().toUpperCase());
+			final Vector<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableComponents().getAbilityComponentMap().get(ID().toUpperCase());
 			if(componentsRequirements!=null)
 			{
-				final List<Object> components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
+				final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements);
 				if(components==null)
 				{
-					mob.tell(L("You lack the necessary materials to use this @x1, the requirements are: @x2.",Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES].toLowerCase(),CMLib.ableMapper().getAbilityComponentDesc(mob,ID())));
+					mob.tell(L("You lack the necessary materials to use this @x1, the requirements are: @x2.",
+							Ability.ACODE_DESCS[classificationCode()&Ability.ALL_ACODES].toLowerCase(),
+							CMLib.ableComponents().getAbilityComponentDesc(mob,ID())));
 					return false;
 				}
-				CMLib.ableMapper().destroyAbilityComponents(components);
+				CMLib.ableComponents().destroyAbilityComponents(components);
 			}
 		}
 		return true;

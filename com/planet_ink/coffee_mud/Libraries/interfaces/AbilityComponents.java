@@ -1,6 +1,4 @@
-package com.planet_ink.coffee_mud.WebMacros;
-
-import com.planet_ink.coffee_web.interfaces.*;
+package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -8,17 +6,17 @@ import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.util.*;
 
+import java.util.*;
 /*
-   Copyright 2012-2015 Bo Zimmerman
+   Copyright 2015-2015 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,24 +30,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ComponentData extends StdWebMacro
-{
-	@Override public String name() { return "ComponentData"; }
-	@Override public boolean isAdminMacro()   {return true;}
 
-	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
-	{
-		final java.util.Map<String,String> parms=parseParms(parm);
-		final String last=httpReq.getUrlParameter("COMPONENT");
-		final StringBuilder str=new StringBuilder("");
-		if(parms.containsKey("DESC"))
-		{
-			str.append(CMLib.ableComponents().getAbilityComponentDesc(null, last));
-		}
-		String strstr=str.toString();
-		if(strstr.endsWith(", "))
-			strstr=strstr.substring(0,strstr.length()-2);
-		return clearWebMacros(strstr);
-	}
+public interface AbilityComponents extends CMLibrary
+{
+	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req);
+	public int destroyAbilityComponents(List<Object> found);
+	public String getAbilityComponentDesc(MOB mob, String AID);
+	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req);
+	public Map<String, List<AbilityComponent>> getAbilityComponentMap();
+	public String addAbilityComponent(String s, Map<String, List<AbilityComponent>> H);
+	public String getAbilityComponentCodedString(String AID);
+	public List<AbilityComponent> getAbilityComponents(String AID);
+	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req, int r);
+	public void setAbilityComponentCodedFromCodedPairs(PairList<String,String> decodedDV, AbilityComponent comp);
+	public PairList<String,String> getAbilityComponentCoded(AbilityComponent comp);
+	public String getAbilityComponentCodedString(List<AbilityComponent> comps);
+	public AbilityComponent createBlankAbilityComponent();
+	public void alterAbilityComponentFile(String compID, boolean delete);
+	
+
 }

@@ -461,7 +461,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				return false;
 			final int lostValue=parsedVars.autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,buildingI)
-				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
+				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
 			buildingI.text();

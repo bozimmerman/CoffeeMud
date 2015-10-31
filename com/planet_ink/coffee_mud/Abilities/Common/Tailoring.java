@@ -416,7 +416,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 				return false;
 			final int lostValue=parsedVars.autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
-				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
+				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{

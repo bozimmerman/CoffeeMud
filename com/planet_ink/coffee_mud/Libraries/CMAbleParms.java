@@ -1229,7 +1229,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							if(connector.equalsIgnoreCase("DEL")||(connector.length()==0)){x++; continue;}
 							try
 							{
-								final AbilityComponent able=CMLib.ableMapper().createBlankAbilityComponent();
+								final AbilityComponent able=CMLib.ableComponents().createBlankAbilityComponent();
 								able.setConnector(AbilityComponent.CompConnector.valueOf(connector));
 								able.setAmount(CMath.s_int(amt));
 								able.setMask("");
@@ -1242,7 +1242,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							x++;
 						}
 						if(comps.size()>0)
-							return CMLib.ableMapper().getAbilityComponentCodedString(comps);
+							return CMLib.ableComponents().getAbilityComponentCodedString(comps);
 					}
 					return oldVal;
 				}
@@ -1259,7 +1259,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return ""+amt;
 					}
 					final List<AbilityComponent> comps=new Vector<AbilityComponent>();
-					AbilityComponent able=CMLib.ableMapper().createBlankAbilityComponent();
+					AbilityComponent able=CMLib.ableComponents().createBlankAbilityComponent();
 					able.setConnector(AbilityComponent.CompConnector.AND);
 					able.setAmount(amt);
 					able.setMask("");
@@ -1269,7 +1269,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					comps.add(able);
 					for(final Integer resourceCode : extraMatsM.keySet())
 					{
-						able=CMLib.ableMapper().createBlankAbilityComponent();
+						able=CMLib.ableComponents().createBlankAbilityComponent();
 						able.setConnector(AbilityComponent.CompConnector.AND);
 						able.setAmount(extraMatsM.get(resourceCode)[0]);
 						able.setMask("");
@@ -1278,7 +1278,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						able.setType(AbilityComponent.CompType.RESOURCE, resourceCode);
 						comps.add(able);
 					}
-					return CMLib.ableMapper().getAbilityComponentCodedString(comps);
+					return CMLib.ableComponents().getAbilityComponentCodedString(comps);
 				}
 				
 				@Override
@@ -1294,7 +1294,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						type=1;
 					else if("EMBEDDED".equalsIgnoreCase(curWhich)) type=2;
 					else if("AMOUNT".equalsIgnoreCase(curWhich)) type=0;
-					else if(CMLib.ableMapper().getAbilityComponentMap().containsKey(value.toUpperCase().trim())) type=1;
+					else if(CMLib.ableComponents().getAbilityComponentMap().containsKey(value.toUpperCase().trim())) type=1;
 					else if(value.startsWith("(")) type=2;
 					else type=0;
 
@@ -1303,7 +1303,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					{
 						final Hashtable<String,List<AbilityComponent>> H=new Hashtable<String,List<AbilityComponent>>();
 						final String s="ID="+value;
-						CMLib.ableMapper().addAbilityComponent(s, H);
+						CMLib.ableComponents().addAbilityComponent(s, H);
 						comps=H.get("ID");
 					}
 					if(comps==null)
@@ -1320,7 +1320,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if((type!=1)||(value.length()==0)||(value.equalsIgnoreCase("0")))
 						str.append(" SELECTED");
 					str.append(">&nbsp;");
-					for(final String S : CMLib.ableMapper().getAbilityComponentMap().keySet())
+					for(final String S : CMLib.ableComponents().getAbilityComponentMap().keySet())
 					{
 						str.append("<OPTION VALUE=\""+S+"\"");
 						if((type==1)&&(value.equalsIgnoreCase(S)))
@@ -1441,19 +1441,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					while(!mob.session().isStopped())
 					{
 						final String help="<AMOUNT>"
-							+"\n\rSkill Component: "+CMParms.toListString(CMLib.ableMapper().getAbilityComponentMap().keySet())
+							+"\n\rSkill Component: "+CMParms.toListString(CMLib.ableComponents().getAbilityComponentMap().keySet())
 							+"\n\rCustom Component: ([DISPOSITION]:[FATE]:[AMOUNT]:[COMPONENT ID]:[MASK]) && ...";
 						str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,help).trim();
 						if(str.equals(oldVal))
 							return oldVal;
 						if(CMath.isInteger(str))
 							return Integer.toString(CMath.s_int(str));
-						if(CMLib.ableMapper().getAbilityComponentMap().containsKey(str.toUpperCase().trim()))
+						if(CMLib.ableComponents().getAbilityComponentMap().containsKey(str.toUpperCase().trim()))
 							return str.toUpperCase().trim();
 						String error=null;
 						if(str.trim().startsWith("("))
 						{
-							error=CMLib.ableMapper().addAbilityComponent("ID="+str, new Hashtable<String,List<AbilityComponent>>());
+							error=CMLib.ableComponents().addAbilityComponent("ID="+str, new Hashtable<String,List<AbilityComponent>>());
 							if(error==null)
 								return str;
 						}

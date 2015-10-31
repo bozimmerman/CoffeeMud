@@ -678,14 +678,14 @@ public class Destroy extends StdCommand
 		}
 
 		final String classID=CMParms.combine(commands,2);
-		if(CMLib.ableMapper().getAbilityComponentMap().get(classID.toUpperCase())==null)
+		if(CMLib.ableComponents().getAbilityComponentMap().get(classID.toUpperCase())==null)
 		{
 			mob.tell(L("'@x1' does not exist, try LIST COMPONENTS.",classID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
-		CMLib.ableMapper().alterAbilityComponentFile(classID,true);
-		CMLib.ableMapper().getAbilityComponentMap().remove(classID.toUpperCase());
+		CMLib.ableComponents().alterAbilityComponentFile(classID,true);
+		CMLib.ableComponents().getAbilityComponentMap().remove(classID.toUpperCase());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just decreased!"));
 		return true;
 	}

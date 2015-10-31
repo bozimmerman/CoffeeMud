@@ -2402,11 +2402,11 @@ public class ListCmd extends StdCommand
 	public String listComponents(Session viewerS)
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Defined Spells and required components: ^N\n\r");
-		for(final String ID : CMLib.ableMapper().getAbilityComponentMap().keySet())
+		for(final String ID : CMLib.ableComponents().getAbilityComponentMap().keySet())
 		{
-			final List<AbilityComponent> DV=CMLib.ableMapper().getAbilityComponentMap().get(ID);
+			final List<AbilityComponent> DV=CMLib.ableComponents().getAbilityComponentMap().get(ID);
 			if(DV!=null)
-				buf.append(CMStrings.padRight(ID,20)+": "+CMLib.ableMapper().getAbilityComponentDesc(null,ID)+"\n\r");
+				buf.append(CMStrings.padRight(ID,20)+": "+CMLib.ableComponents().getAbilityComponentDesc(null,ID)+"\n\r");
 		}
 		if(buf.length()==0)
 			return "None defined.";

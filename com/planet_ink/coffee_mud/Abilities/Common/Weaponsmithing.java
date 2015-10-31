@@ -416,7 +416,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			final int lostValue=parsedVars.autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
-				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
+				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
