@@ -28,14 +28,14 @@
             if(confirm('Create a new achievement?'))
             {
                 var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-                w=window.open("achievement.cmvp?AUTH=@Authenticate?AUTH@&AGENT='+agent+'&ACHIEVEMENT=",
+                w=window.open("achievement.cmvp?AUTH=@Authenticate?AUTH@&AGENT="+agent+"&ACHIEVEMENT=",
                     "Achievement",strFeatures, false);
             }
         }
         function Achievement(achievementid,agent)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("achievement.cmvp?AUTH=@Authenticate?AUTH@&ACHIEVEMENT="+achievementid+'&AGENT='+agent,
+            w=window.open("achievement.cmvp?AUTH=@Authenticate?AUTH@&ACHIEVEMENT="+achievementid+"&AGENT="+agent,
                 "Achievement",strFeatures, false);
         }
         function Clicked(action)
@@ -114,7 +114,7 @@
                 </TR>
             @back@
 	            <TR>
-	            <TD COLSPAN=4><a href="javascript:NewAchievement('PLAYER)"><FONT COLOR=WHITE><B>Create New Player Achievement</a></B></FONT></TD>
+	            <TD COLSPAN=4><a href="javascript:NewAchievement('PLAYER')"><FONT COLOR=WHITE><B>Create New Player Achievement</a></B></FONT></TD>
 	            </TR>
             @if?IsAccountSystem@
 	            <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Account Achievements Manager</H2></FONT></TD></TR>
@@ -140,7 +140,7 @@
 	                </TR>
 	            @back@
 	            <TR>
-	            <TD COLSPAN=4><a href="javascript:NewAchievement('ACCOUNT)"><FONT COLOR=WHITE><B>Create New Account Achievement</a></B></FONT></TD>
+	            <TD COLSPAN=4><a href="javascript:NewAchievement('ACCOUNT')"><FONT COLOR=WHITE><B>Create New Account Achievement</a></B></FONT></TD>
 	            </TR>
             @endif@
             </TABLE>
