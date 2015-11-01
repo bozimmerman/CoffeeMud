@@ -307,6 +307,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 			// getCount(null) should be ok, because it's only the un-savable trackers that need the mob obj
 		}
 		rest.append(" />");
+		rest.append("<TATTOOS>").append(CMParms.toListString(tattoos)).append("</TATTOOS>");
 		return rest.toString();
 	}
 
@@ -344,6 +345,10 @@ public class DefaultPlayerAccount implements PlayerAccount
 			else
 				achievementers.put(A.getTattoo(), A.getTracker(0));
 		}
+		final String[] allTattoos=xmlLib.getValFromPieces(xml, "TATTOOS").split(",");
+		this.tattoos.clear();
+		for(String tattoo : allTattoos)
+			this.addTattoo(tattoo);
 	}
 
 	// Acct Expire Code

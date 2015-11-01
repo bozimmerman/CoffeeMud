@@ -235,7 +235,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public int getTargetCount()
 				{
-					return 1;
+					return Integer.MIN_VALUE;
 				}
 				
 				@Override

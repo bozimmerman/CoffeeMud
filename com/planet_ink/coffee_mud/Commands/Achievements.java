@@ -164,6 +164,8 @@ public class Achievements extends StdCommand
 			prefix=whoM.Name()+L("'s ");
 		}
 		
+		
+		
 		Set<String> WonList = new HashSet<String>();
 		for(Agent agent : agents)
 		{
@@ -179,6 +181,19 @@ public class Achievements extends StdCommand
 			}
 		}
 		final String done=L("DONE!");
+		
+		switch(list)
+		{
+		case ALL:
+			prefix += prefix=L("All ");
+			break;
+		case NOW:
+			prefix += L("Progress in ");
+			break;
+		case WON:
+			break;
+		}
+		
 		StringBuilder finalResponse = new StringBuilder();
 		for(Agent agent : agents)
 		{
@@ -190,7 +205,6 @@ public class Achievements extends StdCommand
 				{
 				case ALL:
 				{
-					prefix += prefix=L("All ");
 					int padding=done.length()+1;
 					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
 					{
@@ -200,40 +214,8 @@ public class Achievements extends StdCommand
 							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
 							final int score = (T==null) ? 0 : T.getCount(whoM);
 							final int targetScore = A.getTargetCount();
-							final int len = (""+score+"/"+targetScore).length(); 
-							if(len >= padding)
-								padding = len+1;
-						}
-					}
-					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
-					{
-						final Achievement A=a.nextElement();
-						if(WonList.contains(A.getTattoo()))
-							AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
-						else
-						{
-							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
-							int score = (T==null) ? 0 : T.getCount(whoM);
-							int targetScore = A.getTargetCount();
-							AchievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
-						}
-					}
-					break;
-				}
-				case NOW:
-				{
-					prefix+=L("Progress in ");
-					int padding=done.length()+1;
-					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
-					{
-						final Achievement A=a.nextElement();
-						if(!WonList.contains(A.getTattoo()))
-						{
-							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
-							final int score = (T==null) ? 0 : T.getCount(whoM);
-							if(score != 0)
+							if(targetScore != Integer.MIN_VALUE)
 							{
-								final int targetScore = A.getTargetCount();
 								final int len = (""+score+"/"+targetScore).length(); 
 								if(len >= padding)
 									padding = len+1;
@@ -249,10 +231,53 @@ public class Achievements extends StdCommand
 						{
 							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
 							int score = (T==null) ? 0 : T.getCount(whoM);
+							int targetScore = A.getTargetCount();
+							if(targetScore == Integer.MIN_VALUE)
+								AchievedList.add(CMStrings.padRight("^w", padding)+"^?: "+A.getDisplayStr());
+							else
+								AchievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
+						}
+					}
+					break;
+				}
+				case NOW:
+				{
+					int padding=done.length()+1;
+					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					{
+						final Achievement A=a.nextElement();
+						if(!WonList.contains(A.getTattoo()))
+						{
+							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
+							final int score = (T==null) ? 0 : T.getCount(whoM);
+							if(score != 0)
+							{
+								final int targetScore = A.getTargetCount();
+								if(targetScore != Integer.MIN_VALUE)
+								{
+									final int len = (""+score+"/"+targetScore).length(); 
+									if(len >= padding)
+										padding = len+1;
+								}
+							}
+						}
+					}
+					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					{
+						final Achievement A=a.nextElement();
+						if(WonList.contains(A.getTattoo()))
+							AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
+						else
+						{
+							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
+							int score = (T==null) ? 0 : T.getCount(whoM);
 							if(score != 0)
 							{
 								int targetScore = A.getTargetCount();
-								AchievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
+								if(targetScore != Integer.MIN_VALUE)
+									AchievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
+								else
+									AchievedList.add(CMStrings.padRight("^w", padding)+"^?: "+A.getDisplayStr());
 							}
 						}
 					}
@@ -272,11 +297,11 @@ public class Achievements extends StdCommand
 				}
 				}
 				if(AchievedList.size()==0)
-					finalResponse .append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements: ^NNone!")+"^w\n\r");
+					finalResponse .append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements: ^NNone!")+"^w\n\r\n\r");
 				else
 				{
 					finalResponse.append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements:")+"^w\n\r");
-					finalResponse.append(CMLib.lister().makeColumns(mob, AchievedList, null, 2).toString()+"^w\n\r");
+					finalResponse.append(CMLib.lister().makeColumns(mob, AchievedList, null, 2).toString()+"^w\n\r\n\r");
 				}
 			}
 		}
