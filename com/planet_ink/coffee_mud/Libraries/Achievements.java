@@ -1206,7 +1206,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public int getTargetCount()
 				{
-					return achievementList.size();
+					if(achievementList.size()<2)
+						return Integer.MIN_VALUE;
+					else
+						return achievementList.size();
 				}
 
 				@Override
