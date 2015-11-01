@@ -37,8 +37,21 @@ public class Get extends StdCommand
 {
 	public Get(){}
 
-	private final String[] access=I(new String[]{"GET","G"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "GET", "G" });
+
+	private final static Class[][] internalParameters=new Class[][]
+	{
+		{Item.class},
+		{Item.class,Boolean.class},
+		{Item.class,Container.class},
+		{Item.class,Container.class,Boolean.class},
+	};
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
 	{
@@ -90,28 +103,6 @@ public class Get extends StdCommand
 	{
 		final Room R=mob.location();
 		Vector origCmds=new XVector(commands);
-		if((commands.size()>1)&&(commands.get(0) instanceof Item))
-		{
-			final Item item=(Item)commands.get(0);
-			Item container=null;
-			boolean quiet=false;
-			if(commands.get(1) instanceof Item)
-			{
-				container=(Item)commands.get(1);
-				if((commands.size()>2)&&(commands.get(2) instanceof Boolean))
-					quiet=((Boolean)commands.get(2)).booleanValue();
-			}
-			else
-			if(commands.get(1) instanceof Boolean)
-				quiet=((Boolean)commands.get(1)).booleanValue();
-			final boolean success=get(mob,container,item,quiet);
-			if(item instanceof Coins)
-				((Coins)item).putCoinsBack();
-			if(item instanceof RawMaterial)
-				((RawMaterial)item).rebundle();
-			return success;
-		}
-
 		if(commands.size()<2)
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("Get what?"));
@@ -138,9 +129,17 @@ public class Get extends StdCommand
 
 		String whatToGet=CMParms.combine(commands,0);
 		final String unmodifiedWhatToGet=whatToGet;
-		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
-		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
-		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
+		boolean allFlag = (commands.size() > 0) ? ((String) commands.get(0)).equalsIgnoreCase("all") : false;
+		if (whatToGet.toUpperCase().startsWith("ALL."))
+		{
+			allFlag = true;
+			whatToGet = "ALL " + whatToGet.substring(4);
+		}
+		if (whatToGet.toUpperCase().endsWith(".ALL"))
+		{
+			allFlag = true;
+			whatToGet = "ALL " + whatToGet.substring(0, whatToGet.length() - 4);
+		}
 		boolean doneSomething=false;
 		while((c<containers.size())||(containers.size()==0))
 		{
@@ -234,9 +233,51 @@ public class Get extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
+	
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		
+		if(args[0] instanceof Item)
+		{
+			final Item item=(Item)args[0];
+			Item container=null;
+			boolean quiet=false;
+			for(int i=1;i<args.length;i++)
+			{
+				if(args[i] instanceof Container)
+					container=(Item)args[1];
+				else
+				if(args[i] instanceof Boolean)
+					quiet=((Boolean)args[i]).booleanValue();
+			}
+			final boolean success=get(mob,container,item,quiet);
+			if(item instanceof Coins)
+				((Coins)item).putCoinsBack();
+			if(item instanceof RawMaterial)
+				((RawMaterial)item).rebundle();
+			return Boolean.valueOf(success);
+		}
+		return Boolean.FALSE;
+	}
 }

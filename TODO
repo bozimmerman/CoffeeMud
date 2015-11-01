@@ -24,6 +24,7 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
+   *. Ongoing 1.4 template compat: try changing the interface, finally
    *. Database table overview in the Programmer's Guide.
    *. Wants and Needs engine - similar to slavery system
    *. Start on Spell Research?
@@ -34,7 +35,6 @@ NON-TECH
    *. Builder Achievements, Archon Achievements, Clan Achievements, Timed achievements (within a time period)
    *. Finish Player Simulator -- the Perpetual Project
    *. Facebook interface?
-   *. Ongoing 1.4 template compat: Drop.java, Get.java, Wield, Follow, AutoAffects, Equipment, Inventory, Wealth, Read, Wear, Wield
    *. MudFTP/DawnFTP support - lets you edit room descriptions etc. in your favourite text editor, or just for fun
    *. Clan Calendar system, that can use mud and rl dates, for scheduling things. Might send reminders -- based on journaling system of course.
    *. Lich Phylactery -- acts as a recall beacon, but only during death. If the Phylactery is destroyed then the lich loses xp and must construct a new one,

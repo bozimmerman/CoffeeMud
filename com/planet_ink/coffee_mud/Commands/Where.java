@@ -35,10 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Where extends StdCommand
 {
-	public Where(){}
+	public Where()
+	{
+	}
+	
+	private final String[]	access	= I(new String[] { "WHERE" });
 
-	private final String[] access=I(new String[]{"WHERE"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	protected void whereAdd(DVector V, Area area, int i)
 	{
@@ -122,7 +129,6 @@ public class Where extends StdCommand
 			}
 			else
 			{
-
 				boolean mobOnly=false;
 				boolean itemOnly=false;
 				boolean roomOnly=false;
@@ -217,6 +223,7 @@ public class Where extends StdCommand
 						if((R!=null)&&(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WHERE))&&(CMLib.flags().canAccess(mob,R.getArea())))
 						{
 							if((!mobOnly)&&(!itemOnly)&&(!exitOnly))
+							{
 								if((who.length()==0)
 								||CMLib.english().containsString(R.displayText(),who)
 								||CMLib.english().containsString(R.description(),who))
@@ -226,6 +233,7 @@ public class Where extends StdCommand
 									lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
+							}
 							if(exitOnly)
 							{
 								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -244,6 +252,7 @@ public class Where extends StdCommand
 								}
 							}
 							if((!mobOnly)&&(!roomOnly)&&(!exitOnly))
+							{
 								for(int i=0;i<R.numItems();i++)
 								{
 									final Item I=R.getItem(i);
@@ -282,12 +291,14 @@ public class Where extends StdCommand
 										lines.append("\n\r");
 									}
 								}
+							}
 							for(int m=0;m<R.numInhabitants();m++)
 							{
 								final MOB M=R.fetchInhabitant(m);
 								if((M!=null)&&((M.isMonster())||(canShowTo(mob,M))))
 								{
 									if((!itemOnly)&&(!roomOnly)&&(!exitOnly))
+									{
 										if((zapperMask)&&(mobOnly))
 										{
 											if(CMLib.masking().maskCheck(compiledZapperMask,M,true))
@@ -320,6 +331,7 @@ public class Where extends StdCommand
 											lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
 											lines.append("\n\r");
 										}
+									}
 									if((!mobOnly)&&(!roomOnly)&&(!exitOnly))
 									{
 										for(int i=0;i<M.numItems();i++)
@@ -427,7 +439,10 @@ public class Where extends StdCommand
 							}
 						}
 					}
-				}catch(final NoSuchElementException nse){}
+				}
+				catch (final NoSuchElementException nse)
+				{
+				}
 			}
 			mob.tell(lines.toString()+"^.");
 		}
@@ -522,7 +537,8 @@ public class Where extends StdCommand
 			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
 				finalScoreList.add((Area)scores.get(i,1));
 			final int mobLevel=mob.phyStats().level();
-			Collections.sort(finalScoreList,new Comparator<Area>(){
+			Collections.sort(finalScoreList,new Comparator<Area>()
+			{
 				@Override
 				public int compare(Area o1, Area o2)
 				{
@@ -550,7 +566,9 @@ public class Where extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

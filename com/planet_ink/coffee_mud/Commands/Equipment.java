@@ -35,10 +35,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Equipment extends StdCommand
 {
-	public Equipment(){}
+	public Equipment()
+	{
+	}
 
-	private final String[] access=I(new String[]{"EQUIPMENT","EQ","EQUIP"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "EQUIPMENT", "EQ", "EQUIP" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	private final static Class[][] internalParameters=new Class[][]{{MOB.class},{Boolean.class},{}};
 
@@ -320,16 +327,15 @@ public class Equipment extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()==1)&&(commands.get(0) instanceof MOB))
-		{
-			commands.add(getEquipment((MOB)commands.get(0),mob,false));
-			return true;
-		}
 		viewEquipment(mob,(commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase("long")));
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException

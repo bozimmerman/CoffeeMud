@@ -142,7 +142,7 @@ public class Scavenger extends ActiveTicker
 				return true;
 			final Item I=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			if(I!=null)
-				mob.doCommand(new XVector<String>("GET",I.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+				mob.doCommand(new XVector<String>("GET","$"+I.Name()+"$"),MUDCmdProcessor.METAFLAG_FORCED);
 			choices.clear();
 			choices=null;
 		}

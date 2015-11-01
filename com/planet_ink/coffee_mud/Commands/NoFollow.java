@@ -46,7 +46,7 @@ public class NoFollow extends Follow
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
-		if((commands.size()>1)&&(commands.get(0) instanceof String))
+		if(commands.size()>1)
 		{
 			if(((String)commands.get(0)).equalsIgnoreCase("UNFOLLOW"))
 			{

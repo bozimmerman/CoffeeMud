@@ -35,8 +35,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AutoAffects extends StdCommand
 {
-	private final String[] access=I(new String[]{"AUTOAFFECTS","AUTOAFF","AAF"});
-	@Override public String[] getAccessWords(){return access;}
+	public AutoAffects()
+	{
+	}
+	
+	private final String[]	access	= I(new String[] { "AUTOAFFECTS", "AUTOAFF", "AAF" });
+
+	private final static Class[][] internalParameters=new Class[][]{{MOB.class},{StringBuffer.class},{StringBuilder.class},{List.class},{}};
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public String getAutoAffects(MOB viewerMOB, Physical P)
 	{
@@ -64,40 +75,12 @@ public class AutoAffects extends StdCommand
 		return msg.toString();
 	}
 
-	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
-		throws java.io.IOException
+	protected void readAutoAffects(MOB mob, Session S, String name)
 	{
-		Session S=mob.session();
-		if((commands!=null)&&(commands.size()>0)&&(!(commands.get(0) instanceof String)))
-		{
-			if(commands.get(0) instanceof MOB)
-				S=((MOB)commands.get(0)).session();
-			else
-			if(commands.get(0) instanceof StringBuffer)
-			{
-				((StringBuffer)commands.get(0)).append(getAutoAffects(mob,mob));
-				return false;
-			}
-			else
-			if(commands.get(0) instanceof List)
-			{
-				((List)commands.get(0)).add(getAutoAffects(mob,mob));
-				return false;
-			}
-			else
-			{
-				commands.clear();
-				commands.add(getAutoAffects(mob,mob));
-				return false;
-			}
-		}
-
 		if(S!=null)
 		{
 			if(CMSecurity.isAllowed(mob, mob.location(),CMSecurity.SecFlag.CMDMOBS))
 			{
-				final String name=CMParms.combine(commands,1);
 				if(name.length()>0)
 				{
 					final Physical P=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Wearable.FILTER_ANY);
@@ -113,7 +96,7 @@ public class AutoAffects extends StdCommand
 						else
 							S.colorOnlyPrintln(msg);
 					}
-					return false;
+					return;
 				}
 
 			}
@@ -125,9 +108,56 @@ public class AutoAffects extends StdCommand
 			else
 				S.colorOnlyPrintln(msg);
 		}
+	}
+	
+	@Override
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
+		throws java.io.IOException
+	{
+		final String name=CMParms.combine(commands,1);
+		Session S=mob.session();
+		readAutoAffects(mob,S,name);
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		if(args.length>0)
+		{
+			if(args[0] instanceof Session)
+			{
+				readAutoAffects(mob,(Session)args[0],"");
+				return Boolean.TRUE;
+			}
+			else
+			if(args[0] instanceof StringBuffer)
+			{
+				((StringBuffer)args[0]).append(getAutoAffects(mob,mob));
+				return Boolean.TRUE;
+			}
+			else
+			if(args[0] instanceof StringBuilder)
+			{
+				((StringBuilder)args[0]).append(getAutoAffects(mob,mob));
+				return Boolean.TRUE;
+			}
+			else
+			if(args[0] instanceof List)
+			{
+				((List)args[0]).add(getAutoAffects(mob,mob));
+				return Boolean.TRUE;
+			}
+		}
+		return getAutoAffects(mob,mob);
+	}
+	
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }
 

@@ -501,10 +501,17 @@ public class StdJournal extends StdItem
 				numToAdd=Integer.MAX_VALUE;
 			for(int v=selections.size()-1;v>=0;v--)
 			{
-				if(numToAdd==0){ selections.setElementAt("",v); continue;}
-				final StringBuffer str=(StringBuffer)selections.elementAt(v);
-				if((newOnly)&&(str.charAt(0)!='*'))
-				{ selections.setElementAt("",v); continue;}
+				if (numToAdd == 0)
+				{
+					selections.setElementAt("", v);
+					continue;
+				}
+				final StringBuffer str = (StringBuffer) selections.elementAt(v);
+				if ((newOnly) && (str.charAt(0) != '*'))
+				{
+					selections.setElementAt("", v);
+					continue;
+				}
 				numToAdd--;
 			}
 			boolean notify=false;
@@ -552,12 +559,14 @@ public class StdJournal extends StdItem
 			catch(final HTTPRedirectException e){}
 
 			if((allMine)||(to.equals("ALL")))
+			{
 				buf.append("\n\r^<JRNL \""+CMStrings.removeColors(name())+"\"^>"+CMStrings.padRight((which+1)+"",3)+"^</JRNL^>)\n\r"
 						   +"FROM: "+from
 						   +"\n\rTO  : "+to
 						   +"\n\rDATE: "+CMLib.time().date2String(date)
 						   +"\n\rSUBJ: "+subject
 						   +"\n\r"+message);
+			}
 		}
 		fakeEntry.derivedBuildMessage=buf;
 		return fakeEntry;
@@ -574,10 +583,30 @@ public class StdJournal extends StdItem
 		return req;
 	}
 
-	protected String getReadReq() { return getParm("READ");}
-	protected String getWriteReq() {return getParm("WRITE");}
-	private String getReplyReq() { return getParm("REPLY");}
-	private String getAdminReq() { return getParm("ADMIN");}
+	protected String getReadReq()
+	{
+		return getParm("READ");
+	}
 
-	@Override public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
+	protected String getWriteReq()
+	{
+		return getParm("WRITE");
+	}
+
+	private String getReplyReq()
+	{
+		return getParm("REPLY");
+	}
+
+	private String getAdminReq()
+	{
+		return getParm("ADMIN");
+	}
+
+	@Override
+	public void recoverPhyStats()
+	{
+		CMLib.flags().setReadable(this, true);
+		super.recoverPhyStats();
+	}
 }

@@ -219,12 +219,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public StringBuilder getInventory(MOB viewer, MOB mob)
 	{
-		final Vector<Object> V=new Vector<Object>();
-		V.addElement(viewer);
-		forceStandardCommand(mob,"Inventory",V);
-		if((V.size()>1)&&(V.elementAt(1) instanceof StringBuilder))
-			return (StringBuilder)V.elementAt(1);
-		return new StringBuilder("");
+		return new StringBuilder(forceInternalCommand(mob,"Inventory",viewer).toString());
 	}
 
 	@Override
@@ -282,16 +277,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	public boolean postGet(MOB mob, Item container, Item getThis, boolean quiet)
 	{
 		if(container==null)
-			return forceStandardCommand(mob,"Get",new XVector<Object>(getThis,Boolean.valueOf(quiet)));
-		return forceStandardCommand(mob,"Get",new XVector<Object>(getThis,container,Boolean.valueOf(quiet)));
+			return ((Boolean)forceInternalCommand(mob,"Get",getThis,Boolean.valueOf(quiet))).booleanValue();
+		return ((Boolean)forceInternalCommand(mob,"Get",getThis,container,Boolean.valueOf(quiet))).booleanValue();
 	}
 
 	@Override
 	public boolean postRemove(MOB mob, Item item, boolean quiet)
 	{
-		if(quiet)
-			return forceStandardCommand(mob,"Remove",new XVector<Object>("REMOVE",item,"QUIETLY"));
-		return forceStandardCommand(mob,"Remove",new XVector<Object>("REMOVE",item));
+		return ((Boolean)forceInternalCommand(mob,"Remove",item,Boolean.valueOf(quiet))).booleanValue();
 	}
 
 	@Override
@@ -358,10 +351,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		if(leader!=null)
 		{
-			if(quiet)
-				forceStandardCommand(follower,"Follow",new XVector<Object>("FOLLOW",leader,"UNOBTRUSIVELY"));
-			else
-				forceStandardCommand(follower,"Follow",new XVector<Object>("FOLLOW",leader));
+			forceInternalCommand(follower,"Follow",leader,Boolean.valueOf(quiet));
 		}
 		else
 		{

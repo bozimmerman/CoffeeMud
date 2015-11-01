@@ -915,8 +915,10 @@ public class RaceData extends StdWebMacro
 				{
 					final Wearable.CODES codes = Wearable.CODES.instance();
 					for(int b=0;b<codes.total();b++)
+					{
 						if(CMath.bset(R.forbiddenWornBits(),codes.get(b)))
 							str.append(codes.name(b)+", ");
+					}
 				}
 				if(parms.containsKey("RABLE"))
 					str.append(dynAbilities(R.racialAbilities(null),R.ID(),R,httpReq,parms,0,parms.get("FONT"))+", ");

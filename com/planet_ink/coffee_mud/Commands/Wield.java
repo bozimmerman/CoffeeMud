@@ -35,11 +35,38 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Wield extends StdCommand
 {
-	public Wield(){}
+	public Wield()
+	{
+	}
+	
+	private final String[]	access	= I(new String[] { "WIELD" });
+	
+	private final static Class[][] internalParameters=new Class[][]{{Item.class}};
 
-	private final String[] access=I(new String[]{"WIELD"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
+	protected boolean wield(List<Item> items, MOB mob)
+	{
+		for(int i=0;i<items.size();i++)
+		{
+			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_WIELD)))
+			{
+				final Item item=items.get(i);
+				final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_WIELD,L("<S-NAME> wield(s) <T-NAME>."));
+				if(mob.location().okMessage(mob,newMsg))
+				{
+					mob.location().send(mob,newMsg);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -51,32 +78,38 @@ public class Wield extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		List<Item> items=null;
-		if(commands.get(0) instanceof Item)
-		{
-			items=new Vector();
-			for(int i=0;i<commands.size();i++)
-				if(commands.get(i) instanceof Item)
-					items.add((Item)commands.get(i));
-		}
-		else
-			items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
+		List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
 			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
-		for(int i=0;i<items.size();i++)
-			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_WIELD)))
-			{
-				final Item item=items.get(i);
-				final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_WIELD,L("<S-NAME> wield(s) <T-NAME>."));
-				if(mob.location().okMessage(mob,newMsg))
-					mob.location().send(mob,newMsg);
-			}
+			wield(items,mob);
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
+	
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		final List<Item> items=new XVector<Item>((Item)args[0]);
+		return Boolean.valueOf(wield(items, mob));
+	}
+	
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

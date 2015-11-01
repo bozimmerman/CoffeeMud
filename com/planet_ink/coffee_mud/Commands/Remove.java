@@ -35,12 +35,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Remove extends StdCommand
 {
-	public Remove(){}
+	public Remove()
+	{
+	}
 
-	private final String[] access=I(new String[]{"REMOVE","REM"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "REMOVE", "REM" });
 
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
+	private final static Class[][] internalParameters=new Class[][]{{Item.class},{Item.class,Boolean.class}};
 
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
@@ -53,19 +60,6 @@ public class Remove extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		if(commands.get(0) instanceof Item)
-		{
-			final boolean quiet=((commands.size()>1)&&(commands.lastElement() instanceof String)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")));
-			final Item item=(Item)commands.get(0);
-			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,quiet?null:L("<S-NAME> remove(s) <T-NAME>."));
-			if(mob.location().okMessage(mob,newMsg))
-			{
-				mob.location().send(mob,newMsg);
-				return true;
-			}
-			return false;
-		}
-
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_WORNONLY,false);
 		if(items.size()==0)
 			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be wearing that."));
@@ -79,9 +73,43 @@ public class Remove extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
+	
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		if(args[0] instanceof Item)
+		{
+			final Item item=(Item)args[0];
+			final boolean quiet=((args.length>1) && (args[1] instanceof Boolean)) ? ((Boolean)args[1]).booleanValue() : false;
+			final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,quiet?null:L("<S-NAME> remove(s) <T-NAME>."));
+			if(mob.location().okMessage(mob,newMsg))
+			{
+				mob.location().send(mob,newMsg);
+				return Boolean.TRUE;
+			}
+			return Boolean.FALSE;
+		}
+		return Boolean.FALSE;
+	}
+	
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 }

@@ -312,8 +312,25 @@ public class StdBook extends StdItem
 		return req;
 	}
 
-	protected String getReadReq() { return getParm("READ");}
-	protected String getWriteReq() { return getParm("WRITE");}
-	private String getAdminReq() { return getParm("ADMIN");}
-	@Override public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
+	protected String getReadReq()
+	{
+		return getParm("READ");
+	}
+
+	protected String getWriteReq()
+	{
+		return getParm("WRITE");
+	}
+
+	private String getAdminReq()
+	{
+		return getParm("ADMIN");
+	}
+
+	@Override
+	public void recoverPhyStats()
+	{
+		CMLib.flags().setReadable(this, true);
+		super.recoverPhyStats();
+	}
 }

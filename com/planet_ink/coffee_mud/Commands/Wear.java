@@ -35,10 +35,26 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Wear extends StdCommand
 {
-	public Wear(){}
+	public Wear()
+	{
+	}
+	
+	private final String[]	access	= I(new String[] { "WEAR" });
 
-	private final String[] access=I(new String[]{"WEAR"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	private final static Class[][] internalParameters=new Class[][]{
+		{Item.class},
+		{Item.class,Boolean.class},
+		{Item.class,Integer.class},
+		{Item.class,Integer.class,Boolean.class},
+		{Item.class,String.class},
+		{Item.class,String.class,Boolean.class},
+	};
 
 	public boolean wear(MOB mob, Item item, int locationIndex, boolean quiet)
 	{
@@ -80,42 +96,12 @@ public class Wear extends StdCommand
 			CMLib.commands().doCommandFail(mob,origCmds,L("Wear what?"));
 			return false;
 		}
-		final Wearable.CODES codes = Wearable.CODES.instance();
 		commands.remove(0);
-		if(commands.get(0) instanceof Item)
-		{
-			final Item wearWhat = (Item)commands.get(0);
-			boolean quietly = false;
-			int wearLocationIndex = 0;
-			commands.remove(0);
-			if(commands.size()>0)
-			{
-				if(commands.get(0) instanceof Integer)
-				{
-					wearLocationIndex=((Integer)commands.get(0)).intValue();
-					commands.remove(0);
-				}
-				else
-				if(commands.get(0) instanceof String)
-				{
-					final int newDex = codes.findDex_ignoreCase((String)commands.get(0));
-					if(newDex>0)
-					{
-						wearLocationIndex=newDex;
-						commands.remove(0);
-					}
-				}
-				if((commands.size()>0)
-				&&(commands.lastElement() instanceof String)
-				&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
-					quietly=true;
-			}
-			return wear(mob,wearWhat,wearLocationIndex,quietly);
-		}
 
 		// discover if a wear location was specified
 		int wearLocationIndex=0;
 		for(int i=commands.size()-2;i>0;i--)
+		{
 			if(((String)commands.get(i)).equalsIgnoreCase("on"))
 			{
 				if((i<commands.size()-2)&&((String)commands.get(i+1)).equalsIgnoreCase("my"))
@@ -138,6 +124,7 @@ public class Wear extends StdCommand
 				}
 				// will always break out here, one way or the other.
 			}
+		}
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
 			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
@@ -163,9 +150,55 @@ public class Wear extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		final Wearable.CODES codes = Wearable.CODES.instance();
+		final Item targetWearI = (Item)args[0];
+		boolean quietly = false;
+		int wearLocationIndex = 0;
+		for(int i=1;i<args.length;i++)
+		{
+			if(args[i] instanceof String)
+			{
+				final int newDex = codes.findDex_ignoreCase((String)args[i]);
+				if(newDex>0)
+				{
+					wearLocationIndex=newDex;
+				}
+			}
+			else
+			if(args[i] instanceof Integer)
+			{
+				wearLocationIndex=((Integer)args[i]).intValue();
+			}
+			else
+			if(args[i] instanceof Boolean)
+			{
+				quietly = ((Boolean)args[i]).booleanValue();
+			}
+		}
+		return Boolean.valueOf(wear(mob,targetWearI,wearLocationIndex,quietly));
+	}
+	
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

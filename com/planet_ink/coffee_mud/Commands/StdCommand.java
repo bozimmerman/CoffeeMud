@@ -35,8 +35,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdCommand implements Command
 {
-	protected final String ID;
-	private final String[] access=null;
+	protected final String	ID;
+	private final String[]	access	= null;
+	
 	public StdCommand()
 	{
 		final String id=this.getClass().getName();
@@ -46,11 +47,29 @@ public class StdCommand implements Command
 		else
 			ID=id;
 	}
-	@Override public String ID() { return ID; }
-	@Override public String name() { return ID();}
+	
+	@Override
+	public String ID()
+	{
+		return ID;
+	}
 
-	@Override public String[] getAccessWords(){return access;}
-	@Override public void initializeClass(){}
+	@Override
+	public String name()
+	{
+		return ID();
+	}
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
 	
 	public String L(final String str, final String ... xs)
 	{
@@ -72,6 +91,7 @@ public class StdCommand implements Command
 		// the return value is arbitrary, though false is conventional.
 		return false;
 	}
+
 	@Override
 	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 		throws java.io.IOException
@@ -115,14 +135,18 @@ public class StdCommand implements Command
 		final StringBuilder str=new StringBuilder("");
 		str.append(L("Illegal arguments. Sent: "));
 		for(final Object o : args)
+		{
 			if(o==null)
 				str.append(L("null "));
 			else
 				str.append(o.getClass().getSimpleName()).append(" ");
+		}
 		str.append(L(". Correct: "));
 		for (final Class[] element : fmt)
+		{
 			for(final Class c : element)
 				str.append(c.getSimpleName()).append(" ");
+		}
 		Log.errOut(ID(),str.toString());
 		return false;
 	}
@@ -132,11 +156,13 @@ public class StdCommand implements Command
 	{
 		return CMProps.getCommandActionCost(ID(), 0.0);
 	}
+
 	@Override
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
 		return CMProps.getCommandCombatActionCost(ID(), 0.0);
 	}
+
 	@Override
 	public double checkedActionsCost(final MOB mob, final List<String> cmds)
 	{
@@ -144,9 +170,25 @@ public class StdCommand implements Command
 			return mob.isInCombat() ? combatActionsCost(mob,cmds) : actionsCost(mob,cmds);
 		return actionsCost(mob,cmds);
 	}
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return true;}
-	@Override public CMObject newInstance(){return this;}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return true;
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		return this;
+	}
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -170,5 +212,9 @@ public class StdCommand implements Command
 		}
 	};
 
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 }

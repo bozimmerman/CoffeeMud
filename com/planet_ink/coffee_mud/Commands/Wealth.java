@@ -27,12 +27,22 @@ import java.util.*;
 */
 public class Wealth extends Inventory
 {
-	public Wealth(){}
+	public Wealth()
+	{
+	}
+	
+	private final String[]	access	= I(new String[] { "WEALTH" });
 
-	private final String[] access=I(new String[]{"WEALTH"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
+	@SuppressWarnings("rawtypes")
+	private final static Class[][] internalParameters=new Class[][]{{MOB.class}};
 
+	@Override
 	public StringBuilder getInventory(MOB seer, MOB mob, String mask)
 	{
 		final StringBuilder msg=new StringBuilder("");
@@ -44,16 +54,10 @@ public class Wealth extends Inventory
 		return msg;
 	}
 
-
-	@Override @SuppressWarnings({"unchecked","rawtypes"})
+	@Override @SuppressWarnings("rawtypes")
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()==1)&&(commands.get(0) instanceof MOB))
-		{
-			commands.add(getInventory((MOB)commands.get(0),mob,null));
-			return true;
-		}
 		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
 			mob.tell(L("You have no money on you."));
@@ -62,6 +66,24 @@ public class Wealth extends Inventory
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
 	}
-	public int ticksToExecute(){return 0;}
-	@Override public boolean canBeOrdered(){return true;}
+	
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return "";
+		final MOB M=(MOB)args[0];
+		return getInventory(M,mob,null).toString();
+	}
+	
+	public int ticksToExecute()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

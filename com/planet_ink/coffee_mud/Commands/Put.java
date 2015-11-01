@@ -35,10 +35,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Put extends StdCommand
 {
-	public Put(){}
+	public Put()
+	{
+	}
 
-	private final String[] access=I(new String[]{"PUT","PU","P"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "PUT", "PU", "P" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public void putout(MOB mob, Vector commands, boolean quiet)
 	{
@@ -92,6 +99,7 @@ public class Put extends StdCommand
 			final String s=CMParms.combine(commands, 0).toLowerCase();
 			final Wearable.CODES codes = Wearable.CODES.instance();
 			for(int i=1;i<codes.total();i++)
+			{
 				if(s.endsWith(" on "+codes.name(i).toLowerCase())||s.endsWith(" on my "+codes.name(i).toLowerCase()))
 				{
 					final Command C=CMClass.getCommand("Wear");
@@ -99,6 +107,7 @@ public class Put extends StdCommand
 						C.execute(mob,commands,metaFlags);
 					return false;
 				}
+			}
 		}
 
 		if(((String)commands.get(1)).equalsIgnoreCase("on"))
@@ -197,9 +206,22 @@ public class Put extends StdCommand
 		mob.location().recoverRoomStats();
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
+	
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
 
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

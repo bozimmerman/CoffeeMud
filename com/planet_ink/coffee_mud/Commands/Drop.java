@@ -36,12 +36,23 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Drop extends StdCommand
 {
-	public Drop(){}
+	public Drop()
+	{
+	}
 
-	private final String[] access=I(new String[]{"DROP","DRO"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "DROP", "DRO" });
 
-	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,Boolean.class,Boolean.class,Boolean.class}};
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	private final static Class[][] internalParameters=new Class[][]
+	{
+		{Environmental.class,Boolean.class,Boolean.class,Boolean.class},
+		{Item.class,Boolean.class,Boolean.class}
+	};
 
 	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize, boolean intermediate)
 	{
@@ -94,18 +105,6 @@ public class Drop extends StdCommand
 		final Item container=null;
 		final Vector V=new Vector();
 
-		//this is probably unnecessary and can be removed
-		if((commands.size()>=3)
-		&&(commands.get(0) instanceof Item)
-		&&(commands.get(1) instanceof Boolean)
-		&&(commands.get(2) instanceof Boolean))
-		{
-			return drop(mob,(Item)commands.get(0),
-						((Boolean)commands.get(1)).booleanValue(),
-						((Boolean)commands.get(2)).booleanValue(),
-						false);
-		}
-
 		if(commands.size()<2)
 		{
 			mob.tell(L("Drop what?"));
@@ -117,7 +116,6 @@ public class Drop extends StdCommand
 		// "drop all sack" will no longer drop all of your "sack", but will drop
 		// all of the contents of your 1.sack, leaving the sack in inventory.
 		//container=CMLib.english().possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
-
 
 		final int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToDrop<0)
@@ -190,16 +188,49 @@ public class Drop extends StdCommand
 		mob.location().recoverRoomStats();
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		return Boolean.valueOf(drop(mob,(Environmental)args[0],((Boolean)args[1]).booleanValue(),((Boolean)args[2]).booleanValue(),((Boolean)args[3]).booleanValue()));
+		if(args[0] instanceof Environmental)
+		{
+			return Boolean.valueOf(
+					drop(mob,
+					(Environmental)args[0],
+					((Boolean)args[1]).booleanValue(),
+					((Boolean)args[2]).booleanValue(),
+					((Boolean)args[3]).booleanValue()));
+		}
+		else
+		if(args[0] instanceof Item)
+		{
+			return Boolean.valueOf(
+					drop(mob,(Item)args[0],
+					((Boolean)args[1]).booleanValue(),
+					((Boolean)args[2]).booleanValue(),
+					false));
+		}
+		return Boolean.FALSE;
 	}
 
 }

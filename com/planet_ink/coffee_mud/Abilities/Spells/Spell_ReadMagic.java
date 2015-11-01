@@ -33,17 +33,48 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Spell_ReadMagic extends Spell
 {
-	@Override public String ID() { return "Spell_ReadMagic"; }
-	private final static String localizedName = CMLib.lang().L("Read Magic");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Ability to read magic)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_ReadMagic";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Read Magic");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Ability to read magic)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_DIVINATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -64,7 +95,7 @@ public class Spell_ReadMagic extends Spell
 		{
 			final Ability thisNewOne=(Ability)this.copyOf();
 			mob.addEffect(thisNewOne);
-			CMLib.commands().forceStandardCommand(mob,"Read",new XVector("READ",target));
+			CMLib.commands().postRead(mob, target, "", false);
 			mob.delEffect(thisNewOne);
 		}
 		else

@@ -59,7 +59,7 @@ public class Thief_Palm extends ThiefSkill
 		else
 		{
 			if((commands.size()>0)&&(!((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
-			   commands.addElement("UNOBTRUSIVELY");
+				commands.addElement("UNOBTRUSIVELY");
 			try
 			{
 				final Command C=CMClass.getCommand("Get");

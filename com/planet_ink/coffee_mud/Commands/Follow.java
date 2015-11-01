@@ -35,10 +35,19 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Follow extends StdCommand
 {
-	public Follow(){}
+	public Follow()
+	{
+	}
+	
+	private final String[]	access	= I(new String[] { "FOLLOW", "FOL", "FO", "F" });
 
-	private final String[] access=I(new String[]{"FOLLOW","FOL","FO","F"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	private final static Class[][] internalParameters=new Class[][]{{MOB.class,Boolean.class}};
 
 	public boolean nofollow(MOB mob, boolean errorsOk, boolean quiet)
 	{
@@ -126,6 +135,7 @@ public class Follow extends StdCommand
 		final Room R=mob.location();
 		if(R==null)
 			return false;
+
 		if((commands.size()>2)
 		&&(commands.lastElement() instanceof String)
 		&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
@@ -133,9 +143,7 @@ public class Follow extends StdCommand
 			commands.remove(commands.size()-1);
 			quiet=true;
 		}
-		if((commands.size()>1)&&(commands.get(1) instanceof MOB))
-			return processFollow(mob,(MOB)commands.get(1),quiet);
-
+		
 		if(commands.size()<2)
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("Follow whom?"));
@@ -174,9 +182,33 @@ public class Follow extends StdCommand
 		processFollow(mob,target,quiet);
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return false;}
+	
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		final MOB target=(MOB)args[0];
+		final Boolean quiet=(Boolean)args[1];
+		return Boolean.valueOf(processFollow(mob,target,quiet.booleanValue()));
+	}
+	
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

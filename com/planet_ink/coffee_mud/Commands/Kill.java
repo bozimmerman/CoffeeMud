@@ -35,10 +35,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Kill extends StdCommand
 {
-	public Kill(){}
+	public Kill()
+	{
+	}
 
-	private final String[] access=I(new String[]{"KILL","K","ATTACK"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "KILL", "K", "ATTACK" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -159,7 +167,7 @@ public class Kill extends StdCommand
 					{
 						final Command C=CMClass.getCommand("Wield");
 						if(C!=null)
-							C.execute(mob,new XVector("WIELD",possibleOtherWeapon),metaFlags);
+							C.executeInternal(mob,metaFlags,possibleOtherWeapon);
 					}
 				}
 			}

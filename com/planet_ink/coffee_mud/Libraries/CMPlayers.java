@@ -597,14 +597,22 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		switch(code)
 		{
-		case 0: return player.name;
-		case 1: return player.charClass;
-		case 2: return player.race;
-		case 3: return Integer.toString(player.level);
-		case 4: return Integer.toString(player.age);
-		case 5: return Long.toString(player.last);
-		case 6: return player.email;
-		case 7: return player.ip;
+		case 0:
+			return player.name;
+		case 1:
+			return player.charClass;
+		case 2:
+			return player.race;
+		case 3:
+			return Integer.toString(player.level);
+		case 4:
+			return Integer.toString(player.age);
+		case 5:
+			return Long.toString(player.last);
+		case 6:
+			return player.email;
+		case 7:
+			return player.ip;
 		}
 		return player.name;
 	}
@@ -613,11 +621,16 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		switch(code)
 		{
-		case 0: return account.getAccountName();
-		case 1: return Long.toString(account.getLastDateTime());
-		case 2: return account.getEmail();
-		case 3: return account.getLastIP();
-		case 4: return Integer.toString(account.numPlayers());
+		case 0:
+			return account.getAccountName();
+		case 1:
+			return Long.toString(account.getLastDateTime());
+		case 2:
+			return account.getEmail();
+		case 3:
+			return account.getLastIP();
+		case 4:
+			return Integer.toString(account.numPlayers());
 		}
 		return account.getAccountName();
 	}
@@ -849,8 +862,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			final long[][] presorted=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(mask.trim(),true), 2, 0, lastLevel);
 			autoPurgeDaysLevels=new long[lastLevel+1];
 			prePurgeLevels=new long[lastLevel+1];
-			for(int i=0;i<autoPurgeDaysLevels.length;i++) autoPurgeDaysLevels[i]=0;
-			for(int i=0;i<prePurgeLevels.length;i++) prePurgeLevels[i]=0;
+			for (int i = 0; i < autoPurgeDaysLevels.length; i++)
+				autoPurgeDaysLevels[i] = 0;
+			for (int i = 0; i < prePurgeLevels.length; i++)
+				prePurgeLevels[i] = 0;
 			for(int i=0;i<presorted.length;i++)
 			{
 				final long[] set=presorted[i];

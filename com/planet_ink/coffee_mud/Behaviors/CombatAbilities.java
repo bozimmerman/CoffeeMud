@@ -723,14 +723,14 @@ public class CombatAbilities extends StdBehavior
 					final Item I=(choices.size()==0)?null:(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 					if(I!=null)
 					{
-						CMLib.commands().forceStandardCommand(mob,"GET",new XVector("GET",I.Name()));
+						CMLib.commands().forceInternalCommand(mob,"GET",I);
 						if(mob.isMine(I))
 							newWeapon=I;
 					}
 				}
 				if(newWeapon!=null)
 				{
-					CMLib.commands().forceStandardCommand(mob,"WIELD",new XVector("WIELD",newWeapon.Name()));
+					CMLib.commands().forceInternalCommand(mob,"WIELD",newWeapon);
 				}
 				chkDown=5;
 			}

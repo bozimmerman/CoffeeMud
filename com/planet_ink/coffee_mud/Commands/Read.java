@@ -35,10 +35,17 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Read extends StdCommand
 {
-	public Read(){}
+	public Read()
+	{
+	}
+	
+	private final String[]	access	= I(new String[] { "READ" });
 
-	private final String[] access=I(new String[]{"READ"});
-	@Override public String[] getAccessWords(){return access;}
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,String.class,Boolean.class}};
 
@@ -82,12 +89,6 @@ public class Read extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		if(commands.get(0) instanceof Environmental)
-		{
-			read(mob,(Environmental)commands.get(0),CMParms.combine(commands,1), false);
-			return false;
-		}
-
 		final int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		Environmental thisThang=null;
 		if(dir>=0)
@@ -106,9 +107,24 @@ public class Read extends StdCommand
 		read(mob,thisThang, theRest, false);
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
+	
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
 	@Override
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException

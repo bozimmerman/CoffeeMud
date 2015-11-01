@@ -35,10 +35,18 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Inventory extends StdCommand
 {
-	public Inventory(){}
+	public Inventory()
+	{
+	}
 
-	private final String[] access=I(new String[]{"INVENTORY","INV","I"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "INVENTORY", "INV", "I" });
+
+	private final static Class[][] internalParameters=new Class[][]{ {MOB.class} };
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public static class InventoryList
 	{
@@ -170,16 +178,10 @@ public class Inventory extends StdCommand
 		return msg;
 	}
 
-
 	@Override
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()==1)&&(commands.get(0) instanceof MOB))
-		{
-			commands.add(getInventory((MOB)commands.get(0),mob,null));
-			return true;
-		}
 		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
 			mob.tell(L("^HYou are carrying:\n\r^!Nothing!^?\n\r"));
@@ -189,7 +191,17 @@ public class Inventory extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
-
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		return getInventory((MOB)args[0],mob,null);
+	}
+	
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }
