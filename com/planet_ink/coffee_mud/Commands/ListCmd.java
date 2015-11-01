@@ -2443,7 +2443,7 @@ public class ListCmd extends StdCommand
 
 	public String listAchievements(Session viewerS)
 	{
-		final StringBuilder str=new StringBuilder("^xAll Defined Achievements: ^N\n\r");
+		final StringBuilder str=new StringBuilder();
 		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(17.0,viewerS);
 		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(7.0,viewerS);
 		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(6.0,viewerS);
@@ -2451,36 +2451,53 @@ public class ListCmd extends StdCommand
 		final int COL_LEN5=ListingLibrary.ColFixer.fixColWidth(11.0,viewerS);
 		final int COL_LEN6=ListingLibrary.ColFixer.fixColWidth(26.0,viewerS);
 		final int COL_LEN7=COL_LEN1+1+COL_LEN2+1+COL_LEN3+1+COL_LEN4+1+COL_LEN5+1;
-		str.append(CMStrings.padRight(L("Tattoo"),COL_LEN1)+" ");
-		str.append(CMStrings.padRight(L("Type"),COL_LEN2)+" ");
-		str.append(CMStrings.padRight(L("Awards"),COL_LEN3)+" ");
-		str.append(CMStrings.padRight(L("Count"),COL_LEN4)+" ");
-		str.append(CMStrings.padRight(L("Parm1"),COL_LEN5)+" ");
-		str.append(L("Display\n\r"));
-		str.append(CMStrings.repeat('-',COL_LEN7+COL_LEN6)).append("\n\r");
-		for(final Enumeration<Achievement> e=CMLib.achievements().achievements();e.hasMoreElements();)
+		final boolean accountSys = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM) > 1; 
+		for(AccountStats.Agent agent : AccountStats.Agent.values())
 		{
-			final Achievement A=e.nextElement();
-			str.append(CMStrings.padRight(A.getTattoo(),COL_LEN1)+" ");
-			str.append(CMStrings.padRight(A.getEvent().name(),COL_LEN2)+" ");
-			str.append(CMStrings.padRight(CMParms.combineWSpaces(A.getRewards())+A.getTitleAward(),COL_LEN3)+" ");
-			str.append(CMStrings.padRight(A.getTargetCount()+"",COL_LEN4)+" ");
-			String miscVal = "";
-			for(String parmName : A.getEvent().getParameters())
+			if((!accountSys) && (agent != AccountStats.Agent.PLAYER))
+				continue;
+			switch(agent)
 			{
-				if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS,parmName))
-				{
-					String val = A.getRawParmVal(parmName);
-					if((val.length()>0)&&(!CMath.isMathExpression(val)))
-						miscVal=val;
-				}
+			case ACCOUNT:
+				str.append("^xAccount Achievements: ^N\n\r");
+				break;
+			case PLAYER:
+				str.append("^xPlayer Achievements: ^N\n\r");
+				break;
 			}
-			str.append(CMStrings.padRight(miscVal,COL_LEN5)+" ");
-			str.append(CMStrings.limit(A.getDisplayStr(),COL_LEN6));
-			str.append("\n\r");
+			str.append(CMStrings.padRight(L("Tattoo"),COL_LEN1)+" ");
+			str.append(CMStrings.padRight(L("Type"),COL_LEN2)+" ");
+			str.append(CMStrings.padRight(L("Awards"),COL_LEN3)+" ");
+			str.append(CMStrings.padRight(L("Count"),COL_LEN4)+" ");
+			str.append(CMStrings.padRight(L("Parm1"),COL_LEN5)+" ");
+			str.append(L("Display\n\r"));
+			str.append(CMStrings.repeat('-',COL_LEN7+COL_LEN6)).append("\n\r");
+			StringBuilder listStr = new StringBuilder("");
+			for(final Enumeration<Achievement> e=CMLib.achievements().achievements(agent);e.hasMoreElements();)
+			{
+				final Achievement A=e.nextElement();
+				listStr.append(CMStrings.padRight(A.getTattoo(),COL_LEN1)+" ");
+				listStr.append(CMStrings.padRight(A.getEvent().name(),COL_LEN2)+" ");
+				listStr.append(CMStrings.padRight(CMParms.combineWSpaces(A.getRewards())+A.getTitleAward(),COL_LEN3)+" ");
+				listStr.append(CMStrings.padRight(A.getTargetCount()+"",COL_LEN4)+" ");
+				String miscVal = "";
+				for(String parmName : A.getEvent().getParameters())
+				{
+					if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS,parmName))
+					{
+						String val = A.getRawParmVal(parmName);
+						if((val.length()>0)&&(!CMath.isMathExpression(val)))
+							miscVal=val;
+					}
+				}
+				listStr.append(CMStrings.padRight(miscVal,COL_LEN5)+" ");
+				listStr.append(CMStrings.limit(A.getDisplayStr(),COL_LEN6));
+				listStr.append("\n\r");
+			}
+			if(listStr.length()==0)
+				listStr.append("None defined.\n\r");
+			str.append(listStr).append("\n\r");
 		}
-		if(str.length()==0)
-			return "None defined.";
 		return str.toString();
 	}
 

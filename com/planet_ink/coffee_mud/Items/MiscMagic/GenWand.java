@@ -119,7 +119,7 @@ public class GenWand extends StdWand
 	public String[] getStatCodes()
 	{
 		if(codes==null)
-			codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
+			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
 		return codes;
 	}
 	@Override

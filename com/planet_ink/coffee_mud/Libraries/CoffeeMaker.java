@@ -42,9 +42,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 public class CoffeeMaker extends StdLibrary implements GenericBuilder
 {
 	@Override public String ID(){return "CoffeeMaker";}
-	public Map<String,Integer> GENMOBCODESHASH=new Hashtable<String,Integer>();
-	public Map<String,Integer> GENITEMCODESHASH=new Hashtable<String,Integer>();
-
+	
 	@Override
 	public String getGenMOBTextUnpacked(MOB mob, String newText)
 	{
@@ -2497,11 +2495,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			set.addAll(Arrays.asList(((MOB)P).baseCharStats().getStatCodes()));
 			if(((MOB)P).playerStats()!=null)
 				set.addAll(Arrays.asList(((MOB)P).playerStats().getStatCodes()));
-			set.addAll(Arrays.asList(GenericBuilder.GENMOBCODES));
+			set.addAll(Arrays.asList(CMParms.toStringArray(GenericBuilder.GenMOBCode.values())));
 		}
 		else
 		if(P instanceof Item)
-			set.addAll(Arrays.asList(GenericBuilder.GENITEMCODES));
+			set.addAll(Arrays.asList(CMParms.toStringArray(GenericBuilder.GenItemCode.values())));
 		return set.toVector();
 	}
 
@@ -2525,13 +2523,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return ((MOB)P).playerStats().isStat(stat);
 			if(getGenMobCodeNum(stat)>=0)
 				return true;
-			if(stat.equalsIgnoreCase("QUESTPOINTS"))
+			final GenMOBBonusFakeStats fakeStat = (GenMOBBonusFakeStats)CMath.s_valueOf(GenMOBBonusFakeStats.class, stat);
+			if(fakeStat != null)
 				return true;
 		}
 		else
 		if(P instanceof Item)
+		{
 			if(getGenItemCodeNum(stat)>=0)
 				return true;
+		}
 		return false;
 	}
 
@@ -2555,15 +2556,24 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return ((MOB)P).playerStats().getStat(stat);
 			if(getGenMobCodeNum(stat)>=0)
 				return getGenMobStat((MOB)P, stat);
-			if(stat.equalsIgnoreCase("QUESTPOINTS"))
+			final GenMOBBonusFakeStats fakeStat = (GenMOBBonusFakeStats)CMath.s_valueOf(GenMOBBonusFakeStats.class, stat);
+			if(fakeStat != null)
 			{
-				return ""+((MOB)P).getQuestPoint();
+				switch(fakeStat)
+				{
+				case QUESTPOINTS:
+					return ""+((MOB)P).getQuestPoint();
+				case FOLLOWERS:
+					return ""+((MOB)P).numFollowers();
+				}
 			}
 		}
 		else
 		if(P instanceof Item)
+		{
 			if(getGenItemCodeNum(stat)>=0)
 				return getGenItemStat((Item)P, stat);
+		}
 		return "";
 	}
 
@@ -3830,48 +3840,73 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	@Override
 	public int getGenItemCodeNum(String code)
 	{
-		if(GENITEMCODESHASH.size()==0)
+		code=code.toUpperCase().trim();
+		GenItemCode itemCode = (GenItemCode)CMath.s_valueOf(GenItemCode.class, code);
+		if(itemCode != null)
+			return itemCode.ordinal();
+		for(GenItemCode c : GenItemCode.values())
 		{
-			for(int i=0;i<GENITEMCODES.length;i++)
-				GENITEMCODESHASH.put(GENITEMCODES[i],Integer.valueOf(i));
+			if(code.startsWith(c.name()))
+				return c.ordinal();
 		}
-		if(GENITEMCODESHASH.containsKey(code.toUpperCase()))
-			return GENITEMCODESHASH.get(code.toUpperCase()).intValue();
-		for(int i=0;i<GENITEMCODES.length;i++)
-			if(code.toUpperCase().startsWith(GENITEMCODES[i]))
-				return i;
 		return -1;
 	}
 
 	@Override
 	public String getGenItemStat(Item I, String code)
 	{
-		switch(getGenItemCodeNum(code))
+		int codeNum = getGenItemCodeNum(code);
+		if(codeNum < 0)
+			return "";
+		switch(GenItemCode.values()[codeNum])
 		{
-		case 0: return I.ID(); // class
-		case 1: return ""+I.usesRemaining(); // uses
-		case 2: return ""+I.basePhyStats().level(); // level
-		case 3: return ""+I.basePhyStats().ability(); // ability
-		case 4: return I.Name(); // name
-		case 5: return I.displayText(); // display
-		case 6: return I.description(); // description
-		case 7: return I.rawSecretIdentity(); // secret
-		case 8: return ""+I.rawProperLocationBitmap(); // properworn
-		case 9: return ""+I.rawLogicalAnd(); // wornand
-		case 10: return ""+I.baseGoldValue(); // basegold
-		case 11: return ""+(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE)); // isreadable
-		case 12: return ""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP)); // isdroppable
-		case 13: return ""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE)); // isremovable
-		case 14: return ""+I.material(); // material
-		case 15: return getExtraEnvPropertiesStr(I); // affbehav
-		case 16: return ""+I.basePhyStats().disposition(); // disposition
-		case 17: return ""+I.basePhyStats().weight(); // weight
-		case 18: return ""+I.basePhyStats().armor();  // armor
-		case 19: return ""+I.basePhyStats().damage();  // damage
-		case 20: return ""+I.basePhyStats().attackAdjustment(); // attack
-		case 21: return I.readableText(); // readabletext
-		case 22: return I.rawImage(); // img
-		//case 23: return getGenScripts(I,false);
+		case CLASS:
+			return I.ID(); // class
+		case USES:
+			return "" + I.usesRemaining(); // uses
+		case LEVEL:
+			return "" + I.basePhyStats().level(); // level
+		case ABILITY:
+			return "" + I.basePhyStats().ability(); // ability
+		case NAME:
+			return I.Name(); // name
+		case DISPLAY:
+			return I.displayText(); // display
+		case DESCRIPTION:
+			return I.description(); // description
+		case SECRET:
+			return I.rawSecretIdentity(); // secret
+		case PROPERWORN:
+			return "" + I.rawProperLocationBitmap(); // properworn
+		case WORNAND:
+			return "" + I.rawLogicalAnd(); // wornand
+		case BASEGOLD:
+			return "" + I.baseGoldValue(); // basegold
+		case ISREADABLE:
+			return "" + (CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ITEMREADABLE)); // isreadable
+		case ISDROPPABLE:
+			return "" + (!CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ITEMNODROP)); // isdroppable
+		case ISREMOVABLE:
+			return "" + (!CMath.bset(I.basePhyStats().sensesMask(), PhyStats.SENSE_ITEMNOREMOVE)); // isremovable
+		case MATERIAL:
+			return "" + I.material(); // material
+		case AFFBEHAV:
+			return getExtraEnvPropertiesStr(I); // affbehav
+		case DISPOSITION:
+			return "" + I.basePhyStats().disposition(); // disposition
+		case WEIGHT:
+			return "" + I.basePhyStats().weight(); // weight
+		case ARMOR:
+			return "" + I.basePhyStats().armor(); // armor
+		case DAMAGE:
+			return "" + I.basePhyStats().damage(); // damage
+		case ATTACK:
+			return "" + I.basePhyStats().attackAdjustment(); // attack
+		case READABLETEXT:
+			return I.readableText(); // readabletext
+		case IMG:
+			return I.rawImage(); // img
+			// case 23: return getGenScripts(I,false);
 		}
 		return "";
 	}
@@ -3879,170 +3914,235 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	@Override
 	public void setGenItemStat(Item I, String code, String val)
 	{
-		switch(getGenItemCodeNum(code))
+		int codeNum = getGenItemCodeNum(code);
+		if(codeNum < 0)
+			return;
+		switch(GenItemCode.values()[codeNum])
 		{
-		case 0: break; // class
-		case 1: I.setUsesRemaining(CMath.s_parseIntExpression(val)); break; // uses
-		case 2: I.basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break; // level
-		case 3: I.basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break; // ability
-		case 4: I.setName(val); break; // name
-		case 5: I.setDisplayText(val); break; // display
-		case 6: I.setDescription(val); break; // description
-		case 7: I.setSecretIdentity(val); break; // secret
-		case 8: {
-				  if(CMath.isLong(val)||(val.trim().length()==0)) // properworn
-					  I.setRawProperLocationBitmap(CMath.s_long(val));
-				  else
-				  {
-					  I.setRawProperLocationBitmap(0);
-					  final List<String> V=CMParms.parseCommas(val,true);
-					  final Wearable.CODES codes = Wearable.CODES.instance();
-					  for(final Iterator<String> e=V.iterator();e.hasNext();)
-					  {
-						  val=e.next();
-						  final int wornIndex=codes.findDex_ignoreCase(val);
-						  if(wornIndex>=0)
-							  I.setRawProperLocationBitmap(I.rawProperLocationBitmap()|codes.get(wornIndex));
-					  }
-				  }
-				  break;
-				}
-		case 9: I.setRawLogicalAnd(CMath.s_bool(val)); break; // wornand
-		case 10: I.setBaseValue(CMath.s_parseIntExpression(val)); break; // basegold
-		case 11: CMLib.flags().setReadable(I,CMath.s_bool(val)); break; // isreadable
-		case 12: CMLib.flags().setDroppable(I,CMath.s_bool(val)); break; // isdroppable
-		case 13: CMLib.flags().setRemovable(I,CMath.s_bool(val)); break; // isremovable
-		case 14: if(CMath.isInteger(val)||(val.trim().length()==0)) // material
-					I.setMaterial(CMath.s_int(val));
-				 else
-				 {
-					 final int rsc=RawMaterial.CODES.FIND_IgnoreCase(val);
-					 if(rsc>=0)
-					 	I.setMaterial(rsc);
-				 }
-				 break;
-		case 15: {
-					 I.delAllEffects(true);
-					 I.delAllBehaviors();
-					 setExtraEnvProperties(I,CMLib.xml().parseAllXML(val)); // affbehav
-					 break;
-				 }
-		case 16:{
-				  if(CMath.isInteger(val)||(val.trim().length()==0))
-					 I.basePhyStats().setDisposition(CMath.s_parseIntExpression(val)); // disposition
-				  else
-				  {
-					  I.basePhyStats().setDisposition(0);
-					  final List<String> V=CMParms.parseCommas(val,true);
-					  for(final Iterator<String> e=V.iterator();e.hasNext();)
-					  {
-						  val=e.next();
-						  final int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
-						  if(dispIndex>=0)
-							  I.basePhyStats().setDisposition(I.basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));
-					  }
-				  }
-				  break;
-		}
-		case 17: I.basePhyStats().setWeight(CMath.s_parseIntExpression(val)); break; // weight
-		case 18: I.basePhyStats().setArmor(CMath.s_parseIntExpression(val)); break; // armor
-		case 19: I.basePhyStats().setDamage(CMath.s_parseIntExpression(val)); break; // damage
-		case 20: I.basePhyStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break; // attack
-		case 21: I.setReadableText(val); break; // readabletext
-		case 22: I.setImage(val); break; // img
-		/*case 23:
+		case CLASS:
+			break; // class
+		case USES:
+			I.setUsesRemaining(CMath.s_parseIntExpression(val));
+			break; // uses
+		case LEVEL:
+			I.basePhyStats().setLevel(CMath.s_parseIntExpression(val));
+			break; // level
+		case ABILITY:
+			I.basePhyStats().setAbility(CMath.s_parseIntExpression(val));
+			break; // ability
+		case NAME:
+			I.setName(val);
+			break; // name
+		case DISPLAY:
+			I.setDisplayText(val);
+			break; // display
+		case DESCRIPTION:
+			I.setDescription(val);
+			break; // description
+		case SECRET:
+			I.setSecretIdentity(val);
+			break; // secret
+		case PROPERWORN:
 		{
-			while(I.numScripts()>0)
+			if (CMath.isLong(val) || (val.trim().length() == 0)) // properworn
+				I.setRawProperLocationBitmap(CMath.s_long(val));
+			else
 			{
-				ScriptingEngine S=I.fetchScript(0);
-				if(S!=null)
-					I.delScript(S);
+				I.setRawProperLocationBitmap(0);
+				final List<String> V = CMParms.parseCommas(val, true);
+				final Wearable.CODES codes = Wearable.CODES.instance();
+				for (final Iterator<String> e = V.iterator(); e.hasNext();)
+				{
+					val = e.next();
+					final int wornIndex = codes.findDex_ignoreCase(val);
+					if (wornIndex >= 0)
+						I.setRawProperLocationBitmap(I.rawProperLocationBitmap() | codes.get(wornIndex));
+				}
 			}
-			setGenScripts(I,CMLib.xml().parseAllXML(val),false);
 			break;
 		}
-		*/
+		case WORNAND:
+			I.setRawLogicalAnd(CMath.s_bool(val));
+			break; // wornand
+		case BASEGOLD:
+			I.setBaseValue(CMath.s_parseIntExpression(val));
+			break; // basegold
+		case ISREADABLE:
+			CMLib.flags().setReadable(I, CMath.s_bool(val));
+			break; // isreadable
+		case ISDROPPABLE:
+			CMLib.flags().setDroppable(I, CMath.s_bool(val));
+			break; // isdroppable
+		case ISREMOVABLE:
+			CMLib.flags().setRemovable(I, CMath.s_bool(val));
+			break; // isremovable
+		case MATERIAL:
+			if (CMath.isInteger(val) || (val.trim().length() == 0)) // material
+				I.setMaterial(CMath.s_int(val));
+			else
+			{
+				final int rsc = RawMaterial.CODES.FIND_IgnoreCase(val);
+				if (rsc >= 0)
+					I.setMaterial(rsc);
+			}
+			break;
+		case AFFBEHAV:
+		{
+			I.delAllEffects(true);
+			I.delAllBehaviors();
+			setExtraEnvProperties(I, CMLib.xml().parseAllXML(val)); // affbehav
+			break;
+		}
+		case DISPOSITION:
+		{
+			if (CMath.isInteger(val) || (val.trim().length() == 0))
+				I.basePhyStats().setDisposition(CMath.s_parseIntExpression(val)); // disposition
+			else
+			{
+				I.basePhyStats().setDisposition(0);
+				final List<String> V = CMParms.parseCommas(val, true);
+				for (final Iterator<String> e = V.iterator(); e.hasNext();)
+				{
+					val = e.next();
+					final int dispIndex = CMParms.indexOfIgnoreCase(PhyStats.IS_CODES, val);
+					if (dispIndex >= 0)
+						I.basePhyStats().setDisposition(I.basePhyStats().disposition() | (int) CMath.pow(2, dispIndex));
+				}
+			}
+			break;
+		}
+		case WEIGHT:
+			I.basePhyStats().setWeight(CMath.s_parseIntExpression(val));
+			break; // weight
+		case ARMOR:
+			I.basePhyStats().setArmor(CMath.s_parseIntExpression(val));
+			break; // armor
+		case DAMAGE:
+			I.basePhyStats().setDamage(CMath.s_parseIntExpression(val));
+			break; // damage
+		case ATTACK:
+			I.basePhyStats().setAttackAdjustment(CMath.s_parseIntExpression(val));
+			break; // attack
+		case READABLETEXT:
+			I.setReadableText(val);
+			break; // readabletext
+		case IMG:
+			I.setImage(val);
+			break; // img
+		/*
+		 * case 23: { while(I.numScripts()>0) { ScriptingEngine
+		 * S=I.fetchScript(0); if(S!=null) I.delScript(S); }
+		 * setGenScripts(I,CMLib.xml().parseAllXML(val),false); break; }
+		 */
 		}
 	}
 
 	@Override
 	public int getGenMobCodeNum(String code)
 	{
-		if(GENMOBCODESHASH.size()==0)
-		{
-			for(int i=0;i<GENMOBCODES.length;i++)
-				GENMOBCODESHASH.put(GENMOBCODES[i],Integer.valueOf(i));
-		}
-		if(GENMOBCODESHASH.containsKey(code.toUpperCase()))
-			return GENMOBCODESHASH.get(code.toUpperCase()).intValue();
-		for(int i=0;i<GENMOBCODES.length;i++)
-			if(code.toUpperCase().startsWith(GENMOBCODES[i]))
-				return i;
+		code=code.toUpperCase().trim();
+		GenMOBCode itemCode = (GenMOBCode)CMath.s_valueOf(GenMOBCode.class, code);
+		if(itemCode != null)
+			return itemCode.ordinal();
+		for(GenMOBCode c : GenMOBCode.values())
+			if(code.startsWith(c.name()))
+				return c.ordinal();
 		return -1;
 	}
 
 	@Override
 	public String getGenMobStat(MOB M, String code)
 	{
-		switch(getGenMobCodeNum(code))
+		int codeNum = getGenMobCodeNum(code);
+		if(codeNum < 0)
+			return "";
+		switch(GenMOBCode.values()[codeNum])
 		{
-		case 0: return CMClass.classID(M); // class
-		case 1: return M.baseCharStats().getMyRace().ID(); // race
-		case 2: return ""+M.basePhyStats().level(); // level
-		case 3: return ""+M.basePhyStats().ability(); // ability
-		case 4: return M.Name(); // name
-		case 5: return M.displayText(); // display
-		case 6: return M.description(); // description
-		case 7: {
-				final String money=""+CMLib.beanCounter().getMoney(M); // money
-				//CMLib.beanCounter().clearZeroMoney(M,null);  WHY THE HECK WAS THIS EVER HERE?!?!
-				return money;
-				}
-		case 8: return ""+M.fetchFaction(CMLib.factions().AlignID()); // alignment
-		case 9: return ""+M.basePhyStats().disposition(); // disposition
-		case 10: return ""+M.basePhyStats().sensesMask(); // senses
-		case 11: return ""+M.basePhyStats().armor(); // armor
-		case 12: return ""+M.basePhyStats().damage(); // damage
-		case 13: return ""+M.basePhyStats().attackAdjustment(); // attack
-		case 14: return ""+M.basePhyStats().speed(); // speed
-		case 15: return getExtraEnvPropertiesStr(M); // affbehav
-		case 16: return getGenMobAbilities(M); // ables
-		case 17:{
-					final StringBuilder str=new StringBuilder(getGenMobInventory(M)); // inventory
-					int x=str.indexOf("<IID>");
-					while(x>0)
-					{
-						final int y=str.indexOf("</IID>",x);
-						if(y>x)
-							str.delete(x,y+6);
-						else break;
-						x=str.indexOf("<IID>");
-					}
-					x=str.indexOf("<ILOC>");
-					while(x>0)
-					{
-						final int y=str.indexOf("</ILOC>",x);
-						if(y>x)
-							str.delete(x,y+7);
-						else break;
-						x=str.indexOf("<ILOC>");
-					}
-					return str.toString();
-				}
-		case 18:{final StringBuilder str=new StringBuilder(""); // tatts
-				 for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
-					 str.append(e.nextElement().toString()+";");
-				 return str.toString();
-				}
-		case 19:{final StringBuilder str=new StringBuilder(""); // exps
-				 for(final Enumeration<String> x=M.expertises();x.hasMoreElements();)
-					str.append(x.nextElement()).append(';');
-				 return str.toString();
-				}
-		case 20: return M.rawImage(); // img
-		case 21: return M.getFactionListing(); // factions
-		case 22: return ""+M.getMoneyVariation(); // varmoney
-		//case 23: return getGenScripts(M,false);
+		case CLASS:
+			return CMClass.classID(M); // class
+		case RACE:
+			return M.baseCharStats().getMyRace().ID(); // race
+		case LEVEL:
+			return "" + M.basePhyStats().level(); // level
+		case ABILITY:
+			return "" + M.basePhyStats().ability(); // ability
+		case NAME:
+			return M.Name(); // name
+		case DISPLAY:
+			return M.displayText(); // display
+		case DESCRIPTION:
+			return M.description(); // description
+		case MONEY:
+		{
+			final String money = "" + CMLib.beanCounter().getMoney(M); // money
+			// CMLib.beanCounter().clearZeroMoney(M,null); WHY THE HECK WAS THIS
+			// EVER HERE?!?!
+			return money;
+		}
+		case ALIGNMENT:
+			return "" + M.fetchFaction(CMLib.factions().AlignID()); // alignment
+		case DISPOSITION:
+			return "" + M.basePhyStats().disposition(); // disposition
+		case SENSES:
+			return "" + M.basePhyStats().sensesMask(); // senses
+		case ARMOR:
+			return "" + M.basePhyStats().armor(); // armor
+		case DAMAGE:
+			return "" + M.basePhyStats().damage(); // damage
+		case ATTACK:
+			return "" + M.basePhyStats().attackAdjustment(); // attack
+		case SPEED:
+			return "" + M.basePhyStats().speed(); // speed
+		case AFFBEHAV:
+			return getExtraEnvPropertiesStr(M); // affbehav
+		case ABLES:
+			return getGenMobAbilities(M); // ables
+		case INVENTORY:
+		{
+			final StringBuilder str = new StringBuilder(getGenMobInventory(M)); // inventory
+			int x = str.indexOf("<IID>");
+			while (x > 0)
+			{
+				final int y = str.indexOf("</IID>", x);
+				if (y > x)
+					str.delete(x, y + 6);
+				else
+					break;
+				x = str.indexOf("<IID>");
+			}
+			x = str.indexOf("<ILOC>");
+			while (x > 0)
+			{
+				final int y = str.indexOf("</ILOC>", x);
+				if (y > x)
+					str.delete(x, y + 7);
+				else
+					break;
+				x = str.indexOf("<ILOC>");
+			}
+			return str.toString();
+		}
+		case TATTS:
+		{
+			final StringBuilder str = new StringBuilder(""); // tatts
+			for (final Enumeration<Tattoo> e = M.tattoos(); e.hasMoreElements();)
+				str.append(e.nextElement().toString() + ";");
+			return str.toString();
+		}
+		case EXPS:
+		{
+			final StringBuilder str = new StringBuilder(""); // exps
+			for (final Enumeration<String> x = M.expertises(); x.hasMoreElements();)
+				str.append(x.nextElement()).append(';');
+			return str.toString();
+		}
+		case IMG:
+			return M.rawImage(); // img
+		case FACTIONS:
+			return M.getFactionListing(); // factions
+		case VARMONEY:
+			return "" + M.getMoneyVariation(); // varmoney
+			// case 23: return getGenScripts(M,false);
 		}
 		return "";
 	}
@@ -4050,124 +4150,151 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	@Override
 	public void setGenMobStat(MOB M, String code, String val)
 	{
-		switch(getGenMobCodeNum(code))
+		int codeNum = getGenMobCodeNum(code);
+		if(codeNum < 0)
+			return;
+		switch(GenMOBCode.values()[codeNum])
 		{
-		case 0: break; // class
-		case 1: M.baseCharStats().setMyRace(CMClass.getRace(val)); break; // race
-		case 2: M.basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break; // level
-		case 3: M.basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break; // ability
-		case 4: M.setName(val); break; // name
-		case 5: M.setDisplayText(val); break; // display
-		case 6: M.setDescription(val); break; // description
-		case 7: CMLib.beanCounter().setMoney(M,CMath.s_parseIntExpression(val)); break; // money
-		case 8: if(CMath.s_int(val)==Integer.MAX_VALUE) // alignment
-					M.removeFaction(CMLib.factions().AlignID());
-				else
-					M.addFaction(CMLib.factions().AlignID(),CMath.s_parseIntExpression(val));
-				break;
-		case 9:
-			{
-				  if(CMath.isInteger(val)||(val.trim().length()==0)) // disposition
-					 M.basePhyStats().setDisposition(CMath.s_parseIntExpression(val));
-				  else
-				  {
-					  M.basePhyStats().setDisposition(0);
-					  final List<String> V=CMParms.parseCommas(val,true);
-					  for(final Iterator<String> e=V.iterator();e.hasNext();)
-					  {
-						  val=e.next();
-						  final int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
-						  if(dispIndex>=0)
-							  M.basePhyStats().setDisposition(M.basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));
-					  }
-				  }
-				  break;
-			}
-		case 10:
-			{
-				  if(CMath.isInteger(val)||(val.trim().length()==0)) // senses
-					 M.basePhyStats().setSensesMask(CMath.s_parseIntExpression(val));
-				  else
-				  {
-					  M.basePhyStats().setSensesMask(0);
-					  final List<String> V=CMParms.parseCommas(val,true);
-					  for(final Iterator<String> e=V.iterator();e.hasNext();)
-					  {
-						  val=e.next();
-						  final int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.CAN_SEE_CODES,val);
-						  if(dispIndex>=0)
-							  M.basePhyStats().setSensesMask(M.basePhyStats().sensesMask()|(int)CMath.pow(2,dispIndex));
-					  }
-				  }
-				  break;
-			}
-		case 11: M.basePhyStats().setArmor(CMath.s_parseIntExpression(val)); break; // armor
-		case 12: M.basePhyStats().setDamage(CMath.s_parseIntExpression(val)); break; // damage
-		case 13: M.basePhyStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break; // attack
-		case 14: M.basePhyStats().setSpeed(CMath.s_parseMathExpression(val)); break; // speed
-		case 15: {
-					 M.delAllEffects(true);
-					 M.delAllBehaviors();
-					 setExtraEnvProperties(M,CMLib.xml().parseAllXML(val)); // affbehav
-					 break;
-				 }
-		case 16:
-			{
-				final String extras=getExtraEnvPropertiesStr(M);
-				M.delAllAbilities();
-				setExtraEnvProperties(M,CMLib.xml().parseAllXML(extras)); // ables
-				setGenMobAbilities(M,CMLib.xml().parseAllXML(val));
-				break;
-			}
-		case 17:
-			{
-				M.delAllItems(true);
-				setGenMobInventory(M,CMLib.xml().parseAllXML(val)); // inventory
-			}
+		case CLASS:
+			break; // class
+		case RACE:
+			M.baseCharStats().setMyRace(CMClass.getRace(val));
+			break; // race
+		case LEVEL:
+			M.basePhyStats().setLevel(CMath.s_parseIntExpression(val));
+			break; // level
+		case ABILITY:
+			M.basePhyStats().setAbility(CMath.s_parseIntExpression(val));
+			break; // ability
+		case NAME:
+			M.setName(val);
+			break; // name
+		case DISPLAY:
+			M.setDisplayText(val);
+			break; // display
+		case DESCRIPTION:
+			M.setDescription(val);
+			break; // description
+		case MONEY:
+			CMLib.beanCounter().setMoney(M, CMath.s_parseIntExpression(val));
+			break; // money
+		case ALIGNMENT:
+			if (CMath.s_int(val) == Integer.MAX_VALUE) // alignment
+				M.removeFaction(CMLib.factions().AlignID());
+			else
+				M.addFaction(CMLib.factions().AlignID(), CMath.s_parseIntExpression(val));
 			break;
-		case 18:
+		case DISPOSITION:
+		{
+			if (CMath.isInteger(val) || (val.trim().length() == 0)) // disposition
+				M.basePhyStats().setDisposition(CMath.s_parseIntExpression(val));
+			else
 			{
-				final List<String> V9=CMParms.parseSemicolons(val,true);
-				for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();) // tatts
-					M.delTattoo(e.nextElement());
-				for(int v=0;v<V9.size();v++)
-					M.addTattoo(CMLib.database().parseTattoo(V9.get(v)));
-			}
-			break;
-		case 19:
-			{
-				final List<String> V9=CMParms.parseSemicolons(val,true); // exps
-				M.delAllExpertises();
-				for(int v=0;v<V9.size();v++)
-					M.addExpertise(V9.get(v));
-			}
-			break;
-		case 20: M.setImage(val); break; // img
-		case 21:
-			{
-				final List<String> V10=CMParms.parseSemicolons(val,true); // factions
-				for(int v=0;v<V10.size();v++)
+				M.basePhyStats().setDisposition(0);
+				final List<String> V = CMParms.parseCommas(val, true);
+				for (final Iterator<String> e = V.iterator(); e.hasNext();)
 				{
-					final String s=V10.get(v);
-					final int x=s.lastIndexOf('(');
-					final int y=s.lastIndexOf(")");
-					if((x>0)&&(y>x))
-						M.addFaction(s.substring(0,x),CMath.s_int(s.substring(x+1,y)));
+					val = e.next();
+					final int dispIndex = CMParms.indexOfIgnoreCase(PhyStats.IS_CODES, val);
+					if (dispIndex >= 0)
+						M.basePhyStats().setDisposition(M.basePhyStats().disposition() | (int) CMath.pow(2, dispIndex));
 				}
-				break;
 			}
-		case 22: M.setMoneyVariation(CMath.s_parseMathExpression(val)); break; // varmoney
-		/*case 23:
-		{
-			while(M.numScripts()>0)
-			{
-				ScriptingEngine S=M.fetchScript(0);
-				if(S!=null)
-					M.delScript(S);
-			}
-			setGenScripts(M,CMLib.xml().parseAllXML(val),false);
 			break;
-		}*/
+		}
+		case SENSES:
+		{
+			if (CMath.isInteger(val) || (val.trim().length() == 0)) // senses
+				M.basePhyStats().setSensesMask(CMath.s_parseIntExpression(val));
+			else
+			{
+				M.basePhyStats().setSensesMask(0);
+				final List<String> V = CMParms.parseCommas(val, true);
+				for (final Iterator<String> e = V.iterator(); e.hasNext();)
+				{
+					val = e.next();
+					final int dispIndex = CMParms.indexOfIgnoreCase(PhyStats.CAN_SEE_CODES, val);
+					if (dispIndex >= 0)
+						M.basePhyStats().setSensesMask(M.basePhyStats().sensesMask() | (int) CMath.pow(2, dispIndex));
+				}
+			}
+			break;
+		}
+		case ARMOR:
+			M.basePhyStats().setArmor(CMath.s_parseIntExpression(val));
+			break; // armor
+		case DAMAGE:
+			M.basePhyStats().setDamage(CMath.s_parseIntExpression(val));
+			break; // damage
+		case ATTACK:
+			M.basePhyStats().setAttackAdjustment(CMath.s_parseIntExpression(val));
+			break; // attack
+		case SPEED:
+			M.basePhyStats().setSpeed(CMath.s_parseMathExpression(val));
+			break; // speed
+		case AFFBEHAV:
+		{
+			M.delAllEffects(true);
+			M.delAllBehaviors();
+			setExtraEnvProperties(M, CMLib.xml().parseAllXML(val)); // affbehav
+			break;
+		}
+		case ABLES:
+		{
+			final String extras = getExtraEnvPropertiesStr(M);
+			M.delAllAbilities();
+			setExtraEnvProperties(M, CMLib.xml().parseAllXML(extras)); // ables
+			setGenMobAbilities(M, CMLib.xml().parseAllXML(val));
+			break;
+		}
+		case INVENTORY:
+		{
+			M.delAllItems(true);
+			setGenMobInventory(M, CMLib.xml().parseAllXML(val)); // inventory
+		}
+			break;
+		case TATTS:
+		{
+			final List<String> V9 = CMParms.parseSemicolons(val, true);
+			for (final Enumeration<Tattoo> e = M.tattoos(); e.hasMoreElements();)
+				// tatts
+				M.delTattoo(e.nextElement());
+			for (int v = 0; v < V9.size(); v++)
+				M.addTattoo(CMLib.database().parseTattoo(V9.get(v)));
+		}
+			break;
+		case EXPS:
+		{
+			final List<String> V9 = CMParms.parseSemicolons(val, true); // exps
+			M.delAllExpertises();
+			for (int v = 0; v < V9.size(); v++)
+				M.addExpertise(V9.get(v));
+		}
+			break;
+		case IMG:
+			M.setImage(val);
+			break; // img
+		case FACTIONS:
+		{
+			final List<String> V10 = CMParms.parseSemicolons(val, true); // factions
+			for (int v = 0; v < V10.size(); v++)
+			{
+				final String s = V10.get(v);
+				final int x = s.lastIndexOf('(');
+				final int y = s.lastIndexOf(")");
+				if ((x > 0) && (y > x))
+					M.addFaction(s.substring(0, x), CMath.s_int(s.substring(x + 1, y)));
+			}
+			break;
+		}
+		case VARMONEY:
+			M.setMoneyVariation(CMath.s_parseMathExpression(val));
+			break; // varmoney
+		/*
+		 * case 23: { while(M.numScripts()>0) { ScriptingEngine
+		 * S=M.fetchScript(0); if(S!=null) M.delScript(S); }
+		 * setGenScripts(M,CMLib.xml().parseAllXML(val),false); break; }
+		 */
 		}
 	}
 

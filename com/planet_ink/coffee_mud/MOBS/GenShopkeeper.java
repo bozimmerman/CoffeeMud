@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -187,7 +188,7 @@ public class GenShopkeeper extends StdShopKeeper
 		if (codes != null)
 			return codes;
 		final String[] MYCODES = CMProps.getStatCodesList(GenShopkeeper.MYCODES, this);
-		final String[] superCodes = GenericBuilder.GENMOBCODES;
+		final String[] superCodes = CMParms.toStringArray(GenericBuilder.GenMOBCode.values());
 		codes = new String[superCodes.length + MYCODES.length];
 		int i = 0;
 		for (; i < superCodes.length; i++)

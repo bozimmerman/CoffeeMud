@@ -39,7 +39,7 @@ public interface AchievementLibrary extends CMLibrary
 	
 	public enum Event
 	{
-		KILLS(new String[]{"NUM","ZAPPERMASK"}),
+		KILLS(new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
 		STATVALUE(new String[]{"VALUE","ABOVEBELOW","STAT"}),
 		FACTION(new String[]{"VALUE","ABOVEBELOW","ID"}),
 		EXPLORE(new String[]{"PERCENT","AREA"}),
@@ -51,6 +51,8 @@ public interface AchievementLibrary extends CMLibrary
 		ROOMENTER(new String[]{"ROOMID"}),
 		LEVELSGAINED(new String[]{"NUM","PLAYERMASK"}),
 		TIMEPLAYED(new String[]{"SECONDS","PLAYERMASK"}),
+		JUSTBE(new String[]{"PLAYERMASK"}),
+		DEATHS(new String[]{"NUM","ZAPPERMASK","PLAYERMASK"})
 		;
 		private final String[] parameters;
 
@@ -75,6 +77,8 @@ public interface AchievementLibrary extends CMLibrary
 	
 	public interface Achievement
 	{
+		public AccountStats.Agent getAgent();
+		
 		public Event getEvent();
 
 		public String getTattoo();
@@ -116,14 +120,14 @@ public interface AchievementLibrary extends CMLibrary
 		public int getCount(MOB mob);
 	}
 	
-	public String evaluateAchievement(String row, boolean addIfPossible);
+	public String evaluateAchievement(AccountStats.Agent agent, String row, boolean addIfPossible);
 	public void reloadAchievements();
 	public boolean evaluateAchievements(MOB mob);
-	public Enumeration<Achievement> achievements();
+	public Enumeration<Achievement> achievements(AccountStats.Agent agent);
 	public Achievement getAchievement(String named);
 	public Achievement deleteAchievement(String named);
 	public void resaveAchievements(final String modifyTattoo);
-	public boolean addModifyAchievement(final MOB mob, final String tattoo, Achievement A);
+	public boolean addModifyAchievement(final MOB mob, AccountStats.Agent agent, final String tattoo, Achievement A);
 	public void possiblyBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms);
 	public Map<String,Map<String,String>> getAchievementsHelpMap();
 	public String getAchievementsHelpFromMap(Map<String,Map<String,String>> helpMap, Event E, String parmName);

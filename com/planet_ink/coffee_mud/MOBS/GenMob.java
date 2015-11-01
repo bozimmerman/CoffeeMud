@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -87,7 +88,7 @@ public class GenMob extends StdMOB
 	public String[] getStatCodes()
 	{
 		if(codes==null)
-			codes=CMProps.getStatCodesList(GenericBuilder.GENMOBCODES,this);
+			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenMOBCode.values()),this);
 		return codes;
 	}
 	@Override

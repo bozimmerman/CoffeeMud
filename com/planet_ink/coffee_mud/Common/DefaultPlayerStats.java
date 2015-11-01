@@ -922,7 +922,7 @@ public class DefaultPlayerStats implements PlayerStats
 			roomSet().parseXML("<AREAS />");
 		final XMLpiece achievePiece = xmlLib.getPieceFromPieces(xml, "ACHIEVEMENTS");
 		achievementers.clear();
-		for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
+		for(Enumeration<Achievement> a=CMLib.achievements().achievements(Agent.PLAYER);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
 			if((achievePiece != null) && achievePiece.parms.containsKey(A.getTattoo()))
@@ -943,11 +943,13 @@ public class DefaultPlayerStats implements PlayerStats
 		final String[] prideStats=xmlLib.getValFromPieces(xml, "PRIDESTATS").split(";");
 		final Pair<Long,int[]>[] finalPrideStats = CMLib.players().parsePrideStats(nextPeriods, prideStats);
 		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+		{
 			if(period.ordinal()<finalPrideStats.length)
 			{
 				this.prideExpireTime[period.ordinal()]=finalPrideStats[period.ordinal()].first.longValue();
 				this.prideStats[period.ordinal()]=finalPrideStats[period.ordinal()].second;
 			}
+		}
 
 		str = xmlLib.getValFromPieces(xml,"ACCOUNT");
 		if(debug)

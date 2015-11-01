@@ -860,13 +860,25 @@ public class Create extends StdCommand
 	public void achievements(MOB mob, Vector commands)
 	throws IOException
 	{
-		if(commands.size()<3)
+		final boolean accountSys = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1;
+		if(commands.size()<((accountSys)?4:3))
 		{
-			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE ACHIEVEMENT [TATTOO NAME]\n\r"));
+			if(accountSys)
+				mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE ACHIEVEMENT (PLAYER/ACCOUNT/ALL) [TATTOO NAME]\n\r"));
+			else
+				mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE ACHIEVEMENT [TATTOO NAME]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final String tattoo=CMParms.combine(commands,2);
+		final String agentStr=accountSys?commands.get(2).toString():"PLAYER";
+		AccountStats.Agent agent=(AccountStats.Agent)CMath.s_valueOf(AccountStats.Agent.class, agentStr.toUpperCase().trim());
+		if(agent == null)
+		{
+			mob.tell(L("'@x1' is an unknown achievement type.  Try @x2!",agentStr,CMParms.toListString(AccountStats.Agent.values())));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final String tattoo=CMParms.combine(commands,((accountSys)?3:2));
 		final Achievement A=CMLib.achievements().getAchievement(tattoo);
 		if(A!=null)
 		{
@@ -886,7 +898,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		if(CMLib.achievements().addModifyAchievement(mob, tattoo, null))
+		if(CMLib.achievements().addModifyAchievement(mob, agent, tattoo, null))
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The vanity of the world just increased!"));
 	}
 

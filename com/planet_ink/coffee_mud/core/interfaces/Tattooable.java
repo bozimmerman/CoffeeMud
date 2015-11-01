@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Tattoo;
 * @author Bo Zimmerman
 *
 */
-public interface Tattooable extends Physical
+public interface Tattooable extends CMObject
 {
 	/**
 	 * Add a new tattoo to this object

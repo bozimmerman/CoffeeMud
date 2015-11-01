@@ -146,7 +146,7 @@ public class GenClanPamphlet extends StdClanPamphlet
 		if (codes != null)
 			return codes;
 		final String[] MYCODES = CMProps.getStatCodesList(GenClanPamphlet.MYCODES, this);
-		final String[] superCodes = GenericBuilder.GENITEMCODES;
+		final String[] superCodes = CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes = new String[superCodes.length + MYCODES.length];
 		int i = 0;
 		for (; i < superCodes.length; i++)

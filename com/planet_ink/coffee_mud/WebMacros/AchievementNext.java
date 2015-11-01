@@ -49,10 +49,19 @@ public class AchievementNext extends StdWebMacro
 				httpReq.removeUrlParameter("ACHIEVEMENT");
 			return "";
 		}
-		String lastID="";
-		for(final Enumeration<Achievement> r=CMLib.achievements().achievements();r.hasMoreElements();)
+		final String agentStr = parms.get("AGENT");
+		final AccountStats.Agent agent = ((agentStr == null)||(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=1)) ? 
+				AccountStats.Agent.PLAYER : (AccountStats.Agent)CMath.s_valueOf(AccountStats.Agent.class, agentStr.toUpperCase().trim());
+		if(agent == null)
 		{
-			final String title=r.nextElement().getTattoo();
+			return " @break@";
+		}
+		
+		String lastID="";
+		for(final Enumeration<Achievement> r=CMLib.achievements().achievements(agent);r.hasMoreElements();)
+		{
+			Achievement A=r.nextElement();
+			final String title=A.getTattoo();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!title.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("ACHIEVEMENT",title);

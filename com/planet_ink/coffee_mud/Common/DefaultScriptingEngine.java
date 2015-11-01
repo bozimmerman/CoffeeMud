@@ -1905,19 +1905,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(!found)
 		if(E instanceof MOB)
 		{
-			for (final String element : GenericBuilder.GENMOBCODES)
+			arg2=arg2.toUpperCase().trim();
+			final GenericBuilder.GenMOBCode element = (GenericBuilder.GenMOBCode)CMath.s_valueOf(GenericBuilder.GenMOBCode.class,arg2);
+			if(element != null)
 			{
-				if(element.equalsIgnoreCase(arg2))
-				{
-					val=CMLib.coffeeMaker().getGenMobStat((MOB)E,element);
-					found=true; break;
-				}
+				val=CMLib.coffeeMaker().getGenMobStat((MOB)E,element.name());
+				found=true; 
 			}
 			if(!found)
 			{
 				final MOB M=(MOB)E;
 				for(final int i : CharStats.CODES.ALLCODES())
-					if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
+					if(CharStats.CODES.NAME(i).equals(arg2)||CharStats.CODES.DESC(i).equals(arg2))
 					{
 						val=""+M.charStats().getStat(CharStats.CODES.NAME(i));
 						found=true;
@@ -1925,7 +1924,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				if(!found)
 				for(int i=0;i<M.curState().getStatCodes().length;i++)
-					if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
+					if(M.curState().getStatCodes()[i].equals(arg2))
 					{
 						val=M.curState().getStat(M.curState().getStatCodes()[i]);
 						found=true;
@@ -1933,7 +1932,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				if(!found)
 				for(int i=0;i<M.phyStats().getStatCodes().length;i++)
-					if(M.phyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+					if(M.phyStats().getStatCodes()[i].equals(arg2))
 					{
 						val=M.phyStats().getStat(M.phyStats().getStatCodes()[i]);
 						found=true;
@@ -1941,7 +1940,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				if((!found)&&(M.playerStats()!=null))
 				for(int i=0;i<M.playerStats().getStatCodes().length;i++)
-					if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+					if(M.playerStats().getStatCodes()[i].equals(arg2))
 					{
 						val=M.playerStats().getStat(M.playerStats().getStatCodes()[i]);
 						found=true;
@@ -1949,36 +1948,40 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
 					for(int i=0;i<M.baseState().getStatCodes().length;i++)
-						if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
+						if(M.baseState().getStatCodes()[i].equals(arg2.substring(4)))
 						{
 							val=M.baseState().getStat(M.baseState().getStatCodes()[i]);
 							found=true;
 							break;
 						}
-				if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
+				if((!found)&&(gstatH.containsKey(arg2)))
 				{
 					found=true;
-					switch(gstatH.get(arg2.toUpperCase()).intValue())
+					switch(gstatH.get(arg2).intValue())
 					{
-					case GSTATADD_DEITY: val=M.getWorshipCharID(); break;
-					case GSTATADD_CLAN: {
-						Clan C=CMLib.clans().findRivalrousClan(M);
-						if(C==null)
-							C=M.clans().iterator().hasNext()?M.clans().iterator().next().first:null;
-						val=(C!=null)?C.clanID():"";
-						break;
-					}
-					case GSTATADD_CLANROLE: {
-						Clan C=CMLib.clans().findRivalrousClan(M);
-						if(C==null)
-							C=M.clans().iterator().hasNext()?M.clans().iterator().next().first:null;
-						if(C!=null)
+						case GSTATADD_DEITY:
+							val = M.getWorshipCharID();
+							break;
+						case GSTATADD_CLAN:
 						{
-							final Pair<Clan,Integer> p=M.getClanRole(C.clanID());
-							val=(p!=null)?p.second.toString():"";
+							Clan C = CMLib.clans().findRivalrousClan(M);
+							if (C == null)
+								C = M.clans().iterator().hasNext() ? M.clans().iterator().next().first : null;
+							val = (C != null) ? C.clanID() : "";
+							break;
 						}
-						break;
-					}
+						case GSTATADD_CLANROLE:
+						{
+							Clan C = CMLib.clans().findRivalrousClan(M);
+							if (C == null)
+								C = M.clans().iterator().hasNext() ? M.clans().iterator().next().first : null;
+							if (C != null)
+							{
+								final Pair<Clan, Integer> p = M.getClanRole(C.clanID());
+								val = (p != null) ? p.second.toString() : "";
+							}
+							break;
+						}
 					}
 				}
 			}
@@ -1986,13 +1989,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		else
 		if(E instanceof Item)
 		{
-			for (final String element : GenericBuilder.GENITEMCODES)
+			final GenericBuilder.GenItemCode code = (GenericBuilder.GenItemCode)CMath.s_valueOf(GenericBuilder.GenItemCode.class, arg2.toUpperCase().trim());
+			if(code != null)
 			{
-				if(element.equalsIgnoreCase(arg2))
-				{
-					val=CMLib.coffeeMaker().getGenItemStat((Item)E,element);
-					found=true; break;
-				}
+				val=CMLib.coffeeMaker().getGenItemStat((Item)E,code.name());
+				found=true; 
 			}
 		}
 		if(found)
@@ -7524,18 +7525,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(!found)
 					if(newTarget instanceof MOB)
 					{
-						for (final String element : GenericBuilder.GENMOBCODES)
+						
+						final GenericBuilder.GenMOBCode element = (GenericBuilder.GenMOBCode)CMath.s_valueOf(GenericBuilder.GenMOBCode.class,arg2.toUpperCase().trim());
+						if(element != null)
 						{
-							if(element.equalsIgnoreCase(arg2))
-							{
-								if(arg3.equals("++"))
-									arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,element))+1);
-								if(arg3.equals("--"))
-									arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,element))-1);
-								CMLib.coffeeMaker().setGenMobStat((MOB)newTarget,element,arg3);
-								found=true;
-								break;
-							}
+							if(arg3.equals("++"))
+								arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,element.name()))+1);
+							if(arg3.equals("--"))
+								arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,element.name()))-1);
+							CMLib.coffeeMaker().setGenMobStat((MOB)newTarget,element.name(),arg3);
+							found=true;
 						}
 						if(!found)
 						{
@@ -7644,18 +7643,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(newTarget instanceof Item)
 					{
-						for (final String element : GenericBuilder.GENITEMCODES)
+						
+						final GenericBuilder.GenItemCode element = (GenericBuilder.GenItemCode)CMath.s_valueOf(GenericBuilder.GenItemCode.class,arg2.toUpperCase().trim());
+						if(element != null)
 						{
-							if(element.equalsIgnoreCase(arg2))
-							{
-								if(arg3.equals("++"))
-									arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenItemStat((Item)newTarget,element))+1);
-								if(arg3.equals("--"))
-									arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenItemStat((Item)newTarget,element))-1);
-								CMLib.coffeeMaker().setGenItemStat((Item)newTarget,element,arg3);
-								found=true;
-								break;
-							}
+							if(arg3.equals("++"))
+								arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenItemStat((Item)newTarget,element.name()))+1);
+							if(arg3.equals("--"))
+								arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenItemStat((Item)newTarget,element.name()))-1);
+							CMLib.coffeeMaker().setGenItemStat((Item)newTarget,element.name(),arg3);
+							found=true;
 						}
 					}
 

@@ -136,7 +136,7 @@ public class GenPostman extends StdPostman
 		if(codes!=null)
 			return codes;
 		final String[] MYCODES=CMProps.getStatCodesList(GenPostman.MYCODES,this);
-		final String[] superCodes=GenericBuilder.GENMOBCODES;
+		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenMOBCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)

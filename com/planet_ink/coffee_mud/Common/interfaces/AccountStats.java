@@ -11,9 +11,12 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -218,6 +221,39 @@ public interface AccountStats extends CMCommon
 	public int getPrideStat(TimeClock.TimePeriod period, PrideStat stat);
 
 	/**
+	 * Returns the tracker for the given achievement, for the given mob, or
+	 * creates it if it does not exist.
+	 * @see PlayerStats#rebuildAchievementTracker(MOB, String)
+	 * @see PlayerStats#killAchievementTracker(Achievement, MOB)
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement
+	 * @param A the achievement to get the tracker for
+	 * @param mob the mob to create a tracker for
+	 * @return the Tracker object that handles this achievement/mob
+	 */
+	public Tracker getAchievementTracker(final Achievement A, final MOB mob);
+	
+	/**
+	 * Deletes the tracker for the given achievement, for the given mob.
+	 * @see PlayerStats#rebuildAchievementTracker(MOB, String)
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement
+	 * @param A the achievement to kill the tracker for
+	 * @param mob the mob to delete a tracker for
+	 */
+	public void killAchievementTracker(final Achievement A, final MOB mob);
+
+	/**
+	 * If an Achievement is modified or removed, this method will update the
+	 * internal player tracker for that achievement.  It does not delete old
+	 * achievements per se, just their trackers!
+	 * @see PlayerStats#getAchievementTracker(com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement, MOB)
+	 * @param mob the mob to modify the tracker for.
+	 * @param achievementTattoo the tattoo/id of the achievement
+	 */
+	public void rebuildAchievementTracker(final MOB mob, String achievementTattoo);
+	
+	/**
 	 * Returns an XML representation of all the data in this object, for
 	 * persistant storage.
 	 *
@@ -252,4 +288,15 @@ public interface AccountStats extends CMCommon
 		QUESTPOINTS_EARNED
 	}
 
+	/**
+	 * A simple enum for picking between a player and an account
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum Agent
+	{
+		PLAYER,
+		ACCOUNT
+	}
+	
 }

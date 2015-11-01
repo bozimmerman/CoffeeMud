@@ -1120,18 +1120,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		if((E2 instanceof MOB)&&(!((MOB)E2).isGeneric()))
 		{
-			for(final String stat : GenericBuilder.GENMOBCODES)
-				if(!stat.equals("ABILITY")) // because this screws up gen hit points
+			for(final GenericBuilder.GenMOBCode stat : GenericBuilder.GenMOBCode.values())
+			{
+				if(stat != GenericBuilder.GenMOBCode.ABILITY) // because this screws up gen hit points
 				{
-					E.setStat(stat, CMLib.coffeeMaker().getGenMobStat((MOB)E2,stat));
+					E.setStat(stat.name(), CMLib.coffeeMaker().getGenMobStat((MOB)E2,stat.name()));
 				}
+			}
 		}
 		else
 		if((E2 instanceof Item)&&(!((Item)E2).isGeneric()))
 		{
-			for(final String stat : GenericBuilder.GENITEMCODES)
+			for(final GenericBuilder.GenItemCode stat : GenericBuilder.GenItemCode.values())
 			{
-				E.setStat(stat,CMLib.coffeeMaker().getGenItemStat((Item)E2,stat));
+				E.setStat(stat.name(),CMLib.coffeeMaker().getGenItemStat((Item)E2,stat.name()));
 			}
 		}
 		else

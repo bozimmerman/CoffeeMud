@@ -70,6 +70,16 @@ public class AchievementData extends StdWebMacro
 		if((last==null)&&(!parms.containsKey("EDIT")))
 			return " @break@";
 
+		String agentStr = parms.get("AGENT");
+		if(agentStr == null)
+			agentStr=httpReq.getUrlParameter("AGENT");
+		AccountStats.Agent agent = ((agentStr == null)||(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=1)) ? 
+				AccountStats.Agent.PLAYER : (AccountStats.Agent)CMath.s_valueOf(AccountStats.Agent.class, agentStr.toUpperCase().trim());
+		if(agent == null)
+		{
+			agent = AccountStats.Agent.PLAYER;
+		}
+		
 		if(parms.containsKey("EDIT"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
@@ -118,7 +128,7 @@ public class AchievementData extends StdWebMacro
 				}
 			}
 
-			String error=CMLib.achievements().evaluateAchievement(row,false);
+			String error=CMLib.achievements().evaluateAchievement(agent,row,false);
 			if(error!=null)
 				return "[error: "+error+"]";
 
@@ -134,7 +144,7 @@ public class AchievementData extends StdWebMacro
 				}
 			}
 
-			error=CMLib.achievements().evaluateAchievement(row,true);
+			error=CMLib.achievements().evaluateAchievement(agent,row,true);
 			if((error!=null)&&(error.length()>0))
 				return "[error: "+error+"]";
 			if(!parms.containsKey("CHECKONLY"))

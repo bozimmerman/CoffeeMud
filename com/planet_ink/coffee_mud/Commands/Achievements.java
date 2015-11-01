@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.Agent;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -46,6 +47,44 @@ public class Achievements extends StdCommand
 		return access;
 	}
 
+	private enum ValidLists
+	{
+		WON, ALL, NOW
+	}
+	
+	private enum ValidParms
+	{
+		ANNOUNCE, ALL, WON, NOW, PLAYER, ACCOUNT, CHARACTER
+	}
+	
+	private Tattooable getTattooable(Agent agent, MOB mob)
+	{
+		switch(agent)
+		{
+		case PLAYER:
+			return mob;
+		case ACCOUNT:
+			if(mob.playerStats()!=null)
+				return mob.playerStats().getAccount();
+			return null;
+		}
+		return null;
+	}
+	
+	private AccountStats getStatter(Agent agent, MOB mob)
+	{
+		switch(agent)
+		{
+		case PLAYER:
+			return mob.playerStats();
+		case ACCOUNT:
+			if(mob.playerStats()!=null)
+				return mob.playerStats().getAccount();
+			return null;
+		}
+		return null;
+	}
+	
 	@Override
 	public boolean execute(final MOB mob, Vector commands, int metaFlags) throws java.io.IOException
 	{
@@ -64,129 +103,189 @@ public class Achievements extends StdCommand
 			// async method, I'll get a freaking prompt.
 		}
 		
-		String prefix = "";
-		List<String> AchievedList = new Vector<String>();
-		boolean announce=rest.toUpperCase().equals("ANNOUNCE");
-		if(announce)
-			rest="";
-			
-		if(rest.toUpperCase().equals("ALL"))
+		MOB whoM=mob;
+		final List<String> parms = CMParms.parseSpaces(rest.toUpperCase(), true);
+		if(parms.size()>0)
 		{
-			prefix=L("All ");
-			String done=L("DONE!");
-			int padding=done.length()+1;
-			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
+			final String lastParm=CMStrings.capitalizeAndLower(parms.get(parms.size()-1));
+			if(CMLib.players().playerExists(lastParm))
 			{
-				final Achievement A=a.nextElement();
-				if(mob.findTattoo(A.getTattoo()) == null)
-				{
-					AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, mob);
-					final int score = (T==null) ? 0 : T.getCount(mob);
-					final int targetScore = A.getTargetCount();
-					final int len = (""+score+"/"+targetScore).length(); 
-					if(len >= padding)
-						padding = len+1;
-				}
+				whoM=CMLib.players().getLoadPlayer(lastParm);
+				parms.remove(parms.size()-1);
 			}
-			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
-			{
-				final Achievement A=a.nextElement();
-				if(mob.findTattoo(A.getTattoo()) != null)
-					AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
-				else
-				{
-					AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, mob);
-					int score = (T==null) ? 0 : T.getCount(mob);
-					int targetScore = A.getTargetCount();
-					AchievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
-				}
-			}
-			
-		}
-		else
-		if(rest.toUpperCase().equals("NOW"))
-		{
-			prefix=L("Progress in ");
-			String done=L("DONE!");
-			int padding=done.length()+1;
-			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
-			{
-				final Achievement A=a.nextElement();
-				if(mob.findTattoo(A.getTattoo()) == null)
-				{
-					AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, mob);
-					final int score = (T==null) ? 0 : T.getCount(mob);
-					if(score != 0)
-					{
-						final int targetScore = A.getTargetCount();
-						final int len = (""+score+"/"+targetScore).length(); 
-						if(len >= padding)
-							padding = len+1;
-					}
-				}
-			}
-			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
-			{
-				final Achievement A=a.nextElement();
-				if(mob.findTattoo(A.getTattoo()) != null)
-					AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
-				else
-				{
-					AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, mob);
-					int score = (T==null) ? 0 : T.getCount(mob);
-					if(score != 0)
-					{
-						int targetScore = A.getTargetCount();
-						AchievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
-					}
-				}
-			}
-			
-		}
-		else
-		if(rest.length()==0)
-		{
-			for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
-			{
-				final Achievement A=a.nextElement();
-				if(mob.findTattoo(A.getTattoo()) != null)
-				{
-					AchievedList.add(A.getDisplayStr());
-				}
-			}
-		}
-		else
-		{
-			MOB M=CMLib.players().getLoadPlayer(rest);
-			if(M==null)
-				mob.tell(L("There is no such player as '@x1'.",rest));
 			else
-			if(M.playerStats()!=null)
 			{
-				prefix=M.Name()+L("'s ");
-				for(Enumeration<Achievement> a=CMLib.achievements().achievements();a.hasMoreElements();)
+				if(CMath.s_valueOf(ValidParms.class,lastParm.toUpperCase().trim()) == null)
+				{
+					mob.tell(L("There is no such player as '@x1'.",lastParm));
+					return false;
+				}
+			}
+		}
+		List<AccountStats.Agent> agents = new LinkedList<AccountStats.Agent>();
+		boolean announce=false;
+		ValidLists list = ValidLists.WON;
+		for(int p=parms.size()-1;p>=0;p--)
+		{
+			ValidParms V = (ValidParms)CMath.s_valueOf(ValidParms.class,parms.get(p).toUpperCase().trim());
+			if(V!=null)
+			{
+				switch(V)
+				{
+				case ANNOUNCE:
+					announce=true;
+					break;
+				case NOW:
+				case WON:
+				case ALL:
+					list = ValidLists.valueOf(V.name());
+					break;
+				case CHARACTER:
+				case PLAYER:
+					if(!agents.contains(AccountStats.Agent.PLAYER))
+						agents.add(AccountStats.Agent.PLAYER);
+					break;
+				case ACCOUNT: 
+					if(!agents.contains(AccountStats.Agent.ACCOUNT))
+						agents.add(AccountStats.Agent.ACCOUNT);
+					break;
+				}
+			}
+		}
+		if(agents.size()==0)
+		{
+			agents.add(AccountStats.Agent.ACCOUNT);
+			agents.add(AccountStats.Agent.PLAYER);
+		}
+		
+		String prefix = "";
+		if(whoM != mob)
+		{
+			prefix=whoM.Name()+L("'s ");
+		}
+		
+		Set<String> WonList = new HashSet<String>();
+		for(Agent agent : agents)
+		{
+			final Tattooable T = getTattooable(agent, whoM);
+			if(T!=null)
+			{
+				for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
 				{
 					final Achievement A=a.nextElement();
-					if(M.findTattoo(A.getTattoo()) != null)
-					{
-						AchievedList.add(A.getDisplayStr());
-					}
+					if(T.findTattoo(A.getTattoo())!=null)
+						WonList.add(A.getTattoo());
 				}
 			}
-
 		}
-		String finalResponse;
-		if(AchievedList.size()==0)
-			finalResponse = "^H"+prefix+L("Achievements: ^NNone!")+"^w\n\r";
-		else
+		final String done=L("DONE!");
+		StringBuilder finalResponse = new StringBuilder();
+		for(Agent agent : agents)
 		{
-			finalResponse = "^H"+prefix+L("Achievements:")+"^w\n\r";
-			finalResponse += CMLib.lister().makeColumns(mob, AchievedList, null, 2).toString();
+			AccountStats stat = getStatter(agent,whoM);
+			if(stat != null)
+			{
+				List<String> AchievedList = new Vector<String>();
+				switch(list)
+				{
+				case ALL:
+				{
+					prefix += prefix=L("All ");
+					int padding=done.length()+1;
+					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					{
+						final Achievement A=a.nextElement();
+						if(!WonList.contains(A.getTattoo()))
+						{
+							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
+							final int score = (T==null) ? 0 : T.getCount(whoM);
+							final int targetScore = A.getTargetCount();
+							final int len = (""+score+"/"+targetScore).length(); 
+							if(len >= padding)
+								padding = len+1;
+						}
+					}
+					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					{
+						final Achievement A=a.nextElement();
+						if(WonList.contains(A.getTattoo()))
+							AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
+						else
+						{
+							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
+							int score = (T==null) ? 0 : T.getCount(whoM);
+							int targetScore = A.getTargetCount();
+							AchievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
+						}
+					}
+					break;
+				}
+				case NOW:
+				{
+					prefix+=L("Progress in ");
+					int padding=done.length()+1;
+					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					{
+						final Achievement A=a.nextElement();
+						if(!WonList.contains(A.getTattoo()))
+						{
+							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
+							final int score = (T==null) ? 0 : T.getCount(whoM);
+							if(score != 0)
+							{
+								final int targetScore = A.getTargetCount();
+								final int len = (""+score+"/"+targetScore).length(); 
+								if(len >= padding)
+									padding = len+1;
+							}
+						}
+					}
+					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					{
+						final Achievement A=a.nextElement();
+						if(WonList.contains(A.getTattoo()))
+							AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
+						else
+						{
+							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
+							int score = (T==null) ? 0 : T.getCount(whoM);
+							if(score != 0)
+							{
+								int targetScore = A.getTargetCount();
+								AchievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
+							}
+						}
+					}
+					break;
+				}
+				case WON:
+				{
+					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					{
+						final Achievement A=a.nextElement();
+						if(WonList.contains(A.getTattoo()))
+						{
+							AchievedList.add(A.getDisplayStr());
+						}
+					}
+					break;
+				}
+				}
+				if(AchievedList.size()==0)
+					finalResponse .append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements: ^NNone!")+"^w\n\r");
+				else
+				{
+					finalResponse.append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements:")+"^w\n\r");
+					finalResponse.append(CMLib.lister().makeColumns(mob, AchievedList, null, 2).toString()+"^w\n\r");
+				}
+			}
 		}
+		if(finalResponse.length()==0)
+			finalResponse.append("^H"+prefix+L("Achievements: ^NNone!")+"^w\n\r");
 		if(announce)
-			CMLib.commands().postSay(mob, finalResponse);
+			CMLib.commands().postSay(mob, finalResponse.toString());
 		else
-			mob.tell(finalResponse);
+			mob.tell(finalResponse.toString());
 		
 		return false;
 	}

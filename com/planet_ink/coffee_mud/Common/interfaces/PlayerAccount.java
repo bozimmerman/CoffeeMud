@@ -7,13 +7,14 @@ import java.util.Vector;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.interfaces.Modifiable;
+import com.planet_ink.coffee_mud.core.interfaces.Tattooable;
 
 /**
  * An interface for a base player account.  If this system is enabled, this
  * represents essentially a "container" for various characters, who
  * share a login and potentially an expiration date.
  */
-public interface PlayerAccount extends CMCommon, AccountStats, Modifiable
+public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tattooable
 {
 	/**
 	 * Return an enumeration of the fully loaded players

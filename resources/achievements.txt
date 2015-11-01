@@ -1,7 +1,12 @@
 # This file contains definitions for automatically checked and gained achievements.
 # Achievements can be seen with the Achievements command, can give rewards, and 
 # are tracked on players using the Tattoo internal system.
-# The format of this file is one title definition per line.  
+#
+# The format of this file is as follows:
+# The file has two sections: [PLAYER] and [ACCOUNT].  If you do not use the account
+# system, only the first section will apply.
+# Under each section, there is one achievement definition per line.
+#
 # An achievement definition is of the following form:
 # [TATTOONAME]= EVENT="[EVENT]" DISPLAY="[DISPLAY]" TITLE="[TITLE]" REWARDS="[REWARDS]" ...
 # 
@@ -33,7 +38,12 @@
 #     CURRENT STRENGTH, MAXSTRENGTH, WEIGHT, CURRENT ARMOR, MANA, CURRENT MANA,
 #     QUESTPOINTS, etc. As you can see, stats that have a base (unmodified) value 
 #     are entered simply, where the modified score is accessed by prefixing with 
-#     CURRENT.
+#     CURRENT.  The stat list (which can also be prefixed with CURRENT) is:
+#          LEVEL, ARMOR, DAMAGE, ATTACK, WEIGHT, HEIGHT, STRENGTH, INTELLIGENCE, 
+#          DEXTERITY, CONSTITUTION, CHARISMA, WISDOM, MAXSTRENGTH, MAXINTELLIGENCE,
+#          MAXDEXTERITY, MAXCONSTITUTION, MAXCHARISMA, MAXWISDOM, AGE, HITS, MANA, 
+#          MOVE, HUNGER, THIRST, FATIGUE, LEVEL, USES, SPEED, MONEY, QUESTPOINTS, 
+#          FOLLOWERS
 #     [VALUE] is the numeric value that the stat must be at or above when
 #     the achievement is checked in order to gain.
 #     [ABOVE/BELOW] is either ABOVE if the faction must be above the value, or 
@@ -104,6 +114,23 @@
 #     Zapper Masks (AHELP ZAPPERMASKS) from the command line for 
 #     syntax on zapper-masks.
 #
+# ... EVENT="JUSTBE" PLAYERMASK="[PLAYERMASK]"
+#     [PLAYERMASK] is a standard mask denoting which players automatically
+#     get this achievement.  Make sure it's a narrow filter! See archon help on 
+#     Zapper Masks (AHELP ZAPPERMASKS) from the command line for 
+#     syntax on zapper-masks.
+#
+# ... EVENT="DEATHS" NUM=[NUMBER] ZAPPERMASK="[ZAPPERMASK]"  PLAYERMASK="[PLAYERMASK]" ...
+#     [NUM] is the number of deaths required to get the achievement.
+#     [ZAPPERMASK] is an optional standard mask denoting killer mobs whos death kills gain 
+#     the player a deaths count towards this achievement. See archon help on 
+#     Zapper Masks (AHELP ZAPPERMASKS) from the command line for 
+#     syntax on zapper-masks.
+#     [PLAYERMASK] is a standard mask denoting which players may gain a deaths point
+#     towards this achievement.  Can be used for class filtering. See archon help on 
+#     Zapper Masks (AHELP ZAPPERMASKS) from the command line for 
+#     syntax on zapper-masks.
+# 
 # Some achievement events are updated every mud-hour (10 mins) automatically by 
 # the system for all players on-line and in memory.
 #
@@ -113,6 +140,8 @@
 # ACH_DEMONIC=EVENT="FACTION" DISPLAY="Have a perfectly Evil alignment" TITLE="*, the Demonic" ABOVEBELOW="BELOW" ID="ALIGNMENT.INI" VALUE=1
 # ACH_1ROOMENTER=EVENT="ROOMENTER" DISPLAY="Enter the start room" TITLE="*, Enterer of Start" REWARDS="" PLAYERMASK="" ROOMID="START"
 # ACH_EXPLORERLIMBO=EVENT="EXPLORE" AREA="Limbo" DISPLAY="Explore Limbo" TITLE="*, the Explorer of Limbo" PERCENT=50 REWARDS="1 QP 10 XP"
+
+[PLAYER]
 
 ACH_DRAGONSLAYR=EVENT="KILLS" DISPLAY="Slay 200 Dragons" TITLE="*, Dragon Slayer" REWARDS="" NUM=200 ZAPPERMASK="-RACE +Dragon"
 ACH_CATHATER=EVENT="KILLS" DISPLAY="End 1000 Cats" TITLE="*, Cat Hater" REWARDS="" NUM=1000 ZAPPERMASK="-RACECAT +Feline"
@@ -177,44 +206,133 @@ ACH_ALL4QUESTOR=EVENT="QUESTOR" DISPLAY="Complete 500 Quests" TITLE="*, Lord of 
 
 ACH_1ACHIEVER=EVENT="ACHIEVER" DISPLAY="Complete Cat Killer and Exterminator" TITLE="*, Master Quester" REWARDS="" PLAYERMASK="" ACHIEVEMENTLIST="ACH_CATHATER,ACH_EXTERMINATOR"
 
-ACH_MASTERAbjurer=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Abjurer" TITLE="*, Master Abjurer" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Abjurer"
-ACH_MASTERAlterer=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Alterer" TITLE="*, Master Alterer" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Alterer"
-ACH_MASTERArcanist=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Arcanist" TITLE="*, Master Arcanist" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Arcanist"
-ACH_MASTERArtisan=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Artisan" TITLE="*, Master Artisan" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Artisan"
-ACH_MASTERAssassin=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Assassin" TITLE="*, Master Assassin" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Assassin"
-ACH_MASTERBarbarian=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Barbarian" TITLE="*, Master Barbarian" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Barbarian"
-ACH_MASTERBard=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Bard" TITLE="*, Master Bard" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Bard"
-ACH_MASTERBeastmaster=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Beastmaster" TITLE="*, Master Beastmaster" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Beastmaster"
-ACH_MASTERBurglar=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Burglar" TITLE="*, Master Burglar" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Burglar"
-ACH_MASTERCharlatan=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Charlatan" TITLE="*, Master Charlatan" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Charlatan"
-ACH_MASTERCleric=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Cleric" TITLE="*, Master Cleric" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Cleric"
-ACH_MASTERConjurer=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Conjurer" TITLE="*, Master Conjurer" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Conjurer"
-ACH_MASTERDelver=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Delver" TITLE="*, Master Delver" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Delver"
-ACH_MASTERDiviner=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Diviner" TITLE="*, Master Diviner" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Diviner"
-ACH_MASTERDoomsayer=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Doomsayer" TITLE="*, Master Doomsayer" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Doomsayer"
-ACH_MASTERDruid=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Druid" TITLE="*, Master Druid" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Druid"
-ACH_MASTEREnchanter=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Enchanter" TITLE="*, Master Enchanter" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Enchanter"
-ACH_MASTEREvoker=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Evoker" TITLE="*, Master Evoker" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Evoker"
-ACH_MASTERFighter=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Fighter" TITLE="*, Master Fighter" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Fighter"
-ACH_MASTERGaian=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Gaian" TITLE="*, Master Gaian" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Gaian"
-ACH_MASTERGaoler=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Gaoler" TITLE="*, Master Gaoler" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Gaoler"
-ACH_MASTERHealer=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Healer" TITLE="*, Master Healer" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Healer"
-ACH_MASTERIllusionist=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Illusionist" TITLE="*, Master Illusionist" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Illusionist"
-ACH_MASTERJester=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Jester" TITLE="*, Master Jester" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Jester"
-ACH_MASTERMage=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Mage" TITLE="*, Master Mage" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Mage"
-ACH_MASTERMinstrel=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Minstrel" TITLE="*, Master Minstrel" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Minstrel"
-ACH_MASTERMissionary=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Missionary" TITLE="*, Master Missionary" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Missionary"
-ACH_MASTERMonk=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Monk" TITLE="*, Master Monk" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Monk"
-ACH_MASTERNecromancer=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Necromancer" TITLE="*, Master Necromancer" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Necromancer"
-ACH_MASTEROracle=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Oracle" TITLE="*, Master Oracle" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Oracle"
-ACH_MASTERPaladin=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Paladin" TITLE="*, Master Paladin" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Paladin"
-ACH_MASTERPrancer=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Prancer" TITLE="*, Master Prancer" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Prancer"
-ACH_MASTERPurist=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Purist" TITLE="*, Master Purist" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Purist"
-ACH_MASTERRanger=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Ranger" TITLE="*, Master Ranger" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Ranger"
-ACH_MASTERShaman=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Shaman" TITLE="*, Master Shaman" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Shaman"
-ACH_MASTERSkyWatcher=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in SkyWatcher" TITLE="*, Master SkyWatcher" REWARDS="" NUM=30 PLAYERMASK="-CLASS +SkyWatcher"
-ACH_MASTERTemplar=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Templar" TITLE="*, Master Templar" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Templar"
-ACH_MASTERThief=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Thief" TITLE="*, Master Thief" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Thief"
-ACH_MASTERTransmuter=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Transmuter" TITLE="*, Master Transmuter" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Transmuter"
-ACH_MASTERWizard=EVENT="LEVELSGAINED" DISPLAY="Gain 30 levels in Wizard" TITLE="*, Master Wizard" REWARDS="" NUM=30 PLAYERMASK="-CLASS +Wizard"
+ACH_MASTERAbjurer=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Abjurer" TITLE="*, Master Abjurer" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Abjurer"
+ACH_MASTERAlterer=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Alterer" TITLE="*, Master Alterer" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Alterer"
+ACH_MASTERArcanist=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Arcanist" TITLE="*, Master Arcanist" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Arcanist"
+ACH_MASTERArtisan=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Artisan" TITLE="*, Master Artisan" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Artisan"
+ACH_MASTERAssassin=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Assassin" TITLE="*, Master Assassin" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Assassin"
+ACH_MASTERBarbarian=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Barbarian" TITLE="*, Master Barbarian" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Barbarian"
+ACH_MASTERBard=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Bard" TITLE="*, Master Bard" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Bard"
+ACH_MASTERBeastmaster=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Beastmaster" TITLE="*, Master Beastmaster" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Beastmaster"
+ACH_MASTERBurglar=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Burglar" TITLE="*, Master Burglar" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Burglar"
+ACH_MASTERCharlatan=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Charlatan" TITLE="*, Master Charlatan" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Charlatan"
+ACH_MASTERCleric=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Cleric" TITLE="*, Master Cleric" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Cleric"
+ACH_MASTERConjurer=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Conjurer" TITLE="*, Master Conjurer" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Conjurer"
+ACH_MASTERDelver=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Delver" TITLE="*, Master Delver" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Delver"
+ACH_MASTERDiviner=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Diviner" TITLE="*, Master Diviner" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Diviner"
+ACH_MASTERDoomsayer=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Doomsayer" TITLE="*, Master Doomsayer" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Doomsayer"
+ACH_MASTERDruid=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Druid" TITLE="*, Master Druid" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Druid"
+ACH_MASTEREnchanter=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Enchanter" TITLE="*, Master Enchanter" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Enchanter"
+ACH_MASTEREvoker=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Evoker" TITLE="*, Master Evoker" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Evoker"
+ACH_MASTERFighter=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Fighter" TITLE="*, Master Fighter" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Fighter"
+ACH_MASTERGaian=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Gaian" TITLE="*, Master Gaian" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Gaian"
+ACH_MASTERGaoler=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Gaoler" TITLE="*, Master Gaoler" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Gaoler"
+ACH_MASTERHealer=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Healer" TITLE="*, Master Healer" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Healer"
+ACH_MASTERIllusionist=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Illusionist" TITLE="*, Master Illusionist" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Illusionist"
+ACH_MASTERJester=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Jester" TITLE="*, Master Jester" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Jester"
+ACH_MASTERMage=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Mage" TITLE="*, Master Mage" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Mage"
+ACH_MASTERMinstrel=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Minstrel" TITLE="*, Master Minstrel" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Minstrel"
+ACH_MASTERMissionary=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Missionary" TITLE="*, Master Missionary" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Missionary"
+ACH_MASTERMonk=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Monk" TITLE="*, Master Monk" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Monk"
+ACH_MASTERNecromancer=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Necromancer" TITLE="*, Master Necromancer" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Necromancer"
+ACH_MASTEROracle=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Oracle" TITLE="*, Master Oracle" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Oracle"
+ACH_MASTERPaladin=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Paladin" TITLE="*, Master Paladin" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Paladin"
+ACH_MASTERPrancer=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Prancer" TITLE="*, Master Prancer" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Prancer"
+ACH_MASTERPurist=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Purist" TITLE="*, Master Purist" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Purist"
+ACH_MASTERRanger=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Ranger" TITLE="*, Master Ranger" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Ranger"
+ACH_MASTERShaman=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Shaman" TITLE="*, Master Shaman" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Shaman"
+ACH_MASTERSkyWatcher=EVENT="JUSTBE" DISPLAY="Gain 30 levels in SkyWatcher" TITLE="*, Master SkyWatcher" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +SkyWatcher"
+ACH_MASTERTemplar=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Templar" TITLE="*, Master Templar" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Templar"
+ACH_MASTERThief=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Thief" TITLE="*, Master Thief" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Thief"
+ACH_MASTERTransmuter=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Transmuter" TITLE="*, Master Transmuter" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Transmuter"
+ACH_MASTERWizard=EVENT="JUSTBE" DISPLAY="Gain 30 levels in Wizard" TITLE="*, Master Wizard" REWARDS="" PLAYERMASK="-CLASSLEVEL +>29 -CLASS +Wizard"
+
+[ACCOUNT]
+
+ACCT_ACH_TRIEDAbjurer=EVENT="JUSTBE" DISPLAY="Try out the Abjurer for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Abjurer"
+ACCT_ACH_TRIEDAlterer=EVENT="JUSTBE" DISPLAY="Try out the Alterer for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Alterer"
+ACCT_ACH_TRIEDArcanist=EVENT="JUSTBE" DISPLAY="Try out the Arcanist for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Arcanist"
+ACCT_ACH_TRIEDArtisan=EVENT="JUSTBE" DISPLAY="Try out the Artisan for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Artisan"
+ACCT_ACH_TRIEDAssassin=EVENT="JUSTBE" DISPLAY="Try out the Assassin for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Assassin"
+ACCT_ACH_TRIEDBarbarian=EVENT="JUSTBE" DISPLAY="Try out the Barbarian for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Barbarian"
+ACCT_ACH_TRIEDBard=EVENT="JUSTBE" DISPLAY="Try out the Bard for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Bard"
+ACCT_ACH_TRIEDBeastmaster=EVENT="JUSTBE" DISPLAY="Try out the Beastmaster for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Beastmaster"
+ACCT_ACH_TRIEDBurglar=EVENT="JUSTBE" DISPLAY="Try out the Burglar for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Burglar"
+ACCT_ACH_TRIEDCharlatan=EVENT="JUSTBE" DISPLAY="Try out the Charlatan for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Charlatan"
+ACCT_ACH_TRIEDCleric=EVENT="JUSTBE" DISPLAY="Try out the Cleric for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Cleric"
+ACCT_ACH_TRIEDConjurer=EVENT="JUSTBE" DISPLAY="Try out the Conjurer for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Conjurer"
+ACCT_ACH_TRIEDDelver=EVENT="JUSTBE" DISPLAY="Try out the Delver for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Delver"
+ACCT_ACH_TRIEDDiviner=EVENT="JUSTBE" DISPLAY="Try out the Diviner for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Diviner"
+ACCT_ACH_TRIEDDoomsayer=EVENT="JUSTBE" DISPLAY="Try out the Doomsayer for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Doomsayer"
+ACCT_ACH_TRIEDDruid=EVENT="JUSTBE" DISPLAY="Try out the Druid for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Druid"
+ACCT_ACH_TRIEDEnchanter=EVENT="JUSTBE" DISPLAY="Try out the Enchanter for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Enchanter"
+ACCT_ACH_TRIEDEvoker=EVENT="JUSTBE" DISPLAY="Try out the Evoker for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Evoker"
+ACCT_ACH_TRIEDFighter=EVENT="JUSTBE" DISPLAY="Try out the Fighter for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Fighter"
+ACCT_ACH_TRIEDGaian=EVENT="JUSTBE" DISPLAY="Try out the Gaian for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Gaian"
+ACCT_ACH_TRIEDGaoler=EVENT="JUSTBE" DISPLAY="Try out the Gaoler for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Gaoler"
+ACCT_ACH_TRIEDHealer=EVENT="JUSTBE" DISPLAY="Try out the Healer for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Healer"
+ACCT_ACH_TRIEDIllusionist=EVENT="JUSTBE" DISPLAY="Try out the Illusionist for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Illusionist"
+ACCT_ACH_TRIEDJester=EVENT="JUSTBE" DISPLAY="Try out the Jester for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Jester"
+ACCT_ACH_TRIEDMage=EVENT="JUSTBE" DISPLAY="Try out the Mage for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Mage"
+ACCT_ACH_TRIEDMinstrel=EVENT="JUSTBE" DISPLAY="Try out the Minstrel for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Minstrel"
+ACCT_ACH_TRIEDMissionary=EVENT="JUSTBE" DISPLAY="Try out the Missionary for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Missionary"
+ACCT_ACH_TRIEDMonk=EVENT="JUSTBE" DISPLAY="Try out the Monk for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Monk"
+ACCT_ACH_TRIEDNecromancer=EVENT="JUSTBE" DISPLAY="Try out the Necromancer for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Necromancer"
+ACCT_ACH_TRIEDOracle=EVENT="JUSTBE" DISPLAY="Try out the Oracle for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Oracle"
+ACCT_ACH_TRIEDPaladin=EVENT="JUSTBE" DISPLAY="Try out the Paladin for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Paladin"
+ACCT_ACH_TRIEDPrancer=EVENT="JUSTBE" DISPLAY="Try out the Prancer for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Prancer"
+ACCT_ACH_TRIEDPurist=EVENT="JUSTBE" DISPLAY="Try out the Purist for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Purist"
+ACCT_ACH_TRIEDRanger=EVENT="JUSTBE" DISPLAY="Try out the Ranger for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Ranger"
+ACCT_ACH_TRIEDShaman=EVENT="JUSTBE" DISPLAY="Try out the Shaman for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Shaman"
+ACCT_ACH_TRIEDSkyWatcher=EVENT="JUSTBE" DISPLAY="Try out the SkyWatcher for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +SkyWatcher"
+ACCT_ACH_TRIEDTemplar=EVENT="JUSTBE" DISPLAY="Try out the Templar for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Templar"
+ACCT_ACH_TRIEDThief=EVENT="JUSTBE" DISPLAY="Try out the Thief for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Thief"
+ACCT_ACH_TRIEDTransmuter=EVENT="JUSTBE" DISPLAY="Try out the Transmuter for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Transmuter"
+ACCT_ACH_TRIEDWizard=EVENT="JUSTBE" DISPLAY="Try out the Wizard for 15 levels" TITLE="" REWARDS="" PLAYERMASK="-CLASSLEVEL +>14 -CLASS +Wizard"
+
+ACCT_ACH_MASTERAbjurer=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERAbjurer" DISPLAY="Master the Abjurer class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERAlterer=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERAlterer" DISPLAY="Master the Alterer class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERArcanist=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERArcanist" DISPLAY="Master the Arcanist class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERArtisan=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERArtisan" DISPLAY="Master the Artisan class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERAssassin=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERAssassin" DISPLAY="Master the Assassin class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERBarbarian=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERBarbarian" DISPLAY="Master the Barbarian class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERBard=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERBard" DISPLAY="Master the Bard class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERBeastmaster=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERBeastmaster" DISPLAY="Master the Beastmaster class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERBurglar=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERBurglar" DISPLAY="Master the Burglar class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERCharlatan=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERCharlatan" DISPLAY="Master the Charlatan class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERCleric=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERCleric" DISPLAY="Master the Cleric class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERConjurer=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERConjurer" DISPLAY="Master the Conjurer class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERDelver=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERDelver" DISPLAY="Master the Delver class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERDiviner=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERDiviner" DISPLAY="Master the Diviner class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERDoomsayer=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERDoomsayer" DISPLAY="Master the Doomsayer class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERDruid=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERDruid" DISPLAY="Master the Druid class" TITLE="" REWARDS=""
+ACCT_ACH_MASTEREnchanter=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTEREnchanter" DISPLAY="Master the Enchanter class" TITLE="" REWARDS=""
+ACCT_ACH_MASTEREvoker=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTEREvoker" DISPLAY="Master the Evoker class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERFighter=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERFighter" DISPLAY="Master the Fighter class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERGaian=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERGaian" DISPLAY="Master the Gaian class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERGaoler=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERGaoler" DISPLAY="Master the Gaoler class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERHealer=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERHealer" DISPLAY="Master the Healer class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERIllusionist=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERIllusionist" DISPLAY="Master the Illusionist class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERJester=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERJester" DISPLAY="Master the Jester class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERMage=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERMage" DISPLAY="Master the Mage class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERMinstrel=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERMinstrel" DISPLAY="Master the Minstrel class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERMissionary=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERMissionary" DISPLAY="Master the Missionary class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERMonk=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERMonk" DISPLAY="Master the Monk class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERNecromancer=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERNecromancer" DISPLAY="Master the Necromancer class" TITLE="" REWARDS=""
+ACCT_ACH_MASTEROracle=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTEROracle" DISPLAY="Master the Oracle class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERPaladin=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERPaladin" DISPLAY="Master the Paladin class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERPrancer=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERPrancer" DISPLAY="Master the Prancer class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERPurist=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERPurist" DISPLAY="Master the Purist class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERRanger=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERRanger" DISPLAY="Master the Ranger class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERShaman=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERShaman" DISPLAY="Master the Shaman class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERSkyWatcher=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERSkyWatcher" DISPLAY="Master the SkyWatcher class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERTemplar=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERTemplar" DISPLAY="Master the Templar class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERThief=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERThief" DISPLAY="Master the Thief class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERTransmuter=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERTransmuter" DISPLAY="Master the Transmuter class" TITLE="" REWARDS=""
+ACCT_ACH_MASTERWizard=EVENT="ACHIEVER" ACHIEVEMENTLIST="ACH_MASTERWizard" DISPLAY="Master the Wizard class" TITLE="" REWARDS=""
+
+ACCT_ACH_ALLQUESTOR=EVENT="QUESTOR" DISPLAY="Complete 250 Quests across all characters" TITLE="" REWARDS="" NUM=250 PLAYERMASK="" QUESTMASK=""
+ACCT_ACH_ALL2QUESTOR=EVENT="QUESTOR" DISPLAY="Complete 500 Quests across all characters" TITLE="" REWARDS="" NUM=500 PLAYERMASK="" QUESTMASK=""
+ACCT_ACH_ALL3QUESTOR=EVENT="QUESTOR" DISPLAY="Complete 1000 Quests across all characters" TITLE="" REWARDS="" NUM=1000 PLAYERMASK="" QUESTMASK=""
+ACCT_ACH_ALL4QUESTOR=EVENT="QUESTOR" DISPLAY="Complete 2500 Quests across all characters" TITLE="" REWARDS="" NUM=2500 PLAYERMASK="" QUESTMASK=""
 

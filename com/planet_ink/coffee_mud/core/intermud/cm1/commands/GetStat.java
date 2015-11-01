@@ -138,10 +138,10 @@ public class GetStat extends CM1Command
 			codes=new SLinkedList<String>(m.getStatCodes());
 		else
 		if(m instanceof MOB)
-			codes=new SLinkedList<String>(GenericBuilder.GENMOBCODES);
+			codes=new SLinkedList<String>(CMParms.toStringArray(GenericBuilder.GenMOBCode.values()));
 		else
 		if(m instanceof Item)
-			codes=new SLinkedList<String>(GenericBuilder.GENITEMCODES);
+			codes=new SLinkedList<String>(CMParms.toStringArray(GenericBuilder.GenItemCode.values()));
 		else
 			return new String[0];
 		if(m instanceof Physical)
