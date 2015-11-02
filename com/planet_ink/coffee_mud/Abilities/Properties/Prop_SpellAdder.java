@@ -305,25 +305,10 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
-	{
-		final String s=CMParms.combine(commands,0);
-		if(s.length()>0)
-			setMiscText(s);
-		if(givenTarget!=null)
-			addMeIfNeccessary(mob,givenTarget,false,asLevel,maxTicks);
-		else
-		{
-			final List<Ability> V=getMySpellsV();
-			commands.clear();
-			commands.addAll(convertToV2(V,null));
-		}
-		return true;
-	}
-
-	@Override
 	public String accountForYourself()
-	{ return spellAccountingsWithMask("Casts "," on the first one who enters.");}
+	{
+		return spellAccountingsWithMask("Casts ", " on the first one who enters.");
+	}
 
 	public void removeMyAffectsFromLastMOB()
 	{
@@ -409,7 +394,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		{
 			processing=true;
 			if((lastMOB!=null)
-			 &&(host!=lastMOB))
+			&&(host!=lastMOB))
 				removeMyAffectsFrom(lastMOB);
 
 			if((lastMOB==null)&&(host instanceof PhysicalAgent))
@@ -440,59 +425,104 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			id+="  Restrictions: "+CMLib.masking().maskDesc(maskString);
 		return id;
 	}
+	
+	@Override
+	public void addAbility(Ability to)
+	{
+	}
 
-	@Override public void addAbility(Ability to){}
-	@Override public void delAbility(Ability to){}
+	@Override
+	public void delAbility(Ability to)
+	{
+	}
+
 	@Override
 	public int numAbilities()
 	{
 		return getMySpellsV().size();
 	}
+
 	@Override
 	public Ability fetchAbility(int index)
 	{
-		final List<Ability> spellsV=getMySpellsV();
-		if(spellsV.size()==0)
+		final List<Ability> spellsV = getMySpellsV();
+		if (spellsV.size() == 0)
 			return null;
-		if((index<0)||(index>=spellsV.size()))
+		if ((index < 0) || (index >= spellsV.size()))
 			return null;
 		try
 		{
 			return spellsV.get(index);
 		}
-		catch(final Exception e)
+		catch (final Exception e)
 		{
 			return null;
 		}
 	}
+
 	@Override
 	public Ability fetchAbility(String ID)
 	{
-		for(final Enumeration<Ability> a=abilities();a.hasMoreElements();)
+		for (final Enumeration<Ability> a = abilities(); a.hasMoreElements();)
 		{
-			final Ability A=a.nextElement();
-			if(A==null)
+			final Ability A = a.nextElement();
+			if (A == null)
 				continue;
-			if(A.ID().equalsIgnoreCase(ID))
+			if (A.ID().equalsIgnoreCase(ID))
 				return A;
 		}
 		return null;
 	}
+
 	@Override
 	public Ability fetchRandomAbility()
 	{
-		final List<Ability> spellsV=getMySpellsV();
-		if(spellsV.size()==0)
+		final List<Ability> spellsV = getMySpellsV();
+		if (spellsV.size() == 0)
 			return null;
 		return spellsV.get(CMLib.dice().roll(1, spellsV.size(), -1));
 	}
+
 	@Override
 	public Enumeration<Ability> abilities()
 	{
 		return new IteratorEnumeration<Ability>(getMySpellsV().iterator());
 	}
-	@Override public void delAllAbilities(){ setMiscText("");}
-	@Override public int numAllAbilities() { return numAbilities();}
-	@Override public Enumeration<Ability> allAbilities(){ return abilities();}
 
+	@Override
+	public void delAllAbilities()
+	{
+		setMiscText("");
+	}
+
+	@Override
+	public int numAllAbilities()
+	{
+		return numAbilities();
+	}
+
+	@Override
+	public Enumeration<Ability> allAbilities()
+	{
+		return abilities();
+	}
+	
+	//TODO: prevents Vector -> List<String>
+	
+	@Override
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		final String s=CMParms.combine(commands,0);
+		if(s.length()>0)
+			setMiscText(s);
+		if(givenTarget!=null)
+			addMeIfNeccessary(mob,givenTarget,false,asLevel,maxTicks);
+		else
+		{
+			final List<Ability> V=getMySpellsV();
+			commands.clear();
+			commands.addAll(convertToV2(V,null));
+		}
+		return true;
+	}
 }

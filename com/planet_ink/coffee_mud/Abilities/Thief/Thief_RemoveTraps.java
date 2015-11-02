@@ -33,31 +33,74 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Thief_RemoveTraps extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_RemoveTraps"; }
-	private final static String localizedName = CMLib.lang().L("Remove Traps");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"DETRAP","UNTRAP","REMOVETRAPS"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	public Environmental lastChecked=null;
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public Vector lastDone=new Vector();
+	@Override
+	public String ID()
+	{
+		return "Thief_RemoveTraps";
+	}
 
+	private final static String	localizedName	= CMLib.lang().L("Remove Traps");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS | Ability.CAN_EXITS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "DETRAP", "UNTRAP", "REMOVETRAPS" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_DETRAP;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	public Environmental lastChecked=null;
+	public LinkedList<String> lastDone=new LinkedList<String>();
+
+	//TODO: prevents Vector -> List<String>
+	
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		boolean saveTheTrap=false;
-		if((commands.size()>0)&&(commands.lastElement() instanceof Boolean))
-		{
-			saveTheTrap=((Boolean)commands.lastElement()).booleanValue();
-			commands.removeElementAt(commands.size()-1);
-		}
+		return invoke(mob, commands, givenTarget, auto, asLevel, false, new Vector<Trap>(0));
+	}
+	
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, boolean quiet, List<Trap> saveTrapsHere)
+	{
 		final String whatTounlock=CMParms.combine(commands,0);
 		Physical unlockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
@@ -129,8 +172,8 @@ public class Thief_RemoveTraps extends ThiefSkill
 		if((success)&&(!lastDone.contains(""+unlockThis)))
 		{
 			while(lastDone.size()>40)
-				lastDone.removeElementAt(0);
-			lastDone.addElement(""+unlockThis);
+				lastDone.removeFirst();
+			lastDone.addLast(""+unlockThis);
 			msg.setValue(1); // this is to notify that the thief gets xp from doing this.
 		}
 		else
@@ -145,14 +188,14 @@ public class Thief_RemoveTraps extends ThiefSkill
 				if(theTrap!=null)
 				{
 					theTrap.disable();
-					if(saveTheTrap)
-						commands.addElement(theTrap);
+					if(saveTrapsHere != null)
+						saveTrapsHere.add(theTrap);
 				}
 				if(opTrap!=null)
 				{
 					opTrap.disable();
-					if(saveTheTrap)
-						commands.addElement(opTrap);
+					if(saveTrapsHere != null)
+						saveTrapsHere.add(opTrap);
 				}
 				if(permanent)
 				{
@@ -171,7 +214,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 					CMLib.database().DBUpdateExits(R);
 				}
 			}
-			if((!auto)&&(!saveTheTrap))
+			if((!auto)&&(!quiet))
 				mob.tell(L("You have completed your attempt."));
 			lastChecked=unlockThis;
 		}

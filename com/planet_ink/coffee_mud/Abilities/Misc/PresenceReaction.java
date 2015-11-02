@@ -297,6 +297,7 @@ public class PresenceReaction extends StdAbility
 		return true;
 	}
 
+	//TODO: prevents Vector -> List<String>
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{

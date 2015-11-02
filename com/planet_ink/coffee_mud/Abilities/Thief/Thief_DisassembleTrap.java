@@ -36,44 +36,82 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_DisassembleTrap extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_DisassembleTrap"; }
-	private final static String localizedName = CMLib.lang().L("Disassemble Traps");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"DISTRAP","DISASSEMBLETRAPS"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	public Environmental lastChecked=null;
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public Vector lastDone=new Vector();
+	@Override
+	public String ID()
+	{
+		return "Thief_DisassembleTrap";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Disassemble Traps");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS | Ability.CAN_EXITS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "DISTRAP", "DISASSEMBLETRAPS" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_DETRAP;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Ability A=mob.fetchAbility("Thief_RemoveTraps");
-		final Hashtable traps=new Hashtable();
-		if(A==null)
+		final Thief_RemoveTraps trapRemover=(Thief_RemoveTraps)mob.fetchAbility("Thief_RemoveTraps");
+		final Hashtable<String,Trap> traps=new Hashtable<String,Trap>();
+		if(trapRemover==null)
 		{
 			mob.tell(L("You don't know how to remove traps."));
 			return false;
 		}
 
-		final Vector cmds=new XVector(commands);
-		cmds.addElement(new Boolean(true));
+		final Vector<Object> cmds=new XVector<Object>(commands);
+		final Vector<Trap> trapList = new XVector<Trap>();
 		final CharState oldState=(CharState)mob.curState().copyOf();
-		final boolean worked=A.invoke(mob,cmds,givenTarget,auto,asLevel);
+		final boolean worked=trapRemover.invoke(mob,cmds,givenTarget,auto,asLevel,true,trapList);
 		oldState.copyInto(mob.curState());
 		if(!worked)
 			return false;
-		for(int c=0;c<cmds.size();c++)
-			if(cmds.elementAt(c) instanceof Trap)
-			{
-				final Trap T=(Trap)cmds.elementAt(c);
-				if(!traps.containsKey(T.ID()))
-					traps.put(T.ID(),T);
-			}
+		for(int c=0;c<trapList.size();c++)
+		{
+			final Trap T=trapList.elementAt(c);
+			if(!traps.containsKey(T.ID()))
+				traps.put(T.ID(),T);
+		}
 		if(traps.size()==0)
 		{
 			mob.tell(L("Your attempt was unsuccessful."));
@@ -84,7 +122,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		final Trap T=(Trap)traps.elements().nextElement();
+		final Trap T=traps.elements().nextElement();
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,T,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_DELICATE_HANDS_ACT,
@@ -115,8 +153,10 @@ public class Thief_DisassembleTrap extends ThiefSkill
 					{
 						final Item I=components.get(i);
 						if(R.isContent(I))
-							if(!CMLib.commands().postGet(mob,null,I,true))
+						{
+							if(!CMLib.commands().postGet(mob,null,I,false))
 								break;
+						}
 					}
 					R.recoverRoomStats();
 				}

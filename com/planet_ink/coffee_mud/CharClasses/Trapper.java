@@ -135,16 +135,31 @@ public class Trapper extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Thief_TrapImmunity",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Thief_Kamikaze",true);
 
+		// still not sure if this skill can be gamed or not, for infinite stuff
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),27,"Thief_DisassembleTrap",false);
+		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_DeathTrap",true);
 	}
-	@Override public String getOtherBonusDesc(){return "Benefits from animal followers leveling.  Gets experience for selling foreign unconjured animals of comparable level.";}
-	@Override public String getOtherLimitsDesc(){return "Sneak and Hide attempts will fail outside of the wild.";}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return "Benefits from animal followers leveling.  Gets experience for selling foreign unconjured animals of comparable level.";
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return "Sneak and Hide attempts will fail outside of the wild.";
+	}
+
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
 		Druid.doAnimalFollowerLevelingCheck(this,host,msg);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -213,13 +228,22 @@ public class Trapper extends Thief
 		return super.okMessage(myHost,msg);
 	}
 
-	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return super.getRequiredRaceList();
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 }

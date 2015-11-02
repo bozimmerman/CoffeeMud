@@ -44,6 +44,8 @@ public class Spell_TeleportObject extends Spell
 	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
+	//TODO: prevents Vector -> List<String>
+	
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
