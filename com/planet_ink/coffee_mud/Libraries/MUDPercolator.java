@@ -2995,7 +2995,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					&&((ignoreStats==null)||(!ignoreStats.contains(preValue.toUpperCase()))))
 					{
 						val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,piece,defined);
-						if(ignoreStats!=null)
+						XMLpiece statPiece=piece;
+						while((val == null)
+						&&(statPiece.parent!=null)
+						&&(!(defPrefix.startsWith(statPiece.tag)&&(!defPrefix.startsWith(statPiece.parent.tag)))))
+						{
+							statPiece=statPiece.parent;
+							val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,statPiece,defined);
+						}
+						if((ignoreStats!=null)&&(val!=null))
 							ignoreStats.add(preValue.toUpperCase());
 					}
 				}

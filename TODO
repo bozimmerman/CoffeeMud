@@ -33,6 +33,7 @@ NON-TECH
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
    *. Builder Achievements, Archon Achievements, Clan Achievements, Timed achievements (within a time period)
+   *. Have race/class availability depend on account achievements -- for unlocking.
    *. Finish Player Simulator -- the Perpetual Project
    *. Facebook interface?
    *. MudFTP/DawnFTP support - lets you edit room descriptions etc. in your favourite text editor, or just for fun
