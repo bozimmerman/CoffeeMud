@@ -74,15 +74,54 @@ public class StdAbility implements Ability
 		return new StdAbility();
 	}
 
-	@Override public String Name(){return name();}
-	@Override public String name(){ return "an ability";}
-	@Override public String description(){return "&";}
-	@Override public String displayText(){return "Affected list display for "+ID();}
-	@Override public String image(){return "";}
-	@Override public String rawImage(){return "";}
-	@Override public void setImage(String newImage){}
-	public static final String[] empty={};
-	@Override public String[] triggerStrings(){return empty;}
+	@Override
+	public String Name()
+	{
+		return name();
+	}
+
+	@Override
+	public String name()
+	{
+		return "an ability";
+	}
+
+	@Override
+	public String description()
+	{
+		return "&";
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "Affected list display for " + ID();
+	}
+
+	@Override
+	public String image()
+	{
+		return "";
+	}
+
+	@Override
+	public String rawImage()
+	{
+		return "";
+	}
+
+	@Override
+	public void setImage(String newImage)
+	{
+	}
+
+	public static final String[]	empty	= {};
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return empty;
+	}
 
 	@Override
 	public int maxRange()
@@ -149,7 +188,9 @@ public class StdAbility implements Ability
 		return 0;
 	}
 
-	protected void setTimeOfNextCast(long absoluteTime){}
+	protected void setTimeOfNextCast(long absoluteTime)
+	{
+	}
 
 	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
 	{
@@ -257,7 +298,10 @@ public class StdAbility implements Ability
 		return abstractQuality();
 	}
 
-	@Override public void initializeClass() { }
+	@Override
+	public void initializeClass()
+	{
+	}
 
 	@Override
 	public String L(final String str, final String ... xs)
@@ -325,17 +369,60 @@ public class StdAbility implements Ability
 		return 0;
 	}
 
-	protected int getX1Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X1);}
-	protected int getX2Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X2);}
-	protected int getX3Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X3);}
-	protected int getX4Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X4);}
-	protected int getX5Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X5);}
-	protected int getXLEVELLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_LEVEL);}
-	protected int getXLOWCOSTLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_LOWCOST);}
-	protected int getXLOWFREECOSTLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_LOWFREECOST);}
-	protected int getXMAXRANGELevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_MAXRANGE);}
-	protected int getXTIMELevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_TIME);}
-	protected int getXPCOSTLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_XPCOST);}
+	protected int getX1Level(MOB mob)
+	{
+		return expertise(mob, ExpertiseLibrary.XFLAG_X1);
+	}
+
+	protected int getX2Level(MOB mob)
+	{
+		return expertise(mob, ExpertiseLibrary.XFLAG_X2);
+	}
+
+	protected int getX3Level(MOB mob)
+	{
+		return expertise(mob, ExpertiseLibrary.XFLAG_X3);
+	}
+
+	protected int getX4Level(MOB mob)
+	{
+		return expertise(mob, ExpertiseLibrary.XFLAG_X4);
+	}
+
+	protected int getX5Level(MOB mob)
+	{
+		return expertise(mob, ExpertiseLibrary.XFLAG_X5);
+	}
+
+	protected int getXLEVELLevel(MOB mob)
+	{
+		return expertise(mob, ExpertiseLibrary.XFLAG_LEVEL);
+	}
+
+	protected int getXLOWCOSTLevel(MOB mob)
+	{
+		return expertise(mob, ExpertiseLibrary.XFLAG_LOWCOST);
+	}
+
+	protected int getXLOWFREECOSTLevel(MOB mob)
+	{
+		return expertise(mob, ExpertiseLibrary.XFLAG_LOWFREECOST);
+	}
+
+	protected int getXMAXRANGELevel(MOB mob)
+	{
+		return expertise(mob, ExpertiseLibrary.XFLAG_MAXRANGE);
+	}
+
+	protected int getXTIMELevel(MOB mob)
+	{
+		return expertise(mob, ExpertiseLibrary.XFLAG_TIME);
+	}
+
+	protected int getXPCOSTLevel(MOB mob)
+	{
+		return expertise(mob, ExpertiseLibrary.XFLAG_XPCOST);
+	}
 
 	protected int getXPCOSTAdjustment(MOB mob, int xpLoss)
 	{
@@ -758,6 +845,7 @@ public class StdAbility implements Ability
 			if((target==null)&&((dir=Directions.getGoodDirectionCode(targetName))>=0))
 				target=R.getExitInDir(dir);
 			if((target==null)&&(checkOthersInventory))
+			{
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					final MOB M=R.fetchInhabitant(i);
@@ -765,6 +853,7 @@ public class StdAbility implements Ability
 					if(target!=null)
 						break;
 				}
+			}
 		}
 		if(target!=null)
 			targetName=target.name();
@@ -1920,38 +2009,67 @@ public class StdAbility implements Ability
 		return false;
 	}
 
-	@Override public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","TEXT","TICKDOWN"};
-	@Override public String[] getStatCodes(){return CODES;}
-	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override
+	public int getSaveStatIndex()
+	{
+		return getStatCodes().length;
+	}
+
+	private static final String[]	CODES	= { "CLASS", "TEXT", "TICKDOWN" };
+
+	@Override
+	public String[] getStatCodes()
+	{
+		return CODES;
+	}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
+	}
+
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return text();
-		case 2: return Integer.toString(tickDown);
+		case 0:
+			return ID();
+		case 1:
+			return text();
+		case 2:
+			return Integer.toString(tickDown);
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return;
-		case 1: setMiscText(val); break;
-		case 2: tickDown=CMath.s_int(val); break;
+		case 0:
+			return;
+		case 1:
+			setMiscText(val);
+			break;
+		case 2:
+			tickDown = CMath.s_int(val);
+			break;
 		}
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -1959,8 +2077,10 @@ public class StdAbility implements Ability
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

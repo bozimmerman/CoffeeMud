@@ -36,15 +36,30 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class PresenceReaction extends StdAbility
 {
-	@Override public String ID(){return "PresenceReaction";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	protected MOB reactToM=null;
-	protected boolean startedManaging=false;
-	protected String previousMood = null;
-	protected String reactToName=null;
-	protected SLinkedList<Object[]> unmanagedYet=new SLinkedList<Object[]>();
-	protected SLinkedList<CMObject> managed = new SLinkedList<CMObject>();
+	@Override
+	public String ID()
+	{
+		return "PresenceReaction";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	protected MOB					reactToM		= null;
+	protected boolean				startedManaging	= false;
+	protected String				previousMood	= null;
+	protected String				reactToName		= null;
+	protected SLinkedList<Object[]>	unmanagedYet	= new SLinkedList<Object[]>();
+	protected SLinkedList<CMObject>	managed			= new SLinkedList<CMObject>();
 
 	public PresenceReaction()
 	{
@@ -53,6 +68,7 @@ public class PresenceReaction extends StdAbility
 		super.savable=false;
 		super.canBeUninvoked=false;
 	}
+
 	@Override
 	protected void cloneFix(Ability E)
 	{
@@ -120,9 +136,13 @@ public class PresenceReaction extends StdAbility
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		for(final CMObject O : managed)
+		{
 			if(O instanceof MsgListener)
+			{
 				if(!((MsgListener)O).okMessage(affecting, msg))
 					return false;
+			}
+		}
 		return super.okMessage(affecting,msg);
 	}
 
@@ -130,8 +150,10 @@ public class PresenceReaction extends StdAbility
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		for(final CMObject O : managed)
+		{
 			if(O instanceof MsgListener)
 				((MsgListener)O).executeMsg(affecting, msg);
+		}
 		super.executeMsg(affecting,msg);
 	}
 
@@ -139,22 +161,28 @@ public class PresenceReaction extends StdAbility
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		for(final CMObject O : managed)
+		{
 			if(O instanceof StatsAffecting)
 				((StatsAffecting)O).affectPhyStats(affected, affectableStats);
+		}
 	}
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		for(final CMObject O : managed)
+		{
 			if(O instanceof StatsAffecting)
 				((StatsAffecting)O).affectCharStats(affectedMob, affectableStats);
+		}
 	}
 	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 		for(final CMObject O : managed)
+		{
 			if(O instanceof StatsAffecting)
 				((StatsAffecting)O).affectCharState(affectedMob, affectableMaxState);
+		}
 	}
 	protected synchronized boolean shutdownPresence(MOB affected)
 	{
@@ -174,7 +202,9 @@ public class PresenceReaction extends StdAbility
 							if(C!=null)
 								C.execute(M,CMParms.parse("MOOD "+previousMood),0);
 						}
-						catch(final Exception e){}
+						catch (final Exception e)
+						{
+						}
 					}
 				}
 				else
@@ -282,22 +312,25 @@ public class PresenceReaction extends StdAbility
 		{
 			final MOB affected=(MOB)this.affected;
 			if((affected.location()!=reactToM.location())
-				||(affected.amDead())
-				||(reactToM.amDead())
-				||(affected.amDestroyed())
-				||(reactToM.amDestroyed())
-				||(!CMLib.flags().isInTheGame(affected, true))
-				||(!CMLib.flags().isInTheGame(reactToM, true)))
-					return shutdownPresence(affected);
+			||(affected.amDead())
+			||(reactToM.amDead())
+			||(affected.amDestroyed())
+			||(reactToM.amDestroyed())
+			||(!CMLib.flags().isInTheGame(affected, true))
+			||(!CMLib.flags().isInTheGame(reactToM, true)))
+				return shutdownPresence(affected);
 			initializeAllManaged(affected);
 			for(final CMObject O : managed)
+			{
 				if(O instanceof Tickable)
 					((Tickable)O).tick(ticking, tickID);
+			}
 		}
 		return true;
 	}
 
 	//TODO: prevents Vector -> List<String>
+
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
@@ -310,8 +343,10 @@ public class PresenceReaction extends StdAbility
 				shutdownPresence(mob);
 			return A!=null;
 		}
+
 		if(!(target instanceof MOB))
 			return false;
+
 		final PresenceReaction A=(PresenceReaction)this.copyOf();
 		A.reactToM=(MOB)target;
 		for(final Object O : commands)
@@ -338,6 +373,5 @@ public class PresenceReaction extends StdAbility
 			A.initializeManagedObjects(mob);
  			return true;
 		}
-
 	}
 }

@@ -36,18 +36,43 @@ import java.util.*;
 */
 public class Prop_HaveSpellCast extends Prop_SpellAdder
 {
-	@Override public String ID() { return "Prop_HaveSpellCast"; }
-	@Override public String name(){ return "Casting spells when owned";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected Item myItem=null;
+	@Override
+	public String ID()
+	{
+		return "Prop_HaveSpellCast";
+	}
 
-	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_GET; }
+	@Override
+	public String name()
+	{
+		return "Casting spells when owned";
+	}
 
-	@Override public long flags(){return Ability.FLAG_CASTER;}
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	protected Item	myItem	= null;
+
+	@Override
+	public int triggerMask()
+	{
+		return TriggeredAffect.TRIGGER_GET;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_CASTER;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return spellAccountingsWithMask("Casts "," on the owner.");}
+	{
+		return spellAccountingsWithMask("Casts ", " on the owner.");
+	}
 
 	@Override
 	public void setAffectedOne(Physical P)

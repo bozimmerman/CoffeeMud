@@ -79,7 +79,13 @@ public class DefaultFaction implements Faction, MsgListener
 	protected SVector<String>   					 choices=new SVector<String>();
 	protected SVector<Faction.FReactionItem>		 reactions=new SVector<Faction.FReactionItem>();
 	protected SHashtable<String,SVector<Faction.FReactionItem>> reactionHash=new SHashtable<String,SVector<Faction.FReactionItem>>();
-	@Override public Enumeration<Faction.FReactionItem> reactions(){return reactions.elements();}
+
+	@Override
+	public Enumeration<Faction.FReactionItem> reactions()
+	{
+		return reactions.elements();
+	}
+
 	@Override
 	public Enumeration<Faction.FReactionItem> reactions(String rangeName)
 	{
@@ -88,52 +94,258 @@ public class DefaultFaction implements Faction, MsgListener
 			return V.elements();
 		return new Vector<Faction.FReactionItem>().elements();
 	}
+	
 	protected Ability presenceReactionPrototype=null;
 
+	@Override
+	public String factionID()
+	{
+		return ID;
+	}
 
-	@Override public String factionID(){return ID;}
-	@Override public String name(){return name;}
-	@Override public long getInternalFlags() { return internalFlagBitmap;}
-	@Override public String choiceIntro(){return choiceIntro;}
-	@Override public int minimum(){return minimum;}
-	@Override public int middle(){return middle;}
-	@Override public int difference(){return difference;}
-	@Override public int maximum(){return maximum;}
-	@Override public boolean isDisabled(){ return isDisabled; }
-	@Override public void disable(boolean truefalse) { isDisabled = truefalse; }
-	public int highest(){return highest;}
-	public int lowest(){return lowest;}
-	@Override public String experienceFlag(){return experienceFlag;}
-	@Override public boolean showInScore(){return showInScore;}
-	@Override public boolean showInSpecialReported(){return showInSpecialReported;}
-	@Override public boolean showInEditor(){return showInEditor;}
-	@Override public boolean showInFactionsCommand(){return showInFactionsCommand;}
-	@Override public Enumeration<Faction.FRange> ranges(){ return ranges.elements(); }
-	@Override public Enumeration<String> defaults(){return defaults.elements();}
-	@Override public Enumeration<String> autoDefaults(){return autoDefaults.elements();}
-	@Override public double rateModifier(){return rateModifier;}
-	@Override public Enumeration<String> changeEventKeys(){return  changes.keys();}
-	@Override public Enumeration<Faction.FZapFactor> factors(){return  factors.elements();}
-	@Override public Enumeration<String> relationFactions(){return  relations.keys();}
-	@Override public Enumeration<Faction.FAbilityUsage> abilityUsages(){return  abilityUsages.elements();}
-	@Override public Enumeration<String> choices(){return  choices.elements();}
-	@Override public Enumeration<String> affectsBehavs(){return  affBehavs.keys();}
-	@Override public void setLightReactions(boolean truefalse){useLightReactions=truefalse;}
-	@Override public boolean useLightReactions(){return useLightReactions;}
+	@Override
+	public String name()
+	{
+		return name;
+	}
 
-	@Override public void setFactionID(String newStr){ID=newStr;}
-	@Override public void setName(String newStr){name=newStr;}
-	@Override public void setInternalFlags(long bitmap) { internalFlagBitmap=bitmap;}
-	@Override public void setChoiceIntro(String newStr){choiceIntro=newStr;}
-	@Override public void setExperienceFlag(String newStr){experienceFlag=newStr;}
-	@Override public void setShowInScore(boolean truefalse){showInScore=truefalse;}
-	@Override public void setShowInSpecialReported(boolean truefalse){showInSpecialReported=truefalse;}
-	@Override public void setShowInEditor(boolean truefalse){showInEditor=truefalse;}
-	@Override public void setShowInFactionsCommand(boolean truefalse){showInFactionsCommand=truefalse;}
-	@Override public void setChoices(List<String> v){choices=new SVector<String>(v);}
-	@Override public void setAutoDefaults(List<String> v){autoDefaults=new SVector<String>(v);}
-	@Override public void setDefaults(List<String> v){defaults=new SVector<String>(v);}
-	@Override public void setRateModifier(double d){rateModifier=d;}
+	@Override
+	public long getInternalFlags()
+	{
+		return internalFlagBitmap;
+	}
+
+	@Override
+	public String choiceIntro()
+	{
+		return choiceIntro;
+	}
+
+	@Override
+	public int minimum()
+	{
+		return minimum;
+	}
+
+	@Override
+	public int middle()
+	{
+		return middle;
+	}
+
+	@Override
+	public int difference()
+	{
+		return difference;
+	}
+
+	@Override
+	public int maximum()
+	{
+		return maximum;
+	}
+
+	@Override
+	public boolean isDisabled()
+	{
+		return isDisabled;
+	}
+
+	@Override
+	public void disable(boolean truefalse)
+	{
+		isDisabled = truefalse;
+	}
+
+	public int highest()
+	{
+		return highest;
+	}
+
+	public int lowest()
+	{
+		return lowest;
+	}
+
+	@Override
+	public String experienceFlag()
+	{
+		return experienceFlag;
+	}
+
+	@Override
+	public boolean showInScore()
+	{
+		return showInScore;
+	}
+
+	@Override
+	public boolean showInSpecialReported()
+	{
+		return showInSpecialReported;
+	}
+
+	@Override
+	public boolean showInEditor()
+	{
+		return showInEditor;
+	}
+
+	@Override
+	public boolean showInFactionsCommand()
+	{
+		return showInFactionsCommand;
+	}
+
+	@Override
+	public Enumeration<Faction.FRange> ranges()
+	{
+		return ranges.elements();
+	}
+
+	@Override
+	public Enumeration<String> defaults()
+	{
+		return defaults.elements();
+	}
+
+	@Override
+	public Enumeration<String> autoDefaults()
+	{
+		return autoDefaults.elements();
+	}
+
+	@Override
+	public double rateModifier()
+	{
+		return rateModifier;
+	}
+
+	@Override
+	public Enumeration<String> changeEventKeys()
+	{
+		return changes.keys();
+	}
+
+	@Override
+	public Enumeration<Faction.FZapFactor> factors()
+	{
+		return factors.elements();
+	}
+
+	@Override
+	public Enumeration<String> relationFactions()
+	{
+		return relations.keys();
+	}
+
+	@Override
+	public Enumeration<Faction.FAbilityUsage> abilityUsages()
+	{
+		return abilityUsages.elements();
+	}
+
+	@Override
+	public Enumeration<String> choices()
+	{
+		return choices.elements();
+	}
+
+	@Override
+	public Enumeration<String> affectsBehavs()
+	{
+		return affBehavs.keys();
+	}
+
+	@Override
+	public void setLightReactions(boolean truefalse)
+	{
+		useLightReactions = truefalse;
+	}
+
+	@Override
+	public boolean useLightReactions()
+	{
+		return useLightReactions;
+	}
+
+	@Override
+	public void setFactionID(String newStr)
+	{
+		ID = newStr;
+	}
+
+	@Override
+	public void setName(String newStr)
+	{
+		name = newStr;
+	}
+
+	@Override
+	public void setInternalFlags(long bitmap)
+	{
+		internalFlagBitmap = bitmap;
+	}
+
+	@Override
+	public void setChoiceIntro(String newStr)
+	{
+		choiceIntro = newStr;
+	}
+
+	@Override
+	public void setExperienceFlag(String newStr)
+	{
+		experienceFlag = newStr;
+	}
+
+	@Override
+	public void setShowInScore(boolean truefalse)
+	{
+		showInScore = truefalse;
+	}
+
+	@Override
+	public void setShowInSpecialReported(boolean truefalse)
+	{
+		showInSpecialReported = truefalse;
+	}
+
+	@Override
+	public void setShowInEditor(boolean truefalse)
+	{
+		showInEditor = truefalse;
+	}
+
+	@Override
+	public void setShowInFactionsCommand(boolean truefalse)
+	{
+		showInFactionsCommand = truefalse;
+	}
+
+	@Override
+	public void setChoices(List<String> v)
+	{
+		choices = new SVector<String>(v);
+	}
+
+	@Override
+	public void setAutoDefaults(List<String> v)
+	{
+		autoDefaults = new SVector<String>(v);
+	}
+
+	@Override
+	public void setDefaults(List<String> v)
+	{
+		defaults = new SVector<String>(v);
+	}
+
+	@Override
+	public void setRateModifier(double d)
+	{
+		rateModifier = d;
+	}
 
 	@Override
 	public boolean isPreLoaded()
@@ -156,7 +368,12 @@ public class DefaultFaction implements Faction, MsgListener
 		factors.trimToSize();
 		return true;
 	}
-	@Override public Faction.FZapFactor getFactor(int x){ return ((x>=0)&&(x<factors.size()))?factors.elementAt(x):null;}
+	
+	@Override
+	public Faction.FZapFactor getFactor(int x)
+	{
+		return ((x >= 0) && (x < factors.size())) ? factors.elementAt(x) : null;
+	}
 
 	@Override
 	public Faction.FZapFactor addFactor(double gain, double loss, String mask)
@@ -192,7 +409,11 @@ public class DefaultFaction implements Faction, MsgListener
 		return 0.0;
 	}
 
-	public DefaultFaction(){super();}
+	public DefaultFaction()
+	{
+		super();
+	}
+
 	@Override
 	public void initializeFaction(String aname)
 	{
@@ -338,23 +559,38 @@ public class DefaultFaction implements Faction, MsgListener
 			return "";
 		int numCall=-1;
 		if((tagRef<TAG_NAMES.length)&&(TAG_NAMES[tagRef].endsWith("*")))
+		{
 			if(CMath.isInteger(tag.substring(TAG_NAMES[tagRef].length()-1)))
 				numCall=CMath.s_int(tag.substring(TAG_NAMES[tagRef].length()-1));
+		}
 		switch(tagRef)
 		{
-		case TAG_NAME: return name;
-		case TAG_MINIMUM: return ""+minimum;
-		case TAG_MAXIMUM: return ""+maximum;
-		case TAG_SCOREDISPLAY: return Boolean.toString(showInScore).toUpperCase();
-		case TAG_SHOWINFACTIONSCMD: return Boolean.toString(showInFactionsCommand).toUpperCase();
-		case TAG_SPECIALREPORTED: return Boolean.toString(showInSpecialReported).toUpperCase();
-		case TAG_EDITALONE: return Boolean.toString(showInEditor).toUpperCase();
-		case TAG_DEFAULT: return CMParms.toSemicolonListString(defaults);
-		case TAG_AUTODEFAULTS: return CMParms.toSemicolonListString(autoDefaults);
-		case TAG_CHOICEINTRO: return choiceIntro;
-		case TAG_AUTOCHOICES: return CMParms.toSemicolonListString(choices);
-		case TAG_RATEMODIFIER: return ""+rateModifier;
-		case TAG_EXPERIENCE: return ""+experienceFlag;
+		case TAG_NAME:
+			return name;
+		case TAG_MINIMUM:
+			return "" + minimum;
+		case TAG_MAXIMUM:
+			return "" + maximum;
+		case TAG_SCOREDISPLAY:
+			return Boolean.toString(showInScore).toUpperCase();
+		case TAG_SHOWINFACTIONSCMD:
+			return Boolean.toString(showInFactionsCommand).toUpperCase();
+		case TAG_SPECIALREPORTED:
+			return Boolean.toString(showInSpecialReported).toUpperCase();
+		case TAG_EDITALONE:
+			return Boolean.toString(showInEditor).toUpperCase();
+		case TAG_DEFAULT:
+			return CMParms.toSemicolonListString(defaults);
+		case TAG_AUTODEFAULTS:
+			return CMParms.toSemicolonListString(autoDefaults);
+		case TAG_CHOICEINTRO:
+			return choiceIntro;
+		case TAG_AUTOCHOICES:
+			return CMParms.toSemicolonListString(choices);
+		case TAG_RATEMODIFIER:
+			return "" + rateModifier;
+		case TAG_EXPERIENCE:
+			return "" + experienceFlag;
 		case TAG_RANGE_:
 		{
 			if((numCall<0)||(numCall>=ranges.size()))
@@ -438,7 +674,8 @@ public class DefaultFaction implements Faction, MsgListener
 			final Faction.FReactionItem item = reactions.elementAt(numCall);
 			return item.toString();
 		}
-		case TAG_USELIGHTREACTIONS: return ""+useLightReactions;
+		case TAG_USELIGHTREACTIONS:
+			return "" + useLightReactions;
 		}
 		return "";
 	}
@@ -473,6 +710,7 @@ public class DefaultFaction implements Faction, MsgListener
 		String ID=null;
 		String[] stuff=null;
 		if(mob.isMonster())
+		{
 			for(final Enumeration<String> e=affectsBehavs();e.hasMoreElements();)
 			{
 				ID=e.nextElement();
@@ -494,6 +732,7 @@ public class DefaultFaction implements Faction, MsgListener
 					}
 				}
 			}
+		}
 		data.addHandlers(aV,bV);
 	}
 
@@ -797,6 +1036,7 @@ public class DefaultFaction implements Faction, MsgListener
 			events=getChangeEvents((msg.source()==myHost)?"MURDER":"KILL");
 			FactionChangeEvent eventC;
 			if(events!=null)
+			{
 				for (final FactionChangeEvent event : events)
 				{
 					eventC=event;
@@ -808,6 +1048,7 @@ public class DefaultFaction implements Faction, MsgListener
 							executeChange(mob,killedM,eventC);
 					}
 				}
+			}
 		}
 
 		if((msg.tool() instanceof Ability)
@@ -844,6 +1085,7 @@ public class DefaultFaction implements Faction, MsgListener
 			FactionChangeEvent eventC;
 			events=getChangeEvents("BRIBE");
 			if(events!=null)
+			{
 				for (final FactionChangeEvent event : events)
 				{
 					eventC=event;
@@ -860,6 +1102,7 @@ public class DefaultFaction implements Faction, MsgListener
 							executeChange(msg.source(),(MOB)msg.target(),eventC);
 					}
 				}
+			}
 		}
 
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)    // Talk watching
@@ -886,6 +1129,7 @@ public class DefaultFaction implements Faction, MsgListener
 				final String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
 				Matcher M=null;
 				if((sayMsg!=null)&&(sayMsg.length()>0)&&(R!=null))
+				{
 					for (final FactionChangeEvent event : events)
 					{
 						eventC=event;
@@ -921,6 +1165,7 @@ public class DefaultFaction implements Faction, MsgListener
 								}
 						}
 					}
+				}
 			}
 			events=getChangeEvents("MUDCHAT");
 			if((events!=null)&&(events.length>0))
@@ -953,6 +1198,7 @@ public class DefaultFaction implements Faction, MsgListener
 					{
 						final String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
 						if((sayMsg!=null)&&(sayMsg.length()>0))
+						{
 							for (final FactionChangeEvent event : events)
 							{
 								eventC=event;
@@ -981,6 +1227,7 @@ public class DefaultFaction implements Faction, MsgListener
 									}
 								}
 							}
+						}
 						if(foundOne)
 							break;
 					}
@@ -1306,38 +1553,110 @@ public class DefaultFaction implements Faction, MsgListener
 
 	 public class DefaultFactionChangeEvent implements Faction.FactionChangeEvent
 	 {
-		private String ID="";
-		private String flagCache="";
-		private int IDclassFilter=-1;
-		private int IDflagFilter=-1;
-		private int IDdomainFilter=-1;
-		private int direction=0;
-		private double factor=0.0;
-		private String targetZapperStr="";
-		private boolean outsiderTargetOK=false;
-		private boolean selfTargetOK=false;
-		private boolean just100=false;
-		private Object[] stateVariables=new Object[0];
+		private String		ID				= "";
+		private String		flagCache		= "";
+		private int			IDclassFilter	= -1;
+		private int			IDflagFilter	= -1;
+		private int			IDdomainFilter	= -1;
+		private int			direction		= 0;
+		private double		factor			= 0.0;
+		private String		targetZapperStr	= "";
+		private boolean		outsiderTargetOK= false;
+		private boolean		selfTargetOK	= false;
+		private boolean		just100			= false;
+		private Object[]	stateVariables	= new Object[0];
+		private String		triggerParms	="";
+		
+		private final Faction	myFaction;
+		
 		private Map<String,String> savedTriggerParms=new Hashtable<String,String>();
-		private String triggerParms="";
-		private final Faction myFaction;
 		private MaskingLibrary.CompiledZapperMask compiledTargetZapper=null;
 		private MaskingLibrary.CompiledZapperMask compiledSourceZapper=null;
 
-		@Override public String eventID(){return ID;}
-		@Override public String flagCache(){return flagCache;}
-		@Override public int IDclassFilter(){return IDclassFilter;}
-		@Override public int IDflagFilter(){return IDflagFilter;}
-		@Override public int IDdomainFilter(){return IDdomainFilter;}
-		@Override public int direction(){return direction;}
-		@Override public double factor(){return factor;}
-		@Override public String targetZapper(){return targetZapperStr;}
-		@Override public boolean outsiderTargetOK(){return outsiderTargetOK;}
-		@Override public boolean selfTargetOK(){return selfTargetOK;}
-		@Override public boolean just100(){return just100;}
-		@Override public void setDirection(int newVal){direction=newVal;}
-		@Override public void setFactor(double newVal){factor=newVal;}
-		@Override public void setTargetZapper(String newVal) { targetZapperStr=newVal; }
+		@Override
+		public String eventID()
+		{
+			return ID;
+		}
+
+		@Override
+		public String flagCache()
+		{
+			return flagCache;
+		}
+
+		@Override
+		public int IDclassFilter()
+		{
+			return IDclassFilter;
+		}
+
+		@Override
+		public int IDflagFilter()
+		{
+			return IDflagFilter;
+		}
+
+		@Override
+		public int IDdomainFilter()
+		{
+			return IDdomainFilter;
+		}
+
+		@Override
+		public int direction()
+		{
+			return direction;
+		}
+
+		@Override
+		public double factor()
+		{
+			return factor;
+		}
+
+		@Override
+		public String targetZapper()
+		{
+			return targetZapperStr;
+		}
+
+		@Override
+		public boolean outsiderTargetOK()
+		{
+			return outsiderTargetOK;
+		}
+
+		@Override
+		public boolean selfTargetOK()
+		{
+			return selfTargetOK;
+		}
+
+		@Override
+		public boolean just100()
+		{
+			return just100;
+		}
+
+		@Override
+		public void setDirection(int newVal)
+		{
+			direction = newVal;
+		}
+
+		@Override
+		public void setFactor(double newVal)
+		{
+			factor = newVal;
+		}
+
+		@Override
+		public void setTargetZapper(String newVal)
+		{
+			targetZapperStr = newVal;
+		}
+
 		@Override
 		public MaskingLibrary.CompiledZapperMask compiledTargetZapper()
 		{
@@ -1380,7 +1699,10 @@ public class DefaultFaction implements Faction, MsgListener
 				return ID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
 		}
 
-		public DefaultFactionChangeEvent(Faction F){myFaction=F;}
+		public DefaultFactionChangeEvent(Faction F)
+		{
+			myFaction = F;
+		}
 
 		public DefaultFactionChangeEvent(Faction F, String key)
 		{
@@ -1417,21 +1739,48 @@ public class DefaultFaction implements Faction, MsgListener
 			IDflagFilter=-1;
 			IDdomainFilter=-1;
 			for (final String element : MISC_TRIGGERS)
+			{
 				if(element.equalsIgnoreCase(newID))
-				{ ID=element;    return true;}
+				{
+					ID = element;
+					return true;
+				}
+			}
 			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+			{
 				if(Ability.ACODE_DESCS[i].equalsIgnoreCase(newID))
-				{    IDclassFilter=i; ID=newID; return true;}
+				{
+					IDclassFilter = i;
+					ID = newID;
+					return true;
+				}
+			}
 			for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
+			{
 				if(Ability.DOMAIN_DESCS[i].equalsIgnoreCase(newID))
-				{    IDdomainFilter=i<<5;  ID=newID;return true;}
+				{
+					IDdomainFilter = i << 5;
+					ID = newID;
+					return true;
+				}
+			}
 			for(int i=0;i< Ability.FLAG_DESCS.length;i++)
+			{
 				if(Ability.FLAG_DESCS[i].equalsIgnoreCase(newID))
-				{ IDflagFilter=(int)CMath.pow(2,i);  ID=newID; return true;}
+				{
+					IDflagFilter = (int) CMath.pow(2, i);
+					ID = newID;
+					return true;
+				}
+			}
 			if(CMClass.getAbility(newID)!=null)
-			{ ID=newID; return true;}
+			{
+				ID = newID;
+				return true;
+			}
 			return false;
 		}
+
 		public boolean setDirection(String d)
 		{
 			if(CMath.isInteger(d))
@@ -1485,6 +1834,7 @@ public class DefaultFaction implements Faction, MsgListener
 				return false;
 			return true;
 		}
+
 		@Override
 		public void setFlags(String newFlagCache)
 		{
@@ -1497,6 +1847,7 @@ public class DefaultFaction implements Faction, MsgListener
 			if(flags.contains("JUST100"))
 				just100=true;
 		}
+
 		@Override
 		public boolean applies(MOB source, MOB target)
 		{
@@ -1507,7 +1858,12 @@ public class DefaultFaction implements Faction, MsgListener
 			return true;
 		}
 
-		@Override public String triggerParameters() { return triggerParms;}
+		@Override
+		public String triggerParameters()
+		{
+			return triggerParms;
+		}
+
 		@Override
 		public void setTriggerParameters(String newVal)
 		{
@@ -1515,7 +1871,13 @@ public class DefaultFaction implements Faction, MsgListener
 			savedTriggerParms=CMParms.parseEQParms(newVal);
 			compiledSourceZapper=null;
 		}
-		@Override public Object stateVariable(int x){ return ((x>=0)&&(x<stateVariables.length))?stateVariables[x]:null;}
+
+		@Override
+		public Object stateVariable(int x)
+		{
+			return ((x >= 0) && (x < stateVariables.length)) ? stateVariables[x] : null;
+		}
+
 		@Override
 		public void setStateVariable(int x, Object newVal)
 		{
@@ -1525,7 +1887,12 @@ public class DefaultFaction implements Faction, MsgListener
 				stateVariables=Arrays.copyOf(stateVariables,x+1);
 			stateVariables[x]=newVal;
 		}
-		@Override public Faction getFaction(){return myFaction;}
+
+		@Override
+		public Faction getFaction()
+		{
+			return myFaction;
+		}
 	}
 
 	@Override
@@ -1536,6 +1903,7 @@ public class DefaultFaction implements Faction, MsgListener
 		recalc();
 		return FR;
 	}
+
 	@Override
 	public boolean delRange(FRange FR)
 	{
@@ -1545,26 +1913,75 @@ public class DefaultFaction implements Faction, MsgListener
 		recalc();
 		return true;
 	}
+
 	public class DefaultFactionRange implements Faction.FRange, Comparable<Faction.FRange>
 	{
-		public int low;
-		public int high;
-		public String Name="";
-		public String CodeName="";
-		public Faction.Align AlignEquiv;
-		public Faction myFaction=null;
+		public int				low;
+		public int				high;
+		public String			Name		= "";
+		public String			CodeName	= "";
+		public Faction.Align	AlignEquiv;
+		public Faction			myFaction	= null;
 
-		@Override public int low(){return low;}
-		@Override public int high(){return high;}
-		@Override public String name(){return Name;}
-		@Override public String codeName(){return CodeName;}
-		@Override public Align alignEquiv(){return AlignEquiv;}
-		@Override public Faction getFaction(){return myFaction;}
+		@Override
+		public int low()
+		{
+			return low;
+		}
 
-		@Override public void setLow(int newVal){low=newVal;}
-		@Override public void setHigh(int newVal){high=newVal;}
-		@Override public void setName(String newVal){Name=newVal;}
-		@Override public void setAlignEquiv(Faction.Align newVal){AlignEquiv=newVal;}
+		@Override
+		public int high()
+		{
+			return high;
+		}
+
+		@Override
+		public String name()
+		{
+			return Name;
+		}
+
+		@Override
+		public String codeName()
+		{
+			return CodeName;
+		}
+
+		@Override
+		public Align alignEquiv()
+		{
+			return AlignEquiv;
+		}
+
+		@Override
+		public Faction getFaction()
+		{
+			return myFaction;
+		}
+
+		@Override
+		public void setLow(int newVal)
+		{
+			low = newVal;
+		}
+
+		@Override
+		public void setHigh(int newVal)
+		{
+			high = newVal;
+		}
+
+		@Override
+		public void setName(String newVal)
+		{
+			Name = newVal;
+		}
+
+		@Override
+		public void setAlignEquiv(Faction.Align newVal)
+		{
+			AlignEquiv = newVal;
+		}
 
 		public DefaultFactionRange(Faction F, String key)
 		{
@@ -1586,12 +2003,14 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			return low +";"+high+";"+Name+";"+CodeName+";"+AlignEquiv.toString();
 		}
+		
 		@Override
 		public int random()
 		{
 			final Random gen = new Random();
 			return high - gen.nextInt(high-low);
 		}
+		
 		@Override
 		public int compareTo(FRange o)
 		{
@@ -1613,6 +2032,7 @@ public class DefaultFaction implements Faction, MsgListener
 		abilityUsages.trimToSize();
 		return usage;
 	}
+	
 	@Override
 	public boolean delAbilityUsage(Faction.FAbilityUsage usage)
 	{
@@ -1624,24 +2044,25 @@ public class DefaultFaction implements Faction, MsgListener
 
 	public class DefaultFactionData implements FData
 	{
-		private int 		value;
-		private boolean 	noListeners;
-		private boolean 	noTickers;
-		private boolean 	noStatAffectors;
-		private long		 lastUpdated;
-		private Ability[]     myEffects;
-		private Behavior[]     myBehaviors;
-		private Ability 	lightPresenceAbilities[];
-		private Faction.FRange currentRange;
-		private boolean 	erroredOut;
-		private Faction 	myFaction;
-		public  boolean 	isReset = false;
-		private DVector 	currentReactionSets;
+		private int				value;
+		private boolean			noListeners;
+		private boolean			noTickers;
+		private boolean			noStatAffectors;
+		private long			lastUpdated;
+		private Ability[]		myEffects;
+		private Behavior[]		myBehaviors;
+		private Ability			lightPresenceAbilities[];
+		private Faction.FRange	currentRange;
+		private boolean			erroredOut;
+		private Faction			myFaction;
+		public boolean			isReset	= false;
+		private DVector			currentReactionSets;
 
 		public DefaultFactionData(Faction F)
 		{
 			resetFactionData(F);
 		}
+		
 		@Override
 		public void resetFactionData(Faction F)
 		{
@@ -1662,8 +2083,19 @@ public class DefaultFaction implements Faction, MsgListener
 				isReset = true;
 			}
 		}
-		@Override public int value() { return value;}
-		@Override public Faction getFaction() { return myFaction;}
+
+		@Override
+		public int value()
+		{
+			return value;
+		}
+
+		@Override
+		public Faction getFaction()
+		{
+			return myFaction;
+		}
+
 		@Override
 		public void setValue(int newValue)
 		{
@@ -1719,18 +2151,21 @@ public class DefaultFaction implements Faction, MsgListener
 			if(!noStatAffectors)
 				for(final Ability A : myEffects) A.affectPhyStats(affected, affectableStats);
 		}
+		
 		@Override
 		public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 		{
 			if(!noStatAffectors)
 				for(final Ability A : myEffects) A.affectCharStats(affectedMob, affectableStats);
 		}
+		
 		@Override
 		public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 		{
 			if(!noStatAffectors)
 				for(final Ability A : myEffects) A.affectCharState(affectedMob, affectableMaxState);
 		}
+		
 		@Override
 		public void addHandlers(List<Ability> listeners, List<Behavior> tickers)
 		{
@@ -1741,7 +2176,12 @@ public class DefaultFaction implements Faction, MsgListener
 			noStatAffectors=(listeners.size()==0);
 			isReset = false;
 		}
-		@Override public boolean requiresUpdating() { return lastFactionDataChange[0] > lastUpdated; }
+
+		@Override
+		public boolean requiresUpdating()
+		{
+			return lastFactionDataChange[0] > lastUpdated;
+		}
 
 		private Ability setPresenceReaction(MOB M, Physical myHost)
 		{
@@ -1751,6 +2191,7 @@ public class DefaultFaction implements Faction, MsgListener
 			Vector<Object> myReactions=null;
 			List<Faction.FReactionItem> tempReactSet=null;
 			for(int d=0;d<currentReactionSets.size();d++)
+			{
 				if(CMLib.masking().maskCheck((MaskingLibrary.CompiledZapperMask)currentReactionSets.elementAt(d,1),M,true))
 				{
 					if(myReactions==null)
@@ -1759,7 +2200,9 @@ public class DefaultFaction implements Faction, MsgListener
 					for(final Faction.FReactionItem reactionItem : tempReactSet)
 						myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
 				}
+			}
 			if(myReactions!=null)
+			{
 				if(useLightReactions())
 				{
 					presenceReactionPrototype.invoke(M,myReactions,myHost,false,0);
@@ -1772,6 +2215,7 @@ public class DefaultFaction implements Faction, MsgListener
 				}
 				else
 					presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
+			}
 			return null;
 		}
 
@@ -1787,8 +2231,10 @@ public class DefaultFaction implements Faction, MsgListener
 				&&(msg.target() instanceof Room))
 				{
 					if(presenceReactionPrototype==null)
+					{
 						if((presenceReactionPrototype=CMClass.getAbility("PresenceReaction"))==null)
 							return;
+					}
 					if((msg.source()==myHost)
 					&&(!msg.source().isMonster()))
 					{
@@ -1846,6 +2292,7 @@ public class DefaultFaction implements Faction, MsgListener
 						final Ability[] newAbilities = new Ability[lightPresenceAbilities.length];
 						int l=0;
 						for (final Ability lightPresenceAbilitie : lightPresenceAbilities)
+						{
 							if(lightPresenceAbilitie.affecting()==null)
 							{}
 							else
@@ -1853,6 +2300,7 @@ public class DefaultFaction implements Faction, MsgListener
 								lightPresenceAbilitie.invoke(msg.source(),new Vector(),null,true,0);
 							else
 								newAbilities[l++]=lightPresenceAbilitie;
+						}
 						if(l==0)
 							lightPresenceAbilities=new Ability[0];
 						else
@@ -1868,6 +2316,7 @@ public class DefaultFaction implements Faction, MsgListener
 			for(final Behavior B : myBehaviors)
 				B.executeMsg(myHost, msg);
 		}
+		
 		@Override
 		public boolean okMessage(final Environmental myHost, final CMMsg msg)
 		{
@@ -1884,6 +2333,7 @@ public class DefaultFaction implements Faction, MsgListener
 					return false;
 			return true;
 		}
+		
 		@Override
 		public boolean tick(Tickable ticking, int tickID)
 		{
@@ -1904,22 +2354,54 @@ public class DefaultFaction implements Faction, MsgListener
 
 	public class DefaultFactionZapFactor implements Faction.FZapFactor
 	{
-		private double gainF=1.0;
-		private double lossF=1.0;
-		private String mask="";
+		private double gainF= 1.0;
+		private double lossF= 1.0;
+		private String mask	= "";
 		private MaskingLibrary.CompiledZapperMask compiledMask=null;
+		
 		public DefaultFactionZapFactor(double gain, double loss, String mask)
 		{
 			setGainFactor(gain);
 			setLossFactor(loss);
 			setMOBMask(mask);
 		}
-		@Override public double gainFactor() { return gainF;}
-		@Override public void setGainFactor(double val){gainF=val;}
-		@Override public double lossFactor(){return lossF;}
-		@Override public void setLossFactor(double val){lossF=val;}
-		@Override public String MOBMask(){return mask;}
-		@Override public MaskingLibrary.CompiledZapperMask compiledMOBMask(){return compiledMask;}
+
+		@Override
+		public double gainFactor()
+		{
+			return gainF;
+		}
+
+		@Override
+		public void setGainFactor(double val)
+		{
+			gainF = val;
+		}
+
+		@Override
+		public double lossFactor()
+		{
+			return lossF;
+		}
+
+		@Override
+		public void setLossFactor(double val)
+		{
+			lossF = val;
+		}
+
+		@Override
+		public String MOBMask()
+		{
+			return mask;
+		}
+
+		@Override
+		public MaskingLibrary.CompiledZapperMask compiledMOBMask()
+		{
+			return compiledMask;
+		}
+
 		@Override
 		public void setMOBMask(String str)
 		{
@@ -1931,14 +2413,31 @@ public class DefaultFaction implements Faction, MsgListener
 
 	public class DefaultFactionReactionItem implements Faction.FReactionItem
 	{
-		private String reactionObjectID="";
-		private String mobMask="";
-		private String rangeName="";
-		private String parms="";
+		private String reactionObjectID	="";
+		private String mobMask			="";
+		private String rangeName		="";
+		private String parms			="";
+		
 		private MaskingLibrary.CompiledZapperMask compiledMobMask=null;
-		@Override public String reactionObjectID(){return reactionObjectID;}
-		@Override public void setReactionObjectID(String str){reactionObjectID=str;}
-		@Override public String presentMOBMask(){return mobMask;}
+		
+		@Override
+		public String reactionObjectID()
+		{
+			return reactionObjectID;
+		}
+
+		@Override
+		public void setReactionObjectID(String str)
+		{
+			reactionObjectID = str;
+		}
+
+		@Override
+		public String presentMOBMask()
+		{
+			return mobMask;
+		}
+
 		@Override
 		public void setPresentMOBMask(String str)
 		{
@@ -1948,14 +2447,51 @@ public class DefaultFaction implements Faction, MsgListener
 			else
 				compiledMobMask=CMLib.masking().maskCompile(str);
 		}
-		@Override public MaskingLibrary.CompiledZapperMask compiledPresentMOBMask(){ return compiledMobMask;}
-		@Override public String rangeCodeName(){return rangeName;}
-		@Override public void setRangeName(String str){rangeName=str.toUpperCase().trim();}
-		@Override public String parameters(){return parms;}
-		public String parameters(String name){ return CMStrings.replaceAll(parms,"<TARGET>", name);}
-		@Override public void setParameters(String str){parms=str;}
-		@Override public String toString(){ return rangeName+";"+mobMask+";"+reactionObjectID+";"+parms;}
-		public DefaultFactionReactionItem(){}
+		
+		@Override
+		public MaskingLibrary.CompiledZapperMask compiledPresentMOBMask()
+		{
+			return compiledMobMask;
+		}
+
+		@Override
+		public String rangeCodeName()
+		{
+			return rangeName;
+		}
+
+		@Override
+		public void setRangeName(String str)
+		{
+			rangeName = str.toUpperCase().trim();
+		}
+
+		@Override
+		public String parameters()
+		{
+			return parms;
+		}
+
+		public String parameters(String name)
+		{
+			return CMStrings.replaceAll(parms, "<TARGET>", name);
+		}
+
+		@Override
+		public void setParameters(String str)
+		{
+			parms = str;
+		}
+
+		@Override
+		public String toString()
+		{
+			return rangeName + ";" + mobMask + ";" + reactionObjectID + ";" + parms;
+		}
+
+		public DefaultFactionReactionItem()
+		{
+		}
 
 		public DefaultFactionReactionItem(String key)
 		{
@@ -1980,27 +2516,79 @@ public class DefaultFaction implements Faction, MsgListener
 
 	public class DefaultFactionAbilityUsage implements Faction.FAbilityUsage
 	{
-		public String ID="";
-		public boolean possibleAbilityID=false;
-		public int type=-1;
-		public int domain=-1;
-		public int flag=-1;
-		public int low=0;
-		public int high=0;
-		public int notflag=-1;
+		public String	ID					= "";
+		public boolean	possibleAbilityID	= false;
+		public int		type				= -1;
+		public int		domain				= -1;
+		public int		flag				= -1;
+		public int		low					= 0;
+		public int		high				= 0;
+		public int		notflag				= -1;
 
-		@Override public String abilityFlags(){return ID;}
-		@Override public boolean possibleAbilityID(){return possibleAbilityID;}
-		@Override public int type(){return type;}
-		@Override public int domain(){return domain;}
-		@Override public int flag(){return flag;}
-		@Override public int low(){return low;}
-		@Override public int high(){return high;}
-		@Override public int notflag(){return notflag;}
-		@Override public void setLow(int newVal){low=newVal;}
-		@Override public void setHigh(int newVal){high=newVal;}
+		@Override
+		public String abilityFlags()
+		{
+			return ID;
+		}
 
-		public DefaultFactionAbilityUsage(){}
+		@Override
+		public boolean possibleAbilityID()
+		{
+			return possibleAbilityID;
+		}
+
+		@Override
+		public int type()
+		{
+			return type;
+		}
+
+		@Override
+		public int domain()
+		{
+			return domain;
+		}
+
+		@Override
+		public int flag()
+		{
+			return flag;
+		}
+
+		@Override
+		public int low()
+		{
+			return low;
+		}
+
+		@Override
+		public int high()
+		{
+			return high;
+		}
+
+		@Override
+		public int notflag()
+		{
+			return notflag;
+		}
+
+		@Override
+		public void setLow(int newVal)
+		{
+			low = newVal;
+		}
+
+		@Override
+		public void setHigh(int newVal)
+		{
+			high = newVal;
+		}
+
+		public DefaultFactionAbilityUsage()
+		{
+		}
+
 		public DefaultFactionAbilityUsage(String key)
 		{
 			final List<String> v = CMParms.parseSemicolons(key,false);
@@ -2080,7 +2668,20 @@ public class DefaultFaction implements Faction, MsgListener
 		reactionHash.clear();
 	}
 
-	@Override public boolean isSavable() { return true; }
-	@Override public void setSavable(boolean truefalse) {}
-	@Override public boolean amDestroyed() { return destroyed; }
+	@Override
+	public boolean isSavable()
+	{
+		return true;
+	}
+
+	@Override
+	public void setSavable(boolean truefalse)
+	{
+	}
+
+	@Override
+	public boolean amDestroyed()
+	{
+		return destroyed;
+	}
 }

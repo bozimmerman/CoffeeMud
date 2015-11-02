@@ -396,16 +396,18 @@ public class GenAbility extends StdAbility
 							P.invoke(mob,V,null,true,asLevel); // spell adder will return addable affects
 							Ability A=null;
 							if(target!=null)
-							for(int v=0;v<V.size();v+=2)
 							{
-								A=(Ability)V.elementAt(v);
-								if(target.fetchEffect(A.ID())==null)
+								for(int v=0;v<V.size();v+=2)
 								{
-									A=(Ability)A.copyOf();
-									final int tickDown=(abstractQuality()==Ability.QUALITY_MALICIOUS)?
-											getMaliciousTickdownTime(mob,target,tickOverride(),asLevel):
-											getBeneficialTickdownTime(mob,target,tickOverride(),asLevel);
-									A.startTickDown(mob,target,tickDown);
+									A=(Ability)V.elementAt(v);
+									if(target.fetchEffect(A.ID())==null)
+									{
+										A=(Ability)A.copyOf();
+										final int tickDown=(abstractQuality()==Ability.QUALITY_MALICIOUS)?
+												getMaliciousTickdownTime(mob,target,tickOverride(),asLevel):
+												getBeneficialTickdownTime(mob,target,tickOverride(),asLevel);
+										A.startTickDown(mob,target,tickDown);
+									}
 								}
 							}
 						}

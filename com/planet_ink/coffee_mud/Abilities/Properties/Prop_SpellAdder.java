@@ -37,21 +37,42 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_SpellAdder extends Property implements AbilityContainer, TriggeredAffect
 {
-	@Override public String ID() { return "Prop_SpellAdder"; }
-	@Override public String name(){ return "Casting spells on oneself";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
-	protected Physical lastMOB=null;
-	protected MOB invokerMOB=null;
-	protected boolean processing=false;
-	protected boolean uninvocable=true;
-	protected short level=-1;
-	protected short maxTicks=-1;
-	protected short chanceToHappen=-1;
-	protected List<Ability> spellV=null;
+	@Override
+	public String ID()
+	{
+		return "Prop_SpellAdder";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Casting spells on oneself";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS | Ability.CAN_ROOMS | Ability.CAN_AREAS | Ability.CAN_MOBS;
+	}
+
+	protected Physical		lastMOB			= null;
+	protected MOB			invokerMOB		= null;
+	protected boolean		processing		= false;
+	protected boolean		uninvocable		= true;
+	protected short			level			= -1;
+	protected short			maxTicks		= -1;
+	protected short			chanceToHappen	= -1;
+	protected List<Ability>	spellV			= null;
+	
 	protected MaskingLibrary.CompiledZapperMask compiledMask=null;
+	
 	protected List<Ability> unrevocableSpells = null;
 
-	@Override public long flags(){return Ability.FLAG_CASTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_CASTER;
+	}
 
 	@Override
 	public int triggerMask()
@@ -506,9 +527,9 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	{
 		return abilities();
 	}
-	
+
 	//TODO: prevents Vector -> List<String>
-	
+
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

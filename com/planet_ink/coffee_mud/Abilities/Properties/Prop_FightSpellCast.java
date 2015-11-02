@@ -36,17 +36,41 @@ import java.util.*;
 */
 public class Prop_FightSpellCast extends Prop_SpellAdder
 {
-	@Override public String ID() { return "Prop_FightSpellCast"; }
-	@Override public String name(){ return "Casting spells when properly used during combat";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_FightSpellCast";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Casting spells when properly used during combat";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return spellAccountingsWithMask("Casts "," during combat.");}
+	{
+		return spellAccountingsWithMask("Casts ", " during combat.");
+	}
 
-	@Override public long flags(){return Ability.FLAG_CASTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_CASTER;
+	}
 
-	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_HITTING_WITH; }
+	@Override
+	public int triggerMask()
+	{
+		return TriggeredAffect.TRIGGER_HITTING_WITH;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

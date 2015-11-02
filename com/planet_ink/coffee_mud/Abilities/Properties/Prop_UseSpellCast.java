@@ -37,9 +37,23 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Prop_UseSpellCast extends Prop_SpellAdder
 {
-	@Override public String ID() { return "Prop_UseSpellCast"; }
-	@Override public String name(){ return "Casting spells when used";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_UseSpellCast";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Casting spells when used";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
 
 	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, int asLevel, short maxTicks)
 	{
@@ -91,7 +105,9 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 
 	@Override
 	public String accountForYourself()
-	{ return spellAccountingsWithMask("Casts "," when used.");}
+	{
+		return spellAccountingsWithMask("Casts ", " when used.");
+	}
 
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)

@@ -37,20 +37,45 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_HaveEnabler extends Prop_SpellAdder
 {
-	@Override public String ID() { return "Prop_HaveEnabler"; }
-	@Override public String name(){ return "Granting skills when owned";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected Item myItem=null;
-	protected Vector lastMOBeffected=new Vector();
-	protected boolean processing2=false;
+	@Override
+	public String ID()
+	{
+		return "Prop_HaveEnabler";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ENABLER;}
+	@Override
+	public String name()
+	{
+		return "Granting skills when owned";
+	}
 
-	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_GET; }
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	protected Item		myItem			= null;
+	protected Vector	lastMOBeffected	= new Vector();
+	protected boolean	processing2		= false;
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ENABLER;
+	}
+
+	@Override
+	public int triggerMask()
+	{
+		return TriggeredAffect.TRIGGER_GET;
+	}
 
 	@Override
 	public String accountForYourself()
-	{ return spellAccountingsWithMask("Grants "," to the owner.");}
+	{
+		return spellAccountingsWithMask("Grants ", " to the owner.");
+	}
 
 	@Override
 	public void setMiscText(String newText)

@@ -43,9 +43,9 @@ import java.util.*;
 public interface Ability extends Environmental
 {
 	/** Constant shortcut for setting the ticks remaining on the skill to basically be endless. */
-	public static final int TICKS_FOREVER=Integer.MAX_VALUE-1000;
+	public static final int TICKS_FOREVER		= Integer.MAX_VALUE-1000;
 	/** Constant shortcut for setting the ticks remaining on the skill to basically be almost endless. */
-	public static final int TICKS_ALMOST_FOREVER=Integer.MAX_VALUE/2;
+	public static final int TICKS_ALMOST_FOREVER= Integer.MAX_VALUE/2;
 
 	/**
 	 * Returns a bitmap describing the general
@@ -917,7 +917,8 @@ public interface Ability extends Environmental
 	public static final long FLAG_AGGROFYING=134217728L;
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
-	public static final String[] FLAG_DESCS={
+	public static final String[] FLAG_DESCS=
+	{
 		"BINDING",
 		"MOVING",
 		"TRANSPORTING",
@@ -948,31 +949,31 @@ public interface Ability extends Environmental
 		"AGGROING"
 	};
 
-	/* constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()*/
+	/** constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/
 	public static final int QUALITY_MALICIOUS=0;
-	/* constant for the abstractQuality and other methods.  Means that this skill would not make the target either happy or unhappy. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()*/
+	/** constant for the abstractQuality and other methods.  Means that this skill would not make the target either happy or unhappy. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/
 	public static final int QUALITY_INDIFFERENT=1;
-	/* constant for the abstractQuality and other methods.  Means that this skill targets the invoker, and is harmless, but only useful in qualified situations. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()*/
+	/** constant for the abstractQuality and other methods.  Means that this skill targets the invoker, and is harmless, but only useful in qualified situations. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/
 	public static final int QUALITY_OK_SELF=2;
-	/* constant for the abstractQuality and other methods.  Means that this skill targets the invoker or others, and is harmless, but only useful in qualified situations. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()*/
+	/** constant for the abstractQuality and other methods.  Means that this skill targets the invoker or others, and is harmless, but only useful in qualified situations. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/
 	public static final int QUALITY_OK_OTHERS=3;
-	/* constant for the abstractQuality and other methods.  Means that this skill targets the invoker, and is always beneficial. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()*/
+	/** constant for the abstractQuality and other methods.  Means that this skill targets the invoker, and is always beneficial. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/
 	public static final int QUALITY_BENEFICIAL_SELF=4;
-	/* constant for the abstractQuality and other methods.  Means that this skill targets the invoker or others, and is always beneficial. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()*/
+	/** constant for the abstractQuality and other methods.  Means that this skill targets the invoker or others, and is always beneficial. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/
 	public static final int QUALITY_BENEFICIAL_OTHERS=5;
-	/* descriptive list of the QUALITY_ flags. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality() */
+	/** descriptive list of the QUALITY_ flags. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/
 	public static final String[] QUALITY_DESCS={"MALICIOUS","INDIFFERENT","OK_SELF","OK_OTHERS","BENEFICIAL_SELF","BENEFICIAL_OTHERS"};
 
-	/* descriptive list of the CAN_ flags. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffectCode() */
+	/** descriptive list of the CAN_ flags. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffect(int)} */
 	public static final String[] CAN_DESCS={"MOBS","ITEMS","AREAS","ROOMS","EXITS"};
-	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect mobs @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffectCode() */
+	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect mobs see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffect(int)} */
 	public static final int CAN_MOBS=1;
-	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect items @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffectCode() */
+	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect items see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffect(int)} */
 	public static final int CAN_ITEMS=2;
-	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect areas @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffectCode() */
+	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect areas see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffect(int)} */
 	public static final int CAN_AREAS=4;
-	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect rooms @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffectCode() */
+	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect rooms see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffect(int)} */
 	public static final int CAN_ROOMS=8;
-	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect exits @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffectCode() */
+	/** constant mask for the canTargetCode() and canAffectCode() methods.  Means it can target/affect exits see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canAffect(int)} */
 	public static final int CAN_EXITS=16;
 }
