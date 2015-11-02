@@ -105,7 +105,9 @@ public class ListCmd extends StdCommand
 	}
 
 	public StringBuilder roomDetails(Session viewerS, Vector these, Room likeRoom)
-	{return roomDetails(viewerS,these.elements(),likeRoom);}
+	{
+		return roomDetails(viewerS, these.elements(), likeRoom);
+	}
 
 	public StringBuilder roomDetails(Session viewerS, Enumeration these, Room likeRoom)
 	{
@@ -2634,6 +2636,46 @@ public class ListCmd extends StdCommand
 			mob.tell(str.toString());
 		}
 	}
+	
+	public void listFileUse(MOB mob, Session S, String fileName)
+	{
+		CMFile F = new CMFile(fileName,mob,CMFile.FLAG_LOGERRORS);
+		if((!F.exists())||(!F.canRead()))
+		{
+			F = new CMFile(Resources.makeFileResourceName(fileName),mob,CMFile.FLAG_LOGERRORS);
+			if((!F.exists())||(!F.canRead()))
+			{
+				if(S!=null)
+					S.rawPrintln(L("File not found: @x1",fileName));
+				return;
+			}
+		}
+		if(S!=null)
+			S.rawPrintln(L("Searching..."));
+		
+		fileName = fileName.toLowerCase();
+		Map<String,Set<Environmental>> found=new TreeMap<String,Set<Environmental>>();
+		for(Enumeration<Room> a=CMLib.map().rooms();a.hasMoreElements();)
+		{
+			final Room R=a.nextElement();
+			if(R!=null)
+			{
+				CMLib.coffeeMaker().fillFileMap(R, found);
+				for(String foundPath : found.keySet())
+				{
+					final String lfoundPath = foundPath.toLowerCase();
+					if(lfoundPath.endsWith(fileName) || fileName.endsWith(lfoundPath))
+					{
+						if(S!=null)
+							S.println(L("Found '@x1' on @x2 in room @x3.",foundPath,found.get(foundPath).iterator().next().Name(),CMLib.map().getExtendedRoomID(R)));
+					}
+				}
+				found.clear();
+			}
+		}
+		if(S!=null)
+			S.rawPrintln(L("Done."));
+	}
 
 	public void listLog(MOB mob, Vector commands)
 	{
@@ -2819,7 +2861,8 @@ public class ListCmd extends StdCommand
 		SOFTWARE("SOFTWARE",new SecFlag[]{SecFlag.CMDITEMS}),
 		EXPIRED("EXPIRED",new SecFlag[]{SecFlag.CMDPLAYERS}),
 		SQL("SQL",new SecFlag[]{SecFlag.CMDDATABASE}),
-		SHIPS("SHIPS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDPLAYERS})
+		SHIPS("SHIPS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDPLAYERS}),
+		FILEUSE("FILEUSE",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS})
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -3330,6 +3373,7 @@ public class ListCmd extends StdCommand
 		case CLANITEMS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.clanItems()).toString()); break;
 		case COMMANDJOURNAL: s.println(journalList(mob.session(),listWord).toString()); break;
 		case REALESTATE: s.wraplessPrintln(roomPropertyDetails(mob.session(),mob.location().getArea(),rest).toString()); break;
+		case FILEUSE: listFileUse(mob,s,CMParms.combine(commands,1)); break;
 		case NOPURGE:
 		{
 			final StringBuilder str=new StringBuilder("\n\rProtected players:\n\r");

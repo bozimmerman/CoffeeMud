@@ -3515,7 +3515,6 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return text.toString();
 	}
 
-	@Override
 	public void fillFileSet(List<String> V, Set<String> H)
 	{
 		if(H==null)
@@ -3569,6 +3568,78 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			for(final Iterator<Environmental> i=((ShopKeeper)E).getShop().getStoreInventory();i.hasNext();)
 				fillFileSet(i.next(),H);
+		}
+	}
+
+	protected void fillFileMap(Environmental E, List<String> V, Map<String,Set<Environmental>> H)
+	{
+		if(H==null)
+			return;
+		if(V==null)
+			return;
+		for(String path : V)
+		{
+			Set<Environmental> L;
+			if(H.containsKey(path))
+				L=H.get(path);
+			else
+			{
+				L=new HashSet<Environmental>(1);
+				H.put(path, L);
+			}
+			if(!L.contains(E))
+				L.add(E);
+		}
+	}
+
+	@Override
+	public void fillFileMap(Environmental E, Map<String,Set<Environmental>> H)
+	{
+		if(E==null)
+			return;
+		if(E instanceof PhysicalAgent)
+		{
+			final PhysicalAgent P=(PhysicalAgent)E;
+			for(final Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
+			{
+				final Behavior B=e.nextElement();
+				if(B!=null)
+					fillFileMap(E, B.externalFiles(),H);
+			}
+			for(final Enumeration<ScriptingEngine> e=P.scripts();e.hasMoreElements();)
+			{
+				final ScriptingEngine SE=e.nextElement();
+				if(SE!=null)
+					fillFileMap(E, SE.externalFiles(),H);
+			}
+		}
+		if(E instanceof Physical)
+		{
+			final Physical P=(Physical)E;
+			for(int a=0;a<P.numEffects();a++)
+			{
+				final Ability A=P.fetchEffect(a);
+				if((A!=null)&&(A.isSavable()))
+					fillFileMap(E, A.externalFiles(),H);
+			}
+		}
+		if(E instanceof MOB)
+		{
+			final MOB M=(MOB)E;
+			for(int i=0;i<M.numItems();i++)
+				fillFileMap(M.getItem(i),H);
+		}
+		if(E instanceof ShopKeeper)
+		{
+			for(final Iterator<Environmental> i=((ShopKeeper)E).getShop().getStoreInventory();i.hasNext();)
+				fillFileMap(i.next(),H);
+		}
+		if(E instanceof Room)
+		{
+			for(final Enumeration<MOB> m=((Room)E).inhabitants();m.hasMoreElements();)
+				fillFileMap(m.nextElement(),H);
+			for(final Enumeration<Item> i=((Room)E).items();i.hasMoreElements();)
+				fillFileMap(i.nextElement(),H);
 		}
 	}
 
