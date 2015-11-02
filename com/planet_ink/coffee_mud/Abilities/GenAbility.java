@@ -218,7 +218,11 @@ public class GenAbility extends StdAbility
 		}
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public boolean invoke(final MOB mob, Vector commands, final Physical givenTarget, final boolean auto, final int asLevel)
@@ -392,21 +396,33 @@ public class GenAbility extends StdAbility
 						final Ability P=CMClass.getAbility("Prop_SpellAdder");
 						if(P!=null)
 						{
-							final Vector V=new XVector(afterAffect);
-							P.invoke(mob,V,null,true,asLevel); // spell adder will return addable affects
+							final Vector<String> V=new XVector<String>(afterAffect);
+							P.invoke(mob,V,null,true,asLevel); // spell adder will have addable affects after
 							Ability A=null;
 							if(target!=null)
 							{
-								for(int v=0;v<V.size();v+=2)
+								for(Enumeration<Ability> a2= ((AbilityContainer)P).abilities();a2.hasMoreElements();)
 								{
-									A=(Ability)V.elementAt(v);
+									A=a2.nextElement();
 									if(target.fetchEffect(A.ID())==null)
 									{
+										final String t=A.text();
 										A=(Ability)A.copyOf();
-										final int tickDown=(abstractQuality()==Ability.QUALITY_MALICIOUS)?
-												getMaliciousTickdownTime(mob,target,tickOverride(),asLevel):
-												getBeneficialTickdownTime(mob,target,tickOverride(),asLevel);
-										A.startTickDown(mob,target,tickDown);
+										if(A!=null)
+										{
+											if(t.length()>0)
+											{
+												final int x=t.indexOf('/');
+												if(x<0)
+													A.setMiscText("");
+												else
+													A.setMiscText(t.substring(x+1));
+											}
+											final int tickDown=(abstractQuality()==Ability.QUALITY_MALICIOUS)?
+													getMaliciousTickdownTime(mob,target,tickOverride(),asLevel):
+													getBeneficialTickdownTime(mob,target,tickOverride(),asLevel);
+											A.startTickDown(mob,target,tickDown);
+										}
 									}
 								}
 							}

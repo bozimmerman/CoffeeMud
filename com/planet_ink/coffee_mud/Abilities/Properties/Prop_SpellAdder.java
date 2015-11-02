@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -245,9 +243,9 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return invokerMOB;
 	}
 
-	public List convertToV2(List<Ability> spellsV, Physical target)
+	public List<Object> convertToV2(List<Ability> spellsV, Physical target)
 	{
-		final List VTOO=new Vector();
+		final List<Object> VTOO=new Vector<Object>();
 		for(int v=0;v<spellsV.size();v++)
 		{
 			Ability A=spellsV.get(v);
@@ -507,7 +505,13 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public Enumeration<Ability> abilities()
 	{
-		return new IteratorEnumeration<Ability>(getMySpellsV().iterator());
+		return new FilteredEnumeration<Ability>(new IteratorEnumeration<Ability>(getMySpellsV().iterator()),new Filterer<Ability>(){
+			@Override
+			public boolean passesFilter(Ability obj)
+			{
+				return didHappen();
+			}
+		});
 	}
 
 	@Override
@@ -525,7 +529,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public Enumeration<Ability> allAbilities()
 	{
-		return abilities();
+		return new IteratorEnumeration<Ability>(getMySpellsV().iterator());
 	}
 
 	//TODO: prevents Vector -> List<String>
@@ -538,12 +542,6 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			setMiscText(s);
 		if(givenTarget!=null)
 			addMeIfNeccessary(mob,givenTarget,false,asLevel,maxTicks);
-		else
-		{
-			final List<Ability> V=getMySpellsV();
-			commands.clear();
-			commands.addAll(convertToV2(V,null));
-		}
 		return true;
 	}
 }
