@@ -546,6 +546,23 @@ public class CraftingSkill extends GatheringSkill
 		return craftItem(null,material,false);
 	}
 
+	/**
+	 * This method is called when a player or the system invokes this skill,
+	 * especially when they intend to use the skill to auto-generate an item
+	 * instead of following the more friendly user-crafting.
+	 * Calls the more complete invoke method without an empty command strings vector
+	 * unless target is non-null, in which case the vector will contain the name
+	 * of the target.
+	 * @param mob the player or mob invoking the skill
+	 * @param commands the parameters entered for the skill (minus trigger word)
+	 * @param target null, unless being auto-invoked. Represents an override target.
+	 * @param auto false if player enters command, true if system invokes the command
+	 * @param asLevel -1, unless being auto-invoked, when it is the level to invoke it at.
+	 * @param autoGenerate 0, unless auto generation, in which case it's a RawMaterial Resource Code number
+	 * @param forceLevels true to override other level modifiers on the items to force the Stock level.
+	 * @param crafted when autoGenerate > 0, this is where the auto generated crafted items are placed
+	 * @return whether the skill successfully invoked.
+	 */
 	public boolean autoGenInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		return false;
