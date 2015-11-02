@@ -205,13 +205,18 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	{
 		if(super.checkStop(mob, commands))
 			return true;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,-1);
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-		if(parsedVars.autoGenerate>0)
+		if(autoGenerate>0)
 		{
 			final Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
 			if(theSpell==null)
@@ -220,7 +225,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			if(level<0)
 				level=1;
 			buildingI=buildItem(theSpell, level);
-			commands.addElement(buildingI);
+			crafted.add(buildingI);
 			return true;
 		}
 		if(commands.size()<1)

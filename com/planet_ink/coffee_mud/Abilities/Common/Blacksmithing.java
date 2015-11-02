@@ -186,7 +186,13 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		final Vector originalCommands=(Vector)commands.clone();
 		if(super.checkStop(mob, commands))
@@ -194,11 +200,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 		fireRequired=true;
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-
 		final PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x2 learn <item>\" to gain recipes, or \"@x3 stop\" to cancel.",triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase(),triggerStrings()[0].toLowerCase()));
@@ -282,7 +285,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			if(V.size()>0)
 			{
 				final int level=CMath.s_int(V.get(RCP_LEVEL));
-				if((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
+				if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
 					break;
@@ -296,7 +299,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
 		if(componentsFoundList==null)
 			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
@@ -311,7 +314,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 											woodRequired,"metal",pm,
 											0,null,null,
 											bundling,
-											parsedVars.autoGenerate,
+											autoGenerate,
 											enhancedTypes);
 		if(data==null)
 			return false;
@@ -320,7 +323,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if(!bundling)
 		{
 			fireRequired=true;
-			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
+			final Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null)
 				return false;
 		}
@@ -353,7 +356,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		final int lostValue=parsedVars.autoGenerate>0?0:
+		final int lostValue=autoGenerate>0?0:
 			CMLib.materials().destroyResourcesValue(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null)
 			+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -446,9 +449,9 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			displayText=L("You are @x1",verb);
 		}
 
-		if(parsedVars.autoGenerate>0)
+		if(autoGenerate>0)
 		{
-			commands.addElement(buildingI);
+			crafted.add(buildingI);
 			return true;
 		}
 

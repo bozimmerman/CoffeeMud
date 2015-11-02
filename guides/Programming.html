@@ -3960,14 +3960,16 @@ checking whether everything went ok and adding it to the room if things
 did. Since common skills work by adding themselves as affects on the
 player/mobs performing the skill, we need only check the
 StdAbility.affected reference variable to find our craftor.</p>
-      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    int autoGenerate = 0;<br /><br />    if( ( auto )<br />        &amp;&amp; ( givenTarget == this )<br />        &amp;&amp; ( commands.size() &gt; 0 )<br />        &amp;&amp; ( commands.firstElement() instanceof Integer )<br />      )<br />    {<br />      autoGenerate = ( (Integer)commands.firstElement() ).intValue();<br />      commands.removeElementAt( 0 );<br />      givenTarget = null;<br />    }<br />       <br /></pre>
+      <pre><br />	@Override<br />	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)<br />	{<br />		// same invoke method as in all other Abilities, but we are redirecting to a special<br />		// method only for Crafting Skills.<br />		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector&lt;Item&gt;(0));<br />	}<br /><br />  	@Override<br />	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, <br />				     final int asLevel, int autoGenerate, boolean forceLevels, List&lt;Item&gt; crafted)<br /><br />       <br /></pre>
       <p>Crafting skills are all outfitted with the ability to allow
 the rest of the system to use the skill class as an automatic item
-generator. By convention, this is done by sending in a commands vector
-(which is normally the parameter strings entered by a user) with the
-first element as an Integer object instead. This object then represents
+generator. By convention, this is done by overriding the autoGenInvoke
+interface, and then redirecting the normal invoke interface at it.
+&nbsp;Then, by sending in the extra parameters, such as autoGenerate,
+which represents
 the material out of which the item should be made, and maps back to one
-of the RawMaterial.RESOURCE_* constants.</p>
+of the RawMaterial.RESOURCE_* constants, it tells the rest of the code
+to behave differently.</p>
       <pre>    randomRecipeFix( mob,<br />                     addRecipes( mob, loadRecipes() ),<br />                     commands,<br />                     autoGenerate<br />                   );<br />       <br /></pre>
       <p>This complex line does the most important work related to the
 autoGenerate flag we set above, and also to handle the case where mobs
@@ -4101,9 +4103,10 @@ the env stats again in case that changed anything.</p>
       <p>Now we can set our messedUp flag based on a proficiency check,
 and change our common skill player-message strings based on whether we
 are bundling.</p>
-      <pre>    if( autoGenerate &gt; 0 )<br />    {<br />      commands.addElement( building );<br />      return true;<br />    }<br />       <br /></pre>
-      <p>If the invoke method was called simply to generate the item,
-we are done -- we can add the item to the commands vector (where it
+      <pre>    if( autoGenerate &gt; 0 )<br />    {<br />      crafted.add( building );<br />      return true;<br />    }<br />       <br /></pre>
+      <p>If the autoGenInvoke method was called simply to generate the
+item,
+we are done -- we can add the item to the crafted list (where it
 will be expected), and return.</p>
       <pre>    CMMsg msg = CMClass.getMsg( mob,<br />                                building,<br />                                this,<br />                                CMMsg.MSG_NOISYMOVEMENT,<br />                                startStr<br />                              );<br /><br />    if( mob.location().okMessage( mob, msg ) )<br />    {<br />      mob.location().send( mob, msg );<br />      building = (Item)msg.target();<br />      beneficialAffect( mob, mob, asLevel, completion );<br />    }<br />    else if( bundling )<br />    {<br />      messedUp = false;<br />      aborted = false;<br />      unInvoke();<br />    }<br />    return true;<br />  }<br />}<br />       <br /></pre>
       <p>Last but not least, we do exactly what we did in our gathering

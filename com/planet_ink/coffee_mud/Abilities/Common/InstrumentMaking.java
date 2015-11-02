@@ -38,7 +38,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "InstrumentMaking"; }
@@ -140,13 +140,17 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	{
 		if(super.checkStop(mob, commands))
 			return true;
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Make what Instrument? Enter \"instrumentmake list\" for a list, \"instrumentmake learn <item>\" to gain recipes, or \"instrumentmake stop\" to cancel."));
@@ -227,8 +231,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			{
 				final String race=V.get(RCP_RACES).trim();
 				final int level=CMath.s_int(V.get(RCP_LEVEL));
-				if(((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
-				&&((parsedVars.autoGenerate>0)||(race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
+				if(((autoGenerate>0)||(level<=xlevel(mob)))
+				&&((autoGenerate>0)||(race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 				{
 					foundRecipe=V;
 					break;
@@ -242,7 +246,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		}
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
 		if(componentsFoundList==null)
 			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
@@ -263,14 +267,14 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 											woodRequired,"material",pm,
 											0,null,null,
 											bundling,
-											parsedVars.autoGenerate,
+											autoGenerate,
 											null);
 		if(data==null)
 			return false;
 		woodRequired=data[0][FOUND_AMT];
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		final int lostValue=parsedVars.autoGenerate>0?0:
+		final int lostValue=autoGenerate>0?0:
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 			+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -335,9 +339,9 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			displayText=L("You are @x1",verb);
 		}
 
-		if(parsedVars.autoGenerate>0)
+		if(autoGenerate>0)
 		{
-			commands.addElement(buildingI);
+			crafted.add(buildingI);
 			return true;
 		}
 

@@ -246,14 +246,18 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	{
 		if(super.checkStop(mob, commands))
 			return true;
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-
 		final PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Make what? Enter \"leatherwork list\" for a list, \"leatherwork refit <item>\" to resize, \"leatherwork learn <item>\", \"leatherwork scan\", \"leatherwork mend <item>\", or \"leatherwork stop\" to cancel."));
@@ -423,7 +427,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -441,7 +445,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 												(multiplier==3)?"metal":null,
 												(multiplier==3)?pm1:null,
 												bundling,
-												parsedVars.autoGenerate,
+												autoGenerate,
 												enhancedTypes);
 			if(data==null)
 				return false;
@@ -449,7 +453,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			final int lostValue=parsedVars.autoGenerate>0?0:
+			final int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -537,9 +541,9 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			displayText=L("You are @x1",verb);
 		}
 
-		if(parsedVars.autoGenerate>0)
+		if(autoGenerate>0)
 		{
-			commands.addElement(buildingI);
+			crafted.add(buildingI);
 			return true;
 		}
 

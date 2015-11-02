@@ -704,6 +704,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	{
 		if(super.checkStop(mob, commands))
 			return true;
 		verb=cookWord();
@@ -717,10 +724,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		activity = CraftingActivity.CRAFTING;
 		final List<List<String>> allRecipes=addRecipes(mob,loadRecipes());
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-
-		if(parsedVars.autoGenerate>0)
+		if(autoGenerate>0)
 		{
 			finalAmount=1;
 			List<String> finalRecipe=null;
@@ -757,12 +761,12 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			if(finalRecipe==null)
 				return false;
 			buildingI=buildItem(mob,finalRecipe,null);
-			if(parsedVars.forceLevels)
+			if(forceLevels)
 			{
 				buildingI.basePhyStats().setLevel(CMath.s_int(finalRecipe.get(RCP_LEVEL)));
 				buildingI.phyStats().setLevel(buildingI.basePhyStats().level());
 			}
-			commands.addElement(buildingI);
+			crafted.add(buildingI);
 			return true;
 		}
 		randomRecipeFix(mob,allRecipes,commands,-1);

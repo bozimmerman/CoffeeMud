@@ -110,17 +110,21 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		final Vector originalCommands=(Vector)commands.clone();
 		if(super.checkStop(mob, commands))
 			return true;
 		final Session session=mob.session();
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Papermake what? Enter \"papermake list\" for a list, or \"papermake stop\" to cancel."));
@@ -194,7 +198,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			if(V.size()>0)
 			{
 				final int level=CMath.s_int(V.get(RCP_LEVEL));
-				if((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
+				if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
 					materialDesc=foundRecipe.get(RCP_WOODTYPE);
@@ -215,7 +219,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		}
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
 		if(componentsFoundList==null)
 			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
@@ -225,7 +229,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 											woodRequired,materialDesc,null,
 											0,null,null,
 											false,
-											parsedVars.autoGenerate,
+											autoGenerate,
 											null);
 		if(data==null)
 			return false;
@@ -258,7 +262,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if(parsedVars.autoGenerate<=0)
+		if(autoGenerate<=0)
 		{
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
 			CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
@@ -316,9 +320,9 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 
-		if(parsedVars.autoGenerate>0)
+		if(autoGenerate>0)
 		{
-			commands.addElement(buildingI);
+			crafted.add(buildingI);
 			return true;
 		}
 

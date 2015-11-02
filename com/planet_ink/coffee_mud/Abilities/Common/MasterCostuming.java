@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class MasterCostuming extends Costuming
 {
 	@Override public String ID() { return "MasterCostuming"; }
@@ -56,22 +56,19 @@ public class MasterCostuming extends Costuming
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Make what? Enter \"mcostume list\" for a list, \"mcostume scan\", \"mcostume refit\", \"mcostume learn <item>\", \"mcostume mend <item>\", or \"mcostume stop\" to cancel."));
 			return false;
 		}
-		if(parsedVars.autoGenerate>0)
-			commands.insertElementAt(Integer.valueOf(parsedVars.autoGenerate),0);
-		return super.invoke(mob,commands,givenTarget,auto,asLevel);
+		return super.autoGenInvoke(mob,commands,givenTarget,auto,asLevel,autoGenerate,forceLevels,crafted);
 	}
 }
 

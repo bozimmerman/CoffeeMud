@@ -61,6 +61,8 @@ public class CraftingSkill extends GatheringSkill
 		public int autoGenerate=0;
 		public Physical givenTarget=null;
 		public boolean forceLevels=false;
+		public List<Item> results=new Vector<Item>(1);
+		
 		public CraftParms(int autoGenerate, Physical givenTarget, boolean forceLevels)
 		{
 			this.autoGenerate=autoGenerate;
@@ -107,23 +109,6 @@ public class CraftingSkill extends GatheringSkill
 				return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
 		}
 		return thisStr;
-	}
-
-	protected CraftParms parseAutoGenerate(boolean auto, Physical givenTarget, Vector commands)
-	{
-		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{
-			final Integer autoGenerate=(Integer)commands.firstElement();
-			commands.removeElementAt(0);
-			Boolean preserveLevels=Boolean.FALSE;
-			if((commands.size()>0)&&(commands.firstElement() instanceof Boolean))
-			{
-				preserveLevels=(Boolean)commands.firstElement();
-				commands.removeElementAt(0);
-			}
-			return new CraftParms(autoGenerate.intValue(),null,preserveLevels.booleanValue());
-		}
-		return new CraftParms(0,givenTarget,false);
 	}
 
 	protected void messedUpCrafting(MOB mob)
@@ -561,6 +546,11 @@ public class CraftingSkill extends GatheringSkill
 		return craftItem(null,material,false);
 	}
 
+	public boolean autoGenInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	{
+		return false;
+	}
+	
 	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels)
 	{
 		Item building=null;
@@ -579,20 +569,15 @@ public class CraftingSkill extends GatheringSkill
 		}
 		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
 		{
-			final Vector V=new Vector();
-			V.addElement(Integer.valueOf(material));
-			if(forceLevels)
-				V.addElement(Boolean.TRUE);
-			if(recipeName!=null)
-				V.addElement(recipeName);
-			invoke(mob,V,null,true,-1);
-			if((V.size()>0)&&(V.lastElement() instanceof Item))
+			List<Item> V=new Vector<Item>(1);
+			autoGenInvoke(mob,new XVector<String>(recipeName),null,true,-1,material,forceLevels,V);
+			if(V.size()>0)
 			{
-				if((V.size()>1)&&((V.elementAt(V.size()-2) instanceof DoorKey)))
-					key=(DoorKey)V.elementAt(V.size()-2);
+				if((V.size()>1)&&((V.get(V.size()-2) instanceof DoorKey)))
+					key=(DoorKey)V.get(V.size()-2);
 				else
 					key=null;
-				building=(Item)V.lastElement();
+				building=V.get(V.size()-1);
 			}
 			else
 				building=null;
@@ -1256,4 +1241,5 @@ public class CraftingSkill extends GatheringSkill
 		}
 		return true;
 	}
+	
 }

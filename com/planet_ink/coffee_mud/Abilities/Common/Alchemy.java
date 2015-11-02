@@ -36,7 +36,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Alchemy"; }
@@ -199,17 +199,21 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-		if(parsedVars.autoGenerate>0)
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(1));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	{
+		if(autoGenerate>0)
 		{
 			final Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
 			if(theSpell==null)
 				return false;
 			final int level=spellLevel(mob,theSpell);
 			buildingI=buildItem(theSpell, level);
-			commands.addElement(buildingI);
-			if(parsedVars.forceLevels)
+			crafted.add(buildingI);
+			if(forceLevels)
 			{
 				final int minLevel=CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());
 				buildingI.basePhyStats().setLevel(minLevel);

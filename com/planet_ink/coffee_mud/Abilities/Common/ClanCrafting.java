@@ -38,7 +38,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class ClanCrafting extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "ClanCrafting"; }
@@ -142,13 +142,17 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	{
 		if(super.checkStop(mob, commands))
 			return true;
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Make what? Enter \"clancraft list\" for a list, or \"clancraft stop\" to cancel."));
@@ -157,7 +161,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		String clanTypeName="Clan";
 		String clanName="None";
 		Clan clanC=null;
-		if(parsedVars.autoGenerate<=0)
+		if(autoGenerate<=0)
 		{
 			if(!mob.clans().iterator().hasNext())
 			{
@@ -260,7 +264,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			if(V.size()>0)
 			{
 				final int level=CMath.s_int(V.get(RCP_LEVEL));
-				if((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
+				if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
 					break;
@@ -299,13 +303,13 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			mob.tell(L("You need @x1 to do that, but your @x2 has only @x3 experience points.",""+expRequired,clanTypeName,""+clanC.getExp()));
 			return false;
 		}
-		final int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,parsedVars.autoGenerate,null);
+		final int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,autoGenerate,null);
 		if(data==null)
 			return false;
 		amt1=data[0][FOUND_AMT];
 		amt2=data[1][FOUND_AMT];
 		final String reqskill=foundRecipe.get(RCP_REQUIREDSKILL);
-		if((parsedVars.autoGenerate<=0)&&(reqskill.trim().length()>0))
+		if((autoGenerate<=0)&&(reqskill.trim().length()>0))
 		{
 			final Ability A=CMClass.findAbility(reqskill.trim());
 			if((A!=null)&&(mob.fetchAbility(A.ID())==null))
@@ -317,9 +321,9 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		if((amt1>0)&&(parsedVars.autoGenerate<=0))
+		if((amt1>0)&&(autoGenerate<=0))
 			CMLib.materials().destroyResourcesValue(mob.location(),amt1,data[0][FOUND_CODE],0,null);
-		if((amt2>0)&&(parsedVars.autoGenerate<=0))
+		if((amt2>0)&&(autoGenerate<=0))
 			CMLib.materials().destroyResourcesValue(mob.location(),amt2,data[1][FOUND_CODE],0,null);
 
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -422,9 +426,9 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 
-		if(parsedVars.autoGenerate>0)
+		if(autoGenerate>0)
 		{
-			commands.addElement(buildingI);
+			crafted.add(buildingI);
 			return true;
 		}
 

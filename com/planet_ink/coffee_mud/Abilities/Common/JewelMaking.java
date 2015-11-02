@@ -260,7 +260,14 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		final Vector originalCommands=(Vector)commands.clone();
 		if(super.checkStop(mob, commands))
@@ -268,11 +275,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 
 		fireRequired=true;
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-
 		final PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, jewel mount <gem name> <item name>, jewel refit <item name>, jewel learn <item>, jewel scan, jewel mend <item name>, or jewel stop to cancel."));
@@ -355,7 +359,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				commonTell(mob,L("@x1 what jewel onto what item?",CMStrings.capitalizeAndLower(word)));
 				return false;
 			}
-			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
+			final Item fire=getRequiredFire(mob,autoGenerate);
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			aborted=false;
@@ -443,7 +447,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
+			final Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null)
 				return false;
 			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
@@ -463,7 +467,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
+			final Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null)
 				return false;
 			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
@@ -515,7 +519,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				if(V.size()>0)
 				{
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
-					if((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
+					if((autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
 						break;
@@ -531,7 +535,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			if(!bundling)
 			{
-				final Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
+				final Item fire=getRequiredFire(mob,autoGenerate);
 				if(fire==null)
 					return false;
 			}
@@ -539,7 +543,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				fireRequired=false;
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -553,7 +557,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 												woodRequired,"metal",pm,
 												otherRequired.length()>0?1:0,otherRequired,null,
 												false,
-												parsedVars.autoGenerate,
+												autoGenerate,
 												enhancedTypes);
 			if(data==null)
 				return false;
@@ -589,7 +593,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 
 
 
-			final int lostValue=parsedVars.autoGenerate>0?0:
+			final int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -670,9 +674,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			displayText=L("You are @x1",verb);
 		}
 
-		if(parsedVars.autoGenerate>0)
+		if(autoGenerate>0)
 		{
-			commands.addElement(buildingI);
+			crafted.add(buildingI);
 			return true;
 		}
 

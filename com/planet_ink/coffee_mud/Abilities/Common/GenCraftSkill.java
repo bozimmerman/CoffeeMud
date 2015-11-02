@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID = "GenCraftSkill";
@@ -444,14 +444,18 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	{
 		if(super.checkStop(mob, commands))
 			return true;
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-
 		final PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		final String noun=CMStrings.capitalizeAndLower(triggerStrings()[0]);
 		final String verbing=V(ID,V_VERB).toString();
 		final Boolean canMendB=(Boolean)V(ID,V_CNMN);
@@ -608,7 +612,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				if(V.size()>0)
 				{
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
-					if((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
+					if((autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
 						break;
@@ -622,7 +626,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			}
 
 			final String requiredMats = foundRecipe.get(RCP_AMOUNTMATS);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, requiredMats, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, requiredMats, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
 			if(componentsFoundList==null)
 				return false;
 			int numRequired=CMath.isInteger(requiredMats)?CMath.s_int(requiredMats):0;
@@ -639,7 +643,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 												numRequired,"material",pm,
 												0,null,null,
 												bundling,
-												parsedVars.autoGenerate,
+												autoGenerate,
 												enhancedTypes);
 			if(data==null)
 				return false;
@@ -647,7 +651,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			numRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			final int lostValue=parsedVars.autoGenerate>0?0:
+			final int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),numRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -768,11 +772,11 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			displayText=L("You are @x1",verb);
 		}
 
-		if(parsedVars.autoGenerate>0)
+		if(autoGenerate>0)
 		{
 			if(key!=null)
-				commands.add(key);
-			commands.add(buildingI);
+				crafted.add(key);
+			crafted.add(buildingI);
 			return true;
 		}
 

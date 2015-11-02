@@ -38,7 +38,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Shipwright"; }
@@ -205,13 +205,17 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	{
 		if(super.checkStop(mob, commands))
 			return true;
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item>\", \"shipwright mend <item>\", \"shipwright title <text>\", \"shipwright desc <text>\", or \"shipwright stop\" to cancel."));
@@ -394,7 +398,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				if(V.size()>0)
 				{
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
-					if((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
+					if((autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
 						break;
@@ -408,7 +412,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			}
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -423,7 +427,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 												woodRequired,"wood",pm,
 												0,null,null,
 												false,
-												parsedVars.autoGenerate,
+												autoGenerate,
 												null);
 			if(data==null)
 				return false;
@@ -431,7 +435,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			final int woodDestroyed=woodRequired;
-			final int lostValue=parsedVars.autoGenerate>0?0:
+			final int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodDestroyed,data[0][FOUND_CODE],0,null)
 				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -504,9 +508,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			displayText=L("You are @x1",verb);
 		}
 
-		if((parsedVars.autoGenerate>0) && (activity != CraftingActivity.RETITLING))
+		if((autoGenerate>0) && (activity != CraftingActivity.RETITLING))
 		{
-			commands.addElement(buildingI);
+			crafted.add(buildingI);
 			return true;
 		}
 

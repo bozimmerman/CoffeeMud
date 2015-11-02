@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "ScrollScribing"; }
@@ -201,19 +201,24 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	{
 		if(super.checkStop(mob, commands))
 			return true;
 
-		final CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
-		givenTarget=parsedVars.givenTarget;
-		if(parsedVars.autoGenerate>0)
+		if(autoGenerate>0)
 		{
 			final Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
 			if(theSpell==null) 
 				return false;
 			final int level=spellLevel(mob,theSpell);
 			buildingI=buildScrollItem(null, theSpell, level);
-			commands.addElement(buildingI);
+			crafted.add(buildingI);
 			return true;
 		}
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
