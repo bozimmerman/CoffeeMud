@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class PresenceReaction extends StdAbility
 {
 	@Override
@@ -347,30 +347,27 @@ public class PresenceReaction extends StdAbility
 		if(!(target instanceof MOB))
 			return false;
 
-		final PresenceReaction A=(PresenceReaction)this.copyOf();
-		A.reactToM=(MOB)target;
+		reactToM=(MOB)target;
 		for(final Object O : commands)
-			A.addAffectOrBehavior((String)O);
-		commands.clear();
-		commands.addElement(A);
+			addAffectOrBehavior((String)O);
 		if(auto)
 		{
 			synchronized(mob)
 			{
 				if(mob.fetchEffect(ID())==null)
 				{
-					mob.addNonUninvokableEffect(A);
-					A.initializeManagedObjects(mob);
+					mob.addNonUninvokableEffect(this);
+					initializeManagedObjects(mob);
 				}
 				return true;
 			}
 		}
 		else
 		{
-			A.makeLongLasting();
-			A.makeNonUninvokable();
-			A.setAffectedOne(mob);
-			A.initializeManagedObjects(mob);
+			makeLongLasting();
+			makeNonUninvokable();
+			setAffectedOne(mob);
+			initializeManagedObjects(mob);
  			return true;
 		}
 	}

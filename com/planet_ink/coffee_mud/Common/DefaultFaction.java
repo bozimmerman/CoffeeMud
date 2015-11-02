@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.database.DBInterface;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Misc.PresenceReaction;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -2205,16 +2206,17 @@ public class DefaultFaction implements Faction, MsgListener
 			{
 				if(useLightReactions())
 				{
-					presenceReactionPrototype.invoke(M,myReactions,myHost,false,0);
-					if(myReactions.size()==1)
-					{
-						final Ability A=(Ability)myReactions.firstElement();
-						A.setInvoker(M);
-						return A;
-					}
+					final Ability A=(Ability)presenceReactionPrototype.copyOf();
+					A.invoke(M,myReactions,myHost,false,0);
+					A.setInvoker(M);
+					return A;
 				}
 				else
-					presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
+				if(M.fetchEffect(presenceReactionPrototype.ID())==null)
+				{
+					final Ability A=(Ability)presenceReactionPrototype.copyOf();
+					A.invoke(M,myReactions,myHost,true,0);
+				}
 			}
 			return null;
 		}
