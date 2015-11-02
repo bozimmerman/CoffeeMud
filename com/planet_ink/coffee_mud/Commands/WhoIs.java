@@ -60,7 +60,26 @@ public class WhoIs extends Who
 				mob.tell(L("Intermud is unavailable."));
 			else
 			if(x==0)
-				CMLib.intermud().i3who(mob,mobName.substring(1));
+			{
+				String mudName = mobName.substring(1);
+				if((mudName.toLowerCase().equals("coffeemuds")||mudName.toLowerCase().equals("all")) 
+				&& (CMSecurity.isAllowedAnywhere(mob, CMSecurity.SecFlag.I3)))
+				{
+					List<String> muds = CMLib.intermud().getI3MudList(mudName.toLowerCase().equals("coffeemuds"));
+					long time=0;
+					for(String mud : muds)
+					{
+						CMLib.s_sleep(time + 1000);
+						long lastTime=System.currentTimeMillis();
+						CMLib.intermud().i3who(mob,mud);
+						lastTime = System.currentTimeMillis() - lastTime;
+						if(lastTime > time)
+							time=lastTime;
+					}
+				}
+				else
+					CMLib.intermud().i3who(mob,mudName);
+			}
 			else
 			{
 				String mudName=mobName.substring(x+1);

@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
+import java.util.List;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -38,6 +40,7 @@ public interface I3Interface extends CMLibrary
 	public void i3finger(MOB mob, String mobName, String mudName);
 	public void i3pingRouter(MOB mob);
 	public void giveI3MudList(MOB mob);
+	public List<String> getI3MudList(boolean coffeemudOnly);
 	public void giveIMC2MudList(MOB mob);
 	public void registerIMC2(Object O);
 	public boolean isI3channel(String channelName);

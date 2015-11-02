@@ -478,7 +478,7 @@ public class IMudInterface implements ImudServices, Serializable
 						int idle=0;
 						if(V2.elementAt(1) instanceof Integer)
 							idle = ((Integer)V2.elementAt(1)).intValue();
-						final String xtra = fixColors((String)V2.elementAt(2));
+						final String xtra = fixColors(V2.elementAt(2).toString());
 						buf.append("["+CMStrings.padRight(nom,20)+"] "+xtra+" ("+idle+")\n\r");
 					}
 					smob.session().wraplessPrintln(buf.toString());

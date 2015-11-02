@@ -694,6 +694,52 @@ public class IMudClient implements I3Interface
 		mob.session().wraplessPrintln(buf.toString());
 	}
 
+	protected List<I3Mud> getSortedI3Muds()
+	{
+		Vector<I3Mud> list = new Vector<I3Mud>();
+		if(!i3online())
+			return list;
+		final MudList mudList=Intermud.getAllMudsList();
+		if(mudList!=null)
+		{
+			for(final I3Mud m : mudList.getMuds().values())
+			{
+				if(m.state<0)
+				{
+					boolean done=false;
+					for(int v=0;v<list.size();v++)
+					{
+						final I3Mud m2=list.elementAt(v);
+						if(m2.mud_name.toUpperCase().compareTo(m.mud_name.toUpperCase())>0)
+						{
+							list.insertElementAt(m,v);
+							done=true;
+							break;
+						}
+					}
+					if(!done)
+						list.addElement(m);
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Override
+	public List<String> getI3MudList(boolean coffeemudOnly)
+	{
+		List<String> list = new Vector<String>();
+		if(!i3online())
+			return list;
+		 List<I3Mud> muds = getSortedI3Muds();
+		 for(I3Mud mud : muds)
+		 {
+			 if((mud!=null) && ((!coffeemudOnly) || mud.base_mudlib.startsWith("CoffeeMud")))
+				 list.add(mud.mud_name);
+		 }
+		 return list;
+	}
+	
 	@Override
 	public void giveI3MudList(MOB mob)
 	{
@@ -702,39 +748,15 @@ public class IMudClient implements I3Interface
 		if(mob.isMonster())
 			return;
 		final StringBuffer buf=new StringBuffer("\n\rI3 Mud List:\n\r");
-		final MudList list=Intermud.getAllMudsList();
-		final Vector V=new Vector();
 		int col1Width=ListingLibrary.ColFixer.fixColWidth(25, mob);
 		int col2Width=ListingLibrary.ColFixer.fixColWidth(25, mob);
-		if(list!=null)
+		 List<I3Mud> muds = getSortedI3Muds();
+		for(I3Mud m : muds)
 		{
-			for(final I3Mud m : list.getMuds().values())
+			if((m!=null)&&(m.base_mudlib!=null))
 			{
-				if(m.state<0)
-				{
-					boolean done=false;
-					for(int v=0;v<V.size();v++)
-					{
-						final I3Mud m2=(I3Mud)V.elementAt(v);
-						if(m2.mud_name.toUpperCase().compareTo(m.mud_name.toUpperCase())>0)
-						{
-							V.insertElementAt(m,v);
-							done=true;
-							break;
-						}
-					}
-					if(!done)
-						V.addElement(m);
-				}
-			}
-			for(int v=0;v<V.size();v++)
-			{
-				final I3Mud m=(I3Mud)V.elementAt(v);
-				if((m!=null)&&(m.base_mudlib!=null))
-				{
-					final String mudlib = m.base_mudlib.startsWith("CoffeeMud") ? "^H"+m.base_mudlib+"^?" : m.base_mudlib;
-					buf.append("["+CMStrings.padRight(m.mud_name,col1Width)+"]["+CMStrings.padRight(mudlib,col2Width)+"] "+m.address+" ("+m.player_port+")\n\r");
-				}
+				final String mudlib = m.base_mudlib.startsWith("CoffeeMud") ? "^H"+m.base_mudlib+"^?" : m.base_mudlib;
+				buf.append("["+CMStrings.padRight(m.mud_name,col1Width)+"]["+CMStrings.padRight(mudlib,col2Width)+"] "+m.address+" ("+m.player_port+")\n\r");
 			}
 		}
 		mob.session().wraplessPrintln(buf.toString());
