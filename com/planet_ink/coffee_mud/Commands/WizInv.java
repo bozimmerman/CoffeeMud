@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class WizInv extends StdCommand
 {
 	public WizInv(){}
@@ -40,12 +39,12 @@ public class WizInv extends StdCommand
 	private final String[] access=I(new String[]{"WIZINVISIBLE","WIZINV","NOWIZINV"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String str=(String)commands.get(0);
+		String str=commands.get(0);
 		if(Character.toUpperCase(str.charAt(0))!='W')
-			commands.insertElementAt("OFF",1);
+			commands.add(1,"OFF");
 		commands.remove(0);
 		int abilityCode=PhyStats.IS_NOT_SEEN|PhyStats.IS_CLOAKED;
 		str=L("Prop_WizInvis");

@@ -425,7 +425,7 @@ public interface ClanManager extends CMLibrary
 	 * @param voteIfNecessary true to start a vote if one is needed, false to just return true.
 	 * @return true to execute the given command, and false not to.
 	 */
-	public boolean goForward(MOB mob, Clan C, Vector<? extends Object> commands, Clan.Function function, boolean voteIfNecessary);
+	public boolean goForward(MOB mob, Clan C, List<String> commands, Clan.Function function, boolean voteIfNecessary);
 
 	/**
 	 * Force the clans maintenance thread

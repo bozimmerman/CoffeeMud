@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Sniff extends StdCommand
 {
 	public Sniff(){}
@@ -40,11 +40,13 @@ public class Sniff extends StdCommand
 	private final String[] access=I(new String[]{"SNIFF","SMELL"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
-		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
+		if((commands!=null)
+		&&(commands.size()>1)
+		&&(commands.get(commands.size()-1).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
 			commands.remove(commands.size()-1);
 			quiet=true;
@@ -81,7 +83,7 @@ public class Sniff extends StdCommand
 		else
 		{
 			if((commands!=null)&&(commands.size()>0))
-				if(((String)commands.get(0)).toUpperCase().startsWith("E"))
+				if(commands.get(0).toUpperCase().startsWith("E"))
 				{
 					mob.tell(L("Sniff what?"));
 					return false;

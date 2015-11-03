@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class GTell extends StdCommand
 {
 	public GTell(){}
@@ -40,7 +40,7 @@ public class GTell extends StdCommand
 	private final String[] access=I(new String[]{"GTELL","GT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String text=CMParms.combine(commands,1);
@@ -52,7 +52,7 @@ public class GTell extends StdCommand
 		text=CMProps.applyINIFilter(text,CMProps.Str.SAYFILTER);
 
 		if((commands.size()>2)
-		&&((((String)commands.get(1)).equalsIgnoreCase("last"))
+		&&((commands.get(1).equalsIgnoreCase("last"))
 		&&(CMath.isNumber(CMParms.combine(commands,2))))
 		&&(mob.playerStats()!=null))
 		{

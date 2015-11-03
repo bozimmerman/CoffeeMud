@@ -41,7 +41,7 @@ public class Push extends Go
 	@Override public String[] getAccessWords(){return access;}
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -51,7 +51,7 @@ public class Push extends Go
 		Environmental E=null;
 		if(commands.size()>1)
 		{
-			dirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
+			dirCode=Directions.getGoodDirectionCode(commands.get(commands.size()-1));
 			if(dirCode>=0)
 			{
 				if((mob.location().getRoomInDir(dirCode)==null)
@@ -69,7 +69,7 @@ public class Push extends Go
 		}
 		if(dir.length()==0)
 		{
-			dirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
+			dirCode=Directions.getGoodDirectionCode(commands.get(commands.size()-1));
 			if(dirCode>=0)
 				pushThis=mob.location().getExitInDir(dirCode);
 		}

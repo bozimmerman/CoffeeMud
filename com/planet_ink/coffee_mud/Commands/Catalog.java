@@ -178,30 +178,30 @@ public class Catalog extends StdCommand
 		return rooms;
 	}
 
-	public int getObjectType(Vector commands)
+	public int getObjectType(List<String> commands)
 	{
 		int whatKind=0;
-		if((commands.size()>0)&&("MOBS".startsWith(((String)commands.get(0)).toUpperCase().trim())))
+		if((commands.size()>0)&&("MOBS".startsWith(commands.get(0).toUpperCase().trim())))
 		{ commands.remove(0); whatKind=1; }
-		if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.get(0)).toUpperCase().trim())))
+		if((commands.size()>0)&&("ITEMS".startsWith(commands.get(0).toUpperCase().trim())))
 		{ commands.remove(0); whatKind=2;}
 		return whatKind;
 	}
 
-	public boolean checkUserRoomSetEntry(Vector commands)
+	public boolean checkUserRoomSetEntry(List<String> commands)
 	{
 		if(commands.size()==0)
 			return false;
-		if((((String)commands.get(0)).equalsIgnoreCase("ROOM"))
-		||(((String)commands.get(0)).equalsIgnoreCase("AREA"))
-		||(((String)commands.get(0)).equalsIgnoreCase("WORLD")))
+		if((commands.get(0).equalsIgnoreCase("ROOM"))
+		||(commands.get(0).equalsIgnoreCase("AREA"))
+		||(commands.get(0).equalsIgnoreCase("WORLD")))
 			return true;
 		return false;
 
 	}
 
 	@Override
-	public boolean execute(final MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Room R=mob.location();
@@ -214,7 +214,7 @@ public class Catalog extends StdCommand
 
 			if(checkUserRoomSetEntry(commands))
 			{
-				final String which=((String)commands.get(0)).toLowerCase();
+				final String which=commands.get(0).toLowerCase();
 				final Enumeration rooms=getRoomSet(mob,which);
 				commands.remove(0);
 				final int whatKind=getObjectType(commands);
@@ -265,7 +265,7 @@ public class Catalog extends StdCommand
 				}
 			}
 			else
-			if(((String)commands.get(0)).equalsIgnoreCase("CATAGORY")||((String)commands.get(0)).equalsIgnoreCase("CATEGORY"))
+			if(commands.get(0).equalsIgnoreCase("CATAGORY")||commands.get(0).equalsIgnoreCase("CATEGORY"))
 			{
 				commands.remove(0);
 				String ID=CMParms.combine(commands,0);
@@ -322,7 +322,7 @@ public class Catalog extends StdCommand
 				}
 			}
 			else
-			if(((String)commands.get(0)).equalsIgnoreCase("LIST"))
+			if(commands.get(0).equalsIgnoreCase("LIST"))
 			{
 				commands.remove(0);
 				final int whatKind=getObjectType(commands);
@@ -411,7 +411,7 @@ public class Catalog extends StdCommand
 					mob.session().wraplessPrintln(list.toString());
 			}
 			else
-			if(((String)commands.get(0)).equalsIgnoreCase("DELETE"))
+			if(commands.get(0).equalsIgnoreCase("DELETE"))
 			{
 				commands.remove(0);
 				final int whatKind=getObjectType(commands);
@@ -471,7 +471,7 @@ public class Catalog extends StdCommand
 				}
 			}
 			else
-			if(((String)commands.get(0)).equalsIgnoreCase("EDIT"))
+			if(commands.get(0).equalsIgnoreCase("EDIT"))
 			{
 				commands.remove(0);
 				final int whatKind=getObjectType(commands);
@@ -540,14 +540,14 @@ public class Catalog extends StdCommand
 				}
 			}
 			else
-			if((((String)commands.get(0)).equalsIgnoreCase("SCAN"))
-			||(((String)commands.get(0)).equalsIgnoreCase("DBSCAN")))
+			if((commands.get(0).equalsIgnoreCase("SCAN"))
+			||(commands.get(0).equalsIgnoreCase("DBSCAN")))
 			{
-				final boolean db=((String)commands.get(0)).toUpperCase().startsWith("DB");
+				final boolean db=commands.get(0).toUpperCase().startsWith("DB");
 				commands.remove(0);
 				if(checkUserRoomSetEntry(commands))
 				{
-					final String which=((String)commands.get(0)).toLowerCase();
+					final String which=commands.get(0).toLowerCase();
 					final Enumeration rooms=getRoomSet(mob,which);
 					commands.remove(0);
 
@@ -586,14 +586,14 @@ public class Catalog extends StdCommand
 					mob.tell(L("Scan what?"));
 			}
 			else
-			if((((String)commands.get(0)).equalsIgnoreCase("OVERLOOK"))
-			||(((String)commands.get(0)).equalsIgnoreCase("DBOVERLOOK")))
+			if((commands.get(0).equalsIgnoreCase("OVERLOOK"))
+			||(commands.get(0).equalsIgnoreCase("DBOVERLOOK")))
 			{
-				final boolean db=((String)commands.get(0)).toUpperCase().startsWith("DB");
+				final boolean db=commands.get(0).toUpperCase().startsWith("DB");
 				commands.remove(0);
 				if(checkUserRoomSetEntry(commands))
 				{
-					final String which=((String)commands.get(0)).toLowerCase();
+					final String which=commands.get(0).toLowerCase();
 					final Enumeration rooms=getRoomSet(mob,which);
 					commands.remove(0);
 
@@ -632,12 +632,12 @@ public class Catalog extends StdCommand
 					mob.tell(L("Scan what?"));
 			}
 			else
-			if(((String)commands.get(0)).equalsIgnoreCase("CLEAN"))
+			if(commands.get(0).equalsIgnoreCase("CLEAN"))
 			{
 				commands.remove(0);
 				if(checkUserRoomSetEntry(commands))
 				{
-					final String which=((String)commands.get(0)).toLowerCase();
+					final String which=commands.get(0).toLowerCase();
 					final Enumeration rooms=getRoomSet(mob,which);
 					commands.remove(0);
 					final int whatKind=getObjectType(commands);

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Up extends Go
 {
 	public Up(){}
@@ -40,7 +40,7 @@ public class Up extends Go
 	private final String[] access=I(new String[]{"UP","U"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(!standIfNecessary(mob,metaFlags, true))

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Exits extends StdCommand
 {
 	public Exits(){}
@@ -40,14 +40,16 @@ public class Exits extends StdCommand
 	private final String[] access=I(new String[]{"EXITS","EX"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final Room R=mob.location();
 		if(R!=null)
 		{
 			final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
-			if((commands!=null)&&(commands.size()>1)&&(commands.lastElement() instanceof String)&&(((String)commands.lastElement()).equalsIgnoreCase("SHORT")))
+			if((commands!=null)
+			&&(commands.size()>1)
+			&&(commands.get(commands.size()-1).equalsIgnoreCase("SHORT")))
 				exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 			if(R.okMessage(mob, exitMsg))
 				R.send(mob, exitMsg);

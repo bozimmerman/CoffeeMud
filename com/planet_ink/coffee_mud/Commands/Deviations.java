@@ -318,7 +318,7 @@ public class Deviations extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.tell(deviations(mob,CMParms.combine(commands,1)).toString());

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class HelpList extends StdCommand
 {
 	public HelpList(){}
@@ -41,7 +41,7 @@ public class HelpList extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final String helpStr=CMParms.combine(commands,1);

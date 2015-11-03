@@ -44,7 +44,7 @@ public class Pour extends StdCommand
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -55,7 +55,7 @@ public class Pour extends StdCommand
 		}
 		commands.remove(0);
 		Environmental fillFromThis=null;
-		final String thingToFillFrom=(String)commands.get(0);
+		final String thingToFillFrom=commands.get(0);
 		fillFromThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToFillFrom);
 		if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 		{
@@ -67,16 +67,16 @@ public class Pour extends StdCommand
 		PourVerb verb=PourVerb.DEFAULT;
 		if(commands.size()>1)
 		{
-			if((((String)commands.get(0))).equalsIgnoreCase("into"))
+			if(((commands.get(0))).equalsIgnoreCase("into"))
 				commands.remove(0);
 			else
-			if((((String)commands.get(0))).equalsIgnoreCase("onto"))
+			if(((commands.get(0))).equalsIgnoreCase("onto"))
 			{
 				commands.remove(0);
 				verb=PourVerb.ONTO;
 			}
 			else
-			if((((String)commands.get(0))).equalsIgnoreCase("out"))
+			if(((commands.get(0))).equalsIgnoreCase("out"))
 			{
 				commands.remove(0);
 				verb=PourVerb.OUT;

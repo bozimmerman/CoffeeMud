@@ -147,7 +147,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 
 	@Override
-	public boolean forceStandardCommand(MOB mob, String command, Vector<Object> parms)
+	public boolean forceStandardCommand(MOB mob, String command, List<String> parms)
 	{
 		try
 		{
@@ -204,10 +204,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public StringBuilder getScore(MOB mob)
 	{
-		final Vector<Object> V=new Vector<Object>();
+		final Vector<String> V=new Vector<String>();
 		forceStandardCommand(mob,"Score",V);
-		if((V.size()==1)&&(V.firstElement() instanceof StringBuilder))
-			return (StringBuilder)V.firstElement();
+		if(V.size()==1)
+			return new StringBuilder(V.firstElement());
 		return new StringBuilder("");
 	}
 	@Override
@@ -291,9 +291,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	public void postLook(MOB mob, boolean quiet)
 	{
 		if(quiet)
-			forceStandardCommand(mob,"Look",new XVector<Object>("LOOK","UNOBTRUSIVELY"));
+			forceStandardCommand(mob,"Look",new XVector<String>("LOOK","UNOBTRUSIVELY"));
 		else
-			forceStandardCommand(mob,"Look",new XVector<Object>("LOOK"));
+			forceStandardCommand(mob,"Look",new XVector<String>("LOOK"));
 	}
 
 	@Override
@@ -305,16 +305,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void postFlee(MOB mob, String whereTo)
 	{
-		forceStandardCommand(mob,"Flee",new XVector<Object>("FLEE",whereTo));
+		forceStandardCommand(mob,"Flee",new XVector<String>("FLEE",whereTo));
 	}
 
 	@Override
 	public void postSheath(MOB mob, boolean ifPossible)
 	{
 		if(ifPossible)
-			forceStandardCommand(mob,"Sheath",new XVector<Object>("SHEATH","IFPOSSIBLE"));
+			forceStandardCommand(mob,"Sheath",new XVector<String>("SHEATH","IFPOSSIBLE"));
 		else
-			forceStandardCommand(mob,"Sheath",new XVector<Object>("SHEATH"));
+			forceStandardCommand(mob,"Sheath",new XVector<String>("SHEATH"));
 	}
 
 	@Override
@@ -323,27 +323,27 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(ifNecessary)
 		{
 			if(doHold)
-				forceStandardCommand(mob,"Draw",new XVector<Object>("DRAW","HELD","IFNECESSARY"));
+				forceStandardCommand(mob,"Draw",new XVector<String>("DRAW","HELD","IFNECESSARY"));
 			else
-				forceStandardCommand(mob,"Draw",new XVector<Object>("DRAW","IFNECESSARY"));
+				forceStandardCommand(mob,"Draw",new XVector<String>("DRAW","IFNECESSARY"));
 		}
 		else
-			forceStandardCommand(mob,"Draw",new XVector<Object>("DRAW"));
+			forceStandardCommand(mob,"Draw",new XVector<String>("DRAW"));
 	}
 
 	@Override
 	public void postStand(MOB mob, boolean ifNecessary)
 	{
 		if(ifNecessary)
-			forceStandardCommand(mob,"Stand",new XVector<Object>("STAND","IFNECESSARY"));
+			forceStandardCommand(mob,"Stand",new XVector<String>("STAND","IFNECESSARY"));
 		else
-			forceStandardCommand(mob,"Stand",new XVector<Object>("STAND"));
+			forceStandardCommand(mob,"Stand",new XVector<String>("STAND"));
 	}
 
 	@Override
 	public void postSleep(MOB mob)
 	{
-		forceStandardCommand(mob,"Sleep",new XVector<Object>("SLEEP"));
+		forceStandardCommand(mob,"Sleep",new XVector<String>("SLEEP"));
 	}
 
 	@Override
@@ -356,9 +356,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		else
 		{
 			if(quiet)
-				forceStandardCommand(follower,"Follow",new XVector<Object>("FOLLOW","SELF","UNOBTRUSIVELY"));
+				forceStandardCommand(follower,"Follow",new XVector<String>("FOLLOW","SELF","UNOBTRUSIVELY"));
 			else
-				forceStandardCommand(follower,"Follow",new XVector<Object>("FOLLOW","SELF"));
+				forceStandardCommand(follower,"Follow",new XVector<String>("FOLLOW","SELF"));
 		}
 	}
 

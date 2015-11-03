@@ -394,7 +394,7 @@ public class Skill_Juggle extends BardSkill
 		&&(CMath.s_int((String)commands.firstElement())>0))
 		{
 			maxToJuggle=CMath.s_int((String)commands.firstElement());
-			commands.setElementAt("all",0);
+			commands.set(0,"all");
 		}
 
 		final Vector V=new Vector();

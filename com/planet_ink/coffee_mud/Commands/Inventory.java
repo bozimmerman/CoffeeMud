@@ -179,7 +179,7 @@ public class Inventory extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));

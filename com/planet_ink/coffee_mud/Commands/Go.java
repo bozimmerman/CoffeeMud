@@ -74,7 +74,7 @@ public class Go extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -145,7 +145,7 @@ public class Go extends StdCommand
 				}
 			}
 		}
-		final String doing=(String)commands.get(0);
+		final String doing=commands.get(0);
 		if(direction>=0)
 			CMLib.tracking().walk(mob,direction,false,false,false,false);
 		else
@@ -158,13 +158,13 @@ public class Go extends StdCommand
 			for(int v=1;v<commands.size();v++)
 			{
 				int num=1;
-				String s=(String)commands.get(v);
+				String s=commands.get(v);
 				if(CMath.s_int(s)>0)
 				{
 					num=CMath.s_int(s);
 					v++;
 					if(v<commands.size())
-						s=(String)commands.get(v);
+						s=commands.get(v);
 				}
 				else
 				if((s.length()>0) && (Character.isDigit(s.charAt(0))))
@@ -203,7 +203,7 @@ public class Go extends StdCommand
 				{
 					E=R.fetchExit(s);
 					if(E!=null)
-						CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<Object>("ENTER",s));
+						CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<String>("ENTER",s));
 					else
 						break;
 				}

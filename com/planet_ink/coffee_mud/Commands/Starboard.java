@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Starboard extends Go
 {
 	public Starboard(){}
@@ -40,13 +40,13 @@ public class Starboard extends Go
 	private final String[] access=I(new String[]{"STARBOARD","STB"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		int direction=Directions.EAST;
 		if((commands!=null)&&(commands.size()>1))
 		{
-			final int nextDir=Directions.getDirectionCode((String)commands.get(2));
+			final int nextDir=Directions.getDirectionCode(commands.get(2));
 			if(nextDir == Directions.NORTH)
 				direction=Directions.NORTHEAST;
 			else

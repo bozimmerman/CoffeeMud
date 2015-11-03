@@ -78,7 +78,7 @@ public class Generate extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<3)
@@ -88,9 +88,9 @@ public class Generate extends StdCommand
 		}
 		final String finalLog = mob.Name()+" called generate command with parms: " + CMParms.combine(commands, 1);
 		CMFile file = null;
-		if((commands.size()>3)&&((String)commands.get(3)).equalsIgnoreCase("FROM"))
+		if((commands.size()>3)&&commands.get(3).equalsIgnoreCase("FROM"))
 		{
-			file = new CMFile(Resources.buildResourcePath((String)commands.get(4)),mob);
+			file = new CMFile(Resources.buildResourcePath(commands.get(4)),mob);
 			commands.remove(3);
 			commands.remove(3);
 		}
@@ -105,7 +105,7 @@ public class Generate extends StdCommand
 		final List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
 		final Hashtable definedIDs = new Hashtable();
 		CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
-		final String typeName = (String)commands.get(1);
+		final String typeName = commands.get(1);
 		String objectType = typeName.toUpperCase().trim();
 		CMClass.CMObjectType codeI=OBJECT_TYPES.get(objectType);
 		if(codeI==null)
@@ -128,7 +128,7 @@ public class Generate extends StdCommand
 		int direction=-1;
 		if((codeI==CMClass.CMObjectType.AREA)||(codeI==CMClass.CMObjectType.LOCALE))
 		{
-			final String possDir=(String)commands.lastElement();
+			final String possDir=commands.get(commands.size()-1);
 			direction = Directions.getGoodDirectionCode(possDir);
 			if(direction<0)
 			{
@@ -143,7 +143,7 @@ public class Generate extends StdCommand
 				return false;
 			}
 		}
-		final String idName = ((String)commands.get(2)).toUpperCase().trim();
+		final String idName = commands.get(2).toUpperCase().trim();
 		if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
 		||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase(objectType)))
 		{

@@ -370,7 +370,7 @@ public class GModify extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.GMODIFY);
@@ -388,7 +388,7 @@ public class GModify extends StdCommand
 			return false;
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.get(0)).equalsIgnoreCase("?"))
+		   commands.get(0).equalsIgnoreCase("?"))
 		{
 			final StringBuffer allFieldsMsg=new StringBuffer("");
 			final Set<String> allKnownFields=new TreeSet<String>();
@@ -404,7 +404,7 @@ public class GModify extends StdCommand
 			return false;
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.get(0)).equalsIgnoreCase("room"))
+		   commands.get(0).equalsIgnoreCase("room"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
@@ -415,7 +415,7 @@ public class GModify extends StdCommand
 			placesToDo.add(mob.location());
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.get(0)).equalsIgnoreCase("area"))
+		   commands.get(0).equalsIgnoreCase("area"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
@@ -426,7 +426,7 @@ public class GModify extends StdCommand
 			placesToDo.add(mob.location().getArea());
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.get(0)).equalsIgnoreCase("world"))
+		   commands.get(0).equalsIgnoreCase("world"))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.GMODIFY))
 			{
@@ -459,7 +459,7 @@ public class GModify extends StdCommand
 		StringBuffer s=new StringBuffer("");
 		for(int i=0;i<commands.size();i++)
 		{
-			String str=((String)commands.get(i));
+			String str=(commands.get(i));
 			if((str.toUpperCase().startsWith("CHANGE="))
 			||(str.toUpperCase().startsWith("WHEN=")))
 			{
@@ -563,7 +563,7 @@ public class GModify extends StdCommand
 				Pattern P=null;
 				if(use==null)
 				{
-					mob.tell(L("'@x1' goes to an unknown parameter!",((String)commands.get(i))));
+					mob.tell(L("'@x1' goes to an unknown parameter!",(commands.get(i))));
 					return false;
 				}
 				while(val.trim().startsWith("["))

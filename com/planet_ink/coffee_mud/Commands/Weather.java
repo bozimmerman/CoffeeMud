@@ -40,13 +40,13 @@ public class Weather extends StdCommand
 	private final String[] access=I(new String[]{"WEATHER"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final Room room=mob.location();
 		if(room==null)
 			return false;
-		if((commands.size()>1)&&((room.domainType()&Room.INDOORS)==0)&&(((String)commands.get(1)).equalsIgnoreCase("WORLD")))
+		if((commands.size()>1)&&((room.domainType()&Room.INDOORS)==0)&&(commands.get(1).equalsIgnoreCase("WORLD")))
 		{
 			final StringBuffer tellMe=new StringBuffer("");
 			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Score extends Affect
 {
 	public Score(){}
@@ -215,7 +215,7 @@ public class Score extends Affect
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String parm="";
@@ -224,7 +224,7 @@ public class Score extends Affect
 		final StringBuilder msg=getScore(mob,parm);
 		if(commands.size()==0)
 		{
-			commands.add(msg);
+			commands.add(msg.toString());
 			return false;
 		}
 		if(!mob.isMonster())

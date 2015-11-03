@@ -41,7 +41,7 @@ public class DrinkCmd extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -51,7 +51,7 @@ public class DrinkCmd extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		if((commands.size()>1)&&(((String)commands.get(0)).equalsIgnoreCase("from")))
+		if((commands.size()>1)&&(commands.get(0).equalsIgnoreCase("from")))
 			commands.remove(0);
 
 		Environmental thisThang=null;

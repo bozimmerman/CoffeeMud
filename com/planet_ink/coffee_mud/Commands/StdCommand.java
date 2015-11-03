@@ -84,7 +84,7 @@ public class StdCommand implements Command
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		// accepts the mob executing, and a Vector of Strings as a parm.
@@ -93,7 +93,7 @@ public class StdCommand implements Command
 	}
 
 	@Override
-	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 		throws java.io.IOException
 	{
 		return true;

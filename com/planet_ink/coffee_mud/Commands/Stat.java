@@ -454,11 +454,11 @@ public class Stat  extends Skills
 	}
 	
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.remove(0);
-		if(((commands.size()>0)&&(commands.get(0) instanceof String)&&((String)commands.get(0)).equals("?"))
+		if(((commands.size()>0)&&commands.get(0).equals("?"))
 		||((commands.size()==0)&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT)))))
 		{
 			final StringBuilder msg = new StringBuilder("STAT allows the following options: \n\r");
@@ -486,8 +486,8 @@ public class Stat  extends Skills
 		{
 			if(commands.size()==0)
 				commands.add("TODAY");
-			final String s1=(commands.size()>0)?((String)commands.get(0)).toUpperCase():"";
-			final String s2=(commands.size()>1)?((String)commands.get(1)).toUpperCase():"";
+			final String s1=(commands.size()>0)?commands.get(0).toUpperCase():"";
+			final String s2=(commands.size()>1)?commands.get(1).toUpperCase():"";
 			if(s1.equalsIgnoreCase("TODAY"))
 				return showTableStats(mob,1,1,CMParms.combine(commands,1));
 			else
@@ -522,7 +522,7 @@ public class Stat  extends Skills
 			int ableTypes=-1;
 			if(commands.size()>1)
 			{
-				final String s=((String)commands.get(0)).toUpperCase();
+				final String s=commands.get(0).toUpperCase();
 				for(int i=0;i<ABLETYPE_DESCS.length;i++)
 				{
 					for(int is=0;is<ABLETYPE_DESCS[i].length;is++)

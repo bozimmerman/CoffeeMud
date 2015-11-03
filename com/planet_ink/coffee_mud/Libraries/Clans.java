@@ -475,7 +475,7 @@ public class Clans extends StdLibrary implements ClanManager
 	}
 
 	@Override
-	public boolean goForward(MOB mob, Clan C, Vector<? extends Object> commands, Clan.Function function, boolean voteIfNecessary)
+	public boolean goForward(MOB mob, Clan C, List<String> commands, Clan.Function function, boolean voteIfNecessary)
 	{
 		if((mob==null)||(C==null))
 			return false;

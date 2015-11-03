@@ -54,8 +54,8 @@ public class Wealth extends Inventory
 		return msg;
 	}
 
-	@Override @SuppressWarnings("rawtypes")
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	@Override
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));

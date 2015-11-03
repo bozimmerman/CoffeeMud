@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class WizEmote extends StdCommand
 {
 	public WizEmote(){}
@@ -40,12 +40,12 @@ public class WizEmote extends StdCommand
 	private final String[] access=I(new String[]{"WIZEMOTE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()>2)
 		{
-			final String who=(String)commands.get(1);
+			final String who=commands.get(1);
 			final String msg=CMParms.combineQuoted(commands,2);
 			Room R=CMLib.map().getRoom(who);
 			if(who.toUpperCase().equals("HERE"))

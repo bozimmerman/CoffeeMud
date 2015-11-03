@@ -98,7 +98,7 @@ public class Get extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final Room R=mob.location();
@@ -110,7 +110,7 @@ public class Get extends StdCommand
 		}
 		commands.remove(0);
 		boolean quiet=false;
-		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
+		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
 			quiet=true;
 			commands.remove(commands.size()-1);
@@ -118,7 +118,7 @@ public class Get extends StdCommand
 
 		String containerName="";
 		if(commands.size()>0)
-			containerName=(String)commands.lastElement();
+			containerName=commands.get(commands.size()-1);
 		final Vector containerCommands=new XVector(commands);
 		final java.util.List<Container> containers=CMLib.english().possibleContainers(mob,commands,Wearable.FILTER_ANY,true);
 		int c=0;
@@ -129,7 +129,7 @@ public class Get extends StdCommand
 
 		String whatToGet=CMParms.combine(commands,0);
 		final String unmodifiedWhatToGet=whatToGet;
-		boolean allFlag = (commands.size() > 0) ? ((String) commands.get(0)).equalsIgnoreCase("all") : false;
+		boolean allFlag = (commands.size() > 0) ? commands.get(0).equalsIgnoreCase("all") : false;
 		if (whatToGet.toUpperCase().startsWith("ALL."))
 		{
 			allFlag = true;

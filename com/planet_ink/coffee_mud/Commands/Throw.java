@@ -40,7 +40,7 @@ public class Throw extends StdCommand
 	private final String[] access=I(new String[]{"THROW","TOSS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -52,8 +52,8 @@ public class Throw extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		final String str=(String)commands.lastElement();
-		commands.removeElement(str);
+		final String str=commands.get(commands.size()-1);
+		commands.remove(str);
 		final String what=CMParms.combine(commands,0);
 		Item item=mob.fetchItem(null,Wearable.FILTER_WORNONLY,what);
 		if(item==null)

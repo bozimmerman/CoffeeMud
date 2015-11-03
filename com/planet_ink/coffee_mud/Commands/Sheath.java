@@ -59,18 +59,18 @@ public class Sheath extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
 		boolean noerrors=false;
 		Vector origCmds=new XVector(commands);
-		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
+		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("QUIETLY")))
 		{
 			commands.remove(commands.size()-1);
 			quiet=true;
 		}
-		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("IFPOSSIBLE")))
+		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("IFPOSSIBLE")))
 		{
 			commands.remove(commands.size()-1);
 			noerrors=true;
@@ -145,12 +145,12 @@ public class Sheath extends StdCommand
 		}
 		else
 		{
-			commands.insertElementAt("all",0);
+			commands.add(0,"all");
 			final Container container=(Container)CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_WORNONLY);
 			String thingToPut=CMParms.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";
-			boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
+			boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 			if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 			if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
 			boolean doBugFix = true;

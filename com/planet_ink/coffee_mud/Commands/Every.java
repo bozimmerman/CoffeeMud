@@ -49,10 +49,9 @@ public class Every extends StdCommand
 	}
 
 	
-	@SuppressWarnings("unchecked")
-	protected Vector makeNewCommands(Vector commands, String replace)
+	protected List<String> makeNewCommands(List<String> commands, String replace)
 	{
-		final XVector newCommands=new XVector(commands);
+		final XVector<String> newCommands=new XVector<String>(commands);
 		int x=newCommands.indexOf("*");
 		if(x>=0)
 			newCommands.set(x,replace);
@@ -61,7 +60,7 @@ public class Every extends StdCommand
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{	
 		final Room room=mob.location();

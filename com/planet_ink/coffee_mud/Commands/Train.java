@@ -65,9 +65,8 @@ public class Train extends StdCommand
 		return V;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		List<String> origCmds=new StringXVector(commands);
@@ -80,7 +79,7 @@ public class Train extends StdCommand
 		String teacherName=null;
 		if(commands.size()>1)
 		{
-			teacherName=(String)commands.lastElement();
+			teacherName=commands.get(commands.size()-1);
 			if(teacherName.length()>1)
 				commands.remove(commands.size()-1);
 			else

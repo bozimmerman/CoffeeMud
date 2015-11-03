@@ -129,7 +129,7 @@ public class WillQualify  extends Skills
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 					throws java.io.IOException
 	{
 		final StringBuffer msg=new StringBuffer("");
@@ -139,9 +139,9 @@ public class WillQualify  extends Skills
 		final HashSet<Object> types=new HashSet<Object>();
 		if(commands.size()>0)
 			commands.remove(0);
-		if((commands.size()>0)&&(CMath.isNumber((String)commands.get(0))))
+		if((commands.size()>0)&&(CMath.isNumber(commands.get(0))))
 		{
-			level=CMath.s_int((String)commands.get(0));
+			level=CMath.s_int(commands.get(0));
 			if(level<0)
 			{
 				mob.tell(willQualErr);
@@ -151,14 +151,14 @@ public class WillQualify  extends Skills
 		}
 		if(commands.size()>0)
 		{
-			final CharClass C2=CMClass.findCharClass((String)commands.get(0));
+			final CharClass C2=CMClass.findCharClass(commands.get(0));
 			if(C2!=null){ C=C2;commands.remove(0);}
 		}
 		while(commands.size()>0)
 		{
-			final String str=((String)commands.get(0)).toUpperCase().trim();
+			final String str=commands.get(0).toUpperCase().trim();
 			final String bothStr=(commands.size()<2) ? str : 
-				((String)commands.get(0)).toUpperCase().trim() + " " + ((String)commands.get(1)).toUpperCase().trim();
+				commands.get(0).toUpperCase().trim() + " " + commands.get(1).toUpperCase().trim();
 			int x=CMParms.indexOf(Ability.ACODE_DESCS,str);
 			if(x<0)
 				x=CMParms.indexOf(Ability.ACODE_DESCS,str.replace(' ','_'));

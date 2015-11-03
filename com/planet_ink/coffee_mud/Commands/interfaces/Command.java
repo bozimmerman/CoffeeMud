@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
-import java.util.Vector;
 
 /*
    Copyright 2002-2015 Bo Zimmerman
@@ -37,7 +36,6 @@ import java.util.Vector;
  * A Command is a thing entered on the command line by players.  It
  * performs some function, right?
  */
-@SuppressWarnings("rawtypes")
 public interface Command extends CMObject
 {
 	/**
@@ -116,7 +114,7 @@ public interface Command extends CMObject
 	 * @return whether the command was successfully executed.  Is almost meaningless.
 	 * @throws java.io.IOException usually means the player has dropped carrier
 	 */
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException;
 
 	/**
@@ -125,7 +123,7 @@ public interface Command extends CMObject
 	 * method is called when the command is entered, and every second
 	 * afterwards until the invoker has enough actions to complete it.
 	 * At completion time, execute is called.
-	 * @see Command#execute(MOB, Vector, int)
+	 * @see Command#execute(MOB, List, int)
 	 * @param mob the player or mob invoking the command
 	 * @param commands the parameters entered for the command (including the trigger word)
 	 * @param metaFlags flags denoting how the command is being executed
@@ -134,7 +132,7 @@ public interface Command extends CMObject
 	 * @return whether the command should be allowed to go forward. false cancels altogether.
 	 * @throws java.io.IOException usually means the player has dropped carrier
 	 */
-	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 		throws java.io.IOException;
 
 	/**

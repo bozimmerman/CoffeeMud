@@ -41,7 +41,7 @@ public class Undress extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -56,8 +56,8 @@ public class Undress extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		final String what=(String)commands.lastElement();
-		commands.removeElement(what);
+		final String what=commands.get(commands.size()-1);
+		commands.remove(what);
 		final String whom=CMParms.combine(commands,0);
 		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))

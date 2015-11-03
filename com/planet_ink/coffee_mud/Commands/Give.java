@@ -40,7 +40,7 @@ public class Give extends StdCommand
 	private final String[] access=I(new String[]{"GIVE","GI"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -56,14 +56,14 @@ public class Give extends StdCommand
 			return false;
 		}
 
-		final MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
+		final MOB recipient=mob.location().fetchInhabitant(commands.get(commands.size()-1));
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",(String)commands.lastElement()));
+			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",commands.get(commands.size()-1)));
 			return false;
 		}
 		commands.remove(commands.size()-1);
-		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("to")))
+		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("to")))
 			commands.remove(commands.size()-1);
 
 		final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
@@ -74,7 +74,7 @@ public class Give extends StdCommand
 		int addendum=1;
 		String addendumStr="";
 		final Vector V=new Vector();
-		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
 		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();

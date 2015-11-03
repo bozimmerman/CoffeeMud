@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Possess extends StdCommand
 {
 	public Possess()
@@ -47,7 +47,7 @@ public class Possess extends StdCommand
 		return access;
 	}
 
-	public MOB getTarget(MOB mob, Vector commands, boolean quiet)
+	public MOB getTarget(MOB mob, List<String> commands, boolean quiet)
 	{
 		String targetName=CMParms.combine(commands,0);
 		MOB target=null;
@@ -85,7 +85,7 @@ public class Possess extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.soulMate()!=null)

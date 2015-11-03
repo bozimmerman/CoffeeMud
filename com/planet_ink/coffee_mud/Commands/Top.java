@@ -34,19 +34,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Top extends StdCommand
 {
 	private final String[] access=I(new String[]{"TOP"});
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean execute(final MOB mob, Vector commands, int metaFlags) throws java.io.IOException
+	public boolean execute(final MOB mob, List<String> commands, int metaFlags) throws java.io.IOException
 	{
 		boolean doPlayers=true;
 		if(commands.size()>1)
 		{
-			final String what=((String)commands.get(1)).toUpperCase();
+			final String what=commands.get(1).toUpperCase();
 			if("PLAYERS".startsWith(what))
 				doPlayers=true;
 			else

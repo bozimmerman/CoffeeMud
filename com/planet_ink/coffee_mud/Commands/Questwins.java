@@ -78,20 +78,20 @@ public class Questwins extends StdCommand
 	}
 	
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(((String)commands.get(0)).toUpperCase().startsWith("QUESTW"))
+		if(commands.get(0).toUpperCase().startsWith("QUESTW"))
 			commands.add("WON");
 
-		if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("WON")))
+		if((commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("WON")))
 		{
 			final String msg=this.getQuestsWonList(mob, L("you are"));
 			if(!mob.isMonster())
 				mob.tell(msg);
 		}
 		else
-		if((commands.size()>2)&&(((String)commands.get(1)).equalsIgnoreCase("DROP")))
+		if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("DROP")))
 		{
 			ScriptingEngine foundS=null;
 			for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)

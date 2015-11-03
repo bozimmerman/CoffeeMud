@@ -33,7 +33,6 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Purge extends StdCommand
 {
 	public Purge(){}
@@ -47,7 +46,7 @@ public class Purge extends StdCommand
 		return false;
 	}
 
-	public boolean mobs(MOB mob, Vector commands)
+	public boolean mobs(MOB mob, List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -57,7 +56,7 @@ public class Purge extends StdCommand
 		}
 
 		String mobID=CMParms.combine(commands,2);
-		boolean allFlag=((String)commands.get(2)).equalsIgnoreCase("all");
+		boolean allFlag=commands.get(2).equalsIgnoreCase("all");
 		if(mobID.toUpperCase().startsWith("ALL.")){ allFlag=true; mobID="ALL "+mobID.substring(4);}
 		if(mobID.toUpperCase().endsWith(".ALL")){ allFlag=true; mobID="ALL "+mobID.substring(0,mobID.length()-4);}
 		MOB deadMOB=mob.location().fetchInhabitant(mobID);
@@ -88,7 +87,7 @@ public class Purge extends StdCommand
 	}
 
 
-	public boolean items(MOB mob, Vector commands)
+	public boolean items(MOB mob, List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -132,7 +131,7 @@ public class Purge extends StdCommand
 			}
 		}
 
-		boolean allFlag=((String)commands.get(2)).equalsIgnoreCase("all");
+		boolean allFlag=commands.get(2).equalsIgnoreCase("all");
 		if(itemID.toUpperCase().startsWith("ALL.")){ allFlag=true; itemID="ALL "+itemID.substring(4);}
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
 		boolean doneSomething=false;
@@ -166,14 +165,14 @@ public class Purge extends StdCommand
 
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
 
 		if(commands.size()>1)
 		{
-			commandType=((String)commands.get(1)).toUpperCase();
+			commandType=commands.get(1).toUpperCase();
 		}
 		if(commandType.equals("ITEM"))
 		{
@@ -192,14 +191,14 @@ public class Purge extends StdCommand
 			final Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Wearable.FILTER_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
-				commands.insertElementAt("ITEM",1);
+				commands.add(1,"ITEM");
 				execute(mob,commands,metaFlags);
 			}
 			else
 			if((thang!=null)&&(thang instanceof MOB))
 			{
 				if(((MOB)thang).isMonster())
-					commands.insertElementAt("MOB",1);
+					commands.add(1,"MOB");
 				else
 				{
 					mob.tell(L("@x1 is a player!",thang.name()));

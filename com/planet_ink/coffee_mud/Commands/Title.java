@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings("rawtypes")
+
 public class Title extends StdCommand
 {
 	private final String[]	access	= I(new String[] { "TITLE" });
@@ -46,7 +46,7 @@ public class Title extends StdCommand
 	}
 
 	@Override
-	public boolean execute(final MOB mob, Vector commands, int metaFlags) throws java.io.IOException
+	public boolean execute(final MOB mob, List<String> commands, int metaFlags) throws java.io.IOException
 	{
 		if ((mob.playerStats() == null) || (mob.playerStats().getTitles().size() == 0))
 		{

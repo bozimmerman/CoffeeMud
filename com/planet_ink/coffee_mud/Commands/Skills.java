@@ -82,20 +82,19 @@ public class Skills extends StdCommand
 		return false;
 	}
 
-	protected int parseOutLevel(Vector commands)
+	protected int parseOutLevel(List<String> commands)
 	{
 		if((commands.size()>1)
-		&&(commands.lastElement() instanceof String)
-		&&(CMath.isNumber((String)commands.lastElement())))
+		&&(CMath.isNumber(commands.get(commands.size()-1))))
 		{
-			final int x=CMath.s_int((String)commands.lastElement());
+			final int x=CMath.s_int(commands.get(commands.size()-1));
 			commands.remove(commands.size()-1);
 			return x;
 		}
 		return -1;
 	}
 
-	protected void parseDomainInfo(MOB mob, Vector commands, Vector acodes, int[] level, int[] domain, String[] domainName)
+	protected void parseDomainInfo(MOB mob, List<String> commands, Vector acodes, int[] level, int[] domain, String[] domainName)
 	{
 		level[0]=parseOutLevel(commands);
 		final String qual=CMParms.combine(commands,1).toUpperCase();
@@ -207,7 +206,7 @@ public class Skills extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuilder msg=new StringBuilder("");

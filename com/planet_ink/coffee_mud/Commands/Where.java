@@ -85,7 +85,7 @@ public class Where extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean overrideSet = false;
@@ -451,7 +451,7 @@ public class Where extends StdCommand
 			int alignment=mob.fetchFaction(CMLib.factions().AlignID());
 			for(int i=commands.size()-1;i>=0;i--)
 			{
-				final String s=(String)commands.get(i);
+				final String s=commands.get(i);
 				if(s.equalsIgnoreCase("good"))
 				{
 					alignment=CMLib.factions().getAlignMedianFacValue(Faction.Align.GOOD);

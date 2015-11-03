@@ -259,7 +259,7 @@ public class Auction extends Channel implements Tickable
 
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		//mob.tell(L("Auctions are currently closed for maintenance.  When it re-opens, this command will continue to remain available for live auctions, and new auctioneer mobs will be placed in the major cities for doing multi-day auctions, so keep your eyes open for that coming soon!"));
@@ -281,7 +281,7 @@ public class Auction extends Channel implements Tickable
 		if(commands.size()<1)
 			cmd="";
 		else
-			cmd=((String)commands.get(0)).toUpperCase();
+			cmd=commands.get(0).toUpperCase();
 
 		if(cmd.equals("LIST"))
 		{
@@ -308,9 +308,9 @@ public class Auction extends Channel implements Tickable
 			}
 			final Vector V=new Vector();
 			if((commands.size()>=2)
-			&&((CMLib.english().numPossibleGold(mob,(String)commands.lastElement())>0)||(((String)commands.lastElement()).equals("0"))))
+			&&((CMLib.english().numPossibleGold(mob,commands.get(commands.size()-1))>0)||(commands.get(commands.size()-1).equals("0"))))
 			{
-				V.add(commands.lastElement());
+				V.add(commands.get(commands.size()-1));
 				commands.remove(commands.size()-1);
 			}
 			else
@@ -432,11 +432,11 @@ public class Auction extends Channel implements Tickable
 				mob.tell(L("Channeling is only allowed during live auctions."));
 				return false;
 			}
-			commands.insertElementAt("AUCTION",0);
+			commands.add(0,"AUCTION");
 			super.execute(mob,commands,metaFlags);
 			return true;
 		}
-		commands.insertElementAt("AUCTION",0);
+		commands.add(0,"AUCTION");
 		super.execute(mob,commands,metaFlags);
 		return false;
 	}

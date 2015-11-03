@@ -41,10 +41,10 @@ public class ClanDetails extends StdCommand
 	private final String[] access=I(new String[]{"CLANDETAILS","CLANPVPKILLS","CLANKILLS","CLAN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final String subCommand = (commands.size()>0)?((String)commands.get(0)).toUpperCase():"CLAN";
+		final String subCommand = (commands.size()>0)?commands.get(0).toUpperCase():"CLAN";
 		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
 		if((clanName.length()==0)&&(mob.clans().iterator().hasNext()))
 			clanName=mob.clans().iterator().next().first.clanID();

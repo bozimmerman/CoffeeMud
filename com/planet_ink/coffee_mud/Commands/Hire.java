@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Hire extends StdCommand
 {
 	public Hire(){}
@@ -40,7 +40,7 @@ public class Hire extends StdCommand
 	private final String[] access=I(new String[]{"HIRE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final String rest=CMParms.combine(commands,1);

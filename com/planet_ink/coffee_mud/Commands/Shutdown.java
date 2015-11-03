@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Shutdown extends StdCommand implements Tickable
 {
 	public Shutdown(){}
@@ -59,7 +59,7 @@ public class Shutdown extends StdCommand implements Tickable
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.isMonster())
@@ -69,7 +69,7 @@ public class Shutdown extends StdCommand implements Tickable
 		boolean keepItDown=true;
 		for(int i=commands.size()-1;i>=1;i--)
 		{
-			final String s=(String)commands.get(i);
+			final String s=commands.get(i);
 			if(s.equalsIgnoreCase("RESTART"))
 			{ keepItDown=false; commands.remove(i);}
 			else
@@ -91,9 +91,9 @@ public class Shutdown extends StdCommand implements Tickable
 			{
 				noPrompt=true;
 				commands.remove(i);
-				final long wait=CMath.s_int((String)commands.get(i));
+				final long wait=CMath.s_int(commands.get(i));
 				commands.remove(i);
-				final String multiplier=(String)commands.get(i);
+				final String multiplier=commands.get(i);
 				commands.remove(i);
 				final long timeMultiplier=CMLib.english().getMillisMultiplierByName(multiplier);
 				if((timeMultiplier<0)||(wait<=0))

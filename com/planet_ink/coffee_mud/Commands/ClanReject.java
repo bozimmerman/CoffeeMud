@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ClanReject extends StdCommand
 {
 	public ClanReject(){}
@@ -42,7 +41,7 @@ public class ClanReject extends StdCommand
 	private final String[] access=I(new String[]{"CLANREJECT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String memberStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";

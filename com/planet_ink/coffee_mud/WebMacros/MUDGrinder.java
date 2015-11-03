@@ -40,8 +40,17 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class MUDGrinder extends StdWebMacro
 {
-	@Override public String name() { return "MUDGrinder"; }
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override
+	public String name()
+	{
+		return "MUDGrinder";
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return true;
+	}
 
 	public static Area getAreaObject(String ID)
 	{
@@ -622,19 +631,28 @@ public class MUDGrinder extends StdWebMacro
 			if(httpReq.getUrlParameter("DELFIRST")!=null)
 				deleteIfExists=httpReq.getUrlParameter("DELFIRST").equalsIgnoreCase("ON");
 			final StringBuffer buf=new StringBuffer(CMStrings.bytesToStr(bufBytes));
-			final Vector<Object> V=new Vector<Object>();
+			Vector<Object> V=new Vector<Object>();
 			V.addAll(CMParms.parse("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT"));
 			V.add(buf);
 			final Command C=CMClass.getCommand("Import");
 			if(C==null)
 				return null;
-			try{C.execute(mob,V,0);}catch(final Exception e){return e.getMessage();}
+			try
+			{
+				V = (Vector<Object>)C.executeInternal(mob, 0, V.toArray(new Object[0]));
+			}
+			catch (final Exception e)
+			{
+				return e.getMessage();
+			}
 			if((V.size()==0)||(V.get(V.size()-1) instanceof StringBuffer))
 				return "<FONT COLOR=LIGHTGREEN>Your file was successfully imported.</FONT>";
 			final StringBuffer error=new StringBuffer("");
 			for(int i=0;i<V.size();i++)
+			{
 				if(V.elementAt(i) instanceof String)
 					error.append(((String)V.elementAt(i))+"<BR>");
+			}
 			return error.toString();
 		}
 		else
@@ -1366,7 +1384,8 @@ public class MUDGrinder extends StdWebMacro
 					return "The room you entered ("+like+") could not be found.";
 				CMLib.map().resetRoom(R);
 				final Room likeRoom=(Room)CMLib.map().getRoom(R).copyOf();
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--) likeRoom.rawDoors()[d]=null;
+				for (int d = Directions.NUM_DIRECTIONS() - 1; d >= 0; d--)
+					likeRoom.rawDoors()[d] = null;
 				RS.addElement(likeRoom);
 			}
 			if(RS.size()==0)
@@ -1398,6 +1417,7 @@ public class MUDGrinder extends StdWebMacro
 			Room R=null;
 			if(overwrite)
 			for(int x=coords[4];x<=endX;x++)
+			{
 				for(int y=coords[5];y<=endY;y++)
 				{
 					roomID=gridRoomID(A,x,y);
@@ -1411,8 +1431,10 @@ public class MUDGrinder extends StdWebMacro
 						}
 					}
 				}
+			}
 			final RoomnumberSet deferredExitSaves=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
 			for(int x=coords[4];x<=endX;x++)
+			{
 				for(int y=coords[5];y<=endY;y++)
 				{
 					roomID=gridRoomID(A,x,y);
@@ -1423,6 +1445,7 @@ public class MUDGrinder extends StdWebMacro
 						Log.sysOut("Grinder",mob.Name()+" added room "+R.roomID());
 					}
 				}
+			}
 			for(final Enumeration e=deferredExitSaves.getRoomIDs();e.hasMoreElements();)
 			{
 				R=getRoomObject(httpReq,(String)e.nextElement());

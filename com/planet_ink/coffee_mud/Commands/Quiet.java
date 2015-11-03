@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Quiet extends StdCommand
 {
 	public Quiet(){}
@@ -40,7 +40,7 @@ public class Quiet extends StdCommand
 	private final String[] access=I(new String[]{"QUIET"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String parm = (commands.size() > 1) ? CMParms.combine(commands,1) : ""; 

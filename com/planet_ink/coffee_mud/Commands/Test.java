@@ -29,6 +29,7 @@ import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
 
 
+
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -261,12 +262,12 @@ public class Test extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()>1)
 		{
-			final String what=((String)commands.get(1)).toUpperCase().trim();
+			final String what=commands.get(1).toUpperCase().trim();
 			//String rest=CMParms.combine(commands,2);
 			if(what.equalsIgnoreCase("levelxptest"))
 			{

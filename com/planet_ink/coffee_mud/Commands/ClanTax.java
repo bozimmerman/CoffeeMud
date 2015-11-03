@@ -42,7 +42,7 @@ public class ClanTax extends StdCommand
 	private final String[] access=I(new String[]{"CLANTAX"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(final MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String taxStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
@@ -66,7 +66,7 @@ public class ClanTax extends StdCommand
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.TAX)!=Authority.CAN_NOT_DO))
 			{	chkC=c.first; break; }
 
-		commands.setElementAt(getAccessWords()[0],0);
+		commands.set(0,getAccessWords()[0]);
 
 		final Clan C=chkC;
 		if(C==null)
@@ -120,7 +120,7 @@ public class ClanTax extends StdCommand
 		setClanTaxRate(mob, C, skipChecks,commands,CMath.div(CMath.s_int(t),100));
 	}
 
-	public void setClanTaxRate(MOB mob, Clan C, boolean skipChecks, Vector commands, double newRate)
+	public void setClanTaxRate(MOB mob, Clan C, boolean skipChecks, List<String> commands, double newRate)
 	{
 		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.TAX,true))
 		{

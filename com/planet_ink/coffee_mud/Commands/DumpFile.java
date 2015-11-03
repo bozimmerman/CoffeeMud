@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class DumpFile extends StdCommand
 {
 	public DumpFile(){}
@@ -40,7 +40,7 @@ public class DumpFile extends StdCommand
 	private final String[] access=I(new String[]{"DUMPFILE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<3)
@@ -54,19 +54,19 @@ public class DumpFile extends StdCommand
 		int numSessions = 0;
 		boolean rawMode=false;
 
-		if(((String)commands.get(0)).equalsIgnoreCase("raw"))
+		if(commands.get(0).equalsIgnoreCase("raw"))
 		{
 			rawMode = true;
 			commands.remove(0);
 		}
 
-		final String targetName = (String)commands.get(0);
+		final String targetName = commands.get(0);
 		final boolean allFlag=(targetName.equalsIgnoreCase("all"));
 
 		commands.remove(0);
 
 		// so they can do dumpfile (username) RAW filename too
-		if(!rawMode && ( ((String)commands.get(0)).equalsIgnoreCase("raw")) )
+		if(!rawMode && ( commands.get(0).equalsIgnoreCase("raw")) )
 		{
 			rawMode = true;
 			commands.remove(0);
@@ -76,7 +76,7 @@ public class DumpFile extends StdCommand
 		while (commands.size() > 0)
 		{
 			boolean wipeAfter = true;
-			final String fn = (String)commands.get(0);
+			final String fn = commands.get(0);
 
 			if (Resources.getResource(fn) != null)
 				wipeAfter = false;

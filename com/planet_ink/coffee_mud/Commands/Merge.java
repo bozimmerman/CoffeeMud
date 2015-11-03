@@ -193,7 +193,7 @@ public class Merge extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.MERGE);
@@ -210,11 +210,11 @@ public class Merge extends StdCommand
 			return false;
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.get(0)).equalsIgnoreCase("noprompt"))
+		   commands.get(0).equalsIgnoreCase("noprompt"))
 			commands.remove(0);
 
 		if((commands.size()>0)&&
-		   ((String)commands.get(0)).equalsIgnoreCase("?"))
+		   commands.get(0).equalsIgnoreCase("?"))
 		{
 			final StringBuffer allFieldsMsg=new StringBuffer("");
 			final Vector allKnownFields=new Vector();
@@ -230,7 +230,7 @@ public class Merge extends StdCommand
 		}
 		String scope="WORLD";
 		if((commands.size()>0)&&
-		   ((String)commands.get(0)).equalsIgnoreCase("room"))
+		   commands.get(0).equalsIgnoreCase("room"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.MERGE))
 			{
@@ -242,7 +242,7 @@ public class Merge extends StdCommand
 			scope="ROOM";
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.get(0)).equalsIgnoreCase("area"))
+		   commands.get(0).equalsIgnoreCase("area"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.MERGE))
 			{
@@ -254,7 +254,7 @@ public class Merge extends StdCommand
 			scope="AREA";
 		}
 		if((commands.size()>0)&&
-		   ((String)commands.get(0)).equalsIgnoreCase("world"))
+		   commands.get(0).equalsIgnoreCase("world"))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.MERGE))
 			{
@@ -270,7 +270,7 @@ public class Merge extends StdCommand
 			mob.tell(L("Merge what? DATABASE or filename"));
 			return false;
 		}
-		String firstWord=(String)commands.get(0);
+		String firstWord=commands.get(0);
 		if(firstWord.equalsIgnoreCase("DATABASE"))
 		{
 			commands.remove(0);
@@ -279,10 +279,10 @@ public class Merge extends StdCommand
 				mob.tell(L("Merge parameters missing: DBCLASS, DBSERVICE, DBUSER, DBPASS"));
 				return false;
 			}
-			firstWord=(String)commands.get(0);
+			firstWord=commands.get(0);
 			return doArchonDBCompare(mob, scope, firstWord, commands);
 		}
-		final String filename=(String)commands.lastElement();
+		final String filename=commands.get(commands.size()-1);
 		commands.remove(filename);
 		final StringBuffer buf=new CMFile(filename,mob,CMFile.FLAG_LOGERRORS).text();
 		if((buf==null)||(buf.length()==0))
@@ -356,7 +356,7 @@ public class Merge extends StdCommand
 
 		for(int i=0;i<commands.size();i++)
 		{
-			String str=((String)commands.get(i)).toUpperCase();
+			String str=commands.get(i).toUpperCase();
 			if(str.startsWith("CHANGE="))
 			{
 				use=changes;
@@ -461,7 +461,7 @@ public class Merge extends StdCommand
 			mergedebugtell(mob,"Ignore fields="+CMParms.toListString(ignore));
 		if(noisy)
 			mergedebugtell(mob,"Change fields="+CMParms.toListString(changes));
-		Log.sysOut("Import",mob.Name()+" merge '"+filename+"'.");
+		Log.sysOut("Merge",mob.Name()+" merge '"+filename+"'.");
 		for(int r=0;r<placesToDo.size();r++)
 		{
 			Room R=(Room)placesToDo.get(r);
@@ -649,7 +649,7 @@ public class Merge extends StdCommand
 		return didSomething;
 	}
 
-	public boolean doArchonDBCompare(MOB mob, String scope, String firstWord, Vector commands) throws java.io.IOException
+	public boolean doArchonDBCompare(MOB mob, String scope, String firstWord, List<String> commands) throws java.io.IOException
 	{
 		CMClass.CMObjectType doType = OBJECT_TYPES.get(firstWord.toUpperCase());
 		if(doType==null)

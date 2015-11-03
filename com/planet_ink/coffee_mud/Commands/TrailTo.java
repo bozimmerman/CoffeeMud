@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class TrailTo extends StdCommand
 {
 	public TrailTo(){}
@@ -41,14 +40,14 @@ public class TrailTo extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 
-	public String trailTo(Room R1, Vector commands)
+	public String trailTo(Room R1, List<String> commands)
 	{
 		int radius=Integer.MAX_VALUE;
 		HashSet<Room> ignoreRooms=null;
 		final TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags();
 		for(int c=0;c<commands.size();c++)
 		{
-			String s=(String)commands.get(c);
+			String s=commands.get(c);
 			if(s.toUpperCase().startsWith("RADIUS"))
 			{
 				s=s.substring(("RADIUS").length()).trim();
@@ -156,13 +155,13 @@ public class TrailTo extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
+		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("QUIETLY")))
 		{
 			commands.remove(commands.size()-1);
-			commands.setElementAt(trailTo(mob.location(),commands),0);
+			commands.set(0,trailTo(mob.location(),commands));
 		}
 		else
 		if(!mob.isMonster())

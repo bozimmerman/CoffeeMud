@@ -48,7 +48,7 @@ public class Kill extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands==null)
@@ -81,7 +81,7 @@ public class Kill extends StdCommand
 		String whomToKill=CMParms.combine(commands,1);
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.KILLDEAD)&&(!mob.isMonster()))
 		{
-			if(((String)commands.lastElement()).equalsIgnoreCase("DEAD"))
+			if(commands.get(commands.size()-1).equalsIgnoreCase("DEAD"))
 			{
 				commands.remove(commands.size()-1);
 				whomToKill=CMParms.combine(commands,1);

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Crawl extends Go
 {
 	public Crawl(){}
@@ -41,7 +41,7 @@ public class Crawl extends Go
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 		throws java.io.IOException
 	{
 		if(secondsElapsed==0)
@@ -56,7 +56,7 @@ public class Crawl extends Go
 		return true;
 	}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));

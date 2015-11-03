@@ -41,7 +41,7 @@ public class Practice extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -56,7 +56,7 @@ public class Practice extends StdCommand
 		boolean triedTeacher=false;
 		if(commands.size()>1)
 		{
-			teacher=mob.location().fetchInhabitant((String)commands.lastElement());
+			teacher=mob.location().fetchInhabitant(commands.get(commands.size()-1));
 			if(teacher!=null)
 			{
 				triedTeacher=true;

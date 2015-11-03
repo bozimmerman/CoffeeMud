@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ClanMorgueSet extends StdCommand
 {
 	public ClanMorgueSet(){}
@@ -41,7 +40,7 @@ public class ClanMorgueSet extends StdCommand
 	private final String[] access=I(new String[]{"CLANMORGUESET"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
@@ -60,7 +59,7 @@ public class ClanMorgueSet extends StdCommand
 		Room R=mob.location();
 		if(skipChecks)
 		{
-			commands.setElementAt(getAccessWords()[0],0);
+			commands.set(0,getAccessWords()[0]);
 			R=CMLib.map().getRoom(CMParms.combine(commands,1));
 		}
 		else

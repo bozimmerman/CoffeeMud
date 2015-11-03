@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Friends extends StdCommand
 {
 	public Friends(){}
@@ -40,7 +40,7 @@ public class Friends extends StdCommand
 	private final String[] access=I(new String[]{"FRIENDS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final PlayerStats pstats=mob.playerStats();
@@ -48,7 +48,7 @@ public class Friends extends StdCommand
 			return false;
 		final Set<String> h=pstats.getFriends();
 
-		if((commands.size()<2)||(((String)commands.get(1)).equalsIgnoreCase("list")))
+		if((commands.size()<2)||(commands.get(1).equalsIgnoreCase("list")))
 		{
 			if(h.size()==0)
 				mob.tell(L("You have no friends listed.  Use FRIENDS ADD to add more."));
@@ -61,7 +61,7 @@ public class Friends extends StdCommand
 			}
 		}
 		else
-		if(((String)commands.get(1)).equalsIgnoreCase("ADD"))
+		if(commands.get(1).equalsIgnoreCase("ADD"))
 		{
 			String name=CMParms.combine(commands,2);
 			if(name.length()==0)
@@ -87,7 +87,7 @@ public class Friends extends StdCommand
 			mob.tell(L("The Player '@x1' has been added to your friends list.",name));
 		}
 		else
-		if(((String)commands.get(1)).equalsIgnoreCase("REMOVE"))
+		if(commands.get(1).equalsIgnoreCase("REMOVE"))
 		{
 			final String name=CMParms.combine(commands,2);
 			if(name.length()==0)
@@ -105,7 +105,7 @@ public class Friends extends StdCommand
 		}
 		else
 		{
-			mob.tell(L("Parameter '@x1' is not recognized.  Try LIST, ADD, or REMOVE.",((String)commands.get(1))));
+			mob.tell(L("Parameter '@x1' is not recognized.  Try LIST, ADD, or REMOVE.",(commands.get(1))));
 			return false;
 		}
 		return false;

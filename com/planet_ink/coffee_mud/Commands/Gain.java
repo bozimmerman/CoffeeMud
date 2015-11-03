@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Gain extends StdCommand
 {
 	public Gain(){}
@@ -40,7 +39,7 @@ public class Gain extends StdCommand
 	private final String[] access=I(new String[]{"GAIN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()==1)
@@ -48,7 +47,7 @@ public class Gain extends StdCommand
 			mob.tell(L("Gain what?  Enter QUALIFY to see what you can gain."));
 			return false;
 		}
-		commands.insertElementAt("SAY",0);
+		commands.add(0,"SAY");
 		mob.doCommand(commands,metaFlags);
 		return false;
 	}

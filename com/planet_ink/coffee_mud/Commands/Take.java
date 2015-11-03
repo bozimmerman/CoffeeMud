@@ -40,7 +40,7 @@ public class Take extends StdCommand
 	private final String[] access=I(new String[]{"TAKE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -56,14 +56,14 @@ public class Take extends StdCommand
 			commands.remove(0);
 			if(commands.size()<2)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("From whom should I take the @x1",(String)commands.get(0)));
+				CMLib.commands().doCommandFail(mob,origCmds,L("From whom should I take the @x1",commands.get(0)));
 				return false;
 			}
 
-			final MOB victim=mob.location().fetchInhabitant((String)commands.lastElement());
+			final MOB victim=mob.location().fetchInhabitant(commands.get(commands.size()-1));
 			if((victim==null)||(!CMLib.flags().canBeSeenBy(victim,mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",(String)commands.lastElement()));
+				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",commands.get(commands.size()-1)));
 				return false;
 			}
 			if((!victim.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ORDER)))
@@ -72,7 +72,7 @@ public class Take extends StdCommand
 				return false;
 			}
 			commands.remove(commands.size()-1);
-			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("from")))
+			if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("from")))
 				commands.remove(commands.size()-1);
 
 			final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,victim,false);
@@ -83,7 +83,7 @@ public class Take extends StdCommand
 			int addendum=1;
 			String addendumStr="";
 			final Vector V=new Vector();
-			boolean allFlag=((String)commands.get(0)).equalsIgnoreCase("all");
+			boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 			if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 			if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
 
@@ -158,7 +158,7 @@ public class Take extends StdCommand
 		}
 		else
 		{
-			if(((String)commands.lastElement()).equalsIgnoreCase("off"))
+			if(commands.get(commands.size()-1).equalsIgnoreCase("off"))
 			{
 				commands.remove(commands.size()-1);
 				final Command C=CMClass.getCommand("Remove");
@@ -166,7 +166,7 @@ public class Take extends StdCommand
 					C.execute(mob,commands,metaFlags);
 			}
 			else
-			if((commands.size()>1)&&(((String)commands.get(1)).equalsIgnoreCase("off")))
+			if((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("off")))
 			{
 				commands.remove(1);
 				final Command C=CMClass.getCommand("Remove");

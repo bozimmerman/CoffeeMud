@@ -63,14 +63,13 @@ public class Experience extends StdCommand
 		return msg;
 	}
 
-	@Override @SuppressWarnings({"unchecked","rawtypes"})
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuffer msg=getScore(mob);
 		if(commands.size()==0)
 		{
-			commands.add(msg);
+			commands.add(msg.toString());
 			return false;
 		}
 		if(!mob.isMonster())

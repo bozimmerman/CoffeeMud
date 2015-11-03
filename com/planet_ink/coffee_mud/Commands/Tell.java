@@ -40,7 +40,7 @@ public class Tell extends StdCommand
 	private final String[] access=I(new String[]{"TELL","T"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -57,7 +57,7 @@ public class Tell extends StdCommand
 		}
 		commands.remove(0);
 
-		if(((String)commands.get(0)).equalsIgnoreCase("last")
+		if(commands.get(0).equalsIgnoreCase("last")
 		   &&(CMath.isNumber(CMParms.combine(commands,1)))
 		   &&(mob.playerStats()!=null))
 		{
@@ -89,7 +89,7 @@ public class Tell extends StdCommand
 		}
 
 		MOB targetM=null;
-		String targetName=((String)commands.get(0)).toUpperCase();
+		String targetName=commands.get(0).toUpperCase();
 		targetM=CMLib.sessions().findPlayerOnline(targetName,true);
 		if(targetM==null)
 			targetM=CMLib.sessions().findPlayerOnline(targetName,false);
@@ -112,9 +112,9 @@ public class Tell extends StdCommand
 		}
 		for(int i=1;i<commands.size();i++)
 		{
-			final String s=(String)commands.get(i);
+			final String s=commands.get(i);
 			if(s.indexOf(' ')>=0)
-				commands.setElementAt("\""+s+"\"",i);
+				commands.set(i,"\""+s+"\"");
 		}
 		String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))

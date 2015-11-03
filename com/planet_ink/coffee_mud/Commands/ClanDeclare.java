@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ClanDeclare extends StdCommand
 {
 	public ClanDeclare(){}
@@ -41,7 +40,7 @@ public class ClanDeclare extends StdCommand
 	private final String[] access=I(new String[]{"CLANDECLARE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<3)
@@ -49,8 +48,8 @@ public class ClanDeclare extends StdCommand
 			mob.tell(L("You must specify the clans name, and a new relationship."));
 			return false;
 		}
-		commands.setElementAt(getAccessWords()[0],0);
-		final String rel=((String)commands.lastElement()).toUpperCase();
+		commands.set(0,getAccessWords()[0]);
+		final String rel=commands.get(commands.size()-1).toUpperCase();
 		Clan C=null;
 		Clan C2=null;
 		String clanName="";
@@ -63,7 +62,7 @@ public class ClanDeclare extends StdCommand
 		C2=CMLib.clans().findClan(clan2Name);
 		if((C2==null)&&(C==null)&&(commands.size()>3))
 		{
-			clanName=(String)commands.get(1);
+			clanName=commands.get(1);
 			clan2Name=CMParms.combine(commands,2,commands.size()-1);
 		}
 

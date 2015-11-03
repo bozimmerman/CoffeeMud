@@ -34,7 +34,6 @@ import org.mozilla.javascript.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MPRun extends StdCommand
 {
 	public MPRun(){}
@@ -43,7 +42,7 @@ public class MPRun extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.findTattoo("SYSTEM_MPRUNDOWN")!=null)
@@ -51,7 +50,7 @@ public class MPRun extends StdCommand
 		MOB checkMOB=mob;
 		if(commands.size()>1)
 		{
-			final String firstParm=(String)commands.get(1);
+			final String firstParm=commands.get(1);
 			final int x=firstParm.indexOf(':');
 			if(x>0)
 			{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class At extends StdCommand
 {
 	public At(){}
@@ -41,7 +40,7 @@ public class At extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.remove(0);
@@ -50,7 +49,7 @@ public class At extends StdCommand
 			mob.tell(L("At where do what?"));
 			return false;
 		}
-		final String cmd=(String)commands.get(0);
+		final String cmd=commands.get(0);
 		commands.remove(0);
 		Room room=CMLib.map().getRoom(cmd.toString());
 		if(room == null)

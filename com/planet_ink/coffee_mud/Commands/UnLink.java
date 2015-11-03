@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class UnLink extends StdCommand
 {
 	public UnLink(){}
@@ -40,11 +39,11 @@ public class UnLink extends StdCommand
 	private final String[] access=I(new String[]{"UNLINK"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.setElementAt("DESTROY",0);
-		commands.insertElementAt("ROOM",1);
+		commands.set(0,"DESTROY");
+		commands.add(1,"ROOM");
 		final Command C=CMClass.getCommand("Destroy");
 		C.execute(mob,commands,metaFlags);
 		return false;

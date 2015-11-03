@@ -41,7 +41,7 @@ public class Order extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -64,7 +64,7 @@ public class Order extends StdCommand
 			return false;
 		}
 
-		String whomToOrder=(String)commands.get(0);
+		String whomToOrder=commands.get(0);
 		final Vector V=new Vector();
 		boolean allFlag=whomToOrder.equalsIgnoreCase("all");
 		if(whomToOrder.toUpperCase().startsWith("ALL.")){ allFlag=true; whomToOrder="ALL "+whomToOrder.substring(4);}
@@ -129,7 +129,7 @@ public class Order extends StdCommand
 		for(int v=0;v<V.size();v++)
 		{
 			target=(MOB)V.get(v);
-			O=CMLib.english().findCommand(target,(Vector)commands.clone());
+			O=CMLib.english().findCommand(target,new XVector<String>(commands));
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 			{
 				if((O instanceof Command)
@@ -139,7 +139,7 @@ public class Order extends StdCommand
 					continue;
 				}
 				if(O instanceof Ability)
-					O=CMLib.english().getToEvoke(target,(Vector)commands.clone());
+					O=CMLib.english().getToEvoke(target,new XVector<String>(commands));
 				if(O instanceof Ability)
 				{
 					if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
@@ -170,7 +170,7 @@ public class Order extends StdCommand
 		for(int v=0;v<doV.size();v++)
 		{
 			target=(MOB)doV.get(v);
-			target.enqueCommand((List)commands.clone(),metaFlags|MUDCmdProcessor.METAFLAG_ORDER,0);
+			target.enqueCommand(new XVector<String>(commands),metaFlags|MUDCmdProcessor.METAFLAG_ORDER,0);
 		}
 		return false;
 	}

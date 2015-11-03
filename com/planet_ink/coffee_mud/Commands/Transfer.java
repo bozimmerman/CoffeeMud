@@ -40,7 +40,7 @@ public class Transfer extends At
 	private final String[] access=I(new String[]{"TRANSFER"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Room room=null;
@@ -50,7 +50,7 @@ public class Transfer extends At
 			return false;
 		}
 		commands.remove(0);
-		String searchName=(String)commands.get(0);
+		String searchName=commands.get(0);
 		final Room curRoom=mob.location();
 		final Vector V=new Vector();
 		boolean allFlag=false;
@@ -60,7 +60,7 @@ public class Transfer extends At
 			if(commands.size()>2)
 			{
 				commands.remove(0);
-				searchName=(String)commands.get(0);
+				searchName=commands.get(0);
 			}
 			else
 				searchName="";
@@ -72,7 +72,7 @@ public class Transfer extends At
 			if(commands.size()>2)
 			{
 				commands.remove(0);
-				searchName=(String)commands.get(0);
+				searchName=commands.get(0);
 			}
 			else
 				searchName="";

@@ -43,7 +43,7 @@ public class Email extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.session()==null)
@@ -53,8 +53,7 @@ public class Email extends StdCommand
 			return true;
 
 		if((commands!=null)
-		&&(commands.size()>1)
-		&&(commands.get(1) instanceof String))
+		&&(commands.size()>1))
 		{
 
 			if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)

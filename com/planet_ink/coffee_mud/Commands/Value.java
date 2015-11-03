@@ -40,7 +40,7 @@ public class Value extends StdCommand
 	private final String[] access=I(new String[]{"VALUE","VAL","V"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -55,15 +55,15 @@ public class Value extends StdCommand
 
 		int maxToDo=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(CMath.s_int((String)commands.get(0))>0))
+		&&(CMath.s_int(commands.get(0))>0))
 		{
-			maxToDo=CMath.s_int((String)commands.get(0));
-			commands.setElementAt("all",0);
+			maxToDo=CMath.s_int(commands.get(0));
+			commands.set(0,"all");
 		}
 
 		String whatName=CMParms.combine(commands,0);
 		final Vector V=new Vector();
-		boolean allFlag=((String)commands.get(0)).equalsIgnoreCase("all");
+		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
 		int addendum=1;

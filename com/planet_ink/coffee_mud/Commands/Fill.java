@@ -40,7 +40,7 @@ public class Fill extends StdCommand
 	private final String[] access=I(new String[]{"FILL"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -65,7 +65,7 @@ public class Fill extends StdCommand
 
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("From what should I fill the @x1?",(String)commands.get(0)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("From what should I fill the @x1?",commands.get(0)));
 			return false;
 		}
 		Environmental fillFromThis=null;
@@ -75,7 +75,7 @@ public class Fill extends StdCommand
 		{
 			int fromDex=commands.size()-1;
 			for(int i=commands.size()-2;i>=1;i--)
-				if(((String)commands.get(i)).equalsIgnoreCase("from"))
+				if(commands.get(i).equalsIgnoreCase("from"))
 				{
 					fromDex=i;
 					commands.remove(i);
@@ -99,7 +99,7 @@ public class Fill extends StdCommand
 		int addendum=1;
 		String addendumStr="";
 		final Vector V=new Vector();
-		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 		if(thingToFill.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(4);}
 		if(thingToFill.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);}
 		boolean doBugFix = true;

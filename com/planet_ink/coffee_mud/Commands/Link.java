@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Link extends At
 {
 	public Link(){}
@@ -41,7 +41,7 @@ public class Link extends At
 	private final String[] access=I(new String[]{"LINK"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
@@ -52,7 +52,7 @@ public class Link extends At
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return false;
 		}
-		final String dirStr=(String)commands.lastElement();
+		final String dirStr=commands.get(commands.size()-1);
 		commands.remove(commands.size()-1);
 		final int direction=Directions.getGoodDirectionCode(dirStr);
 		if(direction<0)

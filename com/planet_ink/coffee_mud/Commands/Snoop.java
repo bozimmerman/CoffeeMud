@@ -51,7 +51,7 @@ public class Snoop extends StdCommand
 
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.remove(0);

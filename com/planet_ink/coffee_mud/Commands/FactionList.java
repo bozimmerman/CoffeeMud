@@ -32,7 +32,6 @@ import java.util.*;
  * limitations under the License.
  */
 
-@SuppressWarnings("rawtypes")
 public class FactionList extends StdCommand
 {
 	public FactionList(){}
@@ -40,7 +39,7 @@ public class FactionList extends StdCommand
 	private final String[] access=I(new String[]{"FACTIONS","FAC"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuffer msg=new StringBuffer(L("\n\r^HFaction Standings:^?^N\n\r"));

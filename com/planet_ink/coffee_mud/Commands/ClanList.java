@@ -41,7 +41,7 @@ public class ClanList extends StdCommand
 	private final String[] access=I(new String[]{"CLANLIST","CLANS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final boolean trophySystemActive=CMLib.clans().trophySystemActive();

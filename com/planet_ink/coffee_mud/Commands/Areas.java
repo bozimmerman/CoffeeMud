@@ -41,7 +41,7 @@ public class Areas extends StdCommand
 	private final String[] access=I(new String[]{"AREAS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String expression=null;
@@ -52,7 +52,7 @@ public class Areas extends StdCommand
 
 		for(int i=1;i<commands.size();i++)
 		{
-			final String s=(String)commands.get(i);
+			final String s=commands.get(i);
 			if(s.toUpperCase().startsWith("SORT=NA"))
 			{
 				append = " (sorted by name)";

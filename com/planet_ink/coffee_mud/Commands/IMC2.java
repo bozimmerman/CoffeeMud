@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class IMC2 extends StdCommand
 {
 	public IMC2(){}
@@ -49,7 +49,7 @@ public class IMC2 extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(!(CMLib.intermud().imc2online()))
@@ -63,7 +63,7 @@ public class IMC2 extends StdCommand
 			IMC2Error(mob);
 			return false;
 		}
-		final String str=(String)commands.get(0);
+		final String str=commands.get(0);
 		if(!(CMLib.intermud().imc2online()))
 			mob.tell(L("IMC2 is unavailable."));
 		else

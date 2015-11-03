@@ -42,7 +42,7 @@ public class Formation extends StdCommand
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -73,7 +73,7 @@ public class Formation extends StdCommand
 			CMLib.commands().doCommandFail(mob,origCmds,L("Noone is following you!"));
 		else
 		{
-			String row=(String)commands.lastElement();
+			String row=commands.get(commands.size()-1);
 			if("FRONT".startsWith(row.toUpperCase()))
 				row="0";
 			commands.remove(commands.size()-1);

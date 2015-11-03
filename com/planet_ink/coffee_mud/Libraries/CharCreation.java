@@ -3279,7 +3279,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				final Command C=CMClass.getCommand("WizInv");
 				if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-					C.execute(mob,new XVector<Object>("WIZINV"),0);
+					C.execute(mob,new XVector<String>("WIZINV"),0);
 			}
 			showTheNews(mob);
 			startRoom = mob.location();
@@ -3319,7 +3319,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				final Command C=CMClass.getCommand("WizInv");
 				if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-					C.execute(mob,new XVector<Object>("WIZINV"),0);
+					C.execute(mob,new XVector<String>("WIZINV"),0);
 			}
 			showTheNews(mob);
 			startRoom = mob.location();

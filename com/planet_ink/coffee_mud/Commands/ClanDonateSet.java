@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ClanDonateSet extends StdCommand
 {
 	public ClanDonateSet(){}
@@ -41,7 +40,7 @@ public class ClanDonateSet extends StdCommand
 	private final String[] access=I(new String[]{"CLANDONATESET"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
@@ -57,7 +56,7 @@ public class ClanDonateSet extends StdCommand
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.SET_DONATE)!=Authority.CAN_NOT_DO))
 			{	C=c.first; break; }
 
-		commands.setElementAt(getAccessWords()[0],0);
+		commands.set(0,getAccessWords()[0]);
 
 		Room R=mob.location();
 		if(skipChecks)

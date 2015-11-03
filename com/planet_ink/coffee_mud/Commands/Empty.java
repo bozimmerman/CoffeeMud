@@ -41,7 +41,7 @@ public class Empty extends Drop
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String whatToDrop=null;
@@ -55,7 +55,7 @@ public class Empty extends Drop
 		commands.remove(0);
 		if(commands.size()>1)
 		{
-			final String s=(String)commands.lastElement();
+			final String s=commands.get(commands.size()-1);
 			if(s.equalsIgnoreCase("here")) 
 				target=mob.location();
 			else
@@ -96,7 +96,7 @@ public class Empty extends Drop
 			return false;
 
 		whatToDrop=CMParms.combine(commands,0);
-		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 		if(whatToDrop.toUpperCase().startsWith("ALL."))
 		{ 
 			allFlag=true; 

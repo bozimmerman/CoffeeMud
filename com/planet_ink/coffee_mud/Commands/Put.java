@@ -47,9 +47,9 @@ public class Put extends StdCommand
 		return access;
 	}
 
-	public void putout(MOB mob, Vector commands, boolean quiet)
+	public void putout(MOB mob, List<String> commands, boolean quiet)
 	{
-		Vector origCmds=new XVector(commands);
+		List<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<3)
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("Put out what?"));
@@ -75,7 +75,7 @@ public class Put extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -85,7 +85,7 @@ public class Put extends StdCommand
 			return false;
 		}
 
-		if(((String)commands.lastElement()).equalsIgnoreCase("on"))
+		if(commands.get(commands.size()-1).equalsIgnoreCase("on"))
 		{
 			commands.remove(commands.size()-1);
 			final Command C=CMClass.getCommand("Wear");
@@ -110,7 +110,7 @@ public class Put extends StdCommand
 			}
 		}
 
-		if(((String)commands.get(1)).equalsIgnoreCase("on"))
+		if(commands.get(1).equalsIgnoreCase("on"))
 		{
 			commands.remove(1);
 			final Command C=CMClass.getCommand("Wear");
@@ -119,7 +119,7 @@ public class Put extends StdCommand
 			return false;
 		}
 
-		if(((String)commands.get(1)).equalsIgnoreCase("out"))
+		if(commands.get(1).equalsIgnoreCase("out"))
 		{
 			putout(mob,commands,false);
 			return false;
@@ -128,11 +128,11 @@ public class Put extends StdCommand
 		commands.remove(0);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Where should I put the @x1",(String)commands.get(0)));
+			CMLib.commands().doCommandFail(mob,origCmds,L("Where should I put the @x1",commands.get(0)));
 			return false;
 		}
 
-		String containerName = (String)commands.lastElement();
+		String containerName = commands.get(commands.size()-1);
 		Environmental container=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_ANY);
 		if(container == null)
 		{
@@ -153,7 +153,7 @@ public class Put extends StdCommand
 		int addendum=1;
 		String addendumStr="";
 		final Vector V=new Vector();
-		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 		if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
 		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();

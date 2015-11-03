@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Vassals extends StdCommand
 {
 	public Vassals(){}
@@ -41,7 +41,7 @@ public class Vassals extends StdCommand
 	private final String[] access=I(new String[]{"VASSALS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.tell(L("The following players are in your service:"));

@@ -317,7 +317,7 @@ public class Reset extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.remove(0);
@@ -329,7 +329,7 @@ public class Reset extends StdCommand
 				mob.tell(L("Reset this ROOM, the whole AREA, or REJUV?"));
 			return false;
 		}
-		String s=(String)commands.get(0);
+		String s=commands.get(0);
 		String rest=(commands.size()>1)?CMParms.combine(commands,1):"";
 		if(s.equalsIgnoreCase("rejuv"))
 		{
@@ -339,7 +339,7 @@ public class Reset extends StdCommand
 				mob.tell(L("Rejuv this ROOM, or the whole AREA?  You can also specify ITEMS or MOBS after ROOM/AREA."));
 				return false;
 			}
-			s=(String)commands.get(0);
+			s=commands.get(0);
 			rest=(commands.size()>1)?CMParms.combine(commands,1):"";
 			int tickID=0;
 			if(rest.startsWith("MOB"))
@@ -796,7 +796,7 @@ public class Reset extends StdCommand
 		{
 			s="room";
 			if(commands.size()>1)
-				s=(String)commands.get(1);
+				s=commands.get(1);
 			if(mob.session()==null)
 				return false;
 			if(mob.session().confirm(L("Alter every mobs combat stats to system defaults?!"), "N"))
@@ -804,7 +804,7 @@ public class Reset extends StdCommand
 				mob.session().print(L("working..."));
 				StringBuffer recordedChanges=null;
 				for(int i=1;i<commands.size();i++)
-					if(((String)commands.get(i)).equalsIgnoreCase("NOSAVE"))
+					if(commands.get(i).equalsIgnoreCase("NOSAVE"))
 					{
 						recordedChanges=new StringBuffer("");
 						break;
@@ -847,7 +847,7 @@ public class Reset extends StdCommand
 							final Area A=(Area)e.nextElement();
 							boolean skip=false;
 							for(int i=1;i<commands.size();i++)
-								if(((String)commands.get(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
+								if(commands.get(i).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
 								{
 									skip=true;
 									break;
@@ -1047,7 +1047,7 @@ public class Reset extends StdCommand
 				mob.tell(L("You need to specify a property or behavior to install."));
 				return false;
 			}
-			final String ID=(String)commands.get(1);
+			final String ID=commands.get(1);
 			Object O=CMClass.getAbility(ID);
 			if(O==null)
 				O=CMClass.getBehavior(ID);
@@ -1184,7 +1184,7 @@ public class Reset extends StdCommand
 		{
 			s="room";
 			if(commands.size()>1)
-				s=(String)commands.get(1);
+				s=commands.get(1);
 
 			if(mob.session()==null)
 				return false;
@@ -1193,7 +1193,7 @@ public class Reset extends StdCommand
 				mob.session().print(L("working..."));
 				StringBuffer recordedChanges=null;
 				for(int i=1;i<commands.size();i++)
-					if(((String)commands.get(i)).equalsIgnoreCase("NOSAVE"))
+					if(commands.get(i).equalsIgnoreCase("NOSAVE"))
 					{
 						recordedChanges=new StringBuffer("");
 						break;
@@ -1237,7 +1237,7 @@ public class Reset extends StdCommand
 							final Area A=(Area)e.nextElement();
 							boolean skip=false;
 							for(int i=1;i<commands.size();i++)
-								if(((String)commands.get(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
+								if(commands.get(i).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
 								{
 									skip=true;
 									commands.remove(i);
@@ -1352,13 +1352,13 @@ public class Reset extends StdCommand
 			try
 			{
 				if(commands.size()>1)
-					s=(String)commands.get(1);
+					s=commands.get(1);
 				boolean area=false;
 				if(s.equalsIgnoreCase("AREA"))
 				{
 					area=true;
 					if(commands.size()>2)
-						s=(String)commands.get(2);
+						s=commands.get(2);
 				}
 				final MOB M=CMLib.players().getLoadPlayer(s);
 				if((M!=null)&&(M.playerStats()!=null))

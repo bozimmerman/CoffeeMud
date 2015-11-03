@@ -58,7 +58,7 @@ public class Save extends StdCommand
 
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((commands.size()==1)&&CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS))
@@ -77,8 +77,8 @@ public class Save extends StdCommand
 		String lastCommand = "";
 		if(commands.size()>1)
 		{
-			firstCommand=((String)commands.get(1)).toUpperCase();
-			lastCommand=((String)commands.lastElement()).toUpperCase();
+			firstCommand=commands.get(1).toUpperCase();
+			lastCommand=commands.get(commands.size()-1).toUpperCase();
 		}
 
 		if(lastCommand.equals("USERS")||lastCommand.equals("PLAYERS")||lastCommand.equals("CHARACTERS"))

@@ -41,12 +41,12 @@ public class Examine extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
 		Vector origCmds=new XVector(commands);
-		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
+		if((commands!=null)&&(commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
 			commands.remove(commands.size()-1);
 			quiet=true;

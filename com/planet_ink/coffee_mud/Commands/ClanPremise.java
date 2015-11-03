@@ -42,7 +42,7 @@ public class ClanPremise extends StdCommand
 	private final String[] access=I(new String[]{"CLANPREMISE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(final MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
@@ -58,7 +58,7 @@ public class ClanPremise extends StdCommand
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.PREMISE)!=Authority.CAN_NOT_DO))
 			{	chkC=c.first; break; }
 
-		commands.setElementAt(getAccessWords()[0],0);
+		commands.set(0,getAccessWords()[0]);
 
 		final Clan C=chkC;
 		if(C==null)

@@ -303,7 +303,7 @@ public class CharGen extends StdCommand
 		Hashtable failSkillCheck=null;
 	}
 
-	public void combatRun(MOB mob, Vector commands)
+	public void combatRun(MOB mob, List<String> commands)
 	{
 		final CombatStats c=new CombatStats();
 		final Room room=mob.location();
@@ -346,7 +346,7 @@ public class CharGen extends StdCommand
 		MOB tempBadGuyM=null;
 		for(int i=0;i<commands.size();i++)
 		{
-			String s=(String)commands.get(i);
+			String s=commands.get(i);
 			if(CMath.isInteger(s))
 			{
 				final int x=CMath.s_int(s);
@@ -1020,7 +1020,7 @@ public class CharGen extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.isMonster())
@@ -1030,20 +1030,20 @@ public class CharGen extends StdCommand
 		boolean createPlayer=false;
 		if(commands.size()>0)
 		{
-			if(((String)commands.get(0)).equalsIgnoreCase("COMBAT"))
+			if(commands.get(0).equalsIgnoreCase("COMBAT"))
 			{
 				commands.remove(0);
 				combatRun(mob,commands);
 				return true;
 			}
 
-			if(((String)commands.get(0)).equalsIgnoreCase("NEW"))
+			if(commands.get(0).equalsIgnoreCase("NEW"))
 			{
 				commands.remove(0);
 				createNewOnly=true;
 			}
 
-			if(((String)commands.get(0)).equalsIgnoreCase("PLAYER"))
+			if(commands.get(0).equalsIgnoreCase("PLAYER"))
 			{
 				commands.remove(0);
 				createPlayer=true;
@@ -1054,7 +1054,7 @@ public class CharGen extends StdCommand
 		String ClassName="";
 		if(commands.size()>0)
 		{
-			ClassName=(String)commands.get(0);
+			ClassName=commands.get(0);
 			C=CMClass.findCharClass(ClassName);
 			level=CMath.s_int(CMParms.combine(commands,1));
 		}

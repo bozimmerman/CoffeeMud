@@ -41,7 +41,7 @@ public class Activate extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -52,7 +52,7 @@ public class Activate extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		final String what=(String)commands.lastElement();
+		final String what=commands.get(commands.size()-1);
 		final String whole=CMParms.combine(commands,0);
 		Item item=null;
 		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whole,Wearable.FILTER_ANY);

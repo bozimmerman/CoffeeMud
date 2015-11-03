@@ -109,7 +109,7 @@ public class Export extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -122,7 +122,7 @@ public class Export extends StdCommand
 			commands.remove(0);
 		if(commands.size()>0)
 		{
-			commandType=((String)commands.get(0)).toUpperCase();
+			commandType=commands.get(0).toUpperCase();
 			commands.remove(0);
 		}
 		if((!commandType.equalsIgnoreCase("ROOM"))
@@ -160,7 +160,7 @@ public class Export extends StdCommand
 		String subType="DATA";
 		if(commands.size()>0)
 		{
-			final String sub=((String)commands.get(0)).toUpperCase().trim();
+			final String sub=commands.get(0).toUpperCase().trim();
 			if((sub.equalsIgnoreCase("ITEMS")
 				||sub.equalsIgnoreCase("MOBS")
 				||sub.equalsIgnoreCase("WEAPONS")

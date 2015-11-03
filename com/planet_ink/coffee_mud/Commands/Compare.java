@@ -41,7 +41,7 @@ public class Compare extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -51,7 +51,7 @@ public class Compare extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		Item compareThis=mob.findItem(null,(String)commands.get(0));
+		Item compareThis=mob.findItem(null,commands.get(0));
 		if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 		{
 			final List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
@@ -61,7 +61,7 @@ public class Compare extends StdCommand
 				{
 					final Environmental shopkeeper=V.get(i);
 					final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-					final Environmental itemToDo=SK.getShop().getStock((String)commands.get(0),mob);
+					final Environmental itemToDo=SK.getShop().getStock(commands.get(0),mob);
 					if((itemToDo==null)||(!(itemToDo instanceof Item)))
 					{
 						continue; // next shopkeeper
@@ -70,13 +70,13 @@ public class Compare extends StdCommand
 				}
 				if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",( (String) commands.get(0))));
+					CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",( commands.get(0))));
 					return false;
 				}
 			}
 			else
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",( (String) commands.get(0))));
+				CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",( commands.get(0))));
 				return false;
 			}
 		}
@@ -122,7 +122,7 @@ public class Compare extends StdCommand
 			toThis=mob.findItem(null,CMParms.combine(commands,1));
 		if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",((String)commands.get(1))));
+			CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",(commands.get(1))));
 			return false;
 		}
 

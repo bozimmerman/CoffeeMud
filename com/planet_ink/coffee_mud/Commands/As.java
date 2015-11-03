@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class As extends StdCommand
 {
 	public As(){}
@@ -41,7 +40,7 @@ public class As extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.remove(0);
@@ -50,7 +49,7 @@ public class As extends StdCommand
 			mob.tell(L("As whom do what?"));
 			return false;
 		}
-		final String cmd=(String)commands.get(0);
+		final String cmd=commands.get(0);
 		commands.remove(0);
 		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AS))||(mob.isMonster()))
 		{
@@ -96,8 +95,8 @@ public class As extends StdCommand
 		}
 		if(M==mob)
 		{
-			if(((String)commands.get(0)).equalsIgnoreCase("here")
-			   ||((String)commands.get(0)).equalsIgnoreCase("."))
+			if(commands.get(0).equalsIgnoreCase("here")
+			   ||commands.get(0).equalsIgnoreCase("."))
 			{
 				commands.remove(0);
 			}
@@ -116,8 +115,8 @@ public class As extends StdCommand
 			mySession.setMob(M);
 			M.setSoulMate(mob);
 			//mySession.initTelnetMode(oldBitmap);
-			if(((String)commands.get(0)).equalsIgnoreCase("here")
-			   ||((String)commands.get(0)).equalsIgnoreCase("."))
+			if(commands.get(0).equalsIgnoreCase("here")
+			   ||commands.get(0).equalsIgnoreCase("."))
 			{
 				if((M.location()!=mob.location())&&(!mob.location().isInhabitant(M)))
 					mob.location().bringMobHere(M,false);

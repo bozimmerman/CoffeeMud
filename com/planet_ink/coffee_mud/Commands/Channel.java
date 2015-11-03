@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Channel extends StdCommand
 {
 	public Channel(){}
@@ -42,7 +42,7 @@ public class Channel extends StdCommand
 	private final static Class[][] internalParameters=new Class[][]{{Boolean.class,String.class,String.class}};
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		return channel(mob, commands, false);
@@ -60,10 +60,10 @@ public class Channel extends StdCommand
 		return Boolean.TRUE;
 	}
 
-	public boolean channel(MOB mob, Vector commands, boolean systemMsg)
+	public boolean channel(MOB mob, List<String> commands, boolean systemMsg)
 	{
 		final PlayerStats pstats=mob.playerStats();
-		final String channelName=((String)commands.get(0)).toUpperCase().trim();
+		final String channelName=commands.get(0).toUpperCase().trim();
 		commands.remove(0);
 		final int channelInt=CMLib.channels().getChannelIndex(channelName);
 		final int channelNum=CMLib.channels().getChannelCodeNumber(channelName);
@@ -101,9 +101,9 @@ public class Channel extends StdCommand
 
 		for(int i=0;i<commands.size();i++)
 		{
-			final String s=(String)commands.get(i);
+			final String s=commands.get(i);
 			if(s.indexOf(' ')>=0)
-				commands.setElementAt("\""+s+"\"",i);
+				commands.set(i,"\""+s+"\"");
 		}
 		final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
 		if(!CMLib.masking().maskCheck(chan.mask,mob,true))
@@ -124,10 +124,10 @@ public class Channel extends StdCommand
 
 		if((commands.size()==2)
 		&&(mob.session()!=null)
-		&&(((String)commands.get(0)).equalsIgnoreCase("last"))
-		&&(CMath.isNumber((String)commands.lastElement())))
+		&&(commands.get(0).equalsIgnoreCase("last"))
+		&&(CMath.isNumber(commands.get(commands.size()-1))))
 		{
-			int num=CMath.s_int((String)commands.lastElement());
+			int num=CMath.s_int(commands.get(commands.size()-1));
 			final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, 0, num);
 			boolean showedAny=false;
 			if(que.size()>0)

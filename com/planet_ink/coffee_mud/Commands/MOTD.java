@@ -46,17 +46,17 @@ public class MOTD extends StdCommand
 	private static Vector<String> DEFAULT_CMD=new ReadOnlyVector<String>(new String[]{"MOTD","AGAIN"});
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean pause=false;
 		String what="MOTD";
 		if((commands!=null)&&(commands.size()>0))
 		{
-			final String firstWord=((String)commands.get(0)).toUpperCase();
+			final String firstWord=commands.get(0).toUpperCase();
 			if(CMParms.indexOf(this.getAccessWords(), firstWord)>0)
 				what=firstWord;
-			if((((String)commands.lastElement()).equalsIgnoreCase("PAUSE")))
+			if((commands.get(commands.size()-1).equalsIgnoreCase("PAUSE")))
 			{
 				pause = true;
 				commands.remove(commands.size()-1);

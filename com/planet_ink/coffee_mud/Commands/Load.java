@@ -65,7 +65,7 @@ public class Load extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob==null)
@@ -79,7 +79,7 @@ public class Load extends StdCommand
 				mob.tell(L("Load what where?"));
 			return false;
 		}
-		String what=(String)commands.get(1);
+		String what=commands.get(1);
 		String name=CMParms.combine(commands,2);
 		if(tryArchon)
 		{

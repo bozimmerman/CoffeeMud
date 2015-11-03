@@ -40,7 +40,7 @@ public class Reply extends StdCommand
 	private final String[] access=I(new String[]{"REPLY","REP","RE"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob==null)
@@ -95,7 +95,7 @@ public class Reply extends StdCommand
 				final Command C=CMClass.getCommand("Say");
 				if((C!=null)&&(C.securityCheck(mob)))
 				{
-					commands.setElementAt("Yell",0);
+					commands.set(0,"Yell");
 					C.execute(mob, commands,metaFlags);
 				}
 				break;

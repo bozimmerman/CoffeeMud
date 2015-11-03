@@ -42,7 +42,7 @@ public class Create extends StdCommand
 	private final String[] access=I(new String[]{"CREATE"});
 	@Override public String[] getAccessWords(){return access;}
 
-	public void exits(MOB mob, Vector commands)
+	public void exits(MOB mob, List<String> commands)
 		throws IOException
 	{
 		if(mob.location().roomID().equals(""))
@@ -58,7 +58,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final int direction=Directions.getGoodDirectionCode(((String)commands.get(2)));
+		final int direction=Directions.getGoodDirectionCode((commands.get(2)));
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
@@ -66,7 +66,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final String Locale=(String)commands.get(3);
+		final String Locale=commands.get(3);
 		Exit thisExit=CMClass.getExit(Locale);
 		if(thisExit==null)
 		{
@@ -194,7 +194,7 @@ public class Create extends StdCommand
 		}
 	}
 	
-	public void items(MOB mob, Vector commands) throws IOException
+	public void items(MOB mob, List<String> commands) throws IOException
 	{
 		if(commands.size()<3)
 		{
@@ -331,7 +331,7 @@ public class Create extends StdCommand
 		Log.sysOut("Items",mob.Name()+" created item "+newItem.ID()+".");
 	}
 
-	public void manufacturer(MOB mob, Vector commands) throws IOException
+	public void manufacturer(MOB mob, List<String> commands) throws IOException
 	{
 		if(commands.size()<3)
 		{
@@ -366,7 +366,7 @@ public class Create extends StdCommand
 		Log.sysOut(mob.Name()+" created manufacturer "+manufacturer.name()+".");
 	}
 
-	public void players(MOB mob, Vector commands) throws IOException
+	public void players(MOB mob, List<String> commands) throws IOException
 	{
 		if(commands.size()<3)
 		{
@@ -400,7 +400,7 @@ public class Create extends StdCommand
 		}
 	}
 
-	public void rooms(MOB mob, Vector commands)
+	public void rooms(MOB mob, List<String> commands)
 	{
 		if(mob.location().roomID().equals(""))
 		{
@@ -415,7 +415,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final int direction=Directions.getGoodDirectionCode(((String)commands.get(2)));
+		final int direction=Directions.getGoodDirectionCode((commands.get(2)));
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
@@ -424,7 +424,7 @@ public class Create extends StdCommand
 		}
 
 		Room thisRoom=null;
-		final String Locale=(String)commands.get(3);
+		final String Locale=commands.get(3);
 		thisRoom=CMClass.getLocale(Locale);
 		if(thisRoom==null)
 		{
@@ -456,7 +456,7 @@ public class Create extends StdCommand
 		Log.sysOut("Rooms",mob.Name()+" created room "+thisRoom.roomID()+".");
 	}
 
-	public void accounts(MOB mob, Vector commands)
+	public void accounts(MOB mob, List<String> commands)
 	{
 		if(commands.size()<4)
 		{
@@ -465,7 +465,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final String AcctName=CMStrings.capitalizeAndLower((String)commands.get(2));
+		final String AcctName=CMStrings.capitalizeAndLower(commands.get(2));
 		final String password=CMParms.combine(commands,3).toLowerCase();
 		if(CMLib.players().accountExists(AcctName))
 		{
@@ -518,7 +518,7 @@ public class Create extends StdCommand
 		return newItem;
 	}
 
-	public void mobs(MOB mob, Vector commands)
+	public void mobs(MOB mob, List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -567,7 +567,7 @@ public class Create extends StdCommand
 		Log.sysOut("Mobs",mob.Name()+" created mob "+newMOB.Name()+".");
 	}
 
-	public void races(MOB mob, Vector commands)
+	public void races(MOB mob, List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -615,7 +615,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The diversity of the world just increased!"));
 	}
 
-	public void areas(MOB mob, Vector commands)
+	public void areas(MOB mob, List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -693,7 +693,7 @@ public class Create extends StdCommand
 		CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
 	}
 
-	public void components(MOB mob, Vector commands)
+	public void components(MOB mob, List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -733,7 +733,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just increased!"));
 	}
 
-	public void expertises(MOB mob, Vector commands)
+	public void expertises(MOB mob, List<String> commands)
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
@@ -784,7 +784,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of skill usage just increased!"));
 	}
 
-	public void titles(MOB mob, Vector commands)
+	public void titles(MOB mob, List<String> commands)
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
@@ -827,7 +827,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The prestige of the players just increased!"));
 	}
 
-	public void abilities(MOB mob, Vector commands)
+	public void abilities(MOB mob, List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -857,7 +857,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
-	public void achievements(MOB mob, Vector commands)
+	public void achievements(MOB mob, List<String> commands)
 	throws IOException
 	{
 		final boolean accountSys = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1;
@@ -902,7 +902,7 @@ public class Create extends StdCommand
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The vanity of the world just increased!"));
 	}
 
-	public void languages(MOB mob, Vector commands)
+	public void languages(MOB mob, List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -932,7 +932,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
-	public void craftSkills(MOB mob, Vector commands)
+	public void craftSkills(MOB mob, List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -962,7 +962,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
-	public void allQualify(MOB mob, Vector commands)
+	public void allQualify(MOB mob, List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<4)
@@ -971,7 +971,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final String eachOrAll=(String)commands.get(2);
+		final String eachOrAll=commands.get(2);
 		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
 		{
 			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
@@ -1002,7 +1002,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
-	public void classes(MOB mob, Vector commands)
+	public void classes(MOB mob, List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -1051,7 +1051,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The employment of the world just increased!"));
 	}
 
-	public void socials(MOB mob, Vector commands)
+	public void socials(MOB mob, List<String> commands)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1080,12 +1080,12 @@ public class Create extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
 		if(commands.size()>1)
-			commandType=((String)commands.get(1)).toUpperCase();
+			commandType=commands.get(1).toUpperCase();
 
 		if(commandType.equals("EXIT"))
 		{
@@ -1519,8 +1519,8 @@ public class Create extends StdCommand
 			String lastWord=null;
 			if(commands.size()>2)
 			{
-				firstWord=(String)commands.get(1);
-				lastWord=(String)commands.lastElement();
+				firstWord=commands.get(1);
+				lastWord=commands.get(commands.size()-1);
 			}
 			Environmental E=null;
 			E=CMClass.getItem(allWord);
@@ -1528,7 +1528,7 @@ public class Create extends StdCommand
 			||(CMLib.english().numPossibleGold(null,allWord)>0)
 			||(CMLib.catalog().getCatalogItem(allWord)!=null))
 			{
-				commands.insertElementAt("ITEM",1);
+				commands.add(1,"ITEM");
 				execute(mob,commands,metaFlags);
 			}
 			else
@@ -1537,7 +1537,7 @@ public class Create extends StdCommand
 				if((E instanceof MOB)
 				||(CMLib.catalog().getCatalogMob(allWord)!=null))
 				{
-					commands.insertElementAt("MOB",1);
+					commands.add(1,"MOB");
 					execute(mob,commands,metaFlags);
 				}
 				else
@@ -1606,12 +1606,12 @@ public class Create extends StdCommand
 					else 
 					if(CMLib.english().numPossibleGold(null,firstWord+" "+theRest)>0)
 					{
-						commands.insertElementAt("ITEM",1);
+						commands.add(1,"ITEM");
 						return execute(mob,commands,metaFlags);
 					}
 					else
 					{
-						final Vector V=(Vector)commands.clone();
+						final List<String> V=new XVector<String>(commands);
 						V.remove(2);
 						for(int i=0;i<num;i++)
 							if((!execute(mob,V,metaFlags))||(!CMLib.flags().isInTheGame(mob, true)))
@@ -1625,7 +1625,7 @@ public class Create extends StdCommand
 					||(CMLib.english().numPossibleGold(null,firstWord)>0)
 					||(CMLib.catalog().getCatalogItem(firstWord)!=null))
 					{
-						commands.insertElementAt("ITEM",1);
+						commands.add(1,"ITEM");
 						return execute(mob,commands,metaFlags);
 					}
 					mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, "

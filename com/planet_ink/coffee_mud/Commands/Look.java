@@ -42,13 +42,15 @@ public class Look extends StdCommand
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
 		final Room R=mob.location();
 		boolean quiet=false;
-		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
+		if((commands!=null)
+		&&(commands.size()>1)
+		&&(commands.get(commands.size()-1).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
 			commands.remove(commands.size()-1);
 			quiet=true;
@@ -60,10 +62,10 @@ public class Look extends StdCommand
 		{
 			Environmental thisThang=null;
 
-			if((commands.size()>2)&&(((String)commands.get(1)).equalsIgnoreCase("at")))
+			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("at")))
 			   commands.remove(1);
 			else
-			if((commands.size()>2)&&(((String)commands.get(1)).equalsIgnoreCase("to")))
+			if((commands.size()>2)&&(commands.get(1).equalsIgnoreCase("to")))
 			   commands.remove(1);
 			final String ID=CMParms.combine(commands,1);
 
@@ -85,7 +87,7 @@ public class Look extends StdCommand
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
 			if((thisThang==null)
 			&&(commands.size()>2)
-			&&(((String)commands.get(1)).equalsIgnoreCase("in")))
+			&&(commands.get(1).equalsIgnoreCase("in")))
 			{
 				commands.remove(1);
 				final String ID2=CMParms.combine(commands,1);
@@ -146,7 +148,7 @@ public class Look extends StdCommand
 		else
 		{
 			if((commands!=null)&&(commands.size()>0))
-				if(((String)commands.get(0)).toUpperCase().startsWith("E"))
+				if(commands.get(0).toUpperCase().startsWith("E"))
 				{
 					CMLib.commands().doCommandFail(mob,origCmds,L("Examine what?"));
 					return false;

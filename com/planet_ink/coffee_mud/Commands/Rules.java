@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Rules extends StdCommand
 {
 	public Rules(){}
@@ -40,7 +40,7 @@ public class Rules extends StdCommand
 	private final String[] access=I(new String[]{"RULES"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer credits=new CMFile(Resources.buildResourcePath("text")+"rules.txt",null,CMFile.FLAG_LOGERRORS).text();

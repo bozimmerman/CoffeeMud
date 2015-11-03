@@ -50,7 +50,7 @@ public class Destroy extends StdCommand
 		return false;
 	}
 
-	public boolean mobs(MOB mob, Vector commands)
+	public boolean mobs(MOB mob, List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -60,7 +60,7 @@ public class Destroy extends StdCommand
 		}
 
 		String mobID=CMParms.combine(commands,2);
-		boolean allFlag=((String)commands.get(2)).equalsIgnoreCase("all");
+		boolean allFlag=commands.get(2).equalsIgnoreCase("all");
 		if(mobID.toUpperCase().startsWith("ALL.")){ allFlag=true; mobID="ALL "+mobID.substring(4);}
 		if(mobID.toUpperCase().endsWith(".ALL")){ allFlag=true; mobID="ALL "+mobID.substring(0,mobID.length()-4);}
 		MOB deadMOB=mob.location().fetchInhabitant(mobID);
@@ -92,7 +92,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public void manufacturer(MOB mob, Vector commands) throws IOException
+	public void manufacturer(MOB mob, List<String> commands) throws IOException
 	{
 		if(commands.size()<3)
 		{
@@ -121,7 +121,7 @@ public class Destroy extends StdCommand
 		}
 	}
 
-	public void accounts(MOB mob, Vector commands)
+	public void accounts(MOB mob, List<String> commands)
 	throws IOException
 	{
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around the heavens."));
@@ -156,7 +156,7 @@ public class Destroy extends StdCommand
 		}
 	}
 
-	public boolean players(MOB mob, Vector commands)
+	public boolean players(MOB mob, List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -253,10 +253,10 @@ public class Destroy extends StdCommand
 
 	}
 
-	public void rooms(MOB mob, Vector commands)
+	public void rooms(MOB mob, List<String> commands)
 		throws IOException
 	{
-		final String thecmd=((String)commands.get(0)).toLowerCase();
+		final String thecmd=commands.get(0).toLowerCase();
 		if(commands.size()<3)
 		{
 			if(thecmd.equalsIgnoreCase("UNLINK"))
@@ -269,7 +269,7 @@ public class Destroy extends StdCommand
 		boolean confirmed=false;
 		if((commands.size()>3))
 		{
-			if(((String)commands.lastElement()).equalsIgnoreCase("CONFIRMED"))
+			if(commands.get(commands.size()-1).equalsIgnoreCase("CONFIRMED"))
 			{
 				commands.remove(commands.size()-1);
 				confirmed=true;
@@ -377,7 +377,7 @@ public class Destroy extends StdCommand
 		}
 	}
 
-	public void exits(MOB mob, Vector commands)
+	public void exits(MOB mob, List<String> commands)
 	{
 		if(mob.location().roomID().equals(""))
 		{
@@ -392,7 +392,7 @@ public class Destroy extends StdCommand
 			return;
 		}
 
-		final int direction=Directions.getGoodDirectionCode(((String)commands.get(2)));
+		final int direction=Directions.getGoodDirectionCode((commands.get(2)));
 		if(direction<0)
 		{
 			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
@@ -434,7 +434,7 @@ public class Destroy extends StdCommand
 		return deadItem;
 	}
 	
-	public boolean items(MOB mob, Vector commands)
+	public boolean items(MOB mob, List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -479,7 +479,7 @@ public class Destroy extends StdCommand
 		}
 
 		int max=Integer.MAX_VALUE;
-		boolean allFlag=((String)commands.get(2)).equalsIgnoreCase("all");
+		boolean allFlag=commands.get(2).equalsIgnoreCase("all");
 		if(itemID.toUpperCase().startsWith("ALL.")){ allFlag=true; itemID="ALL "+itemID.substring(4);}
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
 		boolean doneSomething=false;
@@ -550,7 +550,7 @@ public class Destroy extends StdCommand
 	}
 
 
-	public void areas(MOB mob, Vector commands)
+	public void areas(MOB mob, List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -562,7 +562,7 @@ public class Destroy extends StdCommand
 		boolean confirmed=false;
 		if((commands.size()>3))
 		{
-			if(((String)commands.lastElement()).equalsIgnoreCase("CONFIRMED"))
+			if(commands.get(commands.size()-1).equalsIgnoreCase("CONFIRMED"))
 			{
 				commands.remove(commands.size()-1);
 				confirmed=true;
@@ -572,19 +572,19 @@ public class Destroy extends StdCommand
 		areaNames.add(CMParms.combine(commands,2));
 		if((commands.size()>4))
 		{
-			if(((String)commands.get(2)).equalsIgnoreCase("all"))
+			if(commands.get(2).equalsIgnoreCase("all"))
 			{
 				areaNames.clear();
 				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 					areaNames.add(a.nextElement().Name());
-				if(((String)commands.get(3)).equalsIgnoreCase("except"))
+				if(commands.get(3).equalsIgnoreCase("except"))
 				{
 					for(int i=4;i<commands.size();i++)
 					{
-						final Area A=CMLib.map().getArea((String)commands.get(i));
+						final Area A=CMLib.map().getArea(commands.get(i));
 						if(A==null)
 						{
-							mob.tell(L("There is no such area as '@x1'",((String)commands.get(i))));
+							mob.tell(L("There is no such area as '@x1'",(commands.get(i))));
 							mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a thunderous spell."));
 							return;
 						}
@@ -630,7 +630,7 @@ public class Destroy extends StdCommand
 		}
 	}
 
-	public boolean races(MOB mob, Vector commands)
+	public boolean races(MOB mob, List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -668,7 +668,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean components(MOB mob, Vector commands)
+	public boolean components(MOB mob, List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -690,7 +690,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean expertises(MOB mob, Vector commands)
+	public boolean expertises(MOB mob, List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -711,7 +711,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean titles(MOB mob, Vector commands)
+	public boolean titles(MOB mob, List<String> commands)
 	{
 		mob.tell(L("Destroying a title will not remove the title from all players who may have it."));
 		mob.tell(L("If this is important, you should destroy and then re-add the exact same title with an unreachable mask "
@@ -742,7 +742,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean classes(MOB mob, Vector commands)
+	public boolean classes(MOB mob, List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -780,7 +780,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean abilities(MOB mob, Vector commands)
+	public boolean abilities(MOB mob, List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -816,7 +816,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean achievements(MOB mob, Vector commands)
+	public boolean achievements(MOB mob, List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -850,7 +850,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public void socials(MOB mob, Vector commands)
+	public void socials(MOB mob, List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -923,7 +923,7 @@ public class Destroy extends StdCommand
 		return false;
 	}
 
-	public void allQualify(MOB mob, Vector commands)
+	public void allQualify(MOB mob, List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<4)
@@ -932,7 +932,7 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final String eachOrAll=(String)commands.get(2);
+		final String eachOrAll=commands.get(2);
 		if((!eachOrAll.equalsIgnoreCase("each"))&&(!eachOrAll.equalsIgnoreCase("all")))
 		{
 			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY ALLQUALIFY EACH/ALL [SKILL ID]\n\r"));
@@ -954,7 +954,7 @@ public class Destroy extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((!CMSecurity.isAllowedAnywhereContainsAny(mob,CMSecurity.SECURITY_CMD_GROUP))
@@ -971,7 +971,7 @@ public class Destroy extends StdCommand
 			if(mob.location().fetchInhabitant(CMParms.combine(commands,0))!=null)
 			{
 				final Command C=CMClass.getCommand("Kill");
-				commands.insertElementAt("KILL",0);
+				commands.add(0,"KILL");
 				if(C!=null)
 					C.execute(mob,commands,metaFlags);
 				return false;
@@ -981,14 +981,14 @@ public class Destroy extends StdCommand
 			int maxToDrop=Integer.MAX_VALUE;
 
 			if((commands.size()>1)
-			&&(CMath.s_int((String)commands.get(0))>0))
+			&&(CMath.s_int(commands.get(0))>0))
 			{
-				maxToDrop=CMath.s_int((String)commands.get(0));
-				commands.setElementAt("all",0);
+				maxToDrop=CMath.s_int(commands.get(0));
+				commands.set(0,"all");
 			}
 
 			String whatToDrop=CMParms.combine(commands,0);
-			boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
+			boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 			if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
 			if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
 			int addendum=1;
@@ -1066,7 +1066,7 @@ public class Destroy extends StdCommand
 
 		if(commands.size()>1)
 		{
-			commandType=((String)commands.get(1)).toUpperCase();
+			commandType=commands.get(1).toUpperCase();
 		}
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
@@ -1076,7 +1076,7 @@ public class Destroy extends StdCommand
 			{
 				int which=-1;
 				if(commands.size()>2)
-					which=CMath.s_int((String)commands.get(2));
+					which=CMath.s_int(commands.get(2));
 				final List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
 
 				if((which<=0)||(which>entries.size()))
@@ -1249,7 +1249,7 @@ public class Destroy extends StdCommand
 				return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
-				which=CMath.s_int((String)commands.get(2));
+				which=CMath.s_int(commands.get(2));
 			if(which<=0)
 				mob.tell(L("Please enter a valid player number to delete.  Use List nopurge for more information."));
 			else
@@ -1324,7 +1324,7 @@ public class Destroy extends StdCommand
 				return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
-				which=CMath.s_int((String)commands.get(2));
+				which=CMath.s_int(commands.get(2));
 			if(which<=0)
 				mob.tell(L("Please enter a valid ban number to delete.  Use List Banned for more information."));
 			else
@@ -1358,7 +1358,7 @@ public class Destroy extends StdCommand
 				return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
-				which=CMath.s_int((String)commands.get(2));
+				which=CMath.s_int(commands.get(2));
 			final Session S=CMLib.sessions().getAllSessionAt(which);
 			if(S==null)
 				mob.tell(L("Please enter a valid session number to delete.  Use SESSIONS for more information."));
@@ -1611,16 +1611,16 @@ public class Destroy extends StdCommand
 			}
 			if((thang!=null)&&(thang instanceof Item))
 			{
-				commands.insertElementAt("ITEM",1);
+				commands.add(1,"ITEM");
 				execute(mob,commands,metaFlags);
 			}
 			else
 			if((thang!=null)&&(thang instanceof MOB))
 			{
 				if(((MOB)thang).isMonster())
-					commands.insertElementAt("MOB",1);
+					commands.add(1,"MOB");
 				else
-					commands.insertElementAt("USER",1);
+					commands.add(1,"USER");
 				execute(mob,commands,metaFlags);
 			}
 			else
@@ -1657,7 +1657,7 @@ public class Destroy extends StdCommand
 					else
 					if(CMLib.socials().fetchSocial(allWord,true)!=null)
 					{
-						commands.insertElementAt("SOCIAL",1);
+						commands.add(1,"SOCIAL");
 						execute(mob,commands,metaFlags);
 					}
 					else

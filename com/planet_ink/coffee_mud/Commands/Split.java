@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Split extends StdCommand
 {
 	public Split(){}
@@ -40,7 +40,7 @@ public class Split extends StdCommand
 	private final String[] access=I(new String[]{"SPLIT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
@@ -101,9 +101,9 @@ public class Split extends StdCommand
 			}
 		}
 		else
-		if((commands.size()>2)&&(CMath.isInteger((String)commands.lastElement())))
+		if((commands.size()>2)&&(CMath.isInteger(commands.get(commands.size()-1))))
 		{
-			final int howMuch=CMath.s_int((String)commands.lastElement());
+			final int howMuch=CMath.s_int(commands.get(commands.size()-1));
 			if(howMuch<=0)
 			{
 				mob.tell(L("Split what, how much?"));

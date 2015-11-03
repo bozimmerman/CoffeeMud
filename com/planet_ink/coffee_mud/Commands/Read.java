@@ -80,7 +80,7 @@ public class Read extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
@@ -93,9 +93,9 @@ public class Read extends StdCommand
 		Environmental thisThang=null;
 		if(dir>=0)
 			thisThang=mob.location().getExitInDir(dir);
-		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(), StdCommand.noCoinFilter);
+		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,commands.get(commands.size()-1), StdCommand.noCoinFilter);
 		if(thisThang==null)
-			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_ANY);
+			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,commands.get(commands.size()-1),Wearable.FILTER_ANY);
 		String theRest=null;
 		if(thisThang==null)
 			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Wearable.FILTER_ANY);

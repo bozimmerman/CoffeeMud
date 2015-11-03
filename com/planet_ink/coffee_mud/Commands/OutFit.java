@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class OutFit extends StdCommand
 {
 	public OutFit(){}
@@ -40,7 +40,7 @@ public class OutFit extends StdCommand
 	private final String[] access=I(new String[]{"OUTFIT"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 	throws java.io.IOException
 	{
 		if(secondsElapsed>8.0)
@@ -54,7 +54,7 @@ public class OutFit extends StdCommand
 		return true;
 	}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob==null)

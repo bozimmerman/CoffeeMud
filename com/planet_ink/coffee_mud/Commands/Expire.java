@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Expire extends StdCommand
 {
 	public Expire(){}
@@ -58,7 +58,7 @@ public class Expire extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.session()==null)
@@ -77,7 +77,7 @@ public class Expire extends StdCommand
 		else
 		if(commands.size()==1)
 		{
-			final String playerName=CMStrings.capitalizeAndLower((String)commands.get(0));
+			final String playerName=CMStrings.capitalizeAndLower(commands.get(0));
 			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				stats = CMLib.players().getLoadAccount(playerName);
 			else
@@ -103,7 +103,7 @@ public class Expire extends StdCommand
 		else
 		{
 			long days;
-			final String howLong=(String)commands.get(1);
+			final String howLong=commands.get(1);
 			if(howLong.equalsIgnoreCase("never"))
 				days=Long.MAX_VALUE;
 			else
@@ -117,7 +117,7 @@ public class Expire extends StdCommand
 			}
 			else
 				days=CMath.s_long(howLong)*1000*60*60*24;
-			final String playerName=CMStrings.capitalizeAndLower((String)commands.get(0));
+			final String playerName=CMStrings.capitalizeAndLower(commands.get(0));
 			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				stats = CMLib.players().getLoadAccount(playerName);
 			else

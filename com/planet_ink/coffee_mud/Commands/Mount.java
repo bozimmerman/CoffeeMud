@@ -40,16 +40,15 @@ public class Mount extends StdCommand
 	private final String[] access=I(new String[]{"MOUNT","BOARD","RIDE","M"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		List<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 what?",((String)commands.get(0))));
+			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 what?",(commands.get(0))));
 			return false;
 		}
-		Vector origCommands=(Vector)commands.clone();
 		String cmd=commands.remove(0).toString();
 		Environmental recipient=null;
 		final Vector possRecipients=new Vector();
@@ -68,7 +67,7 @@ public class Mount extends StdCommand
 		Rider RI=null;
 		if(commands.size()>1)
 		{
-			final Item I=mob.location().findItem(null,(String)commands.get(0));
+			final Item I=mob.location().findItem(null,commands.get(0));
 			if(I!=null)
 			{
 				commands.remove(0);
@@ -77,12 +76,12 @@ public class Mount extends StdCommand
 			}
 			if(RI==null)
 			{
-				final MOB M=mob.location().fetchInhabitant((String)commands.get(0));
+				final MOB M=mob.location().fetchInhabitant(commands.get(0));
 				if(M!=null)
 				{
 					if(!CMLib.flags().canBeSeenBy(M,mob))
 					{
-						CMLib.commands().doCommandFail(mob,origCmds,L("You don't see @x1 here.",((String)commands.get(0))));
+						CMLib.commands().doCommandFail(mob,origCmds,L("You don't see @x1 here.",(commands.get(0))));
 						return false;
 					}
 					if((!CMLib.flags().isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
@@ -112,7 +111,7 @@ public class Mount extends StdCommand
 			Command C=CMClass.getCommand("Enter");
 			if(C!=null)
 			{
-				commands=(Vector)origCommands.clone();
+				commands=new XVector<String>(origCmds);
 				commands.set(0,"ENTER");
 				return C.execute(mob, commands, metaFlags);
 			}

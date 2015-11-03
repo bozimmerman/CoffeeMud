@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Expertises extends StdCommand
 {
 	public Expertises(){}
@@ -41,7 +41,7 @@ public class Expertises extends StdCommand
 	private final String[] access=I(new String[]{"EXPERTISES","EXPS"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuffer msg=new StringBuffer("");

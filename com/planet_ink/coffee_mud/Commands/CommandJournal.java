@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class CommandJournal extends StdCommand
 {
 	public CommandJournal(){}
@@ -64,10 +64,10 @@ public class CommandJournal extends StdCommand
 	public boolean transfer(MOB mob,
 							String journalID,
 							String journalWord,
-							Vector commands,
+							List<String> commands,
 							String security)
 	{
-		final String first=(String)commands.get(1);
+		final String first=commands.get(1);
 		final String second=(commands.size()>2)?(String)commands.get(2):"";
 		final String rest=(commands.size()>3)?CMParms.combine(commands,3):"";
 		if(!("TRANSFER".startsWith(first.toUpperCase().trim())))
@@ -136,10 +136,10 @@ public class CommandJournal extends StdCommand
 	public boolean review(MOB mob,
 						  String journalID,
 						  String journalWord,
-						  Vector commands,
+						  List<String> commands,
 						  String security)
 	{
-		final String first=(String)commands.get(1);
+		final String first=commands.get(1);
 		final String second=(commands.size()>2)?CMParms.combine(commands,2):"";
 		if(!("REVIEW".startsWith(first.toUpperCase().trim())))
 		   return false;
@@ -185,7 +185,7 @@ public class CommandJournal extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((commands==null)||(commands.size()<2))
@@ -197,7 +197,7 @@ public class CommandJournal extends StdCommand
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
 			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
-			if(CMJ.NAME().equals(((String)commands.get(0)).toUpperCase().trim()))
+			if(CMJ.NAME().equals(commands.get(0).toUpperCase().trim()))
 			{
 				journal=CMJ;
 				break;
@@ -207,7 +207,7 @@ public class CommandJournal extends StdCommand
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
 			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
-			if(CMJ.NAME().startsWith(((String)commands.get(0)).toUpperCase().trim()))
+			if(CMJ.NAME().startsWith(commands.get(0).toUpperCase().trim()))
 			{
 				journal=CMJ;
 				break;

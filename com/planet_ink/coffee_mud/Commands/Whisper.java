@@ -40,7 +40,7 @@ public class Whisper extends StdCommand
 	private final String[] access=I(new String[]{"WHISPER"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -53,7 +53,7 @@ public class Whisper extends StdCommand
 		final Room R = mob.location();
 		if(commands.size()>2)
 		{
-			final String possibleTarget=(String)commands.get(1);
+			final String possibleTarget=commands.get(1);
 			target=R.fetchFromRoomFavorMOBs(null,possibleTarget);
 			if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
 			   target=null;
@@ -67,9 +67,9 @@ public class Whisper extends StdCommand
 		}
 		for(int i=1;i<commands.size();i++)
 		{
-			final String s=(String)commands.get(i);
+			final String s=commands.get(i);
 			if(s.indexOf(' ')>=0)
-				commands.setElementAt("\""+s+"\"",i);
+				commands.set(i,"\""+s+"\"");
 		}
 		final String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))

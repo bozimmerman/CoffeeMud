@@ -50,7 +50,7 @@ public class Remove extends StdCommand
 	private final static Class[][] internalParameters=new Class[][]{{Item.class},{Item.class,Boolean.class}};
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);

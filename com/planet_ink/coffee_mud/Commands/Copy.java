@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Copy extends StdCommand
 {
 	public Copy(){}
@@ -41,7 +41,7 @@ public class Copy extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
@@ -55,7 +55,7 @@ public class Copy extends StdCommand
 		int number=1;
 		if(commands.size()>1)
 		{
-			number=CMath.s_int((String)commands.get(0));
+			number=CMath.s_int(commands.get(0));
 			if(number<1)
 				number=1;
 			else
@@ -96,7 +96,7 @@ public class Copy extends StdCommand
 		else
 		if(commands.size()>1)
 		{
-			dirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
+			dirCode=Directions.getGoodDirectionCode(commands.get(commands.size()-1));
 			if(dirCode>=0)
 			{
 				commands.remove(commands.size()-1);
@@ -106,7 +106,7 @@ public class Copy extends StdCommand
 				{
 					if(commands.size()>1)
 					{
-						final int subDirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
+						final int subDirCode=Directions.getGoodDirectionCode(commands.get(commands.size()-1));
 						if(subDirCode>=0)
 						{
 							commands.remove(commands.size()-1);

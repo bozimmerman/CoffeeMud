@@ -139,7 +139,7 @@ public class Skill_Climb extends StdSkill
 				CMLib.tracking().walk(mob,dirCode,false,false);
 			else
 			if(target instanceof Rideable)
-				CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<Object>("ENTER",mob.location().getContextName(target)));
+				CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<String>("ENTER",mob.location().getContextName(target)));
 			mob.delEffect(this);
 			mob.recoverPhyStats();
 			if(!success)

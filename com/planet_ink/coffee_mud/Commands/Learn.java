@@ -41,7 +41,7 @@ public class Learn extends StdCommand
 	private final String[] access=I(new String[]{"LEARN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -60,12 +60,12 @@ public class Learn extends StdCommand
 		String sayTo="SAY";
 		if(commands.size()>1)
 		{
-			teacherName="\""+((String)commands.lastElement())+"\" ";
-			if((teacherName.length()>1)&&(mob.location().fetchFromRoomFavorMOBs(null, (String)commands.lastElement()) instanceof MOB))
+			teacherName="\""+(commands.get(commands.size()-1))+"\" ";
+			if((teacherName.length()>1)&&(mob.location().fetchFromRoomFavorMOBs(null, commands.get(commands.size()-1)) instanceof MOB))
 			{
 				sayTo="SAYTO";
 				commands.remove(commands.size()-1);
-				if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("FROM")))
+				if((commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("FROM")))
 					commands.remove(commands.size()-1);
 			}
 			else

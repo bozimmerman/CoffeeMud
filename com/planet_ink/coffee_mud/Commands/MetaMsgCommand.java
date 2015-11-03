@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MetaMsgCommand extends StdCommand
 {
 	public MetaMsgCommand(){}
@@ -40,7 +39,7 @@ public class MetaMsgCommand extends StdCommand
 	private final String[] access=I(new String[]{"METAMSGCOMMAND"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(!CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_ASMESSAGE))

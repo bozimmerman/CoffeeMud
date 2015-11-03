@@ -66,20 +66,20 @@ public class Draw extends Get
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
 		boolean noerrors=false;
 		boolean ifNecessary=false;
 		Vector origCmds=new XVector(commands);
-		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")))
+		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("IFNECESSARY")))
 		{
 			quiet=true;
 			noerrors=true;
 			commands.remove(commands.size()-1);
 			if((commands.size()>0)
-			&&(((String)commands.lastElement()).equalsIgnoreCase("HELD")))
+			&&(commands.get(commands.size()-1).equalsIgnoreCase("HELD")))
 			{
 				commands.remove(commands.size()-1);
 				if(mob.fetchHeldItem()!=null)
@@ -91,12 +91,12 @@ public class Draw extends Get
 		}
 		else
 		{
-			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
+			if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("QUIETLY")))
 			{
 				commands.remove(commands.size()-1);
 				quiet=true;
 			}
-			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")))
+			if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("IFNECESSARY")))
 			{
 				ifNecessary=true;
 				commands.remove(commands.size()-1);
@@ -143,13 +143,13 @@ public class Draw extends Get
 		}
 		else
 		{
-			containerName=(String)commands.lastElement();
-			commands.insertElementAt("all",0);
+			containerName=commands.get(commands.size()-1);
+			commands.add(0,"all");
 			containers=CMLib.english().possibleContainers(mob,commands,Wearable.FILTER_WORNONLY,true);
 			if(containers.size()==0)
 				containers=sheaths;
 			whatToGet=CMParms.combine(commands,0);
-			allFlag=((String)commands.get(0)).equalsIgnoreCase("all");
+			allFlag=commands.get(0).equalsIgnoreCase("all");
 			if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 			if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
 		}

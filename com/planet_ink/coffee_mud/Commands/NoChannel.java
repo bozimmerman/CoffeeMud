@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class NoChannel extends StdCommand
 {
 	public NoChannel(){}
@@ -40,13 +40,13 @@ public class NoChannel extends StdCommand
 	private final String[] access=null;
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
 			return false;
-		String channelName=((String)commands.get(0)).toUpperCase().trim().substring(2);
+		String channelName=commands.get(0).toUpperCase().trim().substring(2);
 		commands.remove(0);
 		int channelNum=-1;
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)

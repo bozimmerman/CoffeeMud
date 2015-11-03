@@ -38,7 +38,7 @@ import org.mozilla.javascript.ScriptableObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class JConsole extends StdCommand
 {
 	public JConsole(){}
@@ -50,7 +50,7 @@ public class JConsole extends StdCommand
 	public static final Set<String> funcH=new SHashSet<String>(ScriptingEngine.funcs);
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String rest="";

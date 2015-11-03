@@ -34,7 +34,7 @@ import org.mozilla.javascript.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class JRun extends StdCommand
 {
 	public JRun(){}
@@ -42,7 +42,7 @@ public class JRun extends StdCommand
 	private final String[] access=I(new String[]{"JRUN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
@@ -52,7 +52,7 @@ public class JRun extends StdCommand
 		}
 		commands.remove(0);
 
-		final String fn = (String)commands.get(0);
+		final String fn = commands.get(0);
 		final StringBuffer ft = new CMFile(fn,mob,CMFile.FLAG_LOGERRORS).text();
 		if((ft==null)||(ft.length()==0))
 		{
@@ -83,7 +83,7 @@ public class JRun extends StdCommand
 		@Override public String getClassName(){ return "JScriptWindow";}
 		static final long serialVersionUID=45;
 		MOB s=null;
-		Vector v=null;
+		List<String> v=null;
 		public MOB mob(){return s;}
 		public int numParms(){return (v==null)?0:v.size();}
 		public String getParm(int i)
@@ -92,11 +92,11 @@ public class JRun extends StdCommand
 				return "";
 			if((i<0)||(i>=v.size()))
 				return "";
-			return (String)v.get(i);
+			return v.get(i);
 		}
 		public static String[] functions = { "mob", "numParms", "getParm", "getParms", "toJavaString"};
 		public String getParms(){return (v==null)?"":CMParms.combineQuoted(v,0);}
-		public JScriptWindow(MOB executor, Vector parms){s=executor; v=parms;}
+		public JScriptWindow(MOB executor, List<String> parms){s=executor; v=parms;}
 		public String toJavaString(Object O){return Context.toString(O);}
 	}
 

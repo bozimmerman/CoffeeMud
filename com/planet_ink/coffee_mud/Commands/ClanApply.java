@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class ClanApply extends StdCommand
 {
 	public ClanApply(){}
@@ -41,10 +41,10 @@ public class ClanApply extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		commands.setElementAt(getAccessWords()[0],0);
+		commands.set(0,getAccessWords()[0]);
 		final String clanName=CMParms.combine(commands,1);
 		if(mob.isMonster())
 			return false;

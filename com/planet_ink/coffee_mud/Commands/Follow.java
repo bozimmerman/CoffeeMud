@@ -125,7 +125,7 @@ public class Follow extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
@@ -137,8 +137,7 @@ public class Follow extends StdCommand
 			return false;
 
 		if((commands.size()>2)
-		&&(commands.lastElement() instanceof String)
-		&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
+		&&(commands.get(commands.size()-1).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
 			commands.remove(commands.size()-1);
 			quiet=true;

@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
 public class AutoInvoke extends StdCommand
 {
 	public AutoInvoke(){}
@@ -83,7 +82,7 @@ public class AutoInvoke extends StdCommand
 	}
 
 	@Override
-	public boolean execute(final MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final List<Ability> abilities=new Vector<Ability>();

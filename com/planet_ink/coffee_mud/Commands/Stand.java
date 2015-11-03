@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Stand extends StdCommand
 {
 	public Stand(){}
@@ -40,10 +40,10 @@ public class Stand extends StdCommand
 	private final String[] access=I(new String[]{"STAND","ST","STA","STAN"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final boolean ifnecessary=((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")));
+		final boolean ifnecessary=((commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("IFNECESSARY")));
 		final Room room = CMLib.map().roomLocation(mob);
 		if(CMLib.flags().isStanding(mob))
 		{

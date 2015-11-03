@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class I3Cmd extends StdCommand
 {
 	public I3Cmd(){}
@@ -49,7 +49,7 @@ public class I3Cmd extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.remove(0);
@@ -63,7 +63,7 @@ public class I3Cmd extends StdCommand
 			i3Error(mob);
 			return false;
 		}
-		final String str=(String)commands.get(0);
+		final String str=commands.get(0);
 		if((!CMLib.intermud().i3online())&&(!str.equalsIgnoreCase("restart")))
 			mob.tell(L("I3 is unavailable."));
 		else

@@ -41,7 +41,7 @@ public class Package extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -53,13 +53,13 @@ public class Package extends StdCommand
 		commands.remove(0);
 		String whatName="";
 		if(commands.size()>0)
-			whatName=(String)commands.lastElement();
+			whatName=commands.get(commands.size()-1);
 		final int maxToGet=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
 		if(maxToGet<0)
 			return false;
 
 		String whatToGet=CMParms.combine(commands,0);
-		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
 		final Vector<Item> V=new Vector<Item>();

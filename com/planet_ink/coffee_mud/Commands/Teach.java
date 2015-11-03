@@ -45,7 +45,7 @@ public class Teach extends StdCommand
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -57,7 +57,7 @@ public class Teach extends StdCommand
 		commands.remove(0);
 
 
-		final MOB student=mob.location().fetchInhabitant((String)commands.get(0));
+		final MOB student=mob.location().fetchInhabitant(commands.get(0));
 		if((student==null)||(!CMLib.flags().canBeSeenBy(student,mob)))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("That person doesn't seem to be here."));

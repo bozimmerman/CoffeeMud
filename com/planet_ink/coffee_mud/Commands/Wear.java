@@ -87,7 +87,7 @@ public class Wear extends StdCommand
 
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
@@ -102,9 +102,9 @@ public class Wear extends StdCommand
 		int wearLocationIndex=0;
 		for(int i=commands.size()-2;i>0;i--)
 		{
-			if(((String)commands.get(i)).equalsIgnoreCase("on"))
+			if(commands.get(i).equalsIgnoreCase("on"))
 			{
-				if((i<commands.size()-2)&&((String)commands.get(i+1)).equalsIgnoreCase("my"))
+				if((i<commands.size()-2)&&commands.get(i+1).equalsIgnoreCase("my"))
 					commands.remove(i+1);
 				final String possibleWearLocation = CMParms.combine(commands, i+1).toLowerCase().trim();
 				int possIndex = CMParms.indexOfIgnoreCase(Wearable.CODES.NAMES(), possibleWearLocation);

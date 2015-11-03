@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Announce extends StdCommand
 {
 	public Announce(){}
@@ -71,11 +70,11 @@ public class Announce extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 
-		String cmd=((String)commands.get(0)).toUpperCase();
+		String cmd=commands.get(0).toUpperCase();
 		if((!cmd.equalsIgnoreCase("ANNOUNCEMSG"))
 		&&(!cmd.equalsIgnoreCase("ANNOUNCETO"))
 		&&(!cmd.equalsIgnoreCase("ANNOUNCE")))
@@ -108,7 +107,7 @@ public class Announce extends StdCommand
 		if(commands.size()>1)
 		{
 			if((!cmd.equalsIgnoreCase("ANNOUNCETO"))
-			||(((String)commands.get(1)).toUpperCase().equals("ALL")))
+			||(commands.get(1).toUpperCase().equals("ALL")))
 			{
 				String text=null;
 				if(cmd.equalsIgnoreCase("ANNOUNCETO"))
@@ -127,7 +126,7 @@ public class Announce extends StdCommand
 			else
 			{
 				boolean found=false;
-				final String name=(String)commands.get(1);
+				final String name=commands.get(1);
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)

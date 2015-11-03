@@ -65,11 +65,11 @@ public class Shell extends StdCommand
 		boolean recurse=false;
 		boolean forceOverwrites=false;
 		boolean preservePaths=false;
-		public cp_options(Vector cmds)
+		public cp_options(List<String> cmds)
 		{
 			for(int c=cmds.size()-1;c>=0;c--)
 			{
-				final String s=(String)cmds.get(c);
+				final String s=cmds.get(c);
 				if(s.startsWith("-"))
 				{
 					for(int c2=1;c2<s.length();c2++)
@@ -218,7 +218,7 @@ public class Shell extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String pwd=(pwds.contains(mob))?(String)pwds.get(pwds.indexOf(mob),2):"";
@@ -229,7 +229,7 @@ public class Shell extends StdCommand
 			return false;
 		}
 		int cmd=-1;
-		String first=((String)commands.get(0)).toUpperCase();
+		String first=commands.get(0).toUpperCase();
 		final StringBuffer allcmds=new StringBuffer("");
 		for(int i=0;i<SUB_CMDS.length;i++)
 		{
@@ -240,7 +240,7 @@ public class Shell extends StdCommand
 				if(first.length()>0)
 				{
 					if(commands.size()>1)
-						commands.setElementAt(first,1);
+						commands.set(1,first);
 					else
 						commands.add(first);
 				}
@@ -336,7 +336,7 @@ public class Shell extends StdCommand
 				mob.tell(L("^x       : -p = preserve paths.^N"));
 				return false;
 			}
-			final String source=(String)commands.get(1);
+			final String source=commands.get(1);
 			String target=CMParms.combine(commands,2);
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
 			if(dirs==null)
@@ -670,7 +670,7 @@ public class Shell extends StdCommand
 				mob.tell(L("^x       : -p = preserve paths.^N"));
 				return false;
 			}
-			final String source=(String)commands.get(1);
+			final String source=commands.get(1);
 			String target=CMParms.combine(commands,2);
 			final CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
 			if(dirs==null)
@@ -780,7 +780,7 @@ public class Shell extends StdCommand
 				mob.tell(L("^xError  : first and second files be specified!^N"));
 				return false;
 			}
-			final String firstFilename=(String)commands.get(1);
+			final String firstFilename=commands.get(1);
 			String secondFilename=CMParms.combine(commands,2);
 			final CMFile file1=new CMFile(incorporateBaseDir(pwd,firstFilename),mob);
 			if((!file1.canRead())

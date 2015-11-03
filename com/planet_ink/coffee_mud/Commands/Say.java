@@ -85,13 +85,13 @@ public class Say extends StdCommand
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
 		String theWord="Say";
 		boolean toFlag=false;
-		final String theCommand=((String)commands.get(0)).toUpperCase();
+		final String theCommand=commands.get(0).toUpperCase();
 		if(theCommand.equals("ASK"))
 			theWord="Ask";
 		else
@@ -131,7 +131,7 @@ public class Say extends StdCommand
 		Physical langTarget=null;
 		if(commands.size()>2)
 		{
-			whom=((String)commands.get(1)).toUpperCase();
+			whom=commands.get(1).toUpperCase();
 			if(!toFlag)
 				for (final String impossibleTarget : impossibleTargets)
 					if(impossibleTarget.startsWith(whom))
@@ -238,7 +238,7 @@ public class Say extends StdCommand
 
 		String combinedCommands;
 		if(commands.size()==2)
-			combinedCommands=(String)commands.get(1);
+			combinedCommands=commands.get(1);
 		else
 			combinedCommands=CMParms.combineQuoted(commands,1);
 		if(combinedCommands.equals(""))

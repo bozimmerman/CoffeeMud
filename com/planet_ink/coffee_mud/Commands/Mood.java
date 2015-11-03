@@ -40,7 +40,7 @@ public class Mood extends StdCommand
 	private final String[] access=I(new String[]{"MOOD"});
 	@Override public String[] getAccessWords(){return access;}
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		final Ability A=CMClass.getAbility("Mood");

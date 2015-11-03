@@ -42,15 +42,15 @@ public class NoFollow extends Follow
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector origCmds=new XVector(commands);
 		if(commands.size()>1)
 		{
-			if(((String)commands.get(0)).equalsIgnoreCase("UNFOLLOW"))
+			if(commands.get(0).equalsIgnoreCase("UNFOLLOW"))
 			{
-				unfollow(mob,((commands.size()>1)&&(commands.get(1) instanceof String)&&(((String)commands.get(1)).equalsIgnoreCase("QUIETLY"))));
+				unfollow(mob,((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("QUIETLY"))));
 				return false;
 			}
 			MOB M=mob.fetchFollower(CMParms.combine(commands,1));
