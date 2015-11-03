@@ -31,11 +31,61 @@ import java.util.*;
    limitations under the License.
 */
 
+/**
+ * Library for configureing and managing the rules for what resource
+ * components (magic dust, tools, etc) are required every time a 
+ * particular skill is used.  Normally this would be part of the 
+ * skill itself, but since this feature was added so late, it's 
+ * separate.  
+ * 
+ *  Also here are common skill limit utilities, for determining
+ *  how many common skills a player can learn.
+ *  
+ * @author Bo Zimmerman
+ */
 public interface AbilityComponents extends CMLibrary
 {
+	/**
+	 * Checks whether the given mob has the given components
+	 * required to use a skill available to him/her, and if found,
+	 * returns them as a FoundComponents list.
+	 * @see AbilityComponents#getAbilityComponents(String)
+	 * @param mob the mob whose inventory or room or both to check
+	 * @param req the ability components rules definition
+	 * @return null if missing components, or the list of found components
+	 */
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req);
+	
+	/**
+	 * If the ability component recipe used to build the list of found
+	 * components needed to use a skill requires that any of the componenets
+	 * are destroyed.
+	 * @see AbilityComponents#componentCheck(MOB, List)
+	 * @param found the components found with componentCheck
+	 * @return the value of the components destroyed
+	 */
 	public int destroyAbilityComponents(List<Object> found);
+	
+	/**
+	 * Returns a friendly readable form of the component requirements
+	 * of the given Ability/Skill ID(), or null if that ability has
+	 * no requirements.  Since requirements may differ by player
+	 * mask, the player mob is also required.
+	 * @param mob the player mob who wants to know
+	 * @param AID the Ability ID() of the skill whose components to check
+	 * @return a friendly readable form of the component requirements
+	 */
 	public String getAbilityComponentDesc(MOB mob, String AID);
+	
+	/**
+	 * Returns a friendly readable form of the component requirements
+	 * of the given Ability/Skill Component List, or null if it has
+	 * no requirements.  Since requirements may differ by player
+	 * mask, the player mob is also required.
+	 * @param mob the player mob who wants to know
+	 * @param req the coded requirements list
+	 * @return a friendly readable form of the component requirements
+	 */
 	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req);
 	public Map<String, List<AbilityComponent>> getAbilityComponentMap();
 	public String addAbilityComponent(String s, Map<String, List<AbilityComponent>> H);
@@ -71,6 +121,4 @@ public interface AbilityComponents extends CMLibrary
 
 		public AbilityLimits specificSkillLimit(int newVal);
 	}
-
-	
 }
