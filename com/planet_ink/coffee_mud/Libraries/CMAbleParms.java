@@ -3512,6 +3512,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return editRow;
 		}
+		
 		@Override
 		public DVector blankRow()
 		{

@@ -191,31 +191,114 @@ public interface AbilityParameters extends CMLibrary
 	 * @param saveVFS true to save to vfs, false for local hard drive
 	 */
 	public void resaveRecipeFile(MOB mob, String recipeFilename, List<DVector> rowsV, List<? extends Object> columnsV, boolean saveVFS);
+	
+	/**
+	 * Given an ItemCraftor object (usually a common skill), this method will load the raw
+	 * recipe file and return it as a stringbuffer.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor
+	 * @param iA the ItemCraftor skill
+	 * @return the recipes for that ItemCraftor, as a stringbuffer
+	 */
 	public StringBuffer getRecipeList(ItemCraftor iA);
+	
+	/**
+	 * Given an ItemCraftor object (usually a common skill), and an item which the ItemCraftor
+	 * might have crafted, this method will construct a single Recipe text line coded for use
+	 * by a Recipe object.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.Recipe
+	 * @param iA the ItemCraftor skill
+	 * @param I the Item to return a recipe for
+	 * @return the recipe line for that ItemCraftor Item
+	 */
 	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException;
 
 	/**
+	 * An AbilityParameters interface for passing around a completely decoded ItemCraftor
+	 * (Common Skill) recipe list, ready for manipulation by users.
 	 * 
 	 * DEV NOTES: Data rows are a DVector (editor ID, data).  However, it starts off as
 	 * (List of possible editor IDs, data), until the correct ID is determined.
-	 * The columns are always either a string, or a list of strings, for multi-use columns.
 	 * For data rows, the offender is blankRow() below, which returns the confused set. 
+	 * The columns are always either a string, or a list of strings, for multi-use columns.
 	 * @author Bo Zimmerman
 	 *
 	 */
 	public static interface AbilityRecipeData
 	{
+		/**
+		 * Returns the VFS filename of the recipe file
+		 * @return the VFS filename of the recipe file
+		 */
 		public String recipeFilename();
+		
+		/**
+		 * Returns the coded format of the recipe list, including optional data
+		 * @return the coded format of the recipe list, including optional data
+		 */
 		public String recipeFormat();
+		
+		/**
+		 * The rows of data, representing the rows of recipes.  One row per List item.
+		 * @return rows of data, representing the rows of recipes.  One row per List item.
+		 */
 		public List<DVector> dataRows();
+		
+		/**
+		 * The columns of the recipe table, including multi-use and optional column data
+		 * @return columns of the recipe table, including multi-use and optional column data
+		 */
 		public List<? extends Object> columns();
+		
+		/**
+		 * Returns the display length of each column, for display purposes
+		 * @return the display length of each column, for display purposes
+		 */
 		public int[] columnLengths();
+		
+		/**
+		 * Returns the display name of each column, for display purposes.
+		 * @return the display name of each column, for display purposes.
+		 */
 		public String[] columnHeaders();
+		
+		/**
+		 * Returns the number of columns that can contain recipe data
+		 * @return the number of columns that can contain recipe data
+		 */
 		public int numberOfDataColumns();
+		
+		/**
+		 * Returns the last parse error when trying to parse a recipe file.
+		 * null means no error.
+		 * @return the last parse error when trying to parse a recipe file.
+		 */
 		public String parseError();
+		
+		/**
+		 * Returns the column number index that represents the Class of the objects
+		 * created by this recipe.
+		 * @return the column number index that represents the Class of the objects
+		 */
 		public int getClassFieldIndex();
+		
+		/**
+		 * Creates a new recipe row from the given Class information
+		 * @param classFieldData the class info for the object in the recipe
+		 * @return the new coded row.
+		 */
 		public DVector newRow(String classFieldData);
+		
+		/**
+		 * Creates a new blank recipe row for alteration.
+		 * @return a new blank recipe row for alteration.
+		 */
 		public DVector blankRow();
+		
+		/**
+		 * Returns true if the recipe file, when loaded, was saved in the vfs
+		 * @return true if the recipe is in the vfs, false for local fs
+		 */
 		public boolean wasVFS();
 	}
 

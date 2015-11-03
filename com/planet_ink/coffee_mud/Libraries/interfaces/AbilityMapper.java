@@ -623,6 +623,10 @@ public interface AbilityMapper extends CMLibrary
 	 * ability they qualify for, determining if there are any pre-requisite
 	 * skills needed to learn this skill.  If they are found, it returns
 	 * those pre-requisites, specially coded.
+	 * @see AbilityMapper#getCommonPreRequisites(MOB, Ability)
+	 * @see AbilityMapper#getCommonPreRequisites(Ability)
+	 * @see AbilityMapper#formatPreRequisites(DVector)
+	 * @see AbilityMapper#getPreReqStrings(String, boolean, String)
 	 * @param studentM the mob who wants to learn
 	 * @param A the Ability the mob wants to learn
 	 * @return any pre-requisites, or null for none.
@@ -637,6 +641,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapper#getCommonPreRequisites(MOB, Ability)
 	 * @see AbilityMapper#getUnmetPreRequisites(MOB, Ability)
 	 * @see AbilityMapper#formatPreRequisites(DVector)
+	 * @see AbilityMapper#getPreReqStrings(String, boolean, String)
 	 * @param A the ability to look for prerequisites to learn
 	 * @return the coded skill prerequisites
 	 */
@@ -650,6 +655,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapper#getCommonPreRequisites(Ability)
 	 * @see AbilityMapper#getUnmetPreRequisites(MOB, Ability)
 	 * @see AbilityMapper#formatPreRequisites(DVector)
+	 * @see AbilityMapper#getPreReqStrings(String, boolean, String)
 	 * @param mob the potential learner of the ability
 	 * @param A the ability to look for prerequisites to learn
 	 * @return the coded skill prerequisites
@@ -663,11 +669,30 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapper#getCommonPreRequisites(Ability)
 	 * @see AbilityMapper#getUnmetPreRequisites(MOB, Ability)
 	 * @see AbilityMapper#getCommonPreRequisites(MOB, Ability)
+	 * @see AbilityMapper#getPreReqStrings(String, boolean, String)
 	 * @param preReqs the coded pre-requisites for this skill
 	 * @return a friendly readable description of those pre-reqs
 	 */
 	public String formatPreRequisites(DVector preReqs);
 
+	/**
+	 * Gets the raw pre-requisites definition for the given mapping by
+	 * class, race, clan ID and ability ID(), optionally also checking the
+	 * All-Qualifies list.  Returns "" if not found, or there are no 
+	 * skill prerequisites.  This is a formatted string where Ability IDs
+	 * are generally semicolon delimited, with required proficiency in 
+	 * parenthesis.
+	 * @see AbilityMapper#getCommonPreRequisites(Ability)
+	 * @see AbilityMapper#getUnmetPreRequisites(MOB, Ability)
+	 * @see AbilityMapper#getCommonPreRequisites(MOB, Ability)
+	 * @see AbilityMapper#formatPreRequisites(DVector)
+	 * @param ID the charclass, race, or clan ID()
+	 * @param checkAll true to check the All Qualifies list, or false not to
+	 * @param abilityID the ability ID() to check
+	 * @return the raw formatted pre-requisite string.
+	 */
+	public String getPreReqStrings(String ID, boolean checkAll, String abilityID);
+	
 	/**
 	 * Returns whether the given ability, for the given charclass, race, or clan
 	 * government ID, and optionally checking the All Qualifies list, is gained
@@ -725,15 +750,128 @@ public interface AbilityMapper extends CMLibrary
 	 * @return true if its secret everywhere, false otherwise
 	 */
 	public boolean getSecretSkill(String abilityID);
+	
+	/**
+	 * Returns any mapping-based overrides to the standard system white
+	 * standards for casting costs (the amount of mana or moves to use a skill).
+	 * The integer array is indexed by the ordinals of the Cost enum.
+	 * @see AbilityMapper.Cost
+	 * @see AbilityMapper#getAllCostOverrides(String)
+	 * @see AbilityMapper#getCostOverrides(String)
+	 * @see AbilityMapper#getCostOverrides(MOB, String)
+	 * @param ID the charclass, race, or clan ID()
+	 * @param checkAll true to check the All Qualifies list, or false not to
+	 * @param abilityID the ability ID() to check
+	 * @return an integer array of the mapping-based overrides to usage costs
+	 */
 	public Integer[] getCostOverrides(String ID, boolean checkAll, String abilityID);
+	
+	/**
+	 * Returns any All-Qualifies overrides to the standard system white
+	 * standards for casting costs (the amount of mana or moves to use a skill).
+	 * The integer array is indexed by the ordinals of the Cost enum.
+	 * @see AbilityMapper.Cost
+	 * @see AbilityMapper#getCostOverrides(String, boolean, String)
+	 * @see AbilityMapper#getCostOverrides(String)
+	 * @see AbilityMapper#getCostOverrides(MOB, String)
+	 * @param abilityID the ability ID() to check
+	 * @return an integer array of the mapping-based overrides to usage costs
+	 */
 	public Integer[] getAllCostOverrides(String abilityID);
+	
+	/**
+	 * Returns any mapping-based overrides to the standard system white
+	 * standards for casting costs (the amount of mana or moves to use a skill)
+	 * relevant to the given mob, based on their class, race, etc.
+	 * The integer array is indexed by the ordinals of the Cost enum.
+	 * @see AbilityMapper.Cost
+	 * @see AbilityMapper#getAllCostOverrides(String)
+	 * @see AbilityMapper#getCostOverrides(String)
+	 * @see AbilityMapper#getCostOverrides(String, boolean, String)
+	 * @param mob the mob whose charclass, race, or clan ID() is relevant
+	 * @param abilityID the ability ID() to check
+	 * @return an integer array of the mapping-based overrides to usage costs
+	 */
 	public Integer[] getCostOverrides(MOB mob, String abilityID);
+	
+	/**
+	 * Returns the first mapping-based override to the standard system white
+	 * standards for casting costs (the amount of mana or moves to use a skill).
+	 * The integer array is indexed by the ordinals of the Cost enum.
+	 * @see AbilityMapper.Cost
+	 * @see AbilityMapper#getCostOverrides(String, boolean, String)
+	 * @see AbilityMapper#getAllCostOverrides(String)
+	 * @see AbilityMapper#getCostOverrides(MOB, String)
+	 * @param abilityID the ability ID() to check
+	 * @return an integer array of the mapping-based overrides to usage costs
+	 */
 	public Integer[] getCostOverrides(String abilityID);
+	
+	/**
+	 * Returns the default argument/parameter to add to the given Ability by ID()
+	 * when gained by the class, race, clan ID, optionally also checking the
+	 * All-Qualifies list.  The argument is sent as the misc-text to the 
+	 * Ability when adding it as a skill.
+	 * @see Environmental#setMiscText(String)
+	 * @param ID the charclass, race, or clan ID()
+	 * @param checkAll true to check the All Qualifies list, or false not to
+	 * @param abilityID the ability ID() to check
+	 * @return the default misc-text arguments for this mapped Ability
+	 */
 	public String getDefaultParm(String ID, boolean checkAll, String abilityID);
-	public String getPreReqStrings(String ID, boolean checkAll, String abilityID);
+	
+	/**
+	 * Returns the default proficiency to give to the given Ability by ID()
+	 * when gained by the class, race, clan ID, optionally also checking the
+	 * All-Qualifies list. 
+	 * @see Ability#proficiency()
+	 * @see AbilityMapper#getMaxProficiency(MOB, boolean, String)
+	 * @param ID the charclass, race, or clan ID()
+	 * @param checkAll true to check the All Qualifies list, or false not to
+	 * @param abilityID the ability ID() to check
+	 * @return the default proficiency argument for this mapped Ability, usually 0
+	 */
 	public int getDefaultProficiency(String ID, boolean checkAll, String abilityID);
+	
+	/**
+	 * Returns the max allowed proficiency for those with the given Ability by ID()
+	 * when carried by the class, race, clan ID, optionally also checking the
+	 * All-Qualifies list. 
+	 * @see Ability#proficiency()
+	 * @see AbilityMapper#getMaxProficiency(String)
+	 * @see AbilityMapper#getMaxProficiency(String, boolean, String)
+	 * @param ID the charclass, race, or clan ID()
+	 * @param checkAll true to check the All Qualifies list, or false not to
+	 * @param abilityID the ability ID() to check
+	 * @return the max proficiency for someone with this this mapped Ability, usually 100
+	 */
 	public int getMaxProficiency(String ID, boolean checkAll, String abilityID);
+	
+	/**
+	 * Returns the max allowed proficiency for those with the given Ability by ID()
+	 * when carried by any class, race, clan ID, while also checking the
+	 * All-Qualifies list. 
+	 * @see AbilityMapper#getMaxProficiency(MOB, boolean, String)
+	 * @see AbilityMapper#getMaxProficiency(String, boolean, String)
+	 * @see Ability#proficiency()
+	 * @param abilityID the ability ID() to check
+	 * @return the max proficiency for everyone with this this mapped Ability, usually 100
+	 */
 	public int getMaxProficiency(String abilityID);
+	
+	/**
+	 * Returns the max allowed proficiency for those with the given Ability by ID()
+	 * when carried by the mob by class, race, clan ID, optionally also checking the
+	 * All-Qualifies list. 
+	 * @see Ability#proficiency()
+	 * @see AbilityMapper#getDefaultProficiency(String, boolean, String)
+	 * @see AbilityMapper#getMaxProficiency(String)
+	 * @see AbilityMapper#getMaxProficiency(String, boolean, String)
+	 * @param mob the mob whose charclass, race, or clan ID() applies
+	 * @param checkAll true to check the All Qualifies list, or false not to
+	 * @param abilityID the ability ID() to check
+	 * @return the max proficiency for the mob with this this mapped Ability, usually 100
+	 */
 	public int getMaxProficiency(MOB mob, boolean checkAll, String abilityID);
 	
 	public boolean isDomainIncludedInAnyAbility(int domain, int acode);
