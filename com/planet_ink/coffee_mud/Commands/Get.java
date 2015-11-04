@@ -102,7 +102,7 @@ public class Get extends StdCommand
 		throws java.io.IOException
 	{
 		final Room R=mob.location();
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("Get what?"));
@@ -119,7 +119,7 @@ public class Get extends StdCommand
 		String containerName="";
 		if(commands.size()>0)
 			containerName=commands.get(commands.size()-1);
-		final Vector containerCommands=new XVector(commands);
+		final Vector<String> containerCommands=new XVector<String>(commands);
 		final java.util.List<Container> containers=CMLib.english().possibleContainers(mob,commands,Wearable.FILTER_ANY,true);
 		int c=0;
 

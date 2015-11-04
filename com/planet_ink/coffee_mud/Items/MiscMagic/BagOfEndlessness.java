@@ -33,7 +33,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 {
 	@Override public String ID(){	return "BagOfEndlessness";}
@@ -84,7 +84,7 @@ public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 			&&(newitem.owner() !=null))
 			{
 				Item neweritem=(Item)newitem.copyOf();
-				final Vector allStuff=new Vector();
+				final Vector<Item> allStuff=new Vector<Item>();
 				allStuff.addElement(neweritem);
 				if(newitem instanceof Container)
 				{
@@ -99,7 +99,7 @@ public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 				neweritem.setContainer(this);
 				for(int i=0;i<allStuff.size();i++)
 				{
-					neweritem=(Item)allStuff.elementAt(i);
+					neweritem=allStuff.elementAt(i);
 					if(newitem.owner() instanceof MOB)
 						((MOB)newitem.owner()).addItem(neweritem);
 					else

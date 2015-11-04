@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Scalp extends CommonSkill
 {
 	@Override public String ID() { return "Scalp"; }
@@ -41,7 +40,7 @@ public class Scalp extends CommonSkill
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =I(new String[] {"SCALP","SCALPING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	public static Vector lastSoManyScalps=new Vector();
+	public static Vector<DeadBody> lastSoManyScalps=new Vector<DeadBody>();
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 
 	private DeadBody body=null;

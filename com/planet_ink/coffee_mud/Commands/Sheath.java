@@ -64,7 +64,7 @@ public class Sheath extends StdCommand
 	{
 		boolean quiet=false;
 		boolean noerrors=false;
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("QUIETLY")))
 		{
 			commands.remove(commands.size()-1);

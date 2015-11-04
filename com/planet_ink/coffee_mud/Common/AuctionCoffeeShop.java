@@ -47,7 +47,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	@Override public String ID(){return "AuctionCoffeeShop";}
 	@Override public String name() { return ID();}
 	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public static final Vector emptyV=new Vector();
+	public static final Vector<Environmental> emptyV=new Vector<Environmental>();
 	public String auctionShop="";
 	protected WeakReference<ShopKeeper> shopKeeper=null;
 
@@ -120,7 +120,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	public Environmental getStock(String name, MOB mob)
 	{
 		final List<AuctionData> auctions=CMLib.coffeeShops().getAuctions(null,auctionShop);
-		final Vector auctionItems=new Vector();
+		final Vector<Environmental> auctionItems=new Vector<Environmental>();
 		for(int a=0;a<auctions.size();a++)
 		{
 			final Item I=auctions.get(a).getAuctionedItem();

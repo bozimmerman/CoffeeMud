@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Ranger_Enemy1 extends StdAbility
 {
 	@Override public String ID() { return "Ranger_Enemy1"; }
@@ -55,10 +55,10 @@ public class Ranger_Enemy1 extends StdAbility
 			if(!(affected instanceof MOB))
 				return super.text();
 			final MOB mob=(MOB)affected;
-			final Vector choices=new Vector();
-			for(final Enumeration r=CMClass.races();r.hasMoreElements();)
+			final Vector<String> choices=new Vector<String>();
+			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 			{
-				final Race R=(Race)r.nextElement();
+				final Race R=r.nextElement();
 				if((!choices.contains(R.racialCategory()))
 				&&(CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 					choices.addElement(R.racialCategory());
@@ -80,7 +80,7 @@ public class Ranger_Enemy1 extends StdAbility
 			choices.remove("Unique");
 			choices.remove("Unknown");
 			choices.remove(mob.charStats().getMyRace().racialCategory());
-			miscText=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+			miscText=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				final Ability A=mob.fetchAbility(a);

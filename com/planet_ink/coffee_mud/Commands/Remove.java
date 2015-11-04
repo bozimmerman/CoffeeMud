@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Remove extends StdCommand
 {
 	public Remove()
@@ -47,13 +47,14 @@ public class Remove extends StdCommand
 		return access;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private final static Class[][] internalParameters=new Class[][]{{Item.class},{Item.class,Boolean.class}};
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("Remove what?"));

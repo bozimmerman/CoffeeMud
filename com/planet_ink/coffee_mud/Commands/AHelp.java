@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class AHelp extends StdCommand
 {
 	public AHelp(){}
@@ -59,7 +59,7 @@ public class AHelp extends StdCommand
 				StringBuffer theRest=(StringBuffer)Resources.getResource("arc_help.therest");
 				if(theRest==null)
 				{
-					final Vector V=new Vector();
+					final Vector<String> V=new Vector<String>();
 					theRest=new StringBuffer("");
 
 					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
@@ -127,9 +127,9 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(final Enumeration b=CMClass.behaviors();b.hasMoreElements();)
+					for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 					{
-						final Behavior B=(Behavior)b.nextElement();
+						final Behavior B=b.nextElement();
 						if(B!=null)
 							V.add(B.ID());
 					}

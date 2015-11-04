@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prayer_RestoreSmell extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_RestoreSmell"; }
@@ -58,7 +58,7 @@ public class Prayer_RestoreSmell extends Prayer implements MendingSkill
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
 		final MOB newMOB=CMClass.getFactoryMOB();
-		final Vector offenders=new Vector(1);
+		final Vector<Ability> offenders=new Vector<Ability>(1);
 
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{

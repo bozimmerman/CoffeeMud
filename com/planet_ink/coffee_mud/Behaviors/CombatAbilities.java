@@ -97,7 +97,7 @@ public class CombatAbilities extends StdBehavior
 			return;
 		}
 		final Vector<String> V=CMParms.parse(theParms.trim());
-		final Vector classes=new Vector();
+		final Vector<CharClass> classes=new Vector<CharClass>();
 		for(int v=0;v<V.size();v++)
 		{
 			C=CMClass.findCharClass(V.elementAt(v));
@@ -116,7 +116,7 @@ public class CombatAbilities extends StdBehavior
 		}
 		for(int i=0;i<classes.size();i++)
 		{
-			C=(CharClass)classes.elementAt(i);
+			C=classes.elementAt(i);
 			mob.baseCharStats().setCurrentClass(C);
 			mob.baseCharStats().setClassLevel(C,mob.basePhyStats().level()/classes.size());
 		}
@@ -707,7 +707,7 @@ public class CombatAbilities extends StdBehavior
 			{
 				if((newWeapon==null)&&(R!=null))
 				{
-					final Vector choices=new Vector(1);
+					final Vector<Item> choices=new Vector<Item>(1);
 					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 					{
 						final Item I=i.nextElement();
@@ -793,7 +793,7 @@ public class CombatAbilities extends StdBehavior
 		{
 			if((weaponSet.wand==null)&&(weaponSet.offHandWand!=null)&&(weaponSet.offHandWand.canWear(mob,Wearable.WORN_HELD)))
 			{
-				final Vector V=new Vector();
+				final Vector<String> V=new Vector<String>();
 				V.addElement("hold");
 				V.addElement(weaponSet.offHandWand.name());
 				mob.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
@@ -817,7 +817,7 @@ public class CombatAbilities extends StdBehavior
 						target=null;
 					if(target!=null)
 					{
-						final Vector V=new Vector();
+						final Vector<String> V=new Vector<String>();
 						V.addElement("sayto");
 						V.addElement(target.name());
 						V.addElement(((Wand)weaponSet.wand).magicWord());

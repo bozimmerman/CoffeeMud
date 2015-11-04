@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Butchering extends GatheringSkill
 {
 	@Override public String ID() { return "Butchering"; }
@@ -78,7 +77,7 @@ public class Butchering extends GatheringSkill
 					{
 						mob.location().show(mob,null,body,getActivityMessageType(),L("<S-NAME> manage(s) to skin and chop up <O-NAME>."));
 						final List<RawMaterial> resources=body.charStats().getMyRace().myResources();
-						final Vector diseases=new Vector();
+						final Vector<Ability> diseases=new Vector<Ability>();
 						for(int i=0;i<body.numEffects();i++)
 						{
 							final Ability A=body.fetchEffect(i);
@@ -96,7 +95,7 @@ public class Butchering extends GatheringSkill
 								final Item newFound=(Item)((Item)resources.get(i)).copyOf();
 								if((newFound instanceof Food)||(newFound instanceof Drink))
 									for(int d=0;d<diseases.size();d++)
-										newFound.addNonUninvokableEffect((Ability)((Ability)diseases.elementAt(d)).copyOf());
+										newFound.addNonUninvokableEffect((Ability)diseases.elementAt(d).copyOf());
 								newFound.recoverPhyStats();
 								mob.location().addItem(newFound,ItemPossessor.Expire.Resource);
 								mob.location().recoverRoomStats();

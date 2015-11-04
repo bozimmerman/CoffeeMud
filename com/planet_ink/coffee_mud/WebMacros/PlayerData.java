@@ -34,7 +34,7 @@ import java.util.Map.Entry;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class PlayerData extends StdWebMacro
 {
 	@Override public String name() { return "PlayerData"; }
@@ -313,9 +313,9 @@ public class PlayerData extends StdWebMacro
 		}
 		case 61:
 		{
-			for(final Enumeration e=M.factions();e.hasMoreElements();)
+			for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
 			{
-				final String FID=(String)e.nextElement();
+				final String FID=e.nextElement();
 				final Faction F=CMLib.factions().getFaction(FID);
 				final int value=M.fetchFaction(FID);
 				if(F!=null)
@@ -436,9 +436,9 @@ public class PlayerData extends StdWebMacro
 				String old=httpReq.getUrlParameter("RACE");
 				if((firstTime)||(old.length()==0))
 					old=""+M.baseCharStats().getMyRace().ID();
-				for(final Enumeration r=CMClass.races();r.hasMoreElements();)
+				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
-					final Race R2=(Race)r.nextElement();
+					final Race R2=r.nextElement();
 					str.append("<OPTION VALUE=\""+R2.ID()+"\"");
 					if(R2.ID().equals(old))
 						str.append(" SELECTED");
@@ -451,9 +451,9 @@ public class PlayerData extends StdWebMacro
 				if(firstTime)
 					old=M.getWorshipCharID();
 				str.append("<OPTION "+((old.length()==0)?"SELECTED":"")+" VALUE=\"\">Godless");
-				for(final Enumeration e=CMLib.map().deities();e.hasMoreElements();)
+				for(final Enumeration<Deity> e=CMLib.map().deities();e.hasMoreElements();)
 				{
-					final Deity E=(Deity)e.nextElement();
+					final Deity E=e.nextElement();
 					str.append("<OPTION VALUE=\""+E.Name()+"\"");
 					if(E.Name().equalsIgnoreCase(old))
 						str.append(" SELECTED");
@@ -465,7 +465,7 @@ public class PlayerData extends StdWebMacro
 				if(M.playerStats()!=null)
 				{
 					int b=0;
-					final Vector titles=new Vector();
+					final Vector<String> titles=new Vector<String>();
 					if(firstTime)
 						titles.addAll(M.playerStats().getTitles());
 					else
@@ -478,7 +478,7 @@ public class PlayerData extends StdWebMacro
 					}
 					for(b=0;b<titles.size();b++)
 					{
-						final String B=(String)titles.elementAt(b);
+						final String B=titles.elementAt(b);
 						if(B!=null)
 							str.append("<INPUT TYPE=TEXT NAME=TITLE"+b+" SIZE="+B.length()+" VALUE=\""+CMStrings.replaceAll(B,"\"","&quot;")+"\"><BR>");
 					}

@@ -244,7 +244,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	@Override
 	public List<MOB> getCriminals(Area myArea, String searchStr)
 	{
-		final Vector V=new Vector();
+		final Vector<MOB> V=new Vector<MOB>();
 		if(!theLawIsEnabled())
 			return V;
 		final Law laws=getLaws(myArea,false);
@@ -260,7 +260,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	@Override
 	public List<LegalWarrant> getWarrantsOf(Area myArea, MOB accused)
 	{
-		final Vector V=new Vector();
+		final Vector<LegalWarrant> V=new Vector<LegalWarrant>();
 		if(!theLawIsEnabled())
 			return V;
 		final Law laws=getLaws(myArea,false);
@@ -772,19 +772,21 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return true;
 	}
 
-	public Vector getRelevantWarrants(List<LegalWarrant> warrants, LegalWarrant W, MOB criminal)
+	public Vector<LegalWarrant> getRelevantWarrants(List<LegalWarrant> warrants, LegalWarrant W, MOB criminal)
 	{
-		final Vector V=new Vector();
+		final Vector<LegalWarrant> V=new Vector<LegalWarrant>();
 		if(W!=null)
 			V.addElement(W);
 		for(final LegalWarrant W2 : warrants)
+		{
 			if((W2.criminal()==criminal)
 			&&(W2!=W)
 			&&((W==null)
 				||(W2.crime()==null)
 				||(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 				||(W2.crime().equalsIgnoreCase(W.crime()))))
-				V.addElement(W2);
+					V.addElement(W2);
+		}
 		return V;
 	}
 
@@ -799,10 +801,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			return CMath.s_double(s);
 		}
 		double fine=0.0;
-		final Vector V=getRelevantWarrants(laws.warrants(),W,criminal);
+		final Vector<LegalWarrant> V=getRelevantWarrants(laws.warrants(),W,criminal);
 		for(int w2=0;w2<V.size();w2++)
 		{
-			final LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
+			final LegalWarrant W2=V.elementAt(w2);
 			if(!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 			{
 				s=W.getPunishmentParm(Law.PUNISHMENTMASK_FINE);
@@ -824,10 +826,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		s=W.getPunishmentParm(Law.PUNISHMENTMASK_DETAIN);
 		if((s==null)||(s.length()==0))
 		{
-			final Vector V=getRelevantWarrants(laws.warrants(),W,criminal);
+			final Vector<LegalWarrant> V=getRelevantWarrants(laws.warrants(),W,criminal);
 			for(int w2=0;w2<V.size();w2++)
 			{
-				final LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
+				final LegalWarrant W2=V.elementAt(w2);
 				if(!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 				{
 					s=W.getPunishmentParm(Law.PUNISHMENTMASK_DETAIN);
@@ -842,6 +844,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 		return "";
 	}
+
 	protected String getDetainRoom(Law laws, LegalWarrant W, MOB criminal)
 	{
 		final String s=getDetainParm(laws,W,criminal);
@@ -852,6 +855,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			return s;
 		return s.substring(0,x);
 	}
+
 	protected int getDetainTime(Law laws, LegalWarrant W, MOB criminal)
 	{
 		final String s=getDetainParm(laws,W,criminal);
@@ -862,15 +866,16 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			return laws.jailTimes()[0].intValue();
 		return CMath.s_int(s.substring(x+1));
 	}
+
 	public int highestCrimeAction(Law laws, LegalWarrant W, MOB criminal)
 	{
 		int highest=0;
 		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 			return W.punishment();
-		final Vector V=getRelevantWarrants(laws.warrants(),W,criminal);
+		final Vector<LegalWarrant> V=getRelevantWarrants(laws.warrants(),W,criminal);
 		for(int w2=0;w2<V.size();w2++)
 		{
-			final LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
+			final LegalWarrant W2=V.elementAt(w2);
 			if(!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 			{
 				if(((W2.punishment()&Law.PUNISHMENT_MASK)+W2.offenses())>(highest&Law.PUNISHMENT_MASK))
@@ -879,7 +884,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 		for(int w2=0;w2<V.size();w2++)
 		{
-			final LegalWarrant W2=(LegalWarrant)V.elementAt(w2);
+			final LegalWarrant W2=V.elementAt(w2);
 			if((!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 			&&(highest<((W2.punishment()&Law.PUNISHMENT_MASK)+4)))
 				highest++;
@@ -895,6 +900,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean isBusyWithJustice(Law laws, MOB M)
 	{
 		for(final LegalWarrant W : laws.warrants())
+		{
 			if(W.arrestingOfficer()!=null)
 			{
 				if(W.criminal()==M)
@@ -903,6 +909,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(W.arrestingOfficer()==M)
 					return true;
 			}
+		}
 		return false;
 	}
 
@@ -1066,7 +1073,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public List<Room> getRooms(Area A, List<String> V)
 	{
-		final Vector finalV=new Vector();
+		final Vector<Room> finalV=new Vector<Room>();
 		Room jail=null;
 		if(V.size()==0)
 			return finalV;
@@ -1169,7 +1176,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public boolean judgeMe(Law laws, MOB judge, MOB officer, MOB criminal, LegalWarrant W, Area A, boolean debugging)
 	{
-		final Vector relevantCrimes=getRelevantWarrants(laws.warrants(),W,criminal);
+		final Vector<LegalWarrant> relevantCrimes=getRelevantWarrants(laws.warrants(),W,criminal);
 		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SKIPTRIAL))
 			judge=officer;
 		if(debugging)
@@ -1185,7 +1192,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			str.append(L("@x1, you are in trouble for @x2.  ",criminal.name(),restOfCharges(laws,criminal)));
 			for(int w2=0;w2<relevantCrimes.size();w2++)
 			{
-				final LegalWarrant W2=(LegalWarrant)relevantCrimes.elementAt(w2);
+				final LegalWarrant W2=relevantCrimes.elementAt(w2);
 				if(W2.criminal()==criminal)
 				{
 					if(W2.witness()!=null)
@@ -1210,7 +1217,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			str.append(L("@x1, you are in trouble for @x2.  ",criminal.name(),restOfCharges(laws,criminal)));
 			for(int w2=0;w2<relevantCrimes.size();w2++)
 			{
-				final LegalWarrant W2=(LegalWarrant)relevantCrimes.elementAt(w2);
+				final LegalWarrant W2=relevantCrimes.elementAt(w2);
 				if(W2.criminal()==criminal)
 				{
 					if(W2.witness()!=null)
@@ -1592,11 +1599,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		W.setLastOffense(System.currentTimeMillis());
 		W.setWarnMsg(warnMsg);
 		sentence=sentence.trim();
-		final Vector sentences=CMParms.parse(sentence);
+		final Vector<String> sentences=CMParms.parse(sentence);
 		W.setPunishment(0);
 		for(int v=0;v<sentences.size();v++)
 		{
-			String s=(String)sentences.elementAt(v);
+			String s=sentences.elementAt(v);
 			final int x=s.indexOf('=');
 			String parm=null;
 			if(x>0)
@@ -2526,10 +2533,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(Character.toString((char)judge.charStats().getStat(CharStats.STAT_GENDER)).equalsIgnoreCase("F"))
 							sirmaam="Ma'am";
 						CMLib.commands().postSay(officer,judge,L("@x1, @x2 has been arrested @x3.",sirmaam,W.criminal().name(),restOfCharges(laws,W.criminal())),false,false);
-						final Vector warrants=getRelevantWarrants(laws.warrants(),W,W.criminal());
+						final Vector<LegalWarrant> warrants=getRelevantWarrants(laws.warrants(),W,W.criminal());
 						for(int w2=0;w2<warrants.size();w2++)
 						{
-							final LegalWarrant W2=(LegalWarrant)warrants.elementAt(w2);
+							final LegalWarrant W2=warrants.elementAt(w2);
 							if(W2.witness()!=null)
 								CMLib.commands().postSay(officer,judge,L("The charge of @x1 was witnessed by @x2.",fixCharge(W2),W2.witness().name()),false,false);
 						}

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Commands extends StdCommand
 {
 	public Commands(){}
@@ -52,12 +52,12 @@ public class Commands extends StdCommand
 				return false;
 			}
 			final StringBuffer commandList=new StringBuffer("");
-			final Vector commandSet=new Vector();
+			final Vector<String> commandSet=new Vector<String>();
 			int col=0;
-			final HashSet done=new HashSet();
-			for(final Enumeration e=CMClass.commands();e.hasMoreElements();)
+			final HashSet<String> done=new HashSet<String>();
+			for(final Enumeration<Command> e=CMClass.commands();e.hasMoreElements();)
 			{
-				final Command C=(Command)e.nextElement();
+				final Command C=e.nextElement();
 				final String[] access=C.getAccessWords();
 				if((access!=null)
 				&&(access.length>0)
@@ -80,9 +80,9 @@ public class Commands extends StdCommand
 			}
 			Collections.sort(commandSet);
 			final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(19.0,mob);
-			for(final Iterator i=commandSet.iterator();i.hasNext();)
+			for(final Iterator<String> i=commandSet.iterator();i.hasNext();)
 			{
-				final String s=(String)i.next();
+				final String s=i.next();
 				if(++col>3){ commandList.append("\n\r"); col=0;}
 				commandList.append(CMStrings.padRight("^<HELP^>"+s+"^</HELP^>",COL_LEN));
 			}

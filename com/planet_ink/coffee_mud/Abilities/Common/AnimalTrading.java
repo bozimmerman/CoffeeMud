@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class AnimalTrading extends CommonSkill
 {
 	@Override public String ID() { return "AnimalTrading"; }
@@ -44,7 +43,7 @@ public class AnimalTrading extends CommonSkill
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
-	protected Vector recentlyTraded=new Vector();
+	protected Vector<String> recentlyTraded=new Vector<String>();
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_IdentifyPoison extends StdSkill
 {
 	@Override public String ID() { return "Skill_IdentifyPoison"; }
@@ -47,7 +47,7 @@ public class Skill_IdentifyPoison extends StdSkill
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		final Vector offenders=new Vector();
+		final Vector<Ability> offenders=new Vector<Ability>();
 
 		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{

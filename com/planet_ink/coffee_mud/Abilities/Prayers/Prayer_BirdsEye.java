@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_BirdsEye extends Prayer
 {
 	@Override public String ID() { return "Prayer_BirdsEye"; }
@@ -60,7 +59,7 @@ public class Prayer_BirdsEye extends Prayer
 				final Item I=CMClass.getItem("BardMap");
 				if(I!=null)
 				{
-					final Vector set=new Vector();
+					final Vector<Room> set=new Vector<Room>();
 					TrackingLibrary.TrackingFlags flags;
 					flags = new TrackingLibrary.TrackingFlags()
 							.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
@@ -68,7 +67,7 @@ public class Prayer_BirdsEye extends Prayer
 					CMLib.tracking().getRadiantRooms(mob.location(),set,flags,null,2,null);
 					final StringBuffer str=new StringBuffer("");
 					for(int i=0;i<set.size();i++)
-						str.append(CMLib.map().getExtendedRoomID((Room)set.elementAt(i))+";");
+						str.append(CMLib.map().getExtendedRoomID(set.elementAt(i))+";");
 					I.setReadableText(str.toString());
 					I.setName("");
 					I.basePhyStats().setDisposition(PhyStats.IS_GLOWING);

@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class ClanQual extends StdCommand
 {
 	public ClanQual(){}
@@ -116,7 +116,7 @@ public class ClanQual extends StdCommand
 							session.prompt(IC[0].reset());
 							return;
 						}
-						final Vector cmds=new Vector();
+						final Vector<String> cmds=new Vector<String>();
 						cmds.add(getAccessWords()[0]);
 						cmds.add(qualMask);
 						if(skipChecks||CMLib.clans().goForward(mob,C,cmds,Clan.Function.PREMISE,true))

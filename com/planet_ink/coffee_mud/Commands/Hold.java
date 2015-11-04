@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Hold extends StdCommand
 {
 	public Hold(){}
@@ -43,7 +43,7 @@ public class Hold extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("Hold what?"));

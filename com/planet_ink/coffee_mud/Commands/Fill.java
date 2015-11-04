@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Fill extends StdCommand
 {
 	public Fill(){}
@@ -43,7 +43,7 @@ public class Fill extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("Fill what, from what?"));
@@ -98,7 +98,7 @@ public class Fill extends StdCommand
 		String thingToFill=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
-		final Vector V=new Vector();
+		final Vector<Environmental> V=new Vector<Environmental>();
 		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 		if(thingToFill.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(4);}
 		if(thingToFill.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);}
@@ -120,7 +120,7 @@ public class Fill extends StdCommand
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			final Environmental fillThis=(Environmental)V.get(i);
+			final Environmental fillThis=V.get(i);
 			final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,L("<S-NAME> fill(s) <T-NAME> from <O-NAME>."));
 			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
 			{

@@ -45,10 +45,10 @@ public class Conquerable extends Arrest
 	protected String savedHoldingClan="";
 	protected String prevHoldingClan="";
 	protected String holdingClan="";
-	protected Vector clanItems=new Vector();
+	protected Vector<ClanItem> clanItems=new Vector();
 	protected DVector clanControlPoints=new DVector(2);
 	protected DVector assaults=new DVector(2);
-	protected Vector noMultiFollows=new Vector();
+	protected Vector<MOB> noMultiFollows=new Vector<MOB>();
 	protected int totalControlPoints=-1;
 	protected Area myArea=null;
 	protected String journalName="";
@@ -270,7 +270,7 @@ public class Conquerable extends Arrest
 		prevHoldingClan=holdingClan;
 		for(int v=0;v<clanItems.size();v++)
 		{
-			final Item I=(Item)clanItems.elementAt(v);
+			final Item I=clanItems.elementAt(v);
 			if((I.owner() instanceof MOB)
 			&&(I instanceof ClanItem)
 			&&(((ClanItem)I).clanID().equals(holdingClan)))
@@ -336,7 +336,7 @@ public class Conquerable extends Arrest
 			{
 				for(int c=clanItems.size()-1;c>=0;c--)
 				{
-					final ClanItem item=(ClanItem)clanItems.elementAt(c);
+					final ClanItem item=clanItems.elementAt(c);
 					if((C==null)
 					&&(item.clanID().equalsIgnoreCase(holdingClan))
 					&&((!(item.owner() instanceof MOB))||(((MOB)item.owner()).isMonster())))
@@ -346,7 +346,7 @@ public class Conquerable extends Arrest
 					}
 					else
 					if(item.getClanItemType()!=ClanItem.ClanItemType.FLAG)
-						deRegisterClanItem((ClanItem)clanItems.elementAt(c));
+						deRegisterClanItem(clanItems.elementAt(c));
 				}
 			}catch(final ArrayIndexOutOfBoundsException x){}
 			if((C==null)&&(clanItems.size()==0)&&(myArea!=null))
@@ -363,7 +363,7 @@ public class Conquerable extends Arrest
 		{
 			for(int i=clanItems.size()-1;i>=0;i--)
 			{
-				final ClanItem I=(ClanItem)clanItems.elementAt(i);
+				final ClanItem I=clanItems.elementAt(i);
 				if((!I.amDestroyed())
 				&&(I.owner() instanceof MOB)
 				&&(((MOB)I.owner()).isMonster())
@@ -439,7 +439,7 @@ public class Conquerable extends Arrest
 
 		for(int i=clanItems.size()-1;i>=0;i--)
 		{
-			final Item I=(Item)clanItems.elementAt(i);
+			final Item I=clanItems.elementAt(i);
 			if(!I.tick(this,Tickable.TICKID_CLANITEM))
 				deRegisterClanItem(I);
 			else
@@ -557,7 +557,8 @@ public class Conquerable extends Arrest
 										}
 										R.addItem(newItem);
 									}
-									registerClanItem(newItem);
+									if(newItem instanceof ClanItem)
+										registerClanItem((ClanItem)newItem);
 								}
 							}
 						}
@@ -576,7 +577,7 @@ public class Conquerable extends Arrest
 				{
 					for(int i=clanItems.size()-1;i>=0;i--)
 					{
-						final ClanItem I=(ClanItem)clanItems.elementAt(i);
+						final ClanItem I=clanItems.elementAt(i);
 						if(I==null)
 							continue;
 						final Room R=CMLib.map().roomLocation(I);
@@ -692,7 +693,7 @@ public class Conquerable extends Arrest
 							&&(M2.getClanRole(holdingClan)==null)
 							&&(CMLib.flags().canBeSeenBy(M2,M1)))
 							{
-								final Vector V=new Vector();
+								final Vector<String> V=new Vector<String>();
 								V.addElement("YELL");
 								V.addElement(warCrys()[CMLib.dice().roll(1,warCrys().length,-1)]);
 								M1.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
@@ -768,7 +769,7 @@ public class Conquerable extends Arrest
 			{
 				for(int i=0;i<clanItems.size();i++)
 				{
-					final ClanItem I=(ClanItem)clanItems.elementAt(i);
+					final ClanItem I=clanItems.elementAt(i);
 					final Room R=CMLib.map().roomLocation(I);
 					if((R==msg.target())
 					&&(!((Item)I).amDestroyed())
@@ -949,7 +950,7 @@ public class Conquerable extends Arrest
 		}
 	}
 
-	protected void registerClanItem(Item I)
+	protected void registerClanItem(ClanItem I)
 	{
 		synchronized(clanItems)
 		{
@@ -990,7 +991,7 @@ public class Conquerable extends Arrest
 		{
 			for(int i=0;i<clanItems.size();i++)
 			{
-				final ClanItem I=(ClanItem)clanItems.elementAt(i);
+				final ClanItem I=clanItems.elementAt(i);
 				if((I.clanID().equals(C.clanID()))
 				&&(!I.amDestroyed())
 				&&(I.getClanItemType()==ClanItem.ClanItemType.FLAG))
@@ -1017,7 +1018,7 @@ public class Conquerable extends Arrest
 					&&(((ClanItem)I).clanID().equals(C.clanID()))
 					&&(!I.amDestroyed()))
 					{
-						registerClanItem(I);
+						registerClanItem((ClanItem)I);
 						return true;
 					}
 				}
@@ -1341,7 +1342,7 @@ public class Conquerable extends Arrest
 				{
 					for(int i=0;i<clanItems.size();i++)
 					{
-						final ClanItem I=(ClanItem)clanItems.elementAt(i);
+						final ClanItem I=clanItems.elementAt(i);
 						final Room R=CMLib.map().roomLocation(I);
 						if((R!=null)
 						&&(((Area)myHost).inMyMetroArea(R.getArea()))

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prayer_Sober extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Sober"; }
@@ -57,7 +57,7 @@ public class Prayer_Sober extends Prayer implements MendingSkill
 
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
-		final Vector offenders=new Vector();
+		final Vector<Ability> offenders=new Vector<Ability>();
 
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{

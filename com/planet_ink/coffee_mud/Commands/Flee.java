@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Flee extends Go
 {
 	public Flee(){}
@@ -43,7 +43,7 @@ public class Flee extends Go
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		String direction="";
 		if(commands.size()>1)
 			direction=CMParms.combine(commands,1);
@@ -89,7 +89,7 @@ public class Flee extends Go
 		{
 			if(direction.length()==0)
 			{
-				final Vector directions=new Vector();
+				final Vector<Integer> directions=new Vector<Integer>();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					final Exit thisExit=R.getExitInDir(d);
@@ -102,7 +102,7 @@ public class Flee extends Go
 					directions.removeElement(Integer.valueOf(Directions.UP));
 				if(directions.size()>0)
 				{
-					directionCode=((Integer)directions.get(CMLib.dice().roll(1,directions.size(),-1))).intValue();
+					directionCode=directions.get(CMLib.dice().roll(1,directions.size(),-1)).intValue();
 					direction=Directions.getDirectionName(directionCode);
 				}
 			}

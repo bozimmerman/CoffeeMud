@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_PlantMaze extends Chant
 {
 	@Override public String ID() { return "Chant_PlantMaze"; }
@@ -182,7 +181,7 @@ public class Chant_PlantMaze extends Chant
 				}
 				newRoom.getArea().fillInAreaRoom(newRoom);
 				beneficialAffect(mob,newRoom,asLevel,0);
-				final Vector everyone=new Vector();
+				final Vector<MOB> everyone=new Vector<MOB>();
 				for(int m=0;m<oldRoom.numInhabitants();m++)
 				{
 					final MOB follower=oldRoom.fetchInhabitant(m);
@@ -191,7 +190,7 @@ public class Chant_PlantMaze extends Chant
 
 				for(int m=0;m<everyone.size();m++)
 				{
-					final MOB follower=(MOB)everyone.elementAt(m);
+					final MOB follower=everyone.elementAt(m);
 					if(follower==null)
 						continue;
 					final Room newerRoom=((GridLocale)newRoom).getRandomGridChild();

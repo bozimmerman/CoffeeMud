@@ -960,7 +960,7 @@ public class CharGen extends StdCommand
 			if(file.canWrite())
 			{
 				final StringBuffer buf=new StringBuffer("");
-				final Vector baseClasses=new Vector();
+				final Vector<String> baseClasses=new Vector<String>();
 				for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 				{
 					final CharClass C=(CharClass)c.classSet.get(charClassDex,1);
@@ -992,7 +992,7 @@ public class CharGen extends StdCommand
 					buf.append("\n\r");
 					for(int b=0;b<baseClasses.size();b++)
 					{
-						final String baseClass=(String)baseClasses.get(b);
+						final String baseClass=baseClasses.get(b);
 						final int[] levels=new int[c.levelEnd+1];
 						double ct=0;
 						for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)

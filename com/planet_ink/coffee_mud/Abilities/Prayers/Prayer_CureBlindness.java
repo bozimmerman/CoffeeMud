@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_CureBlindness extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_CureBlindness"; }
@@ -60,7 +59,7 @@ public class Prayer_CureBlindness extends Prayer implements MendingSkill
 	{
 		final MOB newMOB=CMClass.getFactoryMOB();
 		final MOB newerMOB=CMClass.getFactoryMOB();
-		final Vector offenders=new Vector(1);
+		final Vector<Ability> offenders=new Vector<Ability>(1);
 
 		final CMMsg msg=CMClass.getMsg(newMOB,newerMOB,null,CMMsg.MSG_LOOK,null);
 		for(int a=0;a<fromMe.numEffects();a++) // personal

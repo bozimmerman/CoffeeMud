@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Allergies extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Allergies"; }
@@ -77,9 +76,9 @@ public class Allergies extends StdAbility implements HealthCondition
 			if(V.contains(codes.names()[s]))
 				resourceAllergies.add(Integer.valueOf(codes.get(s)));
 		Race R=null;
-		for(final Enumeration r=CMClass.races();r.hasMoreElements();)
+		for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 		{
-			R=(Race)r.nextElement();
+			R=r.nextElement();
 			if(V.contains(R.ID().toUpperCase()))
 				raceAllergies.add(R);
 		}
@@ -211,7 +210,7 @@ public class Allergies extends StdAbility implements HealthCondition
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final Vector allChoices=new Vector();
+			final Vector<String> allChoices=new Vector<String>();
 			for(final int code : RawMaterial.CODES.ALL())
 				if(((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
 				&&((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
@@ -221,9 +220,9 @@ public class Allergies extends StdAbility implements HealthCondition
 				&&(code!=RawMaterial.RESOURCE_WOOD))
 					allChoices.addElement(RawMaterial.CODES.NAME(code));
 			Race R=null;
-			for(final Enumeration r=CMClass.races();r.hasMoreElements();)
+			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 			{
-				R=(Race)r.nextElement();
+				R=r.nextElement();
 				allChoices.addElement(R.ID().toUpperCase());
 			}
 			String allergies="";
@@ -232,8 +231,8 @@ public class Allergies extends StdAbility implements HealthCondition
 			else
 			for(int i=0;i<allChoices.size();i++)
 				if((CMLib.dice().roll(1,allChoices.size(),0)==1)
-				&&(!(((String)allChoices.elementAt(i)).equalsIgnoreCase(mob.charStats().getMyRace().ID().toUpperCase()))))
-					allergies+=" "+(String)allChoices.elementAt(i);
+				&&(!(allChoices.elementAt(i).equalsIgnoreCase(mob.charStats().getMyRace().ID().toUpperCase()))))
+					allergies+=" "+allChoices.elementAt(i);
 			if(allergies.length()==0)
 				return false;
 

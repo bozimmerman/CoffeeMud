@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class CrossClassAbilities extends StdWebMacro
 {
 	@Override public String name()	{return "CrossClassAbilities";}
@@ -41,16 +41,16 @@ public class CrossClassAbilities extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		final Vector rowsFavoring=new Vector();
-		final Vector allOtherRows=new Vector();
+		final Vector<StringBuffer> rowsFavoring=new Vector<StringBuffer>();
+		final Vector<StringBuffer> allOtherRows=new Vector<StringBuffer>();
 		final String sort=httpReq.getUrlParameter("SORTBY");
 		int sortByClassNum=-1;
 		if((sort!=null)&&(sort.length()>0))
 		{
 			int cnum=0;
-			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				final CharClass C=(CharClass)c.nextElement();
+				final CharClass C=c.nextElement();
 				if((C.ID().equals(sort))&&(CMProps.isTheme(C.availabilityCode())))
 					sortByClassNum=cnum;
 				cnum++;
@@ -61,9 +61,9 @@ public class CrossClassAbilities extends StdWebMacro
 			final Ability A=a.nextElement();
 			final StringBuffer buf=new StringBuffer("");
 			int numFound=0;
-			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				final CharClass C=(CharClass)c.nextElement();
+				final CharClass C=c.nextElement();
 				if(CMProps.isTheme(C.availabilityCode())
 				   &&(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>=0))
 					if((++numFound)>0)
@@ -73,9 +73,9 @@ public class CrossClassAbilities extends StdWebMacro
 			{
 				buf.append("<TR><TD><B>"+A.name()+"</B></TD>");
 				int cnum=0;
-				for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+				for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 				{
-					final CharClass C=(CharClass)c.nextElement();
+					final CharClass C=c.nextElement();
 					if(CMProps.isTheme(C.availabilityCode()))
 					{
 						final int qual=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
@@ -97,9 +97,9 @@ public class CrossClassAbilities extends StdWebMacro
 		}
 		final StringBuffer buf=new StringBuffer("");
 		for(int i=0;i<rowsFavoring.size();i++)
-			buf.append((StringBuffer)rowsFavoring.elementAt(i));
+			buf.append(rowsFavoring.elementAt(i));
 		for(int i=0;i<allOtherRows.size();i++)
-			buf.append((StringBuffer)allOtherRows.elementAt(i));
+			buf.append(allOtherRows.elementAt(i));
 		return clearWebMacros(buf);
 	}
 

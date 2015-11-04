@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Play_LoveSong extends Play
 {
 	@Override public String ID() { return "Play_LoveSong"; }
@@ -52,7 +52,7 @@ public class Play_LoveSong extends Play
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
-			final Vector choices=new Vector();
+			final Vector<MOB> choices=new Vector<MOB>();
 			for(int i=0;i<mob.location().numInhabitants();i++)
 			{
 				final MOB M=mob.location().fetchInhabitant(i);
@@ -66,7 +66,7 @@ public class Play_LoveSong extends Play
 			}
 			if(choices.size()>0)
 			{
-				final MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+				final MOB M=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 				try
 				{
 				if(CMLib.dice().rollPercentage()<=1)

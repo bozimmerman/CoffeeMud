@@ -135,7 +135,7 @@ public class Chant_PlantConstriction extends Chant
 				return Ability.QUALITY_INDIFFERENT;
 			if(target instanceof MOB)
 			{
-				final Vector positionChoices=new Vector();
+				final Vector<Long> positionChoices=new Vector<Long>();
 				if(((MOB)target).getWearPositions(Wearable.WORN_ARMS)>0)
 					positionChoices.addElement(Long.valueOf(Wearable.WORN_ARMS));
 				if(((MOB)target).getWearPositions(Wearable.WORN_LEGS)>0)

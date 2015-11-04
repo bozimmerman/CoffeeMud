@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -73,12 +74,12 @@ public class Email extends StdCommand
 					};
 				while((mob.session()!=null)&&(!mob.session().isStopped()))
 				{
-					final Vector mymsgs=new Vector();
+					final Vector<JournalEntry> mymsgs=new Vector<JournalEntry>();
 					StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",cols[0])+"^?^.\n\r");
 					messages.append("^X### "+CMStrings.padRight(L("From"),cols[1])+" "+CMStrings.padRight(L("Date"),cols[2])+" Subject^?^.\n\r");
 					for(int num=0;num<msgs.size();num++)
 					{
-						final JournalsLibrary.JournalEntry thismsg=msgs.get(num);
+						final JournalEntry thismsg=msgs.get(num);
 						final String to=thismsg.to;
 						if(to.equalsIgnoreCase("ALL")
 						||to.equalsIgnoreCase(mob.Name())
@@ -125,7 +126,7 @@ public class Email extends StdCommand
 					else
 					while((mob.session()!=null)&&(!mob.session().isStopped()))
 					{
-						final JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)mymsgs.get(num-1);
+						final JournalsLibrary.JournalEntry thismsg=mymsgs.get(num-1);
 						final String key=thismsg.key;
 						final String from=thismsg.from;
 						final String date=CMLib.time().date2String(thismsg.date);

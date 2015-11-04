@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_SenseLaw extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_SenseLaw"; }
@@ -44,12 +44,12 @@ public class Thief_SenseLaw extends ThiefSkill
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	@Override public boolean isAutoInvoked(){return true;}
 	@Override public boolean canBeUninvoked(){return false;}
-	public static final Vector empty=new ReadOnlyVector();
+	public static final Vector<MOB> empty=new ReadOnlyVector<MOB>();
 	protected Room oldroom=null;
 	protected String lastReport="";
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
-	public Vector getLawMen(Area legalObject, Room room, LegalBehavior B)
+	public Vector<MOB> getLawMen(Area legalObject, Room room, LegalBehavior B)
 	{
 		if(room==null)
 			return empty;
@@ -57,7 +57,7 @@ public class Thief_SenseLaw extends ThiefSkill
 			return empty;
 		if(B==null)
 			return empty;
-		final Vector V=new Vector();
+		final Vector<MOB> V=new Vector<MOB>();
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 			final MOB M=room.fetchInhabitant(m);
@@ -84,10 +84,10 @@ public class Thief_SenseLaw extends ThiefSkill
 				if(B==null)
 					return super.tick(ticking,tickID);
 				final StringBuffer buf=new StringBuffer("");
-				Vector V=getLawMen(CMLib.law().getLegalObject(mob.location()),mob.location(),B);
+				Vector<MOB> V=getLawMen(CMLib.law().getLegalObject(mob.location()),mob.location(),B);
 				for(int l=0;l<V.size();l++)
 				{
-					final MOB M=(MOB)V.elementAt(l);
+					final MOB M=V.elementAt(l);
 					if(CMLib.flags().canBeSeenBy(M,mob))
 						buf.append(L("@x1 is an officer of the law.  ",M.name(mob)));
 					else

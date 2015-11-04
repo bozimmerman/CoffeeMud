@@ -43,7 +43,7 @@ public class Take extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)
 		||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)
 		||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))

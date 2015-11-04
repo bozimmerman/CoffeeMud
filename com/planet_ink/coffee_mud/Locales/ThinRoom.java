@@ -53,7 +53,7 @@ public class ThinRoom implements Room
 	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
 	protected String roomID="";
 	protected Area myArea=null;
-	protected static final Vector empty=new ReadOnlyVector(1);
+	protected static final Vector<Integer> empty=new ReadOnlyVector<Integer>(1);
 	protected static final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
 	protected static final Room[] rooms=new Room[Directions.NUM_DIRECTIONS()];
 	@Override public String roomID(){return roomID;}

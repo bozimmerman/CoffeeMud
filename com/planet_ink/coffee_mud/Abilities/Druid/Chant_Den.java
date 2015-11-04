@@ -35,7 +35,6 @@ import java.util.Vector;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_Den extends Chant
 {
 	@Override public String ID() { return "Chant_Den"; }
@@ -99,7 +98,7 @@ public class Chant_Den extends Chant
 			mob.tell(L("This magic will not work here."));
 			return false;
 		}
-		final Vector dirChoices=new Vector();
+		final Vector<Integer> dirChoices=new Vector<Integer>();
 		for(final int dir : Directions.CODES())
 		{
 			if(mob.location().getRoomInDir(dir)==null)
@@ -110,7 +109,7 @@ public class Chant_Den extends Chant
 			mob.tell(L("This magic will not work here."));
 			return false;
 		}
-		final int d=((Integer)dirChoices.elementAt(CMLib.dice().roll(1,dirChoices.size(),-1))).intValue();
+		final int d=dirChoices.elementAt(CMLib.dice().roll(1,dirChoices.size(),-1)).intValue();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

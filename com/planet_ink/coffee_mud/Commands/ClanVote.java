@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class ClanVote extends StdCommand
 {
 	public ClanVote(){}
@@ -70,10 +70,10 @@ public class ClanVote extends StdCommand
 		else
 		if(!mob.isMonster())
 		{
-			final Vector votesForYou=new Vector();
-			for(final Enumeration e=C.votes();e.hasMoreElements();)
+			final Vector<Clan.ClanVote> votesForYou=new Vector<Clan.ClanVote>();
+			for(final Enumeration<Clan.ClanVote> e=C.votes();e.hasMoreElements();)
 			{
-				final Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
+				final Clan.ClanVote CV=e.nextElement();
 				if(((CV.function==Clan.Function.ASSIGN.ordinal())
 					&&(C.getAuthority(clanRole.intValue(),Clan.Function.VOTE_ASSIGN)!=Clan.Authority.CAN_NOT_DO))
 				||((CV.function!=Clan.Function.ASSIGN.ordinal())
@@ -89,7 +89,7 @@ public class ClanVote extends StdCommand
 					msg.append(L(" @x1@x2Command to execute\n\r",CMStrings.padRight("#",3),CMStrings.padRight(L("Status"),15)));
 					for(int v=0;v<votesForYou.size();v++)
 					{
-						final Clan.ClanVote CV=(Clan.ClanVote)votesForYou.get(v);
+						final Clan.ClanVote CV=votesForYou.get(v);
 						final boolean ivoted=((CV.votes!=null)&&(CV.votes.containsFirst(mob.Name())));
 						final int votesCast=(CV.votes!=null)?CV.votes.size():0;
 						msg.append((ivoted?"*":" ")
@@ -105,7 +105,7 @@ public class ClanVote extends StdCommand
 				final int which=CMath.s_int(voteNumStr)-1;
 				Clan.ClanVote CV=null;
 				if((which>=0)&&(which<votesForYou.size()))
-					CV=(Clan.ClanVote)votesForYou.get(which);
+					CV=votesForYou.get(which);
 				if(CV==null)
 					msg.append(L("That vote does not exist.  Use CLANVOTE to see a list."));
 				else

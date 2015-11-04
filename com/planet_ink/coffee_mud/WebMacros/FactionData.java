@@ -310,10 +310,10 @@ public class FactionData extends StdWebMacro
 									httpReq.addFakeUrlParameter("CHANGESFACTOR"+v,CMath.toPct(E.factor()));
 									httpReq.addFakeUrlParameter("CHANGESTPARM"+v,E.triggerParameters());
 									String id="";
-									final Vector flags=CMParms.parse(E.flagCache());
+									final Vector<String> flags=CMParms.parse(E.flagCache());
 									for(int f=0;f<flags.size();f++)
 									{
-										httpReq.addFakeUrlParameter("CHANGESFLAGS"+v+"_"+id,""+((String)flags.elementAt(f)));
+										httpReq.addFakeUrlParameter("CHANGESFLAGS"+v+"_"+id,""+(flags.elementAt(f)));
 										id=""+(f+1);
 									}
 									httpReq.addFakeUrlParameter("CHANGESMASK"+v,E.targetZapper());
@@ -354,7 +354,7 @@ public class FactionData extends StdWebMacro
 							val=CMath.toPct(httpReq.getUrlParameter("CHANGESFACTOR"+num));
 							str.append("<INPUT TYPE=TEXT NAME=CHANGESFACTOR"+showNum+" SIZE=4 VALUE=\""+val+"\">");
 							str.append("</TD><TD>");
-							final Vector flags=new Vector();
+							final Vector<String> flags=new Vector();
 							String id="";
 							int x=0;
 							for(;httpReq.isUrlParameter("CHANGESFLAGS"+num+"_"+id);id=""+(++x))

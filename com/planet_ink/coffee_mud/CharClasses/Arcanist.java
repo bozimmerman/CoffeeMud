@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Arcanist extends Thief
 {
 	@Override public String ID(){return "Arcanist";}
@@ -147,7 +147,10 @@ public class Arcanist extends Thief
 	}
 
 	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
-	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+	
+	@SuppressWarnings("unchecked")
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]
+	{
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
 	};
@@ -191,7 +194,7 @@ public class Arcanist extends Thief
 	@Override
 	public void endCharacter(MOB mob)
 	{
-		final Vector otherChoices=new Vector();
+		final Vector<Ability> otherChoices=new Vector<Ability>();
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			final Ability A2=mob.fetchAbility(a);
@@ -201,7 +204,7 @@ public class Arcanist extends Thief
 				otherChoices.addElement(A2);
 		}
 		for(int a=0;a<otherChoices.size();a++)
-			mob.delAbility((Ability)otherChoices.elementAt(a));
+			mob.delAbility(otherChoices.elementAt(a));
 	}
 
 	private void addAbilityToSpellcraftList(MOB mob, Ability A)
@@ -280,7 +283,7 @@ public class Arcanist extends Thief
 						else
 						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30)
 						{
-							final Vector otherChoices=new Vector();
+							final Vector<Ability> otherChoices=new Vector<Ability>();
 							for(int a=0;a<mob.numAbilities();a++)
 							{
 								final Ability A2=mob.fetchAbility(a);
@@ -294,7 +297,7 @@ public class Arcanist extends Thief
 							A.setSavable(false);
 							if(otherChoices.size()>(mob.charStats().getClassLevel(this)/3))
 							{
-								final Ability A2=(Ability)otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1));
+								final Ability A2=otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1));
 								clearAbilityFromSpellcraftList(mob,A2);
 							}
 							addAbilityToSpellcraftList(mob,A);

@@ -32,20 +32,21 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Reply extends StdCommand
 {
 	public Reply(){}
 
 	private final String[] access=I(new String[]{"REPLY","REP","RE"});
 	@Override public String[] getAccessWords(){return access;}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob==null)
 			return false;
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
 			return false;

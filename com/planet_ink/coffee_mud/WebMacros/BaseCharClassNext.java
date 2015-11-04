@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class BaseCharClassNext extends StdWebMacro
 {
 	@Override public String name() { return "BaseCharClassNext"; }
@@ -49,10 +49,10 @@ public class BaseCharClassNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		final Vector baseClasses=new Vector();
-		for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+		final Vector<String> baseClasses=new Vector<String>();
+		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
-			final CharClass C=(CharClass)c.nextElement();
+			final CharClass C=c.nextElement();
 			if((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
 			{
 				if(!baseClasses.contains(C.baseClass()))
@@ -61,7 +61,7 @@ public class BaseCharClassNext extends StdWebMacro
 		}
 		for(int i=0;i<baseClasses.size();i++)
 		{
-			final String C=(String)baseClasses.elementAt(i);
+			final String C=baseClasses.elementAt(i);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("BASECLASS",C);

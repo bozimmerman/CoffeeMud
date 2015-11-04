@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class AddRandomFileFromDir extends StdWebMacro
 {
 	@Override public String name() { return "AddRandomFileFromDir"; }
@@ -47,7 +46,7 @@ public class AddRandomFileFromDir extends StdWebMacro
 		if((parms==null)||(parms.size()==0))
 			return "";
 		final StringBuffer buf=new StringBuffer("");
-		final Vector fileList=new Vector();
+		final Vector<String> fileList=new Vector<String>();
 		boolean LINKONLY=false;
 		for(final String val : parms.values())
 			if(val.equalsIgnoreCase("LINKONLY"))
@@ -74,13 +73,13 @@ public class AddRandomFileFromDir extends StdWebMacro
 		try
 		{
 			if(LINKONLY)
-				buf.append((String)fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)));
+				buf.append(fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)));
 			else
-				buf.append(new String(getHTTPFileData(httpReq,(String)fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)))));
+				buf.append(new String(getHTTPFileData(httpReq,fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)))));
 		}
 		catch(final HTTPException e)
 		{
-			Log.warnOut("Failed "+name()+" "+(String)fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)));
+			Log.warnOut("Failed "+name()+" "+fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)));
 		}
 		return buf.toString();
 	}

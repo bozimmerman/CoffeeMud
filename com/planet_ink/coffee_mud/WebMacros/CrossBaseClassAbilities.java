@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class CrossBaseClassAbilities extends StdWebMacro
 {
 	@Override public String name()	{return "CrossBaseClassAbilities";}
@@ -103,22 +103,22 @@ public class CrossBaseClassAbilities extends StdWebMacro
 				return " @break@";
 			if(baseClass.length()>0)
 			{
-				final Vector charClasses=new Vector();
-				for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+				final Vector<String> charClasses=new Vector<String>();
+				for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 				{
-					final CharClass C=(CharClass)c.nextElement();
+					final CharClass C=c.nextElement();
 					if((CMProps.isTheme(C.availabilityCode()))
 					&&(C.baseClass().equals(baseClass))
 					&&(!charClasses.contains(C.ID())))
 						charClasses.addElement(C.ID());
 				}
 
-				final Vector abilities=new Vector();
-				final Vector levelssum=new Vector();
-				final Vector numberare=new Vector();
+				final Vector<String> abilities=new Vector<String>();
+				final Vector<Integer> levelssum=new Vector<Integer>();
+				final Vector<Integer> numberare=new Vector<Integer>();
 				for(int c=0;c<charClasses.size();c++)
 				{
-					final String className=(String)charClasses.elementAt(c);
+					final String className=charClasses.elementAt(c);
 					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
@@ -134,24 +134,24 @@ public class CrossBaseClassAbilities extends StdWebMacro
 							}
 							else
 							{
-								final Integer I=(Integer)levelssum.elementAt(dex);
+								final Integer I=levelssum.elementAt(dex);
 								levelssum.setElementAt(Integer.valueOf(I.intValue()+level),dex);
-								final Integer I2=(Integer)numberare.elementAt(dex);
+								final Integer I2=numberare.elementAt(dex);
 								numberare.setElementAt(Integer.valueOf(I2.intValue()+1),dex);
 							}
 						}
 					}
 				}
 
-				final Vector sortedAbilities=new Vector();
+				final Vector<String> sortedAbilities=new Vector<String>();
 				while(abilities.size()>0)
 				{
 					double lowAvg=Double.MAX_VALUE;
 					int lowDex=-1;
 					for(int i=0;i<abilities.size();i++)
 					{
-						final Integer I=(Integer)levelssum.elementAt(i);
-						final Integer I2=(Integer)numberare.elementAt(i);
+						final Integer I=levelssum.elementAt(i);
+						final Integer I2=numberare.elementAt(i);
 						final double avg=CMath.div(I.intValue(),I2.intValue());
 						if(avg<lowAvg)
 						{
@@ -174,17 +174,17 @@ public class CrossBaseClassAbilities extends StdWebMacro
 				buf.append("<TD><B><FONT COLOR=WHITE>Skill</FONT></B></TD>");
 				for(int c=0;c<charClasses.size();c++)
 				{
-					final String charClass=(String)charClasses.elementAt(c);
+					final String charClass=charClasses.elementAt(c);
 					buf.append("<TD><B><FONT COLOR=WHITE>"+charClass+"</FONT></B></TD>");
 				}
 				buf.append("</TR>\n\r");
 				for(int a=0;a<sortedAbilities.size();a++)
 				{
-					final String able=(String)sortedAbilities.elementAt(a);
+					final String able=sortedAbilities.elementAt(a);
 					buf.append("<TR><TD><B><FONT COLOR=WHITE>"+able+"</FONT></B></TD>");
 					for(int c=0;c<charClasses.size();c++)
 					{
-						final String charClass=(String)charClasses.elementAt(c);
+						final String charClass=charClasses.elementAt(c);
 						final int level=CMLib.ableMapper().getQualifyingLevel(charClass,true,able);
 						if(level>=0)
 							buf.append("<TD><FONT COLOR=CYAN>"+level+"</FONT></TD>");

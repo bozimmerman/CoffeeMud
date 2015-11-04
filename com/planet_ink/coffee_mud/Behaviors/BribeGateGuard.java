@@ -11,10 +11,10 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 
 import java.util.*;
 
@@ -148,7 +148,7 @@ public class BribeGateGuard extends StdBehavior
 		if(surviveReboot)
 		{
 			final List<JournalsLibrary.JournalEntry> V =CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
-			final Vector mine = new Vector();
+			final Vector<JournalEntry> mine = new Vector<JournalEntry>();
 			for (int v = 0; v < V.size(); v++)
 			{
 				final JournalsLibrary.JournalEntry V2 =V.get(v);
@@ -159,7 +159,7 @@ public class BribeGateGuard extends StdBehavior
 			}
 			for (int v = 0; v < mine.size(); v++)
 			{
-				final JournalsLibrary.JournalEntry V2 = (JournalsLibrary.JournalEntry)mine.elementAt(v);
+				final JournalsLibrary.JournalEntry V2 = mine.elementAt(v);
 				final String fullName = V2.subj;
 				if (fullName.equals("COINS"))
 				{
@@ -219,7 +219,7 @@ public class BribeGateGuard extends StdBehavior
 		if(surviveReboot)
 		{
 			final List<JournalsLibrary.JournalEntry> V = CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
-			final Vector mine = new Vector();
+			final Vector<JournalEntry> mine = new Vector<JournalEntry>();
 			for (int v = 0; v < V.size(); v++)
 			{
 				final JournalsLibrary.JournalEntry V2 = V.get(v);
@@ -230,7 +230,7 @@ public class BribeGateGuard extends StdBehavior
 			}
 			for (int v = 0; v < mine.size(); v++)
 			{
-				final JournalsLibrary.JournalEntry V2 = (JournalsLibrary.JournalEntry)mine.elementAt(v);
+				final JournalsLibrary.JournalEntry V2 = mine.elementAt(v);
 				final String fullName = V2.subj;
 				if (fullName.equals("COINS"))
 				{

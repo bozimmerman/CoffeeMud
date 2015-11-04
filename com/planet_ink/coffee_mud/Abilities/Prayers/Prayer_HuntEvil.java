@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_HuntEvil extends Prayer
 {
 	@Override public String ID() { return "Prayer_HuntEvil"; }
@@ -152,7 +151,7 @@ public class Prayer_HuntEvil extends Prayer
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 		for (final Room R : checkSet)

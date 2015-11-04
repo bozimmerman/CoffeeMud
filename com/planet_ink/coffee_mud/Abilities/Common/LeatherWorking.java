@@ -341,7 +341,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,buildingI,false))
 				return false;
@@ -358,7 +358,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(buildingI==null)
 				return false;

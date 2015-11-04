@@ -114,7 +114,7 @@ public class Auction extends Channel implements Tickable
 					return true;
 				}
 				setLiveAuctionState(getLiveData().getAuctionState()+1);
-				final Vector V=new Vector();
+				final Vector<String> V=new Vector<String>();
 				V.add("AUCTION");
 				V.add("CHANNEL");
 				switch(getLiveData().getAuctionState())
@@ -185,9 +185,9 @@ public class Auction extends Channel implements Tickable
 	}
 
 
-	public boolean doLiveAuction(MOB mob, Vector commands, Environmental target)
+	public boolean doLiveAuction(MOB mob, List<String> commands, Environmental target)
 	{
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>();
 		V.add("AUCTION");
 		V.add("CHANNEL");
 		if(target!=null)
@@ -306,7 +306,7 @@ public class Auction extends Channel implements Tickable
 				mob.tell(L("A live auction is already underway.  Do AUCTION LIST to see it."));
 				return false;
 			}
-			final Vector V=new Vector();
+			final Vector<String> V=new Vector<String>();
 			if((commands.size()>=2)
 			&&((CMLib.english().numPossibleGold(mob,commands.get(commands.size()-1))>0)||(commands.get(commands.size()-1).equals("0"))))
 			{
@@ -345,7 +345,7 @@ public class Auction extends Channel implements Tickable
 			}
 			else
 			if((mob.isMonster())
-			||(!mob.session().confirm(L("Auction @x1 live, with a starting bid of @x2 (Y/n)?",E.name(),((String)V.get(0))),L("Y"))))
+			||(!mob.session().confirm(L("Auction @x1 live, with a starting bid of @x2 (Y/n)?",E.name(),(V.get(0))),L("Y"))))
 				return false;
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,CMLib.beanCounter().getCurrency(mob))<deposit)
 			{
@@ -390,7 +390,7 @@ public class Auction extends Channel implements Tickable
 				mob.tell(L("You are not currently running a live auction."));
 				return false;
 			}
-			final Vector V=new Vector();
+			final Vector<String> V=new Vector<String>();
 			V.add("AUCTION");
 			V.add("The auction has been closed.");
 			CMLib.threads().deleteTick(this,Tickable.TICKID_LIVEAUCTION);

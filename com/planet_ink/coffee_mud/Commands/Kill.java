@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Kill extends StdCommand
 {
 	public Kill()
@@ -61,7 +61,7 @@ public class Kill extends StdCommand
 			return false;
 		}
 
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		MOB target=null;
 		if(commands.size()<2)
 		{

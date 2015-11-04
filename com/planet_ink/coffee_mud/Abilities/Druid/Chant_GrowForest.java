@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_GrowForest extends Chant
 {
 	@Override public String ID() { return "Chant_GrowForest"; }
@@ -60,7 +59,7 @@ public class Chant_GrowForest extends Chant
 		}
 
 		int material=-1;
-		final Vector choices=new Vector();
+		final Vector<Integer> choices=new Vector<Integer>();
 		final String s=CMParms.combine(commands,0);
 
 		final List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_WOODEN);
@@ -79,7 +78,7 @@ public class Chant_GrowForest extends Chant
 		}
 
 		if((material<0)&&(choices.size()>0))
-			material=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
+			material=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 
 		if(material<0)
 			return false;

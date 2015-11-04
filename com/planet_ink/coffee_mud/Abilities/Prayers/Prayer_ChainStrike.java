@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_ChainStrike extends Prayer
 {
 	@Override public String ID() { return "Prayer_ChainStrike"; }
@@ -51,7 +50,7 @@ public class Prayer_ChainStrike extends Prayer
 		if(h==null)
 			h=new HashSet<MOB>();
 
-		final Vector targets=new Vector(h);
+		final Vector<MOB> targets=new Vector<MOB>(h);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -68,13 +67,13 @@ public class Prayer_ChainStrike extends Prayer
 					final int oldDamage=damage;
 					for(int i=0;i<targets.size();i++)
 					{
-						final MOB target=(MOB)targets.elementAt(i);
+						final MOB target=targets.elementAt(i);
 						if(target.amDead()||(target.location()!=mob.location()))
 						{
 							int count=0;
 							for(int i2=0;i2<targets.size();i2++)
 							{
-								final MOB M2=(MOB)targets.elementAt(i2);
+								final MOB M2=targets.elementAt(i2);
 								if((!M2.amDead())
 								   &&(mob.location()!=null)
 								   &&(mob.location().isInhabitant(M2))

@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_MagneticEarth extends Chant
 {
 	@Override public String ID() { return "Chant_MagneticEarth"; }
@@ -52,7 +51,7 @@ public class Chant_MagneticEarth extends Chant
 		if((affected!=null)&&(affected instanceof Room))
 		{
 			final Room R=(Room)affected;
-			final Vector toGo=new Vector();
+			final Vector<Item> toGo=new Vector<Item>();
 			boolean didSomething=false;
 			for(int m=0;m<R.numInhabitants();m++)
 			{
@@ -76,7 +75,7 @@ public class Chant_MagneticEarth extends Chant
 					}
 					for(int i=0;i<toGo.size();i++)
 					{
-						final Item I=(Item)toGo.elementAt(i);
+						final Item I=toGo.elementAt(i);
 						if(CMLib.commands().postDrop(M,I,true,true,false))
 						{
 							didSomething=true;

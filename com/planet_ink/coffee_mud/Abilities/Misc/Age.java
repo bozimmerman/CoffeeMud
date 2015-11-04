@@ -35,7 +35,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Age extends StdAbility
 {
 	@Override public String ID() { return "Age"; }
@@ -148,7 +147,7 @@ public class Age extends StdAbility
 		if((following!=null)&&(babe.description().toUpperCase().indexOf(following.Name().toUpperCase())<0)&&(room!=null))
 		{
 			MOB M=null;
-			final Vector choices=new Vector();
+			final Vector<MOB> choices=new Vector<MOB>();
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				M=room.fetchInhabitant(i);
@@ -169,8 +168,8 @@ public class Age extends StdAbility
 			if(choices.size()>0)
 			{
 				if(babe instanceof MOB)
-					((MOB)babe).setFollowing((MOB)choices.firstElement());
-				following=(MOB)choices.firstElement();
+					((MOB)babe).setFollowing(choices.firstElement());
+				following=choices.firstElement();
 			}
 		}
 		return following;

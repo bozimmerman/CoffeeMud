@@ -450,7 +450,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			final Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null)
 				return false;
-			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob, buildingI,false))
 				return false;
@@ -470,7 +470,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			final Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null)
 				return false;
-			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(buildingI==null)
 				return false;

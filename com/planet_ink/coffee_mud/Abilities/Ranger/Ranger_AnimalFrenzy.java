@@ -45,7 +45,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 	@Override public boolean canBeUninvoked(){return false;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return 0;}
-	protected Vector rangersGroup=null;
+	protected Vector<MOB> rangersGroup=null;
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
 
 	@Override
@@ -89,7 +89,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 			{
 				try
 				{
-					final MOB mob=(MOB)rangersGroup.elementAt(i);
+					final MOB mob=rangersGroup.elementAt(i);
 					if((!H.contains(mob))
 					||(mob.location()!=invoker.location()))
 					{

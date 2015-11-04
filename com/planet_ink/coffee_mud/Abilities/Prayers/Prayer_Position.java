@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prayer_Position extends Prayer
 {
 	@Override public String ID() { return "Prayer_Position"; }
@@ -44,7 +44,7 @@ public class Prayer_Position extends Prayer
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public Room lastPosition=null;
 
-	protected int getRoomDirection(Room R, Room toRoom, Vector ignore)
+	protected int getRoomDirection(Room R, Room toRoom, Vector<Room> ignore)
 	{
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			if((R.getRoomInDir(d)==toRoom)
@@ -55,7 +55,7 @@ public class Prayer_Position extends Prayer
 	}
 	public String trailTo(Room R1, Room R2)
 	{
-		final Vector set=new Vector();
+		final Vector<Room> set=new Vector<Room>();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
@@ -63,13 +63,13 @@ public class Prayer_Position extends Prayer
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{
-			final Room R=(Room)set.elementAt(i);
+			final Room R=set.elementAt(i);
 			if(R==R2){ foundAt=i; break;}
 		}
 		if(foundAt<0)
 			return "You can't get to '"+R2.roomID()+"' from here.";
 		Room checkR=R2;
-		final Vector trailV=new Vector();
+		final Vector<Room> trailV=new Vector<Room>();
 		trailV.addElement(R2);
 		boolean didSomething=false;
 		while(checkR!=R1)
@@ -77,7 +77,7 @@ public class Prayer_Position extends Prayer
 			didSomething=false;
 			for(int r=0;r<foundAt;r++)
 			{
-				final Room R=(Room)set.elementAt(r);
+				final Room R=set.elementAt(r);
 				if(getRoomDirection(R,checkR,trailV)>=0)
 				{
 					trailV.addElement(R);
@@ -90,12 +90,12 @@ public class Prayer_Position extends Prayer
 			if(!didSomething)
 				return "No trail was found?!";
 		}
-		final Vector theDirTrail=new Vector();
-		final Vector empty=new ReadOnlyVector();
+		final Vector<String> theDirTrail=new Vector<String>();
+		final Vector<Room> empty=new ReadOnlyVector<Room>();
 		for(int s=trailV.size()-1;s>=1;s--)
 		{
-			final Room R=(Room)trailV.elementAt(s);
-			final Room RA=(Room)trailV.elementAt(s-1);
+			final Room R=trailV.elementAt(s);
+			final Room RA=trailV.elementAt(s-1);
 			theDirTrail.addElement(Character.toString(Directions.getDirectionName(getRoomDirection(R,RA,empty)).charAt(0))+" ");
 		}
 		final StringBuffer theTrail=new StringBuffer("");
@@ -103,7 +103,7 @@ public class Prayer_Position extends Prayer
 		int lastNum=0;
 		while(theDirTrail.size()>0)
 		{
-			final String s=(String)theDirTrail.elementAt(0);
+			final String s=theDirTrail.elementAt(0);
 			if(lastNum==0)
 			{
 				lastDir=s.charAt(0);

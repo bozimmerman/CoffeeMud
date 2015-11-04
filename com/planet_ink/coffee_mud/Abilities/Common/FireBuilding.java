@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class FireBuilding extends CommonSkill
 {
 	@Override public String ID() { return "FireBuilding"; }
@@ -95,9 +94,9 @@ public class FireBuilding extends CommonSkill
 		return false;
 	}
 
-	public Vector resourceHere(Room R, int material)
+	public Vector<Item> resourceHere(Room R, int material)
 	{
-		final Vector here=new Vector();
+		final Vector<Item> here=new Vector<Item>();
 		for(int i=0;i<R.numItems();i++)
 		{
 			final Item I2=R.getItem(i);

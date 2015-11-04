@@ -681,7 +681,7 @@ public class Reset extends StdCommand
 				for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 				{
 					final Race R=(Race)e.nextElement();
-					final Vector racesToBaseFrom=new Vector();
+					final Vector<Race> racesToBaseFrom=new Vector<Race>();
 					final Race human=CMClass.getRace("Human");
 					final Race halfling=CMClass.getRace("Halfling");
 					if((R.isGeneric())&&(R.ID().length()>1)&&(!R.ID().endsWith("Race"))&&(Character.isUpperCase(R.ID().charAt(0))))
@@ -726,14 +726,14 @@ public class Reset extends StdCommand
 						}
 						final StringBuffer answer=new StringBuffer(R.ID()+": ");
 						for(int i=0;i<racesToBaseFrom.size();i++)
-							answer.append(((Race)racesToBaseFrom.get(i)).ID()+" ");
+							answer.append(racesToBaseFrom.get(i).ID()+" ");
 						mob.tell(answer.toString());
 						if(racesToBaseFrom.size()>0)
 						{
 							final long[] ageChart=new long[Race.AGE_ANCIENT+1];
 							for(int i=0;i<racesToBaseFrom.size();i++)
 							{
-								final Race R2=(Race)racesToBaseFrom.get(i);
+								final Race R2=racesToBaseFrom.get(i);
 								int lastVal=0;
 								for(int x=0;x<ageChart.length;x++)
 								{
@@ -809,7 +809,7 @@ public class Reset extends StdCommand
 						recordedChanges=new StringBuffer("");
 						break;
 					}
-				final Vector rooms=new Vector();
+				final Vector<Room> rooms=new Vector<Room>();
 				if(s.toUpperCase().startsWith("ROOM"))
 					rooms.add(mob.location());
 				else
@@ -817,7 +817,7 @@ public class Reset extends StdCommand
 				{
 					try
 					{
-						for(final Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
+						for(final Enumeration<Room> e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
 							rooms.add(e.nextElement());
 					}catch(final NoSuchElementException nse){}
 				}
@@ -854,7 +854,7 @@ public class Reset extends StdCommand
 								}
 							if(skip)
 								continue;
-							for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+							for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 								rooms.add(r.nextElement());
 						}
 					}catch(final NoSuchElementException nse){}

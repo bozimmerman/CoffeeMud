@@ -1932,7 +1932,7 @@ public class StdMOB implements MOB
 
 			final double diff = actions() - cmd.actionCost;
 			final Object O = cmd.commandObj;
-			final Vector commands = new XVector(cmd.commandVector);
+			final List<String> commands = new XVector<String>(cmd.commandVector);
 			cmd.nextCheck = cmd.nextCheck + 1000;
 			cmd.seconds += 1;
 			final int secondsElapsed = cmd.seconds;

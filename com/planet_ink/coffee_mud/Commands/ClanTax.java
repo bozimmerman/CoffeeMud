@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ClanTax extends StdCommand
 {
 	public ClanTax(){}
@@ -114,7 +113,7 @@ public class ClanTax extends StdCommand
 				mob.session().println(L("'@x1' is not a valid value.  Try 0-25.",t));
 			return;
 		}
-		final Vector commands=new Vector();
+		final Vector<String> commands=new Vector<String>();
 		commands.add(getAccessWords()[0]);
 		commands.add(t);
 		setClanTaxRate(mob, C, skipChecks,commands,CMath.div(CMath.s_int(t),100));

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Look extends StdCommand
 {
 	public Look(){}
@@ -40,12 +40,11 @@ public class Look extends StdCommand
 	private final String[] access=I(new String[]{"LOOK","LOO","LO","L"});
 	@Override public String[] getAccessWords(){return access;}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		final Room R=mob.location();
 		boolean quiet=false;
 		if((commands!=null)

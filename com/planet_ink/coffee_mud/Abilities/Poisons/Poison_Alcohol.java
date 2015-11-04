@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Poison_Alcohol extends Poison
 {
 	@Override public String ID() { return "Poison_Alcohol"; }
@@ -296,8 +295,8 @@ public class Poison_Alcohol extends Poison
 		int largest=alchoholContribution();
 		if((givenTarget instanceof MOB)&&(auto))
 		{
-			final Vector found=new Vector();
-			final Vector remove=new Vector();
+			final Vector<Ability> found=new Vector<Ability>();
+			final Vector<Ability> remove=new Vector<Ability>();
 			largest=0;
 			for(final Enumeration<Ability> a=givenTarget.effects();a.hasMoreElements();)
 			{
@@ -335,7 +334,7 @@ public class Poison_Alcohol extends Poison
 			}
 
 			for(int i=0;i<remove.size();i++)
-				givenTarget.delEffect((Ability)remove.elementAt(i));
+				givenTarget.delEffect(remove.elementAt(i));
 		}
 		final boolean success=super.invoke(mob,commands,givenTarget,auto,asLevel);
 		if(success&&(givenTarget instanceof MOB)&&(auto))

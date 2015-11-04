@@ -33,12 +33,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class DelayedTransporter extends ActiveTicker
 {
 	@Override public String ID(){return "DelayedTransporter";}
-	protected Hashtable transportees=new Hashtable();
-	protected Vector destRoomNames=new Vector();
+	protected Hashtable<String,Integer> transportees=new Hashtable<String,Integer>();
+	protected Vector<String> destRoomNames=new Vector<String>();
 	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS;}
 
 	@Override
@@ -66,8 +66,8 @@ public class DelayedTransporter extends ActiveTicker
 			myParms=myParms.substring(x+1);
 			super.setParms(parmText);
 		}
-		destRoomNames=new Vector();
-		transportees=new Hashtable();
+		destRoomNames=new Vector<String>();
+		transportees=new Hashtable<String,Integer>();
 		while(myParms.length()>0)
 		{
 			String thisRoom=myParms;
@@ -97,7 +97,7 @@ public class DelayedTransporter extends ActiveTicker
 			final MOB inhab=room.fetchInhabitant(i);
 			if(inhab!=null)
 			{
-				Integer I=(Integer)transportees.get(inhab.Name());
+				Integer I=transportees.get(inhab.Name());
 				if(I==null)
 				{
 					I=Integer.valueOf(0);
@@ -107,7 +107,7 @@ public class DelayedTransporter extends ActiveTicker
 				if(I.intValue()>=minTicks)
 					if((CMLib.dice().rollPercentage()<chance)||(I.intValue()>maxTicks))
 					{
-						final String roomName=(String)destRoomNames.elementAt(CMLib.dice().roll(1,destRoomNames.size(),-1));
+						final String roomName=destRoomNames.elementAt(CMLib.dice().roll(1,destRoomNames.size(),-1));
 						final Room otherRoom=CMLib.map().getRoom(roomName);
 						if(otherRoom==null)
 							inhab.tell(L("You are whisked nowhere at all, since '@x1' is nowhere to be found.",roomName));

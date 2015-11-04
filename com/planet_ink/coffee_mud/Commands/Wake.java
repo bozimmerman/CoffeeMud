@@ -32,19 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Wake extends StdCommand
 {
 	public Wake(){}
 
 	private final String[] access=I(new String[]{"WAKE"});
 	@Override public String[] getAccessWords(){return access;}
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands!=null)
 			commands.remove(0);
 		if((commands==null)||(commands.size()==0))

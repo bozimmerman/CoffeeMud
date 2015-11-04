@@ -37,7 +37,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "MasterLeatherWorking"; }
@@ -218,6 +217,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	protected List<List<String>> loadRecipes()
 	{
 		final String filename=parametersFile();
+		@SuppressWarnings("unchecked")
 		List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(recipes==null)
 		{
@@ -369,7 +369,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,buildingI,false))
 				return false;
@@ -386,7 +386,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(buildingI==null)
 				return false;

@@ -126,7 +126,7 @@ public class Chant_TapGrapevine extends Chant
 			}
 		}
 
-		final Vector myRooms=(tapped==null)?null:Druid_MyPlants.myPlantRooms(tapped);
+		final Vector<Room> myRooms=(tapped==null)?null:Druid_MyPlants.myPlantRooms(tapped);
 		if((myRooms==null)||(myRooms.size()==0))
 		{
 			mob.tell(L("There doesn't appear to be any plants around here to listen through."));
@@ -157,7 +157,7 @@ public class Chant_TapGrapevine extends Chant
 					return false;
 				for(int i=0;i<myRooms.size();i++)
 				{
-					final Room R=(Room)myRooms.elementAt(i);
+					final Room R=myRooms.elementAt(i);
 					int ii=0;
 					myPlant=Druid_MyPlants.myPlant(R,tapped,ii);
 					while(myPlant!=null)

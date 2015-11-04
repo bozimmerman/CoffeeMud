@@ -226,8 +226,6 @@ public class DrowWizard extends DrowElf
 		}
 		else
 			prayer = CMClass.getAbility("Prayer_CureSerious");
-//  	  Vector commands = new Vector();
-//  	  commands.addElement();
 		if(prayer!=null)
 			return prayer.invoke(this,null,false,0);
 		return false;

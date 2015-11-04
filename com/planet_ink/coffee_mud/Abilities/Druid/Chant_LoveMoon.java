@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_LoveMoon extends Chant
 {
 	@Override public String ID() { return "Chant_LoveMoon"; }
@@ -81,7 +80,7 @@ public class Chant_LoveMoon extends Chant
 				unInvoke();
 			else
 			{
-				final Vector choices=new Vector();
+				final Vector<MOB> choices=new Vector<MOB>();
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
 					final MOB M=mob.location().fetchInhabitant(i);
@@ -95,7 +94,7 @@ public class Chant_LoveMoon extends Chant
 				}
 				if(choices.size()>0)
 				{
-					final MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					final MOB M=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 					if(CMLib.dice().rollPercentage()==1)
 					{
 						Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);

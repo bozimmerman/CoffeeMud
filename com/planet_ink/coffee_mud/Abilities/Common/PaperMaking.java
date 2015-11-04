@@ -38,7 +38,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class PaperMaking extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "PaperMaking"; }
@@ -251,7 +250,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					final String of=this.input;
 					if((of.trim().length()==0)||(of.indexOf('<')>=0))
 						return;
-					final Vector newCommands=new XVector<String>(originalCommands);
+					final Vector<String> newCommands=new XVector<String>(originalCommands);
 					newCommands.add("STATUE="+of);
 					me.invoke(mob, newCommands, target, auto, asLevel);
 				}

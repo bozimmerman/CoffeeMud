@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Contagion extends Prayer implements DiseaseAffect
 {
 	@Override public String ID() { return "Prayer_Contagion"; }
@@ -84,7 +83,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		final MOB mob=(MOB)affected;
 		if(mob.location().numInhabitants()==1)
 			return true;
-		final Vector choices=new Vector();
+		final Vector<Ability> choices=new Vector<Ability>();
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -100,7 +99,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		if(choices.size()==0)
 			return true;
 		final MOB target=mob.location().fetchRandomInhabitant();
-		final Ability thisOne=(Ability)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+		final Ability thisOne=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 		if((target==null)||(thisOne==null)||(target.fetchEffect(ID())!=null))
 			return true;
 		if(CMLib.dice().rollPercentage()>(target.charStats().getSave(CharStats.STAT_SAVE_DISEASE)))

@@ -365,7 +365,7 @@ public class DefaultSession implements Session
 										if(introDir.isDirectory())
 										{
 											final CMFile[] files=introDir.listFiles();
-											final Vector choices=new Vector();
+											final Vector<String> choices=new Vector<String>();
 											for (final CMFile file : files)
 											{
 												if(file.getName().toLowerCase().startsWith("intro")
@@ -373,7 +373,7 @@ public class DefaultSession implements Session
 													choices.addElement(file.getName());
 											}
 											if(choices.size()>0)
-												introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+												introFilename=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 										}
 										println("\n\r\n\r\n\r^<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400^>\n\r\n\r");
 										if(out!=null)
@@ -767,18 +767,18 @@ public class DefaultSession implements Session
 			   |(((mob!=null)&&(mob.soulMate()!=null))?MUDCmdProcessor.METAFLAG_POSSESSED:0);
 	}
 
-	public void setPreviousCmd(List cmds)
+	public void setPreviousCmd(List<String> cmds)
 	{
 		if(cmds==null)
 			return;
 		if(cmds.size()==0)
 			return;
-		if((cmds.size()>0)&&(((String)cmds.get(0)).trim().startsWith("!")))
+		if((cmds.size()>0)&&(cmds.get(0).trim().startsWith("!")))
 			return;
 
 		previousCmd.clear();
 		for(int i=0;i<cmds.size();i++)
-			previousCmd.add(((String)cmds.get(i)));
+			previousCmd.add((cmds.get(i)));
 	}
 
 	@Override public boolean isAfk(){return afkFlag;}
@@ -1476,7 +1476,7 @@ public class DefaultSession implements Session
 					{
 						final boolean keepDown=parts.size()>3?CMath.s_bool(parts.get(3)):true;
 						final String externalCmd=(parts.size()>4)?CMParms.combine(parts,4):null;
-						final Vector cmd=new XVector("SHUTDOWN","NOPROMPT");
+						final Vector<String> cmd=new XVector<String>("SHUTDOWN","NOPROMPT");
 						if(!keepDown)
 						{
 							cmd.add("RESTART");
@@ -2642,7 +2642,7 @@ public class DefaultSession implements Session
 					final String firstWord=CMDS.get(0);
 					final PlayerStats pstats=mob.playerStats();
 					final String alias=(pstats!=null)?pstats.getAlias(firstWord):"";
-					final Vector ALL_CMDS=new Vector();
+					final Vector<List<String>> ALL_CMDS=new Vector<List<String>>();
 					boolean echoOn=false;
 					if(alias.length()>0)
 					{
@@ -2662,7 +2662,7 @@ public class DefaultSession implements Session
 						ALL_CMDS.addElement(CMDS);
 					for(int v=0;v<ALL_CMDS.size();v++)
 					{
-						CMDS=(List)ALL_CMDS.elementAt(v);
+						CMDS=ALL_CMDS.elementAt(v);
 						setPreviousCmd(CMDS);
 						milliTotal+=(lastStop-lastStart);
 

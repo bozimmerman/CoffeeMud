@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class CommonSkill extends StdAbility
 {
 	@Override public String ID() { return "CommonSkill"; }
@@ -230,14 +230,14 @@ public class CommonSkill extends StdAbility
 
 	protected int lookingFor(int material, Room fromHere)
 	{
-		final Vector V=new Vector();
+		final Vector<Integer> V=new Vector<Integer>();
 		V.addElement(Integer.valueOf(material));
 		return lookingFor(V,fromHere);
 	}
 
-	protected int lookingFor(Vector materials, Room fromHere)
+	protected int lookingFor(Vector<Integer> materials, Room fromHere)
 	{
-		final Vector possibilities=new Vector();
+		final Vector<Integer> possibilities=new Vector<Integer>();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room room=fromHere.getRoomInDir(d);
@@ -251,7 +251,7 @@ public class CommonSkill extends StdAbility
 		}
 		if(possibilities.size()==0)
 			return -1;
-		return ((Integer)(possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1)))).intValue();
+		return (possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
 	}
 
 	public Item getRequiredFire(MOB mob,int autoGenerate)

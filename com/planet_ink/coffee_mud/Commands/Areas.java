@@ -161,7 +161,7 @@ public class Areas extends StdCommand
 			expression=CMParms.combineQuoted(commands,1);
 			msg=new StringBuffer(L("^HFiltered areas list@x1:^?^N\n\r",append));
 		}
-		final Vector areasVec=new Vector();
+		final Vector<String> areasVec=new Vector<String>();
 		final boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
 		final int colWidth=ListingLibrary.ColFixer.fixColWidth(66.0/numCols,mob);
 		for(;a.hasMoreElements();)
@@ -212,7 +212,7 @@ public class Areas extends StdCommand
 				msg.append("\n\r");
 				col=1;
 			}
-			msg.append(CMStrings.padRight((String)areasVec.get(i),colWidth)+"^N");
+			msg.append(CMStrings.padRight(areasVec.get(i),colWidth)+"^N");
 		}
 		msg.append(L("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));
 		if((mob!=null)&&(!mob.isMonster()))

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Follow extends StdCommand
 {
 	public Follow()
@@ -47,6 +47,7 @@ public class Follow extends StdCommand
 		return access;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private final static Class[][] internalParameters=new Class[][]{{MOB.class,Boolean.class}};
 
 	public boolean nofollow(MOB mob, boolean errorsOk, boolean quiet)
@@ -74,7 +75,7 @@ public class Follow extends StdCommand
 	public void unfollow(MOB mob, boolean quiet)
 	{
 		nofollow(mob,false,quiet);
-		final Vector V=new Vector();
+		final Vector<MOB> V=new Vector<MOB>();
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			final MOB F=mob.fetchFollower(f);
@@ -83,7 +84,7 @@ public class Follow extends StdCommand
 		}
 		for(int v=0;v<V.size();v++)
 		{
-			final MOB F=(MOB)V.get(v);
+			final MOB F=V.get(v);
 			nofollow(F,false,quiet);
 		}
 	}
@@ -131,7 +132,7 @@ public class Follow extends StdCommand
 		boolean quiet=false;
 		if(mob==null)
 			return false;
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		final Room R=mob.location();
 		if(R==null)
 			return false;

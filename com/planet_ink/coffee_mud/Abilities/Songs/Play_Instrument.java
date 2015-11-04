@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
+
 public class Play_Instrument extends Play
 {
 	@Override
@@ -69,7 +69,7 @@ public class Play_Instrument extends Play
 		if ((A != null) 
 		&& ((mob != invoker()) || (getSpell().abstractQuality() != Ability.QUALITY_MALICIOUS)))
 		{
-			final Vector chcommands = new Vector();
+			final Vector<String> chcommands = new Vector<String>();
 			chcommands.add(mob.name());
 			A = (Ability) A.copyOf();
 			A.invoke(invoker(), chcommands, mob, true, adjustedLevel(invoker(), 0));

@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SummonMount extends Chant
 {
 	@Override public String ID() { return "Chant_SummonMount"; }
@@ -114,7 +113,7 @@ public class Chant_SummonMount extends Chant
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		final Vector choices=new Vector();
+		final Vector<Integer> choices=new Vector<Integer>();
 		int fromDir=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -133,7 +132,7 @@ public class Chant_SummonMount extends Chant
 			mob.tell(L("You must be further outdoors to summon a mount."));
 			return false;
 		}
-		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
+		fromDir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 		final Room newRoom=mob.location().getRoomInDir(fromDir);
 		final int opDir=Directions.getOpDirectionCode(fromDir);
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

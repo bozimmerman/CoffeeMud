@@ -74,8 +74,8 @@ public class ClanData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("MEMBERSLIST"))
 		{
-			final Vector themembers=new Vector();
-			final Vector theroles=new Vector();
+			final Vector<String> themembers=new Vector<String>();
+			final Vector<Integer> theroles=new Vector<Integer>();
 			if(httpReq.isUrlParameter("MEMB1"))
 			{
 				int num=1;
@@ -111,8 +111,8 @@ public class ClanData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<themembers.size();i++)
 			{
-				final String themember=(String)themembers.elementAt(i);
-				final Integer role=(Integer)theroles.elementAt(i);
+				final String themember=themembers.elementAt(i);
+				final Integer role=theroles.elementAt(i);
 				str.append("<TR><TD WIDTH=35%>");
 				str.append("<SELECT ONCHANGE=\"EditMember(this);\" NAME=MEMB"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -163,7 +163,7 @@ public class ClanData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("RELATIONS"))
 		{
-			final Vector therelations=new Vector();
+			final Vector<Integer> therelations=new Vector<Integer>();
 			Clan CC=null;
 			if(httpReq.isUrlParameter("RELATION1"))
 			{
@@ -195,7 +195,7 @@ public class ClanData extends StdWebMacro
 				if(CC==C)
 					continue;
 				relat++;
-				final Integer relation=(Integer)therelations.elementAt(relat);
+				final Integer relation=therelations.elementAt(relat);
 				str.append("<TR><TD WIDTH=35%><FONT COLOR=YELLOW><B>"+CC.getName()+"</B></FONT>");
 				str.append("<TD WIDTH=65% COLSPAN=2>");
 				str.append("<SELECT NAME=RELATION"+(relat+1)+">");

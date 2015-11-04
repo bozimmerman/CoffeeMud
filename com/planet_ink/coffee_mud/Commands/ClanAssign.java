@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class ClanAssign extends StdCommand
 {
 	public ClanAssign(){}
@@ -120,7 +120,7 @@ public class ClanAssign extends StdCommand
 					{
 						final int oldPos=oldRole.second.intValue();
 						final int maxInNewPos=C.getMostInRole(newPos);
-						final Vector currentMembersInNewPosV=new Vector();
+						final Vector<String> currentMembersInNewPosV=new Vector<String>();
 						for(final MemberRecord member : members)
 							if(member.role==newPos)
 								currentMembersInNewPosV.add(member.name);
@@ -144,7 +144,7 @@ public class ClanAssign extends StdCommand
 							// if there are too many in the new position, demote some of them.
 							while(currentMembersInNewPosV.size()>=maxInNewPos)
 							{
-								final String s=(String)currentMembersInNewPosV.get(0);
+								final String s=currentMembersInNewPosV.get(0);
 								currentMembersInNewPosV.remove(0);
 								CMLib.clans().clanAnnounce(mob,L(" @x1 of the @x2 @x3 is now a @x4.",s,C.getGovernmentName(),C.clanID(),C.getRoleName(C.getGovernment().getAcceptPos(),true,false)));
 								final MOB M2=CMLib.players().getPlayer(s);

@@ -36,7 +36,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class GenMobilePortal extends GenPortal implements Rideable, Exit
 {
 	@Override public String ID(){ return "GenMobilePortal";}
@@ -61,7 +60,7 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 			{
 				myStationaryPortal=null;
 				final Room destR=getDestinationRoom();
-				final Vector choices=new Vector();
+				final Vector<Item> choices=new Vector<Item>();
 				for(int i=0;i<destR.numItems();i++)
 				{
 					final Item I=destR.getItem(i);
@@ -88,11 +87,11 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 					{
 						if(((myStationaryPortal==null)||(myStationaryPortal.amDestroyed()))&&(secretIdentity().length()>0))
 						for(int i=0;i<choices.size();i++)
-							if(((Item)choices.elementAt(i)).secretIdentity().equals(secretIdentity()))
+							if(choices.elementAt(i).secretIdentity().equals(secretIdentity()))
 							{ myStationaryPortal=(StdPortal)choices.elementAt(i); break;}
 						if((myStationaryPortal==null)||(myStationaryPortal.amDestroyed()))
 						for(int i=0;i<choices.size();i++)
-							if(((Item)choices.elementAt(i)).Name().equals(Name()))
+							if(choices.elementAt(i).Name().equals(Name()))
 							{ myStationaryPortal=(StdPortal)choices.elementAt(i); break;}
 						if((myStationaryPortal==null)||(myStationaryPortal.amDestroyed()))
 							myStationaryPortal=(StdPortal)choices.firstElement();

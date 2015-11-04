@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Scrapping extends CommonSkill
 {
 	@Override public String ID() { return "Scrapping"; }
@@ -150,7 +149,7 @@ public class Scrapping extends CommonSkill
 			return false;
 		}
 
-		final Vector V=new Vector();
+		final Vector<Item> V=new Vector<Item>();
 		int totalWeight=0;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
@@ -215,10 +214,10 @@ public class Scrapping extends CommonSkill
 				if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
 				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
-					duration+=((Item)V.elementAt(v)).phyStats().weight();
+					duration+=V.elementAt(v).phyStats().weight();
 				else
-					duration+=((Item)V.elementAt(v)).phyStats().weight()/2;
-				((Item)V.elementAt(v)).destroy();
+					duration+=V.elementAt(v).phyStats().weight()/2;
+				V.elementAt(v).destroy();
 			}
 			beneficialAffect(mob,mob,asLevel,duration);
 		}

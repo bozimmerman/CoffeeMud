@@ -1414,11 +1414,11 @@ public class CMClass extends ClassLoader
 	 */
 	public static final Ability findAbility(final String calledThis, final int ofClassDomain, final long ofFlags, final boolean exactOnly)
 	{
-		final Vector ableV;
+		final Vector<Ability> ableV;
 		Ability A;
 		if((ofClassDomain>=0)||(ofFlags>=0))
 		{
-			ableV = new Vector();
+			ableV = new Vector<Ability>();
 			for(final Enumeration<Ability> e=c().abilities.elements();e.hasMoreElements();)
 			{
 				A=e.nextElement();
@@ -1810,7 +1810,7 @@ public class CMClass extends ClassLoader
 	 */
 	public static final XVector loadVectorListToObj(final String defaultPath, String requestedPathList, final String ancestor)
 	{
-		final Vector v=new Vector();
+		final Vector<Object> v=new Vector<Object>();
 		int x=requestedPathList.indexOf(';');
 		String path;
 		while(x>=0)
@@ -1837,7 +1837,7 @@ public class CMClass extends ClassLoader
 	 */
 	public static final Vector<Object> loadClassList(final String defaultPath, String requestedPathList, final String subDir, final Class<?> ancestorC1, final boolean quiet)
 	{
-		final Vector v=new Vector();
+		final Vector<Object> v=new Vector<Object>();
 		int x=requestedPathList.indexOf(';');
 		while(x>=0)
 		{
@@ -2307,7 +2307,7 @@ public class CMClass extends ClassLoader
 				throw new ClassNotFoundException("JavaScript file "+pathName+" not readable!");
 			final List<String> V=Resources.getFileLineVector(str);
 			Class<?> extendsClass=null;
-			final Vector implementsClasses=new Vector();
+			final Vector<Class<?>> implementsClasses=new Vector<Class<?>>();
 			String overPackage=null;
 			for(int v=0;v<V.size();v++)
 			{
@@ -2357,7 +2357,7 @@ public class CMClass extends ClassLoader
 			{
 				final Class[] CS=new Class[implementsClasses.size()];
 				for(int i=0;i<implementsClasses.size();i++) 
-					CS[i]=(Class)implementsClasses.elementAt(i);
+					CS[i]=implementsClasses.elementAt(i);
 				cc.setTargetImplements(CS);
 			}
 			final Object[] objs = cc.compileToClassFiles(str.toString(), "script", 1, name);
@@ -2528,7 +2528,7 @@ public class CMClass extends ClassLoader
 				if((page.getStr("ABILITIES")!=null)
 				&&(page.getStr("ABILITIES").toUpperCase().indexOf("%DEFAULT%")>=0))
 				{
-					Vector tempV;
+					Vector<Ability> tempV;
 					int size=0;
 					tempV=loadVectorListToObj(prefix+"Abilities/Fighter/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
 					size=tempV.size();
@@ -2705,7 +2705,7 @@ public class CMClass extends ClassLoader
 				c.tech=baseC.tech;
 			else
 			{
-				Vector tempV;
+				Vector<Electronics> tempV;
 				c.tech=loadVectorListToObj(prefix+"Items/BasicTech/",page.getStr("TECH"),CMObjectType.TECH.ancestorName);
 
 				tempV=loadVectorListToObj(prefix+"Items/ShipTech/",page.getStr("SHIPTECH"),CMObjectType.SHIPTECH.ancestorName);

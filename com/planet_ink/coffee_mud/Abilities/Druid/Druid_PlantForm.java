@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_PlantForm extends StdAbility
 {
 	@Override public String ID() { return "Druid_PlantForm"; }
@@ -245,7 +244,7 @@ public class Druid_PlantForm extends StdAbility
 		if(choice.trim().length()>0)
 		{
 			final StringBuffer buf=new StringBuffer(L("Plant Forms:\n\r"));
-			final Vector choices=new Vector();
+			final Vector<String> choices=new Vector<String>();
 			for(int i=0;i<classLevel;i++)
 			{
 				final String s=getRaceName(i);

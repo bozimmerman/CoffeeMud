@@ -139,7 +139,7 @@ public class Chant_Labyrinth extends Chant
 				}
 				newRoom.getArea().fillInAreaRoom(newRoom);
 				beneficialAffect(mob,newRoom,asLevel,0);
-				final Vector everyone=new Vector();
+				final Vector<MOB> everyone=new Vector();
 				for(int m=0;m<oldRoom.numInhabitants();m++)
 				{
 					final MOB follower=oldRoom.fetchInhabitant(m);
@@ -148,7 +148,7 @@ public class Chant_Labyrinth extends Chant
 
 				for(int m=0;m<everyone.size();m++)
 				{
-					final MOB follower=(MOB)everyone.elementAt(m);
+					final MOB follower=everyone.elementAt(m);
 					if(follower==null)
 						continue;
 					final Room newerRoom=((GridLocale)newRoom).getRandomGridChild();

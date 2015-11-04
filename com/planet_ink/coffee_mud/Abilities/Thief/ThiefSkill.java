@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class ThiefSkill extends StdAbility
 {
 	@Override public String ID() { return "ThiefSkill"; }
@@ -71,7 +71,7 @@ public class ThiefSkill extends StdAbility
 			return 0;
 		return meMOB.phyStats().level();
 	}
-	public MOB getHighestLevelMOB(MOB meMOB, Vector not)
+	public MOB getHighestLevelMOB(MOB meMOB, Vector<MOB> not)
 	{
 		if(meMOB==null)
 			return null;

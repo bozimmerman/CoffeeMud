@@ -88,12 +88,11 @@ public class Close extends StdCommand
 		return false;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		final String whatToClose=CMParms.combine(commands,1);
 		if(whatToClose.length()==0)
 		{

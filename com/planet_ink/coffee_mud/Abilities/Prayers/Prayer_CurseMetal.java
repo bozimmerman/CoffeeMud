@@ -47,7 +47,7 @@ public class Prayer_CurseMetal extends Prayer
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING;}
 
-	protected Vector affectedItems=new Vector();
+	protected Vector<Item> affectedItems=new Vector<Item>();
 
 	@Override
 	public void setMiscText(String newText)
@@ -135,7 +135,7 @@ public class Prayer_CurseMetal extends Prayer
 		{
 			for(int i=0;i<affectedItems.size();i++)
 			{
-				final Item I=(Item)affectedItems.elementAt(i);
+				final Item I=affectedItems.elementAt(i);
 				Ability A=I.fetchEffect(this.ID());
 				while(A!=null)
 				{

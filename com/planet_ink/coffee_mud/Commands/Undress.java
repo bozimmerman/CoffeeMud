@@ -32,19 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Undress extends StdCommand
 {
 	public Undress(){}
 
 	private final String[] access=I(new String[]{"UNDRESS"});
 	@Override public String[] getAccessWords(){return access;}
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<3)
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("Undress whom? What would you like to remove?"));

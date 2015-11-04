@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Play_Retreat extends Play
 {
 	@Override public String ID() { return "Play_Retreat"; }
@@ -79,7 +79,7 @@ public class Play_Retreat extends Play
 		{
 			if(where.length()==0)
 			{
-				final Vector directions=new Vector();
+				final Vector<Integer> directions=new Vector<Integer>();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					final Exit thisExit=mob.location().getExitInDir(d);
@@ -92,7 +92,7 @@ public class Play_Retreat extends Play
 					directions.removeElement(Integer.valueOf(Directions.UP));
 				if(directions.size()>0)
 				{
-					directionCode=((Integer)directions.elementAt(CMLib.dice().roll(1,directions.size(),-1))).intValue();
+					directionCode=directions.elementAt(CMLib.dice().roll(1,directions.size(),-1)).intValue();
 					where=Directions.getDirectionName(directionCode);
 				}
 			}

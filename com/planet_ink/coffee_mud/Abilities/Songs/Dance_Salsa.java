@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Dance_Salsa extends Dance
 {
 	@Override public String ID() { return "Dance_Salsa"; }
@@ -52,7 +52,7 @@ public class Dance_Salsa extends Dance
 		if(mob==null)
 			return false;
 
-		final Vector choices=new Vector();
+		final Vector<MOB> choices=new Vector<MOB>();
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
 			final MOB M=mob.location().fetchInhabitant(i);
@@ -66,7 +66,7 @@ public class Dance_Salsa extends Dance
 		}
 		if(choices.size()>0)
 		{
-			final MOB M=(MOB)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+			final MOB M=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 			if(CMLib.dice().rollPercentage()==1)
 			{
 				Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);

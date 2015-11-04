@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class AreaTbl extends StdWebMacro
 {
 	@Override public String name()	{return "AreaTbl";}
@@ -48,11 +48,11 @@ public class AreaTbl extends StdWebMacro
 			return "<TR><TD colspan=\"" + AT_MAX_COL + "\" class=\"cmAreaTblEntry\"><I>Game is not running - unable to get area list!</I></TD></TR>";
 		}
 
-		final Vector areasVec=new Vector();
+		final Vector<String> areasVec=new Vector<String>();
 
-		for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 		{
-			final Area A=(Area)a.nextElement();
+			final Area A=a.nextElement();
 			if((!CMLib.flags().isHidden(A))&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				areasVec.addElement(A.name());
 		}
@@ -82,7 +82,7 @@ public class AreaTbl extends StdWebMacro
 				msg.append(" width=\"" + percent + "%\"");
 
 			msg.append(L(" class=\"cmAreaTblEntry\">"));
-			msg.append((String)areasVec.elementAt(i));
+			msg.append(areasVec.elementAt(i));
 			msg.append("</td>");
 			// finish the row
 			if((percent == 100) || (++col)> (AT_MAX_COL-1 ))

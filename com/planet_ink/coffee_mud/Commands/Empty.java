@@ -46,7 +46,7 @@ public class Empty extends Drop
 	{
 		String whatToDrop=null;
 		Environmental target=mob;
-		final Vector V=new Vector();
+		final Vector<Item> V=new Vector<Item>();
 		if(commands.size()<2)
 		{
 			mob.tell(L("Empty what where?"));
@@ -170,7 +170,7 @@ public class Empty extends Drop
 		&&(V.get(0) instanceof Drink)
 		&&(!((Drink)V.get(0)).containsDrink())
 		)
-			mob.tell(mob,(Drink)V.get(0),null,L("<T-NAME> is already empty."));
+			mob.tell(mob,V.get(0),null,L("<T-NAME> is already empty."));
 		else
 		for(int v=0;v<V.size();v++)
 		{

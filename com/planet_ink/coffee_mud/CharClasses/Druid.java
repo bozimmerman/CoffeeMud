@@ -226,7 +226,7 @@ public class Druid extends StdCharClass
 			return;
 		}
 
-		final Vector grantable=new Vector();
+		final Vector<String> grantable=new Vector<String>();
 
 		final int level=mob.charStats().getClassLevel(this);
 		int numChants=2;
@@ -256,7 +256,7 @@ public class Druid extends StdCharClass
 		{
 			if(grantable.size()==0)
 				break;
-			final String AID=(String)grantable.elementAt(CMLib.dice().roll(1,grantable.size(),-1));
+			final String AID=grantable.elementAt(CMLib.dice().roll(1,grantable.size(),-1));
 			if(AID!=null)
 			{
 				grantable.removeElement(AID);

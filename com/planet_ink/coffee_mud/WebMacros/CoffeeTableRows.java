@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class CoffeeTableRows extends StdWebMacro
 {
 	@Override public String name() { return "CoffeeTableRows"; }
@@ -85,7 +85,7 @@ public class CoffeeTableRows extends StdWebMacro
 			CharClass CharC=null;
 			if(code.length()>1)
 				CharC=CMClass.getCharClass(code.substring(1));
-			final Vector allSkills=new Vector();
+			final Vector<Ability> allSkills=new Vector<Ability>();
 			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				final Ability A=e.nextElement();
@@ -104,7 +104,7 @@ public class CoffeeTableRows extends StdWebMacro
 				C2.set(Calendar.SECOND,59);
 				C2.set(Calendar.MILLISECOND,999);
 				curTime=C2.getTimeInMillis();
-				final Vector set=new Vector();
+				final Vector<CoffeeTableRow> set=new Vector<CoffeeTableRow>();
 				if(V.size()==1)
 				{
 					final CoffeeTableRow T=V.get(0);
@@ -123,9 +123,9 @@ public class CoffeeTableRows extends StdWebMacro
 				}
 				for(int s=0;s<set.size();s++)
 				{
-					final CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
+					final CoffeeTableRow T=set.elementAt(s);
 					for(int x=0;x<allSkills.size();x++)
-						T.totalUp("A"+((Ability)allSkills.elementAt(x)).ID().toUpperCase(),totals[x]);
+						T.totalUp("A"+allSkills.elementAt(x).ID().toUpperCase(),totals[x]);
 				}
 				if(scale==0)
 					break;
@@ -148,7 +148,7 @@ public class CoffeeTableRows extends StdWebMacro
 							A=null;
 						else
 						{
-							A=(Ability)allSkills.elementAt(x);
+							A=allSkills.elementAt(x);
 							table.append("<TD"+colspan+">"+header+A.ID()+footer+"</TD>");
 						}
 					}
@@ -177,7 +177,7 @@ public class CoffeeTableRows extends StdWebMacro
 				C2.set(Calendar.SECOND,59);
 				C2.set(Calendar.MILLISECOND,999);
 				curTime=C2.getTimeInMillis();
-				final Vector set=new Vector();
+				final Vector<CoffeeTableRow> set=new Vector<CoffeeTableRow>();
 				if(V.size()==1)
 				{
 					final CoffeeTableRow T=V.get(0);
@@ -197,7 +197,7 @@ public class CoffeeTableRows extends StdWebMacro
 				if(set.size()==0){ set.addAll(V); V.clear();}
 				for(int s=0;s<set.size();s++)
 				{
-					final CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
+					final CoffeeTableRow T=set.elementAt(s);
 					for(int x=0;x<CMLib.quests().numQuests();x++)
 						T.totalUp("U"+T.tagFix(CMLib.quests().fetchQuest(x).name()),totals[x]);
 				}
@@ -244,7 +244,7 @@ public class CoffeeTableRows extends StdWebMacro
 			C2.set(Calendar.SECOND,59);
 			C2.set(Calendar.MILLISECOND,999);
 			curTime=C2.getTimeInMillis();
-			final Vector set=new Vector();
+			final Vector<CoffeeTableRow> set=new Vector<CoffeeTableRow>();
 			for(int v=V.size()-1;v>=0;v--)
 			{
 				final CoffeeTableRow T=V.get(v);
@@ -260,7 +260,7 @@ public class CoffeeTableRows extends StdWebMacro
 			long numberOnlineCounter=0;
 			for(int s=0;s<set.size();s++)
 			{
-				final CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
+				final CoffeeTableRow T=set.elementAt(s);
 				T.totalUp(code,totals);
 				if(T.highestOnline()>highestOnline)
 					highestOnline=T.highestOnline();

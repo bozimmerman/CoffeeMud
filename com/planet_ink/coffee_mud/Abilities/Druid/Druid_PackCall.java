@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_PackCall extends StdAbility
 {
 	@Override public String ID() { return "Druid_PackCall"; }
@@ -160,7 +159,7 @@ public class Druid_PackCall extends StdAbility
 			return false;
 		}
 
-		final Vector choices=new Vector();
+		final Vector<Integer> choices=new Vector<Integer>();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room R=mob.location().getRoomInDir(d);
@@ -230,7 +229,7 @@ public class Druid_PackCall extends StdAbility
 					CMLib.beanCounter().clearZeroMoney(newMOB,null);
 					if(victim.getVictim()!=newMOB)
 						victim.setVictim(newMOB);
-					final int dir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
+					final int dir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 					if(newMOB.getVictim()!=victim)
 						newMOB.setVictim(victim);
 					newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> arrive(s) @x1 and attack(s) <T-NAMESELF>!",Directions.getFromCompassDirectionName(dir)));

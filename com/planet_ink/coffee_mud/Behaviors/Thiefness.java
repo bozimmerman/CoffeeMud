@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thiefness extends CombatAbilities
 {
 	@Override public String ID(){return "Thiefness";}
@@ -97,7 +97,7 @@ public class Thiefness extends CombatAbilities
 			&&(!CMSecurity.isAllowed(victim,victim.location(),CMSecurity.SecFlag.CMDROOMS))
 			&&(!CMSecurity.isAllowed(victim,victim.location(),CMSecurity.SecFlag.ORDER)))
 			{
-				final Vector V=new Vector();
+				final Vector<String> V=new Vector<String>();
 				final Ability A=mob.fetchAbility((CMLib.dice().rollPercentage()>50)?(mob.isInCombat()?"Thief_Mug":"Thief_Steal"):"Thief_Swipe");
 				if(A!=null)
 				{

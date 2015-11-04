@@ -154,7 +154,7 @@ public class Generate extends StdCommand
 			{
 				final String tKey=(String)tkeye.nextElement();
 				foundIDs.append("^H"+tKey+"^N: \n\r");
-				final Vector xmlTagsV=new Vector();
+				final Vector<String> xmlTagsV=new Vector<String>();
 				for(final Enumeration keys=definedIDs.keys();keys.hasMoreElements();)
 				{
 					final String key=(String)keys.nextElement();
@@ -179,7 +179,7 @@ public class Generate extends StdCommand
 			mob.tell(L("Required ids for @x1 were missing: @x2",idName,cme.getMessage()));
 			return false;
 		}
-		final Vector V = new Vector();
+		final Vector<Object> V = new Vector<Object>();
 		try
 		{
 			switch(codeI)

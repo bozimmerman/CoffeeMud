@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_Surrender extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Surrender"; }
@@ -48,7 +48,7 @@ public class Thief_Surrender extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Vector theList=new Vector();
+		final Vector<MOB> theList=new Vector<MOB>();
 		int gold=0;
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
@@ -78,7 +78,7 @@ public class Thief_Surrender extends ThiefSkill
 			final StringBuffer enemiesList=new StringBuffer("");
 			for(int v=0;v<theList.size();v++)
 			{
-				final MOB vic=(MOB)theList.elementAt(v);
+				final MOB vic=theList.elementAt(v);
 				if(v==0)
 					enemiesList.append(vic.name());
 				else
@@ -96,7 +96,7 @@ public class Thief_Surrender extends ThiefSkill
 				mob.makePeace();
 				for(int v=0;v<theList.size();v++)
 				{
-					final MOB vic=(MOB)theList.elementAt(v);
+					final MOB vic=theList.elementAt(v);
 					CMLib.beanCounter().addMoney(vic,localCurrency,CMath.div(goldRequired,theList.size()));
 					vic.recoverPhyStats();
 					vic.makePeace();

@@ -99,7 +99,7 @@ public class DeityData extends StdWebMacro
 							R=MUDGrinder.getRoomObject(httpReq, roomID);
 							if(R==null)
 								return "No Room?!";
-							final Vector restoreDeities = new Vector();
+							final Vector<Deity> restoreDeities = new Vector<Deity>();
 							for(final Enumeration e=CMLib.map().deities();e.hasMoreElements();)
 							{
 								final Deity D2 = (Deity)e.nextElement();
@@ -111,7 +111,7 @@ public class DeityData extends StdWebMacro
 							R=MUDGrinder.getRoomObject(httpReq, roomID);
 							for(int d=restoreDeities.size()-1;d>=0;d--)
 							{
-								final Deity D2=(Deity)restoreDeities.elementAt(d);
+								final Deity D2=restoreDeities.elementAt(d);
 								if(CMLib.map().getDeity(D2.Name())!=null)
 									restoreDeities.removeElementAt(d);
 							}

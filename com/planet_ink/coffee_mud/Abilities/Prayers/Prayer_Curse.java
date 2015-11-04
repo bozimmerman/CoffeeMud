@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Curse extends Prayer
 {
 	@Override public String ID() { return "Prayer_Curse"; }
@@ -82,23 +81,25 @@ public class Prayer_Curse extends Prayer
 
 	public static Item getSomething(MOB mob, boolean blessedOnly)
 	{
-		final Vector good=new Vector();
-		final Vector great=new Vector();
+		final Vector<Item> good=new Vector<Item>();
+		final Vector<Item> great=new Vector<Item>();
 		Item target=null;
 		for(int i=0;i<mob.numItems();i++)
 		{
 			final Item I=mob.getItem(i);
 			if((!blessedOnly)||(isBlessed(I)))
+			{
 				if(I.amWearingAt(Wearable.IN_INVENTORY))
 					good.addElement(I);
 				else
 					great.addElement(I);
+			}
 		}
 		if(great.size()>0)
-			target=(Item)great.elementAt(CMLib.dice().roll(1,great.size(),-1));
+			target=great.elementAt(CMLib.dice().roll(1,great.size(),-1));
 		else
 		if(good.size()>0)
-			target=(Item)good.elementAt(CMLib.dice().roll(1,good.size(),-1));
+			target=good.elementAt(CMLib.dice().roll(1,good.size(),-1));
 		return target;
 	}
 

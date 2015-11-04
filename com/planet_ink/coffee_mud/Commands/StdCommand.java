@@ -103,7 +103,7 @@ public class StdCommand implements Command
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		// fake it!
-		final Vector commands = new Vector();
+		final Vector<String> commands = new Vector<String>();
 		commands.add(getAccessWords()[0]);
 		for(final Object o : args)
 			commands.add(o.toString());

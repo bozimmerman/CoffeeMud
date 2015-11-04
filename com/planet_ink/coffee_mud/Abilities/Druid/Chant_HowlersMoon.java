@@ -103,10 +103,10 @@ public class Chant_HowlersMoon extends Chant
 				 return true;
 			if(fromDir<0)
 			{
-				final Vector choices=fillChoices(room);
+				final Vector<Integer> choices=fillChoices(room);
 				if(choices.size()==0)
 					return true;
-				fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
+				fromDir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 			}
 			if(fromDir>=0)
 			{
@@ -149,9 +149,9 @@ public class Chant_HowlersMoon extends Chant
 		return true;
 	}
 
-	protected Vector fillChoices(Room R)
+	protected Vector<Integer> fillChoices(Room R)
 	{
-		final Vector choices=new Vector();
+		final Vector<Integer> choices=new Vector();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room room=R.getRoomInDir(d);
@@ -184,7 +184,7 @@ public class Chant_HowlersMoon extends Chant
 					&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 						return Ability.QUALITY_INDIFFERENT;
 				}
-				final Vector choices=fillChoices(R);
+				final Vector<Integer> choices=fillChoices(R);
 				if(choices.size()==0)
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -226,14 +226,14 @@ public class Chant_HowlersMoon extends Chant
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		final Vector choices=fillChoices(mob.location());
+		final Vector<Integer> choices=fillChoices(mob.location());
 		fromDir=-1;
 		if(choices.size()==0)
 		{
 			mob.tell(L("You must be further outdoors to summon an animal."));
 			return false;
 		}
-		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
+		fromDir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

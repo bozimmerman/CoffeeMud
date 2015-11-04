@@ -32,19 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Sleep extends StdCommand
 {
 	public Sleep(){}
 
 	private final String[] access=I(new String[]{"SLEEP","SL"});
 	@Override public String[] getAccessWords(){return access;}
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if(CMLib.flags().isSleeping(mob))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("You are already asleep!"));

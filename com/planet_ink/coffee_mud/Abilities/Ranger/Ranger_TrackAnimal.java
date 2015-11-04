@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Ranger_TrackAnimal extends StdAbility
 {
 	@Override public String ID() { return "Ranger_TrackAnimal"; }
@@ -187,7 +187,7 @@ public class Ranger_TrackAnimal extends StdAbility
 			.plus(TrackingLibrary.TrackingFlag.NOAIR)
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);
 
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,75+(2*getXLEVELLevel(mob)));
 		for (final Room room : checkSet)
 		{

@@ -98,7 +98,7 @@ public class Chant_Grapevine extends Chant
 			mob.tell(L("You are already listening through a grapevine."));
 			return false;
 		}
-		final Vector myRooms=Druid_MyPlants.myPlantRooms(mob);
+		final Vector<Room> myRooms=Druid_MyPlants.myPlantRooms(mob);
 		if((myRooms==null)||(myRooms.size()==0))
 		{
 			mob.tell(L("There doesn't appear to be any of your plants around to listen through."));
@@ -122,14 +122,14 @@ public class Chant_Grapevine extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				myChants=new Vector();
+				myChants=new Vector<Ability>();
 				beneficialAffect(mob,mob,asLevel,0);
 				final Chant_Grapevine C=(Chant_Grapevine)mob.fetchEffect(ID());
 				if(C==null)
 					return false;
 				for(int i=0;i<myRooms.size();i++)
 				{
-					final Room R=(Room)myRooms.elementAt(i);
+					final Room R=myRooms.elementAt(i);
 					int ii=0;
 					myPlant=Druid_MyPlants.myPlant(R,mob,ii);
 					while(myPlant!=null)

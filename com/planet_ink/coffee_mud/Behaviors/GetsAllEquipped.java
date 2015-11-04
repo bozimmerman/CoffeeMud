@@ -78,12 +78,12 @@ public class GetsAllEquipped extends ActiveTicker
 				return true;
 
 			DoneEquipping=true;
-			final Vector stuffIHad=new Vector();
+			final Vector<Item> stuffIHad=new Vector<Item>();
 			for(int i=0;i<mob.numItems();i++)
 				stuffIHad.addElement(mob.getItem(i));
 			mob.enqueCommand(new XVector("GET","ALL"),MUDCmdProcessor.METAFLAG_FORCED,0);
 			Item I=null;
-			final Vector dropThisStuff=new Vector();
+			final Vector<Item> dropThisStuff=new Vector<Item>();
 			for(int i=0;i<mob.numItems();i++)
 			{
 				I=mob.getItem(i);
@@ -97,7 +97,7 @@ public class GetsAllEquipped extends ActiveTicker
 				}
 			}
 			for(int d=0;d<dropThisStuff.size();d++)
-				mob.enqueCommand(new XVector("DROP","$"+((Item)dropThisStuff.elementAt(d)).Name()+"$"),MUDCmdProcessor.METAFLAG_FORCED,0);
+				mob.enqueCommand(new XVector("DROP","$"+dropThisStuff.elementAt(d).Name()+"$"),MUDCmdProcessor.METAFLAG_FORCED,0);
 			mob.enqueCommand(new XVector("WEAR","ALL"),MUDCmdProcessor.METAFLAG_FORCED,0);
 		}
 		return true;

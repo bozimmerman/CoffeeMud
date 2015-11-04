@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings("rawtypes")
+
 public class DefaultSocial implements Social
 {
 	protected String	Social_name;
@@ -229,13 +229,13 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto)
+	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto)
 	{
 		String targetStr = "";
 		if ((commands.size() > 1) 
-		&& (!((String) commands.elementAt(1)).equalsIgnoreCase("SELF")) 
-		&& (!((String) commands.elementAt(1)).equalsIgnoreCase("ALL")))
-			targetStr = (String) commands.elementAt(1);
+		&& (!commands.get(1).equalsIgnoreCase("SELF")) 
+		&& (!commands.get(1).equalsIgnoreCase("ALL")))
+			targetStr = commands.get(1);
 
 		Physical targetE = target;
 		if (targetE == null)
@@ -322,7 +322,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public CMMsg makeChannelMsg(MOB mob, int channelInt, String channelName, Vector commands, boolean makeTarget)
+	public CMMsg makeChannelMsg(MOB mob, int channelInt, String channelName, List<String> commands, boolean makeTarget)
 	{
 		String channelColor = CMLib.channels().getChannel(channelInt).colorOverride;
 		if (channelColor.length() == 0)
@@ -333,13 +333,13 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public CMMsg makeMessage(MOB mob, String str, String end, int srcMask, int fullCode, Vector commands, String I3channelName, boolean makeTarget)
+	public CMMsg makeMessage(MOB mob, String str, String end, int srcMask, int fullCode, List<String> commands, String I3channelName, boolean makeTarget)
 	{
 		String targetStr = "";
 		if ((commands.size() > 1) 
-		&& (!((String) commands.elementAt(1)).equalsIgnoreCase("SELF")) 
-		&& (!((String) commands.elementAt(1)).equalsIgnoreCase("ALL")))
-			targetStr = (String) commands.elementAt(1);
+		&& (!commands.get(1).equalsIgnoreCase("SELF")) 
+		&& (!commands.get(1).equalsIgnoreCase("ALL")))
+			targetStr = commands.get(1);
 
 		Environmental target = null;
 		if (targetStr.length() > 0)

@@ -103,20 +103,20 @@ public class Emoter extends ActiveTicker
 			return false;
 		return true;
 	}
-	protected void setEmoteTypes(Vector V, boolean respectOnlyBeginningAndEnd)
+	protected void setEmoteTypes(Vector<String> V, boolean respectOnlyBeginningAndEnd)
 	{
 		if(respectOnlyBeginningAndEnd)
 		{
-			if(setEmoteType((String)V.firstElement()))
+			if(setEmoteType(V.firstElement()))
 				V.removeElementAt(0);
 			else
-			if(setEmoteType((String)V.lastElement()))
+			if(setEmoteType(V.lastElement()))
 				V.removeElementAt(V.size()-1);
 		}
 		else
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			if(setEmoteType((String)V.elementAt(v)))
+			if(setEmoteType(V.elementAt(v)))
 				V.removeElementAt(v);
 		}
 	}

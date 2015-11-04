@@ -23,9 +23,9 @@ import java.util.*;
  * Company: http://www.falserealities.com
  * @author Tulath (a.k.a.) Jeremy Vyska
  */
-@SuppressWarnings({"unchecked","rawtypes"})
-public class FieryRoom
-	extends ActiveTicker {
+
+public class FieryRoom extends ActiveTicker 
+{
 	@Override
 	public String ID()
 	{
@@ -236,8 +236,8 @@ public class FieryRoom
 
 	private static Item getSomething(MOB mob)
 	{
-		final Vector good = new Vector();
-		final Vector great = new Vector();
+		final Vector<Item> good = new Vector<Item>();
+		final Vector<Item> great = new Vector<Item>();
 		Item target = null;
 		for (int i = 0; i < mob.numItems(); i++)
 		{
@@ -248,10 +248,10 @@ public class FieryRoom
 				great.addElement(I);
 		}
 		if (great.size() > 0)
-			target = (Item) great.elementAt(CMLib.dice().roll(1, great.size(), -1));
+			target = great.elementAt(CMLib.dice().roll(1, great.size(), -1));
 		else
 		if (good.size() > 0)
-			target = (Item) good.elementAt(CMLib.dice().roll(1, good.size(), -1));
+			target = good.elementAt(CMLib.dice().roll(1, good.size(), -1));
 		return target;
 	}
 }

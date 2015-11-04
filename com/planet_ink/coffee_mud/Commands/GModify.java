@@ -374,7 +374,7 @@ public class GModify extends StdCommand
 		throws java.io.IOException
 	{
 		final boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.GMODIFY);
-		Vector placesToDo=new Vector();
+		Vector<Places> placesToDo=new Vector<Places>();
 		final String whole=CMParms.combine(commands,0);
 		commands.remove(0);
 		if(commands.size()==0)

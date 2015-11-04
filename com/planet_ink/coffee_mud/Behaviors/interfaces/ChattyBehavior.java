@@ -57,12 +57,16 @@ public interface ChattyBehavior extends Behavior
 	 * definitely be saying soon.
 	 * @author Bo Zimmermanimmerman
 	 */
-	@SuppressWarnings("rawtypes")
 	public static class ChattyResponse
 	{
-		public ChattyResponse(Vector cmd, int responseDelay) { parsedCommand=cmd; delay=responseDelay;}
-		public int delay;
-		public Vector parsedCommand;
+		public int			delay;
+		public List<String>	parsedCommand;
+		
+		public ChattyResponse(List<String> cmd, int responseDelay)
+		{
+			parsedCommand = cmd;
+			delay = responseDelay;
+		}
 	}
 	/**
 	 * A test response is a possible response to an environmental event, such as

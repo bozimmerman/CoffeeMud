@@ -44,7 +44,7 @@ public class Order extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<3)
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("Order who do to what?"));

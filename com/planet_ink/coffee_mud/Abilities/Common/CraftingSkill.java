@@ -733,9 +733,9 @@ public class CraftingSkill extends GatheringSkill
 		return matches;
 	}
 
-	protected Vector getAllMendable(MOB mob, Environmental from, Item contained)
+	protected Vector<Item> getAllMendable(MOB mob, Environmental from, Item contained)
 	{
-		Vector V=new Vector();
+		Vector<Item> V=new Vector<Item>();
 		if(from==null)
 			return V;
 		if(from instanceof Room)
@@ -772,7 +772,7 @@ public class CraftingSkill extends GatheringSkill
 			if(from instanceof Container)
 				V=getAllMendable(mob,((Item)from).owner(),(Item)from);
 			if(canMend(mob,from,true))
-				V.addElement(from);
+				V.addElement((Item)from);
 		}
 		return V;
 	}
@@ -795,7 +795,7 @@ public class CraftingSkill extends GatheringSkill
 				return false;
 			}
 		}
-		final Vector allStuff=getAllMendable(mob,scanning,null);
+		final Vector<Item> allStuff=getAllMendable(mob,scanning,null);
 		if(allStuff.size()==0)
 		{
 			if(mob==scanning)
@@ -811,7 +811,7 @@ public class CraftingSkill extends GatheringSkill
 			buf.append(L("The following items on @x1 could use some @x2:\n\r",scanning.name(),name()));
 		for(int i=0;i<allStuff.size();i++)
 		{
-			final Item I=(Item)allStuff.elementAt(i);
+			final Item I=allStuff.elementAt(i);
 			buf.append(CMStrings.padRight(I.usesRemaining()+"%",5)+I.name());
 			if(!I.amWearingAt(Wearable.IN_INVENTORY))
 				buf.append(" ("+Wearable.CODES.NAME(I.rawWornCode())+")");

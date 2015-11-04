@@ -280,7 +280,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		else
 		if((commands.size()>1)&&(commands.get(0)).equalsIgnoreCase("add"))
 		{
-			final Vector V=new Vector();
+			final Vector<MOB> V=new Vector<MOB>();
 			for(int i=1;i<commands.size();i++)
 			{
 				final String name=commands.get(i);
@@ -294,7 +294,7 @@ public class Archon_Multiwatch extends ArchonSkill
 			{
 				for(int n=0;n<V.size();n++)
 				{
-					final MOB MN=(MOB)V.elementAt(n);
+					final MOB MN=V.elementAt(n);
 					if(MN.fetchEffect(ID())==null)
 					{
 						final Ability A=(Ability)copyOf();

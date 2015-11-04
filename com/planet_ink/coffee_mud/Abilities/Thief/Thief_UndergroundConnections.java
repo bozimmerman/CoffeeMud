@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_UndergroundConnections extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_UndergroundConnections"; }
@@ -50,8 +50,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	protected int hygieneLoss=0;
 	protected String theNoun=null;
 	protected Room currRoom=null;
-	protected Vector theGroup=null;
-	protected Vector storage=null;
+	protected Vector<MOB> theGroup=null;
+	protected Vector<Room> storage=null;
 	protected String lastDesc=null;
 
 	@Override
@@ -74,7 +74,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 						lastDesc=roomDesc;
 						for(int g=0;g<theGroup.size();g++)
 						{
-							final MOB M=(MOB)theGroup.elementAt(g);
+							final MOB M=theGroup.elementAt(g);
 							if((M.playerStats()!=null)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE)))
 								M.playerStats().adjHygiene(hygieneLoss);
 							switch(CMLib.dice().roll(1,10,0))
@@ -121,7 +121,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			if(theGroup!=null)
 			for(int g=0;g<theGroup.size();g++)
 			{
-				final MOB M=(MOB)theGroup.elementAt(g);
+				final MOB M=theGroup.elementAt(g);
 				M.tell(L("You are told that it's safe and released."));
 				currRoom.bringMobHere(M,false);
 				CMLib.commands().postStand(M,true);
@@ -129,7 +129,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			}
 			if(storage!=null)
 			for(int s=0;s<storage.size();s++)
-				((Room)storage.elementAt(s)).destroy();
+				storage.elementAt(s).destroy();
 			pathOut=null;
 			currRoom=null;
 			if(storage!=null)
@@ -142,20 +142,20 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		super.unInvoke();
 	}
 
-	public void bringMOBSHere(Room newRoom, Vector group, String enterStr, String leaveStr)
+	public void bringMOBSHere(Room newRoom, Vector<MOB> group, String enterStr, String leaveStr)
 	{
 		for(int g=group.size()-1;g>=0;g--)
 		{
-			final MOB follower=(MOB)group.elementAt(g);
+			final MOB follower=group.elementAt(g);
 			if(!bringMOBHere(newRoom,follower,enterStr,leaveStr))
 				group.removeElementAt(g);
 		}
 	}
-	public void bringMOBSLikeHere(Vector rooms, Room newRoom, Vector group, String enterStr, String leaveStr)
+	public void bringMOBSLikeHere(Vector<Room> rooms, Room newRoom, Vector<MOB> group, String enterStr, String leaveStr)
 	{
 		for(int g=group.size()-1;g>=0;g--)
 		{
-			final MOB follower=(MOB)group.elementAt(g);
+			final MOB follower=group.elementAt(g);
 			final Room R=(Room)newRoom.copyOf();
 			if(!bringMOBHere(R,follower,enterStr,leaveStr))
 				group.removeElementAt(g);
@@ -239,7 +239,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			 .plus(TrackingLibrary.TrackingFlag.NOAIR)
 			 .plus(TrackingLibrary.TrackingFlag.NOWATER);
 		final List<Room> trail=CMLib.tracking().getRadiantRooms(thisRoom,flags,30+(2*getXLEVELLevel(mob)));
-		final Vector finalTos=new Vector();
+		final Vector<Room> finalTos=new Vector<Room>();
 		Room R=null;
 		for(int c=0;c<trail.size();c++)
 		{
@@ -297,7 +297,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			{
 				underA.currRoom=thisRoom;
 				final Set<MOB> H=target.getGroupMembers(new HashSet<MOB>());
-				final Vector group=new Vector();
+				final Vector<MOB> group=new Vector<MOB>();
 				group.addElement(target);
 				for (final Object element : H)
 				{
@@ -310,7 +310,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				}
 				underA.theGroup=group;
 				final Area area=thisRoom.getArea();
-				final Vector rooms=new Vector();
+				final Vector<Room> rooms=new Vector<Room>();
 				switch(CMLib.dice().roll(1,4,0))
 				{
 				case 1:

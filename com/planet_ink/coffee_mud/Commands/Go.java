@@ -77,7 +77,7 @@ public class Go extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if(!standIfNecessary(mob,metaFlags, true))
 			return false;
 

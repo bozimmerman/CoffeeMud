@@ -64,7 +64,7 @@ public class Chant_SummonDustdevil extends Chant
 					unInvoke();
 				else
 				{
-					Vector V=new Vector();
+					Vector<Item> V=new Vector<Item>();
 					for(int i=0;i<mob.location().numItems();i++)
 					{
 						final Item I=mob.location().getItem(i);
@@ -74,7 +74,7 @@ public class Chant_SummonDustdevil extends Chant
 					boolean giveUp=false;
 					for(int i=0;i<V.size();i++)
 					{
-						final Item I=(Item)V.elementAt(i);
+						final Item I=V.elementAt(i);
 						if((mob.maxCarry()>=mob.phyStats().weight()+I.phyStats().weight())
 						&&(mob.maxItems()>=(mob.numItems()+I.numberOfItems())))
 							CMLib.commands().postGet(mob,null,I,false);
@@ -83,7 +83,7 @@ public class Chant_SummonDustdevil extends Chant
 					}
 					if(giveUp)
 					{
-						V=new Vector();
+						V=new Vector<Item>();
 						for(int i=0;i<mob.numItems();i++)
 						{
 							final Item I=mob.getItem(i);
@@ -92,7 +92,7 @@ public class Chant_SummonDustdevil extends Chant
 						}
 						for(int i=0;i<V.size();i++)
 						{
-							final CMMsg msg=CMClass.getMsg(mob,invoker,(Item)V.elementAt(i),CMMsg.MSG_GIVE,L("<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>."));
+							final CMMsg msg=CMClass.getMsg(mob,invoker,V.elementAt(i),CMMsg.MSG_GIVE,L("<S-NAME> whirl(s) <O-NAME> to <T-NAMESELF>."));
 							if(mob.location().okMessage(mob,msg))
 								mob.location().send(mob,msg);
 							else

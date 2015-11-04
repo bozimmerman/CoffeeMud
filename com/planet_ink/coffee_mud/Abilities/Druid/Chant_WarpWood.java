@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_WarpWood extends Chant
 {
 	@Override public String ID() { return "Chant_WarpWood"; }
@@ -48,8 +47,8 @@ public class Chant_WarpWood extends Chant
 	{
 		if(mobTarget!=null)
 		{
-			final Vector goodPossibilities=new Vector();
-			final Vector possibilities=new Vector();
+			final Vector<Item> goodPossibilities=new Vector<Item>();
+			final Vector<Item> possibilities=new Vector<Item>();
 			for(int i=0;i<mobTarget.numItems();i++)
 			{
 				final Item item=mobTarget.getItem(i);
@@ -63,10 +62,10 @@ public class Chant_WarpWood extends Chant
 						goodPossibilities.addElement(item);
 				}
 				if(goodPossibilities.size()>0)
-					return (Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
+					return goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
 				else
 				if(possibilities.size()>0)
-					return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
+					return possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
 			}
 		}
 		return null;

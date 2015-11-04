@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_LocatePlants extends Chant
 {
 	@Override public String ID() { return "Chant_LocatePlants"; }
@@ -162,7 +161,7 @@ public class Chant_LocatePlants extends Chant
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 		for (final Room R : checkSet)
 		{

@@ -56,22 +56,34 @@ public class Chant_FindPlant extends Chant
 						  RawMaterial.RESOURCE_HEMP};
 	protected int[] okResources(){    return myRscs;}
 
-	protected Vector allResources=null;
-	protected Vector allOkResources()
+	protected Vector<Integer> allResources=null;
+	protected Vector<Integer> allOkResources()
 	{
 		if(allResources==null)
 		{
 			allResources=new Vector();
 			if(okResources()!=null)
+			{
 				for(int m=0;m<okResources().length;m++)
+				{
 					if(!allResources.contains(Integer.valueOf(okResources()[m])))
 					   allResources.addElement(Integer.valueOf(okResources()[m]));
+				}
+			}
 			for(final int cd : RawMaterial.CODES.ALL())
+			{
 				if(okMaterials()!=null)
+				{
 					for(int m=0;m<okMaterials().length;m++)
+					{
 						if((cd&RawMaterial.MATERIAL_MASK)==okMaterials()[m])
+						{
 							if(!allResources.contains(Integer.valueOf(cd)))
 							   allResources.addElement(Integer.valueOf(cd));
+						}
+					}
+				}
+			}
 		}
 		return allResources;
 	}
@@ -178,14 +190,14 @@ public class Chant_FindPlant extends Chant
 		{
 			final StringBuffer msg=new StringBuffer(L("You may search for any of the following: "));
 			for(int i=0;i<allOkResources().size();i++)
-				msg.append(RawMaterial.CODES.NAME(((Integer)allOkResources().elementAt(i)).intValue()).toLowerCase()+", ");
+				msg.append(RawMaterial.CODES.NAME(allOkResources().elementAt(i).intValue()).toLowerCase()+", ");
 			mob.tell(msg.substring(0,msg.length()-2));
 			return false;
 		}
 		whatImLookingFor=-1;
 		for(int i=0;i<allOkResources().size();i++)
 		{
-			final int c=((Integer)allOkResources().elementAt(i)).intValue();
+			final int c=allOkResources().elementAt(i).intValue();
 			final String d=RawMaterial.CODES.NAME(c);
 			if(d.equalsIgnoreCase(s))
 			{
@@ -212,7 +224,7 @@ public class Chant_FindPlant extends Chant
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)

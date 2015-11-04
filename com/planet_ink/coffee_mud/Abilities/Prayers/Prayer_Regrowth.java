@@ -47,7 +47,7 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 	@Override protected int overrideMana(){return Ability.COST_ALL;}
-	private static Vector limbsToRegrow = null;
+	private static Vector<String> limbsToRegrow = null;
 
 	public Prayer_Regrowth()
 	{
@@ -114,7 +114,7 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 					String missLimb=null;
 					for(int i=0;i<limbsToRegrow.size();i++)
 					{
-						LookingFor = (String)limbsToRegrow.elementAt(i);
+						LookingFor = limbsToRegrow.elementAt(i);
 						for(int j=0;j<missing.size();j++)
 						{
 							missLimb = missing.get(j);

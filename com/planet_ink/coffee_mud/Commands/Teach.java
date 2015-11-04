@@ -34,7 +34,7 @@ import java.util.Map.Entry;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Teach extends StdCommand
 {
 	public Teach(){}
@@ -42,13 +42,11 @@ public class Teach extends StdCommand
 	private final String[] access=I(new String[]{"TEACH"});
 	@Override public String[] getAccessWords(){return access;}
 
-
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<3)
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("Teach who what?"));

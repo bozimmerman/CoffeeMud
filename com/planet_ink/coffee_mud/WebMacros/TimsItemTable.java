@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class TimsItemTable extends StdWebMacro
 {
 	@Override public String name() { return "TimsItemTable"; }
@@ -51,13 +51,13 @@ public class TimsItemTable extends StdWebMacro
 		if(parms.containsKey("WORLD"))
 		{
 			str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>DIFF</TD><TD>DIFF%</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
-			final Vector onesDone=new Vector();
-			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			final Vector<Environmental> onesDone=new Vector<Environmental>();
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				final Area A=(Area)a.nextElement();
-				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				final Area A=a.nextElement();
+				for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 				{
-					final Room R=(Room)r.nextElement();
+					final Room R=r.nextElement();
 					if((endTime>0)&&(System.currentTimeMillis()>endTime))
 						break;
 					for(int i=0;i<R.numItems();i++)
@@ -207,7 +207,7 @@ public class TimsItemTable extends StdWebMacro
 		return clearWebMacros(str)+"</TABLE>";
 	}
 
-	public boolean doneBefore(Vector V, Item I)
+	public boolean doneBefore(Vector<Environmental> V, Item I)
 	{
 		if(I==null)
 			return true;
@@ -216,7 +216,7 @@ public class TimsItemTable extends StdWebMacro
 		if(I.displayText().length()==0)
 			return true;
 		for(int i=0;i<V.size();i++)
-			if(I.sameAs((Environmental)V.elementAt(i)))
+			if(I.sameAs(V.elementAt(i)))
 				return true;
 		V.addElement(I);
 		return false;

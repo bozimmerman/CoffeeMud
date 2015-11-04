@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Play_Solo extends Play
 {
 	@Override public String ID() { return "Play_Solo"; }
@@ -113,7 +113,7 @@ public class Play_Solo extends Play
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				final Room R=(Room)commonRoomSet.elementAt(v);
+				final Room R=commonRoomSet.elementAt(v);
 				final String msgStr=getCorrectMsgString(R,str,v);
 				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
@@ -125,7 +125,7 @@ public class Play_Solo extends Play
 					invoker=mob;
 					final Play newOne=(Play)this.copyOf();
 
-					final Vector songsToCancel=new Vector();
+					final Vector<Ability> songsToCancel=new Vector<Ability>();
 					for(int i=0;i<R.numInhabitants();i++)
 					{
 						final MOB M=R.fetchInhabitant(i);
@@ -148,7 +148,7 @@ public class Play_Solo extends Play
 					mob.curState().adjMana(-reqMana,mob.maxState());
 					for(int i=0;i<songsToCancel.size();i++)
 					{
-						final Ability A=(Ability)songsToCancel.elementAt(i);
+						final Ability A=songsToCancel.elementAt(i);
 						A.unInvoke();
 					}
 					mob.addEffect(newOne);

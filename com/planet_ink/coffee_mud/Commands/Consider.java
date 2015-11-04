@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Consider extends StdCommand
 {
 	public Consider(){}
@@ -40,6 +40,7 @@ public class Consider extends StdCommand
 	private final String[] access=I(new String[]{"CONSIDER","COS","CO"});
 	@Override public String[] getAccessWords(){return access;}
 
+	@SuppressWarnings("rawtypes")
 	private final static Class[][] internalParameters=new Class[][]{{MOB.class}};
 
 	public int relativeLevelDiff(MOB mob1, MOB mob2)
@@ -163,7 +164,7 @@ public class Consider extends StdCommand
 			mob.tell(levelMsg.toString());
 		}
 		final StringBuffer withWhat=new StringBuffer("");
-		final Vector mendors=new Vector();
+		final Vector<Ability> mendors=new Vector<Ability>();
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -172,7 +173,7 @@ public class Consider extends StdCommand
 		}
 		for(int m=0;m<mendors.size();m++)
 		{
-			final Ability A=(Ability)mendors.get(m);
+			final Ability A=mendors.get(m);
 			if(m==0)
 				withWhat.append(L("You could probably help @x1 out with your @x2 skill",target.name(mob),A.name()));
 			else
@@ -194,7 +195,7 @@ public class Consider extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		Physical target=null;
 		if(commands.size()<2)
 		{

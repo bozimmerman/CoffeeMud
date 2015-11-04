@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class AbilityPlayerNext extends StdWebMacro
 {
 	@Override public String name() { return "AbilityPlayerNext"; }
@@ -70,8 +70,8 @@ public class AbilityPlayerNext extends StdWebMacro
 			return " @break@";
 		}
 
-		final Vector abilities=new Vector();
-		HashSet foundIDs=new HashSet();
+		final Vector<Ability> abilities=new Vector<Ability>();
+		HashSet<String> foundIDs=new HashSet<String>();
 		for(final Enumeration<Ability> a=M.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -85,7 +85,7 @@ public class AbilityPlayerNext extends StdWebMacro
 		foundIDs=null;
 		for(int a=0;a<abilities.size();a++)
 		{
-			final Ability A=(Ability)abilities.elementAt(a);
+			final Ability A=abilities.elementAt(a);
 			boolean okToShow=true;
 			final int classType=A.classificationCode()&Ability.ALL_ACODES;
 			final String className=httpReq.getUrlParameter("CLASS");

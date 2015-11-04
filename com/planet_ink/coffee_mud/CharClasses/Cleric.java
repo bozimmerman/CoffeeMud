@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Cleric extends StdCharClass
 {
 	@Override public String ID(){return "Cleric";}
@@ -271,6 +271,7 @@ public class Cleric extends StdCharClass
 	private final String[] raceRequiredList=new String[]{"All"};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
+	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9))
 	};
@@ -381,7 +382,7 @@ public class Cleric extends StdCharClass
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{
-		final Vector outfitChoices=new Vector<Item>();
+		final Vector<Item> outfitChoices=new Vector<Item>();
 		if(CMLib.flags().isEvil(myChar))
 		{
 			final Weapon w=CMClass.getWeapon("Shortsword");

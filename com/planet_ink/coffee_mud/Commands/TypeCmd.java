@@ -32,19 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class TypeCmd extends Go
 {
 	public TypeCmd(){}
 
 	private final String[] access=I(new String[]{"TYPE","="});
 	@Override public String[] getAccessWords(){return access;}
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		final Room R=mob.location();
 		final boolean consoleMode=(mob.riding() instanceof Electronics.Computer);
 		if((commands.size()<=1)||(R==null))

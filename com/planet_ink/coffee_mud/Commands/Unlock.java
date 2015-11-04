@@ -32,19 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Unlock extends StdCommand
 {
 	public Unlock(){}
 
 	private final String[] access=I(new String[]{"UNLOCK","UNL","UN"});
 	@Override public String[] getAccessWords(){return access;}
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		final String whatTounlock=CMParms.combine(commands,1);
 		if(whatTounlock.length()==0)
 		{

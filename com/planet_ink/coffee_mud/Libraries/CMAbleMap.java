@@ -354,7 +354,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	public List<QualifyingID> getClassAllowsList(String classID)
 	{
 		final List<AbilityMapping> ABLES=getUpToLevelListings(classID,CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL),false,false);
-		final SHashtable alreadyDone=new SHashtable();
+		final SHashtable<String,Integer> alreadyDone=new SHashtable<String,Integer>();
 		final List<QualifyingID> DV=new Vector<QualifyingID>(2);
 		Integer Ix=null;
 		for(final AbilityMapping able : ABLES)
@@ -362,7 +362,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			for(final Iterator<String> i=getAbilityAllowsList(able.abilityID());i.hasNext();)
 			{
 				final String s = i.next();
-				Ix=(Integer)alreadyDone.get(s);
+				Ix=alreadyDone.get(s);
 				if(Ix==null)
 				{
 					alreadyDone.put(s, Integer.valueOf(DV.size()));
@@ -405,7 +405,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	public Iterator<String> getAbilityAllowsList(String ableID)
 	{
 		String abilityID=null;
-		Vector remove=null;
+		Vector<String> remove=null;
 		for(final String KEYID : allows.keySet())
 		{
 			if(KEYID.startsWith("*"))
@@ -421,7 +421,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 							KEYID2=KEYID2.substring(1);
 						addPreRequisites(KEYID2,orset,"");
 						if(remove==null)
-							remove=new Vector();
+							remove=new Vector<String>();
 						remove.addElement(KEYID);
 					}
 				}

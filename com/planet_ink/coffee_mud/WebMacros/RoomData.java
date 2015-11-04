@@ -965,10 +965,10 @@ public class RoomData extends StdWebMacro
 				Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-LOCALES");
 				if(sorted==null)
 				{
-					final Vector sortMe=new Vector();
+					final Vector<String> sortMe=new Vector<String>();
 					for(final Enumeration l=CMClass.locales();l.hasMoreElements();)
 						sortMe.addElement(CMClass.classID(l.nextElement()));
-					sorted=(new TreeSet(sortMe)).toArray();
+					sorted=(new TreeSet<String>(sortMe)).toArray();
 					Resources.submitResource("MUDGRINDER-LOCALES",sorted);
 				}
 				if(multiFlag)
@@ -1075,7 +1075,7 @@ public class RoomData extends StdWebMacro
 			}
 			if(parms.containsKey("MOBLIST"))
 			{
-				final Vector classes=new Vector();
+				final Vector<MOB> classes=new Vector<MOB>();
 				List moblist=null;
 				if(httpReq.isUrlParameter("MOB1"))
 				{
@@ -1119,7 +1119,7 @@ public class RoomData extends StdWebMacro
 							final MOB M2=(MOB)m.nextElement();
 							if(CMClass.classID(M2).equals(MATCHING)
 							   &&(!M2.isGeneric()))
-							{	classes.addElement(M2.copyOf()); break;	}
+							{	classes.addElement((MOB)M2.copyOf()); break;	}
 						}
 					}
 				}
@@ -1140,7 +1140,7 @@ public class RoomData extends StdWebMacro
 				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 				for(int i=0;i<classes.size();i++)
 				{
-					final MOB M=(MOB)classes.elementAt(i);
+					final MOB M=classes.elementAt(i);
 					str.append("<TR>");
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelMOB(this);\" NAME=MOB"+(i+1)+">");
@@ -1188,14 +1188,14 @@ public class RoomData extends StdWebMacro
 
 			if(parms.containsKey("ITEMLIST"))
 			{
-				final Vector classes=new Vector();
-				final Vector containers=new Vector();
-				final Vector beingWorn=new Vector();
+				final Vector<Item> classes=new Vector<Item>();
+				final Vector<Object> containers=new Vector<Object>();
+				final Vector<Boolean> beingWorn=new Vector<Boolean>();
 				List<Item> itemlist=null;
 				if(httpReq.isUrlParameter("ITEM1"))
 				{
 					itemlist=getItemCache();
-					final Vector cstrings=new Vector();
+					final Vector<String> cstrings=new Vector<String>();
 					for(int i=1;;i++)
 					{
 						final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
@@ -1213,7 +1213,7 @@ public class RoomData extends StdWebMacro
 					}
 					for(int i=0;i<cstrings.size();i++)
 					{
-						final String CONTAINER=(String)cstrings.elementAt(i);
+						final String CONTAINER=cstrings.elementAt(i);
 						Item C2=null;
 						if(CONTAINER.length()>0)
 							C2=(Item)CMLib.english().fetchEnvironmental(classes,CONTAINER,true);
@@ -1238,7 +1238,7 @@ public class RoomData extends StdWebMacro
 				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 				for(int i=0;i<classes.size();i++)
 				{
-					final Item I=(Item)classes.elementAt(i);
+					final Item I=classes.elementAt(i);
 					final Item C=(classes.contains(containers.elementAt(i))?(Item)containers.elementAt(i):null);
 					//Boolean W=(Boolean)beingWorn.elementAt(i);
 					str.append("<TR>");

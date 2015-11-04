@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Although at one time a simple public variable object, the Social became an environmental
@@ -37,7 +36,7 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.Common.interfaces.Social
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.SocialsList
  */
-@SuppressWarnings("rawtypes")
+
 public interface Social extends Environmental, CMCommon
 {
 
@@ -240,7 +239,7 @@ public interface Social extends Environmental, CMCommon
 	 * @return true, if successful
 	 */
 	public boolean invoke(MOB mob,
-						  Vector commands,
+						  List<String> commands,
 						  Physical target,
 						  boolean auto);
 
@@ -249,7 +248,7 @@ public interface Social extends Environmental, CMCommon
 	 * social over a public chat channel.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#makeMessage(MOB, String, String, int, int, Vector, String, boolean)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#makeMessage(MOB, String, String, int, int, List, String, boolean)
 	 *
 	 * @param mob the mob doing the social
 	 * @param channelInt the channel int representing which chat channel
@@ -262,14 +261,14 @@ public interface Social extends Environmental, CMCommon
 	public CMMsg makeChannelMsg(MOB mob,
 								int channelInt,
 								String channelName,
-								Vector commands,
+								List<String> commands,
 								boolean makeTarget);
 
 	/**
 	 * Manufactures a proper message that represents executing this social as an action
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#makeChannelMsg(MOB, int, String, Vector, boolean)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#makeChannelMsg(MOB, int, String, List, boolean)
 	 *
 	 * @param mob the mob doing the social
 	 * @param str the str an optional "header" string for the msg, usually mxp related
@@ -287,7 +286,7 @@ public interface Social extends Environmental, CMCommon
 							 String end,
 							 int srcMask,
 							 int fullCode,
-							 Vector commands,
+							 List<String> commands,
 							 String I3channelName,
 							 boolean makeTarget);
 

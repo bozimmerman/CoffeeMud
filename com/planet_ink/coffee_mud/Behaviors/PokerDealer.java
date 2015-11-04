@@ -40,7 +40,7 @@ import java.util.*;
 	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 	THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class PokerDealer extends StdBehavior
 {
 	@Override public String ID(){return "PokerDealer";}
@@ -751,14 +751,14 @@ public class PokerDealer extends StdBehavior
 				{
 					// now we parse their words, and see if every word is a number,
 					// and whether every number is between 1-5
-					final Vector parsed=CMParms.parse(textOfSay);
+					final Vector<String> parsed=CMParms.parse(textOfSay);
 					final HandOfCards hand=theDeck().getPlayerHand(msg.source());
 					boolean numbersOK=(hand!=null)&&(parsed.size()>0);
 					if(hand!=null)
 					for(int i=0;i<parsed.size();i++)
-						if((!CMath.isInteger((String)parsed.elementAt(i)))
-						||(CMath.s_int((String)parsed.elementAt(i))<=0)
-						||(CMath.s_int((String)parsed.elementAt(i))>hand.numberOfCards()))
+						if((!CMath.isInteger(parsed.elementAt(i)))
+						||(CMath.s_int(parsed.elementAt(i))<=0)
+						||(CMath.s_int(parsed.elementAt(i))>hand.numberOfCards()))
 						{ numbersOK=false; break;}
 
 					// if it checks out, we remove the specified cards,
@@ -767,11 +767,11 @@ public class PokerDealer extends StdBehavior
 					{
 						final List<Item> cards=new Vector<Item>();
 						cards.addAll(hand.getContents());
-						final Vector removed=new Vector();
+						final Vector<Item> removed=new Vector<Item>();
 						// make a list of cards to remove
 						for(int i=0;i<parsed.size();i++)
-							if(!removed.contains(cards.get(CMath.s_int((String)parsed.elementAt(i))-1)))
-								removed.addElement(cards.get(CMath.s_int((String)parsed.elementAt(i))-1));
+							if(!removed.contains(cards.get(CMath.s_int(parsed.elementAt(i))-1)))
+								removed.addElement(cards.get(CMath.s_int(parsed.elementAt(i))-1));
 						// remove them from our cards list
 						for(int i=0;i<removed.size();i++)
 							cards.remove(removed.elementAt(i));
@@ -1252,7 +1252,7 @@ public class PokerDealer extends StdBehavior
 				final Room R=winner.location();
 				Item I=null;
 				double totalValue=0.0;
-				final Vector winnings=new Vector();
+				final Vector<Item> winnings=new Vector<Item>();
 				for(int i=R.numItems()-1;i>=0;i--)
 				{
 					I=R.getItem(i);
@@ -1261,7 +1261,7 @@ public class PokerDealer extends StdBehavior
 				}
 				for(int i=0;i<winnings.size();i++)
 				{
-					I=(Item)winnings.elementAt(i);
+					I=winnings.elementAt(i);
 					I.setContainer(null);
 					totalValue+=((Coins)I).getTotalValue();
 					I.destroy();

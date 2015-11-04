@@ -72,7 +72,7 @@ public class Draw extends Get
 		boolean quiet=false;
 		boolean noerrors=false;
 		boolean ifNecessary=false;
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("IFNECESSARY")))
 		{
 			quiet=true;

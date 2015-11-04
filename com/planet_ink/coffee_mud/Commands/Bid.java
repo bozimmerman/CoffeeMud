@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Bid extends StdCommand
 {
 	public Bid(){}
@@ -43,7 +43,7 @@ public class Bid extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Bid how much, on what, with whom?");
 		if(shopkeeper==null)
 			return false;
@@ -77,7 +77,7 @@ public class Bid extends StdCommand
 		}
 
 		String whatName=CMParms.combine(commands,0);
-		final Vector V=new Vector();
+		final Vector<Environmental> V=new Vector<Environmental>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
@@ -101,7 +101,7 @@ public class Bid extends StdCommand
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			final Environmental thisThang=(Environmental)V.get(v);
+			final Environmental thisThang=V.get(v);
 			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,
 					CMMsg.MSG_BID,L("<S-NAME> bid(s) @x1 on <O-NAME> with <T-NAMESELF>.",bidStr),
 					CMMsg.MSG_BID,L("<S-NAME> bid(s) '@x1' on <O-NAME> with <T-NAMESELF>.",bidStr),

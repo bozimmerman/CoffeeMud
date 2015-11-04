@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_WindColor extends Chant
 {
 	@Override public String ID() { return "Chant_WindColor"; }
@@ -279,15 +278,17 @@ public class Chant_WindColor extends Chant
 			}
 			break;
 		}
-		final Vector V=new Vector();
+		final Vector<Integer> V=new Vector<Integer>();
 		for(int i=0;i<colors.length;i++)
+		{
 			if(colors[i]>0)
 				V.addElement(Integer.valueOf(i));
+		}
 		if(V.size()==1)
-			return str.toString()+getColor(((Integer)V.firstElement()).intValue());
+			return str.toString()+getColor(V.firstElement().intValue());
 		for(int i=0;i<V.size();i++)
 		{
-			final int x=((Integer)V.elementAt(i)).intValue();
+			final int x=V.elementAt(i).intValue();
 			if(i==V.size()-1)
 				str.append(L("and @x1 ",getColor(x)));
 			else

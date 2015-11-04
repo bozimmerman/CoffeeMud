@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_FindMate extends Chant
 {
 	@Override public String ID() { return "Chant_FindMate"; }
@@ -198,7 +197,7 @@ public class Chant_FindMate extends Chant
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 		for (final Room R : checkSet)
 		{

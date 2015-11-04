@@ -32,18 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Tell extends StdCommand
 {
 	public Tell(){}
 
 	private final String[] access=I(new String[]{"TELL","T"});
 	@Override public String[] getAccessWords(){return access;}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if((!mob.isMonster())&&mob.isAttributeSet(MOB.Attrib.QUIET))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("You have QUIET mode on.  You must turn it off first."));

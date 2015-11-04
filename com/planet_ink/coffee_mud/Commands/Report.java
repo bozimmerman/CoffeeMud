@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Report extends Skills
 {
 	public Report(){}
@@ -91,7 +91,7 @@ public class Report extends Skills
 			if(s.equalsIgnoreCase("ALL"))
 			{
 
-				final Vector V=new Vector();
+				final Vector<Integer> V=new Vector<Integer>();
 				V.add(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
 				V.add(Integer.valueOf(Ability.ACODE_SKILL));
 				V.add(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
@@ -109,7 +109,7 @@ public class Report extends Skills
 			else
 			if("SKILLS".startsWith(s))
 			{
-				final Vector V=new Vector();
+				final Vector<Integer> V=new Vector<Integer>();
 				V.add(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
 				V.add(Integer.valueOf(Ability.ACODE_SKILL));
 				V.add(Integer.valueOf(Ability.ACODE_TECH));

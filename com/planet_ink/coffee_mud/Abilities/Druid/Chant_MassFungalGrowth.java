@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_MassFungalGrowth extends Chant_SummonFungus
 {
 	@Override public String ID() { return "Chant_MassFungalGrowth"; }
@@ -49,7 +48,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final Vector V=new Vector();
+		final Vector<Room> V=new Vector<Room>();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
@@ -60,7 +59,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 		CMLib.tracking().getRadiantRooms(mob.location(),V,flags,null,adjustedLevel(mob,asLevel),null);
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			final Room R=(Room)V.elementAt(v);
+			final Room R=V.elementAt(v);
 			if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 			||(R==mob.location()))
 				V.removeElementAt(v);
@@ -71,7 +70,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 			int done=0;
 			for(int v=0;v<V.size();v++)
 			{
-				final Room R=(Room)V.elementAt(v);
+				final Room R=V.elementAt(v);
 				if(R==mob.location())
 					continue;
 				buildMyThing(mob,R);

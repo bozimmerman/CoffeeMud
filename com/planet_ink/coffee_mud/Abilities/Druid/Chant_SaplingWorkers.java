@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SaplingWorkers extends Chant
 {
 	@Override public String ID() { return "Chant_SaplingWorkers"; }
@@ -151,7 +150,7 @@ public class Chant_SaplingWorkers extends Chant
 		else
 		{
 			final List<Integer> V=mob.location().resourceChoices();
-			final Vector V2=new Vector();
+			final Vector<Integer> V2=new Vector<Integer>();
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
@@ -159,7 +158,7 @@ public class Chant_SaplingWorkers extends Chant
 					V2.addElement(V.get(v));
 			}
 			if(V2.size()>0)
-				material=((Integer)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1))).intValue();
+				material=V2.elementAt(CMLib.dice().roll(1,V2.size(),-1)).intValue();
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

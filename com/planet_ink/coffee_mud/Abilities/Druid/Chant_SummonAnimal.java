@@ -76,9 +76,9 @@ public class Chant_SummonAnimal extends Chant
 		}
 	}
 
-	public Vector outdoorChoices(Room R)
+	public Vector<Integer> outdoorChoices(Room R)
 	{
-		final Vector choices=new Vector();
+		final Vector<Integer> choices=new Vector();
 		if(R==null)
 			return choices;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -106,7 +106,7 @@ public class Chant_SummonAnimal extends Chant
 			{
 				if((R.domainType()&Room.INDOORS)>0)
 					return Ability.QUALITY_INDIFFERENT;
-				final Vector choices=outdoorChoices(mob.location());
+				final Vector<Integer> choices=outdoorChoices(mob.location());
 				if(choices.size()==0)
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -122,14 +122,14 @@ public class Chant_SummonAnimal extends Chant
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		final Vector choices=outdoorChoices(mob.location());
+		final Vector<Integer> choices=outdoorChoices(mob.location());
 		int fromDir=-1;
 		if(choices.size()==0)
 		{
 			mob.tell(L("You must be further outdoors to summon an animal."));
 			return false;
 		}
-		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
+		fromDir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 		final Room newRoom=mob.location().getRoomInDir(fromDir);
 		final int opDir=Directions.getOpDirectionCode(fromDir);
 

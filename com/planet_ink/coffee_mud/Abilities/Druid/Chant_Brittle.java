@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Chant_Brittle extends Chant
 {
 	@Override public String ID() { return "Chant_Brittle"; }
@@ -83,8 +83,8 @@ public class Chant_Brittle extends Chant
 
 	private Item getItem(MOB mobTarget)
 	{
-		final Vector goodPossibilities=new Vector();
-		final Vector possibilities=new Vector();
+		final Vector<Item> goodPossibilities=new Vector<Item>();
+		final Vector<Item> possibilities=new Vector<Item>();
 		for(int i=0;i<mobTarget.numItems();i++)
 		{
 			final Item item=mobTarget.getItem(i);
@@ -98,10 +98,10 @@ public class Chant_Brittle extends Chant
 			}
 		}
 		if(goodPossibilities.size()>0)
-			return (Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
+			return goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
 		else
 		if(possibilities.size()>0)
-			return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
+			return possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
 		return null;
 	}
 

@@ -148,7 +148,7 @@ public class DBUpgrade
 				final FileReader FR = new FileReader(F);
 				final BufferedReader reader = new BufferedReader(FR);
 				String line = "";
-				Vector table = null;
+				Vector<String> table = null;
 				while ((line != null) && (reader.ready()))
 				{
 					line = reader.readLine().trim();
@@ -165,7 +165,7 @@ public class DBUpgrade
 						{
 							if (table == null)
 							{
-								table = new Vector();
+								table = new Vector<String>();
 								oldTables.put(line, table);
 							}
 							else
@@ -233,7 +233,7 @@ public class DBUpgrade
 				final FileReader FR = new FileReader(F);
 				final BufferedReader reader = new BufferedReader(FR);
 				String line = "";
-				Vector table = null;
+				Vector<String> table = null;
 				while ((line != null) && (reader.ready()))
 				{
 					line = reader.readLine().trim();
@@ -273,7 +273,7 @@ public class DBUpgrade
 						{
 							if (table == null)
 							{
-								table = new Vector();
+								table = new Vector<String>();
 								newTables.put(line, table);
 							}
 							else

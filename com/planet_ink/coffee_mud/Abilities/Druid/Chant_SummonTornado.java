@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SummonTornado extends Chant
 {
 	@Override public String ID() { return "Chant_SummonTornado"; }
@@ -113,7 +112,7 @@ public class Chant_SummonTornado extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Vector stuff=new Vector();
+				final Vector<Physical> stuff=new Vector<Physical>();
 				for(int i=0;i<mob.location().numItems();i++)
 				{
 					final Item I=mob.location().getItem(i);
@@ -122,9 +121,11 @@ public class Chant_SummonTornado extends Chant
 				}
 				final Set<MOB> H=properTargets(mob,givenTarget,true);
 				if(H!=null)
-					for (final Object element : H)
+				{
+					for (final MOB element : H)
 						stuff.addElement(element);
-				final Vector availableRooms=new Vector();
+				}
+				final Vector<Room> availableRooms=new Vector<Room>();
 				availableRooms.addElement(mob.location());
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
@@ -141,7 +142,7 @@ public class Chant_SummonTornado extends Chant
 				{
 					final Object O=stuff.elementAt(CMLib.dice().roll(1,stuff.size(),-1));
 					stuff.removeElement(O);
-					final Room R=(Room)availableRooms.elementAt(CMLib.dice().roll(1,availableRooms.size(),-1));
+					final Room R=availableRooms.elementAt(CMLib.dice().roll(1,availableRooms.size(),-1));
 					if(O instanceof Item)
 					{
 						final Item I=(Item)O;

@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Ranger_FindWater extends StdAbility
 {
 	@Override public String ID() { return "Ranger_FindWater"; }
@@ -278,7 +278,7 @@ public class Ranger_FindWater extends StdAbility
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)

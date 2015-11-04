@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class ATopics extends StdCommand
 {
 	public ATopics(){}
@@ -47,8 +47,8 @@ public class ATopics extends StdCommand
 		{
 			topicBuffer=new StringBuffer();
 
-			final Vector reverseList=new Vector();
-			for(final Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+			final Vector<String> reverseList=new Vector<String>();
+			for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 			{
 				final String ptop = (String)e.nextElement();
 				final String thisTag=rHelpFile.getProperty(ptop);

@@ -1045,22 +1045,22 @@ public class Util
 		return sdouble;
 	}
 
-	public static String combine(Vector commands, int startAt, int endAt)
+	public static String combine(List<String> commands, int startAt, int endAt)
 	{
 		final StringBuffer Combined = new StringBuffer("");
 		if (commands != null)
 			for (int commandIndex = startAt; commandIndex < endAt; commandIndex++)
-				Combined.append((String) commands.elementAt(commandIndex) + " ");
+				Combined.append(commands.get(commandIndex) + " ");
 		return Combined.toString().trim();
 	}
 
-	public static String combineWithQuotes(Vector commands, int startAt, int endAt)
+	public static String combineWithQuotes(List<String> commands, int startAt, int endAt)
 	{
 		final StringBuffer Combined = new StringBuffer("");
 		if (commands != null)
 			for (int commandIndex = startAt; commandIndex < endAt; commandIndex++)
 			{
-				String s = (String) commands.elementAt(commandIndex);
+				String s = commands.get(commandIndex);
 				if (s.indexOf(' ') >= 0)
 					s = "\"" + s + "\"";
 				Combined.append(s + " ");
@@ -1068,13 +1068,13 @@ public class Util
 		return Combined.toString().trim();
 	}
 
-	public static String combineAfterIndexWithQuotes(Vector commands, String match)
+	public static String combineAfterIndexWithQuotes(List<String> commands, String match)
 	{
 		final StringBuffer Combined = new StringBuffer("");
 		if (commands != null)
 			for (int commandIndex = 0; commandIndex < 0; commandIndex++)
 			{
-				String s = (String) commands.elementAt(commandIndex);
+				String s = commands.get(commandIndex);
 				if (s.indexOf(' ') >= 0)
 					s = "\"" + s + "\"";
 				Combined.append(s + " ");
@@ -1082,13 +1082,13 @@ public class Util
 		return Combined.toString().trim();
 	}
 
-	public static String combineWithQuotes(Vector commands, int startAt)
+	public static String combineWithQuotes(List<String> commands, int startAt)
 	{
 		final StringBuffer Combined = new StringBuffer("");
 		if (commands != null)
 			for (int commandIndex = startAt; commandIndex < commands.size(); commandIndex++)
 			{
-				String s = (String) commands.elementAt(commandIndex);
+				String s = commands.get(commandIndex);
 				if (s.indexOf(' ') >= 0)
 					s = "\"" + s + "\"";
 				Combined.append(s + " ");
@@ -1096,57 +1096,57 @@ public class Util
 		return Combined.toString().trim();
 	}
 
-	public static String combine(Vector commands, int startAt)
+	public static String combine(List<String> commands, int startAt)
 	{
 		final StringBuffer Combined = new StringBuffer("");
 		if (commands != null)
 			for (int commandIndex = startAt; commandIndex < commands.size(); commandIndex++)
-				Combined.append((String) commands.elementAt(commandIndex) + " ");
+				Combined.append(commands.get(commandIndex) + " ");
 		return Combined.toString().trim();
 	}
 
-	public static Vector parse(String str)
+	public static List<String> parse(String str)
 	{
 		return parse(str, -1);
 	}
 
-	public static Vector paramParse(String str)
+	public static List<String> paramParse(String str)
 	{
-		final Vector commands = parse(str);
+		final List<String> commands = parse(str);
 		for (int i = 0; i < commands.size(); i++)
 		{
-			final String s = (String) commands.elementAt(i);
+			final String s = commands.get(i);
 			if (s.startsWith("=") && (s.length() > 1) && (i > 0))
 			{
-				final String prev = (String) commands.elementAt(i - 1);
-				commands.setElementAt(prev + s, i - 1);
-				commands.removeElementAt(i);
+				final String prev = commands.get(i - 1);
+				commands.set(i-1,prev + s);
+				commands.remove(i);
 				i--;
 			}
 			else 
 			if (s.endsWith("=") && (s.length() > 1) && (i < (commands.size() - 1)))
 			{
-				final String next = (String) commands.elementAt(i + 1);
-				commands.setElementAt(s + next, i);
-				commands.removeElementAt(i + 1);
+				final String next = commands.get(i + 1);
+				commands.set(i, s + next);
+				commands.remove(i + 1);
 			}
 			else 
 			if (s.equals("=") && ((i > 0) && (i < (commands.size() - 1))))
 			{
-				final String prev = (String) commands.elementAt(i - 1);
-				final String next = (String) commands.elementAt(i + 1);
-				commands.setElementAt(prev + "=" + next, i - 1);
-				commands.removeElementAt(i);
-				commands.removeElementAt(i + 1);
+				final String prev = commands.get(i - 1);
+				final String next = commands.get(i + 1);
+				commands.set(i-1, prev + "=" + next);
+				commands.remove(i);
+				commands.remove(i + 1);
 				i--;
 			}
 		}
 		return commands;
 	}
 
-	public static Vector parse(String str, int upTo)
+	public static List<String> parse(String str, int upTo)
 	{
-		final Vector commands = new Vector();
+		final List<String> commands = new Vector<String>();
 		if (str == null)
 			return commands;
 		str = str.trim();
@@ -1182,11 +1182,11 @@ public class Util
 			}
 			if (!CMD.equals(""))
 			{
-				commands.addElement(CMD);
+				commands.add(CMD);
 				if ((upTo >= 0) && (commands.size() >= upTo))
 				{
 					if (str.length() > 0)
-						commands.addElement(str);
+						commands.add(str);
 					break;
 				}
 
@@ -1198,7 +1198,7 @@ public class Util
 	public static String stripBadHTMLTags(String s)
 	{
 		final StringBuffer buf = new StringBuffer(s);
-		final Vector quotes = new Vector();
+		final Vector<Character> quotes = new Vector<Character>();
 		int i = -1;
 		int start = -1;
 		StringBuffer bit = null;
@@ -1238,7 +1238,7 @@ public class Util
 			case '\'':
 				if (start < 0)
 					break;
-				if ((quotes.size() > 0) && (((Character) quotes.lastElement()).charValue() == buf.charAt(i)))
+				if ((quotes.size() > 0) && (quotes.lastElement().charValue() == buf.charAt(i)))
 					quotes.removeElementAt(quotes.size() - 1);
 				else
 					quotes.addElement(new Character(buf.charAt(i)));

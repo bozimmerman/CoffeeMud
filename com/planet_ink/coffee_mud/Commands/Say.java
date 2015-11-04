@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Say extends StdCommand
 {
 	public Say(){}
 
 	private final String[] access=I(new String[]{"SAY",
-							 "ASK",
-							 "`",
-							 "SA",
-							 "SAYTO"});
+												 "ASK",
+												 "`",
+												 "SA",
+												 "SAYTO"});
 	@Override public String[] getAccessWords(){return access;}
 
 	protected static final String[] impossibleTargets={
@@ -83,12 +83,11 @@ public class Say extends StdCommand
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		String theWord="Say";
 		boolean toFlag=false;
 		final String theCommand=commands.get(0).toUpperCase();

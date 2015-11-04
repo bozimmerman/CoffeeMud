@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_WarningWinds extends Chant
 {
 	@Override public String ID() { return "Chant_WarningWinds"; }
@@ -71,7 +70,7 @@ public class Chant_WarningWinds extends Chant
 		&&(((MOB)affected).location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER))
 		{
 			lastRoom=((MOB)affected).location();
-			final Vector V=new Vector();
+			final Vector<Room> V=new Vector<Room>();
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
 					.plus(TrackingLibrary.TrackingFlag.OPENONLY);
@@ -80,7 +79,7 @@ public class Chant_WarningWinds extends Chant
 			boolean enemy=false;
 			for(int r=0;r<V.size();r++)
 			{
-				final Room R=(Room)V.elementAt(r);
+				final Room R=V.elementAt(r);
 				fighting=false;
 				enemy=false;
 				if(R!=lastRoom)

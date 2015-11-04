@@ -60,7 +60,7 @@ public class Play extends StdAbility
 
 	protected MusicalInstrument instrument=null;
 	protected long timeOut=0;
-	protected Vector commonRoomSet=null;
+	protected Vector<Room> commonRoomSet=null;
 	protected Room originRoom=null;
 
 	public String instrumentName()
@@ -118,7 +118,7 @@ public class Play extends StdAbility
 		final MOB mob=(MOB)affected;
 		if((affected==invoker())&&(invoker()!=null)&&(invoker().location()!=originRoom))
 		{
-			final Vector V=getInvokerScopeRoomSet(null);
+			final Vector<Room> V=getInvokerScopeRoomSet(null);
 			commonRoomSet.clear();
 			commonRoomSet.addAll(V);
 			originRoom=invoker().location();
@@ -301,19 +301,19 @@ public class Play extends StdAbility
 		return instrument;
 	}
 
-	protected Vector getInvokerScopeRoomSet(MOB backupMob)
+	protected Vector<Room> getInvokerScopeRoomSet(MOB backupMob)
 	{
 		if((invoker()==null)
 		||(invoker().location()==null))
 		{
 			if((backupMob!=null)&&(backupMob.location()!=null))
-				 return new XVector(backupMob.location());
-			return new Vector();
+				 return new XVector<Room>(backupMob.location());
+			return new Vector<Room>();
 		}
 		final int depth=super.getXMAXRANGELevel(invoker());
 		if(depth==0)
 			return new XVector(invoker().location());
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
@@ -473,7 +473,7 @@ public class Play extends StdAbility
 				str=L("^S<S-NAME> start(s) playing @x1@x2 again.^?",songOfStr,instrumentName());
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				final Room R=(Room)commonRoomSet.elementAt(v);
+				final Room R=commonRoomSet.elementAt(v);
 				final String msgStr=getCorrectMsgString(R,str,v);
 				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))

@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_NeutralizePoison extends Chant implements MendingSkill
 {
 	@Override public String ID() { return "Chant_NeutralizePoison"; }
@@ -55,7 +54,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		final Vector offenders=new Vector();
+		final Vector<Ability> offenders=new Vector<Ability>();
 
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{

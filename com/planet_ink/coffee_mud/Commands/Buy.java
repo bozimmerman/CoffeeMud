@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Buy extends StdCommand
 {
 	public Buy(){}
@@ -44,7 +44,7 @@ public class Buy extends StdCommand
 		throws java.io.IOException
 	{
 		MOB mobFor=null;
-		Vector origCmds=new XVector(commands);
+		Vector<String> origCmds=new XVector<String>(commands);
 		if((commands.size()>2)
 		&&(commands.get(commands.size()-2).equalsIgnoreCase("for")))
 		{
@@ -82,7 +82,7 @@ public class Buy extends StdCommand
 		}
 
 		String whatName=CMParms.combine(commands,0);
-		final Vector V=new Vector();
+		final Vector<Environmental> V=new Vector<Environmental>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
@@ -115,7 +115,7 @@ public class Buy extends StdCommand
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			final Environmental thisThang=(Environmental)V.get(v);
+			final Environmental thisThang=V.get(v);
 			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,L("<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>@x1.",forName));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);

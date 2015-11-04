@@ -98,7 +98,7 @@ public class GrinderFactions {
 		for(int i=0;i<prefixes.length;i++)
 		{
 			final String prefix=prefixes[i];
-			final Vector V=new Vector();
+			final Vector<String> V=new Vector<String>();
 			switch(i)
 			{
 			case 0: F.setAutoDefaults(V); break;

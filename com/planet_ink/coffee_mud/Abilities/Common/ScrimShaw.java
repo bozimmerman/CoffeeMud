@@ -38,7 +38,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "ScrimShaw"; }
@@ -285,7 +284,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			activity = CraftingActivity.CRAFTING;
 			key=null;
 			messedUp=false;
-			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,buildingI,false))
 				return false;
@@ -379,7 +378,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 						final String of=this.input;
 						if((of.trim().length()==0)||(of.indexOf('<')>=0))
 							return;
-						final Vector newCommands=new XVector<String>(originalCommands);
+						final Vector<String> newCommands=new XVector<String>(originalCommands);
 						newCommands.add("STATUE="+of);
 						me.invoke(mob, newCommands, target, auto, asLevel);
 					}

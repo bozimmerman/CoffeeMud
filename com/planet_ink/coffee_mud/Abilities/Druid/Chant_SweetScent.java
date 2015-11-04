@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SweetScent extends Chant
 {
 	@Override public String ID() { return "Chant_SweetScent"; }
@@ -56,7 +55,7 @@ public class Chant_SweetScent extends Chant
 			if(I.owner() instanceof Room)
 			{
 				final Room room=(Room)I.owner();
-				final Vector rooms=new Vector();
+				final Vector<Room> rooms=new Vector<Room>();
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
 						.plus(TrackingLibrary.TrackingFlag.OPENONLY);
@@ -71,7 +70,7 @@ public class Chant_SweetScent extends Chant
 				}
 				for(int r=0;r<rooms.size();r++)
 				{
-					final Room R=(Room)rooms.elementAt(r);
+					final Room R=rooms.elementAt(r);
 					if(R!=room)
 					{
 						final int dir=CMLib.tracking().radiatesFromDir(R,rooms);

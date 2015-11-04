@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_RustCurse extends Chant
 {
 	@Override public String ID() { return "Chant_RustCurse"; }
@@ -66,7 +65,7 @@ public class Chant_RustCurse extends Chant
 		if(affected instanceof MOB)
 		{
 			boolean goodChoices=false;
-			final Vector choices=new Vector();
+			final Vector<Item> choices=new Vector<Item>();
 			final MOB mob=(MOB)affected;
 			for(int i=0;i<mob.numItems();i++)
 			{
@@ -87,11 +86,11 @@ public class Chant_RustCurse extends Chant
 			}
 			if(goodChoices)
 			for(int i=choices.size()-1;i>=0;i--)
-				if(((Item)choices.elementAt(i)).amWearingAt(Wearable.IN_INVENTORY))
+				if(choices.elementAt(i).amWearingAt(Wearable.IN_INVENTORY))
 					choices.removeElementAt(i);
 			if(choices.size()>0)
 			{
-				final Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+				final Item I=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 				if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)
 				||(CMLib.dice().rollPercentage()<10))
 					CMLib.combat().postItemDamage(mob, I, null, 1, CMMsg.TYP_ACID, "<T-NAME> rusts!");

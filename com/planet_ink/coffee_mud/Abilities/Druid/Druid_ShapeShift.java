@@ -258,7 +258,7 @@ public class Druid_ShapeShift extends StdAbility
 
 		this.myRaceLevel=-1;
 		final int[] racesTaken=new int[forms.length];
-		Vector allShapeshifts=new Vector();
+		Vector<Ability> allShapeshifts=new Vector<Ability>();
 		if((myRaceCode>=0)&&(myRaceCode<racesTaken.length))
 			racesTaken[myRaceCode]++;
 
@@ -329,15 +329,15 @@ public class Druid_ShapeShift extends StdAbility
 		// now check for alternate shapeshifts
 		if((triggerStrings().length>0)&&(parm.length()>0)&&(allShapeshifts.size()>1))
 		{
-			final Vector V=allShapeshifts;
-			allShapeshifts=new Vector();
+			final Vector<Ability> V=allShapeshifts;
+			allShapeshifts=new Vector<Ability>();
 			while(V.size()>0)
 			{
 				Ability choice=null;
 				int sortByLevel=Integer.MAX_VALUE;
 				for(int v=0;v<V.size();v++)
 				{
-					final Ability A=(Ability)V.elementAt(v);
+					final Ability A=V.elementAt(v);
 					int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
 					if(lvl<=0)
 						lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
@@ -389,7 +389,7 @@ public class Druid_ShapeShift extends StdAbility
 			{
 				if(iparm<=allShapeshifts.size())
 				{
-					final Ability A=(Ability)allShapeshifts.elementAt(iparm-1);
+					final Ability A=allShapeshifts.elementAt(iparm-1);
 					return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
 				}
 			}

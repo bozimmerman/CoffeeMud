@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class AreaData extends StdWebMacro
 {
 	@Override public String name() { return "AreaData"; }
@@ -44,8 +44,8 @@ public class AreaData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
 		{
-			final Vector theclasses=new Vector();
-			final Vector theparms=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
+			final Vector<String> theparms=new Vector<String>();
 			if(httpReq.isUrlParameter("BEHAV1"))
 			{
 				int num=1;
@@ -81,8 +81,8 @@ public class AreaData extends StdWebMacro
 			final HashSet<String> alreadyHave=new HashSet<String>();
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
-				final String theparm=(String)theparms.elementAt(i);
+				final String theclass=theclasses.elementAt(i);
+				final String theparm=theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditBehavior(this);\" NAME=BEHAV"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -98,14 +98,14 @@ public class AreaData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
 
 			Object[] sortedB=null;
-			final Vector sortMeB=new Vector();
-			for(final Enumeration b=CMClass.behaviors();b.hasMoreElements();)
+			final Vector<String> sortMeB=new Vector<String>();
+			for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 			{
-				final Behavior B=(Behavior)b.nextElement();
+				final Behavior B=b.nextElement();
 				if(B.canImprove(E))
 					sortMeB.addElement(CMClass.classID(B));
 			}
-			sortedB=(new TreeSet(sortMeB)).toArray();
+			sortedB=(new TreeSet<String>(sortMeB)).toArray();
 			for(int r=0;r<sortedB.length;r++)
 				if(!alreadyHave.contains(((String)sortedB[r]).toLowerCase()))
 				{
@@ -126,8 +126,8 @@ public class AreaData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("AFFECTS"))
 		{
-			final Vector theclasses=new Vector();
-			final Vector theparms=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
+			final Vector<String> theparms=new Vector<String>();
 			if(httpReq.isUrlParameter("AFFECT1"))
 			{
 				int num=1;
@@ -163,9 +163,9 @@ public class AreaData extends StdWebMacro
 			final HashSet<String> alreadyHave=new HashSet<String>();
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
+				final String theclass=theclasses.elementAt(i);
 				alreadyHave.add(theclass.toLowerCase());
-				final String theparm=(String)theparms.elementAt(i);
+				final String theparm=theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=AFFECT"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -208,9 +208,9 @@ public class AreaData extends StdWebMacro
 			if(parms.containsKey("SELECTED"))
 				selected=parms.get("SELECTED");
 			final StringBuffer str=new StringBuffer("");
-			for(final Enumeration e=CMClass.areaTypes();e.hasMoreElements();)
+			for(final Enumeration<Area> e=CMClass.areaTypes();e.hasMoreElements();)
 			{
-				final Area A=(Area)e.nextElement();
+				final Area A=e.nextElement();
 				if(A.ID().equalsIgnoreCase(selected))
 					str.append("<OPTION SELECTED VALUE=\""+A.ID()+"\">"+A.ID());
 				else
@@ -429,10 +429,10 @@ public class AreaData extends StdWebMacro
 					Object[] sortedA=(Object[])Resources.getResource("MUDGRINDER-AREAS");
 					if(sortedA==null)
 					{
-						final Vector sortMeA=new Vector();
-						for(final Enumeration a=CMClass.areaTypes();a.hasMoreElements();)
+						final Vector<String> sortMeA=new Vector<String>();
+						for(final Enumeration<Area> a=CMClass.areaTypes();a.hasMoreElements();)
 							sortMeA.addElement(CMClass.classID(a.nextElement()));
-						sortedA=(new TreeSet(sortMeA)).toArray();
+						sortedA=(new TreeSet<String>(sortMeA)).toArray();
 						Resources.submitResource("MUDGRINDER-AREAS",sortedA);
 					}
 					for (final Object element : sortedA)
@@ -447,8 +447,8 @@ public class AreaData extends StdWebMacro
 
 				if(parms.containsKey("BLURBS"))
 				{
-					final Vector theprices=new Vector();
-					final Vector themasks=new Vector();
+					final Vector<String> theprices=new Vector<String>();
+					final Vector<String> themasks=new Vector<String>();
 					int num=1;
 					if(!httpReq.isUrlParameter("IPRIC"+num))
 					{
@@ -478,8 +478,8 @@ public class AreaData extends StdWebMacro
 					str.append("<TR><TD WIDTH=20%>Flag</TD><TD>Description</TD></TR>");
 					for(int i=0;i<theprices.size();i++)
 					{
-						final String PRICE=(String)theprices.elementAt(i);
-						final String MASK=(String)themasks.elementAt(i);
+						final String PRICE=theprices.elementAt(i);
+						final String MASK=themasks.elementAt(i);
 						str.append("<TR><TD>");
 						str.append("<INPUT TYPE=TEXT SIZE=5 NAME=BLURBFLAG"+(i+1)+" VALUE=\""+PRICE+"\">");
 						str.append("</TD><TD>");

@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_RecoverVoice extends StdAbility
 {
 	@Override public String ID() { return "Druid_RecoverVoice"; }
@@ -51,7 +50,7 @@ public class Druid_RecoverVoice extends StdAbility
 	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
 		final MOB newMOB=CMClass.getFactoryMOB();
-		final Vector offenders=new Vector(1);
+		final Vector<Ability> offenders=new Vector<Ability>(1);
 
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{

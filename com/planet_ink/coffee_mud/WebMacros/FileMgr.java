@@ -60,7 +60,7 @@ public class FileMgr extends StdWebMacro
 		return s1.equalsIgnoreCase(s2);
 	}
 
-	public void compileFilenamesList(CMFile F, String regex, Vector V)
+	public void compileFilenamesList(CMFile F, String regex, Vector<String> V)
 	{
 		if((!F.canRead())||(!F.isDirectory()))
 			return;
@@ -79,12 +79,12 @@ public class FileMgr extends StdWebMacro
 		}
 	}
 
-	public void compileTextListFromFiles(Vector files, String regex, Vector V)
+	public void compileTextListFromFiles(Vector<String> files, String regex, Vector<String> V)
 	{
 		final Pattern P=Pattern.compile(regex,Pattern.CASE_INSENSITIVE|Pattern.DOTALL|Pattern.MULTILINE);
 		for(int f=0;f<files.size();f++)
 		{
-			final StringBuffer buf=new CMFile((String)files.elementAt(f),null).text();
+			final StringBuffer buf=new CMFile(files.elementAt(f),null).text();
 			if(P.matcher(buf).find())
 				V.addElement(files.elementAt(f));
 		}
