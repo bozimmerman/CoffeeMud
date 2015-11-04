@@ -110,9 +110,11 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		return contents.contains(item);
 	}
 
-	public synchronized void verifyFixContents()
+	public synchronized boolean verifyFixContents()
 	{
 		final Room R=myProperLocation;
+		if(R==null)
+			return false;
 		for(int i=0;i<contents.size();i++)
 		{
 			final Item thisItem=contents.elementAt(i);
@@ -146,6 +148,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 					thisItem.setContainer(thisContainer);
 			}
 		}
+		return this.myProperLocation != null;
 	}
 
 	@Override
@@ -168,7 +171,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 				CMLib.threads().setTickPending(ticking,Tickable.TICKID_ROOM_ITEM_REJUV);
 				return true; // it will just come back next time
 			}
-			verifyFixContents();
+			if(!verifyFixContents())
+				return false;
 			if((!R.isContent(item))
 			&&((!CMLib.flags().isMobile(item)) || (!CMLib.flags().isInTheGame(item,true))))
 			{
