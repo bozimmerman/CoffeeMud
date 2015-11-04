@@ -24,7 +24,7 @@
   23. Mundane STAT command now support experience point stats. 
   24. Made some of the weather effects spam slightly more frequent, and added a msg for cold and heat.
   25. Mana/Health/Move recovery formulas tweaked with caps.  See coffeemud.ini
-  26. Lots of refactoring done.  Sorry about that.  This is part of the reason for the minor version number change.
+  26. Lots of refactoring done.  Sorry about that.  This is a big part of the reason for the minor version number change.
   27. Most of the CONFIG toggle commands now have optional OFF parameter to force them off.
   28. When Lay Traps/Set Snare is used to set the same trap on the same object, and that trap is sprung, it will reset it.
   29. Added some color to the Group command so health/mana/moves can be monitored at a glance.
