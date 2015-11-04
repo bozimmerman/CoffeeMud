@@ -74,7 +74,7 @@ public class Play_Reveille extends Play
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				final Room R=(Room)commonRoomSet.elementAt(v);
+				final Room R=commonRoomSet.elementAt(v);
 				final String msgStr=getCorrectMsgString(R,str,v);
 				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))

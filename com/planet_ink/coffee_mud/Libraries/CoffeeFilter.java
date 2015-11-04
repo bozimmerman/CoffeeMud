@@ -102,7 +102,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	{
 		int loop=0;
 		final StringBuilder buf=new StringBuilder(msg);
-		int len=(wrap>0)?wrap:Integer.MAX_VALUE;
+		int len=(wrap>0)?wrap:(Integer.MAX_VALUE/3);
 		int lastSpace=0;
 		int firstAlpha=-1;
 		int amperStop = -1;
@@ -715,7 +715,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		final StringBuffer buf=new StringBuffer(msg);
 
 		final int wrap=(S!=null)?S.getWrap():78;
-		int len=(wrap>0)?wrap:Integer.MAX_VALUE;
+		int len=(wrap>0)?wrap:(Integer.MAX_VALUE/3);
 		int loop=0;
 		int lastSpace=0;
 		int firstAlpha=-1;
@@ -728,7 +728,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		{
 			if(loop==lastLoop)
 			{
-				if(++loopDebugCtr>5) //BZ: delete when this is fixed.
+				//BZ: delete when this is fixed. 
+				//BZ: 11/2015 - this might be fixed now!
+				if(++loopDebugCtr>5) 
 				{
 					Log.debugOut("CoffeeFilter","LOOP: "+loop+"/"+wrap+"/!"+(buf.charAt(loop)=='\033')+"!/"+lastSpace+"/"+firstAlpha+"/"+amperStop+"/"+doSagain+"/"+firstSdone+"/"+buf.length()+"/"+loopDebugCtr);
 					Log.debugOut("CoffeeFilter",buf.toString());
