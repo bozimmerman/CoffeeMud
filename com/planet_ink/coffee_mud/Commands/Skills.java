@@ -94,6 +94,42 @@ public class Skills extends StdCommand
 		return -1;
 	}
 
+	/**
+	 * Returns whether there are any crossings between a particular Ability type
+	 * and a particular Ability domain.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abilityCode()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_DESCS
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#ACODE_DESCS
+	 * 
+	 * @param domain the domain mask 
+	 * @param acode the ability code
+	 * @return true if they meet somewhere
+	 */
+	public boolean isDomainIncludedInAnyAbility(int domain, int acode)
+	{
+		Map<Integer, Set<Integer>> completeDomainMap = (Map<Integer, Set<Integer>>)Resources.getResource("SYSYETM_ABLEDOMAINMAP");
+		if(completeDomainMap == null)
+		{
+			completeDomainMap = new SHashtable<Integer,Set<Integer>>();
+			Resources.submitResource("SYSYETM_ABLEDOMAINMAP",completeDomainMap);
+		}
+		STreeSet<Integer> V=(STreeSet<Integer>)completeDomainMap.get(Integer.valueOf(domain));
+		if(V==null)
+		{
+			Ability A=null;
+			V=new STreeSet<Integer>();
+			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			{
+				A=e.nextElement();
+				if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
+				&&(!V.contains(Integer.valueOf((A.classificationCode()&Ability.ALL_ACODES)))))
+					V.add(Integer.valueOf((A.classificationCode()&Ability.ALL_ACODES)));
+			}
+			completeDomainMap.put(Integer.valueOf(domain),V);
+		}
+		return V.contains(Integer.valueOf(acode));
+	}
+	
 	protected void parseDomainInfo(MOB mob, List<String> commands, Vector acodes, int[] level, int[] domain, String[] domainName)
 	{
 		level[0]=parseOutLevel(commands);
@@ -117,7 +153,7 @@ public class Skills extends StdCommand
 			{
 				boolean found=false;
 				for(int a=0;a<acodes.size();a++)
-					found=found||CMLib.ableMapper().isDomainIncludedInAnyAbility(i<<5,((Integer)acodes.get(a)).intValue());
+					found=found||isDomainIncludedInAnyAbility(i<<5,((Integer)acodes.get(a)).intValue());
 				if(found)
 					domains.append(Ability.DOMAIN_DESCS[i].toLowerCase().replace('_',' ')+", ");
 			}

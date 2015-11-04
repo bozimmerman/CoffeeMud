@@ -45,11 +45,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	protected Map<String, Integer>		lowestQualifyingLevelMap	= new SHashtable<String, Integer>();
 	protected Map<String, Integer>		maxProficiencyMap   		= new SHashtable<String, Integer>();
 	protected Map<String, Object>		allows  					= new SHashtable<String, Object>();
-	protected Map<Integer, Set<Integer>>completeDomainMap   		= new SHashtable<Integer,Set<Integer>>();
 	protected Map<String, Map<String, AbilityMapping>>
 										reverseAbilityMap   		= new TreeMap<String, Map<String, AbilityMapping>>();
 	protected List<AbilityMapping>		eachClassSet				= null;
-	protected Map<String,int[]> 		hardOverrideCache			= new Hashtable<String,int[]>();
 	protected final Integer[]			costOverrides				= new Integer[Cost.values().length];
 
 	@Override
@@ -350,26 +348,6 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				}
 			}
 		}
-	}
-
-	@Override
-	public boolean isDomainIncludedInAnyAbility(int domain, int acode)
-	{
-		STreeSet<Integer> V=(STreeSet<Integer>)completeDomainMap.get(Integer.valueOf(domain));
-		if(V==null)
-		{
-			Ability A=null;
-			V=new STreeSet<Integer>();
-			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-			{
-				A=e.nextElement();
-				if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
-				&&(!V.contains(Integer.valueOf((A.classificationCode()&Ability.ALL_ACODES)))))
-					V.add(Integer.valueOf((A.classificationCode()&Ability.ALL_ACODES)));
-			}
-			completeDomainMap.put(Integer.valueOf(domain),V);
-		}
-		return V.contains(Integer.valueOf(acode));
 	}
 
 	@Override
@@ -1803,12 +1781,6 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
-	public Map<String, int[]> getHardOverrideManaCache()
-	{
-		return hardOverrideCache;
-	}
-
-	@Override
 	public Integer[] getCostOverrides(MOB mob, String abilityID)
 	{
 		Integer[] found=null;
@@ -2028,7 +2000,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		Map<String, Map<String,AbilityMapping>> bothMaps;
 		if(cache!=null)
 		{
-			bothMaps=(Map)Resources.getResource("ALLQUALIFIES_MAP");
+			bothMaps=(Map)cache.get("ALLQUALIFIES_MAP");
 			if(bothMaps!=null)
 				return bothMaps;
 		}

@@ -580,6 +580,7 @@ public interface AbilityMapper extends CMLibrary
 	 * qualifies over their life, along with qualifying levels.  This is intended entirely for
 	 * gathering expertises qualified for by class skills. 
 	 * @see AbilityMapper#getAbilityAllowsList(String)
+	 * @see AbilityMapper.QualifyingID
 	 * @param ID the charclass ID(), race ID(), or whatever
 	 * @return the list of skill and skill qualifying information for that class
 	 */
@@ -873,22 +874,58 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the max proficiency for the mob with this this mapped Ability, usually 100
 	 */
 	public int getMaxProficiency(MOB mob, boolean checkAll, String abilityID);
-	
-	public boolean isDomainIncludedInAnyAbility(int domain, int acode);
-	public void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap);
+
+	/**
+	 * Loads the All-Qualifies list from the filesystem.  This is the list that defines particular
+	 * skills that either ALL classes qualify for together.  Things like Skill_Write, or Swim..
+	 * The method takes an optional cache to preserve a loaded map over several sessions.  Otherwise,
+	 * it is usually only needed once.
+	 * @see AbilityMapper#saveAllQualifysFile(Map)
+	 * @param cache a cache to store the map in temporarily, or null
+	 * @return the All-Qualifies skills in a coded map
+	 */
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache);
-	
-	public Map<String, int[]> getHardOverrideManaCache();
-	
+
+	/**
+	 * Saves the All-Qualifies list to the filesystem.  This is the list that defines particular
+	 * skills that either ALL classes qualify for together.  Things like Skill_Write, or Swim.
+	 * @see AbilityMapper#getAllQualified(String, boolean, String)
+	 * @param newMap the All-Qualifies skills in a coded map
+	 */
+	public void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap);
+
+	/**
+	 * A mapping between an Ability ID and it's qualifying level
+	 * @see AbilityMapper#getAbilityAllowsList(String)
+	 * @author Bo Zimmerman
+	 */
 	public static interface QualifyingID
 	{
+		/**
+		 * Returns the Ability ID()
+		 * @return the Ability ID()
+		 */
 		public String ID();
 
+		/**
+		 * Gets the level at which this mapping qualifies for the given Ability ID
+		 * @return the level at which this mapping qualifies for the given Ability ID
+		 */
 		public int qualifyingLevel();
 
+		/**
+		 * sets the level at which this mapping qualifies for the given Ability ID
+		 * @param newLevel the level at which this mapping qualifies for the given Ability ID
+		 */
 		public QualifyingID qualifyingLevel(int newLevel);
 	}
 
+	/**
+	 * An enum usually used to index an array of different kinds
+	 * of skill use costs. 
+	 * @see AbilityMapper#getCostOverrides(String)
+	 * @author Bo Zimmerman
+	 */
 	public enum Cost
 	{
 		PRAC,

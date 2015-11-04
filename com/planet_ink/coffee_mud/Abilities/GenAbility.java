@@ -717,55 +717,117 @@ public class GenAbility extends StdAbility
 		switch(getCodeNum(code))
 		{
 		case 0:
-		if(val.trim().length()>0)
-		{
-			V(ID,V_NAME); // force creation, if necc
-			final Object[] O=(Object[])vars.get(ID);
-			vars.remove(ID);
-			vars.put(val,O);
-			if(num!=9)
-				CMClass.delClass(CMObjectType.ABILITY,this);
-			ID=val;
-			if(num!=9)
-				CMClass.addClass(CMObjectType.ABILITY,this);
-		}
-		break;
-		case 1: setMiscText(val); break;
-		case 2: SV(ID,V_NAME,val);
-				if(ID.equalsIgnoreCase("GenAbility"))
-					break;
+			if (val.trim().length() > 0)
+			{
+				V(ID, V_NAME); // force creation, if necc
+				final Object[] O = (Object[]) vars.get(ID);
+				vars.remove(ID);
+				vars.put(val, O);
+				if (num != 9)
+					CMClass.delClass(CMObjectType.ABILITY, this);
+				ID = val;
+				if (num != 9)
+					CMClass.addClass(CMObjectType.ABILITY, this);
+			}
+			break;
+		case 1:
+			setMiscText(val);
+			break;
+		case 2:
+			SV(ID, V_NAME, val);
+			if (ID.equalsIgnoreCase("GenAbility"))
 				break;
-		case 3: SV(ID,V_DISP,val); break;
-		case 4: SV(ID,V_TRIG,CMParms.toStringArray(CMParms.parseCommas(val.toUpperCase(),true))); break;
-		case 5: SV(ID,V_MAXR,Integer.valueOf(convert(Ability.RANGE_CHOICES,val,false))); break;
-		case 6: SV(ID,V_MINR,Integer.valueOf(convert(Ability.RANGE_CHOICES,val,false))); break;
-		case 7: SV(ID,V_AUTO,Boolean.valueOf(CMath.s_bool(val))); break;
-		case 8: SV(ID,V_FLAG,Integer.valueOf(convert(Ability.FLAG_DESCS,val,true))); break;
-		case 9: SV(ID,V_CLAS,Integer.valueOf(convertClassAndDomain(val))); break;
-		case 10: SV(ID,V_OMAN,Integer.valueOf(CMath.s_parseIntExpression(val))); CMLib.ableMapper().getHardOverrideManaCache().remove(ID()); break;
-		case 11: SV(ID,V_USAG,Integer.valueOf(convert(Ability.USAGE_DESCS,val,true))); break;
-		case 12: SV(ID,V_CAFF,Integer.valueOf(convert(Ability.CAN_DESCS,val,true))); break;
-		case 13: SV(ID,V_CTAR,Integer.valueOf(convert(Ability.CAN_DESCS,val,true))); break;
-		case 14: SV(ID,V_QUAL,Integer.valueOf(convert(Ability.QUALITY_DESCS,val,false))); break;
-		case 15: ((Ability)V(ID,V_HERE)).setMiscText(val); break;
-		case 16: SV(ID,V_CMSK,val); break;
-		case 17: SV(ID,V_SCRP,val); break;
-		case 18: SV(ID,V_TMSK,val); break;
-		case 19: SV(ID,V_FZZL,val); break;
-		case 20: SV(ID,V_ACST,val); break;
-		case 21: SV(ID,V_CAST,val); break;
-		case 22: SV(ID,V_PCST,val); break;
-		case 23: SV(ID,V_ATT2,Integer.valueOf(convert(CMMsg.TYPE_DESCS,val,false))); break;
-		case 24: SV(ID,V_PAFF,val); break;
-		case 25: SV(ID,V_PABL,val); break;
-		case 26: SV(ID,V_PDMG,val); break;
-		case 27: SV(ID,V_HELP,val); break;
-		case 28: SV(ID,V_TKBC,Integer.valueOf(CMath.s_int(val))); break;
-		case 29: SV(ID,V_TKOV,Integer.valueOf(CMath.s_int(val))); break;
-		case 30: SV(ID,V_TKAF,Boolean.valueOf(CMath.s_bool(val))); break;
-		case 31: SV(ID,V_CHAN,Boolean.valueOf(CMath.s_bool(val))); break;
+			break;
+		case 3:
+			SV(ID, V_DISP, val);
+			break;
+		case 4:
+			SV(ID, V_TRIG, CMParms.toStringArray(CMParms.parseCommas(val.toUpperCase(), true)));
+			break;
+		case 5:
+			SV(ID, V_MAXR, Integer.valueOf(convert(Ability.RANGE_CHOICES, val, false)));
+			break;
+		case 6:
+			SV(ID, V_MINR, Integer.valueOf(convert(Ability.RANGE_CHOICES, val, false)));
+			break;
+		case 7:
+			SV(ID, V_AUTO, Boolean.valueOf(CMath.s_bool(val)));
+			break;
+		case 8:
+			SV(ID, V_FLAG, Integer.valueOf(convert(Ability.FLAG_DESCS, val, true)));
+			break;
+		case 9:
+			SV(ID, V_CLAS, Integer.valueOf(convertClassAndDomain(val)));
+			break;
+		case 10:
+			SV(ID, V_OMAN, Integer.valueOf(CMath.s_parseIntExpression(val)));
+			getHardOverrideManaCache().remove(ID());
+			break;
+		case 11:
+			SV(ID, V_USAG, Integer.valueOf(convert(Ability.USAGE_DESCS, val, true)));
+			break;
+		case 12:
+			SV(ID, V_CAFF, Integer.valueOf(convert(Ability.CAN_DESCS, val, true)));
+			break;
+		case 13:
+			SV(ID, V_CTAR, Integer.valueOf(convert(Ability.CAN_DESCS, val, true)));
+			break;
+		case 14:
+			SV(ID, V_QUAL, Integer.valueOf(convert(Ability.QUALITY_DESCS, val, false)));
+			break;
+		case 15:
+			((Ability) V(ID, V_HERE)).setMiscText(val);
+			break;
+		case 16:
+			SV(ID, V_CMSK, val);
+			break;
+		case 17:
+			SV(ID, V_SCRP, val);
+			break;
+		case 18:
+			SV(ID, V_TMSK, val);
+			break;
+		case 19:
+			SV(ID, V_FZZL, val);
+			break;
+		case 20:
+			SV(ID, V_ACST, val);
+			break;
+		case 21:
+			SV(ID, V_CAST, val);
+			break;
+		case 22:
+			SV(ID, V_PCST, val);
+			break;
+		case 23:
+			SV(ID, V_ATT2, Integer.valueOf(convert(CMMsg.TYPE_DESCS, val, false)));
+			break;
+		case 24:
+			SV(ID, V_PAFF, val);
+			break;
+		case 25:
+			SV(ID, V_PABL, val);
+			break;
+		case 26:
+			SV(ID, V_PDMG, val);
+			break;
+		case 27:
+			SV(ID, V_HELP, val);
+			break;
+		case 28:
+			SV(ID, V_TKBC, Integer.valueOf(CMath.s_int(val)));
+			break;
+		case 29:
+			SV(ID, V_TKOV, Integer.valueOf(CMath.s_int(val)));
+			break;
+		case 30:
+			SV(ID, V_TKAF, Boolean.valueOf(CMath.s_bool(val)));
+			break;
+		case 31:
+			SV(ID, V_CHAN, Boolean.valueOf(CMath.s_bool(val)));
+			break;
 		default:
-			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenAbility"))
+			if (code.equalsIgnoreCase("allxml") && ID.equalsIgnoreCase("GenAbility"))
 				parseAllXML(val);
 			break;
 		}

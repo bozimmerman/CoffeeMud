@@ -1164,12 +1164,23 @@ public class StdAbility implements Ability
 		return usageCosts;
 	}
 
+	protected Map<String, int[]> getHardOverrideManaCache()
+	{
+		Map<String,int[]> hardOverrideCache	= (Map<String,int[]>)Resources.getResource("SYSTEM_ABLEUSAGE_HARD_OVERRIDE_CACHE");
+		if(hardOverrideCache != null)
+		{
+			hardOverrideCache = new Hashtable<String,int[]>();
+			Resources.submitResource("SYSTEM_ABLEUSAGE_HARD_OVERRIDE_CACHE", hardOverrideCache);
+		}
+		return hardOverrideCache;
+	}
+
 	@Override
 	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
 	{
 		if(mob==null)
 		{
-			final Map<String,int[]> overrideCache=CMLib.ableMapper().getHardOverrideManaCache();
+			final Map<String,int[]> overrideCache=getHardOverrideManaCache();
 			if(!overrideCache.containsKey(ID()))
 			{
 				final int[] usage=new int[3];
