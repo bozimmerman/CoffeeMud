@@ -36,17 +36,49 @@ import java.util.*;
 
 public class ItemRejuv extends StdAbility implements ItemTicker
 {
-	@Override public String ID() { return "ItemRejuv"; }
-	private final static String localizedName = CMLib.lang().L("ItemRejuv");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(ItemRejuv)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected Room myProperLocation=null;
-	protected Vector<Item> contents=new Vector<Item>();
-	protected Vector<Item> ccontents=new Vector<Item>();
+	@Override
+	public String ID()
+	{
+		return "ItemRejuv";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("ItemRejuv");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(ItemRejuv)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	protected Room			myProperLocation	= null;
+	protected Vector<Item>	contents			= new Vector<Item>();
+	protected Vector<Item>	ccontents			= new Vector<Item>();
 
 	public synchronized void loadContent(ItemTicker ticker, Item item, Room room)
 	{
@@ -69,10 +101,18 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		}
 	}
 
-	@Override public Room properLocation(){return myProperLocation;}
 	@Override
-	public void setProperLocation(Room room)
-	{ myProperLocation=room; }
+	public Room properLocation()
+	{
+		return myProperLocation;
+	}
+
+	@Override
+	public synchronized void setProperLocation(Room room)
+	{
+		myProperLocation = room;
+	}
+
 	@Override
 	public void loadMeUp(Item item, Room room)
 	{
