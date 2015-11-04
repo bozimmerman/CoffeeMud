@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_Haggle extends StdSkill
 {
 	@Override public String ID() { return "Skill_Haggle"; }
@@ -54,11 +54,11 @@ public class Skill_Haggle extends StdSkill
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String cmd="";
 		if(commands.size()>0)
-			cmd=((String)commands.firstElement()).toUpperCase();
+			cmd=(commands.get(0)).toUpperCase();
 
 		if((commands.size()<2)||((!cmd.equals("BUY")&&(!cmd.equals("SELL")))))
 		{
@@ -88,9 +88,9 @@ public class Skill_Haggle extends StdSkill
 				invoker=mob;
 				mob.addEffect(this);
 				mob.recoverCharStats();
-				commands.insertElementAt(CMStrings.capitalizeAndLower(cmd),0);
+				commands.add(0,CMStrings.capitalizeAndLower(cmd));
 				mob.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED);
-				commands.addElement(shopkeeper.name());
+				commands.add(shopkeeper.name());
 				mob.delEffect(this);
 				mob.recoverCharStats();
 			}

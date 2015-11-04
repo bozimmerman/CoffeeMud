@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Fighter_Shrug extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_Shrug"; }
@@ -82,7 +82,7 @@ public class Fighter_Shrug extends FighterSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)&&(!mob.isInCombat()))
 		{

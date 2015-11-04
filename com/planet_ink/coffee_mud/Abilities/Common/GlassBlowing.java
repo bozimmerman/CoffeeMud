@@ -36,7 +36,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class GlassBlowing extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "GlassBlowing"; }
@@ -80,7 +80,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	@Override
-	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
@@ -202,13 +202,13 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
 	
 	@Override
-	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+	public boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
@@ -223,7 +223,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		}
 		if((!auto)
 		&&(commands.size()>0)
-		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+		&&((commands.get(0)).equalsIgnoreCase("bundle")))
 		{
 			bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -231,7 +231,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		final String str=(String)commands.elementAt(0);
+		final String str=commands.get(0);
 		String startStr=null;
 		bundling=false;
 		int duration=4;
@@ -266,7 +266,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			return true;
 		}
 		else
-		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		if(((commands.get(0))).equalsIgnoreCase("learn"))
 		{
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
@@ -277,10 +277,10 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		buildingI=null;
 		messedUp=false;
 		int amount=-1;
-		if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
+		if((commands.size()>1)&&(CMath.isNumber(commands.get(commands.size()-1))))
 		{
-			amount=CMath.s_int((String)commands.lastElement());
-			commands.removeElementAt(commands.size()-1);
+			amount=CMath.s_int(commands.get(commands.size()-1));
+			commands.remove(commands.size()-1);
 		}
 		final String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;

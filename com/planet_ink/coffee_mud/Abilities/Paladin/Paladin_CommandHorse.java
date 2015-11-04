@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Paladin_CommandHorse extends StdAbility
 {
 	@Override public String ID() { return "Paladin_CommandHorse"; }
@@ -48,7 +47,7 @@ public class Paladin_CommandHorse extends StdAbility
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
@@ -58,8 +57,8 @@ public class Paladin_CommandHorse extends StdAbility
 		final List<String> V=new Vector<String>();
 		if(commands.size()>0)
 		{
-			V.add((String)commands.elementAt(0));
-			commands.removeElementAt(0);
+			V.add(commands.get(0));
+			commands.remove(0);
 		}
 
 		final MOB target=getTarget(mob,V,givenTarget);
@@ -69,7 +68,7 @@ public class Paladin_CommandHorse extends StdAbility
 		if(commands.size()==0)
 		{
 			if(mob.isMonster())
-				commands.addElement("FLEE");
+				commands.add("FLEE");
 			else
 			{
 				if(V.size()>0)

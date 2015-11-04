@@ -43,7 +43,7 @@ public class Spell_LocateObject extends Spell
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<1)
@@ -54,7 +54,7 @@ public class Spell_LocateObject extends Spell
 
 		int minLevel=Integer.MIN_VALUE;
 		int maxLevel=Integer.MAX_VALUE;
-		String s=(String)commands.lastElement();
+		String s=commands.get(commands.size()-1);
 		boolean levelAdjust=false;
 		while((commands.size()>1)
 		&&((CMath.s_int(s)>0)
@@ -78,9 +78,9 @@ public class Spell_LocateObject extends Spell
 				else
 					minLevel=levelFind;
 
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				if(commands.size()>1)
-					s=(String)commands.lastElement();
+					s=commands.get(commands.size()-1);
 				else
 					s="";
 			}

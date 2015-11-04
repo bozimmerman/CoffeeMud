@@ -187,7 +187,7 @@ public class Archon_Multiwatch extends ArchonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(CMParms.combine(commands,0).equalsIgnoreCase("auto"))
 		{
@@ -278,12 +278,12 @@ public class Archon_Multiwatch extends ArchonSkill
 			return true;
 		}
 		else
-		if((commands.size()>1)&&((String)commands.firstElement()).equalsIgnoreCase("add"))
+		if((commands.size()>1)&&(commands.get(0)).equalsIgnoreCase("add"))
 		{
 			final Vector V=new Vector();
 			for(int i=1;i<commands.size();i++)
 			{
-				final String name=(String)commands.elementAt(i);
+				final String name=commands.get(i);
 				final MOB M=CMLib.players().getPlayer(name);
 				if((M.session()!=null)&&(CMLib.flags().isInTheGame(M,true)))
 					V.addElement(M);

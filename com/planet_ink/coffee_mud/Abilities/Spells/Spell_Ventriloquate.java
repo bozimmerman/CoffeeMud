@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_Ventriloquate extends Spell
 {
 	@Override public String ID() { return "Spell_Ventriloquate"; }
@@ -44,7 +43,7 @@ public class Spell_Ventriloquate extends Spell
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<2)
@@ -52,10 +51,10 @@ public class Spell_Ventriloquate extends Spell
 			mob.tell(L("You must specify who or what to cast this on, and what you want said."));
 			return false;
 		}
-		final Physical target=mob.location().fetchFromRoomFavorItems(null,(String)commands.elementAt(0));
+		final Physical target=mob.location().fetchFromRoomFavorItems(null,commands.get(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",(commands.get(0))));
 			return false;
 		}
 		if(target==mob)

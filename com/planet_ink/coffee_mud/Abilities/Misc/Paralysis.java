@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Paralysis extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Paralysis"; }
@@ -98,7 +98,7 @@ public class Paralysis extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

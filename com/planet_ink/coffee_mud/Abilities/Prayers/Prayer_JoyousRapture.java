@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_JoyousRapture extends Prayer
 {
 	@Override public String ID() { return "Prayer_JoyousRapture"; }
@@ -90,7 +90,7 @@ public class Prayer_JoyousRapture extends Prayer
 				if((moodA!=null)&&(affected instanceof MOB))
 				{
 					final MOB mob=(MOB)affected;
-					final Vector V=new XVector<String>(text());
+					final Vector<String> V=new XVector<String>(text());
 					moodA.invoke(mob,V,mob,true,0);
 				}
 			}
@@ -103,7 +103,7 @@ public class Prayer_JoyousRapture extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

@@ -675,9 +675,9 @@ public class StdTrap extends StdAbility implements Trap
 		return CMLib.materials().findNumberOfResource(room, resource);
 	}
 	
-	@SuppressWarnings("rawtypes")
+	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=super.getTarget(mob, commands, givenTarget);
 		if(target == null)

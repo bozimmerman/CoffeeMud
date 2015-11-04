@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_AnimalSpirit extends Prayer
 {
 	@Override public String ID() { return "Prayer_AnimalSpirit"; }
@@ -156,7 +156,7 @@ public class Prayer_AnimalSpirit extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean success = super.proficiencyCheck(mob, 0, auto);
 

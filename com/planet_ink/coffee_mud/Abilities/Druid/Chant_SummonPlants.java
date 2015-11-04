@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_SummonPlants extends Chant
 {
 	@Override public String ID() { return "Chant_SummonPlants"; }
@@ -143,7 +143,7 @@ public class Chant_SummonPlants extends Chant
 	{
 		final Area A=room.getArea();
 		final boolean bonusWorthy=(Druid_MyPlants.myPlant(room,mob,0)==null);
-		final Vector V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
+		final Vector<Room> V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
 		int pct=0;
 		if(A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
 			pct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
@@ -226,7 +226,7 @@ public class Chant_SummonPlants extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!rightPlace(mob,auto))
 			return false;

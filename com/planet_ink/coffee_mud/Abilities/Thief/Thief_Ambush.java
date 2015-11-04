@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Thief_Ambush extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Ambush"; }
@@ -48,7 +48,7 @@ public class Thief_Ambush extends ThiefSkill
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect("Thief_Hide")!=null)
 		{

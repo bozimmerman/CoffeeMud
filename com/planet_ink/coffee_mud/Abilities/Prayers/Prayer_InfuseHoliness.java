@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -34,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Prayer_InfuseHoliness extends Prayer
 {
 	@Override public String ID() { return "Prayer_InfuseHoliness"; }
@@ -111,7 +110,7 @@ public class Prayer_InfuseHoliness extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Physical target;
 		if((givenTarget == null)
@@ -145,9 +144,9 @@ public class Prayer_InfuseHoliness extends Prayer
 			}
 			final Area A=mob.location().getArea();
 			Room R=null;
-			for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
+			for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 			{
-				R=(Room)e.nextElement();
+				R=e.nextElement();
 				if(CMLib.law().getClericInfused((Room)target)==D)
 				{
 					mob.tell(L("There is already a holy place of @x1 in this area at @x2.",D.Name(),R.displayText(mob)));

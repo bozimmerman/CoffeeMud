@@ -50,14 +50,14 @@ public class Archon_Wrath extends ArchonSkill
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean announce=false;
 		if(commands.size()>0)
 		{
-			if(((String)commands.lastElement()).equals("!"))
+			if((commands.get(commands.size()-1)).equals("!"))
 			{
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 				announce=true;
 			}
 		}

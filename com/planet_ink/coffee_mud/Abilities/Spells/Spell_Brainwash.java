@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -108,7 +106,7 @@ public class Spell_Brainwash extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String message="";
 		if(givenTarget==null)
@@ -119,7 +117,7 @@ public class Spell_Brainwash extends Spell
 				return false;
 			}
 			message=CMParms.combine(commands,1);
-			commands=new XVector(commands.firstElement());
+			commands=new XVector(commands.get(0));
 		}
 		else
 		if(text().length()>0)

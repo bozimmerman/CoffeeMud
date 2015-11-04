@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_BloodHearth extends Prayer
 {
 	@Override public String ID() { return "Prayer_BloodHearth"; }
@@ -87,7 +87,7 @@ public class Prayer_BloodHearth extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=mob.location();
 		if(target==null)

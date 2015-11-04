@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Song_Rebirth extends Song
 {
 	@Override public String ID() { return "Song_Rebirth"; }
@@ -44,7 +44,7 @@ public class Song_Rebirth extends Song
 	@Override protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

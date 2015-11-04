@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 
 /*
    Copyright 2001-2015 Bo Zimmerman
@@ -35,7 +34,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Property implements Ability
 {
 	@Override public String ID() { return "Property"; }
@@ -89,7 +88,7 @@ public class Property implements Ability
 	@Override public void setInvoker(MOB mob){}
 	public static final String[] empty={};
 	@Override public String[] triggerStrings(){return empty;}
-	@Override public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel){return false;}
+	@Override public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel){return false;}
 	@Override public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel){return false;}
 	@Override public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
 	@Override public boolean autoInvocation(MOB mob, boolean force){return false;}

@@ -202,7 +202,7 @@ public class StdTitle extends StdItem implements LandTitle
 	}
 
 	@Override
-	public void updateLot(List optPlayerList)
+	public void updateLot(List<String> optPlayerList)
 	{
 		final List<Room> V=getAllTitledRooms();
 		for(int v=0;v<V.size();v++)

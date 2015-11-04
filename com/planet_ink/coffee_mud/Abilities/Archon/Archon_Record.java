@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Archon_Record extends ArchonSkill
 {
 	boolean doneTicking=false;
@@ -88,7 +88,7 @@ public class Archon_Record extends ArchonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=CMLib.players().getLoadPlayer(CMParms.combine(commands,0));
 		if(target==null)

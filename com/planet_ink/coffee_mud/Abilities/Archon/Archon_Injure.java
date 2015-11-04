@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Archon_Injure extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Injure"; }
@@ -49,7 +49,7 @@ public class Archon_Injure extends ArchonSkill
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String part=null;
 		if((commands.size()<3)&&(mob.isInCombat()))
@@ -119,7 +119,7 @@ public class Archon_Injure extends ArchonSkill
 					final int percentOff=target.maxState().getHitPoints()/5;
 					if(target.curState().getHitPoints()>(target.curState().getHitPoints()-percentOff))
 						target.curState().setHitPoints(target.curState().getHitPoints()-percentOff);
-					injuryA.invoke(mob,new XVector(),target,true,0);
+					injuryA.invoke(mob,new XVector<String>(),target,true,0);
 					injuryA=target.fetchEffect("Injury");
 					if(injuryA!=null)
 						injuryA.setMiscText("+"+gone.toLowerCase()+"=20");

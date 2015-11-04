@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Prop_Smell extends Property
 {
 	@Override public String ID() { return "Prop_Smell"; }
@@ -86,10 +86,10 @@ public class Prop_Smell extends Property
 			{
 				int pct=100;
 				int ticks=-1;
-				final Vector parsedSmell=CMParms.parse(smell);
+				final Vector<String> parsedSmell=CMParms.parse(smell);
 				for(int ii=parsedSmell.size()-1;ii>=0;ii--)
 				{
-					final String s=((String)parsedSmell.elementAt(ii)).toUpperCase();
+					final String s=parsedSmell.elementAt(ii).toUpperCase();
 					if(s.startsWith("TICKS="))
 					{
 						ticks=CMath.s_int(s.substring(6).trim());

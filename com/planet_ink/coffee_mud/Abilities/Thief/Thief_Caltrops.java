@@ -222,9 +222,9 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		return true;
 	}
 
-	@SuppressWarnings("rawtypes")
+	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)

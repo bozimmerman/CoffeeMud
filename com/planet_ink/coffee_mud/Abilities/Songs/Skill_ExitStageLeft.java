@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Skill_ExitStageLeft extends BardSkill
 {
 	@Override public String ID() { return "Skill_ExitStageLeft"; }
@@ -103,7 +103,7 @@ public class Skill_ExitStageLeft extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)

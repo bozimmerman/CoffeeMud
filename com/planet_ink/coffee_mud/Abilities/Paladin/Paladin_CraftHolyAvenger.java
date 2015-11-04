@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -36,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 {
 	@Override public String ID() { return "Paladin_CraftHolyAvenger"; }
@@ -84,7 +83,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int completion=16;
 		final Item fire=getRequiredFire(mob,0);

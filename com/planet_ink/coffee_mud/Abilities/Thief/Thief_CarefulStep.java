@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_CarefulStep extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_CarefulStep"; }
@@ -83,11 +82,11 @@ public class Thief_CarefulStep extends ThiefSkill
 		return true;
 	}
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0)
-			dir=(String)commands.lastElement();
+			dir=commands.get(commands.size()-1);
 		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))
 			return false;

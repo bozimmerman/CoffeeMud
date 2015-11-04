@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -151,18 +150,18 @@ public class Thief_Con extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands!=null)
 			commands=new XVector(commands);
 		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final Vector V=new Vector();
-		V.addElement(commands.elementAt(0));
+		V.addElement(commands.get(0));
 		final MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null)
 			return false;
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		final int oldProficiency=proficiency();
 

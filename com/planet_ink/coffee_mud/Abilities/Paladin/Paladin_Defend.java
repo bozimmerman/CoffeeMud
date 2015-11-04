@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Paladin_Defend extends StdAbility
 {
 	@Override public String ID() { return "Paladin_Defend"; }
@@ -121,7 +121,7 @@ public class Paladin_Defend extends StdAbility
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().aliveAwakeMobile(mob,false))
 			return false;

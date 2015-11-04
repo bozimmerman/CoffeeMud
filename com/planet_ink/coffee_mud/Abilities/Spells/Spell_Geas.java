@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.SlaveryLibrary;
 
 
+
 import java.util.*;
 
 /*
@@ -33,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_Geas extends Spell
 {
 	@Override public String ID() { return "Spell_Geas"; }
@@ -112,7 +113,7 @@ public class Spell_Geas extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isMonster())
 		{
@@ -126,8 +127,8 @@ public class Spell_Geas extends Spell
 			mob.tell(L("You need to specify a target creature, and a geas to place on them."));
 			return false;
 		}
-		final Vector name=CMParms.parse((String)commands.elementAt(0));
-		commands.remove(commands.firstElement());
+		final Vector<String> name=CMParms.parse(commands.get(0));
+		commands.remove(commands.get(0));
 		final MOB target=getTarget(mob,name,givenTarget);
 		if(target==null)
 			return false;

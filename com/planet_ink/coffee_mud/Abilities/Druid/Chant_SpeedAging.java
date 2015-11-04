@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_SpeedAging extends Chant
 {
 	@Override public String ID() { return "Chant_SpeedAging"; }
@@ -49,7 +49,7 @@ public class Chant_SpeedAging extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY,true);
 		if(target==null)

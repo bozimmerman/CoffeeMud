@@ -807,17 +807,17 @@ public class StdAbility implements Ability
 	}
 
 
-	public Physical getAnyTarget(MOB mob, Vector commands, Physical givenTarget, Filterer<Environmental> filter)
+	public Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter)
 	{
 		return getAnyTarget(mob,commands,givenTarget,filter,false,false);
 	}
 
-	public Physical getAnyTarget(MOB mob, Vector commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory)
+	public Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory)
 	{
 		return getAnyTarget(mob,commands,givenTarget,filter,checkOthersInventory,false);
 	}
 
-	public Physical getAnyTarget(MOB mob, Vector commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory, boolean alreadyAffOk)
+	public Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory, boolean alreadyAffOk)
 	{
 		final Room R=mob.location();
 		String targetName=CMParms.combine(commands,0);
@@ -886,30 +886,30 @@ public class StdAbility implements Ability
 		return target;
 	}
 
-	protected static Item possibleContainer(MOB mob, Vector commands, boolean withStuff, Filterer<Environmental> filter)
+	protected static Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, Filterer<Environmental> filter)
 	{
 		if((commands==null)||(commands.size()<2))
 			return null;
 
-		final String possibleContainerID=(String)commands.lastElement();
+		final String possibleContainerID=commands.get(commands.size()-1);
 		final Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,filter);
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)
 		&&(((Item)thisThang) instanceof Container)
 		&&((!withStuff)||(((Container)thisThang).hasContent())))
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			return (Item)thisThang;
 		}
 		return null;
 	}
 
-	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Vector commands, Filterer<Environmental> filter)
+	public Item getTarget(MOB mob, Room location, Environmental givenTarget, List<String> commands, Filterer<Environmental> filter)
 	{
 		return getTarget(mob,location,givenTarget,null,commands,filter);
 	}
 
-	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, Vector commands, Filterer<Environmental> filter)
+	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, List<String> commands, Filterer<Environmental> filter)
 	{
 		String targetName=CMParms.combine(commands,0);
 
@@ -1327,7 +1327,7 @@ public class StdAbility implements Ability
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
 	{
 		//expertiseCache=null; // this was insane!
 		if((mob!=null)&&(getXMAXRANGELevel(mob)>0))

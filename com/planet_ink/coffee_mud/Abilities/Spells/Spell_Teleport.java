@@ -54,16 +54,16 @@ public class Spell_Teleport extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
+		if((auto||mob.isMonster())&&((commands.size()<1)||((commands.get(0)).equals(mob.name()))))
 		{
 			commands.clear();
 			if((text().length()>0)&&(CMLib.map().findArea(text())!=null))
 				commands.add(text());
 			else
-				commands.addElement(CMLib.map().getRandomArea().Name());
+				commands.add(CMLib.map().getRandomArea().Name());
 		}
 		if(commands.size()<1)
 		{

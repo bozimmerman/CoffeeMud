@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -35,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_Heresy extends Prayer
 {
 	@Override public String ID() { return "Prayer_Heresy"; }
@@ -49,7 +47,7 @@ public class Prayer_Heresy extends Prayer
 	@Override protected int overrideMana(){return 100;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		LegalBehavior B=null;
 		if(mob.location()!=null)
@@ -80,9 +78,9 @@ public class Prayer_Heresy extends Prayer
 					String desc=null;
 					if(D==null)
 					{
-						final Enumeration deities = CMLib.map().deities();
+						final Enumeration<Deity> deities = CMLib.map().deities();
 						if(deities.hasMoreElements())
-							D=(MOB)deities.nextElement();
+							D=deities.nextElement();
 					}
 					if(D==null)
 					{

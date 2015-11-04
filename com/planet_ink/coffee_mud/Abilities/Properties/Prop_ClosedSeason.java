@@ -33,13 +33,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Prop_ClosedSeason extends Property
 {
 	@Override public String ID() { return "Prop_ClosedSeason"; }
 	@Override public String name(){ return "Contingent Visibility";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	protected Vector closedV=null;
+	protected Vector<String> closedV=null;
 	boolean doneToday=false;
 	private Area exitArea=null;
 

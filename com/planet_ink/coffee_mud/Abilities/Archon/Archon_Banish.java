@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Archon_Banish extends ArchonSkill
 {
 	boolean doneTicking=false;
@@ -201,13 +200,13 @@ public class Archon_Banish extends ArchonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		long time=0;
 		if(commands.size()>2)
 		{
-			final String last=((String)commands.lastElement()).toUpperCase();
-			final String num=(String)commands.elementAt(commands.size()-2);
+			final String last=(commands.get(commands.size()-1)).toUpperCase();
+			final String num=commands.get(commands.size()-2);
 			if((CMath.isInteger(num))&&(CMath.s_int(num)>0))
 			{
 				if("DAYS".startsWith(last))
@@ -229,8 +228,8 @@ public class Archon_Banish extends ArchonSkill
 					time=System.currentTimeMillis()+(CMProps.getTickMillis()*CMath.s_int(num));
 				if(time>System.currentTimeMillis())
 				{
-					commands.removeElementAt(commands.size()-1);
-					commands.removeElementAt(commands.size()-1);
+					commands.remove(commands.size()-1);
+					commands.remove(commands.size()-1);
 				}
 			}
 		}
@@ -238,7 +237,7 @@ public class Archon_Banish extends ArchonSkill
 		if(myPrison != null && CMLib.map().getExtendedRoomID(myPrison).length()>0)
 		{
 			while(commands.size() > 1)
-				commands.removeElementAt(1);
+				commands.remove(1);
 		}
 		else
 			myPrison = null;

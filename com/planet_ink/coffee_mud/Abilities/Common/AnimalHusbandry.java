@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class AnimalHusbandry extends CommonSkill
 {
 	@Override public String ID() { return "AnimalHusbandry"; }
@@ -145,7 +145,7 @@ public class AnimalHusbandry extends CommonSkill
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -163,7 +163,7 @@ public class AnimalHusbandry extends CommonSkill
 			commonTell(mob,L("Which animals should I husband here?"));
 			return false;
 		}
-		final String[] names=new String[]{(String)commands.get(0),CMParms.combine(commands,1)};
+		final String[] names=new String[]{commands.get(0),CMParms.combine(commands,1)};
 		int highestLevel=0;
 		for(final String name : names)
 		{

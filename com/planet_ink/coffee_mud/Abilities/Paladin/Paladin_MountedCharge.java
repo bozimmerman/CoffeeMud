@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Paladin_MountedCharge extends StdAbility
 {
 	@Override public String ID() { return "Paladin_MountedCharge"; }
@@ -95,7 +95,7 @@ public class Paladin_MountedCharge extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final boolean notInCombat=!mob.isInCombat();
 		final MOB target=this.getTarget(mob,commands,givenTarget);

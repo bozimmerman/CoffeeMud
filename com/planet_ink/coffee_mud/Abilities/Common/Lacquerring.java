@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Lacquerring extends CommonSkill
 {
 	@Override public String ID() { return "Lacquerring"; }
@@ -130,7 +130,7 @@ public class Lacquerring extends CommonSkill
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -139,10 +139,10 @@ public class Lacquerring extends CommonSkill
 			commonTell(mob,L("You must specify what you want to lacquer, and the color to lacquer it in."));
 			return false;
 		}
-		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
+		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			target=mob.location().findItem(null, (String)commands.firstElement());
+			target=mob.location().findItem(null, commands.get(0));
 			if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 			{
 				final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
@@ -154,17 +154,17 @@ public class Lacquerring extends CommonSkill
 				}
 				if(!ok)
 				{
-					commonTell(mob,L("You aren't allowed to work on '@x1'.",((String)commands.firstElement())));
+					commonTell(mob,L("You aren't allowed to work on '@x1'.",(commands.get(0))));
 					return false;
 				}
 			}
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",((String)commands.firstElement())));
+			commonTell(mob,L("You don't seem to have a '@x1'.",(commands.get(0))));
 			return false;
 		}
-		commands.remove(commands.firstElement());
+		commands.remove(commands.get(0));
 
 		if((((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)

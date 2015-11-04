@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_DiviningEye extends Spell
 {
 	@Override public String ID() { return "Spell_DiviningEye"; }
@@ -45,7 +43,7 @@ public class Spell_DiviningEye extends Spell
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -61,7 +59,7 @@ public class Spell_DiviningEye extends Spell
 		}
 
 		final String commandStr=CMParms.combine(commands);
-		commands.insertElementAt("CAST",0);
+		commands.add(0,"CAST");
 		final Ability A=CMLib.english().getToEvoke(mob, commands);
 		if(A==null)
 		{

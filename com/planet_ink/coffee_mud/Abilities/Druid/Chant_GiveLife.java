@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_GiveLife extends Chant
 {
 	@Override public String ID() { return "Chant_GiveLife"; }
@@ -46,17 +46,17 @@ public class Chant_GiveLife extends Chant
 	@Override public long flags(){return Ability.FLAG_NOORDERING;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int amount=100;
 		if(!auto)
 		{
-			if((commands.size()==0)||(!CMath.isNumber((String)commands.lastElement())))
+			if((commands.size()==0)||(!CMath.isNumber(commands.get(commands.size()-1))))
 			{
 				mob.tell(L("Give how much life experience?"));
 				return false;
 			}
-			amount=CMath.s_int((String)commands.lastElement());
+			amount=CMath.s_int(commands.get(commands.size()-1));
 			if((amount<=0)||((amount>mob.getExperience())
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 			&&!mob.charStats().getCurrentClass().expless()
@@ -65,7 +65,7 @@ public class Chant_GiveLife extends Chant
 				mob.tell(L("You cannot give @x1 life experience.",""+amount));
 				return false;
 			}
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

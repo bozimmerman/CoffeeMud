@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Spell_InvisibilitySphere extends Spell
 {
 	@Override public String ID() { return "Spell_InvisibilitySphere"; }
@@ -223,7 +223,7 @@ public class Spell_InvisibilitySphere extends Spell
 	}
 	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(ID())!=null)
 		{

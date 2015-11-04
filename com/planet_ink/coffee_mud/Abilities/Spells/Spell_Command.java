@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_Command extends Spell
 {
 	@Override public String ID() { return "Spell_Command"; }
@@ -43,13 +42,13 @@ public class Spell_Command extends Spell
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final List<String> V=new Vector<String>();
 		if(commands.size()>0)
 		{
-			V.add((String)commands.elementAt(0));
-			commands.removeElementAt(0);
+			V.add(commands.get(0));
+			commands.remove(0);
 		}
 
 		final MOB target=getTarget(mob,V,givenTarget);
@@ -59,7 +58,7 @@ public class Spell_Command extends Spell
 		if(commands.size()==0)
 		{
 			if(mob.isMonster())
-				commands.addElement("FLEE");
+				commands.add("FLEE");
 			else
 			{
 				if(V.size()>0)
@@ -74,13 +73,13 @@ public class Spell_Command extends Spell
 			return false;
 		}
 
-		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
+		if(commands.get(0).toUpperCase().startsWith("FOL"))
 		{
 			mob.tell(L("You can't command someone to follow."));
 			return false;
 		}
 
-		CMObject O=CMLib.english().findCommand(target,(Vector)commands.clone());
+		CMObject O=CMLib.english().findCommand(target,new XVector<String>(commands));
 		if(O instanceof Command)
 		{
 			if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))
@@ -92,7 +91,7 @@ public class Spell_Command extends Spell
 		else
 		{
 			if(O instanceof Ability)
-				O=CMLib.english().getToEvoke(target,(Vector)commands.clone());
+				O=CMLib.english().getToEvoke(target,new XVector<String>(commands));
 			if(O instanceof Ability)
 			{
 				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))

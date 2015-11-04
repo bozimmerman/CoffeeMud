@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_ImprovedPolymorph extends Spell
 {
 	@Override public String ID() { return "Spell_ImprovedPolymorph"; }
@@ -105,15 +104,15 @@ public class Spell_ImprovedPolymorph extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{
 			mob.tell(L("You need to specify what to turn your target into!"));
 			return false;
 		}
-		final String race=(String)commands.lastElement();
-		commands.removeElement(commands.lastElement());
+		final String race=commands.get(commands.size()-1);
+		commands.remove(commands.size()-1);
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;

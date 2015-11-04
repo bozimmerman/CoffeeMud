@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Undead_LifeDrain extends StdAbility
 {
 	@Override public String ID() { return "Undead_LifeDrain"; }
@@ -50,7 +50,7 @@ public class Undead_LifeDrain extends StdAbility
 	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_Delay extends Spell
 {
 	@Override public String ID() { return "Spell_Delay"; }
@@ -44,7 +43,7 @@ public class Spell_Delay extends Spell
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
 	private Ability shooter=null;
-	protected Vector parameters=null;
+	protected List<String> parameters=null;
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	@Override protected int overrideMana(){return Ability.COST_ALL;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
@@ -90,14 +89,14 @@ public class Spell_Delay extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
 			mob.tell(L("You must specify what arcane spell to delay, and any necessary parameters."));
 			return false;
 		}
-		commands.insertElementAt("CAST",0);
+		commands.add(0,"CAST");
 		shooter=CMLib.english().getToEvoke(mob,commands);
 		parameters=commands;
 		if((shooter==null)||((shooter.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL))

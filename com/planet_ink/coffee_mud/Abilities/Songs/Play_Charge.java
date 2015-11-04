@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -34,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Play_Charge extends Play
 {
 	@Override public String ID() { return "Play_Charge"; }
@@ -43,7 +42,7 @@ public class Play_Charge extends Play
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override protected int canAffectCode(){return 0;}
 	@Override protected boolean persistantSong(){return false;}
-	Vector chcommands=null;
+	List<String> chcommands=null;
 
 	@Override
 	protected void inpersistantAffect(MOB mob)
@@ -69,7 +68,7 @@ public class Play_Charge extends Play
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()==0)&&(!mob.isInCombat()))
 		{
@@ -77,7 +76,7 @@ public class Play_Charge extends Play
 			return false;
 		}
 		if(commands.size()==0)
-			commands.addElement(mob.getVictim().name());
+			commands.add(mob.getVictim().name());
 		chcommands=commands;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

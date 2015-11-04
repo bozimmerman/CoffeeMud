@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Spell_DisguiseOther extends Spell_DisguiseSelf
 {
 	@Override public String ID() { return "Spell_DisguiseOther"; }
@@ -43,14 +43,14 @@ public class Spell_DisguiseOther extends Spell_DisguiseSelf
 	@Override public String displayText() { return localizedStaticDisplay; }
 	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
 			mob.tell(L("Disguise whom as whom?"));
 			return false;
 		}
-		String whomName=(String)commands.firstElement();
+		String whomName=commands.get(0);
 		MOB target=super.getTarget(mob, new XVector<String>(whomName), givenTarget);
 		if(target == null)
 			return false;

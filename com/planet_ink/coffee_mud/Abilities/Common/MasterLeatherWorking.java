@@ -271,13 +271,13 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
 	
 	@Override
-	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+	public boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
@@ -292,7 +292,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		}
 		if((!auto)
 		&&(commands.size()>0)
-		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+		&&((commands.get(0)).equalsIgnoreCase("bundle")))
 		{
 			bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -300,7 +300,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		final String str=(String)commands.elementAt(0);
+		final String str=commands.get(0);
 		playSound="scissor.wav";
 		String startStr=null;
 		bundling=false;
@@ -356,7 +356,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			return true;
 		}
 		else
-		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		if(((commands.get(0))).equalsIgnoreCase("learn"))
 		{
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
@@ -419,10 +419,10 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			messedUp=false;
 			aborted=false;
 			int amount=-1;
-			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
+			if((commands.size()>1)&&(CMath.isNumber(commands.get(commands.size()-1))))
 			{
-				amount=CMath.s_int((String)commands.lastElement());
-				commands.removeElementAt(commands.size()-1);
+				amount=CMath.s_int(commands.get(commands.size()-1));
+				commands.remove(commands.size()-1);
 			}
 			final String recipeName=CMParms.combine(commands,0);
 			List<String> foundRecipe=null;

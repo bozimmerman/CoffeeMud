@@ -93,7 +93,7 @@ public class Skill_Map extends StdSkill
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Ability A=mob.fetchEffect(ID());
 		if(A!=null)

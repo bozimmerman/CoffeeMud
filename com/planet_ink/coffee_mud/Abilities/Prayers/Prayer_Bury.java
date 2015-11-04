@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_Bury extends Prayer
 {
 	@Override public String ID() { return "Prayer_Bury"; }
@@ -47,7 +46,7 @@ public class Prayer_Bury extends Prayer
 	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=null;
 		if((commands.size()==0)&&(!auto)&&(givenTarget==null))

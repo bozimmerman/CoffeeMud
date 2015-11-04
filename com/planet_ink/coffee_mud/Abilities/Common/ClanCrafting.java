@@ -38,7 +38,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class ClanCrafting extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "ClanCrafting"; }
@@ -72,7 +72,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_SPELL=13;
 	protected static final int RCP_REQUIREDSKILL=14;
 
-	public Hashtable parametersFields(){ return new Hashtable();}
+	public Hashtable<String,String> parametersFields(){ return new Hashtable<String,String>();}
 	@Override public String parametersFile(){ return "clancraft.txt";}
 	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
@@ -140,13 +140,13 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
 	
 	@Override
-	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+	public boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
@@ -183,7 +183,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			}
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		final String str=(String)commands.elementAt(0);
+		final String str=commands.get(0);
 		String startStr=null;
 		int duration=4;
 		final int[] cols={

@@ -33,7 +33,7 @@ import java.util.Map.Entry;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Thief_Shadowpass extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Shadowpass"; }
@@ -49,7 +49,7 @@ public class Thief_Shadowpass extends ThiefSkill
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room R=mob.location();
 		if((!auto)&&(!CMLib.flags().isInDark(R))||(R==null))
@@ -62,13 +62,13 @@ public class Thief_Shadowpass extends ThiefSkill
 		for(;v<commands.size();v++)
 		{
 			int num=1;
-			String s=(String)commands.elementAt(v);
+			String s=commands.get(v);
 			if(CMath.s_int(s)>0)
 			{
 				num=CMath.s_int(s);
 				v++;
 				if(v<commands.size())
-					s=(String)commands.elementAt(v);
+					s=commands.get(v);
 			}
 			else
 			if(CMath.isNumberFollowedByString(s))

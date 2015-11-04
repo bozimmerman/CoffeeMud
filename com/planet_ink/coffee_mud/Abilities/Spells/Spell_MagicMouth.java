@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_MagicMouth extends Spell
 {
 	@Override public String ID() { return "Spell_MagicMouth"; }
@@ -114,7 +113,7 @@ public class Spell_MagicMouth extends Spell
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<3)
@@ -122,10 +121,10 @@ public class Spell_MagicMouth extends Spell
 			mob.tell(L("You must specify:\n\r 1. What object you want the spell cast on.\n\r 2. Whether it is triggered by TOUCH, HOLD, WIELD, WEAR, or someone ENTERing the same room. \n\r 3. The message you wish the object to impart. "));
 			return false;
 		}
-		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,((String)commands.elementAt(0)),Wearable.FILTER_UNWORNONLY);
+		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(commands.get(0)),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",(commands.get(0))));
 			return false;
 		}
 		if(target instanceof MOB)
@@ -134,7 +133,7 @@ public class Spell_MagicMouth extends Spell
 			return false;
 		}
 
-		final String triggerStr=((String)commands.elementAt(1)).trim().toUpperCase();
+		final String triggerStr=commands.get(1).trim().toUpperCase();
 
 		if(triggerStr.startsWith("HOLD"))
 			myTrigger=CMMsg.TYP_HOLD;

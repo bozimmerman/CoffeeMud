@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -39,7 +40,7 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
  * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#addEffect(Ability)
  */
-@SuppressWarnings("rawtypes")
+
 public interface Ability extends Environmental
 {
 	/** Constant shortcut for setting the ticks remaining on the skill to basically be endless. */
@@ -218,7 +219,7 @@ public interface Ability extends Environmental
 	 * method is called when the command is entered, and every second
 	 * afterwards until the invoker has enough actions to complete it.
 	 * At completion time, invoke is called.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#invoke(MOB, Vector, Physical, boolean, int)
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#invoke(MOB, List, Physical, boolean, int)
 	 * @param mob the player or mob invoking the skill
 	 * @param commands the parameters entered for the skill (minus trigger word)
 	 * @param givenTarget null, unless being auto-invoked. Represents an override target.
@@ -236,7 +237,7 @@ public interface Ability extends Environmental
 	 * Calls the more complete invoke method without an empty command strings vector
 	 * unless target is non-null, in which case the vector will contain the name
 	 * of the target.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#invoke(MOB, Vector, Physical, boolean, int)
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#invoke(MOB, List, Physical, boolean, int)
 	 * @param mob the player or mob invoking the skill
 	 * @param target null, unless being auto-invoked. Represents an override target.
 	 * @param auto false if player enters command, true if system invokes the command
@@ -258,7 +259,7 @@ public interface Ability extends Environmental
 	 * @param asLevel -1, unless being auto-invoked, when it is the level to invoke it at.
 	 * @return whether the skill successfully invoked.
 	 */
-	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel);
+	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel);
 
 	/**
 	 * If this skill is uninvokable, this method will uninvoke it, remove it

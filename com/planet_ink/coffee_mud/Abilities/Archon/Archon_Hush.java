@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Archon_Hush extends ArchonSkill
 {
 	boolean doneTicking=false;
@@ -85,7 +85,7 @@ public class Archon_Hush extends ArchonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
 		if(target==null)

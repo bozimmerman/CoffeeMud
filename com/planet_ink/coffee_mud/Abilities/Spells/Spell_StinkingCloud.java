@@ -143,7 +143,7 @@ public class Spell_StinkingCloud extends Spell
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=null;
 		if(givenTarget instanceof MOB)

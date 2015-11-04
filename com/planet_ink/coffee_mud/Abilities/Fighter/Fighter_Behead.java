@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -82,7 +81,7 @@ public class Fighter_Behead extends FighterSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -108,14 +107,14 @@ public class Fighter_Behead extends FighterSkill
 
 		final Item w=mob.fetchWieldedItem();
 		Weapon ww=null;
+		if((w==null)||(!(w instanceof Weapon)))
+		{
+			mob.tell(L("You cannot behead without a weapon!"));
+			return false;
+		}
+		ww=(Weapon)w;
 		if((!auto)&&(!CMSecurity.isASysOp(mob)))
 		{
-			if((w==null)||(!(w instanceof Weapon)))
-			{
-				mob.tell(L("You cannot behead without a weapon!"));
-				return false;
-			}
-			ww=(Weapon)w;
 			if(ww.weaponDamageType()!=Weapon.TYPE_SLASHING)
 			{
 				mob.tell(L("You cannot behead with a @x1!",ww.name()));
@@ -133,7 +132,7 @@ public class Fighter_Behead extends FighterSkill
 			}
 		}
 
-		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(ww==null))
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));

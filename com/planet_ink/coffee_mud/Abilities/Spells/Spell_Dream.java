@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_Dream extends Spell
 {
 	@Override public String ID() { return "Spell_Dream"; }
@@ -42,7 +42,7 @@ public class Spell_Dream extends Spell
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<1)
@@ -63,9 +63,9 @@ public class Spell_Dream extends Spell
 				mob.location().send(mob,msg);
 				try
 				{
-					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						final Room R=(Room)r.nextElement();
+						final Room R=r.nextElement();
 						if(CMLib.flags().canAccess(mob,R))
 						for(int i=0;i<R.numInhabitants();i++)
 						{

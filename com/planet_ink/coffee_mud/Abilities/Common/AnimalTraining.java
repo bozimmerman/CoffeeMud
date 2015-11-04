@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class AnimalTraining extends CommonSkill
 {
 	@Override public String ID() { return "AnimalTraining"; }
@@ -133,7 +133,7 @@ public class AnimalTraining extends CommonSkill
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -156,8 +156,8 @@ public class AnimalTraining extends CommonSkill
 			return false;
 		}
 		skill=null;
-		final String what=(String)commands.lastElement();
-		commands.removeElementAt(commands.size()-1);
+		final String what=commands.get(commands.size()-1);
+		commands.remove(commands.size()-1);
 		for(int i=0;i<skills.length;i++)
 		{
 			if(skills[i].startsWith(what.toUpperCase()))
@@ -222,14 +222,14 @@ public class AnimalTraining extends CommonSkill
 			}
 			if(commands.size()>0)
 			{
-				final String last=(String)commands.lastElement();
+				final String last=commands.get(commands.size()-1);
 				final Item I=mob.location().findItem(null,last);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
 				{
 					cage=I;
-					commands.removeElement(last);
+					commands.remove(last);
 				}
 			}
 			if(cage==null)

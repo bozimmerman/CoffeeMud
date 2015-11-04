@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Prayer_CallUndead extends Prayer
 {
 	@Override public String ID() { return "Prayer_CallUndead"; }
@@ -44,7 +44,7 @@ public class Prayer_CallUndead extends Prayer
 	@Override public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room oldRoom=null;
 		MOB target=null;

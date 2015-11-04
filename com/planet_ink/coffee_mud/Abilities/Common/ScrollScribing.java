@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "ScrollScribing"; }
@@ -199,13 +199,13 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
 	
 	@Override
-	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+	public boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
@@ -228,8 +228,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		final String pos=(String)commands.lastElement();
-		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("list"))
+		final String pos=commands.get(commands.size()-1);
+		if(((commands.get(0))).equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

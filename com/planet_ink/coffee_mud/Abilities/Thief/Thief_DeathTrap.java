@@ -248,9 +248,9 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return super.castingQuality(mob,target);
 	}
 
-	@SuppressWarnings("rawtypes")
+	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room trapThis=mob.location();
 

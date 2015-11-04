@@ -15,9 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
-
 import java.util.*;
 
 /*
@@ -36,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Herbology extends CommonSkill
 {
 	@Override public String ID() { return "Herbology"; }
@@ -99,7 +96,7 @@ public class Herbology extends CommonSkill
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -111,10 +108,10 @@ public class Herbology extends CommonSkill
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",((String)commands.firstElement())));
+			commonTell(mob,L("You don't seem to have a '@x1'.",(commands.get(0))));
 			return false;
 		}
-		commands.remove(commands.firstElement());
+		commands.remove(commands.get(0));
 
 		if((target.material()!=RawMaterial.RESOURCE_HERBS)
 		||((!target.Name().toUpperCase().endsWith(" HERBS"))

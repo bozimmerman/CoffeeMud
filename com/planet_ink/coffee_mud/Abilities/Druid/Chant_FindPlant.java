@@ -152,7 +152,7 @@ public class Chant_FindPlant extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -167,7 +167,7 @@ public class Chant_FindPlant extends Chant
 		for(final Ability A : V) A.unInvoke();
 
 		if((commands.size()==0)&&(text().length()>0))
-			commands.addElement(text());
+			commands.add(text());
 		if(commands.size()==0)
 		{
 			mob.tell(L("Find which @x1?  Use 'CHANT \"@x2\" LIST' for a list.",lookingFor,name()));

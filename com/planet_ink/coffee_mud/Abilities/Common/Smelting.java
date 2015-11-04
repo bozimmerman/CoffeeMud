@@ -16,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 
@@ -37,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Smelting extends CraftingSkill
 {
 	@Override public String ID() { return "Smelting"; }
@@ -108,7 +106,7 @@ public class Smelting extends CraftingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -119,7 +117,7 @@ public class Smelting extends CraftingSkill
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		final String str=(String)commands.elementAt(0);
+		final String str=commands.get(0);
 		String startStr=null;
 		int duration=4;
 		if(str.equalsIgnoreCase("list"))
@@ -162,10 +160,10 @@ public class Smelting extends CraftingSkill
 		messedUp=false;
 		String recipeName=CMParms.combine(commands,0);
 		int maxAmount=1;
-		if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
+		if((commands.size()>1)&&(CMath.isNumber(commands.get(commands.size()-1))))
 		{
-			maxAmount=CMath.s_int((String)commands.lastElement());
-			commands.removeElementAt(commands.size()-1);
+			maxAmount=CMath.s_int(commands.get(commands.size()-1));
+			commands.remove(commands.size()-1);
 			recipeName=CMParms.combine(commands,0);
 		}
 		List<String> foundRecipe=null;

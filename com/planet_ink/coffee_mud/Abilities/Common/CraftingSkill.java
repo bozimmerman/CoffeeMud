@@ -504,7 +504,7 @@ public class CraftingSkill extends GatheringSkill
 		return data;
 	}
 
-	protected void randomRecipeFix(MOB mob, List<List<String>> recipes, Vector commands, int autoGeneration)
+	protected void randomRecipeFix(MOB mob, List<List<String>> recipes, List<String> commands, int autoGeneration)
 	{
 		if(((mob.isMonster()&&(!CMLib.flags().isAnimalIntelligence(mob)))||(autoGeneration>0))
 		&&(commands.size()==0)
@@ -534,7 +534,7 @@ public class CraftingSkill extends GatheringSkill
 				}
 				if((proceed)||(tries==(maxtries-1)))
 				{
-					commands.addElement(randomRecipe.get(RCP_FINALNAME));
+					commands.add(randomRecipe.get(RCP_FINALNAME));
 					break;
 				}
 			}
@@ -563,7 +563,7 @@ public class CraftingSkill extends GatheringSkill
 	 * @param crafted when autoGenerate > 0, this is where the auto generated crafted items are placed
 	 * @return whether the skill successfully invoked.
 	 */
-	public boolean autoGenInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	public boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		return false;
 	}
@@ -777,7 +777,7 @@ public class CraftingSkill extends GatheringSkill
 		return V;
 	}
 
-	public boolean publicScan(MOB mob, Vector commands)
+	public boolean publicScan(MOB mob, List<String> commands)
 	{
 		final String rest=CMParms.combine(commands,1);
 		Environmental scanning=null;
@@ -1184,7 +1184,7 @@ public class CraftingSkill extends GatheringSkill
 		return "?";
 	}
 
-	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		recipeHolder=null;
 		if((!(this instanceof ItemCraftor))||(!((ItemCraftor)this).supportsDeconstruction()))

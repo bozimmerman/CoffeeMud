@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -34,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Skill_Chirgury extends StdSkill
 {
 	@Override public String ID() { return "Skill_Chirgury"; }
@@ -65,7 +63,7 @@ public class Skill_Chirgury extends StdSkill
 											  "Stone Golem", "Unknown"};
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -73,8 +71,8 @@ public class Skill_Chirgury extends StdSkill
 			return false;
 
 		}
-		final String part=(String)commands.firstElement();
-		commands.removeElementAt(0);
+		final String part=commands.get(0);
+		commands.remove(0);
 		int partCode=-1;
 		Object[] partSet=new Object[1];
 		for(int i=0;i<parts.length;i++)

@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 {
 	@Override public String ID() { return "Skill_ArrestingSap"; }
@@ -165,7 +164,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean safety=false;
 		int ticks=3;
@@ -174,16 +173,16 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 			if(commands!=null)
 			for(int c=commands.size()-1;c>=0;c--)
 			{
-				if(CMath.isInteger((String)commands.elementAt(c)))
+				if(CMath.isInteger(commands.get(c)))
 				{
-					ticks=CMath.s_int((String)commands.elementAt(c));
-					commands.removeElementAt(c);
+					ticks=CMath.s_int(commands.get(c));
+					commands.remove(c);
 				}
 				else
-				if(((String)commands.elementAt(c)).equalsIgnoreCase("SAFELY"))
+				if(commands.get(c).equalsIgnoreCase("SAFELY"))
 				{
 					safety=true;
-					commands.removeElementAt(c);
+					commands.remove(c);
 				}
 			}
 		}

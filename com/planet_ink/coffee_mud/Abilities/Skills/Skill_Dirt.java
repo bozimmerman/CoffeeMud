@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Skill_Dirt extends StdSkill
 {
 	boolean doneTicking=false;
@@ -132,8 +131,7 @@ public class Skill_Dirt extends StdSkill
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -161,7 +159,7 @@ public class Skill_Dirt extends StdSkill
 
 		if(CMLib.flags().isSleeping(target))
 		{
-			CMLib.commands().forceStandardCommand(target, "Wake", new XVector("Wake"));
+			CMLib.commands().forceStandardCommand(target, "Wake", new XVector<String>("Wake"));
 			if(CMLib.flags().isSleeping(target))
 			{
 				if(!auto)

@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -109,15 +107,15 @@ public class Thief_Kamikaze extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
 			mob.tell(L("You must specify who your kamikaze bomber is, and which direction they should go."));
 			return false;
 		}
-		final String s=(String)commands.lastElement();
-		commands.removeElementAt(commands.size()-1);
+		final String s=commands.get(commands.size()-1);
+		commands.remove(commands.size()-1);
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
@@ -189,8 +187,8 @@ public class Thief_Kamikaze extends ThiefSkill
 				beneficialAffect(mob,target,asLevel,2);
 				bombFound.activateBomb();
 				commands=new Vector();
-				commands.addElement("GO");
-				commands.addElement(s);
+				commands.add("GO");
+				commands.add(s);
 				target.enqueCommand(commands,MUDCmdProcessor.METAFLAG_FORCED,0);
 			}
 		}

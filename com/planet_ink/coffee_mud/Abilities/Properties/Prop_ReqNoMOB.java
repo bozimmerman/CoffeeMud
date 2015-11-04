@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 {
 	@Override public String ID() { return "Prop_ReqNoMOB"; }
@@ -98,12 +98,11 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 				while(hsize!=H.size())
 				{
 					hsize=H.size();
-					final HashSet H2=(HashSet)H.clone();
-					for(final Iterator e=H2.iterator();e.hasNext();)
+					final HashSet<MOB> H2=new XHashSet<MOB>(H);
+					for(final Iterator<MOB> e=H2.iterator();e.hasNext();)
 					{
-						final Object O=e.next();
-						if(O instanceof MOB)
-							((MOB)O).getRideBuddies(H);
+						final MOB M=e.next();
+						M.getRideBuddies(H);
 					}
 				}
 			}

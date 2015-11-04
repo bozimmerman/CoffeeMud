@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -48,7 +47,7 @@ public class Thief_MakeBomb extends ThiefSkill
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=null;
 		final Vector traps=new Vector();
@@ -86,8 +85,8 @@ public class Thief_MakeBomb extends ThiefSkill
 				mob.tell(L("Make a bomb from what, with what kind of bomb? Use bomb list for a list."));
 				return false;
 			}
-			final String name=(String)commands.lastElement();
-			commands.removeElementAt(commands.size()-1);
+			final String name=commands.get(commands.size()-1);
+			commands.remove(commands.size()-1);
 			for(int r=0;r<traps.size();r++)
 			{
 				final Trap T=(Trap)traps.elementAt(r);

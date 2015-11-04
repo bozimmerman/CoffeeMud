@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Thief_Appraise extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Appraise"; }
@@ -51,17 +51,17 @@ public class Thief_Appraise extends ThiefSkill
 	@Override public void setAbilityCode(int newCode){code=newCode;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
 			mob.tell(L("What would you like to appraise?"));
 			return false;
 		}
-		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
+		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",(commands.get(0))));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -528,12 +528,11 @@ public class CommonSkill extends StdAbility
 		tickUp=0;
 	}
 
-	public boolean checkStop(MOB mob, Vector commands)
+	public boolean checkStop(MOB mob, List<String> commands)
 	{
 		if((commands!=null)
 		&&(commands.size()==1)
-		&&(commands.get(0) instanceof String)
-		&&(((String)commands.get(0)).equalsIgnoreCase("stop")))
+		&&(commands.get(0).equalsIgnoreCase("stop")))
 		{
 			final Ability A=mob.fetchEffect(ID());
 			if((A!=null)&&(!A.isNowAnAutoEffect())&&(A.canBeUninvoked()))
@@ -562,7 +561,7 @@ public class CommonSkill extends StdAbility
 	}
 	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		aborted=false;
 		if(mob.isInCombat())

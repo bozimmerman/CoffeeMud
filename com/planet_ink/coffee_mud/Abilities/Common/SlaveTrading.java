@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class SlaveTrading extends CommonSkill
 {
 	@Override public String ID() { return "SlaveTrading"; }
@@ -46,9 +45,9 @@ public class SlaveTrading extends CommonSkill
 	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRIMINAL; }
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		commands.insertElementAt("SELL",0);
+		commands.add(0,"SELL");
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell whom to whom?");
 		if(shopkeeper==null)
 			return false;

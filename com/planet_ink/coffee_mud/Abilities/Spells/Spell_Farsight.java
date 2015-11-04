@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_Farsight extends Spell
 {
 	@Override public String ID() { return "Spell_Farsight"; }
@@ -44,7 +43,7 @@ public class Spell_Farsight extends Spell
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -90,7 +89,7 @@ public class Spell_Farsight extends Spell
 				else
 				while(commands.size()>0)
 				{
-					final String whatToOpen=(String)commands.elementAt(0);
+					final String whatToOpen=commands.get(0);
 					final int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 					if(limit<=0)
 					{
@@ -102,7 +101,7 @@ public class Spell_Farsight extends Spell
 					if(dirCode<0)
 					{
 						mob.tell(L("\n\r'@x1' is not a valid direction.",whatToOpen));
-						commands.removeAllElements();
+						commands.clear();
 						success=false;
 					}
 					else
@@ -114,11 +113,11 @@ public class Spell_Farsight extends Spell
 						{
 							mob.tell(L("\n\rSomething has obstructed your vision."));
 							success=false;
-							commands.removeAllElements();
+							commands.clear();
 						}
 						else
 						{
-							commands.removeElementAt(0);
+							commands.remove(0);
 							thatRoom=room;
 							limit--;
 							mob.tell(L("\n\r"));

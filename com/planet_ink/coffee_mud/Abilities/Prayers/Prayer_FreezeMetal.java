@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_FreezeMetal extends Prayer
 {
 	@Override public String ID() { return "Prayer_FreezeMetal"; }
@@ -47,12 +47,13 @@ public class Prayer_FreezeMetal extends Prayer
 	@Override protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	@Override public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_WATERBASED;}
 
-	protected Vector affectedItems=new Vector();
+	protected Vector<Item> affectedItems=new Vector<Item>();
+	
 	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		affectedItems=new Vector();
+		affectedItems=new Vector<Item>();
 	}
 
 	@Override
@@ -132,7 +133,7 @@ public class Prayer_FreezeMetal extends Prayer
 		{
 			for(int i=0;i<affectedItems.size();i++)
 			{
-				final Item I=(Item)affectedItems.elementAt(i);
+				final Item I=affectedItems.elementAt(i);
 				Ability A=I.fetchEffect(this.ID());
 				while(A!=null)
 				{
@@ -146,7 +147,7 @@ public class Prayer_FreezeMetal extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

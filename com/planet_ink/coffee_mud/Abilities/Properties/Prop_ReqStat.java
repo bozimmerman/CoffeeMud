@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Prop_ReqStat extends Property implements TriggeredAffect
 {
 	@Override public String ID() { return "Prop_ReqStat"; }
@@ -63,11 +63,11 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 	public void setMiscText(String txt)
 	{
 		noSneak=false;
-		final Vector parms=CMParms.parse(txt.toUpperCase());
+		final Vector<String> parms=CMParms.parse(txt.toUpperCase());
 		String s;
-		for(final Enumeration p=parms.elements();p.hasMoreElements();)
+		for(final Enumeration<String> p=parms.elements();p.hasMoreElements();)
 		{
-			s=(String)p.nextElement();
+			s=p.nextElement();
 			if(s.startsWith("NOSNEAK"))
 				noSneak=true;
 		}

@@ -118,7 +118,7 @@ public class Taxidermy extends CraftingSkill
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -142,9 +142,9 @@ public class Taxidermy extends CraftingSkill
 			for(int p=0;p<POSES.size();p++)
 			{
 				final List<String> PP=POSES.get(p);
-				if((PP.size()>1)&&(PP.get(0).equalsIgnoreCase((String)commands.firstElement())))
+				if((PP.size()>1)&&(PP.get(0).equalsIgnoreCase(commands.get(0))))
 				{
-					commands.removeElementAt(0);
+					commands.remove(0);
 					pose=PP.get(CMLib.dice().roll(1,PP.size()-1,0));
 					break;
 				}

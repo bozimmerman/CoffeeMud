@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -35,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_Feralness extends Chant
 {
 	@Override public String ID() { return "Chant_Feralness"; }
@@ -120,7 +118,7 @@ public class Chant_Feralness extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -148,7 +146,7 @@ public class Chant_Feralness extends Chant
 				{
 					final Ability A=mob.fetchAbility("Druid_ShapeShift");
 					if(A!=null)
-						A.invoke(mob,new Vector(),null,false,asLevel);
+						A.invoke(mob,new Vector<String>(),null,false,asLevel);
 				}
 				if(!Druid_ShapeShift.isShapeShifted(mob))
 				{

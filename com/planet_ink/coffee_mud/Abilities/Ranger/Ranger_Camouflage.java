@@ -132,7 +132,7 @@ public class Ranger_Camouflage extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=super.getAnyTarget(mob, commands, givenTarget, new Filterer(){
 			@Override

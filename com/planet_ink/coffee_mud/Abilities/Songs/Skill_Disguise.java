@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Skill_Disguise extends BardSkill
 {
 	@Override public String ID() { return "Skill_Disguise"; }
@@ -178,7 +178,7 @@ public class Skill_Disguise extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!ID().equals("Skill_Disguise"))
 			return super.invoke(mob,commands,givenTarget,auto,asLevel);
@@ -199,7 +199,7 @@ public class Skill_Disguise extends BardSkill
 			mob.tell(L("You remove your disguise."));
 			return true;
 		}
-		final String what=(String)commands.firstElement();
+		final String what=commands.get(0);
 		int which=-1;
 		for(int i=0;i<whats.length;i++)
 			if(whats[i].startsWith(what.toUpperCase()))
@@ -216,7 +216,7 @@ public class Skill_Disguise extends BardSkill
 			mob.tell(L("You must have @x1 levels in this skill to use that disguise.",""+levels[which]));
 			return false;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 		if(commands.size()==0)
 		{
 			mob.tell(L("Disguise @x1 in what way?  Be more specific.",whats[which].toLowerCase()));

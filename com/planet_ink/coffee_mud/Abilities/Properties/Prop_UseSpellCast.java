@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -34,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Prop_UseSpellCast extends Prop_SpellAdder
 {
 	@Override
@@ -73,7 +71,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 			{
 				final String t=A.text();
 				A=(Ability)A.copyOf();
-				Vector V2=new Vector();
+				Vector<String> V2=new Vector<String>();
 				if(t.length()>0)
 				{
 					final int x=t.indexOf('/');

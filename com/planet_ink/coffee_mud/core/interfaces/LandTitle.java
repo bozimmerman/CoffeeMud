@@ -38,7 +38,6 @@ import java.util.List;
  * for sale, or implemented as Items representing the sellable title.
  * @author Bo Zimmerman
  */
-@SuppressWarnings("rawtypes")
 public interface LandTitle extends PrivateProperty
 {
 	/**
@@ -58,7 +57,7 @@ public interface LandTitle extends PrivateProperty
 	 * @param optPlayerList - null, or a vector of player names for quick confirms
 	 * @see LandTitle#updateTitle()
 	 */
-	public void updateLot(List optPlayerList);
+	public void updateLot(List<String> optPlayerList);
 	/**
 	 * Simply resaves the rooms represented by this title to reflect change
 	 * in ownership or price.  The state of the rooms is not inspected or

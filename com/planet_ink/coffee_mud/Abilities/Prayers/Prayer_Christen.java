@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -35,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_Christen extends Prayer
 {
 	@Override public String ID() { return "Prayer_Christen"; }
@@ -60,7 +58,7 @@ public class Prayer_Christen extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
 		{
@@ -72,8 +70,8 @@ public class Prayer_Christen extends Prayer
 			mob.tell(L("Christen whom what?"));
 			return false;
 		}
-		String name=((String)commands.lastElement()).trim();
-		commands.removeElementAt(commands.size()-1);
+		String name=(commands.get(commands.size()-1)).trim();
+		commands.remove(commands.size()-1);
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
 			return false;

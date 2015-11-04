@@ -36,7 +36,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "Armorsmithing"; }
@@ -101,7 +101,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	}
 
 	@Override
-	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
@@ -226,13 +226,13 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
 	
 	@Override
-	public boolean autoGenInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	public boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -247,7 +247,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		}
 		if((!auto)
 		&&(commands.size()>0)
-		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+		&&((commands.get(0)).equalsIgnoreCase("bundle")))
 		{
 			bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -255,7 +255,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		final String str=(String)commands.elementAt(0);
+		final String str=commands.get(0);
 		String startStr=null;
 		bundling=false;
 		int duration=4;
@@ -309,7 +309,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			return true;
 		}
 		else
-		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		if(((commands.get(0))).equalsIgnoreCase("learn"))
 		{
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
@@ -325,7 +325,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			final Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null)
 				return false;
-			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob, buildingI,false))
 				return false;
@@ -345,7 +345,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			final Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null)
 				return false;
-			final Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(buildingI==null)
 				return false;
@@ -382,10 +382,10 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			if(fire==null)
 				return false;
 			int amount=-1;
-			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
+			if((commands.size()>1)&&(CMath.isNumber(commands.get(commands.size()-1))))
 			{
-				amount=CMath.s_int((String)commands.lastElement());
-				commands.removeElementAt(commands.size()-1);
+				amount=CMath.s_int(commands.get(commands.size()-1));
+				commands.remove(commands.size()-1);
 			}
 
 			final String recipeName=CMParms.combine(commands,0);

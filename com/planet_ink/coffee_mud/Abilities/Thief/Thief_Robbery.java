@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Thief_Robbery extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Robbery"; }
@@ -108,7 +107,7 @@ public class Thief_Robbery extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -121,7 +120,7 @@ public class Thief_Robbery extends ThiefSkill
 			return false;
 		}
 
-		final String itemToSteal=(String)commands.elementAt(0);
+		final String itemToSteal=commands.get(0);
 
 		MOB target=null;
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))

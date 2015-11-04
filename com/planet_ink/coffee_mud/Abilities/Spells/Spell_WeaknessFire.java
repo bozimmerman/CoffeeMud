@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_WeaknessFire extends Spell
 {
 	@Override public String ID() { return "Spell_WeaknessFire"; }
@@ -129,7 +129,7 @@ public class Spell_WeaknessFire extends Spell
 		affectedStats.setStat(CharStats.STAT_SAVE_FIRE,affectedStats.getStat(CharStats.STAT_SAVE_FIRE)-100);
 	}
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)

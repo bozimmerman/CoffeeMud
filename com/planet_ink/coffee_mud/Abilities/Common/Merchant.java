@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -477,7 +476,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -491,8 +490,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				mob.location().send(mob,msg);
 			return true;
 		}
-		if(((String)commands.firstElement()).equalsIgnoreCase("remove")
-		||((String)commands.firstElement()).equalsIgnoreCase("delete"))
+		if((commands.get(0)).equalsIgnoreCase("remove")
+		||(commands.get(0)).equalsIgnoreCase("delete"))
 		{
 			if(commands.size()==1)
 			{
@@ -524,12 +523,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		double val=-1;
 		if(commands.size()>1)
 		{
-			final String s=(String)commands.lastElement();
+			final String s=commands.get(commands.size()-1);
 			if(CMath.isInteger(s))
 			{
 				val=CMath.s_int( s );
 				if(val>0)
-					commands.removeElement(s);
+					commands.remove(s);
 			}
 			else
 			{
@@ -542,7 +541,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					{
 						val=CMath.mul(numberCoins,denom);
 						if(val>0)
-							commands.removeElement(s);
+							commands.remove(s);
 					}
 				}
 			}
@@ -550,7 +549,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		String itemName=CMParms.combine(commands,0);
 		final Vector V=new Vector();
-		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(itemName.toUpperCase().startsWith("ALL.")){ allFlag=true; itemName="ALL "+itemName.substring(4);}
 		if(itemName.toUpperCase().endsWith(".ALL")){ allFlag=true; itemName="ALL "+itemName.substring(0,itemName.length()-4);}
 		int addendum=1;

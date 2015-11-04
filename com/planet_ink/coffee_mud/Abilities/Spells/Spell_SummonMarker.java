@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_SummonMarker extends Spell
 {
 	@Override public String ID() { return "Spell_SummonMarker"; }
@@ -54,14 +53,15 @@ public class Spell_SummonMarker extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		try
 		{
-			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
+				{
 					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
@@ -73,6 +73,7 @@ public class Spell_SummonMarker extends Spell
 							break;
 						}
 					}
+				}
 			}
 		}catch(final NoSuchElementException nse){}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

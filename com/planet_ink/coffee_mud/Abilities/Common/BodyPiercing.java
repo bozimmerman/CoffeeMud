@@ -86,7 +86,7 @@ public class BodyPiercing extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -95,15 +95,15 @@ public class BodyPiercing extends CommonSkill
 			commonTell(mob,L("You must specify remove and/or whom you want to pierce, and what body part to pierce."));
 			return false;
 		}
-		String name=(String)commands.firstElement();
+		String name=commands.get(0);
 		String part=CMParms.combine(commands,1);
 		String command="";
 		if(commands.size()>2)
 		{
-			if(((String)commands.firstElement()).equalsIgnoreCase("REMOVE"))
+			if((commands.get(0)).equalsIgnoreCase("REMOVE"))
 			{
-				command=((String)commands.firstElement()).toUpperCase();
-				name=(String)commands.elementAt(1);
+				command=(commands.get(0)).toUpperCase();
+				name=commands.get(1);
 				part=CMParms.combine(commands,2);
 			}
 		}

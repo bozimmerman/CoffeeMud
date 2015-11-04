@@ -36,7 +36,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Alchemy"; }
@@ -85,7 +85,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
@@ -197,13 +197,13 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(1));
 	}
 	
 	@Override
-	public boolean autoGenInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	public boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(autoGenerate>0)
 		{
@@ -233,8 +233,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				ListingLibrary.ColFixer.fixColWidth(25,mob.session()),
 			};
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		final String pos=(String)commands.lastElement();
-		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("list"))
+		final String pos=commands.get(commands.size()-1);
+		if(((commands.get(0))).equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

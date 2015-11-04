@@ -176,16 +176,16 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
 	
 	@Override
-	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+	public boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
-		final Vector originalCommands=(Vector)commands.clone();
+		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands))
 			return true;
 
@@ -198,7 +198,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		}
 		if((!auto)
 		&&(commands.size()>0)
-		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+		&&((commands.get(0)).equalsIgnoreCase("bundle")))
 		{
 			bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -206,7 +206,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		final String str=(String)commands.elementAt(0);
+		final String str=commands.get(0);
 		String startStr=null;
 		int duration=4;
 		bundling=false;
@@ -242,7 +242,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return true;
 		}
 		else
-		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		if(((commands.get(0))).equalsIgnoreCase("learn"))
 		{
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
@@ -278,19 +278,19 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			messedUp=false;
 			aborted=false;
 			String statue=null;
-			if((commands.size()>1)&&((String)commands.lastElement()).startsWith("STATUE="))
+			if((commands.size()>1)&&(commands.get(commands.size()-1)).startsWith("STATUE="))
 			{
-				statue=(((String)commands.lastElement()).substring(7)).trim();
+				statue=((commands.get(commands.size()-1)).substring(7)).trim();
 				if(statue.length()==0)
 					statue=null;
 				else
-					commands.removeElementAt(commands.size()-1);
+					commands.remove(commands.size()-1);
 			}
 			int amount=-1;
-			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
+			if((commands.size()>1)&&(CMath.isNumber(commands.get(commands.size()-1))))
 			{
-				amount=CMath.s_int((String)commands.lastElement());
-				commands.removeElementAt(commands.size()-1);
+				amount=CMath.s_int(commands.get(commands.size()-1));
+				commands.remove(commands.size()-1);
 			}
 			String recipeName=CMParms.combine(commands,0);
 			String rest="";
@@ -298,10 +298,10 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 			if(matches.size()==0)
 			{
-				matches=matchingRecipeNames(recipes,(String)commands.firstElement(),true);
+				matches=matchingRecipeNames(recipes,commands.get(0),true);
 				if(matches.size()>0)
 				{
-					recipeName=(String)commands.firstElement();
+					recipeName=commands.get(0);
 					rest=CMParms.combine(commands,1);
 				}
 			}
@@ -393,7 +393,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 							final String of=this.input;
 							if((of.trim().length()==0)||(of.indexOf('<')>=0))
 								return;
-							final Vector newCommands=(Vector)originalCommands.clone();
+							final Vector<String> newCommands=new XVector<String>(originalCommands);
 							newCommands.add("STATUE="+of);
 							me.invoke(mob, newCommands, target, auto, asLevel);
 						}

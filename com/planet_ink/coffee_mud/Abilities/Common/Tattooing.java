@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Tattooing extends CommonSkill
 {
 	@Override public String ID() { return "Tattooing"; }
@@ -86,20 +85,20 @@ public class Tattooing extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<3)
 		{
 			commonTell(mob,L("You must specify whom you want to tattoo, what body part to tattoo, and what the tattoo looks like. Use 'REMOVE' as the description to remove a tattoo."));
 			return false;
 		}
-		final String whom=(String)commands.firstElement();
-		commands.removeElementAt(0);
-		final String part=(String)commands.firstElement();
-		commands.removeElementAt(0);
+		final String whom=commands.get(0);
+		commands.remove(0);
+		final String part=commands.get(0);
+		commands.remove(0);
 		final String message=CMParms.combine(commands,0);
 		commands.clear();
-		commands.addElement(whom);
+		commands.add(whom);
 
 		int partNum=-1;
 		final StringBuffer allParts=new StringBuffer("");

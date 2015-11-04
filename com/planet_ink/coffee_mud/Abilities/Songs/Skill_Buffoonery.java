@@ -123,7 +123,7 @@ public class Skill_Buffoonery extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -131,7 +131,7 @@ public class Skill_Buffoonery extends BardSkill
 			{
 				final String parm=correctItem(mob);
 				if(parm!=null)
-					commands.addElement(parm);
+					commands.add(parm);
 			}
 			if(commands.size()<2)
 			{
@@ -139,10 +139,10 @@ public class Skill_Buffoonery extends BardSkill
 				return false;
 			}
 		}
-		final Item I=mob.findItem(null,(String)commands.lastElement());
+		final Item I=mob.findItem(null,commands.get(commands.size()-1));
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
-			mob.tell(L("You don't seem to have '@x1'.",((String)commands.lastElement())));
+			mob.tell(L("You don't seem to have '@x1'.",(commands.get(commands.size()-1))));
 			return false;
 		}
 		if(((I instanceof Armor)&&(I.basePhyStats().armor()>1))
@@ -151,7 +151,7 @@ public class Skill_Buffoonery extends BardSkill
 			mob.tell(L("@x1 is not buffoonish enough!",I.name(mob)));
 			return false;
 		}
-		commands.removeElementAt(commands.size()-1);
+		commands.remove(commands.size()-1);
 
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)

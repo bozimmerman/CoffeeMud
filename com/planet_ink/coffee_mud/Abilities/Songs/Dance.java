@@ -315,7 +315,7 @@ public class Dance extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -207,7 +207,7 @@ public class Skill_Track extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		tickStatus=Tickable.STATUS_MISC6;
 		if((!CMLib.flags().aliveAwakeMobile(mob,false))||(mob.location()==null)||(!CMLib.flags().isInTheGame(mob,true)))
@@ -245,27 +245,27 @@ public class Skill_Track extends StdSkill
 		boolean allowAir=true;
 		boolean allowWater=true;
 		if((commands.size()>1)
-		&&(((String)commands.lastElement()).toUpperCase().startsWith("RADIUS="))
-		&&(CMath.isInteger(((String)commands.lastElement()).substring(7))))
+		&&((commands.get(commands.size()-1)).toUpperCase().startsWith("RADIUS="))
+		&&(CMath.isInteger((commands.get(commands.size()-1)).substring(7))))
 		{
-			radius=CMath.s_int(((String)commands.lastElement()).substring(7));
-			commands.removeElementAt(commands.size()-1);
+			radius=CMath.s_int((commands.get(commands.size()-1)).substring(7));
+			commands.remove(commands.size()-1);
 		}
-		if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("LANDONLY")))
+		if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("LANDONLY")))
 		{
 			allowAir=false;
 			allowWater=false;
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 		}
-		if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("NOAIR")))
+		if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("NOAIR")))
 		{
 			allowAir=false;
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 		}
-		if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("NOWATER")))
+		if((commands.size()>1)&&((commands.get(commands.size()-1)).equalsIgnoreCase("NOWATER")))
 		{
 			allowWater=false;
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 		}
 
 		final String mobName=CMParms.combine(commands,0);

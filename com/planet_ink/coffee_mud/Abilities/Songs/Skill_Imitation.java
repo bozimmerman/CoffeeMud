@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Skill_Imitation extends BardSkill
 {
 	@Override public String ID() { return "Skill_Imitation"; }
@@ -90,16 +89,16 @@ public class Skill_Imitation extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;
 		if(commands.size()>1)
 		{
-			target=mob.location().fetchFromRoomFavorMOBs(null,(String)commands.lastElement());
+			target=mob.location().fetchFromRoomFavorMOBs(null,commands.get(commands.size()-1));
 			if(target==null)
-				target=mob.findItem(null,(String)commands.lastElement());
+				target=mob.findItem(null,commands.get(commands.size()-1));
 			if(target!=null)
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 		}
 		final String cmd=(commands.size()>0)?CMParms.combine(commands,0).toUpperCase():"";
 		final StringBuffer str=new StringBuffer("");

@@ -47,7 +47,7 @@ public class AnimalTrading extends CommonSkill
 	protected Vector recentlyTraded=new Vector();
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -55,7 +55,7 @@ public class AnimalTrading extends CommonSkill
 		Environmental taming=null;
 		Item cage=null;
 
-		commands.insertElementAt("SELL",0);
+		commands.add(0,"SELL");
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell what to whom?");
 		if(shopkeeper==null)
 			return false;
@@ -108,7 +108,7 @@ public class AnimalTrading extends CommonSkill
 			}
 			if(commands.size()>0)
 			{
-				final String last=(String)commands.lastElement();
+				final String last=commands.get(commands.size()-1);
 				final Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,last,Wearable.FILTER_ANY);
 				if((E!=null)
 				&&(E instanceof Item)
@@ -116,7 +116,7 @@ public class AnimalTrading extends CommonSkill
 				&&((((Container)E).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
 				{
 					cage=(Item)E;
-					commands.removeElement(last);
+					commands.remove(last);
 				}
 			}
 			if(cage==null)

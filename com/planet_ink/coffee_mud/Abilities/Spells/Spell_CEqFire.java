@@ -37,7 +37,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("rawtypes")
+
 public class Spell_CEqFire extends Spell_BaseClanEq {
 @Override public String ID() { return "Spell_CEqFire"; }
 private final static String localizedName = CMLib.lang().L("ClanEnchant Fire");
@@ -45,7 +45,7 @@ private final static String localizedName = CMLib.lang().L("ClanEnchant Fire");
 @Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
   @Override
-public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
   {
 	type="Fire";
 	// All the work is done by the base model

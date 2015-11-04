@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_Delude extends Spell
 {
 	@Override public String ID() { return "Spell_Delude"; }
@@ -68,7 +67,7 @@ public class Spell_Delude extends Spell
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -109,7 +108,7 @@ public class Spell_Delude extends Spell
 							which=1;
 						else
 							which=2;
-						Enumeration e;
+						Enumeration<Faction.FRange> e;
 						switch(which)
 						{
 							case 1:
@@ -119,7 +118,7 @@ public class Spell_Delude extends Spell
 								if(e!=null)
 								for(;e.hasMoreElements();)
 								{
-									final Faction.FRange R=(Faction.FRange)e.nextElement();
+									final Faction.FRange R=e.nextElement();
 									if(R.alignEquiv()==Faction.Align.GOOD)
 									{
 										newAlign = R.random();
@@ -136,7 +135,7 @@ public class Spell_Delude extends Spell
 								if(e!=null)
 								for(;e.hasMoreElements();)
 								{
-									final Faction.FRange R=(Faction.FRange)e.nextElement();
+									final Faction.FRange R=e.nextElement();
 									if(R.alignEquiv()==Faction.Align.EVIL)
 									{
 										newAlign = R.random();

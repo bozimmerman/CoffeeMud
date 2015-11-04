@@ -702,13 +702,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
 	
 	@Override
-	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+	public boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
@@ -729,7 +729,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			finalAmount=1;
 			List<String> finalRecipe=null;
 			String recipeName=null;
-			if((commands.size()>0)&&(commands.firstElement() instanceof String))
+			if((commands.size()>0))
 				recipeName=CMParms.combine(commands,0);
 			else
 			{
@@ -773,8 +773,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		final int colWidth=ListingLibrary.ColFixer.fixColWidth(20,mob.session());
 		final int lineWidth=ListingLibrary.ColFixer.fixColWidth(78,mob.session());
 		if((commands.size()>0)
-		&&(commands.firstElement() instanceof String)
-		&&((String)commands.firstElement()).equalsIgnoreCase("list"))
+		
+		&&(commands.get(0)).equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;

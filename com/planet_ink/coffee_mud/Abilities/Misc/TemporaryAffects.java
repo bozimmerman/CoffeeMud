@@ -291,20 +291,20 @@ public class TemporaryAffects extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<3)
 		{
 			mob.tell(L("Specify a target, a property, number of ticks, and (optionally) some misc text!"));
 			return false;
 		}
-		final Vector V=new XVector(commands.firstElement());
+		final Vector V=new XVector(commands.get(0));
 		final Physical target=getAnyTarget(mob,V,givenTarget, Wearable.FILTER_ANY);
 		if(target==null)
 			return false;
-		commands.removeElementAt(0);
+		commands.remove(0);
 
-		final String abilityStr = (String)commands.firstElement();
+		final String abilityStr = commands.get(0);
 		CMObject A=CMClass.getAbility(abilityStr);
 		if(A==null)
 			A=CMClass.getBehavior(abilityStr);
@@ -317,7 +317,7 @@ public class TemporaryAffects extends StdAbility
 			mob.tell(L("No such ability or behavior as @x1!",abilityStr));
 			return false;
 		}
-		final String numTicks=((String)commands.elementAt(1)).trim();
+		final String numTicks=commands.get(1).trim();
 		if((!CMath.isInteger(numTicks)) ||(CMath.s_int(numTicks)<=0))
 		{
 			mob.tell(L("'@x1' is not a number of ticks!",numTicks));

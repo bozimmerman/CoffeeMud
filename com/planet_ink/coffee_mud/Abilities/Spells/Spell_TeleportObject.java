@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_TeleportObject extends Spell
 {
 	@Override public String ID() { return "Spell_TeleportObject"; }
@@ -47,15 +46,15 @@ public class Spell_TeleportObject extends Spell
 	//TODO: prevents Vector -> List<String>
 	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
+		if((auto||mob.isMonster())&&((commands.size()<1)||((commands.get(0)).equals(mob.name()))))
 		{
 			commands.clear();
 			if(mob.numItems()>0)
-				commands.addElement(mob.getRandomItem());
-			commands.addElement(CMLib.map().getRandomArea().Name());
+				commands.add(mob.getRandomItem().Name());
+			commands.add(CMLib.map().getRandomArea().Name());
 		}
 		final Room oldRoom=mob.location();
 		if(commands.size()<2)
@@ -63,7 +62,7 @@ public class Spell_TeleportObject extends Spell
 			mob.tell(L("Teleport what object to what place or person?"));
 			return false;
 		}
-		final String objectName=(String)commands.firstElement();
+		final String objectName=commands.get(0);
 		final Item target=mob.findItem(null,objectName);
 		if(target==null)
 		{
@@ -78,7 +77,7 @@ public class Spell_TeleportObject extends Spell
 		String searchWhat=null;
 		if(commands.size()>2)
 		{
-			final String s=(String)commands.elementAt(1);
+			final String s=commands.get(1);
 			if(s.equalsIgnoreCase("room"))
 				searchWhat="R";
 			if(s.equalsIgnoreCase("area"))
@@ -96,7 +95,7 @@ public class Spell_TeleportObject extends Spell
 			if(s.equalsIgnoreCase("object"))
 				searchWhat="I";
 			if(searchWhat!=null)
-				commands.removeElementAt(1);
+				commands.remove(1);
 		}
 		if(searchWhat==null)
 			searchWhat="ERIPM";

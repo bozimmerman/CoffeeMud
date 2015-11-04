@@ -46,7 +46,7 @@ public class Thief_Arsonry extends ThiefSkill
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{

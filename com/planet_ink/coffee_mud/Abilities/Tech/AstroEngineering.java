@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class AstroEngineering extends TechSkill
 {
 	@Override public String ID() { return "AstroEngineering"; }
@@ -261,7 +261,7 @@ public class AstroEngineering extends TechSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -275,67 +275,64 @@ public class AstroEngineering extends TechSkill
 		targetRoom = mob.location();
 		op=Operation.REPAIR;
 		int minTicks=8;
-		if(commands.firstElement() instanceof String)
+		if("INSTALL".startsWith((commands.get(0)).toUpperCase()))
 		{
-			if("INSTALL".startsWith(((String)commands.firstElement()).toUpperCase()))
+			op=Operation.INSTALL;
+			commands.remove(0);
+			if(givenTarget instanceof Item)
 			{
-				op=Operation.INSTALL;
-				commands.remove(0);
-				if(givenTarget instanceof Item)
+				targetPanel=(Item)givenTarget;
+			}
+			else
+			if(commands.size()<2)
+			{
+				mob.tell(L("You need to specify an item to install and a panel to install it into."));
+				return false;
+			}
+			else
+			{
+				final String panelName=commands.get(commands.size()-1);
+				targetPanel=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,panelName);
+				if(targetPanel==null)
 				{
-					targetPanel=(Item)givenTarget;
+					targetPanel=targetRoom.findItem(null,panelName);
 				}
-				else
-				if(commands.size()<2)
+				if((targetPanel==null)||(!CMLib.flags().canBeSeenBy(targetPanel,mob)))
 				{
-					mob.tell(L("You need to specify an item to install and a panel to install it into."));
+					mob.tell(L("You don't see '@x1' here.",panelName));
 					return false;
 				}
-				else
+				if(!(targetPanel instanceof Electronics.ElecPanel))
 				{
-					final String panelName=(String)commands.lastElement();
-					targetPanel=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,panelName);
-					if(targetPanel==null)
-					{
-						targetPanel=targetRoom.findItem(null,panelName);
-					}
-					if((targetPanel==null)||(!CMLib.flags().canBeSeenBy(targetPanel,mob)))
-					{
-						mob.tell(L("You don't see '@x1' here.",panelName));
-						return false;
-					}
-					if(!(targetPanel instanceof Electronics.ElecPanel))
-					{
-						mob.tell(L("That's not an electronics panel."));
-						return false;
-					}
-					commands.remove(commands.size()-1);
+					mob.tell(L("That's not an electronics panel."));
+					return false;
 				}
+				commands.remove(commands.size()-1);
 			}
-			else
-			if("REPAIR".startsWith(((String)commands.firstElement()).toUpperCase()))
-			{
-				op=Operation.REPAIR;
-				commands.remove(0);
-			}
-			else
-			if("ENHANCE".startsWith(((String)commands.firstElement()).toUpperCase()))
-			{
-				op=Operation.ENHANCE;
-				final String[] verbs=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_VERBS);
-				final String[] adjs1=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_ADJ1);
-				final String[] adjs2=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_ADJ2);
-				final String[] adjs12=new String[adjs1.length+adjs2.length];
-				System.arraycopy(adjs1, 0, adjs12, 0, adjs1.length);
-				System.arraycopy(adjs2, 0, adjs12, adjs1.length, adjs2.length);
-				final String[] nouns=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_NOUN);
-				altverb=verbs[CMLib.dice().roll(1, verbs.length, -1)].trim()+" "
-						+adjs12[CMLib.dice().roll(1, adjs12.length, -1)].trim()+" "
-						+adjs2[CMLib.dice().roll(1, adjs2.length, -1)].trim()+" "
-						+nouns[CMLib.dice().roll(1, nouns.length, -1)].trim()
-						;
-				commands.remove(0);
-			}
+		}
+		else
+		if("REPAIR".startsWith((commands.get(0)).toUpperCase()))
+		{
+			op=Operation.REPAIR;
+			commands.remove(0);
+		}
+		else
+		if("ENHANCE".startsWith((commands.get(0)).toUpperCase()))
+		{
+			op=Operation.ENHANCE;
+			final String[] verbs=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_VERBS);
+			final String[] adjs1=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_ADJ1);
+			final String[] adjs2=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_ADJ2);
+			final String[] adjs12=new String[adjs1.length+adjs2.length];
+			System.arraycopy(adjs1, 0, adjs12, 0, adjs1.length);
+			System.arraycopy(adjs2, 0, adjs12, adjs1.length, adjs2.length);
+			final String[] nouns=CMProps.getListFileStringList(CMProps.ListFile.TECH_BABBLE_NOUN);
+			altverb=verbs[CMLib.dice().roll(1, verbs.length, -1)].trim()+" "
+					+adjs12[CMLib.dice().roll(1, adjs12.length, -1)].trim()+" "
+					+adjs2[CMLib.dice().roll(1, adjs2.length, -1)].trim()+" "
+					+nouns[CMLib.dice().roll(1, nouns.length, -1)].trim()
+					;
+			commands.remove(0);
 		}
 		final String itemName=CMParms.combine(commands,0);
 		if(targetItem == null)

@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 
@@ -36,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_Divorce extends Prayer
 {
 	@Override public String ID() { return "Prayer_Divorce"; }
@@ -47,7 +45,7 @@ public class Prayer_Divorce extends Prayer
 	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -91,9 +89,9 @@ public class Prayer_Divorce extends Prayer
 				target.setLiegeID("");
 				try
 				{
-					for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 					{
-						final Room R=(Room)e.nextElement();
+						final Room R=e.nextElement();
 						final LandTitle T=CMLib.law().getLandTitle(R);
 						if((T!=null)&&(T.getOwnerName().equals(maleName)))
 						{

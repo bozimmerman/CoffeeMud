@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Song_Nothing extends Song
 {
 	@Override public String ID() { return "Song_Nothing"; }
@@ -50,7 +50,7 @@ public class Song_Nothing extends Song
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean foundOne=false;
 		for(int a=0;a<mob.numEffects();a++)

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_GroveWalk extends Chant
 {
 	@Override public String ID() { return "Chant_GroveWalk"; }
@@ -45,7 +45,7 @@ public class Chant_GroveWalk extends Chant
 	@Override protected int canTargetCode(){return 0;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Archon_Stinkify extends ArchonSkill
 {
 	boolean doneTicking=false;
@@ -50,7 +50,7 @@ public class Archon_Stinkify extends ArchonSkill
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,true);
 		if(target==null)

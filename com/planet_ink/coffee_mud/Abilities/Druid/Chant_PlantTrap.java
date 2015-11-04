@@ -236,9 +236,9 @@ public class Chant_PlantTrap extends Chant implements Trap
 		return super.castingQuality(mob,target);
 	}
 
-	@SuppressWarnings("rawtypes")
+	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room target=mob.location();
 		if(target==null)

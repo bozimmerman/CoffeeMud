@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Prop_RoomsForSale extends Prop_RoomForSale
 {
 	@Override public String ID() { return "Prop_RoomsForSale"; }
@@ -135,7 +134,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 
 	// update lot, since its called by the savethread, ONLY worries about itself
 	@Override
-	public void updateLot(List optPlayerList)
+	public void updateLot(List<String> optPlayerList)
 	{
 		if(affected instanceof Room)
 		{

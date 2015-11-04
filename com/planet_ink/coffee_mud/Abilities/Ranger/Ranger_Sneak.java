@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -82,11 +81,11 @@ public class Ranger_Sneak extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0)
-			dir=(String)commands.lastElement();
+			dir=commands.get(commands.size()-1);
 		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(dirCode<0)
 		{

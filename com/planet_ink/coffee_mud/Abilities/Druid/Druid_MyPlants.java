@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_MyPlants extends StdAbility
 {
 	@Override public String ID() { return "Druid_MyPlants"; }
@@ -84,30 +82,33 @@ public class Druid_MyPlants extends StdAbility
 		return null;
 	}
 
-	public static Vector myAreaPlantRooms(MOB mob, Area A)
+	public static Vector<Room> myAreaPlantRooms(MOB mob, Area A)
 	{
-		final Vector V=new Vector();
+		final Vector<Room> V=new Vector<Room>();
 		try
 		{
 			if(A!=null)
-			for(final Enumeration r=A.getMetroMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				if((myPlant(R,mob,0)!=null)&&(!V.contains(R)))
 					V.addElement(R);
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 		return V;
 	}
 
-	public static Vector myPlantRooms(MOB mob)
+	public static Vector<Room> myPlantRooms(MOB mob)
 	{
-		final Vector V=new Vector();
+		final Vector<Room> V=new Vector<Room>();
 		try
 		{
-			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				if((myPlant(R,mob,0)!=null)&&(!V.contains(R)))
 					V.addElement(R);
 			}
@@ -117,7 +118,7 @@ public class Druid_MyPlants extends StdAbility
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -138,10 +139,10 @@ public class Druid_MyPlants extends StdAbility
 						ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
 						ListingLibrary.ColFixer.fixColWidth(40,mob.session())
 					};
-				final Vector V=myPlantRooms(mob);
+				final Vector<Room> V=myPlantRooms(mob);
 				for(int v=0;v<V.size();v++)
 				{
-					final Room R=(Room)V.elementAt(v);
+					final Room R=V.elementAt(v);
 					if(R!=null)
 					{
 						int i=0;

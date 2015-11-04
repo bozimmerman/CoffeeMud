@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -35,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_HolyDay extends Prayer
 {
 	@Override public String ID() { return "Prayer_HolyDay"; }
@@ -63,9 +61,9 @@ public class Prayer_HolyDay extends Prayer
 
 		if(canBeUninvoked())
 		{
-			for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
+			for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 			{
-				final Room R=(Room)e.nextElement();
+				final Room R=e.nextElement();
 				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The holy day has ended."));
 			}
 		}
@@ -136,7 +134,7 @@ public class Prayer_HolyDay extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Area target=mob.location().getArea();
 		if(target==null)
@@ -158,9 +156,9 @@ public class Prayer_HolyDay extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(final Enumeration e=target.getMetroMap();e.hasMoreElements();)
+				for(final Enumeration<Room> e=target.getMetroMap();e.hasMoreElements();)
 				{
-					final Room R=(Room)e.nextElement();
+					final Room R=e.nextElement();
 					godName=mob.getWorshipCharID();
 					if((godName.length()==0)||(CMLib.map().getDeity(godName)==null))
 						godName="the gods";

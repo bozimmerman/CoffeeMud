@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Prayer_Sanctum extends Prayer
 {
 	@Override public String ID() { return "Prayer_Sanctum"; }
@@ -122,7 +122,7 @@ public class Prayer_Sanctum extends Prayer
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=mob.location();
 		if(target==null)

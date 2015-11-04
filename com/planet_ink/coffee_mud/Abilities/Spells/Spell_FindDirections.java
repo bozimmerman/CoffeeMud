@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -34,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_FindDirections extends Spell
 {
 	@Override public String ID() { return "Spell_FindDirections"; }
@@ -46,15 +44,15 @@ public class Spell_FindDirections extends Spell
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Room targetR=mob.location();
 		if(targetR==null)
 			return false;
 
 		if((commands.size()>0)
-		&&(commands.firstElement() instanceof String)
-		&&(((String)commands.firstElement()).toLowerCase().startsWith("direction")))
+		
+		&&((commands.get(0)).toLowerCase().startsWith("direction")))
 			commands.remove(0);
 		Area A=null;
 		if(commands.size()>0)

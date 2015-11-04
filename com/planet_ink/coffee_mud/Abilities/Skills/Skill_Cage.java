@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Skill_Cage extends StdSkill
 {
 	@Override public String ID() { return "Skill_Cage"; }
@@ -57,7 +56,7 @@ public class Skill_Cage extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item cage=null;
 		if(mob.location()!=null)
@@ -72,14 +71,14 @@ public class Skill_Cage extends StdSkill
 			}
 			if(commands.size()>0)
 			{
-				final String last=(String)commands.lastElement();
+				final String last=commands.get(commands.size()-1);
 				final Item I=mob.location().findItem(null,last);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
 				{
 					cage=I;
-					commands.removeElement(last);
+					commands.remove(last);
 				}
 			}
 		}

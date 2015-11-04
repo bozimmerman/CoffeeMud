@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_SummonSeed extends Chant
 {
 	@Override public String ID() { return "Chant_SummonSeed"; }
@@ -53,7 +52,7 @@ public class Chant_SummonSeed extends Chant
 	};
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final String s=CMParms.combine(commands,0);
 		final StringBuffer buf=new StringBuffer(L("Seed types known:\n\r"));

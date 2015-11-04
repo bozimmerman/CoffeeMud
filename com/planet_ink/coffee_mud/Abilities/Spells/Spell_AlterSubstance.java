@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_AlterSubstance extends Spell
 {
 	@Override public String ID() { return "Spell_AlterSubstance"; }
@@ -71,13 +70,13 @@ public class Spell_AlterSubstance extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String material="";
 		if(commands.size()>0)
 		{
-			material=(String)commands.lastElement();
-			commands.removeElement(material);
+			material=commands.get(commands.size()-1);
+			commands.remove(material);
 		}
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)

@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class LockSmith extends CraftingSkill
 {
 	@Override public String ID() { return "LockSmith"; }
@@ -193,7 +193,7 @@ public class LockSmith extends CraftingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -213,16 +213,16 @@ public class LockSmith extends CraftingSkill
 		messedUp=false;
 		int woodRequired=1;
 		boolean lboltlock=false;
-		if((commands.size()>0)&&("BOLTLOCK".startsWith(((String)commands.firstElement()).toUpperCase())))
+		if((commands.size()>0)&&("BOLTLOCK".startsWith((commands.get(0)).toUpperCase())))
 		{
 			lboltlock=true;
-			commands.removeElementAt(0);
+			commands.remove(0);
 		}
 		boolean ldelock=false;
-		if((commands.size()>0)&&("DELOCK".startsWith(((String)commands.firstElement()).toUpperCase())))
+		if((commands.size()>0)&&("DELOCK".startsWith((commands.get(0)).toUpperCase())))
 		{
 			ldelock=true;
-			commands.removeElementAt(0);
+			commands.remove(0);
 		}
 		final String recipeName=CMParms.combine(commands,0);
 		final int dir=Directions.getGoodDirectionCode(recipeName);

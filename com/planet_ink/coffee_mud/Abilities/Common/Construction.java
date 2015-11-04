@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Construction extends CraftingSkill
 {
 	@Override public String ID() { return "Construction"; }
@@ -216,9 +216,9 @@ public class Construction extends CraftingSkill
 		R.startItemRejuv();
 		try
 		{
-			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				final Room R2=(Room)r.nextElement();
+				final Room R2=r.nextElement();
 				for(int d=0;d<R2.rawDoors().length;d++)
 				{
 					if(R2.rawDoors()[d]==room)
@@ -353,9 +353,9 @@ public class Construction extends CraftingSkill
 							try
 							{
 								boolean rebuild=false;
-								for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+								for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 								{
-									final Room R2=(Room)r.nextElement();
+									final Room R2=r.nextElement();
 									rebuild=false;
 									for(int d=0;d<R2.rawDoors().length;d++)
 									{
@@ -371,9 +371,9 @@ public class Construction extends CraftingSkill
 							}catch(final NoSuchElementException e){}
 							try
 							{
-								for(final Enumeration e=CMLib.players().players();e.hasMoreElements();)
+								for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 								{
-									final MOB M=(MOB)e.nextElement();
+									final MOB M=e.nextElement();
 									if(M.getStartRoom()==room)
 										M.setStartRoom(R);
 									else
@@ -656,7 +656,7 @@ public class Construction extends CraftingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -665,7 +665,7 @@ public class Construction extends CraftingSkill
 			commonTell(mob,L("Construct what, where? Try Construct list."));
 			return false;
 		}
-		final String str=(String)commands.elementAt(0);
+		final String str=commands.get(0);
 		final int colWidth=ListingLibrary.ColFixer.fixColWidth(20,mob.session());
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
@@ -700,7 +700,7 @@ public class Construction extends CraftingSkill
 		{
 			messedUp=!proficiencyCheck(mob,0,auto);
 			duration=25;
-			commands.removeElementAt(0);
+			commands.remove(0);
 			final MOB targetMOB=getTarget(mob,commands,givenTarget,false,true);
 			if(targetMOB==null)
 				return false;
@@ -733,7 +733,7 @@ public class Construction extends CraftingSkill
 		}
 
 		boolean canBuild=CMLib.law().doesOwnThisLand(mob,mob.location());
-		final String firstWord=(String)commands.firstElement();
+		final String firstWord=commands.get(0);
 		for(int r=0;r<data.length;r++)
 		{
 			if((data[r][0].toUpperCase().startsWith(firstWord.toUpperCase()))
@@ -751,7 +751,7 @@ public class Construction extends CraftingSkill
 			commonTell(mob,L("You may not do construction projects here."));
 			return false;
 		}
-		final String dirName=(String)commands.lastElement();
+		final String dirName=commands.get(commands.size()-1);
 		dir=Directions.getGoodDirectionCode(dirName);
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("roof"))||(dirName.equalsIgnoreCase("ceiling")))
 		{
@@ -911,25 +911,25 @@ public class Construction extends CraftingSkill
 				commonTell(mob,L("You must specify an exit direction or room, followed by a description for it."));
 				return false;
 			}
-			if(Directions.getGoodDirectionCode((String)commands.elementAt(1))>=0)
+			if(Directions.getGoodDirectionCode(commands.get(1))>=0)
 			{
-				dir=Directions.getGoodDirectionCode((String)commands.elementAt(1));
+				dir=Directions.getGoodDirectionCode(commands.get(1));
 				if(mob.location().getExitInDir(dir)==null)
 				{
 					commonTell(mob,L("There is no exit @x1 to describe.",Directions.getInDirectionName(dir)));
 					return false;
 				}
 				workingOn=dir;
-				commands.removeElementAt(1);
+				commands.remove(1);
 			}
 			else
-			if(!((String)commands.elementAt(1)).equalsIgnoreCase("room"))
+			if(!commands.get(1).equalsIgnoreCase("room"))
 			{
-				commonTell(mob,L("'@x1' is neither the word room, nor an exit direction.",((String)commands.elementAt(1))));
+				commonTell(mob,L("'@x1' is neither the word room, nor an exit direction.",(commands.get(1))));
 				return false;
 			}
 			else
-				commands.removeElementAt(1);
+				commands.remove(1);
 
 			final String title=CMParms.combine(commands,1);
 			if(title.length()==0)

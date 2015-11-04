@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Dragonbreath extends StdAbility
 {
 	@Override public String ID() { return "Dragonbreath"; }
@@ -62,7 +62,7 @@ public class Dragonbreath extends StdAbility
 	};
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)

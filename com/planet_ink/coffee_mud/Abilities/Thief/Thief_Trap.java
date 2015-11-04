@@ -102,9 +102,9 @@ public class Thief_Trap extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
-	@SuppressWarnings("rawtypes")
+	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=null;
 		final List<Ability> traps=new ArrayList<Ability>();
@@ -175,12 +175,12 @@ public class Thief_Trap extends ThiefSkill
 			{
 				name=CMParms.combine(commands,1);
 				while(commands.size()>1)
-					commands.removeElementAt(commands.size()-1);
+					commands.remove(commands.size()-1);
 			}
 			else
 			{
-				name=(String)commands.lastElement();
-				commands.removeElementAt(commands.size()-1);
+				name=commands.get(commands.size()-1);
+				commands.remove(commands.size()-1);
 			}
 			for(int r=0;r<traps.size();r++)
 			{

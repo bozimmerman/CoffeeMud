@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_AcidArrow extends Spell
 {
 	@Override public String ID() { return "Spell_AcidArrow"; }
@@ -63,7 +63,7 @@ public class Spell_AcidArrow extends Spell
 		return super.tick(ticking,tickID);
 	}
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

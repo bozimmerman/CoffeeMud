@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_Portal extends Spell
 {
 	@Override public String ID() { return "Spell_Portal"; }
@@ -70,18 +69,18 @@ public class Spell_Portal extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		newRoom=null;
 		oldRoom=null;
 
-		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
+		if((auto||mob.isMonster())&&((commands.size()<1)||((commands.get(0)).equals(mob.name()))))
 		{
 			commands.clear();
 			if(text().trim().length()>0)
 				commands.add(text());
 			else
-				commands.addElement(CMLib.map().getRandomRoom().displayText());
+				commands.add(CMLib.map().getRandomRoom().displayText());
 		}
 		if(commands.size()<1)
 		{

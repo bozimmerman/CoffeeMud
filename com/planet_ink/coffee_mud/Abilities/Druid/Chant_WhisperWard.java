@@ -231,9 +231,9 @@ public class Chant_WhisperWard extends Chant implements Trap
 	}
 
 
-	@SuppressWarnings("rawtypes")
+	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<2)
@@ -241,7 +241,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 			mob.tell(L("You must specify:\n\r What object you want the spell cast on.\n\r AND Whether it is triggered by TOUCH, HOLD, WIELD, WEAR, or someone ENTERing the same room. "));
 			return false;
 		}
-		final String triggerStr=((String)commands.lastElement()).trim().toUpperCase();
+		final String triggerStr=(commands.get(commands.size()-1)).trim().toUpperCase();
 
 		if(triggerStr.startsWith("HOLD"))
 			myTrigger=CMMsg.TYP_HOLD;
@@ -271,7 +271,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",(commands.get(0))));
 			return false;
 		}
 		if(target instanceof MOB)

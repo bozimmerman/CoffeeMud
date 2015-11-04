@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -34,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_Palm extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Palm"; }
@@ -51,19 +49,19 @@ public class Thief_Palm extends ThiefSkill
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to palm something and fail(s)."));
 		else
 		{
-			if((commands.size()>0)&&(!((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
-				commands.addElement("UNOBTRUSIVELY");
+			if((commands.size()>0)&&(!(commands.get(commands.size()-1)).equalsIgnoreCase("UNOBTRUSIVELY")))
+				commands.add("UNOBTRUSIVELY");
 			try
 			{
 				final Command C=CMClass.getCommand("Get");
-				commands.insertElementAt("GET",0);
+				commands.add(0,"GET");
 				if(C!=null)
 					C.execute(mob,commands,0);
 			}

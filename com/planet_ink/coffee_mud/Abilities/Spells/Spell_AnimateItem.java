@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -44,7 +43,7 @@ public class Spell_AnimateItem extends Spell
 	@Override public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<2)
@@ -53,7 +52,7 @@ public class Spell_AnimateItem extends Spell
 			return false;
 		}
 		final Vector V=new Vector();
-		V.addElement(commands.elementAt(0));
+		V.addElement(commands.get(0));
 		final Item target=getTarget(mob,mob.location(),givenTarget,V,Wearable.FILTER_ANY);
 		if(target==null)
 			return false;

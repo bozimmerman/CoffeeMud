@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 {
 	@Override public String ID() { return "Prayer_Doomspout"; }
@@ -169,7 +169,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)

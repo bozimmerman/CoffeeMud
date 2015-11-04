@@ -225,7 +225,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, Vector commands, final Physical givenTarget, final boolean auto, final int asLevel)
+	public boolean invoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((!auto)
 		&&(((String)V(ID,V_CMSK)).length()>0)

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Trap_Popper extends StdTrap
 {
 	@Override
@@ -86,9 +86,9 @@ public class Trap_Popper extends StdTrap
 			{
 				super.spring(target);
 				final Area A=target.location().getArea();
-				for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
+				for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 				{
-					final Room R=(Room)e.nextElement();
+					final Room R=e.nextElement();
 					if(R!=target.location())
 						R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("You hear a loud **POP** coming from somewhere."));
 				}

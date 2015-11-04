@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_Extinguish extends Prayer
 {
 	@Override public String ID() { return "Prayer_Extinguish"; }
@@ -48,7 +47,7 @@ public class Prayer_Extinguish extends Prayer
 	@Override public long flags(){return Ability.FLAG_HOLY;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget, Wearable.FILTER_ANY);
 		if(target==null)

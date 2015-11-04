@@ -34,14 +34,14 @@ import java.util.Map.Entry;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "EnhancedCraftingSkill"; }
 	private final static String localizedName = CMLib.lang().L("Enhanced Crafting Skill");
 	@Override public String name() { return localizedName; }
 
-	public Hashtable parametersFields(){ return new Hashtable();}
+	public Hashtable<String,String> parametersFields(){ return new Hashtable<String,String>();}
 	@Override public String parametersFormat(){ return ""; }
 
 	protected int materialAdjustments=0;
@@ -365,14 +365,14 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return "Not implemented";
 	}
 
-	public PairVector<Integer,Integer> enhancedTypes(MOB mob, Vector commands)
+	public PairVector<Integer,Integer> enhancedTypes(MOB mob, List<String> commands)
 	{
 		String cmd=null;
 		PairVector<Integer,Integer> types=null;
 		materialAdjustments=0;
-		if((commands!=null)&&(commands.size()>0)&&(commands.firstElement() instanceof String))
+		if((commands!=null)&&(commands.size()>0))
 		{
-			cmd=(String)commands.firstElement();
+			cmd=commands.get(0);
 			if((!cmd.equalsIgnoreCase("list"))
 			&&(!cmd.equalsIgnoreCase("mend"))
 			&&(!cmd.equalsIgnoreCase("scan")))
@@ -406,14 +406,14 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 								{
 									if(cmd.equalsIgnoreCase(def.data[s]))
 									{
-										commands.removeElementAt(0);
+										commands.remove(0);
 										if(types==null)
 											types=new PairVector<Integer,Integer>();
 										if(!types.contains(Integer.valueOf(code)))
 										{
 											types.addElement(Integer.valueOf(code),Integer.valueOf(s));
 											if(commands.size()>0)
-												cmd=(String)commands.firstElement();
+												cmd=commands.get(0);
 											else
 												cmd="";
 											foundSomething=true;

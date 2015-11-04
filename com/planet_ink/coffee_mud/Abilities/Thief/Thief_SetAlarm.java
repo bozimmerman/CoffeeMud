@@ -245,9 +245,9 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		return true;
 	}
 
-	@SuppressWarnings("rawtypes")
+	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final String whatToalarm=CMParms.combine(commands,0);
 		Exit alarmThis=null;

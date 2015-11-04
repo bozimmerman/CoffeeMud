@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Bleeding extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Bleeding"; }
@@ -140,7 +140,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
 	{
 		if(target==null)
 			target=mob;

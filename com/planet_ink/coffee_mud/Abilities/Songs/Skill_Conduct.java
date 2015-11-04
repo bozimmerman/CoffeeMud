@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Skill_Conduct extends BardSkill
 {
 	@Override public String ID() { return "Skill_Conduct"; }
@@ -49,7 +49,7 @@ public class Skill_Conduct extends BardSkill
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Ability SYMPHONY=mob.fetchAbility("Play_Symphony");
 		if((!auto)&&(SYMPHONY==null))
@@ -103,7 +103,7 @@ public class Skill_Conduct extends BardSkill
 						{
 							follower.location().send(follower,msg2);
 							if(msg2.value()<=0)
-								SYMPHONY.invoke(follower,new Vector(),null,false,asLevel+(3*getXLEVELLevel(mob)));
+								SYMPHONY.invoke(follower,new Vector<String>(),null,false,asLevel+(3*getXLEVELLevel(mob)));
 						}
 					}
 				}

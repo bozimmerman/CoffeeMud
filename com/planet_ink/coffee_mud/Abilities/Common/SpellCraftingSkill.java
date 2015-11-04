@@ -17,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -37,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class SpellCraftingSkill extends CraftingSkill
 {
 	@Override public String ID() { return "SpellCraftingSkill"; }
@@ -45,10 +43,10 @@ public class SpellCraftingSkill extends CraftingSkill
 	@Override public String name() { return localizedName; }
 	public SpellCraftingSkill(){super();}
 
-	protected String getCraftableSpellName(Vector commands)
+	protected String getCraftableSpellName(List<String> commands)
 	{
 		String spellName=null;
-		if((commands.size()>0)&&(commands.firstElement() instanceof String))
+		if((commands.size()>0))
 			spellName=CMParms.combine(commands,0);
 		else
 		{
@@ -77,13 +75,13 @@ public class SpellCraftingSkill extends CraftingSkill
 		return spellFound;
 	}
 
-	protected Ability getCraftableSpellRecipeSpell(Vector commands)
+	protected Ability getCraftableSpellRecipeSpell(List<String> commands)
 	{
 		Ability theSpell=null;
 		final String spellName=getCraftableSpellName(commands);
 		if(spellName!=null)
 		{
-			theSpell=CMClass.getAbility((String)commands.firstElement());
+			theSpell=CMClass.getAbility(commands.get(0));
 			if(theSpell==null)
 			{
 				final List<String> spellFound=getCraftableSpellRow(spellName);
@@ -94,7 +92,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		return theSpell;
 	}
 
-	protected int getCraftableSpellLevel(Vector commands)
+	protected int getCraftableSpellLevel(List<String> commands)
 	{
 		Ability theSpell=null;
 		final String spellName=getCraftableSpellName(commands);
@@ -103,7 +101,7 @@ public class SpellCraftingSkill extends CraftingSkill
 			final List<String> spellFound=getCraftableSpellRow(spellName);
 			if(spellFound!=null)
 				return CMath.s_int(spellFound.get(RCP_LEVEL));
-			theSpell=CMClass.getAbility((String)commands.firstElement());
+			theSpell=CMClass.getAbility(commands.get(0));
 			if(theSpell!=null)
 				return CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());
 		}

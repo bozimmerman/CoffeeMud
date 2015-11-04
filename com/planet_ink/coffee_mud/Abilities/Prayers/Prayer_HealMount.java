@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_HealMount extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_HealMount"; }
@@ -69,7 +69,7 @@ public class Prayer_HealMount extends Prayer implements MendingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=(mob.riding() instanceof MOB)? (MOB)mob.riding() : null;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)&&(givenTarget instanceof Rideable))

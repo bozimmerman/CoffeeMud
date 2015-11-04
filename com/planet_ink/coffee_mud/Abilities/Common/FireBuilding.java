@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -114,7 +113,7 @@ public class FireBuilding extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -124,9 +123,9 @@ public class FireBuilding extends CommonSkill
 		{
 			if((!fireHere(mob.location()))
 			&&(resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).size()>0))
-				commands.addElement(((Environmental)resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).firstElement()).Name());
+				commands.add(((Environmental)resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).firstElement()).Name());
 			else
-				commands.addElement("fire");
+				commands.add("fire");
 		}
 
 		if(commands.size()==0)

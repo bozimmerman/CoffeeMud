@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Thief_PlantItem extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_PlantItem"; }
@@ -51,17 +51,17 @@ public class Thief_PlantItem extends ThiefSkill
 	@Override public void setAbilityCode(int newCode){code=newCode;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
 			mob.tell(L("What would you like to plant on whom?"));
 			return false;
 		}
-		final MOB target=mob.location().fetchInhabitant((String)commands.lastElement());
+		final MOB target=mob.location().fetchInhabitant(commands.get(commands.size()-1));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",(String)commands.lastElement()));
+			mob.tell(L("You don't see '@x1' here.",commands.get(commands.size()-1)));
 			return false;
 		}
 		if(target==mob)
@@ -69,7 +69,7 @@ public class Thief_PlantItem extends ThiefSkill
 			mob.tell(L("You cannot plant anything on yourself!"));
 			return false;
 		}
-		commands.removeElement(commands.lastElement());
+		commands.remove(commands.size()-1);
 
 		final Item item=super.getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(item==null)

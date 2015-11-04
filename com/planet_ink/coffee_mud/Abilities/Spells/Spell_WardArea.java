@@ -74,9 +74,8 @@ public class Spell_WardArea extends Spell implements Trap
 		return Ability.QUALITY_MALICIOUS;
 	}
 
-	private Ability		shooter		= null;
-	@SuppressWarnings("rawtypes")
-	protected Vector	parameters	= null;
+	private Ability			shooter		= null;
+	protected List<String>	parameters	= null;
 
 	@Override
 	public int classificationCode()
@@ -287,16 +286,15 @@ public class Spell_WardArea extends Spell implements Trap
 		return super.castingQuality(mob,target);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
 			mob.tell(L("You must specify what arcane spell to set, and any necessary parameters."));
 			return false;
 		}
-		commands.insertElementAt("CAST",0);
+		commands.add(0,"CAST");
 		shooter=CMLib.english().getToEvoke(mob,commands);
 		parameters=commands;
 		if((shooter==null)||((shooter.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL))

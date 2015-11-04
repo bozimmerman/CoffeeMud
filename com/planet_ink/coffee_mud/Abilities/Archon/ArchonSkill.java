@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class ArchonSkill extends StdAbility
 {
 	@Override public String ID() { return "ArchonSkill"; }
@@ -50,10 +50,12 @@ public class ArchonSkill extends StdAbility
 	public int classificationCode()
 	{ return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;	}
 
-	public MOB getTargetAnywhere(MOB mob, Vector commands, Environmental givenTarget, boolean playerOnly)
-	{ return getTargetAnywhere(mob,commands,givenTarget,false,false,playerOnly);	}
+	public MOB getTargetAnywhere(MOB mob, List<String> commands, Environmental givenTarget, boolean playerOnly)
+	{
+		return getTargetAnywhere(mob, commands, givenTarget, false, false, playerOnly);
+	}
 
-	public MOB getTargetAnywhere(MOB mob, Vector commands, Environmental givenTarget, boolean quiet, boolean alreadyAffOk, boolean playerOnly)
+	public MOB getTargetAnywhere(MOB mob, List<String> commands, Environmental givenTarget, boolean quiet, boolean alreadyAffOk, boolean playerOnly)
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget,true,alreadyAffOk);
 		if(target!=null)

@@ -45,7 +45,7 @@ public class Prayer_ChainStrike extends Prayer
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)

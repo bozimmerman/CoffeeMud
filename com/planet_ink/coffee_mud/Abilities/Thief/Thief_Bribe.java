@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -49,7 +48,7 @@ public class Thief_Bribe extends ThiefSkill
 	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL; }
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -57,12 +56,12 @@ public class Thief_Bribe extends ThiefSkill
 			return false;
 		}
 		final Vector V=new Vector();
-		V.addElement(commands.elementAt(0));
+		V.addElement(commands.get(0));
 		final MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null)
 			return false;
 
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		if((!target.mayIFight(mob))
 		||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3)
@@ -90,7 +89,7 @@ public class Thief_Bribe extends ThiefSkill
 		else
 		{
 			if(O instanceof Ability)
-				O=CMLib.english().getToEvoke(target,(Vector)commands.clone());
+				O=CMLib.english().getToEvoke(target,new XVector<String>(commands));
 			if(O instanceof Ability)
 			{
 				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
@@ -101,7 +100,7 @@ public class Thief_Bribe extends ThiefSkill
 			}
 		}
 
-		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
+		if(commands.get(0).toUpperCase().startsWith("FOL"))
 		{
 			mob.tell(L("You can't bribe someone to following you."));
 			return false;

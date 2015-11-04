@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
@@ -38,7 +37,7 @@ import java.io.ObjectOutputStream;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_Spellbinding extends Spell
 {
 	@Override public String ID() { return "Spell_Spellbinding"; }
@@ -169,7 +168,7 @@ public class Spell_Spellbinding extends Spell
 							if(msg.target()!=null)
 								A.invoke(msg.source(),CMParms.parse(msg.target().Name()),null,false,0);
 							else
-								A.invoke(msg.source(),new Vector(),null,false,0);
+								A.invoke(msg.source(),new Vector<String>(),null,false,0);
 							msg.source().curState().setMana(curMana);
 						}
 						if(canBeUninvoked())
@@ -184,7 +183,7 @@ public class Spell_Spellbinding extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -196,8 +195,8 @@ public class Spell_Spellbinding extends Spell
 			mob.tell(L("You must specify your trigger word, followed by a list of spells, seperated by spaces."));
 			return false;
 		}
-		final String key=(String)commands.elementAt(0);
-		commands.removeElementAt(0);
+		final String key=commands.get(0);
+		commands.remove(0);
 		final String combined=CMParms.combine(commands,0);
 		final DVector V=new DVector(2);
 		Ability A=mob.fetchAbility(combined);
@@ -215,13 +214,13 @@ public class Spell_Spellbinding extends Spell
 		else
 		for(int v=0;v<commands.size();v++)
 		{
-			A=mob.fetchAbility((String)commands.elementAt(v));
+			A=mob.fetchAbility(commands.get(v));
 			if((A==null)
 			||(A.ID().equals(ID()))
 			||((A.classificationCode()&ALL_ACODES)!=ACODE_SPELL)
 			||(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]>50))
 			{
-				mob.tell(L("You can't bind '@x1'.",((String)commands.elementAt(v))));
+				mob.tell(L("You can't bind '@x1'.",(commands.get(v))));
 				return false;
 			}
 			V.addElement(A.ID(),Integer.valueOf(A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));

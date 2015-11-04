@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Farming extends GatheringSkill
 {
 	@Override public String ID() { return "Farming"; }
@@ -146,14 +145,14 @@ public class Farming extends GatheringSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 		bundling=false;
 		if((!auto)
 		&&(commands.size()>0)
-		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+		&&((commands.get(0)).equalsIgnoreCase("bundle")))
 		{
 			bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -197,7 +196,7 @@ public class Farming extends GatheringSkill
 				if(plantable(mob,I2))
 				{
 					mine=I2;
-					commands.addElement(RawMaterial.CODES.NAME(I2.material()));
+					commands.add(RawMaterial.CODES.NAME(I2.material()));
 					break;
 				}
 			}
@@ -207,7 +206,7 @@ public class Farming extends GatheringSkill
 				final Item I2=mob.getItem(i);
 				if(plantable(mob,I2))
 				{
-					commands.addElement(RawMaterial.CODES.NAME(I2.material()));
+					commands.add(RawMaterial.CODES.NAME(I2.material()));
 					mine=(Item)I2.copyOf();
 					if(mob.location().findItem(null,mob.location().getContextName(I2))==null)
 						mob.location().addItem(mine,ItemPossessor.Expire.Resource);

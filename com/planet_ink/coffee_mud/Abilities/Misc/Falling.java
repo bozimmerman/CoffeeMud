@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Falling extends StdAbility
 {
 	@Override public String ID() { return "Falling"; }
@@ -313,7 +313,7 @@ public class Falling extends StdAbility
 			super.setAffectedOne(P);
 	}
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
 	{
 		if(!auto)
 			return false;

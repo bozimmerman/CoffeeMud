@@ -28,7 +28,7 @@ import java.util.*;
  * KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-@SuppressWarnings("rawtypes")
+
 public class Thief_Racketeer extends ThiefSkill
 {
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_CRIMINAL;}
@@ -80,7 +80,7 @@ public class Thief_Racketeer extends ThiefSkill
 	{
 		return true;
 	}
-	public Vector mobs=new Vector();
+	public Vector<MOB> mobs=new Vector<MOB>();
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -131,7 +131,7 @@ public class Thief_Racketeer extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{

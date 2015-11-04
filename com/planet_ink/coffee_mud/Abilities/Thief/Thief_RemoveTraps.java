@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Thief_RemoveTraps extends ThiefSkill
 {
 	@Override
@@ -94,12 +93,12 @@ public class Thief_RemoveTraps extends ThiefSkill
 	//TODO: prevents Vector -> List<String>
 	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		return invoke(mob, commands, givenTarget, auto, asLevel, false, new Vector<Trap>(0));
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, boolean quiet, List<Trap> saveTrapsHere)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, boolean quiet, List<Trap> saveTrapsHere)
 	{
 		final String whatTounlock=CMParms.combine(commands,0);
 		Physical unlockThis=null;

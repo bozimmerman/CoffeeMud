@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 
@@ -36,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Painting extends CommonSkill
 {
 	@Override public String ID() { return "Painting"; }
@@ -82,9 +81,9 @@ public class Painting extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
+	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final Vector originalCommands=(Vector)commands.clone();
+		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands))
 			return true;
 		if(commands.size()==0)
@@ -94,9 +93,9 @@ public class Painting extends CommonSkill
 		}
 		String paintingKeyWords=null;
 		String paintingDesc=null;
-		while((commands.size()>1)&&(commands.lastElement() instanceof String))
+		while(commands.size()>1)
 		{
-			final String last=((String)commands.lastElement());
+			final String last=(commands.get(commands.size()-1));
 			if(last.startsWith("PAINTINGKEYWORDS="))
 			{
 				paintingKeyWords=last.substring(17).trim();
@@ -228,9 +227,7 @@ public class Painting extends CommonSkill
 									{
 										if(this.input.equals("Y"))
 										{
-											@SuppressWarnings("unchecked")
-											final
-											Vector<String> newCommands=(Vector<String>)originalCommands.clone();
+											final Vector<String> newCommands=new XVector<String>(originalCommands);
 											newCommands.add("PAINTINGKEYWORDS="+name);
 											newCommands.add("PAINTINGDESC="+desc);
 											me.invoke(mob, newCommands, target, auto, asLevel);
@@ -280,9 +277,7 @@ public class Painting extends CommonSkill
 								final String desc=this.input.trim();
 								if(desc.length()==0)
 									return;
-								@SuppressWarnings("unchecked")
-								final
-								Vector<String> newCommands=(Vector<String>)originalCommands.clone();
+								final Vector<String> newCommands=new XVector<String>(originalCommands);
 								newCommands.add("PAINTINGKEYWORDS="+name);
 								newCommands.add("PAINTINGDESC="+desc);
 								me.invoke(mob, newCommands, target, auto, asLevel);

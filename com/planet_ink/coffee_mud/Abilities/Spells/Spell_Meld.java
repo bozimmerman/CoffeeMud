@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_Meld extends Spell
 {
 	@Override public String ID() { return "Spell_Meld"; }
@@ -79,7 +78,7 @@ public class Spell_Meld extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// add something to disable traps
 		//
@@ -88,10 +87,10 @@ public class Spell_Meld extends Spell
 			mob.tell(L("Meld what and what else together?"));
 			return false;
 		}
-		final Item itemOne=mob.findItem(null,(String)commands.elementAt(0));
+		final Item itemOne=mob.findItem(null,commands.get(0));
 		if((itemOne==null)||(!CMLib.flags().canBeSeenBy(itemOne,mob)))
 		{
-			mob.tell(L("You don't seem to have a '@x1'.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't seem to have a '@x1'.",(commands.get(0))));
 			return false;
 		}
 		final Item itemTwo=mob.findItem(null,CMParms.combine(commands,1));

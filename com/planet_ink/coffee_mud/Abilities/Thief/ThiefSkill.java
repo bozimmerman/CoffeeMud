@@ -46,7 +46,7 @@ public class ThiefSkill extends StdAbility
 	@Override protected int canTargetCode(){return CAN_MOBS;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -100,7 +100,7 @@ public class ThiefSkill extends StdAbility
 		return highestMOB;
 	}
 
-	public Physical getOpenable(MOB mob, Room room, Physical givenTarget, Vector commands, int[] dirCode, boolean failOnOpen)
+	public Physical getOpenable(MOB mob, Room room, Physical givenTarget, List<String> commands, int[] dirCode, boolean failOnOpen)
 	{
 		if((room==null)||(mob==null))
 			return null;

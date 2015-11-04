@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import java.util.Vector;
+import java.util.List;
 
 
 
@@ -35,7 +35,7 @@ import java.util.Vector;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Disease_Obesity extends Disease
 {
 	@Override public String ID() { return "Disease_Obesity"; }
@@ -198,7 +198,7 @@ public class Disease_Obesity extends Disease
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

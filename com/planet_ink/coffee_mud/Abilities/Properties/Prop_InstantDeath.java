@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Prop_InstantDeath extends Property
 {
 	@Override public String ID(){return "Prop_InstantDeath";}
@@ -155,9 +154,9 @@ public class Prop_InstantDeath extends Property
 		if(whoE instanceof Area)
 		{
 			final Set<MOB> allMobs=new HashSet<MOB>();
-			for(final Enumeration r=((Area)whoE).getMetroMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=((Area)whoE).getMetroMap();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				allMobs.addAll(getEveryoneHere(null,R));
 			}
 		}

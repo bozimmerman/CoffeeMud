@@ -19,8 +19,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Enumeration;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 
 /*
@@ -182,9 +182,9 @@ public class Prayer_MassGrave extends Prayer
 		return super.okMessage(host,msg);
 	}
 
-	@SuppressWarnings("rawtypes")
+	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

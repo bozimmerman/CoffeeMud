@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -183,13 +182,13 @@ public class Allergies extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String choice="";
 		if(givenTarget!=null)
 		{
-			if((commands.size()>0)&&(((String)commands.firstElement()).equals(givenTarget.name())))
-				commands.removeElementAt(0);
+			if((commands.size()>0)&&((commands.get(0)).equals(givenTarget.name())))
+				commands.remove(0);
 			choice=CMParms.combine(commands,0);
 			commands.clear();
 		}
@@ -198,7 +197,7 @@ public class Allergies extends StdAbility implements HealthCondition
 		{
 			choice=CMParms.combine(commands,1);
 			while(commands.size()>1)
-				commands.removeElementAt(1);
+				commands.remove(1);
 		}
 		final MOB target=getTarget(mob,commands,givenTarget);
 

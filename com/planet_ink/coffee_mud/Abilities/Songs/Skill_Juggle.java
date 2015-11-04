@@ -367,7 +367,7 @@ public class Skill_Juggle extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String whatToJuggle=(mob.isMonster()&&(givenTarget instanceof MOB))?"all":CMParms.combine(commands,0);
 		Skill_Juggle A=(Skill_Juggle)mob.fetchEffect("Skill_Juggle");
@@ -391,14 +391,14 @@ public class Skill_Juggle extends BardSkill
 
 		int maxToJuggle=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(CMath.s_int((String)commands.firstElement())>0))
+		&&(CMath.s_int(commands.get(0))>0))
 		{
-			maxToJuggle=CMath.s_int((String)commands.firstElement());
+			maxToJuggle=CMath.s_int(commands.get(0));
 			commands.set(0,"all");
 		}
 
 		final Vector V=new Vector();
-		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(whatToJuggle.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(4);}
 		if(whatToJuggle.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(0,whatToJuggle.length()-4);}
 		int addendum=1;

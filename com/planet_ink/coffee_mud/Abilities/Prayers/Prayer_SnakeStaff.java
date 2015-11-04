@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_SnakeStaff extends Prayer
 {
 	@Override public String ID() { return "Prayer_SnakeStaff"; }
@@ -129,7 +129,7 @@ public class Prayer_SnakeStaff extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=mob.fetchWieldedItem();
 		if((auto)&&(givenTarget instanceof Item))

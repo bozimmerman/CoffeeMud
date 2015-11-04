@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Skill_CenterOfAttention extends BardSkill
 {
 	@Override public String ID() { return "Skill_CenterOfAttention"; }
@@ -124,7 +124,7 @@ public class Skill_CenterOfAttention extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(CMLib.flags().isSitting(mob))
 		{

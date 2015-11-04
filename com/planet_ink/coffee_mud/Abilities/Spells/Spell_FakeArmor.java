@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_FakeArmor extends Spell
 {
 	@Override public String ID() { return "Spell_FakeArmor"; }
@@ -86,7 +86,7 @@ public class Spell_FakeArmor extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final String[] choices={"plate","chain","leather", "studded"};
 		final String[] choices2={"helmet","shirt","leggings", "sleeves","boots"};
@@ -96,7 +96,7 @@ public class Spell_FakeArmor extends Spell
 		{
 			for(int i=0;i<choices.length;i++)
 			{
-				if(choices[i].equalsIgnoreCase((String)commands.elementAt(0)))
+				if(choices[i].equalsIgnoreCase(commands.get(0)))
 					choice=i;
 			}
 			for(int i=0;i<choices2.length;i++)

@@ -261,7 +261,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> broken limbs have been healed."));
 	}
 
-	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet)
+	public MOB getTarget(MOB mob, List<String> commands, Environmental givenTarget, boolean quiet)
 	{
 		String targetName=CMParms.combine(commands,0);
 		MOB target=null;
@@ -505,13 +505,13 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String choice="";
 		if(givenTarget!=null)
 		{
-			if((commands.size()>0)&&(((String)commands.firstElement()).equals(givenTarget.name())))
-				commands.removeElementAt(0);
+			if((commands.size()>0)&&((commands.get(0)).equals(givenTarget.name())))
+				commands.remove(0);
 			choice=CMParms.combine(commands,0);
 			commands.clear();
 		}
@@ -520,7 +520,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		{
 			choice=CMParms.combine(commands,1);
 			while(commands.size()>1)
-				commands.removeElementAt(1);
+				commands.remove(1);
 		}
 		if(choice.toUpperCase().startsWith("RIGHT "))
 			choice=choice.substring(6).trim();

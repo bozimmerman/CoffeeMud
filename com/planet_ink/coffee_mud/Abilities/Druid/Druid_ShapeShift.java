@@ -244,7 +244,7 @@ public class Druid_ShapeShift extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 		{

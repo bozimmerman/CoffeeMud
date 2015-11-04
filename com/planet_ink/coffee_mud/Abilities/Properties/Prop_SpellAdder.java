@@ -535,7 +535,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	//TODO: prevents Vector -> List<String>
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final String s=CMParms.combine(commands,0);
 		if(s.length()>0)

@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -54,7 +52,7 @@ public class Thief_Pick extends ThiefSkill
 	@Override public void setAbilityCode(int newCode){code=newCode;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final int[] dirCode=new int[]{-1};
 		final Physical unlockThis=super.getOpenable(mob, mob.location(), givenTarget, commands, dirCode, true);

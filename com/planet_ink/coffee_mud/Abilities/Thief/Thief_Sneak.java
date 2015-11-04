@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Thief_Sneak extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Sneak"; }
@@ -48,11 +47,11 @@ public class Thief_Sneak extends ThiefSkill
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0)
-			dir=(String)commands.lastElement();
+			dir=commands.get(commands.size()-1);
 		final int dirCode=Directions.getGoodDirectionCode(dir);
 		if(dirCode<0)
 		{
@@ -101,7 +100,7 @@ public class Thief_Sneak extends ThiefSkill
 				if(toHide==null)
 					toHide=mob.fetchAbility("Ranger_Hide");
 				if(toHide!=null)
-					toHide.invoke(mob,new Vector(),null,false,asLevel);
+					toHide.invoke(mob,new Vector<String>(),null,false,asLevel);
 			}
 			if(CMLib.flags().isSneaking(mob))
 				mob.phyStats().setDisposition(mob.phyStats().disposition()-PhyStats.IS_SNEAKING);

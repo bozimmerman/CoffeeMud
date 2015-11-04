@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_SenseFaithful extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseFaithful"; }
@@ -47,7 +47,7 @@ public class Prayer_SenseFaithful extends Prayer
 	@Override protected int canTargetCode(){return 0;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.getWorshipCharID()==null)||(mob.getWorshipCharID().length()==0))
 		{

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class AnimalTaming extends CommonSkill
 {
 	@Override public String ID() { return "AnimalTaming"; }
@@ -139,7 +139,7 @@ public class AnimalTaming extends CommonSkill
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -182,14 +182,14 @@ public class AnimalTaming extends CommonSkill
 			}
 			if(commands.size()>0)
 			{
-				final String last=(String)commands.lastElement();
+				final String last=commands.get(commands.size()-1);
 				final Item I=mob.location().findItem(null,last);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
 				{
 					cage=I;
-					commands.removeElement(last);
+					commands.remove(last);
 				}
 			}
 			if(cage==null)

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Fighter_BullRush extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_BullRush"; }
@@ -52,7 +51,7 @@ public class Fighter_BullRush extends FighterSkill
 	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -64,8 +63,8 @@ public class Fighter_BullRush extends FighterSkill
 			mob.tell(L("You can only do this in the rage of combat!"));
 			return false;
 		}
-		String str=(String)commands.lastElement();
-		commands.removeElementAt(commands.size()-1);
+		String str=commands.get(commands.size()-1);
+		commands.remove(commands.size()-1);
 		final int dirCode=Directions.getGoodDirectionCode(str);
 		if((dirCode<0)||(mob.location()==null)||(mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{

@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 
@@ -123,16 +121,16 @@ public class GatheringSkill extends CommonSkill
 		return maskV;
 	}
 
-	public boolean bundle(MOB mob, Vector what)
+	public boolean bundle(MOB mob, List<String> what)
 	{
 		if((what.size()<3)
-		||((!CMath.isNumber((String)what.elementAt(1)))&&(!((String)what.elementAt(1)).equalsIgnoreCase("ALL"))))
+		||((!CMath.isNumber(what.get(1)))&&(!what.get(1).equalsIgnoreCase("ALL"))))
 		{
 			commonTell(mob,L("You must specify an amount to bundle, followed by what resource to bundle."));
 			return false;
 		}
-		int amount=CMath.s_int((String)what.elementAt(1));
-		if(((String)what.elementAt(1)).equalsIgnoreCase("ALL"))
+		int amount=CMath.s_int(what.get(1));
+		if(what.get(1).equalsIgnoreCase("ALL"))
 			amount=Integer.MAX_VALUE;
 		if(amount<=0)
 		{

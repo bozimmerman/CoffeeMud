@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -82,22 +80,22 @@ public class Spell_Scatter extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Vector areas=new Vector();
 		if(commands.size()==0)
 			areas.addElement(mob.location().getArea());
 		else
-		if(((String)commands.lastElement()).equalsIgnoreCase("far"))
+		if((commands.get(commands.size()-1)).equalsIgnoreCase("far"))
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 				areas.addElement(e.nextElement());
 		}
 		else
-		if(((String)commands.lastElement()).equalsIgnoreCase("near"))
+		if((commands.get(commands.size()-1)).equalsIgnoreCase("near"))
 		{
-			commands.removeElementAt(commands.size()-1);
+			commands.remove(commands.size()-1);
 			areas.addElement(mob.location().getArea());
 		}
 		else

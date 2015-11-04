@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 {
 	@Override public String ID() { return "MasterWeaponsmithing"; }
@@ -59,7 +59,7 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 	}
 
 	@Override
-	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, 
+	public boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 			 					 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))

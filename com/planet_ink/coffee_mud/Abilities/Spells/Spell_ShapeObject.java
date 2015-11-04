@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_ShapeObject extends Spell
 {
 	@Override public String ID() { return "Spell_ShapeObject"; }
@@ -66,7 +65,7 @@ public class Spell_ShapeObject extends Spell
 	}
 	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// add something to disable traps
 		//
@@ -75,7 +74,7 @@ public class Spell_ShapeObject extends Spell
 			mob.tell(L("Shape what like what?"));
 			return false;
 		}
-		String itemName=(String)commands.get(0);
+		String itemName=commands.get(0);
 		final Item targetI=super.getTarget(mob, null, givenTarget, new XVector<String>(itemName), Wearable.FILTER_UNWORNONLY);
 		if(targetI==null)
 		{

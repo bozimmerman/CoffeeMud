@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_Farsight extends Chant
 {
 	@Override public String ID() { return "Chant_Farsight"; }
@@ -46,7 +45,7 @@ public class Chant_Farsight extends Chant
 	@Override protected int canTargetCode(){return 0;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
@@ -99,7 +98,7 @@ public class Chant_Farsight extends Chant
 				else
 				while(commands.size()>0)
 				{
-					final String whatToOpen=(String)commands.elementAt(0);
+					final String whatToOpen=commands.get(0);
 					int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 					final Exit exit;
 					final Room room;
@@ -133,7 +132,7 @@ public class Chant_Farsight extends Chant
 					if(dirCode<0)
 					{
 						mob.tell(L("\n\r'@x1' is not a valid direction.",whatToOpen));
-						commands.removeAllElements();
+						commands.clear();
 						success=false;
 					}
 					else
@@ -142,11 +141,11 @@ public class Chant_Farsight extends Chant
 						{
 							mob.tell(L("\n\rSomething has obstructed your vision."));
 							success=false;
-							commands.removeAllElements();
+							commands.clear();
 						}
 						else
 						{
-							commands.removeElementAt(0);
+							commands.remove(0);
 							thatRoom=room;
 							limit--;
 							mob.tell(L("\n\r"));

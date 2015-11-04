@@ -187,9 +187,9 @@ public class Thief_Lure extends ThiefSkill implements Trap
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
+	
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -201,8 +201,8 @@ public class Thief_Lure extends ThiefSkill implements Trap
 			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
-		String str=(String)commands.lastElement();
-		commands.removeElementAt(commands.size()-1);
+		String str=commands.get(commands.size()-1);
+		commands.remove(commands.size()-1);
 		final int dirCode=Directions.getGoodDirectionCode(str);
 		if((dirCode<0)||(mob.location()==null)||(mob.location().getRoomInDir(dirCode)==null)||(mob.location().getExitInDir(dirCode)==null))
 		{

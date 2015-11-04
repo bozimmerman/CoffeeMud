@@ -44,7 +44,7 @@ public class Spell_ChainLightening extends Spell
 	@Override public long flags(){return Ability.FLAG_AIRBASED;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)

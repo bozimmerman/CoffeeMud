@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Skill_ScrollCopy extends StdSkill
 {
 	@Override public String ID() { return "Skill_ScrollCopy"; }
@@ -47,7 +47,7 @@ public class Skill_ScrollCopy extends StdSkill
 	@Override protected int overrideMana(){return 0;} //-1=normal, Ability.COST_ALL=all, Ability.COST_PCT
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<2)
@@ -79,7 +79,7 @@ public class Skill_ScrollCopy extends StdSkill
 		for(int a=0;a<theSpells.size();a++)
 		{
 			final Ability A=theSpells.get(a);
-			if(CMLib.english().containsString(A.name(),((String)commands.elementAt(0))))
+			if(CMLib.english().containsString(A.name(),(commands.get(0))))
 			{
 				thisSpell=A;
 				break;

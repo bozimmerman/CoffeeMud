@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_DisassembleTrap extends ThiefSkill
 {
 	@Override
@@ -89,7 +87,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Thief_RemoveTraps trapRemover=(Thief_RemoveTraps)mob.fetchAbility("Thief_RemoveTraps");
 		final Hashtable<String,Trap> traps=new Hashtable<String,Trap>();
@@ -99,7 +97,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 			return false;
 		}
 
-		final Vector<Object> cmds=new XVector<Object>(commands);
+		final Vector<String> cmds=new XVector<String>(commands);
 		final Vector<Trap> trapList = new XVector<Trap>();
 		final CharState oldState=(CharState)mob.curState().copyOf();
 		final boolean worked=trapRemover.invoke(mob,cmds,givenTarget,auto,asLevel,true,trapList);

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_PlantPass extends Chant
 {
 	@Override public String ID() { return "Chant_PlantPass"; }
@@ -46,7 +46,7 @@ public class Chant_PlantPass extends Chant
 	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -62,11 +62,11 @@ public class Chant_PlantPass extends Chant
 			return false;
 		}
 
-		final Vector candidates=Druid_MyPlants.myPlantRooms(mob);
+		final Vector<Room> candidates=Druid_MyPlants.myPlantRooms(mob);
 		Room newRoom=null;
 		for(int m=0;m<candidates.size();m++)
 		{
-			final Room room=(Room)candidates.elementAt(m);
+			final Room room=candidates.elementAt(m);
 			if(CMLib.english().containsString(room.displayText(mob),areaName))
 			{
 			   newRoom=room;

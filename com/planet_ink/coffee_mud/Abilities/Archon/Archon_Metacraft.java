@@ -44,7 +44,7 @@ public class Archon_Metacraft extends ArchonSkill
 
 	public static List<Ability> craftingSkills=new Vector<Ability>();
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(craftingSkills.size()==0)
 		{
@@ -91,36 +91,36 @@ public class Archon_Metacraft extends ArchonSkill
 		{
 			for(int x=1;x<commands.size()-1;x++)
 			{
-				if(((String)commands.elementAt(x)).equalsIgnoreCase("to"))
+				if(commands.get(x).equalsIgnoreCase("to"))
 				{
-					if(((String)commands.elementAt(x+1)).equalsIgnoreCase("self"))
+					if(commands.get(x+1).equalsIgnoreCase("self"))
 					{
 						toWHERE="SELF";
-						commands.removeElementAt(x);
-						commands.removeElementAt(x);
+						commands.remove(x);
+						commands.remove(x);
 						break;
 					}
-					if(((String)commands.elementAt(x+1)).equalsIgnoreCase("here"))
+					if(commands.get(x+1).equalsIgnoreCase("here"))
 					{
 						toWHERE="HERE";
-						commands.removeElementAt(x);
-						commands.removeElementAt(x);
+						commands.remove(x);
+						commands.remove(x);
 						break;
 					}
-					if(((String)commands.elementAt(x+1)).equalsIgnoreCase("file")&&(x<commands.size()-2))
+					if(commands.get(x+1).equalsIgnoreCase("file")&&(x<commands.size()-2))
 					{
-						toWHERE=(String)commands.elementAt(x+2);
-						commands.removeElementAt(x);
-						commands.removeElementAt(x);
-						commands.removeElementAt(x);
+						toWHERE=commands.get(x+2);
+						commands.remove(x);
+						commands.remove(x);
+						commands.remove(x);
 						break;
 					}
 				}
 			}
 			if(commands.size()>1)
 			{
-				mat=((String)commands.lastElement()).toUpperCase();
-				commands.removeElementAt(commands.size()-1);
+				mat=(commands.get(commands.size()-1)).toUpperCase();
+				commands.remove(commands.size()-1);
 			}
 		}
 		int material=-1;

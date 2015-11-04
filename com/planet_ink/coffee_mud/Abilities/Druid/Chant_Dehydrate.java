@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
-import java.util.Vector;
 
 
 /*
@@ -35,7 +34,7 @@ import java.util.Vector;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_Dehydrate extends Chant
 {
 	@Override public String ID() { return "Chant_Dehydrate"; }
@@ -47,7 +46,7 @@ public class Chant_Dehydrate extends Chant
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null)

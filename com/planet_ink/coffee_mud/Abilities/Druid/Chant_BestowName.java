@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_BestowName extends Chant
 {
 	@Override public String ID() { return "Chant_BestowName"; }
@@ -62,15 +62,15 @@ public class Chant_BestowName extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
 			mob.tell(L("You must specify the animal, and a name to give him."));
 			return false;
 		}
-		String myName=((String)commands.lastElement()).trim();
-		commands.removeElementAt(commands.size()-1);
+		String myName=(commands.get(commands.size()-1)).trim();
+		commands.remove(commands.size()-1);
 		if(myName.length()==0)
 		{
 			mob.tell(L("You must specify a name."));

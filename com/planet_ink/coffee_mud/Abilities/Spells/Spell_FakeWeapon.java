@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Spell_FakeWeapon extends Spell
 {
 	@Override public String ID() { return "Spell_FakeWeapon"; }
@@ -104,7 +104,7 @@ public class Spell_FakeWeapon extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final String weaponName=CMParms.combine(commands,0);
 		final String[] choices={"sword","dagger","mace","staff","axe","hammer", "flail"};

@@ -37,7 +37,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("rawtypes")
+
 public class Spell_BaseClanEq extends Spell
 {
 	@Override public String ID() { return "Spell_BaseClanEq"; }
@@ -70,7 +70,7 @@ public class Spell_BaseClanEq extends Spell
 		return super.canBeLearnedBy(teacher,student);
 	}
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(type.length()==0)
 			return false;
@@ -102,14 +102,14 @@ public class Spell_BaseClanEq extends Spell
 			mob.tell(L("Use how much clan enchantment power?"));
 			return false;
 		}
-		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Wearable.FILTER_UNWORNONLY);
+		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,commands.get(0),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",((String)commands.elementAt(0))));
+			mob.tell(L("You don't see '@x1' here.",(commands.get(0))));
 			return false;
 		}
 		// Add clan power check start
-		final int points=CMath.s_int((String)commands.elementAt(1));
+		final int points=CMath.s_int(commands.get(1));
 		if(points<=0)
 		{
 			mob.tell(L("You need to use at least 1 enchantment point."));

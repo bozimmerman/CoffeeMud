@@ -37,7 +37,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Blacksmithing"; }
@@ -87,7 +86,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	@Override public boolean supportsDeconstruction() { return true; }
 
 	@Override
-	protected boolean doLearnRecipe(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
@@ -186,15 +185,15 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
 	
 	@Override
-	public boolean autoGenInvoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	public boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
-		final Vector originalCommands=(Vector)commands.clone();
+		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands))
 			return true;
 
@@ -209,7 +208,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 		if((!auto)
 		&&(commands.size()>0)
-		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+		&&((commands.get(0)).equalsIgnoreCase("bundle")))
 		{
 			bundling=true;
 			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -217,7 +216,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
-		final String str=(String)commands.elementAt(0);
+		final String str=commands.get(0);
 		String startStr=null;
 		bundling=false;
 		int duration=4;
@@ -253,7 +252,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			return true;
 		}
 		else
-		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("learn"))
+		if(((commands.get(0))).equalsIgnoreCase("learn"))
 		{
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
@@ -262,19 +261,19 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		buildingI=null;
 		messedUp=false;
 		String statue=null;
-		if((commands.size()>1)&&((String)commands.lastElement()).startsWith("STATUE="))
+		if((commands.size()>1)&&(commands.get(commands.size()-1)).startsWith("STATUE="))
 		{
-			statue=(((String)commands.lastElement()).substring(7)).trim();
+			statue=((commands.get(commands.size()-1)).substring(7)).trim();
 			if(statue.length()==0)
 				statue=null;
 			else
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 		}
 		int amount=-1;
-		if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
+		if((commands.size()>1)&&(CMath.isNumber(commands.get(commands.size()-1))))
 		{
-			amount=CMath.s_int((String)commands.lastElement());
-			commands.removeElementAt(commands.size()-1);
+			amount=CMath.s_int(commands.get(commands.size()-1));
+			commands.remove(commands.size()-1);
 		}
 		final String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;
@@ -346,7 +345,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 					final String of=this.input;
 					if((of.trim().length()==0)||(of.indexOf('<')>=0))
 						return;
-					final Vector newCommands=(Vector)originalCommands.clone();
+					final Vector<String> newCommands=new XVector<String>(originalCommands);
 					newCommands.add("STATUE="+of);
 					me.invoke(mob, newCommands, target, auto, asLevel);
 				}

@@ -1488,9 +1488,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					&&(!CMLib.flags().isGolem(target))
 					&&(target.fetchEffect("Injury")==null))
 					{
-						final Ability A=CMClass.getAbility("Injury");
+						Ability A=CMClass.getAbility("Injury");
 						if(A!=null)
-							A.invoke(target,new XVector<Object>(msg),target,true,0);
+						{
+							A.startTickDown(target,target,Ability.TICKS_ALMOST_FOREVER);
+							A=target.fetchEffect(A.ID());
+							if(A!=null)
+								A.okMessage(target,msg);
+						}
 					}
 				}
 			}
@@ -2159,7 +2164,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				final int tickDown=CMath.s_parseIntExpression(whatToDo.substring(4).trim(),varVals);
 				if((A!=null)&&(tickDown>0))
 				{
-					A.invoke(mob,new XVector<Object>(""+tickDown,"SAFELY"),mob,true,0);
+					A.invoke(mob,new XVector<String>(""+tickDown,"SAFELY"),mob,true,0);
 					mob.resetToMaxState();
 				}
 			}

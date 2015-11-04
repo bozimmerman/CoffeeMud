@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_SenseSentience extends Chant
 {
 	@Override public String ID() { return "Chant_SenseSentience"; }
@@ -46,7 +46,7 @@ public class Chant_SenseSentience extends Chant
 	@Override protected int canAffectCode(){return 0;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

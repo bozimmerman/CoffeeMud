@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Thief_DeepCut extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_DeepCut"; }
@@ -63,7 +63,13 @@ public class Thief_DeepCut extends ThiefSkill
 			injuryA.setMiscText(mob.Name()+"/"+gone);
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,L("<S-NAME> <DAMAGE> <T-NAME>."));
 			msg2.setValue(target.maxState().getHitPoints()/(20-getXLEVELLevel(mob)));
-			injuryA.invoke(mob,new XVector<CMMsg>(msg2),target,true,0);
+			if(target.fetchEffect("Injury") == null)
+			{
+				injuryA.startTickDown(mob,target,Ability.TICKS_ALMOST_FOREVER);
+				injuryA=target.fetchEffect("Injury");
+				if( injuryA != null )
+					injuryA.okMessage(mob,msg2);
+			}
 			injuryA=target.fetchEffect("Injury");
 			if( injuryA != null )
 			{
@@ -140,7 +146,7 @@ public class Thief_DeepCut extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!prereqs(mob,false))
 			return false;
@@ -151,7 +157,7 @@ public class Thief_DeepCut extends ThiefSkill
 
 		if(commands.size()>0)
 		{
-			final String s=(String)commands.firstElement();
+			final String s=commands.get(0);
 			if(mob.location().fetchInhabitant(s)!=null)
 				target=mob.location().fetchInhabitant(s);
 			if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))
@@ -160,7 +166,7 @@ public class Thief_DeepCut extends ThiefSkill
 				return false;
 			}
 			if(target!=null)
-				commands.removeElementAt(0);
+				commands.remove(0);
 		}
 		if(target==null)
 			target=mob.getVictim();

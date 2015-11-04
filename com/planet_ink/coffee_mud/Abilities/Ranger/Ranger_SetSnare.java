@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Ranger_SetSnare extends StdAbility
 {
 	@Override public String ID() { return "Ranger_SetSnare"; }
@@ -61,7 +61,7 @@ public class Ranger_SetSnare extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=(Trap)CMClass.getAbility("Trap_Snare");
 		

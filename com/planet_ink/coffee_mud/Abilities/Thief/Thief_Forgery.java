@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Thief_Forgery extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Forgery"; }
@@ -47,20 +47,20 @@ public class Thief_Forgery extends ThiefSkill
 	@Override public String[] triggerStrings(){return triggerStrings;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
 			mob.tell(L("What would you like to forge, and onto what?"));
 			return false;
 		}
-		final Item target=mob.findItem(null,(String)commands.lastElement());
+		final Item target=mob.findItem(null,commands.get(commands.size()-1));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			mob.tell(L("You don't see '@x1' here.",((String)commands.lastElement())));
+			mob.tell(L("You don't see '@x1' here.",(commands.get(commands.size()-1))));
 			return false;
 		}
-		commands.removeElementAt(commands.size()-1);
+		commands.remove(commands.size()-1);
 
 		if((!target.isGeneric())
 		   ||((!(target instanceof Scroll))&&(!target.isReadable())))

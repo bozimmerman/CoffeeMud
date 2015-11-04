@@ -608,24 +608,13 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if((givenTarget!=null)&&(auto))
-		{
-			if(givenTarget.fetchEffect(ID())!=null)
-				return false;
-			super.tickDown=2;
-			Ability A=(Ability)copyOf();
-			A.startTickDown(mob,givenTarget,Ability.TICKS_ALMOST_FOREVER);
-			if((commands!=null)&&(commands.size()>0)&&(commands.firstElement() instanceof CMMsg))
-			{
-				A=givenTarget.fetchEffect(ID());
-				if(A!=null)
-					return A.okMessage(mob,(CMMsg)commands.firstElement());
-				return false;
-			}
-			return true;
-		}
-		return super.invoke(mob,commands,givenTarget,auto,asLevel);
+		if(givenTarget.fetchEffect(ID())!=null)
+			return false;
+		super.tickDown=2;
+		Ability A=(Ability)copyOf();
+		A.startTickDown(mob,givenTarget,Ability.TICKS_ALMOST_FOREVER);
+		return true;
 	}
 }

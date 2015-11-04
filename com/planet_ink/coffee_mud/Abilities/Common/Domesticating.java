@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Domesticating extends CommonSkill
 {
 	@Override public String ID() { return "Domesticating"; }
@@ -102,16 +102,16 @@ public class Domesticating extends CommonSkill
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 		taming=null;
 		String str=CMParms.combine(commands,0);
 		String newName=null;
-		if((commands.size()>2)&&(((String)commands.firstElement()).equalsIgnoreCase("name")))
+		if((commands.size()>2)&&((commands.get(0)).equalsIgnoreCase("name")))
 		{
-			str=(String)commands.elementAt(1);
+			str=commands.get(1);
 			newName=CMParms.combine(commands,2);
 		}
 		final MOB M=mob.location().fetchInhabitant(str);
@@ -156,14 +156,14 @@ public class Domesticating extends CommonSkill
 				return false;
 			}
 			String oldName=M.name();
-			final Vector oldV=CMParms.parse(oldName);
+			final Vector<String> oldV=CMParms.parse(oldName);
 			if(oldV.size()>1)
 			{
-				if(oldName.endsWith(", "+((String)oldV.lastElement())))
-					oldName=oldName.substring(0,oldName.length()-(2+((String)oldV.lastElement()).length()));
+				if(oldName.endsWith(", "+(oldV.lastElement())))
+					oldName=oldName.substring(0,oldName.length()-(2+oldV.lastElement().length()));
 				else
-				if(oldName.endsWith("named "+((String)oldV.lastElement())))
-					oldName=oldName.substring(0,oldName.length()-(6+((String)oldV.lastElement()).length()));
+				if(oldName.endsWith("named "+(oldV.lastElement())))
+					oldName=oldName.substring(0,oldName.length()-(6+oldV.lastElement().length()));
 			}
 
 			if((oldName.toUpperCase().startsWith("A "))

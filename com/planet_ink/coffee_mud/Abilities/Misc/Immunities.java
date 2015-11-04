@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Misc;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
@@ -113,8 +114,8 @@ public class Immunities extends StdAbility
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
-	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
+	
+	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
 	{
 		final StringBuilder immunes=new StringBuilder("");
 		int ticksOverride=0;

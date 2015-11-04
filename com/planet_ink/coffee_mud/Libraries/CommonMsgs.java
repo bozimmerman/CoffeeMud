@@ -1341,10 +1341,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(awarenessA!=null)
 				{
 					sess.colorOnlyPrintln("", true);
-					final Vector<Object> list=new Vector<Object>();
+					final Vector<String> list=new Vector<String>();
 					awarenessA.invoke(mob, list, mob.location(), true, CMProps.getIntVar(CMProps.Int.AWARERANGE));
-					for(final Object o : list)
-						sess.colorOnlyPrintln((String)o, true);
+					for(final String o : list)
+						sess.colorOnlyPrintln(o, true);
 					sess.colorOnlyPrintln("\n\r", true);
 				}
 			}

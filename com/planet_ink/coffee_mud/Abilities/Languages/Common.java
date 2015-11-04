@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Common extends StdLanguage
 {
 	@Override public String ID() { return "Common"; }
@@ -49,7 +49,7 @@ public class Common extends StdLanguage
 	@Override public int proficiency(){return 100;}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean anythingDone=false;
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)

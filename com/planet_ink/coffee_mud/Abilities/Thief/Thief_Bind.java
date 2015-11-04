@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Thief_Bind extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Bind"; }
@@ -144,16 +144,16 @@ public class Thief_Bind extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.isInCombat())&&(!auto))
 		{
 			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
-		if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))
+		if((commands.size()>0)&&(commands.get(0)).equalsIgnoreCase("UNTIE"))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			final MOB target=super.getTarget(mob,commands,givenTarget,false,true);
 			if(target==null)
 				return false;

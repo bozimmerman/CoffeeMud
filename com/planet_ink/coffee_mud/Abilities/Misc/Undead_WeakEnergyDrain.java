@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Undead_WeakEnergyDrain extends StdAbility
 {
 	@Override public String ID() { return "Undead_WeakEnergyDrain"; }
@@ -110,7 +110,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=null;
 		Ability reAffect=null;

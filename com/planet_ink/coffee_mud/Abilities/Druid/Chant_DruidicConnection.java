@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_DruidicConnection extends Chant
 {
 	@Override public String ID() { return "Chant_DruidicConnection"; }
@@ -69,7 +68,7 @@ public class Chant_DruidicConnection extends Chant
 			if(ellapsed>=millisPerHoursPerDay)
 			{
 				lastTime=System.currentTimeMillis();
-				final Vector V=Druid_MyPlants.myAreaPlantRooms(invoker(),(Area)affected);
+				final Vector<Room> V=Druid_MyPlants.myAreaPlantRooms(invoker(),(Area)affected);
 				int pct=0;
 				if(((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
 					pct=(int)Math.round(100.0*CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
@@ -111,25 +110,25 @@ public class Chant_DruidicConnection extends Chant
 		final Physical affected=this.affected;
 		if((canBeUninvoked())&&(invoker!=null)&&(affected instanceof Area))
 		{
-			final Vector V=Druid_MyPlants.myAreaPlantRooms(invoker,(Area)affected);
+			final Vector<Room> V=Druid_MyPlants.myAreaPlantRooms(invoker,(Area)affected);
 			if(V.size()>1)
 				V.removeElementAt(0);
 			for(int v=0;v<V.size();v++)
 			{
-				Item I=Druid_MyPlants.myPlant((Room)V.elementAt(v),invoker,0);
+				Item I=Druid_MyPlants.myPlant(V.elementAt(v),invoker,0);
 				int num=0;
 				while(I!=null)
-					I=Druid_MyPlants.myPlant((Room)V.elementAt(v),invoker,++num);
+					I=Druid_MyPlants.myPlant(V.elementAt(v),invoker,++num);
 				for(int x=num-1;x>=0;x--)
 				{
-					I=Druid_MyPlants.myPlant((Room)V.elementAt(v),invoker,x);
+					I=Druid_MyPlants.myPlant(V.elementAt(v),invoker,x);
 					if(I!=null)
 						I.destroy();
 				}
 			}
 			invoker.tell(L("You have destroyed your connection with @x1!",affected.name()));
-			for(final Enumeration e=((Area)affected).getMetroMap();e.hasMoreElements();)
-				((Room)e.nextElement()).recoverRoomStats();
+			for(final Enumeration<Room> e=((Area)affected).getMetroMap();e.hasMoreElements();)
+				e.nextElement().recoverRoomStats();
 		}
 		super.unInvoke();
 		if(invoker != null)
@@ -139,7 +138,7 @@ public class Chant_DruidicConnection extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location()==null))
 			return false;
@@ -155,7 +154,7 @@ public class Chant_DruidicConnection extends Chant
 				mob.tell(L("This place is already connected to a druid."));
 			return false;
 		}
-		final Vector V=Druid_MyPlants.myAreaPlantRooms(mob,target);
+		final Vector<Room> V=Druid_MyPlants.myAreaPlantRooms(mob,target);
 		int pct=0;
 		if(target.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
 			pct=(int)Math.round(100.0*CMath.div(V.size(),target.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
@@ -199,8 +198,8 @@ public class Chant_DruidicConnection extends Chant
 					A.lastTime=System.currentTimeMillis();
 					mob.addEffect(A);
 					A.setAffectedOne(target);
-					for(final Enumeration e=target.getMetroMap();e.hasMoreElements();)
-						((Room)e.nextElement()).recoverRoomStats();
+					for(final Enumeration<Room> e=target.getMetroMap();e.hasMoreElements();)
+						e.nextElement().recoverRoomStats();
 				}
 			}
 			else

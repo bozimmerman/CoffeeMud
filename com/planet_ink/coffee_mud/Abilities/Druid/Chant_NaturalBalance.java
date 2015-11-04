@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_NaturalBalance extends Chant
 {
 	@Override public String ID() { return "Chant_NaturalBalance"; }
@@ -148,7 +148,7 @@ public class Chant_NaturalBalance extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
 		{

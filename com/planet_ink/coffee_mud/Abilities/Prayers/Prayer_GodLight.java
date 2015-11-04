@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Prayer_GodLight extends Prayer
 {
 	@Override public String ID() { return "Prayer_GodLight"; }
@@ -98,12 +97,12 @@ public class Prayer_GodLight extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		Physical target=null;
 		if((!auto)
-		&&((commands.size()==0)||(((String)commands.firstElement()).equalsIgnoreCase("ROOM")))
+		&&((commands.size()==0)||((commands.get(0)).equalsIgnoreCase("ROOM")))
 		&&(!mob.isInCombat()))
 			target=mob.location();
 		else

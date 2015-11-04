@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -34,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_PolymorphSelf extends Spell
 {
 	@Override public String ID() { return "Spell_PolymorphSelf"; }
@@ -95,9 +93,9 @@ public class Spell_PolymorphSelf extends Spell
 
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
+		if((auto||mob.isMonster())&&((commands.size()<1)||((commands.get(0)).equals(mob.name()))))
 		{
 			commands.clear();
 			final XVector<Race> V=new XVector<Race>(CMClass.races());
@@ -105,7 +103,7 @@ public class Spell_PolymorphSelf extends Spell
 				if(!CMath.bset(V.elementAt(v).availabilityCode(),Area.THEME_FANTASY))
 					V.removeElementAt(v);
 			if(V.size()>0)
-				commands.addElement(V.elementAt(CMLib.dice().roll(1,V.size(),-1)).name());
+				commands.add(V.elementAt(CMLib.dice().roll(1,V.size(),-1)).name());
 		}
 		if(commands.size()==0)
 		{

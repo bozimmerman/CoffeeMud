@@ -123,7 +123,7 @@ public class Druid_PackCall extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!CMLib.flags().isInWilderness(mob)))
 		{

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_Nectar extends Chant
 {
 	@Override public String ID() { return "Chant_Nectar"; }
@@ -44,7 +42,7 @@ public class Chant_Nectar extends Chant
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canTargetCode(){return 0;}
-	public Vector drank=null;
+	public Vector<MOB> drank=null;
 	protected int lastNum=-1;
 
 	@Override
@@ -95,15 +93,15 @@ public class Chant_Nectar extends Chant
 		if(M==null)
 			return true;
 		if(drank==null)
-			drank=new Vector();
+			drank=new Vector<MOB>();
 		if(drank.contains(M))
 			return true;
 		drank.addElement(M);
 		if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
 		{
-			final Vector commands=new Vector();
-			commands.addElement("DRINK");
-			commands.addElement(R.getContextName(littleSpring));
+			final List<String> commands=new Vector<String>();
+			commands.add("DRINK");
+			commands.add(R.getContextName(littleSpring));
 			M.enqueCommand(commands,MUDCmdProcessor.METAFLAG_FORCED,0);
 		}
 		return true;
@@ -136,7 +134,7 @@ public class Chant_Nectar extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!auto)
 		{
@@ -178,7 +176,7 @@ public class Chant_Nectar extends Chant
 
 				mob.location().addItem(newItem);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 starts flowing here.",newItem.name()));
-				drank=new Vector();
+				drank=new Vector<MOB>();
 				lastNum=-1;
 				beneficialAffect(mob,newItem,asLevel,0);
 				mob.location().recoverPhyStats();

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Fighter_CalledStrike extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_CalledStrike"; }
@@ -142,7 +141,7 @@ public class Fighter_CalledStrike extends FighterSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!prereqs(mob,false))
 			return false;
@@ -153,7 +152,7 @@ public class Fighter_CalledStrike extends FighterSkill
 
 		if(commands.size()>0)
 		{
-			final String s=(String)commands.firstElement();
+			final String s=commands.get(0);
 			if(mob.location().fetchInhabitant(s)!=null)
 				target=mob.location().fetchInhabitant(s);
 			if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))
@@ -162,7 +161,7 @@ public class Fighter_CalledStrike extends FighterSkill
 				return false;
 			}
 			if(target!=null)
-				commands.removeElementAt(0);
+				commands.remove(0);
 		}
 		if(target==null)
 			target=mob.getVictim();

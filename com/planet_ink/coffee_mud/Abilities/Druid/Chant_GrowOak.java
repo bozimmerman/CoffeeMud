@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
+
 public class Chant_GrowOak extends Chant_SummonPlants
 {
 	@Override public String ID() { return "Chant_GrowOak"; }
@@ -128,12 +127,12 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Vector V=Druid_MyPlants.myPlantRooms(mob);
+		final Vector<Room> V=Druid_MyPlants.myPlantRooms(mob);
 		for(int v=0;v<V.size();v++)
 		{
-			final Room R=(Room)V.elementAt(v);
+			final Room R=V.elementAt(v);
 			for(int i=0;i<R.numItems();i++)
 			{
 				final Item I=R.getItem(i);

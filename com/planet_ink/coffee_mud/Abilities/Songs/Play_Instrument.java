@@ -70,7 +70,7 @@ public class Play_Instrument extends Play
 		&& ((mob != invoker()) || (getSpell().abstractQuality() != Ability.QUALITY_MALICIOUS)))
 		{
 			final Vector chcommands = new Vector();
-			chcommands.addElement(mob.name());
+			chcommands.add(mob.name());
 			A = (Ability) A.copyOf();
 			A.invoke(invoker(), chcommands, mob, true, adjustedLevel(invoker(), 0));
 			if((A.abstractQuality()==Ability.QUALITY_MALICIOUS)
