@@ -64,7 +64,29 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return nonCrashingItem;
 	}
 
-	@Override public String rawMaskHelp(){return DEFAULT_MASK_HELP;}
+	@Override
+	public String rawMaskHelp()
+	{
+		String maskHelp = (String)Resources.getResource("SYSTEM_ZAPPERMASK_HELP");
+		if(maskHelp == null)
+		{
+			final CMFile F = new CMFile(Resources.makeFileResourceName("help/zappermasks.txt"),null,CMFile.FLAG_LOGERRORS);
+			if((F.exists()) && (F.canRead()))
+			{
+				List<String> lines=Resources.getFileLineVector(F.text());
+				StringBuilder str = new StringBuilder("");
+				for(String line : lines)
+				{
+					str.append(line.trim()).append("<BR>");
+				}
+				maskHelp = str.toString();
+			}
+			else
+				maskHelp = "ZAPPERMASK HELP NOT FOUND at /resources/help/zappermasks.txt!";
+			Resources.submitResource("SYSTEM_ZAPPERMASK_HELP",maskHelp);
+		}
+		return maskHelp;
+	}
 
 	protected volatile List<SavedClass> savedCharClasses = new Vector<SavedClass>(1);
 	protected volatile List<SavedRace> savedRaces = new Vector<SavedRace>(1);
