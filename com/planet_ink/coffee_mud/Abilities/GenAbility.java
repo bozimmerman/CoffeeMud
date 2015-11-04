@@ -945,11 +945,15 @@ public class GenAbility extends StdAbility
 		if((V==null)||(V.size()==0))
 			return;
 		for(int c=0;c<getStatCodes().length;c++)
-			if(getStatCodes()[c].equals("CLASS"))
-				ID=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c]));
+		{
+			final String statCode = getStatCodes()[c];
+			final String value = CMLib.xml().getValFromPieces(V, statCode);
+			if(statCode.equals("CLASS"))
+				ID=CMLib.xml().restoreAngleBrackets(value);
 			else
-			if(!getStatCodes()[c].equals("TEXT"))
-				setStat(getStatCodes()[c],CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V, getStatCodes()[c])));
+			if(!statCode.equals("TEXT"))
+				setStat(statCode,CMLib.xml().restoreAngleBrackets(value));
+		}
 	}
 	private String getAllXML()
 	{

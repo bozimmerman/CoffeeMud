@@ -1167,7 +1167,7 @@ public class StdAbility implements Ability
 	protected Map<String, int[]> getHardOverrideManaCache()
 	{
 		Map<String,int[]> hardOverrideCache	= (Map<String,int[]>)Resources.getResource("SYSTEM_ABLEUSAGE_HARD_OVERRIDE_CACHE");
-		if(hardOverrideCache != null)
+		if(hardOverrideCache == null)
 		{
 			hardOverrideCache = new Hashtable<String,int[]>();
 			Resources.submitResource("SYSTEM_ABLEUSAGE_HARD_OVERRIDE_CACHE", hardOverrideCache);
