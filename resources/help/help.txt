@@ -4,8 +4,8 @@ recall ride crawl climb swim        answer quote say tell channels
 sleep wake rest stand enter         quiet emote socials yell ask
 
 ^HCOMBAT/SPELLS/SKILLS^?                ^HINFORMATION^?
-kill backstab flee wimpy rescue     help credits commands areas
-sweep bash disarm dirt trip         report score gods topics who
+kill backstab flee wimpy rescue     help credits commands where
+sweep bash disarm dirt trip         areas score gods topics who
 spells skills prayers songs         look exits topics time helplist
 pray practice cast sing chant
                                     ^HGROUPS^?
