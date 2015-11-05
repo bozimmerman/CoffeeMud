@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,19 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class RandomItems extends ActiveTicker
 {
 	@Override public String ID(){return "RandomItems";}
 	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
 
-	protected Vector maintained=new Vector();
-	protected int minItems=1;
-	protected int maxItems=1;
-	protected int avgItems=1;
-	protected boolean favorMobs=false;
-	protected Vector restrictedLocales=null;
-	protected boolean alreadyTriedLoad=false;
+	protected Vector<Item>		maintained			= new Vector<Item>();
+	protected int				minItems			= 1;
+	protected int				maxItems			= 1;
+	protected int				avgItems			= 1;
+	protected boolean			favorMobs			= false;
+	protected Vector<Integer>	restrictedLocales	= null;
+	protected boolean			alreadyTriedLoad	= false;
 
 	@Override
 	public String accountForYourself()
@@ -56,7 +55,7 @@ public class RandomItems extends ActiveTicker
 	@Override
 	public List<String> externalFiles()
 	{
-		final Vector xmlfiles=new Vector();
+		final Vector<String> xmlfiles=new Vector<String>();
 		final String theseparms=getParms();
 		final int x=theseparms.indexOf(';');
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
@@ -80,7 +79,7 @@ public class RandomItems extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		favorMobs=false;
-		maintained=new Vector();
+		maintained=new Vector<Item>();
 		final int x=newParms.indexOf(';');
 		String oldParms=newParms;
 		restrictedLocales=null;
@@ -106,7 +105,7 @@ public class RandomItems extends ActiveTicker
 				if((s.startsWith("+")||s.startsWith("-"))&&(s.length()>1))
 				{
 					if(restrictedLocales==null)
-						restrictedLocales=new Vector();
+						restrictedLocales=new Vector<Integer>();
 					if(s.equalsIgnoreCase("+ALL"))
 						restrictedLocales.clear();
 					else
@@ -204,6 +203,7 @@ public class RandomItems extends ActiveTicker
 		return I.owner()==CMLib.map().roomLocation(thang);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Item> getItems(Tickable thang, String theseparms)
 	{
 		List<Item> items=null;
@@ -236,7 +236,7 @@ public class RandomItems extends ActiveTicker
 			items=(List<Item>)Resources.getResource("RANDOMITEMS-XML/"+filename.length()+"/"+filename.hashCode());
 			if(items!=null)
 				return items;
-			items=new Vector();
+			items=new Vector<Item>();
 			final String error=CMLib.coffeeMaker().addItemsFromXML(filename,items,null);
 			if(error.length()>0)
 			{
@@ -278,7 +278,7 @@ public class RandomItems extends ActiveTicker
 					Log.errOut("RandomItems: Invalid XML file: '"+filename+"' for '"+thangName+"' ("+thangID+").");
 					return null;
 				}
-				items=new Vector();
+				items=new Vector<Item>();
 				final String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,null);
 				if(error.length()>0)
 				{
@@ -312,7 +312,7 @@ public class RandomItems extends ActiveTicker
 		{
 			try
 			{
-				I=(Item)maintained.elementAt(i);
+				I=maintained.elementAt(i);
 				if(!isStillMaintained(E,SK,I))
 					maintained.removeElement(I);
 			}
@@ -405,7 +405,7 @@ public class RandomItems extends ActiveTicker
 							room=((GridLocale)room).getRandomGridChild();
 						if(room!=null)
 						{
-							final Vector inhabs=new Vector();
+							final Vector<MOB> inhabs=new Vector<MOB>();
 							for(int m=0;m<room.numInhabitants();m++)
 							{
 								final MOB M=room.fetchInhabitant(m);
@@ -414,7 +414,7 @@ public class RandomItems extends ActiveTicker
 							}
 							if(inhabs.size()>0)
 							{
-								final MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
+								final MOB M=inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
 								M.addItem(I);
 								I.wearIfPossible(M);
 								maintained.addElement(I);

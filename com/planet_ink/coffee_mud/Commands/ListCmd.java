@@ -932,7 +932,7 @@ public class ListCmd extends StdCommand
 				buf.append("\n\r");
 				continue;
 			}
-			final List<List<Room>> linkedGroups=new Vector();
+			final List<List<Room>> linkedGroups=new Vector<List<Room>>();
 			int numMobs=0;
 			int totalAlignment=0;
 			int totalLevels=0;
@@ -980,7 +980,7 @@ public class ListCmd extends StdCommand
 							clearVec.add(R);
 						else
 						{
-							clearVec=new Vector();
+							clearVec=new Vector<Room>();
 							clearVec.add(R);
 							linkedGroups.add(clearVec);
 						}
@@ -1056,7 +1056,7 @@ public class ListCmd extends StdCommand
 					clearVec.add(A);
 				else
 				{
-					clearVec=new Vector();
+					clearVec=new Vector<Area>();
 					clearVec.add(A);
 					areaLinkGroups.add(clearVec);
 				}
@@ -1241,7 +1241,7 @@ public class ListCmd extends StdCommand
 		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))
 		{
 			if(oldSet==allUsers)
-				allUsers=new Vector();
+				allUsers=new Vector<PlayerLibrary.ThinPlayer>();
 			if((sortBy<3)||(sortBy>4))
 			{
 				PlayerLibrary.ThinPlayer selected=oldSet.get(0);
@@ -1747,9 +1747,9 @@ public class ListCmd extends StdCommand
 	{
 		final StringBuilder msg=new StringBuilder("");
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
-		for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 		{
-			final Area A=(Area)a.nextElement();
+			final Area A=a.nextElement();
 			msg.append(CMStrings.padRight(A.Name(),COL_LEN)+": ");
 			if(A.getSubOpList().length()==0)
 				msg.append(L("No Area staff defined.\n\r"));
@@ -1764,9 +1764,9 @@ public class ListCmd extends StdCommand
 		final StringBuilder str=new StringBuilder("");
 		try
 		{
-			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				if(R.roomID().length()>0)
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
@@ -1789,9 +1789,9 @@ public class ListCmd extends StdCommand
 		final StringBuilder str=new StringBuilder("");
 		try
 		{
-			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					final Room R2=R.rawDoors()[d];
@@ -1864,7 +1864,7 @@ public class ListCmd extends StdCommand
 		if((!f.exists())||(!f.canRead()))
 			return "File '"+f.getName()+"' does not exist.";
 		final List<String> V=Resources.getFileLineVector(f.text());
-		final Hashtable entries = new Hashtable();
+		final Hashtable<String,int[]> entries = new Hashtable<String,int[]>();
 		for(int v=0;v<V.size();v++)
 		{
 			final String s=V.get(v);
@@ -1872,7 +1872,7 @@ public class ListCmd extends StdCommand
 			{
 				final int x=s.indexOf("wanted help on",19);
 				final String helpEntry=s.substring(x+14).trim().toLowerCase();
-				int[] sightings=(int[])entries.get(helpEntry);
+				int[] sightings=entries.get(helpEntry);
 				if(sightings==null)
 				{
 					sightings=new int[1];
@@ -1886,11 +1886,11 @@ public class ListCmd extends StdCommand
 					sightings[0]--;
 			}
 		}
-		final Hashtable readyEntries = new Hashtable(entries.size());
-		for(final Enumeration e=entries.keys();e.hasMoreElements();)
+		final Hashtable<String,Integer> readyEntries = new Hashtable<String,Integer>(entries.size());
+		for(final Enumeration<String> e=entries.keys();e.hasMoreElements();)
 		{
-			final Object key=e.nextElement();
-			final int[] val=(int[])entries.get(key);
+			final String key=e.nextElement();
+			final int[] val=entries.get(key);
 			readyEntries.put(key,Integer.valueOf(val[0]));
 		}
 		final DVector sightingsDV=DVector.toNVector(readyEntries);
@@ -3452,7 +3452,7 @@ public class ListCmd extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		List<Environmental> V=new Vector();
+		List<Environmental> V=new Vector<Environmental>();
 		commands.remove(0);
 		String forWhat=null;
 		if(commands.size()==0)

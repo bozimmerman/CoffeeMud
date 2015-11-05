@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_ContractHit extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_ContractHit"; }
@@ -49,7 +49,7 @@ public class Thief_ContractHit extends ThiefSkill
 	protected boolean done=false;
 	protected boolean readyToHit=false;
 	protected boolean hitting=false;
-	protected Vector hitmen=new Vector();
+	protected Vector<MOB> hitmen=new Vector<MOB>();
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -126,7 +126,7 @@ public class Thief_ContractHit extends ThiefSkill
 				boolean anyLeft=false;
 				for(int i=0;i<hitmen.size();i++)
 				{
-					final MOB M=(MOB)hitmen.elementAt(i);
+					final MOB M=hitmen.elementAt(i);
 					if((!M.amDead())
 					   &&(M.location()!=null)
 					   &&(CMLib.flags().isInTheGame(M,false))
@@ -168,7 +168,7 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 		for(int i=0;i<hitmen.size();i++)
 		{
-			M=(MOB)hitmen.elementAt(i);
+			M=hitmen.elementAt(i);
 			M.destroy();
 		}
 	}
@@ -211,7 +211,7 @@ public class Thief_ContractHit extends ThiefSkill
 			return false;
 		}
 
-		List<MOB> V=new Vector();
+		List<MOB> V=new Vector<MOB>();
 		try
 		{
 			V=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,CMParms.combine(commands,0), 10);

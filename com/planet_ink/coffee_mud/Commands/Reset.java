@@ -43,7 +43,7 @@ public class Reset extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.RESET);}
 
-	public int resetAreaOramaManaI(MOB mob, Item I, Hashtable rememberI, String lead)
+	public int resetAreaOramaManaI(MOB mob, Item I, Hashtable<String,Integer> rememberI, String lead)
 		throws java.io.IOException
 	{
 		int nochange=0;
@@ -69,7 +69,7 @@ public class Reset extends StdCommand
 				}
 			}
 		}
-		final Integer IT=(Integer)rememberI.get(I.Name());
+		final Integer IT=rememberI.get(I.Name());
 		if(IT!=null)
 		{
 			if(IT.intValue()==I.material())
@@ -539,9 +539,9 @@ public class Reset extends StdCommand
 						CMLib.database().DBReCreate(R,oldID);
 						try
 						{
-							for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+							for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 							{
-								Room R2=(Room)r.nextElement();
+								Room R2=r.nextElement();
 								R2=CMLib.map().getRoom(R2);
 								if(R2!=R)
 								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -584,9 +584,9 @@ public class Reset extends StdCommand
 						CMLib.database().DBReCreate(R,oldID);
 						try
 						{
-							for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+							for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 							{
-								Room R2=(Room)r.nextElement();
+								Room R2=r.nextElement();
 								R2=CMLib.map().getRoom(R2);
 								if(R2!=R)
 								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -917,9 +917,9 @@ public class Reset extends StdCommand
 				mob.session().print(L("working..."));
 				try
 				{
-					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						final Room R=(Room)r.nextElement();
+						final Room R=r.nextElement();
 						boolean changed=false;
 						if(R.roomID().length()>0)
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -951,9 +951,9 @@ public class Reset extends StdCommand
 			if(mob.session().confirm(L("Change all mobs armor to the codebase defaults?"), "N"))
 			{
 				mob.session().print(L("working..."));
-				for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
-					final Area A=(Area)a.nextElement();
+					final Area A=a.nextElement();
 					A.setAreaState(Area.State.FROZEN);
 					for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 					{
@@ -1000,9 +1000,9 @@ public class Reset extends StdCommand
 			if(mob.session().confirm(L("Alter every mobs money to system defaults?!"), "N"))
 			{
 				mob.session().print(L("working..."));
-				for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
-					final Area A=(Area)a.nextElement();
+					final Area A=a.nextElement();
 					A.setAreaState(Area.State.FROZEN);
 					for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 					{
@@ -1060,9 +1060,9 @@ public class Reset extends StdCommand
 			if(mob.session().confirm(L("Add this behavior/property to every Area?"), "N"))
 			{
 				mob.session().print(L("working..."));
-				for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
-					final Area A=(Area)a.nextElement();
+					final Area A=a.nextElement();
 					boolean changed=false;
 					if((O instanceof Behavior))
 					{
@@ -1116,9 +1116,9 @@ public class Reset extends StdCommand
 			if(mob.session().confirm(L("Begin scanning and altering the material type of all items?"), "N"))
 			{
 				mob.session().print(L("working..."));
-				for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
-					final Area A=(Area)a.nextElement();
+					final Area A=a.nextElement();
 					A.setAreaState(Area.State.FROZEN);
 					for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 					{
@@ -1382,13 +1382,13 @@ public class Reset extends StdCommand
 				final Area A=mob.location().getArea();
 				CMLib.map().resetArea(A);
 				A.setAreaState(Area.State.FROZEN);
-				final Hashtable rememberI=new Hashtable();
-				final Hashtable rememberM=new Hashtable();
+				final Hashtable<String,Integer> rememberI=new Hashtable<String,Integer>();
+				final Hashtable<String,Race> rememberM=new Hashtable<String,Race>();
 				try
 				{
-				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					Room R=r.nextElement();
 					if(R.roomID().length()>0)
 					synchronized(("SYNC"+R.roomID()).intern())
 					{
@@ -1422,7 +1422,7 @@ public class Reset extends StdCommand
 								continue;
 							if(!M.isSavable())
 								continue;
-							Race R2=(Race)rememberM.get(M.Name());
+							Race R2=rememberM.get(M.Name());
 							if(R2!=null)
 							{
 								if(M.charStats().getMyRace()==R2)

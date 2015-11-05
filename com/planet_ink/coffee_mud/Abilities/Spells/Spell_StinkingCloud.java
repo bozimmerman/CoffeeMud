@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_StinkingCloud extends Spell
 {
 	@Override public String ID() { return "Spell_StinkingCloud"; }
@@ -148,7 +148,7 @@ public class Spell_StinkingCloud extends Spell
 		Set<MOB> h=null;
 		if(givenTarget instanceof MOB)
 		{
-			h=new HashSet();
+			h=new HashSet<MOB>();
 			h.add((MOB)givenTarget);
 		}
 		else

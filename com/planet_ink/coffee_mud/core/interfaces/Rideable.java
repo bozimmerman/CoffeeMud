@@ -199,7 +199,7 @@ public interface Rideable extends PhysicalAgent
 	 */
 	public String dismountString(Rider R);
 	/**
-	 * Adds all of the MOB Riders on this Rideable to the given HashSet and returns it
+	 * Adds all of the MOB Riders on this Rideable to the given Set and returns it
 	 * @param list the hashset into which to add all the mob riders
 	 * @return the same list passed in, filled
 	 */

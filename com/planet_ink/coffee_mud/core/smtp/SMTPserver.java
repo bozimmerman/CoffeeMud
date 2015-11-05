@@ -420,7 +420,7 @@ public class SMTPserver extends Thread implements Tickable
 				final String journalName=smtpJournal.name;
 				if(smtpJournal.forward)
 				{
-					// Vector mailingList=?
+					// vec mailingList=?
 					final List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgsNewerThan(journalName,"ALL",lastAllProcessing-1);
 					for(final JournalsLibrary.JournalEntry msg : msgs)
 					{

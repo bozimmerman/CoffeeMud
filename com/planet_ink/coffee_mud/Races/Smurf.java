@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Smurf extends StdRace
 {
 	@Override public String ID(){	return "Smurf"; }
@@ -61,7 +61,7 @@ public class Smurf extends StdRace
 	{
 		if(naturalWeaponChoices==null)
 		{
-			naturalWeaponChoices=new Vector();
+			naturalWeaponChoices=new Vector<Weapon>();
 			for(int i=1;i<11;i++)
 			{
 				naturalWeapon=CMClass.getWeapon("StdWeapon");

@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_AuraFear extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraFear"; }
@@ -82,19 +81,19 @@ public class Prayer_AuraFear extends Prayer
 		if(R==null)
 			return super.tick(ticking,tickID);
 
-		HashSet H=null;
+		HashSet<MOB> H=null;
 		if((invoker()!=null)&&(invoker().location()==R))
 		{
-			H=new HashSet();
+			H=new HashSet<MOB>();
 			invoker().getGroupMembers(H);
 			H.add(invoker());
 		}
 		if((affected instanceof MOB)&&(affected!=invoker()))
 		{
 			if(H==null)
-				H=new HashSet();
+				H=new HashSet<MOB>();
 			((MOB)affected).getGroupMembers(H);
-			H.add(affected);
+			H.add((MOB)affected);
 		}
 		for(int i=0;i<R.numInhabitants();i++)
 		{
@@ -113,7 +112,7 @@ public class Prayer_AuraFear extends Prayer
 						if((!CMLib.flags().isMobile(M))||(!M.isInCombat()))
 						{
 							final Command C=CMClass.getCommand("Sit");
-							try{if(C!=null) C.execute(M,new XVector("Sit"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
+							try{if(C!=null) C.execute(M,new XVector<String>("Sit"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
 							if(CMLib.flags().isSitting(M))
 							{
 								R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,L("<S-NAME> cringe(s) in fear at the sight of <O-NAME>."));
@@ -127,7 +126,7 @@ public class Prayer_AuraFear extends Prayer
 						{
 							R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>."));
 							final Command C=CMClass.getCommand("Flee");
-							try{if(C!=null) C.execute(M,new XVector("Flee"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
+							try{if(C!=null) C.execute(M,new XVector<String>("Flee"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
 						}
 						else
 						{
@@ -141,7 +140,7 @@ public class Prayer_AuraFear extends Prayer
 						{
 							R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in fear at the sight of <O-NAME>."));
 							final Command C=CMClass.getCommand("Flee");
-							try{if(C!=null) C.execute(M,new XVector("Flee"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
+							try{if(C!=null) C.execute(M,new XVector<String>("Flee"),MUDCmdProcessor.METAFLAG_FORCED);}catch(final Exception e){}
 						}
 						else
 						{

@@ -34,7 +34,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Create extends StdCommand
 {
 	public Create(){}
@@ -740,15 +740,17 @@ public class Create extends StdCommand
 			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: CREATE EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r"));
 			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS).text();
 			final StringBuffer inst=new StringBuffer("");
-			List<String> V=new Vector();
+			List<String> V=new Vector<String>();
 			if(buf!=null)
 				V=Resources.getFileLineVector(buf);
 			for(int v=0;v<V.size();v++)
+			{
 				if(V.get(v).startsWith("#"))
 					inst.append(V.get(v).substring(1)+"\n\r");
 				else
 				if(V.get(v).length()>0)
 					break;
+			}
 			if(mob.session()!=null)
 				mob.session().wraplessPrintln(inst.toString());
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
@@ -791,15 +793,17 @@ public class Create extends StdCommand
 			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=[ZAPPER MASK] as follows: \n\r"));
 			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS).text();
 			final StringBuffer inst=new StringBuffer("");
-			List<String> V=new Vector();
+			List<String> V=new Vector<String>();
 			if(buf!=null)
 				V=Resources.getFileLineVector(buf);
 			for(int v=0;v<V.size();v++)
+			{
 				if(V.get(v).startsWith("#"))
 					inst.append(V.get(v).substring(1)+"\n\r");
 				else
 				if(V.get(v).length()>0)
 					break;
+			}
 			if(mob.session()!=null)
 				mob.session().wraplessPrintln(inst.toString());
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
@@ -1280,7 +1284,7 @@ public class Create extends StdCommand
 				return false;
 			}
 			else
-				mob.doCommand(new XVector("MODIFY","HOLIDAY",named),metaFlags);
+				mob.doCommand(new XVector<String>("MODIFY","HOLIDAY",named),metaFlags);
 		}
 		else
 		if(commandType.equals("FACTION"))
@@ -1553,7 +1557,7 @@ public class Create extends StdCommand
 						E=CMClass.getAreaType(allWord);
 					if((E!=null)&&(E instanceof Room))
 					{
-						commands=new Vector();
+						commands=new Vector<String>();
 						commands.add("CREATE");
 						commands.add("ROOM");
 						commands.add(lastWord);
@@ -1563,7 +1567,7 @@ public class Create extends StdCommand
 					else
 					if((E!=null)&&(E instanceof Exit))
 					{
-						commands=new Vector();
+						commands=new Vector<String>();
 						commands.add("CREATE");
 						commands.add("EXIT");
 						commands.add(lastWord);
@@ -1573,7 +1577,7 @@ public class Create extends StdCommand
 					else
 					if((E!=null)&&(E instanceof Area))
 					{
-						commands=new Vector();
+						commands=new Vector<String>();
 						commands.add("CREATE");
 						commands.add("AREA");
 						commands.add(lastWord);

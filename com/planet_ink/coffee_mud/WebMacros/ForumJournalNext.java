@@ -36,13 +36,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class ForumJournalNext extends StdWebMacro
 {
 	@Override public String name() { return "ForumJournalNext"; }
 
 	public static MOB guestM = null;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
@@ -91,7 +92,7 @@ public class ForumJournalNext extends StdWebMacro
 			journals=(List<String>)httpReq.getRequestObjects().get("JOURNALLIST");
 			if(journals==null)
 			{
-				journals=new Vector();
+				journals=new Vector<String>();
 				for(final Enumeration<JournalsLibrary.ForumJournal> e=CMLib.journals().forumJournals();e.hasMoreElements();)
 				{
 					final JournalsLibrary.ForumJournal CJ=e.nextElement();

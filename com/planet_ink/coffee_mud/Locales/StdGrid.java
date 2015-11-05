@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdGrid extends StdRoom implements GridLocale
 {
 	@Override public String ID(){return "StdGrid";}
@@ -296,19 +296,46 @@ public class StdGrid extends StdRoom implements GridLocale
 	@Override
 	public List<Room> getAllRooms()
 	{
-		final Vector V=new Vector();
+		final Vector<Room> V=new Vector<Room>();
 		final Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
+		{
 			for (final Room[] element : subMap)
+			{
 				for(int y=0;y<element.length;y++)
 					V.addElement(element[y]);
+			}
+		}
 		return V;
 	}
+	
+	private static final Iterator<Room> emptyIterator = new Iterator<Room>()
+	{
+		@Override
+		public boolean hasNext()
+		{
+			return false;
+		}
+
+		@Override
+		public Room next()
+		{
+			throw new NoSuchElementException();
+		}
+
+		@Override
+		public void remove()
+		{
+			throw new NoSuchElementException();
+		}
+	};
+	
 	@Override
 	public final Iterator<Room> getExistingRooms()
 	{
 		final Room[][] map=this.subMap;
 		if(subMap!=null)
+		{
 			return new Iterator<Room>()
 			{
 				int x=0;
@@ -344,9 +371,9 @@ public class StdGrid extends StdRoom implements GridLocale
 				}
 				@Override public void remove() {}
 			};
-		return EmptyIterator.INSTANCE;
+		}
+		return emptyIterator;
 	}
-
 
 	protected void halfLink(Room room, Room loc, int dirCode, Exit o)
 	{

@@ -19,7 +19,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
+
 public class MXP
 {
 	public final static boolean	tagDebug			= false;
@@ -40,19 +40,20 @@ public class MXP
 	public static final int		MODE_LINE_ROOMEXITS	= 12;
 	public static final int		MODE_LINE_WELCOME	= 19;
 
-	private final Hashtable		elements			= new Hashtable();
-	private final Hashtable		tags				= new Hashtable();
-	private final Hashtable		entities			= new Hashtable();
-	private final Vector		openElements		= new Vector();
 	public String				lastForeground		= "WH";
 	public String				lastBackground		= "WH";
 	private boolean				eatTextUntilEOLN	= false;
 	private boolean				eatNextEOLN			= false;
 	private boolean				eatAllEOLN			= false;
-	private final StringBuffer	responses			= new StringBuffer("");
-	private final StringBuffer	jscriptBuffer		= new StringBuffer("");
-	private final Vector		gauges				= new Vector();
 	private int					mode				= 0;
+	
+	private final StringBuffer					responses		= new StringBuffer("");
+	private final StringBuffer					jscriptBuffer	= new StringBuffer("");
+	private final Hashtable<String, MXPElement>	elements		= new Hashtable<String,MXPElement>();
+	private final Hashtable<Integer, MXPElement>tags			= new Hashtable<Integer, MXPElement>();
+	private final Hashtable<String, MXPEntity>	entities		= new Hashtable<String, MXPEntity>();
+	private final Vector<MXPElement>			openElements	= new Vector<MXPElement>();
+	private final Vector<String[]>				gauges			= new Vector<String[]>();
 
 	public MXP()
 	{
@@ -242,7 +243,7 @@ public class MXP
 		MXPElement E = null;
 		for (int x = openElements.size() - 1; x >= 0; x--)
 		{
-			E = (MXPElement) openElements.elementAt(x);
+			E = openElements.elementAt(x);
 			if (E.isOpen())
 			{
 				final String close = closeTag(E);
@@ -261,7 +262,7 @@ public class MXP
 		MXPElement E = null;
 		for (int i = 0; i < openElements.size(); i++)
 		{
-			E = (MXPElement) openElements.elementAt(i);
+			E = openElements.elementAt(i);
 			if (E.needsText())
 				return true;
 		}
@@ -292,7 +293,7 @@ public class MXP
 			else 
 			if (code < 100)
 			{
-				final MXPElement replace = (MXPElement) tags.get(Integer.valueOf(code));
+				final MXPElement replace = tags.get(Integer.valueOf(code));
 				if ((replace != null) && (!replace.isDisabled()))
 				{
 					buf.insert(i, replace.getFoldedDefinition(""));
@@ -525,7 +526,7 @@ public class MXP
 			}
 			return 3;
 		}
-		MXPElement E = (MXPElement) elements.get(tag);
+		MXPElement E = elements.get(tag);
 		String text = "";
 		if (endTag)
 		{
@@ -533,7 +534,7 @@ public class MXP
 			int foundAt = -1;
 			for (int x = openElements.size() - 1; x >= 0; x--)
 			{
-				E = (MXPElement) openElements.elementAt(x);
+				E = openElements.elementAt(x);
 				if (E.name().equals(tag))
 				{
 					foundAt = x;
@@ -888,7 +889,7 @@ public class MXP
 				return;
 			if ((DELETE != null) && (elements.containsKey(name)))
 			{
-				E = (MXPElement) elements.get(name);
+				E = elements.get(name);
 				if (E.isOpen())
 					elements.remove(name);
 				return;
@@ -1028,7 +1029,7 @@ public class MXP
 			final String value = E.getAttributeValue("ATT");
 			if ((name == null) || (value == null))
 				return;
-			final MXPElement E2 = (MXPElement) elements.get(name.toUpperCase().trim());
+			final MXPElement E2 = elements.get(name.toUpperCase().trim());
 			if (E2 == null)
 				return;
 			E2.setAttributes(value);
@@ -1040,9 +1041,9 @@ public class MXP
 			final List<String> V = E.getUserParms();
 			if ((V == null) || (V.size() == 0))
 			{
-				for (final Enumeration e = elements.elements(); e.hasMoreElements();)
+				for (final Enumeration<MXPElement> e = elements.elements(); e.hasMoreElements();)
 				{
-					final MXPElement E2 = (MXPElement) e.nextElement();
+					final MXPElement E2 = e.nextElement();
 					if (!E2.isBasicElement())
 						continue;
 					final Vector<String> unsupportedParms = E2.getUnsupportedParms();
@@ -1079,7 +1080,7 @@ public class MXP
 						tag = request.substring(0, x).trim();
 						parm = request.substring(x + 1).trim();
 					}
-					final MXPElement RE = (MXPElement) elements.get(tag);
+					final MXPElement RE = elements.get(tag);
 					if ((RE == null) || (!RE.isGenerallySupported()))
 					{
 						if ((parm.length() > 0) && (!parm.equals("*")))
@@ -1142,7 +1143,7 @@ public class MXP
 					parms.append(" BACK=" + backColor);
 				parms.append(">");
 			}
-			final MXPElement L = (MXPElement) tags.get(Integer.valueOf(number));
+			final MXPElement L = tags.get(Integer.valueOf(number));
 			if (L == null)
 				return;
 			int newBitmap = L.getBitmap();
@@ -1179,7 +1180,7 @@ public class MXP
 		{
 			for (int x = openElements.size() - 1; x >= 0; x--)
 			{
-				final MXPElement E = (MXPElement) openElements.elementAt(x);
+				final MXPElement E = openElements.elementAt(x);
 				val = E.getAttributeValue(tag);
 				if (val != null)
 					break;
@@ -1188,7 +1189,7 @@ public class MXP
 			{
 				for (int x = openElements.size() - 1; x >= 0; x--)
 				{
-					final MXPElement E = (MXPElement) openElements.elementAt(x);
+					final MXPElement E = openElements.elementAt(x);
 					val = E.getAttributeValue(tag.toLowerCase());
 					if (val != null)
 						break;
@@ -1198,7 +1199,7 @@ public class MXP
 			{
 				for (int x = openElements.size() - 1; x >= 0; x--)
 				{
-					final MXPElement E = (MXPElement) openElements.elementAt(x);
+					final MXPElement E = openElements.elementAt(x);
 					val = E.getAttributeValue(tag.toUpperCase());
 					if (val != null)
 						break;
@@ -1207,11 +1208,11 @@ public class MXP
 		}
 		if (val == null)
 		{
-			MXPEntity N = (MXPEntity) entities.get(tag);
+			MXPEntity N = entities.get(tag);
 			if (N == null)
-				N = (MXPEntity) entities.get(tag.toLowerCase());
+				N = entities.get(tag.toLowerCase());
 			if (N == null)
-				N = (MXPEntity) entities.get(tag.toUpperCase());
+				N = entities.get(tag.toUpperCase());
 			if (N != null)
 				val = N.getDefinition();
 		}
@@ -1221,7 +1222,7 @@ public class MXP
 	public void modifyEntity(String name, String value)
 	{
 		name = name.toLowerCase();
-		MXPEntity X = (MXPEntity) entities.get(name);
+		MXPEntity X = entities.get(name);
 		if (X == null)
 		{
 			X = new MXPEntity(name, value);
@@ -1236,7 +1237,7 @@ public class MXP
 		String[] gauge = null;
 		for (int g = 0; g < gauges.size(); g++)
 		{
-			gauge = (String[]) gauges.elementAt(g);
+			gauge = gauges.elementAt(g);
 			if ((gauge[0].equalsIgnoreCase(name)) || (gauge[1].equalsIgnoreCase(name)))
 			{
 				final String initEntity = getEntityValue(gauge[0], null);
@@ -1272,7 +1273,7 @@ public class MXP
 		{
 			synchronized (jscriptBuffer)
 			{
-				jscriptBuffer.append("removeGauge('" + ((String[]) gauges.elementAt(0))[0] + "');");
+				jscriptBuffer.append("removeGauge('" + gauges.elementAt(0)[0] + "');");
 			}
 			gauges.removeElementAt(0);
 		}

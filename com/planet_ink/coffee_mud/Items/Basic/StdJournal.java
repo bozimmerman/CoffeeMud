@@ -34,7 +34,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdJournal extends StdItem
 {
 	@Override public String ID(){	return "StdJournal";}
@@ -102,10 +102,10 @@ public class StdJournal extends StdItem
 				int which=-1;
 				boolean newOnly=false;
 				boolean all=false;
-				final Vector parse=CMParms.parse(msg.targetMessage());
+				final Vector<String> parse=CMParms.parse(msg.targetMessage());
 				for(int v=0;v<parse.size();v++)
 				{
-					final String s=(String)parse.elementAt(v);
+					final String s=parse.elementAt(v);
 					if(CMath.s_long(s)>0)
 						which=CMath.s_int(msg.targetMessage());
 					else
@@ -459,7 +459,7 @@ public class StdJournal extends StdItem
 				fakeEntry.from=entry.from;
 				fakeEntry.subj=entry.subj;
 			}
-			final Vector selections=new Vector();
+			final Vector<CharSequence> selections=new Vector<CharSequence>();
 			for(int j=0;j<journal.size();j++)
 			{
 				final JournalsLibrary.JournalEntry entry=journal.get(j);

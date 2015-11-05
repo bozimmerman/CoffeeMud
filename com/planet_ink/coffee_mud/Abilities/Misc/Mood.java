@@ -378,7 +378,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(new XVector("HANDSHAKE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							msg.source().doCommand(new XVector<String>("HANDSHAKE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,5,0))
@@ -394,15 +394,15 @@ public class Mood extends StdAbility
 							if(msg.source().charStats().getStat(CharStats.STAT_GENDER)=='F')
 							{
 								if(M!=null)
-									msg.source().doCommand(new XVector("CURTSEY",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+									msg.source().doCommand(new XVector<String>("CURTSEY",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 								else
-									msg.source().doCommand(new XVector("CURTSEY"),MUDCmdProcessor.METAFLAG_FORCED);
+									msg.source().doCommand(new XVector<String>("CURTSEY"),MUDCmdProcessor.METAFLAG_FORCED);
 							}
 							else
 							if(M!=null)
-								msg.source().doCommand(new XVector("BOW",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+								msg.source().doCommand(new XVector<String>("BOW",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							else
-								msg.source().doCommand(new XVector("BOW"),MUDCmdProcessor.METAFLAG_FORCED);
+								msg.source().doCommand(new XVector<String>("BOW"),MUDCmdProcessor.METAFLAG_FORCED);
 							break;
 						}
 						switch(CMLib.dice().roll(1,5,0))
@@ -421,7 +421,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(new XVector("SMILE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							msg.source().doCommand(new XVector<String>("SMILE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,7,0))
@@ -441,7 +441,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(new XVector("CRY",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							msg.source().doCommand(new XVector<String>("CRY",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,10,0))
@@ -471,9 +471,9 @@ public class Mood extends StdAbility
 						case 7: changeAllSays(msg,"angrily say(s)"); break;
 						case 8:
 							if(M!=null)
-								msg.source().doCommand(new XVector("GRUMBLE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+								msg.source().doCommand(new XVector<String>("GRUMBLE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							else
-								msg.source().doCommand(new XVector("GRUMBLE"),MUDCmdProcessor.METAFLAG_FORCED);
+								msg.source().doCommand(new XVector<String>("GRUMBLE"),MUDCmdProcessor.METAFLAG_FORCED);
 							break;
 						default:
 							break;
@@ -526,9 +526,9 @@ public class Mood extends StdAbility
 						else
 						{
 							if(M!=null)
-								msg.source().doCommand(new XVector("WHAP",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+								msg.source().doCommand(new XVector<String>("WHAP",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							else
-								msg.source().doCommand(new XVector("WHAP"),MUDCmdProcessor.METAFLAG_FORCED);
+								msg.source().doCommand(new XVector<String>("WHAP"),MUDCmdProcessor.METAFLAG_FORCED);
 						}
 						if((M!=null)
 						&&(CMLib.dice().roll(1,10,0)==1)
@@ -544,7 +544,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(new XVector("FLEX",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							msg.source().doCommand(new XVector<String>("FLEX",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,5,0))
@@ -562,7 +562,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(new XVector("GRUMBLE"),MUDCmdProcessor.METAFLAG_FORCED);
+							msg.source().doCommand(new XVector<String>("GRUMBLE"),MUDCmdProcessor.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,2,0))
@@ -579,7 +579,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(new XVector("EXCITED",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							msg.source().doCommand(new XVector<String>("EXCITED",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,5,0))
@@ -590,9 +590,9 @@ public class Mood extends StdAbility
 						case 4: changeAllSays(msg,"excitedly say(s)"); break;
 						case 5:
 							if(M!=null)
-								msg.source().doCommand(new XVector("FIDGET",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+								msg.source().doCommand(new XVector<String>("FIDGET",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							else
-								msg.source().doCommand(new XVector("FIDGET"),MUDCmdProcessor.METAFLAG_FORCED);
+								msg.source().doCommand(new XVector<String>("FIDGET"),MUDCmdProcessor.METAFLAG_FORCED);
 							break;
 						default:
 							break;
@@ -610,7 +610,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(new XVector("COWER",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							msg.source().doCommand(new XVector<String>("COWER",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,6,0))
@@ -622,9 +622,9 @@ public class Mood extends StdAbility
 						case 5: changeAllSays(msg,"barely say(s)"); break;
 						case 6:
 							if(M!=null)
-								msg.source().doCommand(new XVector("WINCE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+								msg.source().doCommand(new XVector<String>("WINCE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							else
-								msg.source().doCommand(new XVector("WINCE"),MUDCmdProcessor.METAFLAG_FORCED);
+								msg.source().doCommand(new XVector<String>("WINCE"),MUDCmdProcessor.METAFLAG_FORCED);
 							break;
 						default:
 							break;
@@ -636,7 +636,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(new XVector("SIGH",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							msg.source().doCommand(new XVector<String>("SIGH",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,5,0))

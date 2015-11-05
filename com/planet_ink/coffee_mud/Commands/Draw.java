@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Draw extends Get
 {
 	public Draw(){}
@@ -107,7 +107,7 @@ public class Draw extends Get
 		}
 
 		boolean allFlag=false;
-		List<Container> containers=new Vector();
+		List<Container> containers=new Vector<Container>();
 		String containerName="";
 		String whatToGet="";
 		int c=0;

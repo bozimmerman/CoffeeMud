@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class AbilityGainReport extends StdWebMacro
 {
 	@Override public String name()	{return "AbilityGainReport";}
@@ -43,8 +43,8 @@ public class AbilityGainReport extends StdWebMacro
 		if(className==null)
 			className="";
 		final List<String> players=CMLib.database().getUserList();
-		final HashSet trainedFor=new HashSet();
-		final Hashtable profSpent=new Hashtable();
+		final HashSet<String> trainedFor=new HashSet<String>();
+		final Hashtable<String,long[]> profSpent=new Hashtable<String,long[]>();
 		for(final String playerName : players)
 		{
 			final MOB player=CMLib.players().getLoadPlayer(playerName);
@@ -76,7 +76,7 @@ public class AbilityGainReport extends StdWebMacro
 					trainedFor.add(A.ID());
 				if((qualifiesFor)&&(A.proficiency()>bestProf))
 				{
-					long[] stats=(long[])profSpent.get(A.ID());
+					long[] stats=profSpent.get(A.ID());
 					if(stats==null)
 					{
 						stats=new long[3];
@@ -91,13 +91,13 @@ public class AbilityGainReport extends StdWebMacro
 		final DVector sorted=new DVector(2);
 		while(profSpent.size()>0)
 		{
-			final Enumeration e=profSpent.keys();
-			String bestKey=(String)e.nextElement();
-			long[] bestStat=(long[])profSpent.get(bestKey);
+			final Enumeration<String> e=profSpent.keys();
+			String bestKey=e.nextElement();
+			long[] bestStat=profSpent.get(bestKey);
 			for(;e.hasMoreElements();)
 			{
-				final String key=(String)e.nextElement();
-				final long[] stat=(long[])profSpent.get(key);
+				final String key=e.nextElement();
+				final long[] stat=profSpent.get(key);
 				if(stat[2]>bestStat[2])
 				{
 					bestKey=key;
@@ -117,9 +117,9 @@ public class AbilityGainReport extends StdWebMacro
 			if(trainedFor.contains(able))
 				buf.append("<TR><TD>"+able+"</TD><TD>"+stats[2]+"</TD><TD>"+stats[1]+"</TD></TR>");
 		}
-		for(final Iterator i=trainedFor.iterator();i.hasNext();)
+		for(final Iterator<String> i=trainedFor.iterator();i.hasNext();)
 		{
-			final String able=(String)i.next();
+			final String able=i.next();
 			if(!sorted.contains(able))
 				buf.append("<TR><TD>"+able+"</TD><TD>N/A</TD><TD>N/A</TD></TR>");
 		}

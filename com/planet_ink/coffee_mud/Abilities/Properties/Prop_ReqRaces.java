@@ -98,13 +98,13 @@ public class Prop_ReqRaces extends Property implements TriggeredAffect
 		   &&(!CMLib.flags().isFalling(msg.source()))
 		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
-			final HashSet H=new HashSet();
+			final HashSet<MOB> H=new HashSet<MOB>();
 			if(noFollow)
 				H.add(msg.source());
 			else
 			{
 				msg.source().getGroupMembers(H);
-				final HashSet H2=(HashSet)H.clone();
+				final HashSet<MOB> H2=new XHashSet(H);
 				for(final Iterator e=H2.iterator();e.hasNext();)
 					((MOB)e.next()).getRideBuddies(H);
 			}

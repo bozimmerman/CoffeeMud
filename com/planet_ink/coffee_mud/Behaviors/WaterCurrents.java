@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class WaterCurrents extends ActiveTicker
 {
 	@Override public String ID(){return "WaterCurrents";}
@@ -68,9 +68,9 @@ public class WaterCurrents extends ActiveTicker
 		if(dirs.length()==0)
 			dirs="NE";
 	}
-	public void applyCurrents(Room R, Vector done)
+	public void applyCurrents(Room R, Vector<Physical> done)
 	{
-		final Vector todo=new Vector();
+		final Vector<Physical> todo=new Vector<Physical>();
 		if((R!=null)&&(R.numInhabitants()>0))
 		{
 			MOB M=null;
@@ -173,7 +173,7 @@ public class WaterCurrents extends ActiveTicker
 		super.tick(ticking,tickID);
 		if(canAct(ticking,tickID))
 		{
-			final Vector sweeps=new Vector();
+			final Vector<Physical> sweeps=new Vector<Physical>();
 			if(ticking instanceof Room)
 			{
 				final Room R=(Room)ticking;
@@ -194,9 +194,9 @@ public class WaterCurrents extends ActiveTicker
 			else
 			if(ticking instanceof Area)
 			{
-				for(final Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
-					final Room R=(Room)r.nextElement();
+					final Room R=r.nextElement();
 					if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 					||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 					||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)

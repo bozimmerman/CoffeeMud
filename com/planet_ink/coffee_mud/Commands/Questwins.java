@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Questwins extends StdCommand
 {
 	public Questwins(){}
@@ -42,7 +42,7 @@ public class Questwins extends StdCommand
 	
 	public String getQuestsWonList(MOB mob, String pronoun)
 	{
-		final Vector qVec=new Vector();
+		final Vector<String> qVec=new Vector<String>();
 		for(int q=0;q<CMLib.quests().numQuests();q++)
 		{
 			final Quest Q=CMLib.quests().fetchQuest(q);
@@ -56,7 +56,7 @@ public class Questwins extends StdCommand
 		Collections.sort(qVec);
 		final StringBuffer msg=new StringBuffer(L("^HQuests @x1 listed as having won:^?^N\n\r",pronoun));
 		for(int i=0;i<qVec.size();i++)
-			msg.append(((String)qVec.get(i))+"^N\n\r");
+			msg.append((qVec.get(i))+"^N\n\r");
 		return msg.toString();
 	}
 

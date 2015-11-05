@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdWand extends StdItem implements Wand
 {
 	@Override public String ID(){    return "StdWand";}
@@ -180,7 +180,7 @@ public class StdWand extends StdItem implements Wand
 						A=(Ability)A.newInstance();
 						if(useTheWand(A,mob,wandUse.abilityCode()))
 						{
-							final Vector V=new Vector();
+							final Vector<String> V=new Vector<String>();
 							if(target!=null)
 								V.addElement(target.name());
 							V.addAll(CMParms.parse(message));

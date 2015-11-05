@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_Warrants extends BardSkill
 {
 	@Override public String ID() { return "Skill_Warrants"; }
@@ -63,7 +63,7 @@ public class Skill_Warrants extends BardSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				List<LegalWarrant> V=new Vector();
+				List<LegalWarrant> V=new Vector<LegalWarrant>();
 				if(B!=null)
 					V=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)null);
 				if(V.size()==0)

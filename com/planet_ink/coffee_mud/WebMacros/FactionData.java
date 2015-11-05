@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class FactionData extends StdWebMacro
 {
 	@Override public String name() { return "FactionData"; }
@@ -137,9 +137,9 @@ public class FactionData extends StdWebMacro
 					if(oldName==null)
 					{
 						int v=0;
-						for(final Enumeration e=F.ranges();e.hasMoreElements();)
+						for(final Enumeration<Faction.FRange> e=F.ranges();e.hasMoreElements();)
 						{
-							final Faction.FRange FR=(Faction.FRange)e.nextElement();
+							final Faction.FRange FR=e.nextElement();
 							httpReq.addFakeUrlParameter("RANGENAME"+v,FR.name());
 							httpReq.addFakeUrlParameter("RANGELOW"+v,""+FR.low());
 							httpReq.addFakeUrlParameter("RANGEHIGH"+v,""+FR.high());
@@ -216,7 +216,7 @@ public class FactionData extends StdWebMacro
 				|| parms.containsKey("PLAYERCHOICES"))
 				{
 					String prefix="";
-					Enumeration Fset=null;
+					Enumeration<String> Fset=null;
 					if(parms.containsKey("AUTOVALUES"))
 					{
 						prefix="AUTOVALUE";
@@ -242,7 +242,7 @@ public class FactionData extends StdWebMacro
 					if((value==null)&&(Fset!=null))
 						for(;Fset.hasMoreElements();)
 						{
-							String def=(String)Fset.nextElement();
+							String def=Fset.nextElement();
 							int lastSp=0;
 							int spDex=def.indexOf(' ',lastSp+1);
 							int finalValue=-1;
@@ -298,9 +298,9 @@ public class FactionData extends StdWebMacro
 					if(trigger==null)
 					{
 						int v=0;
-						for(final Enumeration e=F.changeEventKeys();e.hasMoreElements();)
+						for(final Enumeration<String> e=F.changeEventKeys();e.hasMoreElements();)
 						{
-							final String def=(String)e.nextElement();
+							final String def=e.nextElement();
 							final Faction.FactionChangeEvent[] Es=F.getChangeEvents(def);
 							if(Es!=null)
 								for (final FactionChangeEvent E : Es)
@@ -354,7 +354,7 @@ public class FactionData extends StdWebMacro
 							val=CMath.toPct(httpReq.getUrlParameter("CHANGESFACTOR"+num));
 							str.append("<INPUT TYPE=TEXT NAME=CHANGESFACTOR"+showNum+" SIZE=4 VALUE=\""+val+"\">");
 							str.append("</TD><TD>");
-							final Vector<String> flags=new Vector();
+							final Vector<String> flags=new Vector<String>();
 							String id="";
 							int x=0;
 							for(;httpReq.isUrlParameter("CHANGESFLAGS"+num+"_"+id);id=""+(++x))
@@ -463,9 +463,9 @@ public class FactionData extends StdWebMacro
 					String faction=httpReq.getUrlParameter("RELATIONS0");
 					int x=0;
 					if(faction==null)
-						for(final Enumeration e=F.relationFactions();e.hasMoreElements();x++)
+						for(final Enumeration<String> e=F.relationFactions();e.hasMoreElements();x++)
 						{
-							final String def=(String)e.nextElement();
+							final String def=e.nextElement();
 							final double pctD=F.getRelation(def);
 							httpReq.addFakeUrlParameter("RELATIONS"+x,""+def);
 							httpReq.addFakeUrlParameter("RELATIONSAMT"+x,CMath.toPct(pctD));
@@ -514,16 +514,16 @@ public class FactionData extends StdWebMacro
 					if((abilityID==null)&&(F.abilityUsages()!=null))
 					{
 						int v=0;
-						for(final Enumeration e=F.abilityUsages();e.hasMoreElements();v++)
+						for(final Enumeration<Faction.FAbilityUsage> e=F.abilityUsages();e.hasMoreElements();v++)
 						{
-							final Faction.FAbilityUsage E=(Faction.FAbilityUsage)e.nextElement();
+							final Faction.FAbilityUsage E=e.nextElement();
 							if(!E.possibleAbilityID()||CMClass.getAbility(E.abilityFlags())==null)
 							{
 								final Vector<String> V=CMParms.parse(E.abilityFlags());
 								String id="";
 								int x=-1;
-								for(final Enumeration e2=V.elements();e2.hasMoreElements();id="_"+(++x))
-									httpReq.addFakeUrlParameter("ABILITYUSE"+v+id,(String)e2.nextElement());
+								for(final Enumeration<String> e2=V.elements();e2.hasMoreElements();id="_"+(++x))
+									httpReq.addFakeUrlParameter("ABILITYUSE"+v+id,e2.nextElement());
 							}
 							else
 								httpReq.addFakeUrlParameter("ABILITYUSE"+v,CMClass.getAbility(E.abilityFlags()).ID());
@@ -553,7 +553,7 @@ public class FactionData extends StdWebMacro
 							{
 								int x=-1;
 								int sx=-1;
-								final HashSet doneSet=new HashSet();
+								final HashSet<String> doneSet=new HashSet<String>();
 								addDoneAbilityUsage(doneSet,val);
 								while(httpReq.isUrlParameter("ABILITYUSE"+num+"_"+(++x)))
 								{
@@ -628,9 +628,9 @@ public class FactionData extends StdWebMacro
 					if((abilityID==null)&&(F.affectsBehavs()!=null))
 					{
 						int v=0;
-						for(final Enumeration e=F.affectsBehavs();e.hasMoreElements();v++)
+						for(final Enumeration<String> e=F.affectsBehavs();e.hasMoreElements();v++)
 						{
-							final String ID=(String)e.nextElement();
+							final String ID=e.nextElement();
 							httpReq.addFakeUrlParameter("AFFBEHAV"+v,ID);
 							final String[] affBehavParms=F.getAffectBehav(ID);
 							httpReq.addFakeUrlParameter("AFFBEHAVPARM"+v,affBehavParms[0]);
@@ -670,9 +670,9 @@ public class FactionData extends StdWebMacro
 					str.append("<TR><TD>");
 					str.append("<SELECT NAME=AFFBEHAV"+showNum+" ONCHANGE=\"AddItem(this);\">");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select an ability/behavior");
-					for(final Enumeration e=CMClass.behaviors();e.hasMoreElements();)
+					for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
 					{
-						final Behavior B=(Behavior)e.nextElement();
+						final Behavior B=e.nextElement();
 						str.append("<OPTION VALUE=\""+B.ID()+"\">"+B.name());
 					}
 					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
@@ -703,9 +703,9 @@ public class FactionData extends StdWebMacro
 					if((rangeCode==null)&&(F.reactions().hasMoreElements()))
 					{
 						int v=0;
-						for(final Enumeration e=F.reactions();e.hasMoreElements();v++)
+						for(final Enumeration<Faction.FReactionItem> e=F.reactions();e.hasMoreElements();v++)
 						{
-							final Faction.FReactionItem item=(Faction.FReactionItem)e.nextElement();
+							final Faction.FReactionItem item=e.nextElement();
 							httpReq.addFakeUrlParameter("REACTIONRANGE"+v,item.rangeCodeName());
 							httpReq.addFakeUrlParameter("REACTIONABC"+v,item.reactionObjectID());
 							httpReq.addFakeUrlParameter("REACTIONPARM"+v,item.parameters());
@@ -743,9 +743,9 @@ public class FactionData extends StdWebMacro
 							if(name==null)
 								name="";
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
-							for(final Enumeration e=CMClass.behaviors();e.hasMoreElements();)
+							for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
 							{
-								final Behavior B=(Behavior)e.nextElement();
+								final Behavior B=e.nextElement();
 								str.append("<OPTION VALUE=\""+B.ID()+"\">"+CMStrings.limit(B.name(),20));
 							}
 							for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
@@ -753,9 +753,9 @@ public class FactionData extends StdWebMacro
 								final Ability A=e.nextElement();
 								str.append("<OPTION VALUE=\""+A.ID()+"\">"+CMStrings.limit(A.name(),20));
 							}
-							for(final Enumeration e=CMClass.commands();e.hasMoreElements();)
+							for(final Enumeration<Command> e=CMClass.commands();e.hasMoreElements();)
 							{
-								final Command C=(Command)e.nextElement();
+								final Command C=e.nextElement();
 								if((C.getAccessWords()!=null)&&(C.getAccessWords().length>0))
 									str.append("<OPTION VALUE=\""+C.ID()+"\">"+CMStrings.capitalizeAndLower(C.getAccessWords()[0]));
 								else
@@ -782,9 +782,9 @@ public class FactionData extends StdWebMacro
 					str.append("</TD><TD VALIGN=TOP>");
 					str.append("<SELECT NAME=REACTIONABC"+showNum+">");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select an able/behav/cmd");
-					for(final Enumeration e=CMClass.behaviors();e.hasMoreElements();)
+					for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
 					{
-						final Behavior B=(Behavior)e.nextElement();
+						final Behavior B=e.nextElement();
 						str.append("<OPTION VALUE=\""+B.ID()+"\">"+CMStrings.limit(B.name(),20));
 					}
 					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
@@ -792,9 +792,9 @@ public class FactionData extends StdWebMacro
 						final Ability A=e.nextElement();
 						str.append("<OPTION VALUE=\""+A.ID()+"\">"+CMStrings.limit(A.name(),20));
 					}
-					for(final Enumeration e=CMClass.commands();e.hasMoreElements();)
+					for(final Enumeration<Command> e=CMClass.commands();e.hasMoreElements();)
 					{
-						final Command C=(Command)e.nextElement();
+						final Command C=e.nextElement();
 						if((C.getAccessWords()!=null)&&(C.getAccessWords().length>0))
 							str.append("<OPTION VALUE=\""+C.ID()+"\">"+CMStrings.capitalizeAndLower(C.getAccessWords()[0]));
 						else
@@ -840,7 +840,7 @@ public class FactionData extends StdWebMacro
 		return "";
 	}
 
-	public void addDoneAbilityUsage(HashSet done, String val)
+	public void addDoneAbilityUsage(HashSet<String> done, String val)
 	{
 		switch(CMLib.factions().getAbilityFlagType(val))
 		{
@@ -883,18 +883,22 @@ public class FactionData extends StdWebMacro
 		final PairVector<String,String> codes=new PairVector<String,String>();
 		int num=0;
 		if(oldName==null)
-			for(final Enumeration e=F.ranges();e.hasMoreElements();)
+		{
+			for(final Enumeration<Faction.FRange> e=F.ranges();e.hasMoreElements();)
 			{
-				final Faction.FRange FR=(Faction.FRange)e.nextElement();
+				final Faction.FRange FR=e.nextElement();
 				codes.addElement(FR.codeName(),FR.name());
 			}
+		}
 		else
-		while(httpReq.getUrlParameter("RANGENAME"+num)!=null)
 		{
-			oldName=httpReq.getUrlParameter("RANGENAME"+num);
-			code=httpReq.getUrlParameter("RANGECODE"+num);
-			codes.addElement(code,oldName);
-			num++;
+			while(httpReq.getUrlParameter("RANGENAME"+num)!=null)
+			{
+				oldName=httpReq.getUrlParameter("RANGENAME"+num);
+				code=httpReq.getUrlParameter("RANGECODE"+num);
+				codes.addElement(code,oldName);
+				num++;
+			}
 		}
 		return codes;
 	}

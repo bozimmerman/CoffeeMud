@@ -33,22 +33,49 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Song_Ode extends Song
 {
-	@Override public String ID() { return "Song_Ode"; }
-	private final static String localizedName = CMLib.lang().L("Ode");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public MOB whom=null;
-	public Hashtable benefits=null;
+	@Override
+	public String ID()
+	{
+		return "Song_Ode";
+	}
 
-	protected String song=null;
-	protected Hashtable songs=null;
-	protected StringBuffer trail=null;
-	@Override protected String songOf(){ return (whom==null)?L("Ode"):(L("Ode to ")+whom.name());}
-	@Override protected boolean skipStandardSongTick(){return (song==null);}
-	protected static final Hashtable cmds=new Hashtable();
+	private final static String	localizedName	= CMLib.lang().L("Ode");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	public MOB							whom		= null;
+	public Hashtable<Integer, Integer>	benefits	= null;
+
+	protected String					song		= null;
+	protected Hashtable<String, String>	songs		= null;
+	protected StringBuffer				trail		= null;
+
+	@Override
+	protected String songOf()
+	{
+		return (whom == null) ? L("Ode") : (L("Ode to ") + whom.name());
+	}
+
+	@Override
+	protected boolean skipStandardSongTick()
+	{
+		return (song == null);
+	}
+
+	protected static final Hashtable<String, String[]>	cmds	= new Hashtable<String, String[]>();
 	protected static final String[][] stuff={
 		{""+CMMsg.TYP_EAT,"s","h","<O-NAME> knows our hunger pains!"},
 		{""+CMMsg.TYP_GET,"cs",""+CharStats.STAT_STRENGTH,"The strength of <O-NAME> astounds us all!"},
@@ -88,11 +115,13 @@ public class Song_Ode extends Song
 				final int q=CMath.s_int(t.substring(0,x));
 				t=t.substring(x+1);
 				if(q>=0)
+				{
 					for(int i=0;i<stuff.length;i++)
 					{
 						if(CMath.s_int(stuff[i][0])==q)
 							counts[i]++;
 					}
+				}
 				x=t.indexOf(';');
 			}
 			int wa=-1;
@@ -103,7 +132,7 @@ public class Song_Ode extends Song
 			if(wa>=0)
 				counts[wa]=counts[wa]/25;
 
-			final Vector V=new Vector();
+			final Vector<Integer> V=new Vector<Integer>();
 			while(V.size()<counts.length)
 			{
 				int high=-1;
@@ -119,14 +148,14 @@ public class Song_Ode extends Song
 				if(which>=0)
 					V.addElement(Integer.valueOf(which));
 			}
-			final Vector V2=new Vector();
+			final Vector<Integer> V2=new Vector<Integer>();
 			for(int i=0;i<3;i++)
 			{
-				final Integer ref=(Integer)V.elementAt(i);
+				final Integer ref=V.elementAt(i);
 				Integer which=null;
 				while((which==null)||(V2.contains(which)))
 				{
-					final Integer w=(Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+					final Integer w=V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 					if(counts[w.intValue()]==counts[ref.intValue()])
 						which=w;
 				}
@@ -142,14 +171,14 @@ public class Song_Ode extends Song
 	{
 		if((whom!=null)&&(song!=null))
 		{
-			final Hashtable H=getSongBenefits(song);
-			for(final Enumeration e=H.keys();e.hasMoreElements();)
+			final Hashtable<Integer,Integer> H=getSongBenefits(song);
+			for(final Enumeration<Integer> e=H.keys();e.hasMoreElements();)
 			{
-				final Integer I=(Integer)e.nextElement();
+				final Integer I=e.nextElement();
 				final String[] chk=stuff[I.intValue()];
 				if((chk!=null)&&(chk[1].startsWith("e")))
 				{
-					int ticks=((Integer)H.get(I)).intValue();
+					int ticks=H.get(I).intValue();
 					if(ticks<=0)
 						ticks=1;
 					switch(chk[2].charAt(0))
@@ -172,14 +201,14 @@ public class Song_Ode extends Song
 	{
 		if((whom!=null)&&(song!=null))
 		{
-			final Hashtable H=getSongBenefits(song);
-			for(final Enumeration e=H.keys();e.hasMoreElements();)
+			final Hashtable<Integer,Integer> H=getSongBenefits(song);
+			for(final Enumeration<Integer> e=H.keys();e.hasMoreElements();)
 			{
-				final Integer I=(Integer)e.nextElement();
+				final Integer I=e.nextElement();
 				final String[] chk=stuff[I.intValue()];
 				if((chk!=null)&&(chk[1].startsWith("c")))
 				{
-					int ticks=((Integer)H.get(I)).intValue();
+					int ticks=H.get(I).intValue();
 					if(ticks>50)
 						ticks=50;
 					if(ticks<=0)
@@ -199,14 +228,14 @@ public class Song_Ode extends Song
 	{
 		if((whom!=null)&&(song!=null))
 		{
-			final Hashtable H=getSongBenefits(song);
-			for(final Enumeration e=H.keys();e.hasMoreElements();)
+			final Hashtable<Integer,Integer> H=getSongBenefits(song);
+			for(final Enumeration<Integer> e=H.keys();e.hasMoreElements();)
 			{
-				final Integer I=(Integer)e.nextElement();
+				final Integer I=e.nextElement();
 				final String[] chk=stuff[I.intValue()];
 				if((chk!=null)&&(chk[1].startsWith("s")))
 				{
-					int ticks=((Integer)H.get(I)).intValue();
+					int ticks=H.get(I).intValue();
 					if(ticks>50)
 						ticks=50;
 					if(ticks<=0)
@@ -278,21 +307,21 @@ public class Song_Ode extends Song
 		if(song==null)
 		{
 			if((whom==null)
-			   ||(commonRoomSet==null)
-			   ||(!commonRoomSet.contains(whom.location()))
-			   ||(CMLib.flags().isSleeping(invoker))
-			   ||(!CMLib.flags().canBeSeenBy(whom,invoker)))
-					return unsingMe(mob,null);
+			||(commonRoomSet==null)
+			||(!commonRoomSet.contains(whom.location()))
+			||(CMLib.flags().isSleeping(invoker))
+			||(!CMLib.flags().canBeSeenBy(whom,invoker)))
+				return unsingMe(mob,null);
 		}
 
 		if((whom!=null)&&(song!=null)&&(affected==invoker())
 		   &&(CMLib.dice().rollPercentage()<10))
 		{
-			final Hashtable H=getSongBenefits(song);
-			final Vector V=new Vector();
-			for(final Enumeration e=H.keys();e.hasMoreElements();)
+			final Hashtable<Integer,Integer> H=getSongBenefits(song);
+			final Vector<Integer> V=new Vector<Integer>();
+			for(final Enumeration<Integer> e=H.keys();e.hasMoreElements();)
 				V.addElement(e.nextElement());
-			final Integer I=(Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+			final Integer I=V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 			final String[] chk=stuff[I.intValue()];
 			invoker().location().show(invoker(),this,whom,CMMsg.MSG_SPEAK,L("<S-NAME> sing(s) '@x1'.",chk[3]));
 		}
@@ -304,11 +333,11 @@ public class Song_Ode extends Song
 		return true;
 	}
 
-	public Hashtable getSongBenefits(String s)
+	public Hashtable<Integer,Integer> getSongBenefits(String s)
 	{
 		if(benefits!=null)
 			return benefits;
-		benefits=new Hashtable();
+		benefits=new Hashtable<Integer,Integer>();
 
 		int x=s.indexOf(';');
 		while(x>=0)
@@ -331,23 +360,23 @@ public class Song_Ode extends Song
 	public String text()
 	{
 		final StringBuffer x=new StringBuffer("");
-		for(final Enumeration e=getSongs().keys();e.hasMoreElements();)
+		for(final Enumeration<String> e=getSongs().keys();e.hasMoreElements();)
 		{
-			final String key=(String)e.nextElement();
-			final String notkey=(String)getSongs().get(key);
+			final String key=e.nextElement();
+			final String notkey=getSongs().get(key);
 			x.append(key+"|~|"+notkey+"[|]");
 		}
 		miscText=x.toString();
 		return x.toString();
 	}
 
-	public Hashtable getSongs()
+	public Hashtable<String,String> getSongs()
 	{
 		if(songs!=null)
 			return songs;
 		String t=miscText;
 		int x=t.indexOf("|~|");
-		songs=new Hashtable();
+		songs=new Hashtable<String,String>();
 		while(x>=0)
 		{
 			final String n=t.substring(0,x);
@@ -372,7 +401,7 @@ public class Song_Ode extends Song
 		if(auto)
 			return false;
 
-		final Hashtable H=getSongs();
+		final Hashtable<String,String> H=getSongs();
 		if(commands.size()==0)
 		{
 			final Song_Ode A=(Song_Ode)mob.fetchEffect(ID());
@@ -392,24 +421,24 @@ public class Song_Ode extends Song
 			}
 
 			final StringBuffer str=new StringBuffer("");
-			for(final Enumeration e=H.keys();e.hasMoreElements();)
-				str.append((String)e.nextElement()+" ");
+			for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
+				str.append(e.nextElement()+" ");
 			mob.tell(L("Compose or sing an ode about whom?"));
 			if(str.length()>0)
 				mob.tell(L("You presently have odes written about: @x1.",str.toString().trim()));
 			return false;
 		}
 		String name=CMParms.combine(commands,0);
-		for(final Enumeration e=H.keys();e.hasMoreElements();)
+		for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
 		{
-			final String key=(String)e.nextElement();
+			final String key=e.nextElement();
 			if(CMLib.english().containsString(key,name))
 			{
 				invoker=mob;
 				originRoom=mob.location();
 				commonRoomSet=getInvokerScopeRoomSet(null);
 				name=key;
-				song=(String)H.get(name);
+				song=H.get(name);
 				benefits=null;
 				whom=mob.location().fetchInhabitant(name);
 				if((whom==null)||(!whom.name().equals(name)))

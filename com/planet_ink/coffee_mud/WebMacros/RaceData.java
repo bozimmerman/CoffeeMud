@@ -251,9 +251,9 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer itemList(List<? extends Item> items, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, boolean one)
 	{
 		if(items==null)
-			items=new Vector();
+			items=new Vector<Item>();
 		final StringBuffer str=new StringBuffer("");
-		final Vector classes=new Vector();
+		final Vector<Item> classes=new Vector<Item>();
 		List<Item> itemlist=null;
 		if(httpReq.isUrlParameter(c+"ITEM1"))
 		{
@@ -287,7 +287,7 @@ public class RaceData extends StdWebMacro
 		for(int i=0;i<classes.size();i++)
 		{
 			numItems++;
-			final Item I=(Item)classes.elementAt(i);
+			final Item I=classes.elementAt(i);
 			str.append("<TR>");
 			str.append("<TD WIDTH=90%>");
 			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems)+">");
@@ -332,17 +332,17 @@ public class RaceData extends StdWebMacro
 			{
 				boolean selected=false;
 				for(int x=0;x<classes.size();x++)
-					if(((Item)classes.elementAt(x)).ID().equals(element))
+					if(classes.elementAt(x).ID().equals(element))
 					{ 
 						selected=true;
-						found.add(((Item)classes.elementAt(x)).ID());
+						found.add(classes.elementAt(x).ID());
 						break;
 					}
 				str.append("<OPTION "+(selected?"SELECTED":"")+" VALUE=\""+(String)element+"\">"+(String)element);
 			}
 			for(int x=0;x<classes.size();x++)
-				if(!found.contains(((Item)classes.elementAt(x)).ID()))
-					str.append("<OPTION SELECTED VALUE=\""+((Item)classes.elementAt(x)).ID()+"\">"+((Item)classes.elementAt(x)).ID());
+				if(!found.contains(classes.elementAt(x).ID()))
+					str.append("<OPTION SELECTED VALUE=\""+classes.elementAt(x).ID()+"\">"+classes.elementAt(x).ID());
 		}
 		else
 		{
@@ -1018,7 +1018,7 @@ public class RaceData extends StdWebMacro
 					str.append(itemList(R.outfit(null),'O',httpReq,parms,0,false)+", ");
 				if(parms.containsKey("WEAPON"))
 				{
-					final Vector V=new XVector(R.myNaturalWeapon());
+					final Vector<Item> V=new XVector<Item>(R.myNaturalWeapon());
 					str.append(itemList(V,'W',httpReq,parms,0,true)+", ");
 				}
 				if(parms.containsKey("RESOURCES"))

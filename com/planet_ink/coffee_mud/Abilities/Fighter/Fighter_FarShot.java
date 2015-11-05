@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Fighter_FarShot extends FighterSkill
 {
 	@Override public String ID() { return "Fighter_FarShot"; }
@@ -62,7 +61,7 @@ public class Fighter_FarShot extends FighterSkill
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		qualifiedWeapons=new Vector();
+		qualifiedWeapons=new Vector<Weapon>();
 	}
 
 	@Override

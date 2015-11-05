@@ -168,7 +168,7 @@ public class Who extends StdCommand
 		||mobName.equalsIgnoreCase("pkill")
 		||mobName.equalsIgnoreCase("playerkill")))
 		{
-			friends=new HashSet();
+			friends=new HashSet<String>();
 			for(final Session S : CMLib.sessions().allIterable())
 			{
 				final MOB mob2=S.mob();

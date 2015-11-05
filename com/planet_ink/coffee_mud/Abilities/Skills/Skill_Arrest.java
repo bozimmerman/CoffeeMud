@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_Arrest extends StdSkill
 {
 	@Override public String ID() { return "Skill_Arrest"; }
@@ -52,7 +52,7 @@ public class Skill_Arrest extends StdSkill
 		LegalBehavior B=null;
 		if(legalA!=null)
 			B=CMLib.law().getLegalBehavior(legalA);
-		List<LegalWarrant> warrants=new Vector();
+		List<LegalWarrant> warrants=new Vector<LegalWarrant>();
 		if(B!=null)
 		{
 			warrants=B.getWarrantsOf(legalA,target);

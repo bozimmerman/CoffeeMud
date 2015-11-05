@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Equipment extends StdCommand
 {
 	public Equipment()
@@ -47,6 +47,7 @@ public class Equipment extends StdCommand
 		return access;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private final static Class[][] internalParameters=new Class[][]{{MOB.class},{Boolean.class},{}};
 
 	public StringBuilder getEquipment(MOB seer, MOB mob, boolean allPlaces)
@@ -67,7 +68,7 @@ public class Equipment extends StdCommand
 		final boolean paragraphView=(CMProps.getIntVar(CMProps.Int.EQVIEW)>1)
 							||((seer!=mob)&&(CMProps.getIntVar(CMProps.Int.EQVIEW)>0))
 							||seer.isAttributeSet(MOB.Attrib.COMPRESS);
-		final HashSet alreadyDone=new HashSet();
+		final HashSet<Item> alreadyDone=new HashSet<Item>();
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		for(int l=0;l<codes.all_ordered().length;l++)
 		{

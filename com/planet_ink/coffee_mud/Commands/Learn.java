@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Learn extends StdCommand
 {
 	public Learn(){}
@@ -109,7 +109,7 @@ public class Learn extends StdCommand
 		}
 		if(theExpertise!=null)
 		{
-			final Vector<String> CC=new XVector("SAY","I would like you to teach me "+theExpertise.name);
+			final Vector<String> CC=new XVector<String>("SAY","I would like you to teach me "+theExpertise.name);
 			mob.doCommand(CC,metaFlags);
 			return true;
 		}

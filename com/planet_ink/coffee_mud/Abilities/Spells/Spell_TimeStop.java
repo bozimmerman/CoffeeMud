@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_TimeStop extends Spell
 {
 	@Override public String ID() { return "Spell_TimeStop"; }
@@ -46,13 +46,13 @@ public class Spell_TimeStop extends Spell
 	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 
-	protected Vector fixed=new Vector();
+	protected Vector<MOB> fixed=new Vector<MOB>();
 
 	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		fixed=new Vector();
+		fixed=new Vector<MOB>();
 	}
 
 	@Override
@@ -74,10 +74,10 @@ public class Spell_TimeStop extends Spell
 				CMLib.threads().resumeTicking(room,-1);
 				for(int i=0;i<fixed.size();i++)
 				{
-					final MOB mob2=(MOB)fixed.elementAt(i);
+					final MOB mob2=fixed.elementAt(i);
 					CMLib.threads().resumeTicking(mob2,-1);
 				}
-				fixed=new Vector();
+				fixed=new Vector<MOB>();
 			}
 			else
 			if(affected instanceof MOB)
@@ -162,7 +162,7 @@ public class Spell_TimeStop extends Spell
 				if(msg.value()<=0)
 				{
 					final Room room=mob.location();
-					fixed=new Vector();
+					fixed=new Vector<MOB>();
 					final Set<MOB> grpMembers = mob.getGroupMembers(new HashSet<MOB>());
 					for(int m=0;m<room.numInhabitants();m++)
 					{

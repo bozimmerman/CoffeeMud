@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdTitle extends StdItem implements LandTitle
 {
 	@Override public String ID(){    return "StdTitle";}
@@ -239,7 +239,7 @@ public class StdTitle extends StdItem implements LandTitle
 			if(A!=null)
 				return A.getConnectedPropertyRooms();
 		}
-		return new Vector();
+		return new Vector<Room>();
 	}
 
 	@Override
@@ -259,7 +259,7 @@ public class StdTitle extends StdItem implements LandTitle
 			if(A!=null)
 				return A.getAllTitledRooms();
 		}
-		return new Vector();
+		return new Vector<Room>();
 	}
 
 	@Override

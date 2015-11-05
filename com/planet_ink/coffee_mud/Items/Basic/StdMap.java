@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.interfaces.RoomMap
 {
 	@Override 
@@ -108,14 +108,14 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		//myMap=null;
 	}
 
-	public MapRoom[][] rebuildGrid(Hashtable areaMap)
+	public MapRoom[][] rebuildGrid(Hashtable<Room,MapRoom> areaMap)
 	{
 		// build grid!
 		int xoffset=0;
 		int yoffset=0;
-		for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
+		for(final Enumeration<MapRoom> e=areaMap.elements();e.hasMoreElements();)
 		{
-			final MapRoom mr=(MapRoom)e.nextElement();
+			final MapRoom mr=e.nextElement();
 			if(mr.x<xoffset)
 				xoffset=mr.x;
 			if(mr.y<yoffset)
@@ -127,9 +127,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 		int Xbound=0;
 		int Ybound=0;
-		for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
+		for(final Enumeration<MapRoom> e=areaMap.elements();e.hasMoreElements();)
 		{
-			final MapRoom room=(MapRoom)e.nextElement();
+			final MapRoom room=e.nextElement();
 			room.x=room.x+xoffset;
 			if(room.x>Xbound)
 				Xbound=room.x;
@@ -138,9 +138,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 				Ybound=room.y;
 		}
 		final MapRoom[][] grid=new MapRoom[Xbound+1][Ybound+1];
-		for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
+		for(final Enumeration<MapRoom> e=areaMap.elements();e.hasMoreElements();)
 		{
-			final MapRoom room=(MapRoom)e.nextElement();
+			final MapRoom room=e.nextElement();
 			grid[room.x][room.y]=room;
 		}
 
@@ -180,11 +180,11 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return grid;
 	}
 
-	public void clearTheSkys(Hashtable mapRooms)
+	public void clearTheSkys(Hashtable<Room,MapRoom> mapRooms)
 	{
-		for(final Enumeration e=mapRooms.keys();e.hasMoreElements();)
+		for(final Enumeration<Room> e=mapRooms.keys();e.hasMoreElements();)
 		{
-			final Room R=(Room)e.nextElement();
+			final Room R=e.nextElement();
 			final Room UP=R.rawDoors()[Directions.UP];
 			if((UP!=null)
 			&&(UP.roomID().length()==0)
@@ -206,18 +206,18 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 	}
 
-	public Hashtable makeMapRooms(int width)
+	public Hashtable<Room,MapRoom> makeMapRooms(int width)
 	{
 		final List<String> mapAreas=CMParms.parseSemicolons(getMapArea(),true);
-		final Hashtable mapRooms=new Hashtable();
+		final Hashtable<Room,MapRoom> mapRooms=new Hashtable<Room,MapRoom>();
 		for(int a=0;a<mapAreas.size();a++)
 		{
 			final Area A=CMLib.map().getArea(mapAreas.get(a));
 			if(A!=null)
 			{
-				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 				{
-					final Room R=(Room)r.nextElement();
+					final Room R=r.nextElement();
 					final MapRoom mr=new MapRoom();
 					mr.r=R;
 					mapRooms.put(R,mr);
@@ -231,7 +231,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public StringBuffer[][] finishMapMaking(int width)
 	{
-		final Hashtable mapRooms=makeMapRooms(width);
+		final Hashtable<Room,MapRoom> mapRooms=makeMapRooms(width);
 		StringBuffer[][] map=new StringBuffer[0][0];
 		if(mapRooms.size()>0)
 		{
@@ -417,29 +417,29 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	}
 
 
-	public MapRoom getProcessedRoomAt(Hashtable processed, int x, int y)
+	public MapRoom getProcessedRoomAt(Hashtable<Room,MapRoom> processed, int x, int y)
 	{
-		for(final Enumeration e=processed.elements();e.hasMoreElements();)
+		for(final Enumeration<MapRoom> e=processed.elements();e.hasMoreElements();)
 		{
-			final MapRoom room=(MapRoom)e.nextElement();
+			final MapRoom room=e.nextElement();
 			if((room.x==x)&&(room.y==y))
 				return room;
 		}
 		return null;
 	}
 
-	public MapRoom getRoom(Hashtable allRooms, Room droom)
+	public MapRoom getRoom(Hashtable<Room,MapRoom> allRooms, Room droom)
 	{
-		return (MapRoom)allRooms.get(droom);
+		return allRooms.get(droom);
 	}
 
 	public final static int CLUSTERSIZE=3;
 
-	public boolean isEmptyCluster(Hashtable processed, int x, int y)
+	public boolean isEmptyCluster(Hashtable<Room,MapRoom> processed, int x, int y)
 	{
-		for(final Enumeration e=processed.elements();e.hasMoreElements();)
+		for(final Enumeration<MapRoom> e=processed.elements();e.hasMoreElements();)
 		{
-			final MapRoom room=(MapRoom)e.nextElement();
+			final MapRoom room=e.nextElement();
 			if((((room.x>x-CLUSTERSIZE)&&(room.x<x+CLUSTERSIZE))
 			&&((room.y>y-CLUSTERSIZE)&&(room.y<y+CLUSTERSIZE)))
 			||((room.x==x)&&(room.y==y)))
@@ -448,10 +448,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return true;
 	}
 
-	public void findEmptyCluster(Hashtable processed, Vector XY)
+	public void findEmptyCluster(Hashtable<Room,MapRoom> processed, Vector<Integer> XY)
 	{
-		final int x=((Integer)XY.elementAt(0)).intValue();
-		final int y=((Integer)XY.elementAt(1)).intValue();
+		final int x=XY.elementAt(0).intValue();
+		final int y=XY.elementAt(1).intValue();
 		int spacing=CLUSTERSIZE;
 		while(true)
 		{
@@ -534,16 +534,16 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return true;
 	}
 
-	public void placeRooms(Hashtable areaMap)
+	public void placeRooms(Hashtable<Room,MapRoom> areaMap)
 	{
 		if(areaMap==null)
 			return;
 		if(areaMap.size()==0)
 			return;
 
-		for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
+		for(final Enumeration<MapRoom> e=areaMap.elements();e.hasMoreElements();)
 		{
-			final MapRoom room=(MapRoom)e.nextElement();
+			final MapRoom room=e.nextElement();
 			room.x=0;
 			room.y=0;
 			for(int d=0;d<Directions.NUM_DIRECTIONS()-1;d++)
@@ -558,14 +558,14 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			}
 		}
 
-		final Hashtable processed=new Hashtable();
+		final Hashtable<Room,MapRoom> processed=new Hashtable<Room,MapRoom>();
 		boolean doneSomething=true;
 		while((areaMap.size()>processed.size())&&(doneSomething))
 		{
 			doneSomething=false;
-			for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
+			for(final Enumeration<MapRoom> e=areaMap.elements();e.hasMoreElements();)
 			{
-				final MapRoom room=(MapRoom)e.nextElement();
+				final MapRoom room=e.nextElement();
 				if((processed.get(room.r)==null)&&(okToPlace(room)))
 				{
 					placeRoom(room,areaMap,0,0,processed,true,true,0);
@@ -664,10 +664,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	}
 
 	public void placeRoom(MapRoom room,
-						  Hashtable areaMap,
+						  Hashtable<Room,MapRoom> areaMap,
 						  int favoredX,
 						  int favoredY,
-						  Hashtable processed,
+						  Hashtable<Room,MapRoom> processed,
 						  boolean doNotDefer,
 						  boolean passTwo,
 						  int depth)
@@ -682,9 +682,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			// maybe someone else will take care of it?
 			if(!doNotDefer)
 			{
-				for(final Enumeration e=areaMap.elements();e.hasMoreElements();)
+				for(final Enumeration<MapRoom> e=areaMap.elements();e.hasMoreElements();)
 				{
-					final MapRoom roomToBlame=(MapRoom)e.nextElement();
+					final MapRoom roomToBlame=e.nextElement();
 					if(roomToBlame!=room)
 					{
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -701,12 +701,12 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 				}
 			}
 			// nope; nobody can.  It's up to this!
-			final Vector XY=new Vector();
+			final Vector<Integer> XY=new Vector<Integer>();
 			XY.addElement(Integer.valueOf(0));
 			XY.addElement(Integer.valueOf(0));
 			findEmptyCluster(processed,XY);
-			room.x=((Integer)XY.elementAt(0)).intValue();
-			room.y=((Integer)XY.elementAt(1)).intValue();
+			room.x=XY.elementAt(0).intValue();
+			room.y=XY.elementAt(1).intValue();
 		}
 		else
 		{

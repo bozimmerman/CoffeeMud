@@ -56,7 +56,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												String abilityID,
 												boolean autoGain)
 	{ 
-		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector(),""); 
+		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector<String>(),""); 
 	}
 	
 	@Override
@@ -66,7 +66,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												boolean autoGain,
 												String extraMasks)
 	{ 
-		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector(),extraMasks); 
+		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector<String>(),extraMasks); 
 	}
 	
 	@Override
@@ -98,7 +98,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												String defParm,
 												boolean autoGain)
 	{ 
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,false,new Vector(),""); 
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,false,new Vector<String>(),""); 
 	}
 	
 	public AbilityMapping addCharAbilityMapping(String ID,
@@ -109,7 +109,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												boolean autoGain,
 												String extraMasks)
 	{ 
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,false,new Vector(),extraMasks); 
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,false,new Vector<String>(),extraMasks); 
 	}
 	
 	@Override
@@ -119,7 +119,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												int defaultProficiency,
 												boolean autoGain)
 	{ 
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector(),""); 
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector<String>(),""); 
 	}
 	
 	public AbilityMapping addCharAbilityMapping(String ID,
@@ -129,7 +129,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												boolean autoGain,
 												String extraMasks)
 	{ 
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector(),extraMasks); 
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector<String>(),extraMasks); 
 	}
 
 	@Override
@@ -204,7 +204,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												boolean autoGain,
 												boolean secret)
 	{ 
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector(),"");
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector<String>(),"");
 	}
 
 	public AbilityMapping addCharAbilityMapping(String ID,
@@ -216,7 +216,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												boolean secret,
 												String extraMasks)
 	{ 
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector(),extraMasks);
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector<String>(),extraMasks);
 	}
 
 
@@ -243,7 +243,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												boolean autoGain,
 												boolean secret)
 	{ 
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector(),"");
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector<String>(),"");
 	}
 
 	public AbilityMapping addCharAbilityMapping(String ID,
@@ -256,7 +256,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												boolean secret,
 												String extraMasks)
 	{ 
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector<String>(),extraMasks);
 	}
 
 	@Override
@@ -278,7 +278,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			ableMap=new SHashtable<String,AbilityMapping>();
 			completeAbleMap.put(ID,ableMap);
 		}
-		final AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret, false,new Vector(),extraMask,null);
+		final AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret, false,new Vector<String>(),extraMask,null);
 		addClassAbility(abilityID,ableMap,able);
 		return able;
 	}
@@ -1038,7 +1038,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	protected List<String> getOrSet(String errStr, String abilityID)
 	{
 		Ability preA=null;
-		final List<String> orset=new Vector();
+		final List<String> orset=new Vector<String>();
 		final List<String> preorset=CMParms.parseCommas(abilityID,true);
 		for(int p=0;p<preorset.size();p++)
 		{

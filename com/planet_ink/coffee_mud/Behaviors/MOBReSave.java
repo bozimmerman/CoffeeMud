@@ -40,7 +40,7 @@ public class MOBReSave extends ActiveTicker
 	@Override public String ID(){return "MOBReSave";}
 	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	@Override public long flags(){return 0;}
-	protected static HashSet roomsReset=new HashSet();
+	protected static HashSet<Room> roomsReset=new HashSet<Room>();
 	protected boolean noRecurse=false;
 	protected CharStats startStats=null;
 	protected WeakReference host=null;

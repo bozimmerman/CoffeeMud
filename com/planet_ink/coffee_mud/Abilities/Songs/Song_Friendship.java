@@ -182,7 +182,7 @@ public class Song_Friendship extends Song
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				final Room R=(Room)commonRoomSet.elementAt(v);
+				final Room R=commonRoomSet.elementAt(v);
 				final String msgStr=getCorrectMsgString(R,str,v);
 				final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
 				if(mob.location().okMessage(mob,msg))

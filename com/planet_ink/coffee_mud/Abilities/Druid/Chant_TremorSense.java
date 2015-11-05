@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_TremorSense extends Chant
 {
 	@Override public String ID() { return "Chant_TremorSense"; }
@@ -44,7 +43,7 @@ public class Chant_TremorSense extends Chant
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	protected Vector<Room> rooms=new Vector();
+	protected Vector<Room> rooms=new Vector<Room>();
 
 	@Override
 	public CMObject copyOf()
@@ -158,7 +157,7 @@ public class Chant_TremorSense extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				rooms=new Vector();
+				rooms=new Vector<Room>();
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
 						.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)

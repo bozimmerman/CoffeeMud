@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class SocialData extends StdWebMacro
 {
 	@Override public String name() { return "SocialData"; }
@@ -171,7 +171,7 @@ public class SocialData extends StdWebMacro
 				create=true;
 			else
 				OSV=new XVector<Social>(SV);
-			SV=new Vector();
+			SV=new Vector<Social>();
 
 			String old=httpReq.getUrlParameter("TITLE");
 			if((old!=null)
@@ -184,8 +184,8 @@ public class SocialData extends StdWebMacro
 				last=old;
 			}
 
-			final Vector TYPES=new Vector();
-			final Vector EXTNS=new Vector();
+			final Vector<String> TYPES=new Vector<String>();
+			final Vector<String> EXTNS=new Vector<String>();
 			for (final String element : BTYPES)
 				TYPES.addElement(element);
 			for (final String element : BEXTNS)
@@ -210,8 +210,8 @@ public class SocialData extends StdWebMacro
 
 			for(int t=0;t<TYPES.size();t++)
 			{
-				final String TYPE=(String)TYPES.elementAt(t);
-				final String EXTN=(String)EXTNS.elementAt(t);
+				final String TYPE=TYPES.elementAt(t);
+				final String EXTN=EXTNS.elementAt(t);
 
 				old=httpReq.getUrlParameter("IS"+TYPE);
 				if((old==null)||(!old.equalsIgnoreCase("on")))
@@ -295,13 +295,14 @@ public class SocialData extends StdWebMacro
 			if(last.length()>0)
 			{
 				final String newSocialID=httpReq.getUrlParameter("NEWSOCIAL");
+				@SuppressWarnings("unchecked")
 				List<Social> SV=(List<Social>)httpReq.getRequestObjects().get("SOCIAL-"+last);
 				if((SV==null)
 				&&(newSocialID!=null)
 				&&(newSocialID.length()>0)
 				&&(CMLib.socials().getSocialsSet(newSocialID)==null))
 				{
-					SV=new Vector();
+					SV=new Vector<Social>();
 					last=newSocialID;
 					httpReq.addFakeUrlParameter("SOCIAL",newSocialID);
 				}
@@ -321,8 +322,8 @@ public class SocialData extends StdWebMacro
 							old=last;
 						str.append(old+", ");
 					}
-					final Vector TYPES=new Vector();
-					final Vector EXTNS=new Vector();
+					final Vector<String> TYPES=new Vector<String>();
+					final Vector<String> EXTNS=new Vector<String>();
 					for (final String element : BTYPES)
 						TYPES.addElement(element);
 					for (final String element : BEXTNS)
@@ -388,8 +389,8 @@ public class SocialData extends StdWebMacro
 
 					for(int t=0;t<TYPES.size();t++)
 					{
-						final String TYPE=(String)TYPES.elementAt(t);
-						final String EXTN=(String)EXTNS.elementAt(t);
+						final String TYPE=TYPES.elementAt(t);
+						final String EXTN=EXTNS.elementAt(t);
 						Social S=null;
 						for(int s=0;s<SV.size();s++)
 							if(SV.get(s).Name().equalsIgnoreCase(last+EXTN))

@@ -35,7 +35,7 @@ import java.net.URLEncoder;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class GrinderMap extends GrinderFlatMap
 {
 	private GrinderRoom[][][] grid=null;
@@ -45,19 +45,19 @@ public class GrinderMap extends GrinderFlatMap
 
 	public GrinderMap()
 	{
-		areaMap = new Vector();
-		hashRooms = new Hashtable();
-		for (final Enumeration q = CMLib.map().areas(); q.hasMoreElements(); )
+		areaMap = new Vector<GrinderRoom>();
+		hashRooms = new Hashtable<String,GrinderRoom>();
+		for (final Enumeration<Area> q = CMLib.map().areas(); q.hasMoreElements(); )
 		{
-			final Area A = (Area) q.nextElement();
+			final Area A = q.nextElement();
 			// for now, skip hidden areas.  Areas are often hidden if they aren't linked
 			// to the world (ie under construction or Archon only)
 			if ((CMLib.flags().isHidden(A))
 			||(CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 					continue;
-			for (final Enumeration r = A.getProperRoomnumbers().getRoomIDs(); r.hasMoreElements(); )
+			for (final Enumeration<String> r = A.getProperRoomnumbers().getRoomIDs(); r.hasMoreElements(); )
 			{
-				final String roomID=(String)r.nextElement();
+				final String roomID=r.nextElement();
 				if((roomID.length() > 0)&&(roomID.indexOf("#(")<0))
 				{
 					final GrinderRoom GR = new GrinderRoom(roomID);
@@ -145,11 +145,11 @@ public class GrinderMap extends GrinderFlatMap
 		}
 	}
 
-	protected GrinderRoom getProcessedRoomAt(Hashtable processed, int x, int y, int z)
+	protected GrinderRoom getProcessedRoomAt(Hashtable<String,GrinderRoom> processed, int x, int y, int z)
 	{
-		for (final Enumeration e = processed.elements(); e.hasMoreElements(); )
+		for (final Enumeration<GrinderRoom> e = processed.elements(); e.hasMoreElements(); )
 		{
-			final GrinderRoom room = (GrinderRoom) e.nextElement();
+			final GrinderRoom room = e.nextElement();
 			if ( (room.xy[0] == x) && (room.xy[1] == y) && (room.z == z))
 				return room;
 		}
@@ -174,11 +174,11 @@ public class GrinderMap extends GrinderFlatMap
 		return null;
 	}
 
-	protected boolean isEmptyCluster(Hashtable processed, int x, int y, int z)
+	protected boolean isEmptyCluster(Hashtable<String,GrinderRoom> processed, int x, int y, int z)
 	{
-		for (final Enumeration e = processed.elements(); e.hasMoreElements(); )
+		for (final Enumeration<GrinderRoom> e = processed.elements(); e.hasMoreElements(); )
 		{
-			final GrinderRoom room = (GrinderRoom) e.nextElement();
+			final GrinderRoom room = e.nextElement();
 			if ( ( ( (room.xy[0] > x - CLUSTERSIZE) && (room.xy[0] < x + CLUSTERSIZE))
 				  && ( (room.xy[1] > y - CLUSTERSIZE) && (room.xy[1] < y + CLUSTERSIZE)))
 				|| ( (room.xy[0] == x) && (room.xy[1] == y)) && (room.z == z))
@@ -187,7 +187,7 @@ public class GrinderMap extends GrinderFlatMap
 		return true;
 	}
 
-	protected void findEmptyCluster(Hashtable processed, Vector<Integer> XYZ)
+	protected void findEmptyCluster(Hashtable<String,GrinderRoom> processed, Vector<Integer> XYZ)
 	{
 		final int x = XYZ.elementAt(0).intValue();
 		final int y = XYZ.elementAt(1).intValue();
@@ -264,7 +264,7 @@ public class GrinderMap extends GrinderFlatMap
 			}
 		}
 
-		final Hashtable processed = new Hashtable();
+		final Hashtable<String,GrinderRoom> processed = new Hashtable<String,GrinderRoom>();
 		boolean doneSomething = true;
 
 		while ( (areaMap.size() > processed.size()) && (doneSomething))
@@ -592,7 +592,7 @@ public class GrinderMap extends GrinderFlatMap
 	public void placeRoom(GrinderRoom room,
 						  int favoredX,
 						  int favoredY,
-						  Hashtable processed,
+						  Hashtable<String,GrinderRoom> processed,
 						  boolean doNotDefer,
 						  boolean passTwo,
 						  int depth,

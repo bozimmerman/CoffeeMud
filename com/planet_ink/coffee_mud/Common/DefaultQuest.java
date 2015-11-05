@@ -869,10 +869,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							if(mobName.length()==0)
 								mobName="ANY";
 							final boolean addAll=mobName.equalsIgnoreCase("all");
-							final List choices0=new Vector();
-							final List choices1=new Vector();
-							final List choices2=new Vector();
-							final List choices3=new Vector();
+							final List<MOB> choices0=new Vector<MOB>();
+							final List<MOB> choices1=new Vector<MOB>();
+							final List<MOB> choices2=new Vector<MOB>();
+							final List<MOB> choices3=new Vector<MOB>();
 							try
 							{
 								for(final Enumeration e=getAppropriateRoomSet(q);e.hasMoreElements();)
@@ -938,10 +938,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							choices=(List)getObjectIfSpecified(p,args,2,1);
 						}catch(final CMException ex)
 						{
-							final List choices0=new Vector();
-							final List choices1=new Vector();
-							final List choices2=new Vector();
-							final List choices3=new Vector();
+							final List<Item> choices0=new Vector<Item>();
+							final List<Item> choices1=new Vector<Item>();
+							final List<Item> choices2=new Vector<Item>();
+							final List<Item> choices3=new Vector<Item>();
 							if(itemName.length()==0)
 								itemName="ANY";
 							final boolean addAll=itemName.equalsIgnoreCase("all");
@@ -1736,7 +1736,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							}
 							final List<MOB> V=new ArrayList<MOB>();
 							V.addAll(q.mobGroup);
-							q.mysteryData.agentGroup=new Vector();
+							q.mysteryData.agentGroup=new Vector<MOB>();
 							if(q.mysteryData.agent!=null)
 								q.mysteryData.agentGroup.add(q.mysteryData.agent);
 							int num=CMath.parseIntExpression(numStr);
@@ -1813,7 +1813,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						final List<Room> V=new ArrayList<Room>();
 						V.addAll(q.roomGroup);
-						final List<Room> V2=new Vector();
+						final List<Room> V2=new Vector<Room>();
 						Room R=null;
 						if(cmd.equals("WHEREHAPPENEDGROUP"))
 						{
@@ -2014,7 +2014,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						if(p.size()<3)
 							continue;
-						V2=new Vector();
+						V2=new Vector<String>();
 						String Mstr=null;
 						if(cmd.equals("MOTIVEGROUP"))
 						{
@@ -2206,12 +2206,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', !"+cmd.toLowerCase()+" mobgroup itemgroup.");
 							break;
 						}
-						final List V=new ArrayList();
+						final List<Environmental> V=new ArrayList<Environmental>();
 						if((q.mobGroup!=null)&&(q.mobGroup.size()>0))
 							V.addAll(q.mobGroup);
 						else
 							V.addAll(q.itemGroup);
-						V2=new Vector();
+						V2=new Vector<Environmental>();
 						Environmental finalE=null;
 						if(cmd.equals("TARGETGROUP"))
 						{
@@ -2364,7 +2364,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', Invalid XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
 							break;
 						}
-						q.loadedMobs=new Vector();
+						q.loadedMobs=new Vector<MOB>();
 						final String errorStr=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),q.loadedMobs,null);
 						if(errorStr.length()>0)
 						{
@@ -2460,7 +2460,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							mobName="ANY";
 						final boolean addAll=mobName.equalsIgnoreCase("ALL")
 										||mobName.equalsIgnoreCase("ANY");
-						final List<MOB> choices=new Vector();
+						final List<MOB> choices=new Vector<MOB>();
 						for(int i=0;i<q.loadedMobs.size();i++)
 						{
 							final MOB M2=q.loadedMobs.get(i);
@@ -2546,7 +2546,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							break;
 						}
 						final String itemName=CMParms.combine(p,2);
-						final List<Item> choices=new Vector();
+						final List<Item> choices=new Vector<Item>();
 						for(int i=0;i<q.loadedItems.size();i++)
 						{
 							final Item I2=q.loadedItems.get(i);
@@ -2634,7 +2634,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							break;
 						}
 						final String mobName=CMParms.combine(p,2);
-						final List<MOB> choices=new Vector();
+						final List<MOB> choices=new Vector<MOB>();
 						ReverseEnumeration<PreservedQuestObject> e;
 						for(e=new ReverseEnumeration<PreservedQuestObject>(q.worldObjects);e.hasMoreElements();)
 						{
@@ -3795,7 +3795,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		if(mob==null)
 			return;
 		runtimeRegisterObject(mob);
-		final Vector V=new Vector();
+		final Vector<Object> V=new Vector<Object>();
 		V.addElement(mob);
 		Ability A4=mob.fetchAbility(abilityID);
 		if(A4!=null)
@@ -3858,7 +3858,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		if(affected==null)
 			return;
 		runtimeRegisterObject(affected);
-		final Vector V=new Vector();
+		final Vector<Object> V=new Vector<Object>();
 		V.addElement(affected);
 		Ability A4=affected.fetchEffect(abilityID);
 		if(A4!=null)
@@ -3901,7 +3901,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		if(behaving==null)
 			return;
 		runtimeRegisterObject(behaving);
-		final Vector V=new Vector();
+		final Vector<Object> V=new Vector<Object>();
 		V.addElement(behaving);
 		Behavior B=behaving.fetchBehavior(behaviorID);
 		if(B!=null)
@@ -3940,7 +3940,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			return;
 		if(E instanceof PhysicalAgent)
 			runtimeRegisterObject((PhysicalAgent)E);
-		final Vector V=new Vector();
+		final Vector<Object> V=new Vector<Object>();
 		V.addElement(E);
 		stat=stat.toUpperCase().trim();
 		String oldVal="";

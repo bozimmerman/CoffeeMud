@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Weather extends StdCommand
 {
 	public Weather(){}
@@ -49,9 +49,9 @@ public class Weather extends StdCommand
 		if((commands.size()>1)&&((room.domainType()&Room.INDOORS)==0)&&(commands.get(1).equalsIgnoreCase("WORLD")))
 		{
 			final StringBuffer tellMe=new StringBuffer("");
-			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				final Area A=(Area)a.nextElement();
+				final Area A=a.nextElement();
 				if((CMLib.flags().canAccess(mob,A))
 				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 					tellMe.append(CMStrings.padRight(A.name(),20)+": "+A.getClimateObj().weatherDescription(room)+"\n\r");

@@ -83,8 +83,8 @@ public class GenCharClass extends StdCharClass
 	// IS *only* used by stdcharclass for weaponliminatations, buildDisallowedWeaponClasses,  buildRequiredWeaponMaterials
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
 
-	private HashSet requiredWeaponMaterials=null; // set of Integer material masks
-	@Override protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
+	private Set<Integer> requiredWeaponMaterials=null; // set of Integer material masks
+	@Override protected Set<Integer> requiredWeaponMaterials(){return requiredWeaponMaterials;}
 
 	protected int requiredArmorSourceMinor=-1;
 	@Override public int requiredArmorSourceMinor(){return requiredArmorSourceMinor;}
@@ -95,8 +95,8 @@ public class GenCharClass extends StdCharClass
 	private Pair<String,Integer>[] minimumStatRequirements=new Pair[0];
 	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	protected HashSet disallowedWeaponSet=null; // set of Integers for weapon classes
-	@Override protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
+	protected Set<Integer> disallowedWeaponSet=null; // set of Integers for weapon classes
+	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
 	protected CharStats setStats=null;
 	protected CharStats adjStats=null;
 	protected PhyStats adjPStats=null;
@@ -631,7 +631,7 @@ public class GenCharClass extends StdCharClass
 		disallowedWeaponSet=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
-			disallowedWeaponSet=new HashSet();
+			disallowedWeaponSet=new HashSet<Integer>();
 			for(int x=0;x<xV.size();x++)
 			{
 				final XMLLibrary.XMLpiece iblk=xV.get(x);
@@ -646,7 +646,7 @@ public class GenCharClass extends StdCharClass
 		requiredWeaponMaterials=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
-			requiredWeaponMaterials=new HashSet();
+			requiredWeaponMaterials=new HashSet<Integer>();
 			for(int x=0;x<xV.size();x++)
 			{
 				final XMLLibrary.XMLpiece iblk=xV.get(x);
@@ -676,8 +676,8 @@ public class GenCharClass extends StdCharClass
 		}
 
 		// security groups
-		final List<List<String>> groupSet=new Vector();
-		final List<Integer> groupLevelSet=new Vector();
+		final List<List<String>> groupSet=new Vector<List<String>>();
+		final List<Integer> groupLevelSet=new Vector<Integer>();
 		int index=0;
 		int lastLevel=-1;
 		while(true)
@@ -1046,14 +1046,14 @@ public class GenCharClass extends StdCharClass
 			if (CMath.s_int(val) == 0)
 				disallowedWeaponSet = null;
 			else
-				disallowedWeaponSet = new HashSet();
+				disallowedWeaponSet = new HashSet<Integer>();
 			break;
 		case 32:
 		{
 			final List<String> V = CMParms.parseCommas(val, true);
 			if (V.size() > 0)
 			{
-				disallowedWeaponSet = new HashSet();
+				disallowedWeaponSet = new HashSet<Integer>();
 				for (int v = 0; v < V.size(); v++)
 					disallowedWeaponSet.add(Integer.valueOf(CMath.s_int(V.get(v))));
 			}
@@ -1147,20 +1147,24 @@ public class GenCharClass extends StdCharClass
 			final List<String>[] newGroups = new Vector[num];
 			final Integer[] newLevels = new Integer[num];
 			for (int i = 0; i < securityGroups.length; i++)
+			{
 				if (i < num)
 				{
 					newGroups[i] = securityGroups[i];
 					newLevels[i] = securityGroupLevels[i];
 				}
+			}
 			if (newGroups.length > securityGroups.length)
+			{
 				for (int i = securityGroups.length; i < newGroups.length; i++)
 				{
-					newGroups[i] = new Vector();
+					newGroups[i] = new Vector<String>();
 					if (i == 0)
 						newLevels[0] = Integer.valueOf(0);
 					else
 						newLevels[i] = Integer.valueOf(newLevels[i - 1].intValue() + 1);
 				}
+			}
 			securityGroups = newGroups;
 			securityGroupLevels = newLevels;
 			securityGroupCache.clear();
@@ -1180,14 +1184,14 @@ public class GenCharClass extends StdCharClass
 			if (CMath.s_int(val) == 0)
 				requiredWeaponMaterials = null;
 			else
-				requiredWeaponMaterials = new HashSet();
+				requiredWeaponMaterials = new HashSet<Integer>();
 			break;
 		case 47:
 		{
 			final List<String> V = CMParms.parseCommas(val, true);
 			if (V.size() > 0)
 			{
-				requiredWeaponMaterials = new HashSet();
+				requiredWeaponMaterials = new HashSet<Integer>();
 				for (int v = 0; v < V.size(); v++)
 					requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int(V.get(v))));
 			}

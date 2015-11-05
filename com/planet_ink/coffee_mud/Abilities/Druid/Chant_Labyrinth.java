@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_Labyrinth extends Chant
 {
 	@Override public String ID() { return "Chant_Labyrinth"; }
@@ -139,7 +138,7 @@ public class Chant_Labyrinth extends Chant
 				}
 				newRoom.getArea().fillInAreaRoom(newRoom);
 				beneficialAffect(mob,newRoom,asLevel,0);
-				final Vector<MOB> everyone=new Vector();
+				final Vector<MOB> everyone=new Vector<MOB>();
 				for(int m=0;m<oldRoom.numInhabitants();m++)
 				{
 					final MOB follower=oldRoom.fetchInhabitant(m);

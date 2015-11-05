@@ -402,7 +402,7 @@ public class QuestMaker extends StdWebMacro
 						oldValue=defValue;
 					if(oldValue==null)
 						oldValue="";
-					List<Item> itemList=new Vector();
+					List<Item> itemList=new Vector<Item>();
 					itemList=RoomData.contributeItems(itemList);
 					final Item oldItem=RoomData.getItemFromAnywhere(itemList,oldValue);
 					list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
@@ -463,7 +463,7 @@ public class QuestMaker extends StdWebMacro
 						oldValue=defValue;
 					if(oldValue != null)
 					{
-						List<MOB> mobList=new Vector();
+						List<MOB> mobList=new Vector<MOB>();
 						mobList=RoomData.contributeMOBs(mobList);
 						final MOB oldMob=RoomData.getMOBFromCode(mobList,oldValue);
 						list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");

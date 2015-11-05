@@ -300,7 +300,7 @@ public class CharGen extends StdCommand
 		Area A=null;
 		MOB mob=null;
 		DVector classSet=new DVector(2);
-		Hashtable failSkillCheck=null;
+		Hashtable<String,int[]> failSkillCheck=null;
 	}
 
 	public void combatRun(MOB mob, List<String> commands)
@@ -448,7 +448,7 @@ public class CharGen extends StdCommand
 			}
 			else
 			if(s.equalsIgnoreCase("FAILCHECK"))
-				c.failSkillCheck=new Hashtable();
+				c.failSkillCheck=new Hashtable<String,int[]>();
 		}
 
 		final MOB badGuyM=tempBadGuyM;
@@ -847,7 +847,7 @@ public class CharGen extends StdCommand
 											failed=true;
 											s=s.substring(1);
 										}
-										int[] times=(int[])c.failSkillCheck.get(s);
+										int[] times=c.failSkillCheck.get(s);
 										if(times==null)
 										{
 											times=new int[2];
@@ -925,7 +925,7 @@ public class CharGen extends StdCommand
 								for(final Enumeration i=c.failSkillCheck.keys();i.hasMoreElements();)
 								{
 									final String s=(String)i.nextElement();
-									final int[] times=(int[])c.failSkillCheck.get(s);
+									final int[] times=c.failSkillCheck.get(s);
 									if(times[1]>0)
 									{
 										final int pct=(int)Math.round(100.0*CMath.div(times[1],times[0]));

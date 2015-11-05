@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Export extends StdCommand
 {
 	public Export(){}
@@ -40,6 +40,7 @@ public class Export extends StdCommand
 	private final String[] access=I(new String[]{"EXPORT"});
 	@Override public String[] getAccessWords(){return access;}
 
+	@SuppressWarnings("rawtypes")
 	private final static Class[][] internalParameters=new Class[][]{
 		{String.class,String.class,String.class,Integer.class,null,Area.class,Room.class}
 	};
@@ -345,9 +346,9 @@ public class Export extends StdCommand
 				StringBuffer buf=new StringBuffer("");
 				if(fileNameCode!=2)
 					buf.append("<AREAS>");
-				for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
-					final Area A=(Area)a.nextElement();
+					final Area A=a.nextElement();
 					if(A!=null)
 					{
 						if(S!=null)
@@ -406,7 +407,7 @@ public class Export extends StdCommand
 		{
 			if(fileNameCode==2)
 				fileName=fileName+"/mobs";
-			final Hashtable found=new Hashtable();
+			final Hashtable<String,List<MOB>> found=new Hashtable<String,List<MOB>>();
 			if(commandType.equalsIgnoreCase("ROOM"))
 				xml="<MOBS>"+CMLib.coffeeMaker().getRoomMobs(room,custom,files,found).toString()+"</MOBS>";
 			else
@@ -415,9 +416,9 @@ public class Export extends StdCommand
 				if(S!=null)
 					S.rawPrint(L("Reading area mobs '@x1'...",area.Name()));
 				final StringBuffer buf=new StringBuffer("<MOBS>");
-				for(final Enumeration r=area.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
 				{
-					final Room R=(Room)r.nextElement();
+					final Room R=r.nextElement();
 					//if(S!=null) S.rawPrint(".");
 					buf.append(CMLib.coffeeMaker().getRoomMobs(R,custom,files,found).toString());
 				}
@@ -432,9 +433,9 @@ public class Export extends StdCommand
 				final StringBuffer buf=new StringBuffer("<MOBS>");
 				try
 				{
-					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						final Room R=(Room)r.nextElement();
+						final Room R=r.nextElement();
 						//if(S!=null) S.rawPrint(".");
 						buf.append(CMLib.coffeeMaker().getRoomMobs(R,custom,files,found).toString());
 					}
@@ -469,7 +470,7 @@ public class Export extends StdCommand
 				fileName=fileName+"/items";
 			}
 
-			final Hashtable found=new Hashtable();
+			final Hashtable<String,List<Item>> found=new Hashtable<String,List<Item>>();
 			if(commandType.equalsIgnoreCase("ROOM"))
 				xml="<ITEMS>"+CMLib.coffeeMaker().getRoomItems(room,found,files,type).toString()+"</ITEMS>";
 			else
@@ -478,9 +479,9 @@ public class Export extends StdCommand
 				if(S!=null)
 					S.rawPrint(L("Reading area @x1 '@x2'...",subType.toLowerCase(),area.Name()));
 				final StringBuffer buf=new StringBuffer("<ITEMS>");
-				for(final Enumeration r=area.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
 				{
-					final Room R=(Room)r.nextElement();
+					final Room R=r.nextElement();
 					//if(S!=null) S.rawPrint(".");
 					buf.append(CMLib.coffeeMaker().getRoomItems(R,found,files,type).toString());
 				}
@@ -495,9 +496,9 @@ public class Export extends StdCommand
 				final StringBuffer buf=new StringBuffer("<ITEMS>");
 				try
 				{
-					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						final Room R=(Room)r.nextElement();
+						final Room R=r.nextElement();
 						//if(S!=null) S.rawPrint(".");
 						buf.append(CMLib.coffeeMaker().getRoomItems(R,found,files,type).toString());
 					}

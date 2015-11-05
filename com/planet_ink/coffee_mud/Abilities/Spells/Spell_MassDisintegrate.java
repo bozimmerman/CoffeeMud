@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_MassDisintegrate extends Spell
 {
 	@Override public String ID() { return "Spell_MassDisintegrate"; }
@@ -55,16 +55,16 @@ public class Spell_MassDisintegrate extends Spell
 				mob.tell(L("There doesn't appear to be anyone here worth disintgrating."));
 				return false;
 			}
-			h=new HashSet();
+			h=new HashSet<MOB>();
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		int avgLevel=0;
-		for (final Object element : h)
+		for (final MOB element : h)
 		{
-			final MOB mob2=(MOB)element;
+			final MOB mob2=element;
 			avgLevel+=mob2.phyStats().level();
 		}
 		if(h.size()>0)
@@ -100,7 +100,7 @@ public class Spell_MassDisintegrate extends Spell
 					}
 				}
 			mob.location().recoverRoomStats();
-			final Vector V=new Vector();
+			final Vector<Item> V=new Vector<Item>();
 			for(int i=mob.location().numItems()-1;i>=0;i--)
 			{
 				final Item I=mob.location().getItem(i);
@@ -120,7 +120,7 @@ public class Spell_MassDisintegrate extends Spell
 			}
 			for(int i=0;i<V.size();i++)
 			{
-				final Item I=(Item)V.elementAt(i);
+				final Item I=V.elementAt(i);
 				if((!(I instanceof DeadBody))
 				||(!((DeadBody)I).isPlayerCorpse())
 				||(((DeadBody)I).getMobName().equals(mob.Name())))

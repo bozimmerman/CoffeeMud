@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -75,9 +74,9 @@ public class StdClanCommonItem extends StdClanItem
 		return false;
 	}
 
-	public Vector resourceHere(Room R, int material)
+	public Vector<Item> resourceHere(Room R, int material)
 	{
-		final Vector here=new Vector();
+		final Vector<Item> here=new Vector<Item>();
 		for(int i=0;i<R.numItems();i++)
 		{
 			final Item I2=R.getItem(i);
@@ -92,9 +91,9 @@ public class StdClanCommonItem extends StdClanItem
 		return here;
 	}
 
-	public Vector resourceHere(MOB M, int material)
+	public Vector<Item> resourceHere(MOB M, int material)
 	{
-		final Vector here=new Vector();
+		final Vector<Item> here=new Vector<Item>();
 		for(int i=0;i<M.numItems();i++)
 		{
 			final Item I2=M.getItem(i);
@@ -109,26 +108,27 @@ public class StdClanCommonItem extends StdClanItem
 		return here;
 	}
 
-	public List resourceHere(Room R, List materials)
+	public List<Item> resourceHere(Room R, List<Integer> materials)
 	{
-		final List allMat=new Vector();
-		List V=null;
+		final List<Item> allMat=new Vector<Item>();
+		List<Item> V=null;
 		for(int m=0;m<materials.size();m++)
 		{
-			V=resourceHere(R,((Integer)materials.get(m)).intValue());
+			V=resourceHere(R,materials.get(m).intValue());
 			for(int v=0;v<V.size();v++)
 				allMat.add(V.get(v));
 			V.clear();
 		}
 		return allMat;
 	}
-	public List resourceHere(MOB M, List materials)
+	
+	public List<Item> resourceHere(MOB M, List<Integer> materials)
 	{
-		final List allMat=new Vector();
-		List V=null;
+		final List<Item> allMat=new Vector<Item>();
+		List<Item> V=null;
 		for(int m=0;m<materials.size();m++)
 		{
-			V=resourceHere(M,((Integer)materials.get(m)).intValue());
+			V=resourceHere(M,materials.get(m).intValue());
 			for(int v=0;v<V.size();v++)
 				allMat.add(V.get(v));
 			V.clear();
@@ -136,10 +136,10 @@ public class StdClanCommonItem extends StdClanItem
 		return allMat;
 	}
 
-	public List enCode(MOB M, String req)
+	public List<Integer> enCode(MOB M, String req)
 	{
 		req=req.toUpperCase();
-		final List V=new Vector();
+		final List<Integer> V=new Vector<Integer>();
 		for(final RawMaterial.Material m : RawMaterial.Material.values())
 		{
 			final int x=req.indexOf(m.desc());
@@ -404,13 +404,13 @@ public class StdClanCommonItem extends StdClanItem
 							||(!I.amWearingAt(Wearable.IN_INVENTORY)))
 								I=null;
 						}
-						final Vector V=new Vector();
+						final Vector<String> V=new Vector<String>();
 						if(I!=null)
 							V.addElement(I.name());
 						success=A.invoke(M,V,null,false,phyStats().level());
 					}
 					else
-						success=A.invoke(M,new Vector(),null,false,phyStats().level());
+						success=A.invoke(M,new Vector<String>(),null,false,phyStats().level());
 					if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
 					{
 						DVector DV=needChart.get(M.location().getArea());

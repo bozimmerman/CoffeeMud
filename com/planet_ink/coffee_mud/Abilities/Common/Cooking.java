@@ -36,7 +36,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Cooking extends CraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Cooking"; }
@@ -71,8 +70,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	protected Container cookingPot=null;
 	protected String finalDishName=null;
 	protected int finalAmount=0;
-	protected List finalRecipe=null;
-	protected Hashtable oldPotContents=null;
+	protected List<String> finalRecipe=null;
+	protected Hashtable<String,Integer> oldPotContents=null;
 	protected String defaultFoodSound="sizzle.wav";
 	protected String defaultDrinkSound="liquid.wav";
 
@@ -196,15 +195,15 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	public boolean contentsSame(Hashtable h1, Hashtable h2)
+	public boolean contentsSame(Hashtable<String,Integer> h1, Hashtable<String,Integer> h2)
 	{
 		if(h1.size()!=h2.size())
 			return false;
-		for(final Enumeration e=h1.keys();e.hasMoreElements();)
+		for(final Enumeration<String> e=h1.keys();e.hasMoreElements();)
 		{
-			final String key=(String)e.nextElement();
-			final Integer INT1=(Integer)h1.get(key);
-			final Integer INT2=(Integer)h2.get(key);
+			final String key=e.nextElement();
+			final Integer INT1=h1.get(key);
+			final Integer INT2=h2.get(key);
 			if((INT1==null)||(INT2==null))
 				return false;
 			if(INT1.intValue()!=INT2.intValue())
@@ -262,10 +261,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		final String[] contents=new String[oldPotContents.size()];
 		final int[] amounts=new int[oldPotContents.size()];
 		int numIngredients=0;
-		for(final Enumeration e=oldPotContents.keys();e.hasMoreElements();)
+		for(final Enumeration<String> e=oldPotContents.keys();e.hasMoreElements();)
 		{
-			contents[numIngredients]=(String)e.nextElement();
-			amounts[numIngredients]=((Integer)oldPotContents.get(contents[numIngredients])).intValue();
+			contents[numIngredients]=e.nextElement();
+			amounts[numIngredients]=oldPotContents.get(contents[numIngredients]).intValue();
 			numIngredients++;
 		}
 
@@ -346,10 +345,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public Vector<String> extraIngredientsInOldContents(List<String> Vr, boolean perfectOnly)
 	{
 		final Vector<String> extra=new Vector<String>();
-		for(final Enumeration e=oldPotContents.keys();e.hasMoreElements();)
+		for(final Enumeration<String> e=oldPotContents.keys();e.hasMoreElements();)
 		{
 			boolean found=false;
-			final String ingredient=(String)e.nextElement();
+			final String ingredient=e.nextElement();
 
 			if(honorHerbs()&&ingredient.toUpperCase().startsWith("HERBS/")) // herbs exception
 				found=true;
@@ -390,9 +389,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if(vr<Vr.size()-1)
 					amount=CMath.s_int(Vr.get(vr+1));
 				boolean found=false;
-				for(final Enumeration e=oldPotContents.keys();e.hasMoreElements();)
+				for(final Enumeration<String> e=oldPotContents.keys();e.hasMoreElements();)
 				{
-					final String ingredient2=((String)e.nextElement()).toUpperCase();
+					final String ingredient2=e.nextElement().toUpperCase();
 					final int index=ingredient2.toUpperCase().indexOf(ingredient.toUpperCase()+"/");
 					if((((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1))))))
 					||((!perfectOnly)&&ingredient2.equalsIgnoreCase(ingredient.toUpperCase())))
@@ -898,9 +897,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			final List<String> Vr=allRecipes.get(v);
 			boolean found=false;
-			for(final Enumeration e=oldPotContents.keys();e.hasMoreElements();)
+			for(final Enumeration<String> e=oldPotContents.keys();e.hasMoreElements();)
 			{
-				final String ingredient2=((String)e.nextElement()).toUpperCase();
+				final String ingredient2=e.nextElement().toUpperCase();
 				final int index =ingredient2.indexOf(Vr.get(RCP_MAININGR).toUpperCase()+"/");
 				if((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1)))))
 				{ found=true; break;}
@@ -964,7 +963,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			}
 			return false;
 		}
-		final Vector<String> complaints=new Vector();
+		final Vector<String> complaints=new Vector<String>();
 		for(int vr=0;vr<perfectRecipes.size();vr++)
 		{
 			final List<String> Vr=perfectRecipes.elementAt(vr);
@@ -1023,7 +1022,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		}
 
 		buildingI=buildItem(mob,finalRecipe,cookingPot.getDeepContents());
-		duration=getDuration(mob, CMath.isInteger((String)finalRecipe.get(RCP_LEVEL))?CMath.s_int((String)finalRecipe.get(RCP_LEVEL)):1);
+		duration=getDuration(mob, CMath.isInteger(finalRecipe.get(RCP_LEVEL))?CMath.s_int(finalRecipe.get(RCP_LEVEL)):1);
 		//***********************************************
 		//* done figuring out recipe
 		//***********************************************

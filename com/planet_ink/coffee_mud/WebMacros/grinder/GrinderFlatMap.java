@@ -57,8 +57,8 @@ public class GrinderFlatMap
 	public GrinderFlatMap(Area A, int[] xyxy)
 	{
 		area=A;
-		areaMap=new Vector();
-		hashRooms=new Hashtable();
+		areaMap=new Vector<GrinderRoom>();
+		hashRooms=new Hashtable<String,GrinderRoom>();
 		Enumeration<Room> r=A.getProperMap();
 		Room R=null;
 		boundsXYXY=xyxy;
@@ -157,7 +157,7 @@ public class GrinderFlatMap
 			}
 		}
 		//for(int a=0;a<areaMap.size();a++)
-		//	((GrinderRoom)areaMap.elementAt(a)).score=scoreRoom((GrinderRoom)areaMap.elementAt(a), "X!X!X", new int[2], new HashSet(), new HashSet());
+		//	((GrinderRoom)areaMap.elementAt(a)).score=scoreRoom((GrinderRoom)areaMap.elementAt(a), "X!X!X", new int[2], new HashSet<String>(), new HashSet<String>());
 	}
 
 	public double getDistanceFrom(int[] xy1,int[] xy2)
@@ -209,12 +209,12 @@ public class GrinderFlatMap
 		if((areaMap==null)||(hashRooms==null)||(area instanceof GridZones))
 			return;
 
-		final List<List<GrinderRoom>> sets=new Vector();
+		final List<List<GrinderRoom>> sets=new Vector<List<GrinderRoom>>();
 		List<GrinderRoom> bestSet=null;
-		final HashSet roomsDone=new HashSet();
+		final HashSet<String> roomsDone=new HashSet<String>();
 		boolean didSomething=true;
 		// first, cluster the rooms WITHOUT positioning them
-		final List<GrinderRoom> finalCluster=new Vector();
+		final List<GrinderRoom> finalCluster=new Vector<GrinderRoom>();
 		while((roomsDone.size()<areaMap.size())&&(didSomething))
 		{
 			didSomething=false;
@@ -284,11 +284,11 @@ public class GrinderFlatMap
 		if((areaMap==null)||(hashRooms==null)||(area instanceof GridZones))
 			return;
 
-		final List<List<GrinderRoom>> sets=new Vector();
+		final List<List<GrinderRoom>> sets=new Vector<List<GrinderRoom>>();
 		final Set<String> roomsDone=new HashSet<String>();
 		boolean didSomething=true;
 		// first, cluster the rooms WITHOUT positioning them
-		final List<GrinderRoom> finalCluster=new Vector();
+		final List<GrinderRoom> finalCluster=new Vector<GrinderRoom>();
 		while((roomsDone.size()<areaMap.size())&&(didSomething))
 		{
 			didSomething=false;
@@ -496,11 +496,11 @@ public class GrinderFlatMap
 
 	public List<GrinderRoom> scoreRoomII(Map<String,GrinderRoom> H, GrinderRoom room, Set<String> roomsDone)
 	{
-		final HashSet coordsDone=new HashSet();
+		final HashSet<String> coordsDone=new HashSet<String>();
 		coordsDone.add(0+"/"+0);
 		roomsDone.add(room.roomID);
 
-		final List<GrinderRoom> V=new Vector();
+		final List<GrinderRoom> V=new Vector<GrinderRoom>();
 		V.add(room);
 		int startHere=0;
 		room.xy=new int[2];
@@ -562,7 +562,7 @@ public class GrinderFlatMap
 		return V;
 	}
 
-	public Vector<GrinderRoom> scoreRoom(Map<String,GrinderRoom> H, GrinderRoom room, HashSet roomsDone, boolean finalPosition)
+	public Vector<GrinderRoom> scoreRoom(Map<String,GrinderRoom> H, GrinderRoom room, HashSet<String> roomsDone, boolean finalPosition)
 	{
 		final HashSet<String> coordsDone=new HashSet<String>();
 		coordsDone.add(0+"/"+0);

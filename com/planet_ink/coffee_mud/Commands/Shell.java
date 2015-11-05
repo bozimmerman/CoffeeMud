@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Shell extends StdCommand
 {
 	public Shell(){}
@@ -580,7 +580,7 @@ public class Shell extends StdCommand
 			}
 			mob.session().print(L("\n\rSearching..."));
 			substring=substring.toUpperCase();
-			final Vector dirs2=new Vector();
+			final Vector<CMFile> dirs2=new Vector<CMFile>();
 			for (final CMFile dir : dirs)
 			{
 				final CMFile entry=dir;
@@ -588,8 +588,13 @@ public class Shell extends StdCommand
 				{
 					boolean proceed=true;
 					for (final String badTextExtension : badTextExtensions)
+					{
 						if(entry.getName().toUpperCase().endsWith(badTextExtension))
-						{ proceed=false; break;}
+						{
+							proceed = false;
+							break;
+						}
+					}
 					if(proceed)
 					{
 						final StringBuffer text=entry.textUnformatted();
@@ -606,7 +611,7 @@ public class Shell extends StdCommand
 			final StringBuffer msg=new StringBuffer("\n\r");
 			for(int d=0;d<dirs2.size();d++)
 			{
-				final CMFile entry=(CMFile)dirs2.get(d);
+				final CMFile entry=dirs2.get(d);
 				if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
 					msg.append(" ");
 				else

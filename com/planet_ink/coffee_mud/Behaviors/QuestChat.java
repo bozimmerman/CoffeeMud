@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class QuestChat extends MudChat
 {
 
@@ -63,7 +63,7 @@ public class QuestChat extends MudChat
 						 List<String> V=alreadySaid.get(speaker.Name().toUpperCase());
 						 if(V==null)
 						 {
-							 V=new Vector();
+							 V=new Vector<String>();
 							 alreadySaid.put(speaker.Name().toUpperCase(),V);
 						 }
 						 else

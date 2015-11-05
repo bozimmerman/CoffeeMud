@@ -36,7 +36,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Destroy extends StdCommand
 {
 	public Destroy(){}
@@ -1632,7 +1632,7 @@ public class Destroy extends StdCommand
 				}
 				if(theRoom!=null)
 				{
-					commands=new Vector();
+					commands=new Vector<String>();
 					commands.add("DESTROY");
 					commands.add("ROOM");
 					commands.add(theRoom.roomID());
@@ -1642,13 +1642,13 @@ public class Destroy extends StdCommand
 				{
 					if(Directions.getGoodDirectionCode(allWord)>=0)
 					{
-						commands=new Vector();
+						commands=new Vector<String>();
 						commands.add("DESTROY");
 						commands.add("ROOM");
 						commands.add(allWord);
 						execute(mob,commands,metaFlags);
 
-						commands=new Vector();
+						commands=new Vector<String>();
 						commands.add("DESTROY");
 						commands.add("EXIT");
 						commands.add(allWord);
@@ -1663,7 +1663,7 @@ public class Destroy extends StdCommand
 					else
 					if((thang=CMLib.map().findSpaceObject(allWord,true))!=null)
 					{
-						commands=new Vector();
+						commands=new Vector<String>();
 						commands.add("DESTROY");
 						if(thang instanceof Area)
 							commands.add("AREA");

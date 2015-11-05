@@ -296,7 +296,7 @@ public interface Law extends CMCommon
 
 	/**
 	 * Method for accessing the crimes, flags, and consequences
-	 * defined as the most basic law.  The returned Hashtable is
+	 * defined as the most basic law.  The returned map is
 	 * indexed by the basic crimes ID, and includes NUDITY, ARMED,
 	 * TRESPASSING, MURDER, ASSAULT, RESISTINGARREST, and PROPERTYROB.
 	 * The associated hashed element is a String[] array of various
@@ -313,7 +313,7 @@ public interface Law extends CMCommon
 
 	/**
 	 * Returns a map of various catch-all properties and variables
-	 * associated with the tax laws.  The Hashtable keys are all string
+	 * associated with the tax laws.  The map keys are all string
 	 * IDs denoting the property, while the associated element is an object
 	 * whose type differs by key.
 	 * TAXEVASION - a String[] array index by the constant BIT_*

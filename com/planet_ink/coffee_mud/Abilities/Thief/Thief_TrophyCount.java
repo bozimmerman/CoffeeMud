@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_TrophyCount extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TrophyCount"; }
@@ -49,15 +49,15 @@ public class Thief_TrophyCount extends ThiefSkill
 	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
-	Hashtable theList=new Hashtable();
+	Hashtable<String,String[]> theList=new Hashtable<String,String[]>();
 
 	@Override
 	public String text()
 	{
 		final StringBuffer str=new StringBuffer("<MOBS>");
-		for(final Enumeration e=theList.elements();e.hasMoreElements();)
+		for(final Enumeration<String[]> e=theList.elements();e.hasMoreElements();)
 		{
-			final String[] one=(String[])e.nextElement();
+			final String[] one=e.nextElement();
 			str.append("<MOB>");
 			str.append(CMLib.xml().convertXMLtoTag("RACE",one[0]));
 			str.append(CMLib.xml().convertXMLtoTag("KILLS",one[1]));
@@ -77,7 +77,7 @@ public class Thief_TrophyCount extends ThiefSkill
 			final Race R=msg.source().charStats().getMyRace();
 			if(!R.ID().equalsIgnoreCase("StdRace"))
 			{
-				String[] set=(String[])theList.get(R.name());
+				String[] set=theList.get(R.name());
 				if(set==null)
 				{
 					set=new String[4];
@@ -129,9 +129,9 @@ public class Thief_TrophyCount extends ThiefSkill
 		{
 			final StringBuffer str=new StringBuffer("");
 			str.append(L("@x1Kills\n\r",CMStrings.padRight(L("Name"),20)));
-			for(final Enumeration e=theList.elements();e.hasMoreElements();)
+			for(final Enumeration<String[]> e=theList.elements();e.hasMoreElements();)
 			{
-				final String[] one=(String[])e.nextElement();
+				final String[] one=e.nextElement();
 				final int kills=CMath.s_int(one[1]);
 				str.append(CMStrings.padRight(one[0],20)+kills+"\n\r");
 			}

@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class GrinderClasses
 {
 	public String name() { return "GrinderClasses"; }
@@ -193,7 +193,7 @@ public class GrinderClasses
 		old=httpReq.getUrlParameter("RACQUAL");
 		C.setStat("RACQUAL",(old==null)?"All":old);
 		String id="";
-		List<String> V=new Vector();
+		List<String> V=new Vector<String>();
 		for(int i=0;httpReq.isUrlParameter("NOWEAPS"+id);id=""+(++i))
 			V.add(httpReq.getUrlParameter("NOWEAPS"+id));
 		C.setStat("GETWEP",CMParms.toListString(V));
@@ -262,10 +262,12 @@ public class GrinderClasses
 			C.setStat("SSETLEVEL"+l, ((Integer)DV.elementAt(l,1)).toString());
 		}
 		id="";
-		V=new Vector();
+		V=new Vector<String>();
 		for(int i=0;httpReq.isUrlParameter("WEAPMATS"+id);id=""+(++i))
+		{
 			if(CMath.isInteger(httpReq.getUrlParameter("WEAPMATS"+id)))
 				V.add(httpReq.getUrlParameter("WEAPMATS"+id));
+		}
 		C.setStat("NUMWMAT",""+V.size());
 		C.setStat("GETWMAT",CMParms.toListString(V));
 		old=httpReq.getUrlParameter("ARMORMINOR");

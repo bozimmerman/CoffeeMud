@@ -375,9 +375,9 @@ public class Druid_ShapeShift extends StdAbility
 						}
 						list.append("\n\r");
 						if(CMLib.english().containsString(A.raceName,parm))
-							return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
+							return A.invoke(mob,new Vector<String>(),givenTarget,auto,asLevel);
 						if(CMLib.english().containsString(forms[A.myRaceCode],parm))
-							return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
+							return A.invoke(mob,new Vector<String>(),givenTarget,auto,asLevel);
 						for(int i1=raceLevel;i1>=0;i1--)
 							if(CMLib.english().containsString(shapes[i1][A.myRaceCode],parm))
 								return A.invoke(mob,new XVector(parm),givenTarget,auto,asLevel);
@@ -390,7 +390,7 @@ public class Druid_ShapeShift extends StdAbility
 				if(iparm<=allShapeshifts.size())
 				{
 					final Ability A=allShapeshifts.elementAt(iparm-1);
-					return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
+					return A.invoke(mob,new Vector<String>(),givenTarget,auto,asLevel);
 				}
 			}
 			mob.tell(L("'@x1' is an illegal form!\n\rValid forms include: \n\r@x2",parm,list.toString()));

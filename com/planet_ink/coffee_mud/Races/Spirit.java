@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spirit extends Undead
 {
 	@Override public String ID(){	return "Spirit"; }
@@ -50,7 +50,7 @@ public class Spirit extends Undead
 	{
 		if(naturalWeaponChoices==null)
 		{
-			naturalWeaponChoices=new Vector();
+			naturalWeaponChoices=new Vector<Weapon>();
 			for(int i=1;i<11;i++)
 			{
 				naturalWeapon=CMClass.getWeapon("StdWeapon");

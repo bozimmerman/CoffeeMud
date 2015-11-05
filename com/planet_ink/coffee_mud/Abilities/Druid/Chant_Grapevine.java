@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_Grapevine extends Chant
 {
 	@Override public String ID() { return "Chant_Grapevine"; }
@@ -145,8 +144,8 @@ public class Chant_Grapevine extends Chant
 						myPlant=Druid_MyPlants.myPlant(R,mob,ii);
 					}
 				}
-				C.myChants=new XVector(myChants);
-				myChants=new Vector();
+				C.myChants=new XVector<Ability>(myChants);
+				myChants=new Vector<Ability>();
 			}
 
 		}

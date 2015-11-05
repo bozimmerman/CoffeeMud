@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdPill extends StdFood implements Pill
 {
 	@Override public String ID(){	return "StdPill";}
@@ -90,9 +90,9 @@ public class StdPill extends StdFood implements Pill
 	{ return miscText;}
 	@Override public void setSpellList(String list){miscText=list;}
 
-	public static Vector getSpells(SpellHolder me)
+	public static Vector<Ability> getSpells(SpellHolder me)
 	{
-		final Vector theSpells=new Vector();
+		final Vector<Ability> theSpells=new Vector<Ability>();
 		final String names=me.getSpellList();
 		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
 		for(String thisOne : parsedSpells)

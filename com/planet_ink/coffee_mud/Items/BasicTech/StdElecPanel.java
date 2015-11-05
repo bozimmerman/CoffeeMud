@@ -107,7 +107,6 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 	}
 
 	@Override 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -132,7 +131,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 						}
 						else
 						{
-							installA.invoke(msg.source(),new XVector("INSTALL",msg.tool()), (Physical)msg.target(), false, 0);
+							installA.invoke(msg.source(),new XVector<String>("INSTALL",msg.tool().Name()), (Physical)msg.target(), false, 0);
 							return false;
 						}
 					}

@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_ItemTransporter extends Property
 {
 	@Override public String ID() { return "Prop_ItemTransporter"; }
@@ -68,7 +68,7 @@ public class Prop_ItemTransporter extends Property
 		Integer lastLook=lastLooks.get(text());
 		if((possibilities==null)||(lastLook==null)||(lastLook.intValue()<0))
 		{
-			possibilities=new Vector();
+			possibilities=new Vector<PhysicalAgent>();
 			possiblePossibilities.put(text(),possibilities);
 			lastLook=Integer.valueOf(10);
 			lastLooks.put(text(),lastLook);
@@ -82,9 +82,9 @@ public class Prop_ItemTransporter extends Property
 			nextDestination=null;
 			try
 			{
-				for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					final Room room=(Room)r.nextElement();
+					final Room room=r.nextElement();
 					Ability A=room.fetchEffect("Prop_ItemTransReceiver");
 					if((A!=null)&&(A.text().equalsIgnoreCase(text())))
 						possibilities.add(room);

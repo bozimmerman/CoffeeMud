@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_SummonMonster extends Spell
 {
 	@Override public String ID() { return "Spell_SummonMonster"; }
@@ -114,7 +114,7 @@ public class Spell_SummonMonster extends Spell
 		if(R==null)
 			return null;
 		MOB newMOB=null;
-		final Vector choices=new Vector();
+		final Vector<MOB> choices=new Vector<MOB>();
 		MOB M=null;
 		int range=0;
 		int diff=2;
@@ -138,25 +138,35 @@ public class Spell_SummonMonster extends Spell
 		while((choices.size()==0)&&(range<100))
 		{
 			range+=diff;
-			for(final Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
+			for(final Enumeration<MOB> e=CMClass.mobTypes();e.hasMoreElements();)
 			{
-				M=(MOB)((MOB)e.nextElement()).newInstance();
+				M=(MOB)e.nextElement().newInstance();
 				if((M.basePhyStats().level()<level-range)
 				||(M.basePhyStats().level()>level+range)
 				||(M.isGeneric())
 				||(!CMLib.flags().isEvil(M))
 				||(!M.baseCharStats().getMyRace().canBreedWith(M.baseCharStats().getMyRace()))
-				||CMLib.flags().isGolem(M)
-				){ M.destroy(); try{Thread.sleep(1);}catch(final Exception e1){} continue;}
+				||CMLib.flags().isGolem(M))
+				{
+					M.destroy();
+					try
+					{
+						Thread.sleep(1);
+					}
+					catch (final Exception e1)
+					{
+					}
+					continue;
+				}
 				choices.addElement(M);
 			}
 		}
 		if(choices.size()>0)
 		{
-			MOB winM=(MOB)choices.firstElement();
+			MOB winM=choices.firstElement();
 			for(int i=1;i<choices.size();i++)
 			{
-				M=(MOB)choices.elementAt(i);
+				M=choices.elementAt(i);
 				if(CMath.pow(level-M.basePhyStats().level(),2)<CMath.pow(level-winM.basePhyStats().level(),2))
 					winM=M;
 			}

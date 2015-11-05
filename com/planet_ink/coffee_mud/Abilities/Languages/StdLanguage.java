@@ -53,8 +53,8 @@ public class StdLanguage extends StdAbility implements Language
 	@Override public int classificationCode(){return Ability.ACODE_LANGUAGE;}
 	protected static final String CANCEL_WORD="CANCEL";
 
-	private static Hashtable emptyHash=new Hashtable();
-	private static Vector emptyVector=new Vector();
+	private static Hashtable<String,String> emptyHash=new Hashtable<String,String>();
+	private static Vector<String[]> emptyVector=new Vector<String[]>();
 	protected boolean spoken=false;
 	private final static String consonants="bcdfghjklmnpqrstvwxz";
 	private final static String vowels="aeiouy";
@@ -364,7 +364,7 @@ public class StdLanguage extends StdAbility implements Language
 			return Integer.MAX_VALUE;
 		final CharClass C=student.charStats().getCurrentClass();
 		final PairVector<String,Integer> culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
-		final HashSet culturalAbilities=new HashSet();
+		final HashSet<String> culturalAbilities=new HashSet<String>();
 		for(int i=0;i<culturalAbilitiesDV.size();i++)
 			culturalAbilities.add(culturalAbilitiesDV.getFirst(i).toLowerCase());
 		for(int a=0;a<student.numAbilities();a++)

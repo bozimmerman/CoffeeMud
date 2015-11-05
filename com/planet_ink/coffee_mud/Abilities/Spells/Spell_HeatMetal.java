@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_HeatMetal extends Spell
 {
 	@Override public String ID() { return "Spell_HeatMetal"; }
@@ -46,7 +46,7 @@ public class Spell_HeatMetal extends Spell
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	@Override public long flags(){return Ability.FLAG_HEATING;}
 
-	protected Vector affectedItems=new Vector();
+	protected Vector<Item> affectedItems=new Vector<Item>();
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -123,13 +123,13 @@ public class Spell_HeatMetal extends Spell
 
 		if(affected instanceof MOB)
 		{
-			final Vector affectedItems=this.affectedItems;
+			final Vector<Item> affectedItems=this.affectedItems;
 			if(canBeUninvoked())
 			{
 				super.unInvoke();
 				for(int i=0;i<affectedItems.size();i++)
 				{
-					final Item I=(Item)affectedItems.elementAt(i);
+					final Item I=affectedItems.elementAt(i);
 					Ability A=I.fetchEffect(this.ID());
 					while(A!=null)
 					{

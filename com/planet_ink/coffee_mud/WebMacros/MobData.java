@@ -896,7 +896,7 @@ public class MobData extends StdWebMacro
 					for(int i=0;i<oldM.numItems();i++)
 						M.addItem(oldM.getItem(i));
 
-				containers=new Vector();
+				containers=new Vector<Object>();
 				itemlist=RoomData.getItemCache();
 				final Vector<String> cstrings=new Vector<String>();
 				for(int i=1;;i++)
@@ -1326,7 +1326,7 @@ public class MobData extends StdWebMacro
 					return "false";
 				case SHOPKEEPERTYPE: // shopkeeper type
 				{
-					final HashSet shopTypes=new HashSet();
+					final HashSet<Integer> shopTypes=new HashSet<Integer>();
 					if((firstTime)&&(M instanceof ShopKeeper))
 					{
 						for(int d=0;d<ShopKeeper.DEAL_DESCS.length;d++)

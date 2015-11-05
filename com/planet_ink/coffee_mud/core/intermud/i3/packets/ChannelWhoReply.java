@@ -53,8 +53,12 @@ public class ChannelWhoReply extends Packet {
 			channel = Intermud.getLocalChannel(channel);
 			try
 			{
-			who = (Vector)v.elementAt(7);
-			}catch(final Exception e){ who=new Vector();}
+				who = (Vector) v.elementAt(7);
+			}
+			catch (final Exception e)
+			{
+				who = new Vector();
+			}
 		}
 		catch( final ClassCastException e )
 		{

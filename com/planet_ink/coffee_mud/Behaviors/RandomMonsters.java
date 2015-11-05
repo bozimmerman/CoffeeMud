@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,18 +32,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class RandomMonsters extends ActiveTicker
 {
 	@Override public String ID(){return "RandomMonsters";}
 	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
-	protected Vector maintained=new Vector();
+	protected Vector<MOB> maintained=new Vector<MOB>();
 	protected int tickStatus=0;
 	protected int minMonsters=1;
 	protected int maxMonsters=1;
 	protected int avgMonsters=1;
-	protected Vector restrictedLocales=null;
+	protected Vector<Integer> restrictedLocales=null;
 	protected boolean alreadyTriedLoad=false;
 
 	@Override
@@ -56,7 +55,7 @@ public class RandomMonsters extends ActiveTicker
 	@Override
 	public List<String> externalFiles()
 	{
-		final Vector xmlfiles=new Vector();
+		final Vector<String> xmlfiles=new Vector<String>();
 		final String theseparms=getParms();
 		final int x=theseparms.indexOf(';');
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
@@ -79,7 +78,7 @@ public class RandomMonsters extends ActiveTicker
 	@Override
 	public void setParms(String newParms)
 	{
-		maintained=new Vector();
+		maintained=new Vector<MOB>();
 		final int x=newParms.indexOf(';');
 		String oldParms=newParms;
 		restrictedLocales=null;
@@ -102,7 +101,7 @@ public class RandomMonsters extends ActiveTicker
 				if((s.startsWith("+")||s.startsWith("-"))&&(s.length()>1))
 				{
 					if(restrictedLocales==null)
-						restrictedLocales=new Vector();
+						restrictedLocales=new Vector<Integer>();
 					if(s.equalsIgnoreCase("+ALL"))
 						restrictedLocales.clear();
 					else
@@ -177,6 +176,7 @@ public class RandomMonsters extends ActiveTicker
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<MOB> getMonsters(Tickable thang, String theseparms)
 	{
 		List<MOB> monsters=null;
@@ -209,7 +209,7 @@ public class RandomMonsters extends ActiveTicker
 			monsters=(List<MOB>)Resources.getResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode());
 			if(monsters!=null)
 				return monsters;
-			monsters=new Vector();
+			monsters=new Vector<MOB>();
 			final String error=CMLib.coffeeMaker().addMOBsFromXML(filename,monsters,null);
 			if(error.length()>0)
 			{
@@ -251,7 +251,7 @@ public class RandomMonsters extends ActiveTicker
 					Log.errOut("RandomMonsters: Invalid XML file: '"+filename+"' for '"+thangName+"' ("+thangID+").");
 					return null;
 				}
-				monsters=new Vector();
+				monsters=new Vector<MOB>();
 				final String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),monsters,null);
 				if(error.length()>0)
 				{
@@ -300,7 +300,7 @@ public class RandomMonsters extends ActiveTicker
 		{
 			try
 			{
-				final MOB M=(MOB)maintained.elementAt(i);
+				final MOB M=maintained.elementAt(i);
 				if((M.amDead())||(M.amDestroyed())||(M.location()==null)||(!M.location().isInhabitant(M)))
 					maintained.removeElement(M);
 			}

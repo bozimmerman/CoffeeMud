@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -34,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class ProtectedCitizens extends ActiveTicker
 {
 	@Override public String ID(){return "ProtectedCitizens";}
@@ -121,7 +120,7 @@ public class ProtectedCitizens extends ActiveTicker
 		s=s.substring(x+1).trim();
 		if(s.length()==0)
 		{ claims=defclaims; return claims;}
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>();
 		x=s.indexOf(c);
 		while(x>=0)
 		{
@@ -135,7 +134,7 @@ public class ProtectedCitizens extends ActiveTicker
 			V.addElement(s);
 		claims=new String[V.size()];
 		for(int i=0;i<V.size();i++)
-			claims[i]=(String)V.elementAt(i);
+			claims[i]=V.elementAt(i);
 		return claims;
 	}
 
@@ -180,7 +179,7 @@ public class ProtectedCitizens extends ActiveTicker
 		List<MOB> assMOBS=assisters.get(mob);
 		if(assMOBS==null)
 		{
-			assMOBS=new Vector();
+			assMOBS=new Vector<MOB>();
 			assisters.put(mob,assMOBS);
 		}
 		for(int a=0;a<assMOBS.size();a++)
@@ -279,9 +278,9 @@ public class ProtectedCitizens extends ActiveTicker
 					assistMOB(((Room)ticking).fetchInhabitant(i));
 			else
 			if(ticking instanceof Area)
-				for(final Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
-					final Room R=(Room)r.nextElement();
+					final Room R=r.nextElement();
 					for(int i=0;i<R.numInhabitants();i++)
 						assistMOB(R.fetchInhabitant(i));
 				}

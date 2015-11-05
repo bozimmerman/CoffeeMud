@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class GrinderAreas
 {
 	public static String getAreaList(Enumeration<Area> a, Area pickedA, MOB mob, boolean noInstances)
@@ -127,7 +127,7 @@ public class GrinderAreas
 			return "Please select a class type for this area.";
 		if(!className.equalsIgnoreCase(CMClass.classID(A)))
 		{
-			allMyDamnRooms=new Vector();
+			allMyDamnRooms=new Vector<Room>();
 			for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			final Area oldA=A;
@@ -151,7 +151,7 @@ public class GrinderAreas
 		{
 			if(CMLib.map().getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
-			allMyDamnRooms=new Vector();
+			allMyDamnRooms=new Vector<Room>();
 			for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			CMLib.map().delArea(A);

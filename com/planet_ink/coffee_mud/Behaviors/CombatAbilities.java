@@ -394,7 +394,7 @@ public class CombatAbilities extends StdBehavior
 			&&((A=CMClass.getAbility(s.substring(1)))!=null))
 			{
 				if(skillsNever==null)
-					skillsNever=new Vector();
+					skillsNever=new Vector<String>();
 				skillsNever.add(A.ID());
 			}
 			else
@@ -402,7 +402,7 @@ public class CombatAbilities extends StdBehavior
 			&&((A=CMClass.getAbility(s.substring(1)))!=null))
 			{
 				if(skillsAlways==null)
-					skillsAlways=new Vector();
+					skillsAlways=new Vector<String>();
 				skillsAlways.add(A.ID());
 			}
 		}

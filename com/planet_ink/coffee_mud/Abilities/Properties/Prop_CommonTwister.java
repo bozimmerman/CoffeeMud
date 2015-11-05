@@ -32,13 +32,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_CommonTwister extends Property
 {
 	@Override public String ID() { return "Prop_CommonTwister"; }
 	@Override public String name(){ return "Common Twister";}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	protected DVector changes=new DVector(3);
+	protected List<Triad<String,String,String>> changes=new Vector<Triad<String,String,String>>();
 
 	@Override
 	public String accountForYourself()
@@ -56,7 +56,7 @@ public class Prop_CommonTwister extends Property
 			final String skill=CMParms.getParmStr(s,"SKILL","");
 			final String mask=CMParms.getParmStr(s,"MASK","");
 			if((skill.length()>0)&&(mask.length()>0))
-				changes.addElement(skill,mask,s);
+				changes.add(new Triad<String,String,String>(skill,mask,s));
 		}
 
 	}
@@ -72,7 +72,7 @@ public class Prop_CommonTwister extends Property
 		   ||((affected instanceof Item)&&(msg.source().isMine(affected)))
 		   ||((affected instanceof MOB)&&(msg.source()==affected))))
 		{
-			final Vector poss=new Vector();
+			final Vector<String> poss=new Vector<String>();
 			final int randomResource=CMLib.dice().roll(1,RawMaterial.CODES.TOTAL()-1,0);
 			if(text().length()==0)
 			{
@@ -85,18 +85,18 @@ public class Prop_CommonTwister extends Property
 			else
 			for(int v=0;v<changes.size();v++)
 			{
-				if(((String)changes.elementAt(v,1)).equals("*")
-				||(((String)changes.elementAt(v,1)).equalsIgnoreCase(msg.tool().ID())))
+				if(changes.get(v).first.equals("*")
+				||(changes.get(v).first.equalsIgnoreCase(msg.tool().ID())))
 				{
-					final String two=(String)changes.elementAt(v,2);
+					final String two=changes.get(v).second;
 					if(two.equals("*")
 					||(CMLib.english().containsString(msg.target().name(),two)))
-						poss.addElement(changes.elementAt(v,3));
+						poss.addElement(changes.get(v).third);
 				}
 			}
 			if(poss.size()==0)
 				return true;
-			final String var=(String)poss.elementAt(CMLib.dice().roll(1,poss.size(),-1));
+			final String var=poss.elementAt(CMLib.dice().roll(1,poss.size(),-1));
 			final String newname=CMParms.getParmStr(var,"NAME","");
 			final String newdisp=CMParms.getParmStr(var,"DISPLAY","");
 			final String newmat=CMParms.getParmStr(var,"MATERIAL","");

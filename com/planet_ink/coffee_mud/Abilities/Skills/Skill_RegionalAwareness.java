@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_RegionalAwareness extends StdSkill
 {
 	@Override public String ID() { return "Skill_RegionalAwareness"; }
@@ -124,7 +124,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		final boolean amIndoors=((room.domainType()&Room.INDOORS)==Room.INDOORS);
 		final Room[][] rmap=new Room[diameter][diameter];
 		final Vector<Room> rooms=new Vector<Room>();
-		final HashSet closedPaths=new HashSet();
+		final HashSet<Room> closedPaths=new HashSet<Room>();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)

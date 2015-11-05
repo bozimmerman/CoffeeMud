@@ -2282,7 +2282,7 @@ public class DefaultFaction implements Faction, MsgListener
 						{
 							M=R.fetchInhabitant(m);
 							if((M!=null)&&(M!=myHost)&&(M.isMonster()))
-								presenceReactionPrototype.invoke(M,new Vector(),null,true,0); // this shuts it down
+								presenceReactionPrototype.invoke(M,new Vector<String>(),null,true,0); // this shuts it down
 						}
 						lightPresenceAbilities=new Ability[0];
 					}
@@ -2290,7 +2290,7 @@ public class DefaultFaction implements Faction, MsgListener
 					if((msg.source().isMonster())
 					&&(myHost instanceof Physical))
 					{
-						presenceReactionPrototype.invoke(msg.source(),new Vector(),null,true,0);
+						presenceReactionPrototype.invoke(msg.source(),new Vector<String>(),null,true,0);
 						final Ability[] newAbilities = new Ability[lightPresenceAbilities.length];
 						int l=0;
 						for (final Ability lightPresenceAbilitie : lightPresenceAbilities)
@@ -2299,7 +2299,7 @@ public class DefaultFaction implements Faction, MsgListener
 							{}
 							else
 							if(lightPresenceAbilitie.affecting()==msg.source())
-								lightPresenceAbilitie.invoke(msg.source(),new Vector(),null,true,0);
+								lightPresenceAbilitie.invoke(msg.source(),new Vector<String>(),null,true,0);
 							else
 								newAbilities[l++]=lightPresenceAbilitie;
 						}

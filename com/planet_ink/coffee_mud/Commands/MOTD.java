@@ -36,7 +36,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class MOTD extends StdCommand
 {
 	public MOTD(){}
@@ -116,9 +116,9 @@ public class MOTD extends StdCommand
 				final Vector<String> postalChains=new Vector<String>();
 				final Vector<String> postalBranches=new Vector<String>();
 				PostOffice P=null;
-				for(final Enumeration e=CMLib.map().postOffices();e.hasMoreElements();)
+				for(final Enumeration<PostOffice> e=CMLib.map().postOffices();e.hasMoreElements();)
 				{
-					P=(PostOffice)e.nextElement();
+					P=e.nextElement();
 					if(!postalChains.contains(P.postalChain()))
 						postalChains.add(P.postalChain());
 					if(!postalBranches.contains(P.postalBranch()))
@@ -134,7 +134,7 @@ public class MOTD extends StdCommand
 						final int[] ct=res.get(P);
 						buf.append("\n\r"+report("You have",P,ct));
 					}
-					final Map<PostOffice,int[]> res2=new Hashtable();
+					final Map<PostOffice,int[]> res2=new Hashtable<PostOffice,int[]>();
 					for(final Pair<Clan,Integer> clanPair : CMLib.clans().findPrivilegedClans(mob, Clan.Function.WITHDRAW))
 					{
 						if(clanPair!=null)

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Sheath extends StdCommand
 {
 	public Sheath(){}
@@ -40,9 +40,9 @@ public class Sheath extends StdCommand
 	private final String[] access=I(new String[]{"SHEATH"});
 	@Override public String[] getAccessWords(){return access;}
 
-	public static Vector getSheaths(MOB mob)
+	public static Vector<Container> getSheaths(MOB mob)
 	{
-		final Vector sheaths=new Vector();
+		final Vector<Container> sheaths=new Vector<Container>();
 		if(mob!=null)
 		for(int i=0;i<mob.numItems();i++)
 		{
@@ -53,7 +53,7 @@ public class Sheath extends StdCommand
 			&&(!(I instanceof Drink))
 			&&(((Container)I).capacity()>0)
 			&&(((Container)I).containTypes()!=Container.CONTAIN_ANYTHING))
-				sheaths.add(I);
+				sheaths.add((Container)I);
 		}
 		return sheaths;
 	}
@@ -99,9 +99,9 @@ public class Sheath extends StdCommand
 			if((noerrors)&&(item1==null)&&(item2==null))
 				return false;
 		}
-		final Vector sheaths=getSheaths(mob);
-		final Vector items=new Vector();
-		final Vector containers=new Vector();
+		final Vector<Container> sheaths=getSheaths(mob);
+		final Vector<Item> items=new Vector<Item>();
+		final Vector<Container> containers=new Vector<Container>();
 		Item sheathable=null;
 		if(commands.size()==0)
 		{
@@ -109,7 +109,7 @@ public class Sheath extends StdCommand
 				item2=null;
 			for(int i=0;i<sheaths.size();i++)
 			{
-				final Container sheath=(Container)sheaths.get(i);
+				final Container sheath=sheaths.get(i);
 				if((item1!=null)
 				&&(!items.contains(item1))
 				&&(sheath.canContain(item1)))
@@ -127,14 +127,16 @@ public class Sheath extends StdCommand
 				}
 			}
 			if(item2!=null)
-			for(int i=0;i<sheaths.size();i++)
 			{
-				final Container sheath=(Container)sheaths.get(i);
-				if((sheath.canContain(item2))
-				&&(!items.contains(item2)))
+				for(int i=0;i<sheaths.size();i++)
 				{
-					items.add(item2);
-					containers.add(sheath);
+					final Container sheath=sheaths.get(i);
+					if((sheath.canContain(item2))
+					&&(!items.contains(item2)))
+					{
+						items.add(item2);
+						containers.add(sheath);
+					}
 				}
 			}
 			if(item1!=null)
@@ -175,7 +177,7 @@ public class Sheath extends StdCommand
 							Container tempContainer=null;
 							for(int i=0;i<sheaths.size();i++)
 							{
-								final Container sheath=(Container)sheaths.get(i);
+								final Container sheath=sheaths.get(i);
 								if(sheath.canContain(putThis))
 								{tempContainer=sheath; break;}
 							}
@@ -207,8 +209,8 @@ public class Sheath extends StdCommand
 		else
 		for(int i=0;i<items.size();i++)
 		{
-			final Item putThis=(Item)items.get(i);
-			final Container container=(Container)containers.get(i);
+			final Item putThis=items.get(i);
+			final Container container=containers.get(i);
 			if(CMLib.commands().postRemove(mob,putThis,true))
 			{
 				final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MSG_PUT,((quiet?null:L("<S-NAME> sheath(s) <O-NAME> in <T-NAME>."))));

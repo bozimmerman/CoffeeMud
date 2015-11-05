@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class DeityNext extends StdWebMacro
 {
 	@Override public String name() { return "DeityNext"; }
@@ -49,10 +49,10 @@ public class DeityNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		final HashSet heavensfound=new HashSet();
-		for(final Enumeration d=CMLib.map().deities();d.hasMoreElements();)
+		final HashSet<Room> heavensfound=new HashSet<Room>();
+		for(final Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
 		{
-			final Deity D=(Deity)d.nextElement();
+			final Deity D=d.nextElement();
 			if((D.location()!=null)&&(!heavensfound.contains(D.location())))
 			{
 				if(parms.containsKey("HEAVENS"))

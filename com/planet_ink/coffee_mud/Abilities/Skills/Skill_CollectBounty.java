@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_CollectBounty extends StdSkill
 {
 	@Override public String ID() { return "Skill_CollectBounty"; }
@@ -55,7 +55,7 @@ public class Skill_CollectBounty extends StdSkill
 		LegalBehavior B=null;
 		if(legalA!=null)
 			B=CMLib.law().getLegalBehavior(legalA);
-		List<LegalWarrant> warrants=new Vector();
+		List<LegalWarrant> warrants=new Vector<LegalWarrant>();
 		if(B!=null)
 		{
 			warrants=B.getWarrantsOf(legalA,target);
@@ -76,9 +76,9 @@ public class Skill_CollectBounty extends StdSkill
 			B=CMLib.law().getLegalBehavior(legalA);
 		if((B!=null)&&(myArea!=null))
 		{
-			for(final Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
+			for(final Enumeration<Room> e=myArea.getMetroMap();e.hasMoreElements();)
 			{
-				final Room R=(Room)e.nextElement();
+				final Room R=e.nextElement();
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					final MOB M=R.fetchInhabitant(i);
@@ -87,9 +87,9 @@ public class Skill_CollectBounty extends StdSkill
 				}
 			}
 			if((legalA!=myArea)&&(legalA!=null))
-			for(final Enumeration e=legalA.getMetroMap();e.hasMoreElements();)
+			for(final Enumeration<Room> e=legalA.getMetroMap();e.hasMoreElements();)
 			{
-				final Room R=(Room)e.nextElement();
+				final Room R=e.nextElement();
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					final MOB M=R.fetchInhabitant(i);

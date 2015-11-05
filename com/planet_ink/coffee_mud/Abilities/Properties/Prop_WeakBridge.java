@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_WeakBridge extends Property implements TriggeredAffect
 {
 	@Override public String ID() { return "Prop_WeakBridge"; }
@@ -44,7 +44,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 	protected int max=400;
 	protected int chance=75;
 	protected int ticksDown=100;
-	protected List<MOB> mobsToKill=new Vector();
+	protected List<MOB> mobsToKill=new Vector<MOB>();
 
 	@Override
 	public int triggerMask()
@@ -59,7 +59,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 	@Override
 	public void setMiscText(String newText)
 	{
-		mobsToKill=new Vector();
+		mobsToKill=new Vector<MOB>();
 		super.setMiscText(newText);
 		max=CMParms.getParmInt(newText,"max",400);
 		chance=CMParms.getParmInt(newText,"chance",75);

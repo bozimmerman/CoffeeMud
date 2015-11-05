@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_RoomForSale extends Property implements LandTitle
 {
 	@Override public String ID() { return "Prop_RoomForSale"; }
@@ -362,7 +362,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public List<Room> getAllTitledRooms()
 	{
-		final List<Room> V=new Vector();
+		final List<Room> V=new Vector<Room>();
 		if(affected instanceof Room)
 			V.add((Room)affected);
 		else
@@ -532,6 +532,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return lastNumItems;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static boolean doRentalProperty(Area A, String ID, String owner, int rent)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -546,7 +547,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		else
 			pDataV=CMLib.database().DBReadData(owner,"RENTAL INFO");
 		if(pDataV==null)
-			pDataV=new Vector();
+			pDataV=new Vector<PlayerData>();
 		DatabaseEngine.PlayerData pData = null;
 		if(pDataV.size()==0)
 		{

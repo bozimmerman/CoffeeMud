@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class SewerMaze extends StdMaze
 {
 	@Override public String ID(){return "SewerMaze";}
@@ -49,5 +49,5 @@ public class SewerMaze extends StdMaze
 	@Override public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 
 	@Override public String getGridChildLocaleID(){return "SewerRoom";}
-	@Override public List<Integer> resourceChoices(){return new Vector();}
+	@Override public List<Integer> resourceChoices(){return new Vector<Integer>();}
 }

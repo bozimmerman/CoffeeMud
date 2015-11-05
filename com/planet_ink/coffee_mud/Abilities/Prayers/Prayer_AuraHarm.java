@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_AuraHarm extends Prayer
 {
 	@Override public String ID() { return "Prayer_AuraHarm"; }
@@ -80,10 +79,10 @@ public class Prayer_AuraHarm extends Prayer
 			return super.tick(ticking,tickID);
 		damageTickDown=4;
 
-		HashSet H=null;
+		HashSet<MOB> H=null;
 		if((invoker()!=null)&&(invoker().location()==affected))
 		{
-			H=new HashSet();
+			H=new HashSet<MOB>();
 			invoker().getGroupMembers(H);
 		}
 		final Room R=(Room)affected;

@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Amputation extends StdAbility implements LimbDamage, HealthCondition
 {
 	@Override public String ID() { return "Amputation"; }
@@ -325,7 +324,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	public List<String> unaffectedLimbSet()
 	{
 		affectedLimbNameSet();
-		final List<String> V=new Vector();
+		final List<String> V=new Vector<String>();
 		if(!(affected instanceof MOB))
 			return V;
 		final MOB M=(MOB)affected;
@@ -487,7 +486,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 
 		if(!isFakeLimb)
 		{
-			final List<String> theRest=new Vector();
+			final List<String> theRest=new Vector<String>();
 			final int x=getRacialCode(gone);
 			if(x>=0)
 			{
@@ -592,7 +591,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			LegalBehavior B=null;
 			if(mob.location()!=null)
 				B=CMLib.law().getLegalBehavior(mob.location());
-			List<LegalWarrant> warrants=new Vector();
+			List<LegalWarrant> warrants=new Vector<LegalWarrant>();
 			if(B!=null)
 				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))

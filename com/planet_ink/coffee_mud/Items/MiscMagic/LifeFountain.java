@@ -34,12 +34,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class LifeFountain extends StdDrink implements MiscMagic
 {
 	@Override public String ID(){	return "LifeFountain";}
 
-	private final Hashtable lastDrinks=new Hashtable();
+	private final Hashtable<MOB,Long> lastDrinks=new Hashtable<MOB,Long>();
 
 	public LifeFountain()
 	{
@@ -90,7 +90,7 @@ public class LifeFountain extends StdDrink implements MiscMagic
 			case CMMsg.TYP_DRINK:
 				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 				{
-					Long time=(Long)lastDrinks.get(msg.source());
+					Long time=lastDrinks.get(msg.source());
 					if((time==null)||(time.longValue()<(System.currentTimeMillis()-16000)))
 					{
 						Ability A=CMClass.getAbility("Prayer_CureLight");

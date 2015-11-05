@@ -37,7 +37,6 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Regrowth extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Regrowth"; }
@@ -54,7 +53,7 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 		super();
 		if(limbsToRegrow==null)
 		{
-			limbsToRegrow = new Vector();
+			limbsToRegrow = new Vector<String>();
 			limbsToRegrow.addElement("EYE");
 			limbsToRegrow.addElement("LEG");
 			limbsToRegrow.addElement("FOOT");

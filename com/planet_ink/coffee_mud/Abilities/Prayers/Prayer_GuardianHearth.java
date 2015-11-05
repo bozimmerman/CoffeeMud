@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_GuardianHearth extends Prayer
 {
 	@Override public String ID() { return "Prayer_GuardianHearth"; }
@@ -47,7 +46,7 @@ public class Prayer_GuardianHearth extends Prayer
 	@Override protected int canTargetCode(){return CAN_ROOMS;}
 	@Override protected int overrideMana(){return Ability.COST_ALL;}
 	@Override public long flags(){return Ability.FLAG_NEUTRAL;}
-	protected static HashSet prots=null;
+	protected static HashSet<Integer> prots=null;
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -57,7 +56,7 @@ public class Prayer_GuardianHearth extends Prayer
 
 		if(prots==null)
 		{
-			prots=new HashSet();
+			prots=new HashSet<Integer>();
 			final int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
 			for(final int i : CharStats.CODES.SAVING_THROWS())
 				if(CMMSGMAP[i]>=0)

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_Kamikaze extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Kamikaze"; }
@@ -186,7 +186,7 @@ public class Thief_Kamikaze extends ThiefSkill
 				target.recoverPhyStats();
 				beneficialAffect(mob,target,asLevel,2);
 				bombFound.activateBomb();
-				commands=new Vector();
+				commands=new Vector<String>();
 				commands.add("GO");
 				commands.add(s);
 				target.enqueCommand(commands,MUDCmdProcessor.METAFLAG_FORCED,0);

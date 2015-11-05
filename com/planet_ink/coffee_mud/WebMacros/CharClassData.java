@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class CharClassData extends StdWebMacro
 {
 	@Override public String name() { return "CharClassData"; }
@@ -46,9 +46,9 @@ public class CharClassData extends StdWebMacro
 		str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
 		CharClass C2=null;
 		String C2ID=null;
-		for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+		for(final Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 		{
-			C2=(CharClass)e.nextElement();
+			C2=e.nextElement();
 			C2ID="com.planet_ink.coffee_mud.CharClasses."+C2.ID();
 			if(C2.isGeneric() && CMClass.checkForCMClass(CMObjectType.CHARCLASS,C2ID))
 			{
@@ -175,7 +175,7 @@ public class CharClassData extends StdWebMacro
 				str.append(sfont + (parms.get("HEADERCOL5")) + efont);
 			str.append("</TD></TR>");
 		}
-		final HashSet used=new HashSet();
+		final HashSet<String> used=new HashSet<String>();
 		for(int i=0;i<theclasses.size();i++)
 		{
 			final String theclass=(String)theclasses.elementAt(i,1);
@@ -677,7 +677,7 @@ public class CharClassData extends StdWebMacro
 					else
 					{
 						String id="";
-						set=new Vector();
+						set=new Vector<String>();
 						for(int i=0;httpReq.isUrlParameter("NOWEAPS"+id);id=""+(++i))
 							set.add(httpReq.getUrlParameter("NOWEAPS"+id));
 					}
@@ -851,7 +851,7 @@ public class CharClassData extends StdWebMacro
 					else
 					{
 						String id="";
-						set=new Vector();
+						set=new Vector<String>();
 						for(int i=0;httpReq.isUrlParameter("WEAPMATS"+id);id=""+(++i))
 							if(CMath.isInteger(httpReq.getUrlParameter("WEAPMATS"+id)))
 								set.add(httpReq.getUrlParameter("WEAPMATS"+id));
@@ -947,7 +947,7 @@ public class CharClassData extends StdWebMacro
 					str.append(C.getDamageDesc()+", ");
 				if(parms.containsKey("QUALDOMAINLIST"))
 				{
-					final Hashtable domains=new Hashtable();
+					final Hashtable<String,Integer> domains=new Hashtable<String,Integer>();
 					Ability A=null;
 					String domain=null;
 					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
@@ -959,7 +959,7 @@ public class CharClassData extends StdWebMacro
 								domain=Ability.ACODE_DESCS[A.classificationCode()];
 							else
 								domain=Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5];
-							Integer I=(Integer)domains.get(domain);
+							Integer I=domains.get(domain);
 							if(I==null)
 								I=Integer.valueOf(0);
 							I=Integer.valueOf(I.intValue()+1);
@@ -974,10 +974,10 @@ public class CharClassData extends StdWebMacro
 					{
 						winner=null;
 						winnerI=null;
-						for(final Enumeration e=domains.keys();e.hasMoreElements();)
+						for(final Enumeration<String> e=domains.keys();e.hasMoreElements();)
 						{
-							domain=(String)e.nextElement();
-							I=(Integer)domains.get(domain);
+							domain=e.nextElement();
+							I=domains.get(domain);
 							if((winnerI==null)||(I.intValue()>winnerI.intValue()))
 							{
 								winner=domain;
@@ -1184,7 +1184,7 @@ public class CharClassData extends StdWebMacro
 		M.baseCharStats().setCurrentClass(C);
 		M.recoverCharStats();
 		C.startCharacter(M,false,false);
-		final HashSet seenBefore=new HashSet();
+		final HashSet<String> seenBefore=new HashSet<String>();
 		int totalgained=0;
 		int totalqualified=0;
 		int uniqueClassSkills=0;
@@ -1227,9 +1227,9 @@ public class CharClassData extends StdWebMacro
 				int numOutsiders=0;
 				int thisCrossClassLevelDiffs=0;
 				int tlvl=0;
-				for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+				for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 				{
-					final CharClass C2=(CharClass)c.nextElement();
+					final CharClass C2=c.nextElement();
 					if(C2==C)
 						continue;
 					if(!CMProps.isTheme(C2.availabilityCode()))

@@ -131,7 +131,7 @@ public class GrinderHolidays {
 		}
 
 		final StringBuffer areaGroup = new StringBuffer("");
-		final HashSet areaCodes=new HashSet();
+		final HashSet<String> areaCodes=new HashSet<String>();
 		String id="";
 		for(int i=0;httpReq.isUrlParameter("AREAGROUP"+id);id=Integer.toString(++i))
 			areaCodes.add(httpReq.getUrlParameter("AREAGROUP"+id));

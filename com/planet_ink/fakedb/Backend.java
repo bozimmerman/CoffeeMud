@@ -1001,9 +1001,9 @@ public class Backend
 				if (fakeTables.get(fakeTableName) != null)
 					throw new IOException("Can not read schema: tableName is missing: " + fakeTableName);
 
-				final List columns = new Vector();
-				final List keys = new Vector();
-				final List indexes = new Vector();
+				final List<FakeColumn> columns = new Vector<FakeColumn>();
+				final List<String> keys = new Vector<String>();
+				final List<String> indexes = new Vector<String>();
 				while (true)
 				{
 					String line = in.readLine();

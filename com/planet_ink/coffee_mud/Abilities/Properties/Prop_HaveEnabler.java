@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_HaveEnabler extends Prop_SpellAdder
 {
 	@Override
@@ -55,9 +55,9 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		return Ability.CAN_ITEMS;
 	}
 
-	protected Item		myItem			= null;
-	protected Vector	lastMOBeffected	= new Vector();
-	protected boolean	processing2		= false;
+	protected Item			myItem			= null;
+	protected Vector<String>lastMOBeffected	= new Vector<String>();
+	protected boolean		processing2		= false;
 
 	@Override
 	public long flags()
@@ -81,7 +81,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		lastMOBeffected=new Vector();
+		lastMOBeffected=new Vector<String>();
 	}
 	public boolean addMeIfNeccessary(Environmental source, Environmental target, boolean makeLongLasting, short maxTicks)
 	{
@@ -152,9 +152,9 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		}
 		if(P==lastMOB)
 		{
-			for(final Iterator e=lastMOBeffected.iterator();e.hasNext();)
+			for(final Iterator<String> e=lastMOBeffected.iterator();e.hasNext();)
 			{
-				final String AID=(String)e.next();
+				final String AID=e.next();
 				final Ability A2=lastMOB.fetchEffect(AID);
 				if(A2!=null)
 				{

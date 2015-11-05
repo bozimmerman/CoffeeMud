@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_Arsonry extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Arsonry"; }
@@ -70,7 +70,7 @@ public class Thief_Arsonry extends ThiefSkill
 				mob.tell(L("That way isn't open!"));
 				return false;
 			}
-			final Vector choices=new Vector();
+			final Vector<Item> choices=new Vector<Item>();
 			for(int i=0;i<room.numItems();i++)
 			{
 				final Item I=room.getItem(i);
@@ -87,7 +87,7 @@ public class Thief_Arsonry extends ThiefSkill
 				mob.tell(L("There's nothing that way you can burn!"));
 				return false;
 			}
-			target=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+			target=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 			targetRoom=room;
 		}
 		else

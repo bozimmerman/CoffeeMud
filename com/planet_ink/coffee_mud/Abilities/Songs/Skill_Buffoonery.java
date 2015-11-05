@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_Buffoonery extends BardSkill
 {
 	@Override public String ID() { return "Skill_Buffoonery"; }
@@ -46,9 +46,9 @@ public class Skill_Buffoonery extends BardSkill
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 	@Override public int usageType(){return USAGE_MOVEMENT;}
 
-	protected Vector getFreeWearingPositions(MOB target)
+	protected Vector<Long> getFreeWearingPositions(MOB target)
 	{
-		final Vector V=new Vector();
+		final Vector<Long> V=new Vector<Long>();
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		final boolean[] pos=new boolean[codes.all_ordered().length];
 
@@ -86,7 +86,7 @@ public class Skill_Buffoonery extends BardSkill
 
 	public Item targetItem(MOB target)
 	{
-		final Vector V=new Vector();
+		final Vector<Item> V=new Vector<Item>();
 		for(int i=0;i<target.numItems();i++)
 		{
 			final Item I2=target.getItem(i);
@@ -97,7 +97,7 @@ public class Skill_Buffoonery extends BardSkill
 				V.addElement(I2);
 		}
 		if(V.size()>0)
-			return (Item)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+			return V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 		return null;
 	}
 
@@ -191,7 +191,7 @@ public class Skill_Buffoonery extends BardSkill
 				}
 				else
 				{
-					final Vector free=getFreeWearingPositions(target);
+					final Vector<Long> free=getFreeWearingPositions(target);
 					if(free.size()<1)
 					{
 						mob.tell(L("@x1 has no free wearing positions!",target.name(mob)));
@@ -201,7 +201,7 @@ public class Skill_Buffoonery extends BardSkill
 					&&((I instanceof Weapon)||(!(I instanceof Armor))))
 						position=Wearable.WORN_WIELD;
 					else
-						position=((Long)free.elementAt(CMLib.dice().roll(1,free.size(),-1))).longValue();
+						position=free.elementAt(CMLib.dice().roll(1,free.size(),-1)).longValue();
 				}
 				if(position>=0)
 				{

@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Taxidermy extends CraftingSkill
 {
 	@Override public String ID() { return "Taxidermy"; }
@@ -81,10 +80,11 @@ public class Taxidermy extends CraftingSkill
 	protected List<List<String>> loadRecipes()
 	{
 		final String filename="taxidermy.txt";
+		@SuppressWarnings("unchecked")
 		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(V==null)
 		{
-			V=new Vector();
+			V=new Vector<List<String>>();
 			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
 			final List<String> strV=Resources.getFileLineVector(str);
 			List<String> V2=null;
@@ -96,7 +96,7 @@ public class Taxidermy extends CraftingSkill
 				{
 					if((V2!=null)&&(V2.size()>0))
 						V.add(V2);
-					V2=new Vector();
+					V2=new Vector<String>();
 				}
 				if(s.length()==0)
 					header=true;

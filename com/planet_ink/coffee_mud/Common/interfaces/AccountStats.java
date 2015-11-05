@@ -188,7 +188,7 @@ public interface AccountStats extends CMCommon
 	public void setNotes(String newnotes);
 
 	/**
-	 * Returns a modifiable HashSet that contains the set of player
+	 * Returns a modifiable Set that contains the set of player
 	 * Names that constitutes this players friends.
 	 *
 	 * @return a set of player friend names
@@ -196,7 +196,7 @@ public interface AccountStats extends CMCommon
 	public Set<String> getFriends();
 
 	/**
-	 * Returns a modifiable HashSet that contains the set of player
+	 * Returns a modifiable Set that contains the set of player
 	 * Names that constitutes this players ignored player list.
 	 *
 	 * @return a set of player ignored player list Names

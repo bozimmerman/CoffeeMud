@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Emoter extends ActiveTicker
 {
 	@Override public String ID(){return "Emoter";}
@@ -163,7 +163,7 @@ public class Emoter extends ActiveTicker
 					if(emoteType==EMOTE_TYPE.EMOTE_SMELL)
 					{
 						if(smells==null)
-							smells=new Vector();
+							smells=new Vector<EmoteObj>();
 						smells.add(new EmoteObj(emoteType,thisEmote,broadcast));
 					}
 					emotes.add(new EmoteObj(emoteType,thisEmote,broadcast));
@@ -312,9 +312,9 @@ public class Emoter extends ActiveTicker
 			if(ticking instanceof Area)
 			{
 				emoter=CMClass.getFactoryMOB();
-				for(final Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
-					final Room R=(Room)r.nextElement();
+					final Room R=r.nextElement();
 					emoteHere(R,emoter,emote,null,false);
 				}
 				emoter.destroy();

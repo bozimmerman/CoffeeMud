@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class WeatherAffects extends PuddleMaker
 {
 	@Override public String ID(){return "WeatherAffects";}
@@ -646,7 +646,7 @@ public class WeatherAffects extends PuddleMaker
 			resetDustTicks();
 			if(C.weatherType(null)==Climate.WEATHER_DUSTSTORM)
 			{
-				final Vector choices=new Vector();
+				final Vector<Room> choices=new Vector<Room>();
 				Room R=null;
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
@@ -662,7 +662,7 @@ public class WeatherAffects extends PuddleMaker
 				}
 				if(choices.size()>0)
 				{
-					R=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					R=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 					final MOB M=R.fetchRandomInhabitant();
 					if((M!=null)
 					&&(C.weatherType(R)==Climate.WEATHER_DUSTSTORM)
@@ -680,7 +680,7 @@ public class WeatherAffects extends PuddleMaker
 			resetHailTicks();
 			if(C.weatherType(null)==Climate.WEATHER_HAIL)
 			{
-				final Vector choices=new Vector();
+				final Vector<Room> choices=new Vector<Room>();
 				Room R=null;
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
@@ -696,7 +696,7 @@ public class WeatherAffects extends PuddleMaker
 				}
 				if(choices.size()>0)
 				{
-					R=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					R=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 					final MOB M=R.fetchRandomInhabitant();
 					final Ability A2=CMClass.getAbility("Chant_SummonHail");
 					if((A2!=null)
@@ -748,7 +748,7 @@ public class WeatherAffects extends PuddleMaker
 			||(C.weatherType(null)==Climate.WEATHER_BLIZZARD)
 			||(C.weatherType(null)==Climate.WEATHER_DUSTSTORM))
 			{
-				final Vector choices=new Vector();
+				final Vector<Room> choices=new Vector<Room>();
 				Room R=null;
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
@@ -766,7 +766,7 @@ public class WeatherAffects extends PuddleMaker
 				}
 				if(choices.size()>0)
 				{
-					R=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					R=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 					final MOB M=CMLib.map().getFactoryMOB(R);
 					final Ability A2=CMClass.getAbility("Chant_WindGust");
 					if(A2!=null)
@@ -829,7 +829,7 @@ public class WeatherAffects extends PuddleMaker
 				if(CMLib.dice().rollPercentage()<rustChance)
 				{
 					final int weatherType=C.weatherType(R);
-					final Vector rustThese=new Vector();
+					final Vector<Item> rustThese=new Vector<Item>();
 					for(int i=0;i<M.numItems();i++)
 					{
 						final Item I=M.getItem(i);
@@ -843,11 +843,14 @@ public class WeatherAffects extends PuddleMaker
 						else
 						if(I.amWearingAt(Wearable.WORN_ABOUT_BODY)
 						&&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)))
-						{   rustThese.clear();  break;  }
+						{
+							rustThese.clear();
+							break;
+						}
 					}
 					for(int i=0;i<rustThese.size();i++)
 					{
-						final Item I=(Item)rustThese.elementAt(i);
+						final Item I=rustThese.elementAt(i);
 						CMLib.combat().postItemDamage(M, I, null, 1, CMMsg.TYP_WATER, (weatherType!=0)?"<T-NAME> rusts.":"<T-NAME> rusts in the water.");
 					}
 				}

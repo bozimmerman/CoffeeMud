@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,15 +32,40 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_LangTranslator extends Property implements Language
 {
-	@Override public String ID() { return "Prop_LangTranslator"; }
-	@Override public String name(){return "Language Translator";}
-	@Override public String writtenName(){return "Language Translator";}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS|CAN_ROOMS;}
-	protected DVector langs=new DVector(2);
+	@Override
+	public String ID()
+	{
+		return "Prop_LangTranslator";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Language Translator";
+	}
+
+	@Override
+	public String writtenName()
+	{
+		return "Language Translator";
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS | CAN_ITEMS | CAN_ROOMS;
+	}
+
+	protected PairVector<String,Integer> langs=new PairVector<String,Integer>();
 
 	@Override
 	public String accountForYourself()
@@ -73,26 +97,64 @@ public class Prop_LangTranslator extends Property implements Language
 	@Override
 	public List<String> languagesSupported()
 	{
-		return (List)langs.getDimensionList(1);
+		return Arrays.asList(langs.toArrayFirst(new String[0]));
 	}
 	@Override
 	public boolean translatesLanguage(String language)
 	{
-		return langs.containsIgnoreCase(language);
+		for(int i=0;i<langs.size();i++)
+		{
+			try
+			{
+				Pair<String,Integer> p = langs.get(i);
+				if(p.first.equalsIgnoreCase(language))
+					return true;
+			}
+			catch(Exception e)
+			{
+				return false;
+			}
+		}
+		return false;
 	}
+
 	@Override
 	public int getProficiency(String language)
 	{
 		for(int i=0;i<langs.size();i++)
-			if(((String)langs.elementAt(i,1)).equalsIgnoreCase(language))
-				return ((Integer)langs.elementAt(i,2)).intValue();
+			if(langs.get(i).first.equalsIgnoreCase(language))
+				return langs.get(i).second.intValue();
 		return 0;
 	}
-	@Override public boolean beingSpoken(String language) { return true; }
-	@Override public void setBeingSpoken(String language, boolean beingSpoken) {}
-	@Override public Map<String, String> translationHash(String language) { return new Hashtable();}
-	@Override public List<String[]> translationVector(String language) { return new Vector();}
-	@Override public String translate(String language, String word) { return word;}
+
+	@Override
+	public boolean beingSpoken(String language)
+	{
+		return true;
+	}
+
+	@Override
+	public void setBeingSpoken(String language, boolean beingSpoken)
+	{
+	}
+
+	@Override
+	public Map<String, String> translationHash(String language)
+	{
+		return new Hashtable<String, String>();
+	}
+
+	@Override
+	public List<String[]> translationVector(String language)
+	{
+		return new Vector<String[]>();
+	}
+
+	@Override
+	public String translate(String language, String word)
+	{
+		return word;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -102,10 +164,10 @@ public class Prop_LangTranslator extends Property implements Language
 		{
 			if(text().length()>0)
 			{
-				final int t=langs.indexOf(msg.tool().ID());
+				final int t=langs.indexOfFirst(msg.tool().ID());
 				if(t<0)
 					return;
-				final Integer I=(Integer)langs.elementAt(t,2);
+				final Integer I=langs.get(t).second;
 				if(CMLib.dice().rollPercentage()>I.intValue())
 					return;
 			}

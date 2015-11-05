@@ -34,12 +34,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Hireling extends StdBehavior
 {
 	@Override public String ID(){return "Hireling";}
 
-	protected Hashtable partials=new Hashtable();
+	protected Hashtable<String,Double> partials=new Hashtable<String,Double>();
 	protected String workingFor="";
 	protected long onTheJobUntil=0;
 	protected double price=100.0;
@@ -153,7 +153,7 @@ public class Hireling extends StdBehavior
 		final MOB observer=(MOB)ticking;
 		if(System.currentTimeMillis()>onTheJobUntil)
 		{
-			final Double D=(Double)partials.get(workingFor);
+			final Double D=partials.get(workingFor);
 			partials.remove(workingFor);
 			CMLib.commands().postStand(observer,true);
 			if(!canActAtAll(observer))
@@ -305,7 +305,7 @@ public class Hireling extends StdBehavior
 			double given=((Coins)msg.tool()).getTotalValue();
 			if(partials.get(msg.source().Name())!=null)
 			{
-				given+=((Double)partials.get(msg.source().Name())).doubleValue();
+				given+=partials.get(msg.source().Name()).doubleValue();
 				partials.remove(msg.source().Name());
 			}
 			if(given<price())

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_AlternateReality extends Spell
 {
 	@Override public String ID() { return "Spell_AlternateReality"; }
@@ -130,7 +130,7 @@ public class Spell_AlternateReality extends Spell
 						final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 						if(!H.contains(mob))
 							H.add(mob);
-						final Vector badGuys=new Vector();
+						final Vector<MOB> badGuys=new Vector<MOB>();
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							final MOB M=R.fetchInhabitant(i);
@@ -153,9 +153,9 @@ public class Spell_AlternateReality extends Spell
 						}
 						if(badGuys.size()>0)
 						{
-							target.setVictim((MOB)badGuys.elementAt(CMLib.dice().roll(1,badGuys.size(),-1)));
+							target.setVictim(badGuys.elementAt(CMLib.dice().roll(1,badGuys.size(),-1)));
 							if(mob.getVictim()==null)
-								mob.setVictim((MOB)badGuys.elementAt(CMLib.dice().roll(1,badGuys.size(),-1)));
+								mob.setVictim(badGuys.elementAt(CMLib.dice().roll(1,badGuys.size(),-1)));
 						}
 					}
 				}

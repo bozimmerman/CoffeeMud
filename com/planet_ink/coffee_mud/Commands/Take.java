@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Take extends StdCommand
 {
 	public Take(){}
@@ -82,7 +82,7 @@ public class Take extends StdCommand
 			String thingToGive=CMParms.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";
-			final Vector V=new Vector();
+			final Vector<Item> V=new Vector<Item>();
 			boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 			if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 			if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
@@ -134,7 +134,7 @@ public class Take extends StdCommand
 				{
 					((Item)giveThis).unWear();
 					((Item)giveThis).setContainer(null);
-					V.add(giveThis);
+					V.add((Item)giveThis);
 				}
 				addendumStr="."+(++addendum);
 			}
@@ -144,7 +144,7 @@ public class Take extends StdCommand
 			else
 			for(int i=0;i<V.size();i++)
 			{
-				final Item giveThis=(Item)V.get(i);
+				final Item giveThis=V.get(i);
 				final CMMsg newMsg=CMClass.getMsg(victim,mob,giveThis,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,L("<T-NAME> take(s) <O-NAME> from <S-NAMESELF>."));
 				if(victim.location().okMessage(victim,newMsg))
 					victim.location().send(victim,newMsg);

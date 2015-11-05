@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_ChainLightening extends Spell
 {
 	@Override public String ID() { return "Spell_ChainLightening"; }
@@ -51,12 +51,12 @@ public class Spell_ChainLightening extends Spell
 			h=new HashSet<MOB>();
 
 		final Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
-		final Vector targets=new Vector(h);
-		for (final Object element : h)
+		final Vector<MOB> targets=new Vector<MOB>(h);
+		for (final MOB element : h)
 			targets.addElement(element);
-		for (final Object element : myGroup)
+		for (final MOB element : myGroup)
 		{
-			final MOB M=(MOB)element;
+			final MOB M=element;
 			if((M!=mob)&&(!targets.contains(M)))
 				targets.addElement(M);
 		}
@@ -79,13 +79,13 @@ public class Spell_ChainLightening extends Spell
 					final int oldDamage=damage;
 					for(int i=0;i<targets.size();i++)
 					{
-						final MOB target=(MOB)targets.elementAt(i);
+						final MOB target=targets.elementAt(i);
 						if(target.amDead()||(target.location()!=mob.location()))
 						{
 							int count=0;
 							for(int i2=0;i2<targets.size();i2++)
 							{
-								final MOB M2=(MOB)targets.elementAt(i2);
+								final MOB M2=targets.elementAt(i2);
 								if((!M2.amDead())
 								   &&(mob.location()!=null)
 								   &&(mob.location().isInhabitant(M2))

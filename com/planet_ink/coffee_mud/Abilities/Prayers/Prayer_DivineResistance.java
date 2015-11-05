@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_DivineResistance extends Prayer
 {
 	@Override public String ID() { return "Prayer_DivineResistance"; }
@@ -46,7 +45,7 @@ public class Prayer_DivineResistance extends Prayer
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public long flags(){return Ability.FLAG_HOLY;}
-	protected HashSet permProts=new HashSet();
+	protected HashSet<Environmental> permProts=new HashSet<Environmental>();
 	protected int prots=4;
 
 	@Override

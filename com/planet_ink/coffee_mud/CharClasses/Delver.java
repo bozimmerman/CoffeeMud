@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Delver extends StdCharClass
 {
 	@Override public String ID(){return "Delver";}
@@ -50,8 +50,8 @@ public class Delver extends StdCharClass
 	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_OREONLY;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ROCKY;}
-	private final HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
-	@Override protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
+	private final Set<Integer> requiredWeaponMaterials=buildRequiredWeaponMaterials();
+	@Override protected Set<Integer> requiredWeaponMaterials(){return requiredWeaponMaterials;}
 	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 
 	public Delver()
@@ -204,6 +204,7 @@ public class Delver extends StdCharClass
 	};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
+	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))

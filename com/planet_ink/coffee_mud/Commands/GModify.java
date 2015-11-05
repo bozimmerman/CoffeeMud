@@ -33,7 +33,7 @@ import java.util.regex.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class GModify extends StdCommand
 {
 	public GModify(){}
@@ -434,7 +434,7 @@ public class GModify extends StdCommand
 				return false;
 			}
 			commands.remove(0);
-			placesToDo=new Vector();
+			placesToDo=new Vector<Places>();
 		}
 		else
 			placesToDo.add(mob.location());
@@ -603,9 +603,9 @@ public class GModify extends StdCommand
 			return false;
 		}
 		if(placesToDo.size()==0)
-		for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 		{
-			final Area A=(Area)a.nextElement();
+			final Area A=a.nextElement();
 			if(A.getCompleteMap().hasMoreElements()
 			&&CMSecurity.isAllowed(mob,(A.getCompleteMap().nextElement()),CMSecurity.SecFlag.GMODIFY))
 				placesToDo.add(A);
@@ -621,9 +621,9 @@ public class GModify extends StdCommand
 			{
 				final Area A=(Area)placesToDo.get(i);
 				placesToDo.removeElement(A);
-				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 				{
-					final Room R=(Room)r.nextElement();
+					final Room R=r.nextElement();
 					if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.GMODIFY))
 						placesToDo.add(R);
 				}

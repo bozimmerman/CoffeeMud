@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prayer_Stoning extends Prayer
 {
 	@Override public String ID() { return "Prayer_Stoning"; }
@@ -122,7 +122,7 @@ public class Prayer_Stoning extends Prayer
 		LegalBehavior B=null;
 		if(mob.location()!=null)
 			B=CMLib.law().getLegalBehavior(mob.location());
-		List<LegalWarrant> warrants=new Vector();
+		List<LegalWarrant> warrants=new Vector<LegalWarrant>();
 		if(B!=null)
 			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))

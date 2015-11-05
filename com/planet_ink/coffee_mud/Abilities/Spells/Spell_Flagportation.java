@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_Flagportation extends Spell
 {
 	@Override public String ID() { return "Spell_Flagportation"; }
@@ -69,14 +69,14 @@ public class Spell_Flagportation extends Spell
 			return false;
 		}
 		final Clan C=clanPair.first;
-		final Vector candidates=new Vector();
+		final Vector<Room> candidates=new Vector<Room>();
 		Room R=null;
 		Item I=null;
 		try
 		{
-			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				R=(Room)r.nextElement();
+				R=r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
 				{
 					for(int i=0;i<R.numItems();i++)
@@ -110,7 +110,7 @@ public class Spell_Flagportation extends Spell
 		int tries=0;
 		while((tries<20)&&(newRoom==null))
 		{
-			newRoom=(Room)candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
+			newRoom=candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
 			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 			final Session session=mob.session();
 			mob.setSession(null);

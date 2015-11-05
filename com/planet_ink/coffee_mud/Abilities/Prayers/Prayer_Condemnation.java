@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Condemnation extends Prayer
 {
 	@Override public String ID() { return "Prayer_Condemnation"; }
@@ -55,7 +54,7 @@ public class Prayer_Condemnation extends Prayer
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		List<LegalWarrant> warrants=new Vector();
+		List<LegalWarrant> warrants=new Vector<LegalWarrant>();
 		if(B!=null)
 			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 

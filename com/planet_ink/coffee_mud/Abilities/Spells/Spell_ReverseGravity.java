@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_ReverseGravity extends Spell
 {
 	@Override public String ID() { return "Spell_ReverseGravity"; }
@@ -43,7 +43,7 @@ public class Spell_ReverseGravity extends Spell
 	@Override protected int canAffectCode(){return CAN_ROOMS;}
 	@Override protected int canTargetCode(){return 0;}
 	@Override public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	protected Vector childrenAffects=new Vector();
+	protected Vector<Ability> childrenAffects=new Vector<Ability>();
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	@Override public long flags(){return Ability.FLAG_MOVING;}
 
@@ -124,7 +124,7 @@ public class Spell_ReverseGravity extends Spell
 			}
 			while(childrenAffects.size()>0)
 			{
-				final Ability A=(Ability)childrenAffects.elementAt(0);
+				final Ability A=childrenAffects.elementAt(0);
 				A.setProficiency(0);
 				childrenAffects.removeElement(A);
 			}
@@ -166,7 +166,7 @@ public class Spell_ReverseGravity extends Spell
 			final CMMsg msg = CMClass.getMsg(mob, target, this, verbalCastCode(mob,target,auto), L((auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to reverse!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
-				childrenAffects=new Vector();
+				childrenAffects=new Vector<Ability>();
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob.location(),asLevel,4+(super.getXLEVELLevel(mob)/3));
 			}

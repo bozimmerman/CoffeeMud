@@ -142,11 +142,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(key.startsWith("SCRIPTVAR-"))
 			{
 				str.append("<"+key.substring(10)+">");
-				final Hashtable H=(Hashtable)resources._getResource(key);
-				for(final Enumeration e=H.keys();e.hasMoreElements();)
+				final Hashtable<String,String> H=(Hashtable)resources._getResource(key);
+				for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
 				{
-					final String vn=(String)e.nextElement();
-					final String val=(String)H.get(vn);
+					final String vn=e.nextElement();
+					final String val=H.get(vn);
 					str.append("<"+vn+">"+CMLib.xml().parseOutAngleBrackets(val)+"</"+vn+">");
 				}
 				str.append("</"+key.substring(10)+">");
@@ -171,7 +171,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if((piece.contents!=null)&&(piece.contents.size()>0))
 			{
 				final String kkey="SCRIPTVAR-"+piece.tag;
-				final Hashtable H=new Hashtable();
+				final Hashtable<String,String> H=new Hashtable<String,String>();
 				for(int c=0;c<piece.contents.size();c++)
 				{
 					final XMLLibrary.XMLpiece piece2=piece.contents.get(c);
@@ -716,7 +716,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return room;
 		}
 
-		List<Room> rooms=new Vector(1);
+		List<Room> rooms=new Vector<Room>(1);
 		if((imHere!=null)&&(imHere.getArea()!=null))
 			rooms=CMLib.map().findAreaRoomsLiberally(null, imHere.getArea(), thisName, "RIEPM",100);
 		if(rooms.size()==0)
@@ -909,7 +909,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			if(CMLib.xml().getContentsFromPieces(xml,"AREADATA")!=null)
 			{
-				final Hashtable definedIDs = new Hashtable();
+				final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
 				final Map<String,String> eqParms=new HashMap<String,String>();
 				eqParms.putAll(CMParms.parseEQParms(rest.trim()));
 				final String idName=tagName.toUpperCase();
@@ -1041,7 +1041,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			if(CMLib.xml().getContentsFromPieces(xml,"AREADATA")!=null)
 			{
-				final Hashtable definedIDs = new Hashtable();
+				final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
 				final Map<String,String> eqParms=new HashMap<String,String>();
 				eqParms.putAll(CMParms.parseEQParms(rest.trim()));
 				final String idName=tagName.toUpperCase();
@@ -2016,11 +2016,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			final String name=(String)V.elementAt(v,1);
 			key=((String)V.elementAt(v,2)).toUpperCase();
-			Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+name);
+			Hashtable<String,String> H=(Hashtable)resources._getResource("SCRIPTVAR-"+name);
 			if((H==null)&&(defaultQuestName!=null)&&(defaultQuestName.length()>0))
 			{
 				final MOB M=CMLib.players().getPlayer(name);
 				if(M!=null)
+				{
 					for(final Enumeration<ScriptingEngine> e=M.scripts();e.hasMoreElements();)
 					{
 						final ScriptingEngine SE=e.nextElement();
@@ -2033,18 +2034,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							return;
 						}
 					}
+				}
 			}
 			if(H==null)
 			{
 				if(val.length()==0)
 					continue;
 
-				H=new Hashtable();
+				H=new Hashtable<String,String>();
 				resources._submitResource("SCRIPTVAR-"+name,H);
 			}
 			if(val.equals("++"))
 			{
-				String num=(String)H.get(key);
+				String num=H.get(key);
 				if(num==null)
 					num="0";
 				val=Integer.toString(CMath.s_int(num.trim())+1);
@@ -2052,7 +2054,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			else
 			if(val.equals("--"))
 			{
-				String num=(String)H.get(key);
+				String num=H.get(key);
 				if(num==null)
 					num="0";
 				val=Integer.toString(CMath.s_int(num.trim())-1);
@@ -2063,7 +2065,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				// add via +number form
 				val=val.substring(1);
 				final int amount=CMath.s_int(val.trim());
-				String num=(String)H.get(key);
+				String num=H.get(key);
 				if(num==null)
 					num="0";
 				val=Integer.toString(CMath.s_int(num.trim())+amount);
@@ -2074,7 +2076,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				// subtract -number form
 				val=val.substring(1);
 				final int amount=CMath.s_int(val.trim());
-				String num=(String)H.get(key);
+				String num=H.get(key);
 				if(num==null)
 					num="0";
 				val=Integer.toString(CMath.s_int(num.trim())-amount);
@@ -2085,7 +2087,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				// multiply via *number form
 				val=val.substring(1);
 				final int amount=CMath.s_int(val.trim());
-				String num=(String)H.get(key);
+				String num=H.get(key);
 				if(num==null)
 					num="0";
 				val=Integer.toString(CMath.s_int(num.trim())*amount);
@@ -2096,7 +2098,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				// divide /number form
 				val=val.substring(1);
 				final int amount=CMath.s_int(val.trim());
-				String num=(String)H.get(key);
+				String num=H.get(key);
 				if(num==null)
 					num="0";
 				if(amount==0)
@@ -3937,9 +3939,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							R=lastKnownLocation;
 						if(R==null)
 						{
-							for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+							for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 							{
-								final Area A=(Area)a.nextElement();
+								final Area A=a.nextElement();
 								if((A!=null)&&(A.Name().equalsIgnoreCase(arg3)))
 								{
 									if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
@@ -3952,9 +3954,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						if(R==null)
 						{
-							for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+							for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 							{
-								final Area A=(Area)a.nextElement();
+								final Area A=a.nextElement();
 								if((A!=null)&&(CMLib.english().containsString(A.Name(),arg3)))
 								{
 									if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
@@ -5175,7 +5177,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				Vector<Item> choices=new Vector<Item>();
 				if(E==null)
-					choices=new Vector();
+					choices=new Vector<Item>();
 				else
 				if(E instanceof MOB)
 				{
@@ -6581,7 +6583,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					M=room.fetchInhabitant(p);
 					if((!M.isMonster())&&(M!=monster))
 					{
-						final HashSet seen=new HashSet();
+						final HashSet<MOB> seen=new HashSet<MOB>();
 						while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster())&&(!seen.contains(M)))
 						{
 							seen.add(M);
@@ -6609,7 +6611,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					M=room.fetchInhabitant(p);
 					if(M!=monster)
 					{
-						final HashSet seen=new HashSet();
+						final HashSet<MOB> seen=new HashSet<MOB>();
 						while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster())&&(!seen.contains(M)))
 						{
 							seen.add(M);

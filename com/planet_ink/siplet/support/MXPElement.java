@@ -36,7 +36,7 @@ public class MXPElement implements Cloneable
 	private String			unsupportedParms		= "";
 	private int				bitmap					= 0;
 	private Vector<String>	parsedAttributes		= null;
-	private List<String>	userParms				= new Vector();
+	private List<String>	userParms				= new Vector<String>();
 	private boolean			basicElement			= true;
 	
 	private Hashtable<String,String>		attributeValues			= null;

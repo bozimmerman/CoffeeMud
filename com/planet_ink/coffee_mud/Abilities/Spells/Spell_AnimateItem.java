@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_AnimateItem extends Spell
 {
 	@Override public String ID() { return "Spell_AnimateItem"; }
@@ -51,7 +51,7 @@ public class Spell_AnimateItem extends Spell
 			mob.tell(L("You must specify what to cast this on, and then what you want it to emote."));
 			return false;
 		}
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>();
 		V.addElement(commands.get(0));
 		final Item target=getTarget(mob,mob.location(),givenTarget,V,Wearable.FILTER_ANY);
 		if(target==null)

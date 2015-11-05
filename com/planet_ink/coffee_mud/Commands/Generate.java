@@ -36,7 +36,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Generate extends StdCommand
 {
 	public Generate(){}
@@ -103,16 +103,16 @@ public class Generate extends StdCommand
 		}
 		final StringBuffer xml = file.textUnformatted();
 		final List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
-		final Hashtable definedIDs = new Hashtable();
+		final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
 		CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
 		final String typeName = commands.get(1);
 		String objectType = typeName.toUpperCase().trim();
 		CMClass.CMObjectType codeI=OBJECT_TYPES.get(objectType);
 		if(codeI==null)
 		{
-			for(final Enumeration e=OBJECT_TYPES.keys();e.hasMoreElements();)
+			for(final Enumeration<String> e=OBJECT_TYPES.keys();e.hasMoreElements();)
 			{
-				final String key =(String)e.nextElement();
+				final String key =e.nextElement();
 				if(key.startsWith(typeName.toUpperCase().trim()))
 				{
 					objectType = key;
@@ -150,14 +150,14 @@ public class Generate extends StdCommand
 			if(!idName.equalsIgnoreCase("LIST"))
 				mob.tell(L("The @x1 id '@x2' has not been defined in the data file.",objectType,idName));
 			final StringBuffer foundIDs=new StringBuffer("");
-			for(final Enumeration tkeye=OBJECT_TYPES.keys();tkeye.hasMoreElements();)
+			for(final Enumeration<String> tkeye=OBJECT_TYPES.keys();tkeye.hasMoreElements();)
 			{
-				final String tKey=(String)tkeye.nextElement();
+				final String tKey=tkeye.nextElement();
 				foundIDs.append("^H"+tKey+"^N: \n\r");
 				final Vector<String> xmlTagsV=new Vector<String>();
-				for(final Enumeration keys=definedIDs.keys();keys.hasMoreElements();)
+				for(final Enumeration<String> keys=definedIDs.keys();keys.hasMoreElements();)
 				{
-					final String key=(String)keys.nextElement();
+					final String key=keys.nextElement();
 					if((definedIDs.get(key) instanceof XMLLibrary.XMLpiece)
 					&&(((XMLLibrary.XMLpiece)definedIDs.get(key)).tag.equalsIgnoreCase(tKey)))
 						xmlTagsV.add(key.toLowerCase());
@@ -277,9 +277,9 @@ public class Generate extends StdCommand
 					createNewPlace(mob,mob.location(),R,direction);
 					CMLib.percolator().postProcess(definedIDs);
 					mob.tell(L("Saving remaining rooms for area '@x1'...",A.name()));
-					for(final Enumeration e=A.getFilledProperMap();e.hasMoreElements();)
+					for(final Enumeration<Room> e=A.getFilledProperMap();e.hasMoreElements();)
 					{
-						R=(Room)e.nextElement();
+						R=e.nextElement();
 						CMLib.database().DBCreateRoom(R);
 						CMLib.database().DBUpdateExits(R);
 						CMLib.database().DBUpdateItems(R);

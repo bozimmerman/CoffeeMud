@@ -737,14 +737,14 @@ public class StdCharClass implements CharClass
 		return H;
 	}
 	
-	protected HashSet buildRequiredWeaponMaterials()
+	protected HashSet<Integer> buildRequiredWeaponMaterials()
 	{
 		if(allowedWeaponLevel()==CharClass.WEAPONS_ANY)
 			return null;
 		final int[] set=CharClass.WEAPONS_SETS[allowedWeaponLevel()];
 		if(set[0]>Weapon.CLASS_DESCS.length)
 		{
-			final HashSet H=new HashSet();
+			final HashSet<Integer> H=new HashSet<Integer>();
 			for (final int element : set)
 				H.add(Integer.valueOf(element));
 			return H;
@@ -836,8 +836,8 @@ public class StdCharClass implements CharClass
 		if(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS))
 		{
 			// the most efficient way of doing this -- just hash em!
-			final Hashtable alreadyAble=new Hashtable();
-			final Hashtable alreadyAff=new Hashtable();
+			final Hashtable<String,Ability> alreadyAble=new Hashtable<String,Ability>();
+			final Hashtable<String,Ability> alreadyAff=new Hashtable<String,Ability>();
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
@@ -851,7 +851,7 @@ public class StdCharClass implements CharClass
 				{
 					A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
 					A.setSavable(false);
-					final Ability A2=(Ability)alreadyAff.get(A.ID());
+					final Ability A2=alreadyAff.get(A.ID());
 					if(A2!=null)
 						A2.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
 					else
@@ -875,7 +875,7 @@ public class StdCharClass implements CharClass
 		}
 		else
 		{
-			final Vector onesToAdd=new Vector();
+			final Vector<Ability> onesToAdd=new Vector<Ability>();
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
@@ -886,7 +886,7 @@ public class StdCharClass implements CharClass
 			}
 			for(int v=0;v<onesToAdd.size();v++)
 			{
-				final Ability A=(Ability)onesToAdd.elementAt(v);
+				final Ability A=onesToAdd.elementAt(v);
 				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
 		}
@@ -1041,15 +1041,15 @@ public class StdCharClass implements CharClass
 		//this.startCharacter(mob,isBorrowedClass,verifyOnly)
 		//CR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
 		final String[] names=nameSet();
-		final List<List<String>> securitySets=new Vector();
-		final List<Integer> securityLvls=new Vector();
+		final List<List<String>> securitySets=new Vector<List<String>>();
+		final List<Integer> securityLvls=new Vector<Integer>();
 		CR.setStat("NUMNAME",""+names.length);
 		for(int n=0;n<names.length;n++)
 			CR.nameSet()[n]=names[n];
 		final int[] lvls=new int[names.length];
 		int nameDex=0;
 		final List<String> firstSet=CMParms.parseSemicolons(getSecurityFlags(0).toString(';'),true);
-		final Vector cumulativeSet=new Vector();
+		final Vector<String> cumulativeSet=new Vector<String>();
 		cumulativeSet.addAll(firstSet);
 		securitySets.add(firstSet);
 		securityLvls.add(Integer.valueOf(0));
@@ -1064,7 +1064,7 @@ public class StdCharClass implements CharClass
 			}
 			if(getSecurityFlags(x).size()!=cumulativeSet.size())
 			{
-				final List<String> V=new Vector();
+				final List<String> V=new Vector<String>();
 				V.addAll(CMParms.parseSemicolons(getSecurityFlags(x).toString(';'),true));
 				for(int i=0;i<cumulativeSet.size();i++)
 					V.remove(cumulativeSet.elementAt(i));

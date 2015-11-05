@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Visible extends StdCommand
 {
 	public Visible(){}
@@ -78,10 +78,10 @@ public class Visible extends StdCommand
 			if((C!=null)&&(C.securityCheck(mob)))
 			{
 				didSomething=true;
-				C.execute(mob,new XVector("WIZINV","OFF"),metaFlags);
+				C.execute(mob,new XVector<String>("WIZINV","OFF"),metaFlags);
 			}
 		}
-		final java.util.List V=returnOffensiveAffects(mob);
+		final java.util.List<Ability> V=returnOffensiveAffects(mob);
 		if(V.size()==0)
 		{
 			if(!didSomething)
@@ -89,7 +89,7 @@ public class Visible extends StdCommand
 		}
 		else
 		for(int v=0;v<V.size();v++)
-			((Ability)V.get(v)).unInvoke();
+			V.get(v).unInvoke();
 		mob.location().recoverRoomStats();
 		mob.location().recoverRoomStats();
 		return false;

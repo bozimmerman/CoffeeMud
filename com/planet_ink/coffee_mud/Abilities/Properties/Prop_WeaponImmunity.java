@@ -32,13 +32,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 {
 	@Override public String ID() { return "Prop_WeaponImmunity"; }
 	@Override public String name(){ return "Weapon Immunity";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public Hashtable flags=new Hashtable();
+	public Hashtable<String,Object> flags=new Hashtable<String,Object>();
 
 	@Override
 	public int triggerMask()
@@ -59,7 +59,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 	public void setMiscText(String newValue)
 	{
 		super.setMiscText(newValue);
-		flags=new Hashtable();
+		flags=new Hashtable<String,Object>();
 		final Vector<String> V=CMParms.parse(newValue.toUpperCase());
 		Object c=null;
 		String s=null;

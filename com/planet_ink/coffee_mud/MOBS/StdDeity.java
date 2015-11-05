@@ -418,7 +418,7 @@ public class StdDeity extends StdMOB implements Deity
 		mob.location().bringMobHere(this,false);
 		if(Blessing!=null)
 		{
-			final Vector V=new Vector();
+			final Vector<String> V=new Vector<String>();
 			if(Blessing.canTarget(Ability.CAN_MOBS))
 			{
 				V.addElement(mob.name()+"$");
@@ -474,7 +474,7 @@ public class StdDeity extends StdMOB implements Deity
 		mob.location().bringMobHere(this,false);
 		if(Curse!=null)
 		{
-			final Vector V=new Vector();
+			final Vector<String> V=new Vector<String>();
 			if(Curse.canTarget(Ability.CAN_MOBS))
 			{
 				V.addElement(mob.location().getContextName(mob));
@@ -1066,7 +1066,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if((mob==null)||(room==null))
 			return;
-		final Vector parishaners=new Vector();
+		final Vector<MOB> parishaners=new Vector<MOB>();
 		synchronized(services)
 		{
 			for(final WorshipService w : services)

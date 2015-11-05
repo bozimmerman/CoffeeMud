@@ -36,14 +36,16 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings({"unchecked","rawtypes"})
-public class ListenThread extends Thread {
-	private final ServerSocket listen;
-	private final Vector clients;
 
-	public ListenThread(int port) throws java.io.IOException {
+public class ListenThread extends Thread 
+{
+	private final ServerSocket listen;
+	private final Vector<Socket> clients;
+
+	public ListenThread(int port) throws java.io.IOException 
+	{
 		super("I3Listener@"+port);
-		clients = new Vector(10, 2);
+		clients = new Vector<Socket>(10, 2);
 		listen = new ServerSocket(port);
 		setDaemon(true);
 		start();
@@ -100,7 +102,7 @@ public class ListenThread extends Thread {
 		{
 			if( clients.size() > 0 )
 			{
-				client = (Socket)clients.elementAt(0);
+				client = clients.elementAt(0);
 				clients.removeElementAt(0);
 			}
 			else

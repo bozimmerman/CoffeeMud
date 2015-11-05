@@ -597,9 +597,9 @@ public class ItemData extends StdWebMacro
 									break;
 						}
 						mask=mask.toUpperCase()+";";
-						for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+						for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 						{
-							final Area A2=(Area)a.nextElement();
+							final Area A2=a.nextElement();
 							if(!(A2 instanceof SpaceObject))
 							{
 								str.append("<OPTION VALUE=\""+A2.Name()+"\"");

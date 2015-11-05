@@ -123,7 +123,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	{
 		if(spellV!=null)
 			return spellV;
-		spellV=new Vector();
+		spellV=new Vector<Ability>();
 		final String names=getParmString(text());
 		final List<String> set=CMParms.parseSemicolons(names,true);
 		String thisOne=null;
@@ -314,7 +314,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 					{
 						EA.makeNonUninvokable();
 						if(unrevocableSpells == null)
-							unrevocableSpells = new Vector();
+							unrevocableSpells = new Vector<Ability>();
 						unrevocableSpells.add(EA);
 					}
 				}

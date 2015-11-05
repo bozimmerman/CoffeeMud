@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_HandCuff extends StdSkill
 {
 	@Override public String ID() { return "Skill_HandCuff"; }
@@ -256,7 +256,7 @@ public class Skill_HandCuff extends StdSkill
 								target.setAttribute(MOB.Attrib.AUTOGUARD,false);
 							final boolean oldNOFOL=target.isAttributeSet(MOB.Attrib.NOFOLLOW);
 							if(target.numFollowers()>0)
-								CMLib.commands().forceStandardCommand(target,"NoFollow",new XVector("UNFOLLOW","QUIETLY"));
+								CMLib.commands().forceStandardCommand(target,"NoFollow",new XVector<String>("UNFOLLOW","QUIETLY"));
 							target.setAttribute(MOB.Attrib.NOFOLLOW,false);
 							CMLib.commands().postFollow(target,mob,true);
 							if(oldNOFOL)

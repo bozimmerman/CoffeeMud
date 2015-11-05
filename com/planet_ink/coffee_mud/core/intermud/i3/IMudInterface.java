@@ -518,7 +518,7 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.target_mud=wk.sender_mud;
 				wkr.channel=wk.channel;
 				final int channelInt=CMLib.channels().getChannelIndex(wk.channel);
-				final Vector whoV=new Vector();
+				final Vector<String> whoV=new Vector<String>();
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					final MOB M=S.mob();

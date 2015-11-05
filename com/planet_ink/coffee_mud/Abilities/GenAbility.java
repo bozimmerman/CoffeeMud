@@ -42,7 +42,7 @@ public class GenAbility extends StdAbility
 	// but diff to others.n  I'm thinking like a DVector, and just have
 	private String ID="GenAbility";
 	@Override public String ID() { return ID; }
-	private static final Hashtable vars=new Hashtable();
+	private static final Hashtable<String,Object[]> vars=new Hashtable<String,Object[]>();
 	private static final int V_NAME=0;//S
 	private static final int V_DISP=1;//S
 	private static final int V_TRIG=2;//S[]
@@ -112,7 +112,7 @@ public class GenAbility extends StdAbility
 	private static final Object V(String ID, int varNum)
 	{
 		if(vars.containsKey(ID))
-			return ((Object[])vars.get(ID))[varNum];
+			return vars.get(ID)[varNum];
 		final Object[] O=makeEmpty();
 		vars.put(ID,O);
 		return O[varNum];
@@ -120,7 +120,7 @@ public class GenAbility extends StdAbility
 	private static final void SV(String ID,int varNum,Object O)
 	{
 		if(vars.containsKey(ID))
-			((Object[])vars.get(ID))[varNum]=O;
+			vars.get(ID)[varNum]=O;
 		else
 		{
 			final Object[] O2=makeEmpty();
@@ -720,7 +720,7 @@ public class GenAbility extends StdAbility
 			if (val.trim().length() > 0)
 			{
 				V(ID, V_NAME); // force creation, if necc
-				final Object[] O = (Object[]) vars.get(ID);
+				final Object[] O = vars.get(ID);
 				vars.remove(ID);
 				vars.put(val, O);
 				if (num != 9)

@@ -86,20 +86,26 @@ public class Merge extends StdCommand
 									  boolean noisy)
 	{
 		boolean didAnything=false;
-		final List<String> efields=new Vector();
-		List<String> allMyFields=new Vector();
+		final List<String> efields=new Vector<String>();
+		List<String> allMyFields=new Vector<String>();
 		final String[] EFIELDS=E.getStatCodes();
 		for(int i=0;i<EFIELDS.length;i++)
+		{
 			if(!efields.contains(EFIELDS[i]))
 				efields.add(EFIELDS[i]);
+		}
 		efields.add("REJUV");
 		allMyFields=new XVector<String>(efields);
 		for(int v=0;v<ignore.size();v++)
+		{
 			if(efields.contains(ignore.get(v)))
 				efields.remove(ignore.get(v));
+		}
 		for(int v=0;v<changes.size();v++)
+		{
 			if(efields.contains(changes.get(v)))
 				efields.remove(changes.get(v));
+		}
 		if(noisy)
 			mergedebugtell(mob,"AllMy-"+CMParms.toListString(allMyFields));
 		if(noisy)
@@ -269,7 +275,7 @@ public class Merge extends StdCommand
 				return false;
 			}
 			commands.remove(0);
-			placesToDo=new Vector();
+			placesToDo=new Vector<Places>();
 			scope="WORLD";
 		}
 		if(commands.size()==0)
@@ -298,18 +304,22 @@ public class Merge extends StdCommand
 			return false;
 		}
 
-		final List<String> changes=new Vector();
-		final List<String> onfields=new Vector();
-		final List<String> ignore=new Vector();
+		final List<String> changes=new Vector<String>();
+		final List<String> onfields=new Vector<String>();
+		final List<String> ignore=new Vector<String>();
 		List<String> use=null;
-		final List<String> allKnownFields=new Vector();
-		final List things=new Vector();
+		final List<String> allKnownFields=new Vector<String>();
+		final List<Physical> things=new Vector<Physical>();
 		boolean aremobs=false;
 		if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 		{
 			if(mob.session()!=null)
 				mob.session().rawPrint(L("Unpacking mobs from file: '@x1'...",filename));
-			final String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),things,mob.session());
+			List<MOB> mobs=new Vector<MOB>();
+			final String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),mobs,mob.session());
+			things.addAll(mobs);
+			mobs.clear();
+			mobs=null;
 			if(mob.session()!=null)
 				mob.session().rawPrintln("!");
 			if(error.length()>0)
@@ -325,7 +335,11 @@ public class Merge extends StdCommand
 		{
 			if(mob.session()!=null)
 				mob.session().rawPrint(L("Unpacking items from file: '@x1'...",filename));
-			final String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),things,mob.session());
+			List<Item> items=new Vector<Item>();
+			final String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,mob.session());
+			things.addAll(items);
+			items.clear();
+			items=null;
 			if(mob.session()!=null)
 				mob.session().rawPrintln("!");
 			if(error.length()>0)
@@ -423,9 +437,9 @@ public class Merge extends StdCommand
 			return false;
 		}
 		if(placesToDo.size()==0)
-		for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 		{
-			final Area A=(Area)a.nextElement();
+			final Area A=a.nextElement();
 			if(A.getCompleteMap().hasMoreElements()
 			&&CMSecurity.isAllowed(mob,(A.getCompleteMap().nextElement()),CMSecurity.SecFlag.MERGE))
 				placesToDo.add(A);

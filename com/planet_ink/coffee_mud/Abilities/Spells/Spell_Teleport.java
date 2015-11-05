@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_Teleport extends Spell
 {
 	@Override public String ID() { return "Spell_Teleport"; }
@@ -72,11 +72,11 @@ public class Spell_Teleport extends Spell
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
 		final Area A=CMLib.map().findArea(areaName);
-		final Vector candidates=new Vector();
+		final Vector<Room> candidates=new Vector<Room>();
 		if(A!=null)
-			candidates.addAll(new XVector(A.getProperMap()));
+			candidates.addAll(new XVector<Room>(A.getProperMap()));
 		for(int c=candidates.size()-1;c>=0;c--)
-			if(!CMLib.flags().canAccess(mob,(Room)candidates.elementAt(c)))
+			if(!CMLib.flags().canAccess(mob,candidates.elementAt(c)))
 				candidates.removeElementAt(c);
 
 		if(candidates.size()==0)
@@ -95,7 +95,7 @@ public class Spell_Teleport extends Spell
 		int tries=0;
 		while((tries<20)&&(newRoom==null))
 		{
-			newRoom=(Room)candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
+			newRoom=candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
 			if(((newRoom.roomID().length()==0)&&(CMLib.dice().rollPercentage()>50))
 			||((newRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)&&(CMLib.dice().rollPercentage()>10)))
 			{

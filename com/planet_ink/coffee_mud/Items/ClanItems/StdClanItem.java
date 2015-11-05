@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
+
 public class StdClanItem extends StdItem implements ClanItem
 {
 	@Override
@@ -210,10 +210,10 @@ public class StdClanItem extends StdItem implements ClanItem
 
 	protected static List<List<String>> loadList(StringBuffer str)
 	{
-		final List<List<String>> V = new Vector();
+		final List<List<String>> V = new Vector<List<String>>();
 		if (str == null)
 			return V;
-		List<String> V2 = new Vector();
+		List<String> V2 = new Vector<String>();
 		boolean oneComma = false;
 		int start = 0;
 		int longestList = 0;
@@ -234,7 +234,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					if (V2.size() > longestList)
 						longestList = V2.size();
 					V.add(V2);
-					V2 = new Vector();
+					V2 = new Vector<String>();
 				}
 				start = i + 1;
 				oneComma = false;
@@ -259,6 +259,7 @@ public class StdClanItem extends StdItem implements ClanItem
 
 	public static synchronized List<List<String>> loadRecipes()
 	{
+		@SuppressWarnings("unchecked")
 		List<List<String>> V = (List<List<String>>) Resources.getResource("PARSED: clancraft.txt");
 		if (V == null)
 		{

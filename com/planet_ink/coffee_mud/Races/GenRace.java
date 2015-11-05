@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class GenRace extends StdRace
 {
 	protected String ID="GenRace";
@@ -208,7 +208,7 @@ public class GenRace extends StdRace
 	public List<RawMaterial> myResources()
 	{
 		if(resourceChoices==null)
-			return new Vector();
+			return new Vector<RawMaterial>();
 		return resourceChoices;
 	}
 
@@ -488,7 +488,7 @@ public class GenRace extends StdRace
 		resourceChoices=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
-			resourceChoices=new Vector();
+			resourceChoices=new Vector<RawMaterial>();
 			for(int x=0;x<xV.size();x++)
 			{
 				final XMLLibrary.XMLpiece iblk=xV.get(x);
@@ -883,13 +883,13 @@ public class GenRace extends StdRace
 			if(CMath.s_int(val)==0) 
 				resourceChoices=null; 
 			else 
-				resourceChoices=new Vector(CMath.s_int(val)); 
+				resourceChoices=new Vector<RawMaterial>(CMath.s_int(val)); 
 			break;
 		}
 		case 19: 
 		{
 			if(resourceChoices==null) 
-				resourceChoices=new Vector();
+				resourceChoices=new Vector<RawMaterial>();
 			final Item I=CMClass.getItem(val);
 			if(I instanceof RawMaterial)
 			{
@@ -1006,7 +1006,7 @@ public class GenRace extends StdRace
 			if(CMath.s_int(val)==0) 
 				outfitChoices=null; 
 			else 
-				outfitChoices=new Vector(CMath.s_int(val)); 
+				outfitChoices=new Vector<Item>(CMath.s_int(val)); 
 			break;
 		}
 		case 32:

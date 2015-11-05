@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_Wish extends Spell
 {
 	@Override public String ID() { return "Spell_Wish"; }
@@ -45,7 +45,7 @@ public class Spell_Wish extends Spell
 	@Override public long flags(){return Ability.FLAG_NOORDERING;}
 	@Override protected int overrideMana(){return Ability.COST_ALL;}
 
-	protected Physical maybeAdd(MOB mob, Physical E, Vector foundAll, Physical foundThang)
+	protected Physical maybeAdd(MOB mob, Physical E, Vector<Physical> foundAll, Physical foundThang)
 	{
 		final Room R=CMLib.map().roomLocation(E);
 		if((E!=null)
@@ -164,7 +164,7 @@ public class Spell_Wish extends Spell
 				if(!Character.isLetterOrDigit(wish.charAt(i)))
 					wish.setCharAt(i,' ');
 			myWish=wish.toString().trim().toUpperCase();
-			final Vector wishV=CMParms.parse(myWish);
+			final Vector<String> wishV=CMParms.parse(myWish);
 			myWish=" "+myWish+" ";
 			if(wishV.size()==0)
 			{
@@ -201,16 +201,16 @@ public class Spell_Wish extends Spell
 				{	goldWish=goldWish.substring(1+redundantGoldStarts[i].length()); i=-1;}
 				i++;
 			}
-			final Vector goldCheck=CMParms.parse(goldWish.trim().toLowerCase());
+			final Vector<String> goldCheck=CMParms.parse(goldWish.trim().toLowerCase());
 			if((goldCheck.size()>1)
-			&&(CMath.isNumber((String)goldCheck.firstElement()))
-			&&(CMath.s_int((String)goldCheck.firstElement())>0)
+			&&(CMath.isNumber(goldCheck.firstElement()))
+			&&(CMath.s_int(goldCheck.firstElement())>0)
 			&&(CMLib.english().matchAnyCurrencySet(CMParms.combine(goldCheck,1))!=null))
 			{
 				final Coins newItem=(Coins)CMClass.getItem("StdCoins");
 				newItem.setCurrency(CMLib.english().matchAnyCurrencySet(CMParms.combine(goldCheck,1)));
 				newItem.setDenomination(CMLib.english().matchAnyDenomination(newItem.getCurrency(),CMParms.combine(goldCheck,1)));
-				final long goldCoins=CMath.s_long((String)goldCheck.firstElement());
+				final long goldCoins=CMath.s_long(goldCheck.firstElement());
 				newItem.setNumberOfCoins(goldCoins);
 				int experienceRequired=Math.max((int)Math.round(CMath.div(newItem.getTotalValue(),10.0)),0);
 				while((experienceRequired > mob.getExperience())
@@ -235,7 +235,7 @@ public class Spell_Wish extends Spell
 				return true;
 			}
 
-			final Vector thangsFound=new Vector();
+			final Vector<Physical> thangsFound=new Vector<Physical>();
 			Physical foundThang=null;
 			final Physical P=mob.location().fetchFromRoomFavorItems(null,objectWish);
 			foundThang=maybeAdd(mob,P,thangsFound,foundThang);
@@ -247,8 +247,10 @@ public class Spell_Wish extends Spell
 				items.addAll(CMLib.map().findInventory(CMLib.map().rooms(), mob,objectWish,10));
 				items.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), mob,objectWish,10));
 				for(final Environmental O : items)
+				{
 					if(O instanceof Physical)
 						foundThang=maybeAdd(mob,((Physical)O),thangsFound,foundThang);
+				}
 			}catch(final NoSuchElementException nse){}
 
 			if(foundThang instanceof PackagedItems)
@@ -319,7 +321,7 @@ public class Spell_Wish extends Spell
 
 			// anything else may refer to another person or item
 			Physical target=null;
-			String possName=((String)wishV.elementAt(0)).trim();
+			String possName=wishV.elementAt(0).trim();
 			if(wishV.size()>2)
 			{
 				possName=CMParms.combine(wishV,0,2);
@@ -327,7 +329,7 @@ public class Spell_Wish extends Spell
 				if(target==null)
 					target=mob.findItem(possName);
 				if(target==null)
-					possName=((String)wishV.elementAt(0)).trim();
+					possName=wishV.elementAt(0).trim();
 			}
 			if(target==null)
 				target=mob.location().fetchFromRoomFavorMOBs(null,possName);
@@ -520,7 +522,7 @@ public class Spell_Wish extends Spell
 			if(validStart)
 			{
 				Room newRoom=null;
-				final int dir=Directions.getGoodDirectionCode((String)wishV.lastElement());
+				final int dir=Directions.getGoodDirectionCode(wishV.lastElement());
 				if(dir>=0)
 					newRoom=mob.location().getRoomInDir(dir);
 				if(newRoom==null)
@@ -864,7 +866,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WAS A")>=0)
 			||(myWish.indexOf(" TRANSFORM")>=0)))
 			{
-				final Race R=CMClass.findRace((String)wishV.lastElement());
+				final Race R=CMClass.findRace(wishV.lastElement());
 				if((R!=null)
 				&& (CMath.bset(R.availabilityCode(),Area.THEME_FANTASY))
 				&&(!R.ID().equalsIgnoreCase("StdRace"))
@@ -901,7 +903,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WAS A")>=0)
 			||(myWish.indexOf(" TRANSFORM")>=0)))
 			{
-				final CharClass C=CMClass.findCharClass((String)wishV.lastElement());
+				final CharClass C=CMClass.findCharClass(wishV.lastElement());
 				if((C!=null)&&(CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)))
 				{
 					final CharClass oldC=mob.baseCharStats().getCurrentClass();

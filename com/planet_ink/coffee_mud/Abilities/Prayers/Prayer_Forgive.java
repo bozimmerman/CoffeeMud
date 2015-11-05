@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_Forgive extends Prayer
 {
 	@Override public String ID() { return "Prayer_Forgive"; }
@@ -64,8 +63,8 @@ public class Prayer_Forgive extends Prayer
 			mob.tell(L("Forgive whom?"));
 			return false;
 		}
-		List<LegalWarrant> warrants=new Vector();
-		List<MOB> criminals=new Vector();
+		List<LegalWarrant> warrants=new Vector<LegalWarrant>();
+		List<MOB> criminals=new Vector<MOB>();
 		if(B!=null)
 		{
 			criminals=B.getCriminals(CMLib.law().getLegalObject(mob.location()),name);

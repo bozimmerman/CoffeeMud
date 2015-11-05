@@ -144,16 +144,15 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 						else
 						{
 							msg.source().getGroupMembers(H);
-							final HashSet H2=(HashSet)H.clone();
-							for(final Iterator e=H.iterator();e.hasNext();)
-								((MOB)e.next()).getRideBuddies(H2);
+							final HashSet<MOB> H2=new XHashSet<MOB>(H);
+							for(final Iterator<MOB> e=H.iterator();e.hasNext();)
+								e.next().getRideBuddies(H2);
 							H=H2;
 						}
-						for(final Iterator e=H.iterator();e.hasNext();)
+						for(final Iterator<MOB> e=H.iterator();e.hasNext();)
 						{
-							final Environmental E=(Environmental)e.next();
-							if((E instanceof MOB)
-							&&(passesMuster((MOB)E)))
+							final MOB E=e.next();
+							if(passesMuster(E))
 								return super.okMessage(myHost,msg);
 						}
 						msg.source().tell((message.length()==0)?L("You are not permitted in there."):message);

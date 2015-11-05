@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class BrokenLimbs extends StdAbility implements LimbDamage, HealthCondition
 {
 	@Override public String ID() { return "BrokenLimbs"; }
@@ -335,7 +334,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 	{
 		if(brokenLimbsList!=null)
 			return brokenLimbsList;
-		brokenLimbsList=new Vector();
+		brokenLimbsList=new Vector<String>();
 		if(affected==null)
 			return brokenLimbsList;
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
@@ -413,7 +412,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 	public List<String> unaffectedLimbSet()
 	{
 		affectedLimbNameSet();
-		final List<String> remains=new Vector();
+		final List<String> remains=new Vector<String>();
 		if(!(affected instanceof MOB))
 			return remains;
 		final MOB M=(MOB)affected;
@@ -535,7 +534,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			LegalBehavior B=null;
 			if(mob.location()!=null)
 				B=CMLib.law().getLegalBehavior(mob.location());
-			List<LegalWarrant> warrants=new Vector();
+			List<LegalWarrant> warrants=new Vector<LegalWarrant>();
 			if(B!=null)
 				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))

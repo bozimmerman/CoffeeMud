@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_TapGrapevine extends Chant
 {
 	@Override public String ID() { return "Chant_TapGrapevine"; }
@@ -43,7 +42,7 @@ public class Chant_TapGrapevine extends Chant
 	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	@Override protected int canTargetCode(){return 0;}
-	protected List<Ability> myChants=new Vector();
+	protected List<Ability> myChants=new Vector<Ability>();
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -150,7 +149,7 @@ public class Chant_TapGrapevine extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				myChants=new Vector();
+				myChants=new Vector<Ability>();
 				beneficialAffect(mob,mob,asLevel,0);
 				final Chant_TapGrapevine C=(Chant_TapGrapevine)mob.fetchEffect(ID());
 				if(C==null)
@@ -174,7 +173,7 @@ public class Chant_TapGrapevine extends Chant
 					}
 				}
 				C.myChants=new XVector<Ability>(myChants);
-				myChants=new Vector();
+				myChants=new Vector<Ability>();
 			}
 
 		}

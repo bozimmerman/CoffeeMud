@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_EndureRust extends Chant
 {
 	@Override public String ID() { return "Chant_EndureRust"; }
@@ -46,7 +45,7 @@ public class Chant_EndureRust extends Chant
 	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
-	protected HashSet dontbother=new HashSet();
+	protected HashSet<Environmental> dontbother=new HashSet<Environmental>();
 
 	@Override
 	public void unInvoke()

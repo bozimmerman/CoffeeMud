@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_Shuffle extends BardSkill
 {
 	@Override public String ID() { return "Skill_Shuffle"; }
@@ -79,7 +79,7 @@ public class Skill_Shuffle extends BardSkill
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				final Vector V=new Vector();
+				final Vector<MOB> V=new Vector<MOB>();
 				final Room R=mob.location();
 				for(int i=0;i<R.numInhabitants();i++)
 				{
@@ -93,7 +93,7 @@ public class Skill_Shuffle extends BardSkill
 				}
 				while(V.size()>0)
 				{
-					final MOB M=(MOB)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+					final MOB M=V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 					if(M.location()==R)
 						R.addInhabitant(M);
 					V.removeElement(M);

@@ -2,6 +2,7 @@ package com.planet_ink.siplet.support;
 
 import java.io.*;
 import java.util.*;
+
 import com.jcraft.jzlib.*;
 import com.planet_ink.siplet.applet.Siplet;
 import com.planet_ink.siplet.applet.Siplet.MSPStatus;
@@ -23,7 +24,7 @@ import com.planet_ink.siplet.support.MiniJSON.MJSONException;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings("rawtypes")
+
 public class TelnetFilter
 {
 	public final static boolean	debugChars				= false;
@@ -341,7 +342,7 @@ public class TelnetFilter
 	{
 		if (escapeString.endsWith("m"))
 		{
-			final Vector V = Util.parseSemicolons(escapeString.substring(0, escapeString.length() - 1), true);
+			final Vector<String> V = Util.parseSemicolons(escapeString.substring(0, escapeString.length() - 1), true);
 			final StringBuffer str = new StringBuffer("");
 			String s = null;
 			int code = 0;
@@ -349,7 +350,7 @@ public class TelnetFilter
 			String foreground = null;
 			for (int i = 0; i < V.size(); i++)
 			{
-				s = (String) V.elementAt(i);
+				s = V.elementAt(i);
 				code = Util.s0_int(s);
 				switch (code)
 				{

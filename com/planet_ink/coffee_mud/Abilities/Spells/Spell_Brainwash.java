@@ -43,7 +43,7 @@ public class Spell_Brainwash extends Spell
 	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	public Vector limbsToRemove=new Vector();
+	public Vector<String> limbsToRemove=new Vector<String>();
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)

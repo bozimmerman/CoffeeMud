@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Archon_Metacraft extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Metacraft"; }
@@ -186,7 +185,7 @@ public class Archon_Metacraft extends ArchonSkill
 
 		boolean success=false;
 		final StringBuffer xml = new StringBuffer("<ITEMS>");
-		final HashSet files = new HashSet();
+		final HashSet<String> files = new HashSet<String>();
 		for(int s=0;s<skillsToUse.size();s++)
 		{
 			skill=(ItemCraftor)skillsToUse.get(s);
@@ -267,7 +266,7 @@ public class Archon_Metacraft extends ArchonSkill
 					}
 				}
 			else
-				xml.append(CMLib.coffeeMaker().getItemsXML(items,new Hashtable(),files,0));
+				xml.append(CMLib.coffeeMaker().getItemsXML(items,new Hashtable<String,List<Item>>(),files,0));
 			mob.location().recoverPhyStats();
 			if(!everyFlag)
 				break;
@@ -285,10 +284,9 @@ public class Archon_Metacraft extends ArchonSkill
 				if(files.size()>0)
 				{
 					final StringBuffer str=new StringBuffer("<FILES>");
-					for(final Iterator i=files.iterator();i.hasNext();)
+					for(final Iterator<String> i=files.iterator();i.hasNext();)
 					{
-						final Object O=i.next();
-						final String filename=(String)O;
+						final String filename=i.next();
 						final StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
 						if((buf!=null)&&(buf.length()>0))
 						{

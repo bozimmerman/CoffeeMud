@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_Flee extends StdSkill
 {
 	@Override public String ID() { return "Skill_Flee"; }
@@ -54,7 +54,7 @@ public class Skill_Flee extends StdSkill
 		final boolean success=(!mob.isInCombat())||proficiencyCheck(mob,getXLEVELLevel(mob)*10,auto);
 		if(success)
 		{
-			final Vector V=new XVector("FLEE");
+			final Vector<String> V=new XVector<String>("FLEE");
 			V.addAll(commands);
 			CMLib.commands().forceStandardCommand(mob, "FLEE", V);
 		}

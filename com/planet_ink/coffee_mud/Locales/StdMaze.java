@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdMaze extends StdGrid
 {
 	@Override public String ID(){return "StdMaze";}
@@ -118,13 +118,12 @@ public class StdMaze extends StdGrid
 		return x;
 	}
 
-	protected void mazify(Hashtable visited, int x, int y)
+	protected void mazify(Set<Room> visited, int x, int y)
 	{
-
-		if(visited.get(subMap[x][y])!=null)
+		if(visited.contains(subMap[x][y]))
 			return;
 		final Room room=subMap[x][y];
-		visited.put(room,room);
+		visited.add(room);
 		final Exit ox=CMClass.getExit("Open");
 
 		boolean okRoom=true;
@@ -137,11 +136,13 @@ public class StdMaze extends StdGrid
 					continue;
 				final Room possRoom=roomDir(x,y,d);
 				if(possRoom!=null)
-					if(visited.get(possRoom)==null)
+				{
+					if(!visited.contains(possRoom))
 					{
 						okRoom=true;
 						break;
 					}
+				}
 			}
 			if(okRoom)
 			{
@@ -152,11 +153,13 @@ public class StdMaze extends StdGrid
 					final int d=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),0)-1;
 					final Room possRoom=roomDir(x,y,d);
 					if(possRoom!=null)
-						if(visited.get(possRoom)==null)
+					{
+						if(!visited.contains(possRoom))
 						{
 							goRoom=possRoom;
 							dirCode=d;
 						}
+					}
 				}
 				linkRoom(room,goRoom,dirCode,ox,ox);
 				mazify(visited,getX(x,dirCode),getY(y,dirCode));
@@ -166,7 +169,7 @@ public class StdMaze extends StdGrid
 
 	protected void buildMaze()
 	{
-		final Hashtable visited=new Hashtable();
+		final Set<Room> visited=new HashSet<Room>();
 		final int x=xsize/2;
 		final int y=ysize/2;
 		mazify(visited,x,y);

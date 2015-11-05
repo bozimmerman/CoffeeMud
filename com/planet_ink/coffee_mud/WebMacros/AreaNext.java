@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class AreaNext extends StdWebMacro
 {
 	@Override public String name() { return "AreaNext"; }
@@ -52,9 +52,9 @@ public class AreaNext extends StdWebMacro
 		}
 		final boolean all=parms.containsKey("SPACE")||parms.containsKey("ALL");
 		String lastID="";
-		for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 		{
-			final Area A=(Area)a.nextElement();
+			final Area A=a.nextElement();
 			if((!(A instanceof SpaceObject))||all)
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.Name().equals(lastID))))

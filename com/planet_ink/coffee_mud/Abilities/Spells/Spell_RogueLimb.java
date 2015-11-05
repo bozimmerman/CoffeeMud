@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_RogueLimb extends Spell
 {
 	@Override public String ID() { return "Spell_RogueLimb"; }
@@ -128,7 +128,7 @@ public class Spell_RogueLimb extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					final Vector limbs=new Vector();
+					final Vector<Integer> limbs=new Vector<Integer>();
 					final Race theRace=target.charStats().getMyRace();
 					for(int i=0;i<Race.BODY_PARTS;i++)
 					{
@@ -140,7 +140,7 @@ public class Spell_RogueLimb extends Spell
 					if(limbs.size()==0)
 						limb="body part";
 					else
-						limb=(Race.BODYPARTSTR[((Integer)limbs.elementAt(CMLib.dice().roll(1,limbs.size(),-1))).intValue()]).toLowerCase();
+						limb=(Race.BODYPARTSTR[limbs.elementAt(CMLib.dice().roll(1,limbs.size(),-1)).intValue()]).toLowerCase();
 					rogueLimb=CMClass.getMOB("GenMob");
 					rogueLimb.setName(L("@x1's @x2",target.name(),limb));
 					rogueLimb.setDisplayText(L("@x1 is misbehaving here.",rogueLimb.name()));

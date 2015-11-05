@@ -37,7 +37,6 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings("rawtypes")
 public class WillQualify  extends Skills
 {
 	public WillQualify() {}
@@ -62,9 +61,9 @@ public class WillQualify  extends Skills
 		for (int l = 0; l <= highestLevel; l++)
 		{
 			final StringBuffer thisLine = new StringBuffer("");
-			for (final Enumeration a = CMLib.ableMapper().getClassAbles(classID,true); a.hasMoreElements(); )
+			for (final Enumeration<AbilityMapper.AbilityMapping> a = CMLib.ableMapper().getClassAbles(classID,true); a.hasMoreElements(); )
 			{
-				final AbilityMapper.AbilityMapping cimable=(AbilityMapper.AbilityMapping)a.nextElement();
+				final AbilityMapper.AbilityMapping cimable=a.nextElement();
 				if((cimable.qualLevel() ==l)&&(!cimable.isSecret()))
 				{
 					final Ability A=CMClass.getAbility(cimable.abilityID());

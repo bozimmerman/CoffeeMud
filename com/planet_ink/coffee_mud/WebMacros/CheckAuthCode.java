@@ -37,32 +37,34 @@ public class CheckAuthCode extends StdWebMacro
 {
 	@Override public String name() { return "CheckAuthCode"; }
 
-	public Hashtable getAuths(HTTPRequest httpReq)
+	public Hashtable<String,String> getAuths(HTTPRequest httpReq)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return null;
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob==null)
 			return null;
-		Hashtable auths=(Hashtable)httpReq.getRequestObjects().get("AUTHS_"+mob.Name().toUpperCase().trim());
+		Hashtable<String,String> auths=(Hashtable)httpReq.getRequestObjects().get("AUTHS_"+mob.Name().toUpperCase().trim());
 		if(auths==null)
 		{
-			auths=new Hashtable();
+			auths=new Hashtable<String,String>();
 			boolean subOp=false;
 			final boolean sysop=CMSecurity.isASysOp(mob);
 
 			final String AREA=httpReq.getUrlParameter("AREA");
 			Room R=null;
-			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				final Area A=(Area)a.nextElement();
+				final Area A=a.nextElement();
 				if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))
+				{
 					if(A.amISubOp(mob.Name()))
 					{
 						R=A.getRandomProperRoom();
 						subOp=true;
 						break;
 					}
+				}
 			}
 			auths.put("ANYMODAREAS",""+((subOp&&(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS)))
 														   ||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDAREAS)));
@@ -74,11 +76,13 @@ public class CheckAuthCode extends StdWebMacro
 				int maxLen=Integer.MAX_VALUE;
 				int maxOne=-1;
 				for(int v=0;v<dirs.size();v++)
+				{
 					if(dirs.get(v).length()<maxLen)
 					{
 						maxLen=dirs.get(v).length();
 						maxOne=v;
 					}
+				}
 				final String winner=dirs.get(maxOne);
 				httpReq.addFakeUrlParameter("BESTFILEBROWSE",winner);
 			}
@@ -99,10 +103,10 @@ public class CheckAuthCode extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		boolean finalCondition=false;
-		final Hashtable auths=getAuths(httpReq);
+		final Hashtable<String,String> auths=getAuths(httpReq);
 		if(auths==null)
 			return "false";
-		final boolean sysop=((String)auths.get("SYSOP")).equalsIgnoreCase("true");
+		final boolean sysop=auths.get("SYSOP").equalsIgnoreCase("true");
 		for(String key : parms.keySet())
 		{
 			final String equals=parms.get(key);

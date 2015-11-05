@@ -134,7 +134,7 @@ public class GrinderRaces
 	public static List<Item> itemList(List<? extends Item> items, char c, HTTPRequest httpReq, boolean one)
 	{
 		if(items==null)
-			items=new Vector();
+			items=new Vector<Item>();
 		final Vector<Item> classes=new Vector<Item>();
 		List<Item> itemlist=null;
 		if(httpReq.isUrlParameter(c+"ITEM1"))

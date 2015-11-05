@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_UsePoison extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_UsePoison"; }
@@ -48,7 +48,7 @@ public class Thief_UsePoison extends ThiefSkill
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		final Vector<Ability> offenders=new Vector();
+		final Vector<Ability> offenders=new Vector<Ability>();
 
 		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{

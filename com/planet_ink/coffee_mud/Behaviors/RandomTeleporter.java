@@ -32,13 +32,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class RandomTeleporter extends ActiveTicker
 {
 	@Override public String ID(){return "RandomTeleporter";}
 	@Override protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	@Override public long flags(){return Behavior.FLAG_MOBILITY;}
-	protected Vector restrictedLocales=null;
+	protected Vector<Integer> restrictedLocales=null;
 	protected boolean nowander=false;
 
 	public RandomTeleporter()
@@ -84,7 +84,7 @@ public class RandomTeleporter extends ActiveTicker
 			if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
 			{
 				if(restrictedLocales==null)
-					restrictedLocales=new Vector();
+					restrictedLocales=new Vector<Integer>();
 				if(s.equalsIgnoreCase("+ALL"))
 					restrictedLocales.clear();
 				else

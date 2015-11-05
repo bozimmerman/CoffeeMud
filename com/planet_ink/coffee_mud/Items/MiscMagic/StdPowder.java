@@ -37,8 +37,9 @@ import java.util.*;
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
  */
-@SuppressWarnings({"unchecked","rawtypes"})
-public class StdPowder extends StdItem implements MagicDust {
+
+public class StdPowder extends StdItem implements MagicDust 
+{
 	@Override public String ID(){	return "StdPowder";}
 
 	public StdPowder()
@@ -108,7 +109,7 @@ public class StdPowder extends StdItem implements MagicDust {
 	{
 		final String names=getSpellList();
 
-		final Vector theSpells=new Vector();
+		final Vector<Ability> theSpells=new Vector<Ability>();
 		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
 		for(String thisOne : parsedSpells)
 		{

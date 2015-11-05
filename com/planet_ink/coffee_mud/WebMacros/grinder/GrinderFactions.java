@@ -35,8 +35,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
-public class GrinderFactions {
+
+public class GrinderFactions 
+{
 	public String name() { return "GrinderFactions"; }
 
 
@@ -71,8 +72,8 @@ public class GrinderFactions {
 		F.setShowInSpecialReported((old!=null)&&(old.equalsIgnoreCase("on")));
 
 		int num=0;
-		for(final Enumeration e=F.ranges();e.hasMoreElements();)
-			F.delRange((Faction.FRange)e.nextElement());
+		for(final Enumeration<Faction.FRange> e=F.ranges();e.hasMoreElements();)
+			F.delRange(e.nextElement());
 		while(httpReq.getUrlParameter("RANGENAME"+num)!=null)
 		{
 			old=httpReq.getUrlParameter("RANGENAME"+num);
@@ -160,8 +161,8 @@ public class GrinderFactions {
 		}
 
 		num=0;
-		for(final Enumeration e=F.relationFactions();e.hasMoreElements();)
-			F.delRelation((String)e.nextElement());
+		for(final Enumeration<String> e=F.relationFactions();e.hasMoreElements();)
+			F.delRelation(e.nextElement());
 		while(httpReq.getUrlParameter("RELATIONS"+num)!=null)
 		{
 			old=httpReq.getUrlParameter("RELATIONS"+num);
@@ -171,8 +172,8 @@ public class GrinderFactions {
 		}
 
 		num=0;
-		final DVector affBehav=new DVector(3);
-		final HashSet affBehavKeepers=new HashSet();
+		final TriadVector<String,String,String> affBehav=new TriadVector<String,String,String>();
+		final HashSet<String> affBehavKeepers=new HashSet<String>();
 		// its done this strange way to minimize impact on mob recalculations.
 		while(httpReq.getUrlParameter("AFFBEHAV"+num)!=null)
 		{
@@ -189,21 +190,21 @@ public class GrinderFactions {
 			}
 			num++;
 		}
-		for(final Enumeration e=F.affectsBehavs();e.hasMoreElements();)
+		for(final Enumeration<String> e=F.affectsBehavs();e.hasMoreElements();)
 		{
-			old=(String)e.nextElement();
+			old=e.nextElement();
 			if(!affBehavKeepers.contains(old.toUpperCase().trim()))
 				F.delAffectBehav(old);
 		}
 		for(int d=0;d<affBehav.size();d++)
 		{
-			F.delAffectBehav((String)affBehav.elementAt(d,1));
-			F.addAffectBehav((String)affBehav.elementAt(d,1),(String)affBehav.elementAt(d,2),(String)affBehav.elementAt(d,3));
+			F.delAffectBehav(affBehav.get(d).first);
+			F.addAffectBehav(affBehav.get(d).first,affBehav.get(d).second,affBehav.get(d).third);
 		}
 
 		num=0;
-		for(final Enumeration e=F.abilityUsages();e.hasMoreElements();)
-			F.delAbilityUsage((Faction.FAbilityUsage)e.nextElement());
+		for(final Enumeration<Faction.FAbilityUsage> e=F.abilityUsages();e.hasMoreElements();)
+			F.delAbilityUsage(e.nextElement());
 		while(httpReq.getUrlParameter("ABILITYUSE"+num)!=null)
 		{
 			old=httpReq.getUrlParameter("ABILITYUSE"+num);
@@ -231,8 +232,8 @@ public class GrinderFactions {
 
 
 		num=0;
-		for(final Enumeration e=F.reactions();e.hasMoreElements();)
-			F.delReaction((Faction.FReactionItem)e.nextElement());
+		for(final Enumeration<Faction.FReactionItem> e=F.reactions();e.hasMoreElements();)
+			F.delReaction(e.nextElement());
 		while(httpReq.getUrlParameter("REACTIONRANGE"+num)!=null)
 		{
 			old=httpReq.getUrlParameter("REACTIONRANGE"+num);

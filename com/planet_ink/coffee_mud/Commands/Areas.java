@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Areas extends StdCommand
 {
 	public Areas(){}
@@ -186,7 +186,7 @@ public class Areas extends StdCommand
 					final int[] stats=A.getAreaIStats();
 					if(stats!=null)
 					{
-						final Hashtable H=new Hashtable();
+						final Map<String,Object> H=new Hashtable<String,Object>();
 						for(int i=0;i<stats.length;i++)
 							H.put(Area.Stats.values()[i].name(),Integer.toString(stats[i]));
 						try

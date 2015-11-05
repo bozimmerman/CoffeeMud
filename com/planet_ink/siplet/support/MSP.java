@@ -21,7 +21,7 @@ import com.planet_ink.siplet.applet.Siplet;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
+
 public class MSP
 {
 
@@ -30,7 +30,7 @@ public class MSP
 		super();
 	}
 
-	private static Hashtable	cache			= new Hashtable();
+	private static Hashtable<String, MSPplayer>	cache			= new Hashtable<String, MSPplayer>();
 
 	private String				defMusicPath	= null;
 	private String				defSoundPath	= null;
@@ -184,7 +184,7 @@ public class MSP
 				soundClip = null;
 			currentClip = null;
 		}
-		currentClip = (MSPplayer) cache.get(newOne.key.toUpperCase());
+		currentClip = cache.get(newOne.key.toUpperCase());
 		if (currentClip == null)
 		{
 			currentClip = newOne;

@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class TaxCollector extends StdBehavior
 {
 	@Override public String ID(){return "TaxCollector";}
@@ -379,7 +379,7 @@ public class TaxCollector extends StdBehavior
 						demanded.addElement(M,Long.valueOf(System.currentTimeMillis()));
 						if(M.isMonster())
 						{
-							final Vector V=new Vector();
+							final Vector<String> V=new Vector<String>();
 							V.addElement("GIVE");
 							V.addElement(""+Math.round(owe[OWE_TOTAL]));
 							V.addElement(mob.name());

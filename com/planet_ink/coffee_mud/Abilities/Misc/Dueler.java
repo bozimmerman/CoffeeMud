@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Dueler extends StdAbility
 {
 	@Override public String ID() { return "Dueler"; }
@@ -111,7 +110,7 @@ public class Dueler extends StdAbility
 				mob.makePeace();
 				final Ability A=CMClass.getAbility("Immunities");
 				if(A!=null)
-					A.invoke(mob, new XVector("LEGAL","TICKS=1"), mob, true, 0);
+					A.invoke(mob, new XVector<String>("LEGAL","TICKS=1"), mob, true, 0);
 			}
 		}
 		oldEffects.clear();

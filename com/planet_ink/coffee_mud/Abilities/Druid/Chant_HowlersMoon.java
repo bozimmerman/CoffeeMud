@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_HowlersMoon extends Chant
 {
 	@Override public String ID() { return "Chant_HowlersMoon"; }
@@ -151,7 +150,7 @@ public class Chant_HowlersMoon extends Chant
 
 	protected Vector<Integer> fillChoices(Room R)
 	{
-		final Vector<Integer> choices=new Vector();
+		final Vector<Integer> choices=new Vector<Integer>();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room room=R.getRoomInDir(d);

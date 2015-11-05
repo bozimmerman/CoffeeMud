@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Ranger_AnimalFrenzy extends StdAbility
 {
 	@Override public String ID() { return "Ranger_AnimalFrenzy"; }
@@ -65,7 +65,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 		if(invoker!=affected)
 			return true;
 		if(rangersGroup==null)
-			rangersGroup=new Vector();
+			rangersGroup=new Vector<MOB>();
 
 		if(rangersGroup!=null)
 		{

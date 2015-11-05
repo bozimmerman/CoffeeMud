@@ -38,7 +38,7 @@ public class Util
 		return str.toString();
 	}
 
-	public static String toSemicolonList(Vector bytes)
+	public static String toSemicolonList(Vector<String> bytes)
 	{
 		final StringBuffer str = new StringBuffer("");
 		for (int b = 0; b < bytes.size(); b++)
@@ -48,12 +48,12 @@ public class Util
 
 	public static byte[] fromByteList(String str)
 	{
-		final Vector V = parseSemicolons(str, true);
+		final Vector<String> V = parseSemicolons(str, true);
 		if (V.size() > 0)
 		{
 			final byte[] bytes = new byte[V.size()];
 			for (int b = 0; b < V.size(); b++)
-				bytes[b] = Byte.parseByte((String) V.elementAt(b));
+				bytes[b] = Byte.parseByte(V.elementAt(b));
 			return bytes;
 		}
 		return new byte[0];
@@ -299,7 +299,7 @@ public class Util
 		return defaultVal;
 	}
 
-	public static String[] toStringArray(Vector V)
+	public static String[] toStringArray(Vector<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -312,7 +312,7 @@ public class Util
 		return s;
 	}
 
-	public static long[] toLongArray(Vector V)
+	public static long[] toLongArray(Vector<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -325,7 +325,7 @@ public class Util
 		return s;
 	}
 
-	public static int[] toIntArray(Vector V)
+	public static int[] toIntArray(Vector<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -338,7 +338,7 @@ public class Util
 		return s;
 	}
 
-	public static String[] toStringArray(HashSet V)
+	public static String[] toStringArray(HashSet<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -394,7 +394,7 @@ public class Util
 		return s.toString().substring(2);
 	}
 
-	public static String toStringList(Vector V)
+	public static String toStringList(Vector<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -408,7 +408,7 @@ public class Util
 		return s.toString().substring(2);
 	}
 
-	public static String toStringList(HashSet V)
+	public static String toStringList(HashSet<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -422,47 +422,47 @@ public class Util
 		return s.toString().substring(2);
 	}
 
-	public static Vector makeVector(String[] O)
+	public static Vector<String> makeVector(String[] O)
 	{
-		final Vector V = new Vector();
+		final Vector<String> V = new Vector<String>();
 		if (O != null)
 			for (final String element : O)
 				V.addElement(element);
 		return V;
 	}
 
-	public static Vector makeVector()
+	public static Vector<String> makeVector()
 	{
-		return new Vector();
+		return new Vector<String>();
 	}
 
-	public static Vector makeVector(Object O)
+	public static Vector<Object> makeVector(Object O)
 	{
-		final Vector V = new Vector();
+		final Vector<Object> V = new Vector<Object>();
 		V.addElement(O);
 		return V;
 	}
 
-	public static Vector makeVector(Object O, Object O2)
+	public static Vector<Object> makeVector(Object O, Object O2)
 	{
-		final Vector V = new Vector();
+		final Vector<Object> V = new Vector<Object>();
 		V.addElement(O);
 		V.addElement(O2);
 		return V;
 	}
 
-	public static Vector makeVector(Object O, Object O2, Object O3)
+	public static Vector<Object> makeVector(Object O, Object O2, Object O3)
 	{
-		final Vector V = new Vector();
+		final Vector<Object> V = new Vector<Object>();
 		V.addElement(O);
 		V.addElement(O2);
 		V.addElement(O3);
 		return V;
 	}
 
-	public static Vector makeVector(Object O, Object O2, Object O3, Object O4)
+	public static Vector<Object> makeVector(Object O, Object O2, Object O3, Object O4)
 	{
-		final Vector V = new Vector();
+		final Vector<Object> V = new Vector<Object>();
 		V.addElement(O);
 		V.addElement(O2);
 		V.addElement(O3);
@@ -470,38 +470,38 @@ public class Util
 		return V;
 	}
 
-	public static HashSet makeHashSet()
+	public static HashSet<Object> makeHashSet()
 	{
-		return new HashSet();
+		return new HashSet<Object>();
 	}
 
-	public static HashSet makeHashSet(Object O)
+	public static HashSet<Object> makeHashSet(Object O)
 	{
-		final HashSet H = new HashSet();
+		final HashSet<Object> H = new HashSet<Object>();
 		H.add(O);
 		return H;
 	}
 
-	public static HashSet makeHashSet(Object O, Object O2)
+	public static HashSet<Object> makeHashSet(Object O, Object O2)
 	{
-		final HashSet H = new HashSet();
+		final HashSet<Object> H = new HashSet<Object>();
 		H.add(O);
 		H.add(O2);
 		return H;
 	}
 
-	public static HashSet makeHashSet(Object O, Object O2, Object O3)
+	public static HashSet<Object> makeHashSet(Object O, Object O2, Object O3)
 	{
-		final HashSet H = new HashSet();
+		final HashSet<Object> H = new HashSet<Object>();
 		H.add(O);
 		H.add(O2);
 		H.add(O3);
 		return H;
 	}
 
-	public static HashSet makeHashSet(Object O, Object O2, Object O3, Object O4)
+	public static HashSet<Object> makeHashSet(Object O, Object O2, Object O3, Object O4)
 	{
-		final HashSet H = new HashSet();
+		final HashSet<Object> H = new HashSet<Object>();
 		H.add(O);
 		H.add(O2);
 		H.add(O3);
@@ -509,7 +509,7 @@ public class Util
 		return H;
 	}
 
-	public static String[] toStringArray(Hashtable V)
+	public static String[] toStringArray(Hashtable<String,String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -521,13 +521,13 @@ public class Util
 		for (final Enumeration e = V.keys(); e.hasMoreElements();)
 		{
 			final String KEY = (String) e.nextElement();
-			s[v] = (String) V.get(KEY);
+			s[v] = V.get(KEY);
 			v++;
 		}
 		return s;
 	}
 
-	public static void addToVector(Vector from, Vector to)
+	public static void addToVector(Vector<Object> from, Vector<Object> to)
 	{
 		if (from != null)
 		{
@@ -536,7 +536,7 @@ public class Util
 		}
 	}
 
-	public static String toStringList(Hashtable V)
+	public static String toStringList(Hashtable<String,String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -546,7 +546,7 @@ public class Util
 		for (final Enumeration e = V.keys(); e.hasMoreElements();)
 		{
 			final String KEY = (String) e.nextElement();
-			s.append(KEY + "=" + ((String) V.get(KEY)) + "/");
+			s.append(KEY + "=" + (V.get(KEY)) + "/");
 		}
 		return s.toString();
 	}
@@ -820,9 +820,9 @@ public class Util
 
 	}
 
-	public static Vector copyVector(Vector V)
+	public static Vector<Object> copyVector(Vector<Object> V)
 	{
-		final Vector V2 = new Vector();
+		final Vector<Object> V2 = new Vector<Object>();
 		for (int v = 0; v < V.size(); v++)
 		{
 			final Object h = V.elementAt(v);
@@ -1252,9 +1252,9 @@ public class Util
 		return buf.toString();
 	}
 
-	public static Vector parseCommas(String s, boolean ignoreNulls)
+	public static Vector<String> parseCommas(String s, boolean ignoreNulls)
 	{
-		final Vector V = new Vector();
+		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
 			return V;
 		int x = s.indexOf(',');
@@ -1725,9 +1725,9 @@ public class Util
 		return str.toLowerCase();
 	}
 
-	public static Vector denumerate(Enumeration e)
+	public static Vector<Object> denumerate(Enumeration<Object> e)
 	{
-		final Vector V = new Vector();
+		final Vector<Object> V = new Vector<Object>();
 		for (; e.hasMoreElements();)
 			V.addElement(e.nextElement());
 		return V;

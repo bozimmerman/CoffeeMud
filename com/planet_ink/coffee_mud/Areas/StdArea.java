@@ -1756,7 +1756,7 @@ public class StdArea implements Area
 	public Enumeration<Room> getFilledProperMap()
 	{
 		final Enumeration<Room> r=getProperMap();
-		final Vector V=new Vector();
+		final Vector<Room> V=new Vector<Room>();
 		Room R=null;
 		Room R2=null;
 		for(;r.hasMoreElements();)

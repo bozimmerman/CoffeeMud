@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_Gate extends Spell
 {
 	@Override public String ID() { return "Spell_Gate"; }
@@ -97,7 +97,7 @@ public class Spell_Gate extends Spell
 			return false;
 		}
 
-		List<MOB> candidates=new Vector();
+		List<MOB> candidates=new Vector<MOB>();
 		MOB target=null;
 		try
 		{

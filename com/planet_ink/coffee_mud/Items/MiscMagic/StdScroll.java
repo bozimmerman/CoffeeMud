@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdScroll extends StdItem implements MiscMagic, Scroll
 {
 	@Override public String ID(){	return "StdScroll";}
@@ -146,7 +146,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 					else
 					{
 						Ability thisOne=null;
-						final Vector params=new Vector();
+						final Vector<String> params=new Vector<String>();
 						if(spellName.length()>0)
 						{
 							spellName=spellName.trim();
@@ -207,7 +207,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	public List<Ability> getSpells()
 	{
 		int baseValue=200;
-		final List<Ability> theSpells=new Vector();
+		final List<Ability> theSpells=new Vector<Ability>();
 		final String names=getSpellList();
 		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
 		for(String thisOne : parsedSpells)

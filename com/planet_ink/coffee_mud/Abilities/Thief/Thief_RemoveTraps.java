@@ -90,8 +90,6 @@ public class Thief_RemoveTraps extends ThiefSkill
 	public Environmental lastChecked=null;
 	public LinkedList<String> lastDone=new LinkedList<String>();
 
-	//TODO: prevents Vector -> List<String>
-	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

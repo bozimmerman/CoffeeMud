@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Stat  extends Skills
 {
 	public Stat(){}
@@ -184,7 +184,7 @@ public class Stat  extends Skills
 		if(skillUse)
 		{
 			final CharClass CharC=CMClass.getCharClass(rest);
-			final Vector allSkills=new Vector();
+			final Vector<Ability> allSkills=new Vector<Ability>();
 			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				allSkills.add(e.nextElement());
 			final long[][] totals=new long[allSkills.size()][CoffeeTableRow.STAT_TOTAL];
@@ -200,7 +200,7 @@ public class Stat  extends Skills
 				C2.set(Calendar.SECOND,59);
 				C2.set(Calendar.MILLISECOND,999);
 				curTime=C2.getTimeInMillis();
-				final Vector set=new Vector();
+				final Vector<CoffeeTableRow> set=new Vector<CoffeeTableRow>();
 				for(int v=V.size()-1;v>=0;v--)
 				{
 					final CoffeeTableRow T=V.get(v);
@@ -212,9 +212,9 @@ public class Stat  extends Skills
 				}
 				for(int s=0;s<set.size();s++)
 				{
-					final CoffeeTableRow T=(CoffeeTableRow)set.get(s);
+					final CoffeeTableRow T=set.get(s);
 					for(int x=0;x<allSkills.size();x++)
-						T.totalUp("A"+((Ability)allSkills.get(x)).ID().toUpperCase(),totals[x]);
+						T.totalUp("A"+allSkills.get(x).ID().toUpperCase(),totals[x]);
 				}
 				if(scale==0)
 					break;
@@ -222,7 +222,7 @@ public class Stat  extends Skills
 			boolean cr=false;
 			for(int x=0;x<allSkills.size();x++)
 			{
-				Ability A=(Ability)allSkills.get(x);
+				Ability A=allSkills.get(x);
 				if((CharC==null)||(CMLib.ableMapper().getQualifyingLevel(CharC.ID(),true,A.ID())<0))
 					continue;
 				if(totals[x][CoffeeTableRow.STAT_SKILLUSE]>0)
@@ -236,7 +236,7 @@ public class Stat  extends Skills
 				x++;
 				if(x<allSkills.size())
 				{
-					A=(Ability)allSkills.get(x);
+					A=allSkills.get(x);
 					if(totals[x][CoffeeTableRow.STAT_SKILLUSE]>0)
 					{
 
@@ -267,7 +267,7 @@ public class Stat  extends Skills
 				C2.set(Calendar.SECOND,59);
 				C2.set(Calendar.MILLISECOND,999);
 				curTime=C2.getTimeInMillis();
-				final Vector set=new Vector();
+				final Vector<CoffeeTableRow> set=new Vector<CoffeeTableRow>();
 				for(int v=V.size()-1;v>=0;v--)
 				{
 					final CoffeeTableRow T=V.get(v);
@@ -280,7 +280,7 @@ public class Stat  extends Skills
 				if(set.size()==0){ set.addAll(V); V.clear();}
 				for(int s=0;s<set.size();s++)
 				{
-					final CoffeeTableRow T=(CoffeeTableRow)set.get(s);
+					final CoffeeTableRow T=set.get(s);
 					for(int x=0;x<CMLib.quests().numQuests();x++)
 						T.totalUp("U"+T.tagFix(CMLib.quests().fetchQuest(x).name()),totals[x]);
 				}
@@ -318,7 +318,7 @@ public class Stat  extends Skills
 			C2.set(Calendar.SECOND,59);
 			C2.set(Calendar.MILLISECOND,999);
 			curTime=C2.getTimeInMillis();
-			final Vector set=new Vector();
+			final Vector<CoffeeTableRow> set=new Vector<CoffeeTableRow>();
 			for(int v=V.size()-1;v>=0;v--)
 			{
 				final CoffeeTableRow T=V.get(v);
@@ -334,7 +334,7 @@ public class Stat  extends Skills
 			long numberOnlineCounter=0;
 			for(int s=0;s<set.size();s++)
 			{
-				final CoffeeTableRow T=(CoffeeTableRow)set.get(s);
+				final CoffeeTableRow T=set.get(s);
 				T.totalUp(code,totals);
 				if(T.highestOnline()>highestOnline)
 					highestOnline=T.highestOnline();
@@ -556,7 +556,7 @@ public class Stat  extends Skills
 			{
 				if(ableTypes>=0)
 				{
-					final Vector V=new Vector();
+					final Vector<Integer> V=new Vector<Integer>();
 					final int mask=Ability.ALL_ACODES;
 					V.add(Integer.valueOf(ableTypes));
 					str=getAbilities(mob,target,V,mask,false,-1);
@@ -701,9 +701,9 @@ public class Stat  extends Skills
 				{
 					if(target.playerStats()!=null)
 					{
-						for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+						for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 						{
-							final Area A=(Area)e.nextElement();
+							final Area A=e.nextElement();
 							final int pct=target.playerStats().percentVisited(target, A);
 							if(pct>0)
 								str.append("^H"+A.name()+"^N: "+pct+"%, ");
@@ -718,9 +718,9 @@ public class Stat  extends Skills
 				{
 					if(target.playerStats()!=null)
 					{
-						for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+						for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 						{
-							final Room R=(Room)e.nextElement();
+							final Room R=e.nextElement();
 							if((R.roomID().length()>0)&&(target.playerStats().hasVisited(R)))
 								str.append("^H"+R.roomID()+"^N, ");
 						}

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_Map extends StdSkill
 {
 	@Override public String ID() { return "Skill_Map"; }
@@ -47,7 +47,7 @@ public class Skill_Map extends StdSkill
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
 
-	Vector roomsMappedAlready=new Vector();
+	Vector<Room> roomsMappedAlready=new Vector<Room>();
 	protected Item map=null;
 
 	@Override
@@ -82,7 +82,7 @@ public class Skill_Map extends StdSkill
 		&&(!roomsMappedAlready.contains(msg.target()))
 		&&(!CMath.bset(((Room)msg.target()).phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE)))
 		{
-			roomsMappedAlready.addElement(msg.target());
+			roomsMappedAlready.addElement((Room)msg.target());
 			map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID((Room)msg.target()));
 			if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 				((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();

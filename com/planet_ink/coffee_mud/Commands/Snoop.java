@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Snoop extends StdCommand
 {
 	public Snoop(){}
@@ -42,7 +42,7 @@ public class Snoop extends StdCommand
 
 	protected List<Session> snoopingOn(Session S)
 	{
-		final List<Session> V=new Vector();
+		final List<Session> V=new Vector<Session>();
 		for(final Session S2 : CMLib.sessions().allIterable())
 			if(S2.isBeingSnoopedBy(S))
 				V.add(S2);
@@ -98,7 +98,7 @@ public class Snoop extends StdCommand
 			mob.tell(L("Only another Archon can snoop on @x1.",SnoopOn.mob().name()));
 		else
 		{
-			final Vector snoop=new Vector();
+			final Vector<Session> snoop=new Vector<Session>();
 			snoop.add(SnoopOn);
 			for(int v=0;v<snoop.size();v++)
 			{
@@ -107,7 +107,7 @@ public class Snoop extends StdCommand
 					mob.tell(L("This would create a snoop loop!"));
 					return false;
 				}
-				final List<Session> V=snoopingOn((Session)snoop.get(v));
+				final List<Session> V=snoopingOn(snoop.get(v));
 				for(int v2=0;v2<V.size();v2++)
 				{
 					final Session S2=V.get(v2);

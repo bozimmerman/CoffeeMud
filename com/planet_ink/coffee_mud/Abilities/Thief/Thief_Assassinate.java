@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_Assassinate extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Assassinate"; }
@@ -137,7 +137,7 @@ public class Thief_Assassinate extends ThiefSkill
 							{
 								final int dir=nextDirection;
 								nextDirection=-2;
-								final Vector V=new Vector();
+								final Vector<String> V=new Vector<String>();
 								V.addElement(Directions.getDirectionName(dir));
 								A.invoke(mob,V,null,false,0);
 							}

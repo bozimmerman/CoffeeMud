@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class GetsAllEquipped extends ActiveTicker
 {
 	@Override public String ID(){return "GetsAllEquipped";}
@@ -81,7 +80,7 @@ public class GetsAllEquipped extends ActiveTicker
 			final Vector<Item> stuffIHad=new Vector<Item>();
 			for(int i=0;i<mob.numItems();i++)
 				stuffIHad.addElement(mob.getItem(i));
-			mob.enqueCommand(new XVector("GET","ALL"),MUDCmdProcessor.METAFLAG_FORCED,0);
+			mob.enqueCommand(new XVector<String>("GET","ALL"),MUDCmdProcessor.METAFLAG_FORCED,0);
 			Item I=null;
 			final Vector<Item> dropThisStuff=new Vector<Item>();
 			for(int i=0;i<mob.numItems();i++)
@@ -97,8 +96,8 @@ public class GetsAllEquipped extends ActiveTicker
 				}
 			}
 			for(int d=0;d<dropThisStuff.size();d++)
-				mob.enqueCommand(new XVector("DROP","$"+dropThisStuff.elementAt(d).Name()+"$"),MUDCmdProcessor.METAFLAG_FORCED,0);
-			mob.enqueCommand(new XVector("WEAR","ALL"),MUDCmdProcessor.METAFLAG_FORCED,0);
+				mob.enqueCommand(new XVector<String>("DROP","$"+dropThisStuff.elementAt(d).Name()+"$"),MUDCmdProcessor.METAFLAG_FORCED,0);
+			mob.enqueCommand(new XVector<String>("WEAR","ALL"),MUDCmdProcessor.METAFLAG_FORCED,0);
 		}
 		return true;
 	}

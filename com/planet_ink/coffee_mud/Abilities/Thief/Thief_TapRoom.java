@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_TapRoom extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_TapRoom"; }
@@ -295,7 +295,7 @@ public class Thief_TapRoom extends ThiefSkill
 	public List<RawMaterial> getAvailableLine(MOB mob)
 	{
 		Item I=null;
-		final List<RawMaterial> available=new Vector();
+		final List<RawMaterial> available=new Vector<RawMaterial>();
 		for(int i=0;i<mob.numItems();i++)
 		{
 			I=mob.getItem(i);

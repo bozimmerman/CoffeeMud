@@ -35,7 +35,7 @@ import java.util.Map.Entry;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class MOBTeacher extends CombatAbilities
 {
 	@Override public String ID(){return "MOBTeacher";}
@@ -189,7 +189,7 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.baseCharStats().setMyLevels(""+myMOB.phyStats().level());
 		myMOB.recoverCharStats();
 
-		final Hashtable myAbles=new Hashtable();
+		final Hashtable<String,Ability> myAbles=new Hashtable<String,Ability>();
 		Ability A=null;
 		for(final Enumeration<Ability> a=myMOB.allAbilities();a.hasMoreElements();)
 		{
@@ -448,9 +448,9 @@ public class MOBTeacher extends CombatAbilities
 						CMLib.commands().postSay(monster,student,L("I've heard of @x1, but that's an class-- try TRAINing  for it.",s),true,false);
 					else
 					{
-						for(final Enumeration e=CMLib.expertises().definitions(); e.hasMoreElements();)
+						for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions(); e.hasMoreElements();)
 						{
-							final ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+							final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
 							if(def.name.equalsIgnoreCase(s))
 							{
 								theExpertise=def;

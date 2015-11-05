@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_MakeBomb extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_MakeBomb"; }
@@ -50,7 +50,7 @@ public class Thief_MakeBomb extends ThiefSkill
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=null;
-		final Vector traps=new Vector();
+		final Vector<Trap> traps=new Vector<Trap>();
 		final int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob));
 		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
@@ -58,19 +58,19 @@ public class Thief_MakeBomb extends ThiefSkill
 			if((A instanceof Trap)
 			   &&(((Trap)A).isABomb())
 			   &&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
-				traps.addElement(A);
+				traps.addElement((Trap)A);
 		}
 		final int colWidth=ListingLibrary.ColFixer.fixColWidth(15,mob.session());
 		Physical trapThis=givenTarget;
 		if(trapThis!=null)
-			theTrap=(Trap)traps.elementAt(CMLib.dice().roll(1,traps.size(),-1));
+			theTrap=traps.elementAt(CMLib.dice().roll(1,traps.size(),-1));
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
 			final StringBuffer buf=new StringBuffer(L("@x1 Requires\n\r",CMStrings.padRight(L("Bomb Name"),colWidth)));
 			for(int r=0;r<traps.size();r++)
 			{
-				final Trap T=(Trap)traps.elementAt(r);
+				final Trap T=traps.elementAt(r);
 				buf.append(CMStrings.padRight(T.name(),colWidth)+" ");
 				buf.append(T.requiresToSet()+"\n\r");
 			}
@@ -89,7 +89,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			commands.remove(commands.size()-1);
 			for(int r=0;r<traps.size();r++)
 			{
-				final Trap T=(Trap)traps.elementAt(r);
+				final Trap T=traps.elementAt(r);
 				if(CMLib.english().containsString(T.name(),name))
 					theTrap=T;
 			}

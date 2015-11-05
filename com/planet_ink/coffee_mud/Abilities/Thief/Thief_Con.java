@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_Con extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Con"; }
@@ -54,7 +54,7 @@ public class Thief_Con extends ThiefSkill
 			commands=new XVector<String>(commands);
 		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>();
 		V.addElement(commands.get(0));
 		final MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null)
@@ -83,7 +83,7 @@ public class Thief_Con extends ThiefSkill
 			mob.tell(L("Con whom into doing what?"));
 			return false;
 		}
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>();
 		V.addElement(commands.get(0));
 		final MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null)
@@ -156,7 +156,7 @@ public class Thief_Con extends ThiefSkill
 			commands=new XVector<String>(commands);
 		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>();
 		V.addElement(commands.get(0));
 		final MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null)

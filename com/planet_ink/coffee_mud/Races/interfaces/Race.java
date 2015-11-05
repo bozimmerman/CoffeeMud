@@ -199,11 +199,11 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 */
 	public int[] getBreathables();
 	/**
-	 * Returns a Vector of RawMaterial objects (usually GenFoodResource, GenLiquidResource,
+	 * Returns a list of RawMaterial objects (usually GenFoodResource, GenLiquidResource,
 	 * or GenResource items) representing what is left over of a member of this race
 	 * after they've been butchered and cut up.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
-	 * @return a vector of rawmaterial objects
+	 * @return a list of rawmaterial objects
 	 */
 	public List<RawMaterial> myResources();
 	/**

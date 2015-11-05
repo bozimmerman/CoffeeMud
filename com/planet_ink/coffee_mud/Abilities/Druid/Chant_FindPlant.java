@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_FindPlant extends Chant
 {
 	@Override public String ID() { return "Chant_FindPlant"; }
@@ -61,7 +60,7 @@ public class Chant_FindPlant extends Chant
 	{
 		if(allResources==null)
 		{
-			allResources=new Vector();
+			allResources=new Vector<Integer>();
 			if(okResources()!=null)
 			{
 				for(int m=0;m<okResources().length;m++)

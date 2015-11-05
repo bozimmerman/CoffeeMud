@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Unload extends StdCommand
 {
 	public Unload(){}
@@ -171,10 +171,12 @@ public class Unload extends StdCommand
 			&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)))
 			{
 				final String which=CMParms.combine(commands,2);
-				final Vector users=new Vector();
+				final Vector<MOB> users=new Vector<MOB>();
 				if(which.equalsIgnoreCase("all"))
-					for(final Enumeration e=CMLib.players().players();e.hasMoreElements();)
+				{
+					for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 						users.add(e.nextElement());
+				}
 				else
 				{
 					final MOB M=CMLib.players().getPlayer(which);
@@ -188,7 +190,7 @@ public class Unload extends StdCommand
 				final boolean saveFirst=mob.session().confirm(L("Save first (Y/n)?"),L("Y"));
 				for(int u=0;u<users.size();u++)
 				{
-					final MOB M=(MOB)users.get(u);
+					final MOB M=users.get(u);
 					if(M.session()!=null)
 					{
 						if(M!=mob)
@@ -213,7 +215,7 @@ public class Unload extends StdCommand
 				int done=0;
 				for(int u=0;u<users.size();u++)
 				{
-					final MOB M=(MOB)users.get(u);
+					final MOB M=users.get(u);
 					if(M!=mob)
 					{
 						done++;

@@ -32,14 +32,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 {
 	@Override public String ID() { return "Prop_AbilityImmunity"; }
 	@Override public String name(){ return "Ability Immunity";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	@Override public String accountForYourself() { return "Immunity";	}
-	protected List<String> diseases=new Vector();
+	protected List<String> diseases=new Vector<String>();
 	protected Vector<String> messages=new Vector<String>();
 	protected boolean owner = false;
 	protected boolean wearer = false;

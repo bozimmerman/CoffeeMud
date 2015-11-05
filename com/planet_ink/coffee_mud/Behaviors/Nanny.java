@@ -792,7 +792,7 @@ public class Nanny extends StdBehavior
 				{
 					final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(codes);
 					XMLLibrary.XMLpiece P=null;
-					final Hashtable parsedPlayers=new Hashtable();
+					final Hashtable<String,Object> parsedPlayers=new Hashtable<String,Object>();
 					long time=0;
 					String eName=null;
 					PhysicalAgent PA=null;

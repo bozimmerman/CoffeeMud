@@ -50,10 +50,10 @@ public class Druid extends StdCharClass
 	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
-	private final HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
-	@Override protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
+	private final Set<Integer> requiredWeaponMaterials=buildRequiredWeaponMaterials();
+	@Override protected Set<Integer> requiredWeaponMaterials(){return requiredWeaponMaterials;}
 	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
-	public static Hashtable animalChecking=new Hashtable();
+	public static Hashtable<Environmental,Object[]> animalChecking=new Hashtable<Environmental,Object[]>();
 
 	public Druid()
 	{
@@ -368,7 +368,7 @@ public class Druid extends StdCharClass
 		&&(CMLib.flags().isInTheGame((MOB)host,true))
 		&&(!CMLib.law().isACity(msg.source().location().getArea())))
 		{
-			Object[] stuff=(Object[])animalChecking.get(host);
+			Object[] stuff=animalChecking.get(host);
 			final Room room=msg.source().location();
 			if((stuff==null)||(System.currentTimeMillis()-((Long)stuff[0]).longValue()>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*CMProps.getMillisPerMudHour())))
 			{
@@ -377,7 +377,7 @@ public class Druid extends StdCharClass
 				animalChecking.remove(host);
 				animalChecking.put(host,stuff);
 				stuff[1]=Integer.valueOf(0);
-				stuff[2]=new Vector();
+				stuff[2]=new Vector<String>();
 			}
 			if((((Integer)stuff[1]).intValue()<19)&&(!((List)stuff[2]).contains(""+msg.source())))
 			{

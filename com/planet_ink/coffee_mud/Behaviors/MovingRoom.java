@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class MovingRoom extends ActiveTicker
 {
 	@Override public String ID(){return "MovingRoom";}
@@ -86,11 +86,11 @@ public class MovingRoom extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		String myParms=newParms;
-		listOfRooms=new Vector();
-		roomInfos=new Vector();
-		messageInfo=new Vector();
-		mapInfo=new Vector();
-		stubs=new Vector();
+		listOfRooms=new Vector<String>();
+		roomInfos=new Vector<String>();
+		messageInfo=new Vector<Vector<String>>();
+		mapInfo=new Vector<String>();
+		stubs=new Vector<String>();
 
 		char c=';';
 		int x=myParms.indexOf(c);
@@ -147,7 +147,7 @@ public class MovingRoom extends ActiveTicker
 		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDirBlock, "INSIDE"), "DEPARTINFO"));
 		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDirBlock, "OUTSIDE"), "ARRIVALINFO"));
 		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDirBlock, "OUTSIDE"), "DEPARTINFO"));
-		messageInfo.addElement(new Vector(V));
+		messageInfo.addElement(new Vector<String>(V));
 		V.removeAllElements();
 		final String theNormalDescBlock = (CMLib.xml().returnXMLBlock(theDescriptionsBlock, "NORMALDIRECTION"));
 		final String theReverseDescBlock = (CMLib.xml().returnXMLBlock(theDescriptionsBlock, "REVERSEDIRECTION"));
@@ -159,7 +159,7 @@ public class MovingRoom extends ActiveTicker
 		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDescBlock, "INSIDE"), "DOORCLOSED"));
 		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDescBlock, "OUTSIDE"), "DOOROPENED"));
 		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theReverseDescBlock, "OUTSIDE"), "DOORCLOSED"));
-		messageInfo.addElement(new Vector(V));
+		messageInfo.addElement(new Vector<String>(V));
 		V.removeAllElements();
 		mapInfo.addElement(CMLib.xml().returnXMLValue(theFullBlock, "ROOMPRINTNAME"));
 		mapInfo.addElement(CMLib.xml().returnXMLValue(theFullBlock, "LINEPRINTNAME"));

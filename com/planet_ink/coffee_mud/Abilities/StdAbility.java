@@ -1331,7 +1331,7 @@ public class StdAbility implements Ability
 	@Override
 	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel)
 	{
-		final Vector V=new Vector(1);
+		final Vector<String> V=new Vector<String>(1);
 		if(target!=null)
 			V.addElement(target.name());
 		return invoke(mob,V,target,auto,asLevel);

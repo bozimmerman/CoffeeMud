@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_NarrowLedge extends Property
 {
 	@Override public String ID() { return "Prop_NarrowLedge"; }
@@ -42,7 +42,7 @@ public class Prop_NarrowLedge extends Property
 
 	protected int check=16;
 	protected String name="the narrow ledge";
-	protected List<MOB> mobsToKill=new Vector();
+	protected List<MOB> mobsToKill=new Vector<MOB>();
 
 	@Override
 	public String accountForYourself()
@@ -51,7 +51,7 @@ public class Prop_NarrowLedge extends Property
 	@Override
 	public void setMiscText(String newText)
 	{
-		mobsToKill=new Vector();
+		mobsToKill=new Vector<MOB>();
 		super.setMiscText(newText);
 		check=CMParms.getParmInt(newText,"check",16);
 		name=CMParms.getParmStr(newText,"name","the narrow ledge");

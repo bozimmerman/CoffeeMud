@@ -628,7 +628,7 @@ public class RoomData extends StdWebMacro
 						||(!R2.fetchBehavior(B.ID()).getParms().equalsIgnoreCase(B.getParms())))
 							b.remove();
 					}
-					final HashSet<MOB> checkedMobs=new HashSet();
+					final HashSet<MOB> checkedMobs=new HashSet<MOB>();
 					for(final Iterator<MOB> m=stuff.inhabs.iterator();m.hasNext();)
 					{
 						final MOB M=m.next();
@@ -656,7 +656,7 @@ public class RoomData extends StdWebMacro
 						if((M!=null)&&(!found))
 							m.remove();
 					}
-					final HashSet<Item> checkedItems=new HashSet();
+					final HashSet<Item> checkedItems=new HashSet<Item>();
 					for(final Iterator<Item> i=stuff.items.iterator();i.hasNext();)
 					{
 						final Item I=i.next();
@@ -1278,7 +1278,7 @@ public class RoomData extends StdWebMacro
 				if(ilist==null)
 				{
 					ilist=new StringBuffer("");
-					final List<String> sortMe=new Vector();
+					final List<String> sortMe=new Vector<String>();
 					CMClass.addAllItemClassNames(sortMe,true,true,false,theme);
 					Collections.sort(sortMe);
 					for (final Object element : sortMe)

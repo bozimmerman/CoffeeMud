@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_LimitedItems extends Property
 {
 	@Override public String ID() { return "Prop_LimitedItems"; }
@@ -62,7 +62,7 @@ public class Prop_LimitedItems extends Property
 			{
 				if(!instances.containsKey(I.Name()))
 				{
-					myInstances=new Vector();
+					myInstances=new Vector<Item>();
 					instances.put(I.Name(),myInstances);
 					myInstances.add(I);
 				}

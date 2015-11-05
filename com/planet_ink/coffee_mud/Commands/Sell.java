@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Sell extends StdCommand
 {
 	public Sell(){}
@@ -59,7 +59,7 @@ public class Sell extends StdCommand
 
 
 		String whatName=CMParms.combine(commands,0);
-		final Vector V=new Vector();
+		final Vector<Item> V=new Vector<Item>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
@@ -83,7 +83,7 @@ public class Sell extends StdCommand
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			final Item thisThang=(Item)V.get(v);
+			final Item thisThang=V.get(v);
 			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,L("<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>."));
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);

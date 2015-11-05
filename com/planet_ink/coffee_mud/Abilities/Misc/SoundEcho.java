@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class SoundEcho extends StdAbility
 {
 	@Override public String ID() { return "SoundEcho"; }
@@ -82,7 +82,7 @@ public class SoundEcho extends StdAbility
 				String str=msg.othersMessage();
 				str=CMLib.coffeeFilter().fullOutFilter(null,blindMOB(),msg.source(),msg.target(),msg.tool(),str,false);
 				CMMsg echoMsg=(CMMsg)msg.copyOf();
-				final Vector doneRooms=new Vector();
+				final Vector<Room> doneRooms=new Vector<Room>();
 				if(echoMsg.sourceMessage()!=null)
 					echoMsg.setSourceMessage("You hear an echo: "+CMLib.coffeeFilter().fullOutFilter(null,blindMOB(),msg.source(),msg.target(),msg.tool(),msg.sourceMessage(),false));
 				if(echoMsg.targetMessage()!=null)

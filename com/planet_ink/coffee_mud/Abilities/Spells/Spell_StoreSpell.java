@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_StoreSpell extends Spell
 {
 	@Override public String ID() { return "Spell_StoreSpell"; }
@@ -116,7 +116,7 @@ public class Spell_StoreSpell extends Spell
 				{
 					setMiscText(A.ID()+"/"+(charges-1));
 					A=(Ability)A.newInstance();
-					final Vector V=new Vector();
+					final Vector<String> V=new Vector<String>();
 					if(target!=null)
 						V.addElement(target.name());
 					V.addElement(message);

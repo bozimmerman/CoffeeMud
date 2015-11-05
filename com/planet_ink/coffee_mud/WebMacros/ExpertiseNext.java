@@ -85,16 +85,17 @@ public class ExpertiseNext extends StdWebMacro
 		final String levelName=httpReq.getUrlParameter("LEVEL");
 		final int levelCheck=((levelName!=null)&&(levelName.length()>0))?CMath.s_int(levelName):-1;
 		final String className=httpReq.getUrlParameter("CLASS");
-		Hashtable expertsAllows=null;
+		Hashtable<String,Integer> expertsAllows=null;
 		if((className!=null)&&(className.length()>0))
 		{
 			expertsAllows=(Hashtable)httpReq.getRequestObjects().get("ALLOWS-"+className.toUpperCase().trim());
 			if(expertsAllows==null)
 			{
-				expertsAllows=new Hashtable();
+				expertsAllows=new Hashtable<String,Integer>();
 				httpReq.getRequestObjects().put("ALLOWS-"+className.toUpperCase().trim(),expertsAllows);
 				final List<QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(className);
 				if(DV!=null)
+				{
 					for(final QualifyingID qID : DV)
 					{
 						final String xpertise=qID.ID();
@@ -108,6 +109,7 @@ public class ExpertiseNext extends StdWebMacro
 							expertsAllows.put(xpertise,Integer.valueOf(minLevel));
 						}
 					}
+				}
 			}
 		}
 		for(final Iterator<Object> e=experts.getDimensionList(2).iterator();e.hasNext();)
@@ -117,7 +119,7 @@ public class ExpertiseNext extends StdWebMacro
 			{
 				if(expertsAllows!=null)
 				{
-					qualLevel=(Integer)expertsAllows.get(E.ID);
+					qualLevel=expertsAllows.get(E.ID);
 					if(qualLevel==null)
 						continue;
 					if((levelCheck>=0)&&(levelCheck!=qualLevel.intValue()))

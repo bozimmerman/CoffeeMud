@@ -469,7 +469,7 @@ public class StdRace implements Race
 	{
 		if(naturalWeaponChoices==null)
 		{
-			naturalWeaponChoices=new Vector();
+			naturalWeaponChoices=new Vector<Weapon>();
 			for(int i=1;i<11;i++)
 			{
 				naturalWeapon=CMClass.getWeapon("StdWeapon");
@@ -522,7 +522,12 @@ public class StdRace implements Race
 		return CMClass.getWeapon("Natural");
 	}
 
-	@Override public List<RawMaterial> myResources(){return new Vector();}
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		return new Vector<RawMaterial>();
+	}
+
 	@Override
 	public void setHeightWeight(PhyStats stats, char gender)
 	{
@@ -607,7 +612,7 @@ public class StdRace implements Race
 			}
 		}
 
-		final Vector items=new Vector();
+		final Vector<Item> items=new Vector<Item>();
 		CMLib.beanCounter().getTotalAbsoluteNativeValue(mob); // converts mob.get-Money();
 		if(mob.getMoneyVariation()>0.0)
 			CMLib.beanCounter().addMoney(mob, Math.random()*mob.getMoneyVariation());
@@ -905,7 +910,7 @@ public class StdRace implements Race
 
 		List<RawMaterial> rscs=myResources();
 		if(rscs==null)
-			rscs=new Vector();
+			rscs=new Vector<RawMaterial>();
 		String txt=null;
 		Item I;
 		GR.setStat("NUMRSC",""+rscs.size());
@@ -920,7 +925,7 @@ public class StdRace implements Race
 
 		List<Item> outfit=outfit(null);
 		if(outfit==null)
-			outfit=new Vector();
+			outfit=new Vector<Item>();
 		GR.setStat("NUMOFT",""+outfit.size());
 		for(int i=0;i<outfit.size();i++)
 			GR.setStat("GETOFTID"+i,outfit.get(i).ID());

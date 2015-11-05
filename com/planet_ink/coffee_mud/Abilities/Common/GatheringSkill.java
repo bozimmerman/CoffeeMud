@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class GatheringSkill extends CommonSkill
 {
 	@Override public String ID() { return "GatheringSkill"; }
@@ -43,7 +42,7 @@ public class GatheringSkill extends CommonSkill
 	private static final String[] triggerStrings =I(new String[] {"FLETCH","FLETCHING"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override public String supportedResourceString(){return "";}
-	protected static final Map<String,List<Integer>> supportedResources=new Hashtable();
+	protected static final Map<String,List<Integer>> supportedResources=new Hashtable<String,List<Integer>>();
 
 	public GatheringSkill(){super();}
 
@@ -60,7 +59,7 @@ public class GatheringSkill extends CommonSkill
 		if(supportedResources.containsKey(ID()))
 			return supportedResources.get(ID());
 		String mask=supportedResourceString();
-		final List<Integer> maskV=new Vector();
+		final List<Integer> maskV=new Vector<Integer>();
 		String str=mask;
 		while(mask.length()>0)
 		{
@@ -145,7 +144,7 @@ public class GatheringSkill extends CommonSkill
 		int foundResource=-1;
 		Item foundAnyway=null;
 		final List<Integer> maskV=myResources();
-		final Hashtable foundAblesH=new Hashtable();
+		final Hashtable<String,Ability> foundAblesH=new Hashtable<String,Ability>();
 		Ability A=null;
 		long lowestNonZeroFoodNumber=Long.MAX_VALUE;
 		for(int i=0;i<R.numItems();i++)
@@ -218,7 +217,7 @@ public class GatheringSkill extends CommonSkill
 		}
 		if(I instanceof Decayable)
 			((Decayable)I).setDecayTime(lowestNonZeroFoodNumber);
-		for(final Enumeration e=foundAblesH.keys();e.hasMoreElements();)
+		for(final Enumeration<String> e=foundAblesH.keys();e.hasMoreElements();)
 			I.addNonUninvokableEffect((Ability)((Environmental)foundAblesH.get(e.nextElement())).copyOf());
 		R.recoverRoomStats();
 		return true;

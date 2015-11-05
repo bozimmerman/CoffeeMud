@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_Breadcrumbs extends Spell
 {
 	@Override public String ID() { return "Spell_Breadcrumbs"; }
@@ -41,7 +41,7 @@ public class Spell_Breadcrumbs extends Spell
 	@Override public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
 	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
-	public Vector trail=null;
+	public Vector<Room> trail=null;
 
 	@Override
 	public void unInvoke()
@@ -67,7 +67,7 @@ public class Spell_Breadcrumbs extends Spell
 			Room lastRoom=null;
 			for(int v=trail.size()-1;v>=0;v--)
 			{
-				final Room R=(Room)trail.elementAt(v);
+				final Room R=trail.elementAt(v);
 				if(lastRoom!=null)
 				{
 					int dir=-1;
@@ -107,7 +107,7 @@ public class Spell_Breadcrumbs extends Spell
 					trail.removeElement(trail.elementAt(t));
 				else
 				{
-					final Room R=(Room)trail.elementAt(t);
+					final Room R=trail.elementAt(t);
 					if(R==newRoom)
 						kill=true;
 					t++;
@@ -129,7 +129,7 @@ public class Spell_Breadcrumbs extends Spell
 							trail.removeElement(trail.elementAt(t));
 						else
 						{
-							final Room R=(Room)trail.elementAt(t);
+							final Room R=trail.elementAt(t);
 							if(R==adjacentRoom)
 								kill=true;
 							t++;
@@ -166,7 +166,7 @@ public class Spell_Breadcrumbs extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				trail=new Vector();
+				trail=new Vector<Room>();
 				trail.addElement(mob.location());
 				beneficialAffect(mob,target,asLevel,0);
 			}

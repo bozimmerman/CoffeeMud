@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_RepairingAura extends Spell
 {
 	@Override public String ID() { return "Spell_RepairingAura"; }
@@ -105,8 +105,8 @@ public class Spell_RepairingAura extends Spell
 		else
 		if(target instanceof MOB)
 		{
-			final Vector choices=new Vector();
-			final Vector inventory=new Vector();
+			final Vector<Item> choices=new Vector<Item>();
+			final Vector<Item> inventory=new Vector<Item>();
 			final MOB M=(MOB)target;
 			Item I=null;
 			for(int i=0;i<M.numItems();i++)
@@ -120,7 +120,7 @@ public class Spell_RepairingAura extends Spell
 						choices.addElement(I);
 				}
 			}
-			Vector chooseFrom=inventory;
+			Vector<Item> chooseFrom=inventory;
 			if(choices.size()<3)
 				inventory.addAll(choices);
 			else
@@ -128,7 +128,7 @@ public class Spell_RepairingAura extends Spell
 			if(chooseFrom.size()<1)
 				success=false;
 			else
-				realTarget=(Item)chooseFrom.elementAt(CMLib.dice().roll(1,chooseFrom.size(),-1));
+				realTarget=chooseFrom.elementAt(CMLib.dice().roll(1,chooseFrom.size(),-1));
 		}
 
 		if(success)

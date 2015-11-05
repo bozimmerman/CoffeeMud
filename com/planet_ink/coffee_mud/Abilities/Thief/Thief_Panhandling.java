@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_Panhandling extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Panhandling"; }
@@ -48,7 +48,7 @@ public class Thief_Panhandling extends ThiefSkill
 	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
-	Vector mobsHitUp=new Vector();
+	Vector<MOB> mobsHitUp=new Vector<MOB>();
 	int tickTock=0;
 
 	@Override

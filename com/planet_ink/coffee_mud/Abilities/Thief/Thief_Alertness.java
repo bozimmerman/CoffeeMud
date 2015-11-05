@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_Alertness extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Alertness"; }
@@ -63,7 +63,7 @@ public class Thief_Alertness extends ThiefSkill
 			if(mob.location()!=room)
 			{
 				room=mob.location();
-				Vector choices=null;
+				Vector<Item> choices=null;
 				for(int i=0;i<room.numItems();i++)
 				{
 					final Item I=room.getItem(i);
@@ -72,7 +72,7 @@ public class Thief_Alertness extends ThiefSkill
 					&&(I.displayText().length()==0))
 					{
 						if(choices==null)
-							choices=new Vector();
+							choices=new Vector<Item>();
 						choices.addElement(I);
 					}
 				}
@@ -83,7 +83,7 @@ public class Thief_Alertness extends ThiefSkill
 						alert=1;
 					while((alert>0)&&(choices.size()>0))
 					{
-						final Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+						final Item I=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 						choices.removeElement(I);
 						mob.tell(I.name(mob)+": "+I.description());
 						alert--;

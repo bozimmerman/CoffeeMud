@@ -34,7 +34,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdLawBook extends StdItem
 {
 	@Override public String ID(){	return "StdLawBook";}
@@ -459,8 +459,8 @@ public class StdLawBook extends StdItem
 					final String oldVal=oldLaw[Law.BIT_CRIMELOCS].toUpperCase();
 					String lastOle="";
 					boolean lastAnswer=false;
-					final Vector allloca1=CMParms.parse(oldVal);
-					final Vector allloca2=CMParms.parse(oldVal.toUpperCase());
+					final Vector<String> allloca1=CMParms.parse(oldVal);
+					final Vector<String> allloca2=CMParms.parse(oldVal.toUpperCase());
 					for (final String[] locflag : locflags)
 					{
 						final int dex=allloca2.indexOf(locflag[1].toUpperCase());
@@ -738,7 +738,7 @@ public class StdLawBook extends StdItem
 		{
 			final StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight(L("#  Ability"),20)+" "+shortLawHeader()+"\n\r");
-			final Hashtable filteredTable=new Hashtable();
+			final Hashtable<String,String[]> filteredTable=new Hashtable<String,String[]>();
 			for(final String key : theLaw.abilityCrimes().keySet())
 			{
 				final String[] set=theLaw.abilityCrimes().get(key);
@@ -754,10 +754,10 @@ public class StdLawBook extends StdItem
 				filteredTable.put(key.toUpperCase(),set);
 			}
 			int highest=0;
-			for(final Enumeration e=filteredTable.keys();e.hasMoreElements();)
+			for(final Enumeration<String> e=filteredTable.keys();e.hasMoreElements();)
 			{
-				final String key=(String)e.nextElement();
-				final String[] set=(String[])filteredTable.get(key);
+				final String key=e.nextElement();
+				final String[] set=filteredTable.get(key);
 				final Ability AB=CMClass.getAbility(key);
 				final String name=(AB!=null)?AB.name():key;
 				str.append(CMStrings.padRight(""+(highest+1)+". "+name,20)+" "+shortLawDesc(set)+"\n\r");
@@ -811,10 +811,10 @@ public class StdLawBook extends StdItem
 				String[] crimeSet=null;
 				int count=1;
 				if((x>0)&&(x<=highest))
-					for(final Enumeration e=filteredTable.keys();e.hasMoreElements();)
+					for(final Enumeration<String> e=filteredTable.keys();e.hasMoreElements();)
 					{
-						final String key=(String)e.nextElement();
-						final String[] set=(String[])filteredTable.get(key);
+						final String key=e.nextElement();
+						final String[] set=filteredTable.get(key);
 						if(count==x)
 						{
 							crimeName=key;
@@ -966,7 +966,7 @@ public class StdLawBook extends StdItem
 		{
 			final StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight(L("#  Effect"),20)+" "+shortLawHeader()+"\n\r");
-			final Hashtable filteredTable=new Hashtable();
+			final Hashtable<String,String[]> filteredTable=new Hashtable<String,String[]>();
 			for(final String key : theLaw.abilityCrimes().keySet())
 			{
 				final String[] set=theLaw.abilityCrimes().get(key);
@@ -982,10 +982,10 @@ public class StdLawBook extends StdItem
 				filteredTable.put(key,set);
 			}
 			int highest=0;
-			for(final Enumeration e=filteredTable.keys();e.hasMoreElements();)
+			for(final Enumeration<String> e=filteredTable.keys();e.hasMoreElements();)
 			{
-				final String key=(String)e.nextElement();
-				final String[] set=(String[])filteredTable.get(key);
+				final String key=e.nextElement();
+				final String[] set=filteredTable.get(key);
 				final Ability AB=CMClass.getAbility(key.substring(1));
 				final String name=(AB!=null)?AB.name():key.substring(1);
 				str.append(CMStrings.padRight(""+(highest+1)+". "+name,20)+" "+shortLawDesc(set)+"\n\r");
@@ -1039,10 +1039,10 @@ public class StdLawBook extends StdItem
 				String[] crimeSet=null;
 				int count=1;
 				if((x>0)&&(x<=highest))
-					for(final Enumeration e=filteredTable.keys();e.hasMoreElements();)
+					for(final Enumeration<String> e=filteredTable.keys();e.hasMoreElements();)
 					{
-						final String key=(String)e.nextElement();
-						final String[] set=(String[])filteredTable.get(key);
+						final String key=e.nextElement();
+						final String[] set=filteredTable.get(key);
 						if(count==x)
 						{
 							crimeName=key;
@@ -1147,7 +1147,7 @@ public class StdLawBook extends StdItem
 			str.append("\n\r");
 			List<String> V=theLaw.releaseRooms();
 			if(CMParms.combine(V,0).equals("@"))
-				V=new Vector();
+				V=new Vector<String>();
 			int highest=4;
 			for(int v=0;v<V.size();v++)
 			{
@@ -1236,7 +1236,7 @@ public class StdLawBook extends StdItem
 			str.append("\n\r");
 			List<String> V=theLaw.jailRooms();
 			if(CMParms.combine(V,0).equals("@"))
-				V=new Vector();
+				V=new Vector<String>();
 			int highest=4;
 			for(int v=0;v<V.size();v++)
 			{
@@ -1401,9 +1401,9 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P2"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")));
 		String duhJudge="No Judge Found!\n\r";
 		final StringBuffer duhOfficers=new StringBuffer("");
-		for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
+		for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 		{
-			final Room R=(Room)e.nextElement();
+			final Room R=e.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				final MOB M=R.fetchInhabitant(i);

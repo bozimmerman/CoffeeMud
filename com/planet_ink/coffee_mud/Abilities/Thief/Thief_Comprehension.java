@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_Comprehension extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Comprehension"; }
@@ -45,7 +45,7 @@ public class Thief_Comprehension extends ThiefSkill
 	private static final String[] triggerStrings =I(new String[] {"COMPREHEND","COMPREHENSION"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
 	@Override protected boolean disregardsArmorCheck(MOB mob){return true;}
-	protected Vector queue=new Vector();
+	protected Vector<CMMsg> queue=new Vector<CMMsg>();
 	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
 	@Override
@@ -68,7 +68,7 @@ public class Thief_Comprehension extends ThiefSkill
 			return false;
 		if((queue.size()>0)&&(affected instanceof MOB)&&(proficiencyCheck((MOB)affected,0,false)))
 		{
-			final CMMsg msg=(CMMsg)queue.firstElement();
+			final CMMsg msg=queue.firstElement();
 			queue.removeElementAt(0);
 			final MOB mob=(MOB)affected;
 			if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))

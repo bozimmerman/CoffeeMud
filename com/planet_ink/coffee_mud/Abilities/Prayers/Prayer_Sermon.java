@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prayer_Sermon extends Prayer
 {
 	@Override public String ID() { return "Prayer_Sermon"; }
@@ -131,7 +131,7 @@ public class Prayer_Sermon extends Prayer
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		final Hashtable h=new Hashtable();
+		final Hashtable<MOB,MOB> h=new Hashtable<MOB,MOB>();
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
 			final MOB M=mob.location().fetchInhabitant(i);
@@ -154,9 +154,9 @@ public class Prayer_Sermon extends Prayer
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> begin(s) sermonizing on the wonders of @x1.^?",hisHerDiety(mob))))
-			for(final Enumeration f=h.elements();f.hasMoreElements();)
+			for(final Enumeration<MOB> f=h.elements();f.hasMoreElements();)
 			{
-				final MOB target=(MOB)f.nextElement();
+				final MOB target=f.nextElement();
 
 				if((CMLib.flags().canBeHeardSpeakingBy(mob,target))&&(mob.mayIFight(target)))
 				{

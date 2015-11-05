@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SummonAnimal extends Chant
 {
 	@Override public String ID() { return "Chant_SummonAnimal"; }
@@ -78,7 +77,7 @@ public class Chant_SummonAnimal extends Chant
 
 	public Vector<Integer> outdoorChoices(Room R)
 	{
-		final Vector<Integer> choices=new Vector();
+		final Vector<Integer> choices=new Vector<Integer>();
 		if(R==null)
 			return choices;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

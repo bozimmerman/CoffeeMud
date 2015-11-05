@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Where extends StdCommand
 {
 	public Where()
@@ -476,9 +476,9 @@ public class Where extends StdCommand
 			final DVector mobsVec=new DVector(2);
 			final DVector alignVec=new DVector(2);
 			final int moblevel=mob.phyStats().level()+adjust;
-			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				final Area A=(Area)a.nextElement();
+				final Area A=a.nextElement();
 				if((CMLib.flags().canAccess(mob,A))
 				&&(CMLib.flags().canBeLocated(A))
 				&&(A.getAreaIStats()!=null))
@@ -507,9 +507,9 @@ public class Where extends StdCommand
 			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))&&(mob.playerStats()!=null))
 				msg.append(L("You have explored @x1% of this area and @x2% of the world.\n\r",""+mob.playerStats().percentVisited(mob,mob.location().getArea()),""+mob.playerStats().percentVisited(mob,null)));
 			final DVector scores=new DVector(2);
-			for(final Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				final Area A=(Area)a.nextElement();
+				final Area A=a.nextElement();
 				if(CMLib.flags().canAccess(mob,A))
 				{
 					int index=levelsVec.indexOf(A);

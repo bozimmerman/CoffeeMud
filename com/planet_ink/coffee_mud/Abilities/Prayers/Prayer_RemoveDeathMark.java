@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_RemoveDeathMark"; }
@@ -77,16 +77,16 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		final Hashtable remove=new Hashtable();
+		final Hashtable<Ability,MOB> remove=new Hashtable<Ability,MOB>();
 		Ability E=target.fetchEffect("Thief_Mark");
 		if(E!=null)
 			remove.put(E,target);
 		E=target.fetchEffect("Thief_ContractHit");
 		if(E!=null)
 			remove.put(E,target);
-		for(final Enumeration e=CMLib.players().players();e.hasMoreElements();)
+		for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
-			final MOB M=(MOB)e.nextElement();
+			final MOB M=e.nextElement();
 			if((M!=null)&&(M!=target))
 			{
 				E=M.fetchEffect("Thief_Mark");
@@ -101,10 +101,10 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(final Enumeration e=remove.keys();e.hasMoreElements();)
+				for(final Enumeration<Ability> e=remove.keys();e.hasMoreElements();)
 				{
-					final Ability A=(Ability)e.nextElement();
-					final MOB M=(MOB)remove.get(A);
+					final Ability A=e.nextElement();
+					final MOB M=remove.get(A);
 					A.unInvoke();
 					M.delEffect(A);
 				}

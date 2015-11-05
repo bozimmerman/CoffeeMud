@@ -38,7 +38,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 {
 	@Override public String ID() { return "Herbalism"; }
@@ -59,7 +58,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 
 	String oldName="";
 	private Ability theSpell=null;
-	private static final Hashtable usage=new Hashtable();
+	private static final Hashtable<String,Integer> usage=new Hashtable<String,Integer>();
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -278,7 +277,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 								s=s.substring(0,s.length()-1);
 							if(fillUsage)
 							{
-								Integer I=(Integer)usage.get(s.toUpperCase().trim());
+								Integer I=usage.get(s.toUpperCase().trim());
 								if(I==null)
 									I=Integer.valueOf(0);
 								else

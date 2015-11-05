@@ -397,7 +397,7 @@ public class Skill_Juggle extends BardSkill
 			commands.set(0,"all");
 		}
 
-		final Vector V=new Vector();
+		final Vector<Item> V=new Vector<Item>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(whatToJuggle.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(4);}
 		if(whatToJuggle.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(0,whatToJuggle.length()-4);}
@@ -452,7 +452,7 @@ public class Skill_Juggle extends BardSkill
 			A.pause=true;
 			for(int i=0;i<V.size();i++)
 			{
-				final Item I=(Item)V.elementAt(i);
+				final Item I=V.elementAt(i);
 				final CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> start(s) juggling <T-NAMESELF>."));
 				if((A.juggles.size()<A.maxJuggles())
 				&&(mob.location().okMessage(mob,msg)))

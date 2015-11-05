@@ -36,7 +36,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdClanDonationList extends StdClanItem
 {
 
@@ -113,7 +112,7 @@ public class StdClanDonationList extends StdClanItem
 				{
 					final StringBuffer text=new StringBuffer("");
 					final List<PlayerData> V=CMLib.database().DBReadData(clanID(),"DONATIONS");
-					final Vector sorted=new Vector();
+					final Vector<Object[]> sorted=new Vector<Object[]>();
 					String key=null;
 					int x=0;
 					long val=0;
@@ -129,7 +128,7 @@ public class StdClanDonationList extends StdClanItem
 							boolean did=false;
 							for(int i=0;i<sorted.size();i++)
 							{
-								if(((Long)((Object[])sorted.elementAt(i))[0]).longValue()>val)
+								if(((Long)sorted.elementAt(i)[0]).longValue()>val)
 								{
 									did=true;
 									final Object[] O=new Object[2];
@@ -149,7 +148,7 @@ public class StdClanDonationList extends StdClanItem
 						V.remove(0);
 					}
 					for(int i=0;i<sorted.size();i++)
-						text.append(((String)((Object[])sorted.elementAt(i))[1])+"\n\r");
+						text.append(((String)sorted.elementAt(i)[1])+"\n\r");
 
 					if(text.length()>0)
 						mob.tell(L("It says '@x1'.",text.toString()));

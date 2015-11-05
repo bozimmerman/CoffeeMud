@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_Satire extends BardSkill
 {
 	@Override public String ID() { return "Skill_Satire"; }
@@ -68,7 +68,7 @@ public class Skill_Satire extends BardSkill
 		}
 		LegalBehavior B=null;
 		Area A2=null;
-		final Vector<MOB> forgivables=new Vector();
+		final Vector<MOB> forgivables=new Vector<MOB>();
 		final Room room=mob.location();
 		if(room==null)
 		{

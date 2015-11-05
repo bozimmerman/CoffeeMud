@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Mobile extends ActiveTicker implements MobileBehavior
 {
 	@Override public String ID(){return "Mobile";}
@@ -86,7 +86,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			if(currentRoom==null)
 				return false;
 			if(leashHash==null)
-				leashHash=new Hashtable();
+				leashHash=new Hashtable<Room,Integer>();
 			Integer DISTNOW=leashHash.get(currentRoom);
 			Integer DISTLATER=leashHash.get(newRoom);
 			if(DISTNOW==null)
@@ -141,7 +141,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
 			{
 				if(restrictedLocales==null)
-					restrictedLocales=new Vector();
+					restrictedLocales=new Vector<Integer>();
 				if(s.equalsIgnoreCase("+ALL"))
 					restrictedLocales.clear();
 				else

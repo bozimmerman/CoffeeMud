@@ -32,13 +32,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_AreaForSale extends Property implements LandTitle
 {
 	@Override public String ID() { return "Prop_AreaForSale"; }
 	@Override public String name(){ return "Putting an area up for sale";}
 	@Override protected int canAffectCode(){return Ability.CAN_AREAS;}
-	protected Hashtable lastItemNums=new Hashtable();
+	protected Hashtable<Room,Integer> lastItemNums=new Hashtable<Room,Integer>();
 	@Override
 	public String accountForYourself()
 	{ return "For Sale";	}
@@ -235,7 +235,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	@Override
 	public List<Room> getAllTitledRooms()
 	{
-		final List<Room> V=new Vector();
+		final List<Room> V=new Vector<Room>();
 		Area A=null;
 		if(affected instanceof Area)
 			A=(Area)affected;
@@ -265,7 +265,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			{
 				final Room R=V.get(v);
 				lastCall=System.currentTimeMillis();
-				final Integer lastItemNum=(Integer)lastItemNums.get(R);
+				final Integer lastItemNum=lastItemNums.get(R);
 				lastItemNums.put(R,Integer.valueOf(Prop_RoomForSale.updateLotWithThisData(R,this,false,false,optPlayerList,(lastItemNum==null)?-1:lastItemNum.intValue())));
 			}
 			lastCall=System.currentTimeMillis();

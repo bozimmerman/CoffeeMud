@@ -95,7 +95,7 @@ public class DefaultSession implements Session
 	protected String		 lastColorStr		 = "";
 	protected String		 lastStr			 = null;
 	protected int			 spamStack			 = 0;
-	protected List			 snoops				 = new Vector();
+	protected List<Session>	 snoops				 = new Vector<Session>();
 	protected List<String>	 prevMsgs			 = new Vector<String>();
 	protected StringBuffer	 curPrevMsg			 = null;
 	protected boolean		 lastWasCR			 = false;
@@ -924,7 +924,7 @@ public class DefaultSession implements Session
 				else
 					msgColored=msg;
 				for(int s=0;s<snoops.size();s++)
-					((Session)snoops.get(s)).onlyPrint(preFix+msgColored,noCache);
+					snoops.get(s).onlyPrint(preFix+msgColored,noCache);
 			}
 		}catch(final IndexOutOfBoundsException x){}
 
@@ -2875,7 +2875,7 @@ public class DefaultSession implements Session
 		
 		private MOB theMOB=null;
 		private int msgCode=-1;
-		private final HashSet skipRooms=new HashSet();
+		private final HashSet<Room> skipRooms=new HashSet<Room>();
 		private long activeMillis=0;
 		private LoginLogoutThread(){}
 		public LoginLogoutThread(MOB mob, int msgC)

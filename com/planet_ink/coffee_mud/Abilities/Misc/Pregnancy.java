@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Pregnancy extends StdAbility implements HealthCondition
 {
 	@Override public String ID() { return "Pregnancy"; }
@@ -213,7 +212,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 					{
 						final Ability A=CMClass.getAbility("Mood");
 						if(A!=null)
-							A.invoke(mob,new XVector("RANDOM"),mob,true,0);
+							A.invoke(mob,new XVector<String>("RANDOM"),mob,true,0);
 					}
 					if(daysRemaining<7) // BIRTH!
 					{

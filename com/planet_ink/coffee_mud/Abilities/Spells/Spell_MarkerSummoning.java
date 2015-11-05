@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_MarkerSummoning extends Spell
 {
 	@Override public String ID() { return "Spell_MarkerSummoning"; }
@@ -49,10 +49,11 @@ public class Spell_MarkerSummoning extends Spell
 		Room oldRoom=null;
 		try
 		{
-			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
+				{
 					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
@@ -66,6 +67,7 @@ public class Spell_MarkerSummoning extends Spell
 							}
 						}
 					}
+				}
 				if(oldRoom!=null)
 					break;
 			}
@@ -86,7 +88,7 @@ public class Spell_MarkerSummoning extends Spell
 			return false;
 
 
-		final Vector inhabs=new Vector();
+		final Vector<MOB> inhabs=new Vector<MOB>();
 		int profNeg=0;
 		for(int m=0;m<oldRoom.numInhabitants();m++)
 		{
@@ -110,7 +112,7 @@ public class Spell_MarkerSummoning extends Spell
 				mob.location().send(mob,msg);
 				for(int i=0;i<inhabs.size();i++)
 				{
-					final MOB follower=(MOB)inhabs.elementAt(i);
+					final MOB follower=inhabs.elementAt(i);
 					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appear(s) in a burst of light."));
 					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a great summoning swirl."));
 					if(oldRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
@@ -123,7 +125,7 @@ public class Spell_MarkerSummoning extends Spell
 						CMLib.commands().postLook(follower,true);
 					}
 				}
-				final Vector items=new Vector();
+				final Vector<Item> items=new Vector<Item>();
 				for(int i=oldRoom.numItems()-1;i>=0;i--)
 				{
 					final Item I=oldRoom.getItem(i);
@@ -132,7 +134,7 @@ public class Spell_MarkerSummoning extends Spell
 				}
 				for(int i=0;i<items.size();i++)
 				{
-					final Item I=(Item)items.elementAt(i);
+					final Item I=items.elementAt(i);
 					oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 disappears in a summoning swirl!",I.name()));
 					newRoom.moveItemTo(I);
 					newRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 appears in a burst of light!",I.name()));

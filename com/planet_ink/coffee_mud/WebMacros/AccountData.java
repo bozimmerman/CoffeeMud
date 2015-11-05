@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class AccountData extends StdWebMacro
 {
 	@Override public String name() { return "AccountData"; }
@@ -83,7 +83,7 @@ public class AccountData extends StdWebMacro
 				else
 				{
 					String id="";
-					set=new Vector();
+					set=new Vector<String>();
 					for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
 						set.add(httpReq.getUrlParameter("FLAG"+id));
 				}

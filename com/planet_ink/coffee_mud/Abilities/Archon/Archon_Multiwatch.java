@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Archon_Multiwatch extends ArchonSkill
 {
 	@Override public String ID() { return "Archon_Multiwatch"; }
@@ -199,10 +198,10 @@ public class Archon_Multiwatch extends ArchonSkill
 				if((S.getAddress().length()>0)
 				&&(S.mob()!=null))
 				{
-					List V=ipes.get(S.getAddress());
+					List<MOB> V=ipes.get(S.getAddress());
 					if(V==null)
 					{
-						V=new Vector();
+						V=new Vector<MOB>();
 						ipes.put(S.getAddress(),V);
 					}
 					if(!V.contains(S.mob()))
@@ -210,9 +209,9 @@ public class Archon_Multiwatch extends ArchonSkill
 				}
 			}
 			final StringBuffer rpt=new StringBuffer("");
-			for(final Enumeration e=ipes.keys();e.hasMoreElements();)
+			for(final Enumeration<String> e=ipes.keys();e.hasMoreElements();)
 			{
-				final String addr=(String)e.nextElement();
+				final String addr=e.nextElement();
 				final List<MOB> names=ipes.get(addr);
 				if(names.size()>1)
 				{

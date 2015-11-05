@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_Bribe extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_Bribe"; }
@@ -55,7 +55,7 @@ public class Thief_Bribe extends ThiefSkill
 			mob.tell(L("Bribe whom?"));
 			return false;
 		}
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>();
 		V.addElement(commands.get(0));
 		final MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null)

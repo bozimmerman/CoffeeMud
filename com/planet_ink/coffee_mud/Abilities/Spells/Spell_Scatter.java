@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_Scatter extends Spell
 {
 	@Override public String ID() { return "Spell_Scatter"; }
@@ -44,8 +44,8 @@ public class Spell_Scatter extends Spell
 
 	private Item getItem(MOB mobTarget)
 	{
-		final Vector goodPossibilities=new Vector();
-		final Vector possibilities=new Vector();
+		final Vector<Item> goodPossibilities=new Vector<Item>();
+		final Vector<Item> possibilities=new Vector<Item>();
 		for(int i=0;i<mobTarget.numItems();i++)
 		{
 			final Item item=mobTarget.getItem(i);
@@ -58,10 +58,10 @@ public class Spell_Scatter extends Spell
 			}
 		}
 		if(goodPossibilities.size()>0)
-			return (Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
+			return goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
 		else
 		if(possibilities.size()>0)
-			return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
+			return possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
 		return null;
 	}
 
@@ -82,14 +82,14 @@ public class Spell_Scatter extends Spell
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Vector areas=new Vector();
+		final Vector<Area> areas=new Vector<Area>();
 		if(commands.size()==0)
 			areas.addElement(mob.location().getArea());
 		else
 		if((commands.get(commands.size()-1)).equalsIgnoreCase("far"))
 		{
 			commands.remove(commands.size()-1);
-			for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 				areas.addElement(e.nextElement());
 		}
 		else
@@ -109,7 +109,7 @@ public class Spell_Scatter extends Spell
 				return maliciousFizzle(mob,mobTarget,L("<S-NAME> attempt(s) a scattering spell at <T-NAMESELF>, but nothing happens."));
 		}
 
-		List<Item> targets=new Vector();
+		List<Item> targets=new Vector<Item>();
 		if(givenTarget instanceof Item)
 			targets.add((Item)givenTarget);
 		else
@@ -149,7 +149,7 @@ public class Spell_Scatter extends Spell
 						msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 						Room room = null;
 						for(int x = 0; (x < 10) && (room == null); x++)
-							room=((Area)areas.elementAt(CMLib.dice().roll(1,areas.size(),-1))).getRandomMetroRoom();
+							room=areas.elementAt(CMLib.dice().roll(1,areas.size(),-1)).getRandomMetroRoom();
 						if(mob.location().okMessage(mob,msg) && (room != null))
 						{
 							mob.location().send(mob,msg);

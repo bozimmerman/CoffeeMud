@@ -89,10 +89,10 @@ public class DeityData extends StdWebMacro
 				if(parms.containsKey("MOBCODE"))
 				{
 					final String roomID=D.getStartRoom().roomID();
-					List classes=(List)httpReq.getRequestObjects().get("DEITYLIST-"+roomID);
+					List<MOB> classes=(List)httpReq.getRequestObjects().get("DEITYLIST-"+roomID);
 					if(classes==null)
 					{
-						classes=new Vector();
+						classes=new Vector<MOB>();
 						Room R=(Room)httpReq.getRequestObjects().get(roomID);
 						if(R==null)
 						{
@@ -100,9 +100,9 @@ public class DeityData extends StdWebMacro
 							if(R==null)
 								return "No Room?!";
 							final Vector<Deity> restoreDeities = new Vector<Deity>();
-							for(final Enumeration e=CMLib.map().deities();e.hasMoreElements();)
+							for(final Enumeration<Deity> e=CMLib.map().deities();e.hasMoreElements();)
 							{
-								final Deity D2 = (Deity)e.nextElement();
+								final Deity D2 = e.nextElement();
 								if((D2.getStartRoom()!=null)
 								&&(CMLib.map().getExtendedRoomID(D2.getStartRoom()).equalsIgnoreCase(CMLib.map().getExtendedRoomID(R))))
 									restoreDeities.addElement(D2);

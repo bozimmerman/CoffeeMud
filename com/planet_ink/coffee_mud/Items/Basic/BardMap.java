@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class BardMap extends GenMap
 {
 	@Override public String ID(){	return "BardMap";}
@@ -65,11 +65,11 @@ public class BardMap extends GenMap
 	}
 
 	@Override
-	public Hashtable makeMapRooms(int width)
+	public Hashtable<Room,MapRoom> makeMapRooms(int width)
 	{
 		final String newText=getMapArea();
 		final List<String> mapAreas=CMParms.parseSemicolons(newText,true);
-		final Hashtable mapRooms=new Hashtable();
+		final Hashtable<Room,MapRoom> mapRooms=new Hashtable<Room,MapRoom>();
 		for(int a=0;a<mapAreas.size();a++)
 		{
 			final String area=mapAreas.get(a);

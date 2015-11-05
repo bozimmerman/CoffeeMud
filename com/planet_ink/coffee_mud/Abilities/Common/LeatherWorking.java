@@ -36,7 +36,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "LeatherWorking"; }
@@ -69,6 +68,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	protected List<List<String>> loadRecipes()
 	{
 		final String filename=parametersFile();
+		@SuppressWarnings("unchecked")
 		List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(recipes==null)
 		{
@@ -78,8 +78,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				Log.errOut("LeatherWorking","Recipes not found!");
 			else
 			{
-				final List<List<String>> pleaseAdd1=new Vector();
-				final List<List<String>> pleaseAdd2=new Vector();
+				final List<List<String>> pleaseAdd1=new Vector<List<String>>();
+				final List<List<String>> pleaseAdd2=new Vector<List<String>>();
 				for(int r=0;r<recipes.size();r++)
 				{
 					final List<String> V=recipes.get(r);

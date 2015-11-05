@@ -2779,7 +2779,7 @@ generating the skill use. Typically this method will either return -1
 for non spell casters, or CMMsg.TYP_CAST_SPELL for spell casters. See
 the Core Topics for more information on what the heck a source code of
 a message might be.</p>
-      <pre>  public int allowedWeaponLevel()<br />  {<br />    return CharClass.WEAPONS_THIEFLIKE;<br />  }<br /><br />  private HashSet disallowedWeapons = buildDisallowedWeaponClasses();<br />  public HashSet disallowedWeaponClasses( MOB mob )<br />  {<br />    return disallowedWeapons;<br />  }<br /><br />  private HashSet requiredWeaponMaterials = buildRequiredWeaponMaterials();<br />  public HashSet requiredWeaponMaterials()<br />  {<br />    return requiredWeaponMaterials;<br />  }<br /></pre>
+      <pre>  public int allowedWeaponLevel()<br />  {<br />    return CharClass.WEAPONS_THIEFLIKE;<br />  }<br /><br />  private Set&lt;Integer&gt; disallowedWeapons = buildDisallowedWeaponClasses();<br />  public Set&lt;Integer&gt; disallowedWeaponClasses( MOB mob )<br />  {<br />    return disallowedWeapons;<br />  }<br /><br />  private Set&lt;Integer&gt; requiredWeaponMaterials = buildRequiredWeaponMaterials();<br />  public Set&lt;Integer&gt; requiredWeaponMaterials()<br />  {<br />    return requiredWeaponMaterials;<br />  }<br /></pre>
       <p>The StdCharClass will automaticallyy enforce weapon
 restrictions whenever a weapon attack is made, provided these methods
 are defined. The <code>allowedWeaponLevel()</code>

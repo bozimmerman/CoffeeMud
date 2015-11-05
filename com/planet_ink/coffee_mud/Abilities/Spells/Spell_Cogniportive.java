@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_Cogniportive extends Spell
 {
 	@Override public String ID() { return "Spell_Cogniportive"; }
@@ -50,7 +50,7 @@ public class Spell_Cogniportive extends Spell
 			return ((LandTitle)me).getAllTitledRooms().get(0).roomID();
 		// check mobs worn items first!
 		final String srchStr="$"+me.Name()+"$";
-		List<Item> mobInventory=new Vector(1);
+		List<Item> mobInventory=new Vector<Item>(1);
 		try
 		{
 			mobInventory=CMLib.map().findInventory(CMLib.map().rooms(),null, srchStr, 10);

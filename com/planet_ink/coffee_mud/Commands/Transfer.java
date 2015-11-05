@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Transfer extends At
 {
 	public Transfer(){}
@@ -52,7 +52,7 @@ public class Transfer extends At
 		commands.remove(0);
 		String searchName=commands.get(0);
 		final Room curRoom=mob.location();
-		final Vector V=new Vector();
+		final Vector<Physical> V=new Vector<Physical>();
 		boolean allFlag=false;
 		if(searchName.equalsIgnoreCase("ALL"))
 		{
@@ -97,7 +97,7 @@ public class Transfer extends At
 			{
 				final Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,searchName,Wearable.FILTER_UNWORNONLY);
 				if(E instanceof Item)
-					V.add(E);
+					V.add((Item)E);
 			}
 			else
 			if(searchName.length()>0)
@@ -131,9 +131,9 @@ public class Transfer extends At
 			{
 				try
 				{
-					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						final Room R=(Room)r.nextElement();
+						final Room R=r.nextElement();
 						Item I=null;
 						int num=1;
 						while((num<=1)||(I!=null))
@@ -181,9 +181,9 @@ public class Transfer extends At
 			{
 				try
 				{
-					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						final Room R=(Room)r.nextElement();
+						final Room R=r.nextElement();
 						MOB M=null;
 						int num=1;
 						while((num<=1)||(M!=null))

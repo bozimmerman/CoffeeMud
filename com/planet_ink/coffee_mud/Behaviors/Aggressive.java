@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Aggressive extends StdBehavior
 {
 	@Override public String ID(){return "Aggressive";}
@@ -110,13 +110,13 @@ public class Aggressive extends StdBehavior
 					if(A!=null)
 					{
 						A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
-						monster.enqueCommand(new XVector(A.triggerStrings()[0],R.getContextName(mob)),MUDCmdProcessor.METAFLAG_FORCED,0);
+						monster.enqueCommand(new XVector<String>(A.triggerStrings()[0],R.getContextName(mob)),MUDCmdProcessor.METAFLAG_FORCED,0);
 					}
 				}
 				if((attackMsg!=null)&&(monster.getVictim()!=mob))
-					monster.enqueCommand(new XVector("SAY",attackMsg),MUDCmdProcessor.METAFLAG_FORCED,0);
+					monster.enqueCommand(new XVector<String>("SAY",attackMsg),MUDCmdProcessor.METAFLAG_FORCED,0);
 				// normal attack
-				monster.enqueCommand(new XVector("KILL",R.getContextName(mob)),MUDCmdProcessor.METAFLAG_FORCED,0);
+				monster.enqueCommand(new XVector<String>("KILL",R.getContextName(mob)),MUDCmdProcessor.METAFLAG_FORCED,0);
 				return true;
 			}
 		}

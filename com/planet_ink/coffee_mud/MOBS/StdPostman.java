@@ -36,7 +36,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdPostman extends StdShopKeeper implements PostOffice
 {
 	@Override
@@ -295,10 +295,10 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		}
 	}
 
-	public Vector getAllLocalBoxPD(String boxName)
+	public Vector<PlayerData> getAllLocalBoxPD(String boxName)
 	{
 		final List<PlayerData> V=getBoxRowPDData(boxName);
-		final Vector mine=new Vector();
+		final Vector<PlayerData> mine=new Vector<PlayerData>();
 		for(int v=0;v<V.size();v++)
 		{
 			final DatabaseEngine.PlayerData PD=V.get(v);
@@ -551,9 +551,9 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				List<PlayerData> V=getBoxRowPDData(postalChain());
 				// first parse all the pending mail,
 				// and remove it from the sorter
-				final Vector parsed=new Vector();
+				final Vector<MailPiece> parsed=new Vector<MailPiece>();
 				if(V==null)
-					V=new Vector();
+					V=new Vector<PlayerData>();
 				for(int v=0;v<V.size();v++)
 				{
 					final DatabaseEngine.PlayerData PD=V.get(v);
@@ -563,7 +563,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				PostOffice P=null;
 				for(int v=0;v<parsed.size();v++)
 				{
-					final MailPiece V2=(MailPiece)parsed.elementAt(v);
+					final MailPiece V2=parsed.elementAt(v);
 					final String toWhom=V2.to;
 					String deliveryBranch=findProperBranch(toWhom);
 					if(deliveryBranch!=null)
@@ -886,7 +886,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					Vector V=null;
+					Vector<PlayerData> V=null;
 					final String theName=getSenderName(msg.source(),Clan.Function.DEPOSIT_LIST,false);
 					if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
 						V=getAllLocalBoxPD(theName);
@@ -895,7 +895,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						V=getAllLocalBoxPD(theName);
 						if(mob.isMarriedToLiege())
 						{
-							final Vector PDV=getAllLocalBoxPD(mob.getLiegeID());
+							final Vector<PlayerData> PDV=getAllLocalBoxPD(mob.getLiegeID());
 							if((PDV!=null)&&(PDV.size()>0))
 								V.addAll(PDV);
 						}
@@ -913,7 +913,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						mob.tell(str.toString());
 						for(int i=0;i<V.size();i++)
 						{
-							final DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(i);
+							final DatabaseEngine.PlayerData PD=V.elementAt(i);
 							final MailPiece pieces=parsePostalItemData(PD.xml);
 							final Item I=makeItem(pieces);
 							if(I==null)

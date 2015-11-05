@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class RaceCatNext extends StdWebMacro
 {
 	@Override public String name() { return "RaceCatNext"; }
@@ -49,20 +49,20 @@ public class RaceCatNext extends StdWebMacro
 				httpReq.removeUrlParameter("RACECAT");
 			return "";
 		}
-		Vector raceCats=new Vector();
-		for(final Enumeration r=CMClass.races();r.hasMoreElements();)
+		Vector<String> raceCats=new Vector<String>();
+		for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 		{
-			final Race R=(Race)r.nextElement();
+			final Race R=r.nextElement();
 			if((!raceCats.contains(R.racialCategory()))
 			&&((CMProps.isTheme(R.availabilityCode())&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 				||(parms.containsKey("ALL"))))
 					raceCats.addElement(R.racialCategory());
 		}
-		raceCats=new Vector(new TreeSet(raceCats));
+		raceCats=new Vector<String>(new TreeSet<String>(raceCats));
 		String lastID="";
-		for(final Enumeration r=raceCats.elements();r.hasMoreElements();)
+		for(final Enumeration<String> r=raceCats.elements();r.hasMoreElements();)
 		{
-			final String RC=(String)r.nextElement();
+			final String RC=r.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!RC.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("RACECAT",RC);

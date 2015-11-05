@@ -38,7 +38,6 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MOBHunter extends ActiveTicker
 {
 	@Override public String ID(){return "MOBHunter";}
@@ -127,7 +126,7 @@ public class MOBHunter extends ActiveTicker
 					A.setProficiency(100);
 					mob.curState().setMana(mob.maxState().getMana());
 					mob.curState().setMovement(mob.maxState().getMovement());
-					A.invoke(mob, new Vector(), prey, false,0);
+					A.invoke(mob, new Vector<String>(), prey, false,0);
 				}
 			}
 		}

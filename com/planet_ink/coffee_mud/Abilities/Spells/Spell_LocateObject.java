@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_LocateObject extends Spell
 {
 	@Override public String ID() { return "Spell_LocateObject"; }
@@ -100,8 +100,8 @@ public class Spell_LocateObject extends Spell
 			{
 				mob.location().send(mob,msg);
 				final List<String> itemsFound=new Vector<String>();
-				final HashSet areas=new HashSet();
-				final HashSet areasTried=new HashSet();
+				final HashSet<Area> areas=new HashSet<Area>();
+				final HashSet<Area> areasTried=new HashSet<Area>();
 				Area A=null;
 				int numAreas=(int)Math.round(CMath.mul(CMLib.map().numAreas(),0.90))+1;
 				if(numAreas>CMLib.map().numAreas())

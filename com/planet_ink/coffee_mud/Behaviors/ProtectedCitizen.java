@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class ProtectedCitizen extends ActiveTicker
 {
 	@Override public String ID(){return "ProtectedCitizen";}
@@ -108,17 +108,30 @@ public class ProtectedCitizen extends ActiveTicker
 			return claims;
 		String s=getParmsNoTicks();
 		if(s.length()==0)
-		{ claims=defclaims; return claims;}
+		{
+			claims = defclaims;
+			return claims;
+		}
 
 		char c=';';
 		int x=s.indexOf(c);
-		if(x<0){ c='/'; x=s.indexOf(c);}
+		if (x < 0)
+		{
+			c = '/';
+			x = s.indexOf(c);
+		}
 		if(x<0)
-		{ claims=defclaims; return claims;}
+		{
+			claims = defclaims;
+			return claims;
+		}
 		s=s.substring(x+1).trim();
 		if(s.length()==0)
-		{ claims=defclaims; return claims;}
-		final Vector V=new Vector();
+		{
+			claims = defclaims;
+			return claims;
+		}
+		final Vector<String> V=new Vector<String>();
 		x=s.indexOf(c);
 		while(x>=0)
 		{
@@ -132,7 +145,7 @@ public class ProtectedCitizen extends ActiveTicker
 			V.addElement(s);
 		claims=new String[V.size()];
 		for(int i=0;i<V.size();i++)
-			claims[i]=(String)V.elementAt(i);
+			claims[i]=V.elementAt(i);
 		return claims;
 	}
 
@@ -157,7 +170,7 @@ public class ProtectedCitizen extends ActiveTicker
 			mob.doCommand(CMParms.parse("YELL \""+claim+"\""),MUDCmdProcessor.METAFLAG_FORCED);
 
 		final Room thisRoom=mob.location();
-		final Vector V=new Vector();
+		final Vector<Room> V=new Vector<Room>();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
@@ -166,7 +179,7 @@ public class ProtectedCitizen extends ActiveTicker
 		CMLib.tracking().getRadiantRooms(thisRoom,V,flags,null,radius,null);
 		for(int v=0;v<V.size();v++)
 		{
-			final Room R=(Room)V.elementAt(v);
+			final Room R=V.elementAt(v);
 			MOB M=null;
 			if(R.getArea().Name().equals(mob.location().getArea().Name()))
 				for(int i=0;i<R.numInhabitants();i++)

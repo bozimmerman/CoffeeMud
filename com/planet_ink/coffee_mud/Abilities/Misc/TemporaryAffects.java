@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class TemporaryAffects extends StdAbility
 {
 	@Override public String ID() { return "TemporaryAffects"; }
@@ -298,7 +297,7 @@ public class TemporaryAffects extends StdAbility
 			mob.tell(L("Specify a target, a property, number of ticks, and (optionally) some misc text!"));
 			return false;
 		}
-		final Vector V=new XVector(commands.get(0));
+		final Vector<String> V=new XVector<String>(commands.get(0));
 		final Physical target=getAnyTarget(mob,V,givenTarget, Wearable.FILTER_ANY);
 		if(target==null)
 			return false;

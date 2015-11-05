@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdClanCommonContainer extends StdClanContainer
 {
 	@Override 
@@ -91,13 +91,13 @@ public class StdClanCommonContainer extends StdClanContainer
 							||(I==this)||(!I.amWearingAt(Wearable.IN_INVENTORY)))
 								I=null;
 						}
-						final Vector V=new Vector();
+						final Vector<String> V=new Vector<String>();
 						if(I!=null)
 							V.addElement(I.name());
 						A.invoke(M,V,null,false,phyStats().level());
 					}
 					else
-						A.invoke(M,new Vector(),null,false,phyStats().level());
+						A.invoke(M,new Vector<String>(),null,false,phyStats().level());
 				}
 			}
 		}

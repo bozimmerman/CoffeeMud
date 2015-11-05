@@ -49,7 +49,7 @@ import java.util.*;
 	once a game is over easier.  It also has methods to keep track of
 	one or more Hands, each of which must be attributed to a player.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 {
 	@Override public String ID(){	return "StdDeckOfCards";}
@@ -99,9 +99,9 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// makeAllCards()
 	// this method creates all 52 cards in the deck
 	// and adds them to a vector which is returned.
-	private Vector makeAllCards()
+	private Vector<PlayingCard> makeAllCards()
 	{
-		final Vector allCards=new Vector();
+		final Vector<PlayingCard> allCards=new Vector<PlayingCard>();
 		for (final int suit : PlayingCard.suits)
 			for (final int card : PlayingCard.cards)
 				allCards.addElement(makePlayingCard(suit+card));
@@ -116,9 +116,9 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		alreadyFilled=true;
 		if(!hasContent())
 		{
-			final Vector allCards=makeAllCards();
+			final Vector<PlayingCard> allCards=makeAllCards();
 			for(int i=0;i<allCards.size();i++)
-				addCard((PlayingCard)allCards.elementAt(i));
+				addCard(allCards.elementAt(i));
 		}
 		cardsCache=getContents();
 		hands.clear();
@@ -191,9 +191,9 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 			for(int i=0;i<cardsCache.size();i++)
 				cardsCache.get(i).destroy();
 			cardsCache.clear();
-			final Vector allCards=makeAllCards();
+			final Vector<PlayingCard> allCards=makeAllCards();
 			for(int i=0;i<allCards.size();i++)
-				addCard((PlayingCard)allCards.elementAt(i));
+				addCard(allCards.elementAt(i));
 			cardsCache=getContents();
 		}
 		return numberOfCards()==52;

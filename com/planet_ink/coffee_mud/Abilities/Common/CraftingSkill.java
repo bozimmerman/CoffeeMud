@@ -319,7 +319,7 @@ public class CraftingSkill extends GatheringSkill
 					if(V2 instanceof Vector)
 						((Vector)V2).trimToSize();
 					V.add(V2);
-					V2=new Vector();
+					V2=new Vector<String>();
 				}
 				start=i+1;
 				oneComma=false;
@@ -389,7 +389,7 @@ public class CraftingSkill extends GatheringSkill
 		return loadRecipes();
 	}
 
-	protected List<List<String>> loadRecipes(){ return new Vector();}
+	protected List<List<String>> loadRecipes(){ return new Vector<List<String>>();}
 
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
@@ -675,7 +675,7 @@ public class CraftingSkill extends GatheringSkill
 
 	protected List<List<String>> matchingRecipeNames(List<List<String>> recipes, String recipeName, boolean beLoose)
 	{
-		final List<List<String>> matches=new Vector();
+		final List<List<String>> matches=new Vector<List<String>>();
 		if(recipeName.length()==0)
 			return matches;
 		for(int r=0;r<recipes.size();r++)

@@ -3739,7 +3739,7 @@ public class StdMOB implements MOB
 			if (V != null)
 				return V;
 		}
-		return new Vector(1);
+		return new Vector<Item>(1);
 	}
 
 	@Override
@@ -4856,7 +4856,7 @@ public class StdMOB implements MOB
 	@Override
 	public List<Item> fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes)
 	{
-		final Vector<Item> V = new Vector();
+		final Vector<Item> V = new Vector<Item>();
 		final boolean equalOk = (layerAttributes & Armor.LAYERMASK_MULTIWEAR) > 0;
 		int lay = 0;
 		for (final Enumeration<Item> i = items(); i.hasMoreElements();)

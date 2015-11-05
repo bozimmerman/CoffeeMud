@@ -30,6 +30,12 @@ import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
 
 
+
+
+
+
+
+
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -391,7 +397,7 @@ public class Test extends StdCommand
 			if(what.equalsIgnoreCase("deconstruction"))
 			{
 				mob.tell(L("Building item sets..."));
-				final Hashtable<ItemCraftor,List<ItemCraftor.ItemKeyPair>> allSets=new Hashtable();
+				final Hashtable<ItemCraftor,List<ItemCraftor.ItemKeyPair>> allSets=new Hashtable<ItemCraftor,List<ItemCraftor.ItemKeyPair>>();
 				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
@@ -880,7 +886,7 @@ public class Test extends StdCommand
 				I=CMClass.getItem("StdFood");
 				mobs[0].addItem(I);
 				C=CMClass.getCommand("Put");
-				C.execute(mobs[0],new XVector("Put","Food","Sack"),metaFlags);
+				C.execute(mobs[0],new XVector<String>("Put","Food","Sack"),metaFlags);
 				if(!effectCheck(spells,mobs[0])){ mob.tell(L("Error9-1")); return false;}
 				R.recoverRoomStats();
 
@@ -891,12 +897,12 @@ public class Test extends StdCommand
 				I=CMClass.getItem("StdFood");
 				mobs[0].addItem(I);
 				C=CMClass.getCommand("Put");
-				C.execute(mobs[0],new XVector("Put","Food","Sack"),metaFlags);
+				C.execute(mobs[0],new XVector<String>("Put","Food","Sack"),metaFlags);
 				if(!effectCheck(spells,mobs[0])){ mob.tell(L("Error9-2")); return false;}
 				I=CMClass.getItem("StdFood");
 				mobs[1].addItem(I);
 				C=CMClass.getCommand("Put");
-				C.execute(mobs[1],new XVector("Put","Food","Sack"),metaFlags);
+				C.execute(mobs[1],new XVector<String>("Put","Food","Sack"),metaFlags);
 				if(effectCheck(spells,mobs[1])){ mob.tell(L("Error9-3")); return false;}
 				R.recoverRoomStats();
 			}
@@ -910,7 +916,7 @@ public class Test extends StdCommand
 				mob.tell(L("Test#10-1: @x1",UseSpellCast2.accountForYourself()));
 				IS=giveTo(CMClass.getItem("StdFood"),UseSpellCast2,mobs[0],null,0);
 				C=CMClass.getCommand("Eat");
-				C.execute(mobs[0],new XVector("Eat","ALL"),metaFlags);
+				C.execute(mobs[0],new XVector<String>("Eat","ALL"),metaFlags);
 				if(!effectCheck(spells,mobs[0])){ mob.tell(L("Error10-1")); return false;}
 				R.recoverRoomStats();
 
@@ -919,10 +925,10 @@ public class Test extends StdCommand
 				mob.tell(L("Test#10-2: @x1",UseSpellCast2.accountForYourself()));
 				IS=giveTo(CMClass.getItem("StdFood"),UseSpellCast2,mobs[0],mobs[1],0);
 				C=CMClass.getCommand("Eat");
-				C.execute(mobs[0],new XVector("Eat","ALL"),metaFlags);
+				C.execute(mobs[0],new XVector<String>("Eat","ALL"),metaFlags);
 				if(!effectCheck(spells,mobs[0])){ mob.tell(L("Error10-2")); return false;}
 				C=CMClass.getCommand("Eat");
-				C.execute(mobs[1],new XVector("Eat","ALL"),metaFlags);
+				C.execute(mobs[1],new XVector<String>("Eat","ALL"),metaFlags);
 				if(effectCheck(spells,mobs[1])){ mob.tell(L("Error10-3")); return false;}
 				R.recoverRoomStats();
 			}

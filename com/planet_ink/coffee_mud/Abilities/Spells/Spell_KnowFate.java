@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Spell_KnowFate extends Spell
 {
 	@Override public String ID() { return "Spell_KnowFate"; }
@@ -73,8 +73,8 @@ public class Spell_KnowFate extends Spell
 						final List<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
 						  for(final String stuff : all_stuff)
 						  {
-							final Vector preCommands=CMParms.parse(stuff);
-						  	final List THIS_CMDS=new Vector(preCommands.size());
+							final Vector<String> preCommands=CMParms.parse(stuff);
+						  	final List<String> THIS_CMDS=new Vector<String>(preCommands.size());
 						  	combatV.add(THIS_CMDS);
 							for(int v=preCommands.size()-1;v>=0;v--)
 								THIS_CMDS.add(0,preCommands.elementAt(v));

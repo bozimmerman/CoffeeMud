@@ -45,7 +45,7 @@ public class Conquerable extends Arrest
 	protected String savedHoldingClan="";
 	protected String prevHoldingClan="";
 	protected String holdingClan="";
-	protected Vector<ClanItem> clanItems=new Vector();
+	protected Vector<ClanItem> clanItems=new Vector<ClanItem>();
 	protected DVector clanControlPoints=new DVector(2);
 	protected DVector assaults=new DVector(2);
 	protected Vector<MOB> noMultiFollows=new Vector<MOB>();
@@ -202,10 +202,10 @@ public class Conquerable extends Arrest
 		journalName=CMParms.getParmStr(newParms,"JOURNAL","");
 		allowLaw=CMParms.getParmStr(newParms,"LAW","FALSE").toUpperCase().startsWith("T");
 		loadAttempt=false;
-		clanItems=new Vector();
+		clanItems=new Vector<ClanItem>();
 		clanControlPoints=new DVector(2);
 		assaults=new DVector(2);
-		noMultiFollows=new Vector();
+		noMultiFollows=new Vector<MOB>();
 	}
 
 	@Override
@@ -456,7 +456,7 @@ public class Conquerable extends Arrest
 		&&((waitToReload<=0)||(System.currentTimeMillis()>waitToReload))
 		&&(myArea!=null))
 		{
-			final HashSet doneRooms=new HashSet();
+			final HashSet<Room> doneRooms=new HashSet<Room>();
 			clanItems.clear();
 			final List<PlayerData> itemSet=CMLib.database().DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 			if((itemSet!=null)&&(itemSet.size()>0))
@@ -1182,7 +1182,7 @@ public class Conquerable extends Arrest
 				if((killer!=null)&&(R!=null))
 				{
 					// make sure followers are picked up
-					final HashSet killersSeen=new HashSet();
+					final HashSet<MOB> killersSeen=new HashSet<MOB>();
 					Clan killerClan=CMLib.clans().findConquerableClan(killer);
 					while((killerClan==null)
 					&&(killer.amFollowing()!=null)

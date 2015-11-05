@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Goto extends At
 {
 	public Goto(){}
@@ -51,10 +51,11 @@ public class Goto extends At
 		}
 		commands.remove(0);
 		final StringBuffer cmd = new StringBuffer(CMParms.combine(commands,0));
+		@SuppressWarnings("unchecked")
 		List<String> stack=(List<String>)Resources.getResource("GOTOS_FOR_"+mob.Name().toUpperCase());
 		if(stack==null)
 		{
-			stack=new Vector();
+			stack=new Vector<String>();
 			Resources.submitResource("GOTOS_FOR_"+mob.Name().toUpperCase(),stack);
 		}
 		else

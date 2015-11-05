@@ -272,7 +272,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		}
 	}
 
-	@Override @SuppressWarnings({"unchecked","rawtypes"})
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -366,7 +366,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						return false;
 					}
 					final List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
-					final Hashtable definedIDs = new Hashtable();
+					final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
 					CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
 					String idName = "";
 					final List<String> idChoices = new Vector<String>();

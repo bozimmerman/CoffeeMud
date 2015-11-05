@@ -136,7 +136,7 @@ public class HolidayData extends StdWebMacro
 					}
 					else
 					{
-						final HashSet areaCodes=new HashSet();
+						final HashSet<String> areaCodes=new HashSet<String>();
 						String id="";
 						for(int i=0;httpReq.isUrlParameter("AREAGROUP"+id);id=Integer.toString(++i))
 							areaCodes.add(httpReq.getUrlParameter("AREAGROUP"+id));
@@ -588,7 +588,7 @@ public class HolidayData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("MUDCHAT"))
 		{
-			List<List<String>> mudchats=new Vector();
+			List<List<String>> mudchats=new Vector<List<String>>();
 			if(httpReq.isUrlParameter("MCWDS1"))
 			{
 				int wdsnum=1;
@@ -597,7 +597,7 @@ public class HolidayData extends StdWebMacro
 				String say=httpReq.getUrlParameter("MCSAYS"+wdsnum+"_1");
 				while((wordsList!=null)&&(weight!=null)&&(say!=null))
 				{
-					final List<String> mudchat=new Vector();
+					final List<String> mudchat=new Vector<String>();
 					if(wordsList.length()>0)
 					{
 						mudchats.add(mudchat);

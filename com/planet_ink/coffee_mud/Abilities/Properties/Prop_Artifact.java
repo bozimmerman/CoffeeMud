@@ -35,13 +35,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_Artifact extends Property
 {
 	@Override public String ID() { return "Prop_Artifact"; }
 	@Override public String name(){ return "Artifact";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected static final Hashtable registeredArtifacts=new Hashtable();
+	protected static final Hashtable<String,Item> registeredArtifacts=new Hashtable<String,Item>();
 	private String itemID=null;
 	private boolean autodrop=true;
 	private boolean nocast=true;
@@ -304,7 +304,7 @@ public class Prop_Artifact extends Property
 								{
 									final String iClass=CMLib.xml().getValFromPieces(roomData,"ICLAS");
 									final Item newItem=CMClass.getItem(iClass);
-									final HashSet doneMOBs=new HashSet();
+									final HashSet<MOB> doneMOBs=new HashSet<MOB>();
 									if(newItem!=null)
 									{
 										newItem.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(roomData,"ILEVL"));
@@ -331,9 +331,10 @@ public class Prop_Artifact extends Property
 											}
 										final Area A=R.getArea();
 										if((foundMOB==null)&&(MOBname.length()>0))
-											for(final Enumeration e=A.getMetroMap();e.hasMoreElements();)
+										{
+											for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 											{
-												final Room R2=(Room)e.nextElement();
+												final Room R2=e.nextElement();
 												for(int i=0;i<R2.numInhabitants();i++)
 												{
 													final MOB M=R2.fetchInhabitant(i);
@@ -345,6 +346,7 @@ public class Prop_Artifact extends Property
 													{ foundMOB=M; break;}
 												}
 											}
+										}
 										final Item newItemMinusArtifact=(Item)newItem.copyOf();
 										Ability A2=newItemMinusArtifact.fetchEffect(ID());
 										if(A2!=null)

@@ -87,7 +87,7 @@ public class StdCommand implements Command
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		// accepts the mob executing, and a Vector of Strings as a parm.
+		// accepts the mob executing, and a list of Strings as a parm.
 		// the return value is arbitrary, though false is conventional.
 		return false;
 	}

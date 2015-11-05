@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Shearing extends CommonSkill
 {
 	@Override public String ID() { return "Shearing"; }
@@ -73,9 +72,9 @@ public class Shearing extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	public Vector getMyWool(MOB M)
+	public Vector<RawMaterial> getMyWool(MOB M)
 	{
-		final Vector wool=new Vector();
+		final Vector<RawMaterial> wool=new Vector<RawMaterial>();
 		if((M!=null)
 		&&(M.charStats().getMyRace()!=null)
 		&&(M.charStats().getMyRace().myResources()!=null)
@@ -109,10 +108,10 @@ public class Shearing extends CommonSkill
 						final int yield=abilityCode()<=0?1:abilityCode();
 						for(int i=0;i<yield;i++)
 						{
-							final Vector V=getMyWool(sheep);
+							final Vector<RawMaterial> V=getMyWool(sheep);
 							for(int v=0;v<V.size();v++)
 							{
-								RawMaterial I=(RawMaterial)V.elementAt(v);
+								RawMaterial I=V.elementAt(v);
 								I=(RawMaterial)I.copyOf();
 								mob.location().addItem(I,ItemPossessor.Expire.Monster_EQ);
 							}

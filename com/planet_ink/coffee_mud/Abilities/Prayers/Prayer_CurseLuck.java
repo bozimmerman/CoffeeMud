@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_CurseLuck extends Prayer
 {
 	@Override public String ID() { return "Prayer_CurseLuck"; }
@@ -45,7 +44,7 @@ public class Prayer_CurseLuck extends Prayer
 	@Override public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	@Override public long flags(){return Ability.FLAG_UNHOLY;}
 	@Override protected int canAffectCode(){return CAN_MOBS;}
-	protected HashSet permProts=new HashSet();
+	protected HashSet<Environmental> permProts=new HashSet<Environmental>();
 	protected int prots=4;
 	boolean notAgain=false;
 

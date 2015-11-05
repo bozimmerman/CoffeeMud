@@ -592,10 +592,10 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		throws IOException, SocketException;
 
 	/**
-	 * Returns a pre-parsed, pre-filtered Vector of strings
+	 * Returns a pre-parsed, pre-filtered list of strings
 	 * representing the last command entered by the user
 	 * through this session.
-	 * @return a vector of strings
+	 * @return a list of strings
 	 */
 	public List<String> getPreviousCMD();
 
@@ -777,10 +777,10 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public boolean isRunning();
 
 	/**
-	 * Returns a Vector of the last several message strings received by this user.
+	 * Returns a list of the last several message strings received by this user.
 	 * All are already previously filtered and parsed and ready to display.
 	 *
-	 * @return a vector of string message strings
+	 * @return a list of string message strings
 	 */
 	public List<String> getLastMsgs();
 

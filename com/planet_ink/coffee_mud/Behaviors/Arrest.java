@@ -46,7 +46,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	protected String lastAreaName=null;
 
 	protected boolean loadAttempt=false;
-	protected Hashtable finesAssessed=new Hashtable();
+	protected Hashtable<MOB,Double> finesAssessed=new Hashtable<MOB,Double>();
 
 	@Override public boolean isFullyControlled(){return true;}
 
@@ -198,7 +198,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	@Override
 	public void modifyAssessedFines(double d, MOB mob)
 	{
-		final Double D=(Double)finesAssessed.get(mob);
+		final Double D=finesAssessed.get(mob);
 		if(D!=null)
 			finesAssessed.remove(mob);
 		if(d>0)
@@ -210,7 +210,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	{
 		if(!theLawIsEnabled())
 			return 0.0;
-		final Double D=(Double)finesAssessed.get(mob);
+		final Double D=finesAssessed.get(mob);
 		if(D!=null)
 			return D.doubleValue();
 		return 0.0;
@@ -1351,7 +1351,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if((fines>0.0)&&(judge!=null))
 			{
 				CMLib.commands().postSay(judge,criminal,L("You are hereby fined @x1, payable to the local tax assessor.",CMLib.beanCounter().nameCurrencyShort(judge,fines)),false,false);
-				Double D=(Double)finesAssessed.get(criminal);
+				Double D=finesAssessed.get(criminal);
 				if(D==null)
 					D=Double.valueOf(0.0);
 				else
@@ -2115,7 +2115,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 		laws.propertyTaxTick(myArea,debugging);
 
-		final HashSet handled=new HashSet();
+		final HashSet<String> handled=new HashSet<String>();
 		for(final LegalWarrant W : laws.warrants())
 		{
 			if((W.criminal()==null)||(W.criminal().location()==null))

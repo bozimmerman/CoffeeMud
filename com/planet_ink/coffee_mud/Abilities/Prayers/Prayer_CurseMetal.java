@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_CurseMetal extends Prayer
 {
 	@Override public String ID() { return "Prayer_CurseMetal"; }
@@ -53,7 +52,7 @@ public class Prayer_CurseMetal extends Prayer
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		affectedItems=new Vector();
+		affectedItems=new Vector<Item>();
 	}
 
 	@Override

@@ -15,8 +15,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
+
 import java.util.*;
 import java.io.IOException;
 
@@ -35,7 +35,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class StdBook extends StdItem
 {
 	@Override public String ID(){    return "StdBook";}
@@ -101,10 +101,10 @@ public class StdBook extends StdItem
 				int which=-1;
 				boolean newOnly=false;
 				boolean all=false;
-				final Vector parse=CMParms.parse(msg.targetMessage());
+				final Vector<String> parse=CMParms.parse(msg.targetMessage());
 				for(int v=0;v<parse.size();v++)
 				{
-					final String s=(String)parse.elementAt(v);
+					final String s=parse.elementAt(v);
 					if(CMath.s_long(s)>0)
 						which=CMath.s_int(msg.targetMessage());
 					else
@@ -114,12 +114,12 @@ public class StdBook extends StdItem
 					if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
 						all=true;
 				}
-				final Vector read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+				final Triad<String,String,StringBuffer> read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 				boolean megaRepeat=true;
 				while(megaRepeat)
 				{
 					megaRepeat=false;
-					final StringBuffer entry=(StringBuffer)read.lastElement();
+					final StringBuffer entry=read.third;
 					if(entry.charAt(0)=='#')
 					{
 						which=-1;
@@ -192,10 +192,10 @@ public class StdBook extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public Vector DBRead(MOB readerMOB, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
+	public Triad<String,String,StringBuffer> DBRead(MOB readerMOB, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		final StringBuffer buf=new StringBuffer("");
-		final Vector reply=new Vector();
+		final Triad<String,String,StringBuffer> reply=new Triad<String,String,StringBuffer>("","",new StringBuffer(""));
 		final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
@@ -203,9 +203,9 @@ public class StdBook extends StdItem
 			buf.append("-------------------------------------------------------------------------\n\r");
 			if(journal==null)
 			{
-				reply.addElement("");
-				reply.addElement("");
-				reply.addElement(buf);
+				reply.first="";
+				reply.second="";
+				reply.third = buf;
 				return reply;
 			}
 		}
@@ -214,10 +214,10 @@ public class StdBook extends StdItem
 		{
 			if(journal.size()>0)
 			{
-				reply.addElement(journal.get(0).from);
-				reply.addElement(journal.get(0).subj);
+				reply.first = journal.get(0).from;
+				reply.second = journal.get(0).subj;
 			}
-			final Vector selections=new Vector();
+			final Vector<Object> selections=new Vector<Object>();
 			for(int j=0;j<journal.size();j++)
 			{
 				final JournalsLibrary.JournalEntry entry=journal.get(j);
@@ -246,10 +246,17 @@ public class StdBook extends StdItem
 				numToAdd=Integer.MAX_VALUE;
 			for(int v=selections.size()-1;v>=0;v--)
 			{
-				if(numToAdd==0){ selections.setElementAt("",v); continue;}
-				final StringBuffer str=(StringBuffer)selections.elementAt(v);
-				if((newOnly)&&(str.charAt(0)!='*'))
-				{ selections.setElementAt("",v); continue;}
+				if (numToAdd == 0)
+				{
+					selections.setElementAt("", v);
+					continue;
+				}
+				final StringBuffer str = (StringBuffer) selections.elementAt(v);
+				if ((newOnly) && (str.charAt(0) != '*'))
+				{
+					selections.setElementAt("", v);
+					continue;
+				}
 				numToAdd--;
 			}
 			boolean notify=false;
@@ -273,8 +280,8 @@ public class StdBook extends StdItem
 			final String subject=entry.subj;
 			String message=entry.msg;
 
-			reply.addElement(entry.from);
-			reply.addElement(entry.subj);
+			reply.first = entry.from;
+			reply.second = entry.subj;
 
 			//String compdate=(String)entry.elementAt(6);
 			final boolean mineAble=to.equalsIgnoreCase(readerMOB.Name())
@@ -295,9 +302,7 @@ public class StdBook extends StdItem
 				buf.append("\n\r"+subject
 						   +"\n\r"+message);
 		}
-		while(reply.size()<2)
-			reply.addElement("");
-		reply.addElement(buf);
+		reply.third = buf;
 		return reply;
 	}
 
