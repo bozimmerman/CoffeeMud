@@ -578,9 +578,9 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					final Vector<String> dateV=CMParms.parse(thisOne);
 					if(dateV.size()==3)
 					{
-						int lastYear=CMath.s_int((String)dateV.lastElement());
-						int lastMonth=CMath.s_int((String)dateV.elementAt(1));
-						final int lastDay=CMath.s_int((String)dateV.firstElement());
+						int lastYear=CMath.s_int(dateV.lastElement());
+						int lastMonth=CMath.s_int(dateV.elementAt(1));
+						final int lastDay=CMath.s_int(dateV.firstElement());
 						while(!needsToPay)
 						{
 							if(lastYear<year)

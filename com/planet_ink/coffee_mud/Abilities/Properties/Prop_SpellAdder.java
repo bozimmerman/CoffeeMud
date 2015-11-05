@@ -375,7 +375,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			else
 			for(x=0;x<eff.size();x++)
 			{
-				thisAffect=(Ability)eff.elementAt(x);
+				thisAffect=eff.elementAt(x);
 				final String ID=h.get(thisAffect.ID());
 				if((ID!=null)
 				&&(thisAffect.invoker()==getInvokerMOB(P,P)))

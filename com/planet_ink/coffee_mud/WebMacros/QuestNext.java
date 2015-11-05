@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class QuestNext extends StdWebMacro
 {
 	@Override public String name() { return "QuestNext"; }
@@ -59,11 +59,11 @@ public class QuestNext extends StdWebMacro
 		final Vector<Quest> sortedV=new Vector<Quest>();
 		while(V.size()>0)
 		{
-			Quest lowQ=(Quest)V.firstElement();
+			Quest lowQ=V.firstElement();
 			for(int v=1;v<V.size();v++)
 			{
-				if(((Quest)V.elementAt(v)).name().toUpperCase().compareTo(lowQ.name().toUpperCase())<0)
-					lowQ=(Quest)V.elementAt(v);
+				if(V.elementAt(v).name().toUpperCase().compareTo(lowQ.name().toUpperCase())<0)
+					lowQ=V.elementAt(v);
 			}
 			V.remove(lowQ);
 			sortedV.addElement(lowQ);
@@ -71,7 +71,7 @@ public class QuestNext extends StdWebMacro
 
 		for(int q=0;q<sortedV.size();q++)
 		{
-			final Quest Q=(Quest)sortedV.elementAt(q);
+			final Quest Q=sortedV.elementAt(q);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!(""+Q).equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("QUEST",CMStrings.replaceAll(""+Q,"@","*"));

@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_RideEnabler extends Prop_HaveEnabler
 {
 	@Override public String ID() { return "Prop_RideEnabler"; }

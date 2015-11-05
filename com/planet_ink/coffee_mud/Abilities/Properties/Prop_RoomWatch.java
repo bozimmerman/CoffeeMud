@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_RoomWatch extends Property
 {
 	@Override public String ID() { return "Prop_RoomWatch"; }
@@ -87,7 +87,7 @@ public class Prop_RoomWatch extends Property
 			final Room thisRoom=CMLib.map().roomLocation(affected);
 			for(int r=0;r<newRooms.size();r++)
 			{
-				final Room R=(Room)newRooms.elementAt(r);
+				final Room R=newRooms.elementAt(r);
 				if((R!=null)&&(R.fetchEffect(ID())==null)&&(R!=thisRoom))
 				{
 					final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),msg.tool(),

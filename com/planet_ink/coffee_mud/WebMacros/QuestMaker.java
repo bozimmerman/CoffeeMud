@@ -629,7 +629,7 @@ public class QuestMaker extends StdWebMacro
 						String newVal="";
 						for(int i=0;i<oldValues.size();i++)
 						{
-							oldValue=(String)oldValues.elementAt(i);
+							oldValue=oldValues.elementAt(i);
 							Item I2=oldValue.length()>0?RoomData.getItemFromAnywhere(rawitemlist,oldValue):null;
 							if(I2==null)
 								I2=oldValue.length()>0?RoomData.getItemFromCatalog(oldValue):null;
@@ -708,7 +708,7 @@ public class QuestMaker extends StdWebMacro
 						String newVal="";
 						for(int i=0;i<oldValues.size();i++)
 						{
-							oldValue=(String)oldValues.elementAt(i);
+							oldValue=oldValues.elementAt(i);
 							MOB M2=oldValue.length()>0?RoomData.getMOBFromCode(rawmoblist,oldValue):null;
 							if(M2==null)
 								M2=oldValue.length()>0?RoomData.getMOBFromCatalog(oldValue):null;
