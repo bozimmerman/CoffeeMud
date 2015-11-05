@@ -68,7 +68,10 @@ public class ErrorPacket extends Packet
 				error_code = v.elementAt(6).toString();
 				error_message = v.elementAt(7).toString();
 				packetStr=v.elementAt(8).toString();
-			}catch(final Exception e){ }
+			}
+			catch(final Exception e)
+			{
+			}
 		}
 		catch( final ClassCastException e )
 		{

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class NiceAbilities extends ActiveTicker
 {
 	@Override public String ID(){return "NiceAbilities";}
@@ -104,7 +103,7 @@ public class NiceAbilities extends ActiveTicker
 						&&(tryThisOne.castingQuality(mob,target)==Ability.QUALITY_BENEFICIAL_OTHERS))
 						{
 							tryThisOne.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,tryThisOne.ID()));
-							final Vector V=new XVector("$"+target.Name()+"$");
+							final Vector<String> V=new XVector<String>("$"+target.Name()+"$");
 							V.addElement(target.name());
 							tryThisOne.invoke(mob,V,target,false,0);
 						}

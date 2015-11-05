@@ -338,7 +338,7 @@ public class PlayerData extends StdWebMacro
 		case 64: {
 			for(int f=0;f<M.numFollowers();f++)
 				str.append(M.fetchFollower(f).name()).append(", ");
-			//Vector V=CMLib.database().DBScanFollowers(M);
+			//Vector<MOB> V=CMLib.database().DBScanFollowers(M);
 			//for(int v=0;v<V.size();v++)
 			//    str.append(((MOB)V.elementAt(v)).name()).append(", ");
 			break;

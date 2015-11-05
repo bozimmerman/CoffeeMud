@@ -106,7 +106,7 @@ public class GrinderFlatMap
 		// left, now is the time to siphon out the ones we need.
 		if((area instanceof GridZones)&&(xyxy!=null))
 		{
-			final Vector finalSet=new Vector();
+			final Vector<Room> finalSet=new Vector<Room>();
 			for(;r.hasMoreElements();)
 			{
 				R=r.nextElement();
@@ -345,7 +345,7 @@ public class GrinderFlatMap
 	{
 		// figure out width height, and xy bounds
 		// store them in a vector parallel to each
-		final Vector sizeInfo=new Vector(sets.size());
+		final Vector<int[]> sizeInfo=new Vector<int[]>(sets.size());
 		GrinderRoom R=null;
 		for(int s=0;s<sets.size();s++)
 		{
@@ -391,10 +391,14 @@ public class GrinderFlatMap
 		{
 			int[] bestCoords=new int[]{grid.length-1,grid.length-1};
 			for(int x=0;x<grid.length;x++)
+			{
 				for(int y=0;y<grid[x].length;y++)
+				{
 					if((grid[x][y]==null)
 					&&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
 						bestCoords=new int[]{x,y};
+				}
+			}
 			if(grid[bestCoords[0]][bestCoords[1]]!=null)
 			{
 				Log.errOut("GFlagMap","Lost a chunk of rooms to bad spiral positioning!!!");
@@ -421,6 +425,7 @@ public class GrinderFlatMap
 			{
 				set=grid[x][y];
 				if(set!=null)
+				{
 					for(int r=0;r<set.size();r++)
 					{
 						R=set.get(r);
@@ -428,6 +433,7 @@ public class GrinderFlatMap
 						if(R.xy[0]>nextRightMostX)
 							nextRightMostX=R.xy[0];
 					}
+				}
 			}
 			rightMostX=nextRightMostX+2;
 		}
@@ -556,21 +562,21 @@ public class GrinderFlatMap
 		return V;
 	}
 
-	public Vector scoreRoom(Map<String,GrinderRoom> H, GrinderRoom room, HashSet roomsDone, boolean finalPosition)
+	public Vector<GrinderRoom> scoreRoom(Map<String,GrinderRoom> H, GrinderRoom room, HashSet roomsDone, boolean finalPosition)
 	{
-		final HashSet coordsDone=new HashSet();
+		final HashSet<String> coordsDone=new HashSet<String>();
 		coordsDone.add(0+"/"+0);
 
-		final HashSet myRoomsDone=new HashSet();
+		final HashSet<String> myRoomsDone=new HashSet<String>();
 		myRoomsDone.add(room.roomID);
 
-		final Hashtable xys=new Hashtable();
+		final Hashtable<String,int[]> xys=new Hashtable<String,int[]>();
 		int[] xy=new int[2];
 		if(finalPosition)
 			room.xy=xy;
 		xys.put(room.roomID,xy);
 
-		final Vector V=new Vector();
+		final Vector<GrinderRoom> V=new Vector<GrinderRoom>();
 		V.addElement(room);
 		int startHere=0;
 		while(startHere!=V.size())
@@ -580,9 +586,10 @@ public class GrinderFlatMap
 			startHere=size;
 			for(;s<size;s++)
 			{
-				final GrinderRoom R=(GrinderRoom)V.elementAt(s);
-				xy=(int[])xys.get(R.roomID);
+				final GrinderRoom R=V.elementAt(s);
+				xy=xys.get(R.roomID);
 		 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		 		{
 		 			if((d!=Directions.UP)
 		 			&&(d!=Directions.DOWN)
 		 			&&(R.doors[d]!=null)
@@ -605,6 +612,7 @@ public class GrinderFlatMap
 			 				V.addElement(R2);
 		 				}
 		 			}
+		 		}
 			}
 		}
 		return V;

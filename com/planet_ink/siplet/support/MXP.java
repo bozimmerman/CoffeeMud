@@ -270,11 +270,11 @@ public class MXP
 
 	private String closeTag(MXPElement E)
 	{
-		final Vector endTags = E.getCloseTags(E.getDefinition());
+		final Vector<String> endTags = E.getCloseTags(E.getDefinition());
 		final StringBuffer newEnd = new StringBuffer("");
 		for (int e = endTags.size() - 1; e >= 0; e--)
-			if (elements.containsKey((((String) endTags.elementAt(e))).toUpperCase().trim()))
-				newEnd.append("</" + ((String) endTags.elementAt(e)).toUpperCase().trim());
+			if (elements.containsKey((endTags.elementAt(e)).toUpperCase().trim()))
+				newEnd.append("</" + endTags.elementAt(e).toUpperCase().trim());
 		return newEnd.toString();
 	}
 
@@ -361,7 +361,7 @@ public class MXP
 		// first step is to parse the motherfather
 		// if we can't parse it, we convert the < char at i into &lt;
 		// remember, incomplete tags should nodify the main filterdude
-		final Vector parts = new Vector();
+		final Vector<String> parts = new Vector<String>();
 		int oldI = i;
 		final int oldOldI = i;
 		char lastC = ' ';
@@ -506,7 +506,7 @@ public class MXP
 		final int endI = i + 1;
 
 		// nothing doin
-		String tag = (parts.size() > 0) ? ((String) parts.firstElement()).toUpperCase().trim() : "";
+		String tag = (parts.size() > 0) ? parts.firstElement().toUpperCase().trim() : "";
 		final String oldString = buf.substring(oldI, endI);
 		if (tag.startsWith("!"))
 			tag = tag.substring(1);
@@ -837,26 +837,26 @@ public class MXP
 			E.setAttributeValue("ONCLICK", "");
 			E.setAttributeValue("HREF", "");
 			E.setAttributeValue("HINT", "");
-			final Vector hrefV = Util.parsePipes(href, true);
-			final Vector hintV = Util.parsePipes(hint, true);
+			final Vector<String> hrefV = Util.parsePipes(href, true);
+			final Vector<String> hintV = Util.parsePipes(hint, true);
 			if (hrefV.size() == 1)
 			{
-				href = Util.replaceAll(((String) hrefV.firstElement()), "'", "\\'");
+				href = Util.replaceAll( hrefV.firstElement(), "'", "\\'");
 				E.setAttributeValue("HREF", "javascript:addToPrompt('" + href + "'," + prompt + ")");
 				if (hintV.size() > 1)
-					hint = (String) hintV.firstElement();
+					hint = hintV.firstElement();
 				E.setAttributeValue("HINT", hint);
 			}
 			else 
 			if (hintV.size() > hrefV.size())
 			{
-				E.setAttributeValue("HINT", ((String) hintV.firstElement()));
+				E.setAttributeValue("HINT", hintV.firstElement());
 				hintV.removeElementAt(0);
 				E.setAttributeValue("HREF", "javascript:goDefault(0);");
 				final StringBuffer newHint = new StringBuffer("");
 				for (int i = 0; i < hintV.size(); i++)
 				{
-					newHint.append((String) hintV.elementAt(i));
+					newHint.append(hintV.elementAt(i));
 					if (i < (hintV.size() - 1))
 						newHint.append("|");
 				}
@@ -1045,7 +1045,7 @@ public class MXP
 					final MXPElement E2 = (MXPElement) e.nextElement();
 					if (!E2.isBasicElement())
 						continue;
-					final Vector unsupportedParms = E2.getUnsupportedParms();
+					final Vector<String> unsupportedParms = E2.getUnsupportedParms();
 					if (!E2.isGenerallySupported())
 						supportResponse.append(" -" + E2.name());
 					else
@@ -1054,7 +1054,7 @@ public class MXP
 						if (unsupportedParms.size() > 0)
 						{
 							for (int x = 0; x < unsupportedParms.size(); x++)
-								supportResponse.append(" -" + E2.name() + "." + ((String) unsupportedParms.elementAt(x)));
+								supportResponse.append(" -" + E2.name() + "." + (unsupportedParms.elementAt(x)));
 						}
 					}
 				}
@@ -1093,13 +1093,13 @@ public class MXP
 						supportResponse.append(" +" + tag);
 						continue;
 					}
-					final Vector unsupportedParms = RE.getUnsupportedParms();
-					final Vector allAttributes = RE.getParsedAttributes();
+					final Vector<String> unsupportedParms = RE.getUnsupportedParms();
+					final Vector<String> allAttributes = RE.getParsedAttributes();
 					if (parm.equals("*"))
 					{
 						for (int a = 0; a < allAttributes.size(); a++)
 						{
-							final String att = (String) allAttributes.elementAt(a);
+							final String att = allAttributes.elementAt(a);
 							if (!unsupportedParms.contains(att))
 								supportResponse.append(" +" + tag + "." + att);
 						}

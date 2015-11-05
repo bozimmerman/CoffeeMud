@@ -40,7 +40,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	@Override public String accountForYourself() { return "Immunity";	}
 	protected List<String> diseases=new Vector();
-	protected Vector messages=new Vector();
+	protected Vector<String> messages=new Vector<String>();
 	protected boolean owner = false;
 	protected boolean wearer = false;
 
@@ -53,7 +53,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	@Override
 	public void setMiscText(String newText)
 	{
-		messages=new Vector();
+		messages=new Vector<String>();
 		diseases=CMParms.parseSemicolons(newText.toUpperCase(),true);
 		owner = false;
 		wearer = false;
@@ -99,7 +99,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 						((MOB)msg.target()).tell(L("You are immune to @x1.",msg.tool().name()));
 					if(msg.source()!=msg.target())
 					{
-						final String s=(String)messages.elementAt(i);
+						final String s=messages.elementAt(i);
 						if(s.length()>0)
 							msg.source().tell(msg.source(),msg.target(),msg.tool(),s);
 						else

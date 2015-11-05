@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_ReqClasses extends Property implements TriggeredAffect
 {
 	@Override public String ID() { return "Prop_ReqClasses"; }
@@ -55,11 +55,11 @@ public class Prop_ReqClasses extends Property implements TriggeredAffect
 	{
 		noFollow=false;
 		noSneak=false;
-		final Vector parms=CMParms.parse(txt.toUpperCase());
+		final Vector<String> parms=CMParms.parse(txt.toUpperCase());
 		String s;
-		for(final Enumeration p=parms.elements();p.hasMoreElements();)
+		for(final Enumeration<String> p=parms.elements();p.hasMoreElements();)
 		{
-			s=(String)p.nextElement();
+			s=p.nextElement();
 			if("NOFOLLOW".startsWith(s))
 				noFollow=true;
 			else
@@ -101,19 +101,19 @@ public class Prop_ReqClasses extends Property implements TriggeredAffect
 		   &&(!CMLib.flags().isFalling(msg.source()))
 		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
-			final HashSet H=new HashSet();
+			final HashSet<MOB> H=new HashSet<MOB>();
 			if(noFollow)
 				H.add(msg.source());
 			else
 			{
 				msg.source().getGroupMembers(H);
-				final HashSet H2=(HashSet)H.clone();
-				for(final Iterator e=H2.iterator();e.hasNext();)
-					((MOB)e.next()).getRideBuddies(H);
+				final HashSet<MOB> H2=new XHashSet<MOB>(H);
+				for(final Iterator<MOB> e=H2.iterator();e.hasNext();)
+					e.next().getRideBuddies(H);
 			}
-			for(final Iterator e=H.iterator();e.hasNext();)
+			for(final Iterator<MOB> e=H.iterator();e.hasNext();)
 			{
-				final Environmental E=(Environmental)e.next();
+				final Environmental E=e.next();
 				if((E instanceof MOB)
 				&&(passesMuster((MOB)E)))
 					return super.okMessage(myHost,msg);

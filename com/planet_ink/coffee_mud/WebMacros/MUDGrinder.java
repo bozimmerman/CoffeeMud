@@ -1371,7 +1371,7 @@ public class MUDGrinder extends StdWebMacro
 				return "@break@";
 			String like=httpReq.getUrlParameter("ROOM");
 			final List<String> likeList=CMParms.parseCommas(like,true);
-			final Vector RS=new Vector();
+			final Vector<Room> RS=new Vector<Room>();
 			for(int l=0;l<likeList.size();l++)
 			{
 				like=likeList.get(l);
@@ -1440,7 +1440,7 @@ public class MUDGrinder extends StdWebMacro
 					roomID=gridRoomID(A,x,y);
 					if(!A.getProperRoomnumbers().contains(roomID))
 					{
-						final Room likeRoom=(Room)RS.elementAt(CMLib.dice().roll(1,RS.size(),0)-1);
+						final Room likeRoom=RS.elementAt(CMLib.dice().roll(1,RS.size(),0)-1);
 						R=GrinderRooms.createGridRoom(A,roomID,likeRoom,deferredExitSaves,true);
 						Log.sysOut("Grinder",mob.Name()+" added room "+R.roomID());
 					}

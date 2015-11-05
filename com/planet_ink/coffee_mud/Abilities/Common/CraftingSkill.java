@@ -1143,7 +1143,7 @@ public class CraftingSkill extends GatheringSkill
 			}
 			final StringBuffer buf=new StringBuffer("");
 			for(int r=0;r<componentsRequirements.size();r++)
-				buf.append(CMLib.ableComponents().getAbilityComponentDesc(mob,componentsRequirements,r));
+				buf.append(CMLib.ableComponents().getAbilityComponentDesc(mob,componentsRequirements.get(r),r>0));
 			mob.tell(L("You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString()));
 			return null;
 		}
@@ -1192,7 +1192,7 @@ public class CraftingSkill extends GatheringSkill
 			commonTell(mob,L("You don't know how to learn new recipes with this skill."));
 			return false;
 		}
-		commands=new XVector(commands);
+		commands=new XVector<String>(commands);
 		commands.remove(0);
 		if(commands.size()<1)
 		{

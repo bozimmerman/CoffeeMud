@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prayer_SenseDisease extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseDisease"; }
@@ -74,19 +74,19 @@ public class Prayer_SenseDisease extends Prayer
 		}
 		return null;
 	}
-	private static final Vector empty=new ReadOnlyVector();
-	public Vector diseased(MOB mob, Room R)
+	private static final Vector<Physical> empty=new ReadOnlyVector<Physical>();
+	public Vector<Physical> diseased(MOB mob, Room R)
 	{
 		if(R==null)
 			return empty;
-		Vector V=null;
+		Vector<Physical> V=null;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)&&(M!=mob)&&(getDisease(M)!=null))
 			{
 				if(V==null)
-					V=new Vector();
+					V=new Vector<Physical>();
 				V.addElement(M);
 			}
 		}
@@ -98,7 +98,7 @@ public class Prayer_SenseDisease extends Prayer
 			&&(getDisease(I)!=null))
 			{
 				if(V==null)
-					V=new Vector();
+					V=new Vector<Physical>();
 				V.addElement(I);
 			}
 		}
@@ -122,13 +122,13 @@ public class Prayer_SenseDisease extends Prayer
 				last=Directions.getFromCompassDirectionName(d);
 			}
 		}
-		final Vector V=diseased(mob,mob.location());
+		final Vector<Physical> V=diseased(mob,mob.location());
 		if(V.size()>0)
 		{
 			boolean didSomething=false;
 			for(int v=0;v<V.size();v++)
 			{
-				final Environmental E=(Environmental)V.elementAt(v);
+				final Environmental E=V.elementAt(v);
 				if(CMLib.flags().canBeSeenBy(E,mob))
 				{
 					didSomething=true;

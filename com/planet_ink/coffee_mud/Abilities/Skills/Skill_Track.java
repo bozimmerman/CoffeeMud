@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Skill_Track extends StdSkill
 {
 	protected int cacheCode=-1;
@@ -291,12 +291,12 @@ public class Skill_Track extends StdSkill
 			return false;
 		}
 
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		if(givenTarget instanceof Area)
 			rooms.addElement(((Area)givenTarget).getRandomMetroRoom());
 		else
 		if(givenTarget instanceof Room)
-			rooms.addElement(givenTarget);
+			rooms.addElement((Room)givenTarget);
 		else
 		if((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()!=null))
 			rooms.addElement(((MOB)givenTarget).location());
@@ -338,13 +338,13 @@ public class Skill_Track extends StdSkill
 			theTrail=null;
 			tickStatus=Tickable.STATUS_MISC6+8;
 			if((cacheCode==1)&&(rooms.size()==1))
-				theTrail=cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()));
+				theTrail=cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID(rooms.firstElement()));
 			tickStatus=Tickable.STATUS_MISC6+9;
 			if(theTrail==null)
 				theTrail=CMLib.tracking().findBastardTheBestWay(thisRoom,rooms,flags,radius);
 			tickStatus=Tickable.STATUS_MISC6+10;
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
-				cachedPaths.put(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()),theTrail);
+				cachedPaths.put(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID(rooms.firstElement()),theTrail);
 		}
 
 		tickStatus=Tickable.STATUS_MISC6+11;

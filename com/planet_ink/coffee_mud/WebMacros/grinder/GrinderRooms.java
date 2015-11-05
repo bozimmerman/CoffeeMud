@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class GrinderRooms
 {
 	public static void happilyAddMob(MOB M, Room R)
@@ -180,7 +180,7 @@ public class GrinderRooms
 				return error;
 
 			// here's where you resolve items and mobs
-			final Vector allmobs=new Vector();
+			final Vector<MOB> allmobs=new Vector<MOB>();
 			int skip=0;
 			while(oldR.numInhabitants()>(skip))
 			{
@@ -200,7 +200,7 @@ public class GrinderRooms
 				else
 					skip++;
 			}
-			final Vector allitems=new Vector();
+			final Vector<Item> allitems=new Vector<Item>();
 			while(oldR.numItems()>0)
 			{
 				final Item I=oldR.getItem(0);
@@ -252,9 +252,9 @@ public class GrinderRooms
 						}
 					}
 					else
-					for(final Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+					for(final Enumeration<MOB> m=CMClass.mobTypes();m.hasMoreElements();)
 					{
-						final MOB M2=(MOB)m.nextElement();
+						final MOB M2=m.nextElement();
 						if((CMClass.classID(M2).equals(MATCHING)))
 						{
 							happilyAddMob((MOB)M2.copyOf(),R);
@@ -269,8 +269,8 @@ public class GrinderRooms
 
 			if(httpReq.isUrlParameter("ITEM1"))
 			{
-				final Vector items=new Vector();
-				final Vector cstrings=new Vector();
+				final Vector<Item> items=new Vector<Item>();
+				final Vector<String> cstrings=new Vector<String>();
 				for(int i=1;;i++)
 				{
 					final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
@@ -295,10 +295,10 @@ public class GrinderRooms
 				}
 				for(int i=0;i<cstrings.size();i++)
 				{
-					final String CONTAINER=(String)cstrings.elementAt(i);
+					final String CONTAINER=cstrings.elementAt(i);
 					if(CONTAINER.length()==0)
 						continue;
-					final Item I2=(Item)items.elementAt(i);
+					final Item I2=items.elementAt(i);
 					final Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
 					if(C2 instanceof Container)
 						I2.setContainer((Container)C2);
@@ -310,7 +310,7 @@ public class GrinderRooms
 
 			for(int i=0;i<allitems.size();i++)
 			{
-				final Item I=(Item)allitems.elementAt(i);
+				final Item I=allitems.elementAt(i);
 				if(!R.isContent(I))
 					I.destroy();
 			}
@@ -322,6 +322,7 @@ public class GrinderRooms
 			}
 			for(int m=0;m<allmobs.size();m++)
 			{
+				@SuppressWarnings("cast")
 				final MOB M=(MOB)allmobs.elementAt(m);
 				if(!R.isInhabitant(M))
 					M.destroy();
@@ -331,23 +332,25 @@ public class GrinderRooms
 			{
 				try
 				{
-					for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
-						final Room R2=(Room)r.nextElement();
+						final Room R2=r.nextElement();
 						for(int d=0;d<R2.rawDoors().length;d++)
+						{
 							if(R2.rawDoors()[d]==oldR)
 							{
 								R2.rawDoors()[d]=R;
 								if(R2 instanceof GridLocale)
 									((GridLocale)R2).buildGrid();
 							}
+						}
 					}
 				}catch(final NoSuchElementException e){}
 				try
 				{
-					for(final Enumeration e=CMLib.players().players();e.hasMoreElements();)
+					for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 					{
-						final MOB M=(MOB)e.nextElement();
+						final MOB M=e.nextElement();
 						if(M.getStartRoom()==oldR)
 							M.setStartRoom(R);
 						else

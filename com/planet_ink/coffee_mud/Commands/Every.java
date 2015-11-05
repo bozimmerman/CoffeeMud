@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Every extends StdCommand
 {
 	public Every(){}
@@ -58,7 +58,6 @@ public class Every extends StdCommand
 		return newCommands;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -66,7 +65,7 @@ public class Every extends StdCommand
 		final Room room=mob.location();
 		if(room == null)
 			return false;
-		commands=new XVector(commands);
+		commands=new XVector<String>(commands);
 		Enumeration<Room> roomList = new XVector<Room>(room).elements();
 		MaskingLibrary.CompiledZapperMask mask = null;
 		boolean doPlayers = false;

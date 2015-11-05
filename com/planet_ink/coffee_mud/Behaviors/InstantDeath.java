@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class InstantDeath extends ActiveTicker
 {
 	@Override public String ID(){return "InstantDeath";}
@@ -70,7 +70,7 @@ public class InstantDeath extends ActiveTicker
 	{
 		if(R==null)
 			return;
-		final Vector V=new Vector();
+		final Vector<MOB> V=new Vector<MOB>();
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB M=R.fetchInhabitant(i);
@@ -83,7 +83,7 @@ public class InstantDeath extends ActiveTicker
 		}
 		for(int v=0;v<V.size();v++)
 		{
-			final MOB M=(MOB)V.elementAt(v);
+			final MOB M=V.elementAt(v);
 			CMLib.combat().postDeath(null,M,null);
 		}
 	}
@@ -126,9 +126,9 @@ public class InstantDeath extends ActiveTicker
 			else
 			if(ticking instanceof Area)
 			{
-				for(final Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
-					final Room R=(Room)r.nextElement();
+					final Room R=r.nextElement();
 					killEveryoneHere(null,R);
 				}
 			}

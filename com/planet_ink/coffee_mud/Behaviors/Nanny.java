@@ -196,7 +196,7 @@ public class Nanny extends StdBehavior
 			else
 				friends++;
 		}
-		final Vector pros=new Vector();
+		final Vector<String> pros=new Vector<String>();
 		if(babies>0)
 			pros.addElement("little one"+((babies>1)?"s":""));
 		if(mounts>0)
@@ -208,7 +208,7 @@ public class Nanny extends StdBehavior
 		final StringBuffer list=new StringBuffer("");
 		for(int p=0;p<pros.size();p++)
 		{
-			list.append((String)pros.elementAt(p));
+			list.append(pros.elementAt(p));
 			if((pros.size()>1)&&(p==pros.size()-2))
 				list.append(", and ");
 			else
@@ -673,12 +673,12 @@ public class Nanny extends StdBehavior
 			CMLib.beanCounter().giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
 	}
 
-	public int getNameIndex(Vector V, String name)
+	public int getNameCount(Vector<String> V, String name)
 	{
 		int index=0;
 		for(int v=0;v<V.size();v++)
 		{
-			if(((String)V.elementAt(v)).equals(name))
+			if(V.elementAt(v).equals(name))
 				index++;
 		}
 		return index;
@@ -721,7 +721,7 @@ public class Nanny extends StdBehavior
 				eName=D.baby.Name();
 				oName=D.mommyM.Name();
 				if(oldNames.contains(eName))
-					eName=getNameIndex(oldNames,eName)+"."+eName;
+					eName=getNameCount(oldNames,eName)+"."+eName;
 				parms.append(CMLib.xml().convertXMLtoTag("ENAM",CMLib.xml().parseOutAngleBrackets(eName)));
 				parms.append(CMLib.xml().convertXMLtoTag("ONAM",CMLib.xml().parseOutAngleBrackets(oName)));
 				parms.append(CMLib.xml().convertXMLtoTag("TIME",D.dropOffTime));

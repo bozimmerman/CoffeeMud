@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Order extends StdCommand
 {
 	public Order(){}
@@ -65,7 +65,7 @@ public class Order extends StdCommand
 		}
 
 		String whomToOrder=commands.get(0);
-		final Vector V=new Vector();
+		final Vector<MOB> V=new Vector<MOB>();
 		boolean allFlag=whomToOrder.equalsIgnoreCase("all");
 		if(whomToOrder.toUpperCase().startsWith("ALL.")){ allFlag=true; whomToOrder="ALL "+whomToOrder.substring(4);}
 		if(whomToOrder.toUpperCase().endsWith(".ALL")){ allFlag=true; whomToOrder="ALL "+whomToOrder.substring(0,whomToOrder.length()-4);}
@@ -97,7 +97,7 @@ public class Order extends StdCommand
 		MOB target=null;
 		if(V.size()==1)
 		{
-			target=(MOB)V.get(0);
+			target=V.get(0);
 			if((!CMLib.flags().canBeSeenBy(target,mob))
 			||(!CMLib.flags().canBeHeardSpeakingBy(mob,target))
 			||(target.location()!=mob.location()))
@@ -125,10 +125,10 @@ public class Order extends StdCommand
 			}
 		}
 
-		final Vector doV=new Vector();
+		final Vector<MOB> doV=new Vector<MOB>();
 		for(int v=0;v<V.size();v++)
 		{
-			target=(MOB)V.get(v);
+			target=V.get(v);
 			O=CMLib.english().findCommand(target,new XVector<String>(commands));
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 			{
@@ -169,7 +169,7 @@ public class Order extends StdCommand
 		}
 		for(int v=0;v<doV.size();v++)
 		{
-			target=(MOB)doV.get(v);
+			target=doV.get(v);
 			target.enqueCommand(new XVector<String>(commands),metaFlags|MUDCmdProcessor.METAFLAG_ORDER,0);
 		}
 		return false;

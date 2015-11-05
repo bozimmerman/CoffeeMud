@@ -7633,6 +7633,51 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		return true;
 	}
 
+	protected boolean genText(MOB mob, Map<String,String> map, String[] choices, String help, int showNumber, int showFlag, String FieldDisp, String Field)
+	throws IOException
+	{
+		if(((showFlag>0)&&(showFlag!=showNumber))||(!map.containsKey(Field)))
+			return true;
+		mob.tell(showNumber+". "+FieldDisp+": '"+(map.get(Field)+"'."));
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return true;
+		String newName=mob.session().prompt(L("Enter a new one\n\r:"),"");
+		if(newName.trim().length()==0)
+		{
+			mob.tell(L("(no change)"));
+			return false;
+		}
+		if((newName.equalsIgnoreCase("?"))&&(help!=null))
+		{
+			if((mob.session()==null)||(mob.session().isStopped()))
+				return false;
+			mob.tell(help);
+			return genText(mob,map,choices,help,showNumber,showFlag,FieldDisp,Field);
+		}
+		if(newName.equalsIgnoreCase("null"))
+			newName="";
+		if((choices==null)||(choices.length==0))
+		{
+			map.put(Field,newName);
+			return true;
+		}
+		boolean found=false;
+		for (final String choice : choices)
+		{
+			if(newName.equalsIgnoreCase(choice))
+			{ newName=choice; found=true; break;}
+		}
+		if(!found)
+		{
+			if((mob.session()==null)||(mob.session().isStopped()))
+				return false;
+			mob.tell(help);
+			return genText(mob,map,choices,help,showNumber,showFlag,FieldDisp,Field);
+		}
+		map.put(Field,newName);
+		return true;
+	}
+
 	protected boolean modifyComponent(MOB mob, AbilityComponent comp)
 	throws IOException
 	{
@@ -7684,12 +7729,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			int showNumber=0;
 			for(int v=0;v<codedDV.size();v++)
+			{
 				if((mob.session()!=null)&&(!mob.session().isStopped()))
 				{
 					showNumber++;
 					if((showFlag>0)&&(showFlag!=showNumber))
 						continue;
-					mob.tell(showNumber+": '"+CMLib.ableComponents().getAbilityComponentDesc(null,codedDV,v)+"'.");
+					mob.tell(showNumber+": '"+CMLib.ableComponents().getAbilityComponentDesc(null,codedDV.get(v),v>0)+"'.");
 					if((showFlag!=showNumber)&&(showFlag>-999))
 						continue;
 					if(!modifyComponent(mob,codedDV.get(v)))
@@ -7698,6 +7744,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						v--;
 					}
 				}
+			}
 			while((mob.session()!=null)&&(!mob.session().isStopped()))
 			{
 				showNumber++;

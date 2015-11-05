@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Mage extends StdCharClass
 {
 	@Override public String ID(){return "Mage";}
@@ -324,6 +324,7 @@ public class Mage extends StdCharClass
 	};
 	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
 
+	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
 	};
@@ -340,7 +341,7 @@ public class Mage extends StdCharClass
 		if(!grantSomeSpells())
 			return;
 
-		final Vector grantable=new Vector();
+		final Vector<String> grantable=new Vector<String>();
 
 		final int level=mob.charStats().getClassLevel(this);
 		int numSpells=3;
@@ -359,7 +360,10 @@ public class Mage extends StdCharClass
 			&&(!CMLib.ableMapper().getSecretSkill(ID(),true,A.ID()))
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)))
-			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}
+			{
+				if (!grantable.contains(A.ID()))
+					grantable.addElement(A.ID());
+			}
 		}
 		for(int a=0;a<mob.numAbilities();a++)
 		{
@@ -374,7 +378,7 @@ public class Mage extends StdCharClass
 		{
 			if(grantable.size()==0)
 				break;
-			final String AID=(String)grantable.elementAt(CMLib.dice().roll(1,grantable.size(),-1));
+			final String AID=grantable.elementAt(CMLib.dice().roll(1,grantable.size(),-1));
 			if(AID!=null)
 			{
 				grantable.removeElement(AID);

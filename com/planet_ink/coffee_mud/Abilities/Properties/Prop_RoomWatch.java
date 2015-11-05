@@ -37,7 +37,7 @@ public class Prop_RoomWatch extends Property
 	@Override public String ID() { return "Prop_RoomWatch"; }
 	@Override public String name(){ return "Different Room Can Watch";}
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
-	protected Vector newRooms=null;
+	protected Vector<Room> newRooms=null;
 	protected String prefix=null;
 
 	@Override
@@ -59,7 +59,7 @@ public class Prop_RoomWatch extends Property
 		if(newRooms==null)
 		{
 			final List<String> V=CMParms.parseSemicolons(text(),true);
-			newRooms=new Vector();
+			newRooms=new Vector<Room>();
 			for(int v=0;v<V.size();v++)
 			{
 				final String roomID=V.get(v);

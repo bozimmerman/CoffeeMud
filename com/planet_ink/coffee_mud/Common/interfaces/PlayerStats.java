@@ -201,12 +201,12 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	public void setPrompt(String prompt);
 
 	/**
-	 * Returns a Vector of modifiable title definitions.  These are things
+	 * Returns a list of modifiable title definitions.  These are things
 	 * like *, the bunny slayer and such.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getActiveTitle()
 	 *
-	 * @return  a Vector of modifiable title definitions
+	 * @return  a list of modifiable title definitions
 	 */
 	public List<String> getTitles();
 

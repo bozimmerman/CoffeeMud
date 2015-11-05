@@ -123,7 +123,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		return false;
 	}
 
-	// returns Vector of components found if all good, returns Integer of bad row if not.
+	// returns list of components found if all good, returns Integer of bad row if not.
 	@Override
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req)
 	{
@@ -341,13 +341,12 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req, int r)
+	public String getAbilityComponentDesc(MOB mob, AbilityComponent comp, boolean useConnector)
 	{
 		int amt=0;
 		String itemDesc=null;
 		final StringBuffer buf=new StringBuffer("");
-		final AbilityComponent comp = req.get(r);
-		if(r>0)
+		if(useConnector)
 			buf.append(comp.getConnector()==AbilityComponent.CompConnector.AND?", and ":", or ");
 		if((mob!=null)
 		&&(comp.getCompiledMask()!=null)
@@ -398,7 +397,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		final StringBuffer buf=new StringBuffer("");
 		for (int r = 0; r < req.size(); r++)
 		{
-			buf.append(getAbilityComponentDesc(mob, req, r));
+			buf.append(getAbilityComponentDesc(mob, req.get(r), r>0));
 		}
 		return buf.toString();
 	}

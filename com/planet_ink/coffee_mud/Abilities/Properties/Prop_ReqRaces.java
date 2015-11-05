@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -55,9 +54,9 @@ public class Prop_ReqRaces extends Property implements TriggeredAffect
 	{
 		noFollow=false;
 		noSneak=false;
-		final Vector parms=CMParms.parse(txt.toUpperCase());
+		final Vector<String> parms=CMParms.parse(txt.toUpperCase());
 		String s;
-		for(final Enumeration p=parms.elements();p.hasMoreElements();)
+		for(final Enumeration<String> p=parms.elements();p.hasMoreElements();)
 		{
 			s=(String)p.nextElement();
 			if("NOFOLLOW".startsWith(s))

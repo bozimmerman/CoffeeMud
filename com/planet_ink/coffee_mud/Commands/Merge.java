@@ -111,13 +111,15 @@ public class Merge extends StdCommand
 				mergedebugtell(mob,E.name()+"/"+E2.name()+"/"+CMClass.classID(E)+"/"+CMClass.classID(E2));
 			if(CMClass.classID(E).equals(CMClass.classID(E2)))
 			{
-				Vector fieldsToCheck=null;
+				Vector<String> fieldsToCheck=null;
 				if(onfields.size()>0)
 				{
-					fieldsToCheck=new Vector();
+					fieldsToCheck=new Vector<String>();
 					for(int v=0;v<onfields.size();v++)
+					{
 						if(efields.contains(onfields.get(v)))
 							fieldsToCheck.add(onfields.get(v));
+					}
 				}
 				else
 					fieldsToCheck=new XVector<String>(efields);
@@ -128,11 +130,14 @@ public class Merge extends StdCommand
 				if(checkedOut)
 				for(int i=0;i<fieldsToCheck.size();i++)
 				{
-					final String field=(String)fieldsToCheck.get(i);
+					final String field=fieldsToCheck.get(i);
 					if(noisy)
 						mergedebugtell(mob,field+"/"+getStat(E,field)+"/"+getStat(E2,field)+"/"+getStat(E,field).equals(getStat(E2,field)));
 					if(!getStat(E,field).equals(getStat(E2,field)))
-					{ checkedOut=false; break;}
+					{
+						checkedOut = false;
+						break;
+					}
 				}
 				if(checkedOut)
 				{
@@ -141,10 +146,12 @@ public class Merge extends StdCommand
 						fieldsToChange=new XVector<String>(allMyFields);
 					else
 					{
-						fieldsToChange=new Vector();
+						fieldsToChange=new Vector<String>();
 						for(int v=0;v<changes.size();v++)
+						{
 							if(allMyFields.contains(changes.get(v)))
 								fieldsToChange.add(changes.get(v));
+						}
 					}
 					if(noisy)
 						mergedebugtell(mob,"fieldsToChange-"+CMParms.toListString(fieldsToChange));
@@ -197,7 +204,7 @@ public class Merge extends StdCommand
 		throws java.io.IOException
 	{
 		final boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.MERGE);
-		Vector placesToDo=new Vector();
+		Vector<Places> placesToDo=new Vector<Places>();
 		commands.remove(0);
 		if(commands.size()==0)
 		{
@@ -217,7 +224,7 @@ public class Merge extends StdCommand
 		   commands.get(0).equalsIgnoreCase("?"))
 		{
 			final StringBuffer allFieldsMsg=new StringBuffer("");
-			final Vector allKnownFields=new Vector();
+			final Vector<String> allKnownFields=new Vector<String>();
 			sortEnumeratedList(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.basicItems(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.weapons(),allKnownFields,allFieldsMsg);
@@ -229,8 +236,8 @@ public class Merge extends StdCommand
 			return false;
 		}
 		String scope="WORLD";
-		if((commands.size()>0)&&
-		   commands.get(0).equalsIgnoreCase("room"))
+		if((commands.size()>0)
+		&&commands.get(0).equalsIgnoreCase("room"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.MERGE))
 			{

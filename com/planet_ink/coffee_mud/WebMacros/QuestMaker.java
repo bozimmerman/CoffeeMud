@@ -421,9 +421,9 @@ public class QuestMaker extends StdWebMacro
 				{
 					if(oldValue==null)
 						oldValue=defValue;
-					List<Item> itemList=new Vector();
+					List<Item> itemList=new Vector<Item>();
 					itemList=RoomData.contributeItems(itemList);
-					final Vector oldValues=new Vector();
+					final Vector<String> oldValues=new Vector<String>();
 					int which=1;
 					oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 					while(oldValue!=null)
@@ -436,7 +436,7 @@ public class QuestMaker extends StdWebMacro
 					oldValues.addElement("");
 					for(int i=0;i<oldValues.size();i++)
 					{
-						oldValue=(String)oldValues.elementAt(i);
+						oldValue=oldValues.elementAt(i);
 						final Item oldItem=(oldValue.length()>0)?RoomData.getItemFromAnywhere(itemList,oldValue):null;
 						if(i==0)
 						{
@@ -484,7 +484,7 @@ public class QuestMaker extends StdWebMacro
 					if(oldValue==null)
 						oldValue=defValue;
 					final List<MOB>mobList=RoomData.contributeMOBs(new Vector<MOB>());
-					final Vector oldValues=new Vector();
+					final Vector<String> oldValues=new Vector<String>();
 					int which=1;
 					oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 					while(oldValue!=null)
@@ -497,7 +497,7 @@ public class QuestMaker extends StdWebMacro
 					oldValues.addElement("");
 					for(int i=0;i<oldValues.size();i++)
 					{
-						oldValue=(String)oldValues.elementAt(i);
+						oldValue=oldValues.elementAt(i);
 						final MOB oldMob=(oldValue.length()>0)?RoomData.getMOBFromCode(mobList,oldValue):null;
 						if(i==0)
 						{
@@ -614,7 +614,7 @@ public class QuestMaker extends StdWebMacro
 					{
 						final List<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
 						rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
-						final Vector oldValues=new Vector();
+						final Vector<String> oldValues=new Vector<String>();
 						int which=1;
 						oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 						while(oldValue!=null)
@@ -693,7 +693,7 @@ public class QuestMaker extends StdWebMacro
 					{
 						final List<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
 						rawmoblist.addAll(getCatalogMobsForList(CMLib.catalog().getCatalogMobs()));
-						final Vector oldValues=new Vector();
+						final Vector<String> oldValues=new Vector<String>();
 						int which=1;
 						oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 						while(oldValue!=null)

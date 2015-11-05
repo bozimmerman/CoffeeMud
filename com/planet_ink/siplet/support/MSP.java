@@ -74,7 +74,7 @@ public class MSP
 		if (buf.charAt(i + 7) != '(')
 			return -2;
 		i += 7;
-		final Vector parts = new Vector();
+		final Vector<String> parts = new Vector<String>();
 		final StringBuffer part = new StringBuffer("");
 		boolean done = false;
 		while (((++i) < buf.length()) && (!done))
@@ -115,7 +115,7 @@ public class MSP
 				soundClip = null;
 			currentClip = null;
 		}
-		if (((String) parts.firstElement()).equalsIgnoreCase("off"))
+		if (parts.firstElement().equalsIgnoreCase("off"))
 		{
 			if (tag.equals("MUSIC") && (musicClip != null))
 			{
@@ -127,7 +127,7 @@ public class MSP
 			}
 			for (int v = 1; v < parts.size(); v++)
 			{
-				String s = ((String) parts.elementAt(v)).toUpperCase();
+				String s = parts.elementAt(v).toUpperCase();
 				if (s.startsWith("V="))
 				{
 					s = trimQuotes(s.substring(2));
@@ -145,14 +145,14 @@ public class MSP
 			return -1;
 		}
 		final MSPplayer newOne = new MSPplayer(applet);
-		newOne.key = (String) parts.firstElement();
+		newOne.key = parts.firstElement();
 		newOne.url = (tag.equals("MUSIC") ? defMusicPath : defSoundPath);
 		if (newOne.url == null)
 			newOne.url = defPath;
 		final String defaultUrl = newOne.url;
 		for (int v = 1; v < parts.size(); v++)
 		{
-			final String s = (String) parts.elementAt(v);
+			final String s = parts.elementAt(v);
 			if ((s.startsWith("V=")) || (s.startsWith("v=")))
 				newOne.volume = Util.s_int(trimQuotes(s.substring(2)).trim());
 			if ((s.startsWith("L=")) || (s.startsWith("l=")))

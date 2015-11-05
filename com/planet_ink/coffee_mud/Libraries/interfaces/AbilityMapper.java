@@ -934,38 +934,285 @@ public interface AbilityMapper extends CMLibrary
 		PRACPRAC
 	}
 
+	/**
+	 * An official Ability Mapping, used by many of the AbilityMapper
+	 * classes.  This class doubles as a builder of itself as well.
+	 * @see AbilityMapper
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static interface AbilityMapping extends Cloneable
 	{
+		/**
+		 * Returns the class, race, or clan government ID this
+		 * mapping applies to.
+		 * @see AbilityMapper.AbilityMapping#ID(String)
+		 * @return the class, race, or clan government ID
+		 */
 		public String				ID();
+
+		/**
+		 * Sets the class, race, or clan government ID this
+		 * mapping applies to.
+		 * @see AbilityMapper.AbilityMapping#ID()
+		 * @param newValue ID the class, race, or clan government ID
+		 * @return this
+		 */
 		public AbilityMapping		ID(String newValue);
+		
+		/**
+		 * Returns the ability ID() this mapping belongs to.
+		 * @see AbilityMapper.AbilityMapping#abilityID(String)
+		 * @return the ability ID() this mapping belongs to.
+		 */
 		public String				abilityID();
+		
+		/**
+		 * Sets the ability ID() this mapping belongs to.
+		 * @see AbilityMapper.AbilityMapping#abilityID()
+		 * @param newValue the ability ID() this mapping belongs to.
+		 * @return this
+		 */
 		public AbilityMapping		abilityID(String newValue);
+		
+		/**
+		 * Returns the class/race/clan qualifying level.
+		 * @see AbilityMapper.AbilityMapping#qualLevel(int)
+		 * @return the class/race/clan qualifying level.
+		 */
 		public int					qualLevel();
+		
+		/**
+		 * Sets the class/race/clan qualifying level.
+		 * @see AbilityMapper.AbilityMapping#qualLevel()
+		 * @param newValue the class/race/clan qualifying level.
+		 * @return this
+		 */
 		public AbilityMapping		qualLevel(int newValue);
+		
+		/**
+		 * Returns true if the skill is automatically gained, false
+		 * if it must be trained.
+		 * @see AbilityMapper.AbilityMapping#autoGain(boolean)
+		 * @return true if the skill is automatically gained
+		 */
 		public boolean				autoGain();
+		
+		/**
+		 * Sets true if the skill is automatically gained, false
+		 * if it must be trained.
+		 * @see AbilityMapper.AbilityMapping#autoGain()
+		 * @param newValue true if the skill is automatically gained
+		 * @return this
+		 */
 		public AbilityMapping		autoGain(boolean newValue);
+		
+		/**
+		 * Returns the default proficiency of the skill gained under
+		 * this mapping.
+		 * @see AbilityMapper.AbilityMapping#defaultProficiency(int)
+		 * @return the default proficiency of the skill gained
+		 */
 		public int					defaultProficiency();
+		
+		/**
+		 * Sets the default proficiency of the skill gained under
+		 * this mapping.
+		 * @see AbilityMapper.AbilityMapping#defaultProficiency()
+		 * @param newVal the default proficiency of the skill gained
+		 * @return this
+		 */
 		public AbilityMapping		defaultProficiency(int newValue);
+		
+		/**
+		 * Returns the maximum proficiency of the skill gained under
+		 * this mapping.
+		 * @see AbilityMapper.AbilityMapping#maxProficiency(int)
+		 * @return the maximum proficiency of the skill gained
+		 */
 		public int					maxProficiency();
+		
+		/**
+		 * Sets the maximum proficiency of the skill gained under
+		 * this mapping.
+		 * @see AbilityMapper.AbilityMapping#maxProficiency()
+		 * @param newVal the maximum proficiency of the skill gained
+		 * @return this
+		 */
 		public AbilityMapping		maxProficiency(int newValue);
+		
+		/**
+		 * Returns the default argument/parameter applies to skills
+		 * gained under this mapping.
+		 * @see AbilityMapper.AbilityMapping#defaultParm(String)
+		 * @return the default argument/parameter
+		 */
 		public String				defaultParm();
+		
+		/**
+		 * Sets the default argument/parameter applies to skills
+		 * gained under this mapping.
+		 * @see AbilityMapper.AbilityMapping#defaultParm()
+		 * @param newValue the default argument/parameter
+		 * @return this
+		 */
 		public AbilityMapping		defaultParm(String newValue);
+
+		/**
+		 * Gets whether this skill is secret and unseen even when
+		 * qualified for.
+		 * @see AbilityMapper.AbilityMapping#isSecret(boolean)
+		 * @return whether this skill is secret and unseen
+		 */
 		public boolean				isSecret();
+		
+		/**
+		 * Sets whether this skill is secret and unseen even when
+		 * qualified for.
+		 * @see AbilityMapper.AbilityMapping#isSecret()
+		 * @param newValue whether this skill is secret and unseen
+		 * @return this
+		 */
 		public AbilityMapping		isSecret(boolean newValue);
+		
+		/**
+		 * Gets whether this skill is qualified for identically
+		 * by all classes, thus sharing a mapping.
+		 * @see AbilityMapper.AbilityMapping#isAllQualified(boolean)
+		 * @return whether this skill is qualified for by all classes
+		 */
 		public boolean				isAllQualified();
+		
+		/**
+		 * Sets whether this skill is qualified for identically
+		 * by all classes, thus sharing a mapping.
+		 * @see AbilityMapper.AbilityMapping#isAllQualified()
+		 * @param newValue whether this skill is qualified for by all classes
+		 * @return this
+		 */
 		public AbilityMapping		isAllQualified(boolean newValue);
+		
+		/**
+		 * Gets the coded form of the pre-requisites skills needed
+		 * to train or gain this skill.
+		 * @see AbilityMapper.AbilityMapping#originalSkillPreReqList()
+		 * @see AbilityMapper.AbilityMapping#originalSkillPreReqList(String)
+		 * @see AbilityMapper.AbilityMapping#skillPreReqs(DVector)i
+		 * @return the coded form of the pre-requisites skills needed
+		 */
 		public DVector				skillPreReqs();
+		
+		/**
+		 * Sets the coded form of the pre-requisites skills needed
+		 * to train or gain this skill.
+		 * @see AbilityMapper.AbilityMapping#originalSkillPreReqList()
+		 * @see AbilityMapper.AbilityMapping#originalSkillPreReqList(String)
+		 * @see AbilityMapper.AbilityMapping#skillPreReqs()
+		 * @param newValue the coded form of the pre-requisites skills needed
+		 * @return this
+		 */
 		public AbilityMapping		skillPreReqs(DVector newValue);
+
+		/**
+		 * Gets the zapper mask to apply to players to see if they
+		 * qualify to learn or gain this skill under this mapping.
+		 * @see AbilityMapper.AbilityMapping#extraMask(String)
+		 * @return the zapper mask to apply to players
+		 */
 		public String				extraMask();
+
+		/**
+		 * Sets the zapper mask to apply to players to see if they
+		 * qualify to learn or gain this skill under this mapping.
+		 * @see AbilityMapper.AbilityMapping#extraMask()
+		 * @param newValue the zapper mask to apply to players
+		 * @return this
+		 */
 		public AbilityMapping		extraMask(String newValue);
+		
+		/**
+		 * Gets the uncoded raw string form of the pre-requisite skills
+		 * needed to train or gain this skill
+		 * @see AbilityMapper.AbilityMapping#skillPreReqs()
+		 * @see AbilityMapper.AbilityMapping#skillPreReqs(DVector)
+		 * @see AbilityMapper.AbilityMapping#originalSkillPreReqList(String)
+		 * @return the uncoded raw string form of the pre-requisite skills
+		 */
 		public String				originalSkillPreReqList();
+		
+		/**
+		 * Sets the uncoded raw string form of the pre-requisite skills
+		 * needed to train or gain this skill
+		 * @see AbilityMapper.AbilityMapping#skillPreReqs()
+		 * @see AbilityMapper.AbilityMapping#skillPreReqs(DVector)
+		 * @see AbilityMapper.AbilityMapping#originalSkillPreReqList()
+		 * @param newValue the uncoded raw string form of the pre-requisite skills
+		 * @return this
+		 */
 		public AbilityMapping		originalSkillPreReqList(String newValue);
+		
+		/**
+		 * Gets the array of cost overrides, indexed by the Costs enum, or
+		 * null if there is no overrides of the basic costs.
+		 * @see AbilityMapper.Cost
+		 * @see AbilityMapper.AbilityMapping#costOverrides(Integer[])
+		 * @return the array of cost overrides, or null
+		 */
 		public Integer[]			costOverrides();
+		
+		/**
+		 * Sets the array of cost overrides, indexed by the Costs enum, or
+		 * null if there is no overrides of the basic costs.
+		 * @see AbilityMapper.Cost
+		 * @see AbilityMapper.AbilityMapping#costOverrides()
+		 * @param newValue the array of cost overrides, or null
+		 * @return this
+		 */
 		public AbilityMapping		costOverrides(Integer[] newValue);
+		
+		/**
+		 * Gets whether this skill is qualified for identically
+		 * by all classes, thus sharing a mapping.  This is true 
+		 * when from the AllQualifies list file, and false when
+		 * from a class or coded definition.
+		 * @see AbilityMapper.AbilityMapping#allQualifyFlag(boolean)
+		 * @return whether this skill is qualified for by all classes
+		 */
 		public boolean				allQualifyFlag();
+		
+		/**
+		 * Sets whether this skill is qualified for identically
+		 * by all classes, thus sharing a mapping.  This is true 
+		 * when from the AllQualifies list file, and false when
+		 * from a class or coded definition.
+		 * @see AbilityMapper.AbilityMapping#allQualifyFlag()
+		 * @param newValue whether this skill is qualified for by all classes
+		 * @return this
+		 */
 		public AbilityMapping		allQualifyFlag(boolean newValue);
+		
+		/**
+		 * Gets a key/value pair mappings of extraneous information to
+		 * store with this ability mapping.
+		 * @see AbilityMapper.AbilityMapping#extFields(Map)
+		 * @return a key/value pair mappings of extraneous information
+		 */
 		public Map<String, String>	extFields();
+		
+		
+		/**
+		 * Sets a key/value pair mappings of extraneous information to
+		 * store with this ability mapping.
+		 * @see AbilityMapper.AbilityMapping#extFields()
+		 * @param newValue a key/value pair mappings of extraneous information
+		 * @return this
+		 */
 		public AbilityMapping		extFields(Map<String, String> newValue);
+		
+		/**
+		 * Returns a copy of this mapping.  It's a deep copy.
+		 * @return a copy of this mapping.  It's a deep copy.
+		 */
 		public AbilityMapping		copyOf();
 	}
 }

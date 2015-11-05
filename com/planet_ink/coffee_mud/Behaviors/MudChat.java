@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class MudChat extends StdBehavior implements ChattyBehavior
 {
 	@Override public String ID(){return "MudChat";}
@@ -176,7 +176,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		final int x=parms.indexOf('=');
 		if(x>0)
 		{
-			final Vector xmlfiles=new Vector();
+			final Vector<String> xmlfiles=new Vector<String>();
 			final String filename=parms.substring(0,x).trim();
 			if(filename.length()>0)
 				xmlfiles.addElement(filename.trim());

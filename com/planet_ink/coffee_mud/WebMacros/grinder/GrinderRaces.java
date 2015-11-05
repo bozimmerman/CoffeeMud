@@ -135,7 +135,7 @@ public class GrinderRaces
 	{
 		if(items==null)
 			items=new Vector();
-		final Vector classes=new Vector();
+		final Vector<Item> classes=new Vector<Item>();
 		List<Item> itemlist=null;
 		if(httpReq.isUrlParameter(c+"ITEM1"))
 		{

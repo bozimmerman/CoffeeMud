@@ -1199,7 +1199,7 @@ public class Reset extends StdCommand
 						break;
 					}
 	
-				final Vector rooms=new Vector();
+				final Vector<Room> rooms=new Vector<Room>();
 				if(s.toUpperCase().startsWith("ROOM"))
 					rooms.add(mob.location());
 				else
@@ -1207,9 +1207,12 @@ public class Reset extends StdCommand
 				{
 					try
 					{
-						for(final Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
+						for(final Enumeration<Room> e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
 							rooms.add(e.nextElement());
-					}catch(final NoSuchElementException nse){}
+					}
+					catch(final NoSuchElementException nse)
+					{
+					}
 				}
 				else
 				if(s.toUpperCase().startsWith("CATALOG"))
@@ -1245,7 +1248,7 @@ public class Reset extends StdCommand
 								}
 							if(skip)
 								continue;
-							for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+							for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 								rooms.add(r.nextElement());
 						}
 					}catch(final NoSuchElementException nse){}

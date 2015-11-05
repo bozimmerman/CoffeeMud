@@ -53,16 +53,18 @@ public class QuestNext extends StdWebMacro
 			last=CMStrings.replaceAll(last,"*","@");
 		String lastID="";
 
-		final Vector V=new Vector();
+		final Vector<Quest> V=new Vector<Quest>();
 		for(int q=0;q<CMLib.quests().numQuests();q++)
 			V.addElement(CMLib.quests().fetchQuest(q));
-		final Vector sortedV=new Vector();
+		final Vector<Quest> sortedV=new Vector<Quest>();
 		while(V.size()>0)
 		{
 			Quest lowQ=(Quest)V.firstElement();
 			for(int v=1;v<V.size();v++)
+			{
 				if(((Quest)V.elementAt(v)).name().toUpperCase().compareTo(lowQ.name().toUpperCase())<0)
 					lowQ=(Quest)V.elementAt(v);
+			}
 			V.remove(lowQ);
 			sortedV.addElement(lowQ);
 		}

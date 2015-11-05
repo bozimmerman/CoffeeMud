@@ -32,13 +32,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Get extends StdCommand
 {
 	public Get(){}
 
 	private final String[]	access	= I(new String[] { "GET", "G" });
 
+	@SuppressWarnings("rawtypes")
 	private final static Class[][] internalParameters=new Class[][]
 	{
 		{Item.class},
@@ -143,7 +144,7 @@ public class Get extends StdCommand
 		boolean doneSomething=false;
 		while((c<containers.size())||(containers.size()==0))
 		{
-			final Vector V=new Vector();
+			final Vector<Item> V=new Vector<Item>();
 			Container container=null;
 			if(containers.size()>0)
 				container=containers.get(c++);
@@ -182,14 +183,14 @@ public class Get extends StdCommand
 				&&((CMLib.flags().canBeSeenBy(getThis,mob)||(getThis instanceof Light)))
 				&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
 				&&(!V.contains(getThis)))
-					V.add(getThis);
+					V.add((Item)getThis);
 
 				addendumStr="."+(++addendum);
 			}
 
 			for(int i=0;i<V.size();i++)
 			{
-				final Item getThis=(Item)V.get(i);
+				final Item getThis=V.get(i);
 				if(!getThis.amDestroyed())
 				{
 					get(mob,container,getThis,quiet,"get",true);

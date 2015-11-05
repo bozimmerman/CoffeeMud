@@ -271,7 +271,7 @@ public class Thief_Assassinate extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		if(tracking!=null)
 		{
 			final Room R=tracking.location();

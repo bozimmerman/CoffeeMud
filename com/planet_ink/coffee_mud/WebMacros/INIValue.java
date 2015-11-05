@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class INIValue extends StdWebMacro
 {
 	@Override public String name() { return "INIValue"; }
@@ -41,7 +41,7 @@ public class INIValue extends StdWebMacro
 
 	public String getHelpFor(String tag, String mask)
 	{
-		final Vector help=new Vector();
+		final Vector<String> help=new Vector<String>();
 		final List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
 		boolean startOver=false;
 		for(int p=0;p<page.size();p++)
@@ -67,7 +67,7 @@ public class INIValue extends StdWebMacro
 				{
 					final StringBuffer str=new StringBuffer("");
 					for(int i=0;i<help.size();i++)
-						str.append(((String)help.elementAt(i))+"<BR>");
+						str.append(help.elementAt(i)+"<BR>");
 					return str.toString();
 				}
 				help.clear();
@@ -148,7 +148,8 @@ public class INIValue extends StdWebMacro
 		if((page==null)||(!page.isLoaded()))
 			return "";
 		if(mask.trim().endsWith("*"))
-			for(final Enumeration e=page.keys();e.hasMoreElements();)
+		{
+			for(final Enumeration<Object> e=page.keys();e.hasMoreElements();)
 			{
 				final String key=((String)e.nextElement()).toUpperCase();
 				if(key.startsWith(mask.substring(0,mask.length()-1)))
@@ -162,6 +163,7 @@ public class INIValue extends StdWebMacro
 					return "";
 				}
 			}
+		}
 		httpReq.addFakeUrlParameter("INI",mask);
 		if(parms.containsKey("VALUE"))
 			return clearWebMacros(page.getStr(mask));

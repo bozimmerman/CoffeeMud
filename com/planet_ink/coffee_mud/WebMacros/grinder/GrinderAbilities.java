@@ -34,8 +34,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
-public class GrinderAbilities {
+
+public class GrinderAbilities 
+{
 	public String name() { return "GrinderAbilities"; }
 
 	public static String modifyAbility(HTTPRequest httpReq, java.util.Map<String,String> parms, Ability oldA, Ability A)
@@ -73,7 +74,7 @@ public class GrinderAbilities {
 		A.setStat("TICKAFFECTS",(old==null)?"":""+old.equalsIgnoreCase("on"));
 		old=httpReq.getUrlParameter("AUTOINVOKE");
 		A.setStat("AUTOINVOKE",(old==null)?"":""+old.equalsIgnoreCase("on"));
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>();
 		if(httpReq.isUrlParameter("ABILITY_FLAGS"))
 		{
 			String id="";

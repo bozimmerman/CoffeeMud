@@ -95,28 +95,28 @@ public interface CoffeeShop extends CMCommon
 	public void destroyStoreInventory();
 
 	/**
-	 * Returns a Vector of all the Environmental objects this shop has for sale.
+	 * Returns a iterator of all the Environmental objects this shop has for sale.
 	 * Will only return one of each item, even if multiple are available.
-	 * @return a Vector of objects for sale.
+	 * @return a iterator of objects for sale.
 	 */
 	public Iterator<Environmental> getStoreInventory();
 
 	/**
-	 * Returns a Vector of all the Environmental objects this shop has for sale
+	 * Returns a iterator of all the Environmental objects this shop has for sale
 	 * which match the given search string.
 	 * Will only return one of each item, even if multiple are available.
 	 * @param srchStr the item to hunt for.
-	 * @return a Vector of objects for sale.
+	 * @return a iterator of objects for sale.
 	 */
 	public Iterator<Environmental> getStoreInventory(String srchStr);
 
 	/**
-	 * Returns a Vector of all the Environmental objects this shop has in its base
+	 * Returns a iterator of all the Environmental objects this shop has in its base
 	 * inventory.  Only useful for historical reasons, or if the shop sells inventory
 	 * only.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
 	 * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
-	 * @return a Vector of objects in base inventory
+	 * @return a iterator of objects in base inventory
 	 */
 	public Iterator<Environmental> getEnumerableInventory();
 
@@ -213,12 +213,12 @@ public interface CoffeeShop extends CMCommon
 	/**
 	 * Searches this shops stock of items for sale for one matching the given name.
 	 * If one is found, it copies the item, removes one from the available stock, and
-	 * prepares it for sale by adding it to a Vector along with any necessary accessories,
+	 * prepares it for sale by adding it to a list along with any necessary accessories,
 	 * such as necessary keys, or if a container, any contents of the container.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
 	 * @param named the name of the item to search for
 	 * @param mob the mob who is interested (stock can differ depending on customer)
-	 * @return the available items, if found, as a Vector of Environmental objects
+	 * @return the available items, if found, as a list of Environmental objects
 	 */
 	public List<Environmental> removeSellableProduct(String named, MOB mob);
 

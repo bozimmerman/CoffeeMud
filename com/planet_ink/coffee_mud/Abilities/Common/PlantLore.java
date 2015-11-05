@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class PlantLore extends CommonSkill
 {
 	@Override public String ID() { return "PlantLore"; }
@@ -85,7 +84,7 @@ public class PlantLore extends CommonSkill
 					if((room.domainType()&Room.INDOORS)==0)
 					{
 						final StringBuffer str=new StringBuffer("");
-						final Vector V=new Vector();
+						final Vector<Room> V=new Vector<Room>();
 						TrackingLibrary.TrackingFlags flags;
 						flags = new TrackingLibrary.TrackingFlags()
 								.plus(TrackingLibrary.TrackingFlag.OPENONLY)
@@ -94,7 +93,7 @@ public class PlantLore extends CommonSkill
 						CMLib.tracking().getRadiantRooms(room,V,flags,null,2+(getXLEVELLevel(mob)/2),null);
 						for(int v=0;v<V.size();v++)
 						{
-							final Room R=(Room)V.elementAt(v);
+							final Room R=V.elementAt(v);
 							final int material=R.myResource()&RawMaterial.MATERIAL_MASK;
 							final int resource=R.myResource()&RawMaterial.RESOURCE_MASK;
 							if(!RawMaterial.CODES.IS_VALID(resource))

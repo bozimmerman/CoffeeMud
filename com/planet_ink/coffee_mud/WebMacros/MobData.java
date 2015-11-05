@@ -75,9 +75,9 @@ public class MobData extends StdWebMacro
 		if(parms.containsKey("ABILITIES"))
 		{
 			final boolean player=E.playerStats()!=null;
-			final Vector theclasses=new Vector();
-			final Vector theprofs=new Vector();
-			final Vector thetext=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
+			final Vector<String> theprofs=new Vector<String>();
+			final Vector<String> thetext=new Vector<String>();
 			if(httpReq.isUrlParameter("ABLES1"))
 			{
 				int num=1;
@@ -120,7 +120,7 @@ public class MobData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
+				final String theclass=theclasses.elementAt(i);
 				str.append("<TR><TD WIDTH=35%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=ABLES"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -130,10 +130,10 @@ public class MobData extends StdWebMacro
 				if(player)
 				{
 					str.append("<TD WIDTH=10%>");
-					str.append("<INPUT TYPE=TEXT NAME=ABPOF"+(i+1)+" VALUE=\""+((String)theprofs.elementAt(i))+"\" SIZE=3 MAXLENGTH=3><FONT COLOR=WHITE><B>%</B></FONT>");
+					str.append("<INPUT TYPE=TEXT NAME=ABPOF"+(i+1)+" VALUE=\""+theprofs.elementAt(i)+"\" SIZE=3 MAXLENGTH=3><FONT COLOR=WHITE><B>%</B></FONT>");
 					str.append("</TD>");
 					str.append("<TD WIDTH=50%>");
-					str.append("<INPUT TYPE=TEXT NAME=ABTXT"+(i+1)+" VALUE=\""+((String)thetext.elementAt(i))+"\" SIZE=40>");
+					str.append("<INPUT TYPE=TEXT NAME=ABTXT"+(i+1)+" VALUE=\""+thetext.elementAt(i)+"\" SIZE=40>");
 					str.append("</TD>");
 				}
 				else
@@ -172,7 +172,7 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("EXPERTISELIST"))
 		{
-			final Vector theclasses=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
 			if(httpReq.isUrlParameter("EXPER1"))
 			{
 				int num=1;
@@ -195,7 +195,7 @@ public class MobData extends StdWebMacro
 			}
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
+				final String theclass=theclasses.elementAt(i);
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=EXPER"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				final ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(theclass);
@@ -285,8 +285,8 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BLESSINGS"))
 		{
-			final Vector theclasses=new Vector();
-			final Vector theclerics=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
+			final Vector<Boolean> theclerics=new Vector<Boolean>();
 			if(httpReq.isUrlParameter("BLESS1"))
 			{
 				int num=1;
@@ -316,8 +316,8 @@ public class MobData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
-				final boolean clericOnly=((Boolean)theclerics.elementAt(i)).booleanValue();
+				final String theclass=theclasses.elementAt(i);
+				final boolean clericOnly=theclerics.elementAt(i).booleanValue();
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=BLESS"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -347,8 +347,8 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CURSES"))
 		{
-			final Vector theclasses=new Vector();
-			final Vector theclerics=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
+			final Vector<Boolean> theclerics=new Vector<Boolean>();
 			if(httpReq.isUrlParameter("CURSE1"))
 			{
 				int num=1;
@@ -378,8 +378,8 @@ public class MobData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
-				final boolean clericOnly=((Boolean)theclerics.elementAt(i)).booleanValue();
+				final String theclass=theclasses.elementAt(i);
+				final boolean clericOnly=theclerics.elementAt(i).booleanValue();
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=CURSE"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -409,8 +409,8 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("FACTIONS"))
 		{
-			final Vector theclasses=new Vector();
-			final Vector theparms=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
+			final Vector<String> theparms=new Vector<String>();
 			if(httpReq.isUrlParameter("FACTION1"))
 			{
 				int num=1;
@@ -445,11 +445,11 @@ public class MobData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
+				final String theclass=theclasses.elementAt(i);
 				final Faction F=CMLib.factions().getFaction(theclass);
 				if(F==null)
 					continue;
-				String theparm=(String)theparms.elementAt(i);
+				String theparm=theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditFaction(this);\" NAME=FACTION"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -485,14 +485,14 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Faction");
 
 			Object[] sortedB=null;
-			final Vector sortMeB=new Vector();
+			final Vector<String> sortMeB=new Vector<String>();
 			for(final Enumeration<Faction> fID=CMLib.factions().factions();fID.hasMoreElements();)
 			{
 				final Faction F=fID.nextElement();
 				if((F!=null)&&(!theclasses.contains(F.factionID())))
 					sortMeB.addElement(F.factionID());
 			}
-			sortedB=(new TreeSet(sortMeB)).toArray();
+			sortedB=(new TreeSet<String>(sortMeB)).toArray();
 			for (final Object element : sortedB)
 			{
 				final String cnam=(String)element;
@@ -513,8 +513,8 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CLASSLIST"))
 		{
-			final Vector theclasses=new Vector();
-			final Vector theparms=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
+			final Vector<String> theparms=new Vector<String>();
 			if(httpReq.isUrlParameter("CHARCLASS1"))
 			{
 				int num=1;
@@ -557,11 +557,11 @@ public class MobData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
+				final String theclass=theclasses.elementAt(i);
 				final CharClass C=CMClass.getCharClass(theclass);
 				if(C==null)
 					continue;
-				final String theparm=(String)theparms.elementAt(i);
+				final String theparm=theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditFaction(this);\" NAME=CHARCLASS"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -594,7 +594,7 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("POWERS"))
 		{
-			final Vector theclasses=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
 			if(httpReq.isUrlParameter("POWER1"))
 			{
 				int num=1;
@@ -617,7 +617,7 @@ public class MobData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
+				final String theclass=theclasses.elementAt(i);
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=POWER"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -645,8 +645,8 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("PRICEFACTORS"))
 		{
-			final Vector theprices=new Vector();
-			final Vector themasks=new Vector();
+			final Vector<String> theprices=new Vector<String>();
+			final Vector<String> themasks=new Vector<String>();
 			int num=1;
 			if(!httpReq.isUrlParameter("IPRIC"+num))
 			{
@@ -685,8 +685,8 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=20%>Price Factor</TD><TD>Item type Mask</TD></TR>");
 			for(int i=0;i<theprices.size();i++)
 			{
-				final String PRICE=(String)theprices.elementAt(i);
-				final String MASK=(String)themasks.elementAt(i);
+				final String PRICE=theprices.elementAt(i);
+				final String MASK=themasks.elementAt(i);
 				str.append("<TR><TD>");
 				str.append("<INPUT TYPE=TEXT SIZE=5 NAME=IPRIC"+(i+1)+" VALUE=\""+PRICE+"\">");
 				str.append("</TD><TD>");
@@ -712,9 +712,9 @@ public class MobData extends StdWebMacro
 		str.append(priceFactors(E,httpReq,parms,borderSize));
 		if(parms.containsKey("SHOPINVENTORY"))
 		{
-			final Vector theclasses=new Vector();
-			final Vector theparms=new Vector();
-			final Vector theprices=new Vector();
+			final Vector<Environmental> theclasses=new Vector<Environmental>();
+			final Vector<String> theparms=new Vector<String>();
+			final Vector<String> theprices=new Vector<String>();
 			if(httpReq.isUrlParameter("SHP1"))
 			{
 				int num=1;
@@ -784,15 +784,15 @@ public class MobData extends StdWebMacro
 			}
 			else
 			{
-				final Vector itemClasses=new Vector();
-				final Vector mobClasses=new Vector();
+				final Vector<Item> itemClasses=new Vector<Item>();
+				final Vector<MOB> mobClasses=new Vector<MOB>();
 				for(final Iterator<Environmental> i=E.getShop().getStoreInventory();i.hasNext();)
 				{
 					final Environmental O=i.next();
 					if(O instanceof Item)
-						itemClasses.addElement(O);
+						itemClasses.addElement((Item)O);
 					if(O instanceof MOB)
-						mobClasses.addElement(O);
+						mobClasses.addElement((MOB)O);
 					if(O instanceof Physical)
 						CMLib.catalog().updateCatalogIntegrity((Physical)O);
 					theclasses.addElement(O);
@@ -805,9 +805,9 @@ public class MobData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final Environmental O=(Environmental)theclasses.elementAt(i);
-				final String theparm=(String)theparms.elementAt(i);
-				String theprice=(String)theprices.elementAt(i);
+				final Environmental O=theclasses.elementAt(i);
+				final String theparm=theparms.elementAt(i);
+				String theprice=theprices.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=SHP"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -886,9 +886,9 @@ public class MobData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ITEMLIST"))
 		{
-			final Vector classes=new Vector();
-			Vector containers=new Vector();
-			final Vector beingWorn=new Vector();
+			final Vector<Item> classes=new Vector<Item>();
+			Vector<Object> containers=new Vector<Object>();
+			final Vector<Boolean> beingWorn=new Vector<Boolean>();
 			List<Item> itemlist=null;
 			if(httpReq.isUrlParameter("ITEM1"))
 			{
@@ -898,7 +898,7 @@ public class MobData extends StdWebMacro
 
 				containers=new Vector();
 				itemlist=RoomData.getItemCache();
-				final Vector cstrings=new Vector();
+				final Vector<String> cstrings=new Vector<String>();
 				for(int i=1;;i++)
 				{
 					final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
@@ -916,7 +916,7 @@ public class MobData extends StdWebMacro
 				}
 				for(int i=0;i<cstrings.size();i++)
 				{
-					final String CONTAINER=(String)cstrings.elementAt(i);
+					final String CONTAINER=cstrings.elementAt(i);
 					Item C2=null;
 					if(CONTAINER.length()>0)
 						C2=(Item)CMLib.english().fetchEnvironmental(classes,CONTAINER,true);
@@ -941,9 +941,9 @@ public class MobData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<classes.size();i++)
 			{
-				final Item I=(Item)classes.elementAt(i);
+				final Item I=classes.elementAt(i);
 				final Item C=(classes.contains(containers.elementAt(i))?(Item)containers.elementAt(i):null);
-				final Boolean W=(Boolean)beingWorn.elementAt(i);
+				final Boolean W=beingWorn.elementAt(i);
 				str.append("<TR>");
 				str.append("<TD WIDTH=90%>");
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
@@ -956,12 +956,14 @@ public class MobData extends StdWebMacro
 				str.append("<SELECT NAME=ITEMCONT"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\" "+((C==null)?"SELECTED":"")+">In Inventory");
 				for(int i2=0;i2<classes.size();i2++)
+				{
 					if((classes.elementAt(i2) instanceof Container)&&(i2!=i))
 					{
 						final Container C2=(Container)classes.elementAt(i2);
 						final String name=CMLib.english().getContextName(classes,C2);
 						str.append("<OPTION "+((C2==C)?"SELECTED":"")+" VALUE=\""+name+"\">"+name+" ("+C2.ID()+")");
 					}
+				}
 				str.append("</SELECT>&nbsp;&nbsp; ");
 				str.append("<INPUT TYPE=CHECKBOX NAME=ITEMWORN"+(i+1)+" "+(W.booleanValue()?"CHECKED":"")+">Worn/Wielded");
 				str.append("</FONT></TD>");
@@ -1141,7 +1143,7 @@ public class MobData extends StdWebMacro
 						Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-MOBS");
 						if(sorted==null)
 						{
-							final Vector sortMe=new Vector();
+							final Vector<String> sortMe=new Vector<String>();
 							for(final Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 								sortMe.addElement(CMClass.classID(m.nextElement()));
 							sorted=(new TreeSet(sortMe)).toArray();
@@ -1150,6 +1152,7 @@ public class MobData extends StdWebMacro
 						if(parms.containsKey("CLASSESID"))
 							str.append(old);
 						else
+						{
 							for (final Object element : sorted)
 							{
 								final String cnam=(String)element;
@@ -1158,6 +1161,7 @@ public class MobData extends StdWebMacro
 									str.append(" SELECTED");
 								str.append(">"+cnam);
 							}
+						}
 					}
 					break;
 				case DISPLAYTEXT: // displaytext

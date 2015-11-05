@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_Trainer extends Prop_StatTrainer
 {
 	@Override public String ID() { return "Prop_Trainer"; }
@@ -63,8 +63,8 @@ public class Prop_Trainer extends Prop_StatTrainer
 		{
 			built=true;
 			CharClass C=null;
-			final Vector allowedClasses=new Vector();
-			final Vector allowedExpertises=new Vector();
+			final Vector<CharClass> allowedClasses=new Vector<CharClass>();
+			final Vector<ExpertiseLibrary.ExpertiseDefinition> allowedExpertises=new Vector<ExpertiseLibrary.ExpertiseDefinition>();
 			final Vector<String> V=CMParms.parse(text());
 			String s=null;
 			for(int v=0;v<V.size();v++)
@@ -78,9 +78,9 @@ public class Prop_Trainer extends Prop_StatTrainer
 					if((v>0)&&(V.elementAt(v-1).equalsIgnoreCase("ALL")))
 					{
 						final String baseClass=C.baseClass();
-						for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
-							C=(CharClass)c.nextElement();
+							C=c.nextElement();
 							if((C.baseClass().equalsIgnoreCase(baseClass))
 							&&(!allowedClasses.contains(C)))
 								allowedClasses.addElement(C);
@@ -97,21 +97,25 @@ public class Prop_Trainer extends Prop_StatTrainer
 				}
 			}
 			if(allowedClasses.size()==0)
-			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
-				allowedClasses.addElement(c.nextElement());
+			{
+				for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+					allowedClasses.addElement(c.nextElement());
+			}
 			if(allowedExpertises.size()==0)
-			for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
-				allowedExpertises.addElement(e.nextElement());
+			{
+				for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+					allowedExpertises.addElement(e.nextElement());
+			}
 
 
 			final MOB mob=(MOB)affected;
 			for(int c=0;c<allowedClasses.size();c++)
 			{
-				C=(CharClass)allowedClasses.elementAt(c);
+				C=allowedClasses.elementAt(c);
 				addCharClassIfNotFound(mob,C);
 			}
 			for(int e=0;e<allowedExpertises.size();e++)
-				mob.addExpertise(((ExpertiseLibrary.ExpertiseDefinition)allowedExpertises.elementAt(e)).ID);
+				mob.addExpertise(allowedExpertises.elementAt(e).ID);
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();

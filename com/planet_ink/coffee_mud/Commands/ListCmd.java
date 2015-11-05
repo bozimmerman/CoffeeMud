@@ -104,12 +104,12 @@ public class ListCmd extends StdCommand
 		return str;
 	}
 
-	public StringBuilder roomDetails(Session viewerS, Vector these, Room likeRoom)
+	public StringBuilder roomDetails(Session viewerS, Vector<Room> these, Room likeRoom)
 	{
 		return roomDetails(viewerS, these.elements(), likeRoom);
 	}
 
-	public StringBuilder roomDetails(Session viewerS, Enumeration these, Room likeRoom)
+	public StringBuilder roomDetails(Session viewerS, Enumeration<Room> these, Room likeRoom)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -120,9 +120,9 @@ public class ListCmd extends StdCommand
 		String thisOne=null;
 		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(31.0,viewerS);
 		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(43.0,viewerS);
-		for(final Enumeration r=these;r.hasMoreElements();)
+		for(final Enumeration<Room> r=these;r.hasMoreElements();)
 		{
-			thisThang=(Room)r.nextElement();
+			thisThang=r.nextElement();
 			thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
 				lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",COL_LEN1)+": "+CMStrings.limit(thisThang.displayText(),COL_LEN2)+"\n\r");
@@ -555,7 +555,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder roomResources(Session viewerS, Vector these, Room likeRoom)
+	public StringBuilder roomResources(Session viewerS, Vector<Room> these, Room likeRoom)
 	{
 		return roomResources(viewerS, these.elements(),likeRoom);
 	}
@@ -1448,7 +1448,7 @@ public class ListCmd extends StdCommand
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
 		if(shortList)
 		{
-			final Vector raceNames=new Vector();
+			final Vector<String> raceNames=new Vector<String>();
 			for(final Enumeration e=these;e.hasMoreElements();)
 			{
 				final Race R=(Race)e.nextElement();
@@ -1491,7 +1491,7 @@ public class ListCmd extends StdCommand
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
 		if(shortList)
 		{
-			final Vector classNames=new Vector();
+			final Vector<String> classNames=new Vector<String>();
 			for(final Enumeration e=these;e.hasMoreElements();)
 				classNames.add(((CharClass)e.nextElement()).ID());
 			lines.append(CMParms.toListString(classNames));
@@ -1518,7 +1518,7 @@ public class ListCmd extends StdCommand
 		if(!these.hasMoreElements())
 			return lines;
 		int column=0;
-		final Vector raceCats=new Vector();
+		final Vector<String> raceCats=new Vector<String>();
 		Race R=null;
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
 		for(final Enumeration e=these;e.hasMoreElements();)
@@ -3235,7 +3235,7 @@ public class ListCmd extends StdCommand
 		lines.append(CMStrings.padRight(L("Name"),17)+"| ");
 		lines.append(CMStrings.padRight(L("IP"),17)+"| ");
 		lines.append(CMStrings.padRight(L("Idle"),17)+"^.^N\n\r");
-		final Vector broken=new Vector();
+		final Vector<String[]> broken=new Vector<String[]>();
 		for(final Session S : CMLib.sessions().allIterable())
 		{
 			final String[] set=new String[6];
@@ -3255,7 +3255,7 @@ public class ListCmd extends StdCommand
 			set[5]=CMStrings.padRight(CMLib.english().returnTime(S.getIdleMillis(),0)+"",17);
 			broken.add(set);
 		}
-		Vector sorted=null;
+		Vector<String[]> sorted=null;
 		int sortNum=-1;
 		if(sort.length()>0)
 		{
@@ -3278,14 +3278,14 @@ public class ListCmd extends StdCommand
 			sorted=broken;
 		else
 		{
-			sorted=new Vector();
+			sorted=new Vector<String[]>();
 			while(broken.size()>0)
 			{
 				int selected=0;
 				for(int s=1;s<broken.size();s++)
 				{
-					final String[] S=(String[])broken.get(s);
-					if(S[sortNum].compareToIgnoreCase(((String[])broken.get(selected))[sortNum])<0)
+					final String[] S=broken.get(s);
+					if(S[sortNum].compareToIgnoreCase(broken.get(selected)[sortNum])<0)
 					   selected=s;
 				}
 				sorted.add(broken.get(selected));
@@ -3294,7 +3294,7 @@ public class ListCmd extends StdCommand
 		}
 		for(int s=0;s<sorted.size();s++)
 		{
-			final String[] S=(String[])sorted.get(s);
+			final String[] S=sorted.get(s);
 			for (final String element : S)
 				lines.append(element);
 			lines.append("\n\r");
@@ -3466,7 +3466,7 @@ public class ListCmd extends StdCommand
 		}
 		else
 		{
-			final Vector origCommands=new XVector(commands);
+			final Vector<String> origCommands=new XVector<String>(commands);
 			for(int c=commands.size()-2;c>=0;c--)
 			{
 				if(commands.get(c).equalsIgnoreCase("for"))

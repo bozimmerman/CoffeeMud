@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -59,11 +58,11 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 		noSneak=false;
 		maskS=txt;
 		message="";
-		final Vector parms=CMParms.parse(txt);
+		final Vector<String> parms=CMParms.parse(txt);
 		String s;
-		for(final Enumeration p=parms.elements();p.hasMoreElements();)
+		for(final Enumeration<String> p=parms.elements();p.hasMoreElements();)
 		{
-			s=(String)p.nextElement();
+			s=p.nextElement();
 			if("NOFOLLOW".startsWith(s.toUpperCase()))
 			{
 				maskS=CMStrings.replaceFirst(maskS, s, "");
@@ -112,13 +111,13 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 			&&(!CMLib.flags().isFalling(msg.source()))
 			&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 			{
-				final HashSet H=new HashSet();
+				final HashSet<MOB> H=new HashSet<MOB>();
 				if(noFollow)
 					H.add(msg.source());
 				else
 				{
 					msg.source().getGroupMembers(H);
-					final HashSet H2=(HashSet)H.clone();
+					final HashSet<MOB> H2=(HashSet)H.clone();
 					for(final Iterator e=H2.iterator();e.hasNext();)
 						((MOB)e.next()).getRideBuddies(H);
 				}
@@ -139,7 +138,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 				case CMMsg.TYP_SLEEP:
 				case CMMsg.TYP_MOUNT:
 					{
-						HashSet H=new HashSet();
+						HashSet<MOB> H=new HashSet<MOB>();
 						if(noFollow)
 							H.add(msg.source());
 						else

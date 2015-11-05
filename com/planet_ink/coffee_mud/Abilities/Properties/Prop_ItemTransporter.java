@@ -224,7 +224,7 @@ public class Prop_ItemTransporter extends Property
 				if((container.owner()!=null)&&(container.owner() instanceof MOB))
 					mobMover=(MOB)container.owner();
 			}
-			final Vector itemsToMove=new Vector();
+			final Vector<Item> itemsToMove=new Vector<Item>();
 			if(roomMover!=null)
 			{
 				for(int i=0;i<roomMover.numItems();i++)
@@ -237,7 +237,7 @@ public class Prop_ItemTransporter extends Property
 					   itemsToMove.addElement(item);
 				}
 				for(int i=0;i<itemsToMove.size();i++)
-					roomMover.delItem((Item)itemsToMove.elementAt(i));
+					roomMover.delItem(itemsToMove.elementAt(i));
 			}
 			else
 			if(mobMover!=null)
@@ -247,30 +247,33 @@ public class Prop_ItemTransporter extends Property
 				{
 					final Item item=mobMover.getItem(i);
 					if((item!=null)
-					   &&(item!=container)
-					   &&(item.amWearingAt(Wearable.IN_INVENTORY))
-					   &&((item.container()==container)||(ultimateParent(item)==container)))
-					   itemsToMove.addElement(item);
+					&&(item!=container)
+					&&(item.amWearingAt(Wearable.IN_INVENTORY))
+					&&((item.container()==container)||(ultimateParent(item)==container)))
+						itemsToMove.addElement(item);
 				}
 				for(int i=oldNum;i<itemsToMove.size();i++)
-					mobMover.delItem((Item)itemsToMove.elementAt(i));
+					mobMover.delItem(itemsToMove.elementAt(i));
 			}
 			if(itemsToMove.size()>0)
 			{
 				mobDestination=null;
 				roomDestination=null;
 				if(room!=null)
+				{
 					for(int i=0;i<itemsToMove.size();i++)
 					{
-						final Item item=(Item)itemsToMove.elementAt(i);
+						final Item item=itemsToMove.elementAt(i);
 						if((item.container()==null)||(item.container()==container))
 							item.setContainer(nextDestination);
 						room.addItem(item,ItemPossessor.Expire.Player_Drop);
 					}
+				}
 				if(mob!=null)
+				{
 					for(int i=0;i<itemsToMove.size();i++)
 					{
-						final Item item=(Item)itemsToMove.elementAt(i);
+						final Item item=itemsToMove.elementAt(i);
 						if((item.container()==null)||(item.container()==container))
 							item.setContainer(nextDestination);
 						if(mob instanceof ShopKeeper)
@@ -278,6 +281,7 @@ public class Prop_ItemTransporter extends Property
 						else
 							mob.addItem(item);
 					}
+				}
 				if(room!=null)
 					room.recoverRoomStats();
 				if(mob!=null)

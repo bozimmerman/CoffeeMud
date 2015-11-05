@@ -39,7 +39,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderPlayers extends GrinderMobs
 {
 	public final static String[] BASICS={
@@ -358,7 +357,7 @@ public class GrinderPlayers extends GrinderMobs
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		final Vector allitems=new Vector();
+		final Vector<Item> allitems=new Vector<Item>();
 		while(M.numItems()>0)
 		{
 			final Item I=M.getItem(0);

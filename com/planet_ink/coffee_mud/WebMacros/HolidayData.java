@@ -124,7 +124,7 @@ public class HolidayData extends StdWebMacro
 				{
 					// any, all, "name" "name" "name" "name"
 					String old=httpReq.getUrlParameter("AREAGROUP");
-					Vector areaNames=null;
+					Vector<String> areaNames=null;
 					if(old==null)
 					{
 						final int dex=settings.indexOf("AREAGROUP");
@@ -140,7 +140,7 @@ public class HolidayData extends StdWebMacro
 						String id="";
 						for(int i=0;httpReq.isUrlParameter("AREAGROUP"+id);id=Integer.toString(++i))
 							areaCodes.add(httpReq.getUrlParameter("AREAGROUP"+id));
-						areaNames=new Vector();
+						areaNames=new Vector<String>();
 						if(areaCodes.contains("AREAGROUP0"))
 							areaNames.add("ALL");
 						else
@@ -152,6 +152,7 @@ public class HolidayData extends StdWebMacro
 							boolean reallyAll=true;
 
 							for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
+							{
 								if(areaCodes.contains("AREAGROUP"+areaNum))
 									areaNames.add(((Area)e.nextElement()).Name().toUpperCase());
 								else
@@ -159,6 +160,7 @@ public class HolidayData extends StdWebMacro
 									e.nextElement();
 									reallyAll=false;
 								}
+							}
 							if(reallyAll)
 							{
 								areaCodes.clear();
@@ -203,15 +205,15 @@ public class HolidayData extends StdWebMacro
 					/*else
 					if(old.length()>0)
 					{
-						Vector V=getMoodList();
+						Vector<String> V=getMoodList();
 						if(!V.contains(old.toUpperCase().trim()))
 							old="";
 					}*/
-					final Vector V=getMoodList();
+					final Vector<String> V=getMoodList();
 					str.append("<OPTION VALUE=\"\" "+((old.trim().length()==0)?" SELECTED":"")+">None");
 					for(int v=0;v<V.size();v++)
 					{
-						final String s=(String)V.elementAt(v);
+						final String s=V.elementAt(v);
 						str.append("<OPTION VALUE=\""+s+"\" "+((old.trim().equalsIgnoreCase(s))?" SELECTED":"")+">"+s);
 					}
 					str.append(old+", ");
@@ -352,8 +354,8 @@ public class HolidayData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
 		{
-			final Vector theclasses=new Vector();
-			final Vector theparms=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
+			final Vector<String> theparms=new Vector<String>();
 			if(httpReq.isUrlParameter("BEHAV1"))
 			{
 				int num=1;
@@ -390,8 +392,8 @@ public class HolidayData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
-				final String theparm=(String)theparms.elementAt(i);
+				final String theclass=theclasses.elementAt(i);
+				final String theparm=theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=30%>");
 				str.append("<SELECT ONCHANGE=\"EditBehavior(this);\" NAME=BEHAV"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -406,13 +408,13 @@ public class HolidayData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
 
 			Object[] sortedB=null;
-			final Vector sortMeB=new Vector();
+			final Vector<String> sortMeB=new Vector<String>();
 			for(final Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 			{
 				final Behavior B=(Behavior)b.nextElement();
 				sortMeB.addElement(CMClass.classID(B));
 			}
-			sortedB=(new TreeSet(sortMeB)).toArray();
+			sortedB=(new TreeSet<String>(sortMeB)).toArray();
 			for (final Object element : sortedB)
 			{
 				final String cnam=(String)element;
@@ -432,8 +434,8 @@ public class HolidayData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("AFFECTS"))
 		{
-			final Vector theclasses=new Vector();
-			final Vector theparms=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
+			final Vector<String> theparms=new Vector<String>();
 			if(httpReq.isUrlParameter("AFFECT1"))
 			{
 				int num=1;
@@ -468,8 +470,8 @@ public class HolidayData extends StdWebMacro
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
-				final String theparm=(String)theparms.elementAt(i);
+				final String theclass=theclasses.elementAt(i);
+				final String theparm=theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=30%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=AFFECT"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
@@ -502,8 +504,8 @@ public class HolidayData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("PRICEFACTORS"))
 		{
-			final Vector theclasses=new Vector();
-			final Vector theparms=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
+			final Vector<String> theparms=new Vector<String>();
 			if(httpReq.isUrlParameter("PRCFAC1"))
 			{
 				int num=1;
@@ -563,8 +565,8 @@ public class HolidayData extends StdWebMacro
 			}
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
-				final String theparm=(String)theparms.elementAt(i);
+				final String theclass=theclasses.elementAt(i);
+				final String theparm=theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=25%>");
 				str.append("<INPUT TYPE=TEXT SIZE=5 NAME=PRCFAC"+(i+1)+" VALUE=\""+theclass+"\">");
 				str.append("</TD><TD WIDTH=75%>");
@@ -701,9 +703,9 @@ public class HolidayData extends StdWebMacro
 		return str;
 	}
 
-	protected Vector getMoodList()
+	protected Vector<String> getMoodList()
 	{
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>();
 		final Ability A=CMClass.getAbility("Mood");
 		if(A==null)
 			return V;

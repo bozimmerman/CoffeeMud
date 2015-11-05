@@ -77,7 +77,7 @@ public final class IMC2Driver extends Thread {
 	call_out c_thread=null;
 	call_in c_thread2=null;
 
-	Hashtable muds = new Hashtable();
+	Hashtable<String,REMOTEINFO> muds = new Hashtable();
 	Hashtable channels = new Hashtable();
 	public Hashtable chanhist = new Hashtable();
 	Hashtable replies = new Hashtable();

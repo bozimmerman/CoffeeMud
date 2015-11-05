@@ -80,7 +80,7 @@ public class MOBHunter extends ActiveTicker
 	protected MOB findPrey(MOB mob)
 	{
 		MOB prey=null;
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
@@ -91,7 +91,7 @@ public class MOBHunter extends ActiveTicker
 		CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,radius,null);
 		for(int r=0;r<rooms.size();r++)
 		{
-			final Room R=(Room)rooms.elementAt(r);
+			final Room R=rooms.elementAt(r);
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				final MOB M=R.fetchInhabitant(i);

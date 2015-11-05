@@ -131,7 +131,7 @@ public abstract class Interactive implements ServerUser {
 	private PrintStream 	output_stream;
 	private String  		password;
 	private String  		real_name;
-	private final Vector  		redirect;
+	private final Vector  	redirect;
 	private Socket  		socket;
 
 	/**

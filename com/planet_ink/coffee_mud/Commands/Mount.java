@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Mount extends StdCommand
 {
 	public Mount(){}
@@ -51,18 +51,18 @@ public class Mount extends StdCommand
 		}
 		String cmd=commands.remove(0).toString();
 		Environmental recipient=null;
-		final Vector possRecipients=new Vector();
+		final Vector<Rideable> possRecipients=new Vector<Rideable>();
 		for(int m=0;m<mob.location().numInhabitants();m++)
 		{
 			final MOB M=mob.location().fetchInhabitant(m);
 			if((M!=null)&&(M instanceof Rideable))
-				possRecipients.add(M);
+				possRecipients.add((Rideable)M);
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
 			final Item I=mob.location().getItem(i);
 			if((I!=null)&&(I instanceof Rideable))
-				possRecipients.add(I);
+				possRecipients.add((Rideable)I);
 		}
 		Rider RI=null;
 		if(commands.size()>1)

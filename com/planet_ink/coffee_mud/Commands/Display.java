@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Display extends StdCommand
 {
 	public Display(){}
@@ -73,7 +73,7 @@ public class Display extends StdCommand
 		String thingToGive=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
-		final Vector V=new Vector();
+		final Vector<Environmental> V=new Vector<Environmental>();
 		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
@@ -106,7 +106,7 @@ public class Display extends StdCommand
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			final Environmental giveThis=(Environmental)V.get(i);
+			final Environmental giveThis=V.get(i);
 			final CMMsg newMsg=CMClass.getMsg(recipient,giveThis,mob,CMMsg.MSG_LOOK,L("<O-NAME> show(s) <T-NAME> to <S-NAMESELF>."));
 			if(mob.location().okMessage(recipient,newMsg))
 			{

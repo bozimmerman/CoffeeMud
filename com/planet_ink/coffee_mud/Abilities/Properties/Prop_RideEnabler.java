@@ -40,7 +40,7 @@ public class Prop_RideEnabler extends Prop_HaveEnabler
 	@Override public String ID() { return "Prop_RideEnabler"; }
 	@Override public String name(){ return "Granting skills when ridden";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	protected Vector lastRiders=new Vector();
+	protected Vector<Rider> lastRiders=new Vector<Rider>();
 
 	@Override
 	public String accountForYourself()
@@ -52,7 +52,7 @@ public class Prop_RideEnabler extends Prop_HaveEnabler
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		lastRiders=new Vector();
+		lastRiders=new Vector<Rider>();
 	}
 
 	@Override

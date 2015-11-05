@@ -211,14 +211,14 @@ public interface Law extends CMCommon
 	 * Combined with otherBits, this method returns the
 	 * definition of "miscellaneous" crimes involving emotes
 	 * and similar random phenomenon.  This method in particular
-	 * returns a Vector of String words and phrases which, when encountered
+	 * returns a list of String words and phrases which, when encountered
 	 * in a player or mobs activity, denote the commission of an
 	 * "other" crime.  This Vectors entries match one for one with
-	 * the Vector returned by otherBits()
+	 * the list returned by otherBits()
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#otherBits()
 	 *
-	 * @return a Vector of words and phrases
+	 * @return a list of words and phrases
 	 */
 	public List<List<String>> otherCrimes();
 
@@ -226,10 +226,10 @@ public interface Law extends CMCommon
 	 * Combined with otherCrimes, this method returns the
 	 * definition of "miscellaneous" crimes involving emotes
 	 * and similar random phenomenon.  This method in particular
-	 * returns a Vector of String[] array objects definitioning
+	 * returns a list of String[] array objects definitioning
 	 * the various limitations, flags, and consequences of committing
 	 * each "other" crime.  This Vectors entries match one for one with
-	 * the Vector returned by otherBits()
+	 * the list returned by otherBits()
 	 *
 	 * The entries in each String[] array are indexed by the
 	 * constants BIT_*
@@ -237,23 +237,23 @@ public interface Law extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#BIT_CRIMENAME
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#otherBits()
 	 *
-	 * @return a Vector of String[] array bits of other crime info
+	 * @return a list of String[] array bits of other crime info
 	 */
 	public List<String[]> otherBits();
 
 	/**
 	 * Combined with bannedBits, this method returns the
 	 * definition of "illegal substance carrying" crimes.
-	 * This method in particular returns a Vector of raw
+	 * This method in particular returns a list of raw
 	 * resource names or item names which, when encountered
 	 * in a player or mobs activity, denote the commission of an
 	 * "substance" crime.  This Vectors entries match one for one with
-	 * the Vector returned by bannedBits()
+	 * the list returned by bannedBits()
 	 *
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#bannedBits()
 	 *
-	 * @return a Vector of item or resource names
+	 * @return a list of item or resource names
 	 */
 	public List<List<String>> bannedSubstances();
 
@@ -261,10 +261,10 @@ public interface Law extends CMCommon
 	 * Combined with bannedSubstances, this method returns the
 	 * definition of "substance" crimes involving manipulating
 	 * an illegal substance in public.  This method in particular
-	 * returns a Vector of String[] array objects definitioning
+	 * returns a list of String[] array objects definitioning
 	 * the various limitations, flags, and consequences of committing
 	 * each "substance" crime.  This Vectors entries match one for one with
-	 * the Vector returned by bannedSubstances()
+	 * the list returned by bannedSubstances()
 	 *
 	 * The entries in each String[] array are indexed by the
 	 * constants BIT_*
@@ -272,14 +272,14 @@ public interface Law extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#BIT_CRIMENAME
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#bannedSubstances()
 	 *
-	 * @return a Vector of String[] array bits of substance crime info
+	 * @return a list of String[] array bits of substance crime info
 	 */
 	public List<String[]> bannedBits();
 
 	/**
 	 * Method for accessing the crimes, flags, and consequences
 	 * involving the use of spells, chants, skills, etc.  The
-	 * returned Hashtable is indexed by the Ability ID of the
+	 * returned map is indexed by the Ability ID of the
 	 * potentially banned skill.  The associated hashed element
 	 * is a String[] array of various flags and information about
 	 * the consequences of the act.
@@ -290,7 +290,7 @@ public interface Law extends CMCommon
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#BIT_CRIMENAME
 	 *
-	 * @return a Hashtable of String[] array bits of ability crime info
+	 * @return a map of String[] array bits of ability crime info
 	 */
 	public java.util.Map<String,String[]> abilityCrimes();
 
@@ -307,12 +307,12 @@ public interface Law extends CMCommon
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#BIT_CRIMENAME
 	 *
-	 * @return a Hashtable of String[] array bits of basic crime info
+	 * @return a map of String[] array bits of basic crime info
 	 */
 	public Map<String,String[]> basicCrimes();
 
 	/**
-	 * Returns a Hashtable of various catch-all properties and variables
+	 * Returns a map of various catch-all properties and variables
 	 * associated with the tax laws.  The Hashtable keys are all string
 	 * IDs denoting the property, while the associated element is an object
 	 * whose type differs by key.
@@ -324,63 +324,63 @@ public interface Law extends CMCommon
 	 *  		- safe room.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#BIT_CRIMENAME
 	 *
-	 * @return a Hashtable of tax law related property information
+	 * @return a map of tax law related property information
 	 */
 	public Map<String, Object> taxLaws();
 
 	/**
-	 * A Vector of strings denoting random things an officer will
+	 * A list of strings denoting random things an officer will
 	 * say while taking an arrested criminal to the judge.
 	 *
-	 * @return a vector of cute sayings.
+	 * @return a list of cute sayings.
 	 */
 	public List<String> chitChat();
 
 	/**
-	 * A Vector of strings denoting random things an officer will
+	 * A list of strings denoting random things an officer will
 	 * say while taking an arrested criminal to the jail.
 	 *
-	 * @return a vector of cute sayings.
+	 * @return a list of cute sayings.
 	 */
 	public List<String> chitChat2();
 
 	/**
-	 * A Vector of strings denoting random things an officer will
+	 * A list of strings denoting random things an officer will
 	 * say while taking an arrested criminal to the detention center.
 	 *
-	 * @return a vector of cute sayings.
+	 * @return a list of cute sayings.
 	 */
 	public List<String> chitChat3();
 
 	/**
-	 * A Vector of strings denoting which rooms are considered jails.
+	 * A list of strings denoting which rooms are considered jails.
 	 * They better have a locked door somewhere!
 	 *
-	 * @return a Vector of strings denoting jail rooms
+	 * @return a list of strings denoting jail rooms
 	 */
 	public List<String> jailRooms();
 
 	/**
-	 * A Vector of strings denoting which rooms are considered release
+	 * A list of strings denoting which rooms are considered release
 	 * rooms for after a prisoner has served jail time.
 	 *
-	 * @return a Vector of strings denoting release rooms
+	 * @return a list of strings denoting release rooms
 	 */
 	public List<String> releaseRooms();
 
 	/**
-	 * A Vector a strings denoting which mobs are considered officers
+	 * A list a strings denoting which mobs are considered officers
 	 * of the law in the legal area.
 	 *
-	 * @return a vector of strings denoting the names of officers
+	 * @return a list of strings denoting the names of officers
 	 */
 	public List<String> officerNames();
 
 	/**
-	 * A Vector a strings denoting which mobs are considered judges
+	 * A list a strings denoting which mobs are considered judges
 	 * of the law in the legal area.
 	 *
-	 * @return a vector of strings denoting the names of judges
+	 * @return a list of strings denoting the names of judges
 	 */
 	public List<String> judgeNames();
 

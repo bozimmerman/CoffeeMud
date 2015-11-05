@@ -148,34 +148,34 @@ public interface Poll extends CMCommon
 	public void setExpiration(long time);
 
 	/**
-	 * Returns a Vector of PollOption objects denoting the poll choices.
+	 * Returns a list of PollOption objects denoting the poll choices.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#setOptions(List)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll.PollOption
-	 * @return a Vector of PollOption objects denoting the poll choices.
+	 * @return a list of PollOption objects denoting the poll choices.
 	 */
 	public List<PollOption> getOptions();
 
 	/**
-	 * Sets a Vector of PollOption objects denoting the poll choices.
+	 * Sets a list of PollOption objects denoting the poll choices.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#getOptions()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll.PollOption
-	 * @param V a Vector of PollOption objects denoting the poll choices.
+	 * @param V a list of PollOption objects denoting the poll choices.
 	 */
 	public void setOptions(List<PollOption> V);
 
 	/**
-	 * Returns a Vector of PollResult objects renoting all poll votes.
+	 * Returns a list of PollResult objects renoting all poll votes.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#getResults()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll.PollResult
-	 * @return a Vector of PollResult objects renoting all poll votes.
+	 * @return a list of PollResult objects renoting all poll votes.
 	 */
 	public List<PollResult> getResults();
 
 	/**
-	 * Sets a Vector of PollResult objects renoting all poll votes.
+	 * Sets a list of PollResult objects renoting all poll votes.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#getResults()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll.PollResult
-	 * @param V a Vector of PollResult objects renoting all poll votes.
+	 * @param V a list of PollResult objects renoting all poll votes.
 	 */
 	public void setResults(List<PollResult> V);
 

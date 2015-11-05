@@ -180,8 +180,8 @@ public class Mood extends StdAbility
 				return R.fetchInhabitant(r);
 		if((lastOne instanceof MOB)&&(R.isInhabitant((MOB)lastOne)))
 			return (MOB)lastOne;
-		final Vector players=new Vector();
-		final Vector mobs=new Vector();
+		final Vector<MOB> players=new Vector<MOB>();
+		final Vector<MOB> mobs=new Vector<MOB>();
 		MOB M=null;
 		for(int r=0;r<R.numInhabitants();r++)
 		{
@@ -196,11 +196,11 @@ public class Mood extends StdAbility
 			}
 		}
 		if(players.size()==1)
-			return (MOB)players.firstElement();
+			return players.firstElement();
 		if(players.size()>1)
 			return null;
 		if(mobs.size()==1)
-			return (MOB)mobs.firstElement();
+			return mobs.firstElement();
 		return null;
 	}
 

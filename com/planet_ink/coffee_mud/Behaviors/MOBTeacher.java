@@ -201,7 +201,7 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.baseCharStats().setStat(CharStats.STAT_WISDOM,19);
 
 		int pct=100;
-		Vector V=null;
+		Vector<String> V=null;
 		A=CMClass.getAbility(getParms());
 		if(A!=null)
 		{
@@ -212,58 +212,62 @@ public class MOBTeacher extends CombatAbilities
 			V=CMParms.parse(getParms());
 
 		if(V!=null)
-		for(int v=V.size()-1;v>=0;v--)
 		{
-			final String s=(String)V.elementAt(v);
-			if(s.equalsIgnoreCase("NOCOMMON"))
+			for(int v=V.size()-1;v>=0;v--)
 			{
-				noCommon=true;
-				V.removeElementAt(v);
-			}
-			if(s.equalsIgnoreCase("NOEXPS")||s.equalsIgnoreCase("NOEXP"))
-			{
-				noExpertises=true;
-				V.removeElementAt(v);
-			}
-			if(s.equalsIgnoreCase("NOHLEXPS")||s.equalsIgnoreCase("NOHLEXP"))
-			{
-				noHLExpertises=true;
-				V.removeElementAt(v);
+				final String s=V.elementAt(v);
+				if(s.equalsIgnoreCase("NOCOMMON"))
+				{
+					noCommon=true;
+					V.removeElementAt(v);
+				}
+				if(s.equalsIgnoreCase("NOEXPS")||s.equalsIgnoreCase("NOEXP"))
+				{
+					noExpertises=true;
+					V.removeElementAt(v);
+				}
+				if(s.equalsIgnoreCase("NOHLEXPS")||s.equalsIgnoreCase("NOHLEXP"))
+				{
+					noHLExpertises=true;
+					V.removeElementAt(v);
+				}
 			}
 		}
 
 		if(V!=null)
-		for(int v=0;v<V.size();v++)
 		{
-			final String s=(String)V.elementAt(v);
-			if(s.endsWith("%"))
+			for(int v=0;v<V.size();v++)
 			{
-				pct=CMath.s_int(s.substring(0,s.length()-1));
-				continue;
-			}
-
-			A=CMClass.getAbility(s);
-			final CharClass C=CMClass.findCharClass(s);
-			if((C!=null)&&(C.availabilityCode()!=0))
-			{
-				teachEverything=false;
-				setTheCharClass(myMOB,C);
-				classAbles(myMOB,myAbles,pct);
-				myMOB.recoverCharStats();
-			}
-			else
-			if(A!=null)
-			{
-				addAbility(myMOB,A,pct,myAbles);
-				teachEverything=false;
-			}
-			else
-			{
-				final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(s);
-				if(def!=null)
+				final String s=V.elementAt(v);
+				if(s.endsWith("%"))
 				{
-					myMOB.addExpertise(def.ID);
+					pct=CMath.s_int(s.substring(0,s.length()-1));
+					continue;
+				}
+	
+				A=CMClass.getAbility(s);
+				final CharClass C=CMClass.findCharClass(s);
+				if((C!=null)&&(C.availabilityCode()!=0))
+				{
 					teachEverything=false;
+					setTheCharClass(myMOB,C);
+					classAbles(myMOB,myAbles,pct);
+					myMOB.recoverCharStats();
+				}
+				else
+				if(A!=null)
+				{
+					addAbility(myMOB,A,pct,myAbles);
+					teachEverything=false;
+				}
+				else
+				{
+					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(s);
+					if(def!=null)
+					{
+						myMOB.addExpertise(def.ID);
+						teachEverything=false;
+					}
 				}
 			}
 		}

@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Merchant extends CommonSkill implements ShopKeeper
 {
 	@Override public String ID() { return "Merchant"; }
@@ -442,7 +441,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			case CMMsg.TYP_LIST:
 			{
 				super.executeMsg(myHost,msg);
-				final Vector inventory=new XVector(getShop().getStoreInventory());
+				final Vector<Environmental> inventory=new XVector<Environmental>(getShop().getStoreInventory());
 				final String forMask=CMLib.coffeeShops().getListForMask(msg.targetMessage());
 				final String s=CMLib.coffeeShops().getListInventory(merchantM,mob,inventory,0,this,forMask);
 				if(s.length()>0)
@@ -548,7 +547,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 
 		String itemName=CMParms.combine(commands,0);
-		final Vector V=new Vector();
+		final Vector<Item> V=new Vector<Item>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(itemName.toUpperCase().startsWith("ALL.")){ allFlag=true; itemName="ALL "+itemName.substring(4);}
 		if(itemName.toUpperCase().endsWith(".ALL")){ allFlag=true; itemName="ALL "+itemName.substring(0,itemName.length()-4);}
@@ -598,7 +597,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			mob.location().send(mob,msg);
 			for(int i=0;i<V.size();i++)
 			{
-				final Item I=(Item)V.elementAt(i);
+				final Item I=V.elementAt(i);
 				if(val<=0)
 					getShop().addStoreInventory(I);
 				else

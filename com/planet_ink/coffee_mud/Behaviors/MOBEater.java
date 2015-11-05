@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class MOBEater extends ActiveTicker
 {
 	@Override public String ID(){return "MOBEater";}
@@ -113,7 +113,7 @@ public class MOBEater extends ActiveTicker
 
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach
-		final Vector these=new Vector();
+		final Vector<Physical> these=new Vector<Physical>();
 		for (int x=0;x<stomachR.numInhabitants();x++)
 		{
 			// ===== get the tasty morsels

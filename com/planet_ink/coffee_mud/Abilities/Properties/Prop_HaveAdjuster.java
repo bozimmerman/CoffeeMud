@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 {
 	@Override public String ID() { return "Prop_HaveAdjuster"; }
@@ -55,7 +55,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_GET;
 	}
 
-	public boolean addIfPlussed(String newText, String parm, int parmCode, Vector addTo)
+	public boolean addIfPlussed(String newText, String parm, int parmCode, Vector<Object> addTo)
 	{
 		final int val=CMParms.getParmPlus(newText,parm);
 		if(val==0)
@@ -65,7 +65,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		return true;
 	}
 
-	public Object[] makeObjectArray(Vector V)
+	public Object[] makeObjectArray(Vector<? extends Object> V)
 	{
 		if(V==null)
 			return null;
@@ -89,7 +89,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			mask=MaskingLibrary.CompiledZapperMask.EMPTY();
 		else
 			mask=CMLib.masking().getPreCompiledMask(parameters[1]);
-		final Vector phyStatsV=new Vector();
+		final Vector<Object> phyStatsV=new Vector<Object>();
 		addIfPlussed(parameters[0],"abi",PhyStats.STAT_ABILITY,phyStatsV);
 		addIfPlussed(parameters[0],"arm",PhyStats.STAT_ARMOR,phyStatsV);
 		addIfPlussed(parameters[0],"att",PhyStats.STAT_ATTACK,phyStatsV);
@@ -107,7 +107,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		addIfPlussed(parameters[0],"wei",PhyStats.STAT_WEIGHT,phyStatsV);
 		addIfPlussed(parameters[0],"hei",PhyStats.STAT_HEIGHT,phyStatsV);
 
-		final Vector charStatsV=new Vector();
+		final Vector<Object> charStatsV=new Vector<Object>();
 		String val=CMParms.getParmStr(parameters[0],"gen","").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 		{
@@ -138,10 +138,12 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		}
 		final int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
 		for(final int c : CharStats.CODES.SAVING_THROWS())
+		{
 			if(CMMSGMAP[c]!=-1)
 				addIfPlussed(parameters[0],"save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3),c,charStatsV);
+		}
 
-		final Vector charStateV=new Vector();
+		final Vector<Object> charStateV=new Vector<Object>();
 		addIfPlussed(parameters[0],"hit",CharState.STAT_HITPOINTS,charStateV);
 		addIfPlussed(parameters[0],"hun",CharState.STAT_HUNGER,charStateV);
 		addIfPlussed(parameters[0],"man",CharState.STAT_MANA,charStateV);
@@ -158,24 +160,47 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		if(changes==null)
 			return;
 		for(int c=0;c<changes.length;c+=2)
-		switch(((Integer)changes[c]).intValue())
 		{
-		case PhyStats.STAT_ABILITY: phyStats.setAbility(phyStats.ability()+((Integer)changes[c+1]).intValue()); break;
-		case PhyStats.STAT_ARMOR: phyStats.setArmor(phyStats.armor()+((Integer)changes[c+1]).intValue()); break;
-		case PhyStats.STAT_ATTACK: phyStats.setAttackAdjustment(phyStats.attackAdjustment()+((Integer)changes[c+1]).intValue()); break;
-		case PhyStats.STAT_DAMAGE: phyStats.setDamage(phyStats.damage()+((Integer)changes[c+1]).intValue()); break;
-		case PhyStats.STAT_DISPOSITION: phyStats.setDisposition(phyStats.disposition()|((Integer)changes[c+1]).intValue()); break;
-		case PhyStats.STAT_LEVEL:  {
-			phyStats.setLevel(phyStats.level()+((Integer)changes[c+1]).intValue());
-			if(phyStats.level()<0)
-				phyStats.setLevel(0);
-			break;
-		}
-		case PhyStats.STAT_REJUV: phyStats.setRejuv(phyStats.rejuv()+((Integer)changes[c+1]).intValue()); break;
-		case PhyStats.STAT_SENSES: phyStats.setSensesMask(phyStats.sensesMask()|((Integer)changes[c+1]).intValue()); break;
-		case PhyStats.STAT_WEIGHT: phyStats.setWeight(phyStats.weight()+((Integer)changes[c+1]).intValue()); break;
-		case PhyStats.STAT_HEIGHT: phyStats.setHeight(phyStats.height()+((Integer)changes[c+1]).intValue()); break;
-		case PhyStats.NUM_STATS: phyStats.setSpeed(phyStats.speed()+((Double)changes[c+1]).doubleValue()); break;
+			switch(((Integer)changes[c]).intValue())
+			{
+			case PhyStats.STAT_ABILITY:
+				phyStats.setAbility(phyStats.ability() + ((Integer) changes[c + 1]).intValue());
+				break;
+			case PhyStats.STAT_ARMOR:
+				phyStats.setArmor(phyStats.armor() + ((Integer) changes[c + 1]).intValue());
+				break;
+			case PhyStats.STAT_ATTACK:
+				phyStats.setAttackAdjustment(phyStats.attackAdjustment() + ((Integer) changes[c + 1]).intValue());
+				break;
+			case PhyStats.STAT_DAMAGE:
+				phyStats.setDamage(phyStats.damage() + ((Integer) changes[c + 1]).intValue());
+				break;
+			case PhyStats.STAT_DISPOSITION:
+				phyStats.setDisposition(phyStats.disposition() | ((Integer) changes[c + 1]).intValue());
+				break;
+			case PhyStats.STAT_LEVEL:
+			{
+				phyStats.setLevel(phyStats.level() + ((Integer) changes[c + 1]).intValue());
+				if (phyStats.level() < 0)
+					phyStats.setLevel(0);
+				break;
+			}
+			case PhyStats.STAT_REJUV:
+				phyStats.setRejuv(phyStats.rejuv() + ((Integer) changes[c + 1]).intValue());
+				break;
+			case PhyStats.STAT_SENSES:
+				phyStats.setSensesMask(phyStats.sensesMask() | ((Integer) changes[c + 1]).intValue());
+				break;
+			case PhyStats.STAT_WEIGHT:
+				phyStats.setWeight(phyStats.weight() + ((Integer) changes[c + 1]).intValue());
+				break;
+			case PhyStats.STAT_HEIGHT:
+				phyStats.setHeight(phyStats.height() + ((Integer) changes[c + 1]).intValue());
+				break;
+			case PhyStats.NUM_STATS:
+				phyStats.setSpeed(phyStats.speed() + ((Double) changes[c + 1]).doubleValue());
+				break;
+			}
 		}
 	}
 
@@ -221,11 +246,13 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				charStats.setStat(((Integer)changes[i]).intValue(),charStats.getStat(((Integer)changes[i]).intValue())+((Integer)changes[i+1]).intValue());
 			else
 			if(changes[i] instanceof Character)
-			switch(((Character)changes[i]).charValue())
 			{
-			case 'G': charStats.setStat(CharStats.STAT_GENDER,((Character)changes[i+1]).charValue()); break;
-			case 'C': charStats.setCurrentClass((CharClass)changes[i+1]); break;
-			case 'R': charStats.setMyRace((Race)changes[i+1]); break;
+				switch(((Character)changes[i]).charValue())
+				{
+				case 'G': charStats.setStat(CharStats.STAT_GENDER,((Character)changes[i+1]).charValue()); break;
+				case 'C': charStats.setCurrentClass((CharClass)changes[i+1]); break;
+				case 'R': charStats.setMyRace((Race)changes[i+1]); break;
+				}
 			}
 		}
 	}
@@ -235,13 +262,25 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		if(changes==null)
 			return;
 		for(int c=0;c<changes.length;c+=2)
-		switch(((Integer)changes[c]).intValue())
 		{
-		case CharState.STAT_HITPOINTS: charState.setHitPoints(charState.getHitPoints()+((Integer)changes[c+1]).intValue()); break;
-		case CharState.STAT_HUNGER: charState.setHunger(charState.getHunger()+((Integer)changes[c+1]).intValue()); break;
-		case CharState.STAT_THIRST: charState.setThirst(charState.getThirst()+((Integer)changes[c+1]).intValue()); break;
-		case CharState.STAT_MANA: charState.setMana(charState.getMana()+((Integer)changes[c+1]).intValue()); break;
-		case CharState.STAT_MOVE: charState.setMovement(charState.getMovement()+((Integer)changes[c+1]).intValue()); break;
+			switch(((Integer)changes[c]).intValue())
+			{
+			case CharState.STAT_HITPOINTS:
+				charState.setHitPoints(charState.getHitPoints() + ((Integer) changes[c + 1]).intValue());
+				break;
+			case CharState.STAT_HUNGER:
+				charState.setHunger(charState.getHunger() + ((Integer) changes[c + 1]).intValue());
+				break;
+			case CharState.STAT_THIRST:
+				charState.setThirst(charState.getThirst() + ((Integer) changes[c + 1]).intValue());
+				break;
+			case CharState.STAT_MANA:
+				charState.setMana(charState.getMana() + ((Integer) changes[c + 1]).intValue());
+				break;
+			case CharState.STAT_MOVE:
+				charState.setMovement(charState.getMovement() + ((Integer) changes[c + 1]).intValue());
+				break;
+			}
 		}
 	}
 
@@ -266,6 +305,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		int x=parameters.toUpperCase().indexOf("ARM");
 		for(final StringBuffer ID=new StringBuffer(parameters);((x>0)&&(x<parameters.length()));x++)
+		{
 			if(parameters.charAt(x)=='-')
 			{
 				ID.setCharAt(x,'+');
@@ -282,6 +322,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			else
 			if(Character.isDigit(parameters.charAt(x)))
 				break;
+		}
 		x=parameters.toUpperCase().indexOf("DIS");
 		if(x>=0)
 		{
@@ -291,8 +332,10 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			{
 				final StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<PhyStats.IS_VERBS.length;num++)
+				{
 					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(PhyStats.IS_VERBS[num]+" ");
+				}
 				parameters=parameters.substring(0,x)+middle.toString().trim()+parameters.substring(y+((""+val).length()));
 			}
 		}
@@ -305,8 +348,10 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			{
 				final StringBuffer middle=new StringBuffer("");
 				for(int num=0;num<PhyStats.CAN_SEE_VERBS.length;num++)
+				{
 					if(CMath.bset(val,CMath.pow(2,num)))
 						middle.append(PhyStats.CAN_SEE_VERBS[num]+" ");
+				}
 				parameters=parameters.substring(0,x)+middle.toString().trim()+parameters.substring(y+((""+val).length()));
 			}
 		}

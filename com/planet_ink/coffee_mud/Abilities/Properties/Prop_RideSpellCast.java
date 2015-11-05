@@ -40,7 +40,7 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
 	@Override public String ID() { return "Prop_RideSpellCast"; }
 	@Override public String name(){ return "Casting spells when ridden";}
 	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	protected Vector lastRiders=new Vector();
+	protected Vector<Rider> lastRiders=new Vector<Rider>();
 	@Override
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Casts "," on those mounted.");}
@@ -49,7 +49,7 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		lastRiders=new Vector();
+		lastRiders=new Vector<Rider>();
 	}
 
 	@Override public int triggerMask() { return TriggeredAffect.TRIGGER_MOUNT; }

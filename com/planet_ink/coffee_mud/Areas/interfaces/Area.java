@@ -574,9 +574,9 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public Area getParent(String named);
 
 	/**
-	 * Returns a Vector of all Parent Area objects to this one, recursively
+	 * Returns a list of all Parent Area objects to this one, recursively
 	 * A Parent Area passes down certain behaviors and property effects to its children
-	 * @return a Vector of Area objects
+	 * @return a list of Area objects
 	 */
 	public List<Area> getParentsRecurse();
 

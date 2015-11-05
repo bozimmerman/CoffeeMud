@@ -71,6 +71,8 @@ public interface AbilityComponents extends CMLibrary
 	 * of the given Ability/Skill ID(), or null if that ability has
 	 * no requirements.  Since requirements may differ by player
 	 * mask, the player mob is also required.
+	 * @see AbilityComponents#getAbilityComponentDesc(MOB, List)
+	 * @see AbilityComponents#getAbilityComponentDesc(MOB, AbilityComponent, boolean)
 	 * @param mob the player mob who wants to know
 	 * @param AID the Ability ID() of the skill whose components to check
 	 * @return a friendly readable form of the component requirements
@@ -82,43 +84,220 @@ public interface AbilityComponents extends CMLibrary
 	 * of the given Ability/Skill Component List, or null if it has
 	 * no requirements.  Since requirements may differ by player
 	 * mask, the player mob is also required.
+	 * @see AbilityComponents#getAbilityComponentDesc(MOB, AbilityComponent, boolean)
+	 * @see AbilityComponents#getAbilityComponentDesc(MOB, String)
 	 * @param mob the player mob who wants to know
 	 * @param req the coded requirements list
 	 * @return a friendly readable form of the component requirements
 	 */
 	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req);
+	
+	
+	/**
+	 * Returns a friendly readable description of a specific component in 
+	 * the given decoded ability components definition list.  If the 
+	 * component does not refer to the given mob, "" is returned.  
+	 * @see AbilityComponents#getAbilityComponentDesc(MOB, List)
+	 * @see AbilityComponents#getAbilityComponentDesc(MOB, String)
+	 * @param mob the mob to check this components applicability to.
+	 * @param comp the complete ability component decoded
+	 * @param useConnector true to use a connector AND/OR, false otherwise
+	 * @return a friendly readable description of a specific component
+	 */
+	public String getAbilityComponentDesc(MOB mob, AbilityComponent comp, boolean useConnector);
+	
+	/**
+	 * Returns the master ability component map, keyed by the Ability ID.
+	 * @return the master ability component map, keyed by the Ability ID.
+	 */
 	public Map<String, List<AbilityComponent>> getAbilityComponentMap();
+	
+	/**
+	 * Adds a new coded ability component to the given component map.
+	 * The component is coded as found in components.txt, with ID=parms.
+	 * @param s the new coded ability component string 
+	 * @param H the map to add the new component to
+	 * @return an error string, or null if everything went well.
+	 */
 	public String addAbilityComponent(String s, Map<String, List<AbilityComponent>> H);
-	public String getAbilityComponentCodedString(String AID);
+	
+	/**
+	 * Gets the decoded ability component definition for a given Ability ID().
+	 * This is then used by other methods to determine whether a user has the
+	 * necessary components, or for manipulation of the definition.
+	 * @param AID the Ability ID()
+	 * @return the decoded ability component definition for a given Ability ID()
+	 */
 	public List<AbilityComponent> getAbilityComponents(String AID);
-	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req, int r);
-	public void setAbilityComponentCodedFromCodedPairs(PairList<String,String> decodedDV, AbilityComponent comp);
-	public PairList<String,String> getAbilityComponentCoded(AbilityComponent comp);
+	
+	/**
+	 * Breaks an ability component decoded objects into a series of key/value pairs,
+	 * where the first is always the connector, and the keys are as follows:
+	 * ANDOR, DISPOSITION, FATE, AMOUNT, COMPONENTID, MASK. In that order.
+	 * This is primarily for simplifying editors.
+	 * @see AbilityComponents#setAbilityComponentCodedFromCodedPairs(PairList, AbilityComponent)
+	 * @param comp the decoded ability component to produce fields from
+	 * @return the key/value pairs of the ability component values.
+	 */
+	public PairList<String, String> getAbilityComponentCoded(AbilityComponent comp);
+	
+	/**
+	 * Copies the key/value pairs from a PairList of specific abilitycomponent fields
+	 * into the given AbilityComponent object.	 The first pairlist entry is always the 
+	 * connector, and the keys are as follows: ANDOR, DISPOSITION, FATE, AMOUNT, 
+	 * COMPONENTID, MASK. In that order.
+	 * This is primarily for simplifying editors.
+	 * @see AbilityComponents#getAbilityComponentCoded(AbilityComponent)
+	 * @param decodedDV  the key/value pairs of the ability component values.
+	 * @param comp the decoded ability component to copy field data into 
+	 */
+	public void setAbilityComponentCodedFromCodedPairs(PairList<String, String> decodedDV, AbilityComponent comp);
+	
+	/**
+	 * Reconstructs the coded ability component definition string (ID=parms)
+	 * from the internal cached structures, given a particular Ability ID.
+	 * @see AbilityComponents#getAbilityComponentCodedString(List)
+	 * @param AID the Ability ID()
+	 * @return the coded ability component definition string (ID=parms)
+	 */
+	public String getAbilityComponentCodedString(String AID);
+	
+	/**
+	 * Reconstructs the coded ability component definition string (ID=parms)
+	 * from the given cached decoded structures list.
+	 * @see AbilityComponents#getAbilityComponentCodedString(String)
+	 * @param comps the decoded ability components definition list
+	 * @return the coded ability component definition string (ID=parms)
+	 */
 	public String getAbilityComponentCodedString(List<AbilityComponent> comps);
+	
+	/**
+	 * Creates a new blank ability component object
+	 * @return a new blank ability component object
+	 */
 	public AbilityComponent createBlankAbilityComponent();
+	
+	/**
+	 * Alters and saved the ability components definition to on the
+	 * filesystem (components.txt).  
+	 * @param compID the ID of the component being altered
+	 * @param delete true to delete, false to add or modify
+	 */
 	public void alterAbilityComponentFile(String compID, boolean delete);
 	
+	/**
+	 * Returns the character-class based common skill ability limits
+	 * object applicable to the given mob, or zeroes if there's
+	 * a problem.
+	 * @see AbilityComponents#getCommonSkillLimit(MOB, Ability)
+	 * @see AbilityComponents#getCommonSkillRemainder(MOB, Ability)
+	 * @see AbilityComponents#getCommonSkillRemainder(MOB)
+	 * @see AbilityLimits
+	 * @param studentM the mob to find limits for
+	 * @return the character-class based common skill ability limits
+	 */
 	public AbilityLimits getCommonSkillLimit(MOB studentM);
+	
+	/**
+	 * Returns the character-class based common skill ability limits
+	 * object applicable to the given mob and the given ability.
+	 * @see AbilityComponents#getCommonSkillLimit(MOB)
+	 * @see AbilityComponents#getCommonSkillRemainder(MOB, Ability)
+	 * @see AbilityComponents#getCommonSkillRemainder(MOB)
+	 * @see AbilityLimits
+	 * @see AbilityLimits#specificSkillLimit()
+	 * @param studentM the mob to find limits for
+	 * @param A the ability object to find limits for
+	 * @return the character-class based common skill ability limits
+	 */
 	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A);
+	
+	/**
+	 * Returns the character-class based common skill ability limits
+	 * object applicable to the given mob and the given ability, and
+	 * then subtracts the number of each common skill already learned
+	 * to derive a remaining number of each type.
+	 * @see AbilityComponents#getCommonSkillLimit(MOB, Ability)
+	 * @see AbilityComponents#getCommonSkillLimit(MOB)
+	 * @see AbilityComponents#getCommonSkillRemainder(MOB)
+	 * @see AbilityLimits
+	 * @see AbilityLimits#specificSkillLimit()
+	 * @param studentM the mob to find limits for
+	 * @param A the ability object to find limits for
+	 * @return the character-class based common skill ability remainders
+	 */
 	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A);
+	
+	/**
+	 * Returns the character-class based common skill ability limits
+	 * object applicable to the given mob, and
+	 * then subtracts the number of each common skill already learned
+	 * to derive a remaining number of each type.
+	 * @see AbilityComponents#getCommonSkillLimit(MOB, Ability)
+	 * @see AbilityComponents#getCommonSkillLimit(MOB)
+	 * @see AbilityComponents#getCommonSkillRemainder(MOB, Ability)
+	 * @see AbilityLimits
+	 * @param studentM the mob to find limits for
+	 * @return the character-class based common skill ability limits
+	 */
 	public AbilityLimits getCommonSkillRemainders(MOB student);
 	
+	/**
+	 * Ability Limits object, denoting how many of different types
+	 * of common skills that a player can learn, including an
+	 * entry for a specific skill.
+	 * @author Bo Zimmerman
+	 */
 	public static interface AbilityLimits
 	{
+		/**
+		 * Returns number of common skills
+		 * @return number of common skills
+		 */
 		public int commonSkills();
 
+		/**
+		 * Sets number of common skills
+		 * @param newVal number of common skills
+		 */
 		public AbilityLimits commonSkills(int newVal);
 
+		/**
+		 * Returns number of crafting skills
+		 * @return number of crafting skills
+		 */
 		public int craftingSkills();
 
+		/**
+		 * Sets number of crafting skills
+		 * @param newVal number of crafting skills
+		 */
 		public AbilityLimits craftingSkills(int newVal);
 
+		/**
+		 * Returns number of non-crafting skills
+		 * @return number of non-crafting skills
+		 */
 		public int nonCraftingSkills();
 
+		/**
+		 * Sets number of non-crafting skills
+		 * @param newVal number of non-crafting skills
+		 */
 		public AbilityLimits nonCraftingSkills(int newVal);
 
+		/**
+		 * Returns number of given specific ability type 
+		 * limit.
+		 * @return i don't know how to say it
+		 */
 		public int specificSkillLimit();
 
+		/**
+		 * Sets number of given specific ability type 
+		 * limit.
+		 * @return a new number
+		 */
 		public AbilityLimits specificSkillLimit(int newVal);
 	}
 }

@@ -123,7 +123,7 @@ public class Skill_RegionalAwareness extends StdSkill
 				map[i][i2]=' ';
 		final boolean amIndoors=((room.domainType()&Room.INDOORS)==Room.INDOORS);
 		final Room[][] rmap=new Room[diameter][diameter];
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		final HashSet closedPaths=new HashSet();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
@@ -138,7 +138,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		map[diameter/2][diameter/2]='*';
 		for(int i=0;i<rooms.size();i++)
 		{
-			final Room R=(Room)rooms.elementAt(i);
+			final Room R=rooms.elementAt(i);
 			if((closedPaths.contains(R))
 			||(R==room))
 				continue;

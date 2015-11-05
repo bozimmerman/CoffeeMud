@@ -33,10 +33,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class QuestTracker extends StdBehavior
 {
 	@Override public String ID(){return "QuestTracker";}
 
-	public Vector questObjects=new Vector();
+	public Vector<Quest> questObjects=new Vector<Quest>();
 }

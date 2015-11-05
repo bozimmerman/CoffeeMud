@@ -386,7 +386,7 @@ public interface Ability extends Environmental
 	/**
 	 * Any external files which may be required to make this ability work
 	 * files returned by this method should not be base distrib files!
-	 * @return a Vector of local path names
+	 * @return a list of local path names
 	 */
 	public List<String> externalFiles();
 

@@ -51,7 +51,7 @@ public interface Language extends Ability
 	public String writtenName();
 
 	/**
-	 * Returns a Vector of the languages understood by this ability
+	 * Returns a list of the languages understood by this ability
 	 * @return vector of language ids supported (usually 1 element == ID())
 	 */
 	public List<String> languagesSupported();

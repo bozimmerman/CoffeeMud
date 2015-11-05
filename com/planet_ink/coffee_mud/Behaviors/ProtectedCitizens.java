@@ -176,7 +176,7 @@ public class ProtectedCitizens extends ActiveTicker
 			mob.doCommand(CMParms.parse("YELL \""+claim+"\""),MUDCmdProcessor.METAFLAG_FORCED);
 
 		final Room thisRoom=mob.location();
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		List<MOB> assMOBS=assisters.get(mob);
 		if(assMOBS==null)
 		{
@@ -219,7 +219,7 @@ public class ProtectedCitizens extends ActiveTicker
 		CMLib.tracking().getRadiantRooms(thisRoom,rooms,flags,null,radius,null);
 		for(int r=0;r<rooms.size();r++)
 		{
-			final Room R=(Room)rooms.elementAt(r);
+			final Room R=rooms.elementAt(r);
 			if(R.getArea().Name().equals(thisRoom.getArea().Name()))
 				for(int i=0;i<R.numInhabitants();i++)
 				{

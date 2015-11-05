@@ -180,14 +180,17 @@ public class GrinderHolidays {
 		properties.clear();
 		setText(properties,"MOOD",httpReq.getUrlParameter("MOOD"));
 		for(int i=1;httpReq.isUrlParameter("AFFECT"+i);i++)
+		{
 			if(httpReq.getUrlParameter("AFFECT"+i).trim().length()>0)
 				setText(properties,httpReq.getUrlParameter("AFFECT"+i),httpReq.getUrlParameter("ADATA"+i));
+		}
 
-
-		final Vector priceFV=new Vector();
+		final Vector<String> priceFV=new Vector<String>();
 		for(int i=1;httpReq.isUrlParameter("PRCFAC"+i);i++)
+		{
 			if(CMath.isPct(httpReq.getUrlParameter("PRCFAC"+i).trim()))
 				priceFV.add((CMath.s_pct(httpReq.getUrlParameter("PRCFAC"+i).trim())+" "+httpReq.getUrlParameter("PMASK"+i).trim()).trim());
+		}
 		setText(stats,"PRICEMASKS",CMParms.toListString(priceFV));
 
 		final String err=CMLib.quests().alterHoliday(holidayName, encodedData);

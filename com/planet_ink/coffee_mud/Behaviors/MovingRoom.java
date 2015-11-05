@@ -38,16 +38,16 @@ public class MovingRoom extends ActiveTicker
 	@Override public String ID(){return "MovingRoom";}
 	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS;}
 
-	public Vector listOfRooms=new Vector();
-	protected List<String> roomInfos=new Vector();
-	public Vector messageInfo=new Vector();
-	public Vector mapInfo=new Vector();
-	protected Vector stubs=new Vector();
-	protected String xmlInfo="";
-	private int currentStop = 0;
-	private int nextStop = 0;
-	private int currentStatus = 1;
-	private boolean isReversed = false;
+	public Vector<String>			listOfRooms		= new Vector<String>();
+	protected List<String>			roomInfos		= new Vector<String>();
+	public Vector<Vector<String>>	messageInfo		= new Vector<Vector<String>>();
+	public Vector<String>			mapInfo			= new Vector<String>();
+	protected Vector<String>		stubs			= new Vector<String>();
+	protected String				xmlInfo			= "";
+	private int						currentStop		= 0;
+	private int						nextStop		= 0;
+	private int						currentStatus	= 1;
+	private boolean					isReversed		= false;
 
 	//private static final int CODE0_TRAVELDIRECTION=0;
 	//private static final int CODE0_DOORSDIRECTION=1;
@@ -119,7 +119,7 @@ public class MovingRoom extends ActiveTicker
 
 	protected void parseMovingXML(String roomToParse)
 	{
-		final Vector V = new Vector();
+		final Vector<String> V = new Vector<String>();
 		final String theFullBlock=CMLib.xml().returnXMLBlock(roomToParse, roomInfos.get(0).toString().toUpperCase());
 		final String theStopsBlock=CMLib.xml().returnXMLBlock(theFullBlock, "STOPS");
 		final String theNormalDirBlock=CMLib.xml().returnXMLBlock(theFullBlock, "NORMALDIRECTION");
@@ -139,7 +139,7 @@ public class MovingRoom extends ActiveTicker
 		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theNormalDirBlock, "INSIDE"), "DEPARTINFO"));
 		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theNormalDirBlock, "OUTSIDE"), "ARRIVALINFO"));
 		V.addElement(CMLib.xml().returnXMLValue(CMLib.xml().returnXMLBlock(theNormalDirBlock, "OUTSIDE"), "DEPARTINFO"));
-		messageInfo.addElement(new Vector(V));
+		messageInfo.addElement(new Vector<String>(V));
 		V.removeAllElements();
 		V.addElement(CMLib.xml().returnXMLValue(theReverseDirBlock, "TRAVELDIRECTION"));
 		V.addElement(CMLib.xml().returnXMLValue(theReverseDirBlock, "DOORSDIRECTION"));
@@ -183,20 +183,20 @@ public class MovingRoom extends ActiveTicker
 			boolean revDirName=false;
 			if (((pos==0)||(pos==listOfRooms.size()-1))&&(currentStatus==1))
 				revDirName=true;
-			List V=new Vector();
+			List<String> V=new Vector<String>();
 			if (!revDirName)
 			{
 				if (isReversed)
-					V=(List)messageInfo.elementAt(CODE_REVERSEBLOCK);
+					V=messageInfo.elementAt(CODE_REVERSEBLOCK);
 				else
-					V=(List)messageInfo.elementAt(CODE_NORMALBLOCK);
+					V=messageInfo.elementAt(CODE_NORMALBLOCK);
 			}
 			else
 			{
 				if (isReversed)
-					V=(List)messageInfo.elementAt(CODE_NORMALBLOCK);
+					V=messageInfo.elementAt(CODE_NORMALBLOCK);
 				else
-					V=(List)messageInfo.elementAt(CODE_REVERSEBLOCK);
+					V=messageInfo.elementAt(CODE_REVERSEBLOCK);
 			}
 			repWord=incoming.substring(1,i)+V.get(0).toString()+incoming.substring(i+10);
 		}
@@ -204,22 +204,22 @@ public class MovingRoom extends ActiveTicker
 		if (incoming.indexOf("$outopendir")>0)
 		{
 			i = incoming.indexOf("$outopendir");
-			List V=new Vector();
+			List<String> V=new Vector<String>();
 			if (isReversed)
-				V=(List)messageInfo.elementAt(CODE_REVERSEBLOCK);
+				V=messageInfo.elementAt(CODE_REVERSEBLOCK);
 			else
-				V=(List)messageInfo.elementAt(CODE_NORMALBLOCK);
+				V=messageInfo.elementAt(CODE_NORMALBLOCK);
 			repWord=incoming.substring(1,i)+Directions.getDirectionName(Directions.getOpDirectionCode(V.get(1).toString()))+incoming.substring(i+11);
 		}
 		else
 		if (incoming.indexOf("$inopendir")>0)
 		{
 			i = incoming.indexOf("$inopendir");
-			List V=new Vector();
+			List<String> V=new Vector<String>();
 			if (isReversed)
-				V=(List)messageInfo.elementAt(CODE_REVERSEBLOCK);
+				V=messageInfo.elementAt(CODE_REVERSEBLOCK);
 			else
-				V=(List)messageInfo.elementAt(CODE_NORMALBLOCK);
+				V=messageInfo.elementAt(CODE_NORMALBLOCK);
 			repWord=incoming.substring(1,i)+V.get(1).toString()+incoming.substring(i+10);
 		}
 		else
@@ -246,9 +246,9 @@ public class MovingRoom extends ActiveTicker
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		final Vector normalVec = (Vector)messageInfo.elementAt(CODE_NORMALBLOCK);
-		final Vector reverseVec = (Vector)messageInfo.elementAt(CODE_REVERSEBLOCK);
-		final Vector theDescriptions = (Vector)messageInfo.elementAt(CODE_DESCRIPTIONBLOCK);
+		final Vector<String> normalVec = messageInfo.elementAt(CODE_NORMALBLOCK);
+		final Vector<String> reverseVec = messageInfo.elementAt(CODE_REVERSEBLOCK);
+		final Vector<String> theDescriptions = messageInfo.elementAt(CODE_DESCRIPTIONBLOCK);
 		super.tick(ticking,tickID);
 		if(canAct(ticking,tickID))
 		{
@@ -292,8 +292,8 @@ public class MovingRoom extends ActiveTicker
 				return false;
 			}
 
-			final String currentStopS=(String)listOfRooms.elementAt(currentStop);
-			final String nextStopS=(String)listOfRooms.elementAt(nextStop);
+			final String currentStopS=listOfRooms.elementAt(currentStop);
+			final String nextStopS=listOfRooms.elementAt(nextStop);
 			if(ticking instanceof Room)
 			{
 				Room currentStopRoom = CMLib.map().getRoom(currentStopS);

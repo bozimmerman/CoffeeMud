@@ -667,14 +667,14 @@ public class IMudClient implements I3Interface
 		if(mob.isMonster())
 			return;
 		final Hashtable l=imc2.query_muds();
-		final Vector V=new Vector();
-		for(final Enumeration e=l.elements();e.hasMoreElements();)
+		final Vector<REMOTEINFO> V=new Vector<REMOTEINFO>();
+		for(final Enumeration<REMOTEINFO> e=l.elements();e.hasMoreElements();)
 		{
-			final REMOTEINFO m=(REMOTEINFO)e.nextElement();
+			final REMOTEINFO m=e.nextElement();
 			boolean done=false;
 			for(int v=0;v<V.size();v++)
 			{
-				final REMOTEINFO m2=(REMOTEINFO)V.elementAt(v);
+				final REMOTEINFO m2=V.elementAt(v);
 				if(m2.name.toUpperCase().compareTo(m.name.toUpperCase())>0)
 				{
 					V.insertElementAt(m,v);
@@ -688,7 +688,7 @@ public class IMudClient implements I3Interface
 		final StringBuffer buf=new StringBuffer("\n\rIMC2 Mud List:\n\r");
 		for(int v=0;v<V.size();v++)
 		{
-			final REMOTEINFO m=(REMOTEINFO)V.elementAt(v);
+			final REMOTEINFO m=V.elementAt(v);
 			buf.append("["+CMStrings.padRight(m.name,15)+"]["+CMStrings.padRight(m.version,30)+"] "+CMStrings.padRight(m.network,13)+" ("+CMStrings.padRight(m.hub,10)+")\n\r");
 		}
 		mob.session().wraplessPrintln(buf.toString());

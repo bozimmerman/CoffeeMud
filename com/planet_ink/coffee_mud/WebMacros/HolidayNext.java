@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -58,7 +59,7 @@ public class HolidayNext extends StdWebMacro
 			return (String)resp;
 		else
 			return "[Unknown error.]";
-		final Vector holidays=new Vector();
+		final Vector<String> holidays=new Vector<String>();
 		List<String> line=null;
 		String var=null;
 		List<String> V=null;
@@ -67,7 +68,7 @@ public class HolidayNext extends StdWebMacro
 			final String step=steps.get(s);
 			V=Resources.getFileLineVector(new StringBuffer(step));
 			final List<List<String>> cmds=CMLib.quests().parseQuestCommandLines(V,"SET",0);
-			//Vector areaLine=null;
+			//Vector<String> areaLine=null;
 			List<String> nameLine=null;
 			for(int v=0;v<cmds.size();v++)
 			{

@@ -361,15 +361,20 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 			else
 			if((mob.curState().getHitPoints()>lastHP)&&(lastHP>=0))
 			{
-				final Vector choicesToHeal=new Vector();
+				final Vector<int[]> choicesToHeal=new Vector<int[]>();
 				for(int i=0;i<injuries.length;i++)
+				{
 					if(injuries[i]!=null)
+					{
 						for(int x=0;x<injuries[i].size();x++)
 						{
 							final int[] choice=new int[2];
-							choice[0]=i; choice[1]=x;
+							choice[0] = i;
+							choice[1] = x;
 							choicesToHeal.addElement(choice);
 						}
+					}
+				}
 				if(choicesToHeal.size()==0)
 				{
 					for(int i=0;i<injuries.length;i++)
@@ -385,7 +390,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 					while((pct>0)&&((--tries)>0)&&(choicesToHeal.size()>0))
 					{
 						final int which=CMLib.dice().roll(1,choicesToHeal.size(),-1);
-						final int[] choice=(int[])choicesToHeal.elementAt(which);
+						final int[] choice=choicesToHeal.elementAt(which);
 						if(choice[0]<injuries.length)
 						{
 							final PairVector<String,Integer> V=injuries[choice[0]];

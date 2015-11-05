@@ -214,7 +214,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				{
 					R=CMLib.map().getRoom(R);
 					lastMobSave=System.currentTimeMillis();
-					final Vector mobs=new Vector();
+					final Vector<MOB> mobs=new Vector<MOB>();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						final MOB M=R.fetchInhabitant(m);

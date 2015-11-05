@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Deviations extends StdCommand
 {
 	public Deviations(){}
@@ -80,15 +80,17 @@ public class Deviations extends StdCommand
 		return str.toString();
 	}
 
-	public boolean alreadyDone(Environmental E, Vector itemsDone)
+	public boolean alreadyDone(Environmental E, Vector<Environmental> itemsDone)
 	{
 		for(int i=0;i<itemsDone.size();i++)
-			if(((Environmental)itemsDone.get(i)).sameAs(E))
+		{
+			if(itemsDone.get(i).sameAs(E))
 				return true;
+		}
 		return false;
 	}
 
-	private void fillCheckDeviations(Room R, String type, Vector check)
+	private void fillCheckDeviations(Room R, String type, Vector<Environmental> check)
 	{
 		if(type.equalsIgnoreCase("mobs")||type.equalsIgnoreCase("both"))
 		{
@@ -184,24 +186,24 @@ public class Deviations extends StdCommand
 		}
 		final String where=V.get(1).toLowerCase();
 		final Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
-		final Vector check=new Vector();
+		final Vector<Environmental> check=new Vector<Environmental>();
 		if(where.equalsIgnoreCase("room"))
 			fillCheckDeviations(mob.location(),type,check);
 		else
 		if(where.equalsIgnoreCase("area"))
 		{
-			for(final Enumeration r=mob.location().getArea().getCompleteMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=mob.location().getArea().getCompleteMap();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				fillCheckDeviations(R,type,check);
 			}
 		}
 		else
 		if(where.equalsIgnoreCase("world"))
 		{
-			for(final Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				fillCheckDeviations(R,type,check);
 			}
 		}

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Thief_IdentifyTraps extends ThiefSkill
 {
 	@Override public String ID() { return "Thief_IdentifyTraps"; }
@@ -49,7 +49,7 @@ public class Thief_IdentifyTraps extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Vector savedCommands=new XVector(commands);
+		final Vector<String> savedCommands=new XVector<String>(commands);
 		final String whatTounlock=CMParms.combine(commands,0);
 		Physical unlockThis=givenTarget;
 		Room nextRoom=null;

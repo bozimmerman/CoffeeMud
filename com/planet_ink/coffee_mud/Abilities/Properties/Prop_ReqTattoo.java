@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -76,7 +75,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 		}
 	}
 
-	public Vector getMask(boolean[] flags)
+	public Vector<String> getMask(boolean[] flags)
 	{
 		final Vector<String> V=CMParms.parse(miscText.toUpperCase());
 		String s=null;
@@ -104,7 +103,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 		return V;
 	}
 
-	public boolean passesMuster(Vector mask, boolean[] flags, MOB mob)
+	public boolean passesMuster(Vector<String> mask, boolean[] flags, MOB mob)
 	{
 		if(mob==null)
 			return false;
@@ -116,7 +115,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 		String s=null;
 		for(int v=0;v<mask.size();v++)
 		{
-			s=(String)mask.elementAt(v);
+			s=mask.elementAt(v);
 			if(s.equals("+ALL"))
 				allFlag=1;
 			else
@@ -185,22 +184,21 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 			||((msg.target() instanceof Item)&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_SIT))))
 			{
 				final boolean[] flags=new boolean[2];
-				final Vector V=getMask(flags);
-				final HashSet H=new HashSet();
+				final Vector<String> V=getMask(flags);
+				final HashSet<MOB> H=new HashSet<MOB>();
 				if(flags[0])
 					H.add(msg.source());
 				else
 				{
 					msg.source().getGroupMembers(H);
-					final HashSet H2=(HashSet)H.clone();
+					final HashSet<MOB> H2=new XHashSet(H);
 					for(final Iterator e=H2.iterator();e.hasNext();)
 						((MOB)e.next()).getRideBuddies(H);
 				}
-				for(final Iterator e=H.iterator();e.hasNext();)
+				for(final Iterator<MOB> e=H.iterator();e.hasNext();)
 				{
-					final Environmental E=(Environmental)e.next();
-					if((E instanceof MOB)
-					&&(passesMuster(V,flags,(MOB)E)))
+					final MOB E=e.next();
+					if(passesMuster(V,flags,E))
 						return super.okMessage(myHost,msg);
 				}
 				if(msg.target() instanceof Room)

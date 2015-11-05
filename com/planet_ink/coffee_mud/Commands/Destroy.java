@@ -977,7 +977,7 @@ public class Destroy extends StdCommand
 				return false;
 			}
 
-			final Vector V=new Vector();
+			final Vector<Item> V=new Vector<Item>();
 			int maxToDrop=Integer.MAX_VALUE;
 
 			if((commands.size()>1)
@@ -1041,7 +1041,7 @@ public class Destroy extends StdCommand
 			boolean didAnything=false;
 			for(int i=0;i<V.size();i++)
 			{
-				if(destroyItem(mob,(Item)V.get(i),false,true))
+				if(destroyItem(mob,V.get(i),false,true))
 					didAnything=true;
 				else
 				if(V.get(i) instanceof Coins)

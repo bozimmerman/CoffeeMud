@@ -455,7 +455,7 @@ public class GModify extends StdCommand
 		allKnownFields.addAll(Arrays.asList(new String[]{"REJUV","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT"}));
 		
 		use=onfields;
-		final Vector newSet=new Vector();
+		final Vector<String> newSet=new Vector<String>();
 		StringBuffer s=new StringBuffer("");
 		for(int i=0;i<commands.size();i++)
 		{
@@ -478,7 +478,7 @@ public class GModify extends StdCommand
 			newSet.add(s.toString());
 		for(int i=0;i<newSet.size();i++)
 		{
-			String str=((String)newSet.get(i));
+			String str=newSet.get(i);
 			if(str.toUpperCase().startsWith("CHANGE="))
 			{
 				use=changes;

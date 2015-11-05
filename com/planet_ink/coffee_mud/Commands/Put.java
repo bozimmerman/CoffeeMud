@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Put extends StdCommand
 {
 	public Put()
@@ -152,7 +152,7 @@ public class Put extends StdCommand
 		String thingToPut=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
-		final Vector V=new Vector();
+		final Vector<Item> V=new Vector<Item>();
 		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 		if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
@@ -192,7 +192,7 @@ public class Put extends StdCommand
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			putThis=(Item)V.get(i);
+			putThis=V.get(i);
 			final String putWord=(container instanceof Rideable)?((Rideable)container).putString(mob):"in";
 			final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,L("<S-NAME> put(s) <O-NAME> @x1 <T-NAME>.",putWord));
 			if(mob.location().okMessage(mob,putMsg))

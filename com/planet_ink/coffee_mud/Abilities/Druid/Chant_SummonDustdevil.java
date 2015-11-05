@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_SummonDustdevil extends Chant
 {
 	@Override public String ID() { return "Chant_SummonDustdevil"; }
@@ -135,12 +134,12 @@ public class Chant_SummonDustdevil extends Chant
 		if(mob.location()!=null)
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> dissipate(s)."));
-			final Vector V=new Vector();
+			final Vector<Item> V=new Vector<Item>();
 			for(int i=0;i<mob.numItems();i++)
 				V.addElement(mob.getItem(i));
 			for(int i=0;i<V.size();i++)
 			{
-				final Item I=(Item)V.elementAt(i);
+				final Item I=V.elementAt(i);
 				mob.delItem(I);
 				mob.location().addItem(I,ItemPossessor.Expire.Monster_EQ);
 			}

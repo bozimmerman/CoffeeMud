@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prayer_SenseProfessions extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseProfessions"; }
@@ -68,7 +68,7 @@ public class Prayer_SenseProfessions extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Vector professionsV = new Vector();
+				final Vector<String> professionsV = new Vector<String>();
 				for(final Enumeration<Ability> a=target.allAbilities();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();

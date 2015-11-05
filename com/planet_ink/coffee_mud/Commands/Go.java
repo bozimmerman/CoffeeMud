@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Go extends StdCommand
 {
 	public Go(){}
@@ -41,7 +41,7 @@ public class Go extends StdCommand
 	@Override public String[] getAccessWords(){return access;}
 
 	protected Command stander=null;
-	protected Vector ifneccvec=null;
+	protected Vector<String> ifneccvec=null;
 
 	public boolean standIfNecessary(MOB mob, int metaFlags, boolean giveMsg)
 		throws java.io.IOException
@@ -51,7 +51,7 @@ public class Go extends StdCommand
 		final boolean wasStanding = CMLib.flags().isStanding(mob) && (!CMLib.flags().isSleeping(mob));
 		if((ifneccvec==null)||(ifneccvec.size()!=2))
 		{
-			ifneccvec=new Vector();
+			ifneccvec=new Vector<String>();
 			ifneccvec.add("STAND");
 			ifneccvec.add("IFNECESSARY");
 		}
@@ -192,7 +192,7 @@ public class Go extends StdCommand
 						}
 						else
 						{
-							final Vector V=new Vector();
+							final Vector<String> V=new Vector<String>();
 							V.add(doing);
 							V.add(inAShip?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction));
 							mob.enqueCommand(V,metaFlags,0);

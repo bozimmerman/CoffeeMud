@@ -1250,8 +1250,8 @@ public class ItemData extends StdWebMacro
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("READABLESPELLS"))
 		{
-			final Vector theclasses=new Vector();
-			final Vector theparms=new Vector();
+			final Vector<String> theclasses=new Vector<String>();
+			final Vector<String> theparms=new Vector<String>();
 			if(httpReq.isUrlParameter("RSPELL1"))
 			{
 				int num=1;
@@ -1290,9 +1290,9 @@ public class ItemData extends StdWebMacro
 			final HashSet<String> alreadyHave=new HashSet<String>();
 			for(int i=0;i<theclasses.size();i++)
 			{
-				final String theclass=(String)theclasses.elementAt(i);
+				final String theclass=theclasses.elementAt(i);
 				alreadyHave.add(theclass.toLowerCase());
-				final String theparm=(String)theparms.elementAt(i);
+				final String theparm=theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=RSPELL"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");

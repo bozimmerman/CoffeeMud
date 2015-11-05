@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class FileMgr extends StdWebMacro
 {
 	@Override public String name() { return "FileMgr"; }
@@ -201,14 +201,14 @@ public class FileMgr extends StdWebMacro
 				final String s=parms.get("STR");
 				if((s==null)||(s.length()==0))
 					return "Search not completed! No expression given!";
-				final Vector compiledList=new Vector();
+				final Vector<String> compiledList=new Vector<String>();
 				compileFilenamesList(F, s, compiledList);
 				if(compiledList.size()==0)
 					return "No files found matching your criteria.";
 				final StringBuffer theList=new StringBuffer("");
 				for(int c=0;c<compiledList.size();c++)
 				{
-					String name=((String)compiledList.elementAt(c));
+					String name=compiledList.elementAt(c);
 					if(name.startsWith(F.getAbsolutePath()+"/"))
 						name=name.substring(F.getAbsolutePath().length()+1);
 					theList.append(name+"<BR>");
@@ -223,18 +223,18 @@ public class FileMgr extends StdWebMacro
 				final String s=parms.get("STR");
 				if((s==null)||(s.length()==0))
 					return "Search not completed! No expression given!";
-				final Vector fileList=new Vector();
+				final Vector<String> fileList=new Vector<String>();
 				compileFilenamesList(F,"", fileList);
 				if(fileList.size()==0)
 					return "No files found!";
-				final Vector compiledList=new Vector();
+				final Vector<String> compiledList=new Vector<String>();
 				compileTextListFromFiles(fileList, s, compiledList);
 				if(compiledList.size()==0)
 					return "No files found matching your criteria.";
 				final StringBuffer theList=new StringBuffer("");
 				for(int c=0;c<compiledList.size();c++)
 				{
-					String name=((String)compiledList.elementAt(c));
+					String name=compiledList.elementAt(c);
 					if(name.startsWith(F.getAbsolutePath()+"/"))
 						name=name.substring(F.getAbsolutePath().length()+1);
 					theList.append(name+"<BR>");

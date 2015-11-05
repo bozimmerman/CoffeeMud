@@ -151,10 +151,10 @@ public class Patroller extends ActiveTicker
 			startRoom=new WeakReference<Room>(CMLib.map().roomLocation((Physical)ticking));
 		if(canAct(ticking,tickID))
 		{
-			Vector riders=null;
+			Vector<Rider> riders=null;
 			if(ticking instanceof Rideable)
 			{
-				riders=new Vector();
+				riders=new Vector<Rider>();
 				for(int i=0;i<((Rideable)ticking).numRiders();i++)
 					riders.addElement(((Rideable)ticking).fetchRider(i));
 			}
@@ -405,7 +405,7 @@ public class Patroller extends ActiveTicker
 					final Exit opExit=thatRoom.getReverseExit(direction);
 					for(int i=0;i<riders.size();i++)
 					{
-						final Rider R=(Rider)riders.elementAt(i);
+						final Rider R=riders.elementAt(i);
 						if(R instanceof MOB)
 						{
 							tickStatus=Tickable.STATUS_MISC+16;
@@ -469,8 +469,9 @@ public class Patroller extends ActiveTicker
 					if(riders!=null)
 					for(int i=0;i<riders.size();i++)
 					{
-						final Rider R=(Rider)riders.elementAt(i);
+						final Rider R=riders.elementAt(i);
 						if(CMLib.map().roomLocation(R)!=thatRoom)
+						{
 							if((((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SIT)
 							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_TABLE)
 							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_ENTERIN)
@@ -498,6 +499,7 @@ public class Patroller extends ActiveTicker
 							}
 							else
 								R.setRiding(null);
+						}
 						tickStatus=Tickable.STATUS_MISC+35;
 					}
 					tickStatus=Tickable.STATUS_MISC+36;
@@ -544,7 +546,7 @@ public class Patroller extends ActiveTicker
 				final Ability A=mob.fetchAbility("Thief_Sneak");
 				if(A!=null)
 				{
-					final Vector V=new Vector();
+					final Vector<String> V=new Vector<String>();
 					V.add(Directions.getDirectionName(direction));
 					if(A.proficiency()<50)
 					{

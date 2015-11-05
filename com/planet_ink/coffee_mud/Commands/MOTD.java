@@ -113,8 +113,8 @@ public class MOTD extends StdCommand
 						}
 					}
 				}
-				final Vector postalChains=new Vector();
-				final Vector postalBranches=new Vector();
+				final Vector<String> postalChains=new Vector<String>();
+				final Vector<String> postalBranches=new Vector<String>();
 				PostOffice P=null;
 				for(final Enumeration e=CMLib.map().postOffices();e.hasMoreElements();)
 				{

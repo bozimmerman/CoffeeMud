@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Disease_FrostBite extends Disease
 {
 	@Override public String ID() { return "Disease_FrostBite"; }
@@ -90,17 +89,19 @@ public class Disease_FrostBite extends Disease
 			return;
 		if(where==null)
 		{
-			final Vector choices=new Vector();
+			final Vector<Integer> choices=new Vector<Integer>();
 			for (final int element : limbsAffectable)
+			{
 				if(affected.charStats().getBodyPart(element)>0)
 					choices.addElement(Integer.valueOf(element));
+			}
 			if(choices.size()<=0)
 			{
 				where="nowhere";
 				unInvoke();
 			}
 			else
-				where=Race.BODYPARTSTR[((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue()];
+				where=Race.BODYPARTSTR[choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue()];
 		}
 	}
 

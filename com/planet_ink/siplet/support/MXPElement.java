@@ -35,11 +35,12 @@ public class MXPElement implements Cloneable
 	private String			flag					= "";
 	private String			unsupportedParms		= "";
 	private int				bitmap					= 0;
-	private Vector			parsedAttributes		= null;
-	private Hashtable		attributeValues			= null;
-	private Hashtable		alternativeAttributes	= null;
+	private Vector<String>	parsedAttributes		= null;
 	private List<String>	userParms				= new Vector();
 	private boolean			basicElement			= true;
+	
+	private Hashtable<String,String>		attributeValues			= null;
+	private Hashtable<String,String>		alternativeAttributes	= null;
 
 	private int				bufInsert				= -1;
 
@@ -174,10 +175,10 @@ public class MXPElement implements Cloneable
 		return bitmap;
 	}
 
-	public Vector getUnsupportedParms()
+	public Vector<String> getUnsupportedParms()
 	{
 		if ((unsupportedParms == null) || (unsupportedParms.trim().length() == 0))
-			return new Vector();
+			return new Vector<String>();
 		return Util.parseSpaces(unsupportedParms, true);
 	}
 
@@ -206,13 +207,13 @@ public class MXPElement implements Cloneable
 			attributeValues.put(tag, value);
 	}
 
-	public synchronized Vector getParsedAttributes()
+	public synchronized Vector<String> getParsedAttributes()
 	{
 		if (parsedAttributes != null)
 			return parsedAttributes;
-		parsedAttributes = new Vector();
-		attributeValues = new Hashtable();
-		alternativeAttributes = new Hashtable();
+		parsedAttributes = new Vector<String>();
+		attributeValues = new Hashtable<String,String>();
+		alternativeAttributes = new Hashtable<String,String>();
 		final StringBuffer buf = new StringBuffer(attributes.trim());
 		StringBuffer bit = new StringBuffer("");
 		char quotes = '\0';
@@ -229,7 +230,7 @@ public class MXPElement implements Cloneable
 					final String tag = bit.toString().toUpperCase().trim();
 					bit = new StringBuffer("");
 					parsedAttributes.addElement(tag);
-					attributeValues.put(tag, bit);
+					attributeValues.put(tag, bit.toString());
 				}
 				else
 					bit.append(buf.charAt(i));
@@ -285,8 +286,8 @@ public class MXPElement implements Cloneable
 			parsedAttributes.addElement(bit.toString().toUpperCase().trim());
 		for (int p = parsedAttributes.size() - 1; p >= 0; p--)
 		{
-			final String PA = (String) parsedAttributes.elementAt(p);
-			final StringBuffer VAL = (StringBuffer) attributeValues.get(PA);
+			final String PA = parsedAttributes.elementAt(p);
+			final String VAL = attributeValues.get(PA);
 			if ((VAL != null) && (parsedAttributes.contains(VAL.toString())))
 			{
 				parsedAttributes.removeElementAt(p);
@@ -307,7 +308,7 @@ public class MXPElement implements Cloneable
 		return userParms;
 	}
 
-	public void saveSettings(int insertPoint, Vector theUserParms)
+	public void saveSettings(int insertPoint, Vector<String> theUserParms)
 	{
 		bufInsert = insertPoint;
 		userParms = theUserParms;
@@ -324,10 +325,10 @@ public class MXPElement implements Cloneable
 		attributeValues.remove(name.toUpperCase().trim());
 	}
 
-	public Vector getCloseTags(String desc)
+	public Vector<String> getCloseTags(String desc)
 	{
 		final StringBuffer buf = new StringBuffer(desc);
-		final Vector tags = new Vector();
+		final Vector<String> tags = new Vector<String>();
 		StringBuffer bit = null;
 		char quotes = '\0';
 		int i = -1;
@@ -391,7 +392,7 @@ public class MXPElement implements Cloneable
 
 	public String getFoldedDefinition(String text)
 	{
-		final Vector aV = getParsedAttributes();
+		final Vector<String> aV = getParsedAttributes();
 		attributeValues.remove("TEXT");
 		attributeValues.put("TEXT", text);
 		if ((userParms != null) && (userParms.size() > 0))
@@ -405,7 +406,7 @@ public class MXPElement implements Cloneable
 				int xx = userParm.indexOf('=');
 				if ((xx > 0) && (alternativeAttributes.containsKey(userParm.substring(0, xx).trim())))
 				{
-					final String newKey = (String) alternativeAttributes.get(userParm.substring(0, xx).trim());
+					final String newKey = alternativeAttributes.get(userParm.substring(0, xx).trim());
 					final String uu = userParms.get(u);
 					xx = uu.indexOf('=');
 					userParms.set(u, newKey + uu.substring(xx));
@@ -416,7 +417,7 @@ public class MXPElement implements Cloneable
 				{
 					for (int a = 0; a < aV.size(); a++)
 					{
-						avParm = (String) aV.elementAt(a);
+						avParm = aV.elementAt(a);
 						if ((userParm.startsWith(avParm + "=")) || (avParm.equals(userParm)))
 						{
 							found = true;
@@ -432,7 +433,7 @@ public class MXPElement implements Cloneable
 				if ((!found) && (position < (aV.size() - 1)))
 				{
 					position++;
-					avParm = (String) aV.elementAt(position);
+					avParm = aV.elementAt(position);
 					attributeValues.remove(avParm);
 					attributeValues.put(avParm, userParms.get(u).trim());
 				}

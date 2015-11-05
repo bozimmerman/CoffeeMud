@@ -236,7 +236,7 @@ public class Song extends StdAbility
 		final int depth=getXMAXRANGELevel(invoker());
 		if(depth==0)
 			return new XVector(invoker().location());
-		final Vector rooms=new Vector();
+		final Vector<Room> rooms=new Vector<Room>();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()

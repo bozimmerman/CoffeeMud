@@ -33,7 +33,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Disease_Alzheimers extends Disease
 {
 	@Override public String ID() { return "Disease_Alzheimers"; }
@@ -100,17 +99,19 @@ public class Disease_Alzheimers extends Disease
 				final Room R=mob.location();
 				if((CMLib.flags().isStanding(mob))&&(R!=null)&&(CMLib.flags().isInTheGame(mob,true)))
 				{
-					final Vector dirs=new Vector();
+					final Vector<Integer> dirs=new Vector<Integer>();
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
 						if((R.getRoomInDir(d)!=null)
 						&&(R.getExitInDir(d)!=null)
 						&&(R.getExitInDir(d).isOpen()))
 							dirs.addElement(Integer.valueOf(d));
+					}
 					if(dirs.size()==0)
 						everyTick=0;
 					else
 					{
-						final int dir=((Integer)dirs.elementAt(CMLib.dice().roll(1,dirs.size(),-1))).intValue();
+						final int dir=dirs.elementAt(CMLib.dice().roll(1,dirs.size(),-1)).intValue();
 						CMLib.tracking().walk(mob,dir,false,false,false);
 					}
 				}

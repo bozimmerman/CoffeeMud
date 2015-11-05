@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prayer_SenseAllergies extends Prayer
 {
 	@Override public String ID() { return "Prayer_SenseAllergies"; }
@@ -68,7 +68,7 @@ public class Prayer_SenseAllergies extends Prayer
 				else
 				{
 
-					final Vector allergies=new Vector();
+					final Vector<String> allergies=new Vector<String>();
 					final Vector<String> V=CMParms.parse(A.text().toUpperCase().trim());
 					for(int i=0;i<V.size();i++)
 					{

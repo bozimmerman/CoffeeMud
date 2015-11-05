@@ -187,11 +187,11 @@ public class GrinderMap extends GrinderFlatMap
 		return true;
 	}
 
-	protected void findEmptyCluster(Hashtable processed, Vector XYZ)
+	protected void findEmptyCluster(Hashtable processed, Vector<Integer> XYZ)
 	{
-		final int x = ( (Integer) XYZ.elementAt(0)).intValue();
-		final int y = ( (Integer) XYZ.elementAt(1)).intValue();
-		final int z = ( (Integer) XYZ.elementAt(2)).intValue();
+		final int x = XYZ.elementAt(0).intValue();
+		final int y = XYZ.elementAt(1).intValue();
+		final int z = XYZ.elementAt(2).intValue();
 		int spacing = CLUSTERSIZE;
 		while (true)
 		{
@@ -627,14 +627,14 @@ public class GrinderMap extends GrinderFlatMap
 				}
 			}
 			// nope; nobody can.  It's up to this!
-			final Vector XYZ = new Vector();
+			final Vector<Integer> XYZ = new Vector<Integer>();
 			XYZ.addElement(Integer.valueOf(0));
 			XYZ.addElement(Integer.valueOf(0));
 			XYZ.addElement(Integer.valueOf(0));
 			findEmptyCluster(processed, XYZ);
-			room.xy[0] = ( (Integer) XYZ.elementAt(0)).intValue();
-			room.xy[1] = ( (Integer) XYZ.elementAt(1)).intValue();
-			room.z = ( (Integer) XYZ.elementAt(2)).intValue();
+			room.xy[0] = XYZ.elementAt(0).intValue();
+			room.xy[1] = XYZ.elementAt(1).intValue();
+			room.z = XYZ.elementAt(2).intValue();
 		}
 		else
 		{

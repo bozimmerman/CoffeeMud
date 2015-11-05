@@ -414,7 +414,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	@Override
 	public List<String> externalFiles()
 	{
-		final Vector xmlfiles=new Vector();
+		final Vector<String> xmlfiles=new Vector<String>();
 		parseLoads(getScript(), 0, xmlfiles, null);
 		return xmlfiles;
 	}
@@ -603,7 +603,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return CMLib.flags().canFreelyBehaveNormal(affecting);
 	}
 
-	protected String parseLoads(String text, int depth, Vector filenames, StringBuffer nonFilenameScript)
+	protected String parseLoads(String text, int depth, Vector<String> filenames, StringBuffer nonFilenameScript)
 	{
 		final StringBuffer results=new StringBuffer("");
 		String parse=text;
@@ -1175,27 +1175,31 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(areaThing==null)
 				{
 					final Area A=imHere.getArea();
-					final Vector all=new Vector();
+					final Vector<Environmental> all=new Vector<Environmental>();
 					if(mob)
 					{
 						all.addAll(CMLib.map().findInhabitants(A.getProperMap(),null,thisName,100));
 						if(all.size()==0)
 							all.addAll(CMLib.map().findShopStock(A.getProperMap(), null, thisName,100));
 						for(int a=all.size()-1;a>=0;a--)
+						{
 							if(!(all.elementAt(a) instanceof MOB))
 								all.removeElementAt(a);
+						}
 						if(all.size()>0)
-							areaThing=(Environmental)all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+							areaThing=all.elementAt(CMLib.dice().roll(1,all.size(),-1));
 						else
 						{
 							all.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(),null,thisName,100));
 							if(all.size()==0)
 								all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), null, thisName,100));
 							for(int a=all.size()-1;a>=0;a--)
+							{
 								if(!(all.elementAt(a) instanceof MOB))
 									all.removeElementAt(a);
+							}
 							if(all.size()>0)
-								thing=(Environmental)all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+								thing=all.elementAt(CMLib.dice().roll(1,all.size(),-1));
 						}
 					}
 					if(all.size()==0)
@@ -1206,7 +1210,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(all.size()==0)
 							all.addAll(CMLib.map().findShopStock(A.getProperMap(), null,thisName,100));
 						if(all.size()>0)
-							areaThing=(Environmental)all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+							areaThing=all.elementAt(CMLib.dice().roll(1,all.size(),-1));
 						else
 						{
 							all.addAll(CMLib.map().findRoomItems(CMLib.map().rooms(), null,thisName,true,100));
@@ -1215,11 +1219,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(all.size()==0)
 								all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), null,thisName,100));
 							if(all.size()>0)
-								thing=(Environmental)all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+								thing=all.elementAt(CMLib.dice().roll(1,all.size(),-1));
 						}
 					}
 				}
-			}catch(final NoSuchElementException nse){}
+			}
+			catch(final NoSuchElementException nse)
+			{
+			}
 		}
 		if(areaThing!=null)
 			OBJS.add(areaThing);
@@ -2117,7 +2124,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final int STATE_POSTFUNCQUOTE=5;
 		final int STATE_MAYFUNCTION=6;
 
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>();
 		if((evaluable==null)||(evaluable.trim().length()==0))
 			return new String[]{};
 		final char[] evalC=evaluable.toCharArray();
@@ -2278,12 +2285,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					if((V.size()>2)
 					&&(signH.containsKey(V.lastElement()))
-					&&(((String)V.elementAt(V.size()-2)).equals(")")))
+					&&(V.elementAt(V.size()-2).equals(")")))
 					{
-						final String sign=(String)V.lastElement();
+						final String sign=V.lastElement();
 						V.removeElementAt(V.size()-1);
 						V.removeElementAt(V.size()-1);
-						final String prev=(String)V.lastElement();
+						final String prev=V.lastElement();
 						if(prev.equals("("))
 							s=sign+" "+new String(evalC,dex+1,c-dex);
 						else
@@ -2310,12 +2317,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if((V.size()>1)
 						&&(signH.containsKey(V.lastElement()))
-						&&(((String)V.elementAt(V.size()-2)).equals(")")))
+						&&(V.elementAt(V.size()-2).equals(")")))
 						{
-							final String sign=(String)V.lastElement();
+							final String sign=V.lastElement();
 							V.removeElementAt(V.size()-1);
 							V.removeElementAt(V.size()-1);
-							final String prev=(String)V.lastElement();
+							final String prev=V.lastElement();
 							if(prev.equals("("))
 								s=sign+" "+new String(evalC,dex+1,c-dex);
 							else
@@ -2356,7 +2363,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return CMParms.toStringArray(V);
 	}
 
-	public void pushEvalBoolean(Vector stack, boolean trueFalse)
+	public void pushEvalBoolean(Vector<Object> stack, boolean trueFalse)
 	{
 		if(stack.size()>0)
 		{
@@ -2621,7 +2628,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		String[] tt=eval[0];
 		if(tmp == null)
 			tmp = newObjs();
-		final Vector stack=new Vector();
+		final Vector<Object> stack=new Vector<Object>();
 		for(int t=startEval;t<tt.length;t++)
 		if(tt[t].equals("("))
 			stack.addElement(tt[t]);
@@ -5078,9 +5085,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				Vector choices=new Vector();
+				Vector<Item> choices=new Vector<Item>();
 				if(E==null)
-					choices=new Vector();
+					choices=new Vector<Item>();
 				else
 				if(E instanceof MOB)
 				{
@@ -5097,7 +5104,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(E instanceof Container)
 						choices.addAll(((Container)E).getDeepContents());
 					else
-						choices.addElement(E);
+						choices.addElement((Item)E);
 				}
 				else
 				if(E instanceof Room)
@@ -5110,7 +5117,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				if(choices.size()>0)
-					results.append(((Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).name());
+					results.append(choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).name());
 				break;
 			}
 			case 74: // hasnum
@@ -5166,7 +5173,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				Vector choices=new Vector();
+				Vector<Item> choices=new Vector<Item>();
 				if(E==null)
 					choices=new Vector();
 				else
@@ -5185,10 +5192,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(E instanceof Container)
 						choices.addAll(((Container)E).getDeepContents());
 					else
-						choices.addElement(E);
+						choices.addElement((Item)E);
 				}
 				if(choices.size()>0)
-					results.append(((Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).name());
+					results.append(choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).name());
 				break;
 			}
 			case 4: // isnpc
@@ -5800,7 +5807,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
 					if(which!=null)
 					{
-						final Vector list=new Vector();
+						final Vector<MOB> list=new Vector<MOB>();
 						for(int i=0;i<lastKnownLocation.numInhabitants();i++)
 						{
 							final MOB M=lastKnownLocation.fetchInhabitant(i);
@@ -5819,7 +5826,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				int ct=1;
 				if(lastKnownLocation!=null)
 				{
-					final Vector list=new Vector();
+					final Vector<Item> list=new Vector<Item>();
 					for(int i=0;i<lastKnownLocation.numItems();i++)
 					{
 						final Item I=lastKnownLocation.getItem(i);
@@ -5827,7 +5834,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							list.addElement(I);
 							if(ct==CMath.s_int(arg1.trim()))
-							{ which=I; break;}
+							{
+								which = I;
+								break;
+							}
 							ct++;
 						}
 					}
@@ -6565,7 +6575,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			MOB M=null;
 			if(room!=null)
 			{
-				final Vector choices = new Vector();
+				final Vector<MOB> choices = new Vector<MOB>();
 				for(int p=0;p<room.numInhabitants();p++)
 				{
 					M=room.fetchInhabitant(p);
@@ -6593,7 +6603,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			MOB M=null;
 			if(room!=null)
 			{
-				final Vector choices = new Vector();
+				final Vector<MOB> choices = new Vector<MOB>();
 				for(int p=0;p<room.numInhabitants();p++)
 				{
 					M=room.fetchInhabitant(p);
@@ -7884,19 +7894,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(scripted,"MPUNLOADSCRIPT","Runtime","File does not exist: "+Resources.makeFileResourceName(scriptname));
 				else
 				{
-					final Vector delThese=new Vector();
-					boolean foundKey=false;
+					final Vector<String> delThese=new Vector<String>();
 					scriptname=scriptname.toUpperCase().trim();
 					final String parmname=scriptname;
 					for(final Iterator<String> k = Resources.findResourceKeys(parmname);k.hasNext();)
 					{
 						final String key=k.next();
 						if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().endsWith(parmname)))
-						{ foundKey=true; delThese.addElement(key);}
+						{
+							delThese.addElement(key);
+						}
 					}
-					if(foundKey)
-						for(int i=0;i<delThese.size();i++)
-							Resources.removeResource((String)delThese.elementAt(i));
+					for(int i=0;i<delThese.size();i++)
+						Resources.removeResource(delThese.elementAt(i));
 				}
 
 				break;
@@ -7960,7 +7970,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
-				final Vector Ms=new Vector();
+				final Vector<Environmental> Ms=new Vector<Environmental>();
 				MOB m=CMClass.getMOB(name);
 				if(m!=null)
 					Ms.addElement(m);
@@ -8011,9 +8021,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					Container container=null;
 					if(containerIndex>=0)
 					{
-						final Vector containers=new Vector();
+						final Vector<Environmental> containers=new Vector<Environmental>();
 						findSomethingCalledThis(name.substring(containerIndex+6).trim(),monster,lastKnownLocation,containers,false);
 						for(int c=0;c<containers.size();c++)
+						{
 							if((containers.elementAt(c) instanceof Container)
 							&&(((Container)containers.elementAt(c)).capacity()>0))
 							{
@@ -8021,6 +8032,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								name=name.substring(0,containerIndex).trim();
 								break;
 							}
+						}
 					}
 					final long coins=CMLib.english().numPossibleGold(null,name);
 					if(coins>0)
@@ -8038,7 +8050,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(lastKnownLocation!=null)
 					{
-						final Vector Is=new Vector();
+						final Vector<Environmental> Is=new Vector<Environmental>();
 						Item m=CMClass.getItem(name);
 						if(m!=null)
 							Is.addElement(m);
@@ -8092,14 +8104,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
 				if(lastKnownLocation!=null)
 				{
-					final Vector Is=new Vector();
+					final Vector<Environmental> Is=new Vector<Environmental>();
 					final int containerIndex=name.toUpperCase().indexOf(" INTO ");
 					Container container=null;
 					if(containerIndex>=0)
 					{
-						final Vector containers=new Vector();
+						final Vector<Environmental> containers=new Vector<Environmental>();
 						findSomethingCalledThis(name.substring(containerIndex+6).trim(),null,lastKnownLocation,containers,false);
 						for(int c=0;c<containers.size();c++)
+						{
 							if((containers.elementAt(c) instanceof Container)
 							&&(((Container)containers.elementAt(c)).capacity()>0))
 							{
@@ -8107,6 +8120,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								name=name.substring(0,containerIndex).trim();
 								break;
 							}
+						}
 					}
 					final long coins=CMLib.english().numPossibleGold(null,name);
 					if(coins>0)
@@ -8264,7 +8278,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 				}
-				final Vector V=new Vector();
+				final Vector<MOB> V=new Vector<MOB>();
 				final String who=tt[1];
 				if(who.equalsIgnoreCase("all"))
 				{
@@ -8275,11 +8289,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					final Environmental newTarget=getArgumentItem(who,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 					if(newTarget instanceof MOB)
-						V.addElement(newTarget);
+						V.addElement((MOB)newTarget);
 				}
 				for(int v=0;v<V.size();v++)
 				{
-					final Environmental newTarget=(Environmental)V.elementAt(v);
+					final Environmental newTarget=V.elementAt(v);
 					if(newTarget instanceof MOB)
 					{
 						final MOB mob=(MOB)newTarget;
@@ -9120,7 +9134,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						newRoom=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
 					if(newRoom!=null)
 					{
-						final Vector V=new Vector();
+						final Vector<Environmental> V=new Vector<Environmental>();
 						if(mobName.startsWith("$"))
 						{
 							final Environmental E=getArgumentItem(mobName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -9162,6 +9176,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										V.addElement(findOne);
 								}
 								if((findOne==null)&&(A!=null))
+								{
 									for(final Enumeration r=A.getProperMap();r.hasMoreElements();)
 									{
 										final Room R=(Room)r.nextElement();
@@ -9169,6 +9184,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										if((findOne!=null)&&(findOne!=monster))
 											V.addElement(findOne);
 									}
+								}
 							}
 						}
 						for(int v=0;v<V.size();v++)
@@ -9210,7 +9226,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							}
 							else
 							if((V.elementAt(v) instanceof Item)
-							&&(newRoom!=CMLib.map().roomLocation((Environmental)V.elementAt(v))))
+							&&(newRoom!=CMLib.map().roomLocation(V.elementAt(v))))
 								newRoom.moveItemTo((Item)V.elementAt(v),ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 							if(V.elementAt(v)==scripted)
 								lastKnownLocation=newRoom;
@@ -9238,7 +9254,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						newRoom=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
 					if((newRoom!=null)&&(lastKnownLocation!=null))
 					{
-						final Vector V=new Vector();
+						final Vector<MOB> V=new Vector<MOB>();
 						if(beacon.equalsIgnoreCase("all"))
 						{
 							for(int x=0;x<lastKnownLocation.numInhabitants();x++)
@@ -9256,7 +9272,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						for(int v=0;v<V.size();v++)
 						{
-							final MOB follower=(MOB)V.elementAt(v);
+							final MOB follower=V.elementAt(v);
 							if(!follower.isMonster())
 								follower.setStartRoom(newRoom);
 						}
@@ -9805,7 +9821,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					final Vector V=new Vector();
+					final Vector<String> V=new Vector<String>();
 					V.addElement("MPWHILE");
 					String conditionStr=(s.substring(7).trim());
 					if(!conditionStr.startsWith("("))
@@ -9905,7 +9921,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(EVALO[0]!=EVAL)
 				{
-					final Vector lazyV=new Vector();
+					final Vector<String> lazyV=new Vector<String>();
 					lazyV.addElement("MPWHILE");
 					lazyV.addElement("(");
 					final String[] newEVAL=EVALO[0];
@@ -10033,7 +10049,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return null;
 	}
 
-	protected static final Vector empty=new ReadOnlyVector();
+	protected static final Vector<DVector> empty=new ReadOnlyVector<DVector>();
 
 	@Override
 	public String getScriptResourceKey()
@@ -11606,31 +11622,69 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	
 	protected static class JScriptEvent extends ScriptableObject
 	{
-		@Override public String getClassName(){ return "JScriptEvent";}
-		static final long serialVersionUID=43;
-		final PhysicalAgent h;
-		final MOB s;
-		final Environmental t;
-		final MOB m;
-		final Item pi;
-		final Item si;
-		final Object[] objs;
-		Vector scr;
-		final String message;
-		final DefaultScriptingEngine c;
-		public Environmental host(){return h;}
-		public MOB source(){return s;}
-		public Environmental target(){return t;}
-		public MOB monster(){return m;}
-		public Item item(){return pi;}
-		public Item item2(){return si;}
-		public String message(){return message;}
+		@Override
+		public String getClassName()
+		{
+			return "JScriptEvent";
+		}
+
+		static final long				serialVersionUID	= 43;
+		final PhysicalAgent				h;
+		final MOB						s;
+		final Environmental				t;
+		final MOB						m;
+		final Item						pi;
+		final Item						si;
+		final Object[]					objs;
+		Vector<String>					scr;
+		final String					message;
+		final DefaultScriptingEngine	c;
+
+		public Environmental host()
+		{
+			return h;
+		}
+
+		public MOB source()
+		{
+			return s;
+		}
+
+		public Environmental target()
+		{
+			return t;
+		}
+
+		public MOB monster()
+		{
+			return m;
+		}
+
+		public Item item()
+		{
+			return pi;
+		}
+
+		public Item item2()
+		{
+			return si;
+		}
+
+		public String message()
+		{
+			return message;
+		}
+
 		public void setVar(String host, String var, String value)
 		{
 			c.setVar(host,var.toUpperCase(),value);
 		}
+
 		public String getVar(String host, String var)
-		{ return c.getVar(host,var);}
+		{
+			return c.getVar(host, var);
+		}
+
 		public String toJavaString(Object O){return Context.toString(O);}
 
 		@Override

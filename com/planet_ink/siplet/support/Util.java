@@ -1271,9 +1271,9 @@ public class Util
 		return V;
 	}
 
-	public static Vector parsePipes(String s, boolean ignoreNulls)
+	public static Vector<String> parsePipes(String s, boolean ignoreNulls)
 	{
-		final Vector V = new Vector();
+		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
 			return V;
 		int x = s.indexOf('|');
@@ -1290,9 +1290,9 @@ public class Util
 		return V;
 	}
 
-	public static Vector parseSquiggles(String s)
+	public static Vector<String> parseSquiggles(String s)
 	{
-		final Vector V = new Vector();
+		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
 			return V;
 		int x = s.indexOf('~');
@@ -1306,9 +1306,9 @@ public class Util
 		return V;
 	}
 
-	public static Vector parseSentences(String s)
+	public static Vector<String> parseSentences(String s)
 	{
-		final Vector V = new Vector();
+		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
 			return V;
 		int x = s.indexOf('.');
@@ -1322,9 +1322,9 @@ public class Util
 		return V;
 	}
 
-	public static Vector parseSquiggleDelimited(String s, boolean ignoreNulls)
+	public static Vector<String> parseSquiggleDelimited(String s, boolean ignoreNulls)
 	{
-		final Vector V = new Vector();
+		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
 			return V;
 		int x = s.indexOf('~');
@@ -1341,9 +1341,9 @@ public class Util
 		return V;
 	}
 
-	public static Vector parseSemicolons(String s, boolean ignoreNulls)
+	public static Vector<String> parseSemicolons(String s, boolean ignoreNulls)
 	{
-		final Vector V = new Vector();
+		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
 			return V;
 		int x = s.indexOf(';');
@@ -1374,9 +1374,9 @@ public class Util
 		return val * -1;
 	}
 
-	public static Vector parseSpaces(String s, boolean ignoreNulls)
+	public static Vector<String> parseSpaces(String s, boolean ignoreNulls)
 	{
-		final Vector V = new Vector();
+		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
 			return V;
 		int x = s.indexOf(' ');

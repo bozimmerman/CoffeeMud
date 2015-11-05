@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Hunting extends CommonSkill
 {
 	@Override public String ID() { return "Hunting"; }
@@ -54,7 +53,7 @@ public class Hunting extends CommonSkill
 
 	public Room nearByRoom()
 	{
-		final Vector possibilities=new Vector();
+		final Vector<Integer> possibilities=new Vector<Integer>();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(d!=Directions.UP)
@@ -67,7 +66,7 @@ public class Hunting extends CommonSkill
 		}
 		if(possibilities.size()>0)
 		{
-			final int dir=((Integer)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
+			final int dir=possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1)).intValue();
 			return activityRoom.getRoomInDir(dir);
 		}
 		return null;
@@ -78,7 +77,7 @@ public class Hunting extends CommonSkill
 		if(found.location()==null)
 			return;
 
-		final Vector possibilities=new Vector();
+		final Vector<Integer> possibilities=new Vector<Integer>();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(d!=Directions.UP)
@@ -91,7 +90,7 @@ public class Hunting extends CommonSkill
 		}
 		if(possibilities.size()>0)
 		{
-			final int dir=((Integer)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
+			final int dir=possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1)).intValue();
 			CMLib.tracking().walk(found,dir,true,false);
 		}
 	}

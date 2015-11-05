@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Drop extends StdCommand
 {
 	public Drop()
@@ -48,6 +48,7 @@ public class Drop extends StdCommand
 		return access;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private final static Class[][] internalParameters=new Class[][]
 	{
 		{Environmental.class,Boolean.class,Boolean.class,Boolean.class},
@@ -103,7 +104,7 @@ public class Drop extends StdCommand
 	{
 		String whatToDrop=null;
 		final Item container=null;
-		final Vector V=new Vector();
+		final Vector<Item> V=new Vector<Item>();
 
 		if(commands.size()<2)
 		{
@@ -180,7 +181,7 @@ public class Drop extends StdCommand
 		else
 		for(int i=0;i<V.size();i++)
 		{
-			final Item I=(Item)V.get(i);
+			final Item I=V.get(i);
 			if(!I.amDestroyed())
 				drop(mob,I,false,true,false);
 		}

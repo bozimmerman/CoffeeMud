@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 {
 	@Override public String ID() { return "Prop_EnterAdjuster"; }
@@ -76,7 +76,7 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 		&&((mask==null)||(CMLib.masking().maskCheck(mask,msg.source(),true))))
 		{
 			final MOB mob=msg.source();
-			final Vector theSpells=new Vector();
+			final Vector<Ability> theSpells=new Vector<Ability>();
 			int del=parameters[0].indexOf(';');
 			while(del>=0)
 			{
@@ -104,7 +104,7 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 			}
 			for(int i=0;i<theSpells.size();i++)
 			{
-				final Ability thisOne=(Ability)((Ability)theSpells.elementAt(i)).copyOf();
+				final Ability thisOne=(Ability)theSpells.elementAt(i).copyOf();
 				thisOne.invoke(mob,mob,true,0);
 			}
 

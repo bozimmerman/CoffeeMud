@@ -254,7 +254,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			{
 				final String t=A.text();
 				A=(Ability)A.copyOf();
-				Vector V2=new Vector();
+				Vector<String> V2=new Vector<String>();
 				if(t.length()>0)
 				{
 					final int x=t.indexOf('/');
@@ -352,7 +352,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			return;
 
 		int x=0;
-		final Vector eff=new Vector();
+		final Vector<Ability> eff=new Vector<Ability>();
 		Ability thisAffect=null;
 		for(x=0;x<P.numEffects();x++) // personal
 		{

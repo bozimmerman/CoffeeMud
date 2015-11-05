@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prayer_Resurrect extends Prayer implements MendingSkill
 {
 	@Override public String ID() { return "Prayer_Resurrect"; }
@@ -77,17 +77,19 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		{
 			final List<PlayerData> V=CMLib.database().DBReadData("HEAVEN");
 			final Vector<Physical> allObjs=new Vector<Physical>();
-			final Vector allDataPs=new Vector();
+			final Vector<DatabaseEngine.PlayerData> allDataPs=new Vector<DatabaseEngine.PlayerData>();
 			if((V!=null)&&(V.size()>0))
-			for(int v=0;v<V.size();v++)
 			{
-				final DatabaseEngine.PlayerData dataP=V.get(v);
-				final String data=dataP.xml;
-				final PhysicalAgent obj=parseHeavenlyData(data);
-				if(obj!=null)
+				for(int v=0;v<V.size();v++)
 				{
-					allDataPs.addElement(dataP);
-					allObjs.addElement(obj);
+					final DatabaseEngine.PlayerData dataP=V.get(v);
+					final String data=dataP.xml;
+					final PhysicalAgent obj=parseHeavenlyData(data);
+					if(obj!=null)
+					{
+						allDataPs.addElement(dataP);
+						allObjs.addElement(obj);
+					}
 				}
 			}
 			if(allObjs.size()==0)
@@ -102,7 +104,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				{
 					body=allObjs.elementAt(i);
 					final Ability age=body.fetchEffect("Age");
-					mob.tell(CMStrings.padRight(((DatabaseEngine.PlayerData)allDataPs.elementAt(i)).who,15)
+					mob.tell(CMStrings.padRight(allDataPs.elementAt(i).who,15)
 							+CMStrings.padRight(body.name(),45)
 							+CMStrings.padRight(((age==null)?"":CMLib.time().date2String(CMath.s_long(age.text()))),16)+"\n\r"+CMStrings.padRight("",15)+body.description());
 				}
@@ -116,7 +118,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			for(int i=0;i<allObjs.size();i++)
 				if(allObjs.elementAt(i)==P)
 				{
-					nonPlayerData=(DatabaseEngine.PlayerData)allDataPs.elementAt(i);
+					nonPlayerData=allDataPs.elementAt(i);
 					body=P;
 					break;
 				}

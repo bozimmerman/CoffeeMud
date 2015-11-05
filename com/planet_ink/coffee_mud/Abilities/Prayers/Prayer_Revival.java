@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prayer_Revival extends Prayer
 {
 	@Override public String ID() { return "Prayer_Revival"; }
@@ -70,8 +70,8 @@ public class Prayer_Revival extends Prayer
 			final MOB mob=(MOB)affected;
 			final Room R=mob.location();
 			int levels=0;
-			final Vector inhabs=new Vector();
-			final Vector clerics=new Vector();
+			final Vector<MOB> inhabs=new Vector<MOB>();
+			final Vector<MOB> clerics=new Vector<MOB>();
 			final int bonus=(2*getXLEVELLevel(invoker()));
 			for(int i=0;i<R.numInhabitants();i++)
 			{
@@ -95,35 +95,60 @@ public class Prayer_Revival extends Prayer
 			if((D!=null)&&(CMLib.dice().rollPercentage()<50))
 			switch(CMLib.dice().roll(1,13,0))
 			{
-			case 1:	CMLib.commands().postSay(mob,null,L("@x1 is great! Shout @x2 praises!",D.name(),CMStrings.capitalizeAndLower(D.charStats().hisher())),false,false); break;
-			case 2:	CMLib.commands().postSay(mob,null,L("Can I hear an AMEN?!"),false,false); break;
-			case 3:	CMLib.commands().postSay(mob,null,L("Praise @x1!",D.name()),false,false); break;
-			case 4:	CMLib.commands().postSay(mob,null,L("Halleluyah! @x1 is great!",D.name()),false,false); break;
-			case 5:	CMLib.commands().postSay(mob,null,L("Let's hear it for @x1!",D.name()),false,false); break;
-			case 6:	CMLib.commands().postSay(mob,null,L("Exalt the name of @x1!",D.name()),false,false); break;
-			case 7:	if(clerics.size()>1)
+				case 1:
+					CMLib.commands().postSay(mob, null, L("@x1 is great! Shout @x2 praises!", D.name(), CMStrings.capitalizeAndLower(D.charStats().hisher())), false, false);
+					break;
+				case 2:
+					CMLib.commands().postSay(mob, null, L("Can I hear an AMEN?!"), false, false);
+					break;
+				case 3:
+					CMLib.commands().postSay(mob, null, L("Praise @x1!", D.name()), false, false);
+					break;
+				case 4:
+					CMLib.commands().postSay(mob, null, L("Halleluyah! @x1 is great!", D.name()), false, false);
+					break;
+				case 5:
+					CMLib.commands().postSay(mob, null, L("Let's hear it for @x1!", D.name()), false, false);
+					break;
+				case 6:
+					CMLib.commands().postSay(mob, null, L("Exalt the name of @x1!", D.name()), false, false);
+					break;
+				case 7:
+					if (clerics.size() > 1)
 					{
-						final MOB M=(MOB)clerics.elementAt(CMLib.dice().roll(1,clerics.size(),-1));
-						if(M!=mob)
-							CMLib.commands().postSay(mob,null,L("Preach it @x1!",M.name(mob)),false,false);
+						final MOB M = clerics.elementAt(CMLib.dice().roll(1, clerics.size(), -1));
+						if (M != mob)
+							CMLib.commands().postSay(mob, null, L("Preach it @x1!", M.name(mob)), false, false);
 						else
-							CMLib.commands().postSay(mob,null,L("I LOVE @x1!",D.name()),false,false);
+							CMLib.commands().postSay(mob, null, L("I LOVE @x1!", D.name()), false, false);
 					}
 					else
-						CMLib.commands().postSay(mob,null,L("I LOVE @x1!",D.name()),false,false);
+						CMLib.commands().postSay(mob, null, L("I LOVE @x1!", D.name()), false, false);
 					break;
-			case 8:	CMLib.commands().postSay(mob,null,L("Holy is the name of @x1!",D.name()),false,false); break;
-			case 9:	CMLib.commands().postSay(mob,null,L("Do you BELIEVE?!? I BELIEVE!!!"),false,false); break;
-			case 10: CMLib.commands().postSay(mob,null,L("Halleluyah!"),false,false); break;
-			case 11: mob.enqueCommand(CMParms.parse("EMOTE do(es) a spirit-filled dance!"),MUDCmdProcessor.METAFLAG_FORCED,0); break;
-			case 12: mob.enqueCommand(CMParms.parse("EMOTE wave(s) <S-HIS-HER> hands in the air!"),MUDCmdProcessor.METAFLAG_FORCED,0);  break;
-			case 13: mob.enqueCommand(CMParms.parse("EMOTE catch(es) the spirit of "+D.name()+"!"),MUDCmdProcessor.METAFLAG_FORCED,0); break;
+				case 8:
+					CMLib.commands().postSay(mob, null, L("Holy is the name of @x1!", D.name()), false, false);
+					break;
+				case 9:
+					CMLib.commands().postSay(mob, null, L("Do you BELIEVE?!? I BELIEVE!!!"), false, false);
+					break;
+				case 10:
+					CMLib.commands().postSay(mob, null, L("Halleluyah!"), false, false);
+					break;
+				case 11:
+					mob.enqueCommand(CMParms.parse("EMOTE do(es) a spirit-filled dance!"), MUDCmdProcessor.METAFLAG_FORCED, 0);
+					break;
+				case 12:
+					mob.enqueCommand(CMParms.parse("EMOTE wave(s) <S-HIS-HER> hands in the air!"), MUDCmdProcessor.METAFLAG_FORCED, 0);
+					break;
+				case 13:
+					mob.enqueCommand(CMParms.parse("EMOTE catch(es) the spirit of " + D.name() + "!"), MUDCmdProcessor.METAFLAG_FORCED, 0);
+					break;
 			}
 			if((clerics.size()>2)&&(inhabs.size()>0))
 			{
 				levels=levels/clerics.size();
 				levels=levels+((clerics.size()-3)*5);
-				final MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
+				final MOB M=inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
 				if((M!=null)&&(levels>=(M.phyStats().level()+bonus)))
 				{
 					final MOB vic1=mob.getVictim();
@@ -138,18 +163,20 @@ public class Prayer_Revival extends Prayer
 					{
 						final Ability A=CMClass.getAbility("Prayer_UndeniableFaith");
 						if(A!=null)
+						{
 							if(A.invoke(mob,M,true,0))
 							{
 								if(M.getWorshipCharID().equals(mob.getWorshipCharID()))
 								{
 									for(int c=0;c<clerics.size();c++)
 									{
-										final MOB M2=(MOB)clerics.elementAt(c);
+										final MOB M2=clerics.elementAt(c);
 										if(M2!=mob)
 											CMLib.leveler().postExperience(M2,M,null,25,false);
 									}
 								}
 							}
+						}
 					}
 					mob.setVictim(vic1);
 					M.setVictim(vic2);

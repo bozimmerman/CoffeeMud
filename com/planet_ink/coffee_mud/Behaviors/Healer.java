@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Healer extends ActiveTicker
 {
 	@Override public String ID(){return "Healer";}
@@ -97,7 +97,7 @@ public class Healer extends ActiveTicker
 						mob.addAbility(thisOne);
 					}
 					thisOne.setProficiency(100);
-					final Vector V=new Vector();
+					final Vector<String> V=new Vector<String>();
 					if(!target.isMonster())
 						V.addElement(target.name());
 					thisOne.invoke(mob,V,target,false,0);

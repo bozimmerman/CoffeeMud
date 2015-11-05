@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Paladin_SummonMount extends StdAbility
 {
 	@Override public String ID() { return "Paladin_SummonMount"; }
@@ -119,7 +118,7 @@ public class Paladin_SummonMount extends StdAbility
 			mob.tell(L("Your alignment has alienated you from your god."));
 			return false;
 		}
-		final Vector choices=new Vector();
+		final Vector<Integer> choices=new Vector<Integer>();
 		int fromDir=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -138,7 +137,7 @@ public class Paladin_SummonMount extends StdAbility
 			mob.tell(L("You must be further outdoors to call your mount."));
 			return false;
 		}
-		fromDir=((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue();
+		fromDir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 		final Room newRoom=mob.location().getRoomInDir(fromDir);
 		final int opDir=Directions.getOpDirectionCode(fromDir);
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

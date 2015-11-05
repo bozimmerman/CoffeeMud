@@ -35,14 +35,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class GrinderClans
 {
 	public String name() { return "GrinderClans"; }
 
 	public static String membersList(Clan C, HTTPRequest httpReq)
 	{
-		final Vector newMembersNames=new Vector();
+		final Vector<String> newMembersNames=new Vector<String>();
 		final List<MemberRecord> DV=C.getMemberList();
 		if(httpReq.isUrlParameter("MEMB1"))
 		{
@@ -83,9 +83,9 @@ public class GrinderClans
 		{
 			int relat=0;
 			Clan CC=null;
-			for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+			for(final Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 			{
-				CC=(Clan)e.nextElement();
+				CC=e.nextElement();
 				if(CC==C)
 					continue;
 				relat++;

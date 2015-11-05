@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,21 +32,21 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class ItemGenerator extends ActiveTicker
 {
 	@Override public String ID(){return "ItemGenerator";}
 	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
 	protected static volatile Tickable[] builerTick=new Tickable[1];
 
-	protected Vector maintained=new Vector();
-	protected int minItems=1;
-	protected int maxItems=1;
-	protected int avgItems=1;
-	protected int maxDups=1;
-	protected int enchantPct=10;
-	protected boolean favorMobs=false;
-	protected Vector restrictedLocales=null;
+	protected Vector<Item>		maintained			= new Vector<Item>();
+	protected int				minItems			= 1;
+	protected int				maxItems			= 1;
+	protected int				avgItems			= 1;
+	protected int				maxDups				= 1;
+	protected int				enchantPct			= 10;
+	protected boolean			favorMobs			= false;
+	protected Vector<Integer>	restrictedLocales	= null;
 
 	@Override
 	public String accountForYourself()
@@ -66,7 +65,7 @@ public class ItemGenerator extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		favorMobs=false;
-		maintained=new Vector();
+		maintained=new Vector<Item>();
 		restrictedLocales=null;
 		String parms=newParms;
 		if(parms.indexOf(';')>=0)
@@ -81,7 +80,7 @@ public class ItemGenerator extends ActiveTicker
 			if((s.startsWith("+")||s.startsWith("-"))&&(s.length()>1))
 			{
 				if(restrictedLocales==null)
-					restrictedLocales=new Vector();
+					restrictedLocales=new Vector<Integer>();
 				if(s.equalsIgnoreCase("+ALL"))
 					restrictedLocales.clear();
 				else
@@ -111,8 +110,10 @@ public class ItemGenerator extends ActiveTicker
 					}
 					code=-1;
 					for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
+					{
 						if(Room.DOMAIN_OUTDOOR_DESCS[i].startsWith(s))
 							code=i;
+					}
 					if(code>=0)
 					{
 						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
@@ -121,7 +122,6 @@ public class ItemGenerator extends ActiveTicker
 						if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
 							restrictedLocales.addElement(Integer.valueOf(code));
 					}
-
 				}
 			}
 		}
@@ -192,6 +192,7 @@ public class ItemGenerator extends ActiveTicker
 		@Override
 		public boolean tick(Tickable host, int tickID)
 		{
+			@SuppressWarnings("unchecked")
 			List<Item> allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
 			if(allItems!=null)
 				return false;
@@ -217,6 +218,7 @@ public class ItemGenerator extends ActiveTicker
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public synchronized GeneratedItemSet getItems(Tickable thang, String theseparms)
 	{
 		String mask=parms;
@@ -288,7 +290,7 @@ public class ItemGenerator extends ActiveTicker
 		{
 			try
 			{
-				I=(Item)maintained.elementAt(i);
+				I=maintained.elementAt(i);
 				if(!isStillMaintained(E,SK,I))
 					maintained.removeElement(I);
 			}
@@ -325,8 +327,10 @@ public class ItemGenerator extends ActiveTicker
 					{
 						int numDups=0;
 						for(int m=0;m<maintained.size();m++)
-							if(I.sameAs((Item)maintained.elementAt(m)))
+						{
+							if(I.sameAs(maintained.elementAt(m)))
 								numDups++;
+						}
 						if((maxDups>0)&&(numDups>=maxDups))
 							return true;
 					}
@@ -404,7 +408,7 @@ public class ItemGenerator extends ActiveTicker
 						{
 							if(CMLib.flags().isGettable(I)&&(!(I instanceof Rideable)))
 							{
-								final Vector inhabs=new Vector();
+								final Vector<MOB> inhabs=new Vector<MOB>();
 								for(int m=0;m<room.numInhabitants();m++)
 								{
 									final MOB M=room.fetchInhabitant(m);
@@ -413,7 +417,7 @@ public class ItemGenerator extends ActiveTicker
 								}
 								if(inhabs.size()>0)
 								{
-									final MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
+									final MOB M=inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
 									M.addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 									I.wearIfPossible(M);
 									maintained.addElement(I);

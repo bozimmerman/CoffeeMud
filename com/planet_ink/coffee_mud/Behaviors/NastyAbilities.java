@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class NastyAbilities extends ActiveTicker
 {
 	@Override public String ID(){return "NastyAbilities";}
@@ -119,10 +118,10 @@ public class NastyAbilities extends ActiveTicker
 									H.put(M,M.getVictim());
 							}
 							tryThisOne.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,tryThisOne.ID()));
-							final Vector V=new Vector();
+							final Vector<String> V=new Vector<String>();
 							V.addElement(target.name());
 							if((tryThisOne.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
-								tryThisOne.invoke(mob,new Vector(),null,false,0);
+								tryThisOne.invoke(mob,new Vector<String>(),null,false,0);
 							else
 								tryThisOne.invoke(mob,V,target,false,0);
 

@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Chant_PlantConstriction extends Chant
 {
 	@Override public String ID() { return "Chant_PlantConstriction"; }
@@ -164,7 +163,7 @@ public class Chant_PlantConstriction extends Chant
 				return false;
 			}
 		}
-		final Vector positionChoices=new Vector();
+		final Vector<Long> positionChoices=new Vector<Long>();
 		if(target.getWearPositions(Wearable.WORN_ARMS)>0)
 			positionChoices.addElement(Long.valueOf(Wearable.WORN_ARMS));
 		if(target.getWearPositions(Wearable.WORN_LEGS)>0)
@@ -188,7 +187,7 @@ public class Chant_PlantConstriction extends Chant
 			{
 				mob.location().send(mob,msg);
 				target.moveItemTo(myPlant);
-				final Long II=(Long)positionChoices.elementAt(CMLib.dice().roll(1,positionChoices.size(),-1));
+				final Long II=positionChoices.elementAt(CMLib.dice().roll(1,positionChoices.size(),-1));
 				myPlant.setRawWornCode(II.longValue());
 				if(II.longValue()==Wearable.WORN_ARMS)
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("@x1 jumps up and wraps itself around <S-YOUPOSS> arms!",myPlant.name()));

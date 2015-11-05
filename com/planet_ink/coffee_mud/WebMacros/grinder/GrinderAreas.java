@@ -108,7 +108,7 @@ public class GrinderAreas
 
 	public static String modifyArea(HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
-		final Vector areasNeedingUpdates=new Vector();
+		final Vector<Area> areasNeedingUpdates=new Vector<Area>();
 		final String last=httpReq.getUrlParameter("AREA");
 		if((last==null)||(last.length()==0))
 			return "Old area name not defined!";
@@ -118,7 +118,7 @@ public class GrinderAreas
 		areasNeedingUpdates.addElement(A);
 
 		boolean redoAllMyDamnRooms=false;
-		Vector allMyDamnRooms=null;
+		Vector<Room> allMyDamnRooms=null;
 		String oldName=null;
 
 		// class!
@@ -152,7 +152,7 @@ public class GrinderAreas
 			if(CMLib.map().getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
 			allMyDamnRooms=new Vector();
-			for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			CMLib.map().delArea(A);
 			oldName=A.Name();
@@ -210,7 +210,7 @@ public class GrinderAreas
 		int num=1;
 		if(httpReq.isUrlParameter("BLURBFLAG1"))
 		{
-			final Vector prics=new Vector();
+			final Vector<String> prics=new Vector<String>();
 			String DOUBLE=httpReq.getUrlParameter("BLURBFLAG"+num);
 			String MASK=httpReq.getUrlParameter("BLURB"+num);
 			while((DOUBLE!=null)&&(MASK!=null))
@@ -224,7 +224,7 @@ public class GrinderAreas
 			for(final Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
 				A.delBlurbFlag(f.nextElement());
 			for(int v=0;v<prics.size();v++)
-				A.addBlurbFlag((String)prics.elementAt(v));
+				A.addBlurbFlag(prics.elementAt(v));
 		}
 		// description
 		String desc=httpReq.getUrlParameter("DESCRIPTION");
@@ -307,7 +307,7 @@ public class GrinderAreas
 		num=1;
 		if(httpReq.isUrlParameter("IPRIC1"))
 		{
-			final Vector prics=new Vector();
+			final Vector<String> prics=new Vector<String>();
 			String DOUBLE=httpReq.getUrlParameter("IPRIC"+num);
 			String MASK=httpReq.getUrlParameter("IPRICM"+num);
 			while((DOUBLE!=null)&&(MASK!=null))
@@ -378,7 +378,7 @@ public class GrinderAreas
 
 		for(int i=0;i<areasNeedingUpdates.size();i++) // will always include A
 		{
-			final Area A2=(Area)areasNeedingUpdates.elementAt(i);
+			final Area A2=areasNeedingUpdates.elementAt(i);
 			if(CMLib.flags().isSavable(A2))
 			{
 				CMLib.database().DBUpdateArea(A2.Name(),A2);

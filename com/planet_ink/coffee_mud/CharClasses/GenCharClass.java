@@ -112,7 +112,7 @@ public class GenCharClass extends StdCharClass
 	@Override public boolean showThinQualifyList(){return (disableFlags&CharClass.GENFLAG_THINQUALLIST)==CharClass.GENFLAG_THINQUALLIST;}
 	@Override public String getStartingMoney() { return startingMoney; }
 
-	//protected Vector outfitChoices=null; from stdcharclass -- but don't forget them!
+	//protected Vector<Item> outfitChoices=null; from stdcharclass -- but don't forget them!
 	protected List<String>[] securityGroups=new List[0];
 	protected Integer[] securityGroupLevels={};
 	protected Map<Integer,CMSecurity.SecGroup> securityGroupCache=new Hashtable<Integer,CMSecurity.SecGroup>();
@@ -392,7 +392,7 @@ public class GenCharClass extends StdCharClass
 			str.append(CMLib.xml().convertXMLtoTag("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(startAdjState)));
 		str.append(CMLib.xml().convertXMLtoTag("DISFLAGS",""+disableFlags));
 
-		final Vector ables=getAbleSet();
+		final Vector<AbilityMapper.AbilityMapping> ables=getAbleSet();
 		if((ables==null)||(ables.size()==0))
 			str.append("<CABILITIES/>");
 		else
@@ -401,15 +401,15 @@ public class GenCharClass extends StdCharClass
 			for(int r=0;r<ables.size();r++)
 			{
 				str.append("<CABILITY>");
-				str.append("<CACLASS>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).abilityID()+"</CACLASS>");
-				str.append("<CALEVEL>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).qualLevel()+"</CALEVEL>");
-				str.append("<CAPROFF>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).defaultProficiency()+"</CAPROFF>");
-				str.append("<CAAGAIN>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).autoGain()+"</CAAGAIN>");
-				str.append("<CASECR>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).isSecret()+"</CASECR>");
-				str.append("<CAPARM>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).defaultParm()+"</CAPARM>");
-				str.append("<CAPREQ>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).originalSkillPreReqList()+"</CAPREQ>");
-				str.append("<CAMASK>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).extraMask()+"</CAMASK>");
-				str.append("<CAMAXP>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).maxProficiency()+"</CAMAXP>");
+				str.append("<CACLASS>"+ables.elementAt(r).abilityID()+"</CACLASS>");
+				str.append("<CALEVEL>"+ables.elementAt(r).qualLevel()+"</CALEVEL>");
+				str.append("<CAPROFF>"+ables.elementAt(r).defaultProficiency()+"</CAPROFF>");
+				str.append("<CAAGAIN>"+ables.elementAt(r).autoGain()+"</CAAGAIN>");
+				str.append("<CASECR>"+ables.elementAt(r).isSecret()+"</CASECR>");
+				str.append("<CAPARM>"+ables.elementAt(r).defaultParm()+"</CAPARM>");
+				str.append("<CAPREQ>"+ables.elementAt(r).originalSkillPreReqList()+"</CAPREQ>");
+				str.append("<CAMASK>"+ables.elementAt(r).extraMask()+"</CAMASK>");
+				str.append("<CAMAXP>"+ables.elementAt(r).maxProficiency()+"</CAMAXP>");
 				str.append("</CABILITY>");
 			}
 			str.append("</CABILITIES>");
@@ -498,8 +498,8 @@ public class GenCharClass extends StdCharClass
 		}
 		else
 		{
-			final Vector nameSet=new Vector();
-			final Vector levelSet=new Vector();
+			final Vector<String> nameSet=new Vector<String>();
+			final Vector<Integer> levelSet=new Vector<Integer>();
 			int index=0;
 			int lastLevel=-1;
 			while(true)
@@ -517,8 +517,8 @@ public class GenCharClass extends StdCharClass
 			nameLevels=new Integer[levelSet.size()];
 			for(int i=0;i<nameSet.size();i++)
 			{
-				names[i]=(String)nameSet.elementAt(i);
-				nameLevels[i]=(Integer)levelSet.elementAt(i);
+				names[i]=nameSet.elementAt(i);
+				nameLevels[i]=levelSet.elementAt(i);
 			}
 		}
 		final String base=CMLib.xml().getValFromPieces(classData,"BASE");
@@ -711,9 +711,9 @@ public class GenCharClass extends StdCharClass
 			setStat(getStatCodes()[i],CMLib.xml().getValFromPieces(classData, getStatCodes()[i]));
 	}
 
-	protected Vector getAbleSet()
+	protected Vector<AbilityMapper.AbilityMapping> getAbleSet()
 	{
-		final Vector VA=new Vector(9);
+		final Vector<AbilityMapper.AbilityMapping> VA=new Vector<AbilityMapper.AbilityMapping>(9);
 		final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
 		for(final AbilityMapper.AbilityMapping able : V)
 		{
@@ -762,76 +762,138 @@ public class GenCharClass extends StdCharClass
 		}
 		switch(getCodeNum(code))
 		{
-		case 0: return ID;
-		case 1: if(num<names.length)
-					return names[num];
-				break;
-		case 2: return baseClass;
-		case 3: return ""+hitPointsFormula;
-		case 4: return subClassRule.toString();
-		case 5: return ""+bonusPracLevel;
-		case 6: return CMParms.toListString(getRequiredRaceList());
-		case 7: return ""+bonusAttackLevel;
-		case 8: return ""+attackAttribute;
-		case 9: return ""+trainsFirstLevel;
-		case 10: return ""+pracsFirstLevel;
-		case 11: return ""+levelsPerBonusDamage;
-		case 12: return ""+movementFormula;
-		case 13: return ""+allowedArmorLevel;
-		case 14: return "";//weaponLimitations;
-		case 15: return "";//armorLimitations;
-		case 16: return otherLimitations;
-		case 17: return otherBonuses;
-		case 18: return qualifications;
-		case 19: return ""+selectability;
-		case 20: return (adjPStats==null)?"":CMLib.coffeeMaker().getPhyStatsStr(adjPStats);
-		case 21: return (adjStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(adjStats);
-		case 22: return (setStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(setStats);
-		case 23: return (adjState==null)?"":CMLib.coffeeMaker().getCharStateStr(adjState);
-		case 24: return Integer.toString(getAbleSet().size());
-		case 25: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).abilityID();
-		case 26: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).qualLevel());
-		case 27: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).defaultProficiency());
-		case 28: return Boolean.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).autoGain());
-		case 29: return Boolean.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).isSecret());
-		case 30: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).defaultParm();
-		case 31: return ""+((disallowedWeaponSet!=null)?disallowedWeaponSet.size():0);
-		case 32: return CMParms.toListString(disallowedWeaponSet);
-		case 33: return ""+((outfit(null)!=null)?outfit(null).size():0);
-		case 34: return ""+((outfit(null)!=null)?outfit(null).get(num).ID():"");
-		case 35: return ""+((outfit(null)!=null)?outfit(null).get(num).text():"");
-		case 36: return ""+getMinimumStatRequirements().length;
-		case 37: return ""+manaFormula;
-		case 38: return getMinimumStatRequirements()[num].first;
-		case 39: return ""+disableFlags;
-		case 40: return (startAdjState==null)?"":CMLib.coffeeMaker().getCharStateStr(startAdjState);
-		case 41: return ""+names.length;
-		case 42: if(num<nameLevels.length)
-					return ""+nameLevels[num].intValue();
-				 break;
-		case 43: return ""+securityGroups.length;
-		case 44: if(num<securityGroups.length)
-					return CMParms.combineQuoted(securityGroups[num],0);
-				 break;
-		case 45: if(num<securityGroupLevels.length)
-					return ""+securityGroupLevels[num];
-				 break;
-		case 46: return ""+((requiredWeaponMaterials!=null)?requiredWeaponMaterials.size():0);
-		case 47: return CMParms.toListString(requiredWeaponMaterials);
-		case 48: return ""+requiredArmorSourceMinor();
-		case 49: return this.getCharClassLocatorID(statBuddy);
-		case 50: return this.getCharClassLocatorID(eventBuddy);
-		case 51: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).originalSkillPreReqList();
-		case 52: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).extraMask();
-		case 53: return helpEntry;
-		case 54: return ""+levelCap;
-		case 55: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).maxProficiency());
-		case 56: return ""+maxNonCraftingSkills;
-		case 57: return ""+maxCraftingSkills;
-		case 58: return ""+maxCommonSkills;
-		case 59: return ""+maxLanguages;
-		case 60: return getMinimumStatRequirements()[num].second.toString();
-		case 61: return startingMoney;
+		case 0:
+			return ID;
+		case 1:
+			if (num < names.length)
+				return names[num];
+			break;
+		case 2:
+			return baseClass;
+		case 3:
+			return "" + hitPointsFormula;
+		case 4:
+			return subClassRule.toString();
+		case 5:
+			return "" + bonusPracLevel;
+		case 6:
+			return CMParms.toListString(getRequiredRaceList());
+		case 7:
+			return "" + bonusAttackLevel;
+		case 8:
+			return "" + attackAttribute;
+		case 9:
+			return "" + trainsFirstLevel;
+		case 10:
+			return "" + pracsFirstLevel;
+		case 11:
+			return "" + levelsPerBonusDamage;
+		case 12:
+			return "" + movementFormula;
+		case 13:
+			return "" + allowedArmorLevel;
+		case 14:
+			return "";// weaponLimitations;
+		case 15:
+			return "";// armorLimitations;
+		case 16:
+			return otherLimitations;
+		case 17:
+			return otherBonuses;
+		case 18:
+			return qualifications;
+		case 19:
+			return "" + selectability;
+		case 20:
+			return (adjPStats == null) ? "" : CMLib.coffeeMaker().getPhyStatsStr(adjPStats);
+		case 21:
+			return (adjStats == null) ? "" : CMLib.coffeeMaker().getCharStatsStr(adjStats);
+		case 22:
+			return (setStats == null) ? "" : CMLib.coffeeMaker().getCharStatsStr(setStats);
+		case 23:
+			return (adjState == null) ? "" : CMLib.coffeeMaker().getCharStateStr(adjState);
+		case 24:
+			return Integer.toString(getAbleSet().size());
+		case 25:
+			return getAbleSet().elementAt(num).abilityID();
+		case 26:
+			return Integer.toString(getAbleSet().elementAt(num).qualLevel());
+		case 27:
+			return Integer.toString(getAbleSet().elementAt(num).defaultProficiency());
+		case 28:
+			return Boolean.toString(getAbleSet().elementAt(num).autoGain());
+		case 29:
+			return Boolean.toString(getAbleSet().elementAt(num).isSecret());
+		case 30:
+			return getAbleSet().elementAt(num).defaultParm();
+		case 31:
+			return "" + ((disallowedWeaponSet != null) ? disallowedWeaponSet.size() : 0);
+		case 32:
+			return CMParms.toListString(disallowedWeaponSet);
+		case 33:
+			return "" + ((outfit(null) != null) ? outfit(null).size() : 0);
+		case 34:
+			return "" + ((outfit(null) != null) ? outfit(null).get(num).ID() : "");
+		case 35:
+			return "" + ((outfit(null) != null) ? outfit(null).get(num).text() : "");
+		case 36:
+			return "" + getMinimumStatRequirements().length;
+		case 37:
+			return "" + manaFormula;
+		case 38:
+			return getMinimumStatRequirements()[num].first;
+		case 39:
+			return "" + disableFlags;
+		case 40:
+			return (startAdjState == null) ? "" : CMLib.coffeeMaker().getCharStateStr(startAdjState);
+		case 41:
+			return "" + names.length;
+		case 42:
+			if (num < nameLevels.length)
+				return "" + nameLevels[num].intValue();
+			break;
+		case 43:
+			return "" + securityGroups.length;
+		case 44:
+			if (num < securityGroups.length)
+				return CMParms.combineQuoted(securityGroups[num], 0);
+			break;
+		case 45:
+			if (num < securityGroupLevels.length)
+				return "" + securityGroupLevels[num];
+			break;
+		case 46:
+			return "" + ((requiredWeaponMaterials != null) ? requiredWeaponMaterials.size() : 0);
+		case 47:
+			return CMParms.toListString(requiredWeaponMaterials);
+		case 48:
+			return "" + requiredArmorSourceMinor();
+		case 49:
+			return this.getCharClassLocatorID(statBuddy);
+		case 50:
+			return this.getCharClassLocatorID(eventBuddy);
+		case 51:
+			return getAbleSet().elementAt(num).originalSkillPreReqList();
+		case 52:
+			return getAbleSet().elementAt(num).extraMask();
+		case 53:
+			return helpEntry;
+		case 54:
+			return "" + levelCap;
+		case 55:
+			return Integer.toString(getAbleSet().elementAt(num).maxProficiency());
+		case 56:
+			return "" + maxNonCraftingSkills;
+		case 57:
+			return "" + maxCraftingSkills;
+		case 58:
+			return "" + maxCommonSkills;
+		case 59:
+			return "" + maxLanguages;
+		case 60:
+			return getMinimumStatRequirements()[num].second.toString();
+		case 61:
+			return startingMoney;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -852,201 +914,349 @@ public class GenCharClass extends StdCharClass
 		}
 		switch(getCodeNum(code))
 		{
-		case 0: ID=val; break;
-		case 1: if(num<names.length)
-					names[num]=val;
-				break;
-		case 2: baseClass=val; break;
-		case 3: hitPointsFormula=val; super.hitPointsDesc=null; break;
-		case 4: subClassRule=(SubClassRule)CMath.s_valueOf(SubClassRule.class,val.toUpperCase().trim(),SubClassRule.BASEONLY); break;
-		case 5: bonusPracLevel=CMath.s_parseIntExpression(val); break;
-		case 6: raceRequiredList=CMParms.parseCommas(val,true).toArray(new String[0]); break;
-		case 7: bonusAttackLevel=CMath.s_parseIntExpression(val); break;
-		case 8: attackAttribute=CMath.s_parseListIntExpression(CharStats.CODES.NAMES(),val); break;
-		case 9: trainsFirstLevel=CMath.s_parseIntExpression(val); break;
-		case 10: pracsFirstLevel=CMath.s_parseIntExpression(val); break;
-		case 11: levelsPerBonusDamage=CMath.s_parseIntExpression(val); break;
-		case 12: movementFormula=val; super.movementDesc=null; break;
-		case 13: allowedArmorLevel=CMath.s_parseListIntExpression(CharClass.ARMOR_DESCS,val); break;
-		case 14: break;//weaponLimitations=val;break;
-		case 15: break;//armorLimitations=val;break;
-		case 16: otherLimitations=val;break;
-		case 17: otherBonuses=val;break;
-		case 18: qualifications=val;break;
-		case 19: selectability=CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES,val); break;
-		case 20: adjPStats=null;if(val.length()>0){adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0); CMLib.coffeeMaker().setPhyStats(adjPStats,val);}break;
-		case 21: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
-		case 22: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
-		case 23: adjState=null;if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
-		case 24: CMLib.ableMapper().delCharMappings(ID()); break;
-		case 25: CMLib.ableMapper().addCharAbilityMapping(ID(),
-														 CMath.s_int(tempables[1]),
-														 val,
-														 CMath.s_int(tempables[2]),
-														 CMath.s_int(tempables[8]),
-														 tempables[5],
-														 CMath.s_bool(tempables[3]),
-														 CMath.s_bool(tempables[4]),
-														 CMParms.parseCommas(tempables[6],true),
-														 tempables[7],
-														 null);
-														 break;
-		case 26: tempables[1]=val; break;
-		case 27: tempables[2]=val; break;
-		case 28: tempables[3]=val; break;
-		case 29: tempables[4]=val; break;
-		case 30: tempables[5]=val; break;
-		case 31: if(CMath.s_int(val)==0)
-					 disallowedWeaponSet=null;
-				 else
-					 disallowedWeaponSet=new HashSet();
-				 break;
+		case 0:
+			ID = val;
+			break;
+		case 1:
+			if (num < names.length)
+				names[num] = val;
+			break;
+		case 2:
+			baseClass = val;
+			break;
+		case 3:
+			hitPointsFormula = val;
+			super.hitPointsDesc = null;
+			break;
+		case 4:
+			subClassRule = (SubClassRule) CMath.s_valueOf(SubClassRule.class, val.toUpperCase().trim(), SubClassRule.BASEONLY);
+			break;
+		case 5:
+			bonusPracLevel = CMath.s_parseIntExpression(val);
+			break;
+		case 6:
+			raceRequiredList = CMParms.parseCommas(val, true).toArray(new String[0]);
+			break;
+		case 7:
+			bonusAttackLevel = CMath.s_parseIntExpression(val);
+			break;
+		case 8:
+			attackAttribute = CMath.s_parseListIntExpression(CharStats.CODES.NAMES(), val);
+			break;
+		case 9:
+			trainsFirstLevel = CMath.s_parseIntExpression(val);
+			break;
+		case 10:
+			pracsFirstLevel = CMath.s_parseIntExpression(val);
+			break;
+		case 11:
+			levelsPerBonusDamage = CMath.s_parseIntExpression(val);
+			break;
+		case 12:
+			movementFormula = val;
+			super.movementDesc = null;
+			break;
+		case 13:
+			allowedArmorLevel = CMath.s_parseListIntExpression(CharClass.ARMOR_DESCS, val);
+			break;
+		case 14:
+			break;// weaponLimitations=val;break;
+		case 15:
+			break;// armorLimitations=val;break;
+		case 16:
+			otherLimitations = val;
+			break;
+		case 17:
+			otherBonuses = val;
+			break;
+		case 18:
+			qualifications = val;
+			break;
+		case 19:
+			selectability = CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES, val);
+			break;
+		case 20:
+			adjPStats = null;
+			if (val.length() > 0)
+			{
+				adjPStats = (PhyStats) CMClass.getCommon("DefaultPhyStats");
+				adjPStats.setAllValues(0);
+				CMLib.coffeeMaker().setPhyStats(adjPStats, val);
+			}
+			break;
+		case 21:
+			adjStats = null;
+			if (val.length() > 0)
+			{
+				adjStats = (CharStats) CMClass.getCommon("DefaultCharStats");
+				adjStats.setAllValues(0);
+				CMLib.coffeeMaker().setCharStats(adjStats, val);
+			}
+			break;
+		case 22:
+			setStats = null;
+			if (val.length() > 0)
+			{
+				setStats = (CharStats) CMClass.getCommon("DefaultCharStats");
+				setStats.setAllValues(0);
+				CMLib.coffeeMaker().setCharStats(setStats, val);
+			}
+			break;
+		case 23:
+			adjState = null;
+			if (val.length() > 0)
+			{
+				adjState = (CharState) CMClass.getCommon("DefaultCharState");
+				adjState.setAllValues(0);
+				CMLib.coffeeMaker().setCharState(adjState, val);
+			}
+			break;
+		case 24:
+			CMLib.ableMapper().delCharMappings(ID());
+			break;
+		case 25: 
+			CMLib.ableMapper().addCharAbilityMapping(ID(),
+													 CMath.s_int(tempables[1]),
+													 val,
+													 CMath.s_int(tempables[2]),
+													 CMath.s_int(tempables[8]),
+													 tempables[5],
+													 CMath.s_bool(tempables[3]),
+													 CMath.s_bool(tempables[4]),
+													 CMParms.parseCommas(tempables[6],true),
+													 tempables[7],
+													 null);
+			break;
+		case 26:
+			tempables[1] = val;
+			break;
+		case 27:
+			tempables[2] = val;
+			break;
+		case 28:
+			tempables[3] = val;
+			break;
+		case 29:
+			tempables[4] = val;
+			break;
+		case 30:
+			tempables[5] = val;
+			break;
+		case 31:
+			if (CMath.s_int(val) == 0)
+				disallowedWeaponSet = null;
+			else
+				disallowedWeaponSet = new HashSet();
+			break;
 		case 32:
 		{
-			final List<String> V=CMParms.parseCommas(val,true);
-			if(V.size()>0)
+			final List<String> V = CMParms.parseCommas(val, true);
+			if (V.size() > 0)
 			{
-				disallowedWeaponSet=new HashSet();
-				for(int v=0;v<V.size();v++)
+				disallowedWeaponSet = new HashSet();
+				for (int v = 0; v < V.size(); v++)
 					disallowedWeaponSet.add(Integer.valueOf(CMath.s_int(V.get(v))));
 			}
 			else
-				disallowedWeaponSet=null;
+				disallowedWeaponSet = null;
 			break;
 		}
-		case 33: if(CMath.s_int(val)==0) outfitChoices=null; break;
-		case 34: {   if(outfitChoices==null) outfitChoices=new Vector<Item>();
-					 if(num>=outfitChoices.size())
-						outfitChoices.add(CMClass.getItem(val));
-					 else
-						outfitChoices.set(num,CMClass.getItem(val));
-					 break;
-				 }
-		case 35: {   if((outfitChoices!=null)&&(num<outfitChoices.size()))
-					 {
-						final Item I=outfitChoices.get(num);
-						I.setMiscText(val);
-						I.recoverPhyStats();
-					 }
-					 break;
-				 }
-		case 36: {  minimumStatRequirements=new Pair[CMath.s_int(val)];
-					for(int i=0;i<CMath.s_int(val);i++)
-						minimumStatRequirements[i]=new Pair<String,Integer>("",Integer.valueOf(0));
-					break;
-				 }
-		case 37: manaFormula=val; super.manaDesc=null; break;
-		case 38: minimumStatRequirements[num].first=val; break;
-		case 39: disableFlags=CMath.s_int(val); break;
-		case 40: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
-		case 41: num=CMath.s_int(val);
-				 if(num>0)
-				 {
-					final String[] newNames=new String[num];
-					final Integer[] newLevels=new Integer[num];
-					for(int i=0;i<names.length;i++)
-						if(i<num)
-						{
-							newNames[i]=names[i];
-							newLevels[i]=nameLevels[i];
-						}
-					if(newNames.length>names.length)
-					for(int i=names.length;i<newNames.length;i++)
+		case 33:
+			if (CMath.s_int(val) == 0)
+				outfitChoices = null;
+			break;
+		case 34:
+		{
+			if (outfitChoices == null)
+				outfitChoices = new Vector<Item>();
+			if (num >= outfitChoices.size())
+				outfitChoices.add(CMClass.getItem(val));
+			else
+				outfitChoices.set(num, CMClass.getItem(val));
+			break;
+		}
+		case 35:
+		{
+			if ((outfitChoices != null) && (num < outfitChoices.size()))
+			{
+				final Item I = outfitChoices.get(num);
+				I.setMiscText(val);
+				I.recoverPhyStats();
+			}
+			break;
+		}
+		case 36:
+		{
+			minimumStatRequirements = new Pair[CMath.s_int(val)];
+			for (int i = 0; i < CMath.s_int(val); i++)
+				minimumStatRequirements[i] = new Pair<String, Integer>("", Integer.valueOf(0));
+			break;
+		}
+		case 37:
+			manaFormula = val;
+			super.manaDesc = null;
+			break;
+		case 38:
+			minimumStatRequirements[num].first = val;
+			break;
+		case 39:
+			disableFlags = CMath.s_int(val);
+			break;
+		case 40:
+			startAdjState = null;
+			if (val.length() > 0)
+			{
+				startAdjState = (CharState) CMClass.getCommon("DefaultCharState");
+				startAdjState.setAllValues(0);
+				CMLib.coffeeMaker().setCharState(startAdjState, val);
+			}
+			break;
+		case 41:
+		{
+			num = CMath.s_int(val);
+			if (num > 0)
+			{
+				final String[] newNames = new String[num];
+				final Integer[] newLevels = new Integer[num];
+				for (int i = 0; i < names.length; i++)
+					if (i < num)
 					{
-						newNames[i]=names[names.length-1];
-						newLevels[i]=Integer.valueOf(newLevels[i-1].intValue()+1);
+						newNames[i] = names[i];
+						newLevels[i] = nameLevels[i];
 					}
-					names=newNames;
-					nameLevels=newLevels;
-				 }
-				 break;
-		case 42: if(num<nameLevels.length)
-					nameLevels[num]=Integer.valueOf(CMath.s_int(val));
-				 break;
-		case 43:{
-				num=CMath.s_int(val);
-				if(num<0)
-					num=0;
-				final List<String>[] newGroups=new Vector[num];
-				final Integer[] newLevels=new Integer[num];
-				for(int i=0;i<securityGroups.length;i++)
-					if(i<num)
+				if (newNames.length > names.length)
+					for (int i = names.length; i < newNames.length; i++)
 					{
-						newGroups[i]=securityGroups[i];
-						newLevels[i]=securityGroupLevels[i];
+						newNames[i] = names[names.length - 1];
+						newLevels[i] = Integer.valueOf(newLevels[i - 1].intValue() + 1);
 					}
-				if(newGroups.length>securityGroups.length)
-				for(int i=securityGroups.length;i<newGroups.length;i++)
+				names = newNames;
+				nameLevels = newLevels;
+			}
+			break;
+		}
+		case 42:
+			if (num < nameLevels.length)
+				nameLevels[num] = Integer.valueOf(CMath.s_int(val));
+			break;
+		case 43:
+		{
+			num = CMath.s_int(val);
+			if (num < 0)
+				num = 0;
+			final List<String>[] newGroups = new Vector[num];
+			final Integer[] newLevels = new Integer[num];
+			for (int i = 0; i < securityGroups.length; i++)
+				if (i < num)
 				{
-					newGroups[i]=new Vector();
-					if(i==0)
-						newLevels[0]=Integer.valueOf(0);
+					newGroups[i] = securityGroups[i];
+					newLevels[i] = securityGroupLevels[i];
+				}
+			if (newGroups.length > securityGroups.length)
+				for (int i = securityGroups.length; i < newGroups.length; i++)
+				{
+					newGroups[i] = new Vector();
+					if (i == 0)
+						newLevels[0] = Integer.valueOf(0);
 					else
-						newLevels[i]=Integer.valueOf(newLevels[i-1].intValue()+1);
+						newLevels[i] = Integer.valueOf(newLevels[i - 1].intValue() + 1);
 				}
-				securityGroups=newGroups;
-				securityGroupLevels=newLevels;
-				securityGroupCache.clear();
-				break;
-				}
-		case 44: if(num<securityGroups.length)
-					securityGroups[num]=CMParms.parse(val.toUpperCase());
-				 securityGroupCache.clear();
-				 break;
-		case 45: if(num<securityGroupLevels.length)
-					securityGroupLevels[num]=Integer.valueOf(CMath.s_int(val));
-				securityGroupCache.clear();
-				 break;
-		case 46: if(CMath.s_int(val)==0)
-					 requiredWeaponMaterials=null;
-				 else
-					 requiredWeaponMaterials=new HashSet();
-				 break;
+			securityGroups = newGroups;
+			securityGroupLevels = newLevels;
+			securityGroupCache.clear();
+			break;
+		}
+		case 44:
+			if (num < securityGroups.length)
+				securityGroups[num] = CMParms.parse(val.toUpperCase());
+			securityGroupCache.clear();
+			break;
+		case 45:
+			if (num < securityGroupLevels.length)
+				securityGroupLevels[num] = Integer.valueOf(CMath.s_int(val));
+			securityGroupCache.clear();
+			break;
+		case 46:
+			if (CMath.s_int(val) == 0)
+				requiredWeaponMaterials = null;
+			else
+				requiredWeaponMaterials = new HashSet();
+			break;
 		case 47:
 		{
-			final List<String> V=CMParms.parseCommas(val,true);
-			if(V.size()>0)
+			final List<String> V = CMParms.parseCommas(val, true);
+			if (V.size() > 0)
 			{
-				requiredWeaponMaterials=new HashSet();
-				for(int v=0;v<V.size();v++)
+				requiredWeaponMaterials = new HashSet();
+				for (int v = 0; v < V.size(); v++)
 					requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int(V.get(v))));
 			}
 			else
-				requiredWeaponMaterials=null;
-			 break;
+				requiredWeaponMaterials = null;
+			break;
 		}
-		case 48: requiredArmorSourceMinor=CMath.s_int(val); break;
+		case 48:
+			requiredArmorSourceMinor = CMath.s_int(val);
+			break;
 		case 49:
 		{
-			statBuddy=CMClass.getCharClass(val);
+			statBuddy = CMClass.getCharClass(val);
 			try
 			{
-				if(statBuddy==null)
-					statBuddy=(CharClass)CMClass.getLoadNewClassInstance(CMObjectType.CHARCLASS,val,true);
-			}catch(final Exception e){}
+				if (statBuddy == null)
+					statBuddy = (CharClass) CMClass.getLoadNewClassInstance(CMObjectType.CHARCLASS, val, true);
+			}
+			catch (final Exception e)
+			{
+			}
 			break;
 		}
 		case 50:
 		{
-			eventBuddy=CMClass.getCharClass(val);
+			eventBuddy = CMClass.getCharClass(val);
 			try
 			{
-				if(eventBuddy==null)
-					eventBuddy=(CharClass)CMClass.getLoadNewClassInstance(CMObjectType.CHARCLASS,val,true);
-			}catch(final Exception e){}
+				if (eventBuddy == null)
+					eventBuddy = (CharClass) CMClass.getLoadNewClassInstance(CMObjectType.CHARCLASS, val, true);
+			}
+			catch (final Exception e)
+			{
+			}
 			break;
 		}
-		case 51: tempables[6]=val; break;
-		case 52: tempables[7]=val; break;
-		case 53: helpEntry=val; break;
-		case 54: levelCap=CMath.s_int(val); break;
-		case 55: tempables[8]=val; break;
-		case 56: maxNonCraftingSkills=CMath.s_int(val); break;
-		case 57: maxCraftingSkills=CMath.s_int(val); break;
-		case 58: maxCommonSkills=CMath.s_int(val); break;
-		case 59: maxLanguages=CMath.s_int(val); break;
-		case 60: minimumStatRequirements[num].second=Integer.valueOf(CMath.s_int(val)); break;
-		case 61: startingMoney=val; break;
+		case 51:
+			tempables[6] = val;
+			break;
+		case 52:
+			tempables[7] = val;
+			break;
+		case 53:
+			helpEntry = val;
+			break;
+		case 54:
+			levelCap = CMath.s_int(val);
+			break;
+		case 55:
+			tempables[8] = val;
+			break;
+		case 56:
+			maxNonCraftingSkills = CMath.s_int(val);
+			break;
+		case 57:
+			maxCraftingSkills = CMath.s_int(val);
+			break;
+		case 58:
+			maxCommonSkills = CMath.s_int(val);
+			break;
+		case 59:
+			maxLanguages = CMath.s_int(val);
+			break;
+		case 60:
+			minimumStatRequirements[num].second = Integer.valueOf(CMath.s_int(val));
+			break;
+		case 61:
+			startingMoney = val;
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

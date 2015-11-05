@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Disease_Lycanthropy extends Disease
 {
 	@Override public String ID() { return "Disease_Lycanthropy"; }
@@ -113,7 +112,7 @@ public class Disease_Lycanthropy extends Disease
 		return null;
 	}
 
-	protected boolean findVictim(MOB mob, Room room, Vector rooms, int depth)
+	protected boolean findVictim(MOB mob, Room room, Vector<Room> rooms, int depth)
 	{
 		if(depth>5)
 			return false;
@@ -162,7 +161,7 @@ public class Disease_Lycanthropy extends Disease
 		   deathTrail=null;
 		if(deathTrail==null)
 		{
-			final Vector rooms=new Vector();
+			final Vector<Room> rooms=new Vector<Room>();
 			if((findVictim(mob,mob.location(),rooms,0))&&(rooms.size()>0))
 			{
 				TrackingLibrary.TrackingFlags flags;

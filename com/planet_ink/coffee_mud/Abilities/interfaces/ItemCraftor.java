@@ -44,8 +44,8 @@ import java.util.*;
 public interface ItemCraftor extends Ability
 {
 	/**
-	 * A Vector containing an entry for each craftable recipe
-	 * Each craftable recipe is also a vector of strings.
+	 * A list containing an entry for each craftable recipe
+	 * Each craftable recipe is also a list of strings.
 	 * @return a vector of vectors
 	 */
 	public List<List<String>> fetchRecipes();
@@ -128,7 +128,7 @@ public interface ItemCraftor extends Ability
 	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels);
 
 	/**
-	 * Returns a Vector of Integer objects where each Integer
+	 * Returns a list of Integer objects where each Integer
 	 * is a fully qualified RawMaterial code.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @return a vector of integers

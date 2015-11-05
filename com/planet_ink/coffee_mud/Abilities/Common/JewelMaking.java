@@ -38,7 +38,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override public String ID() { return "JewelMaking"; }
@@ -64,7 +63,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	protected static final int RCP_EXTRAREQ=9;
 	protected static final int RCP_SPELL=10;
 
-	protected Vector beingDone=null;
+	protected Pair<Item,String> beingDone=null;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -105,15 +104,15 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
-					if((beingDone!=null)&&(beingDone.size()>=2))
+					if(beingDone!=null)
 					{
 						if(messedUp)
 							commonEmote(mob,L("<S-NAME> mess(es) up @x1.",verb));
 						else
 						{
-							final Item I=(Item)beingDone.elementAt(1);
+							final Item I=beingDone.first;
 							buildingI.setBaseValue(buildingI.baseGoldValue()+(I.baseGoldValue()*2));
-							buildingI.setDescription(buildingI.description()+" "+(String)beingDone.elementAt(0));
+							buildingI.setDescription(buildingI.description()+" "+beingDone.second);
 						}
 						beingDone=null;
 					}
@@ -409,11 +408,11 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			buildingI=(Item)thangE;
-			beingDone=new Vector();
+			beingDone=new Pair<Item,String>(null,"");
 			String materialName=RawMaterial.CODES.NAME(jewelI.material()).toLowerCase();
 			if(word.equals("encrust"))
 			{
-				beingDone.addElement(CMStrings.capitalizeAndLower(buildingI.name())+" is encrusted with bits of "+materialName+".");
+				beingDone.second = (CMStrings.capitalizeAndLower(buildingI.name())+" is encrusted with bits of "+materialName+".");
 				startStr=L("<S-NAME> start(s) encrusting @x1 with @x2.",buildingI.name(),materialName);
 				displayText=L("You are encrusting @x1 with @x2",buildingI.name(),materialName);
 				verb=L("encrusting @x1 with bits of @x2",buildingI.name(),materialName);
@@ -421,12 +420,12 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			else
 			{
 				materialName=CMLib.english().startWithAorAn(materialName).toLowerCase();
-				beingDone.addElement(CMStrings.capitalizeAndLower(buildingI.name())+" has "+materialName+" mounted on it.");
+				beingDone.second = (CMStrings.capitalizeAndLower(buildingI.name())+" has "+materialName+" mounted on it.");
 				startStr=L("<S-NAME> start(s) mounting @x1 onto @x2.",materialName,buildingI.name());
 				displayText=L("You are mounting @x1 onto @x2",materialName,buildingI.name());
 				verb=L("mounting @x1 onto @x2",materialName,buildingI.name());
 			}
-			beingDone.addElement(jewelI);
+			beingDone.first = jewelI;
 			messedUp=!proficiencyCheck(mob,0,auto);
 			duration=10;
 			final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr);

@@ -1026,7 +1026,7 @@ public class PokerDealer extends StdBehavior
 	// method repeatedly for all players,
 	// determining the score for their hands.
 	// It then passes back a 2 dimensional
-	// Vector with the player mob object and
+	// DVector with the player mob object and
 	// the score.  It is sorted by score.
 	// since stud starts betting with high SHOWN cards,
 	// we need a way to specify that only the face up

@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Prop_HereSpellCast extends Prop_HaveSpellCast
 {
 	@Override public String ID() { return "Prop_HereSpellCast"; }
@@ -42,7 +42,7 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	@Override public boolean bubbleAffect(){return true;}
 	protected int lastNum=-1;
-	private Vector lastMOBs=new Vector();
+	private Vector<MOB> lastMOBs=new Vector<MOB>();
 
 	@Override
 	public String accountForYourself()
@@ -54,7 +54,7 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		lastMOBs=new Vector();
+		lastMOBs=new Vector<MOB>();
 	}
 
 	public void process(MOB mob, Room room, int code) // code=0 add/sub, 1=addon, 2=subon
@@ -63,7 +63,7 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 		{
 			for(int v=lastMOBs.size()-1;v>=0;v--)
 			{
-				final MOB lastMOB=(MOB)lastMOBs.elementAt(v);
+				final MOB lastMOB=lastMOBs.elementAt(v);
 				if((lastMOB.location()!=room)
 				||((mob==lastMOB)&&(code==2)))
 				{

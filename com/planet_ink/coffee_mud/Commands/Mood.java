@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Mood extends StdCommand
 {
 	public Mood(){}
@@ -46,7 +46,7 @@ public class Mood extends StdCommand
 		final Ability A=CMClass.getAbility("Mood");
 		if(A!=null)
 		{
-			final Vector V=new XVector(commands);
+			final Vector<String> V=new XVector<String>(commands);
 			V.remove(0);
 			A.invoke(mob,V,mob,true,0);
 		}

@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+
 public class Knock extends StdCommand
 {
 	public Knock(){}
@@ -87,7 +87,7 @@ public class Knock extends StdCommand
 				&&(R.showOthers(mob,E,null,CMMsg.MSG_KNOCK,L("You hear a knock on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50))))
 				&&((R.domainType()&Room.INDOORS)==Room.INDOORS))
 				{
-					final Vector V=new Vector();
+					final Vector<Room> V=new Vector<Room>();
 					V.add(mob.location());
 					TrackingLibrary.TrackingFlags flags;
 					flags = new TrackingLibrary.TrackingFlags()
@@ -96,7 +96,7 @@ public class Knock extends StdCommand
 					V.removeElement(mob.location());
 					for(int v=0;v<V.size();v++)
 					{
-						final Room R2=(Room)V.get(v);
+						final Room R2=V.get(v);
 						final int dir2=CMLib.tracking().radiatesFromDir(R2,V);
 						if((dir2>=0)&&((R2.domainType()&Room.INDOORS)==Room.INDOORS))
 						{

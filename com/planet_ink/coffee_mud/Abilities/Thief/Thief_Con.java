@@ -153,7 +153,7 @@ public class Thief_Con extends ThiefSkill
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands!=null)
-			commands=new XVector(commands);
+			commands=new XVector<String>(commands);
 		if(!conCheck(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final Vector V=new Vector();

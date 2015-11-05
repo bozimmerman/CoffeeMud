@@ -291,12 +291,12 @@ public class GrinderMobs
 	}
 
 
-	public static String items(MOB M, Vector allitems, HTTPRequest httpReq)
+	public static String items(MOB M, Vector<Item> allitems, HTTPRequest httpReq)
 	{
 		if(httpReq.isUrlParameter("ITEM1"))
 		{
-			final Vector items=new Vector();
-			final Vector cstrings=new Vector();
+			final Vector<Item> items=new Vector<Item>();
+			final Vector<String> cstrings=new Vector<String>();
 			for(int i=1;;i++)
 			{
 				final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
@@ -326,17 +326,17 @@ public class GrinderMobs
 			}
 			for(int i=0;i<cstrings.size();i++)
 			{
-				final String CONTAINER=(String)cstrings.elementAt(i);
+				final String CONTAINER=cstrings.elementAt(i);
 				if(CONTAINER.length()==0)
 					continue;
-				final Item I2=(Item)items.elementAt(i);
+				final Item I2=items.elementAt(i);
 				final Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
 				if(C2 instanceof Container)
 					I2.setContainer((Container)C2);
 			}
 			for(int i=0;i<allitems.size();i++)
 			{
-				final Item I=(Item)allitems.elementAt(i);
+				final Item I=allitems.elementAt(i);
 				if(!M.isMine(I))
 				{
 					I.setOwner(M);
@@ -426,7 +426,7 @@ public class GrinderMobs
 				M=CMClass.getMOB(newClassID);
 			M.setStartRoom(R);
 
-			final Vector allitems=new Vector();
+			final Vector<Item> allitems=new Vector<Item>();
 			while(oldM.numItems()>0)
 			{
 				final Item I=oldM.getItem(0);
@@ -875,7 +875,7 @@ public class GrinderMobs
 				if((M instanceof Economics)
 				&&(httpReq.isUrlParameter("IPRIC1")))
 				{
-					final Vector prics=new Vector();
+					final Vector<String> prics=new Vector<String>();
 					String DOUBLE=httpReq.getUrlParameter("IPRIC"+num);
 					String MASK=httpReq.getUrlParameter("IPRICM"+num);
 					while((DOUBLE!=null)&&(MASK!=null))

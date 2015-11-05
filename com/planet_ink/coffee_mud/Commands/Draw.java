@@ -40,9 +40,9 @@ public class Draw extends Get
 	private final String[] access=I(new String[]{"DRAW"});
 	@Override public String[] getAccessWords(){return access;}
 
-	public Vector getSheaths(MOB mob)
+	public Vector<Container> getSheaths(MOB mob)
 	{
-		final Vector sheaths=new Vector();
+		final Vector<Container> sheaths=new Vector<Container>();
 		if(mob!=null)
 		for(int i=0;i<mob.numItems();i++)
 		{
@@ -55,11 +55,13 @@ public class Draw extends Get
 			{
 				final List<Item> contents=((Container)I).getContents();
 				for(int c=0;c<contents.size();c++)
+				{
 					if(contents.get(c) instanceof Weapon)
 					{
-						sheaths.add(I);
+						sheaths.add((Container)I);
 						break;
 					}
+				}
 			}
 		}
 		return sheaths;
@@ -109,7 +111,7 @@ public class Draw extends Get
 		String containerName="";
 		String whatToGet="";
 		int c=0;
-		final Vector sheaths=getSheaths(mob);
+		final Vector<Container> sheaths=getSheaths(mob);
 		if(commands.size()>0)
 			commands.remove(0);
 		if(commands.size()==0)
@@ -122,8 +124,8 @@ public class Draw extends Get
 			{
 				final Item I=mob.getItem(i);
 				if((I instanceof Weapon)
-				   &&(I.container()!=null)
-				   &&(sheaths.contains(I.container())))
+				&&(I.container()!=null)
+				&&(sheaths.contains(I.container())))
 				{
 					containers.add(I.container());
 					whatToGet=I.name();
@@ -131,6 +133,7 @@ public class Draw extends Get
 				}
 			}
 			if(whatToGet.length()==0)
+			{
 				for(int i=0;i<mob.numItems();i++)
 				{
 					final Item I=mob.getItem(i);
@@ -140,6 +143,7 @@ public class Draw extends Get
 						break;
 					}
 				}
+			}
 		}
 		else
 		{
@@ -156,7 +160,7 @@ public class Draw extends Get
 		boolean doneSomething=false;
 		while((c<containers.size())||(containers.size()==0))
 		{
-			final Vector V=new Vector();
+			final Vector<Weapon> V=new Vector<Weapon>();
 			Container container=null;
 			if(containers.size()>0)
 				container=containers.get(c++);
@@ -172,13 +176,13 @@ public class Draw extends Get
 				if(getThis==null)
 					break;
 				if(getThis instanceof Weapon)
-					V.add(getThis);
+					V.add((Weapon)getThis);
 				addendumStr="."+(++addendum);
 			}
 
 			for(int i=0;i<V.size();i++)
 			{
-				final Item getThis=(Item)V.get(i);
+				final Item getThis=V.get(i);
 				long wearCode=0;
 				if(container!=null)
 					wearCode=container.rawWornCode();

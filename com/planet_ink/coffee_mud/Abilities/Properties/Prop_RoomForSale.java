@@ -272,7 +272,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		&&(affected instanceof Room))
 		{
 			updateLot(null);
-			final Vector mobs=new Vector();
+			final Vector<MOB> mobs=new Vector<MOB>();
 			Room R=(Room)affected;
 			if(R!=null)
 			{
@@ -575,7 +575,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				if(thisOne.startsWith(ID+"|~>|"))
 				{
 					thisOne=thisOne.substring((ID+"|~>|").length());
-					final Vector dateV=CMParms.parse(thisOne);
+					final Vector<String> dateV=CMParms.parse(thisOne);
 					if(dateV.size()==3)
 					{
 						int lastYear=CMath.s_int((String)dateV.lastElement());

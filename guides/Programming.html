@@ -2219,12 +2219,12 @@ proceed.</p>
       <pre>  public boolean execute( MOB mob, List&lt;String&gt; commands, int metaFlags )<br />    throws java.io.IOException<br />  {<br />    String parameters = CMParms.combine( commands, 1 );<br />    if( parameters.length() == 0 )<br />    {<br />      mob.tell( "Nothing done." );<br />    }<br />    else<br />    {<br />      mob.tell( "Nothing, not even '" + parameters + "', done." );<br />    }<br />    return false;<br /><br />  }<br /> <br /></pre>
       <p>Our last method is where the command actually does its work.
 The mob given would be the MOB object trying to execute this command,
-while commands is a Vector of parameters.</p>
+while commands is a List of parameters.</p>
       <p>The parameter commands is never null, and by convention is a
 Vector of strings starting with the access word used to execute the
 command. For instance, if the user entered:</p>
       <pre>donothing never "and always" never<br />       <br /></pre>
-      <p>The commands Vector would be size 4, and contain "donothing",
+      <p>The commands List would be size 4, and contain "donothing",
 "never", "and always", and "never" respectively. In the case of this
 command, we use one of the String utilities to recombine the last 3
 parameters back into one string "never and always never", and then

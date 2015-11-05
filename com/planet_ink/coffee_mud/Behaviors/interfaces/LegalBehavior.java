@@ -252,17 +252,17 @@ public interface LegalBehavior extends Behavior
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
 	 * @param myArea the geographic legal area
 	 * @param searchStr the name/search string to use
-	 * @return a Vector of MOB objects
+	 * @return a list of MOB objects
 	 */
 	public List<MOB> getCriminals(Area myArea, String searchStr);
 
 	/**
-	 * Returns a Vector of all active legal warrants available on the given
+	 * Returns a list of all active legal warrants available on the given
 	 * mob.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant
 	 * @param myArea the geographic legal area
 	 * @param accused the mob to look for warrants for
-	 * @return a Vector of LegalWarrant objects
+	 * @return a list of LegalWarrant objects
 	 */
 	public List<LegalWarrant> getWarrantsOf(Area myArea, MOB accused);
 
@@ -321,7 +321,7 @@ public interface LegalBehavior extends Behavior
 	 * is indeed an official Jail room as defined by this legal behavior.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @param myArea the geographic legal area
-	 * @param jails a Vector of Room objects to inspect
+	 * @param jails a list of Room objects to inspect
 	 * @return whether any one of the room objects is, in fact, a jail
 	 */
 	public boolean isJailRoom(Area myArea, List<Room> jails);

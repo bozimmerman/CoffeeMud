@@ -46,13 +46,13 @@ public class Prayer_Stoning extends Prayer
 	@Override public String displayText(){ return "";}
 	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
 	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	protected Vector cits=new Vector();
+	protected Vector<MOB> cits=new Vector<MOB>();
 
 	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		cits=new Vector();
+		cits=new Vector<MOB>();
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class Prayer_Stoning extends Prayer
 		{
 			for(int i=0;i<cits.size();i++)
 			{
-				final MOB M=(MOB)cits.elementAt(i);
+				final MOB M=cits.elementAt(i);
 				if((M.location()!=mob.location())||(mob.amDead()))
 				{
 					CMLib.tracking().wanderAway(M,true,false);
