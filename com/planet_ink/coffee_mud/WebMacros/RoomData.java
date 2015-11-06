@@ -73,8 +73,10 @@ public class RoomData extends StdWebMacro
 		if(I==null)
 			return "";
 		for(int i=0;i<R.numItems();i++)
+		{
 			if(R.getItem(i)==I)
 				return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+i;
+		}
 		return "";
 	}
 
@@ -104,8 +106,10 @@ public class RoomData extends StdWebMacro
 		if(I==null)
 			return "";
 		for(int i=0;i<M.numItems();i++)
+		{
 			if(M.getItem(i)==I)
 				return Long.toString( ( I.ID() + "/" + I.Name() + "/" + I.displayText() ).hashCode() << 5 ) + i;
+		}
 		return "";
 	}
 
@@ -145,13 +149,17 @@ public class RoomData extends StdWebMacro
 		if(M==null)
 			return getItemFromCode(getItemCache(),code);
 		for(int i=0;i<M.numItems();i++)
+		{
 			if(getItemCode(M,M.getItem(i)).equals(code))
 				return M.getItem(i);
+		}
 		if(code.length()>2)
 			code=code.substring(0,code.length()-2);
 		for(int i=0;i<M.numItems();i++)
+		{
 			if(getItemCode(M,M.getItem(i)).startsWith(code))
 				return M.getItem(i);
+		}
 		return null;
 	}
 
@@ -160,13 +168,17 @@ public class RoomData extends StdWebMacro
 		if(R==null)
 			return getItemFromCode(getItemCache(),code);
 		for(int i=0;i<R.numItems();i++)
+		{
 			if(getItemCode(R,R.getItem(i)).equals(code))
 				return R.getItem(i);
+		}
 		if(code.length()>2)
 			code=code.substring(0,code.length()-2);
 		for(int i=0;i<R.numItems();i++)
+		{
 			if(getItemCode(R,R.getItem(i)).startsWith(code))
 				return R.getItem(i);
+		}
 		return null;
 	}
 
@@ -194,13 +206,17 @@ public class RoomData extends StdWebMacro
 		if(R==null)
 			return getMOBFromCode(getMOBCache(),code);
 		for(int i=0;i<R.numInhabitants();i++)
+		{
 			if(getMOBCode(R,R.fetchInhabitant(i)).equals(code))
 				return R.fetchInhabitant(i);
+		}
 		if(code.length()>2)
 			code=code.substring(0,code.length()-2);
 		for(int i=0;i<R.numInhabitants();i++)
+		{
 			if(getMOBCode(R,R.fetchInhabitant(i)).startsWith(code))
 				return R.fetchInhabitant(i);
+		}
 		return null;
 	}
 
@@ -353,9 +369,11 @@ public class RoomData extends StdWebMacro
 		if(str.length()==0)
 			return false;
 		for(int c=0;c<str.length();c++)
+		{
 			if((!Character.isDigit(str.charAt(c)))
 			&&(str.charAt(c)!='-'))
 				return false;
+		}
 		return true;
 	}
 
@@ -369,7 +387,10 @@ public class RoomData extends StdWebMacro
 				for (final Item I2 : getItemCache())
 				{
 					if(I.sameAs(I2))
-					{	found=true;	break;	}
+					{
+						found = true;
+						break;
+					}
 				}
 				if(!found)
 				{

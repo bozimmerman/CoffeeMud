@@ -89,8 +89,8 @@ public class GenCompEnviroSystem extends GenElecCompItem
 								pct=pct*CMath.div(usesRemaining(),100);
 							final String code=Technical.TechCommand.AIRREFRESH.makeCommand(Double.valueOf(pct),Integer.valueOf(airResource));
 							final CMMsg msg2=CMClass.getMsg(msg.source(), ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-							if(A.okMessage(msg2.source(), msg))
-								A.executeMsg(msg2.source(), msg);
+							if(A.okMessage(msg2.source(), msg2))
+								A.executeMsg(msg2.source(), msg2);
 						}
 					}
 				}

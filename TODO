@@ -1,5 +1,5 @@
 BUGS
-  *. ShopKeeper, and presumably random inventory kick in during mudgrinder edits.  Fix This.
+  *. ShopKeeper, and presumably random inventory kick in during mudgrinder edits. No reproduce, but watch it.
 
 TECH
    *. add air circulater and heat regulators
