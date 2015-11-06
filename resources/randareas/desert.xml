@@ -137,17 +137,18 @@ See guides/RandomAreas.html for information about documents of this type.
 		<NAME condition="$mob_level&lt;85 and $mob_level&gt;=80">a very old blue dragon</NAME>
 		<NAME condition="$mob_level&gt;=85">a ancient blue dragon</NAME>
 	</NAME>
-		<DISPLAY select="pick-1">
-			<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>
-			<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
-			<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
-		</DISPLAY>
+	<DISPLAY select="pick-1">
+		<DISPLAY pickweight="1">$mob_name leaps towards you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+		<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+	</DISPLAY>
 	<DESCRIPTION>$mob_name strikes terror in your very bones.</DESCRIPTION>
 	<BEHAVIOR select="all">
 		<BEHAVIOR condition="$mob_level&gt;=40" class="MOBEater" parms="" />
 		<BEHAVIOR class="CombatAbilities" parms="" />
 		<BEHAVIOR class="ObjectGuardian" parms="" />
 	</BEHAVIOR>
+	<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 	<ABILITY select="all">
 		<ABILITY condition="$mob_level&gt;=10" class="Skill_Trip" parms="" />
 		<ABILITY condition="$mob_level&gt;=20" class="Dragonbreath" parms="" />

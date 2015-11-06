@@ -149,6 +149,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<BEHAVIOR class="CombatAbilities" parms="" />
 		<BEHAVIOR class="ObjectGuardian" parms="" />
 	</BEHAVIOR>
+	<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 	<ABILITY select="all">
 		<ABILITY condition="$mob_level&gt;=10" class="Skill_Trip" parms="" />
 		<ABILITY condition="$mob_level&gt;=20" class="Dragonbreath" parms="" />

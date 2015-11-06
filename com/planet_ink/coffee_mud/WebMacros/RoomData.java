@@ -605,6 +605,7 @@ public class RoomData extends StdWebMacro
 		R=(Room)R.copyOf();
 		final RoomStuff stuff=new RoomStuff(R);
 		for(final String roomID : multiRoomList)
+		{
 			if(!roomID.equalsIgnoreCase(R.roomID()))
 			{
 				final Room R2=MUDGrinder.getRoomObject(httpReq, roomID);
@@ -612,8 +613,10 @@ public class RoomData extends StdWebMacro
 				{
 					CMLib.map().resetRoom(R2);
 					for(final String[] set : STAT_CHECKS)
+					{
 						if(!R.getStat(set[0]).equalsIgnoreCase(R2.getStat(set[0])))
 							fixtures.add(new Pair<String,String>(set[1].trim(), ""));
+					}
 					for(final Iterator<Ability> a=stuff.affects.iterator();a.hasNext();)
 					{
 						final Ability A=a.next();
@@ -686,6 +689,7 @@ public class RoomData extends StdWebMacro
 					}
 				}
 			}
+		}
 		return makePairs(stuff,fixtures);
 	}
 
@@ -933,6 +937,7 @@ public class RoomData extends StdWebMacro
 			{
 				final Pair<String,String> pairs[]=makeMergableRoomFields(httpReq, R,multiRoomList);
 				if(pairs!=null)
+				{
 					for(final Pair<String,String> p : pairs)
 					{
 						if(p.second==null)
@@ -940,6 +945,7 @@ public class RoomData extends StdWebMacro
 						else
 							httpReq.addFakeUrlParameter(p.first,p.second);
 					}
+				}
 				useRoomItems=false;
 			}
 			httpReq.getRequestObjects().put(last,R);

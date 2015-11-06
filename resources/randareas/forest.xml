@@ -151,6 +151,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<BEHAVIOR CLASS="BrotherHelper" />
 		<BEHAVIOR CLASS="ObjectGuardian" />
 	</BEHAVIOR>
+	<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 	<ITEM select="all">
 		<ITEM class="GenArmor" LEVEL="$mob_level">
 			<NAME>faerie garb</NAME>

@@ -42,7 +42,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
  */
 //STOP-ECLIPSE-FORMATTING
 // @formatter: off
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class StdMOB implements MOB
 {
 	@Override
@@ -126,16 +125,18 @@ public class StdMOB implements MOB
 	protected CMUniqNameSortSVec<Tattoo>	tattoos			= new CMUniqNameSortSVec<Tattoo>(1);
 	protected volatile PairList<MOB,Short>	followers		= null;
 	protected LinkedList<QMCommand>			commandQue		= new LinkedList<QMCommand>();
-	protected SVector<ScriptingEngine>		scripts			= new SVector(1);
+	protected SVector<ScriptingEngine>		scripts			= new SVector<ScriptingEngine>(1);
 	protected volatile List<Ability>		racialAffects	= null;
 	protected volatile List<Ability>		clanAffects		= null;
 	protected SHashtable<String, FData>		factions		= new SHashtable<String, FData>(1);
 	protected volatile WeakReference<Item>	possWieldedItem	= null;
 	protected volatile WeakReference<Item>	possHeldItem	= null;
 
-	protected	ApplyAffectPhyStats			affectPhyStats	= new ApplyAffectPhyStats(this);
-	protected	ApplyRecAffectPhyStats		recoverAffectP	= new ApplyRecAffectPhyStats(this);
+	protected	ApplyAffectPhyStats<Ability>affectPhyStats	= new ApplyAffectPhyStats<Ability>(this);
+	protected	ApplyRecAffectPhyStats<Item>recoverAffectP	= new ApplyRecAffectPhyStats<Item>(this);
+	@SuppressWarnings("rawtypes")
 	protected	ApplyAffectCharStats		affectCharStats	= new ApplyAffectCharStats(this);
+	@SuppressWarnings("rawtypes")
 	protected	ApplyAffectCharState		affectCharState	= new ApplyAffectCharState(this);
 	
 	protected	OrderedMap<String,Pair<Clan,Integer>>	clans = new OrderedMap<String,Pair<Clan,Integer>>();
@@ -377,9 +378,9 @@ public class StdMOB implements MOB
 	public String getFactionListing()
 	{
 		final StringBuffer msg = new StringBuffer();
-		for (final Enumeration e = factions(); e.hasMoreElements();)
+		for (final Enumeration<String> e = factions(); e.hasMoreElements();)
 		{
-			final Faction F = CMLib.factions().getFaction((String) e.nextElement());
+			final Faction F = CMLib.factions().getFaction(e.nextElement());
 			if(F!=null)
 				msg.append(F.name() + "(" + fetchFaction(F.factionID()) + ");");
 		}
@@ -587,6 +588,7 @@ public class StdMOB implements MOB
 		return this.amDestroyed;
 	}
 
+	@SuppressWarnings("rawtypes")
 	protected void cloneFix(MOB M)
 	{
 		if (M == null)
@@ -610,8 +612,8 @@ public class StdMOB implements MOB
 			phyStats = (PhyStats) M.phyStats().copyOf();
 		}
 		
-		affectPhyStats = new ApplyAffectPhyStats(this);
-		recoverAffectP	= new ApplyRecAffectPhyStats(this);
+		affectPhyStats = new ApplyAffectPhyStats<Ability>(this);
+		recoverAffectP	= new ApplyRecAffectPhyStats<Item>(this);
 		affectCharStats= new ApplyAffectCharStats(this);
 		affectCharState = new ApplyAffectCharState(this);
 		
@@ -632,7 +634,7 @@ public class StdMOB implements MOB
 		expertises = new STreeMap<String,Integer>();
 		followers = null;
 		commandQue = new LinkedList<QMCommand>();
-		scripts	= new SVector();
+		scripts	= new SVector<ScriptingEngine>();
 		racialAffects = null;
 		clanAffects	= null;
 		factions = new SHashtable<String, FData>(1);
@@ -779,8 +781,8 @@ public class StdMOB implements MOB
 		}
 		eachItem(recoverAffectP);
 		eachEffect(affectPhyStats);
-		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
-			((Faction.FData) e.nextElement()).affectPhyStats(this, phyStats);
+		for (final Enumeration<FData> e = factions.elements(); e.hasMoreElements();)
+			e.nextElement().affectPhyStats(this, phyStats);
 		/* the follower light exception */
 		if (!CMLib.flags().isLightSource(this))
 		{
@@ -857,6 +859,7 @@ public class StdMOB implements MOB
 		return charStats;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void recoverCharStats()
 	{
@@ -880,8 +883,8 @@ public class StdMOB implements MOB
 		eachItem(affectCharStats);
 		if (location() != null)
 			location().affectCharStats(this, charStats);
-		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
-			((Faction.FData) e.nextElement()).affectCharStats(this, charStats);
+		for (final Enumeration<FData> e = factions.elements(); e.hasMoreElements();)
+			e.nextElement().affectCharStats(this, charStats);
 		if ((playerStats != null) && (soulMate == null) && (playerStats.getHygiene() >= PlayerStats.HYGIENE_DELIMIT))
 		{
 			final int chaAdjust = (int) (playerStats.getHygiene() / PlayerStats.HYGIENE_DELIMIT);
@@ -981,6 +984,7 @@ public class StdMOB implements MOB
 		maxState.copyInto(curState);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void recoverMaxState()
 	{
@@ -995,8 +999,8 @@ public class StdMOB implements MOB
 			charStats.getMyClass(c).affectCharState(this, maxState);
 		eachEffect(affectCharState);
 		eachItem(affectCharState);
-		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
-			((Faction.FData) e.nextElement()).affectCharState(this, maxState);
+		for (final Enumeration<Faction.FData> e = factions.elements(); e.hasMoreElements();)
+			e.nextElement().affectCharState(this, maxState);
 		if (location() != null)
 			location().affectCharState(this, maxState);
 	}
@@ -1966,7 +1970,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void doCommand(List commands, int metaFlags)
+	public void doCommand(List<String> commands, int metaFlags)
 	{
 		final CMObject O = CMLib.english().findCommand(this, commands);
 		if (O != null)
@@ -1975,18 +1979,18 @@ public class StdMOB implements MOB
 			CMLib.commands().handleUnknownCommand(this, commands);
 	}
 
-	protected void doCommand(Object O, List commands, int metaFlags)
+	protected void doCommand(Object O, List<String> commands, int metaFlags)
 	{
 		try
 		{
 			if (O instanceof Command)
-				((Command) O).execute(this, new XVector(commands), metaFlags);
+				((Command) O).execute(this, new XVector<String>(commands), metaFlags);
 			else
 			if (O instanceof Social)
-				((Social) O).invoke(this, new XVector(commands), null, false);
+				((Social) O).invoke(this, new XVector<String>(commands), null, false);
 			else
 			if (O instanceof Ability)
-				CMLib.english().evoke(this, new XVector(commands));
+				CMLib.english().evoke(this, new XVector<String>(commands));
 			else
 				CMLib.commands().handleUnknownCommand(this, commands);
 		}
@@ -2144,9 +2148,9 @@ public class StdMOB implements MOB
 				return false;
 		}
 
-		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
+		for (final Enumeration<Faction.FData> e = factions.elements(); e.hasMoreElements();)
 		{
-			final Faction.FData fD = (Faction.FData) e.nextElement();
+			final Faction.FData fD = e.nextElement();
 			if (!fD.getFaction().okMessage(this, msg))
 				return false;
 			if (!fD.okMessage(this, msg))
@@ -3226,9 +3230,9 @@ public class StdMOB implements MOB
 			});
 		}
 
-		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
+		for (final Enumeration<Faction.FData> e = factions.elements(); e.hasMoreElements();)
 		{
-			final Faction.FData fD = (Faction.FData) e.nextElement();
+			final Faction.FData fD = e.nextElement();
 			fD.getFaction().executeMsg(this, msg);
 			fD.executeMsg(this, msg);
 		}
@@ -3692,7 +3696,7 @@ public class StdMOB implements MOB
 	{
 		if (inventory.isEmpty())
 			return null;
-		final SVector inv = inventory;
+		final SVector<Item> inv = inventory;
 		Item item = null;
 		if (respectLocationAndWornCode)
 		{
@@ -3727,6 +3731,7 @@ public class StdMOB implements MOB
 		return fetchFromInventory(goodLocation, itemName, filter, true);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<Item> findItems(final String itemName)
 	{
@@ -3783,10 +3788,12 @@ public class StdMOB implements MOB
 		return (followers == null) ? 0 : followers.size();
 	}
 
+	private static final Enumeration<Pair<MOB,Short>> emptyFollowers = new EmptyEnumeration<Pair<MOB,Short>>(); 
+	
 	@Override
 	public Enumeration<Pair<MOB,Short>> followers()
 	{
-		return (followers == null) ? EmptyEnumeration.INSTANCE : new IteratorEnumeration<Pair<MOB,Short>>(followers.iterator());
+		return (followers == null) ? emptyFollowers : new IteratorEnumeration<Pair<MOB,Short>>(followers.iterator());
 	}
 
 	@Override
@@ -3877,7 +3884,7 @@ public class StdMOB implements MOB
 		Followable<MOB> following = amFollowing;
 		if (following == null)
 			return null;
-		final HashSet<Followable> seen = new HashSet<Followable>();
+		final HashSet<Followable<MOB>> seen = new HashSet<Followable<MOB>>();
 		while ((following != null) && (following.amFollowing() != null) && (!seen.contains(following)))
 		{
 			seen.add(following);
@@ -4017,10 +4024,12 @@ public class StdMOB implements MOB
 		return abilitys.elements();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<Ability> allAbilities()
 	{
-		final MultiListEnumeration multi = new MultiListEnumeration(new List[] { abilitys, charStats().getMyRace().racialAbilities(this) });
+		final MultiListEnumeration<Ability> multi = 
+				new MultiListEnumeration<Ability>(new List[] { abilitys, charStats().getMyRace().racialAbilities(this) });
 		for(final Pair<Clan,Integer> p : clans())
 			multi.addEnumeration(p.first.clanAbilities(this));
 		return multi;
@@ -4359,10 +4368,11 @@ public class StdMOB implements MOB
 		return affects.elements();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<Ability> effects()
 	{
-		return new MultiListEnumeration(new List[] { affects, racialEffects(), clanEffects() });
+		return new MultiListEnumeration<Ability>(new List[] { affects, racialEffects(), clanEffects() });
 	}
 
 	/**
@@ -4580,10 +4590,12 @@ public class StdMOB implements MOB
 		return (scripts == null) ? 0 : scripts.size();
 	}
 
+	private static final Enumeration<ScriptingEngine> emptyScripts = new EmptyEnumeration<ScriptingEngine>();
+	
 	@Override
 	public Enumeration<ScriptingEngine> scripts()
 	{
-		return (scripts == null) ? EmptyEnumeration.INSTANCE : scripts.elements();
+		return (scripts == null) ? emptyScripts : scripts.elements();
 	}
 
 	@Override
@@ -4614,7 +4626,8 @@ public class StdMOB implements MOB
 				}
 			}
 			catch (final ArrayIndexOutOfBoundsException e)
-			{}
+			{
+			}
 		}
 	}
 
@@ -4734,9 +4747,9 @@ public class StdMOB implements MOB
 	@Override
 	public void copyFactions(FactionMember source)
 	{
-		for (final Enumeration e = source.factions(); e.hasMoreElements();)
+		for (final Enumeration<String> e = source.factions(); e.hasMoreElements();)
 		{
-			final String fID = (String) e.nextElement();
+			final String fID = e.nextElement();
 			addFaction(fID, source.fetchFaction(fID));
 		}
 	}
@@ -4754,9 +4767,9 @@ public class StdMOB implements MOB
 	public List<String> fetchFactionRanges()
 	{
 		final Vector<String> V = new Vector<String>(factions.size());
-		for (final Enumeration e = factions(); e.hasMoreElements();)
+		for (final Enumeration<String> e = factions(); e.hasMoreElements();)
 		{
-			final Faction F = CMLib.factions().getFaction((String) e.nextElement());
+			final Faction F = CMLib.factions().getFaction(e.nextElement());
 			if (F == null)
 				continue;
 			final Faction.FRange FR = CMLib.factions().getRange(F.factionID(), fetchFaction(F.factionID()));
@@ -4927,11 +4940,11 @@ public class StdMOB implements MOB
 			final Item I = i.nextElement();
 			if ((I != null) && (I.owner() == this) && (I.amWearingAt(Wearable.WORN_WIELD)) && (I.container() == null))
 			{
-				possWieldedItem = new WeakReference(I);
+				possWieldedItem = new WeakReference<Item>(I);
 				return I;
 			}
 		}
-		possWieldedItem = new WeakReference(null);
+		possWieldedItem = new WeakReference<Item>(null);
 		return null;
 	}
 
@@ -4959,11 +4972,11 @@ public class StdMOB implements MOB
 			&& (I.amWearingAt(Wearable.WORN_HELD))
 			&& (I.container() == null))
 			{
-				possHeldItem = new WeakReference(I);
+				possHeldItem = new WeakReference<Item>(I);
 				return I;
 			}
 		}
-		possHeldItem = new WeakReference(null);
+		possHeldItem = new WeakReference<Item>(null);
 		return null;
 	}
 
