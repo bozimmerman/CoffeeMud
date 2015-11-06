@@ -287,7 +287,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 						&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false)))
 						&&(CMLib.dice().rollPercentage() <= getProtection(abilityType)))
 						{
-							mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,L("<T-NAME> resist(s) the @x1 from <S-NAME>.",CMLib.flags().getAbilityType(A).toLowerCase()));
+							mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,L("<T-NAME> repell(s) the @x1 effects from <S-NAME>.",CMLib.flags().getAbilityType(A).toLowerCase()));
 							return false;
 						}
 						else
@@ -295,7 +295,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 						&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false)))
 						&&(CMLib.dice().rollPercentage() <= getProtection(abilityDomain)))
 						{
-							mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,L("<T-NAME> resist(s) the @x1 from <S-NAME>.",abilityDomain.toLowerCase().replace('_',' ')));
+							mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,L("<T-NAME> repell(s) the @x1 effects from <S-NAME>.",abilityDomain.toLowerCase().replace('_',' ')));
 							return false;
 						}
 					}
