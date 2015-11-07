@@ -53,6 +53,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setConsumedFuelType(new int[]{RawMaterial.RESOURCE_DEUTERIUM});
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -61,7 +62,10 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 		return super.sameAs(E);
 	}
 
-	protected boolean willConsumeFuelIdle() { return true; }
+	protected boolean willConsumeFuelIdle()
+	{
+		return true;
+	}
 
 	@Override
 	public long containTypes()
@@ -94,18 +98,23 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements Electro
 	}
 
 	@Override
-	public void setConsumedFuelType(int[] resources) {
+	public void setConsumedFuelType(int[] resources)
+	{
 		generatedFuelTypes = resources;
 	}
+
 	@Override
 	public int getFuelRemaining()
 	{
 		int amt=0;
 		for(final Item I : getFuel())
+		{
 			if(I instanceof RawMaterial)
 				amt+=I.phyStats().weight();
+		}
 		return amt;
 	}
+
 	@Override
 	public int getTotalFuelCapacity()
 	{

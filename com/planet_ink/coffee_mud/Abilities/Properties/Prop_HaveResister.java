@@ -78,7 +78,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		this.prots.clear();
 		for(String parts : parmParts)
 		{
-			Integer newPct = null;;
+			Integer newPct = null;
 			if(parts.endsWith("%"))
 			{
 				parts=parts.substring(0,parts.length()-1).trim();

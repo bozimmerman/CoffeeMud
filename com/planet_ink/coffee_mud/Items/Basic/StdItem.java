@@ -1274,6 +1274,10 @@ public class StdItem implements Item
 			if((this instanceof Electronics)||(this instanceof Software))
 				return true;
 			break;
+		case CMMsg.TYP_COLLISION:
+			if(this instanceof SpaceObject)
+				return true;
+			break;
 		case CMMsg.TYP_WRITE:
 			if(((isReadable())&&(!(this instanceof Scroll)))
 			||(this instanceof Electronics.ElecPanel)

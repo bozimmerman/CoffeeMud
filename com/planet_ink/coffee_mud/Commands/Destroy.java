@@ -517,6 +517,7 @@ public class Destroy extends StdCommand
 			{
 				CMLib.database().DBDeleteItem("SPACE", deadItem);
 				deadItem.destroy();
+				CMLib.map().delObjectInSpace((SpaceObject)deadItem);
 				deadItem=null;
 			}
 			else

@@ -622,7 +622,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			SpaceObject O=o.next();
 			if(O!=ofObj)
 			{
-				final long dist=getDistanceFrom(O,ofObj) - O.radius() - ofObj.radius();
+				final long dist=Math.round(Math.abs(getDistanceFrom(O,ofObj) - O.radius() - ofObj.radius()));
 				if((dist<minDistance)||(dist>maxDistance))
 					o.remove();
 			}

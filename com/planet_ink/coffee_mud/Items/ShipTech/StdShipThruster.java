@@ -100,7 +100,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if ((pct >= 0.0) && (pct <= 2.0))
 			installedFactor = pct;
 	}
-
+	
 	@Override
 	public int getMaxThrust()
 	{

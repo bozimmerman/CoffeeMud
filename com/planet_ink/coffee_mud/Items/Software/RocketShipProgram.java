@@ -40,15 +40,19 @@ import java.util.*;
 */
 public class RocketShipProgram extends GenShipProgram
 {
-	@Override public String ID(){	return "RocketShipProgram";}
+	@Override
+	public String ID()
+	{
+		return "RocketShipProgram";
+	}
 
 	protected volatile long nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
 
 	protected String noActivationMenu="^rNo engine systems found.\n\r";
 
-	protected volatile List<ShipEngine> engines=null;
-	protected volatile List<ShipComponent> sensors=null;
-	protected volatile List<Electronics.PowerSource> batteries=null;
+	protected volatile List<ShipEngine>		engines				= null;
+	protected volatile List<ShipComponent>	sensors				= null;
+	protected volatile List<ShipComponent>	components			= null;
 	
 	protected final List<CMObject> sensorReport = new LinkedList<CMObject>();
 
@@ -77,7 +81,144 @@ public class RocketShipProgram extends GenShipProgram
 		return "SHIP";
 	}
 
-	protected String buildActivationMenu(List<ShipComponent> sensors, List<ShipEngine> engines, List<Electronics.PowerSource> batteries)
+	@Override
+	public String getCurrentScreenDisplay()
+	{
+		return this.getActivationMenu();
+	}
+
+	protected synchronized List<ShipComponent> getComponent(final TechType type)
+	{
+		List<ShipComponent> components;
+		if(circuitKey.length()==0)
+			return components=new Vector<ShipComponent>(0);
+		else
+		{
+			final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
+			components=new Vector<ShipComponent>(1);
+			for(final Electronics E : electronics)
+			{
+				if ((E instanceof ShipComponent) && (E.getTechType()== type))
+					components.add((ShipComponent)E);
+			}
+		}
+		return components;
+	}
+
+	protected synchronized List<ShipEngine> getEngines()
+	{
+		if(engines == null)
+		{
+			engines=new Vector<ShipEngine>(1);
+			final List<ShipComponent> stuff=getShipComponents();
+			for(final Electronics E : stuff)
+			{
+				if(E instanceof ShipComponent.ShipEngine)
+					engines.add((ShipComponent.ShipEngine)E);
+			}
+		}
+		return engines;
+	}
+
+	protected synchronized List<ShipComponent> getShipComponents()
+	{
+		if(components == null)
+		{
+			if(circuitKey.length()==0)
+				components=new Vector<ShipComponent>(0);
+			else
+			{
+				final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
+				components=new Vector<ShipComponent>(1);
+				for(final Electronics E : electronics)
+				{
+					if(E instanceof ShipComponent)
+						components.add((ShipComponent)E);
+				}
+			}
+		}
+		return components;
+	}
+
+	protected synchronized List<ShipComponent> getShipSensors()
+	{
+		if(sensors == null)
+		{
+			final List<ShipComponent> stuff=getShipComponents();
+			sensors=new Vector<ShipComponent>(1);
+			for(final ShipComponent E : stuff)
+			{
+				if(E.getTechType()==TechType.SHIP_SENSOR)
+					sensors.add(E);
+			}
+		}
+		return sensors;
+	}
+
+	@Override
+	public boolean isActivationString(String word)
+	{
+		return isCommandString(word, false);
+	}
+
+	@Override
+	public boolean isDeActivationString(String word)
+	{
+		return isCommandString(word, false);
+	}
+
+	protected ShipComponent findComponentByName(List<? extends ShipComponent> list, String prefix, String name)
+	{
+		if(list.size()==0)
+			return null;
+		name=name.toUpperCase();
+		if(name.startsWith(prefix))
+		{
+			final String numStr=name.substring(6);
+			if(!CMath.isInteger(numStr))
+				return null;
+			final int num=CMath.s_int(numStr);
+			if((num>0)&&(num<=list.size()))
+				return list.get(num-1);
+			return null;
+		}
+		ShipComponent E=(ShipComponent)CMLib.english().fetchEnvironmental(list, name, true);
+		if(E==null)
+			E=(ShipComponent)CMLib.english().fetchEnvironmental(list, name, false);
+		return E;
+	}
+
+	protected ShipEngine findEngineByName(String name)
+	{
+		return (ShipEngine)findComponentByName(getEngines(), "ENGINE", name);
+	}
+
+	protected ShipComponent findSensorByName(String name)
+	{
+		return findComponentByName(getShipSensors(), "SENSOR", name);
+	}
+
+	@Override 
+	public boolean isCommandString(String word, boolean isActive)
+	{
+		final Vector<String> parsed=CMParms.parse(word);
+		if(parsed.size()==0)
+			return false;
+		final String uword=parsed.get(0).toUpperCase();
+		if(uword.equals("ENGINEHELP")
+		||uword.equals("HELP")
+		||uword.equals("ACTIVATE")
+		||uword.equals("DEACTIVATE")
+		||(uword.startsWith("ENGINE")&&(CMath.isInteger(uword.substring(6))))
+		||(uword.startsWith("SENSOR")&&(CMath.isInteger(uword.substring(6))))
+		||(uword.startsWith("SYSTEM")&&(CMath.isInteger(uword.substring(6))))
+		)
+			return true;
+		return findEngineByName(uword)!=null;
+	}
+
+	@Override
+	public String getActivationMenu()
 	{
 		final StringBuilder str=new StringBuilder();
 		str.append("^X").append(CMStrings.centerPreserve(L(" -- Flight Status -- "),60)).append("^.^N\n\r");
@@ -143,7 +284,8 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		str.append("^N\n\r");
 
-		if((sensors!=null)&&(sensors.size()>0))
+		final List<ShipComponent> sensors = this.getShipSensors();
+		if(sensors.size()>0)
 		{
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Sensors -- "),60)).append("^.^N\n\r");
 			int sensorNumber=1;
@@ -198,22 +340,29 @@ public class RocketShipProgram extends GenShipProgram
 			}
 		}
 		
-		if((batteries!=null)&&(batteries.size()>0))
+		final List<ShipEngine> engines = getEngines();
+		final List<ShipComponent> components = getShipComponents();
+		if(components.size()> engines.size() + sensors.size())
 		{
-			str.append("^X").append(CMStrings.centerPreserve(L(" -- Batteries -- "),60)).append("^.^N\n\r");
-			int sensorNumber=1;
-			for(final Electronics.PowerSource battery : batteries)
+			str.append("^X").append(CMStrings.centerPreserve(L(" -- Other Systems -- "),60)).append("^.^N\n\r");
+			int systemNumber=1;
+			for(final ShipComponent component : components)
 			{
-				str.append("^H").append(CMStrings.padRight(L("BATTERY@x1",""+sensorNumber),9));
-				str.append(CMStrings.padRight(battery.activated()?L("^gACTIVE"):L("^rINACTIVE"),9));
-				str.append("^H").append(CMStrings.padRight(L("Power"),6));
-				str.append("^N").append(CMStrings.padRight(Long.toString(battery.powerRemaining()),11));
-				str.append("^H").append(CMStrings.padRight(battery.Name(),24));
-				str.append("^.^N\n\r");
-				sensorNumber++;
+				if((!engines.contains(component))
+				&&(!sensors.contains(component)))
+				{
+					str.append("^H").append(CMStrings.padRight(L("SYSTEM@x1",""+systemNumber),9));
+					str.append(CMStrings.padRight(component.activated()?L("^gACTIVE"):L("^rINACTIVE"),9));
+					str.append("^H").append(CMStrings.padRight(L("Power"),6));
+					str.append("^N").append(CMStrings.padRight(Long.toString(component.powerRemaining()),11));
+					str.append("^H").append(CMStrings.padRight(component.Name(),24));
+					str.append("^.^N\n\r");
+					systemNumber++;
+				}
 			}
 			str.append("^.^N\n\r");
 		}
+		
 		if((engines==null)||(engines.size()==0))
 			str.append(noActivationMenu);
 		else
@@ -238,126 +387,6 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("^N\n\r");
 		}
 		return str.toString();
-	}
-
-	@Override
-	public String getCurrentScreenDisplay()
-	{
-		return this.getActivationMenu();
-	}
-
-	protected synchronized List<ShipEngine> getEngines()
-	{
-		if(engines == null)
-		{
-			if(circuitKey.length()==0)
-				engines=new Vector<ShipEngine>(0);
-			else
-			{
-				final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
-				engines=new Vector<ShipEngine>(1);
-				for(final Electronics E : electronics)
-				{
-					if(E instanceof ShipComponent.ShipEngine)
-						engines.add((ShipComponent.ShipEngine)E);
-				}
-			}
-		}
-		return engines;
-	}
-
-	protected synchronized List<ShipComponent> getShipSensors()
-	{
-		if(sensors == null)
-		{
-			if(circuitKey.length()==0)
-				sensors=new Vector<ShipComponent>(0);
-			else
-			{
-				final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
-				sensors=new Vector<ShipComponent>(1);
-				for(final Electronics E : electronics)
-				{
-					if((E instanceof ShipComponent)&&(E.getTechType()==TechType.SHIP_SENSOR))
-						sensors.add((ShipComponent)E);
-				}
-
-			}
-		}
-		return sensors;
-	}
-
-	protected synchronized List<Electronics.PowerSource> getBatteries()
-	{
-		if(batteries == null)
-		{
-			if(circuitKey.length()==0)
-				batteries=new Vector<Electronics.PowerSource>(0);
-			else
-			{
-				final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(circuitKey);
-				batteries=new Vector<Electronics.PowerSource>(1);
-				for(final Electronics E : electronics)
-				{
-					if((E instanceof ShipComponent)
-					&&(E.getTechType()==TechType.SHIP_POWER)
-					&&(!(E instanceof Electronics.FuelConsumer))
-					&&(E instanceof Electronics.PowerSource))
-						batteries.add((Electronics.PowerSource)E);
-				}
-
-			}
-		}
-		return batteries;
-	}
-
-	@Override public boolean isActivationString(String word)
-	{
-		return isCommandString(word,false);
-	}
-
-	@Override public boolean isDeActivationString(String word)
-	{
-		return isCommandString(word,false);
-	}
-
-	protected ShipEngine findEngineByName(String name)
-	{
-		final List<ShipEngine> engines=getEngines();
-		if(engines.size()==0)
-			return null;
-		name=name.toUpperCase();
-		if(name.startsWith("ENGINE"))
-		{
-			final String numStr=name.substring(6);
-			if(!CMath.isInteger(numStr))
-				return null;
-			final int num=CMath.s_int(numStr);
-			if((num>0)&&(num<=engines.size()))
-				return engines.get(num-1);
-			return null;
-		}
-		ShipEngine E=(ShipEngine)CMLib.english().fetchEnvironmental(engines, name, true);
-		if(E==null)
-			E=(ShipEngine)CMLib.english().fetchEnvironmental(engines, name, false);
-		return E;
-	}
-
-	@Override public boolean isCommandString(String word, boolean isActive)
-	{
-		final Vector<String> parsed=CMParms.parse(word);
-		if(parsed.size()==0)
-			return false;
-		final String uword=parsed.get(0).toUpperCase();
-		if(uword.startsWith("ENGINEHELP"))
-			return true;
-		return findEngineByName(uword)!=null;
-	}
-
-	@Override
-	public String getActivationMenu()
-	{
-		return buildActivationMenu(getShipSensors(), getEngines(), getBatteries());
 	}
 
 	@Override
@@ -392,10 +421,18 @@ public class RocketShipProgram extends GenShipProgram
 			final Vector<String> parsed=CMParms.parse(message);
 			if(parsed.size()==0)
 			{
-				super.addScreenMessage(L("Error: No command."));
+				super.addScreenMessage(L("Error: No command.  Try HELP."));
 				return;
 			}
 			final String uword=parsed.get(0).toUpperCase();
+			if(uword.equalsIgnoreCase("HELP"))
+			{
+				super.addScreenMessage(L("^HHELP:^N\n\r^N"+"The ACTIVATE command can be used to turn on any engine, "
+					+ "sensor, or other system in your ship.  The DEACTIVATE command will turn off any system specified. "
+					+ "Otherwise, see ENGINE help for engine commands."));
+				return;
+			}
+			else
 			if(uword.equalsIgnoreCase("ENGINEHELP"))
 			{
 				super.addScreenMessage(L("^HENGINEHELP:^N\n\r^N"+"The ENGINE command instructs the given " +
@@ -406,66 +443,111 @@ public class RocketShipProgram extends GenShipProgram
 						"in sustained accelleration."));
 				return;
 			}
-			final ShipEngine E=findEngineByName(uword);
-			if(E==null)
+			CMMsg msg = null;
+			Electronics E  = null;
+			if(uword.equalsIgnoreCase("ACTIVATE") || uword.equalsIgnoreCase("DEACTIVATE"))
 			{
-				super.addScreenMessage(L("Error: Unknown engine '"+uword+"'."));
-				return;
-			}
-			int amount=0;
-			ShipEngine.ThrustPort portDir=ShipEngine.ThrustPort.AFT;
-			if(parsed.size()>3)
-			{
-				super.addScreenMessage(L("Error: Too many parameters."));
-				return;
-			}
-			if(parsed.size()==1)
-			{
-				super.addScreenMessage(L("Error: No thrust amount given."));
-				return;
-			}
-			if(!CMath.isInteger(parsed.get(parsed.size()-1)))
-			{
-				super.addScreenMessage(L("Error: '@x1' is not a valid amount.",parsed.get(parsed.size()-1)));
-				return;
-			}
-			amount=CMath.s_int(parsed.get(parsed.size()-1));
-			if(parsed.size()==3)
-			{
-				portDir=(ShipEngine.ThrustPort)CMath.s_valueOf(ShipEngine.ThrustPort.class, parsed.get(1).toUpperCase().trim());
-				if(portDir!=null) { }
-				else
-				if("aft".startsWith(parsed.get(1).toLowerCase()))
-					portDir=ShipEngine.ThrustPort.AFT;
-				else
-				if("port".startsWith(parsed.get(1).toLowerCase()))
-					portDir=ShipEngine.ThrustPort.PORT;
-				else
-				if("starboard".startsWith(parsed.get(1).toLowerCase()))
-					portDir=ShipEngine.ThrustPort.STARBOARD;
-				else
-				if("ventral".startsWith(parsed.get(1).toLowerCase()))
-					portDir=ShipEngine.ThrustPort.VENTRAL;
-				else
-				if("dorsel".startsWith(parsed.get(1).toLowerCase()))
-					portDir=ShipEngine.ThrustPort.DORSEL;
-				else
+				final String rest = CMParms.combine(parsed,1).toUpperCase();
+				String code = null;
+				E=findEngineByName(rest);
+				if(E!=null)
 				{
-					super.addScreenMessage(L("Error: '@x1' is not a valid direction: AFT, PORT, VENTRAL, DORSEL, or STARBOARD.",parsed.get(1)));
-					return;
+					code=Technical.TechCommand.THRUST.makeCommand(ShipEngine.ThrustPort.AFT,Integer.valueOf(1));
+				}
+				else
+					E=findSensorByName(rest);
+				if(E==null)
+				{
+					final List<ShipComponent> others = new ArrayList<ShipComponent>();
+					for(ShipComponent component : getShipComponents())
+					{
+						if((!getEngines().contains(component))&&(!getShipSensors().contains(component)))
+							others.add(component);
+					}
+					E=findComponentByName(others,"SYSTEM",rest);
+				}
+				if(E!=null)
+				{
+					if(uword.equalsIgnoreCase("ACTIVATE"))
+						msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+					else
+						msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 				}
 			}
-
-			final String code=Technical.TechCommand.THRUST.makeCommand(portDir,Integer.valueOf(amount));
-			final CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-			if(E.owner() instanceof Room)
+			else
 			{
-				if(((Room)E.owner()).okMessage(mob, msg))
-					((Room)E.owner()).send(mob, msg);
+				E=findEngineByName(uword);
+				if(E==null)
+				{
+					super.addScreenMessage(L("Error: Unknown engine name or command word '"+uword+"'.   Try HELP."));
+					return;
+				}
+				int amount=0;
+				ShipEngine.ThrustPort portDir=ShipEngine.ThrustPort.AFT;
+				if(parsed.size()>3)
+				{
+					super.addScreenMessage(L("Error: Too many parameters."));
+					return;
+				}
+				if(parsed.size()==1)
+				{
+					super.addScreenMessage(L("Error: No thrust amount given."));
+					return;
+				}
+				if(!CMath.isInteger(parsed.get(parsed.size()-1)))
+				{
+					super.addScreenMessage(L("Error: '@x1' is not a valid amount.",parsed.get(parsed.size()-1)));
+					return;
+				}
+				amount=CMath.s_int(parsed.get(parsed.size()-1));
+				if(parsed.size()==3)
+				{
+					portDir=(ShipEngine.ThrustPort)CMath.s_valueOf(ShipEngine.ThrustPort.class, parsed.get(1).toUpperCase().trim());
+					if(portDir!=null) { }
+					else
+					if("aft".startsWith(parsed.get(1).toLowerCase()))
+						portDir=ShipEngine.ThrustPort.AFT;
+					else
+					if("port".startsWith(parsed.get(1).toLowerCase()))
+						portDir=ShipEngine.ThrustPort.PORT;
+					else
+					if("starboard".startsWith(parsed.get(1).toLowerCase()))
+						portDir=ShipEngine.ThrustPort.STARBOARD;
+					else
+					if("ventral".startsWith(parsed.get(1).toLowerCase()))
+						portDir=ShipEngine.ThrustPort.VENTRAL;
+					else
+					if("dorsel".startsWith(parsed.get(1).toLowerCase()))
+						portDir=ShipEngine.ThrustPort.DORSEL;
+					else
+					{
+						super.addScreenMessage(L("Error: '@x1' is not a valid direction: AFT, PORT, VENTRAL, DORSEL, or STARBOARD.",parsed.get(1)));
+						return;
+					}
+				}
+				if(amount > 0)
+				{
+					final String code=Technical.TechCommand.THRUST.makeCommand(portDir,Integer.valueOf(amount));
+					msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				}
+				else
+					msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+			}
+			if((E!=null) && (msg != null))
+			{
+				if(E.owner() instanceof Room)
+				{
+					if(((Room)E.owner()).okMessage(mob, msg))
+						((Room)E.owner()).send(mob, msg);
+				}
+				else
+				if(E.okMessage(mob, msg))
+					E.executeMsg(mob, msg);
 			}
 			else
-			if(E.okMessage(mob, msg))
-				E.executeMsg(mob, msg);
+			{
+				super.addScreenMessage(L("Error: Unknown command '"+message+"'.   Try HELP."));
+			}
 		}
 	}
 
@@ -510,12 +592,13 @@ public class RocketShipProgram extends GenShipProgram
 		return;
 	}
 
-	@Override public void onPowerCurrent(int value)
+	@Override
+	public void onPowerCurrent(int value)
 	{
-		if(System.currentTimeMillis()>nextPowerCycleTmr)
+		if (System.currentTimeMillis() > nextPowerCycleTmr)
 		{
-			engines=null;
-			nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
+			engines = null;
+			nextPowerCycleTmr = System.currentTimeMillis() + (8 * 1000);
 		}
 	}
 

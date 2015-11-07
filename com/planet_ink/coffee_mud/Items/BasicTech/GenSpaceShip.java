@@ -250,6 +250,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				final MOB mob=msg.source();
 				final boolean hitSomethingMassive;
 				
+				final double previousSpeed = speed();
 				if((msg.tool() instanceof SpaceObject) // we hit something very very big
 				&&(((SpaceObject)msg.tool()).getMass() >= (100 * SpaceObject.Distance.Kilometer.dm)))
 				{
@@ -261,7 +262,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				
 				// this only works because Areas don't move.
 				// the only way to hit one is to be moving towards it.
-				if((speed() <= SpaceObject.ACCELLERATION_DAMAGED) 
+				if((previousSpeed <= SpaceObject.ACCELLERATION_DAMAGED) 
 				&&(msg.tool() instanceof Area))
 				{
 					long shortestDistance=Long.MAX_VALUE;
