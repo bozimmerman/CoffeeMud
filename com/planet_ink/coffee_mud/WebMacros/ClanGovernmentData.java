@@ -172,30 +172,30 @@ public class ClanGovernmentData extends StdWebMacro
 			}
 
 			// iterators
-				if(parms.containsKey("POSITIONSTART"))
+			if(parms.containsKey("POSITIONSTART"))
+			{
+				if(httpReq.getUrlParameter("GOVTPOSITION")!=null)
+					httpReq.removeUrlParameter("GOVTPOSITION");
+				return "";
+			}
+			if(parms.containsKey("POSITIONNEXT"))
+			{
+				String lastPos="";
+				for(int p=0;p<posList.size();p++)
 				{
-					if(httpReq.getUrlParameter("GOVTPOSITION")!=null)
-						httpReq.removeUrlParameter("GOVTPOSITION");
-					return "";
-				}
-				if(parms.containsKey("POSITIONNEXT"))
-				{
-					String lastPos="";
-					for(int p=0;p<posList.size();p++)
+					if((cmpos==null)||((cmpos.length()>0)&&(cmpos.equals(lastPos))&&(!(""+p).equals(lastPos))))
 					{
-						if((cmpos==null)||((cmpos.length()>0)&&(cmpos.equals(lastPos))&&(!(""+p).equals(lastPos))))
-						{
-							httpReq.addFakeUrlParameter("GOVTPOSITION",(""+p));
-							return "";
-						}
-						lastPos=(""+p);
+						httpReq.addFakeUrlParameter("GOVTPOSITION",(""+p));
+						return "";
 					}
-					httpReq.addFakeUrlParameter("LASTGOVTPOSITION",""+posList.size());
-					httpReq.addFakeUrlParameter("GOVTPOSITION","");
-					if(parms.containsKey("EMPTYOK"))
-						return "<!--EMPTY-->";
-					return " @break@";
+					lastPos=(""+p);
 				}
+				httpReq.addFakeUrlParameter("LASTGOVTPOSITION",""+posList.size());
+				httpReq.addFakeUrlParameter("GOVTPOSITION","");
+				if(parms.containsKey("EMPTYOK"))
+					return "<!--EMPTY-->";
+				return " @break@";
+			}
 
 			if(parms.containsKey("NAME"))
 			{

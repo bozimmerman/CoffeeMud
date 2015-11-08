@@ -1,21 +1,6 @@
 package com.planet_ink.coffee_mud.core.collections;
 
 import java.util.*;
-/*
-   Copyright 2000-2015 Bo Zimmerman
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-	   http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
- */
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 
@@ -83,6 +68,41 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return new ConvertingIterator<Quad<T, K, L, M>, M>(iterator(), getFourthConverter());
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean contains(Object o)
+	{
+		if (o instanceof Quad)
+			return super.contains(o);
+		if (containsFirst((T) o))
+			return true;
+		return containsSecond((K) o);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public int indexOf(Object o)
+	{
+		if (o instanceof Quad)
+			return super.indexOf(o);
+		final int x = indexOfFirst((T) o);
+		if (x >= 0)
+			return x;
+		return indexOfSecond((K) o);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized int indexOf(Object o, int index)
+	{
+		if (o instanceof Quad)
+			return super.indexOf(o, index);
+		final int x = indexOfFirst((T) o, index);
+		if (x >= 0)
+			return x;
+		return indexOfSecond((K) o, index);
+	}
+	
 	public synchronized int indexOfFirst(T t)
 	{
 		return indexOfFirst(t, 0);

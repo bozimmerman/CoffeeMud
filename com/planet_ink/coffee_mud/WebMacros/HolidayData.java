@@ -50,7 +50,7 @@ public class HolidayData extends StdWebMacro
 		{
 			final int index=CMLib.quests().getHolidayIndex(last);
 			exists = index>=0;
-			QuestManager.RawHolidayData encodedData=(QuestManager.RawHolidayData)httpReq.getRequestObjects().get("HOLIDAY_"+last.toUpperCase().trim());
+			QuestManager.HolidayData encodedData=(QuestManager.HolidayData)httpReq.getRequestObjects().get("HOLIDAY_"+last.toUpperCase().trim());
 			if(encodedData==null)
 			{
 				List<String> steps=null;
@@ -72,10 +72,10 @@ public class HolidayData extends StdWebMacro
 			}
 			if(encodedData!=null)
 			{
-				final DVector settings=encodedData.settings;
-				final DVector behaviors=encodedData.behaviors;
-				final DVector properties=encodedData.properties;
-				final DVector stats=encodedData.stats;
+				final TriadList<String,String,Integer> settings=encodedData.settings();
+				final TriadList<String,String,Integer> behaviors=encodedData.behaviors();
+				final TriadList<String,String,Integer> properties=encodedData.properties();
+				final TriadList<String,String,Integer> stats=encodedData.stats();
 				//List stepV=(List)encodedData.elementAt(4);
 				//int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
 
@@ -89,9 +89,9 @@ public class HolidayData extends StdWebMacro
 					String old=httpReq.getUrlParameter("NAME");
 					if(old==null)
 					{
-						final int dex=settings.indexOf("NAME");
+						final int dex=settings.indexOfFirst("NAME");
 						if(dex>=0)
-							old=(String)settings.elementAt(dex,2);
+							old=settings.get(dex).second;
 						else
 							old="New Holiday";
 					}
@@ -102,9 +102,9 @@ public class HolidayData extends StdWebMacro
 					String old=httpReq.getUrlParameter("DURATION");
 					if(old==null)
 					{
-						final int dex=settings.indexOf("DURATION");
+						final int dex=settings.indexOfFirst("DURATION");
 						if(dex>=0)
-							old=(String)settings.elementAt(dex,2);
+							old=settings.get(dex).second;
 						else
 							old="900";
 					}
@@ -112,10 +112,10 @@ public class HolidayData extends StdWebMacro
 				}
 				if(parms.containsKey("AREAS"))
 				{
-					final int dex=settings.indexOf("AREAGROUP");
+					final int dex=settings.indexOfFirst("AREAGROUP");
 					String old=null;
 					if(dex>=0)
-						old=(String)settings.elementAt(dex,2);
+						old=settings.get(dex).second;
 					if((old==null)||(old.length()==0))
 						old="ALL";
 					str.append(old+", ");
@@ -127,9 +127,9 @@ public class HolidayData extends StdWebMacro
 					Vector<String> areaNames=null;
 					if(old==null)
 					{
-						final int dex=settings.indexOf("AREAGROUP");
+						final int dex=settings.indexOfFirst("AREAGROUP");
 						if(dex>=0)
-							old=(String)settings.elementAt(dex,2);
+							old=settings.get(dex).second;
 						if((old==null)||(old.length()==0))
 							old="ALL";
 						areaNames = CMParms.parse(old.toUpperCase().trim());
@@ -183,9 +183,9 @@ public class HolidayData extends StdWebMacro
 					String old=httpReq.getUrlParameter("MOBGROUP");
 					if(old==null)
 					{
-						final int dex=settings.indexOf("MOBGROUP");
+						final int dex=settings.indexOfFirst("MOBGROUP");
 						if(dex>=0)
-							old=(String)settings.elementAt(dex,2);
+							old=settings.get(dex).second;
 						else
 							old="";
 					}
@@ -196,9 +196,9 @@ public class HolidayData extends StdWebMacro
 					String old=httpReq.getUrlParameter("MOOD");
 					if(old==null)
 					{
-						final int dex=properties.indexOf("MOOD");
+						final int dex=properties.indexOfFirst("MOOD");
 						if(dex>=0)
-							old=(String)properties.elementAt(dex,2);
+							old=properties.get(dex).second;
 						else
 							old="";
 					}
@@ -223,9 +223,9 @@ public class HolidayData extends StdWebMacro
 					String old=httpReq.getUrlParameter("AGGRESSIVE");
 					if(old==null)
 					{
-						final int dex=behaviors.indexOf("AGGRESSIVE");
+						final int dex=behaviors.indexOfFirst("AGGRESSIVE");
 						if(dex>=0)
-							old=(String)behaviors.elementAt(dex,2);
+							old=behaviors.get(dex).second;
 						else
 							old="";
 					}
@@ -239,8 +239,8 @@ public class HolidayData extends StdWebMacro
 					final String[] TYPES={"RANDOM INTERVAL","MUD-DAY","RL-DAY"};
 					if(old==null)
 					{
-						final int mudDayIndex=settings.indexOf("MUDDAY");
-						final int dateIndex=settings.indexOf("DATE");
+						final int mudDayIndex=settings.indexOfFirst("MUDDAY");
+						final int dateIndex=settings.indexOfFirst("DATE");
 						if(mudDayIndex>=0)
 							old=TYPES[1];
 						else
@@ -262,13 +262,13 @@ public class HolidayData extends StdWebMacro
 				{
 					final String[] TYPES={"RANDOM INTERVAL","MUD-DAY","RL-DAY"};
 					String old;
-					final int mudDayIndex=settings.indexOf("MUDDAY");
-					final int dateIndex=settings.indexOf("DATE");
+					final int mudDayIndex=settings.indexOfFirst("MUDDAY");
+					final int dateIndex=settings.indexOfFirst("DATE");
 					if(mudDayIndex>=0)
 					{
-						final int dex=settings.indexOf("MUDDAY");
+						final int dex=settings.indexOfFirst("MUDDAY");
 						if(dex>=0)
-							old=(String)settings.elementAt(dex,2);
+							old=settings.get(dex).second;
 						else
 							old="1-1";
 						old=TYPES[1]+": "+old;
@@ -277,9 +277,9 @@ public class HolidayData extends StdWebMacro
 					else
 					if(dateIndex>=0)
 					{
-						final int dex=settings.indexOf("DATE");
+						final int dex=settings.indexOfFirst("DATE");
 						if(dex>=0)
-							old=(String)settings.elementAt(dex,2);
+							old=settings.get(dex).second;
 						else
 							old="1-1";
 						old=TYPES[2]+": "+old;
@@ -288,9 +288,9 @@ public class HolidayData extends StdWebMacro
 					else
 					{
 						old=TYPES[0];
-						final int dex=settings.indexOf("WAIT");
+						final int dex=settings.indexOfFirst("WAIT");
 						if(dex>=0)
-							old=(String)settings.elementAt(dex,2);
+							old=settings.get(dex).second;
 						else
 							old="100";
 						str.append(TYPES[0]+": "+old+" ticks");
@@ -302,9 +302,9 @@ public class HolidayData extends StdWebMacro
 					String old=httpReq.getUrlParameter("MUDDAY");
 					if(old==null)
 					{
-						final int dex=settings.indexOf("MUDDAY");
+						final int dex=settings.indexOfFirst("MUDDAY");
 						if(dex>=0)
-							old=(String)settings.elementAt(dex,2);
+							old=settings.get(dex).second;
 						else
 							old="1-1";
 					}
@@ -315,9 +315,9 @@ public class HolidayData extends StdWebMacro
 					String old=httpReq.getUrlParameter("DATE");
 					if(old==null)
 					{
-						final int dex=settings.indexOf("DATE");
+						final int dex=settings.indexOfFirst("DATE");
 						if(dex>=0)
-							old=(String)settings.elementAt(dex,2);
+							old=settings.get(dex).second;
 						else
 							old="1-1";
 					}
@@ -328,9 +328,9 @@ public class HolidayData extends StdWebMacro
 					String old=httpReq.getUrlParameter("WAIT");
 					if(old==null)
 					{
-						final int dex=settings.indexOf("WAIT");
+						final int dex=settings.indexOfFirst("WAIT");
 						if(dex>=0)
-							old=(String)settings.elementAt(dex,2);
+							old=settings.get(dex).second;
 						else
 							old="100";
 					}
@@ -349,7 +349,7 @@ public class HolidayData extends StdWebMacro
 		return "";
 	}
 
-	public static StringBuffer behaviors(DVector behaviors, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer behaviors(TriadList<String,String,Integer> behaviors, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
@@ -378,13 +378,13 @@ public class HolidayData extends StdWebMacro
 			else
 			for(int b=0;b<behaviors.size();b++)
 			{
-				final Behavior B=CMClass.getBehavior((String)behaviors.elementAt(b,1));
+				final Behavior B=CMClass.getBehavior(behaviors.get(b).first);
 				if((B!=null)
 				&&(!B.ID().equalsIgnoreCase("MUDCHAT"))
 				&&(!B.ID().equalsIgnoreCase("AGGRESSIVE")))
 				{
 					theclasses.addElement(CMClass.classID(B));
-					String t=(String)behaviors.elementAt(b,2);
+					String t=behaviors.get(b).second;
 					t=CMStrings.replaceAll(t,"\"","&quot;");
 					theparms.addElement(t);
 				}
@@ -429,7 +429,7 @@ public class HolidayData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer properties(DVector properties, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer properties(TriadList<String,String,Integer> properties, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("AFFECTS"))
@@ -458,11 +458,11 @@ public class HolidayData extends StdWebMacro
 			else
 			for(int b=0;b<properties.size();b++)
 			{
-				final Ability A=CMClass.getAbility((String)properties.elementAt(b,1));
+				final Ability A=CMClass.getAbility(properties.get(b).first);
 				if((A!=null)&&(!A.ID().equalsIgnoreCase("MOOD")))
 				{
 					theclasses.addElement(CMClass.classID(A));
-					String t=(String)properties.elementAt(b,2);
+					String t=properties.get(b).second;
 					t=CMStrings.replaceAll(t,"\"","&quot;");
 					theparms.addElement(t);
 				}
@@ -499,7 +499,7 @@ public class HolidayData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer priceFactors(DVector stats, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer priceFactors(TriadList<String,String,Integer> stats, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("PRICEFACTORS"))
@@ -530,7 +530,7 @@ public class HolidayData extends StdWebMacro
 			else
 			{
 				final int pndex=stats.indexOf("PRICEMASKS");
-				final String priceStr=(pndex<0)?"":(String)stats.elementAt(pndex,2);
+				final String priceStr=(pndex<0)?"":(String)stats.get(pndex).second;
 				final List<String> priceV=CMParms.parseCommas(priceStr,true);
 				for(int v=0;v<priceV.size();v++)
 				{
@@ -583,7 +583,7 @@ public class HolidayData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer mudChat(DVector behaviors, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer mudChat(TriadList<String,String,Integer> behaviors, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("MUDCHAT"))

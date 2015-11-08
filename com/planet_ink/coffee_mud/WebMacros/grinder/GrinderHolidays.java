@@ -39,20 +39,20 @@ public class GrinderHolidays {
 	public String name() { return "GrinderHolidays"; }
 
 
-	protected static String setText(DVector sets, String var, String newVAL)
+	protected static String setText(TriadList<String,String,Integer> sets, String var, String newVAL)
 	{
 		if(newVAL==null)
 			newVAL="";
 		//var=var.toUpperCase().trim();
-		final int index=sets.indexOf(var);
-		final String oldVal=index>=0?(String)sets.elementAt(index,2):"";
+		final int index=sets.indexOfFirst(var);
+		final String oldVal=index>=0?(String)sets.get(index).second:"";
 		if(index>=0)
 		{
 			if(!newVAL.equals(oldVal))
-				sets.setElementAt(index,2,newVAL);
+				sets.get(index).second = newVAL;
 		}
 		else
-			sets.addElement(var,newVAL,Integer.valueOf(-1));
+			sets.add(var,newVAL,Integer.valueOf(-1));
 		return newVAL;
 	}
 
@@ -70,7 +70,7 @@ public class GrinderHolidays {
 				return "Error creating holiday file.";
 		}
 		List<String> steps=null;
-		QuestManager.RawHolidayData encodedData = null;
+		QuestManager.HolidayData encodedData = null;
 		final Object resp=CMLib.quests().getHolidayFile();
 		if(resp instanceof List)
 			steps=(List<String>)resp;
@@ -81,10 +81,10 @@ public class GrinderHolidays {
 			encodedData=CMLib.quests().getEncodedHolidayData(steps.get(index));
 		if((encodedData==null)||(steps==null))
 			return "Error reading holiday data (code: "+((resp instanceof List)?"T":"F")+":"+((steps==null)?"F":"T")+":"+((encodedData==null)?"F":"T")+")";
-		final DVector settings=encodedData.settings;
-		final DVector behaviors=encodedData.behaviors;
-		final DVector properties=encodedData.properties;
-		final DVector stats=encodedData.stats;
+		final TriadList<String,String,Integer> settings=encodedData.settings();
+		final TriadList<String,String,Integer> behaviors=encodedData.behaviors();
+		final TriadList<String,String,Integer> properties=encodedData.properties();
+		final TriadList<String,String,Integer> stats=encodedData.stats();
 		//List stepV=(List)encodedData.elementAt(4);
 		//int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
 
@@ -104,11 +104,11 @@ public class GrinderHolidays {
 		final int waitIndex=settings.indexOf("WAIT");
 		final String scheduleName=new String[]{"WAIT","MUDDAY","DATE"}[typeIndex];
 		if((typeIndex!=0)&&(waitIndex>=0))
-			settings.removeElement("WAIT");
+			settings.removeFirst("WAIT");
 		if((typeIndex!=1)&&(mudDayIndex>=0))
-			settings.removeElement("MUDDAY");
+			settings.removeFirst("MUDDAY");
 		if((typeIndex!=2)&&(dateIndex>=0))
-			settings.removeElement("DATE");
+			settings.removeFirst("DATE");
 		final String newWait = setText(settings,scheduleName,httpReq.getUrlParameter(scheduleName));
 		switch(typeIndex)
 		{

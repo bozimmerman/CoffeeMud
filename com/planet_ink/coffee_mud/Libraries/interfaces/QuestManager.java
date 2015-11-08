@@ -51,26 +51,26 @@ public interface QuestManager extends CMLibrary
 	public String listHolidays(Area A, String otherParms);
 	public String deleteHoliday(int holidayNumber);
 	public void modifyHoliday(MOB mob, int holidayNumber);
-	public String alterHoliday(String oldName, RawHolidayData newData);
+	public String alterHoliday(String oldName, HolidayData newData);
 	public String createHoliday(String named, String areaName, boolean save);
 	public StringBuffer getDefaultHoliData(String named, String area);
 	public Object getHolidayFile();
-	public RawHolidayData getEncodedHolidayData(String dataFromStepsFile);
-	public List<List<String>> breakOutMudChatVs(String MUDCHAT, DVector behaviors);
+	public HolidayData getEncodedHolidayData(String dataFromStepsFile);
+	public List<List<String>> breakOutMudChatVs(String MUDCHAT, TriadList<String,String,Integer> behaviors);
 	public String breakOutMaskString(String s, List<String> p);
 
 	public DVector getQuestTemplate(MOB mob, String fileToGet);
 	public Quest questMaker(MOB mob);
 	public List<Quest> getPlayerPersistantQuests(MOB player);
 
-	public class RawHolidayData
+	public interface HolidayData
 	{
-		public DVector settings=new DVector(3);
-		public DVector behaviors=new DVector(3);
-		public DVector properties=new DVector(3);
-		public DVector stats=new DVector(3);
-		public List<String> stepV=new Vector<String>();
-		public Integer pricingMobIndex=Integer.valueOf(0);
+		public TriadList<String,String,Integer> settings();
+		public TriadList<String,String,Integer> behaviors();
+		public TriadList<String,String,Integer> properties();
+		public TriadList<String,String,Integer> stats();
+		public List<String> stepV();
+		public Integer pricingMobIndex();
 	}
 
 	public final static int QM_COMMAND_$TITLE=0;

@@ -1,38 +1,41 @@
 package com.planet_ink.coffee_mud.core.collections;
 
 import java.util.*;
-/*
-   Copyright 2000-2015 Bo Zimmerman
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-	   http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
- */
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 
-public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List<Triad<T, K, L>>
+public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements TriadList<T, K, L>
 {
 	private static final long	serialVersionUID	= -9175373358892311411L;
 
+	public TriadVector()
+	{
+		super();
+	}
+	
+	public TriadVector(TriadList<T, K, L> list)
+	{
+		super();
+		if(list != null)
+		{
+			for(Triad<T, K, L> t : list)
+				add(t.first, t.second, t.third);
+		}
+	}
+	
+	@Override
 	public Triad.FirstConverter<T, K, L> getFirstConverter()
 	{
 		return new Triad.FirstConverter<T, K, L>();
 	}
 
+	@Override
 	public Triad.SecondConverter<T, K, L> getSecondConverter()
 	{
 		return new Triad.SecondConverter<T, K, L>();
 	}
 
+	@Override
 	public Triad.ThirdConverter<T, K, L> getThirdConverter()
 	{
 		return new Triad.ThirdConverter<T, K, L>();
@@ -53,51 +56,61 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return new ConvertingEnumeration<Triad<T, K, L>, L>(elements(), getThirdConverter());
 	}
 
+	@Override
 	public Iterator<T> firstIterator()
 	{
 		return new ConvertingIterator<Triad<T, K, L>, T>(iterator(), getFirstConverter());
 	}
 
+	@Override
 	public Iterator<K> secondIterator()
 	{
 		return new ConvertingIterator<Triad<T, K, L>, K>(iterator(), getSecondConverter());
 	}
 
+	@Override
 	public Iterator<L> thirdIterator()
 	{
 		return new ConvertingIterator<Triad<T, K, L>, L>(iterator(), getThirdConverter());
 	}
 
+	@Override
 	public synchronized int indexOfFirst(T t)
 	{
 		return indexOfFirst(t, 0);
 	}
 
+	@Override
 	public synchronized int indexOfSecond(K k)
 	{
 		return indexOfSecond(k, 0);
 	}
 
+	@Override
 	public synchronized int indexOfThird(L l)
 	{
 		return indexOfThird(l, 0);
 	}
 
+	@Override
 	public T getFirst(int index)
 	{
 		return get(index).first;
 	}
 
+	@Override
 	public K getSecond(int index)
 	{
 		return get(index).second;
 	}
 
+	@Override
 	public L getThird(int index)
 	{
 		return get(index).third;
 	}
 
+	@Override
 	public void add(T t, K k, L l)
 	{
 		add(new Triad<T, K, L>(t, k, l));
@@ -108,6 +121,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		add(new Triad<T, K, L>(t, k, l));
 	}
 
+	@Override
 	public boolean containsFirst(T t)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
@@ -118,6 +132,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return false;
 	}
 
+	@Override
 	public boolean containsSecond(K k)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
@@ -128,6 +143,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return false;
 	}
 
+	@Override
 	public boolean containsThird(L l)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
@@ -138,21 +154,60 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return false;
 	}
 
+	@Override
 	public T elementAtFirst(int index)
 	{
 		return get(index).first;
 	}
 
+	@Override
 	public K elementAtSecond(int index)
 	{
 		return get(index).second;
 	}
 
+	@Override
 	public L elementAtThird(int index)
 	{
 		return get(index).third;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean contains(Object o)
+	{
+		if (o instanceof Triad)
+			return super.contains(o);
+		if (containsFirst((T) o))
+			return true;
+		return containsSecond((K) o);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public int indexOf(Object o)
+	{
+		if (o instanceof Triad)
+			return super.indexOf(o);
+		final int x = indexOfFirst((T) o);
+		if (x >= 0)
+			return x;
+		return indexOfSecond((K) o);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized int indexOf(Object o, int index)
+	{
+		if (o instanceof Triad)
+			return super.indexOf(o, index);
+		final int x = indexOfFirst((T) o, index);
+		if (x >= 0)
+			return x;
+		return indexOfSecond((K) o, index);
+	}
+	
+	@Override
 	public int indexOfFirst(T t, int index)
 	{
 		try
@@ -169,6 +224,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return -1;
 	}
 
+	@Override
 	public int indexOfSecond(K k, int index)
 	{
 		try
@@ -185,6 +241,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return -1;
 	}
 
+	@Override
 	public int indexOfThird(L l, int index)
 	{
 		try
@@ -201,6 +258,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return -1;
 	}
 
+	@Override
 	public int lastIndexOfFirst(T t, int index)
 	{
 		try
@@ -217,6 +275,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return -1;
 	}
 
+	@Override
 	public int lastIndexOfSecond(K k, int index)
 	{
 		try
@@ -233,6 +292,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return -1;
 	}
 
+	@Override
 	public int lastIndexOfThird(L l, int index)
 	{
 		try
@@ -249,21 +309,25 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return -1;
 	}
 
+	@Override
 	public synchronized int lastIndexOfFirst(T t)
 	{
 		return lastIndexOfFirst(t, size() - 1);
 	}
 
+	@Override
 	public synchronized int lastIndexOfSecond(K k)
 	{
 		return lastIndexOfSecond(k, size() - 1);
 	}
 
+	@Override
 	public synchronized int lastIndexOfThird(L l)
 	{
 		return lastIndexOfThird(l, size() - 1);
 	}
 
+	@Override
 	public synchronized boolean removeFirst(T t)
 	{
 		Triad<T, K, L> pair;
@@ -279,6 +343,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return false;
 	}
 
+	@Override
 	public synchronized boolean removeSecond(K k)
 	{
 		Triad<T, K, L> pair;
@@ -294,6 +359,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return false;
 	}
 
+	@Override
 	public synchronized boolean removeThird(L l)
 	{
 		Triad<T, K, L> pair;
@@ -309,16 +375,19 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return false;
 	}
 
+	@Override
 	public boolean removeElementFirst(T t)
 	{
 		return removeFirst(t);
 	}
 
+	@Override
 	public boolean removeElementSecond(K k)
 	{
 		return removeSecond(k);
 	}
 
+	@Override
 	public boolean removeElementThird(L l)
 	{
 		return removeThird(l);
@@ -354,6 +423,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return lastElement().third;
 	}
 
+	@Override
 	public T[] toArrayFirst(T[] a)
 	{
 		final T[] objs = toArray(a);
@@ -362,6 +432,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return objs;
 	}
 
+	@Override
 	public K[] toArraySecond(K[] a)
 	{
 		final K[] objs = toArray(a);
@@ -370,6 +441,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements List
 		return objs;
 	}
 
+	@Override
 	public L[] toArrayThird(L[] a)
 	{
 		final L[] objs = toArray(a);

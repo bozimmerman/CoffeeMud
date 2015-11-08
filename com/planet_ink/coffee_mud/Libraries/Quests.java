@@ -245,11 +245,11 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 
-	protected void promptText(MOB mob, DVector sets, String var, int showNumber, int showFlag, String prompt, String help, boolean emptyOK)
+	protected void promptText(MOB mob, TriadList<String,String,Integer> sets, String var, int showNumber, int showFlag, String prompt, String help, boolean emptyOK)
 	throws java.io.IOException
 	{
-		final int index=sets.indexOf(var);
-		final String oldVal=index>=0?(String)sets.elementAt(index,2):"";
+		final int index=sets.indexOfFirst(var);
+		final String oldVal=index>=0?(String)sets.get(index).second:"";
 		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			final String newVAL=CMLib.genEd().prompt(mob,oldVal,showNumber,showFlag,prompt,emptyOK);
@@ -260,10 +260,10 @@ public class Quests extends StdLibrary implements QuestManager
 			}
 			else
 			if(index>=0)
-				sets.setElementAt(index,2,newVAL);
+				sets.get(index).second = newVAL;
 			else
 			if(!newVAL.equals(oldVal))
-				sets.addElement(var,newVAL,Integer.valueOf(-1));
+				sets.add(var,newVAL,Integer.valueOf(-1));
 			break;
 		}
 	}
@@ -458,21 +458,15 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public RawHolidayData getEncodedHolidayData(String dataFromStepsFile)
+	public HolidayData getEncodedHolidayData(String dataFromStepsFile)
 	{
 		final List<String> stepV=Resources.getFileLineVector(new StringBuffer(dataFromStepsFile));
 		for(int v=0;v<stepV.size();v++)
 			stepV.set(v,CMStrings.replaceAll(stepV.get(v),"\\;",";"));
-		final DVector settings=new DVector(3);
-		final DVector behaviors=new DVector(3);
-		final DVector properties=new DVector(3);
-		final DVector stats=new DVector(3);
-		final RawHolidayData encodedData=new RawHolidayData();
-		encodedData.settings=settings;
-		encodedData.behaviors=behaviors;
-		encodedData.properties=properties;
-		encodedData.stats=stats;
-		encodedData.stepV=stepV;
+		final TriadList<String,String,Integer> settings=new TriadVector<String,String,Integer>();
+		final TriadList<String,String,Integer> behaviors=new TriadVector<String,String,Integer>();
+		final TriadList<String,String,Integer> properties=new TriadVector<String,String,Integer>();
+		final TriadList<String,String,Integer> stats=new TriadVector<String,String,Integer>();
 		Vector<String> lineV=null;
 		String line=null;
 		String var=null;
@@ -489,7 +483,7 @@ public class Quests extends StdLibrary implements QuestManager
 				var=lineV.elementAt(1).toUpperCase();
 				if(cmd.equals("SET")&&(CMParms.indexOf(SETTINGS,var)>=0))
 				{
-					if(!settings.contains(var))
+					if(!settings.containsFirst(var))
 					{
 						String str=CMParms.combineQuoted(lineV,2);
 						if(str.toUpperCase().startsWith("ANY "))
@@ -498,7 +492,7 @@ public class Quests extends StdLibrary implements QuestManager
 							str=str.substring(14);
 						if(str.toUpperCase().startsWith("MASK="))
 							str=str.substring(5);
-						settings.addElement(var,str,Integer.valueOf(v));
+						settings.add(var,str,Integer.valueOf(v));
 					}
 					else
 					if((var.equalsIgnoreCase("MOBGROUP"))
@@ -509,23 +503,59 @@ public class Quests extends StdLibrary implements QuestManager
 				if(cmd.equals("GIVE")&&("BEHAVIOR".equalsIgnoreCase(var))&&(lineV.size()>2)&&(pricingMobIndex<0))
 				{
 					var=lineV.elementAt(2).toUpperCase();
-					behaviors.addElement(var,CMParms.combineQuoted(lineV,3),Integer.valueOf(v));
+					behaviors.add(var,CMParms.combineQuoted(lineV,3),Integer.valueOf(v));
 				}
 				if(cmd.equals("GIVE")&&("AFFECT".equalsIgnoreCase(var))&&(lineV.size()>2)&&(pricingMobIndex<0))
 				{
 					var=lineV.elementAt(2).toUpperCase();
-					properties.addElement(var,CMParms.combineQuoted(lineV,3),Integer.valueOf(v));
+					properties.add(var,CMParms.combineQuoted(lineV,3),Integer.valueOf(v));
 				}
 				if(cmd.equals("GIVE")&&("STAT".equalsIgnoreCase(var))&&(lineV.size()>2))
 				{
 					var=lineV.elementAt(2).toUpperCase();
 					if((pricingMobIndex<0)||(var.equals("PRICEMASKS")))
-						stats.addElement(var,CMParms.combineQuoted(lineV,3),Integer.valueOf(v));
+						stats.add(var,CMParms.combineQuoted(lineV,3),Integer.valueOf(v));
 				}
 			}
 		}
-		encodedData.pricingMobIndex=Integer.valueOf(pricingMobIndex);
-		return encodedData;
+		final Integer pricingMobIndexI = Integer.valueOf(pricingMobIndex);
+		return new HolidayData()
+		{
+			@Override
+			public TriadList<String, String, Integer> settings()
+			{
+				return settings;
+			}
+			@Override
+			public TriadList<String, String, Integer> behaviors()
+			{
+				return behaviors;
+			}
+
+			@Override
+			public TriadList<String, String, Integer> properties()
+			{
+				return properties;
+			}
+
+			@Override
+			public TriadList<String, String, Integer> stats()
+			{
+				return stats;
+			}
+
+			@Override
+			public List<String> stepV()
+			{
+				return stepV;
+			}
+
+			@Override
+			public Integer pricingMobIndex()
+			{
+				return pricingMobIndexI;
+			}
+		};
 	}
 
 	@Override
@@ -544,16 +574,16 @@ public class Quests extends StdLibrary implements QuestManager
 		{ mob.tell(L("@x1 does not exist as a holiday -- enter LIST HOLIDAYS.",""+holidayNumber)); return;}
 
 		final String step=steps.get(holidayNumber);
-		final RawHolidayData encodedData=getEncodedHolidayData(step);
-		final DVector settings=encodedData.settings;
-		final DVector behaviors=encodedData.behaviors;
-		final DVector properties=encodedData.properties;
-		final DVector stats=encodedData.stats;
+		final HolidayData encodedData=getEncodedHolidayData(step);
+		final TriadList<String,String,Integer> settings=encodedData.settings();
+		final TriadList<String,String,Integer> behaviors=encodedData.behaviors();
+		final TriadList<String,String,Integer> properties=encodedData.properties();
+		final TriadList<String,String,Integer> stats=encodedData.stats();
 
-		final int oldNameIndex=settings.indexOf("NAME");
+		final int oldNameIndex=settings.indexOfFirst("NAME");
 		if((mob.isMonster())||(oldNameIndex<0))
 			return;
-		final String oldName=(String)settings.elementAt(oldNameIndex,2);
+		final String oldName=settings.get(oldNameIndex).second;
 		boolean ok=false;
 		int showFlag=-1;
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
@@ -565,9 +595,9 @@ public class Quests extends StdLibrary implements QuestManager
 				int showNumber=0;
 				promptText(mob,settings,"NAME",++showNumber,showFlag,"Holiday Name","It's, well, a name.",false);
 				showNumber=promptDuration(mob,settings,showNumber,showFlag);
-				if(settings.indexOf("AREAGROUP")>=0)
+				if(settings.indexOfFirst("AREAGROUP")>=0)
 					promptText(mob,settings,"AREAGROUP",++showNumber,showFlag,"Areas List (?)","Area names are space separated, and words grouped using double-quotes",false);
-				if(settings.indexOf("MOBGROUP")>=0)
+				if(settings.indexOfFirst("MOBGROUP")>=0)
 					promptText(mob,settings,"MOBGROUP",++showNumber,showFlag,"Mask for mobs that apply (?)",CMLib.masking().maskHelp("\n\r","disallow"),false);
 				promptText(mob,properties,"MOOD",++showNumber,showFlag,"Mood setting (?)","NULL/Empty (to not use a Mood), or one of: FORMAL, POLITE, HAPPY, SAD, ANGRY, RUDE, MEAN, PROUD, GRUMPY, EXCITED, SCARED, LONELY",true);
 				promptText(mob,behaviors,"AGGRESSIVE",++showNumber,showFlag,"Aggressive setting (?)",CMLib.help().getHelpText("Aggressive",mob,true)+"\n\r\n\r** NULL/Empty (to not use Aggressive **",true);
@@ -597,14 +627,14 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String alterHoliday(String oldName, RawHolidayData newData)
+	public String alterHoliday(String oldName, HolidayData newData)
 	{
-		final DVector settings=newData.settings;
-		final DVector behaviors=newData.behaviors;
-		final DVector properties=newData.properties;
-		final DVector stats=newData.stats;
+		final TriadList<String,String,Integer> settings=newData.settings();
+		final TriadList<String,String,Integer> behaviors=newData.behaviors();
+		final TriadList<String,String,Integer> properties=newData.properties();
+		final TriadList<String,String,Integer> stats=newData.stats();
 		//List stepV=(List)data.elementAt(4);
-		final int pricingMobIndex=newData.pricingMobIndex.intValue();
+		final int pricingMobIndex=newData.pricingMobIndex().intValue();
 
 		final int holidayNumber=getHolidayIndex(oldName);
 		final Object resp=getHolidayFile();
@@ -618,7 +648,7 @@ public class Quests extends StdLibrary implements QuestManager
 
 		String step = null;
 		List<String> stepV = null;
-		RawHolidayData encodedData = null;
+		HolidayData encodedData = null;
 		final StringBuffer buf=new StringBuffer("");
 		for(int v=0;v<steps.size();v++)
 		{
@@ -626,48 +656,48 @@ public class Quests extends StdLibrary implements QuestManager
 			if(v==holidayNumber)
 			{
 				encodedData=getEncodedHolidayData(step);
-				final DVector oldBehaviors=encodedData.behaviors.copyOf();
-				final DVector oldProperties=encodedData.properties.copyOf();
-				stepV=encodedData.stepV;
+				final TriadList<String,String,Integer> oldBehaviors=new TriadVector<String,String,Integer>(encodedData.behaviors());
+				final TriadList<String,String,Integer> oldProperties=new TriadVector<String,String,Integer>(encodedData.properties());
+				stepV=encodedData.stepV();
 
 				int index=startLineIndex(stepV,"SET NAME");
-				stepV.set(index,"SET NAME "+(String)settings.elementAt(settings.indexOf("NAME"),2));
+				stepV.set(index,"SET NAME "+settings.get(settings.indexOfFirst("NAME")).second);
 				index=startLineIndex(stepV,"SET DURATION");
-				stepV.set(index,"SET DURATION "+(String)settings.elementAt(settings.indexOf("DURATION"),2));
+				stepV.set(index,"SET DURATION "+settings.get(settings.indexOfFirst("DURATION")).second);
 				int intervalLine=startLineIndex(stepV,"SET MUDDAY");
 				if(intervalLine<0)
 					intervalLine=startLineIndex(stepV,"SET DATE");
 				if(intervalLine<0)
 					intervalLine=startLineIndex(stepV,"SET WAIT");
-				final int mudDayIndex=settings.indexOf("MUDDAY");
-				final int dateIndex=settings.indexOf("DATE");
-				final int waitIndex=settings.indexOf("WAIT");
+				final int mudDayIndex=settings.indexOfFirst("MUDDAY");
+				final int dateIndex=settings.indexOfFirst("DATE");
+				final int waitIndex=settings.indexOfFirst("WAIT");
 				if(mudDayIndex>=0)
-					stepV.set(intervalLine,"SET MUDDAY "+((String)settings.elementAt(mudDayIndex,2)));
+					stepV.set(intervalLine,"SET MUDDAY "+(settings.get(mudDayIndex).second));
 				else
 				if(dateIndex>=0)
-					stepV.set(intervalLine,"SET DATE "+((String)settings.elementAt(dateIndex,2)));
+					stepV.set(intervalLine,"SET DATE "+(settings.get(dateIndex).second));
 				else
-					stepV.set(intervalLine,"SET WAIT "+((String)settings.elementAt(waitIndex,2)));
+					stepV.set(intervalLine,"SET WAIT "+(settings.get(waitIndex).second));
 
-				index=settings.indexOf("AREAGROUP");
+				index=settings.indexOfFirst("AREAGROUP");
 				if(index>=0)
 				{
 					index=startLineIndex(stepV,"SET AREAGROUP");
 					if(index>=0)
-						stepV.set(index,"SET AREAGROUP "+settings.elementAt(settings.indexOf("AREAGROUP"),2));
+						stepV.set(index,"SET AREAGROUP "+settings.get(settings.indexOfFirst("AREAGROUP")).second);
 				}
 
-				index=settings.indexOf("MOBGROUP");
+				index=settings.indexOfFirst("MOBGROUP");
 				if(index>=0)
 				{
 					index=startLineIndex(stepV,"SET MOBGROUP");
-					stepV.set(index,"SET MOBGROUP RESELECT MASK="+settings.elementAt(settings.indexOf("MOBGROUP"),2));
+					stepV.set(index,"SET MOBGROUP RESELECT MASK="+settings.get(settings.indexOfFirst("MOBGROUP")).second);
 				}
-				if((pricingMobIndex>0)&&(stats.indexOf("PRICEMASKS")>=0))
+				if((pricingMobIndex>0)&&(stats.indexOfFirst("PRICEMASKS")>=0))
 				{
 					index=startLineIndex(stepV,"GIVE STAT PRICEMASKS");
-					final String s=(String)stats.elementAt(stats.indexOf("PRICEMASKS"),2);
+					final String s=stats.get(stats.indexOfFirst("PRICEMASKS")).second;
 					if(s.trim().length()==0)
 					{
 						if(index>=0)
@@ -682,11 +712,11 @@ public class Quests extends StdLibrary implements QuestManager
 					}
 				}
 				int mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
-				index=behaviors.indexOf("AGGRESSIVE");
+				index=behaviors.indexOfFirst("AGGRESSIVE");
 				if(index>=0)
 				{
 					index=startLineIndex(stepV,"GIVE BEHAVIOR AGGRESSIVE");
-					final String s=(String)behaviors.elementAt(behaviors.indexOf("AGGRESSIVE"),2);
+					final String s=behaviors.get(behaviors.indexOfFirst("AGGRESSIVE")).second;
 					if(s.trim().length()==0)
 					{
 						if(index>=0)
@@ -702,11 +732,11 @@ public class Quests extends StdLibrary implements QuestManager
 				}
 
 				mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
-				index=behaviors.indexOf("MUDCHAT");
+				index=behaviors.indexOfFirst("MUDCHAT");
 				if(index>=0)
 				{
 					index=startLineIndex(stepV,"GIVE BEHAVIOR MUDCHAT");
-					final String s=(String)behaviors.elementAt(behaviors.indexOf("MUDCHAT"),2);
+					final String s=behaviors.get(behaviors.indexOfFirst("MUDCHAT")).second;
 					if(s.trim().length()<2)
 					{
 						if(index>=0)
@@ -722,11 +752,11 @@ public class Quests extends StdLibrary implements QuestManager
 				}
 
 				mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
-				index=properties.indexOf("MOOD");
+				index=properties.indexOfFirst("MOOD");
 				if(index>=0)
 				{
 					index=startLineIndex(stepV,"GIVE AFFECT MOOD");
-					final String s=(String)properties.elementAt(properties.indexOf("MOOD"),2);
+					final String s=properties.get(properties.indexOfFirst("MOOD")).second;
 					if(s.trim().length()==0)
 					{
 						if(index>=0)
@@ -744,8 +774,8 @@ public class Quests extends StdLibrary implements QuestManager
 				// look for newly missing stuff
 				for(int p=0;p<oldProperties.size();p++)
 				{
-					final String prop=(String)oldProperties.elementAt(p,1);
-					if(properties.indexOf(prop)<0)
+					final String prop=oldProperties.get(p).first;
+					if(properties.indexOfFirst(prop)<0)
 					{
 						index=startLineIndex(stepV,"GIVE AFFECT "+prop);
 						if(index>=0)
@@ -755,8 +785,8 @@ public class Quests extends StdLibrary implements QuestManager
 				// look for newly missing stuff
 				for(int p=0;p<oldBehaviors.size();p++)
 				{
-					final String behav=(String)oldBehaviors.elementAt(p,1);
-					if(behaviors.indexOf(behav)<0)
+					final String behav=oldBehaviors.get(p).first;
+					if(behaviors.indexOfFirst(behav)<0)
 					{
 						index=startLineIndex(stepV,"GIVE BEHAVIOR "+behav);
 						if(index>=0)
@@ -766,28 +796,28 @@ public class Quests extends StdLibrary implements QuestManager
 				// now changed/added stuff
 				for(int p=0;p<properties.size();p++)
 				{
-					final String prop=(String)properties.elementAt(p,1);
+					final String prop=properties.get(p).first;
 					if(prop.equalsIgnoreCase("MOOD"))
 						continue;
 					mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
 					index=startLineIndex(stepV,"GIVE AFFECT "+prop);
 					if(index>=0)
-						stepV.set(index,"GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.elementAt(p,2)));
+						stepV.set(index,"GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.get(p).second));
 					else
-						stepV.add(mobGroupIndex+1,"GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.elementAt(p,2)));
+						stepV.add(mobGroupIndex+1,"GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.get(p).second));
 				}
 				// now changed/added stuff
 				for(int p=0;p<behaviors.size();p++)
 				{
-					final String behav=(String)behaviors.elementAt(p,1);
+					final String behav=behaviors.get(p).first;
 					if(behav.equalsIgnoreCase("AGGRESSIVE")||behav.equalsIgnoreCase("MUDCHAT"))
 						continue;
 					mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
 					index=startLineIndex(stepV,"GIVE BEHAVIOR "+behav);
 					if(index>=0)
-						stepV.set(index,"GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.elementAt(p,2)));
+						stepV.set(index,"GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.get(p).second));
 					else
-						stepV.add(mobGroupIndex+1,"GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.elementAt(p,2)));
+						stepV.add(mobGroupIndex+1,"GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.get(p).second));
 				}
 
 				for(int v1=0;v1<stepV.size();v1++)
@@ -808,17 +838,17 @@ public class Quests extends StdLibrary implements QuestManager
 		return "";
 	}
 
-	protected int promptDuration(MOB mob, DVector settings, int showNumber,int showFlag)
+	protected int promptDuration(MOB mob, TriadList<String,String,Integer> settings, int showNumber,int showFlag)
 		throws IOException
 	{
-		int mudDayIndex=settings.indexOf("MUDDAY");
-		int dateIndex=settings.indexOf("DATE");
-		int waitIndex=settings.indexOf("WAIT");
-		int durationIndex=settings.indexOf("DURATION");
+		int mudDayIndex=settings.indexOfFirst("MUDDAY");
+		int dateIndex=settings.indexOfFirst("DATE");
+		int waitIndex=settings.indexOfFirst("WAIT");
+		int durationIndex=settings.indexOfFirst("DURATION");
 		if(durationIndex<0)
 		{
-			settings.addElement("DURATION","900",Integer.valueOf(-1));
-			durationIndex=settings.indexOf("DURATION");
+			settings.add("DURATION","900",Integer.valueOf(-1));
+			durationIndex=settings.indexOfFirst("DURATION");
 		}
 		++showNumber;
 		if((showFlag<0)||(showFlag==showNumber))
@@ -845,25 +875,25 @@ public class Quests extends StdLibrary implements QuestManager
 					}
 					typeIndex=CMParms.indexOf(TYPES,newVal.toUpperCase().trim());
 					if((typeIndex!=0)&&(waitIndex>=0))
-						settings.removeElement("WAIT");
+						settings.removeFirst("WAIT");
 					if((typeIndex!=1)&&(mudDayIndex>=0))
-						settings.removeElement("MUDDAY");
+						settings.removeFirst("MUDDAY");
 					if((typeIndex!=2)&&(dateIndex>=0))
-						settings.removeElement("DATE");
+						settings.removeFirst("DATE");
 					if((typeIndex==0)&&(waitIndex<0))
-						settings.addElement("WAIT","100",Integer.valueOf(-1));
+						settings.add("WAIT","100",Integer.valueOf(-1));
 					if((typeIndex==1)&&(mudDayIndex<0))
-						settings.addElement("MUDDAY","1-1",Integer.valueOf(-1));
+						settings.add("MUDDAY","1-1",Integer.valueOf(-1));
 					if((typeIndex==2)&&(dateIndex<0))
-						settings.addElement("DATE","1-1",Integer.valueOf(-1));
+						settings.add("DATE","1-1",Integer.valueOf(-1));
 					if(showFlag==showNumber)
 						return showNumber;
 					break;
 				}
-				mudDayIndex=settings.indexOf("MUDDAY");
-				dateIndex=settings.indexOf("DATE");
-				waitIndex=settings.indexOf("WAIT");
-				durationIndex=settings.indexOf("DURATION");
+				mudDayIndex=settings.indexOfFirst("MUDDAY");
+				dateIndex=settings.indexOfFirst("DATE");
+				waitIndex=settings.indexOfFirst("WAIT");
+				durationIndex=settings.indexOfFirst("DURATION");
 			}
 			else
 				mob.tell(L("@x1. Schedule type: @x2",""+showNumber,TYPES[typeIndex]));
@@ -880,14 +910,14 @@ public class Quests extends StdLibrary implements QuestManager
 		return showNumber;
 	}
 
-	protected int genBehaviors(MOB mob, DVector behaviors, int showNumber, int showFlag)
+	protected int genBehaviors(MOB mob, TriadList<String,String,Integer> behaviors, int showNumber, int showFlag)
 	throws IOException
 	{
 		for(int b=0;b<=behaviors.size();b++)
 		{
 			if((b<behaviors.size())
-			&&(((String)behaviors.elementAt(b,1)).equalsIgnoreCase("MUDCHAT")
-				||((String)behaviors.elementAt(b,1)).equalsIgnoreCase("AGGRESSIVE")))
+			&&(behaviors.get(b).first.equalsIgnoreCase("MUDCHAT")
+				||behaviors.get(b).first.equalsIgnoreCase("AGGRESSIVE")))
 				continue;
 			if((showFlag>0)&&(showFlag!=showNumber)){ if(b<behaviors.size()) showNumber++; continue;}
 			if(b==behaviors.size())
@@ -897,7 +927,7 @@ public class Quests extends StdLibrary implements QuestManager
 					if(((showFlag<=-999)&&CMLib.genEd().prompt(mob,false,showNumber,showFlag,L("Add new mob behavior")))
 					||(showNumber==showFlag))
 					{
-						behaviors.addElement("BehaviorID","",Integer.valueOf(behaviors.size()));
+						behaviors.add("BehaviorID","",Integer.valueOf(behaviors.size()));
 						b-=1;
 					}
 					else
@@ -906,8 +936,8 @@ public class Quests extends StdLibrary implements QuestManager
 				}
 				continue;
 			}
-			String behavior=(String)behaviors.elementAt(b,1);
-			String parms=(String)behaviors.elementAt(b,2);
+			String behavior=behaviors.get(b).first;
+			String parms=behaviors.get(b).second;
 
 			mob.tell(L("@x1. Behavior: @x2: @x3",""+showNumber,behavior,parms));
 			if((showFlag==showNumber)||(showFlag<=-999))
@@ -915,7 +945,7 @@ public class Quests extends StdLibrary implements QuestManager
 				behavior=CMLib.genEd().prompt(mob,behavior,showNumber,showFlag,L("Behavior ID (NULL to delete)"),true,toStringList(CMClass.behaviors()));
 				if(behavior.length()==0)
 				{
-					behaviors.removeElementAt(b);
+					behaviors.remove(b);
 					b--;
 					if((showFlag==showNumber))
 						break;
@@ -933,21 +963,21 @@ public class Quests extends StdLibrary implements QuestManager
 				if(help==null)
 					help=new StringBuilder("No help on '"+behavior+"'");
 				parms=CMLib.genEd().prompt(mob,parms,showNumber,showFlag,L("Behavior Parameters"),help.toString());
-				behaviors.setElementAt(b,1,behavior);
-				behaviors.setElementAt(b,2,parms);
+				behaviors.get(b).first = behavior;
+				behaviors.get(b).second = parms;
 			}
 			showNumber++;
 		}
 		return showNumber;
 	}
 
-	protected int genProperties(MOB mob, DVector properties, int showNumber, int showFlag)
+	protected int genProperties(MOB mob, TriadList<String,String,Integer> properties, int showNumber, int showFlag)
 	throws IOException
 	{
 		for(int p=0;p<=properties.size();p++)
 		{
 			if((p<properties.size())
-			&&(((String)properties.elementAt(p,1)).equalsIgnoreCase("MOOD")))
+			&&(properties.get(p).first.equalsIgnoreCase("MOOD")))
 				continue;
 			if((showFlag>0)&&(showFlag!=showNumber)){ if(p<properties.size()) showNumber++; continue;}
 			if(p==properties.size())
@@ -957,7 +987,7 @@ public class Quests extends StdLibrary implements QuestManager
 					if(((showFlag<=-999)&&CMLib.genEd().prompt(mob,false,showNumber,showFlag,L("Add new mob property")))
 					||(showNumber==showFlag))
 					{
-						properties.addElement("AbilityID","",Integer.valueOf(properties.size()));
+						properties.add("AbilityID","",Integer.valueOf(properties.size()));
 						p-=1;
 					}
 					else
@@ -966,8 +996,8 @@ public class Quests extends StdLibrary implements QuestManager
 				}
 				continue;
 			}
-			String propertyID=(String)properties.elementAt(p,1);
-			String parms=(String)properties.elementAt(p,2);
+			String propertyID=properties.get(p).first;
+			String parms=properties.get(p).second;
 
 			mob.tell(L("@x1. Effect: @x2: @x3",""+showNumber,propertyID,parms));
 			if((showFlag==showNumber)||(showFlag<=-999))
@@ -975,7 +1005,7 @@ public class Quests extends StdLibrary implements QuestManager
 				propertyID=CMLib.genEd().prompt(mob,propertyID,showNumber,showFlag,L("Ability ID (NULL to delete)"),true,toStringList(CMClass.abilities()));
 				if(propertyID.length()==0)
 				{
-					properties.removeElementAt(p);
+					properties.remove(p);
 					p--;
 					if((showFlag==showNumber))
 						break;
@@ -993,8 +1023,8 @@ public class Quests extends StdLibrary implements QuestManager
 				if(help==null)
 					help=new StringBuilder("No help on '"+propertyID+"'");
 				parms=CMLib.genEd().prompt(mob,parms,showNumber,showFlag,L("Ability Parameters"),help.toString());
-				properties.setElementAt(p,1,propertyID);
-				properties.setElementAt(p,2,parms);
+				properties.get(p).first =propertyID;
+				properties.get(p).second = parms;
 			}
 			showNumber++;
 		}
@@ -1020,11 +1050,11 @@ public class Quests extends StdLibrary implements QuestManager
 		return s.toString().substring(2);
 	}
 
-	protected int genPricing(MOB mob, DVector stats, int showNumber, int showFlag)
+	protected int genPricing(MOB mob, TriadList<String,String,Integer> stats, int showNumber, int showFlag)
 	throws IOException
 	{
-		final int pndex=stats.indexOf("PRICEMASKS");
-		final String priceStr=(pndex<0)?"":(String)stats.elementAt(pndex,2);
+		final int pndex=stats.indexOfFirst("PRICEMASKS");
+		final String priceStr=(pndex<0)?"":(String)stats.get(pndex).second;
 		final List<String> priceV=CMParms.parseCommas(priceStr,true);
 		for(int v=0;v<=priceV.size();v++)
 		{
@@ -1077,9 +1107,9 @@ public class Quests extends StdLibrary implements QuestManager
 		}
 		final String newVal=CMParms.toListString(priceV);
 		if(pndex>=0)
-			stats.setElementAt(pndex,2,newVal);
+			stats.get(pndex).second = newVal;
 		else
-			stats.addElement("PRICEMASKS",newVal,Integer.valueOf(stats.size()));
+			stats.add("PRICEMASKS",newVal,Integer.valueOf(stats.size()));
 		return showNumber;
 	}
 
@@ -1111,10 +1141,10 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public List<List<String>> breakOutMudChatVs(String MUDCHAT, DVector behaviors)
+	public List<List<String>> breakOutMudChatVs(String MUDCHAT, TriadList<String,String,Integer> behaviors)
 	{
-		final int mndex=behaviors.indexOf(MUDCHAT);
-		String mudChatStr=(mndex<0)?"":(String)behaviors.elementAt(mndex,2);
+		final int mndex=behaviors.indexOfFirst(MUDCHAT);
+		String mudChatStr=(mndex<0)?"":(String)behaviors.get(mndex).second;
 		if(mudChatStr.startsWith("+"))
 			mudChatStr=mudChatStr.substring(1);
 		final List<String> rawMCV=CMParms.parseSemicolons(mudChatStr,true);
@@ -1141,10 +1171,10 @@ public class Quests extends StdLibrary implements QuestManager
 		return mudChatV;
 	}
 
-	protected int genMudChat(MOB mob, String var, DVector behaviors, int showNumber, int showFlag)
+	protected int genMudChat(MOB mob, String var, TriadList<String,String,Integer> behaviors, int showNumber, int showFlag)
 	throws IOException
 	{
-		final int mndex=behaviors.indexOf(var);
+		final int mndex=behaviors.indexOfFirst(var);
 		final List<List<String>> mudChatV = breakOutMudChatVs(var,behaviors);
 		List<String> V = null;
 		String s=null;
@@ -1232,9 +1262,9 @@ public class Quests extends StdLibrary implements QuestManager
 			finalVal.append(";");
 		}
 		if(mndex>=0)
-			behaviors.setElementAt(mndex,2,(finalVal.toString().trim().length()==0)?"":("+"+finalVal.toString()));
+			behaviors.get(mndex).second  =(finalVal.toString().trim().length()==0)?"":("+"+finalVal.toString());
 		else
-			behaviors.addElement(var,(finalVal.toString().trim().length()==0)?"":("+"+finalVal.toString()),Integer.valueOf(behaviors.size()));
+			behaviors.add(var,(finalVal.toString().trim().length()==0)?"":("+"+finalVal.toString()),Integer.valueOf(behaviors.size()));
 		return showNumber;
 	}
 
