@@ -71,22 +71,150 @@ public interface AbilityParameters extends CMLibrary
 	 */
 	public static interface AbilityParmEditor
 	{
+		/**
+		 * The code-word/identifier for this editor.  Corresponds directly to the
+		 * bits in the coded parameter string.
+		 * @return code-word/identifier for this editor
+		 */
 		public String ID();
+		
+		/**
+		 * The general type of data being manipulated by the editor.
+		 * @see ParmType
+		 * @return general type of data being manipulated by the editor
+		 */
 		public ParmType parmType();
+		
+		/**
+		 * Creates key/display pairs from an enumeration of objects whose identity
+		 * depends entirely on this editor.  It returns a pair list where the first
+		 * entry is the actual returnable value, and the second is the user-enterable
+		 * selectable display key.
+		 * @param e the enumeration of objects to create choices from
+		 * @return key/display pairs
+		 */
 		public PairList<String,String> createChoices(Enumeration<? extends Object> e);
+		
+		/**
+		 * Creates key/display pairs from a list of objects whose identity
+		 * depends entirely on this editor.  It returns a pair list where the first
+		 * entry is the actual returnable value, and the second is the user-enterable
+		 * selectable display key.
+		 * @param V the list of objects to create choices from
+		 * @return key/display pairs
+		 */
 		public PairList<String,String> createChoices(Vector<? extends Object> V);
+		
+		/**
+		 * Creates key/display pairs from a list of strings whose identity
+		 * depends entirely on this editor.  It returns a pair list where the first
+		 * entry is the actual returnable value, and the second is the user-enterable
+		 * selectable display key.  In this case, they would both be the same.
+		 * @param S the array of strings to create choices from
+		 * @return key/display pairs
+		 */
 		public PairList<String,String> createChoices(String[] S);
+		
+		/**
+		 * Creates key/display pairs whose identity depends entirely on this editor.  
+		 * It returns a pair list where the first entry is the actual returnable 
+		 * value, and the second is the user-enterable selectable display key.  
+		 * @return key/display pairs
+		 */
 		public PairList<String,String> choices();
+		
+		/**
+		 * Returns how much this editor applies as the appropriate editor to the
+		 * given object.  A number less than 0 means it definitely doesn't apply.
+		 * The higher the number, the more likely it is to be the correct edior.
+		 * @param o the object to check and see if this is an editor of
+		 * @return a number denoting how likely it is that this is the editor.
+		 */
 		public int appliesToClass(Object o);
+		
+		/**
+		 * Returns whether the given value constitutes a valid value for this editor.
+		 * @param oldVal the data to check
+		 * @return true if the value is acceptable, false otherwise
+		 */
 		public boolean confirmValue(String oldVal);
+		
+		/**
+		 * Presents fake user input for testing.  The String array is the pre-parsed
+		 * commands that a user would have entered to satisfy the prompt or prompts
+		 * represented by this editor.
+		 * @param oldVal the current value
+		 * @return  fake user input for testing
+		 */
 		public String[] fakeUserInput(String oldVal);
+		
+		/**
+		 * Presents the given mob player the official command line prompt for this editor and
+		 * lets them enter a value or values before returning the final value as a result.
+		 * @param mob the player who is being prompted
+		 * @param oldVal the old/previous value for this field
+		 * @param showNumber the arbitrary number of this field 1, 2, 3.. 
+		 * @param showFlag same as shownumber to edit, -1 to display, -999 to always edit
+		 * @return the value entered by the user
+		 * @throws java.io.IOException typically means a dropped carrier
+		 */
 		public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException;
+		
+		/**
+		 * The displayable name of this column.
+		 * @return displayable name of this column.
+		 */
 		public String colHeader();
+		
+		/**
+		 * The display prompt used for command line editors.
+		 * @return
+		 */
 		public String prompt();
+		
+		/**
+		 * The default value to use when no previous value is available.
+		 * @return default value to use when no previous value is available
+		 */
 		public String defaultValue();
+
+		/**
+		 * The current web value of this field, sufficient to be put into the VALUE field
+		 * of a text or hidden tag.
+		 * @param httpReq the request objects, containing access to url parameters
+		 * @param parms the tag url parameters map
+		 * @param oldVal the original previous value of this field
+		 * @param fieldName the name of the field
+		 * @return current web value of this field
+		 */
 		public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName);
+		
+		/**
+		 * Returns the html tag field, complete with current value, for this editor
+		 * @param httpReq the request objects, containing access to url parameters
+		 * @param parms the tag url parameters map
+		 * @param oldVal the original previous value of this field
+		 * @param fieldName the name of the field
+		 * @return the html tag field, complete with current value, for this editor
+		 */
 		public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName);
+		
+		/**
+		 * The current web value of this field, sufficient to be put into the overview table
+		 * showing the value of all the fields.
+		 * @param httpReq the request objects, containing access to url parameters
+		 * @param parms the tag url parameters map
+		 * @param oldVal the original previous value of this field
+		 * @return current web value of this field for an overview table
+		 */
 		public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal);
+		
+		/**
+		 * Createa a new value field from an item, given the specific craftor to which this editor was made.
+		 * @param A the item craftor that this editor belongs to
+		 * @param I the item to grab a field from
+		 * @return the value from the item
+		 */
 		public String convertFromItem(final ItemCraftor A, final Item I);
 	}
 

@@ -484,11 +484,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				String foundChoice = null;
 				String foundVal = "";
 				for(int c=0;c<choices.size();c++)
+				{
 					if(choices.get(c).second.equalsIgnoreCase(thisVal))
 					{
 						foundChoice = choices.get(c).second;
 						foundVal = choices.get(c).first.toString();
 					}
+				}
 				if(foundChoice == null)
 				{
 					mob.tell(L("'@x1' is not an available option.  Use ? for a list.",newVal));
@@ -539,8 +541,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return oldVal;
 		String oldShowVal = oldVal;
 		for(int c=0;c<choices.size();c++)
+		{
 			if(choices.get(c).first.equalsIgnoreCase(oldVal))
 				oldShowVal = choices.get(c).second;
+		}
 		mob.tell(showNumber+". "+FieldDisp+": '"+oldShowVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;

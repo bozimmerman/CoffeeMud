@@ -501,7 +501,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(A==null)
 						throw new CMException("Col name "+(colV.get(c))+" is not defined.");
 					if((applicableA==null)
-							||(A.appliesToClass(classModelI) > applicableA.appliesToClass(classModelI)))
+					||(A.appliesToClass(classModelI) > applicableA.appliesToClass(classModelI)))
 						applicableA = A;
 				}
 				if((applicableA == null)||(applicableA.appliesToClass(classModelI)<0))
@@ -515,8 +515,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				return false;
 			}
 			else
-				if((rowShow>=0)&&(!A.confirmValue((String)dataRow.elementAt(d,2))))
-					Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1))+" at row "+rowShow);
+			if((rowShow>=0)&&(!A.confirmValue((String)dataRow.elementAt(d,2))))
+				Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1))+" at row "+rowShow);
 		}
 		return true;
 	}
@@ -1682,32 +1682,34 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String[] fakeUserInput(String oldVal)
 				{
-					final Vector<String> V = new Vector<String>();
+					final ArrayList<String> V = new ArrayList<String>();
 					final short[] layerAtt = new short[1];
 					final short[] layers = new short[1];
 					final long[] wornLoc = new long[1];
 					final boolean[] logicalAnd = new boolean[1];
 					final double[] hardBonus=new double[1];
 					CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,oldVal);
-					V.addElement(""+layers[0]);
+					V.add(""+layers[0]);
 					if(CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH))
-						V.addElement("Y");
+						V.add("Y");
 					else
-						V.addElement("N");
+						V.add("N");
 					if(CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR))
-						V.addElement("Y");
+						V.add("Y");
 					else
-						V.addElement("N");
-					V.addElement("1");
-					V.addElement("1");
+						V.add("N");
+					V.add("1");
+					V.add("1");
 					final Wearable.CODES codes = Wearable.CODES.instance();
 					for(int i=0;i<codes.total();i++)
+					{
 						if(CMath.bset(wornLoc[0],codes.get(i)))
 						{
-							V.addElement(""+(i+2));
-							V.addElement(""+(i+2));
+							V.add(""+(i+2));
+							V.add(""+(i+2));
 						}
-					V.addElement("0");
+					}
+					V.add("0");
 					return CMParms.toStringArray(V);
 				}
 
