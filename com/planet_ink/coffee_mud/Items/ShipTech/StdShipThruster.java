@@ -220,7 +220,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		final SpaceShip ship=(SpaceShip)obj;
 		if((portDir==null)||(amount<0))
 			return reportError(me, controlI, mob, lang.L("@x1 rumbles loudly, but accomplishes nothing.",me.name(mob)), lang.L("Failure: @x1: exhaust control.",me.name(mob)));
-		double thrust=Math.round(me.getInstalledFactor() * (amount + ship.getMass()));
+		double thrust=Math.round(me.getInstalledFactor() * amount);
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
 		thrust=(int)Math.round(manufacturer.getReliabilityPct() * thrust);
@@ -228,8 +228,20 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust((int)Math.round(thrust));
 		
-		final int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
+		final int fuelToConsume=(int)Math.round(
+			CMath.ceiling(
+				thrust
+				*me.getFuelEfficiency()
+				*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct())) 
+				/ getFuelDivisor()
+			)
+		);
+		
+		if(portDir==ThrustPort.AFT) // when thrusting aft, there's a smidgeon more power
+			thrust = thrust * 1000.0;
+		
 		final long accelleration=Math.round(Math.ceil(CMath.div(thrust*getThrustFactor(),ship.getMass())));
+		
 		if(amount > 1)
 			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a rumble and hear the blast of @x1.",me.name(mob)));
 		if(accelleration == 0)

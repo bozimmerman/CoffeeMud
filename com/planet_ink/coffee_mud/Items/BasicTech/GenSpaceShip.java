@@ -198,16 +198,16 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 									switch(dir)
 									{
 									case STARBOARD: 
-										facing[0]-=amount; 
+										facing[0]-=CMath.mul(amount,0.017); 
 										break;
 									case PORT: 
-										facing[0]+=amount; 
+										facing[0]+=CMath.mul(amount,0.017); 
 										break;
 									case DORSEL: 
-										facing[1]-=amount; 
+										facing[1]-=CMath.mul(amount,0.017); 
 										break;
 									case VENTRAL: 
-										facing[1]+=amount; 
+										facing[1]+=CMath.mul(amount,0.017); 
 										break;
 									case FORWARD: 
 										break;
@@ -221,8 +221,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										break;
 									}
 									}
-									facing[0]=facing[0]%(2*Math.PI);
-									facing[1]=facing[1]%(2*Math.PI);
+									facing[0]=Math.abs(facing[0]%(2*Math.PI));
+									facing[1]=Math.abs(facing[1]%(2*Math.PI));  // should that really be 2*?
 								}
 							}
 						}
@@ -260,9 +260,10 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				else
 					hitSomethingMassive=false;
 				
+				final long myMass=getMass();
 				// this only works because Areas don't move.
 				// the only way to hit one is to be moving towards it.
-				if((previousSpeed <= SpaceObject.ACCELLERATION_DAMAGED) 
+				if((previousSpeed <= (SpaceObject.ACCELLERATION_DAMAGED * myMass))
 				&&(msg.tool() instanceof Area))
 				{
 					long shortestDistance=Long.MAX_VALUE;
@@ -302,7 +303,6 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					}
 					else
 					{
-						final long myMass=getMass();
 						final double dmgSpeed = CMath.abs(speed() - O.speed()) % SpaceObject.VELOCITY_LIGHT;
 						final long relMass = CMath.abs(myMass - O.getMass())  % (100 * SpaceObject.Distance.Kilometer.dm);
 						final int hardness = (int)(RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm);
@@ -835,8 +835,10 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

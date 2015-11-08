@@ -455,24 +455,30 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				items.delItem(this);
 		}
 		final CMMsg expireMsg=CMClass.getMsg(CMLib.map().deity(), this, CMMsg.MASK_ALWAYS|CMMsg.MSG_EXPIRE, L("<T-NAME> is destroyed!"));
-		for(final Enumeration<Room> r = getShipArea().getProperMap(); r.hasMoreElements();)
+		final Area A = getShipArea();
+		if(A!=null)
 		{
-			final Room R=r.nextElement();
-			if(R!=null)
+			for(final Enumeration<Room> r = A.getProperMap(); r.hasMoreElements();)
 			{
-				expireMsg.setTarget(R);
-				final Set<MOB> players=CMLib.players().getPlayersHere(R);
-				if(players.size()>0)
-					for(final MOB M : players)
+				final Room R=r.nextElement();
+				if(R!=null)
+				{
+					expireMsg.setTarget(R);
+					final Set<MOB> players=CMLib.players().getPlayersHere(R);
+					if(players.size()>0)
 					{
-						//players will get some fancy message when appearing in death room -- which means they should die!
-						M.executeMsg(expireMsg.source(), expireMsg);
-						CMLib.combat().justDie(expireMsg.source(), M);
+						for(final MOB M : players)
+						{
+							//players will get some fancy message when appearing in death room -- which means they should die!
+							M.executeMsg(expireMsg.source(), expireMsg);
+							CMLib.combat().justDie(expireMsg.source(), M);
+						}
 					}
-				R.send(expireMsg.source(), expireMsg);
+					R.send(expireMsg.source(), expireMsg);
+				}
 			}
+			A.destroy();
 		}
-		getShipArea().destroy();
 		destroy();
 	}
 	
