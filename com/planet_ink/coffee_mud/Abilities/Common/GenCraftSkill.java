@@ -454,7 +454,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
-		final PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		final String noun=CMStrings.capitalizeAndLower(triggerStrings()[0]);
 		final String verbing=V(ID,V_VERB).toString();

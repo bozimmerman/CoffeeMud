@@ -43,7 +43,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	protected SHashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new SHashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
 	protected SHashtable<String,List<String>> baseEduSetLists=new SHashtable<String,List<String>>();
 	@SuppressWarnings("unchecked")
-	protected Hashtable<String,String>[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
+	protected Hashtable<String,String>[] completeUsageMap=new Hashtable[ExpertiseLibrary.Flag.values().length];
 	protected Properties helpMap=new Properties();
 	protected DVector rawDefinitions=new DVector(7);
 
@@ -258,15 +258,15 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public String getApplicableExpertise(String ID, int code)
+	public String getApplicableExpertise(String ID, Flag code)
 	{
-		return completeUsageMap[code].get(ID);
+		return completeUsageMap[code.ordinal()].get(ID);
 	}
 
 	@Override
-	public int getApplicableExpertiseLevel(String ID, int code, MOB mob)
+	public int getApplicableExpertiseLevel(String ID, Flag code, MOB mob)
 	{
-		final Pair<String,Integer> e=mob.fetchExpertise(completeUsageMap[code].get(ID));
+		final Pair<String,Integer> e=mob.fetchExpertise(completeUsageMap[code.ordinal()].get(ID));
 		if((e!=null)&&(e.getValue()!=null))
 			return e.getValue().intValue();
 		return 0;
@@ -499,7 +499,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			costs[i-6]=parts.get(i);
 		didOne=false;
 		for(int u=0;u<completeUsageMap.length;u++)
-			didOne=didOne||flags.contains(ExpertiseLibrary.XFLAG_CODES[u]);
+		{
+			didOne=didOne||flags.contains(ExpertiseLibrary.Flag.values()[u].name());
+		}
 		if(!didOne)
 			return "Error: No flags ("+parts.get(2).toUpperCase()+") were set: "+ID+"="+row;
 		if(addIfPossible)
@@ -534,9 +536,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		ID=CMStrings.replaceAll(ID,"@X1","");
 		ID=CMStrings.replaceAll(ID,"@X2","");
 		for(int u=0;u<completeUsageMap.length;u++)
-			if(flags.contains(ExpertiseLibrary.XFLAG_CODES[u]))
+		{
+			if(flags.contains(ExpertiseLibrary.Flag.values()[u].name()))
+			{
 				for(int k=0;k<skillsToRegister.size();k++)
 					completeUsageMap[u].put(skillsToRegister.get(k),ID);
+			}
+		}
 		return addIfPossible?ID:null;
 	}
 

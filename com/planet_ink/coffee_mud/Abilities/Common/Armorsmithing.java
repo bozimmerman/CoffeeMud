@@ -238,7 +238,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			return true;
 		fireRequired=true;
 
-		final PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{

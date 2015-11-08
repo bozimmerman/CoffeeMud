@@ -256,7 +256,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 
-		final PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{

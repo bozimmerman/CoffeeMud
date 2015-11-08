@@ -73,6 +73,26 @@ public class CraftingSkill extends GatheringSkill
 
 	public CraftingSkill(){super();}
 
+	protected enum EnhancedExpertise
+	{
+		LITECRAFT("LITE",ExpertiseLibrary.Flag.X1),
+		DURACRAFT("DURA",ExpertiseLibrary.Flag.X2),
+		QUALCRAFT("QUAL",ExpertiseLibrary.Flag.X3),
+		LTHLCRAFT("LTHL",ExpertiseLibrary.Flag.X4),
+		CNTRCRAFT("CNTR",ExpertiseLibrary.Flag.X5)
+		;
+		
+		public final String stageKey;
+		public final ExpertiseLibrary.Flag flag;
+		
+		private EnhancedExpertise(String stageKey, ExpertiseLibrary.Flag flag)
+		{
+			this.stageKey = stageKey;
+			this.flag = flag;
+		}
+		
+	}
+
 	public String parametersFile(){ return "";}
 
 	public double getItemWeightMultiplier(boolean bundling)
@@ -398,7 +418,7 @@ public class CraftingSkill extends GatheringSkill
 											 String req2Desc, int[] req2,
 											 boolean bundle,
 											 int autoGeneration,
-											 PairVector<Integer,Integer> eduMods)
+											 PairVector<EnhancedExpertise,Integer> eduMods)
 	{
 		final int[][] data=new int[2][2];
 		if((req1Desc!=null)&&(req1Desc.length()==0))

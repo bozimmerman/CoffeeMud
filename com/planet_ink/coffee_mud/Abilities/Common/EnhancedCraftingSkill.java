@@ -45,13 +45,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	@Override public String parametersFormat(){ return ""; }
 
 	protected int materialAdjustments=0;
-	protected static final int TYPE_LITECRAFT=0;
-	protected static final int TYPE_DURACRAFT=1;
-	protected static final int TYPE_QUALCRAFT=2;
-	protected static final int TYPE_LTHLCRAFT=3;
-	protected static final int TYPE_CNTRCRAFT=4;
-	protected final static String[] STAGE_KEY={"LITE","DURA","QUAL","LTHL","CNTR"};
-
+	
 	@Override public boolean supportsDeconstruction() { return true; }
 
 	@Override
@@ -62,16 +56,16 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 											 String req2Desc, int[] req2,
 											 boolean bundle,
 											 int autoGeneration,
-											 PairVector<Integer,Integer> expMods)
+											 PairVector<EnhancedExpertise,Integer> expMods)
 	{
 		if(expMods!=null)
 		for(int t=0;t<expMods.size();t++)
 		{
-			final int type=expMods.elementAt(t).first.intValue();
+			final EnhancedExpertise type=expMods.elementAt(t).first;
 			final int stage=expMods.elementAt(t).second.intValue();
 			switch(type)
 			{
-			case TYPE_LITECRAFT:
+			case LITECRAFT:
 				switch(stage)
 				{
 				case 0:
@@ -94,7 +88,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					break;
 				}
 				break;
-			case TYPE_DURACRAFT:
+			case DURACRAFT:
 				switch(stage)
 				{
 				case 0:
@@ -117,7 +111,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					break;
 				}
 				break;
-			case TYPE_QUALCRAFT:
+			case QUALCRAFT:
 				switch(stage)
 				{
 				case 0:
@@ -128,7 +122,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					break;
 				}
 				break;
-			case TYPE_LTHLCRAFT:
+			case LTHLCRAFT:
 				switch(stage)
 				{
 				case 0:
@@ -139,7 +133,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					break;
 				}
 				break;
-			case TYPE_CNTRCRAFT:
+			case CNTRCRAFT:
 				switch(stage)
 				{
 				case 0:
@@ -209,15 +203,17 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return value;
 	}
 
-	protected int getLocalExpCode(String exp)
+	protected EnhancedExpertise getLocalExpCode(String exp)
 	{
 		if(exp==null)
-			return -1;
+			return null;
 		exp=exp.toUpperCase();
-		for(int i=0;i<STAGE_KEY.length;i++)
-			if(exp.startsWith(STAGE_KEY[i]))
-				return i;
-		return -1;
+		for(final EnhancedExpertise key : EnhancedExpertise.values())
+		{
+			if(exp.startsWith(key.stageKey))
+				return key;
+		}
+		return null;
 	}
 
 	protected String applyName(String name, String word)
@@ -252,9 +248,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public List<String> getThisSkillsExpertises()
 	{
 		final List<String> V=new Vector<String>();
-		for(int x=ExpertiseLibrary.XFLAG_X1;x<=ExpertiseLibrary.XFLAG_X5;x++)
+		for(EnhancedExpertise expertise : EnhancedExpertise.values())
 		{
-			final String s=CMLib.expertises().getApplicableExpertise(ID(),x);
+			final String s=CMLib.expertises().getApplicableExpertise(ID(),expertise.flag);
 			if(s!=null)
 				V.add(s);
 		}
@@ -304,8 +300,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		{
 			key=types.get(t);
 			final int stages=CMLib.expertises().getStages(key);
-			final int code=getLocalExpCode(key);
-			if(code>=0)
+			final EnhancedExpertise code=getLocalExpCode(key);
+			if(code != null)
 			{
 				final Pair<String,Integer> X=mob.fetchExpertise(key);
 				for(int s=stages-1;s>=0;s--)
@@ -338,8 +334,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		{
 			key=experTypes.get(t);
 			final int stages=CMLib.expertises().getStages(key);
-			final int code=getLocalExpCode(key);
-			if(code>=0)
+			final EnhancedExpertise code=getLocalExpCode(key);
+			if(code != null)
 			{
 				for(int s=stages-1;s>=0;s--)
 				{
@@ -365,10 +361,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return "Not implemented";
 	}
 
-	public PairVector<Integer,Integer> enhancedTypes(MOB mob, List<String> commands)
+	public PairVector<EnhancedExpertise,Integer> enhancedTypes(MOB mob, List<String> commands)
 	{
 		String cmd=null;
-		PairVector<Integer,Integer> types=null;
+		PairVector<EnhancedExpertise,Integer> types=null;
 		materialAdjustments=0;
 		if((commands!=null)&&(commands.size()>0))
 		{
@@ -388,8 +384,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 						key=experTypes.get(t);
 						final int stages=CMLib.expertises().getStages(key);
-						final int code=getLocalExpCode(key);
-						if(code>=0)
+						final EnhancedExpertise code=getLocalExpCode(key);
+						if(code != null)
 						{
 							final Pair<String,Integer> X=mob.fetchExpertise(key);
 							for(int s=stages-1;s>=0;s--)
@@ -408,10 +404,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 									{
 										commands.remove(0);
 										if(types==null)
-											types=new PairVector<Integer,Integer>();
-										if(!types.contains(Integer.valueOf(code)))
+											types=new PairVector<EnhancedExpertise,Integer>();
+										if(!types.containsFirst(code))
 										{
-											types.addElement(Integer.valueOf(code),Integer.valueOf(s));
+											types.addElement(code,Integer.valueOf(s));
 											if(commands.size()>0)
 												cmd=commands.get(0);
 											else
@@ -466,7 +462,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 	}
 
-	public void enhanceItem(MOB mob, Item item, PairVector<Integer,Integer> types)
+	public void enhanceItem(MOB mob, Item item, PairVector<EnhancedExpertise,Integer> types)
 	{
 		if(types==null)
 			return;
@@ -478,9 +474,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		{
 			for(int t=0;t<types.size();t++)
 			{
-				final int type=types.elementAt(t).first.intValue();
+				final EnhancedExpertise type=types.elementAt(t).first;
 				final int stage=types.elementAt(t).second.intValue();
-				final String expertiseID=CMLib.expertises().getApplicableExpertise(ID(),type);
+				final String expertiseID=CMLib.expertises().getApplicableExpertise(ID(),type.flag);
 				ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(expertiseID+CMath.convertToRoman(1));
 				if(def==null)
 					def = CMLib.expertises().getDefinition(expertiseID+1);
@@ -490,7 +486,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					continue;
 				switch(type)
 				{
-				case TYPE_LITECRAFT:
+				case LITECRAFT:
 				{
 					switch(stage)
 					{
@@ -512,7 +508,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					}
 					break;
 				}
-				case TYPE_DURACRAFT:
+				case DURACRAFT:
 				{
 					if(!(item instanceof Armor))
 						commonTell(mob,L("@x1 only applies to armor.",def.getData()[stage]));
@@ -540,7 +536,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					}
 					break;
 				}
-				case TYPE_QUALCRAFT:
+				case QUALCRAFT:
 				{
 					switch(stage)
 					{
@@ -565,7 +561,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					}
 					break;
 				}
-				case TYPE_LTHLCRAFT:
+				case LTHLCRAFT:
 				{
 					if(!(item instanceof Weapon))
 						commonTell(mob,L("@x1 only applies to weapons.",def.getData()[stage]));
@@ -595,7 +591,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					}
 					break;
 				}
-				case TYPE_CNTRCRAFT:
+				case CNTRCRAFT:
 				{
 					if(!(item instanceof Weapon))
 						commonTell(mob,L("@x1 only applies to weapons.",def.getData()[stage]));
