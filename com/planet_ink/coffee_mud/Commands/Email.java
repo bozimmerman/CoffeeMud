@@ -68,9 +68,9 @@ public class Email extends StdCommand
 				final String journalName=CMProps.getVar(CMProps.Str.MAILBOX);
 				final List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
 				final int[] cols={
-						ListingLibrary.ColFixer.fixColWidth(48,mob.session()),
-						ListingLibrary.ColFixer.fixColWidth(15,mob.session()),
-						ListingLibrary.ColFixer.fixColWidth(20,mob.session())
+						CMLib.lister().fixColWidth(48,mob.session()),
+						CMLib.lister().fixColWidth(15,mob.session()),
+						CMLib.lister().fixColWidth(20,mob.session())
 					};
 				while((mob.session()!=null)&&(!mob.session().isStopped()))
 				{

@@ -131,8 +131,14 @@ public interface JournalsLibrary extends CMLibrary
 		public String getScriptFilename(){return flags.get(CommandJournalFlags.SCRIPT);}
 	}
 
-	public static enum CommandJournalFlags {
-		CHANNEL,ADDROOM,EXPIRE,ADMINECHO,CONFIRM,SCRIPT;
+	public static enum CommandJournalFlags
+	{
+		CHANNEL,
+		ADDROOM,
+		EXPIRE,
+		ADMINECHO,
+		CONFIRM,
+		SCRIPT;
 	}
 
 	public static class SMTPJournal

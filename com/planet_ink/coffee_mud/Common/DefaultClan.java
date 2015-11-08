@@ -130,7 +130,7 @@ public class DefaultClan implements Clan
 				lastClanKillRecord="";
 			else
 			{
-				lastClanKillRecord=V.get(0).xml;
+				lastClanKillRecord=V.get(0).xml();
 				final List<String> V2=CMParms.parseSemicolons(lastClanKillRecord,true);
 				for(int v=0;v<V2.size();v++)
 					clanKills.add(Long.valueOf(CMath.s_long(V2.get(v))));
@@ -297,7 +297,7 @@ public class DefaultClan implements Clan
 			for(int v=0;v<V.size();v++)
 			{
 				final ClanVote CV=new ClanVote();
-				final String rawxml=V.get(v).xml;
+				final String rawxml=V.get(v).xml();
 				if(rawxml.trim().length()==0)
 					return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
 				final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(rawxml);
@@ -755,7 +755,7 @@ public class DefaultClan implements Clan
 			msg.append(L("^xClan Controlled Areas (% revolt):^.^N\n\r"));
 			Collections.sort(control);
 			int col=0;
-			final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
+			final int COL_LEN=CMLib.lister().fixColWidth(25.0,mob);
 			for(int i=0;i<control.size();i++)
 			{
 				if((++col)>3)

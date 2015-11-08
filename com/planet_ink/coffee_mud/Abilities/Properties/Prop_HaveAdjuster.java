@@ -86,7 +86,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		this.charStatsChanges=null;
 		parameters=CMLib.masking().separateMaskStrs(text());
 		if(parameters[1].trim().length()==0)
-			mask=MaskingLibrary.CompiledZapperMask.EMPTY();
+			mask=CMLib.masking().createEmptyMask();
 		else
 			mask=CMLib.masking().getPreCompiledMask(parameters[1]);
 		final Vector<Object> phyStatsV=new Vector<Object>();

@@ -106,13 +106,13 @@ public class Channel extends StdCommand
 				commands.set(i,"\""+s+"\"");
 		}
 		final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
-		if(!CMLib.masking().maskCheck(chan.mask,mob,true))
+		if(!CMLib.masking().maskCheck(chan.mask(),mob,true))
 		{
 			mob.tell(L("This channel is not available to you."));
 			return false;
 		}
 
-		final Set<ChannelsLibrary.ChannelFlag> flags=chan.flags;
+		final Set<ChannelsLibrary.ChannelFlag> flags=chan.flags();
 		if((flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
 		{
 			if(!CMLib.clans().checkClanPrivilege(mob, Clan.Function.CHANNEL))
@@ -146,12 +146,12 @@ public class Channel extends StdCommand
 				}
 				for(final ChannelsLibrary.ChannelMsg msg : showThese)
 				{
-					final CMMsg modMsg = (CMMsg)msg.msg.copyOf();
-					elapsedTime=now-msg.ts;
+					final CMMsg modMsg = (CMMsg)msg.msg().copyOf();
+					elapsedTime=now-msg.ts();
 					elapsedTime=Math.round(elapsedTime/1000L)*1000L;
 					if(elapsedTime<0)
 					{
-						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+msg.ts);
+						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+msg.ts());
 						elapsedTime=0;
 					}
 

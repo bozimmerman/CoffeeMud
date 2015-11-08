@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -39,6 +40,67 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	public String[] clookup=null;
 	public String[] htlookup=null;
 
+	private final static Map<Integer,ColorState> cache=new SHashtable<Integer,ColorState>();
+	
+	private static class ColorStateImpl implements ColorState
+	{
+		public final char foregroundCode;
+		public final char backgroundCode;
+
+		@Override
+		public char foregroundCode()
+		{
+			return foregroundCode;
+		}
+		
+		@Override
+		public char backgroundCode()
+		{
+			return backgroundCode;
+		}
+
+		public ColorStateImpl(final char fg, final char bg)
+		{
+			foregroundCode=fg;
+			backgroundCode=bg;
+		}
+
+		@Override
+		public boolean equals(Object cs)
+		{
+			if(!(cs instanceof ColorState))
+				return false;
+			return (((ColorState)cs).foregroundCode() == foregroundCode)
+				&& (((ColorState)cs).backgroundCode() == backgroundCode);
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return (backgroundCode * 65536) + foregroundCode;
+		}
+
+	}
+	
+	private static final ColorState COLORSTATE_NORMAL=new ColorStateImpl('N','.');
+	
+	@Override
+	public final ColorState getNormalColor()
+	{
+		return COLORSTATE_NORMAL;
+	}
+
+	@Override
+	public final ColorState valueOf(final char fg, final char bg)
+	{
+		final Integer keyI=Integer.valueOf((bg * 65536) + fg);
+		if(cache.containsKey(keyI))
+			return cache.get(keyI);
+		final ColorState newColorState = new ColorStateImpl(fg,bg);
+		cache.put(keyI,newColorState);
+		return newColorState;
+	}
+	
 	@Override
 	public int translateSingleCMCodeToANSIOffSet(String code)
 	{

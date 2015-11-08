@@ -102,7 +102,7 @@ public class Link extends At
 		if(opRoom!=null)
 			mob.location().rawDoors()[direction]=null;
 
-		WorldMap.CrossExit CE=null;
+		GridLocale.CrossExit CE=null;
 		final GridLocale hereGL=(mob.location().getGridParent()!=null)?mob.location().getGridParent():null;
 		final int hereX=(hereGL!=null)?hereGL.getGridChildX(mob.location()):-1;
 		final int hereY=(hereGL!=null)?hereGL.getGridChildY(mob.location()):-1;
@@ -111,7 +111,7 @@ public class Link extends At
 		final int thereY=(thereGL!=null)?thereGL.getGridChildY(room):-1;
 		if(hereGL!=null)
 		{
-			for(final Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
+			for(final Iterator<GridLocale.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
 			{
 				CE=hereIter.next();
 				if((CE.out)
@@ -119,7 +119,7 @@ public class Link extends At
 				&&(CE.x==hereX)&&(CE.y==hereY))
 				   hereGL.delOuterExit(CE);
 			}
-			CE=WorldMap.CrossExit.make(hereX,hereY,direction,CMLib.map().getExtendedRoomID(room),true);
+			CE=GridLocale.CrossExit.make(hereX,hereY,direction,CMLib.map().getExtendedRoomID(room),true);
 			hereGL.addOuterExit(CE);
 		}
 
@@ -136,7 +136,7 @@ public class Link extends At
 		}
 		if(thereGL!=null)
 		{
-			for(final Iterator<WorldMap.CrossExit> thereIter=thereGL.outerExits();thereIter.hasNext();)
+			for(final Iterator<GridLocale.CrossExit> thereIter=thereGL.outerExits();thereIter.hasNext();)
 			{
 				CE=thereIter.next();
 				if((!CE.out)
@@ -144,14 +144,14 @@ public class Link extends At
 				&&(CE.destRoomID.equals(CMLib.map().getExtendedRoomID(mob.location()))))
 				   thereGL.delOuterExit(CE);
 			}
-			CE=WorldMap.CrossExit.make(thereX,thereY,direction,CMLib.map().getExtendedRoomID(mob.location()),false);
+			CE=GridLocale.CrossExit.make(thereX,thereY,direction,CMLib.map().getExtendedRoomID(mob.location()),false);
 			thereGL.addOuterExit(CE);
 
 			if((room.rawDoors()[opDir]==null)
 			||(thereGL==room.rawDoors()[opDir])
 			||(thereGL.isMyGridChild(room.rawDoors()[opDir])))
 			{
-				for(final Iterator<WorldMap.CrossExit> thereIter=thereGL.outerExits();thereIter.hasNext();)
+				for(final Iterator<GridLocale.CrossExit> thereIter=thereGL.outerExits();thereIter.hasNext();)
 				{
 					CE=thereIter.next();
 					if((CE.out)
@@ -159,12 +159,12 @@ public class Link extends At
 					&&(CE.x==thereX)&&(CE.y==thereY))
 					   thereGL.delOuterExit(CE);
 				}
-				CE=WorldMap.CrossExit.make(thereX,thereY,opDir,CMLib.map().getExtendedRoomID(mob.location()),true);
+				CE=GridLocale.CrossExit.make(thereX,thereY,opDir,CMLib.map().getExtendedRoomID(mob.location()),true);
 				thereGL.addOuterExit(CE);
 				if(hereGL!=null)
 				{
 					room.rawDoors()[opDir]=hereGL;
-					for(final Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
+					for(final Iterator<GridLocale.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
 					{
 						CE=hereIter.next();
 						if((!CE.out)
@@ -172,7 +172,7 @@ public class Link extends At
 						&&(CE.destRoomID.equals(CMLib.map().getExtendedRoomID(room))))
 						   hereGL.delOuterExit(CE);
 					}
-					CE=WorldMap.CrossExit.make(hereX,hereY,opDir,CMLib.map().getExtendedRoomID(room),false);
+					CE=GridLocale.CrossExit.make(hereX,hereY,opDir,CMLib.map().getExtendedRoomID(room),false);
 					hereGL.addOuterExit(CE);
 				}
 				else
@@ -186,15 +186,15 @@ public class Link extends At
 			if(hereGL!=null)
 			{
 				room.rawDoors()[opDir]=hereGL;
-				for(final Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
+				for(final Iterator<GridLocale.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
 				{
 					CE=hereIter.next();
 					if((!CE.out)
 					&&(CE.dir==opDir)
 					&&(CE.destRoomID.equals(room.roomID())))
-					   hereGL.delOuterExit(CE);
+						hereGL.delOuterExit(CE);
 				}
-				CE=WorldMap.CrossExit.make(hereX,hereY,opDir,CMLib.map().getExtendedRoomID(room),false);
+				CE=GridLocale.CrossExit.make(hereX,hereY,opDir,CMLib.map().getExtendedRoomID(room),false);
 				hereGL.addOuterExit(CE);
 			}
 			else

@@ -119,7 +119,7 @@ public class Affect extends StdCommand
 	{
 		final StringBuffer msg=new StringBuffer("");
 		final int NUM_COLS=2;
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(36.0,S);
+		final int COL_LEN=CMLib.lister().fixColWidth(36.0,S);
 		int colnum=NUM_COLS;
 		final MOB mob=(S!=null)?S.mob():null;
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)

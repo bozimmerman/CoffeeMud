@@ -45,10 +45,10 @@ public class Who extends StdCommand
 	public int[] getShortColWidths(MOB seer)
 	{
 		return new int[]{
-			ListingLibrary.ColFixer.fixColWidth(12,seer.session()),
-			ListingLibrary.ColFixer.fixColWidth(12,seer.session()),
-			ListingLibrary.ColFixer.fixColWidth(7,seer.session()),
-			ListingLibrary.ColFixer.fixColWidth(40,seer.session())
+			CMLib.lister().fixColWidth(12,seer.session()),
+			CMLib.lister().fixColWidth(12,seer.session()),
+			CMLib.lister().fixColWidth(7,seer.session()),
+			CMLib.lister().fixColWidth(40,seer.session())
 		};
 	}
 

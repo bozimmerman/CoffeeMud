@@ -49,9 +49,10 @@ public class Channels extends StdCommand
 		final StringBuffer buf=new StringBuffer(L("Available channels: \n\r"));
 		int col=0;
 		final String[] names=CMLib.channels().getChannelNames();
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0,mob);
+		final int COL_LEN=CMLib.lister().fixColWidth(24.0,mob);
 		for(int x=0;x<names.length;x++)
-			if(CMLib.masking().maskCheck(CMLib.channels().getChannel(x).mask,mob,true))
+		{
+			if(CMLib.masking().maskCheck(CMLib.channels().getChannel(x).mask(),mob,true))
 			{
 				if((++col)>3)
 				{
@@ -62,6 +63,7 @@ public class Channels extends StdCommand
 				final boolean onoff=CMath.isSet(pstats.getChannelMask(),x);
 				buf.append(CMStrings.padRight("^<CHANNELS '"+(onoff?"":"NO")+"'^>"+channelName+"^</CHANNELS^>"+(onoff?" (OFF)":""),COL_LEN));
 			}
+		}
 		if(names.length==0)
 			buf.append("None!");
 		else

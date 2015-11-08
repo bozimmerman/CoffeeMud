@@ -142,18 +142,18 @@ public class StdBanker extends StdShopKeeper implements Banker
 		for(int v=rawInventoryV.size()-1;v>=0;v--)
 		{
 			final DatabaseEngine.PlayerData PD=rawInventoryV.get(v);
-			final int IDx=PD.xml.indexOf(';');
+			final int IDx=PD.xml().indexOf(';');
 			if(IDx>0)
 			{
-				if(PD.xml.substring(IDx+1).startsWith("CONTAINER="+key+";"))
+				if(PD.xml().substring(IDx+1).startsWith("CONTAINER="+key+";"))
 				{
-					Item I=makeItemContainer(PD.xml).first;
+					Item I=makeItemContainer(PD.xml()).first;
 					I.setContainer(C);
 					inventory.add(I);
 					rawInventoryV.remove(v);
 					if(I instanceof Container)
-						inventory.addAll(findDeleteRecursiveDepositInventoryByContainerKey((Container)I,rawInventoryV,PD.key));
-					CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
+						inventory.addAll(findDeleteRecursiveDepositInventoryByContainerKey((Container)I,rawInventoryV,PD.key()));
+					CMLib.database().DBDeleteData(PD.who(),PD.section(),PD.key());
 				}
 			}
 		}
@@ -172,10 +172,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 				for(int v=rawInventoryV.size()-1;v>=0;v--)
 				{
 					final DatabaseEngine.PlayerData PD=rawInventoryV.get(v);
-					if(PD.xml.startsWith("COINS;"))
+					if(PD.xml().startsWith("COINS;"))
 					{
-						CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
-						items.add(makeItemContainer(PD.xml).first);
+						CMLib.database().DBDeleteData(PD.who(),PD.section(),PD.key());
+						items.add(makeItemContainer(PD.xml()).first);
 					}
 				}
 			}
@@ -184,9 +184,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 				for(int v=rawInventoryV.size()-1;v>=0;v--)
 				{
 					final DatabaseEngine.PlayerData PD=rawInventoryV.get(v);
-					if(PD.xml.startsWith(likeItem.ID()+";") && (!PD.xml.startsWith(likeItem.ID()+";CONTAINER=")))
+					if(PD.xml().startsWith(likeItem.ID()+";") && (!PD.xml().startsWith(likeItem.ID()+";CONTAINER=")))
 					{
-						final Pair<Item,String> pI=makeItemContainer(PD.xml);
+						final Pair<Item,String> pI=makeItemContainer(PD.xml());
 						if((pI!=null) && likeItem.sameAs(pI.first))
 						{
 							pI.first.setContainer(null);
@@ -196,10 +196,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 								final Hashtable<String,List<DatabaseEngine.PlayerData>> pairings=new Hashtable<String,List<DatabaseEngine.PlayerData>>(); 
 								for(final PlayerData PDp : rawInventoryV)
 								{
-									final int IDx=PDp.xml.indexOf(';');
+									final int IDx=PDp.xml().indexOf(';');
 									if(IDx>0)
 									{
-										final String subXML=PDp.xml.substring(IDx+1);
+										final String subXML=PDp.xml().substring(IDx+1);
 										if(subXML.startsWith("CONTAINER="))
 										{
 											int x=subXML.indexOf(';');
@@ -213,9 +213,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 										}
 									}
 								}
-								CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
+								CMLib.database().DBDeleteData(PD.who(),PD.section(),PD.key());
 								final Map<String,Container> containerMap=new Hashtable<String,Container>();
-								containerMap.put(PD.key, (Container)pI.first);
+								containerMap.put(PD.key(), (Container)pI.first);
 								while(containerMap.size()>0)
 								{
 									final String contKey=containerMap.keySet().iterator().next();
@@ -225,12 +225,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 									{
 										for(DatabaseEngine.PlayerData PDi : contents)
 										{
-											Pair<Item,String> pairI=makeItemContainer(PDi.xml);
-											CMLib.database().DBDeleteData(PDi.who,PDi.section,PDi.key);
+											Pair<Item,String> pairI=makeItemContainer(PDi.xml());
+											CMLib.database().DBDeleteData(PDi.who(),PDi.section(),PDi.key());
 											pairI.first.setContainer(container);
 											items.add(pairI.first);
 											if(pairI.first instanceof Container)
-												containerMap.put(PDi.key, (Container)pairI.first);
+												containerMap.put(PDi.key(), (Container)pairI.first);
 										}
 									}
 								}
@@ -238,7 +238,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							else
 							{
 								items.add(pI.first);
-								CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
+								CMLib.database().DBDeleteData(PD.who(),PD.section(),PD.key());
 							}
 							break;
 						}
@@ -270,9 +270,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 		final Hashtable<String,Pair<Item,String>> pairings=new Hashtable<String,Pair<Item,String>>(); 
 		for(final PlayerData PD : getRawPDDepositInventory(depositorName))
 		{
-			final Pair<Item,String> pair=makeItemContainer(PD.xml);
+			final Pair<Item,String> pair=makeItemContainer(PD.xml());
 			if(pair!=null)
-				pairings.put(PD.key, pair);
+				pairings.put(PD.key(), pair);
 		}
 		for(final Pair<Item,String> pair : pairings.values())
 		{
@@ -301,10 +301,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 		for(int v=0;v<V.size();v++)
 		{
 			final DatabaseEngine.PlayerData V2=V.get(v);
-			if(!h.contains(V2.who))
+			if(!h.contains(V2.who()))
 			{
-				h.add(V2.who);
-				mine.addElement(V2.who);
+				h.add(V2.who());
+				mine.addElement(V2.who());
 			}
 		}
 		return mine;
@@ -325,17 +325,17 @@ public class StdBanker extends StdShopKeeper implements Banker
 			for(int v=0;v<V.size();v++)
 			{
 				final DatabaseEngine.PlayerData PD=V.get(v);
-				if(PD.xml.startsWith("COINS;"))
-					return makeItemContainer(PD.xml).first;
+				if(PD.xml().startsWith("COINS;"))
+					return makeItemContainer(PD.xml()).first;
 			}
 		}
 		else
 		for(int v=0;v<V.size();v++)
 		{
 			final DatabaseEngine.PlayerData PD=V.get(v);
-			if(PD.xml.lastIndexOf(";CONTAINER=",81)<0)
+			if(PD.xml().lastIndexOf(";CONTAINER=",81)<0)
 			{
-				final Pair<Item,String> pair=makeItemContainer(PD.xml);
+				final Pair<Item,String> pair=makeItemContainer(PD.xml());
 				if(pair!=null)
 				{
 					if(CMLib.english().containsString(pair.first.Name(),itemName))
@@ -439,7 +439,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					for(int v=0;v<bankDataV.size();v++)
 					{
 						final DatabaseEngine.PlayerData dat=bankDataV.get(v);
-						final String name=dat.who;
+						final String name=dat.who();
 						if(!userNames.contains(name))
 						{
 							if(!CMLib.players().playerExists(name))
@@ -844,7 +844,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						}
 					}
 
-					final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(34.0,mob);
+					final int COL_LEN=CMLib.lister().fixColWidth(34.0,mob);
 					StringBuffer str=new StringBuffer("");
 					str.append(L("\n\rAccount balance at '@x1'.\n\r",bankChain()));
 					final String c="^x[Item                              ] ";

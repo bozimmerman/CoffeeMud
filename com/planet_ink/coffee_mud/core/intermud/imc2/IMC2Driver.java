@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.core.intermud.imc2;
 import com.planet_ink.coffee_mud.Commands.interfaces.Command;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
@@ -158,10 +159,11 @@ public final class IMC2Driver extends Thread {
 		final List<CMChannel> map=new Vector<CMChannel>(chan_conf.size());
 		for(final Enumeration e=chan_conf.keys();e.hasMoreElements();)
 		{
-			final CMChannel chan=new CMChannel();
-			chan.name=(String)e.nextElement();
-			chan.mask=(String)chan_mask.get(chan.name);
-			chan.imc2Name=(String)chan_conf.get(chan.name);
+			String name=(String)e.nextElement();
+			String mask=(String)chan_mask.get(name);
+			String imc2Name=(String)chan_conf.get(name);
+			final CMChannel chan=CMLib.channels().createNewChannel(name, "", imc2Name, mask, "","",new HashSet<ChannelFlag>());
+			map.add(chan);
 		}
 		return map;
 	}
@@ -349,8 +351,8 @@ public final class IMC2Driver extends Thread {
 
 		for(final CMChannel chan : imc2Channels)
 		{
-			chan_mask.put(chan.name,chan.mask);
-			chan_conf.put(chan.name,chan.imc2Name);
+			chan_mask.put(chan.name(),chan.mask());
+			chan_conf.put(chan.name(),chan.imc2Name());
 		}
 
 		imc_name=loginName;
@@ -1119,7 +1121,7 @@ public final class IMC2Driver extends Thread {
 		final int channelInt=CMLib.channels().getChannelIndex(channelName);
 		if(channelInt<0)
 			return;
-		String channelColor=CMLib.channels().getChannel(channelInt).colorOverride;
+		String channelColor=CMLib.channels().getChannel(channelInt).colorOverride();
 		if(channelColor.length()==0)
 			channelColor="^Q";
 		final MOB mob=CMClass.getFactoryMOB();

@@ -163,7 +163,7 @@ public class Areas extends StdCommand
 		}
 		final Vector<String> areasVec=new Vector<String>();
 		final boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
-		final int colWidth=ListingLibrary.ColFixer.fixColWidth(66.0/numCols,mob);
+		final int colWidth=CMLib.lister().fixColWidth(66.0/numCols,mob);
 		for(;a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();

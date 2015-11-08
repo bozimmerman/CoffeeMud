@@ -9789,10 +9789,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					for(int v=0;v<V.size();v++)
 					{
 						final DatabaseEngine.PlayerData VAR=V.get(v);
-						String varName=VAR.key;
+						String varName=VAR.key();
 						if(varName.startsWith(which.toUpperCase()+"_SCRIPTABLEVARS_"))
 							varName=varName.substring((which+"_SCRIPTABLEVARS_").length());
-						setVar(which,varName,VAR.xml);
+						setVar(which,varName,VAR.xml());
 					}
 				}
 				break;
@@ -11551,7 +11551,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final String channel=t[1];
 							final int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
 							String str=null;
-							if(channel.equalsIgnoreCase(CMLib.channels().getChannel(channelInt).name))
+							if(channel.equalsIgnoreCase(CMLib.channels().getChannel(channelInt).name()))
 							{
 								str=msg.sourceMessage();
 								if(str==null)

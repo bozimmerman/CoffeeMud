@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2005-2015 Bo Zimmerman
@@ -54,40 +55,61 @@ public interface ChannelsLibrary extends CMLibrary
 	public int loadChannels(String list, String ilist, String imc2list);
 	public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender);
 	public void reallyChannel(MOB mob, String channelName, String message, boolean systemMsg);
+	public CMChannel createNewChannel(final String name, final String i3Name, final String imc2Name, 
+									  final String mask, final String colorOverride, final String colorOverrideStr, 
+									  final Set<ChannelFlag> flags);
 
 
 	/**
 	 * Basic Channel definition
 	 * @author Bo Zimmerman
 	 */
-	public static class CMChannel
+	public static interface CMChannel
 	{
-		public String name="";
-		public String i3name="";
-		public String imc2Name="";
-		public String mask="";
-		public String colorOverride="";
-		public String colorOverrideStr="";
-		public Set<ChannelFlag> flags=new HashSet<ChannelFlag>();
-		public SLinkedList<ChannelMsg> queue=new SLinkedList<ChannelMsg>();
-		public CMChannel(){}
-		public CMChannel(String name, String i3name, String imc2name)
-		{ this.name=name; this.i3name=i3name; this.imc2Name=imc2name;}
+		public String name();
+		public String i3name();
+		public String imc2Name();
+		public String mask();
+		public String colorOverride();
+		public String colorOverrideStr();
+		public Set<ChannelFlag> flags();
+		public SLinkedList<ChannelMsg> queue();
 	}
 
-	public static class ChannelMsg
+	public interface ChannelMsg
 	{
-		public final CMMsg msg;
-		public long ts;
-		public ChannelMsg(CMMsg msg){this.msg=msg; ts=System.currentTimeMillis();}
-		public ChannelMsg(CMMsg msg, long tm){this.msg=msg; ts=tm;}
+		public CMMsg msg();
+		public long ts();
 	}
 
-	public static enum ChannelFlag {
-		DEFAULT,SAMEAREA,CLANONLY,READONLY,
-		EXECUTIONS,LOGINS,LOGOFFS,BIRTHS,MARRIAGES,
-		DIVORCES,CHRISTENINGS,LEVELS,DETAILEDLEVELS,DEATHS,DETAILEDDEATHS,
-		CONQUESTS,CONCEPTIONS,NEWPLAYERS,LOSTLEVELS,PLAYERPURGES,CLANINFO,
-		WARRANTS, PLAYERREADONLY, CLANALLYONLY, ACCOUNTOOC, NOBACKLOG, ACHIEVEMENTS
+	public static enum ChannelFlag
+	{
+		DEFAULT,
+		SAMEAREA,
+		CLANONLY,
+		READONLY,
+		EXECUTIONS,
+		LOGINS,
+		LOGOFFS,
+		BIRTHS,
+		MARRIAGES,
+		DIVORCES,
+		CHRISTENINGS,
+		LEVELS,
+		DETAILEDLEVELS,
+		DEATHS,
+		DETAILEDDEATHS,
+		CONQUESTS,
+		CONCEPTIONS,
+		NEWPLAYERS,
+		LOSTLEVELS,
+		PLAYERPURGES,
+		CLANINFO,
+		WARRANTS,
+		PLAYERREADONLY,
+		CLANALLYONLY,
+		ACCOUNTOOC,
+		NOBACKLOG,
+		ACHIEVEMENTS
 	}
 }

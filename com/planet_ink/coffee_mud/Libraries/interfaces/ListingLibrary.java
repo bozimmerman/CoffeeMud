@@ -56,45 +56,13 @@ public interface ListingLibrary extends CMLibrary
 	public StringBuilder threeColumns(MOB viewerM, List<String> reverseList);
 	public StringBuilder threeColumns(MOB viewerM, List<String> reverseList, String tag);
 	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols);
-
-	public static class ListStringer
+	public ListStringer getListStringer();
+	public int fixColWidth(final double colWidth, final MOB mob);
+	public int fixColWidth(final double colWidth, final Session session);
+	public int fixColWidth(final double colWidth, final double totalWidth);
+	
+	public static interface ListStringer
 	{
-		public String stringify(Object o)
-		{
-			if(o instanceof String)
-				return (String)o;
-			else
-			if(o instanceof Ability)
-				return ((Ability)o).ID()+(((Ability)o).isGeneric()?"*":"");
-			else
-			if(o instanceof CharClass)
-				return ((CharClass)o).ID()+(((CharClass)o).isGeneric()?"*":"");
-			else
-			if(o instanceof Race)
-				return ((Race)o).ID()+(((Race)o).isGeneric()?"*":"");
-			else
-				return CMClass.classID(o);
-		}
-	}
-
-	public static class ColFixer
-	{
-		public static final int fixColWidth(final double colWidth, final MOB mob)
-		{
-			return fixColWidth(colWidth,(mob==null)?null:mob.session());
-		}
-
-		public static final int fixColWidth(final double colWidth, final Session session)
-		{
-			double totalWidth=(session==null)?78.0:(double)session.getWrap();
-			if(totalWidth==0.0)
-				totalWidth=1024.0;
-			return (int)Math.round((colWidth/78.0)*totalWidth);
-		}
-
-		public static final int fixColWidth(final double colWidth, final double totalWidth)
-		{
-			return (int)Math.round((colWidth/78.0)*totalWidth);
-		}
+		public String stringify(Object o);
 	}
 }

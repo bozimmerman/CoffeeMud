@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -43,6 +42,38 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public Vector<String> allCurrencyNames=new Vector<String>();
 	public Hashtable<String,List<String>> allCurrencyDenominationNames=new Hashtable<String,List<String>>();
 
+	private class MoneyDenominationImpl implements MoneyDenomination
+	{
+		private final double value;
+		private final String name;
+		private final String abbr;
+		
+		@Override
+		public double value()
+		{
+			return value;
+		}
+		
+		@Override
+		public String name()
+		{
+			return name;
+		}
+		
+		@Override
+		public String abbr()
+		{
+			return abbr;
+		}
+		
+		protected MoneyDenominationImpl(double value,String name,String abbr)
+		{
+			this.value=value;
+			this.name=name;
+			this.abbr=abbr;
+		}
+	}
+	
 	@Override
 	public void unloadCurrencySet(String currency)
 	{
@@ -108,18 +139,23 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			{
 				int insertAt=-1;
 				for(int i=0;i<DV.size();i++)
-					if(DV.elementAt(i).value>d)
-					{ insertAt=i; break;}
+				{
+					if(DV.elementAt(i).value()>d)
+					{
+						insertAt = i;
+						break;
+					}
+				}
 				if((insertAt<0)||(insertAt>=DV.size()))
-					DV.addElement(new MoneyDenomination(d,s,shortName));
+					DV.addElement(new MoneyDenominationImpl(d,s,shortName));
 				else
-					DV.insertElementAt(new MoneyDenomination(d,s,shortName),insertAt);
+					DV.insertElementAt(new MoneyDenominationImpl(d,s,shortName),insertAt);
 				currencyNames.addElement(s);
 				if(shortName.length()>0)
 					currencyNames.add(shortName);
 			}
 		}
-		final MoneyDenomination[] DVs=new MoneyDenomination[DV.size()];
+		final MoneyDenomination[] DVs=new MoneyDenominationImpl[DV.size()];
 		for(int i=0;i<DV.size();i++)
 			DVs[i]=DV.elementAt(i);
 		currencies.put(code,DVs);
@@ -134,8 +170,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		final MoneyDenomination[] DV=getCurrencySet(currency);
 		if(DV!=null)
 		for(int d=0;d<DV.length;d++)
-			if(value==DV[d].value)
+		{
+			if(value==DV[d].value())
 				return d;
+		}
 		return -1;
 	}
 
@@ -189,8 +227,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(DV!=null)
 		{
 			for (final MoneyDenomination element : DV)
-				if(element.abbr.length()>0)
-					return element.value;
+			{
+				if(element.abbr().length()>0)
+					return element.value();
+			}
 			return getLowestDenomination(currency);
 		}
 		return 1.0;
@@ -208,9 +248,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			double denom=0.0;
 			long num=0;
 			for(int i=DV.length-1;i>=0;i--)
-				if(DV[i].abbr.length()>0)
+			{
+				if(DV[i].abbr().length()>0)
 				{
-					denom=DV[i].value;
+					denom=DV[i].value();
 					if(denom<absoluteAmount)
 					{
 						num=Math.round(Math.floor(absoluteAmount/denom));
@@ -222,6 +263,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 						}
 					}
 				}
+			}
 			if(lowestDenom==Double.MAX_VALUE)
 				lowestDenom=absoluteLowest;
 			return lowestDenom;
@@ -267,8 +309,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(DV==null)
 			return "";
 		for (final MoneyDenomination element : DV)
-			if(element.value==denomination)
-				return element.abbr;
+		{
+			if(element.value()==denomination)
+				return element.abbr();
+		}
 		return "";
 	}
 
@@ -278,7 +322,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		final MoneyDenomination[] DV=getCurrencySet(currency);
 		if((DV==null)||(DV.length==0))
 			return 1.0;
-		return DV[0].value;
+		return DV[0].value();
 	}
 
 	@Override
@@ -310,7 +354,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			final double low=getLowestDenomination(currency);
 			for(int d=DV.length-1;d>=0;d--)
 			{
-				denom=DV[d].value;
+				denom=DV[d].value();
 				if((denom<=absoluteValue)
 				&&(absoluteValue-(Math.floor(absoluteValue/denom)*denom)<low))
 					return denom;
@@ -328,7 +372,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		{
 			for(int d=DV.length-1;d>=0;d--)
 			{
-				final double denom=DV[d].value;
+				final double denom=DV[d].value();
 				if(((denom*(numberOfCoins))<=absoluteValue)
 				&&(denom>bestDenom))
 					bestDenom=denom;
@@ -345,7 +389,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(DV!=null)
 		for(int d=DV.length-1;d>=0;d--)
 		{
-			final double denom=DV[d].value;
+			final double denom=DV[d].value();
 			if(denom<=absoluteValue)
 			{
 				final long number=Math.round(Math.floor(absoluteValue/denom));
@@ -388,16 +432,16 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		int closestX=getDenominationIndex(currency, denomination);
 		if(closestX<0)
 		for(int i=0;i<DV.length;i++)
-			if(DV[i].value<=denomination)
+			if(DV[i].value()<=denomination)
 			{
-				if((DV[i].value==denomination)
+				if((DV[i].value()==denomination)
 				||(closestX<0)
-				||((denomination-DV[i].value)<(denomination-DV[closestX].value)))
+				||((denomination-DV[i].value())<(denomination-DV[closestX].value())))
 					closestX=i;
 			}
 		if(closestX<0)
 			return "unknown";
-		return DV[closestX].name;
+		return DV[closestX].name();
 	}
 
 	@Override
@@ -545,8 +589,8 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		for(int r=0;r<rows.size();r++)
 		{
 			final PlayerData row=rows.get(r);
-			final String debtor=row.who;
-			final String xml=row.xml;
+			final String debtor=row.who();
+			final String xml=row.xml();
 			parseDebt(debt,debtor,xml);
 		}
 		return debt;
@@ -601,8 +645,8 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		for(int r=0;r<rows.size();r++)
 		{
 			final PlayerData row=rows.get(r);
-			final String debtor=row.who;
-			final String xml=row.xml;
+			final String debtor=row.who();
+			final String xml=row.xml();
 			parseDebt(debt,debtor,xml);
 		}
 		return debt;
@@ -616,8 +660,8 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		for(int r=0;r<rows.size();r++)
 		{
 			final PlayerData row=rows.get(r);
-			final String debtor=row.who;
-			final String xml=row.xml;
+			final String debtor=row.who();
+			final String xml=row.xml();
 			parseDebt(debt,debtor,xml);
 		}
 		return debt;
@@ -806,14 +850,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			if((V!=null)&&(V.size()>0))
 			{
 				final DatabaseEngine.PlayerData D=V.get(0);
-				String last=D.xml;
+				String last=D.xml();
 				if(last.length()>4096)
 				{
 					final int x=last.indexOf(";|;",1024);
 					if(x>=0)
 						last=last.substring(x+3);
 				}
-				CMLib.database().DBReCreateData(owner,D.section,D.key,last+explanation+";|;");
+				CMLib.database().DBReCreateData(owner,D.section(),D.key(),last+explanation+";|;");
 			}
 			else
 				CMLib.database().DBCreateData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner,explanation+";|;");
@@ -827,10 +871,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		for(int v=0;v<V.size();v++)
 		{
 			final DatabaseEngine.PlayerData D=V.get(v);
-			final String last=D.xml;
+			final String last=D.xml();
 			if(last.startsWith("COINS;"))
 			{
-				if((bankName==null)||(bankName.length()==0)||(bankName.equals(D.section)))
+				if((bankName==null)||(bankName.length()==0)||(bankName.equals(D.section())))
 				{
 					Coins C=(Coins)CMClass.getItem("StdCoins");
 					CMLib.coffeeMaker().setPropertiesStr(C,last.substring(6),true);
@@ -842,9 +886,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 					{
 						C=makeBestCurrency(currency,value+absoluteAmount);
 						if(C!=null)
-							CMLib.database().DBReCreateData(owner,D.section,D.key,"COINS;"+CMLib.coffeeMaker().getPropertiesStr(C,true));
+							CMLib.database().DBReCreateData(owner,D.section(),D.key(),"COINS;"+CMLib.coffeeMaker().getPropertiesStr(C,true));
 						else
-							CMLib.database().DBDeleteData(owner,D.section,D.key);
+							CMLib.database().DBDeleteData(owner,D.section(),D.key());
 						bankLedger(bankName,owner,explanation);
 						return true;
 					}

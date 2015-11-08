@@ -79,7 +79,7 @@ public class Commands extends StdCommand
 				}
 			}
 			Collections.sort(commandSet);
-			final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(19.0,mob);
+			final int COL_LEN=CMLib.lister().fixColWidth(19.0,mob);
 			for(final Iterator<String> i=commandSet.iterator();i.hasNext();)
 			{
 				final String s=i.next();

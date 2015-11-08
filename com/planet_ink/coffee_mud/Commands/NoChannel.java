@@ -52,24 +52,24 @@ public class NoChannel extends StdCommand
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
 			final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
-			if(chan.name.equalsIgnoreCase(channelName))
+			if(chan.name().equalsIgnoreCase(channelName))
 			{
 				channelNum=c;
-				channelName=chan.name;
+				channelName=chan.name();
 			}
 		}
 		if(channelNum<0)
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
 			final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
-			if(chan.name.toUpperCase().startsWith(channelName))
+			if(chan.name().toUpperCase().startsWith(channelName))
 			{
 				channelNum=c;
-				channelName=chan.name;
+				channelName=chan.name();
 			}
 		}
 		if((channelNum<0)
-		||(!CMLib.masking().maskCheck(CMLib.channels().getChannel(channelNum).mask,mob,true)))
+		||(!CMLib.masking().maskCheck(CMLib.channels().getChannel(channelNum).mask(),mob,true)))
 		{
 			mob.tell(L("This channel is not available to you."));
 			return false;

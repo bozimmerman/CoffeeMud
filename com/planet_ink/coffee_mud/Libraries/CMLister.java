@@ -37,9 +37,30 @@ import java.util.*;
 public class CMLister extends StdLibrary implements ListingLibrary
 {
 	@Override public String ID(){return "CMLister";}
-	protected static final ListStringer stringer=new ListStringer();
 	@SuppressWarnings("unchecked")
 	protected static final Filterer<Object>[] NO_FILTER=new Filterer[0];
+
+	protected static final ListStringer stringer=new ListStringer()
+	{
+		@Override
+		public String stringify(Object o)
+		{
+			if(o instanceof String)
+				return (String)o;
+			else
+			if(o instanceof Ability)
+				return ((Ability)o).ID()+(((Ability)o).isGeneric()?"*":"");
+			else
+			if(o instanceof CharClass)
+				return ((CharClass)o).ID()+(((CharClass)o).isGeneric()?"*":"");
+			else
+			if(o instanceof Race)
+				return ((Race)o).ID()+(((Race)o).isGeneric()?"*":"");
+			else
+				return CMClass.classID(o);
+		}
+	};
+
 	protected static class LikeRoomFilter implements Filterer<Object>
 	{
 		private final Room likeRoom;
@@ -81,6 +102,13 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		}
 	}
 
+	@Override
+	public ListStringer getListStringer()
+	{
+		return CMLister.stringer;
+	}
+
+	
 	@Override
 	public String itemSeenString(MOB viewerM, Environmental item, boolean useName, boolean longLook, boolean sysmsgs)
 	{
@@ -365,7 +393,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		if(these.size()==0)
 			return lines;
 		int column=0;
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
+		final int COL_LEN=fixColWidth(24.0, viewerM);
 		for(final String key : these.keySet())
 		{
 			final Object thisThang=these.get(key);
@@ -407,7 +435,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		if(!these.hasMoreElements())
 			return lines;
 		int column=0;
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0, viewerM);
+		final int COL_LEN=fixColWidth(24.0, viewerM);
 		for(final Enumeration<? extends Object> e=these;e.hasMoreElements();)
 		{
 			final Object thisThang=e.nextElement();
@@ -445,7 +473,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		if(!these.hasMoreElements())
 			return lines;
 		int column=0;
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(37.0, viewerM);
+		final int COL_LEN=fixColWidth(37.0, viewerM);
 		for(final Enumeration<? extends Object> e=these;e.hasMoreElements();)
 		{
 			final Object thisThang=e.nextElement();
@@ -493,12 +521,33 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	}
 
 	@Override
+	public int fixColWidth(final double colWidth, final MOB mob)
+	{
+		return fixColWidth(colWidth,(mob==null)?null:mob.session());
+	}
+
+	@Override
+	public int fixColWidth(final double colWidth, final Session session)
+	{
+		double totalWidth=(session==null)?78.0:(double)session.getWrap();
+		if(totalWidth==0.0)
+			totalWidth=1024.0;
+		return (int)Math.round((colWidth/78.0)*totalWidth);
+	}
+
+	@Override
+	public int fixColWidth(final double colWidth, final double totalWidth)
+	{
+		return (int)Math.round((colWidth/78.0)*totalWidth);
+	}
+	
+	@Override
 	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols)
 	{
 		final StringBuilder topicBuffer=new StringBuilder("");
 		int col=0;
 		String s=null;
-		final int colSize = ListingLibrary.ColFixer.fixColWidth(72.0,viewerM) / numCols;
+		final int colSize = fixColWidth(72.0,viewerM) / numCols;
 		for(int i=0;i<reverseList.size();i++)
 		{
 			if((++col)>numCols)

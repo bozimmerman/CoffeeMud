@@ -54,10 +54,28 @@ public class GCClassLoader
 			final ResultSet R=D.query("SELECT * FROM CMCCAC");
 			while(R.next())
 			{
-				final DatabaseEngine.AckRecord ack = new DatabaseEngine.AckRecord(
-					DBConnections.getRes(R,"CMCCID"),
-					DBConnections.getRes(R,"CMCDAT"),
-					"GenCharClass");
+				final String ccid = DBConnections.getRes(R,"CMCCID");
+				final String cdat = DBConnections.getRes(R,"CMCDAT");
+				final DatabaseEngine.AckRecord ack = new DatabaseEngine.AckRecord()
+				{
+					@Override
+					public String ID()
+					{
+						return ccid;
+					}
+
+					@Override
+					public String data()
+					{
+						return cdat;
+					}
+
+					@Override
+					public String typeClass()
+					{
+						return "GenCharClass";
+					}
+				};
 				rows.addElement(ack);
 			}
 		}

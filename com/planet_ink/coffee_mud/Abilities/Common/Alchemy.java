@@ -230,7 +230,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			return false;
 		}
 		final int[] cols={
-				ListingLibrary.ColFixer.fixColWidth(25,mob.session()),
+				CMLib.lister().fixColWidth(25,mob.session()),
 			};
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		final String pos=commands.get(commands.size()-1);

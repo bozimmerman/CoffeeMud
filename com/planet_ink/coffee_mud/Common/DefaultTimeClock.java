@@ -487,7 +487,7 @@ public class DefaultTimeClock implements TimeClock
 				if((bitV==null)||(bitV.size()==0))
 					timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
 				else
-					timeRsc=bitV.get(0).xml;
+					timeRsc=bitV.get(0).xml();
 				final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(timeRsc);
 				setHourOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
 				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));

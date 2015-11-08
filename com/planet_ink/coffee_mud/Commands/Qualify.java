@@ -128,10 +128,10 @@ public class Qualify  extends Skills
 				highestLevel=level;
 		}
 		int col=0;
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerM);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(19.0,viewerM);
-		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(12.0,viewerM);
-		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(13.0,viewerM);
+		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerM);
+		final int COL_LEN2=CMLib.lister().fixColWidth(19.0,viewerM);
+		final int COL_LEN3=CMLib.lister().fixColWidth(12.0,viewerM);
+		final int COL_LEN4=CMLib.lister().fixColWidth(13.0,viewerM);
 		for(int l=0;l<=highestLevel;l++)
 		{
 			final StringBuffer thisLine=new StringBuffer("");
@@ -221,10 +221,10 @@ public class Qualify  extends Skills
 			}
 		}
 		boolean classesFound=false;
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,mob);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(19.0,mob);
-		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(12.0,mob);
-		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(13.0,mob);
+		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,mob);
+		final int COL_LEN2=CMLib.lister().fixColWidth(19.0,mob);
+		final int COL_LEN3=CMLib.lister().fixColWidth(12.0,mob);
+		final int COL_LEN4=CMLib.lister().fixColWidth(13.0,mob);
 		if((mob!=null)
 		&&(showAll||("CLASSES".startsWith(qual)))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
@@ -278,7 +278,7 @@ public class Qualify  extends Skills
 					msg.append(L("\n\r^HExpertises:^?\n\r"));
 					ExpertiseLibrary.ExpertiseDefinition def=null;
 					int col=0;
-					final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
+					final int COL_LEN=CMLib.lister().fixColWidth(25.0,mob);
 					for(int e=0;e<V.size();e++)
 					{
 						def=V.get(e);
@@ -311,7 +311,7 @@ public class Qualify  extends Skills
 					ExpertiseLibrary.ExpertiseDefinition def=null;
 					String req=null;
 					String prefix=null;
-					final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(30.0,mob);
+					final int COL_LEN=CMLib.lister().fixColWidth(30.0,mob);
 					for(int v=0;v<V.size();v++)
 					{
 						def=V.get(v);

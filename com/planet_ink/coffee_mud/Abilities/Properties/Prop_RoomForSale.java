@@ -551,12 +551,12 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		DatabaseEngine.PlayerData pData = null;
 		if(pDataV.size()==0)
 		{
-			pData = new DatabaseEngine.PlayerData();
-			pData.who=owner;
-			pData.section="RENTAL INFO";
-			pData.key="RENTAL INFO/"+owner;
-			pData.xml=ID+"|~>|"+day+" "+month+" "+year+"|~;|";
-			CMLib.database().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,pData.xml);
+			pData = CMLib.database().createPlayerData();
+			pData.who(owner);
+			pData.section("RENTAL INFO");
+			pData.key("RENTAL INFO/"+owner);
+			pData.xml(ID+"|~>|"+day+" "+month+" "+year+"|~;|");
+			CMLib.database().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,pData.xml());
 			pDataV.add(pData);
 			Resources.submitResource("RENTAL INFO/"+owner,pDataV);
 			return false;
@@ -565,7 +565,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(pDataV.get(0) != null)
 		{
 			pData=pDataV.get(0);
-			String parse=pData.xml;
+			String parse=pData.xml();
 			int x=parse.indexOf("|~;|");
 			final StringBuffer reparse=new StringBuffer("");
 			boolean changesMade=false;
@@ -624,11 +624,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			if(changesMade)
 			{
 				CMLib.database().DBReCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
-				pData = new DatabaseEngine.PlayerData();
-				pData.who=owner;
-				pData.section="RENTAL INFO";
-				pData.key="RENTAL INFO/"+owner;
-				pData.xml=reparse.toString();
+				pData = CMLib.database().createPlayerData();
+				pData.who(owner);
+				pData.section("RENTAL INFO");
+				pData.key("RENTAL INFO/"+owner);
+				pData.xml(reparse.toString());
 				pDataV.set(0,pData);
 				Resources.removeResource("RENTAL INFO/"+owner);
 				Resources.submitResource("RENTAL INFO/"+owner,pDataV);

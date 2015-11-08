@@ -118,21 +118,4 @@ public interface GenericEditor extends CMLibrary
 		public Object eval(Object val, Object[] choices, boolean emptyOK) 
 				throws CMException;
 	}
-	
-	public static class CMEvalStrChoice implements CMEval
-	{
-		public static CMEvalStrChoice INSTANCE = new CMEvalStrChoice();
-		@Override
-		public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException
-		{
-			if(choices.length==0)
-				return "";
-			final String str=val.toString().trim();
-			for(final Object o : choices)
-				if(str.equalsIgnoreCase(o.toString()))
-					return o.toString();
-			throw new CMException("That was not one of your choices.");
-		}
-	}
-
 }

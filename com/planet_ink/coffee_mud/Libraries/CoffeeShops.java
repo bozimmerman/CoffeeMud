@@ -820,7 +820,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						   ||(shop.isSold(ShopKeeper.DEAL_CLANDSELLER))
 						   ||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER))
 						   ||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER)))?1:2;
-			final int totalWidth=ListingLibrary.ColFixer.fixColWidth(60.0/totalCols,buyer);
+			final int totalWidth=CMLib.lister().fixColWidth(60.0/totalCols,buyer);
 			String showPrice=null;
 			ShopKeeper.ShopPrice price=null;
 			for(int i=0;i<inventory.size();i++)

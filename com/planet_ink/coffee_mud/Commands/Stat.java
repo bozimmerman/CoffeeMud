@@ -671,8 +671,8 @@ public class Stat  extends Skills
 				{
 					str.append(L("^XCurrent Character Statistics:^.^N\n\r"));
 					int[] col={0};
-					int headerWidth=ListingLibrary.ColFixer.fixColWidth(12, mob);
-					int numberWidth=ListingLibrary.ColFixer.fixColWidth(6, mob);
+					int headerWidth=CMLib.lister().fixColWidth(12, mob);
+					int numberWidth=CMLib.lister().fixColWidth(6, mob);
 					addCharStatsChars(target.charStats(), headerWidth, numberWidth, col, str);
 					addCharStatsPhys(target.phyStats(), headerWidth, numberWidth, col, str);
 					addCharStatsState(target.curState(), headerWidth, numberWidth, col, str);

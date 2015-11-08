@@ -224,15 +224,15 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		{
 			final DatabaseEngine.PlayerData PD=V.get(v);
 			if((PD!=null)
-			&&(PD.key.startsWith(postalBranch()+";")))
+			&&(PD.key().startsWith(postalBranch()+";")))
 			{
-				final Item I=makeItem(parsePostalItemData(PD.xml));
+				final Item I=makeItem(parsePostalItemData(PD.xml()));
 				if(I==null)
 					continue;
 				if(thisThang.sameAs(I))
 				{
 					found=true;
-					CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
+					CMLib.database().DBDeleteData(PD.who(),PD.section(),PD.key());
 					break;
 				}
 			}
@@ -257,7 +257,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			final DatabaseEngine.PlayerData PD=V.get(v);
 			if(PD!=null)
 			{
-				final String key=PD.key;
+				final String key=PD.key();
 				final int x=key.indexOf('/');
 				if(x>0)
 					branches.put(key.substring(0,x),key.substring(x+1));
@@ -288,9 +288,9 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		{
 			final DatabaseEngine.PlayerData PD=V.get(v);
 			if((PD!=null)
-			&&(PD.key.startsWith(postalBranch()+"/")))
+			&&(PD.key().startsWith(postalBranch()+"/")))
 			{
-				CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
+				CMLib.database().DBDeleteData(PD.who(),PD.section(),PD.key());
 			}
 		}
 	}
@@ -303,7 +303,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		{
 			final DatabaseEngine.PlayerData PD=V.get(v);
 			if((PD!=null)
-			&&(PD.key.startsWith(postalBranch()+";")))
+			&&(PD.key().startsWith(postalBranch()+";")))
 			{
 				mine.addElement(PD);
 			}
@@ -324,9 +324,9 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		{
 			final DatabaseEngine.PlayerData PD=V.get(v);
 			if((PD!=null)
-			&&(PD.key.startsWith(postalBranch()+";")))
+			&&(PD.key().startsWith(postalBranch()+";")))
 			{
-				final Item I=makeItem(parsePostalItemData(PD.xml));
+				final Item I=makeItem(parsePostalItemData(PD.xml()));
 				if(I==null)
 					continue;
 				if(CMLib.english().containsString(I.Name(),likeThis))
@@ -343,13 +343,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		{
 			final DatabaseEngine.PlayerData PD=V.get(v);
 			if((PD!=null)
-			&&(PD.key.startsWith(postalBranch()+";")))
+			&&(PD.key().startsWith(postalBranch()+";")))
 			{
-				final Item I=makeItem(parsePostalItemData(PD.xml));
+				final Item I=makeItem(parsePostalItemData(PD.xml()));
 				if(I==null)
 					continue;
 				if(I.sameAs(likeThis))
-					return parsePostalItemData(PD.xml);
+					return parsePostalItemData(PD.xml());
 			}
 		}
 		return null;
@@ -557,8 +557,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				for(int v=0;v<V.size();v++)
 				{
 					final DatabaseEngine.PlayerData PD=V.get(v);
-					parsed.addElement(parsePostalItemData(PD.xml));
-					CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
+					parsed.addElement(parsePostalItemData(PD.xml()));
+					CMLib.database().DBDeleteData(PD.who(),PD.section(),PD.key());
 				}
 				PostOffice P=null;
 				for(int v=0;v<parsed.size();v++)
@@ -594,9 +594,9 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				for(int v=0;v<V.size();v++)
 				{
 					final DatabaseEngine.PlayerData V2=V.get(v);
-					if(V2.key.startsWith(postalBranch()+";"))
+					if(V2.key().startsWith(postalBranch()+";"))
 					{
-						final MailPiece data=parsePostalItemData(V2.xml);
+						final MailPiece data=parsePostalItemData(V2.xml());
 						if((data!=null)&&(getStartRoom()!=null))
 						{
 							final long time=System.currentTimeMillis()-CMath.s_long(data.time);
@@ -607,7 +607,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 								if(months>maxMudMonthsHeld())
 								{
 									final Item I=makeItem(data);
-									CMLib.database().DBDeleteData(V2.who,V2.section,V2.key);
+									CMLib.database().DBDeleteData(V2.who(),V2.section(),V2.key());
 									if(I!=null)
 										getShop().addStoreInventory(I);
 								}
@@ -914,7 +914,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						for(int i=0;i<V.size();i++)
 						{
 							final DatabaseEngine.PlayerData PD=V.elementAt(i);
-							final MailPiece pieces=parsePostalItemData(PD.xml);
+							final MailPiece pieces=parsePostalItemData(PD.xml());
 							final Item I=makeItem(pieces);
 							if(I==null)
 								continue;

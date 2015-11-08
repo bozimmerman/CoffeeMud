@@ -291,9 +291,9 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			int toggler=1;
 			final int toggleTop=2;
 			final int[] cols={
-					ListingLibrary.ColFixer.fixColWidth(29,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
+					CMLib.lister().fixColWidth(29,mob.session()),
+					CMLib.lister().fixColWidth(3,mob.session()),
+					CMLib.lister().fixColWidth(3,mob.session())
 				};
 			for(int r=0;r<toggleTop;r++)
 				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Amt"),cols[2]));

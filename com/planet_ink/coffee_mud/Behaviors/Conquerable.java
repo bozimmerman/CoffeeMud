@@ -461,7 +461,7 @@ public class Conquerable extends Arrest
 			final List<PlayerData> itemSet=CMLib.database().DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 			if((itemSet!=null)&&(itemSet.size()>0))
 			{
-				final String data=itemSet.get(0).xml;
+				final String data=itemSet.get(0).xml();
 				final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(data);
 				if(xml!=null)
 				{

@@ -245,9 +245,9 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		bundling=false;
 		int duration=4;
 		final int[] cols={
-				ListingLibrary.ColFixer.fixColWidth(27,mob.session()),
-				ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
-				ListingLibrary.ColFixer.fixColWidth(6,mob.session())
+				CMLib.lister().fixColWidth(27,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session()),
+				CMLib.lister().fixColWidth(6,mob.session())
 			};
 		if(str.equalsIgnoreCase("list"))
 		{

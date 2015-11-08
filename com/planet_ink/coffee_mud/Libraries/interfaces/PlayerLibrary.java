@@ -89,6 +89,7 @@ public interface PlayerLibrary extends CMLibrary
 		public String accountName="";
 		public String email="";
 		public MOB loadedMOB=null;
+
 		public boolean matchesPassword(String checkPass)
 		{
 			return CMLib.encoder().isARandomHashString(password)

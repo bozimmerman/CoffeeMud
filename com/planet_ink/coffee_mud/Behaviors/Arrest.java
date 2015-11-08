@@ -510,7 +510,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if((data!=null)&&(data.size()>0))
 					{
 						final DatabaseEngine.PlayerData pdata=data.get(0);
-						String s=CMStrings.replaceAll(pdata.xml,"~","\n");
+						String s=CMStrings.replaceAll(pdata.xml(),"~","\n");
 						s=CMStrings.replaceAll(s,"`","'");
 						lawprops.load(new ByteArrayInputStream(CMStrings.strToBytes(s)));
 					}

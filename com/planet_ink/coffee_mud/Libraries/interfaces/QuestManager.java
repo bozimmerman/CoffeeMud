@@ -118,7 +118,8 @@ public interface QuestManager extends CMLibrary
 		"$FACTION",
 		"$TIMEEXPRESSION"
 	};
-	public final static GenericEditor.CMEval[] QM_COMMAND_TESTS={
+	public final static GenericEditor.CMEval[] QM_COMMAND_TESTS=
+	{
 		new GenericEditor.CMEval(){ @Override
 		public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //title
 			return str;

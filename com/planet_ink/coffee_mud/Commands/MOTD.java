@@ -294,8 +294,8 @@ public class MOTD extends StdCommand
 		for(int i=0;i<mailData.size();i++)
 		{
 			final DatabaseEngine.PlayerData letter=mailData.get(i);
-			final String chain=letter.section;
-			String branch=letter.key;
+			final String chain=letter.section();
+			String branch=letter.key();
 			final int x=branch.indexOf(';');
 			if(x<0)
 				continue;
@@ -303,7 +303,7 @@ public class MOTD extends StdCommand
 			P=CMLib.map().getPostOffice(chain,branch);
 			if(P==null)
 				continue;
-			final PostOffice.MailPiece pieces=P.parsePostalItemData(letter.xml);
+			final PostOffice.MailPiece pieces=P.parsePostalItemData(letter.xml());
 			int[] ct=results.get(P);
 			if(ct==null)
 			{

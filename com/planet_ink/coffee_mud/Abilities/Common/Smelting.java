@@ -130,9 +130,9 @@ public class Smelting extends CraftingSkill
 				mask="";
 			}
 			final int[] cols={
-					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(16,mob.session())
+					CMLib.lister().fixColWidth(20,mob.session()),
+					CMLib.lister().fixColWidth(3,mob.session()),
+					CMLib.lister().fixColWidth(16,mob.session())
 				};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Metal #2\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),CMStrings.padRight(L("Metal #1"),cols[2])));
 			for(int r=0;r<recipes.size();r++)

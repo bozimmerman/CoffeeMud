@@ -701,7 +701,7 @@ public class Masonry extends CraftingSkill
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
 			final String mask=CMParms.combine(commands,1);
-			final int colWidth=ListingLibrary.ColFixer.fixColWidth(20,mob.session());
+			final int colWidth=CMLib.lister().fixColWidth(20,mob.session());
 			final StringBuffer buf=new StringBuffer(L("@x1 Stone required\n\r",CMStrings.padRight(L("Item"),colWidth)));
 			for(int r=0;r<data.length;r++)
 			{

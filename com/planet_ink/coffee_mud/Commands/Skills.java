@@ -193,9 +193,9 @@ public class Skills extends StdCommand
 
 	protected StringBuilder getAbilities(MOB viewerM, MOB ableM, Vector<Integer> ofTypes, int mask, boolean addQualLine, int maxLevel)
 	{
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerM);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(18.0,viewerM);
-		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(19.0,viewerM);
+		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerM);
+		final int COL_LEN2=CMLib.lister().fixColWidth(18.0,viewerM);
+		final int COL_LEN3=CMLib.lister().fixColWidth(19.0,viewerM);
 		int highestLevel=0;
 		final int lowestLevel=ableM.phyStats().level()+1;
 		final StringBuilder msg=new StringBuilder("");

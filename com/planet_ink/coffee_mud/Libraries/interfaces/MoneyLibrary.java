@@ -113,17 +113,11 @@ public interface MoneyLibrary extends CMLibrary
 	public void dropMoney(Room R, Container container, String currency, double absoluteValue);
 	public void removeMoney(Room R, Container container, String currency, double absoluteValue);
 
-	public static class MoneyDenomination
+	public static interface MoneyDenomination
 	{
-		public double value=0.0;
-		public String name="";
-		public String abbr="";
-		public MoneyDenomination(double value,String name,String abbr)
-		{
-			this.value=value;
-			this.name=name;
-			this.abbr=abbr;
-		}
+		public double value();
+		public String name();
+		public String abbr();
 	}
 
 	public static final String defaultCurrencyDefinition=

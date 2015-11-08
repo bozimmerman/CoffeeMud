@@ -50,16 +50,74 @@ public class PollLoader
 			final ResultSet R=D.query("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'");
 			while(R.next())
 			{
-				final DatabaseEngine.PollData data = new DBInterface.PollData();
-				data.name=DBConnections.getRes(R,"CMNAME");
-				data.byName=DBConnections.getRes(R,"CMBYNM");
-				data.subject=DBConnections.getRes(R,"CMSUBJ");
-				data.description=DBConnections.getRes(R,"CMDESC");
-				data.options=DBConnections.getRes(R,"CMOPTN");
-				data.flag=DBConnections.getLongRes(R,"CMFLAG");
-				data.qual=DBConnections.getRes(R,"CMQUAL");
-				data.results=DBConnections.getRes(R,"CMRESL");
-				data.expiration=DBConnections.getLongRes(R,"CMEXPI");
+				final String cname=DBConnections.getRes(R,"CMNAME");
+				final String byName=DBConnections.getRes(R,"CMBYNM");
+				final String subject=DBConnections.getRes(R,"CMSUBJ");
+				final String description=DBConnections.getRes(R,"CMDESC");
+				final String options=DBConnections.getRes(R,"CMOPTN");
+				final long flag=DBConnections.getLongRes(R,"CMFLAG");
+				final String qual=DBConnections.getRes(R,"CMQUAL");
+				final String results=DBConnections.getRes(R,"CMRESL");
+				final long expiration=DBConnections.getLongRes(R,"CMEXPI");
+				
+				final DatabaseEngine.PollData data = new DBInterface.PollData()
+				{
+
+					@Override
+					public String name()
+					{
+						return cname;
+					}
+
+					@Override
+					public long flag()
+					{
+						return flag;
+					}
+
+					@Override
+					public String byName()
+					{
+						return byName;
+					}
+
+					@Override
+					public String subject()
+					{
+						return subject;
+					}
+
+					@Override
+					public String description()
+					{
+						return description;
+					}
+
+					@Override
+					public String options()
+					{
+						return options;
+					}
+
+					@Override
+					public String qual()
+					{
+						return qual;
+					}
+
+					@Override
+					public String results()
+					{
+						return results;
+					}
+
+					@Override
+					public long expiration()
+					{
+						return expiration;
+					}
+					
+				};
 				return data;
 			}
 		}
@@ -86,11 +144,69 @@ public class PollLoader
 			final ResultSet R=D.query("SELECT * FROM CMPOLL");
 			while(R.next())
 			{
-				final DatabaseEngine.PollData data = new DBInterface.PollData();
-				data.name=DBConnections.getRes(R,"CMNAME");
-				data.flag=DBConnections.getLongRes(R,"CMFLAG");
-				data.qual=DBConnections.getRes(R,"CMQUAL");
-				data.expiration=DBConnections.getLongRes(R,"CMEXPI");
+				final String cname=DBConnections.getRes(R,"CMNAME");
+				final long flag=DBConnections.getLongRes(R,"CMFLAG");
+				final String qual=DBConnections.getRes(R,"CMQUAL");
+				final long expiration=DBConnections.getLongRes(R,"CMEXPI");
+				
+				final DatabaseEngine.PollData data = new DBInterface.PollData()
+				{
+
+					@Override
+					public String name()
+					{
+						return cname;
+					}
+
+					@Override
+					public long flag()
+					{
+						return flag;
+					}
+
+					@Override
+					public String byName()
+					{
+						return "";
+					}
+
+					@Override
+					public String subject()
+					{
+						return "";
+					}
+
+					@Override
+					public String description()
+					{
+						return "";
+					}
+
+					@Override
+					public String options()
+					{
+						return "";
+					}
+
+					@Override
+					public String qual()
+					{
+						return qual;
+					}
+
+					@Override
+					public String results()
+					{
+						return "";
+					}
+
+					@Override
+					public long expiration()
+					{
+						return expiration;
+					}
+					
+				};
 				rows.addElement(data);
 			}
 		}

@@ -125,7 +125,7 @@ public class Deities extends StdCommand
 		else
 			msg.append(L("\n\r^HThe known deities named '@x1':^? \n\r",str));
 		int col=0;
-		final int colWidth=ListingLibrary.ColFixer.fixColWidth(18,mob.session());
+		final int colWidth=CMLib.lister().fixColWidth(18,mob.session());
 		for(final Enumeration d=CMLib.map().deities();d.hasMoreElements();)
 		{
 			final Deity D=(Deity)d.nextElement();

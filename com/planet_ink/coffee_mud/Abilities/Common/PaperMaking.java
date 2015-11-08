@@ -152,8 +152,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				mask="";
 			}
 			final int[] cols={
-					ListingLibrary.ColFixer.fixColWidth(22,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
+					CMLib.lister().fixColWidth(22,mob.session()),
+					CMLib.lister().fixColWidth(3,mob.session())
 				};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Material required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			for(int r=0;r<recipes.size();r++)

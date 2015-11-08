@@ -799,7 +799,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					compiledMask=CMLib.masking().maskCompile(lootPolicies.get(p).substring(maskDex+5).trim());
 				}
 				else
-					compiledMask=MaskingLibrary.CompiledZapperMask.EMPTY();
+					compiledMask=CMLib.masking().createEmptyMask();
 				final Vector<String> parsed=CMParms.parse(s);
 				int pct=100;
 				for(int x=0;x<parsed.size();x++)
@@ -908,7 +908,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=parseLootPolicyFor(mob);
 		for(int d=0;d<policies.size();d++)
 		{
-			if((policies.get(d).third.entries.length>0)
+			if((policies.get(d).third.entries().length>0)
 			&&(!CMLib.masking().maskCheck(policies.get(d).third,I,true)))
 				continue;
 			if(CMLib.dice().rollPercentage()>policies.get(d).first.intValue())

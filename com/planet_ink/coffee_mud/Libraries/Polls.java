@@ -49,8 +49,19 @@ public class Polls extends StdLibrary implements PollManager
 		return true;
 	}
 
-	@Override public void addPoll(Poll P){if(getCache()!=null) getCache().add(P);}
-	@Override public void removePoll(Poll P){if(getCache()!=null) getCache().remove(P);}
+	@Override
+	public void addPoll(Poll P)
+	{
+		if (getCache() != null)
+			getCache().add(P);
+	}
+
+	@Override
+	public void removePoll(Poll P)
+	{
+		if (getCache() != null)
+			getCache().remove(P);
+	}
 
 	public synchronized List<Poll> getCache()
 	{
@@ -63,7 +74,7 @@ public class Polls extends StdLibrary implements PollManager
 			Poll P=null;
 			for(final DatabaseEngine.PollData data : list)
 			{
-				P=loadPollByName(data.name);
+				P=loadPollByName(data.name());
 				if(P!=null)
 					pollCache.addElement(P);
 			}
@@ -139,10 +150,10 @@ public class Polls extends StdLibrary implements PollManager
 		for(final DatabaseEngine.PollData data : V)
 		{
 			final Poll P=(Poll)CMClass.getCommon("DefaultPoll");
-			P.setName(data.name);
-			P.setFlags(data.flag);
-			P.setQualZapper(data.qual);
-			P.setExpiration(data.expiration);
+			P.setName(data.name());
+			P.setFlags(data.flag());
+			P.setQualZapper(data.qual());
+			P.setExpiration(data.expiration());
 			P.setLoaded(false);
 			list.add(P);
 		}
@@ -381,13 +392,13 @@ public class Polls extends StdLibrary implements PollManager
 		final DatabaseEngine.PollData data =CMLib.database().DBReadPoll(P.getName());
 		if(data==null)
 			return false;
-		P.setName(data.name);
-		P.setAuthor(data.byName);
-		P.setSubject(data.subject);
-		P.setDescription(data.description);
+		P.setName(data.name());
+		P.setAuthor(data.byName());
+		P.setSubject(data.subject());
+		P.setDescription(data.description());
 		final Vector<Poll.PollOption> options=new Vector<Poll.PollOption>();
 		P.setOptions(options);
-		final String optionsXML=data.options;
+		final String optionsXML=data.options();
 		List<XMLLibrary.XMLpiece> V2=CMLib.xml().parseAllXML(optionsXML);
 		XMLLibrary.XMLpiece OXV=CMLib.xml().getPieceFromPieces(V2,"OPTIONS");
 		if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
@@ -401,11 +412,11 @@ public class Polls extends StdLibrary implements PollManager
 			);
 			options.addElement(PO);
 		}
-		P.setFlags(data.flag);
-		P.setQualZapper(data.qual);
+		P.setFlags(data.flag());
+		P.setQualZapper(data.qual());
 		final Vector<Poll.PollResult> results=new Vector<Poll.PollResult>();
 		P.setResults(results);
-		final String resultsXML=data.results;
+		final String resultsXML=data.results();
 		V2=CMLib.xml().parseAllXML(resultsXML);
 		OXV=CMLib.xml().getPieceFromPieces(V2,"RESULTS");
 		if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
@@ -420,7 +431,7 @@ public class Polls extends StdLibrary implements PollManager
 					CMLib.xml().getValFromPieces(XP.contents,"ANS"));
 			results.addElement(PR);
 		}
-		P.setExpiration(data.expiration);
+		P.setExpiration(data.expiration());
 		P.setLoaded(true);
 		return true;
 	}

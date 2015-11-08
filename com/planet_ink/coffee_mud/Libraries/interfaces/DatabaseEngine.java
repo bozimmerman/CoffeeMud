@@ -194,7 +194,8 @@ public interface DatabaseEngine extends CMLibrary
 	public boolean DBUpdateStat(long startTime, String data);
 	public List<CoffeeTableRow> DBReadStats(long startTime);
 	public void DBCreatePoll(String name, String player, String subject, String description, String optionXML, int flag, String qualZapper, String results, long expiration);
-	public void DBUpdatePoll(String OldName, String name, String player, String subject, String description, String optionXML, int flag, String qualZapper, String results, long expiration);
+	public void DBUpdatePoll(String OldName, String name, String player, String subject, String description, 
+							 String optionXML, int flag, String qualZapper, String results, long expiration);
 	public void DBUpdatePollResults(String name, String results);
 	public void DBDeletePoll(String name);
 	public List<PollData> DBReadPollList();
@@ -210,41 +211,38 @@ public interface DatabaseEngine extends CMLibrary
 	public void addBackLogEntry(String channelName, final String entry);
 	public List<Pair<String,Long>> getBackLogEntries(String channelName, final int newestToSkip, final int numToReturn);
 	public void trimBackLogEntries(final String[] channels, final int maxMessages, final long oldestTime);
-
-	public static class PlayerData
+	public PlayerData createPlayerData();
+	
+	public static interface PlayerData
 	{
-		public String who="";
-		public String section="";
-		public String key="";
-		public String xml="";
+		public String who();
+		public PlayerData who(String who);
+		public String section();
+		public PlayerData section(String section);
+		public String key();
+		public PlayerData key(String key);
+		public String xml();
+		public PlayerData xml(String xml);
 	}
 
-	public static class PollData
+	public static interface PollData
 	{
-		public String name="";
-		public long flag=0;
-		public String byName="";
-		public String subject="";
-		public String description="";
-		public String options="";
-		public String qual="";
-		public String results="";
-		public long expiration=0;
-
+		public String name();
+		public long flag();
+		public String byName();
+		public String subject();
+		public String description();
+		public String options();
+		public String qual();
+		public String results();
+		public long expiration();
 	}
 
-	public static class AckRecord
+	public static interface AckRecord
 	{
-		public String ID="";
-		public String data="";
-		public String typeClass="GenAbility";
-		public AckRecord(String id, String dataStr, String type)
-		{
-			ID=id;
-			data=dataStr;
-			if((type!=null)&&(type.length()>0))
-				typeClass=type;
-		}
+		public String ID();
+		public String data();
+		public String typeClass();
 	}
 
 }

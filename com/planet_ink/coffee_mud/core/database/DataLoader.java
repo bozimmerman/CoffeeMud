@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -39,10 +40,14 @@ import java.util.regex.Pattern;
 public class DataLoader
 {
 	protected DBConnector DB=null;
-	public DataLoader(DBConnector newDB)
+	protected DatabaseEngine engine=null;
+	
+	public DataLoader(DatabaseEngine engine, DBConnector newDB)
 	{
-		DB=newDB;
+		this.DB=newDB;
+		this.engine=engine;
 	}
+	
 	public List<PlayerData> DBRead(String playerID, String section)
 	{
 		DBConnection D=null;
@@ -58,11 +63,11 @@ public class DataLoader
 			{
 				final String playerID2=DBConnections.getRes(R,"CMPLID");
 				final String section2=DBConnections.getRes(R,"CMSECT");
-				final PlayerData d = new PlayerData();
-				d.who=playerID2;
-				d.section=section2;
-				d.key=DBConnections.getRes(R,"CMPKEY");
-				d.xml=DBConnections.getRes(R,"CMPDAT");
+				final PlayerData d = engine.createPlayerData();
+				d.who(playerID2);
+				d.section(section2);
+				d.key(DBConnections.getRes(R,"CMPKEY"));
+				d.xml(DBConnections.getRes(R,"CMPDAT"));
 				rows.addElement(d);
 			}
 		}
@@ -91,11 +96,11 @@ public class DataLoader
 				final String playerID2=DBConnections.getRes(R,"CMPLID");
 				if(playerID2.equalsIgnoreCase(playerID))
 				{
-					final PlayerData d = new PlayerData();
-					d.who=playerID2;
-					d.section=DBConnections.getRes(R,"CMSECT");
-					d.key=DBConnections.getRes(R,"CMPKEY");
-					d.xml=DBConnections.getRes(R,"CMPDAT");
+					final PlayerData d = engine.createPlayerData();
+					d.who(playerID2);
+					d.section(DBConnections.getRes(R,"CMSECT"));
+					d.key(DBConnections.getRes(R,"CMPKEY"));
+					d.xml(DBConnections.getRes(R,"CMPDAT"));
 					rows.addElement(d);
 				}
 			}
@@ -156,11 +161,11 @@ public class DataLoader
 				final Matcher M=P.matcher(key);
 				if(M.find())
 				{
-					final PlayerData d = new PlayerData();
-					d.who=plid;
-					d.section=sect;
-					d.key=key;
-					d.xml=DBConnections.getRes(R,"CMPDAT");
+					final PlayerData d = engine.createPlayerData();
+					d.who(plid);
+					d.section(sect);
+					d.key(key);
+					d.xml(DBConnections.getRes(R,"CMPDAT"));
 					rows.addElement(d);
 				}
 			}
@@ -191,11 +196,11 @@ public class DataLoader
 				final String plid=DBConnections.getRes(R,"CMPLID");
 				final String sect=DBConnections.getRes(R,"CMSECT");
 				key=DBConnections.getRes(R,"CMPKEY");
-				final PlayerData d = new PlayerData();
-				d.who=plid;
-				d.section=sect;
-				d.key=key;
-				d.xml=DBConnections.getRes(R,"CMPDAT");
+				final PlayerData d = engine.createPlayerData();
+				d.who(plid);
+				d.section(sect);
+				d.key(key);
+				d.xml(DBConnections.getRes(R,"CMPDAT"));
 				rows.addElement(d);
 			}
 		}
@@ -227,11 +232,11 @@ public class DataLoader
 			{
 				final String playerID2=DBConnections.getRes(R,"CMPLID");
 				final String section2=DBConnections.getRes(R,"CMSECT");
-				final PlayerData d = new PlayerData();
-				d.who=playerID2;
-				d.section=section2;
-				d.key=DBConnections.getRes(R,"CMPKEY");
-				d.xml=DBConnections.getRes(R,"CMPDAT");
+				final PlayerData d = engine.createPlayerData();
+				d.who(playerID2);
+				d.section(section2);
+				d.key(DBConnections.getRes(R,"CMPKEY"));
+				d.xml(DBConnections.getRes(R,"CMPDAT"));
 				rows.addElement(d);
 			}
 		}
@@ -258,11 +263,11 @@ public class DataLoader
 			final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
 			while(R.next())
 			{
-				final PlayerData d = new PlayerData();
-				d.who=DBConnections.getRes(R,"CMPLID");
-				d.section=DBConnections.getRes(R,"CMSECT");
-				d.key=DBConnections.getRes(R,"CMPKEY");
-				d.xml=DBConnections.getRes(R,"CMPDAT");
+				final PlayerData d = engine.createPlayerData();
+				d.who(DBConnections.getRes(R,"CMPLID"));
+				d.section(DBConnections.getRes(R,"CMSECT"));
+				d.key(DBConnections.getRes(R,"CMPKEY"));
+				d.xml(DBConnections.getRes(R,"CMPDAT"));
 				rows.addElement(d);
 			}
 		}
@@ -298,11 +303,11 @@ public class DataLoader
 			final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND ("+clause+")");
 			while(R.next())
 			{
-				final PlayerData d = new PlayerData();
-				d.who=DBConnections.getRes(R,"CMPLID");
-				d.section=DBConnections.getRes(R,"CMSECT");
-				d.key=DBConnections.getRes(R,"CMPKEY");
-				d.xml=DBConnections.getRes(R,"CMPDAT");
+				final PlayerData d = engine.createPlayerData();
+				d.who(DBConnections.getRes(R,"CMPLID"));
+				d.section(DBConnections.getRes(R,"CMSECT"));
+				d.key(DBConnections.getRes(R,"CMPKEY"));
+				d.xml(DBConnections.getRes(R,"CMPDAT"));
 				rows.addElement(d);
 			}
 		}
@@ -458,7 +463,7 @@ public class DataLoader
 		for(int i=0;i<itemSet.size();i++)
 		{
 			final PlayerData item=itemSet.get(i);
-			final String itemID=item.who;
+			final String itemID=item.who();
 			final Ability A=CMClass.getAbility("Prop_Artifact");
 			if(A!=null)
 			{

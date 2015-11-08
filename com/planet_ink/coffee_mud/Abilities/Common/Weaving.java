@@ -289,9 +289,9 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			int toggler=1;
 			final int toggleTop=2;
 			final int[] cols={
-					ListingLibrary.ColFixer.fixColWidth(22,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(10,mob.session())
+					CMLib.lister().fixColWidth(22,mob.session()),
+					CMLib.lister().fixColWidth(3,mob.session()),
+					CMLib.lister().fixColWidth(10,mob.session())
 				};
 			for(int r=0;r<toggleTop;r++)
 				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Material"),cols[2]));

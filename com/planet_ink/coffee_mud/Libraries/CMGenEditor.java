@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary.ListStringer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -52,6 +53,23 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	// showNumber should always be a valid number no less than 1
 	// showFlag should be a valid number for editing, or -1 for skipping
 
+	private static CMEval CMEVAL_INSTANCE = new CMEval()
+	{
+		@Override
+		public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException
+		{
+			if(choices.length==0)
+				return "";
+			final String str=val.toString().trim();
+			for(final Object o : choices)
+			{
+				if(str.equalsIgnoreCase(o.toString()))
+					return o.toString();
+			}
+			throw new CMException("That was not one of your choices.");
+		}
+	};
+	
 	@Override
 	public void promptStatInt(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
 	throws IOException
@@ -85,11 +103,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	@Override
 	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices)
 	throws IOException
-	{	E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,false,false,help,CMEvalStrChoice.INSTANCE,choices)); }
+	{	E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,false,false,help,CMEVAL_INSTANCE,choices)); }
 	@Override
 	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices)
 	throws IOException
-	{	E.setStat(Field,this.promptCommaList(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, help, CMEvalStrChoice.INSTANCE, choices)); }
+	{	E.setStat(Field,this.promptCommaList(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, help, CMEVAL_INSTANCE, choices)); }
 	@Override
 	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
 	throws IOException
@@ -2643,8 +2661,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				StringBuffer allDenoms=new StringBuffer("");
 				if(DV!=null)
+				{
 					for (final MoneyDenomination element : DV)
-						allDenoms.append(element.value+"("+element.name+"), ");
+						allDenoms.append(element.value()+"("+element.name()+"), ");
+				}
 				if(allDenoms.toString().endsWith(", "))
 					allDenoms=new StringBuffer(allDenoms.substring(0,allDenoms.length()-2));
 				mob.tell(L("'@x1' is not a defined denomination. Try one of these: @x2.",newDenom,allDenoms.toString()));
@@ -3207,7 +3227,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		String newFact="Q";
-		final int wrap=ListingLibrary.ColFixer.fixColWidth(50,mob.session());
+		final int wrap=CMLib.lister().fixColWidth(50,mob.session());
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newFact.length()>0))
 		{
 			String listing=E.getFactionListing();
@@ -3691,6 +3711,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		String behave="NO";
+		final ListStringer baseStringer = CMLib.lister().getListStringer();
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
 			String behaviorstr="";
@@ -3721,7 +3742,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						@Override
 						public String stringify(Object o)
 						{
-							String s=super.stringify(o);
+							String s=baseStringer.stringify(o);
 							if((s!=null)&&(s.length()>0)&&(o instanceof Behavior) && (((Behavior)o).canImprove(P)))
 								s="^w"+s+"^n";
 							return s;
@@ -3793,6 +3814,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		String behave="NO";
+		final ListStringer baseStringer = CMLib.lister().getListStringer();
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
 			String affectstr="";
@@ -3824,7 +3846,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						@Override
 						public String stringify(Object o)
 						{
-							String s=super.stringify(o);
+							String s=baseStringer.stringify(o);
 							if((s!=null)&&(s.length()>0)&&(o instanceof Ability) && (((Ability)o).canAffect(P)))
 								s="^X"+s+"^N";
 							return s;
@@ -9409,7 +9431,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me.getMaxTechLevelDiff()<me.getMinTechLevelDiff())
 				me.setMaxTechLevelDiff(me.getMinTechLevelDiff());
 			me.setManufactureredTypesList(promptCommaList(mob,me.getManufactureredTypesList(),++showNumber,showFlag,"Manufact. Types: ",
-					"Choices: "+CMParms.toListString(TechType.values()),CMEvalStrChoice.INSTANCE,TechType.values()));
+					"Choices: "+CMParms.toListString(TechType.values()),CMEVAL_INSTANCE,TechType.values()));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));

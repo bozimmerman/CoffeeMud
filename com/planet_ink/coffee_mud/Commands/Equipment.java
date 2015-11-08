@@ -56,8 +56,8 @@ public class Equipment extends StdCommand
 		if(CMLib.flags().isSleeping(seer))
 			return new StringBuilder("(nothing you can see right now)");
 
-		final int wrap=ListingLibrary.ColFixer.fixColWidth(74,seer.session());
-		final int shortWrap=ListingLibrary.ColFixer.fixColWidth(50,seer.session());
+		final int wrap=CMLib.lister().fixColWidth(74,seer.session());
+		final int shortWrap=CMLib.lister().fixColWidth(50,seer.session());
 		final int headWrap=26;
 
 		long wornCode=0;

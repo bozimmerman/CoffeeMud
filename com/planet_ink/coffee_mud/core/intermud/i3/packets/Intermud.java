@@ -19,23 +19,15 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-/**
- * com.planet_ink.coffee_mud.core.intermud.i3.packets.Intermud
- * Copyright (c) 1996 George Reese
- * This source code may not be modified, copied,
- * redistributed, or used in any fashion without the
- * express written consent of George Reese.
- *
- * This is the TCP/IP interface to version 3 of the
- * Intermud network.
- */
 
 import java.io.*;
 import java.net.Socket;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
@@ -142,16 +134,13 @@ public class Intermud implements Runnable, Persistent, Serializable
 	{
 		if((!isConnected())||(thread.intermud.getLocalChannel(c).length()>0))
 			return "";
-		final CMChannel chan=new CMChannel();
 		String name=c.toUpperCase();
 		final int x=1;
 		while(thread.intermud.getRemoteChannel(name).length()>0)
 			name=c.toUpperCase()+x;
-		chan.name=name;
-		chan.i3name=c;
-		chan.mask="+FAKE";
+		final CMChannel chan=CMLib.channels().createNewChannel(name, c, "", "+FAKE", "", "", new HashSet<ChannelFlag>());
 		if(thread.intermud.addChannel(chan))
-			return chan.name;
+			return chan.name();
 		return "";
 	}
 

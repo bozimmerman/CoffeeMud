@@ -769,8 +769,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			return true;
 		}
 		randomRecipeFix(mob,allRecipes,commands,-1);
-		final int colWidth=ListingLibrary.ColFixer.fixColWidth(20,mob.session());
-		final int lineWidth=ListingLibrary.ColFixer.fixColWidth(78,mob.session());
+		final int colWidth=CMLib.lister().fixColWidth(20,mob.session());
+		final int lineWidth=CMLib.lister().fixColWidth(78,mob.session());
 		if((commands.size()>0)
 		
 		&&(commands.get(0)).equalsIgnoreCase("list"))

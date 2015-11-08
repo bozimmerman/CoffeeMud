@@ -12,7 +12,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary.ColFixer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -64,7 +63,7 @@ public class Top extends StdCommand
 		List<Pair<String,Integer>> set2;
 		List<Pair<String,Integer>> set3;
 		final StringBuilder str=new StringBuilder();
-		final int width=ColFixer.fixColWidth(72, mob)/3;
+		final int width=CMLib.lister().fixColWidth(72, mob)/3;
 		final int nameWidth=width - (width/3)-3;
 		final String slashes=CMStrings.repeat('=', width);
 		for(final TimePeriod period : new TimePeriod[]{TimePeriod.ALLTIME,TimePeriod.MONTH})

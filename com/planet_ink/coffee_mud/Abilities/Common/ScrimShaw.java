@@ -248,8 +248,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				mask="";
 			}
 			final int[] cols={
-					ListingLibrary.ColFixer.fixColWidth(23,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
+					CMLib.lister().fixColWidth(23,mob.session()),
+					CMLib.lister().fixColWidth(3,mob.session())
 				};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Bone required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
 			for(int r=0;r<recipes.size();r++)

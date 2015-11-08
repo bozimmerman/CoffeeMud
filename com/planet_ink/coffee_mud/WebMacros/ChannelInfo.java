@@ -71,21 +71,28 @@ public class ChannelInfo extends StdWebMacro
 				if(parms.containsKey("ID"))
 					str.append(code).append(", ");
 				if(parms.containsKey("NAME"))
-					str.append(C.name).append(", ");
+					str.append(C.name()).append(", ");
 				if(parms.containsKey("COLOROVERRIDE"))
-					str.append(C.colorOverrideStr).append(", ");
+					str.append(C.colorOverrideStr()).append(", ");
 				if(parms.containsKey("I3NAME"))
-					str.append(C.i3name).append(", ");
+					str.append(C.i3name()).append(", ");
 				if(parms.containsKey("IMC2NAME"))
-					str.append(C.imc2Name).append(", ");
+					str.append(C.imc2Name()).append(", ");
 				if(parms.containsKey("MASK"))
-					str.append(C.mask).append(", ");
+					str.append(C.mask()).append(", ");
 				if(parms.containsKey("FLAGSET"))
+				{
 					for(final ChannelsLibrary.ChannelFlag flag : ChannelsLibrary.ChannelFlag.values())
-						httpReq.addFakeUrlParameter("FLAG_"+flag.name(), C.flags.contains(flag)?(parms.containsKey("SELECTED")?"selected":parms.containsKey("CHECKED")?"checked":"on"):"");
+					{
+						httpReq.addFakeUrlParameter("FLAG_"+flag.name(), 
+								C.flags().contains(flag)?(parms.containsKey("SELECTED")?"selected":parms.containsKey("CHECKED")?"checked":"on"):"");
+					}
+				}
 				for(final ChannelsLibrary.ChannelFlag flag : ChannelsLibrary.ChannelFlag.values())
+				{
 					if(parms.containsKey("FLAG_"+flag.name().toUpperCase().trim()))
-						str.append(C.flags.contains(flag)?(parms.containsKey("SELECTED")?"selected":parms.containsKey("CHECKED")?"checked":"on"):"").append(", ");
+						str.append(C.flags().contains(flag)?(parms.containsKey("SELECTED")?"selected":parms.containsKey("CHECKED")?"checked":"on"):"").append(", ");
+				}
 			}
 		}
 		String strstr=str.toString();

@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -49,10 +50,7 @@ public class IMudInterface implements ImudServices, Serializable
 	public String i3state="Development";
 	public Room   universalR=null;
 	public int port=5555;
-	public List<CMChannel> channels=new XVector<CMChannel>(
-			new CMChannel[]{new CMChannel("I3CHAT","diku_chat",""),
-							new CMChannel("I3GOSSIP","diku_immortals",""),
-							new CMChannel("GREET","diku_code","")});
+	public List<CMChannel> channels=new XVector<CMChannel>();
 
 	private static volatile long lastPacketReceivedTime = System.currentTimeMillis();
 
@@ -136,6 +134,13 @@ public class IMudInterface implements ImudServices, Serializable
 			version=Version;
 		if(Channels!=null)
 			channels=Channels;
+		else
+		if(channels.size()==0)
+		{
+			channels.add(CMLib.channels().createNewChannel("I3CHAT", "diku_chat", "", "", "", "", new HashSet<ChannelFlag>()));
+			channels.add(CMLib.channels().createNewChannel("I3GOSSIP", "diku_immortals", "", "", "", "", new HashSet<ChannelFlag>()));
+			channels.add(CMLib.channels().createNewChannel("GREET", "diku_code", "", "", "", "", new HashSet<ChannelFlag>()));
+		}
 		port=Port;
 	}
 
@@ -264,7 +269,7 @@ public class IMudInterface implements ImudServices, Serializable
 				int channelCode=channelInt;
 				if(channelInt >= 0)
 				{
-					channelColor=CMLib.channels().getChannel(channelInt).colorOverride;
+					channelColor=CMLib.channels().getChannel(channelInt).colorOverride();
 				}
 				else
 				{
@@ -627,7 +632,7 @@ public class IMudInterface implements ImudServices, Serializable
 	{
 		final Vector V=new Vector();
 		for(final CMChannel chan : channels)
-			V.addElement(chan.i3name);
+			V.addElement(chan.i3name());
 		return V.elements();
 	}
 
@@ -640,8 +645,8 @@ public class IMudInterface implements ImudServices, Serializable
 	@Override
 	public boolean addChannel(CMChannel chan)
 	{
-		if((getLocalChannel(chan.i3name).length()==0)
-		&&(getRemoteChannel(chan.name).length()==0))
+		if((getLocalChannel(chan.i3name()).length()==0)
+		&&(getRemoteChannel(chan.name()).length()==0))
 		{
 			channels.add(chan);
 			return true;
@@ -659,11 +664,13 @@ public class IMudInterface implements ImudServices, Serializable
 	public boolean delChannel(String remoteChannelName)
 	{
 		for(int i=0;i<channels.size();i++)
-			if(channels.get(i).i3name.equalsIgnoreCase(remoteChannelName))
+		{
+			if(channels.get(i).i3name().equalsIgnoreCase(remoteChannelName))
 			{
 				channels.remove(i);
 				return true;
 			}
+		}
 		return false;
 	}
 
@@ -682,8 +689,10 @@ public class IMudInterface implements ImudServices, Serializable
 	public String getLocalChannel(String str)
 	{
 		for(final CMChannel chan : channels)
-			if(chan.i3name.equalsIgnoreCase(str))
-				return chan.name;
+		{
+			if(chan.i3name().equalsIgnoreCase(str))
+				return chan.name();
+		}
 		return "";
 	}
 
@@ -701,8 +710,10 @@ public class IMudInterface implements ImudServices, Serializable
 	public String getLocalMask(String str)
 	{
 		for(final CMChannel chan : channels)
-			if(chan.name.equalsIgnoreCase(str))
-				return chan.mask;
+		{
+			if(chan.name().equalsIgnoreCase(str))
+				return chan.mask();
+		}
 		return "";
 	}
 
@@ -757,8 +768,10 @@ public class IMudInterface implements ImudServices, Serializable
 	public String getRemoteMask(String str)
 	{
 		for(final CMChannel chan : channels)
-			if(chan.i3name.equalsIgnoreCase(str))
-				return chan.mask;
+		{
+			if(chan.i3name().equalsIgnoreCase(str))
+				return chan.mask();
+		}
 		return "";
 	}
 
@@ -776,8 +789,10 @@ public class IMudInterface implements ImudServices, Serializable
 	public String getRemoteChannel(String str)
 	{
 		for(final CMChannel chan : channels)
-			if(chan.name.equalsIgnoreCase(str))
-				return chan.i3name;
+		{
+			if(chan.name().equalsIgnoreCase(str))
+				return chan.i3name();
+		}
 		return "";
 	}
 }

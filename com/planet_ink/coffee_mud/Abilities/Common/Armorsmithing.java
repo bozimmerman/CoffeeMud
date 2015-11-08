@@ -270,9 +270,9 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			}
 			final StringBuffer buf=new StringBuffer("");
 			final int[] cols={
-					ListingLibrary.ColFixer.fixColWidth(29,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
+					CMLib.lister().fixColWidth(29,mob.session()),
+					CMLib.lister().fixColWidth(3,mob.session()),
+					CMLib.lister().fixColWidth(3,mob.session())
 				};
 			int toggler=1;
 			final int toggleTop=2;

@@ -2636,11 +2636,11 @@ public class CMClass extends ClassLoader
 						int loaded=0;
 						for(final DatabaseEngine.AckRecord rec : genAbilities)
 						{
-							String type=rec.typeClass;
+							String type=rec.typeClass();
 							if((type==null)||(type.trim().length()==0))
 								type="GenAbility";
 							final Ability A=(Ability)(CMClass.getAbility(type).copyOf());
-							A.setStat("ALLXML",rec.data);
+							A.setStat("ALLXML",rec.data());
 							if((!A.ID().equals("GenAbility"))&&(!A.ID().equals(type)))
 							{
 								c.abilities.addElement(A);
@@ -2776,7 +2776,7 @@ public class CMClass extends ClassLoader
 				for(int r=0;r<genRaces.size();r++)
 				{
 					final Race GR=(Race)getRace("GenRace").copyOf();
-					GR.setRacialParms(genRaces.get(r).data);
+					GR.setRacialParms(genRaces.get(r).data());
 					if(!GR.ID().equals("GenRace"))
 					{
 						addRace(GR);
@@ -2796,7 +2796,7 @@ public class CMClass extends ClassLoader
 				for(int r=0;r<genClasses.size();r++)
 				{
 					final CharClass CR=(CharClass)(CMClass.getCharClass("GenCharClass").copyOf());
-					CR.setClassParms(genClasses.get(r).data);
+					CR.setClassParms(genClasses.get(r).data());
 					if(!CR.ID().equals("GenCharClass"))
 					{
 						addCharClass(CR);

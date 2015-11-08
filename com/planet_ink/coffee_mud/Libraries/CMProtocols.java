@@ -2146,7 +2146,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									{
 										ChannelsLibrary.CMChannel channel=CMLib.channels().getChannel(i);
 										if(CMLib.channels().mayReadThisChannel(mob, true, M, i, false))
-											doc.append("\"").append(MiniJSON.toJSONString(channel.name.toLowerCase())).append("\",");
+											doc.append("\"").append(MiniJSON.toJSONString(channel.name().toLowerCase())).append("\",");
 									}
 									if(doc.charAt(doc.length()-1)==',')
 										doc.deleteCharAt(doc.length()-1);

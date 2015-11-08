@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -113,7 +114,7 @@ public interface GridLocale extends Room, GridZones
 	 * @see GridLocale#delOuterExit(com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit)
 	 * @return an iterator of cross ("outer") exits.
 	 */
-	public Iterator<WorldMap.CrossExit> outerExits();
+	public Iterator<CrossExit> outerExits();
 
 	/**
 	 * Normally the grid-child rooms can only exit to each other, or to
@@ -126,7 +127,7 @@ public interface GridLocale extends Room, GridZones
 	 * @see GridLocale#delOuterExit(com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit)
 	 * @param x the new cross ("outer") exit
 	 */
-	public void addOuterExit(WorldMap.CrossExit x);
+	public void addOuterExit(CrossExit x);
 
 	/**
 	 * Normally the grid-child rooms can only exit to each other, or to
@@ -139,5 +140,24 @@ public interface GridLocale extends Room, GridZones
 	 * @see GridLocale#addOuterExit(com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit)
 	 * @param x the existing cross ("outer") exit to delete
 	 */
-	public void delOuterExit(WorldMap.CrossExit x);
+	public void delOuterExit(CrossExit x);
+	
+	public static class CrossExit
+	{
+		public int x;
+		public int y;
+		public int dir;
+		public String destRoomID="";
+		public boolean out=false;
+		public static CrossExit make(int xx, int xy, int xdir, String xdestRoomID, boolean xout)
+		{
+			final CrossExit EX = new CrossExit();
+			EX.x = xx;
+			EX.y = xy;
+			EX.dir = xdir;
+			EX.destRoomID = xdestRoomID;
+			EX.out = xout;
+			return EX;
+		}
+	}
 }

@@ -187,83 +187,327 @@ public class VFShell
 					protected OutputStream bout=System.out;
 					protected MOB mob = fakeMob;
 
-					@Override public String ID(){return "FakeSession";}
-					@Override public String name() { return ID();}
-					@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new FakeSession();}}
-					@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
-					@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-					@Override public void initializeSession(Socket s, String groupName, String introTextStr){}
-					@Override public String getGroupName() { return Thread.currentThread().getThreadGroup().getName(); }
-					@Override public void setGroupName(String group) {}
-					@Override public long getStartTime(){ return 0; }
-					@Override public int getGroupID() { return Thread.currentThread().getThreadGroup().getName().charAt(0); }
-					@Override public boolean isLockedUpWriting(){return false;}
-					@Override public void initializeClass(){}
-					@Override public void run(){}
-					@Override public boolean isRunning() { return false;}
-					@Override public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj){return false;}
-					@Override public void logout(boolean b1){}
-					@Override public String getTerminalType(){ return "Fake";}
-					@Override public void negotiateTelnetMode(int code){}
-					@Override public boolean isAllowedMxp(String tag) { return false; }
-					@Override public boolean isFake() { return false;}
-					@Override public void setIdleTimers(){}
-					@Override public void sendGMCPEvent(final String eventName, final String json){}
-					@Override public void setFakeInput(String input){ }
-					@Override public boolean isAllowedMcp(String packageName, float version) { return false; }
-					@Override public boolean sendMcpCommand(String packageCommand, String parms) { return false; }
+					@Override
+					public String ID()
+					{
+						return "FakeSession";
+					}
 
-					@Override public String[] getColorCodes(){return new String[255];}
+					@Override
+					public String name()
+					{
+						return ID();
+					}
+
+					@Override
+					public CMObject newInstance()
+					{
+						try
+						{
+							return getClass().newInstance();
+						}
+						catch (final Exception e)
+						{
+							return new FakeSession();
+						}
+					}
+
+					@Override
+					public CMObject copyOf()
+					{
+						try
+						{
+							return (CMObject) this.clone();
+						}
+						catch (final Exception e)
+						{
+							return newInstance();
+						}
+					}
+
+					@Override
+					public int compareTo(CMObject o)
+					{
+						return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+					}
+
+					@Override
+					public void initializeSession(Socket s, String groupName, String introTextStr)
+					{
+					}
+
+					@Override
+					public String getGroupName()
+					{
+						return Thread.currentThread().getThreadGroup().getName();
+					}
+
+					@Override
+					public void setGroupName(String group)
+					{
+					}
+
+					@Override
+					public long getStartTime()
+					{
+						return 0;
+					}
+
+					@Override
+					public int getGroupID()
+					{
+						return Thread.currentThread().getThreadGroup().getName().charAt(0);
+					}
+
+					@Override
+					public boolean isLockedUpWriting()
+					{
+						return false;
+					}
+
+					@Override
+					public void initializeClass()
+					{
+					}
+
+					@Override
+					public void run()
+					{
+					}
+
+					@Override
+					public boolean isRunning()
+					{
+						return false;
+					}
+
+					@Override
+					public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj)
+					{
+						return false;
+					}
+
+					@Override
+					public void logout(boolean b1)
+					{
+					}
+
+					@Override
+					public String getTerminalType()
+					{
+						return "Fake";
+					}
+
+					@Override
+					public void negotiateTelnetMode(int code)
+					{
+					}
+
+					@Override
+					public boolean isAllowedMxp(String tag)
+					{
+						return false;
+					}
+
+					@Override
+					public boolean isFake()
+					{
+						return false;
+					}
+
+					@Override
+					public void setIdleTimers()
+					{
+					}
+
+					@Override
+					public void sendGMCPEvent(final String eventName, final String json)
+					{
+					}
+
+					@Override
+					public void setFakeInput(String input)
+					{
+					}
+
+					@Override
+					public boolean isAllowedMcp(String packageName, float version)
+					{
+						return false;
+					}
+
+					@Override
+					public boolean sendMcpCommand(String packageCommand, String parms)
+					{
+						return false;
+					}
+
+					@Override
+					public String[] getColorCodes()
+					{
+						return new String[255];
+					}
 
 					@Override
 					public void onlyPrint(String msg, boolean noCache)
 					{
-						if(bout != null)
+						if (bout != null)
 						{
-							synchronized(bout)
+							synchronized (bout)
 							{
 								try
 								{
-									bout.write(CMStrings.replaceAll(CMStrings.removeColors(msg),"\n\r","\n").getBytes());
+									bout.write(CMStrings.replaceAll(CMStrings.removeColors(msg), "\n\r", "\n").getBytes());
 								}
-								catch(final Exception e)
+								catch (final Exception e)
 								{
-									Log.errOut("FakeSession",e);
+									Log.errOut("FakeSession", e);
 								}
 							}
 						}
 					}
-					@Override public void onlyPrint(String msg){ onlyPrint(msg,false); }
-					@Override public void rawOut(String msg){ onlyPrint(msg,false); }
-					@Override public void rawPrintln(String msg){ onlyPrint(msg+"\n",false); }
-					@Override public void rawPrint(String msg){ onlyPrint(msg,false); }
-					@Override public void stdPrint(String msg){ onlyPrint(msg,false); }
-					@Override public void stdPrint(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
-					@Override public void stdPrintln(String msg){ onlyPrint(msg+"\n",false); }
-					@Override public void stdPrintln(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
-					@Override public void rawCharsOut(char[] c){ onlyPrint(new String(c),false); }
-					@Override public void print(String msg){ onlyPrint(msg,false); }
-					@Override public void promptPrint(String msg) { onlyPrint(msg,false); }
-					@Override public void print(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
-					@Override public void println(String msg){ onlyPrint(msg+"\n",false); }
-					@Override public void println(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
-					@Override public void wraplessPrintln(String msg){ onlyPrint(msg+"\n",false); }
-					@Override public void wraplessPrint(String msg){ onlyPrint(msg,false); }
-					@Override public void colorOnlyPrintln(String msg, boolean noCache){ onlyPrint(msg+"\n",false); }
-					@Override public void colorOnlyPrint(String msg, boolean noCache){ onlyPrint(msg,false); }
-					@Override public void colorOnlyPrintln(String msg){ onlyPrint(msg+"\n",false); }
-					@Override public void colorOnlyPrint(String msg){ onlyPrint(msg,false); }
-					@Override public void setPromptFlag(boolean truefalse){}
 
-					@Override public char hotkey(long maxWait) {return ' ';}
 					@Override
-					public String prompt(String Message, String Default) {
-						onlyPrint(Message,false);
-						final String msg  = readlineContinue();
-						if(msg.length()==0)
+					public void onlyPrint(String msg)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
+					public void rawOut(String msg)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
+					public void rawPrintln(String msg)
+					{
+						onlyPrint(msg + "\n", false);
+					}
+
+					@Override
+					public void rawPrint(String msg)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
+					public void stdPrint(String msg)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
+					public void stdPrint(Physical Source, Environmental Target, Environmental Tool, String msg)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
+					public void stdPrintln(String msg)
+					{
+						onlyPrint(msg + "\n", false);
+					}
+
+					@Override
+					public void stdPrintln(Physical Source, Environmental Target, Environmental Tool, String msg)
+					{
+						onlyPrint(msg + "\n", false);
+					}
+
+					@Override
+					public void rawCharsOut(char[] c)
+					{
+						onlyPrint(new String(c), false);
+					}
+
+					@Override
+					public void print(String msg)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
+					public void promptPrint(String msg)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
+					public void print(Physical Source, Environmental Target, Environmental Tool, String msg)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
+					public void println(String msg)
+					{
+						onlyPrint(msg + "\n", false);
+					}
+
+					@Override
+					public void println(Physical Source, Environmental Target, Environmental Tool, String msg)
+					{
+						onlyPrint(msg + "\n", false);
+					}
+
+					@Override
+					public void wraplessPrintln(String msg)
+					{
+						onlyPrint(msg + "\n", false);
+					}
+
+					@Override
+					public void wraplessPrint(String msg)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
+					public void colorOnlyPrintln(String msg, boolean noCache)
+					{
+						onlyPrint(msg + "\n", false);
+					}
+
+					@Override
+					public void colorOnlyPrint(String msg, boolean noCache)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
+					public void colorOnlyPrintln(String msg)
+					{
+						onlyPrint(msg + "\n", false);
+					}
+
+					@Override
+					public void colorOnlyPrint(String msg)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
+					public void setPromptFlag(boolean truefalse)
+					{
+					}
+
+					@Override
+					public char hotkey(long maxWait)
+					{
+						return ' ';
+					}
+
+					@Override
+					public String prompt(String Message, String Default)
+					{
+						onlyPrint(Message, false);
+						final String msg = readlineContinue();
+						if (msg.length() == 0)
 							return Default;
 						return msg;
 					}
+
 					@Override
 					public void prompt(InputCallback callBack)
 					{
@@ -271,33 +515,70 @@ public class VFShell
 						callBack.setInput(readlineContinue());
 						callBack.callBack();
 					}
-					@Override public String prompt(String Message, String Default, long maxTime) { return prompt(Message,Default);}
-					@Override public String prompt(String Message) { return prompt(Message,"");}
-					@Override public String prompt(String Message, long maxTime) { return prompt(Message,"");}
+
+					@Override
+					public String prompt(String Message, String Default, long maxTime)
+					{
+						return prompt(Message, Default);
+					}
+
+					@Override
+					public String prompt(String Message)
+					{
+						return prompt(Message, "");
+					}
+
+					@Override
+					public String prompt(String Message, long maxTime)
+					{
+						return prompt(Message, "");
+					}
+
 					@Override
 					public boolean confirm(String Message, String Default)
 					{
-						if(Default.toUpperCase().startsWith("T"))
-							Default="Y";
-						final String YN=choose(Message,"YN",Default,0);
-						return(YN.equals("Y"))?true:false;
+						if (Default.toUpperCase().startsWith("T"))
+							Default = "Y";
+						final String YN = choose(Message, "YN", Default, 0);
+						return (YN.equals("Y")) ? true : false;
 					}
-					@Override public boolean confirm(String Message, String Default, long maxTime) { return confirm(Message,Default,0);}
+
 					@Override
-					public String choose(String Message, String Choices, String Default) {
-						onlyPrint(Message,false);
-						final String msg  = readlineContinue();
-						if(msg.length()==0)
+					public boolean confirm(String Message, String Default, long maxTime)
+					{
+						return confirm(Message, Default, 0);
+					}
+
+					@Override
+					public String choose(String Message, String Choices, String Default)
+					{
+						onlyPrint(Message, false);
+						final String msg = readlineContinue();
+						if (msg.length() == 0)
 							return Default;
-						if(Choices.toUpperCase().indexOf(msg.toUpperCase().trim())>=0)
+						if (Choices.toUpperCase().indexOf(msg.toUpperCase().trim()) >= 0)
 							return msg.toUpperCase().trim();
 						return Default;
 					}
+
 					@Override
-					public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut)
-					throws IOException { return choose(Message,Choices,Default);}
-					@Override public String choose(String Message, String Choices, String Default, long maxTime) { return choose(Message,Choices,Default);}
-					@Override public String blockingIn(long timeoutMillis, boolean filter) { return readlineContinue();}
+					public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut) throws IOException
+					{
+						return choose(Message, Choices, Default);
+					}
+
+					@Override
+					public String choose(String Message, String Choices, String Default, long maxTime)
+					{
+						return choose(Message, Choices, Default);
+					}
+
+					@Override
+					public String blockingIn(long timeoutMillis, boolean filter)
+					{
+						return readlineContinue();
+					}
+
 					@Override
 					public String readlineContinue()
 					{
@@ -305,64 +586,266 @@ public class VFShell
 						{
 							return new BufferedReader(new InputStreamReader(System.in)).readLine();
 						}
-						catch(Exception e)
+						catch (Exception e)
 						{
 							System.exit(-1);
 							return "";
 						}
 					}
 
-					@Override public void setBeingSnoopedBy(Session session, boolean onOff){}
-					@Override public boolean isBeingSnoopedBy(Session S){return S==this;}
-					@Override public int snoopSuspension(int x){return 0;}
+					@Override
+					public void setBeingSnoopedBy(Session session, boolean onOff)
+					{
+					}
 
-					@Override public void stopSession(boolean t1, boolean t2, boolean t3){}
-					@Override public boolean isStopped(){return false;}
+					@Override
+					public boolean isBeingSnoopedBy(Session S)
+					{
+						return S == this;
+					}
 
-					@Override public boolean isAfk(){return false;}
-					@Override public void setAfkFlag(boolean truefalse){}
-					@Override public String getAfkMessage(){return ""; }
-					@Override public void setAFKMessage(String str){}
+					@Override
+					public int snoopSuspension(int x)
+					{
+						return 0;
+					}
 
-					@Override public List<String> getPreviousCMD() { return new Vector<String>();}
-					@Override public MOB mob() { return mob;}
-					@Override public void setMob(MOB newmob){ mob=newmob;}
-					@Override public void setAccount(PlayerAccount account){}
+					@Override
+					public void stopSession(boolean t1, boolean t2, boolean t3)
+					{
+					}
 
-					@Override public void setCurrentColor(ColorState newcolor){}
-					@Override public void setLastColor(ColorState newColor){}
-					@Override public ColorState getCurrentColor(){return ColorLibrary.COLORSTATE_NORMAL;}
-					@Override public ColorState getLastColor(){return ColorLibrary.COLORSTATE_NORMAL;}
-					@Override public int getWrap(){return 80;}
+					@Override
+					public boolean isStopped()
+					{
+						return false;
+					}
 
-					@Override public String getAddress(){return "";}
-					@Override public SessionStatus getStatus(){return SessionStatus.MAINLOOP;}
-					@Override public void setStatus(SessionStatus newStatus){}
-					@Override public boolean isWaitingForInput() { return false; }
-					@Override public long getTotalMillis(){return 0;}
-					@Override public long getTotalTicks(){return 0;}
-					@Override public long getIdleMillis(){return 0;}
-					@Override public long getMillisOnline(){return 0;}
-					@Override public long getLastPKFight(){return 0;}
-					@Override public void setLastPKFight(){}
-					@Override public long getLastNPCFight(){return 0;}
-					@Override public void setLastNPCFight(){}
-					@Override public long getInputLoopTime(){return 0;}
-					@Override public void setInputLoopTime(){}
-					@Override public List<String> getLastMsgs(){return new Vector<String>();}
+					@Override
+					public boolean isAfk()
+					{
+						return false;
+					}
 
-					@Override public void setServerTelnetMode(int telnetCode, boolean onOff){}
-					@Override public boolean getServerTelnetMode(int telnetCode){return false;}
-					@Override public void setClientTelnetMode(int telnetCode, boolean onOff){}
-					@Override public boolean getClientTelnetMode(int telnetCode){return false;}
-					@Override public void changeTelnetMode(int telnetCode, boolean onOff){}
-					@Override public void initTelnetMode(int mobbitmap){}
-					@Override public int getSaveStatIndex() { return 0;}
-					@Override public String getStat(String code) { return null;}
-					@Override public String[] getStatCodes() { return new String[0];}
-					@Override public boolean isStat(String code) { return false;}
-					@Override public void setStat(String code, String val){}
-						@Override public long activeTimeMillis() { return 0;}
+					@Override
+					public void setAfkFlag(boolean truefalse)
+					{
+					}
+
+					@Override
+					public String getAfkMessage()
+					{
+						return "";
+					}
+
+					@Override
+					public void setAFKMessage(String str)
+					{
+					}
+
+					@Override
+					public List<String> getPreviousCMD()
+					{
+						return new Vector<String>();
+					}
+
+					@Override
+					public MOB mob()
+					{
+						return mob;
+					}
+
+					@Override
+					public void setMob(MOB newmob)
+					{
+						mob = newmob;
+					}
+
+					@Override
+					public void setAccount(PlayerAccount account)
+					{
+					}
+
+					@Override
+					public void setCurrentColor(ColorState newcolor)
+					{
+					}
+
+					@Override
+					public void setLastColor(ColorState newColor)
+					{
+					}
+
+					@Override
+					public ColorState getCurrentColor()
+					{
+						return CMLib.color().getNormalColor();
+					}
+
+					@Override
+					public ColorState getLastColor()
+					{
+						return CMLib.color().getNormalColor();
+					}
+
+					@Override
+					public int getWrap()
+					{
+						return 80;
+					}
+
+					@Override
+					public String getAddress()
+					{
+						return "";
+					}
+
+					@Override
+					public SessionStatus getStatus()
+					{
+						return SessionStatus.MAINLOOP;
+					}
+
+					@Override
+					public void setStatus(SessionStatus newStatus)
+					{
+					}
+
+					@Override
+					public boolean isWaitingForInput()
+					{
+						return false;
+					}
+
+					@Override
+					public long getTotalMillis()
+					{
+						return 0;
+					}
+
+					@Override
+					public long getTotalTicks()
+					{
+						return 0;
+					}
+
+					@Override
+					public long getIdleMillis()
+					{
+						return 0;
+					}
+
+					@Override
+					public long getMillisOnline()
+					{
+						return 0;
+					}
+
+					@Override
+					public long getLastPKFight()
+					{
+						return 0;
+					}
+
+					@Override
+					public void setLastPKFight()
+					{
+					}
+
+					@Override
+					public long getLastNPCFight()
+					{
+						return 0;
+					}
+
+					@Override
+					public void setLastNPCFight()
+					{
+					}
+
+					@Override
+					public long getInputLoopTime()
+					{
+						return 0;
+					}
+
+					@Override
+					public void setInputLoopTime()
+					{
+					}
+
+					@Override
+					public List<String> getLastMsgs()
+					{
+						return new Vector<String>();
+					}
+
+					@Override
+					public void setServerTelnetMode(int telnetCode, boolean onOff)
+					{
+					}
+
+					@Override
+					public boolean getServerTelnetMode(int telnetCode)
+					{
+						return false;
+					}
+
+					@Override
+					public void setClientTelnetMode(int telnetCode, boolean onOff)
+					{
+					}
+
+					@Override
+					public boolean getClientTelnetMode(int telnetCode)
+					{
+						return false;
+					}
+
+					@Override
+					public void changeTelnetMode(int telnetCode, boolean onOff)
+					{
+					}
+
+					@Override
+					public void initTelnetMode(int mobbitmap)
+					{
+					}
+
+					@Override
+					public int getSaveStatIndex()
+					{
+						return 0;
+					}
+
+					@Override
+					public String getStat(String code)
+					{
+						return null;
+					}
+
+					@Override
+					public String[] getStatCodes()
+					{
+						return new String[0];
+					}
+
+					@Override
+					public boolean isStat(String code)
+					{
+						return false;
+					}
+
+					@Override
+					public void setStat(String code, String val)
+					{
+					}
+
+					@Override
+					public long activeTimeMillis()
+					{
+						return 0;
+					}
 				};
 				fakeMob.setSession(session);
 				fakeMob.setSoulMate(fakeMob);

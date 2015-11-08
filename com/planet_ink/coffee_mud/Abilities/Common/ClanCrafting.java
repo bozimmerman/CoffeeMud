@@ -187,12 +187,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		String startStr=null;
 		int duration=4;
 		final int[] cols={
-				ListingLibrary.ColFixer.fixColWidth(24,mob.session()),
-				ListingLibrary.ColFixer.fixColWidth(9,mob.session()),
-				ListingLibrary.ColFixer.fixColWidth(14,mob.session()),
-				ListingLibrary.ColFixer.fixColWidth(4,mob.session()),
-				ListingLibrary.ColFixer.fixColWidth(14,mob.session()),
-				ListingLibrary.ColFixer.fixColWidth(4,mob.session())
+				CMLib.lister().fixColWidth(24,mob.session()),
+				CMLib.lister().fixColWidth(9,mob.session()),
+				CMLib.lister().fixColWidth(14,mob.session()),
+				CMLib.lister().fixColWidth(4,mob.session()),
+				CMLib.lister().fixColWidth(14,mob.session()),
+				CMLib.lister().fixColWidth(4,mob.session())
 			};
 		if(str.equalsIgnoreCase("list"))
 		{

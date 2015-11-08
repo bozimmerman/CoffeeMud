@@ -265,9 +265,9 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		int duration=4;
 		bundling=false;
 		final int[] cols={
-			ListingLibrary.ColFixer.fixColWidth(29,mob.session()),
-			ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
-			ListingLibrary.ColFixer.fixColWidth(4,mob.session())
+			CMLib.lister().fixColWidth(29,mob.session()),
+			CMLib.lister().fixColWidth(3,mob.session()),
+			CMLib.lister().fixColWidth(4,mob.session())
 		};
 		if(str.equalsIgnoreCase("list"))
 		{

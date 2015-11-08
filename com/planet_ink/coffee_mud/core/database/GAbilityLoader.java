@@ -52,7 +52,32 @@ public class GAbilityLoader
 			D=DB.DBFetch();
 			final ResultSet R=D.query("SELECT * FROM CMGAAC");
 			while(R.next())
-				rows.addElement(new DatabaseEngine.AckRecord(DBConnections.getRes(R,"CMGAID"), DBConnections.getRes(R,"CMGAAT"), DBConnections.getRes(R,"CMGACL")));
+			{
+				final String gaid = DBConnections.getRes(R,"CMGAID");
+				final String gaat = DBConnections.getRes(R,"CMGAAT");
+				String gaac = DBConnections.getRes(R,"CMGACL");
+				final String finalGaac = (gaac == null) || (gaac.length()==0) ? "GenAbility" : gaac;
+				rows.addElement(new DatabaseEngine.AckRecord()
+				{
+					@Override
+					public String ID()
+					{
+						return gaid;
+					}
+
+					@Override
+					public String data()
+					{
+						return gaat;
+					}
+
+					@Override
+					public String typeClass()
+					{
+						return finalGaac;
+					}
+				});
+			}
 		}
 		catch(final Exception sqle)
 		{

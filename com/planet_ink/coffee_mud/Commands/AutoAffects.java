@@ -53,7 +53,7 @@ public class AutoAffects extends StdCommand
 	{
 		final StringBuffer msg=new StringBuffer("");
 		final int NUM_COLS=2;
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerMOB);
+		final int COL_LEN=CMLib.lister().fixColWidth(25.0,viewerMOB);
 		int colnum=NUM_COLS;
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{

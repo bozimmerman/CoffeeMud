@@ -267,9 +267,9 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			int toggler=1;
 			final int toggleTop=2;
 			final int[] cols={
-					ListingLibrary.ColFixer.fixColWidth(28,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(5,mob.session())
+					CMLib.lister().fixColWidth(28,mob.session()),
+					CMLib.lister().fixColWidth(3,mob.session()),
+					CMLib.lister().fixColWidth(5,mob.session())
 				};
 			for(int r=0;r<toggleTop;r++)
 				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Cloth"),cols[2]));

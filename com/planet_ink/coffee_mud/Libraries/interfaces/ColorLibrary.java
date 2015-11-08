@@ -213,45 +213,12 @@ public interface ColorLibrary extends CMLibrary
 	public static final String COLOR_FR0G3B5="\033[38;5;"+(16+(0*36)+(3*6)+5)+"m";
 	public static final String COLOR_BR0G3B5="\033[48;5;"+(16+(0*36)+(3*6)+5)+"m";
 
-	public static class ColorState
+	public interface ColorState
 	{
-		public final char foregroundCode;
-		public final char backgroundCode;
-		private final static Map<Integer,ColorState> cache=new SHashtable<Integer,ColorState>();
-
-		public ColorState(final char fg, final char bg)
-		{
-			foregroundCode=fg;
-			backgroundCode=bg;
-		}
-
-		@Override
-		public boolean equals(Object cs)
-		{
-			if(!(cs instanceof ColorState))
-				return false;
-			return (((ColorState)cs).foregroundCode == foregroundCode)
-				&& (((ColorState)cs).backgroundCode == backgroundCode);
-		}
-
-		@Override
-		public int hashCode()
-		{
-			return (backgroundCode * 65536) + foregroundCode;
-		}
-
-		public static final ColorState valueOf(final char fg, final char bg)
-		{
-			final Integer keyI=Integer.valueOf((bg * 65536) + fg);
-			if(cache.containsKey(keyI))
-				return cache.get(keyI);
-			final ColorState newColorState = new ColorState(fg,bg);
-			cache.put(keyI,newColorState);
-			return newColorState;
-		}
+		public char foregroundCode();
+		public char backgroundCode();
 	}
-	public static final ColorState COLORSTATE_NORMAL=ColorState.valueOf('N','.');
-
+	
 	public void clearLookups();
 	public int translateSingleCMCodeToANSIOffSet(String code);
 	public String translateCMCodeToANSI(String code);
@@ -261,5 +228,6 @@ public interface ColorLibrary extends CMLibrary
 	public CMMsg fixSourceFightColor(CMMsg msg);
 	public String[] standardHTMLlookups();
 	public String[] standardColorLookups();
-
+	public ColorState valueOf(final char fg, final char bg);
+	public ColorState getNormalColor();
 }

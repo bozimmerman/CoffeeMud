@@ -36,7 +36,14 @@ import java.util.*;
 public class CoffeeFilter extends StdLibrary implements TelnetFilter
 {
 	@Override public String ID(){return "CoffeeFilter";}
-	public Hashtable<String,Pronoun> tagTable=null;
+	private Hashtable<String,Pronoun> tagTable=null;
+	private ColorState normalColor = null;
+
+	@Override
+	public void initializeClass()
+	{
+		normalColor = CMLib.color().getNormalColor();
+	}
 
 	@Override
 	public Map<String, Pronoun> getTagTable()
@@ -324,23 +331,23 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			{
 				ColorState lastColor=S.getLastColor();
 				final ColorState currColor=S.getCurrentColor();
-				if((lastColor.foregroundCode==currColor.foregroundCode)
-				&&(lastColor.backgroundCode==currColor.backgroundCode))
-					lastColor=ColorLibrary.COLORSTATE_NORMAL;
+				if((lastColor.foregroundCode()==currColor.foregroundCode())
+				&&(lastColor.backgroundCode()==currColor.backgroundCode()))
+					lastColor=normalColor;
 				final String[] clookup = S.getColorCodes();
 				String escapeSequence;
-				if(lastColor.foregroundCode < 256)
-					escapeSequence=clookup[lastColor.foregroundCode];
+				if(lastColor.foregroundCode() < 256)
+					escapeSequence=clookup[lastColor.foregroundCode()];
 				else
-					escapeSequence="\033[38;5;"+(lastColor.foregroundCode & 0xff)+"m";
-				if(lastColor.backgroundCode=='.')
+					escapeSequence="\033[38;5;"+(lastColor.foregroundCode() & 0xff)+"m";
+				if(lastColor.backgroundCode()=='.')
 					escapeSequence=ColorLibrary.COLOR_NONE+escapeSequence;
 				else
 				{
 					String bgEscapeSequence;
-					if(lastColor.backgroundCode < 256)
+					if(lastColor.backgroundCode() < 256)
 					{
-						bgEscapeSequence=clookup[lastColor.backgroundCode];
+						bgEscapeSequence=clookup[lastColor.backgroundCode()];
 						if(bgEscapeSequence==null)
 							bgEscapeSequence=ColorLibrary.COLOR_BGBLACK;
 						else
@@ -348,7 +355,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							bgEscapeSequence=ColorLibrary.MAP_COLOR_TO_BGCOLOR.get(bgEscapeSequence);
 					}
 					else
-						bgEscapeSequence="\033[48;5;"+(lastColor.backgroundCode & 0xff)+"m";
+						bgEscapeSequence="\033[48;5;"+(lastColor.backgroundCode() & 0xff)+"m";
 					escapeSequence+=bgEscapeSequence;
 				}
 				S.setLastColor(S.getCurrentColor());
@@ -401,7 +408,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				if(isFg)
 				{
 					escapeSequence="\033[38;5;"+finalNum+"m";
-					if((S!=null)&&(S.getCurrentColor().backgroundCode!='.'))
+					if((S!=null)&&(S.getCurrentColor().backgroundCode()!='.'))
 						escapeSequence=ColorLibrary.COLOR_NONE+escapeSequence;
 				}
 				else
@@ -413,11 +420,11 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					if(isFg)
 					{
 						S.setLastColor(S.getCurrentColor());
-						S.setCurrentColor(ColorState.valueOf((char)(256 | finalNum), '.'));
+						S.setCurrentColor(CMLib.color().valueOf((char)(256 | finalNum), '.'));
 					}
 					else
 					{
-						S.setCurrentColor(ColorState.valueOf(S.getCurrentColor().foregroundCode, (char)(256 | finalNum)));
+						S.setCurrentColor(CMLib.color().valueOf(S.getCurrentColor().foregroundCode(), (char)(256 | finalNum)));
 					}
 				}
 				return index+escapeSequence.length()-1;
@@ -444,7 +451,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				if(S!=null)
 				{
 					final ColorState curColor=S.getCurrentColor();
-					S.setCurrentColor(ColorState.valueOf(curColor.foregroundCode, bc));
+					S.setCurrentColor(CMLib.color().valueOf(curColor.foregroundCode(), bc));
 				}
 				return index+bgEscapeSequence.length()-1;
 			}
@@ -566,10 +573,10 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				if((S!=null)&&(escapeSequence.length()>0)&&(escapeSequence.charAt(0)=='\033'))
 				{
 					final ColorState state=S.getCurrentColor();
-					if(state.backgroundCode!='.')
+					if(state.backgroundCode()!='.')
 						escapeSequence=ColorLibrary.COLOR_NONE+escapeSequence;
 					S.setLastColor(state);
-					S.setCurrentColor(ColorState.valueOf(c,'.'));
+					S.setCurrentColor(CMLib.color().valueOf(c,'.'));
 				}
 				str.insert(index+2, escapeSequence);
 				str.delete(index, index+2);
@@ -658,12 +665,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		}
 
 		if ((S!=null)
-		&&(!ColorLibrary.COLORSTATE_NORMAL.equals(S.getCurrentColor()))
+		&&(!normalColor.equals(S.getCurrentColor()))
 		&&(S.getClientTelnetMode(Session.TELNET_ANSI)))
 		{
 			buf.append(S.getColorCodes()['N']);
 			S.setLastColor(S.getCurrentColor());
-			S.setCurrentColor(ColorLibrary.COLORSTATE_NORMAL);
+			S.setCurrentColor(normalColor);
 		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.OUTPUT))
 			Log.debugOut("CoffeeFilter","OUTPUT: "+(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+": "+buf.toString());
@@ -1325,12 +1332,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		if(firstAlpha<buf.length())
 			buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
 		if((S!=null)
-		&&(!ColorLibrary.COLORSTATE_NORMAL.equals(S.getCurrentColor()))
+		&&(!normalColor.equals(S.getCurrentColor()))
 		&&(S.getClientTelnetMode(Session.TELNET_ANSI)))
 		{
 			buf.append(S.getColorCodes()['N']);
 			S.setLastColor(S.getCurrentColor());
-			S.setCurrentColor(ColorLibrary.COLORSTATE_NORMAL);
+			S.setCurrentColor(normalColor);
 		}
 
 		/* fabulous debug code

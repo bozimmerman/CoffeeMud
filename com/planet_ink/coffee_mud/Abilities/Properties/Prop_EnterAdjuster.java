@@ -39,7 +39,7 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 	@Override public String ID() { return "Prop_EnterAdjuster"; }
 	@Override public String name(){ return "Room entering adjuster";}
 	@Override protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	protected MaskingLibrary.CompiledZapperMask mask=MaskingLibrary.CompiledZapperMask.EMPTY();
+	protected MaskingLibrary.CompiledZapperMask mask=CMLib.masking().createEmptyMask();
 	protected String[] parameters=new String[]{"",""};
 
 	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
@@ -56,7 +56,7 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 		super.setMiscText(newText);
 		parameters=CMLib.masking().separateMaskStrs(text());
 		if(parameters[1].trim().length()==0)
-			mask=MaskingLibrary.CompiledZapperMask.EMPTY();
+			mask=CMLib.masking().createEmptyMask();
 		else
 			mask=CMLib.masking().getPreCompiledMask(parameters[1]);
 	}

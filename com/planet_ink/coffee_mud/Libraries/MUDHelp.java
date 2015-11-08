@@ -297,14 +297,14 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				final MoneyLibrary.MoneyDenomination denoms[]=CMLib.beanCounter().getCurrencySet(currency);
 				for (final MoneyDenomination denom : denoms)
 				{
-					if(denom.abbr.length()>0)
-						help.append("\n\r"+CMStrings.padRight(denom.name+" ("+denom.abbr+")",20)+":");
+					if(denom.abbr().length()>0)
+						help.append("\n\r"+CMStrings.padRight(denom.name()+" ("+denom.abbr()+")",20)+":");
 					else
-						help.append("\n\r"+CMStrings.padRight(denom.name,20)+":");
-					if(denom.value==CMLib.beanCounter().getLowestDenomination(currency))
-						help.append(" (exchange rate is "+denom.value+" of base)");
+						help.append("\n\r"+CMStrings.padRight(denom.name(),20)+":");
+					if(denom.value()==CMLib.beanCounter().getLowestDenomination(currency))
+						help.append(" (exchange rate is "+denom.value()+" of base)");
 					else
-						help.append(" "+CMLib.beanCounter().getConvertableDescription(currency,denom.value));
+						help.append(" "+CMLib.beanCounter().getConvertableDescription(currency,denom.value()));
 				}
 				help.append("\n\r");
 			}

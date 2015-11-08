@@ -46,12 +46,12 @@ public class Group extends StdCommand
 		final StringBuffer msg=new StringBuffer("^N");
 		msg.append("[^w");
 		final int[] cols={
-				ListingLibrary.ColFixer.fixColWidth(7,seer.session()),
-				ListingLibrary.ColFixer.fixColWidth(7,seer.session()),
-				ListingLibrary.ColFixer.fixColWidth(5,seer.session()),
-				ListingLibrary.ColFixer.fixColWidth(13,seer.session()),
-				ListingLibrary.ColFixer.fixColWidth(3,seer.session()),
-				ListingLibrary.ColFixer.fixColWidth(12,seer.session())
+				CMLib.lister().fixColWidth(7,seer.session()),
+				CMLib.lister().fixColWidth(7,seer.session()),
+				CMLib.lister().fixColWidth(5,seer.session()),
+				CMLib.lister().fixColWidth(13,seer.session()),
+				CMLib.lister().fixColWidth(3,seer.session()),
+				CMLib.lister().fixColWidth(12,seer.session())
 			};
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{

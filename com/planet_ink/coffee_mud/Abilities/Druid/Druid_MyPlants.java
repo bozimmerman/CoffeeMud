@@ -135,9 +135,9 @@ public class Druid_MyPlants extends StdAbility
 				final StringBuffer yourPlants=new StringBuffer("");
 				int plantNum=0;
 				final int[] cols={
-						ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
-						ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
-						ListingLibrary.ColFixer.fixColWidth(40,mob.session())
+						CMLib.lister().fixColWidth(3,mob.session()),
+						CMLib.lister().fixColWidth(20,mob.session()),
+						CMLib.lister().fixColWidth(40,mob.session())
 					};
 				final Vector<Room> V=myPlantRooms(mob);
 				for(int v=0;v<V.size();v++)

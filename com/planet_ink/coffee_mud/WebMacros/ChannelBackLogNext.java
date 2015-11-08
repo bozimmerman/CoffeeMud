@@ -92,10 +92,10 @@ public class ChannelBackLogNext extends StdWebMacro
 							return "<!--EMPTY-->";
 						return " @break@";
 					}
-					final boolean areareq=CMLib.channels().getChannel(channelInt).flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
+					final boolean areareq=CMLib.channels().getChannel(channelInt).flags().contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 
 					final ChannelsLibrary.ChannelMsg cmsg=que.get(doNum);
-					final CMMsg msg=cmsg.msg;
+					final CMMsg msg=cmsg.msg();
 					String str=null;
 					if((mob==msg.source())&&(msg.sourceMessage()!=null))
 						str=msg.sourceMessage();
@@ -108,11 +108,11 @@ public class ChannelBackLogNext extends StdWebMacro
 					else
 						str="";
 					str=CMStrings.removeColors(str);
-					elapsedTime=now-cmsg.ts;
+					elapsedTime=now-cmsg.ts();
 					elapsedTime=Math.round(elapsedTime/1000L)*1000L;
 					if(elapsedTime<0)
 					{
-						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+cmsg.ts);
+						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+cmsg.ts());
 						elapsedTime=0;
 					}
 					str += " ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";

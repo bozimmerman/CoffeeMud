@@ -66,9 +66,9 @@ public interface TrackingLibrary extends CMLibrary
 	public Rideable findALadder(MOB mob, Room room);
 	public void postMountLadder(MOB mob, Rideable ladder);
 
-	public static abstract class RFilter
+	public static interface RFilter
 	{
-		public abstract boolean isFilteredOut(final Room R, final Exit E, final int dir);
+		public boolean isFilteredOut(final Room R, final Exit E, final int dir);
 	}
 
 	public static class RFilterNode

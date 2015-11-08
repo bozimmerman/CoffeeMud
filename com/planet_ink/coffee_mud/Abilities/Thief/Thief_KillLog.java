@@ -194,8 +194,8 @@ public class Thief_KillLog extends ThiefSkill
 		{
 			final StringBuffer str=new StringBuffer("");
 			final int[] cols={
-					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(6,mob.session())
+					CMLib.lister().fixColWidth(20,mob.session()),
+					CMLib.lister().fixColWidth(6,mob.session())
 				};
 			str.append(L("@x1@x2Kill Pct.\n\r",CMStrings.padRight(L("Name"),cols[0]),CMStrings.padRight(L("Level"),cols[1])));
 			final Vector<String[]> order=new Vector<String[]>();

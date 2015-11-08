@@ -666,7 +666,7 @@ public class Construction extends CraftingSkill
 			return false;
 		}
 		final String str=commands.get(0);
-		final int colWidth=ListingLibrary.ColFixer.fixColWidth(20,mob.session());
+		final int colWidth=CMLib.lister().fixColWidth(20,mob.session());
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
 			final String mask=CMParms.combine(commands,1);

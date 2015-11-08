@@ -411,14 +411,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
 			final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
-			if(chan.name.equalsIgnoreCase(firstWord))
+			if(chan.name().equalsIgnoreCase(firstWord))
 			{
 				C=CMClass.getCommand("Channel");
 				if((C!=null)&&(C.securityCheck(mob)))
 					return C;
 			}
 			else
-			if(("NO"+chan.name).equalsIgnoreCase(firstWord))
+			if(("NO"+chan.name()).equalsIgnoreCase(firstWord))
 			{
 				C=CMClass.getCommand("NoChannel");
 				if((C!=null)&&(C.securityCheck(mob)))
@@ -476,17 +476,17 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
 			final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
-			if(chan.name.startsWith(firstWord))
+			if(chan.name().startsWith(firstWord))
 			{
-				commands.set(0,chan.name);
+				commands.set(0,chan.name());
 				C=CMClass.getCommand("Channel");
 				if((C!=null)&&(C.securityCheck(mob)))
 					return C;
 			}
 			else
-			if(("NO"+chan.name).startsWith(firstWord))
+			if(("NO"+chan.name()).startsWith(firstWord))
 			{
-				commands.set(0,"NO"+chan.name);
+				commands.set(0,"NO"+chan.name());
 				C=CMClass.getCommand("NoChannel");
 				if((C!=null)&&(C.securityCheck(mob)))
 					return C;
@@ -1426,18 +1426,20 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		itemID=itemID.toUpperCase();
 		String s=null;
 		if(DV!=null)
+		{
 			for (final MoneyDenomination element : DV)
 			{
-				s=element.name.toUpperCase();
+				s=element.name().toUpperCase();
 				if(s.endsWith("(S)"))
 					s=s.substring(0,s.length()-3)+"S";
 				if(containsString(s,itemID))
-					return element.value;
+					return element.value();
 				else
 				if((s.length()>0)
 				&&(containsString(s,itemID)))
-					return element.value;
+					return element.value();
 			}
+		}
 		return 0.0;
 	}
 

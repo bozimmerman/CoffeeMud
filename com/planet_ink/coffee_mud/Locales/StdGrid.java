@@ -42,7 +42,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	protected Room[][] subMap=null;
 	protected String[] 					  descriptions=new String[0];
 	protected String[] 					  displayTexts=new String[0];
-	protected SVector<WorldMap.CrossExit> gridexits=new SVector<WorldMap.CrossExit>();
+	protected SVector<CrossExit> gridexits=new SVector<CrossExit>();
 	protected int xsize=5;
 	protected int ysize=5;
 
@@ -190,20 +190,20 @@ public class StdGrid extends StdRoom implements GridLocale
 	}
 
 	@Override 
-	public Iterator<WorldMap.CrossExit> outerExits()
+	public Iterator<CrossExit> outerExits()
 	{
 		return gridexits.iterator();
 	}
 	
 	@Override 
-	public void addOuterExit(WorldMap.CrossExit x)
+	public void addOuterExit(CrossExit x)
 	{
 		if(x!=null)
 			gridexits.addElement(x);
 	}
 	
 	@Override 
-	public void delOuterExit(WorldMap.CrossExit x)
+	public void delOuterExit(CrossExit x)
 	{
 		gridexits.remove(x);
 	}
@@ -223,7 +223,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			if(grid!=null)
 				for(int d=0;d<gridexits.size();d++)
 				{
-					final WorldMap.CrossExit EX=gridexits.elementAt(d);
+					final CrossExit EX=gridexits.elementAt(d);
 					if((!EX.out)
 					&&(EX.destRoomID.equalsIgnoreCase(roomID))
 					&&(EX.dir==direction)
@@ -400,7 +400,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if((subMap!=null)&&(room.getGridParent()==this)&&(gridexits!=null))
 		for(int d=0;d<gridexits.size();d++)
 		{
-			final WorldMap.CrossExit EX=gridexits.elementAt(d);
+			final CrossExit EX=gridexits.elementAt(d);
 			try
 			{
 				if((EX.out)&&(EX.dir==dir)
@@ -632,7 +632,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 	}
 
-	public void tryFillInExtraneousExternal(WorldMap.CrossExit EX, Exit ox)
+	public void tryFillInExtraneousExternal(CrossExit EX, Exit ox)
 	{
 		if(EX==null)
 			return;
@@ -659,7 +659,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(subMap!=null)
 		for(int d=0;d<gridexits.size();d++)
 		{
-			final WorldMap.CrossExit EX=gridexits.elementAt(d);
+			final CrossExit EX=gridexits.elementAt(d);
 			try
 			{
 				if(EX.out)

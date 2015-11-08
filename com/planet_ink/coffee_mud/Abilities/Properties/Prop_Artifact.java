@@ -288,7 +288,7 @@ public class Prop_Artifact extends Property
 					// does it already exist?
 					if(registeredArtifacts.containsKey(getItemID()))
 						registeredArtifacts.remove(getItemID());
-					final String data=itemSet.get(0).xml;
+					final String data=itemSet.get(0).xml();
 					final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(data);
 					if(xml!=null)
 						for(int c=0;c<xml.size();c++)

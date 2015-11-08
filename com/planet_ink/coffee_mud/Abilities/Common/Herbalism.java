@@ -250,8 +250,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			}
 			final StringBuffer buf=new StringBuffer(L("Potions you know how to brew:\n\r"));
 			final int[] cols={
-					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(5,mob.session())
+					CMLib.lister().fixColWidth(20,mob.session()),
+					CMLib.lister().fixColWidth(5,mob.session())
 				};
 			buf.append(L("@x1 @x2 Ingredients\n\r",CMStrings.padRight(L("Chant"),cols[0]),CMStrings.padRight(L("Level"),cols[1])));
 			final boolean fillUsage=(usage.size()==0);

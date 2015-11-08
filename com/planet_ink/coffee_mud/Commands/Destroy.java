@@ -336,9 +336,9 @@ public class Destroy extends StdCommand
 				final GridLocale GL=mob.location().getGridParent();
 				final int myX=GL.getGridChildX(mob.location());
 				final int myY=GL.getGridChildY(mob.location());
-				for(final Iterator<WorldMap.CrossExit> i=GL.outerExits();i.hasNext();)
+				for(final Iterator<GridLocale.CrossExit> i=GL.outerExits();i.hasNext();)
 				{
-					final WorldMap.CrossExit CE=i.next();
+					final GridLocale.CrossExit CE=i.next();
 					if((CE.out)
 					&&(CE.x==myX)
 					&&(CE.y==myY)
@@ -358,9 +358,9 @@ public class Destroy extends StdCommand
 			if(unRoom instanceof GridLocale)
 			{
 				final GridLocale GL=(GridLocale)unRoom;
-				for(final Iterator<WorldMap.CrossExit> i=GL.outerExits();i.hasNext();)
+				for(final Iterator<GridLocale.CrossExit> i=GL.outerExits();i.hasNext();)
 				{
-					final WorldMap.CrossExit CE=i.next();
+					final GridLocale.CrossExit CE=i.next();
 					if((!CE.out)
 					&&(CE.dir==direction)
 					&&(CE.destRoomID.equalsIgnoreCase(CMLib.map().getExtendedRoomID(mob.location()))))

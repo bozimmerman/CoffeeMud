@@ -69,10 +69,28 @@ public class GRaceLoader
 			final ResultSet R=D.query("SELECT * FROM CMGRAC");
 			while(R.next())
 			{
-				final DatabaseEngine.AckRecord ack=new DatabaseEngine.AckRecord(
-						DBConnections.getRes(R,"CMRCID"),
-						DBConnections.getRes(R,"CMRDAT"),
-						"GenRace");
+				final String rcid = DBConnections.getRes(R,"CMRCID");
+				final String rdat = DBConnections.getRes(R,"CMRDAT");
+				final DatabaseEngine.AckRecord ack=new DatabaseEngine.AckRecord()
+				{
+					@Override
+					public String ID()
+					{
+						return rcid;
+					}
+
+					@Override
+					public String data()
+					{
+						return rdat;
+					}
+
+					@Override
+					public String typeClass()
+					{
+						return "GenRace";
+					}
+				};
 				rows.add(ack);
 			}
 		}

@@ -319,9 +319,9 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			int toggler=1;
 			final int toggleTop=2;
 			final int[] cols={
-					ListingLibrary.ColFixer.fixColWidth(30,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
+					CMLib.lister().fixColWidth(30,mob.session()),
+					CMLib.lister().fixColWidth(3,mob.session()),
+					CMLib.lister().fixColWidth(3,mob.session())
 				};
 			for(int r=0;r<toggleTop;r++)
 				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Amt"),cols[2]));

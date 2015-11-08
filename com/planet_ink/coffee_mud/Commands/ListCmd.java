@@ -45,7 +45,7 @@ public class ListCmd extends StdCommand
 	private final String[] access=I(new String[]{"LIST"});
 	@Override public String[] getAccessWords(){return access;}
 
-	public static class WorldFilter implements Filterer<Area>
+	private static class WorldFilter implements Filterer<Area>
 	{
 		private final TimeClock to;
 		public WorldFilter(Room R)
@@ -62,43 +62,70 @@ public class ListCmd extends StdCommand
 		}
 	}
 
+	private static Filterer<Area> planetsAreaFilter=new Filterer<Area>()
+	{
+		@Override
+		public boolean passesFilter(Area obj)
+		{
+			return (obj instanceof SpaceObject) && (!(obj instanceof SpaceShip));
+		}
+	};
+
+	private static Filterer<Area> mundaneAreaFilter=new Filterer<Area>()
+	{
+		@Override
+		public boolean passesFilter(Area obj)
+		{
+			return !(obj instanceof SpaceObject);
+		}
+	};
+	
+	private static Filterer<Area> spaceShipsAreaFilter=new Filterer<Area>()
+	{
+		@Override
+		public boolean passesFilter(Area obj)
+		{
+			return (obj instanceof SpaceObject) && (obj instanceof SpaceShip);
+		}
+	};
+	
 	public StringBuilder listAllQualifies(Session viewerS, List<String> cmds)
 	{
 		final StringBuilder str=new StringBuilder("");
 		final Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
 		str.append("<<EACH CLASS>>\n\r");
 		Map<String,AbilityMapper.AbilityMapping> subMap=map.get("EACH");
-		str.append(CMStrings.padRight(L("Skill ID"), ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
-		str.append(CMStrings.padRight(L("Lvl"), ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
-		str.append(CMStrings.padRight(L("Gain"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-		str.append(CMStrings.padRight(L("Prof"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-		str.append(CMStrings.padRight(L("Mask"), ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+		str.append(CMStrings.padRight(L("Skill ID"), CMLib.lister().fixColWidth(20.0,viewerS)));
+		str.append(CMStrings.padRight(L("Lvl"), CMLib.lister().fixColWidth(4.0,viewerS)));
+		str.append(CMStrings.padRight(L("Gain"), CMLib.lister().fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight(L("Prof"), CMLib.lister().fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight(L("Mask"), CMLib.lister().fixColWidth(40.0,viewerS)));
 		str.append("\n\r");
 		for(final AbilityMapper.AbilityMapping mapped : subMap.values())
 		{
-			str.append(CMStrings.padRight(mapped.abilityID(), ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
-			str.append(CMStrings.padRight(""+mapped.qualLevel(), ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
-			str.append(CMStrings.padRight(mapped.autoGain()?L("yes"):L("no"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-			str.append(CMStrings.padRight(""+mapped.defaultProficiency(), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-			str.append(CMStrings.padRight(mapped.extraMask(), ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.abilityID(), CMLib.lister().fixColWidth(20.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.qualLevel(), CMLib.lister().fixColWidth(4.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.autoGain()?L("yes"):L("no"), CMLib.lister().fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.defaultProficiency(), CMLib.lister().fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.extraMask(), CMLib.lister().fixColWidth(40.0,viewerS)));
 			str.append("\n\r");
 		}
 		str.append("\n\r");
 		str.append("<<ALL CLASSES>>\n\r");
 		subMap=map.get("ALL");
-		str.append(CMStrings.padRight(L("Skill ID"), ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
-		str.append(CMStrings.padRight(L("Lvl"), ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
-		str.append(CMStrings.padRight(L("Gain"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-		str.append(CMStrings.padRight(L("Prof"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-		str.append(CMStrings.padRight(L("Mask"), ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+		str.append(CMStrings.padRight(L("Skill ID"), CMLib.lister().fixColWidth(20.0,viewerS)));
+		str.append(CMStrings.padRight(L("Lvl"), CMLib.lister().fixColWidth(4.0,viewerS)));
+		str.append(CMStrings.padRight(L("Gain"), CMLib.lister().fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight(L("Prof"), CMLib.lister().fixColWidth(5.0,viewerS)));
+		str.append(CMStrings.padRight(L("Mask"), CMLib.lister().fixColWidth(40.0,viewerS)));
 		str.append("\n\r");
 		for(final AbilityMapper.AbilityMapping mapped : subMap.values())
 		{
-			str.append(CMStrings.padRight(mapped.abilityID(), ListingLibrary.ColFixer.fixColWidth(20.0,viewerS)));
-			str.append(CMStrings.padRight(""+mapped.qualLevel(), ListingLibrary.ColFixer.fixColWidth(4.0,viewerS)));
-			str.append(CMStrings.padRight(mapped.autoGain()?L("yes"):L("no"), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-			str.append(CMStrings.padRight(""+mapped.defaultProficiency(), ListingLibrary.ColFixer.fixColWidth(5.0,viewerS)));
-			str.append(CMStrings.padRight(mapped.extraMask(), ListingLibrary.ColFixer.fixColWidth(40.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.abilityID(), CMLib.lister().fixColWidth(20.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.qualLevel(), CMLib.lister().fixColWidth(4.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.autoGain()?L("yes"):L("no"), CMLib.lister().fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(""+mapped.defaultProficiency(), CMLib.lister().fixColWidth(5.0,viewerS)));
+			str.append(CMStrings.padRight(mapped.extraMask(), CMLib.lister().fixColWidth(40.0,viewerS)));
 			str.append("\n\r");
 		}
 		return str;
@@ -118,8 +145,8 @@ public class ListCmd extends StdCommand
 			return lines;
 		Room thisThang=null;
 		String thisOne=null;
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(31.0,viewerS);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(43.0,viewerS);
+		final int COL_LEN1=CMLib.lister().fixColWidth(31.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(43.0,viewerS);
 		for(final Enumeration<Room> r=these;r.hasMoreElements();)
 		{
 			thisThang=r.nextElement();
@@ -562,8 +589,8 @@ public class ListCmd extends StdCommand
 	
 	public StringBuilder roomResources(Session viewerS, Enumeration these, Room likeRoom)
 	{
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(15.0,viewerS);
+		final int COL_LEN1=CMLib.lister().fixColWidth(30.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(15.0,viewerS);
 		final StringBuilder lines=new StringBuilder(CMStrings.padRight(L("Room ID#"),COL_LEN1)+"| "
 										   +CMStrings.padRight(L("Room Type"),COL_LEN2)+"| "
 										   +"Resource\n\r");
@@ -593,8 +620,8 @@ public class ListCmd extends StdCommand
 
 	public StringBuilder areaConquests(Session viewerS, Enumeration these)
 	{
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(26.0,viewerS);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(40.0,viewerS);
+		final int COL_LEN1=CMLib.lister().fixColWidth(26.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(40.0,viewerS);
 		final StringBuilder lines=new StringBuilder(CMStrings.padRight(L("Area"),COL_LEN1)+"| "
 										   +CMStrings.padRight(L("Clan"),COL_LEN2)+"| "
 										   +"Controlled\n\r");
@@ -818,8 +845,8 @@ public class ListCmd extends StdCommand
 		StringBuilder lines=new StringBuilder("");
 		if(rest.equalsIgnoreCase("COUNT"))
 		{
-			final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(50.0,viewerS);
-			final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
+			final int COL_LEN1=CMLib.lister().fixColWidth(50.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(5.0,viewerS);
 			lines=new StringBuilder("^x")
 			.append(CMStrings.padRight(L("Script File"),COL_LEN1))
 			.append(CMStrings.padRight(L("Usage"),COL_LEN2))
@@ -855,9 +882,9 @@ public class ListCmd extends StdCommand
 		else
 		if(rest.equalsIgnoreCase("DETAILS"))
 		{
-			final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
-			final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(20.0,viewerS);
-			final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
+			final int COL_LEN1=CMLib.lister().fixColWidth(30.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(20.0,viewerS);
+			final int COL_LEN3=CMLib.lister().fixColWidth(25.0,viewerS);
 			lines=new StringBuilder("^x")
 			.append(CMStrings.padRight(L("Script File"),COL_LEN1))
 			.append(CMStrings.padRight(L("Host"),COL_LEN2))
@@ -1111,8 +1138,8 @@ public class ListCmd extends StdCommand
 		if(journal==null)
 			return buf;
 		final List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs("SYSTEM_"+journal+"S");
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS);
+		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(10.0,viewerS);
 		if(V!=null)
 		{
 			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1+2)+CMStrings.padRight(L("From"),COL_LEN2)+" Entry^.^N\n\r");
@@ -1213,13 +1240,13 @@ public class ListCmd extends StdCommand
 				return;
 			}
 		}
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(8.0,viewerS);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS);
-		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(4.0,viewerS);
-		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
-		final int COL_LEN5=ListingLibrary.ColFixer.fixColWidth(23.0,viewerS);
-		final int COL_LEN6=ListingLibrary.ColFixer.fixColWidth(18.0,viewerS);
-		final int COL_LEN7=ListingLibrary.ColFixer.fixColWidth(15.0,viewerS);
+		final int COL_LEN1=CMLib.lister().fixColWidth(8.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(10.0,viewerS);
+		final int COL_LEN3=CMLib.lister().fixColWidth(4.0,viewerS);
+		final int COL_LEN4=CMLib.lister().fixColWidth(5.0,viewerS);
+		final int COL_LEN5=CMLib.lister().fixColWidth(23.0,viewerS);
+		final int COL_LEN6=CMLib.lister().fixColWidth(18.0,viewerS);
+		final int COL_LEN7=CMLib.lister().fixColWidth(15.0,viewerS);
 		final StringBuilder head=new StringBuilder("");
 		head.append("[");
 		head.append(CMStrings.padRight(L("Race"),COL_LEN1)+" ");
@@ -1312,9 +1339,9 @@ public class ListCmd extends StdCommand
 				return;
 			}
 		}
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(18.0,viewerS);
-		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(23.0,viewerS);
+		final int COL_LEN1=CMLib.lister().fixColWidth(10.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(18.0,viewerS);
+		final int COL_LEN3=CMLib.lister().fixColWidth(23.0,viewerS);
 		final StringBuilder head=new StringBuilder("");
 		head.append("^X");
 		head.append("[");
@@ -1445,7 +1472,7 @@ public class ListCmd extends StdCommand
 		if(!these.hasMoreElements())
 			return lines;
 		int column=0;
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
+		final int COL_LEN=CMLib.lister().fixColWidth(25.0,viewerS);
 		if(shortList)
 		{
 			final Vector<String> raceNames=new Vector<String>();
@@ -1488,7 +1515,7 @@ public class ListCmd extends StdCommand
 		if(!these.hasMoreElements())
 			return lines;
 		int column=0;
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
+		final int COL_LEN=CMLib.lister().fixColWidth(25.0,viewerS);
 		if(shortList)
 		{
 			final Vector<String> classNames=new Vector<String>();
@@ -1520,7 +1547,7 @@ public class ListCmd extends StdCommand
 		int column=0;
 		final Vector<String> raceCats=new Vector<String>();
 		Race R=null;
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
+		final int COL_LEN=CMLib.lister().fixColWidth(25.0,viewerS);
 		for(final Enumeration e=these;e.hasMoreElements();)
 		{
 			R=(Race)e.nextElement();
@@ -1557,8 +1584,8 @@ public class ListCmd extends StdCommand
 		else
 		{
 			buf.append("\n\r^xQuest Report:^.^N\n\r");
-			final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
-			final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
+			final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
 			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+" Status^.^N\n\r");
 			for(int i=0;i<CMLib.quests().numQuests();i++)
 			{
@@ -1613,8 +1640,8 @@ public class ListCmd extends StdCommand
 			buf.append(L("No journals exits."));
 		else
 		{
-			final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
-			final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(30.0,viewerS);
+			final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
 			buf.append("\n\r^xJournals List:^.^N\n\r");
 			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+" Messages^.^N\n\r");
 			for(int i=0;i<journals.size();i++)
@@ -1692,10 +1719,10 @@ public class ListCmd extends StdCommand
 		{
 			mask=whichGroupStr.toUpperCase().trim();
 		}
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(4.0,viewerS);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(20.0,viewerS);
-		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
-		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(8.0,viewerS);
+		final int COL_LEN1=CMLib.lister().fixColWidth(4.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(20.0,viewerS);
+		final int COL_LEN3=CMLib.lister().fixColWidth(3.0,viewerS);
+		final int COL_LEN4=CMLib.lister().fixColWidth(8.0,viewerS);
 		if(!activeOnly)
 			msg.append(CMStrings.padRight(L("Grp"),COL_LEN1)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4));
 		msg.append(CMStrings.padRight(L("Grp"),COL_LEN1)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
@@ -1746,7 +1773,7 @@ public class ListCmd extends StdCommand
 	public StringBuilder listSubOps(Session viewerS)
 	{
 		final StringBuilder msg=new StringBuilder("");
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
+		final int COL_LEN=CMLib.lister().fixColWidth(25.0,viewerS);
 		for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();
@@ -2240,11 +2267,11 @@ public class ListCmd extends StdCommand
 		}
 		
 		final int COL_LEN1, COL_LEN2, COL_LEN3, COL_LEN4, COL_LEN5;
-		str.append(CMStrings.padRight(L("Typ"),COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS))+" ");
-		str.append(CMStrings.padRight(L("Radius"),COL_LEN2=ListingLibrary.ColFixer.fixColWidth(7.0,viewerS))+" ");
-		str.append(CMStrings.padRight(L("Coordinates"),COL_LEN3=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS))+" ");
-		str.append(CMStrings.padRight(L("Speed"),COL_LEN4=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS))+" ");
-		str.append(CMStrings.padRight(L("Mass"),COL_LEN5=ListingLibrary.ColFixer.fixColWidth(7.0,viewerS))+" ");
+		str.append(CMStrings.padRight(L("Typ"),COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerS))+" ");
+		str.append(CMStrings.padRight(L("Radius"),COL_LEN2=CMLib.lister().fixColWidth(7.0,viewerS))+" ");
+		str.append(CMStrings.padRight(L("Coordinates"),COL_LEN3=CMLib.lister().fixColWidth(25.0,viewerS))+" ");
+		str.append(CMStrings.padRight(L("Speed"),COL_LEN4=CMLib.lister().fixColWidth(10.0,viewerS))+" ");
+		str.append(CMStrings.padRight(L("Mass"),COL_LEN5=CMLib.lister().fixColWidth(7.0,viewerS))+" ");
 		str.append(L("Name\n\r"));
 		for(SpaceObject obj : objs)
 		{
@@ -2288,12 +2315,12 @@ public class ListCmd extends StdCommand
 		final StringBuilder str=new StringBuilder("");
 		//for(String S : RawMaterial.CODES.NAMES())
 		//	str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(S.toLowerCase()),16));
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(15.0,viewerS);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS);
-		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
-		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(4.0,viewerS);
-		final int COL_LEN5=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
-		final int COL_LEN6=ListingLibrary.ColFixer.fixColWidth(36.0,viewerS);
+		final int COL_LEN1=CMLib.lister().fixColWidth(15.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(10.0,viewerS);
+		final int COL_LEN3=CMLib.lister().fixColWidth(3.0,viewerS);
+		final int COL_LEN4=CMLib.lister().fixColWidth(4.0,viewerS);
+		final int COL_LEN5=CMLib.lister().fixColWidth(3.0,viewerS);
+		final int COL_LEN6=CMLib.lister().fixColWidth(36.0,viewerS);
 		final int COL_LEN7=COL_LEN1+1+COL_LEN2+1+COL_LEN3+1+COL_LEN4+1+COL_LEN5+1;
 		str.append(CMStrings.padRight(L("Resource"),COL_LEN1)+" ");
 		str.append(CMStrings.padRight(L("Material"),COL_LEN2)+" ");
@@ -2418,7 +2445,7 @@ public class ListCmd extends StdCommand
 	public String listExpertises(Session viewerS)
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(20.0,viewerS);
+		final int COL_LEN=CMLib.lister().fixColWidth(20.0,viewerS);
 		for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 		{
 			final ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
@@ -2448,12 +2475,12 @@ public class ListCmd extends StdCommand
 	public String listAchievements(Session viewerS)
 	{
 		final StringBuilder str=new StringBuilder();
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(17.0,viewerS);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(7.0,viewerS);
-		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(6.0,viewerS);
-		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(5.0,viewerS);
-		final int COL_LEN5=ListingLibrary.ColFixer.fixColWidth(11.0,viewerS);
-		final int COL_LEN6=ListingLibrary.ColFixer.fixColWidth(26.0,viewerS);
+		final int COL_LEN1=CMLib.lister().fixColWidth(17.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(7.0,viewerS);
+		final int COL_LEN3=CMLib.lister().fixColWidth(6.0,viewerS);
+		final int COL_LEN4=CMLib.lister().fixColWidth(5.0,viewerS);
+		final int COL_LEN5=CMLib.lister().fixColWidth(11.0,viewerS);
+		final int COL_LEN6=CMLib.lister().fixColWidth(26.0,viewerS);
 		final int COL_LEN7=COL_LEN1+1+COL_LEN2+1+COL_LEN3+1+COL_LEN4+1+COL_LEN5+1;
 		final boolean accountSys = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM) > 1; 
 		for(AccountStats.Agent agent : AccountStats.Agent.values())
@@ -2512,7 +2539,7 @@ public class ListCmd extends StdCommand
 		for(final ClanGovernment G : CMLib.clans().getStockGovernments())
 			if(G.getName().length()>glen)
 				glen=G.getName().length();
-		final int SCREEN_LEN=ListingLibrary.ColFixer.fixColWidth(78.0,viewerS);
+		final int SCREEN_LEN=CMLib.lister().fixColWidth(78.0,viewerS);
 		for(final ClanGovernment G : CMLib.clans().getStockGovernments())
 			buf.append(CMStrings.padRight(G.getName(),glen)+": "+CMStrings.limit(G.getShortDesc(),SCREEN_LEN-glen-2)+"\n\r");
 		return buf.toString();
@@ -2528,7 +2555,7 @@ public class ListCmd extends StdCommand
 			if(C.clanID().length()>clen)
 				clen=C.clanID().length();
 		}
-		final int SCREEN_LEN=ListingLibrary.ColFixer.fixColWidth(78.0,viewerS);
+		final int SCREEN_LEN=CMLib.lister().fixColWidth(78.0,viewerS);
 		for(final Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)
 		{
 			final Clan C=c.nextElement();
@@ -2565,9 +2592,9 @@ public class ListCmd extends StdCommand
 		Room R=null;
 		Room TR=null;
 		Map<String,Room> set=null;
-		final int SCREEN_LEN1=ListingLibrary.ColFixer.fixColWidth(15.0,mob);
-		final int SCREEN_LEN2=ListingLibrary.ColFixer.fixColWidth(35.0,mob);
-		final int SCREEN_LEN3=ListingLibrary.ColFixer.fixColWidth(3.0,mob);
+		final int SCREEN_LEN1=CMLib.lister().fixColWidth(15.0,mob);
+		final int SCREEN_LEN2=CMLib.lister().fixColWidth(35.0,mob);
+		final int SCREEN_LEN3=CMLib.lister().fixColWidth(3.0,mob);
 		for(;roomsToDo.hasMoreElements();)
 		{
 			R=(Room)roomsToDo.nextElement();
@@ -3045,19 +3072,19 @@ public class ListCmd extends StdCommand
 	{
 		final Session viewerS = mob.session();
 		final StringBuffer str=new StringBuffer("");
-		str.append(CMStrings.padRight(L("Name"), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
-		str.append(CMStrings.padRight(L("Location"), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
-		str.append(CMStrings.padRight(L("Reg."), ListingLibrary.ColFixer.fixColWidth(15.0,viewerS))).append(" ");
+		str.append(CMStrings.padRight(L("Name"), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
+		str.append(CMStrings.padRight(L("Location"), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
+		str.append(CMStrings.padRight(L("Reg."), CMLib.lister().fixColWidth(15.0,viewerS))).append(" ");
 		str.append("\n\r");
-		str.append(CMStrings.repeat('-', ListingLibrary.ColFixer.fixColWidth(75.0,viewerS))).append("\n\r");
+		str.append(CMStrings.repeat('-', CMLib.lister().fixColWidth(75.0,viewerS))).append("\n\r");
 		for(final Enumeration<BoardableShip> s=CMLib.map().ships(); s.hasMoreElements();)
 		{
 			final BoardableShip S=s.nextElement();
-			str.append(CMStrings.padRight(S.Name(), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
+			str.append(CMStrings.padRight(S.Name(), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
 			if((S instanceof SpaceObject)&&(((SpaceShip)S).getIsDocked()==null))
-				str.append(CMStrings.padRight(CMParms.toListString(((SpaceObject)S).coordinates()), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
+				str.append(CMStrings.padRight(CMParms.toListString(((SpaceObject)S).coordinates()), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
 			else
-				str.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(S)), ListingLibrary.ColFixer.fixColWidth(30.0,viewerS))).append(" ");
+				str.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(S)), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
 			if(S instanceof SpaceObject)
 				str.append(CMLib.tech().getElectronicsKey(S));
 			else
@@ -3429,11 +3456,11 @@ public class ListCmd extends StdCommand
 		case DISABLEFLAG: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toListString(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
 		case ALLQUALIFYS: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
 		case NEWS: listNews(mob,commands); break;
-		case AREAS: listAreas(mob, commands, WorldMap.mundaneAreaFilter); break;
+		case AREAS: listAreas(mob, commands, mundaneAreaFilter); break;
 		case SESSIONS: { listSessions(mob,commands); break; }
 		case WORLD: listAreas(mob, commands, new WorldFilter(mob.location())); break;
-		case PLANETS: listAreas(mob, commands, WorldMap.planetsAreaFilter); break;
-		case SPACESHIPAREAS: listAreas(mob, commands, WorldMap.spaceShipsAreaFilter); break;
+		case PLANETS: listAreas(mob, commands, planetsAreaFilter); break;
+		case SPACESHIPAREAS: listAreas(mob, commands, spaceShipsAreaFilter); break;
 		case CURRENTS: listCurrents(mob, commands); break;
 		case MANUFACTURERS: listManufacturers(mob, commands); break;
 		case TECHSKILLS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_TECH).toString()); break;

@@ -245,9 +245,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				mask="";
 			}
 			final int[] cols={
-					ListingLibrary.ColFixer.fixColWidth(16,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(5,mob.session()),
-					ListingLibrary.ColFixer.fixColWidth(8,mob.session())
+					CMLib.lister().fixColWidth(16,mob.session()),
+					CMLib.lister().fixColWidth(5,mob.session()),
+					CMLib.lister().fixColWidth(8,mob.session())
 				};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Wood required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Level"),cols[1]),CMStrings.padRight(L("Capacity"),cols[2])));
 			for(int r=0;r<recipes.size();r++)

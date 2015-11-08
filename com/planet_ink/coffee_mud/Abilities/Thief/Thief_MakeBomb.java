@@ -60,7 +60,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			   &&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
 				traps.addElement((Trap)A);
 		}
-		final int colWidth=ListingLibrary.ColFixer.fixColWidth(15,mob.session());
+		final int colWidth=CMLib.lister().fixColWidth(15,mob.session());
 		Physical trapThis=givenTarget;
 		if(trapThis!=null)
 			theTrap=traps.elementAt(CMLib.dice().roll(1,traps.size(),-1));

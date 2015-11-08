@@ -53,10 +53,10 @@ public class WillQualify  extends Skills
 		final int highestLevel = maxLevel;
 		final StringBuffer msg = new StringBuffer("");
 		int col = 0;
-		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(3.0,viewerM);
-		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(19.0,viewerM);
-		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(12.0,viewerM);
-		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(13.0,viewerM);
+		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerM);
+		final int COL_LEN2=CMLib.lister().fixColWidth(19.0,viewerM);
+		final int COL_LEN3=CMLib.lister().fixColWidth(12.0,viewerM);
+		final int COL_LEN4=CMLib.lister().fixColWidth(13.0,viewerM);
 		final List<AbilityMapper.QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(classID);
 		for (int l = 0; l <= highestLevel; l++)
 		{

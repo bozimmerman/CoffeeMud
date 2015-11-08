@@ -748,8 +748,8 @@ public class IMudClient implements I3Interface
 		if(mob.isMonster())
 			return;
 		final StringBuffer buf=new StringBuffer("\n\rI3 Mud List:\n\r");
-		int col1Width=ListingLibrary.ColFixer.fixColWidth(25, mob);
-		int col2Width=ListingLibrary.ColFixer.fixColWidth(25, mob);
+		int col1Width=CMLib.lister().fixColWidth(25, mob);
+		int col2Width=CMLib.lister().fixColWidth(25, mob);
 		 List<I3Mud> muds = getSortedI3Muds();
 		for(I3Mud m : muds)
 		{

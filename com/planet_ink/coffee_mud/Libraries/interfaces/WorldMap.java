@@ -173,54 +173,9 @@ public interface WorldMap extends CMLibrary
 	/* ***********************************************************************/
 	/* *							 HELPER CLASSES								*/
 	/* ***********************************************************************/
-	public static class LocatedPair
+	public static interface LocatedPair
 	{
-		private final WeakReference<Room> roomW;
-		private final WeakReference<PhysicalAgent> objW;
-		public Room room(){return roomW.get();}
-		public PhysicalAgent obj(){return objW.get();}
-		public LocatedPair(final Room room, final PhysicalAgent obj)
-		{ this.roomW=new WeakReference<Room>(room); this.objW=new WeakReference<PhysicalAgent>(obj);}
-	}
-
-	public static Filterer<Area> planetsAreaFilter=new Filterer<Area>()
-	{
-		@Override
-		public boolean passesFilter(Area obj)
-		{
-			return (obj instanceof SpaceObject) && (!(obj instanceof SpaceShip));
-		}
-	};
-
-	public static Filterer<Area> spaceShipsAreaFilter=new Filterer<Area>()
-	{
-		@Override
-		public boolean passesFilter(Area obj)
-		{
-			return (obj instanceof SpaceObject) && (obj instanceof SpaceShip);
-		}
-	};
-
-	public static Filterer<Area> mundaneAreaFilter=new Filterer<Area>()
-	{
-		@Override
-		public boolean passesFilter(Area obj)
-		{
-			return !(obj instanceof SpaceObject);
-		}
-	};
-
-	public static class CrossExit
-	{
-		public int x;
-		public int y;
-		public int dir;
-		public String destRoomID="";
-		public boolean out=false;
-		public static CrossExit make(int xx, int xy, int xdir, String xdestRoomID, boolean xout)
-		{   final CrossExit EX=new CrossExit();
-			EX.x=xx;EX.y=xy;EX.dir=xdir;EX.destRoomID=xdestRoomID;EX.out=xout;
-			return EX;
-		}
+		public Room room();
+		public PhysicalAgent obj();
 	}
 }

@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.core.collections.MultiEnumeration.MultiEnumerat
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.interfaces.MsgListener;
+import com.planet_ink.coffee_mud.core.interfaces.PhysicalAgent;
 import com.planet_ink.coffee_mud.core.interfaces.PrivateProperty;
 import com.planet_ink.coffee_mud.core.interfaces.SpaceObject;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -80,6 +81,47 @@ public class CMMap extends StdLibrary implements WorldMap
 	private static final long EXPIRE_30MINS	= 30*60*1000;
 	private static final long EXPIRE_1HOUR	= 60*60*1000;
 
+	private static class LocatedPairImpl implements LocatedPair
+	{
+		final WeakReference<Room> roomW;
+		final WeakReference<PhysicalAgent> objW;
+		
+		private LocatedPairImpl(Room room, PhysicalAgent host)
+		{
+			roomW = new WeakReference<Room>(room);
+			objW = new WeakReference<PhysicalAgent>(host);
+		}
+		@Override
+		public Room room()
+		{
+			return roomW.get();
+		}
+
+		@Override
+		public PhysicalAgent obj()
+		{
+			return objW.get();
+		}
+	}
+	
+	private static Filterer<Area> planetsAreaFilter=new Filterer<Area>()
+	{
+		@Override
+		public boolean passesFilter(Area obj)
+		{
+			return (obj instanceof SpaceObject) && (!(obj instanceof SpaceShip));
+		}
+	};
+
+	private static Filterer<Area> mundaneAreaFilter=new Filterer<Area>()
+	{
+		@Override
+		public boolean passesFilter(Area obj)
+		{
+			return !(obj instanceof SpaceObject);
+		}
+	};
+	
 	protected int getGlobalIndex(List<Environmental> list, String name)
 	{
 		if(list.size()==0)
@@ -2837,7 +2879,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return semaphore;
 	}
 
-	protected void addScriptHost(final Area area, final Room room, final PhysicalAgent host)
+	protected void addScriptHost(Area area, Room room, PhysicalAgent host)
 	{
 		if((area==null) || (host == null))
 			return;
@@ -2857,7 +2899,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				if(isAScriptHost(hosts,host))
 					return;
 			}
-			hosts.add(new LocatedPair(room, host));
+			hosts.add(new LocatedPairImpl(room, host));
 		}
 	}
 	protected void delScriptHost(Area area, final PhysicalAgent oneToDel)

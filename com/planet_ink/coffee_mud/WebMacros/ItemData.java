@@ -904,10 +904,10 @@ public class ItemData extends StdWebMacro
 						final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
 						for (final MoneyDenomination element : DV)
 						{
-							str.append("<OPTION VALUE=\""+element.value+"\"");
-							if(element.value==CMath.s_double(old))
+							str.append("<OPTION VALUE=\""+element.value()+"\"");
+							if(element.value()==CMath.s_double(old))
 								str.append(" SELECTED");
-							str.append(">"+element.name);
+							str.append(">"+element.name());
 						}
 						break;
 					}

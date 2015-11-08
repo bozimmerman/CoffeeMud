@@ -120,7 +120,7 @@ public class StdClanDonationList extends StdClanItem
 					while(V.size()>0)
 					{
 						set=V.get(0);
-						key=set.key;
+						key=set.key();
 						x=key.indexOf('/');
 						if(x>0)
 						{
@@ -133,7 +133,7 @@ public class StdClanDonationList extends StdClanItem
 									did=true;
 									final Object[] O=new Object[2];
 									O[0]=Long.valueOf(val);
-									O[1]=set.xml;
+									O[1]=set.xml();
 									sorted.insertElementAt(O,i);
 								}
 							}
@@ -141,7 +141,7 @@ public class StdClanDonationList extends StdClanItem
 							{
 								final Object[] O=new Object[2];
 								O[0]=Long.valueOf(val);
-								O[1]=set.xml;
+								O[1]=set.xml();
 								sorted.addElement(O);
 							}
 						}

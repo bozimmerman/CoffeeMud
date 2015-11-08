@@ -292,7 +292,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			final StringBuffer buf=new StringBuffer(L("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r"));
 			int toggler=1;
 			final int toggleTop=displayColumns();
-			final int itemWidth=ListingLibrary.ColFixer.fixColWidth((78/toggleTop)-9,mob.session());
+			final int itemWidth=CMLib.lister().fixColWidth((78/toggleTop)-9,mob.session());
 			for(int r=0;r<toggleTop;r++)
 				buf.append(L("@x1 Lvl @x2@x3",CMStrings.padRight(L("Item"),itemWidth),CMStrings.padRight(L("Amt"),3),((r<(toggleTop-1)?" ":""))));
 			buf.append("\n\r");

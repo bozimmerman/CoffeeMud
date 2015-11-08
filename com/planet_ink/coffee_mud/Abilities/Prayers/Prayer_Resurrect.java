@@ -83,7 +83,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				for(int v=0;v<V.size();v++)
 				{
 					final DatabaseEngine.PlayerData dataP=V.get(v);
-					final String data=dataP.xml;
+					final String data=dataP.xml();
 					final PhysicalAgent obj=parseHeavenlyData(data);
 					if(obj!=null)
 					{
@@ -104,7 +104,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				{
 					body=allObjs.elementAt(i);
 					final Ability age=body.fetchEffect("Age");
-					mob.tell(CMStrings.padRight(allDataPs.elementAt(i).who,15)
+					mob.tell(CMStrings.padRight(allDataPs.elementAt(i).who(),15)
 							+CMStrings.padRight(body.name(),45)
 							+CMStrings.padRight(((age==null)?"":CMLib.time().date2String(CMath.s_long(age.text()))),16)+"\n\r"+CMStrings.padRight("",15)+body.description());
 				}
@@ -187,7 +187,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				else
 				if((nonPlayerData!=null) && (body != null))
 				{
-					final String data=nonPlayerData.xml;
+					final String data=nonPlayerData.xml();
 					final Environmental object=parseHeavenlyData(data);
 					if(object==null)
 						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,L("<T-NAME> twitch(es) for a moment, but the spirit is too far gone."));

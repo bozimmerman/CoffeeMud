@@ -2,10 +2,11 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
-import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEvalStrChoice;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -51,6 +52,23 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	
 	private final static String achievementFilename  = "achievements.txt";
 
+	private static CMEval CMEVAL_INSTANCE = new CMEval()
+	{
+		@Override
+		public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException
+		{
+			if(choices.length==0)
+				return "";
+			final String str=val.toString().trim();
+			for(final Object o : choices)
+			{
+				if(str.equalsIgnoreCase(o.toString()))
+					return o.toString();
+			}
+			throw new CMException("That was not one of your choices.");
+		}
+	};
+	
 	@Override
 	public String evaluateAchievement(final Agent agent, String row, boolean addIfPossible)
 	{
@@ -2217,7 +2235,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				String help;
 				
 				help=getAchievementsHelpFromMap(helpMap,null,"EVENT");
-				parmTree.put("EVENT",CMLib.genEd().prompt(mob, parmTree.get("EVENT"), ++showNumber, showFlag, "Event Type", false, false, help, CMEvalStrChoice.INSTANCE, Event.getEventChoices()));
+				parmTree.put("EVENT",CMLib.genEd().prompt(mob, parmTree.get("EVENT"), ++showNumber, showFlag, "Event Type", false, false, help, CMEVAL_INSTANCE, Event.getEventChoices()));
 				E = (Event)CMath.s_valueOf(Event.class, parmTree.get("EVENT"));
 				
 				help=getAchievementsHelpFromMap(helpMap,null,"DISPLAY");

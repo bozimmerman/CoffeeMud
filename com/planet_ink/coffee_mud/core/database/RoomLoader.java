@@ -473,7 +473,7 @@ public class RoomLoader
 						for(int ces=0;ces<CEs.size();ces++)
 						{
 							final Vector<String> SCE=CMParms.parse(CEs.get(ces).trim());
-							final WorldMap.CrossExit CE=new WorldMap.CrossExit();
+							final GridLocale.CrossExit CE=new GridLocale.CrossExit();
 							if(SCE.size()<3)
 								continue;
 							CE.x=CMath.s_int(SCE.elementAt(0));
@@ -1161,9 +1161,9 @@ public class RoomLoader
 		{
 			final HashSet<String> done=new HashSet<String>();
 			int ordinal=0;
-			for(final Iterator<WorldMap.CrossExit> i=((GridLocale)room).outerExits();i.hasNext();)
+			for(final Iterator<GridLocale.CrossExit> i=((GridLocale)room).outerExits();i.hasNext();)
 			{
-				final WorldMap.CrossExit CE=i.next();
+				final GridLocale.CrossExit CE=i.next();
 				Room R=CMLib.map().getRoom(CE.destRoomID);
 				if(R==null)
 					continue;
@@ -1173,9 +1173,9 @@ public class RoomLoader
 				{
 					done.add(R.roomID());
 					final HashSet<String> oldStrs=new HashSet<String>();
-					for(final Iterator<WorldMap.CrossExit> i2=((GridLocale)room).outerExits();i2.hasNext();)
+					for(final Iterator<GridLocale.CrossExit> i2=((GridLocale)room).outerExits();i2.hasNext();)
 					{
-						final WorldMap.CrossExit CE2=i2.next();
+						final GridLocale.CrossExit CE2=i2.next();
 						if((CE2.destRoomID.equals(R.roomID())
 						||(CE2.destRoomID.startsWith(R.roomID()+"#("))))
 						{

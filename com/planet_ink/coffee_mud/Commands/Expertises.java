@@ -47,7 +47,7 @@ public class Expertises extends StdCommand
 		final StringBuffer msg=new StringBuffer("");
 		msg.append(L("\n\r^HYour expertises:^? \n\r"));
 		int col=0;
-		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
+		final int COL_LEN=CMLib.lister().fixColWidth(25.0,mob);
 		final XVector<String> expers=new XVector<String>();
 		for(final Enumeration<String> e=mob.expertises();e.hasMoreElements();)
 		{

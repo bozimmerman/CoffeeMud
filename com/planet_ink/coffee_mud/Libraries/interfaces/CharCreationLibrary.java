@@ -101,7 +101,11 @@ public interface CharCreationLibrary extends CMLibrary
 
 	public enum NewCharNameCheckResult { OK, NO_NEW_PLAYERS, NO_NEW_LOGINS, BAD_USED_NAME, CREATE_LIMIT_REACHED }
 
-	public final static String[] DEFAULT_BADNAMES = new String[]{"LIST","DELETE","QUIT","NEW","HERE","YOU","SHIT","FUCK","CUNT","FAGGOT","ASSHOLE","NIGGER","ARSEHOLE","PUSSY","COCK","SLUT","BITCH","DAMN","CRAP","GOD","JESUS","CHRIST","NOBODY","SOMEBODY","MESSIAH","ADMIN","SYSOP"};
+	public final static String[] DEFAULT_BADNAMES = new String[]
+	{
+		"LIST","DELETE","QUIT","NEW","HERE","YOU","SHIT","FUCK","CUNT","FAGGOT","ASSHOLE","NIGGER","ARSEHOLE","PUSSY",
+		"COCK","SLUT","BITCH","DAMN","CRAP","GOD","JESUS","CHRIST","NOBODY","SOMEBODY","MESSIAH","ADMIN","SYSOP"
+	};
 
 	public enum LoginResult
 	{

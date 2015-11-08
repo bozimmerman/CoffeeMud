@@ -114,8 +114,8 @@ public class DefaultSession implements Session
 	protected boolean[]		 loggingOutObj		 = new boolean[]{false};
 
 	protected byte[]		 promptSuffix		 = new byte[0];
-	protected ColorState	 currentColor		 = ColorLibrary.COLORSTATE_NORMAL;
-	protected ColorState	 lastColor			 = ColorLibrary.COLORSTATE_NORMAL;
+	protected ColorState	 currentColor		 = null;
+	protected ColorState	 lastColor			 = null;
 	protected long			 lastStart			 = System.currentTimeMillis();
 	protected long			 lastStop			 = System.currentTimeMillis();
 	protected long			 lastLoopTop		 = System.currentTimeMillis();
@@ -206,6 +206,8 @@ public class DefaultSession implements Session
 		this.groupName=groupName;
 		sock[0]=s;
 		promptSuffix = CMProps.getPromptSuffix();
+		currentColor = CMLib.color().getNormalColor();
+		lastColor = CMLib.color().getNormalColor();
 		try
 		{
 			setStatus(SessionStatus.HANDSHAKE_OPEN);
