@@ -264,13 +264,13 @@ public class SetStat extends GetStat
 						else
 						if(adjuster=='-')
 						{
-							((MOB)mod).delExpertise(def.ID);
-							req.sendMsg("[OK -"+def.ID+"]");
+							((MOB)mod).delExpertise(def.ID());
+							req.sendMsg("[OK -"+def.ID()+"]");
 						}
 						else
 						{
-							((MOB)mod).addExpertise(def.ID);
-							req.sendMsg("[OK "+def.ID+"]");
+							((MOB)mod).addExpertise(def.ID());
+							req.sendMsg("[OK "+def.ID()+"]");
 						}
 						return;
 					}

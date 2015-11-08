@@ -276,7 +276,7 @@ public class PlayerData extends StdWebMacro
 				if(X==null)
 					str.append(E+", ");
 				else
-					str.append(X.name+", ");
+					str.append(X.name()+", ");
 			}
 			break;
 		}

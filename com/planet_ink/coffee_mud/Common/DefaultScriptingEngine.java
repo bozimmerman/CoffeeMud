@@ -10389,7 +10389,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							logError(scripted,"MPENABLE","Syntax","Unknown skill/expertise: "+cast);
 						else
 						if((newTarget!=null)&&(newTarget instanceof MOB))
-							((MOB)newTarget).addExpertise(D.ID);
+							((MOB)newTarget).addExpertise(D.ID());
 					}
 				}
 				if((newTarget!=null)
@@ -10429,7 +10429,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						Log.sysOut("Scripting",newTarget.Name()+" was MPDISABLED with "+A.Name());
 					final ExpertiseLibrary.ExpertiseDefinition D=CMLib.expertises().findDefinition(cast,false);
 					if((newTarget instanceof MOB)&&(D!=null))
-						((MOB)newTarget).delExpertise(D.ID);
+						((MOB)newTarget).delExpertise(D.ID());
 				}
 				break;
 			}

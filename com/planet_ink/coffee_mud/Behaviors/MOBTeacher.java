@@ -127,7 +127,7 @@ public class MOBTeacher extends CombatAbilities
 				if(teachEverything)
 				{
 					for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
-						mob.addExpertise(e.nextElement().ID);
+						mob.addExpertise(e.nextElement().ID());
 					trainableExpertises=null;
 				}
 				else
@@ -147,9 +147,9 @@ public class MOBTeacher extends CombatAbilities
 						for(int v=0;v<V.size();v++)
 						{
 							def=V.get(v);
-							if(mob.fetchExpertise(def.ID)==null)
+							if(mob.fetchExpertise(def.ID())==null)
 							{
-								mob.addExpertise(def.ID);
+								mob.addExpertise(def.ID());
 								someNew=true;
 							}
 						}
@@ -265,7 +265,7 @@ public class MOBTeacher extends CombatAbilities
 					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(s);
 					if(def!=null)
 					{
-						myMOB.addExpertise(def.ID);
+						myMOB.addExpertise(def.ID());
 						teachEverything=false;
 					}
 				}
@@ -427,14 +427,14 @@ public class MOBTeacher extends CombatAbilities
 					}
 					for(final ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
 					{
-						if((def.name.equalsIgnoreCase(s))
+						if((def.name().equalsIgnoreCase(s))
 						&&(theExpertise==null))
 							theExpertise=def;
 					}
 					if(theExpertise==null)
 					for(final ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
 					{
-						if((CMLib.english().containsString(def.name,s)
+						if((CMLib.english().containsString(def.name(),s)
 						&&(theExpertise==null)))
 							theExpertise=def;
 					}
@@ -451,7 +451,7 @@ public class MOBTeacher extends CombatAbilities
 						for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions(); e.hasMoreElements();)
 						{
 							final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
-							if(def.name.equalsIgnoreCase(s))
+							if(def.name().equalsIgnoreCase(s))
 							{
 								theExpertise=def;
 								break;
@@ -460,7 +460,7 @@ public class MOBTeacher extends CombatAbilities
 						if(theExpertise==null)
 							CMLib.commands().postSay(monster,student,L("I'm sorry, but I've never heard of @x1",s),true,false);
 						else
-							CMLib.commands().postSay(monster,student,L("I'm sorry, but I do not know @x1.",theExpertise.name));
+							CMLib.commands().postSay(monster,student,L("I'm sorry, but I do not know @x1.",theExpertise.name()));
 					}
 					return;
 				}

@@ -209,10 +209,10 @@ public class StdAbility implements Ability
 			{
 				Integer val=O[AbilityMapper.Cost.TRAIN.ordinal()];
 				if(val!=null)
-					return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(val.intValue()));
+					return CMLib.expertises().createNewSkillCost(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(val.intValue()));
 				val=O[AbilityMapper.Cost.PRAC.ordinal()];
 				if(val!=null)
-					return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.PRACTICE,Double.valueOf(val.intValue()));
+					return CMLib.expertises().createNewSkillCost(ExpertiseLibrary.CostType.PRACTICE,Double.valueOf(val.intValue()));
 			}
 			qualifyingLevel=CMLib.ableMapper().qualifyingLevel(mob, this);
 			playerLevel=mob.basePhyStats().level();
@@ -226,10 +226,10 @@ public class StdAbility implements Ability
 			qualifyingLevel=1;
 		final ExpertiseLibrary.SkillCostDefinition rawCost=getRawTrainingCost();
 		if(rawCost==null)
-			return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(1.0));
+			return CMLib.expertises().createNewSkillCost(ExpertiseLibrary.CostType.TRAIN,Double.valueOf(1.0));
 		final double[] vars=new double[]{ qualifyingLevel,playerLevel};
-		final double value=CMath.parseMathExpression(rawCost.costDefinition,vars);
-		return new ExpertiseLibrary.SkillCost(rawCost.type,Double.valueOf(value));
+		final double value=CMath.parseMathExpression(rawCost.costDefinition(),vars);
+		return CMLib.expertises().createNewSkillCost(rawCost.type(),Double.valueOf(value));
 	}
 
 	public int practicesToPractice(MOB mob)

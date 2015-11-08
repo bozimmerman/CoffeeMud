@@ -202,7 +202,7 @@ public class MobData extends StdWebMacro
 				if(X==null)
 					str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				else
-					str.append("<OPTION VALUE=\""+X.ID+"\" SELECTED>"+X.name);
+					str.append("<OPTION VALUE=\""+X.ID()+"\" SELECTED>"+X.name());
 				str.append("</SELECT>,&nbsp; ");
 			}
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=EXPER"+(theclasses.size()+1)+">");
@@ -210,7 +210,7 @@ public class MobData extends StdWebMacro
 			for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 			{
 				final ExpertiseLibrary.ExpertiseDefinition X=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
-				str.append("<OPTION VALUE=\""+X.ID+"\">"+X.name);
+				str.append("<OPTION VALUE=\""+X.ID()+"\">"+X.name());
 			}
 			str.append("</SELECT>");
 		}

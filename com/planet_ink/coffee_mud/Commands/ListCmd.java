@@ -2422,7 +2422,9 @@ public class ListCmd extends StdCommand
 		for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 		{
 			final ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
-			buf.append(CMStrings.padRight("^Z"+def.ID,COL_LEN)+"^?: "+CMStrings.padRight(def.name,COL_LEN)+": "+CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
+			buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
+					  +CMStrings.padRight(def.name(),COL_LEN)+": "
+					  +CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
 		}
 		if(buf.length()==0)
 			return "None defined.";

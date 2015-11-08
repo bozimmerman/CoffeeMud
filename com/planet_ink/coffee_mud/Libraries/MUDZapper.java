@@ -894,7 +894,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								final ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
 								if(E!=null)
-									buf.append(E.name+", ");
+									buf.append(E.name()+", ");
 							}
 						}
 						if(buf.toString().endsWith(", "))
@@ -914,7 +914,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								final ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
 								if(E!=null)
-									buf.append(E.name+", ");
+									buf.append(E.name()+", ");
 							}
 						}
 						if(buf.toString().endsWith(", "))
@@ -2221,7 +2221,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								final ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(str2.substring(1).toUpperCase().trim());
 								if(E!=null)
-									preReqs.addElement(E.ID);
+									preReqs.addElement(E.ID());
 							}
 						}
 					}

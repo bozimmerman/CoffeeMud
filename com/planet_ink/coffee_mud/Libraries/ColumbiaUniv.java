@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.SkillCost;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -58,13 +60,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		for(int i=1;i<ID.length();i++)
 			if(CMSecurity.isExpertiseDisabled(ID.substring(0,i).toUpperCase()+"*"))
 				return null;
-		def=new  ExpertiseLibrary.ExpertiseDefinition();
-		def.ID=ID.toUpperCase();
-		def.name=name;
-		def.baseName=baseName;
+		def=createNewExpertiseDefinition(ID.toUpperCase(), name, baseName);
 		def.addListMask(listMask);
 		def.addFinalMask(finalMask);
-		def.data=(data==null)?new String[0]:data;
+		def.setData((data==null)?new String[0]:data);
 		final int practices=CMath.s_int(costs[0]);
 		final int trains=CMath.s_int(costs[1]);
 		final int qpCost=CMath.s_int(costs[2]);
@@ -79,7 +78,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		if(expCost>0)
 			def.addCost(CostType.XP, Double.valueOf(expCost));
 		//if(timeCost>0) def.addCost(CostType.PRACTICE, Double.valueOf(practices));
-		completeEduMap.put(def.ID,def);
+		completeEduMap.put(def.ID(),def);
 		baseEduSetLists.clear();
 		return def;
 	}
@@ -137,7 +136,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
 		{
 			D=e.nextElement();
-			if(D.name.equalsIgnoreCase(ID))
+			if(D.name().equalsIgnoreCase(ID))
 				return D;
 		}
 		if(exactOnly)
@@ -145,13 +144,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
 		{
 			D=e.nextElement();
-			if(D.ID.startsWith(ID))
+			if(D.ID().startsWith(ID))
 				return D;
 		}
 		for(final Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
 		{
 			D=e.nextElement();
-			if(CMLib.english().containsString(D.name,ID))
+			if(CMLib.english().containsString(D.name(),ID))
 				return D;
 		}
 		return null;
@@ -274,6 +273,95 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
+	public SkillCost createNewSkillCost(final CostType costType, final Double value)
+	{
+		return new SkillCost()
+		{
+			/**
+			 * Returns a simple description of the Type of
+			 * this cost.  A MOB and sample value is required for
+			 * money currencies.
+			 * @param mob MOB, for GOLD type currency eval
+			 * @return the type of currency
+			 */
+			@Override
+			public String costType(final MOB mob)
+			{
+				final String ofWhat;
+				switch(costType)
+				{
+				case XP: ofWhat="experience points"; break;
+				case GOLD: ofWhat=CMLib.beanCounter().getDenominationName(mob, value.doubleValue()); break;
+				case PRACTICE: ofWhat="practice points"; break;
+				case QP: ofWhat="quest points"; break;
+				default: ofWhat=CMLib.english().makePlural(costType.name().toLowerCase()); break;
+				}
+				return ofWhat;
+			}
+
+			@Override
+			public String requirements(final MOB mob)
+			{
+				switch(costType)
+				{
+				case XP: return value.intValue()+" XP";
+				case QP: return value.intValue()+" quest pts";
+				case GOLD:
+					if(mob==null)
+						return CMLib.beanCounter().abbreviatedPrice("", value.doubleValue());
+					else
+						return CMLib.beanCounter().abbreviatedPrice(mob, value.doubleValue());
+				default: return value.intValue()+" "
+							   +((value.intValue()==1)
+									   ?costType.name().toLowerCase()
+									   :CMLib.english().makePlural(costType.name().toLowerCase()));
+				}
+			}
+
+			/**
+			 * Returns whether the given mob meets the given cost requirements.
+			 * @param student the student to check
+			 * @return true if it meets, false otherwise
+			 */
+			@Override
+			public boolean doesMeetCostRequirements(final MOB student)
+			{
+				switch(costType)
+				{
+				case XP:
+					return student.getExperience() >= value.intValue();
+				case GOLD:
+					return CMLib.beanCounter().getTotalAbsoluteNativeValue(student) >= value.doubleValue();
+				case TRAIN:
+					return student.getTrains() >= value.intValue();
+				case PRACTICE:
+					return student.getPractices() >= value.intValue();
+				case QP:
+					return student.getQuestPoint() >= value.intValue();
+				}
+				return false;
+			}
+
+			/**
+			 * Expends the given cost upon the given student
+			 * @param student the student to check
+			 */
+			@Override
+			public void spendSkillCost(final MOB student)
+			{
+				switch(costType)
+				{
+				case XP:	   CMLib.leveler().postExperience(student, null, "", value.intValue(), true); break;
+				case GOLD:     CMLib.beanCounter().subtractMoney(student, value.doubleValue()); break;
+				case TRAIN:    student.setTrains(student.getTrains()-value.intValue()); break;
+				case PRACTICE: student.setPractices(student.getPractices()-value.intValue()); break;
+				case QP:	   student.setQuestPoint(student.getQuestPoint()-value.intValue()); break;
+				}
+			}
+		};
+	}
+	
+	@Override
 	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible)
 	{
 		int levels=0;
@@ -308,23 +396,25 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			if(this.getDefinition(ID)!=null)
 			{
 				def=getDefinition(ID);
-				WKID=def.name.toUpperCase().replace(' ','_');
+				WKID=def.name().toUpperCase().replace(' ','_');
 				if(addIfPossible)
 				{
-					def.data=CMParms.parseCommas(row,true).toArray(new String[0]);
+					def.setData(CMParms.parseCommas(row,true).toArray(new String[0]));
 				}
 			}
 			else
 			{
 				final List<String> stages=getStageCodes(ID);
 				if(addIfPossible)
+				{
 					for(int s1=0;s1<stages.size();s1++)
 					{
 						def=getDefinition(stages.get(s1));
 						if(def==null)
 							continue;
-						def.data=CMParms.parseCommas(row,true).toArray(new String[0]);
+						def.setData(CMParms.parseCommas(row,true).toArray(new String[0]));
 					}
+				}
 			}
 			return null;
 		}
@@ -342,7 +432,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			if(getDefinition(ID)!=null)
 			{
 				def=getDefinition(ID);
-				WKID=def.name.toUpperCase().replace(' ','_');
+				WKID=def.name().toUpperCase().replace(' ','_');
 				if(addIfPossible)
 				{
 					helpMap.remove(WKID);
@@ -357,14 +447,14 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				def=getDefinition(stages.get(0));
 				if(def!=null)
 				{
-					WKID=def.name.toUpperCase().replace(' ','_');
+					WKID=def.name().toUpperCase().replace(' ','_');
 					x=WKID.lastIndexOf('_');
 					if((x>=0)&&(CMath.isInteger(WKID.substring(x+1))||CMath.isRomanNumeral(WKID.substring(x+1))))
 					{
 						WKID=WKID.substring(0,x);
 						if(addIfPossible)
 						if(!helpMap.containsKey(WKID))
-							helpMap.put(WKID,row+"\n\r(See help on "+def.name+").");
+							helpMap.put(WKID,row+"\n\r(See help on "+def.name()+").");
 					}
 				}
 				if(addIfPossible)
@@ -373,7 +463,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 					def=getDefinition(stages.get(s1));
 					if(def==null)
 						continue;
-					WKID=def.name.toUpperCase().replace(' ','_');
+					WKID=def.name().toUpperCase().replace(' ','_');
 					if(!helpMap.containsKey(WKID))
 						helpMap.put(WKID,row);
 				}
@@ -543,32 +633,42 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		{
 			final ExpertiseDefinition theExpertise=(ExpertiseDefinition)learnThis;
 			teachWhat=theExpertise.name();
-			if(student.fetchExpertise(theExpertise.ID)!=null)
+			if(student.fetchExpertise(theExpertise.ID())!=null)
 			{
 				if(teacher.isMonster())
-					CMLib.commands().postSay(teacher,student,L("You already know @x1",theExpertise.name),true,false);
+					CMLib.commands().postSay(teacher,student,L("You already know @x1",theExpertise.name()),true,false);
 				else
-					teacher.tell(L("@x1 already knows @x2",student.name(),theExpertise.name));
+					teacher.tell(L("@x1 already knows @x2",student.name(),theExpertise.name()));
 				return false;
 			}
 
 			if(!myQualifiedExpertises(student).contains(theExpertise))
 			{
 				if(teacher.isMonster())
-					CMLib.commands().postSay(teacher,student,L("I'm sorry, you do not yet fully qualify for the expertise '@x1'.\n\rRequirements: @x2",theExpertise.name,CMLib.masking().maskDesc(theExpertise.allRequirements())),true,false);
+				{
+					CMLib.commands().postSay(teacher,student,
+							L("I'm sorry, you do not yet fully qualify for the expertise '@x1'.\n\rRequirements: @x2",
+							theExpertise.name(),CMLib.masking().maskDesc(theExpertise.allRequirements())),true,false);
+				}
 				else
-					teacher.tell(L("@x1 does not yet fully qualify for the expertise '@x2'.\n\rRequirements: @x3",student.name(),theExpertise.name,CMLib.masking().maskDesc(theExpertise.allRequirements())));
+				{
+					teacher.tell(L("@x1 does not yet fully qualify for the expertise '@x2'.\n\rRequirements: @x3",
+							student.name(),theExpertise.name(),CMLib.masking().maskDesc(theExpertise.allRequirements())));
+				}
 				return false;
 			}
 			if(!theExpertise.meetsCostRequirements(student))
 			{
 				if(teacher.isMonster())
-					CMLib.commands().postSay(teacher,student,L("I'm sorry, but to learn the expertise '@x1' requires: @x2",theExpertise.name,theExpertise.costDescription()),true,false);
+				{
+					CMLib.commands().postSay(teacher,student,L("I'm sorry, but to learn the expertise '@x1' requires: @x2",
+						theExpertise.name(),theExpertise.costDescription()),true,false);
+				}
 				else
 					teacher.tell(L("Training for that expertise requires @x1.",theExpertise.costDescription()));
 				return false;
 			}
-			teachWhat=theExpertise.name;
+			teachWhat=theExpertise.name();
 		}
 		//TODO: move this to handleBeingTaught and make async!!
 		try
@@ -621,7 +721,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		{
 			final ExpertiseDefinition theExpertise=(ExpertiseDefinition)learnThis;
 			theExpertise.spendCostRequirements(student);
-			student.addExpertise(theExpertise.ID);
+			student.addExpertise(theExpertise.ID());
 			if((!teacher.isMonster()) && (!student.isMonster()))
 				CMLib.leveler().postExperience(teacher, null, null, 100, false);
 		}
@@ -641,5 +741,215 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			return false;
 		teacher.location().send(teacher,msg);
 		return true;
+	}
+	
+	protected ExpertiseDefinition createNewExpertiseDefinition(String ID, String name, String baseName)
+	{
+		final ExpertiseDefinition definition = new ExpertiseDefinition()
+		{
+			private String								ID					= "";
+			private String								name				= "";
+			private String								baseName			= "";
+			private String[]							data				= new String[0];
+			private String								uncompiledListMask	= "";
+			private String								uncompiledFinalMask	= "";
+			private int									minLevel			= Integer.MIN_VALUE + 1;
+			private MaskingLibrary.CompiledZapperMask	compiledListMask	= null;
+			private final ExpertiseDefinition			parent				= null;
+			private MaskingLibrary.CompiledZapperMask	compiledFinalMask	= null;
+			private final List<SkillCost>				costs				= new LinkedList<SkillCost>();
+
+			@Override
+			public String getBaseName()
+			{
+				return baseName;
+			}
+			
+			@Override
+			public void setBaseName(String baseName)
+			{
+				this.baseName = baseName;
+			}
+			
+			@Override
+			public void setName(String name)
+			{
+				this.name = name;
+			}
+			
+			@Override
+			public void setID(String ID)
+			{
+				this.ID = ID;
+			}
+			
+			@Override
+			public void setData(String[] data)
+			{
+				this.data = data;
+			}
+			
+			@Override
+			public ExpertiseDefinition getParent()
+			{
+				return parent;
+			}
+			
+			@Override
+			public String name()
+			{
+				return name;
+			}
+			
+			@Override
+			public int getMinimumLevel()
+			{
+				if(minLevel==Integer.MIN_VALUE+1)
+					minLevel=CMLib.masking().minMaskLevel(allRequirements(),0);
+				return minLevel;
+			}
+			
+			@Override
+			public String[] getData()
+			{
+				return data;
+			}
+			
+			@Override
+			public MaskingLibrary.CompiledZapperMask compiledListMask()
+			{
+				if((this.compiledListMask==null)&&(uncompiledListMask.length()>0))
+				{
+					compiledListMask=CMLib.masking().maskCompile(uncompiledListMask);
+					CMLib.ableMapper().addPreRequisites(ID,new Vector<String>(),uncompiledListMask.trim());
+				}
+				return this.compiledListMask;
+			}
+			
+			@Override
+			public MaskingLibrary.CompiledZapperMask compiledFinalMask()
+			{
+				if((this.compiledFinalMask==null)&&(uncompiledFinalMask.length()>0))
+				{
+					this.compiledFinalMask=CMLib.masking().maskCompile(uncompiledFinalMask);
+					CMLib.ableMapper().addPreRequisites(ID,new Vector<String>(),uncompiledFinalMask.trim());
+				}
+				return this.compiledFinalMask;
+			}
+			
+			@Override
+			public String allRequirements()
+			{
+				String req=uncompiledListMask;
+				if(req==null)
+					req=""; else req=req.trim();
+				if((uncompiledFinalMask!=null)&&(uncompiledFinalMask.length()>0))
+					req=req+" "+uncompiledFinalMask;
+				return req.trim();
+			}
+			
+			@Override
+			public String listRequirements()
+			{
+				return uncompiledListMask;
+			}
+
+			@Override
+			public String finalRequirements()
+			{
+				return uncompiledFinalMask;
+			}
+
+			@Override
+			public void addListMask(String mask)
+			{
+				if((mask==null)||(mask.length()==0))
+					return;
+				if(uncompiledListMask==null)
+					uncompiledListMask=mask;
+				else
+					uncompiledListMask+=mask;
+				compiledListMask=null;
+			}
+
+			@Override
+			public void addFinalMask(String mask)
+			{
+				if((mask==null)||(mask.length()==0))
+					return;
+				if(uncompiledFinalMask==null)
+					uncompiledFinalMask=mask;
+				else
+					uncompiledFinalMask+=mask;
+				compiledFinalMask=CMLib.masking().maskCompile(uncompiledFinalMask);
+				CMLib.ableMapper().addPreRequisites(ID,new Vector<String>(),uncompiledFinalMask.trim());
+			}
+
+			@Override
+			public void addCost(CostType type, Double value)
+			{
+				costs.add(createNewSkillCost(type,value));
+			}
+			
+			@Override
+			public String costDescription()
+			{
+				final StringBuffer costStr=new StringBuffer("");
+				for(final SkillCost cost : costs)
+					costStr.append(cost.requirements(null)).append(", ");
+				if(costStr.length()==0)
+					return "";
+				return costStr.substring(0,costStr.length()-2);
+			}
+			
+			@Override
+			public boolean meetsCostRequirements(MOB mob)
+			{
+				for(final SkillCost cost : costs)
+					if(!cost.doesMeetCostRequirements(mob))
+						return false;
+				return true;
+			}
+			
+			@Override
+			public void spendCostRequirements(MOB mob)
+			{
+				for(final SkillCost cost : costs)
+					cost.spendSkillCost(mob);
+			}
+			
+			@Override
+			public int compareTo(CMObject o)
+			{
+				return (o == this) ? 0 : 1;
+			}
+
+			@Override
+			public String ID()
+			{
+				return ID;
+			}
+
+			@Override
+			public CMObject newInstance()
+			{
+				return this;
+			}
+
+			@Override
+			public CMObject copyOf()
+			{
+				return this;
+			}
+
+			@Override
+			public void initializeClass()
+			{
+			}
+		};
+		definition.setID(ID.toUpperCase());
+		definition.setName(name);
+		definition.setBaseName(baseName);
+		return definition;
 	}
 }

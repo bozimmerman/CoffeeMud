@@ -61,7 +61,7 @@ public class ExpertiseNext extends StdWebMacro
 			for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
 			{
 				E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
-				Ename=E.name;
+				Ename=E.name();
 				x=Ename.lastIndexOf(' ');
 				if((x>0)&&(CMath.isRomanNumeral(Ename.substring(x).trim())))
 					Ename=Ename.substring(0,x)+" "+((char)('a'+CMath.convertFromRoman(Ename.substring(x).trim())));
@@ -119,7 +119,7 @@ public class ExpertiseNext extends StdWebMacro
 			{
 				if(expertsAllows!=null)
 				{
-					qualLevel=expertsAllows.get(E.ID);
+					qualLevel=expertsAllows.get(E.ID());
 					if(qualLevel==null)
 						continue;
 					if((levelCheck>=0)&&(levelCheck!=qualLevel.intValue()))
@@ -128,12 +128,12 @@ public class ExpertiseNext extends StdWebMacro
 				else
 				if((levelCheck>=0)&&(levelCheck!=E.getMinimumLevel()))
 					continue;
-				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!E.ID.equals(lastID))))
+				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!E.ID().equals(lastID))))
 				{
-					httpReq.addFakeUrlParameter("EXPERTISE",E.ID);
+					httpReq.addFakeUrlParameter("EXPERTISE",E.ID());
 					return "";
 				}
-				lastID=E.ID;
+				lastID=E.ID();
 			}
 		}
 		httpReq.addFakeUrlParameter("EXPERTISE","");

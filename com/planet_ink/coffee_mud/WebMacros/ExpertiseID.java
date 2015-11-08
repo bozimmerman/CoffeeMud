@@ -46,7 +46,7 @@ public class ExpertiseID extends StdWebMacro
 		{
 			final ExpertiseLibrary.ExpertiseDefinition E=CMLib.expertises().getDefinition(last);
 			if(E!=null)
-				return E.ID;
+				return E.ID();
 		}
 		return "";
 	}

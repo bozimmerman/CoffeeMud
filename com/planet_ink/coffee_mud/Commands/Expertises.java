@@ -65,7 +65,7 @@ public class Expertises extends StdCommand
 					expers.add("?"+CMStrings.capitalizeAllFirstLettersAndLower(p.first)+" "+p.second.intValue());
 			}
 			else
-				expers.add(def.name);
+				expers.add(def.name());
 		}
 		expers.sort();
 		for(final String expName : expers)

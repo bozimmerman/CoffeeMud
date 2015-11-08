@@ -99,8 +99,8 @@ public class WillQualify  extends Skills
 					&&((types.size()==0)
 						||types.contains("EXPERTISE")
 						||types.contains("EXPERTISES")
-						||types.contains(E.ID.toUpperCase())
-						||types.contains(E.name.toUpperCase())))
+						||types.contains(E.ID().toUpperCase())
+						||types.contains(E.name().toUpperCase())))
 					{
 						if ( (++col) > 2)
 						{
@@ -108,7 +108,7 @@ public class WillQualify  extends Skills
 							col = 1;
 						}
 						thisLine.append("^N[^H" + CMStrings.padRight("" + l, 3) + "^?] "
-								+ CMStrings.padRight("^<HELP^>"+E.name+"^</HELP^>", 19) + " "
+								+ CMStrings.padRight("^<HELP^>"+E.name()+"^</HELP^>", 19) + " "
 								+ CMStrings.padRight(E.costDescription(), (col == 2) ? 12 : 13));
 					}
 				}

@@ -93,23 +93,30 @@ public class Learn extends StdCommand
 		final List<ExpertiseDefinition> V2=CMLib.expertises().myListableExpertises(mob);
 		for (final ExpertiseDefinition def : V2)
 		{
-			if((def.name.equalsIgnoreCase(what)
-			||def.name.equalsIgnoreCase(what))
-			||(def.name.toLowerCase().startsWith((what).toLowerCase())
-					&&(CMath.isRomanNumeral(def.name.substring((what).length()).trim())||CMath.isNumber(def.name.substring((what).length()).trim())))
+			if((def.name().equalsIgnoreCase(what)
+			||def.name().equalsIgnoreCase(what))
+			||(def.name().toLowerCase().startsWith((what).toLowerCase())
+				&&(CMath.isRomanNumeral(def.name().substring((what).length()).trim())
+					||CMath.isNumber(def.name().substring((what).length()).trim())))
 			)
-			{ theExpertise=def; break;}
+			{
+				theExpertise = def;
+				break;
+			}
 		}
 		if(theExpertise==null)
 		for(final Enumeration<ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 		{
 			final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
-			if(def.name.equalsIgnoreCase(what))
-			{ theExpertise=def; break;}
+			if(def.name().equalsIgnoreCase(what))
+			{
+				theExpertise = def;
+				break;
+			}
 		}
 		if(theExpertise!=null)
 		{
-			final Vector<String> CC=new XVector<String>("SAY","I would like you to teach me "+theExpertise.name);
+			final Vector<String> CC=new XVector<String>("SAY","I would like you to teach me "+theExpertise.name());
 			mob.doCommand(CC,metaFlags);
 			return true;
 		}

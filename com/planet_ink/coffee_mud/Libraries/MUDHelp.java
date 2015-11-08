@@ -224,8 +224,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				def=CMLib.expertises().getDefinition(allowStr);
 				if(def!=null)
 				{
-					prepend.append(def.name);
-					lastLine+=(def.name.length()+2);
+					prepend.append(def.name());
+					lastLine+=(def.name().length()+2);
 				}
 				else
 				{
@@ -319,12 +319,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 			{
 				def=e.nextElement();
-				if(def.name.toUpperCase().replace(' ','_').equals(tag.toUpperCase()))
+				if(def.name().toUpperCase().replace(' ','_').equals(tag.toUpperCase()))
 				{
 					final StringBuilder prepend=new StringBuilder("");
-					prepend.append(L("\n\rExpertise: @x1",def.name));
+					prepend.append(L("\n\rExpertise: @x1",def.name()));
 					prepend.append(L("\n\rRequires : @x1",CMLib.masking().maskDesc(def.allRequirements(),true)));
-					appendAllowed(prepend,def.ID);
+					appendAllowed(prepend,def.ID());
 					str=prepend.toString()+"\n\r"+str;
 				}
 			}

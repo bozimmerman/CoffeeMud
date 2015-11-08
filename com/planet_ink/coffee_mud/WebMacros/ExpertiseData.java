@@ -53,9 +53,9 @@ public class ExpertiseData extends StdWebMacro
 				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuilder s=CMLib.help().getHelpText(E.ID,null,false);
+					StringBuilder s=CMLib.help().getHelpText(E.ID(),null,false);
 					if(s==null)
-						s=CMLib.help().getHelpText(E.name,null,false);
+						s=CMLib.help().getHelpText(E.name(),null,false);
 					int limit=78;
 					if(parms.containsKey("LIMIT"))
 						limit=CMath.s_int(parms.get("LIMIT"));
@@ -63,13 +63,13 @@ public class ExpertiseData extends StdWebMacro
 				}
 				if(parms.containsKey("SHORTHELP"))
 				{
-					String s=CMLib.help().getHelpFile().getProperty(E.ID.toUpperCase());
+					String s=CMLib.help().getHelpFile().getProperty(E.ID().toUpperCase());
 					if(s==null)
-						s=CMLib.help().getArcHelpFile().getProperty(E.ID.toUpperCase());
+						s=CMLib.help().getArcHelpFile().getProperty(E.ID().toUpperCase());
 					if(s==null)
-						s=CMLib.help().getHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
+						s=CMLib.help().getHelpFile().getProperty(E.name().toUpperCase().replace(' ','_'));
 					if(s==null)
-						s=CMLib.help().getArcHelpFile().getProperty(E.name.toUpperCase().replace(' ','_'));
+						s=CMLib.help().getArcHelpFile().getProperty(E.name().toUpperCase().replace(' ','_'));
 					if(s!=null)
 					{
 						if(s.toUpperCase().trim().startsWith("<EXPERTISE>"))
@@ -78,14 +78,14 @@ public class ExpertiseData extends StdWebMacro
 					}
 					else
 					{
-						StringBuilder s2=CMLib.help().getHelpText(E.ID,null,false);
+						StringBuilder s2=CMLib.help().getHelpText(E.ID(),null,false);
 						if(s2==null)
-							s2=CMLib.help().getHelpText(E.name,null,false);
+							s2=CMLib.help().getHelpText(E.name(),null,false);
 						str.append(helpHelp(s2));
 					}
 				}
 				if(parms.containsKey("NAME"))
-					str.append(E.name+", ");
+					str.append(E.name()+", ");
 				if(parms.containsKey("COST"))
 					str.append(E.costDescription()+", ");
 				if(parms.containsKey("REQUIRES"))
@@ -94,12 +94,12 @@ public class ExpertiseData extends StdWebMacro
 				{
 					ExpertiseLibrary.ExpertiseDefinition def=null;
 					Ability A=null;
-					for(final Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(E.ID);i.hasNext();)
+					for(final Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(E.ID());i.hasNext();)
 					{
 						final String allowStr=i.next();
 						def=CMLib.expertises().getDefinition(allowStr);
 						if(def!=null)
-							str.append(def.name+", ");
+							str.append(def.name()+", ");
 						else
 						{
 							A=CMClass.getAbility(allowStr);

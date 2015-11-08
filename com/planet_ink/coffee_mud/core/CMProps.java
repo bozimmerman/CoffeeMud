@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core;
 
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
@@ -1243,10 +1244,28 @@ public class CMProps extends Properties
 				Log.errOut("CMProps","Error parsing coffeemud.ini '"+fieldName+"' has duplicate key:"+((keyField.length()==0)?"<EMPTY>":keyField));
 				continue;
 			}
-			map.put(keyField.toUpperCase(), new ExpertiseLibrary.SkillCostDefinition(costType,formula));
+			map.put(keyField.toUpperCase(), makeCostDefinition(costType,formula));
 		}
 	}
 
+	private static final ExpertiseLibrary.SkillCostDefinition makeCostDefinition(final CostType costType, final String costDefinition)
+	{
+		return new ExpertiseLibrary.SkillCostDefinition()
+		{
+			@Override
+			public CostType type()
+			{
+				return costType;
+			}
+
+			@Override
+			public String costDefinition()
+			{
+				return costDefinition;
+			}
+		};
+	}
+	
 	/**
 	 * Returns the cost of gaining the given skill, by Ability id, for the callers
 	 * thread group.
@@ -1260,7 +1279,7 @@ public class CMProps extends Properties
 		if(pair==null)
 			pair=p.skillsCost.get("");
 		if(pair==null)
-			pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+			pair=makeCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
 		return pair;
 	}
 
@@ -1277,7 +1296,7 @@ public class CMProps extends Properties
 		if(pair==null)
 			pair=p.commonCost.get("");
 		if(pair==null)
-			pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+			pair=makeCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
 		return pair;
 	}
 
@@ -1294,7 +1313,7 @@ public class CMProps extends Properties
 		if(pair==null)
 			pair=p.languageCost.get("");
 		if(pair==null)
-			pair=new ExpertiseLibrary.SkillCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
+			pair=makeCostDefinition(ExpertiseLibrary.CostType.TRAIN, "1");
 		return pair;
 	}
 

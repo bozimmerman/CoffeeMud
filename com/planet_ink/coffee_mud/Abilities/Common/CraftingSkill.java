@@ -928,9 +928,11 @@ public class CraftingSkill extends GatheringSkill
 				allExpertiseWords = new TreeSet<String>();
 				for(final ExpertiseLibrary.ExpertiseDefinition def : V )
 				{
-					if(def.data != null)
-						for(final String s : def.data)
+					if(def.getData() != null)
+					{
+						for(final String s : def.getData())
 							allExpertiseWords.add(s.toUpperCase());
+					}
 				}
 				Resources.submitResource("CRAFTING_SKILL_EXPERTISE_WORDS", allExpertiseWords);
 			}

@@ -765,7 +765,7 @@ public class AbilityData extends StdWebMacro
 						final String allowStr=i.next();
 						def=CMLib.expertises().getDefinition(allowStr);
 						if(def!=null)
-							str.append(def.name+", ");
+							str.append(def.name()+", ");
 						else
 						{
 							A2=CMClass.getAbility(allowStr);

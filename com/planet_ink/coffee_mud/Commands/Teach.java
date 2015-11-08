@@ -92,7 +92,7 @@ public class Teach extends StdCommand
 			for(int v=0;v<V.size();v++)
 			{
 				final ExpertiseLibrary.ExpertiseDefinition def=V.get(v);
-				if((def.name.equalsIgnoreCase(abilityName))
+				if((def.name().equalsIgnoreCase(abilityName))
 				&&(theExpertise==null))
 					theExpertise=def;
 			}
@@ -100,7 +100,7 @@ public class Teach extends StdCommand
 				for(int v=0;v<V.size();v++)
 				{
 					final ExpertiseLibrary.ExpertiseDefinition def=V.get(v);
-					if((CMLib.english().containsString(def.name,abilityName)
+					if((CMLib.english().containsString(def.name(),abilityName)
 					&&(theExpertise==null)))
 						theExpertise=def;
 				}

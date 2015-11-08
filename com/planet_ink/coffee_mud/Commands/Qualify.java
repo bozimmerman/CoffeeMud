@@ -267,8 +267,10 @@ public class Qualify  extends Skills
 		{
 			final List<ExpertiseDefinition> V=CMLib.expertises().myListableExpertises(mob);
 			for(int v=V.size()-1;v>=0;v--)
-				if(mob.fetchExpertise(V.get(v).ID)!=null)
+			{
+				if(mob.fetchExpertise(V.get(v).ID())!=null)
 					V.remove(v);
+			}
 			if(V.size()>0)
 			{
 				if(showAll)
@@ -280,20 +282,20 @@ public class Qualify  extends Skills
 					for(int e=0;e<V.size();e++)
 					{
 						def=V.get(e);
-						if(def.name.length()>=COL_LEN)
+						if(def.name().length()>=COL_LEN)
 						{
 							if(col>=2)
 							{
 								msg.append("\n\r");
 								col=0;
 							}
-							msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name+"^</HELP^>",COL_LEN));
-							final int spaces=(COL_LEN*2)-def.name.length();
+							msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name()+"^</HELP^>",COL_LEN));
+							final int spaces=(COL_LEN*2)-def.name().length();
 							for(int i=0;i<spaces;i++) msg.append(" ");
 							col++;
 						}
 						else
-							msg.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",COL_LEN));
+							msg.append(CMStrings.padRight("^<HELP^>"+def.name()+"^</HELP^>",COL_LEN));
 						if((++col)>=3)
 						{
 							msg.append("\n\r");
@@ -314,7 +316,7 @@ public class Qualify  extends Skills
 					{
 						def=V.get(v);
 						req=CMLib.masking().maskDesc(def.finalRequirements(),true);
-						prefix="^<HELP^>"+def.name+"^</HELP^>";
+						prefix="^<HELP^>"+def.name()+"^</HELP^>";
 						if(req.length()<=46)
 							msg2.append(CMStrings.padRight(prefix,COL_LEN)+req+"\n\r");
 						else

@@ -869,7 +869,7 @@ public class StdCharClass implements CharClass
 					giveMobAbility(mob,A,100,"",true,false);
 			}
 			for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
-				mob.addExpertise(((ExpertiseLibrary.ExpertiseDefinition)e.nextElement()).ID);
+				mob.addExpertise(((ExpertiseLibrary.ExpertiseDefinition)e.nextElement()).ID());
 			alreadyAble.clear();
 			alreadyAff.clear();
 		}

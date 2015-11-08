@@ -215,92 +215,394 @@ public class WaterCurrents extends ActiveTicker
 		public AWaterCurrent()
 		{
 			super();
-			//CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
+			// CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed
+			// for mem & perf
 		}
-		@Override public String ID() { return "AWaterCurrent"; }
-		@Override public String name(){ return "a water current";}
-		@Override public String Name(){return name();}
-		@Override public String description(){return "";}
-		@Override public String displayText(){return "";}
-		protected boolean savable=true;
-		protected String miscText="";
-		protected Physical affected=null;
-		protected int canAffectCode(){return 0;}
-		protected int canTargetCode(){return 0;}
-		@Override public boolean canTarget(int can_code){return false;}
-		@Override public boolean canAffect(int can_code){return false;}
-		@Override public double castingTime(final MOB mob, final List<String> cmds){return 0.0;}
-		@Override public double combatCastingTime(final MOB mob, final List<String> cmds){return 0.0;}
-		@Override public double checkedCastingCost(final MOB mob, final List<String> cmds){return 0.0;}
-		@Override public void initializeClass(){}
-		@Override public int abilityCode(){return 0;}
-		@Override public void setAbilityCode(int newCode){}
-		@Override public int adjustedLevel(MOB mob, int asLevel){return -1;}
-		@Override public boolean bubbleAffect(){return false;}
+
+		@Override
+		public String ID()
+		{
+			return "AWaterCurrent";
+		}
+
+		@Override
+		public String name()
+		{
+			return "a water current";
+		}
+
+		@Override
+		public String Name()
+		{
+			return name();
+		}
+
+		@Override
+		public String description()
+		{
+			return "";
+		}
+
+		@Override
+		public String displayText()
+		{
+			return "";
+		}
+
+		protected boolean	savable		= true;
+		protected String	miscText	= "";
+		protected Physical	affected	= null;
+
+		protected int canAffectCode()
+		{
+			return 0;
+		}
+
+		protected int canTargetCode()
+		{
+			return 0;
+		}
+
+		@Override
+		public boolean canTarget(int can_code)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean canAffect(int can_code)
+		{
+			return false;
+		}
+
+		@Override
+		public double castingTime(final MOB mob, final List<String> cmds)
+		{
+			return 0.0;
+		}
+
+		@Override
+		public double combatCastingTime(final MOB mob, final List<String> cmds)
+		{
+			return 0.0;
+		}
+
+		@Override
+		public double checkedCastingCost(final MOB mob, final List<String> cmds)
+		{
+			return 0.0;
+		}
+
+		@Override
+		public void initializeClass()
+		{
+		}
+
+		@Override
+		public int abilityCode()
+		{
+			return 0;
+		}
+
+		@Override
+		public void setAbilityCode(int newCode)
+		{
+		}
+
+		@Override
+		public int adjustedLevel(MOB mob, int asLevel)
+		{
+			return -1;
+		}
+
+		@Override
+		public boolean bubbleAffect()
+		{
+			return false;
+		}
+
 		@Override
 		public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)
-		{ return new ExpertiseLibrary.SkillCost(ExpertiseLibrary.CostType.TRAIN, Double.valueOf(1.0));}
-		@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-		@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
-		@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
-		@Override public int usageType(){return 0;}
-		//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
-		@Override public long expirationDate(){return 0;}
-		@Override public void setExpirationDate(long time){}
+		{
+			return CMLib.expertises().createNewSkillCost(ExpertiseLibrary.CostType.TRAIN, Double.valueOf(1.0));
+		}
 
-		@Override public void setName(String newName){}
-		@Override public void setDescription(String newDescription){}
-		@Override public void setDisplayText(String newDisplayText){}
-		@Override public String image(){return "";}
-		@Override public String rawImage(){return "";}
-		@Override public void setImage(String newImage){}
-		@Override public MOB invoker(){return null;}
-		@Override public void setInvoker(MOB mob){}
-		@Override public String[] triggerStrings(){return empty;}
-		@Override public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
-		@Override public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel){return false;}
-		@Override public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel){return false;}
-		@Override public boolean autoInvocation(MOB mob, boolean force){return false;}
-		@Override public void unInvoke(){}
-		@Override public boolean canBeUninvoked(){return false;}
-		@Override public boolean isAutoInvoked(){return true;}
-		@Override public boolean isNowAnAutoEffect(){return true;}
-		@Override public List<String> externalFiles(){return null;}
+		@Override
+		public String L(final String str, final String... xs)
+		{
+			return CMLib.lang().fullSessionTranslation(str, xs);
+		}
 
-		@Override public boolean canBeTaughtBy(MOB teacher, MOB student){return false;}
-		@Override public boolean canBePracticedBy(MOB teacher, MOB student){return false;}
-		@Override public boolean canBeLearnedBy(MOB teacher, MOB student){return false;}
-		@Override public void teach(MOB teacher, MOB student){}
-		@Override public void practice(MOB teacher, MOB student){}
-		@Override public int maxRange(){return Integer.MAX_VALUE;}
-		@Override public int minRange(){return Integer.MIN_VALUE;}
+		@Override
+		public long flags()
+		{
+			return Ability.FLAG_TRANSPORTING;
+		}
+
+		@Override
+		public int getTickStatus()
+		{
+			return Tickable.STATUS_NOT;
+		}
+
+		@Override
+		public int usageType()
+		{
+			return 0;
+		}
+
+		// protected void finalize(){
+		// CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed
+		// for mem & perf
+		@Override
+		public long expirationDate()
+		{
+			return 0;
+		}
+
+		@Override
+		public void setExpirationDate(long time)
+		{
+		}
+
+		@Override
+		public void setName(String newName)
+		{
+		}
+
+		@Override
+		public void setDescription(String newDescription)
+		{
+		}
+
+		@Override
+		public void setDisplayText(String newDisplayText)
+		{
+		}
+
+		@Override
+		public String image()
+		{
+			return "";
+		}
+
+		@Override
+		public String rawImage()
+		{
+			return "";
+		}
+
+		@Override
+		public void setImage(String newImage)
+		{
+		}
+
+		@Override
+		public MOB invoker()
+		{
+			return null;
+		}
+
+		@Override
+		public void setInvoker(MOB mob)
+		{
+		}
+
+		@Override
+		public String[] triggerStrings()
+		{
+			return empty;
+		}
+
+		@Override
+		public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+		{
+			return true;
+		}
+
+		@Override
+		public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean autoInvocation(MOB mob, boolean force)
+		{
+			return false;
+		}
+
+		@Override
+		public void unInvoke()
+		{
+		}
+
+		@Override
+		public boolean canBeUninvoked()
+		{
+			return false;
+		}
+
+		@Override
+		public boolean isAutoInvoked()
+		{
+			return true;
+		}
+
+		@Override
+		public boolean isNowAnAutoEffect()
+		{
+			return true;
+		}
+
+		@Override
+		public List<String> externalFiles()
+		{
+			return null;
+		}
+
+		@Override
+		public boolean canBeTaughtBy(MOB teacher, MOB student)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean canBePracticedBy(MOB teacher, MOB student)
+		{
+			return false;
+		}
+
+		@Override
+		public boolean canBeLearnedBy(MOB teacher, MOB student)
+		{
+			return false;
+		}
+
+		@Override
+		public void teach(MOB teacher, MOB student)
+		{
+		}
+
+		@Override
+		public void practice(MOB teacher, MOB student)
+		{
+		}
+
+		@Override
+		public int maxRange()
+		{
+			return Integer.MAX_VALUE;
+		}
+
+		@Override
+		public int minRange()
+		{
+			return Integer.MIN_VALUE;
+		}
 
 		@Override
 		public void startTickDown(MOB invokerMOB, Physical affected, int tickTime)
 		{
-			if(affected.fetchEffect(ID())==null)
+			if (affected.fetchEffect(ID()) == null)
 				affected.addEffect(this);
 		}
 
-		@Override public int proficiency(){return 0;}
-		@Override public void setProficiency(int newProficiency){}
-		@Override public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto){return false;}
-		@Override public void helpProficiency(MOB mob, int adjustment){}
+		@Override
+		public int proficiency()
+		{
+			return 0;
+		}
 
-		@Override public Physical affecting(){return affected;}
-		@Override public void setAffectedOne(Physical P){affected=P;}
+		@Override
+		public void setProficiency(int newProficiency)
+		{
+		}
 
-		@Override public boolean putInCommandlist(){return false;}
-		@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-		@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-		@Override public int castingQuality(MOB mob, Physical target){return Ability.QUALITY_INDIFFERENT;}
+		@Override
+		public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto)
+		{
+			return false;
+		}
 
-		@Override public int classificationCode(){ return Ability.ACODE_PROPERTY;}
-		@Override public boolean isSavable(){ return savable;}
-		@Override public void setSavable(boolean truefalse)	{ savable=truefalse; }
-		protected boolean amDestroyed=false;
-		@Override public void destroy(){amDestroyed=true;}
-		@Override public boolean amDestroyed(){return amDestroyed;}
+		@Override
+		public void helpProficiency(MOB mob, int adjustment)
+		{
+		}
+
+		@Override
+		public Physical affecting()
+		{
+			return affected;
+		}
+
+		@Override
+		public void setAffectedOne(Physical P)
+		{
+			affected = P;
+		}
+
+		@Override
+		public boolean putInCommandlist()
+		{
+			return false;
+		}
+
+		@Override
+		public int abstractQuality()
+		{
+			return Ability.QUALITY_INDIFFERENT;
+		}
+
+		@Override
+		public int enchantQuality()
+		{
+			return Ability.QUALITY_INDIFFERENT;
+		}
+
+		@Override
+		public int castingQuality(MOB mob, Physical target)
+		{
+			return Ability.QUALITY_INDIFFERENT;
+		}
+
+		@Override
+		public int classificationCode()
+		{
+			return Ability.ACODE_PROPERTY;
+		}
+
+		@Override
+		public boolean isSavable()
+		{
+			return savable;
+		}
+
+		@Override
+		public void setSavable(boolean truefalse)
+		{
+			savable = truefalse;
+		}
+
+		protected boolean	amDestroyed	= false;
+
+		@Override
+		public void destroy()
+		{
+			amDestroyed = true;
+		}
+
+		@Override
+		public boolean amDestroyed()
+		{
+			return amDestroyed;
+		}
 
 		@Override
 		public CMObject newInstance()
@@ -309,42 +611,67 @@ public class WaterCurrents extends ActiveTicker
 			{
 				return this.getClass().newInstance();
 			}
-			catch(final Exception e)
+			catch (final Exception e)
 			{
-				Log.errOut(ID(),e);
+				Log.errOut(ID(), e);
 			}
 			return new AWaterCurrent();
 		}
 
-		@Override public int getSaveStatIndex(){return getStatCodes().length;}
-		@Override public String[] getStatCodes(){return CODES;}
-		@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+		@Override
+		public int getSaveStatIndex()
+		{
+			return getStatCodes().length;
+		}
+
+		@Override
+		public String[] getStatCodes()
+		{
+			return CODES;
+		}
+
+		@Override
+		public boolean isStat(String code)
+		{
+			return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
+		}
+
 		protected int getCodeNum(String code)
 		{
 			for(int i=0;i<CODES.length;i++)
+			{
 				if(code.equalsIgnoreCase(CODES[i]))
 					return i;
+			}
 			return -1;
 		}
+
 		@Override
 		public String getStat(String code)
 		{
 			switch(getCodeNum(code))
 			{
-			case 0: return ID();
-			case 1: return text();
+			case 0:
+				return ID();
+			case 1:
+				return text();
 			}
 			return "";
 		}
+
 		@Override
 		public void setStat(String code, String val)
 		{
 			switch(getCodeNum(code))
 			{
-			case 0: return;
-			case 1: setMiscText(val); break;
+			case 0:
+				return;
+			case 1:
+				setMiscText(val);
+				break;
 			}
 		}
+		
 		@Override
 		public boolean sameAs(Environmental E)
 		{
@@ -352,11 +679,16 @@ public class WaterCurrents extends ActiveTicker
 				return false;
 			final String[] codes=getStatCodes();
 			for(int i=0;i<codes.length;i++)
+			{
 				if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 					return false;
+			}
 			return true;
 		}
-		protected void cloneFix(Ability E){}
+
+		protected void cloneFix(Ability E)
+		{
+		}
 
 		@Override
 		public CMObject copyOf()
@@ -375,14 +707,47 @@ public class WaterCurrents extends ActiveTicker
 			}
 		}
 
-		@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+		@Override
+		public int compareTo(CMObject o)
+		{
+			return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+		}
 
-		@Override public void setMiscText(String newMiscText){ miscText=newMiscText;}
-		@Override public String text(){ return miscText;}
-		@Override public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
-		@Override public boolean appropriateToMyFactions(MOB mob){return true;}
-		@Override public String accountForYourself(){return "";}
-		@Override public String requirements(MOB mob){return "";}
+		@Override
+		public void setMiscText(String newMiscText)
+		{
+			miscText = newMiscText;
+		}
+
+		@Override
+		public String text()
+		{
+			return miscText;
+		}
+
+		@Override
+		public String miscTextFormat()
+		{
+			return CMParms.FORMAT_UNDEFINED;
+		}
+
+		@Override
+		public boolean appropriateToMyFactions(MOB mob)
+		{
+			return true;
+		}
+
+		@Override
+		public String accountForYourself()
+		{
+			return "";
+		}
+
+		@Override
+		public String requirements(MOB mob)
+		{
+			return "";
+		}
 
 		@Override
 		public boolean canAffect(Physical P)
@@ -406,36 +771,65 @@ public class WaterCurrents extends ActiveTicker
 
 		@Override
 		public boolean canTarget(Physical P)
-		{ return false;}
+		{
+			return false;
+		}
 
 		@Override
 		public void affectPhyStats(Physical affected, PhyStats affectableStats)
-		{}
+		{
+		}
+
 		@Override
 		public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-		{}
+		{
+		}
+
 		@Override
 		public void affectCharState(MOB affectedMob, CharState affectableMaxState)
-		{}
+		{
+		}
+
 		@Override
 		public void executeMsg(final Environmental myHost, final CMMsg msg)
 		{
 			return;
 		}
+
 		@Override
 		public boolean okMessage(final Environmental myHost, final CMMsg msg)
 		{
 			return true;
 		}
+
 		@Override
 		public boolean tick(Tickable ticking, int tickID)
-		{ return true;	}
-		@Override public void makeLongLasting(){}
-		@Override public void makeNonUninvokable(){}
-		protected static final int[] cost=new int[3];
-		@Override public int[] usageCost(MOB mob, boolean ignoreClassOverride){return cost;}
+		{
+			return true;
+		}
 
+		@Override
+		public void makeLongLasting()
+		{
+		}
 
-		@Override public boolean isGeneric(){return false;}
+		@Override
+		public void makeNonUninvokable()
+		{
+		}
+
+		protected static final int[]	cost	= new int[3];
+
+		@Override
+		public int[] usageCost(MOB mob, boolean ignoreClassOverride)
+		{
+			return cost;
+		}
+
+		@Override
+		public boolean isGeneric()
+		{
+			return false;
+		}
 	}
 }

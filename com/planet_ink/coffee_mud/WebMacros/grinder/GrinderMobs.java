@@ -281,7 +281,7 @@ public class GrinderMobs
 					if(def==null)
 						return "Unknown Expertise '"+aff+"'.";
 					else
-						E.addExpertise(def.ID);
+						E.addExpertise(def.ID());
 				}
 				num++;
 				aff=httpReq.getUrlParameter("EXPER"+num);
