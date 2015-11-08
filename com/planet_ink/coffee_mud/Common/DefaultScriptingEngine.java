@@ -91,10 +91,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		debugBadScripts=CMSecurity.isDebugging(CMSecurity.DbgFlag.BADSCRIPTS);
 	}
 
-	@Override public boolean isSavable(){ return isSavable;}
-	@Override public void setSavable(boolean truefalse){isSavable=truefalse;}
+	@Override
+	public boolean isSavable()
+	{
+		return isSavable;
+	}
 
-	@Override public String defaultQuestName(){ return defaultQuestName;}
+	@Override
+	public void setSavable(boolean truefalse)
+	{
+		isSavable = truefalse;
+	}
+
+	@Override
+	public String defaultQuestName()
+	{
+		return defaultQuestName;
+	}
 
 	protected Quest defaultQuest()
 	{
@@ -126,9 +139,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	@Override public String getVarScope() { return scope;}
+	@Override
+	public String getVarScope()
+	{
+		return scope;
+	}
 
-	protected Object[] newObjs() { return new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];}
+	protected Object[] newObjs()
+	{
+		return new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
+	}
 
 	@Override
 	public String getLocalVarXML()
@@ -190,12 +210,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		Quest Q=null;
 		for(int i=0;i<CMLib.quests().numQuests();i++)
 		{
-			try{Q=CMLib.quests().fetchQuest(i);}catch(final Exception e){}
+			try
+			{
+				Q = CMLib.quests().fetchQuest(i);
+			}
+			catch (final Exception e)
+			{
+			}
 			if(Q!=null)
 			{
 				if(Q.name().equalsIgnoreCase(named))
+				{
 					if(Q.running())
 						return Q;
+				}
 			}
 		}
 		return CMLib.quests().fetchQuest(named);
@@ -290,53 +318,67 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		for(int i=0;i<instructions.length();i++)
 			switch(instructions.charAt(i))
 			{
-			case 'c': newLine[i]=CMParms.getCleanBit(line,i); break;
-			case 'C': newLine[i]=CMParms.getCleanBit(line,i).toUpperCase().trim(); break;
-			case 'r': newLine[i]=CMParms.getPastBitClean(line,i-1); break;
-			case 'R': newLine[i]=CMParms.getPastBitClean(line,i-1).toUpperCase().trim(); break;
-			case 'p': newLine[i]=CMParms.getPastBit(line,i-1); break;
-			case 'P': newLine[i]=CMParms.getPastBit(line,i-1).toUpperCase().trim(); break;
-			case 'S': line=line.toUpperCase();
-			//$FALL-THROUGH$
+			case 'c':
+				newLine[i] = CMParms.getCleanBit(line, i);
+				break;
+			case 'C':
+				newLine[i] = CMParms.getCleanBit(line, i).toUpperCase().trim();
+				break;
+			case 'r':
+				newLine[i] = CMParms.getPastBitClean(line, i - 1);
+				break;
+			case 'R':
+				newLine[i] = CMParms.getPastBitClean(line, i - 1).toUpperCase().trim();
+				break;
+			case 'p':
+				newLine[i] = CMParms.getPastBit(line, i - 1);
+				break;
+			case 'P':
+				newLine[i] = CMParms.getPastBit(line, i - 1).toUpperCase().trim();
+				break;
+			case 'S':
+				line = line.toUpperCase();
+				//$FALL-THROUGH$
 			case 's':
 			{
-				final String s=CMParms.getPastBit(line,i-1);
-				final int numBits=CMParms.numBits(s);
-				final String[] newNewLine=new String[newLine.length-1+numBits];
-				for(int x=0;x<i;x++)
-					newNewLine[x]=newLine[x];
-				for(int x=0;x<numBits;x++)
-					newNewLine[i+x]=CMParms.getCleanBit(s,i-1);
-				newLine=newNewLine;
-				i=instructions.length();
+				final String s = CMParms.getPastBit(line, i - 1);
+				final int numBits = CMParms.numBits(s);
+				final String[] newNewLine = new String[newLine.length - 1 + numBits];
+				for (int x = 0; x < i; x++)
+					newNewLine[x] = newLine[x];
+				for (int x = 0; x < numBits; x++)
+					newNewLine[i + x] = CMParms.getCleanBit(s, i - 1);
+				newLine = newNewLine;
+				i = instructions.length();
 				break;
 			}
-			case 'T': line=line.toUpperCase();
-			//$FALL-THROUGH$
+			case 'T':
+				line = line.toUpperCase();
+				//$FALL-THROUGH$
 			case 't':
 			{
-				final String s=CMParms.getPastBit(line,i-1);
-				String[] newNewLine=null;
-				if(CMParms.getCleanBit(s,0).equalsIgnoreCase("P"))
+				final String s = CMParms.getPastBit(line, i - 1);
+				String[] newNewLine = null;
+				if (CMParms.getCleanBit(s, 0).equalsIgnoreCase("P"))
 				{
-					newNewLine=new String[newLine.length+1];
-					for(int x=0;x<i;x++)
-						newNewLine[x]=newLine[x];
-					newNewLine[i]="P";
-					newNewLine[i+1]=CMParms.getPastBitClean(s,0);
+					newNewLine = new String[newLine.length + 1];
+					for (int x = 0; x < i; x++)
+						newNewLine[x] = newLine[x];
+					newNewLine[i] = "P";
+					newNewLine[i + 1] = CMParms.getPastBitClean(s, 0);
 				}
 				else
 				{
 
-					final int numNewBits=(s.trim().length()==0)?1:CMParms.numBits(s);
-					newNewLine=new String[newLine.length-1+numNewBits];
-					for(int x=0;x<i;x++)
-						newNewLine[x]=newLine[x];
-					for(int x=0;x<numNewBits;x++)
-						newNewLine[i+x]=CMParms.getCleanBit(s,x);
+					final int numNewBits = (s.trim().length() == 0) ? 1 : CMParms.numBits(s);
+					newNewLine = new String[newLine.length - 1 + numNewBits];
+					for (int x = 0; x < i; x++)
+						newNewLine[x] = newLine[x];
+					for (int x = 0; x < numNewBits; x++)
+						newNewLine[i + x] = CMParms.getCleanBit(s, x);
 				}
-				newLine=newNewLine;
-				i=instructions.length();
+				newLine = newNewLine;
+				i = instructions.length();
 				break;
 			}
 			}
@@ -371,7 +413,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final String[] newLine=insertStringArray(tt,parsed,start);
 		oldBits[0]=newLine;
 		return newLine;
-
 	}
 
 	@Override
@@ -536,6 +577,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			final MOB M=CMLib.players().getPlayer(host);
 			if(M!=null)
+			{
 				for(final Enumeration<ScriptingEngine> e=M.scripts();e.hasMoreElements();)
 				{
 					final ScriptingEngine SE=e.nextElement();
@@ -545,6 +587,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(SE.isVar(host,var)))
 						return SE.getVar(host,var);
 				}
+			}
 		}
 		if(val==null) 
 			return defaultVal;
@@ -771,15 +814,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		switch(SIGN.intValue())
 		{
-		case SIGN_EQUL: return (x==0);
+		case SIGN_EQUL:
+			return (x == 0);
 		case SIGN_EQGT:
-		case SIGN_GTEQ: return (x==0)||(x>0);
+		case SIGN_GTEQ:
+			return (x == 0) || (x > 0);
 		case SIGN_EQLT:
-		case SIGN_LTEQ: return (x==0)||(x<0);
-		case SIGN_GRAT: return (x>0);
-		case SIGN_LEST: return (x<0);
-		case SIGN_NTEQ: return (x!=0);
-		default: return (x==0);
+		case SIGN_LTEQ:
+			return (x == 0) || (x < 0);
+		case SIGN_GRAT:
+			return (x > 0);
+		case SIGN_LEST:
+			return (x < 0);
+		case SIGN_NTEQ:
+			return (x != 0);
+		default:
+			return (x == 0);
 		}
 	}
 
@@ -1302,81 +1352,94 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			else
 			switch(str.charAt(1))
 			{
-			case 'a': return (lastKnownLocation!=null)?lastKnownLocation.getArea():null;
-			case 'B':
-			case 'b': return (lastLoaded instanceof PhysicalAgent)?(PhysicalAgent)lastLoaded:null;
-			case 'N':
-			case 'n': return ((source==backupMOB)&&(backupMOB!=null)&&(monster!=scripted))?scripted:source;
-			case 'I':
-			case 'i': return scripted;
-			case 'T':
-			case 't': return ((target==backupMOB)&&(backupMOB!=null)&&(monster!=scripted))?
-								scripted:(target instanceof PhysicalAgent)?(PhysicalAgent)target:null;
-			case 'O':
-			case 'o': return primaryItem;
-			case 'P':
-			case 'p': return secondaryItem;
-			case 'd':
-			case 'D': return lastKnownLocation;
-			case 'F':
-			case 'f': if((monster!=null)&&(monster.amFollowing()!=null))
+				case 'a':
+					return (lastKnownLocation != null) ? lastKnownLocation.getArea() : null;
+				case 'B':
+				case 'b':
+					return (lastLoaded instanceof PhysicalAgent) ? (PhysicalAgent) lastLoaded : null;
+				case 'N':
+				case 'n':
+					return ((source == backupMOB) && (backupMOB != null) && (monster != scripted)) ? scripted : source;
+				case 'I':
+				case 'i':
+					return scripted;
+				case 'T':
+				case 't':
+					return ((target == backupMOB) && (backupMOB != null) && (monster != scripted)) 
+							? scripted : (target instanceof PhysicalAgent) ? (PhysicalAgent) target : null;
+				case 'O':
+				case 'o':
+					return primaryItem;
+				case 'P':
+				case 'p':
+					return secondaryItem;
+				case 'd':
+				case 'D':
+					return lastKnownLocation;
+				case 'F':
+				case 'f':
+					if ((monster != null) && (monster.amFollowing() != null))
 						return monster.amFollowing();
-					  return null;
-			case 'r':
-			case 'R': return getRandPC(monster,tmp,lastKnownLocation);
-			case 'c':
-			case 'C': return getRandAnyone(monster,tmp,lastKnownLocation);
-			case 'w': return primaryItem!=null?primaryItem.owner():null;
-			case 'W': return secondaryItem!=null?secondaryItem.owner():null;
-			case 'x':
-			case 'X':
-				if(lastKnownLocation!=null)
-				{
-					if((str.length()>2)&&(Directions.getGoodDirectionCode(""+str.charAt(2))>=0))
-						return lastKnownLocation.getExitInDir(Directions.getGoodDirectionCode(""+str.charAt(2)));
-					int i=0;
-					Exit E=null;
-					while(((++i)<100)||(E!=null))
-						E=lastKnownLocation.getExitInDir(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1));
-					return E;
-				}
-				return null;
-			case '[':
-				{
-					final int x=str.substring(2).indexOf(']');
-					if(x>=0)
+					return null;
+				case 'r':
+				case 'R':
+					return getRandPC(monster, tmp, lastKnownLocation);
+				case 'c':
+				case 'C':
+					return getRandAnyone(monster, tmp, lastKnownLocation);
+				case 'w':
+					return primaryItem != null ? primaryItem.owner() : null;
+				case 'W':
+					return secondaryItem != null ? secondaryItem.owner() : null;
+				case 'x':
+				case 'X':
+					if (lastKnownLocation != null)
 					{
-						String mid=str.substring(2).substring(0,x);
-						final int y=mid.indexOf(' ');
-						if(y>0)
+						if ((str.length() > 2) && (Directions.getGoodDirectionCode("" + str.charAt(2)) >= 0))
+							return lastKnownLocation.getExitInDir(Directions.getGoodDirectionCode("" + str.charAt(2)));
+						int i = 0;
+						Exit E = null;
+						while (((++i) < 100) || (E != null))
+							E = lastKnownLocation.getExitInDir(CMLib.dice().roll(1, Directions.NUM_DIRECTIONS(), -1));
+						return E;
+					}
+					return null;
+				case '[':
+				{
+					final int x = str.substring(2).indexOf(']');
+					if (x >= 0)
+					{
+						String mid = str.substring(2).substring(0, x);
+						final int y = mid.indexOf(' ');
+						if (y > 0)
 						{
-							final int num=CMath.s_int(mid.substring(0,y).trim());
-							mid=mid.substring(y+1).trim();
-							final Quest Q=getQuest(mid);
-							if(Q!=null)
+							final int num = CMath.s_int(mid.substring(0, y).trim());
+							mid = mid.substring(y + 1).trim();
+							final Quest Q = getQuest(mid);
+							if (Q != null)
 								return Q.getQuestItem(num);
 						}
 					}
+					break;
 				}
-			break;
-			case '{':
+				case '{':
 				{
-					final int x=str.substring(2).indexOf('}');
-					if(x>=0)
+					final int x = str.substring(2).indexOf('}');
+					if (x >= 0)
 					{
-						String mid=str.substring(2).substring(0,x).trim();
-						final int y=mid.indexOf(' ');
-						if(y>0)
+						String mid = str.substring(2).substring(0, x).trim();
+						final int y = mid.indexOf(' ');
+						if (y > 0)
 						{
-							final int num=CMath.s_int(mid.substring(0,y).trim());
-							mid=mid.substring(y+1).trim();
-							final Quest Q=getQuest(mid);
-							if(Q!=null)
+							final int num = CMath.s_int(mid.substring(0, y).trim());
+							mid = mid.substring(y + 1).trim();
+							final Quest Q = getQuest(mid);
+							if (Q != null)
 								return Q.getQuestMob(num);
 						}
 					}
+					break;
 				}
-			break;
 			}
 		}
 		if(lastKnownLocation!=null)
@@ -1463,268 +1526,282 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			else
 			switch(c)
 			{
-			case '@':
-				if((t<varifyable.length()-2)&&Character.isLetter(varifyable.charAt(t+2)))
-				{
-					final Environmental E=getArgumentItem("$"+varifyable.charAt(t+2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-					middle=(E==null)?"null":""+E;
-				}
-				break;
-			case 'a':
-				if(lastKnownLocation!=null)
-					middle=lastKnownLocation.getArea().name();
-				break;
-				//case 'a':
-			case 'A':
-				// unnecessary, since, in coffeemud, this is part of the name
-				break;
-			case 'b': middle=lastLoaded!=null?lastLoaded.name():""; break;
-			case 'B': middle=lastLoaded!=null?lastLoaded.displayText():""; break;
-			case 'c':
-			case 'C':
-				randMOB=getRandAnyone(monster,tmp,lastKnownLocation);
-				if(randMOB!=null)
-					middle=randMOB.name();
-				break;
-			case 'd': middle=(lastKnownLocation!=null)?lastKnownLocation.displayText(monster):""; break;
-			case 'D': middle=(lastKnownLocation!=null)?lastKnownLocation.description(monster):""; break;
-			case 'e':
-				if(source!=null)
-					middle=source.charStats().heshe();
-				break;
-			case 'E':
-				if((target!=null)&&(target instanceof MOB))
-					middle=((MOB)target).charStats().heshe();
-				break;
-			case 'f':
-				if((monster!=null)&&(monster.amFollowing()!=null))
-					middle=monster.amFollowing().name();
-				break;
-			case 'F':
-				if((monster!=null)&&(monster.amFollowing()!=null))
-					middle=monster.amFollowing().charStats().heshe();
-				break;
-			case 'g': middle=((msg==null)?"":msg.toLowerCase()); break;
-			case 'G': middle=((msg==null)?"":msg); break;
-			case 'h':
-				if(monster!=null)
-					middle=monster.charStats().himher();
-				break;
-			case 'H':
-				randMOB=getRandPC(monster,tmp,lastKnownLocation);
-				if(randMOB!=null)
-					middle=randMOB.charStats().himher();
-				break;
-			case 'i':
-				if(monster!=null)
-					middle=monster.name();
-				break;
-			case 'I':
-				if(monster!=null)
-					middle=monster.displayText();
-				break;
-			case 'j':
-				if(monster!=null)
-					middle=monster.charStats().heshe();
-				break;
-			case 'J':
-				randMOB=getRandPC(monster,tmp,lastKnownLocation);
-				if(randMOB!=null)
-					middle=randMOB.charStats().heshe();
-				break;
-			case 'k':
-				if(monster!=null)
-					middle=monster.charStats().hisher();
-				break;
-			case 'K':
-				randMOB=getRandPC(monster,tmp,lastKnownLocation);
-				if(randMOB!=null)
-					middle=randMOB.charStats().hisher();
-				break;
-			case 'l':
-				if(lastKnownLocation!=null)
-				{
-					final StringBuffer str=new StringBuffer("");
-					for(int i=0;i<lastKnownLocation.numInhabitants();i++)
+				case '@':
+					if ((t < varifyable.length() - 2) && Character.isLetter(varifyable.charAt(t + 2)))
 					{
-						final MOB M=lastKnownLocation.fetchInhabitant(i);
-						if((M!=null)&&(M!=monster)&&(CMLib.flags().canBeSeenBy(M,monster)))
-						   str.append("\""+M.name()+"\" ");
+						final Environmental E = getArgumentItem("$" + varifyable.charAt(t + 2), 
+								source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+						middle = (E == null) ? "null" : "" + E;
 					}
-					middle=str.toString();
-				}
-				break;
-			case 'L':
-				if(lastKnownLocation!=null)
-				{
-					final StringBuffer str=new StringBuffer("");
-					for(int i=0;i<lastKnownLocation.numItems();i++)
+					break;
+				case 'a':
+					if (lastKnownLocation != null)
+						middle = lastKnownLocation.getArea().name();
+					break;
+				// case 'a':
+				case 'A':
+					// unnecessary, since, in coffeemud, this is part of the
+					// name
+					break;
+				case 'b':
+					middle = lastLoaded != null ? lastLoaded.name() : "";
+					break;
+				case 'B':
+					middle = lastLoaded != null ? lastLoaded.displayText() : "";
+					break;
+				case 'c':
+				case 'C':
+					randMOB = getRandAnyone(monster, tmp, lastKnownLocation);
+					if (randMOB != null)
+						middle = randMOB.name();
+					break;
+				case 'd':
+					middle = (lastKnownLocation != null) ? lastKnownLocation.displayText(monster) : "";
+					break;
+				case 'D':
+					middle = (lastKnownLocation != null) ? lastKnownLocation.description(monster) : "";
+					break;
+				case 'e':
+					if (source != null)
+						middle = source.charStats().heshe();
+					break;
+				case 'E':
+					if ((target != null) && (target instanceof MOB))
+						middle = ((MOB) target).charStats().heshe();
+					break;
+				case 'f':
+					if ((monster != null) && (monster.amFollowing() != null))
+						middle = monster.amFollowing().name();
+					break;
+				case 'F':
+					if ((monster != null) && (monster.amFollowing() != null))
+						middle = monster.amFollowing().charStats().heshe();
+					break;
+				case 'g':
+					middle = ((msg == null) ? "" : msg.toLowerCase());
+					break;
+				case 'G':
+					middle = ((msg == null) ? "" : msg);
+					break;
+				case 'h':
+					if (monster != null)
+						middle = monster.charStats().himher();
+					break;
+				case 'H':
+					randMOB = getRandPC(monster, tmp, lastKnownLocation);
+					if (randMOB != null)
+						middle = randMOB.charStats().himher();
+					break;
+				case 'i':
+					if (monster != null)
+						middle = monster.name();
+					break;
+				case 'I':
+					if (monster != null)
+						middle = monster.displayText();
+					break;
+				case 'j':
+					if (monster != null)
+						middle = monster.charStats().heshe();
+					break;
+				case 'J':
+					randMOB = getRandPC(monster, tmp, lastKnownLocation);
+					if (randMOB != null)
+						middle = randMOB.charStats().heshe();
+					break;
+				case 'k':
+					if (monster != null)
+						middle = monster.charStats().hisher();
+					break;
+				case 'K':
+					randMOB = getRandPC(monster, tmp, lastKnownLocation);
+					if (randMOB != null)
+						middle = randMOB.charStats().hisher();
+					break;
+				case 'l':
+					if (lastKnownLocation != null)
 					{
-						final Item I=lastKnownLocation.getItem(i);
-						if((I!=null)&&(I.container()==null)&&(CMLib.flags().canBeSeenBy(I,monster)))
-						   str.append("\""+I.name()+"\" ");
-					}
-					middle=str.toString();
-				}
-				break;
-			case 'm':
-				if(source!=null)
-					middle=source.charStats().hisher();
-				break;
-			case 'M':
-				if((target!=null)&&(target instanceof MOB))
-					middle=((MOB)target).charStats().hisher();
-				break;
-			case 'n':
-			case 'N':
-				if(source!=null)
-					middle=source.name();
-				break;
-			case 'o':
-			case 'O':
-				if(primaryItem!=null)
-					middle=primaryItem.name();
-				break;
-			case 'p':
-			case 'P':
-				if(secondaryItem!=null)
-					middle=secondaryItem.name();
-				break;
-			case 'r':
-			case 'R':
-				randMOB=getRandPC(monster,tmp,lastKnownLocation);
-				if(randMOB!=null)
-					middle=randMOB.name();
-				break;
-			case 's':
-				if(source!=null)
-					middle=source.charStats().himher();
-				break;
-			case 'S':
-				if((target!=null)&&(target instanceof MOB))
-					middle=((MOB)target).charStats().himher();
-				break;
-			case 't':
-			case 'T':
-				if(target!=null)
-					middle=target.name();
-				break;
-			case 'w':
-				middle=primaryItem!=null?primaryItem.owner().Name():middle;
-				break;
-			case 'W':
-				middle=secondaryItem!=null?secondaryItem.owner().Name():middle;
-				break;
-			case 'x':
-			case 'X':
-				if(lastKnownLocation!=null)
-				{
-					middle="";
-					Exit E=null;
-					int dir=-1;
-					if((t<varifyable.length()-2)&&(Directions.getGoodDirectionCode(""+varifyable.charAt(t+2))>=0))
-					{
-						dir=Directions.getGoodDirectionCode(""+varifyable.charAt(t+2));
-						E=lastKnownLocation.getExitInDir(dir);
-					}
-					else
-					{
-						int i=0;
-						while(((++i)<100)||(E!=null))
+						final StringBuffer str = new StringBuffer("");
+						for (int i = 0; i < lastKnownLocation.numInhabitants(); i++)
 						{
-							dir=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1);
-							E=lastKnownLocation.getExitInDir(dir);
+							final MOB M = lastKnownLocation.fetchInhabitant(i);
+							if ((M != null) && (M != monster) && (CMLib.flags().canBeSeenBy(M, monster)))
+								str.append("\"" + M.name() + "\" ");
 						}
+						middle = str.toString();
 					}
-					if((dir>=0)&&(E!=null))
+					break;
+				case 'L':
+					if (lastKnownLocation != null)
 					{
-						if(c=='x')
-							middle=Directions.getDirectionName(dir);
+						final StringBuffer str = new StringBuffer("");
+						for (int i = 0; i < lastKnownLocation.numItems(); i++)
+						{
+							final Item I = lastKnownLocation.getItem(i);
+							if ((I != null) && (I.container() == null) && (CMLib.flags().canBeSeenBy(I, monster)))
+								str.append("\"" + I.name() + "\" ");
+						}
+						middle = str.toString();
+					}
+					break;
+				case 'm':
+					if (source != null)
+						middle = source.charStats().hisher();
+					break;
+				case 'M':
+					if ((target != null) && (target instanceof MOB))
+						middle = ((MOB) target).charStats().hisher();
+					break;
+				case 'n':
+				case 'N':
+					if (source != null)
+						middle = source.name();
+					break;
+				case 'o':
+				case 'O':
+					if (primaryItem != null)
+						middle = primaryItem.name();
+					break;
+				case 'p':
+				case 'P':
+					if (secondaryItem != null)
+						middle = secondaryItem.name();
+					break;
+				case 'r':
+				case 'R':
+					randMOB = getRandPC(monster, tmp, lastKnownLocation);
+					if (randMOB != null)
+						middle = randMOB.name();
+					break;
+				case 's':
+					if (source != null)
+						middle = source.charStats().himher();
+					break;
+				case 'S':
+					if ((target != null) && (target instanceof MOB))
+						middle = ((MOB) target).charStats().himher();
+					break;
+				case 't':
+				case 'T':
+					if (target != null)
+						middle = target.name();
+					break;
+				case 'w':
+					middle = primaryItem != null ? primaryItem.owner().Name() : middle;
+					break;
+				case 'W':
+					middle = secondaryItem != null ? secondaryItem.owner().Name() : middle;
+					break;
+				case 'x':
+				case 'X':
+					if (lastKnownLocation != null)
+					{
+						middle = "";
+						Exit E = null;
+						int dir = -1;
+						if ((t < varifyable.length() - 2) && (Directions.getGoodDirectionCode("" + varifyable.charAt(t + 2)) >= 0))
+						{
+							dir = Directions.getGoodDirectionCode("" + varifyable.charAt(t + 2));
+							E = lastKnownLocation.getExitInDir(dir);
+						}
 						else
-							middle=E.name();
-					}
-				}
-				break;
-			case 'y':
-				if(source!=null)
-					middle=source.charStats().sirmadam();
-				break;
-			case 'Y':
-				if((target!=null)&&(target instanceof MOB))
-					middle=((MOB)target).charStats().sirmadam();
-				break;
-			case '<':
-				{
-					final int x=back.indexOf('>');
-					if(x>=0)
-					{
-						String mid=back.substring(0,x);
-						final int y=mid.indexOf(' ');
-						Environmental E=null;
-						String arg1="";
-						if(y>=0)
 						{
-							arg1=mid.substring(0,y).trim();
-							E=getArgumentItem(arg1,source,monster,monster,target,primaryItem,secondaryItem,msg,tmp);
-							mid=mid.substring(y+1).trim();
+							int i = 0;
+							while (((++i) < 100) || (E != null))
+							{
+								dir = CMLib.dice().roll(1, Directions.NUM_DIRECTIONS(), -1);
+								E = lastKnownLocation.getExitInDir(dir);
+							}
 						}
-						if(arg1.length()>0)
-							middle=getVar(E,arg1,mid,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
-						back=back.substring(x+1);
-					}
-				}
-				break;
-			case '[':
-				{
-					middle="";
-					final int x=back.indexOf(']');
-					if(x>=0)
-					{
-						String mid=back.substring(0,x);
-						final int y=mid.indexOf(' ');
-						if(y>0)
+						if ((dir >= 0) && (E != null))
 						{
-							final int num=CMath.s_int(mid.substring(0,y).trim());
-							mid=mid.substring(y+1).trim();
-							final Quest Q=getQuest(mid);
-							if(Q!=null)
-								middle=Q.getQuestItemName(num);
+							if (c == 'x')
+								middle = Directions.getDirectionName(dir);
+							else
+								middle = E.name();
 						}
-						back=back.substring(x+1);
 					}
-				}
-				break;
-			case '{':
+					break;
+				case 'y':
+					if (source != null)
+						middle = source.charStats().sirmadam();
+					break;
+				case 'Y':
+					if ((target != null) && (target instanceof MOB))
+						middle = ((MOB) target).charStats().sirmadam();
+					break;
+				case '<':
 				{
-					middle="";
-					final int x=back.indexOf('}');
-					if(x>=0)
+					final int x = back.indexOf('>');
+					if (x >= 0)
 					{
-						String mid=back.substring(0,x).trim();
-						final int y=mid.indexOf(' ');
-						if(y>0)
+						String mid = back.substring(0, x);
+						final int y = mid.indexOf(' ');
+						Environmental E = null;
+						String arg1 = "";
+						if (y >= 0)
 						{
-							final int num=CMath.s_int(mid.substring(0,y).trim());
-							mid=mid.substring(y+1).trim();
-							final Quest Q=getQuest(mid);
-							if(Q!=null)
-								middle=Q.getQuestMobName(num);
+							arg1 = mid.substring(0, y).trim();
+							E = getArgumentItem(arg1, source, monster, monster, target, primaryItem, secondaryItem, msg, tmp);
+							mid = mid.substring(y + 1).trim();
 						}
-						back=back.substring(x+1);
+						if (arg1.length() > 0)
+							middle = getVar(E, arg1, mid, source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp);
+						back = back.substring(x + 1);
 					}
+					break;
 				}
-				break;
-			case '%':
+				case '[':
 				{
-					middle="";
-					final int x=back.indexOf('%');
-					if(x>=0)
+					middle = "";
+					final int x = back.indexOf(']');
+					if (x >= 0)
 					{
-						middle=functify(monster,source,target,monster,primaryItem,secondaryItem,msg,tmp,back.substring(0,x).trim());
-						back=back.substring(x+1);
+						String mid = back.substring(0, x);
+						final int y = mid.indexOf(' ');
+						if (y > 0)
+						{
+							final int num = CMath.s_int(mid.substring(0, y).trim());
+							mid = mid.substring(y + 1).trim();
+							final Quest Q = getQuest(mid);
+							if (Q != null)
+								middle = Q.getQuestItemName(num);
+						}
+						back = back.substring(x + 1);
 					}
+					break;
 				}
-				break;
+				case '{':
+				{
+					middle = "";
+					final int x = back.indexOf('}');
+					if (x >= 0)
+					{
+						String mid = back.substring(0, x).trim();
+						final int y = mid.indexOf(' ');
+						if (y > 0)
+						{
+							final int num = CMath.s_int(mid.substring(0, y).trim());
+							mid = mid.substring(y + 1).trim();
+							final Quest Q = getQuest(mid);
+							if (Q != null)
+								middle = Q.getQuestMobName(num);
+						}
+						back = back.substring(x + 1);
+					}
+					break;
+				}
+				case '%':
+				{
+					middle = "";
+					final int x = back.indexOf('%');
+					if (x >= 0)
+					{
+						middle = functify(monster, source, target, monster, primaryItem, secondaryItem, msg, tmp, back.substring(0, x).trim());
+						back = back.substring(x + 1);
+					}
+					break;
+				}
 			}
 			if((back.startsWith("."))
 			&&(back.length()>1))
@@ -1825,65 +1902,87 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			final MOB M=(MOB)E;
 			for(final int i : CharStats.CODES.ALLCODES())
+			{
 				if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
 				{
 					val=""+M.charStats().getStat(CharStats.CODES.NAME(i)); //yes, this is right
 					found=true;
 					break;
 				}
+			}
 			if(!found)
-			for(int i=0;i<M.curState().getStatCodes().length;i++)
-				if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
+			{
+				for(int i=0;i<M.curState().getStatCodes().length;i++)
 				{
-					val=M.curState().getStat(M.curState().getStatCodes()[i]);
-					found=true;
-					break;
+					if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
+					{
+						val=M.curState().getStat(M.curState().getStatCodes()[i]);
+						found=true;
+						break;
+					}
 				}
+			}
 			if(!found)
-			for(int i=0;i<M.phyStats().getStatCodes().length;i++)
-				if(M.phyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+			{
+				for(int i=0;i<M.phyStats().getStatCodes().length;i++)
 				{
-					val=M.phyStats().getStat(M.phyStats().getStatCodes()[i]);
-					found=true;
-					break;
+					if(M.phyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+					{
+						val=M.phyStats().getStat(M.phyStats().getStatCodes()[i]);
+						found=true;
+						break;
+					}
 				}
+			}
 			if((!found)&&(M.playerStats()!=null))
+			{
 				for(int i=0;i<M.playerStats().getStatCodes().length;i++)
+				{
 					if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
 					{
 						val=M.playerStats().getStat(M.playerStats().getStatCodes()[i]);
 						found=true;
 						break;
 					}
+				}
+			}
 			if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+			{
 				for(int i=0;i<M.baseState().getStatCodes().length;i++)
+				{
 					if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
 					{
 						val=M.baseState().getStat(M.baseState().getStatCodes()[i]);
 						found=true;
 						break;
 					}
+				}
+			}
 			if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
 			{
 				found=true;
 				switch(gstatH.get(arg2.toUpperCase()).intValue())
 				{
-				case GSTATADD_DEITY: val=M.getWorshipCharID(); break;
-				case GSTATADD_CLAN: {
-					Clan C=CMLib.clans().findRivalrousClan(M);
-					if(C==null)
-						C=M.clans().iterator().hasNext()?M.clans().iterator().next().first:null;
-					val=(C!=null)?C.clanID():"";
+				case GSTATADD_DEITY:
+					val = M.getWorshipCharID();
+					break;
+				case GSTATADD_CLAN:
+				{
+					Clan C = CMLib.clans().findRivalrousClan(M);
+					if (C == null)
+						C = M.clans().iterator().hasNext() ? M.clans().iterator().next().first : null;
+					val = (C != null) ? C.clanID() : "";
 					break;
 				}
-				case GSTATADD_CLANROLE: {
-					Clan C=CMLib.clans().findRivalrousClan(M);
-					if(C==null)
-						C=M.clans().iterator().hasNext()?M.clans().iterator().next().first:null;
-					if(C!=null)
+				case GSTATADD_CLANROLE:
+				{
+					Clan C = CMLib.clans().findRivalrousClan(M);
+					if (C == null)
+						C = M.clans().iterator().hasNext() ? M.clans().iterator().next().first : null;
+					if (C != null)
 					{
-						final Pair<Clan,Integer> p=M.getClanRole(C.clanID());
-						val=(p!=null)?p.second.toString():"";
+						final Pair<Clan, Integer> p = M.getClanRole(C.clanID());
+						val = (p != null) ? p.second.toString() : "";
 					}
 					break;
 				}
@@ -1923,44 +2022,62 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final MOB M=(MOB)E;
 				for(final int i : CharStats.CODES.ALLCODES())
+				{
 					if(CharStats.CODES.NAME(i).equals(arg2)||CharStats.CODES.DESC(i).equals(arg2))
 					{
 						val=""+M.charStats().getStat(CharStats.CODES.NAME(i));
 						found=true;
 						break;
 					}
+				}
 				if(!found)
-				for(int i=0;i<M.curState().getStatCodes().length;i++)
-					if(M.curState().getStatCodes()[i].equals(arg2))
+				{
+					for(int i=0;i<M.curState().getStatCodes().length;i++)
 					{
-						val=M.curState().getStat(M.curState().getStatCodes()[i]);
-						found=true;
-						break;
+						if(M.curState().getStatCodes()[i].equals(arg2))
+						{
+							val=M.curState().getStat(M.curState().getStatCodes()[i]);
+							found=true;
+							break;
+						}
 					}
+				}
 				if(!found)
-				for(int i=0;i<M.phyStats().getStatCodes().length;i++)
-					if(M.phyStats().getStatCodes()[i].equals(arg2))
+				{
+					for(int i=0;i<M.phyStats().getStatCodes().length;i++)
 					{
-						val=M.phyStats().getStat(M.phyStats().getStatCodes()[i]);
-						found=true;
-						break;
+						if(M.phyStats().getStatCodes()[i].equals(arg2))
+						{
+							val=M.phyStats().getStat(M.phyStats().getStatCodes()[i]);
+							found=true;
+							break;
+						}
 					}
+				}
 				if((!found)&&(M.playerStats()!=null))
-				for(int i=0;i<M.playerStats().getStatCodes().length;i++)
-					if(M.playerStats().getStatCodes()[i].equals(arg2))
+				{
+					for(int i=0;i<M.playerStats().getStatCodes().length;i++)
 					{
-						val=M.playerStats().getStat(M.playerStats().getStatCodes()[i]);
-						found=true;
-						break;
+						if(M.playerStats().getStatCodes()[i].equals(arg2))
+						{
+							val=M.playerStats().getStat(M.playerStats().getStatCodes()[i]);
+							found=true;
+							break;
+						}
 					}
+				}
 				if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+				{
 					for(int i=0;i<M.baseState().getStatCodes().length;i++)
+					{
 						if(M.baseState().getStatCodes()[i].equals(arg2.substring(4)))
 						{
 							val=M.baseState().getStat(M.baseState().getStatCodes()[i]);
 							found=true;
 							break;
 						}
+					}
+				}
 				if((!found)&&(gstatH.containsKey(arg2)))
 				{
 					found=true;
@@ -2136,6 +2253,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		String s=null;
 		int depth=0;
 		for(int c=0;c<evalC.length;c++)
+		{
 			switch(state)
 			{
 			case STATE_MAIN:
@@ -2157,55 +2275,58 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				else
 				if(Character.isLetter(evalC[c]))
-				{ /* move along */ }
+				{ /* move along */
+				}
 				else
-				switch(evalC[c])
 				{
-				case '!':
-				{
-					if(c==evalC.length-1)
-						throw new ScriptParseException("Bad Syntax on last !");
-					V.addElement("NOT");
-					dex=c+1;
-					break;
-				}
-				case '(':
-				{
-					s=new String(evalC,dex,c-dex).trim();
-					if(s.length()>0)
+					switch(evalC[c])
 					{
-						s=s.toUpperCase();
-						V.addElement(s);
-						V.addElement("(");
-						dex=c+1;
-						if(funcH.containsKey(s))
-							state=STATE_INFUNCTION;
-						else
-						if(connH.containsKey(s))
-							state=STATE_MAIN;
-						else
-							throw new ScriptParseException("Unknown keyword: "+s);
-					}
-					else
+					case '!':
 					{
-						V.addElement("(");
-						depth++;
+						if(c==evalC.length-1)
+							throw new ScriptParseException("Bad Syntax on last !");
+						V.addElement("NOT");
 						dex=c+1;
+						break;
 					}
-					break;
-				}
-				case ')':
-					s=new String(evalC,dex,c-dex).trim();
-					if(s.length()>0)
-						throw new ScriptParseException("Bad syntax before ) at: "+s);
-					if(depth==0)
-						throw new ScriptParseException("Unmatched ) character");
-					V.addElement(")");
-					depth--;
-					dex=c+1;
-					break;
-				default:
-					throw new ScriptParseException("Unknown character at: "+new String(evalC,dex,c-dex+1).trim()+": "+evaluable);
+					case '(':
+					{
+						s=new String(evalC,dex,c-dex).trim();
+						if(s.length()>0)
+						{
+							s=s.toUpperCase();
+							V.addElement(s);
+							V.addElement("(");
+							dex=c+1;
+							if(funcH.containsKey(s))
+								state=STATE_INFUNCTION;
+							else
+							if(connH.containsKey(s))
+								state=STATE_MAIN;
+							else
+								throw new ScriptParseException("Unknown keyword: "+s);
+						}
+						else
+						{
+							V.addElement("(");
+							depth++;
+							dex=c+1;
+						}
+						break;
+					}
+					case ')':
+						s=new String(evalC,dex,c-dex).trim();
+						if(s.length()>0)
+							throw new ScriptParseException("Bad syntax before ) at: "+s);
+						if(depth==0)
+							throw new ScriptParseException("Unmatched ) character");
+						V.addElement(")");
+						depth--;
+						dex=c+1;
+						break;
+					default:
+						throw new ScriptParseException("Unknown character at: "+new String(evalC,dex,c-dex+1).trim()+": "+evaluable);
+					}
 				}
 				break;
 			}
@@ -2225,6 +2346,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case STATE_POSTFUNCTION:
 			{
 				if(!Character.isWhitespace(evalC[c]))
+				{
 					switch(evalC[c])
 					{
 					case '=': case '>': case '<': case '!':
@@ -2256,6 +2378,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						state=STATE_MAIN;
 						break;
 					}
+				}
 				break;
 			}
 			case STATE_INFUNCTION:
@@ -2343,7 +2466,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				else
 				if(Character.isLetterOrDigit(evalC[c]))
-				{ /* move along */ }
+				{ /* move along */
+				}
 				else
 				if((evalC[c]=='\'')||(evalC[c]=='`'))
 				{
@@ -2357,6 +2481,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 			}
+		}
 		if((state==STATE_POSTFUNCQUOTE)
 		||(state==STATE_INFUNCQUOTE))
 			throw new ScriptParseException("Unclosed "+lastQuote+" somewhere");
@@ -2381,20 +2506,31 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					stack.removeElementAt(stack.size()-1);
 					switch(connector)
 					{
-					case CONNECTOR_AND: trueFalse=preTrueFalse&&trueFalse; break;
-					case CONNECTOR_OR: trueFalse=preTrueFalse||trueFalse; break;
-					case CONNECTOR_ANDNOT: trueFalse=preTrueFalse&&(!trueFalse); break;
+					case CONNECTOR_AND:
+						trueFalse = preTrueFalse && trueFalse;
+						break;
+					case CONNECTOR_OR:
+						trueFalse = preTrueFalse || trueFalse;
+						break;
+					case CONNECTOR_ANDNOT:
+						trueFalse = preTrueFalse && (!trueFalse);
+						break;
 					case CONNECTOR_NOT:
-					case CONNECTOR_ORNOT: trueFalse=preTrueFalse||(!trueFalse); break;
+					case CONNECTOR_ORNOT:
+						trueFalse = preTrueFalse || (!trueFalse);
+						break;
 					}
 				}
 				else
 				switch(connector)
 				{
-				case CONNECTOR_ANDNOT:
-				case CONNECTOR_NOT:
-				case CONNECTOR_ORNOT: trueFalse=!trueFalse; break;
-				default: break;
+					case CONNECTOR_ANDNOT:
+					case CONNECTOR_NOT:
+					case CONNECTOR_ORNOT:
+						trueFalse = !trueFalse;
+						break;
+					default:
+						break;
 				}
 			}
 			else
@@ -2471,25 +2607,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(str.length()==0) 
 			return lastIndex;
 		buf.setLength(0);
-		switch(combiner)
+		switch (combiner)
 		{
 		case '&':
-			lastIndex=strIndex(V,str,0);
+			lastIndex = strIndex(V, str, 0);
 			return lastIndex;
 		case '|':
-			if(lastIndex>=0) 
+			if (lastIndex >= 0)
 				return lastIndex;
-			return strIndex(V,str,0);
+			return strIndex(V, str, 0);
 		case '>':
-			if(lastIndex<0) 
+			if (lastIndex < 0)
 				return lastIndex;
-			return strIndex(V,str,lastIndex+1);
+			return strIndex(V, str, lastIndex + 1);
 		case '<':
 		{
-			if(lastIndex<0) 
+			if (lastIndex < 0)
 				return lastIndex;
-			final int newIndex=strIndex(V,str,0);
-			if(newIndex<lastIndex) 
+			final int newIndex = strIndex(V, str, 0);
+			if (newIndex < lastIndex)
 				return newIndex;
 			return -1;
 		}
@@ -2699,7 +2835,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 2: // has
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -2736,7 +2873,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 74: // hasnum
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+				if (tlen == 1)
+					tt = parseBits(eval, t, "cccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String item=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final String cmp=tt[t+2];
@@ -2793,7 +2931,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 67: // hastitle
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if (tlen == 1)
+					tt = parseBits(eval, t, "cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
@@ -2813,7 +2952,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 3: // worn
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if (tlen == 1)
+					tt = parseBits(eval, t, "cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -2857,16 +2997,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						 returnable=false;
 					else
 					{
-						 final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
-						 final int month=C.getMonth();
-						 final int day=C.getDayOfMonth();
-						 final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-						 final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-						 if((C.getYear()>mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
-						 &&((month==bmonth)&&(day==bday)))
-							 returnable=true;
-						 else
-							 returnable=false;
+						final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
+						final int month=C.getMonth();
+						final int day=C.getDayOfMonth();
+						final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+						final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+						if((C.getYear()>mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
+						&&((month==bmonth)&&(day==bday)))
+							returnable=true;
+						else
+							returnable=false;
 					}
 				}
 				break;
@@ -2923,7 +3063,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 58: // isable
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
@@ -3049,7 +3190,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 95: // isspeaking
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
@@ -3086,7 +3228,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 7: // isname
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -3098,7 +3241,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 56: // name
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3111,7 +3255,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 75: // currency
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3124,7 +3269,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 61: // strin
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final Vector<String> V=CMParms.parse(arg1.toUpperCase());
@@ -3133,7 +3279,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 62: // callfunc
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				String found=null;
@@ -3184,7 +3331,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 14: // affected
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -3201,7 +3349,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 69: // isbehave
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final PhysicalAgent P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -3218,7 +3367,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 70: // ipaddress
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3231,7 +3381,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 28: // questwinner
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
 				final Environmental E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
@@ -3248,7 +3399,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 93: // questscripted
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final PhysicalAgent E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				final String arg2=tt[t+1];
 				final Quest Q=getQuest(arg2);
@@ -3266,7 +3418,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 94: // questroom
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
 				final Quest Q=getQuest(arg2);
@@ -3278,7 +3431,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 29: // questmob
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
 				final Quest Q=getQuest(arg2);
@@ -3290,7 +3444,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 31: // isquestmobalive
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
 				final Quest Q=getQuest(arg2);
@@ -3311,7 +3466,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 32: // nummobsinarea
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
 				final String arg2=tt[t+1];
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3346,7 +3502,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 33: // nummobs
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
 				final String arg2=tt[t+1];
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3378,13 +3535,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								num++;
 						}
 					}
-				}catch(final NoSuchElementException nse){}
+				}
+				catch (final NoSuchElementException nse)
+				{
+				}
 				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMMOBS");
 				break;
 			}
 			case 34: // numracesinarea
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3406,7 +3567,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 35: // numraces
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3423,13 +3585,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								num++;
 						}
 					}
-				}catch(final NoSuchElementException nse){}
+				}
+				catch (final NoSuchElementException nse)
+				{
+				}
 				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMRACES");
 				break;
 			}
 			case 30: // questobj
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
 				final Quest Q=getQuest(arg2);
@@ -3441,7 +3607,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 85: // islike
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -3453,7 +3620,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 86: // strcontains
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				returnable=stringContainsFunctionImpl(arg1,arg2)>=0;
@@ -3472,7 +3640,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 16: // hitprcnt
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3500,12 +3669,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					arg1=arg1.toUpperCase();
 					for(final TimeClock.Season season : TimeClock.Season.values())
+					{
 						if(season.toString().startsWith(arg1.toUpperCase())
 						&&(monster.location().getArea().getTimeObj().getSeasonCode()==season))
 						{
 							returnable=true;
 							break;
 						}
+					}
 				}
 				break;
 			}
@@ -3515,9 +3686,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				returnable=false;
 				if(monster.location()!=null)
 				for(int a=0;a<Climate.WEATHER_DESCS.length;a++)
+				{
 					if((Climate.WEATHER_DESCS[a]).startsWith(arg1.toUpperCase())
 					&&(monster.location().getArea().getClimateObj().weatherType(monster.location())==a))
-					{returnable=true; break;}
+					{
+						returnable = true;
+						break;
+					}
+				}
 				break;
 			}
 			case 57: // ismoon
@@ -3532,12 +3708,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						arg1=arg1.toUpperCase();
 						for(final TimeClock.MoonPhase phase : TimeClock.MoonPhase.values())
+						{
 							if(phase.toString().startsWith(arg1)
 							&&(monster.location().getArea().getTimeObj().getMoonPhase()==phase))
 							{
 								returnable=true;
 								break;
 							}
+						}
 					}
 				}
 				break;
@@ -3641,7 +3819,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 63: // numpcsroom
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				if(lastKnownLocation!=null)
@@ -3650,7 +3829,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 79: // numpcsarea
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				if(lastKnownLocation!=null)
@@ -3665,7 +3845,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 77: // explored
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String where=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final String cmp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3704,7 +3885,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 72: // faction
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final String cmp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3745,7 +3927,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 46: // numitemsroom
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				int ct=0;
@@ -3761,7 +3944,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 47: //mobitem
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3777,7 +3961,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((I!=null)&&(I.container()==null))
 					{
 						if(ct==CMath.s_int(arg2.trim()))
-						{ which=I; break;}
+						{
+							which = I;
+							break;
+						}
 						ct++;
 					}
 				}
@@ -3791,7 +3978,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 49: // hastattoo
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
@@ -3809,7 +3997,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 48: // numitemsmob
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -3818,18 +4007,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
 				int ct=1;
 				if(which!=null)
-				for(int i=0;i<which.numItems();i++)
 				{
-					final Item I=which.getItem(i);
-					if((I!=null)&&(I.container()==null))
-						ct++;
+					for(int i=0;i<which.numItems();i++)
+					{
+						final Item I=which.getItem(i);
+						if((I!=null)&&(I.container()==null))
+							ct++;
+					}
 				}
 				returnable=simpleEval(scripted,""+ct,arg3,arg2,"NUMITEMSMOB");
 				break;
 			}
 			case 43: // roommob
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1)
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				Environmental which=null;
@@ -3845,7 +4037,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 44: // roomitem
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				Environmental which=null;
@@ -3857,7 +4050,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((I!=null)&&(I.container()==null))
 					{
 						if(ct==CMath.s_int(arg1.trim()))
-						{ which=I; break;}
+						{
+							which = I;
+							break;
+						}
 						ct++;
 					}
 				}
@@ -3967,7 +4163,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 							}
 						}
-					}catch(final NoSuchElementException nse){}
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
 				}
 				if(R==null)
 					R=getRoom(arg3,lastKnownLocation);
@@ -4068,17 +4267,26 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 18: // sex
 			{
-				if(tlen==1) tt=parseBits(eval,t,"CcR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"CcR"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
 				String arg3=tt[t+2];
 				if(CMath.isNumber(arg3.trim()))
+				{
 					switch(CMath.s_int(arg3.trim()))
 					{
-					case 0: arg3="NEUTER"; break;
-					case 1: arg3="MALE"; break;
-					case 2: arg3="FEMALE"; break;
+					case 0:
+						arg3 = "NEUTER";
+						break;
+					case 1:
+						arg3 = "MALE";
+						break;
+					case 2:
+						arg3 = "FEMALE";
+						break;
 					}
+				}
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -4105,7 +4313,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 91: // datetime
 			{
-				if(tlen==1) tt=parseBits(eval,t,"Ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"Ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=tt[t+2];
@@ -4118,12 +4327,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					String val=null;
 					switch(index)
 					{
-					case 2: val=""+CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth(); break;
-					case 3: val=""+CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth(); break;
-					case 4: val=""+CMLib.map().areaLocation(scripted).getTimeObj().getMonth(); break;
-					case 5: val=""+CMLib.map().areaLocation(scripted).getTimeObj().getYear(); break;
+					case 2:
+						val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth();
+						break;
+					case 3:
+						val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth();
+						break;
+					case 4:
+						val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getMonth();
+						break;
+					case 5:
+						val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getYear();
+						break;
 					default:
-						val=""+CMLib.map().areaLocation(scripted).getTimeObj().getHourOfDay(); break;
+						val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getHourOfDay();
+						break;
 					}
 					returnable=simpleEval(scripted,val,arg3,arg2,"DATETIME");
 				}
@@ -4131,7 +4349,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 13: // stat
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=tt[t+2];
@@ -4165,7 +4384,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 52: // gstat
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=tt[t+2];
@@ -4199,7 +4419,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 19: // position
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=tt[t+2];
@@ -4234,7 +4455,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 20: // level
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4255,7 +4477,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 80: // questpoints
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4276,7 +4499,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 83: // qvar
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final String arg3=tt[t+2];
@@ -4295,7 +4519,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 84: // math
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4314,7 +4539,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 81: // trains
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4335,7 +4561,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 82: // pracs
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4356,7 +4583,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 66: // clanrank
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4382,7 +4610,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 64: // deity
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4412,7 +4641,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 68: // clandata
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cccR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=tt[t+2];
@@ -4460,7 +4690,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 98: // clanqualifies
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
@@ -4494,7 +4725,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 65: // clan
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4535,7 +4767,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 88: // mood
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4566,7 +4799,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 21: // class
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4596,7 +4830,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 22: // baseclass
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4626,7 +4861,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 23: // race
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4656,7 +4892,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 24: //racecat
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4686,7 +4923,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 25: // goldamt
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4721,7 +4959,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 78: // exp
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4742,7 +4981,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 76: // value
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4786,7 +5026,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 26: // objtype
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4816,7 +5057,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 27: // var
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cCcr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cCcr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
 				final String arg3=tt[t+2];
@@ -4854,7 +5096,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 41: // eval
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg3=tt[t+1];
 				final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4892,14 +5135,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).trim();
 				boolean isnumber=(val.length()>0);
 				for(int i=0;i<val.length();i++)
+				{
 					if(!Character.isDigit(val.charAt(i)))
-					{ isnumber=false; break;}
+					{
+						isnumber = false;
+						break;
+					}
+				}
 				returnable=isnumber;
 				break;
 			}
 			case 42: // randnum
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase().trim();
 				int arg1=0;
 				if(CMath.isMathExpression(arg1s.trim()))
@@ -4919,7 +5168,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 71: // rand0num
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase().trim();
 				int arg1=0;
 				if(CMath.isMathExpression(arg1s))
@@ -4939,7 +5189,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 53: // incontainer
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				final String arg2=tt[t+1];
@@ -4974,7 +5225,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 96: // iscontents
 			{
-				if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				final String arg2=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+1]);
@@ -5001,7 +5253,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 97: // wornon
 			{
-				if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				if(tlen==1) 
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final PhysicalAgent E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				final String arg2=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+1]);
@@ -5087,9 +5340,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				Vector<Item> choices=new Vector<Item>();
+				ArrayList<Item> choices=new ArrayList<Item>();
 				if(E==null)
-					choices=new Vector<Item>();
+					choices=new ArrayList<Item>();
 				else
 				if(E instanceof MOB)
 				{
@@ -5097,7 +5350,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final Item I=((MOB)E).getItem(i);
 						if((I!=null)&&(I.amWearingAt(Wearable.IN_INVENTORY))&&(I.container()==null))
-							choices.addElement(I);
+							choices.add(I);
 					}
 				}
 				else
@@ -5106,7 +5359,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(E instanceof Container)
 						choices.addAll(((Container)E).getDeepContents());
 					else
-						choices.addElement((Item)E);
+						choices.add((Item)E);
 				}
 				else
 				if(E instanceof Room)
@@ -5115,11 +5368,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final Item I=((Room)E).getItem(i);
 						if((I!=null)&&(I.container()==null))
-							choices.addElement(I);
+							choices.add(I);
 					}
 				}
 				if(choices.size()>0)
-					results.append(choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).name());
+					results.append(choices.get(CMLib.dice().roll(1,choices.size(),-1)).name());
 				break;
 			}
 			case 74: // hasnum
@@ -5175,9 +5428,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				Vector<Item> choices=new Vector<Item>();
+				ArrayList<Item> choices=new ArrayList<Item>();
 				if(E==null)
-					choices=new Vector<Item>();
+					choices=new ArrayList<Item>();
 				else
 				if(E instanceof MOB)
 				{
@@ -5185,7 +5438,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final Item I=((MOB)E).getItem(i);
 						if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(I.container()==null))
-							choices.addElement(I);
+							choices.add(I);
 					}
 				}
 				else
@@ -5194,10 +5447,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(E instanceof Container)
 						choices.addAll(((Container)E).getDeepContents());
 					else
-						choices.addElement((Item)E);
+						choices.add((Item)E);
 				}
 				if(choices.size()>0)
-					results.append(choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).name());
+					results.append(choices.get(CMLib.dice().roll(1,choices.size(),-1)).name());
 				break;
 			}
 			case 4: // isnpc
@@ -5397,7 +5650,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(funcParms,0));
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
-				final Vector<String> V=CMParms.parse(arg1.toUpperCase());
+				final List<String> V=CMParms.parse(arg1.toUpperCase());
 				results.append(V.indexOf(arg2.toUpperCase()));
 				break;
 			}
@@ -5496,12 +5749,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg1=CMParms.cleanBit(funcParms);
 				final PhysicalAgent E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E!=null)
+				{
 					for(final Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 					{
 						final Behavior B=e.nextElement();
 						if(B!=null)
 							results.append(B.ID()+" ");
 					}
+				}
 				break;
 			}
 			case 70: // ipaddress
@@ -5517,12 +5772,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg1=CMParms.cleanBit(funcParms);
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB)&&(!((MOB)E).isMonster()))
+				{
 					for(int q=0;q<CMLib.quests().numQuests();q++)
 					{
 						final Quest Q=CMLib.quests().fetchQuest(q);
 						if((Q!=null)&&(Q.wasWinner(E.Name())))
 							results.append(Q.name()+" ");
 					}
+				}
 				break;
 			}
 			case 93: // questscripted
@@ -5754,7 +6011,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								num++;
 						}
 					}
-				}catch(final NoSuchElementException nse){}
+				}
+				catch (final NoSuchElementException nse)
+				{
+				}
 				results.append(num);
 				break;
 			}
@@ -5897,8 +6157,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					int num=0;
 					for(final Session S : CMLib.sessions().localOnlineIterable())
+					{
 						if((S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
 							num++;
+					}
 					results.append(""+num);
 				}
 				break;
@@ -5974,14 +6236,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Item which=null;
 				int ct=1;
 				if(M!=null)
-				for(int i=0;i<M.numItems();i++)
 				{
-					final Item I=M.getItem(i);
-					if((I!=null)&&(I.container()==null))
+					for(int i=0;i<M.numItems();i++)
 					{
-						if(ct==CMath.s_int(arg2.trim()))
-						{ which=I; break;}
-						ct++;
+						final Item I=M.getItem(i);
+						if((I!=null)&&(I.container()==null))
+						{
+							if(ct==CMath.s_int(arg2.trim()))
+							{
+								which = I;
+								break;
+							}
+							ct++;
+						}
 					}
 				}
 				if(which!=null)
@@ -6078,14 +6345,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(scripted,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+scripted.name());
 				else
 				if(CMLib.map().areaLocation(scripted)!=null)
-				switch(index)
 				{
-				case 2: results.append(CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth()); break;
-				case 3: results.append(CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth()); break;
-				case 4: results.append(CMLib.map().areaLocation(scripted).getTimeObj().getMonth()); break;
-				case 5: results.append(CMLib.map().areaLocation(scripted).getTimeObj().getYear()); break;
-				default:
-					results.append(CMLib.map().areaLocation(scripted).getTimeObj().getHourOfDay()); break;
+					switch(index)
+					{
+					case 2:
+						results.append(CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth());
+						break;
+					case 3:
+						results.append(CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth());
+						break;
+					case 4:
+						results.append(CMLib.map().areaLocation(scripted).getTimeObj().getMonth());
+						break;
+					case 5:
+						results.append(CMLib.map().areaLocation(scripted).getTimeObj().getYear());
+						break;
+					default:
+						results.append(CMLib.map().areaLocation(scripted).getTimeObj().getHourOfDay()); break;
+					}
 				}
 				break;
 			}
@@ -6102,7 +6379,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						logError(scripted,"STAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
 						break;
 					}
-
 					results.append(val);
 					break;
 				}
@@ -6121,7 +6397,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						logError(scripted,"GSTAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
 						break;
 					}
-
 					results.append(val);
 					break;
 				}
@@ -6133,12 +6408,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(P!=null)
 				{
-					String sex="STANDING";
+					final String sex;
 					if(CMLib.flags().isSleeping(P))
 						sex="SLEEPING";
 					else
 					if(CMLib.flags().isSitting(P))
 						sex="SITTING";
+					else
+						sex="STANDING";
 					results.append(sex);
 					break;
 				}
@@ -6499,8 +6776,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).trim();
 				boolean isnumber=(val.length()>0);
 				for(int i=0;i<val.length();i++)
+				{
 					if(!Character.isDigit(val.charAt(i)))
-					{ isnumber=false; break;}
+					{
+						isnumber = false;
+						break;
+					}
+				}
 				if(isnumber)
 					results.append(CMath.s_long(val.trim()));
 				break;
@@ -6598,6 +6880,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		return (MOB)tmp[SPECIAL_RANDPC];
 	}
+
 	protected MOB getRandAnyone(MOB monster, Object[] tmp, Room room)
 	{
 		if((tmp[SPECIAL_RANDANYONE]==null)||(tmp[SPECIAL_RANDANYONE]==monster))
@@ -6655,9 +6938,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 			Integer methCode=methH.get(cmd);
 			if((methCode==null)&&(cmd.startsWith("MP")))
+			{
 				for(int i=0;i<methods.length;i++)
+				{
 					if(methods[i].startsWith(cmd))
 						methCode=Integer.valueOf(i);
+				}
+			}
 			if(methCode==null)
 				methCode=Integer.valueOf(0);
 			tickStatus=Tickable.STATUS_MISC3+methCode.intValue();
@@ -7015,7 +7302,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						ignoreUntilEndScript=false;
 					}
 					else
-					if(ignoreUntilEndScript){}
+					if(ignoreUntilEndScript)
+					{
+					}
 					else
 					if(cmd.equals("NEXT")&&(depth==0))
 					{
@@ -7247,7 +7536,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String value=((MOB)newTarget).session().prompt(promptStr,60000);
 						setVar(newTarget.Name(),var,value);
 					}
-					catch(final Exception e) { return "";}
+					catch(final Exception e) 
+					{
+						return "";
+					}
 				}
 				break;
 			}
@@ -7270,7 +7562,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String value=((MOB)newTarget).session().confirm(promptStr,defaultVal,60000)?"Y":"N";
 						setVar(newTarget.Name(),var,value);
 					}
-					catch(final Exception e) { return "";}
+					catch(final Exception e)
+					{
+						return "";
+					}
 				}
 				break;
 			}
@@ -7294,7 +7589,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String value=((MOB)newTarget).session().choose(promptStr,choices,defaultVal,60000);
 						setVar(newTarget.Name(),var,value);
 					}
-					catch(final Exception e) { return "";}
+					catch(final Exception e)
+					{
+						return "";
+					}
 				}
 				break;
 			}
@@ -7331,6 +7629,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final MOB M=(MOB)newTarget;
 						for(final int i : CharStats.CODES.ALLCODES())
+						{
 							if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
 							{
 								if(arg3.equals("++"))
@@ -7344,44 +7643,59 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								found=true;
 								break;
 							}
+						}
 						if(!found)
-						for(int i=0;i<M.curState().getStatCodes().length;i++)
-							if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
+						{
+							for(int i=0;i<M.curState().getStatCodes().length;i++)
 							{
-								if(arg3.equals("++"))
-									arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))+1);
-								if(arg3.equals("--"))
-									arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))-1);
-								M.curState().setStat(arg2,arg3);
-								found=true;
-								break;
+								if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
+								{
+									if(arg3.equals("++"))
+										arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))+1);
+									if(arg3.equals("--"))
+										arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))-1);
+									M.curState().setStat(arg2,arg3);
+									found=true;
+									break;
+								}
 							}
+						}
 						if(!found)
-						for(int i=0;i<M.basePhyStats().getStatCodes().length;i++)
-							if(M.basePhyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+						{
+							for(int i=0;i<M.basePhyStats().getStatCodes().length;i++)
 							{
-								if(arg3.equals("++"))
-									arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))+1);
-								if(arg3.equals("--"))
-									arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))-1);
-								M.basePhyStats().setStat(arg2,arg3);
-								found=true;
-								break;
+								if(M.basePhyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+								{
+									if(arg3.equals("++"))
+										arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))+1);
+									if(arg3.equals("--"))
+										arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))-1);
+									M.basePhyStats().setStat(arg2,arg3);
+									found=true;
+									break;
+								}
 							}
+						}
 						if((!found)&&(M.playerStats()!=null))
-						for(int i=0;i<M.playerStats().getStatCodes().length;i++)
-							if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+						{
+							for(int i=0;i<M.playerStats().getStatCodes().length;i++)
 							{
-								if(arg3.equals("++"))
-									arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))+1);
-								if(arg3.equals("--"))
-									arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))-1);
-								M.playerStats().setStat(arg2,arg3);
-								found=true;
-								break;
+								if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+								{
+									if(arg3.equals("++"))
+										arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))+1);
+									if(arg3.equals("--"))
+										arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))-1);
+									M.playerStats().setStat(arg2,arg3);
+									found=true;
+									break;
+								}
 							}
+						}
 						if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+						{
 							for(int i=0;i<M.baseState().getStatCodes().length;i++)
+							{
 								if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
 								{
 									if(arg3.equals("++"))
@@ -7392,30 +7706,36 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									found=true;
 									break;
 								}
+							}
+						}
 						if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
 						{
 							found=true;
 							switch(gstatH.get(arg2.toUpperCase()).intValue())
 							{
-							case GSTATADD_DEITY: M.setWorshipCharID(arg3); break;
-							case GSTATADD_CLAN: {
-								Pair<Clan,Integer> p=M.getClanRole(arg3);
-								if(p==null)
+							case GSTATADD_DEITY:
+								M.setWorshipCharID(arg3);
+								break;
+							case GSTATADD_CLAN:
+							{
+								Pair<Clan, Integer> p = M.getClanRole(arg3);
+								if (p == null)
 								{
-									final Clan C=CMLib.clans().getClan(arg3);
-									if(C!=null)
-										p=new Pair<Clan,Integer>(C,Integer.valueOf(C.getGovernment().getAcceptPos()));
+									final Clan C = CMLib.clans().getClan(arg3);
+									if (C != null)
+										p = new Pair<Clan, Integer>(C, Integer.valueOf(C.getGovernment().getAcceptPos()));
 								}
-								if(p!=null)
-									M.setClan(p.first.clanID(),p.second.intValue());
+								if (p != null)
+									M.setClan(p.first.clanID(), p.second.intValue());
 								break;
 							}
-							case GSTATADD_CLANROLE: {
-								Clan C=CMLib.clans().findRivalrousClan((MOB)newTarget);
-								if(C==null)
-									C=((MOB)newTarget).clans().iterator().hasNext()?((MOB)newTarget).clans().iterator().next().first:null;
-								if(C!=null)
-									M.setClan(C.clanID(),CMath.s_int(arg3));
+							case GSTATADD_CLANROLE:
+							{
+								Clan C = CMLib.clans().findRivalrousClan((MOB) newTarget);
+								if (C == null)
+									C = ((MOB) newTarget).clans().iterator().hasNext() ? ((MOB) newTarget).clans().iterator().next().first : null;
+								if (C != null)
+									M.setClan(C.clanID(), CMath.s_int(arg3));
 								break;
 							}
 							}
@@ -7477,32 +7797,55 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tmp[CMath.s_int(Character.toString(c))]=O;
 				}
 				else
-				switch(arg1.charAt(1))
 				{
-				case 'N':
-				case 'n': if(O instanceof MOB) source=(MOB)O; break;
-				case 'B':
-				case 'b': if(O instanceof Environmental)
-								lastLoaded=(Environmental)O;
-						  break;
-				case 'I':
-				case 'i': if(O instanceof PhysicalAgent) scripted=(PhysicalAgent)O;
-						  if(O instanceof MOB)
-						  	monster=(MOB)O;
-						  break;
-				case 'T':
-				case 't': if(O instanceof Environmental) target=(Environmental)O; break;
-				case 'O':
-				case 'o': if(O instanceof Item) primaryItem=(Item)O; break;
-				case 'P':
-				case 'p': if(O instanceof Item) secondaryItem=(Item)O; break;
-				case 'd':
-				case 'D': if(O instanceof Room) lastKnownLocation=(Room)O; break;
-				case 'g':
-				case 'G': if(O instanceof String) msg=(String)O; break;
-				default:
-					logError(scripted,"MPARGSET","Syntax","Invalid argument var: "+arg1+" for "+scripted.Name());
-					break;
+					switch(arg1.charAt(1))
+					{
+					case 'N':
+					case 'n':
+						if (O instanceof MOB)
+							source = (MOB) O;
+						break;
+					case 'B':
+					case 'b':
+						if (O instanceof Environmental)
+							lastLoaded = (Environmental) O;
+						break;
+					case 'I':
+					case 'i':
+						if (O instanceof PhysicalAgent)
+							scripted = (PhysicalAgent) O;
+						if (O instanceof MOB)
+							monster = (MOB) O;
+						break;
+					case 'T':
+					case 't':
+						if (O instanceof Environmental)
+							target = (Environmental) O;
+						break;
+					case 'O':
+					case 'o':
+						if (O instanceof Item)
+							primaryItem = (Item) O;
+						break;
+					case 'P':
+					case 'p':
+						if (O instanceof Item)
+							secondaryItem = (Item) O;
+						break;
+					case 'd':
+					case 'D':
+						if (O instanceof Room)
+							lastKnownLocation = (Room) O;
+						break;
+					case 'g':
+					case 'G':
+						if (O instanceof String)
+							msg = (String) O;
+						break;
+					default:
+						logError(scripted, "MPARGSET", "Syntax", "Invalid argument var: " + arg1 + " for " + scripted.Name());
+						break;
+					}
 				}
 				break;
 			}
@@ -7531,123 +7874,141 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(arg3.equals("--"))
 								arg3=""+(CMath.s_int(newTarget.getStat(newTarget.getStatCodes()[i]))-1);
 							newTarget.setStat(newTarget.getStatCodes()[i],arg3);
-							found=true; break;
+							found=true; 
+							break;
 						}
 					}
 					if(!found)
-					if(newTarget instanceof MOB)
 					{
-						
-						final GenericBuilder.GenMOBCode element = (GenericBuilder.GenMOBCode)CMath.s_valueOf(GenericBuilder.GenMOBCode.class,arg2.toUpperCase().trim());
-						if(element != null)
+						if(newTarget instanceof MOB)
 						{
-							if(arg3.equals("++"))
-								arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,element.name()))+1);
-							if(arg3.equals("--"))
-								arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,element.name()))-1);
-							CMLib.coffeeMaker().setGenMobStat((MOB)newTarget,element.name(),arg3);
-							found=true;
-						}
-						if(!found)
-						{
-							final MOB M=(MOB)newTarget;
-							for(final int i : CharStats.CODES.ALLCODES())
+							final GenericBuilder.GenMOBCode element = (GenericBuilder.GenMOBCode)CMath.s_valueOf(GenericBuilder.GenMOBCode.class,arg2.toUpperCase().trim());
+							if(element != null)
 							{
-								if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
-								{
-									if(arg3.equals("++"))
-										arg3=""+(M.baseCharStats().getStat(i)+1);
-									if(arg3.equals("--"))
-										arg3=""+(M.baseCharStats().getStat(i)-1);
-									if((arg3.length()==1)&&(Character.isLetter(arg3.charAt(0))))
-										M.baseCharStats().setStat(i,arg3.charAt(0));
-									else
-										M.baseCharStats().setStat(i,CMath.s_int(arg3.trim()));
-									M.recoverCharStats();
-									if(arg2.equalsIgnoreCase("RACE"))
-										M.charStats().getMyRace().startRacing(M,false);
-									found=true;
-									break;
-								}
+								if(arg3.equals("++"))
+									arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,element.name()))+1);
+								if(arg3.equals("--"))
+									arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,element.name()))-1);
+								CMLib.coffeeMaker().setGenMobStat((MOB)newTarget,element.name(),arg3);
+								found=true;
 							}
 							if(!found)
-							for(int i=0;i<M.curState().getStatCodes().length;i++)
 							{
-								if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
+								final MOB M=(MOB)newTarget;
+								for(final int i : CharStats.CODES.ALLCODES())
 								{
-									if(arg3.equals("++"))
-										arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))+1);
-									if(arg3.equals("--"))
-										arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))-1);
-									M.curState().setStat(arg2,arg3);
-									found=true;
-									break;
-								}
-							}
-							if(!found)
-							for(int i=0;i<M.basePhyStats().getStatCodes().length;i++)
-							{
-								if(M.basePhyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
-								{
-									if(arg3.equals("++"))
-										arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))+1);
-									if(arg3.equals("--"))
-										arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))-1);
-									M.basePhyStats().setStat(arg2,arg3);
-									found=true;
-									break;
-								}
-							}
-							if((!found)&&(M.playerStats()!=null))
-							for(int i=0;i<M.playerStats().getStatCodes().length;i++)
-								if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
-								{
-									if(arg3.equals("++"))
-										arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))+1);
-									if(arg3.equals("--"))
-										arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))-1);
-									M.playerStats().setStat(arg2,arg3);
-									found=true;
-									break;
-								}
-							if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
-								for(int i=0;i<M.baseState().getStatCodes().length;i++)
-									if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
+									if(CharStats.CODES.NAME(i).equalsIgnoreCase(arg2)||CharStats.CODES.DESC(i).equalsIgnoreCase(arg2))
 									{
 										if(arg3.equals("++"))
-											arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))+1);
+											arg3=""+(M.baseCharStats().getStat(i)+1);
 										if(arg3.equals("--"))
-											arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))-1);
-										M.baseState().setStat(arg2.substring(4),arg3);
+											arg3=""+(M.baseCharStats().getStat(i)-1);
+										if((arg3.length()==1)&&(Character.isLetter(arg3.charAt(0))))
+											M.baseCharStats().setStat(i,arg3.charAt(0));
+										else
+											M.baseCharStats().setStat(i,CMath.s_int(arg3.trim()));
+										M.recoverCharStats();
+										if(arg2.equalsIgnoreCase("RACE"))
+											M.charStats().getMyRace().startRacing(M,false);
 										found=true;
 										break;
 									}
-							if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
-							{
-								found=true;
-								switch(gstatH.get(arg2.toUpperCase()).intValue())
+								}
+								if(!found)
 								{
-								case GSTATADD_DEITY: M.setWorshipCharID(arg3); break;
-								case GSTATADD_CLAN: {
-									Pair<Clan,Integer> p=M.getClanRole(arg3);
-									if(p==null)
+									for(int i=0;i<M.curState().getStatCodes().length;i++)
 									{
-										final Clan C=CMLib.clans().getClan(arg3);
-										if(C!=null)
-											p=new Pair<Clan,Integer>(C,Integer.valueOf(C.getGovernment().getAcceptPos()));
+										if(M.curState().getStatCodes()[i].equalsIgnoreCase(arg2))
+										{
+											if(arg3.equals("++"))
+												arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))+1);
+											if(arg3.equals("--"))
+												arg3=""+(CMath.s_int(M.curState().getStat(M.curState().getStatCodes()[i]))-1);
+											M.curState().setStat(arg2,arg3);
+											found=true;
+											break;
+										}
 									}
-									if(p!=null)
-										M.setClan(p.first.clanID(),p.second.intValue());
-									break;
 								}
-								case GSTATADD_CLANROLE: {
-									Clan C=CMLib.clans().findRivalrousClan((MOB)newTarget);
-									if(C==null)
-										C=((MOB)newTarget).clans().iterator().hasNext()?((MOB)newTarget).clans().iterator().next().first:null;
-									if(C!=null)
-										M.setClan(C.clanID(),CMath.s_int(arg3));
-									break;
+								if(!found)
+								{
+									for(int i=0;i<M.basePhyStats().getStatCodes().length;i++)
+									{
+										if(M.basePhyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+										{
+											if(arg3.equals("++"))
+												arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))+1);
+											if(arg3.equals("--"))
+												arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))-1);
+											M.basePhyStats().setStat(arg2,arg3);
+											found=true;
+											break;
+										}
+									}
 								}
+								if((!found)&&(M.playerStats()!=null))
+								{
+									for(int i=0;i<M.playerStats().getStatCodes().length;i++)
+									{
+										if(M.playerStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+										{
+											if(arg3.equals("++"))
+												arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))+1);
+											if(arg3.equals("--"))
+												arg3=""+(CMath.s_int(M.playerStats().getStat(M.playerStats().getStatCodes()[i]))-1);
+											M.playerStats().setStat(arg2,arg3);
+											found=true;
+											break;
+										}
+									}
+								}
+								if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+								{
+									for(int i=0;i<M.baseState().getStatCodes().length;i++)
+									{
+										if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
+										{
+											if(arg3.equals("++"))
+												arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))+1);
+											if(arg3.equals("--"))
+												arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))-1);
+											M.baseState().setStat(arg2.substring(4),arg3);
+											found=true;
+											break;
+										}
+									}
+								}
+								if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
+								{
+									found=true;
+									switch(gstatH.get(arg2.toUpperCase()).intValue())
+									{
+									case GSTATADD_DEITY:
+										M.setWorshipCharID(arg3);
+										break;
+									case GSTATADD_CLAN:
+									{
+										Pair<Clan, Integer> p = M.getClanRole(arg3);
+										if (p == null)
+										{
+											final Clan C = CMLib.clans().getClan(arg3);
+											if (C != null)
+												p = new Pair<Clan, Integer>(C, Integer.valueOf(C.getGovernment().getAcceptPos()));
+										}
+										if (p != null)
+											M.setClan(p.first.clanID(), p.second.intValue());
+										break;
+									}
+									case GSTATADD_CLANROLE:
+									{
+										Clan C = CMLib.clans().findRivalrousClan((MOB) newTarget);
+										if (C == null)
+											C = ((MOB) newTarget).clans().iterator().hasNext() ? ((MOB) newTarget).clans().iterator().next().first : null;
+										if (C != null)
+											M.setClan(C.clanID(), CMath.s_int(arg3));
+										break;
+									}
+									}
 								}
 							}
 						}
@@ -7896,7 +8257,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(scripted,"MPUNLOADSCRIPT","Runtime","File does not exist: "+Resources.makeFileResourceName(scriptname));
 				else
 				{
-					final Vector<String> delThese=new Vector<String>();
+					final ArrayList<String> delThese=new ArrayList<String>();
 					scriptname=scriptname.toUpperCase().trim();
 					final String parmname=scriptname;
 					for(final Iterator<String> k = Resources.findResourceKeys(parmname);k.hasNext();)
@@ -7904,11 +8265,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String key=k.next();
 						if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().endsWith(parmname)))
 						{
-							delThese.addElement(key);
+							delThese.add(key);
 						}
 					}
 					for(int i=0;i<delThese.size();i++)
-						Resources.removeResource(delThese.elementAt(i));
+						Resources.removeResource(delThese.get(i));
 				}
 
 				break;
@@ -7972,19 +8333,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
-				final Vector<Environmental> Ms=new Vector<Environmental>();
+				final ArrayList<Environmental> Ms=new ArrayList<Environmental>();
 				MOB m=CMClass.getMOB(name);
 				if(m!=null)
-					Ms.addElement(m);
+					Ms.add(m);
 				if(lastKnownLocation!=null)
 				{
 					if(Ms.size()==0)
 						findSomethingCalledThis(name,monster,lastKnownLocation,Ms,true);
 					for(int i=0;i<Ms.size();i++)
 					{
-						if(Ms.elementAt(i) instanceof MOB)
+						if(Ms.get(i) instanceof MOB)
 						{
-							m=(MOB)((MOB)Ms.elementAt(i)).copyOf();
+							m=(MOB)((MOB)Ms.get(i)).copyOf();
 							m.text();
 							m.recoverPhyStats();
 							m.recoverCharStats();
@@ -8023,14 +8384,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					Container container=null;
 					if(containerIndex>=0)
 					{
-						final Vector<Environmental> containers=new Vector<Environmental>();
+						final ArrayList<Environmental> containers=new ArrayList<Environmental>();
 						findSomethingCalledThis(name.substring(containerIndex+6).trim(),monster,lastKnownLocation,containers,false);
 						for(int c=0;c<containers.size();c++)
 						{
-							if((containers.elementAt(c) instanceof Container)
-							&&(((Container)containers.elementAt(c)).capacity()>0))
+							if((containers.get(c) instanceof Container)
+							&&(((Container)containers.get(c)).capacity()>0))
 							{
-								container=(Container)containers.elementAt(c);
+								container=(Container)containers.get(c);
 								name=name.substring(0,containerIndex).trim();
 								break;
 							}
@@ -8052,17 +8413,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(lastKnownLocation!=null)
 					{
-						final Vector<Environmental> Is=new Vector<Environmental>();
+						final ArrayList<Environmental> Is=new ArrayList<Environmental>();
 						Item m=CMClass.getItem(name);
 						if(m!=null)
-							Is.addElement(m);
+							Is.add(m);
 						else
 							findSomethingCalledThis(name,monster,lastKnownLocation,Is,false);
 						for(int i=0;i<Is.size();i++)
 						{
-							if(Is.elementAt(i) instanceof Item)
+							if(Is.get(i) instanceof Item)
 							{
-								m=(Item)Is.elementAt(i);
+								m=(Item)Is.get(i);
 								if((m!=null)
 								&&(!(m instanceof ArchonOnly)))
 								{
@@ -8106,19 +8467,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
 				if(lastKnownLocation!=null)
 				{
-					final Vector<Environmental> Is=new Vector<Environmental>();
+					final ArrayList<Environmental> Is=new ArrayList<Environmental>();
 					final int containerIndex=name.toUpperCase().indexOf(" INTO ");
 					Container container=null;
 					if(containerIndex>=0)
 					{
-						final Vector<Environmental> containers=new Vector<Environmental>();
+						final ArrayList<Environmental> containers=new ArrayList<Environmental>();
 						findSomethingCalledThis(name.substring(containerIndex+6).trim(),null,lastKnownLocation,containers,false);
 						for(int c=0;c<containers.size();c++)
 						{
-							if((containers.elementAt(c) instanceof Container)
-							&&(((Container)containers.elementAt(c)).capacity()>0))
+							if((containers.get(c) instanceof Container)
+							&&(((Container)containers.get(c)).capacity()>0))
 							{
-								container=(Container)containers.elementAt(c);
+								container=(Container)containers.get(c);
 								name=name.substring(0,containerIndex).trim();
 								break;
 							}
@@ -8130,21 +8491,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String currency=CMLib.english().numPossibleGoldCurrency(monster,name);
 						final double denom=CMLib.english().numPossibleGoldDenomination(monster,currency,name);
 						final Coins C=CMLib.beanCounter().makeCurrency(currency,denom,coins);
-						Is.addElement(C);
+						Is.add(C);
 					}
 					else
 					{
 						final Item I=CMClass.getItem(name);
 						if(I!=null)
-							Is.addElement(I);
+							Is.add(I);
 						else
 							findSomethingCalledThis(name,monster,lastKnownLocation,Is,false);
 					}
 					for(int i=0;i<Is.size();i++)
 					{
-						if(Is.elementAt(i) instanceof Item)
+						if(Is.get(i) instanceof Item)
 						{
-							Item I=(Item)Is.elementAt(i);
+							Item I=(Item)Is.get(i);
 							if((I!=null)
 							&&(!(I instanceof ArchonOnly)))
 							{
@@ -8264,8 +8625,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final Area A=CMLib.map().findArea(next);
 						if(A!=null)
+						{
 							for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
 								CMLib.threads().rejuv((Room)e.nextElement(),tickID);
+						}
 						else
 							logError(scripted,"MPREJUV","Syntax","Unknown location: "+next+" for "+scripted.Name());
 					}
@@ -8369,7 +8732,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((newTarget instanceof Exit)&&(((Exit)newTarget).hasADoor())&&(((Exit)newTarget).isOpen()))
+				if((newTarget instanceof Exit)
+				&&(((Exit)newTarget).hasADoor())
+				&&(((Exit)newTarget).isOpen()))
 				{
 					final Exit E=(Exit)newTarget;
 					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),false,E.defaultsLocked());
@@ -8377,7 +8742,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						lastKnownLocation.recoverRoomStats();
 				}
 				else
-				if((newTarget instanceof Container)&&(((Container)newTarget).hasADoor())&&(((Container)newTarget).isOpen()))
+				if((newTarget instanceof Container)
+				&&(((Container)newTarget).hasADoor())
+				&&(((Container)newTarget).isOpen()))
 				{
 					final Container E=(Container)newTarget;
 					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),false,E.defaultsLocked());
@@ -8395,7 +8762,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((newTarget instanceof Exit)&&(((Exit)newTarget).hasALock()))
+				if((newTarget instanceof Exit)
+				&&(((Exit)newTarget).hasALock()))
 				{
 					final Exit E=(Exit)newTarget;
 					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),true,E.defaultsLocked());
@@ -8403,7 +8771,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						lastKnownLocation.recoverRoomStats();
 				}
 				else
-				if((newTarget instanceof Container)&&(((Container)newTarget).hasALock()))
+				if((newTarget instanceof Container)
+				&&(((Container)newTarget).hasALock()))
 				{
 					final Container E=(Container)newTarget;
 					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),true,E.defaultsLocked());
@@ -8421,7 +8790,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((newTarget instanceof Exit)&&(((Exit)newTarget).isLocked()))
+				if((newTarget instanceof Exit)
+				&&(((Exit)newTarget).isLocked()))
 				{
 					final Exit E=(Exit)newTarget;
 					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),false,E.defaultsLocked());
@@ -8429,7 +8799,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						lastKnownLocation.recoverRoomStats();
 				}
 				else
-				if((newTarget instanceof Container)&&(((Container)newTarget).isLocked()))
+				if((newTarget instanceof Container)
+				&&(((Container)newTarget).isLocked()))
 				{
 					final Container E=(Container)newTarget;
 					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),false,E.defaultsLocked());
@@ -8790,8 +9161,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String time=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
 				int triggerCode=-1;
 				for(int i=0;i<progs.length;i++)
+				{
 					if(trigger.equalsIgnoreCase(progs[i]))
 						triggerCode=i;
+				}
 				if(triggerCode<0)
 					logError(scripted,"MPNOTRIGGER","RunTime",trigger+" is not a valid trigger name.");
 				else
@@ -8846,7 +9219,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							final Faction.FRange FR2=e.nextElement();
 							if(FR2.name().equalsIgnoreCase(range))
-							{ FR=FR2; break;}
+							{
+								FR = FR2;
+								break;
+							}
 						}
 						if(FR==null)
 							logError(scripted,"MPFACTION","RunTime",range+" is not a valid range for "+F.name()+".");
@@ -9136,12 +9512,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						newRoom=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
 					if(newRoom!=null)
 					{
-						final Vector<Environmental> V=new Vector<Environmental>();
+						final ArrayList<Environmental> V=new ArrayList<Environmental>();
 						if(mobName.startsWith("$"))
 						{
 							final Environmental E=getArgumentItem(mobName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 							if(E!=null)
-								V.addElement(E);
+								V.add(E);
 						}
 						if(V.size()==0)
 						{
@@ -9154,7 +9530,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									{
 										final MOB m=lastKnownLocation.fetchInhabitant(x);
 										if((m!=null)&&(m!=monster)&&(!V.contains(m)))
-											V.addElement(m);
+											V.add(m);
 									}
 								}
 							}
@@ -9167,7 +9543,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									findOne=lastKnownLocation.fetchInhabitant(mobName);
 									A=lastKnownLocation.getArea();
 									if((findOne!=null)&&(findOne!=monster))
-										V.addElement(findOne);
+										V.add(findOne);
 								}
 								if(findOne==null)
 								{
@@ -9175,7 +9551,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									if((findOne!=null)&&(!CMLib.flags().isInTheGame(findOne,true)))
 										findOne=null;
 									if((findOne!=null)&&(findOne!=monster))
-										V.addElement(findOne);
+										V.add(findOne);
 								}
 								if((findOne==null)&&(A!=null))
 								{
@@ -9184,30 +9560,30 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										final Room R=(Room)r.nextElement();
 										findOne=R.fetchInhabitant(mobName);
 										if((findOne!=null)&&(findOne!=monster))
-											V.addElement(findOne);
+											V.add(findOne);
 									}
 								}
 							}
 						}
 						for(int v=0;v<V.size();v++)
 						{
-							if(V.elementAt(v) instanceof MOB)
+							if(V.get(v) instanceof MOB)
 							{
-								final MOB mob=(MOB)V.elementAt(v);
+								final MOB mob=(MOB)V.get(v);
 								final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 								for (final Object element : H)
 								{
 									final MOB M=(MOB)element;
 									if((!V.contains(M))&&(M.location()==mob.location()))
-									   V.addElement(M);
+										V.add(M);
 								}
 							}
 						}
 						for(int v=0;v<V.size();v++)
 						{
-							if(V.elementAt(v) instanceof MOB)
+							if(V.get(v) instanceof MOB)
 							{
-								final MOB follower=(MOB)V.elementAt(v);
+								final MOB follower=(MOB)V.get(v);
 								final Room thisRoom=follower.location();
 								// scripting guide calls for NO text -- empty is probably req tho
 								final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER," "+CMLib.protocol().msp("appear.wav",10));
@@ -9227,10 +9603,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 							}
 							else
-							if((V.elementAt(v) instanceof Item)
-							&&(newRoom!=CMLib.map().roomLocation(V.elementAt(v))))
-								newRoom.moveItemTo((Item)V.elementAt(v),ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
-							if(V.elementAt(v)==scripted)
+							if((V.get(v) instanceof Item)
+							&&(newRoom!=CMLib.map().roomLocation(V.get(v))))
+								newRoom.moveItemTo((Item)V.get(v),ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
+							if(V.get(v)==scripted)
 								lastKnownLocation=newRoom;
 						}
 					}
@@ -9722,26 +10098,44 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				switch(c)
 				{
 				case 'N':
-				case 'n': if(O instanceof MOB) source=(MOB)O; break;
+				case 'n':
+					if (O instanceof MOB)
+						source = (MOB) O;
+					break;
 				case 'I':
-				case 'i': if(O instanceof PhysicalAgent) scripted=(PhysicalAgent)O;
-						  if(O instanceof MOB)
-						  	monster=(MOB)O;
-						  break;
+				case 'i':
+					if (O instanceof PhysicalAgent)
+						scripted = (PhysicalAgent) O;
+					if (O instanceof MOB)
+						monster = (MOB) O;
+					break;
 				case 'B':
-				case 'b': if(O instanceof Environmental)
-								lastLoaded=(Environmental)O;
-						  break;
+				case 'b':
+					if (O instanceof Environmental)
+						lastLoaded = (Environmental) O;
+					break;
 				case 'T':
-				case 't': if(O instanceof Environmental) target=(Environmental)O; break;
+				case 't':
+					if (O instanceof Environmental)
+						target = (Environmental) O;
+					break;
 				case 'O':
-				case 'o': if(O instanceof Item) primaryItem=(Item)O; break;
+				case 'o':
+					if (O instanceof Item)
+						primaryItem = (Item) O;
+					break;
 				case 'P':
-				case 'p': if(O instanceof Item) secondaryItem=(Item)O; break;
+				case 'p':
+					if (O instanceof Item)
+						secondaryItem = (Item) O;
+					break;
 				case 'd':
-				case 'D': if(O instanceof Room) lastKnownLocation=(Room)O; break;
+				case 'D':
+					if (O instanceof Room)
+						lastKnownLocation = (Room) O;
+					break;
 				default:
-					logError(scripted,"MPLOADQUESTOBJ","Syntax","Invalid argument var: "+varArg+" for "+scripted.Name());
+					logError(scripted, "MPLOADQUESTOBJ", "Syntax", "Invalid argument var: " + varArg + " for " + scripted.Name());
 					break;
 				}
 				break;
@@ -9823,8 +10217,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					final Vector<String> V=new Vector<String>();
-					V.addElement("MPWHILE");
+					final ArrayList<String> V=new ArrayList<String>();
+					V.add("MPWHILE");
 					String conditionStr=(s.substring(7).trim());
 					if(!conditionStr.startsWith("("))
 					{
@@ -9835,6 +10229,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					int x=-1;
 					int depth=0;
 					for(int i=0;i<conditionStr.length();i++)
+					{
 						if(conditionStr.charAt(i)=='(')
 							depth++;
 						else
@@ -9843,6 +10238,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							x=i;
 							break;
 						}
+					}
 					if(x<0)
 					{
 						logError(scripted,"MPWHILE","Syntax"," no closing ')': "+s);
@@ -9853,11 +10249,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					try
 					{
 						final String[] EVAL=parseEval(conditionStr);
-						V.addElement("(");
-						final Vector<String> V2=new XVector<String>(EVAL);
-						V.addAll(V2);
-						V.addElement(")");
-						V.addElement(DO);
+						V.add("(");
+						V.addAll(Arrays.asList(EVAL));
+						V.add(")");
+						V.add(DO);
 						tt=CMParms.toStringArray(V);
 						script.setElementAt(si,2,tt);
 					}
@@ -9906,7 +10301,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				vscript.addElement("FUNCTION_PROG MPWHILE_"+Math.random(),null);
 				vscript.addElement(DO,DOT);
 				final long time=System.currentTimeMillis();
-				while((eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,EVALO,0))&&((System.currentTimeMillis()-time)<4000))
+				while((eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,EVALO,0))
+				&&((System.currentTimeMillis()-time)<4000))
 					execute(scripted,source,target,monster,primaryItem,secondaryItem,vscript,msg,tmp);
 				if(vscript.elementAt(1,2)!=DOT)
 				{
@@ -10111,408 +10507,51 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if((!(host instanceof PhysicalAgent))||(msg.source()==null)||(recurseCounter.get()>2))
 			return true;
 
-		try { // atomic recurse counter
-		recurseCounter.addAndGet(1);
-
-		final PhysicalAgent affecting = (PhysicalAgent)host;
-
-		final List<DVector> scripts=getScripts();
-		DVector script=null;
-		boolean tryIt=false;
-		String trigger=null;
-		String[] t=null;
-		int triggerCode=0;
-		String str=null;
-		for(int v=0;v<scripts.size();v++)
+		try 
 		{
-			tryIt=false;
-			script=scripts.get(v);
-			if(script.size()<1)
-				continue;
-
-			trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
-			t=(String[])script.elementAt(0,2);
-			triggerCode=getTriggerCode(trigger,t);
-			switch(triggerCode)
+			// atomic recurse counter
+			recurseCounter.addAndGet(1);
+	
+			final PhysicalAgent affecting = (PhysicalAgent)host;
+	
+			final List<DVector> scripts=getScripts();
+			DVector script=null;
+			boolean tryIt=false;
+			String trigger=null;
+			String[] t=null;
+			int triggerCode=0;
+			String str=null;
+			for(int v=0;v<scripts.size();v++)
 			{
-			case 42: // cnclmsg_prog
-				if(canTrigger(42))
+				tryIt=false;
+				script=scripts.get(v);
+				if(script.size()<1)
+					continue;
+	
+				trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
+				t=(String[])script.elementAt(0,2);
+				triggerCode=getTriggerCode(trigger,t);
+				switch(triggerCode)
 				{
-					if(t==null)
-						t=parseBits(script,0,"CCT");
-					if(t!=null)
+				case 42: // cnclmsg_prog
+					if(canTrigger(42))
 					{
-						final String command=t[1];
-						boolean chk=false;
-						final int x=command.indexOf('=');
-						if(x>0)
+						if(t==null)
+							t=parseBits(script,0,"CCT");
+						if(t!=null)
 						{
-							chk=true;
-							boolean minorOnly = false;
-							boolean majorOnly = false;
-							for(int i=0;i<x;i++)
+							final String command=t[1];
+							boolean chk=false;
+							final int x=command.indexOf('=');
+							if(x>0)
 							{
-								switch(command.charAt(i))
+								chk=true;
+								boolean minorOnly = false;
+								boolean majorOnly = false;
+								for(int i=0;i<x;i++)
 								{
-								case 'S':
-									if(majorOnly)
-										chk=chk&&msg.isSourceMajor(command.substring(x+1)); 
-									else
-									if(minorOnly)
-										chk=chk&&msg.isSourceMinor(command.substring(x+1)); 
-									else
-										chk=chk&&msg.isSource(command.substring(x+1)); 
-									break;
-								case 'T': 
-									if(majorOnly)
-										chk=chk&&msg.isTargetMajor(command.substring(x+1)); 
-									else
-									if(minorOnly)
-										chk=chk&&msg.isTargetMinor(command.substring(x+1)); 
-									else
-										chk=chk&&msg.isTarget(command.substring(x+1)); 
-									break;
-								case 'O': 
-									if(majorOnly)
-										chk=chk&&msg.isOthersMajor(command.substring(x+1)); 
-									else
-									if(minorOnly)
-										chk=chk&&msg.isOthersMinor(command.substring(x+1)); 
-									else
-										chk=chk&&msg.isOthers(command.substring(x+1)); 
-									break;
-								case '<':
-									minorOnly=true;
-									majorOnly=false;
-									break;
-								case '>':
-									majorOnly=true;
-									minorOnly=false;
-									break;
-								case '?':
-									majorOnly=false;
-									minorOnly=false;
-									break;
-								default: 
-									chk=false; 
-									break;
-								}
-							}
-						}
-						else
-						if(command.startsWith(">"))
-						{
-							String cmd=command.substring(1);
-							chk=msg.isSourceMajor(cmd)||msg.isTargetMajor(cmd)||msg.isOthersMajor(cmd);
-						}
-						else
-						if(command.startsWith("<"))
-						{
-							String cmd=command.substring(1);
-							chk=msg.isSourceMinor(cmd)||msg.isTargetMinor(cmd)||msg.isOthersMinor(cmd);
-						}
-						else
-						if(command.startsWith("?"))
-						{
-							String cmd=command.substring(1);
-							chk=msg.isSource(cmd)||msg.isTarget(cmd)||msg.isOthers(cmd);
-						}
-						else
-							chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
-						if(chk)
-						{
-							str="";
-							if((msg.source().session()!=null)&&(msg.source().session().getPreviousCMD()!=null))
-								str=" "+CMParms.combine(msg.source().session().getPreviousCMD(),0).toUpperCase()+" ";
-							if((t[2].length()==0)||(t[2].equals("ALL")))
-								tryIt=true;
-							else
-							if((t[2].equals("P"))&&(t.length>3))
-							{
-								if(match(str.trim(),t[3]))
-									tryIt=true;
-							}
-							else
-							for(int i=2;i<t.length;i++)
-							{
-								if(str.indexOf(" "+t[i]+" ")>=0)
-								{
-									str=(t[i].trim()+" "+str.trim()).trim();
-									tryIt=true;
-									break;
-								}
-							}
-						}
-					}
-				}
-				break;
-			}
-			if(tryIt)
-			{
-				final MOB monster=getMakeMOB(affecting);
-				if(lastKnownLocation==null)
-					lastKnownLocation=msg.source().location();
-				if((monster==null)||(monster.amDead())||(lastKnownLocation==null))
-					return true;
-				final Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
-				Item Tool=null;
-				if(msg.tool() instanceof Item)
-					Tool=(Item)msg.tool();
-				if(Tool==null)
-					Tool=defaultItem;
-				String resp=null;
-				if(msg.target() instanceof MOB)
-					resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,newObjs());
-				else
-				if(msg.target() instanceof Item)
-					resp=execute(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,str,newObjs());
-				else
-					resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,newObjs());
-				if((resp!=null)&&(resp.equalsIgnoreCase("CANCEL")))
-					return false;
-			}
-		}
-		}
-		finally { recurseCounter.addAndGet(-1); }
-		return true;
-	}
-
-	protected String standardTriggerCheck(DVector script, String[] t, Environmental E)
-	{
-		if(E==null)
-			return null;
-		if(t==null)
-			t=parseBits(script,0,"CT");
-		final String NAME=E.Name().toUpperCase();
-		if((t[1].length()==0)
-		||(t[1].equals("ALL"))
-		||(t[1].equals("P")
-			&&(t.length>2)
-			&&((t[2].indexOf(NAME)>=0)
-				||(E.ID().equalsIgnoreCase(t[2]))
-				||(t[2].equalsIgnoreCase("ALL")))))
-			return t[1];
-		for(int i=1;i<t.length;i++)
-		{
-			if(((" "+NAME+" ").indexOf(" "+t[i]+" ")>=0)
-			||(E.ID().equalsIgnoreCase(t[i]))
-			||(t[i].equalsIgnoreCase("ALL")))
-				return t[i];
-		}
-		return null;
-
-	}
-
-	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
-	{
-		if((!(host instanceof PhysicalAgent))||(msg.source()==null)||(recurseCounter.get() > 2))
-			return;
-
-		try { // atomic recurse counter
-		recurseCounter.addAndGet(1);
-
-		final PhysicalAgent affecting = (PhysicalAgent)host;
-
-		final MOB monster=getMakeMOB(affecting);
-
-		if(lastKnownLocation==null)
-			lastKnownLocation=msg.source().location();
-		if((monster==null)||(monster.amDead())||(lastKnownLocation==null))
-			return;
-
-		final Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
-		MOB eventMob=monster;
-		if((defaultItem!=null)&&(defaultItem.owner() instanceof MOB))
-			eventMob=(MOB)defaultItem.owner();
-
-		final List<DVector> scripts=getScripts();
-
-		if(msg.amITarget(eventMob)
-		&&(!msg.amISource(monster))
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.source()!=monster))
-			lastToHurtMe=msg.source();
-		DVector script=null;
-		String trigger=null;
-		String[] t=null;
-		for(int v=0;v<scripts.size();v++)
-		{
-			script=scripts.get(v);
-			if(script.size()<1)
-				continue;
-
-			trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
-			t=(String[])script.elementAt(0,2);
-			final int triggerCode=getTriggerCode(trigger,t);
-			int targetMinorTrigger=-1;
-			switch(triggerCode)
-			{
-			case 1: // greet_prog
-				if((msg.targetMinor()==CMMsg.TYP_ENTER)
-				&&(msg.amITarget(lastKnownLocation))
-				&&(!msg.amISource(eventMob))
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
-				&&canTrigger(1)
-				&&((!(affecting instanceof MOB))||CMLib.flags().canSenseEnteringLeaving(msg.source(),(MOB)affecting)))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CR");
-					if(t!=null)
-					{
-						final int prcnt=CMath.s_int(t[1]);
-						if(CMLib.dice().rollPercentage()<prcnt)
-						{
-							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
-							return;
-						}
-					}
-				}
-				break;
-			case 45: // arrive_prog
-				if(((msg.targetMinor()==CMMsg.TYP_ENTER)||(msg.sourceMinor()==CMMsg.TYP_LIFE))
-				&&(msg.amISource(eventMob))
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
-				&&canTrigger(45))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CR");
-					if(t!=null)
-					{
-						final int prcnt=CMath.s_int(t[1]);
-						if(CMLib.dice().rollPercentage()<prcnt)
-						{
-							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
-							return;
-						}
-					}
-				}
-				break;
-			case 2: // all_greet_prog
-				if((msg.targetMinor()==CMMsg.TYP_ENTER)&&canTrigger(2)
-				&&(msg.amITarget(lastKnownLocation))
-				&&(!msg.amISource(eventMob))
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
-				&&((!(affecting instanceof MOB)) ||CMLib.flags().canActAtAll(monster)))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CR");
-					if(t!=null)
-					{
-						final int prcnt=CMath.s_int(t[1]);
-						if(CMLib.dice().rollPercentage()<prcnt)
-						{
-							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
-							return;
-						}
-					}
-				}
-				break;
-			case 3: // speech_prog
-				if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))&&canTrigger(3)
-				&&(!msg.amISource(monster))
-				&&(!msg.othersMajor(CMMsg.MASK_CHANNEL))
-				&&(((msg.othersMessage()!=null)&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
-				   ||((msg.target()==monster)&&(msg.targetMessage()!=null)&&(msg.tool()==null)))
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CT");
-					if(t!=null)
-					{
-						String str=null;
-						if(msg.othersMessage() != null)
-							str=CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase());
-						else
-						if(msg.targetMessage() != null)
-							str=CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());
-						if(str != null)
-						{
-							str=(" "+str.replaceAll("`","'")+" ").toUpperCase();
-							str=CMStrings.removeColors(str);
-							str=CMStrings.replaceAll(str,"\n\r"," ");
-							if((t[1].length()==0)||(t[1].equals("ALL")))
-							{
-								enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
-								return;
-							}
-							else
-							if((t[1].equals("P"))&&(t.length>2))
-							{
-								if(match(str.trim(),t[2]))
-								{
-									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
-									return;
-								}
-							}
-							else
-							for(int i=1;i<t.length;i++)
-							{
-								final int x=str.indexOf(" "+t[i]+" ");
-								if(x>=0)
-								{
-									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim());
-									return;
-								}
-							}
-						}
-					}
-				}
-				break;
-			case 4: // give_prog
-				if((msg.targetMinor()==CMMsg.TYP_GIVE)
-				&&canTrigger(4)
-				&&((msg.amITarget(monster))
-						||(msg.tool()==affecting)
-						||(affecting instanceof Room)
-						||(affecting instanceof Area))
-				&&(!msg.amISource(monster))
-				&&(msg.tool() instanceof Item)
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					final String check=standardTriggerCheck(script,t,msg.tool());
-					if(check!=null)
-					{
-						if(lastMsg==msg)
-							break;
-						lastMsg=msg;
-						enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,check);
-						return;
-					}
-				}
-				break;
-			case 40: // llook_prog
-				if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&canTrigger(40)
-				&&(!msg.amISource(monster))
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					final String check=standardTriggerCheck(script,t,msg.target());
-					if(check!=null)
-					{
-						enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
-						return;
-					}
-				}
-				break;
-			case 41: // execmsg_prog
-				if(canTrigger(41))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CCT");
-					if(t!=null)
-					{
-						final String command=t[1];
-						boolean chk=false;
-						final int x=command.indexOf('=');
-						if(x>0)
-						{
-							chk=true;
-							boolean minorOnly = false;
-							boolean majorOnly = false;
-							for(int i=0;i<x;i++)
-							{
-								switch(command.charAt(i))
-								{
+									switch(command.charAt(i))
+									{
 									case 'S':
 										if(majorOnly)
 											chk=chk&&msg.isSourceMajor(command.substring(x+1)); 
@@ -10555,51 +10594,1002 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									default: 
 										chk=false; 
 										break;
+									}
+								}
+							}
+							else
+							if(command.startsWith(">"))
+							{
+								String cmd=command.substring(1);
+								chk=msg.isSourceMajor(cmd)||msg.isTargetMajor(cmd)||msg.isOthersMajor(cmd);
+							}
+							else
+							if(command.startsWith("<"))
+							{
+								String cmd=command.substring(1);
+								chk=msg.isSourceMinor(cmd)||msg.isTargetMinor(cmd)||msg.isOthersMinor(cmd);
+							}
+							else
+							if(command.startsWith("?"))
+							{
+								String cmd=command.substring(1);
+								chk=msg.isSource(cmd)||msg.isTarget(cmd)||msg.isOthers(cmd);
+							}
+							else
+								chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
+							if(chk)
+							{
+								str="";
+								if((msg.source().session()!=null)&&(msg.source().session().getPreviousCMD()!=null))
+									str=" "+CMParms.combine(msg.source().session().getPreviousCMD(),0).toUpperCase()+" ";
+								if((t[2].length()==0)||(t[2].equals("ALL")))
+									tryIt=true;
+								else
+								if((t[2].equals("P"))&&(t.length>3))
+								{
+									if(match(str.trim(),t[3]))
+										tryIt=true;
+								}
+								else
+								for(int i=2;i<t.length;i++)
+								{
+									if(str.indexOf(" "+t[i]+" ")>=0)
+									{
+										str=(t[i].trim()+" "+str.trim()).trim();
+										tryIt=true;
+										break;
+									}
 								}
 							}
 						}
-						else
-						if(command.startsWith(">"))
+					}
+					break;
+				}
+				if(tryIt)
+				{
+					final MOB monster=getMakeMOB(affecting);
+					if(lastKnownLocation==null)
+						lastKnownLocation=msg.source().location();
+					if((monster==null)||(monster.amDead())||(lastKnownLocation==null))
+						return true;
+					final Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
+					Item Tool=null;
+					if(msg.tool() instanceof Item)
+						Tool=(Item)msg.tool();
+					if(Tool==null)
+						Tool=defaultItem;
+					String resp=null;
+					if(msg.target() instanceof MOB)
+						resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,newObjs());
+					else
+					if(msg.target() instanceof Item)
+						resp=execute(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,str,newObjs());
+					else
+						resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,newObjs());
+					if((resp!=null)&&(resp.equalsIgnoreCase("CANCEL")))
+						return false;
+				}
+			}
+		}
+		finally 
+		{ 
+			recurseCounter.addAndGet(-1); 
+		}
+		return true;
+	}
+
+	protected String standardTriggerCheck(DVector script, String[] t, Environmental E)
+	{
+		if(E==null)
+			return null;
+		if(t==null)
+			t=parseBits(script,0,"CT");
+		final String NAME=E.Name().toUpperCase();
+		if((t[1].length()==0)
+		||(t[1].equals("ALL"))
+		||(t[1].equals("P")
+			&&(t.length>2)
+			&&((t[2].indexOf(NAME)>=0)
+				||(E.ID().equalsIgnoreCase(t[2]))
+				||(t[2].equalsIgnoreCase("ALL")))))
+			return t[1];
+		for(int i=1;i<t.length;i++)
+		{
+			if(((" "+NAME+" ").indexOf(" "+t[i]+" ")>=0)
+			||(E.ID().equalsIgnoreCase(t[i]))
+			||(t[i].equalsIgnoreCase("ALL")))
+				return t[i];
+		}
+		return null;
+
+	}
+
+	@Override
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if((!(host instanceof PhysicalAgent))||(msg.source()==null)||(recurseCounter.get() > 2))
+			return;
+
+		try 
+		{ 
+			// atomic recurse counter
+			recurseCounter.addAndGet(1);
+	
+			final PhysicalAgent affecting = (PhysicalAgent)host;
+	
+			final MOB monster=getMakeMOB(affecting);
+	
+			if(lastKnownLocation==null)
+				lastKnownLocation=msg.source().location();
+			if((monster==null)||(monster.amDead())||(lastKnownLocation==null))
+				return;
+	
+			final Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
+			MOB eventMob=monster;
+			if((defaultItem!=null)&&(defaultItem.owner() instanceof MOB))
+				eventMob=(MOB)defaultItem.owner();
+	
+			final List<DVector> scripts=getScripts();
+	
+			if(msg.amITarget(eventMob)
+			&&(!msg.amISource(monster))
+			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			&&(msg.source()!=monster))
+				lastToHurtMe=msg.source();
+			DVector script=null;
+			String trigger=null;
+			String[] t=null;
+			for(int v=0;v<scripts.size();v++)
+			{
+				script=scripts.get(v);
+				if(script.size()<1)
+					continue;
+	
+				trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
+				t=(String[])script.elementAt(0,2);
+				final int triggerCode=getTriggerCode(trigger,t);
+				int targetMinorTrigger=-1;
+				switch(triggerCode)
+				{
+				case 1: // greet_prog
+					if((msg.targetMinor()==CMMsg.TYP_ENTER)
+					&&(msg.amITarget(lastKnownLocation))
+					&&(!msg.amISource(eventMob))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
+					&&canTrigger(1)
+					&&((!(affecting instanceof MOB))||CMLib.flags().canSenseEnteringLeaving(msg.source(),(MOB)affecting)))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CR");
+						if(t!=null)
 						{
-							String cmd=command.substring(1);
-							chk=msg.isSourceMajor(cmd)||msg.isTargetMajor(cmd)||msg.isOthersMajor(cmd);
-						}
-						else
-						if(command.startsWith("<"))
-						{
-							String cmd=command.substring(1);
-							chk=msg.isSourceMinor(cmd)||msg.isTargetMinor(cmd)||msg.isOthersMinor(cmd);
-						}
-						else
-						if(command.startsWith("?"))
-						{
-							String cmd=command.substring(1);
-							chk=msg.isSource(cmd)||msg.isTarget(cmd)||msg.isOthers(cmd);
-						}
-						else
-							chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
-						if(chk)
-						{
-							String str="";
-							if((msg.source().session()!=null)&&(msg.source().session().getPreviousCMD()!=null))
-								str=" "+CMParms.combine(msg.source().session().getPreviousCMD(),0).toUpperCase()+" ";
-							boolean doIt=false;
-							if((t[2].length()==0)||(t[2].equals("ALL")))
-								doIt=true;
-							else
-							if((t[2].equals("P"))&&(t.length>3))
+							final int prcnt=CMath.s_int(t[1]);
+							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								if(match(str.trim(),t[3]))
-									doIt=true;
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								return;
+							}
+						}
+					}
+					break;
+				case 45: // arrive_prog
+					if(((msg.targetMinor()==CMMsg.TYP_ENTER)||(msg.sourceMinor()==CMMsg.TYP_LIFE))
+					&&(msg.amISource(eventMob))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
+					&&canTrigger(45))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CR");
+						if(t!=null)
+						{
+							final int prcnt=CMath.s_int(t[1]);
+							if(CMLib.dice().rollPercentage()<prcnt)
+							{
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								return;
+							}
+						}
+					}
+					break;
+				case 2: // all_greet_prog
+					if((msg.targetMinor()==CMMsg.TYP_ENTER)&&canTrigger(2)
+					&&(msg.amITarget(lastKnownLocation))
+					&&(!msg.amISource(eventMob))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
+					&&((!(affecting instanceof MOB)) ||CMLib.flags().canActAtAll(monster)))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CR");
+						if(t!=null)
+						{
+							final int prcnt=CMath.s_int(t[1]);
+							if(CMLib.dice().rollPercentage()<prcnt)
+							{
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								return;
+							}
+						}
+					}
+					break;
+				case 3: // speech_prog
+					if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))&&canTrigger(3)
+					&&(!msg.amISource(monster))
+					&&(!msg.othersMajor(CMMsg.MASK_CHANNEL))
+					&&(((msg.othersMessage()!=null)&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
+					   ||((msg.target()==monster)&&(msg.targetMessage()!=null)&&(msg.tool()==null)))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CT");
+						if(t!=null)
+						{
+							String str=null;
+							if(msg.othersMessage() != null)
+								str=CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase());
+							else
+							if(msg.targetMessage() != null)
+								str=CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());
+							if(str != null)
+							{
+								str=(" "+str.replaceAll("`","'")+" ").toUpperCase();
+								str=CMStrings.removeColors(str);
+								str=CMStrings.replaceAll(str,"\n\r"," ");
+								if((t[1].length()==0)||(t[1].equals("ALL")))
+								{
+									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
+									return;
+								}
+								else
+								if((t[1].equals("P"))&&(t.length>2))
+								{
+									if(match(str.trim(),t[2]))
+									{
+										enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
+										return;
+									}
+								}
+								else
+								for(int i=1;i<t.length;i++)
+								{
+									final int x=str.indexOf(" "+t[i]+" ");
+									if(x>=0)
+									{
+										enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim());
+										return;
+									}
+								}
+							}
+						}
+					}
+					break;
+				case 4: // give_prog
+					if((msg.targetMinor()==CMMsg.TYP_GIVE)
+					&&canTrigger(4)
+					&&((msg.amITarget(monster))
+						||(msg.tool()==affecting)
+						||(affecting instanceof Room)
+						||(affecting instanceof Area))
+					&&(!msg.amISource(monster))
+					&&(msg.tool() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.tool());
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,check);
+							return;
+						}
+					}
+					break;
+				case 40: // llook_prog
+					if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&canTrigger(40)
+					&&(!msg.amISource(monster))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.target());
+						if(check!=null)
+						{
+							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
+							return;
+						}
+					}
+					break;
+				case 41: // execmsg_prog
+					if(canTrigger(41))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CCT");
+						if(t!=null)
+						{
+							final String command=t[1];
+							boolean chk=false;
+							final int x=command.indexOf('=');
+							if(x>0)
+							{
+								chk=true;
+								boolean minorOnly = false;
+								boolean majorOnly = false;
+								for(int i=0;i<x;i++)
+								{
+									switch(command.charAt(i))
+									{
+										case 'S':
+											if(majorOnly)
+												chk=chk&&msg.isSourceMajor(command.substring(x+1)); 
+											else
+											if(minorOnly)
+												chk=chk&&msg.isSourceMinor(command.substring(x+1)); 
+											else
+												chk=chk&&msg.isSource(command.substring(x+1)); 
+											break;
+										case 'T': 
+											if(majorOnly)
+												chk=chk&&msg.isTargetMajor(command.substring(x+1)); 
+											else
+											if(minorOnly)
+												chk=chk&&msg.isTargetMinor(command.substring(x+1)); 
+											else
+												chk=chk&&msg.isTarget(command.substring(x+1)); 
+											break;
+										case 'O': 
+											if(majorOnly)
+												chk=chk&&msg.isOthersMajor(command.substring(x+1)); 
+											else
+											if(minorOnly)
+												chk=chk&&msg.isOthersMinor(command.substring(x+1)); 
+											else
+												chk=chk&&msg.isOthers(command.substring(x+1)); 
+											break;
+										case '<':
+											minorOnly=true;
+											majorOnly=false;
+											break;
+										case '>':
+											majorOnly=true;
+											minorOnly=false;
+											break;
+										case '?':
+											majorOnly=false;
+											minorOnly=false;
+											break;
+										default: 
+											chk=false; 
+											break;
+									}
+								}
 							}
 							else
-							for(int i=2;i<t.length;i++)
+							if(command.startsWith(">"))
 							{
-								if(str.indexOf(" "+t[i]+" ")>=0)
-								{
-									str=(t[i].trim()+" "+str.trim()).trim();
+								String cmd=command.substring(1);
+								chk=msg.isSourceMajor(cmd)||msg.isTargetMajor(cmd)||msg.isOthersMajor(cmd);
+							}
+							else
+							if(command.startsWith("<"))
+							{
+								String cmd=command.substring(1);
+								chk=msg.isSourceMinor(cmd)||msg.isTargetMinor(cmd)||msg.isOthersMinor(cmd);
+							}
+							else
+							if(command.startsWith("?"))
+							{
+								String cmd=command.substring(1);
+								chk=msg.isSource(cmd)||msg.isTarget(cmd)||msg.isOthers(cmd);
+							}
+							else
+								chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
+							if(chk)
+							{
+								String str="";
+								if((msg.source().session()!=null)&&(msg.source().session().getPreviousCMD()!=null))
+									str=" "+CMParms.combine(msg.source().session().getPreviousCMD(),0).toUpperCase()+" ";
+								boolean doIt=false;
+								if((t[2].length()==0)||(t[2].equals("ALL")))
 									doIt=true;
+								else
+								if((t[2].equals("P"))&&(t.length>3))
+								{
+									if(match(str.trim(),t[3]))
+										doIt=true;
+								}
+								else
+								for(int i=2;i<t.length;i++)
+								{
+									if(str.indexOf(" "+t[i]+" ")>=0)
+									{
+										str=(t[i].trim()+" "+str.trim()).trim();
+										doIt=true;
+										break;
+									}
+								}
+								if(doIt)
+								{
+									Item Tool=null;
+									if(msg.tool() instanceof Item)
+										Tool=(Item)msg.tool();
+									if(Tool==null)
+										Tool=defaultItem;
+									if(msg.target() instanceof MOB)
+										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+									else
+									if(msg.target() instanceof Item)
+										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
+									else
+										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+									return;
+								}
+							}
+						}
+					}
+					break;
+				case 39: // look_prog
+					if((msg.targetMinor()==CMMsg.TYP_LOOK)&&canTrigger(39)
+					&&(!msg.amISource(monster))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.target());
+						if(check!=null)
+						{
+							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,defaultItem,script,1,check);
+							return;
+						}
+					}
+					break;
+				case 20: // get_prog
+					if((msg.targetMinor()==CMMsg.TYP_GET)&&canTrigger(20)
+					&&(msg.amITarget(affecting)
+						||(affecting instanceof Room)
+						||(affecting instanceof Area)
+						||(affecting instanceof MOB))
+					&&(!msg.amISource(monster))
+					&&(msg.target() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						Item checkInE=(Item)msg.target();
+						if((msg.tool() instanceof Item)
+						&&(((Item)msg.tool()).container()==msg.target()))
+							checkInE=(Item)msg.tool();
+						final String check=standardTriggerCheck(script,t,checkInE);
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(affecting,msg.source(),msg.target(),monster,checkInE,defaultItem,script,1,check);
+							return;
+						}
+					}
+					break;
+				case 22: // drop_prog
+					if((msg.targetMinor()==CMMsg.TYP_DROP)&&canTrigger(22)
+					&&((msg.amITarget(affecting))
+						||(affecting instanceof Room)
+						||(affecting instanceof Area)
+						||(affecting instanceof MOB))
+					&&(!msg.amISource(monster))
+					&&(msg.target() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.target());
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							if(msg.target() instanceof Coins)
+								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
+							else
+								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
+							return;
+						}
+					}
+					break;
+				case 24: // remove_prog
+					if((msg.targetMinor()==CMMsg.TYP_REMOVE)&&canTrigger(24)
+					&&((msg.amITarget(affecting))
+						||(affecting instanceof Room)
+						||(affecting instanceof Area)
+						||(affecting instanceof MOB))
+					&&(!msg.amISource(monster))
+					&&(msg.target() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.target());
+						if(check!=null)
+						{
+							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
+							return;
+						}
+					}
+					break;
+				case 34: // open_prog
+					if(targetMinorTrigger<0)
+						targetMinorTrigger=CMMsg.TYP_OPEN;
+					//$FALL-THROUGH$
+				case 35: // close_prog
+					if(targetMinorTrigger<0)
+						targetMinorTrigger=CMMsg.TYP_CLOSE;
+					//$FALL-THROUGH$
+				case 36: // lock_prog
+					if(targetMinorTrigger<0)
+						targetMinorTrigger=CMMsg.TYP_LOCK;
+					//$FALL-THROUGH$
+				case 37: // unlock_prog
+				{
+					if(targetMinorTrigger<0)
+						targetMinorTrigger=CMMsg.TYP_UNLOCK;
+					if((msg.targetMinor()==targetMinorTrigger)&&canTrigger(triggerCode)
+					&&((msg.amITarget(affecting))
+						||(affecting instanceof Room)
+						||(affecting instanceof Area)
+						||(affecting instanceof MOB))
+					&&(!msg.amISource(monster))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final Item I=(msg.target() instanceof Item)?(Item)msg.target():defaultItem;
+						final String check=standardTriggerCheck(script,t,msg.target());
+						if(check!=null)
+						{
+							enqueResponse(affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,check);
+							return;
+						}
+					}
+					break;
+				}
+				case 25: // consume_prog
+					if(((msg.targetMinor()==CMMsg.TYP_EAT)||(msg.targetMinor()==CMMsg.TYP_DRINK))
+					&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
+					&&(!msg.amISource(monster))&&canTrigger(25)
+					&&(msg.target() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.target());
+						if(check!=null)
+						{
+							if((msg.target() == affecting)
+							&&(affecting instanceof Food))
+								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
+							else
+								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
+							return;
+						}
+					}
+					break;
+				case 21: // put_prog
+					if((msg.targetMinor()==CMMsg.TYP_PUT)&&canTrigger(21)
+					&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
+					&&(msg.tool() instanceof Item)
+					&&(!msg.amISource(monster))
+					&&(msg.target() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.target());
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
+								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
+							else
+								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),script,1,check);
+							return;
+						}
+					}
+					break;
+				case 27: // buy_prog
+					if((msg.targetMinor()==CMMsg.TYP_BUY)&&canTrigger(27)
+					&&((!(affecting instanceof ShopKeeper))
+						||msg.amITarget(affecting))
+					&&(!msg.amISource(monster))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.tool());
+						if(check!=null)
+						{
+							final Item product=makeCheapItem(msg.tool());
+							if((product instanceof Coins)
+							&&(product.owner() instanceof Room))
+								execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,check,newObjs());
+							else
+								enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check);
+							return;
+						}
+					}
+					break;
+				case 28: // sell_prog
+					if((msg.targetMinor()==CMMsg.TYP_SELL)&&canTrigger(28)
+					&&((msg.amITarget(affecting))||(!(affecting instanceof ShopKeeper)))
+					&&(!msg.amISource(monster))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.tool());
+						if(check!=null)
+						{
+							final Item product=makeCheapItem(msg.tool());
+							if((product instanceof Coins)
+							&&(product.owner() instanceof Room))
+								execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
+							else
+								enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check);
+							return;
+						}
+					}
+					break;
+				case 23: // wear_prog
+					if(((msg.targetMinor()==CMMsg.TYP_WEAR)
+						||(msg.targetMinor()==CMMsg.TYP_HOLD)
+						||(msg.targetMinor()==CMMsg.TYP_WIELD))
+					&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
+					&&(!msg.amISource(monster))&&canTrigger(23)
+					&&(msg.target() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.target());
+						if(check!=null)
+						{
+							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+							return;
+						}
+					}
+					break;
+				case 19: // bribe_prog
+					if((msg.targetMinor()==CMMsg.TYP_GIVE)
+					&&(msg.amITarget(eventMob)||(!(affecting instanceof MOB)))
+					&&(!msg.amISource(monster))&&canTrigger(19)
+					&&(msg.tool() instanceof Coins)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CR");
+						if(t!=null)
+						{
+							if(t[1].startsWith("ANY")||t[1].startsWith("ALL"))
+								t[1]=t[1].trim();
+							else
+							if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(monster)))
+								break;
+							double d=0.0;
+							if(CMath.isDouble(t[1]))
+								d=CMath.s_double(t[1]);
+							else
+								d=CMath.s_int(t[1]);
+							if((((Coins)msg.tool()).getTotalValue()>=d)
+							||(t[1].equals("ALL"))
+							||(t[1].equals("ANY")))
+							{
+								enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null);
+								return;
+							}
+						}
+					}
+					break;
+				case 8: // entry_prog
+					if((msg.targetMinor()==CMMsg.TYP_ENTER)&&canTrigger(8)
+					&&(msg.amISource(eventMob)
+						||(msg.target()==affecting)
+						||(msg.tool()==affecting)
+						||(affecting instanceof Item))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CR");
+						if(t!=null)
+						{
+							final int prcnt=CMath.s_int(t[1]);
+							if(CMLib.dice().rollPercentage()<prcnt)
+							{
+								final List<ScriptableResponse> V=new XVector(que);
+								ScriptableResponse SB=null;
+								String roomID=null;
+								if(msg.target()!=null)
+									roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
+								for(int q=0;q<V.size();q++)
+								{
+									SB=V.get(q);
+									if((SB.scr==script)&&(SB.s==msg.source()))
+									{
+										if(que.remove(SB))
+											execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
+										break;
+									}
+								}
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
+								return;
+							}
+						}
+					}
+					break;
+				case 9: // exit prog
+					if((msg.targetMinor()==CMMsg.TYP_LEAVE)&&canTrigger(9)
+					&&(msg.amITarget(lastKnownLocation))
+					&&(!msg.amISource(eventMob))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CR");
+						if(t!=null)
+						{
+							final int prcnt=CMath.s_int(t[1]);
+							if(CMLib.dice().rollPercentage()<prcnt)
+							{
+								final List<ScriptableResponse> V=new XVector(que);
+								ScriptableResponse SB=null;
+								String roomID=null;
+								if(msg.target()!=null)
+									roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
+								for(int q=0;q<V.size();q++)
+								{
+									SB=V.get(q);
+									if((SB.scr==script)&&(SB.s==msg.source()))
+									{
+										if(que.remove(SB))
+											execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
+										break;
+									}
+								}
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
+								return;
+							}
+						}
+					}
+					break;
+				case 10: // death prog
+					if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(10)
+					&&(msg.amISource(eventMob)||(!(affecting instanceof MOB))))
+					{
+						if(t==null)
+							t=parseBits(script,0,"C");
+						final MOB ded=msg.source();
+						MOB src=lastToHurtMe;
+						if(msg.tool() instanceof MOB)
+							src=(MOB)msg.tool();
+						if((src==null)||(src.location()!=monster.location()))
+							src=ded;
+						execute(affecting,src,ded,ded,defaultItem,null,script,null,newObjs());
+						return;
+					}
+					break;
+				case 44: // kill prog
+					if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(44)
+					&&((msg.tool()==affecting)||(!(affecting instanceof MOB))))
+					{
+						if(t==null)
+							t=parseBits(script,0,"C");
+						final MOB ded=msg.source();
+						MOB src=lastToHurtMe;
+						if(msg.tool() instanceof MOB)
+							src=(MOB)msg.tool();
+						if((src==null)||(src.location()!=monster.location()))
+							src=ded;
+						execute(affecting,src,ded,ded,defaultItem,null,script,null,newObjs());
+						return;
+					}
+					break;
+				case 26: // damage prog
+					if((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&canTrigger(26)
+					&&(msg.amITarget(eventMob)||(msg.tool()==affecting)))
+					{
+						if(t==null)
+							t=parseBits(script,0,"C");
+						Item I=null;
+						if(msg.tool() instanceof Item)
+							I=(Item)msg.tool();
+						execute(affecting,msg.source(),msg.target(),eventMob,defaultItem,I,script,""+msg.value(),newObjs());
+						return;
+					}
+					break;
+				case 29: // login_prog
+					if(!registeredEvents.contains(Integer.valueOf(CMMsg.TYP_LOGIN)))
+					{
+						CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_LOGIN);
+						registeredEvents.add(Integer.valueOf(CMMsg.TYP_LOGIN));
+					}
+					if((msg.sourceMinor()==CMMsg.TYP_LOGIN)&&canTrigger(29)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
+					&&(!CMLib.flags().isCloaked(msg.source())))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CR");
+						if(t!=null)
+						{
+							final int prcnt=CMath.s_int(t[1]);
+							if(CMLib.dice().rollPercentage()<prcnt)
+							{
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								return;
+							}
+						}
+					}
+					break;
+				case 32: // level_prog
+					if(!registeredEvents.contains(Integer.valueOf(CMMsg.TYP_LEVEL)))
+					{
+						CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_LEVEL);
+						registeredEvents.add(Integer.valueOf(CMMsg.TYP_LEVEL));
+					}
+					if((msg.sourceMinor()==CMMsg.TYP_LEVEL)&&canTrigger(32)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
+					&&(!CMLib.flags().isCloaked(msg.source())))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CR");
+						if(t!=null)
+						{
+							final int prcnt=CMath.s_int(t[1]);
+							if(CMLib.dice().rollPercentage()<prcnt)
+							{
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								return;
+							}
+						}
+					}
+					break;
+				case 30: // logoff_prog
+					if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&canTrigger(30)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
+					&&(!CMLib.flags().isCloaked(msg.source())))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CR");
+						if(t!=null)
+						{
+							final int prcnt=CMath.s_int(t[1]);
+							if(CMLib.dice().rollPercentage()<prcnt)
+							{
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								return;
+							}
+						}
+					}
+					break;
+				case 12: // mask_prog
+					if(!canTrigger(12))
+						break;
+				//$FALL-THROUGH$
+				case 18: // act_prog
+					if((msg.amISource(monster))
+					||((triggerCode==18)&&(!canTrigger(18))))
+						break;
+				//$FALL-THROUGH$
+				case 43: // imask_prog
+					if((triggerCode!=43)||(msg.amISource(monster)&&canTrigger(43)))
+					{
+						if(t==null)
+						{
+							t=parseBits(script,0,"CT");
+							for(int i=1;i<t.length;i++)
+								t[i]=CMLib.english().stripPunctuation(CMStrings.removeColors(t[i]));
+						}
+						boolean doIt=false;
+						String str=msg.othersMessage();
+						if(str==null)
+							str=msg.targetMessage();
+						if(str==null)
+							str=msg.sourceMessage();
+						if(str==null)
+							break;
+						str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
+						str=CMLib.english().stripPunctuation(CMStrings.removeColors(str));
+						str=" "+CMStrings.replaceAll(str,"\n\r"," ").toUpperCase().trim()+" ";
+						if((t[1].length()==0)||(t[1].equals("ALL")))
+							doIt=true;
+						else
+						if((t[1].equals("P"))&&(t.length>2))
+						{
+							if(match(str.trim(),t[2]))
+								doIt=true;
+						}
+						else
+						for(int i=1;i<t.length;i++)
+						{
+							if(str.indexOf(" "+t[i]+" ")>=0)
+							{
+								str=t[i];
+								doIt=true;
+								break;
+							}
+						}
+						if(doIt)
+						{
+							Item Tool=null;
+							if(msg.tool() instanceof Item)
+								Tool=(Item)msg.tool();
+							if(Tool==null)
+								Tool=defaultItem;
+							if(msg.target() instanceof MOB)
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+							else
+							if(msg.target() instanceof Item)
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
+							else
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+							return;
+						}
+					}
+					break;
+				case 38: // social prog
+					if(!msg.amISource(monster)
+					&&canTrigger(38)
+					&&(msg.tool() instanceof Social))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CR");
+						if((t!=null)
+						&&((Social)msg.tool()).Name().toUpperCase().startsWith(t[1]))
+						{
+							final Item Tool=defaultItem;
+							if(msg.target() instanceof MOB)
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name());
+							else
+							if(msg.target() instanceof Item)
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,msg.tool().Name());
+							else
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name());
+							return;
+						}
+					}
+					break;
+				case 33: // channel prog
+					if(!registeredEvents.contains(Integer.valueOf(CMMsg.TYP_CHANNEL)))
+					{
+						CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_CHANNEL);
+						registeredEvents.add(Integer.valueOf(CMMsg.TYP_CHANNEL));
+					}
+					if(!msg.amISource(monster)
+					&&(msg.othersMajor(CMMsg.MASK_CHANNEL))
+					&&canTrigger(33))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CCT");
+						boolean doIt=false;
+						if(t!=null)
+						{
+							final String channel=t[1];
+							final int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
+							String str=null;
+							if(channel.equalsIgnoreCase(CMLib.channels().getChannel(channelInt).name))
+							{
+								str=msg.sourceMessage();
+								if(str==null)
+									str=msg.othersMessage();
+								if(str==null)
+									str=msg.targetMessage();
+								if(str==null)
 									break;
+								str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase().trim();
+								int dex=str.indexOf("["+channel+"]");
+								if(dex>0)
+									str=str.substring(dex+2+channel.length()).trim();
+								else
+								{
+									dex=str.indexOf('\'');
+									final int edex=str.lastIndexOf('\'');
+									if(edex>dex)
+										str=str.substring(dex+1,edex);
+								}
+								str=" "+CMStrings.removeColors(str)+" ";
+								str=CMStrings.replaceAll(str,"\n\r"," ");
+								if((t[2].length()==0)||(t[2].equals("ALL")))
+									doIt=true;
+								else
+								if(t[2].equals("P")&&(t.length>2))
+								{
+									if(match(str.trim(),t[3]))
+										doIt=true;
+								}
+								else
+								for(int i=2;i<t.length;i++)
+								{
+									if(str.indexOf(" "+t[i]+" ")>=0)
+									{
+										str=t[i];
+										doIt=true;
+										break;
+									}
 								}
 							}
 							if(doIt)
@@ -10620,558 +11610,38 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							}
 						}
 					}
-				}
-				break;
-			case 39: // look_prog
-				if((msg.targetMinor()==CMMsg.TYP_LOOK)&&canTrigger(39)
-				&&(!msg.amISource(monster))
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					final String check=standardTriggerCheck(script,t,msg.target());
-					if(check!=null)
-					{
-						enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,defaultItem,script,1,check);
-						return;
-					}
-				}
-				break;
-			case 20: // get_prog
-				if((msg.targetMinor()==CMMsg.TYP_GET)&&canTrigger(20)
-				&&(msg.amITarget(affecting)||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
-				&&(!msg.amISource(monster))
-				&&(msg.target() instanceof Item)
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					Item checkInE=(Item)msg.target();
-					if((msg.tool() instanceof Item)
-					&&(((Item)msg.tool()).container()==msg.target()))
-						checkInE=(Item)msg.tool();
-					final String check=standardTriggerCheck(script,t,checkInE);
-					if(check!=null)
-					{
-						if(lastMsg==msg)
-							break;
-						lastMsg=msg;
-						enqueResponse(affecting,msg.source(),msg.target(),monster,checkInE,defaultItem,script,1,check);
-						return;
-					}
-				}
-				break;
-			case 22: // drop_prog
-				if((msg.targetMinor()==CMMsg.TYP_DROP)&&canTrigger(22)
-				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
-				&&(!msg.amISource(monster))
-				&&(msg.target() instanceof Item)
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					final String check=standardTriggerCheck(script,t,msg.target());
-					if(check!=null)
-					{
-						if(lastMsg==msg)
-							break;
-						lastMsg=msg;
-						if(msg.target() instanceof Coins)
-							execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
-						else
-							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
-						return;
-					}
-				}
-				break;
-			case 24: // remove_prog
-				if((msg.targetMinor()==CMMsg.TYP_REMOVE)&&canTrigger(24)
-				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
-				&&(!msg.amISource(monster))
-				&&(msg.target() instanceof Item)
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					final String check=standardTriggerCheck(script,t,msg.target());
-					if(check!=null)
-					{
-						enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
-						return;
-					}
-				}
-				break;
-			case 34: // open_prog
-				if(targetMinorTrigger<0)
-					targetMinorTrigger=CMMsg.TYP_OPEN;
-				//$FALL-THROUGH$
-			case 35: // close_prog
-				if(targetMinorTrigger<0)
-					targetMinorTrigger=CMMsg.TYP_CLOSE;
-				//$FALL-THROUGH$
-			case 36: // lock_prog
-				if(targetMinorTrigger<0)
-					targetMinorTrigger=CMMsg.TYP_LOCK;
-				//$FALL-THROUGH$
-			case 37: // unlock_prog
-			{
-				if(targetMinorTrigger<0)
-					targetMinorTrigger=CMMsg.TYP_UNLOCK;
-				if((msg.targetMinor()==targetMinorTrigger)&&canTrigger(triggerCode)
-				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
-				&&(!msg.amISource(monster))
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					final Item I=(msg.target() instanceof Item)?(Item)msg.target():defaultItem;
-					final String check=standardTriggerCheck(script,t,msg.target());
-					if(check!=null)
-					{
-						enqueResponse(affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,check);
-						return;
-					}
-				}
-				break;
-			}
-			case 25: // consume_prog
-				if(((msg.targetMinor()==CMMsg.TYP_EAT)||(msg.targetMinor()==CMMsg.TYP_DRINK))
-				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
-				&&(!msg.amISource(monster))&&canTrigger(25)
-				&&(msg.target() instanceof Item)
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					final String check=standardTriggerCheck(script,t,msg.target());
-					if(check!=null)
-					{
-						if((msg.target() == affecting)
-						&&(affecting instanceof Food))
-							execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
-						else
-							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
-						return;
-					}
-				}
-				break;
-			case 21: // put_prog
-				if((msg.targetMinor()==CMMsg.TYP_PUT)&&canTrigger(21)
-				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
-				&&(msg.tool() instanceof Item)
-				&&(!msg.amISource(monster))
-				&&(msg.target() instanceof Item)
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					final String check=standardTriggerCheck(script,t,msg.target());
-					if(check!=null)
-					{
-						if(lastMsg==msg)
-							break;
-						lastMsg=msg;
-						if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-							execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
-						else
-							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),script,1,check);
-						return;
-					}
-				}
-				break;
-			case 27: // buy_prog
-				if((msg.targetMinor()==CMMsg.TYP_BUY)&&canTrigger(27)
-				&&((!(affecting instanceof ShopKeeper))
-					||msg.amITarget(affecting))
-				&&(!msg.amISource(monster))
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					final String check=standardTriggerCheck(script,t,msg.tool());
-					if(check!=null)
-					{
-						final Item product=makeCheapItem(msg.tool());
-						if((product instanceof Coins)
-						&&(product.owner() instanceof Room))
-							execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,check,newObjs());
-						else
-							enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check);
-						return;
-					}
-				}
-				break;
-			case 28: // sell_prog
-				if((msg.targetMinor()==CMMsg.TYP_SELL)&&canTrigger(28)
-				&&((msg.amITarget(affecting))||(!(affecting instanceof ShopKeeper)))
-				&&(!msg.amISource(monster))
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					final String check=standardTriggerCheck(script,t,msg.tool());
-					if(check!=null)
-					{
-						final Item product=makeCheapItem(msg.tool());
-						if((product instanceof Coins)
-						&&(product.owner() instanceof Room))
-							execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
-						else
-							enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check);
-						return;
-					}
-				}
-				break;
-			case 23: // wear_prog
-				if(((msg.targetMinor()==CMMsg.TYP_WEAR)
-					||(msg.targetMinor()==CMMsg.TYP_HOLD)
-					||(msg.targetMinor()==CMMsg.TYP_WIELD))
-				&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
-				&&(!msg.amISource(monster))&&canTrigger(23)
-				&&(msg.target() instanceof Item)
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					final String check=standardTriggerCheck(script,t,msg.target());
-					if(check!=null)
-					{
-						enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
-						return;
-					}
-				}
-				break;
-			case 19: // bribe_prog
-				if((msg.targetMinor()==CMMsg.TYP_GIVE)
-				&&(msg.amITarget(eventMob)||(!(affecting instanceof MOB)))
-				&&(!msg.amISource(monster))&&canTrigger(19)
-				&&(msg.tool() instanceof Coins)
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CR");
-					if(t!=null)
-					{
-						if(t[1].startsWith("ANY")||t[1].startsWith("ALL"))
-							t[1]=t[1].trim();
-						else
-						if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(monster)))
-							break;
-						double d=0.0;
-						if(CMath.isDouble(t[1]))
-							d=CMath.s_double(t[1]);
-						else
-							d=CMath.s_int(t[1]);
-						if((((Coins)msg.tool()).getTotalValue()>=d)
-						||(t[1].equals("ALL"))
-						||(t[1].equals("ANY")))
-						{
-							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null);
-							return;
-						}
-					}
-				}
-				break;
-			case 8: // entry_prog
-				if((msg.targetMinor()==CMMsg.TYP_ENTER)&&canTrigger(8)
-				&&(msg.amISource(eventMob)
-					||(msg.target()==affecting)
-					||(msg.tool()==affecting)
-					||(affecting instanceof Item))
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CR");
-					if(t!=null)
-					{
-						final int prcnt=CMath.s_int(t[1]);
-						if(CMLib.dice().rollPercentage()<prcnt)
-						{
-							final List<ScriptableResponse> V=new XVector(que);
-							ScriptableResponse SB=null;
-							String roomID=null;
-							if(msg.target()!=null)
-								roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
-							for(int q=0;q<V.size();q++)
-							{
-								SB=V.get(q);
-								if((SB.scr==script)&&(SB.s==msg.source()))
-								{
-									if(que.remove(SB))
-										execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
-									break;
-								}
-							}
-							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
-							return;
-						}
-					}
-				}
-				break;
-			case 9: // exit prog
-				if((msg.targetMinor()==CMMsg.TYP_LEAVE)&&canTrigger(9)
-				&&(msg.amITarget(lastKnownLocation))
-				&&(!msg.amISource(eventMob))
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CR");
-					if(t!=null)
-					{
-						final int prcnt=CMath.s_int(t[1]);
-						if(CMLib.dice().rollPercentage()<prcnt)
-						{
-							final List<ScriptableResponse> V=new XVector(que);
-							ScriptableResponse SB=null;
-							String roomID=null;
-							if(msg.target()!=null)
-								roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
-							for(int q=0;q<V.size();q++)
-							{
-								SB=V.get(q);
-								if((SB.scr==script)&&(SB.s==msg.source()))
-								{
-									if(que.remove(SB))
-										execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
-									break;
-								}
-							}
-							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
-							return;
-						}
-					}
-				}
-				break;
-			case 10: // death prog
-				if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(10)
-				&&(msg.amISource(eventMob)||(!(affecting instanceof MOB))))
-				{
-					if(t==null)
-						t=parseBits(script,0,"C");
-					final MOB ded=msg.source();
-					MOB src=lastToHurtMe;
-					if(msg.tool() instanceof MOB)
-						src=(MOB)msg.tool();
-					if((src==null)||(src.location()!=monster.location()))
-					   src=ded;
-					execute(affecting,src,ded,ded,defaultItem,null,script,null,newObjs());
-					return;
-				}
-				break;
-			case 44: // kill prog
-				if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(44)
-				&&((msg.tool()==affecting)||(!(affecting instanceof MOB))))
-				{
-					if(t==null)
-						t=parseBits(script,0,"C");
-					final MOB ded=msg.source();
-					MOB src=lastToHurtMe;
-					if(msg.tool() instanceof MOB)
-						src=(MOB)msg.tool();
-					if((src==null)||(src.location()!=monster.location()))
-					   src=ded;
-					execute(affecting,src,ded,ded,defaultItem,null,script,null,newObjs());
-					return;
-				}
-				break;
-			case 26: // damage prog
-				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&canTrigger(26)
-				&&(msg.amITarget(eventMob)||(msg.tool()==affecting)))
-				{
-					if(t==null)
-						t=parseBits(script,0,"C");
-					Item I=null;
-					if(msg.tool() instanceof Item)
-						I=(Item)msg.tool();
-					execute(affecting,msg.source(),msg.target(),eventMob,defaultItem,I,script,""+msg.value(),newObjs());
-					return;
-				}
-				break;
-			case 29: // login_prog
-				if(!registeredEvents.contains(Integer.valueOf(CMMsg.TYP_LOGIN)))
-				{
-					CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_LOGIN);
-					registeredEvents.add(Integer.valueOf(CMMsg.TYP_LOGIN));
-				}
-				if((msg.sourceMinor()==CMMsg.TYP_LOGIN)&&canTrigger(29)
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
-				&&(!CMLib.flags().isCloaked(msg.source())))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CR");
-					if(t!=null)
-					{
-						final int prcnt=CMath.s_int(t[1]);
-						if(CMLib.dice().rollPercentage()<prcnt)
-						{
-							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
-							return;
-						}
-					}
-				}
-				break;
-			case 32: // level_prog
-				if(!registeredEvents.contains(Integer.valueOf(CMMsg.TYP_LEVEL)))
-				{
-					CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_LEVEL);
-					registeredEvents.add(Integer.valueOf(CMMsg.TYP_LEVEL));
-				}
-				if((msg.sourceMinor()==CMMsg.TYP_LEVEL)&&canTrigger(32)
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
-				&&(!CMLib.flags().isCloaked(msg.source())))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CR");
-					if(t!=null)
-					{
-						final int prcnt=CMath.s_int(t[1]);
-						if(CMLib.dice().rollPercentage()<prcnt)
-						{
-							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
-							return;
-						}
-					}
-				}
-				break;
-			case 30: // logoff_prog
-				if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&canTrigger(30)
-				&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
-				&&(!CMLib.flags().isCloaked(msg.source())))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CR");
-					if(t!=null)
-					{
-						final int prcnt=CMath.s_int(t[1]);
-						if(CMLib.dice().rollPercentage()<prcnt)
-						{
-							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
-							return;
-						}
-					}
-				}
-				break;
-			case 12: // mask_prog
-				if(!canTrigger(12))
 					break;
-			//$FALL-THROUGH$
-			case 18: // act_prog
-				if((msg.amISource(monster))
-				||((triggerCode==18)&&(!canTrigger(18))))
-					break;
-			//$FALL-THROUGH$
-			case 43: // imask_prog
-				if((triggerCode!=43)||(msg.amISource(monster)&&canTrigger(43)))
-				{
-					if(t==null)
+				case 31: // regmask prog
+					if(!msg.amISource(monster)&&canTrigger(31))
 					{
-						t=parseBits(script,0,"CT");
-						for(int i=1;i<t.length;i++)
-							t[i]=CMLib.english().stripPunctuation(CMStrings.removeColors(t[i]));
-					}
-					boolean doIt=false;
-					String str=msg.othersMessage();
-					if(str==null)
-						str=msg.targetMessage();
-					if(str==null)
-						str=msg.sourceMessage();
-					if(str==null)
-						break;
-					str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
-					str=CMLib.english().stripPunctuation(CMStrings.removeColors(str));
-					str=" "+CMStrings.replaceAll(str,"\n\r"," ").toUpperCase().trim()+" ";
-					if((t[1].length()==0)||(t[1].equals("ALL")))
-						doIt=true;
-					else
-					if((t[1].equals("P"))&&(t.length>2))
-					{
-						if(match(str.trim(),t[2]))
-							doIt=true;
-					}
-					else
-					for(int i=1;i<t.length;i++)
-						if(str.indexOf(" "+t[i]+" ")>=0)
-						{
-							str=t[i];
-							doIt=true;
-							break;
-						}
-					if(doIt)
-					{
-						Item Tool=null;
-						if(msg.tool() instanceof Item)
-							Tool=(Item)msg.tool();
-						if(Tool==null)
-							Tool=defaultItem;
-						if(msg.target() instanceof MOB)
-							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
-						else
-						if(msg.target() instanceof Item)
-							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
-						else
-							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
-						return;
-					}
-				}
-				break;
-			case 38: // social prog
-				if(!msg.amISource(monster)
-				&&canTrigger(38)
-				&&(msg.tool() instanceof Social))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CR");
-					if((t!=null)
-					&&((Social)msg.tool()).Name().toUpperCase().startsWith(t[1]))
-					{
-						final Item Tool=defaultItem;
-						if(msg.target() instanceof MOB)
-							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name());
-						else
-						if(msg.target() instanceof Item)
-							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,msg.tool().Name());
-						else
-							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name());
-						return;
-					}
-				}
-				break;
-			case 33: // channel prog
-				if(!registeredEvents.contains(Integer.valueOf(CMMsg.TYP_CHANNEL)))
-				{
-					CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_CHANNEL);
-					registeredEvents.add(Integer.valueOf(CMMsg.TYP_CHANNEL));
-				}
-				if(!msg.amISource(monster)
-				&&(msg.othersMajor(CMMsg.MASK_CHANNEL))
-				&&canTrigger(33))
-				{
-					if(t==null)
-						t=parseBits(script,0,"CCT");
-					boolean doIt=false;
-					if(t!=null)
-					{
-						final String channel=t[1];
-						final int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
-						String str=null;
-						if(channel.equalsIgnoreCase(CMLib.channels().getChannel(channelInt).name))
-						{
+						boolean doIt=false;
+						String str=msg.othersMessage();
+						if(str==null)
+							str=msg.targetMessage();
+						if(str==null)
 							str=msg.sourceMessage();
-							if(str==null)
-								str=msg.othersMessage();
-							if(str==null)
-								str=msg.targetMessage();
-							if(str==null)
-								break;
-							str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false).toUpperCase().trim();
-							int dex=str.indexOf("["+channel+"]");
-							if(dex>0)
-								str=str.substring(dex+2+channel.length()).trim();
+						if(str==null)
+							break;
+						str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
+						if(t==null)
+							t=parseBits(script,0,"Cp");
+						if(t!=null)
+						{
+							if(CMParms.getCleanBit(t[1],0).equalsIgnoreCase("p"))
+								doIt=str.trim().equals(t[1].substring(1).trim());
 							else
 							{
-								dex=str.indexOf('\'');
-								final int edex=str.lastIndexOf('\'');
-								if(edex>dex)
-									str=str.substring(dex+1,edex);
-							}
-							str=" "+CMStrings.removeColors(str)+" ";
-							str=CMStrings.replaceAll(str,"\n\r"," ");
-							if((t[2].length()==0)||(t[2].equals("ALL")))
-								doIt=true;
-							else
-							if(t[2].equals("P")&&(t.length>2))
-							{
-								if(match(str.trim(),t[3]))
-									doIt=true;
-							}
-							else
-							for(int i=2;i<t.length;i++)
-								if(str.indexOf(" "+t[i]+" ")>=0)
+								Pattern P=patterns.get(t[1]);
+								if(P==null)
 								{
-									str=t[i];
-									doIt=true;
-									break;
+									P=Pattern.compile(t[1], Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+									patterns.put(t[1],P);
 								}
+								final Matcher M=P.matcher(str);
+								doIt=M.find();
+								if(doIt)
+									str=str.substring(M.start()).trim();
+							}
 						}
 						if(doIt)
 						{
@@ -11190,62 +11660,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							return;
 						}
 					}
+					break;
 				}
-				break;
-			case 31: // regmask prog
-				if(!msg.amISource(monster)&&canTrigger(31))
-				{
-					boolean doIt=false;
-					String str=msg.othersMessage();
-					if(str==null)
-						str=msg.targetMessage();
-					if(str==null)
-						str=msg.sourceMessage();
-					if(str==null)
-						break;
-					str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
-					if(t==null)
-						t=parseBits(script,0,"Cp");
-					if(t!=null)
-					{
-						if(CMParms.getCleanBit(t[1],0).equalsIgnoreCase("p"))
-							doIt=str.trim().equals(t[1].substring(1).trim());
-						else
-						{
-							Pattern P=patterns.get(t[1]);
-							if(P==null)
-							{
-								P=Pattern.compile(t[1], Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-								patterns.put(t[1],P);
-							}
-							final Matcher M=P.matcher(str);
-							doIt=M.find();
-							if(doIt)
-								str=str.substring(M.start()).trim();
-						}
-					}
-					if(doIt)
-					{
-						Item Tool=null;
-						if(msg.tool() instanceof Item)
-							Tool=(Item)msg.tool();
-						if(Tool==null)
-							Tool=defaultItem;
-						if(msg.target() instanceof MOB)
-							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
-						else
-						if(msg.target() instanceof Item)
-							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
-						else
-							enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
-						return;
-					}
-				}
-				break;
 			}
 		}
+		finally 
+		{ 
+			recurseCounter.addAndGet(-1); 
 		}
-		finally { recurseCounter.addAndGet(-1); }
 	}
 
 	protected int getTriggerCode(String trigger, String[] ttrigger)
@@ -11566,8 +11988,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return true;
 	}
 
-	@Override public void initializeClass(){}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 
 	public void enqueResponse(PhysicalAgent host,
 							  MOB source,
@@ -11614,7 +12044,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					que.remove(SB);
 				}
 			}
-		}catch(final Exception e){Log.errOut("DefaultScriptingEngine",e);}
+		}
+		catch (final Exception e)
+		{
+			Log.errOut("DefaultScriptingEngine", e);
+		}
 	}
 
 	public String L(final String str, final String ... xs)
@@ -11709,10 +12143,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								strb.append(" ").append(String.valueOf(args[0]));
 							else
 							for(int i=0;i<args.length;i++)
+							{
 								if(i==args.length-1)
 									strb.append(" ").append(String.valueOf(args[i]));
 								else
 									strb.append(" ").append("'"+String.valueOf(args[i])+"'");
+							}
 							final DVector DV=new DVector(2);
 							DV.addElement("JS_PROG",null);
 							DV.addElement(strb.toString(),null);
@@ -11725,10 +12161,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								strb.append(" ").append(String.valueOf(args[0]));
 							else
 							for(int i=0;i<args.length;i++)
+							{
 								if(i==args.length-1)
 									strb.append(" ").append(String.valueOf(args[i]));
 								else
 									strb.append(" ").append("'"+String.valueOf(args[i])+"'");
+							}
 							strb.append(" ) ");
 							return c.functify(h,s,t,m,pi,si,message,objs,strb.toString());
 						}
@@ -11741,23 +12179,102 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String[][] EVAL={sargs};
 						return Boolean.valueOf(c.eval(h,s,t,m,pi,si,message,objs,EVAL,0));
 					}
-					@Override public void delete(String arg0) { }
-					@Override public void delete(int arg0) { }
-					@Override public Object get(String arg0, Scriptable arg1) { return null; }
-					@Override public Object get(int arg0, Scriptable arg1) { return null; }
-					@Override public String getClassName() { return null; }
-					@Override public Object getDefaultValue(Class<?> arg0) { return null; }
-					@Override public Object[] getIds() { return null; }
-					@Override public Scriptable getParentScope() { return null; }
-					@Override public Scriptable getPrototype() { return null; }
-					@Override public boolean has(String arg0, Scriptable arg1) { return false; }
-					@Override public boolean has(int arg0, Scriptable arg1) { return false; }
-					@Override public boolean hasInstance(Scriptable arg0) { return false; }
-					@Override public void put(String arg0, Scriptable arg1, Object arg2) { }
-					@Override public void put(int arg0, Scriptable arg1, Object arg2) { }
-					@Override public void setParentScope(Scriptable arg0) { }
-					@Override public void setPrototype(Scriptable arg0) { }
-					@Override public Scriptable construct(Context arg0, Scriptable arg1, Object[] arg2) { return null; }
+
+					@Override
+					public void delete(String arg0)
+					{
+					}
+
+					@Override
+					public void delete(int arg0)
+					{
+					}
+
+					@Override
+					public Object get(String arg0, Scriptable arg1)
+					{
+						return null;
+					}
+
+					@Override
+					public Object get(int arg0, Scriptable arg1)
+					{
+						return null;
+					}
+
+					@Override
+					public String getClassName()
+					{
+						return null;
+					}
+
+					@Override
+					public Object getDefaultValue(Class<?> arg0)
+					{
+						return null;
+					}
+
+					@Override
+					public Object[] getIds()
+					{
+						return null;
+					}
+
+					@Override
+					public Scriptable getParentScope()
+					{
+						return null;
+					}
+
+					@Override
+					public Scriptable getPrototype()
+					{
+						return null;
+					}
+
+					@Override
+					public boolean has(String arg0, Scriptable arg1)
+					{
+						return false;
+					}
+
+					@Override
+					public boolean has(int arg0, Scriptable arg1)
+					{
+						return false;
+					}
+
+					@Override
+					public boolean hasInstance(Scriptable arg0)
+					{
+						return false;
+					}
+
+					@Override
+					public void put(String arg0, Scriptable arg1, Object arg2)
+					{
+					}
+
+					@Override
+					public void put(int arg0, Scriptable arg1, Object arg2)
+					{
+					}
+
+					@Override
+					public void setParentScope(Scriptable arg0)
+					{
+					}
+
+					@Override
+					public void setPrototype(Scriptable arg0)
+					{
+					}
+
+					@Override
+					public Scriptable construct(Context arg0, Scriptable arg1, Object[] arg2)
+					{
+						return null;
+					}
 				};
 			}
 			return super.get(name, start);

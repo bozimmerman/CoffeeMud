@@ -479,11 +479,13 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 				setWearLocation(buildingI,misctype,hardness);
 			}
 			if(buildingI instanceof Container)
+			{
 				if(capacity>0)
 				{
 					((Container)buildingI).setCapacity(capacity+woodRequired);
 					((Container)buildingI).setContainTypes(canContain);
 				}
+			}
 			buildingI.recoverPhyStats();
 			buildingI.text();
 			buildingI.recoverPhyStats();
