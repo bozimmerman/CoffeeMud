@@ -210,7 +210,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 	
 	@Override
-	public boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
+	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		final List<String> originalCommands = new XVector<String>(commands);

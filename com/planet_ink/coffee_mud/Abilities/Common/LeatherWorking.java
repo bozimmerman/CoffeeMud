@@ -250,7 +250,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	}
 	
 	@Override
-	public boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
+	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))

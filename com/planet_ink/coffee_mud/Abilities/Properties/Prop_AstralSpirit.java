@@ -34,15 +34,39 @@ import java.util.*;
 */
 public class Prop_AstralSpirit extends Property
 {
-	@Override public String ID() { return "Prop_AstralSpirit"; }
-	@Override public String name(){ return "Astral Spirit";}
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Spirit Form)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	private Race race=null;
+	@Override
+	public String ID()
+	{
+		return "Prop_AstralSpirit";
+	}
 
+	@Override
+	public String name()
+	{
+		return "Astral Spirit";
+	}
 
-	@Override public long flags(){return Ability.FLAG_ADJUSTER|Ability.FLAG_IMMUNER;}
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Spirit Form)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	private Race	race	= null;
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER | Ability.FLAG_IMMUNER;
+	}
 
 	public Race spiritRace()
 	{
@@ -50,6 +74,7 @@ public class Prop_AstralSpirit extends Property
 			race=CMClass.getRace("Spirit");
 		return race;
 	}
+
 	@Override
 	public boolean autoInvocation(MOB mob, boolean force)
 	{
@@ -63,7 +88,9 @@ public class Prop_AstralSpirit extends Property
 
 	@Override
 	public String accountForYourself()
-	{ return "an astral spirit";	}
+	{
+		return "an astral spirit";
+	}
 
 	public void peaceAt(MOB mob)
 	{
@@ -108,7 +135,7 @@ public class Prop_AstralSpirit extends Property
 				}
 			}
 			if((msg.tool()!=null)&&(msg.tool().ID().equalsIgnoreCase("Skill_Revoke")))
-			   return super.okMessage(myHost,msg);
+				return super.okMessage(myHost,msg);
 			else
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
@@ -143,6 +170,7 @@ public class Prop_AstralSpirit extends Property
 		affectableStats.setMyRace(spiritRace());
 		super.affectCharStats(affected, affectableStats);
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{

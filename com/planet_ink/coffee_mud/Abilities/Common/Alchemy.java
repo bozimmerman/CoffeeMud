@@ -203,7 +203,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	}
 	
 	@Override
-	public boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(autoGenerate>0)
 		{

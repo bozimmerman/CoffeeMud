@@ -1001,7 +1001,7 @@ Previewing</a></h3>
 put the message out into the system. There is a standard form for the
 sending of almost all messages. If the source of the message is a MOB
 called "SourceMOB", this standard form looks like this:</p>
-      <pre>CMMsg msg = CMClass.getMsg(SourceMOB,TargetMOB,weapon,CMMsg.MSG_WEAPONATTACK,<br />          "&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");<br /><br />if(SourceMOB.location().okMessage(SourceMOB,msg))<br />{<br />     SourceMOB.location().send(SourceMOB,msg);<br />}<br /></pre>
+      <pre>CMMsg msg = CMClass.getMsg(SourceMOB,TargetMOB,weapon,CMMsg.MSG_WEAPONATTACK, "&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");<br /><br />if(SourceMOB.location().okMessage(SourceMOB,msg))<br />{<br />     SourceMOB.location().send(SourceMOB,msg);<br />}<br /></pre>
       <p>The <code>location()</code> field on a MOB refers to the Room
 in which the mob is. Room's are always the top level at which messages
 are previewed, and then executed or sent. The first line (where the
@@ -2221,7 +2221,7 @@ proceed.</p>
 The mob given would be the MOB object trying to execute this command,
 while commands is a List of parameters.</p>
       <p>The parameter commands is never null, and by convention is a
-Vector of strings starting with the access word used to execute the
+List of strings starting with the access word used to execute the
 command. For instance, if the user entered:</p>
       <pre>donothing never "and always" never<br />       <br /></pre>
       <p>The commands List would be size 4, and contain "donothing",
@@ -2616,7 +2616,7 @@ longer be Tickable.TICKID_MOB, but would be
 Tickable.TICKID_ITEM_BEHAVIOR, Tickable.TICKID_ROOM_BEHAVIOR, or
 Tickable.TICKID_EXIT_BEHAVIOR. Since our host, in this case, is a Mob,
 we check for Tickable.TICKID_MOB.</p>
-      <pre>    if( ( !canActAtAll( mob ) )<br />        ||( !canFreelyBehaveNormal( mob ) )<br />      )<br />    {<br />      return super.tick( ticking, tickID );<br />    }<br /></pre>
+      <pre>    if( ( !canActAtAll( mob ) ) || ( !canFreelyBehaveNormal( mob ) )<br />      )<br />    {<br />      return super.tick( ticking, tickID );<br />    }<br /></pre>
       <p>Our next step is to call a couple more internal StdBehavior
 methods. The first (<code>canActAtAll()</code>) returns true if the mob
 is alive, awake, and mobile. The second method (<code>canFreelyBehaveNormal()</code>)
@@ -2837,7 +2837,7 @@ The next parameter is a List of Strings, representing a list of
 skills which must be known by this class before he can learn the skill
 in question. The last parameter is a String representing a mask which
 must be passed by the person who wants to gain this skill.</p>
-      <pre>  public List&lt;String&gt; getSecurityGroups( int classLevel )<br />  {<br />    if( classLevel &gt; 1000 )<br />    {<br />      Vector V = new Vector();<br />      V.addElement( "ABOVELAW" );<br />      V.addElement( "LISTADMIN" );<br />      return V;<br />    }<br />    else<br />    {<br />      return new Vector();<br />    }<br />  }<br /></pre>
+      <pre>  public CMSecurity.SecGroup getSecurityFlags( int classLevel )<br />  {<br />    if( classLevel &gt; 1000 )<br />    {<br />        CMSecurity.SecFlag[] flags = new CMSecurity.SecFlag[] {<br />            CMSecurity.SecFlag.ABOVELAW,<br />            CMSecurity.SecFlag.LISTADMIN<br />        }<br />        return new CMSecurity.SecGroup(flags);<br />    }<br />    else<br />    {<br />        return new CMSecurity.SecGroup(new CMSecurity.SecFlag[0]);<br />    }<br />  }<br /></pre>
       <p>The purpose of this method is to allow you to assign CoffeeMud
 Security Flags or CoffeeMud Security Groups to your players based on
 their Character Class and Character Class Level. This is a rather
@@ -2857,7 +2857,7 @@ In our example above, there is only a check to
 see if the idiot is still breathing. Also note that a quiet boolean
 exists to allow qualifications to be checked without sending any
 messages to the player in question.</p>
-      <pre>  private final String[] raceRequiredList=new String[]{<br />    "Human","Humanoid","Troll-kin","Elf"<br />  };<br />  public String[] getRequiredRaceList(){ return raceRequiredList; }<br /><br /></pre>
+      <pre>  private final String[] raceRequiredList=new String[] {<br />    "Human","Humanoid","Troll-kin","Elf"<br />  };<br />  public String[] getRequiredRaceList(){ return raceRequiredList; }<br /><br /></pre>
       <p>The next method, like <span style="font-family: monospace;">qualifiesForThisClass</span><code>&nbsp;</code>method
 above is for checking qualifications. It contains an exhaustive list of
 all races, race IDs, or racial categories required to become this
@@ -2895,7 +2895,7 @@ skills they merely qualify for. In the sample code above, we give the
 mobs every skill the class qualifies for up to the mobs level in the
 class, except for any common skills. Those would still need to be given
 by hand to each mob.</p>
-      <pre>  public boolean okMessage( Environmental myHost, CMMsg msg )<br />  {<br />    if( !( myHost instanceof MOB ) )<br />    {<br />      return super.okMessage( myHost, msg );<br />    }<br /><br />    MOB myChar = (MOB)myHost;<br /><br />    if( ( msg.amITarget( myChar ) )<br />        &amp;&amp;( msg.targetMinor() == CMMsg.TYP_DAMAGE )<br />        &amp;&amp;( ( msg.sourceMinor() == CMMsg.TYP_COLD )<br />                    || ( msg.sourceMinor() == CMMsg.TYP_WATER )<br />                  )<br />      )<br />    {<br />      int recovery = myChar.charStats().getClassLevel( this );<br />      msg.setValue( msg.value() - recovery );<br />    }<br />    else if( ( msg.amITarget( myChar ) )<br />             &amp;&amp;( msg.targetMinor() == CMMsg.TYP_DAMAGE )<br />             &amp;&amp;( msg.sourceMinor() == CMMsg.TYP_FIRE )<br />           )<br />    {<br />      int recovery = msg.value();<br />      msg.setValue( msg.value() + recovery );<br />    }<br /><br />    return super.okMessage( myChar, msg );<br />  }<br />}<br /></pre>
+      <pre>  public boolean okMessage( Environmental myHost, CMMsg msg )<br />  {<br />    if( !( myHost instanceof MOB ) )<br />    {<br />      return super.okMessage( myHost, msg );<br />    }<br /><br />    MOB myChar = (MOB)myHost;<br /><br />    if( ( msg.amITarget( myChar ) )<br />        &amp;&amp;( msg.targetMinor() == CMMsg.TYP_DAMAGE )<br />        &amp;&amp;( ( msg.sourceMinor() == CMMsg.TYP_COLD )<br />          ||( msg.sourceMinor() == CMMsg.TYP_WATER )<br />          )<br />      )<br />    {<br />      int recovery = myChar.charStats().getClassLevel( this );<br />      msg.setValue( msg.value() - recovery );<br />    }<br />    else if( ( msg.amITarget( myChar ) )<br />           &amp;&amp;( msg.targetMinor() == CMMsg.TYP_DAMAGE )<br />           &amp;&amp;( msg.sourceMinor() == CMMsg.TYP_FIRE )<br />           )<br />    {<br />      int recovery = msg.value();<br />      msg.setValue( msg.value() + recovery );<br />    }<br /><br />    return super.okMessage( myChar, msg );<br />  }<br />}<br /></pre>
       <p>And lastly, just as I'm sure you were wondering how useful
 those three Core Topics above would really be, we see them in active
 use. Some classes contain methods such as these to enforce some of the
@@ -3375,7 +3375,8 @@ circumstances</td>
         </tbody>
       </table>
       <p>Only skills marked as Ability.QUALITY_BENEFICIAL_*
-orAbility.QUALITY_MALICIOUS will be used in combat or by most behaviors.</p>
+or Ability.QUALITY_MALICIOUS will be used in combat or by most
+behaviors.</p>
       <pre>  public int castingQuality( MOB invoker, Physical target )<br />  {<br />    return super.castingQuality( invoker, target );<br />  }<br /></pre>
       <p>This second most important method is similar to the <code>abstractQuality()</code>
 method above, but it tells the system what the quality of the skills or
@@ -3932,7 +3933,31 @@ pipe | character.</p>
 the name and function of each column of the crafting skill's text file.
 Later on, we will use these constants to index into a Vector that
 represents the particular row from the crafting skill's text file that
-the player is building.</p>
+the player is building. </p>
+      <pre>   public String parametersFormat()<br />   { <br />       return<br />       "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"<br />      +"ITEM_CLASS_ID\tLID_LOCK\tCONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";<br />   }<br />       <br /></pre>
+      <p>The&nbsp;<code>parametersFormat()</code> method supports the
+recipe
+editors, both online and command line, but giving the engine a coded
+representation of the meaning of each column as specified above.
+&nbsp;Each column is tab-delimited, and each entry is one of the
+specific value codes. &nbsp;If a column can have multiple meanings,
+usually based on class, it is separated by <span
+ style="font-family: monospace;">||</span> characters. &nbsp; Value
+codes include: &nbsp;<span style="font-family: monospace;">OPTIONAL_RESOURCE_OR_MATERIAL,
+AMMO_TYPE, BASE_ARMOR_AMOUNT, WEAPON_TYPE, REQUIRED_COMMON_SKILL_ID,
+AMMO_CAPACITY, MATERIALS_REQUIRED, SPELL_ID, CONTAINER_TYPE_OR_LIDLOCK,
+ITEM_BASE_VALUE, ITEM_NAME, AMOUNT_MATERIAL_REQUIRED, N_A,
+POSE_DESCRIPTION, RESOURCE_NAME, ATTACK_MODIFICATION, STATUE,
+WEAPON_CLASS, LIQUID_CAPACITY, OPTIONAL_RACE_ID, RESOURCE_OR_MATERIAL,
+CODED_WEAR_LOCATION, CONTAINER_TYPE, INSTRUMENT_TYPE,
+CLAN_ITEM_CODENUMBER, MAXIMUM_RANGE, RESOURCE_OR_KEYWORD, LID_LOCK,
+OPTIONAL_AMOUNT_REQUIRED, SMELL_LIST, LIGHT_DURATION, READABLE_TEXT,
+CODED_SPELL_LIST, BUILD_TIME_TICKS, POSE_NAME, METAL_OR_WOOD,
+RESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED, CLAN_EXPERIENCE_COST_AMOUNT,
+CLAN_AREA_FLAG, RESOURCE_NAME_OR_HERB_NAME, CONTAINER_CAPACITY,
+ITEM_LEVEL, BASE_DAMAGE, ITEM_CLASS_ID, RIDE_CAPACITY, FOOD_DRINK,
+WOOD_METAL_CLOTH, WEAPON_HANDS_REQUIRED, RIDE_BASIS, HERB_NAME,
+SMOKE_FLAG, STONE_FLAG</span></p>
       <pre>  protected Item building    = null;<br />  protected Item fire        = null;<br />  protected boolean messedUp = false;<br />       <br /></pre>
       <p>As in the gathering skill, we need to set up our global
 variables to remember the object we are crafting, since it will be
@@ -3952,7 +3977,7 @@ recipes list is a comma-delimited file where each row is linefeed
 delimited. Each columns meaning is defined by the constants above. The
 loadRecipes(String) method will automaticallyy look in
 $coffeemud-install-path/resources/skills for the file specified.</p>
-      <pre>  public void unInvoke()<br />  {<br />    if( canBeUninvoked() )<br />    {<br />      if( ( affected != null ) &amp;&amp; ( affected instanceof MOB ) )<br />      {<br />        MOB mob = (MOB)affected;<br /><br />        if( ( building != null ) &amp;&amp; ( !aborted ) )<br />        {<br />          if( messedUp )<br />          {<br />            commonTell( mob,<br />                        CMStrings.capitalizeAndLower(<br />                                                      building.name())<br />                                                      + " explodes!"<br />                      );<br />          }<br />          else<br />          {<br />            mob.location().addItemRefuse( building, ItemPossessor.ItemExpiration.Player_Drop );<br />          }<br />        }<br /><br />        building = null;<br />      }<br />    }<br />    super.unInvoke();<br />  }<br />       <br /></pre>
+      <pre>  public void unInvoke()<br />  {<br />    if( canBeUninvoked() )<br />    {<br />      if( ( affected != null ) &amp;&amp; ( affected instanceof MOB ) )<br />      {<br />        MOB mob = (MOB)affected;<br /><br />        if( ( building != null ) &amp;&amp; ( !aborted ) )<br />        {<br />          if( messedUp )<br />          {<br />            commonTell( mob,<br />                        CMStrings.capitalizeAndLower( building.name()) + " explodes!"<br />                      );<br />          }<br />          else<br />          {<br />            mob.location().addItemRefuse( building, ItemPossessor.ItemExpiration.Player_Drop );<br />          }<br />        }<br /><br />        building = null;<br />      }<br />    }<br />    super.unInvoke();<br />  }<br />       <br /></pre>
       <p>Just like in the gathering skill, the <code>unInvoke()</code>
 method is where we actually give our product to the world. Its been
 saved in the 'building' variable reference, so its just a matter of
@@ -3960,7 +3985,7 @@ checking whether everything went ok and adding it to the room if things
 did. Since common skills work by adding themselves as affects on the
 player/mobs performing the skill, we need only check the
 StdAbility.affected reference variable to find our craftor.</p>
-      <pre><br />	@Override<br />	public boolean invoke(MOB mob, List&lt;String&gt; commands, Physical givenTarget, boolean auto, int asLevel)<br />	{<br />		// same invoke method as in all other Abilities, but we are redirecting to a special<br />		// method only for Crafting Skills.<br />		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector&lt;Item&gt;(0));<br />	}<br /><br />  	@Override<br />	public boolean autoGenInvoke(final MOB mob, List&lt;String&gt; commands, Physical givenTarget, final boolean auto, <br />				     final int asLevel, int autoGenerate, boolean forceLevels, List&lt;Item&gt; crafted)<br /><br />       <br /></pre>
+      <pre><br />	@Override<br />	public boolean invoke(MOB mob, List&lt;String&gt; commands, Physical givenTarget, boolean auto, int asLevel)<br />	{<br />		// same invoke method as in all other Abilities, but we are redirecting to a special<br />		// method only for Crafting Skills.<br />		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector&lt;Item&gt;(0));<br />	}<br /><br />  	@Override<br />	protected boolean autoGenInvoke(final MOB mob, List&lt;String&gt; commands, Physical givenTarget, final boolean auto, <br />				     final int asLevel, int autoGenerate, boolean forceLevels, List&lt;Item&gt; crafted)<br /><br />       <br /></pre>
       <p>Crafting skills are all outfitted with the ability to allow
 the rest of the system to use the skill class as an automatic item
 generator. By convention, this is done by overriding the autoGenInvoke

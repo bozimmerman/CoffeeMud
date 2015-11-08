@@ -563,7 +563,7 @@ public class CraftingSkill extends GatheringSkill
 	 * @param crafted when autoGenerate > 0, this is where the auto generated crafted items are placed
 	 * @return whether the skill successfully invoked.
 	 */
-	public boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		return false;
 	}

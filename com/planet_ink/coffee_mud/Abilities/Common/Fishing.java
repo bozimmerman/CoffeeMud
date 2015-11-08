@@ -75,7 +75,6 @@ public class Fishing extends GatheringSkill
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
-
 			}
 		}
 		return super.tick(ticking,tickID);

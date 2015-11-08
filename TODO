@@ -2,7 +2,7 @@ BUGS
   *. ShopKeeper, and presumably random inventory kick in during mudgrinder edits. No reproduce, but watch it.
 
 TECH
-   *. test and debug launch and landing - fix navigation thrusters, accelleration may be too high on aft thrusters. Enviro power usage.
+   *. test and debug launch and landing - make sure navigation thrusters affect speed and direction properly.
    *. ShopKeeper VIEW should give more information about tech items
    *. interacting items of diff tech level might damage each other
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
