@@ -33,6 +33,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The AreaGenerationLibrary is the random generator, which takes a special
+ * flavor of xml as input to randomly generate anything from strings, to
+ * mobs and items, whole populated rooms, or entire areas.  Most of the methods
+ * in this library provide a finer control to the generation process. 
+ * @author Bo Zimmerman
+ *
+ */
 public interface AreaGenerationLibrary extends CMLibrary
 {
 	public void buildDefinedIDSet(List<XMLpiece> xmlRoot, Map<String,Object> defined);
@@ -78,8 +86,38 @@ public interface AreaGenerationLibrary extends CMLibrary
 		public void setRoom(Room room);
 	}
 
-	public enum LayoutTags { NODERUN, NODEFLAGS, NODETYPE, NODEEXITS}
-	public enum LayoutTypes { surround, leaf, street, square, interior }
-	public enum LayoutFlags { corner, gate, intersection, tee, offleaf }
-	public enum LayoutRuns { ew,ns,ud,nesw,nwse }
+	public enum LayoutTags
+	{
+		NODERUN,
+		NODEFLAGS,
+		NODETYPE,
+		NODEEXITS
+	}
+
+	public enum LayoutTypes
+	{
+		surround,
+		leaf,
+		street,
+		square,
+		interior
+	}
+
+	public enum LayoutFlags
+	{
+		corner,
+		gate,
+		intersection,
+		tee,
+		offleaf
+	}
+
+	public enum LayoutRuns
+	{
+		ew,
+		ns,
+		ud,
+		nesw,
+		nwse
+	}
 }
