@@ -1412,7 +1412,7 @@ public class Quests extends StdLibrary implements QuestManager
 									break;
 								final String name=s.substring(15).trim();
 								pageDV=new DVector(4);
-								pageDV.addElement(Integer.valueOf(QuestManager.QM_COMMAND_$TITLE),name,"","");
+								pageDV.addElement(Integer.valueOf(QuestManager.QMCommand.$TITLE.ordinal()),name,"","");
 								((Vector<Object>)templatesDV.elementAt(templatesDV.size()-1,4)).addElement(pageDV);
 							}
 							else
@@ -1444,14 +1444,14 @@ public class Quests extends StdLibrary implements QuestManager
 										mask=mask|QuestManager.QM_COMMAND_OPTIONAL;
 										cmd=cmd.substring(1,cmd.length()-1);
 									}
-									final int code=CMParms.indexOf(QuestManager.QM_COMMAND_TYPES,cmd);
-									if(code<0)
+									final QMCommand command = (QMCommand)CMath.s_valueOf(QMCommand.class, cmd);
+									if(command == null)
 									{
 										Log.errOut("Quests","QuestMaker syntax error, '"+cmd+"' is an unknown command");
 										pageDV.removeElementsAt(pageDV.size()-1);
 									}
 									else
-										pageDV.setElementAt(pageDV.size()-1,1,Integer.valueOf(code|mask));
+										pageDV.setElementAt(pageDV.size()-1,1,Integer.valueOf(command.ordinal()|mask));
 								}
 							}
 						}
@@ -1469,13 +1469,13 @@ public class Quests extends StdLibrary implements QuestManager
 							if(parsePages)
 							{
 								if((pageDV.size()<2)
-								||(((Integer)pageDV.elementAt(pageDV.size()-1,1)).intValue()==QuestManager.QM_COMMAND_$TITLE)
-								||(((Integer)pageDV.elementAt(pageDV.size()-1,1)).intValue()==QuestManager.QM_COMMAND_$LABEL))
+								||(((Integer)pageDV.elementAt(pageDV.size()-1,1)).intValue()==QuestManager.QMCommand.$TITLE.ordinal())
+								||(((Integer)pageDV.elementAt(pageDV.size()-1,1)).intValue()==QuestManager.QMCommand.$LABEL.ordinal()))
 								{
 									if(s.length()==0)
 									{
-										if(((Integer)pageDV.elementAt(pageDV.size()-1,1)).intValue()==QuestManager.QM_COMMAND_$TITLE)
-											pageDV.addElement(Integer.valueOf(QuestManager.QM_COMMAND_$LABEL),"",s,"");
+										if(((Integer)pageDV.elementAt(pageDV.size()-1,1)).intValue()==QuestManager.QMCommand.$TITLE.ordinal())
+											pageDV.addElement(Integer.valueOf(QuestManager.QMCommand.$LABEL.ordinal()),"",s,"");
 										else
 											pageDV.setElementAt(pageDV.size()-1,3,((String)pageDV.elementAt(pageDV.size()-1,3))+"\n\r\n\r");
 									}
@@ -1483,7 +1483,7 @@ public class Quests extends StdLibrary implements QuestManager
 										pageDV.setElementAt(pageDV.size()-1,3,((String)pageDV.elementAt(pageDV.size()-1,3))+s+" ");
 								}
 								else
-									pageDV.addElement(Integer.valueOf(QuestManager.QM_COMMAND_$LABEL),"",s,"");
+									pageDV.addElement(Integer.valueOf(QuestManager.QMCommand.$LABEL.ordinal()),"",s,"");
 							}
 						}
 					}
@@ -1562,9 +1562,9 @@ public class Quests extends StdLibrary implements QuestManager
 		if(baseM!=null)
 			showName=CMLib.english().getContextName(choices,baseM);
 		lastLabel=((lastLabel==null)?"":lastLabel)+"\n\rChoices: "+choiceDescs.toString();
+		final GenericEditor.CMEval evaler = getQuestCommandEval(QMCommand.$MOBXML);
 		final String s=CMLib.genEd().prompt(mob,showName,showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
-										QuestManager.QM_COMMAND_TESTS[QuestManager.QM_COMMAND_$MOBXML],
-										choices.toArray());
+										evaler, choices.toArray());
 		canMOB.destroy();
 		if(s.equalsIgnoreCase("CANCEL"))
 			return null;
@@ -1634,9 +1634,9 @@ public class Quests extends StdLibrary implements QuestManager
 		if(baseI!=null)
 			showName=CMLib.english().getContextName(choices,baseI);
 		lastLabel=((lastLabel==null)?"":lastLabel)+"\n\rChoices: "+choiceDescs.toString();
+		final GenericEditor.CMEval evaler = getQuestCommandEval(QMCommand.$ITEMXML);
 		final String s=CMLib.genEd().prompt(mob,showName,showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
-										QuestManager.QM_COMMAND_TESTS[QuestManager.QM_COMMAND_$ITEMXML],
-										choices.toArray());
+										evaler, choices.toArray());
 		canItem.destroy();
 		if(s.equalsIgnoreCase("CANCEL"))
 			return null;
@@ -1749,77 +1749,81 @@ public class Quests extends StdLibrary implements QuestManager
 
 						final boolean optionalEntry=CMath.bset(stepType.intValue(),QuestManager.QM_COMMAND_OPTIONAL);
 						final int inputCode=stepType.intValue()&QuestManager.QM_COMMAND_MASK;
-						switch(inputCode)
+						final QMCommand inputCommand = QMCommand.values()[inputCode];
+						switch(inputCommand)
 						{
-						case QM_COMMAND_$TITLE: break;
-						case QM_COMMAND_$HIDDEN:
+						case $TITLE: break;
+						case $HIDDEN:
 							pageDV.setElementAt(step,4,defValue==null?"":defValue);
 							break;
-						case QM_COMMAND_$LABEL: lastLabel=defValue; break;
-						case QM_COMMAND_$EXPRESSION:
-						case QM_COMMAND_$TIMEEXPRESSION:
-						case QM_COMMAND_$UNIQUE_QUEST_NAME:
-						case QM_COMMAND_$STRING:
-						case QM_COMMAND_$LONG_STRING:
-						case QM_COMMAND_$NAME:
-						case QM_COMMAND_$ZAPPERMASK:
-						case QM_COMMAND_$ROOMID:
+						case $LABEL: lastLabel=defValue; break;
+						case $EXPRESSION:
+						case $TIMEEXPRESSION:
+						case $UNIQUE_QUEST_NAME:
+						case $STRING:
+						case $LONG_STRING:
+						case $NAME:
+						case $ZAPPERMASK:
+						case $ROOMID:
 						{
 							final String showValue=(showFlag<-900)?defValue:(String)pageDV.elementAt(step,4);
-							if(inputCode==QM_COMMAND_$ZAPPERMASK)
+							final GenericEditor.CMEval evaler = getQuestCommandEval(inputCommand);
+							if(inputCommand==QMCommand.$ZAPPERMASK)
 								lastLabel=(lastLabel==null?"":lastLabel)+"\n\r"+CMLib.masking().maskHelp("\n\r","disallows");
 							final String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,lastLabel,
-															QuestManager.QM_COMMAND_TESTS[inputCode],null);
+															evaler,null);
 							pageDV.setElementAt(step,4,s);
 							break;
 						}
-						case QM_COMMAND_$AREA:
+						case $AREA:
 						{
 							final String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
 							final StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
 							for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 								label.append("\""+e.nextElement().name()+"\" ");
+							final GenericEditor.CMEval evaler = getQuestCommandEval(inputCommand);
 							final String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
-															QuestManager.QM_COMMAND_TESTS[inputCode],
+															evaler,
 															null);
 							pageDV.setElementAt(step,4,s);
 							break;
 						}
-						case QM_COMMAND_$EXISTING_QUEST_NAME:
+						case $EXISTING_QUEST_NAME:
 						{
 							final String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
 							final StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
 							for(int q=0;q<CMLib.quests().numQuests();q++)
 								label.append("\""+CMLib.quests().fetchQuest(q).name()+"\" ");
+							final GenericEditor.CMEval evaler = getQuestCommandEval(inputCommand);
 							final String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
-															QuestManager.QM_COMMAND_TESTS[inputCode],
-															null);
+															evaler, null);
 							pageDV.setElementAt(step,4,s);
 							break;
 						}
-						case QM_COMMAND_$ABILITY:
+						case $ABILITY:
 						{
 							final String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
 							final StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
 							for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 								label.append(e.nextElement().ID()+" ");
+							final GenericEditor.CMEval evaler = getQuestCommandEval(inputCommand);
 							final String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
-															QuestManager.QM_COMMAND_TESTS[inputCode],
-															null);
+															evaler, null);
 							pageDV.setElementAt(step,4,s);
 							break;
 						}
-						case QM_COMMAND_$CHOOSE:
+						case $CHOOSE:
 						{
 							final String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
 							final String label=((lastLabel==null)?"":lastLabel)+"\n\rChoices: "+defValue;
+							final GenericEditor.CMEval evaler = getQuestCommandEval(inputCommand);
 							final String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label,
-															QuestManager.QM_COMMAND_TESTS[inputCode],
+															evaler,
 															CMParms.toStringArray(CMParms.parseCommas(defValue.toUpperCase(),true)));
 							pageDV.setElementAt(step,4,s);
 							break;
 						}
-						case QM_COMMAND_$ITEMXML:
+						case $ITEMXML:
 						{
 							final String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
 							final String newValue=addXMLQuestItem(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optionalEntry, step, ++showNumber);
@@ -1827,7 +1831,7 @@ public class Quests extends StdLibrary implements QuestManager
 								pageDV.setElementAt(step,4,newValue);
 							break;
 						}
-						case QM_COMMAND_$ITEMXML_ONEORMORE:
+						case $ITEMXML_ONEORMORE:
 						{
 							String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
 							final Vector<String> itemXMLs=new Vector<String>();
@@ -1862,7 +1866,7 @@ public class Quests extends StdLibrary implements QuestManager
 								pageDV.setElementAt(step,4,newValue);
 							break;
 						}
-						case QM_COMMAND_$MOBXML:
+						case $MOBXML:
 						{
 							final String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
 							final String newValue=addXMLQuestMob(mob, showFlag, pageDV, showValue, parm1Fixed, lastLabel, optionalEntry, step, ++showNumber);
@@ -1870,7 +1874,7 @@ public class Quests extends StdLibrary implements QuestManager
 								pageDV.setElementAt(step,4,newValue);
 							break;
 						}
-						case QM_COMMAND_$MOBXML_ONEORMORE:
+						case $MOBXML_ONEORMORE:
 						{
 							String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
 							final Vector<String> mobXMLs=new Vector<String>();
@@ -1906,15 +1910,15 @@ public class Quests extends StdLibrary implements QuestManager
 								pageDV.setElementAt(step,4,newValue);
 							break;
 						}
-						case QM_COMMAND_$FACTION:
+						case $FACTION:
 						{
 							final String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
 							final StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
 							for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 								label.append("\""+f.nextElement().name()+"\" ");
+							final GenericEditor.CMEval evaler = getQuestCommandEval(inputCommand);
 							final String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
-															QuestManager.QM_COMMAND_TESTS[inputCode],
-															null);
+															evaler, null);
 							pageDV.setElementAt(step,4,s);
 							break;
 						}
@@ -1953,7 +1957,7 @@ public class Quests extends StdLibrary implements QuestManager
 				{
 					var=(String)pageDV.elementAt(v,2);
 					val=(String)pageDV.elementAt(v,4);
-					if(((Integer)pageDV.elementAt(v,1)).intValue()==QM_COMMAND_$UNIQUE_QUEST_NAME)
+					if(((Integer)pageDV.elementAt(v,1)).intValue()==QMCommand.$UNIQUE_QUEST_NAME.ordinal())
 						name=val;
 					script=CMStrings.replaceAll(script,var,val);
 				}
@@ -1981,5 +1985,433 @@ public class Quests extends StdLibrary implements QuestManager
 		{
 			return null;
 		}
+	}
+	
+	@Override
+	public GenericEditor.CMEval getQuestCommandEval(QMCommand command)
+	{
+		switch(command)
+		{
+		case $TITLE:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // title
+					return str;
+				}
+			};
+		case $LABEL:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // label
+					return str;
+				}
+			};
+		case $EXPRESSION:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // expression
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter an expression!");
+					}
+					if (!CMath.isMathExpression((String) str))
+						throw new CMException("Invalid mathematical expression.  Use numbers,+,-,*,/,(), and ? only.");
+					return str;
+				}
+			};
+		case $UNIQUE_QUEST_NAME:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // quest name
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter a quest name!");
+					}
+					for (int i = 0; i < ((String) str).length(); i++)
+					{
+						if ((!Character.isLetterOrDigit(((String) str).charAt(i))) && (((String) str).charAt(i) != '_'))
+							throw new CMException("Quest names may only contain letters, digits, or _ -- no spaces or special characters.");
+					}
+
+					if (CMLib.quests().fetchQuest(((String) str).trim()) != null)
+						throw new CMException("A quest of that name already exists.  Enter another.");
+					return ((String) str).trim();
+				}
+			};
+		case $CHOOSE:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // choose
+					if ((choices == null) || (choices.length == 0))
+						throw new CMException("NO choices?!");
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter a value!");
+					}
+					final int x = CMParms.indexOf(choices, ((String) str).toUpperCase().trim());
+					if (x < 0)
+						throw new CMException("That is not a valid option.  Choices include: " + CMParms.toListString(choices));
+					return choices[x];
+				}
+			};
+		case $ITEMXML:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // itemxml
+					if ((choices == null) || (choices.length == 0))
+						throw new CMException("NO choices?!");
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					StringBuffer choiceNames = new StringBuffer("");
+					for (final Object choice : choices)
+						choiceNames.append(((Environmental) choice).Name() + ", ");
+					if (choiceNames.toString().endsWith(", "))
+						choiceNames = new StringBuffer(choiceNames.substring(0, choiceNames.length() - 2));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter one of the following: " + choiceNames.toString());
+					}
+					final Environmental[] ES = new Environmental[choices.length];
+					for (int e = 0; e < choices.length; e++)
+						ES[e] = (Environmental) choices[e];
+					final Environmental E = CMLib.english().fetchEnvironmental(Arrays.asList(ES), (String) str, false);
+					if (E == null)
+						throw new CMException("'" + str + "' was not found.  You must enter one of the following: " + choiceNames.toString());
+					return CMLib.english().getContextName(ES, E);
+				}
+			};
+		case $STRING:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // string
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter a value!");
+					}
+					return str;
+				}
+			};
+		case $ROOMID:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // roomid
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter an room id(s), name(s), keyword ANY, or ANY MASK=...");
+					}
+					if (((String) str).trim().equalsIgnoreCase("ANY"))
+						return ((String) str).trim();
+					if (((String) str).trim().toUpperCase().startsWith("ANY MASK="))
+						return str;
+					if (CMStrings.contains(Quest.ROOM_REFERENCE_QCODES, ((String) str).toUpperCase().trim()))
+						return ((String) str).toUpperCase().trim();
+					if ((((String) str).indexOf(' ') > 0) && (((String) str).indexOf('\"') < 0))
+						throw new CMException(
+								"Multiple-word room names/ids must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
+					final Vector<String> V = CMParms.parse((String) str);
+					if (V.size() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter an room id(s), name(s), keyword ANY, or ANY MASK=...");
+					}
+					String s = null;
+					for (int v = 0; v < V.size(); v++)
+					{
+						s = V.elementAt(v);
+						boolean found = false;
+						final Room R = CMLib.map().getRoom(s);
+						if (R != null)
+							found = true;
+						if (!found)
+							found = CMLib.map().findWorldRoomLiberally(null, s, "R", 50, 30000) != null;
+						if (!found)
+							throw new CMException("'" + (V.elementAt(v)) + "' is not a valid room name, id, or description.");
+					}
+					return str;
+				}
+			};
+		case $AREA:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // area
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter an area name(s), keyword ANY, or ANY MASK=...");
+					}
+					if (((String) str).trim().equalsIgnoreCase("ANY"))
+						return ((String) str).trim();
+					if (((String) str).trim().toUpperCase().startsWith("ANY MASK="))
+						return str;
+					if ((((String) str).indexOf(' ') > 0) && (((String) str).indexOf('\"') < 0))
+						throw new CMException(
+								"Multiple-word area names/ids must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
+					final Vector<String> V = CMParms.parse((String) str);
+					if (V.size() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter an area name(s), keyword ANY, or ANY MASK=...");
+					}
+					final StringBuffer returnStr = new StringBuffer("");
+					for (int v = 0; v < V.size(); v++)
+					{
+						final Area A = CMLib.map().findArea(V.elementAt(v));
+						if (A == null)
+							throw new CMException("'" + (V.elementAt(v)) + "' is not a valid area name.");
+						returnStr.append("\"" + A.name() + "\" ");
+					}
+					return returnStr.toString().trim();
+				}
+			};
+		case $MOBXML:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // mobxml
+					if ((choices == null) || (choices.length == 0))
+						throw new CMException("NO choices?!");
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					StringBuffer choiceNames = new StringBuffer("");
+					for (final Object choice : choices)
+						choiceNames.append(((Environmental) choice).Name() + ", ");
+					if (choiceNames.toString().endsWith(", "))
+						choiceNames = new StringBuffer(choiceNames.substring(0, choiceNames.length() - 2));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter one of the following: " + choiceNames.toString());
+					}
+					final Environmental[] ES = new Environmental[choices.length];
+					for (int e = 0; e < choices.length; e++)
+						ES[e] = (Environmental) choices[e];
+					final Environmental E = CMLib.english().fetchEnvironmental(Arrays.asList(ES), (String) str, false);
+					if (E == null)
+						throw new CMException("'" + str + "' was not found.  You must enter one of the following: " + choiceNames.toString());
+					return CMLib.english().getContextName(ES, E);
+				}
+			};
+		case $NAME:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // designame
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter a value!");
+					}
+					if (((String) str).trim().equalsIgnoreCase("ANY"))
+						return ((String) str).trim();
+					if (((String) str).trim().toUpperCase().startsWith("ANY MASK="))
+						return str;
+					if ((((String) str).indexOf(' ') > 0) && (((String) str).indexOf('\"') < 0))
+						throw new CMException("Multiple-word names must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
+					return str;
+				}
+			};
+		case $LONG_STRING:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // string
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter a value!");
+					}
+					str = CMStrings.replaceAll((String) str, "\n\r", " ");
+					str = CMStrings.replaceAll((String) str, "\r\n", " ");
+					str = CMStrings.replaceAll((String) str, "\n", " ");
+					str = CMStrings.replaceAll((String) str, "\r", " ");
+					return str;
+				}
+			};
+		case $MOBXML_ONEORMORE:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // mobxml_1ormore
+					final GenericEditor.CMEval evaler = getQuestCommandEval(QMCommand.$MOBXML);
+					return evaler.eval(str, choices, emptyOK);
+				}
+			};
+		case $ITEMXML_ONEORMORE:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // itemxml_1ormore
+					final GenericEditor.CMEval evaler = getQuestCommandEval(QMCommand.$ITEMXML);
+					return evaler.eval(str, choices, emptyOK);
+				}
+			};
+		case $ZAPPERMASK:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // zappermask
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					final Vector<String> errors = new Vector<String>(1);
+					if (!CMLib.masking().syntaxCheck((String) str, errors))
+						throw new CMException("Mask Error: " + CMParms.toListString(errors));
+					return str;
+				}
+			};
+		case $ABILITY:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // ability
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					final StringBuffer list = new StringBuffer("");
+					for (final Enumeration<Ability> e = CMClass.abilities(); e.hasMoreElements();)
+						list.append(e.nextElement().ID() + ", ");
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter an ability ID, choose from the following: " + list.toString());
+					}
+					Ability A = CMClass.getAbility((String) str);
+					if (A == null)
+						A = CMClass.findAbility((String) str);
+					if ((A.classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_ARCHON)
+						A = null;
+					if (A == null)
+						throw new CMException("Invalid ability id, choose from the following: " + list.toString());
+					return A.ID();
+				}
+			};
+		case $EXISTING_QUEST_NAME:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // existing quest name
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter a quest name!");
+					}
+					final Quest Q = CMLib.quests().fetchQuest(((String) str).trim());
+					if (Q == null)
+						throw new CMException("A quest of the name '" + ((String) str).trim() + "' does not exist.  Enter another.");
+					return Q.name();
+				}
+			};
+		case $HIDDEN:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // hidden
+					return str;
+				}
+			};
+		case $FACTION:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // faction
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter a faction id!");
+					}
+					final Faction F = CMLib.factions().getFaction((String) str);
+					if (F == null)
+						throw new CMException("A faction of the name '" + ((String) str).trim() + "' does not exist.  Enter another.");
+					return F.factionID();
+				}
+			};
+		case $TIMEEXPRESSION:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				{ // timeexpression
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter an expression!");
+					}
+					if (!CMLib.time().isTickExpression((String) str))
+						throw new CMException("Invalid time mathematical expression.  Use numbers,+,-,*,/,(), and ? only.  You may add ticks, minutes, hours, days, mudhours, muddays, mudweeks, mudmonths, mudyears.");
+					return str;
+				}
+			};
+		}
+		return null;
 	}
 }

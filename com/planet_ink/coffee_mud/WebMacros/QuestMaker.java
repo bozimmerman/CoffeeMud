@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.QuestManager.QMCommand;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -267,13 +268,14 @@ public class QuestMaker extends StdWebMacro
 				final boolean optionalEntry=CMath.bset(stepType.intValue(),QuestManager.QM_COMMAND_OPTIONAL);
 				final int inputCode=stepType.intValue()&QuestManager.QM_COMMAND_MASK;
 				String oldValue=httpReq.getUrlParameter(httpKeyName);
-				switch(inputCode)
+				final QMCommand command = QMCommand.values()[inputCode];
+				switch(command)
 				{
-				case QuestManager.QM_COMMAND_$TITLE: break;
-				case QuestManager.QM_COMMAND_$LABEL: lastLabel=defValue; break;
-				case QuestManager.QM_COMMAND_$EXPRESSION:
-				case QuestManager.QM_COMMAND_$TIMEEXPRESSION:
-				case QuestManager.QM_COMMAND_$UNIQUE_QUEST_NAME:
+				case $TITLE: break;
+				case $LABEL: lastLabel=defValue; break;
+				case $EXPRESSION:
+				case $TIMEEXPRESSION:
+				case $UNIQUE_QUEST_NAME:
 				{
 					if(oldValue==null)
 						oldValue=defValue;
@@ -284,7 +286,7 @@ public class QuestMaker extends StdWebMacro
 					list.append(" VALUE=\""+htmlOutgoingFilter(oldValue)+"\"></TD></TR>");
 					break;
 				}
-				case QuestManager.QM_COMMAND_$LONG_STRING:
+				case $LONG_STRING:
 				{
 					if(oldValue==null)
 						oldValue=defValue;
@@ -295,7 +297,7 @@ public class QuestMaker extends StdWebMacro
 					list.append(oldValue+"</TEXTAREA></TD></TR>");
 					break;
 				}
-				case QuestManager.QM_COMMAND_$ZAPPERMASK:
+				case $ZAPPERMASK:
 				{
 					if(oldValue==null)
 						oldValue=defValue;
@@ -306,10 +308,10 @@ public class QuestMaker extends StdWebMacro
 					list.append(oldValue+"</TEXTAREA></TD></TR>");
 					break;
 				}
-				case QuestManager.QM_COMMAND_$STRING:
-				case QuestManager.QM_COMMAND_$ROOMID:
-				case QuestManager.QM_COMMAND_$NAME:
-				case QuestManager.QM_COMMAND_$AREA:
+				case $STRING:
+				case $ROOMID:
+				case $NAME:
+				case $AREA:
 				{
 					if(oldValue==null)
 						oldValue=defValue;
@@ -320,9 +322,9 @@ public class QuestMaker extends StdWebMacro
 					list.append(" VALUE=\""+htmlOutgoingFilter(oldValue)+"\"></TD></TR>");
 					break;
 				}
-				case QuestManager.QM_COMMAND_$HIDDEN:
+				case $HIDDEN:
 					break;
-				case QuestManager.QM_COMMAND_$ABILITY:
+				case $ABILITY:
 				{
 					if(oldValue==null)
 						oldValue=defValue;
@@ -350,7 +352,7 @@ public class QuestMaker extends StdWebMacro
 					list.append("</TD></TR>");
 					break;
 				}
-				case QuestManager.QM_COMMAND_$EXISTING_QUEST_NAME:
+				case $EXISTING_QUEST_NAME:
 				{
 					if(oldValue==null)
 						oldValue=defValue;
@@ -375,7 +377,7 @@ public class QuestMaker extends StdWebMacro
 					list.append("</TD></TR>");
 					break;
 				}
-				case QuestManager.QM_COMMAND_$CHOOSE:
+				case $CHOOSE:
 				{
 					list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
 					list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
@@ -396,7 +398,7 @@ public class QuestMaker extends StdWebMacro
 					list.append("</SELECT></TD></TR>");
 					break;
 				}
-				case QuestManager.QM_COMMAND_$ITEMXML:
+				case $ITEMXML:
 				{
 					if(oldValue==null)
 						oldValue=defValue;
@@ -417,7 +419,7 @@ public class QuestMaker extends StdWebMacro
 					list.append("</TD></TR>");
 					break;
 				}
-				case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
+				case $ITEMXML_ONEORMORE:
 				{
 					if(oldValue==null)
 						oldValue=defValue;
@@ -457,7 +459,7 @@ public class QuestMaker extends StdWebMacro
 					}
 					break;
 				}
-				case QuestManager.QM_COMMAND_$MOBXML:
+				case $MOBXML:
 				{
 					if(oldValue==null)
 						oldValue=defValue;
@@ -479,7 +481,7 @@ public class QuestMaker extends StdWebMacro
 					}
 					break;
 				}
-				case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
+				case $MOBXML_ONEORMORE:
 				{
 					if(oldValue==null)
 						oldValue=defValue;
@@ -518,7 +520,7 @@ public class QuestMaker extends StdWebMacro
 					}
 					break;
 				}
-				case QuestManager.QM_COMMAND_$FACTION:
+				case $FACTION:
 				{
 					if(oldValue==null)
 						oldValue=defValue;
@@ -600,17 +602,18 @@ public class QuestMaker extends StdWebMacro
 				final boolean optionalEntry=CMath.bset(stepType.intValue(),QuestManager.QM_COMMAND_OPTIONAL);
 				final int inputCode=stepType.intValue()&QuestManager.QM_COMMAND_MASK;
 				String oldValue=httpReq.getUrlParameter(httpKeyName);
-				final GenericEditor.CMEval eval= QuestManager.QM_COMMAND_TESTS[inputCode];
+				final QMCommand command = QMCommand.values()[inputCode];
+				final GenericEditor.CMEval eval= CMLib.quests().getQuestCommandEval(command);
 				try
 				{
-					switch(inputCode)
+					switch(command)
 					{
-					case QuestManager.QM_COMMAND_$TITLE: break;
-					case QuestManager.QM_COMMAND_$LABEL: break;
-					case QuestManager.QM_COMMAND_$HIDDEN:
+					case $TITLE: break;
+					case $LABEL: break;
+					case $HIDDEN:
 						httpReq.addFakeUrlParameter(httpKeyName,defValue);
 						break;
-					case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
+					case $ITEMXML_ONEORMORE:
 					{
 						final List<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
 						rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
@@ -657,7 +660,7 @@ public class QuestMaker extends StdWebMacro
 						httpReq.addFakeUrlParameter(httpKeyName,newVal);
 						break;
 					}
-					case QuestManager.QM_COMMAND_$ITEMXML:
+					case $ITEMXML:
 					{
 						final List<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
 						rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
@@ -689,7 +692,7 @@ public class QuestMaker extends StdWebMacro
 						httpReq.addFakeUrlParameter(httpKeyName,newVal);
 						break;
 					}
-					case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
+					case $MOBXML_ONEORMORE:
 					{
 						final List<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
 						rawmoblist.addAll(getCatalogMobsForList(CMLib.catalog().getCatalogMobs()));
@@ -736,7 +739,7 @@ public class QuestMaker extends StdWebMacro
 						httpReq.addFakeUrlParameter(httpKeyName,newVal);
 						break;
 					}
-					case QuestManager.QM_COMMAND_$MOBXML:
+					case $MOBXML:
 					{
 						final List<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
 						rawmoblist.addAll(getCatalogMobsForList(CMLib.catalog().getCatalogMobs()));
@@ -768,7 +771,7 @@ public class QuestMaker extends StdWebMacro
 						httpReq.addFakeUrlParameter(httpKeyName,newVal);
 						break;
 					}
-					case QuestManager.QM_COMMAND_$CHOOSE:
+					case $CHOOSE:
 					{
 						if(oldValue==null)
 							oldValue="";
@@ -818,13 +821,15 @@ public class QuestMaker extends StdWebMacro
 						val=httpReq.getUrlParameter(httpKeyName);
 						if(val==null)
 							val="";
-						switch(((Integer)pageDV.elementAt(v,1)).intValue()&QuestManager.QM_COMMAND_MASK)
+						final int codeNum = ((Integer)pageDV.elementAt(v,1)).intValue()&QuestManager.QM_COMMAND_MASK;
+						final QMCommand command = QMCommand.values()[codeNum];
+						switch(command)
 						{
-							case QuestManager.QM_COMMAND_$UNIQUE_QUEST_NAME:
+							case $UNIQUE_QUEST_NAME:
 								name=val;
 								break;
-							case QuestManager.QM_COMMAND_$ITEMXML:
-							case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
+							case $ITEMXML:
+							case $ITEMXML_ONEORMORE:
 							{
 								final List<String> V=CMParms.parseSemicolons(val,true);
 								val="";
@@ -840,8 +845,8 @@ public class QuestMaker extends StdWebMacro
 								}
 								break;
 							}
-							case QuestManager.QM_COMMAND_$MOBXML:
-							case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
+							case $MOBXML:
+							case $MOBXML_ONEORMORE:
 							{
 								final List<String> V=CMParms.parseSemicolons(val,true);
 								val="";
@@ -855,6 +860,8 @@ public class QuestMaker extends StdWebMacro
 								}
 								break;
 							}
+						default:
+							break;
 						}
 						script=CMStrings.replaceAll(script,var,val);
 					}
