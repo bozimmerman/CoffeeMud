@@ -43,7 +43,12 @@ import java.util.*;
 */
 public class CharCreation extends StdLibrary implements CharCreationLibrary
 {
-	@Override public String ID(){return "CharCreation";}
+	@Override
+	public String ID()
+	{
+		return "CharCreation";
+	}
+
 	public Map<String,String>		startRooms			= new Hashtable<String,String>();
 	public Map<String,String>		deathRooms			= new Hashtable<String,String>();
 	public Map<String,String>		bodyRooms			= new Hashtable<String,String>();
@@ -270,7 +275,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		reloadTerminal(mob);
 		Command C=CMClass.getCommand("PollCmd");
-		try{ C.execute(mob,null,0);}catch(final Exception e){}
+		try
+		{
+			C.execute(mob, null, 0);
+		}
+		catch (final Exception e)
+		{
+		}
 
 		if((mob.session()==null)
 		||(mob.isMonster())
@@ -431,12 +442,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			CMLib.players().addAccount(acct);
 			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), acct.getAccountName(), 
 				"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), acct.getAccountName(),
-				"Password for "+acct.getAccountName(),
-				"Your password for "+acct.getAccountName()+" is: "+password+"\n\r"
-				+ "You can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\r"
-				+ "After creating a character, you may use the PASSWORD command to change it once you are online.");
+				L("Password for @x1",acct.getAccountName()),
+				L("Your password for @x1 is: @x2\n\r"
+				+ "You can login by pointing your mud client at @x3 port(s): @x4.\n\r"
+				+ "After creating a character, you may use the PASSWORD command to change it once you are online.",
+				acct.getAccountName(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS)));
 			session.println(L("Your account has been created.  You will receive an email with your password shortly."));
-			try{Thread.sleep(2000);}catch(final Exception e){}
+			CMLib.s_sleep(2000);
 			session.stopSession(false,false,false);
 			Log.sysOut("Created account: "+acct.getAccountName());
 			session.setAccount(null);
@@ -450,7 +462,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			CMLib.database().DBCreateAccount(acct);
 			CMLib.players().addAccount(acct);
 			StringBuffer doneText=new CMFile(Resources.buildResourcePath("text")+"doneacct.txt",null,CMFile.FLAG_LOGERRORS).text();
-			try { doneText = CMLib.webMacroFilter().virtualPageFilter(doneText);}catch(final Exception ex){}
+			try
+			{
+				doneText = CMLib.webMacroFilter().virtualPageFilter(doneText);
+			}
+			catch (final Exception ex)
+			{
+			}
 			session.println(null,null,null,"\n\r\n\r"+doneText.toString());
 		}
 		session.setAccount(acct);
@@ -546,7 +564,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		&&(!((mob.session()!=null)&&(CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, mob.session().getAddress())))))
 		{
 			StringBuffer rejectText=Resources.getFileResource("text/nologins.txt",true);
-			try { rejectText = CMLib.webMacroFilter().virtualPageFilter(rejectText);}catch(final Exception ex){}
+			try
+			{
+				rejectText = CMLib.webMacroFilter().virtualPageFilter(rejectText);
+			}
+			catch (final Exception ex)
+			{
+			}
 			if((rejectText!=null)&&(rejectText.length()>0))
 				mob.session().println(rejectText.toString());
 			try{Thread.sleep(1000);}catch(final Exception e){}
@@ -579,8 +603,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				final Room oldRoom=M.location();
 				if(oldRoom!=null)
+				{
 					while(oldRoom.isInhabitant(M))
 						oldRoom.delInhabitant(M);
+				}
 				session.setMob(M);
 				M.setSession(session);
 				S.setMob(null);
@@ -620,17 +646,27 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	private String getMSSPPacket()
 	{
 		final StringBuffer rpt = new StringBuffer("\r\nMSSP-REPLY-START");
-		rpt.append("\r\n"); rpt.append("PLAYERS");
-		rpt.append("\t"); rpt.append(Integer.toString(CMLib.sessions().getCountLocalOnline()));
-		rpt.append("\r\n"); rpt.append("STATUS");
+		rpt.append("\r\n").append("PLAYERS");
+		rpt.append("\t").append(Integer.toString(CMLib.sessions().getCountLocalOnline()));
+		rpt.append("\r\n").append("STATUS");
 		rpt.append("\t");
 		switch(CMProps.getIntVar(CMProps.Int.MUDSTATE))
 		{
-		case 0: rpt.append("Alpha"); break;
-		case 1: rpt.append("Closed Beta"); break;
-		case 2: rpt.append("Open Beta"); break;
-		case 3: rpt.append("Live"); break;
-		default : rpt.append("Live"); break;
+		case 0:
+			rpt.append("Alpha");
+			break;
+		case 1:
+			rpt.append("Closed Beta");
+			break;
+		case 2:
+			rpt.append("Open Beta");
+			break;
+		case 3:
+			rpt.append("Live");
+			break;
+		default:
+			rpt.append("Live");
+			break;
 		}
 
 		MudHost host = null;
@@ -638,67 +674,67 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			host = CMLib.hosts().get(0);
 		if(host != null)
 		{
-			rpt.append("\r\n"); rpt.append("UPTIME");
-			rpt.append("\t"); rpt.append(Long.toString(host.getUptimeSecs()));
-			rpt.append("\r\n"); rpt.append("HOSTNAME");
-			rpt.append("\t"); rpt.append(host.getHost());
-			rpt.append("\r\n"); rpt.append("PORT");
-			rpt.append("\t"); rpt.append(Integer.toString(host.getPort()));
+			rpt.append("\r\n").append("UPTIME");
+			rpt.append("\t").append(Long.toString(host.getUptimeSecs()));
+			rpt.append("\r\n").append("HOSTNAME");
+			rpt.append("\t").append(host.getHost());
+			rpt.append("\r\n").append("PORT");
+			rpt.append("\t").append(Integer.toString(host.getPort()));
 			if(Thread.currentThread() instanceof CWThread)
 			{
 				final String webServerPort=Integer.toString(((CWThread)Thread.currentThread()).getConfig().getHttpListenPorts()[0]);
-				rpt.append("\r\n"); rpt.append("WEBSITE");
-				rpt.append("\t"); rpt.append(("http://"+host.getHost()+":"+webServerPort));
+				rpt.append("\r\n").append("WEBSITE");
+				rpt.append("\t").append(("http://"+host.getHost()+":"+webServerPort));
 			}
-			rpt.append("\r\n"); rpt.append("LANGUAGE");
-			rpt.append("\t"); rpt.append(host.getLanguage());
+			rpt.append("\r\n").append("LANGUAGE");
+			rpt.append("\t").append(host.getLanguage());
 		}
 		if(CMLib.intermud().i3online())
 		{
-			rpt.append("\r\n"); rpt.append("INTERMUD");
-			rpt.append("\t"); rpt.append("I3");
+			rpt.append("\r\n").append("INTERMUD");
+			rpt.append("\t").append("I3");
 		}
 		if(CMLib.intermud().imc2online())
 		{
-			rpt.append("\r\n"); rpt.append("INTERMUD");
-			rpt.append("\t"); rpt.append("IMC2");
+			rpt.append("\r\n").append("INTERMUD");
+			rpt.append("\t").append("IMC2");
 		}
-		rpt.append("\r\n"); rpt.append("FAMILY");
-		rpt.append("\t"); rpt.append("CoffeeMUD");
-		rpt.append("\r\n"); rpt.append("EMAIL");
-		rpt.append("\t"); rpt.append(CMProps.getVar(CMProps.Str.ADMINEMAIL));
-		rpt.append("\r\n"); rpt.append("CODEBASE");
-		rpt.append("\t"); rpt.append(("CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER)));
-		rpt.append("\r\n"); rpt.append("AREAS");
-		rpt.append("\t"); rpt.append(Integer.toString(CMLib.map().numAreas()));
-		rpt.append("\r\n"); rpt.append("HELPFILES");
-		rpt.append("\t"); rpt.append(Integer.toString(CMLib.help().getHelpFile().size()));
-		rpt.append("\r\n"); rpt.append("MOBILES");
-		rpt.append("\t"); rpt.append(Long.toString(CMClass.numPrototypes(CMClass.CMObjectType.MOB)));
-		rpt.append("\r\n"); rpt.append("OBJECTS");
-		rpt.append("\t"); rpt.append(Long.toString(CMClass.numPrototypes(CMClass.OBJECTS_ITEMTYPES)));
-		rpt.append("\r\n"); rpt.append("ROOMS");
-		rpt.append("\t"); rpt.append(Long.toString(CMLib.map().numRooms()));
-		rpt.append("\r\n"); rpt.append("CLASSES");
+		rpt.append("\r\n").append("FAMILY");
+		rpt.append("\t").append("CoffeeMUD");
+		rpt.append("\r\n").append("EMAIL");
+		rpt.append("\t").append(CMProps.getVar(CMProps.Str.ADMINEMAIL));
+		rpt.append("\r\n").append("CODEBASE");
+		rpt.append("\t").append(("CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER)));
+		rpt.append("\r\n").append("AREAS");
+		rpt.append("\t").append(Integer.toString(CMLib.map().numAreas()));
+		rpt.append("\r\n").append("HELPFILES");
+		rpt.append("\t").append(Integer.toString(CMLib.help().getHelpFile().size()));
+		rpt.append("\r\n").append("MOBILES");
+		rpt.append("\t").append(Long.toString(CMClass.numPrototypes(CMClass.CMObjectType.MOB)));
+		rpt.append("\r\n").append("OBJECTS");
+		rpt.append("\t").append(Long.toString(CMClass.numPrototypes(CMClass.OBJECTS_ITEMTYPES)));
+		rpt.append("\r\n").append("ROOMS");
+		rpt.append("\t").append(Long.toString(CMLib.map().numRooms()));
+		rpt.append("\r\n").append("CLASSES");
 		int numClasses = 0;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 			numClasses=CMLib.login().classQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
-		rpt.append("\t"); rpt.append(Long.toString(numClasses));
-		rpt.append("\r\n"); rpt.append("RACES");
+		rpt.append("\t").append(Long.toString(numClasses));
+		rpt.append("\r\n").append("RACES");
 		int numRaces = 0;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 			numRaces=CMLib.login().raceQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
-		rpt.append("\t"); rpt.append(Long.toString(numRaces));
-		rpt.append("\r\n"); rpt.append("SKILLS");
-		rpt.append("\t"); rpt.append(Long.toString(CMLib.ableMapper().numMappedAbilities()));
-		rpt.append("\r\n"); rpt.append("ANSI");
-		rpt.append("\t"); rpt.append("1");
-		rpt.append("\r\n"); rpt.append("MCCP");
-		rpt.append("\t"); rpt.append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP)?"1":"0"));
-		rpt.append("\r\n"); rpt.append("MSP");
-		rpt.append("\t"); rpt.append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)?"1":"0"));
-		rpt.append("\r\n"); rpt.append("MXP");
-		rpt.append("\t"); rpt.append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)?"1":"0"));
+		rpt.append("\t").append(Long.toString(numRaces));
+		rpt.append("\r\n").append("SKILLS");
+		rpt.append("\t").append(Long.toString(CMLib.ableMapper().numMappedAbilities()));
+		rpt.append("\r\n").append("ANSI");
+		rpt.append("\t").append("1");
+		rpt.append("\r\n").append("MCCP");
+		rpt.append("\t").append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP)?"1":"0"));
+		rpt.append("\r\n").append("MSP");
+		rpt.append("\t").append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)?"1":"0"));
+		rpt.append("\r\n").append("MXP");
+		rpt.append("\t").append((!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)?"1":"0"));
 		rpt.append("\r\nMSSP-REPLY-END\r\n");
 		return rpt.toString();
 	}
@@ -745,60 +781,114 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		switch(loginObj.state)
 		{
-		case LOGIN_START: return loginStart(loginObj, session);
-		case LOGIN_NAME: return loginName(loginObj, session);
-		case LOGIN_ACCTCHAR_PWORD: return loginAcctcharPword(loginObj, session);
-		case LOGIN_ACCTCONV_CONFIRM: return loginAcctconvConfirm(loginObj, session);
-		case ACCTCREATE_START: return acctcreateStart(loginObj, session);
-		case ACCTCREATE_ANSICONFIRM: return acctcreateANSIConfirm(loginObj, session);
-		case ACCTCREATE_EMAILSTART: return acctcreateEmailStart(loginObj, session);
-		case ACCTCREATE_EMAILPROMPT: return acctcreateEmailPrompt(loginObj, session);
-		case ACCTCREATE_EMAILENTERED: return acctcreateEmailEntered(loginObj, session);
-		case ACCTCREATE_EMAILCONFIRMED: return acctcreateEmailConfirmed(loginObj, session);
-		case ACCTCREATE_PASSWORDED: return acctcreatePassworded(loginObj, session);
-		case LOGIN_PASS_START: return loginPassStart(loginObj, session);
-		case LOGIN_NEWACCOUNT_CONFIRM: return loginNewaccountConfirm(loginObj, session);
-		case LOGIN_NEWCHAR_CONFIRM: return loginNewcharConfirm(loginObj, session);
-		case LOGIN_PASS_RECEIVED: return loginPassReceived(loginObj, session);
-		case LOGIN_EMAIL_PASSWORD: return loginEmailPassword(loginObj, session);
-		case ACCTMENU_START: return acctmenuStart(loginObj, session);
-		case ACCTMENU_SHOWCHARS: return acctmenuShowChars(loginObj, session);
-		case ACCTMENU_SHOWMENU: return acctmenuShowMenu(loginObj, session);
-		case ACCTMENU_PROMPT: return acctmenuPrompt(loginObj, session);
-		case ACCTMENU_CONFIRMCOMMAND: return acctmenuConfirmCommand(loginObj, session);
-		case ACCTMENU_ADDTOCOMMAND: return acctmenuAddToCommand(loginObj, session);
-		case ACCTMENU_COMMAND: return acctmenuCommand(loginObj, session);
-		case CHARCR_START: return charcrStart(loginObj, session);
-		case CHARCR_PASSWORDDONE: return charcrPasswordDone(loginObj, session);
-		case CHARCR_EMAILSTART: return charcrEmailStart(loginObj, session);
-		case CHARCR_EMAILPROMPT: return charcrEmailPrompt(loginObj, session);
-		case CHARCR_EMAILENTERED: return charcrEmailEntered(loginObj, session);
-		case CHARCR_EMAILCONFIRMED: return charcrEmailConfirmed(loginObj, session);
-		case CHARCR_EMAILDONE: return charcrEmailDone(loginObj, session);
-		case CHARCR_ANSICONFIRMED: return charcrANSIConfirmed(loginObj, session);
-		case CHARCR_ANSIDONE: return charcrANSIDone(loginObj, session);
-		case CHARCR_THEMESTART: return charcrThemeStart(loginObj, session);
-		case CHARCR_THEMEPICKED: return charcrThemePicked(loginObj, session);
-		case CHARCR_THEMEDONE: return charcrThemeDone(loginObj, session);
-		case CHARCR_RACESTART: return charcrRaceStart(loginObj, session);
-		case CHARCR_RACEENTERED: return charcrRaceReEntered(loginObj, session);
-		case CHARCR_RACECONFIRMED: return charcrRaceConfirmed(loginObj, session);
-		case CHARCR_RACEDONE: return charcrRaceDone(loginObj, session);
-		case CHARCR_GENDERSTART: return charcrGenderStart(loginObj, session);
-		case CHARCR_GENDERDONE: return charcrGenderDone(loginObj, session);
-		case CHARCR_STATSTART: return charcrStatStart(loginObj, session);
-		case CHARCR_STATCONFIRM: return charcrStatConfirm(loginObj, session);
-		case CHARCR_STATPICKADD: return charcrStatPickAdd(loginObj, session);
-		case CHARCR_STATPICK: return charcrStatPick(loginObj, session);
-		case CHARCR_STATDONE: return charcrStatDone(loginObj, session);
-		case CHARCR_CLASSSTART: return charcrClassStart(loginObj, session);
-		case CHARCR_CLASSPICKED: return charcrClassPicked(loginObj, session);
-		case CHARCR_CLASSCONFIRM: return charcrClassConfirm(loginObj, session);
-		case CHARCR_CLASSDONE: return charcrClassDone(loginObj, session);
-		case CHARCR_FACTIONNEXT: return charcrFactionNext(loginObj, session);
-		case CHARCR_FACTIONPICK: return charcrFactionPick(loginObj, session);
-		case CHARCR_FACTIONDONE: return charcrFactionDone(loginObj, session);
-		case CHARCR_FINISH: return charcrFinish(loginObj, session);
+		case LOGIN_START:
+			return loginStart(loginObj, session);
+		case LOGIN_NAME:
+			return loginName(loginObj, session);
+		case LOGIN_ACCTCHAR_PWORD:
+			return loginAcctcharPword(loginObj, session);
+		case LOGIN_ACCTCONV_CONFIRM:
+			return loginAcctconvConfirm(loginObj, session);
+		case ACCTCREATE_START:
+			return acctcreateStart(loginObj, session);
+		case ACCTCREATE_ANSICONFIRM:
+			return acctcreateANSIConfirm(loginObj, session);
+		case ACCTCREATE_EMAILSTART:
+			return acctcreateEmailStart(loginObj, session);
+		case ACCTCREATE_EMAILPROMPT:
+			return acctcreateEmailPrompt(loginObj, session);
+		case ACCTCREATE_EMAILENTERED:
+			return acctcreateEmailEntered(loginObj, session);
+		case ACCTCREATE_EMAILCONFIRMED:
+			return acctcreateEmailConfirmed(loginObj, session);
+		case ACCTCREATE_PASSWORDED:
+			return acctcreatePassworded(loginObj, session);
+		case LOGIN_PASS_START:
+			return loginPassStart(loginObj, session);
+		case LOGIN_NEWACCOUNT_CONFIRM:
+			return loginNewaccountConfirm(loginObj, session);
+		case LOGIN_NEWCHAR_CONFIRM:
+			return loginNewcharConfirm(loginObj, session);
+		case LOGIN_PASS_RECEIVED:
+			return loginPassReceived(loginObj, session);
+		case LOGIN_EMAIL_PASSWORD:
+			return loginEmailPassword(loginObj, session);
+		case ACCTMENU_START:
+			return acctmenuStart(loginObj, session);
+		case ACCTMENU_SHOWCHARS:
+			return acctmenuShowChars(loginObj, session);
+		case ACCTMENU_SHOWMENU:
+			return acctmenuShowMenu(loginObj, session);
+		case ACCTMENU_PROMPT:
+			return acctmenuPrompt(loginObj, session);
+		case ACCTMENU_CONFIRMCOMMAND:
+			return acctmenuConfirmCommand(loginObj, session);
+		case ACCTMENU_ADDTOCOMMAND:
+			return acctmenuAddToCommand(loginObj, session);
+		case ACCTMENU_COMMAND:
+			return acctmenuCommand(loginObj, session);
+		case CHARCR_START:
+			return charcrStart(loginObj, session);
+		case CHARCR_PASSWORDDONE:
+			return charcrPasswordDone(loginObj, session);
+		case CHARCR_EMAILSTART:
+			return charcrEmailStart(loginObj, session);
+		case CHARCR_EMAILPROMPT:
+			return charcrEmailPrompt(loginObj, session);
+		case CHARCR_EMAILENTERED:
+			return charcrEmailEntered(loginObj, session);
+		case CHARCR_EMAILCONFIRMED:
+			return charcrEmailConfirmed(loginObj, session);
+		case CHARCR_EMAILDONE:
+			return charcrEmailDone(loginObj, session);
+		case CHARCR_ANSICONFIRMED:
+			return charcrANSIConfirmed(loginObj, session);
+		case CHARCR_ANSIDONE:
+			return charcrANSIDone(loginObj, session);
+		case CHARCR_THEMESTART:
+			return charcrThemeStart(loginObj, session);
+		case CHARCR_THEMEPICKED:
+			return charcrThemePicked(loginObj, session);
+		case CHARCR_THEMEDONE:
+			return charcrThemeDone(loginObj, session);
+		case CHARCR_RACESTART:
+			return charcrRaceStart(loginObj, session);
+		case CHARCR_RACEENTERED:
+			return charcrRaceReEntered(loginObj, session);
+		case CHARCR_RACECONFIRMED:
+			return charcrRaceConfirmed(loginObj, session);
+		case CHARCR_RACEDONE:
+			return charcrRaceDone(loginObj, session);
+		case CHARCR_GENDERSTART:
+			return charcrGenderStart(loginObj, session);
+		case CHARCR_GENDERDONE:
+			return charcrGenderDone(loginObj, session);
+		case CHARCR_STATSTART:
+			return charcrStatStart(loginObj, session);
+		case CHARCR_STATCONFIRM:
+			return charcrStatConfirm(loginObj, session);
+		case CHARCR_STATPICKADD:
+			return charcrStatPickAdd(loginObj, session);
+		case CHARCR_STATPICK:
+			return charcrStatPick(loginObj, session);
+		case CHARCR_STATDONE:
+			return charcrStatDone(loginObj, session);
+		case CHARCR_CLASSSTART:
+			return charcrClassStart(loginObj, session);
+		case CHARCR_CLASSPICKED:
+			return charcrClassPicked(loginObj, session);
+		case CHARCR_CLASSCONFIRM:
+			return charcrClassConfirm(loginObj, session);
+		case CHARCR_CLASSDONE:
+			return charcrClassDone(loginObj, session);
+		case CHARCR_FACTIONNEXT:
+			return charcrFactionNext(loginObj, session);
+		case CHARCR_FACTIONPICK:
+			return charcrFactionPick(loginObj, session);
+		case CHARCR_FACTIONDONE:
+			return charcrFactionDone(loginObj, session);
+		case CHARCR_FINISH:
+			return charcrFinish(loginObj, session);
 		default:
 			loginObj.state=LoginState.LOGIN_START;
 			return null;
@@ -921,14 +1011,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			if((loginObj.player.accountName==null)||(loginObj.player.accountName.trim().length()==0))
 			{
-				session.println(L("\n\rThis mud is now using an account system.  Please create a new account and use the IMPORT command to add your character(s) to your account."));
+				session.println(L("\n\rThis mud is now using an account system.  Please create a new account "
+								+ "and use the IMPORT command to add your character(s) to your account."));
 				session.promptPrint(L("Would you like to create your new master account and call it '@x1' (y/N)? ",loginObj.player.name));
 				loginObj.state=LoginState.LOGIN_ACCTCONV_CONFIRM;
 				return LoginResult.INPUT_REQUIRED;
 			}
 			else
 			{
-				session.println(L("\n\rThis mud uses an account system.  Your account name is `^H@x1^N`.\n\rPlease use this account name when logging in.",loginObj.player.accountName));
+				session.println(L("\n\rThis mud uses an account system.  Your account name is `^H@x1^N`.\n\r"
+								+ "Please use this account name when logging in.",loginObj.player.accountName));
 			}
 		}
 		loginObj.state=LoginState.LOGIN_START;
@@ -992,7 +1084,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			acct.setFlag(PlayerAccount.FLAG_ANSI, true);
 		}
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newacct.txt",null,CMFile.FLAG_LOGERRORS).text();
-		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+		try
+		{
+			introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+		}
+		catch (final Exception ex)
+		{
+		}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
@@ -1114,6 +1212,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		{
 			for(final Session otherSess : CMLib.sessions().allIterable())
+			{
 				if((otherSess!=session)&&(otherSess.isPendingLogin(loginObj)))
 				{
 					session.println(L("A previous login is still pending.  Please be patient."));
@@ -1122,6 +1221,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					loginObj.state=LoginState.LOGIN_START;
 					return LoginResult.NO_LOGIN;
 				}
+			}
 			session.promptPrint(L("password: "));
 			loginObj.state=LoginState.LOGIN_PASS_RECEIVED;
 			return LoginResult.INPUT_REQUIRED;
@@ -1192,13 +1292,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				session.setAccount(loginObj.acct);
 				final StringBuilder loginMsg=new StringBuilder("");
 				loginMsg.append(session.getAddress()).append(" "+session.getTerminalType())
-				.append(session.getClientTelnetMode(Session.TELNET_MXP)?" MXP":"")
-				.append(session.getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
-				.append(session.getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
-				.append(session.getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
-				.append((session.getClientTelnetMode(Session.TELNET_COMPRESS)||session.getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-				.append(session.getClientTelnetMode(Session.TELNET_ANSI)?" ANSI":"")
-				.append(", account login: "+loginObj.acct.getAccountName());
+						.append(session.getClientTelnetMode(Session.TELNET_MXP)?" MXP":"")
+						.append(session.getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
+						.append(session.getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
+						.append(session.getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
+						.append((session.getClientTelnetMode(Session.TELNET_COMPRESS)||session.getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+						.append(session.getClientTelnetMode(Session.TELNET_ANSI)?" ANSI":"")
+						.append(", account login: "+loginObj.acct.getAccountName());
 				Log.sysOut(loginMsg.toString());
 				//session.setStatus(SessionStatus.ACCOUNTMENU);
 				loginObj.state=LoginState.ACCTMENU_START;
@@ -1290,7 +1390,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
 		// if its not a new account, do this?
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,CMFile.FLAG_LOGERRORS).text();
-		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+		try
+		{
+			introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+		}
+		catch (final Exception ex)
+		{
+		}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		if(acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
 		{
@@ -1336,21 +1442,21 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final StringBuffer buf = new StringBuffer("");
 		if(!acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
 		{
-			buf.append(" ^XAccount Menu^.^N\n\r");
+			buf.append(L(" ^XAccount Menu^.^N\n\r"));
 			buf.append(L(" ^XL^.^w)^Hist characters\n\r"));
-			buf.append(" ^XN^.^w)^Hew character\n\r");
+			buf.append(L(" ^XN^.^w)^Hew character\n\r"));
 			if(acct.isSet(PlayerAccount.FLAG_CANEXPORT))
 			{
 				buf.append(L(" ^XI^.^w)^Hmport character\n\r"));
 				buf.append(L(" ^XE^.^w)^Hxport character\n\r"));
 			}
 			buf.append(L(" ^XD^.^w)^Helete/Retire character\n\r"));
-			buf.append(" ^XH^.^w)^Help\n\r");
-			buf.append(" ^XM^.^w)^Henu OFF\n\r");
+			buf.append(L(" ^XH^.^w)^Help\n\r"));
+			buf.append(L(" ^XM^.^w)^Henu OFF\n\r"));
 			buf.append(L(" ^XP^.^w)^Hassword change\n\r"));
 			if(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE"))
-				buf.append(" ^XE^.^w)^Hmail change\n\r");
-			buf.append(" ^XQ^.^w)^Huit (logout)\n\r");
+				buf.append(L(" ^XE^.^w)^Hmail change\n\r"));
+			buf.append(L(" ^XQ^.^w)^Huit (logout)\n\r"));
 			buf.append(L("\n\r^H ^w(^HEnter your character name to login^w)^H"));
 			session.println(buf.toString());
 			buf.setLength(0);
@@ -1601,8 +1707,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				final String password=CMLib.encoder().generateRandomPassword();
 				acct.setPassword(password);
 				CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), acct.getAccountName(), "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), acct.getAccountName(),
-					"Password for "+acct.getAccountName(),
-					"Your password for "+acct.getAccountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
+					L("Password for @x1",acct.getAccountName()),
+					L("Your password for @x1 is: @x2\n\r"
+					+ "You can login by pointing your mud client at @x3 port(s): @x4.\n\r"
+					+ "After creating a character, you may use the PASSWORD command to change it once you are online.",
+					acct.getAccountName(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS)));
 				session.println(L("Your account email address has been updated.  You will receive an email with your new password shortly."));
 				session.stopSession(false,false,false);
 				try{Thread.sleep(1000);}catch(final Exception e){}
@@ -1862,7 +1971,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		Log.sysOut("Creating user: "+loginObj.login);
 
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,CMFile.FLAG_LOGERRORS).text();
-		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText); }catch(final Exception ex){}
+		try
+		{
+			introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+		}
+		catch (final Exception ex)
+		{
+		}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		final String password=(loginObj.acct!=null)?loginObj.acct.getPasswordStr():"";
 
@@ -2106,7 +2221,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(selections.length()==0)
 			selections="/F";
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"themes.txt",null,CMFile.FLAG_LOGERRORS).text();
-		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+		try
+		{
+			introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+		}
+		catch (final Exception ex)
+		{
+		}
 		session.println(null,null,null,introText.toString());
 		session.promptPrint(L("\n\r^!Please select from the following:^N @x1\n\r: ",selections.substring(1)));
 		loginObj.state=LoginState.CHARCR_THEMEPICKED;
@@ -2233,7 +2354,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{ 
 				introText = CMLib.webMacroFilter().virtualPageFilter(introText);
 			}
-			catch(final Exception ex){}
+			catch (final Exception ex)
+			{
+			}
 			session.println(null,null,null,introText.toString());
 		}
 		final StringBuffer listOfRaces=new StringBuffer("[");
@@ -2270,6 +2393,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 									||(CMath.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK))))
 				newRace=null;
 			if(newRace==null)
+			{
 				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
 					final Race R=r.nextElement();
@@ -2282,7 +2406,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						break;
 					}
 				}
+			}
 			if(newRace==null)
+			{
 				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
 					final Race R=r.nextElement();
@@ -2295,6 +2421,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						break;
 					}
 				}
+			}
 			if(newRace!=null)
 			{
 				final StringBuilder str=CMLib.help().getHelpText(newRace.ID().toUpperCase(),mob,false);
@@ -2432,7 +2559,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				total += CT.getStat(i);
 				statstr.append("^H"+CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
-						+"^N: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"^N/^w"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"^N\n\r");
+							  +"^N: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
+							  +"^N/^w"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"^N\n\r");
 			}
 			statstr.append("^w"+CMStrings.padRight(L("STATS TOTAL"),15)+"^N: ^w"+total+"^N/^w"+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)*6)+"^.^N");
 			session.println(statstr.toString());
@@ -2453,12 +2581,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if(loginObj.statPoints == 0)
 				{
 					session.println(L("\n\r^!You have no more points remaining.^N"));
-					promptStr = "^NEnter a Stat to remove points, ? for help, R for random roll, or ENTER to complete.^N\n\r: ^N";
+					promptStr = L("^NEnter a Stat to remove points, ? for help, R for random roll, or ENTER to complete.^N\n\r: ^N");
 				}
 				else
 				{
 					session.println(L("\n\r^NYou have ^w@x1^N points remaining.^N",""+loginObj.statPoints));
-					promptStr = "^NEnter a Stat to add or remove points, ? for help, or R for random roll.^N\n\r: ^N";
+					promptStr = L("^NEnter a Stat to add or remove points, ? for help, or R for random roll.^N\n\r: ^N");
 				}
 
 				session.promptPrint(promptStr);
@@ -2883,7 +3011,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((F.choiceIntro()!=null)&&(F.choiceIntro().length()>0))
 		{
 			StringBuffer intro = new CMFile(Resources.makeFileResourceName(F.choiceIntro()),null,CMFile.FLAG_LOGERRORS).text();
-			try { intro = CMLib.webMacroFilter().virtualPageFilter(intro);}catch(final Exception ex){}
+			try
+			{
+				intro = CMLib.webMacroFilter().virtualPageFilter(intro);
+			}
+			catch (final Exception ex)
+			{
+			}
 			session.println(null,null,null,"\n\r\n\r"+intro.toString());
 		}
 		loginObj.lastInput="";
@@ -2908,13 +3042,27 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(choice.length()>0)
 		{
 			if(!namedChoices.contains(choice))
+			{
 				for(int i=0;i<namedChoices.size();i++)
+				{
 					if(namedChoices.get(i).startsWith(choice.toUpperCase()))
-					{ choice=namedChoices.get(i); break;}
+					{
+						choice = namedChoices.get(i);
+						break;
+					}
+				}
+			}
 			if(!namedChoices.contains(choice))
+			{
 				for(int i=0;i<namedChoices.size();i++)
+				{
 					if(namedChoices.get(i).indexOf(choice.toUpperCase())>=0)
-					{ choice=namedChoices.get(i); break;}
+					{
+						choice = namedChoices.get(i);
+						break;
+					}
+				}
+			}
 		}
 		if(namedChoices.contains(choice))
 		{
@@ -2961,7 +3109,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,CMFile.FLAG_LOGERRORS).text();
-		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+		try
+		{
+			introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+		}
+		catch (final Exception ex)
+		{
+		}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		loginObj.state=LoginState.CHARCR_FINISH;
 		return LoginResult.INPUT_REQUIRED;
@@ -2978,8 +3132,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.playerStats().setPassword(password);
 			CMLib.database().DBUpdatePassword(mob.Name(),mob.playerStats().getPasswordStr());
 			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), mob.Name(), "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), mob.Name(),
-				"Password for "+mob.Name(),
-				"Your password for "+mob.Name()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
+				L("Password for @x1",mob.Name()),
+				L("Your password for @x1 is: @x2\n\r"
+				+ "You can login by pointing your mud client at @x3 port(s): @x4.\n\r"
+				+ "You may use the PASSWORD command to change it once you are online.",
+				mob.Name(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS)));
 			session.println(L("Your character has been created.  You will receive an email with your password shortly."));
 			try{Thread.sleep(1000);}catch(final Exception e){}
 			if(mob==session.mob())
@@ -3171,6 +3328,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 	}
 
+	@Override
 	public LoginResult completeLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException
 	{
 		if(loginsDisabled(mob))
@@ -3350,8 +3508,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			final List<String> V=mob.fetchFactionRanges();
 			for(int v=0;v<V.size();v++)
+			{
 				if(startRooms.containsKey(V.get(v).toUpperCase()))
-				{ roomID=startRooms.get(V.get(v).toUpperCase()); break;}
+				{
+					roomID = startRooms.get(V.get(v).toUpperCase());
+					break;
+				}
+			}
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=startRooms.get(deity);
@@ -3387,8 +3550,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			final List<String> V=mob.fetchFactionRanges();
 			for(int v=0;v<V.size();v++)
+			{
 				if(deathRooms.containsKey(V.get(v).toUpperCase()))
-				{ roomID=deathRooms.get(V.get(v).toUpperCase()); break;}
+				{
+					roomID = deathRooms.get(V.get(v).toUpperCase());
+					break;
+				}
+			}
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=deathRooms.get(deity);
@@ -3443,8 +3611,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			final List<String> V=mob.fetchFactionRanges();
 			for(int v=0;v<V.size();v++)
+			{
 				if(bodyRooms.containsKey(V.get(v).toUpperCase()))
-				{ roomID=bodyRooms.get(V.get(v).toUpperCase()); break;}
+				{
+					roomID = bodyRooms.get(V.get(v).toUpperCase());
+					break;
+				}
+			}
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
 			roomID=bodyRooms.get(deity);
@@ -3622,7 +3795,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		for(int i=0;i<rawData.length();i++)
 		{
 			final int start=i;
-			while(!Character.isDigit(rawData.charAt(i)))
+			while((i+1<rawData.length())&&(!Character.isDigit(rawData.charAt(i))))
 				i++;
 			set.add(new Pair<String,Integer>(rawData.substring(start,i),Integer.valueOf(rawData.substring(i,i+1))));
 		}
@@ -3650,7 +3823,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
-    public String generateRandomName(int minSyllable, int maxSyllable)
+	public String generateRandomName(int minSyllable, int maxSyllable)
 	{
 		final StringBuilder name=new StringBuilder("");
 		final DiceLibrary dice=CMLib.dice();
