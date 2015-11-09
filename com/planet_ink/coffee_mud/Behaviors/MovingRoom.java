@@ -110,11 +110,23 @@ public class MovingRoom extends ActiveTicker
 	protected static synchronized String loadInfo()
 	{
 		final StringBuffer str=new StringBuffer("");
-		final List<String> V=Resources.getFileLineVector(new CMFile("resources/movingroom.xml",null,CMFile.FLAG_LOGERRORS).text());
-		for(int v=0;v<V.size();v++)
-			str.append(V.get(v));
-		final String theString = str.toString();
-		return theString;
+		final String resourceName = "movingroom.xml";
+		CMFile //F=new CMFile(Resources.makeFileResourceName("behavior/"+resourceName),null,0);
+		//if((!F.exists()) || (!F.canRead()))
+			F=new CMFile(Resources.makeFileResourceName(resourceName),null,0);
+		if((F.exists()) && (F.canRead()))
+		{
+			final List<String> V=Resources.getFileLineVector(F.text());
+			for(int v=0;v<V.size();v++)
+				str.append(V.get(v));
+			final String theString = str.toString();
+			return theString;
+		}
+		else
+		{
+			Log.errOut("MovingRoom","Unable to load "+Resources.makeFileResourceName("behavior/"+resourceName)+" or "+Resources.makeFileResourceName(resourceName));
+			return "";
+		}
 	}
 
 	protected void parseMovingXML(String roomToParse)

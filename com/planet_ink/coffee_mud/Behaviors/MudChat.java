@@ -109,6 +109,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		final ArrayList<String> names=new ArrayList<String>();
 		final ArrayList<MaskingLibrary.CompiledZapperMask> masks=new ArrayList<MaskingLibrary.CompiledZapperMask>();
 		for(int i=0;i<n.length;i++)
+		{
 			if(n[i]==lookFor)
 			{
 				final String s=name.substring(last,i).trim();
@@ -129,6 +130,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				lookFor='/';
 				last=i;
 			}
+		}
 		final String s=name.substring(last,name.length()).trim();
 		if(s.length()>0)
 		{
@@ -237,15 +239,20 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					if(otherChatGroup==null)
 						otherChatGroup=chatGroups.get(0);
 					if(otherChatGroup != currentChatGroup)
+					{
 						for(final ChattyEntry CE : otherChatGroup.entries)
 							currentChatEntries.add(CE);
+					}
 				}
 				break;
 			case '%':
 				{
-					  final StringBuffer rsc2=new StringBuffer(Resources.getFileResource(str.substring(1).trim(),true).toString());
-					  if(rsc2.length()<1) { Log.sysOut("MudChat","Error reading resource "+str.substring(1).trim()); }
-					  rsc.insert(0,rsc2.toString());
+					final StringBuffer rsc2=new StringBuffer(Resources.getFileResource(str.substring(1).trim(),true).toString());
+					if (rsc2.length() < 1)
+					{
+						Log.sysOut("MudChat", "Error reading resource " + str.substring(1).trim());
+					}
+					rsc.insert(0,rsc2.toString());
 				}
 				break;
 			case '0':
@@ -273,8 +280,19 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected static ChattyGroup[] loadChatData(String resourceName)
 	{
-		final StringBuffer rsc=new CMFile(Resources.makeFileResourceName(resourceName),null,CMFile.FLAG_LOGERRORS).text();
-		return parseChatData(rsc);
+		CMFile //F=new CMFile(Resources.makeFileResourceName("behavior/"+resourceName),null,0);
+		//if((!F.exists()) || (!F.canRead()))
+			F=new CMFile(Resources.makeFileResourceName(resourceName),null,0);
+		if(F.exists() && F.canRead())
+		{
+			final StringBuffer rsc=F.text();
+			return parseChatData(rsc);
+		}
+		else
+		{
+			Log.errOut("MudChat","Unable to load "+Resources.makeFileResourceName("behavior/"+resourceName)+" or "+Resources.makeFileResourceName(resourceName));
+			return new ChattyGroup[0];
+		}
 	}
 
 	public static String nextLine(StringBuffer tsc)
@@ -318,16 +336,24 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		if(myName.equals("DEFAULT"))
 			return chatGroups[0];
 		for(final ChattyGroup CG : chatGroups)
+		{
 			if(CG.entries!=null)
 			{
 				for(final String name : CG.groupNames)
+				{
 					if(name.equals(myName))
 						return CG;
+				}
 				if(meM != null)
+				{
 					for(final MaskingLibrary.CompiledZapperMask mask : CG.groupMasks)
+					{
 						if(CMLib.masking().maskCheck(mask, meM, true))
 							return CG;
+					}
+				}
 			}
+		}
 		return null;
 	}
 
@@ -428,11 +454,13 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 				Vector<String> V=CMParms.parse(finalCommand);
 				for(final ChattyResponse R : responseQue)
+				{
 					if(CMParms.combine(R.parsedCommand,1).equalsIgnoreCase(finalCommand))
 					{
 						V=null;
 						break;
 					}
+				}
 				if(V!=null)
 					responseQue.add(new ChattyResponse(V,RESPONSE_DELAY));
 			}
@@ -506,6 +534,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				int expEnd=0;
 				int parenCount=1;
 				while(((++expEnd)<expression.length())&&(parenCount>0))
+				{
 					if(expression.charAt(expEnd)=='(')
 						parenCount++;
 					else
@@ -515,6 +544,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 						if(parenCount<=0)
 							break;
 					}
+				}
 				if(expEnd<expression.length()&&(parenCount<=0))
 				{
 					return response && match(speaker,expression.substring(1,expEnd).trim(),message,rest);
@@ -637,8 +667,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 						else
 						if(combat)
 							continue;
-
-
 						if((expression.charAt(0)==c1)
 						&&(expression.charAt(expression.length()-1)==c2))
 						{
