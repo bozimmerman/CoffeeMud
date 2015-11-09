@@ -142,7 +142,7 @@ public class Link extends At
 				if((!CE.out)
 				&&(CE.dir==direction)
 				&&(CE.destRoomID.equals(CMLib.map().getExtendedRoomID(mob.location()))))
-				   thereGL.delOuterExit(CE);
+					thereGL.delOuterExit(CE);
 			}
 			CE=GridLocale.CrossExit.make(thereX,thereY,direction,CMLib.map().getExtendedRoomID(mob.location()),false);
 			thereGL.addOuterExit(CE);

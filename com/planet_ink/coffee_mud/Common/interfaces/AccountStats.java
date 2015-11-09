@@ -223,8 +223,8 @@ public interface AccountStats extends CMCommon
 	/**
 	 * Returns the tracker for the given achievement, for the given mob, or
 	 * creates it if it does not exist.
-	 * @see PlayerStats#rebuildAchievementTracker(MOB, String)
-	 * @see PlayerStats#killAchievementTracker(Achievement, MOB)
+	 * @see AccountStats#rebuildAchievementTracker(MOB, String)
+	 * @see AccountStats#killAchievementTracker(Achievement, MOB)
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement
 	 * @param A the achievement to get the tracker for
@@ -235,7 +235,7 @@ public interface AccountStats extends CMCommon
 	
 	/**
 	 * Deletes the tracker for the given achievement, for the given mob.
-	 * @see PlayerStats#rebuildAchievementTracker(MOB, String)
+	 * @see AccountStats#rebuildAchievementTracker(MOB, String)
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement
 	 * @param A the achievement to kill the tracker for
@@ -247,7 +247,7 @@ public interface AccountStats extends CMCommon
 	 * If an Achievement is modified or removed, this method will update the
 	 * internal player tracker for that achievement.  It does not delete old
 	 * achievements per se, just their trackers!
-	 * @see PlayerStats#getAchievementTracker(com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement, MOB)
+	 * @see AccountStats#getAchievementTracker(com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement, MOB)
 	 * @param mob the mob to modify the tracker for.
 	 * @param achievementTattoo the tattoo/id of the achievement
 	 */

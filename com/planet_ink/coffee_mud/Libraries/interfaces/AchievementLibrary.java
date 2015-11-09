@@ -33,10 +33,32 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The achievement library forms the basis of the achievement system,
+ * which accepts player events as input, as well as the file based achievement
+ * definition files, and tracks player and account completion of achievements
+ * through trackers.
+ * @see AchievementLibrary.Event
+ * @see AchievementLibrary.Tracker
+ * @see AchievementLibrary.Achievement
+ * @author Bo Zimmerman
+ *
+ */
 public interface AchievementLibrary extends CMLibrary
 {
+	/**
+	 * The list of arguments/parameters common to all achievement event types
+	 */
 	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] { "EVENT", "DISPLAY", "TITLE", "REWARDS" };
 	
+	/**
+	 * Events define the type of achievement, describing specific arguments that 
+	 * the achievement of each event type needs. It is also used to specify the
+	 * type of player event that has occurred, allowing the appropriate achievement
+	 * to be determined and tracked.
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public enum Event
 	{
 		KILLS(new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
@@ -61,11 +83,19 @@ public interface AchievementLibrary extends CMLibrary
 			parameters = CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, extraParameters);
 		}
 
+		/**
+		 * Returns all arguments, required and optional, to this achievement event type
+		 * @return all arguments to this achievement event type
+		 */
 		public String[] getParameters()
 		{
 			return parameters;
 		}
 
+		/**
+		 * Returns a string list of all event types.
+		 * @return a string list of all event types.
+		 */
 		public static String[] getEventChoices()
 		{
 			final List<String> choices=new ArrayList<String>(Event.values().length);
@@ -75,39 +105,151 @@ public interface AchievementLibrary extends CMLibrary
 		}
 	}
 	
+	/**
+	 * The achievement interface provides basic information about the specific achievement,
+	 * as defined in the achievements.txt definition file.  It also allows a tracker to
+	 * be created for situation where progress in the event requires tracking each
+	 * player event.
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public interface Achievement
 	{
+		/**
+		 * Returns whether this is a player or account achievement.
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats.Agent
+		 * @return the agent type
+		 */
 		public AccountStats.Agent getAgent();
-		
+
+		/**
+		 * Returns the event that defines the general type of this achievement.
+		 * @see Event
+		 * @return the event that defines the general type of this achievement.
+		 */
 		public Event getEvent();
 
+		/**
+		 * Gets the tattoo that is added to players or accounts to designate
+		 * that this achievement has been completed.  It is also the unique
+		 * key for all achievements.
+		 * @return the tattoo that is added to players or accounts
+		 */
 		public String getTattoo();
 
+		/**
+		 * Creates a new tracker object with the given progress count as
+		 * the default/starting value.
+		 * @see Achievement#getTargetCount()
+		 * @param oldCount the initial value for progress, if applicable
+		 * @return a new tracker object with the given progress count
+		 */
 		public Tracker getTracker(int oldCount);
 
+		/**
+		 * Parses the parameters defined by the event type of this achievement 
+		 * to produce the unique achievement that this is. The parameters are
+		 * in key=value pairs, space delimited.
+		 * @see Event#getParameters()
+		 * @see Achievement#getRawParmVal(String)
+		 * @param parms the parameter values to parse
+		 * @return "" if all went well, or an error message
+		 */
 		public String parseParms(String parms);
 
+		/**
+		 * Returns the friendly display name of this achievement.
+		 * @return the friendly display name of this achievement.
+		 */
 		public String getDisplayStr();
 
+		/**
+		 * Gets the title that is awarded to players who complete this
+		 * achievement.  It is in normal title format, where * is
+		 * substituted for the players name.
+		 * @return the title that is awarded to players
+		 */
 		public String getTitleAward();
 
+		/**
+		 * Returns the list of coded awards given to players who
+		 * complete this achievement.  The format is a string with
+		 * a number followed by a string of the type of thing
+		 * to award, such as QP, XP, or a currency.
+		 * @return the list of coded awards given to players
+		 */
 		public String[] getRewards();
 
+		/**
+		 * For achievements that require tracking progress, 
+		 * this returns the target count that the tracker
+		 * must report.
+		 * @return the target count that the tracker
+		 */
 		public int getTargetCount();
 
+		/**
+		 * Returns true if this achievement is completed
+		 * when the tracker count is &gt; than the target count,
+		 * and false if the opposite is true.
+		 * @return true for a &gt; completion
+		 */
 		public boolean isTargetFloor();
 
+		/**
+		 * Returns true if this achievement requires progress
+		 * tracking, which means it must be saved with the player
+		 * and/or account record to keep track of.
+		 * @return true if this achievement requires progress
+		 */
 		public boolean isSavableTracker();
 
+		/**
+		 * Allows access to the parameters passed into this
+		 * achievement to create it.  
+		 * @see Event#getParameters()
+		 * @see Achievement#parseParms(String)
+		 * @param str the name of the parameter to query
+		 * @return the value of the parameter 
+		 */
 		public String getRawParmVal(String str);
 	}
 	
+	/**
+	 * A tracker object assigned to a particular player or account
+	 * for a particular achievement, allowing the achievement to 
+	 * track progress if it needs to, or just providing a way
+	 * to quickly query completion otherwise.
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public interface Tracker
 	{
+		/**
+		 * The achievement to which this tracker belongs.
+		 * @return achievement to which this tracker belongs.
+		 */
 		public Achievement getAchievement();
 
+		/**
+		 * Returns true if the given mob has completed this
+		 * achievement, even if the tattoo has not yet been
+		 * assigned.
+		 * @param mob the player being checked
+		 * @return true if completion has happened, false otherwise
+		 */
 		public boolean isAchieved(MOB mob);
 
+		/**
+		 * For events which require tracked progress, this method is
+		 * called to give this tracker a potential bump, after testing
+		 * the given mob and the given arguments to see if the 
+		 * achievement deserves a bump in progress.
+		 * @param mob the player who did something trackable
+		 * @param bumpNum the amount to bump the progress by
+		 * @param parms optional arguments unique to the Event
+		 * @return true if a bump occurred, false otherwise
+		 */
 		public boolean testBump(MOB mob, int bumpNum, Object... parms);
 
 		/**
@@ -120,15 +262,98 @@ public interface AchievementLibrary extends CMLibrary
 		public int getCount(MOB mob);
 	}
 	
+	/**
+	 * This method is how an achievement definition row is evaluated and added
+	 * to the permanent list of achievements.  It accepts the coded row with
+	 * key=value pairs for all the achievement arguments.  If all is well, ""
+	 * is returned, otherwise an error message is returned.
+	 * @param agent whether this is a player or account
+	 * @param row the coded key=value pairs row.
+	 * @param addIfPossible true if, on success, the new achievment is added, false otherwise
+	 * @return the error message, or "" for success
+	 */
 	public String evaluateAchievement(AccountStats.Agent agent, String row, boolean addIfPossible);
+	
+	/**
+	 * Forces all achievements to be reloaded from the definition file.
+	 */
 	public void reloadAchievements();
+	
+	/**
+	 * Iterates through all the achievements to see if the given mob has completed
+	 * any new ones, granting them and the awards if they have.
+	 * @param mob the player to evaluate
+	 * @return true if any achievements were newly completed, false otherwise
+	 */
 	public boolean evaluateAchievements(MOB mob);
+	
+	/**
+	 * Allows iterating through all the achievements of the given agent group.
+	 * If the agent is null, then ALL achievements from all groups are iterated
+	 * through.
+	 * @param agent the player, or account, or null for all
+	 * @return the enumeration of all achievements that apply
+	 */
 	public Enumeration<Achievement> achievements(AccountStats.Agent agent);
-	public Achievement getAchievement(String named);
-	public Achievement deleteAchievement(String named);
+	
+	/**
+	 * Returns the achievement with the given tattoo key.
+	 * @param tattoo the tattoo key to find the achievement for
+	 * @return the achievement object
+	 */
+	public Achievement getAchievement(String tattoo);
+	
+	/**
+	 * Finds and deleted the achievement with teh given tattoo key.
+	 * @param tattoo the tattoo key to find the achievement for
+	 * @return the achievement object deleted, or null if not found
+	 */
+	public Achievement deleteAchievement(String tattoo);
+	
+	/**
+	 * Forces any changed or deleted achievements to re-saved to 
+	 * the definition file.
+	 * @param modifyTattoo the tattoo modified or deleted
+	 */
 	public void resaveAchievements(final String modifyTattoo);
+	
+	/**
+	 * Allows a new achievement to be added or removed, with a user interface
+	 * editor presented for the given mob.
+	 * @param mob the mob adding or editing the achievement
+	 * @param agent whether player or account achievement
+	 * @param tattoo the tattoo of the new or old achievement
+	 * @param A the achievement to modify, or null for new
+	 * @return true if the achievement was added or modified, false otherwise
+	 */
 	public boolean addModifyAchievement(final MOB mob, AccountStats.Agent agent, final String tattoo, Achievement A);
+	
+	/**
+	 * When an event occurs that might possible cause a player to have one of their achievements bumped,
+	 * this method is called with event specific parameters which might possibly cause the achievement
+	 * to be bumped in the tracker, which might cause it to be completed as well.
+	 * @param mob the player whose achievement needs to be checked
+	 * @param E the event that occurred
+	 * @param bumpNum the amount to bump the achievement by
+	 * @param parms any event-specific argument that help determine whether a bump is warranted.
+	 */
 	public void possiblyBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms);
+	
+	/**
+	 * Returns all the comment/help entries from the achievement definition file
+	 * The map is of the form event ID, then parameter->help map.
+	 * @return all the comment/help entries from the achievement definition file
+	 */
 	public Map<String,Map<String,String>> getAchievementsHelpMap();
+	
+	/**
+	 * Given the comments/help entried from the achievement definition file, and an event,
+	 * and the name of the parameter inside the event, this returns the help entry for
+	 * that parameter
+	 * @param helpMap the help map
+	 * @param E the event to get help for
+	 * @param parmName the parameter of that event to get help for
+	 * @return the help text.
+	 */
 	public String getAchievementsHelpFromMap(Map<String,Map<String,String>> helpMap, Event E, String parmName);
 }

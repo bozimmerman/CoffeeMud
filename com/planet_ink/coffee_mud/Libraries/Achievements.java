@@ -2048,21 +2048,21 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 	
 	@Override
-	public Achievement getAchievement(String named)
+	public Achievement getAchievement(String tattoo)
 	{
 		for(Enumeration<Achievement> a = achievements(null); a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
-			if(A.getTattoo().equalsIgnoreCase(named))
+			if(A.getTattoo().equalsIgnoreCase(tattoo))
 				return A;
 		}
 		return null;
 	}
 	
 	@Override
-	public Achievement deleteAchievement(String named)
+	public Achievement deleteAchievement(String tattoo)
 	{
-		final Achievement A=getAchievement(named);
+		final Achievement A=getAchievement(tattoo);
 		if(A!=null)
 		{
 			switch(A.getAgent())

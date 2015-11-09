@@ -575,7 +575,7 @@ public class CraftingSkill extends GatheringSkill
 	 * of the target.
 	 * @param mob the player or mob invoking the skill
 	 * @param commands the parameters entered for the skill (minus trigger word)
-	 * @param target null, unless being auto-invoked. Represents an override target.
+	 * @param givenTarget null, unless being auto-invoked. Represents an override target.
 	 * @param auto false if player enters command, true if system invokes the command
 	 * @param asLevel -1, unless being auto-invoked, when it is the level to invoke it at.
 	 * @param autoGenerate 0, unless auto generation, in which case it's a RawMaterial Resource Code number

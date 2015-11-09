@@ -55,7 +55,6 @@ public interface GridLocale extends Room, GridZones
 	 * populate the grid.  For example: StdRoom.
 	 * @return the Room ID() for the type of Java room class
 	 */
-	
 	public String getGridChildLocaleID();
 
 	/**
@@ -109,9 +108,9 @@ public interface GridLocale extends Room, GridZones
 	 * the same places as the gridlocale host.  Outer Exits are a way around
 	 * this by pre-defining exits from grid children to elsewhere on the 
 	 * map, including into other gridlocales.
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit
-	 * @see GridLocale#addOuterExit(com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit)
-	 * @see GridLocale#delOuterExit(com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit)
+	 * @see GridLocale.CrossExit
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.GridLocale#addOuterExit(GridLocale.CrossExit)
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.GridLocale#delOuterExit(GridLocale.CrossExit)
 	 * @return an iterator of cross ("outer") exits.
 	 */
 	public Iterator<CrossExit> outerExits();
@@ -122,9 +121,9 @@ public interface GridLocale extends Room, GridZones
 	 * this by pre-defining exits from grid children to elsewhere on the 
 	 * map, including into other gridlocales.
 	 * This method will add a new one.
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit
+	 * @see GridLocale.CrossExit
 	 * @see GridLocale#outerExits()
-	 * @see GridLocale#delOuterExit(com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit)
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.GridLocale#delOuterExit(GridLocale.CrossExit)
 	 * @param x the new cross ("outer") exit
 	 */
 	public void addOuterExit(CrossExit x);
@@ -135,13 +134,18 @@ public interface GridLocale extends Room, GridZones
 	 * this by pre-defining exits from grid children to elsewhere on the 
 	 * map, including into other gridlocales.
 	 * This method will remove an existing one
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit
+	 * @see GridLocale.CrossExit
 	 * @see GridLocale#outerExits()
-	 * @see GridLocale#addOuterExit(com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap.CrossExit)
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.GridLocale#addOuterExit(GridLocale.CrossExit)
 	 * @param x the existing cross ("outer") exit to delete
 	 */
 	public void delOuterExit(CrossExit x);
 	
+	/**
+	 * class definition for an exit that goes from inside a grid locale child to a place 
+	 * outside the parent gridlocale room
+	 * @author Bo Zimmerman
+	 */
 	public static class CrossExit
 	{
 		public int x;
@@ -149,6 +153,7 @@ public interface GridLocale extends Room, GridZones
 		public int dir;
 		public String destRoomID="";
 		public boolean out=false;
+	
 		public static CrossExit make(int xx, int xy, int xdir, String xdestRoomID, boolean xout)
 		{
 			final CrossExit EX = new CrossExit();

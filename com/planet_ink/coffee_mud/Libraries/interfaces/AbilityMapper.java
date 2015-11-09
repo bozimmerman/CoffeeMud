@@ -88,7 +88,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
 	 * @param abilityID the Ability ID()
 	 * @param autoGain true if the player/race automatically gets the ability, false if they must pay COSTs
-	 * @param extraMask a zappermask for the player with any miscellaneough requirements
+	 * @param extraMasks a zappermask for the player with any miscellaneough requirements
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, String extraMasks);
@@ -106,7 +106,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @param abilityID the Ability ID()
 	 * @param autoGain true if the player/race automatically gets the ability, false if they must pay COSTs
 	 * @param preReqSkillsList String list of required Ability IDs with optional min. proff in parenthesis
-	 * @param extraMask a zappermask for the player with any miscellaneough requirements
+	 * @param extraMasks a zappermask for the player with any miscellaneough requirements
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, List<String> preReqSkillsList, String extraMasks);
@@ -164,7 +164,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
-									  String defaultParam, boolean autoGain, boolean secret);
+												String defaultParam, boolean autoGain, boolean secret);
 
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
@@ -186,8 +186,8 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
-									  String defaultParam, boolean autoGain, boolean secret,
-									  List<String> preReqSkillsList, String extraMask);
+												String defaultParam, boolean autoGain, boolean secret,
+												List<String> preReqSkillsList, String extraMask);
 
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
@@ -211,8 +211,8 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
-									  int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
-									  List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
+												int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
+												List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
 
 	/**
 	 * Creates a raw Ability Mapping object.
@@ -1019,7 +1019,7 @@ public interface AbilityMapper extends CMLibrary
 		 * Sets the default proficiency of the skill gained under
 		 * this mapping.
 		 * @see AbilityMapper.AbilityMapping#defaultProficiency()
-		 * @param newVal the default proficiency of the skill gained
+		 * @param newValue the default proficiency of the skill gained
 		 * @return this
 		 */
 		public AbilityMapping		defaultProficiency(int newValue);
@@ -1036,7 +1036,7 @@ public interface AbilityMapper extends CMLibrary
 		 * Sets the maximum proficiency of the skill gained under
 		 * this mapping.
 		 * @see AbilityMapper.AbilityMapping#maxProficiency()
-		 * @param newVal the maximum proficiency of the skill gained
+		 * @param newValue the maximum proficiency of the skill gained
 		 * @return this
 		 */
 		public AbilityMapping		maxProficiency(int newValue);

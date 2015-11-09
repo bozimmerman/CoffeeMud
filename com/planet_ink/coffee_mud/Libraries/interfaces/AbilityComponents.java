@@ -191,7 +191,7 @@ public interface AbilityComponents extends CMLibrary
 	 * a problem.
 	 * @see AbilityComponents#getCommonSkillLimit(MOB, Ability)
 	 * @see AbilityComponents#getCommonSkillRemainder(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillRemainder(MOB)
+	 * @see AbilityComponents#getCommonSkillRemainders(MOB)
 	 * @see AbilityLimits
 	 * @param studentM the mob to find limits for
 	 * @return the character-class based common skill ability limits
@@ -203,7 +203,7 @@ public interface AbilityComponents extends CMLibrary
 	 * object applicable to the given mob and the given ability.
 	 * @see AbilityComponents#getCommonSkillLimit(MOB)
 	 * @see AbilityComponents#getCommonSkillRemainder(MOB, Ability)
-	 * @see AbilityComponents#getCommonSkillRemainder(MOB)
+	 * @see AbilityComponents#getCommonSkillRemainders(MOB)
 	 * @see AbilityLimits
 	 * @see AbilityLimits#specificSkillLimit()
 	 * @param studentM the mob to find limits for
@@ -219,7 +219,7 @@ public interface AbilityComponents extends CMLibrary
 	 * to derive a remaining number of each type.
 	 * @see AbilityComponents#getCommonSkillLimit(MOB, Ability)
 	 * @see AbilityComponents#getCommonSkillLimit(MOB)
-	 * @see AbilityComponents#getCommonSkillRemainder(MOB)
+	 * @see AbilityComponents#getCommonSkillRemainders(MOB)
 	 * @see AbilityLimits
 	 * @see AbilityLimits#specificSkillLimit()
 	 * @param studentM the mob to find limits for
@@ -240,7 +240,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @param studentM the mob to find limits for
 	 * @return the character-class based common skill ability limits
 	 */
-	public AbilityLimits getCommonSkillRemainders(MOB student);
+	public AbilityLimits getCommonSkillRemainders(MOB studentM);
 	
 	/**
 	 * Ability Limits object, denoting how many of different types

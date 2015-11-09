@@ -168,7 +168,7 @@ public interface AbilityParameters extends CMLibrary
 		
 		/**
 		 * The display prompt used for command line editors.
-		 * @return
+		 * @return display prompt used for command line editors.
 		 */
 		public String prompt();
 		
@@ -335,7 +335,7 @@ public interface AbilityParameters extends CMLibrary
 	 * by a Recipe object.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.Recipe
-	 * @param iA the ItemCraftor skill
+	 * @param C the ItemCraftor skill
 	 * @param I the Item to return a recipe for
 	 * @return the recipe line for that ItemCraftor Item
 	 */

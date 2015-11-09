@@ -1195,7 +1195,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		
 		/**
 		 * The more official description code name of this attribute.
-		 * @returne more official description code name of this attribute.
+		 * @return more official description code name of this attribute.
 		 */
 		public String getName()
 		{

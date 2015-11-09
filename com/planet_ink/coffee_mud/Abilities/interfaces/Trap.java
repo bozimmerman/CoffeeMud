@@ -95,7 +95,7 @@ public interface Trap extends Ability
 	 * Causes the trap to become reset and unsprung.  Called
 	 * usually by thief type skills.
 	 * @param mob the person resetting the trap
-	 * @see Trap#canReSetTrapOn(MOB, Physical)
+	 * @see Trap#canReSetTrap(MOB)
 	 */
 	public void resetTrap(MOB mob);
 
