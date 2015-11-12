@@ -292,12 +292,15 @@ public class ServiceEngine implements ThreadEngine
 		}
 
 		final TickClient newC=new StdTickClient(E,numTicks,tickID);
-		tock.addTicker(newC);
+		synchronized(tock)
+		{
+			tock.addTicker(newC);
+		}
 		return newC;
 	}
 
 	@Override
-	public synchronized boolean deleteTick(Tickable E, int tickID)
+	public boolean deleteTick(Tickable E, int tickID)
 	{
 		boolean foundOne=false;
 		for(final TickableGroup almostTock : allTicks)
@@ -305,14 +308,19 @@ public class ServiceEngine implements ThreadEngine
 			final Iterator<TickClient> set=almostTock.getTickSet(E,tickID);
 			foundOne = foundOne || set.hasNext();
 			for(;set.hasNext();)
-				almostTock.delTicker(set.next());
+			{
+				synchronized(almostTock)
+				{
+					almostTock.delTicker(set.next());
+				}
+			}
 		}
 		return foundOne;
 	}
 
 
 	@Override
-	public synchronized boolean setTickPending(Tickable E, int tickID)
+	public boolean setTickPending(Tickable E, int tickID)
 	{
 		boolean foundOne=false;
 		for(final TickableGroup almostTock : allTicks)
@@ -322,7 +330,10 @@ public class ServiceEngine implements ThreadEngine
 			for(;set.hasNext();)
 			{
 				final TickClient C = set.next();
-				C.setCurrentTickDownPending();
+				synchronized(C)
+				{
+					C.setCurrentTickDownPending();
+				}
 			}
 		}
 		return foundOne;
