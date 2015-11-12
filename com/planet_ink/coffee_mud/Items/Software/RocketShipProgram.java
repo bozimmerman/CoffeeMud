@@ -363,7 +363,7 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("^.^N\n\r");
 		}
 		
-		if((engines==null)||(engines.size()==0))
+		if(engines.size()==0)
 			str.append(noActivationMenu);
 		else
 		{
