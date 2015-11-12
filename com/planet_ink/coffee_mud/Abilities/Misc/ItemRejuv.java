@@ -107,8 +107,10 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		return myProperLocation;
 	}
 
+	// this was briefly synchronized to fix some problem
+	// but it caused a sync lock with service  engine.
 	@Override
-	public synchronized void setProperLocation(Room room)
+	public void setProperLocation(Room room)
 	{
 		myProperLocation = room;
 	}
@@ -140,7 +142,9 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 
 	@Override
 	public String accountForYourself()
-	{ return ""; }
+	{
+		return "";
+	}
 
 	@Override
 	public boolean isVerifiedContents(Item item)
