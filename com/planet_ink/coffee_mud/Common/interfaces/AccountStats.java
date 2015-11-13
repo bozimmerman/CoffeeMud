@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -272,6 +273,14 @@ public interface AccountStats extends CMCommon
 	 */
 	public void setXML(String str);
 
+	/**
+	 * Returns a mapping definition between this player (or account)
+	 * and various skills.  These are always above and beyond whatever
+	 * is provided by class, race, or clan.
+	 * @return a skill mapping, keyed by ability ID()
+	 */
+	public Map<String, AbilityMapping> getExtraQualifiedSkills();
+	
 	/**
 	 * The recorded player and account statistics.
 	 * @author Bo Zimmerman

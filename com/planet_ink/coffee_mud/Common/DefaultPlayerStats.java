@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
@@ -89,7 +90,8 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Map<String,String>	alias			= new STreeMap<String,String>();
 	protected Map<String,Integer>	legacy			= new STreeMap<String,Integer>();
 
-	protected TriadVector<Integer, Long, String>	levelInfo		= new TriadVector<Integer, Long, String>();
+	protected Map<String, AbilityMapping>		ableMap		= new SHashtable<String, AbilityMapping>();
+	protected TriadVector<Integer, Long, String>levelInfo	= new TriadVector<Integer, Long, String>();
 	
 	public DefaultPlayerStats()
 	{
@@ -770,6 +772,12 @@ public class DefaultPlayerStats implements PlayerStats
 
 	}
 
+	@Override
+	public Map<String, AbilityMapping> getExtraQualifiedSkills()
+	{
+		return ableMap;
+	}
+	
 	@Override
 	public void setXML(String xmlStr)
 	{
