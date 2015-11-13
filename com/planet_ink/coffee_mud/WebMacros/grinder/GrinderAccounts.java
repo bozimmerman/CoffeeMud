@@ -69,13 +69,13 @@ public class GrinderAccounts
 				if(str!=null)
 				{
 					if(str.equalsIgnoreCase("Never"))
-						A.setFlag(PlayerAccount.FLAG_NOEXPIRE, true);
+						A.setFlag(PlayerAccount.AccountFlag.NOEXPIRE, true);
 					else
 					if(!CMLib.time().isValidDateString(str))
 						err="Invalid date string given.";
 					else
 					{
-						A.setFlag(PlayerAccount.FLAG_NOEXPIRE, false);
+						A.setFlag(PlayerAccount.AccountFlag.NOEXPIRE, false);
 						final Calendar C=CMLib.time().string2Date(str);
 						A.setAccountExpiration(C.getTimeInMillis());
 					}

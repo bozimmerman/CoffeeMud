@@ -124,7 +124,7 @@ public class AccountCreate extends StdWebMacro
 		if(checkResult!=CharCreationLibrary.NewCharNameCheckResult.OK)
 			return checkResult.toString();
 		final PlayerAccount acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
-		acct.setFlag(PlayerAccount.FLAG_ANSI, true);
+		acct.setFlag(PlayerAccount.AccountFlag.ANSI, true);
 		acct.setAccountName(name);
 		acct.setPassword(password);
 		acct.setEmail(emailAddress);

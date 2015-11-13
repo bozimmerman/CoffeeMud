@@ -64,13 +64,15 @@ public class AccountData extends StdWebMacro
 				return ""+A.getNotes();
 			if(parms.containsKey("ACCTEXPIRATION"))
 			{
-				if(A.isSet(PlayerAccount.FLAG_NOEXPIRE))
+				if(A.isSet(PlayerAccount.AccountFlag.NOEXPIRE))
 					return "Never";
 				return ""+CMLib.time().date2String(A.getAccountExpiration());
 			}
-			for(final String flag : PlayerAccount.FLAG_DESCS)
-				if(parms.containsKey("IS"+flag))
+			for(final PlayerAccount.AccountFlag flag : PlayerAccount.AccountFlag.values())
+			{
+				if(parms.containsKey("IS"+flag.name()))
 					return ""+A.isSet(flag);
+			}
 			if(parms.containsKey("FLAGS"))
 			{
 				final String old=httpReq.getUrlParameter("FLAGS");
@@ -88,12 +90,12 @@ public class AccountData extends StdWebMacro
 						set.add(httpReq.getUrlParameter("FLAG"+id));
 				}
 				final StringBuffer str=new StringBuffer("");
-				for (final String element : PlayerAccount.FLAG_DESCS)
+				for (final PlayerAccount.AccountFlag element : PlayerAccount.AccountFlag.values())
 				{
 					str.append("<OPTION VALUE=\""+element+"\"");
 					if(set.contains(element))
 						str.append(" SELECTED");
-					str.append(">"+CMStrings.capitalizeAndLower(element));
+					str.append(">"+CMStrings.capitalizeAndLower(element.name()));
 				}
 				str.append(", ");
 			}

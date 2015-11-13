@@ -99,12 +99,12 @@ public class AccountOnline extends StdWebMacro
 						CMSecurity.ban(A.getEmail());
 					if(canModify&&(parms.containsKey("EXPIRENEVER")))
 					{
-						A.setFlag(PlayerAccount.FLAG_NOEXPIRE, true);
+						A.setFlag(PlayerAccount.AccountFlag.NOEXPIRE, true);
 						CMLib.database().DBUpdateAccount(A);
 					}
 					if(canModify&&(parms.containsKey("EXPIRENOW")))
 					{
-						A.setFlag(PlayerAccount.FLAG_NOEXPIRE, false);
+						A.setFlag(PlayerAccount.AccountFlag.NOEXPIRE, false);
 						A.setAccountExpiration(System.currentTimeMillis());
 						CMLib.database().DBUpdateAccount(A);
 					}

@@ -49,7 +49,7 @@ public class NoANSI extends StdCommand
 			if(mob.playerStats()!=null)
 				acct = mob.playerStats().getAccount();
 			if(acct != null)
-				acct.setFlag(PlayerAccount.FLAG_ANSI, false);
+				acct.setFlag(PlayerAccount.AccountFlag.ANSI, false);
 			if(mob.isAttributeSet(MOB.Attrib.ANSI))
 			{
 				mob.setAttribute(MOB.Attrib.ANSI,false);

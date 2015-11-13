@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
+import com.planet_ink.coffee_mud.core.CMParms;
 import com.planet_ink.coffee_mud.core.interfaces.Modifiable;
 import com.planet_ink.coffee_mud.core.interfaces.Tattooable;
 
@@ -97,33 +98,47 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 
 	/**
 	 * Checks whether the given string flag is set for this account.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount#setFlag(String, boolean)
-	 * @param flagName the flag name
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount#setFlag(AccountFlag, boolean)
+	 * @param flag the flag name
 	 * @return true if it is set, false if not
 	 */
-	public boolean isSet(String flagName);
+	public boolean isSet(AccountFlag flag);
 
 	/**
 	 * Sets or unsets an account-wide flag.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount#isSet(String)
-	 * @param flagName the flag name
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount#isSet(AccountFlag)
+	 * @param flag the flag name
 	 * @param setOrUnset true to set it, false to unset
 	 */
-	public void setFlag(String flagName, boolean setOrUnset);
+	public void setFlag(AccountFlag flag, boolean setOrUnset);
 
-	/** Constant for account flags that overrides number of characters limitation */
-	public final static String FLAG_NUMCHARSOVERRIDE="NUMCHARSOVERRIDE";
-	/** Constant for account flags that overrides account expiration */
-	public final static String FLAG_NOEXPIRE="NOEXPIRE";
-	/** Constant for account flags that overrides account expiration */
-	public final static String FLAG_CANEXPORT="CANEXPORT";
-	/** Constant for account flags that overrides account expiration */
-	public final static String FLAG_MAXCONNSOVERRIDE="MAXCONNSOVERRIDE";
-	/** Constant for account flags that overrides account expiration */
-	public final static String FLAG_ANSI="ANSI";
-	/** Constant for account flags that overrides account expiration */
-	public final static String FLAG_ACCOUNTMENUSOFF="ACCOUNTMENUSOFF";
-
-	/** list of account flags */
-	public final static String[] FLAG_DESCS = {FLAG_NUMCHARSOVERRIDE,FLAG_NOEXPIRE,FLAG_CANEXPORT,FLAG_MAXCONNSOVERRIDE,FLAG_ANSI,FLAG_ACCOUNTMENUSOFF};
+	/**
+	 * Various account-level flags
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum AccountFlag
+	{
+		/** Constant for account flags that overrides number of characters limitation */
+		NUMCHARSOVERRIDE,
+		/** Constant for account flags that overrides account expiration */
+		NOEXPIRE,
+		/** Constant for account flags that overrides account expiration */
+		CANEXPORT,
+		/** Constant for account flags that overrides account expiration */
+		MAXCONNSOVERRIDE,
+		/** Constant for account flags that overrides account expiration */
+		ANSI,
+		/** Constant for account flags that overrides account expiration */
+		ACCOUNTMENUSOFF
+		;
+		/**
+		 * Returns a comma-delimited list of strings representing the accountflag values
+		 * @return a comma-delimited list of strings representing the accountflag values
+		 */
+		public static String getListString()
+		{
+			return CMParms.toListString(AccountFlag.values());
+		}
+	}
 }

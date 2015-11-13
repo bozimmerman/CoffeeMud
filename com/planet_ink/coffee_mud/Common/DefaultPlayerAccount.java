@@ -56,7 +56,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	protected String			notes				= "";
 	protected long 				accountExpiration	= 0;
 	protected String[]			xtraValues			= null;
-	protected SHashSet<String>	acctFlags			= new SHashSet<String>();
+	protected Set<AccountFlag>	acctFlags			= new SHashSet<AccountFlag>();
 	protected volatile MOB 		fakePlayerM			= null;
 	protected long[]			prideExpireTime		= new long[TimeClock.TimePeriod.values().length];
 	protected int[][]			prideStats			= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
@@ -493,18 +493,18 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public boolean isSet(String flagName)
+	public boolean isSet(AccountFlag flag)
 	{
-		return acctFlags.contains(flagName.toUpperCase());
+		return acctFlags.contains(flag);
 	}
 
 	@Override
-	public void setFlag(String flagName, boolean setOrUnset)
+	public void setFlag(AccountFlag flag, boolean setOrUnset)
 	{
 		if(setOrUnset)
-			acctFlags.add(flagName.toUpperCase());
+			acctFlags.add(flag);
 		else
-			acctFlags.remove(flagName.toUpperCase());
+			acctFlags.remove(flag);
 	}
 
 	@Override
@@ -668,8 +668,16 @@ public class DefaultPlayerAccount implements PlayerAccount
 			accountExpiration = CMath.s_long(val);
 			break;
 		case 7:
-			acctFlags = new SHashSet<String>(CMParms.parseCommandFlags(val.toUpperCase(), PlayerAccount.FLAG_DESCS));
+		{
+			acctFlags = new SHashSet<AccountFlag>();
+			for(String s : CMParms.parseCommas(val.toUpperCase(),true))
+			{
+				final AccountFlag flag = (AccountFlag)CMath.s_valueOf(AccountFlag.class, s);
+				if(flag != null)
+					acctFlags.add(flag);
+			}
 			break;
+		}
 		case 8:
 			email = val;
 			break;

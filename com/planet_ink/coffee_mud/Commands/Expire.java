@@ -53,7 +53,7 @@ public class Expire extends StdCommand
 		if(stats instanceof PlayerAccount)
 		{
 			final PlayerAccount A=(PlayerAccount)stats;
-			A.setFlag(PlayerAccount.FLAG_NOEXPIRE, false);
+			A.setFlag(PlayerAccount.AccountFlag.NOEXPIRE, false);
 		}
 	}
 
@@ -149,7 +149,7 @@ public class Expire extends StdCommand
 				if(stats instanceof PlayerAccount)
 				{
 					final PlayerAccount A=(PlayerAccount)stats;
-					A.setFlag(PlayerAccount.FLAG_NOEXPIRE, true);
+					A.setFlag(PlayerAccount.AccountFlag.NOEXPIRE, true);
 				}
 				mob.tell(L("Player/Account '@x1' is now protected from expiration.",playerName));
 			}

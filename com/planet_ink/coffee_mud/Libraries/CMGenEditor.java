@@ -9235,7 +9235,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genEmail(mob, A, ++showNumber, showFlag);
 			if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 				genAccountExpiration(mob,A,++showNumber,showFlag);
-			promptStatStr(mob,A,CMParms.toListString(PlayerAccount.FLAG_DESCS),++showNumber,showFlag,"Flags (?)","FLAGS",true);
+			promptStatStr(mob,A,PlayerAccount.AccountFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
 			promptStatStr(mob,A,++showNumber,showFlag,"Notes: ","NOTES");
 			for(int x=A.getSaveStatIndex();x<A.getStatCodes().length;x++)
 				A.setStat(A.getStatCodes()[x],prompt(mob,A.getStat(A.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(A.getStatCodes()[x])));
