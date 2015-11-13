@@ -1976,7 +1976,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACHIEVEMENTS);
 			if(!CMLib.flags().isCloaked(mob))
 			{
-				final String name = (A.getAgent() == Agent.ACCOUNT) && (mob.playerStats() != null) && (mob.playerStats().getAccount() != null) ? mob.playerStats().getAccount().name() : mob.name();
+				final PlayerStats pStats = mob.playerStats();
+				final PlayerAccount account = (pStats != null) ? pStats.getAccount() : null;
+				final String name = ((A.getAgent() == Agent.ACCOUNT) && (account != null)) ? account.getAccountName() : mob.name();
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has completed the '@x2' @x3 achievement!",name,A.getDisplayStr(),A.getAgent().name().toLowerCase()),true);
 			}
