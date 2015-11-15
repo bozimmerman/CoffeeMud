@@ -1298,11 +1298,39 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		}
 		return names.toString();
 	}
+	
+	protected final AbilityMapping getPersonalMapping(final MOB studentM, final String AID)
+	{
+		if(studentM != null)
+		{
+			final PlayerStats pStats = studentM.playerStats();
+			if(pStats != null)
+			{
+				if(pStats.getExtraQualifiedSkills().containsKey(AID))
+				{
+					final AbilityMapping mapping = pStats.getExtraQualifiedSkills().get(AID);
+					if(studentM.basePhyStats().level() >= mapping.qualLevel())
+						return mapping;
+				}
+				final PlayerAccount account = pStats.getAccount();
+				if((account != null)&&(account.getExtraQualifiedSkills().containsKey(AID)))
+				{
+					final AbilityMapping mapping = account.getExtraQualifiedSkills().get(AID);
+					if(studentM.basePhyStats().level() >= mapping.qualLevel())
+						return mapping;
+				}
+			}
+		}
+		return null;
+	}
 
 	public final List<String> getCurrentlyQualifyingIDs(final MOB studentM, final String AID)
 	{
 		final List<String> ids=new LinkedList<String>();
 		final CharStats cStats = studentM.charStats();
+		final AbilityMapping personalMap = getPersonalMapping(studentM, AID);
+		if(personalMap != null)
+			ids.add(studentM.Name());
 		for(int c=cStats.numClasses()-1;c>=0;c--)
 		{
 			final CharClass C=cStats.getMyClass(c);
@@ -1333,6 +1361,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		if((studentM==null)||(A==null))
 			return new DVector(2);
 		final String AID=A.ID();
+		final AbilityMapping personalMap = getPersonalMapping(studentM, AID);
+		if(personalMap != null)
+			return personalMap.skillPreReqs() == null ? new DVector(2) : personalMap.skillPreReqs().copyOf();
 		final List<String> qualifyingIDs=getCurrentlyQualifyingIDs(studentM,AID);
 		DVector reqs=null;
 		for (String ID : qualifyingIDs)
@@ -1369,6 +1400,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		if((studentM==null)||(A==null))
 			return "";
 		final String AID=A.ID();
+		final AbilityMapping personalMap = getPersonalMapping(studentM, AID);
+		if(personalMap != null)
+			return personalMap.extraMask() == null ? "" : personalMap.extraMask();
 		final List<String> qualifyingIDs=getCurrentlyQualifyingIDs(studentM,AID);
 		String mask=null;
 		for (String ID : qualifyingIDs)
@@ -1389,6 +1423,12 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			return -1;
 		int theLevel=-1;
 		int greatestDiff=-1;
+		final AbilityMapping personalMap = getPersonalMapping(studentM, A.ID());
+		if((personalMap != null)&&(personalMap.qualLevel() >= studentM.phyStats().level()))
+		{
+			theLevel = personalMap.qualLevel();
+			greatestDiff = studentM.phyStats().level() - personalMap.qualLevel();
+		}
 		for(int c=studentM.charStats().numClasses()-1;c>=0;c--)
 		{
 			final CharClass C=studentM.charStats().getMyClass(c);
@@ -1459,6 +1499,12 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			return null;
 		int theLevel=-1;
 		CMObject theClass=null;
+		final AbilityMapping personalMap = getPersonalMapping(studentM, A.ID());
+		if(personalMap != null)
+		{
+			theLevel = personalMap.qualLevel();
+			theClass = studentM;
+		}
 		for(int c=studentM.charStats().numClasses()-1;c>=0;c--)
 		{
 			final CharClass C=studentM.charStats().getMyClass(c);
@@ -1493,6 +1539,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	{
 		if(studentM==null)
 			return false;
+		final AbilityMapping personalMap = getPersonalMapping(studentM, A.ID());
+		if((personalMap != null)&&(studentM.phyStats().level() >= personalMap.qualLevel()))
+			return true;
 		final CharClass C=studentM.charStats().getCurrentClass();
 		int level=getQualifyingLevel(C.ID(),true,A.ID());
 		if((level>=0)
@@ -1558,6 +1607,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	{
 		if(studentM==null)
 			return false;
+		final AbilityMapping personalMap = getPersonalMapping(studentM, abilityID);
+		if((personalMap != null) && (studentM.phyStats().level() >= personalMap.qualLevel()))
+			return true;
 		for(int c=studentM.charStats().numClasses()-1;c>=0;c--)
 		{
 			final CharClass C=studentM.charStats().getMyClass(c);
@@ -1668,6 +1720,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	public final List<AbilityMapping> getAllAbilityMappings(final MOB mob, final String abilityID)
 	{
 		final List<AbilityMapping> list=new LinkedList<AbilityMapping>();
+		final AbilityMapping personalMap = getPersonalMapping(mob, abilityID);
+		if(personalMap != null)
+			list.add(personalMap);
 		for(int c=0;c<mob.charStats().numClasses();c++)
 		{
 			final String charClass=mob.charStats().getMyClass(c).ID();
@@ -1704,6 +1759,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	public boolean getSecretSkill(MOB mob, String abilityID)
 	{
 		boolean secretFound=false;
+		final AbilityMapping personalMap = getPersonalMapping(mob, abilityID);
+		if(personalMap != null)
+			return personalMap.isSecret();
 		final List<AbilityMapping> mappings=getAllAbilityMappings(mob,abilityID);
 		for (AbilityMapping ableMap : mappings)
 		{
@@ -1784,6 +1842,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	public Integer[] getCostOverrides(MOB mob, String abilityID)
 	{
 		Integer[] found=null;
+		final AbilityMapping personalMap = getPersonalMapping(mob, abilityID);
+		if(personalMap != null)
+			return personalMap.costOverrides();
 		final List<AbilityMapping> mappings=getAllAbilityMappings(mob,abilityID);
 		for (AbilityMapping ableMap : mappings)
 		{
@@ -1867,6 +1928,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	{
 		if(mob==null)
 			return getMaxProficiency(abilityID);
+		final AbilityMapping personalMap = getPersonalMapping(mob, abilityID);
+		if(personalMap != null)
+			return personalMap.maxProficiency();
 		final CharClass C=mob.charStats().getCurrentClass();
 		if(C==null)
 			return getMaxProficiency(abilityID);
