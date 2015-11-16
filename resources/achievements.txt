@@ -16,8 +16,12 @@
 # [TITLE] is optional.  If filled in, it is a title awarded to the player who
 # achieves this event.
 # [REWARDS] is also an optional list of other awards, separated by >spaces<.  
+# On rewards for PLAYER achievements, rewards go only to the player.  For rewards
+# on an ACCOUNT achievement, rewards go to all new players or children.
 # Each entry can be an amount of game money (e.g. 10 gold coins), an amount of 
-# experience (10 xp), or an amount of quest points (e.g. 10 qp).  Note the spaces!
+# experience (10 xp), an amount of quest points (e.g. 10 qp), a level and new
+# skill (10 Spell_Light).
+# Note the spaces!
 # [DISPLAY] is a friendly display name of this achievement.
 # [EVENT] is the type of achievement event.  Each type determines the other
 # parameters.  The format of each achievement event type is as follows:

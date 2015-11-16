@@ -60,6 +60,7 @@ public interface CharCreationLibrary extends CMLibrary
 	public Room getDefaultStartRoom(MOB mob);
 	public Room getDefaultDeathRoom(MOB mob);
 	public Room getDefaultBodyRoom(MOB mob);
+	public int getTotalBonusStatPoints();
 	public String generateRandomName(int minSyllable, int maxSyllable);
 	public LoginResult completeLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException;
 

@@ -542,6 +542,36 @@ public class CMStrings
 	}
 
 	/**
+	 * This methods replaces any double-escapes to single escape characters, and any
+	 * escaped double-quotes to double-quotes
+	 * @param str the string to de-escape
+	 * @return the string, de-escaped
+	 */
+	public final static String deEscape(String str)
+	{
+		if(str==null)
+			return str;
+		if(str.indexOf('\\')<0)
+			return str;
+		return replaceAll(replaceAll(str,"\\\"","\""),"\\\\","\\");
+	}
+	
+	/**
+	 * This methods replaces any escapes to double-escape characters, and any
+	 *  double-quotes to escaped double-quotes
+	 * @param str the string to escape
+	 * @return the string, escaped
+	 */
+	public final static String escape(String str)
+	{
+		if(str==null)
+			return str;
+		if(str.indexOf('\\')<0)
+			return str;
+		return replaceAll(replaceAll(str,"\\\\","\\"),"\\\"","\"");
+	}
+	
+	/**
 	 * Finds all instances of the second parameter string in the first StringBuffer,
 	 * replaces them with the third word.  Returns the StringBuffer with or without changes. 
 	 * The search is case sensitive

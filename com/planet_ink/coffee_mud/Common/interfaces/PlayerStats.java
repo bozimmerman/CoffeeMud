@@ -11,8 +11,11 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -714,6 +717,21 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 */
 	public int getLegacyLevel(String category);
 
+	/**
+	 * Returns a mapping definition between awarded abilities and
+	 * their requirements.  These are always above and beyond whatever
+	 * is provided by class, race, or clan.
+	 * @return a skill mapping, keyed by ability ID()
+	 */
+	public Map<String, AbilityMapping> getExtraQualifiedSkills();
+
+	/**
+	 * Returns a mapping definition between awarded expertise and
+	 * their requirements.  These are always above and beyond whatever
+	 * is provided by class, race, or clan.
+	 * @return an expertise map
+	 */
+	public Map<String, ExpertiseDefinition> getExtraQualifiedExpertises();
 	
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;

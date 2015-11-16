@@ -57,7 +57,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
 
-	protected int getTotalStatPoints()
+	@Override
+	public int getTotalBonusStatPoints()
 	{
 		final int basemax = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 		final int basemin = CMProps.getIntVar(CMProps.Int.BASEMINSTAT);
@@ -2520,7 +2521,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
-			loginObj.statPoints = getTotalStatPoints()+bonusPoints;
+			loginObj.statPoints = getTotalBonusStatPoints()+bonusPoints;
 			for(int i=0;i<CharStats.CODES.BASECODES().length;i++)
 				mob.baseCharStats().setStat(CharStats.CODES.BASECODES()[i],CMProps.getIntVar(CMProps.Int.BASEMINSTAT));
 			mob.recoverCharStats();
@@ -2653,7 +2654,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(prompt.toLowerCase().startsWith("r"))
 		{
 			loginObj.baseStats.copyInto(mob.baseCharStats());
-			reRollStats(mob,mob.baseCharStats(),getTotalStatPoints());
+			reRollStats(mob,mob.baseCharStats(),getTotalBonusStatPoints());
 			loginObj.statPoints=0;
 			loginObj.state=LoginState.CHARCR_STATSTART;
 			return null;

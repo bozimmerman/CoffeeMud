@@ -1312,13 +1312,6 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 					if(studentM.basePhyStats().level() >= mapping.qualLevel())
 						return mapping;
 				}
-				final PlayerAccount account = pStats.getAccount();
-				if((account != null)&&(account.getExtraQualifiedSkills().containsKey(AID)))
-				{
-					final AbilityMapping mapping = account.getExtraQualifiedSkills().get(AID);
-					if(studentM.basePhyStats().level() >= mapping.qualLevel())
-						return mapping;
-				}
 			}
 		}
 		return null;

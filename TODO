@@ -1,5 +1,6 @@
 BUGS
   *. ShopKeeper, and presumably random inventory kick in during mudgrinder edits. No reproduce, but watch it.
+TEST:  35. New command: Remort.  Yes, CoffeeMud now has a more traditional remort system. See coffeemud.ini, and the Achievement tie-in.
 
 TECH
    *. test and debug launch and landing - make sure navigation thrusters affect speed and direction properly.

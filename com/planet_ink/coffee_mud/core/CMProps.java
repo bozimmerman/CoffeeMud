@@ -189,7 +189,9 @@ public class CMProps extends Properties
 		FORMULA_MANARECOVER,
 		FORMULA_MOVESRECOVER,
 		CHANNELBACKLOG,
-		BLACKLISTFILE
+		BLACKLISTFILE,
+		REMORTMASK,
+		REMORTRETAIN
 	}
 
 	/**
@@ -1753,6 +1755,9 @@ public class CMProps extends Properties
 		p().emoteFilter.addAll(CMParms.parse((getStr("EMOTEFILTER")).toUpperCase()));
 		setVar(Str.POSEFILTER,getStr("POSEFILTER"));
 		setVar(Str.STATCOSTS,getStr("STATCOSTS","<18 1, <22 2, <25 3, <99 5"));
+		setVar(Str.REMORTMASK,getStr("REMORTMASK","-LEVEL +>60"));
+		setVar(Str.REMORTRETAIN,getStr("REMORTRETAIN","SKILLSAT100"));
+		
 		p().poseFilter.clear();
 		p().poseFilter.addAll(CMParms.parse((getStr("POSEFILTER")).toUpperCase()));
 		setVar(Str.SAYFILTER,getStr("SAYFILTER"));

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -71,6 +72,7 @@ public class Retire extends StdCommand
 					if(CMSecurity.isDisabled(CMSecurity.DisFlag.RETIREREASON))
 					{
 						Log.sysOut("Retire","Retired: "+mob.Name());
+						CMLib.achievements().possiblyBumpAchievement(mob, Event.RETIRE, 1);
 						CMLib.players().obliteratePlayer(mob,true,false);
 						session.logout(true);
 					}
@@ -85,6 +87,7 @@ public class Retire extends StdCommand
 						@Override public void callBack()
 						{
 							Log.sysOut("Retire","Retired: "+mob.Name()+": "+this.input);
+							CMLib.achievements().possiblyBumpAchievement(mob, Event.RETIRE, 1);
 							CMLib.players().obliteratePlayer(mob,true,false);
 							session.logout(true);
 						}

@@ -4,6 +4,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMParms;
@@ -111,7 +112,7 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	 * @param setOrUnset true to set it, false to unset
 	 */
 	public void setFlag(AccountFlag flag, boolean setOrUnset);
-
+	
 	/**
 	 * Various account-level flags
 	 * @author Bo Zimmerman

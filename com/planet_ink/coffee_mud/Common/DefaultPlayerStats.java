@@ -2,7 +2,9 @@ package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -91,6 +93,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Map<String,Integer>	legacy			= new STreeMap<String,Integer>();
 
 	protected Map<String, AbilityMapping>		ableMap		= new SHashtable<String, AbilityMapping>();
+	protected Map<String, ExpertiseDefinition>	experMap	= new SHashtable<String, ExpertiseDefinition>();
 	protected TriadVector<Integer, Long, String>levelInfo	= new TriadVector<Integer, Long, String>();
 	
 	public DefaultPlayerStats()
@@ -1248,6 +1251,12 @@ public class DefaultPlayerStats implements PlayerStats
 		return 0;
 	}
 
+	@Override
+	public Map<String,ExpertiseDefinition> getExtraQualifiedExpertises()
+	{
+		return experMap;
+	}
+	
 	@Override
 	public PlayerAccount getAccount()
 	{

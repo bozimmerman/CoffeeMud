@@ -10,7 +10,10 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AwardType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -234,7 +237,15 @@ public class AchievementData extends StdWebMacro
 		{
 			String value=httpReq.getUrlParameter("TITLE");
 			if((value==null)&&(A!=null))
-				value=A.getTitleAward();
+			{
+				for(Award award: A.getRewards())
+				{
+					if(award.getType()==AwardType.TITLE)
+					{
+						value=((TitleAward)award).getTitle();
+					}
+				}
+			}
 			if(value!=null)
 				str.append(CMStrings.replaceAll(value,"\"","&quot;")+", ");
 		}
@@ -242,7 +253,7 @@ public class AchievementData extends StdWebMacro
 		{
 			String value=httpReq.getUrlParameter("REWARDS");
 			if((value==null)&&(A!=null))
-				value=CMParms.combineWSpaces(A.getRewards());
+				value=CMLib.achievements().getAwardString(A.getRewards());
 			if(value!=null)
 				str.append(CMStrings.replaceAll(value,"\"","&quot;")+", ");
 		}

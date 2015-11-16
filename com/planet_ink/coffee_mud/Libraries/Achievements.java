@@ -4,9 +4,13 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -21,6 +25,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
@@ -90,10 +95,360 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final Event eventType = (Event)CMath.s_valueOf(Event.class, eventStr.toUpperCase().trim());
 		if(eventType == null)
 			return "Error: Blank or unknown achievement type: "+eventStr+"!";
-		final String displayStr=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(params, "DISPLAY", ""),"\\\"","\""),"\\\\","\\");
-		final String titleStr=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(params, "TITLE", ""),"\\\"","\""),"\\\\","\\");
-		String rewardStr=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(params, "REWARDS", ""),"\\\"","\""),"\\\\","\\");
-		final String[] rewardList = rewardStr.split(" ");
+		final String displayStr=CMStrings.deEscape(CMParms.getParmStr(params, "DISPLAY", ""));
+		final String titleStr=CMStrings.deEscape(CMParms.getParmStr(params, "TITLE", ""));
+		String rewardStr=CMStrings.deEscape(CMParms.getParmStr(params, "REWARDS", ""));
+		String[] awardSet = CMParms.parse(rewardStr).toArray(new String[0]);
+		List<Award> awardsList = new ArrayList<Award>();
+		if(titleStr.length()>0)
+		{
+			awardsList.add(new TitleAward()
+			{
+				@Override
+				public AwardType getType()
+				{
+					return AwardType.TITLE;
+				}
+
+				@Override
+				public String getTitle()
+				{
+					return titleStr;
+				}
+			});
+		}
+		for(int a=0;a<awardSet.length;a++)
+		{
+			if(awardSet[a].length()>0)
+			{
+				String thing = "";
+				if(CMath.isInteger(awardSet[a]))
+				{
+					final int number = CMath.s_int(awardSet[a]);
+					a++;
+					while((a<awardSet.length)&&(awardSet[a].length()>0)&&(!CMath.isInteger(awardSet[a])))
+					{
+						thing += awardSet[a]+" ";
+						a++;
+					}
+					a--;
+					thing = thing.toUpperCase().trim();
+					if(thing.equals("XP") || thing.startsWith("EXPERIEN") || thing.equals("EXP"))
+					{
+						awardsList.add(new AmountAward()
+						{
+							@Override
+							public AwardType getType()
+							{
+								return AwardType.XP;
+							}
+							@Override
+							public int getAmount()
+							{
+								return number;
+							}
+						});
+					}
+					else
+					if(thing.equals("QP") || thing.startsWith("QUEST"))
+					{
+						awardsList.add(new AmountAward()
+						{
+							@Override
+							public AwardType getType()
+							{
+								return AwardType.QP;
+							}
+							@Override
+							public int getAmount()
+							{
+								return number;
+							}
+						});
+					}
+					else
+					{
+						int y=thing.indexOf('(');
+						String parms="";
+						if((y>0) && thing.endsWith(")"))
+						{
+							parms=thing.substring(y+1,thing.length()-1);
+							thing=thing.substring(0,y);
+						}
+						Ability A=CMClass.getAbility(thing);
+						if(A!=null)
+						{
+							String ableParms = CMStrings.deEscape(CMParms.getParmStr(parms, "PARMS", ""));
+							String mask = CMStrings.deEscape(CMParms.getParmStr(parms, "MASK", ""));
+							String preReqs = CMStrings.deEscape(CMParms.getParmStr(parms, "PREREQS", ""));
+							boolean autoGain = CMParms.getParmBool(parms, "AUTOGAIN", true);
+							final AbilityMapper.AbilityMapping mapp=CMLib.ableMapper().newAbilityMapping();
+							mapp.abilityID(A.ID())
+								.qualLevel(number)
+								.autoGain(autoGain)
+								.extraMask(mask)
+								.defaultParm(ableParms);
+							if(preReqs.length()>0)
+							{
+								mapp.originalSkillPreReqList(preReqs);
+							}
+							awardsList.add(new AbilityAward()
+							{
+								@Override
+								public AwardType getType()
+								{
+									return AwardType.ABILITY;
+								}
+
+								@Override
+								public AbilityMapping getAbilityMapping()
+								{
+									return mapp;
+								}
+							});
+						}
+						else
+						if(CMLib.expertises().findDefinition(thing, true) != null)
+						{
+							final ExpertiseDefinition oldDef=CMLib.expertises().findDefinition(thing, true);
+							final String ID = oldDef.ID();
+							final ExpertiseDefinition def = new ExpertiseDefinition()
+							{
+								volatile WeakReference<ExpertiseDefinition> ref=new WeakReference<ExpertiseDefinition>(CMLib.expertises().findDefinition(ID, true));
+								private ExpertiseDefinition baseDef()
+								{
+									if(ref == null)
+										return null;
+									ExpertiseDefinition curDef = ref.get();
+									if(curDef == null)
+									{
+										curDef = CMLib.expertises().findDefinition(ID, true); 
+										if(curDef==null)
+										{
+											ref = null;
+										}
+										else
+											ref = new WeakReference<ExpertiseDefinition>(curDef);
+									}
+									return curDef;
+								}
+								
+								@Override
+								public String ID()
+								{
+									return ID;
+								}
+
+								@Override
+								public String name()
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									return (curDef == null) ? "" : curDef.name();
+								}
+
+								@Override
+								public CMObject newInstance()
+								{
+									return baseDef();
+								}
+
+								@Override
+								public CMObject copyOf()
+								{
+									return baseDef();
+								}
+
+								@Override
+								public void initializeClass()
+								{
+								}
+
+								@Override
+								public int compareTo(CMObject o)
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									return (curDef == null) ? -1 : curDef.compareTo(o);
+								}
+
+								@Override
+								public String getBaseName()
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									return (curDef == null) ? "" : curDef.getBaseName();
+								}
+
+								@Override
+								public void setBaseName(String baseName)
+								{
+								}
+
+								@Override
+								public void setName(String name)
+								{
+								}
+
+								@Override
+								public void setID(String ID)
+								{
+								}
+
+								@Override
+								public void setData(String[] data)
+								{
+								}
+
+								@Override
+								public ExpertiseDefinition getParent()
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									return (curDef == null) ? null : curDef.getParent();
+								}
+
+								@Override
+								public int getMinimumLevel()
+								{
+									return number;
+								}
+
+								@Override
+								public String[] getData()
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									return (curDef == null) ? new String[0] : curDef.getData();
+								}
+
+								@Override
+								public CompiledZapperMask compiledListMask()
+								{
+									//TODO:BZ
+									return CMLib.masking().createEmptyMask();
+								}
+
+								@Override
+								public CompiledZapperMask compiledFinalMask()
+								{
+									//TODO:BZ
+									return CMLib.masking().createEmptyMask();
+								}
+
+								@Override
+								public String allRequirements()
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									return (curDef == null) ? "" : curDef.allRequirements();
+								}
+
+								@Override
+								public String listRequirements()
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									return (curDef == null) ? "" : curDef.listRequirements();
+								}
+
+								@Override
+								public String finalRequirements()
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									return (curDef == null) ? "" : curDef.finalRequirements();
+								}
+
+								@Override
+								public void addListMask(String mask)
+								{
+								}
+
+								@Override
+								public void addFinalMask(String mask)
+								{
+								}
+
+								@Override
+								public void addCost(CostType type, Double value)
+								{
+								}
+
+								@Override
+								public String costDescription()
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									return (curDef == null) ? "" : curDef.costDescription();
+								}
+
+								@Override
+								public boolean meetsCostRequirements(MOB mob)
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									return (curDef == null) ? false : curDef.meetsCostRequirements(mob);
+								}
+
+								@Override
+								public void spendCostRequirements(MOB mob)
+								{
+									final ExpertiseDefinition curDef = baseDef();
+									if(curDef != null)
+										curDef.spendCostRequirements(mob);
+								}
+							};
+							awardsList.add(new ExpertiseAward()
+							{
+								@Override
+								public AwardType getType()
+								{
+									return AwardType.EXPERTISE;
+								}
+
+								@Override
+								public int getLevel()
+								{
+									return number;
+								}
+
+								@Override
+								public ExpertiseDefinition getExpertise()
+								{
+									return def;
+								}
+							});
+						}
+						else
+						{
+							String currency = CMLib.english().matchAnyCurrencySet(thing);
+							if(currency == null)
+								Log.debugOut("Achievement", "Unknown award type: "+thing);
+							else
+							{
+								double denomination = CMLib.english().matchAnyDenomination(currency, thing);
+								if(denomination == 0.0)
+									Log.debugOut("Achievement", "Unknown award type: "+thing);
+								else
+								{
+									final String currencyName = thing;
+									awardsList.add(new CurrencyAward()
+									{
+										@Override
+										public AwardType getType()
+										{
+											return AwardType.CURRENCY;
+										}
+										@Override
+										public int getAmount()
+										{
+											return number;
+										}
+										@Override
+										public String getCurrency()
+										{
+											return currencyName;
+										}
+									});
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		final Award[] rewardList = awardsList.toArray(new Award[0]); 
 		Achievement A;
 		switch(eventType)
 		{
@@ -142,13 +497,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
@@ -269,13 +618,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
@@ -380,21 +723,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return abelo > 0;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
 					return displayStr;
 				}
-				
+
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
@@ -495,12 +832,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
 				public boolean isTargetFloor()
 				{
 					return abelo > 0;
@@ -513,7 +844,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
@@ -614,19 +945,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
 				public int getTargetCount()
 				{
 					return pct;
 				}
 
 				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
@@ -756,13 +1081,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
@@ -902,19 +1221,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
 				public boolean isTargetFloor()
 				{
 					return true;
 				}
 				
 				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
@@ -1079,13 +1392,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
@@ -1237,13 +1544,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 				
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
@@ -1365,15 +1666,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return true;
 				}
-				
+
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
@@ -1453,6 +1748,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			};
 			break;
+		case RETIRE:
+		case REMORT:
 		case LEVELSGAINED:
 			A=new Achievement()
 			{
@@ -1482,13 +1779,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return num;
 				}
-				
+
 				@Override
 				public boolean isTargetFloor()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
@@ -1496,17 +1793,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
-				
+
 				@Override
 				public String getRawParmVal(String str)
 				{
@@ -1617,17 +1908,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
-				
+
 				@Override
 				public String getRawParmVal(String str)
 				{
@@ -1739,13 +2024,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getTitleAward()
-				{
-					return titleStr;
-				}
-				
-				@Override
-				public String[] getRewards()
+				public Award[] getRewards()
 				{
 					return rewardList;
 				}
@@ -1966,6 +2245,91 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 		}
 	}
+
+	public void giveAwards(final MOB mob, final Award[] awardSet)
+	{
+		if(mob == null)
+			return;
+		final PlayerStats pStats = mob.playerStats();
+		StringBuilder awardMessage = new StringBuilder("");
+		for(final Award award : awardSet)
+		{
+			switch(award.getType())
+			{
+			case ABILITY:
+			{
+				final AbilityAward aaward = (AbilityAward)award;
+				if((pStats!=null) && (!pStats.getExtraQualifiedSkills().containsValue(aaward.getAbilityMapping())))
+				{
+					final Ability A=CMClass.getAbility(aaward.getAbilityMapping().abilityID());
+					if(A!=null)
+					{
+						pStats.getExtraQualifiedSkills().put(A.ID(), aaward.getAbilityMapping());
+						awardMessage.append(L("^HYou are awarded a qualification for @x1 at level @x2!\n\r^?",A.name(),""+aaward.getAbilityMapping().qualLevel()));
+					}
+				}
+				break;
+			}
+			case CURRENCY:
+			{
+				final CurrencyAward aaward=(CurrencyAward)award;
+				String currency = CMLib.english().matchAnyCurrencySet(aaward.getCurrency());
+				if(currency != null)
+				{
+					double denomination = CMLib.english().matchAnyDenomination(currency, aaward.getCurrency());
+					if(denomination != 0.0)
+					{
+						double money=CMath.mul(aaward.getAmount(),  denomination);
+						CMLib.beanCounter().giveSomeoneMoney(mob, money);
+						awardMessage.append(L("^HYou are awarded @x1!\n\r^?",CMLib.beanCounter().getDenominationName(currency, denomination, aaward.getAmount())));
+					}
+				}
+				break;
+			}
+			case EXPERTISE:
+			{
+				final ExpertiseAward aaward = (ExpertiseAward)award;
+				if(pStats!=null)
+				{
+					if((pStats!=null) && (!pStats.getExtraQualifiedExpertises().containsValue(aaward.getExpertise().ID())))
+					{
+						pStats.getExtraQualifiedExpertises().put(aaward.getExpertise().ID(), aaward.getExpertise());
+						awardMessage.append(L("^HYou are awarded a qualification for @x1 at level @x2!\n\r^?",aaward.getExpertise().name(),""+aaward.getLevel()));
+					}
+				}
+				break;
+			}
+			case QP:
+			{
+				final AmountAward aaward=(AmountAward)award;
+				awardMessage.append(L("^HYou are awarded @x1 quest points!\n\r^?\n\r",""+aaward.getAmount()));
+				mob.setQuestPoint(mob.getQuestPoint() + aaward.getAmount());
+				break;
+			}
+			case TITLE:
+			{
+				final TitleAward aaward=(TitleAward)award;
+				if((pStats != null) && (!pStats.getTitles().contains(aaward.getTitle())))
+				{
+					pStats.getTitles().add(aaward.getTitle());
+					awardMessage.append(L("^HYou are awarded the title: @x1!\n\r^?",aaward.getTitle()));
+				}
+				break;
+			}
+			case XP:
+			{
+				final AmountAward aaward=(AmountAward)award;
+				awardMessage.append(L("^HYou are awarded experience points!\n\r^?\n\r"));
+				CMLib.leveler().postExperience(mob, null, null, aaward.getAmount(), false);
+				break;
+			}
+			default:
+				break;
+			
+			}
+		}
+		mob.tell(awardMessage.toString());
+	}
 	
 	private boolean giveAwards(final Achievement A, final Tattooable holder, final MOB mob)
 	{
@@ -1982,68 +2346,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has completed the '@x2' @x3 achievement!",name,A.getDisplayStr(),A.getAgent().name().toLowerCase()),true);
 			}
-			String[] awardSet = A.getRewards();
-			if((A.getTitleAward() != null) && (A.getTitleAward().trim().length()>0))
-			{
-				final PlayerStats pStats = mob.playerStats();
-				if(pStats != null)
-				{
-					if(!pStats.getTitles().contains(A.getTitleAward()))
-					{
-						pStats.getTitles().add(A.getTitleAward());
-						awardMessage.append(L("^HYou are awarded the title: @x1!\n\r^?",A.getTitleAward()));
-					}
-				}
-			}
-			for(int a=0;a<awardSet.length;a++)
-			{
-				if(awardSet[a].length()>0)
-				{
-					String thing = "";
-					if(CMath.isInteger(awardSet[a]))
-					{
-						int number = CMath.s_int(awardSet[a]);
-						a++;
-						while((a<awardSet.length)&&(awardSet[a].length()>0)&&(!CMath.isInteger(awardSet[a])))
-						{
-							thing += awardSet[a]+" ";
-							a++;
-						}
-						a--;
-						thing = thing.toUpperCase().trim();
-						if(thing.equals("XP") || thing.startsWith("EXPERIEN") || thing.equals("EXP"))
-						{
-							awardMessage.append(L("^HYou are awarded experience points!\n\r^?\n\r"));
-							CMLib.leveler().postExperience(mob, null, null, number, false);
-						}
-						else
-						if(thing.equals("QP") || thing.startsWith("QUEST"))
-						{
-							awardMessage.append(L("^HYou are awarded @x1 quest points!\n\r^?\n\r",""+number));
-							mob.setQuestPoint(mob.getQuestPoint() + number);
-						}
-						else
-						{
-							String currency = CMLib.english().matchAnyCurrencySet(thing);
-							if(currency == null)
-								Log.debugOut("Achievement", "Unknown award type: "+thing);
-							else
-							{
-								double denomination = CMLib.english().matchAnyDenomination(currency, thing);
-								if(denomination == 0.0)
-									Log.debugOut("Achievement", "Unknown award type: "+thing);
-								else
-								{
-									double money=CMath.mul(number,  denomination);
-									CMLib.beanCounter().giveSomeoneMoney(mob, money);
-									awardMessage.append(L("^HYou are awarded @x1!\n\r^?",CMLib.beanCounter().getDenominationName(currency, denomination, number)));
-								}
-							}
-						}
-					}
-				}
-			}
+			final Award[] awardSet = A.getRewards();
 			mob.tell(awardMessage.toString());
+			if(A.getAgent() == Agent.PLAYER)
+			{
+				giveAwards(mob,awardSet);
+			}
 			return true;
 		}
 		return false;
@@ -2190,14 +2498,77 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return str.toString();
 	}
+
+	@Override
+	public String getAwardString(final Award[] awards)
+	{
+		final StringBuilder awardStr=new StringBuilder();
+		for(Award award : awards)
+		{
+			switch(award.getType())
+			{
+			case ABILITY:
+			{
+				final AbilityMapping map = ((AbilityAward)award).getAbilityMapping();
+				awardStr.append(" ").append(map.qualLevel());
+				final StringBuilder parms=new StringBuilder("");
+				if(!map.autoGain())
+					parms.append(" AUTOGAIN=FALSE");
+				if((map.extraMask().length()>0)&&(map.extraMask().length()>0))
+					parms.append(" MASK="+CMStrings.escape("\""+CMStrings.escape(map.extraMask()))+"\"");
+				if((map.defaultParm().length()>0)&&(map.defaultParm().length()>0))
+					parms.append(" PARMS="+CMStrings.escape("\""+CMStrings.escape(map.defaultParm()))+"\"");
+				if((map.originalSkillPreReqList()!=null)&&(map.originalSkillPreReqList().length()>0))
+					parms.append(" PREREQS="+CMStrings.escape("\""+CMStrings.escape(map.originalSkillPreReqList()))+"\"");
+				if(parms.toString().trim().length()>0)
+				{
+					awardStr.append(" \"")
+							.append(map.abilityID())
+							.append("(").append(parms).append(")")
+							.append("\"");
+				}
+				else
+					awardStr.append(" ").append(map.abilityID());
+				break;
+			}
+			case CURRENCY:
+				awardStr.append(" ").append(((CurrencyAward)award).getAmount())
+						.append(" ").append(((CurrencyAward)award).getCurrency());
+				break;
+			case EXPERTISE:
+				awardStr.append(" ").append(((ExpertiseAward)award).getLevel())
+						.append(" ").append(((ExpertiseAward)award).getExpertise().ID());
+				break;
+			case QP:
+				awardStr.append(" ").append(((CurrencyAward)award).getAmount())
+						.append(" ").append("QP");
+				break;
+			case TITLE:
+				break;
+			case XP:
+				awardStr.append(" ").append(((CurrencyAward)award).getAmount())
+						.append(" ").append("XP");
+				break;
+			default:
+				break;
+			}
+		}
+		return awardStr.toString();
+	}
 	
 	private void fillAchievementParmTree(final Map<String,String> parmTree, final Achievement A)
 	{
 		parmTree.put("TATTOO",A.getTattoo());
 		parmTree.put("EVENT", A.getEvent().name());
 		parmTree.put("DISPLAY", A.getDisplayStr());
-		parmTree.put("TITLE", A.getTitleAward());
-		parmTree.put("REWARDS", CMParms.combineWSpaces(A.getRewards()));
+		parmTree.put("TITLE", "");
+		for(Award award : A.getRewards())
+		{
+			if(award.getType() == AwardType.TITLE)
+				parmTree.put("TITLE", ((TitleAward)award).getTitle());
+		}
+		String awardStr=getAwardString(A.getRewards());
+		parmTree.put("REWARDS", awardStr);
 		for(String s : A.getEvent().getParameters())
 		{
 			if(!CMParms.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, s))

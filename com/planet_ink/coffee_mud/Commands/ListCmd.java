@@ -13,7 +13,13 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AbilityAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AmountAward;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.CurrencyAward;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
@@ -2509,7 +2515,37 @@ public class ListCmd extends StdCommand
 				final Achievement A=e.nextElement();
 				listStr.append(CMStrings.padRight(A.getTattoo(),COL_LEN1)+" ");
 				listStr.append(CMStrings.padRight(A.getEvent().name(),COL_LEN2)+" ");
-				listStr.append(CMStrings.padRight(CMParms.combineWSpaces(A.getRewards())+A.getTitleAward(),COL_LEN3)+" ");
+				StringBuilder rewardDisplay = new StringBuilder("");
+				TitleAward titleAward = null;
+				for(Award award : A.getRewards())
+				{
+					switch(award.getType())
+					{
+					case ABILITY:
+						rewardDisplay.append(((AbilityAward)award).getAbilityMapping().abilityID()+" ");
+						break;
+					case CURRENCY:
+						rewardDisplay.append(((CurrencyAward)award).getAmount()+" "+((CurrencyAward)award).getCurrency()+" ");
+						break;
+					case EXPERTISE:
+						rewardDisplay.append(((ExpertiseAward)award).getExpertise().ID()+" ");
+						break;
+					case QP:
+						rewardDisplay.append(((AmountAward)award).getAmount()+"QP ");
+						break;
+					case TITLE:
+						titleAward=(TitleAward)award;
+						break;
+					case XP:
+						rewardDisplay.append(((AmountAward)award).getAmount()+"XP ");
+						break;
+					default:
+						break;
+					}
+				}
+				if((titleAward!=null) && (rewardDisplay.length() < COL_LEN3))
+					rewardDisplay.append(titleAward.getTitle()+" ");
+				listStr.append(CMStrings.padRight(rewardDisplay.toString(),COL_LEN3)+" ");
 				listStr.append(CMStrings.padRight(A.getTargetCount()+"",COL_LEN4)+" ");
 				String miscVal = "";
 				for(String parmName : A.getEvent().getParameters())

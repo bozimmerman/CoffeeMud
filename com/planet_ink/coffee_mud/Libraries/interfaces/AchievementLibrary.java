@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -74,7 +76,9 @@ public interface AchievementLibrary extends CMLibrary
 		LEVELSGAINED(new String[]{"NUM","PLAYERMASK"}),
 		TIMEPLAYED(new String[]{"SECONDS","PLAYERMASK"}),
 		JUSTBE(new String[]{"PLAYERMASK"}),
-		DEATHS(new String[]{"NUM","ZAPPERMASK","PLAYERMASK"})
+		DEATHS(new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
+		RETIRE(new String[]{"PLAYERMASK"}),
+		REMORT(new String[]{"PLAYERMASK"}),
 		;
 		private final String[] parameters;
 
@@ -164,21 +168,14 @@ public interface AchievementLibrary extends CMLibrary
 		public String getDisplayStr();
 
 		/**
-		 * Gets the title that is awarded to players who complete this
-		 * achievement.  It is in normal title format, where * is
-		 * substituted for the players name.
-		 * @return the title that is awarded to players
-		 */
-		public String getTitleAward();
-
-		/**
 		 * Returns the list of coded awards given to players who
 		 * complete this achievement.  The format is a string with
 		 * a number followed by a string of the type of thing
 		 * to award, such as QP, XP, or a currency.
-		 * @return the list of coded awards given to players
+		 * @see AchievementLibrary.Award
+		 * @return the list of decoded awards given to players
 		 */
-		public String[] getRewards();
+		public Award[] getRewards();
 
 		/**
 		 * For achievements that require tracking progress, 
@@ -213,6 +210,122 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return the value of the parameter 
 		 */
 		public String getRawParmVal(String str);
+	}
+	
+	/**
+	 * The award type is an enumeration of the different types
+	 * of awards that can be granted for completing an achievement.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum AwardType
+	{
+		QP,
+		XP,
+		CURRENCY,
+		TITLE,
+		ABILITY,
+		EXPERTISE
+	}
+	
+	/**
+	 * The award interface provides pre-parsed award information for those who
+	 * complete the achievement.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface Award
+	{
+		/**
+		 * The type of award
+		 * @return type of award
+		 */
+		public AwardType getType();
+	}
+	
+	/**
+	 * The AbilityAward interface provides pre-parsed award information for those who
+	 * complete the achievement.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface AbilityAward extends Award
+	{
+		/**
+		 * The ability mapping granted by this award
+		 * @return the ability mapping granted by this award
+		 */
+		public AbilityMapping getAbilityMapping();
+	}
+	
+	/**
+	 * The award interface provides pre-parsed award information for those who
+	 * complete the achievement.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface AmountAward extends Award
+	{
+		/**
+		 * The amount awarded by the award
+		 * @return amount awarded by the award
+		 */
+		public int getAmount();
+	}
+	
+	/**
+	 * The award interface provides pre-parsed award information for those who
+	 * complete the achievement.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface CurrencyAward extends AmountAward
+	{
+		/**
+		 * The currency name awarded by this award
+		 * @return currency name awarded by this award
+		 */
+		public String getCurrency();
+	}
+	
+	/**
+	 * The award interface provides pre-parsed award information for those who
+	 * complete the achievement.
+	 * Gets the title that is awarded to players who complete this
+	 * achievement.  It is in normal title format, where * is
+	 * substituted for the players name.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface TitleAward extends Award
+	{
+		/**
+		 * The title name awarded by this award
+		 * @return title name awarded by this award
+		 */
+		public String getTitle();
+	}
+	
+	/**
+	 * The ExpertiseAward interface provides pre-parsed award information for those who
+	 * complete the achievement.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface ExpertiseAward extends Award
+	{
+		/**
+		 * The level at which the player is granted, or qualified for,
+		 * this expertise.
+		 * @return the level at which the player is granted
+		 */
+		public int getLevel();
+		
+		/**
+		 * The expertise granted by this award.
+		 * @return expertise granted by this award.
+		 */
+		public ExpertiseDefinition getExpertise();
 	}
 	
 	/**
@@ -356,4 +469,11 @@ public interface AchievementLibrary extends CMLibrary
 	 * @return the help text.
 	 */
 	public String getAchievementsHelpFromMap(Map<String,Map<String,String>> helpMap, Event E, String parmName);
+	
+	/**
+	 * Converts a parsed awards list back into an unparsed parameter/value string.
+	 * @param awards a parsed awards list
+	 * @return an unparsed parameter/value string
+	 */
+	public String getAwardString(final Award[] awards);
 }

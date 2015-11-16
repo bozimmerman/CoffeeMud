@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -65,7 +66,6 @@ public class DefaultPlayerAccount implements PlayerAccount
 	protected SVector<PlayerLibrary.ThinPlayer> thinPlayers 	= new SVector<PlayerLibrary.ThinPlayer>();
 	protected Map<String,Tracker>				achievementers	= new STreeMap<String,Tracker>();
 	protected CMUniqNameSortSVec<Tattoo>		tattoos			= new CMUniqNameSortSVec<Tattoo>(1);
-	protected Map<String,AbilityMapping>		ableMap			= new SHashtable<String,AbilityMapping>();
 
 	public DefaultPlayerAccount()
 	{
@@ -407,12 +407,6 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return null;
 	}
 
-	@Override
-	public Map<String, AbilityMapping> getExtraQualifiedSkills()
-	{
-		return ableMap;
-	}
-	
 	@Override
 	public void delPlayer(String name)
 	{
