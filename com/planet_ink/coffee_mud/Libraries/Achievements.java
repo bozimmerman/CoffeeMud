@@ -320,36 +320,31 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								@Override
 								public CompiledZapperMask compiledListMask()
 								{
-									//TODO:BZ
-									return CMLib.masking().createEmptyMask();
+									return CMLib.masking().getPreCompiledMask("-LEVEL +>="+number);
 								}
 
 								@Override
 								public CompiledZapperMask compiledFinalMask()
 								{
-									//TODO:BZ
 									return CMLib.masking().createEmptyMask();
 								}
 
 								@Override
 								public String allRequirements()
 								{
-									final ExpertiseDefinition curDef = baseDef();
-									return (curDef == null) ? "" : curDef.allRequirements();
+									return "-LEVEL +>="+number;
 								}
 
 								@Override
 								public String listRequirements()
 								{
-									final ExpertiseDefinition curDef = baseDef();
-									return (curDef == null) ? "" : curDef.listRequirements();
+									return "-LEVEL +>="+number;
 								}
 
 								@Override
 								public String finalRequirements()
 								{
-									final ExpertiseDefinition curDef = baseDef();
-									return (curDef == null) ? "" : curDef.finalRequirements();
+									return "";
 								}
 
 								@Override
@@ -2259,7 +2254,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case ABILITY:
 			{
 				final AbilityAward aaward = (AbilityAward)award;
-				if((pStats!=null) && (!pStats.getExtraQualifiedSkills().containsValue(aaward.getAbilityMapping())))
+				if((pStats!=null) && (!pStats.getExtraQualifiedSkills().containsKey(aaward.getAbilityMapping().abilityID())))
 				{
 					final Ability A=CMClass.getAbility(aaward.getAbilityMapping().abilityID());
 					if(A!=null)
@@ -2291,7 +2286,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final ExpertiseAward aaward = (ExpertiseAward)award;
 				if(pStats!=null)
 				{
-					if((pStats!=null) && (!pStats.getExtraQualifiedExpertises().containsValue(aaward.getExpertise().ID())))
+					if(!pStats.getExtraQualifiedExpertises().containsKey(aaward.getExpertise().ID()))
 					{
 						pStats.getExtraQualifiedExpertises().put(aaward.getExpertise().ID(), aaward.getExpertise());
 						awardMessage.append(L("^HYou are awarded a qualification for @x1 at level @x2!\n\r^?",aaward.getExpertise().name(),""+aaward.getLevel()));

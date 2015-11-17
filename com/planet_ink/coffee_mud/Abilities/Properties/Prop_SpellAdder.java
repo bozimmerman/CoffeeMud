@@ -505,7 +505,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public Enumeration<Ability> abilities()
 	{
-		return new FilteredEnumeration<Ability>(new IteratorEnumeration<Ability>(getMySpellsV().iterator()),new Filterer<Ability>(){
+		return new FilteredEnumeration<Ability>(new IteratorEnumeration<Ability>(getMySpellsV().iterator()),new Filterer<Ability>()
+		{
 			@Override
 			public boolean passesFilter(Ability obj)
 			{
@@ -531,8 +532,6 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	{
 		return new IteratorEnumeration<Ability>(getMySpellsV().iterator());
 	}
-
-	//TODO: prevents Vector -> List<String>
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

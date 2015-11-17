@@ -39,7 +39,6 @@ import java.util.*;
  * mobs and items, whole populated rooms, or entire areas.  Most of the methods
  * in this library provide a finer control to the generation process. 
  * @author Bo Zimmerman
- *
  */
 public interface AreaGenerationLibrary extends CMLibrary
 {
@@ -58,6 +57,13 @@ public interface AreaGenerationLibrary extends CMLibrary
 	public void preDefineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
 	public List<XMLpiece> getAllChoices(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
 
+	/**
+	 * Area generators work by first laying out a set of rooms into a
+	 * configuration called a Layout. Layouts are scalable configurations
+	 * that can handle any size, or originating direction of entry.
+	 * @author Bo Zi
+	 *
+	 */
 	public static interface LayoutManager
 	{
 		public String name();

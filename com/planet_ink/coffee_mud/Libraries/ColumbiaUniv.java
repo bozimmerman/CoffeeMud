@@ -168,6 +168,21 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			&&((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true))))
 				V.add(D);
 		}
+		final PlayerStats pStats = mob.playerStats();
+		if(pStats != null)
+		{
+			for(final ExpertiseDefinition def : pStats.getExtraQualifiedExpertises().values())
+			{
+				if(((def.compiledFinalMask()==null)||(CMLib.masking().maskCheck(def.compiledFinalMask(),mob,true)))
+				&&((def.compiledListMask()==null)||(CMLib.masking().maskCheck(def.compiledListMask(),mob,true))))
+				{
+					D = completeEduMap.get(def.ID());
+					if(D!=null)
+						V.remove(D);
+					V.add(def);
+				}
+			}
+		}
 		return V;
 	}
 
@@ -181,6 +196,20 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			D=e.nextElement();
 			if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true)))
 				V.add(D);
+		}
+		final PlayerStats pStats = mob.playerStats();
+		if(pStats != null)
+		{
+			for(final ExpertiseDefinition def : pStats.getExtraQualifiedExpertises().values())
+			{
+				if((def.compiledListMask()==null)||(CMLib.masking().maskCheck(def.compiledListMask(),mob,true)))
+				{
+					D = completeEduMap.get(def.ID());
+					if(D!=null)
+						V.remove(D);
+					V.add(def);
+				}
+			}
 		}
 		return V;
 	}
