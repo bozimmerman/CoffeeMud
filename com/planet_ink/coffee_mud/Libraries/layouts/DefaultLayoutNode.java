@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Map;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
@@ -47,8 +48,8 @@ public class DefaultLayoutNode implements LayoutNode
 	@Override public Room room() { return associatedRoom;}
 	@Override public void setRoom(Room room){associatedRoom=room;}
 	@Override public long[] coord(){ return coord;}
-	@Override public Hashtable<LayoutTags,String> tags(){ return tags;}
-	@Override public Hashtable<Integer,LayoutNode> links() { return links;}
+	@Override public Map<LayoutTags, String> tags(){ return tags;}
+	@Override public Map<Integer, LayoutNode> links() { return links;}
 	@Override
 	public void crossLink(LayoutNode to)
 	{

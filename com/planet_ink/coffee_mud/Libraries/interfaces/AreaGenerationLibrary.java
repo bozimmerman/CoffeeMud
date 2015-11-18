@@ -60,23 +60,47 @@ public interface AreaGenerationLibrary extends CMLibrary
 	/**
 	 * Area generators work by first laying out a set of rooms into a
 	 * configuration called a Layout. Layouts are scalable configurations
-	 * that can handle any size, or originating direction of entry.
-	 * @author Bo Zi
+	 * that can handle any size, or originating direction of entry. 
+	 * A Layout Manager then, is an algorithm for generating the room set
+	 * given a size and initial direction.  Each Layout Manager then 
+	 * generates a layout of rooms according to its kind.
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static interface LayoutManager
 	{
+		/**
+		 * The name of the layout manager
+		 * @return name of the layout manager
+		 */
 		public String name();
+		
+		/**
+		 * Generates a list of layout nodes, each
+		 * of which reprents a single room in the area.
+		 * The first node is always the entry room, which
+		 * is entered from the direction given to this method.
+		 * @see AreaGenerationLibrary.LayoutNode
+		 * @param num the number of nodes to generate
+		 * @param dir the direction of entry into this group of nodes.
+		 * @return a list of layout nodes
+		 */
 		public List<LayoutNode> generate(int num, int dir);
 	}
 
+	/**
+	 * A layout node represents a single room in a layout
+	 * manager.  
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static interface LayoutNode
 	{
 		public void crossLink(LayoutNode to);
 		public void delLink(LayoutNode linkNode);
 		public LayoutNode getLink(int d);
-		public Hashtable<Integer,LayoutNode> links();
-		public Hashtable<LayoutTags,String> tags();
+		public Map<Integer, LayoutNode> links();
+		public Map<LayoutTags, String> tags();
 		public long[] coord();
 		public boolean isStreetLike();
 		public void deLink();

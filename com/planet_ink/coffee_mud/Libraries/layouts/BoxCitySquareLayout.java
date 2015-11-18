@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.Directions;
@@ -100,9 +101,9 @@ public class BoxCitySquareLayout extends BoxCityLayout
 						continue;
 					if(!n2.isStreetLike())
 						continue;
-					final Enumeration<LayoutNode> nodes=n2.links().elements();
-					final LayoutNode p_1=nodes.nextElement();
-					final LayoutNode p_2=nodes.nextElement();
+					final Iterator<LayoutNode> nodes=n2.links().values().iterator();
+					final LayoutNode p_1=nodes.next();
+					final LayoutNode p_2=nodes.next();
 					n2.deLink();
 					p_1.crossLink(p_2);
 					lSet.unUse(n2);

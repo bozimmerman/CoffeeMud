@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
 
@@ -197,9 +198,9 @@ public class LayoutSet
 						if((p2!=null)
 						&&(!p.links().containsValue(p2)))
 						{
-							final Enumeration<LayoutNode> nodes=p.links().elements();
-							final LayoutNode p_1=nodes.nextElement();
-							final LayoutNode p_2=nodes.nextElement();
+							final Iterator<LayoutNode> nodes=p.links().values().iterator();
+							final LayoutNode p_1=nodes.next();
+							final LayoutNode p_2=nodes.next();
 							p.deLink();
 							p_1.crossLink(p_2);
 							unUse(p);
@@ -240,9 +241,9 @@ public class LayoutSet
 					n.flag(flag);
 				else
 				{
-					final Enumeration<Integer> dirs=n.links().keys();
-					final Integer lN1=dirs.nextElement();
-					final Integer lN2=dirs.nextElement();
+					final Iterator<Integer> dirs=n.links().keySet().iterator();
+					final Integer lN1=dirs.next();
+					final Integer lN2=dirs.next();
 					if(lN1.intValue() != Directions.getOpDirectionCode(lN2.intValue()))
 						n.flag(LayoutFlags.corner);
 				}

@@ -79,8 +79,8 @@ public class LayoutTester
 		for(int s=0;s<set.size();s++)
 		{
 			final LayoutNode node = set.get(s);
-			for(final Enumeration<LayoutNode> e=node.links().elements();e.hasMoreElements();)
-				if(!set.contains(e.nextElement()))
+			for(final Iterator<LayoutNode> e=node.links().values().iterator();e.hasNext();)
+				if(!set.contains(e.next()))
 					return false;
 		}
 		return true;
