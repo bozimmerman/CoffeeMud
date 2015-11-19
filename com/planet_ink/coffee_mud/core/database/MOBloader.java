@@ -189,6 +189,7 @@ public class MOBloader
 						}
 					}
 				}
+				CMLib.achievements().loadPlayerSkillAwards(mob, pstats);
 			}
 			R.close();
 			R=D.query("SELECT * FROM CMCHCL WHERE CMUSERID='"+name+"'");

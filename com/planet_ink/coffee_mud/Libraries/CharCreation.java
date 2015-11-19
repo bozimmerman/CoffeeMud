@@ -3150,6 +3150,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.bringToLife(mob.getStartRoom(),true);
 			mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> appears!"));
 		}
+		CMLib.achievements().loadAccountAchievements(mob);
 		mob.playerStats().leveledDateTime(0);
 		CMLib.database().DBCreateCharacter(mob);
 		CMLib.players().addPlayer(mob);

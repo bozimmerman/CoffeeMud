@@ -486,6 +486,7 @@ public class Age extends StdAbility
 						newMan.recoverMaxState();
 						newMan.resetToMaxState();
 					}
+					CMLib.achievements().loadAccountAchievements(newMan);
 					CMLib.database().DBCreateCharacter(newMan);
 					CMLib.players().addPlayer(newMan);
 

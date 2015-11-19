@@ -875,18 +875,22 @@ public class StdCharClass implements CharClass
 		}
 		else
 		{
-			final Vector<Ability> onesToAdd=new Vector<Ability>();
+			final List<Ability> onesToAdd=new ArrayList<Ability>();
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
 				&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this))
 				&&(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
-					onesToAdd.addElement(A);
+				{
+					final String extraMask=CMLib.ableMapper().getExtraMask(A.ID(),true,A.ID());
+					if((extraMask.length()==0)||(CMLib.masking().maskCheck(extraMask,mob,true)))
+						onesToAdd.add(A);
+				}
 			}
 			for(int v=0;v<onesToAdd.size();v++)
 			{
-				final Ability A=onesToAdd.elementAt(v);
+				final Ability A=onesToAdd.get(v);
 				giveMobAbility(mob,A,CMLib.ableMapper().getDefaultProficiency(ID(),true,A.ID()),CMLib.ableMapper().getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
 			}
 		}
@@ -1125,6 +1129,7 @@ public class StdCharClass implements CharClass
 			mob.setPractices(mob.getPractices()+getPracsFirstLevel());
 			mob.setTrains(mob.getTrains()+getTrainsFirstLevel());
 			grantAbilities(mob,isBorrowedClass);
+			CMLib.achievements().grantAbilitiesAndExpertises(mob);
 		}
 	}
 

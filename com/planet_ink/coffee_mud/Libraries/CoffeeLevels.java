@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -519,15 +520,27 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		mob.tell(theNews.toString());
 		curClass=mob.baseCharStats().getCurrentClass();
-		final HashSet<String> oldAbilities=new HashSet<String>();
+		final Set<String> oldAbilities=new HashSet<String>();
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if(A!=null)
 				oldAbilities.add(A.ID());
 		}
+		final Map<String,Integer> oldExpertises=new TreeMap<String,Integer>();
+		for(final Enumeration<String> e=mob.expertises();e.hasMoreElements();)
+		{
+			Pair<String,Integer> pair = mob.fetchExpertise(e.nextElement());
+			if(pair != null)
+			{
+				if((!oldExpertises.containsKey(pair.first))
+				||(oldExpertises.get(pair.first).intValue() < pair.second.intValue()))
+					oldExpertises.put(pair.first, pair.second);
+			}
+		}
 
 		curClass.grantAbilities(mob,false);
+		CMLib.achievements().grantAbilitiesAndExpertises(mob);
 
 		// check for autoinvoking abilities
 		for(int a=0;a<mob.numAbilities();a++)
@@ -563,6 +576,23 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 		}
 
+		for(final Enumeration<String> e=mob.expertises();e.hasMoreElements();)
+		{
+			final Pair<String,Integer> pair = mob.fetchExpertise(e.nextElement());
+			if(pair != null)
+			{
+				ExpertiseDefinition def=CMLib.expertises().findDefinition(pair.first,true);
+				if(def == null)
+					 def=CMLib.expertises().findDefinition(pair.first,false);
+				if(def != null)
+				{
+					if((!oldExpertises.containsKey(pair.first))
+					||(oldExpertises.get(pair.first).intValue() < pair.second.intValue()))
+						mob.tell(L("^NYou have learned ^H@x1^?.^N",def.name()));
+				}
+			}
+		}
+		
 		fixMobStatsIfNecessary(mob,1);
 
 		// wrap it all up

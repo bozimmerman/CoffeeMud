@@ -732,7 +732,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * @return an expertise map
 	 */
 	public Map<String, ExpertiseDefinition> getExtraQualifiedExpertises();
-	
+
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;
 	/** Constant for month of birthday, as from {@link PlayerStats#getBirthday()} */
@@ -741,7 +741,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	public static final int BIRTHDEX_YEAR = 2;
 	/** Constant for year of last known birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_LASTYEARCELEBRATED = 3;
-	
+
 	/** Constant for private messenging, means the last private msg was a SAYTO */
 	public static final int REPLY_SAY=0;
 	/** Constant for private messenging, means the last private msg was a YELL */

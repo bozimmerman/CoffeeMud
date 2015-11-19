@@ -20,7 +20,7 @@
 # on an ACCOUNT achievement, rewards go to all new players or children.
 # Each entry can be an amount of game money (e.g. 10 gold coins), an amount of 
 # experience (10 xp), an amount of quest points (e.g. 10 qp), a level and new
-# skill (10 Spell_Light).
+# skill (10 Spell_Light), or a level and an expertise code (10 VEXING1).
 # Note the spaces!
 # [DISPLAY] is a friendly display name of this achievement.
 # [EVENT] is the type of achievement event.  Each type determines the other

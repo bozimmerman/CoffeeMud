@@ -476,4 +476,33 @@ public interface AchievementLibrary extends CMLibrary
 	 * @return an unparsed parameter/value string
 	 */
 	public String getAwardString(final Award[] awards);
+	
+	/**
+	 * Typically called when a mob gains a level, to allow the achievements on the mob to
+	 * assign any new skills or expertises.  Can also be called just to populate a mob 
+	 * with achievement skills, so it should also confirm any lower level skills also.
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
+	 * @param mob the mob to give abilities to.
+	 */
+	public void grantAbilitiesAndExpertises(MOB mob);
+	
+	/**
+	 * When a player is loaded, this method inspects their tattoos for any past
+	 * achievements and, if found, loads the playerstats with trackable 
+	 * skill and expertises mappings, allowing them to receive those awards when
+	 * the time is right.
+	 * @see AchievementLibrary#grantAbilitiesAndExpertises(MOB)
+	 * @param mob the tattooable mob to check tattoos on
+	 * @param stats the playerstats to load with prizes
+	 */
+	public void loadPlayerSkillAwards(Tattooable mob, PlayerStats stats);
+
+	/**
+	 * When a new player is created, this method inspects their account tattoos
+	 * for any that need to be passed down to this new player.  If any are passed
+	 * down, then the awards are granted, including skill awards if any.
+	 * @see AchievementLibrary#loadPlayerSkillAwards(Tattooable, PlayerStats)
+	 * @param mob the new character to load up.
+	 */
+	public void loadAccountAchievements(final MOB mob);
 }

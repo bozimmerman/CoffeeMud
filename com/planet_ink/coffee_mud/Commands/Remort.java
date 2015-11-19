@@ -407,6 +407,8 @@ public class Remort extends StdCommand
 						mob.recoverMaxState();
 						mob.resetToMaxState();
 						mob.recoverPhyStats();
+						CMLib.achievements().loadAccountAchievements(mob);
+						CMLib.achievements().loadPlayerSkillAwards(mob, mob.playerStats());
 						CMLib.commands().postLook(mob, true);
 						if((mob.charStats().getCurrentClass().leveless())
 						||(mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))

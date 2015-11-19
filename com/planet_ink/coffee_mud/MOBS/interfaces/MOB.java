@@ -1089,7 +1089,11 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void delExpertise(String baseCode);
 
 	/**
-	 * Returns the expertise and number for the given code
+	 * Returns the expertise and number for the given code. The
+	 * code is a full expertise code, including number.  This
+	 * will only return a value if the mob has one at or below
+	 * the given level, returning null if the mob does not have
+	 * a sufficient expertise as the one given.
 	 * @see MOB#delAllExpertises()
 	 * @see MOB#expertises()
 	 * @see MOB#delExpertise(String)

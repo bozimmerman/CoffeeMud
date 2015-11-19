@@ -210,6 +210,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						else
 						if(CMLib.expertises().findDefinition(thing, true) != null)
 						{
+							final boolean isAutoGained = CMParms.getParmBool(parms, "AUTOGAIN", true);
 							final ExpertiseDefinition oldDef=CMLib.expertises().findDefinition(thing, true);
 							final String ID = oldDef.ID();
 							final ExpertiseDefinition def = new ExpertiseDefinition()
@@ -365,6 +366,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								@Override
 								public String costDescription()
 								{
+									if(isAutoGained)
+										return "";
 									final ExpertiseDefinition curDef = baseDef();
 									return (curDef == null) ? "" : curDef.costDescription();
 								}
@@ -372,6 +375,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								@Override
 								public boolean meetsCostRequirements(MOB mob)
 								{
+									if(isAutoGained)
+										return true;
 									final ExpertiseDefinition curDef = baseDef();
 									return (curDef == null) ? false : curDef.meetsCostRequirements(mob);
 								}
@@ -379,6 +384,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								@Override
 								public void spendCostRequirements(MOB mob)
 								{
+									if(isAutoGained)
+										return;
 									final ExpertiseDefinition curDef = baseDef();
 									if(curDef != null)
 										curDef.spendCostRequirements(mob);
@@ -2810,6 +2817,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return false;
 	}
 	
+	
 	private boolean evaluateAchievement(final Achievement A, final PlayerStats pStats, final PlayerAccount aStats, final MOB mob)
 	{
 		switch(A.getAgent())
@@ -2889,6 +2897,106 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 
+	@Override
+	public void grantAbilitiesAndExpertises(MOB mob)
+	{
+		final PlayerStats pStats = (mob == null) ? null : mob.playerStats();
+		if((pStats != null) && (mob!=null))
+		{
+			for(final AbilityMapper.AbilityMapping map : pStats.getExtraQualifiedSkills().values())
+			{
+				if(map.autoGain() && (mob.fetchAbility(map.abilityID()) == null))
+				{
+					final Ability A=CMClass.getAbility(map.abilityID());
+					if((A!=null)
+					&&(map.qualLevel()<=mob.basePhyStats().level())
+					&&((map.extraMask().length()==0)||(CMLib.masking().maskCheck(map.extraMask(),mob,true))))
+					{
+						A.setSavable(true);
+						A.setProficiency(map.defaultProficiency());
+						A.setMiscText(map.defaultParm());
+						mob.addAbility(A);
+						A.autoInvocation(mob, false);
+					}
+				}
+			}
+			for(final ExpertiseDefinition def : pStats.getExtraQualifiedExpertises().values())
+			{
+				if((def.costDescription().length()==0)
+				&&(CMLib.masking().maskCheck(def.compiledFinalMask(), mob, true))
+				&&(mob.fetchExpertise(def.ID())==null))
+				{
+					mob.addExpertise(def.ID());
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void loadPlayerSkillAwards(Tattooable mob, PlayerStats stats)
+	{
+		if((mob != null) && (stats != null))
+		{
+			for(final Enumeration<Tattoo> t = mob.tattoos();t.hasMoreElements();)
+			{
+				final Achievement A=getAchievement(t.nextElement().getTattooName());
+				if(A != null)
+				{
+					for(final Award award : A.getRewards())
+					{
+						if(award.getType() == AwardType.ABILITY)
+						{
+							final AbilityAward aaward = (AbilityAward)award;
+							if(!stats.getExtraQualifiedSkills().containsKey(aaward.getAbilityMapping().abilityID()))
+							{
+								final Ability abilityCheck=CMClass.getAbility(aaward.getAbilityMapping().abilityID());
+								if(abilityCheck!=null)
+									stats.getExtraQualifiedSkills().put(abilityCheck.ID(), aaward.getAbilityMapping());
+							}
+						}
+						else
+						if(award.getType() == AwardType.EXPERTISE)
+						{
+							final ExpertiseAward aaward = (ExpertiseAward)award;
+							if(!stats.getExtraQualifiedExpertises().containsKey(aaward.getExpertise().ID()))
+								stats.getExtraQualifiedExpertises().put(aaward.getExpertise().ID(), aaward.getExpertise());
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void loadAccountAchievements(final MOB mob)
+	{
+		final PlayerStats pStats = (mob==null) ? null : mob.playerStats();
+		final PlayerAccount account = (pStats == null) ? null : pStats.getAccount();
+		if((mob!=null) && (account != null))
+		{
+			boolean somethingDone = false;
+			for(Enumeration<Tattoo> t=account.tattoos();t.hasMoreElements();)
+			{
+				final Tattoo T = t.nextElement();
+				final Achievement A=getAchievement(t.nextElement().getTattooName());
+				if(A != null)
+				{
+					if(mob.findTattoo(T.getTattooName())==null)
+					{
+						mob.addTattoo(A.getTattoo());
+						giveAwards(mob, A.getRewards());
+						somethingDone=true;
+					}
+				}
+			}
+			if(somethingDone)
+			{
+				loadPlayerSkillAwards(mob, pStats);
+				grantAbilitiesAndExpertises(mob);
+			}
+		}
+	}
+	
 	@Override
 	public boolean shutdown()
 	{

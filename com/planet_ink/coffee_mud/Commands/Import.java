@@ -5246,6 +5246,8 @@ public class Import extends StdCommand
 					}
 					if(M.playerStats()!=null)
 						M.playerStats().setLastUpdated(System.currentTimeMillis());
+					CMLib.achievements().loadPlayerSkillAwards(M, M.playerStats());
+					CMLib.achievements().loadAccountAchievements(M);
 					CMLib.database().DBCreateCharacter(M);
 					CMLib.players().addPlayer(M);
 					Log.sysOut("Import","Imported user: "+M.Name());

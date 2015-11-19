@@ -776,6 +776,12 @@ public class CMClass extends ClassLoader
 	 */
 	public static final Ability 	getAbility(final String calledThis) { return (Ability)getNewGlobal(c().abilities,calledThis); }
 	/**
+	 * Returns the prototype instance of the ability object of the given ID from your classloader
+	 * @param calledThis the ID() of the object to return
+	 * @return the prototype instance of a ability object of the given ID
+	 */
+	public static final Ability 	getAbilityPrototype(final String calledThis) { return (Ability)getGlobal(c().abilities,calledThis); }
+	/**
 	 * Returns a reference to the prototype for the char class of the given ID from your classloader
 	 * @param calledThis the ID() of the object to return
 	 * @return a reference to the prototype for the char class of the given ID
