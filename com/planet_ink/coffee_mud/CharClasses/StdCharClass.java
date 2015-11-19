@@ -884,7 +884,9 @@ public class StdCharClass implements CharClass
 				&&(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 				{
 					final String extraMask=CMLib.ableMapper().getExtraMask(A.ID(),true,A.ID());
-					if((extraMask.length()==0)||(CMLib.masking().maskCheck(extraMask,mob,true)))
+					if((extraMask==null)
+					||(extraMask.length()==0)
+					||(CMLib.masking().maskCheck(extraMask,mob,true)))
 						onesToAdd.add(A);
 				}
 			}

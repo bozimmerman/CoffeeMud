@@ -2314,7 +2314,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				if((pStats != null) && (!pStats.getTitles().contains(aaward.getTitle())))
 				{
 					pStats.getTitles().add(aaward.getTitle());
-					awardMessage.append(L("^HYou are awarded the title: @x1!\n\r^?",aaward.getTitle()));
+					awardMessage.append(L("^HYou are awarded the title: @x1!\n\r^?",CMStrings.replaceAll(aaward.getTitle(),"*",mob.Name())));
 				}
 				break;
 			}
