@@ -2331,6 +2331,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 		}
 		mob.tell(awardMessage.toString());
+		grantAbilitiesAndExpertises(mob);
 	}
 	
 	private boolean giveAwards(final Achievement A, final Tattooable holder, final MOB mob)
@@ -2978,7 +2979,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			for(Enumeration<Tattoo> t=account.tattoos();t.hasMoreElements();)
 			{
 				final Tattoo T = t.nextElement();
-				final Achievement A=getAchievement(t.nextElement().getTattooName());
+				final Achievement A=getAchievement(T.getTattooName());
 				if(A != null)
 				{
 					if(mob.findTattoo(T.getTattooName())==null)

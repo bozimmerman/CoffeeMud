@@ -60,6 +60,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		String id=readableText;
 		int x=id.toUpperCase().indexOf("ARM");
 		for(final StringBuffer ID=new StringBuffer(id);((x>0)&&(x<id.length()));x++)
+		{
 			if(id.charAt(x)=='-')
 			{
 				ID.setCharAt(x,'+');
@@ -76,6 +77,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 			else
 			if(Character.isDigit(id.charAt(x)))
 				break;
+		}
 		x=id.toUpperCase().indexOf("DIS");
 		if(x>=0)
 		{
@@ -120,9 +122,6 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		mob.basePhyStats().setAttackAdjustment(mob.basePhyStats().attackAdjustment()+CMParms.getParmPlus(readableText,"att"));
 		mob.basePhyStats().setDamage(mob.basePhyStats().damage()+CMParms.getParmPlus(readableText,"dam"));
 		mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|CMParms.getParmPlus(readableText,"dis"));
-		final int levels=CMParms.getParmPlus(readableText,"lev");
-		for(int i=0;i<levels;i++)
-			CMLib.leveler().level(mob);
 		mob.basePhyStats().setLevel(mob.basePhyStats().level());
 		mob.basePhyStats().setRejuv(mob.basePhyStats().rejuv()+CMParms.getParmPlus(readableText,"rej"));
 		mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|CMParms.getParmPlus(readableText,"sen"));
@@ -149,7 +148,41 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 			}
 		}
 		if(CMParms.getParmPlus(readableText,"lev")!=0)
-			mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())+CMParms.getParmPlus(readableText,"lev"));
+		{
+			int num=CMParms.getParmPlus(readableText,"lev");
+			if((mob.charStats().getCurrentClass().leveless())
+			||(mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
+			||(mob.charStats().getMyRace().leveless())
+			||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
+			{
+				
+			}
+			else
+			if(num > 0)
+			{
+				for(int i=0;i<num;i++)
+				{
+					if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
+					||(mob.charStats().getCurrentClass().expless())
+					||(mob.charStats().getMyRace().expless()))
+						CMLib.leveler().level(mob);
+					else
+						CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+				}
+			}
+			else
+			if(num < 0)
+			{
+				num=num*-1;
+				for(int i=0;i<num;i++)
+				{
+					if(mob.basePhyStats().level() > 1)
+					{
+						CMLib.leveler().unLevel(mob);
+					}
+				}
+			}
+		}
 		val=CMParms.getParmStr(readableText,"rac","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{

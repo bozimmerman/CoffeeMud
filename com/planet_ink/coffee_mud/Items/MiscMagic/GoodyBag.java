@@ -152,6 +152,21 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 				I.setDisplayText(L("A pretty little pill has been left here."));
 				((Pill)I).setSpellList("cha+1");
 				putInBag(I);
+				I=CMClass.getItem("GenSuperPill");
+				I.setName(L("a level pill"));
+				I.setDisplayText(L("A pretty little pill has been left here."));
+				((Pill)I).setSpellList("level+1");
+				putInBag(I);
+				I=CMClass.getItem("GenSuperPill");
+				I.setName(L("a 5-level pill"));
+				I.setDisplayText(L("A pretty little pill has been left here."));
+				((Pill)I).setSpellList("level+5");
+				putInBag(I);
+				I=CMClass.getItem("GenSuperPill");
+				I.setName(L("a 10-level pill"));
+				I.setDisplayText(L("A pretty little pill has been left here."));
+				((Pill)I).setSpellList("level+10");
+				putInBag(I);
 			}
 		}
 		super.executeMsg(myHost,msg);

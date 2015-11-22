@@ -1417,7 +1417,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		int theLevel=-1;
 		int greatestDiff=-1;
 		final AbilityMapping personalMap = getPersonalMapping(studentM, A.ID());
-		if((personalMap != null)&&(personalMap.qualLevel() >= studentM.phyStats().level()))
+		if((personalMap != null)&&(personalMap.qualLevel() <= studentM.phyStats().level()))
 		{
 			theLevel = personalMap.qualLevel();
 			greatestDiff = studentM.phyStats().level() - personalMap.qualLevel();

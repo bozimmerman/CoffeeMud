@@ -312,7 +312,7 @@ public class Remort extends StdCommand
 		
 		final CharClass newCharClass = C;
 		
-		mob.tell(L("^HThis will drop your level back to @x1!",""+newLevel));
+		mob.tell(L("^HThis will drop your level back to @x1!",""+newLevel[0]));
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)
 		{
 			@Override public void showPrompt()
@@ -381,13 +381,19 @@ public class Remort extends StdCommand
 					});
 					try
 					{
+						mob.baseCharStats().setMyClasses("StdCharClass");
+						mob.baseCharStats().setMyLevels("1");
+						mob.basePhyStats().setLevel(1);
+						mob.recoverCharStats();
+						mob.recoverPhyStats();
+						mob.recoverCharStats();
+						mob.recoverMaxState();
+						mob.resetToMaxState();
+						mob.recoverPhyStats();
 						CMLib.login().promptPlayerStats(mob.playerStats().getTheme(), mob, mob.session(), bonusPointsPerStat[0]);
 						mob.recoverCharStats();
 						mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
 						mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
-						mob.baseCharStats().setMyClasses("StdCharClass");
-						mob.baseCharStats().setMyLevels("1");
-						mob.basePhyStats().setLevel(1);
 						mob.recoverCharStats();
 						mob.recoverMaxState();
 						mob.resetToMaxState();
