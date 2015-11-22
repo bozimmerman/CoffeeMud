@@ -1143,7 +1143,7 @@ public class ListCmd extends StdCommand
 		}
 		if(journal==null)
 			return buf;
-		final List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs("SYSTEM_"+journal+"S");
+		final List<JournalEntry> V=CMLib.database().DBReadJournalMsgs("SYSTEM_"+journal+"S");
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(10.0,viewerS);
 		if(V!=null)
@@ -1152,9 +1152,9 @@ public class ListCmd extends StdCommand
 			buf.append("---------------------------------------------\n\r");
 			for(int j=0;j<V.size();j++)
 			{
-				final JournalsLibrary.JournalEntry entry=V.get(j);
-				final String from=entry.from;
-				final String message=entry.msg;
+				final JournalEntry entry=V.get(j);
+				final String from=entry.from();
+				final String message=entry.msg();
 				buf.append(CMStrings.padRight((j+1)+"",COL_LEN1)+") "+CMStrings.padRight(from,COL_LEN2)+" "+message+"\n\r");
 			}
 		}

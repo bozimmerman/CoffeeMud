@@ -33,7 +33,7 @@ import java.util.*;
 */
 public interface JournalsLibrary extends CMLibrary
 {
-	public HashSet<String> getArchonJournalNames();
+	public Set<String> getArchonJournalNames();
 	public boolean isArchonJournalName(String journal);
 
 	public int loadCommandJournals(String list);
@@ -65,70 +65,35 @@ public interface JournalsLibrary extends CMLibrary
 
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 
-	public static class JournalSummaryStats
+	public interface JournalSummaryStats
 	{
-		public String name = "";
-		public int threads =0;
-		public int posts = 0;
-		public String imagePath = "";
-		public String shortIntro = "";
-		public String longIntro = "";
-		public String introKey = "";
-		public String latestKey = "";
-		public List<String> stuckyKeys=null;
+		public String name();
+		public JournalSummaryStats name(String intro);
+		public int threads();
+		public JournalSummaryStats threads(int num);
+		public int posts();
+		public JournalSummaryStats posts(int num);
+		public String imagePath();
+		public JournalSummaryStats imagePath(String intro);
+		public String shortIntro();
+		public JournalSummaryStats shortIntro(String intro);
+		public String longIntro();
+		public JournalSummaryStats longIntro(String intro);
+		public String introKey();
+		public JournalSummaryStats introKey(String key);
+		public String latestKey();
+		public JournalSummaryStats latestKey(String key);
+		public List<String> stuckyKeys();
+		public JournalSummaryStats stuckyKeys(List<String> keys);
 	}
 
-	public static class JournalEntry implements Comparable<JournalEntry>, Cloneable
+	public static interface CommandJournal
 	{
-		public String key=null;
-		public String from;
-		public String to;
-		public String subj;
-		public String msg;
-		public long date=0;
-		public long update=0;
-		public String parent="";
-		public long attributes=0;
-		public String data="";
-		public int cardinal=0;
-		public String msgIcon="";
-		public int replies=0;
-		public int views=0;
-		public boolean isLastEntry=false;
-		@Override
-		public int compareTo(JournalEntry o)
-		{
-			if(date < o.date)
-				return -1;
-			if(date > o.date)
-				return 1;
-			return 0;
-		}
-		public StringBuffer derivedBuildMessage=null;
-		public JournalEntry copyOf() { try{ return (JournalEntry)this.clone(); } catch(final Exception e){ return new JournalEntry();} }
-
-		public final static long ATTRIBUTE_STUCKY=2;
-		public final static long ATTRIBUTE_PROTECTED=1;
-
-	}
-
-	public static class CommandJournal
-	{
-		private String name="";
-		private String mask="";
-		private Hashtable<CommandJournalFlags,String> flags=new Hashtable<CommandJournalFlags,String>(1);
-
-		public CommandJournal(String name, String mask, Hashtable<CommandJournalFlags,String> flags)
-		{
-			this.name=name;
-			this.mask=mask;
-			this.flags=flags;
-		}
-		public String NAME(){return name;}
-		public String mask(){return mask;}
-		public String JOURNAL_NAME(){ return "SYSTEM_"+NAME().toUpperCase().trim()+"S";}
-		public String getFlag(CommandJournalFlags flag){return flags.get(flag);}
-		public String getScriptFilename(){return flags.get(CommandJournalFlags.SCRIPT);}
+		public String NAME();
+		public String mask();
+		public String JOURNAL_NAME();
+		public String getFlag(CommandJournalFlags flag);
+		public String getScriptFilename();
 	}
 
 	public static enum CommandJournalFlags
@@ -141,84 +106,34 @@ public interface JournalsLibrary extends CMLibrary
 		SCRIPT;
 	}
 
-	public static class SMTPJournal
+	public static interface SMTPJournal
 	{
-		public final String  name;
-		public final boolean forward;
-		public final boolean subscribeOnly;
-		public final boolean keepAll;
-		public final String  criteriaStr;
-		public final MaskingLibrary.CompiledZapperMask criteria;
-		public SMTPJournal(String name, boolean forward, boolean subscribeOnly, boolean keepAll, String criteriaStr)
-		{
-			this.name=name; this.forward=forward; this.subscribeOnly=subscribeOnly; this.keepAll=keepAll; this.criteriaStr=criteriaStr;
-			if(criteriaStr.trim().length()==0)
-				this.criteria=null;
-			else
-				this.criteria=CMLib.masking().maskCompile(criteriaStr);
-		}
+		public String  name();
+		public boolean forward();
+		public boolean subscribeOnly();
+		public boolean keepAll();
+		public String  criteriaStr();
+		public MaskingLibrary.CompiledZapperMask criteria();
 	}
 
-	public static class ForumJournal
+	public static interface ForumJournal
 	{
-		private String name="";
-		private String readMask="";
-		private String postMask="";
-		private String replyMask="";
-		private String adminMask="";
-		private Hashtable<ForumJournalFlags,String> flags=new Hashtable<ForumJournalFlags,String>(1);
-
-		public ForumJournal(String name, Hashtable<ForumJournalFlags,String> flags)
-		{
-			this.name=name;
-			String mask;
-
-			mask=flags.remove(ForumJournalFlags.READ);
-			this.readMask=(mask != null)?mask.trim():"";
-			mask=flags.remove(ForumJournalFlags.POST);
-			this.postMask=(mask != null)?mask.trim():"";
-			mask=flags.remove(ForumJournalFlags.REPLY);
-			this.replyMask=(mask != null)?mask.trim():"";
-			mask=flags.remove(ForumJournalFlags.ADMIN);
-			this.adminMask=(mask != null)?mask.trim():"";
-			this.flags=flags;
-		}
-		public String NAME(){return name;}
-		public String readMask(){return readMask;}
-		public String postMask(){return postMask;}
-		public String replyMask(){return replyMask;}
-		public String adminMask(){return adminMask;}
-		public String getFlag(CommandJournalFlags flag){return flags.get(flag);}
-		public boolean maskCheck(MOB M, String mask)
-		{
-			if(mask.length()>0)
-			{
-				if(M==null)
-					return false;
-				return CMLib.masking().maskCheck(mask, M, true);
-			}
-			return true;
-		}
-		public boolean authorizationCheck(MOB M, ForumJournalFlags fl)
-		{
-			if(!maskCheck(M,readMask))
-				return false;
-			if(fl==ForumJournalFlags.READ)
-				return true;
-			if(fl==ForumJournalFlags.POST)
-				return maskCheck(M,postMask);
-			else
-			if(fl==ForumJournalFlags.REPLY)
-				return maskCheck(M,replyMask);
-			else
-			if(fl==ForumJournalFlags.ADMIN)
-				return maskCheck(M,adminMask);
-			return false;
-		}
+		public String NAME();
+		public String readMask();
+		public String postMask();
+		public String replyMask();
+		public String adminMask();
+		public String getFlag(CommandJournalFlags flag);
+		public boolean maskCheck(MOB M, String mask);
+		public boolean authorizationCheck(MOB M, ForumJournalFlags fl);
 	}
 
-	public static enum ForumJournalFlags {
-		EXPIRE,READ,POST,REPLY,ADMIN;
+	public static enum ForumJournalFlags
+	{
+		EXPIRE,
+		READ,
+		POST,
+		REPLY,
+		ADMIN;
 	}
-
 }

@@ -69,7 +69,7 @@ public class ForumInfo extends StdWebMacro
 			TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
 			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
 			final String email=((M!=null) &&(M.playerStats()!=null) && (M.playerStats().getEmail()!=null)) ? M.playerStats().getEmail() : "";
-			str.append( ((entry!=null) && (email.length()>0)) ? Boolean.toString(entry.forward) : "false").append(", ");
+			str.append( ((entry!=null) && (email.length()>0)) ? Boolean.toString(entry.forward()) : "false").append(", ");
 		}
 
 		if(parms.containsKey("ISSMTPSUBSCRIBER"))
@@ -85,9 +85,9 @@ public class ForumInfo extends StdWebMacro
 			final
 			TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
 			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
-			if((entry!=null)&&(entry.forward))
+			if((entry!=null)&&(entry.forward()))
 			{
-				str.append( entry.name.replace(' ','_')+"@"+CMProps.getVar(CMProps.Str.MUDDOMAIN)).append(", ");
+				str.append( entry.name().replace(' ','_')+"@"+CMProps.getVar(CMProps.Str.MUDDOMAIN)).append(", ");
 			}
 		}
 
@@ -129,24 +129,24 @@ public class ForumInfo extends StdWebMacro
 			return " @break@";
 
 		if(parms.containsKey("POSTS"))
-			str.append( ""+stats.posts).append(", ");
+			str.append( ""+stats.posts()).append(", ");
 
 		if(parms.containsKey("THREADS"))
-			str.append( ""+stats.threads).append(", ");
+			str.append( ""+stats.threads()).append(", ");
 
 		if(parms.containsKey("SHORTDESC"))
-			str.append( ""+stats.shortIntro).append(", ");
+			str.append( ""+stats.shortIntro()).append(", ");
 
 		if(parms.containsKey("LONGDESC"))
-			str.append( ""+stats.longIntro).append(", ");
+			str.append( ""+stats.longIntro()).append(", ");
 
 		if(parms.containsKey("IMAGEPATH"))
 		{
-			if((stats.imagePath==null)
-			||(stats.imagePath.trim().length()==0))
+			if((stats.imagePath()==null)
+			||(stats.imagePath().trim().length()==0))
 				str.append( L("images/lilcm.jpg")).append(", ");
 			else
-				str.append( ""+stats.threads).append(", ");
+				str.append( ""+stats.threads()).append(", ");
 		}
 
 		String strstr=str.toString();

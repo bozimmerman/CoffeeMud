@@ -6,7 +6,6 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -1351,14 +1350,14 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					JournalEntry WIN = null;
 					for (final JournalEntry J : journalEntries)
 					{
-						if (J.subj.trim().equals(subj))
+						if (J.subj().trim().equals(subj))
 							WIN = J;
 					}
 					if (WIN == null)
 					{
 						for (final JournalEntry J : journalEntries)
 						{
-							if (J.subj.trim().equalsIgnoreCase(subj))
+							if (J.subj().trim().equalsIgnoreCase(subj))
 								WIN = J;
 						}
 					}
@@ -1366,7 +1365,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					{
 						for (final JournalEntry J : journalEntries)
 						{
-							if (J.subj.trim().indexOf(subj) >= 0)
+							if (J.subj().trim().indexOf(subj) >= 0)
 								WIN = J;
 						}
 					}
@@ -1374,35 +1373,35 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					{
 						for (final JournalEntry J : journalEntries)
 						{
-							if (J.subj.toLowerCase().trim().indexOf(subj.toLowerCase()) >= 0)
+							if (J.subj().toLowerCase().trim().indexOf(subj.toLowerCase()) >= 0)
 								WIN = J;
 						}
 					}
 
 					if (WIN != null)
-						parent = WIN.key;
+						parent = WIN.key();
 				}
 				if (parent.length() == 0)
 					subject = subj;
 			}
-			final JournalsLibrary.JournalEntry msg = new JournalsLibrary.JournalEntry();
-			msg.from = author;
-			msg.subj = CMLib.webMacroFilter().clearWebMacros(subject);
-			msg.msg = CMLib.webMacroFilter().clearWebMacros(theMessage);
-			msg.date = postDate.getTime();
-			msg.update = postDate.getTime();
-			msg.parent = parent;
-			msg.msgIcon = "";
-			msg.data = "";
-			msg.to = "ALL";
+			final JournalEntry msg = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
+			msg.from (author);
+			msg.subj (CMLib.webMacroFilter().clearWebMacros(subject));
+			msg.msg (CMLib.webMacroFilter().clearWebMacros(theMessage));
+			msg.date (postDate.getTime());
+			msg.update (postDate.getTime());
+			msg.parent (parent);
+			msg.msgIcon ("");
+			msg.data ("");
+			msg.to ("ALL");
 			// check for dups
-			final Vector<JournalsLibrary.JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(forum.NAME(), "ALL", msg.date - 1);
-			for (final JournalsLibrary.JournalEntry entry : chckEntries)
+			final Vector<JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(forum.NAME(), "ALL", msg.date() - 1);
+			for (final JournalEntry entry : chckEntries)
 			{
-				if ((entry.date == msg.date) 
-				&& (entry.from.equals(msg.from)) 
-				&& (entry.subj.equals(msg.subj)) 
-				&& (entry.parent.equals(msg.parent)))
+				if ((entry.date() == msg.date()) 
+				&& (entry.from().equals(msg.from())) 
+				&& (entry.subj().equals(msg.subj())) 
+				&& (entry.parent().equals(msg.parent())))
 				{
 					Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER", Integer.toString(sess.lastMsgNum));
 					return "Msg#" + sess.lastMsgNum + " was a dup!";
@@ -1410,7 +1409,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			}
 			CMLib.database().DBWriteJournal(forum.NAME(), msg);
 			if (parent.length() > 0)
-				CMLib.database().DBTouchJournalMessage(parent, msg.date);
+				CMLib.database().DBTouchJournalMessage(parent, msg.date());
 			CMLib.journals().clearJournalSummaryStats(forum);
 			Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER", Integer.toString(sess.lastMsgNum));
 		}

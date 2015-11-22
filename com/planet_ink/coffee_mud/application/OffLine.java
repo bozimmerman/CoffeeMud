@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
-import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalSummaryStats;
 import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;

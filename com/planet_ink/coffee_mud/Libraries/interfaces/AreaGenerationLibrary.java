@@ -90,7 +90,10 @@ public interface AreaGenerationLibrary extends CMLibrary
 
 	/**
 	 * A layout node represents a single room in a layout
-	 * manager.  
+	 * manager.  It contains numerous methods for linking
+	 * nodes together the way rooms are, and for flagging
+	 * nodes to give some idea of where the node fits in
+	 * various layouts.
 	 * @author Bo Zimmerman
 	 *
 	 */

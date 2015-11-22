@@ -68,14 +68,14 @@ public class JournalMessageNext extends StdWebMacro
 		}
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		cardinal++;
-		JournalsLibrary.JournalEntry entry = null;
+		JournalEntry entry = null;
 		final String page=httpReq.getUrlParameter("JOURNALPAGE");
 		final String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
 		final String parent=httpReq.getUrlParameter("JOURNALPARENT");
 		final String dbsearch=httpReq.getUrlParameter("DBSEARCH");
 		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
 		final JournalsLibrary.ForumJournal journal= CMLib.journals().getForumJournal(journalName,setClan);
-		final List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
+		final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
 		while((entry==null)||(!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
 		{
 			entry = JournalInfo.getNextEntry(msgs,last);
@@ -86,9 +86,9 @@ public class JournalMessageNext extends StdWebMacro
 					return "<!--EMPTY-->";
 				return " @break@";
 			}
-			last=entry.key;
+			last=entry.key();
 		}
-		entry.cardinal=cardinal;
+		entry.cardinal(cardinal);
 		httpReq.addFakeUrlParameter("JOURNALCARDINAL",""+cardinal);
 		httpReq.addFakeUrlParameter("JOURNALMESSAGE",last);
 		return "";

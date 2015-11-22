@@ -25,7 +25,6 @@ import java.io.IOException;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckRecord;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
-import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 /*
    Copyright 2004-2015 Bo Zimmerman
 
@@ -463,7 +462,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBUpdateJournal(String Journal, JournalsLibrary.JournalEntry entry)
+	public void DBUpdateJournal(String Journal, JournalEntry entry)
 	{
 		JournalLoader.DBUpdateJournal(Journal, entry);
 	}
@@ -499,7 +498,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public JournalsLibrary.JournalEntry DBReadJournalEntry(String Journal, String Key)
+	public JournalEntry DBReadJournalEntry(String Journal, String Key)
 	{
 		return JournalLoader.DBReadJournalEntry(Journal, Key);
 	}
@@ -517,19 +516,19 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public Vector<JournalsLibrary.JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr)
+	public Vector<JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr)
 	{
 		return JournalLoader.DBSearchAllJournalEntries(Journal, searchStr);
 	}
 
 	@Override
-	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate)
+	public Vector<JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate)
 	{
 		return JournalLoader.DBReadJournalMsgsNewerThan(Journal, to, olderDate);
 	}
 
 	@Override
-	public Vector<JournalsLibrary.JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit)
+	public Vector<JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit)
 	{
 		return JournalLoader.DBReadJournalPageMsgs(Journal, parent, searchStr, newerDate, limit);
 	}
@@ -547,7 +546,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBWriteJournal(String Journal, JournalsLibrary.JournalEntry entry)
+	public void DBWriteJournal(String Journal, JournalEntry entry)
 	{
 		JournalLoader.DBWrite(Journal, entry);
 	}
@@ -570,7 +569,7 @@ public class DBInterface implements DatabaseEngine
 		JournalLoader.DBWrite(Journal, journalSource, from, to, parentKey, subject, message);
 	}
 
-	public void DBWrite(String Journal, JournalsLibrary.JournalEntry entry)
+	public void DBWrite(String Journal, JournalEntry entry)
 	{
 		JournalLoader.DBWrite(Journal, entry);
 	}

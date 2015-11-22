@@ -111,10 +111,10 @@ public class JournalFunction extends StdWebMacro
 				return "Post not submitted -- No subject!";
 			if((parent!=null)&&(parent.length()>0)&&(subject.length()==0))
 			{
-				JournalsLibrary.JournalEntry parentEntry = null;
+				JournalEntry parentEntry = null;
 				parentEntry=CMLib.database().DBReadJournalEntry(journalName, parent);
 				if(parentEntry!=null)
-					subject="RE: "+parentEntry.subj;
+					subject="RE: "+parentEntry.subj();
 			}
 			final String date=httpReq.getUrlParameter("DATE");
 			final String icon=httpReq.getUrlParameter("MSGICON");
@@ -132,30 +132,30 @@ public class JournalFunction extends StdWebMacro
 				if(count>=CMProps.getIntVar(CMProps.Int.MAXMAILBOX))
 					return "Post not submitted -- Mailbox is full!";
 			}
-			final JournalsLibrary.JournalEntry msg = new JournalsLibrary.JournalEntry();
-			msg.from=from;
-			msg.subj=clearWebMacros(subject);
-			msg.msg=clearWebMacros(text);
+			final JournalEntry msg = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
+			msg.from(from);
+			msg.subj(clearWebMacros(subject));
+			msg.msg(clearWebMacros(text));
 			if((date!=null) && (CMath.isLong(date)))
-				msg.date = CMath.s_long(date);
+				msg.date(CMath.s_long(date));
 			else
-				msg.date=System.currentTimeMillis();
-			msg.update=System.currentTimeMillis();
-			msg.parent=(parent==null)?"":parent;
-			msg.msgIcon=(icon==null)?"":icon;
+				msg.date(System.currentTimeMillis());
+			msg.update(System.currentTimeMillis());
+			msg.parent((parent==null)?"":parent);
+			msg.msgIcon((icon==null)?"":icon);
 			if(flags.contains("STUCKY"))
-				msg.attributes|=JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY;
+				msg.attributes(msg.attributes()|JournalEntry.ATTRIBUTE_STUCKY);
 			if(flags.contains("PROTECTED"))
-				msg.attributes|=JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED;
-			msg.data="";
-			msg.to=to;
+				msg.attributes(msg.attributes()|JournalEntry.ATTRIBUTE_PROTECTED);
+			msg.data("");
+			msg.to(to);
 			// check for dups
-			final Vector<JournalsLibrary.JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(journalName, to, msg.date-1);
-			for(final JournalsLibrary.JournalEntry entry : chckEntries)
-				if((entry.date == msg.date)
-				&&(entry.from.equals(msg.from))
-				&&(entry.subj.equals(msg.subj))
-				&&(entry.parent.equals(msg.parent)))
+			final Vector<JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(journalName, to, msg.date()-1);
+			for(final JournalEntry entry : chckEntries)
+				if((entry.date() == msg.date())
+				&&(entry.from().equals(msg.from()))
+				&&(entry.subj().equals(msg.subj()))
+				&&(entry.parent().equals(msg.parent())))
 					return "";
 			CMLib.database().DBWriteJournal(journalName,msg);
 			JournalInfo.clearJournalCache(httpReq, journalName);
@@ -179,11 +179,11 @@ public class JournalFunction extends StdWebMacro
 			if(stats == null)
 				return "Changes not submitted -- No Stats!";
 			if(longDesc!=null)
-				stats.longIntro=clearWebMacros(longDesc);
+				stats.longIntro(clearWebMacros(longDesc));
 			if(shortDesc!=null)
-				stats.shortIntro=clearWebMacros(shortDesc);
+				stats.shortIntro(clearWebMacros(shortDesc));
 			if(imgPath!=null)
-				stats.imagePath=clearWebMacros(imgPath);
+				stats.imagePath(clearWebMacros(imgPath));
 			CMLib.database().DBUpdateJournalStats(journalName, stats);
 			CMLib.journals().clearJournalSummaryStats(forum);
 			return "Changed applied.";
@@ -196,7 +196,7 @@ public class JournalFunction extends StdWebMacro
 			dbsearch="";
 		final String page=httpReq.getUrlParameter("JOURNALPAGE");
 		final String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
-		final List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,forum,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
+		final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,forum,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
 		String msgKey=httpReq.getUrlParameter("JOURNALMESSAGE");
 		int cardinalNumber = CMath.s_int(httpReq.getUrlParameter("JOURNALCARDINAL"));
 		String srch=httpReq.getUrlParameter("JOURNALMESSAGESEARCH");
@@ -205,11 +205,11 @@ public class JournalFunction extends StdWebMacro
 		final boolean doThemAll=parms.containsKey("EVERYTHING");
 		if(doThemAll)
 		{
-			final JournalsLibrary.JournalEntry entry = JournalInfo.getNextEntry(msgs, null);
+			final JournalEntry entry = JournalInfo.getNextEntry(msgs, null);
 			if(entry==null)
 				msgKey="";
 			else
-				msgKey=entry.key;
+				msgKey=entry.key();
 			cardinalNumber=1;
 		}
 		final StringBuffer messages=new StringBuffer("");
@@ -230,28 +230,28 @@ public class JournalFunction extends StdWebMacro
 					parms.put(replyemail,replyemail);
 				if(parms.size()==1)
 				{
-					JournalsLibrary.JournalEntry entry = JournalInfo.getNextEntry(msgs, msgKey);
+					JournalEntry entry = JournalInfo.getNextEntry(msgs, msgKey);
 					while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
-						entry = JournalInfo.getNextEntry(msgs, entry.key);
+						entry = JournalInfo.getNextEntry(msgs, entry.key());
 
 					if(entry==null)
 						keepProcessing=false;
 					else
-						msgKey=entry.key;
+						msgKey=entry.key();
 					continue;
 				}
 				fieldSuffix=msgKey;
 			}
 			else
 				keepProcessing=false;
-			JournalsLibrary.JournalEntry entry = JournalInfo.getEntry(msgs, msgKey);
+			JournalEntry entry = JournalInfo.getEntry(msgs, msgKey);
 			if((entry==null)&&parms.containsKey("DELETEREPLY"))
 				entry=CMLib.database().DBReadJournalEntry(journalName, msgKey);
 			if(entry == null)
 				return "Function not performed -- illegal journal message specified.<BR>";
 			if(!doThemAll)
-				entry.cardinal=cardinalNumber;
-			final String to=entry.to;
+				entry.cardinal(cardinalNumber);
+			final String to=entry.to();
 			if((M!=null)
 			&&(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)||(to.equalsIgnoreCase(M.Name())))
 			&&((forum==null)||(forum.authorizationCheck(M, ForumJournalFlags.READ))))
@@ -265,7 +265,7 @@ public class JournalFunction extends StdWebMacro
 						messages.append("Reply to #"+cardinalNumber+" not submitted -- No text!<BR>");
 					else
 					{
-						CMLib.database().DBWriteJournalReply(journalName,entry.key,from,"","",clearWebMacros(text));
+						CMLib.database().DBWriteJournalReply(journalName,entry.key(),from,"","",clearWebMacros(text));
 						CMLib.journals().clearJournalSummaryStats(forum);
 						JournalInfo.clearJournalCache(httpReq, journalName);
 						messages.append("Reply to #"+cardinalNumber+" submitted<BR>");
@@ -281,7 +281,7 @@ public class JournalFunction extends StdWebMacro
 						messages.append("Email to #"+cardinalNumber+" not submitted -- No text!<BR>");
 					else
 					{
-						final String toName=entry.from;
+						final String toName=entry.from();
 						final MOB toM=CMLib.players().getLoadPlayer(toName);
 						if((toM==null)||(toM.playerStats()==null)||(toM.playerStats().getEmail().indexOf('@')<0))
 							messages.append("Player '"+toName+"' does not exist, or has no email address.<BR>");
@@ -290,7 +290,7 @@ public class JournalFunction extends StdWebMacro
 							CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
 															  M.Name(),
 															  toM.Name(),
-															  "RE: "+entry.subj,
+															  "RE: "+entry.subj(),
 															  clearWebMacros(replyMsg));
 							JournalInfo.clearJournalCache(httpReq, journalName);
 							messages.append("Email to #"+cardinalNumber+" queued<BR>");
@@ -301,18 +301,18 @@ public class JournalFunction extends StdWebMacro
 				{
 					if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 						return "Delete not authorized.";
-					CMLib.database().DBDeleteJournal(journalName,entry.key);
-					if(parms.containsKey("DELETEREPLY")&&(entry.parent!=null)&&(entry.parent.length()>0))
+					CMLib.database().DBDeleteJournal(journalName,entry.key());
+					if(parms.containsKey("DELETEREPLY")&&(entry.parent()!=null)&&(entry.parent().length()>0))
 					{
 						// this constitutes a threaded reply -- update the counter
-						final JournalsLibrary.JournalEntry parentEntry=CMLib.database().DBReadJournalEntry(journalName, entry.parent);
+						final JournalEntry parentEntry=CMLib.database().DBReadJournalEntry(journalName, entry.parent());
 						if(parentEntry!=null)
-							CMLib.database().DBUpdateMessageReplies(parentEntry.key,parentEntry.replies-1);
+							CMLib.database().DBUpdateMessageReplies(parentEntry.key(),parentEntry.replies()-1);
 						JournalInfo.clearJournalCache(httpReq, journalName);
-						httpReq.addFakeUrlParameter("JOURNALMESSAGE",entry.parent);
+						httpReq.addFakeUrlParameter("JOURNALMESSAGE",entry.parent());
 						httpReq.addFakeUrlParameter("JOURNALPARENT","");
 						if(cardinalNumber==0)
-							cardinalNumber=entry.cardinal;
+							cardinalNumber=entry.cardinal();
 						if(cardinalNumber==0)
 							messages.append("Reply deleted.<BR>");
 						else
@@ -321,7 +321,7 @@ public class JournalFunction extends StdWebMacro
 					else
 					{
 						if(cardinalNumber==0)
-							cardinalNumber=entry.cardinal;
+							cardinalNumber=entry.cardinal();
 						if(cardinalNumber==0)
 							messages.append("Message deleted.<BR>");
 						else
@@ -334,7 +334,7 @@ public class JournalFunction extends StdWebMacro
 				else
 				if(parms.containsKey("EDIT"))
 				{
-					if((entry.to.equals(M.Name()))
+					if((entry.to().equals(M.Name()))
 					||((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 					||CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS))
 					{
@@ -350,22 +350,22 @@ public class JournalFunction extends StdWebMacro
 								if(ISSTUCKY==null)
 									ISSTUCKY=httpReq.getUrlParameter("ISSTUCKY"+fieldSuffix);
 								if((ISSTUCKY!=null)&&(ISSTUCKY.equalsIgnoreCase("on")))
-									attributes|=JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY;
+									attributes|=JournalEntry.ATTRIBUTE_STUCKY;
 								final String ISPROTECTED=httpReq.getUrlParameter("ISPROTECTED"+fieldSuffix);
 								if((ISPROTECTED!=null)&&(ISPROTECTED.equalsIgnoreCase("on")))
-									attributes|=JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED;
+									attributes|=JournalEntry.ATTRIBUTE_PROTECTED;
 							}
-							CMLib.database().DBUpdateJournal(entry.key, entry.subj, clearWebMacros(text), attributes);
+							CMLib.database().DBUpdateJournal(entry.key(), entry.subj(), clearWebMacros(text), attributes);
 							if(cardinalNumber==0)
-								cardinalNumber=entry.cardinal;
+								cardinalNumber=entry.cardinal();
 							if(cardinalNumber==0)
 								messages.append("Message modified.<BR>");
 							else
 								messages.append("Message #"+cardinalNumber+" modified.<BR>");
 							JournalInfo.clearJournalCache(httpReq, journalName);
-							if((entry.parent!=null)&&(entry.parent.length()>0))
+							if((entry.parent()!=null)&&(entry.parent().length()>0))
 							{
-								httpReq.addFakeUrlParameter("JOURNALMESSAGE",entry.parent);
+								httpReq.addFakeUrlParameter("JOURNALMESSAGE",entry.parent());
 								httpReq.addFakeUrlParameter("JOURNALPARENT","");
 							}
 							CMLib.journals().clearJournalSummaryStats(forum);
@@ -406,9 +406,9 @@ public class JournalFunction extends StdWebMacro
 						else
 						{
 							CMLib.journals().clearJournalSummaryStats(forum);
-							CMLib.database().DBDeleteJournal(journalName,entry.key);
+							CMLib.database().DBDeleteJournal(journalName,entry.key());
 							if(journalName.toUpperCase().startsWith("SYSTEM_"))
-								entry.update=System.currentTimeMillis();
+								entry.update(System.currentTimeMillis());
 							CMLib.database().DBWriteJournal(realName,entry);
 							CMLib.journals().clearJournalSummaryStats(forum);
 							JournalInfo.clearJournalCache(httpReq, journalName);
@@ -425,11 +425,11 @@ public class JournalFunction extends StdWebMacro
 				cardinalNumber++;
 				entry = JournalInfo.getNextEntry(msgs, msgKey);
 				while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
-					entry = JournalInfo.getNextEntry(msgs, entry.key);
+					entry = JournalInfo.getNextEntry(msgs, entry.key());
 				if(entry==null)
 					keepProcessing=false;
 				else
-					msgKey=entry.key;
+					msgKey=entry.key();
 			}
 		}
 		return messages.toString();

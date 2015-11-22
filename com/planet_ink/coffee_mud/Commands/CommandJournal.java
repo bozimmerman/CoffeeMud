@@ -83,7 +83,7 @@ public class CommandJournal extends StdCommand
 			return true;
 		}
 		final int count=CMath.s_int(second);
-		final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
+		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
 		int size=0;
 		if(journal!=null)
 			size=journal.size();
@@ -117,13 +117,13 @@ public class CommandJournal extends StdCommand
 			mob.tell(L("@x1 is not a journal",rest));
 			return true;
 		}
-		final List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(journalID);
-		final JournalsLibrary.JournalEntry entry2=journal2.get(count-1);
-		final String from2=entry2.from;
-		final String to=entry2.to;
-		final String subject=entry2.subj;
-		final String message=entry2.msg;
-		CMLib.database().DBDeleteJournal(journalID,entry2.key);
+		final List<JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(journalID);
+		final JournalEntry entry2=journal2.get(count-1);
+		final String from2=entry2.from();
+		final String to=entry2.to();
+		final String subject=entry2.subj();
+		final String message=entry2.msg();
+		CMLib.database().DBDeleteJournal(journalID,entry2.key());
 		CMLib.database().DBWriteJournal(realName,
 										  from2,
 										  to,
@@ -154,7 +154,7 @@ public class CommandJournal extends StdCommand
 			mob.tell(L("This feature has been disabled."));
 		else
 		{
-			final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
+			final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
 			int size=0;
 			if(journal!=null)
 				size=journal.size();

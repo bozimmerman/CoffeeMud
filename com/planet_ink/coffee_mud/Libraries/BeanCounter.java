@@ -516,7 +516,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		return C;
 	}
 
-	protected void parseDebt(Vector<DebtItem> debt, String debtor, String xml)
+	protected void parseDebt(Vector<DebtItem> debt, final String debtor, String xml)
 	{
 		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
 		if(xml==null){ Log.errOut("BeanCounter","Unable to parse: "+xml); return ;}
@@ -532,7 +532,52 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			final String reason=CMLib.xml().getValFromPieces(ablk.contents,"FOR");
 			final long due=CMLib.xml().getLongFromPieces(ablk.contents,"DUE");
 			final double interest=CMLib.xml().getDoubleFromPieces(ablk.contents,"INT");
-			debt.addElement(new DebtItem(debtor,owed,amt,reason,due,interest));
+			debt.addElement(new DebtItem()
+			{
+				double amount = amt;
+
+				@Override
+				public String debtor()
+				{
+					return debtor;
+				}
+
+				@Override
+				public String owedTo()
+				{
+					return owed;
+				}
+
+				@Override
+				public double amt()
+				{
+					return amount;
+				}
+
+				@Override
+				public void setAmt(double amt)
+				{
+					amount = amt;
+				}
+
+				@Override
+				public long due()
+				{
+					return due;
+				}
+
+				@Override
+				public double interest()
+				{
+					return interest;
+				}
+
+				@Override
+				public String reason()
+				{
+					return reason;
+				}
+			});
 		}
 	}
 
@@ -541,15 +586,15 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		final StringBuffer xml=new StringBuffer("<DEBT>");
 		for(int d=0;d<debt.size();d++)
 		{
-			if((debt.elementAt(d).debtor.equalsIgnoreCase(name))
-			&&(debt.elementAt(d).owedTo.equalsIgnoreCase(owedTo)))
+			if((debt.elementAt(d).debtor().equalsIgnoreCase(name))
+			&&(debt.elementAt(d).owedTo().equalsIgnoreCase(owedTo)))
 			{
 				xml.append("<OWE>");
-				xml.append(CMLib.xml().convertXMLtoTag("TO",debt.elementAt(d).owedTo));
-				xml.append(CMLib.xml().convertXMLtoTag("AMT",""+debt.elementAt(d).amt));
-				xml.append(CMLib.xml().convertXMLtoTag("FOR",debt.elementAt(d).reason));
-				xml.append(CMLib.xml().convertXMLtoTag("DUE",""+debt.elementAt(d).due));
-				xml.append(CMLib.xml().convertXMLtoTag("INT",""+debt.elementAt(d).interest));
+				xml.append(CMLib.xml().convertXMLtoTag("TO",debt.elementAt(d).owedTo()));
+				xml.append(CMLib.xml().convertXMLtoTag("AMT",""+debt.elementAt(d).amt()));
+				xml.append(CMLib.xml().convertXMLtoTag("FOR",debt.elementAt(d).reason()));
+				xml.append(CMLib.xml().convertXMLtoTag("DUE",""+debt.elementAt(d).due()));
+				xml.append(CMLib.xml().convertXMLtoTag("INT",""+debt.elementAt(d).interest()));
 				xml.append("</OWE>");
 			}
 		}
@@ -566,7 +611,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			final Vector<DebtItem> debt=getDebt(name,owedTo);
 			double total=0.0;
 			for(int d=0;d<debt.size();d++)
-				total+=debt.elementAt(d).amt;
+				total+=debt.elementAt(d).amt();
 			return total;
 		}
 	}
@@ -597,7 +642,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public void adjustDebt(String name, String owedTo, double adjustAmt, String reason, double interest, long due)
+	public void adjustDebt(final String name, final String owedTo, double adjustAmt, final String reason, final double interest, final long due)
 	{
 		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
 		synchronized(key.intern())
@@ -608,21 +653,69 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			for(int d=0;d<debts.size();d++)
 			{
 				final DebtItem debt=debts.elementAt(d);
-				if((debt.debtor.equalsIgnoreCase(name))
-				&&(debt.owedTo.equalsIgnoreCase(owedTo))
-				&&(debt.interest==interest)
-				&&(debt.due==due)
-				&&(debt.reason.equalsIgnoreCase(reason)))
+				if((debt.debtor().equalsIgnoreCase(name))
+				&&(debt.owedTo().equalsIgnoreCase(owedTo))
+				&&(debt.interest()==interest)
+				&&(debt.due()==due)
+				&&(debt.reason().equalsIgnoreCase(reason)))
 				{
-					debt.amt+=adjustAmt;
-					if(debt.amt<=0.0)
+					debt.setAmt(debt.amt()+adjustAmt);
+					if(debt.amt()<=0.0)
 						debts.removeElementAt(d);
 					done=true;
 					break;
 				}
 			}
 			if((!done)&&(adjustAmt>=0.0))
-				debts.addElement(new DebtItem(name,owedTo,adjustAmt,reason,due,interest));
+			{
+				final double initialAdjustedAmount = adjustAmt;
+				debts.addElement(new DebtItem()
+				{
+					double amount = initialAdjustedAmount;
+
+					@Override
+					public String debtor()
+					{
+						return name;
+					}
+
+					@Override
+					public String owedTo()
+					{
+						return owedTo;
+					}
+
+					@Override
+					public double amt()
+					{
+						return amount;
+					}
+
+					@Override
+					public void setAmt(double amt)
+					{
+						amount = amt;
+					}
+
+					@Override
+					public long due()
+					{
+						return due;
+					}
+
+					@Override
+					public double interest()
+					{
+						return interest;
+					}
+
+					@Override
+					public String reason()
+					{
+						return reason;
+					}
+				});
+			}
 
 			final String xml=unparseDebt(debts,name,owedTo);
 			if(update)

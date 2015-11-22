@@ -45,11 +45,11 @@ public class MassMailer implements Runnable
 
 	private static class MassMailerEntry
 	{
-		public final JournalsLibrary.JournalEntry mail;
+		public final JournalEntry mail;
 		public final String  journalName;
 		public final String  overrideReplyTo;
 		public final boolean usePrivateRules;
-		public MassMailerEntry(JournalsLibrary.JournalEntry mail, String journalName, String overrideReplyTo, boolean usePrivateRules)
+		public MassMailerEntry(JournalEntry mail, String journalName, String overrideReplyTo, boolean usePrivateRules)
 		{
 			this.mail=mail;
 			this.journalName=journalName;
@@ -103,7 +103,7 @@ public class MassMailer implements Runnable
 		return false;
 	}
 
-	public void addMail(JournalsLibrary.JournalEntry mail, String journalName, String overrideReplyTo, boolean usePrivateRules)
+	public void addMail(JournalEntry mail, String journalName, String overrideReplyTo, boolean usePrivateRules)
 	{
 		entries.add(new MassMailerEntry(mail,journalName,overrideReplyTo,usePrivateRules));
 	}
@@ -132,17 +132,17 @@ public class MassMailer implements Runnable
 	{
 		for(final MassMailerEntry entry : entries)
 		{
-			final JournalsLibrary.JournalEntry mail=entry.mail;
+			final JournalEntry mail=entry.mail;
 			final String journalName=entry.journalName;
 			final String overrideReplyTo=entry.overrideReplyTo;
 			final boolean usePrivateRules=entry.usePrivateRules;
 
-			final String key=mail.key;
-			final String from=mail.from;
-			final String to=mail.to;
-			final long date=mail.update;
-			final String subj=mail.subj;
-			final String msg=mail.msg.trim();
+			final String key=mail.key();
+			final String from=mail.from();
+			final String to=mail.to();
+			final long date=mail.update();
+			final String subj=mail.subj();
+			final String msg=mail.msg().trim();
 
 			if(to.equalsIgnoreCase("ALL")||(to.toUpperCase().trim().startsWith("MASK=")))
 				continue;
@@ -190,7 +190,7 @@ public class MassMailer implements Runnable
 
 			// check email age
 			if((usePrivateRules)
-			&&(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
+			&&(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
 			&&(deleteEmailIfOld(journalName, key, date, getEmailDays())))
 				continue;
 
@@ -205,7 +205,7 @@ public class MassMailer implements Runnable
 			catch(final BadEmailAddressException be)
 			{
 				if((!usePrivateRules)
-				&&(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED)))
+				&&(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED)))
 				{
 					// email is a goner if its a list
 					CMLib.database().DBDeleteJournal(journalName,key);
@@ -221,7 +221,7 @@ public class MassMailer implements Runnable
 					oldEmailComplaints.add(toName);
 					Log.errOut("SMTPServer","Unable to send '"+toEmail+"' for '"+toName+"': "+ioe.getMessage());
 				}
-				if(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
+				if(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
 					deleteEmailIfOld(journalName, key, date,getFailureDays());
 				continue;
 			}

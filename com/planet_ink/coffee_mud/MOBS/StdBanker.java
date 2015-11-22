@@ -397,8 +397,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 		if(depositorName.length()==0)
 			return null;
 		for(int d=0;d<debt.size();d++)
-			if(debt.elementAt(d).debtor.equalsIgnoreCase(depositorName))
+		{
+			if(debt.elementAt(d).debtor().equalsIgnoreCase(depositorName))
 				return debt.elementAt(d);
+		}
 		return null;
 	}
 
@@ -478,13 +480,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 						for(int d=debts.size()-1;d>=0;d--)
 						{
 							final MoneyLibrary.DebtItem debtItem=debts.elementAt(d);
-							final String debtor=debtItem.debtor;
+							final String debtor=debtItem.debtor();
 							if(debtor.equalsIgnoreCase(name))
 							{
-								final long debtDueAt=debtItem.due;
-								final double intRate=debtItem.interest;
-								final double dueAmount=debtItem.amt;
-								final String reason=debtItem.reason;
+								final long debtDueAt=debtItem.due();
+								final double intRate=debtItem.interest();
+								final double dueAmount=debtItem.amt();
+								final String reason=debtItem.reason();
 								final double intDue=CMath.mul(intRate,dueAmount);
 								final long timeRemaining=debtDueAt-System.currentTimeMillis();
 								if((timeRemaining<0)&&(newBalance<((dueAmount)+intDue)))
@@ -545,7 +547,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						}
 					}
 					for(int d=debts.size()-1;d>=0;d--)
-						CMLib.beanCounter().delAllDebt(debts.elementAt(d).debtor,bankChain());
+						CMLib.beanCounter().delAllDebt(debts.elementAt(d).debtor(),bankChain());
 				}
 			}
 		}
@@ -885,9 +887,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 						for(int d=0;d<debts.size();d++)
 						{
 							final MoneyLibrary.DebtItem debt=debts.elementAt(d);
-							final long debtDueAt=debt.due;
-							final double intRate=debt.interest;
-							final double dueAmount=debt.amt;
+							final long debtDueAt=debt.due();
+							final double intRate=debt.interest();
+							final double dueAmount=debt.amt();
 							final long timeRemaining=debtDueAt-System.currentTimeMillis();
 							if(timeRemaining>0)
 								str.append(L("\n\r@x1 owe ^H@x2^? in debt.\n\rMonthly interest is @x3%.  The loan must be paid in full in @x4 months.",((isSold(ShopKeeper.DEAL_CLANBANKER))?CMStrings.capitalizeFirstLetter(listerName):L("You")),CMLib.beanCounter().nameCurrencyLong(this,dueAmount),""+(intRate*100.0),""+(timeRemaining/timeInterval())));

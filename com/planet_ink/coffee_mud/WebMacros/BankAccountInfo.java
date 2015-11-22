@@ -42,6 +42,7 @@ public class BankAccountInfo extends StdWebMacro
 		double balance=0.0;
 		MoneyLibrary.DebtItem debt=null;
 		List<Item> items=new Vector<Item>(1);
+		@Override
 		public void finalize() throws Throwable
 		{
 			if(items != null)
@@ -150,12 +151,12 @@ public class BankAccountInfo extends StdWebMacro
 		||(parms.containsKey("DEBTINT")))
 		{
 			final MoneyLibrary.DebtItem debt=acct.debt;
-			if((debt==null)||(debt.amt==0.0))
+			if((debt==null)||(debt.amt()==0.0))
 				return "N/A";
-			final double amt=debt.amt;
-			final String reason=debt.reason;
-			final String intRate=CMath.div((int)Math.round(debt.interest*10000.0),100.0)+"%";
-			final long dueLong=debt.due;
+			final double amt=debt.amt();
+			final String reason=debt.reason();
+			final String intRate=CMath.div((int)Math.round(debt.interest()*10000.0),100.0)+"%";
+			final long dueLong=debt.due();
 			final long timeRemaining=System.currentTimeMillis()-dueLong;
 			String dueDate="";
 			if(timeRemaining<0)

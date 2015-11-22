@@ -80,7 +80,7 @@ public class JournalNext extends StdWebMacro
 			httpReq.getRequestObjects().put("JOURNALLIST",journals);
 		}
 		String lastID="";
-		final HashSet<String> H=CMLib.journals().getArchonJournalNames();
+		final Set<String> H=CMLib.journals().getArchonJournalNames();
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		for(int j=0;j<journals.size();j++)
 		{

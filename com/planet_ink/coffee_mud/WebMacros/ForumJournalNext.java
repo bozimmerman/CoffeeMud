@@ -104,7 +104,7 @@ public class ForumJournalNext extends StdWebMacro
 			}
 		}
 		String lastID="";
-		final HashSet<String> H=CMLib.journals().getArchonJournalNames();
+		final Set<String> H=CMLib.journals().getArchonJournalNames();
 		boolean allForumJournals=false;
 		if((Thread.currentThread() instanceof CWThread)
 		&&CMath.s_bool(((CWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))

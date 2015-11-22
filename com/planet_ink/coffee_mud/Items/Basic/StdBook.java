@@ -196,7 +196,7 @@ public class StdBook extends StdItem
 	{
 		final StringBuffer buf=new StringBuffer("");
 		final Triad<String,String,StringBuffer> reply=new Triad<String,String,StringBuffer>("","",new StringBuffer(""));
-		final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
+		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
 			buf.append(L("\n\rTable of Contents\n\r"));
@@ -214,16 +214,16 @@ public class StdBook extends StdItem
 		{
 			if(journal.size()>0)
 			{
-				reply.first = journal.get(0).from;
-				reply.second = journal.get(0).subj;
+				reply.first = journal.get(0).from();
+				reply.second = journal.get(0).subj();
 			}
 			final Vector<Object> selections=new Vector<Object>();
 			for(int j=0;j<journal.size();j++)
 			{
-				final JournalsLibrary.JournalEntry entry=journal.get(j);
-				final String from=entry.from;
-				final String to=entry.to;
-				final String subject=entry.subj;
+				final JournalEntry entry=journal.get(j);
+				final String from=entry.from();
+				final String to=entry.to();
+				final String subject=entry.subj();
 				final StringBuffer selection=new StringBuffer("");
 				if(to.equals("ALL")
 				||to.equalsIgnoreCase(readerMOB.Name())
@@ -274,14 +274,14 @@ public class StdBook extends StdItem
 		}
 		else
 		{
-			final JournalsLibrary.JournalEntry entry=journal.get(which);
-			final String from=entry.from;
-			final String to=entry.to;
-			final String subject=entry.subj;
-			String message=entry.msg;
+			final JournalEntry entry=journal.get(which);
+			final String from=entry.from();
+			final String to=entry.to();
+			final String subject=entry.subj();
+			String message=entry.msg();
 
-			reply.first = entry.from;
-			reply.second = entry.subj;
+			reply.first = entry.from();
+			reply.second = entry.subj();
 
 			//String compdate=(String)entry.elementAt(6);
 			final boolean mineAble=to.equalsIgnoreCase(readerMOB.Name())

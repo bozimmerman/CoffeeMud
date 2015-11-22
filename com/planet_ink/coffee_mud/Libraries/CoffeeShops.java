@@ -1647,21 +1647,21 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		final Vector<AuctionData> auctions=new Vector<AuctionData>();
 		final String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
-		final List<JournalsLibrary.JournalEntry> otherAuctions=CMLib.database().DBReadJournalMsgs(house);
+		final List<JournalEntry> otherAuctions=CMLib.database().DBReadJournalMsgs(house);
 		for(int o=0;o<otherAuctions.size();o++)
 		{
-			final JournalsLibrary.JournalEntry auctionData=otherAuctions.get(o);
-			final String from=auctionData.from;
-			final String to=auctionData.to;
-			final String key=auctionData.key;
+			final JournalEntry auctionData=otherAuctions.get(o);
+			final String from=auctionData.from();
+			final String to=auctionData.to();
+			final String key=auctionData.key();
 			if((ofLike instanceof MOB)&&(!((MOB)ofLike).Name().equals(to)))
 				continue;
 			if((ofLike instanceof String)&&(!((String)ofLike).equals(key)))
 				continue;
 			final AuctionData data=(AuctionData)CMClass.getCommon("DefaultAuction");
-			data.setStartTime(auctionData.date);
+			data.setStartTime(auctionData.date());
 			data.setAuctionTickDown(CMath.s_long(to));
-			final String xml=auctionData.msg;
+			final String xml=auctionData.msg();
 			List<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(xml);
 			xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
 			final String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");

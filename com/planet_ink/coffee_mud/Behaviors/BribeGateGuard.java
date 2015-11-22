@@ -11,7 +11,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -147,26 +146,26 @@ public class BribeGateGuard extends StdBehavior
 		// return the balance in int form
 		if(surviveReboot)
 		{
-			final List<JournalsLibrary.JournalEntry> V =CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
+			final List<JournalEntry> V =CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
 			final Vector<JournalEntry> mine = new Vector<JournalEntry>();
 			for (int v = 0; v < V.size(); v++)
 			{
-				final JournalsLibrary.JournalEntry V2 =V.get(v);
-				if ( ( V2.from.equalsIgnoreCase(mob.Name())))
+				final JournalEntry V2 =V.get(v);
+				if ( ( V2.from().equalsIgnoreCase(mob.Name())))
 				{
 					mine.addElement(V2);
 				}
 			}
 			for (int v = 0; v < mine.size(); v++)
 			{
-				final JournalsLibrary.JournalEntry V2 = mine.elementAt(v);
-				final String fullName = V2.subj;
+				final JournalEntry V2 = mine.elementAt(v);
+				final String fullName = V2.subj();
 				if (fullName.equals("COINS"))
 				{
 					final Coins item = (Coins) CMClass.getItem("StdCoins");
 					if (item != null)
 					{
-						CMLib.coffeeMaker().setPropertiesStr(item,V2.msg, true);
+						CMLib.coffeeMaker().setPropertiesStr(item,V2.msg(), true);
 						item.recoverPhyStats();
 						item.text();
 						balance += item.getTotalValue();
@@ -218,23 +217,23 @@ public class BribeGateGuard extends StdBehavior
 		// kill the journal entries for that mob
 		if(surviveReboot)
 		{
-			final List<JournalsLibrary.JournalEntry> V = CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
+			final List<JournalEntry> V = CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
 			final Vector<JournalEntry> mine = new Vector<JournalEntry>();
 			for (int v = 0; v < V.size(); v++)
 			{
-				final JournalsLibrary.JournalEntry V2 = V.get(v);
-				if ( ( V2.from).equalsIgnoreCase(mob.Name()))
+				final JournalEntry V2 = V.get(v);
+				if ( ( V2.from()).equalsIgnoreCase(mob.Name()))
 				{
 					mine.addElement(V2);
 				}
 			}
 			for (int v = 0; v < mine.size(); v++)
 			{
-				final JournalsLibrary.JournalEntry V2 = mine.elementAt(v);
-				final String fullName = V2.subj;
+				final JournalEntry V2 = mine.elementAt(v);
+				final String fullName = V2.subj();
 				if (fullName.equals("COINS"))
 				{
-					CMLib.database().DBDeleteJournal("BRIBEGATE_"+gates(), V2.key);
+					CMLib.database().DBDeleteJournal("BRIBEGATE_"+gates(), V2.key());
 				}
 			}
 		}

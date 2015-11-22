@@ -131,22 +131,14 @@ public interface MoneyLibrary extends CMLibrary
 	public static final String dollarStandard=
 		"DOLLAR=1 cent(c) (c);100 dollar($) (mc);100000 grand (k$)";
 
-	public static class DebtItem
+	public static interface DebtItem
 	{
-		public String debtor;
-		public String owedTo;
-		public double amt;
-		public long due;
-		public double interest;
-		public String reason;
-		public DebtItem(String debtor, String owedTo, double amt, String reason, long due, double interest)
-		{
-			this.debtor=debtor;
-			this.owedTo=owedTo;
-			this.amt=amt;
-			this.reason=reason;
-			this.due=due;
-			this.interest=interest;
-		}
+		public String debtor();
+		public String owedTo();
+		public double amt();
+		public void setAmt(double amt);
+		public long due();
+		public double interest();
+		public String reason();
 	}
 }

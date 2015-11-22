@@ -10,7 +10,6 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournalFlags;
-import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -39,7 +38,7 @@ public class JournalInfo extends StdWebMacro
 {
 	@Override public String name() { return "JournalInfo"; }
 
-	public static JournalsLibrary.JournalEntry getEntry(List<JournalsLibrary.JournalEntry> msgs, String key)
+	public static JournalEntry getEntry(List<JournalEntry> msgs, String key)
 	{
 		if(msgs==null)
 			return null;
@@ -47,14 +46,14 @@ public class JournalInfo extends StdWebMacro
 			return null;
 		for (final JournalEntry entry : msgs)
 		{
-			if(entry.key.equalsIgnoreCase(key))
+			if(entry.key().equalsIgnoreCase(key))
 				return entry;
 		}
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<JournalsLibrary.JournalEntry> getMessages(String journalName, JournalsLibrary.ForumJournal forumJournal, String page, String mpage, String parent, String dbsearch, Map<String,Object> objs)
+	public static List<JournalEntry> getMessages(String journalName, JournalsLibrary.ForumJournal forumJournal, String page, String mpage, String parent, String dbsearch, Map<String,Object> objs)
 	{
 		if((parent!=null)&&(parent.length()>0))
 		{
@@ -78,7 +77,7 @@ public class JournalInfo extends StdWebMacro
 		if(parent==null)
 			parent="";
 		final String httpkey="JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page;
-		List<JournalsLibrary.JournalEntry> msgs=(List<JournalsLibrary.JournalEntry>)objs.get(httpkey);
+		List<JournalEntry> msgs=(List<JournalEntry>)objs.get(httpkey);
 		if(msgs==null)
 		{
 			if((page==null)||(page.length()==0))
@@ -90,15 +89,15 @@ public class JournalInfo extends StdWebMacro
 				int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 				if(limit<=0)
 					limit=Integer.MAX_VALUE;
-				msgs = new Vector<JournalsLibrary.JournalEntry>();
+				msgs = new Vector<JournalEntry>();
 				if((pageDate <= 0)
-				&& (stats.stuckyKeys!=null)
+				&& (stats.stuckyKeys()!=null)
 				&& ((dbsearch==null)||(dbsearch.length()==0))
 				&& ((parent != null)&&(parent.length()==0)))
 				{
-					for(final String stuckyKey : stats.stuckyKeys)
+					for(final String stuckyKey : stats.stuckyKeys())
 					{
-						final JournalsLibrary.JournalEntry entry = CMLib.database().DBReadJournalEntry(journalName, stuckyKey);
+						final JournalEntry entry = CMLib.database().DBReadJournalEntry(journalName, stuckyKey);
 						if(entry != null)
 							msgs.add(entry);
 					}
@@ -120,16 +119,16 @@ public class JournalInfo extends StdWebMacro
 				httpReq.getRequestObjects().remove(o.toString());
 	}
 
-	public static JournalsLibrary.JournalEntry getNextEntry(List<JournalsLibrary.JournalEntry> info, String key)
+	public static JournalEntry getNextEntry(List<JournalEntry> info, String key)
 	{
 		if(info==null)
 			return null;
-		for(final Iterator<JournalsLibrary.JournalEntry> e=info.iterator();e.hasNext();)
+		for(final Iterator<JournalEntry> e=info.iterator();e.hasNext();)
 		{
-			final JournalsLibrary.JournalEntry entry = e.next();
+			final JournalEntry entry = e.next();
 			if((key == null)||(key.length()==0))
 				return entry;
-			if(entry.key.equalsIgnoreCase(key))
+			if(entry.key().equalsIgnoreCase(key))
 			{
 				if(e.hasNext())
 					return e.next();
@@ -165,15 +164,15 @@ public class JournalInfo extends StdWebMacro
 		final JournalsLibrary.ForumJournal journal= CMLib.journals().getForumJournal(journalName,setClan);
 
 		final String cardinal=httpReq.getUrlParameter("JOURNALCARDINAL");
-		JournalsLibrary.JournalEntry entry=null;
+		JournalEntry entry=null;
 		if(msgKey.equalsIgnoreCase("FORUMLATEST"))
 		{
 			final JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journal);
-			if((stats!=null)&&(stats.latestKey!=null)&&(stats.latestKey.length()>0))
+			if((stats!=null)&&(stats.latestKey()!=null)&&(stats.latestKey().length()>0))
 			{
-				entry=CMLib.database().DBReadJournalEntry(journalName, stats.latestKey);
+				entry=CMLib.database().DBReadJournalEntry(journalName, stats.latestKey());
 				if(entry != null)
-					httpReq.addFakeUrlParameter("JOURNALMESSAGE", entry.key);
+					httpReq.addFakeUrlParameter("JOURNALMESSAGE", entry.key());
 			}
 		}
 		else
@@ -184,7 +183,7 @@ public class JournalInfo extends StdWebMacro
 			final String dbsearch=httpReq.getUrlParameter("DBSEARCH");
 			if((page!=null)&&(page.length()>0))
 			{
-				final List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
+				final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
 				entry= JournalInfo.getEntry(msgs,msgKey);
 			}
 		}
@@ -196,9 +195,9 @@ public class JournalInfo extends StdWebMacro
 		if(entry==null)
 			return " @break@";
 		if(cardinal!=null)
-			entry.cardinal=CMath.s_int(cardinal);
+			entry.cardinal(CMath.s_int(cardinal));
 		final boolean priviledged=CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)&&(!parms.containsKey("NOPRIV"));
-		String to=entry.to;
+		String to=entry.to();
 		if(to.equalsIgnoreCase("all")
 		||((M!=null)
 		   &&(priviledged
@@ -210,7 +209,7 @@ public class JournalInfo extends StdWebMacro
 				if(M==null)
 					return "false";
 				return String.valueOf(
-						entry.from.equals(M.Name())
+						entry.from().equals(M.Name())
 						|| priviledged
 						|| (journal!=null && journal.authorizationCheck(M, ForumJournalFlags.ADMIN))
 						);
@@ -221,62 +220,62 @@ public class JournalInfo extends StdWebMacro
 				final String quotedMessage=httpReq.getUrlParameter("QUOTEDMESSAGE");
 				if((quotedMessage==null)||(quotedMessage.length()==0))
 					return "";
-				final JournalsLibrary.JournalEntry quotedEntry =CMLib.database().DBReadJournalEntry(journalName, quotedMessage);
+				final JournalEntry quotedEntry =CMLib.database().DBReadJournalEntry(journalName, quotedMessage);
 				return "<P><BLOCKQUOTE style=\"border : solid #000 1px; padding : 3px; margin-left: 1em; margin-bottom:0.2em; background: #f9f9f9 none; color: #000;\">"
-					+"<FONT SIZE=-1>Quoted from "+quotedEntry.from
-					+" &nbsp;("+CMLib.time().date2String(quotedEntry.date)+"):</FONT><HR>"
-					+ "<I>"+quotedEntry.msg + "</I></BLOCKQUOTE></P>";
+					+"<FONT SIZE=-1>Quoted from "+quotedEntry.from()
+					+" &nbsp;("+CMLib.time().date2String(quotedEntry.date())+"):</FONT><HR>"
+					+ "<I>"+quotedEntry.msg() + "</I></BLOCKQUOTE></P>";
 			}
 			else
 			if(parms.containsKey("KEY"))
-				return clearWebMacros(entry.key);
+				return clearWebMacros(entry.key());
 			else
 			if(parms.containsKey("ISLASTENTRY"))
-				return String.valueOf(entry.isLastEntry);
+				return String.valueOf(entry.isLastEntry());
 			else
 			if(parms.containsKey("FROM"))
-				return clearWebMacros(entry.from);
+				return clearWebMacros(entry.from());
 			else
 			if(parms.containsKey("ISSTICKY")||parms.containsKey("ISSTUCKY"))
-				return String.valueOf(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY));
+				return String.valueOf(CMath.bset(entry.attributes(), JournalEntry.ATTRIBUTE_STUCKY));
 			else
 			if(parms.containsKey("ISPROTECTED"))
-				return String.valueOf(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED));
+				return String.valueOf(CMath.bset(entry.attributes(), JournalEntry.ATTRIBUTE_PROTECTED));
 			else
 			if(parms.containsKey("MSGICON"))
-				return clearWebMacros(entry.msgIcon);
+				return clearWebMacros(entry.msgIcon());
 			else
 			if(parms.containsKey("MSGTYPEICON"))
 			{
-				if(entry.attributes==0)
+				if(entry.attributes()==0)
 					return "images/doc.gif";
-				if(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY))
+				if(CMath.bset(entry.attributes(), JournalEntry.ATTRIBUTE_STUCKY))
 					return "images/doclocked.gif";
-				if(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
+				if(CMath.bset(entry.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
 					return "images/docstar.gif";
 				return "images/docunknown.gif";
 			}
 			else
 			if(parms.containsKey("CARDINAL"))
-				return clearWebMacros(entry.cardinal+"");
+				return clearWebMacros(entry.cardinal()+"");
 			else
 			if(parms.containsKey("DATE"))
-				return CMLib.time().date2String(entry.date);
+				return CMLib.time().date2String(entry.date());
 			else
 			if(parms.containsKey("REPLIES"))
-				return clearWebMacros(entry.replies+"");
+				return clearWebMacros(entry.replies()+"");
 			else
 			if(parms.containsKey("VIEWS"))
-				return clearWebMacros(entry.views+"");
+				return clearWebMacros(entry.views()+"");
 			else
 			if(parms.containsKey("DATEPOSTED"))
 			{
 				final Calendar meC=Calendar.getInstance();
 				final Calendar C=Calendar.getInstance();
-				meC.setTimeInMillis(entry.update);
+				meC.setTimeInMillis(entry.update());
 				if(Calendar.getInstance().get(Calendar.YEAR)!=meC.get(Calendar.YEAR))
-					return CMLib.time().date2Date2String(entry.update);
-				final String dateString = CMLib.time().date2MonthDateString(entry.date, false);
+					return CMLib.time().date2Date2String(entry.update());
+				final String dateString = CMLib.time().date2MonthDateString(entry.date(), false);
 				final String todayString = CMLib.time().date2MonthDateString(System.currentTimeMillis(), false);
 				if(dateString.equals(todayString))
 					return "Today";
@@ -289,17 +288,17 @@ public class JournalInfo extends StdWebMacro
 			else
 			if(parms.containsKey("TIMEPOSTED"))
 			{
-				return CMLib.time().date2APTimeString(entry.date);
+				return CMLib.time().date2APTimeString(entry.date());
 			}
 			else
 			if(parms.containsKey("DATEUPDATED"))
 			{
 				final Calendar meC=Calendar.getInstance();
 				final Calendar C=Calendar.getInstance();
-				meC.setTimeInMillis(entry.update);
+				meC.setTimeInMillis(entry.update());
 				if(Calendar.getInstance().get(Calendar.YEAR)!=meC.get(Calendar.YEAR))
-					return CMLib.time().date2Date2String(entry.update);
-				final String dateString = CMLib.time().date2MonthDateString(entry.update, false);
+					return CMLib.time().date2Date2String(entry.update());
+				final String dateString = CMLib.time().date2MonthDateString(entry.update(), false);
 				final String todayString = CMLib.time().date2MonthDateString(System.currentTimeMillis(), false);
 				if(dateString.equals(todayString))
 					return "Today";
@@ -313,12 +312,12 @@ public class JournalInfo extends StdWebMacro
 			else
 			if(parms.containsKey("TIMEUPDATED"))
 			{
-				return CMLib.time().date2APTimeString(entry.update);
+				return CMLib.time().date2APTimeString(entry.update());
 			}
 			else
 			if(parms.containsKey("UPDATED"))
 			{
-				return String.valueOf(entry.update);
+				return String.valueOf(entry.update());
 			}
 			else
 			if(parms.containsKey("TO"))
@@ -329,11 +328,11 @@ public class JournalInfo extends StdWebMacro
 			}
 			else
 			if(parms.containsKey("SUBJECT"))
-				return clearWebMacros(entry.subj);
+				return clearWebMacros(entry.subj());
 			else
 			if(parms.containsKey("MESSAGE"))
 			{
-				String s=entry.msg;
+				String s=entry.msg();
 				if(parms.containsKey("NOREPLIES"))
 				{
 					final int x=s.indexOf(JournalsLibrary.JOURNAL_BOUNDARY);
@@ -354,12 +353,15 @@ public class JournalInfo extends StdWebMacro
 					s=colorwebifyOnly(new StringBuffer(s)).toString();
 					s=clearWebMacros(s);
 				}
-				if((entry.parent==null)||(entry.parent.length()==0))
-					CMLib.database().DBViewJournalMessage(entry.key, ++entry.views);
+				if((entry.parent()==null)||(entry.parent().length()==0))
+				{
+					entry.views(entry.views()+1);
+					CMLib.database().DBViewJournalMessage(entry.key(), entry.views());
+				}
 				return s;
 			}
 			if(parms.containsKey("EMAILALLOWED"))
-				return ""+((entry.from.length()>0)
+				return ""+((entry.from().length()>0)
 						&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
 		}
 		return "";

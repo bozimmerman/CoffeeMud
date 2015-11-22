@@ -774,14 +774,14 @@ public class Reset extends StdCommand
 			}
 			if(mob.session().confirm(L("Inspect and update all COIN objects in player bank accounts?"), "N"))
 			{
-				final List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
+				final List<JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
 				for(int v=0;v<V.size();v++)
 				{
-					final JournalsLibrary.JournalEntry V2=V.get(v);
-					final String name=V2.from;
-					final String ID=V2.subj;
-					String classID=V2.to;
-					final String data=V2.msg;
+					final JournalEntry V2=V.get(v);
+					final String name=V2.from();
+					final String ID=V2.subj();
+					String classID=V2.to();
+					final String data=V2.msg();
 					if(ID.equalsIgnoreCase("COINS"))
 						classID="COINS";
 					final Item I=(Item)CMClass.getItem("GenItem").copyOf();

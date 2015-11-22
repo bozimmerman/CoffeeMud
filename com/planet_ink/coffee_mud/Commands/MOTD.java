@@ -83,18 +83,18 @@ public class MOTD extends StdCommand
 					buf.append(msg+"\n\r--------------------------------------\n\r");
 				}
 
-				final List<JournalsLibrary.JournalEntry> journal=new LinkedList<JournalsLibrary.JournalEntry>();
+				final List<JournalEntry> journal=new LinkedList<JournalEntry>();
 				journal.addAll(CMLib.database().DBReadJournalMsgs("CoffeeMud News")); // deprecated
 				journal.addAll(CMLib.database().DBReadJournalMsgs("SYSTEM_NEWS"));
 				for(int which=0;which<journal.size();which++)
 				{
-					final JournalsLibrary.JournalEntry entry=journal.get(which);
-					final String from=entry.from;
-					final long last=entry.date;
-					String to=entry.to;
-					final String subject=entry.subj;
-					String message=entry.msg;
-					final long compdate=entry.update;
+					final JournalEntry entry=journal.get(which);
+					final String from=entry.from();
+					final long last=entry.date();
+					String to=entry.to();
+					final String subject=entry.subj();
+					String message=entry.msg();
+					final long compdate=entry.update();
 					if(compdate>mob.playerStats().getLastDateTime())
 					{
 						boolean allMine=to.equalsIgnoreCase(mob.Name())
@@ -173,14 +173,14 @@ public class MOTD extends StdCommand
 				for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
 				{
 					final JournalsLibrary.CommandJournal CMJ=myEchoableCommandJournals.get(cj);
-					final List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S");
+					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S");
 					if(items!=null)
 					for(int i=0;i<items.size();i++)
 					{
-						final JournalsLibrary.JournalEntry entry=items.get(i);
-						final String from=entry.from;
-						final String message=entry.msg;
-						final long compdate=entry.update;
+						final JournalEntry entry=items.get(i);
+						final String from=entry.from();
+						final String message=entry.msg();
+						final long compdate=entry.update();
 						if(compdate>mob.playerStats().getLastDateTime())
 						{
 							buf.append("\n\rNEW "+CMJ.NAME()+" from "+from+": "+message+"\n\r");
@@ -194,12 +194,12 @@ public class MOTD extends StdCommand
 				if((!mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{
-					final List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX));
+					final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX));
 					int mymsgs=0;
 					for(int num=0;num<msgs.size();num++)
 					{
-						final JournalsLibrary.JournalEntry thismsg=msgs.get(num);
-						final String to=thismsg.to;
+						final JournalEntry thismsg=msgs.get(num);
+						final String to=thismsg.to();
 						if(to.equalsIgnoreCase("all")
 						||to.equalsIgnoreCase(mob.Name())
 						||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))

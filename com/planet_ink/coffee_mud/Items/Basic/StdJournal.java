@@ -14,8 +14,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
+
 import java.util.*;
 import java.io.IOException;
 
@@ -115,13 +115,13 @@ public class StdJournal extends StdItem
 					if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
 						all=true;
 				}
-				JournalsLibrary.JournalEntry read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+				JournalEntry read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 				boolean megaRepeat=true;
 				while((megaRepeat) && (read!=null))
 				{
 					megaRepeat=false;
-					final String from=read.from;
-					StringBuffer entry=read.derivedBuildMessage;
+					final String from=read.from();
+					StringBuffer entry=read.derivedBuildMessage();
 					boolean mineAble=false;
 					if(entry.charAt(0)=='#')
 					{
@@ -181,7 +181,7 @@ public class StdJournal extends StdItem
 									{
 										which++;
 										read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
-										entry=read.derivedBuildMessage;
+										entry=read.derivedBuildMessage();
 										if(entry==null)
 											break;
 										if(entry.toString().trim().length()>0)
@@ -212,7 +212,7 @@ public class StdJournal extends StdItem
 											CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
 																			  mob.Name(),
 																			  M.Name(),
-																			  "RE: "+read.subj,
+																			  "RE: "+read.subj(),
 																			  replyMsg);
 											mob.tell(L("Email queued."));
 										}
@@ -260,14 +260,14 @@ public class StdJournal extends StdItem
 											mob.tell(L("The journal '@x1' does not presently exist.  Aborted.",journal));
 										else
 										{
-											final List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(Name());
-											final JournalsLibrary.JournalEntry entry2=journal2.get(which-1);
-											CMLib.database().DBDeleteJournal(Name(),entry2.key);
+											final List<JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(Name());
+											final JournalEntry entry2=journal2.get(which-1);
+											CMLib.database().DBDeleteJournal(Name(),entry2.key());
 											CMLib.database().DBWriteJournal(realName,
-																			  entry2.from,
-																			  entry2.to,
-																			  entry2.subj,
-																			  entry2.msg);
+																			  entry2.from(),
+																			  entry2.to(),
+																			  entry2.subj(),
+																			  entry2.msg());
 											msg.setValue(-1);
 										}
 										mob.tell(L("Message transferred."));
@@ -281,7 +281,7 @@ public class StdJournal extends StdItem
 									read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 									if(read != null)
 									{
-										CMLib.database().DBDeleteJournal(Name(),read.key);
+										CMLib.database().DBDeleteJournal(Name(),read.key());
 										msg.setValue(-1);
 										mob.tell(L("Entry deleted."));
 									}
@@ -296,7 +296,7 @@ public class StdJournal extends StdItem
 										final String replyMsg=mob.session().prompt(L("Enter your response\n\r: "));
 										if(replyMsg.trim().length()>0)
 										{
-											CMLib.database().DBWriteJournalReply(Name(),read.key,mob.Name(),"","",replyMsg);
+											CMLib.database().DBWriteJournalReply(Name(),read.key(),mob.Name(),"","",replyMsg);
 											mob.tell(L("Reply added."));
 										}
 										else
@@ -424,10 +424,10 @@ public class StdJournal extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public JournalsLibrary.JournalEntry DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
+	public JournalEntry DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		final StringBuffer buf=new StringBuffer("");
-		final List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
+		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
 		final boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
@@ -440,35 +440,35 @@ public class StdJournal extends StdItem
 			buf.append("-------------------------------------------------------------------------\n\r");
 			if(journal==null)
 			{
-				final JournalsLibrary.JournalEntry fakeEntry = new JournalsLibrary.JournalEntry();
-				fakeEntry.key="";
-				fakeEntry.from="";
-				fakeEntry.subj="";
-				fakeEntry.derivedBuildMessage=buf;
+				final JournalEntry fakeEntry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
+				fakeEntry.key("");
+				fakeEntry.from("");
+				fakeEntry.subj("");
+				fakeEntry.derivedBuildMessage(buf);
 				return fakeEntry;
 			}
 		}
 
-		final JournalsLibrary.JournalEntry fakeEntry = new JournalsLibrary.JournalEntry();
+		final JournalEntry fakeEntry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
 		if((which<0)||(which>=journal.size()))
 		{
 			if(journal.size()>0)
 			{
-				final JournalsLibrary.JournalEntry entry=journal.get(0);
-				fakeEntry.key=entry.key;
-				fakeEntry.from=entry.from;
-				fakeEntry.subj=entry.subj;
+				final JournalEntry entry=journal.get(0);
+				fakeEntry.key(entry.key());
+				fakeEntry.from(entry.from());
+				fakeEntry.subj(entry.subj());
 			}
 			final Vector<CharSequence> selections=new Vector<CharSequence>();
 			for(int j=0;j<journal.size();j++)
 			{
-				final JournalsLibrary.JournalEntry entry=journal.get(j);
-				final String from=entry.from;
-				final long date=entry.date;
-				String to=entry.to;
-				final String subject=entry.subj;
+				final JournalEntry entry=journal.get(j);
+				final String from=entry.from();
+				final long date=entry.date();
+				String to=entry.to();
+				final String subject=entry.subj();
 				// message is 5, but dont matter.
-				final long compdate=entry.update;
+				final long compdate=entry.update();
 				final StringBuffer selection=new StringBuffer("");
 				boolean mayRead=(to.equals("ALL")
 								||to.equalsIgnoreCase(reader.Name())
@@ -529,16 +529,16 @@ public class StdJournal extends StdItem
 		}
 		else
 		{
-			final JournalsLibrary.JournalEntry entry=journal.get(which);
-			final String from=entry.from;
-			final long date=entry.date;
-			String to=entry.to;
-			final String subject=entry.subj;
-			String message=entry.msg;
+			final JournalEntry entry=journal.get(which);
+			final String from=entry.from();
+			final long date=entry.date();
+			String to=entry.to();
+			final String subject=entry.subj();
+			String message=entry.msg();
 
-			fakeEntry.key=entry.key;
-			fakeEntry.from=entry.from;
-			fakeEntry.subj=entry.subj;
+			fakeEntry.key(entry.key());
+			fakeEntry.from(entry.from());
+			fakeEntry.subj(entry.subj());
 
 			boolean allMine=(to.equalsIgnoreCase(reader.Name())
 							||from.equalsIgnoreCase(reader.Name()));
@@ -568,7 +568,7 @@ public class StdJournal extends StdItem
 						   +"\n\r"+message);
 			}
 		}
-		fakeEntry.derivedBuildMessage=buf;
+		fakeEntry.derivedBuildMessage(buf);
 		return fakeEntry;
 	}
 

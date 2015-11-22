@@ -12,7 +12,9 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournalFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -79,8 +81,136 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				stats = journalSummaryStats.get(journal.NAME().toUpperCase().trim());
 				if(stats == null)
 				{
-					stats = new JournalSummaryStats();
-					stats.name = journal.NAME();
+					stats = new JournalSummaryStats()
+					{
+						private String			name		= "";
+						private int				threads		= 0;
+						private int				posts		= 0;
+						private String			imagePath	= "";
+						private String			shortIntro	= "";
+						private String			longIntro	= "";
+						private String			introKey	= "";
+						private String			latestKey	= "";
+						private List<String>	stuckyKeys	= null;
+
+						@Override
+						public String name()
+						{
+							return name;
+						}
+
+						@Override
+						public JournalSummaryStats name(String intro)
+						{
+							name = intro;
+							return this;
+						}
+
+						@Override
+						public int threads()
+						{
+							return threads;
+						}
+
+						@Override
+						public JournalSummaryStats threads(int num)
+						{
+							this.threads = num;
+							return this;
+						}
+
+						@Override
+						public int posts()
+						{
+							return posts;
+						}
+
+						@Override
+						public JournalSummaryStats posts(int num)
+						{
+							this.posts = num;
+							return this;
+						}
+
+						@Override
+						public String imagePath()
+						{
+							return imagePath;
+						}
+
+						@Override
+						public JournalSummaryStats imagePath(String intro)
+						{
+							imagePath = intro;
+							return this;
+						}
+
+						@Override
+						public String shortIntro()
+						{
+							return shortIntro;
+						}
+
+						@Override
+						public JournalSummaryStats shortIntro(String intro)
+						{
+							shortIntro = intro;
+							return this;
+						}
+
+						@Override
+						public String longIntro()
+						{
+							return longIntro;
+						}
+
+						@Override
+						public JournalSummaryStats longIntro(String intro)
+						{
+							longIntro = intro;
+							return this;
+						}
+
+						@Override
+						public String introKey()
+						{
+							return introKey;
+						}
+
+						@Override
+						public JournalSummaryStats introKey(String key)
+						{
+							introKey = key;
+							return this;
+						}
+
+						@Override
+						public String latestKey()
+						{
+							return latestKey;
+						}
+
+						@Override
+						public JournalSummaryStats latestKey(String key)
+						{
+							latestKey = key;
+							return this;
+						}
+
+						@Override
+						public List<String> stuckyKeys()
+						{
+							return stuckyKeys;
+						}
+
+						@Override
+						public JournalSummaryStats stuckyKeys(List<String> keys)
+						{
+							stuckyKeys = keys;
+							return this;
+						}
+					};
+					stats.name( journal.NAME() );
 					CMLib.database().DBReadJournalSummaryStats(stats);
 					journalSummaryStats.put(journal.NAME().toUpperCase().trim(), stats);
 				}
@@ -151,7 +281,39 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				item=item.substring(0,x);
 			}
 			CMSecurity.registerJournal(item.toUpperCase().trim());
-			commandJournals.put(item.toUpperCase().trim(),new CommandJournal(item.toUpperCase().trim(),mask,flags));
+			final String journalAdminMask = mask;
+			commandJournals.put(item.toUpperCase().trim(),new CommandJournal()
+			{
+				@Override
+				public String NAME()
+				{
+					return name;
+				}
+
+				@Override
+				public String mask()
+				{
+					return journalAdminMask;
+				}
+
+				@Override
+				public String JOURNAL_NAME()
+				{
+					return "SYSTEM_" + NAME().toUpperCase().trim() + "S";
+				}
+
+				@Override
+				public String getFlag(CommandJournalFlags flag)
+				{
+					return flags.get(flag);
+				}
+
+				@Override
+				public String getScriptFilename()
+				{
+					return flags.get(CommandJournalFlags.SCRIPT);
+				}
+			});
 		}
 		return commandJournals.size();
 	}
@@ -161,13 +323,13 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{
 		if(entry==null)
 			return false;
-		final String to=entry.to;
+		final String to=entry.to();
 		if((srchMatch!=null)
 		&&(srchMatch.length()>0)
 		&&((to.toLowerCase().indexOf(srchMatch)<0)
-		&&(entry.from.toLowerCase().indexOf(srchMatch)<0)
-		&&(entry.subj.toLowerCase().indexOf(srchMatch)<0)
-		&&(entry.msg.toLowerCase().indexOf(srchMatch)<0)))
+		&&(entry.from().toLowerCase().indexOf(srchMatch)<0)
+		&&(entry.subj().toLowerCase().indexOf(srchMatch)<0)
+		&&(entry.msg().toLowerCase().indexOf(srchMatch)<0)))
 			return false;
 		boolean priviledged=false;
 		if(readerM!=null)
@@ -241,7 +403,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		while(list.length()>0)
 		{
 			int x=list.indexOf(',');
-			String item=null;
+			String item;
 			if(x<0)
 			{
 				item=list.trim();
@@ -295,14 +457,91 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					catch(final Exception e){}
 				}
 			}
-			journals.add(new ForumJournal(item.trim(),flags));
+			String mask;
+			mask=flags.remove(ForumJournalFlags.READ);
+			final String readMask=(mask != null)?mask.trim():"";
+			mask=flags.remove(ForumJournalFlags.POST);
+			final String postMask=(mask != null)?mask.trim():"";
+			mask=flags.remove(ForumJournalFlags.REPLY);
+			final String replyMask=(mask != null)?mask.trim():"";
+			mask=flags.remove(ForumJournalFlags.ADMIN);
+			final String adminMask=(mask != null)?mask.trim():"";
+			final String name = item.trim();
+			journals.add(new ForumJournal()
+			{
+				@Override
+				public String NAME()
+				{
+					return name;
+				}
+
+				@Override
+				public String readMask()
+				{
+					return readMask;
+				}
+
+				@Override
+				public String postMask()
+				{
+					return postMask;
+				}
+
+				@Override
+				public String replyMask()
+				{
+					return replyMask;
+				}
+
+				@Override
+				public String adminMask()
+				{
+					return adminMask;
+				}
+				
+				@Override
+				public String getFlag(CommandJournalFlags flag)
+				{
+					return flags.get(flag);
+				}
+				
+				@Override
+				public boolean maskCheck(MOB M, String mask)
+				{
+					if(mask.length()>0)
+					{
+						if(M==null)
+							return false;
+						return CMLib.masking().maskCheck(mask, M, true);
+					}
+					return true;
+				}
+
+				@Override
+				public boolean authorizationCheck(MOB M, ForumJournalFlags fl)
+				{
+					if(!maskCheck(M,readMask))
+						return false;
+					if(fl==ForumJournalFlags.READ)
+						return true;
+					if(fl==ForumJournalFlags.POST)
+						return maskCheck(M,postMask);
+					else
+					if(fl==ForumJournalFlags.REPLY)
+						return maskCheck(M,replyMask);
+					else
+					if(fl==ForumJournalFlags.ADMIN)
+						return maskCheck(M,adminMask);
+					return false;
+				}
+			});
 		}
 		return journals;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public HashSet<String> getArchonJournalNames()
+	public Set<String> getArchonJournalNames()
 	{
 		HashSet<String> H = (HashSet<String>)Resources.getResource("ARCHON_ONLY_JOURNALS");
 		if(H == null)
@@ -371,19 +610,19 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				if((num!=null)&&(CMath.isNumber(num))&&(CMath.s_double(num)>0.0))
 				{
 					setThreadStatus(serviceClient,"updating journal "+CMJ.NAME());
-					final List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
+					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
 					if(items!=null)
 					for(int i=items.size()-1;i>=0;i--)
 					{
 						final JournalEntry entry=items.get(i);
-						long compdate=entry.update;
+						long compdate=entry.update();
 						compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
 						if(System.currentTimeMillis()>compdate)
 						{
-							final String from=entry.from;
-							final String message=entry.msg;
+							final String from=entry.from();
+							final String message=entry.msg();
 							Log.sysOut(Thread.currentThread().getName(),"Expired "+CMJ.NAME()+" from "+from+": "+message);
-							CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
+							CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key());
 						}
 					}
 					setThreadStatus(serviceClient,"command journal sweeping");
@@ -399,21 +638,21 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				if((num!=null)&&(CMath.isNumber(num))&&(CMath.s_double(num)>0.0))
 				{
 					setThreadStatus(serviceClient,"updating journal "+FMJ.NAME());
-					final List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(FMJ.NAME());
+					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgs(FMJ.NAME());
 					if(items!=null)
 					for(int i=items.size()-1;i>=0;i--)
 					{
 						final JournalEntry entry=items.get(i);
-						if(!CMath.bset(entry.attributes, JournalEntry.ATTRIBUTE_PROTECTED))
+						if(!CMath.bset(entry.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
 						{
-							long compdate=entry.update;
+							long compdate=entry.update();
 							compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
 							if(System.currentTimeMillis()>compdate)
 							{
-								final String from=entry.from;
-								final String message=entry.msg;
+								final String from=entry.from();
+								final String message=entry.msg();
 								Log.debugOut(Thread.currentThread().getName(),"Expired "+FMJ.NAME()+" from "+from+": "+message);
-								CMLib.database().DBDeleteJournal(FMJ.NAME(),entry.key);
+								CMLib.database().DBDeleteJournal(FMJ.NAME(),entry.key());
 							}
 						}
 					}

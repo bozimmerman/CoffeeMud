@@ -517,13 +517,15 @@ public class ProcessSMTPrequest implements Runnable
 														String realSubject=subject.substring(3).trim();
 														if(realSubject.toUpperCase().startsWith("["+journal.toUpperCase()+"]"))
 															realSubject=realSubject.substring(journal.length()+2).trim();
-														final List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalPageMsgs(journal, null, realSubject, 0, 0);
-														for(final JournalsLibrary.JournalEntry entry : entries)
-															if(entry.subj.equalsIgnoreCase(realSubject))
+														final List<JournalEntry> entries = CMLib.database().DBReadJournalPageMsgs(journal, null, realSubject, 0, 0);
+														for(final JournalEntry entry : entries)
+														{
+															if(entry.subj().equalsIgnoreCase(realSubject))
 															{
-																parentKey=entry.key;
+																parentKey=entry.key();
 																break;
 															}
+														}
 													}
 												}
 											}

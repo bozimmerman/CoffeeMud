@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
@@ -22,9 +23,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 
+
+
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
 
 /*
    Copyright 2004-2015 Bo Zimmerman
@@ -205,8 +208,49 @@ public class SMTPserver extends Thread implements Tickable
 						else
 							crit.append(s+" ");
 					}
-					set.put(s.toUpperCase().trim(),
-							new JournalsLibrary.SMTPJournal(s, forward, subscribeOnly, keepAll, crit.toString().trim()));
+					final String smtpName = s;
+					final boolean isForward = forward;
+					final boolean isSubscribeOnly = subscribeOnly;
+					final boolean isKeepAll = keepAll;
+					final String criteriaString = crit.toString();
+					set.put(s.toUpperCase().trim(), new JournalsLibrary.SMTPJournal()
+					{
+						@Override
+						public String name()
+						{
+							return smtpName;
+						}
+
+						@Override
+						public boolean forward()
+						{
+							return isForward;
+						}
+
+						@Override
+						public boolean subscribeOnly()
+						{
+							return isSubscribeOnly;
+						}
+
+						@Override
+						public boolean keepAll()
+						{
+							return isKeepAll;
+						}
+
+						@Override
+						public String criteriaStr()
+						{
+							return criteriaString;
+						}
+
+						@Override
+						public CompiledZapperMask criteria()
+						{
+							return CMLib.masking().getPreCompiledMask(criteriaString);
+						}
+					});
 				}
 			}
 		}
@@ -217,7 +261,7 @@ public class SMTPserver extends Thread implements Tickable
 	{
 		journal=CMStrings.replaceAll(journal,"_"," ");
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
-		return jrnl != null ? jrnl.name : null;
+		return jrnl != null ? jrnl.name() : null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -243,22 +287,22 @@ public class SMTPserver extends Thread implements Tickable
 	public boolean isAForwardingJournal(String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
-		return jrnl != null ? jrnl.forward : false;
+		return jrnl != null ? jrnl.forward() : false;
 	}
 	public boolean isASubscribeOnlyJournal(String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
-		return jrnl != null ? jrnl.subscribeOnly : false;
+		return jrnl != null ? jrnl.subscribeOnly() : false;
 	}
 	public boolean isAKeepAllJournal(String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
-		return jrnl != null ? jrnl.keepAll : false;
+		return jrnl != null ? jrnl.keepAll() : false;
 	}
 	public MaskingLibrary.CompiledZapperMask getJournalCriteria(String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
-		return jrnl != null ? jrnl.criteria : null;
+		return jrnl != null ? jrnl.criteria() : null;
 	}
 
 	protected boolean loadPropPage()
@@ -417,46 +461,46 @@ public class SMTPserver extends Thread implements Tickable
 			// forwarded to all members private boxes.  Lots of work to do!
 			for(final JournalsLibrary.SMTPJournal smtpJournal : set.values())
 			{
-				final String journalName=smtpJournal.name;
-				if(smtpJournal.forward)
+				final String journalName=smtpJournal.name();
+				if(smtpJournal.forward())
 				{
 					// vec mailingList=?
-					final List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgsNewerThan(journalName,"ALL",lastAllProcessing-1);
-					for(final JournalsLibrary.JournalEntry msg : msgs)
+					final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgsNewerThan(journalName,"ALL",lastAllProcessing-1);
+					for(final JournalEntry msg : msgs)
 					{
 						//if(msg.to.equalsIgnoreCase("ALL")) // implied by the query
-						final String subj=msg.subj;
-						final String msgStr=msg.msg.trim();
+						final String subj=msg.subj();
+						final String msgStr=msg.msg().trim();
 						if((subj.equalsIgnoreCase("subscribe"))
 						||(msgStr.equalsIgnoreCase("subscribe")))
 						{
 							// add to mailing list
-							CMLib.database().DBDeleteJournal(journalName,msg.key);
-							updatedMailingLists= CMLib.journals().subscribeToJournal(journalName, msg.from, false) || updatedMailingLists;
+							CMLib.database().DBDeleteJournal(journalName,msg.key());
+							updatedMailingLists= CMLib.journals().subscribeToJournal(journalName, msg.from(), false) || updatedMailingLists;
 						}
 						else
 						if((subj.equalsIgnoreCase("unsubscribe"))
 						||(msgStr.equalsIgnoreCase("unsubscribe")))
 						{
 							// remove from mailing list
-							CMLib.database().DBDeleteJournal(journalName,msg.key);
-							updatedMailingLists= CMLib.journals().unsubscribeFromJournal(journalName, msg.from, false) || updatedMailingLists;
+							CMLib.database().DBDeleteJournal(journalName,msg.key());
+							updatedMailingLists= CMLib.journals().unsubscribeFromJournal(journalName, msg.from(), false) || updatedMailingLists;
 						}
 						else
 						{
 							if(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 							{
 								String jrnlSubj;
-								if(msg.subj.indexOf("["+journalName+"]")<0)
+								if(msg.subj().indexOf("["+journalName+"]")<0)
 								{
-									if(msg.subj.startsWith("RE: "))
-										jrnlSubj="RE: ["+journalName+"] "+msg.subj.substring(4);
+									if(msg.subj().startsWith("RE: "))
+										jrnlSubj="RE: ["+journalName+"] "+msg.subj().substring(4);
 									else
-										jrnlSubj="["+journalName+"] "+msg.subj;
+										jrnlSubj="["+journalName+"] "+msg.subj();
 								}
 								else
-									jrnlSubj=msg.subj;
-								String jrnlMessage=msg.msg;
+									jrnlSubj=msg.subj();
+								String jrnlMessage=msg.msg();
 								if(jrnlMessage.startsWith("<HTML><BODY>"))
 								{
 
@@ -475,25 +519,25 @@ public class SMTPserver extends Thread implements Tickable
 								}
 								final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 								final List<String> mylist=lists.get(journalName);
-								if((mylist!=null)&&(mylist.contains(msg.from)))
+								if((mylist!=null)&&(mylist.contains(msg.from())))
 								{
 									for(int i=0;i<mylist.size();i++)
 									{
 										final String emailToName=mylist.get(i);
 										if(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
-											CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,msg.from,emailToName,jrnlSubj,jrnlMessage);
+											CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,msg.from(),emailToName,jrnlSubj,jrnlMessage);
 									}
 								}
 							}
 							if(!isAKeepAllJournal(journalName))
-								CMLib.database().DBDeleteJournal(journalName,msg.key);
+								CMLib.database().DBDeleteJournal(journalName,msg.key());
 							else
 							{
 								final Calendar IQE=Calendar.getInstance();
-								IQE.setTimeInMillis(msg.update);
+								IQE.setTimeInMillis(msg.update());
 								IQE.add(Calendar.DATE,getJournalDays());
 								if(IQE.getTimeInMillis()<System.currentTimeMillis())
-									CMLib.database().DBDeleteJournal(journalName,msg.key);
+									CMLib.database().DBDeleteJournal(journalName,msg.key());
 							}
 						}
 					}
@@ -507,12 +551,12 @@ public class SMTPserver extends Thread implements Tickable
 			{
 				if((mailboxName()!=null)&&(mailboxName().length()>0))
 				{
-					final List<JournalsLibrary.JournalEntry> emails=CMLib.database().DBReadJournalMsgs(mailboxName());
+					final List<JournalEntry> emails=CMLib.database().DBReadJournalMsgs(mailboxName());
 					if(emails!=null)
-					for(final JournalsLibrary.JournalEntry mail : emails)
+					for(final JournalEntry mail : emails)
 					{
-						if((mail.data.length()>0)&&(isAForwardingJournal(mail.data)))
-							massMailer.addMail(mail, mailboxName(), mail.data, true);
+						if((mail.data().length()>0)&&(isAForwardingJournal(mail.data())))
+							massMailer.addMail(mail, mailboxName(), mail.data(), true);
 						else
 							massMailer.addMail(mail, mailboxName(), null, true);
 					}

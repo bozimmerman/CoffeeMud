@@ -1078,14 +1078,14 @@ public class Destroy extends StdCommand
 				int which=-1;
 				if(commands.size()>2)
 					which=CMath.s_int(commands.get(2));
-				final List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
+				final List<JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
 
 				if((which<=0)||(which>entries.size()))
 					mob.tell(L("Please enter a valid @x1 number to delete.  Use LIST @x2S for more information.",CMJ.NAME().toLowerCase(),CMJ.NAME()));
 				else
 				{
-					final JournalsLibrary.JournalEntry entry = entries.get(which-1);
-					CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
+					final JournalEntry entry = entries.get(which-1);
+					CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key());
 					mob.tell(L("@x1 deletion submitted.",CMJ.NAME().toLowerCase()));
 
 				}
