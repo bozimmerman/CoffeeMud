@@ -208,12 +208,20 @@ public class Qualify  extends Skills
 		if(!showAll)
 		{
 			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
-				if(Ability.DOMAIN_DESCS[i].startsWith(qual.toUpperCase()))
-				{ domain=i<<5; break;}
-				else
-				if((Ability.DOMAIN_DESCS[i].indexOf('/')>=0)
-				&&(Ability.DOMAIN_DESCS[i].substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).startsWith(qual.toUpperCase())))
-				{ domain=i<<5; break;}
+			{
+				if (Ability.DOMAIN_DESCS[i].startsWith(qual.toUpperCase()))
+				{
+					domain = i << 5;
+					break;
+				}
+				else 
+				if ((Ability.DOMAIN_DESCS[i].indexOf('/') >= 0) 
+				&& (Ability.DOMAIN_DESCS[i].substring(Ability.DOMAIN_DESCS[i].indexOf('/') + 1).startsWith(qual.toUpperCase())))
+				{
+					domain = i << 5;
+					break;
+				}
+			}
 			if(domain>0)
 			{
 				domainName=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain>>5]);
@@ -364,6 +372,7 @@ public class Qualify  extends Skills
 					limits.nonCraftingSkills(0);
 				if(limits.nonCraftingSkills() < Integer.MAX_VALUE/2)
 					msg.append(L("\n\r^HYou may learn ^w@x1^H more non-crafting common skills.^N",""+limits.nonCraftingSkills()));
+				
 				mob.session().wraplessPrintln(L("^!You now qualify for the following unknown abilities:^?@x1",msg.toString()));
 				mob.tell(L("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises."));
 				if(classesFound)
