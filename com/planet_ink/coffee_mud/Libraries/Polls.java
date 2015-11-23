@@ -15,11 +15,11 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.IOException;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
    Copyright 2000-2015 Bo Zimmerman
@@ -399,16 +399,16 @@ public class Polls extends StdLibrary implements PollManager
 		final Vector<Poll.PollOption> options=new Vector<Poll.PollOption>();
 		P.setOptions(options);
 		final String optionsXML=data.options();
-		List<XMLLibrary.XMLpiece> V2=CMLib.xml().parseAllXML(optionsXML);
-		XMLLibrary.XMLpiece OXV=CMLib.xml().getPieceFromPieces(V2,"OPTIONS");
-		if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
-		for(int v2=0;v2<OXV.contents.size();v2++)
+		List<XMLLibrary.XMLTag> V2=CMLib.xml().parseAllXML(optionsXML);
+		XMLTag OXV=CMLib.xml().getPieceFromPieces(V2,"OPTIONS");
+		if((OXV!=null)&&(OXV.contents()!=null)&&(OXV.contents().size()>0))
+		for(int v2=0;v2<OXV.contents().size();v2++)
 		{
-			final XMLLibrary.XMLpiece XP=OXV.contents.get(v2);
-			if(!XP.tag.equalsIgnoreCase("option"))
+			final XMLTag XP=OXV.contents().get(v2);
+			if(!XP.tag().equalsIgnoreCase("option"))
 				continue;
 			final Poll.PollOption PO=new Poll.PollOption(
-					CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(XP.contents,"TEXT"))
+					CMLib.xml().restoreAngleBrackets(XP.getValFromPieces("TEXT"))
 			);
 			options.addElement(PO);
 		}
@@ -419,16 +419,16 @@ public class Polls extends StdLibrary implements PollManager
 		final String resultsXML=data.results();
 		V2=CMLib.xml().parseAllXML(resultsXML);
 		OXV=CMLib.xml().getPieceFromPieces(V2,"RESULTS");
-		if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
-		for(int v2=0;v2<OXV.contents.size();v2++)
+		if((OXV!=null)&&(OXV.contents()!=null)&&(OXV.contents().size()>0))
+		for(int v2=0;v2<OXV.contents().size();v2++)
 		{
-			final XMLLibrary.XMLpiece XP=OXV.contents.get(v2);
-			if(!XP.tag.equalsIgnoreCase("result"))
+			final XMLTag XP=OXV.contents().get(v2);
+			if(!XP.tag().equalsIgnoreCase("result"))
 				continue;
 			final Poll.PollResult PR=new Poll.PollResult(
-					CMLib.xml().getValFromPieces(XP.contents,"USER"),
-					CMLib.xml().getValFromPieces(XP.contents,"IP"),
-					CMLib.xml().getValFromPieces(XP.contents,"ANS"));
+					XP.getValFromPieces("USER"),
+					XP.getValFromPieces("IP"),
+					XP.getValFromPieces("ANS"));
 			results.addElement(PR);
 		}
 		P.setExpiration(data.expiration());

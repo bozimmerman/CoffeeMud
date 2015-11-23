@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -790,8 +791,8 @@ public class Nanny extends StdBehavior
 				parms=parms.substring(0,3);
 				if(codes.trim().length()>0)
 				{
-					final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(codes);
-					XMLLibrary.XMLpiece P=null;
+					final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(codes);
+					XMLTag P=null;
 					final Hashtable<String,Object> parsedPlayers=new Hashtable<String,Object>();
 					long time=0;
 					String eName=null;
@@ -803,11 +804,11 @@ public class Nanny extends StdBehavior
 					for(int v=0;v<V.size();v++)
 					{
 						P=(V.get(v));
-						if((P!=null)&&(P.contents!=null)&&(P.contents.size()==3)&&(P.tag.equalsIgnoreCase("DROP")))
+						if((P!=null)&&(P.contents()!=null)&&(P.contents().size()==3)&&(P.tag().equalsIgnoreCase("DROP")))
 						{
-							eName=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(P.contents,"ENAM"));
-							oName=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(P.contents,"ONAM"));
-							time=CMLib.xml().getLongFromPieces(P.contents,"TIME");
+							eName=CMLib.xml().restoreAngleBrackets(P.getValFromPieces("ENAM"));
+							oName=CMLib.xml().restoreAngleBrackets(P.getValFromPieces("ONAM"));
+							time=P.getLongFromPieces("TIME");
 							if(parsedPlayers.get(oName) instanceof MOB)
 								M=(MOB)parsedPlayers.get(oName);
 							else
@@ -832,7 +833,7 @@ public class Nanny extends StdBehavior
 						}
 						else
 						if(P!=null)
-							Log.errOut("Nanny","Unable to parse: "+codes+", specifically: "+P.value);
+							Log.errOut("Nanny","Unable to parse: "+codes+", specifically: "+P.value());
 					}
 				}
 			}

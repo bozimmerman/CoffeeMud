@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -300,13 +301,13 @@ public class DefaultClan implements Clan
 				final String rawxml=V.get(v).xml();
 				if(rawxml.trim().length()==0)
 					return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
-				final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(rawxml);
+				final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(rawxml);
 				if(xml==null)
 				{
 					Log.errOut("Clans","Unable to parse: "+rawxml);
 					return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
 				}
-				final List<XMLLibrary.XMLpiece> voteData=CMLib.xml().getContentsFromPieces(xml,"BALLOTS");
+				final List<XMLLibrary.XMLTag> voteData=CMLib.xml().getContentsFromPieces(xml,"BALLOTS");
 				if(voteData==null){ Log.errOut("Clans","Unable to get BALLOTS data."); return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());}
 				CV.voteStarter=CMLib.xml().getValFromPieces(voteData,"BY");
 				CV.voteStarted=CMLib.xml().getLongFromPieces(voteData,"ON");
@@ -314,16 +315,16 @@ public class DefaultClan implements Clan
 				CV.voteStatus=CMLib.xml().getIntFromPieces(voteData,"STATUS");
 				CV.matter=CMLib.xml().getValFromPieces(voteData,"CMD");
 				CV.votes=new PairVector<String,Boolean>();
-				final List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(voteData,"VOTES");
+				final List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(voteData,"VOTES");
 				if((xV!=null)&&(xV.size()>0))
 				{
 					for(int x=0;x<xV.size();x++)
 					{
-						final XMLLibrary.XMLpiece iblk=xV.get(x);
-						if((!iblk.tag.equalsIgnoreCase("VOTE"))||(iblk.contents==null))
+						final XMLTag iblk=xV.get(x);
+						if((!iblk.tag().equalsIgnoreCase("VOTE"))||(iblk.contents()==null))
 							continue;
-						final String userID=CMLib.xml().getValFromPieces(iblk.contents,"BY");
-						final boolean yn=CMLib.xml().getBoolFromPieces(iblk.contents,"YN");
+						final String userID=iblk.getValFromPieces("BY");
+						final boolean yn=iblk.getBoolFromPieces("YN");
 						CV.votes.addElement(userID,Boolean.valueOf(yn));
 					}
 				}
@@ -999,18 +1000,18 @@ public class DefaultClan implements Clan
 	@Override
 	public void setPolitics(String politics)
 	{
-		XMLLibrary.XMLpiece piece;
+		XMLTag piece;
 		relations.clear();
 		government=0;
 		if(politics.trim().length()==0)
 			return;
-		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(politics);
+		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(politics);
 		if(xml==null)
 		{
 			Log.errOut("Clans","Unable to parse: "+politics);
 			return;
 		}
-		final List<XMLLibrary.XMLpiece> poliData=CMLib.xml().getContentsFromPieces(xml,"POLITICS");
+		final List<XMLLibrary.XMLTag> poliData=CMLib.xml().getContentsFromPieces(xml,"POLITICS");
 		if(poliData==null){ Log.errOut("Clans","Unable to get POLITICS data."); return;}
 		government=CMLib.xml().getIntFromPieces(poliData,"GOVERNMENT");
 		exp=CMLib.xml().getLongFromPieces(poliData,"EXP");
@@ -1022,27 +1023,27 @@ public class DefaultClan implements Clan
 		clanCategory=null;
 		piece=CMLib.xml().getPieceFromPieces(poliData, "CATE");
 		if(piece!=null)
-			setCategory(piece.value);
+			setCategory(piece.value());
 		overrideMinClanMembers=null;
 		piece=CMLib.xml().getPieceFromPieces(poliData, "MINM");
 		if(piece!=null)
-			this.setMinClanMembers(CMath.s_int(piece.value));
+			this.setMinClanMembers(CMath.s_int(piece.value()));
 		isRivalrous=null;
 		piece=CMLib.xml().getPieceFromPieces(poliData, "RIVAL");
 		if(piece!=null)
-			setRivalrous(CMath.s_bool(piece.value));
+			setRivalrous(CMath.s_bool(piece.value()));
 
 		// now RESOURCES!
-		final List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(poliData,"RELATIONS");
+		final List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(poliData,"RELATIONS");
 		if((xV!=null)&&(xV.size()>0))
 		{
 			for(int x=0;x<xV.size();x++)
 			{
-				final XMLLibrary.XMLpiece iblk=xV.get(x);
-				if((!iblk.tag.equalsIgnoreCase("RELATION"))||(iblk.contents==null))
+				final XMLTag iblk=xV.get(x);
+				if((!iblk.tag().equalsIgnoreCase("RELATION"))||(iblk.contents()==null))
 					continue;
-				final String relClanID=CMLib.xml().getValFromPieces(iblk.contents,"CLAN");
-				final int rel=CMLib.xml().getIntFromPieces(iblk.contents,"STATUS");
+				final String relClanID=iblk.getValFromPieces("CLAN");
+				final int rel=iblk.getIntFromPieces("STATUS");
 				setClanRelations(relClanID,rel,0);
 			}
 		}

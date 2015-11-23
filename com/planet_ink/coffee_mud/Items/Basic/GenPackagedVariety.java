@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
    Copyright 2014-2015 Bo Zimmerman
@@ -117,21 +118,21 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	{
 		if(packageText().length()==0)
 			return null;
-		final List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(packageText());
+		final List<XMLLibrary.XMLTag> buf=CMLib.xml().parseAllXML(packageText());
 		if(buf==null)
 		{
 			Log.errOut("Packaged","Error parsing 'PAKITEM'.");
 			return null;
 		}
-		final XMLLibrary.XMLpiece iblk=CMLib.xml().getPieceFromPieces(buf,"PAKITEM");
-		if((iblk==null)||(iblk.contents==null))
+		final XMLTag iblk=CMLib.xml().getPieceFromPieces(buf,"PAKITEM");
+		if((iblk==null)||(iblk.contents()==null))
 		{
 			Log.errOut("Packaged","Error parsing 'PAKITEM'.");
 			return null;
 		}
-		final String itemi=CMLib.xml().getValFromPieces(iblk.contents,"PICLASS");
+		final String itemi=iblk.getValFromPieces("PICLASS");
 		final Environmental newOne=CMClass.getItem(itemi);
-		final List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"PIDATA");
+		final List<XMLLibrary.XMLTag> idat=iblk.getContentsFromPieces("PIDATA");
 		if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
 		{
 			Log.errOut("Packaged","Error parsing 'PAKITEM' data.");
@@ -151,23 +152,23 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 		if(number<=0)
 			return V;
 		Item firstItem = null;
-		final List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(packageText());
+		final List<XMLLibrary.XMLTag> buf=CMLib.xml().parseAllXML(packageText());
 		StringBuilder newXml=new StringBuilder("");
 		if(buf!=null)
 		{
 			for(int p=0;p<buf.size();p++)
 			{
-				final XMLLibrary.XMLpiece iblk=buf.get(p);
-				if((iblk!=null)&&(iblk.contents!=null)&&(iblk.tag.equals("PAKITEM")))
+				final XMLTag iblk=buf.get(p);
+				if((iblk!=null)&&(iblk.contents()!=null)&&(iblk.tag().equals("PAKITEM")))
 				{
 					if(number<=0)
-						newXml.append("<PAKITEM>"+iblk.value+"</PAKITEM>");
+						newXml.append("<PAKITEM>"+iblk.value()+"</PAKITEM>");
 					else
 					{
-						final int numOfThese = CMLib.xml().getIntFromPieces(iblk.contents,"PINUM");
-						final String itemi=CMLib.xml().getValFromPieces(iblk.contents,"PICLASS");
+						final int numOfThese = iblk.getIntFromPieces("PINUM");
+						final String itemi=iblk.getValFromPieces("PICLASS");
 						final Environmental newOne=CMClass.getItem(itemi);
-						final List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"PIDATA");
+						final List<XMLLibrary.XMLTag> idat=iblk.getContentsFromPieces("PIDATA");
 						if((idat!=null)&&(newOne!=null)&&(newOne instanceof Item))
 						{
 							Item I=(Item)newOne;
@@ -179,7 +180,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 									newXml.append("<PAKITEM>");
 									newXml.append(CMLib.xml().convertXMLtoTag("PINUM",""+(numOfThese - i)));
 									newXml.append(CMLib.xml().convertXMLtoTag("PICLASS",itemi));
-									newXml.append(CMLib.xml().convertXMLtoTag("PIDATA",CMLib.xml().getValFromPieces(iblk.contents,"PIDATA")));
+									newXml.append(CMLib.xml().convertXMLtoTag("PIDATA",iblk.getValFromPieces("PIDATA")));
 									newXml.append("</PAKITEM>");
 								}
 								else
@@ -230,14 +231,14 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	{
 		if(this.numberOfItemsInPackage <= 0)
 		{
-			final List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(packageText());
+			final List<XMLLibrary.XMLTag> buf=CMLib.xml().parseAllXML(packageText());
 			if(buf!=null)
 			{
 				for(int p=0;p<buf.size();p++)
 				{
-					final XMLLibrary.XMLpiece iblk=buf.get(p);
-					if((iblk!=null)&&(iblk.contents!=null))
-						this.numberOfItemsInPackage += CMLib.xml().getIntFromPieces(iblk.contents,"PINUM");
+					final XMLTag iblk=buf.get(p);
+					if((iblk!=null)&&(iblk.contents()!=null))
+						this.numberOfItemsInPackage += iblk.getIntFromPieces("PINUM");
 				}
 			}
 		}

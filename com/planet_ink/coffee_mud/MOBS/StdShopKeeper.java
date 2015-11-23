@@ -197,7 +197,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							shoptext = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMLib.encoder().decompressString((byte[]) miscText));
 						else
 							shoptext = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMStrings.bytesToStr(miscText));
-						final List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(shoptext);
+						final List<XMLLibrary.XMLTag> xml = CMLib.xml().parseAllXML(shoptext);
 						if (xml != null)
 						{
 							CMLib.coffeeMaker().populateShops(this, xml);

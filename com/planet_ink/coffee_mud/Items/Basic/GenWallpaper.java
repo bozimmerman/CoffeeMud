@@ -161,7 +161,7 @@ public class GenWallpaper implements Item
 	@Override
 	public void setMiscText(String newText)
 	{
-		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(newText);
+		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(newText);
 		if(V!=null)
 		{
 			setName(CMLib.xml().getValFromPieces(V,"NAME"));

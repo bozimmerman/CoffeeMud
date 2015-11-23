@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
    Copyright 2004-2015 Bo Zimmerman
@@ -103,17 +104,17 @@ public class Thief_TrophyCount extends ThiefSkill
 		theList.clear();
 		if((str.trim().length()>0)&&(str.trim().startsWith("<MOBS>")))
 		{
-			final List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(str);
-			final List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"MOBS");
+			final List<XMLLibrary.XMLTag> buf=CMLib.xml().parseAllXML(str);
+			final List<XMLLibrary.XMLTag> V=CMLib.xml().getContentsFromPieces(buf,"MOBS");
 			if(V!=null)
 			for(int i=0;i<V.size();i++)
 			{
-				final XMLLibrary.XMLpiece ablk=V.get(i);
-				if(ablk.tag.equalsIgnoreCase("MOB"))
+				final XMLTag ablk=V.get(i);
+				if(ablk.tag().equalsIgnoreCase("MOB"))
 				{
 					final String[] one=new String[4];
-					one[0]=CMLib.xml().getValFromPieces(ablk.contents,"RACE");
-					one[1]=CMLib.xml().getValFromPieces(ablk.contents,"KILLS");
+					one[0]=ablk.getValFromPieces("RACE");
+					one[1]=ablk.getValFromPieces("KILLS");
 					theList.put(one[0],one);
 				}
 			}

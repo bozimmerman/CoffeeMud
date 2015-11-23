@@ -13,10 +13,12 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.util.Map.Entry;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
    Copyright 2007-2015 Bo Zimmerman
@@ -307,21 +309,21 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	@Override
 	public void parseXML(String xml)
 	{
-		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
+		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
 		if((V==null)||(V.size()==0))
 			return;
-		final List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(V,"AREAS");
+		final List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(V,"AREAS");
 		root.clear();
 		String ID=null;
 		String NUMS=null;
 		if((xV!=null)&&(xV.size()>0))
 			for(int x=0;x<xV.size();x++)
 			{
-				final XMLLibrary.XMLpiece ablk=xV.get(x);
-				if((ablk.tag.equalsIgnoreCase("AREA"))&&(ablk.contents!=null))
+				final XMLTag ablk=xV.get(x);
+				if((ablk.tag().equalsIgnoreCase("AREA"))&&(ablk.contents()!=null))
 				{
-					ID=CMLib.xml().getValFromPieces(ablk.contents,"ID").toUpperCase();
-					NUMS=CMLib.xml().getValFromPieces(ablk.contents,"NUMS");
+					ID=ablk.getValFromPieces("ID").toUpperCase();
+					NUMS=ablk.getValFromPieces("NUMS");
 					if((NUMS!=null)&&(NUMS.length()>0))
 						root.put(ID,new LongSet().parseString(NUMS));
 					else

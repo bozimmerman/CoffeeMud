@@ -171,7 +171,7 @@ public class MOBloader
 					}
 				}
 				mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
-				final List<XMLLibrary.XMLpiece> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
+				final List<XMLLibrary.XMLTag> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
 				R.close();
 				if(pstats.getSavedPose().length()>0)
 					mob.setDisplayText(pstats.getSavedPose());
@@ -267,11 +267,11 @@ public class MOBloader
 						final String roomXML=text.substring(0,roomX+2);
 						text=text.substring(roomX+2);
 						newItem.setMiscText(text);
-						final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(roomXML);
+						final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(roomXML);
 						if((xml!=null)&&(xml.size()>0))
 						{
-							final String roomID=xml.get(0).parms.get("ID");
-							final long expirationDate=CMath.s_long(xml.get(0).parms.get("EXPIRE"));
+							final String roomID=xml.get(0).parms().get("ID");
+							final long expirationDate=CMath.s_long(xml.get(0).parms().get("EXPIRE"));
 							if(roomID.startsWith("SPACE.") && (newItem instanceof SpaceObject))
 							{
 								CMLib.map().addObjectToSpace((SpaceObject)newItem,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));

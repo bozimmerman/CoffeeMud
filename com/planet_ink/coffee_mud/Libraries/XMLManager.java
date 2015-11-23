@@ -17,7 +17,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
    Copyright 2001-2015 Bo Zimmerman
@@ -50,7 +51,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	protected int[]			beginDex;
 	protected int[]			endDex;
 	protected StringBuffer	buf;
-	protected List<XMLpiece>contents;
+	protected List<XMLTag>contents;
 	protected Set<String>	illegalTags;
 
 	public XMLManager()
@@ -66,7 +67,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		this.buf=buf;
 		beginDex = new int[State.values().length];
 		endDex = new int[State.values().length];
-		contents=new XVector<XMLpiece>();
+		contents=new XVector<XMLTag>();
 		for(int i=0;i<State.values().length;i++)
 		{
 			beginDex[i]=-1;
@@ -83,6 +84,331 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		}
 	}
 
+	/**
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	private static class XMLpiece implements Cloneable, XMLTag
+	{
+		protected String tag="";
+		protected String value="";
+		protected List<XMLTag> contents=new XVector<XMLTag>();
+		protected Map<String,String> parms=new XHashtable<String,String>();
+		protected XMLpiece parent=null;
+		protected int outerStart=-1;
+		protected int innerStart=-1;
+		protected int innerEnd=-1;
+		protected int outerEnd=-1;
+
+		public XMLpiece()
+		{
+			
+		}
+		
+		public XMLpiece(String tag, String value)
+		{
+			this.tag=tag.toUpperCase().trim();
+			this.value=value;
+		}
+		
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#copyOf()
+		 */
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#copyOf()
+		 */
+		@Override
+		public XMLTag copyOf()
+		{
+			try
+			{
+				final XMLpiece piece2=(XMLpiece)this.clone();
+				piece2.contents =new XVector<XMLTag>(contents());
+				piece2.parms = new XHashtable<String,String>(parms());
+				return piece2;
+			}
+			catch(final Exception e)
+			{
+				return this;
+			}
+		}
+
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#addContent(com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag)
+		 */
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#addContent(com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag)
+		 */
+		@Override
+		public void addContent(XMLTag x)
+		{
+			if (x == null) return;
+			if (contents() == null) 
+				contents = new XVector<XMLTag>();
+			if(x instanceof XMLpiece)
+				((XMLpiece)x).parent = this;
+			contents().add(x);
+		}
+
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#toString()
+		 */
+		@Override
+		public String toString()
+		{
+			final StringBuilder str=new StringBuilder("");
+			str.append("<").append(tag());
+			for(final String parm : parms().keySet())
+				str.append(" ").append(parm).append("=\"").append(parms().get(parm)).append("\"");
+			str.append(">").append(value()).append("</").append(tag()).append(">");
+			return str.toString();
+		}
+
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#tag()
+		 */
+		@Override
+		public String tag()
+		{
+			return tag;
+		}
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#value()
+		 */
+		@Override
+		public String value()
+		{
+			return value;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#contents()
+		 */
+		@Override
+		public List<XMLTag> contents()
+		{
+			return contents;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#parms()
+		 */
+		@Override
+		public Map<String,String> parms()
+		{
+			return parms;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#parent()
+		 */
+		@Override
+		public XMLpiece parent()
+		{
+			return parent;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#outerStartIndex()
+		 */
+		@Override
+		public int outerStartIndex()
+		{
+			return outerStart;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#innerStartIndex()
+		 */
+		@Override
+		public int innerStartIndex()
+		{
+			return innerStart;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#innerEndIndex()
+		 */
+		@Override
+		public int innerEndIndex()
+		{
+			return innerEnd;
+		}
+
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#outerEndIndex()
+		 */
+		@Override
+		public int outerEndIndex()
+		{
+			return outerEnd;
+		}
+		
+		@Override
+		public String getParmValue(String Tag)
+		{
+			if((parms != null)&&(Tag != null))
+				return parms.get(Tag.toUpperCase().trim());
+			return null;
+		}
+		
+		@Override
+		public XMLTag getPieceFromPieces(String tag)
+		{
+			if(contents==null)
+				return null;
+			for(int v=0;v<contents.size();v++)
+			{
+				if(contents.get(v).tag().equalsIgnoreCase(tag))
+					return contents.get(v);
+			}
+			return null;
+		}
+		
+		@Override
+		public double getDoubleFromPieces(String tag, double defVal)
+		{
+			final XMLTag x=getPieceFromPieces(tag);
+			if((x!=null)&&(x.value()!=null))
+				return s_double(x.value());
+			return defVal;
+		}
+
+		@Override
+		public boolean getBoolFromPieces(String tag, boolean defVal)
+		{
+			final String val=getValFromPieces(tag);
+			if((val==null)||(val.length()==0))
+				return false;
+			if(val.toUpperCase().trim().startsWith("T"))
+				return true;
+			return false;
+		}
+
+
+		@Override
+		public int getIntFromPieces(String tag, int defVal)
+		{
+			final XMLTag x=getPieceFromPieces(tag);
+			if((x!=null)&&(x.value()!=null))
+				return s_int(x.value());
+			return defVal;
+		}
+
+		@Override
+		public short getShortFromPieces(String tag, short defVal)
+		{
+			final XMLTag x=getPieceFromPieces(tag);
+			if((x!=null)&&(x.value()!=null))
+				return s_short(x.value());
+			return defVal;
+		}
+
+		@Override
+		public long getLongFromPieces(String tag, long defVal)
+		{
+			final XMLTag x=getPieceFromPieces(tag);
+			if((x!=null)&&(x.value()!=null))
+				return s_long(x.value());
+			return defVal;
+		}
+		
+		@Override
+		public String getValFromPieces(String tag)
+		{
+			return getValFromPieces(tag, "");
+		}
+
+		@Override
+		public String getValFromPieces(String tag, String defVal)
+		{
+			final XMLTag x=getPieceFromPieces(tag);
+			if((x!=null)&&(x.value()!=null))
+				return x.value();
+			return defVal;
+		}
+		
+		@Override
+		public List<XMLTag> getContentsFromPieces(String tag)
+		{
+			final XMLTag x=getPieceFromPieces(tag);
+			if(x!=null)
+				return x.contents();
+			return null;
+		}
+
+		@Override
+		public boolean isTagInPieces(String tag)
+		{
+			if(contents!=null)
+			{
+				for(int v=0;v<contents.size();v++)
+				{
+					if(contents.get(v).tag().equalsIgnoreCase(tag))
+						return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public List<XMLTag> getPiecesFromPieces(String tag)
+		{
+			if(contents==null)
+				return null;
+			final List<XMLTag> pieces = new ArrayList<XMLTag>();
+			for(int v=0;v<contents.size();v++)
+			{
+				if(contents.get(v).tag().equalsIgnoreCase(tag))
+					pieces.add(contents.get(v));
+			}
+			return pieces;
+		}
+
+		@Override
+		public boolean getBoolFromPieces(String tag)
+		{
+			final String val=getValFromPieces(tag);
+			if((val==null)||(val.length()==0))
+				return false;
+			if(val.toUpperCase().trim().startsWith("T"))
+				return true;
+			return false;
+		}
+
+
+		@Override
+		public int getIntFromPieces(String tag)
+		{
+			return s_int(getValFromPieces(tag));
+		}
+
+		@Override
+		public short getShortFromPieces(String tag)
+		{
+			return s_short(getValFromPieces(tag));
+		}
+
+		@Override
+		public long getLongFromPieces(String tag)
+		{
+			return s_long(getValFromPieces(tag));
+		}
+
+		@Override
+		public double getDoubleFromPieces(String tag)
+		{
+			return s_double(getValFromPieces(tag));
+		}
+	}
+
+	@Override
+	public XMLTag createNewTag(String key, String value)
+	{
+		return new XMLpiece(key, value);
+	}
+	
 	@Override
 	public String parseOutAngleBrackets(String s)
 	{
@@ -189,7 +515,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * @param DOUBLE String to convert
 	 * @return double Double value of the string
 	 */
-	public double s_double(String DOUBLE)
+	protected static double s_double(String DOUBLE)
 	{
 		double sdouble=0;
 		try{ sdouble=Double.parseDouble(DOUBLE); }
@@ -204,7 +530,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * @param INT Integer value of string
 	 * @return int Integer value of the string
 	 */
-	public int s_int(String INT)
+	protected static int s_int(String INT)
 	{
 		int sint=0;
 		try{ sint=Integer.parseInt(INT); }
@@ -219,7 +545,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * @param SHORT Short value of string
 	 * @return short Short value of the string
 	 */
-	public short s_short(String SHORT)
+	protected static short s_short(String SHORT)
 	{
 		short sint=0;
 		try{ sint=Short.parseShort(SHORT); }
@@ -234,7 +560,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * @param LONG Long value of string
 	 * @return long Long value of the string
 	 */
-	public  long s_long(String LONG)
+	protected static  long s_long(String LONG)
 	{
 		long slong=0;
 		try{ slong=Long.parseLong(LONG); }
@@ -350,64 +676,68 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 	@Override
-	public String getValFromPieces(List<XMLpiece> V, String tag)
+	public String getValFromPieces(List<XMLTag> V, String tag)
 	{
 		return getValFromPieces(V, tag, "");
 	}
 
 	@Override
-	public String getValFromPieces(List<XMLpiece> V, String tag, String defVal)
+	public String getValFromPieces(List<XMLTag> V, String tag, String defVal)
 	{
-		final XMLpiece x=getPieceFromPieces(V,tag);
-		if((x!=null)&&(x.value!=null))
-			return x.value;
+		final XMLTag x=getPieceFromPieces(V,tag);
+		if((x!=null)&&(x.value()!=null))
+			return x.value();
 		return defVal;
 	}
 
 	@Override
-	public List<XMLpiece> getContentsFromPieces(List<XMLpiece> V, String tag)
+	public List<XMLTag> getContentsFromPieces(List<XMLTag> V, String tag)
 	{
-		final XMLpiece x=getPieceFromPieces(V,tag);
+		final XMLTag x=getPieceFromPieces(V,tag);
 		if(x!=null)
-			return x.contents;
+			return x.contents();
 		return null;
 	}
 
 	@Override
-	public XMLpiece getPieceFromPieces(List<XMLpiece> V, String tag)
+	public XMLTag getPieceFromPieces(List<XMLTag> V, String tag)
 	{
 		if(V==null)
 			return null;
 		for(int v=0;v<V.size();v++)
-			if(V.get(v).tag.equalsIgnoreCase(tag))
+		{
+			if(V.get(v).tag().equalsIgnoreCase(tag))
 				return V.get(v);
+		}
 		return null;
 	}
 
 	@Override
-	public boolean isTagInPieces(List<XMLpiece> V, String tag)
+	public boolean isTagInPieces(List<XMLTag> V, String tag)
 	{
 		if(V!=null)
 		for(int v=0;v<V.size();v++)
-			if(V.get(v).tag.equalsIgnoreCase(tag))
+		{
+			if(V.get(v).tag().equalsIgnoreCase(tag))
 				return true;
+		}
 		return false;
 	}
 
 	@Override
-	public List<XMLpiece> getPiecesFromPieces(List<XMLpiece> V, String tag)
+	public List<XMLTag> getPiecesFromPieces(List<XMLTag> V, String tag)
 	{
 		if(V==null)
 			return null;
-		final List<XMLpiece> pieces = new ArrayList<XMLpiece>();
+		final List<XMLTag> pieces = new ArrayList<XMLTag>();
 		for(int v=0;v<V.size();v++)
-			if(V.get(v).tag.equalsIgnoreCase(tag))
+			if(V.get(v).tag().equalsIgnoreCase(tag))
 				pieces.add(V.get(v));
 		return pieces;
 	}
 
 	@Override
-	public boolean getBoolFromPieces(List<XMLpiece> V, String tag)
+	public boolean getBoolFromPieces(List<XMLTag> V, String tag)
 	{
 		final String val=getValFromPieces(V,tag);
 		if((val==null)||(val.length()==0))
@@ -419,31 +749,31 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 
 	@Override
-	public int getIntFromPieces(List<XMLpiece> V, String tag)
+	public int getIntFromPieces(List<XMLTag> V, String tag)
 	{
 		return s_int(getValFromPieces(V,tag));
 	}
 
 	@Override
-	public short getShortFromPieces(List<XMLpiece> V, String tag)
+	public short getShortFromPieces(List<XMLTag> V, String tag)
 	{
 		return s_short(getValFromPieces(V,tag));
 	}
 
 	@Override
-	public long getLongFromPieces(List<XMLpiece> V, String tag)
+	public long getLongFromPieces(List<XMLTag> V, String tag)
 	{
 		return s_long(getValFromPieces(V,tag));
 	}
 
 	@Override
-	public double getDoubleFromPieces(List<XMLpiece> V, String tag)
+	public double getDoubleFromPieces(List<XMLTag> V, String tag)
 	{
 		return s_double(getValFromPieces(V,tag));
 	}
 
 	@Override
-	public boolean getBoolFromPieces(List<XMLpiece> V, String tag, boolean defVal)
+	public boolean getBoolFromPieces(List<XMLTag> V, String tag, boolean defVal)
 	{
 		final String val=getValFromPieces(V,tag);
 		if((val==null)||(val.length()==0))
@@ -455,41 +785,41 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 
 	@Override
-	public int getIntFromPieces(List<XMLpiece> V, String tag, int defVal)
+	public int getIntFromPieces(List<XMLTag> V, String tag, int defVal)
 	{
-		final XMLpiece x=getPieceFromPieces(V,tag);
-		if((x!=null)&&(x.value!=null))
-			return s_int(x.value);
+		final XMLTag x=getPieceFromPieces(V,tag);
+		if((x!=null)&&(x.value()!=null))
+			return s_int(x.value());
 		return defVal;
 	}
 
 	@Override
-	public short getShortFromPieces(List<XMLpiece> V, String tag, short defVal)
+	public short getShortFromPieces(List<XMLTag> V, String tag, short defVal)
 	{
-		final XMLpiece x=getPieceFromPieces(V,tag);
-		if((x!=null)&&(x.value!=null))
-			return s_short(x.value);
+		final XMLTag x=getPieceFromPieces(V,tag);
+		if((x!=null)&&(x.value()!=null))
+			return s_short(x.value());
 		return defVal;
 	}
 
 	@Override
-	public long getLongFromPieces(List<XMLpiece> V, String tag, long defVal)
+	public long getLongFromPieces(List<XMLTag> V, String tag, long defVal)
 	{
-		final XMLpiece x=getPieceFromPieces(V,tag);
-		if((x!=null)&&(x.value!=null))
-			return s_long(x.value);
+		final XMLTag x=getPieceFromPieces(V,tag);
+		if((x!=null)&&(x.value()!=null))
+			return s_long(x.value());
 		return defVal;
 	}
 
 	@Override
-	public double getDoubleFromPieces(List<XMLpiece> V, String tag, double defVal)
+	public double getDoubleFromPieces(List<XMLTag> V, String tag, double defVal)
 	{
-		final XMLpiece x=getPieceFromPieces(V,tag);
-		if((x!=null)&&(x.value!=null))
-			return s_double(x.value);
+		final XMLTag x=getPieceFromPieces(V,tag);
+		if((x!=null)&&(x.value()!=null))
+			return s_double(x.value());
 		return defVal;
 	}
-
+	
 	protected void changeTagState(State newState)
 	{
 		this.endDex[state.ordinal()]=bufDex;
@@ -508,15 +838,15 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 	protected void abandonTagState(State newState)
 	{
-		if((piece!=null)&&(piece.outerEnd<0))
+		if((piece!=null)&&(piece.outerEndIndex()<0))
 		{
-			if(piece.parent!=null)
-				piece.parent.contents.remove(piece);
+			if(piece.parent()!=null)
+				piece.parent().contents().remove(piece);
 			else
 				contents.remove(piece);
-			final XMLpiece childPiece=piece;
-			piece=piece.parent;
-			Log.warnOut("XMLManager","Abandoned tag "+childPiece.tag+((piece!=null)?" of parent "+piece.tag:""));
+			final XMLTag childPiece=piece;
+			piece=piece.parent();
+			Log.warnOut("XMLManager","Abandoned tag "+childPiece.tag()+((piece!=null)?" of parent "+piece.tag():""));
 		}
 		changeTagState(newState);
 	}
@@ -604,13 +934,13 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	protected void startPiece(int endOfTagName)
 	{
 		final XMLpiece newPiece=new XMLpiece();
-		newPiece.outerStart=beginDex[State.BEFORETAG.ordinal()];
-		newPiece.tag=buf.substring(beginDex[State.INTAG.ordinal()],endOfTagName).toUpperCase().trim();
+		newPiece.outerStart = beginDex[State.BEFORETAG.ordinal()];
+		newPiece. tag = buf.substring(beginDex[State.INTAG.ordinal()],endOfTagName).toUpperCase().trim();
 		if(piece!=null)
-			piece.contents.add(newPiece);
+			piece.contents().add(newPiece);
 		else
 			contents.add(newPiece);
-		newPiece.parent=piece;
+		newPiece.parent = piece;
 		piece=newPiece;
 	}
 
@@ -618,8 +948,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		if(piece!=null)
 		{
-			piece.outerEnd=outerEnd;
-			piece=piece.parent;
+			piece.outerEnd = outerEnd;
+			piece=piece.parent();
 		}
 	}
 
@@ -627,12 +957,12 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		final String closeTag=buf.substring(beginDex[State.INCLOSETAG.ordinal()],endDex[State.INCLOSETAG.ordinal()]).toUpperCase().trim();
 		XMLpiece closePiece=piece;
-		while((closePiece!=null)&&(!closePiece.tag.equalsIgnoreCase(closeTag)))
-			closePiece=closePiece.parent;
+		while((closePiece!=null)&&(!closePiece.tag().equalsIgnoreCase(closeTag)))
+			closePiece=closePiece.parent();
 		if(closePiece!=null)
 		{
-			if(closePiece.innerStart>=0)
-				closePiece.value=buf.substring(closePiece.innerStart,beginDex[State.BEFORETAG.ordinal()]-1);
+			if(closePiece.innerStartIndex()>=0)
+				closePiece.value = buf.substring(closePiece.innerStartIndex(),beginDex[State.BEFORETAG.ordinal()]-1);
 			piece=closePiece;
 			doneWithPiece(outerEnd);
 		}
@@ -658,7 +988,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			if(canStartPiece(bufDex))
 			{
 				startPiece(bufDex);
-				piece.innerStart=bufDex+1;
+				piece.innerStart = bufDex+1;
 			}
 			changeTagState(State.START);
 			return;
@@ -738,12 +1068,12 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		{
 		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
 		case '<':
-			piece.innerStart=bufDex;
+			piece.innerStart = bufDex;
 			abandonTagState(State.BEFORETAG);
 			return;
 		case '>':
 			changeTagState(State.START);
-			piece.innerStart=bufDex;
+			piece.innerStart = bufDex;
 			return;
 		case '/':
 			changedTagState(State.BEGINTAGSELFEND);
@@ -760,12 +1090,12 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		{
 		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
 		case '<':
-			piece.innerStart=bufDex;
+			piece.innerStart = bufDex;
 			abandonTagState(State.BEFORETAG);
 			return;
 		case '>':
 			changeTagState(State.START);
-			piece.innerStart=bufDex;
+			piece.innerStart = bufDex;
 			return;
 		case '/':
 			endEmptyAttrib(bufDex);
@@ -784,8 +1114,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			final String value="";
 			final String parmName=buf.substring(beginDex[State.INATTRIB.ordinal()],endOfAttrib);
 			if((parmName.length()>25)||(parmName.length()==0))
-				Log.warnOut("XMLManager","Suspicious attribute '"+parmName+"' for tag "+piece.tag);
-			piece.parms.put(parmName, value);
+				Log.warnOut("XMLManager","Suspicious attribute '"+parmName+"' for tag "+piece.tag());
+			piece.parms().put(parmName, value);
 		}
 	}
 
@@ -797,13 +1127,13 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		case '=':  changeTagState(State.BEFOREATTRIBVALUE); return;
 		case '<':
 			endEmptyAttrib(bufDex);
-			piece.innerStart=bufDex;
+			piece.innerStart = bufDex;
 			abandonTagState(State.BEFORETAG);
 			return;
 		case '>':
 			endEmptyAttrib(bufDex);
 			changeTagState(State.START);
-			piece.innerStart=bufDex;
+			piece.innerStart = bufDex;
 			return;
 		case '/':
 			endEmptyAttrib(bufDex);
@@ -821,13 +1151,13 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		case '=':  changeTagState(State.BEFOREATTRIBVALUE); return;
 		case '<':
 			endEmptyAttrib(endDex[State.INATTRIB.ordinal()]);
-			piece.innerStart=bufDex;
+			piece.innerStart = bufDex;
 			abandonTagState(State.BEFORETAG);
 			return;
 		case '>':
 			endEmptyAttrib(endDex[State.INATTRIB.ordinal()]);
 			changeTagState(State.START);
-			piece.innerStart=bufDex;
+			piece.innerStart =bufDex;
 			return;
 		case '/':
 			endEmptyAttrib(endDex[State.INATTRIB.ordinal()]);
@@ -844,8 +1174,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			final String parmName=buf.substring(beginDex[State.INATTRIB.ordinal()], endDex[State.INATTRIB.ordinal()]).toUpperCase().trim();
 			final String value=buf.substring(beginDex[state.ordinal()],endOfValue).trim();
 			if((parmName.length()>25)||(parmName.length()==0))
-				Log.warnOut("XMLManager","Suspicious attribute '"+parmName+"' for tag "+piece.tag);
-			piece.parms.put(parmName, value);
+				Log.warnOut("XMLManager","Suspicious attribute '"+parmName+"' for tag "+piece.tag());
+			piece.parms().put(parmName, value);
 		}
 
 	}
@@ -858,13 +1188,13 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		case '=':  bufDex++; return;
 		case '<':
 			assignAttrib(bufDex);
-			piece.innerStart=bufDex;
+			piece.innerStart = bufDex;
 			abandonTagState(State.BEFORETAG);
 			return;
 		case '>':
 			assignAttrib(bufDex);
 			changeTagState(State.START);
-			piece.innerStart=bufDex;
+			piece.innerStart = bufDex;
 			return;
 		case '/':
 			assignAttrib(bufDex);
@@ -885,13 +1215,13 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			return;
 		case '<':
 			assignAttrib(bufDex);
-			piece.innerStart=bufDex;
+			piece.innerStart = bufDex;
 			abandonTagState(State.BEFORETAG);
 			return;
 		case '>':
 			assignAttrib(bufDex);
 			changeTagState(State.START);
-			piece.innerStart=bufDex;
+			piece.innerStart = bufDex;
 			return;
 		case '/':
 			assignAttrib(bufDex);
@@ -913,7 +1243,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		}
 	}
 
-	protected XMLpiece parseXML()
+	protected XMLTag parseXML()
 	{
 		while(bufDex<buf.length())
 		{
@@ -934,19 +1264,19 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			case INQUOTEDATTRIBVALUE: inQuotedAttribValue(buf.charAt(bufDex)); break;
 			}
 		}
-		while((piece!=null)&&(piece.parent!=null))
-			piece=piece.parent;
+		while((piece!=null)&&(piece.parent()!=null))
+			piece=piece.parent();
 		return piece;
 	}
 
 	@Override
-	public List<XMLpiece> parseAllXML(String buf)
+	public List<XMLTag> parseAllXML(String buf)
 	{
 		return parseAllXML(new StringBuffer(buf));
 	}
 
 	@Override
-	public List<XMLpiece> parseAllXML(StringBuffer buf)
+	public List<XMLTag> parseAllXML(StringBuffer buf)
 	{
 		final XMLManager manager=new XMLManager(buf, 0);
 		manager.parseXML();
@@ -998,14 +1328,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 	@Override
-	public String getParmValue(Map<String, String> parmSet, String Tag)
-	{
-		if((parmSet != null)&&(Tag != null))
-			return parmSet.get(Tag.toUpperCase().trim());
-		return null;
-	}
-
-	@Override
 	public String getXMLList(List<String> V)
 	{
 		final StringBuffer str=new StringBuffer("");
@@ -1024,10 +1346,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public List<String> parseXMLList(String numberedList)
 	{
-		final List<XMLLibrary.XMLpiece> xml=parseAllXML(numberedList);
+		final List<XMLLibrary.XMLTag> xml=parseAllXML(numberedList);
 		final Vector<String> V=new Vector<String>();
 		for(int v=0;v<xml.size();v++)
-			V.addElement(this.restoreAngleBrackets(xml.get(v).value));
+			V.addElement(this.restoreAngleBrackets(xml.get(v).value()));
 		return V;
 	}
 }

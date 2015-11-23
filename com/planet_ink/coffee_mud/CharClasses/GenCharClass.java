@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -476,13 +477,13 @@ public class GenCharClass extends StdCharClass
 	{
 		if(parms.trim().length()==0)
 			return;
-		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(parms);
+		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(parms);
 		if(xml==null)
 		{
 			Log.errOut("GenCharClass","Unable to parse: "+parms);
 			return;
 		}
-		final List<XMLLibrary.XMLpiece> classData=CMLib.xml().getContentsFromPieces(xml,"CCLASS");
+		final List<XMLLibrary.XMLTag> classData=CMLib.xml().getContentsFromPieces(xml,"CCLASS");
 		if(classData==null){	Log.errOut("GenCharClass","Unable to get CCLASS data."); return;}
 		final String classID=CMLib.xml().getValFromPieces(classData,"ID");
 		if(classID.length()==0)
@@ -572,11 +573,11 @@ public class GenCharClass extends StdCharClass
 		helpEntry=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(classData,"HELP"));
 		raceRequiredList=CMParms.parseCommas(CMLib.xml().getValFromPieces(classData,"RACQUAL"), true).toArray(new String[0]);
 		final List<Pair<String,Integer>> statQuals=new ArrayList<Pair<String,Integer>>();
-		final List<XMLLibrary.XMLpiece> mV=CMLib.xml().getContentsFromPieces(classData,"MINSTATS");
+		final List<XMLLibrary.XMLTag> mV=CMLib.xml().getContentsFromPieces(classData,"MINSTATS");
 		if((mV!=null)&&(mV.size()>0))
-			for(final XMLLibrary.XMLpiece p : mV)
-				if(p.tag.equalsIgnoreCase("STAT"))
-					statQuals.add(new Pair<String,Integer>(p.parms.get("NAME"),Integer.valueOf(CMath.s_int(p.parms.get("MIN")))));
+			for(final XMLTag p : mV)
+				if(p.tag().equalsIgnoreCase("STAT"))
+					statQuals.add(new Pair<String,Integer>(p.parms().get("NAME"),Integer.valueOf(CMath.s_int(p.parms().get("MIN")))));
 		minimumStatRequirements=statQuals.toArray(new Pair[0]);
 
 		final String s=CMLib.xml().getValFromPieces(classData,"PLAYER");
@@ -601,28 +602,28 @@ public class GenCharClass extends StdCharClass
 		final String saState=CMLib.xml().getValFromPieces(classData,"STARTASTATE");
 		if(saState.length()>0){ startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,saState);}
 
-		List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(classData,"CABILITIES");
+		List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(classData,"CABILITIES");
 		CMLib.ableMapper().delCharMappings(ID());
 		if((xV!=null)&&(xV.size()>0))
 			for(int x=0;x<xV.size();x++)
 			{
-				final XMLLibrary.XMLpiece iblk=xV.get(x);
-				if((!iblk.tag.equalsIgnoreCase("CABILITY"))||(iblk.contents==null))
+				final XMLTag iblk=xV.get(x);
+				if((!iblk.tag().equalsIgnoreCase("CABILITY"))||(iblk.contents()==null))
 					continue;
 				// I hate backwards compatibility.
-				String maxProff=CMLib.xml().getValFromPieces(iblk.contents,"CAMAXP");
+				String maxProff=iblk.getValFromPieces("CAMAXP");
 				if((maxProff==null)||(maxProff.trim().length()==0))
 					maxProff="100";
 				CMLib.ableMapper().addCharAbilityMapping(ID(),
-									 CMLib.xml().getIntFromPieces(iblk.contents,"CALEVEL"),
-									 CMLib.xml().getValFromPieces(iblk.contents,"CACLASS"),
-									 CMLib.xml().getIntFromPieces(iblk.contents,"CAPROFF"),
+									 iblk.getIntFromPieces("CALEVEL"),
+									 iblk.getValFromPieces("CACLASS"),
+									 iblk.getIntFromPieces("CAPROFF"),
 									 CMath.s_int(maxProff),
-									 CMLib.xml().getValFromPieces(iblk.contents,"CAPARM"),
-									 CMLib.xml().getBoolFromPieces(iblk.contents,"CAAGAIN"),
-									 CMLib.xml().getBoolFromPieces(iblk.contents,"CASECR"),
-									 CMParms.parseCommas(CMLib.xml().getValFromPieces(iblk.contents,"CAPREQ"),true),
-									 CMLib.xml().getValFromPieces(iblk.contents,"CAMASK"),
+									 iblk.getValFromPieces("CAPARM"),
+									 iblk.getBoolFromPieces("CAAGAIN"),
+									 iblk.getBoolFromPieces("CASECR"),
+									 CMParms.parseCommas(iblk.getValFromPieces("CAPREQ"),true),
+									 iblk.getValFromPieces("CAMASK"),
 									 null);
 			}
 
@@ -634,10 +635,10 @@ public class GenCharClass extends StdCharClass
 			disallowedWeaponSet=new HashSet<Integer>();
 			for(int x=0;x<xV.size();x++)
 			{
-				final XMLLibrary.XMLpiece iblk=xV.get(x);
-				if((!iblk.tag.equalsIgnoreCase("WCLASS"))||(iblk.contents==null))
+				final XMLTag iblk=xV.get(x);
+				if((!iblk.tag().equalsIgnoreCase("WCLASS"))||(iblk.contents()==null))
 					continue;
-				disallowedWeaponSet.add(Integer.valueOf(CMath.s_int(iblk.value)));
+				disallowedWeaponSet.add(Integer.valueOf(CMath.s_int(iblk.value())));
 			}
 		}
 
@@ -649,26 +650,26 @@ public class GenCharClass extends StdCharClass
 			requiredWeaponMaterials=new HashSet<Integer>();
 			for(int x=0;x<xV.size();x++)
 			{
-				final XMLLibrary.XMLpiece iblk=xV.get(x);
-				if((!iblk.tag.equalsIgnoreCase("WMAT"))||(iblk.contents==null))
+				final XMLTag iblk=xV.get(x);
+				if((!iblk.tag().equalsIgnoreCase("WMAT"))||(iblk.contents()==null))
 					continue;
-				requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int(iblk.value)));
+				requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int(iblk.value())));
 			}
 		}
 
 		// now OUTFIT!
-		final List<XMLLibrary.XMLpiece> oV=CMLib.xml().getContentsFromPieces(classData,"OUTFIT");
+		final List<XMLLibrary.XMLTag> oV=CMLib.xml().getContentsFromPieces(classData,"OUTFIT");
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
 			outfitChoices=new Vector<Item>();
 			for(int x=0;x<oV.size();x++)
 			{
-				final XMLLibrary.XMLpiece iblk=oV.get(x);
-				if((!iblk.tag.equalsIgnoreCase("OFTITEM"))||(iblk.contents==null))
+				final XMLTag iblk=oV.get(x);
+				if((!iblk.tag().equalsIgnoreCase("OFTITEM"))||(iblk.contents()==null))
 					continue;
-				final Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
-				final String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
+				final Item newOne=CMClass.getItem(iblk.getValFromPieces("OFCLASS"));
+				final String idat=iblk.getValFromPieces("OFDATA");
 				newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
 				newOne.recoverPhyStats();
 				outfitChoices.add(newOne);

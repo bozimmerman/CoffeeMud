@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 import java.util.*;
 
@@ -1662,7 +1663,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			data.setStartTime(auctionData.date());
 			data.setAuctionTickDown(CMath.s_long(to));
 			final String xml=auctionData.msg();
-			List<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(xml);
+			List<XMLLibrary.XMLTag> xmlV=CMLib.xml().parseAllXML(xml);
 			xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
 			final String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
 			final double oldBid=CMath.s_double(bid);
@@ -1680,10 +1681,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			data.setCurrency(CMLib.beanCounter().getCurrency(data.getAuctioningMob()));
 			for(int v=0;v<xmlV.size();v++)
 			{
-				final XMLLibrary.XMLpiece X=xmlV.get(v);
-				if(X.tag.equalsIgnoreCase("AUCTIONITEM"))
+				final XMLTag X=xmlV.get(v);
+				if(X.tag().equalsIgnoreCase("AUCTIONITEM"))
 				{
-					data.setAuctionedItem(CMLib.coffeeMaker().getItemFromXML(X.value));
+					data.setAuctionedItem(CMLib.coffeeMaker().getItemFromXML(X.value()));
 					break;
 				}
 			}

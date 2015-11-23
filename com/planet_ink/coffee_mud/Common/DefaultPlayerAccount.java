@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMappi
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.StdMOB;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -317,7 +317,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	public void setXML(String str)
 	{
 		final XMLLibrary xmlLib = CMLib.xml();
-		final List<XMLLibrary.XMLpiece> xml = xmlLib.parseAllXML(str);
+		final List<XMLLibrary.XMLTag> xml = xmlLib.parseAllXML(str);
 		final String[] codes=getStatCodes();
 		for (final String code : codes)
 		{
@@ -337,13 +337,13 @@ public class DefaultPlayerAccount implements PlayerAccount
 				this.prideStats[period.ordinal()]=finalPrideStats[period.ordinal()].second;
 			}
 		}
-		final XMLpiece achievePiece = xmlLib.getPieceFromPieces(xml, "ACHIEVEMENTS");
+		final XMLTag achievePiece = xmlLib.getPieceFromPieces(xml, "ACHIEVEMENTS");
 		achievementers.clear();
 		for(Enumeration<Achievement> a=CMLib.achievements().achievements(Agent.ACCOUNT);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
-			if((achievePiece != null) && achievePiece.parms.containsKey(A.getTattoo()))
-				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms.get(A.getTattoo()).trim())));
+			if((achievePiece != null) && achievePiece.parms().containsKey(A.getTattoo()))
+				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms().get(A.getTattoo()).trim())));
 			else
 				achievementers.put(A.getTattoo(), A.getTracker(0));
 		}

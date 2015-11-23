@@ -14,7 +14,8 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.MOBS.GenShopkeeper;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -365,7 +366,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						msg.source().tell(L("Unable to load this area.  Please try again later."));
 						return false;
 					}
-					final List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
+					final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
 					final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
 					CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
 					String idName = "";
@@ -379,11 +380,11 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						{
 							final Object val=definedIDs.get(key);
 							if((key instanceof String)
-							&&(val instanceof XMLpiece)
-							&&(((XMLLibrary.XMLpiece)val).tag.equalsIgnoreCase("area")))
+							&&(val instanceof XMLTag)
+							&&(((XMLTag)val).tag().equalsIgnoreCase("area")))
 							{
-								final XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)val; 
-								final String inserter = CMLib.xml().getParmValue(piece.parms,"INSERT");
+								final XMLTag piece=(XMLTag)val; 
+								final String inserter = piece.getParmValue("INSERT");
 								if(inserter!=null)
 								{
 									final List<String> V=CMParms.parseCommas(inserter,true);
@@ -392,10 +393,10 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 										String s = V.get(v);
 										if(s.startsWith("$"))
 											s=s.substring(1).trim();
-										final XMLLibrary.XMLpiece insertPiece =(XMLLibrary.XMLpiece)definedIDs.get(s.toUpperCase().trim());
+										final XMLTag insertPiece =(XMLTag)definedIDs.get(s.toUpperCase().trim());
 										if(insertPiece == null)
 											continue;
-										if(insertPiece.tag.equalsIgnoreCase("area"))
+										if(insertPiece.tag().equalsIgnoreCase("area"))
 											if(!idChoices.contains(s.toUpperCase().trim()))
 												idChoices.add(s.toUpperCase().trim());
 									}
@@ -409,8 +410,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					if(idChoices.size()>0)
 						idName=idChoices.get(CMLib.dice().roll(1, idChoices.size(), -1)).toUpperCase().trim();
 
-					if((!(definedIDs.get(idName) instanceof XMLpiece))
-					||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase("area")))
+					if((!(definedIDs.get(idName) instanceof XMLTag))
+					||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("area")))
 					{
 						msg.source().tell(L("The area id '@x1' has not been defined in the data file.",idName));
 						return false;
@@ -451,8 +452,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						definedIDs.put("AGGROCHANCE", ""+msg.source().basePhyStats().level());
 					try
 					{
-						XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
-						final List<XMLpiece> pieces = CMLib.percolator().getAllChoices(piece.tag, piece, definedIDs);
+						XMLTag piece=(XMLTag)definedIDs.get(idName);
+						final List<XMLTag> pieces = CMLib.percolator().getAllChoices(piece.tag(), piece, definedIDs);
 						if(pieces.size()>0)
 							piece=pieces.get(CMLib.dice().roll(1, pieces.size(), -1));
 //TODO: fix this

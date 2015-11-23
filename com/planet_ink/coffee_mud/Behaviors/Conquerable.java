@@ -14,11 +14,11 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
    Copyright 2004-2015 Bo Zimmerman
@@ -462,21 +462,21 @@ public class Conquerable extends Arrest
 			if((itemSet!=null)&&(itemSet.size()>0))
 			{
 				final String data=itemSet.get(0).xml();
-				final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(data);
+				final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(data);
 				if(xml!=null)
 				{
 					savedHoldingClan=CMLib.xml().getValFromPieces(xml,"CLANID");
 					prevHoldingClan=CMLib.xml().getValFromPieces(xml,"OLDCLANID");
 					conquestDate=CMLib.xml().getLongFromPieces(xml,"CLANDATE");
 					holdingClan=savedHoldingClan;
-					final List<XMLLibrary.XMLpiece> allData=CMLib.xml().getContentsFromPieces(xml,"ACITEMS");
+					final List<XMLLibrary.XMLTag> allData=CMLib.xml().getContentsFromPieces(xml,"ACITEMS");
 					if(allData!=null)
 					for(int c=0;c<allData.size();c++)
 					{
-						final XMLLibrary.XMLpiece iblk=allData.get(c);
-						if((iblk.tag.equalsIgnoreCase("ACITEM"))&&(iblk.contents!=null))
+						final XMLTag iblk=allData.get(c);
+						if((iblk.tag().equalsIgnoreCase("ACITEM"))&&(iblk.contents()!=null))
 						{
-							final List<XMLLibrary.XMLpiece> roomData=iblk.contents;
+							final List<XMLLibrary.XMLTag> roomData=iblk.contents();
 							final String roomID=CMLib.xml().getValFromPieces(roomData,"ROOMID");
 							final String MOBname=CMLib.xml().getValFromPieces(roomData,"MOB");
 							final Room R=CMLib.map().getRoom(roomID);

@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -105,14 +105,14 @@ public interface GenericBuilder extends CMLibrary
 	public String getGenMobInventory(MOB M);
 	public void doGenPropertiesCopy(Environmental fromE, Environmental toE);
 	public String unpackRoomFromXML(String buf, boolean andContent);
-	public String unpackRoomFromXML(List<XMLpiece> xml, boolean andContent);
-	public String fillAreaAndCustomVectorFromXML(String buf,  List<XMLpiece> area, List<CMObject> custom, Map<String,String> externalFiles);
+	public String unpackRoomFromXML(List<XMLTag> xml, boolean andContent);
+	public String fillAreaAndCustomVectorFromXML(String buf,  List<XMLTag> area, List<CMObject> custom, Map<String,String> externalFiles);
 	public String fillCustomVectorFromXML(String xml, List<CMObject> custom, Map<String,String> externalFiles);
-	public String fillCustomVectorFromXML(List<XMLpiece> xml,  List<CMObject> custom, Map<String,String> externalFiles);
-	public String fillAreasVectorFromXML(String buf,  List<List<XMLpiece>> areas, List<CMObject> custom, Map<String,String> externalFiles);
+	public String fillCustomVectorFromXML(List<XMLTag> xml,  List<CMObject> custom, Map<String,String> externalFiles);
+	public String fillAreasVectorFromXML(String buf,  List<List<XMLTag>> areas, List<CMObject> custom, Map<String,String> externalFiles);
 	public void addAutoPropsToAreaIfNecessary(Area newArea);
 	public Area unpackAreaObjectFromXML(String xml) throws CMException;
-	public String unpackAreaFromXML(List<XMLpiece> aV, Session S, String overrideAreaType, boolean andRooms);
+	public String unpackAreaFromXML(List<XMLTag> aV, Session S, String overrideAreaType, boolean andRooms);
 	public String unpackAreaFromXML(String buf, Session S, String overrideAreaType, boolean andRooms);
 	public StringBuffer getAreaXML(Area area,  Session S, Set<CMObject> custom, Set<String> files, boolean andRooms);
 	public StringBuffer getAreaObjectXML(Area area, Session S, Set<CMObject> custom, Set<String> files, boolean andRooms);
@@ -125,8 +125,8 @@ public interface GenericBuilder extends CMLibrary
 	public StringBuffer getUniqueItemXML(Item item, int type, Map<String,List<Item>> found, Set<String> files);
 	public String addItemsFromXML(String xmlBuffer, List<Item> addHere, Session S);
 	public String addMOBsFromXML(String xmlBuffer, List<MOB> addHere, Session S);
-	public String addItemsFromXML(List<XMLpiece> xml, List<Item> addHere, Session S);
-	public String addMOBsFromXML(List<XMLpiece> xml, List<MOB> addHere, Session S);
+	public String addItemsFromXML(List<XMLTag> xml, List<Item> addHere, Session S);
+	public String addMOBsFromXML(List<XMLTag> xml, List<MOB> addHere, Session S);
 	public MOB getMobFromXML(String xmlBuffer);
 	public Item getItemFromXML(String xmlBuffer);
 	// TYPE= 0=item, 1=weapon, 2=armor
@@ -136,9 +136,9 @@ public interface GenericBuilder extends CMLibrary
 	public StringBuffer getRoomXML(Room room,  Set<CMObject> custom, Set<String> files, boolean andContent);
 	public Ammunition makeAmmunition(String ammunitionType, int number);
 	public void setPropertiesStr(Environmental E, String buf, boolean fromTop);
-	public void setPropertiesStr(Environmental E, List<XMLpiece> V, boolean fromTop);
-	public void setGenScripts(PhysicalAgent E, List<XMLpiece> buf, boolean restoreVars);
-	public void populateShops(ShopKeeper shopKeep, List<XMLpiece> buf);
+	public void setPropertiesStr(Environmental E, List<XMLTag> V, boolean fromTop);
+	public void setGenScripts(PhysicalAgent E, List<XMLTag> buf, boolean restoreVars);
+	public void populateShops(ShopKeeper shopKeep, List<XMLTag> buf);
 	public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files);
 	public String getAccountXML(PlayerAccount account, Set<CMObject> custom, Set<String> files);
 	public String addPlayersAndAccountsFromXML(String xmlBuffer, List<PlayerAccount> addAccounts, List<MOB> addMobs, Session S);
@@ -152,8 +152,8 @@ public interface GenericBuilder extends CMLibrary
 	public void setCharStats(CharStats E, String props);
 	public void setCharState(CharState E, String props);
 	public void setPhyStats(PhyStats E, String props);
-	public void setEnvProperties(Environmental E, List<XMLpiece> buf);
-	public void setExtraEnvProperties(Environmental E, List<XMLpiece> buf);
+	public void setEnvProperties(Environmental E, List<XMLTag> buf);
+	public void setExtraEnvProperties(Environmental E, List<XMLTag> buf);
 	public void setAnyGenStat(Physical P, String stat, String value, boolean supportPlusMinusPrefix);
 	public void setAnyGenStat(Physical P, String stat, String value);
 	public String getAnyGenStat(Physical P, String stat);
@@ -167,5 +167,5 @@ public interface GenericBuilder extends CMLibrary
 	public void setGenMobStat(MOB M, String code, String val);
 	public Area copyArea(Area A, String newName, boolean setSavable);
 	public String getFactionXML(MOB mob);
-	public void setFactionFromXML(MOB mob, List<XMLpiece> xml);
+	public void setFactionFromXML(MOB mob, List<XMLTag> xml);
 }

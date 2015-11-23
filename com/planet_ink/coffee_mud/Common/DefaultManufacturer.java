@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -198,7 +198,7 @@ public class DefaultManufacturer implements Manufacturer
 	@Override
 	public void setXml(String xml)
 	{
-		final List<XMLpiece> xpc = CMLib.xml().parseAllXML(xml);
+		final List<XMLTag> xpc = CMLib.xml().parseAllXML(xml);
 		setName(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xpc,"NAME")));
 		setMaxTechLevelDiff((byte)CMath.s_short(CMLib.xml().getValFromPieces(xpc,"MAXTECHDIFF")));
 		setMinTechLevelDiff((byte)CMath.s_short(CMLib.xml().getValFromPieces(xpc,"MINTECHDIFF")));

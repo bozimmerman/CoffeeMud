@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -4274,21 +4275,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			text=text.substring(0,x);
 			if((xml.length()>0)&&(internalFiles==null))
 			{
-				final List<XMLLibrary.XMLpiece> topXMLV=CMLib.xml().parseAllXML(xml);
+				final List<XMLLibrary.XMLTag> topXMLV=CMLib.xml().parseAllXML(xml);
 				for(int t=0;t<topXMLV.size();t++)
 				{
-					final XMLLibrary.XMLpiece filePiece=topXMLV.get(t);
+					final XMLTag filePiece=topXMLV.get(t);
 					String name=null;
 					String data=null;
-					if(filePiece.tag.equalsIgnoreCase("FILE")&&(filePiece.contents!=null))
+					if(filePiece.tag().equalsIgnoreCase("FILE")&&(filePiece.contents()!=null))
 					{
-						for(int p=0;p<filePiece.contents.size();p++)
+						for(int p=0;p<filePiece.contents().size();p++)
 						{
-							final XMLLibrary.XMLpiece piece=filePiece.contents.get(p);
-							if(piece.tag.equalsIgnoreCase("NAME"))
-								name=piece.value;
-							if(piece.tag.equalsIgnoreCase("DATA"))
-								data=piece.value;
+							final XMLTag piece=filePiece.contents().get(p);
+							if(piece.tag().equalsIgnoreCase("NAME"))
+								name=piece.value();
+							if(piece.tag().equalsIgnoreCase("DATA"))
+								data=piece.value();
 						}
 					}
 					if((name!=null)&&(data!=null)&&(name.trim().length()>0)&&(data.trim().length()>0))

@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
    Copyright 2005-2015 Bo Zimmerman
@@ -153,21 +154,21 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	{
 		if (packageText().length() == 0)
 			return null;
-		final List<XMLLibrary.XMLpiece> buf = CMLib.xml().parseAllXML(packageText());
+		final List<XMLLibrary.XMLTag> buf = CMLib.xml().parseAllXML(packageText());
 		if (buf == null)
 		{
 			Log.errOut("Packaged", "Error parsing 'PAKITEM'.");
 			return null;
 		}
-		final XMLLibrary.XMLpiece iblk = CMLib.xml().getPieceFromPieces(buf, "PAKITEM");
-		if ((iblk == null) || (iblk.contents == null))
+		final XMLTag iblk = CMLib.xml().getPieceFromPieces(buf, "PAKITEM");
+		if ((iblk == null) || (iblk.contents() == null))
 		{
 			Log.errOut("Packaged", "Error parsing 'PAKITEM'.");
 			return null;
 		}
-		final String itemi = CMLib.xml().getValFromPieces(iblk.contents, "PICLASS");
+		final String itemi = iblk.getValFromPieces( "PICLASS");
 		final Environmental newOne = CMClass.getItem(itemi);
-		final List<XMLLibrary.XMLpiece> idat = CMLib.xml().getContentsFromPieces(iblk.contents, "PIDATA");
+		final List<XMLLibrary.XMLTag> idat = iblk.getContentsFromPieces( "PIDATA");
 		if ((idat == null) || (newOne == null) || (!(newOne instanceof Item)))
 		{
 			Log.errOut("Packaged", "Error parsing 'PAKITEM' data.");

@@ -259,7 +259,7 @@ public class GenLanguage extends StdLanguage
 
 	private void parseAllXML(String xml)
 	{
-		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
+		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
 		if((V==null)||(V.size()==0))
 			return;
 		for(int c=0;c<getStatCodes().length;c++)

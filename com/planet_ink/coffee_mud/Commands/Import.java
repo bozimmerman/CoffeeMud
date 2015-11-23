@@ -4910,7 +4910,7 @@ public class Import extends StdCommand
 					buf=CF.textUnformatted();
 				if(buf == null)
 					buf = new StringBuffer("");
-				final List<List<XMLLibrary.XMLpiece>> areas=new Vector<List<XMLLibrary.XMLpiece>>();
+				final List<List<XMLLibrary.XMLTag>> areas=new Vector<List<XMLLibrary.XMLTag>>();
 				if(session!=null)
 					session.rawPrint(L("Unpacking area(s) from file: '@x1'...",areaFileName));
 				String error=CMLib.coffeeMaker().fillAreasVectorFromXML(buf.toString(),areas,custom,externalFiles);
@@ -4930,7 +4930,7 @@ public class Import extends StdCommand
 				{
 					if(session!=null)
 						session.rawPrint(L("Unpacking area #@x1/@x2...",""+(a+1),""+num));
-					final List<XMLLibrary.XMLpiece> area=areas.get(0);
+					final List<XMLLibrary.XMLTag> area=areas.get(0);
 					error=CMLib.coffeeMaker().unpackAreaFromXML(area,session,areaType,true);
 					if(session!=null)
 						session.rawPrintln("!");
@@ -4994,7 +4994,7 @@ public class Import extends StdCommand
 					buf = new StringBuffer("");
 				if(session!=null)
 					session.rawPrint(L("Unpacking area from file: '@x1'...",areaFileName));
-				final Vector<XMLLibrary.XMLpiece> areaD=new Vector<XMLLibrary.XMLpiece>();
+				final Vector<XMLLibrary.XMLTag> areaD=new Vector<XMLLibrary.XMLTag>();
 				String error=CMLib.coffeeMaker().fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom,externalFiles);
 				if(error.length()==0)
 					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);

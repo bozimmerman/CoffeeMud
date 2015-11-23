@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -103,7 +103,7 @@ public class Generate extends StdCommand
 			return false;
 		}
 		final StringBuffer xml = file.textUnformatted();
-		final List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
+		final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
 		final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
 		CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
 		final String typeName = commands.get(1);
@@ -145,8 +145,8 @@ public class Generate extends StdCommand
 			}
 		}
 		final String idName = commands.get(2).toUpperCase().trim();
-		if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
-		||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase(objectType)))
+		if((!(definedIDs.get(idName) instanceof XMLTag))
+		||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase(objectType)))
 		{
 			if(!idName.equalsIgnoreCase("LIST"))
 				mob.tell(L("The @x1 id '@x2' has not been defined in the data file.",objectType,idName));
@@ -159,8 +159,8 @@ public class Generate extends StdCommand
 				for(final Enumeration<String> keys=definedIDs.keys();keys.hasMoreElements();)
 				{
 					final String key=keys.nextElement();
-					if((definedIDs.get(key) instanceof XMLLibrary.XMLpiece)
-					&&(((XMLLibrary.XMLpiece)definedIDs.get(key)).tag.equalsIgnoreCase(tKey)))
+					if((definedIDs.get(key) instanceof XMLTag)
+					&&(((XMLTag)definedIDs.get(key)).tag().equalsIgnoreCase(tKey)))
 						xmlTagsV.add(key.toLowerCase());
 				}
 				foundIDs.append(CMParms.toListString(xmlTagsV)+"\n\r");
@@ -169,7 +169,7 @@ public class Generate extends StdCommand
 			return false;
 		}
 
-		final XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
+		final XMLTag piece=(XMLTag)definedIDs.get(idName);
 		definedIDs.putAll(CMParms.parseEQParms(commands,3,commands.size()));
 		try
 		{
@@ -188,7 +188,7 @@ public class Generate extends StdCommand
 			case LIBRARY:
 			{
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
+				CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
 				final String s=CMLib.percolator().findString("STRING", piece, definedIDs);
 				if(s!=null)
 					V.add(s);
@@ -196,7 +196,7 @@ public class Generate extends StdCommand
 			}
 			case AREA:
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
+				CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
 				definedIDs.put("ROOMTAG_NODEGATEEXIT", Directions.getDirectionName(Directions.getOpDirectionCode(direction)));
 				definedIDs.put("ROOMTAG_GATEEXITROOM", mob.location());
 				final Area A=CMLib.percolator().findArea(piece, definedIDs, direction);
@@ -205,14 +205,14 @@ public class Generate extends StdCommand
 				break;
 			case MOB:
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
+				CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
 				V.addAll(CMLib.percolator().findMobs(piece, definedIDs));
 				break;
 			case LOCALE:
 			{
 				final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
+				CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
 				definedIDs.put("ROOMTAG_NODEGATEEXIT", Directions.getDirectionName(Directions.getOpDirectionCode(direction)));
 				definedIDs.put("ROOMTAG_GATEEXITROOM", mob.location());
 				final Room R=CMLib.percolator().buildRoom(piece, definedIDs, exits, direction);
@@ -222,7 +222,7 @@ public class Generate extends StdCommand
 			}
 			case ITEM:
 				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
+				CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
 				V.addAll(CMLib.percolator().findItems(piece, definedIDs));
 				break;
 			default:

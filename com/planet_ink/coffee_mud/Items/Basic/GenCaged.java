@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
    Copyright 2003-2015 Bo Zimmerman
@@ -105,22 +106,22 @@ public class GenCaged extends GenItem implements CagedAnimal
 		MOB M=null;
 		if(cageText().length()==0)
 			return M;
-		final List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(cageText());
+		final List<XMLLibrary.XMLTag> buf=CMLib.xml().parseAllXML(cageText());
 		if(buf==null)
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM'.");
 			return M;
 		}
-		final XMLLibrary.XMLpiece iblk=CMLib.xml().getPieceFromPieces(buf,"MOBITEM");
-		if((iblk==null)||(iblk.contents==null))
+		final XMLTag iblk=CMLib.xml().getPieceFromPieces(buf,"MOBITEM");
+		if((iblk==null)||(iblk.contents()==null))
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM'.");
 			return M;
 		}
-		final String itemi=CMLib.xml().getValFromPieces(iblk.contents,"MICLASS");
-		final String startr=CMLib.xml().getValFromPieces(iblk.contents,"MISTART");
+		final String itemi=iblk.getValFromPieces("MICLASS");
+		final String startr=iblk.getValFromPieces("MISTART");
 		final Environmental newOne=CMClass.getMOB(itemi);
-		final List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"MIDATA");
+		final List<XMLLibrary.XMLTag> idat=iblk.getContentsFromPieces("MIDATA");
 		if((idat==null)||(newOne==null)||(!(newOne instanceof MOB)))
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM' data.");

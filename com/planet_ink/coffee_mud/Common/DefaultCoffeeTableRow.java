@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.StdLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -167,20 +168,20 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		{
 			startTime=start;
 			endTime=end;
-			final List<XMLLibrary.XMLpiece> all=CMLib.xml().parseAllXML(data);
+			final List<XMLLibrary.XMLTag> all=CMLib.xml().parseAllXML(data);
 			if((all==null)||(all.size()==0))
 				return;
 			highestOnline=CMLib.xml().getIntFromPieces(all,"HIGH");
 			numberOnlineTotal=CMLib.xml().getIntFromPieces(all,"NUMONLINE");
 			numberOnlineCounter=CMLib.xml().getIntFromPieces(all,"NUMCOUNT");
-			final XMLLibrary.XMLpiece X=CMLib.xml().getPieceFromPieces(all,"STATS");
-			if((X==null)||(X.contents==null)||(X.contents.size()==0)||(!X.tag.equals("STATS")))
+			final XMLTag X=CMLib.xml().getPieceFromPieces(all,"STATS");
+			if((X==null)||(X.contents()==null)||(X.contents().size()==0)||(!X.tag().equals("STATS")))
 				return;
 			stats.clear();
-			for(int s=0;s<X.contents.size();s++)
+			for(int s=0;s<X.contents().size();s++)
 			{
-				final XMLLibrary.XMLpiece S=X.contents.get(s);
-				long[] l=CMParms.toLongArray(CMParms.parseCommas(S.value,true));
+				final XMLTag S=X.contents().get(s);
+				long[] l=CMParms.toLongArray(CMParms.parseCommas(S.value(),true));
 				if(l.length<STAT_TOTAL)
 				{
 					final long[] l2=new long[STAT_TOTAL];
@@ -188,14 +189,14 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 						l2[i]=l[i];
 					l=l2;
 				}
-				final long[] l2=stats.get(S.tag);
+				final long[] l2=stats.get(S.tag());
 				if(l2!=null)
 				{
 					for(int i=0;i<l2.length;i++)
 						l[i]+=l2[i];
-					stats.remove(S.tag);
+					stats.remove(S.tag());
 				}
-				stats.put(S.tag,l);
+				stats.put(S.tag(),l);
 			}
 		}
 	}

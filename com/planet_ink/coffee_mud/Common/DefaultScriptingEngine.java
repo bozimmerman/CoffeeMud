@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -184,18 +185,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(key.startsWith("SCRIPTVAR-"))
 				resources._removeResource(key);
 		}
-		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
+		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
 		for(int v=0;v<V.size();v++)
 		{
-			final XMLLibrary.XMLpiece piece=V.get(v);
-			if((piece.contents!=null)&&(piece.contents.size()>0))
+			final XMLTag piece=V.get(v);
+			if((piece.contents()!=null)&&(piece.contents().size()>0))
 			{
-				final String kkey="SCRIPTVAR-"+piece.tag;
+				final String kkey="SCRIPTVAR-"+piece.tag();
 				final Hashtable<String,String> H=new Hashtable<String,String>();
-				for(int c=0;c<piece.contents.size();c++)
+				for(int c=0;c<piece.contents().size();c++)
 				{
-					final XMLLibrary.XMLpiece piece2=piece.contents.get(c);
-					H.put(piece2.tag,piece2.value);
+					final XMLTag piece2=piece.contents().get(c);
+					H.put(piece2.tag(),piece2.value());
 				}
 				resources._submitResource(kkey,H);
 			}
@@ -901,7 +902,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf.toString());
+		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		monsters=new Vector<PhysicalAgent>();
 		if(xml!=null)
 		{
@@ -953,7 +954,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf.toString());
+		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		monsters=new Vector<PhysicalAgent>();
 		if(xml!=null)
 		{
@@ -966,13 +967,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				try
 				{
 					CMLib.percolator().buildDefinedIDSet(xml,definedIDs);
-					if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
-					||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase("MOB")))
+					if((!(definedIDs.get(idName) instanceof XMLTag))
+					||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("MOB")))
 					{
 						logError(scripted,"XMLLOAD","?","Non-MOB tag '"+idName+"' for XML file: '"+filename+"' in "+thangName);
 						return null;
 					}
-					final XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
+					final XMLTag piece=(XMLTag)definedIDs.get(idName);
 					definedIDs.putAll(eqParms);
 					try
 					{
@@ -984,7 +985,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 					}
 					CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-					CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
+					CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
 					monsters.addAll(CMLib.percolator().findMobs(piece, definedIDs));
 					CMLib.percolator().postProcess(definedIDs);
 					if(monsters.size()<=0)
@@ -1034,7 +1035,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return null;
 		}
 		items=new Vector<PhysicalAgent>();
-		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf.toString());
+		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		if(xml!=null)
 		{
 			if(CMLib.xml().getContentsFromPieces(xml,"ITEMS")!=null)
@@ -1086,7 +1087,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return null;
 		}
 		items=new Vector<PhysicalAgent>();
-		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf.toString());
+		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		if(xml!=null)
 		{
 			if(CMLib.xml().getContentsFromPieces(xml,"AREADATA")!=null)
@@ -1098,13 +1099,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				try
 				{
 					CMLib.percolator().buildDefinedIDSet(xml,definedIDs);
-					if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
-					||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase("ITEM")))
+					if((!(definedIDs.get(idName) instanceof XMLTag))
+					||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("ITEM")))
 					{
 						logError(scripted,"XMLLOAD","?","Non-ITEM tag '"+idName+"' for XML file: '"+filename+"' in "+thangName);
 						return null;
 					}
-					final XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
+					final XMLTag piece=(XMLTag)definedIDs.get(idName);
 					definedIDs.putAll(eqParms);
 					try
 					{
@@ -1116,7 +1117,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 					}
 					CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-					CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
+					CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
 					items.addAll(CMLib.percolator().findItems(piece, definedIDs));
 					CMLib.percolator().postProcess(definedIDs);
 					if(items.size()<=0)

@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Libraries.layouts.AbstractLayout;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -42,20 +42,20 @@ import java.util.*;
  */
 public interface AreaGenerationLibrary extends CMLibrary
 {
-	public void buildDefinedIDSet(List<XMLpiece> xmlRoot, Map<String,Object> defined);
-	public List<Item> findItems(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
-	public List<MOB> findMobs(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
-	public String findString(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
-	public Room buildRoom(XMLLibrary.XMLpiece piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException;
-	public void checkRequirements(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
-	public Map<String,String> getUnfilledRequirements(Map<String,Object> defined, XMLLibrary.XMLpiece piece);
-	public Area findArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, int directions) throws CMException;
-	public boolean fillInArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, Area A, int direction) throws CMException;
+	public void buildDefinedIDSet(List<XMLTag> xmlRoot, Map<String,Object> defined);
+	public List<Item> findItems(XMLTag piece, Map<String,Object> defined) throws CMException;
+	public List<MOB> findMobs(XMLTag piece, Map<String,Object> defined) throws CMException;
+	public String findString(String tagName, XMLTag piece, Map<String,Object> defined) throws CMException;
+	public Room buildRoom(XMLTag piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException;
+	public void checkRequirements(XMLTag piece, Map<String,Object> defined) throws CMException;
+	public Map<String,String> getUnfilledRequirements(Map<String,Object> defined, XMLTag piece);
+	public Area findArea(XMLTag piece, Map<String,Object> defined, int directions) throws CMException;
+	public boolean fillInArea(XMLTag piece, Map<String,Object> defined, Area A, int direction) throws CMException;
 	public LayoutManager getLayoutManager(String named);
 	public void postProcess(final Map<String,Object> defined) throws CMException;
-	public void defineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, String value, Map<String,Object> defined) throws CMException;
-	public void preDefineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
-	public List<XMLpiece> getAllChoices(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
+	public void defineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLTag piece, String value, Map<String,Object> defined) throws CMException;
+	public void preDefineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLTag piece, Map<String,Object> defined) throws CMException;
+	public List<XMLTag> getAllChoices(String tagName, XMLTag piece, Map<String,Object> defined) throws CMException;
 
 	/**
 	 * Area generators work by first laying out a set of rooms into a

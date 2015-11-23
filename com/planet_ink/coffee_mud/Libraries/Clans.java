@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -955,17 +956,17 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public ClanGovernment[] parseGovernmentXML(StringBuffer xml)
 	{
-		final List<XMLLibrary.XMLpiece> xmlV = CMLib.xml().parseAllXML(xml);
-		final XMLLibrary.XMLpiece clanTypesTag = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPES");
-		List<XMLLibrary.XMLpiece> clanTypes = null;
+		final List<XMLLibrary.XMLTag> xmlV = CMLib.xml().parseAllXML(xml);
+		final XMLTag clanTypesTag = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPES");
+		List<XMLLibrary.XMLTag> clanTypes = null;
 		if(clanTypesTag != null)
-			clanTypes = clanTypesTag.contents;
+			clanTypes = clanTypesTag.contents();
 		else
 		{
-			final XMLLibrary.XMLpiece clanType = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPE");
+			final XMLLibrary.XMLTag clanType = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPE");
 			if(clanType != null)
 			{
-				clanTypes = new SVector<XMLLibrary.XMLpiece>();
+				clanTypes = new SVector<XMLLibrary.XMLTag>();
 				clanTypes.add(clanType);
 			}
 			else
@@ -976,55 +977,55 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 
 		final List<ClanGovernment> governments=new SVector<ClanGovernment>();
-		for(final XMLLibrary.XMLpiece clanTypePieceTag : clanTypes)
+		for(final XMLTag clanTypePieceTag : clanTypes)
 		{
-			final String typeName=clanTypePieceTag.parms.get("NAME");
-			final int typeID=CMath.s_int(clanTypePieceTag.parms.get("TYPEID"));
-			final boolean isDefault=CMath.s_bool(clanTypePieceTag.parms.get("ISDEFAULT"));
-			String category=clanTypePieceTag.parms.get("CATEGORY");
+			final String typeName=clanTypePieceTag.parms().get("NAME");
+			final int typeID=CMath.s_int(clanTypePieceTag.parms().get("TYPEID"));
+			final boolean isDefault=CMath.s_bool(clanTypePieceTag.parms().get("ISDEFAULT"));
+			String category=clanTypePieceTag.parms().get("CATEGORY");
 			if(category==null)
 				category="";
 
 			final Authority[]	baseFunctionChart = new Authority[Function.values().length];
 			for(int i=0;i<Function.values().length;i++)
 				baseFunctionChart[i]=Authority.CAN_NOT_DO;
-			final XMLLibrary.XMLpiece votingTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "VOTING");
-			final int maxVotingDays = CMath.s_int(votingTag.parms.get("MAXDAYS"));
-			final int minVotingPct = CMath.s_int(votingTag.parms.get("QUORUMPCT"));
-			for(final XMLLibrary.XMLpiece piece : votingTag.contents)
+			final XMLTag votingTag = clanTypePieceTag.getPieceFromPieces( "VOTING");
+			final int maxVotingDays = CMath.s_int(votingTag.parms().get("MAXDAYS"));
+			final int minVotingPct = CMath.s_int(votingTag.parms().get("QUORUMPCT"));
+			for(final XMLTag piece : votingTag.contents())
 			{
-				if(piece.tag.equalsIgnoreCase("POWER"))
+				if(piece.tag().equalsIgnoreCase("POWER"))
 				{
-					final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),piece.value);
+					final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),piece.value());
 					if(power == null)
-						Log.errOut("Clans","Illegal power found in xml: "+piece.value);
+						Log.errOut("Clans","Illegal power found in xml: "+piece.value());
 					else
 						baseFunctionChart[power.ordinal()] = Authority.MUST_VOTE_ON;
 				}
 			}
 
 			final List<ClanPosition> positions=new SVector<ClanPosition>();
-			final XMLLibrary.XMLpiece positionsTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "POSITIONS");
-			for(final XMLLibrary.XMLpiece posPiece : positionsTag.contents)
+			final XMLTag positionsTag = clanTypePieceTag.getPieceFromPieces( "POSITIONS");
+			for(final XMLTag posPiece : positionsTag.contents())
 			{
-				if(posPiece.tag.equalsIgnoreCase("POSITION"))
+				if(posPiece.tag().equalsIgnoreCase("POSITION"))
 				{
 					final Authority[]	functionChart = baseFunctionChart.clone();
-					final String ID=posPiece.parms.get("ID");
-					final int roleID=CMath.s_int(posPiece.parms.get("ROLEID"));
-					final int rank=CMath.s_int(posPiece.parms.get("RANK"));
-					final String name=posPiece.parms.get("NAME");
-					final String pluralName=posPiece.parms.get("PLURAL");
-					final int max=CMath.s_int(posPiece.parms.get("MAX"));
-					final boolean isPublic=CMath.s_bool(posPiece.parms.get("PUBLIC"));
-					final String innerMaskStr=CMLib.xml().restoreAngleBrackets(posPiece.parms.get("INNERMASK"));
-					for(final XMLLibrary.XMLpiece powerPiece : posPiece.contents)
+					final String ID=posPiece.parms().get("ID");
+					final int roleID=CMath.s_int(posPiece.parms().get("ROLEID"));
+					final int rank=CMath.s_int(posPiece.parms().get("RANK"));
+					final String name=posPiece.parms().get("NAME");
+					final String pluralName=posPiece.parms().get("PLURAL");
+					final int max=CMath.s_int(posPiece.parms().get("MAX"));
+					final boolean isPublic=CMath.s_bool(posPiece.parms().get("PUBLIC"));
+					final String innerMaskStr=CMLib.xml().restoreAngleBrackets(posPiece.parms().get("INNERMASK"));
+					for(final XMLTag powerPiece : posPiece.contents())
 					{
-						if(powerPiece.tag.equalsIgnoreCase("POWER"))
+						if(powerPiece.tag().equalsIgnoreCase("POWER"))
 						{
-							final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),powerPiece.value);
+							final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),powerPiece.value());
 							if(power == null)
-								Log.errOut("Clans","Illegal power found in xml: "+powerPiece.value);
+								Log.errOut("Clans","Illegal power found in xml: "+powerPiece.value());
 							else
 								functionChart[power.ordinal()] = Authority.CAN_DO;
 						}
@@ -1060,7 +1061,7 @@ public class Clans extends StdLibrary implements ClanManager
 				Log.errOut("Clans","Missing positions in "+typeName);
 				continue;
 			}
-			final String	autoRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPOSITION");
+			final String	autoRoleStr=clanTypePieceTag.getValFromPieces( "AUTOPOSITION");
 			ClanPosition autoRole=null;
 			for(final ClanPosition pos : positions)
 				if(pos.getID().equalsIgnoreCase(autoRoleStr) )
@@ -1070,7 +1071,7 @@ public class Clans extends StdLibrary implements ClanManager
 				Log.errOut("Clans","Illegal role found in xml: "+autoRoleStr);
 				continue;
 			}
-			final String	acceptRoleStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "ACCEPTPOSITION");
+			final String	acceptRoleStr=clanTypePieceTag.getValFromPieces( "ACCEPTPOSITION");
 			ClanPosition acceptRole=null;
 			for(final ClanPosition pos : positions)
 				if(pos.getID().equalsIgnoreCase(acceptRoleStr) )
@@ -1080,38 +1081,38 @@ public class Clans extends StdLibrary implements ClanManager
 				Log.errOut("Clans","Illegal acceptRole found in xml: "+acceptRoleStr);
 				continue;
 			}
-			final String requiredMaskStr=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "REQUIREDMASK"));
-			final String entryScript=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "ENTRYSCRIPT"));
-			final String exitScript=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "EXITSCRIPT"));
-			final String shortDesc=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "SHORTDESC"));
-			final String longDesc=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "LONGDESC"));
-			final String autoPromoteStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPROMOTEBY");
+			final String requiredMaskStr=CMLib.xml().restoreAngleBrackets(clanTypePieceTag.getValFromPieces( "REQUIREDMASK"));
+			final String entryScript=CMLib.xml().restoreAngleBrackets(clanTypePieceTag.getValFromPieces( "ENTRYSCRIPT"));
+			final String exitScript=CMLib.xml().restoreAngleBrackets(clanTypePieceTag.getValFromPieces( "EXITSCRIPT"));
+			final String shortDesc=CMLib.xml().restoreAngleBrackets(clanTypePieceTag.getValFromPieces( "SHORTDESC"));
+			final String longDesc=CMLib.xml().restoreAngleBrackets(clanTypePieceTag.getValFromPieces( "LONGDESC"));
+			final String autoPromoteStr=clanTypePieceTag.getValFromPieces( "AUTOPROMOTEBY");
 			final Clan.AutoPromoteFlag autoPromote = AutoPromoteFlag.valueOf(autoPromoteStr);
 			if(autoPromote==null)
 			{
 				Log.errOut("Clans","Illegal AUTOPROMOTEBY found in xml: "+autoPromoteStr);
 				continue;
 			}
-			final boolean isPublic=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "PUBLIC"));
-			final boolean isFamilyOnly=CMath.s_bool(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "FAMILYONLY"));
-			final String	overrideMinMembersStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "OVERRIDEMINMEMBERS");
+			final boolean isPublic=CMath.s_bool(clanTypePieceTag.getValFromPieces( "PUBLIC"));
+			final boolean isFamilyOnly=CMath.s_bool(clanTypePieceTag.getValFromPieces( "FAMILYONLY"));
+			final String	overrideMinMembersStr=clanTypePieceTag.getValFromPieces( "OVERRIDEMINMEMBERS");
 			Integer overrideMinMembers = null;
 			if((overrideMinMembersStr!=null)&&CMath.isInteger(overrideMinMembersStr))
 				overrideMinMembers=Integer.valueOf(CMath.s_int(overrideMinMembersStr));
 			boolean isRivalrous=true;
-			final String rivalrousStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "RIVALROUS");
+			final String rivalrousStr=clanTypePieceTag.getValFromPieces( "RIVALROUS");
 			if(CMath.isBool(rivalrousStr))
 				isRivalrous=CMath.s_bool(rivalrousStr);
-			final String xpPerLevelFormulaStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "XPPERLEVELFORMULA");
-			final XMLLibrary.XMLpiece conquestTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "CONQUEST");
+			final String xpPerLevelFormulaStr=clanTypePieceTag.getValFromPieces( "XPPERLEVELFORMULA");
+			final XMLTag conquestTag = clanTypePieceTag.getPieceFromPieces( "CONQUEST");
 			boolean conquestEnabled=true;
 			boolean conquestItemLoyalty=true;
 			boolean conquestDeityBasis=false;
 			if(conquestTag!=null)
 			{
-				conquestEnabled=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "ENABLED"));
-				conquestItemLoyalty=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "ITEMLOYALTY"));
-				conquestDeityBasis=CMath.s_bool(CMLib.xml().getValFromPieces(conquestTag.contents, "DEITYBASIS"));
+				conquestEnabled=CMath.s_bool(conquestTag.getValFromPieces( "ENABLED"));
+				conquestItemLoyalty=CMath.s_bool(conquestTag.getValFromPieces( "ITEMLOYALTY"));
+				conquestDeityBasis=CMath.s_bool(conquestTag.getValFromPieces( "DEITYBASIS"));
 			}
 			final ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
 			G.setID(typeID);
@@ -1138,31 +1139,31 @@ public class Clans extends StdLibrary implements ClanManager
 			G.setVoteQuorumPct(minVotingPct);
 			G.setDefault(isDefault);
 
-			final XMLLibrary.XMLpiece abilitiesTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "ABILITIES");
-			if((abilitiesTag!=null)&&(abilitiesTag.contents!=null)&&(abilitiesTag.contents.size()>0))
+			final XMLTag abilitiesTag = clanTypePieceTag.getPieceFromPieces( "ABILITIES");
+			if((abilitiesTag!=null)&&(abilitiesTag.contents()!=null)&&(abilitiesTag.contents().size()>0))
 			{
-				G.setStat("NUMRABLE", Integer.toString(abilitiesTag.contents.size()));
-				for(int x=0;x<abilitiesTag.contents.size();x++)
+				G.setStat("NUMRABLE", Integer.toString(abilitiesTag.contents().size()));
+				for(int x=0;x<abilitiesTag.contents().size();x++)
 				{
-					final XMLLibrary.XMLpiece able = abilitiesTag.contents.get(x);
-					G.setStat("GETRABLE"+x, able.parms.get("ID"));
-					G.setStat("GETRABLEPROF"+x, able.parms.get("PROFF"));
-					G.setStat("GETRABLEQUAL"+x, able.parms.get("QUALIFYONLY"));
-					G.setStat("GETRABLELVL"+x, able.parms.get("LEVEL"));
-					G.setStat("GETRABLEROLE"+x, able.parms.get("ROLES"));
+					final XMLTag able = abilitiesTag.contents().get(x);
+					G.setStat("GETRABLE"+x, able.parms().get("ID"));
+					G.setStat("GETRABLEPROF"+x, able.parms().get("PROFF"));
+					G.setStat("GETRABLEQUAL"+x, able.parms().get("QUALIFYONLY"));
+					G.setStat("GETRABLELVL"+x, able.parms().get("LEVEL"));
+					G.setStat("GETRABLEROLE"+x, able.parms().get("ROLES"));
 				}
 			}
-			final XMLLibrary.XMLpiece effectsTag = CMLib.xml().getPieceFromPieces(clanTypePieceTag.contents, "EFFECTS");
-			if((effectsTag!=null)&&(effectsTag.contents!=null)&&(effectsTag.contents.size()>0))
+			final XMLTag effectsTag = clanTypePieceTag.getPieceFromPieces( "EFFECTS");
+			if((effectsTag!=null)&&(effectsTag.contents()!=null)&&(effectsTag.contents().size()>0))
 			{
-				G.setStat("NUMREFF", Integer.toString(effectsTag.contents.size()));
-				for(int x=0;x<effectsTag.contents.size();x++)
+				G.setStat("NUMREFF", Integer.toString(effectsTag.contents().size()));
+				for(int x=0;x<effectsTag.contents().size();x++)
 				{
-					final XMLLibrary.XMLpiece able = effectsTag.contents.get(x);
-					G.setStat("GETREFF"+x, able.parms.get("ID"));
-					G.setStat("GETREFFPARM"+x, CMLib.xml().restoreAngleBrackets(able.parms.get("PARMS")));
-					G.setStat("GETREFFLVL"+x, able.parms.get("LEVEL"));
-					G.setStat("GETREFFROLE"+x, able.parms.get("ROLES"));
+					final XMLTag able = effectsTag.contents().get(x);
+					G.setStat("GETREFF"+x, able.parms().get("ID"));
+					G.setStat("GETREFFPARM"+x, CMLib.xml().restoreAngleBrackets(able.parms().get("PARMS")));
+					G.setStat("GETREFFLVL"+x, able.parms().get("LEVEL"));
+					G.setStat("GETREFFROLE"+x, able.parms().get("ROLES"));
 				}
 			}
 			governments.add(G);

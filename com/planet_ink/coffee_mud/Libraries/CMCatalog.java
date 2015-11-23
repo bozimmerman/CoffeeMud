@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.RoomContent;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -1213,23 +1214,23 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		@Override
 		public void build(String catadata)
 		{
-			List<XMLLibrary.XMLpiece> V=null;
+			List<XMLLibrary.XMLTag> V=null;
 			if((catadata!=null)&&(catadata.length()>0))
 			{
 				V=CMLib.xml().parseAllXML(catadata);
-				final XMLLibrary.XMLpiece piece=CMLib.xml().getPieceFromPieces(V,"CATALOGDATA");
-				if((piece!=null)&&(piece.contents!=null)&&(piece.contents.size()>0))
+				final XMLTag piece=CMLib.xml().getPieceFromPieces(V,"CATALOGDATA");
+				if((piece!=null)&&(piece.contents()!=null)&&(piece.contents().size()>0))
 				{
-					catagory=CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(piece.parms, "CATAGORY"));
+					catagory=CMLib.xml().restoreAngleBrackets(piece.getParmValue( "CATAGORY"));
 					if(catagory==null)
 						catagory="";
-					lmaskStr=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(piece.contents,"LMASK"));
-					final String ratestr=CMLib.xml().getValFromPieces(piece.contents,"RATE");
+					lmaskStr=CMLib.xml().restoreAngleBrackets(piece.getValFromPieces("LMASK"));
+					final String ratestr=piece.getValFromPieces("RATE");
 					rate=CMath.s_pct(ratestr);
 					lmaskV=null;
 					if(lmaskStr.length()>0)
 						lmaskV=CMLib.masking().maskCompile(lmaskStr);
-					live=CMath.s_bool(CMLib.xml().getValFromPieces(piece.contents,"LIVE"));
+					live=CMath.s_bool(piece.getValFromPieces("LIVE"));
 				}
 			}
 			else

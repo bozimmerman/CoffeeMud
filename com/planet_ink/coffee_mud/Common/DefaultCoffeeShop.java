@@ -15,15 +15,10 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.ref.WeakReference;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Vector;
-
-
-
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
    Copyright 2008-2015 Bo Zimmerman
@@ -542,7 +537,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			return;
 		}
 
-		final List<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(text);
+		final List<XMLLibrary.XMLTag> xmlV=CMLib.xml().parseAllXML(text);
 		if(xmlV==null)
 		{
 			Log.errOut("DefaultCoffeeShop","Error parsing data.");
@@ -564,7 +559,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		if(parm!=null)
 			shop.setIgnoreMask(parm);
 
-		final List<XMLLibrary.XMLpiece> iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
+		final List<XMLLibrary.XMLTag> iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
 		if(iV==null)
 		{
 			Log.errOut("DefaultCoffeeShop","Error parsing 'INVS'.");
@@ -572,19 +567,19 @@ public class DefaultCoffeeShop implements CoffeeShop
 		}
 		for(int i=0;i<iV.size();i++)
 		{
-			final XMLLibrary.XMLpiece iblk=iV.get(i);
-			if((!iblk.tag.equalsIgnoreCase("INV"))||(iblk.contents==null))
+			final XMLTag iblk=iV.get(i);
+			if((!iblk.tag().equalsIgnoreCase("INV"))||(iblk.contents()==null))
 			{
 				Log.errOut("DefaultCoffeeShop","Error parsing 'INVS' data.");
 				return;
 			}
-			final String itemi=CMLib.xml().getValFromPieces(iblk.contents,"ICLASS");
-			final int itemnum=CMLib.xml().getIntFromPieces(iblk.contents,"INUM");
-			final int val=CMLib.xml().getIntFromPieces(iblk.contents,"IVAL");
+			final String itemi=iblk.getValFromPieces("ICLASS");
+			final int itemnum=iblk.getIntFromPieces("INUM");
+			final int val=iblk.getIntFromPieces("IVAL");
 			PhysicalAgent newOne=CMClass.getItem(itemi);
 			if(newOne==null)
 				newOne=CMClass.getMOB(itemi);
-			final List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"IDATA");
+			final List<XMLLibrary.XMLTag> idat=iblk.getContentsFromPieces("IDATA");
 			if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
 			{
 				Log.errOut("DefaultCoffeeShop","Error parsing 'INV' data.");

@@ -5,7 +5,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achieve
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
@@ -717,15 +718,15 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 	}
 
-	private void setAliasXML(List<XMLpiece> xml)
+	private void setAliasXML(List<XMLTag> xml)
 	{
 		alias.clear();
-		for (final XMLpiece piece : xml)
+		for (final XMLTag piece : xml)
 		{
-			if((piece.tag.equals("ALIAS"))&&(piece.parms!=null))
+			if((piece.tag().equals("ALIAS"))&&(piece.parms()!=null))
 			{
-				final String command=CMLib.xml().getParmValue(piece.parms, "CMD");
-				final String value=CMLib.xml().getParmValue(piece.parms, "VAL");
+				final String command=piece.getParmValue( "CMD");
+				final String value=piece.getParmValue( "VAL");
 				if((command!=null)&&(value!=null))
 					alias.put(command, CMLib.xml().restoreAngleBrackets(value));
 			}
@@ -741,28 +742,28 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 	}
 
-	private void setLegacyXML(List<XMLpiece> xml)
+	private void setLegacyXML(List<XMLTag> xml)
 	{
 		legacy.clear();
-		for (final XMLpiece piece : xml)
+		for (final XMLTag piece : xml)
 		{
-			if((piece.tag.equals("LEGACY"))&&(piece.parms!=null))
+			if((piece.tag().equals("LEGACY"))&&(piece.parms()!=null))
 			{
-				final String category=CMLib.xml().getParmValue(piece.parms, "CAT");
-				final String levelStr=CMLib.xml().getParmValue(piece.parms, "LVL");
+				final String category=piece.getParmValue( "CAT");
+				final String levelStr=piece.getParmValue( "LVL");
 				if((category!=null)&&(levelStr!=null))
 					legacy.put(category, Integer.valueOf(levelStr));
 			}
 		}
 	}
 
-	private void setTitleXML(List<XMLpiece> xml)
+	private void setTitleXML(List<XMLTag> xml)
 	{
 		titles.clear();
-		for (final XMLpiece piece : xml)
+		for (final XMLTag piece : xml)
 		{
-			if(piece.tag.equals("TITLE"))
-				titles.add(CMLib.xml().restoreAngleBrackets(piece.value));
+			if(piece.tag().equals("TITLE"))
+				titles.add(CMLib.xml().restoreAngleBrackets(piece.value()));
 		}
 		int t=-1;
 		while((++t)>=0)
@@ -791,7 +792,7 @@ public class DefaultPlayerStats implements PlayerStats
 		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.PLAYERSTATS);
 		if(debug)
 			Log.debugOut("XML="+xmlStr);
-		final List<XMLLibrary.XMLpiece> xml = xmlLib.parseAllXML(xmlStr);
+		final List<XMLLibrary.XMLTag> xml = xmlLib.parseAllXML(xmlStr);
 		String str=xmlLib.getValFromPieces(xml,"FRIENDS");
 		if(debug)
 			Log.debugOut("FRIENDS="+str);
@@ -931,13 +932,13 @@ public class DefaultPlayerStats implements PlayerStats
 			roomSet().parseXML("<AREAS>"+str+"</AREAS>");
 		else
 			roomSet().parseXML("<AREAS />");
-		final XMLpiece achievePiece = xmlLib.getPieceFromPieces(xml, "ACHIEVEMENTS");
+		final XMLTag achievePiece = xmlLib.getPieceFromPieces(xml, "ACHIEVEMENTS");
 		achievementers.clear();
 		for(Enumeration<Achievement> a=CMLib.achievements().achievements(Agent.PLAYER);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
-			if((achievePiece != null) && achievePiece.parms.containsKey(A.getTattoo()))
-				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms.get(A.getTattoo()).trim())));
+			if((achievePiece != null) && achievePiece.parms().containsKey(A.getTattoo()))
+				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms().get(A.getTattoo()).trim())));
 			else
 				achievementers.put(A.getTattoo(), A.getTracker(0));
 		}

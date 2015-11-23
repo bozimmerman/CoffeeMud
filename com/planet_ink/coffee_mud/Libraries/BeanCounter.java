@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -518,20 +519,20 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	protected void parseDebt(Vector<DebtItem> debt, final String debtor, String xml)
 	{
-		final List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
+		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
 		if(xml==null){ Log.errOut("BeanCounter","Unable to parse: "+xml); return ;}
-		final List<XMLLibrary.XMLpiece> debtData=CMLib.xml().getContentsFromPieces(V,"DEBT");
+		final List<XMLLibrary.XMLTag> debtData=CMLib.xml().getContentsFromPieces(V,"DEBT");
 		if(debtData==null){ Log.errOut("BeanCounter","Unable to get debt data"); return ;}
 		for(int p=0;p<debtData.size();p++)
 		{
-			final XMLLibrary.XMLpiece ablk=debtData.get(p);
-			if((!ablk.tag.equalsIgnoreCase("OWE"))||(ablk.contents==null)||(ablk.contents.size()==0))
+			final XMLTag ablk=debtData.get(p);
+			if((!ablk.tag().equalsIgnoreCase("OWE"))||(ablk.contents()==null)||(ablk.contents().size()==0))
 				continue;
-			final String owed=CMLib.xml().getValFromPieces(ablk.contents,"TO");
-			final double amt=CMLib.xml().getDoubleFromPieces(ablk.contents,"AMT");
-			final String reason=CMLib.xml().getValFromPieces(ablk.contents,"FOR");
-			final long due=CMLib.xml().getLongFromPieces(ablk.contents,"DUE");
-			final double interest=CMLib.xml().getDoubleFromPieces(ablk.contents,"INT");
+			final String owed=ablk.getValFromPieces("TO");
+			final double amt=ablk.getDoubleFromPieces("AMT");
+			final String reason=ablk.getValFromPieces("FOR");
+			final long due=ablk.getLongFromPieces("DUE");
+			final double interest=ablk.getDoubleFromPieces("INT");
 			debt.addElement(new DebtItem()
 			{
 				double amount = amt;

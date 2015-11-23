@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.Electronics.ElecPanel;
 import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerGenerator;
 import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerSource;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -809,18 +810,18 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		manufacturers.clear();
 		if(xmlFile.exists() && xmlFile.canRead())
 		{
-			final List<XMLLibrary.XMLpiece> xDoc=CMLib.xml().parseAllXML(xmlFile.text());
-			final List<XMLLibrary.XMLpiece> xMans=new SLinkedList<XMLLibrary.XMLpiece>();
-			for(final XMLLibrary.XMLpiece x : xDoc)
-				if(x.tag.equalsIgnoreCase("MANUFACTURER"))
+			final List<XMLLibrary.XMLTag> xDoc=CMLib.xml().parseAllXML(xmlFile.text());
+			final List<XMLLibrary.XMLTag> xMans=new SLinkedList<XMLLibrary.XMLTag>();
+			for(final XMLLibrary.XMLTag x : xDoc)
+				if(x.tag().equalsIgnoreCase("MANUFACTURER"))
 					xMans.add(x);
 				else
-				if(x.tag.equalsIgnoreCase("MANUFACTURERS"))
-					xMans.addAll(x.contents);
-			for(final XMLLibrary.XMLpiece x : xMans)
+				if(x.tag().equalsIgnoreCase("MANUFACTURERS"))
+					xMans.addAll(x.contents());
+			for(final XMLTag x : xMans)
 			{
 				final Manufacturer man =(Manufacturer)CMClass.getCommon("DefaultManufacturer");
-				man.setXml(x.value);
+				man.setXml(x.value());
 				addManufacturer(man);
 			}
 		}

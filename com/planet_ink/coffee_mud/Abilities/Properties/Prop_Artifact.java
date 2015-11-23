@@ -13,10 +13,10 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 
 import java.util.*;
 
@@ -289,14 +289,15 @@ public class Prop_Artifact extends Property
 					if(registeredArtifacts.containsKey(getItemID()))
 						registeredArtifacts.remove(getItemID());
 					final String data=itemSet.get(0).xml();
-					final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(data);
+					final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(data);
 					if(xml!=null)
+					{
 						for(int c=0;c<xml.size();c++)
 						{
-							final XMLLibrary.XMLpiece iblk=xml.get(c);
-							if((iblk.tag.equalsIgnoreCase("ARTITEM"))&&(iblk.contents!=null))
+							final XMLTag iblk=xml.get(c);
+							if((iblk.tag().equalsIgnoreCase("ARTITEM"))&&(iblk.contents()!=null))
 							{
-								final List<XMLLibrary.XMLpiece> roomData=iblk.contents;
+								final List<XMLLibrary.XMLTag> roomData=iblk.contents();
 								final String roomID=CMLib.xml().getValFromPieces(roomData,"ROOMID");
 								final String MOBname=CMLib.xml().getValFromPieces(roomData,"MOB");
 								final Room R=CMLib.map().getRoom(roomID);
@@ -405,6 +406,7 @@ public class Prop_Artifact extends Property
 							}
 						}
 					}
+				}
 				// my work is done, I can go away.
 				return false;
 			}

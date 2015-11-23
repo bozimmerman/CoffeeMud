@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
    Copyright 2003-2015 Bo Zimmerman
@@ -373,13 +374,13 @@ public class GenRace extends StdRace
 			Log.errOut("GenRace","Unable to parse empty xml");
 			return;
 		}
-		final List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(parms);
+		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(parms);
 		if(xml==null)
 		{
 			Log.errOut("GenRace","Unable to parse xml: "+parms);
 			return;
 		}
-		final List<XMLLibrary.XMLpiece> raceData=CMLib.xml().getContentsFromPieces(xml,"RACE");
+		final List<XMLLibrary.XMLTag> raceData=CMLib.xml().getContentsFromPieces(xml,"RACE");
 		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data: ("+parms.length()+"): "+CMStrings.padRight(parms,30)+"."); return;}
 		final String id=CMLib.xml().getValFromPieces(raceData,"ID");
 		if(id.length()==0)
@@ -484,21 +485,21 @@ public class GenRace extends StdRace
 			getAgingChart()[v]=CMath.s_int(aV.get(v));
 		clrStatChgDesc();
 		// now RESOURCES!
-		List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(raceData,"RESOURCES");
+		List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(raceData,"RESOURCES");
 		resourceChoices=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
 			resourceChoices=new Vector<RawMaterial>();
 			for(int x=0;x<xV.size();x++)
 			{
-				final XMLLibrary.XMLpiece iblk=xV.get(x);
-				if((!iblk.tag.equalsIgnoreCase("RSCITEM"))||(iblk.contents==null))
+				final XMLTag iblk=xV.get(x);
+				if((!iblk.tag().equalsIgnoreCase("RSCITEM"))||(iblk.contents()==null))
 					continue;
-				final Item I=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"ICLASS"));
+				final Item I=CMClass.getItem(iblk.getValFromPieces("ICLASS"));
 				if(I instanceof RawMaterial)
 				{
 					final RawMaterial newOne=(RawMaterial)I;
-					final String idat=CMLib.xml().getValFromPieces(iblk.contents,"IDATA");
+					final String idat=iblk.getValFromPieces("IDATA");
 					newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
 					newOne.recoverPhyStats();
 					resourceChoices.add(newOne);
@@ -507,31 +508,31 @@ public class GenRace extends StdRace
 		}
 
 		// now OUTFIT!
-		final List<XMLLibrary.XMLpiece> oV=CMLib.xml().getContentsFromPieces(raceData,"OUTFIT");
+		final List<XMLLibrary.XMLTag> oV=CMLib.xml().getContentsFromPieces(raceData,"OUTFIT");
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
 			outfitChoices=new Vector<Item>();
 			for(int x=0;x<oV.size();x++)
 			{
-				final XMLLibrary.XMLpiece iblk=oV.get(x);
-				if((!iblk.tag.equalsIgnoreCase("OFTITEM"))||(iblk.contents==null))
+				final XMLTag iblk=oV.get(x);
+				if((!iblk.tag().equalsIgnoreCase("OFTITEM"))||(iblk.contents()==null))
 					continue;
-				final Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
+				final Item newOne=CMClass.getItem(iblk.getValFromPieces("OFCLASS"));
 				if(newOne != null)
 				{
-					final String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
+					final String idat=iblk.getValFromPieces("OFDATA");
 					newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
 					newOne.recoverPhyStats();
 					outfitChoices.add(newOne);
 				}
 				else
-					Log.errOut("GenRace","Unknown newOne race: " + CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
+					Log.errOut("GenRace","Unknown newOne race: " + iblk.getValFromPieces("OFCLASS"));
 			}
 		}
 
 		naturalWeapon=null;
-		final List<XMLLibrary.XMLpiece> wblk=CMLib.xml().getContentsFromPieces(raceData,"WEAPON");
+		final List<XMLLibrary.XMLTag> wblk=CMLib.xml().getContentsFromPieces(raceData,"WEAPON");
 		if(wblk!=null)
 		{
 			naturalWeapon=CMClass.getWeapon(CMLib.xml().getValFromPieces(wblk,"ICLASS"));
@@ -555,13 +556,13 @@ public class GenRace extends StdRace
 			racialAbilityLevels=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				final XMLLibrary.XMLpiece iblk=xV.get(x);
-				if((!iblk.tag.equalsIgnoreCase("RABILITY"))||(iblk.contents==null))
+				final XMLTag iblk=xV.get(x);
+				if((!iblk.tag().equalsIgnoreCase("RABILITY"))||(iblk.contents()==null))
 					continue;
-				racialAbilityNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"RCLASS");
-				racialAbilityProficiencies[x]=CMLib.xml().getIntFromPieces(iblk.contents,"RPROFF");
-				racialAbilityQuals[x]=CMLib.xml().getBoolFromPieces(iblk.contents,"RAGAIN");
-				racialAbilityLevels[x]=CMLib.xml().getIntFromPieces(iblk.contents,"RLEVEL");
+				racialAbilityNames[x]=iblk.getValFromPieces("RCLASS");
+				racialAbilityProficiencies[x]=iblk.getIntFromPieces("RPROFF");
+				racialAbilityQuals[x]=iblk.getBoolFromPieces("RAGAIN");
+				racialAbilityLevels[x]=iblk.getIntFromPieces("RLEVEL");
 			}
 		}
 
@@ -579,12 +580,12 @@ public class GenRace extends StdRace
 			racialEffectLevels=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				final XMLLibrary.XMLpiece iblk=xV.get(x);
-				if((!iblk.tag.equalsIgnoreCase("REFFECT"))||(iblk.contents==null))
+				final XMLTag iblk=xV.get(x);
+				if((!iblk.tag().equalsIgnoreCase("REFFECT"))||(iblk.contents()==null))
 					continue;
-				racialEffectNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"RFCLASS");
-				racialEffectParms[x]=CMLib.xml().getValFromPieces(iblk.contents,"RFPARM");
-				racialEffectLevels[x]=CMLib.xml().getIntFromPieces(iblk.contents,"RFLEVEL");
+				racialEffectNames[x]=iblk.getValFromPieces("RFCLASS");
+				racialEffectParms[x]=iblk.getValFromPieces("RFPARM");
+				racialEffectLevels[x]=iblk.getIntFromPieces("RFLEVEL");
 			}
 		}
 
@@ -598,11 +599,11 @@ public class GenRace extends StdRace
 			culturalAbilityProficiencies=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				final XMLLibrary.XMLpiece iblk=xV.get(x);
-				if((!iblk.tag.equalsIgnoreCase("CABILITY"))||(iblk.contents==null))
+				final XMLTag iblk=xV.get(x);
+				if((!iblk.tag().equalsIgnoreCase("CABILITY"))||(iblk.contents()==null))
 					continue;
-				culturalAbilityNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"CCLASS");
-				culturalAbilityProficiencies[x]=CMLib.xml().getIntFromPieces(iblk.contents,"CPROFF");
+				culturalAbilityNames[x]=iblk.getValFromPieces("CCLASS");
+				culturalAbilityProficiencies[x]=iblk.getIntFromPieces("CPROFF");
 			}
 		}
 
