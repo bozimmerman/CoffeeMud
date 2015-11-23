@@ -2059,7 +2059,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public void haveMobReactToLaw(MOB mob, MOB officer)
 	{
-		if((mob.isMonster())&&(!CMLib.flags().isSitting(mob))&&(mob.amFollowing()==null)&&(!mob.isInCombat()))
+		if((mob.isMonster())
+		&&(!CMLib.flags().isSitting(mob))
+		&&(mob.amFollowing()==null)
+		&&(!mob.isInCombat()))
 		{
 			final boolean good=CMLib.flags().isGood(mob);
 			final boolean evil=CMLib.flags().isEvil(mob);
@@ -2323,14 +2326,18 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					else
 					{
 						haveMobReactToLaw(W.criminal(),officer);
-						W.setState(Law.STATE_SUBDUEING);
 						if(CMLib.flags().isSitting(W.criminal())||CMLib.flags().isSleeping(W.criminal()))
 						{
 							if(!CMLib.flags().isAnimalIntelligence(W.criminal()))
 								CMLib.commands().postSay(officer,W.criminal(),laws.getMessage(Law.MSG_NORESIST),false,false);
+							W.setState(Law.STATE_SUBDUEING);
 						}
 						else
+						if((System.currentTimeMillis() - W.getLastStateChangeTime())>(CMath.mul(CMProps.getTickMillis(),1.5))) // only leave this state after they've had enough time.
+						{
+							W.setState(Law.STATE_SUBDUEING);
 							CMLib.commands().postSay(officer,W.criminal(),laws.getMessage(Law.MSG_RESISTWARN),false,false);
+						}
 						if(W.criminal().isMonster())
 							haveMobReactToLaw(W.criminal(),officer);
 					}
