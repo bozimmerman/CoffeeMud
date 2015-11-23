@@ -35,17 +35,63 @@ import java.util.*;
 
 public class Spell_SummonEnemy extends Spell
 {
-	@Override public String ID() { return "Spell_SummonEnemy"; }
-	private final static String localizedName = CMLib.lang().L("Summon Enemy");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Enemy Summoning)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
-	@Override protected int overrideMana(){return Ability.COST_PCT+50;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_SummonEnemy";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Summon Enemy");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Enemy Summoning)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING | Ability.FLAG_SUMMONING;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_PCT + 50;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public void unInvoke()
@@ -56,6 +102,7 @@ public class Spell_SummonEnemy extends Spell
 		{
 			if(mob.amDead())
 				mob.setLocation(null);
+			CMLib.tracking().wanderAway(mob,false,false);
 			mob.destroy();
 		}
 	}
@@ -74,7 +121,22 @@ public class Spell_SummonEnemy extends Spell
 				msg.source().playerStats().setLastUpdated(0);
 		}
 	}
-
+	
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(ticking instanceof MOB)
+		{
+			final MOB mob=(MOB)ticking;
+			if((mob.getVictim() == null)
+			||(mob.getVictim().location()!=mob.location()))
+				unInvoke();
+		}
+		return !this.unInvoked;
+	}
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

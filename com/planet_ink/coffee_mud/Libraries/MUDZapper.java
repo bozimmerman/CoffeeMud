@@ -450,6 +450,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			zapCodes.put("+MOODS",Integer.valueOf(121));
 			zapCodes.put("+MOOD",Integer.valueOf(121));
 			zapCodes.put("-CHANCE",Integer.valueOf(122));
+			zapCodes.put("-ACCCHIEVES",Integer.valueOf(123));
+			zapCodes.put("-ACCCHIEVE",Integer.valueOf(123));
+			zapCodes.put("-ACCHIEVES",Integer.valueOf(123));
+			zapCodes.put("-ACHIEVES",Integer.valueOf(123));
+			zapCodes.put("+ACCCHIEVES",Integer.valueOf(124));
+			zapCodes.put("+ACCCHIEVE",Integer.valueOf(124));
+			zapCodes.put("+ACCHIEVE",Integer.valueOf(124));
+			zapCodes.put("+ACHIEVE",Integer.valueOf(124));
 		}
 		return zapCodes;
 	}
@@ -959,6 +967,50 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("-"))
 								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 123: // -accchieves
+					{
+						buf.append(L((skipFirstWord?"The":"Requires")+" the following account achievement"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.elementAt(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("+"))
+							{
+								final AchievementLibrary.Achievement A=CMLib.achievements().getAchievement(str2.substring(1));
+								if(A!=null)
+									buf.append(A.getDisplayStr()+", ");
+								else
+									buf.append(str2.substring(1)+", ");
+							}
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 124: // +accchieves
+					{
+						buf.append(L("Disallows the following account achievement"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.elementAt(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("-"))
+							{
+								final AchievementLibrary.Achievement A=CMLib.achievements().getAchievement(str2.substring(1));
+								if(A!=null)
+									buf.append(A.getDisplayStr()+", ");
+								else
+									buf.append(str2.substring(1)+", ");
+							}
 						}
 						if(buf.toString().endsWith(", "))
 							buf=new StringBuilder(buf.substring(0,buf.length()-2));
@@ -2747,11 +2799,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntryImpl(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
-				case 7: // -Tattoos
 				case 31: // -Area
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
+				case 7: // -Tattoos
 				case 120: // -Mood
+				case 123: // -Accchieves
 				case 81: // -expertise
 				case 44: // -Deity
 				case 9: // -Names
@@ -2827,11 +2880,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntryImpl(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
-				case 8: // +Tattoos
 				case 32: // +Area
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
+				case 8: // +Tattoos
 				case 121: // +Mood
+				case 124: // +Accchieves
 				case 82: // +expertise
 				case 45: // +Deity
 				case 16: // +Names
@@ -3723,10 +3777,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					boolean found=false;
 					for(final Object o : entry.parms())
+					{
 						if((mob.findTattoo((String)o)!=null)
 						||((room!=null)&&(room.getArea().getBlurbFlag((String)o)!=null)))
 						{ found=true; break;}
-
+					}
 					if(!found)
 						return false;
 				}
@@ -3734,9 +3789,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 8: // +tattoo
 				{
 					for(final Object o : entry.parms())
+					{
 						if((mob.findTattoo((String)o)!=null)
 						||((room!=null)&&(room.getArea().getBlurbFlag((String)o)!=null)))
 						{ return false;}
+					}
 				}
 				break;
 			case 120: // -mood
@@ -3759,6 +3816,39 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						moodName= "NORMAL";
 					if(CMParms.contains(entry.parms(),moodName))
 						return false;
+				}
+				break;
+			case 123: // -accchieves
+				{
+					boolean found=false;
+					final PlayerStats playerStats = mob.playerStats();
+					if((playerStats != null) && (mob.playerStats().getAccount()!=null))
+					{
+						final PlayerAccount acct = playerStats.getAccount();
+						for(final Object o : entry.parms())
+						{
+							if((acct.findTattoo((String)o)!=null)
+							||((room!=null)&&(room.getArea().getBlurbFlag((String)o)!=null)))
+							{ found=true; break;}
+						}
+					}
+					if(!found)
+						return false;
+				}
+				break;
+			case 124: // +accchieves
+				{
+					final PlayerStats playerStats = mob.playerStats();
+					if((playerStats != null) && (mob.playerStats().getAccount()!=null))
+					{
+						final PlayerAccount acct = playerStats.getAccount();
+						for(final Object o : entry.parms())
+						{
+							if((acct.findTattoo((String)o)!=null)
+							||((room!=null)&&(room.getArea().getBlurbFlag((String)o)!=null)))
+							{ return false;}
+						}
+					}
 				}
 				break;
 			case 81: // -expertise
@@ -4892,6 +4982,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 8: // +tattoo
 			case 120: // -mood
 			case 121: // +mood
+			case 123: // -mood
+			case 124: // +mood
 			case 81: // -expertise
 			case 82: // +expertise
 			case 83: // -skill

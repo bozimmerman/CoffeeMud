@@ -137,4 +137,8 @@
 -SKILLFLAG +ENCHANTMENT etc.. (create exceptions to -skillflag)
 +SKILLFLAG (do not <WORD> anyone, even non skilled people)
 +SKILLFLAG -ENCHANTMENT etc.. (create exceptions to +skillflag)
+-ACCCHIEVES (<WORD> all Account achievements, even a lack of a achievements)
+-ACCCHIEVES +mytatto +thistattoo +anytattoo etc..  (create exceptions)
++ACCCHIEVES (do not <WORD> any or no Account achievements)
++ACCCHIEVES -mytattoo -anytatto, etc.. (create exceptions)
 -CHANCE 50 (<WORD> the given % of the time)

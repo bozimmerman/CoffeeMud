@@ -34,6 +34,8 @@
   33. Prop_Resistance (and the other resistance props) now supports ability types and domains.
   34. New player command: Account, for seeing account info
   35. New command: Remort.  Yes, CoffeeMud now has a more traditional remort system. See coffeemud.ini, and the Achievement tie-in.
+  36. Accounts now support tattoos at that level.  All the tattoo props have been adjusted accordingly.
+  37. New Zapper Mask: ACCCHIEVES for filtering account achievements.  TATTOO is for player achievements.
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)

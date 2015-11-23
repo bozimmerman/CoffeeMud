@@ -128,9 +128,18 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 			if(s.startsWith("+")||s.startsWith("-"))
 			{
 				final char c=s.charAt(0);
-				final boolean found=((c=='+')||(c=='-'))?
-					(mob.findTattoo(s.substring(1))!=null)
-					:(mob.findTattoo(s)!=null);
+				final String tattooName;
+				if((c=='+')||(c=='-'))
+					tattooName = s.substring(1);
+				else
+					tattooName = s;
+				final boolean found;
+				if(tattooName.toLowerCase().startsWith("account ")
+				&&(mob.playerStats()!=null)
+				&&(mob.playerStats().getAccount()!=null))
+					found=mob.playerStats().getAccount().findTattoo(tattooName.substring(8).trim())!=null;
+				else
+					found=mob.findTattoo(tattooName)!=null;
 				switch(allFlag)
 				{
 				case 0: // +NONE -- HAS/LACKS ALL

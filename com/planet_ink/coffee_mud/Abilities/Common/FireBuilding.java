@@ -132,9 +132,7 @@ public class FireBuilding extends CommonSkill
 			commonTell(mob,L("Light what?  Try light fire, or light torch..."));
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-
+		
 		final String name=CMParms.combine(commands,0);
 		int proficiencyAdjustment=0;
 		int duration=6;
@@ -243,6 +241,10 @@ public class FireBuilding extends CommonSkill
 			proficiencyAdjustment=-50;
 			break;
 		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+
 		failed=!proficiencyCheck(mob,proficiencyAdjustment,auto);
 
 		durationOfBurn=durationOfBurn*abilityCode();

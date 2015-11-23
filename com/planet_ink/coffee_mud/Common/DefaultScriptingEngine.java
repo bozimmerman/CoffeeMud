@@ -3996,6 +3996,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					returnable=false;
 				break;
 			}
+			case 99: // hasacctattoo
+			{
+				if(tlen==1) 
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				final String arg1=tt[t+0];
+				final String arg2=tt[t+1];
+				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if(arg2.length()==0)
+				{
+					logError(scripted,"HASACCTATTOO","Syntax",funcParms);
+					break;
+				}
+				else
+				if((E!=null)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null)&&(((MOB)E).playerStats().getAccount()!=null))
+					returnable=((MOB)E).playerStats().getAccount().findTattoo(arg2)!=null;
+				else
+					returnable=false;
+				break;
+			}
 			case 48: // numitemsmob
 			{
 				if(tlen==1) 
@@ -5906,6 +5925,28 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					E=Q.getQuestMob(num);
 				}
 				results.append(list.toString().trim());
+				break;
+			}
+			case 49: // hastattoo
+			{
+				final String arg1=CMParms.cleanBit(funcParms);
+				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if((E!=null)&&(E instanceof MOB))
+				{
+					for(Enumeration<Tattoo> t = ((MOB)E).tattoos();t.hasMoreElements();)
+						results.append(t.nextElement().ID()).append(" ");
+				}
+				break;
+			}
+			case 99: // hasacctattoo
+			{
+				final String arg1=CMParms.cleanBit(funcParms);
+				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if((E!=null)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null)&&(((MOB)E).playerStats().getAccount()!=null))
+				{
+					for(Enumeration<Tattoo> t = ((MOB)E).playerStats().getAccount().tattoos();t.hasMoreElements();)
+						results.append(t.nextElement().ID()).append(" ");
+				}
 				break;
 			}
 			case 32: // nummobsinarea
@@ -9134,6 +9175,39 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
 				{
 					final MOB themob=(MOB)newTarget;
+					final boolean tattooMinus=tattooName.startsWith("-");
+					if(tattooMinus)
+						tattooName=tattooName.substring(1);
+					final Tattoo pT=CMLib.database().parseTattoo(tattooName);
+					final Tattoo T=themob.findTattoo(pT.getTattooName());
+					if(T!=null)
+					{
+						if(tattooMinus)
+							themob.delTattoo(T);
+					}
+					else
+					if(!tattooMinus)
+						themob.addTattoo(pT);
+				}
+				break;
+			}
+			case 83: // mpacctattoo
+			{
+				if(tt==null)
+				{
+					tt=parseBits(script,si,"Ccr");
+					if(tt==null)
+						return null;
+				}
+				final Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				String tattooName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
+				if((newTarget!=null)
+				&&(tattooName.length()>0)
+				&&(newTarget instanceof MOB)
+				&&(((MOB)newTarget).playerStats()!=null)
+				&&(((MOB)newTarget).playerStats().getAccount()!=null))
+				{
+					final Tattooable themob=((MOB)newTarget).playerStats().getAccount();
 					final boolean tattooMinus=tattooName.startsWith("-");
 					if(tattooMinus)
 						tattooName=tattooName.substring(1);

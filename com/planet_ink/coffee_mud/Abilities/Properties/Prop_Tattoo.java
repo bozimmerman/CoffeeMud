@@ -62,12 +62,20 @@ public class Prop_Tattoo extends Property
 			final List<String> V=CMParms.parseSemicolons(text,true);
 			for(int v=0;v<V.size();v++)
 			{
-				final String s=V.get(v);
+				String s=V.get(v);
+				Tattooable T=M;
+				if(s.toLowerCase().startsWith("account ")
+				&&(M.playerStats()!=null)
+				&&(M.playerStats().getAccount()!=null))
+				{
+					T=M.playerStats().getAccount();
+					s=s.substring(8).trim();
+				}
 				final int x=s.indexOf(' ');
 				if((x>0)&&(CMath.isNumber(s.substring(0,x))))
-					M.addTattoo(s.substring(x+1).trim(),CMath.s_int(s.substring(0,x)));
+					T.addTattoo(s.substring(x+1).trim(),CMath.s_int(s.substring(0,x)));
 				else
-					M.addTattoo(s);
+					T.addTattoo(s);
 			}
 		}
 		savable=false;

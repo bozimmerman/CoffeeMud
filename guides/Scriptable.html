@@ -81,6 +81,7 @@
             <li><a href="#switch">switch, case</a></li>
             <li><a href="#for">for, next</a></li>
             <li><a href="#script">&lt;SCRIPT&gt;</a></li>
+            <li><a href="#mpacctattoo">mpacctattoo</a></li>
             <li><a href="#mpaffect">mpaffect</a></li>
             <li><a href="#mpalarm">mpalarm</a></li>
             <li><a href="#mpargset">mpargset</a></li>
@@ -178,6 +179,7 @@
             <li><a href="#goldamt">goldamt</a></li>
             <li><a href="#gstat">gstat</a></li>
             <li><a href="#has">has</a></li>
+            <li><a href="#hasacctattoo">hasacctattoo</a></li>
             <li><a href="#hasnum">hasnum</a></li>
             <li><a href="#hastattoo">hastattoo</a></li>
             <li><a href="#hitprcnt">hitprcnt</a></li>
@@ -862,7 +864,8 @@ sign to narrow matches to only those messages where your given code
 appears as the Source, Others, and Target codes respectively.
 &nbsp;For
 example, use a message code of ST=DEATH to match cases where the Source
-and Target message codes are DEATH and the Others code is ignored.&nbsp;You
+and Target message codes are DEATH and the Others code is
+ignored.&nbsp;You
 can also put the character &lt; or &gt; before the&nbsp; S, O, or Ts in
 order to narrowly check against the Major masks or the Minor type codes
 respectively. &nbsp;See the Programmer's Guide if you don't know what
@@ -2084,6 +2087,15 @@ of a given item in the given mob or
 rooms inventory.</td>
           </tr>
           <tr>
+            <td>HASACCTATTOO([mob[)</td>
+            <td>Returns space delimited list of tattoos on the mobs
+player common account</td>
+          </tr>
+          <tr>
+            <td>HASTATTOO([mob code])</td>
+            <td>Returns space delimited list of tattoos on the mob</td>
+          </tr>
+          <tr>
             <td>HASTITLE([code])</td>
             <td>Returns the
 selected title of the given player mob.</td>
@@ -2766,7 +2778,27 @@ parsing process. For this reason, if you absolutely must keep a
 semicolon ANYWHERE in your javascript, whether as part of a displayable
 string, or a line delimeter, it must be escaped: \;</p>
       <p>Here is an example:</p>
-      <pre>GREET_PROG 100<br />mpecho Greetings $n! This command is mpecho, a mobprog command!<br /><br />&lt;SCRIPT&gt;<br />var greetedBefore=getVar(source().Name(),"GREETEDBEFORE");<br />source().tell("However, this greeting comes from Javascript!");<br />if(greetedBefore == 'true')<br /> source().tell("We've met before\; we will meet again!!");<br />else<br /> setVar(source().Name(),"GREETEDBEFORE","true");<br />&lt;/SCRIPT&gt;<br /><br />if var($n GREETEDBEFORE == true)<br /> mpecho The variable set in Javascript can be read here in mobprog land also!<br />endif<br />~<br /></pre>
+      <pre>GREET_PROG 100<br />mpecho Greetings $n! This command is mpecho, a mobprog command!<br /><br />&lt;SCRIPT&gt;<br />var greetedBefore=getVar(source().Name(),"GREETEDBEFORE");<br />source().tell("However, this greeting comes from Javascript!");<br />if(greetedBefore == 'true')<br /> source().tell("We've met before\; we will meet again!!");<br />else<br /> setVar(source().Name(),"GREETEDBEFORE","true");<br />&lt;/SCRIPT&gt;<br /><br />if var($n GREETEDBEFORE == true)<br /> mpecho The variable set in Javascript can be read here in mobprog land also!<br />endif<br />~    </pre>
+      <h3><a name="mpacctattoo">mpacctattoo</a></h3>
+      <p>Usage:</p>
+mpacctattoo [target] (-)[tattoo name]<br />
+      <p>If your mud even uses the common account system, this command
+grants or
+removes from the target's common player account a tattoo of the
+given name. This is useful for permanently flagging accounts in some
+way
+which can be checked and acted on elsewhere, for instance using the
+HASACCTATTOO function. The tattoo must begin with the character - to
+denote removal. &nbsp;See MPTATTOO for the similar command that applies
+to regular player mobs instead of their accounts.</p>
+      <p>When adding new tattoos,
+you can prefix the name with a number
+to create a temporary tattoo that disappears in the given number of
+ticks.</p>
+      <p>EXAMPLES:</p>
+mpacctattoo $n smurfkiller<br />
+mpacctattoo $n -smurfkiller<br />
+mpacctattoo $n '50 smurfkiller'<br />
       <h3><a name="mpaffect">mpaffect</a></h3>
       <p>Usage:</p>
       <pre>mpaffect [spell name] [target] [parameters]<br /></pre>
@@ -4255,7 +4287,28 @@ expression, including codes.</p>
 character has the given item in their
 inventory or on their person.</p>
       <p>EXAMPLE:</p>
-      <pre>if has($n a long sword)<br /> mpecho The actor has a long sword.<br />else<br /> mpecho The actor does not have anything called 'a long sword'.<br />endif<br /></pre>
+      <pre>if has($n a long sword)<br /> mpecho The actor has a long sword.<br />else<br /> mpecho The actor does not have anything called 'a long sword'.<br />endif      </pre>
+      <h3><a name="hasacctattoo">hasacctattoo</a></h3>
+      <p>Usage:</p>
+      <span style="font-family: monospace;">hasacctattoo(character
+tattoo)</span><br />
+      <p>If your mud even uses the common account system, this command
+checks whether the
+character's common player account has had the given tattoo
+assigned to them.</p>
+      <p>EXAMPLE:</p>
+      <span style="font-family: monospace;">if hasacctattoo($n
+beastmark)</span><br style="font-family: monospace;" />
+      <span style="font-family: monospace;"> mpecho The actor's account
+has the tattoo called beastmark.</span><br
+ style="font-family: monospace;" />
+      <span style="font-family: monospace;">else</span><br
+ style="font-family: monospace;" />
+      <span style="font-family: monospace;"> mpecho The actor</span><span
+ style="font-family: monospace;">'s account</span><span
+ style="font-family: monospace;"> does not have the tattoo called
+beastmark.</span><br style="font-family: monospace;" />
+      <span style="font-family: monospace;">endif</span>
       <h3><a name="hasnum">hasnum</a></h3>
       <p>Usage:</p>
       <pre>hasnum(character item &gt; value)<br /></pre>
@@ -4267,7 +4320,7 @@ the code for a room.</p>
       <pre>if hasnum($n 'a long sword' &gt; 1)<br /> mpecho The actor has several long swords.<br />else<br /> mpecho The actor does not have anything called 'a long sword', or only has 1.<br />endif<br /></pre>
       <h3><a name="hastattoo">hastattoo</a></h3>
       <p>Usage:</p>
-      <pre>hastattoo(character item)<br /></pre>
+      <pre>hastattoo(character tattoo)<br /></pre>
       <p>This checks whether the
 character has had the given tattoo
 assigned to them.</p>

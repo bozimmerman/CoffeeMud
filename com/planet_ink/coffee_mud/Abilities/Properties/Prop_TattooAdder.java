@@ -104,6 +104,14 @@ public class Prop_TattooAdder extends Property
 		if(silent)
 			tattooName=tattooName.substring(1);
 
+		Tattooable TO=mob;
+		if(tattooName.toLowerCase().startsWith("account ")
+		&&(mob.playerStats()!=null)
+		&&(mob.playerStats().getAccount()!=null))
+		{
+			TO=mob.playerStats().getAccount();
+			tattooName=tattooName.substring(8).trim();
+		}
 		if(addOnly)
 			tattooMinus=false;
 		if(subOnly)
@@ -117,7 +125,7 @@ public class Prop_TattooAdder extends Property
 			{
 				if(!silent)
 					mob.location().show(mob,affected,CMMsg.MSG_OK_ACTION,L("<T-NAME> takes away the @x1 tattoo from <S-NAME>.",pT.getTattooName().toLowerCase()));
-				mob.delTattoo(T);
+				TO.delTattoo(T);
 			}
 		}
 		else
@@ -126,7 +134,7 @@ public class Prop_TattooAdder extends Property
 			{
 				if(!silent)
 					mob.location().show(mob,affected,CMMsg.MSG_OK_ACTION,L("<T-NAME> gives <S-NAME> the @x1 tattoo.",pT.getTattooName().toLowerCase()));
-				mob.addTattoo(pT);
+				TO.addTattoo(pT);
 			}
 		}
 	}
