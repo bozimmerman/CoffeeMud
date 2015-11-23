@@ -3,6 +3,8 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
 
@@ -33,18 +35,40 @@ public class LayoutSet
 	Random r = new Random();
 
 	private long total  = 0;
-	private final Hashtable<Long, LayoutNode> used = new Hashtable<Long, LayoutNode>();
-	private Vector<LayoutNode> set = null;
-	public LayoutSet(Vector<LayoutNode> V, long total)
+	private final Map<Long, LayoutNode> used = new Hashtable<Long, LayoutNode>();
+	private List<LayoutNode> set = null;
+
+	public LayoutSet(List<LayoutNode> V, long total)
 	{
 		this.total = total;
 		this.set = V;
 	}
-	public Vector<LayoutNode> set() { return set;}
-	public Long getHashCode(long x, long y){ return (Long.valueOf((x * total)+y));}
-	public boolean isUsed(long[] xy) { return isUsed(xy[0],xy[1]); }
-	public boolean isUsed(long x, long y) { return used.containsKey(getHashCode(x,y)); }
-	public boolean isUsed(LayoutNode n) { return isUsed(n.coord())&&set.contains(n); }
+
+	public List<LayoutNode> set()
+	{
+		return set;
+	}
+
+	public Long getHashCode(long x, long y)
+	{
+		return (Long.valueOf((x * total) + y));
+	}
+
+	public boolean isUsed(long[] xy)
+	{
+		return isUsed(xy[0], xy[1]);
+	}
+
+	public boolean isUsed(long x, long y)
+	{
+		return used.containsKey(getHashCode(x, y));
+	}
+
+	public boolean isUsed(LayoutNode n)
+	{
+		return isUsed(n.coord()) && set.contains(n);
+	}
+
 	public void unUse(LayoutNode n)
 	{
 		used.remove(getHashCode(n.coord()[0],n.coord()[1]));
@@ -60,9 +84,21 @@ public class LayoutSet
 			n.reType(nodeType);
 		return true;
 	}
-	public LayoutNode getNode(long[] xy) { return getNode(xy[0],xy[1]);}
-	public LayoutNode getNode(long x, long y) { return used.get(getHashCode(x,y));}
-	public boolean spaceAvailable() { return set.size() < total; }
+
+	public LayoutNode getNode(long[] xy)
+	{
+		return getNode(xy[0], xy[1]);
+	}
+
+	public LayoutNode getNode(long x, long y)
+	{
+		return used.get(getHashCode(x, y));
+	}
+
+	public boolean spaceAvailable()
+	{
+		return set.size() < total;
+	}
 
 	public long[] makeNextCoord(long[] n, int dir)
 	{
@@ -185,13 +221,13 @@ public class LayoutSet
 
 	public void clipLongStreets()
 	{
-		@SuppressWarnings("unchecked")
-		final
-		Vector<LayoutNode> set2=(Vector<LayoutNode>)set().clone();
+		final Vector<LayoutNode> set2= new Vector<LayoutNode>(set());
 		for (final LayoutNode p : set2)
 		{
 			if(isUsed(p) && p.isStreetLike())
+			{
 				for(int d=0;d<4;d++)
+				{
 					if(p.getLink(d)==null)
 					{
 						final LayoutNode p2 =getNextNode(p, d);
@@ -210,6 +246,8 @@ public class LayoutSet
 							break;
 						}
 					}
+				}
+			}
 		}
 	}
 
@@ -231,12 +269,14 @@ public class LayoutSet
 			{
 				LayoutFlags flag = null;
 				if(n.type()==LayoutTypes.interior)
+				{
 					for(final Integer dirLink : n.links().keySet())
 					{
 						final LayoutNode n2=n.links().get(dirLink);
 						if((n2!=null)&&(n2.type()==LayoutTypes.leaf))
 							flag=LayoutFlags.offleaf;
 					}
+				}
 				if(flag!=null)
 					n.flag(flag);
 				else

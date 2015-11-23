@@ -27,7 +27,11 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 
 public class BoxCityLayout extends AbstractLayout
 {
-	@Override public String name() { return "BOXCITY";}
+	@Override
+	public String name()
+	{
+		return "BOXCITY";
+	}
 
 	public void halfLineN(LayoutSet lSet, int startX, int endX, int height, TreeSet<Integer> xposUsed)
 	{
@@ -125,16 +129,20 @@ public class BoxCityLayout extends AbstractLayout
 				{
 					x=lastX.intValue()+((thisX.intValue() - lastX.intValue()) / 2);
 					if(y.intValue() > (-diameter+1))
+					{
 						if(!fillMaze(lSet, lSet.getNode(x, y.intValue()), Directions.NORTH))
 							fillMaze(lSet, lSet.getNode(x+1, y.intValue()), Directions.NORTH);
+					}
 					if(thisXE.hasNext())
 					{
 						lastX = thisX;
 						thisX = thisXE.next();
 						x=lastX.intValue()+((thisX.intValue() - lastX.intValue()) / 2);
 						if(y.intValue() < 0)
+						{
 							if(!fillMaze(lSet, lSet.getNode(x, y.intValue()), Directions.SOUTH))
 								fillMaze(lSet, lSet.getNode(x+1, y.intValue()), Directions.SOUTH);
+						}
 					}
 				}
 				lastX = thisX;

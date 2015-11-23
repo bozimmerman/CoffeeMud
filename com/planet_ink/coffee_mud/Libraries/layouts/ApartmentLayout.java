@@ -27,14 +27,24 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.Layo
 
 public class ApartmentLayout extends AbstractLayout
 {
-	@Override public String name() { return "APARTMENT";}
+	@Override
+	public String name()
+	{
+		return "APARTMENT";
+	}
 
 	public void setRunFromDirection(LayoutNode node, int dir)
 	{
 		switch(dir)
 		{
-		case Directions.NORTH:case Directions.SOUTH: node.flagRun(LayoutRuns.ns); break;
-		case Directions.EAST:case Directions.WEST: node.flagRun(LayoutRuns.ew); break;
+		case Directions.NORTH:
+		case Directions.SOUTH:
+			node.flagRun(LayoutRuns.ns);
+			break;
+		case Directions.EAST:
+		case Directions.WEST:
+			node.flagRun(LayoutRuns.ew);
+			break;
 		}
 	}
 

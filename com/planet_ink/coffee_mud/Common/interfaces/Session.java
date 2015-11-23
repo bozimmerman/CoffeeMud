@@ -198,7 +198,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * menu transaction.  If a loginsession is passed it, it will
 	 * return true only if the two sessions are engaging the
 	 * same login name.
-	 * @param loginObj another login session to potentially match
+	 * @param otherLoginName another login name potentially match
 	 * @return true if it is pending, false otherwise
 	 */
 	public boolean isPendingLogin(final String otherLoginName);

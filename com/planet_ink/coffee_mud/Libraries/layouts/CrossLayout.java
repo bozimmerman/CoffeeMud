@@ -24,7 +24,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.Layo
 
 public class CrossLayout extends AbstractLayout
 {
-	@Override public String name() { return "CROSS";}
+	@Override
+	public String name()
+	{
+		return "CROSS";
+	}
 
 	public void addRoom(LayoutSet lSet, LayoutNode n2, int dir)
 	{

@@ -25,7 +25,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.Layo
 */
 public class BoxCitySquareLayout extends BoxCityLayout
 {
-	@Override public String name() { return "BOXCITYSQUARE";}
+	@Override
+	public String name()
+	{
+		return "BOXCITYSQUARE";
+	}
 
 	@Override
 	protected void drawABox(LayoutSet lSet, int width, int height)

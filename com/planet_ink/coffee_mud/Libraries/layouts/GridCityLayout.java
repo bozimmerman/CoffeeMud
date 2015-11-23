@@ -26,7 +26,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.Layo
 
 public class GridCityLayout extends AbstractLayout
 {
-	@Override public String name() { return "GRIDCITY";}
+	@Override
+	public String name()
+	{
+		return "GRIDCITY";
+	}
 
 	@Override
 	public List<LayoutNode> generate(int num, int dir)

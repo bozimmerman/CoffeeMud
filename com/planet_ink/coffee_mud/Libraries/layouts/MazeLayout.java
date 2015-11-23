@@ -25,7 +25,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.Layo
 
 public class MazeLayout extends AbstractLayout
 {
-	@Override public String name() { return "MAZE";}
+	@Override
+	public String name()
+	{
+		return "MAZE";
+	}
 
 	public void fillMaze(LayoutSet lSet, LayoutNode p, int width, int height)
 	{
@@ -69,14 +73,30 @@ public class MazeLayout extends AbstractLayout
 		LayoutNode n = null;
 		switch(dir)
 		{
-		case Directions.NORTH: n=new DefaultLayoutNode(new long[]{(diameter+plusX)/2,0}); break;
-		case Directions.SOUTH: n=new DefaultLayoutNode(new long[]{(diameter+plusX)/2,-diameter+1}); break;
-		case Directions.EAST: n=new DefaultLayoutNode(new long[]{0,(-diameter+1)/2}); break;
-		case Directions.WEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
-		case Directions.NORTHEAST: n=new DefaultLayoutNode(new long[]{0,(-diameter+1)/2}); break;
-		case Directions.NORTHWEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
-		case Directions.SOUTHEAST: n=new DefaultLayoutNode(new long[]{0,(-diameter+1)/2}); break;
-		case Directions.SOUTHWEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
+		case Directions.NORTH:
+			n = new DefaultLayoutNode(new long[] { (diameter + plusX) / 2, 0 });
+			break;
+		case Directions.SOUTH:
+			n = new DefaultLayoutNode(new long[] { (diameter + plusX) / 2, -diameter + 1 });
+			break;
+		case Directions.EAST:
+			n = new DefaultLayoutNode(new long[] { 0, (-diameter + 1) / 2 });
+			break;
+		case Directions.WEST:
+			n = new DefaultLayoutNode(new long[] { diameter + plusX - 1, (-diameter + 1) / 2 });
+			break;
+		case Directions.NORTHEAST:
+			n = new DefaultLayoutNode(new long[] { 0, (-diameter + 1) / 2 });
+			break;
+		case Directions.NORTHWEST:
+			n = new DefaultLayoutNode(new long[] { diameter + plusX - 1, (-diameter + 1) / 2 });
+			break;
+		case Directions.SOUTHEAST:
+			n = new DefaultLayoutNode(new long[] { 0, (-diameter + 1) / 2 });
+			break;
+		case Directions.SOUTHWEST:
+			n = new DefaultLayoutNode(new long[] { diameter + plusX - 1, (-diameter + 1) / 2 });
+			break;
 		}
 		if(n!=null)
 		{

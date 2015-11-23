@@ -24,7 +24,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.Layo
 
 public class TreeLayout extends AbstractLayout
 {
-	@Override public String name(){return "TREE";}
+	@Override
+	public String name()
+	{
+		return "TREE";
+	}
+
 	int originalDirection=Directions.NORTH;
 
 	private class TreeStem
@@ -46,14 +51,18 @@ public class TreeLayout extends AbstractLayout
 			{
 			case Directions.NORTH:
 			case Directions.SOUTH:
-				if(originalDirection==Directions.EAST) return new int[]{Directions.EAST};
-				if(originalDirection==Directions.WEST) return new int[]{Directions.WEST};
-				return new int[]{Directions.WEST,Directions.EAST};
+				if (originalDirection == Directions.EAST)
+					return new int[] { Directions.EAST };
+				if (originalDirection == Directions.WEST)
+					return new int[] { Directions.WEST };
+				return new int[] { Directions.WEST, Directions.EAST };
 			case Directions.EAST:
 			case Directions.WEST:
-				if(originalDirection==Directions.NORTH) return new int[]{Directions.NORTH};
-				if(originalDirection==Directions.SOUTH) return new int[]{Directions.SOUTH};
-				return new int[]{Directions.NORTH,Directions.SOUTH};
+				if (originalDirection == Directions.NORTH)
+					return new int[] { Directions.NORTH };
+				if (originalDirection == Directions.SOUTH)
+					return new int[] { Directions.SOUTH };
+				return new int[] { Directions.NORTH, Directions.SOUTH };
 			}
 			return null;
 		}

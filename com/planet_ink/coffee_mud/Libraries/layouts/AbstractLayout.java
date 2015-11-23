@@ -44,6 +44,7 @@ public abstract class AbstractLayout implements LayoutManager
 
 	@Override
 	public abstract String name();
+
 	@Override
 	public abstract List<LayoutNode> generate(int num, int dir);
 
