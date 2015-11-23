@@ -86,7 +86,7 @@
         </TD>
         <TD>
             <INPUT TYPE=TEXT SIZE=20 NAME=TATTOO VALUE="@AchievementData?TATTOO@">
-            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=TATTOONAME@</FONT>
+            <BR><FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=TATTOONAME@</FONT>
         </TD>
     </TR>
     <TR>
@@ -98,7 +98,7 @@
             <SELECT NAME=EVENT ONCHANGE="Refresh();">
             @AchievementData?EVENTOPTIONS@
             </SELECT>
-            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=EVENT@</FONT>
+            <BR><FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=EVENT@</FONT>
         </TD>
     </TR>
     <TR>
@@ -108,7 +108,7 @@
         </TD>
         <TD>
             <INPUT TYPE=TEXT SIZE=40 NAME=DISPLAY VALUE="@AchievementData?DISPLAY@">
-            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=DISPLAY@</FONT>
+            <BR><FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=DISPLAY@</FONT>
         </TD>
     </TR>
     <TR>
@@ -118,7 +118,7 @@
         </TD>
         <TD>
             <INPUT TYPE=TEXT SIZE=40 NAME=TITLE VALUE="@AchievementData?TITLE@">
-            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=TITLE@</FONT>
+            <BR><FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=TITLE@</FONT>
         </TD>
     </TR>
     <TR>
@@ -128,7 +128,7 @@
         </TD>
         <TD>
             <INPUT TYPE=TEXT SIZE=60 NAME=REWARDS VALUE="@AchievementData?REWARDS@">
-            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=REWARDS@</FONT>
+            <BR><FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=REWARDS@</FONT>
         </TD>
     </TR>
     @AchievementData?OTHERPARMNEXT&RESET@
@@ -141,7 +141,7 @@
 	        </TD>
 	        <TD>
 	            <INPUT TYPE=TEXT SIZE=60 NAME=@RequestParameter?OTHERPARM@ VALUE="@AchievementData?@@RequestParameter?OTHERPARM@@ @">
-	            <BR><FONT COLOR=WHITE SIZE=-1 >...@AchievementData?HELP&FIELD=@@RequestParameter?OTHERPARM@@ @</FONT>
+	            <BR><FONT COLOR=WHITE SIZE=-1>@AchievementData?HELP&FIELD=@@RequestParameter?OTHERPARM@@ @</FONT>
 	        </TD>
 	    </TR>
     @back@

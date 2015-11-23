@@ -211,7 +211,12 @@ public class AchievementData extends StdWebMacro
 			}
 			String help = CMLib.achievements().getAchievementsHelpFromMap(map, E, field);
 			if(help != null)
-				str.append(CMStrings.replaceAll(help,"\"","&quot;")+", ");
+			{
+				str.append("<PRE>");
+				str.append(CMStrings.replaceAll(help,"\n\r","\n"));
+				str.append("</PRE>");
+				str.append(", ");
+			}
 		}
 		if(parms.containsKey("EVENTOPTIONS"))
 		{

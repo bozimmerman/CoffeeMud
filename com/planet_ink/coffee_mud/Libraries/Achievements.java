@@ -2442,7 +2442,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			if((s.length()==0)
 			||((!s.startsWith("#"))&&(!s.startsWith(";"))))
 				continue;
-			s=s.substring(1).trim();
+			s=s.substring(1);
 			int x=s.indexOf("EVENT=\"");
 			if(x>=0)
 			{
@@ -2460,13 +2460,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				help.put(eventName, parmMap);
 			}
 			String value;
-			if(s.startsWith("["))
+			if(s.trim().startsWith("["))
 			{
-				x=s.indexOf(']',1);
+				int start=s.indexOf('[');
+				x=s.indexOf(']',start+1);
 				if(x>0)
 				{
-					keyName = s.substring(1,x);
-					value = s.substring(x+1).trim(); 
+					keyName = s.substring(start+1,x);
+					value = s.substring(x+1); 
 				}
 				else
 					value="";
@@ -2476,8 +2477,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			if((keyName.length()>0)&&(value.length()>0))
 			{
 				String oldS=parmMap.containsKey(keyName) ? parmMap.get(keyName) : "";
-				value = oldS + " " + value;
-				parmMap.put(keyName, value.trim());
+				value = oldS + "\n\r" + value;
+				parmMap.put(keyName, value);
 			}
 			
 		}
@@ -2878,7 +2879,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					}
 				}
 				if(!found)
-					Log.errOut("Achievements","Unknown section name in achievements.txt: "+row);
+					Log.errOut("Achievements","Unknown section name in "+achievementFilename+": "+row);
 				continue;
 			}
 			WKID=evaluateAchievement(agent,row,true);
