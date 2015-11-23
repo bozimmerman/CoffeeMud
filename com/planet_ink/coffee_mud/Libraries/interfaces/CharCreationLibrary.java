@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.*;
 /*
    Copyright 2006-2015 Bo Zimmerman
@@ -50,7 +51,6 @@ public interface CharCreationLibrary extends CMLibrary
 	public void showTheNews(MOB mob);
 	public void notifyFriends(MOB mob, String message);
 	public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException;
-	public LoginResult loginSystem(Session session, LoginSession loginObj) throws java.io.IOException;
 	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean checkPlayerName);
 	public NewCharNameCheckResult newAccountNameCheck(String login, String ipAddress);
 	public void pageRooms(CMProps page, Map<String, String> table, String start);
@@ -63,6 +63,22 @@ public interface CharCreationLibrary extends CMLibrary
 	public int getTotalBonusStatPoints();
 	public String generateRandomName(int minSyllable, int maxSyllable);
 	public LoginResult completeLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException;
+	public LoginSession createLoginSession(final Session session);
+	
+	public interface LoginSession
+	{
+		public String login();
+		
+		public LoginResult loginSystem(Session session) throws java.io.IOException;
+		
+		public void logoutLoginSession();
+		
+		public boolean reset();
+		
+		public boolean skipInputThisTime();
+		
+		public String acceptInput(Session session)  throws SocketException, IOException;
+	}
 
 	public enum LoginState {LOGIN_START, LOGIN_NAME, LOGIN_ACCTCHAR_PWORD, LOGIN_PASS_START, LOGIN_NEWACCOUNT_CONFIRM, LOGIN_NEWCHAR_CONFIRM,
 							LOGIN_PASS_RECEIVED, LOGIN_EMAIL_PASSWORD, LOGIN_ACCTCONV_CONFIRM,
@@ -79,26 +95,6 @@ public interface CharCreationLibrary extends CMLibrary
 							CHARCR_FACTIONNEXT, CHARCR_FACTIONDONE, CHARCR_FACTIONPICK,
 							CHARCR_FINISH
 							}
-
-	public static class LoginSession
-	{
-		public boolean 		 wizi	   = false;
-		public boolean		 reset	   = false;
-		public boolean		 skipInput = false;
-		public LoginState 	 state	   = LoginState.LOGIN_START;
-		public String 		 login	   = null;
-		public PlayerAccount acct 	   = null;
-		public String 		 lastInput = null;
-		public String		 savedInput= null;
-		public String 		 password  = null;
-		public int			 attempt   = 0;
-		public MOB			 mob	   = null;
-		public int			 theme	   = -1;
-		public int			 statPoints= 0;
-		public CharStats	 baseStats = null;
-		public int			 index	   = 0;
-		public PlayerLibrary.ThinnerPlayer player = null;
-	}
 
 	public enum NewCharNameCheckResult { OK, NO_NEW_PLAYERS, NO_NEW_LOGINS, BAD_USED_NAME, CREATE_LIMIT_REACHED }
 

@@ -87,7 +87,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final Object o=defined.get(id.toUpperCase());
 				if(o != null)
 				{
-					if(!(o instanceof XMLLibrary.XMLpiece))
+					if(!(o instanceof XMLpiece))
 						Log.errOut("Duplicate ID: "+id+" (first tag did not resolve to a complex piece -- it wins.)");
 					else
 					{
@@ -1154,7 +1154,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				String s = V.get(v);
 				if(s.startsWith("$"))
 					s=s.substring(1).trim();
-				final XMLLibrary.XMLpiece statPiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
+				final XMLpiece statPiece =(XMLpiece)defined.get(s.toUpperCase().trim());
 				if(statPiece == null)
 				{
 					Object o=CMClass.getMOBPrototype(s);
@@ -2389,7 +2389,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(asDefined instanceof String)
 			return (String)asDefined;
 		XMLLibrary.XMLpiece processDefined=null;
-		if(asDefined instanceof XMLLibrary.XMLpiece)
+		if(asDefined instanceof XMLpiece)
 		{
 			piece=(XMLLibrary.XMLpiece)asDefined;
 			processDefined=piece;
@@ -2434,7 +2434,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return finalFinalValue;
 	}
 
-	protected XMLLibrary.XMLpiece processLikeParm(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	protected XMLpiece processLikeParm(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		final String like = CMLib.xml().getParmValue(piece.parms,"LIKE");
 		if(like!=null)
@@ -2981,7 +2981,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 			else
 				val = defined.get(V.var.toUpperCase().trim());
-			if(val instanceof XMLLibrary.XMLpiece)
+			if(val instanceof XMLpiece)
 			{
 				val = findString(E,ignoreStats,defPrefix,"STRING",(XMLLibrary.XMLpiece)val,defined);
 			}

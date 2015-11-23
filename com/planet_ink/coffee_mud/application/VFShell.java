@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
 import com.planet_ink.coffee_mud.Libraries.Clans;
-import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
@@ -282,7 +281,7 @@ public class VFShell
 					}
 
 					@Override
-					public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj)
+					public boolean isPendingLogin(final String otherLoginName)
 					{
 						return false;
 					}

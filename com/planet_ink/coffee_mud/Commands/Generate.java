@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;

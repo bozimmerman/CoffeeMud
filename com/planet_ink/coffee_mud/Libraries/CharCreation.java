@@ -4,6 +4,8 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginState;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -23,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.PrintWriter;
+import java.net.SocketException;
 import java.util.*;
 
 
@@ -56,7 +59,76 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public Pair<String,Integer>[]	randomNameConsonants= null;
 
 	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
+	
+	private final CharCreation me = this;
 
+	private class LoginSessionImpl implements LoginSession
+	{
+		public boolean 		 wizi	   = false;
+		public boolean		 reset	   = false;
+		public boolean		 skipInput = false;
+		public LoginState 	 state	   = LoginState.LOGIN_START;
+		public String 		 login	   = null;
+		public PlayerAccount acct 	   = null;
+		public String 		 lastInput = null;
+		public String		 savedInput= null;
+		public String 		 password  = null;
+		public int			 attempt   = 0;
+		public MOB			 mob	   = null;
+		public int			 theme	   = -1;
+		public int			 statPoints= 0;
+		public CharStats	 baseStats = null;
+		public int			 index	   = 0;
+		public PlayerLibrary.ThinnerPlayer player = null;
+		
+		@Override
+		public String login()
+		{
+			return login;
+		}
+		
+		@Override
+		public boolean reset()
+		{
+			return reset;
+		}
+		
+		@Override
+		public LoginResult loginSystem(Session session) throws IOException
+		{
+			return me.loginSystem(session, this);
+		}
+		
+		@Override
+		public void logoutLoginSession()
+		{
+			me.logoutLoginSession(this);
+		}
+		
+		@Override
+		public boolean skipInputThisTime()
+		{
+			final boolean doSkip = skipInput;
+			this.skipInput = false;
+			return doSkip;
+		}
+		
+		@Override
+		public String acceptInput(Session session) throws SocketException, IOException
+		{
+			lastInput=(session == null) ? null : session.readlineContinue();
+			return lastInput;
+		}
+	}
+
+	@Override
+	public LoginSession createLoginSession(final Session session)
+	{
+		LoginSessionImpl loginSession = new LoginSessionImpl();
+		loginSession.reset=false;
+		return loginSession;
+	}
+	
 	@Override
 	public int getTotalBonusStatPoints()
 	{
@@ -426,7 +498,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return extraScripts;
 	}
 
-	protected void finishCreateAccount(final LoginSession loginObj, final PlayerAccount acct, final String login, final String pw, final String emailAddy, final Session session)
+	protected void finishCreateAccount(final LoginSessionImpl loginObj, final PlayerAccount acct, final String login, final String pw, final String emailAddy, final Session session)
 	{
 		acct.setAccountName(CMStrings.capitalizeAndLower(login.trim()));
 		acct.setEmail(emailAddy);
@@ -740,45 +812,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return rpt.toString();
 	}
 
-	@Override
-	public LoginResult loginSystem(Session session, LoginSession loginObj) throws IOException
-	{
-		if(session==null)
-			return LoginResult.NO_LOGIN;
-		if(loginObj==null)
-			loginObj=new LoginSession();
-		try
-		{
-			while(!session.isStopped())
-			{
-				switch(loginObj.state)
-				{
-				case LOGIN_START:
-				case LOGIN_NAME:
-				case ACCTMENU_SHOWMENU:
-					session.setMob(null);
-					break;
-				default:
-					break;
-				}
-				final LoginResult res = loginSubsystem(loginObj, session);
-				if(res != null)
-				{
-					return res;
-				}
-			}
-		}
-		catch(final Exception e)
-		{
-			session.println(L("\n\r\n\rI'm sorry, but something bad happened. You'll need to re-log.\n\r\n\r"));
-			Log.errOut(e);
-		}
-		loginObj.reset=true;
-		loginObj.state=LoginState.LOGIN_START;
-		return LoginResult.NO_LOGIN;
-	}
-
-	protected LoginResult loginSubsystem(final LoginSession loginObj, final Session session) throws IOException
+	protected LoginResult loginSubsystem(final LoginSessionImpl loginObj, final Session session) throws IOException
 	{
 		switch(loginObj.state)
 		{
@@ -896,7 +930,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 	}
 
-	protected LoginResult loginStart(final LoginSession loginObj, final Session session)
+	protected LoginResult loginStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		loginObj.wizi=false;
 		session.setAccount(null);
@@ -917,7 +951,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.INPUT_REQUIRED;
 	}
 
-	protected LoginResult loginName(final LoginSession loginObj, final Session session)
+	protected LoginResult loginName(final LoginSessionImpl loginObj, final Session session)
 	{
 		loginObj.login=loginObj.lastInput;
 		if(loginObj.login==null)
@@ -1005,7 +1039,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult loginAcctcharPword(final LoginSession loginObj, final Session session)
+	protected LoginResult loginAcctcharPword(final LoginSessionImpl loginObj, final Session session)
 	{
 		loginObj.password=loginObj.lastInput;
 		if(loginObj.player.matchesPassword(loginObj.password))
@@ -1028,7 +1062,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult loginAcctconvConfirm(final LoginSession loginObj, final Session session)
+	protected LoginResult loginAcctconvConfirm(final LoginSessionImpl loginObj, final Session session)
 	{
 		final String input=loginObj.lastInput.toUpperCase().trim();
 		if(input.startsWith("Y"))
@@ -1048,7 +1082,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.NO_LOGIN;
 	}
 
-	protected LoginResult acctcreateStart(final LoginSession loginObj, final Session session)
+	protected LoginResult acctcreateStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		Log.sysOut("Creating account: "+loginObj.login);
 		loginObj.state=LoginState.ACCTCREATE_ANSICONFIRM;
@@ -1064,7 +1098,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 	}
 
-	protected LoginResult acctcreateANSIConfirm(final LoginSession loginObj, final Session session)
+	protected LoginResult acctcreateANSIConfirm(final LoginSessionImpl loginObj, final Session session)
 	{
 		final PlayerAccount acct=loginObj.acct;
 		final String input=loginObj.lastInput.toUpperCase().trim();
@@ -1106,7 +1140,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult acctcreateEmailStart(final LoginSession loginObj, final Session session)
+	protected LoginResult acctcreateEmailStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		if(CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE"))
 		{
@@ -1120,14 +1154,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult acctcreateEmailPrompt(final LoginSession loginObj, final Session session)
+	protected LoginResult acctcreateEmailPrompt(final LoginSessionImpl loginObj, final Session session)
 	{
 		session.promptPrint(L("\n\rEnter your e-mail address: "));
 		loginObj.state=LoginState.ACCTCREATE_EMAILENTERED;
 		return LoginResult.INPUT_REQUIRED;
 	}
 
-	protected LoginResult acctcreateEmailEntered(final LoginSession loginObj, final Session session)
+	protected LoginResult acctcreateEmailEntered(final LoginSessionImpl loginObj, final Session session)
 	{
 		final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
@@ -1153,7 +1187,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult acctcreateEmailConfirmed(final LoginSession loginObj, final Session session)
+	protected LoginResult acctcreateEmailConfirmed(final LoginSessionImpl loginObj, final Session session)
 	{
 		final boolean emailReq=(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"));
 		final String newEmail=loginObj.savedInput;
@@ -1171,7 +1205,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult acctcreatePassworded(final LoginSession loginObj, final Session session)
+	protected LoginResult acctcreatePassworded(final LoginSessionImpl loginObj, final Session session)
 	{
 		final String password=loginObj.lastInput;
 		if(password.length()==0)
@@ -1187,7 +1221,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult loginPassStart(final LoginSession loginObj, final Session session)
+	protected LoginResult loginPassStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		if(loginObj.player==null)
 		{
@@ -1212,9 +1246,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		else
 		{
+			final String otherLoginName = loginObj == null ? null : loginObj.login;
 			for(final Session otherSess : CMLib.sessions().allIterable())
 			{
-				if((otherSess!=session)&&(otherSess.isPendingLogin(loginObj)))
+				if((otherSess!=session)&&(otherSess.isPendingLogin(otherLoginName)))
 				{
 					session.println(L("A previous login is still pending.  Please be patient."));
 					session.stopSession(false, false, false);
@@ -1229,7 +1264,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 	}
 
-	protected LoginResult loginNewcharConfirm(final LoginSession loginObj, final Session session)
+	protected LoginResult loginNewcharConfirm(final LoginSessionImpl loginObj, final Session session)
 	{
 		final String input=loginObj.lastInput.trim().toUpperCase();
 		if(input.startsWith("Y"))
@@ -1247,7 +1282,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult loginNewaccountConfirm(final LoginSession loginObj, final Session session)
+	protected LoginResult loginNewaccountConfirm(final LoginSessionImpl loginObj, final Session session)
 	{
 		final LoginResult result=LoginResult.NO_LOGIN;
 		final String input=loginObj.lastInput.trim().toUpperCase();
@@ -1271,7 +1306,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return result;
 	}
 
-	protected LoginResult loginPassReceived(final LoginSession loginObj, final Session session) throws IOException
+	protected LoginResult loginPassReceived(final LoginSessionImpl loginObj, final Session session) throws IOException
 	{
 		loginObj.password=loginObj.lastInput;
 		if(loginObj.player.matchesPassword(loginObj.password))
@@ -1339,7 +1374,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.NORMAL_LOGIN;
 	}
 
-	protected LoginResult loginEmailPassword(final LoginSession loginObj, final Session session) throws IOException
+	protected LoginResult loginEmailPassword(final LoginSessionImpl loginObj, final Session session) throws IOException
 	{
 		final String input=loginObj.lastInput.toUpperCase().trim();
 		if(input.startsWith("Y"))
@@ -1384,7 +1419,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult acctmenuStart(final LoginSession loginObj, final Session session)
+	protected LoginResult acctmenuStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		final PlayerAccount acct=loginObj.acct;
 		session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.AccountFlag.ANSI));
@@ -1410,7 +1445,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult acctmenuShowChars(final LoginSession loginObj, final Session session)
+	protected LoginResult acctmenuShowChars(final LoginSessionImpl loginObj, final Session session)
 	{
 		final PlayerAccount acct=loginObj.acct;
 		final StringBuffer buf = new StringBuffer("");
@@ -1437,7 +1472,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult acctmenuShowMenu(final LoginSession loginObj, final Session session)
+	protected LoginResult acctmenuShowMenu(final LoginSessionImpl loginObj, final Session session)
 	{
 		final PlayerAccount acct=loginObj.acct;
 		final StringBuffer buf = new StringBuffer("");
@@ -1466,7 +1501,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult acctmenuPrompt(final LoginSession loginObj, final Session session)
+	protected LoginResult acctmenuPrompt(final LoginSessionImpl loginObj, final Session session)
 	{
 		session.setStatus(Session.SessionStatus.ACCOUNT_MENU);
 		session.promptPrint(L("\n\r^wCommand or Name ^H(?)^w: ^N "));
@@ -1475,7 +1510,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.INPUT_REQUIRED;
 	}
 
-	protected LoginResult acctmenuConfirmCommand(final LoginSession loginObj, final Session session)
+	protected LoginResult acctmenuConfirmCommand(final LoginSessionImpl loginObj, final Session session)
 	{
 		final String input=loginObj.lastInput.trim().toUpperCase();
 		if(input.startsWith("Y"))
@@ -1494,7 +1529,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult acctmenuAddToCommand(final LoginSession loginObj, final Session session)
+	protected LoginResult acctmenuAddToCommand(final LoginSessionImpl loginObj, final Session session)
 	{
 		if(loginObj.lastInput.length()>0)
 		{
@@ -1509,7 +1544,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult acctmenuCommand(final LoginSession loginObj, final Session session) throws IOException
+	protected LoginResult acctmenuCommand(final LoginSessionImpl loginObj, final Session session) throws IOException
 	{
 		final PlayerAccount acct=loginObj.acct;
 		final String s=loginObj.lastInput.trim();
@@ -1964,7 +1999,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.NORMAL_LOGIN;
 	}
 
-	protected LoginResult charcrStart(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		session.setStatus(Session.SessionStatus.CHARCREATE);
 
@@ -1994,7 +2029,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrPasswordDone(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrPasswordDone(final LoginSessionImpl loginObj, final Session session)
 	{
 		String password=(loginObj.acct!=null)?loginObj.acct.getPasswordStr():"";
 		final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
@@ -2049,7 +2084,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrEmailStart(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrEmailStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try { emailIntro = CMLib.webMacroFilter().virtualPageFilter(emailIntro);}catch(final Exception ex){}
@@ -2058,14 +2093,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrEmailPrompt(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrEmailPrompt(final LoginSessionImpl loginObj, final Session session)
 	{
 		session.promptPrint(L("\n\rEnter your e-mail address: "));
 		loginObj.state=LoginState.CHARCR_EMAILENTERED;
 		return LoginResult.INPUT_REQUIRED;
 	}
 
-	protected LoginResult charcrEmailEntered(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrEmailEntered(final LoginSessionImpl loginObj, final Session session)
 	{
 		final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
@@ -2092,7 +2127,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrEmailConfirmed(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrEmailConfirmed(final LoginSessionImpl loginObj, final Session session)
 	{
 		final boolean emailReq=(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"));
 		final String newEmail=loginObj.savedInput;
@@ -2112,7 +2147,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrEmailDone(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrEmailDone(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		session.setMob(loginObj.mob);
@@ -2149,7 +2184,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrANSIConfirmed(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrANSIConfirmed(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		session.setMob(loginObj.mob);
@@ -2172,7 +2207,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrANSIDone(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrANSIDone(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		session.setMob(loginObj.mob);
@@ -2201,7 +2236,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrThemeStart(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrThemeStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		session.setMob(loginObj.mob);
 		final int themeCode=CMProps.getIntVar(CMProps.Int.MUDTHEME);
@@ -2235,7 +2270,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.INPUT_REQUIRED;
 	}
 
-	protected LoginResult charcrThemePicked(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrThemePicked(final LoginSessionImpl loginObj, final Session session)
 	{
 		session.setMob(loginObj.mob);
 		final int themeCode=CMProps.getIntVar(CMProps.Int.MUDTHEME);
@@ -2281,7 +2316,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 	}
 
-	protected LoginResult charcrThemeDone(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrThemeDone(final LoginSessionImpl loginObj, final Session session)
 	{
 		moveSessionToCorrectThreadGroup(session,loginObj.theme);
 		final MOB mob=loginObj.mob;
@@ -2291,7 +2326,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected MOB setMOBClass(final String classID, final LoginSession loginObj, final Session session)
+	protected MOB setMOBClass(final String classID, final LoginSessionImpl loginObj, final Session session)
 	{
 		MOB mob=loginObj.mob;
 		if(!mob.ID().equalsIgnoreCase(classID))
@@ -2327,7 +2362,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return mob;
 	}
 	
-	protected LoginResult charcrRaceStart(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrRaceStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		MOB mob=loginObj.mob;
 		session.setMob(loginObj.mob);
@@ -2379,7 +2414,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.INPUT_REQUIRED;
 	}
 
-	protected LoginResult charcrRaceReEntered(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrRaceReEntered(final LoginSessionImpl loginObj, final Session session)
 	{
 		final String raceStr=loginObj.lastInput.trim();
 		MOB mob=loginObj.mob;
@@ -2440,7 +2475,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrRaceConfirmed(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrRaceConfirmed(final LoginSessionImpl loginObj, final Session session)
 	{
 		final String input=loginObj.lastInput.trim().toUpperCase();
 		if(input.startsWith("N"))
@@ -2456,7 +2491,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrRaceDone(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrRaceDone(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		mob.baseState().setHitPoints(CMProps.getIntVar(CMProps.Int.STARTHP));
@@ -2468,14 +2503,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrGenderStart(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrGenderStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		session.promptPrint(L("\n\r^!What is your gender (M/F)?^N"));
 		loginObj.state=LoginState.CHARCR_GENDERDONE;
 		return LoginResult.INPUT_REQUIRED;
 	}
 
-	protected LoginResult charcrGenderDone(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrGenderDone(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		final PlayerAccount acct=loginObj.acct;
@@ -2498,7 +2533,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return charcrStatInit(loginObj, session, 0);
 	}
 
-	protected LoginResult charcrStatInit(final LoginSession loginObj, final Session session, final int bonusPoints)
+	protected LoginResult charcrStatInit(final LoginSessionImpl loginObj, final Session session, final int bonusPoints)
 	{
 		final MOB mob=loginObj.mob;
 		int startStat=CMProps.getIntVar(CMProps.Int.STARTSTAT);
@@ -2531,7 +2566,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrStatStart(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrStatStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		if(loginObj.baseStats==null)
@@ -2600,7 +2635,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrStatConfirm(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrStatConfirm(final LoginSessionImpl loginObj, final Session session)
 	{
 		final String input=loginObj.lastInput.toUpperCase().trim();
 		if(input.startsWith("Y"))
@@ -2616,14 +2651,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrStatPickAdd(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrStatPickAdd(final LoginSessionImpl loginObj, final Session session)
 	{
 		loginObj.lastInput=loginObj.savedInput+" "+loginObj.lastInput;
 		loginObj.state=LoginState.CHARCR_STATPICK;
 		return null;
 	}
 
-	protected LoginResult charcrStatPick(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrStatPick(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		if(loginObj.baseStats==null)
@@ -2788,14 +2823,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrStatDone(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrStatDone(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		executeScript(mob,getLoginScripts().get("STATS"));
 		return charcrClassInit(loginObj, session);
 	}
 
-	protected LoginResult charcrClassInit(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrClassInit(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		final List<CharClass> qualClassesV=classQualifies(mob,loginObj.theme);
@@ -2864,7 +2899,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrClassStart(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrClassStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		mob.baseCharStats().setMyClasses("StdCharClass");
@@ -2878,7 +2913,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.INPUT_REQUIRED;
 	}
 
-	protected LoginResult charcrClassPicked(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrClassPicked(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		final String ClassStr=loginObj.lastInput;
@@ -2932,7 +2967,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrClassConfirm(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrClassConfirm(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		if(loginObj.lastInput.toUpperCase().trim().startsWith("N"))
@@ -2948,7 +2983,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrClassDone(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrClassDone(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		mob.basePhyStats().setLevel(1);
@@ -2979,7 +3014,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrFactionNext(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrFactionNext(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		loginObj.index++;
@@ -3026,7 +3061,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult charcrFactionPick(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrFactionPick(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		final Faction F=CMLib.factions().getFactionByNumber(loginObj.index);
@@ -3080,7 +3115,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.INPUT_REQUIRED;
 	}
 
-	protected LoginResult charcrFactionDone(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrFactionDone(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		executeScript(mob,getLoginScripts().get("FACTIONS"));
@@ -3122,7 +3157,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.INPUT_REQUIRED;
 	}
 
-	protected LoginResult charcrFinish(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrFinish(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
 		final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
@@ -3709,7 +3744,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPoints) throws IOException
 	{
-		final LoginSession loginObj=new LoginSession();
+		final LoginSessionImpl loginObj=new LoginSessionImpl();
 		if(mob.playerStats()!=null)
 			loginObj.acct=mob.playerStats().getAccount();
 		loginObj.login=mob.Name();
@@ -3731,7 +3766,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public CharClass promptCharClass(int theme, MOB mob, Session session) throws IOException
 	{
-		final LoginSession loginObj=new LoginSession();
+		final LoginSessionImpl loginObj=new LoginSessionImpl();
 		final PlayerStats pStats=mob.playerStats();
 		if(pStats!=null)
 			loginObj.acct=pStats.getAccount();
@@ -3756,7 +3791,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws IOException
 	{
 		final SessionStatus status=session.getStatus();
-		final LoginSession loginObj=new LoginSession();
+		final LoginSessionImpl loginObj=new LoginSessionImpl();
 		loginObj.acct=acct;
 		loginObj.login=login;
 		loginObj.mob=null;
@@ -3876,5 +3911,55 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			isVowel = !isVowel;
 		}
 		return CMStrings.capitalizeFirstLetter(name.toString());
+	}
+
+	public LoginResult loginSystem(Session session, LoginSessionImpl loginObj) throws IOException
+	{
+		if(session==null)
+			return LoginResult.NO_LOGIN;
+		if(loginObj==null)
+			return LoginResult.NO_LOGIN;
+		try
+		{
+			while(!session.isStopped())
+			{
+				switch(loginObj.state)
+				{
+				case LOGIN_START:
+				case LOGIN_NAME:
+				case ACCTMENU_SHOWMENU:
+					session.setMob(null);
+					break;
+				default:
+					break;
+				}
+				final LoginResult res = loginSubsystem(loginObj, session);
+				if(res != null)
+				{
+					return res;
+				}
+			}
+		}
+		catch(final Exception e)
+		{
+			session.println(L("\n\r\n\rI'm sorry, but something bad happened. You'll need to re-log.\n\r\n\r"));
+			Log.errOut(e);
+		}
+		loginObj.reset=true;
+		loginObj.state=LoginState.LOGIN_START;
+		return LoginResult.NO_LOGIN;
+	}
+
+	protected void logoutLoginSession(LoginSessionImpl loginSession)
+	{
+		if(loginSession!=null)
+		{
+			if(loginSession.acct!=null)
+				loginSession.state=CharCreationLibrary.LoginState.ACCTMENU_START;
+			else
+				loginSession.state=CharCreationLibrary.LoginState.LOGIN_START;
+			loginSession.skipInput=true;
+			loginSession.attempt=0;
+		}
 	}
 }

@@ -11,11 +11,11 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.io.IOException;
 import java.net.Socket;
@@ -201,7 +201,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param loginObj another login session to potentially match
 	 * @return true if it is pending, false otherwise
 	 */
-	public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj);
+	public boolean isPendingLogin(final String otherLoginName);
 
 	/**
 	 * Medium-level text output method.  Does full

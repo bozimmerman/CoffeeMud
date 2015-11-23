@@ -375,6 +375,9 @@ public interface XMLLibrary extends CMLibrary
 			this.value=value;
 		}
 		
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#copyOf()
+		 */
 		public XMLpiece copyOf()
 		{
 			try
@@ -390,6 +393,9 @@ public interface XMLLibrary extends CMLibrary
 			}
 		}
 
+		/* (non-Javadoc)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#addContent(com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece)
+		 */
 		public void addContent(XMLpiece x)
 		{
 			if (x == null) return;

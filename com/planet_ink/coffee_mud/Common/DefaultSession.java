@@ -2270,7 +2270,7 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj)
+	public boolean isPendingLogin(final String otherLoginName)
 	{
 		switch(status)
 		{
@@ -2285,15 +2285,12 @@ public class DefaultSession implements Session
 			default:
 				return false;
 		}
-		if(loginObj==null)
-			return true;
 		if(loginSession==null)
 			return false;
-		final String otherLogin=loginObj.login;
-		final String myLogin=loginSession.login;
-		if((otherLogin==null)||(myLogin==null))
+		final String myLogin=loginSession.login();
+		if((otherLoginName==null)||(myLogin==null))
 			return false;
-		return otherLogin.equalsIgnoreCase(myLogin);
+		return otherLoginName.equalsIgnoreCase(myLogin);
 	}
 
 
@@ -2438,19 +2435,16 @@ public class DefaultSession implements Session
 	{
 		try
 		{
-			if((loginSession==null)||(loginSession.reset))
+			if((loginSession==null)||(loginSession.reset()))
 			{
-				loginSession=new CharCreationLibrary.LoginSession();
-				loginSession.reset=false;
+				loginSession = CMLib.login().createLoginSession(this);
 				setStatus(SessionStatus.LOGIN);
 			}
 			else
-			if(loginSession.skipInput)
-				loginSession.skipInput=false;
-			else
+			if(!loginSession.skipInputThisTime())
 			{
-				loginSession.lastInput=readlineContinue();
-				if(loginSession.lastInput==null)
+				String lastInput = loginSession.acceptInput(this);
+				if(lastInput==null)
 				{
 					if((System.currentTimeMillis()-lastWriteTime)>PINGTIMEOUT)
 						rawCharsOut(PINGCHARS);
@@ -2459,9 +2453,12 @@ public class DefaultSession implements Session
 				if(!killFlag)
 					setInputLoopTime();
 			}
+			if(loginSession == null)
+				killFlag = true;
+			else
 			if(!killFlag)
 			{
-				final CharCreationLibrary.LoginResult loginResult=CMLib.login().loginSystem(this,loginSession);
+				final CharCreationLibrary.LoginResult loginResult=loginSession.loginSystem(this);
 				switch(loginResult)
 				{
 				case INPUT_REQUIRED:
@@ -2681,15 +2678,8 @@ public class DefaultSession implements Session
 			}
 			if(mob==null)
 			{
-				if(loginSession!=null)
-				{
-					if(loginSession.acct!=null)
-						loginSession.state=CharCreationLibrary.LoginState.ACCTMENU_START;
-					else
-						loginSession.state=CharCreationLibrary.LoginState.LOGIN_START;
-					loginSession.skipInput=true;
-					loginSession.attempt=0;
-				}
+				if(loginSession != null)
+					loginSession.logoutLoginSession();
 				setStatus(SessionStatus.LOGIN);
 				return;
 			}

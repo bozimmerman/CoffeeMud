@@ -379,7 +379,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						{
 							final Object val=definedIDs.get(key);
 							if((key instanceof String)
-							&&(val instanceof XMLLibrary.XMLpiece)
+							&&(val instanceof XMLpiece)
 							&&(((XMLLibrary.XMLpiece)val).tag.equalsIgnoreCase("area")))
 							{
 								final XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)val; 
@@ -409,7 +409,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					if(idChoices.size()>0)
 						idName=idChoices.get(CMLib.dice().roll(1, idChoices.size(), -1)).toUpperCase().trim();
 
-					if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
+					if((!(definedIDs.get(idName) instanceof XMLpiece))
 					||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase("area")))
 					{
 						msg.source().tell(L("The area id '@x1' has not been defined in the data file.",idName));
