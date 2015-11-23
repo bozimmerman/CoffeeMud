@@ -749,14 +749,25 @@ public class StdAbility implements Ability
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS)&&(mob.getVictim()!=null))
-			target=mob.getVictim();
-		else
-		if((targetName.length()==0)&&(castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF))
-			target=mob;
-		else
-		if((targetName.length()==0)&&(abstractQuality()!=Ability.QUALITY_MALICIOUS))
-			target=mob;
+		if(targetName.length()==0)
+		{
+			final boolean inCombat = mob.isInCombat();
+			if(inCombat
+			&&(castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS)
+			&&(mob.getVictim()!=null))
+				target=mob.getVictim();
+			else
+			if(castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)
+				target=mob;
+			else
+			if(inCombat
+			&&(abstractQuality()==Ability.QUALITY_MALICIOUS)
+			&&(mob.getVictim()!=null))
+				target=mob.getVictim();
+			else
+			if(abstractQuality()!=Ability.QUALITY_MALICIOUS)
+				target=mob;
+		}
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
 			target=mob;
@@ -780,7 +791,9 @@ public class StdAbility implements Ability
 			targetName=target.name();
 
 		if((target==null)
-		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))&&((!CMLib.flags().canBeHeardMovingBy(target,mob))||(!target.isInCombat()))))
+		||((givenTarget==null)
+			&&(!CMLib.flags().canBeSeenBy(target,mob))
+			&&((!CMLib.flags().canBeHeardMovingBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
 			{
@@ -830,6 +843,9 @@ public class StdAbility implements Ability
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
 		   target=mob;
+		else
+		if((targetName.length()==0)&&(mob.isInCombat())&&(abstractQuality()==Ability.QUALITY_MALICIOUS))
+			target=mob.getVictim();
 		else
 		if(R!=null)
 		{
