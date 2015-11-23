@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -37,6 +36,20 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 {
 	@Override public String ID(){return "AutoTitles";}
 	private TriadSVector<String,String,MaskingLibrary.CompiledZapperMask> autoTitles=null;
+
+	private static final String titleFilename = "titles.ini";
+	
+	private String getTitleFilename()
+	{
+		CMFile F = new CMFile(Resources.makeFileResourceName(titleFilename),null);
+		if(F.exists() && (F.canRead()))
+			return titleFilename;
+		final String oldFilename = titleFilename.substring(0,titleFilename.length()-4)+".txt"; 
+		F = new CMFile(Resources.makeFileResourceName(oldFilename),null);
+		if(F.exists() && (F.canRead()))
+			return oldFilename;
+		return titleFilename;
+	}
 
 	@Override
 	public String evaluateAutoTitle(String row, boolean addIfPossible)
@@ -155,8 +168,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		return somethingDone;
 	}
 
-	@Override
-	public void dispossesTitle(String title)
+	protected void dispossesTitle(String title)
 	{
 		final List<String> list=CMLib.database().getUserList();
 		final String fixedTitle = CMStrings.removeColors(title).replace('\'', '`');
@@ -191,12 +203,40 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 			}
 		}
 	}
+	
+	@Override
+	public void appendAutoTitle(String text)
+	{
+		Resources.removeResource(this.getTitleFilename());
+		final CMFile F=new CMFile(Resources.makeFileResourceName(titleFilename),null,CMFile.FLAG_LOGERRORS);
+		F.saveText(text,true);
+		reloadAutoTitles();
+	}
+
+	@Override
+	public String deleteTitleAndResave(String title)
+	{
+		dispossesTitle(title);
+		final CMFile F=new CMFile(Resources.makeFileResourceName(titleFilename),null,CMFile.FLAG_LOGERRORS);
+		if(F.exists())
+		{
+			final boolean removed=Resources.findRemoveProperty(F, title);
+			if(removed)
+			{
+				Resources.removeResource(titleFilename);
+				reloadAutoTitles();
+				return null;
+			}
+			return "Unable to delete title!";
+		}
+		return "Unable to open "+titleFilename+"!";
+	}
 
 	@Override
 	public void reloadAutoTitles()
 	{
 		autoTitles=new TriadSVector<String,String,MaskingLibrary.CompiledZapperMask>();
-		final List<String> V=Resources.getFileLineVector(Resources.getFileResource("titles.txt",true));
+		final List<String> V=Resources.getFileLineVector(Resources.getFileResource(this.getTitleFilename(),true));
 		String WKID=null;
 		for(int v=0;v<V.size();v++)
 		{
@@ -216,6 +256,25 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 					CMLib.database().DBUpdatePlayerPlayerStats(M);
 			}
 		}
+	}
+	
+	@Override
+	public String getAutoTitleInstructions()
+	{
+		final StringBuffer buf=new CMFile(Resources.makeFileResourceName(this.getTitleFilename()),null,CMFile.FLAG_LOGERRORS).text();
+		final StringBuffer inst=new StringBuffer("");
+		List<String> V=new Vector<String>();
+		if(buf!=null)
+			V=Resources.getFileLineVector(buf);
+		for(int v=0;v<V.size();v++)
+		{
+			if(V.get(v).startsWith("#"))
+				inst.append(V.get(v).substring(1)+"\n\r");
+			else
+			if(V.get(v).length()>0)
+				break;
+		}
+		return inst.toString();
 	}
 
 }

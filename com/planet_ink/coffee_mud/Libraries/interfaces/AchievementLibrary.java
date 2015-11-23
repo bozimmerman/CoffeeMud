@@ -111,7 +111,7 @@ public interface AchievementLibrary extends CMLibrary
 	
 	/**
 	 * The achievement interface provides basic information about the specific achievement,
-	 * as defined in the achievements.txt definition file.  It also allows a tracker to
+	 * as defined in the achievements.ini definition file.  It also allows a tracker to
 	 * be created for situation where progress in the event requires tracking each
 	 * player event.
 	 * @author Bo Zimmerman

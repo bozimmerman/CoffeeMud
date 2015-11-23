@@ -55,7 +55,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	private List<Achievement> 			accountAchievements = null;
 	private Map<Event,List<Achievement>>eventMap			= null;
 	
-	private final static String achievementFilename  = "achievements.txt";
+	private final static String achievementFilename  = "achievements.ini";
 
 	private static CMEval CMEVAL_INSTANCE = new CMEval()
 	{
@@ -2432,6 +2432,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	{
 		final Map<String,Map<String,String>> help = new TreeMap<String,Map<String,String>>();
 		
+		final String achievementFilename = getAchievementFilename();
 		final List<String> V=Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename,true));
 		Resources.removeResource(achievementFilename);
 		String eventName = "";
@@ -2720,8 +2721,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public void resaveAchievements(final String modifyTattoo)
 	{
-		final StringBuffer buf = Resources.getRawFileResource(achievementFilename,true);
-		Resources.removeResource(achievementFilename);
+		final String loadAchievementFilename = getAchievementFilename();
+		final StringBuffer buf = Resources.getRawFileResource(loadAchievementFilename,true);
+		Resources.removeResource(loadAchievementFilename);
 		final List<String> V=Resources.getFileLineVector(buf);
 		final StringBuffer newFileData = new StringBuffer("");
 		final Map<String,Achievement>[] maps=new Map[Agent.values().length];
@@ -2851,6 +2853,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return somethingDone;
 	}
+	
+	private String getAchievementFilename()
+	{
+		CMFile F = new CMFile(Resources.makeFileResourceName(achievementFilename),null);
+		if(F.exists() && (F.canRead()))
+			return achievementFilename;
+		final String oldFilename = achievementFilename.substring(0,achievementFilename.length()-4)+".txt"; 
+		F = new CMFile(Resources.makeFileResourceName(oldFilename),null);
+		if(F.exists() && (F.canRead()))
+			return oldFilename;
+		return achievementFilename;
+	}
 
 	@Override
 	public synchronized void reloadAchievements()
@@ -2858,6 +2872,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		accountAchievements=new LinkedList<Achievement>();
 		playerAchievements=new LinkedList<Achievement>();
 		eventMap=new TreeMap<Event,List<Achievement>>();
+		final String achievementFilename = getAchievementFilename();
 		final List<String> V=Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename,true));
 		Resources.removeResource(achievementFilename);
 		String WKID=null;

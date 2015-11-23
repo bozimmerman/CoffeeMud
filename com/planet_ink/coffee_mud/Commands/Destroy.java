@@ -731,15 +731,19 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
-		CMLib.titles().dispossesTitle(classID);
-		final CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
-		final boolean removed=Resources.findRemoveProperty(F, classID);
-		if(removed)
+		
+		String error = CMLib.titles().deleteTitleAndResave(classID);
+		if(error == null)
 		{
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The prestige of players just decreased!"));
-			Resources.removeResource("titles.txt");
-			CMLib.titles().reloadAutoTitles();
 		}
+		else
+		{
+			mob.tell(L(error));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+			
 		return true;
 	}
 

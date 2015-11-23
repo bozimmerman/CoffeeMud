@@ -1790,7 +1790,7 @@ public class CMProps extends Properties
 		setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
 		setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICE"),true));
 
-		setUpLowVar(Str.BLACKLISTFILE,getStr("BLACKLISTFILE","/resources/ipblock.txt"));
+		setUpLowVar(Str.BLACKLISTFILE,getStr("BLACKLISTFILE","/resources/ipblock.ini"));
 		setWhitelist(CMProps.WhiteList.CONNS,getStr("WHITELISTIPSCONN"));
 		setWhitelist(CMProps.WhiteList.LOGINS,getStr("WHITELISTLOGINS"));
 		setWhitelist(CMProps.WhiteList.NEWPLAYERS,getStr("WHITELISTIPSNEWPLAYERS"));

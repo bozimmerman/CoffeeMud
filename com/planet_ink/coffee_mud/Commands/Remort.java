@@ -55,8 +55,18 @@ public class Remort extends StdCommand
 		SKILLSAT100,
 		FACTION,
 		EXPERTISE,
-		BONUSSTATPOINT
+		BONUSSTATPOINT,
+		QUESTPOINT
 	}
+	
+	private static void recoverEverything(final MOB mob)
+	{
+		mob.recoverCharStats();
+		mob.recoverMaxState();
+		mob.resetToMaxState();
+		mob.recoverPhyStats();
+	}
+	
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -75,21 +85,6 @@ public class Remort extends StdCommand
 			return false;
 		}
 		
-		if(commands.size()<2)
-		{
-			CMLib.commands().doCommandFail(mob,commands,L("Remort into which class?"));
-			return false;
-		}
-		
-		String className = CMParms.combine(commands,1);
-		CharClass C=CMClass.getCharClass(className);
-		if(C == null)
-			C=CMClass.findCharClass(className);
-		if(C==null)
-		{
-			CMLib.commands().doCommandFail(mob,commands,L("Unknown character class name: '@x1'?",className));
-			return false;
-		}
 		
 		final int[] newLevel = new int[]{1};
 		final int[] newMana = new int[]{CMProps.getIntVar(CMProps.Int.STARTMANA)};
@@ -98,6 +93,7 @@ public class Remort extends StdCommand
 		final int[] newAttack = new int[]{0};
 		final int[] newDefense = new int[]{100};
 		final int[] bonusPointsPerStat = new int[]{0};
+		final int[] questPoint = new int[]{0};
 		final List<Pair<String,Integer>> factions=new ArrayList<Pair<String,Integer>>();
 		final List<Triad<String,String,Integer>> abilities=new ArrayList<Triad<String,String,Integer>>();
 		final List<Triad<String,String,Integer>> abilities100=new ArrayList<Triad<String,String,Integer>>();
@@ -167,6 +163,15 @@ public class Remort extends StdCommand
 						total += (int)Math.round(CMath.mul(pctAmount, mob.basePhyStats().attackAdjustment()));
 					total += flatAmount;
 					newAttack[0] += total;
+					break;
+				}
+				case QUESTPOINT:
+				{
+					int total = 0;
+					if(pctAmount != 0)
+						total += (int)Math.round(CMath.mul(pctAmount, mob.getQuestPoint()));
+					total += flatAmount;
+					questPoint[0] += total;
 					break;
 				}
 				case DEFENSE:
@@ -310,8 +315,6 @@ public class Remort extends StdCommand
 			}
 		}
 		
-		final CharClass newCharClass = C;
-		
 		mob.tell(L("^HThis will drop your level back to @x1!",""+newLevel[0]));
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)
 		{
@@ -372,68 +375,47 @@ public class Remort extends StdCommand
 					}
 					mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
 					mob.getStartRoom().bringMobHere(mob, true);
-					CMLib.threads().executeRunnable(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-						}
-					});
 					try
 					{
 						mob.baseCharStats().setMyClasses("StdCharClass");
 						mob.baseCharStats().setMyLevels("1");
 						mob.basePhyStats().setLevel(1);
-						mob.recoverCharStats();
-						mob.recoverPhyStats();
-						mob.recoverCharStats();
-						mob.recoverMaxState();
-						mob.resetToMaxState();
-						mob.recoverPhyStats();
+						recoverEverything(mob);
 						CMLib.login().promptPlayerStats(mob.playerStats().getTheme(), mob, mob.session(), bonusPointsPerStat[0]);
-						mob.recoverCharStats();
-						mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
-						mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
-						mob.recoverCharStats();
-						mob.recoverMaxState();
-						mob.resetToMaxState();
-						mob.recoverPhyStats();
-						if(newCharClass.qualifiesForThisClass(mob, false))
-							mob.baseCharStats().setMyClasses(newCharClass.ID());
-						else
-							mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(mob.playerStats().getTheme(), mob, mob.session()));
+						recoverEverything(mob);
 						mob.basePhyStats().setSensesMask(0);
 						mob.baseCharStats().getMyRace().startRacing(mob,false);
 						mob.setWimpHitPoint(5);
-						mob.recoverCharStats();
-						mob.recoverMaxState();
-						mob.resetToMaxState();
-						mob.recoverPhyStats();
-						mob.recoverCharStats();
-						mob.recoverMaxState();
-						mob.resetToMaxState();
-						mob.recoverPhyStats();
+						mob.setQuestPoint(questPoint[0]);
+						recoverEverything(mob);
+						mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(mob.playerStats().getTheme(), mob, mob.session()));
+						mob.setPractices(0);
+						mob.setTrains(0);
+						mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
+						mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
+						recoverEverything(mob);
+						recoverEverything(mob);
 						CMLib.achievements().loadAccountAchievements(mob);
 						CMLib.achievements().loadPlayerSkillAwards(mob, mob.playerStats());
 						CMLib.commands().postLook(mob, true);
-						if((mob.charStats().getCurrentClass().leveless())
-						||(mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
-						||(mob.charStats().getMyRace().leveless())
-						||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
+						if((!mob.charStats().getCurrentClass().leveless())
+						&&(!mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
+						&&(!mob.charStats().getMyRace().leveless())
+						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 						{
-							
+							for(int i=1;i<newLevel[0];i++)
+							{
+								if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
+								||(mob.charStats().getCurrentClass().expless())
+								||(mob.charStats().getMyRace().expless()))
+									CMLib.leveler().level(mob);
+								else
+									CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+							}
 						}
-						else
-						for(int i=1;i<newLevel[0];i++)
-						{
-							if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
-							||(mob.charStats().getCurrentClass().expless())
-							||(mob.charStats().getMyRace().expless()))
-								CMLib.leveler().level(mob);
-							else
-								CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
-						}
+						recoverEverything(mob);
 						CMLib.utensils().confirmWearability(mob);
+						recoverEverything(mob);
 						mob.tell(L("You have remorted back to level @x1!",""+mob.phyStats().level()));
 					}
 					catch (final IOException e){}

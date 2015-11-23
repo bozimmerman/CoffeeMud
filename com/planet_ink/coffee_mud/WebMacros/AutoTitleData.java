@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -34,24 +35,10 @@ import java.util.*;
 */
 public class AutoTitleData extends StdWebMacro
 {
-	@Override public String name() { return "AutoTitleData"; }
-
-	public String deleteTitle(String title)
+	@Override
+	public String name()
 	{
-		CMLib.titles().dispossesTitle(title);
-		final CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
-		if(F.exists())
-		{
-			final boolean removed=Resources.findRemoveProperty(F, title);
-			if(removed)
-			{
-				Resources.removeResource("titles.txt");
-				CMLib.titles().reloadAutoTitles();
-				return null;
-			}
-			return "Unable to delete title!";
-		}
-		return "Unable to open titles.txt!";
+		return "AutoTitleData";
 	}
 
 	@Override
@@ -89,17 +76,14 @@ public class AutoTitleData extends StdWebMacro
 
 			if((last!=null)&&(CMLib.titles().isExistingAutoTitle(last)))
 			{
-				final String err=deleteTitle(last);
+				final String err=CMLib.titles().deleteTitleAndResave(last);
 				if(err!=null)
 				{
 					CMLib.titles().reloadAutoTitles();
 					return err;
 				}
 			}
-			final CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
-			F.saveText("\n"+newTitle+"="+newMask,true);
-			Resources.removeResource("titles.txt");
-			CMLib.titles().reloadAutoTitles();
+			CMLib.titles().appendAutoTitle("\n"+newTitle+"="+newMask);
 		}
 		else
 		if(parms.containsKey("DELETE"))
@@ -113,7 +97,7 @@ public class AutoTitleData extends StdWebMacro
 				return " @break@";
 			if(!CMLib.titles().isExistingAutoTitle(last))
 				return "Unknown title!";
-			final String err=deleteTitle(last);
+			final String err=CMLib.titles().deleteTitleAndResave(last);
 			if(err==null)
 				return "Auto-Title deleted.";
 			return err;

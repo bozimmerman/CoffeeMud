@@ -791,21 +791,9 @@ public class Create extends StdCommand
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
 			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=[ZAPPER MASK] as follows: \n\r"));
-			final StringBuffer buf=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS).text();
-			final StringBuffer inst=new StringBuffer("");
-			List<String> V=new Vector<String>();
-			if(buf!=null)
-				V=Resources.getFileLineVector(buf);
-			for(int v=0;v<V.size();v++)
-			{
-				if(V.get(v).startsWith("#"))
-					inst.append(V.get(v).substring(1)+"\n\r");
-				else
-				if(V.get(v).length()>0)
-					break;
-			}
+			final String inst = CMLib.titles().getAutoTitleInstructions();
 			if(mob.session()!=null)
-				mob.session().wraplessPrintln(inst.toString());
+				mob.session().wraplessPrintln(inst);
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -824,10 +812,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		final CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
-		F.saveText("\n"+parms,true);
-		Resources.removeResource("titles.txt");
-		CMLib.titles().reloadAutoTitles();
+		CMLib.titles().appendAutoTitle("\n"+parms);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The prestige of the players just increased!"));
 	}
 

@@ -1246,7 +1246,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		else
 		{
-			final String otherLoginName = loginObj == null ? null : loginObj.login;
+			final String otherLoginName = loginObj.login;
 			for(final Session otherSess : CMLib.sessions().allIterable())
 			{
 				if((otherSess!=session)&&(otherSess.isPendingLogin(otherLoginName)))

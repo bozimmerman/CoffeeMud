@@ -280,9 +280,10 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				}
 				item=item.substring(0,x);
 			}
-			CMSecurity.registerJournal(item.toUpperCase().trim());
+			final String name=item.toUpperCase().trim();
+			CMSecurity.registerJournal(name);
 			final String journalAdminMask = mask;
-			commandJournals.put(item.toUpperCase().trim(),new CommandJournal()
+			commandJournals.put(name,new CommandJournal()
 			{
 				@Override
 				public String NAME()
@@ -592,11 +593,23 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return oldValue;
 	}
 
-	@Override public int getNumCommandJournals() { return commandJournals.size();    }
+	@Override
+	public int getNumCommandJournals()
+	{
+		return commandJournals.size();
+	}
 
-	@Override public Enumeration<CommandJournal> commandJournals(){ return commandJournals.elements();}
+	@Override
+	public Enumeration<CommandJournal> commandJournals()
+	{
+		return commandJournals.elements();
+	}
 
-	@Override public CommandJournal getCommandJournal(String named) { return commandJournals.get(named.toUpperCase().trim());}
+	@Override
+	public CommandJournal getCommandJournal(String named)
+	{
+		return commandJournals.get(named.toUpperCase().trim());
+	}
 
 	public void expirationJournalSweep()
 	{

@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2008-2015 Bo Zimmerman
@@ -86,15 +87,31 @@ public interface AutoTitlesLibrary extends CMLibrary
 
 	/**
 	 * Forces this library to re-load its list of titles from
-	 * the resource file titles.txt.
+	 * the resource file titles.ini.
 	 */
 	public void reloadAutoTitles();
 
 	/**
-	 * Scans all users in the database to ensure that the given
-	 * title still belongs with them.  If it doesn't, the title
-	 * is removed.
-	 * @param title the title to scan users qualifications for
+	 * Appends to the list of titles from the given text and
+	 * refreshes the cache.  This will also save the file. 
+	 * @param text the text of the new title definition
 	 */
-	public void dispossesTitle(String title);
+	public void appendAutoTitle(String text);
+	
+	/**
+	 * Removes the given title from all affected players, 
+	 * removes the given title from the titles properties file,
+	 * and refreshes the titles cache.
+	 * @param title the title to remove
+	 * @return an error message, or null for success
+	 */
+	public String deleteTitleAndResave(String title);
+	
+	/**
+	 * Reads the titles.ini file and returns the 
+	 * instructions therein.
+	 * @return the instructions for entering a title
+	 */
+	public String getAutoTitleInstructions();
+	
 }

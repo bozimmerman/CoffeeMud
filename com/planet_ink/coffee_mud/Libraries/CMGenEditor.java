@@ -3476,7 +3476,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genTattoos(MOB mob, MOB M, int showNumber, int showFlag)
+	protected void genTattoos(MOB mob, Tattooable M, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -9237,6 +9237,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genAccountExpiration(mob,A,++showNumber,showFlag);
 			promptStatStr(mob,A,PlayerAccount.AccountFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
 			promptStatStr(mob,A,++showNumber,showFlag,"Notes: ","NOTES");
+			genTattoos(mob,A,++showNumber,showFlag);
 			for(int x=A.getSaveStatIndex();x<A.getStatCodes().length;x++)
 				A.setStat(A.getStatCodes()[x],prompt(mob,A.getStat(A.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(A.getStatCodes()[x])));
 			if(showFlag<-900){ ok=true; break;}
