@@ -65,6 +65,16 @@ public class GrinderAccounts
 				str=httpReq.getUrlParameter("NOTES");
 				if(str!=null)
 					A.setNotes(str);
+				str=httpReq.getUrlParameter("TATTOOS");
+				if(str!=null)
+				{
+					List<Tattoo> oldTatts = new XVector<Tattoo>(A.tattoos());
+					for(Tattoo t : oldTatts)
+						A.delTattoo(t);
+					List<String> tattNames = CMParms.parseCommas(str,true);
+					for(String tattName : tattNames)
+						A.addTattoo(CMLib.database().parseTattoo(tattName));
+				}
 				str=httpReq.getUrlParameter("EXPIRATION");
 				if(str!=null)
 				{

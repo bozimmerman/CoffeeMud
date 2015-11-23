@@ -62,6 +62,13 @@ public class AccountData extends StdWebMacro
 				return ""+A.getEmail();
 			if(parms.containsKey("NOTES"))
 				return ""+A.getNotes();
+			if(parms.containsKey("TATTOOS"))
+			{
+				StringBuilder str = new StringBuilder("");
+				for(final Enumeration<Tattoo> e=A.tattoos();e.hasMoreElements();)
+					str.append(e.nextElement().toString()+", ");
+				return str.toString();
+			}
 			if(parms.containsKey("ACCTEXPIRATION"))
 			{
 				if(A.isSet(PlayerAccount.AccountFlag.NOEXPIRE))

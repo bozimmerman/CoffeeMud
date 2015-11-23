@@ -212,6 +212,16 @@
 </TR>
 @endif@
 <TR>
+	<TD WIDTH=33%><FONT COLOR=YELLOW>Tattoos: </FONT></TD>
+	<TD WIDTH=66%>
+		@if?CheckReqParm?FUNCTION=EDIT@
+        	<TEXTAREA ROWS=2 COLS=60 NAME=TATTOOS>@AccountData?TATTOOS@</TEXTAREA>
+		@else@
+			<FONT COLOR=WHITE>@AccountData?TATTOOS@</FONT>&nbsp;
+		@endif@
+	</TD>
+</TR>
+<TR>
 	<TD WIDTH=33%><FONT COLOR=YELLOW>Notes: </FONT></TD>
 	<TD WIDTH=66%>
 		@if?CheckReqParm?FUNCTION=EDIT@
