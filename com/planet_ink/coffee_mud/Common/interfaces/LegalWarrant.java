@@ -229,6 +229,7 @@ public interface LegalWarrant extends CMCommon
 	 * Sets the current state of adjudication.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#state()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#getLastStateChangeTime()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#STATE_DETAINING
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#STATE_EXECUTING
 	 *
@@ -353,4 +354,14 @@ public interface LegalWarrant extends CMCommon
 	 * @param R the room into which this criminal will be released after jail.
 	 */
 	public void setReleaseRoom(Room R);
+	
+	/**
+	 * Returns the real time in ms when the state last changed.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#setState(int)
+	 *
+	 * @return the real time in ms when the state last changed.
+	 */
+	public long getLastStateChangeTime();
+
 }
