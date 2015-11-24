@@ -96,7 +96,25 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * @throws CMException any parsing or generation errors
 	 */
 	public Room buildRoom(XMLTag piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException;
+	
+	/**
+	 * Does nothing but check the requirements to build the given xml tag piece, and compares it with
+	 * the variables in the given id definition map, to see if all requirements are met.  If not,
+	 * it throws an exception.
+	 * @param piece the xml tag piece you want to build
+	 * @param defined the defined id set from the entire xml document, and the user
+	 * @throws CMException any parsing or generation errors
+	 */
 	public void checkRequirements(XMLTag piece, Map<String,Object> defined) throws CMException;
+	
+	
+	/**
+	 * Check the requirements to build the given xml tag piece, and compares it with
+	 * the variables in the given id definition map, to see if all requirements are met.  If not,
+	 * it returns a map of the undefined or mis-defined ids as keys, mapped to the data type name.
+	 * @param defined the defined id set from the entire xml document, and the user
+	 * @param piece the xml tag piece you want to build
+	 */
 	public Map<String,String> getUnfilledRequirements(Map<String,Object> defined, XMLTag piece);
 	public Area findArea(XMLTag piece, Map<String,Object> defined, int directions) throws CMException;
 	public boolean fillInArea(XMLTag piece, Map<String,Object> defined, Area A, int direction) throws CMException;
