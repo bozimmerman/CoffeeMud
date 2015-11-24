@@ -2910,8 +2910,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public synchronized void reloadAchievements()
 	{
-		accountAchievements=new LinkedList<Achievement>();
-		playerAchievements=new LinkedList<Achievement>();
+		accountAchievements=new SLinkedList<Achievement>();
+		playerAchievements=new SLinkedList<Achievement>();
 		eventMap=new TreeMap<Event,List<Achievement>>();
 		final String achievementFilename = getAchievementFilename();
 		final List<String> V=Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename,true));
