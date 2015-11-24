@@ -2192,7 +2192,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Enumeration<Achievement> achievements(Agent agent)
+	public synchronized Enumeration<Achievement> achievements(Agent agent)
 	{
 		ensureAchievementsLoaded();
 		if(agent == null)
