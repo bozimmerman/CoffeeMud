@@ -665,6 +665,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		}
 
 		if ((S!=null)
+		&&(normalColor!=null)
 		&&(!normalColor.equals(S.getCurrentColor()))
 		&&(S.getClientTelnetMode(Session.TELNET_ANSI)))
 		{
