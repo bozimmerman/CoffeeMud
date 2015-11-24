@@ -53,6 +53,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	/**
 	 * Given a specific ITEM generation tag, this method will return the items selected
 	 * by that tag piece.
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
 	 * @param piece the identified tag that can return items
 	 * @param defined the defined id set from the entire xml document
 	 * @return the list of items generated from the tag.
@@ -63,13 +64,37 @@ public interface AreaGenerationLibrary extends CMLibrary
 	/**
 	 * Given a specific MOB generation tag, this method will return the MOBs selected
 	 * by that tag piece.
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
 	 * @param piece the identified tag that can return MOBs
 	 * @param defined the defined id set from the entire xml document
 	 * @return the list of MOBs generated from the tag.
 	 * @throws CMException any parsing or generation errors
 	 */
 	public List<MOB> findMobs(XMLTag piece, Map<String,Object> defined) throws CMException;
+	
+	/**
+	 * Returns a string of the given tag name type, from the given top-level xml tag piece that
+	 * resolves to a string, and with the given pre-defined id set.
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
+	 * @param tagName the name of the string tag
+	 * @param piece the top level piece, probably of type tagname
+	 * @param defined the pre-defined id set from the entire xml document
+	 * @return the string this resolves to
+	 * @throws CMException any parsing or generation errors
+	 */
 	public String findString(String tagName, XMLTag piece, Map<String,Object> defined) throws CMException;
+	
+	/**
+	 * Given a specific ROOM generation tag, this method will return the room selected
+	 * by that tag piece, with the entrace to it being in the given direction
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
+	 * @param piece the identified tag that can return a room
+	 * @param defined the defined id set from the entire xml document
+	 * @param exits pre-defined exits from this room, if any
+	 * @param direction the direction of entrance to this room
+	 * @return the room generated from the tag.
+	 * @throws CMException any parsing or generation errors
+	 */
 	public Room buildRoom(XMLTag piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException;
 	public void checkRequirements(XMLTag piece, Map<String,Object> defined) throws CMException;
 	public Map<String,String> getUnfilledRequirements(Map<String,Object> defined, XMLTag piece);
