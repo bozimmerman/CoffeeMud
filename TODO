@@ -1,6 +1,5 @@
 BUGS
   *. ShopKeeper, and presumably random inventory kick in during mudgrinder edits. No reproduce, but watch it.
-  *. Add tattoos to account editor
 
 TECH
    *. test and debug launch and landing - make sure navigation thrusters affect speed and direction properly.
