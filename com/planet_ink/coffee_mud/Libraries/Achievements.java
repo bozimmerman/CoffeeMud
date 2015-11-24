@@ -87,10 +87,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final String tattoo=row.substring(0,x).toUpperCase().trim();
 		if(tattoo.length()==0)
 			return "Error: Blank achievement tattoo: "+tattoo+"!";
-		if(Character.isDigit(tattoo.charAt(tattoo.length()-1)))
+		if(Character.isDigit(tattoo.charAt(0)))
 			return "Error: Invalid achievement tattoo: "+tattoo+"!";
 		final String params=row.substring(x+1).trim();
-		
 		String eventStr=CMParms.getParmStr(params, "EVENT", "");
 		final Event eventType = (Event)CMath.s_valueOf(Event.class, eventStr.toUpperCase().trim());
 		if(eventType == null)
