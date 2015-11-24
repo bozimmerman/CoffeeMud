@@ -470,7 +470,7 @@ public class Stat  extends Skills
 				msg.append(stat).append(", ");
 			for(String stat : mob.phyStats().getStatCodes())
 				msg.append(stat).append(", ");
-			msg.append("XP, XPTNL, XPFNL, ");
+			msg.append("XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, ");
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
 			{
 				msg.append(L("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
@@ -875,6 +875,24 @@ public class Stat  extends Skills
 				if(thisStat.equalsIgnoreCase("XP"))
 				{
 					str.append(M.getExperience()).append(" ");
+					found=true;
+				}
+				else
+				if(thisStat.equalsIgnoreCase("TRAINS"))
+				{
+					str.append(M.getTrains()).append(" ");
+					found=true;
+				}
+				else
+				if(thisStat.equalsIgnoreCase("PRACTICES"))
+				{
+					str.append(M.getPractices()).append(" ");
+					found=true;
+				}
+				else
+				if(thisStat.equalsIgnoreCase("QUESTPOINTS"))
+				{
+					str.append(M.getQuestPoint()).append(" ");
 					found=true;
 				}
 				else
