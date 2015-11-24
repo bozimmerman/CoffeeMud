@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AmountA
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.CurrencyAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -2526,6 +2527,12 @@ public class ListCmd extends StdCommand
 						break;
 					case CURRENCY:
 						rewardDisplay.append(((CurrencyAward)award).getAmount()+" "+((CurrencyAward)award).getCurrency()+" ");
+						break;
+					case STAT:
+						if(((StatAward)award).getStat().indexOf(' ')>0)
+							rewardDisplay.append(((StatAward)award).getAmount()+" \\\""+((StatAward)award).getStat()+"\\\" ");
+						else
+							rewardDisplay.append(((StatAward)award).getAmount()+" "+((StatAward)award).getStat()+" ");
 						break;
 					case EXPERTISE:
 						rewardDisplay.append(((ExpertiseAward)award).getExpertise().ID()+" ");

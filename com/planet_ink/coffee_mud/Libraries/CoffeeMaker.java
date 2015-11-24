@@ -2566,6 +2566,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return ""+((MOB)P).getQuestPoint();
 				case FOLLOWERS:
 					return ""+((MOB)P).numFollowers();
+				case TRAINS:
+					return ""+((MOB)P).getTrains();
+				case PRACTICES:
+					return ""+((MOB)P).getPractices();
 				}
 			}
 		}
@@ -2656,10 +2660,23 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				setGenMobStat((MOB)P, stat, value);
 				return;
 			}
-			if(stat.equalsIgnoreCase("QUESTPOINTS"))
+			final GenMOBBonusFakeStats fakeStat = (GenMOBBonusFakeStats)CMath.s_valueOf(GenMOBBonusFakeStats.class, stat);
+			if(fakeStat != null)
 			{
-				((MOB)P).setQuestPoint(CMath.parseIntExpression(value));
-				return;
+				switch(fakeStat)
+				{
+				case QUESTPOINTS:
+					((MOB)P).setQuestPoint(CMath.parseIntExpression(value));
+					return;
+				case FOLLOWERS:
+					return;
+				case TRAINS:
+					((MOB)P).setTrains(CMath.parseIntExpression(value));
+					return;
+				case PRACTICES:
+					((MOB)P).setPractices(CMath.parseIntExpression(value));
+					return;
+				}
 			}
 		}
 		else

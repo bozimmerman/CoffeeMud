@@ -413,6 +413,32 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							});
 						}
 						else
+						if(CMLib.coffeeMaker().isAnyGenStat(CMClass.sampleMOB(), thing))
+						{
+							final String stat = thing.toUpperCase().trim();
+							
+							awardsList.add(new StatAward()
+							{
+								@Override
+								public AwardType getType()
+								{
+									return AwardType.STAT;
+								}
+
+								@Override
+								public int getAmount()
+								{
+									return number;
+								}
+
+								@Override
+								public String getStat()
+								{
+									return stat;
+								}
+							});
+						}
+						else
 						{
 							String currency = CMLib.english().matchAnyCurrencySet(thing);
 							if(currency == null)
@@ -2288,6 +2314,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 				break;
 			}
+			case STAT:
+			{
+				final StatAward aaward=(StatAward)award;
+				String value = CMLib.coffeeMaker().getAnyGenStat(mob, aaward.getStat());
+				if(CMath.isNumber(value))
+				{
+					awardMessage.append(L("^HYou are awarded @x1!\n\r^?",aaward.getAmount() + " " + aaward.getStat()));
+					CMLib.coffeeMaker().setAnyGenStat(mob, aaward.getStat(), "" + (CMath.s_int(value) + aaward.getAmount()));
+				}
+				break;
+			}
 			case EXPERTISE:
 			{
 				final ExpertiseAward aaward = (ExpertiseAward)award;
@@ -2539,6 +2576,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case CURRENCY:
 				awardStr.append(" ").append(((CurrencyAward)award).getAmount())
 						.append(" ").append(((CurrencyAward)award).getCurrency());
+				break;
+			case STAT:
+				awardStr.append(" ").append(((StatAward)award).getAmount())
+						.append(" ").append(((StatAward)award).getStat());
 				break;
 			case EXPERTISE:
 				awardStr.append(" ").append(((ExpertiseAward)award).getLevel())

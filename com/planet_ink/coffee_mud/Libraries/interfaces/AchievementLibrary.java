@@ -225,7 +225,8 @@ public interface AchievementLibrary extends CMLibrary
 		CURRENCY,
 		TITLE,
 		ABILITY,
-		EXPERTISE
+		EXPERTISE,
+		STAT
 	}
 	
 	/**
@@ -286,6 +287,21 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return currency name awarded by this award
 		 */
 		public String getCurrency();
+	}
+	
+	/**
+	 * The award interface provides pre-parsed award information for those who
+	 * complete the achievement.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface StatAward extends AmountAward
+	{
+		/**
+		 * The stat name awarded by this award
+		 * @return stat name awarded by this award
+		 */
+		public String getStat();
 	}
 	
 	/**

@@ -92,7 +92,9 @@ public interface GenericBuilder extends CMLibrary
 	public enum GenMOBBonusFakeStats
 	{
 		QUESTPOINTS,
-		FOLLOWERS
+		FOLLOWERS,
+		TRAINS,
+		PRACTICES
 	}
 
 	public String getGenMOBTextUnpacked(MOB mob, String newText);
