@@ -984,8 +984,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						logError(scripted,"XMLLOAD","?","Required ids for "+idName+" were missing for XML file: '"+filename+"' in "+thangName+": "+cme.getMessage());
 						return null;
 					}
-					CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-					CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
+					CMLib.percolator().preDefineReward(piece, definedIDs);
+					CMLib.percolator().defineReward(piece,definedIDs);
 					monsters.addAll(CMLib.percolator().findMobs(piece, definedIDs));
 					CMLib.percolator().postProcess(definedIDs);
 					if(monsters.size()<=0)
@@ -1116,8 +1116,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						logError(scripted,"XMLLOAD","?","Required ids for "+idName+" were missing for XML file: '"+filename+"' in "+thangName+": "+cme.getMessage());
 						return null;
 					}
-					CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-					CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
+					CMLib.percolator().preDefineReward(piece, definedIDs);
+					CMLib.percolator().defineReward(piece,definedIDs);
 					items.addAll(CMLib.percolator().findItems(piece, definedIDs));
 					CMLib.percolator().postProcess(definedIDs);
 					if(items.size()<=0)

@@ -187,16 +187,16 @@ public class Generate extends StdCommand
 			{
 			case LIBRARY:
 			{
-				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-				CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
+				CMLib.percolator().preDefineReward(piece, definedIDs);
+				CMLib.percolator().defineReward(piece,definedIDs);
 				final String s=CMLib.percolator().findString("STRING", piece, definedIDs);
 				if(s!=null)
 					V.add(s);
 				break;
 			}
 			case AREA:
-				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-				CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
+				CMLib.percolator().preDefineReward(piece, definedIDs);
+				CMLib.percolator().defineReward(piece,definedIDs);
 				definedIDs.put("ROOMTAG_NODEGATEEXIT", Directions.getDirectionName(Directions.getOpDirectionCode(direction)));
 				definedIDs.put("ROOMTAG_GATEEXITROOM", mob.location());
 				final Area A=CMLib.percolator().findArea(piece, definedIDs, direction);
@@ -204,15 +204,15 @@ public class Generate extends StdCommand
 					V.add(A);
 				break;
 			case MOB:
-				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-				CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
+				CMLib.percolator().preDefineReward(piece, definedIDs);
+				CMLib.percolator().defineReward(piece,definedIDs);
 				V.addAll(CMLib.percolator().findMobs(piece, definedIDs));
 				break;
 			case LOCALE:
 			{
 				final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
-				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-				CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
+				CMLib.percolator().preDefineReward(piece, definedIDs);
+				CMLib.percolator().defineReward(piece,definedIDs);
 				definedIDs.put("ROOMTAG_NODEGATEEXIT", Directions.getDirectionName(Directions.getOpDirectionCode(direction)));
 				definedIDs.put("ROOMTAG_GATEEXITROOM", mob.location());
 				final Room R=CMLib.percolator().buildRoom(piece, definedIDs, exits, direction);
@@ -221,8 +221,8 @@ public class Generate extends StdCommand
 				break;
 			}
 			case ITEM:
-				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
-				CMLib.percolator().defineReward(null, null, null, piece, piece.value(),definedIDs);
+				CMLib.percolator().preDefineReward(piece, definedIDs);
+				CMLib.percolator().defineReward(piece,definedIDs);
 				V.addAll(CMLib.percolator().findItems(piece, definedIDs));
 				break;
 			default:

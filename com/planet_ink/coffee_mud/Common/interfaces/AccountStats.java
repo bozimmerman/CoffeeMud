@@ -224,14 +224,14 @@ public interface AccountStats extends CMCommon
 	 * Returns the tracker for the given achievement, for the given mob, or
 	 * creates it if it does not exist.
 	 * @see AccountStats#rebuildAchievementTracker(MOB, String)
-	 * @see AccountStats#killAchievementTracker(Achievement, MOB)
+	 * see #killAchievementTracker(Achievement, MOB)
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement
 	 * @param A the achievement to get the tracker for
 	 * @param mob the mob to create a tracker for
 	 * @return the Tracker object that handles this achievement/mob
 	 */
-	public Tracker getAchievementTracker(final Achievement A, final MOB mob);
+	public Tracker getAchievementTracker(Achievement A, MOB mob);
 	
 	/**
 	 * Deletes the tracker for the given achievement, for the given mob.
@@ -241,7 +241,7 @@ public interface AccountStats extends CMCommon
 	 * @param A the achievement to kill the tracker for
 	 * @param mob the mob to delete a tracker for
 	 */
-	public void killAchievementTracker(final Achievement A, final MOB mob);
+	public void killAchievementTracker(Achievement A, MOB mob);
 
 	/**
 	 * If an Achievement is modified or removed, this method will update the

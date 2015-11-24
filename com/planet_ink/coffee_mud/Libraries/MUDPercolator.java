@@ -2267,7 +2267,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	@Override
-	public void defineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLTag piece, String value, Map<String,Object> defined) throws CMException
+	public void defineReward(XMLTag piece, Map<String,Object> defined) throws CMException
+	{
+		defineReward(null, null, null,piece,piece.value(),defined);
+	}
+
+	protected void defineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLTag piece, String value, Map<String,Object> defined) throws CMException
 	{
 		try
 		{
@@ -2280,7 +2285,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	@Override
-	public void preDefineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLTag piece, Map<String,Object> defined) throws CMException
+	public void preDefineReward(XMLTag piece, Map<String,Object> defined) throws CMException
+	{
+		preDefineReward(null,null,null,piece,defined);
+	}
+	
+	protected void preDefineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLTag piece, Map<String,Object> defined) throws CMException
 	{
 		try
 		{
