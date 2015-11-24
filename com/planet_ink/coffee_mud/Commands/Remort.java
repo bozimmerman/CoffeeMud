@@ -380,6 +380,15 @@ public class Remort extends StdCommand
 						mob.baseCharStats().setMyClasses("StdCharClass");
 						mob.baseCharStats().setMyLevels("1");
 						mob.basePhyStats().setLevel(1);
+						for (final Enumeration<Ability> a = mob.personalEffects(); a.hasMoreElements();)
+						{
+							final Ability A = a.nextElement();
+							if ((A != null)&& (A.canBeUninvoked()))
+							{
+								A.unInvoke();
+								mob.delEffect(A);
+							}
+						}
 						recoverEverything(mob);
 						CMLib.login().promptPlayerStats(mob.playerStats().getTheme(), mob, mob.session(), bonusPointsPerStat[0]);
 						recoverEverything(mob);
