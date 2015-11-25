@@ -84,6 +84,36 @@ public class Achievements extends StdCommand
 		return null;
 	}
 	
+	private List<Achievement> getLowestNumberedTattoos(final Agent agent, final Set<String> WonList)
+	{
+		List<Achievement> useList = new LinkedList<Achievement>();
+		HashSet<String> ignoredStarters = new HashSet<String>();
+		for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+		{
+			final Achievement A=a.nextElement();
+			final String tattooName = A.getTattoo();
+			if(WonList.contains(A.getTattoo()))
+				useList.add(A);
+			else
+			if((tattooName.length()>1)
+			&& Character.isDigit(tattooName.charAt(tattooName.length()-1)))
+			{
+				int x=tattooName.length()-1;
+				while((x>0) && Character.isDigit(tattooName.charAt(x)))
+					x--;
+				final String starter = tattooName.substring(0,x+1);
+				if(!ignoredStarters.contains(starter))
+				{
+					ignoredStarters.add(starter);
+					useList.add(A);
+				}
+			}
+			else
+				useList.add(A);
+		}
+		return useList;
+	}
+	
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags) throws java.io.IOException
 	{
@@ -204,10 +234,11 @@ public class Achievements extends StdCommand
 				{
 				case ALL:
 				{
+					final List<Achievement> useList = getLowestNumberedTattoos(agent,WonList);
 					int padding=done.length()+1;
-					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					for(Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
-						final Achievement A=a.nextElement();
+						final Achievement A=a.next();
 						if(!WonList.contains(A.getTattoo()))
 						{
 							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
@@ -221,9 +252,9 @@ public class Achievements extends StdCommand
 							}
 						}
 					}
-					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					for(Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
-						final Achievement A=a.nextElement();
+						final Achievement A=a.next();
 						if(WonList.contains(A.getTattoo()))
 							AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
 						else
@@ -242,9 +273,10 @@ public class Achievements extends StdCommand
 				case NOW:
 				{
 					int padding=done.length()+1;
-					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					final List<Achievement> useList = getLowestNumberedTattoos(agent,WonList);
+					for(Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
-						final Achievement A=a.nextElement();
+						final Achievement A=a.next();
 						if(!WonList.contains(A.getTattoo()))
 						{
 							AchievementLibrary.Tracker T=pStats.getAchievementTracker(A, whoM);
@@ -261,9 +293,9 @@ public class Achievements extends StdCommand
 							}
 						}
 					}
-					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					for(Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
-						final Achievement A=a.nextElement();
+						final Achievement A=a.next();
 						if(WonList.contains(A.getTattoo()))
 							AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
 						else
