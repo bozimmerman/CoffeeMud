@@ -1141,6 +1141,48 @@ public class CMStrings
 	}
 
 	/**
+	 * Returns whether the given string array contains a string that
+	 * starts with the given string.
+	 * This check is Case Sensitive!
+	 * @param strs the array to look in
+	 * @param str the string to look for
+	 * @return true if the array contained the string beginning, and false otherwise
+	 */
+	public final static boolean containsStartsWith(final String[] strs, final String str)
+	{
+		if((str==null)||(strs==null))
+			return false;
+		for (final String str2 : strs)
+		{
+			if(str2.startsWith(str))
+				return true;
+		}
+		return false;
+	}
+
+
+	/**
+	 * Returns whether the given string array contains a string that
+	 * start is the first part of the given string, such that:
+	 * str.startsWith(strs[x])
+	 * This check is Case Sensitive!
+	 * @param strs the array to look in
+	 * @param str the string to look for
+	 * @return true if the array contained the string beginning, and false otherwise
+	 */
+	public final static boolean containsStarterWith(final String[] strs, final String str)
+	{
+		if((str==null)||(strs==null))
+			return false;
+		for (final String str2 : strs)
+		{
+			if(str.startsWith(str2))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Replaces @x1 type variables inside a stringbuffer with an actual value
 	 * Not used in the main expression system, this is a stand alone function
 	 * Also uniquely, supports @x numbers above 10.  Values are *1* indexed!!

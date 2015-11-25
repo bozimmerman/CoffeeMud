@@ -51,6 +51,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return "Achievements";
 	}
 	
+	// order is now significant, so they are Lists
 	private List<Achievement> 			playerAchievements	= null;
 	private List<Achievement> 			accountAchievements = null;
 	private Map<Event,List<Achievement>>eventMap			= null;
