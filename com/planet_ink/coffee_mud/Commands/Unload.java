@@ -40,7 +40,7 @@ public class Unload extends StdCommand
 
 	private final String[] access=I(new String[]{"UNLOAD"});
 	@Override public String[] getAccessWords(){return access;}
-	final String[] ARCHON_LIST={"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "[FILENAME]"};
+	final String[] ARCHON_LIST={"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]"};
 
 
 	@Override
@@ -145,6 +145,12 @@ public class Unload extends StdCommand
 					return false;
 				}
 				mob.tell(L("No access to help."));
+			}
+			else
+			if(str.equalsIgnoreCase("achievements"))
+			{
+				CMLib.achievements().shutdown();
+				mob.tell(L("Achievements unloaded."));
 			}
 			else
 			if(str.equalsIgnoreCase("inifile"))

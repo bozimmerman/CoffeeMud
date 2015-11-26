@@ -3204,6 +3204,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public boolean shutdown()
 	{
+		Resources.removeResource("SYSTEM_ACHIEVEMENT_HELP");
 		accountAchievements=null;
 		playerAchievements=null;
 		eventMap=null;
