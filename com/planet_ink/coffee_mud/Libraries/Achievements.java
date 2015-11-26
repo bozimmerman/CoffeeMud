@@ -3055,6 +3055,152 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 	
+	protected String makeAchievmentHelp(Achievement A)
+	{
+		if(A == null)
+			return null;
+		@SuppressWarnings("unchecked")
+		Map<String,String> helpMap = (Map<String,String>)Resources.getResource("SYSTEM_ACHIEVEMENT_HELP");
+		if(helpMap == null)
+		{
+			helpMap = new Hashtable<String,String>();
+			Resources.submitResource("SYSTEM_ACHIEVEMENT_HELP", helpMap);
+		}
+		String help = helpMap.get(A.getTattoo());
+		if(help != null)
+			return help;
+		StringBuilder str = new StringBuilder("");
+		int cols = 20;
+		if(A.getAgent() == Agent.ACCOUNT)
+			str.append("\n\r").append(CMStrings.padRight(L("Account Achievement:"),cols)).append(" ").append(A.getTattoo());
+		else
+			str.append("\n\r").append(CMStrings.padRight(L("Char. Achievement:"),cols)).append(" ").append(A.getTattoo());
+		str.append("\n\r").append(CMStrings.padRight(L("Description:"),cols)).append(" ").append(A.getDisplayStr());
+		str.append("\n\r").append(CMStrings.padRight(L("Achievement Type:"),cols)).append(" ");
+		str.append(L(A.getEvent().displayName()));
+		if(A.getRewards().length>0)
+		{
+			if(A.getAgent() == Agent.ACCOUNT)
+				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("New Characters, Children, and Remorted"));
+			else
+				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("Immediately"));
+		}
+		for(Award W : A.getRewards())
+		{
+			switch(W.getType())
+			{
+			case ABILITY:
+			{
+				AbilityAward award = (AbilityAward)W;
+				Ability skillA = CMClass.getAbility(award.getAbilityMapping().abilityID());
+				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(skillA.name());
+				if(award.getAbilityMapping().autoGain())
+					str.append(L("at level @x1",""+award.getAbilityMapping().qualLevel()));
+				else
+					str.append(L("qualification level @x1",""+award.getAbilityMapping().qualLevel()));
+				break;
+			}
+			case CURRENCY:
+			{
+				CurrencyAward award = (CurrencyAward)W;
+				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
+					.append(award.getAmount()).append(" ").append(CMStrings.capitalizeAndLower(award.getCurrency()));
+				break;
+			}
+			case EXPERTISE:
+			{
+				ExpertiseAward award = (ExpertiseAward)W;
+				ExpertiseDefinition defE = award.getExpertise();
+				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(defE.name());
+				if(defE.costDescription().length()==0)
+					str.append(L("at level @x1",""+defE.getMinimumLevel()));
+				else
+					str.append(L("qualification level @x1",""+defE.getMinimumLevel()));
+				break;
+			}
+			case QP:
+			{
+				AmountAward award = (AmountAward)W;
+				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
+					.append(award.getAmount()).append(" ").append(L("Quest Points"));
+				break;
+			}
+			case STAT:
+			{
+				StatAward award = (StatAward)W;
+				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" +")
+					.append(award.getAmount()).append(" ").append(L(CMStrings.capitalizeAndLower(award.getStat())));
+				break;
+			}
+			case TITLE:
+			{
+				TitleAward T = (TitleAward)W;
+				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
+				.append(L("The title: ")).append(T.getTitle());
+				break;
+			}
+			case XP:
+			{
+				AmountAward award = (AmountAward)W;
+				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
+					.append(award.getAmount()).append(" ").append(L("Experience Points"));
+				break;
+			}
+			}
+		}
+		str.append("\n\r");
+		helpMap.put(A.getTattoo(), str.toString());
+		return str.toString();
+	}
+	
+	@Override
+	public String getAchievementsHelp(String ID, boolean exact)
+	{
+		if(ID==null)
+			return null;
+		ID = ID.replace('`','\'');
+		Achievement A=this.getAchievement(ID.toUpperCase());
+		if(A == null)
+		{
+			for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
+			{
+				final Achievement A2 = a.nextElement();
+				if(A2.getDisplayStr().equalsIgnoreCase(ID))
+				{
+					A=A2;
+					break;
+				}
+			}
+		}
+		if(exact)
+			return makeAchievmentHelp(A);
+		if(A == null)
+		{
+			for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
+			{
+				final Achievement A2 = a.nextElement();
+				if(A2.getTattoo().toUpperCase().startsWith(ID.toUpperCase()))
+				{
+					A=A2;
+					break;
+				}
+			}
+		}
+		if(A == null)
+		{
+			for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
+			{
+				final Achievement A2 = a.nextElement();
+				if(A2.getDisplayStr().toLowerCase().startsWith(ID.toLowerCase()))
+				{
+					A=A2;
+					break;
+				}
+			}
+		}
+		return makeAchievmentHelp(A);
+	}
+	
 	@Override
 	public boolean shutdown()
 	{

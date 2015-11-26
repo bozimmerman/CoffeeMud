@@ -38,7 +38,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomina
 */
 public class MUDHelp extends StdLibrary implements HelpLibrary
 {
-	@Override public String ID(){return "MUDHelp";}
+	@Override
+	public String ID()
+	{
+		return "MUDHelp";
+	}
 
 	@Override
 	public boolean isPlayerSkill(String helpStr)
@@ -69,7 +73,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 	@Override
 	public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp)
-	{ return getHelpText(helpStr, forMOB, favorAHelp, false);}
+	{
+		return getHelpText(helpStr, forMOB, favorAHelp, false);
+	}
 
 	@Override
 	public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp, boolean noFix)
@@ -127,13 +133,15 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 		}
 		if(rHelpFile!=null)
-		for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 		{
-			final String ptop = (String)e.nextElement();
-			final String thisTag=rHelpFile.getProperty(ptop);
-			if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
-				|| (rHelpFile.getProperty(thisTag)== null) )
-					reverseList.addElement(ptop);
+			for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
+			{
+				final String ptop = (String)e.nextElement();
+				final String thisTag=rHelpFile.getProperty(ptop);
+				if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
+					|| (rHelpFile.getProperty(thisTag)== null) )
+						reverseList.addElement(ptop);
+			}
 		}
 		Collections.sort(reverseList);
 		return reverseList;
@@ -162,9 +170,15 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		int whichConsumed=consumption[0];
 		switch(which)
 		{
-		case Ability.USAGE_MOVEMENT: whichConsumed=consumption[Ability.USAGEINDEX_MOVEMENT]; break;
-		case Ability.USAGE_MANA: whichConsumed=consumption[Ability.USAGEINDEX_MANA]; break;
-		case Ability.USAGE_HITPOINTS: whichConsumed=consumption[Ability.USAGEINDEX_HITPOINTS]; break;
+		case Ability.USAGE_MOVEMENT:
+			whichConsumed = consumption[Ability.USAGEINDEX_MOVEMENT];
+			break;
+		case Ability.USAGE_MANA:
+			whichConsumed = consumption[Ability.USAGEINDEX_MANA];
+			break;
+		case Ability.USAGE_HITPOINTS:
+			whichConsumed = consumption[Ability.USAGEINDEX_HITPOINTS];
+			break;
 		}
 		if(destroymob)
 			forMOB.destroy();
@@ -690,6 +704,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	@Override
 	public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB, boolean noFix)
 	{
+		final String unfixedHelpStr = helpStr;
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(' ')>=0)
 			helpStr=helpStr.replace(' ','_');
@@ -763,7 +778,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 		if((!areaTag)&&(!found))
 		{
-			final String ahelpStr=helpStr.replaceAll("_"," ").trim();
+			final String ahelpStr=unfixedHelpStr.toUpperCase();
 			if(!found)
 			{
 				final String s=CMLib.socials().getSocialsHelp(forMOB,helpStr.toUpperCase(), true);
@@ -817,8 +832,19 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 
 			}
+			if(!found)
+			{
+				final String s=CMLib.achievements().getAchievementsHelp(unfixedHelpStr.toUpperCase(),true);
+				if(s!=null)
+				{
+					thisTag=s;
+					helpStr=helpStr.toUpperCase();
+					found=true;
+				}
+			}
 			// INEXACT searches start here
 			if(!found)
+			{
 				for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 				{
 					final String key=((String)e.nextElement()).toUpperCase();
@@ -830,6 +856,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						break;
 					}
 				}
+			}
 			if(!found)
 			{
 				final String currency=CMLib.english().matchAnyCurrencySet(ahelpStr);
@@ -846,6 +873,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 
 			if(!found)
+			{
 				for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
 				{
 					final String key=((String)e.nextElement()).toUpperCase();
@@ -857,6 +885,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						break;
 					}
 				}
+			}
 
 			if(!found)
 			{
@@ -891,6 +920,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 
 			if(!found)
+			{
 				for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 				{
 					final Area A=e.nextElement();
@@ -900,9 +930,20 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						break;
 					}
 				}
+			}
 			if(!found)
 			{
 				final String s=CMLib.expertises().getExpertiseHelp(helpStr.toUpperCase(),false);
+				if(s!=null)
+				{
+					thisTag=s;
+					helpStr=helpStr.toUpperCase();
+					found=true;
+				}
+			}
+			if(!found)
+			{
+				final String s=CMLib.achievements().getAchievementsHelp(unfixedHelpStr.toUpperCase(),false);
 				if(s!=null)
 				{
 					thisTag=s;
@@ -928,8 +969,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 		// the area exception
 		if((thisTag==null)||(thisTag.length()==0))
+		{
 			if(CMLib.map().getArea(helpStr.trim())!=null)
 				return new StringBuilder(CMLib.map().getArea(helpStr.trim()).getAreaStats().toString());
+		}
 
 		// internal exceptions
 		if((thisTag==null)||(thisTag.length()==0))
@@ -1005,12 +1048,14 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				matches.add(key.toUpperCase());
 		}
 		if(rHelpFile2!=null)
-		for(final Enumeration<Object> e=rHelpFile2.keys();e.hasMoreElements();)
 		{
-			final String key=(String)e.nextElement();
-			final String prop=rHelpFile1.getProperty(key,"");
-			if((key.toUpperCase().indexOf(helpStr)>=0)||(CMLib.english().containsString(prop,helpStr)))
-				matches.add(key.toUpperCase());
+			for(final Enumeration<Object> e=rHelpFile2.keys();e.hasMoreElements();)
+			{
+				final String key=(String)e.nextElement();
+				final String prop=rHelpFile1.getProperty(key,"");
+				if((key.toUpperCase().indexOf(helpStr)>=0)||(CMLib.english().containsString(prop,helpStr)))
+					matches.add(key.toUpperCase());
+			}
 		}
 		if(matches.size()==0)
 			return new StringBuilder("");
@@ -1106,8 +1151,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 							{
 								final String keyStr=key.toString();
 								for(int i=0;i<keyStr.length();i++)
+								{
 									if(Character.isLetter(keyStr.charAt(i))&&Character.isLowerCase(keyStr.charAt(i)))
 										Log.debugOut("Lower key in "+item+": "+key+": "+local.getProperty(keyStr));
+								}
 							}
 						}
 					}

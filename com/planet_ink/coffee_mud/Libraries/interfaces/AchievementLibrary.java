@@ -63,30 +63,41 @@ public interface AchievementLibrary extends CMLibrary
 	 */
 	public enum Event
 	{
-		KILLS(new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
-		STATVALUE(new String[]{"VALUE","ABOVEBELOW","STAT"}),
-		FACTION(new String[]{"VALUE","ABOVEBELOW","ID"}),
-		EXPLORE(new String[]{"PERCENT","AREA"}),
-		CRAFTING(new String[]{"NUM","ABILITYID"}),
-		MENDER(new String[]{"NUM","ABILITYID"}),
-		SKILLUSE(new String[]{"NUM","ABILITYID"}),
-		QUESTOR(new String[]{"NUM","PLAYERMASK","QUESTMASK"}),
-		ACHIEVER(new String[]{"ACHIEVEMENTLIST"}), 
-		ROOMENTER(new String[]{"ROOMID"}),
-		LEVELSGAINED(new String[]{"NUM","PLAYERMASK"}),
-		TIMEPLAYED(new String[]{"SECONDS","PLAYERMASK"}),
-		JUSTBE(new String[]{"PLAYERMASK"}),
-		DEATHS(new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
-		RETIRE(new String[]{"PLAYERMASK"}),
-		REMORT(new String[]{"PLAYERMASK"}),
+		KILLS("Number of Kills",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
+		STATVALUE("A Stat value",new String[]{"VALUE","ABOVEBELOW","STAT"}),
+		FACTION("A Faction level",new String[]{"VALUE","ABOVEBELOW","ID"}),
+		EXPLORE("Exploration",new String[]{"PERCENT","AREA"}),
+		CRAFTING("Crafting",new String[]{"NUM","ABILITYID"}),
+		MENDER("Mending",new String[]{"NUM","ABILITYID"}),
+		SKILLUSE("Using Skills",new String[]{"NUM","ABILITYID"}),
+		QUESTOR("Completing Quests",new String[]{"NUM","PLAYERMASK","QUESTMASK"}),
+		ACHIEVER("Completing Achievements",new String[]{"ACHIEVEMENTLIST"}), 
+		ROOMENTER("Entering a Room",new String[]{"ROOMID"}),
+		LEVELSGAINED("Gaining Levels",new String[]{"NUM","PLAYERMASK"}),
+		TIMEPLAYED("Time Played",new String[]{"SECONDS","PLAYERMASK"}),
+		JUSTBE("Character State",new String[]{"PLAYERMASK"}),
+		DEATHS("Dieing",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
+		RETIRE("Retiring",new String[]{"PLAYERMASK"}),
+		REMORT("Remorting",new String[]{"PLAYERMASK"}),
 		;
 		private final String[] parameters;
+		private final String displayName;
 
-		private Event(final String[] extraParameters)
+		private Event(final String displayName, final String[] extraParameters)
 		{
+			this.displayName = displayName;
 			parameters = CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, extraParameters);
 		}
 
+		/**
+		 * Returns the friendly display name of this event.
+		 * @return the friendly display name of this event.
+		 */
+		public String displayName()
+		{
+			return this.displayName;
+		}
+		
 		/**
 		 * Returns all arguments, required and optional, to this achievement event type
 		 * @return all arguments to this achievement event type
@@ -521,4 +532,13 @@ public interface AchievementLibrary extends CMLibrary
 	 * @param mob the new character to load up.
 	 */
 	public void loadAccountAchievements(final MOB mob);
+
+	/**
+	 * Searches for an Achievement of the given tattoo name or display name,
+	 * and returns a help entry for the achievement.
+	 * @param ID the tattoo name or display name
+	 * @param exact true for exact matches only, false for startswith
+	 * @return the help entry, or ""
+	 */
+	public String getAchievementsHelp(String ID, boolean exact);
 }
