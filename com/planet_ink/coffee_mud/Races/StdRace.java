@@ -697,6 +697,22 @@ public class StdRace implements Race
 						room.addItem(I,ItemPossessor.Expire.Monster_EQ);
 				}
 		}
+		else
+		if((room != null)&&(room.isContent(bodyI)))
+		{
+			// remove duplicate already looted corpses
+			for(int i=0;i<room.numItems();i++)
+			{
+				final Item thisItem=mob.getItem(i);
+				if((thisItem instanceof DeadBody)
+				&&(thisItem.Name().equals(bodyI.Name()))
+				&&(((DeadBody)thisItem).getContents().size()==0))
+				{
+					thisItem.destroy();
+					break;
+				}
+			}
+		}
 		return bodyI;
 	}
 
