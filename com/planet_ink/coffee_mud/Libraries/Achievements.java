@@ -2981,7 +2981,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			for(final ExpertiseDefinition def : pStats.getExtraQualifiedExpertises().values())
 			{
 				if((def.costDescription().length()==0)
-				&&(CMLib.masking().maskCheck(def.compiledFinalMask(), mob, true))
+				&&((def.compiledListMask()==null)||CMLib.masking().maskCheck(def.compiledListMask(), mob, true))
+				&&((def.compiledFinalMask()==null)||CMLib.masking().maskCheck(def.compiledFinalMask(), mob, true))
 				&&(mob.fetchExpertise(def.ID())==null))
 				{
 					mob.addExpertise(def.ID());

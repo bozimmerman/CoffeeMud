@@ -398,6 +398,7 @@ public class Remort extends StdCommand
 						mob.setQuestPoint(questPoint[0]);
 						recoverEverything(mob);
 						mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(mob.playerStats().getTheme(), mob, mob.session()));
+						recoverEverything(mob);
 						mob.setPractices(0);
 						mob.setTrains(0);
 						mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
