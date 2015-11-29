@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.lang.reflect.Method;
 import java.net.*;
@@ -164,6 +165,8 @@ public class Authenticate extends StdWebMacro
 
 	public static boolean authenticated(HTTPRequest httpReq, String login, String password)
 	{
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return false;
 		final MOB mob=CMLib.players().getLoadPlayer(login);
 		if((mob!=null)
 		&&(mob.playerStats()!=null)

@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_web.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -39,6 +40,8 @@ public class AbilityGainReport extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 		String className=httpReq.getUrlParameter("CLASS");
 		if(className==null)
 			className="";

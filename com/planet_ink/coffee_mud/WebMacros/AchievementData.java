@@ -68,6 +68,8 @@ public class AchievementData extends StdWebMacro
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("ACHIEVEMENT");
 		if((last==null)&&(!parms.containsKey("EDIT")))
