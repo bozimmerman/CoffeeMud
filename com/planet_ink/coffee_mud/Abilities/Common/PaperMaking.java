@@ -282,7 +282,10 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		playSound="crumple.wav";
 		buildingI.setDisplayText(L("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
-		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+		int weight = getStandardWeight(woodRequired,bundling) / 10;
+		if(weight < 1)
+			weight = 1;
+		buildingI.basePhyStats().setWeight(weight);
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 		buildingI.setMaterial(data[0][FOUND_CODE]);
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
