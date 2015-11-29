@@ -3096,9 +3096,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				Ability skillA = CMClass.getAbility(award.getAbilityMapping().abilityID());
 				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(skillA.name());
 				if(award.getAbilityMapping().autoGain())
-					str.append(L("at level @x1",""+award.getAbilityMapping().qualLevel()));
+					str.append(L(" at level @x1",""+award.getAbilityMapping().qualLevel()));
 				else
-					str.append(L("qualification level @x1",""+award.getAbilityMapping().qualLevel()));
+					str.append(L(" qualification level @x1",""+award.getAbilityMapping().qualLevel()));
 				break;
 			}
 			case CURRENCY:
@@ -3114,9 +3114,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				ExpertiseDefinition defE = award.getExpertise();
 				str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(defE.name());
 				if(defE.costDescription().length()==0)
-					str.append(L("at level @x1",""+defE.getMinimumLevel()));
+					str.append(L(" at level @x1",""+defE.getMinimumLevel()));
 				else
-					str.append(L("qualification level @x1",""+defE.getMinimumLevel()));
+					str.append(L(" qualification level @x1",""+defE.getMinimumLevel()));
 				break;
 			}
 			case QP:
