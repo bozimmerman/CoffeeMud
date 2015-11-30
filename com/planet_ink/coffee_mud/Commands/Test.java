@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -23,6 +24,7 @@ import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.MultiPartData;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
+
 
 
 
@@ -229,12 +231,20 @@ public class Test extends StdCommand
 		mobs[0]=CMClass.getMOB("StdMOB");
 		mobs[0].baseCharStats().setMyRace(CMClass.getRace("Dwarf"));
 		mobs[0].setName(L("A Dwarf"));
+		mobs[0].baseCharStats().setCurrentClass(CMClass.getCharClass("Gaian"));
+		mobs[0].baseCharStats().setCurrentClassLevel(30);
+		mobs[0].basePhyStats().setLevel(30);
 		mobs[0].recoverCharStats();
+		mobs[0].recoverPhyStats();
 		backups[0]=(MOB)mobs[0].copyOf();
 		mobs[1]=CMClass.getMOB("StdMOB");
 		mobs[1].setName(L("A Human"));
 		mobs[1].baseCharStats().setMyRace(CMClass.getRace("Human"));
+		mobs[1].baseCharStats().setCurrentClass(CMClass.getCharClass("Druid"));
+		mobs[1].baseCharStats().setCurrentClassLevel(30);
+		mobs[1].basePhyStats().setLevel(30);
 		mobs[1].recoverCharStats();
+		mobs[1].recoverPhyStats();
 		backups[0]=(MOB)mobs[1].copyOf();
 
 		mobs[0].bringToLife(R,true);
@@ -1487,6 +1497,34 @@ public class Test extends StdCommand
 			||(what.equalsIgnoreCase("Prop_ReqTattoo")))
 			{
 
+			}
+			if((what.equalsIgnoreCase("all_masks"))
+			||(what.equalsIgnoreCase("ZAPPER_ANYCLASSLEVEL"))
+			||what.equalsIgnoreCase("all"))
+			{
+				reset(mobs,backups,R,IS,R2);
+				String mask1="-ANYCLASSLEVEL +Gaian +>=30 +Druid +<10";
+				String mask2="+ANYCLASSLEVEL -Gaian ->=30 -Druid -<10";
+				MaskingLibrary.CompiledZapperMask cmask1 = CMLib.masking().maskCompile(mask1);
+				mob.tell(L("Test#27-1: @x1",CMLib.masking().maskDesc(mask1)));
+				if(!CMLib.masking().maskCheck(mask1, mobs[0],true))
+				{ mob.tell(L("Error27-1")); return false;}
+				if(!CMLib.masking().maskCheck(cmask1, mobs[0],true))
+				{ mob.tell(L("Error27-2")); return false;}
+				if(CMLib.masking().maskCheck(mask1, mobs[1],true))
+				{ mob.tell(L("Error27-3")); return false;}
+				if(CMLib.masking().maskCheck(cmask1, mobs[1],true))
+				{ mob.tell(L("Error27-4")); return false;}
+				MaskingLibrary.CompiledZapperMask cmask2 = CMLib.masking().maskCompile(mask2);
+				mob.tell(L("Test#27-2: @x1",CMLib.masking().maskDesc(mask2)));
+				if(CMLib.masking().maskCheck(mask2, mobs[0],true))
+				{ mob.tell(L("Error27-5")); return false;}
+				if(CMLib.masking().maskCheck(cmask2, mobs[0],true))
+				{ mob.tell(L("Error27-6")); return false;}
+				if(!CMLib.masking().maskCheck(mask2, mobs[1],true))
+				{ mob.tell(L("Error27-7")); return false;}
+				if(!CMLib.masking().maskCheck(cmask2, mobs[1],true))
+				{ mob.tell(L("Error27-8")); return false;}
 			}
 			if((what.equalsIgnoreCase("all")||what.equalsIgnoreCase("rtree"))&&(mob.session()!=null))
 			{
