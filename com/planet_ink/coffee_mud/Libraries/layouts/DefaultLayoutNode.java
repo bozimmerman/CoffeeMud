@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.Layo
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.core.Directions;
+import com.planet_ink.coffee_mud.core.collections.SHashtable;
 
 /*
    Copyright 2007-2015 Bo Zimmerman
@@ -35,8 +36,8 @@ public class DefaultLayoutNode implements LayoutNode
 {
 	public long[]							coord;
 	public Room								associatedRoom	= null;
-	public Map<Integer, LayoutNode>			links			= new Hashtable<Integer, LayoutNode>();
-	private final Map<LayoutTags, String>	tags			= new Hashtable<LayoutTags, String>();
+	public Map<Integer, LayoutNode>			links			= new SHashtable<Integer, LayoutNode>();
+	private final Map<LayoutTags, String>	tags			= new SHashtable<LayoutTags, String>();
 	private final Set<LayoutFlags>			flags			= new HashSet<LayoutFlags>();
 
 	public DefaultLayoutNode(long[] coord)
