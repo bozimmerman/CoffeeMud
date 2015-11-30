@@ -2376,7 +2376,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(holder.findTattoo(A.getTattoo())==null)
 		{
 			holder.addTattoo(A.getTattoo());
-			StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' @x3 achievement!^?\n\r",A.getDisplayStr(),A.getAgent().name().toLowerCase()));
+			StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' @x2 achievement!^?\n\r",A.getDisplayStr(),A.getAgent().name().toLowerCase()));
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACHIEVEMENTS);
 			if(!CMLib.flags().isCloaked(mob))
 			{
