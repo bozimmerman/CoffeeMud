@@ -32,6 +32,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The Catalog Library maintains the prototypes of various Items and Mobs
+ * who are keyed by their Name.  They can belong to categories to help
+ * organize them, but that doesn't change the key requirements.  Individual
+ * mobs and items are flagged as actually BEING an instance of a cataloged
+ * prototype, and thus will change to reflect prototype changes when they
+ * are able.  In addition to all this, certain statistics and information 
+ * about catalog usage is maintained by the system.
+ * @author Bo Zimmerman
+ *
+ */
 public interface CatalogLibrary extends CMLibrary
 {
 	public static final String ITEMCAT="ITEMS".intern();
