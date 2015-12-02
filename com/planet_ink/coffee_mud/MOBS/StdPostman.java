@@ -369,11 +369,21 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			}
 			switch(i)
 			{
-			case 0: piece.from = data.substring(0,x); break;
-			case 1: piece.to = data.substring(0,x); break;
-			case 2: piece.time = data.substring(0,x); break;
-			case 3: piece.cod = data.substring(0,x); break;
-			case 4: piece.classID = data.substring(0,x); break;
+			case 0:
+				piece.from = data.substring(0, x);
+				break;
+			case 1:
+				piece.to = data.substring(0, x);
+				break;
+			case 2:
+				piece.time = data.substring(0, x);
+				break;
+			case 3:
+				piece.cod = data.substring(0, x);
+				break;
+			case 4:
+				piece.classID = data.substring(0, x);
+				break;
 			}
 			data=data.substring(x+1);
 		}
@@ -853,10 +863,25 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 							CMLib.commands().postSay(this,mob,L("You don't have a box open here!"),true,false);
 					}
 					else
+					if(str.toUpperCase().equalsIgnoreCase("STOP") || str.toUpperCase().equalsIgnoreCase("UNFORWARD") || str.toUpperCase().equalsIgnoreCase("END"))
+					{
+						final Map<String,String> allOpenBoxes = getOurOpenBoxes(theName);
+						if(allOpenBoxes.containsKey(postalBranch()))
+						{
+							deleteBoxHere(theName);
+							CMLib.commands().postSay(this,mob,L("Ok, mail send here will no longer be forwarded anywhere."),true,false);
+						}
+					}
+					else
 					{
 						final Area A=CMLib.map().findAreaStartsWith(str);
 						if(A==null)
-							CMLib.commands().postSay(this,mob,L("I don't know of an area called '@x1'.",str),true,false);
+						{
+							CMLib.commands().postSay(this,mob,L("I don't know of an area called '@x1' to forward to.",str),true,false);
+							final Map<String,String> allOpenBoxes = getOurOpenBoxes(theName);
+							if(allOpenBoxes.containsKey(postalBranch()))
+								CMLib.commands().postSay(this,mob,L("Top stop forwarding, try FORWARD STOP."),true,false);
+						}
 						else
 						{
 							final PostOffice P=CMLib.map().getPostOffice(postalChain(),A.Name());

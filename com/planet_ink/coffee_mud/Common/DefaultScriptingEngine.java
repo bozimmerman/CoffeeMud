@@ -9705,6 +9705,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						newRoom=CMLib.map().roomLocation(this.getArgumentItem(roomName,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
 					if(newRoom==null)
 						newRoom=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
+					if(newRoom == null)
+						logError(scripted,"MPBRACON","RunTime",tt[1]+" is not a room.");
+					else
 					if((newRoom!=null)&&(lastKnownLocation!=null))
 					{
 						final Vector<MOB> V=new Vector<MOB>();
