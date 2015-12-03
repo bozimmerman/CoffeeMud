@@ -41,35 +41,161 @@ import java.util.*;
  * are able.  In addition to all this, certain statistics and information 
  * about catalog usage is maintained by the system.
  * @author Bo Zimmerman
- *
  */
 public interface CatalogLibrary extends CMLibrary
 {
-	public static final String ITEMCAT="ITEMS".intern();
-	public static final String MOBSCAT="MOBS".intern();
-
+	/**
+	 * Creates a list of all the item keys (names) of all the items
+	 * in the catalog, regardless of catagory.
+	 * @return a list of all the item keys
+	 */
 	public String[] getCatalogItemNames();
+
+	/**
+	 * Creates a list of all the item keys (names) of all the items
+	 * in the catalog in the given catagory.  Send null to get all
+	 * items regardless of catagory
+	 * @param catagory the item catagory to filter by
+	 * @return a list of all the item keys
+	 */
 	public String[] getCatalogItemNames(String catagory);
+
+	/**
+	 * Creates a list of all the mob keys (names) of all the mobs
+	 * in the catalog, regardless of catagory.
+	 * @return a list of all the mob keys
+	 */
 	public String[] getCatalogMobNames();
+
+	/**
+	 * Creates a list of all the mob keys (names) of all the mobs
+	 * in the catalog in the given catagory.  Send null to get all
+	 * mobs regardless of catagory
+	 * @param catagory the mob catagory to filter by
+	 * @return a list of all the mob keys
+	 */
 	public String[] getCatalogMobNames(String catagory);
+
+	/**
+	 * Creates a list of all the catagories that mobs have been
+	 * placed in.
+	 * @return a list of all the catagories
+	 */
 	public String[] getMobCatalogCatagories();
+
+	/**
+	 * Creates a list of all the catagories that items have been
+	 * placed in.
+	 * @return a list of all the catagories
+	 */
 	public String[] getItemCatalogCatagories();
+
+	/**
+	 * Changes the catagory of the catalog item with the given
+	 * physical objects name to the given catagory.
+	 * @param P the catalog item to get a key/name from
+	 * @param catagory the new catagory, such as null
+	 */
 	public void setCatagory(Physical P, String catagory);
+
+	/**
+	 * Creates a list of all the prototype catalog items.
+	 * @return a list of all the prototype catalog items.
+	 */
 	public Item[] getCatalogItems();
+
+	/**
+	 * Creates a list of all the prototype catalog mobs.
+	 * @return a list of all the prototype catalog mobs.
+	 */
 	public MOB[] getCatalogMobs();
+
+	/**
+	 * Returns whether there exists an item/mob in the catalog
+	 * of the same type and name/key as the given item or
+	 * mob.
+	 * @param E the item or mob
+	 * @return true if it's in the catalog, false otherwise
+	 */
 	public boolean isCatalogObj(Environmental E);
+
+	/**
+	 * Returns whether there exists an item or mob in the catalog
+	 * of the given name/key. Since the name could be item or mob,
+	 * preference is given to mobs.
+	 * @param name the item or mob name
+	 * @return true if it's in the catalog, false otherwise
+	 */
 	public boolean isCatalogObj(String name);
+
+	/**
+	 * Returns the cataloged prototype item of the given name.
+	 * @param name the name to look for.
+	 * @return the cataloged prototype item
+	 */
 	public Item getCatalogItem(String name);
+
+	/**
+	 * Returns the cataloged prototype mob of the given name.
+	 * @param name the name to look for.
+	 * @return the cataloged prototype mob
+	 */
 	public MOB getCatalogMob(String name);
+
+	/**
+	 * Returns the cataloged prototype mob or item of the same type
+	 * and with the same name as the given object.
+	 * @param P the object type and name to look for
+	 * @return the cataloged prototype mob or item
+	 */
 	public Physical getCatalogObj(Physical P);
+
+	/**
+	 * Returns the cataloged metadata for the item of the given name
+	 * @see CataData
+	 * @param name the name of the cataloged item.
+	 * @return the cataloged metadata for the item
+	 */
 	public CataData getCatalogItemData(String name);
+
+	/**
+	 * Returns the cataloged metadata for the mob of the given name
+	 * @see CataData
+	 * @param name the name of the cataloged mob.
+	 * @return the cataloged metadata for the mob
+	 */
 	public CataData getCatalogMobData(String name);
+
+	/**
+	 * Returns the cataloged metadata for the mob or item of the same type
+	 * and with the same name as the given object.
+	 * @see CataData
+	 * @param P the object type and name to look for
+	 * @return the cataloged metadata for the mob
+	 */
 	public CataData getCatalogData(Physical P);
+
+	/**
+	 * Creates a new catalog item or mob from the given item or mob
+	 * in the given catagory. The given object is marked as cataloged
+	 * and a copy if submitted to the database and memory.
+	 * @param catagory the new catagory, such as null
+	 * @param PA the item or mob to create in the catalog
+	 */
 	public void addCatalog(String catagory, Physical PA);
+
+	/**
+	 * Creates a new catalog item or mob from the given item or mob
+	 * in no catagory. The given object is marked as cataloged
+	 * and a copy if submitted to the database and memory.
+	 * @param PA the item or mob to create in the catalog
+	 */
+	public void addCatalog(Physical PA);
+	
+	// doesn't database, or copy/mark the item
+	public void submitToCatalog(Physical P);
 	public void updateCatalogCatagory(Physical modelP, String newCat);
 	public void delCatalog(Physical P);
-	public void addCatalog(Physical PA);
-	public void submitToCatalog(Physical P);
 	public void updateCatalog(Physical modelP);
 	public StringBuffer checkCatalogIntegrity(Physical P);
 	public void updateCatalogIntegrity(Physical P);

@@ -114,8 +114,10 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	public boolean containsAll(Collection<?> arg0)
 	{
 		for(final Object o : arg0)
+		{
 			if(!contains(o))
 				return false;
+		}
 		return true;
 	}
 
@@ -143,7 +145,6 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 				end=mid-1;
 			else
 				start=mid+1;
-
 		}
 		return -1;
 	}

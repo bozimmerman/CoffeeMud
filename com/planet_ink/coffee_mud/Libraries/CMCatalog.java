@@ -39,12 +39,16 @@ import java.util.*;
 */
 public class CMCatalog extends StdLibrary implements CatalogLibrary
 {
-	@Override public String ID(){return "CMCatalog";}
+	@Override
+	public String ID()
+	{
+		return "CMCatalog";
+	}
 
-	public DVector icatalog=new DVector(2);
-	public DVector mcatalog=new DVector(2);
-	public volatile CMFile.CMVFSDir catalogFileMobsRoot = null;
-	public volatile CMFile.CMVFSDir catalogFileItemsRoot = null;
+	public DVector					icatalog				= new DVector(2);
+	public DVector					mcatalog				= new DVector(2);
+	public volatile CMFile.CMVFSDir	catalogFileMobsRoot		= null;
+	public volatile CMFile.CMVFSDir	catalogFileItemsRoot	= null;
 
 	public void changeCatalogFlag(Physical P, boolean truefalse)
 	{
@@ -135,12 +139,16 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			if(catagory!=null)
 				data.setCatagory(catagory);
 			if(mid>=0)
+			{
 				for(comp=lastStart;comp<=lastEnd;comp++)
+				{
 					if(((Environmental)DV.elementAt(comp,1)).Name().compareToIgnoreCase(name)>0)
 					{
 						DV.insertElementAt(comp,P,data);
 						return;
 					}
+				}
+			}
 			DV.addElement(P,data);
 		}
 	}
@@ -149,8 +157,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		final List<String> nameList=new ArrayList<String>(catalog.size());
 		for(int x=0;x<catalog.size();x++)
+		{
 			if((catName==null)||(catName.equals(((CataData)catalog.elementAt(x, 2)).category())))
 				nameList.add(((Environmental)catalog.elementAt(x, 1)).Name());
+		}
 		return nameList.toArray(new String[0]);
 	}
 
@@ -158,9 +168,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		final List<String> catalogList=new SortedListWrap<String>(new ArrayList<String>(2));
 		for(int x=0;x<catalog.size();x++)
+		{
 			if(!catalogList.contains(((CataData)catalog.elementAt(x, 2)).category()))
 				catalogList.add(((CataData)catalog.elementAt(x, 2)).category());
-		return catalogList.toArray(new String[0]);
+		}
+		return catalogList.toArray(new String[catalogList.size()]);
 	}
 
 	@Override
@@ -241,13 +253,29 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		return o!=null;
 	}
 
-	@Override public Item getCatalogItem(String called) { return (Item)getCatalogObject(icatalog,called,1); }
+	@Override
+	public Item getCatalogItem(String called)
+	{
+		return (Item) getCatalogObject(icatalog, called, 1);
+	}
 
-	@Override public MOB getCatalogMob(String called) { return (MOB)getCatalogObject(mcatalog,called,1); }
+	@Override
+	public MOB getCatalogMob(String called)
+	{
+		return (MOB) getCatalogObject(mcatalog, called, 1);
+	}
 
-	@Override public CataData getCatalogItemData(String called) { return (CataData)getCatalogObject(icatalog,called,2); }
+	@Override
+	public CataData getCatalogItemData(String called)
+	{
+		return (CataData) getCatalogObject(icatalog, called, 2);
+	}
 
-	@Override public CataData getCatalogMobData(String called) { return (CataData)getCatalogObject(mcatalog,called,2); }
+	@Override
+	public CataData getCatalogMobData(String called)
+	{
+		return (CataData) getCatalogObject(mcatalog, called, 2);
+	}
 
 	@Override
 	public Vector<RoomContent> roomContent(Room R)
@@ -729,11 +757,17 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				if((isMob)&&(E instanceof MOB)
 				&&(CMLib.flags().isCataloged(E))
 				&&(cataP.Name().equalsIgnoreCase(E.Name())))
-				{ E.setMiscText(E.text()); changes=true;}
+				{
+					E.setMiscText(E.text());
+					changes = true;
+				}
 				if((!isMob)&&(E instanceof Item)
 				&&(CMLib.flags().isCataloged(E))
 				&&(cataP.Name().equalsIgnoreCase(E.Name())))
-				{ E.setMiscText(E.text()); changes=true;}
+				{
+					E.setMiscText(E.text());
+					changes = true;
+				}
 			}
 			newShop.add(E);
 		}
@@ -778,8 +812,15 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 
-	private final String getSync(String name, boolean mobType) { return ((mobType)?"CATASYNC_MOB_":"CATASYNC_ITEM_")+name.toUpperCase();}
-	private final String getSync(Environmental E) { return getSync(E.Name(),E instanceof MOB);}
+	private final String getSync(String name, boolean mobType)
+	{
+		return ((mobType) ? "CATASYNC_MOB_" : "CATASYNC_ITEM_") + name.toUpperCase();
+	}
+
+	private final String getSync(Environmental E)
+	{
+		return getSync(E.Name(), E instanceof MOB);
+	}
 
 	@Override
 	public StringBuffer checkCatalogIntegrity(Physical P)
@@ -878,7 +919,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		return I;
 	}
 
-	@Override public CataData sampleCataData(String xml) {return new CataDataImpl(xml);}
+	@Override
+	public CataData sampleCataData(String xml)
+	{
+		return new CataDataImpl(xml);
+	}
 
 	@Override
 	public boolean activate()
@@ -891,7 +936,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		return true;
 	}
 
-	@Override public boolean tick(Tickable ticking, int tickID)
+	@Override 
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		try
 		{
@@ -935,38 +981,72 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		return true;
 	}
 
-	public void forceTick()
+	protected void forceTick()
 	{
 		serviceClient.tickTicker(true);
 	}
 
-	public static class RoomContentImpl implements RoomContent
+	protected static class RoomContentImpl implements RoomContent
 	{
 		private Physical 		obj=null;
 		private boolean 		dirty=false;
 		private Environmental	holder=null;
 
-		public RoomContentImpl(Physical P){ obj=P;}
-		public RoomContentImpl(Physical P, Environmental E){ obj=P; holder=E;}
-		@Override public Physical P(){return obj;}
-		@Override public void flagDirty(){ dirty=true;}
-		@Override public Environmental holder(){ return holder;}
-		@Override public boolean isDirty(){ return dirty;}
-		@Override public boolean deleted(){ return obj.amDestroyed();}
+		public RoomContentImpl(Physical P)
+		{
+			obj = P;
+		}
+
+		public RoomContentImpl(Physical P, Environmental E)
+		{
+			obj = P;
+			holder = E;
+		}
+
+		@Override
+		public Physical P()
+		{
+			return obj;
+		}
+
+		@Override
+		public void flagDirty()
+		{
+			dirty = true;
+		}
+
+		@Override
+		public Environmental holder()
+		{
+			return holder;
+		}
+
+		@Override
+		public boolean isDirty()
+		{
+			return dirty;
+		}
+
+		@Override
+		public boolean deleted()
+		{
+			return obj.amDestroyed();
+		}
 	}
 
-	public static class CataDataImpl implements CataData
+	protected static class CataDataImpl implements CataData
 	{
-		public String 		lmaskStr=null;
-		public String		catagory="";
-		public boolean 		live=false;
-		public double 		rate=0.0;
-		public volatile int deathPickup=0;
+		public String 		lmaskStr			= null;
+		public String		catagory			= "";
+		public boolean 		live				= false;
+		public double 		rate				= 0.0;
+		public volatile int deathPickup			= 0;
 		public SVector<WeakReference<Physical>>
-							refs=new SVector<WeakReference<Physical>>(1);
-		public boolean noRefs = CMProps.getBoolVar(CMProps.Bool.CATALOGNOCACHE)
-								|| CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGCACHE);
-		public MaskingLibrary.CompiledZapperMask 		lmaskV=null;
+							refs				= new SVector<WeakReference<Physical>>(1);
+		public boolean 		noRefs = CMProps.getBoolVar(CMProps.Bool.CATALOGNOCACHE)
+								  || CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGCACHE);
+		public MaskingLibrary.CompiledZapperMask 
+							lmaskV				= null;
 
 		public CataDataImpl(String catadata)
 		{
@@ -1007,7 +1087,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				catagory="";
 		}
 
-		public RoomnumberSet getLocations()
+		protected RoomnumberSet getLocations()
 		{
 			final Vector<Physical> items=makeVector();
 			final RoomnumberSet homes=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
@@ -1078,10 +1158,23 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			return num;
 		}
 
-		@Override public Enumeration<Physical> enumeration() { return makeVector().elements();}
+		@Override
+		public Enumeration<Physical> enumeration()
+		{
+			return makeVector().elements();
+		}
 
-		@Override public int getDeathsPicksups(){ return deathPickup;}
-		@Override public void bumpDeathPickup(){ deathPickup++;}
+		@Override
+		public int getDeathsPicksups()
+		{
+			return deathPickup;
+		}
+
+		@Override
+		public void bumpDeathPickup()
+		{
+			deathPickup++;
+		}
 
 		@Override
 		public synchronized void cleanHouse()
@@ -1101,7 +1194,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 						refs.removeElementAt(r);
 				}
 			}
-			catch(final ArrayIndexOutOfBoundsException ex){}
+			catch (final ArrayIndexOutOfBoundsException ex)
+			{
+			}
 		}
 
 		@Override
@@ -1119,7 +1214,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 						return o;
 				}
 			}
-			catch(final Exception e) { }
+			catch (final Exception e)
+			{
+			}
 			return null;
 		}
 		@Override
@@ -1168,12 +1265,12 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			}
 		}
 
-		public CataDataImpl(String _lmask, String _rate, boolean _live)
+		protected CataDataImpl(String _lmask, String _rate, boolean _live)
 		{
 			this(_lmask,CMath.s_pct(_rate),_live);
 		}
 
-		public CataDataImpl(String _lmask, double _rate, boolean _live)
+		protected CataDataImpl(String _lmask, double _rate, boolean _live)
 		{
 			live=_live;
 			lmaskStr=_lmask;
@@ -1183,10 +1280,30 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			rate=_rate;
 		}
 
-		@Override public MaskingLibrary.CompiledZapperMask getMaskV(){return lmaskV;}
-		@Override public String getMaskStr(){return lmaskStr;}
-		@Override public boolean getWhenLive(){return live;}
-		@Override public double getRate(){return rate;}
+		@Override
+		public MaskingLibrary.CompiledZapperMask getMaskV()
+		{
+			return lmaskV;
+		}
+
+		@Override
+		public String getMaskStr()
+		{
+			return lmaskStr;
+		}
+
+		@Override
+		public boolean getWhenLive()
+		{
+			return live;
+		}
+
+		@Override
+		public double getRate()
+		{
+			return rate;
+		}
+
 		@Override
 		public void setMaskStr(String s)
 		{
@@ -1196,8 +1313,18 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			else
 				lmaskV=CMLib.masking().maskCompile(s);
 		}
-		@Override public void setWhenLive(boolean l){live=l;}
-		@Override public void setRate(double r){rate=r;}
+
+		@Override
+		public void setWhenLive(boolean l)
+		{
+			live = l;
+		}
+
+		@Override
+		public void setRate(double r)
+		{
+			rate = r;
+		}
 
 		@Override
 		public String data()
@@ -1272,9 +1399,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		return new CMFile.CMVFSDir(root,root.getPath()+"catalog/")
 		{
-			private CMFile.CMVFSFile[] myFiles=null;
-			private CMFile.CMVFSFile[] oldFiles=null;
-			@Override protected CMFile.CMVFSFile[] getFiles()
+			private CMFile.CMVFSFile[]	myFiles		= null;
+			private CMFile.CMVFSFile[]	oldFiles	= null;
+
+			@Override 
+			protected CMFile.CMVFSFile[] getFiles()
 			{
 				if((myFiles==null)||(oldFiles!=super.files)||(catalogFileItemsRoot==null)||(catalogFileMobsRoot==null))
 				{
@@ -1318,7 +1447,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 
 			catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.getPath()+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
 			{
-				@Override public Object readData()
+				@Override 
+				public Object readData()
 				{
 					if(obj instanceof MOB)
 						return CMLib.coffeeMaker().getMobXML((MOB)obj);
@@ -1337,7 +1467,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 		catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.getPath()+"all.cmare",48,System.currentTimeMillis(),"SYS")
 		{
-			@Override public Object readData()
+			@Override 
+			public Object readData()
 			{
 				final String tagName=(catalog.elementAt(0,1) instanceof MOB)?"MOBS":"ITEMS";
 				final StringBuilder str=new StringBuilder("<"+tagName+">");
@@ -1374,7 +1505,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				{
 					catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.getPath()+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
 					{
-						@Override public Object readData()
+						@Override 
+						public Object readData()
 						{
 							if(obj instanceof MOB)
 								return CMLib.coffeeMaker().getMobXML((MOB)obj);
@@ -1389,7 +1521,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			}
 			catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.getPath()+"all.cmare",48,System.currentTimeMillis(),"SYS")
 			{
-				@Override public Object readData()
+				@Override 
+				public Object readData()
 				{
 					final String tagName=(objs.get(0) instanceof MOB)?"MOBS":"ITEMS";
 					final StringBuilder str=new StringBuilder("<"+tagName+">");
