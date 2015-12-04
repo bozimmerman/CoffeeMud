@@ -331,8 +331,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public void updateRoomContent(String roomID, Vector<RoomContent> content)
 	{
-		final Vector<Environmental> updatables=new Vector<Environmental>();
-		final Vector<Environmental> deletables=new Vector<Environmental>();
+		final List<Environmental> updatables=new LinkedList<Environmental>();
+		final List<Environmental> deletables=new LinkedList<Environmental>();
 		for(final RoomContent C : content)
 		{
 			if(C.deleted())
@@ -340,7 +340,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				if(C.holder()!=null)
 				{
 					if(!updatables.contains(C.holder()))
-						updatables.addElement(C.holder());
+						updatables.add(C.holder());
 				}
 				else
 				if(!updatables.contains(C.P()))
@@ -352,7 +352,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				if(C.holder()!=null)
 				{
 					if(!updatables.contains(C.holder()))
-						updatables.addElement(C.holder());
+						updatables.add(C.holder());
 				}
 				else
 				if(!updatables.contains(C.P()))
@@ -419,7 +419,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public void addCatalog(String catagory, Physical PA)
 	{
-		if((PA==null)||(!(PA instanceof DBIdentifiable))||(!((DBIdentifiable)PA).canSaveDatabaseID()))
+		if((PA==null)
+		||(!(PA instanceof DBIdentifiable))
+		||(!((DBIdentifiable)PA).canSaveDatabaseID()))
 			return;
 		synchronized(getSync(PA).intern())
 		{
@@ -526,7 +528,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				Vector<RoomContent> contents=roomContent(R);
 				for(final RoomContent content : contents)
 				{
-					if((CMLib.flags().isCataloged(content.P()))&&(content.P().Name().equalsIgnoreCase(P.Name())))
+					if((CMLib.flags().isCataloged(content.P()))
+					&&(content.P().Name().equalsIgnoreCase(P.Name())))
 					{
 						if(((P instanceof MOB)&&(content.P() instanceof MOB))
 						||((P instanceof Item)&&(content.P() instanceof Item)))
@@ -538,7 +541,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				boolean dirty=false;
 				for(final RoomContent content : contents)
 				{
-					if((CMLib.flags().isCataloged(content.P()))&&(content.P().Name().equalsIgnoreCase(P.Name())))
+					if((CMLib.flags().isCataloged(content.P()))
+					&&(content.P().Name().equalsIgnoreCase(P.Name())))
 					{
 						if(((P instanceof MOB)&&(content.P() instanceof MOB))
 						||((P instanceof Item)&&(content.P() instanceof Item)))
@@ -721,7 +725,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		synchronized(getSync(P).intern())
 		{
-			if((P!=null)&&(P.basePhyStats()!=null)&&(!P.amDestroyed()))
+			if((P!=null)
+			&&(P.basePhyStats()!=null)
+			&&(!P.amDestroyed()))
 			{
 				if(toCataloged)
 				{
@@ -754,14 +760,16 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			if(!ignored.contains(E) && (E instanceof Physical))
 			{
 				ignored.add((Physical)E);
-				if((isMob)&&(E instanceof MOB)
+				if((isMob)
+				&&(E instanceof MOB)
 				&&(CMLib.flags().isCataloged(E))
 				&&(cataP.Name().equalsIgnoreCase(E.Name())))
 				{
 					E.setMiscText(E.text());
 					changes = true;
 				}
-				if((!isMob)&&(E instanceof Item)
+				if((!isMob)
+				&&(E instanceof Item)
 				&&(CMLib.flags().isCataloged(E))
 				&&(cataP.Name().equalsIgnoreCase(E.Name())))
 				{
@@ -851,8 +859,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					{
 						diffs=new StringBuffer("");
 						for(int i=0;i<cataE.getStatCodes().length;i++)
+						{
 							if((!cataE.getStat(cataE.getStatCodes()[i]).equals(P.getStat(cataE.getStatCodes()[i]))))
 								diffs.append(cataE.getStatCodes()[i]+",");
+						}
 					}
 					if((P instanceof MOB)&&(cataE instanceof MOB))
 					{
@@ -860,11 +870,17 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 						if(diffs==null)
 							diffs=new StringBuffer("");
 						for(final Pair<Clan,Integer> p : ((MOB)P).clans())
-							if((((MOB)cataE).getClanRole(p.first.clanID())==null)||(((MOB)cataE).getClanRole(p.first.clanID()).second.intValue()!=p.second.intValue()))
+						{
+							if((((MOB)cataE).getClanRole(p.first.clanID())==null)
+							||(((MOB)cataE).getClanRole(p.first.clanID()).second.intValue()!=p.second.intValue()))
 								firstChecked=true;
+						}
 						for(final Pair<Clan,Integer> p : ((MOB)cataE).clans())
-							if((((MOB)P).getClanRole(p.first.clanID())==null)||(((MOB)P).getClanRole(p.first.clanID()).second.intValue()!=p.second.intValue()))
+						{
+							if((((MOB)P).getClanRole(p.first.clanID())==null)
+							||(((MOB)P).getClanRole(p.first.clanID()).second.intValue()!=p.second.intValue()))
 								firstChecked=true;
+						}
 						if(firstChecked)
 							diffs.append("CLANID,");
 					}
@@ -889,7 +905,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		if(M==null)
 			return null;
 		CatalogLibrary.CataData data=null;
-		Vector<Item> selections=null;
+		List<Item> selections=null;
 		synchronized(icatalog)
 		{
 			try
@@ -904,8 +920,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					&&(CMLib.masking().maskCheck(data.getMaskV(),M,true)))
 					{
 						if(selections==null)
-							selections=new Vector<Item>();
-						selections.addElement((Item)icatalog.elementAt(d,1));
+							selections=new ArrayList<Item>();
+						selections.add((Item)icatalog.elementAt(d,1));
 					}
 				}
 			}
@@ -913,7 +929,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 		if(selections==null)
 			return null;
-		Item I=selections.elementAt(CMLib.dice().roll(1,selections.size(),-1));
+		Item I=selections.get(CMLib.dice().roll(1,selections.size(),-1));
 		I=(Item)I.copyOf();
 		changeCatalogUsage(I,true);
 		return I;

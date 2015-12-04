@@ -268,9 +268,43 @@ public interface CatalogLibrary extends CMLibrary
 	 * @param modelP the updated changed item or mob
 	 */
 	public void updateCatalog(Physical modelP);
+	
+	/**
+	 * Given an item or mob that might be in the catalog, this method
+	 * confirms that fact.  It returns null if all is well, and if there
+	 * are differences between this object and the cataloged one, it
+	 * returns a string list of the stats that differ.
+	 * @param P the item or mob to check
+	 * @return null or the list of bad stats
+	 */
 	public StringBuffer checkCatalogIntegrity(Physical P);
+	
+	/**
+	 * Confirms this mob or item instance against the catalog prototype.
+	 * If it matches, it does nothing.  If it doesn't, the given item
+	 * or mob loses its catalog flagging.
+	 * @param P the item or mob to confirm against the catalog prototype
+	 */
 	public void updateCatalogIntegrity(Physical P);
+	
+	/**
+	 * Adds or clears the catalog flag on the item or mob instance given
+	 * to this method, and adds (or removes) it as an instance from the
+	 * catadata for its prototype.
+	 * @param P the item or mob to alter
+	 * @param add true to flag it as cataloged, false to clear its flag.
+	 */
 	public void changeCatalogUsage(Physical P, boolean add);
+	
+	/**
+	 * The catalog has the ability to provide random items from the catalog
+	 * as either random equipment on a live mob, or a random drop from a
+	 * dead one.  This method is called to generate just such an item 
+	 * from the available options.
+	 * @param M the mob to equip
+	 * @param live true if its for a live mob, false if its for a corpse
+	 * @return null or a random item
+	 */
 	public Item getDropItem(MOB M, boolean live);
 	public CataData sampleCataData(String xml);
 	public Vector<RoomContent> roomContent(Room R);
