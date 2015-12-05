@@ -35,13 +35,43 @@ import java.util.*;
 
 public class Prayer_Omnipresence extends Prayer
 {
-	@Override public String ID() { return "Prayer_Omnipresence"; }
-	private final static String localizedName = CMLib.lang().L("Omnipresence");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){ return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_HOLY;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_Omnipresence";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Omnipresence");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_COMMUNING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -50,7 +80,7 @@ public class Prayer_Omnipresence extends Prayer
 			return false;
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
-			this.beneficialVisualFizzle(mob,null,L("<S-NAME> @x1, but the is unanswered.",prayWord(mob)));
+			this.beneficialVisualFizzle(mob,null,L("<S-NAME> @x1, but <S-YOU-ARE> unanswered.",prayWord(mob)));
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),L("^S<S-NAME> @x1 for the power of omnipresence.^?",prayWord(mob)));

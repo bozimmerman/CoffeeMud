@@ -504,8 +504,13 @@ public class Where extends StdCommand
 				}
 			}
 			final StringBuffer msg=new StringBuffer(L("You are currently in: ^H@x1^?\n\r",mob.location().getArea().name()));
-			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))&&(mob.playerStats()!=null))
-				msg.append(L("You have explored @x1% of this area and @x2% of the world.\n\r",""+mob.playerStats().percentVisited(mob,mob.location().getArea()),""+mob.playerStats().percentVisited(mob,null)));
+			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))
+			&&(mob.playerStats()!=null))
+			{
+				msg.append(L("You have explored @x1% of this area and @x2% of the world.\n\r",
+						""+mob.playerStats().percentVisited(mob,mob.location().getArea()),
+						""+mob.playerStats().percentVisited(mob,null)));
+			}
 			final DVector scores=new DVector(2);
 			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{

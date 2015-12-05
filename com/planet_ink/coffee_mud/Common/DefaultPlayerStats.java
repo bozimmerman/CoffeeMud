@@ -1111,7 +1111,7 @@ public class DefaultPlayerStats implements PlayerStats
 			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 			{
 				A=e.nextElement();
-				if((CMLib.flags().canAccess(mob,A))
+				if((!CMLib.flags().isHidden(A))
 				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				{
 					final int[] stats=A.getAreaIStats();
@@ -1289,30 +1289,54 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return getPrivateList(getFriends());
-		case 2: return getPrivateList(getIgnored());
-		case 3: return getTitleXML();
-		case 4: return getAliasXML();
-		case 5: return lastIP;
-		case 6: return ""+lLastDateTime;
-		case 7: return ""+channelMask;
-		case 8: return colorStr;
-		case 9: return prompt;
-		case 10: return poofin;
-		case 11: return poofout;
-		case 12: return tranpoofin;
-		case 13: return tranpoofout;
-		case 14: return announceMsg;
-		case 15: return notes;
-		case 16: return ""+wrap;
-		case 17: return CMParms.toListString(birthday);
-		case 18: return ""+accountExpires;
-		case 19: return getPrivateList(introductions);
-		case 20: return ""+pageBreak;
-		case 21: return ""+savedPose;
-		case 22: return ""+theme;
-		case 23: return ""+getTotalLegacyLevels();
+		case 0:
+			return ID();
+		case 1:
+			return getPrivateList(getFriends());
+		case 2:
+			return getPrivateList(getIgnored());
+		case 3:
+			return getTitleXML();
+		case 4:
+			return getAliasXML();
+		case 5:
+			return lastIP;
+		case 6:
+			return "" + lLastDateTime;
+		case 7:
+			return "" + channelMask;
+		case 8:
+			return colorStr;
+		case 9:
+			return prompt;
+		case 10:
+			return poofin;
+		case 11:
+			return poofout;
+		case 12:
+			return tranpoofin;
+		case 13:
+			return tranpoofout;
+		case 14:
+			return announceMsg;
+		case 15:
+			return notes;
+		case 16:
+			return "" + wrap;
+		case 17:
+			return CMParms.toListString(birthday);
+		case 18:
+			return "" + accountExpires;
+		case 19:
+			return getPrivateList(introductions);
+		case 20:
+			return "" + pageBreak;
+		case 21:
+			return "" + savedPose;
+		case 22:
+			return "" + theme;
+		case 23:
+			return "" + getTotalLegacyLevels();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1322,37 +1346,99 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: break;
-		case 1: { friends.clear(); friends.addAll(getHashFrom(val)); break; }
-		case 2: { ignored.clear(); ignored.addAll(getHashFrom(val)); break; }
-		case 3: setTitleXML(CMLib.xml().parseAllXML(val)); break;
-		case 4: setAliasXML(CMLib.xml().parseAllXML(val)); break;
-		case 5: lastIP=val; break;
-		case 6: lLastDateTime=CMath.s_long(val); break;
-		case 7: channelMask=CMath.s_int(val); break;
-		case 8: colorStr=val; break;
-		case 9: prompt=val; break;
-		case 10: poofin=val; break;
-		case 11: poofout=val; break;
-		case 12: tranpoofin=val; break;
-		case 13: tranpoofout=val; break;
-		case 14: announceMsg=val; break;
-		case 15: notes=val; break;
-		case 16: setWrap(CMath.s_int(val)); break;
-		case 17: setBirthday(val); break;
-		case 18: accountExpires=CMath.s_long(val); break;
-		case 19: { introductions.clear(); introductions.addAll(getHashFrom(val)); break; }
-		case 20: pageBreak=CMath.s_int(val); break;
-		case 21: savedPose=val; break;
-		case 22: theme=CMath.s_int(val); break;
-		case 23: break; // legacy levels
+		case 0:
+			break;
+		case 1:
+		{
+			friends.clear();
+			friends.addAll(getHashFrom(val));
+			break;
+		}
+		case 2:
+		{
+			ignored.clear();
+			ignored.addAll(getHashFrom(val));
+			break;
+		}
+		case 3:
+			setTitleXML(CMLib.xml().parseAllXML(val));
+			break;
+		case 4:
+			setAliasXML(CMLib.xml().parseAllXML(val));
+			break;
+		case 5:
+			lastIP = val;
+			break;
+		case 6:
+			lLastDateTime = CMath.s_long(val);
+			break;
+		case 7:
+			channelMask = CMath.s_int(val);
+			break;
+		case 8:
+			colorStr = val;
+			break;
+		case 9:
+			prompt = val;
+			break;
+		case 10:
+			poofin = val;
+			break;
+		case 11:
+			poofout = val;
+			break;
+		case 12:
+			tranpoofin = val;
+			break;
+		case 13:
+			tranpoofout = val;
+			break;
+		case 14:
+			announceMsg = val;
+			break;
+		case 15:
+			notes = val;
+			break;
+		case 16:
+			setWrap(CMath.s_int(val));
+			break;
+		case 17:
+			setBirthday(val);
+			break;
+		case 18:
+			accountExpires = CMath.s_long(val);
+			break;
+		case 19:
+		{
+			introductions.clear();
+			introductions.addAll(getHashFrom(val));
+			break;
+		}
+		case 20:
+			pageBreak = CMath.s_int(val);
+			break;
+		case 21:
+			savedPose = val;
+			break;
+		case 22:
+			theme = CMath.s_int(val);
+			break;
+		case 23:
+			break; // legacy levels
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
-	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return (xtraValues == null) ? getStatCodes().length : getStatCodes().length - xtraValues.length;
+	}
+
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -1360,24 +1446,39 @@ public class DefaultPlayerStats implements PlayerStats
 			codes=CMProps.getStatCodesList(CODES,this);
 		return codes;
 	}
-	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
+	}
+
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	@Override
 	public boolean sameAs(PlayerStats E)
 	{
 		if(!(E instanceof DefaultPlayerStats))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
+		{
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
+		}
 		return true;
 	}
 
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 }
