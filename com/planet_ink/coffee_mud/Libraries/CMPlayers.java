@@ -1128,12 +1128,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						setThreadStatus(serviceClient,"checking player titles");
 						for(final MOB M : playersList)
 						{
-							if(M.playerStats()!=null)
+							if((M.playerStats()!=null)&&(CMLib.flags().isInTheGame(M,true)))
 							{
-								boolean didSomething = CMLib.titles().evaluateAutoTitles(M);
-								didSomething = CMLib.achievements().evaluateAchievements(M) || didSomething;
-								if((didSomething)&&(!CMLib.flags().isInTheGame(M,true)))
-									CMLib.database().DBUpdatePlayerMOBOnly(M);
+								//boolean didSomething =
+								CMLib.titles().evaluateAutoTitles(M);
+								//didSomething = 
+								CMLib.achievements().evaluateAchievements(M);// || didSomething;
+								//if(didSomething)&&(!CMLib.flags().isInTheGame(M,true)))
+								//	CMLib.database().DBUpdatePlayerMOBOnly(M);
 							}
 						}
 						autoPurge();
