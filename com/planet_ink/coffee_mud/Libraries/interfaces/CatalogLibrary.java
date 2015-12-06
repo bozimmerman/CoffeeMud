@@ -306,22 +306,112 @@ public interface CatalogLibrary extends CMLibrary
 	 * @return null or a random item
 	 */
 	public Item getDropItem(MOB M, boolean live);
+	
+	/**
+	 * Builds catalog metadata, optionally building it from an xml
+	 * doc of saved metadata.
+	 * @see CataData
+	 * @param xml an optional xml doc of metadata data
+	 * @return a catadata object
+	 */
 	public CataData sampleCataData(String xml);
-	public Vector<RoomContent> roomContent(Room R);
-	public void updateRoomContent(String roomID, Vector<RoomContent> content);
+
+	/**
+	 * Returns the coded contents of a room, as it presently exists.
+	 * That's all the mobs and items, including all the shopkeeper
+	 * shop items.  This is used typically for catalogging.
+	 * @see CatalogLibrary#updateRoomContent(String, List)
+	 * @see CatalogLibrary.RoomContent
+	 * @param R the room to retreive content from
+	 * @return the list of items and mobs in the room
+	 */
+	public List<RoomContent> roomContent(Room R);
+	
+	/**
+	 * Updates the database entries of the given room id and the
+	 * adjusted content objects.  
+	 * @see CatalogLibrary#roomContent(Room)
+	 * @see CatalogLibrary.RoomContent
+	 * @param roomID the roomID of the room being updated
+	 * @param content the adjusted content of the room
+	 */
+	public void updateRoomContent(String roomID, List<RoomContent> content);
+	
+	/**
+	 * Registers the given cataloged item or mob as being an instance,
+	 * for metadata collection purposes only.
+	 * @param P the item or mob to register as being in the world
+	 */
 	public void newInstance(Physical P);
+	
+	/**
+	 * When a cataloged mob dies, or a cataloged item is picked up,
+	 * this method is called to bump the metadata stats on the object.  
+	 * @param P the item or mob to bump the stats on
+	 */
 	public void bumpDeathPickup(Physical P);
+	
+	/**
+	 * In order to make the catalog appear in the vfs directory paths,
+	 * this method is called to get the root directory of the catalog,
+	 * which automatically turns all the catalog entries into 
+	 * directories and files.
+	 * @param resourcesRoot the vfs dir of the resources directory
+	 * @return the vfs dir of the catalog directory
+	 */
 	public CMFile.CMVFSDir getCatalogRoot(CMFile.CMVFSDir resourcesRoot);
 
+	/**
+	 * An interface for getting a manipulable list of the content
+	 * of a room.  This interface would represent one mob, item,
+	 * or shop object in a room.  It can then be altered, and flagged
+	 * as dirty for re-saving to the database.
+	 * @see CatalogLibrary#roomContent(Room)
+	 * @see CatalogLibrary#updateRoomContent(String, List)
+	 * @author Bo Zimmerman
+	 */
 	public static interface RoomContent
 	{
+		/**
+		 * The item or mob in the room
+		 * @return item or mob in the room
+		 */
 		public Physical P();
+		
+		/**
+		 * The shopkeeper, or mob that owns the
+		 * item.
+		 * @return  mob, or shopkeeper
+		 */
 		public Environmental holder();
+		
+		/**
+		 * Returns whether the object needs re-saving.
+		 * @return whether the object needs re-saving.
+		 */
 		public boolean isDirty();
+		
+		/**
+		 * Sets the object as needing re-saving.
+		 */
 		public void flagDirty();
+		
+		/**
+		 * Returns whether the object was deleted.
+		 * @return whether the object was deleted.
+		 */
 		public boolean deleted();
 	}
 
+	/**
+	 * CataData is the metadata about each entry in the
+	 * catalog.  It stores information for features like
+	 * the random drop, for instances of the cataloged items
+	 * in the world, and how many times the mob has been
+	 * killed or item picked up.
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static interface CataData
 	{
 		public MaskingLibrary.CompiledZapperMask getMaskV();

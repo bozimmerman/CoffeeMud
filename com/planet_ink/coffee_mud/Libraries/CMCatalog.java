@@ -329,7 +329,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void updateRoomContent(String roomID, Vector<RoomContent> content)
+	public void updateRoomContent(String roomID, List<RoomContent> content)
 	{
 		final List<Environmental> updatables=new LinkedList<Environmental>();
 		final List<Environmental> deletables=new LinkedList<Environmental>();
@@ -525,7 +525,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			}
 			for(Room R : rooms)
 			{
-				Vector<RoomContent> contents=roomContent(R);
+				List<RoomContent> contents=roomContent(R);
 				for(final RoomContent content : contents)
 				{
 					if((CMLib.flags().isCataloged(content.P()))

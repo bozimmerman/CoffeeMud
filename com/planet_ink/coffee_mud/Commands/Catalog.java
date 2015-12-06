@@ -230,7 +230,7 @@ public class Catalog extends StdCommand
 					{
 						roomID=(String)rooms.nextElement();
 						R=CMLib.coffeeMaker().makeNewRoomContent(CMLib.map().getRoom(roomID),false);
-						final Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
+						final List<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						boolean dirty=false;
 						for(final CatalogLibrary.RoomContent content : contents)
 						{
@@ -560,7 +560,7 @@ public class Catalog extends StdCommand
 						R=CMLib.map().getRoom(roomID);
 						if(db)
 							R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
-						final Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
+						final List<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						for(final CatalogLibrary.RoomContent content : contents)
 						{
 							P=content.P();
@@ -606,7 +606,7 @@ public class Catalog extends StdCommand
 						R=CMLib.map().getRoom(roomID);
 						if(db)
 							R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
-						final Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
+						final List<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						for(final CatalogLibrary.RoomContent content : contents)
 						{
 							E=content.P();
@@ -651,7 +651,7 @@ public class Catalog extends StdCommand
 						{
 							roomID=(String)rooms.nextElement();
 							R=CMLib.coffeeMaker().makeNewRoomContent(CMLib.map().getRoom(roomID),false);
-							final Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
+							final List<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 							boolean dirty=false;
 							for(final CatalogLibrary.RoomContent content : contents)
 							{

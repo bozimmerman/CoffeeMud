@@ -75,6 +75,15 @@ public class AbilityNext extends StdWebMacro
 		final boolean allFlag =parms.containsKey("ALL");
 		final boolean domainFlag=parms.containsKey("DOMAIN");
 		final String domain=parms.get("DOMAIN");
+		boolean containsACodeMask=false;
+		for (final String element : Ability.ACODE_DESCS)
+		{
+			if(parms.containsKey(element))
+			{
+				containsACodeMask = true;
+				break;
+			}
+		}
 
 
 		final Enumeration<Ability> a;
@@ -155,11 +164,7 @@ public class AbilityNext extends StdWebMacro
 			{
 				if((domainFlag)&&(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5])))
 				   okToShow=false;
-				boolean containsOne=false;
-				for (final String element : Ability.ACODE_DESCS)
-					if(parms.containsKey(element))
-					{ containsOne=true; break;}
-				if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
+				if(containsACodeMask&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
 					okToShow=false;
 			}
 			if(notFlag)

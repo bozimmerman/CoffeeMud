@@ -279,7 +279,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			completeAbleMap.put(ID,ableMap);
 		}
 		final AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret, false,new Vector<String>(),extraMask,null);
-		addClassAbility(abilityID,ableMap,able);
+		mapAbilityFinal(abilityID,ableMap,able);
 		return able;
 	}
 
@@ -461,7 +461,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		}
 		final AbilityMapping able = makeAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,
 				defaultParam,autoGain,secret,false,preReqSkillsList,extraMask,costOverrides);
-		addClassAbility(abilityID,ableMap,able);
+		mapAbilityFinal(abilityID,ableMap,able);
 		return able;
 	}
 	
@@ -762,29 +762,34 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		return allLevelsArray[(int)Math.round( CMath.div( allLevelsArray.length,2.0 ) )].intValue();
 	}
 
-	public void addClassAbility(String abilityID, Map<String, AbilityMapping> ableMap, AbilityMapping able)
+	protected void mapAbilityFinal(String abilityID, Map<String, AbilityMapping> ableMap, AbilityMapping able)
 	{
 		if(CMSecurity.isAbilityDisabled(able.abilityID().toUpperCase()))
 			return;
 		ableMap.put(abilityID,able);
+		
+		final boolean isACharacterClass = CMClass.getCharClass(able.ID()) != null || (able.ID().equalsIgnoreCase("All"));
 
 		final int qualLevel = able.qualLevel();
 		final int maxProficiency = able.maxProficiency();
 
-		// set lowest level map
-		final Integer lowLevel=lowestQualifyingLevelMap.get(abilityID);
-		if(qualLevel > 0)
+		if(isACharacterClass)
 		{
-			if((lowLevel==null)
-			||(qualLevel<lowLevel.intValue()))
-				lowestQualifyingLevelMap.put(abilityID,Integer.valueOf(qualLevel));
-		}
+			// set lowest level map
+			final Integer lowLevel=lowestQualifyingLevelMap.get(abilityID);
+			if(qualLevel > 0)
+			{
+				if((lowLevel==null)
+				||(qualLevel<lowLevel.intValue()))
+					lowestQualifyingLevelMap.put(abilityID,Integer.valueOf(qualLevel));
+			}
 
-		// and max proficiency maps
-		final Integer maxProf=maxProficiencyMap.get(abilityID);
-		if((maxProf==null)
-		||(maxProficiency>maxProf.intValue()))
-			maxProficiencyMap.put(abilityID,Integer.valueOf(maxProficiency));
+			// and max proficiency maps
+			final Integer maxProf=maxProficiencyMap.get(abilityID);
+			if((maxProf==null)
+			||(maxProficiency>maxProf.intValue()))
+				maxProficiencyMap.put(abilityID,Integer.valueOf(maxProficiency));
+		}
 
 		// and the reverse lookup map
 		Map<String, AbilityMapping> revT = reverseAbilityMap.get(abilityID);
@@ -797,13 +802,17 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			revT.put(able.ID(), able);
 
 		// archons get everything
-		final int arc_level=getQualifyingLevel("Archon",true,abilityID);
-		if(((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
-		&&(!able.ID().equalsIgnoreCase("Archon"))
-		&&(!able.ID().equalsIgnoreCase("All")))
-			addCharAbilityMapping("Archon",qualLevel,abilityID,true);
+		if(isACharacterClass)
+		{
+			final int arc_level=getQualifyingLevel("Archon",true,abilityID);
+			if(((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
+			&&(!able.ID().equalsIgnoreCase("Archon"))
+			&&(!able.ID().equalsIgnoreCase("All")))
+			{
+				addCharAbilityMapping("Archon",qualLevel,abilityID,true);
+			}
+		}
 	}
-
 
 	public synchronized void handleEachAndClassAbility(Map<String, AbilityMapping> ableMap, Map<String,Map<String,AbilityMapping>> allQualMap, String ID)
 	{
@@ -832,7 +841,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 					completeAbleMap.put("All",allMap);
 				}
 				able.allQualifyFlag(true);
-				addClassAbility(able.abilityID(), allMap, able);
+				mapAbilityFinal(able.abilityID(), allMap, able);
 			}
 		}
 		for (final AbilityMapping abilityMapping : eachClassSet)
@@ -840,7 +849,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			final AbilityMapping able=abilityMapping.copyOf();
 			able.ID(ID);
 			able.allQualifyFlag(true);
-			addClassAbility(able.abilityID(), ableMap, able);
+			mapAbilityFinal(able.abilityID(), ableMap, able);
 		}
 	}
 
