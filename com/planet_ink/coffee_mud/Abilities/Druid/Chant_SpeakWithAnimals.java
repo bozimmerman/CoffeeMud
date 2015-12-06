@@ -34,15 +34,41 @@ import java.util.*;
 */
 
 
-public class Chant_SpeakWithAnimals extends Chant
+public class Chant_SpeakWithAnimals extends Chant implements Language
 {
-	@Override public String ID() { return "Chant_SpeakWithAnimals"; }
-	private final static String localizedName = CMLib.lang().L("Speak With Animals");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Speak With Animals)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SpeakWithAnimals";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Speak With Animals");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Speak With Animals)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ANIMALAFFINITY;
+	}
 
 	protected WeakHashMap<MOB,Behavior> mudChatters=new WeakHashMap<MOB,Behavior>();
 	protected Map<String,Language> myLanguages=new Hashtable<String,Language>();
@@ -254,7 +280,9 @@ public class Chant_SpeakWithAnimals extends Chant
 					if(msg.amISource(mob)
 					&&(msg.target() instanceof MOB)
 					&&(CMLib.flags().isAnimalIntelligence((MOB)msg.target()))
-					&&((msg.tool()==null) || (!(msg.tool() instanceof Language)) ||(((MOB)msg.target()).charStats().getMyRace().racialAbilities((MOB)msg.target()).find(msg.tool().ID())==null)))
+					&&((msg.tool()==null) 
+						|| (!(msg.tool() instanceof Language)) 
+						||(((MOB)msg.target()).charStats().getMyRace().racialAbilities((MOB)msg.target()).find(msg.tool().ID())==null)))
 					{
 						Language lA=this.getAnimalSpeak((MOB)msg.target());
 						if(lA!=null)
@@ -315,60 +343,57 @@ public class Chant_SpeakWithAnimals extends Chant
 		// return whether it worked
 		return success;
 	}
-	/*
+
 	@Override
 	public String writtenName()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return localizedName;
 	}
+
 	@Override
 	public List<String> languagesSupported()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new LinkedList<String>();
 	}
+
 	@Override
 	public boolean translatesLanguage(String language)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return myLanguages.containsKey(language);
 	}
+
 	@Override
 	public int getProficiency(String language)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return 100;
 	}
+
 	@Override
 	public boolean beingSpoken(String language)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return myLanguages.containsKey(language);
 	}
+
 	@Override
 	public void setBeingSpoken(String language, boolean beingSpoken)
 	{
-		// TODO Auto-generated method stub
-		
 	}
+
 	@Override
 	public Map<String, String> translationHash(String language)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
+
 	@Override
 	public List<String[]> translationVector(String language)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
+
 	@Override
 	public String translate(String language, String word)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
-	*/
 }

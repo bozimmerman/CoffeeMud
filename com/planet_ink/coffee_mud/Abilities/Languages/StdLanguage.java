@@ -278,7 +278,8 @@ public class StdLanguage extends StdAbility implements Language
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected instanceof MOB)&&(beingSpoken(ID())))
+		if((affected instanceof MOB)
+		&&(beingSpoken(ID())))
 		{
 			if((msg.source()==affected)
 			&&(msg.sourceMessage()!=null)
@@ -314,6 +315,7 @@ public class StdLanguage extends StdAbility implements Language
 			}
 			else
 			if((msg.target()==affected)&&(msg.source()!=affected))
+			{
 				switch(msg.targetMinor())
 				{
 				case CMMsg.TYP_ORDER:
@@ -353,6 +355,7 @@ public class StdLanguage extends StdAbility implements Language
 				default:
 					break;
 				}
+			}
 		}
 		return super.okMessage(myHost,msg);
 	}

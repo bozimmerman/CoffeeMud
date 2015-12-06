@@ -35,11 +35,23 @@ import java.util.*;
 
 public class AnimalSpeak extends StdLanguage
 {
-	@Override public String ID() { return "AnimalSpeak"; }
-	private final static String localizedName = CMLib.lang().L("Animal Speak");
-	@Override public String name() { return localizedName; }
-	public static List<String[]> wordLists=null;
-	private static boolean mapped=false;
+	@Override
+	public String ID()
+	{
+		return "AnimalSpeak";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Animal Speak");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	public static List<String[]>	wordLists	= null;
+	private static boolean			mapped		= false;
+
 	public AnimalSpeak()
 	{
 		super();
@@ -66,8 +78,11 @@ public class AnimalSpeak extends StdLanguage
 		"trill","squeak","eek","brux","croak","bellow","chirp","caw","crow","scream","squawk","mew","bark","bleat","baa","hiss","chirp",
 		"twitter","squeak","chatter","click","bellow","twitter","squeal","cry","whistle","squeak","growl","roar","snarl","whistle","sing",
 		"croak","gobble","chirp","chatter","grunt","bark","coo","sputter","scream","groan","sing","bark","howl","cry","yell","yelp","trill",
-		"warble","moan","whinny","whoop"};
-	protected String[] getSounds() {
+		"warble","moan","whinny","whoop"
+	};
+	
+	protected String[] getSounds() 
+	{
 		return animalSounds;
 	}
 
@@ -91,12 +106,18 @@ public class AnimalSpeak extends StdLanguage
 		final String newWord=getSounds()[CMLib.dice().roll(1, getSounds().length, -1)];
 		switch(CMLib.dice().roll(1, 5, -1))
 		{
-		case 0: return newWord.toLowerCase();
-		case 1: return newWord.toLowerCase();
-		case 2: return CMStrings.capitalizeAndLower(newWord);
-		case 3: return newWord.toUpperCase();
-		case 5: return newWord.toUpperCase()+"!";
-		default: return newWord;
+		case 0:
+			return newWord.toLowerCase();
+		case 1:
+			return newWord.toLowerCase();
+		case 2:
+			return CMStrings.capitalizeAndLower(newWord);
+		case 3:
+			return newWord.toUpperCase();
+		case 5:
+			return newWord.toUpperCase() + "!";
+		default:
+			return newWord;
 		}
 	}
 }
