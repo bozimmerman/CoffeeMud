@@ -1299,11 +1299,17 @@ public class StdRace implements Race
 			return emptyIDs;
 		Integer level=null;
 		if(mob!=null)
+		{
 			level=Integer.valueOf(mob.phyStats().level());
+			if(level.intValue() == 0) // for mudstarting situations
+				level = Integer.valueOf(mob.basePhyStats().level());
+		}
 		else
 			level=Integer.valueOf(Integer.MAX_VALUE);
 		if(racialAbilityMap.containsKey(level))
 			return racialAbilityMap.get(level);
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return emptyIDs;
 		final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
 		final CMUniqSortSVec<Ability> finalV=new CMUniqSortSVec<Ability>(V.size());
 		for(final AbilityMapper.AbilityMapping able : V)
@@ -1318,6 +1324,7 @@ public class StdRace implements Race
 			}
 		}
 		finalV.trimToSize();
+		finalV.setReadOnly(true);
 		racialAbilityMap.put(level,finalV);
 		return finalV;
 	}

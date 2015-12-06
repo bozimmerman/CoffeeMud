@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements SearchIDList<T>
 {
 	private static final long serialVersionUID = 6687178785122361992L;
+	private boolean readOnly = false;
 
 	public CMUniqSortSVec(int size)
 	{
@@ -33,7 +34,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	@Override
 	public synchronized boolean add(T arg0)
 	{
-		if(arg0==null)
+		if((arg0==null)||(readOnly))
 			return false;
 		if(size()==0)
 			return super.add(arg0);
@@ -216,7 +217,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	public synchronized boolean remove(Object arg0)
 	{
 		final int index=indexOf(arg0);
-		if(index >= 0)
+		if((index >= 0)&&(!readOnly))
 			return remove(index)==arg0;
 		return false;
 	}
@@ -225,5 +226,10 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	public T set(int arg0, T arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
+	}
+	
+	public void setReadOnly(boolean trueFalse)
+	{
+		readOnly = trueFalse;
 	}
 }

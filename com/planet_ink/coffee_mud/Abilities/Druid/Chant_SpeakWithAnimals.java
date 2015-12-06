@@ -97,9 +97,14 @@ public class Chant_SpeakWithAnimals extends Chant
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 				&&(A instanceof Language))
 				{
-					A=M.fetchEffect(A.ID());
-					if((A!=null)&&(((Language)A).beingSpoken(A.ID())))
-						return (Language)A;
+					Ability effectA=M.fetchEffect(A.ID());
+					if(effectA==null)
+					{
+						A.autoInvocation(M, false);
+						A=M.fetchEffect(A.ID());
+					}
+					if((effectA!=null)&&(((Language)effectA).beingSpoken(effectA.ID())))
+						return (Language)effectA;
 				}
 			}
 		}
@@ -310,4 +315,60 @@ public class Chant_SpeakWithAnimals extends Chant
 		// return whether it worked
 		return success;
 	}
+	/*
+	@Override
+	public String writtenName()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<String> languagesSupported()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public boolean translatesLanguage(String language)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public int getProficiency(String language)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public boolean beingSpoken(String language)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public void setBeingSpoken(String language, boolean beingSpoken)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Map<String, String> translationHash(String language)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<String[]> translationVector(String language)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String translate(String language, String word)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	*/
 }
