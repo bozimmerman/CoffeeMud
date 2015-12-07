@@ -414,29 +414,218 @@ public interface CatalogLibrary extends CMLibrary
 	 */
 	public static interface CataData
 	{
+		/**
+		 * A compiled zapper mask that is applied to mobs to
+		 * determine if this particular item is potentially
+		 * a random drop.  The mask is only applied if it is
+		 * non-null, so null means it is NOT a random drop.
+		 * @see CataData#getMaskStr()
+		 * @see CataData#getWhenLive()
+		 * @see CataData#getRate()
+		 * @return a compiled zapper mask for dead mobs
+		 */
 		public MaskingLibrary.CompiledZapperMask getMaskV();
+		
+		/**
+		 * A zapper mask string that is applied to mobs to
+		 * determine if this particular item is potentially
+		 * a random drop.  The mask is only applied if it is
+		 * non-empty, so empty means it is NOT a random drop.
+		 * @see CataData#getMaskV()
+		 * @see CataData#getRate()
+		 * @see CataData#setMaskStr(String)
+		 * @return a  zapper mask string for dead mobs
+		 */
 		public String getMaskStr();
+		
+		/**
+		 * If this item is a random drop, this flag will 
+		 * return true if it is random equipment for a live
+		 * mob, and false if it is random drop for a corpse.
+		 * @see CataData#getMaskV()
+		 * @see CataData#getRate()
+		 * @see CataData#setWhenLive(boolean)
+		 * @return true for equipment, false for live mob
+		 */
 		public boolean getWhenLive();
+		
+		/**
+		 * If this item is a random drop, then this is the pct
+		 * chance that this item is a potential selection for
+		 * a random drop.  It is a number from 0.0 - 1, where 0.0
+		 * means it is not a random drop at all.
+		 * @see CataData#getMaskV()
+		 * @see CataData#setRate(double)
+		 * @see CataData#getWhenLive()
+		 * @return pct chance that the item is a potential selection
+		 */
 		public double getRate();
+		
+		/**
+		 * A zapper mask string that is applied to mobs to
+		 * determine if this particular item is potentially
+		 * a random drop.  The mask is only applied if it is
+		 * non-empty, so empty means it is NOT a random drop.
+		 * @see CataData#getMaskV()
+		 * @see CataData#getRate()
+		 * @see CataData#getMaskStr()
+		 * @param s a  zapper mask string for dead mobs
+		 */
 		public void setMaskStr(String s);
+		
+		/**
+		 * If this item is a random drop, this flag will 
+		 * be true if it is random equipment for a live
+		 * mob, and false if it is random drop for a corpse.
+		 * @see CataData#getMaskV()
+		 * @see CataData#getRate()
+		 * @see CataData#getWhenLive()
+		 * @param l true for equipment, false for live mob
+		 */
 		public void setWhenLive(boolean l);
+		
+		/**
+		 * If this item is a random drop, then this is the pct
+		 * chance that this item is a potential selection for
+		 * a random drop.  It is a number from 0.0 - 1, where 0.0
+		 * means it is not a random drop at all.
+		 * @see CataData#getMaskV()
+		 * @see CataData#setRate(double)
+		 * @see CataData#getWhenLive()
+		 * @param r pct chance that the item is a potential selection
+		 */
 		public void setRate(double r);
+
+		/**
+		 * Creates and returns an enumeration of all the instances of 
+		 * this cataloged item in the world.
+		 * @see CataData#addReference(Physical)
+		 * @see CataData#isReference(Physical)
+		 * @see CataData#delReference(Physical)
+		 * @see CataData#numReferences()
+		 * @return an enumeration of all the instances
+		 */
 		public Enumeration<Physical> enumeration();
+		
+		/**
+		 * Adds the given object as a world instance of this
+		 * cataloged object
+		 * @see CataData#enumeration()
+		 * @see CataData#isReference(Physical)
+		 * @see CataData#delReference(Physical)
+		 * @see CataData#numReferences()
+		 * @param P the mob or item in the world
+		 */
 		public void addReference(Physical P);
+		
+		/**
+		 * Returns whether the given item is a registered world
+		 * instance of this cataloged object.
+		 * @see CataData#enumeration()
+		 * @see CataData#addReference(Physical)
+		 * @see CataData#delReference(Physical)
+		 * @see CataData#numReferences()
+		 * @param P the item or mob in the world
+		 * @return true if its registered, false otherwise
+		 */
 		public boolean isReference(Physical P);
+		
+		/**
+		 * Removes the given item from the list of registered
+		 * world instances of this cataloged object.
+		 * @see CataData#enumeration()
+		 * @see CataData#addReference(Physical)
+		 * @see CataData#isReference(Physical)
+		 * @see CataData#numReferences()
+		 * @param P the item or mob in the world
+		 */
 		public void delReference(Physical P);
+		
+		/**
+		 * Returns the number of world items that are instances
+		 * of this cataloged object.
+		 * @see CataData#enumeration()
+		 * @see CataData#addReference(Physical)
+		 * @see CataData#isReference(Physical)
+		 * @see CataData#delReference(Physical)
+		 * @return  the number of world items
+		 */
 		public int numReferences();
+		
+		/**
+		 * Determines and returns the name of the most
+		 * popular area in which instances of this catalog
+		 * object can be found.
+		 * @return the name of the area
+		 */
 		public String mostPopularArea();
+		
+		/**
+		 * Returns one of the rooms in which an instance
+		 * of this cataloged item was registered.
+		 * @return a room with an instance
+		 */
 		public String randomRoom();
+		
+		/**
+		 * Goes through all the world instances of this
+		 * cataloged item and removes any that are destroyed.
+		 * Hopefully this method never does anything.
+		 */
 		public void cleanHouse();
+		
+		/**
+		 * Returns the first world instance of this
+		 * cataloged item or mob.
+		 * @return the first world instance
+		 */
 		public Physical getLiveReference();
+		
+		/**
+		 * Returns the number of times this mob has died,
+		 * if the cataloged object is a mob, or the number of
+		 * times this item has been picked up, if it's an item.
+		 * @see CataData#bumpDeathPickup()
+		 * @return the number of times
+		 */
 		public int getDeathsPicksups();
+		
+		/**
+		 * Bumps the number of times this mob has died,
+		 * if the cataloged object is a mob, or the number of
+		 * times this item has been picked up, if it's an item.
+		 * @see CataData#bumpDeathPickup()
+		 */
 		public void bumpDeathPickup();
+		
+		/**
+		 * Returns the user-defined catagory to which this
+		 * cataloged object belongs.  null is uncatagorized  
+		 * @see CataData#setCatagory(String)
+		 * @return the catagory name
+		 */
 		public String category();
+		
+		/**
+		 * Sets the user-defined catagory to which this
+		 * cataloged object belongs.  null is uncatagorized
+		 * @see CataData#category()
+		 * @param cat the catagory name
+		 */
 		public void setCatagory(String cat);
 
+		/**
+		 * Returns this metadata as an xml doc
+		 * @see CataData#build(String)
+		 * @return this metadata as an xml doc
+		 */
 		public String data();
 
+		/**
+		 * Builds this metadata from an xml doc
+		 * @see CataData#data()
+		 * @param catadata this metadata as an xml doc
+		 */
 		public void build(String catadata);
 	}
 }
