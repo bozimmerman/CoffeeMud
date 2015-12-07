@@ -28,20 +28,26 @@ public class Siplet
 	public final static long serialVersionUID=7;
 	public static final float VERSION_MAJOR=(float)2.1;
 	public static final long  VERSION_MINOR=0;
-	protected StringBuffer buf=new StringBuffer("");
-	protected String lastURL="coffeemud.net";
-	protected int lastPort=23;
-	protected Socket sock=null;
-	protected InputStream rawin=null;
-	protected BufferedReader[] in;
-	protected DataOutputStream out;
-	protected boolean connected=false;
-	protected TelnetFilter Telnet=new TelnetFilter(this);
+	
+	protected StringBuffer		buf			= new StringBuffer("");
+	protected String			lastURL		= "coffeemud.net";
+	protected int				lastPort	= 23;
+	protected Socket			sock		= null;
+	protected InputStream		rawin		= null;
+	protected BufferedReader[]	in;
+	protected DataOutputStream	out;
+	protected boolean			connected	= false;
+	protected TelnetFilter		Telnet		= new TelnetFilter(this);
 
-	protected StringBuffer buffer;
-	protected int sillyCounter=0;
+	protected StringBuffer		buffer;
+	protected int				sillyCounter= 0;
 
-	public enum MSPStatus { Disabled, Internal, External }
+	public enum MSPStatus
+	{
+		Disabled,
+		Internal,
+		External
+	}
 
 	public void setFeatures(boolean mxp, MSPStatus msp, boolean mccp)
 	{
@@ -62,19 +68,24 @@ public class Siplet
 
 	public void start()
 	{
-		if(debugDataOut) System.out.println("starting siplet "+VERSION_MAJOR+"."+VERSION_MINOR+" ");
+		if (debugDataOut)
+			System.out.println("starting siplet " + VERSION_MAJOR + "." + VERSION_MINOR + " ");
 	}
 
 	public void stop()
 	{
-		if(debugDataOut) System.out.println("!stopped siplet!");
+		if (debugDataOut)
+			System.out.println("!stopped siplet!");
 	}
 
 	public void destroy()
 	{
 	}
 
-	public Siplet create() { return new Siplet();}
+	public Siplet create()
+	{
+		return new Siplet();
+	}
 
 	public void addItem(String newWord)
 	{
@@ -90,7 +101,11 @@ public class Siplet
 		//g.drawString(buffer.toString(), 5, 15);
 	}
 
-	public boolean connectToURL(){ return connectToURL(lastURL,lastPort);}
+	public boolean connectToURL()
+	{
+		return connectToURL(lastURL, lastPort);
+	}
+
 	public boolean connectToURL(String url, int port)
 	{
 		connected=false;
@@ -100,14 +115,15 @@ public class Siplet
 		{
 			lastURL=url;
 			lastPort=port;
-			if(debugDataOut) System.out.println("connecting to "+url+":"+port+" ");
-			sock=new Socket(InetAddress.getByName(url),port);
+			if (debugDataOut)
+				System.out.println("connecting to " + url + ":" + port + " ");
+			sock = new Socket(InetAddress.getByName(url), port);
 			Thread.sleep(100);
-			rawin=sock.getInputStream();
-			in=new BufferedReader[1];
-			in[0]=new BufferedReader(new InputStreamReader(sock.getInputStream(),"iso-8859-1"));
-			out=new DataOutputStream(sock.getOutputStream());
-			Telnet=new TelnetFilter(this);
+			rawin = sock.getInputStream();
+			in = new BufferedReader[1];
+			in[0] = new BufferedReader(new InputStreamReader(sock.getInputStream(), "iso-8859-1"));
+			out = new DataOutputStream(sock.getOutputStream());
+			Telnet = new TelnetFilter(this);
 			connected=true;
 		}
 		catch(final Exception e)
@@ -126,7 +142,8 @@ public class Siplet
 		{
 			lastURL=url;
 			lastPort=port;
-			if(debugDataOut) System.out.println("internal connect to "+url+":"+port+" ");
+			if (debugDataOut)
+				System.out.println("internal connect to " + url + ":" + port + " ");
 			this.sock=sock;
 			rawin=sock.getInputStream();
 			in=new BufferedReader[1];
@@ -217,17 +234,22 @@ public class Siplet
 		synchronized(buf)
 		{
 			final String s=Telnet.getEnquedResponses();
-			if(s.length()>0)  sendData(s);
+			if (s.length() > 0)
+				sendData(s);
 			final StringBuilder data=new StringBuilder("");
 			if(Telnet.MSDPsupport())
 				data.append(Telnet.getMsdpHtml());
 			if(Telnet.GMCPsupport())
 				data.append(Telnet.getGmcpHtml());
 			int endAt=Telnet.HTMLFilter(buf);
-			if(buf.length()==0) return data.toString();
-			if(endAt<0) endAt=buf.length();
-			if(endAt==0) return data.toString();
-			if(Telnet.isUIonHold()) return data.toString();
+			if (buf.length() == 0)
+				return data.toString();
+			if (endAt < 0)
+				endAt = buf.length();
+			if (endAt == 0)
+				return data.toString();
+			if (Telnet.isUIonHold())
+				return data.toString();
 			if(endAt<buf.length())
 			{
 				data.append(buf.substring(0,endAt));
@@ -238,7 +260,11 @@ public class Siplet
 				data.append(buf.toString());
 				buf.setLength(0);
 			}
-			if(debugDataOut) if(data.length()>0) System.out.println("/DATA="+data.toString());
+			if (debugDataOut)
+			{
+				if (data.length() > 0)
+					System.out.println("/DATA=" + data.toString());
+			}
 			return data.toString();
 		}
 	}

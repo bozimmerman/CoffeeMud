@@ -274,8 +274,10 @@ public class MXP
 		final Vector<String> endTags = E.getCloseTags(E.getDefinition());
 		final StringBuffer newEnd = new StringBuffer("");
 		for (int e = endTags.size() - 1; e >= 0; e--)
+		{
 			if (elements.containsKey((endTags.elementAt(e)).toUpperCase().trim()))
 				newEnd.append("</" + endTags.elementAt(e).toUpperCase().trim());
+		}
 		return newEnd.toString();
 	}
 
