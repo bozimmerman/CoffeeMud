@@ -176,6 +176,12 @@ public class Spell_Fabricate extends Spell
 			if(B!=null)
 				intoI.delBehavior(B);
 		}
+		
+		if(intoI instanceof SpellHolder)
+			((SpellHolder)intoI).setSpellList("");
+		if(intoI instanceof Wand)
+			((Wand)intoI).setSpell(null);
+			
 		intoI.basePhyStats().setAbility(0);
 		intoI.basePhyStats().setDisposition(intoI.basePhyStats().disposition() & (~PhyStats.IS_BONUS));
 		intoI.recoverPhyStats();
