@@ -80,6 +80,7 @@ public class Undead extends StdRace
 		super.executeMsg(myHost,msg);
 		if(msg.amITarget(myHost)
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
+		&&(CMLib.flags().canSmell(msg.source()))
 		&&(myHost instanceof MOB)
 		&&(ID().equals("Undead")))
 			msg.source().tell(L("@x1 stinks of grime and decay.",name()));

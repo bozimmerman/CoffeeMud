@@ -9706,9 +9706,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(newRoom==null)
 						newRoom=getRoom(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,roomName),lastKnownLocation);
 					if(newRoom == null)
-						logError(scripted,"MPBRACON","RunTime",tt[1]+" is not a room.");
+						logError(scripted,"MPBEACON","RunTime",tt[1]+" is not a room.");
 					else
-					if((newRoom!=null)&&(lastKnownLocation!=null))
+					if(lastKnownLocation!=null)
 					{
 						final Vector<MOB> V=new Vector<MOB>();
 						if(beacon.equalsIgnoreCase("all"))
