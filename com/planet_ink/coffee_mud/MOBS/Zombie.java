@@ -41,7 +41,7 @@ public class Zombie extends Undead
 		super();
 		username="a zombie";
 		setDescription("decayed and rotting, a dead body has been brought back to life...");
-		setDisplayText("a skeleton slowly moves about.");
+		setDisplayText("a zombie slowly moves about.");
 		setMoney(10);
 		basePhyStats.setWeight(30);
 		baseCharStats().setMyRace(CMClass.getRace("Undead"));
