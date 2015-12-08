@@ -161,15 +161,7 @@ public class Spell_Fabricate extends Spell
 		}
 
 		intoI=(Item)intoI.copyOf();
-		while(intoI.numEffects()>0)
-		{
-			Ability A=intoI.fetchEffect(0);
-			if(A!=null)
-			{
-				A.unInvoke();
-				intoI.delEffect(A);
-			}
-		}
+		CMLib.utensils().disenchantItem(intoI);
 		while(intoI.numBehaviors()>0)
 		{
 			Behavior B=intoI.fetchBehavior(0);
@@ -177,12 +169,7 @@ public class Spell_Fabricate extends Spell
 				intoI.delBehavior(B);
 		}
 		
-		if(intoI instanceof SpellHolder)
-			((SpellHolder)intoI).setSpellList("");
-		if(intoI instanceof Wand)
-			((Wand)intoI).setSpell(null);
 			
-		intoI.basePhyStats().setAbility(0);
 		intoI.basePhyStats().setDisposition(intoI.basePhyStats().disposition() & (~PhyStats.IS_BONUS));
 		intoI.recoverPhyStats();
 		intoI.setBaseValue(0);

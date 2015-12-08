@@ -230,22 +230,13 @@ public class Spell_PolymorphObject extends Spell
 			intoI.setDescription(CMStrings.replaceWord(intoI.description(), oldMaterialName, newMaterialName));
 		}
 		
-		while(intoI.numEffects()>0)
-		{
-			Ability A=intoI.fetchEffect(0);
-			if(A!=null)
-			{
-				A.unInvoke();
-				intoI.delEffect(A);
-			}
-		}
+		CMLib.utensils().disenchantItem(intoI);
 		while(intoI.numBehaviors()>0)
 		{
 			Behavior B=intoI.fetchBehavior(0);
 			if(B!=null)
 				intoI.delBehavior(B);
 		}
-		intoI.basePhyStats().setAbility(0);
 		intoI.basePhyStats().setDisposition(intoI.basePhyStats().disposition() & (~PhyStats.IS_BONUS));
 		intoI.recoverPhyStats();
 		intoI.setBaseValue(0);
