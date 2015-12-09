@@ -375,60 +375,124 @@ public class Remort extends StdCommand
 					}
 					mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
 					mob.getStartRoom().bringMobHere(mob, true);
-					try
+					final String failsafeID = "RemoteFailSafe";
+					MsgListener finishRemoteListener = new MsgListener()
 					{
-						mob.baseCharStats().setMyClasses("StdCharClass");
-						mob.baseCharStats().setMyLevels("1");
-						mob.basePhyStats().setLevel(1);
-						for (final Enumeration<Ability> a = mob.personalEffects(); a.hasMoreElements();)
+						final MsgListener me=this;
+						
+						@Override
+						public void executeMsg(Environmental myHost, CMMsg msg)
 						{
-							final Ability A = a.nextElement();
-							if ((A != null)&& (A.canBeUninvoked()))
+							if((msg.source() == myHost)
+							&&(myHost instanceof MOB)
+							&&(msg.sourceMinor()==CMMsg.TYP_LIFE))
 							{
-								A.unInvoke();
-								mob.delEffect(A);
-							}
-						}
-						recoverEverything(mob);
-						CMLib.login().promptPlayerStats(mob.playerStats().getTheme(), mob, mob.session(), bonusPointsPerStat[0]);
-						recoverEverything(mob);
-						mob.basePhyStats().setSensesMask(0);
-						mob.baseCharStats().getMyRace().startRacing(mob,false);
-						mob.setWimpHitPoint(5);
-						mob.setQuestPoint(questPoint[0]);
-						recoverEverything(mob);
-						mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(mob.playerStats().getTheme(), mob, mob.session()));
-						recoverEverything(mob);
-						mob.setPractices(0);
-						mob.setTrains(0);
-						mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
-						mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
-						recoverEverything(mob);
-						recoverEverything(mob);
-						CMLib.achievements().loadAccountAchievements(mob);
-						CMLib.achievements().loadPlayerSkillAwards(mob, mob.playerStats());
-						CMLib.commands().postLook(mob, true);
-						if((!mob.charStats().getCurrentClass().leveless())
-						&&(!mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
-						&&(!mob.charStats().getMyRace().leveless())
-						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
-						{
-							for(int i=1;i<newLevel[0];i++)
-							{
-								if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
-								||(mob.charStats().getCurrentClass().expless())
-								||(mob.charStats().getMyRace().expless()))
-									CMLib.leveler().level(mob);
+								Runnable remortRun = new Runnable()
+								{
+									@Override
+									public void run()
+									{
+										try
+										{
+											final Session sess = mob.session();
+											mob.baseCharStats().setMyClasses("StdCharClass");
+											mob.baseCharStats().setMyLevels("1");
+											mob.basePhyStats().setLevel(1);
+											for (final Enumeration<Ability> a = mob.personalEffects(); a.hasMoreElements();)
+											{
+												final Ability A = a.nextElement();
+												if ((A != null)&& (A.canBeUninvoked()))
+												{
+													A.unInvoke();
+													mob.delEffect(A);
+												}
+											}
+											Ability oldFailSafeA=mob.fetchEffect(failsafeID);
+											if(oldFailSafeA!=null)
+												mob.delEffect(oldFailSafeA);
+											ExtendableAbility failsafeA=(ExtendableAbility)CMClass.getAbility("ExtAbility");
+											if(failsafeA!=null)
+											{
+												failsafeA.setAbilityID(failsafeID);
+												failsafeA.setMsgListener(me);
+												failsafeA.setSavable(false);
+												mob.addNonUninvokableEffect(failsafeA);
+											}
+											recoverEverything(mob);
+											CMLib.login().promptPlayerStats(mob.playerStats().getTheme(), mob, mob.session(), bonusPointsPerStat[0]);
+											if(sess.isStopped())
+												throw new IOException("Session stopped");
+											recoverEverything(mob);
+											mob.basePhyStats().setSensesMask(0);
+											mob.baseCharStats().getMyRace().startRacing(mob,false);
+											mob.setWimpHitPoint(5);
+											mob.setQuestPoint(questPoint[0]);
+											recoverEverything(mob);
+											mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(mob.playerStats().getTheme(), mob, mob.session()));
+											if(sess.isStopped())
+												throw new IOException("Session stopped");
+											recoverEverything(mob);
+											mob.setPractices(0);
+											mob.setTrains(0);
+											mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
+											mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
+											recoverEverything(mob);
+											recoverEverything(mob);
+											CMLib.achievements().loadAccountAchievements(mob);
+											CMLib.achievements().loadPlayerSkillAwards(mob, mob.playerStats());
+											CMLib.commands().postLook(mob, true);
+											if((!mob.charStats().getCurrentClass().leveless())
+											&&(!mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
+											&&(!mob.charStats().getMyRace().leveless())
+											&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
+											{
+												for(int i=1;i<newLevel[0];i++)
+												{
+													if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
+													||(mob.charStats().getCurrentClass().expless())
+													||(mob.charStats().getMyRace().expless()))
+														CMLib.leveler().level(mob);
+													else
+														CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+												}
+											}
+											recoverEverything(mob);
+											CMLib.utensils().confirmWearability(mob);
+											recoverEverything(mob);
+											mob.tell(L("You have remorted back to level @x1!",""+mob.phyStats().level()));
+											Ability A=mob.fetchEffect(failsafeID);
+											if(A!=null)
+												mob.delEffect(A);
+										}
+										catch(java.lang.NullPointerException e)
+										{
+										}
+										catch (final IOException e)
+										{
+										}
+									}
+								};
+								if(msg.sourceMajor(CMMsg.MASK_CNTRLMSG))
+									remortRun.run();
 								else
-									CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+									CMLib.threads().scheduleRunnable(remortRun,500);
 							}
 						}
-						recoverEverything(mob);
-						CMLib.utensils().confirmWearability(mob);
-						recoverEverything(mob);
-						mob.tell(L("You have remorted back to level @x1!",""+mob.phyStats().level()));
+						@Override
+						public boolean okMessage(Environmental myHost, CMMsg msg)
+						{
+							return true;
+						}
+					};
+					ExtendableAbility failsafeA=(ExtendableAbility)CMClass.getAbility("ExtAbility");
+					if(failsafeA!=null)
+					{
+						failsafeA.setAbilityID(failsafeID);
+						failsafeA.setMsgListener(finishRemoteListener);
+						failsafeA.setSavable(false);
+						mob.addNonUninvokableEffect(failsafeA);
 					}
-					catch (final IOException e){}
+					finishRemoteListener.executeMsg(mob, CMClass.getMsg(mob, CMMsg.MSG_BRINGTOLIFE | CMMsg.MASK_CNTRLMSG, null));
 				}
 			}
 		});
