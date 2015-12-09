@@ -3356,8 +3356,10 @@ public class StdMOB implements MOB
 				{
 					if (!CMLib.flags().canBreathe(this))
 					{
+						final MOB victiM = getVictim();
+						final MOB killerM = (victiM == null) ? this : victiM;
 						R.show(this, this, CMMsg.MSG_OK_VISUAL, L("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
-						CMLib.combat().postDamage(this, this, null,
+						CMLib.combat().postDamage(killerM, this, null,
 								(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
 								CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);
 					}
@@ -3365,10 +3367,12 @@ public class StdMOB implements MOB
 					if(!CMLib.flags().canBreatheHere(this,R))
 					{
 						final int atmo=R.getAtmosphere();
+						final MOB victiM = getVictim();
+						final MOB killerM = (victiM == null) ? this : victiM;
 						if((atmo&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 						{
 							R.show(this, this, CMMsg.MSG_OK_VISUAL, L("^Z<S-NAME> <S-IS-ARE> drowning in @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10));
-							CMLib.combat().postDamage(this, this, null, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);
+							CMLib.combat().postDamage(killerM, this, null, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);
 						}
 						else
 						{
@@ -3376,7 +3380,7 @@ public class StdMOB implements MOB
 								R.show(this, this, CMMsg.MSG_OK_VISUAL, L("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
 							else
 								R.show(this, this, CMMsg.MSG_OK_VISUAL, L("^Z<S-NAME> <S-IS-ARE> choking on @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10));
-							CMLib.combat().postDamage(this, this, null, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), CMMsg.MASK_ALWAYS | CMMsg.TYP_GAS, -1, null);
+							CMLib.combat().postDamage(killerM, this, null, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), CMMsg.MASK_ALWAYS | CMMsg.TYP_GAS, -1, null);
 						}
 					}
 				}
