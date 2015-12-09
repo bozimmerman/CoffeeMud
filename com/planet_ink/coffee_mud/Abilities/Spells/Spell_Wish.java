@@ -35,15 +35,55 @@ import java.util.*;
 
 public class Spell_Wish extends Spell
 {
-	@Override public String ID() { return "Spell_Wish"; }
+	@Override
+	public String ID()
+	{
+		return "Spell_Wish";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Wish");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_NOORDERING;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int enchantQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NOORDERING;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
 
 	protected Physical maybeAdd(MOB mob, Physical E, Vector<Physical> foundAll, Physical foundThang)
 	{
@@ -108,7 +148,11 @@ public class Spell_Wish extends Spell
 	public void age(MOB mob)
 	{
 		final Ability A=CMClass.getAbility("Chant_SpeedAging");
-		if(A!=null){ A.setAbilityCode(65536); A.invoke(mob,mob,true,0);}
+		if (A != null)
+		{
+			A.setAbilityCode(65536);
+			A.invoke(mob, mob, true, 0);
+		}
 	}
 
 	@Override
@@ -161,8 +205,10 @@ public class Spell_Wish extends Spell
 			mob.location().send(mob,msg);
 			final StringBuffer wish=new StringBuffer(myWish);
 			for(int i=0;i<wish.length();i++)
+			{
 				if(!Character.isLetterOrDigit(wish.charAt(i)))
 					wish.setCharAt(i,' ');
+			}
 			myWish=wish.toString().trim().toUpperCase();
 			final Vector<String> wishV=CMParms.parse(myWish);
 			myWish=" "+myWish+" ";
@@ -176,29 +222,79 @@ public class Spell_Wish extends Spell
 
 			// do locate object first.. its the most likely
 			String objectWish=myWish;
-			final String[] redundantStarts={"CREATE","TO CREATE","ANOTHER","THERE WAS","I HAD","I COULD HAVE","MAY I HAVE","CAN I HAVE","CAN YOU","CAN I","MAKE","TO MAKE","GIVE","ME","TO HAVE","TO GET","A NEW","SOME MORE","MY OWN","A","PLEASE","THE","I OWNED"};
-			final String[] redundantEnds={"TO APPEAR","OF MY OWN","FOR ME","BE","CREATED","PLEASE","HERE"};
+			final String[] redundantStarts={
+				"CREATE",
+				"TO CREATE",
+				"ANOTHER",
+				"THERE WAS",
+				"I HAD",
+				"I COULD HAVE",
+				"MAY I HAVE",
+				"CAN I HAVE",
+				"CAN YOU",
+				"CAN I",
+				"MAKE",
+				"TO MAKE",
+				"GIVE",
+				"ME",
+				"TO HAVE",
+				"TO GET",
+				"A NEW",
+				"SOME MORE",
+				"MY OWN",
+				"A",
+				"PLEASE",
+				"THE",
+				"I OWNED"
+			};
+			final String[] redundantEnds=
+			{
+				"TO APPEAR",
+				"OF MY OWN",
+				"FOR ME",
+				"BE",
+				"CREATED",
+				"PLEASE",
+				"HERE"
+			};
 			int i=0;
 			while(i<redundantStarts.length)
 			{
 				if(objectWish.startsWith(" "+redundantStarts[i]+" "))
-				{	objectWish=objectWish.substring(1+redundantStarts[i].length()); i=-1;}
+				{
+					objectWish = objectWish.substring(1 + redundantStarts[i].length());
+					i = -1;
+				}
 				i++;
 			}
 			i=0;
 			while(i<redundantEnds.length)
 			{
 				if(objectWish.endsWith(" "+redundantEnds[i]+" "))
-				{	objectWish=objectWish.substring(0,objectWish.length()-(1+redundantEnds[i].length())); i=-1;}i++;}
+				{
+					objectWish = objectWish.substring(0, objectWish.length() - (1 + redundantEnds[i].length()));
+					i = -1;
+				}
+				i++;
+			}
 			String goldWish=objectWish.toUpperCase();
 			objectWish=objectWish.toLowerCase().trim();
 
-			final String[] redundantGoldStarts={"A PILE OF","A STACK OF","PILE OF","STACK OF"};
+			final String[] redundantGoldStarts=
+			{
+				"A PILE OF",
+				"A STACK OF",
+				"PILE OF",
+				"STACK OF"
+			};
 			i=0;
 			while(i<redundantGoldStarts.length)
 			{
 				if(goldWish.startsWith(" "+redundantGoldStarts[i]+" "))
-				{	goldWish=goldWish.substring(1+redundantGoldStarts[i].length()); i=-1;}
+				{
+					goldWish = goldWish.substring(1 + redundantGoldStarts[i].length());
+					i = -1;
+				}
 				i++;
 			}
 			final Vector<String> goldCheck=CMParms.parse(goldWish.trim().toLowerCase());
@@ -251,7 +347,10 @@ public class Spell_Wish extends Spell
 					if(O instanceof Physical)
 						foundThang=maybeAdd(mob,((Physical)O),thangsFound,foundThang);
 				}
-			}catch(final NoSuchElementException nse){}
+			}
+			catch (final NoSuchElementException nse)
+			{
+			}
 
 			if(foundThang instanceof PackagedItems)
 				foundThang = ((PackagedItems)foundThang).peekFirstItem();
@@ -444,56 +543,57 @@ public class Spell_Wish extends Spell
 
 			// a wish for movement
 			String locationWish=myWish;
-			final String[] redundantStarts2={"TO GO TO",
-									  "TO TELEPORT TO",
-									  "TO TRANSPORT TO",
-									  "TO TRANSFER TO",
-									  "TO PORTAL TO",
-									  "WOULD TELEPORT TO",
-									  "WOULD TRANSPORT TO",
-									  "WOULD TRANSFER TO",
-									  "WOULD PORTAL TO",
-									  "WOULD GO TO",
-									  "TO PORTAL TO",
-									  "TO BE TELEPORTED TO",
-									  "TO BE TRANSPORTED TO",
-									  "TO BE TRANSFERRED TO",
-									  "TO BE PORTALLED TO",
-									  "TO BE PORTALED TO",
-									  "TO BE TELEPORTED",
-									  "TO BE TRANSPORTED",
-									  "TO BE TRANSFERRED",
-									  "TO BE PORTALLED",
-									  "TO BE PORTALED",
-									  "TO APPEAR IN ",
-									  "TO BE IN",
-									  "TO APPEAR AT",
-									  "TO BE AT",
-									  "TO GO",
-									  "TO MOVE TO",
-									  "TO MOVE",
-									  "TO BE AT",
-									  "TO BE IN",
-									  "TO BE",
-									  "TO TRAVEL",
-									  "TO WALK TO",
-									  "TO WALK",
-									  "TO TRAVEL TO",
-									  "TO GOTO",
-									  "TELEPORTATION TO",
-									  "TRANSPORTED TO",
-									  "TELEPORTED TO",
-									  "TRANSFERRED TO",
-									  "WAS TRANSPORTED TO",
-									  "WAS TELEPORTED TO",
-									  "WAS TRANSFERRED TO",
-									  "TELEPORT",
-									  "GO",
-									  "GO TO",
-									  "GOTO",
-									  "TRANSFER",
-									  "PORTAL",
-									  "TELEPORTATION"};
+			final String[] redundantStarts2={
+					"TO GO TO",
+				  "TO TELEPORT TO",
+				  "TO TRANSPORT TO",
+				  "TO TRANSFER TO",
+				  "TO PORTAL TO",
+				  "WOULD TELEPORT TO",
+				  "WOULD TRANSPORT TO",
+				  "WOULD TRANSFER TO",
+				  "WOULD PORTAL TO",
+				  "WOULD GO TO",
+				  "TO PORTAL TO",
+				  "TO BE TELEPORTED TO",
+				  "TO BE TRANSPORTED TO",
+				  "TO BE TRANSFERRED TO",
+				  "TO BE PORTALLED TO",
+				  "TO BE PORTALED TO",
+				  "TO BE TELEPORTED",
+				  "TO BE TRANSPORTED",
+				  "TO BE TRANSFERRED",
+				  "TO BE PORTALLED",
+				  "TO BE PORTALED",
+				  "TO APPEAR IN ",
+				  "TO BE IN",
+				  "TO APPEAR AT",
+				  "TO BE AT",
+				  "TO GO",
+				  "TO MOVE TO",
+				  "TO MOVE",
+				  "TO BE AT",
+				  "TO BE IN",
+				  "TO BE",
+				  "TO TRAVEL",
+				  "TO WALK TO",
+				  "TO WALK",
+				  "TO TRAVEL TO",
+				  "TO GOTO",
+				  "TELEPORTATION TO",
+				  "TRANSPORTED TO",
+				  "TELEPORTED TO",
+				  "TRANSFERRED TO",
+				  "WAS TRANSPORTED TO",
+				  "WAS TELEPORTED TO",
+				  "WAS TRANSFERRED TO",
+				  "TELEPORT",
+				  "GO",
+				  "GO TO",
+				  "GOTO",
+				  "TRANSFER",
+				  "PORTAL",
+				  "TELEPORTATION"};
 			final String[] redundantEnds2={"IMMEDIATELY","PLEASE","NOW","AT ONCE"};
 			boolean validStart=false;
 			i=0;
@@ -532,7 +632,10 @@ public class Spell_Wish extends Spell
 						final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, locationWish.trim(), true, 10);
 						if(rooms.size()>0)
 							newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
-					}catch(final NoSuchElementException nse){}
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
 				}
 				if(newRoom!=null)
 				{
@@ -671,8 +774,16 @@ public class Spell_Wish extends Spell
 			}
 
 			if((target!=null)
-			&&((myWish.indexOf(" LOWER ")>=0)||(myWish.indexOf(" LOSE ")>=0)||(myWish.indexOf(" GAIN ")>=0)||(myWish.indexOf(" HIGHER ")>=0)||(myWish.indexOf(" WAS ")>=0)||(myWish.indexOf(" WOULD BE ")>=0)||(myWish.indexOf(" WOULD BECOME ")>=0)||(myWish.indexOf(" BECAME ")>=0))
-			&&((myWish.indexOf(" LEVEL ")>=0)||(myWish.indexOf(" LEVELS ")>=0))
+			&&((myWish.indexOf(" LOWER ")>=0)
+				||(myWish.indexOf(" LOSE ")>=0)
+				||(myWish.indexOf(" GAIN ")>=0)
+				||(myWish.indexOf(" HIGHER ")>=0)
+				||(myWish.indexOf(" WAS ")>=0)
+				||(myWish.indexOf(" WOULD BE ")>=0)
+				||(myWish.indexOf(" WOULD BECOME ")>=0)
+				||(myWish.indexOf(" BECAME ")>=0))
+			&&((myWish.indexOf(" LEVEL ")>=0)
+				||(myWish.indexOf(" LEVELS ")>=0))
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 			{
 				int level=0;
@@ -793,10 +904,12 @@ public class Spell_Wish extends Spell
 					}
 					wishDrain(mob,baseLoss*levelsLost,true);
 					if((mob!=target)||(level>0))
-					for(int i2=0;i2<levelsLost;i2++)
 					{
-						CMLib.leveler().unLevel(mob);
-						mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
+						for(int i2=0;i2<levelsLost;i2++)
+						{
+							CMLib.leveler().unLevel(mob);
+							mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
+						}
 					}
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now level @x2!",target.name(),""+target.phyStats().level()));
 				}
@@ -940,17 +1053,39 @@ public class Spell_Wish extends Spell
 			if(target instanceof MOB)
 			{
 				int code=-1;
-				int x=myWish.indexOf(" KNOW "); if((x>=0)&&(x+5>code)) code=x+5;
-				x=myWish.indexOf(" KNEW "); if((x>=0)&&(x+5>code)) code=x+5;
-				x=myWish.indexOf(" LEARN "); if((x>=0)&&(x+6>code)) code=x+6;
-				x=myWish.indexOf(" COULD "); if((x>=0)&&(x+6>code)) code=x+6;
-				x=myWish.indexOf(" GAIN "); if((x>=0)&&(x+5>code)) code=x+5;
-				x=myWish.indexOf(" BE TAUGHT "); if((x>=0)&&(x+10>code)) code=x+10;
-				x=myWish.indexOf(" HOW TO "); if((x>=0)&&(x+7>code)) code=x+7;
-				x=myWish.indexOf(" ABLE TO "); if((x>=0)&&(x+8>code)) code=x+8;
-				x=myWish.indexOf(" CAST "); if((x>=0)&&(x+5>code)) code=x+5;
-				x=myWish.indexOf(" SING "); if((x>=0)&&(x+5>code)) code=x+5;
-				x=myWish.indexOf(" PRAY FOR "); if((x>=0)&&(x+9>code)) code=x+9;
+				int x = myWish.indexOf(" KNOW ");
+				if ((x >= 0) && (x + 5 > code))
+					code = x + 5;
+				x = myWish.indexOf(" KNEW ");
+				if ((x >= 0) && (x + 5 > code))
+					code = x + 5;
+				x = myWish.indexOf(" LEARN ");
+				if ((x >= 0) && (x + 6 > code))
+					code = x + 6;
+				x = myWish.indexOf(" COULD ");
+				if ((x >= 0) && (x + 6 > code))
+					code = x + 6;
+				x = myWish.indexOf(" GAIN ");
+				if ((x >= 0) && (x + 5 > code))
+					code = x + 5;
+				x = myWish.indexOf(" BE TAUGHT ");
+				if ((x >= 0) && (x + 10 > code))
+					code = x + 10;
+				x = myWish.indexOf(" HOW TO ");
+				if ((x >= 0) && (x + 7 > code))
+					code = x + 7;
+				x = myWish.indexOf(" ABLE TO ");
+				if ((x >= 0) && (x + 8 > code))
+					code = x + 8;
+				x = myWish.indexOf(" CAST ");
+				if ((x >= 0) && (x + 5 > code))
+					code = x + 5;
+				x = myWish.indexOf(" SING ");
+				if ((x >= 0) && (x + 5 > code))
+					code = x + 5;
+				x = myWish.indexOf(" PRAY FOR ");
+				if ((x >= 0) && (x + 9 > code))
+					code = x + 9;
 				if((code>=0)&&(code<myWish.length()))
 				{
 					final MOB tm=(MOB)target;
@@ -993,20 +1128,44 @@ public class Spell_Wish extends Spell
 					}
 				}
 				code=-1;
-				x=myWish.indexOf(" FORGOT "); if((x>=0)&&(x+7>code)) code=x+7;
-				x=myWish.indexOf(" LOST "); if((x>=0)&&(x+5>code)) code=x+5;
-				x=myWish.indexOf(" LOSE "); if((x>=0)&&(x+5>code)) code=x+5;
-				x=myWish.indexOf(" REVOKE "); if((x>=0)&&(x+7>code)) code=x+7;
-				x=myWish.indexOf(" REVOKED "); if((x>=0)&&(x+8>code)) code=x+8;
-				x=myWish.indexOf(" DIDN`T KNOW "); if((x>=0)&&(x+12>code)) code=x+12;
-				x=myWish.indexOf(" DID NOT KNOW "); if((x>=0)&&(x+13>code)) code=x+13;
+				x = myWish.indexOf(" FORGOT ");
+				if ((x >= 0) && (x + 7 > code))
+					code = x + 7;
+				x = myWish.indexOf(" LOST ");
+				if ((x >= 0) && (x + 5 > code))
+					code = x + 5;
+				x = myWish.indexOf(" LOSE ");
+				if ((x >= 0) && (x + 5 > code))
+					code = x + 5;
+				x = myWish.indexOf(" REVOKE ");
+				if ((x >= 0) && (x + 7 > code))
+					code = x + 7;
+				x = myWish.indexOf(" REVOKED ");
+				if ((x >= 0) && (x + 8 > code))
+					code = x + 8;
+				x = myWish.indexOf(" DIDN`T KNOW ");
+				if ((x >= 0) && (x + 12 > code))
+					code = x + 12;
+				x = myWish.indexOf(" DID NOT KNOW ");
+				if ((x >= 0) && (x + 13 > code))
+					code = x + 13;
 				if(code>=0)
 				{
-					x=myWish.indexOf(" ABILITY TO "); if((x>=0)&&(x+12>code)) code=x+12;
-					x=myWish.indexOf(" KNOWLEDGE OF "); if((x>=0)&&(x+13>code)) code=x+13;
-					x=myWish.indexOf(" CAST "); if((x>=0)&&(x+5>code)) code=x+5;
-					x=myWish.indexOf(" SING "); if((x>=0)&&(x+5>code)) code=x+5;
-					x=myWish.indexOf(" PRAY FOR "); if((x>=0)&&(x+9>code)) code=x+9;
+					x = myWish.indexOf(" ABILITY TO ");
+					if ((x >= 0) && (x + 12 > code))
+						code = x + 12;
+					x = myWish.indexOf(" KNOWLEDGE OF ");
+					if ((x >= 0) && (x + 13 > code))
+						code = x + 13;
+					x = myWish.indexOf(" CAST ");
+					if ((x >= 0) && (x + 5 > code))
+						code = x + 5;
+					x = myWish.indexOf(" SING ");
+					if ((x >= 0) && (x + 5 > code))
+						code = x + 5;
+					x = myWish.indexOf(" PRAY FOR ");
+					if ((x >= 0) && (x + 9 > code))
+						code = x + 9;
 				}
 				if((code>=0)&&(code<myWish.length()))
 				{
@@ -1051,7 +1210,10 @@ public class Spell_Wish extends Spell
 			for(final int attributes : CharStats.CODES.ALLCODES())
 			{
 				if(CMLib.english().containsString(myWish,CharStats.CODES.DESC(attributes)))
-				{	foundAttribute=attributes; break;}
+				{
+					foundAttribute = attributes;
+					break;
+				}
 			}
 			if(myWish.indexOf("STRONG")>=0)
 				foundAttribute=CharStats.STAT_STRENGTH;
@@ -1077,12 +1239,18 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf("IMMUN")>=0))
 			{
 				for(final int saveStat : CharStats.CODES.SAVING_THROWS())
+				{
 					if(myWish.indexOf(" "+CharStats.CODES.DESC(saveStat))>=0)
 						foundAttribute=saveStat;
+				}
 				if(foundAttribute<0)
-				for(final int saveStat : CharStats.CODES.SAVING_THROWS())
-					if(myWish.indexOf(" "+CharStats.CODES.NAME(saveStat))>=0)
-						foundAttribute=saveStat;
+				{
+					for(final int saveStat : CharStats.CODES.SAVING_THROWS())
+					{
+						if(myWish.indexOf(" "+CharStats.CODES.NAME(saveStat))>=0)
+							foundAttribute=saveStat;
+					}
+				}
 				if(myWish.indexOf(" PARALY")>=0)
 					foundAttribute=CharStats.STAT_SAVE_PARALYSIS;
 				if(myWish.indexOf(" FIRE")>=0)

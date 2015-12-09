@@ -30,12 +30,40 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The main chat channels management library.  This is one of the 
+ * older libraries in the system, and as such, still reflects the
+ * use of indexed vectors that was common.  It still makes sense
+ * given the way those numbers are used in CMMsg message codes to
+ * identify the channels.  
+ * 
+ * Over the years, the ability to filter the channels by user
+ * was added, along with flags to automatically insert information
+ * or enable other parts of the system to generate channel
+ * messages.
+ * 
+ * @author Bo Zimmerman
+ */
 public interface ChannelsLibrary extends CMLibrary
 {
-	public final int QUEUE_SIZE=100;
-
+	/**
+	 * Returns the number of registered channels
+	 * @return the number of registered channels
+	 */
 	public int getNumChannels();
+	
+	/**
+	 * Returns the CMChannel object for the given
+	 * registered channel from 0 - getNumChannels();
+	 * Basically this is almost all you need, but
+	 * there's more....
+	 * @see ChannelsLibrary#getNumChannels()
+	 * @param i the index of the channel
+	 * @return the CMChannel object
+	 */
 	public CMChannel getChannel(int i);
+	
+	
 	public List<ChannelMsg> getChannelQue(int i, int numNewToSkip, int numToReturn);
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i);
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i, boolean offlineOK);
@@ -58,7 +86,6 @@ public interface ChannelsLibrary extends CMLibrary
 	public CMChannel createNewChannel(final String name, final String i3Name, final String imc2Name, 
 									  final String mask, final String colorOverride, final String colorOverrideStr, 
 									  final Set<ChannelFlag> flags);
-
 
 	/**
 	 * Basic Channel definition
