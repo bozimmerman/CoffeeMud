@@ -108,11 +108,11 @@ public class ChannelBackLogNext extends StdWebMacro
 					else
 						str="";
 					str=CMStrings.removeColors(str);
-					elapsedTime=now-cmsg.ts();
+					elapsedTime=now-cmsg.sentTimeMillis();
 					elapsedTime=Math.round(elapsedTime/1000L)*1000L;
 					if(elapsedTime<0)
 					{
-						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+cmsg.ts());
+						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+cmsg.sentTimeMillis());
 						elapsedTime=0;
 					}
 					str += " ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";

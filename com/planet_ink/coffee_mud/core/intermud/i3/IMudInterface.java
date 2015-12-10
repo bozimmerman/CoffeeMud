@@ -137,9 +137,9 @@ public class IMudInterface implements ImudServices, Serializable
 		else
 		if(channels.size()==0)
 		{
-			channels.add(CMLib.channels().createNewChannel("I3CHAT", "diku_chat", "", "", "", "", new HashSet<ChannelFlag>()));
-			channels.add(CMLib.channels().createNewChannel("I3GOSSIP", "diku_immortals", "", "", "", "", new HashSet<ChannelFlag>()));
-			channels.add(CMLib.channels().createNewChannel("GREET", "diku_code", "", "", "", "", new HashSet<ChannelFlag>()));
+			channels.add(CMLib.channels().createNewChannel("I3CHAT", "diku_chat", "", "", "", new HashSet<ChannelFlag>()));
+			channels.add(CMLib.channels().createNewChannel("I3GOSSIP", "diku_immortals", "", "", "", new HashSet<ChannelFlag>()));
+			channels.add(CMLib.channels().createNewChannel("GREET", "diku_code", "", "", "", new HashSet<ChannelFlag>()));
 		}
 		port=Port;
 	}

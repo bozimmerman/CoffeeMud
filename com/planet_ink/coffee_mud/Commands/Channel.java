@@ -56,7 +56,7 @@ public class Channel extends StdCommand
 		final boolean systemMsg=((Boolean)args[0]).booleanValue();
 		final String channelName=(String)args[1];
 		final String message=(String)args[2];
-		CMLib.channels().reallyChannel(mob,channelName,message,systemMsg);
+		CMLib.channels().createAndSendChannelMessage(mob,channelName,message,systemMsg);
 		return Boolean.TRUE;
 	}
 
@@ -147,11 +147,11 @@ public class Channel extends StdCommand
 				for(final ChannelsLibrary.ChannelMsg msg : showThese)
 				{
 					final CMMsg modMsg = (CMMsg)msg.msg().copyOf();
-					elapsedTime=now-msg.ts();
+					elapsedTime=now-msg.sentTimeMillis();
 					elapsedTime=Math.round(elapsedTime/1000L)*1000L;
 					if(elapsedTime<0)
 					{
-						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+msg.ts());
+						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+msg.sentTimeMillis());
 						elapsedTime=0;
 					}
 
@@ -162,7 +162,7 @@ public class Channel extends StdCommand
 						modMsg.setTargetMessage(modMsg.targetMessage()+timeAgo);
 					if((modMsg.othersMessage()!=null)&&(modMsg.othersMessage().length()>0))
 						modMsg.setOthersMessage(modMsg.othersMessage()+timeAgo);
-					showedAny=CMLib.channels().channelTo(mob.session(),areareq,channelInt,modMsg,modMsg.source())||showedAny;
+					showedAny=CMLib.channels().sendChannelCMMsgTo(mob.session(),areareq,channelInt,modMsg,modMsg.source())||showedAny;
 				}
 			}
 			if(!showedAny)
@@ -184,7 +184,7 @@ public class Channel extends StdCommand
 			return false;
 		}
 		else
-			CMLib.channels().reallyChannel(mob,channelName,CMParms.combine(commands,0),systemMsg);
+			CMLib.channels().createAndSendChannelMessage(mob,channelName,CMParms.combine(commands,0),systemMsg);
 		return false;
 	}
 
