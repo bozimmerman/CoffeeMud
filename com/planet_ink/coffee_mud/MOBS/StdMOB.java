@@ -1352,7 +1352,7 @@ public class StdMOB implements MOB
 					return false;
 			}
 		}
-		if (CMLib.flags().isUnattackable(mob) && (mob.getVictim() != this))
+		if (CMLib.flags().isUnattackable(mob) && (!mob.isInCombat()))
 			return false;
 		if (targetIsMonster || iAmMonster)
 			return true;
