@@ -284,7 +284,7 @@ public class Email extends StdCommand
 			mob.tell(L("You will receive an email with your new password shortly.  Goodbye."));
 			if(mob.session()!=null)
 			{
-				try{Thread.sleep(1000);}catch(final Exception e){}
+				CMLib.s_sleep(1000);
 				mob.session().stopSession(false,false,false);
 			}
 		}

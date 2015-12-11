@@ -426,7 +426,7 @@ public class DefaultSession implements Session
 		rawout.flush();
 		rawout=new BufferedOutputStream(sock[0].getOutputStream());
 		out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-		try{Thread.sleep(50);}catch(final Exception e){}
+		CMLib.s_sleep(50);
 		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 			Log.debugOut("MCCP compression stopped");

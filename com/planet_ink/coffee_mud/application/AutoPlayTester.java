@@ -84,6 +84,17 @@ public class AutoPlayTester
 		System.out.println(s);
 		return s;
 	}
+	
+	public void s_sleep(long time)
+	{
+		try
+		{
+			Thread.sleep(time);
+		}
+		catch(Exception e)
+		{
+		}
+	}
 
 	public String[] waitFor(String regEx, int num) throws IOException
 	{
@@ -95,7 +106,7 @@ public class AutoPlayTester
 			bufferFill();
 			if(inbuffer.size()==0)
 			{
-				try{Thread.sleep(100);}catch(final Exception e){}
+				s_sleep(100);
 			}
 			else
 			{
@@ -128,7 +139,7 @@ public class AutoPlayTester
 	public void writeln(String s) throws IOException
 	{
 		System.out.println(s);
-		try{Thread.sleep(500);}catch(final Exception e){}
+		s_sleep(500);
 		out.write(s+"\n");
 		out.flush();
 	}
@@ -141,7 +152,7 @@ public class AutoPlayTester
 			sock.setSoTimeout(100);
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-			try{Thread.sleep(1000);}catch(final Exception e){}
+			s_sleep(1000);
 			return true;
 		}
 		catch(final java.io.IOException e)

@@ -1001,7 +1001,7 @@ public class ServiceEngine implements ThreadEngine
 				tock.shutdown();
 				allTicks.remove(tock);
 			}
-			try{Thread.sleep(100);}catch(final Exception e){}
+			CMLib.s_sleep(100);
 		}
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": thread shutdown");
 		CMLib.killThread(drivingThread,100,10);
@@ -1343,7 +1343,7 @@ public class ServiceEngine implements ThreadEngine
 	public void run()
 	{
 		while(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-			try{Thread.sleep(1000);}catch(final Exception e){}
+			CMLib.s_sleep(1000);
 		while(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
 		{
 			try

@@ -107,7 +107,7 @@ public class OffLine extends Thread implements MudHost
 
 		while (!serverIsRunning && isOK)
 		{
-			try{Thread.sleep(1000);}catch(final Exception e){}
+			CMLib.s_sleep(1000);
 		}
 		if (!isOK)
 		{
@@ -267,7 +267,7 @@ public class OffLine extends Thread implements MudHost
 					if(offLineText!=null)
 						out.print(offLineText);
 					out.flush();
-					try{Thread.sleep(250);}catch(final Exception e){}
+					CMLib.s_sleep(250);
 					closeSocks(sock,in,out);
 				}
 				catch(final SocketException e)
@@ -289,7 +289,7 @@ public class OffLine extends Thread implements MudHost
 			out.println(rejectText);
 			out.flush();
 			out.close();
-			try{Thread.sleep(250);}catch(final Exception e){}
+			CMLib.s_sleep(250);
 			sock = null;
 		}
 	}

@@ -229,8 +229,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(login.equalsIgnoreCase("all"))
 			return true;
 		for (final String element : DEFAULT_BADNAMES)
+		{
 			if(CMLib.english().containsString(login, element))
 				return true;
+		}
 		final List<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.Str.BADNAMES),true);
 		for(int v2=0;v2<V2.size();v2++)
 		{
@@ -555,7 +557,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.state=LoginState.ACCTMENU_START;
 	}
 
-
 	protected String buildQualifyingClassList(MOB mob, List<CharClass> classes, String finalConnector)
 	{
 		final StringBuilder list = new StringBuilder("");
@@ -646,7 +647,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			if((rejectText!=null)&&(rejectText.length()>0))
 				mob.session().println(rejectText.toString());
-			try{Thread.sleep(1000);}catch(final Exception e){}
+			CMLib.s_sleep(1000);
 			mob.session().stopSession(false,false,false);
 			return true;
 		}
@@ -1750,7 +1751,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					acct.getAccountName(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS)));
 				session.println(L("Your account email address has been updated.  You will receive an email with your new password shortly."));
 				session.stopSession(false,false,false);
-				try{Thread.sleep(1000);}catch(final Exception e){}
+				CMLib.s_sleep(1000);
 				CMLib.database().DBUpdateAccount(acct);
 				return LoginResult.NO_LOGIN;
 			}
@@ -3174,7 +3175,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				+ "You may use the PASSWORD command to change it once you are online.",
 				mob.Name(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS)));
 			session.println(L("Your character has been created.  You will receive an email with your password shortly."));
-			try{Thread.sleep(1000);}catch(final Exception e){}
+			CMLib.s_sleep(1000);
 			if(mob==session.mob())
 				session.stopSession(false,false,false);
 		}

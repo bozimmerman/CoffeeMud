@@ -203,7 +203,7 @@ public class Unload extends StdCommand
 						{
 							if(M.session()!=null)
 								M.session().stopSession(false,false,false);
-							while(M.session()!=null){try{Thread.sleep(100);}catch(final Exception e){}}
+							while(M.session()!=null){CMLib.s_sleep(100);}
 							if(M.session()!=null)
 								M.session().stopSession(true,true,true);
 						}

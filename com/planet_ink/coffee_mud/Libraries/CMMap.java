@@ -922,7 +922,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			findRoomsByDisplay(mob,enumSet,foundRooms,srchStr,returnFirst,delay);
 			if((returnFirst)&&(foundRooms.size()>0))
 				return foundRooms;
-			if(enumSet.hasMoreElements()) try{Thread.sleep(1000 - delay);}catch(final Exception e){}
+			if(enumSet.hasMoreElements()) CMLib.s_sleep(1000 - delay);
 		}
 		if(!displayOnly)
 		{
@@ -932,7 +932,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				findRoomsByDesc(mob,enumSet,foundRooms,srchStr,returnFirst,delay);
 				if((returnFirst)&&(foundRooms.size()>0))
 					return foundRooms;
-				if(enumSet.hasMoreElements()) try{Thread.sleep(1000 - delay);}catch(final Exception e){}
+				if(enumSet.hasMoreElements()) CMLib.s_sleep(1000 - delay);
 			}
 		}
 		return foundRooms;
@@ -1012,7 +1012,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					return found;
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
-				try{Thread.sleep(1000 - delay); startTime=System.currentTimeMillis();}catch(final Exception e){}
+				CMLib.s_sleep(1000 - delay); startTime=System.currentTimeMillis();
 		}
 		return found;
 	}
@@ -1069,7 +1069,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					return found;
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
-				try{Thread.sleep(1000 - delay); startTime=System.currentTimeMillis();}catch(final Exception e){}
+				CMLib.s_sleep(1000 - delay); startTime=System.currentTimeMillis();
 		}
 		return found;
 	}
@@ -1164,7 +1164,16 @@ public class CMMap extends StdLibrary implements WorldMap
 					}
 				}
 				if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
-					try{Thread.sleep(1000 - delay); startTime=System.currentTimeMillis();}catch(final Exception ex){}
+				{
+					try
+					{
+						Thread.sleep(1000 - delay);
+						startTime = System.currentTimeMillis();
+					}
+					catch (final Exception ex)
+					{
+					}
+				}
 			}
 		}
 		else
@@ -1236,7 +1245,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
-				try{Thread.sleep(1000 - delay); startTime=System.currentTimeMillis();}catch(final Exception e){}
+				CMLib.s_sleep(1000 - delay); startTime=System.currentTimeMillis();
 		}
 		for (final Area A : areas)
 		{
@@ -1294,7 +1303,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					return found;
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
-				try{Thread.sleep(1000 - delay); startTime=System.currentTimeMillis();}catch(final Exception e){}
+				CMLib.s_sleep(1000 - delay); startTime=System.currentTimeMillis();
 		}
 		return found;
 	}
@@ -3003,11 +3012,14 @@ public class CMMap extends StdLibrary implements WorldMap
 				final Area A = a.nextElement();
 				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				{
-					try {
+					try 
+					{
 						final Room R=r.nextElement();
 						A.delProperRoom(R);
 						R.destroy();
-					} catch(Exception e) {}
+					} 
+					catch(Exception e) 
+					{}
 				}
 				if(debugMem)
 				{
@@ -3129,7 +3141,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 
 		}
-		catch(final java.util.NoSuchElementException e){}
+		catch(final java.util.NoSuchElementException e)
+		{}
 		setThreadStatus(serviceClient,"title sweeping");
 		final List<String> playerList=CMLib.database().getUserList();
 		try
@@ -3145,7 +3158,9 @@ public class CMMap extends StdLibrary implements WorldMap
 					setThreadStatus(serviceClient,"title sweeping");
 				}
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch(final NoSuchElementException nse)
+		{}
 
 		setThreadStatus(serviceClient,"cleaning scripts");
 		for(final String areaKey : scriptHostMap.keySet())
@@ -3192,7 +3207,9 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 			}
 		}
-		catch(final java.util.NoSuchElementException e){}
+		catch(final java.util.NoSuchElementException e)
+		{
+		}
 		finally
 		{
 			if(expireM!=null)
@@ -3213,7 +3230,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		rootFiles.add(new CMFile.CMVFSDir(root,root.getPath()+"stats/")
 		{
-			@Override protected CMFile.CMVFSFile[] getFiles()
+			@Override 
+			protected CMFile.CMVFSFile[] getFiles()
 			{
 				final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 				final String[] stats=E.getStatCodes();
@@ -3223,7 +3241,8 @@ public class CMMap extends StdLibrary implements WorldMap
 					final String statValue=E.getStat(statName);
 					myFiles.add(new CMFile.CMVFSFile(this.getPath()+statName,256,System.currentTimeMillis(),"SYS")
 					{
-						@Override public int getMaskBits(MOB accessor)
+						@Override 
+						public int getMaskBits(MOB accessor)
 						{
 							if(accessor==null)
 								return this.mask;
@@ -3241,11 +3260,13 @@ public class CMMap extends StdLibrary implements WorldMap
 							return this.mask|48;
 						}
 
-						@Override public Object readData()
+						@Override 
+						public Object readData()
 						{
 							return statValue;
 						}
-						@Override public void saveData(String filename, int vfsBits, String author, Object O)
+						@Override 
+						public void saveData(String filename, int vfsBits, String author, Object O)
 						{
 							E.setStat(statName, O.toString());
 							if(E instanceof Area)
@@ -3282,14 +3303,16 @@ public class CMMap extends StdLibrary implements WorldMap
 					final Area A=a.nextElement();
 					myFiles.add(new CMFile.CMVFSFile(this.getPath()+cmfsFilenameify(A.Name())+".cmare",48,System.currentTimeMillis(),"SYS")
 					{
-						@Override public Object readData()
+						@Override 
+						public Object readData()
 						{
 							return CMLib.coffeeMaker().getAreaXML(A, null, null, null, true);
 						}
 					});
 					myFiles.add(new CMFile.CMVFSDir(this,this.getPath()+cmfsFilenameify(A.Name())+"/")
 					{
-						@Override protected CMFile.CMVFSFile[] getFiles()
+						@Override 
+						protected CMFile.CMVFSFile[] getFiles()
 						{
 							final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 							for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
@@ -3302,33 +3325,38 @@ public class CMMap extends StdLibrary implements WorldMap
 										roomID=roomID.substring(A.Name().length()+1);
 									myFiles.add(new CMFile.CMVFSFile(this.getPath()+cmfsFilenameify(R.roomID())+".cmare",48,System.currentTimeMillis(),"SYS")
 									{
-										@Override public Object readData()
+										@Override 
+										public Object readData()
 										{
 											return CMLib.coffeeMaker().getRoomXML(R, null, null, true);
 										}
 									});
 									myFiles.add(new CMFile.CMVFSDir(this,this.getPath()+cmfsFilenameify(roomID).toLowerCase()+"/")
 									{
-										@Override protected CMFile.CMVFSFile[] getFiles()
+										@Override 
+										protected CMFile.CMVFSFile[] getFiles()
 										{
 											final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 											myFiles.add(new CMFile.CMVFSFile(this.getPath()+"items.cmare",48,System.currentTimeMillis(),"SYS")
 											{
-												@Override public Object readData()
+												@Override 
+												public Object readData()
 												{
 													return CMLib.coffeeMaker().getRoomItems(R, new TreeMap<String,List<Item>>(), null, -1);
 												}
 											});
 											myFiles.add(new CMFile.CMVFSFile(this.path+"mobs.cmare",48,System.currentTimeMillis(),"SYS")
 											{
-												@Override public Object readData()
+												@Override 
+												public Object readData()
 												{
 													return CMLib.coffeeMaker().getRoomMobs(R, null, null, new TreeMap<String,List<MOB>>());
 												}
 											});
 											myFiles.add(new CMFile.CMVFSDir(this,this.path+"mobs/")
 											{
-												@Override protected CMFile.CMVFSFile[] getFiles()
+												@Override 
+												protected CMFile.CMVFSFile[] getFiles()
 												{
 													final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 													final Room R2=CMLib.coffeeMaker().makeNewRoomContent(R, false);
@@ -3337,14 +3365,16 @@ public class CMMap extends StdLibrary implements WorldMap
 														final MOB M=R2.fetchInhabitant(i);
 														myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(R2.getContextName(M))+".cmare",48,System.currentTimeMillis(),"SYS")
 														{
-															@Override public Object readData()
+															@Override 
+															public Object readData()
 															{
 																return CMLib.coffeeMaker().getMobXML(M);
 															}
 														});
 														myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(M))+"/")
 														{
-															@Override protected CMFile.CMVFSFile[] getFiles()
+															@Override 
+															protected CMFile.CMVFSFile[] getFiles()
 															{
 																final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 																addMapStatFiles(myFiles,R,M,this);
@@ -3359,7 +3389,8 @@ public class CMMap extends StdLibrary implements WorldMap
 											});
 											myFiles.add(new CMFile.CMVFSDir(this,this.path+"items/")
 											{
-												@Override protected CMFile.CMVFSFile[] getFiles()
+												@Override 
+												protected CMFile.CMVFSFile[] getFiles()
 												{
 													final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 													final Room R2=CMLib.coffeeMaker().makeNewRoomContent(R, false);
@@ -3368,14 +3399,16 @@ public class CMMap extends StdLibrary implements WorldMap
 														final Item I=R2.getItem(i);
 														myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(R2.getContextName(I))+".cmare",48,System.currentTimeMillis(),"SYS")
 														{
-															@Override public Object readData()
+															@Override 
+															public Object readData()
 															{
 																return CMLib.coffeeMaker().getItemXML(I);
 															}
 														});
 														myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(I))+"/")
 														{
-															@Override protected CMFile.CMVFSFile[] getFiles()
+															@Override 
+															protected CMFile.CMVFSFile[] getFiles()
 															{
 																final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 																addMapStatFiles(myFiles,R,I,this);

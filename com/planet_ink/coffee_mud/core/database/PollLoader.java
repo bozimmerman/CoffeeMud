@@ -263,7 +263,7 @@ public class PollLoader
 	public void DBDelete(String name)
 	{
 		DB.update("DELETE FROM CMPOLL WHERE CMNAME='"+name+"'");
-		try{Thread.sleep(500);}catch(final Exception e){}
+		CMLib.s_sleep(500);
 		if(DB.queryRows("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'")>0)
 			Log.errOut("Failed to delete data from poll "+name+".");
 	}

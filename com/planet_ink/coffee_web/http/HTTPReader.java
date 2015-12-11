@@ -700,7 +700,13 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						}
 						if(buffer.remaining()>0)
 						{
-							try{Thread.sleep(1);}catch(final Exception e){}
+							try
+							{
+								Thread.sleep(1);
+							}
+							catch(Exception e)
+							{
+							}
 						}
 					}
 				}

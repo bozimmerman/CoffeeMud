@@ -827,7 +827,7 @@ public class DBConnections
 						{
 							DB.clearFailures();
 							DBDone(DB);
-							try{Thread.sleep(1000);}catch(final Exception e){}
+							CMLib.s_sleep(1000);
 						}
 					}
 				}

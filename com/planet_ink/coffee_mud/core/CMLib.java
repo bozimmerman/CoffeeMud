@@ -892,7 +892,7 @@ public class CMLib
 			else
 			{
 				t.interrupt();
-				try{Thread.sleep(sleepTime);}catch(final Exception e){}
+				CMLib.s_sleep(sleepTime);
 				int att=0;
 				while((att++<attempts)&&t.isAlive())
 				{

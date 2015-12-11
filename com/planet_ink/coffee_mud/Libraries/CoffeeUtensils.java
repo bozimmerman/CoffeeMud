@@ -238,8 +238,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			final long m0 =rt.totalMemory() - rt.freeMemory() ;
 			System.gc() ;
 			Thread.sleep( 500 ) ;
-			for (int i = 0 ; i < n ; ++i) objs[i] =
-					E=(Environmental)cl.copyOf();
+			for (int i = 0 ; i < n ; ++i) 
+				objs[i] = E = (Environmental)cl.copyOf();
 			System.gc() ;
 			Thread.sleep( 1000 ) ;
 			final long m1 =rt.totalMemory() - rt.freeMemory() ;

@@ -190,7 +190,13 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 						bytesWritten+=bytesOut;
 					if(buffer.remaining()>0)
 					{
-						try{Thread.sleep(1);}catch(final Exception e){}
+						try
+						{
+							Thread.sleep(1);
+						}
+						catch(Exception e)
+						{
+						}
 					}
 				}
 			}

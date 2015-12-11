@@ -903,7 +903,7 @@ public class JournalLoader
 					DBUpdateMessageReplies(parentEntry.key(),parentEntry.replies()+1);
 			}
 			if(System.currentTimeMillis()==now) // ensures unique keys.
-				try{Thread.sleep(1);}catch(final Exception e){}
+				CMLib.s_sleep(1);
 		}
 	}
 }
