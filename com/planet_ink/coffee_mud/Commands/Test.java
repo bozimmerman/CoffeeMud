@@ -40,6 +40,9 @@ import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 
 
 
+
+
+
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -1686,6 +1689,28 @@ public class Test extends StdCommand
 				str=CMLib.coffeeFilter().fullOutFilter(mob.session(), mob, mob, null, null, str, false);
 				str=CMLib.coffeeFilter().fullOutFilter(mob.session(), mob, mob, null, null, str, false);
 				mob.tell(str);
+			}
+			if(what.equalsIgnoreCase("spacesectors"))
+			{
+				long[] coordinates = new long[3];
+				for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
+				{
+					coordinates[0] = x;
+					long [] in = CMLib.map().getInSectorCoords(coordinates);
+					mob.tell(CMLib.map().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
+				}
+				for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
+				{
+					coordinates[1] = x;
+					long [] in = CMLib.map().getInSectorCoords(coordinates);
+					mob.tell(CMLib.map().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
+				}
+				for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
+				{
+					coordinates[2] = x;
+					long [] in = CMLib.map().getInSectorCoords(coordinates);
+					mob.tell(CMLib.map().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
+				}
 			}
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("clans")))

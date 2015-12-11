@@ -438,6 +438,55 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public String getSectorName(long[] coordinates)
+	{
+		final String[] xsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
+		final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
+		final String[] zsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Z_NAMES);
+		
+		final long dmsPerXSector = SpaceObject.Distance.GalaxyRadius.dm / xsecs.length;
+		final long dmsPerYSector = SpaceObject.Distance.GalaxyRadius.dm / ysecs.length;
+		final long dmsPerZSector = SpaceObject.Distance.GalaxyRadius.dm / zsecs.length;
+		
+		final int secDeX = (int)(coordinates[0] / dmsPerXSector / 2);
+		final int secDeY = (int)(coordinates[1] / dmsPerYSector / 2);
+		final int secDeZ = (int)(coordinates[2] / dmsPerZSector / 2);
+		
+		final StringBuilder sectorName = new StringBuilder("");
+		sectorName.append(xsecs[(secDeX < 0)?(xsecs.length+secDeX):secDeX]).append(" ");
+		sectorName.append(ysecs[(secDeY < 0)?(ysecs.length+secDeY):secDeY]).append(" ");
+		sectorName.append(zsecs[(secDeZ < 0)?(zsecs.length+secDeZ):secDeZ]);
+		return sectorName.toString();
+	}
+	
+	@Override
+	public long[] getInSectorCoords(long[] coordinates)
+	{
+		final String[] xsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
+		final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
+		final String[] zsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Z_NAMES);
+		
+		final long dmsPerXSector = SpaceObject.Distance.GalaxyRadius.dm / xsecs.length;
+		final long dmsPerYSector = SpaceObject.Distance.GalaxyRadius.dm / ysecs.length;
+		final long dmsPerZSector = SpaceObject.Distance.GalaxyRadius.dm / zsecs.length;
+		
+		final int secDeX = (int)(coordinates[0] / dmsPerXSector / (2 * (coordinates[0]<0?-1:1)));
+		final int secDeY = (int)(coordinates[1] / dmsPerYSector / (2 * (coordinates[0]<0?-1:1)));
+		final int secDeZ = (int)(coordinates[2] / dmsPerZSector / (2 * (coordinates[0]<0?-1:1)));
+		
+		long[] sectorCoords = Arrays.copyOf(coordinates, 3);
+		for(int i=0;i<sectorCoords.length;i++)
+		{
+			if(sectorCoords[i]<0)
+				sectorCoords[i]*=-1;
+		}
+		sectorCoords[0] -= secDeX * dmsPerXSector;
+		sectorCoords[1] -= secDeY * dmsPerYSector;
+		sectorCoords[2] -= secDeZ * dmsPerZSector;
+		return sectorCoords;
+	}
+	
+	@Override
 	public void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
 	{
 		final double directionYaw = O.direction()[0];

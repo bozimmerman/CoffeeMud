@@ -159,6 +159,8 @@ public interface WorldMap extends CMLibrary
 	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance);
 	public List<SpaceObject> getSpaceObjectsByCenterpointWithin(final long[] centerCoordinates, long minDistance, long maxDistance);
 	public SpaceObject findSpaceObject(String s, boolean exactOnly);
+	public String getSectorName(long[] coordinates);
+	public long[] getInSectorCoords(long[] coordinates);
 
 	/* ***********************************************************************/
 	/* *							 MESSAGES	 								*/
