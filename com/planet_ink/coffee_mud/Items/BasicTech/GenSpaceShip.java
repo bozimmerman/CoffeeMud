@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -117,6 +118,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	@Override
 	public void unDock(boolean moveToOutside)
 	{
+		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+			Log.debugOut("SpaceShip "+name()+" is undocking"+(moveToOutside?"into space":""));
 		final Room R=getIsDocked();
 		super.unDock(moveToOutside);
 		if(R instanceof LocationRoom)
@@ -193,6 +196,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 								final ThrustPort dir=(ThrustPort)parms[0];
 								final int amount=((Integer)parms[1]).intValue();
 								//long specificImpulse=((Long)parms[2]).longValue();
+								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+									Log.debugOut("SpaceShip "+name()+" accellerates "+amount+" to the "+dir.toString());
 								if((amount != 0) || (speed() != 0))
 								{
 									switch(dir)
@@ -255,12 +260,16 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				&&(((SpaceObject)msg.tool()).getMass() >= (100 * SpaceObject.Distance.Kilometer.dm)))
 				{
 					hitSomethingMassive=true;
+					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+						Log.debugOut("SpaceShip "+name()+" just hit "+msg.tool().Name()+"!!!");
 					stopThisShip(mob);
 				}
 				else
 					hitSomethingMassive=false;
 				
 				final long myMass=getMass();
+				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+					Log.debugOut("SpaceShip "+name()+" just collided with "+msg.tool().Name()+" of mass "+myMass+" at speed "+previousSpeed);
 				// this only works because Areas don't move.
 				// the only way to hit one is to be moving towards it.
 				if((previousSpeed <= (SpaceObject.ACCELLERATION_DAMAGED * myMass))
@@ -336,7 +345,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	}
 
 	@Override
-    protected LocationRoom findNearestDocks(Room R)
+	protected LocationRoom findNearestDocks(Room R)
 	{
 		final List<LocationRoom> docks=new XVector<LocationRoom>();
 		if(R!=null)
@@ -344,7 +353,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			if((R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 			&&(R instanceof LocationRoom))
 				return (LocationRoom)R;
-			
+
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
@@ -385,9 +394,10 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		return docks.get(CMLib.dice().roll(1, docks.size(), -1));
 	}
 
-
 	protected void stopThisShip(MOB mob)
 	{
+		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+			Log.debugOut("SpaceShip "+name()+" is now STOPPED!");
 		setSpeed(0); // if you collide with something massive, your speed ENDS
 		final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getShipArea()));
 		for(final Electronics E : electronics)
@@ -462,7 +472,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			}
 		}
 	}
-	
+
 	@Override 
 	public TechType getTechType() 
 	{ 

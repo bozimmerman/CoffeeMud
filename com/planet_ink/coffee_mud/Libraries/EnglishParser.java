@@ -208,6 +208,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if((min==null)||(min.length()>s.length()))
 						min=s;
 				}
+				break;
 			}
 		}
 		if(min==null)

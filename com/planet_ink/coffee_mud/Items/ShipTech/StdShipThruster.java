@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Items.ShipTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -210,6 +211,18 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		}
 	}
 	
+	private static int getFuelToConsume(final ShipEngine me, final Manufacturer manufacturer, double thrust)
+	{
+		return (int)Math.round(
+			CMath.ceiling(
+				thrust
+				*me.getFuelEfficiency()
+				*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct())) 
+				/ getFuelDivisor()
+			)
+		);
+	}
+	
 	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final ShipEngine.ThrustPort portDir, final int amount)
 	{
 		final LanguageLibrary lang=CMLib.lang();
@@ -224,25 +237,18 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
 		thrust=(int)Math.round(manufacturer.getReliabilityPct() * thrust);
-
+		final int oldThrust = me.getThrust();
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
-			me.setThrust((int)Math.round(thrust));
+			me.setThrust(Math.round(amount)); // also, its always the intended amount, not the adjusted amount
 		
-		final int fuelToConsume=(int)Math.round(
-			CMath.ceiling(
-				thrust
-				*me.getFuelEfficiency()
-				*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct())) 
-				/ getFuelDivisor()
-			)
-		);
+		final int fuelToConsume=getFuelToConsume(me, manufacturer, thrust);
 		
 		if(portDir==ThrustPort.AFT) // when thrusting aft, there's a smidgeon more power
 			thrust = thrust * 1000.0;
 		
 		final long accelleration=Math.round(Math.ceil(CMath.div(thrust*getThrustFactor(),ship.getMass())));
 		
-		if(amount > 1)
+		if((amount > 1)&&((portDir!=ThrustPort.AFT) || (me.getThrust() > oldThrust)))
 			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a rumble and hear the blast of @x1.",me.name(mob)));
 		if(accelleration == 0)
 		{
@@ -309,15 +315,23 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 				final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
 				if(me.consumeFuel(fuelToConsume))
 				{
-					final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
-					if(obj instanceof SpaceShip)
+					if(me.getThrust() > 0)
 					{
-						final SpaceObject ship=((SpaceShip)obj).getShipSpaceObject();
-						final long accelleration=Math.round(Math.ceil(CMath.div(me.getThrust()*getThrustFactor(),(double)ship.getMass())));
-						final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(ThrustPort.AFT,Integer.valueOf((int)accelleration),Long.valueOf(me.getSpecificImpulse()));
-						final CMMsg msg2=CMClass.getMsg(msg.source(), ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-						if(ship.okMessage(msg.source(), msg2))
-							ship.executeMsg(msg.source(), msg2);
+						final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
+						if(obj instanceof SpaceShip)
+						{
+							final SpaceObject ship=((SpaceShip)obj).getShipSpaceObject();
+							final String code=Technical.TechCommand.THRUST.makeCommand(ThrustPort.AFT,Integer.valueOf(me.getThrust()));
+							final CMMsg msg2=CMClass.getMsg(msg.source(), me, null, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+							if(me.owner() instanceof Room)
+							{
+								if(me.owner().okMessage(msg.source(), msg2))
+									((Room)me.owner()).send(msg.source(), msg2);
+							}
+							else
+							if(ship.okMessage(msg.source(), msg2))
+								ship.executeMsg(msg.source(), msg2);
+						}
 					}
 				}
 				else

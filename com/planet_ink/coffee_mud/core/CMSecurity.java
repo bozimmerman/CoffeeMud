@@ -1449,7 +1449,6 @@ public class CMSecurity
 			group = new LongSet();
 			final String filename = CMProps.getVar(CMProps.Str.BLACKLISTFILE);
 			final List<String> ipList = Resources.getFileLineVector(Resources.getFileResource(filename, false));
-			boolean onceIsFine = false;
 			for(String ip : ipList)
 			{
 				if(ip.trim().startsWith("#")||(ip.trim().length()==0))
@@ -1473,12 +1472,6 @@ public class CMSecurity
 					{
 						group.add(ipFrom,ipTo);
 					}
-				}
-				if(isDebugging(DbgFlag.TEMPMISC) && group.contains(2130706433) && (!onceIsFine))
-				{
-					onceIsFine = true;
-					Log.debugOut("BOOM! Just added "+ip.trim()+"/"+x);
-					Log.debugOut(group.toString());
 				}
 			}
 			Resources.submitResource("SYSTEM_IP_BLOCKS", group);
@@ -2153,11 +2146,19 @@ public class CMSecurity
 		CLANMEMBERS("Clan Membership"),
 		INPUT("All user input"),
 		SHUTDOWN("System Shutdown"),
-		TEMPMISC("Temporary Misc")
+		SPACESHIP("Spaceships")
 		;
 		private final String desc;
-		DbgFlag(final String description){this.desc=description;}
-		public String description() { return desc;}
+
+		DbgFlag(final String description)
+		{
+			this.desc = description;
+		}
+
+		public String description()
+		{
+			return desc;
+		}
 	}
 
 	/**

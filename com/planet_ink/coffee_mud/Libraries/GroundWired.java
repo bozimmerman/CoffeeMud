@@ -363,6 +363,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							final double[] directionTo=CMLib.map().getDirection(O, cO);
 							// can this cause slip-through?
 							long mass = Math.max(1,O.getMass() / 1000);
+							if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+(SpaceObject.ACCELLERATION_G * mass)+" towards " +cO.Name());
 							CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G * mass); 
 							cube=cube.expand(directionTo,SpaceObject.ACCELLERATION_G * mass);
 							inAirFlag = Boolean.TRUE;

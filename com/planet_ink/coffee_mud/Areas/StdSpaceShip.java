@@ -299,9 +299,22 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		climateObj=null;
 	}
 	
-	@Override public int getClimateTypeCode(){return Places.CLIMASK_NORMAL;}
-	@Override public int getClimateType() { return Places.CLIMASK_NORMAL; }
-	@Override public void setClimateType(int newClimateType){}
+	@Override
+	public int getClimateTypeCode()
+	{
+		return Places.CLIMASK_NORMAL;
+	}
+
+	@Override
+	public int getClimateType()
+	{
+		return Places.CLIMASK_NORMAL;
+	}
+
+	@Override
+	public void setClimateType(int newClimateType)
+	{
+	}
 
 	public StdSpaceShip()
 	{
@@ -316,9 +329,22 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		localClock.setLoadName(newName);
 	}
 
-	@Override public int getTheme(){return Area.THEME_TECHNOLOGY;}
-	@Override public int getThemeCode(){return Area.THEME_TECHNOLOGY;}
-	@Override public void setTheme(int level){}
+	@Override
+	public int getTheme()
+	{
+		return Area.THEME_TECHNOLOGY;
+	}
+
+	@Override
+	public int getThemeCode()
+	{
+		return Area.THEME_TECHNOLOGY;
+	}
+
+	@Override
+	public void setTheme(int level)
+	{
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -333,7 +359,12 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		}
 		return new StdSpaceShip();
 	}
-	@Override public boolean isGeneric(){return false;}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return false;
+	}
 	
 	@Override
 	protected void cloneFix(StdBoardableShip ship)
@@ -547,6 +578,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 
 	private static final String[] LOCAL_CODES={"RADIUS","AUTHOR"};
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -561,7 +593,13 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			codes[i]=LOCAL_CODES[x];
 		return codes;
 	}
-	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
+	}
+
 	@Override
 	public String getStat(String code)
 	{
@@ -569,11 +607,14 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			return super.getStat(code);
 		switch(CMParms.indexOf(LOCAL_CODES,code.toUpperCase().trim()))
 		{
-		case 0: return ""+getOMLCoeff();
-		case 1: return ""+radius();
+		case 0:
+			return "" + getOMLCoeff();
+		case 1:
+			return "" + radius();
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -582,8 +623,12 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		else
 		switch(CMParms.indexOf(LOCAL_CODES,code.toUpperCase().trim()))
 		{
-		case 0: setOMLCoeff(CMath.s_double(val)); break;
-		case 1: setRadius(CMath.s_long(val)); break;
+			case 0:
+				setOMLCoeff(CMath.s_double(val));
+				break;
+			case 1:
+				setRadius(CMath.s_long(val));
+				break;
 		}
 	}
 }
