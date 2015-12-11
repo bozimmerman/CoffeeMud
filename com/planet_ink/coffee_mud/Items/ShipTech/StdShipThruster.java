@@ -246,7 +246,8 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(portDir==ThrustPort.AFT) // when thrusting aft, there's a smidgeon more power
 			thrust = thrust * 1000.0;
 		
-		final long accelleration=Math.round(Math.ceil(CMath.div(thrust*getThrustFactor(),ship.getMass())));
+		final double activeThrust = CMath.div((thrust * getThrustFactor()), ship.getMass());
+		final long accelleration=Math.round(Math.ceil(activeThrust));
 		
 		if((amount > 1)&&((portDir!=ThrustPort.AFT) || (me.getThrust() > oldThrust)))
 			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a rumble and hear the blast of @x1.",me.name(mob)));

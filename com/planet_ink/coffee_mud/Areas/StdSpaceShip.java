@@ -287,7 +287,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			}
 			this.mass=newMass;
 		}
-		return mass;
+		return this.mass;
 	}
 
 	@Override
@@ -413,21 +413,29 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 						final Object[] parms=command.confirmAndTranslate(parts);
 						if(parms!=null)
 						{
-							if((command==Technical.TechCommand.AIRREFRESH)&&(staleAirList.size()>0))
+							if(command==Technical.TechCommand.AIRREFRESH)
 							{
-								final double pct=((Double)parms[0]).doubleValue();
-								final int atmoResource=((Integer)parms[1]).intValue();
-								int numToClear=(int)Math.round(CMath.mul(staleAirList.size(),pct));
-								while((numToClear>0)&&(staleAirList.size()>0))
+								if((staleAirList.size()==0)
+								&&(msg.tool() instanceof Item)
+								&&(((Item)msg.tool()).owner() instanceof Room)
+								&&(((Room)((Item)msg.tool()).owner()).getAtmosphere()<=0))
+									doStaleCheck();
+								if(staleAirList.size()>0)
 								{
-									final String roomID=staleAirList.iterator().next();
-									staleAirList.remove(roomID);
-									changeRoomAir(getRoom(roomID),null,atmoResource);
-									numToClear--;
+									final double pct=((Double)parms[0]).doubleValue();
+									final int atmoResource=((Integer)parms[1]).intValue();
+									int numToClear=(int)Math.round(CMath.mul(staleAirList.size(),pct));
+									while((numToClear>0)&&(staleAirList.size()>0))
+									{
+										final String roomID=staleAirList.iterator().next();
+										staleAirList.remove(roomID);
+										changeRoomAir(getRoom(roomID),null,atmoResource);
+										numToClear--;
+									}
+									changeRoomAir(getRandomMetroRoom(),null,atmoResource);
+									for(final Pair<Room,Integer> p  : shipExitCache)
+										changeRoomAir(p.first,null,atmoResource);
 								}
-								changeRoomAir(getRandomMetroRoom(),null,atmoResource);
-								for(final Pair<Room,Integer> p  : shipExitCache)
-									changeRoomAir(p.first,null,atmoResource);
 							}
 						}
 					}
@@ -494,6 +502,19 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			}
 		}
 	}
+	
+	protected void doStaleCheck()
+	{
+		nextStaleCheck=System.currentTimeMillis()+STALE_AIR_INTERVAL;
+		for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			if(!staleAirList.contains(R.roomID()))
+				staleAirList.add(R.roomID());
+			else
+				R.setAtmosphere(RawMaterial.RESOURCE_NOTHING); // WE NOW HAVE A VACUUM HERE!!!
+		}
+	}
 
 	protected void doAtmosphereChanges()
 	{
@@ -535,15 +556,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		}
 		if(System.currentTimeMillis() >= nextStaleCheck)
 		{
-			nextStaleCheck=System.currentTimeMillis()+STALE_AIR_INTERVAL;
-			for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
-			{
-				final Room R=r.nextElement();
-				if(!staleAirList.contains(R.roomID()))
-					staleAirList.add(R.roomID());
-				else
-					R.setAtmosphere(RawMaterial.RESOURCE_NOTHING); // WE NOW HAVE A VACUUM HERE!!!
-			}
+			doStaleCheck();
 		}
 	}
 

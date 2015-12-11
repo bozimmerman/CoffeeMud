@@ -480,9 +480,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(sectorCoords[i]<0)
 				sectorCoords[i]*=-1;
 		}
-		sectorCoords[0] -= secDeX * dmsPerXSector;
-		sectorCoords[1] -= secDeY * dmsPerYSector;
-		sectorCoords[2] -= secDeZ * dmsPerZSector;
+		sectorCoords[0] -= (secDeX * dmsPerXSector) / 1000;
+		sectorCoords[1] -= (secDeY * dmsPerYSector) / 1000;
+		sectorCoords[2] -= (secDeZ * dmsPerZSector) / 1000;
 		return sectorCoords;
 	}
 	

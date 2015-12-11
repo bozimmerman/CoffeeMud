@@ -192,7 +192,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		d=Math.abs(d);
 		for(SpaceObject.Distance distance : SpaceObject.DISTANCES)
 		{
-			if(distance.dm < d)
+			if((distance.dm * 2) < d)
 			{
 				double val=(double)d/(double)distance.dm;
 				if((val<0)||(val<100))
@@ -205,10 +205,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(s.endsWith(".0"))
 						s=s.substring(0,s.length()-2);
 					s+=distance.abbr;
-					if((min==null)||(min.length()>s.length()))
-						min=s;
+					min = s;
+					break;
+					//if((min==null)||(min.length()>s.length())) min=s;
 				}
-				break;
 			}
 		}
 		if(min==null)

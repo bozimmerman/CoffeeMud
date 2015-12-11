@@ -1,5 +1,4 @@
 BUGS
-  *. ShopKeeper, and presumably random inventory kick in during mudgrinder edits. No reproduce, but watch it.
 
 TECH
    *. test and debug launch and landing - make sure navigation thrusters affect speed and direction properly.
@@ -23,6 +22,7 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
+   *. Ability to export the catalog
    *. Database table overview in the Programmer's Guide.
    *. Simple Desires quest behavior - see Tim's Wants and Needs doc
    *. Wants and Needs engine - similar to slavery system

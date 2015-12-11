@@ -261,17 +261,14 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("^H").append(CMStrings.padRight(L("Direction"),10));
 			final String dirStr=display(ship.direction());
 			str.append("^N").append(CMStrings.padRight(dirStr,20));
-			str.append("\n\r");
-			str.append("^H").append(CMStrings.padRight(L("Location"),10));
 			if(orbitingPlanet!=null)
+			{
+				str.append("\n\r");
+				str.append("^H").append(CMStrings.padRight(L("Location"),10));
 				str.append("^N").append(CMStrings.padRight(L("orbiting @x1",orbitingPlanet.name()),50));
+			}
 			else
-				str.append("^N").append(CMStrings.padRight(CMParms.toListString(shipSpaceObject.coordinates()),50));
-			str.append("\n\r");
-			str.append("^H").append(CMStrings.padRight(L("Facing"),10));
-			final String facStr=display(ship.facing());
-			str.append("^N").append(CMStrings.padRight(facStr,20));
-			if(altitudePlanet!=null)
+			if(altitudePlanet != null)
 			{
 				str.append("^H").append(CMStrings.padRight(L("Altitude"),10));
 				str.append("^N").append(CMStrings.padRight(display(CMLib.map().getDistanceFrom(shipSpaceObject, altitudePlanet)-altitudePlanet.radius()),20));
@@ -279,7 +276,16 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			{
 				str.append("\n\r");
+				str.append("^H").append(CMStrings.padRight(L("Sector"),10));
+				str.append("^N").append(CMStrings.padRight(CMLib.map().getSectorName(ship.coordinates()),50));
+				str.append("\n\r");
+				str.append("^H").append(CMStrings.padRight(L("Location"),10));
+				str.append("^N").append(CMStrings.padRight(CMParms.toListString(CMLib.map().getInSectorCoords(shipSpaceObject.coordinates())),50));
 			}
+			str.append("\n\r");
+			str.append("^H").append(CMStrings.padRight(L("Facing"),10));
+			final String facStr=display(ship.facing());
+			str.append("^N").append(CMStrings.padRight(facStr,20));
 			str.append("\n\r");
 		}
 		str.append("^N\n\r");
