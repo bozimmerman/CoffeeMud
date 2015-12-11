@@ -63,6 +63,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * through the stat selection process.  The bonusPoints are any
 	 * over and above the standard allocation points.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
 	 * @see CharCreationLibrary#reRollStats(CharStats, int)
 	 * @see CharCreationLibrary#promptCharClass(int, MOB, Session)
 	 * @param theme the theme code to use for stat allocation
@@ -81,6 +82,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
 	 * @see CharCreationLibrary#reRollStats(CharStats, int)
 	 * @see CharCreationLibrary#promptPlayerStats(int, MOB, Session, int)
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
 	 * @param theme the theme code to use for class selection
 	 * @param mob the mob who is getting the new char class
 	 * @param session the session which might help allocate the points
@@ -98,15 +100,75 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return negative number for error, or the number of trains required
 	 */
 	public int getTrainingCost(MOB mob, int abilityCode, boolean quiet);
+	
+	/**
+	 * Returns whether the given mob can change to the given class (that is,
+	 * to become level 0 in that class) in the given theme.  The mob is
+	 * optional, at which point it is only checking base rules and theme.
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
+	 * @see CharCreationLibrary#classQualifies(MOB, int)
+	 * @param mob null or the mob who wants to learn a new class
+	 * @param thisClass the class that the mob wants to learn
+	 * @param theme the theme defining which classes are available
+	 * @return true if the mob can change to the class, false otherwise
+	 */
 	public boolean canChangeToThisClass(MOB mob, CharClass thisClass, int theme);
-	// mob is optional
+	
+	/**
+	 * Returns the list of all character classes that the given mob can change
+	 * into, given their currrent state, and the given theme.  The mob is
+	 * optional, at which point it is only checking base class rules and theme.
+	 * @see CharCreationLibrary#canChangeToThisClass(MOB, CharClass, int)
+	 * @param mob the mob who wants to change classes
+	 * @param theme the theme to filter the classes by
+	 * @return the list of classes that the mob may change to.
+	 */
 	public List<CharClass> classQualifies(MOB mob, int theme);
-	// mob is optional
-	public void moveSessionToCorrectThreadGroup(final Session session, int theme);
-	public List<String> getExpiredList();
+
+	/**
+	 * Returns the list of the names of all the expired Accounts
+	 * or Characters, depending on whether the account system
+	 * is used or not.  This only matters when the expiration
+	 * system is being used, such as on a pay system
+	 * @return the list of the names of all the expired
+	 */
+	public List<String> getExpiredAcctOrCharsList();
+	
+	/**
+	 * Returns the list of all races that the given mob can choose
+	 * into, given their currrent state, and the given theme.  The mob is
+	 * optional, at which point it is only checking base race rules and theme.
+	 * @see CharCreationLibrary#canChangeToThisClass(MOB, CharClass, int)
+	 * @param mob the mob who wants to choose races
+	 * @param theme the theme to filter the races by
+	 * @return the list of races that the mob may choose.
+	 */
 	public List<Race> raceQualifies(MOB mob, int theme);
+	
+	/**
+	 * Returns whether the given name is a valid,  legitimate, 
+	 * unused, unbanned, non-bad name to use in coffeemud, for accounts
+	 * or players. 
+	 * @see CharCreationLibrary#isBadName(String)
+	 * @param login the name to test
+	 * @param spacesOk true if spaces in the name are ok, false otherwise
+	 * @return true if the name is ok, false otherwise 
+	 */
 	public boolean isOkName(String login, boolean spacesOk);
+	
+	/**
+	 * Returns only whether the given name has a bad word in it.
+	 * @see CharCreationLibrary#isOkName(String, boolean)
+	 * @param login the name to test
+	 * @return true if it has a bad name, false otherwise
+	 */
 	public boolean isBadName(String login);
+	
+	/**
+	 * Resets the MXP, MSP and other session flags based on the mobs
+	 * attributes.  Typically done at sign-on only.
+	 * @param mob the mob whose session needs to match his 
+	 */
 	public void reloadTerminal(MOB mob);
 	public void showTheNews(MOB mob);
 	public void notifyFriends(MOB mob, String message);

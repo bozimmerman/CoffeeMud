@@ -212,7 +212,7 @@ public class MOTD extends StdCommand
 				if((CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
 				&&(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)))
 				{
-					final List<String> l=CMLib.login().getExpiredList();
+					final List<String> l=CMLib.login().getExpiredAcctOrCharsList();
 					if(l.size()>0)
 					{
 						buf.append(L("\n\r^XThere are currently @x1 expired "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"accounts":"characters"),""+l.size()));

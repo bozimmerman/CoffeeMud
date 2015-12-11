@@ -2298,7 +2298,7 @@ public class ListCmd extends StdCommand
 		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 		{
 			final String theWord=(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"account":"character";
-			final List<String> l=CMLib.login().getExpiredList();
+			final List<String> l=CMLib.login().getExpiredAcctOrCharsList();
 			if(l.size()>0)
 			{
 				buf.append(L("\n\rThere are currently @x1 expired @x2s.\n\r",""+l.size(),theWord));
@@ -2880,6 +2880,7 @@ public class ListCmd extends StdCommand
 		QUESTS("QUESTS",new SecFlag[]{SecFlag.CMDQUESTS}),
 		DISEASES("DISEASES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		POISONS("POISONS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		LANGUAGES("LANGUAGES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		TICKS("TICKS",new SecFlag[]{SecFlag.LISTADMIN}),
 		MAGIC("MAGIC",new SecFlag[]{SecFlag.CMDITEMS}),
 		TECH("TECH",new SecFlag[]{SecFlag.CMDITEMS}),
@@ -3399,6 +3400,7 @@ public class ListCmd extends StdCommand
 			{
 				final StringBuilder str=new StringBuilder("");
 				for(int v=0;v<V.size();v++)
+				{
 					if(V.get(v).length()>0)
 					{
 						str.append(V.get(v));
@@ -3408,44 +3410,112 @@ public class ListCmd extends StdCommand
 						if(v<(V.size()-1))
 							str.append(", ");
 					}
+				}
 				mob.tell(L("You cannot list '@x1'.  Try @x2.",listWord,str.toString()));
 			}
 			return;
 		}
 		switch(code)
 		{
-		case UNLINKEDEXITS:	s.wraplessPrintln(unlinkedExits(mob.session(),commands)); break;
-		case ITEMS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.basicItems()).toString()); break;
-		case ARMOR: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.armor()).toString()); break;
-		case ENVRESOURCES: s.wraplessPrintln(listEnvResources(mob.session(),rest)); break;
-		case WEAPONS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.weapons()).toString()); break;
-		case MOBS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.mobTypes()).toString()); break;
-		case ROOMS: s.wraplessPrintln(roomDetails(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
-		case AREA: s.wraplessPrintln(roomTypes(mob,mob.location().getArea().getMetroMap(),mob.location(),commands).toString()); break;
-		case LOCALES: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.locales()).toString()); break;
-		case BEHAVIORS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.behaviors()).toString()); break;
-		case EXITS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.exits()).toString()); break;
-		case RACES: s.wraplessPrintln(listRaces(s,CMClass.races(),rest).toString()); break;
-		case CLASSES: s.wraplessPrintln(listCharClasses(s,CMClass.charClasses(),rest.equalsIgnoreCase("SHORT")).toString()); break;
-		case STAFF: s.wraplessPrintln(listSubOps(mob.session()).toString()); break;
-		case SPELLS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SPELL).toString()); break;
-		case SONGS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SONG).toString()); break;
-		case PRAYERS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_PRAYER).toString()); break;
-		case PROPERTIES: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_PROPERTY).toString()); break;
-		case THIEFSKILLS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_THIEF_SKILL).toString()); break;
-		case COMMON: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_COMMON_SKILL).toString()); break;
-		case JOURNALS: s.println(listJournals(mob.session()).toString()); break;
-		case SKILLS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SKILL).toString()); break;
-		case QUESTS: s.println(listQuests(mob.session()).toString()); break;
-		case DISEASES: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_DISEASE).toString()); break;
-		case POISONS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_POISON).toString()); break;
-		case TICKS: s.println(listTicks(mob.session(),CMParms.combine(commands,1)).toString()); break;
-		case MAGIC: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.miscMagic()).toString()); break;
-		case TECH: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.tech()).toString()); break;
-		case CLANITEMS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.clanItems()).toString()); break;
-		case COMMANDJOURNAL: s.println(journalList(mob.session(),listWord).toString()); break;
-		case REALESTATE: s.wraplessPrintln(roomPropertyDetails(mob.session(),mob.location().getArea(),rest).toString()); break;
-		case FILEUSE: listFileUse(mob,s,CMParms.combine(commands,1)); break;
+		case UNLINKEDEXITS:
+			s.wraplessPrintln(unlinkedExits(mob.session(), commands));
+			break;
+		case ITEMS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.basicItems()).toString());
+			break;
+		case ARMOR:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.armor()).toString());
+			break;
+		case ENVRESOURCES:
+			s.wraplessPrintln(listEnvResources(mob.session(), rest));
+			break;
+		case WEAPONS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.weapons()).toString());
+			break;
+		case MOBS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.mobTypes()).toString());
+			break;
+		case ROOMS:
+			s.wraplessPrintln(roomDetails(mob.session(), mob.location().getArea().getMetroMap(), mob.location()).toString());
+			break;
+		case AREA:
+			s.wraplessPrintln(roomTypes(mob, mob.location().getArea().getMetroMap(), mob.location(), commands).toString());
+			break;
+		case LOCALES:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.locales()).toString());
+			break;
+		case BEHAVIORS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.behaviors()).toString());
+			break;
+		case EXITS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.exits()).toString());
+			break;
+		case RACES:
+			s.wraplessPrintln(listRaces(s, CMClass.races(), rest).toString());
+			break;
+		case CLASSES:
+			s.wraplessPrintln(listCharClasses(s, CMClass.charClasses(), rest.equalsIgnoreCase("SHORT")).toString());
+			break;
+		case STAFF:
+			s.wraplessPrintln(listSubOps(mob.session()).toString());
+			break;
+		case SPELLS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SPELL).toString());
+			break;
+		case SONGS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SONG).toString());
+			break;
+		case PRAYERS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_PRAYER).toString());
+			break;
+		case PROPERTIES:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_PROPERTY).toString());
+			break;
+		case THIEFSKILLS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_THIEF_SKILL).toString());
+			break;
+		case COMMON:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_COMMON_SKILL).toString());
+			break;
+		case JOURNALS:
+			s.println(listJournals(mob.session()).toString());
+			break;
+		case SKILLS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SKILL).toString());
+			break;
+		case QUESTS:
+			s.println(listQuests(mob.session()).toString());
+			break;
+		case DISEASES:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_DISEASE).toString());
+			break;
+		case POISONS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_POISON).toString());
+			break;
+		case LANGUAGES:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_LANGUAGE).toString());
+			break;
+		case TICKS:
+			s.println(listTicks(mob.session(), CMParms.combine(commands, 1)).toString());
+			break;
+		case MAGIC:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.miscMagic()).toString());
+			break;
+		case TECH:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.tech()).toString());
+			break;
+		case CLANITEMS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.clanItems()).toString());
+			break;
+		case COMMANDJOURNAL:
+			s.println(journalList(mob.session(), listWord).toString());
+			break;
+		case REALESTATE:
+			s.wraplessPrintln(roomPropertyDetails(mob.session(), mob.location().getArea(), rest).toString());
+			break;
+		case FILEUSE:
+			listFileUse(mob, s, CMParms.combine(commands, 1));
+			break;
 		case NOPURGE:
 		{
 			final StringBuilder str=new StringBuilder("\n\rProtected players:\n\r");
@@ -3466,57 +3536,153 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(str.toString());
 			break;
 		}
-		case RACECATS: s.wraplessPrintln(listRaceCats(s,CMClass.races(),CMParms.containsIgnoreCase(commands,"SHORT")).toString()); break;
-		case LOG: listLog(mob,commands); break;
-		case USERS: listUsers(mob.session(),mob,commands); break;
-		case LINKAGES: s.println(listLinkages(mob.session(),mob,rest).toString()); break;
-		case REPORTS: s.println(listReports(mob.session(),mob).toString()); break;
-		case THREADS: s.println(listThreads(mob.session(),mob,CMParms.containsIgnoreCase(commands,"SHORT"),CMParms.containsIgnoreCase(commands,"EXTEND")).toString()); break;
-		case RESOURCES: s.println(listResources(mob,CMParms.combine(commands,1))); break;
-		case ONEWAYDOORS: s.wraplessPrintln(reallyFindOneWays(mob.session(),commands)); break;
-		case CHANTS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_CHANT).toString()); break;
-		case SUPERPOWERS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SUPERPOWER).toString()); break;
-		case COMPONENTS: s.wraplessPrintln(listComponents(mob.session())); break;
-		case EXPERTISES: s.wraplessPrintln(listExpertises(mob.session())); break;
-		case FACTIONS: s.wraplessPrintln(CMLib.factions().listFactions()); break;
-		case MATERIALS: s.wraplessPrintln(listMaterials()); break;
-		case OBJCOUNTERS: s.println("\n\r^xCounter Report: NO LONGER AVAILABLE^.^N\n\r"); break;//+CMClass.getCounterReport()); break;
-		case POLLS: listPolls(mob,commands); break;
-		case CONTENTS: s.wraplessPrintln(listContent(mob,commands).toString()); break;
-		case EXPIRES: s.wraplessPrintln(roomExpires(mob.session(),mob.location().getArea().getProperMap(),mob.location()).toString()); break;
-		case TITLES: s.wraplessPrintln(listTitles(mob.session())); break;
-		case ACHIEVEMENTS: s.wraplessPrintln(listAchievements(mob.session())); break;
-		case AREARESOURCES: s.wraplessPrintln(roomResources(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
-		case CONQUERED: s.wraplessPrintln(areaConquests(mob.session(),CMLib.map().areas()).toString()); break;
-		case HOLIDAYS: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1))); break;
-		case RECIPES: s.wraplessPrintln(listRecipes(mob,CMParms.combine(commands,1))); break;
-		case HELPFILEREQUESTS: s.wraplessPrint(listHelpFileRequests(mob,CMParms.combine(commands,1))); break;
-		case SCRIPTS: s.wraplessPrintln(listScripts(mob.session(),mob,commands).toString()); break;
-		case ACCOUNTS: listAccounts(mob.session(),mob,commands); break;
-		case GOVERNMENTS: s.wraplessPrintln(listClanGovernments(mob.session(),commands)); break;
-		case CLANS: s.wraplessPrintln(listClans(mob.session(),commands)); break;
-		case DEBUGFLAG: s.println("\n\r^xDebug Settings: ^?^.^N\n\r"+CMParms.toListString(new XVector<CMSecurity.DbgFlag>(CMSecurity.getDebugEnum()))+"\n\r"); break;
-		case DISABLEFLAG: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toListString(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
-		case ALLQUALIFYS: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
-		case NEWS: listNews(mob,commands); break;
-		case AREAS: listAreas(mob, commands, mundaneAreaFilter); break;
-		case SESSIONS: { listSessions(mob,commands); break; }
-		case WORLD: listAreas(mob, commands, new WorldFilter(mob.location())); break;
-		case PLANETS: listAreas(mob, commands, planetsAreaFilter); break;
-		case SPACESHIPAREAS: listAreas(mob, commands, spaceShipsAreaFilter); break;
-		case CURRENTS: listCurrents(mob, commands); break;
-		case MANUFACTURERS: listManufacturers(mob, commands); break;
-		case TECHSKILLS: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_TECH).toString()); break;
-		case SOFTWARE: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.tech(new Filterer<Electronics>()
+		case RACECATS:
+			s.wraplessPrintln(listRaceCats(s, CMClass.races(), CMParms.containsIgnoreCase(commands, "SHORT")).toString());
+			break;
+		case LOG:
+			listLog(mob, commands);
+			break;
+		case USERS:
+			listUsers(mob.session(), mob, commands);
+			break;
+		case LINKAGES:
+			s.println(listLinkages(mob.session(), mob, rest).toString());
+			break;
+		case REPORTS:
+			s.println(listReports(mob.session(), mob).toString());
+			break;
+		case THREADS:
+			s.println(listThreads(mob.session(), mob, CMParms.containsIgnoreCase(commands, "SHORT"), CMParms.containsIgnoreCase(commands, "EXTEND")).toString());
+			break;
+		case RESOURCES:
+			s.println(listResources(mob, CMParms.combine(commands, 1)));
+			break;
+		case ONEWAYDOORS:
+			s.wraplessPrintln(reallyFindOneWays(mob.session(), commands));
+			break;
+		case CHANTS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_CHANT).toString());
+			break;
+		case SUPERPOWERS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_SUPERPOWER).toString());
+			break;
+		case COMPONENTS:
+			s.wraplessPrintln(listComponents(mob.session()));
+			break;
+		case EXPERTISES:
+			s.wraplessPrintln(listExpertises(mob.session()));
+			break;
+		case FACTIONS:
+			s.wraplessPrintln(CMLib.factions().listFactions());
+			break;
+		case MATERIALS:
+			s.wraplessPrintln(listMaterials());
+			break;
+		case OBJCOUNTERS:
+			s.println("\n\r^xCounter Report: NO LONGER AVAILABLE^.^N\n\r");
+			break;// +CMClass.getCounterReport()); break;
+		case POLLS:
+			listPolls(mob, commands);
+			break;
+		case CONTENTS:
+			s.wraplessPrintln(listContent(mob, commands).toString());
+			break;
+		case EXPIRES:
+			s.wraplessPrintln(roomExpires(mob.session(), mob.location().getArea().getProperMap(), mob.location()).toString());
+			break;
+		case TITLES:
+			s.wraplessPrintln(listTitles(mob.session()));
+			break;
+		case ACHIEVEMENTS:
+			s.wraplessPrintln(listAchievements(mob.session()));
+			break;
+		case AREARESOURCES:
+			s.wraplessPrintln(roomResources(mob.session(), mob.location().getArea().getMetroMap(), mob.location()).toString());
+			break;
+		case CONQUERED:
+			s.wraplessPrintln(areaConquests(mob.session(), CMLib.map().areas()).toString());
+			break;
+		case HOLIDAYS:
+			s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(), CMParms.combine(commands, 1)));
+			break;
+		case RECIPES:
+			s.wraplessPrintln(listRecipes(mob, CMParms.combine(commands, 1)));
+			break;
+		case HELPFILEREQUESTS:
+			s.wraplessPrint(listHelpFileRequests(mob, CMParms.combine(commands, 1)));
+			break;
+		case SCRIPTS:
+			s.wraplessPrintln(listScripts(mob.session(), mob, commands).toString());
+			break;
+		case ACCOUNTS:
+			listAccounts(mob.session(), mob, commands);
+			break;
+		case GOVERNMENTS:
+			s.wraplessPrintln(listClanGovernments(mob.session(), commands));
+			break;
+		case CLANS:
+			s.wraplessPrintln(listClans(mob.session(), commands));
+			break;
+		case DEBUGFLAG:
+			s.println("\n\r^xDebug Settings: ^?^.^N\n\r" + CMParms.toListString(new XVector<CMSecurity.DbgFlag>(CMSecurity.getDebugEnum())) + "\n\r");
+			break;
+		case DISABLEFLAG:
+			s.println("\n\r^xDisable Settings: ^?^.^N\n\r" + CMParms.toListString(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum())) + "\n\r");
+			break;
+		case ALLQUALIFYS:
+			s.wraplessPrintln(listAllQualifies(mob.session(), commands).toString());
+			break;
+		case NEWS:
+			listNews(mob, commands);
+			break;
+		case AREAS:
+			listAreas(mob, commands, mundaneAreaFilter);
+			break;
+		case SESSIONS:
+		{
+			listSessions(mob, commands);
+			break;
+		}
+		case WORLD:
+			listAreas(mob, commands, new WorldFilter(mob.location()));
+			break;
+		case PLANETS:
+			listAreas(mob, commands, planetsAreaFilter);
+			break;
+		case SPACESHIPAREAS:
+			listAreas(mob, commands, spaceShipsAreaFilter);
+			break;
+		case CURRENTS:
+			listCurrents(mob, commands);
+			break;
+		case MANUFACTURERS:
+			listManufacturers(mob, commands);
+			break;
+		case TECHSKILLS:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), Ability.ACODE_TECH).toString());
+			break;
+		case SOFTWARE:
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.tech(new Filterer<Electronics>()
+			{
+				@Override
+				public boolean passesFilter(Electronics obj)
 				{
-					@Override public boolean passesFilter(Electronics obj) { return obj instanceof Software; }
-				})).toString());
-				break;
-		case EXPIRED: s.wraplessPrintln(listExpired(mob)); break;
-		case SPACE: s.wraplessPrintln(listSpace(mob,commands).toString()); 
-				break;
-		case SQL: listSql(mob,rest); break;
-		case SHIPS: listShips(mob, commands); break;
+					return obj instanceof Software;
+				}
+			})).toString());
+			break;
+		case EXPIRED:
+			s.wraplessPrintln(listExpired(mob));
+			break;
+		case SPACE:
+			s.wraplessPrintln(listSpace(mob, commands).toString());
+			break;
+		case SQL:
+			listSql(mob, rest);
+			break;
+		case SHIPS:
+			listShips(mob, commands);
+			break;
 		}
 	}
 

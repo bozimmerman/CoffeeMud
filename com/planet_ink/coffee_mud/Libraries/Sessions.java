@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import com.planet_ink.coffee_mud.Areas.interfaces.Area;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
@@ -315,4 +316,30 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 		return null;
 	}
+	
+	@Override
+	public void moveSessionToCorrectThreadGroup(final Session session, int theme)
+	{
+		final int themeDex=CMath.firstBitSetIndex(theme);
+		if((themeDex>=0)&&(themeDex<Area.THEME_BIT_NAMES.length))
+		{
+			final ThreadGroup privateGroup=CMProps.getPrivateOwner(Area.THEME_BIT_NAMES[themeDex]+"PLAYERS");
+			if((privateGroup!=null)
+			&&(privateGroup.getName().length()>0)
+			&&(!privateGroup.getName().equals(session.getGroupName())))
+			{
+				if(session.getGroupName().length()>0)
+				{
+					if(CMLib.library(session.getGroupName().charAt(0), CMLib.Library.SESSIONS)
+					!= CMLib.library(privateGroup.getName().charAt(0), CMLib.Library.SESSIONS))
+					{
+						((Sessions)CMLib.library(session.getGroupName().charAt(0), CMLib.Library.SESSIONS)).remove(session);
+						((Sessions)CMLib.library(privateGroup.getName().charAt(0), CMLib.Library.SESSIONS)).add(session);
+					}
+				}
+				session.setGroupName(privateGroup.getName());
+			}
+		}
+	}
+
 }

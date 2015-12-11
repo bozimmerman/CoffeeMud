@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -35,4 +36,12 @@ public interface SessionsList extends CMLibrary
 	public Session getAllSessionAt(int index);
 	public void add(Session s);
 	public void remove(Session s);
+	
+	/**
+	 * Determines the correct thread group for the given theme, and marks the
+	 * given session appropriately.
+	 * @param session
+	 * @param theme
+	 */
+	public void moveSessionToCorrectThreadGroup(final Session session, int theme);
 }
