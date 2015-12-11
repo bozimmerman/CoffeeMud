@@ -1211,7 +1211,7 @@ public class StdMOB implements MOB
 		{
 			final Area area=CMLib.map().areaLocation(location());
 			if(area!=null)
-				CMLib.login().moveSessionToCorrectThreadGroup(session(), area.getTheme());
+				CMLib.sessions().moveSessionToCorrectThreadGroup(session(), area.getTheme());
 		}
 
 		// will ensure no duplicate ticks, this obj, this id
