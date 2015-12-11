@@ -356,6 +356,9 @@ public class CMProps extends Properties
 		TECH_BABBLE_ADJ1,
 		TECH_BABBLE_ADJ2,
 		TECH_BABBLE_NOUN,
+		TECH_SECTOR_X_NAMES,
+		TECH_SECTOR_Y_NAMES,
+		TECH_SECTOR_Z_NAMES,
 		WEATHER_CLEAR, // try to always and forever keep these at the end...
 		WEATHER_CLOUDY, // try to always and forever keep these at the end...
 		WEATHER_WINDY, // try to always and forever keep these at the end...
