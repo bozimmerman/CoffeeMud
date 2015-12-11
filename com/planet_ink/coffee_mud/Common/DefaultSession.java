@@ -872,7 +872,7 @@ public class DefaultSession implements Session
 					}
 					out.write(chars);
 					if(out.checkError())
-						stopSession(true,true,true);
+						stopSession(true,true,false);
 				}
 				finally
 				{
@@ -2044,6 +2044,8 @@ public class DefaultSession implements Session
 			logoutFinal();
 		if(killThread)
 		{
+			// this is a really really bad idea, because any other sessions
+			// on the same thread get killed also!
 			Thread killThisThread=null;
 			synchronized(this)
 			{

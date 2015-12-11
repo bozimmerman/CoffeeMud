@@ -123,9 +123,14 @@ public class Sessions extends StdLibrary implements SessionsList
 		if(S==null)
 			return;
 		S.stopSession(true,true,false);
+		CMLib.s_sleep(100);
 		if(all.contains(S))
 		{
+			CMLib.s_sleep(100);
 			S.run();
+			CMLib.s_sleep(100);
+			S.stopSession(true,true,false);
+			CMLib.s_sleep(100);
 			if(all.contains(S))
 			{
 				S.stopSession(true,true,true);

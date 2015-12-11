@@ -652,7 +652,7 @@ public class MUD extends Thread implements MudHost
 				else
 				{
 					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Stopping session "+S2.getAddress());
-					S2.stopSession(true,true,true);
+					S2.stopSession(true,true,false);
 					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Done stopping session "+S2.getAddress());
 				}
 				if(S!=null)

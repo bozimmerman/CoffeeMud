@@ -201,11 +201,20 @@ public class Unload extends StdCommand
 					{
 						if(M!=mob)
 						{
-							if(M.session()!=null)
-								M.session().stopSession(false,false,false);
-							while(M.session()!=null){CMLib.s_sleep(100);}
-							if(M.session()!=null)
-								M.session().stopSession(true,true,true);
+							if (M.session() != null)
+								M.session().stopSession(false, false, false);
+							while (M.session() != null)
+							{
+								CMLib.s_sleep(100);
+							}
+							if (M.session() != null)
+								M.session().stopSession(true, true, false);
+							while (M.session() != null)
+							{
+								CMLib.s_sleep(100);
+							}
+							if (M.session() != null)
+								M.session().stopSession(true, true, true);
 						}
 						else
 							mob.tell(L("Can't unload yourself -- a destroy is involved, which would disrupt this process."));

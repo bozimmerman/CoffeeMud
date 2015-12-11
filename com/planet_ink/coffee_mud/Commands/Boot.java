@@ -72,6 +72,7 @@ public class Boot extends StdCommand
 				else
 					mob.tell(L("You boot @x1",S.getAddress()));
 				S.stopSession(false,false,false);
+				CMLib.s_sleep(100);
 				if(((S.getPreviousCMD()==null)||(S.getPreviousCMD().size()==0))
 				&&(!CMLib.flags().isInTheGame(S.mob(),true)))
 					CMLib.sessions().stopSessionAtAllCosts(S);
