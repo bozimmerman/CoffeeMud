@@ -149,13 +149,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
-	public void reRollStats(MOB mob, CharStats C, int pointsLeft)
+	public void reRollStats(CharStats baseCharStats, int pointsLeft)
 	{
 		final int basemax = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 
 		final int[] stats=new int[CharStats.CODES.BASECODES().length];
 		for(int i=0;i<stats.length;i++)
-			stats[i]=C.getStat(CharStats.CODES.BASECODES()[i]);
+			stats[i]=baseCharStats.getStat(CharStats.CODES.BASECODES()[i]);
 
 		while (pointsLeft > 0)
 		{
@@ -168,7 +168,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 
 		for(int i=0;i<stats.length;i++)
-			C.setStat(CharStats.CODES.BASECODES()[i],stats[i]);
+			baseCharStats.setStat(CharStats.CODES.BASECODES()[i],stats[i]);
 	}
 
 	@Override
@@ -2580,7 +2580,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(randomRoll)
 		{
 			loginObj.baseStats.copyInto(mob.baseCharStats());
-			reRollStats(mob,mob.baseCharStats(),loginObj.statPoints);
+			reRollStats(mob.baseCharStats(),loginObj.statPoints);
 		}
 
 		mob.recoverCharStats();
@@ -2690,7 +2690,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(prompt.toLowerCase().startsWith("r"))
 		{
 			loginObj.baseStats.copyInto(mob.baseCharStats());
-			reRollStats(mob,mob.baseCharStats(),getTotalBonusStatPoints());
+			reRollStats(mob.baseCharStats(),getTotalBonusStatPoints());
 			loginObj.statPoints=0;
 			loginObj.state=LoginState.CHARCR_STATSTART;
 			return null;

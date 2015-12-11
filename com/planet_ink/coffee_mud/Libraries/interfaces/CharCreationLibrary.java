@@ -45,9 +45,58 @@ import java.util.*;
  */
 public interface CharCreationLibrary extends CMLibrary
 {
-	public void reRollStats(MOB mob, CharStats C, int pointsLeft);
+	/**
+	 * Re-populates the base stats of the given CharStats
+	 * object by resetting the values to minimum, and then
+	 * adding as many of the given points to random stats
+	 * until they are all gone.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+	 * @param baseCharStats the charstats object to populate
+	 * @param pointsLeft the number of points above minimum to allocate
+	 */
+	public void reRollStats(CharStats baseCharStats, int pointsLeft);
+	
+	/**
+	 * A blocking call that populates the given mob with their base
+	 * CharStats according to character creation rules.  This method
+	 * might return instantly, or it might send the given session
+	 * through the stat selection process.  The bonusPoints are any
+	 * over and above the standard allocation points.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+	 * @see CharCreationLibrary#reRollStats(CharStats, int)
+	 * @see CharCreationLibrary#promptCharClass(int, MOB, Session)
+	 * @param theme the theme code to use for stat allocation
+	 * @param mob the mob who is getting the new char stats
+	 * @param session the session which might help allocate the points
+	 * @param bonusPoints any bonus points to allocate to stats
+	 * @throws IOException any input errors that occur
+	 */
 	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPoints) throws IOException;
+	
+	/**
+	 * A blocking call that populates the given mob with a character class
+	 * according to character creation rules.  This method
+	 * might return instantly, or it might send the given session
+	 * through the class selection process.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+	 * @see CharCreationLibrary#reRollStats(CharStats, int)
+	 * @see CharCreationLibrary#promptPlayerStats(int, MOB, Session, int)
+	 * @param theme the theme code to use for class selection
+	 * @param mob the mob who is getting the new char class
+	 * @param session the session which might help allocate the points
+	 * @throws IOException any input errors that occur
+	 */
 	public CharClass promptCharClass(int theme, MOB mob, Session session) throws IOException;
+	
+	/**
+	 * Returns the cost, in trains, for the given mob to gain a point in the
+	 * given ability code stat number.   
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
+	 * @param mob the mob who is trying to train
+	 * @param abilityCode the ability code the mob wants to train
+	 * @param quiet true to not give verbal errors
+	 * @return negative number for error, or the number of trains required
+	 */
 	public int getTrainingCost(MOB mob, int abilityCode, boolean quiet);
 	public boolean canChangeToThisClass(MOB mob, CharClass thisClass, int theme);
 	// mob is optional
