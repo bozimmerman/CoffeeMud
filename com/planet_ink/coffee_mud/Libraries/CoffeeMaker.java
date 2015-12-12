@@ -1823,35 +1823,71 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(xmlBuffer);
 		if(xml==null)
-			return unpackErr("MOBs","null 'xml'");
+			return unpackErr("CataDats","null 'xml'");
+		final List<Map<String,CataData>> sets = new ArrayList<Map<String,CataData>>();
 		for(Iterator<XMLLibrary.XMLTag> t= xml.iterator();t.hasNext();)
 		{
 			XMLLibrary.XMLTag tag = t.next();
 			if(tag.tag().equalsIgnoreCase("CATADATAS"))
 			{
+				final Map<String,CataData> set = new TreeMap<String,CataData>();
+				sets.add(set);
 				for(Iterator<XMLLibrary.XMLTag> t2= tag.contents().iterator();t2.hasNext();)
 				{
 					XMLLibrary.XMLTag cataDataTag = t2.next();
 					if(cataDataTag.tag().equalsIgnoreCase("CATALOGDATA"))
 					{
 						CataData catDat = CMLib.catalog().sampleCataData(cataDataTag.toString());
-						if(nameMatchers == null)
-							addHere.add(catDat);
+						if(cataDataTag.parms().containsKey("NAME"))
+							set.put(CMLib.xml().restoreAngleBrackets(cataDataTag.parms().get("NAME")), catDat);
 						else
-						if((cataDataTag.parms().containsKey("NAME"))
-						&&(addHere.size() < nameMatchers.size()))
-						{
-							final String name = CMLib.xml().restoreAngleBrackets(cataDataTag.parms().get("NAME"));
-							Physical P = nameMatchers.get(addHere.size());
-							if(P.Name().equals(name))
-							{
-								addHere.add(catDat);
-							}
-						}
+							return unpackErr("CataDats","null 'name'");
 					}
 				}
 			}
 		}
+		if(nameMatchers == null)
+		{
+			for(Map<String,CataData> chk : sets)
+			{
+				for(CataData dat : chk.values())
+					addHere.add(dat);
+			}
+		}
+		else
+		{
+			int bestMatch = -1;
+			Map<String,CataData> bestSet = null;
+			for(Map<String,CataData> chk : sets)
+			{
+				int ct = 0;
+				for(Physical P : nameMatchers)
+				{
+					if(chk.containsKey(P.Name()))
+						ct++;
+				}
+				if((ct > bestMatch)&&(ct>0))
+				{
+					bestMatch=ct;
+					bestSet=chk;
+				}
+			}
+			if(bestSet != null)
+			{
+				for(Physical P : nameMatchers)
+				{
+					if(bestSet.containsKey(P.Name()))
+						addHere.add(bestSet.get(P.Name()));
+					else
+					{
+						addHere.clear();
+						break;
+					}
+				}
+			}
+		}
+		if(addHere.size() == 0)
+			return unpackErr("CataDats","nothing found");
 		return "";
 	}
 

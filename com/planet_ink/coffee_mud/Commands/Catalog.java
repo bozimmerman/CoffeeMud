@@ -335,8 +335,6 @@ public class Catalog extends StdCommand
 				if((whatKind==0)||(whatKind==1))
 				{
 					String cat=currentCats.get(mob.Name());
-					if(cat==null)
-						cat="";
 					list.append("^HMobs ("+(cat)+")\n\r^N");
 					list.append(CMStrings.padRight(L("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3));
@@ -371,8 +369,6 @@ public class Catalog extends StdCommand
 				if((whatKind==0)||(whatKind==2))
 				{
 					String cat=currentCats.get(mob.Name());
-					if(cat==null)
-						cat="";
 					list.append("^HItems ("+(cat)+")\n\r^N");
 					list.append(CMStrings.padRight(L("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3)+" ");
