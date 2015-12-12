@@ -3391,7 +3391,7 @@ public class CMMap extends StdLibrary implements WorldMap
 												@Override 
 												public Object readData()
 												{
-													return CMLib.coffeeMaker().getRoomItems(R, new TreeMap<String,List<Item>>(), null, -1);
+													return CMLib.coffeeMaker().getRoomItems(R, new TreeMap<String,List<Item>>(), null, null);
 												}
 											});
 											myFiles.add(new CMFile.CMVFSFile(this.path+"mobs.cmare",48,System.currentTimeMillis(),"SYS")

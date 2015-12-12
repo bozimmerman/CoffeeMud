@@ -120,7 +120,7 @@ public class Skill_QuickChange extends BardSkill
 		for(final PackedItem I : items)
 			itemList.add(I.I);
 		final StringBuilder str=new StringBuilder("<ITEMS>");
-		str.append(CMLib.coffeeMaker().getItemsXML(itemList, new Hashtable<String,List<Item>>(), new HashSet<String>(), 0));
+		str.append(CMLib.coffeeMaker().getItemsXML(itemList, new Hashtable<String,List<Item>>(), new HashSet<String>(), null));
 		str.append("</ITEMS>");
 		str.append(locationsDelim);
 		for(final PackedItem I : items)

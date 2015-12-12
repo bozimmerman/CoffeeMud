@@ -117,7 +117,7 @@ public class Prop_ItemSlot extends Property
 			if((I != null)&&(!items.contains(I)))
 				items.add(I);
 		}
-		str.append("<ITEMS>"+CMLib.coffeeMaker().getItemsXML(items, new Hashtable<String,List<Item>>(),new HashSet<String>(),0)+"</ITEMS>");
+		str.append("<ITEMS>"+CMLib.coffeeMaker().getItemsXML(items, new Hashtable<String,List<Item>>(),new HashSet<String>(),null)+"</ITEMS>");
 		return str.toString();
 	}
 	

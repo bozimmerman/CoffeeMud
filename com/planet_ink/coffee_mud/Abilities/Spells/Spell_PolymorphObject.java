@@ -269,7 +269,7 @@ public class Spell_PolymorphObject extends Spell
 					items.add(targetI);
 					if(targetI instanceof Container)
 						items.addAll(((Container)targetI).getDeepContents());
-					A.setMiscText(CMLib.coffeeMaker().getItemsXML(items, new Hashtable<String,List<Item>>(),new HashSet<String>(),0).toString());
+					A.setMiscText(CMLib.coffeeMaker().getItemsXML(items, new Hashtable<String,List<Item>>(),new HashSet<String>(),null).toString());
 					A.previousItems = items;
 					ItemPossessor possessor = targetI.owner();
 					if(possessor != null)
