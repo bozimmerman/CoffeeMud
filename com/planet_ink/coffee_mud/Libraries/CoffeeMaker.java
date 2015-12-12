@@ -1620,17 +1620,48 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	@Override
 	public StringBuffer getUniqueItemXML(Item item,
-										 int type,
+										 CMObjectType type,
 										 Map<String,List<Item>> found,
 										 Set<String> files)
 	{
 		final StringBuffer buf=new StringBuffer("");
-		switch(type)
+		if(type != null)
 		{
-		case 1: if(!(item instanceof Weapon)) return buf;
+			switch(type)
+			{
+			case WEAPON:
+				if (!(item instanceof Weapon))
+					return buf;
 				break;
-		case 2: if(!(item instanceof Armor)) return buf;
+			case ARMOR:
+				if (!(item instanceof Armor))
+					return buf;
 				break;
+			case ITEM:
+				break;
+			case MISCMAGIC:
+				if (!(item instanceof MiscMagic))
+					return buf;
+				break;
+			case CLANITEM:
+				if (!(item instanceof ClanItem))
+					return buf;
+				break;
+			case TECH:
+				if (!(item instanceof Technical))
+					return buf;
+				break;
+			case SHIPTECH:
+				if (!(item instanceof ShipComponent))
+					return buf;
+				break;
+			case SOFTWARE:
+				if (!(item instanceof Software))
+					return buf;
+				break;
+			default:
+				break;
+			}
 		}
 		if(item.displayText().length()>0)
 		{
@@ -1892,7 +1923,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public StringBuffer getItemsXML(List<Item> items, Map<String,List<Item>> found, Set<String> files, int type)
+	public StringBuffer getItemsXML(List<Item> items, Map<String,List<Item>> found, Set<String> files, CMObjectType type)
 	{
 		final StringBuffer buf=new StringBuffer("");
 		for(final Item I : items)
@@ -1904,7 +1935,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public StringBuffer getRoomItems(Room room,
 									 Map<String,List<Item>> found,
 									 Set<String> files,
-									 int type) // 0=item, 1=weapon, 2=armor
+									 CMObjectType type) // 0=item, 1=weapon, 2=armor
 	{
 		final StringBuffer buf=new StringBuffer("");
 		room=makeNewRoomContent(room,false);

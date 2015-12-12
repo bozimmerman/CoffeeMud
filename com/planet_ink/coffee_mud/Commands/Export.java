@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -240,21 +241,56 @@ public class Export extends StdCommand
 		return true;
 	}
 
-	protected int getItemSubType(String subType, int fileNameCode, String[] fileName)
+	protected CMObjectType getItemSubType(String subType, int fileNameCode, String[] fileName)
 	{
-		int type=0;
+		CMObjectType type=CMObjectType.ITEM;
 		if(subType.equalsIgnoreCase("WEAPONS"))
 		{
 			if(fileNameCode==2)
 				fileName[0]=fileName[0]+"/weapons";
-			type=1;
+			type=CMObjectType.WEAPON;
 		}
 		else
 		if(subType.equalsIgnoreCase("ARMOR"))
 		{
 			if(fileNameCode==2)
 				fileName[0]=fileName[0]+"/armor";
-			type=2;
+			type=CMObjectType.ARMOR;
+		}
+		else
+		if(subType.equalsIgnoreCase("TECH"))
+		{
+			if(fileNameCode==2)
+				fileName[0]=fileName[0]+"/tech";
+			type=CMObjectType.TECH;
+		}
+		else
+		if(subType.equalsIgnoreCase("MISCMAGIC"))
+		{
+			if(fileNameCode==2)
+				fileName[0]=fileName[0]+"/miscmagic";
+			type=CMObjectType.MISCMAGIC;
+		}
+		else
+		if(subType.equalsIgnoreCase("CLANITEM"))
+		{
+			if(fileNameCode==2)
+				fileName[0]=fileName[0]+"/clanitem";
+			type=CMObjectType.CLANITEM;
+		}
+		else
+		if(subType.equalsIgnoreCase("SHIPTECH"))
+		{
+			if(fileNameCode==2)
+				fileName[0]=fileName[0]+"/shiptech";
+			type=CMObjectType.SHIPTECH;
+		}
+		else
+		if(subType.equalsIgnoreCase("SOFTWARE"))
+		{
+			if(fileNameCode==2)
+				fileName[0]=fileName[0]+"/software";
+			type=CMObjectType.SOFTWARE;
 		}
 		else
 		if(fileNameCode==2)
@@ -369,7 +405,7 @@ public class Export extends StdCommand
 				foundMobs.clear();
 				x.append("\r\n<ITEMS>");
 				Map<String,List<Item>> foundItems=new TreeMap<String,List<Item>>();
-				x.append(CMLib.coffeeMaker().getItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), foundItems, files, 0));
+				x.append(CMLib.coffeeMaker().getItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), foundItems, files, null));
 				x.append("\r\n</ITEMS>\r\n");
 				x.append("\r\n").append(getCatalogData(foundItems));
 				foundItems.clear();
@@ -473,18 +509,18 @@ public class Export extends StdCommand
 		if(commandType.equalsIgnoreCase("CATALOG"))
 		{
 			String[] fileNameAdj = new String[]{fileName};
-			int type = getItemSubType(subType, fileNameCode,fileNameAdj);
+			CMObjectType type = getItemSubType(subType, fileNameCode,fileNameAdj);
 			fileName = fileNameAdj[0];
 			
 			final StringBuffer x=new StringBuffer("<CATALOG");
-			if((type > 0)||(subType.equalsIgnoreCase("ITEMS")))
+			if(((type!=null)&&(type != CMObjectType.ITEM))||(subType.equalsIgnoreCase("ITEMS")))
 				x.append(" HASITEMS>");
 			else
 			if(subType.equalsIgnoreCase("MOBS"))
 				x.append(" HASMOBS>");
 			else
 				x.append(" HASBOTH>");
-			if((type == 0)&&(!(!subType.equalsIgnoreCase("ITEMS"))))
+			if((((type==null)||(type == CMObjectType.ITEM)))&&(!subType.equalsIgnoreCase("ITEMS")))
 			{
 				x.append("\r\n<MOBS>");
 				final Map<String,List<MOB>> found = new TreeMap<String,List<MOB>>();
@@ -500,7 +536,7 @@ public class Export extends StdCommand
 				x.append("\r\n</ITEMS>\r\n");
 				x.append("\r\n").append(getCatalogData(found));
 			}
-			if((fileNameCode==2)&&(type==0))
+			if((fileNameCode==2)&&(((type==null)||(type == CMObjectType.ITEM))))
 				fileName=fileName+"/catalog";
 			if(S!=null)
 				S.rawPrintln("!");
@@ -556,7 +592,7 @@ public class Export extends StdCommand
 		{
 
 			String[] fileNameAdj = new String[]{fileName};
-			int type = getItemSubType(subType, fileNameCode,fileNameAdj);
+			CMObjectType type = getItemSubType(subType, fileNameCode,fileNameAdj);
 			fileName = fileNameAdj[0];
 			
 			final Hashtable<String,List<Item>> found=new Hashtable<String,List<Item>>();

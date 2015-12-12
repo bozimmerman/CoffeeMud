@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -125,7 +126,7 @@ public interface GenericBuilder extends CMLibrary
 	public StringBuffer getRoomMobs(Room room, Set<CMObject> custom, Set<String> files, Map<String,List<MOB>> found);
 	public StringBuffer getMobXML(MOB mob);
 	public StringBuffer getMobsXML(List<MOB> mobs, Set<CMObject> custom, Set<String> files, Map<String,List<MOB>> found);
-	public StringBuffer getUniqueItemXML(Item item, int type, Map<String,List<Item>> found, Set<String> files);
+	public StringBuffer getUniqueItemXML(Item item, CMObjectType type, Map<String,List<Item>> found, Set<String> files);
 	public String addItemsFromXML(String xmlBuffer, List<Item> addHere, Session S);
 	public String addMOBsFromXML(String xmlBuffer, List<MOB> addHere, Session S);
 	public String addItemsFromXML(List<XMLTag> xml, List<Item> addHere, Session S);
@@ -134,8 +135,8 @@ public interface GenericBuilder extends CMLibrary
 	public MOB getMobFromXML(String xmlBuffer);
 	public Item getItemFromXML(String xmlBuffer);
 	// TYPE= 0=item, 1=weapon, 2=armor
-	public StringBuffer getRoomItems(Room room, Map<String,List<Item>> found, Set<String> files, int type);
-	public StringBuffer getItemsXML(List<Item> items, Map<String,List<Item>> found, Set<String> files, int type);
+	public StringBuffer getRoomItems(Room room, Map<String,List<Item>> found, Set<String> files, CMObjectType type);
+	public StringBuffer getItemsXML(List<Item> items, Map<String,List<Item>> found, Set<String> files, CMObjectType type);
 	public StringBuffer getItemXML(Item item);
 	public StringBuffer getRoomXML(Room room,  Set<CMObject> custom, Set<String> files, boolean andContent);
 	public Ammunition makeAmmunition(String ammunitionType, int number);

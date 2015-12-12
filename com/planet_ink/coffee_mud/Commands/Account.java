@@ -42,11 +42,11 @@ public class Account extends StdCommand
 	private final String[] access=I(new String[]{"ACCOUNT"});
 	@Override public String[] getAccessWords(){return access;}
 
-	public static StringBuffer showCharLong(MOB seer, ThinPlayer who)
+	public static StringBuffer showCharLong(String bgColor, MOB seer, ThinPlayer who)
 	{
 
 		final StringBuffer msg=new StringBuffer("");
-		msg.append("[^w");
+		msg.append("[^w"+bgColor);
 		final int[] cols={
 				CMLib.lister().fixColWidth(10,seer.session()),
 				CMLib.lister().fixColWidth(10,seer.session()),
@@ -97,7 +97,7 @@ public class Account extends StdCommand
 			else
 				msg.append(CMStrings.padRight(levelStr,cols[2]));
 		}
-		msg.append("^w] ^H" + who.name+"^N ");
+		msg.append("^w"+bgColor+"] ^b"+bgColor + who.name+"^N ");
 		msg.append("\n\r");
 		return msg;
 	}
@@ -152,7 +152,7 @@ public class Account extends StdCommand
 				str.append("\n\r");
 			}
 			str.append("\n\r");
-			str.append(L("@x1's characters:",account.getAccountName())).append("\n\r");
+			str.append(CMStrings.padRight(L("^X@x1's characters:",account.getAccountName()),40)).append("^.^N\n\r");
 			boolean toggle = false;
 			for (final Enumeration<ThinPlayer> p=account.getThinPlayers(); p.hasMoreElements();)
 			{
@@ -161,7 +161,7 @@ public class Account extends StdCommand
 					str.append("^~y");
 				else
 					str.append("^N");
-				str.append(showCharLong(mob,player));
+				str.append(showCharLong(toggle?"^~y":"",mob,player));
 				toggle = !toggle;
 			}
 			str.append("^N");
