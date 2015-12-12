@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
@@ -42,7 +43,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 */
 public class CoffeeMaker extends StdLibrary implements GenericBuilder
 {
-	@Override public String ID(){return "CoffeeMaker";}
+	@Override
+	public String ID()
+	{
+		return "CoffeeMaker";
+	}
 	
 	@Override
 	public String getGenMOBTextUnpacked(MOB mob, String newText)
@@ -1811,6 +1816,43 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(xmlBuffer);
 		return addMOBsFromXML(xml, addHere, S);
+	}
+
+	@Override
+	public String addCataDataFromXML(String xmlBuffer, List<CataData> addHere, List<? extends Physical> nameMatchers, Session S)
+	{
+		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(xmlBuffer);
+		if(xml==null)
+			return unpackErr("MOBs","null 'xml'");
+		for(Iterator<XMLLibrary.XMLTag> t= xml.iterator();t.hasNext();)
+		{
+			XMLLibrary.XMLTag tag = t.next();
+			if(tag.tag().equalsIgnoreCase("CATADATAS"))
+			{
+				for(Iterator<XMLLibrary.XMLTag> t2= tag.contents().iterator();t2.hasNext();)
+				{
+					XMLLibrary.XMLTag cataDataTag = t2.next();
+					if(cataDataTag.tag().equalsIgnoreCase("CATALOGDATA"))
+					{
+						CataData catDat = CMLib.catalog().sampleCataData(cataDataTag.toString());
+						if(nameMatchers == null)
+							addHere.add(catDat);
+						else
+						if((cataDataTag.parms().containsKey("NAME"))
+						&&(addHere.size() < nameMatchers.size()))
+						{
+							final String name = CMLib.xml().restoreAngleBrackets(cataDataTag.parms().get("NAME"));
+							Physical P = nameMatchers.get(addHere.size());
+							if(P.Name().equals(name))
+							{
+								addHere.add(catDat);
+							}
+						}
+					}
+				}
+			}
+		}
+		return "";
 	}
 
 	@Override

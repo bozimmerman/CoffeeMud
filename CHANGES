@@ -40,6 +40,7 @@
   39. Note: "titles.txt" has been renamed to "titles.ini".  The system will still load the old name, but be aware!
   40. New Zapper Mask: ANYCLASSLEVEL for filtering players by the levels in previous classes.
   41. You can now turn off post office mail forwarding with FORWARD STOP.
+  42. Import/Export now supports the Catalog.
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -628,7 +629,8 @@ public class Import extends StdCommand
 		return "";
 	}
 
-	protected static final String[][] colors={
+	protected static final String[][] colors=
+	{
 		{((char)27)+"ash"+((char)27),"^c"},
 		{((char)27)+"black"+((char)27),"^W"},
 		{((char)27)+"blood"+((char)27),"^R"},
@@ -1558,360 +1560,712 @@ public class Import extends StdCommand
 
 		switch(i)
 		{
-		case -1: break;
-		case 0: break;
-		case 1: return "Spell_GraceOfTheCat"; // armor
-		case 2: return "Spell_Teleport";
-		case 3: return "Prayer_Bless";
-		case 4: return "Spell_Blindness";
-		case 5: return "Spell_BurningHands";
-		case 6: return "Spell_Clog"; // call lightening, dumb
-		case 7: return "Spell_Charm";
-		case 8: return "Undead_ColdTouch"; // chill touch
-		case 9: return "Spell_MirrorImage"; // clone
-		case 10: return "Spell_Feeblemind"; // color spray
-		case 11: return "Chant_CallRain";
-		case 12: return "Prayer_CreateFood";
-		case 13: return "Prayer_CreateWater";
-		case 14: return "Prayer_CureBlindness";
-		case 15: return "Prayer_CureCritical";
-		case 16: return "Prayer_CureLight";
-		case 17: return "Prayer_Curse";
-		case 18: return "Prayer_SenseEvil";
-		case 19: return "Spell_DetectInvisible";
-		case 20: return "Spell_DetectMagic";
-		case 21: return "Spell_DetectPoison";
-		case 22: return "Prayer_DispelEvil";
-		case 23: return "Spell_Earthquake";
-		case 24: return "Spell_EnchantWeapon";
-		case 25: return "Prayer_Drain";
-		case 26: return "Spell_Fireball";
-		case 27: return "Prayer_Harm";
-		case 28: return "Prayer_Heal";
-		case 29: return "Spell_Invisibility";
-		case 30: return "Spell_Lightning";
-		case 31: return "Spell_LocateObject";
-		case 32: return "Spell_MagicMissile";
-		case 33: return "Thief_Poison";
-		case 34: return "Prayer_ProtEvil";
-		case 35: return "Prayer_RemoveCurse";
-		case 36: return "Prayer_Sanctuary";
-		case 37: return "Spell_ShockingGrasp";
-		case 38: return "Spell_Sleep";
-		case 39: return "Spell_GiantStrength";
-		case 40: return "Spell_Summon";
-		case 41: return "Spell_Ventriloquate";
-		case 42: return "Skill_WordRecall";
-		case 43: return "Prayer_RemovePoison";
-		case 44: return "Chant_Dragonsight";
-		case 45: return "Prayer_CureDisease"; // not the real ###
-		case 51: return "Spell_ShockingGrasp";
-		case 53: return "Spell_IdentifyObject";
-		case 54: return "Prayer_AnimateDead";
-		case 55: return "Spell_Fear";
-		case 56: return "Spell_Fly";
-		case 57: return "Spell_Light";
-		case 58: return "Spell_KnowAlignment";
-		case 59: return "Spell_DispelMagic";
-		case 60: return "Spell_FlamingHands";
-		case 61: return "Prayer_CureSerious";
-		case 62: return "Prayer_CauseLight";
-		case 63: return "Spell_WaterBreathing"; // water of lifew
-		case 64: return "Prayer_CauseSerious";
-		case 65: return "Spell_Dragonfire"; // flamestrike
-		case 66: return "Spell_Stoneskin";
-		case 67: return "Spell_Shield";
-		case 68: return "Spell_Weaken";
-		case 69: return "Spell_MassInvisibility";
-		case 70: return "Spell_AcidArrow"; // acid blast
-		case 71: return "Spell_Portal"; // actually mass teleport
-		case 72: return "Spell_FaerieFog";
-		case 73: return "Spell_IceStorm";
-		case 74: return "Spell_PassDoor";
-		case 75: return "Spell_EnchantArmor";
-		case 76: return "Spell_StoneFlesh"; // stone
-		case 77: return "Spell_Infravision";
-		case 78: return "Prayer_RaiseDead";
-		case 80: return "Prayer_CreateWater";
-		case 81: return "Prayer_Restoration"; // refresh
-		case 82: return "Spell_ChangeSex";
-		case 83: return "Spell_Gate";
-		case 84: return "Spell_Haste";
-		case 85: return "Chant_SummonFire";
-		case 86: return "Spell_DetectTraps";
-		case 87: return "Thief_RemoveTraps";
-		case 88: return "Spell_Flameshield";
-		case 89: return "Spell_Shockshield";
-		case 90: return "Spell_PassDoor";
-		case 91: return "Spell_Scry";
-		case 93: return "Skill_Meditate";
-		case 94: return "Skill_Meditate";
-		case 97: return "Spell_Web";
-		case 98: return "Spell_EnchantArmor";
-		case 99: return "Spell_Teleport";
-		case 101: return ""; // create symbol
-		case 102: return ""; // alertness
-		case 103: return "Spell_Fatigue"; // fatigue
-		case 104: return ""; // grounding
-		case 105: return ""; // charged beacon
-		case 106: return ""; // resilience
-		case 107: return "Spell_Feeblemind";
-		case 108: return ""; // ill fortune
-		case 109: return "Spell_Slow";
-		case 110: return ""; // unravel defence
-		case 111: return ""; // holy sanctity
-		case 112: return ""; // divinity
-		case 113: return "Prayer_Restoration";
-		case 114: return "Undead_ColdTouch";
-		case 115: return ""; // spiritual wrath
-		case 120: return "Spell_Cloudkill";
-		case 121: return "Prayer_MajorInfusion"; // quickening
-		case 122: return "Chant_SummonElemental"; // summon elemental
-		case 124: return ""; // uplift
-		case 200: return "Acidbreath";
-		case 201: return "Firebreath";
-		case 202: return "Frostbreath";
-		case 203: return "Gasbreath";
-		case 204: return "Lighteningbreath";
-		case 205: return "Spell_Frenzy";
-		case 206: return "Prayer_DispelGood";
-		case 207: return "Spell_EnchantWeapon";
-		case 208: return "Spell_EnchantArmor";
-		case 209: return "Prayer_Restoration";
-		case 210: return "Spell_HeatMetal";
-		case 211: return "Spell_Farsight";
-		case 212: return "Spell_MageArmor";
-		case 213: return "Prayer_Plague";
-		case 214: return "Spell_Slow";
-		case 215: return "Spell_Web";
-		case 216: return "Spell_Confusion";
-		case 217: return "Spell_DetectSentience";
-		case 218: return "Spell_Nightmare";
-		case 219: return "Spell_MindLight";
-		case 220: return "Prayer_Calm";
-		case 221: return "Prayer_SenseGood";
-		case 222: return "Prayer_CauseSerious";
-		case 223: return "";
-		case 224: return "Chant_Barkskin";
-		case 225: return "Spell_Tourettes";
-		case 226: return "Spell_Misstep";
-		case 227: return "Prayer_Restoration";
-		case 228: return "Prayer_HolyWord";
-		case 229: return "Prayer_MassHeal";
-		case 230: return "Spell_AcidFog";
-		case 231: return "Prayer_Etherealness";
-		case 232: return "Spell_Flameshield";
-		case 233: return "Prayer_BladeBarrier";
-		case 234: return "Chant_RestoreMana";
-		case 235: return "Spell_Frenzy";
-		case 236: return "Spell_CombatPrecognition";
-		case 237: return "Spell_TrueSight";
-		case 238: return "Spell_MindBlock";
-		case 239: return "Spell_Shatter";
-		case 240: return "Spell_IceStorm";
-		case 241: return "Spell_Disintegrate";
-		case 242: return "Prayer_AnimateDead";
-		case 243: return "Spell_Siphon";
-		case 244: return "Spell_Blink";
-		case 245: return "Prayer_Plague";
-		case 246: return "Spell_Delirium";
-		case 247: return "Chant_SpellWard";
-		case 291: return "Chant_PlantPass";
-		case 292: return "Spell_FeatherFall";
-		case 294: return "Spell_Polymorph";
-		case 295: return ""; // spiral blast
-		case 296: return "Spell_BurningHands";
-		case 299: return ""; // ice shard
-		case 300: return ""; //Torrent
-		case 301: return ""; //Black Hand
-		case 302: return ""; //Acetum Primus
-		case 303: return ""; //Black Lightning
-		case 304: return ""; //Galvanic Whip
-		case 305: return ""; //Disruption
-		case 306: return ""; //Spectral Furor
-		case 308: return ""; //Sulfurous Spray
-		case 309: return ""; //Sonic Resonance
-		case 310: return ""; //Black Fist
-		case 311: return ""; //Magnetic Thrust
-		case 313: return ""; //Caustic Fount
-		case 314: return ""; //Quantum Spike
-		case 315: return ""; //Energy Blast
-		case 342: return ""; //Benefic Aura
-		case 356: return ""; //Succor
-		case 402: return "Skill_Explosive";
-		case 500: return "Spell_ChainLightening";
-		case 501: return "Chant_Goodberry";
-		case 502: return "Prayer_FlameWeapon";
-		case 503: return "Chant_GrowClub"; // spiritual hammer
-		case 504: return "Spell_Frenzy";
-		case 505: return "Spell_Fireball";
-		case 506: return "Prayer_HolyWord";
-		case 507: return ""; // vine whip
-		case 508: return "Chant_Barkskin";
-		case 509: return "Prayer_ProtectElements";
-		case 510: return "Spell_Frenzy";
-		case 511: return ""; // fletch
-		case 512: return ""; // divine aid
-		case 513: return "Spell_Frenzy"; // divine fury
-		case 514: return "Prayer_Curse"; // lich curse
-		case 515: return "Spell_GiantStrength";
-		case 516: return "Prayer_Drain"; // withering hand
-		case 517: return "Spell_GraceOfTheCat"; // chaos armor
-		case 518: return ""; // soul scream
-		case 519: return "Spell_StinkingCloud";
-		case 520: return "Spell_Web";
-		case 521: return "Chant_PlantSnare";
-		case 522: return "Prayer_BladeBarrier";
-		case 523: return "Spell_ResistFire";
-		case 524: return ""; // heroes feast
-		case 525: return "Prayer_RemoveParalysis";
-		case 526: return "Druid_RecoverVoice";
-		case 527: return "Spell_Silence";
-		case 528: return "Spell_Hold";
-		case 529: return "Prayer_HolyWord";
-		case 530: return "Spell_PolymorphSelf";
-		case 531: return "Spell_GustOfWind";
-		case 532: return ""; //creepingdoom
-		case 533: return "Chant_Sunray";
-		case 534: return "Prayer_Calm";
-		case 535: return ""; //fireseed
-		case 536: return ""; //warmount
-		case 537: return ""; //despair
-		case 538: return "Spell_Forget";
-		case 539: return "Skill_WordRecall";
-		case 540: return "Spell_Portal";
-		case 541: return ""; // mass armor
-		case 542: return ""; // arcane perception
-		case 543: return ""; // mass armor
-		case 544: return "Spell_MassFeatherfall"; // mass featherfall
-		case 545: return ""; // mass refresh
-		case 546: return "Spell_MassFly";
-		case 547: return ""; // minor track
-		case 548: return ""; // major track
-		case 550: return "Spell_AcidFog";
-		case 551: return "Spell_ResistPoison";
-		case 553: return "Prayer_Poison";
-		case 554: return "Spell_AcidArrow";
-		case 555: return "Spell_MeteorStorm";
-		case 556: return "Spell_Frost";
-		case 559: return "Spell_GustOfWind";
-		case 560: return "Spell_StinkingCloud";
-		case 561: return ""; // skeletal armor
-		case 562: return "Prayer_AiryForm"; // wraithform
-		case 563: return "Spell_ManaBurn";
-		case 564: return "Undead_ColdTouch";
-		case 565: return ""; // death chant
-		case 566: return ""; // life surge
-		case 567: return ""; // mana surge
-		case 568: return ""; // death aura
-		case 569: return ""; // dark ritual
-		case 570: return "Prayer_Deathfinger";
-		case 573: return ""; // crystal blades
-		case 574: return "Spell_Dragonfire"; // fiery dragon
-		case 575: return ""; // celestial thunder
-		case 576: return ""; // celestial lightning
-		case 577: return ""; // create mistletow
-		case 578: return "Prayer_Plague"; // toxin shot
-		case 579: return "Spell_Slow";
-		case 580: return "Chant_Dragonsight";
-		case 581: return "Spell_SummonSteed";
-		case 582: return ""; // rejuvenate
-		case 583: return "Spell_Haste";
-		case 584: return ""; // cacophony
-		case 585: return "Spell_Disintegrate";
-		case 586: return ""; // beacon
-		case 587: return "Prayer_Anger";
-		case 588: return "Spell_MassWaterbreath";
-		case 589: return "Spell_Gate";
-		case 590: return "Spell_Portal";
-		case 591: return ""; // tree transport
-		case 592: return ""; // treespeak
-		case 593: return ""; // bloodslash
-		case 594: return "Spell_SpellTurning";
-		case 595: return "Spell_ChainLightening";
-		case 596: return ""; // harmonic aura
-		case 597: return "Spell_Siphon";
-		case 598: return "Undead_ColdTouch";
-		case 599: return "Spell_ResistFire";
-		case 600: return "Spell_ResistCold";
-		case 601: return "Spell_ResistFire";
-		case 602: return "Prayer_Curse";
-		case 603: return "Spell_Knock";
-		case 604: return "Prayer_Deathfinger";
-		case 605: return "Spell_MinorGlobe";
-		case 606: return "Spell_Mirage";
-		case 607: return ""; // tarangreal
-		case 608: return ""; // kassandra
-		case 609: return ""; // sebat
-		case 610: return ""; // metandra
-		case 611: return ""; // vampiric blast
-		case 612: return ""; // dragonskin
-		case 613: return "Prayer_Heal";
-		case 614: return "Spell_ResistElectricity";
-		case 615: return ""; // shocking trap
-		case 616: return "Spell_Feeblemind"; //insanity
-		case 617: return ""; // holy shield
-		case 618: return ""; // evil spirit
-		case 619: return ""; // disgrace
-		case 620: return ""; // summon shadow
-		case 621: return ""; // dismantle
-		case 622: return ""; // astral walk
-		case 623: return "Prayer_SenseLife";
-		case 624: return ""; // take revenge
-		case 625: return "Spell_Hold";
-		case 626: return ""; // improved detect
-		case 627: return "Spell_ImprovedInvisibility";
-		case 628: return "Spell_MassSleep";
-		case 629: return ""; // desert heat
-		case 630: return "Prayer_DivineLuck";
-		case 631: return "Paralysis";
-		case 632: return ""; // lighting stroke
-		case 633: return "Spell_Repulsion";
-		case 634: return "Spel_MassSlow";
-		case 636: return "Prayer_ProtUndead";
-		case 637: return "Prayer_BlessItem";
-		case 638: return ""; // resiliance
-		case 639: return "Spell_Polymorph";
-		case 640: return "Prayer_Heal";
-		case 641: return "Prayer_Restoration";
-		case 643: return "Prayer_Restoration";
-		case 644: return "Spell_AcidArrow";
-		case 645: return ""; // etheral fist
-		case 646: return ""; // spectral furor
-		case 647: return "Undead_ColdTouch";
-		case 649: return ""; // disruption
-		case 650: return "Spell_Forget"; // mind wrack
-		case 651: return "Spell_Feeblemind"; // mind wrack
-		case 652: return ""; // sulferous spray
-		case 653: return ""; // caustic front
-		case 655: return ""; // galvan whip
-		case 656: return ""; // magnetic trust
-		case 657: return ""; // quantum spike
-		case 658: return ""; // mist walk
-		case 659: return ""; // solar flight
-		case 660: return ""; // blue fire
-		case 661: return ""; // hellenic flow
-		case 662: return ""; // lesser golem
-		case 663: return ""; // stone golem
-		case 664: return ""; // iron golem
-		case 665: return ""; // adamantite golem
-		case 666: return "Prayer_ProtGood";
-		case 667: return ""; // ruler aura
-		case 668: return "Chant_Reincarnation";
-		case 669: return "Skill_ControlUndead";
-		case 670: return ""; // assist
-		case 671: return ""; // corruption
-		case 672: return "Chant_Tornado";//hurricane
-		case 673: return ""; // sanctify lands
-		case 674: return ""; // deadly worm
-		case 675: return ""; // cursed lands
-		case 676: return ""; // lethargic mist
-		case 677: return ""; // black death
-		case 678: return "Spell_Dream";
-		case 679: return "Prayer_BladeBarrier";
-		case 680: return ""; // aid
-		case 681: return ""; // desert fist
-
+		case -1:
+			break;
+		case 0:
+			break;
+		case 1:
+			return "Spell_GraceOfTheCat"; // armor
+		case 2:
+			return "Spell_Teleport";
+		case 3:
+			return "Prayer_Bless";
+		case 4:
+			return "Spell_Blindness";
+		case 5:
+			return "Spell_BurningHands";
+		case 6:
+			return "Spell_Clog"; // call lightening, dumb
+		case 7:
+			return "Spell_Charm";
+		case 8:
+			return "Undead_ColdTouch"; // chill touch
+		case 9:
+			return "Spell_MirrorImage"; // clone
+		case 10:
+			return "Spell_Feeblemind"; // color spray
+		case 11:
+			return "Chant_CallRain";
+		case 12:
+			return "Prayer_CreateFood";
+		case 13:
+			return "Prayer_CreateWater";
+		case 14:
+			return "Prayer_CureBlindness";
+		case 15:
+			return "Prayer_CureCritical";
+		case 16:
+			return "Prayer_CureLight";
+		case 17:
+			return "Prayer_Curse";
+		case 18:
+			return "Prayer_SenseEvil";
+		case 19:
+			return "Spell_DetectInvisible";
+		case 20:
+			return "Spell_DetectMagic";
+		case 21:
+			return "Spell_DetectPoison";
+		case 22:
+			return "Prayer_DispelEvil";
+		case 23:
+			return "Spell_Earthquake";
+		case 24:
+			return "Spell_EnchantWeapon";
+		case 25:
+			return "Prayer_Drain";
+		case 26:
+			return "Spell_Fireball";
+		case 27:
+			return "Prayer_Harm";
+		case 28:
+			return "Prayer_Heal";
+		case 29:
+			return "Spell_Invisibility";
+		case 30:
+			return "Spell_Lightning";
+		case 31:
+			return "Spell_LocateObject";
+		case 32:
+			return "Spell_MagicMissile";
+		case 33:
+			return "Thief_Poison";
+		case 34:
+			return "Prayer_ProtEvil";
+		case 35:
+			return "Prayer_RemoveCurse";
+		case 36:
+			return "Prayer_Sanctuary";
+		case 37:
+			return "Spell_ShockingGrasp";
+		case 38:
+			return "Spell_Sleep";
+		case 39:
+			return "Spell_GiantStrength";
+		case 40:
+			return "Spell_Summon";
+		case 41:
+			return "Spell_Ventriloquate";
+		case 42:
+			return "Skill_WordRecall";
+		case 43:
+			return "Prayer_RemovePoison";
+		case 44:
+			return "Chant_Dragonsight";
+		case 45:
+			return "Prayer_CureDisease"; // not the real ###
+		case 51:
+			return "Spell_ShockingGrasp";
+		case 53:
+			return "Spell_IdentifyObject";
+		case 54:
+			return "Prayer_AnimateDead";
+		case 55:
+			return "Spell_Fear";
+		case 56:
+			return "Spell_Fly";
+		case 57:
+			return "Spell_Light";
+		case 58:
+			return "Spell_KnowAlignment";
+		case 59:
+			return "Spell_DispelMagic";
+		case 60:
+			return "Spell_FlamingHands";
+		case 61:
+			return "Prayer_CureSerious";
+		case 62:
+			return "Prayer_CauseLight";
+		case 63:
+			return "Spell_WaterBreathing"; // water of lifew
+		case 64:
+			return "Prayer_CauseSerious";
+		case 65:
+			return "Spell_Dragonfire"; // flamestrike
+		case 66:
+			return "Spell_Stoneskin";
+		case 67:
+			return "Spell_Shield";
+		case 68:
+			return "Spell_Weaken";
+		case 69:
+			return "Spell_MassInvisibility";
+		case 70:
+			return "Spell_AcidArrow"; // acid blast
+		case 71:
+			return "Spell_Portal"; // actually mass teleport
+		case 72:
+			return "Spell_FaerieFog";
+		case 73:
+			return "Spell_IceStorm";
+		case 74:
+			return "Spell_PassDoor";
+		case 75:
+			return "Spell_EnchantArmor";
+		case 76:
+			return "Spell_StoneFlesh"; // stone
+		case 77:
+			return "Spell_Infravision";
+		case 78:
+			return "Prayer_RaiseDead";
+		case 80:
+			return "Prayer_CreateWater";
+		case 81:
+			return "Prayer_Restoration"; // refresh
+		case 82:
+			return "Spell_ChangeSex";
+		case 83:
+			return "Spell_Gate";
+		case 84:
+			return "Spell_Haste";
+		case 85:
+			return "Chant_SummonFire";
+		case 86:
+			return "Spell_DetectTraps";
+		case 87:
+			return "Thief_RemoveTraps";
+		case 88:
+			return "Spell_Flameshield";
+		case 89:
+			return "Spell_Shockshield";
+		case 90:
+			return "Spell_PassDoor";
+		case 91:
+			return "Spell_Scry";
+		case 93:
+			return "Skill_Meditate";
+		case 94:
+			return "Skill_Meditate";
+		case 97:
+			return "Spell_Web";
+		case 98:
+			return "Spell_EnchantArmor";
+		case 99:
+			return "Spell_Teleport";
+		case 101:
+			return ""; // create symbol
+		case 102:
+			return ""; // alertness
+		case 103:
+			return "Spell_Fatigue"; // fatigue
+		case 104:
+			return ""; // grounding
+		case 105:
+			return ""; // charged beacon
+		case 106:
+			return ""; // resilience
+		case 107:
+			return "Spell_Feeblemind";
+		case 108:
+			return ""; // ill fortune
+		case 109:
+			return "Spell_Slow";
+		case 110:
+			return ""; // unravel defence
+		case 111:
+			return ""; // holy sanctity
+		case 112:
+			return ""; // divinity
+		case 113:
+			return "Prayer_Restoration";
+		case 114:
+			return "Undead_ColdTouch";
+		case 115:
+			return ""; // spiritual wrath
+		case 120:
+			return "Spell_Cloudkill";
+		case 121:
+			return "Prayer_MajorInfusion"; // quickening
+		case 122:
+			return "Chant_SummonElemental"; // summon elemental
+		case 124:
+			return ""; // uplift
+		case 200:
+			return "Acidbreath";
+		case 201:
+			return "Firebreath";
+		case 202:
+			return "Frostbreath";
+		case 203:
+			return "Gasbreath";
+		case 204:
+			return "Lighteningbreath";
+		case 205:
+			return "Spell_Frenzy";
+		case 206:
+			return "Prayer_DispelGood";
+		case 207:
+			return "Spell_EnchantWeapon";
+		case 208:
+			return "Spell_EnchantArmor";
+		case 209:
+			return "Prayer_Restoration";
+		case 210:
+			return "Spell_HeatMetal";
+		case 211:
+			return "Spell_Farsight";
+		case 212:
+			return "Spell_MageArmor";
+		case 213:
+			return "Prayer_Plague";
+		case 214:
+			return "Spell_Slow";
+		case 215:
+			return "Spell_Web";
+		case 216:
+			return "Spell_Confusion";
+		case 217:
+			return "Spell_DetectSentience";
+		case 218:
+			return "Spell_Nightmare";
+		case 219:
+			return "Spell_MindLight";
+		case 220:
+			return "Prayer_Calm";
+		case 221:
+			return "Prayer_SenseGood";
+		case 222:
+			return "Prayer_CauseSerious";
+		case 223:
+			return "";
+		case 224:
+			return "Chant_Barkskin";
+		case 225:
+			return "Spell_Tourettes";
+		case 226:
+			return "Spell_Misstep";
+		case 227:
+			return "Prayer_Restoration";
+		case 228:
+			return "Prayer_HolyWord";
+		case 229:
+			return "Prayer_MassHeal";
+		case 230:
+			return "Spell_AcidFog";
+		case 231:
+			return "Prayer_Etherealness";
+		case 232:
+			return "Spell_Flameshield";
+		case 233:
+			return "Prayer_BladeBarrier";
+		case 234:
+			return "Chant_RestoreMana";
+		case 235:
+			return "Spell_Frenzy";
+		case 236:
+			return "Spell_CombatPrecognition";
+		case 237:
+			return "Spell_TrueSight";
+		case 238:
+			return "Spell_MindBlock";
+		case 239:
+			return "Spell_Shatter";
+		case 240:
+			return "Spell_IceStorm";
+		case 241:
+			return "Spell_Disintegrate";
+		case 242:
+			return "Prayer_AnimateDead";
+		case 243:
+			return "Spell_Siphon";
+		case 244:
+			return "Spell_Blink";
+		case 245:
+			return "Prayer_Plague";
+		case 246:
+			return "Spell_Delirium";
+		case 247:
+			return "Chant_SpellWard";
+		case 291:
+			return "Chant_PlantPass";
+		case 292:
+			return "Spell_FeatherFall";
+		case 294:
+			return "Spell_Polymorph";
+		case 295:
+			return ""; // spiral blast
+		case 296:
+			return "Spell_BurningHands";
+		case 299:
+			return ""; // ice shard
+		case 300:
+			return ""; // Torrent
+		case 301:
+			return ""; // Black Hand
+		case 302:
+			return ""; // Acetum Primus
+		case 303:
+			return ""; // Black Lightning
+		case 304:
+			return ""; // Galvanic Whip
+		case 305:
+			return ""; // Disruption
+		case 306:
+			return ""; // Spectral Furor
+		case 308:
+			return ""; // Sulfurous Spray
+		case 309:
+			return ""; // Sonic Resonance
+		case 310:
+			return ""; // Black Fist
+		case 311:
+			return ""; // Magnetic Thrust
+		case 313:
+			return ""; // Caustic Fount
+		case 314:
+			return ""; // Quantum Spike
+		case 315:
+			return ""; // Energy Blast
+		case 342:
+			return ""; // Benefic Aura
+		case 356:
+			return ""; // Succor
+		case 402:
+			return "Skill_Explosive";
+		case 500:
+			return "Spell_ChainLightening";
+		case 501:
+			return "Chant_Goodberry";
+		case 502:
+			return "Prayer_FlameWeapon";
+		case 503:
+			return "Chant_GrowClub"; // spiritual hammer
+		case 504:
+			return "Spell_Frenzy";
+		case 505:
+			return "Spell_Fireball";
+		case 506:
+			return "Prayer_HolyWord";
+		case 507:
+			return ""; // vine whip
+		case 508:
+			return "Chant_Barkskin";
+		case 509:
+			return "Prayer_ProtectElements";
+		case 510:
+			return "Spell_Frenzy";
+		case 511:
+			return ""; // fletch
+		case 512:
+			return ""; // divine aid
+		case 513:
+			return "Spell_Frenzy"; // divine fury
+		case 514:
+			return "Prayer_Curse"; // lich curse
+		case 515:
+			return "Spell_GiantStrength";
+		case 516:
+			return "Prayer_Drain"; // withering hand
+		case 517:
+			return "Spell_GraceOfTheCat"; // chaos armor
+		case 518:
+			return ""; // soul scream
+		case 519:
+			return "Spell_StinkingCloud";
+		case 520:
+			return "Spell_Web";
+		case 521:
+			return "Chant_PlantSnare";
+		case 522:
+			return "Prayer_BladeBarrier";
+		case 523:
+			return "Spell_ResistFire";
+		case 524:
+			return ""; // heroes feast
+		case 525:
+			return "Prayer_RemoveParalysis";
+		case 526:
+			return "Druid_RecoverVoice";
+		case 527:
+			return "Spell_Silence";
+		case 528:
+			return "Spell_Hold";
+		case 529:
+			return "Prayer_HolyWord";
+		case 530:
+			return "Spell_PolymorphSelf";
+		case 531:
+			return "Spell_GustOfWind";
+		case 532:
+			return ""; // creepingdoom
+		case 533:
+			return "Chant_Sunray";
+		case 534:
+			return "Prayer_Calm";
+		case 535:
+			return ""; // fireseed
+		case 536:
+			return ""; // warmount
+		case 537:
+			return ""; // despair
+		case 538:
+			return "Spell_Forget";
+		case 539:
+			return "Skill_WordRecall";
+		case 540:
+			return "Spell_Portal";
+		case 541:
+			return ""; // mass armor
+		case 542:
+			return ""; // arcane perception
+		case 543:
+			return ""; // mass armor
+		case 544:
+			return "Spell_MassFeatherfall"; // mass featherfall
+		case 545:
+			return ""; // mass refresh
+		case 546:
+			return "Spell_MassFly";
+		case 547:
+			return ""; // minor track
+		case 548:
+			return ""; // major track
+		case 550:
+			return "Spell_AcidFog";
+		case 551:
+			return "Spell_ResistPoison";
+		case 553:
+			return "Prayer_Poison";
+		case 554:
+			return "Spell_AcidArrow";
+		case 555:
+			return "Spell_MeteorStorm";
+		case 556:
+			return "Spell_Frost";
+		case 559:
+			return "Spell_GustOfWind";
+		case 560:
+			return "Spell_StinkingCloud";
+		case 561:
+			return ""; // skeletal armor
+		case 562:
+			return "Prayer_AiryForm"; // wraithform
+		case 563:
+			return "Spell_ManaBurn";
+		case 564:
+			return "Undead_ColdTouch";
+		case 565:
+			return ""; // death chant
+		case 566:
+			return ""; // life surge
+		case 567:
+			return ""; // mana surge
+		case 568:
+			return ""; // death aura
+		case 569:
+			return ""; // dark ritual
+		case 570:
+			return "Prayer_Deathfinger";
+		case 573:
+			return ""; // crystal blades
+		case 574:
+			return "Spell_Dragonfire"; // fiery dragon
+		case 575:
+			return ""; // celestial thunder
+		case 576:
+			return ""; // celestial lightning
+		case 577:
+			return ""; // create mistletow
+		case 578:
+			return "Prayer_Plague"; // toxin shot
+		case 579:
+			return "Spell_Slow";
+		case 580:
+			return "Chant_Dragonsight";
+		case 581:
+			return "Spell_SummonSteed";
+		case 582:
+			return ""; // rejuvenate
+		case 583:
+			return "Spell_Haste";
+		case 584:
+			return ""; // cacophony
+		case 585:
+			return "Spell_Disintegrate";
+		case 586:
+			return ""; // beacon
+		case 587:
+			return "Prayer_Anger";
+		case 588:
+			return "Spell_MassWaterbreath";
+		case 589:
+			return "Spell_Gate";
+		case 590:
+			return "Spell_Portal";
+		case 591:
+			return ""; // tree transport
+		case 592:
+			return ""; // treespeak
+		case 593:
+			return ""; // bloodslash
+		case 594:
+			return "Spell_SpellTurning";
+		case 595:
+			return "Spell_ChainLightening";
+		case 596:
+			return ""; // harmonic aura
+		case 597:
+			return "Spell_Siphon";
+		case 598:
+			return "Undead_ColdTouch";
+		case 599:
+			return "Spell_ResistFire";
+		case 600:
+			return "Spell_ResistCold";
+		case 601:
+			return "Spell_ResistFire";
+		case 602:
+			return "Prayer_Curse";
+		case 603:
+			return "Spell_Knock";
+		case 604:
+			return "Prayer_Deathfinger";
+		case 605:
+			return "Spell_MinorGlobe";
+		case 606:
+			return "Spell_Mirage";
+		case 607:
+			return ""; // tarangreal
+		case 608:
+			return ""; // kassandra
+		case 609:
+			return ""; // sebat
+		case 610:
+			return ""; // metandra
+		case 611:
+			return ""; // vampiric blast
+		case 612:
+			return ""; // dragonskin
+		case 613:
+			return "Prayer_Heal";
+		case 614:
+			return "Spell_ResistElectricity";
+		case 615:
+			return ""; // shocking trap
+		case 616:
+			return "Spell_Feeblemind"; // insanity
+		case 617:
+			return ""; // holy shield
+		case 618:
+			return ""; // evil spirit
+		case 619:
+			return ""; // disgrace
+		case 620:
+			return ""; // summon shadow
+		case 621:
+			return ""; // dismantle
+		case 622:
+			return ""; // astral walk
+		case 623:
+			return "Prayer_SenseLife";
+		case 624:
+			return ""; // take revenge
+		case 625:
+			return "Spell_Hold";
+		case 626:
+			return ""; // improved detect
+		case 627:
+			return "Spell_ImprovedInvisibility";
+		case 628:
+			return "Spell_MassSleep";
+		case 629:
+			return ""; // desert heat
+		case 630:
+			return "Prayer_DivineLuck";
+		case 631:
+			return "Paralysis";
+		case 632:
+			return ""; // lighting stroke
+		case 633:
+			return "Spell_Repulsion";
+		case 634:
+			return "Spel_MassSlow";
+		case 636:
+			return "Prayer_ProtUndead";
+		case 637:
+			return "Prayer_BlessItem";
+		case 638:
+			return ""; // resiliance
+		case 639:
+			return "Spell_Polymorph";
+		case 640:
+			return "Prayer_Heal";
+		case 641:
+			return "Prayer_Restoration";
+		case 643:
+			return "Prayer_Restoration";
+		case 644:
+			return "Spell_AcidArrow";
+		case 645:
+			return ""; // etheral fist
+		case 646:
+			return ""; // spectral furor
+		case 647:
+			return "Undead_ColdTouch";
+		case 649:
+			return ""; // disruption
+		case 650:
+			return "Spell_Forget"; // mind wrack
+		case 651:
+			return "Spell_Feeblemind"; // mind wrack
+		case 652:
+			return ""; // sulferous spray
+		case 653:
+			return ""; // caustic front
+		case 655:
+			return ""; // galvan whip
+		case 656:
+			return ""; // magnetic trust
+		case 657:
+			return ""; // quantum spike
+		case 658:
+			return ""; // mist walk
+		case 659:
+			return ""; // solar flight
+		case 660:
+			return ""; // blue fire
+		case 661:
+			return ""; // hellenic flow
+		case 662:
+			return ""; // lesser golem
+		case 663:
+			return ""; // stone golem
+		case 664:
+			return ""; // iron golem
+		case 665:
+			return ""; // adamantite golem
+		case 666:
+			return "Prayer_ProtGood";
+		case 667:
+			return ""; // ruler aura
+		case 668:
+			return "Chant_Reincarnation";
+		case 669:
+			return "Skill_ControlUndead";
+		case 670:
+			return ""; // assist
+		case 671:
+			return ""; // corruption
+		case 672:
+			return "Chant_Tornado";// hurricane
+		case 673:
+			return ""; // sanctify lands
+		case 674:
+			return ""; // deadly worm
+		case 675:
+			return ""; // cursed lands
+		case 676:
+			return ""; // lethargic mist
+		case 677:
+			return ""; // black death
+		case 678:
+			return "Spell_Dream";
+		case 679:
+			return "Prayer_BladeBarrier";
+		case 680:
+			return ""; // aid
+		case 681:
+			return ""; // desert fist
 		default:
 			Log.sysOut("Unknown spell num: "+i);
 			break;
@@ -2138,50 +2492,81 @@ public class Import extends StdCommand
 		if(str1.startsWith("'"))
 			str1=str1.substring(1);
 		for (final String[] weaponDamageType : weaponTypes)
+		{
 			if(str1.startsWith(weaponDamageType[0]))
-			{ val1=CMath.s_int(weaponDamageType[1]); break;}
+			{
+				val1 = CMath.s_int(weaponDamageType[1]);
+				break;
+			}
+		}
 		if(val1==0)
+		{
 			for (final String[] weaponDamageType : weaponTypes)
+			{
 				if(name.toLowerCase().indexOf(weaponDamageType[0])>=0)
-				{ val1=CMath.s_int(weaponDamageType[1]); break;}
+				{
+					val1 = CMath.s_int(weaponDamageType[1]);
+					break;
+				}
+			}
+		}
 		if((name.toUpperCase().endsWith("HAMMER"))&&(val1==4))
 			val1=11;
 		switch(val1)
 		{
-		case 0: I.setWeaponClassification(Weapon.CLASS_RANGED);
-				if(name.toUpperCase().indexOf("BOW")>=0)
+		case 0:
+			I.setWeaponClassification(Weapon.CLASS_RANGED);
+			if (name.toUpperCase().indexOf("BOW") >= 0)
+			{
+				if (I instanceof AmmunitionWeapon)
 				{
-					if(I instanceof AmmunitionWeapon)
-					{
-						((AmmunitionWeapon)I).setAmmoCapacity(20);
-						((AmmunitionWeapon)I).setAmmoRemaining(20);
-						((AmmunitionWeapon)I).setAmmunitionType("arrows");
-					}
-					I.setRanges(1,3);
-					I.setRawLogicalAnd(true);
+					((AmmunitionWeapon) I).setAmmoCapacity(20);
+					((AmmunitionWeapon) I).setAmmoRemaining(20);
+					((AmmunitionWeapon) I).setAmmunitionType("arrows");
 				}
-				break;
-		case 1: I.setWeaponClassification(Weapon.CLASS_SWORD); break;
-		case 2: I.setWeaponClassification(Weapon.CLASS_EDGED); break;
-		case 3: I.setWeaponClassification(Weapon.CLASS_POLEARM);
-				I.setRanges(0,1);
+				I.setRanges(1, 3);
 				I.setRawLogicalAnd(true);
-				break;
-		case 4: I.setWeaponClassification(Weapon.CLASS_BLUNT); break;
-		case 5: I.setWeaponClassification(Weapon.CLASS_AXE); break;
-		case 6: I.setWeaponClassification(Weapon.CLASS_FLAILED);
-				I.setRanges(0,1);
-				break;
-		case 7: I.setWeaponClassification(Weapon.CLASS_FLAILED);
-				I.setRanges(0,1);
-				break;
-		case 8: I.setWeaponClassification(Weapon.CLASS_POLEARM);
-				I.setRanges(0,1);
-				I.setRawLogicalAnd(true);
-				break;
-		case 9: I.setWeaponClassification(Weapon.CLASS_DAGGER); break;
-		case 10: I.setWeaponClassification(Weapon.CLASS_STAFF); break;
-		case 11: I.setWeaponClassification(Weapon.CLASS_HAMMER); break;
+			}
+			break;
+		case 1:
+			I.setWeaponClassification(Weapon.CLASS_SWORD);
+			break;
+		case 2:
+			I.setWeaponClassification(Weapon.CLASS_EDGED);
+			break;
+		case 3:
+			I.setWeaponClassification(Weapon.CLASS_POLEARM);
+			I.setRanges(0, 1);
+			I.setRawLogicalAnd(true);
+			break;
+		case 4:
+			I.setWeaponClassification(Weapon.CLASS_BLUNT);
+			break;
+		case 5:
+			I.setWeaponClassification(Weapon.CLASS_AXE);
+			break;
+		case 6:
+			I.setWeaponClassification(Weapon.CLASS_FLAILED);
+			I.setRanges(0, 1);
+			break;
+		case 7:
+			I.setWeaponClassification(Weapon.CLASS_FLAILED);
+			I.setRanges(0, 1);
+			break;
+		case 8:
+			I.setWeaponClassification(Weapon.CLASS_POLEARM);
+			I.setRanges(0, 1);
+			I.setRawLogicalAnd(true);
+			break;
+		case 9:
+			I.setWeaponClassification(Weapon.CLASS_DAGGER);
+			break;
+		case 10:
+			I.setWeaponClassification(Weapon.CLASS_STAFF);
+			break;
+		case 11:
+			I.setWeaponClassification(Weapon.CLASS_HAMMER);
+			break;
 		}
 		if(val2>=1)
 			I.basePhyStats().setDamage(val2*val3);
@@ -2266,12 +2651,14 @@ public class Import extends StdCommand
 		case 7:
 		case 8:
 		case 27:
-				I.setWeaponDamageType(Weapon.TYPE_BASHING); break;
+			I.setWeaponDamageType(Weapon.TYPE_BASHING);
+			break;
 		case 29:
 		case 55:
 		case 56:
 		case 57:
-				I.setWeaponDamageType(Weapon.TYPE_BURNING); break;
+			I.setWeaponDamageType(Weapon.TYPE_BURNING);
+			break;
 		case 22:
 		case 5:
 		case 10:
@@ -2282,18 +2669,23 @@ public class Import extends StdCommand
 		case 16:
 		case 17:
 		case 24:
-				I.setWeaponDamageType(Weapon.TYPE_NATURAL); break;
+			I.setWeaponDamageType(Weapon.TYPE_NATURAL);
+			break;
 		case 2:
 		case 11:
-				I.setWeaponDamageType(Weapon.TYPE_PIERCING); break;
+			I.setWeaponDamageType(Weapon.TYPE_PIERCING);
+			break;
 		case 25:
 		case 21:
 		case 4:
 		case 3:
 		case 1:
-				I.setWeaponDamageType(Weapon.TYPE_SLASHING); break;
+			I.setWeaponDamageType(Weapon.TYPE_SLASHING);
+			break;
 
-		default: I.setWeaponDamageType(Weapon.TYPE_BURSTING); break;
+		default:
+			I.setWeaponDamageType(Weapon.TYPE_BURSTING);
+			break;
 		}
 	}
 
@@ -2795,8 +3187,12 @@ public class Import extends StdCommand
 			M.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			switch(sexCode)
 			{
-			case 2: M.baseCharStats().setStat(CharStats.STAT_GENDER,'F'); break;
-			case 3: M.baseCharStats().setStat(CharStats.STAT_GENDER,'N'); break;
+			case 2:
+				M.baseCharStats().setStat(CharStats.STAT_GENDER, 'F');
+				break;
+			case 3:
+				M.baseCharStats().setStat(CharStats.STAT_GENDER, 'N');
+				break;
 			}
 
 			if(circleFormat)
@@ -2807,12 +3203,24 @@ public class Import extends StdCommand
 				final int size=CMath.s_int(CMParms.getCleanBit(codeStr5,2).trim());
 				switch(size)
 				{
-				case 0: M.basePhyStats().setWeight(1); break;
-				case 1: M.basePhyStats().setWeight(15); break;
-				case 2: M.basePhyStats().setWeight(150); break;
-				case 3: M.basePhyStats().setWeight(350); break;
-				case 4: M.basePhyStats().setWeight(850); break;
-				case 5: M.basePhyStats().setWeight(2000); break;
+				case 0:
+					M.basePhyStats().setWeight(1);
+					break;
+				case 1:
+					M.basePhyStats().setWeight(15);
+					break;
+				case 2:
+					M.basePhyStats().setWeight(150);
+					break;
+				case 3:
+					M.basePhyStats().setWeight(350);
+					break;
+				case 4:
+					M.basePhyStats().setWeight(850);
+					break;
+				case 5:
+					M.basePhyStats().setWeight(2000);
+					break;
 				}
 				// ignore the above, coffeemud does it better!
 				final int numAbiles=M.numAbilities();
@@ -3450,10 +3858,14 @@ public class Import extends StdCommand
 		case 7:
 			adjuster.setMiscText(adjuster.text()+" cha"+((val>=0)?("+"+val):(""+val)));
 			break;
-		case 8: 	break;
-		case 9: 	break;
-		case 10: 	break;
-		case 11: 	break;
+		case 8:
+			break;
+		case 9:
+			break;
+		case 10:
+			break;
+		case 11:
+			break;
 		case 12:
 			adjuster.setMiscText(adjuster.text()+" mana"+((val>=0)?("+"+val):(""+val)));
 			break;
@@ -3463,8 +3875,10 @@ public class Import extends StdCommand
 		case 14:
 			adjuster.setMiscText(adjuster.text()+" move"+((val>=0)?("+"+val):(""+val)));
 			break;
-		case 15: 	break;
-		case 16: 	break;
+		case 15:
+			break;
+		case 16:
+			break;
 		case 17:
 			if((val>0)&&(I instanceof Armor))
 				I.basePhyStats().setArmor(I.basePhyStats().armor()+(val*5));
@@ -3485,9 +3899,12 @@ public class Import extends StdCommand
 			break;
 		case 20: // spells, but with a numeric value.. ?!?!
 			break;
-		case 21: 	break;
-		case 22: 	break;
-		case 23: 	break;
+		case 21:
+			break;
+		case 22:
+			break;
+		case 23:
+			break;
 		case 24:
 			resister.setMiscText(resister.text()+" magic "+((-val)*2)+"%");
 			break;
@@ -3682,9 +4099,7 @@ public class Import extends StdCommand
 				}
 				else
 					returnAnError(session,"Invalid object codeStr2 line: "+codeStr2+", item not aborted, but stuff will be wrong!",compileErrors,commands);
-
 			}
-
 
 			final String str1=CMParms.getBit(codeStr2,0);
 			final String str2=CMParms.getBit(codeStr2,1);
@@ -3697,217 +4112,262 @@ public class Import extends StdCommand
 			Item I=null;
 			switch(objType)
 			{
-			case 1: if(objectName.toUpperCase().indexOf("LANTERN")>=0)
-						I=CMClass.getBasicItem("GenLantern");
+			case 1:
+				if (objectName.toUpperCase().indexOf("LANTERN") >= 0)
+					I = CMClass.getBasicItem("GenLantern");
+				else
+					I = CMClass.getBasicItem("GenLightSource");
+				((Light) I).setDuration(val3 * 80);
+				break;
+			case 2:
+				I = CMClass.getMiscMagic("GenScroll");
+				I.basePhyStats().setLevel(val1);
+				I.setUsesRemaining(3);
+				((SpellHolder) I).setSpellList(getSpell(str2, val2) + ";" + getSpell(str3, val3) + ";" + getSpell(str4, val4));
+				break;
+			case 3:
+				I = CMClass.getMiscMagic("GenWand");
+				I.basePhyStats().setLevel(val1);
+				I.setUsesRemaining(val2);
+				((Wand) I).setSpell(CMClass.getAbility(getSpell(str4, val4)));
+				break;
+			case 4:
+				I = CMClass.getWeapon("GenStaff");
+				I.basePhyStats().setLevel(val1);
+				I.setUsesRemaining(val2);
+				((Wand) I).setSpell(CMClass.getAbility(getSpell(str4, val4)));
+				adjuster = CMClass.getAbility("Prop_WearAdjuster");
+				break;
+			case 5:
+				I = CMClass.getWeapon("GenWeapon");
+				doWeapon((Weapon) I, objectName, val1, str1, val2, val3, val4, str4);
+				adjuster = CMClass.getAbility("Prop_WearAdjuster");
+				break;
+			case 6:
+				I = CMClass.getWeapon("GenWeapon");
+				doWeapon((Weapon) I, objectName, val1, str1, val2, val3, val4, str4);
+				adjuster = CMClass.getAbility("Prop_WearAdjuster");
+				break;
+			case 7:
+				I = CMClass.getWeapon("GenWeapon");
+				doWeapon((Weapon) I, objectName, val1, str1, val2, val3, val4, str4);
+				adjuster = CMClass.getAbility("Prop_WearAdjuster");
+				break;
+			case 8:
+				I = CMClass.getBasicItem("GenItem");
+				break;
+			case 9:
+				if (objectName.toUpperCase().indexOf("SHIELD") >= 0)
+					I = CMClass.getArmor("GenShield");
+				else
+					I = CMClass.getArmor("GenArmor");
+				I.basePhyStats().setArmor((int) Math.round(CMath.div((val1 + val2 + val3 + val4 + 1), 4.0) + 1));
+				adjuster = CMClass.getAbility("Prop_WearAdjuster");
+				break;
+			case 10:
+				I = CMClass.getMiscMagic("GenPotion");
+				I.basePhyStats().setLevel(val1);
+				((Potion) I).setSpellList(getSpell(str2, val2) + ";" + getSpell(str3, val3) + ";" + getSpell(str4, val4));
+				break;
+			case 11:
+				I = CMClass.getArmor("GenArmor");
+				I.basePhyStats().setArmor(0);
+				adjuster = CMClass.getAbility("Prop_WearAdjuster");
+				break;
+			case 12:
+				I = CMClass.getBasicItem("GenItem");
+				if (hasReadableContent(objectName))
+					I = CMClass.getBasicItem("GenReadable");
+				break;
+			case 13:
+				I = CMClass.getBasicItem("GenItem");
+				if (hasReadableContent(objectName))
+					I = CMClass.getBasicItem("GenReadable");
+				break;
+			case 14:
+				I = CMClass.getBasicItem("GenItem");
+				break;
+			case 15:
+				if (CMLib.english().containsString(objectName, "belt") 
+				|| CMLib.english().containsString(objectName, "bandolier") 
+				|| CMLib.english().containsString(objectName, "sheath"))
+					I = CMClass.getArmor("GenArmor");
+				else
+					I = CMClass.getBasicItem("GenContainer");
+				((Container) I).setCapacity(val1);
+				boolean lid = false;
+				boolean open = true;
+				boolean lock = false;
+				boolean locked = false;
+				if ((val2 & 1) == 1)
+					lid = true;
+				if ((val2 & 2) == 2)
+				{
+					lock = true;
+					locked = true;
+					open = false;
+					lid = true;
+					I.basePhyStats().setLevel(100);
+				}
+				if ((val2 & 4) == 4)
+				{
+					lid = true;
+					open = false;
+				}
+				if ((val2 & 8) == 8)
+				{
+					lock = true;
+					locked = true;
+					open = false;
+					lid = true;
+				}
+				((Container) I).setDoorsNLocks(lid, open, !open, lock, locked, locked);
+				if (((Container) I).hasADoor() && ((Container) I).hasALock())
+					((Container) I).setKeyName(areaName + "#" + val3);
+				break;
+			case 16:
+				I = CMClass.getBasicItem("GenItem");
+				break;
+			case 17:
+				I = CMClass.getBasicItem("GenDrink");
+				str3 = str3.toUpperCase().trim();
+				if (((val3 > 0) && (val3 < 6)) 
+				|| (str3.indexOf("BEER") >= 0) 
+				|| (str3.indexOf("ALE") >= 0) 
+				|| (str3.indexOf("BREW") >= 0) 
+				|| (str3.indexOf("WINE") >= 0))
+				{
+					((Drink) I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
+					I.addEffect(CMClass.getAbility("Poison_Beer"));
+					((Drink) I).setLiquidHeld(val1 * 10);
+					((Drink) I).setLiquidRemaining(val2);
+				}
+				else 
+				if (str3.indexOf("FIREBREATHER") >= 0)
+				{
+					((Drink) I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
+					I.addEffect(CMClass.getAbility("Poison_Firebreather"));
+					((Drink) I).setLiquidHeld(val1 * 10);
+					((Drink) I).setLiquidRemaining(val2);
+				}
+				else 
+				if (str3.indexOf("LOCAL SPECIALTY") >= 0)
+				{
+					((Drink) I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
+					I.addEffect(CMClass.getAbility("Poison_Liquor"));
+					((Drink) I).setLiquidHeld(val1 * 10);
+					((Drink) I).setLiquidRemaining(val2);
+				}
+				else 
+				if (str3.indexOf("WHISKEY") >= 0)
+				{
+					((Drink) I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
+					I.addEffect(CMClass.getAbility("Poison_Liquor"));
+					((Drink) I).setLiquidHeld(val1 * 10);
+					((Drink) I).setLiquidRemaining(val2);
+				}
+				else 
+				if ((val4 > 0) || (str3.indexOf("POISON") >= 0))
+				{
+					((Drink) I).setLiquidType(RawMaterial.RESOURCE_POISON);
+					I.addEffect(CMClass.getAbility("Poison"));
+					((Drink) I).setLiquidHeld(val1 * 10);
+					((Drink) I).setLiquidRemaining(val2);
+				}
+				else
+				{
+					((Drink) I).setLiquidHeld(val1 * 30);
+					((Drink) I).setLiquidRemaining(val2 * 10);
+				}
+				break;
+			case 18:
+				I = CMClass.getBasicItem("GenKey");
+				((DoorKey) I).setKey(areaName + objectID);
+				break;
+			case 19:
+				I = CMClass.getBasicItem("GenFood");
+				if (val4 > 0)
+				{
+					I = CMClass.getMiscMagic("GenPill");
+					((Pill) I).setSpellList("Poison;");
+				}
+				((Food) I).setNourishment(20 * val1);
+				break;
+			case 20:
+				I = CMClass.getBasicItem("StdCoins");
+				((Coins) I).setNumberOfCoins(val1);
+				((Coins) I).setDenomination(1.0);
+				((Coins) I).setCurrency("");
+				break;
+			case 21:
+				I = CMClass.getBasicItem("GenItem");
+				break;
+			case 22:
+				I = CMClass.getBasicItem("GenBoat");
+				break;
+			case 23:
+				I = CMClass.getBasicItem("GenCorpse");
+				break;
+			case 24:
+				I = CMClass.getBasicItem("GenCorpse");
+				break;
+			case 25:
+				I = CMClass.getBasicItem("GenWater");
+				CMLib.flags().setGettable(I, false);
+				((Drink) I).setLiquidHeld(Integer.MAX_VALUE - 5000);
+				((Drink) I).setLiquidRemaining(((Drink) I).liquidHeld());
+				break;
+			case 26:
+				I = CMClass.getMiscMagic("GenPill");
+				I.basePhyStats().setLevel(val1);
+				((Pill) I).setSpellList(getSpell(str2, val2) + ";" + getSpell(str3, val3) + ";" + getSpell(str4, val4));
+				break;
+			case 27:
+				I = CMClass.getBasicItem("GenItem");
+				break;
+			case 28:
+				I = CMClass.getBasicItem("GenReadable"); // don't use GemMaps
+															// any more...
+				break;
+			case 29:
+				I = CMClass.getBasicItem("GenItem");
+				break;
+			case 97:
+				I = CMClass.getBasicItem("GenPortal");
+				if ((str4.length() > 0) && (!str4.equals("0")))
+				{
+					Room R = getRoom(areaRooms, doneRooms, areaName, str4);
+					if (R != null)
+						I.setReadableText(R.roomID());
 					else
-						I=CMClass.getBasicItem("GenLightSource");
-					((Light)I).setDuration(val3*80);
-					break;
-			case 2: I=CMClass.getMiscMagic("GenScroll");
-					I.basePhyStats().setLevel(val1);
-					I.setUsesRemaining(3);
-					((SpellHolder)I).setSpellList(getSpell(str2,val2)+";"+getSpell(str3,val3)+";"+getSpell(str4,val4));
-					break;
-			case 3: I=CMClass.getMiscMagic("GenWand");
-					I.basePhyStats().setLevel(val1);
-					I.setUsesRemaining(val2);
-					((Wand)I).setSpell(CMClass.getAbility(getSpell(str4,val4)));
-					break;
-			case 4: I=CMClass.getWeapon("GenStaff");
-					I.basePhyStats().setLevel(val1);
-					I.setUsesRemaining(val2);
-					((Wand)I).setSpell(CMClass.getAbility(getSpell(str4,val4)));
-					adjuster=CMClass.getAbility("Prop_WearAdjuster");
-					break;
-			case 5: I=CMClass.getWeapon("GenWeapon");
-					doWeapon((Weapon)I,objectName,val1,str1,val2,val3,val4,str4);
-					adjuster=CMClass.getAbility("Prop_WearAdjuster");
-					break;
-			case 6: I=CMClass.getWeapon("GenWeapon");
-					doWeapon((Weapon)I,objectName,val1,str1,val2,val3,val4,str4);
-					adjuster=CMClass.getAbility("Prop_WearAdjuster");
-					break;
-			case 7: I=CMClass.getWeapon("GenWeapon");
-					doWeapon((Weapon)I,objectName,val1,str1,val2,val3,val4,str4);
-					adjuster=CMClass.getAbility("Prop_WearAdjuster");
-					break;
-			case 8: I=CMClass.getBasicItem("GenItem");
-					break;
-			case 9: if(objectName.toUpperCase().indexOf("SHIELD")>=0)
-						I=CMClass.getArmor("GenShield");
-					else
-						I=CMClass.getArmor("GenArmor");
-					I.basePhyStats().setArmor((int)Math.round(CMath.div((val1+val2+val3+val4+1),4.0)+1));
-					adjuster=CMClass.getAbility("Prop_WearAdjuster");
-					break;
-			case 10: I=CMClass.getMiscMagic("GenPotion");
-					I.basePhyStats().setLevel(val1);
-					((Potion)I).setSpellList(getSpell(str2,val2)+";"+getSpell(str3,val3)+";"+getSpell(str4,val4));
-					 break;
-			case 11: I=CMClass.getArmor("GenArmor");
-					 I.basePhyStats().setArmor(0);
-					 adjuster=CMClass.getAbility("Prop_WearAdjuster");
-					 break;
-			case 12: I=CMClass.getBasicItem("GenItem");
-					 if(hasReadableContent(objectName))
-						I=CMClass.getBasicItem("GenReadable");
-					 break;
-			case 13: I=CMClass.getBasicItem("GenItem");
-					 if(hasReadableContent(objectName))
-						I=CMClass.getBasicItem("GenReadable");
-					 break;
-			case 14: I=CMClass.getBasicItem("GenItem"); break;
-			case 15: if(CMLib.english().containsString(objectName,"belt")
-					 ||CMLib.english().containsString(objectName,"bandolier")
-					 ||CMLib.english().containsString(objectName,"sheath"))
-						I=CMClass.getArmor("GenArmor");
-					 else
-						I=CMClass.getBasicItem("GenContainer");
-					 ((Container)I).setCapacity(val1);
-					 boolean lid=false;
-					 boolean open=true;
-					 boolean lock=false;
-					 boolean locked=false;
-					 if((val2&1)==1)
-						 lid=true;
-					 if((val2&2)==2)
-					 {
-						 lock=true;
-						 locked=true;
-						 open=false;
-						 lid=true;
-						 I.basePhyStats().setLevel(100);
-					 }
-					 if((val2&4)==4)
-					 {
-						 lid=true;
-						 open=false;
-					 }
-					 if((val2&8)==8)
-					 {
-						 lock=true;
-						 locked=true;
-						 open=false;
-						 lid=true;
-					 }
-					 ((Container)I).setDoorsNLocks(lid,open,!open,lock,locked,locked);
-					 if(((Container)I).hasADoor()&&((Container)I).hasALock())
-						 ((Container)I).setKeyName(areaName+"#"+val3);
-					 break;
-			case 16: I=CMClass.getBasicItem("GenItem"); break;
-			case 17: I=CMClass.getBasicItem("GenDrink");
-					 str3=str3.toUpperCase().trim();
-					 if(((val3>0)&&(val3<6))
-					 ||(str3.indexOf("BEER")>=0)
-					 ||(str3.indexOf("ALE")>=0)
-					 ||(str3.indexOf("BREW")>=0)
-					 ||(str3.indexOf("WINE")>=0))
-					 {
-						((Drink)I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
-						I.addEffect(CMClass.getAbility("Poison_Beer"));
-						((Drink)I).setLiquidHeld(val1*10);
-						((Drink)I).setLiquidRemaining(val2);
-					 }
-					 else
-					 if(str3.indexOf("FIREBREATHER")>=0)
-					 {
-						((Drink)I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
-						I.addEffect(CMClass.getAbility("Poison_Firebreather"));
-						((Drink)I).setLiquidHeld(val1*10);
-						((Drink)I).setLiquidRemaining(val2);
-					 }
-					 else
-					 if(str3.indexOf("LOCAL SPECIALTY")>=0)
-					 {
-						((Drink)I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
-						I.addEffect(CMClass.getAbility("Poison_Liquor"));
-						((Drink)I).setLiquidHeld(val1*10);
-						((Drink)I).setLiquidRemaining(val2);
-					 }
-					 else
-					 if(str3.indexOf("WHISKEY")>=0)
-					 {
-						((Drink)I).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
-						I.addEffect(CMClass.getAbility("Poison_Liquor"));
-						((Drink)I).setLiquidHeld(val1*10);
-						((Drink)I).setLiquidRemaining(val2);
-					 }
-					 else
-					 if((val4>0)||(str3.indexOf("POISON")>=0))
-					 {
-						((Drink)I).setLiquidType(RawMaterial.RESOURCE_POISON);
-						I.addEffect(CMClass.getAbility("Poison"));
-						((Drink)I).setLiquidHeld(val1*10);
-						((Drink)I).setLiquidRemaining(val2);
-					 }
-					 else
-					 {
-						((Drink)I).setLiquidHeld(val1*30);
-						((Drink)I).setLiquidRemaining(val2*10);
-					 }
-					 break;
-			case 18: I=CMClass.getBasicItem("GenKey");
-					 ((DoorKey)I).setKey(areaName+objectID);
-					 break;
-			case 19: I=CMClass.getBasicItem("GenFood");
-					 if(val4>0)
-					 {
-						 I=CMClass.getMiscMagic("GenPill");
-						 ((Pill)I).setSpellList("Poison;");
-					 }
-					 ((Food)I).setNourishment(20*val1);
-					 break;
-			case 20: I=CMClass.getBasicItem("StdCoins");
-					 ((Coins)I).setNumberOfCoins(val1);
-					 ((Coins)I).setDenomination(1.0);
-					 ((Coins)I).setCurrency("");
-					 break;
-			case 21: I=CMClass.getBasicItem("GenItem"); break;
-			case 22: I=CMClass.getBasicItem("GenBoat");
-					 break;
-			case 23: I=CMClass.getBasicItem("GenCorpse"); break;
-			case 24: I=CMClass.getBasicItem("GenCorpse"); break;
-			case 25: I=CMClass.getBasicItem("GenWater");
-					 CMLib.flags().setGettable(I,false);
-					 ((Drink)I).setLiquidHeld(Integer.MAX_VALUE-5000);
-					 ((Drink)I).setLiquidRemaining(((Drink)I).liquidHeld());
-					 break;
-			case 26: I=CMClass.getMiscMagic("GenPill");
-					I.basePhyStats().setLevel(val1);
-					((Pill)I).setSpellList(getSpell(str2,val2)+";"+getSpell(str3,val3)+";"+getSpell(str4,val4));
-					 break;
-			case 27: I=CMClass.getBasicItem("GenItem"); break;
-			case 28: I=CMClass.getBasicItem("GenReadable"); // don't use GemMaps any more...
-					 break;
-			case 29: I=CMClass.getBasicItem("GenItem"); break;
-			case 97: I=CMClass.getBasicItem("GenPortal");
-					 if((str4.length()>0)&&(!str4.equals("0")))
-					 {
-						 Room R=getRoom(areaRooms,doneRooms,areaName,str4);
-						 if(R!=null)
-							 I.setReadableText(R.roomID());
-						 else
-						 for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
-						 {
-							 R=e.nextElement();
-							 if(R.roomID().endsWith("#"+str4))
-							 {
+					{
+						for (final Enumeration<Room> e = CMLib.map().rooms(); e.hasMoreElements();)
+						{
+							R = e.nextElement();
+							if (R.roomID().endsWith("#" + str4))
+							{
 								I.setReadableText(R.roomID());
 								break;
-							 }
-						 }
-						if(I.readableText().length()==0)
-							I.setReadableText("#"+str4);
-					 }
-					 break;
-			case 98: I=CMClass.getBasicItem("GenKey");
-					 ((DoorKey)I).setKey(areaName+objectID);
-					 break;
-			case 99: I=CMClass.getBasicItem("GenCorpse"); break;
-			case -1: I=CMClass.getBasicItem("GenWallpaper"); break;
+							}
+						}
+					}
+					if (I.readableText().length() == 0)
+						I.setReadableText("#" + str4);
+				}
+				break;
+			case 98:
+				I = CMClass.getBasicItem("GenKey");
+				((DoorKey) I).setKey(areaName + objectID);
+				break;
+			case 99:
+				I = CMClass.getBasicItem("GenCorpse");
+				break;
+			case -1:
+				I = CMClass.getBasicItem("GenWallpaper");
+				break;
 			default:
-					I=CMClass.getBasicItem("GenItem");
-					break;
+				I = CMClass.getBasicItem("GenItem");
+				break;
 			}
 
 			if(!CMath.isSet(wearFlag,0))
@@ -3993,7 +4453,6 @@ public class Import extends StdCommand
 				I.basePhyStats().setLevel(level);
 			}
 
-
 			I.setName(objectName);
 			I.setDisplayText(objectDisplay);
 			if(!objectDescription.trim().equalsIgnoreCase("OLDSTYLE"))
@@ -4008,12 +4467,14 @@ public class Import extends StdCommand
 
 			boolean materialchange=false;
 			for (final String[] objDesc : objDescs)
+			{
 				if(objectDescription.equalsIgnoreCase(objDesc[0]))
 				{
 					I.setMaterial(CMath.s_int(objDesc[1]));
 					materialchange=true;
 					break;
 				}
+			}
 
 			// correction for certain rings
 			if((((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)
@@ -4728,210 +5189,280 @@ public class Import extends StdCommand
 		while(commands.size()>0)
 		{
 			final Object O=commands.remove(0);
-		final Vector areaData=new Vector();
-		final Vector roomData=new Vector();
-		final Vector<String> resetData=new Vector<String>();
-		final Vector mobProgData=new Vector();
-		final Vector roomProgData=new Vector();
-		final Vector objProgData=new Vector();
-		final Vector shopData=new Vector();
-		final Vector specialData=new Vector();
-		final Vector<Room> newRooms=new Vector<Room>();
-		final Vector<String> socialData=new Vector<String>();
-		Vector<String> reLinkTable=null;
-
-		StringBuffer buf=null;
-		String areaFileName=null;
-		CMFile CF=null;
-		boolean zonFormat=false;
-		if(O instanceof StringBuffer)
-		{
-			areaFileName="memory.cmare";
-			buf=(StringBuffer)O;
-		}
-		else
-		if(O instanceof Pair)
-		{
-			areaFileName=((Pair)O).first.toString();
-			buf=(StringBuffer)((Pair)O).second;
-		}
-		else
-		if(O instanceof java.util.zip.ZipInputStream)
-		{
-			final java.util.zip.ZipInputStream i=(java.util.zip.ZipInputStream)O;
-			final java.util.zip.ZipEntry entry=i.getNextEntry();
-			if(entry==null)
+			final Vector areaData=new Vector();
+			final Vector roomData=new Vector();
+			final Vector<String> resetData=new Vector<String>();
+			final Vector mobProgData=new Vector();
+			final Vector roomProgData=new Vector();
+			final Vector objProgData=new Vector();
+			final Vector shopData=new Vector();
+			final Vector specialData=new Vector();
+			final Vector<Room> newRooms=new Vector<Room>();
+			final Vector<String> socialData=new Vector<String>();
+			Vector<String> reLinkTable=null;
+	
+			StringBuffer buf=null;
+			String areaFileName=null;
+			CMFile CF=null;
+			boolean zonFormat=false;
+			if(O instanceof StringBuffer)
 			{
-				i.close();
-				continue;
-			}
-			final byte[] data = new byte[(int)entry.getSize()];
-			int dex=0;
-			int read=i.read(data);
-			while((read>=0)&&(dex < entry.getSize()))
-			{
-				dex+=read;
-				read=i.read(data, dex, (int)entry.getSize()-dex);
-			}
-			i.closeEntry();
-			if(commands.size()==0)
-			{
-				commands.add(new Pair<String,StringBuffer>("unzip:"+entry.getName(),new StringBuffer(new String(data))));
-				commands.add(i);
+				areaFileName="memory.cmare";
+				buf=(StringBuffer)O;
 			}
 			else
+			if(O instanceof Pair)
 			{
-				commands.add(0,new Pair<String,StringBuffer>("unzip:"+entry.getName(),new StringBuffer(new String(data))));
-				commands.add(1,i);
+				areaFileName=((Pair)O).first.toString();
+				buf=(StringBuffer)((Pair)O).second;
 			}
-			continue;
-		}
-		else
-		{
-			areaFileName=(String)O;
-			final int x=areaFileName.lastIndexOf('.');
-			final String ext=(x>0)?areaFileName.toLowerCase().substring(x+1):"";
-			// read in the .are file
-
-			if(ext.equalsIgnoreCase("zip"))
+			else
+			if(O instanceof java.util.zip.ZipInputStream)
 			{
-				final java.util.zip.ZipInputStream i=new java.util.zip.ZipInputStream(new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS).getRawStream());
+				final java.util.zip.ZipInputStream i=(java.util.zip.ZipInputStream)O;
+				final java.util.zip.ZipEntry entry=i.getNextEntry();
+				if(entry==null)
+				{
+					i.close();
+					continue;
+				}
+				final byte[] data = new byte[(int)entry.getSize()];
+				int dex=0;
+				int read=i.read(data);
+				while((read>=0)&&(dex < entry.getSize()))
+				{
+					dex+=read;
+					read=i.read(data, dex, (int)entry.getSize()-dex);
+				}
+				i.closeEntry();
 				if(commands.size()==0)
+				{
+					commands.add(new Pair<String,StringBuffer>("unzip:"+entry.getName(),new StringBuffer(new String(data))));
 					commands.add(i);
+				}
 				else
-					commands.add(0,i);
+				{
+					commands.add(0,new Pair<String,StringBuffer>("unzip:"+entry.getName(),new StringBuffer(new String(data))));
+					commands.add(1,i);
+				}
 				continue;
-			}
-			if(ext.equals("zon")
-			|| ext.endsWith("wld")
-			|| ext.endsWith("obj")
-			|| ext.endsWith("mob")
-			|| ext.endsWith("shp")
-			|| ext.endsWith("doc"))
-			{
-				final String baseAreaFileName=areaFileName.substring(0,x);
-				if(baseFilesAlreadyDone.contains(baseAreaFileName.toLowerCase()))
-					continue;
-				baseFilesAlreadyDone.add(baseAreaFileName.toLowerCase());
-				areaFileName=baseAreaFileName+".zon";
-				CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
-				buf=CF.text();
-				final StringBuffer finalBuf=new StringBuffer("");
-				final String eoln=CMStrings.determineEOLN(buf);
-				String resetsStr="";
-				if((buf!=null)&&(buf.length()>0))
-				{
-					final int wldDivDex=buf.indexOf(eoln+eoln);
-					if(wldDivDex<0)
-						return returnAnError(session,"Malformed Zone at: '"+areaFileName+"'!",compileErrors,commands);
-					int startDex=0;
-					if(buf.charAt(0)=='#')
-						startDex=buf.indexOf(eoln)+eoln.length();
-					finalBuf.append("#AREA").append(eoln).append(buf.substring(startDex,wldDivDex)).append(eoln).append(eoln);
-					resetsStr=L("#RESETS@x1@x2@x3@x4",eoln,buf.substring(wldDivDex+(eoln.length()*2)),eoln,eoln);
-					areaFileName=baseAreaFileName+".wld";
-					CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
-					buf=CF.text();
-				}
-				if((buf!=null)&&(buf.length()>0))
-				{
-					finalBuf.append("#ROOMS").append(eoln).append(buf.toString()).append(eoln).append(eoln);
-					areaFileName=baseAreaFileName+".mob";
-					CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
-					buf=CF.text();
-				}
-				if((buf!=null)&&(buf.length()>0))
-				{
-					finalBuf.append("#MOBILES").append(eoln).append(buf.toString()).append(eoln).append(eoln);
-					areaFileName=baseAreaFileName+".obj";
-					CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
-					buf=CF.text();
-				}
-				if((buf!=null)&&(buf.length()>0))
-				{
-					finalBuf.append("#OBJECTS").append(eoln).append(buf.toString()).append(eoln).append(eoln);
-					finalBuf.append(resetsStr);
-					areaFileName=baseAreaFileName+".zon";
-				}
-				buf=finalBuf;
-				zonFormat=true;
 			}
 			else
 			{
-				CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
-				buf=CF.text();
-			}
-			if((buf==null)||(buf.length()==0))
-				return returnAnError(session,"File not found at: '"+areaFileName+"'!",compileErrors,commands);
-		}
-		try
-		{
-			if((areaFileName!=null)&&(areaFileName.toUpperCase().trim().endsWith(".LST")))
-			{
-				if(session!=null)
-					session.println(L("Unpacking areas lists from file : '@x1'...",areaFileName));
-				String filePrefix="";
-				int c=areaFileName.lastIndexOf('/');
-				if(c>=0)
-					filePrefix=areaFileName.substring(0,c+1);
-				c=0;
-				String fn="";
-				while((buf!=null)&&(buf.length()>0)&&(c<buf.length()))
+				areaFileName=(String)O;
+				final int x=areaFileName.lastIndexOf('.');
+				final String ext=(x>0)?areaFileName.toLowerCase().substring(x+1):"";
+				// read in the .are file
+	
+				if(ext.equalsIgnoreCase("zip"))
 				{
-					switch(buf.charAt(c))
-					{
-					case '\n':
-					case '\r':
-						if((fn.length()>0)&&(!fn.startsWith("#"))&&(!fn.startsWith("$")))
-							commands.add(filePrefix+fn);
-						buf.delete(0,c+1);
-						c=0;
-						fn="";
-						break;
-					default:
-						fn+=buf.charAt(c);
-						c++;
-						break;
-					}
-				}
-				if((fn.length()>0)&&(!fn.startsWith("#"))&&(!fn.startsWith("$")))
-					commands.add(filePrefix+fn);
-				continue;
-			}
-			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<AREAS>")>=0))
-			{
-				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
-				{
-					returnAnError(session,"You are not allowed to import areas in '"+areaFileName+"'.",compileErrors,commands);
+					final java.util.zip.ZipInputStream i=new java.util.zip.ZipInputStream(new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS).getRawStream());
+					if(commands.size()==0)
+						commands.add(i);
+					else
+						commands.add(0,i);
 					continue;
 				}
-
-				if(CF!=null)
-					buf=CF.textUnformatted();
-				if(buf == null)
-					buf = new StringBuffer("");
-				final List<List<XMLLibrary.XMLTag>> areas=new Vector<List<XMLLibrary.XMLTag>>();
-				if(session!=null)
-					session.rawPrint(L("Unpacking area(s) from file: '@x1'...",areaFileName));
-				String error=CMLib.coffeeMaker().fillAreasVectorFromXML(buf.toString(),areas,custom,externalFiles);
-				if(error.length()==0)
-					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
-				if(error.length()>0)
-					return false;
-				if(session!=null)
-					session.rawPrintln("!");
-				if(session!=null)
-					session.println(L("Found @x1 areas.",""+areas.size()));
-				final int num=areas.size();
-				int a=0;
-				while(areas.size()>0)
+				if(ext.equals("zon")
+				|| ext.endsWith("wld")
+				|| ext.endsWith("obj")
+				|| ext.endsWith("mob")
+				|| ext.endsWith("shp")
+				|| ext.endsWith("doc"))
+				{
+					final String baseAreaFileName=areaFileName.substring(0,x);
+					if(baseFilesAlreadyDone.contains(baseAreaFileName.toLowerCase()))
+						continue;
+					baseFilesAlreadyDone.add(baseAreaFileName.toLowerCase());
+					areaFileName=baseAreaFileName+".zon";
+					CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
+					buf=CF.text();
+					final StringBuffer finalBuf=new StringBuffer("");
+					final String eoln=CMStrings.determineEOLN(buf);
+					String resetsStr="";
+					if((buf!=null)&&(buf.length()>0))
+					{
+						final int wldDivDex=buf.indexOf(eoln+eoln);
+						if(wldDivDex<0)
+							return returnAnError(session,"Malformed Zone at: '"+areaFileName+"'!",compileErrors,commands);
+						int startDex=0;
+						if(buf.charAt(0)=='#')
+							startDex=buf.indexOf(eoln)+eoln.length();
+						finalBuf.append("#AREA").append(eoln).append(buf.substring(startDex,wldDivDex)).append(eoln).append(eoln);
+						resetsStr=L("#RESETS@x1@x2@x3@x4",eoln,buf.substring(wldDivDex+(eoln.length()*2)),eoln,eoln);
+						areaFileName=baseAreaFileName+".wld";
+						CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
+						buf=CF.text();
+					}
+					if((buf!=null)&&(buf.length()>0))
+					{
+						finalBuf.append("#ROOMS").append(eoln).append(buf.toString()).append(eoln).append(eoln);
+						areaFileName=baseAreaFileName+".mob";
+						CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
+						buf=CF.text();
+					}
+					if((buf!=null)&&(buf.length()>0))
+					{
+						finalBuf.append("#MOBILES").append(eoln).append(buf.toString()).append(eoln).append(eoln);
+						areaFileName=baseAreaFileName+".obj";
+						CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
+						buf=CF.text();
+					}
+					if((buf!=null)&&(buf.length()>0))
+					{
+						finalBuf.append("#OBJECTS").append(eoln).append(buf.toString()).append(eoln).append(eoln);
+						finalBuf.append(resetsStr);
+						areaFileName=baseAreaFileName+".zon";
+					}
+					buf=finalBuf;
+					zonFormat=true;
+				}
+				else
+				{
+					CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
+					buf=CF.text();
+				}
+				if((buf==null)||(buf.length()==0))
+					return returnAnError(session,"File not found at: '"+areaFileName+"'!",compileErrors,commands);
+			}
+			try
+			{
+				if((areaFileName!=null)&&(areaFileName.toUpperCase().trim().endsWith(".LST")))
 				{
 					if(session!=null)
-						session.rawPrint(L("Unpacking area #@x1/@x2...",""+(a+1),""+num));
-					final List<XMLLibrary.XMLTag> area=areas.get(0);
-					error=CMLib.coffeeMaker().unpackAreaFromXML(area,session,areaType,true);
+						session.println(L("Unpacking areas lists from file : '@x1'...",areaFileName));
+					String filePrefix="";
+					int c=areaFileName.lastIndexOf('/');
+					if(c>=0)
+						filePrefix=areaFileName.substring(0,c+1);
+					c=0;
+					String fn="";
+					while((buf!=null)&&(buf.length()>0)&&(c<buf.length()))
+					{
+						switch(buf.charAt(c))
+						{
+						case '\n':
+						case '\r':
+							if((fn.length()>0)&&(!fn.startsWith("#"))&&(!fn.startsWith("$")))
+								commands.add(filePrefix+fn);
+							buf.delete(0,c+1);
+							c=0;
+							fn="";
+							break;
+						default:
+							fn+=buf.charAt(c);
+							c++;
+							break;
+						}
+					}
+					if((fn.length()>0)&&(!fn.startsWith("#"))&&(!fn.startsWith("$")))
+						commands.add(filePrefix+fn);
+					continue;
+				}
+				if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<AREAS>")>=0))
+				{
+					if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
+					{
+						returnAnError(session,"You are not allowed to import areas in '"+areaFileName+"'.",compileErrors,commands);
+						continue;
+					}
+	
+					if(CF!=null)
+						buf=CF.textUnformatted();
+					if(buf == null)
+						buf = new StringBuffer("");
+					final List<List<XMLLibrary.XMLTag>> areas=new Vector<List<XMLLibrary.XMLTag>>();
+					if(session!=null)
+						session.rawPrint(L("Unpacking area(s) from file: '@x1'...",areaFileName));
+					String error=CMLib.coffeeMaker().fillAreasVectorFromXML(buf.toString(),areas,custom,externalFiles);
+					if(error.length()==0)
+						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+					if(error.length()>0)
+						return false;
+					if(session!=null)
+						session.rawPrintln("!");
+					if(session!=null)
+						session.println(L("Found @x1 areas.",""+areas.size()));
+					final int num=areas.size();
+					int a=0;
+					while(areas.size()>0)
+					{
+						if(session!=null)
+							session.rawPrint(L("Unpacking area #@x1/@x2...",""+(a+1),""+num));
+						final List<XMLLibrary.XMLTag> area=areas.get(0);
+						error=CMLib.coffeeMaker().unpackAreaFromXML(area,session,areaType,true);
+						if(session!=null)
+							session.rawPrintln("!");
+						if(error.startsWith("Area Exists: "))
+						{
+							final String areaName=error.substring(13).trim();
+							if((nodelete)&&(!prompt))
+								return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,commands);
+							else
+							if(((!prompt)||((session!=null)&&session.confirm(L("Area: \"@x1\" exists, obliterate first?",areaName),L("N")))))
+							{
+								if(reLinkTable==null)
+									reLinkTable=new Vector<String>();
+								if((mob.location()!=null)
+								&&(mob.location().getArea().Name().equalsIgnoreCase(areaName)))
+								{
+									try
+									{
+										for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+										{
+											final Room R=r.nextElement();
+											if((R!=null)&&(!R.getArea().Name().equalsIgnoreCase(areaName)))
+											{
+												R.bringMobHere(mob,true);
+												break;
+											}
+										}
+									}catch(final NoSuchElementException e){}
+								}
+								if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
+									return false;
+							}
+							else
+								return false;
+						}
+						else
+						if(error.length()>0)
+							return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
+						else
+						{
+							areas.remove(area);
+							a++;
+						}
+					}
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+					if(session!=null)
+						session.println(L("Area(s) successfully imported!"));
+					continue;
+				}
+				else
+				if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<AREA>")>=0))
+				{
+					if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
+					{
+						returnAnError(session,"You are not allowed to import area in '"+areaFileName+"'.",compileErrors,commands);
+						continue;
+					}
+					if(CF!=null)
+						buf=CF.textUnformatted();
+					if(buf == null)
+						buf = new StringBuffer("");
+					if(session!=null)
+						session.rawPrint(L("Unpacking area from file: '@x1'...",areaFileName));
+					final Vector<XMLLibrary.XMLTag> areaD=new Vector<XMLLibrary.XMLTag>();
+					String error=CMLib.coffeeMaker().fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom,externalFiles);
+					if(error.length()==0)
+						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true);
 					if(session!=null)
 						session.rawPrintln("!");
 					if(error.startsWith("Area Exists: "))
@@ -4940,656 +5471,649 @@ public class Import extends StdCommand
 						if((nodelete)&&(!prompt))
 							return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,commands);
 						else
-						if(((!prompt)||((session!=null)&&session.confirm(L("Area: \"@x1\" exists, obliterate first?",areaName),L("N")))))
+						if((!prompt)
+						||((session!=null)&&session.confirm(L("Area: \"@x1\" exists, obliterate first?",areaName),L("N"))))
 						{
-							if(reLinkTable==null)
-								reLinkTable=new Vector<String>();
-							if((mob.location()!=null)
-							&&(mob.location().getArea().Name().equalsIgnoreCase(areaName)))
-							{
-								try
-								{
-									for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
-									{
-										final Room R=r.nextElement();
-										if((R!=null)&&(!R.getArea().Name().equalsIgnoreCase(areaName)))
-										{
-											R.bringMobHere(mob,true);
-											break;
-										}
-									}
-								}catch(final NoSuchElementException e){}
-							}
+							reLinkTable=new Vector<String>();
 							if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
 								return false;
 						}
 						else
 							return false;
+						if(session!=null)
+							session.rawPrint(L("Unpacking area from file: '@x1'...",areaFileName));
+						error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true);
+						if(session!=null)
+							session.rawPrintln("!");
 					}
-					else
 					if(error.length()>0)
 						return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
-					else
-					{
-						areas.remove(area);
-						a++;
-					}
-				}
-				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null)
-					session.println(L("Area(s) successfully imported!"));
-				continue;
-			}
-			else
-			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<AREA>")>=0))
-			{
-				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
-				{
-					returnAnError(session,"You are not allowed to import area in '"+areaFileName+"'.",compileErrors,commands);
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+					if(session!=null)
+						session.println(L("Area successfully imported!"));
 					continue;
 				}
-				if(CF!=null)
-					buf=CF.textUnformatted();
-				if(buf == null)
-					buf = new StringBuffer("");
-				if(session!=null)
-					session.rawPrint(L("Unpacking area from file: '@x1'...",areaFileName));
-				final Vector<XMLLibrary.XMLTag> areaD=new Vector<XMLLibrary.XMLTag>();
-				String error=CMLib.coffeeMaker().fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom,externalFiles);
-				if(error.length()==0)
-					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true);
-				if(session!=null)
-					session.rawPrintln("!");
-				if(error.startsWith("Area Exists: "))
+				else
+				if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<AROOM>")>=0))
 				{
-					final String areaName=error.substring(13).trim();
-					if((nodelete)&&(!prompt))
-						return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,commands);
-					else
-					if((!prompt)
-					||((session!=null)&&session.confirm(L("Area: \"@x1\" exists, obliterate first?",areaName),L("N"))))
+					if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
 					{
-						reLinkTable=new Vector<String>();
-						if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
-							return false;
+						returnAnError(session,"You are not allowed to import room in '"+areaFileName+"'.",compileErrors,commands);
+						continue;
 					}
-					else
-						return false;
+					if(CF!=null)
+						buf=CF.textUnformatted();
+					if(buf == null)
+						buf = new StringBuffer("");
 					if(session!=null)
-						session.rawPrint(L("Unpacking area from file: '@x1'...",areaFileName));
-					error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true);
-					if(session!=null)
-						session.rawPrintln("!");
-				}
-				if(error.length()>0)
-					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
-				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null)
-					session.println(L("Area successfully imported!"));
-				continue;
-			}
-			else
-			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<AROOM>")>=0))
-			{
-				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
-				{
-					returnAnError(session,"You are not allowed to import room in '"+areaFileName+"'.",compileErrors,commands);
-					continue;
-				}
-				if(CF!=null)
-					buf=CF.textUnformatted();
-				if(buf == null)
-					buf = new StringBuffer("");
-				if(session!=null)
-					session.println(L("Unpacking room from file: '@x1'...",areaFileName));
-				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
-				if(error.length()==0)
-					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
-				if(error.startsWith("Room Exists: "))
-				{
-					final Room R=CMLib.map().getRoom(error.substring(13).trim());
-					if(R!=null)
+						session.println(L("Unpacking room from file: '@x1'...",areaFileName));
+					String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+					if(error.length()==0)
+						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
+					if(error.startsWith("Room Exists: "))
 					{
-						if((nodelete)&&(!prompt))
-							return returnAnError(session,"Room '"+R.ID()+"' already exists.",compileErrors,commands);
-						reLinkTable=new Vector<String>();
-						try
+						final Room R=CMLib.map().getRoom(error.substring(13).trim());
+						if(R!=null)
 						{
-							for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+							if((nodelete)&&(!prompt))
+								return returnAnError(session,"Room '"+R.ID()+"' already exists.",compileErrors,commands);
+							reLinkTable=new Vector<String>();
+							try
 							{
-								final Room R2=r.nextElement();
-								if(R2!=R)
+								for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 								{
-									for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+									final Room R2=r.nextElement();
+									if(R2!=R)
 									{
-										final Room dirR=R2.rawDoors()[d];
-										if((dirR!=null)&&(dirR==R))
-											reLinkTable.add(R2.roomID()+"/"+d+"/"+dirR.roomID());
+										for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+										{
+											final Room dirR=R2.rawDoors()[d];
+											if((dirR!=null)&&(dirR==R))
+												reLinkTable.add(R2.roomID()+"/"+d+"/"+dirR.roomID());
+										}
 									}
 								}
 							}
+							catch (final NoSuchElementException e)
+							{
+							}
+							CMLib.map().obliterateRoom(R);
 						}
-						catch (final NoSuchElementException e)
-						{
-						}
-						CMLib.map().obliterateRoom(R);
+						error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
 					}
-					error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
-				}
-				if(error.length()>0)
-					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
-				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null)
-					session.println(L("Room successfully imported!"));
-				continue;
-			}
-			else
-			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<CATALOG")>=0))
-			{
-				if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTMOBS))
-				||(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CATALOG)))
-				{
-					returnAnError(session,"You are not allowed to import catalog items in '"+areaFileName+"' here.",compileErrors,commands);
+					if(error.length()>0)
+						return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+					if(session!=null)
+						session.println(L("Room successfully imported!"));
 					continue;
 				}
-				boolean hasBoth = buf.substring(0,30).indexOf("<CATALOG HASBOTH")>0;
-				boolean hasMobs = hasBoth || buf.substring(0,30).indexOf("<CATALOG HASMOBS")>0;
-				boolean hasItems = hasBoth || buf.substring(0,30).indexOf("<CATALOG HASITEMS")>0;
-				if(CF!=null)
-					buf=CF.textUnformatted();
-				if(buf == null)
-					buf = new StringBuffer("");
-				if(session!=null)
-					session.rawPrint(L("Unpacking stuff from file: '@x1'...",areaFileName));
-				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
-				if(error.length()==0)
-					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
-				final Vector<MOB> mobs=new Vector<MOB>();
-				if((error.length()==0)&&(hasMobs))
-					error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),mobs,session);
-				final Vector<Item> items=new Vector<Item>();
-				if((error.length()==0)&&(hasItems))
-					error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,session);
-				if(session!=null)
-					session.rawPrintln("!");
-				if(error.length()>0)
-					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
-				for(int m=0;m<mobs.size();m++)
+				else
+				if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<CATALOG")>=0))
 				{
-					final MOB M=mobs.get(m);
-					//TODO: do the thing here!
-				}
-				for(int m=0;m<items.size();m++)
-				{
-					final Item I=items.get(m);
-					//TODO: do the thing here!
-				}
-				mob.location().recoverRoomStats();
-				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null)
-					session.println(L("MOB(s) successfully imported!"));
-				continue;
-			}
-			else
-			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
-			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTMOBS))
-				{
-					returnAnError(session,"You are not allowed to import mobs in '"+areaFileName+"' here.",compileErrors,commands);
-					continue;
-				}
-				if(CF!=null)
-					buf=CF.textUnformatted();
-				if(buf == null)
-					buf = new StringBuffer("");
-				if(session!=null)
-					session.rawPrint(L("Unpacking mobs from file: '@x1'...",areaFileName));
-				final Vector<MOB> mobs=new Vector<MOB>();
-				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
-				if(error.length()==0)
-					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),mobs,session);
-				if(session!=null)
-					session.rawPrintln("!");
-				if(error.length()>0)
-					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
-				if(mob.location()==null)
-					return returnAnError(session,"You must be in a room to import mobs.",compileErrors,commands);
-				for(int m=0;m<mobs.size();m++)
-				{
-					final MOB M=mobs.get(m);
-					M.setStartRoom(mob.location());
-					M.setLocation(mob.location());
-					M.bringToLife(mob.location(),true);
-				}
-				mob.location().recoverRoomStats();
-				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null)
-					session.println(L("MOB(s) successfully imported!"));
-				continue;
-			}
-			else
-			if((buf!=null)&&(buf.length()>20)&&((buf.substring(0,20).indexOf("<PLAYERS>")>=0)||(buf.substring(0,20).indexOf("<ACCOUNTS>")>=0)))
-			{
-				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTPLAYERS))
-				{
-					returnAnError(session,"You are not allowed to import players in '"+areaFileName+"' here.",compileErrors,commands);
-					continue;
-				}
-				if(CF!=null)
-					buf=CF.textUnformatted();
-				if(buf == null)
-					buf = new StringBuffer("");
-				if(session!=null)
-					session.rawPrint(L("Unpacking players from file: '@x1'...",areaFileName));
-				final List<MOB> mobs=new Vector<MOB>();
-				final List<PlayerAccount> accounts=new Vector<PlayerAccount>();
-				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
-				if(error.length()==0)
-					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					error=CMLib.coffeeMaker().addPlayersAndAccountsFromXML(buf.toString(),accounts,mobs,session);
-				if(session!=null)
-					session.rawPrintln("!");
-				if(error.length()>0)
-					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
-
-				Vector<String> names=null;
-				if(accounts.size()>0)
-				{
-					for(int m=0;m<accounts.size();m++)
+					if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTMOBS))
+					||(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CATALOG)))
 					{
-						final PlayerAccount A=accounts.get(m);
-						for(int af=0;af<commands.size();af++)
+						returnAnError(session,"You are not allowed to import catalog items in '"+areaFileName+"' here.",compileErrors,commands);
+						continue;
+					}
+					boolean hasBoth = buf.substring(0,30).indexOf("<CATALOG HASBOTH")>=0;
+					boolean hasMobs = hasBoth || buf.substring(0,30).indexOf("<CATALOG HASMOBS")>=0;
+					boolean hasItems = hasBoth || buf.substring(0,30).indexOf("<CATALOG HASITEMS")>=0;
+					if(CF!=null)
+						buf=CF.textUnformatted();
+					if(buf == null)
+						buf = new StringBuffer("");
+					if(session!=null)
+						session.rawPrint(L("Unpacking stuff from file: '@x1'...",areaFileName));
+					final List<XMLLibrary.XMLTag> xmlFirst=CMLib.xml().parseAllXML(buf);
+					if((xmlFirst.size()==0)||(!xmlFirst.get(0).tag().equalsIgnoreCase("CATALOG")))
+					{
+						returnAnError(session,"No catalog data in '"+areaFileName+"' here.",compileErrors,commands);
+						continue;
+					}
+					buf = new StringBuffer(xmlFirst.get(0).value());
+					xmlFirst.clear();
+					
+					String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+					if(error.length()==0)
+						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+					final Vector<MOB> mobs=new Vector<MOB>();
+					final Vector<CataData> mobCatData=new Vector<CataData>();
+					if((error.length()==0)&&(hasMobs))
+					{
+						error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),mobs,session);
+						if(error.length()==0)
+							error=CMLib.coffeeMaker().addCataDataFromXML(buf.toString(),mobCatData,mobs,session);
+					}
+					final Vector<Item> items=new Vector<Item>();
+					final Vector<CataData> itemCatData=new Vector<CataData>();
+					if((error.length()==0)&&(hasItems))
+					{
+						error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,session);
+						if(error.length()==0)
+							error=CMLib.coffeeMaker().addCataDataFromXML(buf.toString(),itemCatData,items,session);
+					}
+					if(session!=null)
+						session.rawPrintln("!");
+					if(error.length()>0)
+						return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
+					for(int m=0;m<mobs.size();m++)
+					{
+						final MOB M=mobs.get(m);
+						if(CMLib.catalog().isCatalogObj(M))
 						{
+							if((!prompt)||((session!=null)&&(session.confirm("Replace existing catalog mob '"+M.name()+"' with imported one?", "Y"))))
+								CMLib.catalog().updateCatalog(M);
+							else
+								continue;
+						}
+						else
+						{
+							CMLib.catalog().addCatalog(M);
+						}
+						Log.sysOut("Import",mob.Name()+" imported catalog mob "+M.Name());
+						if(m<mobCatData.size())
+						{
+							CataData dat = CMLib.catalog().getCatalogData(M);
+							dat.build(mobCatData.get(m).data(null));
+						}
+						M.destroy();
+					}
+					for(int m=0;m<items.size();m++)
+					{
+						final Item I=items.get(m);
+						if(CMLib.catalog().isCatalogObj(I))
+						{
+							if((!prompt)||((session!=null)&&(session.confirm("Replace existing catalog item '"+I.name()+"' with imported one?", "Y"))))
+								CMLib.catalog().updateCatalog(I);
+							else
+								continue;
+						}
+						else
+						{
+							CMLib.catalog().addCatalog(I);
+						}
+						Log.sysOut("Import",mob.Name()+" imported catalog item "+I.Name());
+						if(m<itemCatData.size())
+						{
+							CataData dat = CMLib.catalog().getCatalogData(I);
+							dat.build(mobCatData.get(m).data(null));
+						}
+						I.destroy();
+					}
+					mob.location().recoverRoomStats();
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+					if(session!=null)
+						session.println(L("MOB(s) successfully imported!"));
+					continue;
+				}
+				else
+				if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
+				{
+					if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTMOBS))
+					{
+						returnAnError(session,"You are not allowed to import mobs in '"+areaFileName+"' here.",compileErrors,commands);
+						continue;
+					}
+					if(CF!=null)
+						buf=CF.textUnformatted();
+					if(buf == null)
+						buf = new StringBuffer("");
+					if(session!=null)
+						session.rawPrint(L("Unpacking mobs from file: '@x1'...",areaFileName));
+					final Vector<MOB> mobs=new Vector<MOB>();
+					String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+					if(error.length()==0)
+						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),mobs,session);
+					if(session!=null)
+						session.rawPrintln("!");
+					if(error.length()>0)
+						return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
+					if(mob.location()==null)
+						return returnAnError(session,"You must be in a room to import mobs.",compileErrors,commands);
+					for(int m=0;m<mobs.size();m++)
+					{
+						final MOB M=mobs.get(m);
+						M.setStartRoom(mob.location());
+						M.setLocation(mob.location());
+						M.bringToLife(mob.location(),true);
+					}
+					mob.location().recoverRoomStats();
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+					if(session!=null)
+						session.println(L("MOB(s) successfully imported!"));
+					continue;
+				}
+				else
+				if((buf!=null)&&(buf.length()>20)&&((buf.substring(0,20).indexOf("<PLAYERS>")>=0)||(buf.substring(0,20).indexOf("<ACCOUNTS>")>=0)))
+				{
+					if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTPLAYERS))
+					{
+						returnAnError(session,"You are not allowed to import players in '"+areaFileName+"' here.",compileErrors,commands);
+						continue;
+					}
+					if(CF!=null)
+						buf=CF.textUnformatted();
+					if(buf == null)
+						buf = new StringBuffer("");
+					if(session!=null)
+						session.rawPrint(L("Unpacking players from file: '@x1'...",areaFileName));
+					final List<MOB> mobs=new Vector<MOB>();
+					final List<PlayerAccount> accounts=new Vector<PlayerAccount>();
+					String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+					if(error.length()==0)
+						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						error=CMLib.coffeeMaker().addPlayersAndAccountsFromXML(buf.toString(),accounts,mobs,session);
+					if(session!=null)
+						session.rawPrintln("!");
+					if(error.length()>0)
+						return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
+	
+					Vector<String> names=null;
+					if(accounts.size()>0)
+					{
+						for(int m=0;m<accounts.size();m++)
+						{
+							final PlayerAccount A=accounts.get(m);
+							for(int af=0;af<commands.size();af++)
+							{
+								if((commands.get(af) instanceof String)
+								&&(A.getAccountName().equalsIgnoreCase((String)commands.get(af))))
+								{
+									if(names==null)
+										names=new Vector<String>();
+									names.add((String)commands.get(af));
+								}
+							}
+						}
+					}
+					else
+					for(int m=0;m<mobs.size();m++)
+					{
+						final MOB M=mobs.get(m);
+						for(int af=0;af<commands.size();af++)
 							if((commands.get(af) instanceof String)
-							&&(A.getAccountName().equalsIgnoreCase((String)commands.get(af))))
+							&&(M.Name().equalsIgnoreCase((String)commands.get(af))))
 							{
 								if(names==null)
 									names=new Vector<String>();
 								names.add((String)commands.get(af));
 							}
-						}
 					}
-				}
-				else
-				for(int m=0;m<mobs.size();m++)
-				{
-					final MOB M=mobs.get(m);
-					for(int af=0;af<commands.size();af++)
-						if((commands.get(af) instanceof String)
-						&&(M.Name().equalsIgnoreCase((String)commands.get(af))))
-						{
-							if(names==null)
-								names=new Vector<String>();
-							names.add((String)commands.get(af));
-						}
-				}
-				if(names!=null)
-				{
-					for(int n=0;n<names.size();n++)
-						commands.remove(names.get(n));
-				}
-				for(int m=0;m<accounts.size();m++)
-				{
-					final PlayerAccount A=accounts.get(m);
-					if(CMLib.players().accountExists(A.getAccountName()))
-					{
-						if(!prompt)
-						{
-							returnAnError(session,"Account '"+A.getAccountName()+"' already exists.  Skipping.",compileErrors,commands);
-							continue;
-						}
-						else
-						if((session!=null)&&(!session.confirm(L("Account: \"@x1\" exists, obliterate first?",A.getAccountName()),L("Y"))))
-							continue;
-						else
-							CMLib.players().obliterateAccountOnly(CMLib.players().getLoadAccount(A.getAccountName()));
-					}
-					A.setLastUpdated(System.currentTimeMillis());
-					Log.sysOut("Import","Imported account: "+A.getAccountName());
-					CMLib.database().DBCreateAccount(A);
-					CMLib.players().addAccount(A);
-				}
-				for(int m=0;m<mobs.size();m++)
-				{
-					final MOB M=mobs.get(m);
 					if(names!=null)
 					{
-						boolean found=false;
 						for(int n=0;n<names.size();n++)
-						{
-							if(M.Name().equalsIgnoreCase(names.get(n)))
-								found=true;
-						}
-						if(!found)
-							continue;
+							commands.remove(names.get(n));
 					}
-					if(CMLib.players().playerExists(M.Name()))
+					for(int m=0;m<accounts.size();m++)
 					{
-						if(!prompt)
+						final PlayerAccount A=accounts.get(m);
+						if(CMLib.players().accountExists(A.getAccountName()))
 						{
-							returnAnError(session,"Player '"+M.Name()+"' already exists.  Skipping.",compileErrors,commands);
-							continue;
+							if(!prompt)
+							{
+								returnAnError(session,"Account '"+A.getAccountName()+"' already exists.  Skipping.",compileErrors,commands);
+								continue;
+							}
+							else
+							if((session!=null)&&(!session.confirm(L("Account: \"@x1\" exists, obliterate first?",A.getAccountName()),L("Y"))))
+								continue;
+							else
+								CMLib.players().obliterateAccountOnly(CMLib.players().getLoadAccount(A.getAccountName()));
 						}
-						else
-						if((session!=null)&&(!session.confirm(L("Player: \"@x1\" exists, obliterate first?",M.Name()),L("Y"))))
-							continue;
-						else
-							CMLib.players().obliteratePlayer(CMLib.players().getLoadPlayer(M.Name()),false,false);
+						A.setLastUpdated(System.currentTimeMillis());
+						Log.sysOut("Import","Imported account: "+A.getAccountName());
+						CMLib.database().DBCreateAccount(A);
+						CMLib.players().addAccount(A);
 					}
-					if(M.playerStats()!=null)
-						M.playerStats().setLastUpdated(System.currentTimeMillis());
-					CMLib.achievements().loadPlayerSkillAwards(M, M.playerStats());
-					CMLib.achievements().loadAccountAchievements(M);
-					CMLib.database().DBCreateCharacter(M);
-					CMLib.players().addPlayer(M);
-					Log.sysOut("Import","Imported user: "+M.Name());
-					CMLib.login().notifyFriends(M,"^X"+M.Name()+" has just been created.^.^?");
-					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
-					for(int i=0;i<channels.size();i++)
-						CMLib.commands().postChannel(channels.get(i),M.clans(),M.Name()+" has just been created.",true);
-					if(M.getStartRoom()==null)
-						M.setStartRoom(CMLib.login().getDefaultStartRoom(M));
-					if(M.location()==null)
-						M.setLocation(mob.location());
-					if(M.playerStats().getBirthday()==null)
+					for(int m=0;m<mobs.size();m++)
 					{
-						M.baseCharStats().setStat(CharStats.STAT_AGE,M.playerStats().initializeBirthday(CMLib.time().localClock(mob.getStartRoom()),(int)Math.round(CMath.div(M.getAgeMinutes(),60.0)),M.baseCharStats().getMyRace()));
-						M.recoverCharStats();
+						final MOB M=mobs.get(m);
+						if(names!=null)
+						{
+							boolean found=false;
+							for(int n=0;n<names.size();n++)
+							{
+								if(M.Name().equalsIgnoreCase(names.get(n)))
+									found=true;
+							}
+							if(!found)
+								continue;
+						}
+						if(CMLib.players().playerExists(M.Name()))
+						{
+							if(!prompt)
+							{
+								returnAnError(session,"Player '"+M.Name()+"' already exists.  Skipping.",compileErrors,commands);
+								continue;
+							}
+							else
+							if((session!=null)&&(!session.confirm(L("Player: \"@x1\" exists, obliterate first?",M.Name()),L("Y"))))
+								continue;
+							else
+								CMLib.players().obliteratePlayer(CMLib.players().getLoadPlayer(M.Name()),false,false);
+						}
+						if(M.playerStats()!=null)
+							M.playerStats().setLastUpdated(System.currentTimeMillis());
+						CMLib.achievements().loadPlayerSkillAwards(M, M.playerStats());
+						CMLib.achievements().loadAccountAchievements(M);
+						CMLib.database().DBCreateCharacter(M);
+						CMLib.players().addPlayer(M);
+						Log.sysOut("Import","Imported user: "+M.Name());
+						CMLib.login().notifyFriends(M,"^X"+M.Name()+" has just been created.^.^?");
+						final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
+						for(int i=0;i<channels.size();i++)
+							CMLib.commands().postChannel(channels.get(i),M.clans(),M.Name()+" has just been created.",true);
+						if(M.getStartRoom()==null)
+							M.setStartRoom(CMLib.login().getDefaultStartRoom(M));
+						if(M.location()==null)
+							M.setLocation(mob.location());
+						if(M.playerStats().getBirthday()==null)
+						{
+							M.baseCharStats().setStat(CharStats.STAT_AGE,M.playerStats().initializeBirthday(CMLib.time().localClock(mob.getStartRoom()),(int)Math.round(CMath.div(M.getAgeMinutes(),60.0)),M.baseCharStats().getMyRace()));
+							M.recoverCharStats();
+						}
+						CMLib.database().DBUpdatePlayer(M);
+						M.removeFromGame(false,true);
 					}
-					CMLib.database().DBUpdatePlayer(M);
-					M.removeFromGame(false,true);
-				}
-				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null)
-					session.println(L("Player(s)/Account(s) successfully imported!"));
-				continue;
-			}
-			else
-			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
-			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTITEMS))
-				{
-					returnAnError(session,"You are not allowed to import items in '"+areaFileName+"' here.",compileErrors,commands);
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+					if(session!=null)
+						session.println(L("Player(s)/Account(s) successfully imported!"));
 					continue;
 				}
-				if(CF!=null)
-					buf=CF.textUnformatted();
-				if(buf == null)
-					buf = new StringBuffer("");
-				if(session!=null)
-					session.rawPrint(L("Unpacking items from file: '@x1'...",areaFileName));
-				final Vector<Item> items=new Vector<Item>();
-				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
-				if(error.length()==0)
-					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
-				if(error.length()==0)
-					error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,session);
-				if(session!=null)
-					session.rawPrintln("!");
-				if(error.length()>0)
-					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
-				if(mob.location()==null)
-					return returnAnError(session,"You must be in a room to import items.",compileErrors,commands);
-				for(int i=0;i<items.size();i++)
+				else
+				if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
 				{
-					final Item I=items.get(i);
-					mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
-				}
-				mob.location().recoverRoomStats();
-				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null)
-					session.println(L("Item(s) successfully imported!"));
-				continue;
-			}
-		}
-		catch(final Exception e)
-		{
-			Log.errOut("Import-",e);
-			return returnAnError(session,e.getMessage(),compileErrors,commands);
-		}
-
-
-		final List<String> V=Resources.getFileLineVector(buf);
-
-		// sort the data into general blocks, and identify area
-		if(session!=null)
-			session.println(L("\n\rSorting data from file '@x1'...",areaFileName));
-		Log.sysOut("Import","Importing data from file '"+areaFileName+"'");
-		readBlocks(V,areaData,roomData,mobData,resetData,objectData,mobProgData,objProgData,shopData,specialData,socialData,roomProgData);
-		boolean didSocials=false;
-		try
-		{
-			while(socialData.size()>0)
-			{
-				final String codeLine=eatNextLine(socialData);
-				if((!codeLine.startsWith("#"))&&(codeLine.trim().length()>0))
-				{
-					didSocials=true;
-					String word=codeLine.trim().toUpperCase();
-					final int x=word.indexOf(' ');
-					if(x>0)
-						word=word.substring(0,x).trim();
-
-					Social S1=CMLib.socials().fetchSocial(word,true);
-					Social S2=CMLib.socials().fetchSocial(word+" <T-NAME>",true);
-					Social S3=CMLib.socials().fetchSocial(word+" SELF",true);
-					boolean changing=true;
-					if((S1==null)||(!S1.name().toUpperCase().equals(word)))
+					if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTITEMS))
 					{
-						S1=(Social)CMClass.getCommon("DefaultSocial");
-						S1.setName(word);
-						CMLib.socials().addSocial(S1);
-						changing=false;
-					}
-
-					String str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#"))
+						returnAnError(session,"You are not allowed to import items in '"+areaFileName+"' here.",compileErrors,commands);
 						continue;
-
-					if((S1.You_see()==null)||(!S1.You_see().equals(str)))
-					{
-						if((changing)&&prompt&&(session!=null))
-							session.rawPrint(L("Change Social '@x1' from '@x2', you see, to: '@x3'",S1.name(),S1.You_see(),str));
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
-							S1.setYou_see(str);
 					}
-
-					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#"))
-						continue;
-
-					if((S1.Third_party_sees()==null)||(!S1.Third_party_sees().equals(str)))
+					if(CF!=null)
+						buf=CF.textUnformatted();
+					if(buf == null)
+						buf = new StringBuffer("");
+					if(session!=null)
+						session.rawPrint(L("Unpacking items from file: '@x1'...",areaFileName));
+					final Vector<Item> items=new Vector<Item>();
+					String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+					if(error.length()==0)
+						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+					if(error.length()==0)
+						error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,session);
+					if(session!=null)
+						session.rawPrintln("!");
+					if(error.length()>0)
+						return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
+					if(mob.location()==null)
+						return returnAnError(session,"You must be in a room to import items.",compileErrors,commands);
+					for(int i=0;i<items.size();i++)
 					{
-						if((changing)&&prompt&&(session!=null))
-							session.rawPrint(L("Change Social '@x1' from '@x2', others see, to: '@x3'",S1.name(),S1.Third_party_sees(),str));
-						if((!changing)||((session!=null)&&prompt&&(session.confirm("?",L("Y")))))
-							S1.setThird_party_sees(str);
+						final Item I=items.get(i);
+						mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
 					}
-
-					changing=true;
-					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#"))
-						continue;
-					if(S2==null)
-					{
-						S2=(Social)CMClass.getCommon("DefaultSocial");
-						S2.setName(word+" <T-NAME>");
-						CMLib.socials().addSocial(S2);
-						changing=false;
-					}
-
-					if((S2.You_see()==null)||(!S2.You_see().equals(str)))
-					{
-						if((changing)&&prompt&&(session!=null))
-							session.rawPrint(L("Change Social '@x1' from '@x2', you see, to: '@x3'",S2.name(),S2.You_see(),str));
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
-							S2.setYou_see(str);
-					}
-
-					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#"))
-						continue;
-
-					if((S2.Third_party_sees()==null)||(!S2.Third_party_sees().equals(str)))
-					{
-						if((session!=null)&&prompt&&changing)
-							session.rawPrint(L("Change Social '@x1', others see from '@x2', to: '@x3'",S2.name(),S2.Third_party_sees(),str));
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
-							S2.setThird_party_sees(str);
-					}
-
-					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#"))
-						continue;
-
-					if((S2.Target_sees()==null)||(!S2.Target_sees().equals(str)))
-					{
-						if((session!=null)&&prompt&&changing)
-							session.rawPrint(L("Change Social '@x1', target sees from '@x2', to: '@x3'",S2.name(),S2.Target_sees(),str));
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
-							S2.setTarget_sees(str);
-					}
-
-					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#"))
-						continue;
-
-					if((S2.See_when_no_target()==null)||(!S2.See_when_no_target().equals(str)))
-					{
-						if((session!=null)&&prompt&&changing)
-							session.rawPrint(L("Change Social '@x1', no target sees from '@x2', to: '@x3'",S2.name(),S2.See_when_no_target(),str));
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
-							S2.setSee_when_no_target(str);
-					}
-
-					changing=true;
-					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#"))
-						continue;
-					if(S3==null)
-					{
-						S3=(Social)CMClass.getCommon("DefaultSocial");
-						S3.setName(L("@x1 SELF",word));
-						CMLib.socials().addSocial(S3);
-						changing=false;
-					}
-
-					if((S3.You_see()==null)||(!S3.You_see().equals(str)))
-					{
-						if((session!=null)&&prompt&&changing)
-							session.rawPrint(L("Change Social '@x1', you see from '@x2', to: '@x3''",S3.name(),S3.You_see(),str));
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
-							S3.setYou_see(str);
-					}
-
-					str=socialFix(eatNextLine(socialData));
-					if(str.startsWith("#"))
-						continue;
-
-					if((S3.Third_party_sees()==null)||(!S3.Third_party_sees().equals(str)))
-					{
-						if((session!=null)&&prompt&&changing)
-							session.rawPrint(L("Change Social '@x1', others see from '@x2', to: '@x3'",S3.name(),S3.Third_party_sees(),str));
-						if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
-							S3.setThird_party_sees(str);
-					}
-
-				}
-			}
-			if(didSocials)
-			{
-				Log.sysOut("Import",mob.Name()+" imported socials from "+areaFileName);
-				CMLib.socials().save(mob);
-			}
-		}
-		catch(final Exception e)
-		{
-			Log.errOut("Import",e);
-			return returnAnError(session,e.getMessage(),compileErrors,commands);
-		}
-
-		if((roomData.size()==0)||(areaData.size()==0))
-		{
-			if(!didSocials)
-			{
-				if(multiArea)
-				{
-					returnAnError(session,"No data in "+areaFileName,compileErrors,commands);
-					if((prompt)&&(session!=null))
-					{
-						try
-						{
-						if(!session.confirm(L("Would you like to continue (y/N)"),L("N")))
-							return false;
-						}catch(final Exception e){}
-					}
+					mob.location().recoverRoomStats();
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+					if(session!=null)
+						session.println(L("Item(s) successfully imported!"));
 					continue;
 				}
-				returnAnError(session,"Missing data! It is very unlikely this is an .are file.",compileErrors,commands);
-				return false;
 			}
-		}
-		String areaName=getAreaName(areaData);
-		final String areaAuthor=getAreaAuthor(areaData);
-		if((areaName==null)||(areaName.length()==0))
-		{
-			if(!didSocials)
-				returnAnError(session,"#AREA tag not found!",compileErrors,commands);
-			if(multiArea)
-				continue;
-			return false;
-		}
-		if((areaName.toUpperCase().startsWith(areaAuthor.toUpperCase()+" "))
-		&&(areaName.substring(areaAuthor.length()+1).trim().length()>0))
-			areaName=areaName.substring(areaAuthor.length()+1).trim();
-		if((areaName!=null)&&(areaName.endsWith("~")))
-			areaName=areaName.substring(0,areaName.length()-1);
-
-		try
-		{
-			// confirm area creation/overwrite
-			boolean exists=false;
+			catch(final Exception e)
+			{
+				Log.errOut("Import-",e);
+				return returnAnError(session,e.getMessage(),compileErrors,commands);
+			}
+	
+	
+			final List<String> V=Resources.getFileLineVector(buf);
+	
+			// sort the data into general blocks, and identify area
+			if(session!=null)
+				session.println(L("\n\rSorting data from file '@x1'...",areaFileName));
+			Log.sysOut("Import","Importing data from file '"+areaFileName+"'");
+			readBlocks(V,areaData,roomData,mobData,resetData,objectData,mobProgData,objProgData,shopData,specialData,socialData,roomProgData);
+			boolean didSocials=false;
 			try
 			{
-				for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				while(socialData.size()>0)
 				{
-					final Room R=r.nextElement();
-					if(R.getArea().Name().equalsIgnoreCase(areaName))
+					final String codeLine=eatNextLine(socialData);
+					if((!codeLine.startsWith("#"))&&(codeLine.trim().length()>0))
 					{
-						exists=true;
-						break;
+						didSocials=true;
+						String word=codeLine.trim().toUpperCase();
+						final int x=word.indexOf(' ');
+						if(x>0)
+							word=word.substring(0,x).trim();
+	
+						Social S1=CMLib.socials().fetchSocial(word,true);
+						Social S2=CMLib.socials().fetchSocial(word+" <T-NAME>",true);
+						Social S3=CMLib.socials().fetchSocial(word+" SELF",true);
+						boolean changing=true;
+						if((S1==null)||(!S1.name().toUpperCase().equals(word)))
+						{
+							S1=(Social)CMClass.getCommon("DefaultSocial");
+							S1.setName(word);
+							CMLib.socials().addSocial(S1);
+							changing=false;
+						}
+	
+						String str=socialFix(eatNextLine(socialData));
+						if(str.startsWith("#"))
+							continue;
+	
+						if((S1.You_see()==null)||(!S1.You_see().equals(str)))
+						{
+							if((changing)&&prompt&&(session!=null))
+								session.rawPrint(L("Change Social '@x1' from '@x2', you see, to: '@x3'",S1.name(),S1.You_see(),str));
+							if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
+								S1.setYou_see(str);
+						}
+	
+						str=socialFix(eatNextLine(socialData));
+						if(str.startsWith("#"))
+							continue;
+	
+						if((S1.Third_party_sees()==null)||(!S1.Third_party_sees().equals(str)))
+						{
+							if((changing)&&prompt&&(session!=null))
+								session.rawPrint(L("Change Social '@x1' from '@x2', others see, to: '@x3'",S1.name(),S1.Third_party_sees(),str));
+							if((!changing)||((session!=null)&&prompt&&(session.confirm("?",L("Y")))))
+								S1.setThird_party_sees(str);
+						}
+	
+						changing=true;
+						str=socialFix(eatNextLine(socialData));
+						if(str.startsWith("#"))
+							continue;
+						if(S2==null)
+						{
+							S2=(Social)CMClass.getCommon("DefaultSocial");
+							S2.setName(word+" <T-NAME>");
+							CMLib.socials().addSocial(S2);
+							changing=false;
+						}
+	
+						if((S2.You_see()==null)||(!S2.You_see().equals(str)))
+						{
+							if((changing)&&prompt&&(session!=null))
+								session.rawPrint(L("Change Social '@x1' from '@x2', you see, to: '@x3'",S2.name(),S2.You_see(),str));
+							if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
+								S2.setYou_see(str);
+						}
+	
+						str=socialFix(eatNextLine(socialData));
+						if(str.startsWith("#"))
+							continue;
+	
+						if((S2.Third_party_sees()==null)||(!S2.Third_party_sees().equals(str)))
+						{
+							if((session!=null)&&prompt&&changing)
+								session.rawPrint(L("Change Social '@x1', others see from '@x2', to: '@x3'",S2.name(),S2.Third_party_sees(),str));
+							if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
+								S2.setThird_party_sees(str);
+						}
+	
+						str=socialFix(eatNextLine(socialData));
+						if(str.startsWith("#"))
+							continue;
+	
+						if((S2.Target_sees()==null)||(!S2.Target_sees().equals(str)))
+						{
+							if((session!=null)&&prompt&&changing)
+								session.rawPrint(L("Change Social '@x1', target sees from '@x2', to: '@x3'",S2.name(),S2.Target_sees(),str));
+							if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
+								S2.setTarget_sees(str);
+						}
+	
+						str=socialFix(eatNextLine(socialData));
+						if(str.startsWith("#"))
+							continue;
+	
+						if((S2.See_when_no_target()==null)||(!S2.See_when_no_target().equals(str)))
+						{
+							if((session!=null)&&prompt&&changing)
+								session.rawPrint(L("Change Social '@x1', no target sees from '@x2', to: '@x3'",S2.name(),S2.See_when_no_target(),str));
+							if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
+								S2.setSee_when_no_target(str);
+						}
+	
+						changing=true;
+						str=socialFix(eatNextLine(socialData));
+						if(str.startsWith("#"))
+							continue;
+						if(S3==null)
+						{
+							S3=(Social)CMClass.getCommon("DefaultSocial");
+							S3.setName(L("@x1 SELF",word));
+							CMLib.socials().addSocial(S3);
+							changing=false;
+						}
+	
+						if((S3.You_see()==null)||(!S3.You_see().equals(str)))
+						{
+							if((session!=null)&&prompt&&changing)
+								session.rawPrint(L("Change Social '@x1', you see from '@x2', to: '@x3''",S3.name(),S3.You_see(),str));
+							if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
+								S3.setYou_see(str);
+						}
+	
+						str=socialFix(eatNextLine(socialData));
+						if(str.startsWith("#"))
+							continue;
+	
+						if((S3.Third_party_sees()==null)||(!S3.Third_party_sees().equals(str)))
+						{
+							if((session!=null)&&prompt&&changing)
+								session.rawPrint(L("Change Social '@x1', others see from '@x2', to: '@x3'",S3.name(),S3.Third_party_sees(),str));
+							if((!changing)||((session!=null)&&prompt&&session.confirm("?",L("Y"))))
+								S3.setThird_party_sees(str);
+						}
+	
 					}
 				}
-			}catch(final NoSuchElementException e){}
-			if(exists)
-			{
-				if((nodelete)&&(!prompt))
-					return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,commands);
-				else
-				if((!prompt)
-				||((session!=null)&&(session.confirm(L("Area: \"@x1\" exists, obliterate first?",areaName),L("N")))))
+				if(didSocials)
 				{
-					reLinkTable=new Vector<String>();
-					if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
+					Log.sysOut("Import",mob.Name()+" imported socials from "+areaFileName);
+					CMLib.socials().save(mob);
+				}
+			}
+			catch(final Exception e)
+			{
+				Log.errOut("Import",e);
+				return returnAnError(session,e.getMessage(),compileErrors,commands);
+			}
+	
+			if((roomData.size()==0)||(areaData.size()==0))
+			{
+				if(!didSocials)
+				{
+					if(multiArea)
+					{
+						returnAnError(session,"No data in "+areaFileName,compileErrors,commands);
+						if((prompt)&&(session!=null))
+						{
+							try
+							{
+							if(!session.confirm(L("Would you like to continue (y/N)"),L("N")))
+								return false;
+							}catch(final Exception e){}
+						}
+						continue;
+					}
+					returnAnError(session,"Missing data! It is very unlikely this is an .are file.",compileErrors,commands);
+					return false;
+				}
+			}
+			String areaName=getAreaName(areaData);
+			final String areaAuthor=getAreaAuthor(areaData);
+			if((areaName==null)||(areaName.length()==0))
+			{
+				if(!didSocials)
+					returnAnError(session,"#AREA tag not found!",compileErrors,commands);
+				if(multiArea)
+					continue;
+				return false;
+			}
+			if((areaName.toUpperCase().startsWith(areaAuthor.toUpperCase()+" "))
+			&&(areaName.substring(areaAuthor.length()+1).trim().length()>0))
+				areaName=areaName.substring(areaAuthor.length()+1).trim();
+			if((areaName!=null)&&(areaName.endsWith("~")))
+				areaName=areaName.substring(0,areaName.length()-1);
+	
+			try
+			{
+				// confirm area creation/overwrite
+				boolean exists=false;
+				try
+				{
+					for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+					{
+						final Room R=r.nextElement();
+						if(R.getArea().Name().equalsIgnoreCase(areaName))
+						{
+							exists=true;
+							break;
+						}
+					}
+				}
+				catch (final NoSuchElementException e)
+				{
+				}
+				if(exists)
+				{
+					if((nodelete)&&(!prompt))
+						return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,commands);
+					else
+					if((!prompt)
+					||((session!=null)&&(session.confirm(L("Area: \"@x1\" exists, obliterate first?",areaName),L("N")))))
+					{
+						reLinkTable=new Vector<String>();
+						if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
+						{
+							if(multiArea)
+								continue;
+							return false;
+						}
+					}
+					else
 					{
 						if(multiArea)
 							continue;
@@ -5597,609 +6121,719 @@ public class Import extends StdCommand
 					}
 				}
 				else
+				if((prompt)&&((session!=null)&&(!session.confirm(L("Found area: \"@x1\", is this ok?",areaName),L("Y")))))
 				{
 					if(multiArea)
 						continue;
 					return false;
 				}
-			}
-			else
-			if((prompt)&&((session!=null)&&(!session.confirm(L("Found area: \"@x1\", is this ok?",areaName),L("Y")))))
-			{
-				if(multiArea)
-					continue;
-				return false;
-			}
-
-			if(session!=null)
-				session.println(L("Loading and Linking Rooms..."));
-			Log.sysOut("Import",mob.Name()+" imported "+areaName+" from "+areaFileName);
-			// begin initial room-read
-			// build first room structures, leaving rest for later.
-			Room lastRoom=null;
-			final Hashtable<Room,Room> petShops=new Hashtable<Room,Room>();
-			final Hashtable<String,Room> areaRooms=new Hashtable<String,Room>();
-			final Hashtable<String,Item> areaItems=new Hashtable<String,Item>();
-			final Hashtable<String,MOB> areaMOBS=new Hashtable<String,MOB>();
-
-			for(int r=0;r<roomData.size();r++)
-			{
-				List<String> roomV=null;
-				if(roomData.get(r) instanceof List)
+	
+				if(session!=null)
+					session.println(L("Loading and Linking Rooms..."));
+				Log.sysOut("Import",mob.Name()+" imported "+areaName+" from "+areaFileName);
+				// begin initial room-read
+				// build first room structures, leaving rest for later.
+				Room lastRoom=null;
+				final Hashtable<Room,Room> petShops=new Hashtable<Room,Room>();
+				final Hashtable<String,Room> areaRooms=new Hashtable<String,Room>();
+				final Hashtable<String,Item> areaItems=new Hashtable<String,Item>();
+				final Hashtable<String,MOB> areaMOBS=new Hashtable<String,MOB>();
+	
+				for(int r=0;r<roomData.size();r++)
 				{
-					roomV=(List)roomData.get(r);
-					if((roomV.size()==1)
-					&&(roomV.get(1).toUpperCase().trim().startsWith("#ROOM")))
-						continue;
-				}
-				else
-				if(roomData.get(r) instanceof String)
-				{
-					final String s=(String)roomData.get(r);
-					if(!s.toUpperCase().trim().startsWith("#ROOM"))
-						returnAnError(session,"Eating immaterial line: "+roomData.get(r)+", area="+areaName,compileErrors,commands);
-					continue;
-				}
-				else
-					continue;
-
-				Area A=CMLib.map().getArea(areaName);
-				if(A==null)
-				{
-					if(areaType==null)
-						A=CMClass.getAreaType("StdArea");
+					List<String> roomV=null;
+					if(roomData.get(r) instanceof List)
+					{
+						roomV=(List)roomData.get(r);
+						if((roomV.size()==1)
+						&&(roomV.get(1).toUpperCase().trim().startsWith("#ROOM")))
+							continue;
+					}
 					else
-						A=CMClass.getAreaType(areaType);
-					A.setName(areaName);
-					A.setAuthorID(areaAuthor);
-					CMLib.map().addArea(A);
-					CMLib.database().DBCreateArea(A);
-				}
-				else
-					A.setAreaState(Area.State.FROZEN);
-
-				Room R=CMClass.getLocale("StdRoom");
-				String plainRoomID=eatNextLine(roomV);
-				if(isBadID(plainRoomID))
-				{
-					Log.errOut("IMPORT","Eating bad room id "+plainRoomID);
-					roomData.remove(r);
-					r--;
-					continue;
-				}
-
-				R.setRoomID(plainRoomID);
-
-				//if(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMPORT))
-				//	Log.debugOut("IMPORT","Found: "+plainRoomID+" ("+areaName+")");
-
-				if((roomV.size()>2)
-				&&(roomV.get(0).trim().equals("~"))
-				&&(roomV.get(1).trim().equals("~")))
-				{
-					eatLineSquiggle(roomV);
-					eatLineSquiggle(roomV);
-					R.setDisplayText(L("Emptiness..."));
-					R.setDescription("");
-				}
-				else
-				{
-					R.setDisplayText(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
-					R.setDescription(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
-				}
-				if(R.expirationDate()!=0)
-					R.setExpirationDate(R.expirationDate()+(360000));
-
-				final String codeLine=eatNextLine(roomV);
-				if((!R.roomID().startsWith("#"))
-				||(R.displayText().length()==0)
-				||(CMParms.numBits(codeLine)<2)
-				||((CMParms.numBits(codeLine)>6)&&(!zonFormat)))
-				{
-					returnAnError(session,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName,compileErrors,commands);
-					continue;
-				}
-
-				R.setRoomID(areaName+R.roomID());
-				R.setArea(A);
-				long codeBits=getBitMask(codeLine,0);
-				int sectorType=(int)getBitMask(codeLine,1);
-				final String[][] secTypes={
-				{ "inside",		"0"},
-				{ "city",		"1"},
-				{ "field",		"2"},
-				{ "forest",		"3"},
-				{ "hills",		"4"},
-				{ "mountain",	"5"},
-				{ "swim",		"6"}, // means it is swimmable
-				{ "noswim",		"7"}, // means it requires a boat
-				{ "unused",		"8"},
-				{ "air",		"9"},
-				{ "desert",		"10"}};
-				boolean circleFormat=false;
-				if((CMParms.numBits(codeLine)>=6)||(CMParms.numBits(codeLine)==4)) // wierder circlemud exception
-				{
-					codeBits=(getBitMask(codeLine,2)<<16)|getBitMask(codeLine,1); // ignoring 3 & 4
-					sectorType=CMath.s_int(CMParms.getBit(codeLine,5));
-					circleFormat=true;
-				}
-				else
-				if(CMParms.numBits(codeLine)==5) // wierd circlemud exception
-				{
-					codeBits=sectorType;
-					codeBits=(getBitMask(codeLine,2)<<16)|getBitMask(codeLine,1); // ignoring 3
-					sectorType=CMath.s_int(CMParms.getBit(codeLine,4));
-					circleFormat=true;
-				}
-				else
-				if(CMParms.numBits(codeLine)==3)
-				{
-					codeBits=sectorType;
-					final String secType=CMParms.getBit(codeLine,2);
-					sectorType=(int)getBitMask(codeLine,2);
-					for (final String[] secType2 : secTypes)
-						if(secType.equalsIgnoreCase(secType2[0]))
+					if(roomData.get(r) instanceof String)
+					{
+						final String s=(String)roomData.get(r);
+						if(!s.toUpperCase().trim().startsWith("#ROOM"))
+							returnAnError(session,"Eating immaterial line: "+roomData.get(r)+", area="+areaName,compileErrors,commands);
+						continue;
+					}
+					else
+						continue;
+	
+					Area A=CMLib.map().getArea(areaName);
+					if(A==null)
+					{
+						if(areaType==null)
+							A=CMClass.getAreaType("StdArea");
+						else
+							A=CMClass.getAreaType(areaType);
+						A.setName(areaName);
+						A.setAuthorID(areaAuthor);
+						CMLib.map().addArea(A);
+						CMLib.database().DBCreateArea(A);
+					}
+					else
+						A.setAreaState(Area.State.FROZEN);
+	
+					Room R=CMClass.getLocale("StdRoom");
+					String plainRoomID=eatNextLine(roomV);
+					if(isBadID(plainRoomID))
+					{
+						Log.errOut("IMPORT","Eating bad room id "+plainRoomID);
+						roomData.remove(r);
+						r--;
+						continue;
+					}
+	
+					R.setRoomID(plainRoomID);
+	
+					//if(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMPORT))
+					//	Log.debugOut("IMPORT","Found: "+plainRoomID+" ("+areaName+")");
+	
+					if((roomV.size()>2)
+					&&(roomV.get(0).trim().equals("~"))
+					&&(roomV.get(1).trim().equals("~")))
+					{
+						eatLineSquiggle(roomV);
+						eatLineSquiggle(roomV);
+						R.setDisplayText(L("Emptiness..."));
+						R.setDescription("");
+					}
+					else
+					{
+						R.setDisplayText(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
+						R.setDescription(CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV)));
+					}
+					if(R.expirationDate()!=0)
+						R.setExpirationDate(R.expirationDate()+(360000));
+	
+					final String codeLine=eatNextLine(roomV);
+					if((!R.roomID().startsWith("#"))
+					||(R.displayText().length()==0)
+					||(CMParms.numBits(codeLine)<2)
+					||((CMParms.numBits(codeLine)>6)&&(!zonFormat)))
+					{
+						returnAnError(session,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName,compileErrors,commands);
+						continue;
+					}
+	
+					R.setRoomID(areaName+R.roomID());
+					R.setArea(A);
+					long codeBits=getBitMask(codeLine,0);
+					int sectorType=(int)getBitMask(codeLine,1);
+					final String[][] secTypes={
+						{ "inside",		"0"},
+						{ "city",		"1"},
+						{ "field",		"2"},
+						{ "forest",		"3"},
+						{ "hills",		"4"},
+						{ "mountain",	"5"},
+						{ "swim",		"6"}, // means it is swimmable
+						{ "noswim",		"7"}, // means it requires a boat
+						{ "unused",		"8"},
+						{ "air",		"9"},
+						{ "desert",		"10"}
+					};
+					boolean circleFormat=false;
+					if((CMParms.numBits(codeLine)>=6)||(CMParms.numBits(codeLine)==4)) // wierder circlemud exception
+					{
+						codeBits=(getBitMask(codeLine,2)<<16)|getBitMask(codeLine,1); // ignoring 3 & 4
+						sectorType=CMath.s_int(CMParms.getBit(codeLine,5));
+						circleFormat=true;
+					}
+					else
+					if(CMParms.numBits(codeLine)==5) // wierd circlemud exception
+					{
+						codeBits=sectorType;
+						codeBits=(getBitMask(codeLine,2)<<16)|getBitMask(codeLine,1); // ignoring 3
+						sectorType=CMath.s_int(CMParms.getBit(codeLine,4));
+						circleFormat=true;
+					}
+					else
+					if(CMParms.numBits(codeLine)==3)
+					{
+						codeBits=sectorType;
+						final String secType=CMParms.getBit(codeLine,2);
+						sectorType=(int)getBitMask(codeLine,2);
+						for (final String[] secType2 : secTypes)
 						{
-							sectorType=CMath.s_int(secType2[1]);
+							if(secType.equalsIgnoreCase(secType2[0]))
+							{
+								sectorType=CMath.s_int(secType2[1]);
+								break;
+							}
+						}
+					}
+					if(circleFormat)
+					{
+						switch(sectorType)
+						{
+						case 0:
+							R = changeRoomClass(R, "StoneRoom");
+							break;
+						case 1:
+							R = changeRoomClass(R, "CityStreet");
+							break;
+						case 2:
+							R = changeRoomClass(R, "Plains");
+							break;
+						case 3:
+							R = changeRoomClass(R, "Woods");
+							break;
+						case 4:
+							R = changeRoomClass(R, "Hills");
+							break;
+						case 5:
+							R = changeRoomClass(R, "Mountains");
+							break;
+						case 6:
+							R = changeRoomClass(R, "ShallowWater");
+							break;
+						case 7:
+							R = changeRoomClass(R, "WaterSurface");
+							break;
+						case 8:
+							R = changeRoomClass(R, "UnderWater");
+							break;
+						case 9:
+							R = changeRoomClass(R, "InTheAir");
+							break;
+						case 10:
+							R = changeRoomClass(R, "Desert");
+							break;
+						case 11:
+							R = changeRoomClass(R, "FrozenPlains");
+							break;
+						case 12:
+							R = changeRoomClass(R, "FrozenMountains");
 							break;
 						}
-				}
-				if(circleFormat)
-				{
-					switch(sectorType)
-					{
-					case 0:	R=changeRoomClass(R,"StoneRoom"); break;
-					case 1:	R=changeRoomClass(R,"CityStreet"); break;
-					case 2:	R=changeRoomClass(R,"Plains"); break;
-					case 3:	R=changeRoomClass(R,"Woods"); break;
-					case 4:	R=changeRoomClass(R,"Hills"); break;
-					case 5:	R=changeRoomClass(R,"Mountains"); break;
-					case 6:	R=changeRoomClass(R,"ShallowWater"); break;
-					case 7:	R=changeRoomClass(R,"WaterSurface"); break;
-					case 8:	R=changeRoomClass(R,"UnderWater"); break;
-					case 9:	R=changeRoomClass(R,"InTheAir"); break;
-					case 10: R=changeRoomClass(R,"Desert"); break;
-					case 11: R=changeRoomClass(R,"FrozenPlains"); break;
-					case 12: R=changeRoomClass(R,"FrozenMountains"); break;
 					}
-				}
-				else
-				if((codeBits&8)==0)
-				{
-					switch(sectorType)
-					{
-					case 0:	R=changeRoomClass(R,"CityStreet"); break;
-					case 1:	R=changeRoomClass(R,"CityStreet"); break;
-					case 2:	R=changeRoomClass(R,"Plains"); break;
-					case 3:	R=changeRoomClass(R,"Woods"); break;
-					case 4:	R=changeRoomClass(R,"Hills"); break;
-					case 5:	R=changeRoomClass(R,"Mountains"); break;
-					case 6:	R=changeRoomClass(R,"ShallowWater"); break;
-					case 7:	R=changeRoomClass(R,"WaterSurface"); break;
-					case 8:	R=changeRoomClass(R,"FrozenPlains"); break;
-					case 9:	R=changeRoomClass(R,"InTheAir"); break;
-					case 10: R=changeRoomClass(R,"Desert"); break;
-					case 11: R=changeRoomClass(R,"FrozenPlains"); break;
-					case 12: R=changeRoomClass(R,"FrozenMountains"); break;
-					}
-				}
-				else
-				{
-					switch(sectorType)
-					{
- 					case 0:	R=changeRoomClass(R,"StoneRoom"); break;
-					case 1:	R=changeRoomClass(R,"StoneRoom"); break;
-					case 2:	R=changeRoomClass(R,"WoodRoom"); break;
-					case 3:	R=changeRoomClass(R,"WoodRoom"); break;
-					case 4:	R=changeRoomClass(R,"StoneRoom"); break;
-					case 5:	R=changeRoomClass(R,"StoneRoom"); break;
-					case 6:	R=changeRoomClass(R,"IndoorShallowWater"); break;
-					case 7:	R=changeRoomClass(R,"IndoorWaterSurface"); break;
-					case 8:	R=changeRoomClass(R,"IceRoom"); break;
-					case 9:	R=changeRoomClass(R,"IndoorInTheAir"); break;
-					case 10: R=changeRoomClass(R,"HotRoom"); break;
-					case 11: R=changeRoomClass(R,"IceRoom"); break;
-					case 12: R=changeRoomClass(R,"IceRoom"); break;
-					}
-					switch(sectorType)
-					{
-					case 0:
-					case 1:
-					case 2:
-					case 3:
-					case 4:
-					case 5:
-					case 10:
-					case 11:
-					case 12:
-						if((R.displayText().toUpperCase().indexOf("CAVE")>=0)
-						||(R.description().toUpperCase().indexOf("CAVE")>=0))
-							R=changeRoomClass(R,"CaveRoom");
-						break;
-					}
-
-				}
-
-				R=applyRoomCodeBits(R,lastRoom,petShops,codeBits,circleFormat);
-
-				roomV.add(0,R.roomID());
-				newRooms.add(R);
-				if(plainRoomID.startsWith("#"))
-				{
-					while(plainRoomID.startsWith("#0")&&(plainRoomID.length()>2))
-						plainRoomID="#"+plainRoomID.substring(2);
-					doneRooms.put(areaName+plainRoomID,R);
-					areaRooms.put(areaName+plainRoomID,R);
-				}
-				else
-				{
-					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMPORT))
-						Log.debugOut("Non-# room ID: "+plainRoomID);
-					while(plainRoomID.startsWith("0")&&(plainRoomID.length()>1))
-						plainRoomID=plainRoomID.substring(1);
-					doneRooms.put(areaName+"#"+plainRoomID,R);
-					areaRooms.put(areaName+"#"+plainRoomID,R);
-				}
-
-				lastRoom=R;
-			}
-
-			//if(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMPORT)) Log.debugOut("IMPORT","Pass 2: exits, mobs, object");
-
-			// begin second pass through rooms
-			// handle exits, mobs, objects, etc.
-			for(int r=0;r<roomData.size();r++)
-			{
-				List<String> roomV=null;
-				if(roomData.get(r) instanceof List)
-					roomV=(List)roomData.get(r);
-				else
-					continue;
-				final String roomID=eatLine(roomV);
-				Room R=getRoom(areaRooms,doneRooms,areaName,roomID);
-				if(R==null)
-				{
-					Log.errOut("Import","Unhashed room "+roomID+"! Aborting!");
-					return false;
-				}
-
-				// handle exits, and 'E' tags
-				while(roomV.size()>0)
-				{
-					String nextLine=eatNextLine(roomV);
-					if(nextLine.toUpperCase().startsWith("S"))
-						continue;
 					else
-					if(nextLine.toUpperCase().startsWith("E"))
+					if((codeBits&8)==0)
 					{
-						final String nameString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
-						final String descString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
-						Item I=null;
-						if(hasReadableContent(nameString))
+						switch(sectorType)
 						{
-							I=CMClass.getBasicItem("GenWallpaper");
-							CMLib.flags().setReadable(I,true);
-							I.setReadableText(fixReadableContent(descString));
+						case 0:
+							R = changeRoomClass(R, "CityStreet");
+							break;
+						case 1:
+							R = changeRoomClass(R, "CityStreet");
+							break;
+						case 2:
+							R = changeRoomClass(R, "Plains");
+							break;
+						case 3:
+							R = changeRoomClass(R, "Woods");
+							break;
+						case 4:
+							R = changeRoomClass(R, "Hills");
+							break;
+						case 5:
+							R = changeRoomClass(R, "Mountains");
+							break;
+						case 6:
+							R = changeRoomClass(R, "ShallowWater");
+							break;
+						case 7:
+							R = changeRoomClass(R, "WaterSurface");
+							break;
+						case 8:
+							R = changeRoomClass(R, "FrozenPlains");
+							break;
+						case 9:
+							R = changeRoomClass(R, "InTheAir");
+							break;
+						case 10:
+							R = changeRoomClass(R, "Desert");
+							break;
+						case 11:
+							R = changeRoomClass(R, "FrozenPlains");
+							break;
+						case 12:
+							R = changeRoomClass(R, "FrozenMountains");
+							break;
+						}
+					}
+					else
+					{
+						switch(sectorType)
+						{
+						case 0:
+							R = changeRoomClass(R, "StoneRoom");
+							break;
+						case 1:
+							R = changeRoomClass(R, "StoneRoom");
+							break;
+						case 2:
+							R = changeRoomClass(R, "WoodRoom");
+							break;
+						case 3:
+							R = changeRoomClass(R, "WoodRoom");
+							break;
+						case 4:
+							R = changeRoomClass(R, "StoneRoom");
+							break;
+						case 5:
+							R = changeRoomClass(R, "StoneRoom");
+							break;
+						case 6:
+							R = changeRoomClass(R, "IndoorShallowWater");
+							break;
+						case 7:
+							R = changeRoomClass(R, "IndoorWaterSurface");
+							break;
+						case 8:
+							R = changeRoomClass(R, "IceRoom");
+							break;
+						case 9:
+							R = changeRoomClass(R, "IndoorInTheAir");
+							break;
+						case 10:
+							R = changeRoomClass(R, "HotRoom");
+							break;
+						case 11:
+							R = changeRoomClass(R, "IceRoom");
+							break;
+						case 12:
+							R = changeRoomClass(R, "IceRoom");
+							break;
+						}
+						switch(sectorType)
+						{
+						case 0:
+						case 1:
+						case 2:
+						case 3:
+						case 4:
+						case 5:
+						case 10:
+						case 11:
+						case 12:
+							if((R.displayText().toUpperCase().indexOf("CAVE")>=0)
+							||(R.description().toUpperCase().indexOf("CAVE")>=0))
+								R=changeRoomClass(R,"CaveRoom");
+							break;
+						}
+	
+					}
+	
+					R=applyRoomCodeBits(R,lastRoom,petShops,codeBits,circleFormat);
+	
+					roomV.add(0,R.roomID());
+					newRooms.add(R);
+					if(plainRoomID.startsWith("#"))
+					{
+						while(plainRoomID.startsWith("#0")&&(plainRoomID.length()>2))
+							plainRoomID="#"+plainRoomID.substring(2);
+						doneRooms.put(areaName+plainRoomID,R);
+						areaRooms.put(areaName+plainRoomID,R);
+					}
+					else
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMPORT))
+							Log.debugOut("Non-# room ID: "+plainRoomID);
+						while(plainRoomID.startsWith("0")&&(plainRoomID.length()>1))
+							plainRoomID=plainRoomID.substring(1);
+						doneRooms.put(areaName+"#"+plainRoomID,R);
+						areaRooms.put(areaName+"#"+plainRoomID,R);
+					}
+	
+					lastRoom=R;
+				}
+	
+				//if(CMSecurity.isDebugging(CMSecurity.DbgFlag.IMPORT)) Log.debugOut("IMPORT","Pass 2: exits, mobs, object");
+	
+				// begin second pass through rooms
+				// handle exits, mobs, objects, etc.
+				for(int r=0;r<roomData.size();r++)
+				{
+					List<String> roomV=null;
+					if(roomData.get(r) instanceof List)
+						roomV=(List)roomData.get(r);
+					else
+						continue;
+					final String roomID=eatLine(roomV);
+					Room R=getRoom(areaRooms,doneRooms,areaName,roomID);
+					if(R==null)
+					{
+						Log.errOut("Import","Unhashed room "+roomID+"! Aborting!");
+						return false;
+					}
+	
+					// handle exits, and 'E' tags
+					while(roomV.size()>0)
+					{
+						String nextLine=eatNextLine(roomV);
+						if(nextLine.toUpperCase().startsWith("S"))
+							continue;
+						else
+						if(nextLine.toUpperCase().startsWith("E"))
+						{
+							final String nameString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+							final String descString=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+							Item I=null;
+							if(hasReadableContent(nameString))
+							{
+								I=CMClass.getBasicItem("GenWallpaper");
+								CMLib.flags().setReadable(I,true);
+								I.setReadableText(fixReadableContent(descString));
+							}
+							else
+								I=CMClass.getBasicItem("GenWallpaper");
+							I.setName(nameString);
+							I.setDisplayText("");
+							I.setDescription(descString);
+							R.addItem(I);
 						}
 						else
-							I=CMClass.getBasicItem("GenWallpaper");
-						I.setName(nameString);
-						I.setDisplayText("");
-						I.setDescription(descString);
-						R.addItem(I);
-					}
-					else
-					if(nextLine.toUpperCase().startsWith("D"))
-					{
-						int dirCode=CMath.s_int(CMParms.getCleanBit(nextLine,0).substring(1).trim());
-						final String descStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
-						final String nameStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
-						String codeStr=eatLine(roomV);
-						if(codeStr.equalsIgnoreCase("~"))
-							codeStr=eatLine(roomV);
-						if(dirCode<Directions.NUM_DIRECTIONS())
-						switch(dirCode)
+						if(nextLine.toUpperCase().startsWith("D"))
 						{
-						case 0: dirCode=Directions.NORTH; break;
-						case 1: dirCode=Directions.EAST; break;
-						case 2: dirCode=Directions.SOUTH; break;
-						case 3: dirCode=Directions.WEST; break;
-						case 4: dirCode=Directions.UP; break;
-						case 5: dirCode=Directions.DOWN; break;
-						case 6: dirCode=Directions.NORTHWEST; break;
-						case 7: dirCode=Directions.NORTHEAST; break;
-						case 8: dirCode=Directions.SOUTHWEST; break;
-						case 9: dirCode=Directions.SOUTHEAST; break;
-						case 10: dirCode=Directions.GATE; break;
-						default:
+							int dirCode=CMath.s_int(CMParms.getCleanBit(nextLine,0).substring(1).trim());
+							final String descStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+							final String nameStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
+							String codeStr=eatLine(roomV);
+							if(codeStr.equalsIgnoreCase("~"))
+								codeStr=eatLine(roomV);
+							if(dirCode<Directions.NUM_DIRECTIONS())
+							switch(dirCode)
+							{
+							case 0:
+								dirCode = Directions.NORTH;
+								break;
+							case 1:
+								dirCode = Directions.EAST;
+								break;
+							case 2:
+								dirCode = Directions.SOUTH;
+								break;
+							case 3:
+								dirCode = Directions.WEST;
+								break;
+							case 4:
+								dirCode = Directions.UP;
+								break;
+							case 5:
+								dirCode = Directions.DOWN;
+								break;
+							case 6:
+								dirCode = Directions.NORTHWEST;
+								break;
+							case 7:
+								dirCode = Directions.NORTHEAST;
+								break;
+							case 8:
+								dirCode = Directions.SOUTHWEST;
+								break;
+							case 9:
+								dirCode = Directions.SOUTHEAST;
+								break;
+							case 10:
+								dirCode = Directions.GATE;
+								break;
+							default:
+								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+									if(R.rawDoors()[d]==null)
+									{
+										dirCode=d;
+										break;
+									}
+								break;
+							}
+							else
+							if((dirCode==10)&&(Directions.NUM_DIRECTIONS()<10))
+								dirCode=Directions.GATE;
+							else
 							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								if(R.rawDoors()[d]==null)
 								{
 									dirCode=d;
 									break;
 								}
-							break;
-						}
-						else
-						if((dirCode==10)&&(Directions.NUM_DIRECTIONS()<10))
-							dirCode=Directions.GATE;
-						else
-						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-							if(R.rawDoors()[d]==null)
+							if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS()))
 							{
-								dirCode=d;
-								break;
+								returnAnError(session,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName,compileErrors,commands);
+								continue;
 							}
-						if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS()))
-						{
-							returnAnError(session,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName,compileErrors,commands);
-							continue;
-						}
-						if((R.getRawExit(dirCode)!=null)||(R.rawDoors()[dirCode]!=null))
-						{
-							returnAnError(session,"Room: "+R.roomID()+", Redundant exit codeStr "+nextLine+"/"+codeStr+", dircode="+dirCode+".  Aborting exit, area="+areaName,compileErrors,commands);
-							continue;
-						}
-						if(codeStr.length()==0)
-						{
-							final String nextStr=nextLine(roomV);
-							if((CMParms.numBits(nextStr)==3)&&(CMath.isInteger(CMParms.getCleanBit(nextStr,0))))
-								codeStr=eatLine(roomV);
-						}
-						if((CMParms.numBits(codeStr)==1)&&(CMath.isInteger(codeStr.trim())))
-						{
-							final String nextStr=nextLine(roomV);
-							if((CMParms.numBits(nextStr)==2)&&(CMath.isInteger(CMParms.getCleanBit(nextStr,0))))
-								codeStr+=" "+eatLine(roomV);
-						}
-						final long exitFlag=getBitMask(codeStr,0) & 31;
-						final long doorState=getBitMask(codeStr,1);
-						final long linkRoomID=getBitMask(codeStr,2);
-						if(CMParms.numBits(codeStr)==11) // wierd circle format
-						{ /* all is well */}
-						else
-						if(CMParms.numBits(codeStr)==4)
-						{ /* all is still well -- from the wld format I guess. */ }
-						else
-						if(CMParms.numBits(codeStr)==5)
-						{
-							/*TODO:BZ all is still well -- from wierd modified rom. */ 
-						}
-						else
-						if(CMParms.numBits(codeStr)!=3)
-						{
-							returnAnError(session,"Room: "+R.roomID()+", Malformed exit codeStr "+codeStr+".  Aborting exit, area="+areaName,compileErrors,commands);
-							continue;
-						}
-						final Exit X=CMClass.getExit("GenExit");
-						Room linkRoom=getRoom(areaRooms,doneRooms,areaName,""+linkRoomID);
-						if(linkRoomID>=0)
-						{
-							boolean hasDoor=false;
-							boolean hasLock=false;
-							boolean defaultsClosed=false;
-							boolean defaultsLocked=false;
-
-							if((exitFlag==1)
-							||(exitFlag==6)
-							||((exitFlag==3)&&(CMParms.numBits(codeStr)==5)))
+							if((R.getRawExit(dirCode)!=null)||(R.rawDoors()[dirCode]!=null))
 							{
-								hasDoor=true;
-								defaultsClosed=true;
-								if(exitFlag==6)
-								{
-									X.basePhyStats().setLevel(100);
-									X.recoverPhyStats();
-								}
+								returnAnError(session,"Room: "+R.roomID()+", Redundant exit codeStr "+nextLine+"/"+codeStr+", dircode="+dirCode+".  Aborting exit, area="+areaName,compileErrors,commands);
+								continue;
 							}
-							if(doorState<0)
-								defaultsClosed=false;
+							if(codeStr.length()==0)
+							{
+								final String nextStr=nextLine(roomV);
+								if((CMParms.numBits(nextStr)==3)&&(CMath.isInteger(CMParms.getCleanBit(nextStr,0))))
+									codeStr=eatLine(roomV);
+							}
+							if((CMParms.numBits(codeStr)==1)&&(CMath.isInteger(codeStr.trim())))
+							{
+								final String nextStr=nextLine(roomV);
+								if((CMParms.numBits(nextStr)==2)&&(CMath.isInteger(CMParms.getCleanBit(nextStr,0))))
+									codeStr+=" "+eatLine(roomV);
+							}
+							final long exitFlag=getBitMask(codeStr,0) & 31;
+							final long doorState=getBitMask(codeStr,1);
+							final long linkRoomID=getBitMask(codeStr,2);
+							if(CMParms.numBits(codeStr)==11) // wierd circle format
+							{ /* all is well */}
 							else
-							if(doorState>0)
+							if(CMParms.numBits(codeStr)==4)
+							{ /* all is still well -- from the wld format I guess. */ }
+							else
+							if(CMParms.numBits(codeStr)==5)
 							{
-								hasDoor=true;
-								defaultsClosed=true;
-								if(doorState>1)
-								{
-									hasLock=true;
-									defaultsLocked=true;
-									X.setKeyName(areaName+"#"+doorState);
-								}
-							}
-							X.setDoorsNLocks(hasDoor,!defaultsClosed,defaultsClosed,
-											 hasLock,defaultsLocked,defaultsLocked);
-						}
-						X.setDisplayText(descStr);
-						String name=CMParms.getCleanBit(nameStr,0).trim();
-						if(name.equalsIgnoreCase("SECRET"))
-						{
-							name="secret door";
-							X.basePhyStats().setDisposition(X.basePhyStats().disposition()|PhyStats.IS_HIDDEN);
-							X.recoverPhyStats();
-						}
-
-						if(name.length()>0)
-							X.setName(CMLib.english().startWithAorAn(name));
-						else
-						{
-							if(X.hasADoor())
-							{
-								X.setName(L("a door"));
-								name="door";
+								/*TODO:BZ all is still well -- from wierd modified rom. */ 
 							}
 							else
+							if(CMParms.numBits(codeStr)!=3)
 							{
-								X.setName(L("the ground"));
-								name="ground";
+								returnAnError(session,"Room: "+R.roomID()+", Malformed exit codeStr "+codeStr+".  Aborting exit, area="+areaName,compileErrors,commands);
+								continue;
 							}
-						}
-						X.setExitParams(name,X.closeWord(),X.openWord(),X.Name()+", closed");
-						X.setDescription(descStr);
-						R.setRawExit(dirCode,X);
-						Exit opExit=null;
-						if(((linkRoom==null)||(linkRoom.getArea().Name()!=R.getArea().Name()))&&(linkRoomID>=0))
-						{
-							try
+							final Exit X=CMClass.getExit("GenExit");
+							Room linkRoom=getRoom(areaRooms,doneRooms,areaName,""+linkRoomID);
+							if(linkRoomID>=0)
 							{
-								for(final Enumeration<Room> r2=CMLib.map().rooms();r2.hasMoreElements();)
+								boolean hasDoor=false;
+								boolean hasLock=false;
+								boolean defaultsClosed=false;
+								boolean defaultsLocked=false;
+	
+								if((exitFlag==1)
+								||(exitFlag==6)
+								||((exitFlag==3)&&(CMParms.numBits(codeStr)==5)))
 								{
-									Room R2=r2.nextElement();
-									if((R2.roomID().endsWith("#"+linkRoomID))&&(R2!=R))
+									hasDoor=true;
+									defaultsClosed=true;
+									if(exitFlag==6)
 									{
-										synchronized(("SYNC"+R2.roomID()).intern())
-										{
-											R2=CMLib.map().getRoom(R2);
-											for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-											{
-												final Exit E3=R2.getRawExit(d);
-												if((E3!=null)
-												&&(E3.temporaryDoorLink().length()>0)
-												&&(R.roomID().endsWith(E3.temporaryDoorLink())))
-												{
-													opExit=E3;
-													R2.rawDoors()[d]=R;
-												}
-											}
-											if(opExit==null)
-											{
-												if((prompt)
-												&&(session!=null)
-												&&(!session.confirm(L("@x1 links to #@x2. Found @x3. Link?",R.roomID(),""+linkRoomID,R2.roomID()),L("Y"))))
-													continue;
-											}
-											linkRoom=R2;
-											if(opExit!=null)
-												opExit.setTemporaryDoorLink("");
-											if((!doneRooms.containsValue(linkRoom))&&(!doneRooms.contains(linkRoom)))
-												CMLib.database().DBUpdateExits(linkRoom);
-										}
-										break;
+										X.basePhyStats().setLevel(100);
+										X.recoverPhyStats();
 									}
 								}
-							}catch(final NoSuchElementException e){}
-							if(linkRoom==null)
-								X.setTemporaryDoorLink("#"+linkRoomID);
+								if(doorState<0)
+									defaultsClosed=false;
+								else
+								if(doorState>0)
+								{
+									hasDoor=true;
+									defaultsClosed=true;
+									if(doorState>1)
+									{
+										hasLock=true;
+										defaultsLocked=true;
+										X.setKeyName(areaName+"#"+doorState);
+									}
+								}
+								X.setDoorsNLocks(hasDoor,!defaultsClosed,defaultsClosed,
+												 hasLock,defaultsLocked,defaultsLocked);
+							}
+							X.setDisplayText(descStr);
+							String name=CMParms.getCleanBit(nameStr,0).trim();
+							if(name.equalsIgnoreCase("SECRET"))
+							{
+								name="secret door";
+								X.basePhyStats().setDisposition(X.basePhyStats().disposition()|PhyStats.IS_HIDDEN);
+								X.recoverPhyStats();
+							}
+	
+							if(name.length()>0)
+								X.setName(CMLib.english().startWithAorAn(name));
 							else
-								X.setTemporaryDoorLink("");
-
+							{
+								if(X.hasADoor())
+								{
+									X.setName(L("a door"));
+									name="door";
+								}
+								else
+								{
+									X.setName(L("the ground"));
+									name="ground";
+								}
+							}
+							X.setExitParams(name,X.closeWord(),X.openWord(),X.Name()+", closed");
+							X.setDescription(descStr);
+							R.setRawExit(dirCode,X);
+							Exit opExit=null;
+							if(((linkRoom==null)||(linkRoom.getArea().Name()!=R.getArea().Name()))&&(linkRoomID>=0))
+							{
+								try
+								{
+									for(final Enumeration<Room> r2=CMLib.map().rooms();r2.hasMoreElements();)
+									{
+										Room R2=r2.nextElement();
+										if((R2.roomID().endsWith("#"+linkRoomID))&&(R2!=R))
+										{
+											synchronized(("SYNC"+R2.roomID()).intern())
+											{
+												R2=CMLib.map().getRoom(R2);
+												for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+												{
+													final Exit E3=R2.getRawExit(d);
+													if((E3!=null)
+													&&(E3.temporaryDoorLink().length()>0)
+													&&(R.roomID().endsWith(E3.temporaryDoorLink())))
+													{
+														opExit=E3;
+														R2.rawDoors()[d]=R;
+													}
+												}
+												if(opExit==null)
+												{
+													if((prompt)
+													&&(session!=null)
+													&&(!session.confirm(L("@x1 links to #@x2. Found @x3. Link?",R.roomID(),""+linkRoomID,R2.roomID()),L("Y"))))
+														continue;
+												}
+												linkRoom=R2;
+												if(opExit!=null)
+													opExit.setTemporaryDoorLink("");
+												if((!doneRooms.containsValue(linkRoom))&&(!doneRooms.contains(linkRoom)))
+													CMLib.database().DBUpdateExits(linkRoom);
+											}
+											break;
+										}
+									}
+								}catch(final NoSuchElementException e){}
+								if(linkRoom==null)
+									X.setTemporaryDoorLink("#"+linkRoomID);
+								else
+									X.setTemporaryDoorLink("");
+	
+							}
+							if((linkRoom==null)&&(R.rawDoors()[dirCode]!=null))
+								returnAnError(session,"Room: "+R.roomID()+" re-linked "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
+							R.rawDoors()[dirCode]=linkRoom;
+							if((linkRoom==null)&&(linkRoomID>=0))
+							{
+								if(multiArea)
+									laterLinks.put((R.roomID()+"/"+dirCode),"#"+linkRoomID);
+								else
+									returnAnError(session,"Room: "+R.roomID()+" links "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
+							}
 						}
-						if((linkRoom==null)&&(R.rawDoors()[dirCode]!=null))
-							returnAnError(session,"Room: "+R.roomID()+" re-linked "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
-						R.rawDoors()[dirCode]=linkRoom;
-						if((linkRoom==null)&&(linkRoomID>=0))
+						else
+						if(nextLine.toUpperCase().startsWith("M"))
+						{
+							// mana heal rate
+							// not important enough to generate an error from
+						}
+						else
+						if(nextLine.toUpperCase().startsWith("R"))
+						{
+							// R ERROR 700 100~
+							// No idea what this is.  Not important enough to generate an error from
+						}
+						else
+						if(nextLine.toUpperCase().startsWith("C"))
+						{
+							if(!nextLine.endsWith("~"))
+								nextLine+= eatLineSquiggle(roomV);
+							if(nextLine.startsWith("C "))
+								nextLine=nextLine.substring(2).trim();
+							if(nextLine.endsWith("~"))
+								nextLine=nextLine.substring(0,nextLine.length()-1);
+							final long codeBits=getBitMask(nextLine,0);
+							R=applyRoomCodeBits(R,lastRoom,petShops,codeBits,true);
+						}
+						else
+						if(nextLine.toUpperCase().startsWith("H"))
+						{
+							// hit point heal rate
+							// not important enough to generate an error from
+						}
+						else
+						if(nextLine.startsWith(">"))
+						{
+							String scriptStuff="";
+							if(!nextLine.substring(1).trim().toUpperCase().startsWith("IN_FILE_PROG"))
+							{
+								scriptStuff+=nextLine.substring(1).trim()+";";
+								nextLine=nextLine(roomV);
+								while(nextLine.indexOf('~')<0)
+								{
+									scriptStuff+=nextLine.trim()+";";
+									eatLine(roomV);
+									nextLine=nextLine(roomV);
+								}
+								nextLine=eatLineSquiggle(roomV).trim();
+								scriptStuff+=nextLine+"~";
+							}
+							nextLine=scriptStuff;
+							// nothing done with the script. :(
+						}
+						else
+						if(nextLine.toUpperCase().startsWith("O"))
+						{
+							// ?
+							// not important enough to generate an error from
+						}
+						else
+						if(nextLine.startsWith("Rd"))
+						{
+							// some sort of eos thang
+							// not important enough to generate an error from
+						}
+						else
+						if(nextLine.trim().equals("|"))
+						{
+							// ?
+							// not important enough to generate an error from
+						}
+						else
+						if((!nextLine.equalsIgnoreCase("#0"))&&(nextLine.trim().length()>0))
+							returnAnError(session,"Unknown room code: "+nextLine+", area="+areaName,compileErrors,commands);
+					}
+				}
+	
+				if(session!=null)
+					session.print(L("Loading objects.."));
+				final Hashtable<String,Container> containerHash=new Hashtable<String,Container>();
+				MOB M=null;
+				Room R=null;
+				for(int nrd=0;nrd<nextResetData.size();nrd++)
+					resetData.add(nextResetData.get(nrd));
+				nextResetData.clear();
+				while(resetData.size()>0)
+				{
+					if(session!=null)
+						session.print(".");
+					final String s=eatNextLine(resetData).trim();
+					if((s.startsWith("#RE"))||(s.startsWith("*"))||(s.startsWith("S")))
+					{
+					}
+					else
+					if(s.startsWith("M "))
+					{
+						final String mobID=CMParms.getCleanBit(s,2).trim();
+						final String roomID=CMParms.getCleanBit(s,4).trim();
+						R=getRoom(areaRooms,doneRooms,areaName,roomID);
+						if(R==null)
 						{
 							if(multiArea)
-								laterLinks.put((R.roomID()+"/"+dirCode),"#"+linkRoomID);
+								nextResetData.add(s);
 							else
-								returnAnError(session,"Room: "+R.roomID()+" links "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName,compileErrors,commands);
+								returnAnError(session,"Reset error (no room) on line: "+s+", area="+areaName,compileErrors,commands);
 						}
-					}
-					else
-					if(nextLine.toUpperCase().startsWith("M"))
-					{
-						// mana heal rate
-						// not important enough to generate an error from
-					}
-					else
-					if(nextLine.toUpperCase().startsWith("R"))
-					{
-						// R ERROR 700 100~
-						// No idea what this is.  Not important enough to generate an error from
-					}
-					else
-					if(nextLine.toUpperCase().startsWith("C"))
-					{
-						if(!nextLine.endsWith("~"))
-							nextLine+= eatLineSquiggle(roomV);
-						if(nextLine.startsWith("C "))
-							nextLine=nextLine.substring(2).trim();
-						if(nextLine.endsWith("~"))
-							nextLine=nextLine.substring(0,nextLine.length()-1);
-						final long codeBits=getBitMask(nextLine,0);
-						R=applyRoomCodeBits(R,lastRoom,petShops,codeBits,true);
-					}
-					else
-					if(nextLine.toUpperCase().startsWith("H"))
-					{
-						// hit point heal rate
-						// not important enough to generate an error from
-					}
-					else
-					if(nextLine.startsWith(">"))
-					{
-						String scriptStuff="";
-						if(!nextLine.substring(1).trim().toUpperCase().startsWith("IN_FILE_PROG"))
-						{
-							scriptStuff+=nextLine.substring(1).trim()+";";
-							nextLine=nextLine(roomV);
-							while(nextLine.indexOf('~')<0)
-							{
-								scriptStuff+=nextLine.trim()+";";
-								eatLine(roomV);
-								nextLine=nextLine(roomV);
-							}
-							nextLine=eatLineSquiggle(roomV).trim();
-							scriptStuff+=nextLine+"~";
-						}
-						nextLine=scriptStuff;
-						// nothing done with the script. :(
-					}
-					else
-					if(nextLine.toUpperCase().startsWith("O"))
-					{
-						// ?
-						// not important enough to generate an error from
-					}
-					else
-					if(nextLine.startsWith("Rd"))
-					{
-						// some sort of eos thang
-						// not important enough to generate an error from
-					}
-					else
-					if(nextLine.trim().equals("|"))
-					{
-						// ?
-						// not important enough to generate an error from
-					}
-					else
-					if((!nextLine.equalsIgnoreCase("#0"))&&(nextLine.trim().length()>0))
-						returnAnError(session,"Unknown room code: "+nextLine+", area="+areaName,compileErrors,commands);
-				}
-			}
-
-			if(session!=null)
-				session.print(L("Loading objects.."));
-			final Hashtable<String,Container> containerHash=new Hashtable<String,Container>();
-			MOB M=null;
-			Room R=null;
-			for(int nrd=0;nrd<nextResetData.size();nrd++)
-				resetData.add(nextResetData.get(nrd));
-			nextResetData.clear();
-			while(resetData.size()>0)
-			{
-				if(session!=null)
-					session.print(".");
-				final String s=eatNextLine(resetData).trim();
-				if((s.startsWith("#RE"))||(s.startsWith("*"))||(s.startsWith("S")))
-				{
-				}
-				else
-				if(s.startsWith("M "))
-				{
-					final String mobID=CMParms.getCleanBit(s,2).trim();
-					final String roomID=CMParms.getCleanBit(s,4).trim();
-					R=getRoom(areaRooms,doneRooms,areaName,roomID);
-					if(R==null)
-					{
-						if(multiArea)
-							nextResetData.add(s);
 						else
-							returnAnError(session,"Reset error (no room) on line: "+s+", area="+areaName,compileErrors,commands);
+						{
+							M=getMOB("#"+mobID,R,session,CMParms.copyFlattenList(mobData),CMParms.copyFlattenList(mobProgData),CMParms.copyFlattenList(specialData),CMParms.copyFlattenList(shopData),areaMOBS,doneMOBS,areaFileName,compileErrors,commands);
+							if(M==null)
+							{
+								if(multiArea)
+									nextResetData.add(s);
+								else
+									returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
+							}
+							else
+								M.bringToLife(R,true);
+						}
 					}
 					else
+					if(s.startsWith("G "))
 					{
-						M=getMOB("#"+mobID,R,session,CMParms.copyFlattenList(mobData),CMParms.copyFlattenList(mobProgData),CMParms.copyFlattenList(specialData),CMParms.copyFlattenList(shopData),areaMOBS,doneMOBS,areaFileName,compileErrors,commands);
 						if(M==null)
 						{
 							if(multiArea)
@@ -6208,199 +6842,218 @@ public class Import extends StdCommand
 								returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
 						}
 						else
-							M.bringToLife(R,true);
-					}
-				}
-				else
-				if(s.startsWith("G "))
-				{
-					if(M==null)
-					{
-						if(multiArea)
-							nextResetData.add(s);
-						else
-							returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
-					}
-					else
-					{
-						final String itemID=CMParms.getCleanBit(s,2).trim();
-						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
-						if(I==null)
 						{
-							if(multiArea)
-								nextResetData.add(s);
-							else
-							returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
-						}
-						else
-						{
-							I.recoverPhyStats();
-							if(M instanceof ShopKeeper)
+							final String itemID=CMParms.getCleanBit(s,2).trim();
+							final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+							if(I==null)
 							{
-								if(I.basePhyStats().level()<1)
-								{
-									I.basePhyStats().setLevel(1);
-									I.recoverPhyStats();
-								}
-								int num=CMath.s_int(CMParms.getCleanBit(s,3).trim());
-								if(num<0)
-									num=100;
-								((ShopKeeper)M).getShop().addStoreInventory(I,num,-1);
-								if((I instanceof Light)&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("OilFlask",null)))
-									((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("OilFlask"),num*2,-1);
-								else
-								if(((I.ID().equals("GenReadable"))
-								||(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap))
-								&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("Parchment",null)))
-								{
-									((ShopKeeper)M).setWhatIsSoldMask(0);
-									((ShopKeeper)M).addSoldType(ShopKeeper.DEAL_INVENTORYONLY);
-									((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("Parchment"),num,-1);
-									final Item journal2=CMClass.getBasicItem("GenJournal");
-									journal2.setName(L("the adventurers journal"));
-									journal2.setBaseValue(250);
-									journal2.recoverPhyStats();
-									journal2.text();
-									((ShopKeeper)M).getShop().addStoreInventory(journal2,num,-1);
-								}
-								else
-								if(((ShopKeeper)M).isSold(ShopKeeper.DEAL_WEAPONS))
-								{
-									final Item arrows=CMClass.getBasicItem("GenAmmunition");
-									((Ammunition)arrows).setAmmunitionType("arrows");
-									arrows.setName(L("a pack of 20 arrows"));
-									((Ammunition)arrows).setAmmoRemaining(20);
-									arrows.setBaseValue(50);
-									arrows.setDescription(L("They are sturdy and wooden, but probably not much use without a bow."));
-									arrows.setDisplayText(L("Some arrows have been left here."));
-									arrows.recoverPhyStats();
-									arrows.text();
-									((ShopKeeper)M).getShop().addStoreInventory(arrows,num,-1);
-								}
-							}
-							else
-							{
-								if(I.basePhyStats().level()<1)
-								{
-									I.basePhyStats().setLevel(M.basePhyStats().level());
-									I.recoverPhyStats();
-								}
-								M.addItem(I);
-							}
-							I.recoverPhyStats();
-							M.recoverCharStats();
-							M.recoverPhyStats();
-							M.recoverMaxState();
-							M.text();
-							if(I instanceof Container)
-								containerHash.put(itemID,(Container)I);
-						}
-					}
-				}
-				else
-				if(s.startsWith("EC "))
-				{
-					String roomID=CMParms.getCleanBit(s,1).trim();
-					final String mobID=CMParms.getCleanBit(s,2).trim();
-					final int x=roomID.lastIndexOf('#');
-					if(x>=0)
-						roomID=roomID.substring(x);
-					final Room R2=getRoom(areaRooms,doneRooms,areaName,roomID);
-					MOB M2=null;
-					if(R2!=null)
-						M2=R2.fetchInhabitant(mobID);
-					if((R2==null)||(M2==null))
-					{
-						if(multiArea)
-							nextResetData.add(s);
-						else
-							returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
-					}
-					else
-					{
-						final String itemID=CMParms.getCleanBit(s,5).trim();
-						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
-						if(I==null)
-						{
-							if(multiArea)
-								nextResetData.add(s);
-							else
-								returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
-						}
-						else
-						{
-							if(I.basePhyStats().level()<1)
-								I.basePhyStats().setLevel(M2.basePhyStats().level());
-							M2.addItem(I);
-							I.wearIfPossible(M2);
-							I.recoverPhyStats();
-							M2.recoverCharStats();
-							M2.recoverPhyStats();
-							M2.recoverMaxState();
-							M2.text();
-							if(I instanceof Container)
-								containerHash.put(itemID,(Container)I);
-						}
-					}
-				}
-				else
-				if(s.startsWith("E "))
-				{
-					if(M==null)
-					{
-						if(multiArea)
-							nextResetData.add(s);
-						else
-						returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
-					}
-					else
-					{
-						final String itemID=CMParms.getCleanBit(s,2).trim();
-						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
-						if(I==null)
-						{
-							if(multiArea)
-							{
-								if(M.location()!=null)
-									nextResetData.add("EC '"+M.location().roomID()+"' '"+M.Name()+"' "+s);
-								else
+								if(multiArea)
 									nextResetData.add(s);
+								else
+								returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
 							}
 							else
-								returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
+							{
+								I.recoverPhyStats();
+								if(M instanceof ShopKeeper)
+								{
+									if(I.basePhyStats().level()<1)
+									{
+										I.basePhyStats().setLevel(1);
+										I.recoverPhyStats();
+									}
+									int num=CMath.s_int(CMParms.getCleanBit(s,3).trim());
+									if(num<0)
+										num=100;
+									((ShopKeeper)M).getShop().addStoreInventory(I,num,-1);
+									if((I instanceof Light)&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("OilFlask",null)))
+										((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("OilFlask"),num*2,-1);
+									else
+									if(((I.ID().equals("GenReadable"))
+									||(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap))
+									&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("Parchment",null)))
+									{
+										((ShopKeeper)M).setWhatIsSoldMask(0);
+										((ShopKeeper)M).addSoldType(ShopKeeper.DEAL_INVENTORYONLY);
+										((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("Parchment"),num,-1);
+										final Item journal2=CMClass.getBasicItem("GenJournal");
+										journal2.setName(L("the adventurers journal"));
+										journal2.setBaseValue(250);
+										journal2.recoverPhyStats();
+										journal2.text();
+										((ShopKeeper)M).getShop().addStoreInventory(journal2,num,-1);
+									}
+									else
+									if(((ShopKeeper)M).isSold(ShopKeeper.DEAL_WEAPONS))
+									{
+										final Item arrows=CMClass.getBasicItem("GenAmmunition");
+										((Ammunition)arrows).setAmmunitionType("arrows");
+										arrows.setName(L("a pack of 20 arrows"));
+										((Ammunition)arrows).setAmmoRemaining(20);
+										arrows.setBaseValue(50);
+										arrows.setDescription(L("They are sturdy and wooden, but probably not much use without a bow."));
+										arrows.setDisplayText(L("Some arrows have been left here."));
+										arrows.recoverPhyStats();
+										arrows.text();
+										((ShopKeeper)M).getShop().addStoreInventory(arrows,num,-1);
+									}
+								}
+								else
+								{
+									if(I.basePhyStats().level()<1)
+									{
+										I.basePhyStats().setLevel(M.basePhyStats().level());
+										I.recoverPhyStats();
+									}
+									M.addItem(I);
+								}
+								I.recoverPhyStats();
+								M.recoverCharStats();
+								M.recoverPhyStats();
+								M.recoverMaxState();
+								M.text();
+								if(I instanceof Container)
+									containerHash.put(itemID,(Container)I);
+							}
+						}
+					}
+					else
+					if(s.startsWith("EC "))
+					{
+						String roomID=CMParms.getCleanBit(s,1).trim();
+						final String mobID=CMParms.getCleanBit(s,2).trim();
+						final int x=roomID.lastIndexOf('#');
+						if(x>=0)
+							roomID=roomID.substring(x);
+						final Room R2=getRoom(areaRooms,doneRooms,areaName,roomID);
+						MOB M2=null;
+						if(R2!=null)
+							M2=R2.fetchInhabitant(mobID);
+						if((R2==null)||(M2==null))
+						{
+							if(multiArea)
+								nextResetData.add(s);
+							else
+								returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
 						}
 						else
 						{
-							if(I.basePhyStats().level()<1)
-								I.basePhyStats().setLevel(M.basePhyStats().level());
-							M.addItem(I);
-							I.wearIfPossible(M);
-							I.recoverPhyStats();
-							M.recoverCharStats();
-							M.recoverPhyStats();
-							M.recoverMaxState();
-							M.text();
-							if(I instanceof Container)
-								containerHash.put(itemID,(Container)I);
+							final String itemID=CMParms.getCleanBit(s,5).trim();
+							final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+							if(I==null)
+							{
+								if(multiArea)
+									nextResetData.add(s);
+								else
+									returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
+							}
+							else
+							{
+								if(I.basePhyStats().level()<1)
+									I.basePhyStats().setLevel(M2.basePhyStats().level());
+								M2.addItem(I);
+								I.wearIfPossible(M2);
+								I.recoverPhyStats();
+								M2.recoverCharStats();
+								M2.recoverPhyStats();
+								M2.recoverMaxState();
+								M2.text();
+								if(I instanceof Container)
+									containerHash.put(itemID,(Container)I);
+							}
 						}
 					}
-				}
-				else
-				if(s.startsWith("O "))
-				{
-					final String itemID=CMParms.getCleanBit(s,2).trim();
-					final String roomID=CMParms.getCleanBit(s,4).trim();
-					R=getRoom(areaRooms,doneRooms,areaName,roomID);
-					if(R==null)
+					else
+					if(s.startsWith("E "))
 					{
-						if(multiArea)
-							nextResetData.add(s);
+						if(M==null)
+						{
+							if(multiArea)
+								nextResetData.add(s);
+							else
+							returnAnError(session,"Reset error (no mob) on line: "+s+", area="+areaName,compileErrors,commands);
+						}
 						else
-						returnAnError(session,"Reset error (no room) on line: "+s+"/"+roomID+"/"+roomID.length()+", area="+areaName,compileErrors,commands);
+						{
+							final String itemID=CMParms.getCleanBit(s,2).trim();
+							final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+							if(I==null)
+							{
+								if(multiArea)
+								{
+									if(M.location()!=null)
+										nextResetData.add("EC '"+M.location().roomID()+"' '"+M.Name()+"' "+s);
+									else
+										nextResetData.add(s);
+								}
+								else
+									returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
+							}
+							else
+							{
+								if(I.basePhyStats().level()<1)
+									I.basePhyStats().setLevel(M.basePhyStats().level());
+								M.addItem(I);
+								I.wearIfPossible(M);
+								I.recoverPhyStats();
+								M.recoverCharStats();
+								M.recoverPhyStats();
+								M.recoverMaxState();
+								M.text();
+								if(I instanceof Container)
+									containerHash.put(itemID,(Container)I);
+							}
+						}
 					}
 					else
+					if(s.startsWith("O "))
 					{
+						final String itemID=CMParms.getCleanBit(s,2).trim();
+						final String roomID=CMParms.getCleanBit(s,4).trim();
+						R=getRoom(areaRooms,doneRooms,areaName,roomID);
+						if(R==null)
+						{
+							if(multiArea)
+								nextResetData.add(s);
+							else
+							returnAnError(session,"Reset error (no room) on line: "+s+"/"+roomID+"/"+roomID.length()+", area="+areaName,compileErrors,commands);
+						}
+						else
+						{
+							final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+							if(I==null)
+							{
+								if(multiArea)
+									nextResetData.add(s);
+								else
+								returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
+							}
+							else
+							{
+								if(I.basePhyStats().level()<1)
+									I.basePhyStats().setLevel(1);
+								R.addItem(I);
+								if(CMLib.flags().isGettable(I))
+								{
+									final int rejuv=(int)Math.round(CMath.div((long)60000,CMProps.getTickMillis())*4.0);
+									I.basePhyStats().setRejuv(rejuv*I.basePhyStats().level());
+								}
+								I.recoverPhyStats();
+								if(I instanceof Container)
+								{
+									containerHash.remove(itemID);
+									containerHash.put(itemID,(Container)I);
+								}
+							}
+						}
+					}
+					else
+					if(s.startsWith("P "))
+					{
+						final String itemID=CMParms.getCleanBit(s,2).trim();
+						final String containerID=CMParms.getCleanBit(s,4).trim();
 						final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
+						final Container C=containerHash.get(containerID);
 						if(I==null)
 						{
 							if(multiArea)
@@ -6409,276 +7062,258 @@ public class Import extends StdCommand
 							returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
 						}
 						else
+						if(C==null)
 						{
+							if(multiArea)
+								nextResetData.add(s);
+							else
+							returnAnError(session,"Reset error (no container) on line: "+s+", area="+areaName,compileErrors,commands);
+						}
+						else
+						if(C.owner()==null)
+						{
+							if(multiArea)
+								nextResetData.add(s);
+							else
+							returnAnError(session,"Reset error (no container owner) on line: "+s+", area="+areaName,compileErrors,commands);
+						}
+						else
+						if(C.owner() instanceof Room)
+						{
+							final Room RR=(Room)C.owner();
 							if(I.basePhyStats().level()<1)
 								I.basePhyStats().setLevel(1);
-							R.addItem(I);
+							RR.addItem(I);
+							I.setContainer(C);
 							if(CMLib.flags().isGettable(I))
-							{
-								final int rejuv=(int)Math.round(CMath.div((long)60000,CMProps.getTickMillis())*4.0);
-								I.basePhyStats().setRejuv(rejuv*I.basePhyStats().level());
-							}
+								I.basePhyStats().setRejuv(1000);
 							I.recoverPhyStats();
 							if(I instanceof Container)
-							{
-								containerHash.remove(itemID);
 								containerHash.put(itemID,(Container)I);
-							}
+						}
+						else
+						if(C.owner() instanceof MOB)
+						{
+							final MOB MM=(MOB)C.owner();
+							if(I.basePhyStats().level()<1)
+								I.basePhyStats().setLevel(MM.basePhyStats().level());
+							MM.addItem(I);
+							I.setContainer(C);
+							MM.text();
+							I.recoverPhyStats();
+							if(I instanceof Container)
+								containerHash.put(itemID,(Container)I);
 						}
 					}
-				}
-				else
-				if(s.startsWith("P "))
-				{
-					final String itemID=CMParms.getCleanBit(s,2).trim();
-					final String containerID=CMParms.getCleanBit(s,4).trim();
-					final Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenList(objectData),CMParms.copyFlattenList(objProgData),areaItems,doneItems,areaRooms,doneRooms,compileErrors,commands);
-					final Container C=containerHash.get(containerID);
-					if(I==null)
-					{
-						if(multiArea)
-							nextResetData.add(s);
-						else
-						returnAnError(session,"Reset error (no item) on line: "+s+", area="+areaName,compileErrors,commands);
-					}
 					else
-					if(C==null)
+					if(s.startsWith("D "))
 					{
-						if(multiArea)
-							nextResetData.add(s);
-						else
-						returnAnError(session,"Reset error (no container) on line: "+s+", area="+areaName,compileErrors,commands);
-					}
-					else
-					if(C.owner()==null)
-					{
-						if(multiArea)
-							nextResetData.add(s);
-						else
-						returnAnError(session,"Reset error (no container owner) on line: "+s+", area="+areaName,compileErrors,commands);
-					}
-					else
-					if(C.owner() instanceof Room)
-					{
-						final Room RR=(Room)C.owner();
-						if(I.basePhyStats().level()<1)
-							I.basePhyStats().setLevel(1);
-						RR.addItem(I);
-						I.setContainer(C);
-						if(CMLib.flags().isGettable(I))
-							I.basePhyStats().setRejuv(1000);
-						I.recoverPhyStats();
-						if(I instanceof Container)
-							containerHash.put(itemID,(Container)I);
-					}
-					else
-					if(C.owner() instanceof MOB)
-					{
-						final MOB MM=(MOB)C.owner();
-						if(I.basePhyStats().level()<1)
-							I.basePhyStats().setLevel(MM.basePhyStats().level());
-						MM.addItem(I);
-						I.setContainer(C);
-						MM.text();
-						I.recoverPhyStats();
-						if(I instanceof Container)
-							containerHash.put(itemID,(Container)I);
-					}
-				}
-				else
-				if(s.startsWith("D "))
-				{
-					final String roomID=CMParms.getCleanBit(s,2).trim();
-					int dirCode=(int)getBitMask(s,3);
-					R=getRoom(areaRooms,doneRooms,areaName,roomID);
-					if(R==null)
-					{
-						if(multiArea)
-							nextResetData.add(s);
-						else
-						returnAnError(session,"Reset error (no room) on line: "+s+", area="+areaName,compileErrors,commands);
-					}
-					else
-					{
-						switch(dirCode)
+						final String roomID=CMParms.getCleanBit(s,2).trim();
+						int dirCode=(int)getBitMask(s,3);
+						R=getRoom(areaRooms,doneRooms,areaName,roomID);
+						if(R==null)
 						{
-						case 0: dirCode=Directions.NORTH; break;
-						case 1: dirCode=Directions.EAST; break;
-						case 2: dirCode=Directions.SOUTH; break;
-						case 3: dirCode=Directions.WEST; break;
-						case 4: dirCode=Directions.UP; break;
-						case 5: dirCode=Directions.DOWN; break;
-						case 6:
-						case 7:
-						case 8:
-						case 9:
-							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-								if((R.getRawExit(d)!=null)
-								&&(!R.getRawExit(d).hasADoor()))
-								{
-									dirCode=d;
-									break;
-								}
-							break;
-						case 10: dirCode=Directions.GATE; break;
-						default:
-							returnAnError(session,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+" (not so bad at this point, it was probably aborted earlier, area="+areaName,compileErrors,commands);
-						}
-						if(dirCode<Directions.NUM_DIRECTIONS())
-						{
-							final Exit E=R.getRawExit(dirCode);
-							if(E==null)
-								returnAnError(session,"Room: "+R.roomID()+", Unknown exit in dir: "+dirCode+" very confusing!, area="+areaName,compileErrors,commands);
+							if(multiArea)
+								nextResetData.add(s);
 							else
-							{
-								final int lockBit=(int)getBitMask(s,4);
-								boolean HasDoor=E.hasADoor();
-								final boolean HasLock=E.hasALock();
-								boolean DefaultsClosed=E.defaultsClosed();
-								boolean DefaultsLocked=E.defaultsLocked();
-								boolean Open=E.isOpen();
-								boolean Locked=E.isLocked();
-								switch(lockBit)
-								{
-								case 0:
-									HasDoor=true;
-									Locked=false;
-									DefaultsLocked=false;
-									Open=true;
-									DefaultsClosed=false;
-									break;
-								case 1:
-									HasDoor=true;
-									Locked=false;
-									DefaultsLocked=false;
-									Open=false;
-									DefaultsClosed=true;
-									break;
-								case 2:
-									HasDoor=true;
-									Locked=true;
-									DefaultsLocked=true;
-									Open=false;
-									DefaultsClosed=true;
-									break;
-								default:
-									returnAnError(session,"Room: "+R.roomID()+", Unknown door code: "+lockBit+", area="+areaName,compileErrors,commands);
-									break;
-								}
-								E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
-								if(E.hasADoor()&&E.name().equals("the ground"))
-								{
-									E.setName(L("a door"));
-									E.setExitParams("door","close","open","a door, closed.");
-								}
-							}
+							returnAnError(session,"Reset error (no room) on line: "+s+", area="+areaName,compileErrors,commands);
 						}
-					}
-				}
-				else
-				if(s.startsWith("R "))
-				{
-					// have no idea what this is, but its not important.
-				}
-				else
-				if(s.startsWith("*"))
-				{
-					// usually a comment of some sort
-				}
-				else
-				if(s.length()>0)
-					returnAnError(session,"Reset, unknown command: "+s+", area="+areaName,compileErrors,commands);
-
-			}
-			// now fix the pet shops!
-			for(final Enumeration<Room> e=petShops.keys();e.hasMoreElements();)
-			{
-				final Room storeRoom=e.nextElement();
-				final Room shopRoom=petShops.get(storeRoom);
-				ShopKeeper shopKeeper=null;
-				if(shopRoom==null)
-					returnAnError(session,"Unknown store room: "+storeRoom.roomID()+", area="+areaName,compileErrors,commands);
-				else
-				for(int i=0;i<shopRoom.numInhabitants();i++)
-				{
-					final MOB sk=shopRoom.fetchInhabitant(i);
-					if((sk!=null)&&(sk instanceof ShopKeeper))
-					{ shopKeeper=(ShopKeeper)sk; break;	}
-				}
-				if(shopKeeper==null)
-					returnAnError(session,"Unknown shopkeeper not in room: "+storeRoom.roomID()+", area="+areaName,compileErrors,commands);
-				else
-				while(storeRoom.numInhabitants()>0)
-				{
-					shopKeeper.setWhatIsSoldMask(0);
-					shopKeeper.addSoldType(ShopKeeper.DEAL_PETS);
-					final MOB pet=storeRoom.fetchInhabitant(0);
-					if(pet!=null)
-					{
-						shopKeeper.getShop().addStoreInventory(pet,20,-1);
-						pet.setFollowing(null);
-						pet.destroy();
-					}
-				}
-			}
-			// now fix the smurfy wells
-			for(int r=0;r<newRooms.size();r++)
-			{
-				final Room smurfRoom=newRooms.get(r);
-				for(int ei=0;ei<smurfRoom.numItems();ei++)
-				{
-					final Item lookItem=smurfRoom.getItem(ei);
-					if((lookItem!=null)&&(lookItem.displayText().length()==0))
-					{
-						for(int i=0;i<smurfRoom.numItems();i++)
+						else
 						{
-							final Item I=smurfRoom.getItem(i);
-							if((I!=null)
-							&&(I.displayText().length()>0)
-							&&(I.displayText().indexOf(lookItem.Name())>=0))
+							switch(dirCode)
 							{
-								final String description=lookItem.description();
-								smurfRoom.delItem(lookItem);
-
-								final Item testItem=CMClass.getItem(I.ID());
-								if((testItem!=null)&&(testItem.description().equals(I.description())))
-									I.setDescription(description);
-								else
-									I.setDescription(L("@x1%0D@x2",I.description(),description));
-								ei=ei-1;
+							case 0:
+								dirCode = Directions.NORTH;
 								break;
+							case 1:
+								dirCode = Directions.EAST;
+								break;
+							case 2:
+								dirCode = Directions.SOUTH;
+								break;
+							case 3:
+								dirCode = Directions.WEST;
+								break;
+							case 4:
+								dirCode = Directions.UP;
+								break;
+							case 5:
+								dirCode = Directions.DOWN;
+								break;
+							case 6:
+							case 7:
+							case 8:
+							case 9:
+								for (int d = Directions.NUM_DIRECTIONS() - 1; d >= 0; d--)
+								{
+									if ((R.getRawExit(d) != null) && (!R.getRawExit(d).hasADoor()))
+									{
+										dirCode = d;
+										break;
+									}
+								}
+								break;
+							case 10:
+								dirCode = Directions.GATE;
+								break;
+							default:
+								returnAnError(session,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+" (not so bad at this point, it was probably aborted earlier, area="+areaName,compileErrors,commands);
+							}
+							if(dirCode<Directions.NUM_DIRECTIONS())
+							{
+								final Exit E=R.getRawExit(dirCode);
+								if(E==null)
+									returnAnError(session,"Room: "+R.roomID()+", Unknown exit in dir: "+dirCode+" very confusing!, area="+areaName,compileErrors,commands);
+								else
+								{
+									final int lockBit=(int)getBitMask(s,4);
+									boolean HasDoor=E.hasADoor();
+									final boolean HasLock=E.hasALock();
+									boolean DefaultsClosed=E.defaultsClosed();
+									boolean DefaultsLocked=E.defaultsLocked();
+									boolean Open=E.isOpen();
+									boolean Locked=E.isLocked();
+									switch(lockBit)
+									{
+									case 0:
+										HasDoor=true;
+										Locked=false;
+										DefaultsLocked=false;
+										Open=true;
+										DefaultsClosed=false;
+										break;
+									case 1:
+										HasDoor=true;
+										Locked=false;
+										DefaultsLocked=false;
+										Open=false;
+										DefaultsClosed=true;
+										break;
+									case 2:
+										HasDoor=true;
+										Locked=true;
+										DefaultsLocked=true;
+										Open=false;
+										DefaultsClosed=true;
+										break;
+									default:
+										returnAnError(session,"Room: "+R.roomID()+", Unknown door code: "+lockBit+", area="+areaName,compileErrors,commands);
+										break;
+									}
+									E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
+									if(E.hasADoor()&&E.name().equals("the ground"))
+									{
+										E.setName(L("a door"));
+										E.setExitParams("door","close","open","a door, closed.");
+									}
+								}
+							}
+						}
+					}
+					else
+					if(s.startsWith("R "))
+					{
+						// have no idea what this is, but its not important.
+					}
+					else
+					if(s.startsWith("*"))
+					{
+						// usually a comment of some sort
+					}
+					else
+					if(s.length()>0)
+						returnAnError(session,"Reset, unknown command: "+s+", area="+areaName,compileErrors,commands);
+	
+				}
+				// now fix the pet shops!
+				for(final Enumeration<Room> e=petShops.keys();e.hasMoreElements();)
+				{
+					final Room storeRoom=e.nextElement();
+					final Room shopRoom=petShops.get(storeRoom);
+					ShopKeeper shopKeeper=null;
+					if(shopRoom==null)
+						returnAnError(session,"Unknown store room: "+storeRoom.roomID()+", area="+areaName,compileErrors,commands);
+					else
+					for(int i=0;i<shopRoom.numInhabitants();i++)
+					{
+						final MOB sk=shopRoom.fetchInhabitant(i);
+						if((sk!=null)&&(sk instanceof ShopKeeper))
+						{ shopKeeper=(ShopKeeper)sk; break;	}
+					}
+					if(shopKeeper==null)
+						returnAnError(session,"Unknown shopkeeper not in room: "+storeRoom.roomID()+", area="+areaName,compileErrors,commands);
+					else
+					while(storeRoom.numInhabitants()>0)
+					{
+						shopKeeper.setWhatIsSoldMask(0);
+						shopKeeper.addSoldType(ShopKeeper.DEAL_PETS);
+						final MOB pet=storeRoom.fetchInhabitant(0);
+						if(pet!=null)
+						{
+							shopKeeper.getShop().addStoreInventory(pet,20,-1);
+							pet.setFollowing(null);
+							pet.destroy();
+						}
+					}
+				}
+				// now fix the smurfy wells
+				for(int r=0;r<newRooms.size();r++)
+				{
+					final Room smurfRoom=newRooms.get(r);
+					for(int ei=0;ei<smurfRoom.numItems();ei++)
+					{
+						final Item lookItem=smurfRoom.getItem(ei);
+						if((lookItem!=null)&&(lookItem.displayText().length()==0))
+						{
+							for(int i=0;i<smurfRoom.numItems();i++)
+							{
+								final Item I=smurfRoom.getItem(i);
+								if((I!=null)
+								&&(I.displayText().length()>0)
+								&&(I.displayText().indexOf(lookItem.Name())>=0))
+								{
+									final String description=lookItem.description();
+									smurfRoom.delItem(lookItem);
+	
+									final Item testItem=CMClass.getItem(I.ID());
+									if((testItem!=null)&&(testItem.description().equals(I.description())))
+										I.setDescription(description);
+									else
+										I.setDescription(L("@x1%0D@x2",I.description(),description));
+									ei=ei-1;
+									break;
+								}
 							}
 						}
 					}
 				}
-			}
-			if(session!=null)
-				session.print(L("\n\rResets..."));
-
-			processRoomRelinks(reLinkTable,areaName,areaRooms,doneRooms);
-
-			if(newRooms.size()==0)
-			{
 				if(session!=null)
-					session.println(L("\nDone? No Room!\n\r"));
+					session.print(L("\n\rResets..."));
+	
+				processRoomRelinks(reLinkTable,areaName,areaRooms,doneRooms);
+	
+				if(newRooms.size()==0)
+				{
+					if(session!=null)
+						session.println(L("\nDone? No Room!\n\r"));
+				}
+				else
+				if(!multiArea)
+				{
+					if(session!=null)
+						session.println(L("\nDone!!!!!!  A good room to look at would be @x1\n\r",newRooms.get(0).roomID()));
+				}
+				else
+				{
+					if(session!=null)
+						session.println(L("Done!!!\n\r"));
+				}
 			}
-			else
-			if(!multiArea)
+			catch(final Exception e)
 			{
-				if(session!=null)
-					session.println(L("\nDone!!!!!!  A good room to look at would be @x1\n\r",newRooms.get(0).roomID()));
+				Log.errOut("Import",e);
+				return returnAnError(session,e.getMessage(),compileErrors,commands);
 			}
-			else
-			{
-				if(session!=null)
-					session.println(L("Done!!!\n\r"));
-			}
-		}
-		catch(final Exception e)
-		{
-			Log.errOut("Import",e);
-			return returnAnError(session,e.getMessage(),compileErrors,commands);
-		}
 		}
 
 		if(nextResetData.size()>0)

@@ -1343,10 +1343,13 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 
 		@Override
-		public String data()
+		public String data(String name)
 		{
 			final StringBuffer buf=new StringBuffer("");
-			buf.append("<CATALOGDATA CATAGORY=\""+CMLib.xml().parseOutAngleBracketsAndQuotes(catagory)+"\">");
+			buf.append("<CATALOGDATA ");
+			if(name != null)
+				buf.append("NAME=\""+CMLib.xml().parseOutAngleBracketsAndQuotes(name)+"\" ");
+			buf.append("CATAGORY=\""+CMLib.xml().parseOutAngleBracketsAndQuotes(catagory)+"\">");
 			buf.append("<RATE>"+CMath.toPct(rate)+"</RATE>");
 			buf.append("<LMASK>"+CMLib.xml().parseOutAngleBrackets(lmaskStr)+"</LMASK>");
 			buf.append("<LIVE>"+live+"</LIVE>");

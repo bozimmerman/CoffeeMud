@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -129,6 +130,7 @@ public interface GenericBuilder extends CMLibrary
 	public String addMOBsFromXML(String xmlBuffer, List<MOB> addHere, Session S);
 	public String addItemsFromXML(List<XMLTag> xml, List<Item> addHere, Session S);
 	public String addMOBsFromXML(List<XMLTag> xml, List<MOB> addHere, Session S);
+	public String addCataDataFromXML(String xmlBuffer, List<CataData> addHere, List<? extends Physical> nameMatchers, Session S);
 	public MOB getMobFromXML(String xmlBuffer);
 	public Item getItemFromXML(String xmlBuffer);
 	// TYPE= 0=item, 1=weapon, 2=armor

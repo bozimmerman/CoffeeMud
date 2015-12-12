@@ -616,14 +616,15 @@ public interface CatalogLibrary extends CMLibrary
 
 		/**
 		 * Returns this metadata as an xml doc
+		 * @param name TODO
 		 * @see CataData#build(String)
 		 * @return this metadata as an xml doc
 		 */
-		public String data();
+		public String data(String name);
 
 		/**
 		 * Builds this metadata from an xml doc
-		 * @see CataData#data()
+		 * @see CataData#data(String)
 		 * @param catadata this metadata as an xml doc
 		 */
 		public void build(String catadata);

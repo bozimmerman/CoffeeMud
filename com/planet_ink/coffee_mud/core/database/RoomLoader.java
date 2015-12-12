@@ -1061,7 +1061,7 @@ public class RoomLoader
 		{
 			final CatalogLibrary.CataData dataI=CMLib.catalog().getCatalogItemData(thisItem.Name());
 			if(dataI!=null)
-				text+=dataI.data();
+				text+=dataI.data(null);
 		}
 		return new DBPreparedBatchEntry(
 		"INSERT INTO CMROIT ("
@@ -1241,7 +1241,7 @@ public class RoomLoader
 		{
 			final CatalogLibrary.CataData dataM=CMLib.catalog().getCatalogMobData(thisMOB.Name());
 			if(dataM!=null)
-				text+=dataM.data();
+				text+=dataM.data(null);
 		}
 		return new DBPreparedBatchEntry(
 		"INSERT INTO CMROCH ("

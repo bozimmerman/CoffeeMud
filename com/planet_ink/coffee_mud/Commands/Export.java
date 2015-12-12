@@ -263,6 +263,23 @@ public class Export extends StdCommand
 		}
 		return type;
 	}
+
+	@SuppressWarnings("rawtypes")
+	protected String getCatalogData(Map<String,?> found)
+	{
+		StringBuilder str = new StringBuilder("<CATADATAS>");
+		for(String key : found.keySet())
+		{
+			List foundMs = (List)found.get(key);
+			for(Object P : foundMs)
+			{
+				CatalogLibrary.CataData data = CMLib.catalog().getCatalogData((Physical)P);
+				str.append(data.data(((Physical)P).name()));
+			}
+		}
+		str.append("</CATADATAS>");
+		return str.toString();
+	}
 	
 	/**
 	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#executeInternal(MOB, int, Object...)
@@ -345,11 +362,17 @@ public class Export extends StdCommand
 				if(S!=null)
 					S.rawPrint(L("Reading catalog items and mobs..."));
 				x.append("\r\n<MOBS>");
-				x.append(CMLib.coffeeMaker().getMobsXML(Arrays.asList(CMLib.catalog().getCatalogMobs()), custom, files, new TreeMap<String,List<MOB>>()));
+				Map<String,List<MOB>> foundMobs=new TreeMap<String,List<MOB>>();
+				x.append(CMLib.coffeeMaker().getMobsXML(Arrays.asList(CMLib.catalog().getCatalogMobs()), custom, files, foundMobs));
 				x.append("\r\n</MOBS>\r\n");
+				x.append("\r\n").append(getCatalogData(foundMobs));
+				foundMobs.clear();
 				x.append("\r\n<ITEMS>");
-				x.append(CMLib.coffeeMaker().getItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), new TreeMap<String,List<Item>>(), files, 0));
+				Map<String,List<Item>> foundItems=new TreeMap<String,List<Item>>();
+				x.append(CMLib.coffeeMaker().getItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), foundItems, files, 0));
 				x.append("\r\n</ITEMS>\r\n");
+				x.append("\r\n").append(getCatalogData(foundItems));
+				foundItems.clear();
 				if(fileNameCode==2)
 					fileName=fileName+"/catalog";
 				if(S!=null)
@@ -464,14 +487,18 @@ public class Export extends StdCommand
 			if((type == 0)&&(!(!subType.equalsIgnoreCase("ITEMS"))))
 			{
 				x.append("\r\n<MOBS>");
-				x.append(CMLib.coffeeMaker().getMobsXML(Arrays.asList(CMLib.catalog().getCatalogMobs()), custom, files, new TreeMap<String,List<MOB>>()));
+				final Map<String,List<MOB>> found = new TreeMap<String,List<MOB>>();
+				x.append(CMLib.coffeeMaker().getMobsXML(Arrays.asList(CMLib.catalog().getCatalogMobs()), custom, files, found));
 				x.append("\r\n</MOBS>\r\n");
+				x.append("\r\n").append(getCatalogData(found));
 			}
 			if(!subType.equalsIgnoreCase("MOBS"))
 			{
+				Map<String,List<Item>> found=new TreeMap<String,List<Item>>();
 				x.append("\r\n<ITEMS>");
-				x.append(CMLib.coffeeMaker().getItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), new TreeMap<String,List<Item>>(), files, type));
+				x.append(CMLib.coffeeMaker().getItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), found, files, type));
 				x.append("\r\n</ITEMS>\r\n");
+				x.append("\r\n").append(getCatalogData(found));
 			}
 			if((fileNameCode==2)&&(type==0))
 				fileName=fileName+"/catalog";
@@ -618,8 +645,15 @@ public class Export extends StdCommand
 		return null;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_EXPORT_GROUP);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
-
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowedContainsAny(mob, mob.location(), CMSecurity.SECURITY_EXPORT_GROUP);
+	}
 }

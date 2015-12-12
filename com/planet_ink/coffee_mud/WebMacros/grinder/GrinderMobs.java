@@ -917,7 +917,7 @@ public class GrinderMobs
 						if(cataData!=null)
 						{
 							final CatalogLibrary.CataData data=CMLib.catalog().getCatalogMobData(M.Name());
-							data.build(cataData.data());
+							data.build(cataData.data(null));
 						}
 						CMLib.catalog().updateCatalog(M);
 						Log.infoOut("GrinderItems",whom.Name()+" updated catalog MOB "+M.Name());

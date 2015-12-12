@@ -775,7 +775,7 @@ public class GrinderItems
 					if(cataData!=null)
 					{
 						final CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I.Name());
-						data.build(cataData.data());
+						data.build(cataData.data(null));
 					}
 					CMLib.catalog().updateCatalog(I);
 					Log.infoOut("GrinderItems",whom.Name()+" updated catalog ITEM "+I.Name());
