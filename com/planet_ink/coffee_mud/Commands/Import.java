@@ -5092,6 +5092,55 @@ public class Import extends StdCommand
 				continue;
 			}
 			else
+			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<CATALOG")>=0))
+			{
+				if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTMOBS))
+				||(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CATALOG)))
+				{
+					returnAnError(session,"You are not allowed to import catalog items in '"+areaFileName+"' here.",compileErrors,commands);
+					continue;
+				}
+				boolean hasBoth = buf.substring(0,30).indexOf("<CATALOG HASBOTH")>0;
+				boolean hasMobs = hasBoth || buf.substring(0,30).indexOf("<CATALOG HASMOBS")>0;
+				boolean hasItems = hasBoth || buf.substring(0,30).indexOf("<CATALOG HASITEMS")>0;
+				if(CF!=null)
+					buf=CF.textUnformatted();
+				if(buf == null)
+					buf = new StringBuffer("");
+				if(session!=null)
+					session.rawPrint(L("Unpacking stuff from file: '@x1'...",areaFileName));
+				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+				if(error.length()==0)
+					importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
+				if(error.length()==0)
+					importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
+				final Vector<MOB> mobs=new Vector<MOB>();
+				if((error.length()==0)&&(hasMobs))
+					error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),mobs,session);
+				final Vector<Item> items=new Vector<Item>();
+				if((error.length()==0)&&(hasItems))
+					error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,session);
+				if(session!=null)
+					session.rawPrintln("!");
+				if(error.length()>0)
+					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
+				for(int m=0;m<mobs.size();m++)
+				{
+					final MOB M=mobs.get(m);
+					//TODO: do the thing here!
+				}
+				for(int m=0;m<items.size();m++)
+				{
+					final Item I=items.get(m);
+					//TODO: do the thing here!
+				}
+				mob.location().recoverRoomStats();
+				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+				if(session!=null)
+					session.println(L("MOB(s) successfully imported!"));
+				continue;
+			}
+			else
 			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTMOBS))
