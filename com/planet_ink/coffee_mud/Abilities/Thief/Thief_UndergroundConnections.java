@@ -234,7 +234,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			return false;
 		}
 
-		final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 		flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 			 .plus(TrackingLibrary.TrackingFlag.NOAIR)
 			 .plus(TrackingLibrary.TrackingFlag.NOWATER);

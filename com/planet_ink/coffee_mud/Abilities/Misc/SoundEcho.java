@@ -93,7 +93,7 @@ public class SoundEcho extends StdAbility
 				echoMsg=CMClass.getMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,msg.othersCode(),str);
 				final Vector<Room> rooms=new Vector<Room>();
 				TrackingLibrary.TrackingFlags flags;
-				flags = new TrackingLibrary.TrackingFlags()
+				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 				CMLib.tracking().getRadiantRooms(sourceRoom,rooms,flags,null,range/2,null);

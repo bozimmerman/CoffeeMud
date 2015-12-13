@@ -65,46 +65,23 @@ public interface TrackingLibrary extends CMLibrary
 	public String getTrailToDescription(Room R1, List<Room> set, String where, boolean areaNames, boolean confirm, int radius, Set<Room> ignoreRooms, int maxMins);
 	public Rideable findALadder(MOB mob, Room room);
 	public void postMountLadder(MOB mob, Rideable ladder);
+	public TrackingFlags newFlags();
 
 	public static interface RFilter
 	{
 		public boolean isFilteredOut(final Room R, final Exit E, final int dir);
 	}
 
-	public static class RFilterNode
+	public static interface RFilters
 	{
-		private RFilterNode next=null;
-		private final RFilter filter;
-		public RFilterNode(RFilter fil){ this.filter=fil;}
-
+		public boolean isFilteredOut(final Room R, final Exit E, final int dir);
+		
+		public RFilters plus(RFilter filter);
 	}
-	public static class RFilters
+
+	public static interface TrackingFlags extends Set<TrackingFlag>
 	{
-		private RFilterNode head=null;
-		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
-		{
-			RFilterNode me=head;
-			while(me!=null)
-			{
-				if(me.filter.isFilteredOut(R,E,dir))
-					return true;
-				me=me.next;
-			}
-			return false;
-		}
-		public RFilters plus(RFilter filter)
-		{
-			RFilterNode me=head;
-			if(me==null)
-				head=new RFilterNode(filter);
-			else
-			{
-				while(me.next!=null)
-					me=me.next;
-				me.next=new RFilterNode(filter);
-			}
-			return this;
-		}
+		public TrackingFlags plus(TrackingFlag flag);
 	}
 
 	public static enum TrackingFlag
@@ -172,23 +149,6 @@ public interface TrackingLibrary extends CMLibrary
 		private TrackingFlag(RFilter filter)
 		{
 			this.myFilter=filter;
-		}
-	}
-
-	public static class TrackingFlags extends HashSet<TrackingFlag>
-	{
-		private static final long serialVersionUID = -6914706649617909073L;
-		private int hashCode=(int)serialVersionUID;
-		public TrackingFlags plus(TrackingFlag flag)
-		{
-			add(flag);
-			hashCode^=flag.hashCode();
-			return this;
-		}
-		@Override
-		public int hashCode()
-		{
-			return hashCode;
 		}
 	}
 }

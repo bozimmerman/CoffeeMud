@@ -1313,18 +1313,24 @@ public class ListCmd extends StdCommand
 			final PlayerLibrary.ThinPlayer U=allUsers.get(u);
 
 			head.append("[");
-			head.append(CMStrings.padRight(U.race,COL_LEN1)+" ");
-			head.append(CMStrings.padRight(U.charClass,COL_LEN2)+" ");
-			head.append(CMStrings.padRight(""+U.level,COL_LEN3)+" ");
-			final long age=Math.round(CMath.div(CMath.s_long(""+U.age),60.0));
+			head.append(CMStrings.padRight(U.race(),COL_LEN1)+" ");
+			head.append(CMStrings.padRight(U.charClass(),COL_LEN2)+" ");
+			head.append(CMStrings.padRight(""+U.level(),COL_LEN3)+" ");
+			final long age=Math.round(CMath.div(CMath.s_long(""+U.age()),60.0));
 			head.append(CMStrings.padRight(""+age,COL_LEN4)+" ");
 			switch(showBy)
 			{
-			case 6: head.append(CMStrings.padRight(U.email,COL_LEN5)+" "); break;
-			case 7: head.append(CMStrings.padRight(U.ip,COL_LEN5)+" "); break;
-			default: head.append(CMStrings.padRight(CMLib.time().date2String(U.last),COL_LEN6)+" "); break;
+			case 6:
+				head.append(CMStrings.padRight(U.email(), COL_LEN5) + " ");
+				break;
+			case 7:
+				head.append(CMStrings.padRight(U.ip(), COL_LEN5) + " ");
+				break;
+			default:
+				head.append(CMStrings.padRight(CMLib.time().date2String(U.last()), COL_LEN6) + " ");
+				break;
 			}
-			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+U.name+"^</LSTUSER^>",COL_LEN7));
+			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+U.name()+"^</LSTUSER^>",COL_LEN7));
 			head.append("\n\r");
 		}
 		mob.tell(head.toString());
@@ -1366,11 +1372,69 @@ public class ListCmd extends StdCommand
 		final Hashtable<String, PlayerLibrary.ThinPlayer> thinAcctHash=new Hashtable<String, PlayerLibrary.ThinPlayer>();
 		for(final PlayerAccount acct : allAccounts)
 		{
-			final PlayerLibrary.ThinPlayer selectedU=new PlayerLibrary.ThinPlayer();
-			selectedU.email=acct.getEmail();
-			selectedU.ip=acct.getLastIP();
-			selectedU.last=acct.getLastDateTime();
-			selectedU.name=acct.getAccountName();
+			PlayerLibrary.ThinPlayer selectedU=new PlayerLibrary.ThinPlayer()
+			{
+				@Override
+				public String name()
+				{
+					return acct.getAccountName();
+				}
+
+				@Override
+				public String charClass()
+				{
+					return "";
+				}
+
+				@Override
+				public String race()
+				{
+					return "";
+				}
+
+				@Override
+				public int level()
+				{
+					return 0;
+				}
+
+				@Override
+				public int age()
+				{
+					return 0;
+				}
+
+				@Override
+				public long last()
+				{
+					return acct.getLastDateTime();
+				}
+
+				@Override
+				public String email()
+				{
+					return acct.getEmail();
+				}
+
+				@Override
+				public String ip()
+				{
+					return acct.getLastIP();
+				}
+
+				@Override
+				public int exp()
+				{
+					return 0;
+				}
+
+				@Override
+				public int expLvl()
+				{
+					return 0;
+				}
+				
+			};
 			thinAcctHash.put(acct.getAccountName(), selectedU);
 		}
 		final int showBy=sortBy;

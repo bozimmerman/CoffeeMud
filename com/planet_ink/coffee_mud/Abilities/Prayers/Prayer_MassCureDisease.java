@@ -101,7 +101,7 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 			{
 				mob.location().send(mob,msg);
 				boolean worked=false;
-				final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,100);
 				for (final Room room : checkSet)
 				{

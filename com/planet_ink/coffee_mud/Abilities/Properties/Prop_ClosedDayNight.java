@@ -181,7 +181,7 @@ public class Prop_ClosedDayNight extends Property
 			final MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
-				final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,25);
 				for (final Room room : checkSet)
 				{

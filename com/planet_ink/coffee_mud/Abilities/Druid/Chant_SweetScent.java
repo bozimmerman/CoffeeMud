@@ -57,7 +57,7 @@ public class Chant_SweetScent extends Chant
 				final Room room=(Room)I.owner();
 				final Vector<Room> rooms=new Vector<Room>();
 				TrackingLibrary.TrackingFlags flags;
-				flags = new TrackingLibrary.TrackingFlags()
+				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 				CMLib.tracking().getRadiantRooms(room,rooms,flags,null,10,null);
 				for(int i=0;i<room.numInhabitants();i++)

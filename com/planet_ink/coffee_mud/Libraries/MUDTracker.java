@@ -17,6 +17,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilter;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 
 
 /*
@@ -41,10 +44,66 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	protected Hashtable<Integer,Vector<String>> openCommandSets=new Hashtable<Integer,Vector<String>>();
 	protected Hashtable<Integer,Vector<String>> closeCommandSets=new Hashtable<Integer,Vector<String>>();
 	protected Hashtable<TrackingFlags,RFilters> trackingFilters=new Hashtable<TrackingFlags,RFilters>();
-	protected static final TrackingFlags		EMPTY_FLAGS=new TrackingFlags();
-	protected static final RFilters				EMPTY_FILTERS=new RFilters();
+	protected static final TrackingFlags		EMPTY_FLAGS=new DefaultTrackingFlags();
+	protected static final RFilters				EMPTY_FILTERS=new DefaultRFilters();
 
+	protected static class RFilterNode
+	{
+		private RFilterNode next=null;
+		private final RFilter filter;
+		public RFilterNode(RFilter fil){ this.filter=fil;}
 
+	}
+
+	protected static class DefaultRFilters implements RFilters
+	{
+		private RFilterNode head=null;
+		@Override
+		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		{
+			RFilterNode me=head;
+			while(me!=null)
+			{
+				if(me.filter.isFilteredOut(R,E,dir))
+					return true;
+				me=me.next;
+			}
+			return false;
+		}
+		@Override
+		public RFilters plus(RFilter filter)
+		{
+			RFilterNode me=head;
+			if(me==null)
+				head=new RFilterNode(filter);
+			else
+			{
+				while(me.next!=null)
+					me=me.next;
+				me.next=new RFilterNode(filter);
+			}
+			return this;
+		}
+	}
+	
+	protected static class DefaultTrackingFlags extends HashSet<TrackingFlag> implements TrackingFlags
+	{
+		private static final long serialVersionUID = -6914706649617909073L;
+		private int hashCode=(int)serialVersionUID;
+		@Override
+		public TrackingFlags plus(TrackingFlag flag)
+		{
+			add(flag);
+			hashCode^=flag.hashCode();
+			return this;
+		}
+		@Override
+		public int hashCode()
+		{
+			return hashCode;
+		}
+	}
+	
 	protected Vector<String> getDirectionCommandSet(int direction)
 	{
 		final Integer dir=Integer.valueOf(direction);
@@ -295,7 +354,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				filters=EMPTY_FILTERS;
 			else
 			{
-				filters=new RFilters();
+				filters=new DefaultRFilters();
 				for(final TrackingFlag flag : flags)
 					filters.plus(flag.myFilter);
 			}
@@ -304,6 +363,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		getRadiantRooms(room, rooms, filters, radiateTo, maxDepth, ignoreRooms);
 	}
 
+	@Override
+	public TrackingFlags newFlags()
+	{
+		return new DefaultTrackingFlags();
+	}
+	
 	@Override
 	public void getRadiantRooms(final Room room, List<Room> rooms, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
 	{
@@ -1391,7 +1456,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 		if(R2==null)
 			return "Unable to determine '"+where+"'.";
-		final TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags()
+		final TrackingLibrary.TrackingFlags flags = new DefaultTrackingFlags()
 											.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 		if(set.size()==0)
 			getRadiantRooms(R1,set,flags,R2,radius,ignoreRooms);

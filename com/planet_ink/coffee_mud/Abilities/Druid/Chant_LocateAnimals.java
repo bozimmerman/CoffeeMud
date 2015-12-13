@@ -151,7 +151,7 @@ public class Chant_LocateAnimals extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		final Vector<Room> rooms=new Vector<Room>();
-		final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
 		for (final Room room : checkSet)
 		{

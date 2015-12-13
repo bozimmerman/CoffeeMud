@@ -91,7 +91,7 @@ public class Prayer_Omnipresence extends Prayer
 			{
 				mob.location().send(mob,msg);
 				final Room thatRoom=mob.location();
-				final TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags()
+				final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 														.plus(TrackingLibrary.TrackingFlag.NOAIR)
 														.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 														.plus(TrackingLibrary.TrackingFlag.NOWATER);

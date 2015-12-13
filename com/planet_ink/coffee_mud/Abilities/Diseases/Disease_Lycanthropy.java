@@ -165,7 +165,7 @@ public class Disease_Lycanthropy extends Disease
 			if((findVictim(mob,mob.location(),rooms,0))&&(rooms.size()>0))
 			{
 				TrackingLibrary.TrackingFlags flags;
-				flags = new TrackingLibrary.TrackingFlags()
+				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 						.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)

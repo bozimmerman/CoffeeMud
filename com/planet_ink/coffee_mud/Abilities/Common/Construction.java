@@ -890,7 +890,7 @@ public class Construction extends CraftingSkill
 				commonTell(mob,L("A title must be specified."));
 				return false;
 			}
-			final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+			final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 			final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
 			for (final Room room2 : checkSet)
 			{

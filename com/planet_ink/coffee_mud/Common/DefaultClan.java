@@ -1296,8 +1296,8 @@ public class DefaultClan implements Clan
 					final PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(member.name);
 					if(tP != null)
 					{
-						final boolean isAdmin=CMSecurity.isASysOp(tP) || tP.level > CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
-						members.add(new FullMemberRecord(member.name,tP.level,member.role,tP.last,member.mobpvps,member.playerpvps,isAdmin));
+						final boolean isAdmin=CMSecurity.isASysOp(tP) || tP.level() > CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
+						members.add(new FullMemberRecord(member.name,tP.level(),member.role,tP.last(),member.mobpvps,member.playerpvps,isAdmin));
 					}
 					else
 					{

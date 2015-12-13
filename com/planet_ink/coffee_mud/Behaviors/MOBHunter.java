@@ -81,7 +81,7 @@ public class MOBHunter extends ActiveTicker
 		MOB prey=null;
 		final Vector<Room> rooms=new Vector<Room>();
 		TrackingLibrary.TrackingFlags flags;
-		flags = new TrackingLibrary.TrackingFlags()
+		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)

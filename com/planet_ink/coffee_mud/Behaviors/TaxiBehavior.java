@@ -36,7 +36,7 @@ public class TaxiBehavior extends Concierge
 {
 	@Override public String ID(){return "TaxiBehavior";}
 	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
-	protected final TrackingLibrary.TrackingFlags taxiTrackingFlags = new TrackingLibrary.TrackingFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+	protected final TrackingLibrary.TrackingFlags taxiTrackingFlags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 	
 	protected volatile Ability isEnRouter = null;
 	protected Room returnToRoom = null;
@@ -73,7 +73,7 @@ public class TaxiBehavior extends Concierge
 	protected void giveMerchandise(MOB whoM, Room destR, Environmental observer, Room room)
 	{
 		MOB fromM=getTalker(observer,room);
-		TrackingLibrary.TrackingFlags taxiTrackingFlags = new TrackingLibrary.TrackingFlags()
+		TrackingLibrary.TrackingFlags taxiTrackingFlags = CMLib.tracking().newFlags()
 			.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 			.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 		if(areaOnly)

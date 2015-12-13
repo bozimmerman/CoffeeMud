@@ -147,7 +147,7 @@ public class Thief_Safehouse extends ThiefSkill
 		if(!isGoodSafehouse(target))
 		{
 			TrackingLibrary.TrackingFlags flags;
-			flags = new TrackingLibrary.TrackingFlags()
+			flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 					.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)

@@ -104,7 +104,7 @@ public class Spell_NaturalCommunion extends Spell
 			{
 				mob.location().send(mob,msg);
 				final int radius=3 + super.getXLEVELLevel(mob);
-				final List<Room> rooms=CMLib.tracking().getRadiantRooms(mob.location(), new TrackingLibrary.TrackingFlags(), radius);
+				final List<Room> rooms=CMLib.tracking().getRadiantRooms(mob.location(), CMLib.tracking().newFlags(), radius);
 				final List<String> stuff=new Vector<String>();
 				communeWithThisRoom(mob,mob.location(),stuff);
 				for(final Room R : rooms)

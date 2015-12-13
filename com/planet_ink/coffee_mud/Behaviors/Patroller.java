@@ -332,7 +332,7 @@ public class Patroller extends ActiveTicker
 					tickStatus=Tickable.STATUS_MISC+8;
 					if((direction<0)||(thatRoom==null))
 					{
-						final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+						final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 						if(ticking instanceof Item)
 							flags.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 						flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);

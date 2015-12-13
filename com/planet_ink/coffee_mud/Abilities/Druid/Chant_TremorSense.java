@@ -159,7 +159,7 @@ public class Chant_TremorSense extends Chant
 				mob.location().send(mob,msg);
 				rooms=new Vector<Room>();
 				TrackingLibrary.TrackingFlags flags;
-				flags = new TrackingLibrary.TrackingFlags()
+				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 						.plus(TrackingLibrary.TrackingFlag.NOAIR)
 						.plus(TrackingLibrary.TrackingFlag.NOWATER);

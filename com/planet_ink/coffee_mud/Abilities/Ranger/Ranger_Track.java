@@ -173,7 +173,7 @@ public class Ranger_Track extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		TrackingLibrary.TrackingFlags flags;
-		flags=new TrackingLibrary.TrackingFlags()
+		flags=CMLib.tracking().newFlags()
 			.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 			.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 			.plus(TrackingLibrary.TrackingFlag.NOAIR)

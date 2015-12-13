@@ -67,18 +67,18 @@ public interface PlayerLibrary extends CMLibrary
 
 	public static final String[] ACCOUNT_THIN_SORT_CODES={ "NAME","LAST","EMAIL","IP","NUMPLAYERS"};
 
-	public static class ThinPlayer
+	public static interface ThinPlayer
 	{
-		public String name="";
-		public String charClass="";
-		public String race="";
-		public int level=0;
-		public int age=0;
-		public long last=0;
-		public String email="";
-		public String ip="";
-		public int exp=0;
-		public int expLvl=0;
+		public String name();
+		public String charClass();
+		public String race();
+		public int level();
+		public int age();
+		public long last();
+		public String email();
+		public String ip();
+		public int exp();
+		public int expLvl();
 	}
 
 	public static class ThinnerPlayer

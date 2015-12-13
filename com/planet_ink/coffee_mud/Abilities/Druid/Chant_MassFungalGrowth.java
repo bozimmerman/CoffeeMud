@@ -50,7 +50,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 
 		final Vector<Room> V=new Vector<Room>();
 		TrackingLibrary.TrackingFlags flags;
-		flags = new TrackingLibrary.TrackingFlags()
+		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)

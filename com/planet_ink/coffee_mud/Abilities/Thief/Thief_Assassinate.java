@@ -283,7 +283,7 @@ public class Thief_Assassinate extends ThiefSkill
 		{
 			try
 			{
-				final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 				if(givenTarget!=null&&auto&&mob.isMonster())
 					flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 				flags.plus(TrackingLibrary.TrackingFlag.OPENONLY)
@@ -300,7 +300,7 @@ public class Thief_Assassinate extends ThiefSkill
 			}catch(final NoSuchElementException nse){}
 		}
 
-		final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 		flags.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 			 .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 			 .plus(TrackingLibrary.TrackingFlag.NOAIR)

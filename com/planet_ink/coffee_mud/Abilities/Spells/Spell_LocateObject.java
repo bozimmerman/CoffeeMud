@@ -124,7 +124,7 @@ public class Spell_LocateObject extends Spell
 				Environmental item=null;
 				Room room=null;
 				ShopKeeper SK=null;
-				final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+adjustedLevel(mob,asLevel));
 				for (final Room room2 : checkSet)
 				{

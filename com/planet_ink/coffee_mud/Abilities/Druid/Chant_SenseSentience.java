@@ -63,7 +63,7 @@ public class Chant_SenseSentience extends Chant
 				lines.append(CMStrings.padRight(L("Name"),25)+"| ");
 				lines.append(CMStrings.padRight(L("Location"),17)+"^.^N\n\r");
 				TrackingLibrary.TrackingFlags flags;
-				flags = new TrackingLibrary.TrackingFlags()
+				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 				if(!checkSet.contains(mob.location()))

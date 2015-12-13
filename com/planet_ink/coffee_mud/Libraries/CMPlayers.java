@@ -118,8 +118,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		for(final Enumeration<ThinPlayer> e=thinPlayers("",null);e.hasMoreElements();)
 		{
 			final ThinPlayer P=e.nextElement();
-			if(P.email.equalsIgnoreCase(email))
-				return getLoadPlayer(P.name);
+			if(P.email().equalsIgnoreCase(email))
+				return getLoadPlayer(P.name());
 		}
 		return null;
 	}
@@ -598,23 +598,23 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		switch(code)
 		{
 		case 0:
-			return player.name;
+			return player.name();
 		case 1:
-			return player.charClass;
+			return player.charClass();
 		case 2:
-			return player.race;
+			return player.race();
 		case 3:
-			return Integer.toString(player.level);
+			return Integer.toString(player.level());
 		case 4:
-			return Integer.toString(player.age);
+			return Integer.toString(player.age());
 		case 5:
-			return Long.toString(player.last);
+			return Long.toString(player.last());
 		case 6:
-			return player.email;
+			return player.email();
 		case 7:
-			return player.ip;
+			return player.ip();
 		}
-		return player.name;
+		return player.name();
 	}
 
 	public String getThinSortValue(PlayerAccount account, int code)
@@ -900,9 +900,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 		for(final ThinPlayer user : allUsers)
 		{
-			final String name=user.name;
-			final int level=user.level;
-			final long userLastLoginDateTime=user.last;
+			final String name=user.name();
+			final int level=user.level();
+			final long userLastLoginDateTime=user.last();
 			long purgeDateTime;
 			long warnDateTime;
 			if(level>=autoPurgeDaysLevels.length)

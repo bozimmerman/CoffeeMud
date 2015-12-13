@@ -482,8 +482,7 @@ public class MOBloader
 	{
 		try
 		{
-			final PlayerLibrary.ThinPlayer thisUser=new PlayerLibrary.ThinPlayer();
-			thisUser.name=DBConnections.getRes(R,"CMUSERID");
+			final String name=DBConnections.getRes(R,"CMUSERID");
 			String cclass=DBConnections.getRes(R,"CMCLAS");
 			final int x=cclass.lastIndexOf(';');
 			CharClass C=null;
@@ -493,29 +492,94 @@ public class MOBloader
 				if(C!=null)
 					cclass=C.name();
 			}
-			thisUser.charClass=(cclass);
+			final String charClass=(cclass);
 			final String rrace=DBConnections.getRes(R,"CMRACE");
 			final Race R2=CMClass.getRace(rrace);
+			final String race;
 			if(R2!=null)
-				thisUser.race=(R2.name());
+				race=(R2.name());
 			else
-				thisUser.race=rrace;
+				race=rrace;
 			final List<String> lvls=CMParms.parseSemicolons(DBConnections.getRes(R,"CMLEVL"), true);
-			thisUser.level=0;
+			int calcLevel=0;
 			for(final String lvl : lvls)
-				thisUser.level+=CMath.s_int(lvl);
-			thisUser.age=(int)DBConnections.getLongRes(R,"CMAGEH");
-			final MOB M=CMLib.players().getPlayer(thisUser.name);
+				calcLevel+=CMath.s_int(lvl);
+			final int level = calcLevel;
+			final int age=(int)DBConnections.getLongRes(R,"CMAGEH");
+			final MOB M=CMLib.players().getPlayer(name);
+			final long last;
 			if((M!=null)&&(M.lastTickedDateTime()>0))
-				thisUser.last=M.lastTickedDateTime();
+				last=M.lastTickedDateTime();
 			else
-				thisUser.last=DBConnections.getLongRes(R,"CMDATE");
+				last=DBConnections.getLongRes(R,"CMDATE");
 			final String lsIP=DBConnections.getRes(R,"CMLSIP");
-			thisUser.email=DBConnections.getRes(R,"CMEMAL");
-			thisUser.ip=lsIP;
-			thisUser.exp=CMath.s_int(DBConnections.getRes(R,"CMEXPE"));
-			thisUser.expLvl=CMath.s_int(DBConnections.getRes(R,"CMEXLV"));
-			return thisUser;
+			final String email=DBConnections.getRes(R,"CMEMAL");
+			final String ip=lsIP;
+			final int exp=CMath.s_int(DBConnections.getRes(R,"CMEXPE"));
+			final int expLvl=CMath.s_int(DBConnections.getRes(R,"CMEXLV"));
+			return new PlayerLibrary.ThinPlayer()
+			{
+
+				@Override
+				public String name()
+				{
+					return name;
+				}
+
+				@Override
+				public String charClass()
+				{
+					return charClass;
+				}
+
+				@Override
+				public String race()
+				{
+					return race;
+				}
+
+				@Override
+				public int level()
+				{
+					return level;
+				}
+
+				@Override
+				public int age()
+				{
+					return age;
+				}
+
+				@Override
+				public long last()
+				{
+					return last;
+				}
+
+				@Override
+				public String email()
+				{
+					return email;
+				}
+
+				@Override
+				public String ip()
+				{
+					return ip;
+				}
+
+				@Override
+				public int exp()
+				{
+					return exp;
+				}
+
+				@Override
+				public int expLvl()
+				{
+					return expLvl;
+				}
+			};
 		}catch(final Exception e)
 		{
 			Log.errOut("MOBloader",e);

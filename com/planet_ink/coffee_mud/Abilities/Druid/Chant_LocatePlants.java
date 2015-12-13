@@ -158,7 +158,7 @@ public class Chant_LocatePlants extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		TrackingLibrary.TrackingFlags flags;
-		flags = new TrackingLibrary.TrackingFlags()
+		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		final Vector<Room> rooms=new Vector<Room>();
@@ -172,7 +172,7 @@ public class Chant_LocatePlants extends Chant
 		if(rooms.size()>0)
 		{
 			//TrackingLibrary.TrackingFlags flags;
-			flags = new TrackingLibrary.TrackingFlags()
+			flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR);
 			theTrail=CMLib.tracking().findBastardTheBestWay(target.location(),rooms,flags,50);

@@ -61,7 +61,7 @@ public class Prayer_BirdsEye extends Prayer
 				{
 					final Vector<Room> set=new Vector<Room>();
 					TrackingLibrary.TrackingFlags flags;
-					flags = new TrackingLibrary.TrackingFlags()
+					flags = CMLib.tracking().newFlags()
 							.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 							.plus(TrackingLibrary.TrackingFlag.NOAIR);
 					CMLib.tracking().getRadiantRooms(mob.location(),set,flags,null,2,null);

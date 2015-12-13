@@ -61,12 +61,12 @@ public class PlayerNext extends StdWebMacro
 		for(;pe.hasMoreElements();)
 		{
 			final PlayerLibrary.ThinPlayer user=(PlayerLibrary.ThinPlayer)pe.nextElement();
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!user.name.equals(lastID))))
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!user.name().equals(lastID))))
 			{
-				httpReq.addFakeUrlParameter("PLAYER",user.name);
+				httpReq.addFakeUrlParameter("PLAYER",user.name());
 				return "";
 			}
-			lastID=user.name;
+			lastID=user.name();
 		}
 		httpReq.addFakeUrlParameter("PLAYER","");
 		if(parms.containsKey("EMPTYOK"))

@@ -308,7 +308,7 @@ public class Skill_Track extends StdSkill
 				rooms.addElement(R);
 		}
 
-		final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 		if(!(allowAir||allowWater))
 			flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 		if(!allowAir)

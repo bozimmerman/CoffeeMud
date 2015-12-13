@@ -121,11 +121,11 @@ public class ProcessSMTPrequest implements Runnable
 				for(final Enumeration<ThinPlayer> e=A.getThinPlayers();e.hasMoreElements();)
 				{
 					final ThinPlayer P=e.nextElement();
-					if((tP==null)||(P.level>tP.level))
+					if((tP==null)||(P.level()>tP.level()))
 						tP=P;
 				}
 				if(tP!=null)
-					M=CMLib.players().getLoadPlayer(tP.name);
+					M=CMLib.players().getLoadPlayer(tP.name());
 			}
 			return M;
 		}

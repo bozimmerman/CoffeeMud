@@ -5405,47 +5405,47 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(CMSecurity.isASysOp(E))
 						return true;
 					for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
-						if(e.nextElement().amISubOp(E.name))
+						if(e.nextElement().amISubOp(E.name()))
 							return true;
 					break;
 				case _SUBOP: // -subop
 					if(CMSecurity.isASysOp(E))
 						return false;
 					for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
-						if(e.nextElement().amISubOp(E.name))
+						if(e.nextElement().amISubOp(E.name()))
 							return false;
 					break;
 				case _CLASS: // -class
 					{
-						final CharClass C=CMClass.getCharClass(E.charClass);
+						final CharClass C=CMClass.getCharClass(E.charClass());
 						if((C==null)||(!CMParms.contains(entry.parms(),C.name())))
 							return false;
 					}
 					break;
 				case _BASECLASS: // -baseclass
 					{
-						final CharClass C=CMClass.getCharClass(E.charClass);
+						final CharClass C=CMClass.getCharClass(E.charClass());
 						if((C==null)||(!CMParms.contains(entry.parms(),C.baseClass())))
 							return false;
 					}
 					break;
 				case BASECLASS: // +baseclass
 					{
-						final CharClass C=CMClass.getCharClass(E.charClass);
+						final CharClass C=CMClass.getCharClass(E.charClass());
 						if((C!=null)&&(CMParms.contains(entry.parms(),C.baseClass())))
 							return false;
 					}
 					break;
 				case _RACE: // -race
 					{
-						final Race R=CMClass.getRace(E.race);
+						final Race R=CMClass.getRace(E.race());
 						if((R==null)||(!CMParms.contains(entry.parms(),R.name())))
 							return false;
 					}
 					break;
 				case _LEVEL: // -level
 					{
-						final int level=E.level;
+						final int level=E.level();
 						boolean found=false;
 						for(int v=0;v<entry.parms().length-1;v+=2)
 						{
@@ -5485,7 +5485,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(final Object o : entry.parms())
 						{
 							final Quest Q=CMLib.quests().fetchQuest((String)o);
-							if((Q!=null)&&(Q.wasWinner(E.name)))
+							if((Q!=null)&&(Q.wasWinner(E.name())))
 							{
 								found = true;
 								break;
@@ -5500,7 +5500,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						for(final Object o : entry.parms())
 						{
 							final Quest Q=CMLib.quests().fetchQuest((String)o);
-							if((Q!=null)&&(Q.wasWinner(E.name)))
+							if((Q!=null)&&(Q.wasWinner(E.name())))
 								return false;
 						}
 					}
@@ -5508,7 +5508,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _NAME: // -names
 					{
 						boolean found=false;
-						final String name=E.name;
+						final String name=E.name();
 						for(final Object o : entry.parms())
 						{
 							if(name.equalsIgnoreCase((String)o))
@@ -5525,21 +5525,21 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break; // always true
 				case _RACECAT: // -racecat
 					{
-						final Race R=CMClass.getRace(E.race);
+						final Race R=CMClass.getRace(E.race());
 						if((R==null)||(!CMParms.contains(entry.parms(),R.racialCategory())))
 							return false;
 					}
 					break;
 				case RACE: // +race
 					{
-						final Race R=CMClass.getRace(E.race);
+						final Race R=CMClass.getRace(E.race());
 						if((R!=null)&&(CMParms.contains(entry.parms(),R.name())))
 							return false;
 					}
 					break;
 				case RACECAT: // +racecat
 					{
-						final Race R=CMClass.getRace(E.race);
+						final Race R=CMClass.getRace(E.race());
 						if((R!=null)&&(CMParms.contains(entry.parms(),R.racialCategory())))
 							return false;
 					}
@@ -5570,7 +5570,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case NAME: // +name
 					{
-						final String name=E.name;
+						final String name=E.name();
 						for(final Object o : entry.parms())
 						{
 							if(name.equalsIgnoreCase((String)o))
@@ -5583,7 +5583,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _ANYCLASS: // -anyclass
 					{
 						boolean found=false;
-						final CharClass C=CMClass.getCharClass(E.charClass);
+						final CharClass C=CMClass.getCharClass(E.charClass());
 						if(C!=null)
 						{
 							for(final Object o : entry.parms())
@@ -5601,7 +5601,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case ANYCLASS: // +anyclass
 					{
-						final CharClass C=CMClass.getCharClass(E.charClass);
+						final CharClass C=CMClass.getCharClass(E.charClass());
 						if(C!=null)
 						{
 							for(final Object o : entry.parms())
@@ -5717,23 +5717,23 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case IF: // +if
 					return false;
 				case LVLGR: // +lvlgr
-					if((entry.parms().length>0)&&((E.level)>((Integer)entry.parms()[0]).intValue()))
+					if((entry.parms().length>0)&&((E.level())>((Integer)entry.parms()[0]).intValue()))
 						return false;
 					break;
 				case LVLGE: // +lvlge
-					if((entry.parms().length>0)&&((E.level)>=((Integer)entry.parms()[0]).intValue()))
+					if((entry.parms().length>0)&&((E.level())>=((Integer)entry.parms()[0]).intValue()))
 						return false;
 					break;
 				case LVLLT: // +lvlt
-					if((entry.parms().length>0)&&((E.level)<((Integer)entry.parms()[0]).intValue()))
+					if((entry.parms().length>0)&&((E.level())<((Integer)entry.parms()[0]).intValue()))
 						return false;
 					break;
 				case LVLLE: // +lvlle
-					if((entry.parms().length>0)&&((E.level)<=((Integer)entry.parms()[0]).intValue()))
+					if((entry.parms().length>0)&&((E.level())<=((Integer)entry.parms()[0]).intValue()))
 						return false;
 					break;
 				case LVLEQ: // +lvleq
-					if((entry.parms().length>0)&&((E.level)==((Integer)entry.parms()[0]).intValue()))
+					if((entry.parms().length>0)&&((E.level())==((Integer)entry.parms()[0]).intValue()))
 						return false;
 					break;
 				case _CHANCE: // -chance
@@ -5742,7 +5742,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case CLASS: // +class
 				{
-					final CharClass C=CMClass.getCharClass(E.charClass);
+					final CharClass C=CMClass.getCharClass(E.charClass());
 					if(C!=null)
 					if(CMParms.contains(entry.parms(),C.name()))
 						return false;

@@ -52,23 +52,23 @@ public class Account extends StdCommand
 				CMLib.lister().fixColWidth(10,seer.session()),
 				CMLib.lister().fixColWidth(5,seer.session())
 			};
-		CharClass C=CMClass.getCharClass(who.charClass);
+		CharClass C=CMClass.getCharClass(who.charClass());
 		if(C==null)
-			C=CMClass.findCharClass(who.charClass);
+			C=CMClass.findCharClass(who.charClass());
 		if(C==null)
 		{
-			final MOB mob=CMLib.players().getLoadPlayer(who.name);
+			final MOB mob=CMLib.players().getLoadPlayer(who.name());
 			if(mob==null)
 				return new StringBuffer("");
 			C=mob.charStats().getCurrentClass();
 		}
 		
-		Race R=CMClass.getRace(who.race);
+		Race R=CMClass.getRace(who.race());
 		if(R==null)
-			R=CMClass.getRace(who.race);
+			R=CMClass.getRace(who.race());
 		if(R==null)
 		{
-			final MOB mob=CMLib.players().getLoadPlayer(who.name);
+			final MOB mob=CMLib.players().getLoadPlayer(who.name());
 			if(mob==null)
 				return new StringBuffer("");
 			R=mob.charStats().getMyRace();
@@ -82,7 +82,7 @@ public class Account extends StdCommand
 				msg.append(CMStrings.padRight(R.name(),cols[0])+" ");
 		}
 		
-		String levelStr=""+who.level;
+		String levelStr=""+who.level();
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
 			if(R.classless())
@@ -97,7 +97,7 @@ public class Account extends StdCommand
 			else
 				msg.append(CMStrings.padRight(levelStr,cols[2]));
 		}
-		msg.append("^w"+bgColor+"] ^b"+bgColor + who.name+"^N ");
+		msg.append("^w"+bgColor+"] ^b"+bgColor + who.name()+"^N ");
 		msg.append("\n\r");
 		return msg;
 	}

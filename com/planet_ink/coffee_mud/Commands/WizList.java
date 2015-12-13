@@ -61,13 +61,13 @@ public class WizList extends StdCommand
 		for(final PlayerLibrary.ThinPlayer U : allUsers)
 		{
 			CharClass C;
-			final MOB player = CMLib.players().getPlayer(U.name);
+			final MOB player = CMLib.players().getPlayer(U.name());
 			if(player != null)
 				C=player.charStats().getCurrentClass();
 			else
-				C=CMClass.getCharClass(U.charClass);
+				C=CMClass.getCharClass(U.charClass());
 			if(C==null)
-				C=CMClass.findCharClass(U.charClass);
+				C=CMClass.findCharClass(U.charClass());
 			if(((player!=null)&&(CMLib.masking().maskCheck(compiledMask, player, true)))
 			||(CMLib.masking().maskCheck(compiledMask, U)))
 			{
@@ -76,14 +76,14 @@ public class WizList extends StdCommand
 					head.append(CMStrings.padRight(C.name(),16)+" ");
 				else
 					head.append(CMStrings.padRight(L("Unknown"),16)+" ");
-				head.append(CMStrings.padRight(U.race,8)+" ");
+				head.append(CMStrings.padRight(U.race(),8)+" ");
 				if((C==null)||(!C.leveless()))
-					head.append(CMStrings.padRight(""+U.level,4)+" ");
+					head.append(CMStrings.padRight(""+U.level(),4)+" ");
 				else
 					head.append(CMStrings.padRight("    ",4)+" ");
 				if(isArchonLooker)
-					head.append(CMStrings.padRight(CMLib.time().date2String(U.last),18)+" ");
-				head.append("] "+U.name);
+					head.append(CMStrings.padRight(CMLib.time().date2String(U.last()),18)+" ");
+				head.append("] "+U.name());
 				head.append("\n\r");
 			}
 		}

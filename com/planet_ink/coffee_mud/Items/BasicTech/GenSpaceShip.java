@@ -355,7 +355,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				return (LocationRoom)R;
 
 			TrackingLibrary.TrackingFlags flags;
-			flags = new TrackingLibrary.TrackingFlags()
+			flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR)
 					.plus(TrackingLibrary.TrackingFlag.NOHOMES)

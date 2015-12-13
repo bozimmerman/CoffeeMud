@@ -1460,11 +1460,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			final PlayerLibrary.ThinPlayer player = p.nextElement();
 			buf.append("^H");
-			buf.append(CMStrings.padRight(player.name,20));
+			buf.append(CMStrings.padRight(player.name(),20));
 			buf.append("^.^N");
-			buf.append(" " + CMStrings.padRight(player.race,10));
-			buf.append(" " + CMStrings.padRight(""+player.level,5));
-			buf.append(" " + CMStrings.padRight(player.charClass,15));
+			buf.append(" " + CMStrings.padRight(player.race(),10));
+			buf.append(" " + CMStrings.padRight(""+player.level(),5));
+			buf.append(" " + CMStrings.padRight(player.charClass(),15));
 			buf.append("^.^N\n\r");
 		}
 		session.println(buf.toString());
@@ -1778,7 +1778,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			for(final Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
 			{
 				final PlayerLibrary.ThinPlayer player = p.nextElement();
-				if(player.name.equalsIgnoreCase(parms[1]))
+				if(player.name().equalsIgnoreCase(parms[1]))
 					delMeChk=player;
 			}
 			final String properName=CMStrings.capitalizeAndLower(parms[1]);
@@ -1792,17 +1792,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final PlayerLibrary.ThinPlayer delMe = delMeChk;
 			if((parms.length>2)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
 			{
-				final MOB M=CMLib.players().getLoadPlayer(delMe.name);
+				final MOB M=CMLib.players().getLoadPlayer(delMe.name());
 				if(M!=null)
 				{
 					CMLib.players().obliteratePlayer(M, true, false);
 				}
-				acct.delPlayer(delMe.name);
-				session.println(L("@x1 has been deleted.",delMe.name));
+				acct.delPlayer(delMe.name());
+				session.println(L("@x1 has been deleted.",delMe.name()));
 			}
 			else
 			{
-				session.promptPrint(L("Are you sure you want to retire and delete '@x1' (y/N)?",delMe.name));
+				session.promptPrint(L("Are you sure you want to retire and delete '@x1' (y/N)?",delMe.name()));
 				loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -1827,7 +1827,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			for(final Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
 			{
 				final PlayerLibrary.ThinPlayer player = p.nextElement();
-				if(player.name.equalsIgnoreCase(parms[1]))
+				if(player.name().equalsIgnoreCase(parms[1]))
 					delMe=player;
 			}
 			if(delMe==null)
@@ -1851,7 +1851,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			if((parms.length>3)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
 			{
-				final MOB M=CMLib.players().getLoadPlayer(delMe.name);
+				final MOB M=CMLib.players().getLoadPlayer(delMe.name());
 				if(M!=null)
 				{
 					acct.delPlayer(M);
@@ -1861,12 +1861,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					M.playerStats().setLastUpdated(System.currentTimeMillis());
 					M.playerStats().setPassword(password);
 					CMLib.database().DBUpdatePlayer(M);
-					session.println(L("@x1 has been exported from your account.",delMe.name));
+					session.println(L("@x1 has been exported from your account.",delMe.name()));
 				}
 			}
 			else
 			{
-				session.promptPrint(L("Are you sure you want to remove character  '@x1' from your account (y/N)?",delMe.name));
+				session.promptPrint(L("Are you sure you want to remove character  '@x1' from your account (y/N)?",delMe.name()));
 				loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}

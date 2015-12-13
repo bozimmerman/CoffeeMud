@@ -456,13 +456,79 @@ public class DefaultPlayerAccount implements PlayerAccount
 		synchronized(thinPlayers)
 		{
 			if(thinPlayers.size() != players.size())
-				for(final Enumeration<String> e=getPlayers();e.hasMoreElements();)
+			{
+				for(Enumeration<String> e=getPlayers();e.hasMoreElements();)
 				{
 					final String name = e.nextElement();
 					PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(name);
-					if(tP==null){ tP=new PlayerLibrary.ThinPlayer(); tP.name = name;}
+					if (tP == null)
+					{
+						tP = new PlayerLibrary.ThinPlayer()
+						{
+							@Override
+							public String name()
+							{
+								return name;
+							}
+
+							@Override
+							public String charClass()
+							{
+								return "";
+							}
+
+							@Override
+							public String race()
+							{
+								return "";
+							}
+
+							@Override
+							public int level()
+							{
+								return 0;
+							}
+
+							@Override
+							public int age()
+							{
+								return 0;
+							}
+
+							@Override
+							public long last()
+							{
+								return 0;
+							}
+
+							@Override
+							public String email()
+							{
+								return null;
+							}
+
+							@Override
+							public String ip()
+							{
+								return "";
+							}
+
+							@Override
+							public int exp()
+							{
+								return 0;
+							}
+
+							@Override
+							public int expLvl()
+							{
+								return 0;
+							}
+						};
+					}
 					thinPlayers.add(tP);
 				}
+			}
 		}
 		return thinPlayers.elements();
 	}

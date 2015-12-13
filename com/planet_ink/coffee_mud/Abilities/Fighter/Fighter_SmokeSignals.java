@@ -137,7 +137,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 				mob.location().send(mob,msg);
 				final String str=CMParms.combine(commands,0);
 				final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,L("You see some smoke signals in the distance."));
-				final TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 				for(final Iterator<Room> r=checkSet.iterator();r.hasNext();)
 				{

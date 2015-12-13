@@ -195,7 +195,7 @@ public class Chant_FindMate extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		TrackingLibrary.TrackingFlags flags;
-		flags = new TrackingLibrary.TrackingFlags()
+		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 		final Vector<Room> rooms=new Vector<Room>();
 		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
@@ -211,7 +211,7 @@ public class Chant_FindMate extends Chant
 		}
 		checkSet=null;
 		//TrackingLibrary.TrackingFlags flags;
-		flags = new TrackingLibrary.TrackingFlags()
+		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR)

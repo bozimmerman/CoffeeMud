@@ -52,7 +52,7 @@ public class Concierge extends StdBehavior
 	protected String mountStr="";
 	protected int maxRange = 100;
 	
-	private final TrackingLibrary.TrackingFlags trackingFlags = new TrackingLibrary.TrackingFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+	private final TrackingLibrary.TrackingFlags trackingFlags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 	
 	protected TrackingLibrary.TrackingFlags getTrackingFlags()
 	{
@@ -251,10 +251,10 @@ public class Concierge extends StdBehavior
 			return roomsInRange;
 		TrackingLibrary.TrackingFlags flags;
 		if(areaOnly)
-			flags = new TrackingLibrary.TrackingFlags()
+			flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 		else
-			flags = new TrackingLibrary.TrackingFlags();
+			flags = CMLib.tracking().newFlags();
 		return
 			CMLib.tracking().getRadiantRooms(centerRoom,flags,maxRange);
 	}

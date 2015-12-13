@@ -58,7 +58,7 @@ public class ThinPlayerData extends StdWebMacro {
 			for(;pe.hasMoreElements();)
 			{
 				final PlayerLibrary.ThinPlayer TP=(PlayerLibrary.ThinPlayer)pe.nextElement();
-				if(TP.name.equalsIgnoreCase(last))
+				if(TP.name().equalsIgnoreCase(last))
 				{
 					player = TP;
 					break;

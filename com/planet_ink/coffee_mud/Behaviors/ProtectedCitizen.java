@@ -172,7 +172,7 @@ public class ProtectedCitizen extends ActiveTicker
 		final Room thisRoom=mob.location();
 		final Vector<Room> V=new Vector<Room>();
 		TrackingLibrary.TrackingFlags flags;
-		flags = new TrackingLibrary.TrackingFlags()
+		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 		if(!wander)
 			flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);

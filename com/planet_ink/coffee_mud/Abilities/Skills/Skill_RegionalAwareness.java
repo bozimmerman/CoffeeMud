@@ -126,7 +126,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		final Vector<Room> rooms=new Vector<Room>();
 		final HashSet<Room> closedPaths=new HashSet<Room>();
 		TrackingLibrary.TrackingFlags flags;
-		flags = new TrackingLibrary.TrackingFlags()
+		flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR);
 		if(openOnly)

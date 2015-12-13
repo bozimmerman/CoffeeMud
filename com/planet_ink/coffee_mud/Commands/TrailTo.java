@@ -44,7 +44,7 @@ public class TrailTo extends StdCommand
 	{
 		int radius=Integer.MAX_VALUE;
 		HashSet<Room> ignoreRooms=null;
-		final TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags();
+		final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags();
 		for(int c=0;c<commands.size();c++)
 		{
 			String s=commands.get(c);

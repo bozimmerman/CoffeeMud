@@ -204,7 +204,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		{
 			final List<Room> rooms=new ArrayList<Room>();
 			TrackingLibrary.TrackingFlags flags;
-			flags = new TrackingLibrary.TrackingFlags()
+			flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 					.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 			CMLib.tracking().getRadiantRooms(room1,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);

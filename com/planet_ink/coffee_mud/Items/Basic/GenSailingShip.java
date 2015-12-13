@@ -439,7 +439,7 @@ public class GenSailingShip extends StdBoardable
 			if(R.domainType()==Room.DOMAIN_OUTDOORS_SEAPORT)
 				return R;
 			TrackingLibrary.TrackingFlags flags;
-			flags = new TrackingLibrary.TrackingFlags()
+			flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 					.plus(TrackingLibrary.TrackingFlag.NOAIR)
