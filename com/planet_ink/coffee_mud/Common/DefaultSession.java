@@ -2198,9 +2198,9 @@ public class DefaultSession implements Session
 				{
 					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
 					for(int i=0;i<channels.size();i++)
-						CMLib.commands().postChannel(channels.get(i),M.clans(),name+" has logged out",true);
+						CMLib.commands().postChannel(channels.get(i),M.clans(),L("@x1 has logged out",name),true);
 				}
-				CMLib.login().notifyFriends(M,"^X"+M.Name()+" has logged off.^.^?");
+				CMLib.login().notifyFriends(M,L("^X@x1 has logged off.^.^?",M.Name()));
 		
 				// the player quit message!
 				CMLib.threads().executeRunnable(groupName,new LoginLogoutThread(M,CMMsg.MSG_QUIT));
@@ -2608,6 +2608,11 @@ public class DefaultSession implements Session
 			CMLib.sessions().remove(this);
 			setStatus(SessionStatus.LOGOUTFINAL);
 		}
+	}
+	
+	private String L(final String str, final String... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 
 	public void mainLoop()

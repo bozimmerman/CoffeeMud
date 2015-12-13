@@ -728,13 +728,13 @@ public class Factions extends StdLibrary implements FactionManager
 				Faction.FRange FR=me.fetchRange(which);
 				if(FR==null)
 				{
-					if(mob.session().confirm(L("Create a new range code named '@x1' (y/N): ",which),L("N")))
+					if(mob.session().confirm(L("Create a new range code named '@x1' (y/N): ",which),"N"))
 					{
 						FR=me.addRange("0;100;Change My Name;"+which+";");
 					}
 				}
 				else
-				if(mob.session().choose(L("Would you like to M)odify or D)elete this range (M/d): "),L("MD"),L("M")).toUpperCase().startsWith("D"))
+				if(mob.session().choose(L("Would you like to M)odify or D)elete this range (M/d): "),"MD","M").toUpperCase().startsWith("D"))
 				{
 					me.delRange(FR);
 					mob.tell(L("Range deleted."));
@@ -901,7 +901,7 @@ public class Factions extends StdLibrary implements FactionManager
 				{
 					factor=me.getFactor(factorNum);
 					if(factor!=null)
-						if(mob.session().choose(L("Would you like to M)odify or D)elete this range (M/d): "),L("MD"),L("M")).toUpperCase().startsWith("D"))
+						if(mob.session().choose(L("Would you like to M)odify or D)elete this range (M/d): "),"MD","M").toUpperCase().startsWith("D"))
 						{
 							me.delFactor(factor);
 							mob.tell(L("Factor deleted."));
@@ -971,14 +971,14 @@ public class Factions extends StdLibrary implements FactionManager
 					if(possibleF==null)
 						mob.tell(L("'@x1' is not a valid faction.",which));
 					else
-					if(mob.session().confirm(L("Create a new relation for faction  '@x1' (y/N):",possibleF.name()),L("N")))
+					if(mob.session().confirm(L("Create a new relation for faction  '@x1' (y/N):",possibleF.name()),"N"))
 					{
 						theF=possibleF;
 						me.addRelation(theF.factionID(),1.0);
 					}
 				}
 				else
-				if(mob.session().choose(L("Would you like to M)odify or D)elete this relation (M/d): "),L("MD"),L("M")).toUpperCase().startsWith("D"))
+				if(mob.session().choose(L("Would you like to M)odify or D)elete this relation (M/d): "),"MD","M").toUpperCase().startsWith("D"))
 				{
 					me.delRelation(theF.factionID());
 					mob.tell(L("Relation deleted."));
@@ -1055,7 +1055,7 @@ public class Factions extends StdLibrary implements FactionManager
 						continue;
 					}
 					else
-					if(!mob.session().confirm(L("Create a new trigger using ID '@x1' (y/N): ",newID),L("N")))
+					if(!mob.session().confirm(L("Create a new trigger using ID '@x1' (y/N): ",newID),"N"))
 					{
 						me.delChangeEvent(CE);
 						CE=null;
@@ -1063,7 +1063,7 @@ public class Factions extends StdLibrary implements FactionManager
 					}
 				}
 				else
-				if(mob.session().choose(L("Would you like to M)odify or D)elete this trigger (M/d): "),L("MD"),L("M")).toUpperCase().startsWith("D"))
+				if(mob.session().choose(L("Would you like to M)odify or D)elete this trigger (M/d): "),"MD","M").toUpperCase().startsWith("D"))
 				{
 					me.delChangeEvent(CE);
 					mob.tell(L("Trigger deleted."));
@@ -1170,7 +1170,7 @@ public class Factions extends StdLibrary implements FactionManager
 						mob.tell(L("That allowance is invalid.."));
 						continue;
 					}
-					if(mob.session().choose(L("Would you like to M)odify or D)elete this allowance (M/d): "),L("MD"),L("M")).toUpperCase().startsWith("D"))
+					if(mob.session().choose(L("Would you like to M)odify or D)elete this allowance (M/d): "),"MD","M").toUpperCase().startsWith("D"))
 					{
 						me.delAbilityUsage(CA);
 						mob.tell(L("Allowance deleted."));
@@ -1178,7 +1178,7 @@ public class Factions extends StdLibrary implements FactionManager
 					}
 				}
 				else
-				if(!mob.session().confirm(L("Create a new allowance (y/N): "),L("N")))
+				if(!mob.session().confirm(L("Create a new allowance (y/N): "),"N"))
 				{
 					continue;
 				}
@@ -1282,7 +1282,7 @@ public class Factions extends StdLibrary implements FactionManager
 						break;
 					ID=IDs.elementAt(num);
 					final String type=getWordAffOrBehav(ID);
-					if(mob.session().choose(L("Would you like to M)odify or D)elete this @x1 (M/d): ",type),L("MD"),L("M")).toUpperCase().startsWith("D"))
+					if(mob.session().choose(L("Would you like to M)odify or D)elete this @x1 (M/d): ",type),"MD","M").toUpperCase().startsWith("D"))
 					{
 						me.delAffectBehav(ID);
 						mob.tell(L("@x1 deleted.",CMStrings.capitalizeAndLower(type)));
@@ -1319,7 +1319,7 @@ public class Factions extends StdLibrary implements FactionManager
 								cont=true;
 							}
 							else
-							if(!mob.session().confirm(L("Create a new @x1 (y/N): ",type),L("N")))
+							if(!mob.session().confirm(L("Create a new @x1 (y/N): ",type),"N"))
 							{
 								ID=null;
 								break;
@@ -1421,7 +1421,7 @@ public class Factions extends StdLibrary implements FactionManager
 						break;
 					item=reactions.elementAt(num);
 					final String type=getWordAffOrBehav(item.reactionObjectID());
-					if(mob.session().choose(L("Would you like to M)odify or D)elete this @x1 (M/d): ",type),L("MD"),L("M")).toUpperCase().startsWith("D"))
+					if(mob.session().choose(L("Would you like to M)odify or D)elete this @x1 (M/d): ",type),"MD","M").toUpperCase().startsWith("D"))
 					{
 						me.delReaction(item);
 						mob.tell(L("@x1 deleted.",CMStrings.capitalizeAndLower(type)));

@@ -183,7 +183,7 @@ public class ClanVote extends StdCommand
 								break;
 							case 'C':
 								if((mob.session()!=null)
-								&&(mob.session().confirm(L("This will cancel this entire vote, are you sure (N/y)?"),L("N"))))
+								&&(mob.session().confirm(L("This will cancel this entire vote, are you sure (N/y)?"),"N")))
 								{
 									C.delVote(CV);
 									CMLib.clans().clanAnnounce(mob,L("A prior vote for @x1 @x2 has been deleted.",C.getGovernmentName(),C.clanID()));

@@ -616,7 +616,7 @@ public interface CatalogLibrary extends CMLibrary
 
 		/**
 		 * Returns this metadata as an xml doc
-		 * @param name TODO
+		 * @param name null, or an optional item/mob name
 		 * @see CataData#build(String)
 		 * @return this metadata as an xml doc
 		 */

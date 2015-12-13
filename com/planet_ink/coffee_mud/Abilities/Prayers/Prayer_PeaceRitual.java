@@ -69,7 +69,7 @@ public class Prayer_PeaceRitual extends Prayer
 		}
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel(channels.get(i),clan2Set,mob.name()+" located in '"+mob.location().displayText(mob)+"' is performing a peace ritual on behalf of "+clan1.name()+".",false);
+			CMLib.commands().postChannel(channels.get(i),clan2Set,L("@x1 located in '@x2' is performing a peace ritual on behalf of @x3.",mob.name(),mob.location().displayText(mob),clan1.name()),false);
 		return super.tick(ticking,tickID);
 	}
 
@@ -130,7 +130,7 @@ public class Prayer_PeaceRitual extends Prayer
 				}
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),"There is now peace between "+C1.name()+" and "+C2.name()+".",false);
+					CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("There is now peace between @x1 and @x2.",C1.name(),C2.name()),false);
 			}
 		}
 	}

@@ -154,7 +154,7 @@ public class Skill_Convert extends StdSkill
 		{
 			try
 			{
-				if(!target.session().confirm(L("\n\r@x1 is trying to convert you to the worship of @x2.  Is this what you want (N/y)?",mob.name(target),D.name()),L("N")))
+				if(!target.session().confirm(L("\n\r@x1 is trying to convert you to the worship of @x2.  Is this what you want (N/y)?",mob.name(target),D.name()),"N"))
 				{
 					mob.location().show(mob,target,CMMsg.MSG_SPEAK,L("<S-YOUPOSS> attempt to convert <T-NAME> to the worship of @x1 is rejected.",D.name()));
 					return false;

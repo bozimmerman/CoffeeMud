@@ -1325,7 +1325,7 @@ public class MOBloader
 			return;
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has just been deleted.",true);
+			CMLib.commands().postChannel(channels.get(i),mob.clans(),CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",mob.Name()),true);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_PURGES);
 		DB.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
 		DB.update("DELETE FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"'");

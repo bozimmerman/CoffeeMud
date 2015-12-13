@@ -301,7 +301,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOSTLEVELS);
 			if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has just lost a level.",true);
+				CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has just lost a level.",mob.Name()),true);
 		}
 
 		final CharClass curClass=mob.baseCharStats().getCurrentClass();
@@ -492,10 +492,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			final List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LEVELS);
 			if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(room)+".",true);
+				CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has just gained a level at @x2.",mob.Name(),CMLib.map().getExtendedRoomID(room)),true);
 			if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels2.size();i++)
-				CMLib.commands().postChannel(channels2.get(i),mob.clans(),mob.Name()+" has just gained a level.",true);
+				CMLib.commands().postChannel(channels2.get(i),mob.clans(),L("@x1 has just gained a level.",mob.Name()),true);
 			if(mob.soulMate()==null)
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LEVELSGAINED);
 		}

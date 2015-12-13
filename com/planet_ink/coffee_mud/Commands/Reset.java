@@ -173,7 +173,7 @@ public class Reset extends StdCommand
 				String s=I.description().trim().toLowerCase();
 				if((mob!=null)&&(mob.session()!=null)&&(openOnly))
 				{
-					if(mob.session().confirm(L("Clear @x1/@x2/@x3 (Y/n)?",I.name(),I.displayText(),I.description()),L("Y")))
+					if(mob.session().confirm(L("Clear @x1/@x2/@x3 (Y/n)?",I.name(),I.displayText(),I.description()),"Y"))
 					{
 						I.setDescription("");
 						return I.material();
@@ -202,7 +202,7 @@ public class Reset extends StdCommand
 				{
 					if(mob!=null)
 					{
-						if(mob.session().confirm(L("Change @x1/@x2 material to @x3 (y/N)?",I.name(),I.displayText(),RawMaterial.CODES.NAME(rightMat)),L("N")))
+						if(mob.session().confirm(L("Change @x1/@x2 material to @x3 (y/N)?",I.name(),I.displayText(),RawMaterial.CODES.NAME(rightMat)),"N"))
 						{
 							I.setMaterial(rightMat);
 							I.setDescription("");
@@ -369,7 +369,7 @@ public class Reset extends StdCommand
 		if(s.equalsIgnoreCase("room"))
 		{
 			final String warning=resetWarning(mob, mob.location());
-			if((mob.session()==null)||(warning==null)||(mob.session().confirm(L("@x1\n\rReset the contents of the room '@x2', OK (Y/n)?",warning,mob.location().displayText(mob)),L("Y"))))
+			if((mob.session()==null)||(warning==null)||(mob.session().confirm(L("@x1\n\rReset the contents of the room '@x2', OK (Y/n)?",warning,mob.location().displayText(mob)),"Y")))
 			{
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 					if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
@@ -432,7 +432,7 @@ public class Reset extends StdCommand
 			}
 			if(CMLib.smtp().isValidEmailAddress(stat.getEmail()))
 			{
-				if((mob.session()==null)||(mob.session().confirm(L("Generate a random password for '@x1' and email to '@x2' (Y/n)?",finalName,stat.getEmail()),L("Y"))))
+				if((mob.session()==null)||(mob.session().confirm(L("Generate a random password for '@x1' and email to '@x2' (Y/n)?",finalName,stat.getEmail()),"Y")))
 				{
 					String password=CMLib.encoder().generateRandomPassword();
 					stat.setPassword(password);
@@ -448,7 +448,7 @@ public class Reset extends StdCommand
 				}
 			}
 			else
-			if((mob.session()==null)||(mob.session().confirm(L("Would you like to set the password for '@x1' to '@x2' (Y/n)?",finalName,finalName.toLowerCase()),L("Y"))))
+			if((mob.session()==null)||(mob.session().confirm(L("Would you like to set the password for '@x1' to '@x2' (Y/n)?",finalName,finalName.toLowerCase()),"Y")))
 			{
 				String password=finalName.toLowerCase();
 				stat.setPassword(password);
@@ -481,7 +481,7 @@ public class Reset extends StdCommand
 				final String warning=resetWarning(mob, A);
 				if(warning!=null)
 					mob.tell(warning);
-				if((mob.session()==null)||(mob.session().confirm(L("Reset the contents of the area '@x1', OK (Y/n)?",A.name()),L("Y"))))
+				if((mob.session()==null)||(mob.session().confirm(L("Reset the contents of the area '@x1', OK (Y/n)?",A.name()),"Y")))
 				{
 					for(final Session S : CMLib.sessions().localOnlineIterable())
 						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(A.inMyMetroArea(S.mob().location().getArea())))
@@ -618,7 +618,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("propertygarbage"))
 		{
-			if(mob.session().confirm(L("Reset all unowned property to default room descriptions?"), "N"))
+			if(mob.session().confirm(L("Reset all unowned property to default room descriptions?"), L("N")))
 			{
 				Room R=null;
 				LandTitle T=null;
@@ -643,7 +643,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("racestatgains")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
-			if(mob.session().confirm(L("Alter the stat gains every generic race automatically?"), "N"))
+			if(mob.session().confirm(L("Alter the stat gains every generic race automatically?"), L("N")))
 			{
 				for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 				{
@@ -676,7 +676,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("genraceagingcharts")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
-			if(mob.session().confirm(L("Alter the aging charts of every race automatically?"), "N"))
+			if(mob.session().confirm(L("Alter the aging charts of every race automatically?"), L("N")))
 			{
 				for(final Enumeration e=CMClass.races();e.hasMoreElements();)
 				{
@@ -772,7 +772,7 @@ public class Reset extends StdCommand
 				mob.tell(L("Which bank?"));
 				return false;
 			}
-			if(mob.session().confirm(L("Inspect and update all COIN objects in player bank accounts?"), "N"))
+			if(mob.session().confirm(L("Inspect and update all COIN objects in player bank accounts?"), L("N")))
 			{
 				final List<JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
 				for(int v=0;v<V.size();v++)
@@ -799,7 +799,7 @@ public class Reset extends StdCommand
 				s=commands.get(1);
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Alter every mobs combat stats to system defaults?!"), "N"))
+			if(mob.session().confirm(L("Alter every mobs combat stats to system defaults?!"), L("N")))
 			{
 				mob.session().print(L("working..."));
 				StringBuffer recordedChanges=null;
@@ -912,7 +912,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Alter every door called 'the ground'?!"), "N"))
+			if(mob.session().confirm(L("Alter every door called 'the ground'?!"), L("N")))
 			{
 				mob.session().print(L("working..."));
 				try
@@ -948,7 +948,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Change all mobs armor to the codebase defaults?"), "N"))
+			if(mob.session().confirm(L("Change all mobs armor to the codebase defaults?"), L("N")))
 			{
 				mob.session().print(L("working..."));
 				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
@@ -997,7 +997,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Alter every mobs money to system defaults?!"), "N"))
+			if(mob.session().confirm(L("Alter every mobs money to system defaults?!"), L("N")))
 			{
 				mob.session().print(L("working..."));
 				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
@@ -1057,7 +1057,7 @@ public class Reset extends StdCommand
 				return false;
 			}
 
-			if(mob.session().confirm(L("Add this behavior/property to every Area?"), "N"))
+			if(mob.session().confirm(L("Add this behavior/property to every Area?"), L("N")))
 			{
 				mob.session().print(L("working..."));
 				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
@@ -1113,7 +1113,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Begin scanning and altering the material type of all items?"), "N"))
+			if(mob.session().confirm(L("Begin scanning and altering the material type of all items?"), L("N")))
 			{
 				mob.session().print(L("working..."));
 				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
@@ -1188,7 +1188,7 @@ public class Reset extends StdCommand
 
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Begin scanning and altering all items to system defaults?"), "N"))
+			if(mob.session().confirm(L("Begin scanning and altering all items to system defaults?"), L("N")))
 			{
 				mob.session().print(L("working..."));
 				StringBuffer recordedChanges=null;
@@ -1376,7 +1376,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("arearacemat")&&(CMSecurity.isASysOp(mob)))
 		{
-			if(mob.session().confirm(L("Begin scanning and altering all item materials and mob races manually?"), "N"))
+			if(mob.session().confirm(L("Begin scanning and altering all item materials and mob races manually?"), L("N")))
 			{
 				// this is just utility code and will change frequently
 				final Area A=mob.location().getArea();
@@ -1569,7 +1569,7 @@ public class Reset extends StdCommand
 		{
 			TechType[] types;
 			String[] names;
-			if(mob.session().confirm(L("Re-create all the manufacturers?"), "N"))
+			if(mob.session().confirm(L("Re-create all the manufacturers?"), L("N")))
 			{
 				final List<Manufacturer> m=new XVector<Manufacturer>(CMLib.tech().manufacterers());
 				for(final Manufacturer M : m)

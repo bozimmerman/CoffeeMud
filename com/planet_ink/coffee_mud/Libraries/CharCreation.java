@@ -1075,7 +1075,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(RECONFIRMSTR);
+			session.promptPrint(L(RECONFIRMSTR));
 			return LoginResult.INPUT_REQUIRED;
 		}
 		loginObj.state=LoginState.LOGIN_START;
@@ -1112,7 +1112,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("Y")))
 		{
-			session.promptPrint(RECONFIRMSTR);
+			session.promptPrint(L(RECONFIRMSTR));
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else
@@ -1276,7 +1276,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(RECONFIRMSTR);
+			session.promptPrint(L(RECONFIRMSTR));
 			return LoginResult.INPUT_REQUIRED;
 		}
 		loginObj.state=LoginState.LOGIN_START;
@@ -1296,7 +1296,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(RECONFIRMSTR);
+			session.promptPrint(L(RECONFIRMSTR));
 			return LoginResult.INPUT_REQUIRED;
 		}
 		if(result==LoginResult.NO_LOGIN)
@@ -1413,7 +1413,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(RECONFIRMSTR);
+			session.promptPrint(L(RECONFIRMSTR));
 			return LoginResult.INPUT_REQUIRED;
 		}
 		loginObj.state=LoginState.LOGIN_START;
@@ -1522,7 +1522,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(RECONFIRMSTR);
+			session.promptPrint(L(RECONFIRMSTR));
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else
@@ -2199,7 +2199,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("Y")))
 		{
-			session.promptPrint(RECONFIRMSTR);
+			session.promptPrint(L(RECONFIRMSTR));
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else
@@ -2459,7 +2459,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("Y")))
 		{
-			session.promptPrint(RECONFIRMSTR);
+			session.promptPrint(L(RECONFIRMSTR));
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else
@@ -2619,7 +2619,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(RECONFIRMSTR);
+			session.promptPrint(L(RECONFIRMSTR));
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else
@@ -3171,7 +3171,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.playerStats().setLastIP(session.getAddress());
 		Log.sysOut("Created user: "+mob.Name());
 		CMProps.addNewUserByIP(session.getAddress());
-		notifyFriends(mob,"^X"+mob.Name()+" has just been created.^.^?");
+		notifyFriends(mob,L("^X@x1 has just been created.^.^?",mob.Name()));
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS"))
 		&&(!mob.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 			mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
@@ -3181,7 +3181,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CMLib.database().DBUpdatePlayer(mob);
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has just been created.",true);
+			CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has just been created.",mob.Name()),true);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
 		if(isExpired(mob.playerStats().getAccount(),session,mob))
 		{
@@ -3391,7 +3391,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(mob.playerStats()!=null)
 			mob.playerStats().setLastIP(session.getAddress());
-		notifyFriends(mob,"^X"+mob.Name()+" has logged on.^.^?");
+		notifyFriends(mob,L("^X@x1 has logged on.^.^?",mob.Name()));
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS"))
 		&&(!mob.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 			mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
@@ -3402,7 +3402,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(!CMLib.flags().isCloaked(mob))
 		{
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has logged on.",true);
+				CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has logged on.",mob.Name()),true);
 		}
 		setGlobalBitmaps(mob);
 		return LoginResult.NORMAL_LOGIN;

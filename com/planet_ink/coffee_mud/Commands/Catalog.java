@@ -78,7 +78,7 @@ public class Catalog extends StdCommand
 				if((data!=null)&&(!data.category().equals(newCat)))
 				{
 					if((mob.session()==null)
-					||(!mob.session().confirm(L("The object '@x1' already exists in the catalog@x2 , exactly as it is.  Would you like to change it to category '@x3'(y/N)?",cataP.Name(),catagory,newCat),L("N"))))
+					||(!mob.session().confirm(L("The object '@x1' already exists in the catalog@x2 , exactly as it is.  Would you like to change it to category '@x3'(y/N)?",cataP.Name(),catagory,newCat),"N")))
 					{
 						return false;
 					}
@@ -97,7 +97,7 @@ public class Catalog extends StdCommand
 			if((data!=null)&&(!data.category().equals(newCat)))
 				diffs.insert(0,"New category: '"+newCat+"', ");
 			if((mob.session()==null)
-			||(!mob.session().confirm(L("Cataloging that object will change the existing cataloged '@x1'@x2 by altering the following properties: @x3.  Please confirm (y/N)?",P.Name(),catagory,diffs.toString()),L("Y"))))
+			||(!mob.session().confirm(L("Cataloging that object will change the existing cataloged '@x1'@x2 by altering the following properties: @x3.  Please confirm (y/N)?",P.Name(),catagory,diffs.toString()),"Y")))
 			{
 				CMLib.catalog().changeCatalogUsage(origP,false);
 				return false;
@@ -221,8 +221,8 @@ public class Catalog extends StdCommand
 				final String type=types[whatKind];
 
 				if((mob.session()!=null)
-				&&(mob.session().confirm(L("You are about to auto-catalog (room-reset and save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),L("N")))
-				&&((which.equalsIgnoreCase("ROOM"))||mob.session().confirm(L("I'm serious now.  You can't abort this, and it WILL modify stuff.\n\rHave you tested this command on small areas and know what you're doing?.\n\rAre you absolutely POSITIVELY sure (y/N)?"),L("N"))))
+				&&(mob.session().confirm(L("You are about to auto-catalog (room-reset and save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),"N"))
+				&&((which.equalsIgnoreCase("ROOM"))||mob.session().confirm(L("I'm serious now.  You can't abort this, and it WILL modify stuff.\n\rHave you tested this command on small areas and know what you're doing?.\n\rAre you absolutely POSITIVELY sure (y/N)?"),"N")))
 				{
 					Physical P=null;
 					String roomID=null;
@@ -445,7 +445,7 @@ public class Catalog extends StdCommand
 						if((data!=null)&&(data.numReferences()>0))
 							prefix="Catalog MOB '"+((MOB)P).Name()+"' is currently listed as being in use '"+data.numReferences()+" times.  ";
 						if((mob.session()!=null)
-						&&((del.length>10)||(mob.session().confirm(L("@x1This will permanently delete mob '@x2' from the catalog.  Are you sure (y/N)?",prefix,((MOB)P).Name()),L("N")))))
+						&&((del.length>10)||(mob.session().confirm(L("@x1This will permanently delete mob '@x2' from the catalog.  Are you sure (y/N)?",prefix,((MOB)P).Name()),"N"))))
 						{
 							CMLib.catalog().delCatalog(P);
 							mob.tell(L("MOB '@x1 has been permanently removed from the catalog.",((MOB)P).Name()));
@@ -458,7 +458,7 @@ public class Catalog extends StdCommand
 						if((data!=null)&&(data.numReferences()>0))
 							prefix="Catalog Item '"+((Item)P).Name()+"' is currently listed as being in use '"+data.numReferences()+" times.  ";
 						if((mob.session()!=null)
-						&&((del.length>10)||(mob.session().confirm(L("@x1This will permanently delete item '@x2' from the catalog.  Are you sure (y/N)?",prefix,((Item)P).Name()),L("N")))))
+						&&((del.length>10)||(mob.session().confirm(L("@x1This will permanently delete item '@x2' from the catalog.  Are you sure (y/N)?",prefix,((Item)P).Name()),"N"))))
 						{
 							CMLib.catalog().delCatalog(P);
 							mob.tell(L("Item '@x1 has been permanently removed from the catalog.",P.Name()));
@@ -639,7 +639,7 @@ public class Catalog extends StdCommand
 					final int whatKind=getObjectType(commands);
 					final String type=types[whatKind];
 					if((mob.session()!=null)
-					&&(mob.session().confirm(L("You are about to auto-clean (and auto-save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),L("N"))))
+					&&(mob.session().confirm(L("You are about to auto-clean (and auto-save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),"N")))
 					{
 						Physical P=null;
 						String roomID=null;

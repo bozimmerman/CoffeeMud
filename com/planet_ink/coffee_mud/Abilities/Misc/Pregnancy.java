@@ -360,7 +360,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_BIRTHS);
 								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS);
 								for(int i=0;i<channels.size();i++)
-									CMLib.commands().postChannel(mob,channels.get(i),mob.name()+" has just given birth to "+I.name()+"!",true);
+									CMLib.commands().postChannel(mob,channels.get(i),L("@x1 has just given birth to @x2!",mob.name(),I.name()),true);
 								String parent=mob.Name();
 								if(mob.isMonster()&&(otherParentM!=null))
 									parent=otherParentM.Name();
@@ -434,7 +434,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel(channels.get(i),mob.clans(),target.name()+" is now in a 'family way'.",true);
+					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 is now in a 'family way'.",target.name()),true);
 				target.addNonUninvokableEffect((Ability)copyOf());
 			}
 		}

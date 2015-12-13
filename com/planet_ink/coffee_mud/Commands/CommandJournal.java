@@ -234,7 +234,7 @@ public class CommandJournal extends StdCommand
 			{
 				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.CONFIRM)!=null)
 				{
-					if(!mob.session().confirm(L("\n\r^HSubmit this @x1: '^N@x2^H' (Y/n)?^.^N",journal.NAME().toLowerCase(),msgString),L("Y")))
+					if(!mob.session().confirm(L("\n\r^HSubmit this @x1: '^N@x2^H' (Y/n)?^.^N",journal.NAME().toLowerCase(),msgString),"Y"))
 						return false;
 				}
 				String prePend="";
@@ -245,7 +245,7 @@ public class CommandJournal extends StdCommand
 						prePend+msgString);
 				mob.tell(L("Your @x1 message has been sent.  Thank you.",journal.NAME().toLowerCase()));
 				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL)!=null)
-					CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL).toUpperCase().trim(),null,mob.Name()+" posted to "+journal.NAME()+": "+CMParms.combine(commands,1),true);
+					CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL).toUpperCase().trim(),null,L("@x1 posted to @x2: @x3",mob.Name(),journal.NAME(),CMParms.combine(commands,1)),true);
 			}
 			else
 			{

@@ -113,7 +113,7 @@ public class Destroy extends StdCommand
 
 		if(mob.session().confirm(L("This will complete OBLITERATE the manufacturer '@x1' forever.  "
 				+ "This means all the stuff that is made by this manufacturer will get transferred to ACME. "
-				+ "Are you SURE?! (y/N)?",manufacturerID),L("N")))
+				+ "Are you SURE?! (y/N)?",manufacturerID),"N"))
 		{
 			CMLib.tech().delManufacturer(manufacturer);
 			mob.location().recoverRoomStats();
@@ -140,7 +140,7 @@ public class Destroy extends StdCommand
 			return;
 		}
 		final String playerList = CMParms.toListString(theAccount.getPlayers());
-		if(mob.session().confirm(L("This will complete OBLITERATE the account '@x1' and players '@x2' forever.  Are you SURE?! (y/N)?",theAccount.getAccountName(),playerList),L("N")))
+		if(mob.session().confirm(L("This will complete OBLITERATE the account '@x1' and players '@x2' forever.  Are you SURE?! (y/N)?",theAccount.getAccountName(),playerList),"N"))
 		{
 			for(final Enumeration<String> p=theAccount.getPlayers();p.hasMoreElements();)
 			{
@@ -177,7 +177,7 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-		if(mob.session().confirm(L("This will complete OBLITERATE the user '@x1' forever.  Are you SURE?! (y/N)?",name),L("N")))
+		if(mob.session().confirm(L("This will complete OBLITERATE the user '@x1' forever.  Are you SURE?! (y/N)?",name),"N"))
 		{
 			final MOB deadMOB=CMLib.players().getLoadPlayer(name);
 			CMLib.players().obliteratePlayer(deadMOB,true,false);
@@ -313,7 +313,7 @@ public class Destroy extends StdCommand
 			}
 
 			if(!confirmed)
-				if(!mob.session().confirm(L("You are fixing to permanantly destroy Room \"@x1\".  Are you ABSOLUTELY SURE (y/N)",deadRoom.roomID()),L("N")))
+				if(!mob.session().confirm(L("You are fixing to permanantly destroy Room \"@x1\".  Are you ABSOLUTELY SURE (y/N)",deadRoom.roomID()),"N"))
 					return;
 			CMLib.map().obliterateRoom(deadRoom);
 			mob.tell(L("The sound of massive destruction rings in your ears."));
@@ -612,7 +612,7 @@ public class Destroy extends StdCommand
 			}
 
 			if(!confirmed)
-				if(mob.session().confirm(L("Area: \"@x1\", OBLITERATE IT???",areaName),L("N")))
+				if(mob.session().confirm(L("Area: \"@x1\", OBLITERATE IT???",areaName),"N"))
 				{
 					if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
 					{
@@ -885,7 +885,7 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
-		if(mob.session().confirm(L("Are you sure you want to delete that social (y/N)? "),L("N")))
+		if(mob.session().confirm(L("Are you sure you want to delete that social (y/N)? "),"N"))
 		{
 			CMLib.socials().remove(soc2.name());
 			CMLib.socials().save(mob);
@@ -1314,7 +1314,7 @@ public class Destroy extends StdCommand
 				final StringBuffer list=new StringBuffer("");
 				for(int v=0;v<V.size();v++)
 					list.append(V.get(v).name()+", ");
-				if((mob.session()!=null)&&(mob.session().confirm(L("Destroy the following ticking objects: @x1  (y/N)? ",list.substring(0,list.length()-2)),L("N"))))
+				if((mob.session()!=null)&&(mob.session().confirm(L("Destroy the following ticking objects: @x1  (y/N)? ",list.substring(0,list.length()-2)),"N")))
 				{
 					for(int v=0;v<V.size();v++)
 						CMLib.threads().deleteTick(V.get(v),-1);
@@ -1407,7 +1407,7 @@ public class Destroy extends StdCommand
 			if(which<0)
 				mob.tell(L("Please enter a valid journal name to delete.  Use List Journals for more information."));
 			else
-			if(mob.session().confirm(L("This will destroy all @x1 messages.  Are you SURE (y/N)? ",""+CMLib.database().DBCountJournal(name,null,null)),L("N")))
+			if(mob.session().confirm(L("This will destroy all @x1 messages.  Are you SURE (y/N)? ",""+CMLib.database().DBCountJournal(name,null,null)),"N"))
 			{
 				CMLib.database().DBDeleteJournal(name,null);
 				mob.tell(L("It is done."));
@@ -1430,7 +1430,7 @@ public class Destroy extends StdCommand
 				if(F==null)
 					mob.tell(L("Faction '@x1' is unknown.  Try list factions.",name));
 				else
-				if((!mob.isMonster())&&(mob.session().confirm(L("Destroy faction '@x1' -- this could have unexpected consequences in the future -- (N/y)? ",F.factionID()),L("N"))))
+				if((!mob.isMonster())&&(mob.session().confirm(L("Destroy faction '@x1' -- this could have unexpected consequences in the future -- (N/y)? ",F.factionID()),"N")))
 				{
 					try
 					{
@@ -1485,7 +1485,7 @@ public class Destroy extends StdCommand
 				}
 				catch (Exception e)
 				{
-					mob.tell("Failure: "+e.getMessage());
+					mob.tell(L("Failure: @x1",e.getMessage()));
 				}
 			}
 		}
@@ -1508,7 +1508,7 @@ public class Destroy extends StdCommand
 				return false;
 			}
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
-			if((mob.session()!=null)&&(mob.session().confirm(L("Destroy POLL @x1, are you SURE? (Y/n)? ",P.getName()),L("Y"))))
+			if((mob.session()!=null)&&(mob.session().confirm(L("Destroy POLL @x1, are you SURE? (Y/n)? ",P.getName()),"Y")))
 			{
 				CMLib.polls().deletePoll(P);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^SThe world has grown a bit more certain.^?"));

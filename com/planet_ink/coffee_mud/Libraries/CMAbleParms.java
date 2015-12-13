@@ -2612,7 +2612,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return "";
 						final boolean isResource = CMParms.contains(RawMaterial.CODES.NAMES(),str);
 						if((!isResource)&&(mob.session()!=null)&&(!mob.session().isStopped()))
-							if(!mob.session().confirm(L("You`ve entered a non-resource item keyword '@x1', ok (Y/n)?",str),L("Y")))
+							if(!mob.session().confirm(L("You`ve entered a non-resource item keyword '@x1', ok (Y/n)?",str),"Y"))
 								proceed = true;
 					}
 					return str;
@@ -2711,7 +2711,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						final boolean isResource = CMParms.contains(RawMaterial.CODES.NAMES(),str);
 						if((!isResource)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 						{
-							if(!mob.session().confirm(L("You`ve entered a non-resource item keyword '@x1', ok (Y/n)?",str),L("Y")))
+							if(!mob.session().confirm(L("You`ve entered a non-resource item keyword '@x1', ok (Y/n)?",str),"Y"))
 								proceed = true;
 							else
 								str=str+"$";

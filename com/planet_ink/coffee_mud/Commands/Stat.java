@@ -656,7 +656,7 @@ public class Stat  extends Skills
 							{
 								lastDateTime = dateTime;
 								if(level==0)
-								 	str.append(CMStrings.padRight("Created",8));
+								 	str.append(CMStrings.padRight(L("Created"),8));
 								else
 								 	str.append(CMStrings.padRight(""+level,8));
 								str.append(CMLib.time().date2String(dateTime));

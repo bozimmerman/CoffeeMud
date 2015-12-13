@@ -55,7 +55,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @param pointsLeft the number of points above minimum to allocate
 	 */
 	public void reRollStats(CharStats baseCharStats, int pointsLeft);
-	
+
 	/**
 	 * A blocking call that populates the given mob with their base
 	 * CharStats according to character creation rules.  This method
@@ -73,7 +73,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @throws IOException any input errors that occur
 	 */
 	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPoints) throws IOException;
-	
+
 	/**
 	 * A blocking call that populates the given mob with a character class
 	 * according to character creation rules.  This method
@@ -89,7 +89,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @throws IOException any input errors that occur
 	 */
 	public CharClass promptCharClass(int theme, MOB mob, Session session) throws IOException;
-	
+
 	/**
 	 * Returns the cost, in trains, for the given mob to gain a point in the
 	 * given ability code stat number.   
@@ -100,7 +100,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return negative number for error, or the number of trains required
 	 */
 	public int getTrainingCost(MOB mob, int abilityCode, boolean quiet);
-	
+
 	/**
 	 * Returns whether the given mob can change to the given class (that is,
 	 * to become level 0 in that class) in the given theme.  The mob is
@@ -113,7 +113,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return true if the mob can change to the class, false otherwise
 	 */
 	public boolean canChangeToThisClass(MOB mob, CharClass thisClass, int theme);
-	
+
 	/**
 	 * Returns the list of all character classes that the given mob can change
 	 * into, given their currrent state, and the given theme.  The mob is
@@ -133,7 +133,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return the list of the names of all the expired
 	 */
 	public List<String> getExpiredAcctOrCharsList();
-	
+
 	/**
 	 * Returns the list of all races that the given mob can choose
 	 * into, given their currrent state, and the given theme.  The mob is
@@ -144,7 +144,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return the list of races that the mob may choose.
 	 */
 	public List<Race> raceQualifies(MOB mob, int theme);
-	
+
 	/**
 	 * Returns whether the given name is a valid,  legitimate, 
 	 * unused, unbanned, non-bad name to use in coffeemud, for accounts
@@ -155,7 +155,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return true if the name is ok, false otherwise 
 	 */
 	public boolean isOkName(String login, boolean spacesOk);
-	
+
 	/**
 	 * Returns only whether the given name has a bad word in it.
 	 * @see CharCreationLibrary#isOkName(String, boolean)
@@ -163,14 +163,30 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return true if it has a bad name, false otherwise
 	 */
 	public boolean isBadName(String login);
-	
+
 	/**
 	 * Resets the MXP, MSP and other session flags based on the mobs
 	 * attributes.  Typically done at sign-on only.
+	 * @see CharCreationLibrary#showTheNews(MOB)
 	 * @param mob the mob whose session needs to match his 
 	 */
 	public void reloadTerminal(MOB mob);
+
+	/**
+	 * Resets the terminal to the given mobs specs, shows
+	 * any available polls, the daily message, and runs
+	 * the MOTD.
+	 * @see CharCreationLibrary#reloadTerminal(MOB)
+	 * @param mob the mob to show these things to
+	 */
 	public void showTheNews(MOB mob);
+	
+	/**
+	 * If any of the given mobs friends are online, they are sent the
+	 * given message.
+	 * @param mob the mob whose friends need notifying
+	 * @param message the message to send to the mobs friends.
+	 */
 	public void notifyFriends(MOB mob, String message);
 	public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException;
 	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean checkPlayerName);

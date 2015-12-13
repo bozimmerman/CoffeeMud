@@ -415,7 +415,7 @@ public class DefaultLawSet implements Law
 										clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
 										final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 										for(int i=0;i<channels.size();i++)
-											CMLib.commands().postChannel(channels.get(i),clanSet,T.getOwnerName()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
+											CMLib.commands().postChannel(channels.get(i),clanSet,CMLib.lang().L("@x1 has lost the title to @x2 due to failure to pay property taxes.",T.getOwnerName(),T.landPropertyID()),false);
 									}
 									else
 									if(CMLib.players().getPlayer(T.getOwnerName())!=null)

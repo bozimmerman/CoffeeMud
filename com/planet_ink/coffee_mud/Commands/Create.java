@@ -1299,7 +1299,7 @@ public class Create extends StdCommand
 					return false;
 				}
 				else
-				if((!mob.isMonster())&&(mob.session().confirm(L("Create a new faction with ID/filename: 'resources/@x1' (N/y)? ",name),L("N"))))
+				if((!mob.isMonster())&&(mob.session().confirm(L("Create a new faction with ID/filename: 'resources/@x1' (N/y)? ",name),"N")))
 				{
 					//name=Resources.buildResourcePath("")+name;
 					final StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,CMFile.FLAG_LOGERRORS).text();
@@ -1379,7 +1379,7 @@ public class Create extends StdCommand
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			if(commands.size()<3)
 			{
-				if((mob.session()!=null)&&(mob.session().confirm(L("Create a new Quest using the Quest Maker Wizard (y/N)? "),L("N"))))
+				if((mob.session()!=null)&&(mob.session().confirm(L("Create a new Quest using the Quest Maker Wizard (y/N)? "),"N")))
 					CMLib.quests().questMaker(mob);
 				else
 				{
@@ -1401,7 +1401,7 @@ public class Create extends StdCommand
 				else
 				if((CMLib.quests().fetchQuest(Q.name())!=null)
 				&&((mob.isMonster())
-					||(!mob.session().confirm(L("That quest is already loaded.  Load a duplicate (N/y)? "),L("N")))))
+					||(!mob.session().confirm(L("That quest is already loaded.  Load a duplicate (N/y)? "),"N"))))
 						return false;
 				else
 				{
@@ -1465,7 +1465,7 @@ public class Create extends StdCommand
 				}
 				catch (Exception e)
 				{
-					mob.tell("Failure: "+e.getMessage());
+					mob.tell(L("Failure: @x1",e.getMessage()));
 				}
 			}
 		}

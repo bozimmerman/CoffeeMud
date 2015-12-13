@@ -310,7 +310,7 @@ public class Modify extends StdCommand
 			{
 				if(!mob.isMonster())
 				{
-					if(confirmed||mob.session().confirm(L("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '@x1'.  Are you SURE (y/N)?",restStr),L("N")))
+					if(confirmed||mob.session().confirm(L("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '@x1'.  Are you SURE (y/N)?",restStr),"N"))
 					{
 						int tries=0;
 						while((areaType.length()==0)&&((++tries)<10)&&(mob.session()!=null)&&(!mob.session().isStopped()))
@@ -689,7 +689,7 @@ public class Modify extends StdCommand
 
 		if((!myArea.Name().equals(oldName))&&(!mob.isMonster()))
 		{
-			if(mob.session().confirm(L("Is changing the name of this area really necessary (y/N)?"),L("N")))
+			if(mob.session().confirm(L("Is changing the name of this area really necessary (y/N)?"),"N"))
 			{
 				for(final Enumeration<Room> r=myArea.getCompleteMap();r.hasMoreElements();)
 				{
@@ -1852,7 +1852,7 @@ public class Modify extends StdCommand
 					somethingFound=true;
 					mob.tell(L("Unapproved script:\n\r@x1\n\r",((StringBuffer)O).toString()));
 					if((!mob.isMonster())
-					&&(mob.session().confirm(L("Approve this script (Y/n)?"),L("Y"))))
+					&&(mob.session().confirm(L("Approve this script (Y/n)?"),"Y")))
 						CMSecurity.approveJScript(mob.Name(),L.longValue());
 					else
 						j.remove(L);

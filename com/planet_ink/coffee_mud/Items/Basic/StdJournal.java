@@ -204,7 +204,7 @@ public class StdJournal extends StdItem
 										repeat=true;
 									}
 									else
-									if(!mob.session().choose(L("Send email to @x1 (Y/n)?",M.Name()),L("YN\n"),L("Y")).equalsIgnoreCase("N"))
+									if(!mob.session().choose(L("Send email to @x1 (Y/n)?",M.Name()),L("YN\n"),"Y").equalsIgnoreCase("N"))
 									{
 										final String replyMsg=mob.session().prompt(L("Enter your email response\n\r: "));
 										if((replyMsg.trim().length()>0) && (read != null))
@@ -332,7 +332,7 @@ public class StdJournal extends StdItem
 				   &&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)||admin)
 				   &&(!mob.isMonster()))
 				{
-					if(mob.session().confirm(L("Delete all journal entries? Are you sure (y/N)?"),L("N")))
+					if(mob.session().confirm(L("Delete all journal entries? Are you sure (y/N)?"),"N"))
 						CMLib.database().DBDeleteJournal(name(),null);
 				}
 				else
@@ -343,7 +343,7 @@ public class StdJournal extends StdItem
 						to=mob.Name();
 					else
 					if(CMath.s_bool(getParm("MAILBOX"))
-					||mob.session().confirm(L("Is this a private message (y/N)?"),L("N")))
+					||mob.session().confirm(L("Is this a private message (y/N)?"),"N"))
 					{
 						to=mob.session().prompt(L("To whom:"));
 						if(((!to.toUpperCase().trim().startsWith("MASK=")

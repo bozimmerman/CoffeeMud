@@ -76,7 +76,7 @@ public class Prayer_Annul extends Prayer
 				mob.location().send(mob,msg);
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel(channels.get(i),mob.clans(),target.name()+" and "+target.getLiegeID()+" just had their marriage annulled.",true);
+					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 and @x2 just had their marriage annulled.",target.name(),target.getLiegeID()),true);
 				final MOB M=CMLib.players().getPlayer(target.getLiegeID());
 				if(M!=null)
 					M.setLiegeID("");

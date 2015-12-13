@@ -296,7 +296,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			{
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.WARRANTS);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel(channels.get(i),null,W.criminal().name()+" has been accused of "+fixCharge(W)+".",true);
+					CMLib.commands().postChannel(channels.get(i),null,L("@x1 has been accused of @x2.",W.criminal().name(),fixCharge(W)),true);
 			}
 			return true;
 		}
@@ -2553,7 +2553,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						{
 							final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.EXECUTIONS);
 							for(int i=0;i<channels.size();i++)
-								CMLib.commands().postChannel(judge,channels.get(i),W.criminal().Name()+" is being executed at "+judge.location().displayText(judge)+" for "+W.criminal().charStats().hisher()+" crimes.",true);
+								CMLib.commands().postChannel(judge,channels.get(i),L("@x1 is being executed at @x2 for @x3 crimes.",W.criminal().Name(),judge.location().displayText(judge),W.criminal().charStats().hisher()),true);
 						}
 					}
 					else

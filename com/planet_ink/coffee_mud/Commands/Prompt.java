@@ -61,7 +61,7 @@ public class Prompt extends StdCommand
 				str="";
 				showStr=CMProps.getVar(CMProps.Str.DEFAULTPROMPT);
 			}
-			if(sess.confirm(L("Change your prompt to: @x1, are you sure (Y/n)?",showStr),L("Y")))
+			if(sess.confirm(L("Change your prompt to: @x1, are you sure (Y/n)?",showStr),"Y"))
 			{
 				pstats.setPrompt(str);
 				sess.rawPrintln(L("Your prompt is currently now set at:\n\r@x1",pstats.getPrompt()));

@@ -365,7 +365,7 @@ public class Socials extends StdLibrary implements SocialsList
 		List<Social> socials=getSocialsSet(socialsParse.firstElement());
 		if(((socials==null)||(socials.size()==0))
 		&&((mob.session()==null)
-			||(!mob.session().confirm(L("The social '@x1' does not exist.  Create it (y/N)? ",name),L("N")))))
+			||(!mob.session().confirm(L("The social '@x1' does not exist.  Create it (y/N)? ",name),"N"))))
 			return false;
 		if(socials==null)
 			socials=new Vector<Social>();
@@ -475,7 +475,7 @@ public class Socials extends StdLibrary implements SocialsList
 					newOne="";
 				else
 				if(!newOne.equals("ALL")&&!newOne.equals("SELF")
-				&&!mob.session().confirm(L("'@x1' is a non-standard target.  Are you sure (y/N)? ",newOne),L("N")))
+				&&!mob.session().confirm(L("'@x1' is a non-standard target.  Are you sure (y/N)? ",newOne),"N"))
 				{
 					rest="";
 					pickNewSocial=true;

@@ -821,14 +821,14 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 				case 'S':
 					if(((paramAll!=null)&&(paramAll.equalsIgnoreCase("Y")))
-					||(sess.confirm(L("Save and exit, are you sure (N/y)? "),L("N"))))
+					||(sess.confirm(L("Save and exit, are you sure (N/y)? "),"N")))
 					{
 						return MsgMkrResolution.SAVEFILE;
 					}
 					break;
 				case 'Q':
 					if(((paramAll!=null)&&(paramAll.equalsIgnoreCase("Y")))
-					||(sess.confirm(L("Quit without saving (N/y)? "),L("N"))))
+					||(sess.confirm(L("Quit without saving (N/y)? "),"N")))
 						return MsgMkrResolution.CANCELFILE;
 					break;
 				case 'R':

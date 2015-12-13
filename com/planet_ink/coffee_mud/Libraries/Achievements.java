@@ -2654,17 +2654,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				String help;
 				
 				help=getAchievementsHelpFromMap(helpMap,null,"EVENT");
-				parmTree.put("EVENT",CMLib.genEd().prompt(mob, parmTree.get("EVENT"), ++showNumber, showFlag, "Event Type", false, false, help, CMEVAL_INSTANCE, Event.getEventChoices()));
+				parmTree.put("EVENT",CMLib.genEd().prompt(mob, parmTree.get("EVENT"), ++showNumber, showFlag, L("Event Type"), false, false, help, CMEVAL_INSTANCE, Event.getEventChoices()));
 				E = (Event)CMath.s_valueOf(Event.class, parmTree.get("EVENT"));
 				
 				help=getAchievementsHelpFromMap(helpMap,null,"DISPLAY");
-				parmTree.put("DISPLAY",CMLib.genEd().prompt(mob, parmTree.get("DISPLAY"), ++showNumber, showFlag, "Display Desc", false, false, help, null, null));
+				parmTree.put("DISPLAY",CMLib.genEd().prompt(mob, parmTree.get("DISPLAY"), ++showNumber, showFlag, L("Display Desc"), false, false, help, null, null));
 				
 				help=getAchievementsHelpFromMap(helpMap,null,"TITLE");
-				parmTree.put("TITLE",CMLib.genEd().prompt(mob, parmTree.get("TITLE"), ++showNumber, showFlag, "Title Award", true, false, help, null, null));
+				parmTree.put("TITLE",CMLib.genEd().prompt(mob, parmTree.get("TITLE"), ++showNumber, showFlag, L("Title Award"), true, false, help, null, null));
 				
 				help=getAchievementsHelpFromMap(helpMap,null,"REWARDS");
-				parmTree.put("REWARDS",CMLib.genEd().prompt(mob, parmTree.get("REWARDS"), ++showNumber, showFlag, "Rewards List", true, false, help, null, null));
+				parmTree.put("REWARDS",CMLib.genEd().prompt(mob, parmTree.get("REWARDS"), ++showNumber, showFlag, L("Rewards List"), true, false, help, null, null));
 				
 				for(final String parmName : E.getParameters())
 				{
@@ -2685,7 +2685,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				String err = evaluateAchievement(agent, achievementRow, false);
 				if((err != null)&&(err.trim().length()>0)&&(mob.session()!=null))
 				{
-					mob.session().println("^HERRORS: ^r"+err+"^N");
+					mob.session().println(L("^HERRORS: ^r@x1^N",err));
 				}
 				else
 				if(showFlag<-900)
@@ -2710,7 +2710,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					else
 					if((err != null)&&(err.trim().length()>0)&&(mob.session()!=null))
 					{
-						mob.session().println("^HCorrect errors first or enter CANCEL: ^r"+err+"^N");
+						mob.session().println(L("^HCorrect errors first or enter CANCEL: ^r@x1^N",err));
 						showFlag=-1;
 						continue;
 					}

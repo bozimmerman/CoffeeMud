@@ -151,7 +151,7 @@ public class Email extends StdCommand
 						}
 						if(mob.session()==null)
 							continue;
-						s=mob.session().choose(L("Would you like to D)elete, H)old, or R)eply (D/H/R)? "),L("DHR"),L("H"));
+						s=mob.session().choose(L("Would you like to D)elete, H)old, or R)eply (D/H/R)? "),"DHR","H");
 						if(s.equalsIgnoreCase("H"))
 							break;
 						if(s.equalsIgnoreCase("R"))
@@ -185,12 +185,12 @@ public class Email extends StdCommand
 				}
 				if(!M.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 				{
-					if(!mob.session().confirm(L("Send email to '@x1' (Y/n)?",M.Name()),L("Y")))
+					if(!mob.session().confirm(L("Send email to '@x1' (Y/n)?",M.Name()),"Y"))
 						return false;
 				}
 				else
 				{
-					if(!mob.session().confirm(L("Send email to '@x1', even though their AUTOFORWARD is turned off (y/N)?",M.Name()),L("N")))
+					if(!mob.session().confirm(L("Send email to '@x1', even though their AUTOFORWARD is turned off (y/N)?",M.Name()),"N"))
 						return false;
 				}
 				if(CMProps.getIntVar(CMProps.Int.MAXMAILBOX)>0)
@@ -240,7 +240,7 @@ public class Email extends StdCommand
 		{
 			if(commands==null)
 				return true;
-			final String change=mob.session().prompt(L("You currently have '@x1' set as the email address for this character.\n\rChange it (y/N)?",pstats.getEmail()),L("N"));
+			final String change=mob.session().prompt(L("You currently have '@x1' set as the email address for this character.\n\rChange it (y/N)?",pstats.getEmail()),"N");
 			if(change.toUpperCase().startsWith("N"))
 				return false;
 		}

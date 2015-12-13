@@ -493,11 +493,11 @@ public class Age extends StdAbility
 					if((liege != null) && (liege.session() != null))
 						newMan.playerStats().setLastIP(liege.session().getAddress());
 					Log.sysOut("Age","Created user: "+newMan.Name());
-					CMLib.login().notifyFriends(newMan,"^X"+newMan.Name()+" has just been created.^.^?");
+					CMLib.login().notifyFriends(newMan,L("^X@x1 has just been created.^.^?",newMan.Name()));
 
 					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
 					for(int i=0;i<channels.size();i++)
-						CMLib.commands().postChannel(channels.get(i),newMan.clans(),newMan.Name()+" has just been created.",true);
+						CMLib.commands().postChannel(channels.get(i),newMan.clans(),L("@x1 has just been created.",newMan.Name()),true);
 
 					if(liege != null)
 					{

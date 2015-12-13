@@ -290,7 +290,7 @@ public class Druid_ShapeShift extends StdAbility
 			{
 				try
 				{
-				if(!mob.session().confirm(L("You have not yet chosen your form, would you like to now (Y/n)?"),L("Y")))
+				if(!mob.session().confirm(L("You have not yet chosen your form, would you like to now (Y/n)?"),"Y"))
 					return false;
 				final StringBuffer str=new StringBuffer(L("Choose from the following:\n\r"));
 				final StringBuffer choices=new StringBuffer("");

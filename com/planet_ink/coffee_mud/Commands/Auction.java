@@ -340,12 +340,12 @@ public class Auction extends Channel implements Tickable
 			if(deposit>0.0)
 			{
 				if((mob.isMonster())
-				||(!mob.session().confirm(L("Auctioning @x1 will cost a listing fee of @x2, proceed (Y/n)?",E.name(),depositAmt),L("Y"))))
+				||(!mob.session().confirm(L("Auctioning @x1 will cost a listing fee of @x2, proceed (Y/n)?",E.name(),depositAmt),"Y")))
 					return false;
 			}
 			else
 			if((mob.isMonster())
-			||(!mob.session().confirm(L("Auction @x1 live, with a starting bid of @x2 (Y/n)?",E.name(),(V.get(0))),L("Y"))))
+			||(!mob.session().confirm(L("Auction @x1 live, with a starting bid of @x2 (Y/n)?",E.name(),(V.get(0))),"Y")))
 				return false;
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,CMLib.beanCounter().getCurrency(mob))<deposit)
 			{

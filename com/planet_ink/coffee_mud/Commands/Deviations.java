@@ -57,7 +57,7 @@ public class Deviations extends StdCommand
 		str.append(CMStrings.padRight(L("Rejuv"),5)+" ");
 		if(useFaction!=null)
 			str.append(CMStrings.padRight(useFaction.name(),7)+" ");
-		str.append(CMStrings.padRight("Money",5)+" ");
+		str.append(CMStrings.padRight(L("Money"),5)+" ");
 		str.append(CMStrings.padRight(L("Worn"),5));
 		str.append("\n\r");
 		return str.toString();

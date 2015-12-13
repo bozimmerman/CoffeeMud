@@ -710,7 +710,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		{
 			if((!teacher.isMonster())
 			&&(student.session()!=null)
-			&&(!student.session().confirm(L("\n\r@x1 wants to teach you @x2.  Is this Ok (y/N)?",teacher.Name(),teachWhat),L("N"),5000)))
+			&&(!student.session().confirm(L("\n\r@x1 wants to teach you @x2.  Is this Ok (y/N)?",teacher.Name(),teachWhat),"N",5000)))
 			{
 				if(student.session()!=null)
 					student.session().println("\n\r");

@@ -248,7 +248,7 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("MODLAW"));
 		if(oldLaw==null)
 		{
-			if(mob.session().confirm(L("This is not presently a crime, would you like to make it one (Y/n)?"),L("Y")))
+			if(mob.session().confirm(L("This is not presently a crime, would you like to make it one (Y/n)?"),"Y"))
 			{
 				oldLaw=new String[Law.BIT_NUMBITS];
 				oldLaw[Law.BIT_CRIMENAME]="Name of the crime";
@@ -285,7 +285,7 @@ public class StdLawBook extends StdItem
 				oldLaw[Law.BIT_WARNMSG]=mob.session().prompt(L("Shame/Justification Message: "),oldLaw[Law.BIT_WARNMSG]);
 				break;
 			case 6:
-				if(mob.session().confirm(L("Are you sure you want to delete this crime (y/N)?"),L("N")))
+				if(mob.session().confirm(L("Are you sure you want to delete this crime (y/N)?"),"N"))
 					return null;
 				break;
 			case 4:
@@ -398,7 +398,7 @@ public class StdLawBook extends StdItem
 											abort=true;
 										}
 										else
-										if(mob.session().confirm(L("Add this room as a new detention center room (y/N)? "),L("N")))
+										if(mob.session().confirm(L("Add this room as a new detention center room (y/N)? "),"N"))
 										{
 											final String time=mob.session().prompt(L("Enter the amount of time before they are released: "),"");
 											if((time.length()==0)||(!CMath.isInteger(time))||(CMath.s_int(time)<0)||(CMath.s_int(time)>10000))
@@ -664,7 +664,7 @@ public class StdLawBook extends StdItem
 				{
 					s=s.toUpperCase();
 					final boolean resource=RawMaterial.CODES.FIND_CaseSensitive(s)>=0;
-					if(resource||mob.session().confirm(L("'@x1' is not a known resource.  Add as a key word anyway (y/N)?",s),L("N")))
+					if(resource||mob.session().confirm(L("'@x1' is not a known resource.  Add as a key word anyway (y/N)?",s),"N"))
 					{
 						final String[] newValue=modifyLaw(A,B,theLaw,mob,null);
 						if(newValue!=null)
@@ -1169,7 +1169,7 @@ public class StdLawBook extends StdItem
 				if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
 					mob.tell(L("You can not add this room as a release room, as it is not in the area."));
 				else
-				if(mob.session().confirm(L("Add this room as a new release room (y/N)? "),L("N")))
+				if(mob.session().confirm(L("Add this room as a new release room (y/N)? "),"N"))
 				{
 					V.add(CMLib.map().getExtendedRoomID(mob.location()));
 					changed=true;
@@ -1182,7 +1182,7 @@ public class StdLawBook extends StdItem
 				{
 					if(x>4)
 					{
-						if(mob.session().confirm(L("Remove this room as a release room (y/N)? "),L("N")))
+						if(mob.session().confirm(L("Remove this room as a release room (y/N)? "),"N"))
 						{
 							V.remove(x-5);
 							changed=true;
@@ -1258,7 +1258,7 @@ public class StdLawBook extends StdItem
 				if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
 					mob.tell(L("You can not add this room as a jail, as it is not in the area."));
 				else
-				if(mob.session().confirm(L("Add this room as a new jail room (y/N)? "),L("N")))
+				if(mob.session().confirm(L("Add this room as a new jail room (y/N)? "),"N"))
 				{
 					V.add(CMLib.map().getExtendedRoomID(mob.location()));
 					changed=true;
@@ -1271,7 +1271,7 @@ public class StdLawBook extends StdItem
 				{
 					if(x>4)
 					{
-						if(mob.session().confirm(L("Remove this room as a jail room (y/N)? "),L("N")))
+						if(mob.session().confirm(L("Remove this room as a jail room (y/N)? "),"N"))
 						{
 							V.remove(x-5);
 							changed=true;

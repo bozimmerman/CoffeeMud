@@ -161,7 +161,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return false;
 		if(showFlag!=showNumber)
-			return mob.session().confirm(L("Toggle (y/N)?"),L("N"));
+			return mob.session().confirm(L("Toggle (y/N)?"),"N");
 		return true;
 	}
 
@@ -624,7 +624,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				return;
 			}
 			else
-			if(mob.session().confirm(L("This object is cataloged.  Changing its name will detach it from the cataloged version, are you sure (y/N)?"),L("N")))
+			if(mob.session().confirm(L("This object is cataloged.  Changing its name will detach it from the cataloged version, are you sure (y/N)?"),"N"))
 			{
 				CMLib.catalog().changeCatalogUsage(P,false);
 				P.setName(newName);
@@ -1212,7 +1212,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(newRoom==null)
 					mob.tell(L("'@x1' does not exist. No Change.",newName));
 				else
-				if(mob.session().confirm(L("This will change the room type of room @x1. It will automatically save any mobs and items in this room permanently.  Are you absolutely sure (y/N)?",R.roomID()),L("N")))
+				if(mob.session().confirm(L("This will change the room type of room @x1. It will automatically save any mobs and items in this room permanently.  Are you absolutely sure (y/N)?",R.roomID()),"N"))
 					R=changeRoomType(R,newRoom);
 				R.recoverRoomStats();
 			}
@@ -4098,7 +4098,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								else
 								if(M.isSold(ShopKeeper.DEAL_INVENTORYONLY))
 									ok=true;
-								if((ok)||((mob.session()!=null)&&mob.session().confirm(L("This shopkeeper type does not sell that. Are you sure (y/N)?"),L("N"))))
+								if((ok)||((mob.session()!=null)&&mob.session().confirm(L("This shopkeeper type does not sell that. Are you sure (y/N)?"),"N")))
 								{
 									boolean alreadyHasIt=false;
 									if(M.getShop().doIHaveThisInStock(item.Name(),null))
@@ -4600,7 +4600,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
 									alreadyHasIt=true;
 							}
-							final boolean clericOnly=mob.session().confirm(L("Is this for clerics only (y/N)?"),L("N"));
+							final boolean clericOnly=mob.session().confirm(L("Is this for clerics only (y/N)?"),"N");
 							if(!alreadyHasIt)
 								mob.tell(L("@x1 added.",chosenOne.ID()));
 							else
@@ -4671,7 +4671,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
 									alreadyHasIt=true;
 							}
-							final boolean clericOnly=mob.session().confirm(L("Is this for clerics only (y/N)?"),L("N"));
+							final boolean clericOnly=mob.session().confirm(L("Is this for clerics only (y/N)?"),"N");
 							if(!alreadyHasIt)
 								mob.tell(L("@x1 added.",chosenOne.ID()));
 							else
@@ -6579,7 +6579,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						final StringBuffer str=new StringBuffer(A.ID()+";");
 						final String level=mob.session().prompt(L("Enter the level of this skill (1): "),"1");
 						str.append((""+CMath.s_int(level))+";");
-						if(mob.session().confirm(L("Is this skill automatically gained (Y/n)?"),L("Y")))
+						if(mob.session().confirm(L("Is this skill automatically gained (Y/n)?"),"Y"))
 							str.append("false;");
 						else
 							str.append("true;");
@@ -6815,7 +6815,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		Integer level=null;
 		if(origLevelIndex>=0)
 		{
-			if(mob.session().confirm(L("Enter Y to DELETE, or N to modify (y/N)?"),L("N")))
+			if(mob.session().confirm(L("Enter Y to DELETE, or N to modify (y/N)?"),"N"))
 			{
 				final List<AbilityMapper.AbilityMapping> set=(List<AbilityMapper.AbilityMapping>)sets.elementAt(origLevelIndex,2);
 				set.remove(origAbleIndex);
@@ -8542,7 +8542,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final Item I=i.nextElement();
 				if((I!=null)&&(I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()!=PhyStats.NO_REJUV)&&(session!=null))
 				{
-					if(session.confirm(L("\n\r**This mob has variable equipment in the catalog, would you like to reset it first (Y/n)? "),L("Y")))
+					if(session.confirm(L("\n\r**This mob has variable equipment in the catalog, would you like to reset it first (Y/n)? "),"Y"))
 					{
 						CMLib.coffeeMaker().setPropertiesStr(me, cataM.text(),false);
 						CMLib.catalog().changeCatalogUsage(me, true);

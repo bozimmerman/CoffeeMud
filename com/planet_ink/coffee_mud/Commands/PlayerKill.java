@@ -80,7 +80,7 @@ public class PlayerKill extends StdCommand
 			mob.tell(L("Turning on this flag will allow you to kill and be killed by other players."));
 			if(CMProps.getVar(CMProps.Str.PKILL).startsWith("ONEWAY"))
 				mob.tell(L("Once turned on, this flag may not be turned off again."));
-			if(mob.session().confirm(L("Are you absolutely sure (y/N)?"),L("N")))
+			if(mob.session().confirm(L("Are you absolutely sure (y/N)?"),"N"))
 			{
 				mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
 				mob.tell(L("Your playerkill flag has been turned on."));

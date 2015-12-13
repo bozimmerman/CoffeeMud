@@ -323,7 +323,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						return false;
 					}
 					CMLib.commands().postSay(this,mob,L("Auctioning @x1 will cost a listing fee of @x2, proceed?",I.name(),depositAmt),true,false);
-					try{if(!mob.session().confirm(L("(Y/N):"),L("Y"),10000)) return false;}catch(final Exception e){return false;}
+					try{if(!mob.session().confirm(L("(Y/N):"),"Y",10000)) return false;}catch(final Exception e){return false;}
 					lastMsgData=(AuctionData)CMClass.getCommon("DefaultAuction");
 					lastMsgData.setAuctionedItem((Item)msg.tool());
 					lastMsgData.setAuctioningMob(msg.source());
@@ -378,7 +378,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						{
 							try
 							{
-							if(!msg.source().session().confirm(L("This will cancel your auction on @x1, are you sure (y/N)?",data.getAuctionedItem().name()),L("N"),10000))
+							if(!msg.source().session().confirm(L("This will cancel your auction on @x1, are you sure (y/N)?",data.getAuctionedItem().name()),"N",10000))
 								return false;
 							}catch(final Exception e){return false;}
 						}
@@ -455,7 +455,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						{
 							try
 							{
-							if(!msg.source().session().confirm(L("This will cancel your auction on @x1, are you sure (y/N)?",data.getAuctionedItem().name()),L("N"),10000))
+							if(!msg.source().session().confirm(L("This will cancel your auction on @x1, are you sure (y/N)?",data.getAuctionedItem().name()),"N",10000))
 								return false;
 							}catch(final Exception e){return false;}
 						}
@@ -548,7 +548,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 							thisData.setBuyOutPrice(-1.0);
 						thisData.setStartTime(System.currentTimeMillis());
 						CMLib.coffeeShops().saveAuction(thisData, auctionHouse(),false);
-						CMLib.commands().postChannel(this,"AUCTION","New "+thisData.daysRemaining(thisData.getAuctioningMob(),msg.source())+" day auction: "+thisData.getAuctionedItem().name(),true);
+						CMLib.commands().postChannel(this,"AUCTION",L("New @x1 day auction: @x2",""+thisData.daysRemaining(thisData.getAuctioningMob(),msg.source()),thisData.getAuctionedItem().name()),true);
 						final AuctionPolicy aRates=(AuctionPolicy)CMClass.getCommon("DefaultAuctionPolicy");
 						aRates.mergeAuctioneerPolicy(this);
 						double deposit=aRates.timedListingPrice();

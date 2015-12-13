@@ -523,7 +523,7 @@ public class Clans extends StdLibrary implements ClanManager
 			if(numVotes==1)
 				return true;
 
-			if(mob.session().confirm(L("This matter must be voted upon.  Would you like to start the vote now (y/N)?"),L("N")))
+			if(mob.session().confirm(L("This matter must be voted upon.  Would you like to start the vote now (y/N)?"),"N"))
 			{
 				final Clan.ClanVote CV=new Clan.ClanVote();
 				CV.matter=matter;

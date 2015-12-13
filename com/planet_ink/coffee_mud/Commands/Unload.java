@@ -193,7 +193,7 @@ public class Unload extends StdCommand
 					}
 					users.add(M);
 				}
-				final boolean saveFirst=mob.session().confirm(L("Save first (Y/n)?"),L("Y"));
+				final boolean saveFirst=mob.session().confirm(L("Save first (Y/n)?"),"Y");
 				for(int u=0;u<users.size();u++)
 				{
 					final MOB M=users.get(u);

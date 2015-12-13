@@ -1929,7 +1929,7 @@ public class Quests extends StdLibrary implements QuestManager
 					final String what=mob.session().prompt(L("Edit which (enter 0 to cancel)? "),"");
 					if(what.trim().equals("0"))
 					{
-						if(mob.session().confirm(L("Are you sure you want to abort (y/N)? "),L("N")))
+						if(mob.session().confirm(L("Are you sure you want to abort (y/N)? "),"N"))
 						{
 							mob.tell(L("Aborted."));
 							return null;
@@ -1964,7 +1964,7 @@ public class Quests extends StdLibrary implements QuestManager
 			}
 			script=CMStrings.replaceAll(script,"$#AUTHOR",mob.Name());
 			if((mob.session()!=null)&&(!mob.session().isStopped())
-			&&(mob.session().confirm(L("Create the new quest: @x1 (y/N)? ",name),L("N"))))
+			&&(mob.session().confirm(L("Create the new quest: @x1 (y/N)? ",name),"N")))
 			{
 				final Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
 				final CMFile newQF=new CMFile(Resources.makeFileResourceName("quests/"+name+".quest"),mob,CMFile.FLAG_LOGERRORS);

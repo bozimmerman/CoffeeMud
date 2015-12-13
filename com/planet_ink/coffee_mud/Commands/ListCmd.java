@@ -2497,10 +2497,10 @@ public class ListCmd extends StdCommand
 			switch(agent)
 			{
 			case ACCOUNT:
-				str.append("^xAccount Achievements: ^N\n\r");
+				str.append(L("^xAccount Achievements: ^N\n\r"));
 				break;
 			case PLAYER:
-				str.append("^xPlayer Achievements: ^N\n\r");
+				str.append(L("^xPlayer Achievements: ^N\n\r"));
 				break;
 			}
 			str.append(CMStrings.padRight(L("Tattoo"),COL_LEN1)+" ");
@@ -2569,7 +2569,7 @@ public class ListCmd extends StdCommand
 				listStr.append("\n\r");
 			}
 			if(listStr.length()==0)
-				listStr.append("None defined.\n\r");
+				listStr.append(L("None defined.\n\r"));
 			str.append(listStr).append("\n\r");
 		}
 		return str.toString();
