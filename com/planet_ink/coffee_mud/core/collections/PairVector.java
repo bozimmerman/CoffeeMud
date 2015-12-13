@@ -308,18 +308,20 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@Override
-	public T[] toArrayFirst(T[] a)
+	public T[] toArrayFirst(T[] objs)
 	{
-		final T[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getFirst(x);
 		return objs;
 	}
 
 	@Override
-	public K[] toArraySecond(K[] a)
+	public K[] toArraySecond(K[] objs)
 	{
-		final K[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getSecond(x);
 		return objs;

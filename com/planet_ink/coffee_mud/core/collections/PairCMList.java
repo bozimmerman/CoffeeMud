@@ -1,21 +1,6 @@
 package com.planet_ink.coffee_mud.core.collections;
 
 import java.util.*;
-/*
-   Copyright 2000-2015 Bo Zimmerman
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-	   http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
- */
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 
@@ -229,18 +214,20 @@ public final class PairCMList<T, K> extends CMList<Pair<T, K>> implements PairLi
 	}
 
 	@Override
-	public T[] toArrayFirst(T[] a)
+	public T[] toArrayFirst(T[] objs)
 	{
-		final T[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getFirst(x);
 		return objs;
 	}
 
 	@Override
-	public K[] toArraySecond(K[] a)
+	public K[] toArraySecond(K[] objs)
 	{
-		final K[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getSecond(x);
 		return objs;

@@ -588,41 +588,46 @@ public class QuintVector<T, K, L, M, N> extends Vector<Quint<T, K, L, M, N>> imp
 		return lastElement().fifth;
 	}
 
-	public T[] toArrayFirst(T[] a)
+	public T[] toArrayFirst(T[] objs)
 	{
-		final T[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getFirst(x);
 		return objs;
 	}
 
-	public K[] toArraySecond(K[] a)
+	public K[] toArraySecond(K[] objs)
 	{
-		final K[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getSecond(x);
 		return objs;
 	}
 
-	public L[] toArrayThird(L[] a)
+	public L[] toArrayThird(L[] objs)
 	{
-		final L[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getThird(x);
 		return objs;
 	}
 
-	public M[] toArrayFourth(M[] a)
+	public M[] toArrayFourth(M[] objs)
 	{
-		final M[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getFourth(x);
 		return objs;
 	}
 
-	public N[] toArrayFifth(N[] a)
+	public N[] toArrayFifth(N[] objs)
 	{
-		final N[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getFifth(x);
 		return objs;

@@ -424,27 +424,30 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public T[] toArrayFirst(T[] a)
+	public T[] toArrayFirst(T[] objs)
 	{
-		final T[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getFirst(x);
 		return objs;
 	}
 
 	@Override
-	public K[] toArraySecond(K[] a)
+	public K[] toArraySecond(K[] objs)
 	{
-		final K[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getSecond(x);
 		return objs;
 	}
 
 	@Override
-	public L[] toArrayThird(L[] a)
+	public L[] toArrayThird(L[] objs)
 	{
-		final L[] objs = toArray(a);
+		if(objs.length < size())
+			objs = Arrays.copyOf(objs, size());
 		for (int x = 0; x < size(); x++)
 			objs[x] = getThird(x);
 		return objs;
