@@ -959,9 +959,8 @@ public class MOBloader
 			||CMath.bset(mob.location().getArea().flags(),Area.FLAG_INSTANCE_CHILD)))
 			strOtherRoomID=strStartRoomID;
 
-		final String pfxml=getPlayerStatsXML(mob);
-		final StringBuilder cleanXML=new StringBuilder();
-		cleanXML.append(CMLib.coffeeMaker().getFactionXML(mob));
+		final String playerStatsXML=getPlayerStatsXML(mob);
+		final String factionDataXML=CMLib.coffeeMaker().getFactionXML(mob).toString();
 		DB.updateWithClobs(
 				 "UPDATE CMCHAR SET  CMPASS='"+pstats.getPasswordStr()+"'"
 				+", CMCHID='"+mob.ID()+"'"
@@ -1007,8 +1006,16 @@ public class MOBloader
 				+", CMMXML=?"
 				+", CMDESC=?"
 				+"  WHERE CMUSERID='"+mob.Name()+"'"
-				,new String[][]{{pstats.getPrompt(),pstats.getColorStr(),pstats.getEmail(),
-								 pfxml,mob.baseCharStats().getNonBaseStatsAsString(),cleanXML.toString(),mob.description()+" "}});
+				,new String[][]{{
+					pstats.getPrompt(),
+					pstats.getColorStr(),
+					pstats.getEmail(),
+					playerStatsXML,
+					mob.baseCharStats().getNonBaseStatsAsString(),
+					factionDataXML,
+					mob.description()+" "
+				}}
+				);
 		final List<String> clanStatements=new LinkedList<String>();
 		DBConnection D=null;
 		try

@@ -43,9 +43,19 @@ import java.util.*;
  */
 public class DefaultClan implements Clan
 {
-	@Override public String ID(){return "DefaultClan";}
-	private final int tickStatus=Tickable.STATUS_NOT;
-	@Override public int getTickStatus(){return tickStatus;}
+	@Override
+	public String ID()
+	{
+		return "DefaultClan";
+	}
+
+	private final int	tickStatus	= Tickable.STATUS_NOT;
+
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
 
 	protected String 			clanName="";
 	protected String			clanCategory=null;
@@ -79,9 +89,30 @@ public class DefaultClan implements Clan
 	protected final List<Pair<Clan,Integer>> channelSet = new XVector<Pair<Clan,Integer>>(1,true);
 
 	/** return a new instance of the object*/
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultClan();}}
-	@Override public void initializeClass(){}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultClan();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -217,6 +248,7 @@ public class DefaultClan implements Clan
 				CMLib.database().DBUpdateClanKills(this.clanID(), killer.Name(), 0, 1);
 		}
 	}
+
 	@Override
 	public int getCurrentClanKills(MOB killer)
 	{
@@ -255,6 +287,7 @@ public class DefaultClan implements Clan
 	{
 		return calculateMapPoints(getControlledAreas());
 	}
+
 	@Override
 	public long calculateMapPoints(List<Area> controlledAreas)
 	{
@@ -384,18 +417,43 @@ public class DefaultClan implements Clan
 			}
 		}
 	}
-	@Override public void adjExp(int howMuch) { if(howMuch!=0) setExp(getExp()+howMuch); }
-	@Override public long getExp(){return exp;}
 
-	@Override public int getTrophies(){return clanTrophies;}
-	@Override public void setTrophies(int trophyFlag){clanTrophies=trophyFlag;}
+	@Override
+	public void adjExp(int howMuch)
+	{
+		if (howMuch != 0)
+			setExp(getExp() + howMuch);
+	}
+
+	@Override
+	public long getExp()
+	{
+		return exp;
+	}
+
+	@Override
+	public int getTrophies()
+	{
+		return clanTrophies;
+	}
+
+	@Override
+	public void setTrophies(int trophyFlag)
+	{
+		clanTrophies = trophyFlag;
+	}
 
 	@Override
 	public void setTaxes(double rate)
 	{
 		taxRate=rate;
 	}
-	@Override public double getTaxes(){return taxRate;}
+
+	@Override
+	public double getTaxes()
+	{
+		return taxRate;
+	}
 
 	@Override
 	public int getClanRelations(String id)
@@ -414,6 +472,7 @@ public class DefaultClan implements Clan
 			return i[1];
 		return 0;
 	}
+
 	@Override
 	public void setClanRelations(String id, int rel, long time)
 	{
@@ -424,8 +483,19 @@ public class DefaultClan implements Clan
 		relations.put(id.toUpperCase(),i);
 	}
 
-	@Override public int getGovernmentID(){return government;}
-	@Override public void setGovernmentID(int type){government=type; lastGovernmentLoadTime=-1;}
+	@Override
+	public int getGovernmentID()
+	{
+		return government;
+	}
+
+	@Override
+	public void setGovernmentID(int type)
+	{
+		government = type;
+		lastGovernmentLoadTime = -1;
+	}
+
 	@Override
 	public String getCategory()
 	{
@@ -433,6 +503,7 @@ public class DefaultClan implements Clan
 			return clanCategory;
 		return govt().getCategory();
 	}
+
 	@Override
 	public int getMinClanMembers()
 	{
@@ -442,6 +513,7 @@ public class DefaultClan implements Clan
 			return govt().getOverrideMinMembers().intValue();
 		return CMProps.getIntVar(CMProps.Int.MINCLANMEMBERS);
 	}
+
 	@Override
 	public void setMinClanMembers(int amt)
 	{
@@ -646,13 +718,18 @@ public class DefaultClan implements Clan
 		final LinkedList<CMath.CompiledOperation> form = govt().getXPCalculationFormula();
 		final double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
 		msg.append(L("^x@x1 Profile   :^.^N @x2\n\r"
-				+ "-----------------------------------------------------------------\n\r"
-				+ "@x3\n\r"
-				+ "-----------------------------------------------------------------\n\r"
-				+ "^xLevel           :^.^N @x4"+ ((member||sysmsgs)?("                      (Next at ^w@x5^Nxp)\n\r"):"\n\r")
-				+ "^xType            :^.^N @x6\n\r",
-				getGovernmentName(),clanID(),getPremise(),""+getClanLevel(),""+nextLevelXP,
-				CMStrings.capitalizeAndLower(govt().getName())));
+					+"-----------------------------------------------------------------\n\r"
+					+"@x3\n\r"
+					+"-----------------------------------------------------------------\n\r"
+					+"^xLevel           :^.^N @x4"+ ((member||sysmsgs)?("                      (Next at ^w@x5^Nxp)\n\r"):"\n\r")
+					+"^xType            :^.^N @x6\n\r",
+					getGovernmentName(),
+					clanID(),
+					getPremise(),
+					""+getClanLevel(),
+					""+nextLevelXP,
+					CMStrings.capitalizeAndLower(govt().getName()))
+		);
 		if(getAcceptanceSettings().length()>0)
 		{
 			msg.append(L("^xQualifications  :^.^N @x1\n\r",CMLib.masking().maskDesc(getAcceptanceSettings())));
@@ -729,6 +806,7 @@ public class DefaultClan implements Clan
 		{
 			updateClanPrivileges(mob);
 			for(final ClanPosition pos : govt().getPositions())
+			{
 				if((!pos.isPublic())&&(member)
 				&&((pos.getRoleID()!=govt().getAutoRole())||(pos.getRoleID()==govt().getAcceptPos())))
 				{
@@ -736,6 +814,7 @@ public class DefaultClan implements Clan
 							  +"^x"+CMStrings.padRight(CMStrings.capitalizeAndLower(pos.getPluralName()),16)
 							  +":^.^N "+crewList(members, pos.getRoleID())+"\n\r");
 				}
+			}
 			if((mobClanRole!=null)
 			&&(govt().getAutoRole()!=govt().getAcceptPos())
 			&&((getAuthority(mobClanRole.second.intValue(),Function.ACCEPT)!=Clan.Authority.CAN_NOT_DO)||sysmsgs))
@@ -782,6 +861,7 @@ public class DefaultClan implements Clan
 			msg.append("-----------------------------------------------------------------\n\r");
 			msg.append(L("^xTrophies awarded:^.^N\n\r"));
 			for(final Trophy t : Trophy.values())
+			{
 				if(CMath.bset(getTrophies(),t.flagNum()))
 				{
 					msg.append(t.codeString+" ");
@@ -796,6 +876,7 @@ public class DefaultClan implements Clan
 					}
 					msg.append(L(" Prize: @x1\n\r",CMLib.clans().translatePrize(t)));
 				}
+			}
 		}
 		if(((mobClanRole!=null)&&(getAuthority(mobClanRole.second.intValue(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))||sysmsgs)
 		{
@@ -848,7 +929,11 @@ public class DefaultClan implements Clan
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 	
-	@Override public String getGovernmentName() { return CMStrings.capitalizeAndLower(govt().getName());}
+	@Override
+	public String getGovernmentName()
+	{
+		return CMStrings.capitalizeAndLower(govt().getName());
+	}
 
 	@Override
 	public boolean canBeAssigned(MOB mob, int role)
@@ -917,15 +1002,18 @@ public class DefaultClan implements Clan
 	{
 		return fixRequirementMask(govt().getRequiredMaskStr());
 	}
-	public List<MemberRecord> getRealMemberList(int PosFilter)
+	
+	protected List<MemberRecord> getRealMemberList(int PosFilter)
 	{
 		final List<MemberRecord> members=getMemberList(PosFilter);
 		if(members==null)
 			return null;
 		final List<MemberRecord> realMembers=new Vector<MemberRecord>();
 		for(final MemberRecord member : members)
+		{
 			if(CMLib.players().playerExists(member.name))
 				realMembers.add(member);
+		}
 		return members;
 	}
 
@@ -935,16 +1023,48 @@ public class DefaultClan implements Clan
 		return CMLib.database().DBClanMembers(clanID()).size(); 
 	}
 
-	@Override public String name() {return clanName;}
-	@Override public String getName() {return clanName;}
-	@Override public String clanID() {return clanName;}
-	@Override public void setName(String newName) {clanName = newName; }
+	@Override
+	public String name()
+	{
+		return clanName;
+	}
 
-	@Override public String getPremise() {return clanPremise;}
-	@Override public void setPremise(String newPremise){ clanPremise = newPremise;}
+	@Override
+	public String getName()
+	{
+		return clanName;
+	}
 
-	@Override public int getClanLevel() {return clanLevel;}
-	
+	@Override
+	public String clanID()
+	{
+		return clanName;
+	}
+
+	@Override
+	public void setName(String newName)
+	{
+		clanName = newName;
+	}
+
+	@Override
+	public String getPremise()
+	{
+		return clanPremise;
+	}
+
+	@Override
+	public void setPremise(String newPremise)
+	{
+		clanPremise = newPremise;
+	}
+
+	@Override
+	public int getClanLevel()
+	{
+		return clanLevel;
+	}
+
 	@Override
 	public void setClanLevel(int newClanLevel)
 	{
@@ -954,11 +1074,29 @@ public class DefaultClan implements Clan
 			clanLevel = newClanLevel;
 	}
 
-	@Override public String getAcceptanceSettings() { return acceptanceSettings; }
-	@Override public void setAcceptanceSettings(String newSettings) { acceptanceSettings=newSettings; }
+	@Override
+	public String getAcceptanceSettings()
+	{
+		return acceptanceSettings;
+	}
 
-	@Override public String getClanClass(){return clanClass;}
-	@Override public void setClanClass(String newClass){clanClass=newClass;}
+	@Override
+	public void setAcceptanceSettings(String newSettings)
+	{
+		acceptanceSettings = newSettings;
+	}
+
+	@Override
+	public String getClanClass()
+	{
+		return clanClass;
+	}
+
+	@Override
+	public void setClanClass(String newClass)
+	{
+		clanClass = newClass;
+	}
 
 	@Override
 	public String getPolitics()
@@ -1049,17 +1187,53 @@ public class DefaultClan implements Clan
 		}
 	}
 
-	@Override public int getStatus() { return clanStatus; }
-	@Override public void setStatus(int newStatus) { clanStatus=newStatus; }
+	@Override
+	public int getStatus()
+	{
+		return clanStatus;
+	}
 
-	@Override public String getRecall() { return clanRecall; }
-	@Override public void setRecall(String newRecall) { clanRecall=newRecall; }
+	@Override
+	public void setStatus(int newStatus)
+	{
+		clanStatus = newStatus;
+	}
 
-	@Override public String getMorgue() { return clanMorgue; }
-	@Override public void setMorgue(String newMorgue) { clanMorgue=newMorgue; }
+	@Override
+	public String getRecall()
+	{
+		return clanRecall;
+	}
 
-	@Override public String getDonation() { return clanDonationRoom; }
-	@Override public void setDonation(String newDonation) { clanDonationRoom=newDonation; }
+	@Override
+	public void setRecall(String newRecall)
+	{
+		clanRecall = newRecall;
+	}
+
+	@Override
+	public String getMorgue()
+	{
+		return clanMorgue;
+	}
+
+	@Override
+	public void setMorgue(String newMorgue)
+	{
+		clanMorgue = newMorgue;
+	}
+
+	@Override
+	public String getDonation()
+	{
+		return clanDonationRoom;
+	}
+
+	@Override
+	public void setDonation(String newDonation)
+	{
+		clanDonationRoom = newDonation;
+	}
 
 	@Override
 	public List<MemberRecord> getMemberList()
@@ -1081,8 +1255,10 @@ public class DefaultClan implements Clan
 	{
 		final Vector<MemberRecord> filteredMembers=new Vector<MemberRecord>();
 		for(final MemberRecord member : members)
+		{
 			if((member.role==posFilter)||(posFilter<0))
 				filteredMembers.add(member);
+		}
 		return filteredMembers;
 	}
 
@@ -1157,8 +1333,10 @@ public class DefaultClan implements Clan
 		final List<MemberRecord> members=getMemberList();
 		final Function voteFunc = (function == Function.ASSIGN) ? Function.VOTE_ASSIGN : Function.VOTE_OTHER;
 		for(final MemberRecord member : members)
+		{
 			if(getAuthority(member.role, voteFunc)==Authority.CAN_DO)
 				voters++;
+		}
 		return voters;
 	}
 
@@ -1167,20 +1345,30 @@ public class DefaultClan implements Clan
 	{
 		final List<ClanPosition> allRoles=new LinkedList<ClanPosition>();
 		for(final ClanPosition pos : govt().getPositions())
+		{
 			if((func==null)||(pos.getFunctionChart()[func.ordinal()]!=Authority.CAN_NOT_DO))
 				allRoles.add(pos);
+		}
 		final List<Integer> roleIDs=new LinkedList<Integer>();
 		int topRank=Integer.MAX_VALUE;
 		for(final ClanPosition pos : allRoles)
+		{
 			if(pos.getRank() < topRank)
 				topRank=pos.getRank();
+		}
 		for(final ClanPosition pos : allRoles)
+		{
 			if(pos.getRank() == topRank)
 				roleIDs.add(Integer.valueOf(pos.getRoleID()));
+		}
 		return roleIDs;
 	}
 
-	@Override public int getNumberRoles(){ return govt().getPositions().length;}
+	@Override
+	public int getNumberRoles()
+	{
+		return govt().getPositions().length;
+	}
 
 	@Override
 	public int getTopQualifiedRoleID(Function func, MOB mob)
@@ -1189,10 +1377,12 @@ public class DefaultClan implements Clan
 			return govt().getAutoRole();
 		ClanPosition topPos = null;
 		for(final ClanPosition pos : govt().getPositions())
+		{
 			if(canBeAssigned(mob,pos.getRoleID())
 			&&((topPos==null)||(pos.getRank() < topPos.getRank()))
 			&&((func==null)||(getAuthority(pos.getRoleID(),func)!=Authority.CAN_NOT_DO)))
 				topPos = pos;
+		}
 		if(topPos == null)
 			return govt().getAutoRole();
 		return topPos.getRoleID();
@@ -1203,18 +1393,24 @@ public class DefaultClan implements Clan
 	{
 		position=position.toUpperCase().trim();
 		for(final ClanPosition pos : govt().getPositions())
+		{
 			if(pos.getID().equalsIgnoreCase(position)
 			||pos.getName().equalsIgnoreCase(position)
 			||pos.getPluralName().equalsIgnoreCase(position))
 				return pos.getRoleID();
+		}
 		for(final ClanPosition pos : govt().getPositions())
+		{
 			if(pos.getID().toUpperCase().startsWith(position)
 			||pos.getName().toUpperCase().equalsIgnoreCase(position))
 				return pos.getRoleID();
+		}
 		for(final ClanPosition pos : govt().getPositions())
+		{
 			if((pos.getID().toUpperCase().indexOf(position)>0)
 			||(pos.getName().toUpperCase().indexOf(position)>0))
 				return pos.getRoleID();
+		}
 		return -1;
 	}
 
@@ -1269,12 +1465,14 @@ public class DefaultClan implements Clan
 			return true;
 		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if((protectedOnes!=null)&&(protectedOnes.size()>0))
+		{
 			for(int b=0;b<protectedOnes.size();b++)
 			{
 				final String B=protectedOnes.get(b);
 				if(B.equalsIgnoreCase(clanID()))
 					return true;
 			}
+		}
 		return false;
 	}
 
@@ -1367,9 +1565,11 @@ public class DefaultClan implements Clan
 				final List<Integer> highPositionList = getTopRankedRoles(null);
 				final List<MemberRecord> highMembers=new LinkedList<MemberRecord>();
 				for(final FullMemberRecord member : members)
+				{
 					if((((System.currentTimeMillis()-member.timestamp)<deathMilis)||(deathMilis==0))
 					&&(highPositionList.contains(Integer.valueOf(member.role))))
 						highMembers.add(member);
+				}
 
 				AutoPromoteFlag basePromoteBy = govt().getAutoPromoteBy();
 				boolean overWrite = false;
@@ -1396,9 +1596,11 @@ public class DefaultClan implements Clan
 						if(M==null)
 							continue;
 						for(final Integer posI : highPositionList)
+						{
 							if((((System.currentTimeMillis()-member.timestamp)<deathMilis)||(deathMilis==0))
 							&&(canBeAssigned(M, posI.intValue())))
 								highestQualifiedMembers.add(member);
+						}
 					}
 					if(basePromoteBy==AutoPromoteFlag.RANK)
 					{
@@ -1410,9 +1612,13 @@ public class DefaultClan implements Clan
 								bestPos=currentPos;
 						}
 						if(bestPos!=null)
+						{
 							for(final Iterator<MemberRecord> i=highestQualifiedMembers.iterator();i.hasNext();)
+							{
 								if(i.next().role != bestPos.getRoleID())
 									i.remove();
+							}
+						}
 					}
 
 					int highestLevel=-1;
@@ -1438,6 +1644,7 @@ public class DefaultClan implements Clan
 						{
 							final ClanPosition newRole=govt().getPositions()[govt().getAcceptPos()];
 							for(final MemberRecord member : highMembers)
+							{
 								if(!highestQualifiedMembers.contains(member))
 								{
 									final MOB M=CMLib.players().getLoadPlayer(member.name);
@@ -1449,8 +1656,10 @@ public class DefaultClan implements Clan
 									member.role=newRole.getRoleID();
 									CMLib.database().DBUpdateClanMembership(M.Name(), name(), newRole.getRoleID());
 								}
+							}
 						}
 						for(final MemberRecord member : highestQualifiedMembers)
+						{
 							if(!highMembers.contains(member))
 							{
 								final MOB M=CMLib.players().getLoadPlayer(member.name);
@@ -1473,14 +1682,17 @@ public class DefaultClan implements Clan
 									break;
 								}
 							}
+						}
 					}
 				}
 				highMembers.clear();
 				members=getFullMemberList();
 				for(final FullMemberRecord member : members)
+				{
 					if((((System.currentTimeMillis()-member.timestamp)<deathMilis)||(deathMilis==0))
 					&&(highPositionList.contains(Integer.valueOf(member.role))))
 						highMembers.add(member);
+				}
 
 				if(highMembers.size()==0)
 				{
@@ -1499,9 +1711,12 @@ public class DefaultClan implements Clan
 
 			boolean anyVoters = false;
 			for(final ClanPosition pos : govt().getPositions())
+			{
 				if((pos.getFunctionChart()[Function.VOTE_ASSIGN.ordinal()]==Clan.Authority.CAN_DO)
 				||(pos.getFunctionChart()[Function.VOTE_OTHER.ordinal()]==Clan.Authority.CAN_DO))
 					anyVoters=true;
+			}
+			
 			// now do votes
 			if(anyVoters&&(votes()!=null))
 			{
@@ -1543,10 +1758,12 @@ public class DefaultClan implements Clan
 								int yeas=0;
 								int nays=0;
 								for(int i=0;i<CV.votes.size();i++)
+								{
 									if(CV.votes.getSecond(i).booleanValue())
 										yeas++;
 									else
 										nays++;
+								}
 								if(yeas<=nays)
 									CV.voteStatus=VSTAT_FAILED;
 								else
@@ -1666,12 +1883,24 @@ public class DefaultClan implements Clan
 				String awardStr=null;
 				switch(t)
 				{
-				case Areas: awardStr=CMProps.getVar(CMProps.Str.CLANTROPAREA); break;
-				case Points: awardStr=CMProps.getVar(CMProps.Str.CLANTROPCP); break;
-				case Experience: awardStr=CMProps.getVar(CMProps.Str.CLANTROPEXP); break;
-				case PlayerKills: awardStr=CMProps.getVar(CMProps.Str.CLANTROPPK); break;
-				case Members: awardStr=CMProps.getVar(CMProps.Str.CLANTROPMB); break;
-				case MemberLevel: awardStr=CMProps.getVar(CMProps.Str.CLANTROPLVL); break;
+				case Areas:
+					awardStr = CMProps.getVar(CMProps.Str.CLANTROPAREA);
+					break;
+				case Points:
+					awardStr = CMProps.getVar(CMProps.Str.CLANTROPCP);
+					break;
+				case Experience:
+					awardStr = CMProps.getVar(CMProps.Str.CLANTROPEXP);
+					break;
+				case PlayerKills:
+					awardStr = CMProps.getVar(CMProps.Str.CLANTROPPK);
+					break;
+				case Members:
+					awardStr = CMProps.getVar(CMProps.Str.CLANTROPMB);
+					break;
+				case MemberLevel:
+					awardStr = CMProps.getVar(CMProps.Str.CLANTROPLVL);
+					break;
 				}
 				if(awardStr!=null)
 				{
@@ -1718,6 +1947,7 @@ public class DefaultClan implements Clan
 		String memberName = null;
 		ClanPosition newPos=null;
 		for(final MemberRecord member : members)
+		{
 			if((member.role<govt().getPositions().length)
 			&&(member.role>=0)
 			&&((newPos==null)||(govt().getPositions()[member.role].getRank()<newPos.getRank())))
@@ -1725,6 +1955,7 @@ public class DefaultClan implements Clan
 				newPos = govt().getPositions()[member.role];
 				memberName = member.name;
 			}
+		}
 		if(memberName != null)
 			return CMLib.players().getLoadPlayer(memberName);
 		return null;
@@ -1736,9 +1967,24 @@ public class DefaultClan implements Clan
 		return extItems;
 	}
 
-	@Override public String[] getStatCodes(){ return CLAN_STATS;}
-	@Override public int getSaveStatIndex(){ return CLAN_STATS.length;}
-	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override
+	public String[] getStatCodes()
+	{
+		return CLAN_STATS;
+	}
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return CLAN_STATS.length;
+	}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
+	}
+
 	@Override
 	public String getStat(String code)
 	{
@@ -1747,47 +1993,69 @@ public class DefaultClan implements Clan
 			return "";
 		switch(dex)
 		{
-		case 0: return getAcceptanceSettings();
-		case 1: return getDetail(null);
-		case 2: return getDonation();
-		case 3: return ""+getExp();
-		case 4: return ""+getGovernmentName();
-		case 5: return getMorgue();
-		case 6: return getPolitics();
-		case 7: return getPremise();
-		case 8: return getRecall();
-		case 9: return ""+getSize();
-		case 10: return Clan.CLANSTATUS_DESC[getStatus()];
-		case 11: return ""+getTaxes();
-		case 12: return ""+getTrophies();
-		case 13: return "0";
-		case 14: {
-			 final List<Area> areas=getControlledAreas();
-			 final StringBuffer list=new StringBuffer("");
-			 for(int i=0;i<areas.size();i++)
-				 list.append("\""+areas.get(i).name()+"\" ");
-			 return list.toString().trim();
+		case 0:
+			return getAcceptanceSettings();
+		case 1:
+			return getDetail(null);
+		case 2:
+			return getDonation();
+		case 3:
+			return "" + getExp();
+		case 4:
+			return "" + getGovernmentName();
+		case 5:
+			return getMorgue();
+		case 6:
+			return getPolitics();
+		case 7:
+			return getPremise();
+		case 8:
+			return getRecall();
+		case 9:
+			return "" + getSize();
+		case 10:
+			return Clan.CLANSTATUS_DESC[getStatus()];
+		case 11:
+			return "" + getTaxes();
+		case 12:
+			return "" + getTrophies();
+		case 13:
+			return "0";
+		case 14:
+		{
+			final List<Area> areas = getControlledAreas();
+			final StringBuffer list = new StringBuffer("");
+			for (int i = 0; i < areas.size(); i++)
+				list.append("\"" + areas.get(i).name() + "\" ");
+			return list.toString().trim();
 		}
 		case 15:
 		{
-			final List<MemberRecord> members=getMemberList();
-				 final StringBuffer list=new StringBuffer("");
-				 for(final MemberRecord member : members)
-					 list.append("\""+member.name+"\" ");
-				 return list.toString().trim();
+			final List<MemberRecord> members = getMemberList();
+			final StringBuffer list = new StringBuffer("");
+			for (final MemberRecord member : members)
+				list.append("\"" + member.name + "\" ");
+			return list.toString().trim();
 		}
-		case 16: {
-			final MOB M=getResponsibleMember();
-			if(M!=null)
+		case 16:
+		{
+			final MOB M = getResponsibleMember();
+			if (M != null)
 				return M.Name();
 			return "";
 		}
-		case 17: return Integer.toString(getClanLevel());
-		case 18: return ""+getCategory();
-		case 19: return ""+isRivalrous();
-		case 20: return ""+getMinClanMembers();
-		case 21: return ""+getClanClass();
-		case 22: return ""+getName();
+		case 17:
+			return Integer.toString(getClanLevel());
+		case 18:
+			return "" + getCategory();
+		case 19:
+			return "" + isRivalrous();
+		case 20:
+			return "" + getMinClanMembers();
+		case 21:
+			return "" + getClanClass();
+		case 22:
+			return "" + getName();
 		}
 		return "";
 	}
@@ -1800,29 +2068,69 @@ public class DefaultClan implements Clan
 			return;
 		switch(dex)
 		{
-		case 0: setAcceptanceSettings(val); break;
-		case 1: break; // detail
-		case 2: setDonation(val); break;
-		case 3: setExp(CMath.s_long(val.trim())); break;
-		case 4: setGovernmentID(CMath.s_int(val.trim())); break;
-		case 5: setMorgue(val); break;
-		case 6: setPolitics(val); break;
-		case 7: setPremise(val); break;
-		case 8: setRecall(val); break;
-		case 9: break; // size
-		case 10: setStatus(CMath.s_int(val.trim())); break;
-		case 11: setTaxes(CMath.s_double(val.trim())); break;
-		case 12: setTrophies(CMath.s_int(val.trim())); break;
-		case 13: break; // type
-		case 14: break; // areas
-		case 15: break; // memberlist
-		case 16: break; // topmember
-		case 17: setClanLevel(CMath.s_int(val.trim())); break; // clanlevel
-		case 18: setCategory(val.trim()); break; // clancategory
-		case 19: setRivalrous(CMath.s_bool(val.trim())); break; // isrivalrous
-		case 20: setMinClanMembers(CMath.s_int(val.trim())); break; //minmembers
-		case 21: setClanClass(val.trim()); break; // clancharclass
-		case 22: this.setName(val.trim()); break; // name
+		case 0:
+			setAcceptanceSettings(val);
+			break;
+		case 1:
+			break; // detail
+		case 2:
+			setDonation(val);
+			break;
+		case 3:
+			setExp(CMath.s_long(val.trim()));
+			break;
+		case 4:
+			setGovernmentID(CMath.s_int(val.trim()));
+			break;
+		case 5:
+			setMorgue(val);
+			break;
+		case 6:
+			setPolitics(val);
+			break;
+		case 7:
+			setPremise(val);
+			break;
+		case 8:
+			setRecall(val);
+			break;
+		case 9:
+			break; // size
+		case 10:
+			setStatus(CMath.s_int(val.trim()));
+			break;
+		case 11:
+			setTaxes(CMath.s_double(val.trim()));
+			break;
+		case 12:
+			setTrophies(CMath.s_int(val.trim()));
+			break;
+		case 13:
+			break; // type
+		case 14:
+			break; // areas
+		case 15:
+			break; // memberlist
+		case 16:
+			break; // topmember
+		case 17:
+			setClanLevel(CMath.s_int(val.trim()));
+			break; // clanlevel
+		case 18:
+			setCategory(val.trim());
+			break; // clancategory
+		case 19:
+			setRivalrous(CMath.s_bool(val.trim()));
+			break; // isrivalrous
+		case 20:
+			setMinClanMembers(CMath.s_int(val.trim()));
+			break; // minmembers
+		case 21:
+			setClanClass(val.trim());
+			break; // clancharclass
+		case 22:
+			this.setName(val.trim());
+			break; // name
 		}
 	}
 }
