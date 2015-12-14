@@ -256,8 +256,15 @@ public class WebServer extends Thread
 				{
 					if(key.isValid())
 					{
-						key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
-						executor.execute(handler);
+						try
+						{
+							key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
+							executor.execute(handler);
+						}
+						catch(CancelledKeyException x)
+						{
+							handlers.remove(handler);
+						}
 					}
 				}
 				else
