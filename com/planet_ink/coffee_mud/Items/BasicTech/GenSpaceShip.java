@@ -276,14 +276,17 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					// This is technically wrong. Imagine taping a huge object from behind because you 
 					// are going just a tiny bit faster, even though you are both going very fast.
 					// However, the odds of that happening are nothing.  Forget it.
-					final double dmgSpeed = (previousSpeed + O.speed()) * myMass;
-					final int hardness = (int)(RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm);
-					final int kineticDamage = (int)((hardness > 0) ? Math.round(dmgSpeed / hardness ) : 0);
-					if(kineticDamage > 1)
+					final double dmgSpeed = (previousSpeed * myMass) + (O.speed() * O.getMass());
+					final long hardness = RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm;
+					double absorbedDamage = dmgSpeed / hardness;
+					if(absorbedDamage > Integer.MAX_VALUE / 10)
+						absorbedDamage = Integer.MAX_VALUE / 10;
+					if(absorbedDamage > 1)
 					{
 						// we've been -- hit? It's up to the item itself to see to it's own explosion or whatever
+						//TODO: might want to vary this message..
 						final CMMsg sMsg=CMClass.getMsg(msg.source(),getShipArea(),O,CMMsg.MSG_WEAPONATTACK,L("You hear a loud crash and feel the ship shake."));
-						sMsg.setValue(kineticDamage);
+						sMsg.setValue((int)Math.round(absorbedDamage));
 						if(O.okMessage(O, sMsg) && okMessage(O,sMsg))
 						{
 							O.executeMsg(O, sMsg);
