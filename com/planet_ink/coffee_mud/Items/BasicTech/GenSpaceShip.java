@@ -276,7 +276,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					// This is technically wrong. Imagine taping a huge object from behind because you 
 					// are going just a tiny bit faster, even though you are both going very fast.
 					// However, the odds of that happening are nothing.  Forget it.
-					final double dmgSpeed =previousSpeed * myMass;
+					final double dmgSpeed = (previousSpeed + O.speed()) * myMass;
 					final int hardness = (int)(RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm);
 					final int kineticDamage = (int)((hardness > 0) ? Math.round(dmgSpeed / hardness ) : 0);
 					if(kineticDamage > 1)
