@@ -270,8 +270,9 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(altitudePlanet != null)
 			{
+				str.append("\n\r");
 				str.append("^H").append(CMStrings.padRight(L("Altitude"),10));
-				str.append("^N").append(CMStrings.padRight(display(CMLib.map().getDistanceFrom(shipSpaceObject, altitudePlanet)-altitudePlanet.radius()),20));
+				str.append("^N").append(CMStrings.padRight(display(CMLib.map().getDistanceFrom(shipSpaceObject, altitudePlanet)-shipSpaceObject.radius()-altitudePlanet.radius()),20));
 			}
 			else
 			{
@@ -282,7 +283,6 @@ public class RocketShipProgram extends GenShipProgram
 				str.append("^H").append(CMStrings.padRight(L("Location"),10));
 				str.append("^N").append(CMStrings.padRight(CMParms.toListString(CMLib.map().getInSectorCoords(shipSpaceObject.coordinates())),50));
 			}
-			str.append("\n\r");
 			str.append("^H").append(CMStrings.padRight(L("Facing"),10));
 			final String facStr=display(ship.facing());
 			str.append("^N").append(CMStrings.padRight(facStr,20));
@@ -332,10 +332,15 @@ public class RocketShipProgram extends GenShipProgram
 				else
 				for(CMObject o : localSensorReport)
 				{
+					if(o == spaceObject)
+						continue;
 					if(o instanceof SpaceObject)
 					{
 						SpaceObject O=(SpaceObject)o;
-						str.append("^W").append(L("Found: ")).append("^N").append(O.displayText());
+						if(O.displayText().length()>0)
+							str.append("^W").append(L("Found: ")).append("^N").append(O.displayText());
+						else
+							str.append("^W").append(L("Found: ")).append("^N").append(o.name());
 					}
 					else
 						str.append("^W").append(L("Found: ")).append("^N").append(o.name());

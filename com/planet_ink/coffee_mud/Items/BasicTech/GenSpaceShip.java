@@ -108,6 +108,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	@Override
 	public void dockHere(Room R)
 	{
+		if((CMSecurity.isDebugging(DbgFlag.SPACESHIP))&&(getIsDocked()==null))
+			Log.debugOut("SpaceShip "+name()+" is docking at '"+R.displayText()+"' ("+R.roomID()+")");
 		if(R instanceof LocationRoom)
 			setCoords(((LocationRoom)R).coordinates());
 		CMLib.map().delObjectInSpace(getShipSpaceObject());
@@ -155,8 +157,6 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost, msg))
-			return false;
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
@@ -165,11 +165,11 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			{
 				if((msg.value() < 2) || (!okAreaMessage(msg,false)))
 					return false;
-				break;
+				return true;
 			}
 			}
 		}
-		return true;
+		return super.okMessage(myHost, msg);
 	}
 
 	@Override
@@ -240,7 +240,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				if((msg.value() > 1)&&(myMass>0))
 				{
 					sendAreaMessage(msg,false);
-					double dmg = usesRemaining() * (msg.value() / myMass) ;
+					double dmg = usesRemaining() * ((double)msg.value() / (double)myMass) ;
 					if(dmg >= usesRemaining())
 					{
 						destroyThisShip();
@@ -253,27 +253,47 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			case CMMsg.TYP_COLLISION:
 			{
 				final MOB mob=msg.source();
-				final boolean hitSomethingMassive;
-				
 				final double previousSpeed = speed();
 				if((msg.tool() instanceof SpaceObject) // we hit something very very big
 				&&(((SpaceObject)msg.tool()).getMass() >= (100 * SpaceObject.Distance.Kilometer.dm)))
 				{
-					hitSomethingMassive=true;
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut("SpaceShip "+name()+" just hit "+msg.tool().Name()+"!!!");
 					stopThisShip(mob);
 				}
-				else
-					hitSomethingMassive=false;
 				
 				final long myMass=getMass();
 				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 					Log.debugOut("SpaceShip "+name()+" just collided with "+msg.tool().Name()+" of mass "+myMass+" at speed "+previousSpeed);
+				
 				// this only works because Areas don't move.
 				// the only way to hit one is to be moving towards it.
-				if((previousSpeed <= (SpaceObject.ACCELLERATION_DAMAGED * myMass))
-				&&(msg.tool() instanceof Area))
+				if((previousSpeed > (SpaceObject.ACCELLERATION_DAMAGED))
+				&&(msg.tool() instanceof SpaceObject)
+				&&(((SpaceObject)msg.tool()).getMass() >= (myMass / 100))) // hitting tiny things don't matter
+				{
+					SpaceObject O=(SpaceObject)msg.tool();
+					// This is technically wrong. Imagine taping a huge object from behind because you 
+					// are going just a tiny bit faster, even though you are both going very fast.
+					// However, the odds of that happening are nothing.  Forget it.
+					final double dmgSpeed =previousSpeed * myMass;
+					final int hardness = (int)(RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm);
+					final int kineticDamage = (int)((hardness > 0) ? Math.round(dmgSpeed / hardness ) : 0);
+					if(kineticDamage > 1)
+					{
+						// we've been -- hit? It's up to the item itself to see to it's own explosion or whatever
+						final CMMsg sMsg=CMClass.getMsg(msg.source(),getShipArea(),O,CMMsg.MSG_WEAPONATTACK,L("You hear a loud crash and feel the ship shake."));
+						sMsg.setValue(kineticDamage);
+						if(O.okMessage(O, sMsg) && okMessage(O,sMsg))
+						{
+							O.executeMsg(O, sMsg);
+							if(sMsg.value() > 1)
+								executeMsg(this,sMsg);
+						}
+					}
+				}
+
+				if((!amDestroyed()) && (msg.tool() instanceof Area))
 				{
 					long shortestDistance=Long.MAX_VALUE;
 					LocationRoom LR = null;
@@ -293,6 +313,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					}
 					if(LR!=null)
 					{
+						//final CMMsg kMsg=CMClass.getMsg(msg.source(),getShipArea(),this,CMMsg.MSG_OK_ACTION,L("The ship comes to a resting stop."));
 						dockHere(LR); // set location and so forth
 					}
 					else
@@ -300,40 +321,6 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 						// we landed, but there was nowhere to dock!
 						stopThisShip(mob);
 					}
-				}
-				else
-				if(msg.tool() instanceof SpaceObject)
-				{
-					SpaceObject O=(SpaceObject)msg.tool();
-					final double relSpeed = CMath.abs(speed() - O.speed());
-					if((hitSomethingMassive) || (relSpeed > SpaceObject.VELOCITY_LIGHT)) // you hit a planet, or something moving too fast
-					{
-						destroyThisShip();
-					}
-					else
-					{
-						final double dmgSpeed = CMath.abs(speed() - O.speed()) % SpaceObject.VELOCITY_LIGHT;
-						final long relMass = CMath.abs(myMass - O.getMass())  % (100 * SpaceObject.Distance.Kilometer.dm);
-						final int hardness = (int)(RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm);
-						final int kineticDamage = (int)((hardness > 0) ? Math.round((dmgSpeed * relMass) / hardness ) : 0);
-						if(kineticDamage > 1)
-						{
-							// we've been -- hit? It's up to the item itself to see to it's own explosion or whatever
-							final CMMsg kMsg=CMClass.getMsg(msg.source(),getShipArea(),O,CMMsg.MSG_WEAPONATTACK,L("You hear a crash and feel the ship shake."));
-							kMsg.setValue(kineticDamage);
-							if(O.okMessage(O, kMsg) && okMessage(O,kMsg))
-							{
-								O.executeMsg(O, kMsg);
-								if(kMsg.value() > 1)
-									executeMsg(this,kMsg);
-							}
-						}
-					}
-				}
-				else
-				{
-					//so there was a collision, but not with a space object?
-					Log.errOut("SpaceShip","Collided with "+msg.tool());
 				}
 				sendComputerMessage(mob,msg);
 				break;

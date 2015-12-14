@@ -21,7 +21,7 @@
   20. New Misc Property: AutoStack -- for automatically stacking/packaging identical items.
   21. New command for muds using the account system: SWITCH, for quickly switching between other players on the same acct.
   22. The Deviations command now shows mob money deviations.
-  23. Mundane STAT command now support experience point stats. 
+  23. Mundane STAT command now supports experience point stats. 
   24. Made some of the weather effects spam slightly more frequent, and added a msg for cold and heat.
   25. Mana/Health/Move recovery formulas tweaked with caps.  See coffeemud.ini
   26. Lots of refactoring done.  Sorry about that.  This is a big part of the reason for the minor version number change.
