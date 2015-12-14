@@ -150,6 +150,9 @@ public interface CharCreationLibrary extends CMLibrary
 	 * unused, unbanned, non-bad name to use in coffeemud, for accounts
 	 * or players. 
 	 * @see CharCreationLibrary#isBadName(String)
+	 * @see CharCreationLibrary#isOkName(String, boolean)
+	 * @see CharCreationLibrary#newCharNameCheck(String, String, boolean)
+	 * @see CharCreationLibrary#newAccountNameCheck(String, String)
 	 * @param login the name to test
 	 * @param spacesOk true if spaces in the name are ok, false otherwise
 	 * @return true if the name is ok, false otherwise 
@@ -159,11 +162,39 @@ public interface CharCreationLibrary extends CMLibrary
 	/**
 	 * Returns only whether the given name has a bad word in it.
 	 * @see CharCreationLibrary#isOkName(String, boolean)
+	 * @see CharCreationLibrary#newCharNameCheck(String, String, boolean)
+	 * @see CharCreationLibrary#newAccountNameCheck(String, String)
 	 * @param login the name to test
 	 * @return true if it has a bad name, false otherwise
 	 */
 	public boolean isBadName(String login);
 
+	/**
+	 * Checks whether a character with the given login name from the
+	 * given ipAddress may be created at this time.
+	 * @see CharCreationLibrary#isBadName(String)
+	 * @see CharCreationLibrary#isOkName(String, boolean)
+	 * @see CharCreationLibrary#newAccountNameCheck(String, String)
+	 * @see CharCreationLibrary.NewCharNameCheckResult
+	 * @param login the name to check
+	 * @param ipAddress the ip address of the name checker
+	 * @param skipAccountNameCheck true to ignore account name matches
+	 * @return the results of the new character name check.
+	 */
+	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean skipAccountNameCheck);
+	
+	/**
+	 * Checks whether an account with the given login name from the
+	 * given ipAddress may be created at this time.
+	 * @see CharCreationLibrary#isBadName(String)
+	 * @see CharCreationLibrary#isOkName(String, boolean)
+	 * @see CharCreationLibrary#newCharNameCheck(String, String, boolean)
+	 * @param login the name to check
+	 * @param ipAddress the ip address of the name checker
+	 * @return the results of the new account name check.
+	 */
+	public NewCharNameCheckResult newAccountNameCheck(String login, String ipAddress);
+	
 	/**
 	 * Resets the MXP, MSP and other session flags based on the mobs
 	 * attributes.  Typically done at sign-on only.
@@ -188,116 +219,216 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @param message the message to send to the mobs friends.
 	 */
 	public void notifyFriends(MOB mob, String message);
-	public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException;
-	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean checkPlayerName);
-	public NewCharNameCheckResult newAccountNameCheck(String login, String ipAddress);
-	public void pageRooms(CMProps page, Map<String, String> table, String start);
+	
+	/**
+	 * Attempts to send the given session through the character creation process,
+	 * at the end of which a character with the given login as name will be
+	 * in the database, ready to load.
+	 * @see CharCreationLibrary.LoginResult
+	 * @param login the name of the new character
+	 * @param session the session of the character creating person
+	 * @return the results of the effort
+	 * @throws java.io.IOException
+	 */
+	public LoginResult createCharacter(String login, Session session) throws java.io.IOException;
+	
+	/**
+	 * Initialize the rules for determining the new character start/recall room 
+	 * given the characteristics of the player.
+	 * @see CharCreationLibrary#initDeathRooms(CMProps)
+	 * @see CharCreationLibrary#initBodyRooms(CMProps)
+	 * @see CharCreationLibrary#getDefaultStartRoom(MOB)
+	 * @param page the properties containing info about the start rooms
+	 */
 	public void initStartRooms(CMProps page);
+	
+	/**
+	 * Initialize the rules for determining the new character death room 
+	 * given the characteristics of the player.
+	 * @see CharCreationLibrary#initStartRooms(CMProps)
+	 * @see CharCreationLibrary#initBodyRooms(CMProps)
+	 * @see CharCreationLibrary#getDefaultDeathRoom(MOB)
+	 * @param page the properties containing info about the death rooms
+	 */
 	public void initDeathRooms(CMProps page);
+	
+	/**
+	 * Initialize the rules for determining the new character morgue room 
+	 * given the characteristics of the player.
+	 * @see CharCreationLibrary#initStartRooms(CMProps)
+	 * @see CharCreationLibrary#initDeathRooms(CMProps)
+	 * @see CharCreationLibrary#getDefaultBodyRoom(MOB)
+	 * @param page the properties containing info about the morgue rooms
+	 */
 	public void initBodyRooms(CMProps page);
+	
+	/**
+	 * Given the characteristics of the given mob, this method returns
+	 * the appropriate start/recall room for the given mob.
+	 * @see CharCreationLibrary#initStartRooms(CMProps)
+	 * @see CharCreationLibrary#getDefaultDeathRoom(MOB)
+	 * @see CharCreationLibrary#getDefaultBodyRoom(MOB)
+	 * @param mob the mob who needs to know their start room
+	 * @return the start room for the given mob
+	 */
 	public Room getDefaultStartRoom(MOB mob);
+	
+	/**
+	 * Given the characteristics of the given mob, this method returns
+	 * the appropriate death room for the given mob.
+	 * @see CharCreationLibrary#initDeathRooms(CMProps)
+	 * @see CharCreationLibrary#getDefaultStartRoom(MOB)
+	 * @see CharCreationLibrary#getDefaultBodyRoom(MOB)
+	 * @param mob the mob who needs to know their death room
+	 * @return the death room for the given mob
+	 */
 	public Room getDefaultDeathRoom(MOB mob);
+	
+	/**
+	 * Given the characteristics of the given mob, this method returns
+	 * the appropriate morgue room for the given mob.
+	 * @see CharCreationLibrary#initBodyRooms(CMProps)
+	 * @see CharCreationLibrary#getDefaultStartRoom(MOB)
+	 * @see CharCreationLibrary#getDefaultDeathRoom(MOB)
+	 * @param mob the mob who needs to know their morgue room
+	 * @return the morgue room for the given mob
+	 */
 	public Room getDefaultBodyRoom(MOB mob);
+	
+	/**
+	 * Based on the rules of the system, this method returns the number of
+	 * bonus stat points available to players to allocate, if the system
+	 * lets them do such a thing.
+	 * @return the number of stat points available to allocate
+	 */
 	public int getTotalBonusStatPoints();
+	
+	/**
+	 * Returns a random fantasy name with the range of syllables given.
+	 * @param minSyllable the minimum number of syllables, at least 1
+	 * @param maxSyllable the maximum number of syllables, at least minimum
+	 * @return a random fansty name
+	 */
 	public String generateRandomName(int minSyllable, int maxSyllable);
+	
+	/**
+	 * Completes the given session and mobs login by putting the mob into the given start room
+	 * in the world, checking their email, and seeing if they are allowed in.
+	 * @see CharCreationLibrary.LoginResult
+	 * @param session the session trying to login
+	 * @param mob the mob trying to log in
+	 * @param startRoom the room they will appear in
+	 * @param resetStats true to reset their state (hit points, etc) or false to keep as-was
+	 * @return the LoginResult status of having tried to complete their login
+	 * @throws IOException any I/O errors during the process
+	 */
 	public LoginResult completeLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException;
+	
+	/**
+	 * Creates a new Login Session for the given Session, which will start the login state machine process
+	 * that will end eventually with either a disconnect or a character logged in.
+	 * @param session the telnet session trying to login
+	 * @return the new session object, giving all necessary access to the login state machine.
+	 */
 	public LoginSession createLoginSession(final Session session);
 	
+	/**
+	 * This is the main login state machine transaction object.  It allows the telnet session getting
+	 * thread and i/o time to repeatedly call into the LoginSession object it creates until the
+	 * object reports that it is completely done.  
+	 * A login session includes initial telnet negotiation, login prompts, the account menu, and
+	 * all of character creation. 
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public interface LoginSession
 	{
+		/**
+		 * The login name received in the first prompt after connection.
+		 * @return the login name previously received.
+		 */
 		public String login();
 		
+		/**
+		 * Continues through the login state machine for the given session.
+		 * What the session should do next depends on the result object
+		 * sent back.
+		 * @see CharCreationLibrary.LoginResult
+		 * @param session the session trying to login
+		 * @return the results of the latest state
+		 * @throws java.io.IOException any I/O errors that occur
+		 */
 		public LoginResult loginSystem(Session session) throws java.io.IOException;
 		
+		/**
+		 * Puts the session into a "logged out" state, which means either back
+		 * to the initial prompt, or back to the account menu, depending.
+		 */
 		public void logoutLoginSession();
 		
+		/**
+		 * Set to true whenever the loginsystem needs the session to basically
+		 * start the whole state machine over by re-creating the LoginSession
+		 * object and calling in again.  It is an "I give up!" flag from this
+		 * session.
+		 * @return true if its time for a new LoginSession
+		 */
 		public boolean reset();
-		
+
+		/**
+		 * Returns true if the loginsystem needs the session to skip any input
+		 * it was previously asked for and simply call right back into the
+		 * state machine.  The is usually done with when one non-input state
+		 * needs to force proceed to another non-input state.
+		 * @return true to skip user input
+		 */
 		public boolean skipInputThisTime();
 		
+		/**
+		 * This strange method calls back into the given session for input from
+		 * the user, if any is available. In a stateless I/O system, usually there
+		 * isn't, so null is returned.
+		 * @param session the session to ask for input
+		 * @return null if none yet available, or the fully ENTEREd user input.
+		 * @throws SocketException a socket error that occurs
+		 * @throws IOException some other I/O error that occurred
+		 */
 		public String acceptInput(Session session)  throws SocketException, IOException;
 	}
 
+	/**
+	 * A response object from one of the login system methods, basically telling the caller
+	 * something about the results of what was attempted.
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public enum LoginResult
 	{
+		/** Nothing happened, try again */
 		NO_LOGIN,
+		/** Login completed, proceed */
 		NORMAL_LOGIN,
+		/** User input required before proceeding */
 		INPUT_REQUIRED
 	}
 
+	/**
+	 * A response object from one of the name checking methods, telling the caller some specifics
+	 * about the attempt to create a new character by testing a new name.
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public enum NewCharNameCheckResult
 	{
+		/** All is well, proceed */
 		OK,
+		/** Cannot create a character because new players aren't allowed */
 		NO_NEW_PLAYERS,
+		/** Cannot create a character because new logins aren't allowed */
 		NO_NEW_LOGINS,
+		/** Either the name was a bad one, or used before by someone else */
 		BAD_USED_NAME,
+		/** The limits on character creation have been reached for this player or ip*/
 		CREATE_LIMIT_REACHED
 	}
-
-	public enum LoginState
-	{
-		LOGIN_START,
-		LOGIN_NAME,
-		LOGIN_ACCTCHAR_PWORD,
-		LOGIN_PASS_START,
-		LOGIN_NEWACCOUNT_CONFIRM,
-		LOGIN_NEWCHAR_CONFIRM,
-		LOGIN_PASS_RECEIVED,
-		LOGIN_EMAIL_PASSWORD,
-		LOGIN_ACCTCONV_CONFIRM,
-		ACCTMENU_COMMAND,
-		ACCTMENU_PROMPT,
-		ACCTMENU_CONFIRMCOMMAND,
-		ACCTMENU_ADDTOCOMMAND,
-		ACCTMENU_SHOWMENU,
-		ACCTMENU_SHOWCHARS,
-		ACCTMENU_START,
-		ACCTCREATE_START,
-		ACCTCREATE_ANSICONFIRM,
-		ACCTCREATE_PASSWORDED,
-		ACCTCREATE_EMAILSTART,
-		ACCTCREATE_EMAILPROMPT,
-		ACCTCREATE_EMAILENTERED,
-		ACCTCREATE_EMAILCONFIRMED,
-		CHARCR_EMAILCONFIRMED,
-		CHARCR_EMAILPROMPT,
-		CHARCR_EMAILENTERED,
-		CHARCR_EMAILSTART,
-		CHARCR_EMAILDONE,
-		CHARCR_PASSWORDDONE,
-		CHARCR_START,
-		CHARCR_ANSIDONE,
-		CHARCR_ANSICONFIRMED,
-		CHARCR_THEMEDONE,
-		CHARCR_THEMEPICKED,
-		CHARCR_THEMESTART,
-		CHARCR_GENDERSTART,
-		CHARCR_GENDERDONE,
-		CHARCR_RACEDONE,
-		CHARCR_RACESTART,
-		CHARCR_RACEENTERED,
-		CHARCR_RACECONFIRMED,
-		CHARCR_STATDONE,
-		CHARCR_STATSTART,
-		CHARCR_STATCONFIRM,
-		CHARCR_STATPICK,
-		CHARCR_STATPICKADD,
-		CHARCR_CLASSSTART,
-		CHARCR_CLASSDONE,
-		CHARCR_CLASSPICKED,
-		CHARCR_CLASSCONFIRM,
-		CHARCR_FACTIONNEXT,
-		CHARCR_FACTIONDONE,
-		CHARCR_FACTIONPICK,
-		CHARCR_FINISH
-	}
-
-	public final static String[] DEFAULT_BADNAMES = new String[]
-	{
-		"LIST","DELETE","QUIT","NEW","HERE","YOU","SHIT","FUCK","CUNT",
-		"FAGGOT","ASSHOLE","NIGGER","ARSEHOLE","PUSSY", "COCK","SLUT",
-		"BITCH","DAMN","CRAP","GOD","JESUS","CHRIST","NOBODY","SOMEBODY",
-		"MESSIAH","ADMIN","SYSOP"
-	};
-
 }

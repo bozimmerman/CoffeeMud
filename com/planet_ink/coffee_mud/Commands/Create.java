@@ -390,7 +390,7 @@ public class Create extends StdCommand
 			return;
 		}
 		mobID=CMStrings.capitalizeAndLower(mobID);
-		CMLib.login().createCharacter(null,mobID,mob.session());
+		CMLib.login().createCharacter(mobID,mob.session());
 		M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
 		{

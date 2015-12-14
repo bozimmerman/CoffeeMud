@@ -5,7 +5,6 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
-import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginState;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -60,8 +59,74 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
 	
+	public final static String[] DEFAULT_BADNAMES = new String[]
+	{
+		"LIST","DELETE","QUIT","NEW","HERE","YOU","SHIT","FUCK","CUNT",
+		"FAGGOT","ASSHOLE","NIGGER","ARSEHOLE","PUSSY", "COCK","SLUT",
+		"BITCH","DAMN","CRAP","GOD","JESUS","CHRIST","NOBODY","SOMEBODY",
+		"MESSIAH","ADMIN","SYSOP"
+	};
+
 	private final CharCreation me = this;
 
+	public enum LoginState
+	{
+		LOGIN_START,
+		LOGIN_NAME,
+		LOGIN_ACCTCHAR_PWORD,
+		LOGIN_PASS_START,
+		LOGIN_NEWACCOUNT_CONFIRM,
+		LOGIN_NEWCHAR_CONFIRM,
+		LOGIN_PASS_RECEIVED,
+		LOGIN_EMAIL_PASSWORD,
+		LOGIN_ACCTCONV_CONFIRM,
+		ACCTMENU_COMMAND,
+		ACCTMENU_PROMPT,
+		ACCTMENU_CONFIRMCOMMAND,
+		ACCTMENU_ADDTOCOMMAND,
+		ACCTMENU_SHOWMENU,
+		ACCTMENU_SHOWCHARS,
+		ACCTMENU_START,
+		ACCTCREATE_START,
+		ACCTCREATE_ANSICONFIRM,
+		ACCTCREATE_PASSWORDED,
+		ACCTCREATE_EMAILSTART,
+		ACCTCREATE_EMAILPROMPT,
+		ACCTCREATE_EMAILENTERED,
+		ACCTCREATE_EMAILCONFIRMED,
+		CHARCR_EMAILCONFIRMED,
+		CHARCR_EMAILPROMPT,
+		CHARCR_EMAILENTERED,
+		CHARCR_EMAILSTART,
+		CHARCR_EMAILDONE,
+		CHARCR_PASSWORDDONE,
+		CHARCR_START,
+		CHARCR_ANSIDONE,
+		CHARCR_ANSICONFIRMED,
+		CHARCR_THEMEDONE,
+		CHARCR_THEMEPICKED,
+		CHARCR_THEMESTART,
+		CHARCR_GENDERSTART,
+		CHARCR_GENDERDONE,
+		CHARCR_RACEDONE,
+		CHARCR_RACESTART,
+		CHARCR_RACEENTERED,
+		CHARCR_RACECONFIRMED,
+		CHARCR_STATDONE,
+		CHARCR_STATSTART,
+		CHARCR_STATCONFIRM,
+		CHARCR_STATPICK,
+		CHARCR_STATPICKADD,
+		CHARCR_CLASSSTART,
+		CHARCR_CLASSDONE,
+		CHARCR_CLASSPICKED,
+		CHARCR_CLASSCONFIRM,
+		CHARCR_FACTIONNEXT,
+		CHARCR_FACTIONDONE,
+		CHARCR_FACTIONPICK,
+		CHARCR_FINISH
+	}
+	
 	private class LoginSessionImpl implements LoginSession
 	{
 		public boolean 		 wizi	   = false;
@@ -142,7 +207,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		// Make sure there aren't too many points
 		if (points > (basemax - 1) * CharStats.CODES.BASECODES().length)
-				points = (basemax - 1) * CharStats.CODES.BASECODES().length;
+			points = (basemax - 1) * CharStats.CODES.BASECODES().length;
 
 		// Subtract stat minimums from point total to get distributable points
 		return points - (basemin * CharStats.CODES.BASECODES().length);
@@ -3673,8 +3738,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return val;
 	}
 
-	@Override
-	public void pageRooms(CMProps page, Map<String, String> table, String start)
+	protected void pageRooms(CMProps page, Map<String, String> table, String start)
 	{
 		for(final Enumeration<Object> i=page.keys();i.hasMoreElements();)
 		{
@@ -3764,11 +3828,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
-	public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws IOException
+	public LoginResult createCharacter(String login, Session session) throws IOException
 	{
 		final SessionStatus status=session.getStatus();
 		final LoginSessionImpl loginObj=new LoginSessionImpl();
-		loginObj.acct=acct;
+		loginObj.acct=null;
 		loginObj.login=login;
 		loginObj.mob=null;
 		final MOB prevMOB=session.mob();
@@ -3931,9 +3995,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(loginSession!=null)
 		{
 			if(loginSession.acct!=null)
-				loginSession.state=CharCreationLibrary.LoginState.ACCTMENU_START;
+				loginSession.state=LoginState.ACCTMENU_START;
 			else
-				loginSession.state=CharCreationLibrary.LoginState.LOGIN_START;
+				loginSession.state=LoginState.LOGIN_START;
 			loginSession.skipInput=true;
 			loginSession.attempt=0;
 		}

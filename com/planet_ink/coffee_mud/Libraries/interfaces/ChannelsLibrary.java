@@ -252,7 +252,6 @@ public interface ChannelsLibrary extends CMLibrary
 	 * Sends the given channel message from the given sender to the given session on the
 	 * given channelNumbered channel.  
 	 * @see ChannelsLibrary#getNumChannels()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Channel
 	 * @see ChannelsLibrary#createAndSendChannelMessage(MOB, String, String, boolean)
 	 * @param ses the session to send the channel message to
 	 * @param areareq true if the sender and session must be in the same area, false otherwise
@@ -326,7 +325,7 @@ public interface ChannelsLibrary extends CMLibrary
 		 * Empty string, or a color code to override the
 		 * default channel color
 		 * @see ColorLibrary
-		 * @returnEmpty string, or a color code to override
+		 * @return Empty string, or a color code to override
 		 */
 		public String colorOverride();
 		
