@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+<html>
+<head>
+	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>MOB Skills and Abilities</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+	function openUp2(named)
+	{
+		var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+		w=window.open("property.cmvp?ABILITY="+named,
+		            "Ability",strFeatures, false);
+	}
+	//-->
+	</SCRIPT>
+</head>
+
+<body BGCOLOR=#FFCCCC>
+<h3>CoffeeMud @MudServerVersion@ Player Skills and Abilities</h3><P>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR>
+		<TD WIDTH=5%><FONT COLOR=BLACK><B>ID</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=BLACK><B>TYPE</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=BLACK><B>DOMAIN</B></FONT></TD>
+		<TD WIDTH=10%><FONT COLOR=BLACK><B>Qualifying Classes (Levels)</B></FONT></TD>
+		<TD WIDTH=35%><FONT COLOR=BLACK><B>Allows</B></FONT></TD>
+		<TD WIDTH=40%><FONT COLOR=BLACK><B>Description</B></FONT></TD>
+	</TR>
+	@AbilityNext?reset@
+	@loop@
+	@AbilityNext@
+	<TR>
+		<TD><FONT COLOR=BLACK>@AbilityID@</FONT></TD>
+		<TD><FONT COLOR=BLACK>@AbilityData?TYPE&PLAIN@</FONT></TD>
+		<TD><FONT COLOR=BLACK>@AbilityData?DOMAIN&PLAIN@</FONT></TD>
+		<TD><FONT COLOR=BLACK>
+			@AbilityData?CharClassNext&Reset@
+			@loop@
+				@AbilityData?CharClassNext@
+				@CharClassID@ (@AbilityData?charclasslevel@)
+			@back@
+			</FONT>
+		</TD>
+		<TD><FONT COLOR=BLACK>
+			@AbilityData?ALLOWS@
+			</FONT>
+		</TD>
+		<TD><FONT COLOR=BLACK>@AbilityData?HELP&PLAIN@</FONT></TD>
+	</TR>
+	@back@
+	</TABLE>
+	<P>
+</body>
+</html>
+@endif@

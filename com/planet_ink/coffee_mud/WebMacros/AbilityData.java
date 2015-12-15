@@ -132,6 +132,44 @@ public class AbilityData extends StdWebMacro
 					str.append(old+", ");
 				}
 
+				if(parms.containsKey("CHARCLASSLEVEL"))
+				{
+					String old=httpReq.getUrlParameter("CLASS");
+					if(old != null)
+					{
+						str.append(CMLib.ableMapper().getQualifyingLevel(old, true, A.ID())).append(", ");
+					}
+				}
+				
+				if(parms.containsKey("CHARCLASSNEXT"))
+				{
+					if(parms.containsKey("RESET"))
+					{
+						httpReq.removeUrlParameter("CLASS");
+						return "";
+					}
+					String lastID="";
+					String clast = httpReq.getUrlParameter("CLASS");
+					for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+					{
+						final CharClass C=c.nextElement();
+						if(((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
+						&&(CMLib.ableMapper().getQualifyingLevel(C.ID(), true, A.ID())>=0))
+						{
+							if((clast==null)||((clast.length()>0)&&(clast.equals(lastID))&&(!C.ID().equals(lastID))))
+							{
+								httpReq.addFakeUrlParameter("CLASS",C.ID());
+								return "";
+							}
+							lastID=C.ID();
+						}
+					}
+					httpReq.addFakeUrlParameter("CLASS","");
+					if(parms.containsKey("EMPTYOK"))
+						return "<!--EMPTY-->";
+					return " @break@";
+				}
+
 				if(A instanceof Language)
 				{
 					if(parms.containsKey("WORDLISTS"))
@@ -664,22 +702,21 @@ public class AbilityData extends StdWebMacro
 					str.append(old+", ");
 				}
 
-
-
 				/*********************************************************************************/
 				/*********************************************************************************/
 				// here begins the old display data parms
 
 				if(parms.containsKey("HELP"))
 				{
-					StringBuilder s=CMLib.help().getHelpText(A.ID(),null,false);
+					StringBuilder s=CMLib.help().getHelpText(A.ID(),null,false,parms.containsKey("PLAIN"));
 					if(s==null)
-						s=CMLib.help().getHelpText(A.Name(),null,false);
+						s=CMLib.help().getHelpText(A.Name(),null,false,parms.containsKey("PLAIN"));
 					int limit=78;
 					if(parms.containsKey("LIMIT"))
 						limit=CMath.s_int(parms.get("LIMIT"));
 					str.append(helpHelp(s,limit));
 				}
+
 				if(parms.containsKey("RANGES"))
 				{
 					final int min=A.minRange();
@@ -774,25 +811,34 @@ public class AbilityData extends StdWebMacro
 						}
 					}
 				}
+				
+				if(parms.containsKey("TYPE"))
+					str.append(CMLib.flags().getAbilityType(A)).append(", ");
+
 				if(parms.containsKey("DOMAIN"))
 				{
-					final StringBuffer thang=new StringBuffer("");
-					if((A.classificationCode()&Ability.ALL_DOMAINS)!=0)
-					{
-						int domain=A.classificationCode()&Ability.ALL_DOMAINS;
-						domain=domain>>5;
-						thang.append(Ability.DOMAIN_DESCS[domain].toLowerCase().replace('_',' '));
-					}
+					if(parms.containsKey("PLAIN"))
+						str.append(CMLib.flags().getAbilityDomain(A)).append(", ");
 					else
-						thang.append(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES].toLowerCase());
-					if(thang.length()>0)
 					{
-						thang.setCharAt(0,Character.toUpperCase(thang.charAt(0)));
+						final StringBuffer thang=new StringBuffer("");
+						if((A.classificationCode()&Ability.ALL_DOMAINS)!=0)
+						{
+							int domain=A.classificationCode()&Ability.ALL_DOMAINS;
+							domain=domain>>5;
+							thang.append(Ability.DOMAIN_DESCS[domain].toLowerCase().replace('_',' '));
+						}
+						else
+							thang.append(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES].toLowerCase());
+						if(thang.length()>0)
+						{
+							thang.setCharAt(0,Character.toUpperCase(thang.charAt(0)));
 
-						final int x=thang.toString().indexOf('/');
-						if(x>0)
-							thang.setCharAt(x+1,Character.toUpperCase(thang.charAt(x+1)));
-						str.append(thang.toString()+", ");
+							final int x=thang.toString().indexOf('/');
+							if(x>0)
+								thang.setCharAt(x+1,Character.toUpperCase(thang.charAt(x+1)));
+							str.append(thang.toString()+", ");
+						}
 					}
 				}
 				if(parms.containsKey("TYPENDOMAIN"))
