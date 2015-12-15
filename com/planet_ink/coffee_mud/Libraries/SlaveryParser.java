@@ -144,8 +144,10 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		{"find and %s %m","mobfind %m;%s %m"},
 		{"%s %m","mobfind %m;%s %m"},
 		// below is item fetching
-//DROWN, DROWN YOURSELF, DROWN IN A LAKE, SWIM, SWIM AN OCEAN, CLIMB A MOUNTAIN, CLIMB A TREE, CLIMB <X>, SWIM <x>, HANG YOURSELF, CRAWL <x>
+//DROWN, DROWN YOURSELF, DROWN IN A LAKE, SWIM, SWIM AN OCEAN, CLIMB A MOUNTAIN, 
+//CLIMB A TREE, CLIMB <X>, SWIM <x>, HANG YOURSELF, CRAWL <x>
 //BLOW YOUR NOSE, VOMIT, PUKE, THROW UP, KISS MY ASS, KISS <CHAR> <Body part>
+//TELL <CHAR> <WHAT>
 		{"bring %i","itemfind %i;mobfind %c;give %i %c"},
 		{"bring %m %i","itemfind %i;mobfind %m;give %i %m"},
 		{"bring %i to %m","itemfind %i;mobfind %m;give %i %m"},

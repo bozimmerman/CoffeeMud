@@ -166,7 +166,9 @@ public class Spell_StinkingCloud extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":L("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?")))
+			if(mob.location().show(mob,null,this,somanticCastCode(mob,null,auto),auto?"":
+				L("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?")))
+			{
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
@@ -183,10 +185,12 @@ public class Spell_StinkingCloud extends Spell
 						{
 							castingLocation=mob.location();
 							success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) enveloped in the stinking cloud!"));
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,
+									L("<S-NAME> become(s) enveloped in the stinking cloud!"));
 						}
 					}
 				}
+			}
 		}
 		else
 			return maliciousFizzle(mob,null,L("<S-NAME> incant(s), but the spell fizzles."));

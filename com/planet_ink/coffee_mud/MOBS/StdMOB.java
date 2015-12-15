@@ -1433,7 +1433,9 @@ public class StdMOB implements MOB
 	private int maxRangeWith(Environmental tool)
 	{
 		final int max = maxRange();
-		if ((tool != null)&&(tool.maxRange() < max))
+		if(tool == null)
+			return minRange();
+		if (tool.maxRange() < max)
 			return tool.maxRange();
 		return max;
 	}
@@ -2649,7 +2651,7 @@ public class StdMOB implements MOB
 			{
 				if (Log.combatChannelOn())
 					Log.combatOut(srcM.Name() + ":" + Name() + ":" + CMMsg.TYPE_DESCS[msg.targetMinor()] + ":"
-							+ ((msg.tool() != null) ? msg.tool().Name() : "null"));
+						+ ((msg.tool() != null) ? msg.tool().Name() : "null"));
 
 				if ((msg.amISource(this))
 				&& (!msg.sourceMajor(CMMsg.MASK_ALWAYS))
