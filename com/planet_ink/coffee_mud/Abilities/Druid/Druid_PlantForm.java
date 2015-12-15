@@ -89,7 +89,7 @@ public class Druid_PlantForm extends StdAbility
 				msg.source().tell(L("Attack a plant?!"));
 				if(target.getVictim()==msg.source())
 				{
-					target.makePeace();
+					target.makePeace(true);
 					target.setVictim(null);
 				}
 				return false;

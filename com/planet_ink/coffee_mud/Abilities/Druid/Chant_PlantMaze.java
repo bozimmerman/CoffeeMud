@@ -199,7 +199,7 @@ public class Chant_PlantMaze extends Chant
 					if(oldRoom.okMessage(follower,leaveMsg)&&newerRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())
-							follower.makePeace();
+							follower.makePeace(true);
 						oldRoom.send(follower,leaveMsg);
 						newerRoom.bringMobHere(follower,false);
 						newerRoom.send(follower,enterMsg);

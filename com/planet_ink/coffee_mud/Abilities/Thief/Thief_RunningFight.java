@@ -103,7 +103,7 @@ public class Thief_RunningFight extends ThiefSkill
 			}
 			if(dir<0)
 				return super.okMessage(myHost,msg);
-			mob.makePeace();
+			mob.makePeace(true);
 			if(CMLib.tracking().walk(M,dir,false,false))
 			{
 				M.setVictim(mob);

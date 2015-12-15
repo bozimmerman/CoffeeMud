@@ -168,7 +168,7 @@ public class Prayer_Sermon extends Prayer
 						if((success)&&(msg.value()<=0))
 						{
 							if(target.getVictim()==mob)
-								target.makePeace();
+								target.makePeace(true);
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> begin(s) nodding and shouting praises to @x1.",hisHerDiety(mob)));
 							CMLib.commands().postFollow(target,mob,true);
 						}

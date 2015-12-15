@@ -54,7 +54,7 @@ public class Song_Serenity extends Song
 		&&(CMLib.flags().canBeHeardSpeakingBy(invoker,msg.source()))
 		&&(msg.target()!=null))
 		{
-			msg.source().makePeace();
+			msg.source().makePeace(true);
 			msg.source().tell(L("You feel too peaceful to fight."));
 			return false;
 		}

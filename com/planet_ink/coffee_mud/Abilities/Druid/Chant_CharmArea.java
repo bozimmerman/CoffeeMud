@@ -64,8 +64,8 @@ public class Chant_CharmArea extends Chant
 				msg.source().tell(L("You feel too peaceful here."));
 				final MOB victim=msg.source().getVictim();
 				if(victim!=null)
-					victim.makePeace();
-				msg.source().makePeace();
+					victim.makePeace(true);
+				msg.source().makePeace(true);
 			}
 			msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"");
 			return false;

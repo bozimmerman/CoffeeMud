@@ -161,10 +161,10 @@ public class Thief_TurfWar extends ThiefSkill
 	{
 		final MOB attacker=invoker();
 		if(attacker!=null)
-			attacker.makePeace();
+			attacker.makePeace(true);
 		if(defender!=null)
 		{
-			defender.makePeace();
+			defender.makePeace(true);
 			defender.setAttribute(MOB.Attrib.PLAYERKILL,this.defenderPKILLON);
 		}
 

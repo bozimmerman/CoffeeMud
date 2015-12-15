@@ -200,7 +200,7 @@ public class Thief_Hideout extends ThiefSkill
 				if(mob.isInCombat())
 				{
 					CMLib.commands().postFlee(mob,("NOWHERE"));
-					mob.makePeace();
+					mob.makePeace(false);
 				}
 				thisRoom.send(mob,msg);
 				newRoom.bringMobHere(mob,false);

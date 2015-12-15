@@ -1446,7 +1446,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void makePeace()
+	public void makePeace(boolean includePlayerFollowers)
 	{
 		final MOB myVictim = victim;
 		setVictim(null);
@@ -1454,13 +1454,13 @@ public class StdMOB implements MOB
 		{
 			final MOB M = fetchFollower(f);
 			if ((M != null) && (M.isInCombat()))
-				M.makePeace();
+				M.makePeace(true);
 		}
 		if (myVictim != null)
 		{
 			final MOB oldVictim = myVictim.getVictim();
 			if (oldVictim == this)
-				myVictim.makePeace();
+				myVictim.makePeace(true);
 		}
 	}
 
@@ -1541,7 +1541,7 @@ public class StdMOB implements MOB
 				playerStats().getExtItems().addItem(Body);
 		}
 		amDead = true;
-		makePeace();
+		makePeace(false);
 		setRiding(null);
 		synchronized (commandQue)
 		{

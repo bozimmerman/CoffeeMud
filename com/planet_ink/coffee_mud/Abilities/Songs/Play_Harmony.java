@@ -49,8 +49,8 @@ public class Play_Harmony extends Play
 	{
 		final MOB victim=mob.getVictim();
 		if(victim!=null)
-			victim.makePeace();
-		mob.makePeace();
+			victim.makePeace(true);
+		mob.makePeace(true);
 	}
 
 	@Override

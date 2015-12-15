@@ -108,8 +108,8 @@ public class Paladin_Defend extends StdAbility
 					{
 						final MOB victim=mob.getVictim();
 						if((victim!=null)&&(victim.getVictim()==mob))
-							victim.makePeace();
-						mob.makePeace();
+							victim.makePeace(true);
+						mob.makePeace(true);
 						unInvoke();
 					}
 				}

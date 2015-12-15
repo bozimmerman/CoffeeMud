@@ -157,11 +157,8 @@ public class Account extends StdCommand
 			for (final Enumeration<ThinPlayer> p=account.getThinPlayers(); p.hasMoreElements();)
 			{
 				ThinPlayer player = p.nextElement();
-				if(toggle)
-					str.append("^~y");
-				else
-					str.append("^N");
-				str.append(showCharLong(toggle?"^~y":"",mob,player));
+				str.append("^N");
+				str.append(showCharLong("",mob,player));
 				toggle = !toggle;
 			}
 			str.append("^N");

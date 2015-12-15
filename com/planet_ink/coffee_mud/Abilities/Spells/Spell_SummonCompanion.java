@@ -104,7 +104,7 @@ public class Spell_SummonCompanion extends Spell
 				{
 					if(newRoom.okMessage(follower,enterMsg))
 					{
-						follower.makePeace();
+						follower.makePeace(true);
 						oldRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,true);
 						newRoom.send(follower,enterMsg);

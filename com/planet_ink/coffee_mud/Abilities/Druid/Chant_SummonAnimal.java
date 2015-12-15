@@ -152,12 +152,12 @@ public class Chant_SummonAnimal extends Chant
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat())
-					target.makePeace();
+					target.makePeace(true);
 				CMLib.tracking().walk(target,opDir,false,false);
 				if(target.location()==room)
 				{
 					if(target.isInCombat())
-						target.makePeace();
+						target.makePeace(true);
 					CMLib.commands().postFollow(target,mob,true);
 					beneficialAffect(mob,target,asLevel,0);
 					if(target.amFollowing()!=mob)

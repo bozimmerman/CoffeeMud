@@ -265,9 +265,9 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 								((MOB)msg.target()).phyStats().setDisposition(((MOB)msg.target()).phyStats().disposition()|PhyStats.IS_SLEEPING);
 							}
 							if(mob.getVictim()==msg.source())
-								mob.makePeace();
+								mob.makePeace(true);
 							if(msg.source().getVictim()==mob)
-								msg.source().makePeace();
+								msg.source().makePeace(true);
 							msg.setValue(0);
 						}
 						break;

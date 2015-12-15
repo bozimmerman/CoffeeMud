@@ -107,7 +107,7 @@ public class Disease_Depression extends Disease
 		&&(CMLib.dice().rollPercentage()<10))
 		{
 			mob.tell(L("Whats the point in fighting, really?"));
-			mob.makePeace();
+			mob.makePeace(true);
 		}
 		if((!mob.isInCombat())
 		&&(mob.session()!=null)

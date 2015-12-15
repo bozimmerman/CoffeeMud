@@ -160,16 +160,16 @@ public class Spell_Geas extends Spell
 				setMiscText(CMParms.combine(commands,0));
 				if(maliciousAffect(mob,target,asLevel,2000,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0))!=null)
 				{
-					target.makePeace();
+					target.makePeace(true);
 					if(mob.getVictim()==target)
-						mob.makePeace();
+						mob.makePeace(true);
 					if(target.location()==mob.location())
 					{
 						for(int m=0;m<target.location().numInhabitants();m++)
 						{
 							final MOB M=target.location().fetchInhabitant(m);
 							if((M!=null)&&(M.getVictim()==target))
-								M.makePeace();
+								M.makePeace(true);
 						}
 					}
 				}

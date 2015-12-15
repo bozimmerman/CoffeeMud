@@ -136,7 +136,7 @@ public class Spell_SummonSteed extends Spell
 				beneficialAffect(mob,target,asLevel,0);
 				if(squabble==null)
 				{
-					if (target.isInCombat()) target.makePeace();
+					if (target.isInCombat()) target.makePeace(true);
 					CMLib.commands().postFollow(target,mob,true);
 					invoker=mob;
 					if (target.amFollowing() != mob)

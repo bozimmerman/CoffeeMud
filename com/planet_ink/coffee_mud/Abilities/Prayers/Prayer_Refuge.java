@@ -109,7 +109,7 @@ public class Prayer_Refuge extends Prayer
 									if(follower.isInCombat())
 									{
 										CMLib.commands().postFlee(follower,("NOWHERE"));
-										follower.makePeace();
+										follower.makePeace(true);
 									}
 									thisRoom.send(follower,leaveMsg);
 									newRoom.bringMobHere(follower,false);

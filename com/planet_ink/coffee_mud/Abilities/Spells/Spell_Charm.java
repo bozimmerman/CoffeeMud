@@ -237,7 +237,7 @@ public class Spell_Charm extends Spell
 					if(success)
 					{
 						if(target.isInCombat())
-							target.makePeace();
+							target.makePeace(true);
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)

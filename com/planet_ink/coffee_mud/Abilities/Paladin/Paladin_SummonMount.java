@@ -159,12 +159,12 @@ public class Paladin_SummonMount extends StdAbility
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				if(target.isInCombat())
-					target.makePeace();
+					target.makePeace(true);
 				CMLib.tracking().walk(target,opDir,false,false);
 				if(target.location()==mob.location())
 				{
 					if(target.isInCombat())
-						target.makePeace();
+						target.makePeace(true);
 					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)
 						mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));

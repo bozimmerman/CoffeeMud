@@ -138,12 +138,12 @@ public class Spell_Timeport extends Spell
 			{
 				mob.location().send(mob,msg);
 				final Room room=mob.location();
-				target.makePeace();
+				target.makePeace(true);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					final MOB M=room.fetchInhabitant(i);
 					if((M!=null)&&(M.getVictim()==target))
-						M.makePeace();
+						M.makePeace(true);
 				}
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es)!"));
 				CMLib.threads().suspendTicking(target,-1);

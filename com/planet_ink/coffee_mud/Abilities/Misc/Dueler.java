@@ -107,7 +107,7 @@ public class Dueler extends StdAbility
 				mob.recoverCharStats();
 				mob.recoverMaxState();
 				mob.recoverPhyStats();
-				mob.makePeace();
+				mob.makePeace(true);
 				final Ability A=CMClass.getAbility("Immunities");
 				if(A!=null)
 					A.invoke(mob, new XVector<String>("LEGAL","TICKS=1"), mob, true, 0);
@@ -138,7 +138,7 @@ public class Dueler extends StdAbility
 					CMMsg.MSG_DUELLOSS,L("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
 			deathRoom.send(target, msg2);
 			CMLib.combat().doDeathPostProcessing(msg);
-			target.makePeace();
+			target.makePeace(true);
 			//source.makePeace();
 			unInvoke();
 			return false;

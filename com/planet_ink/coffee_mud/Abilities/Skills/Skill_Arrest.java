@@ -76,9 +76,9 @@ public class Skill_Arrest extends StdSkill
 			if((inhab!=null)&&(inhab.isInCombat()))
 			{
 				if(inhab.getVictim()==mob)
-					inhab.makePeace();
+					inhab.makePeace(true);
 				if(inhab.getVictim()==target)
-					inhab.makePeace();
+					inhab.makePeace(true);
 			}
 		}
 	}

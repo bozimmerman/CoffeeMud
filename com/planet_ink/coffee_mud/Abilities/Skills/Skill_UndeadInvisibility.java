@@ -62,7 +62,7 @@ public class Skill_UndeadInvisibility extends StdSkill
 				msg.source().tell(L("You don't see @x1",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
-					target.makePeace();
+					target.makePeace(true);
 					target.setVictim(null);
 					helpProficiency((MOB)affected, 0);
 				}

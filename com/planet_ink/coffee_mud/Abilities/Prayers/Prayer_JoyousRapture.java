@@ -96,7 +96,7 @@ public class Prayer_JoyousRapture extends Prayer
 			}
 			if(affected instanceof MOB)
 			{
-				((MOB)affected).makePeace();
+				((MOB)affected).makePeace(true);
 			}
 		}
 		return true;

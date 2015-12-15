@@ -154,9 +154,9 @@ public class CombatSleep extends StdAbility implements HealthCondition
 						if(target.location()==mob.location())
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) unconscious!!"));
 				}
-				target.makePeace();
+				target.makePeace(true);
 				if(mob.getVictim()==target)
-					mob.makePeace();
+					mob.makePeace(true);
 			}
 		}
 		else

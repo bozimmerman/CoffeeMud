@@ -86,7 +86,7 @@ public class Prayer_Calm extends Prayer
 					if((inhab!=null)&&(inhab.isInCombat()))
 					{
 						inhab.tell(L("You feel at peace."));
-						inhab.makePeace();
+						inhab.makePeace(true);
 					}
 				}
 			}

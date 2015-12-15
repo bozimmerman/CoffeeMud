@@ -351,8 +351,8 @@ public class Nanny extends StdBehavior
 					CMLib.commands().postSay((MOB)host,msg.source(),L("Not in my @x1 you dont!",place));
 					final MOB victim=msg.source().getVictim();
 					if(victim!=null)
-						victim.makePeace();
-					msg.source().makePeace();
+						victim.makePeace(true);
+					msg.source().makePeace(true);
 				}
 				else
 					msg.source().tell(L("You can't do that here."));

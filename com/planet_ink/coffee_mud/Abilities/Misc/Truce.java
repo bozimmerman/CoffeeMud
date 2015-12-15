@@ -115,9 +115,9 @@ public class Truce extends StdAbility
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
 			msg.source().tell(msg.source(),msg.target(),null,L("You have made peace with <T-NAMESELF>."));
-			msg.source().makePeace();
+			msg.source().makePeace(true);
 			if(msg.target() instanceof MOB)
-				((MOB)msg.target()).makePeace();
+				((MOB)msg.target()).makePeace(true);
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -148,9 +148,9 @@ public class Truce extends StdAbility
 					if(A!=null)
 						A.setMiscText(target.Name());
 				}
-				target.makePeace();
+				target.makePeace(true);
 				if(mob.getVictim()==target)
-					mob.makePeace();
+					mob.makePeace(true);
 			}
 		}
 		else

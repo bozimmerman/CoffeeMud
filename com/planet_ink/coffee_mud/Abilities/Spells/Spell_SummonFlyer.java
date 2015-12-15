@@ -135,7 +135,7 @@ public class Spell_SummonFlyer extends Spell
 				beneficialAffect(mob,target,0,asLevel);
 				if(squabble==null)
 				{
-					if (target.isInCombat()) target.makePeace();
+					if (target.isInCombat()) target.makePeace(true);
 					CMLib.commands().postFollow(target,mob,true);
 					invoker=mob;
 					if (target.amFollowing() != mob)

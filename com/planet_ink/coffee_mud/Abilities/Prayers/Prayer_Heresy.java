@@ -108,7 +108,7 @@ public class Prayer_Heresy extends Prayer
 			beneficialWordsFizzle(mob,target,L("<S-NAME> accuse(s) <T-NAMESELF> of heresy@x1, but nothing happens.",againstTheGods(mob)));
 		mob.setVictim(oldVictim);
 		if(oldVictim==null)
-			mob.makePeace();
+			mob.makePeace(true);
 
 		// return whether it worked
 		return success;

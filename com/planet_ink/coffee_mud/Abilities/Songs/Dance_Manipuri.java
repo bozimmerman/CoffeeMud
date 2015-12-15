@@ -79,7 +79,7 @@ public class Dance_Manipuri extends Dance
 				msg.source().tell(L("You feel like letting @x1 be for awhile.",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
-					target.makePeace();
+					target.makePeace(true);
 					target.setVictim(null);
 				}
 				return false;

@@ -81,7 +81,7 @@ public class Prop_SafePet extends Property
 				{
 					if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 						msg.source().tell(msg.source(),affected,null,displayMessage);
-					((MOB)affected).makePeace();
+					((MOB)affected).makePeace(true);
 					return false;
 				}
 				else

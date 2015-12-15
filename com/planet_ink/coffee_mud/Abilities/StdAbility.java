@@ -1810,6 +1810,26 @@ public class StdAbility implements Ability
 		return true;
 	}
 
+	protected Map<MOB,MOB> saveCombatState(MOB mob, boolean andFollowers)
+	{
+		Map<MOB,MOB> map = new TreeMap<MOB,MOB>();
+		HashSet<MOB> fols = new HashSet<MOB>();
+		fols.add(mob);
+		if(andFollowers)
+			mob.getGroupMembers(fols);
+		for(MOB M : fols)
+			map.put(M,M.getVictim());
+		return map;
+	}
+	
+	protected void restoreCombatState(Map<MOB,MOB> map)
+	{
+		for(MOB M : map.keySet())
+		{
+			M.setVictim(map.get(M));
+		}
+	}
+	
 	protected int verbalCastCode(MOB mob, Physical target, boolean auto)
 	{
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;

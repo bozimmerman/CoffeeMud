@@ -94,8 +94,8 @@ public class Chant_Treemorph extends Chant
 			{
 				final MOB victim=mob.getVictim();
 				if(victim!=null)
-					victim.makePeace();
-				mob.makePeace();
+					victim.makePeace(true);
+				mob.makePeace(true);
 			}
 			mob.recoverMaxState();
 			mob.resetToMaxState();
@@ -134,8 +134,8 @@ public class Chant_Treemorph extends Chant
 			{
 				final MOB victim=mob.getVictim();
 				if(victim!=null)
-					victim.makePeace();
-				mob.makePeace();
+					victim.makePeace(true);
+				mob.makePeace(true);
 			}
 		}
 		return true;
@@ -230,7 +230,7 @@ public class Chant_Treemorph extends Chant
 						if(target.numEffects()==s)
 							a++;
 					}
-					target.makePeace();
+					target.makePeace(true);
 					CMLib.commands().postStand(target,true);
 					tree=CMClass.getItem("GenItem");
 					tree.setName(L("a oak tree"));

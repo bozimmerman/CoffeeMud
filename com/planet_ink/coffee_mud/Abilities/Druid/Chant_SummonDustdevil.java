@@ -222,7 +222,7 @@ public class Chant_SummonDustdevil extends Chant
 				if(target!=null)
 				{
 					if(target.isInCombat())
-						target.makePeace();
+						target.makePeace(true);
 					beneficialAffect(mob,target,asLevel,0);
 					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)

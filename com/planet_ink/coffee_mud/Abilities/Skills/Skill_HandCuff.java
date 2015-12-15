@@ -133,7 +133,7 @@ public class Skill_HandCuff extends StdSkill
 			msg.source().tell(L("You may not assault this prisoner."));
 			if(mob.getVictim()==msg.source())
 			{
-				mob.makePeace();
+				mob.makePeace(true);
 				mob.setVictim(null);
 			}
 			return false;

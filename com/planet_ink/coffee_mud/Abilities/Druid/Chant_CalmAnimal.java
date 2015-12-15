@@ -78,7 +78,7 @@ public class Chant_CalmAnimal extends Chant
 				{
 					final MOB mob2=mob.location().fetchInhabitant(i);
 					if((mob2.getVictim()==target)||(mob2==target))
-						mob2.makePeace();
+						mob2.makePeace(true);
 				}
 			}
 		}

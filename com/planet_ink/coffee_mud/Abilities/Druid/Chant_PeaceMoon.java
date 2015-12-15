@@ -80,8 +80,8 @@ public class Chant_PeaceMoon extends Chant
 				msg.source().tell(L("Nah, you feel too peaceful under that bright moon."));
 				final MOB victim=msg.source().getVictim();
 				if(victim!=null)
-					victim.makePeace();
-				msg.source().makePeace();
+					victim.makePeace(true);
+				msg.source().makePeace(true);
 			}
 			msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"");
 			return false;
@@ -102,7 +102,7 @@ public class Chant_PeaceMoon extends Chant
 			if(mob.location().fetchEffect(ID())==null)
 				unInvoke();
 			if(mob.isInCombat())
-				mob.makePeace();
+				mob.makePeace(true);
 		}
 		else
 		if(affected instanceof Room)

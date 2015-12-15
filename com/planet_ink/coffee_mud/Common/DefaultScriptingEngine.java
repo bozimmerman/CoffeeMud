@@ -8714,7 +8714,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							&&(!A.isAutoInvoked()))
 								A.unInvoke();
 						}
-						mob.makePeace();
+						mob.makePeace(false);
 						if(lastKnownLocation!=null)
 							lastKnownLocation.recoverRoomStats();
 					}
@@ -9668,7 +9668,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									if(follower.isInCombat())
 									{
 										CMLib.commands().postFlee(follower,("NOWHERE"));
-										follower.makePeace();
+										follower.makePeace(true);
 									}
 									thisRoom.send(follower,leaveMsg);
 									newRoom.bringMobHere(follower,false);

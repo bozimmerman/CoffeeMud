@@ -2191,7 +2191,7 @@ public class DefaultSession implements Session
 				if((M.isInCombat())&&(M.location()!=null))
 				{
 					CMLib.commands().postFlee(mob,"NOWHERE");
-					M.makePeace();
+					M.makePeace(false);
 				}
 				if(!CMLib.flags().isCloaked(M))
 				{

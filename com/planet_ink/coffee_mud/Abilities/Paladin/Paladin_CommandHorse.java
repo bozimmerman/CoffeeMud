@@ -105,7 +105,7 @@ public class Paladin_CommandHorse extends StdAbility
 					if((msg2.value()<=0)&&(omsg.sourceMinor()==CMMsg.TYP_ORDER))
 					{
 						invoker=mob;
-						target.makePeace();
+						target.makePeace(true);
 						target.enqueCommand(commands,MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
 					}
 				}

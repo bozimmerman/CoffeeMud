@@ -177,7 +177,7 @@ public class Spell_Shelter extends Spell
 						if(follower.isInCombat())
 						{
 							CMLib.commands().postFlee(follower,("NOWHERE"));
-							follower.makePeace();
+							follower.makePeace(false);
 						}
 						thisRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);

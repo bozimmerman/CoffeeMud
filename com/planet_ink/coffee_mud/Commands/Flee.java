@@ -116,7 +116,7 @@ public class Flee extends Go
 		}
 		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(CMLib.tracking().walk(mob,directionCode,true,false,false))))
 		{
-			mob.makePeace();
+			mob.makePeace(false);
 			if(XPloss&&(fighting!=null))
 			{
 				final String whatToDo=CMProps.getVar(CMProps.Str.PLAYERFLEE);

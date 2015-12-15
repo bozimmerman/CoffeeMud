@@ -36,21 +36,79 @@ import java.util.*;
 
 public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 {
-	@Override public String ID() { return "Skill_ArrestingSap"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_ArrestingSap";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Arresting Sap");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Knocked out: "+tickDown+")"); }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"ASAP"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	protected int enhancement=0;
-	@Override public int abilityCode(){return enhancement;}
-	@Override public void setAbilityCode(int newCode){enhancement=newCode;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	protected boolean utterSafety=false;
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Knocked out: " + tickDown + ")");
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "ASAP" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	protected int enhancement = 0;
+
+	@Override
+	public int abilityCode()
+	{
+		return enhancement;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		enhancement = newCode;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	protected boolean utterSafety = false;
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_LEGAL;
+	}
 
 	@Override
 	public String getHealthConditionDesc()
@@ -152,7 +210,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 
 	public void makeMyPeace(MOB target)
 	{
-		target.makePeace();
+		target.makePeace(true);
 		final Room R=target.location();
 		if(R!=null)
 			for(int i=0;i<R.numInhabitants();i++)

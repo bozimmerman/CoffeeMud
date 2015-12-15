@@ -93,13 +93,13 @@ public class Thief_Surrender extends ThiefSkill
 				mob.location().send(mob,msg);
 				CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 				mob.recoverPhyStats();
-				mob.makePeace();
+				mob.makePeace(true);
 				for(int v=0;v<theList.size();v++)
 				{
 					final MOB vic=theList.elementAt(v);
 					CMLib.beanCounter().addMoney(vic,localCurrency,CMath.div(goldRequired,theList.size()));
 					vic.recoverPhyStats();
-					vic.makePeace();
+					vic.makePeace(true);
 				}
 			}
 			else

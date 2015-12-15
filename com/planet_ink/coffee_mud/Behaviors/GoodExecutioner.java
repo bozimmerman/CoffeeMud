@@ -96,7 +96,7 @@ public class GoodExecutioner  extends StdBehavior
 			final MOB observer=(MOB)affecting;
 			if((observer.getVictim() == msg.source())
 			||(msg.source().getVictim() == observer))
-				observer.makePeace();
+				observer.makePeace(true);
 			synchronized(protectedOnes)
 			{
 				final int x = protectedOnes.indexOf(msg.source().Name());

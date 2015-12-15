@@ -167,8 +167,8 @@ public class Thief_Flay extends ThiefSkill
 						A.invoke(mob,target,true,asLevel);
 					if(makePeace)
 					{
-						mob.makePeace();
-						target.makePeace();
+						mob.makePeace(true);
+						target.makePeace(true);
 					}
 				}
 			}

@@ -71,7 +71,7 @@ public class Prop_SparringRoom extends Property
 				final Set<MOB> dividers=CMLib.combat().getCombatDividers(source,target,combatCharClass);
 				CMLib.combat().dispenseExperience(beneficiaries,dividers,target);
 			}
-			target.makePeace();
+			target.makePeace(true);
 			target.setRiding(null);
 			for(int a=target.numEffects()-1;a>=0;a--) // personal effects
 			{

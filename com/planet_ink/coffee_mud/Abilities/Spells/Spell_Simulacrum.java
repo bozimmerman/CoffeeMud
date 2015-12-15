@@ -107,7 +107,7 @@ public class Spell_Simulacrum extends Spell
 				{
 				case CMMsg.TYP_DAMAGE:
 					msg.setValue(0);
-					simulacruM.makePeace();
+					simulacruM.makePeace(true);
 					break;
 				case CMMsg.TYP_GET:
 				case CMMsg.TYP_PUSH:
@@ -124,7 +124,7 @@ public class Spell_Simulacrum extends Spell
 				{
 				case CMMsg.TYP_DAMAGE:
 					msg.setValue(0);
-					simulacruM.makePeace();
+					simulacruM.makePeace(true);
 					break;
 				case CMMsg.TYP_LOOK:
 				case CMMsg.TYP_EXAMINE:

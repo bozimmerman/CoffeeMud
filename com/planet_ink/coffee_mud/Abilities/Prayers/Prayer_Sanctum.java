@@ -111,8 +111,8 @@ public class Prayer_Sanctum extends Prayer
 				}
 				final MOB victim=msg.source().getVictim();
 				if(victim!=null)
-					victim.makePeace();
-				msg.source().makePeace();
+					victim.makePeace(true);
+				msg.source().makePeace(true);
 				msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"");
 				return false;
 			}

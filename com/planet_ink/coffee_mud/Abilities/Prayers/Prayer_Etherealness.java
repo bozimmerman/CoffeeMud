@@ -119,7 +119,7 @@ public class Prayer_Etherealness extends Prayer
 			case CMMsg.TYP_THROW:
 			case CMMsg.TYP_WEAPONATTACK:
 				msg.source().tell(L("You fail your attempt to affect matter in this form."));
-				msg.source().makePeace();
+				msg.source().makePeace(true);
 				return false;
 			}
 		}

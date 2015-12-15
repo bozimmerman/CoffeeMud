@@ -128,9 +128,9 @@ public class Thief_Shadowstrike extends ThiefSkill
 				final MOB oldVictim=target.getVictim();
 				final MOB oldVictim2=mob.getVictim();
 				if(oldVictim==mob)
-					target.makePeace();
+					target.makePeace(true);
 				if(oldVictim2==target)
-					mob.makePeace();
+					mob.makePeace(true);
 				if(mob.fetchEffect("Thief_Hide")==null)
 				{
 					final Ability hide=mob.fetchAbility("Thief_Hide");

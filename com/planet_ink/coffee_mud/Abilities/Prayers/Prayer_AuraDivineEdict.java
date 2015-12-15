@@ -78,7 +78,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		   ||CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		{
 			msg.source().tell(L("@x1 DEMANDS NO FIGHTING!",godName));
-			msg.source().makePeace();
+			msg.source().makePeace(true);
 			return false;
 		}
 		else
@@ -130,7 +130,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			if((M!=null)&&(M.isInCombat()))
 			{
 				M.tell(L("@x1 DEMANDS NO FIGHTING!",invoker().getWorshipCharID().toUpperCase()));
-				M.makePeace();
+				M.makePeace(true);
 			}
 		}
 		return true;

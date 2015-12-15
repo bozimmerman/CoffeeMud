@@ -85,8 +85,8 @@ public class Prayer_InfuseBalance extends Prayer
 			if(msg.source().getWorshipCharID().equalsIgnoreCase(((MOB)msg.target()).getWorshipCharID()))
 			{
 				msg.source().tell(L("Not right now -- you're in a service."));
-				msg.source().makePeace();
-				((MOB)msg.target()).makePeace();
+				msg.source().makePeace(true);
+				((MOB)msg.target()).makePeace(true);
 				return false;
 			}
 		}

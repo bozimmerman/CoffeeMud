@@ -74,14 +74,14 @@ public class Dummy extends Doll
 			if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 			{
 				msg.source().curState().setHitPoints(99999);
-				((MOB)myHost).makePeace();
+				((MOB)myHost).makePeace(true);
 				final Room room=((MOB)myHost).location();
 				if(room!=null)
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					final MOB mob=room.fetchInhabitant(i);
 					if((mob.getVictim()!=null)&&(mob.getVictim()==myHost))
-						mob.makePeace();
+						mob.makePeace(true);
 				}
 				return false;
 			}

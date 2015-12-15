@@ -132,14 +132,14 @@ public class Spell_KnowBliss extends Spell
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> smile(s) most peculiarly!"));
 					maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
-					target.makePeace();
+					target.makePeace(true);
 					if(mob.getVictim()==target)
-						mob.makePeace();
+						mob.makePeace(true);
 					for(int m=0;m<target.location().numInhabitants();m++)
 					{
 						final MOB M=target.location().fetchInhabitant(m);
 						if((M!=null)&&(M.getVictim()==target))
-							M.makePeace();
+							M.makePeace(true);
 					}
 				}
 			}

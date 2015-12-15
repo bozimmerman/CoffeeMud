@@ -794,7 +794,7 @@ public class Conquerable extends Arrest
 				msg.source().tell(L("@x1 is a fellow @x2 member, and you must respect @x3.",target.name(msg.source()),holdingClan,target.charStats().himher()));
 				if(target.getVictim()==msg.source())
 				{
-					target.makePeace();
+					target.makePeace(true);
 					target.setVictim(null);
 				}
 				return false;

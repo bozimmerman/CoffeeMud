@@ -357,7 +357,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		for (final MOB mob2 : myGroup)
 		{
 			if(mob2.isInCombat()&&(myGroup.contains(mob2.getVictim())))
-				mob2.makePeace();
+				mob2.makePeace(true);
 		}
 	}
 
@@ -533,8 +533,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 		{
 			final MOB M=m.nextElement();
-			if((M!=null)&&(M.getVictim()==mob)&&(M!=mob)&&(!exceptionSet.contains(M)))
-				M.makePeace();
+			if((M!=null)
+			&&(M.getVictim()==mob)
+			&&(M!=mob)
+			&&(!exceptionSet.contains(M)))
+				M.setVictim(null);
 		}
 	}
 	

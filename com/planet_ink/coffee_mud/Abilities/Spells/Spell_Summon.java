@@ -159,7 +159,7 @@ public class Spell_Summon extends Spell
 				{
 					if(newRoom.okMessage(follower,enterMsg))
 					{
-						follower.makePeace();
+						follower.makePeace(true);
 						oldRoom.send(follower,leaveMsg);
 						newRoom.bringMobHere(follower,false);
 						newRoom.send(follower,enterMsg);

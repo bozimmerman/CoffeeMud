@@ -173,7 +173,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			if(follower.isInCombat())
 			{
 				CMLib.commands().postFlee(follower,("NOWHERE"));
-				follower.makePeace();
+				follower.makePeace(true);
 			}
 			thisRoom.send(follower,leaveMsg);
 			newRoom.bringMobHere(follower,false);

@@ -450,9 +450,9 @@ public class StdDeity extends StdMOB implements Deity
 		if(mob.location()!=prevRoom)
 		{
 			if(mob.getVictim()==this)
-				mob.makePeace();
+				mob.makePeace(true);
 			if(getVictim()==mob)
-				makePeace();
+				makePeace(true);
 		}
 	}
 
@@ -506,9 +506,9 @@ public class StdDeity extends StdMOB implements Deity
 		if(mob.location()!=prevRoom)
 		{
 			if(mob.getVictim()==this)
-				mob.makePeace();
+				mob.makePeace(true);
 			if(getVictim()==mob)
-				makePeace();
+				makePeace(true);
 		}
 	}
 

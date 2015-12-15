@@ -99,7 +99,7 @@ public class Spell_FindFamiliar extends Spell
 				mob.location().send(mob,msg);
 				final MOB target = determineMonster(mob, mob.phyStats().level());
 				if(target.isInCombat())
-					target.makePeace();
+					target.makePeace(true);
 				CMLib.commands().postFollow(target,mob,true);
 				invoker=mob;
 				if(target.amFollowing()!=mob)

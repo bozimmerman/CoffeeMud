@@ -140,7 +140,7 @@ public class Stone extends StdRace
 				msg.source().tell(L("Attack a rock?!"));
 				if(target.getVictim()==msg.source())
 				{
-					target.makePeace();
+					target.makePeace(true);
 					target.setVictim(null);
 				}
 				return false;

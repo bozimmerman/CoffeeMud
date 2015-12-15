@@ -215,7 +215,7 @@ public class Thief_Bind extends ThiefSkill
 				{
 					final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 					MOB M=null;
-					mob.makePeace();
+					mob.makePeace(true);
 					for (final Object element : H)
 					{
 						M=(MOB)element;

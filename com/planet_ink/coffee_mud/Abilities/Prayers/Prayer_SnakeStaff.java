@@ -168,7 +168,7 @@ public class Prayer_SnakeStaff extends Prayer
 				if(A!=null)
 				{
 					if (monster.isInCombat()) 
-						monster.makePeace();
+						monster.makePeace(true);
 					CMLib.commands().postFollow(monster,mob,true);
 					invoker=mob;
 					if (monster.amFollowing() != mob)

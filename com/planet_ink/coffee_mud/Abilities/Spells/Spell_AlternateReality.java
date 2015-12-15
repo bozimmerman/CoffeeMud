@@ -124,7 +124,7 @@ public class Spell_AlternateReality extends Spell
 					{
 						final Room R=target.location();
 						R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> change(s) sides!"));
-						target.makePeace();
+						target.makePeace(true);
 						if(mob.getVictim()==target)
 							mob.setVictim(null);
 						final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());

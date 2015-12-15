@@ -142,9 +142,9 @@ public class Thief_StripItem extends ThiefSkill
 				if((!target.isMonster())&&(mob.isMonster())&&(!alreadyFighting))
 				{
 					if(target.getVictim()==mob)
-						target.makePeace();
+						target.makePeace(true);
 					if(mob.getVictim()==target)
-						mob.makePeace();
+						mob.makePeace(true);
 				}
 				else
 				if(((hisStr==null)||mob.isMonster())
@@ -152,7 +152,7 @@ public class Thief_StripItem extends ThiefSkill
 				&&(CMLib.dice().rollPercentage()>stolen.phyStats().level()))
 				{
 					if(target.getVictim()==mob)
-						target.makePeace();
+						target.makePeace(true);
 				}
 				msg=CMClass.getMsg(target,stolen,null,CMMsg.MSG_REMOVE,CMMsg.MSG_REMOVE,CMMsg.MSG_NOISE,null);
 				if(target.location().okMessage(target,msg))

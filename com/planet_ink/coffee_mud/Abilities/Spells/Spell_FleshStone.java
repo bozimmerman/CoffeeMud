@@ -55,7 +55,7 @@ public class Spell_FleshStone extends Spell
 		&&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;
-			mob.makePeace();
+			mob.makePeace(true);
 			if((statue.owner()!=null)&&(statue.owner()!=mob.location()))
 			{
 				Room room=null;
@@ -83,8 +83,8 @@ public class Spell_FleshStone extends Spell
 			{
 				final MOB victim=mob.getVictim();
 				if(victim!=null)
-					victim.makePeace();
-				mob.makePeace();
+					victim.makePeace(true);
+				mob.makePeace(true);
 			}
 			mob.recoverMaxState();
 			mob.resetToMaxState();
@@ -118,8 +118,8 @@ public class Spell_FleshStone extends Spell
 			{
 				final MOB victim=mob.getVictim();
 				if(victim!=null)
-					victim.makePeace();
-				mob.makePeace();
+					victim.makePeace(true);
+				mob.makePeace(true);
 			}
 		}
 		return true;
@@ -231,7 +231,7 @@ public class Spell_FleshStone extends Spell
 					statue.basePhyStats().setWeight(2000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> turn(s) into stone!!"));
 					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*getXLEVELLevel(mob))),-1)!=null;
-					target.makePeace();
+					target.makePeace(true);
 					if(mob.getVictim()==target)
 						mob.setVictim(null);
 					final Ability A=target.fetchEffect(ID());

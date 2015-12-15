@@ -84,7 +84,7 @@ public class Thief_Scratch extends ThiefSkill
 						mob.getNaturalWeapon().weaponDamageType(),L("<S-YOUPOSS> scratch <DAMAGES> <T-NAME>!"));
 				if(CMLib.flags().isHidden(mob) && makePeace)
 				{
-					mob.makePeace();
+					mob.makePeace(true);
 					CMLib.combat().forcePeaceAllFightingAgainst(mob, combatants);
 				}
 			}

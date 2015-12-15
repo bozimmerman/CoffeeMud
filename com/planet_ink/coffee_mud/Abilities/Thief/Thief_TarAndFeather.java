@@ -35,18 +35,69 @@ import java.util.*;
 
 public class Thief_TarAndFeather extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_TarAndFeather"; }
+	@Override
+	public String ID()
+	{
+		return "Thief_TarAndFeather";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Tar And Feather");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"TARANDFEATHER","TAR"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int overrideMana(){return 100;}
-	@Override public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	@Override public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "TARANDFEATHER", "TAR" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 100;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT | USAGE_MANA;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_LEGAL;
+	}
 
 	@Override
 	public void affectPhyStats(Physical host, PhyStats stats)
@@ -118,10 +169,12 @@ public class Thief_TarAndFeather extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
+			final Map<MOB,MOB> combatState = saveCombatState(mob,true);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,L("<S-NAME> tar(s) and feather(s) <T-NAMESELF>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				restoreCombatState(combatState);
 				final Item I=CMClass.getArmor("GenArmor");
 				if(I!=null)
 				{

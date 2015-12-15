@@ -147,7 +147,7 @@ public class Spell_FeignDeath extends Spell
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			target.makePeace();
+			target.makePeace(true);
 			peaceAt(target);
 			deathRoom=mob.location();
 			Body=(DeadBody)CMClass.getItem("Corpse");

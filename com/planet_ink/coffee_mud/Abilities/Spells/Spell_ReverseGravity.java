@@ -61,7 +61,7 @@ public class Spell_ReverseGravity extends Spell
 				final MOB inhab=room.fetchInhabitant(i);
 				if(!CMLib.flags().isInFlight(inhab))
 				{
-					inhab.makePeace();
+					inhab.makePeace(true);
 					Ability A=CMClass.getAbility("Falling");
 					A.setAffectedOne(null);
 					A.setProficiency(100);

@@ -59,7 +59,7 @@ public class Spell_AweOther extends Spell
 				msg.source().tell(L("You are too much in awe of @x1",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
-					target.makePeace();
+					target.makePeace(true);
 					target.setVictim(null);
 				}
 				return false;

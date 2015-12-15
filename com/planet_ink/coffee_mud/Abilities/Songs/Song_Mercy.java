@@ -80,7 +80,7 @@ public class Song_Mercy extends Song
 				msg.source().tell(L("You feel like showing @x1 mercy right now.",target.name(msg.source())));
 				if(target.getVictim()==msg.source())
 				{
-					target.makePeace();
+					target.makePeace(true);
 					target.setVictim(null);
 				}
 				return false;

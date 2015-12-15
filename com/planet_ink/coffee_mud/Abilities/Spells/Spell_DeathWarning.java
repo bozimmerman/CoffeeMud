@@ -76,7 +76,7 @@ public class Spell_DeathWarning extends Spell
 			mob.doCommand(commands,0);
 			if(mob.location()!=room)
 			{
-				mob.makePeace();
+				mob.makePeace(true);
 				return false;
 			}
 			else

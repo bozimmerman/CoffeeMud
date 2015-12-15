@@ -54,7 +54,7 @@ public class Play_Retreat extends Play
 			mob.tell(L("Flee where?!"));
 			return;
 		}
-		mob.makePeace();
+		mob.makePeace(true);
 		CMLib.tracking().walk(mob,directionCode,true,false);
 	}
 

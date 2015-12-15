@@ -103,8 +103,8 @@ public class Skill_Subdue extends StdSkill
 			{
 				final Ability sap=CMClass.getAbility("Skill_ArrestingSap");
 				if(sap!=null) sap.invoke(whom,new XVector(new Object[]{"SAFELY",Integer.toString(adjustedLevel(msg.source(),asLevel))}),whom,true,0);
-				whom.makePeace();
-				msg.source().makePeace();
+				whom.makePeace(true);
+				msg.source().makePeace(true);
 				unInvoke();
 			}
 		}

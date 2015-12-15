@@ -60,8 +60,8 @@ public class Chant_Treeform extends Chant
 		{
 			final MOB victim=mob.getVictim();
 			if(victim!=null)
-				victim.makePeace();
-			mob.makePeace();
+				victim.makePeace(true);
+			mob.makePeace(true);
 		}
 		mob.recoverMaxState();
 		mob.resetToMaxState();
@@ -114,8 +114,8 @@ public class Chant_Treeform extends Chant
 		{
 			final MOB victim=mob.getVictim();
 			if(victim!=null)
-				victim.makePeace();
-			mob.makePeace();
+				victim.makePeace(true);
+			mob.makePeace(true);
 		}
 		return true;
 	}
@@ -206,7 +206,7 @@ public class Chant_Treeform extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					target.makePeace();
+					target.makePeace(true);
 					CMLib.commands().postStand(target,true);
 					oldState=(CharState)target.curState().copyOf();
 					success=beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*getXLEVELLevel(mob)))*50)!=null;

@@ -128,7 +128,7 @@ public class Prayer_CorpseWalk extends Prayer
 							if(follower.isInCombat())
 							{
 								CMLib.commands().postFlee(follower,("NOWHERE"));
-								follower.makePeace();
+								follower.makePeace(false);
 							}
 							thisRoom.send(follower,leaveMsg);
 							newRoom.bringMobHere(follower,true);

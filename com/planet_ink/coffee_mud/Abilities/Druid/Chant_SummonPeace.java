@@ -72,7 +72,7 @@ public class Chant_SummonPeace extends Chant
 					if((inhab!=null)&&(inhab.isInCombat()))
 					{
 						inhab.tell(L("You feel at peace."));
-						inhab.makePeace();
+						inhab.makePeace(true);
 					}
 				}
 			}

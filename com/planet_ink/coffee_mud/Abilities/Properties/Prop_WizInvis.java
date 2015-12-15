@@ -142,7 +142,7 @@ public class Prop_WizInvis extends Property
 			{
 				msg.source().tell(L("Ah, leave @x1 alone.",affected.name()));
 				if(affected instanceof MOB)
-					((MOB)affected).makePeace();
+					((MOB)affected).makePeace(true);
 			}
 			return false;
 		}

@@ -98,7 +98,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 					mob.tell(L("Flee where?!"));
 					return false;
 				}
-				mob.makePeace();
+				mob.makePeace(true);
 				CMLib.tracking().walk(mob,directionCode,true,false);
 			}
 		}

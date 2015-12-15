@@ -259,7 +259,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * Returns whether this mob is in an active combat state
 	 * @see MOB#getVictim()
 	 * @see MOB#setVictim(MOB)
-	 * @see MOB#makePeace()
+	 * @see MOB#makePeace(boolean)
 	 * @see MOB#setRangeToTarget(int)
 	 * @see MOB#mayIFight(MOB)
 	 * @return true if this mob is in combat, false otherwise
@@ -271,7 +271,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * targeting. If this method returns null, the mob is not in combat.
 	 * @see MOB#isInCombat()
 	 * @see MOB#setVictim(MOB)
-	 * @see MOB#makePeace()
+	 * @see MOB#makePeace(boolean)
 	 * @see MOB#setRangeToTarget(int)
 	 * @see MOB#mayIFight(MOB)
 	 * @return the combat target, or null for a peace state
@@ -284,7 +284,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * If a null value, the mob is no longer fighting.
 	 * @see MOB#isInCombat()
 	 * @see MOB#getVictim()
-	 * @see MOB#makePeace()
+	 * @see MOB#makePeace(boolean)
 	 * @see MOB#setRangeToTarget(int)
 	 * @see MOB#mayIFight(MOB)
 	 * @param mob the combat target, or null for a peace state
@@ -296,13 +296,14 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * target, clears the targets combat state, as well as
 	 * that of any followers of this mob.  It is at best
 	 * an approximation of a universal combat ender.
+	 * @param includePlayerFollowers TODO
 	 * @see MOB#isInCombat()
 	 * @see MOB#getVictim()
 	 * @see MOB#setVictim(MOB)
 	 * @see MOB#setRangeToTarget(int)
 	 * @see MOB#mayIFight(MOB)
 	 */
-	public void makePeace();
+	public void makePeace(boolean includePlayerFollowers);
 
 	/**
 	 * Sets the distance between this mob and the current combat

@@ -87,14 +87,14 @@ public class Prop_PracticeDummy extends Property
 			{
 				if(unkillable)
 					msg.source().curState().setHitPoints(99999);
-				((MOB)affected).makePeace();
+				((MOB)affected).makePeace(true);
 				final Room room=((MOB)affected).location();
 				if(room!=null)
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					final MOB mob=room.fetchInhabitant(i);
 					if((mob.getVictim()!=null)&&(mob.getVictim()==affected))
-						mob.makePeace();
+						mob.makePeace(true);
 				}
 				return false;
 			}

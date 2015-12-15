@@ -139,7 +139,7 @@ public class Chant_SummonElemental extends Chant
 				final MOB target = determineMonster(mob, mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 				beneficialAffect(mob,target,asLevel,0);
 				if(target.isInCombat())
-					target.makePeace();
+					target.makePeace(true);
 				CMLib.commands().postFollow(target,mob,true);
 				if(target.amFollowing()!=mob)
 					mob.tell(L("@x1 seems unwilling to follow you.",target.name(mob)));

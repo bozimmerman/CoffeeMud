@@ -108,7 +108,7 @@ public class Skill_ControlUndead extends StdSkill
 				msg.source().tell(L("You're too submissive towards @x1",invoker().name()));
 				if(invoker().getVictim()==msg.source())
 				{
-					invoker().makePeace();
+					invoker().makePeace(true);
 					invoker().setVictim(null);
 				}
 			}
@@ -254,7 +254,7 @@ public class Skill_ControlUndead extends StdSkill
 						if(success)
 						{
 							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> now controlled."));
-							target.makePeace();
+							target.makePeace(true);
 							CMLib.commands().postFollow(target,mob,false);
 							CMLib.combat().makePeaceInGroup(mob);
 							invoker=mob;
@@ -265,7 +265,7 @@ public class Skill_ControlUndead extends StdSkill
 					else
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) submissive!"));
-						target.makePeace();
+						target.makePeace(true);
 						beneficialAffect(mob,target,asLevel,5);
 					}
 				}

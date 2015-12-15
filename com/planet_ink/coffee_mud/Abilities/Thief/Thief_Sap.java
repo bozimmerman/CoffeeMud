@@ -183,7 +183,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 					success=maliciousAffect(mob,target,asLevel,3,-1)!=null;
 					final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 					MOB M=null;
-					mob.makePeace();
+					mob.makePeace(true);
 					for (final Object element : H)
 					{
 						M=(MOB)element;

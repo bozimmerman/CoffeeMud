@@ -128,7 +128,7 @@ public class ROMPatrolman extends StdBehavior
 					{
 						final MOB ivictim=inhab.getVictim();
 						if(ivictim!=null)
-							ivictim.makePeace();
+							ivictim.makePeace(true);
 					}
 				}
 			}

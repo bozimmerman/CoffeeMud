@@ -98,7 +98,7 @@ public class Spell_Shove extends Spell
 				if((msg.value()<=0)&&(target.location()==mob.location()))
 				{
 					mob.location().send(mob,msg);
-					target.makePeace();
+					target.makePeace(true);
 					final Room newRoom=mob.location().getRoomInDir(dir);
 					final Room thisRoom=mob.location();
 					final CMMsg enterMsg=CMClass.getMsg(target,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> fly(s) in from @x1.",Directions.getFromCompassDirectionName(Directions.getOpDirectionCode(dir))));

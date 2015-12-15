@@ -81,11 +81,11 @@ public class Paladin_Breakup extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.makePeace();
+				target.makePeace(true);
 				final MOB victim=target.getVictim();
 				if((victim!=null)
 				   &&(victim.getVictim()==target))
-					victim.makePeace();
+					victim.makePeace(true);
 			}
 		}
 		else

@@ -75,7 +75,7 @@ public class Fighter_Intimidate extends FighterSkill
 				}
 				if(targetM.getVictim()==msg.source())
 				{
-					targetM.makePeace();
+					targetM.makePeace(true);
 					targetM.setVictim(null);
 				}
 				return false;

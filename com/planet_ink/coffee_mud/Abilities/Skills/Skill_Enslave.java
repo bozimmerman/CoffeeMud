@@ -382,9 +382,9 @@ public class Skill_Enslave extends StdSkill
 			{
 				mob.location().send(mob,msg);
 				if(peace2)
-					target.makePeace();
+					target.makePeace(true);
 				if(peace1)
-					mob.makePeace();
+					mob.makePeace(true);
 				Ability A=target.fetchEffect(ID());
 				if(A==null)
 				{

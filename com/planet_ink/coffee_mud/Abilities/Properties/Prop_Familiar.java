@@ -201,9 +201,9 @@ public class Prop_Familiar extends Property
 			{
 				msg.source().tell(L("You are too much in awe of @x1",target.name(msg.source())));
 				if(familiarWith.getVictim()==msg.source())
-					familiarWith.makePeace();
+					familiarWith.makePeace(true);
 				if(familiarTo.getVictim()==msg.source())
-					familiarTo.makePeace();
+					familiarTo.makePeace(true);
 				return false;
 			}
 		}
