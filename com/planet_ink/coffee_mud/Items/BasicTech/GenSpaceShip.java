@@ -301,21 +301,13 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					{
 						// we've been -- hit? It's up to the item itself to see to it's own explosion or whatever
 						//TODO: might want to vary this message..
-						final CMMsg sMsg=CMClass.getMsg(msg.source(),getShipArea(),O,CMMsg.MSG_WEAPONATTACK,null);
+						final CMMsg sMsg=CMClass.getMsg(msg.source(),this,O,CMMsg.MSG_WEAPONATTACK,null);
 						sMsg.setValue((int)Math.round(absorbedDamage));
-						if(O.okMessage(O, sMsg))
+						if(O.okMessage(O, sMsg)  && okMessage(this,sMsg))
 						{
-							sMsg.setTarget(this);
-							if(okMessage(this,sMsg))
-							{
-								sMsg.setTarget(getShipArea());
-								O.executeMsg(O, sMsg);
-								if(sMsg.value() > 1)
-								{
-									sMsg.setTarget(this);
-									executeMsg(this,sMsg);
-								}
-							}
+							O.executeMsg(O, sMsg);
+							if(sMsg.value() > 1)
+								executeMsg(this,sMsg);
 						}
 					}
 				}
