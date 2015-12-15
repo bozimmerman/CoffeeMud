@@ -1670,7 +1670,7 @@ public class StdMOB implements MOB
 			else
 				sendBack = new StringBuffer(titledName());
 			sendBack.append(" ");
-			sendBack.append(L(CMLib.flags().dispositionString(this, CMFlagLibrary.flag_is)+" here"));
+			sendBack.append(L(CMLib.flags().dispositionString(this, CMFlagLibrary.Disposition.IS)+" here"));
 			if (riding() != null)
 			{
 				sendBack.append(" " + riding().stateString(this) + " ");

@@ -1859,7 +1859,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public final static int flag_is=2;
 	
 	@Override
-	public String dispositionString(Physical seen, int flag_msgType)
+	public String dispositionString(Physical seen, Disposition flag_msgType)
 	{
 		String type=null;
 		if(isFalling(seen))
@@ -1867,7 +1867,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		else
 		if(isSleeping(seen))
 		{
-			if(flag_msgType!=flag_is)
+			if(flag_msgType!=Disposition.IS)
 				type="floats";
 			else
 				type="sleeps";
@@ -1881,7 +1881,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		else
 		if(isSitting(seen))
 		{
-			if(flag_msgType!=flag_is)
+			if(flag_msgType!=Disposition.IS)
 				type="crawls";
 			else
 			if(seen instanceof MOB)
@@ -1893,33 +1893,32 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(isFlying(seen))
 			type="flies";
 		else
-		if((isClimbing(seen))&&(flag_msgType!=flag_is))
+		if((isClimbing(seen))&&(flag_msgType!=Disposition.IS))
 			type="climbs";
 		else
 		if(isSwimmingInWater(seen))
 			type="swims";
 		else
-		if((flag_msgType==flag_arrives)||(flag_msgType==flag_leaves))
+		if(flag_msgType != null)
 		{
-			if(seen instanceof MOB)
+			switch(flag_msgType)
 			{
-				if(flag_msgType==flag_arrives)
+			case ARRIVES:
+				if(seen instanceof MOB)
 					return ((MOB)seen).charStats().getMyRace().arriveStr();
 				else
-				if(flag_msgType==flag_leaves)
+					return "arrives";
+			case LEAVES:
+				if(seen instanceof MOB)
 					return ((MOB)seen).charStats().getMyRace().leaveStr();
+				else
+					return "leaves";
+			default:
+				return "is";
 			}
-			else
-			if(flag_msgType==flag_arrives)
-				return "arrives";
-			else
-			if(flag_msgType==flag_leaves)
-				return "leaves";
 		}
-		else
-			return "is";
 
-		if(flag_msgType==flag_arrives)
+		if(flag_msgType==Disposition.ARRIVES)
 			return type+" in";
 		return type;
 

@@ -32,9 +32,12 @@ import java.util.*;
 */
 public interface CMFlagLibrary extends CMLibrary
 {
-	public final static int flag_arrives=0;
-	public final static int flag_leaves=1;
-	public final static int flag_is=2;
+	public enum Disposition
+	{
+		ARRIVES,
+		LEAVES,
+		IS;
+	}
 
 	public boolean canSee(MOB M);
 	public boolean canBeLocated(Physical P);
@@ -127,7 +130,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canBarelyBeSeenBy(Environmental seen , MOB seer);
 	public StringBuffer colorCodes(Physical seen , MOB seer);
 	public boolean seenTheSameWay(MOB seer, Physical seen1, Physical seen2);
-	public String dispositionString(Physical seen, int flag_msgType);
+	public String dispositionString(Physical seen, Disposition flag_msgType);
 	public boolean isWaterWorthy(Physical P);
 	public boolean isInFlight(Physical P);
 	public boolean isAnimalIntelligence(MOB M);
