@@ -36,20 +36,71 @@ import java.util.*;
 
 public class Archon_Freeze extends ArchonSkill
 {
-	boolean doneTicking=false;
-	@Override public String ID() { return "Archon_Freeze"; }
+	@Override
+	public String ID()
+	{
+		return "Archon_Freeze";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Freeze");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Freezed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"FREEZE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "FREEZE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ARCHON;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(1);
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

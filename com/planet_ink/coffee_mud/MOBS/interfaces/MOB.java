@@ -296,12 +296,12 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * target, clears the targets combat state, as well as
 	 * that of any followers of this mob.  It is at best
 	 * an approximation of a universal combat ender.
-	 * @param includePlayerFollowers TODO
 	 * @see MOB#isInCombat()
 	 * @see MOB#getVictim()
 	 * @see MOB#setVictim(MOB)
 	 * @see MOB#setRangeToTarget(int)
 	 * @see MOB#mayIFight(MOB)
+	 * @param includePlayerFollowers false to apply only to mob followers, true for mob and player
 	 */
 	public void makePeace(boolean includePlayerFollowers);
 

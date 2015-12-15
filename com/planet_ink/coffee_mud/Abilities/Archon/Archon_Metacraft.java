@@ -35,13 +35,30 @@ import java.util.*;
 
 public class Archon_Metacraft extends ArchonSkill
 {
-	@Override public String ID() { return "Archon_Metacraft"; }
-	private final static String localizedName = CMLib.lang().L("Metacrafting");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"METACRAFT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "Archon_Metacraft";
+	}
 
-	public static List<Ability> craftingSkills=new Vector<Ability>();
+	private final static String localizedName = CMLib.lang().L("Metacrafting");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "METACRAFT" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	public static List<Ability> craftingSkills = new Vector<Ability>();
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -201,12 +218,14 @@ public class Archon_Metacraft extends ArchonSkill
 						V=skill.craftAllItemSets(false);
 
 					if(V!=null)
+					{
 						for(final ItemCraftor.ItemKeyPair L: V)
 						{
 							items.add(L.item);
 							if(L.key!=null)
 								items.add(L.key);
 						}
+					}
 				}
 				else
 				if(material>=0)
@@ -239,6 +258,7 @@ public class Archon_Metacraft extends ArchonSkill
 				continue;
 			success=true;
 			if(toWHERE.equals("SELF")||toWHERE.equals("HERE"))
+			{
 				for(final Item building : items)
 				{
 					if(building instanceof ClanItem)
@@ -265,6 +285,7 @@ public class Archon_Metacraft extends ArchonSkill
 						mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,L("@x1 appears in <S-YOUPOSS> hands.",building.name()));
 					}
 				}
+			}
 			else
 				xml.append(CMLib.coffeeMaker().getItemsXML(items,new Hashtable<String,List<Item>>(),files,null));
 			mob.location().recoverPhyStats();

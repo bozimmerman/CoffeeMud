@@ -35,19 +35,71 @@ import java.util.*;
 
 public class Skill_HandCuff extends StdSkill
 {
-	@Override public String ID() { return "Skill_HandCuff"; }
+	@Override
+	public String ID()
+	{
+		return "Skill_HandCuff";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Handcuff");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Handcuffed)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"HANDCUFF","CUFF"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_BINDING; }
-	@Override public long flags(){return Ability.FLAG_BINDING;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "HANDCUFF", "CUFF" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_BINDING;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_BINDING;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	public int amountRemaining=0;
 	public boolean oldAssist=false;

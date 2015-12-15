@@ -37,18 +37,51 @@ import java.util.*;
 
 public class ArchonSkill extends StdAbility
 {
-	@Override public String ID() { return "ArchonSkill"; }
+	@Override
+	public String ID()
+	{
+		return "ArchonSkill";
+	}
+
 	private final static String localizedName = CMLib.lang().L("an Archon Skill");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(in the realms of greatest power)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public boolean putInCommandlist(){return false;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	@Override
 	public int classificationCode()
-	{ return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;	}
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ARCHON;
+	}
 
 	public MOB getTargetAnywhere(MOB mob, List<String> commands, Environmental givenTarget, boolean playerOnly)
 	{
@@ -85,7 +118,9 @@ public class ArchonSkill extends StdAbility
 				if(targets.size()>0)
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}
-			catch(final NoSuchElementException e){}
+			catch (final NoSuchElementException e)
+			{
+			}
 		}
 
 		if((target==null)||((playerOnly)&&(target.isMonster())))
@@ -124,5 +159,4 @@ public class ArchonSkill extends StdAbility
 		}
 		return target;
 	}
-
 }

@@ -35,20 +35,66 @@ import java.util.*;
 
 public class Archon_Multiwatch extends ArchonSkill
 {
-	@Override public String ID() { return "Archon_Multiwatch"; }
-	private final static String localizedName = CMLib.lang().L("Multiwatch");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){return "";}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"MULTIWATCH"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	@Override
+	public String ID()
+	{
+		return "Archon_Multiwatch";
+	}
 
-	public static Hashtable<MOB,int[]> DATA=new Hashtable<MOB,int[]>();
-	public static Hashtable<String,List<MOB>> IPS=new Hashtable<String,List<MOB>>();
+	private final static String localizedName = CMLib.lang().L("Multiwatch");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "MULTIWATCH" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ARCHON;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	public static Hashtable<MOB, int[]>			DATA				= new Hashtable<MOB, int[]>();
+	public static Hashtable<String, List<MOB>>	IPS					= new Hashtable<String, List<MOB>>();
 
 	public static final int DATA_GOODSPEECH=0;
 	public static final int DATA_ANYSPEECH=1;

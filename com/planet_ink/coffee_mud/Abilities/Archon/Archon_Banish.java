@@ -36,21 +36,72 @@ import java.util.*;
 
 public class Archon_Banish extends ArchonSkill
 {
-	boolean doneTicking=false;
-	@Override public String ID() { return "Archon_Banish"; }
+	@Override
+	public String ID()
+	{
+		return "Archon_Banish";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Banish");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return L("(Banished "+timeRemaining()+")"); }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"BANISH"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	protected Room prisonRoom=null;
-	protected long releaseTime=0;
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return L("(Banished " + timeRemaining() + ")");
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "BANISH" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ARCHON;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(1);
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	protected Room	prisonRoom	= null;
+	protected long	releaseTime	= 0;
 
 	protected String timeRemaining()
 	{

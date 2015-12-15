@@ -334,6 +334,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 
 	public void runSpace()
 	{
+		final long moonletMass = SpaceObject.MULTIPLIER_PLANET_MASS* SpaceObject.Distance.MoonRadius.dm / 10;
+		final long asteroidMass = moonletMass / 5;
 		for(final Enumeration<SpaceObject> o = CMLib.map().getSpaceObjects(); o.hasMoreElements(); )
 		{
 			final SpaceObject O=o.nextElement();
@@ -353,23 +355,28 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				}
 				Boolean inAirFlag = Boolean.FALSE;
 				final List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.Distance.LightMinute.dm);
+				final long oMass = O.getMass();
 				for(final SpaceObject cO : cOs)
 				{
 					if(cO != O)
 					{
-						if(((cO instanceof Area)||(cO.getMass() > (SpaceObject.MULTIPLIER_PLANET_MASS/4)))
-						&&(CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS))
+						if(((cO instanceof Area)||(cO.getMass() >= asteroidMass))
+						&&(oMass < moonletMass))
 						{
-							final double[] directionTo=CMLib.map().getDirection(O, cO);
-							// can this cause slip-through?
-							long mass = Math.max(1,O.getMass() / 1000);
-							if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+(SpaceObject.ACCELLERATION_G * mass)+" towards " +cO.Name());
-							CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G * mass); 
-							cube=cube.expand(directionTo,SpaceObject.ACCELLERATION_G * mass);
-							inAirFlag = Boolean.TRUE;
+							if((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS))
+							{
+								final double[] directionTo=CMLib.map().getDirection(O, cO);
+								// can this cause slip-through?
+								long mass = Math.max(1,oMass / 1000);
+								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+									Log.debugOut("SpaceShip "+O.name()+" is gravitating "+(SpaceObject.ACCELLERATION_G * mass)+" towards " +cO.Name());
+								CMLib.map().moveSpaceObject(O, directionTo, SpaceObject.ACCELLERATION_G * mass); 
+								cube=cube.expand(directionTo,SpaceObject.ACCELLERATION_G * mass);
+								inAirFlag = Boolean.TRUE;
+							}
 						}
-						if(cO.getBounds().intersects(cube))
+						if((cO.getBounds().intersects(cube))
+						&&((oMass < moonletMass)||(cO.getMass() < moonletMass)))
 						{
 							final MOB host=CMLib.map().deity();
 							CMMsg msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION, null);

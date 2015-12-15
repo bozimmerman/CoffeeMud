@@ -36,17 +36,63 @@ import java.util.*;
 
 public class Archon_Injure extends ArchonSkill
 {
-	@Override public String ID() { return "Archon_Injure"; }
+	@Override
+	public String ID()
+	{
+		return "Archon_Injure";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Injure");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"INJURE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "INJURE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ARCHON;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(1);
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -87,11 +133,13 @@ public class Archon_Injure extends ArchonSkill
 			remainingLimbList.add("torso");
 		String gone=null;
 		for(int i=0;i<remainingLimbList.size();i++)
+		{
 			if((part==null)||remainingLimbList.get(i).toUpperCase().endsWith(part))
 			{
 				gone=remainingLimbList.get(i);
 				break;
 			}
+		}
 		if(gone==null)
 		{
 			if(part==null)

@@ -36,18 +36,63 @@ import java.util.*;
 
 public class Archon_Stinkify extends ArchonSkill
 {
-	boolean doneTicking=false;
-	@Override public String ID() { return "Archon_Stinkify"; }
+	@Override
+	public String ID()
+	{
+		return "Archon_Stinkify";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Stinkify");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"STINKIFY"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(1);}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[] triggerStrings = I(new String[] { "STINKIFY" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ARCHON;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(1);
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
