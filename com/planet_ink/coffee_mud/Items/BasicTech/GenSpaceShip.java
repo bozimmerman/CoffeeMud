@@ -234,19 +234,36 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					}
 				}
 				break;
-			case CMMsg.TYP_WEAPONATTACK: // kinetic damage taken
+			case CMMsg.TYP_WEAPONATTACK: // kinetic damage taken to the outside of the ship
 			{
 				final long myMass=getMass();
 				if((msg.value() > 1)&&(myMass>0))
 				{
-					sendAreaMessage(msg,false);
 					double dmg = usesRemaining() * ((double)msg.value() / (double)myMass) ;
+					final long hardness = RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm;
+					dmg = dmg / hardness;
 					if(dmg >= usesRemaining())
 					{
+						msg.setOthersMessage(L("For a split second, you hear a loud crash and feel a jolt."));
+						sendAreaMessage(msg,false);
 						destroyThisShip();
 					}
 					else
+					{
+						
 						setUsesRemaining(usesRemaining() - (int)Math.round(dmg));
+						if(dmg > 75)
+							msg.setOthersMessage(L("You hear a booming crash and feel a crushing jolt."));
+						else
+						if(dmg > 50)
+							msg.setOthersMessage(L("You hear a loud crash and feel a hard jolt."));
+						else
+						if(dmg > 25)
+							msg.setOthersMessage(L("You hear a noise and feel a small jolt."));
+						else
+							msg.setOthersMessage(L("You hear a bump and feel a short rattle."));
+						sendAreaMessage(msg,false);
+					}
 				}
 				break;
 			}
@@ -276,22 +293,28 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					// This is technically wrong. Imagine taping a huge object from behind because you 
 					// are going just a tiny bit faster, even though you are both going very fast.
 					// However, the odds of that happening are nothing.  Forget it.
-					final double dmgSpeed = (previousSpeed * myMass) + (O.speed() * O.getMass());
-					final long hardness = RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm;
-					double absorbedDamage = dmgSpeed / hardness;
+					double absorbedDamage = (previousSpeed * myMass) + (O.speed() * O.getMass());
 					if(absorbedDamage > Integer.MAX_VALUE / 10)
 						absorbedDamage = Integer.MAX_VALUE / 10;
 					if(absorbedDamage > 1)
 					{
 						// we've been -- hit? It's up to the item itself to see to it's own explosion or whatever
 						//TODO: might want to vary this message..
-						final CMMsg sMsg=CMClass.getMsg(msg.source(),getShipArea(),O,CMMsg.MSG_WEAPONATTACK,L("You hear a loud crash and feel the ship shake."));
+						final CMMsg sMsg=CMClass.getMsg(msg.source(),getShipArea(),O,CMMsg.MSG_WEAPONATTACK,null);
 						sMsg.setValue((int)Math.round(absorbedDamage));
-						if(O.okMessage(O, sMsg) && okMessage(O,sMsg))
+						if(O.okMessage(O, sMsg))
 						{
-							O.executeMsg(O, sMsg);
-							if(sMsg.value() > 1)
-								executeMsg(this,sMsg);
+							sMsg.setTarget(this);
+							if(okMessage(this,sMsg))
+							{
+								sMsg.setTarget(getShipArea());
+								O.executeMsg(O, sMsg);
+								if(sMsg.value() > 1)
+								{
+									sMsg.setTarget(this);
+									executeMsg(this,sMsg);
+								}
+							}
 						}
 					}
 				}
