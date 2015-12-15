@@ -163,6 +163,9 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			{
 			case CMMsg.TYP_WEAPONATTACK:
 			{
+				final double myMass=getMass();
+				final double hardness = RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm;
+				msg.setValue((int)Math.round((usesRemaining() * (msg.value() / myMass)) / hardness));
 				if((msg.value() < 2) || (!okAreaMessage(msg,false)))
 					return false;
 				return true;
@@ -239,9 +242,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				final long myMass=getMass();
 				if((msg.value() > 1)&&(myMass>0))
 				{
-					double dmg = usesRemaining() * ((double)msg.value() / (double)myMass) ;
-					final long hardness = RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm;
-					dmg = dmg / hardness;
+					final int dmg = msg.value();
 					if(dmg >= usesRemaining())
 					{
 						msg.setOthersMessage(L("For a split second, you hear a loud crash and feel a jolt."));
@@ -251,7 +252,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 					else
 					{
 						
-						setUsesRemaining(usesRemaining() - (int)Math.round(dmg));
+						setUsesRemaining(usesRemaining() - Math.round(dmg));
 						if(dmg > 75)
 							msg.setOthersMessage(L("You hear a booming crash and feel a crushing jolt."));
 						else
