@@ -305,8 +305,10 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				this.lastReader=null;
 		}
 		for(final Rider R : riders)
+		{
 			if(R instanceof MOB)
 				readers.add((MOB)R);
+		}
 		return readers;
 	}
 
@@ -406,30 +408,46 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					if(msgs.size()==0)
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown command. Please read the screen for a menu.\n\r^.^N'"));
 					else
-					for(final CMMsg msg2 : msgs)
 					{
-						if(msg2.target().okMessage(M, msg2))
+						if((Math.random()<getFinalManufacturer().getReliabilityPct()*getInstalledFactor())
+						&&((!subjectToWearAndTear()) || (Math.random() < CMath.div(usesRemaining(), 100))))
 						{
-							msg2.target().executeMsg(M, msg2);
-							if(msg2.target() instanceof Software)
+							for(final CMMsg msg2 : msgs)
 							{
-								final Software sw=(Software)msg2.target();
-								if(msg2.targetMinor()==CMMsg.TYP_ACTIVATE)
+								if(msg2.target().okMessage(M, msg2))
 								{
-									setActiveMenu(sw.getInternalName());
-									readFlag=true;
-								}
-								else
-								if(msg2.targetMinor()==CMMsg.TYP_DEACTIVATE)
-								{
-									setActiveMenu(sw.getParentMenu());
-									menuRead=true;
-								}
-								else
-								{
-									readFlag=true;
+									msg2.target().executeMsg(M, msg2);
+									if(msg2.target() instanceof Software)
+									{
+										final Software sw=(Software)msg2.target();
+										if(msg2.targetMinor()==CMMsg.TYP_ACTIVATE)
+										{
+											setActiveMenu(sw.getInternalName());
+											readFlag=true;
+										}
+										else
+										if(msg2.targetMinor()==CMMsg.TYP_DEACTIVATE)
+										{
+											setActiveMenu(sw.getParentMenu());
+											menuRead=true;
+										}
+										else
+										{
+											readFlag=true;
+										}
+									}
 								}
 							}
+						}
+						else
+						{
+							final List<MOB> readers=getCurrentReaders();
+							for(final MOB M2 : readers)
+							{
+								if(CMLib.flags().canBeSeenBy(this, M2))
+									M2.location().show(M2, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> blue screens!!\n\r^.^N'"));
+							}
+							deactivateSystem();
 						}
 					}
 					if(readFlag)
@@ -479,9 +497,27 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					if(msgs.size()==0)
 						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'"));
 					else
-					for(final CMMsg msg2 : msgs)
-						if(msg2.target().okMessage(M, msg2))
-							msg2.target().executeMsg(M, msg2);
+					{
+						if((Math.random()<getFinalManufacturer().getReliabilityPct()*getInstalledFactor())
+						&&((!subjectToWearAndTear()) || (Math.random() < CMath.div(usesRemaining(), 100))))
+						{
+							for(final CMMsg msg2 : msgs)
+							{
+								if(msg2.target().okMessage(M, msg2))
+									msg2.target().executeMsg(M, msg2);
+							}
+						}
+						else
+						{
+							final List<MOB> readers=getCurrentReaders();
+							for(final MOB M2 : readers)
+							{
+								if(CMLib.flags().canBeSeenBy(this, M2))
+									M2.location().show(M2, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> blue screens!!\n\r^.^N'"));
+							}
+							deactivateSystem();
+						}
+					}
 					if(readFlag)
 						forceReadersSeeNew();
 				}
@@ -538,25 +574,12 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 						final CMMsg msg2=CMClass.getMsg(msg.source(), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_POWERCURRENT,null,CMMsg.NO_EFFECT,null);
 						synchronized(software)
 						{
-							if((Math.random()<getFinalManufacturer().getReliabilityPct()*getInstalledFactor())
-							&&(subjectToWearAndTear() && (Math.random() < CMath.div(usesRemaining(), 100))))
+							for(final Software sw : software)
 							{
-								for(final Software sw : software)
-								{
-									msg2.setTarget(sw);
-									msg2.setValue(((powerToGive>0)?1:0)+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
-									if(sw.okMessage(host, msg2))
-										sw.executeMsg(host, msg2);
-								}
-							}
-							else
-							if(Math.random() > 0.99)
-							{
-								final List<MOB> readers=getCurrentReaders();
-								for(final MOB M : readers)
-									if(CMLib.flags().canBeSeenBy(this, M))
-										M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> blue screens!!\n\r^.^N'"));
-								deactivateSystem();
+								msg2.setTarget(sw);
+								msg2.setValue(((powerToGive>0)?1:0)+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
+								if(sw.okMessage(host, msg2))
+									sw.executeMsg(host, msg2);
 							}
 						}
 					}
@@ -570,7 +593,9 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			}
 		}
 		else
-		if((msg.source()==this.lastReader)&&(msg.target() instanceof Electronics.ElecPanel)&&(msg.targetMinor()==CMMsg.TYP_READ))
+		if((msg.source()==this.lastReader)
+		&&(msg.target() instanceof Electronics.ElecPanel)
+		&&(msg.targetMinor()==CMMsg.TYP_READ))
 			this.lastReader=null;
 		super.executeMsg(host,msg);
 	}
@@ -653,8 +678,10 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			activate(false);
 			final List<MOB> readers=getCurrentReaders();
 			for(final MOB M : readers)
+			{
 				if(CMLib.flags().canBeSeenBy(this, M))
 					M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("The screen on <T-NAME> goes blank."));
+			}
 		}
 	}
 }

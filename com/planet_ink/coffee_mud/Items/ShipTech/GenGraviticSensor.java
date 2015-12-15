@@ -408,11 +408,12 @@ public class GenGraviticSensor extends GenElecCompSensor
 			@Override
 			public boolean passesFilter(SpaceObject obj)
 			{
-				if((spaceMe == null)||(me == obj))
+				if((spaceMe == null)||(me == obj)||(spaceMe == obj))
 					return false;
 				final long distance = CMLib.map().getDistanceFrom(spaceMe.coordinates(), obj.coordinates());
 				final long adjustedMax = Math.round(obj.getMass() * (1.0 - CMath.div(distance, getSensorMaxRange())));
-				return adjustedMax > 100; // tiny objects are not detected, nor ships at great distance.
+				// tiny objects are not detected, nor ships at great distance, nor things inside us
+				return (adjustedMax > 100) && (distance > obj.radius() + spaceMe.radius()); 
 			}
 		};
 	}
