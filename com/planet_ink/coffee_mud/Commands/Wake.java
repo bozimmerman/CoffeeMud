@@ -61,7 +61,6 @@ public class Wake extends StdCommand
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
 				}
-				
 			}
 		}
 		else
