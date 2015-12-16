@@ -384,6 +384,8 @@ public class StdRideable extends StdContainer implements Rideable
 		case CMMsg.TYP_SIT:
 			if(amRiding(msg.source()))
 			{
+				if((rideBasis()==Rideable.RIDEABLE_SLEEP) && (CMLib.flags().isSleeping(msg.source())))
+					return true;
 				msg.source().tell(L("You are @x1 @x2!",stateString(msg.source()),name(msg.source())));
 				msg.source().setRiding(this);
 				return false;
