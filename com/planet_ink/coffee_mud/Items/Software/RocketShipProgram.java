@@ -264,8 +264,8 @@ public class RocketShipProgram extends GenShipProgram
 			if(orbitingPlanet!=null)
 			{
 				str.append("\n\r");
-				str.append("^H").append(CMStrings.padRight(L("Location"),10));
-				str.append("^N").append(CMStrings.padRight(L("orbiting @x1",orbitingPlanet.name()),50));
+				str.append("^H").append(CMStrings.padRight(L("Orbiting"),10));
+				str.append("^N").append(CMStrings.padRight(orbitingPlanet.name(),20));
 			}
 			else
 			if(altitudePlanet != null)
@@ -281,7 +281,7 @@ public class RocketShipProgram extends GenShipProgram
 				str.append("^N").append(CMStrings.padRight(CMLib.map().getSectorName(ship.coordinates()),50));
 				str.append("\n\r");
 				str.append("^H").append(CMStrings.padRight(L("Location"),10));
-				str.append("^N").append(CMStrings.padRight(CMParms.toListString(CMLib.map().getInSectorCoords(shipSpaceObject.coordinates())),50));
+				str.append("^N").append(CMStrings.padRight(CMLib.english().coordDescShort(CMLib.map().getInSectorCoords(shipSpaceObject.coordinates())),20));
 			}
 			str.append("^H").append(CMStrings.padRight(L("Facing"),10));
 			final String facStr=display(ship.facing());

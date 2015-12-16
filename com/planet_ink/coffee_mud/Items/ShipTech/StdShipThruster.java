@@ -67,9 +67,13 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		return super.sameAs(E);
 	}
 
+	/**
+	 * This is the "grade" of engine.  
+	 * @return the factor to multiply by the users thrust amount.
+	 */
 	protected static double getThrustFactor() 
 	{ 
-		return 100.0; 
+		return 100000.0; 
 	}
 
 	protected static double getFuelDivisor() 
@@ -243,10 +247,11 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		
 		final int fuelToConsume=getFuelToConsume(me, manufacturer, thrust);
 		
+		final double activeThrust;
 		if(portDir==ThrustPort.AFT) // when thrusting aft, there's a smidgeon more power
-			thrust = thrust * 1000.0;
-		
-		final double activeThrust = CMath.div((thrust * getThrustFactor()), ship.getMass());
+			activeThrust = (thrust * getThrustFactor() / ship.getMass());
+		else
+			activeThrust = thrust;
 		final long accelleration=Math.round(Math.ceil(activeThrust));
 		
 		if((amount > 1)&&((portDir!=ThrustPort.AFT) || (me.getThrust() > oldThrust)))

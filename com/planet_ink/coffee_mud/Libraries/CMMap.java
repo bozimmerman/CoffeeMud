@@ -448,9 +448,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		final long dmsPerYSector = SpaceObject.Distance.GalaxyRadius.dm / ysecs.length;
 		final long dmsPerZSector = SpaceObject.Distance.GalaxyRadius.dm / zsecs.length;
 		
-		final int secDeX = (int)(coordinates[0] / dmsPerXSector / 2);
-		final int secDeY = (int)(coordinates[1] / dmsPerYSector / 2);
-		final int secDeZ = (int)(coordinates[2] / dmsPerZSector / 2);
+		final int secDeX = (int)((coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerXSector / 2);
+		final int secDeY = (int)((coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerYSector / 2);
+		final int secDeZ = (int)((coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerZSector / 2);
 		
 		final StringBuilder sectorName = new StringBuilder("");
 		sectorName.append(xsecs[(secDeX < 0)?(xsecs.length+secDeX):secDeX]).append(" ");
@@ -470,9 +470,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		final long dmsPerYSector = SpaceObject.Distance.GalaxyRadius.dm / ysecs.length;
 		final long dmsPerZSector = SpaceObject.Distance.GalaxyRadius.dm / zsecs.length;
 		
-		final int secDeX = (int)(coordinates[0] / dmsPerXSector / (2 * (coordinates[0]<0?-1:1)));
-		final int secDeY = (int)(coordinates[1] / dmsPerYSector / (2 * (coordinates[0]<0?-1:1)));
-		final int secDeZ = (int)(coordinates[2] / dmsPerZSector / (2 * (coordinates[0]<0?-1:1)));
+		final int secDeX = (int)((coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerXSector / (2 * (coordinates[0]<0?-1:1)));
+		final int secDeY = (int)((coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerYSector / (2 * (coordinates[0]<0?-1:1)));
+		final int secDeZ = (int)((coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerZSector / (2 * (coordinates[0]<0?-1:1)));
 		
 		long[] sectorCoords = Arrays.copyOf(coordinates, 3);
 		for(int i=0;i<sectorCoords.length;i++)
@@ -532,11 +532,11 @@ public class CMMap extends StdLibrary implements WorldMap
 			newDirectionPitch = facingPitch;
 		}
 
-		O.direction()[0]=newDirectionYaw;
 		if((O.direction()[0]>Math.PI)&&(O.direction()[1]<=Math.PI))
-			O.direction()[1]=Math.PI+newDirectionPitch;
-		else
-			O.direction()[1]=newDirectionPitch;
+			newDirectionPitch=Math.PI+newDirectionPitch;
+
+		O.direction()[0]=newDirectionYaw;
+		O.direction()[1]=newDirectionPitch;
 		O.setSpeed(newSpeed);
 	}
 

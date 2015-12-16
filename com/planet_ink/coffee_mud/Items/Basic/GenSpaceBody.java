@@ -36,9 +36,14 @@ import java.util.*;
 */
 public class GenSpaceBody extends StdSpaceBody
 {
-	@Override public String ID(){	return "GenSpaceBody";}
+	@Override
+	public String ID()
+	{
+		return "GenSpaceBody";
+	}
 
 	protected String readableText="";
+
 	public GenSpaceBody()
 	{
 		super();
@@ -55,8 +60,18 @@ public class GenSpaceBody extends StdSpaceBody
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText = text;
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -66,6 +81,7 @@ public class GenSpaceBody extends StdSpaceBody
 	}
 
 	private final static String[] MYCODES={"DIRECTION","SPEED","RADIUS","COORDINATES"};
+
 	@Override
 	public String getStat(String code)
 	{
@@ -73,10 +89,14 @@ public class GenSpaceBody extends StdSpaceBody
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+CMParms.toListString(direction());
-		case 1: return ""+speed();
-		case 2: return ""+radius();
-		case 3: return ""+CMParms.toListString(coordinates());
+		case 0:
+			return "" + CMParms.toListString(direction());
+		case 1:
+			return "" + speed();
+		case 2:
+			return "" + radius();
+		case 3:
+			return "" + CMParms.toListString(coordinates());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -89,24 +109,40 @@ public class GenSpaceBody extends StdSpaceBody
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true))); break;
-		case 1: setSpeed(CMath.s_parseMathExpression(val)); break;
-		case 2: setRadius(CMath.s_parseLongExpression(val)); break;
-		case 3: setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true))); break;
+		case 0:
+			setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			break;
+		case 1:
+			setSpeed(CMath.s_parseMathExpression(val));
+			break;
+		case 2:
+			setRadius(CMath.s_parseLongExpression(val));
+			break;
+		case 3:
+			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
+			coordinates[0] = coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm;
+			coordinates[1] = coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm;
+			coordinates[2] = coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm;
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -122,6 +158,7 @@ public class GenSpaceBody extends StdSpaceBody
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -129,8 +166,10 @@ public class GenSpaceBody extends StdSpaceBody
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
+		{
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;
+		}
 		return true;
 	}
 }

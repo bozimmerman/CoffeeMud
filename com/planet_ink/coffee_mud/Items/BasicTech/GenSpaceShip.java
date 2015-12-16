@@ -126,8 +126,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		super.unDock(moveToOutside);
 		if(R instanceof LocationRoom)
 		{
-			setDirection(((LocationRoom)R).getDirectionFromCore());
-			setFacing(((LocationRoom)R).getDirectionFromCore());
+			setDirection(Arrays.copyOf(((LocationRoom)R).getDirectionFromCore(),2));
+			setFacing(Arrays.copyOf(((LocationRoom)R).getDirectionFromCore(),2));
 		}
 		if(moveToOutside)
 		{
@@ -201,7 +201,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 								//long specificImpulse=((Long)parms[2]).longValue();
 								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 									Log.debugOut("SpaceShip "+name()+" accellerates "+amount+" to the "+dir.toString());
-								if((amount != 0) || (speed() != 0))
+								if(amount != 0)
 								{
 									switch(dir)
 									{
@@ -607,7 +607,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	@Override 
 	public void setDirection(double[] dir)
 	{
-		if(dir!=null) 
+		if(dir!=null)
 			direction=dir;
 	}
 	
@@ -739,87 +739,91 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
-				break;
-			case 1:
-				setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 2:
-				setCapacity(CMath.s_parseIntExpression(val));
-				break;
-			case 3:
-				setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
-				break;
-			case 4:
-				setOpenDelayTicks(CMath.s_parseIntExpression(val));
-				break;
-			case 5:
-				break;
-			case 6:
-				break;
-			case 7:
-				setPowerCapacity(CMath.s_parseIntExpression(val));
-				break;
-			case 8:
-				activate(CMath.s_bool(val));
-				break;
-			case 9:
-				setPowerRemaining(CMath.s_parseLongExpression(val));
-				break;
-			case 10:
-				setManufacturerName(val);
-				break;
-			case 11:
-				setShipArea(val);
-				break;
-			case 12:
-				setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
-				break;
-			case 13:
-				setRadius(CMath.s_long(val));
-				break;
-			case 14:
-				setRoll(CMath.s_double(val));
-				break;
-			case 15:
-				setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
-				break;
-			case 16:
-				setSpeed(CMath.s_double(val));
-				break;
-			case 17:
-				setFacing(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
-				break;
-			case 18:
-				setOwnerName(val);
-				break;
-			case 19:
-				setPrice(CMath.s_int(val));
-				break;
-			case 20:
-				setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 21:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
-				break;
-			case 22:
-				putString = val;
-				break;
-			case 23:
-				mountString = val;
-				break;
-			case 24:
-				dismountString = val;
-				break;
-			case 25:
-				doorName = val;
-				break;
+		case 0:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+			break;
+		case 1:
+			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 2:
+			setCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+			break;
+		case 4:
+			setOpenDelayTicks(CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			setPowerCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 8:
+			activate(CMath.s_bool(val));
+			break;
+		case 9:
+			setPowerRemaining(CMath.s_parseLongExpression(val));
+			break;
+		case 10:
+			setManufacturerName(val);
+			break;
+		case 11:
+			setShipArea(val);
+			break;
+		case 12:
+			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
+			coordinates[0] = coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm;
+			coordinates[1] = coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm;
+			coordinates[2] = coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm;
+			break;
+		case 13:
+			setRadius(CMath.s_long(val));
+			break;
+		case 14:
+			setRoll(CMath.s_double(val));
+			break;
+		case 15:
+			setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			break;
+		case 16:
+			setSpeed(CMath.s_double(val));
+			break;
+		case 17:
+			setFacing(CMParms.toDoubleArray(CMParms.parseCommas(val, true)));
+			break;
+		case 18:
+			setOwnerName(val);
+			break;
+		case 19:
+			setPrice(CMath.s_int(val));
+			break;
+		case 20:
+			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 21:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
+		case 22:
+			putString = val;
+			break;
+		case 23:
+			mountString = val;
+			break;
+		case 24:
+			dismountString = val;
+			break;
+		case 25:
+			doorName = val;
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
@@ -828,7 +832,9 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				return i;
 		return -1;
 	}
+
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -844,6 +850,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{

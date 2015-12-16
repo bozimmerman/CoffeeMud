@@ -1008,6 +1008,21 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.state=LoginState.LOGIN_START;
 			return LoginResult.NO_LOGIN;
 		}
+		
+		// an input eating pause for stray characters (esp from WINTIN)
+		final long startTime = System.currentTimeMillis() + 500;
+		while(System.currentTimeMillis() < startTime)
+		{
+			try
+			{
+				session.readlineContinue();
+			}
+			catch(Exception x)
+			{
+				return LoginResult.NO_LOGIN;
+			}
+		}
+			
 		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 			session.promptPrint(L("\n\raccount name: "));
 		else

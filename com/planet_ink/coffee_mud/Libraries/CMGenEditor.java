@@ -4921,6 +4921,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(!fail)
 				{
 					E.setCoords(new long[]{valL[0].longValue(),valL[1].longValue(),valL[2].longValue()});
+					E.coordinates()[0] = E.coordinates()[0] % SpaceObject.Distance.GalaxyRadius.dm;
+					E.coordinates()[1] = E.coordinates()[1] % SpaceObject.Distance.GalaxyRadius.dm;
+					E.coordinates()[2] = E.coordinates()[2] % SpaceObject.Distance.GalaxyRadius.dm;
 					break;
 				}
 			}

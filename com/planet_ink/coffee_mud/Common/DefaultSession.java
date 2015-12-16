@@ -1748,7 +1748,7 @@ public class DefaultSession implements Session
 		return '\0';
 	}
 
-	public int nonBlockingIn(boolean appendInputFlag)
+	protected int nonBlockingIn(boolean appendInputFlag)
 	throws IOException
 	{
 		try

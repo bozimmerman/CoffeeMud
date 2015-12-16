@@ -167,6 +167,9 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		{
 		case 0:
 			setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true)));
+			coordinates[0] = coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm;
+			coordinates[1] = coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm;
+			coordinates[2] = coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm;
 			break;
 		case 1:
 			setRadius(CMath.s_long(val));
