@@ -3,6 +3,7 @@
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 @MUDGrinder?EDITITEM@
+@if?CheckReqParm?ERRMSG=@
 <HTML>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
@@ -12,5 +13,8 @@
 	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@" NAME=MENU>
 </FRAMESET>
 </HTML>
+@else@
+	@AddFile?/grinder/edititemform.cmvp@
+@endif@
 @endif@
 @endif@

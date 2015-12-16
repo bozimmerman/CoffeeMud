@@ -1418,28 +1418,36 @@ public class StdArea implements Area
 				}
 			}
 			s.append("Level range    : ^H"+statData[Area.Stats.MIN_LEVEL.ordinal()]+"^N to ^H"+statData[Area.Stats.MAX_LEVEL.ordinal()]+"^N\n\r");
-			s.append("Average level  : ^H"+statData[Area.Stats.AVG_LEVEL.ordinal()]+"^N\n\r");
+			//s.append("Average level  : ^H"+statData[Area.Stats.AVG_LEVEL.ordinal()]+"^N\n\r");
 			s.append("Median level   : ^H"+statData[Area.Stats.MED_LEVEL.ordinal()]+"^N\n\r");
 			if(theFaction!=null)
 				s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()])+"^N\n\r");
 			if(theFaction!=null)
 				s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.MED_ALIGNMENT.ordinal()])+"^N\n\r");
-			try
+		}
+		try
+		{
+			boolean blurbed=false;
+			String flag=null;
+			for(final Enumeration<String> f= allBlurbFlags();f.hasMoreElements();)
 			{
-				boolean blurbed=false;
-				String flag=null;
-				for(final Enumeration<String> f= allBlurbFlags();f.hasMoreElements();)
+				flag=getBlurbFlag(f.nextElement());
+				if(flag!=null)
 				{
-					flag=getBlurbFlag(f.nextElement());
-					if(flag!=null)
+					if (!blurbed)
 					{
-						if(!blurbed){blurbed=true; s.append("\n\r");}
-						s.append(flag+"\n\r");
+						blurbed = true;
+						s.append("\n\r");
 					}
+					s.append(flag+"\n\r");
 				}
-				if(blurbed)
-					s.append("\n\r");
-			}catch(final Exception e){}
+			}
+			if(blurbed)
+				s.append("\n\r");
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("StdArea",e);
 		}
 		return s;
 	}

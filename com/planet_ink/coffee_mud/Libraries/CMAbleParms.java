@@ -401,6 +401,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			data.append(str.charAt(0));
 			str.delete(0,1);
 		}
+		if((div.charAt(0)=='\n') && (data.length()>0))
+			return data.toString();
 		return null;
 	}
 
@@ -479,8 +481,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		final Map<String,AbilityParmEditor> editors = getEditors();
 		if(classModelI == null)
 		{
-			Log.errOut("CMAbleParms","Data row "+rowShow+" discarded due to null/empty classID");
-			return false;
+			//Log.errOut("CMAbleParms","Data row "+rowShow+" discarded due to null/empty classID");
+			throw new CMException(L("Data row @x1 discarded due to null/empty classID",""+rowShow));
 		}
 		for(int d=0;d<dataRow.size();d++)
 		{
@@ -499,7 +501,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					final AbilityParmEditor A = editors.get(colV.get(c));
 					if(A==null)
-						throw new CMException("Col name "+(colV.get(c))+" is not defined.");
+						throw new CMException(L("Col name @x1 is not defined.",""+(colV.get(c))));
 					if((applicableA==null)
 					||(A.appliesToClass(classModelI) > applicableA.appliesToClass(classModelI)))
 						applicableA = A;
@@ -511,12 +513,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final AbilityParmEditor A = editors.get(dataRow.elementAt(d,1));
 			if(A==null)
 			{
-				Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has no editor for "+((String)dataRow.elementAt(d,1)));
-				return false;
+				throw new CMException(L("Item id @x1 has no editor for @x2",classModelI.ID(),((String)dataRow.elementAt(d,1))));
+				//Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has no editor for "+((String)dataRow.elementAt(d,1)));
+				//return false;
 			}
 			else
 			if((rowShow>=0)&&(!A.confirmValue((String)dataRow.elementAt(d,2))))
-				Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1))+" at row "+rowShow);
+				throw new CMException(L("Item id @x1 has bad data '@x2' for column @x3 at row @x4",classModelI.ID(),((String)dataRow.elementAt(d,2)),((String)dataRow.elementAt(d,1)),""+rowShow));
+				//Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1))+" at row "+rowShow);
 		}
 		return true;
 	}
@@ -528,10 +532,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			dataRow=rowsV.elementAt(r);
 			if(!fixDataColumn(dataRow,r))
+				throw new CMException(L("Unknown error in row @x1",""+r));
+			/*
+			catch(CMException e)
 			{
 				rowsV.removeElementAt(r);
 				r--;
 			}
+			*/
 		}
 	}
 
@@ -540,8 +548,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if(str.indexOf("\n")<0)
 			return new StringBuffer(str.toString().replace('\r','\n'));
 		for(int i=str.length()-1;i>=0;i--)
+		{
 			if(str.charAt(i)=='\r')
 				str.delete(i,i+1);
+		}
 		return str;
 	}
 
@@ -552,19 +562,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@Override
-	public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save)
+	public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save) throws CMException
 	{
 		final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,CMFile.FLAG_LOGERRORS).text();
-		try
-		{
-			testRecipeParsing(str,recipeFormat,save?recipeFilename:null);
-		}
-		catch(final CMException e)
-		{
-
-			Log.errOut("CMAbleParms","File: "+recipeFilename+": "+e.getMessage());
-			return;
-		}
+		testRecipeParsing(str,recipeFormat,save?recipeFilename:null);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -602,7 +603,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					final String newVal = A.commandLinePrompt(mob,oldVal,showNumber,showFlag);
 					editRow.setElementAt(a,2,newVal);
 				}
-				catch(final Exception e) {}
+				catch (final Exception e)
+				{
+				}
 			}
 		}
 		fakeSession.setMob(null);
@@ -3503,7 +3506,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				fixDataColumn(editRow,-1);
 			}
-			catch(final CMException cme) { return null;}
+			catch (final CMException cme)
+			{
+				return null;
+			}
 			for(int i=0;i<editRow.size();i++)
 			{
 				if(i!=keyIndex)

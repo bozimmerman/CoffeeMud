@@ -934,6 +934,31 @@ public class ItemData extends StdWebMacro
 						}
 						break;
 					}
+					case RECIPESKILLHELP: // recipeskillhelp
+					{
+						Ability A=null;
+						if((firstTime)&&(I instanceof Recipe))
+						{
+							A=CMClass.getAbility(((Recipe)I).getCommonSkillID());
+							if(A==null)
+							{
+								for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+								{
+									Ability A2=a.nextElement();
+									if(A2 instanceof ItemCraftor)
+									{
+										A=A2;
+										break;
+									}
+								}
+							}
+						}
+						else
+							A=CMClass.getAbility(httpReq.getUrlParameter("RECIPESKILL"));
+						if(A instanceof ItemCraftor)
+							str.append(((ItemCraftor)A).parametersFormat()).append(", ");
+						break;
+					}
 					case RECIPEDATA: // recipedata
 						if(I instanceof Recipe)
 						{

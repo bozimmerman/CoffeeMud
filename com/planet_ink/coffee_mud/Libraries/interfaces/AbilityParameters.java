@@ -274,8 +274,9 @@ public interface AbilityParameters extends CMLibrary
 	 * @param recipeFilename the unpathed regular filename of the recipe data to start with
 	 * @param recipeFormat the recipe format coded string from
 	 * @param save true to re-save the recipes file, false not to
+	 * @throws CMException a parse error, if any
 	 */
-	public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save);
+	public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save) throws CMException;
 	/**
 	 * Test method for the crafting common skill recipe parsers.  Basically it takes loaded
 	 * recipe file data, parses it into the editors, re-generates the recipe file data from the

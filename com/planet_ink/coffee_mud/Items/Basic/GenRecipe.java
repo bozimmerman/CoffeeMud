@@ -37,10 +37,16 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenRecipe extends GenReadable implements Recipe
 {
-	@Override public String ID(){	return "GenRecipe";}
-	protected String commonSkillID="";
-	protected String[] recipeLines=new String[0];
-	protected String replaceName = null;
+	@Override
+	public String ID()
+	{
+		return "GenRecipe";
+	}
+
+	protected String	commonSkillID	= "";
+	protected String[]	recipeLines		= new String[0];
+	protected String	replaceName		= null;
+
 	public GenRecipe()
 	{
 		super();
@@ -90,7 +96,12 @@ public class GenRecipe extends GenReadable implements Recipe
 		super.executeMsg( myHost, msg );
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
+
 	@Override
 	public void recoverPhyStats()
 	{
@@ -128,9 +139,25 @@ public class GenRecipe extends GenReadable implements Recipe
 				phyStats().setName(replaceName);
 		}
 	}
-	@Override public String getCommonSkillID(){return commonSkillID;}
-	@Override public void setCommonSkillID(String ID){commonSkillID=ID;}
-	@Override public String[] getRecipeCodeLines(){return recipeLines;}
+
+	@Override
+	public String getCommonSkillID()
+	{
+		return commonSkillID;
+	}
+
+	@Override
+	public void setCommonSkillID(String ID)
+	{
+		commonSkillID = ID;
+	}
+
+	@Override
+	public String[] getRecipeCodeLines()
+	{
+		return recipeLines;
+	}
+
 	@Override
 	public void setRecipeCodeLines(String[] lines)
 	{
@@ -138,10 +165,21 @@ public class GenRecipe extends GenReadable implements Recipe
 		setReadableText("");
 		replaceName = null;
 	}
-	@Override public int getTotalRecipePages() { return super.usesRemaining(); }
-	@Override public void setTotalRecipePages(int numRemaining) { super.setUsesRemaining(numRemaining); }
+
+	@Override
+	public int getTotalRecipePages()
+	{
+		return super.usesRemaining();
+	}
+
+	@Override
+	public void setTotalRecipePages(int numRemaining)
+	{
+		super.setUsesRemaining(numRemaining);
+	}
 
 	private final static String[] MYCODES={"SKILLID","RECIPES","NUMRECIPES"};
+
 	@Override
 	public String getStat(String code)
 	{
@@ -149,7 +187,8 @@ public class GenRecipe extends GenReadable implements Recipe
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+getCommonSkillID();
+		case 0: 
+			return ""+getCommonSkillID();
 		case 1:
 			{
 				final StringBuilder str=new StringBuilder("");
@@ -160,11 +199,13 @@ public class GenRecipe extends GenReadable implements Recipe
 				final String recipeStr = str.toString();
 				return recipeStr.substring(0,recipeStr.length()-1);
 			}
-		case 2: return ""+this.getTotalRecipePages();
+		case 2: 
+			return ""+this.getTotalRecipePages();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -173,10 +214,17 @@ public class GenRecipe extends GenReadable implements Recipe
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setCommonSkillID(val); break;
-		case 1: setRecipeCodeLines(CMParms.parseAny(val, '\n', true).toArray(new String[0])); break;
-		case 2: final int x=CMath.s_int(val); setTotalRecipePages(x>0?x:1); break;
-		default:
+			case 0:
+				setCommonSkillID(val);
+				break;
+			case 1:
+				setRecipeCodeLines(CMParms.parseAny(val, '\n', true).toArray(new String[0]));
+				break;
+			case 2:
+				final int x = CMath.s_int(val);
+				setTotalRecipePages(x > 0 ? x : 1);
+				break;
+			default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
@@ -189,7 +237,9 @@ public class GenRecipe extends GenReadable implements Recipe
 				return i;
 		return -1;
 	}
+
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -205,6 +255,7 @@ public class GenRecipe extends GenReadable implements Recipe
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -212,8 +263,10 @@ public class GenRecipe extends GenReadable implements Recipe
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

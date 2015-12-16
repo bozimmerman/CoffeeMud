@@ -1876,27 +1876,30 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(int i=1;i<=recipes.length;i++)
 				str.append(i+") "+CMStrings.replaceAll(recipes[i-1],"\t",",")).append("\n");
 			if(recipes.length<E.getTotalRecipePages())
-				str.append((recipes.length+1)+") ADD NEW RECIPE").append("\n");
+				str.append(L("(@x1) ADD NEW RECIPE",""+(recipes.length+1))).append("\n");
 			mob.tell(str.toString());
 			final String newName=mob.session().prompt(L("Enter a number to add/edit/remove\n\r:"),"");
 			final int x=CMath.s_int(newName);
 			if((x<=0)||(x>E.getTotalRecipePages()))
 				break;
 			final List<String> recipeList = new XVector<String>(recipes);
-			class Checker { public String getErrors(String line)
-			{
-				if(C==null)
-					return "Skill "+E.getCommonSkillID()+" is not a crafting skill!";
-				try
+			class Checker 
+			{ 
+				public String getErrors(String line)
 				{
-					CMLib.ableParms().testRecipeParsing(new StringBuffer(CMStrings.replaceAll(line,",","\t")), C.parametersFormat());
-				}
-				catch(final CMException cme)
-				{
-					return cme.getMessage();
-				}
-				return null;
-			} }
+					if(C==null)
+						return L("Skill @x1 is not a crafting skill!",E.getCommonSkillID());
+					try
+					{
+						CMLib.ableParms().testRecipeParsing(new StringBuffer(CMStrings.replaceAll(line,",","\t")), C.parametersFormat());
+					}
+					catch(final CMException cme)
+					{
+						return cme.getMessage();
+					}
+					return null;
+				} 
+			}
 			if(x<=recipes.length)
 			{
 				final String newLine=mob.session().prompt(L("Re-Enter this line, or NULL to delete (?).\n\r:"),"");

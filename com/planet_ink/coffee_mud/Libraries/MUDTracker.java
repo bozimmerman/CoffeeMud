@@ -40,12 +40,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFl
 public class MUDTracker extends StdLibrary implements TrackingLibrary
 {
 	@Override public String ID(){return "MUDTracker";}
-	protected Hashtable<Integer,Vector<String>> directionCommandSets=new Hashtable<Integer,Vector<String>>();
-	protected Hashtable<Integer,Vector<String>> openCommandSets=new Hashtable<Integer,Vector<String>>();
-	protected Hashtable<Integer,Vector<String>> closeCommandSets=new Hashtable<Integer,Vector<String>>();
-	protected Hashtable<TrackingFlags,RFilters> trackingFilters=new Hashtable<TrackingFlags,RFilters>();
-	protected static final TrackingFlags		EMPTY_FLAGS=new DefaultTrackingFlags();
-	protected static final RFilters				EMPTY_FILTERS=new DefaultRFilters();
+	protected Hashtable<Integer,Vector<String>> directionCommandSets= new Hashtable<Integer,Vector<String>>();
+	protected Hashtable<Integer,Vector<String>> openCommandSets		= new Hashtable<Integer,Vector<String>>();
+	protected Hashtable<Integer,Vector<String>> closeCommandSets	= new Hashtable<Integer,Vector<String>>();
+	protected Hashtable<TrackingFlags,RFilters> trackingFilters		= new Hashtable<TrackingFlags,RFilters>();
+	protected static final TrackingFlags		EMPTY_FLAGS			= new DefaultTrackingFlags();
+	protected static final RFilters				EMPTY_FILTERS		= new DefaultRFilters();
 
 	protected static class RFilterNode
 	{
@@ -1181,11 +1181,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 		}
 		if((leaveTrailersSoFar!=null)&&(leaveMsg.target() instanceof Room))
+		{
 			for(final CMMsg msg : leaveTrailersSoFar)
 				((Room)leaveMsg.target()).send(mob,msg);
+		}
 		if((enterTrailersSoFar!=null)&&(enterMsg.target() instanceof Room))
+		{
 			for(final CMMsg msg : enterTrailersSoFar)
 				((Room)enterMsg.target()).send(mob,msg);
+		}
 		return true;
 	}
 

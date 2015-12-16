@@ -120,8 +120,8 @@ public class VeryAggressive extends Aggressive
 						&&(CMLib.flags().canSenseEnteringLeaving(inhab,mob))
 						&&(CMLib.masking().maskCheck(zapStr,inhab,false))
 						&&((zapStr.length()>0)
-						||((inhab.phyStats().level()<(mob.phyStats().level()+15))
-						   &&(inhab.phyStats().level()>(mob.phyStats().level()-15)))))
+						||((inhab.phyStats().level()<(mob.phyStats().level()+8))
+						   &&(inhab.phyStats().level()>(mob.phyStats().level()-8)))))
 						{
 							dirCode=d;
 							break;

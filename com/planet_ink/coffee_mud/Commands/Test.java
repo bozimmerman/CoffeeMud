@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.CMath.CompiledOperation;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -516,7 +517,16 @@ public class Test extends StdCommand
 					{
 						final ItemCraftor iA=(ItemCraftor)A;
 						if(iA.parametersFormat().length()>0)
-							CMLib.ableParms().testRecipeParsing(iA.parametersFile(),iA.parametersFormat(),save);
+						{
+							try
+							{
+								CMLib.ableParms().testRecipeParsing(iA.parametersFile(),iA.parametersFormat(),save);
+							}
+							catch(CMException e2)
+							{
+								mob.tell("Recipe parse exception "+e2.getMessage());
+							}
+						}
 					}
 				}
 			}

@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -67,7 +68,7 @@ public class GrinderItems
 		ISSHIPCOMPONENT,ISSHIPENGINE,ISPANEL,ISFUELCONSUMER,ISPOWERGENERATION,
 		MANUFACTURER,POWCAPACITY,POWREMAINING,ACTIVATED,
 		MAXTHRUST,SPECIMPULSE,FUELEFFICIENCY,INSTALLFACTOR,
-		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML;
+		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
 		{
@@ -154,12 +155,14 @@ public class GrinderItems
 					}
 				}
 				else
+				{
 					for(int i=0;i<M.numItems();i++)
 					{
 						final Item I2=M.getItem(i);
 						if(I2!=null)
 							str.append(I2.Name()+"="+RoomData.getItemCode(M,I2));
 					}
+				}
 				return str.toString();
 			}
 			Item copyItem=(Item)I.copyOf();
@@ -536,20 +539,39 @@ public class GrinderItems
 					if(I instanceof Recipe)
 						((Recipe)I).setCommonSkillID(old);
 					break;
+				case RECIPESKILLHELP: // recipeskillhelp
+					break;
 				case RECIPEDATA: // recipedata
 					if(I instanceof Recipe)
 					{
-						final String recipeFieldName=parms.get("RECIPEFIELDNAME");
-						if(recipeFieldName==null)
-							return "No recipefieldname!";
+						final String recipeFieldName="RECIPEDATA###";
 						int x=0;
 						String thisFieldname = CMStrings.replaceAll(recipeFieldName,"###", ""+x);
 						final List<String> finalData=new ArrayList<String>();
 						while(httpReq.isUrlParameter(thisFieldname))
 						{
 							old = httpReq.getUrlParameter(thisFieldname);
-							finalData.add(CMStrings.replaceAll(old,",","\t"));
+							if(old.trim().length()>0)
+								finalData.add(CMStrings.replaceAll(old,",","\t"));
 							thisFieldname = CMStrings.replaceAll(recipeFieldName,"###", ""+(++x));
+						}
+						final String rAstr=httpReq.getUrlParameter("RECIPESKILL");
+						final ItemCraftor rA=(ItemCraftor)CMClass.getAbility(rAstr);
+						if(rA==null)
+							return CMLib.lang().L("Skill @x1 is not a crafting skill!",rAstr);
+						else
+						{
+							try
+							{
+								for(String line : finalData)
+								{
+									CMLib.ableParms().testRecipeParsing(new StringBuffer(line), rA.parametersFormat());
+								}
+							}
+							catch(final CMException cme)
+							{
+								return cme.getMessage();
+							}
 						}
 						((Recipe)I).setRecipeCodeLines(finalData.toArray(new String[0]));
 					}
