@@ -40,7 +40,11 @@ import org.mozilla.javascript.ScriptableObject;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class DefaultQuest implements Quest, Tickable, CMObject
 {
-	@Override public String ID(){return "DefaultQuest";}
+	@Override
+	public String ID()
+	{
+		return "DefaultQuest";
+	}
 
 	protected String 	name="";
 	protected String 	author="";
@@ -64,20 +68,48 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	private boolean 	suspended=false;
 	public DVector 		internalFiles=null;
 	private int[] 		resetData=null;
+	
 	private final Map<String,Long> 	stepEllapsedTimes=new Hashtable<String,Long>();
-	protected SVector<String> 	winners=new SVector<String>();
+	protected SVector<String> 		winners=new SVector<String>();
 
 	// the unique name of the quest
-	@Override public String name(){return name;}
-	@Override public void setName(String newName){name=newName;}
+	@Override
+	public String name()
+	{
+		return name;
+	}
+
+	@Override
+	public void setName(String newName)
+	{
+		name = newName;
+	}
 
 	// the author of the quest
-	@Override public String author(){return author;}
-	@Override public void setAuthor(String newName){author=newName;}
+	@Override
+	public String author()
+	{
+		return author;
+	}
+
+	@Override
+	public void setAuthor(String newName)
+	{
+		author = newName;
+	}
 
 	// the display name of the quest
-	@Override public String displayName(){ return displayName;}
-	@Override public void setDisplayName(String newName){ displayName=newName;}
+	@Override
+	public String displayName()
+	{
+		return displayName;
+	}
+
+	@Override
+	public void setDisplayName(String newName)
+	{
+		displayName = newName;
+	}
 
 	@Override
 	public CMObject copyOf()
@@ -93,11 +125,35 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	@Override public boolean suspended(){ return suspended;}
-	@Override public void setSuspended(boolean truefalse){suspended=truefalse;}
+	@Override
+	public boolean suspended()
+	{
+		return suspended;
+	}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultQuest();}}
-	@Override public void initializeClass(){}
+	@Override
+	public void setSuspended(boolean truefalse)
+	{
+		suspended = truefalse;
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultQuest();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
 
 	@Override
 	public Object getDesignatedObject(String named)
@@ -108,21 +164,36 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			{ code=i; break;}
 		switch(code)
 		{
-		case 0: return ID();
-		case 1: return name();
-		case 2: return ""+duration();
-		case 3: return ""+minWait();
-		case 4: return ""+minPlayers();
-		case 5: return ""+playerMask();
-		case 6: return ""+runLevel();
-		case 7: return ""+startDate();
-		case 8: return ""+startDate();
-		case 9: return ""+waitInterval();
-		case 10: return SPAWN_DESCS[getSpawn()];
-		case 11: return displayName();
-		case 12: break; // instructions should fall through
-		case 13: return Boolean.toString(durable);
-		case 14: return ""+author();
+		case 0:
+			return ID();
+		case 1:
+			return name();
+		case 2:
+			return "" + duration();
+		case 3:
+			return "" + minWait();
+		case 4:
+			return "" + minPlayers();
+		case 5:
+			return "" + playerMask();
+		case 6:
+			return "" + runLevel();
+		case 7:
+			return "" + startDate();
+		case 8:
+			return "" + startDate();
+		case 9:
+			return "" + waitInterval();
+		case 10:
+			return SPAWN_DESCS[getSpawn()];
+		case 11:
+			return displayName();
+		case 12:
+			break; // instructions should fall through
+		case 13:
+			return Boolean.toString(durable);
+		case 14:
+			return "" + author();
 		}
 		return questState.getStat(named);
 	}
@@ -143,11 +214,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				{
 					final String key=k.next();
 					if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().endsWith(filename)))
-					{ foundKey=true; delThese.addElement(key);}
+					{
+						foundKey = true;
+						delThese.addElement(key);
+					}
 				}
 				if(foundKey)
+				{
 					for(int d=0;d<delThese.size();d++)
 						Resources.removeResource(delThese.elementAt(d));
+				}
 			}
 			internalFiles.clear();
 			internalFiles=null;
@@ -155,7 +231,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	// the unique name of the quest
-	@Override public String startDate(){return startDate;}
+	@Override
+	public String startDate()
+	{
+		return startDate;
+	}
+
 	@Override
 	public void setStartDate(String newDate)
 	{
@@ -174,21 +255,77 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	// the duration, in ticks
-	@Override public int duration(){return duration;}
-	@Override public void setDuration(int newTicks){duration=newTicks;}
+	@Override
+	public int duration()
+	{
+		return duration;
+	}
 
-	@Override public void setCopy(boolean truefalse){copy=truefalse;}
-	@Override public boolean isCopy(){return copy;}
+	@Override
+	public void setDuration(int newTicks)
+	{
+		duration = newTicks;
+	}
 
-	@Override public void setSpawn(int spawnFlag){spawn=(spawnFlag<0)?0:spawnFlag;}
-	@Override public int getSpawn(){return spawn;}
+	@Override
+	public void setCopy(boolean truefalse)
+	{
+		copy = truefalse;
+	}
 
-	@Override public int minPlayers(){return minPlayers;}
-	@Override public void setMinPlayers(int players){minPlayers=players;}
-	@Override public int runLevel(){return runLevel;}
-	@Override public void setRunLevel(int level){runLevel=level;}
-	@Override public String playerMask(){return playerMask;}
-	@Override public void setPlayerMask(String mask){playerMask=mask;}
+	@Override
+	public boolean isCopy()
+	{
+		return copy;
+	}
+
+	@Override
+	public void setSpawn(int spawnFlag)
+	{
+		spawn = (spawnFlag < 0) ? 0 : spawnFlag;
+	}
+
+	@Override
+	public int getSpawn()
+	{
+		return spawn;
+	}
+
+	@Override
+	public int minPlayers()
+	{
+		return minPlayers;
+	}
+
+	@Override
+	public void setMinPlayers(int players)
+	{
+		minPlayers = players;
+	}
+
+	@Override
+	public int runLevel()
+	{
+		return runLevel;
+	}
+
+	@Override
+	public void setRunLevel(int level)
+	{
+		runLevel = level;
+	}
+
+	@Override
+	public String playerMask()
+	{
+		return playerMask;
+	}
+
+	@Override
+	public void setPlayerMask(String mask)
+	{
+		playerMask = mask;
+	}
 
 	// the rest of the script.  This may be semicolon-separated instructions,
 	// or a LOAD command followed by the quest script path.
@@ -217,7 +354,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			spawn=SPAWN_NO;
 		return true;
 	}
-	@Override public String script(){return rawScriptParameter;}
+	
+	@Override
+	public String script()
+	{
+		return rawScriptParameter;
+	}
 
 	@Override
 	public void autostartup()
@@ -302,7 +444,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return list;
 	}
 
-	private List sortSelect(Environmental E, String str,
+	private List sortSelect(Environmental E, 
+							String str,
 							List choices,
 							List choices0,
 							List choices1,
@@ -440,6 +583,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		{
 			Set<String> inUseByWhom=new TreeSet<String>();
 			for(int c=choices.size()-1;c>=0;c--)
+			{
 				if((!reselect)||(!q.reselectable.contains(choices.get(c))))
 				{
 					final Quest Q=CMLib.quests().objectInUse(choices.get(c));
@@ -449,6 +593,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						inUseByWhom.add(Q.name());
 					}
 				}
+			}
 			if((choices.size()==0)&&(!isQuiet))
 				errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+choicesStr+"' by: "+CMParms.toListString(inUseByWhom)+".");
 		}
@@ -608,8 +753,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						try
 						{
-							q.area=(Area)getObjectIfSpecified(p,args,2,0); q.envObject=q.area; continue;
-						}catch(final CMException ex)
+							q.area = (Area) getObjectIfSpecified(p, args, 2, 0);
+							q.envObject = q.area;
+							continue;
+						}
+						catch(final CMException ex)
 						{
 							q.area=null;
 						}
@@ -629,23 +777,27 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							if(areaName.equalsIgnoreCase("any"))
 								areas.addElement(CMLib.map().getRandomArea());
 							if(oldSize==areas.size())
-							for (final Enumeration e = CMLib.map().areas(); e.hasMoreElements(); )
 							{
-								final Area A2 = (Area) e.nextElement();
-								if (A2.Name().equalsIgnoreCase(areaName))
+								for (final Enumeration e = CMLib.map().areas(); e.hasMoreElements(); )
 								{
-									areas.addElement(A2);
-									break;
+									final Area A2 = (Area) e.nextElement();
+									if (A2.Name().equalsIgnoreCase(areaName))
+									{
+										areas.addElement(A2);
+										break;
+									}
 								}
 							}
 							if(oldSize==areas.size())
-							for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 							{
-								final Area A2=(Area)e.nextElement();
-								if(CMLib.english().containsString(A2.Name(),areaName))
+								for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 								{
-									areas.addElement(A2);
-									break;
+									final Area A2=(Area)e.nextElement();
+									if(CMLib.english().containsString(A2.Name(),areaName))
+									{
+										areas.addElement(A2);
+										break;
+									}
 								}
 							}
 						}
@@ -732,7 +884,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						try
 						{
 							q.mob=(MOB)getObjectIfSpecified(p,args,2,0);
-						}catch(final CMException ex)
+						}
+						catch(final CMException ex)
 						{
 							q.mob=null;
 							final List<MOB> choices=new Vector<MOB>();
@@ -767,7 +920,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 												}
 											}
 										}
-									}catch(final NoSuchElementException e){}
+									}
+									catch (final NoSuchElementException e)
+									{
+									}
 								}
 								else
 								{
@@ -789,7 +945,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 													choices.add(M2);
 											}
 										}
-									}catch(final NoSuchElementException e){}
+									}
+									catch (final NoSuchElementException e)
+									{
+									}
 								}
 							}
 
@@ -865,7 +1024,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						try
 						{
 							choices=(List)getObjectIfSpecified(p,args,2,1);
-						}catch(final CMException ex)
+						}
+						catch(final CMException ex)
 						{
 							if(mobName.length()==0)
 								mobName="ANY";
@@ -899,7 +1059,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 										}
 									}
 								}
-							}catch(final NoSuchElementException e){}
+							}
+							catch (final NoSuchElementException e)
+							{
+							}
 
 							this.filterOutThoseInUse(choices, p.toString(), q, isQuiet, reselect);
 						}
@@ -937,7 +1100,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						try
 						{
 							choices=(List)getObjectIfSpecified(p,args,2,1);
-						}catch(final CMException ex)
+						}
+						catch(final CMException ex)
 						{
 							final List<Item> choices0=new Vector<Item>();
 							final List<Item> choices1=new Vector<Item>();
@@ -969,7 +1133,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 										}
 									}
 								}
-							}catch(final NoSuchElementException e){}
+							}
+							catch (final NoSuchElementException e)
+							{
+							}
 							this.filterOutThoseInUse(choices, p.toString(), q, isQuiet, reselect);
 						}
 						if((choices!=null)&&(choices.size()>0))
@@ -1002,7 +1169,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						try
 						{
 							q.item=(Item)getObjectIfSpecified(p,args,2,0);
-						}catch(final CMException ex)
+						}
+						catch(final CMException ex)
 						{
 							q.item=null;
 							final List<Item> choices=new ArrayList<Item>();
@@ -1241,7 +1409,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									q.envObject=q.room;
 								}
 								continue;
-							}catch(final CMException ex)
+							}
+							catch(final CMException ex)
 							{
 								q.room=null;
 							}
@@ -1272,7 +1441,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								q.roomGroup=(List)getObjectIfSpecified(p,args,2,1);
 								q.envObject=q.roomGroup;
 								continue;
-							}catch(final CMException ex)
+							}
+							catch(final CMException ex)
 							{
 								q.roomGroup=null;
 							}
@@ -1402,7 +1572,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						try
 						{
 							q.mob=(MOB)getObjectIfSpecified(p,args,2,0);
-						}catch(final CMException ex)
+						}
+						catch(final CMException ex)
 						{
 							q.mob=null;
 							List<MOB> choices=null;
@@ -1498,7 +1669,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						try
 						{
 							q.item=(Item)getObjectIfSpecified(p,args,2,0);
-						}catch(final CMException ex)
+						}
+						catch(final CMException ex)
 						{
 							q.item=null;
 							List<Item> choices=null;
@@ -1649,7 +1821,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						try
 						{
 							q.mysteryData.factionGroup=(List)getObjectIfSpecified(p,args,2,1);
-						}catch(final CMException ex)
+						}
+						catch(final CMException ex)
 						{
 							q.mysteryData.factionGroup=null;
 							String numStr=CMParms.combine(p,2);
@@ -2611,7 +2784,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						errorOccurred(q,isQuiet,"Quest '"+name()+"', unknown load type '"+cmd+"'.");
 						break;
 					}
-
 				}
 				else
 				if(cmd.equals("GIVE"))
@@ -3122,7 +3294,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		try
 		{
 			parseQuestScript(baseScript,args,0);
-		}catch(final Exception t)
+		}
+		catch(final Exception t)
 		{
 			questState.error=true;
 			Log.errOut("DefaultQuest",t);
@@ -3381,7 +3554,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		{
 			setVars(script,questState.lastLine);
 			parseQuestScript(script,args,questState.lastLine);
-		}catch(final Exception t)
+		}
+		catch(final Exception t)
 		{
 			questState.error=true;
 			Log.errOut("DefaultQuest",t);
@@ -4249,7 +4423,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			if(V.size()>0)
 			{
 				filename=V.firstElement();
-				Vector parms=null;
+				Vector<String> parms=null;
 				try
 				{
 					for(int v=1;v<V.size();v++)
@@ -4506,7 +4680,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return QCODES;
 	}
 
-	@Override public int getSaveStatIndex(){return getStatCodes().length;}
+	@Override
+	public int getSaveStatIndex()
+	{
+		return getStatCodes().length;
+	}
+
 	protected int getCodeNum(String code)
 	{
 		final String[] CCODES=getStatCodes();
@@ -4534,7 +4713,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: break;
+		case 0:
+			break;
 		case 1:
 			setName(val);
 			break;
