@@ -37,8 +37,14 @@ public class Exits extends StdCommand
 {
 	public Exits(){}
 
-	private final String[] access=I(new String[]{"EXITS","EX"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[] access = I(new String[] { "EXITS", "EX" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -49,15 +55,18 @@ public class Exits extends StdCommand
 			final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
 			if((commands!=null)
 			&&(commands.size()>1)
-			&&(commands.get(commands.size()-1).equalsIgnoreCase("SHORT")))
-				exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
+			&&(commands.get(commands.size()-1).equalsIgnoreCase("SHORT")
+				||commands.get(commands.size()-1).equalsIgnoreCase("BRIEF")))
+					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
 			if(R.okMessage(mob, exitMsg))
 				R.send(mob, exitMsg);
 		}
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

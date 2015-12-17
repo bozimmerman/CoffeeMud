@@ -1,0 +1,1 @@
+FOR %%G IN (aa,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z) DO (start java -classpath ".;.\lib\js.jar;.\lib\jzlib.jar" -Djava.awt.headless=true -Xms128m -Xmx256m com.planet_ink.coffee_mud.application.AutoPlayTester localhost 5555 gimp%%G resources\progs\autoplayer\autoplay.js)

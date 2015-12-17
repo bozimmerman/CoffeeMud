@@ -6,6 +6,8 @@ import java.util.regex.*;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
+
+import com.planet_ink.coffee_mud.core.CMStrings;
 /*
    Copyright 2000-2015 Bo Zimmerman
 
@@ -42,7 +44,7 @@ public class AutoPlayTester
 	{
 		this.host=host;
 		this.port=port;
-		this.name=charName;
+		this.name=CMStrings.capitalizeAndLower(charName);
 		this.filename=script;
 	}
 
@@ -210,26 +212,117 @@ public class AutoPlayTester
 
 	protected static class JScriptEvent extends ScriptableObject
 	{
-		@Override public String getClassName(){ return "JScriptEvent";}
+		@Override
+		public String getClassName()
+		{
+			return "JScriptEvent";
+		}
+
 		static final long serialVersionUID=43;
 		protected AutoPlayTester testObj;
 		public static final String[] functions={ "tester", "toJavaString", "writeLine", "login", "stdout",
-												 "stderr", "waitFor", "waitForMultiMatch", "startsWith",
-												 "name","rand","sleep"};
-		public AutoPlayTester tester() { return testObj;}
-		public String toJavaString(Object O){return Context.toString(O);}
-		public boolean startsWith(Object O1, Object O2){ try { return toJavaString(O1).startsWith(toJavaString(O2)); } catch(final Exception e) {return false; } }
-		public boolean login(){ return testObj.login();}
-		public String name() { return testObj.name;}
-		public void stdout(Object O) { try { System.out.println(toJavaString(O)); } catch(final Exception e) { } }
-		public void sleep(Object O) { try { Thread.sleep(Long.valueOf(toJavaString(O)).longValue()); } catch(final Exception e) { } }
-		public void stderr(Object O) { try { System.err.println(toJavaString(O)); } catch(final Exception e) { } }
-		public int rand(int x){ final int y=(int)Math.round(Math.floor(Math.random() * ((x)-0.001))); return (y>0)?y:-y;}
+												 "stderr", "waitFor", "waitForOptions","waitForMultiMatch", "startsWith",
+												 "name","rand","sleep","clearOutbuffer","getAccumulated"};
+
+		public AutoPlayTester tester()
+		{
+			return testObj;
+		}
+
+		public String toJavaString(Object O)
+		{
+			return Context.toString(O);
+		}
+
+		public boolean startsWith(Object O1, Object O2)
+		{
+			try
+			{
+				return toJavaString(O1).startsWith(toJavaString(O2));
+			}
+			catch (final Exception e)
+			{
+				return false;
+			}
+		}
+
+		public boolean login()
+		{
+			return testObj.login();
+		}
+
+		public String name()
+		{
+			return testObj.name;
+		}
+
+		public void clearOutbuffer()
+		{
+			testObj.outbuffer.clear();
+		}
+
+		public String getAccumulated()
+		{
+			StringBuilder str = new StringBuilder("");
+			for(String s : testObj.outbuffer)
+				str.append(s).append("\n");
+			return str.toString();
+		}
+
+		public void stdout(Object O)
+		{
+			try
+			{
+				System.out.println(toJavaString(O));
+			}
+			catch (final Exception e)
+			{
+			}
+		}
+
+		public void sleep(Object O)
+		{
+			try
+			{
+				Thread.sleep(Long.valueOf(toJavaString(O)).longValue());
+			}
+			catch (final Exception e)
+			{
+			}
+		}
+
+		public void stderr(Object O)
+		{
+			try
+			{
+				System.err.println(toJavaString(O));
+			}
+			catch (final Exception e)
+			{
+			}
+		}
+
+		public int rand(int x)
+		{
+			final int y = (int) Math.round(Math.floor(Math.random() * ((x) - 0.001)));
+			return (y > 0) ? y : -y;
+		}
+
 		public Object waitFor(Object regexO)
 		{
 			try
 			{
 				return testObj.waitFor(toJavaString(regexO),1)[0];
+			}
+			catch(final Exception e) { return null; }
+		}
+		public Object waitForOptions(Object regexO)
+		{
+			try
+			{
+				//Object o = Context.jsToJava(regexO, String[].class);
+				return "";
+				//return ""+testObj.waitForOptions((String[])o);
 			}
 			catch(final Exception e) { return null; }
 		}

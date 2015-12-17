@@ -5,6 +5,7 @@ var promptMarker=".*<(\\d+)Hp (\\d+)m (\\d+)mv>.*";
 var hitpoints=20;
 var mana=100;
 var move=100;
+var socialsCache = [];
 
 var s;
 var mudUsesAccountSystem = false;
@@ -27,8 +28,20 @@ if(mudUsesAccountSystem)
 	{
 		writeLine(name());
 		s = waitFor("(?>Command or Name ).*");
-		writeLine(name());
-		waitForPrompt();
+		writeLine("L");
+		s = waitFor("(?>"+name()+"|Command or Name).*");
+		if(startsWith(s,"Command or Name"))
+		{
+			writeLine("NEW "+name());
+			s = waitFor("(?>Create a new character called).*");
+			writeLine("Y");
+			finishCreateCharacter();
+		}
+		else
+		{
+			writeLine(name());
+			startPlaying();
+		}
 	}
 	else
 	{
@@ -39,8 +52,11 @@ if(mudUsesAccountSystem)
 		writeLine(name());
 		s = waitFor("(?>Enter your e-mail address).*");
 		writeLine("someone@nowhere.com");
-		s = waitFor("(?>Please enter a name for your character).*");
-		writeLine(name());
+		s = waitFor("(?>Please enter a name for your character|Command or Name).*");
+		if(startsWith(s.toLowerCase(),"command or name"))
+			writeLine("NEW "+name());
+		else
+			writeLine(name());
 		s = waitFor("(?>Create a new character called).*");
 		writeLine("Y");
 		finishCreateCharacter();
@@ -53,7 +69,7 @@ else
 	if(startsWith(s.toLowerCase(),"password"))
 	{
 		writeLine(name());
-		waitForPrompt();
+		startPlaying();
 	}
 	else
 	{
@@ -68,6 +84,46 @@ else
 	}
 }
 
+function doAnySocial()
+{
+	if(socialsCache.length == 0)
+	{
+		writeLine("socials");
+		s = waitFor("Complete socials list:");
+		clearOutbuffer();
+		waitForPrompt();
+		s = getAccumulated();
+		var lines = s.split("\n");
+		var i;
+		for(i=0;i<lines.length;i++)
+		{
+			if(lines[i].length == 0)
+				break;
+			var set=splittrimnoempty(lines[i],' ');
+			var x;
+			for(x=0;x<set.length;x++)
+			{
+				if(set[x].length > 0)
+					socialsCache.push(set[x]);
+			}
+		}
+	}
+	if(socialsCache.length == 0)
+		writeLine("smile");
+	else
+		writeLine(socialsCache[rand(socialsCache.length)]);
+}
+
+function startPlaying()
+{
+	waitForPrompt();
+	while(true)
+	{
+		doAnySocial();
+		waitForPrompt();
+	}
+}
+
 function waitForPrompt()
 {
 	var s=waitForMultiMatch(promptMarker,3);
@@ -79,7 +135,12 @@ function waitForPrompt()
 function finishCreateCharacter()
 {
 	var s;
-	s = waitFor("(?>Please choose from the following races).*");
+	s = waitFor("(?>Please choose from the following races|Please select from the following: F).*");
+	if(startsWith(s.toLowerCase(),"please select from"))
+	{
+		writeLine("F");
+		s = waitFor("(?>Please choose from the following races).*");
+	}
 	
 	s = waitFor(".*\\[(.*)\\].*");
 	var races=splittrimnoempty(s,', ');
@@ -95,8 +156,16 @@ function finishCreateCharacter()
 	else
 		writeLine("F");
 	//s = waitFor(".*This would qualify you for (.*)\\..*");
-	s = waitFor(".*re\\-roll \\(y/N\\)\\?.*");
-	writeLine("N");
+	s = waitFor(".*(?>re\\-roll \\(y/N\\)\\?|.*R for random roll).*");
+	if(s.indexOf("R for random roll")>0)
+	{
+		writeLine("R");
+		s = waitFor(".*(?>re\\-roll \\(y/N\\)\\?|.*R for random roll).*");
+		if(s.indexOf("R for random roll")>0)
+			writeLine("");
+	}
+	else
+		writeLine("N");
 	s = waitFor("(?>Please choose from the following Classes).*");
 	s = waitFor(".*\\[(.*)\\].*");
 	var cclasses=splittrimnoempty(s,', ');
@@ -114,5 +183,5 @@ function finishCreateCharacter()
 	writeLine(achoice);
 	waitFor(".*Press Enter to begin:.*");
 	writeLine("");
-	waitForPrompt();
+	startPlaying();
 }
