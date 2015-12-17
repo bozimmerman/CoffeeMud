@@ -65,7 +65,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.8;
-	private static final float	  HOST_VERSION_MINOR	= (float)8.0;
+	private static final int	  HOST_VERSION_MINOR	= 9;
 	private static enum MudState {STARTING,WAITING,ACCEPTING,STOPPED}
 
 	private volatile MudState state		 = MudState.STOPPED;
@@ -274,9 +274,14 @@ public class MUD extends Thread implements MudHost
 				{
 					StringBuffer rejectText;
 
-					try { rejectText = Resources.getFileResource("text/offline.txt",true);
+					try 
+					{ 
+						rejectText = Resources.getFileResource("text/offline.txt",true);
 					}
-					catch(final java.lang.NullPointerException npe) { rejectText=new StringBuffer("");}
+					catch(final java.lang.NullPointerException npe) 
+					{ 
+						rejectText=new StringBuffer("");
+					}
 
 					try
 					{
@@ -481,7 +486,10 @@ public class MUD extends Thread implements MudHost
 								if((A!=null)&&(!A.isSavable()))
 									M.delEffect(A);
 							}
-							catch(final Exception ex) {Log.errOut(ex);}
+							catch (final Exception ex)
+							{
+								Log.errOut(ex);
+							}
 						}
 					}
 				}
@@ -531,17 +539,21 @@ public class MUD extends Thread implements MudHost
 					roomSet.addElement(R);
 				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 		if(S!=null)
 			S.println(CMLib.lang().L("done"));
 		if(debugMem) shutdownMemReport("Notifications");
-		final CMLib.Library[][] libraryShutdownLists={
-				{CMLib.Library.QUEST,CMLib.Library.TECH,CMLib.Library.SESSIONS},
-				{CMLib.Library.STATS,CMLib.Library.THREADS},
-				{CMLib.Library.SOCIALS,CMLib.Library.CLANS,CMLib.Library.CHANNELS,CMLib.Library.JOURNALS,
-					CMLib.Library.POLLS,CMLib.Library.HELP,CMLib.Library.CATALOG,CMLib.Library.MAP,
-					CMLib.Library.PLAYERS
-				}
+		final CMLib.Library[][] libraryShutdownLists=
+		{
+			{CMLib.Library.QUEST,CMLib.Library.TECH,CMLib.Library.SESSIONS},
+			{CMLib.Library.STATS,CMLib.Library.THREADS},
+			{CMLib.Library.SOCIALS,CMLib.Library.CLANS,CMLib.Library.CHANNELS,CMLib.Library.JOURNALS,
+				CMLib.Library.POLLS,CMLib.Library.HELP,CMLib.Library.CATALOG,CMLib.Library.MAP,
+				CMLib.Library.PLAYERS
+			}
 		};
 
 		for(final CMLib.Library lib : libraryShutdownLists[0])
@@ -759,8 +771,10 @@ public class MUD extends Thread implements MudHost
 		bringDown=keepItDown;
 		serviceEngine.resumeAll();
 		if(!keepItDown)
+		{
 			if(S!=null)
 				S.println(CMLib.lang().L("Restarting..."));
+		}
 		if(S!=null)
 			S.stopSession(true,true,false);
 		checkedSleep(500);
@@ -772,6 +786,7 @@ public class MUD extends Thread implements MudHost
 		execExternalCommand=externalCommand;
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
 		for(int m=CMLib.hosts().size()-1;m>=0;m--)
+		{
 			if(CMLib.hosts().get(m) instanceof Thread)
 			{
 				try
@@ -780,6 +795,7 @@ public class MUD extends Thread implements MudHost
 				}
 				catch(final Exception t){}
 			}
+		}
 		CMLib.hosts().clear();
 		if(!keepItDown)
 			CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,false);
@@ -858,12 +874,22 @@ public class MUD extends Thread implements MudHost
 				else
 				switch(CMath.s_int(playstate.trim()))
 				{
-				case 0: playstate = "MudLib Development"; break;
-				case 1: playstate = "Restricted Access"; break;
-				case 2: playstate = "Beta Testing"; break;
-				case 3: playstate = "Open to the public"; break;
-				default: playstate = "MudLib Development"; break;
-				}
+					case 0:
+						playstate = "MudLib Development";
+						break;
+					case 1:
+						playstate = "Restricted Access";
+						break;
+					case 2:
+						playstate = "Beta Testing";
+						break;
+					case 3:
+						playstate = "Open to the public";
+						break;
+					default:
+						playstate = "MudLib Development";
+						break;
+					}
 				final IMudInterface imud=new IMudInterface(CMProps.getVar(CMProps.Str.MUDNAME),
 													 "CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER),
 													 CMLib.mud(0).getPort(),
@@ -896,11 +922,13 @@ public class MUD extends Thread implements MudHost
 			{
 				final String iniFile = page.getStr("CM1CONFIG");
 				for(final CM1Server s : cm1Servers)
+				{
 					if(s.getINIFilename().equalsIgnoreCase(iniFile))
 					{
 						s.shutdown();
 						cm1Servers.remove(s);
 					}
+				}
 				cm1server=new CM1Server("CM1Server"+tCode,iniFile);
 				cm1server.start();
 				cm1Servers.add(cm1server);
@@ -926,15 +954,15 @@ public class MUD extends Thread implements MudHost
 			{
 				imc2server=new IMC2Driver();
 				if(!imc2server.imc_startup(false,
-										page.getStr("IMC2LOGIN").trim(),
-										CMProps.getVar(CMProps.Str.MUDNAME),
-										page.getStr("IMC2MYEMAIL").trim(),
-										page.getStr("IMC2MYWEB").trim(),
-										page.getStr("IMC2HUBNAME").trim(),
-										page.getInt("IMC2HUBPORT"),
-										page.getStr("IMC2PASS1").trim(),
-										page.getStr("IMC2PASS2").trim(),
-										CMLib.channels().getIMC2ChannelsList()))
+											page.getStr("IMC2LOGIN").trim(),
+											CMProps.getVar(CMProps.Str.MUDNAME),
+											page.getStr("IMC2MYEMAIL").trim(),
+											page.getStr("IMC2MYWEB").trim(),
+											page.getStr("IMC2HUBNAME").trim(),
+											page.getInt("IMC2HUBPORT"),
+											page.getStr("IMC2PASS1").trim(),
+											page.getStr("IMC2PASS2").trim(),
+											CMLib.channels().getIMC2ChannelsList()))
 				{
 					Log.errOut(Thread.currentThread().getName(),"IMC2 Failed to start!");
 					imc2server=null;
@@ -1079,8 +1107,15 @@ public class MUD extends Thread implements MudHost
 			}
 		}
 
-		public boolean isStarted() { return hostStarted; }
-		public boolean failedToStart() { return failedStart; }
+		public boolean isStarted()
+		{
+			return hostStarted;
+		}
+
+		public boolean failedToStart()
+		{
+			return failedStart;
+		}
 
 		public void fatalStartupError(Thread t, int type)
 		{
@@ -1628,9 +1663,15 @@ public class MUD extends Thread implements MudHost
 							for(int i=0;i<((byte[])o).length;i++)
 								idNumber^=((byte[])o)[0] << (i*8);
 						}
-					}catch(final Exception e1){}
+					}
+					catch (final Exception e1)
+					{
+					}
 				}
-			}catch(final Exception e1){}
+			}
+			catch (final Exception e1)
+			{
+			}
 			if(idNumber<0)
 				idNumber=idNumber*-1;
 			nameID=nameID+idNumber;
@@ -1668,7 +1709,6 @@ public class MUD extends Thread implements MudHost
 		Log.instance().configureLog(Log.Type.kills, page.getStr("KILMSGS"));
 		Log.instance().configureLog(Log.Type.combat, page.getStr("CBTMSGS"));
 		Log.instance().configureLog(Log.Type.access, page.getStr("ACCMSGS"));
-
 
 		final Thread shutdownHook=new Thread("ShutdownHook")
 		{
