@@ -94,7 +94,7 @@ public class Allergies extends StdAbility implements HealthCondition
 		{
 			allergicCheckDown=0;
 			final MOB mob=(MOB)affected;
-			if((CMLib.flags().aliveAwakeMobile(mob,true))&&(CMLib.flags().isInTheGame(mob,true)))
+			if((CMLib.flags().isAliveAwakeMobile(mob,true))&&(CMLib.flags().isInTheGame(mob,true)))
 			{
 				final Room R=CMLib.map().roomLocation(mob);
 				if(raceAllergies.size()>0)

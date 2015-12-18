@@ -61,7 +61,7 @@ public class Thief_Observation extends ThiefSkill
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(!CMLib.flags().aliveAwakeMobile((MOB)affected,true)))
+		&&(!CMLib.flags().isAliveAwakeMobile((MOB)affected,true)))
 		{ unInvoke(); return false;}
 		return true;
 	}

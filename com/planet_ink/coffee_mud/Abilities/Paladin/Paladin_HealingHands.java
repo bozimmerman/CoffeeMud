@@ -52,7 +52,7 @@ public class Paladin_HealingHands extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
 
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))

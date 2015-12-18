@@ -201,7 +201,7 @@ public class Patroller extends ActiveTicker
 					return true;
 				}
 			}
-			if((ticking instanceof Physical)&&(!CMLib.flags().canWorkOnSomething((Physical)ticking)) && (CMLib.dice().roll(1,100,0)>1))
+			if((ticking instanceof Physical)&&(!CMLib.flags().canTrack((Physical)ticking)) && (CMLib.dice().roll(1,100,0)>1))
 			{
 				tickStatus=Tickable.STATUS_NOT;
 				return true;

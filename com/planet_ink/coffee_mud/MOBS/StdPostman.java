@@ -648,7 +648,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			{
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_DEPOSIT:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					if(msg.tool() instanceof Container)
 						((Container)msg.tool()).emptyPlease(true);
@@ -740,7 +740,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				}
 				return;
 			case CMMsg.TYP_WITHDRAW:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					final String fromWhom=getSenderName(msg.source(),Clan.Function.WITHDRAW,false);
 					final Item old=(Item)msg.tool();
@@ -909,7 +909,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			case CMMsg.TYP_LIST:
 			{
 				super.executeMsg(myHost,msg);
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					Vector<PlayerData> V=null;
 					final String theName=getSenderName(msg.source(),Clan.Function.DEPOSIT_LIST,false);

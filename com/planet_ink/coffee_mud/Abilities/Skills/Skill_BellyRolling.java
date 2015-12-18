@@ -64,7 +64,7 @@ public class Skill_BellyRolling extends StdSkill
 
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&(CMLib.flags().aliveAwakeMobile(mob,true))
+		&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 		&&(CMLib.flags().isSitting(mob))
 		&&(!doneThisRound)
 		&&(msg.tool() instanceof Weapon))

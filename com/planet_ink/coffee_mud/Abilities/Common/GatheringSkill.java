@@ -50,7 +50,7 @@ public class GatheringSkill extends CommonSkill
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 

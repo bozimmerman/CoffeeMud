@@ -96,7 +96,7 @@ public class GiantScorpion extends StdMOB
 
 	protected boolean sting()
 	{
-		if (CMLib.flags().aliveAwakeMobileUnbound(this,true)&&
+		if (CMLib.flags().isAliveAwakeMobileUnbound(this,true)&&
 			(CMLib.flags().canHear(this)||CMLib.flags().canSee(this)||CMLib.flags().canSmell(this)))
 		{
 			final MOB target = getVictim();

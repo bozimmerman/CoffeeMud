@@ -83,7 +83,7 @@ public class Spell_FreeMovement extends Spell
 			try
 			{
 				A.affectPhyStats(newMOB,newMOB.phyStats());
-				if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
+				if((!CMLib.flags().isAliveAwakeMobileUnbound(newMOB,true))
 				   ||(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 				   ||(!A.okMessage(newMOB,msg2)))
 				{

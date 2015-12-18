@@ -60,7 +60,7 @@ public class Fighter_Roll extends FighterSkill
 
 		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
-		&&(CMLib.flags().aliveAwakeMobile(mob,true))
+		&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
 		&&(msg.tool() instanceof Weapon)

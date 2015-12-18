@@ -58,7 +58,7 @@ public class Thief_Alertness extends ThiefSkill
 		{
 
 			final MOB mob=(MOB)affected;
-			if(!CMLib.flags().aliveAwakeMobile(mob,true))
+			if(!CMLib.flags().isAliveAwakeMobile(mob,true))
 			{ unInvoke(); return false;}
 			if(mob.location()!=room)
 			{

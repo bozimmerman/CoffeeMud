@@ -105,7 +105,7 @@ public class Fighter_CircleTrip extends FighterSkill
 		{
 			if(CMLib.flags().isSitting(mob))
 				return Ability.QUALITY_INDIFFERENT;
-			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+			if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
@@ -125,7 +125,7 @@ public class Fighter_CircleTrip extends FighterSkill
 			mob.tell(L("You need to stand up!"));
 			return false;
 		}
-		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{

@@ -202,7 +202,7 @@ public class MOBEater extends ActiveTicker
 	{
 		if(stomachR==null) 
 			return true;
-		if (CMLib.flags().aliveAwakeMobile(mob,true)
+		if (CMLib.flags().isAliveAwakeMobile(mob,true)
 			&&(mob.rangeToTarget()==0)
 			&&(CMLib.flags().canHear(mob)||CMLib.flags().canSee(mob)||CMLib.flags().canSmell(mob)))
 		{

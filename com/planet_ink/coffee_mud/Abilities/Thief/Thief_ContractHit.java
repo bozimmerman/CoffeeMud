@@ -130,7 +130,7 @@ public class Thief_ContractHit extends ThiefSkill
 					if((!M.amDead())
 					   &&(M.location()!=null)
 					   &&(CMLib.flags().isInTheGame(M,false))
-					   &&(CMLib.flags().aliveAwakeMobileUnbound(M,true)))
+					   &&(CMLib.flags().isAliveAwakeMobileUnbound(M,true)))
 					{
 						anyLeft=true;
 						M.isInCombat();

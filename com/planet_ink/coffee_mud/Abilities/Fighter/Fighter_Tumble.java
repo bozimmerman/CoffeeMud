@@ -103,7 +103,7 @@ public class Fighter_Tumble extends FighterSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if(!mob.isInCombat())
 				return Ability.QUALITY_INDIFFERENT;
-			if(!CMLib.flags().aliveAwakeMobile(mob,true))
+			if(!CMLib.flags().isAliveAwakeMobile(mob,true))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -123,7 +123,7 @@ public class Fighter_Tumble extends FighterSkill
 			mob.tell(L("You aren't in combat!"));
 			return false;
 		}
-		if(!CMLib.flags().aliveAwakeMobile(mob,true))
+		if(!CMLib.flags().isAliveAwakeMobile(mob,true))
 		{
 			mob.tell(L("You need to stand up!"));
 			return false;

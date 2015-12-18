@@ -90,11 +90,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		final StringBuilder errLogMsg=new StringBuilder("("+lastAreaName+"): ");
 		errLogMsg.append(!W.criminal().location().isInhabitant(officer)?L("AE1 "):"");
 		errLogMsg.append(W.criminal().amDead()?L("AE2 "):"");
-		errLogMsg.append(!CMLib.flags().aliveAwakeMobile(W.criminal(),true)?L("AE3 "):"");
+		errLogMsg.append(!CMLib.flags().isAliveAwakeMobile(W.criminal(),true)?L("AE3 "):"");
 		errLogMsg.append(!CMLib.flags().isInTheGame(W.criminal(),true)?L("AE4 "):"");
 		errLogMsg.append(W.crime().equalsIgnoreCase("pardoned")?L("AE5 "):"");
 		errLogMsg.append(!((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))?L("AE6 "):"");
-		errLogMsg.append(!CMLib.flags().aliveAwakeMobile(officer,true)?L("AE7 "):"");
+		errLogMsg.append(!CMLib.flags().isAliveAwakeMobile(officer,true)?L("AE7 "):"");
 		errLogMsg.append(!CMLib.flags().isBound(W.criminal())?L("AE8 "):"");
 		if(CMSecurity.isDebugging(DbgFlag.ARREST))
 			Log.debugOut("Arrest",lead+errLogMsg.toString());
@@ -670,7 +670,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 			if(isAnyKindOfOfficer(laws,M)
 			&&(!isBusyWithJustice(laws,M))
-			&&(CMLib.flags().aliveAwakeMobile(M,true))
+			&&(CMLib.flags().isAliveAwakeMobile(M,true))
 			&&(!M.isInCombat()))
 				return true;
 		}
@@ -1923,7 +1923,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if((msg.source().isMonster())&&(!laws.arrestMobs()))
 			return;
 
-		if(!CMLib.flags().aliveAwakeMobile(msg.source(),true))
+		if(!CMLib.flags().isAliveAwakeMobile(msg.source(),true))
 			return;
 
 		final Room R=msg.source().location();
@@ -2374,7 +2374,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(W.criminal().location().isInhabitant(officer))
 				&&(CMLib.flags().isInTheGame(W.criminal(),true))
 				&&(!W.criminal().amDead())
-				&&(CMLib.flags().aliveAwakeMobile(officer,true))
+				&&(CMLib.flags().isAliveAwakeMobile(officer,true))
 				&&(CMLib.flags().canBeSeenBy(W.criminal(),officer)))
 				{
 					if(officer.isInCombat())
@@ -2430,7 +2430,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(W.criminal().location().isInhabitant(officer))
 				&&(!W.criminal().amDead())
 				&&(CMLib.flags().isInTheGame(W.criminal(),true))
-				&&(CMLib.flags().aliveAwakeMobile(officer,true))
+				&&(CMLib.flags().isAliveAwakeMobile(officer,true))
 				&&(CMLib.flags().canBeSeenBy(W.criminal(),officer)))
 				{
 					W.setTravelAttemptTime(0);
@@ -2540,7 +2540,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(CMLib.flags().isInTheGame(W.criminal(),true))
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
 				&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
-				&&(CMLib.flags().aliveAwakeMobile(officer,true)))
+				&&(CMLib.flags().isAliveAwakeMobile(officer,true)))
 				{
 					if(W.criminal().curState().getMovement()<50)
 						W.criminal().curState().setMovement(50);
@@ -2589,7 +2589,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!W.criminal().amDead())
 				&&(CMLib.flags().isInTheGame(W.criminal(),true))
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
-				&&(CMLib.flags().aliveAwakeMobile(officer,true)))
+				&&(CMLib.flags().isAliveAwakeMobile(officer,true)))
 				{
 					final MOB judge=getTheJudgeHere(laws,officer.location());
 					if(judge==null)
@@ -2606,7 +2606,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 					}
 					else
-					if(CMLib.flags().aliveAwakeMobile(judge,true))
+					if(CMLib.flags().isAliveAwakeMobile(judge,true))
 					{
 						CMLib.tracking().stopTracking(officer);
 						W.setTravelAttemptTime(0);
@@ -2661,7 +2661,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(W.criminal().location().isInhabitant(officer))
 				&&(CMLib.flags().isInTheGame(W.criminal(),true))
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
-				&&(CMLib.flags().aliveAwakeMobile(officer,true)))
+				&&(CMLib.flags().isAliveAwakeMobile(officer,true)))
 				{
 					final MOB judge=getTheJudgeHere(laws,officer.location());
 					if(judge==null)
@@ -2677,7 +2677,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						}
 					}
 					else
-					if(CMLib.flags().aliveAwakeMobile(judge,true))
+					if(CMLib.flags().isAliveAwakeMobile(judge,true))
 					{
 						if(judgeMe(laws,judge,officer,W.criminal(),W,myArea,debugging))
 						{
@@ -2721,7 +2721,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!W.criminal().amDead())
 				&&(W.criminal().location().isInhabitant(officer))
 				&&(CMLib.flags().isInTheGame(W.criminal(),true))
-				&&(CMLib.flags().aliveAwakeMobile(officer,true))
+				&&(CMLib.flags().isAliveAwakeMobile(officer,true))
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
 				&&(CMLib.flags().canBeSeenBy(W.criminal(),officer)))
 				{
@@ -2729,7 +2729,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					fileAllWarrants(laws,W,W.criminal());
 					unCuff(W.criminal());
 					if((judge!=null)
-					&&(CMLib.flags().aliveAwakeMobile(judge,true)))
+					&&(CMLib.flags().isAliveAwakeMobile(judge,true)))
 					{
 						judge.location().show(judge,W.criminal(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> put(s) <T-NAME> on parole!"));
 						final Ability A=CMClass.getAbility("Prisoner");
@@ -2772,7 +2772,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!W.criminal().amDead())
 				&&(W.criminal().location().isInhabitant(officer))
 				&&(CMLib.flags().isInTheGame(W.criminal(),true))
-				&&(CMLib.flags().aliveAwakeMobile(officer,true))
+				&&(CMLib.flags().isAliveAwakeMobile(officer,true))
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
 				&&(CMLib.flags().canBeSeenBy(W.criminal(),officer)))
 				{
@@ -2843,7 +2843,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(!W.criminal().amDead())
 				&&(W.criminal().location().isInhabitant(officer))
 				&&(CMLib.flags().isInTheGame(W.criminal(),true))
-				&&(CMLib.flags().aliveAwakeMobile(officer,true))
+				&&(CMLib.flags().isAliveAwakeMobile(officer,true))
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
 				&&(CMLib.flags().canBeSeenBy(W.criminal(),officer)))
 				{
@@ -2921,14 +2921,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(CMLib.flags().isInTheGame(criminalM,true))
 				&&(!criminalM.amDead())
 				&&(criminalM.location().isInhabitant(officer))
-				&&(CMLib.flags().aliveAwakeMobile(officer,true))
+				&&(CMLib.flags().isAliveAwakeMobile(officer,true))
 				&&(!W.crime().equalsIgnoreCase("pardoned"))
 				&&(CMLib.flags().canBeSeenBy(criminalM,officer))
 				&&(canFocusOn(officer,criminalM)))
 				{
 					final MOB judgeM=getTheJudgeHere(laws,officer.location());
 					if((judgeM!=null)
-					&&(CMLib.flags().aliveAwakeMobile(judgeM,true))
+					&&(CMLib.flags().isAliveAwakeMobile(judgeM,true))
 					&&(judgeM.location()==criminalM.location()))
 					{
 						dismissOfficer(officer);
@@ -2991,7 +2991,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(W.criminal().location().isInhabitant(officer))
 				&&(CMLib.flags().isInTheGame(W.criminal(),true))
 				&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
-				&&(CMLib.flags().aliveAwakeMobile(officer,true))
+				&&(CMLib.flags().isAliveAwakeMobile(officer,true))
 				&&(W.jail()!=null))
 				{
 					if(W.criminal().curState().getMovement()<50)
@@ -3060,7 +3060,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(W.criminal().location().isInhabitant(officer))
 				&&(CMLib.flags().isInTheGame(W.criminal(),true))
 				&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
-				&&(CMLib.flags().aliveAwakeMobile(officer,true))
+				&&(CMLib.flags().isAliveAwakeMobile(officer,true))
 				&&(W.jail()!=null))
 				{
 					if(W.criminal().curState().getMovement()<50)
@@ -3143,7 +3143,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					if(W.criminal().location()==W.jail())
 					{
 						if((officer==null)
-						||(!CMLib.flags().aliveAwakeMobile(officer,true))
+						||(!CMLib.flags().isAliveAwakeMobile(officer,true))
 						||(W.criminal().amDead())
 						||(!CMLib.flags().isInTheGame(W.criminal(),true))
 						||(!W.criminal().location().isInhabitant(officer)))
@@ -3197,7 +3197,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 							if(officer!=null)
 							{
-								if((CMLib.flags().aliveAwakeMobile(officer,true))
+								if((CMLib.flags().isAliveAwakeMobile(officer,true))
 								&&(W.criminal().location().isInhabitant(officer)))
 									CMLib.commands().postSay(officer,null,laws.getMessage(Law.MSG_LAWFREE),false,false);
 								dismissOfficer(officer);
@@ -3207,7 +3207,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						else
 						{
 							if((officer!=null)
-							&&(CMLib.flags().aliveAwakeMobile(officer,true))
+							&&(CMLib.flags().isAliveAwakeMobile(officer,true))
 							&&(W.criminal().location().isInhabitant(officer))
 							&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000))))
 							{

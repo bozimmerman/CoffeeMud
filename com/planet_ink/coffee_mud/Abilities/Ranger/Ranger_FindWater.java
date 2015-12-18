@@ -174,7 +174,7 @@ public class Ranger_FindWater extends StdAbility
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 

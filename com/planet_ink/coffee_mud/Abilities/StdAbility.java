@@ -1364,7 +1364,7 @@ public class StdAbility implements Ability
 			isAnAutoEffect=false;
 
 			// if you can't move, you can't cast! Not even verbal!
-			if(!CMLib.flags().aliveAwakeMobile(mob,false))
+			if(!CMLib.flags().isAliveAwakeMobile(mob,false))
 				return false;
 
 			final Room room=mob.location();

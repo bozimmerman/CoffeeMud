@@ -111,13 +111,13 @@ public class Hunting extends CommonSkill
 			else
 			if((found!=null)
 			&&(found.location()!=null)
-			&&(CMLib.flags().aliveAwakeMobile(found,true))
+			&&(CMLib.flags().isAliveAwakeMobile(found,true))
 			&&(!found.isInCombat()))
 			{
 				if(found.location()==mob.location())
 				{
 					if((mob.isMonster())
-					&&(CMLib.flags().aliveAwakeMobile(mob,true))
+					&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 					&&(CMLib.flags().canBeSeenBy(found,mob))
 					&&(!mob.isInCombat()))
 						CMLib.combat().postAttack(mob,found,mob.fetchWieldedItem());
@@ -159,7 +159,7 @@ public class Hunting extends CommonSkill
 			if(mob.isMonster()
 			&&(CMLib.dice().rollPercentage()>50)
 			&&(CMLib.flags().isMobile(mob))
-			&&(CMLib.flags().aliveAwakeMobile(mob,true))
+			&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 			&&(CMLib.flags().canSenseEnteringLeaving(found,mob)))
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

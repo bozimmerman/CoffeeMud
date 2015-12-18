@@ -78,7 +78,7 @@ public class Fighter_AutoBash extends FighterSkill
 		{
 			if(mob.isInCombat()
 			&&(mob.rangeToTarget()==0)
-			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+			&&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 			&&(proficiencyCheck(null,0,false)))
 			{
 				final Ability A=mob.fetchAbility("Skill_Bash");

@@ -56,7 +56,7 @@ public class Spell_CombatPrecognition extends Spell
 
 		if(msg.amITarget(mob)
 		   &&(mob.location()!=null)
-		   &&(CMLib.flags().aliveAwakeMobile(mob,true)))
+		   &&(CMLib.flags().isAliveAwakeMobile(mob,true)))
 		{
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{

@@ -99,7 +99,7 @@ public class Thief_Footlocks extends ThiefSkill
 		{
 			if(CMLib.flags().isSleeping(mob))
 				return Ability.QUALITY_INDIFFERENT;
-			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+			if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 				return Ability.QUALITY_INDIFFERENT;
 			final Item cloth=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_CLOTH);
 			if((cloth==null)||CMLib.materials().findNumberOfResource(mob,cloth.material())<1)
@@ -123,7 +123,7 @@ public class Thief_Footlocks extends ThiefSkill
 			mob.tell(L("You need to wake up!"));
 			return false;
 		}
-		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
 		Item cloth=null;
 		Item wood=null;

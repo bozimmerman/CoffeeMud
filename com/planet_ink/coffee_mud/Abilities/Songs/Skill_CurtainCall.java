@@ -78,7 +78,7 @@ public class Skill_CurtainCall extends BardSkill
 			if(!mob.isMonster())
 				CMLib.commands().postStand(mob,true);
 			if(CMLib.flags().isStanding(mob) 
-			&& CMLib.flags().aliveAwakeMobileUnbound(mob, false)
+			&& CMLib.flags().isAliveAwakeMobileUnbound(mob, false)
 			&& ((mob.curState().getHitPoints() < mob.maxState().getHitPoints())||(mob.curState().getMana() < mob.maxState().getMana())))
 			{
 				mob.doCommand(new XVector<String>("Bow"), MUDCmdProcessor.METAFLAG_FORCED);

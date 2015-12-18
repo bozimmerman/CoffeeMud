@@ -367,7 +367,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	/** a bit setting, as from sensesMask(), flagging this mob as unable to think clearly*/
 	public final static int CAN_NOT_THINK=131072;
 	/** a bit setting, as from sensesMask(), flagging this mob as unable to engage in long tasks*/
-	public final static int CAN_NOT_WORK=262144;
+	public final static int CAN_NOT_TRACK=262144;
 	/** a bit setting, as from sensesMask(), flagging this mob as unable to engage in standard combat ticks*/
 	public final static int CAN_NOT_AUTO_ATTACK=524288;
 	/** a bit setting, as from sensesMask(), flagging this mob as not respawning when being camped*/

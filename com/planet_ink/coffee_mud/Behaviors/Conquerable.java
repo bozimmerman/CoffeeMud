@@ -1309,7 +1309,7 @@ public class Conquerable extends Arrest
 						&&(M.getClanRole(holdingClan)!=null)
 						&&(!M.isInCombat())
 						&&(!CMLib.flags().isAnimalIntelligence(M))
-						&&(CMLib.flags().aliveAwakeMobileUnbound(M,true))
+						&&(CMLib.flags().isAliveAwakeMobileUnbound(M,true))
 						&&(CMLib.flags().canBeSeenBy(msg.source(),M))
 						&&(!assaults.contains(M))
 						&&(msg.source().getClanRole(holdingClan)==null)

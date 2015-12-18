@@ -139,7 +139,7 @@ public class Dance_Swords extends Dance
 		&&(M!=null)
 		&&(M.location().isContent((Weapon)affected))
 		&&(M.fetchEffect(ID())!=null)
-		&&(CMLib.flags().aliveAwakeMobile(M,true)))
+		&&(CMLib.flags().isAliveAwakeMobile(M,true)))
 		{
 			final MOB victiM=M.getVictim();
 			if(M.isInCombat())
@@ -194,7 +194,7 @@ public class Dance_Swords extends Dance
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if((!auto)&&(!CMLib.flags().aliveAwakeMobile(mob,false)))
+		if((!auto)&&(!CMLib.flags().isAliveAwakeMobile(mob,false)))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);

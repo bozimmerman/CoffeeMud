@@ -141,14 +141,14 @@ public class Ranger_TrackAnimal extends StdAbility
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!CMLib.flags().aliveAwakeMobile(mob,false))
+		if(!CMLib.flags().isAliveAwakeMobile(mob,false))
 			return false;
 
 		if(!CMLib.flags().canBeSeenBy(mob.location(),mob))

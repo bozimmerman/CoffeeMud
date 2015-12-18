@@ -422,7 +422,7 @@ public class Dragon extends StdMOB
 	{
 		if(Stomach==null)
 			return true;
-		if (CMLib.flags().aliveAwakeMobileUnbound(this,true)
+		if (CMLib.flags().isAliveAwakeMobileUnbound(this,true)
 			&&(rangeToTarget()==0)
 			&&(CMLib.flags().canHear(this)||CMLib.flags().canSee(this)||CMLib.flags().canSmell(this)))
 		{

@@ -61,7 +61,7 @@ public class Skill_Track extends StdSkill
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
@@ -210,7 +210,7 @@ public class Skill_Track extends StdSkill
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		tickStatus=Tickable.STATUS_MISC6;
-		if((!CMLib.flags().aliveAwakeMobile(mob,false))||(mob.location()==null)||(!CMLib.flags().isInTheGame(mob,true)))
+		if((!CMLib.flags().isAliveAwakeMobile(mob,false))||(mob.location()==null)||(!CMLib.flags().isInTheGame(mob,true)))
 		{
 			tickStatus=Tickable.STATUS_NOT;
 			return false;

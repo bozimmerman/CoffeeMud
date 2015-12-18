@@ -188,7 +188,7 @@ public class ProtectedCitizen extends ActiveTicker
 					if((M2!=null)
 					&&(M2.mayIFight(mob.getVictim()))
 					&&(M2!=mob.getVictim())
-					&&(CMLib.flags().aliveAwakeMobileUnbound(M2,true)
+					&&(CMLib.flags().isAliveAwakeMobileUnbound(M2,true)
 					&&(!M2.isInCombat())
 					&&(CMLib.flags().isMobile(M2))
 					&&(CMLib.masking().maskCheck(getCityguardName(),M2,false))

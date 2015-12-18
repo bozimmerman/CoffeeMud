@@ -57,7 +57,7 @@ public class Thief_Snipe extends ThiefSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if(CMLib.flags().isSitting(mob))
 				return Ability.QUALITY_INDIFFERENT;
-			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+			if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 				return Ability.QUALITY_INDIFFERENT;
 			if(target instanceof MOB)
 			{
@@ -94,7 +94,7 @@ public class Thief_Snipe extends ThiefSkill
 			mob.tell(L("You need to stand up!"));
 			return false;
 		}
-		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{

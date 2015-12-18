@@ -60,7 +60,7 @@ public class Ranger_HuntersEndurance extends StdAbility
 		&&(((MOB)affected).location()!=null))
 		{
 			final MOB mob=(MOB)affected;
-			if((!CMLib.flags().canWorkOnSomething(affected))
+			if((!CMLib.flags().canTrack(affected))
 			&&(CMLib.flags().isTracking(mob))
 			&&(!mob.isInCombat()))
 			{

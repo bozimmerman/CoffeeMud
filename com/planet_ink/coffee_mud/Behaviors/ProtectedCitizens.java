@@ -145,7 +145,7 @@ public class ProtectedCitizens extends ActiveTicker
 
 		if((!mob.isMonster())
 		||(!mob.isInCombat())
-		||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+		||(!CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 		||(mob.location()==null))
 		{
 			if(assisters.containsKey(mob))
@@ -189,7 +189,7 @@ public class ProtectedCitizens extends ActiveTicker
 			&&(M.mayIFight(mob.getVictim()))
 			&&(M!=mob.getVictim())
 			&&(M.location()!=null)
-			&&(CMLib.flags().aliveAwakeMobileUnbound(M,true)
+			&&(CMLib.flags().isAliveAwakeMobileUnbound(M,true)
 			&&(!M.isInCombat())
 			&&(!BrotherHelper.isBrother(mob.getVictim(),M,false))
 			&&(canFreelyBehaveNormal(M))
@@ -226,7 +226,7 @@ public class ProtectedCitizens extends ActiveTicker
 					if((M!=null)
 					&&(M.mayIFight(mob.getVictim()))
 					&&(M!=mob.getVictim())
-					&&(CMLib.flags().aliveAwakeMobileUnbound(M,true)
+					&&(CMLib.flags().isAliveAwakeMobileUnbound(M,true)
 					&&(!M.isInCombat())
 					&&((CMLib.flags().isMobile(M))||(M.location()==thisRoom))
 					&&(!assMOBS.contains(M))

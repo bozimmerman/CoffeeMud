@@ -95,7 +95,7 @@ public class Dance_Square extends Dance
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if((!auto)&&(!CMLib.flags().aliveAwakeMobile(mob,false)))
+		if((!auto)&&(!CMLib.flags().isAliveAwakeMobile(mob,false)))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);

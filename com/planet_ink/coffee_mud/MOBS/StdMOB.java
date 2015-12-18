@@ -2225,7 +2225,7 @@ public class StdMOB implements MOB
 				if (CMath.bset(srcCode, CMMsg.MASK_MOUTH))
 				{
 					if (((srcMinor != CMMsg.TYP_LIST) || srcM.amDead() || CMLib.flags().isSleeping(srcM))
-					&& (!CMLib.flags().aliveAwakeMobile(this, false)))
+					&& (!CMLib.flags().isAliveAwakeMobile(this, false)))
 						return false;
 					if (CMath.bset(srcCode, CMMsg.MASK_SOUND))
 					{
@@ -2280,7 +2280,7 @@ public class StdMOB implements MOB
 						srcM.tell(L("You don't see '@x1' here.",((Physical)msg.target()).name(this)));
 						return false;
 					}
-					if (!CMLib.flags().aliveAwakeMobile(this, false))
+					if (!CMLib.flags().isAliveAwakeMobile(this, false))
 						return false;
 
 					if ((CMLib.flags().isSitting(this))
@@ -2434,7 +2434,7 @@ public class StdMOB implements MOB
 							final MOB M = m.nextElement();
 							if((M != this) 
 							&&(M.getVictim() == this)
-							&&(CMLib.flags().aliveAwakeMobile(M, true))
+							&&(CMLib.flags().isAliveAwakeMobile(M, true))
 							&&(CMLib.flags().canSenseEnteringLeaving(srcM, M))
 							&&(CMProps.getVar(CMProps.Str.PLAYERFLEE)!=null)
 							&&(CMProps.getVar(CMProps.Str.PLAYERFLEE).length()>0))
@@ -2978,7 +2978,7 @@ public class StdMOB implements MOB
 				CMLib.combat().establishRange(this, (MOB) msg.target(), msg.tool());
 				if ((msg.tool() instanceof Weapon)
 				|| (msg.sourceMinor() == CMMsg.TYP_WEAPONATTACK)
-				|| (!CMLib.flags().aliveAwakeMobileUnbound((MOB) msg.target(), true)))
+				|| (!CMLib.flags().isAliveAwakeMobileUnbound((MOB) msg.target(), true)))
 				{
 					setVictim((MOB) msg.target());
 				}
@@ -3401,7 +3401,7 @@ public class StdMOB implements MOB
 					peaceTime += CMProps.getTickMillis();
 					if (this.isAttributeSet(MOB.Attrib.AUTODRAW)
 					&& (peaceTime >= START_SHEATH_TIME)
-					&& (peaceTime < END_SHEATH_TIME) && (CMLib.flags().aliveAwakeMobileUnbound(this, true)))
+					&& (peaceTime < END_SHEATH_TIME) && (CMLib.flags().isAliveAwakeMobileUnbound(this, true)))
 						CMLib.commands().postSheath(this, true);
 				}
 

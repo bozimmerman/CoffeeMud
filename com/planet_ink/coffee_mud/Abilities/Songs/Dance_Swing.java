@@ -63,7 +63,7 @@ public class Dance_Swing extends Dance
 		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
-		   &&(CMLib.flags().aliveAwakeMobile(mob,true))
+		   &&(CMLib.flags().isAliveAwakeMobile(mob,true))
 		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(!doneThisRound)
 		   &&(mob.rangeToTarget()==0))

@@ -81,7 +81,7 @@ public class Thief_Swipe extends ThiefSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if(((MOB)target).amDead()||(!CMLib.flags().canBeSeenBy(target,mob)))
 				return Ability.QUALITY_INDIFFERENT;
-			if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile((MOB)target,true)||(mob.getVictim()!=target)))
+			if((mob.isInCombat())&&(CMLib.flags().isAliveAwakeMobile((MOB)target,true)||(mob.getVictim()!=target)))
 				return Ability.QUALITY_INDIFFERENT;
 			if(!((MOB)target).mayIFight(mob))
 				return Ability.QUALITY_INDIFFERENT;
@@ -101,7 +101,7 @@ public class Thief_Swipe extends ThiefSkill
 		if(target==null)
 			return false;
 
-		if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile(target,true)||(mob.getVictim()!=target)))
+		if((mob.isInCombat())&&(CMLib.flags().isAliveAwakeMobile(target,true)||(mob.getVictim()!=target)))
 		{
 			mob.tell(mob,mob.getVictim(),null,L("Not while you are fighting <T-NAME>!"));
 			return false;
@@ -139,7 +139,7 @@ public class Thief_Swipe extends ThiefSkill
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
-		if(!CMLib.flags().aliveAwakeMobile(target,true)){levelDiff=100;discoverChance=0;}
+		if(!CMLib.flags().isAliveAwakeMobile(target,true)){levelDiff=100;discoverChance=0;}
 		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)

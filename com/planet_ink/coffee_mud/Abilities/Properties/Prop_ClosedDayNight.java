@@ -227,7 +227,7 @@ public class Prop_ClosedDayNight extends Property
 			if(closed(affected))
 			{
 				CMLib.commands().postStand(mob,true);
-				if(!CMLib.flags().aliveAwakeMobile(mob,true)||(mob.isInCombat()))
+				if(!CMLib.flags().isAliveAwakeMobile(mob,true)||(mob.isInCombat()))
 					return true;
 
 				if((mob.location()==mob.getStartRoom())
@@ -291,7 +291,7 @@ public class Prop_ClosedDayNight extends Property
 			else
 			{
 				CMLib.commands().postStand(mob,true);
-				if(!CMLib.flags().aliveAwakeMobile(mob,true)||(mob.isInCombat()))
+				if(!CMLib.flags().isAliveAwakeMobile(mob,true)||(mob.isInCombat()))
 					return true;
 				if(Home!=null)
 				{

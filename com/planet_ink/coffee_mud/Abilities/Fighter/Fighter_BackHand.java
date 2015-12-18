@@ -58,7 +58,7 @@ public class Fighter_BackHand extends MonkSkill
 		{
 			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
-			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+			&&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 			&&(mob.rangeToTarget()==0)
 			&&(mob.charStats().getBodyPart(Race.BODY_HAND)>1)
 			&&(mob.location()!=null)

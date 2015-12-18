@@ -52,6 +52,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean canBeLocated(Physical P)
 	{
+		if(P instanceof MOB)
+			return true;
+		else
 		if ((P != null) 
 		&& (!isSleeping(P)) 
 		&& ((P.phyStats().sensesMask() & PhyStats.SENSE_UNLOCATABLE) == 0))
@@ -124,9 +127,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
-	public boolean canWorkOnSomething(Physical P)
+	public boolean canTrack(Physical P)
 	{
-		return (P != null) && ((P.phyStats().sensesMask() & PhyStats.CAN_NOT_WORK) == 0);
+		return (P != null) && ((P.phyStats().sensesMask() & PhyStats.CAN_NOT_TRACK) == 0);
 	}
 
 	@Override
@@ -875,9 +878,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
-	public boolean aliveAwakeMobileUnbound(MOB mob, boolean quiet)
+	public boolean isAliveAwakeMobileUnbound(MOB mob, boolean quiet)
 	{
-		if(!aliveAwakeMobile(mob,quiet))
+		if(!isAliveAwakeMobile(mob,quiet))
 			return false;
 		if(isBound(mob))
 		{
@@ -895,7 +898,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
-	public boolean aliveAwakeMobile(final MOB mob, final boolean quiet)
+	public boolean isAliveAwakeMobile(final MOB mob, final boolean quiet)
 	{
 		if(mob==null)
 			return false;
@@ -1095,33 +1098,35 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean canBarelyBeSeenBy(Environmental seen , MOB seer)
 	{
 		if(!canBeSeenBy(seen,seer))
-		if((seer!=null)&&(!(seen instanceof Room)))
 		{
-			final Room R=seer.location();
-			if((R!=null)&&(isInDark(R)))
+			if((seer!=null)&&(!(seen instanceof Room)))
 			{
-				if(R.getArea().getClimateObj().canSeeTheMoon(R,null))
+				final Room R=seer.location();
+				if((R!=null)&&(isInDark(R)))
 				{
-					return R.getArea().getTimeObj().getMoonPhase() != TimeClock.MoonPhase.NEW;
+					if(R.getArea().getClimateObj().canSeeTheMoon(R,null))
+					{
+						return R.getArea().getTimeObj().getMoonPhase() != TimeClock.MoonPhase.NEW;
+					}
 				}
 			}
-		}
-		else
-		if((seen instanceof Physical) && (isInDark((Physical)seen)))
-		{
-			if((seen instanceof Room)
-			&&(((Room)seen).getArea().getClimateObj().canSeeTheMoon(((Room)seen),null)))
+			else
+			if((seen instanceof Physical) && (isInDark((Physical)seen)))
 			{
-				switch(((Room)seen).getArea().getTimeObj().getMoonPhase())
+				if((seen instanceof Room)
+				&&(((Room)seen).getArea().getClimateObj().canSeeTheMoon(((Room)seen),null)))
 				{
-					case FULL:
-					case WAXGIBBOUS:
-					case WANEGIBBOUS:
-						return false;
-					case NEW:
-						return false;
-					default:
-						return true;
+					switch(((Room)seen).getArea().getTimeObj().getMoonPhase())
+					{
+						case FULL:
+						case WAXGIBBOUS:
+						case WANEGIBBOUS:
+							return false;
+						case NEW:
+							return false;
+						default:
+							return true;
+					}
 				}
 			}
 		}
@@ -1134,7 +1139,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(affecting instanceof MOB)
 		{
 			final MOB monster=(MOB)affecting;
-			if((!aliveAwakeMobile(monster,true))
+			if((!isAliveAwakeMobile(monster,true))
 			||(monster.location()==null)
 			||(!isInTheGame(monster,false)))
 				return false;

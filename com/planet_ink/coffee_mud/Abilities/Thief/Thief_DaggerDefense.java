@@ -64,7 +64,7 @@ public class Thief_DaggerDefense extends ThiefSkill
 		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
-		   &&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+		   &&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(!doneThisRound)
 		   &&(mob.rangeToTarget()==0))

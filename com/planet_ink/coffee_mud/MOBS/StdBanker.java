@@ -615,7 +615,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			{
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_DEPOSIT:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					String depositorName=getBankClientName(msg.source(),Clan.Function.DEPOSIT,false);
 					//if(msg.tool() instanceof Container)
@@ -691,7 +691,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				return;
 			case CMMsg.TYP_BORROW:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					final Item old=(Item)msg.tool();
 					if(old instanceof Coins)
@@ -718,7 +718,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				break;
 			case CMMsg.TYP_WITHDRAW:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					String withdrawerName=getBankClientName(msg.source(),Clan.Function.WITHDRAW,false);
 					final Item old=(Item)msg.tool();
@@ -817,7 +817,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case CMMsg.TYP_LIST:
 			{
 				super.executeMsg(myHost,msg);
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					final String listerName=getBankClientName(msg.source(),Clan.Function.DEPOSIT_LIST,false);
 					List<Item> V=null;

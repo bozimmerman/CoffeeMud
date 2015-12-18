@@ -57,7 +57,7 @@ public class Fighter_CriticalShot extends FighterSkill
 
 		final MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
-		&&(CMLib.flags().aliveAwakeMobile(mob,true))
+		&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target()!=null)
 		&&(mob.getVictim()==msg.target())

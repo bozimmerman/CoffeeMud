@@ -139,7 +139,7 @@ public class RandomTeleporter extends ActiveTicker
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			final MOB mob=(MOB)ticking;
-			if((!CMLib.flags().canWorkOnSomething(mob)) && (CMLib.dice().roll(1,100,0)>1))
+			if((!CMLib.flags().canTrack(mob)) && (CMLib.dice().roll(1,100,0)>1))
 			{
 				return true;
 			}

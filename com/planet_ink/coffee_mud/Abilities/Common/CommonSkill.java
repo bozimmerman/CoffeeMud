@@ -107,7 +107,7 @@ public class CommonSkill extends StdAbility
 			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
 			||(mob.location()!=activityRoom)
-			||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true)))
+			||(!CMLib.flags().isAliveAwakeMobileUnbound(mob,true)))
 			{
 				aborted=true;
 				unInvoke();
@@ -600,7 +600,7 @@ public class CommonSkill extends StdAbility
 		isAnAutoEffect=false;
 
 		// if you can't move, you can't do anything!
-		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
 		final int[] consumed=usageCost(mob,false);
 		if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])

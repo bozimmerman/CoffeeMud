@@ -56,7 +56,7 @@ public class Fighter_WeaponCatch extends FighterSkill
 		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
-		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+		&&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 		&&(msg.tool() instanceof Ability)
 		&&(msg.tool().ID().equals("Skill_Disarm"))
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false))

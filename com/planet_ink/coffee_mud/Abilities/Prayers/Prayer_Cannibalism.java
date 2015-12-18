@@ -118,7 +118,7 @@ public class Prayer_Cannibalism extends Prayer
 			if((M.isMonster())
 			&&((M.curState().getThirst()<=0)||(M.curState().getHunger()<=0))
 			&&(M.fetchEffect("Butchering")==null)
-			&&(CMLib.flags().aliveAwakeMobileUnbound(M,true)))
+			&&(CMLib.flags().isAliveAwakeMobileUnbound(M,true)))
 			{
 				DeadBody B=null;
 				Food F=null;

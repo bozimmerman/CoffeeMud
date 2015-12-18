@@ -108,7 +108,7 @@ public class Fighter_Cleave extends FighterSkill
 			if((damAmount>victim.curState().getHitPoints())
 			&&(w.weaponDamageType()==Weapon.TYPE_SLASHING)
 			&&(w.weaponClassification()!=Weapon.CLASS_NATURAL)
-			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+			&&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 			{
 				nextTarget=null;

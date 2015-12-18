@@ -59,7 +59,7 @@ public class Fighter_CatchProjectile extends FighterSkill
 		final MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
 		&&(!doneThisRound)
-		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+		&&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(msg.tool() instanceof Weapon)
 		&&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)

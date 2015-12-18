@@ -65,7 +65,7 @@ public class Skill_Conduct extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if((!auto)&&(!CMLib.flags().aliveAwakeMobileUnbound(mob,false)))
+		if((!auto)&&(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false)))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);

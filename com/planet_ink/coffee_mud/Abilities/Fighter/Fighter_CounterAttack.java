@@ -55,7 +55,7 @@ public class Fighter_CounterAttack extends FighterSkill
 		final MOB mob=(MOB)affected;
 
 		if(msg.amISource(mob)
-		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+		&&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 		&&(msg.target() instanceof MOB)
 		&&(msg.tool() instanceof Ability)
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false))

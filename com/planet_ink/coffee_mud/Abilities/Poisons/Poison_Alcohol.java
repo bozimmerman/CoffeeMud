@@ -131,7 +131,7 @@ public class Poison_Alcohol extends Poison
 			return true;
 
 		final Room room=mob.location();
-		if((CMLib.dice().rollPercentage()<(4*drunkness))&&(CMLib.flags().aliveAwakeMobile(mob,true))&&(room!=null))
+		if((CMLib.dice().rollPercentage()<(4*drunkness))&&(CMLib.flags().isAliveAwakeMobile(mob,true))&&(room!=null))
 		{
 			if(CMLib.flags().isEvil(mob))
 			switch(CMLib.dice().roll(1,9,-1))

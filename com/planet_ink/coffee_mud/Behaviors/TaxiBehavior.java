@@ -83,7 +83,7 @@ public class TaxiBehavior extends Concierge
 		thingsToSay.addElement(whoM,L("OK, we're now on our way to @x1.",getDestinationName(destR)));
 		this.returnToRoom=fromM.location();
 		this.isEnRouter=CMClass.getAbility("Prop_Adjuster");
-		this.isEnRouter.setMiscText("sen+"+PhyStats.CAN_NOT_WORK);
+		this.isEnRouter.setMiscText("sen+"+PhyStats.CAN_NOT_TRACK);
 		this.destRoom = destR;
 		this.riderM = whoM;
 		if(observer instanceof Affectable)

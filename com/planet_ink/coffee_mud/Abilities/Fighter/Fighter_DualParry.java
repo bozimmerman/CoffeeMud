@@ -57,7 +57,7 @@ public class Fighter_DualParry extends FighterSkill
 		final MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
-		   &&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+		   &&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(mob.rangeToTarget()==0))
 		{

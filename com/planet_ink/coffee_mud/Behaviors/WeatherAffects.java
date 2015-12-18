@@ -291,7 +291,7 @@ public class WeatherAffects extends PuddleMaker
 							final MOB mob=R.fetchInhabitant(i);
 							if((mob!=null)
 							&&(!mob.isMonster())
-							&&(CMLib.flags().aliveAwakeMobile(mob,true))
+							&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 							&&(mob.isAttributeSet(MOB.Attrib.AUTOWEATHER)))
 								mob.tell(C.getWeatherDescription(A));
 						}

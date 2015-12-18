@@ -108,7 +108,7 @@ public class Skill_Trip extends StdSkill
 		{
 			if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 				return Ability.QUALITY_INDIFFERENT;
-			if((!CMLib.flags().aliveAwakeMobile(mob,true)||(CMLib.flags().isSitting(mob))))
+			if((!CMLib.flags().isAliveAwakeMobile(mob,true)||(CMLib.flags().isSitting(mob))))
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
@@ -133,7 +133,7 @@ public class Skill_Trip extends StdSkill
 			return false;
 		}
 
-		if((!CMLib.flags().aliveAwakeMobile(mob,true)||(CMLib.flags().isSitting(mob))))
+		if((!CMLib.flags().isAliveAwakeMobile(mob,true)||(CMLib.flags().isSitting(mob))))
 		{
 			mob.tell(L("You need to stand up!"));
 			return false;

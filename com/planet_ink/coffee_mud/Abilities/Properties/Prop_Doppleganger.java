@@ -155,7 +155,7 @@ public class Prop_Doppleganger extends Property
 			final MOB mob=(MOB)affected;
 			final Room R=(msg.target() instanceof Room)?((Room)msg.target()):msg.source().location();
 			if((R!=null)
-			&&(CMLib.flags().aliveAwakeMobile(mob,true))
+			&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 			&&(mob.curState().getHitPoints()>=mob.maxState().getHitPoints()))
 			{
 				int total=0;

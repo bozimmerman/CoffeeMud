@@ -88,7 +88,7 @@ public class StdClanPamphlet extends StdClanItem
 						&&(mob.getClanRole(rulingClan)==null)
 						&&(mob.getClanRole(clanID())==null)
 						&&(CMLib.flags().canSpeak(mob))
-						&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+						&&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 						&&(R!=null))
 						{
 							final MOB M=R.fetchRandomInhabitant();

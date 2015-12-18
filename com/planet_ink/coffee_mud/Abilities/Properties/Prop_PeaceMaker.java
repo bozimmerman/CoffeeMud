@@ -55,7 +55,7 @@ public class Prop_PeaceMaker extends Property
 				if(affected instanceof MOB)
 				{
 					final MOB mob=(MOB)affected;
-					if((CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+					if((CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 					&&(!mob.isInCombat()))
 					{
 						String t="No fighting!";

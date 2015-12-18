@@ -84,7 +84,7 @@ public class Vagrant extends StdBehavior
 			}
 			else
 			{
-				if(CMLib.flags().aliveAwakeMobile(mob,true))
+				if(CMLib.flags().isAliveAwakeMobile(mob,true))
 					mob.location().show(mob,mob.location(),CMMsg.MSG_SLEEP,L("<S-NAME> curl(s) on the ground and go(es) to sleep."));
 				if(CMLib.flags().isSleeping(mob))
 					sleepForTicks=CMLib.dice().roll(1,10,0);

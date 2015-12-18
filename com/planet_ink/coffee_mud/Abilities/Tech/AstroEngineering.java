@@ -205,7 +205,7 @@ public class AstroEngineering extends TechSkill
 			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
 			||(mob.location()!=targetRoom)
-			||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true)))
+			||(!CMLib.flags().isAliveAwakeMobileUnbound(mob,true)))
 			{
 				aborted=true;
 				unInvoke();

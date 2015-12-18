@@ -147,7 +147,7 @@ public class Song extends StdAbility
 		&&(mob.amFollowing()==null)
 		&&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0))
 		&&(!CMLib.flags().isATrackingMonster(mob))
-		&&(CMLib.flags().aliveAwakeMobile(mob,true)))
+		&&(CMLib.flags().isAliveAwakeMobile(mob,true)))
 		{
 			if((mob.location()!=originRoom)
 			&&(CMLib.flags().isMobile(mob)))
@@ -172,7 +172,7 @@ public class Song extends StdAbility
 			return true;
 
 		if((invoker==null)
-		||(!CMLib.flags().aliveAwakeMobile(invoker,true))
+		||(!CMLib.flags().isAliveAwakeMobile(invoker,true))
 		||(!CMLib.flags().canBeHeardSpeakingBy(invoker,mob)))
 			return unsingMe(mob,null);
 		return true;

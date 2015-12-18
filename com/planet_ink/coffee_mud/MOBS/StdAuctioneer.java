@@ -274,7 +274,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 			{
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_SELL:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					if(!(msg.tool() instanceof Item))
 					{
@@ -336,7 +336,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				}
 				return false;
 			case CMMsg.TYP_BID:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
 						return false;
@@ -418,7 +418,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				}
 				return false;
 			case CMMsg.TYP_BUY:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
 						return false;
@@ -492,7 +492,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				}
 				return false;
 			case CMMsg.TYP_VALUE:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
 						return false;
@@ -500,7 +500,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				}
 				return false;
 			case CMMsg.TYP_VIEW:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
 						return false;
@@ -524,7 +524,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 			{
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_SELL:
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					final AuctionData thisData=lastMsgData;
 					if((thisData==null)||(thisData.getAuctioningMob()!=msg.source())||(msg.source().isMonster()))
@@ -562,7 +562,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				break;
 			case CMMsg.TYP_BUY:
 				super.executeMsg(myHost,msg);
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					if(msg.tool() instanceof Item)
 					{
@@ -620,7 +620,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				break;
 			case CMMsg.TYP_BID:
 				super.executeMsg(myHost,msg);
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					if(msg.tool() instanceof Item)
 					{
@@ -672,7 +672,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				break;
 			case CMMsg.TYP_VALUE:
 				super.executeMsg(myHost,msg);
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					CMLib.commands().postSay(this,mob,L("That's for the people to decide.  Why don't you use the SELL command and see what you can get?"),true,false);
 					return;
@@ -704,7 +704,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 			case CMMsg.TYP_LIST:
 			{
 				super.executeMsg(myHost,msg);
-				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
 					final String forMask=CMLib.coffeeShops().getListForMask(msg.targetMessage());
 					final String s=CMLib.coffeeShops().getAuctionInventory(this,mob,this,forMask);

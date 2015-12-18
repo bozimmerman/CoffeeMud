@@ -57,7 +57,7 @@ public class Fighter_SideKick extends MonkSkill
 		{
 			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
-			&&(CMLib.flags().aliveAwakeMobile(mob,true))
+			&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 			&&(mob.rangeToTarget()==0)
 			&&(mob.charStats().getBodyPart(Race.BODY_LEG)>1)
 			&&(mob.location()!=null)

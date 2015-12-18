@@ -71,7 +71,7 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 					newMOB.recoverPhyStats();
 					A.affectPhyStats(newMOB,newMOB.phyStats());
 					final int clas=A.classificationCode()&Ability.ALL_ACODES;
-					if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
+					if((!CMLib.flags().isAliveAwakeMobileUnbound(newMOB,true))
 					   ||(CMath.bset(A.flags(),Ability.FLAG_BINDING))
 					   ||(!A.okMessage(newMOB,msg)))
 					if((A.invoker()==null)

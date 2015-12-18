@@ -253,7 +253,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				&&(room.getArea().getAreaState()!=Area.State.ACTIVE))
 					return true;
 
-				if((!CMLib.flags().canWorkOnSomething(mob)) && (CMLib.dice().roll(1,100,0)>1))
+				if((!CMLib.flags().canTrack(mob)) && (CMLib.dice().roll(1,100,0)>1))
 				{
 					tickDown=0;
 					return true;

@@ -1977,7 +1977,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						&&(fighter.amFollowing().rangeToTarget()>=0)
 						&&(fighter.amFollowing().fetchFollowerOrder(fighter)>=0))?
 							fighter.amFollowing().fetchFollowerOrder(fighter)+fighter.amFollowing().rangeToTarget():-1;
-		if(CMLib.flags().aliveAwakeMobile(fighter,true))
+		if(CMLib.flags().isAliveAwakeMobile(fighter,true))
 		{
 			if(((combatSystem!=CombatLibrary.COMBAT_MANUAL)&&(combatSystem!=CombatLibrary.COMBAT_TURNBASED))
 			||(fighter.isMonster()))

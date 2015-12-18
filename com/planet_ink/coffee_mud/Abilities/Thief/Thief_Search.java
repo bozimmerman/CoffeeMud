@@ -62,7 +62,7 @@ public class Thief_Search extends ThiefSkill
 	{
 		if(affected instanceof MOB)
 		{
-			if(!CMLib.flags().aliveAwakeMobile((MOB)affected,true))
+			if(!CMLib.flags().isAliveAwakeMobile((MOB)affected,true))
 			{ unInvoke(); return false;}
 			if(((MOB)affected).location()!=lastRoom)
 			{

@@ -126,7 +126,7 @@ public class Thief_Flank extends ThiefSkill
 			mob.tell(L("You need to stand up!"));
 			return false;
 		}
-		if(!CMLib.flags().aliveAwakeMobile(mob,false))
+		if(!CMLib.flags().isAliveAwakeMobile(mob,false))
 			return false;
 
 		if(mob.rangeToTarget()>0)

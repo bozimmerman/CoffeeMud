@@ -69,7 +69,7 @@ public class Flee extends Go
 			for (final Object element : H)
 			{
 				final MOB M=(MOB)element;
-				if(CMLib.flags().aliveAwakeMobileUnbound(M,true))
+				if(CMLib.flags().isAliveAwakeMobileUnbound(M,true))
 				{
 					XPloss=true;
 					break;

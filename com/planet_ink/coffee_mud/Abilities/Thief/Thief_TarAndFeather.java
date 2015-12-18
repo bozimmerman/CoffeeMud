@@ -147,7 +147,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			mob.tell(L("You need to stand up!"));
 			return false;
 		}
-		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
 		{

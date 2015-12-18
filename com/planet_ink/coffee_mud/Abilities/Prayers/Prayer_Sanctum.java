@@ -85,7 +85,7 @@ public class Prayer_Sanctum extends Prayer
 				if(affected instanceof MOB)
 				{
 					final MOB mob=(MOB)affected;
-					if((CMLib.flags().aliveAwakeMobile(mob,true))
+					if((CMLib.flags().isAliveAwakeMobile(mob,true))
 					&&(!mob.isInCombat()))
 					{
 						String t="No fighting!";

@@ -255,7 +255,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 					msg.source().tell(L("@x1 is out of @x2.",name(),ammunitionType()));
 					if((msg.source().isMine(this))
 					   &&(msg.source().location()!=null)
-					   &&(CMLib.flags().aliveAwakeMobile(msg.source(),true)))
+					   &&(CMLib.flags().isAliveAwakeMobile(msg.source(),true)))
 					{
 						lastReloadTime=msg.source().lastTickedDateTime();
 						if((!msg.source().isMonster())||inventoryAmmoCheck(msg.source()))

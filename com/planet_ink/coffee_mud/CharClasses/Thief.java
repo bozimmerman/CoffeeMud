@@ -228,7 +228,7 @@ public class Thief extends StdCharClass
 				  ||msg.tool().ID().equals("Thief_Racketeer")
 				  ||msg.tool().ID().equals("Thief_Swipe")))
 			{
-				final int xp=CMLib.flags().aliveAwakeMobileUnbound((MOB)msg.target(), true)?10:5;
+				final int xp=CMLib.flags().isAliveAwakeMobileUnbound((MOB)msg.target(), true)?10:5;
 				CMLib.leveler().postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),xp,false);
 			}
 		}

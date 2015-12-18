@@ -308,7 +308,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			switch (msg.targetMinor())
 			{
 			case CMMsg.TYP_GIVE:
-				if (CMLib.flags().aliveAwakeMobileUnbound(mob, true))
+				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
 					if ((msg.tool() != null)
 					&& ((CMSecurity.isAllowed(msg.source(), location(), CMSecurity.SecFlag.ORDER) 
@@ -329,7 +329,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_VALUE:
 			{
 				super.executeMsg(myHost, msg);
-				if (CMLib.flags().aliveAwakeMobileUnbound(mob, true))
+				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
 					final double pawningPrice = CMLib.coffeeShops().pawningPrice(this, mob, msg.tool(), this).absoluteGoldPrice;
 					final String currencyShort = CMLib.beanCounter().nameCurrencyShort(this, pawningPrice);
@@ -340,7 +340,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
 			{
 				super.executeMsg(myHost, msg);
-				if (CMLib.flags().aliveAwakeMobileUnbound(mob, true))
+				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
 					final double paid = CMLib.coffeeShops().transactPawn(this, msg.source(), this, msg.tool());
 					if (paid > Double.MIN_VALUE)
@@ -359,7 +359,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_VIEW:
 			{
 				super.executeMsg(myHost, msg);
-				if (CMLib.flags().aliveAwakeMobileUnbound(mob, true))
+				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
 					if ((msg.tool() != null) 
 					&& (getShop().doIHaveThisInStock("$" + msg.tool().Name() + "$", mob)))
@@ -374,7 +374,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								// shopkeeper
 			{
 				super.executeMsg(myHost, msg);
-				if (CMLib.flags().aliveAwakeMobileUnbound(mob, true))
+				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
 					final MOB mobFor = CMLib.coffeeShops().parseBuyingFor(msg.source(), msg.targetMessage());
 					if ((msg.tool() != null) && (getShop().doIHaveThisInStock("$" + msg.tool().Name() + "$", mobFor)) 
@@ -418,7 +418,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_LIST:
 			{
 				super.executeMsg(myHost, msg);
-				if (CMLib.flags().aliveAwakeMobileUnbound(mob, true))
+				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
 					final String forMask = CMLib.coffeeShops().getListForMask(msg.targetMessage());
 					List<Environmental> inventory = new XVector<Environmental>(getShop().getStoreInventory());

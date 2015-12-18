@@ -60,8 +60,8 @@ public class Spell_RogueLimb extends Spell
 			}
 			if((rogueLimb.amFollowing()!=null)
 			||(rogueLimb.getVictim()!=affected)
-			||(!CMLib.flags().aliveAwakeMobileUnbound(rogueLimb,true))
-			||(!CMLib.flags().aliveAwakeMobileUnbound((MOB)affected,true))
+			||(!CMLib.flags().isAliveAwakeMobileUnbound(rogueLimb,true))
+			||(!CMLib.flags().isAliveAwakeMobileUnbound((MOB)affected,true))
 			||(!CMLib.flags().isInTheGame((MOB)affected,false))
 			||(!CMLib.flags().isInTheGame(rogueLimb,false)))
 				unInvoke();
@@ -81,8 +81,8 @@ public class Spell_RogueLimb extends Spell
 		   ||(rogueLimb==null))
 			return true;
 		if(msg.amITarget(rogueLimb)
-		&&(CMLib.flags().aliveAwakeMobileUnbound(rogueLimb,true))
-		&&(CMLib.flags().aliveAwakeMobileUnbound((MOB)affected,true))
+		&&(CMLib.flags().isAliveAwakeMobileUnbound(rogueLimb,true))
+		&&(CMLib.flags().isAliveAwakeMobileUnbound((MOB)affected,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			CMLib.combat().postDamage(rogueLimb,(MOB)affected,this,msg.value(),CMMsg.MASK_ALWAYS|msg.sourceCode(),Weapon.TYPE_NATURAL,null);
 		if(msg.amISource(rogueLimb)

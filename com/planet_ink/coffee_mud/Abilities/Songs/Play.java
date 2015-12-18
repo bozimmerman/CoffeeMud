@@ -132,7 +132,7 @@ public class Play extends StdAbility
 		&&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0))
 		&&(!mob.isInCombat())
 		&&(!CMLib.flags().isATrackingMonster(mob))
-		&&(CMLib.flags().aliveAwakeMobile(mob,true)))
+		&&(CMLib.flags().isAliveAwakeMobile(mob,true)))
 		{
 			if((mob.location()!=originRoom)
 			&&(CMLib.flags().isMobile(mob)))
@@ -158,7 +158,7 @@ public class Play extends StdAbility
 
 		if((invoker==null)
 		||((instrument!=null)&&(!usingInstrument(instrument,invoker)))
-		||(!CMLib.flags().aliveAwakeMobileUnbound(invoker,true))
+		||(!CMLib.flags().isAliveAwakeMobileUnbound(invoker,true))
 		||(!CMLib.flags().canBeHeardSpeakingBy(invoker,mob)))
 			return unplayMe(mob,null);
 		return true;
@@ -455,7 +455,7 @@ public class Play extends StdAbility
 		if(skipStandardSongInvoke())
 			return true;
 
-		if((!auto)&&(!CMLib.flags().aliveAwakeMobileUnbound(mob,false)))
+		if((!auto)&&(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false)))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);

@@ -55,7 +55,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
-			if((!CMLib.flags().aliveAwakeMobile(mob,true))
+			if((!CMLib.flags().isAliveAwakeMobile(mob,true))
 			||(!CMLib.flags().isBound(mob)))
 			{ unInvoke(); return false;}
 			final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
@@ -98,7 +98,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 		{
 			if(mob.fetchEffect(this.ID())!=null)
 				return Ability.QUALITY_INDIFFERENT;
-			if((!CMLib.flags().aliveAwakeMobile(mob,true))||(!CMLib.flags().isBound(mob)))
+			if((!CMLib.flags().isAliveAwakeMobile(mob,true))||(!CMLib.flags().isBound(mob)))
 				return Ability.QUALITY_INDIFFERENT;
 			final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
 			if(V.size()==0)
@@ -120,7 +120,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already trying to slip free of <S-HIS-HER> bonds."));
 			return false;
 		}
-		if((!CMLib.flags().aliveAwakeMobile(mob,true))||(!CMLib.flags().isBound(mob)))
+		if((!CMLib.flags().isAliveAwakeMobile(mob,true))||(!CMLib.flags().isBound(mob)))
 		{
 			mob.tell(target,null,null,L("<T-NAME> <T-IS-ARE> not bound!"));
 			return false;

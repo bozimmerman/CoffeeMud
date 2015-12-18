@@ -69,7 +69,7 @@ public class Disease_Fever extends Disease
 				mob.setVictim(newvictim);
 		}
 		else
-		if(CMLib.flags().aliveAwakeMobile(mob,false)
+		if(CMLib.flags().isAliveAwakeMobile(mob,false)
 		&&(CMLib.flags().canSee(mob))
 		&&((--diseaseTick)<=0))
 		{

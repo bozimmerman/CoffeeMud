@@ -84,7 +84,7 @@ public class Unbinding extends CommonSkill
 					aborted=true;
 					unInvoke();
 				}
-				if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+				if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 				{
 					aborted=true;
 					unInvoke();

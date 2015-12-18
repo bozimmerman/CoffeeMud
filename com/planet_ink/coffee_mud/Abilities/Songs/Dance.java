@@ -99,7 +99,7 @@ public class Dance extends StdAbility
 		&&(!mob.amDead())
 		&&(mob.isMonster())
 		&&(!mob.isInCombat())
-		&&(CMLib.flags().aliveAwakeMobile(mob,true))
+		&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 		&&(mob.amFollowing()==null)
 		&&((!(mob instanceof Rideable))||(((Rideable)mob).numRiders()==0))
 		&&(!CMLib.flags().isATrackingMonster(mob)))
@@ -128,8 +128,8 @@ public class Dance extends StdAbility
 
 		if((invoker==null)
 		||(CMLib.flags().isSitting(invoker()))
-		||(!CMLib.flags().aliveAwakeMobile(mob,true))
-		||(!CMLib.flags().aliveAwakeMobile(invoker(),true))
+		||(!CMLib.flags().isAliveAwakeMobile(mob,true))
+		||(!CMLib.flags().isAliveAwakeMobile(invoker(),true))
 		||(!CMLib.flags().canBeSeenBy(invoker,mob)))
 			return undanceMe(mob,null);
 
@@ -336,7 +336,7 @@ public class Dance extends StdAbility
 		if(skipStandardDanceInvoke())
 			return true;
 
-		if((!auto)&&(!CMLib.flags().aliveAwakeMobile(mob,false)))
+		if((!auto)&&(!CMLib.flags().isAliveAwakeMobile(mob,false)))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);

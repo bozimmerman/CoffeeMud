@@ -67,7 +67,7 @@ public class Thief_Shadow extends ThiefSkill
 			return false;
 		if(mob.location()==null)
 			return false;
-		if(!CMLib.flags().aliveAwakeMobile(mob,true))
+		if(!CMLib.flags().isAliveAwakeMobile(mob,true))
 			return false;
 		return true;
 	}
@@ -82,7 +82,7 @@ public class Thief_Shadow extends ThiefSkill
 			return false;
 		if(shadowing.location()==null)
 			return false;
-		if(!CMLib.flags().aliveAwakeMobile(shadowing,true))
+		if(!CMLib.flags().isAliveAwakeMobile(shadowing,true))
 			return false;
 		return true;
 	}

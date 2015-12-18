@@ -112,7 +112,7 @@ public class Thief_Distract extends ThiefSkill
 		{
 			if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 				return Ability.QUALITY_INDIFFERENT;
-			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+			if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
@@ -133,7 +133,7 @@ public class Thief_Distract extends ThiefSkill
 			return false;
 		}
 
-		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{

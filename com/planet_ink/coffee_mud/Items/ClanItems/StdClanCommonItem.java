@@ -376,7 +376,7 @@ public class StdClanCommonItem extends StdClanItem
 					}
 
 					if((M.location()!=null)
-					&&(CMLib.flags().aliveAwakeMobileUnbound(M,true))
+					&&(CMLib.flags().isAliveAwakeMobileUnbound(M,true))
 					&&(!CMLib.flags().canBeSeenBy(M.location(),M)))
 					{
 						switch(CMLib.dice().roll(1,7,0))

@@ -59,7 +59,7 @@ public class Poison_Firebreather extends Poison_Liquor
 
 		final MOB mob=(MOB)affected;
 		final Room room=mob.location();
-		if((CMLib.dice().rollPercentage()<drunkness)&&(CMLib.flags().aliveAwakeMobile(mob,true))&&(room!=null))
+		if((CMLib.dice().rollPercentage()<drunkness)&&(CMLib.flags().isAliveAwakeMobile(mob,true))&&(room!=null))
 		{
 			if(CMLib.dice().rollPercentage()<40)
 			{

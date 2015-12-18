@@ -327,7 +327,7 @@ public class TaxCollector extends StdBehavior
 
 		if((R!=null)
 		&&(!mob.isInCombat())
-		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+		&&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 		&&(R.numInhabitants()>1))
 		{
 			final MOB M=R.fetchRandomInhabitant();

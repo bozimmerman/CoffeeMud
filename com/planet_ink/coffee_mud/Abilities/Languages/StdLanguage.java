@@ -298,7 +298,7 @@ public class StdLanguage extends StdAbility implements Language
 						return false;
 					if(!processNonSourceMessages(msg,str,numToMess))
 						return false;
-					if(CMLib.flags().aliveAwakeMobile((MOB)affected,true))
+					if(CMLib.flags().isAliveAwakeMobile((MOB)affected,true))
 						helpProficiency((MOB)affected, 0);
 				}
 			}

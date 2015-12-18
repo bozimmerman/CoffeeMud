@@ -123,7 +123,7 @@ public class Paladin_Defend extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!CMLib.flags().aliveAwakeMobile(mob,false))
+		if(!CMLib.flags().isAliveAwakeMobile(mob,false))
 			return false;
 
 		final Ability A=mob.fetchEffect(ID());

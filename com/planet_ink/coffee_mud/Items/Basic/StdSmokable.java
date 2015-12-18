@@ -135,7 +135,7 @@ public class StdSmokable extends StdContainer implements Light
 				{
 					final MOB mob=(MOB)owner();
 					if((mob.location()!=null)
-					&&(CMLib.flags().aliveAwakeMobile(mob,true)))
+					&&(CMLib.flags().isAliveAwakeMobile(mob,true)))
 					{
 						tickStatus=Tickable.STATUS_WEATHER;
 						mob.location().show(mob,this,this,CMMsg.MSG_HANDS,L("<S-NAME> puff(s) on <T-NAME>."));

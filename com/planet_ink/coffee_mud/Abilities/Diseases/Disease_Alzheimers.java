@@ -92,7 +92,7 @@ public class Disease_Alzheimers extends Disease
 			if((--everyTick)<=0)
 				return true;
 			final MOB mob=(MOB)affected;
-			if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+			if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 			{
 				if(!CMLib.flags().isStanding(mob))
 					CMLib.commands().postStand(mob,true);

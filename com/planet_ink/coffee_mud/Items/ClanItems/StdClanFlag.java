@@ -220,7 +220,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 							if ((M != null) 
 							&& (M.isMonster()) 
 							&& (M.getClanRole(clanID()) != null) 
-							&& (CMLib.flags().aliveAwakeMobileUnbound(M, true)) 
+							&& (CMLib.flags().isAliveAwakeMobileUnbound(M, true)) 
 							&& (CMLib.flags().canBeSeenBy(this, M))
 							&& (!CMLib.flags().isAnimalIntelligence(M)))
 							{

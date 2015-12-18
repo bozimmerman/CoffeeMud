@@ -115,7 +115,7 @@ public class Skill_CenterOfAttention extends BardSkill
 		{
 			if(CMLib.flags().isSitting(mob))
 				return Ability.QUALITY_INDIFFERENT;
-			if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+			if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 				return Ability.QUALITY_INDIFFERENT;
 			if(target.fetchEffect(ID())!=null)
 				return Ability.QUALITY_INDIFFERENT;
@@ -131,7 +131,7 @@ public class Skill_CenterOfAttention extends BardSkill
 			mob.tell(L("You need to stand up!"));
 			return false;
 		}
-		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

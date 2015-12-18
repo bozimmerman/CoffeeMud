@@ -59,7 +59,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		if(msg.amITarget(mob)
 		&&(amountOfShieldArmor>0)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+		&&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 		&&(msg.tool() instanceof Weapon)
 		&&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 		&&(msg.source().getVictim()==mob))
