@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -34,31 +36,38 @@ import java.util.*;
 */
 public class Concierge extends StdBehavior
 {
-	@Override public String ID(){return "Concierge";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;}
-
-	protected PairVector<Object,Double> rates=new PairVector<Object,Double>();
-	protected List<Room> ratesVec=null;
-	protected TriadVector<MOB,Room,Double> destinations=new TriadVector<MOB,Room,Double>();
-	protected PairVector<MOB,String> thingsToSay=new PairVector<MOB,String>();
-	protected double basePrice=0.0;
-	protected double perRoomPrice=0.0;
-	protected String talkerName="";
-	protected MOB fakeTalker=null;
-	protected Room startRoom=null;
-	protected boolean areaOnly=false;
-	protected boolean indoorOK=true;
-	protected String greeting="Need directions? Just name the place!";
-	protected String mountStr="";
-	protected int maxRange = 100;
-	
-	private final TrackingLibrary.TrackingFlags trackingFlags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
-	
-	protected TrackingLibrary.TrackingFlags getTrackingFlags()
+	@Override
+	public String ID()
 	{
-		return trackingFlags;
+		return "Concierge";
 	}
 
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ITEMS | Behavior.CAN_MOBS | Behavior.CAN_ROOMS | Behavior.CAN_EXITS | Behavior.CAN_AREAS;
+	}
+
+	protected PairVector<Object, Double>		rates		= new PairVector<Object, Double>();
+	protected List<Room>						ratesVec	= null;
+	protected PairVector<MOB, String>			thingsToSay	= new PairVector<MOB, String>();
+	
+	protected QuadVector<MOB, Room, Double, TrackingFlags>	destinations= new QuadVector<MOB, Room, Double, TrackingFlags>();
+	
+	protected static final String defaultGreeting = "Need directions? Just name the place and I'll name the price! Append words like noswim, noclimb, nofly, nolocks and nocrawl to narrow the focus.";
+	
+	protected double	basePrice		= 0.0;
+	protected double	perRoomPrice	= 0.0;
+	protected String	talkerName		= "";
+	protected MOB		fakeTalker		= null;
+	protected Room		startRoom		= null;
+	protected String	greeting		= defaultGreeting;
+	protected String	mountStr		= "";
+	protected int		maxRange		= 100;
+	
+	protected TrackingLibrary.TrackingFlags trackingFlags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+	protected TrackingLibrary.TrackingFlags roomRadiusFlags = CMLib.tracking().newFlags();
+	
 	@Override
 	public String accountForYourself()
 	{
@@ -126,11 +135,9 @@ public class Concierge extends StdBehavior
 	{
 		basePrice=0.0;
 		talkerName="";
-		indoorOK=true;
 		fakeTalker=null;
 		startRoom=null;
-		areaOnly=false;
-		greeting="Need directions? Just name the place!";
+		greeting=defaultGreeting;
 		mountStr="";
 		maxRange = 100;
 		perRoomPrice = 0.0;
@@ -138,6 +145,12 @@ public class Concierge extends StdBehavior
 		ratesVec=null;
 		destinations.clear();
 		thingsToSay.clear();
+	}
+	
+	protected void resetFlags()
+	{
+		trackingFlags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+		roomRadiusFlags = CMLib.tracking().newFlags();
 	}
 	
 	@Override
@@ -157,6 +170,7 @@ public class Concierge extends StdBehavior
 		double price=0;
 		Room R=null;
 		Area A=null;
+		resetFlags();
 		for(int v=0;v<V.size();v++)
 		{
 			s=V.get(v);
@@ -169,13 +183,51 @@ public class Concierge extends StdBehavior
 				s=s.substring(0,x).trim().toUpperCase();
 				if(s.equals("AREAONLY"))
 				{
-					areaOnly=CMath.s_bool(numStr);
+					roomRadiusFlags.add(TrackingFlag.AREAONLY);
+					continue;
+				}
+				else
+				if(s.equals("NOCLIMB"))
+				{
+					trackingFlags.add(TrackingFlag.NOCLIMB);
+					continue;
+				}
+				else
+				if(s.equals("NOWATER"))
+				{
+					trackingFlags.add(TrackingFlag.NOWATER);
 					continue;
 				}
 				else
 				if(s.equals("INDOOROK"))
 				{
-					indoorOK=CMath.s_bool(numStr);
+					trackingFlags.remove(TrackingFlag.OUTDOORONLY);
+					roomRadiusFlags.remove(TrackingFlag.OUTDOORONLY);
+					continue;
+				}
+				else
+				if(s.equals("NOAIR"))
+				{
+					trackingFlags.add(TrackingFlag.NOAIR);
+					continue;
+				}
+				else
+				if(s.equals("NOLOCKS"))
+				{
+					trackingFlags.add(TrackingFlag.UNLOCKEDONLY);
+					continue;
+				}
+				else
+				if(s.equals("NOHOMES"))
+				{
+					trackingFlags.add(TrackingFlag.NOHOMES);
+					continue;
+				}
+				else
+				if(s.equals("NOINDOOR"))
+				{
+					trackingFlags.add(TrackingFlag.OUTDOORONLY);
+					roomRadiusFlags.add(TrackingFlag.OUTDOORONLY);
 					continue;
 				}
 				else
@@ -236,7 +288,7 @@ public class Concierge extends StdBehavior
 			double price=basePrice;
 			if(this.perRoomPrice > 0.0)
 			{
-				List<Room> trail=CMLib.tracking().findBastardTheBestWay(centerRoom, destR, getTrackingFlags(), maxRange);
+				List<Room> trail=CMLib.tracking().findBastardTheBestWay(centerRoom, destR, trackingFlags, maxRange);
 				if(trail != null)
 					price = price + (perRoomPrice * trail.size());
 			}
@@ -245,21 +297,24 @@ public class Concierge extends StdBehavior
 		return rates.get(rateIndex).second.doubleValue();
 	}
 
-	protected final List<Room> getRoomsInRange(final Room centerRoom, final List<Room> roomsInRange)
+	protected final List<Room> getRoomsInRange(final Room centerRoom, final List<Room> roomsInRange, TrackingFlags roomRadiusFlags)
 	{
 		if(roomsInRange != null)
 			return roomsInRange;
-		TrackingLibrary.TrackingFlags flags;
-		if(areaOnly)
-			flags = CMLib.tracking().newFlags()
-					.plus(TrackingLibrary.TrackingFlag.AREAONLY);
-		else
-			flags = CMLib.tracking().newFlags();
-		return
-			CMLib.tracking().getRadiantRooms(centerRoom,flags,maxRange);
+		return CMLib.tracking().getRadiantRooms(centerRoom,roomRadiusFlags,maxRange);
 	}
 	
-	protected Room findDestination(final Environmental observer, final MOB mob, final Room centerRoom, final String where)
+	protected Room findNearestAreaRoom(Area A, List<Room> roomsInRange)
+	{
+		for(Room R : roomsInRange)
+		{
+			if(A.inMyMetroArea(R.getArea()))
+				return R;
+		}
+		return A.getRandomMetroRoom();
+	}
+	
+	protected Room findDestination(final Environmental observer, final MOB mob, final Room centerRoom, final String where, TrackingFlags roomRadiusFlags)
 	{
 		PairVector<String,Double> stringsToDo=null;
 		Room roomR=null;
@@ -268,12 +323,16 @@ public class Concierge extends StdBehavior
 		{
 			Area A=CMLib.map().findArea(where);
 			if(A!=null)
-				roomR=A.getRandomMetroRoom();
+			{
+				roomsInRange=getRoomsInRange(centerRoom,roomsInRange,roomRadiusFlags);
+				roomR=findNearestAreaRoom(A,roomsInRange);
+			}
 		}
 		else
 		if(rates.size()>0)
 		{
 			for(int r=rates.size()-1;r>=0;r--)
+			{
 				if(rates.get(r).first instanceof String)
 				{
 					final String place=(String)rates.get(r).first;
@@ -285,13 +344,14 @@ public class Concierge extends StdBehavior
 					}
 					rates.removeElementAt(r);
 				}
+			}
 			if((stringsToDo!=null)&&(observer!=null))
 			{
 				Room R=null;
 				String place=null;
 				for(int r=0;r<stringsToDo.size();r++)
 				{
-					roomsInRange=getRoomsInRange(centerRoom,roomsInRange);
+					roomsInRange=getRoomsInRange(centerRoom,roomsInRange,roomRadiusFlags);
 					place=stringsToDo.get(r).first;
 					R=(Room)CMLib.english().fetchEnvironmental(roomsInRange,place,false);
 					if(R!=null) 
@@ -304,11 +364,13 @@ public class Concierge extends StdBehavior
 			{
 				ratesVec=new ArrayList<Room>();
 				for(Pair<Object,Double> p : rates)
+				{
 					if(p.first instanceof Area)
 						ratesVec.add(((Area)p.first).getRandomMetroRoom());
 					else
 					if(p.first instanceof Room)
 						ratesVec.add((Room)p.first);
+				}
 			}
 			roomR=(Room)CMLib.english().fetchEnvironmental(ratesVec,where,true);
 			if(roomR==null)
@@ -317,12 +379,15 @@ public class Concierge extends StdBehavior
 			{
 				Area A=CMLib.map().findArea(where);
 				if(A!=null)
-					roomR=A.getRandomMetroRoom();
+				{
+					roomsInRange=getRoomsInRange(centerRoom,roomsInRange,roomRadiusFlags);
+					roomR=findNearestAreaRoom(A,roomsInRange);
+				}
 			}
 		}
 		if(roomR==null)
 		{
-			roomsInRange=getRoomsInRange(centerRoom,roomsInRange);
+			roomsInRange=getRoomsInRange(centerRoom,roomsInRange,roomRadiusFlags);
 			roomR=CMLib.map().findFirstRoom(new IteratorEnumeration<Room>(roomsInRange.iterator()), mob, where, false, 5);
 		}
 		return roomR;
@@ -426,7 +491,7 @@ public class Concierge extends StdBehavior
 			final int destIndex=destinations.indexOfFirst(source);
 			if(destIndex>=0)
 			{
-				Triad<MOB,Room,Double> destT=destinations.get(destIndex);
+				Quad<MOB,Room,Double,TrackingFlags> destT=destinations.get(destIndex);
 				final Room destR=destT.second;
 				final Double owed=Double.valueOf(destT.third.doubleValue() - ((Coins)possibleCoins).getTotalValue());
 				if(owed.doubleValue()>0.0)
@@ -459,7 +524,7 @@ public class Concierge extends StdBehavior
 						CMLib.commands().postSay(conciergeM,source,L("Gee, thanks. :)"),true,false);
 				}
 				((Coins)possibleCoins).destroy();
-				this.giveMerchandise(source, destR, conciergeM, source.location());
+				giveMerchandise(source, destR, conciergeM, source.location(), destT.fourth);
 				destinations.removeElementFirst(source);
 			}
 			else
@@ -473,12 +538,12 @@ public class Concierge extends StdBehavior
 		return (destination instanceof Room)?destination.displayText():destination.name();
 	}
 	
-	protected void giveMerchandise(MOB whoM, Room destination, Environmental observer, Room room)
+	protected void giveMerchandise(MOB whoM, Room destination, Environmental observer, Room room, TrackingFlags trackingFlags)
 	{
 		MOB fromM=getTalker(observer,room);
 		String name=CMLib.map().getExtendedRoomID(destination);
-		final Vector<Room> set=new Vector<Room>();
-		CMLib.tracking().getRadiantRooms(fromM.location(),set,getTrackingFlags(),null,maxRange,null);
+		final List<Room> set=new ArrayList<Room>();
+		CMLib.tracking().getRadiantRooms(fromM.location(),set,trackingFlags,null,maxRange,null);
 		String trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,false,false,maxRange,null,1);
 		thingsToSay.addElement(whoM,L("The way to @x1 from here is: @x2",getDestinationName(destination),trailStr));
 	}
@@ -528,24 +593,59 @@ public class Concierge extends StdBehavior
 				&&((!(observer instanceof Rideable))||(msg.source().riding()==observer))
 				&&(msg.sourceMessage()!=null))
 				{
-					final String say=CMStrings.getSayFromMessage(msg.sourceMessage());
+					String say=CMStrings.getSayFromMessage(msg.sourceMessage());
 					if((say!=null)&&(say.length()>0))
 					{
-						final Room roomR=findDestination(observer,msg.source(),room,say);
+						List<String> parsedSay = CMParms.parse(say);
+						boolean didLoop=true;
+						TrackingFlags myRoomRadiusFlags=CMLib.tracking().newFlags();
+						myRoomRadiusFlags.addAll(roomRadiusFlags);
+						boolean didAnything=false;
+						while(didLoop && (parsedSay.size()>0))
+						{
+							didLoop=false;
+							String s=parsedSay.get(parsedSay.size()-1);
+							if(s.equalsIgnoreCase("noclimb"))
+								didLoop=myRoomRadiusFlags.add(TrackingFlag.NOCLIMB);
+							else
+							if(s.equalsIgnoreCase("nodoors"))
+								didLoop=myRoomRadiusFlags.add(TrackingFlag.OPENONLY);
+							else
+							if(s.equalsIgnoreCase("noswim"))
+								didLoop=myRoomRadiusFlags.add(TrackingFlag.NOWATER);
+							else
+							if(s.equalsIgnoreCase("nofly"))
+								didLoop=myRoomRadiusFlags.add(TrackingFlag.NOAIR);
+							else
+							if(s.equalsIgnoreCase("nolocks"))
+								didLoop=myRoomRadiusFlags.add(TrackingFlag.UNLOCKEDONLY);
+							else
+							if(s.equalsIgnoreCase("nocrawl"))
+								didLoop=myRoomRadiusFlags.add(TrackingFlag.NOCRAWL);
+							if(didLoop)
+								parsedSay.remove(parsedSay.size()-1);
+							didAnything = didAnything || didLoop;
+						}
+						if(didAnything)
+							say=CMParms.combine(parsedSay);
+						final Room roomR=findDestination(observer,msg.source(),room,say,myRoomRadiusFlags);
 						if(roomR==null)
+						{
 							synchronized(thingsToSay)
 							{
 								thingsToSay.addElement(msg.source(),L("I'm sorry, I don't know where '@x1' is.",say));
 								return;
 							}
+						}
 						final double rate=getPrice(room,roomR);
 						final Double owed=Double.valueOf(rate);
+						trackingFlags.addAll(myRoomRadiusFlags);
 						destinations.removeElementFirst(msg.source());
 						if(owed.doubleValue()<=0.0)
-							giveMerchandise(msg.source(), roomR, observer, room);
+							giveMerchandise(msg.source(), roomR, observer, room, trackingFlags);
 						else
 						{
-							destinations.addElement(msg.source(),roomR,owed);
+							destinations.addElement(msg.source(),roomR,owed, trackingFlags);
 							final String moneyName=CMLib.beanCounter().nameCurrencyLong(getTalker(observer,room),rate);
 							thingsToSay.addElement(msg.source(),this.getGiveMoneyMessage(observer,roomR,moneyName));
 						}

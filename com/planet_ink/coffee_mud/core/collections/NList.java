@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
 
-@SuppressWarnings("unchecked")
 public interface NList<T>
 {
 	public void clear();

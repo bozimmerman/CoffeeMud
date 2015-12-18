@@ -91,11 +91,43 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		private static final long serialVersionUID = -6914706649617909073L;
 		private int hashCode=(int)serialVersionUID;
 		@Override
+		public boolean add(TrackingFlag flag)
+		{
+			if(super.add(flag))
+			{
+				hashCode^=flag.hashCode();
+				return true;
+			}
+			return false;
+		}
+		@Override
+		public boolean addAll(Collection<? extends TrackingFlag> flags)
+		{
+			if(super.addAll(flags))
+			{
+				for(TrackingFlag f : flags)
+					hashCode^=f.hashCode();
+				return true;
+			}
+			return false;
+		}
+		@Override
 		public TrackingFlags plus(TrackingFlag flag)
 		{
 			add(flag);
-			hashCode^=flag.hashCode();
 			return this;
+		}
+		@Override
+		public boolean remove(Object flag)
+		{
+			if(remove(flag))
+			{
+				hashCode=(int)serialVersionUID;
+				for(TrackingFlag f : this)
+					hashCode^=f.hashCode();
+				return true;
+			}
+			return false;
 		}
 		@Override
 		public int hashCode()
@@ -1429,6 +1461,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	{
 		Room R2=CMLib.map().getRoom(where);
 		if(R2==null)
+		{
 			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				final Area A=a.nextElement();
@@ -1462,6 +1495,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					break;
 				}
 			}
+		}
 		if(R2==null)
 			return "Unable to determine '"+where+"'.";
 		final TrackingLibrary.TrackingFlags flags = new DefaultTrackingFlags()

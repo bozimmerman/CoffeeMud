@@ -771,6 +771,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean isCrawlable(Physical P)
+	{
+		if((P instanceof Room)||(P instanceof Area)||(P instanceof Exit))
+			return (P.phyStats().sensesMask() & PhyStats.SENSE_ROOMCRUNCHEDIN) == PhyStats.SENSE_ROOMCRUNCHEDIN;
+		return false;
+	}
+
+	@Override
 	public boolean isSwimming(Physical P)
 	{
 		return (P != null) && ((P.phyStats().disposition() & PhyStats.IS_SWIMMING) == PhyStats.IS_SWIMMING);

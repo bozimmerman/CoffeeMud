@@ -44,6 +44,7 @@
   43. Programmer's Guide updated with information about the Database Tables.
   44. New Archon Skill: Accuse -- for creating on-the-fly criminals out of anyone anywhere.
   45. Leiges no longer have to be online to gain experience from vassals.
+  46. TaxiBehavior/Concierge now has more features!  See their help entries.
 # Build 5.8.5 Released 12/23/2014
    1. Sailing ship creation and distribution now actually works.
    2. Sailing Ships are now only as fast as their item's "ability" score. (1 means 1 move per tick, etc)

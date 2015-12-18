@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -34,22 +36,24 @@ import java.util.*;
 */
 public class TaxiBehavior extends Concierge
 {
-	@Override public String ID(){return "TaxiBehavior";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
-	protected final TrackingLibrary.TrackingFlags taxiTrackingFlags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
-	
-	protected volatile Ability isEnRouter = null;
-	protected Room returnToRoom = null;
-	protected Room destRoom = null;
-	protected MOB riderM = null;
-	protected List<Room> trailTo= null;
-	protected List<Rider> defaultRiders = null;
-	
 	@Override
-	protected TrackingLibrary.TrackingFlags getTrackingFlags()
+	public String ID()
 	{
-		return taxiTrackingFlags;
+		return "TaxiBehavior";
 	}
+
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ITEMS | Behavior.CAN_MOBS;
+	}
+
+	protected volatile Ability	isEnRouter		= null;
+	protected Room				returnToRoom	= null;
+	protected Room				destRoom		= null;
+	protected MOB				riderM			= null;
+	protected List<Room>		trailTo			= null;
+	protected List<Rider>		defaultRiders	= null;
 
 	@Override
 	public String accountForYourself()
@@ -70,17 +74,12 @@ public class TaxiBehavior extends Concierge
 	}
 	
 	@Override
-	protected void giveMerchandise(MOB whoM, Room destR, Environmental observer, Room room)
+	protected void giveMerchandise(MOB whoM, Room destR, Environmental observer, Room room, TrackingFlags trackingFlags)
 	{
 		MOB fromM=getTalker(observer,room);
-		TrackingLibrary.TrackingFlags taxiTrackingFlags = CMLib.tracking().newFlags()
-			.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-			.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-		if(areaOnly)
-			taxiTrackingFlags=taxiTrackingFlags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 		final ArrayList<Room> set=new ArrayList<Room>();
-		CMLib.tracking().getRadiantRooms(fromM.location(),set,getTrackingFlags(),null,maxRange,null);
-		trailTo=CMLib.tracking().findBastardTheBestWay(fromM.location(), destR, taxiTrackingFlags, maxRange);
+		CMLib.tracking().getRadiantRooms(fromM.location(),set,roomRadiusFlags,null,maxRange,null);
+		trailTo=CMLib.tracking().findBastardTheBestWay(fromM.location(), destR, trackingFlags, maxRange);
 		thingsToSay.addElement(whoM,L("OK, we're now on our way to @x1.",getDestinationName(destR)));
 		this.returnToRoom=fromM.location();
 		this.isEnRouter=CMClass.getAbility("Prop_Adjuster");
@@ -187,7 +186,7 @@ public class TaxiBehavior extends Concierge
 					final Exit nextE=locR.getExitInDir(nextDirection);
 					if((nextR != null) && (nextE != null) && (nextE.isOpen()))
 					{
-						if((!indoorOK)&&((nextR.domainType()&Room.INDOORS)!=0))
+						if((trackingFlags.contains(TrackingFlag.OUTDOORONLY))&&((nextR.domainType()&Room.INDOORS)!=0))
 							endTheRide(observer);
 						else
 						if(observer instanceof MOB)
@@ -216,7 +215,6 @@ public class TaxiBehavior extends Concierge
 	protected void resetDefaults()
 	{
 		super.resetDefaults();
-		indoorOK=false;
 		greeting="Need a lift? If so, come aboard.";
 		mountStr=L("Where are you headed?");
 		isEnRouter = null;
@@ -237,8 +235,21 @@ public class TaxiBehavior extends Concierge
 	}
 	
 	@Override
+	protected void resetFlags()
+	{
+		trackingFlags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+		trackingFlags.plus(TrackingFlag.OPENONLY);
+		trackingFlags.plus(TrackingFlag.OUTDOORONLY);
+		roomRadiusFlags = CMLib.tracking().newFlags();
+		roomRadiusFlags.plus(TrackingFlag.OPENONLY);
+		trackingFlags.plus(TrackingFlag.OUTDOORONLY);
+	}
+	
+	@Override
 	public void setParms(String newParm)
 	{
 		super.setParms(newParm);
+		if(roomRadiusFlags.contains(TrackingFlag.AREAONLY))
+			trackingFlags.add(TrackingFlag.AREAONLY);
 	}
 }
