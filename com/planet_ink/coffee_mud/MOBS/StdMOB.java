@@ -1455,7 +1455,7 @@ public class StdMOB implements MOB
 		for (int f = 0; f < numFollowers(); f++)
 		{
 			final MOB M = fetchFollower(f);
-			if ((M != null) && (M.isInCombat()))
+			if ((M != null) && (M.isInCombat()) && (includePlayerFollowers || M.isMonster()))
 				M.makePeace(true);
 		}
 		if (myVictim != null)

@@ -39,68 +39,211 @@ public class StdRace implements Race
 {
 	@Override public String	 ID(){	return "StdRace"; }
 
-	protected static final int[] breatheAnythingArray = new int[0];
-	protected static final int[] breatheAirArray = new int[]{ RawMaterial.RESOURCE_AIR };
-	protected static final int[] breatheWaterArray = new int[]{ RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
-	protected static final int[] breatheAirWaterArray = new int[]{ RawMaterial.RESOURCE_AIR, RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
+	protected static final int[] breatheAnythingArray	= new int[0];
+	protected static final int[] breatheAirArray		= new int[] { RawMaterial.RESOURCE_AIR };
+	protected static final int[] breatheWaterArray		= new int[] { RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
+	protected static final int[] breatheAirWaterArray	= new int[] { RawMaterial.RESOURCE_AIR, RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
+	protected static final List empty					= new ReadOnlyVector(1);
+	//  												   an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[] 	parts					= {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	protected static final SearchIDList emptyIDs = new CMUniqSortSVec(1);
 
-	private final int[]	   agingChart={0,1,3,15,35,53,70,74,78};
-	protected String	   baseStatChgDesc = null;
-	protected String	   sensesChgDesc = null;
-	protected String	   dispChgDesc = null;
-	protected String	   abilitiesDesc = null;
-	protected String	   languagesDesc = null;
-	protected Weapon	   naturalWeapon=null;
-	protected boolean	   mappedCulturalAbilities=false;
-	protected List<Item>   outfitChoices=null;
-	protected List<Weapon> naturalWeaponChoices=null;
-	protected Map<Integer,SearchIDList<Ability>>
-						   racialAbilityMap=null;
-	protected Map<Integer,SearchIDList<Ability>>
-						   racialEffectMap=null;
-
-	@Override public String   	name(){ return "StdRace"; }
-	@Override public int  		shortestMale(){return 24;}
-	@Override public int  		shortestFemale(){return 24;}
-	@Override public int  		heightVariance(){return 5;}
-	@Override public int  		lightestWeight(){return 60;}
-	@Override public int  		weightVariance(){return 10;}
-	@Override public long 		forbiddenWornBits(){return 0;}
-	@Override public String   	racialCategory(){return "Unknown";}
-	@Override public boolean  	isGeneric(){return false;}
-	@Override public boolean  	classless(){return false;}
-	@Override public boolean  	leveless(){return false;}
-	@Override public boolean  	expless(){return false;}
-	@Override public int[]		bodyMask(){return parts;}
-	@Override public int[]		getAgingChart(){return agingChart;}
-	@Override public int[]		getBreathables() { return breatheAirArray; }
-	@Override public boolean useRideClass() { return false; }
-
+	private final int[]		agingChart				= { 0, 1, 3, 15, 35, 53, 70, 74, 78 };
+	protected String		baseStatChgDesc			= null;
+	protected String		sensesChgDesc			= null;
+	protected String		dispChgDesc				= null;
+	protected String		abilitiesDesc			= null;
+	protected String		languagesDesc			= null;
+	protected Weapon		naturalWeapon			= null;
+	protected boolean		mappedCulturalAbilities	= false;
+	protected List<Item>	outfitChoices			= null;
+	protected List<Weapon>	naturalWeaponChoices	= null;
 	
-	protected int   	practicesAtFirstLevel(){return 0;}
-	protected int   	trainsAtFirstLevel(){return 0;}
-	protected String[]  racialEffectNames(){return null;}
-	protected int[] 	racialEffectLevels(){return null;}
-	protected String[]  racialEffectParms(){return null;}
-	protected String[]  racialAbilityNames(){return null;}
-	protected int[] 	racialAbilityLevels(){return null;}
-	protected int[] 	racialAbilityProficiencies(){return null;}
-	protected boolean[] racialAbilityQuals(){return null;}
-	protected String[]  culturalAbilityNames(){return null;}
-	protected int[] 	culturalAbilityProficiencies(){return null;}
-	protected boolean   uncharmable(){return false;}
-	protected boolean   destroyBodyAfterUse(){return false;}
+	protected Map<Integer,SearchIDList<Ability>> racialAbilityMap	= null;
+	protected Map<Integer,SearchIDList<Ability>> racialEffectMap	= null;
 
-	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	@Override
+	public String name()
+	{
+		return "StdRace";
+	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
-	@Override public CMObject newInstance(){return this;}
-	@Override public void 	initializeClass(){}
-	protected static final SearchIDList emptyIDs=new CMUniqSortSVec(1);
-	protected static final List empty=new ReadOnlyVector(1);
+	@Override
+	public int shortestMale()
+	{
+		return 24;
+	}
 
-	public boolean fertile(){return true;}
+	@Override
+	public int shortestFemale()
+	{
+		return 24;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 5;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 60;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 10;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Unknown";
+	}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean classless()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean leveless()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean expless()
+	{
+		return false;
+	}
+
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	@Override
+	public int[] getBreathables()
+	{
+		return breatheAirArray;
+	}
+
+	@Override
+	public boolean useRideClass()
+	{
+		return false;
+	}
+
+	protected int practicesAtFirstLevel()
+	{
+		return 0;
+	}
+
+	protected int trainsAtFirstLevel()
+	{
+		return 0;
+	}
+
+	protected String[] racialEffectNames()
+	{
+		return null;
+	}
+
+	protected int[] racialEffectLevels()
+	{
+		return null;
+	}
+
+	protected String[] racialEffectParms()
+	{
+		return null;
+	}
+
+	protected String[] racialAbilityNames()
+	{
+		return null;
+	}
+
+	protected int[] racialAbilityLevels()
+	{
+		return null;
+	}
+
+	protected int[] racialAbilityProficiencies()
+	{
+		return null;
+	}
+
+	protected boolean[] racialAbilityQuals()
+	{
+		return null;
+	}
+
+	protected String[] culturalAbilityNames()
+	{
+		return null;
+	}
+
+	protected int[] culturalAbilityProficiencies()
+	{
+		return null;
+	}
+
+	protected boolean uncharmable()
+	{
+		return false;
+	}
+
+	protected boolean destroyBodyAfterUse()
+	{
+		return false;
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		return this;
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+	
+	public boolean fertile()
+	{
+		return true;
+	}
 
 	@Override
 	public CMObject copyOf()
@@ -109,7 +252,6 @@ public class StdRace implements Race
 		{
 			final StdRace E=(StdRace)this.clone();
 			return E;
-
 		}
 		catch(final CloneNotSupportedException e)
 		{
@@ -117,7 +259,10 @@ public class StdRace implements Race
 		}
 	}
 
-	public Race healthBuddy(){return this;}
+	public Race healthBuddy()
+	{
+		return this;
+	}
 
 	@Override
 	public boolean canBreedWith(Race R)
@@ -136,55 +281,92 @@ public class StdRace implements Race
 	{
 
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats charStats)
 	{
 	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{
 		switch(age)
 		{
 			case Race.AGE_INFANT:
+			{
 				switch(gender)
 				{
-				case 'M': case 'm': return "boy infant "+name().toLowerCase();
-				case 'F': case 'f': return "girl infant "+name().toLowerCase();
-				default: return "baby "+name().toLowerCase();
+				case 'M':
+				case 'm':
+					return L("boy infant @x1", name().toLowerCase());
+				case 'F':
+				case 'f':
+					return L("girl infant @x1", name().toLowerCase());
+				default:
+					return L("baby @x1", name().toLowerCase());
 				}
+			}
 			case Race.AGE_TODDLER:
+			{
 				switch(gender)
 				{
-				case 'M': case 'm': return "baby boy "+name().toLowerCase();
-				case 'F': case 'f': return "baby girl "+name().toLowerCase();
-				default: return "baby "+name().toLowerCase();
+				case 'M':
+				case 'm':
+					return L("baby boy @x1", name().toLowerCase());
+				case 'F':
+				case 'f':
+					return L("baby girl @x1", name().toLowerCase());
+				default:
+					return L("baby @x1", name().toLowerCase());
 				}
+			}
 			case Race.AGE_CHILD:
+			{
 				switch(gender)
 				{
-				case 'M': case 'm': return "little boy "+name().toLowerCase();
-				case 'F': case 'f': return "little girl "+name().toLowerCase();
-				default: return "young "+name().toLowerCase();
+				case 'M':
+				case 'm':
+					return L("little boy @x1", name().toLowerCase());
+				case 'F':
+				case 'f':
+					return L("little girl @x1", name().toLowerCase());
+				default:
+					return L("young @x1", name().toLowerCase());
 				}
+			}
 			case Race.AGE_YOUNGADULT:
 			case Race.AGE_MATURE:
 			case Race.AGE_MIDDLEAGED:
 			default:
+			{
 				switch(gender)
 				{
-				case 'M': case 'm': return "male "+name().toLowerCase();
-				case 'F': case 'f': return "female "+name().toLowerCase();
-				default: return name().toLowerCase();
+				case 'M':
+				case 'm':
+					return L("male @x1", name().toLowerCase());
+				case 'F':
+				case 'f':
+					return L("female @x1", name().toLowerCase());
+				default:
+					return name().toLowerCase();
 				}
+			}
 			case Race.AGE_OLD:
 			case Race.AGE_VENERABLE:
 			case Race.AGE_ANCIENT:
+			{
 				switch(gender)
 				{
-				case 'M': case 'm': return "old male "+name().toLowerCase();
-				case 'F': case 'f': return "old female "+name().toLowerCase();
-				default: return "old "+name().toLowerCase();
+				case 'M':
+				case 'm':
+					return L("old male @x1",name().toLowerCase());
+				case 'F':
+				case 'f':
+					return L("old female @x1",name().toLowerCase());
+				default:
+					return L("old @x1",name().toLowerCase());
 				}
+			}
 		}
 	}
 
@@ -364,6 +546,7 @@ public class StdRace implements Race
 			}
 		}
 	}
+
 	@Override
 	public String arriveStr()
 	{
@@ -374,11 +557,29 @@ public class StdRace implements Race
 	{
 		return "leaves";
 	}
-	@Override public void level(MOB mob, List<String> gainedAbilityIDs){}
-	@Override public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
 
-	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
-	@Override public boolean tick(Tickable myChar, int tickID){return true;}
+	@Override
+	public void level(MOB mob, List<String> gainedAbilityIDs)
+	{
+	}
+
+	@Override
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
+	{
+		return amount;
+	}
+
+	@Override
+	public int getTickStatus()
+	{
+		return Tickable.STATUS_NOT;
+	}
+
+	@Override
+	public boolean tick(Tickable myChar, int tickID)
+	{
+		return true;
+	}
 	
 	public String L(final String str, final String ... xs)
 	{
@@ -449,6 +650,7 @@ public class StdRace implements Race
 			}
 		}
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -457,7 +659,11 @@ public class StdRace implements Race
 		return naturalWeapon;
 	}
 
-	@Override public List<Item> outfit(MOB myChar){return outfitChoices;}
+	@Override
+	public List<Item> outfit(MOB myChar)
+	{
+		return outfitChoices;
+	}
 
 	@Override
 	public String healthText(MOB viewer, MOB mob)
@@ -476,39 +682,39 @@ public class StdRace implements Race
 				if(naturalWeapon==null)
 					continue;
 				naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
-				switch(i)
+				switch (i)
 				{
-					case 1:
-					case 2:
-					case 3:
+				case 1:
+				case 2:
+				case 3:
 					naturalWeapon.setName(L("a quick punch"));
 					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
-					case 4:
+				case 4:
 					naturalWeapon.setName(L("fingernails and teeth"));
 					naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
 					break;
-					case 5:
+				case 5:
 					naturalWeapon.setName(L("an elbow"));
 					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
-					case 6:
+				case 6:
 					naturalWeapon.setName(L("a backhand"));
 					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
-					case 7:
+				case 7:
 					naturalWeapon.setName(L("a strong jab"));
 					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
-					case 8:
+				case 8:
 					naturalWeapon.setName(L("a stinging punch"));
 					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
-					case 9:
+				case 9:
 					naturalWeapon.setName(L("a knee"));
 					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
-					case 10:
+				case 10:
 					naturalWeapon.setName(L("a head butt"));
 					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
@@ -552,7 +758,11 @@ public class StdRace implements Race
 			stats.setHeight(shortestFemale()+heightModifier);
 	}
 
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 
 	protected RawMaterial makeResource(String name, int type)
 	{
@@ -689,6 +899,7 @@ public class StdRace implements Race
 		if(destroyBodyAfterUse())
 		{
 			for(Item I : myResources())
+			{
 				if(I!=null)
 				{
 					I=(Item)I.copyOf();
@@ -696,6 +907,7 @@ public class StdRace implements Race
 					if(room!=null)
 						room.addItem(I,ItemPossessor.Expire.Monster_EQ);
 				}
+			}
 		}
 		else
 		if((room != null)&&(room.isContent(bodyI)))
@@ -741,8 +953,16 @@ public class StdRace implements Race
 			finalFinalV = new ChameleonList<Ability>(finalV,
 			new ChameleonList.Signaler<Ability>(myList)
 			{
-				@Override public boolean isDeprecated() { return false;}
-				@Override public void rebuild(final ChameleonList<Ability> me){}
+				@Override
+				public boolean isDeprecated()
+				{
+					return false;
+				}
+
+				@Override
+				public void rebuild(final ChameleonList<Ability> me)
+				{
+				}
 			});
 		}
 		else
@@ -759,6 +979,7 @@ public class StdRace implements Race
 						return true;
 					return false;
 				}
+
 				@Override
 				public void rebuild(final ChameleonList<Ability> me)
 				{
@@ -888,6 +1109,7 @@ public class StdRace implements Race
 		affectCharStats(fakeMOB,S2);
 		affectCharStats(fakeMOB,S3);
 		for(final int i: CharStats.CODES.ALLCODES())
+		{
 			if(i!=CharStats.STAT_AGE)
 			{
 				if(CharStats.CODES.isBASE(i))
@@ -907,6 +1129,7 @@ public class StdRace implements Race
 				else
 					ADJSTAT.setStat(i,S1.getStat(i));
 			}
+		}
 		GR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
 		GR.setStat("CSTATS",CMLib.coffeeMaker().getCharStatsStr(SETSTAT));
 
@@ -1045,6 +1268,7 @@ public class StdRace implements Race
 		long finalWear=0;
 		boolean toggle=false;
 		for(final long wornCode : Wearable.CODES.ALL())
+		{
 			if(wornCode != Wearable.IN_INVENTORY)
 			{
 				if((!CMath.bset(race1worn,wornCode))&&(!CMath.bset(race2worn,wornCode)))
@@ -1062,6 +1286,7 @@ public class StdRace implements Race
 					toggle=!toggle;
 				}
 			}
+		}
 
 		GR.setStat("WEAR",""+finalWear);
 		Weapon W=otherRace.myNaturalWeapon();
@@ -1077,6 +1302,7 @@ public class StdRace implements Race
 		GR.setStat("CANRIDE",""+otherRace.getStat("CANRIDE"));
 		GR.setStat("AGING",CMParms.toListString(aging));
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
+		{
 			if((race1.bodyMask()[i]>0)&&(race2.bodyMask()[i]>0))
 				GR.bodyMask()[i]=((race1.bodyMask()[i]+race2.bodyMask()[i])/2);
 			else
@@ -1084,6 +1310,7 @@ public class StdRace implements Race
 				GR.bodyMask()[i]=race2.bodyMask()[i];
 			else
 				GR.bodyMask()[i]=race1.bodyMask()[i];
+		}
 
 		final PhyStats RS1=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS1.setAllValues(0);
@@ -1335,18 +1562,21 @@ public class StdRace implements Race
 		makeStatChgDesc();
 		return baseStatChgDesc;
 	}
+
 	@Override
 	public String getSensesChgDesc()
 	{
 		makeStatChgDesc();
 		return sensesChgDesc;
 	}
+
 	@Override
 	public String getDispositionChgDesc()
 	{
 		makeStatChgDesc();
 		return dispChgDesc;
 	}
+
 	@Override
 	public String getTrainAdjDesc()
 	{
@@ -1356,6 +1586,7 @@ public class StdRace implements Race
 			return "trains"+trainsAtFirstLevel();
 		return "";
 	}
+
 	@Override
 	public String getPracAdjDesc()
 	{
@@ -1365,20 +1596,31 @@ public class StdRace implements Race
 			return "practices"+practicesAtFirstLevel();
 		return "";
 	}
+
 	@Override
 	public String getAbilitiesDesc()
 	{
 		makeStatChgDesc();
 		return abilitiesDesc;
 	}
+
 	@Override
 	public String getLanguagesDesc()
 	{
 		makeStatChgDesc();
 		return languagesDesc;
 	}
-	@Override public String racialParms(){ return "";}
-	@Override public void setRacialParms(String parms){}
+
+	@Override
+	public String racialParms()
+	{
+		return "";
+	}
+
+	@Override
+	public void setRacialParms(String parms)
+	{
+	}
 
 	protected void clrStatChgDesc()
 	{
@@ -1388,6 +1630,7 @@ public class StdRace implements Race
 		abilitiesDesc = null;
 		languagesDesc = null;
 	}
+
 	protected void makeStatChgDesc()
 	{
 		if((baseStatChgDesc == null)
@@ -1466,33 +1709,58 @@ public class StdRace implements Race
 
 
 	protected static String[] CODES={"CLASS","PARMS"};
-	@Override public int getSaveStatIndex(){return getStatCodes().length;}
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return getStatCodes().length;
+	}
+
 	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return ""+racialParms();
+		case 0:
+			return ID();
+		case 1:
+			return "" + racialParms();
 		}
 		return "";
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return;
-		case 1: setRacialParms(val); break;
+		case 0:
+			return;
+		case 1:
+			setRacialParms(val);
+			break;
 		}
 	}
-	@Override public String[] getStatCodes(){return CODES;}
-	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	
+	@Override
+	public String[] getStatCodes()
+	{
+		return CODES;
+	}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
+	}
+
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
 	public boolean sameAs(Race E)
@@ -1500,8 +1768,10 @@ public class StdRace implements Race
 		if(!(E instanceof StdRace))
 			return false;
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 				return false;
+		}
 		return true;
 	}
 }

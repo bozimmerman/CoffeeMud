@@ -51,7 +51,7 @@ public class Ogre extends StdMOB
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8);
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,22);
-		baseCharStats().setMyRace(CMClass.getRace("Giant"));
+		baseCharStats().setMyRace(CMClass.getRace("Ogre"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		basePhyStats().setAbility(0);
