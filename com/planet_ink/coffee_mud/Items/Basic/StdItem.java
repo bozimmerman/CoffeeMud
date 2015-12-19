@@ -37,7 +37,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdItem implements Item
 {
-	@Override public String ID(){	return "StdItem";}
+	@Override
+	public String ID()
+	{
+		return "StdItem";
+	}
 
 	protected String		name="an ordinary item";
 	protected String		displayText=L("a nondescript item sits here doing nothing.");
@@ -79,12 +83,38 @@ public class StdItem implements Item
 		basePhyStats().setArmor(0);
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
-	protected boolean abilityImbuesMagic(){return true;}
-	//protected void finalize() { CMClass.unbumpCounter(this,CMClass.CMObjectType.ITEM); }//removed for mem & perf
-	@Override public void initializeClass(){}
-	@Override public boolean isGeneric(){return false;}
-	@Override public String Name(){ return name;}
-	@Override public void setName(String newName){name=newName;}
+	
+	protected boolean abilityImbuesMagic()
+	{
+		return true;
+	}
+
+	// protected void finalize() {
+	// CMClass.unbumpCounter(this,CMClass.CMObjectType.ITEM); }//removed for mem
+	// & perf
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return false;
+	}
+
+	@Override
+	public String Name()
+	{
+		return name;
+	}
+
+	@Override
+	public void setName(String newName)
+	{
+		name = newName;
+	}
+
 	@Override
 	public String name()
 	{
@@ -92,11 +122,36 @@ public class StdItem implements Item
 			return phyStats().newName();
 		return Name();
 	}
-	@Override public String displayText(MOB viewerMob) { return displayText(); }
-	@Override public String name(MOB viewerMob) { return name(); }
-	@Override public void setDatabaseID(String id){databaseID=id;}
-	@Override public boolean canSaveDatabaseID(){ return true;}
-	@Override public String databaseID(){return databaseID;}
+
+	@Override
+	public String displayText(MOB viewerMob)
+	{
+		return displayText();
+	}
+
+	@Override
+	public String name(MOB viewerMob)
+	{
+		return name();
+	}
+
+	@Override
+	public void setDatabaseID(String id)
+	{
+		databaseID = id;
+	}
+
+	@Override
+	public boolean canSaveDatabaseID()
+	{
+		return true;
+	}
+
+	@Override
+	public String databaseID()
+	{
+		return databaseID;
+	}
 
 	@Override
 	public String image()
@@ -336,8 +391,10 @@ public class StdItem implements Item
 	public boolean wearIfPossible(MOB mob)
 	{
 		for(final long code : Wearable.CODES.ALL_ORDERED())
+		{
 			if((code>0) && wearIfPossible(mob,code))
 				return true;
+		}
 		return false;
 	}
 
@@ -408,6 +465,7 @@ public class StdItem implements Item
 		if(!wornLogicalAnd)
 		{
 			for(final long wornCode : codes.all())
+			{
 				if(wornCode != Wearable.IN_INVENTORY)
 				{
 					if(fitsOn(wornCode))
@@ -417,15 +475,18 @@ public class StdItem implements Item
 							return 0;
 					}
 				}
+			}
 			return couldHaveBeenWornAt;
 		}
 		for(final long wornCode : codes.all())
+		{
 			if(wornCode != Wearable.IN_INVENTORY)
 			{
 				if((fitsOn(wornCode))
 				&&(mob.freeWearPositions(wornCode,layer,layerAtt)==0))
 					return wornCode;
 			}
+		}
 		return 0;
 	}
 
@@ -484,10 +545,29 @@ public class StdItem implements Item
 		baseGoldValue=newValue;
 	}
 
-	@Override public String readableText(){return miscText;}
-	@Override public void setReadableText(String text){miscText=text;}
-	@Override public boolean isReadable(){ return CMLib.flags().isReadable(this);}
-	@Override public void setReadable(boolean truefalse){ CMLib.flags().setReadable(this, truefalse);}
+	@Override
+	public String readableText()
+	{
+		return miscText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		miscText = text;
+	}
+
+	@Override
+	public boolean isReadable()
+	{
+		return CMLib.flags().isReadable(this);
+	}
+
+	@Override
+	public void setReadable(boolean truefalse)
+	{
+		CMLib.flags().setReadable(this, truefalse);
+	}
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
@@ -519,16 +599,20 @@ public class StdItem implements Item
 		}
 		final List<Ability> affects=this.affects;
 		if((affects!=null)&&(!affects.isEmpty()))
-		try
 		{
-			for(int a=0;a<affects.size();a++)
+			try
 			{
-				final Ability A=affects.get(a);
-				if((A!=null)&&(A.bubbleAffect()))
-					A.affectPhyStats(affected,affectableStats);
+				for(int a=0;a<affects.size();a++)
+				{
+					final Ability A=affects.get(a);
+					if((A!=null)&&(A.bubbleAffect()))
+						A.affectPhyStats(affected,affectableStats);
+				}
+			}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -536,16 +620,20 @@ public class StdItem implements Item
 	{
 		final List<Ability> affects=this.affects;
 		if((affects!=null)&&(!affects.isEmpty()))
-		try
 		{
-			for(int a=0;a<affects.size();a++)
+			try
 			{
-				final Ability A=affects.get(a);
-				if((A!=null)&&(A.bubbleAffect()))
-					A.affectCharStats(affectedMob,affectableStats);
+				for(int a=0;a<affects.size();a++)
+				{
+					final Ability A=affects.get(a);
+					if((A!=null)&&(A.bubbleAffect()))
+						A.affectCharStats(affectedMob,affectableStats);
+				}
+			}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -553,16 +641,20 @@ public class StdItem implements Item
 	{
 		final List<Ability> affects=this.affects;
 		if((affects!=null)&&(!affects.isEmpty()))
-		try
 		{
-			for(int a=0;a<affects.size();a++)
+			try
 			{
-				final Ability A=affects.get(a);
-				if((A!=null)&&(A.bubbleAffect()))
-					A.affectCharState(affectedMob,affectableMaxState);
+				for(int a=0;a<affects.size();a++)
+				{
+					final Ability A=affects.get(a);
+					if((A!=null)&&(A.bubbleAffect()))
+						A.affectCharState(affectedMob,affectableMaxState);
+				}
+			}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -577,11 +669,23 @@ public class StdItem implements Item
 		return miscText;
 	}
 
-	@Override public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
+	@Override
+	public String miscTextFormat()
+	{
+		return CMParms.FORMAT_UNDEFINED;
+	}
 
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 
-	@Override public int getTickStatus(){return tickStatus;}
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -593,22 +697,28 @@ public class StdItem implements Item
 		{
 			tickStatus=Tickable.STATUS_BEHAVIOR;
 			if(numBehaviors()>0)
-				eachBehavior(new EachApplicable<Behavior>(){ 
+			{
+				eachBehavior(new EachApplicable<Behavior>()
+				{ 
 					@Override
 					public final void apply(final Behavior B)
 					{
 						B.tick(ticking,tickID);
 					} 
 				});
+			}
 			tickStatus=Tickable.STATUS_SCRIPT;
 			if(numScripts()>0)
-				eachScript(new EachApplicable<ScriptingEngine>(){ 
+			{
+				eachScript(new EachApplicable<ScriptingEngine>()
+				{ 
 					@Override
 					public final void apply(final ScriptingEngine S)
 					{
 						S.tick(ticking,tickID);
 					} 
 				});
+			}
 			if((numBehaviors()==0)&&(numScripts()==0))
 				return false;
 		}
@@ -617,14 +727,17 @@ public class StdItem implements Item
 		{
 			tickStatus=Tickable.STATUS_AFFECT;
 			if(numEffects()>0)
-			eachEffect(new EachApplicable<Ability>(){ 
-				@Override
-				public final void apply(final Ability A)
-				{
-					if(!A.tick(ticking,tickID))
-						A.unInvoke();
-				} 
-			});
+			{
+				eachEffect(new EachApplicable<Ability>()
+				{ 
+					@Override
+					public final void apply(final Ability A)
+					{
+						if(!A.tick(ticking,tickID))
+							A.unInvoke();
+					} 
+				});
+			}
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return !amDestroyed();
@@ -651,7 +764,12 @@ public class StdItem implements Item
 		return myContainer;
 	}
 
-	@Override public String rawSecretIdentity(){return ((secretIdentity==null)?"":secretIdentity);}
+	@Override
+	public String rawSecretIdentity()
+	{
+		return ((secretIdentity == null) ? "" : secretIdentity);
+	}
+
 	@Override
 	public String secretIdentity()
 	{
@@ -1311,29 +1429,38 @@ public class StdItem implements Item
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
 		if(numBehaviors()>0)
-			eachBehavior(new EachApplicable<Behavior>(){ 
+		{
+			eachBehavior(new EachApplicable<Behavior>()
+			{ 
 				@Override
 				public final void apply(final Behavior B)
 				{
 					B.executeMsg(me,msg);
 				} 
 			});
+		}
 		if(numScripts()>0)
-			eachScript(new EachApplicable<ScriptingEngine>(){ 
+		{
+			eachScript(new EachApplicable<ScriptingEngine>()
+			{ 
 				@Override
 				public final void apply(final ScriptingEngine S)
 				{
 					S.executeMsg(me,msg);
 				} 
 			});
+		}
 		if(numEffects()>0)
-			eachEffect(new EachApplicable<Ability>(){ 
+		{
+			eachEffect(new EachApplicable<Ability>()
+			{ 
 				@Override
 				public final void apply(final Ability A)
 				{
 					A.executeMsg(me, msg);
 				}
 			});
+		}
 
 		final MOB mob=msg.source();
 		if((msg.tool()==this)
@@ -1367,14 +1494,30 @@ public class StdItem implements Item
 			CMLib.commands().handleBeingSniffed(msg);
 			break;
 		case CMMsg.TYP_LOOK:
-		case CMMsg.TYP_EXAMINE: CMLib.commands().handleBeingLookedAt(msg); break;
-		case CMMsg.TYP_READ: CMLib.commands().handleBeingRead(msg); break;
-		case CMMsg.TYP_HOLD: CMLib.commands().handleBeingHeld(msg); break;
-		case CMMsg.TYP_WEAR: CMLib.commands().handleBeingWorn(msg); break;
-		case CMMsg.TYP_WIELD: CMLib.commands().handleBeingWielded(msg); break;
-		case CMMsg.TYP_GET: CMLib.commands().handleBeingGetted(msg); break;
-		case CMMsg.TYP_REMOVE: CMLib.commands().handleBeingRemoved(msg);  break;
-		case CMMsg.TYP_DROP: CMLib.commands().handleBeingDropped(msg); break;
+		case CMMsg.TYP_EXAMINE:
+			CMLib.commands().handleBeingLookedAt(msg);
+			break;
+		case CMMsg.TYP_READ:
+			CMLib.commands().handleBeingRead(msg);
+			break;
+		case CMMsg.TYP_HOLD:
+			CMLib.commands().handleBeingHeld(msg);
+			break;
+		case CMMsg.TYP_WEAR:
+			CMLib.commands().handleBeingWorn(msg);
+			break;
+		case CMMsg.TYP_WIELD:
+			CMLib.commands().handleBeingWielded(msg);
+			break;
+		case CMMsg.TYP_GET:
+			CMLib.commands().handleBeingGetted(msg);
+			break;
+		case CMMsg.TYP_REMOVE:
+			CMLib.commands().handleBeingRemoved(msg);
+			break;
+		case CMMsg.TYP_DROP:
+			CMLib.commands().handleBeingDropped(msg);
+			break;
 		case CMMsg.TYP_WRITE:
 			if(isReadable() && (!(this instanceof Electronics)))
 				setReadableText((readableText()+" "+msg.targetMessage()).trim());
@@ -1541,16 +1684,20 @@ public class StdItem implements Item
 	{
 		final List<Ability> affects=this.affects;
 		if((affects!=null)&&(!affects.isEmpty()))
-		try
 		{
-			for(int a=0;a<affects.size();a++)
+			try
 			{
-				final Ability A=affects.get(a);
-				if(A!=null)
-					applier.apply(A);
+				for(int a=0;a<affects.size();a++)
+				{
+					final Ability A=affects.get(a);
+					if(A!=null)
+						applier.apply(A);
+				}
+			}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 	@Override
 	public void delAllEffects(boolean unInvoke)
@@ -1606,7 +1753,9 @@ public class StdItem implements Item
 		{
 			return affects.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
 
@@ -1634,8 +1783,10 @@ public class StdItem implements Item
 		if(behaviors==null)
 			behaviors=new SVector<Behavior>(1);
 		for(final Behavior B : behaviors)
+		{
 			if(B.ID().equals(to.ID()))
 				return;
+		}
 
 		// first one! so start ticking...
 		if(behaviors.isEmpty())
@@ -1700,8 +1851,10 @@ public class StdItem implements Item
 		if(behaviors==null)
 			return null;
 		for(final Behavior B : behaviors)
+		{
 			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
 				return B;
+		}
 		return null;
 	}
 
@@ -1710,16 +1863,20 @@ public class StdItem implements Item
 	{
 		final List<Behavior> behaviors=this.behaviors;
 		if(behaviors!=null)
-		try
 		{
-			for(int a=0;a<behaviors.size();a++)
+			try
 			{
-				final Behavior B=behaviors.get(a);
-				if(B!=null)
-					applier.apply(B);
+				for(int a=0;a<behaviors.size();a++)
+				{
+					final Behavior B=behaviors.get(a);
+					if(B!=null)
+						applier.apply(B);
+				}
+			}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	/** Manipulation of the scripts list */
@@ -1768,30 +1925,53 @@ public class StdItem implements Item
 			scripts.clear();
 		scripts=null;
 		if(didSomething && ((behaviors==null)||(behaviors.isEmpty())))
-		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
+			CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
 
-	@Override public int numScripts(){return (scripts==null)?0:scripts.size();}
+	@Override
+	public int numScripts()
+	{
+		return (scripts == null) ? 0 : scripts.size();
+	}
 
-	@Override public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
+	@Override
+	public Enumeration<ScriptingEngine> scripts()
+	{
+		return (scripts == null) ? EmptyEnumeration.INSTANCE : scripts.elements();
+	}
 
-	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(final Exception e){} return null;}
+	@Override
+	public ScriptingEngine fetchScript(int x)
+	{
+		try
+		{
+			return scripts.elementAt(x);
+		}
+		catch (final Exception e)
+		{
+		}
+		return null;
+	}
 
 	@Override
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
 		if(scripts!=null)
-		try
 		{
-			for(int a=0;a<scripts.size();a++)
+			try
 			{
-				final ScriptingEngine S=scripts.get(a);
-				if(S!=null)
-					applier.apply(S);
+				for(int a=0;a<scripts.size();a++)
+				{
+					final ScriptingEngine S=scripts.get(a);
+					if(S!=null)
+						applier.apply(S);
+				}
+			}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	protected String tackOns()
@@ -1800,7 +1980,9 @@ public class StdItem implements Item
 		if(numEffects()>0)
 			identity.append("\n\rHas the following magical properties: ");
 		if(numEffects()>0)
-			eachEffect(new EachApplicable<Ability>(){ 
+		{
+			eachEffect(new EachApplicable<Ability>()
+			{ 
 				@Override
 				public final void apply(final Ability A)
 				{
@@ -1808,22 +1990,39 @@ public class StdItem implements Item
 						identity.append("\n\r"+A.accountForYourself());
 				}
 			});
+		}
 		return identity.toString();
 	}
 
-	@Override public int maxRange(){return 0;}
-	@Override public int minRange(){return 0;}
+	@Override
+	public int maxRange()
+	{
+		return 0;
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 0;
+	}
+
 	protected static String[] CODES={"CLASS","USES","LEVEL","ABILITY","TEXT"};
+
 	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return ""+usesRemaining();
-		case 2: return ""+basePhyStats().ability();
-		case 3: return ""+basePhyStats().level();
-		case 4: return text();
+		case 0:
+			return ID();
+		case 1:
+			return "" + usesRemaining();
+		case 2:
+			return "" + basePhyStats().ability();
+		case 3:
+			return "" + basePhyStats().level();
+		case 4:
+			return text();
 		}
 		return "";
 	}
@@ -1832,23 +2031,59 @@ public class StdItem implements Item
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return;
-		case 1: setUsesRemaining(CMath.s_parseIntExpression(val)); break;
-		case 2: basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break;
-		case 3: basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break;
-		case 4: setMiscText(val); break;
+		case 0:
+			return;
+		case 1:
+			setUsesRemaining(CMath.s_parseIntExpression(val));
+			break;
+		case 2:
+			basePhyStats().setLevel(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			basePhyStats().setAbility(CMath.s_parseIntExpression(val));
+			break;
+		case 4:
+			setMiscText(val);
+			break;
 		}
 	}
-	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	protected String I(final String str) { return CMLib.lang().commandWordTranslation(str); }
-	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
-	@Override public String[] getStatCodes(){return CODES;}
-	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	
+	@Override
+	public String L(final String str, final String... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
+
+	protected String I(final String str)
+	{
+		return CMLib.lang().commandWordTranslation(str);
+	}
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return (xtraValues == null) ? getStatCodes().length : getStatCodes().length - xtraValues.length;
+	}
+
+	@Override
+	public String[] getStatCodes()
+	{
+		return CODES;
+	}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
+	}
+
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
 	@Override
@@ -1858,8 +2093,10 @@ public class StdItem implements Item
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

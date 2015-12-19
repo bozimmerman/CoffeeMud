@@ -128,7 +128,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 		if(comp==0)
 		{
-			if(P instanceof DBIdentifiable)
+			if((P instanceof DBIdentifiable)
+			&&((DBIdentifiable)DV.elementAt(mid,1)).databaseID().length()>0)
 				((DBIdentifiable)P).setDatabaseID(((DBIdentifiable)DV.elementAt(mid,1)).databaseID());
 			((Environmental)DV.elementAt(mid,1)).destroy();
 			DV.setElementAt(mid,1,P);
@@ -458,7 +459,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 
 	public void submitToCatalog(String catagory, Physical P)
 	{
-		if(P==null)
+		if((P==null)
+		||(!(P instanceof DBIdentifiable))
+		||(!((DBIdentifiable)P).canSaveDatabaseID()))
 			return;
 		synchronized(getSync(P).intern())
 		{
