@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CatalogKind;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -39,11 +40,16 @@ public class Catalog extends StdCommand
 {
 	public Catalog(){}
 
-	private final String[] access=I(new String[]{"CATALOG"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "CATALOG" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	protected TreeMap<String,String> currentCats=new TreeMap<String,String>();
-
+	
 	public boolean catalog(Room R, MOB mob, Physical P)
 		throws java.io.IOException
 	{
@@ -114,51 +120,99 @@ public class Catalog extends StdCommand
 	}
 
 
-	public Physical findCatalog(int whatKind, String ID, boolean exactOnly)
+	public Physical findCatalog(CatalogKind whatKind, String ID, boolean exactOnly)
 	{
 		final Object[] data=new Object[]{null,null};
-		if((data[0]==null)&&((whatKind==0)||(whatKind==1)))
-		{ data[0]=CMLib.catalog().getCatalogMob(ID); if(data[0]!=null) data[1]=Integer.valueOf(1);}
-		if((data[0]==null)&&((whatKind==0)||(whatKind==2)))
-		{ data[0]=CMLib.catalog().getCatalogItem(ID); if(data[0]!=null) data[1]=Integer.valueOf(2);}
+		if((data[0]==null)&&((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.MOB)))
+		{
+			data[0] = CMLib.catalog().getCatalogMob(ID);
+			if (data[0] != null)
+				data[1] = Integer.valueOf(1);
+		}
+		if((data[0]==null)&&((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.ITEM)))
+		{
+			data[0] = CMLib.catalog().getCatalogItem(ID);
+			if (data[0] != null)
+				data[1] = Integer.valueOf(2);
+		}
 		if(exactOnly)
 			return (Physical)data[0];
-		if((data[0]==null)&&((whatKind==0)||(whatKind==1)))
+		if((data[0]==null)&&((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.MOB)))
 		{
 			final String[] names=CMLib.catalog().getCatalogMobNames().clone();
 			for (final String name : names)
+			{
 				if(CMLib.english().containsString(name, ID))
-				{	data[0]=CMLib.catalog().getCatalogMob(name); data[1]=Integer.valueOf(1); break;}
+				{
+					data[0] = CMLib.catalog().getCatalogMob(name);
+					data[1] = Integer.valueOf(1);
+					break;
+				}
+			}
 			if(data[0] == null)
 			{
 				for(int s=0;s<names.length;s++)
 					names[s] = CMStrings.removeColors(names[s]);
 				for (final String name : names)
+				{
 					if(ID.equalsIgnoreCase(name))
-					{	data[0]=CMLib.catalog().getCatalogMob(name); data[1]=Integer.valueOf(1); break;}
+					{
+						data[0] = CMLib.catalog().getCatalogMob(name);
+						data[1] = Integer.valueOf(1);
+						break;
+					}
+				}
 				if(data[0] == null)
+				{
 					for (final String name : names)
+					{
 						if(CMLib.english().containsString(name, ID))
-						{	data[0]=CMLib.catalog().getCatalogMob(name); data[1]=Integer.valueOf(1); break;}
+						{
+							data[0] = CMLib.catalog().getCatalogMob(name);
+							data[1] = Integer.valueOf(1);
+							break;
+						}
+					}
+				}
 			}
 		}
-		if((data[0]==null)&&((whatKind==0)||(whatKind==2)))
+		if((data[0]==null)&&((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.ITEM)))
 		{
 			final String[] names=CMLib.catalog().getCatalogItemNames().clone();
 			for (final String name : names)
+			{
 				if(CMLib.english().containsString(name, ID))
-				{	data[0]=CMLib.catalog().getCatalogItem(name); data[1]=Integer.valueOf(2); break;}
+				{
+					data[0] = CMLib.catalog().getCatalogItem(name);
+					data[1] = Integer.valueOf(2);
+					break;
+				}
+			}
 			if(data[0] == null)
 			{
 				for(int s=0;s<names.length;s++)
 					names[s] = CMStrings.removeColors(names[s]);
 				for (final String name : names)
+				{
 					if(ID.equalsIgnoreCase(name))
-					{	data[0]=CMLib.catalog().getCatalogItem(name); data[1]=Integer.valueOf(2); break;}
+					{
+						data[0] = CMLib.catalog().getCatalogItem(name);
+						data[1] = Integer.valueOf(2);
+						break;
+					}
+				}
 				if(data[0] == null)
+				{
 					for (final String name : names)
+					{
 						if(CMLib.english().containsString(name, ID))
-						{	data[0]=CMLib.catalog().getCatalogItem(name); data[1]=Integer.valueOf(2); break;}
+						{
+							data[0] = CMLib.catalog().getCatalogItem(name);
+							data[1] = Integer.valueOf(2);
+							break;
+						}
+					}
+				}
 			}
 		}
 		return (Physical)data[0];
@@ -178,13 +232,19 @@ public class Catalog extends StdCommand
 		return rooms;
 	}
 
-	public int getObjectType(List<String> commands)
+	public CatalogKind getObjectType(List<String> commands)
 	{
-		int whatKind=0;
+		CatalogKind whatKind=CatalogKind.OBJECT;
 		if((commands.size()>0)&&("MOBS".startsWith(commands.get(0).toUpperCase().trim())))
-		{ commands.remove(0); whatKind=1; }
+		{
+			commands.remove(0);
+			whatKind = CatalogKind.MOB;
+		}
 		if((commands.size()>0)&&("ITEMS".startsWith(commands.get(0).toUpperCase().trim())))
-		{ commands.remove(0); whatKind=2;}
+		{
+			commands.remove(0);
+			whatKind = CatalogKind.ITEM;
+		}
 		return whatKind;
 	}
 
@@ -210,15 +270,13 @@ public class Catalog extends StdCommand
 		if((commands!=null)&&(commands.size()>1))
 		{
 			commands.remove(0);
-			final String[] types={"object","mobs","items"};
-
 			if(checkUserRoomSetEntry(commands))
 			{
 				final String which=commands.get(0).toLowerCase();
 				final Enumeration rooms=getRoomSet(mob,which);
 				commands.remove(0);
-				final int whatKind=getObjectType(commands);
-				final String type=types[whatKind];
+				final CatalogKind whatKind=getObjectType(commands);
+				final String type=whatKind.name().toLowerCase();
 
 				if((mob.session()!=null)
 				&&(mob.session().confirm(L("You are about to auto-catalog (room-reset and save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),"N"))
@@ -237,7 +295,7 @@ public class Catalog extends StdCommand
 							P=content.P();
 							if(P instanceof Coins)
 								continue;
-							if((P instanceof MOB)&&(whatKind!=2))
+							if((P instanceof MOB)&&(whatKind!=CatalogKind.ITEM))
 							{
 								if(catalog(R,mob,P))
 								{
@@ -246,7 +304,7 @@ public class Catalog extends StdCommand
 								}
 							}
 							else
-							if((P instanceof Item)&&(whatKind!=1))
+							if((P instanceof Item)&&(whatKind!=CatalogKind.MOB))
 							{
 								if(catalog(R,mob,P))
 								{
@@ -294,9 +352,19 @@ public class Catalog extends StdCommand
 							if(session!=null)
 								session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N")
 								{
-									@Override public void showPrompt() { session.promptPrint(L("Create new category '@x1' (y/N)?",newCat));}
-									@Override public void timedOut() {}
-									@Override public void callBack()
+									@Override
+									public void showPrompt()
+									{
+										session.promptPrint(L("Create new category '@x1' (y/N)?", newCat));
+									}
+
+									@Override
+									public void timedOut()
+									{
+									}
+
+									@Override
+									public void callBack()
 									{
 										if(this.confirmed)
 										{
@@ -325,14 +393,14 @@ public class Catalog extends StdCommand
 			if(commands.get(0).equalsIgnoreCase("LIST"))
 			{
 				commands.remove(0);
-				final int whatKind=getObjectType(commands);
+				final CatalogKind whatKind=getObjectType(commands);
 				final String ID=CMParms.combine(commands,0);
 				final StringBuffer list=new StringBuffer("");
 				int col=0;
 				MOB M=null;
 				Item I=null;
 				CatalogLibrary.CataData data;
-				if((whatKind==0)||(whatKind==1))
+				if((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.MOB))
 				{
 					String cat=currentCats.get(mob.Name());
 					list.append("^HMobs ("+(cat)+")\n\r^N");
@@ -366,7 +434,7 @@ public class Catalog extends StdCommand
 					}
 					list.append("\n\r\n\r");
 				}
-				if((whatKind==0)||(whatKind==2))
+				if((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.ITEM))
 				{
 					String cat=currentCats.get(mob.Name());
 					list.append("^HItems ("+(cat)+")\n\r^N");
@@ -410,7 +478,7 @@ public class Catalog extends StdCommand
 			if(commands.get(0).equalsIgnoreCase("DELETE"))
 			{
 				commands.remove(0);
-				final int whatKind=getObjectType(commands);
+				final CatalogKind whatKind=getObjectType(commands);
 				final String ID=CMParms.combine(commands,0);
 				Physical[] del=null;
 				if(ID.equalsIgnoreCase("everydamnmob"))
@@ -470,7 +538,7 @@ public class Catalog extends StdCommand
 			if(commands.get(0).equalsIgnoreCase("EDIT"))
 			{
 				commands.remove(0);
-				final int whatKind=getObjectType(commands);
+				final CatalogKind whatKind=getObjectType(commands);
 				final String ID=CMParms.combine(commands,0);
 				final Physical P=findCatalog(whatKind,ID,false);
 				if(P==null)
@@ -547,7 +615,7 @@ public class Catalog extends StdCommand
 					final Enumeration rooms=getRoomSet(mob,which);
 					commands.remove(0);
 
-					final int whatKind=getObjectType(commands);
+					final CatalogKind whatKind=getObjectType(commands);
 					Physical P=null;
 					String roomID=null;
 					for(;rooms.hasMoreElements();)
@@ -562,17 +630,25 @@ public class Catalog extends StdCommand
 							P=content.P();
 							if(P instanceof Coins)
 								continue;
-							if((P instanceof MOB)&&(whatKind!=2)&&(CMLib.flags().isCataloged(P)))
+							if((P instanceof MOB)
+							&&(whatKind!=CatalogKind.ITEM)
+							&&(CMLib.flags().isCataloged(P)))
+							{
 								if(CMLib.catalog().getCatalogObj(P)!=null)
 									mob.tell(L("Check: MOB @x1 in @x2 is cataloged.",P.Name(),roomID));
 								else
 									mob.tell(L("Error: MOB @x1 in @x2 is falsely cataloged.",P.Name(),roomID));
+							}
 
-							if((P instanceof Item)&&(whatKind!=1)&&(CMLib.flags().isCataloged(P)))
+							if((P instanceof Item)
+							&&(whatKind!=CatalogKind.MOB)
+							&&(CMLib.flags().isCataloged(P)))
+							{
 								if(CMLib.catalog().getCatalogObj(P)!=null)
 									mob.tell(L("Check: Item @x1 in @x2 is cataloged.",P.Name(),roomID));
 								else
 									mob.tell(L("Error: Item @x1 in @x2 is falsely cataloged.",P.Name(),roomID));
+							}
 						}
 						if(db)
 							R.destroy();
@@ -593,7 +669,7 @@ public class Catalog extends StdCommand
 					final Enumeration rooms=getRoomSet(mob,which);
 					commands.remove(0);
 
-					final int whatKind=getObjectType(commands);
+					final CatalogKind whatKind=getObjectType(commands);
 					Environmental E=null;
 					String roomID=null;
 					for(;rooms.hasMoreElements();)
@@ -608,17 +684,25 @@ public class Catalog extends StdCommand
 							E=content.P();
 							if(E instanceof Coins)
 								continue;
-							if((E instanceof MOB)&&(whatKind!=2)&&(!CMLib.flags().isCataloged(E)))
+							if((E instanceof MOB)
+							&&(whatKind!=CatalogKind.ITEM)
+							&&(!CMLib.flags().isCataloged(E)))
+							{
 								if(CMLib.catalog().getCatalogMob(E.Name())!=null)
 									mob.tell(L("MOB @x1 in @x2 should be tied to the catalog.",E.Name(),roomID));
 								else
 									mob.tell(L("MOB @x1 in @x2 is not cataloged.",E.Name(),roomID));
+							}
 
-							if((E instanceof Item)&&(whatKind!=1)&&(!CMLib.flags().isCataloged(E)))
+							if((E instanceof Item)
+							&&(whatKind!=CatalogKind.MOB)
+							&&(!CMLib.flags().isCataloged(E)))
+							{
 								if(CMLib.catalog().getCatalogItem(E.Name())!=null)
 									mob.tell(L("Item @x1 in @x2 should be tied to the catalog.",E.Name(),roomID));
 								else
 									mob.tell(L("Item @x1 in @x2 is not cataloged.",E.Name(),roomID));
+							}
 						}
 						if(db)
 							R.destroy();
@@ -636,8 +720,8 @@ public class Catalog extends StdCommand
 					final String which=commands.get(0).toLowerCase();
 					final Enumeration rooms=getRoomSet(mob,which);
 					commands.remove(0);
-					final int whatKind=getObjectType(commands);
-					final String type=types[whatKind];
+					final CatalogKind whatKind=getObjectType(commands);
+					final String type=whatKind.name().toLowerCase();
 					if((mob.session()!=null)
 					&&(mob.session().confirm(L("You are about to auto-clean (and auto-save) all @x1 @x2.\n\rThis command, if used improperly, may alter @x3 in this @x4.\n\rAre you absolutely sure (y/N)?",which,type,type,which),"N")))
 					{
@@ -654,7 +738,8 @@ public class Catalog extends StdCommand
 								P=content.P();
 								if(P instanceof Coins)
 									continue;
-								if((P instanceof MOB)&&(whatKind!=2))
+								if((P instanceof MOB)
+								&&(whatKind!=CatalogKind.ITEM))
 								{
 									if((CMLib.flags().isCataloged(P))
 									&&(CMLib.catalog().getCatalogObj(P)==null))
@@ -666,7 +751,8 @@ public class Catalog extends StdCommand
 									}
 								}
 								else
-								if((P instanceof Item)&&(whatKind!=1))
+								if((P instanceof Item)
+								&&(whatKind!=CatalogKind.MOB))
 								{
 									if((CMLib.flags().isCataloged(P))
 									&&(CMLib.catalog().getCatalogObj(P)==null))
@@ -725,6 +811,15 @@ public class Catalog extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CATALOG);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CATALOG);
+	}
 }

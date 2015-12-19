@@ -35,14 +35,49 @@ import java.util.*;
 
 public class Spell_Scribe extends Spell
 {
-	@Override public String ID() { return "Spell_Scribe"; }
-	private final static String localizedName = CMLib.lang().L("Scribe");
-	@Override public String name() { return localizedName; }
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
-	@Override public long flags(){return Ability.FLAG_NOORDERING;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Scribe";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Scribe");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_EVOCATION;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_NOORDERING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -79,6 +114,7 @@ public class Spell_Scribe extends Spell
 				scrollThis=(Spell)A;
 		}
 		if(scrollThis==null)
+		{
 			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
@@ -88,6 +124,8 @@ public class Spell_Scribe extends Spell
 				&&(!A.ID().equals(this.ID())))
 					scrollThis=(Spell)A;
 			}
+		}
+		
 		if(scrollThis==null)
 		{
 			mob.tell(L("You don't know how to scribe '@x1'.",spellName));
@@ -110,11 +148,13 @@ public class Spell_Scribe extends Spell
 
 		final List<Ability> spells=scroll.getSpells();
 		for(final Ability spell: spells)
+		{
 			if(spell.ID().equals(scrollThis.ID()))
 			{
 				mob.tell(L("That spell is already scribed onto @x1.",scroll.name()));
 				return false;
 			}
+		}
 
 		int level=25;
 		for(final Ability A : spells)

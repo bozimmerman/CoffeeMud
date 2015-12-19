@@ -362,6 +362,17 @@ public interface CatalogLibrary extends CMLibrary
 	public CMFile.CMVFSDir getCatalogRoot(CMFile.CMVFSDir resourcesRoot);
 
 	/**
+	 * An enumeration for the two general catalog object kinds.
+	 * @author Bo Zimmerman
+	 */
+	public enum CatalogKind
+	{
+		OBJECT,
+		MOB,
+		ITEM
+	}
+
+	/**
 	 * An interface for getting a manipulable list of the content
 	 * of a room.  This interface would represent one mob, item,
 	 * or shop object in a room.  It can then be altered, and flagged
