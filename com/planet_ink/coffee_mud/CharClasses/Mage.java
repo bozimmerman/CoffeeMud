@@ -36,26 +36,116 @@ import java.util.*;
 
 public class Mage extends StdCharClass
 {
-	@Override public String ID(){return "Mage";}
-	private final static String localizedStaticName = CMLib.lang().L("Mage");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return ID();}
-	@Override public int getBonusPracLevel(){return 4;}
-	@Override public int getBonusAttackLevel(){return 0;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_INTELLIGENCE;}
-	@Override public int getLevelsPerBonusDamage(){ return 30;}
-	@Override public int getPracsFirstLevel(){return 6;}
-	@Override public int getTrainsFirstLevel(){return 3;}
-	@Override public String getMovementFormula(){return "8*((@x2<@x3)/18)"; }
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/6)+(1*(1?5))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/3)+(1*(1?4))"; }
-	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_MAGELIKE;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
-	protected boolean grantSomeSpells(){return true;}
+	@Override
+	public String ID()
+	{
+		return "Mage";
+	}
+
+	private final static String	localizedStaticName	= CMLib.lang().L("Mage");
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return ID();
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 4;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_INTELLIGENCE;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 30;
+	}
+
+	@Override
+	public int getPracsFirstLevel()
+	{
+		return 6;
+	}
+
+	@Override
+	public int getTrainsFirstLevel()
+	{
+		return 3;
+	}
+
+	@Override
+	public String getMovementFormula()
+	{
+		return "8*((@x2<@x3)/18)";
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/6)+(1*(1?5))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/3)+(1*(1?4))";
+	}
+
+	@Override
+	protected String armorFailMessage()
+	{
+		return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_CLOTH;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_MAGELIKE;
+	}
+
+	private final Set<Integer>	disallowedWeapons	= buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
+
+	@Override
+	public int requiredArmorSourceMinor()
+	{
+		return CMMsg.TYP_CAST_SPELL;
+	}
+
+	protected boolean grantSomeSpells()
+	{
+		return true;
+	}
 
 	public Mage()
 	{
@@ -279,6 +369,7 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_Repulsion",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_EnchantArmor",false);
 		// level 21
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Alchemy",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_Command",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_Immunity",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_SummonEnemy",false);

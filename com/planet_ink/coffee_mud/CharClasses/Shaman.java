@@ -35,14 +35,45 @@ import java.util.*;
 */
 public class Shaman extends Cleric
 {
-	@Override public String ID(){return "Shaman";}
-	private final static String localizedStaticName = CMLib.lang().L("Shaman");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Cleric";}
-	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NEUTRALCLERIC;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	@Override
+	public String ID()
+	{
+		return "Shaman";
+	}
+
+	private final static String	localizedStaticName	= CMLib.lang().L("Shaman");
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Cleric";
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_WISDOM;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_NEUTRALCLERIC;
+	}
+
+	private final Set<Integer>	disallowedWeapons	= buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
 
 	public Shaman()
 	{
@@ -50,6 +81,7 @@ public class Shaman extends Cleric
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -83,6 +115,7 @@ public class Shaman extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_Deafness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CreateFood",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Alchemy",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CreateWater",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_EarthMud",false);
