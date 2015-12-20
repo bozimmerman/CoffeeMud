@@ -531,9 +531,14 @@ public class DefaultSession implements Session
 	{
 		if((!getClientTelnetMode(TELNET_MXP))||(mxpSupportSet.size()==0))
 			return false;
-		if(tagString.startsWith("^<IMAGE")&&(mxpSupportSet.contains("-IMAGE")))
-			return false;
-		// someday this may get more complicated -- someday
+		if(tagString.startsWith("^<"))
+		{
+			int x=tagString.indexOf(' ');
+			if(x<0) 
+				x=tagString.indexOf('>');
+			if((x>0)&&(this.mxpSupportSet.contains("-"+tagString.substring(2,x))))
+				return false;
+		}
 		return true;
 	}
 
