@@ -1279,12 +1279,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		{
 			String s=((Area)E).getCurrency();
 			if(s.length()==0)
+			{
 				for(final Enumeration<Area> p=((Area)E).getParents();p.hasMoreElements();)
 				{
 					s=getCurrency(p.nextElement());
 					if(s.length()>0)
 						break;
 				}
+			}
 			final int x=s.indexOf('=');
 			if(x<0)
 				return s.toUpperCase().trim();

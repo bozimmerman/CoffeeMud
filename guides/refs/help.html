@@ -9,7 +9,7 @@
 		<center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr>
 		<td width=100% colspan=2 bgcolor=#DFDFDF align=left>
 		<h1> Player Help </h1>
-		<h2> CoffeeMud 5.8 </h2>
+		<h2> CoffeeMud 5.9 </h2>
 		</td></tr><tr><td width=20% valign=top align=left>
 		<ul>
 			
@@ -17,6 +17,10 @@
 			<li> <a href="#ABJURER">ABJURER</a>
 			
 			<li> <a href="#ABOVE">ABOVE</a>
+			
+			<li> <a href="#ACCOUNT">ACCOUNT</a>
+			
+			<li> <a href="#ACHIEVEMENTS">ACHIEVEMENTS</a>
 			
 			<li> <a href="#ACTIVATE">ACTIVATE</a>
 			
@@ -710,6 +714,8 @@
 			
 			<li> <a href="#REMORT">REMORT</a>
 			
+			<li> <a href="#REMORTING">REMORTING</a>
+			
 			<li> <a href="#REMOVE">REMOVE</a>
 			
 			<li> <a href="#REPAIR">REPAIR</a>
@@ -823,6 +829,8 @@
 			<li> <a href="#SUICIDE">SUICIDE</a>
 			
 			<li> <a href="#SWIM">SWIM</a>
+			
+			<li> <a href="#SWITCH">SWITCH</a>
 			
 			<li> <a href="#TAKE">TAKE</a>
 			
@@ -953,6 +961,16 @@
 			</P>
 			
 			<p>
+			<a name="ACCOUNT"><B>ACCOUNT</B></a>
+			<pre>Command : ACCOUNT<BR>Usage   : ACCOUNT<BR>Example : account<BR>Short(s): <BR>If this mud supports accounts, this command will show you a list of your<BR>characters, and your account expiration date, if applicable.</pre>
+			</P>
+			
+			<p>
+			<a name="ACHIEVEMENTS"><B>ACHIEVEMENTS</B></a>
+			<pre>Command : ACHIEVEMENTS<BR>Usage   : ACHIEVEMENTS (PLAYER/ACCOUNT) (ALL/NOW/ANNOUNCE) ([PLAYERNAME])<BR>Example : achievements<BR>Example : achievements all<BR>Example : achievements bob<BR>Example : achievements player now<BR>Example : achievements account announce bob<BR>This command shows the player all their notable achievements in the game. If<BR>the optional NOW parameter is given, then all achievements in which the player<BR>has made any progress is shown. If the optional ALL parameter is given, then<BR>all Possible achievements are shown, along with any progress the player has<BR>made towards them. If ANNOUNCE is specified, then the player will announce the<BR>achievements to the room.  If a player name is specified, then the achievements<BR>of that player are shown instead.  If the optional player or account parameter<BR>is specified, then the achievements will be limited to player or account<BR>specific achievements, if your mud supports accounts.<BR><BR>Some achievements are evaluated only once an hour, but this command will also<BR>force your achievement tracker to do an evaluation.</pre>
+			</P>
+			
+			<p>
 			<a name="ACTIVATE"><B>ACTIVATE</B></a>
 			<pre>Command : ACTIVATE<BR>Usage   : ACTIVATE ([COMMANDS]) [ITEM]<BR>Example : activate phazer<BR>Example : activate console<BR>Example : activate stun phazer<BR>This multi-purpose command is used to turn-on electrical devices, and, in some<BR>circumstances, cause the device to perform its function. (by including optional<BR>parameters), and operate computer consoles.</pre>
 			</P>
@@ -999,7 +1017,7 @@
 			
 			<p>
 			<a name="ALTERER"><B>ALTERER</B></a>
-			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Alterer <FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Mage<FONT COLOR=CYAN>)</I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Intelligence (25), Others (18)<BR><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Intelligence 9+<BR><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Human, Elf, Gith, Dragon, Humanoid, Illithid, Gnome, Fairy-kin,<BR>            or Halfelf<BR><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Intelligence               <FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Int/18) per level<BR><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>6 +(Wisdom/6)+4 per level  <FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level<BR><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +(Con/6)+(1d5) per lvl  <FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +(Int/3)+(1d4) /lvl<BR><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +8X(Str/18) per lvl    <FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 30 level(s)<BR><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use daggers, staves, or natural weapons.<BR><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear cloth, vegetation, or paper based armor.<BR><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> At 5th level, receives bonus damage from Alteration as levels<BR>            advance.  At 10th level, receives double duration on your<BR>            Alteration magic, and half duration from malicious Alteration<BR>            magic.<BR><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> Unable to cast Invocation/evocation spells.  Receives penalty<BR>            damage from Invocation/evocation as levels advance.  Receives<BR>            double duration from malicious Invocation/evocation magic, half<BR>            duration on other Invocation/evocation effects.<BR><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT><BR>Alterers are specialist mages who concentrate their studies in the mastery of<BR>altering the world around them.  Their all-purpose skills serve them<BR>wonderfully in combat, in the maintenance of their own health and equipment,<BR>and in becomming successful adventurers.  So skilled are they in the alteration<BR>of the universe that they gain all known alteration spells, including some<BR>which only the alterer may gain.<BR><BR>The Alterer suffers from a lack of access to the Evocation school of magic, the<BR>long duration and heavy impact of their spells plus the general usefulness of<BR>their school makes them a good choice for all mages.  Since they have their own<BR>kind of destructive magic, they will find they don't miss evocations at all.<BR></pre>
+			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Alterer <FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Mage<FONT COLOR=CYAN>)</I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Intelligence (25), Others (18)<BR><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Intelligence 9+<BR><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Human, Elf, Gith, Dragon, Humanoid, Illithid, Gnome, Fairy-kin,<BR>            or Halfelf<BR><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Intelligence               <FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Int/18) per level<BR><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>6 +(Wisdom/6)+4 per level  <FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level<BR><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +(Con/6)+(1d5) per lvl  <FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +(Int/3)+(1d4) /lvl<BR><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +8X(Str/18) per lvl    <FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 30 level(s)<BR><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use daggers, staves, or natural weapons.<BR><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear cloth, vegetation, or paper based armor.<BR><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> At 5th level, receives bonus damage from Alteration as levels<BR>            advance.  At 10th level, receives double duration on your<BR>            Alteration magic, and half duration from malicious Alteration<BR>            magic.<BR><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> Unable to cast Invocation/evocation spells.  Receives penalty<BR>            damage from Invocation/evocation as levels advance.  Receives<BR>            double duration from malicious Invocation/evocation magic, half<BR>            duration on other Invocation/evocation effects.<BR><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT><BR>Alterers are specialist mages who concentrate their studies in the mastery of<BR>altering the world around them.  Their all-purpose skills serve them<BR>wonderfully in combat, in the maintenance of their own health and equipment,<BR>and in becoming successful adventurers.  So skilled are they in the alteration<BR>of the universe that they gain all known alteration spells, including some<BR>which only the alterer may gain.<BR><BR>The Alterer suffers from a lack of access to the Evocation school of magic, the<BR>long duration and heavy impact of their spells plus the general usefulness of<BR>their school makes them a good choice for all mages.  Since they have their own<BR>kind of destructive magic, they will find they don't miss evocations at all.<BR></pre>
 			</P>
 			
 			<p>
@@ -1034,17 +1052,17 @@
 			
 			<p>
 			<a name="AREA_COINS"><B>AREA_COINS</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
 			<a name="AREA_CURRENCY"><B>AREA_CURRENCY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
 			<a name="AREA_MONEY"><B>AREA_MONEY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
@@ -1104,37 +1122,37 @@
 			
 			<p>
 			<a name="AUTOASSIST"><B>AUTOASSIST</B></a>
-			<pre>Command : AUTOASSIST<BR>Usage   : AUTOASSIST<BR>Example : autoassist<BR>Short(s): <BR>Toggles whether or not you automatically assist fellow group members who have<BR>entered combat.</pre>
+			<pre>Command : AUTOASSIST<BR>Usage   : AUTOASSIST (ON/OFF)<BR>Example : autoassist<BR>Example : autoassist off<BR>Short(s): <BR>Toggles whether or not you automatically assist fellow group members who have<BR>entered combat.</pre>
 			</P>
 			
 			<p>
 			<a name="AUTODRAW"><B>AUTODRAW</B></a>
-			<pre>Command : AUTODRAW<BR>Usage   : AUTODRAW<BR>Example : autodraw<BR>Short(s): <BR>Toggles whether or not you automatically draw a weapon from a sheath before<BR>combat and automatically sheath your weapons when no longer in combat.</pre>
+			<pre>Command : AUTODRAW<BR>Usage   : AUTODRAW (ON/OFF)<BR>Example : autodraw<BR>Example : autodraw off<BR>Short(s): <BR>Toggles whether or not you automatically draw a weapon from a sheath before<BR>combat and automatically sheath your weapons when no longer in combat.</pre>
 			</P>
 			
 			<p>
 			<a name="AUTOEXITS"><B>AUTOEXITS</B></a>
-			<pre>Command : AUTOEXITS<BR>Usage   : AUTOEXITS<BR>Example : autoexits<BR>Short(s): <BR>Toggles whether or not the exits to any room are automatically displayed<BR>whenever you look.</pre>
+			<pre>Command : AUTOEXITS<BR>Usage   : AUTOEXITS (ON/OFF)<BR>Example : autoexits<BR>Example : autoexits off<BR>Short(s): <BR>Toggles whether or not the exits to any room are automatically displayed<BR>whenever you look.</pre>
 			</P>
 			
 			<p>
 			<a name="AUTOFORWARD"><B>AUTOFORWARD</B></a>
-			<pre>Command : AUTOFORWARD<BR>Usage   : AUTOFORWARD<BR>Example : autoforward<BR>Short(s): <BR>Toggles whether or not email sent to your players email address<BR>(playername@mudhost) will be forwarded to the email address you have on file<BR>with your player.  See help on the EMAIL command also.</pre>
+			<pre>Command : AUTOFORWARD<BR>Usage   : AUTOFORWARD (ON/OFF)<BR>Example : autoforward<BR>Example : autoforward off<BR>Short(s): <BR>Toggles whether or not email sent to your players email address<BR>(playername@mudhost) will be forwarded to the email address you have on file<BR>with your player.  See help on the EMAIL command also.</pre>
 			</P>
 			
 			<p>
 			<a name="AUTOGOLD"><B>AUTOGOLD</B></a>
-			<pre>Command : AUTOGOLD<BR>Usage   : AUTOGOLD<BR>Example : autogold<BR>Short(s): <BR>Toggles whether or not you automatically collect any gold from the corpses of<BR>vanquished foes.</pre>
+			<pre>Command : AUTOGOLD<BR>Usage   : AUTOGOLD (ON/OFF)<BR>Example : autogold<BR>Example : autogold off<BR>Short(s): <BR>Toggles whether or not you automatically collect any gold from the corpses of<BR>vanquished foes.</pre>
 			</P>
 			
 			<p>
 			<a name="AUTOGUARD"><B>AUTOGUARD</B></a>
-			<pre>Command : AUTOGUARD<BR>Usage   : AUTOGUARD<BR>Example : autoguard<BR>Short(s): <BR>By default, all players and mobs will literally follow from room to room<BR>whoever is the leader of their group.  By toggling on AUTOGUARD, a player or<BR>mob will stay put, even when the leader leaves the room.</pre>
+			<pre>Command : AUTOGUARD<BR>Usage   : AUTOGUARD (ON/OFF)<BR>Example : autoguard<BR>Example : autoguard off<BR>Short(s): guard<BR>By default, all players and mobs will literally follow from room to room<BR>whoever is the leader of their group.  By toggling on AUTOGUARD, a player or<BR>mob will stay put, even when the leader leaves the room.</pre>
 			</P>
 			
 			<p>
 			<a name="AUTOIMPROVEMENT"><B>AUTOIMPROVEMENT</B></a>
-			<pre>Command : AUTOIMPROVEMENT<BR>Usage   : AUTOIMPROVEMENT<BR>Example : autoimprovement<BR>Short(s): <BR>Toggles whether or not you are automatically notified whenever your proficiency<BR>goes up in one of your skills/spells/prayers/chants/songs/etc..</pre>
+			<pre>Command : AUTOIMPROVEMENT<BR>Usage   : AUTOIMPROVEMENT (ON/OFF)<BR>Example : autoimprovement<BR>Example : autoimprovement off<BR>Short(s): <BR>Toggles whether or not you are automatically notified whenever your proficiency<BR>goes up in one of your skills/spells/prayers/chants/songs/etc..</pre>
 			</P>
 			
 			<p>
@@ -1144,27 +1162,27 @@
 			
 			<p>
 			<a name="AUTOLOOT"><B>AUTOLOOT</B></a>
-			<pre>Command : AUTOLOOT<BR>Usage   : AUTOLOOT<BR>Example : autoloot<BR>Short(s): <BR>Toggles whether or not you automatically collect any items from the corpses of<BR>vanquished foes.</pre>
+			<pre>Command : AUTOLOOT<BR>Usage   : AUTOLOOT (ON/OFF)<BR>Example : autoloot<BR>Example : autoloot off<BR>Short(s): <BR>Toggles whether or not you automatically collect any items from the corpses of<BR>vanquished foes.</pre>
 			</P>
 			
 			<p>
 			<a name="AUTOMAP"><B>AUTOMAP</B></a>
-			<pre>Command : AUTOMAP<BR>Usage   : AUTOMAP<BR>Example : automap<BR>Short(s): <BR>If this mud supports the feature, then this command toggles whether or not you<BR>automatically see a mini-map of your immediate surroundings when you enter a<BR>new room.</pre>
+			<pre>Command : AUTOMAP<BR>Usage   : AUTOMAP (ON/OFF)<BR>Example : automap<BR>Example : automap off<BR>Short(s): <BR>If this mud supports the feature, then this command toggles whether or not you<BR>automatically see a mini-map of your immediate surroundings when you enter a<BR>new room.</pre>
 			</P>
 			
 			<p>
 			<a name="AUTOMELEE"><B>AUTOMELEE</B></a>
-			<pre>Command : AUTOMELEE<BR>Usage   : AUTOMELEE<BR>Example : automelee<BR>Short(s): <BR>Toggles whether or not you automatically advance towards an opponent who is out<BR>of range of your weapon.  When turned off it will allow a mage to stand back<BR>and use ranged spells without entering melee combat, or allow a player with a<BR>ranged weapon (such as a bow) to use an attack to retreat to a ranged position<BR>from a melee position.  This is turned on by default, and should be toggled<BR>with care.</pre>
+			<pre>Command : AUTOMELEE<BR>Usage   : AUTOMELEE (ON/OFF)<BR>Example : automelee<BR>Example : automelee off<BR>Short(s): <BR>Toggles whether or not you automatically advance towards an opponent who is out<BR>of range of your weapon.  When turned off it will allow a mage to stand back<BR>and use ranged spells without entering melee combat, or allow a player with a<BR>ranged weapon (such as a bow) to use an attack to retreat to a ranged position<BR>from a melee position.  This is turned on by default, and should be toggled<BR>with care.</pre>
 			</P>
 			
 			<p>
 			<a name="AUTONOTIFY"><B>AUTONOTIFY</B></a>
-			<pre>Command : AUTONOTIFY<BR>Usage   : AUTONOTIFY<BR>Example : autonotify<BR>Short(s): <BR>Toggles whether or not you are automatically notified whenever one of the users<BR>on your FRIENDS list logs on.  See the FRIENDS command for more information on<BR>this.</pre>
+			<pre>Command : AUTONOTIFY<BR>Usage   : AUTONOTIFY (ON/OFF)<BR>Example : autonotify<BR>Example : autonotify off<BR>Short(s): <BR>Toggles whether or not you are automatically notified whenever one of the users<BR>on your FRIENDS list logs on.  See the FRIENDS command for more information on<BR>this.</pre>
 			</P>
 			
 			<p>
 			<a name="AUTORUN"><B>AUTORUN</B></a>
-			<pre>Command : AUTORUN<BR>Usage   : AUTORUN<BR>Example : autorun<BR>Short(s): <BR>Toggles whether or not you automatically run when using the standard movement<BR>commands. Running consumes movement points far more quickly than standard<BR>movement does.</pre>
+			<pre>Command : AUTORUN<BR>Usage   : AUTORUN (ON/OFF)<BR>Example : autorun<BR>Example : autorun off<BR>Short(s): <BR>Toggles whether or not you automatically run when using the standard movement<BR>commands. Running consumes movement points far more quickly than standard<BR>movement does.</pre>
 			</P>
 			
 			<p>
@@ -1174,7 +1192,7 @@
 			
 			<p>
 			<a name="AUTOWEATHER"><B>AUTOWEATHER</B></a>
-			<pre>Command : AUTOWEATHER<BR>Usage   : AUTOWEATHER<BR>Example : autoweather<BR>Short(s): <BR>Toggles whether or not you automatically see weather information along with the<BR>room descriptions.</pre>
+			<pre>Command : AUTOWEATHER<BR>Usage   : AUTOWEATHER (ON/OFF)<BR>Example : autoweather<BR>Example : autoweather off<BR>Short(s): <BR>Toggles whether or not you automatically see weather information along with the<BR>room descriptions.</pre>
 			</P>
 			
 			<p>
@@ -1244,7 +1262,7 @@
 			
 			<p>
 			<a name="BRIEF"><B>BRIEF</B></a>
-			<pre>Command : BREIF<BR>Usage   : BRIEF<BR>Example : brief<BR>Short(s): <BR>Toggles whether the room descriptions are shown as you move around. See also<BR>the COMPRESS command.</pre>
+			<pre>Command : BREIF<BR>Usage   : BRIEF (ON/OFF)<BR>Example : brief<BR>Example : brief off<BR>Short(s): <BR>Toggles whether the room descriptions are shown as you move around. See also<BR>the COMPRESS command.</pre>
 			</P>
 			
 			<p>
@@ -1484,7 +1502,7 @@
 			
 			<p>
 			<a name="COINS"><B>COINS</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
@@ -1519,7 +1537,7 @@
 			
 			<p>
 			<a name="COMPRESS"><B>COMPRESS</B></a>
-			<pre>Command : COMPRESS<BR>Usage   : COMPRESS<BR>Example : compress<BR>Short(s): <BR>Toggles whether compressed room and equipment descriptions are shown. See also<BR>the BRIEF command.</pre>
+			<pre>Command : COMPRESS<BR>Usage   : COMPRESS (ON/OFF)<BR>Example : compress<BR>Example : compress off<BR>Short(s): <BR>Toggles whether compressed room and equipment descriptions are shown. See also<BR>the BRIEF command.</pre>
 			</P>
 			
 			<p>
@@ -1574,12 +1592,12 @@
 			
 			<p>
 			<a name="CURRENCIES"><B>CURRENCIES</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
 			<a name="CURRENCY"><B>CURRENCY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
@@ -1819,7 +1837,7 @@
 			
 			<p>
 			<a name="EXITS"><B>EXITS</B></a>
-			<pre>Command : EXITS<BR>Usage   : EXITS<BR>Example : exits<BR>Short(s): ex<BR>List the exits available to your character from the current room or area. </pre>
+			<pre>Command : EXITS<BR>Usage   : EXITS (SHORT/BRIEF)<BR>Example : exits<BR>Example : exits brief<BR>Short(s): ex<BR>List the exits available to your character from the current room or area. The<BR>"brief" (or "short") qualifier will leave out the exits details and just show<BR>you the directions. </pre>
 			</P>
 			
 			<p>
@@ -2249,17 +2267,17 @@
 			
 			<p>
 			<a name="LOCAL_COINS"><B>LOCAL_COINS</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
 			<a name="LOCAL_CURRENCY"><B>LOCAL_CURRENCY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
 			<a name="LOCAL_MONEY"><B>LOCAL_MONEY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
@@ -2309,12 +2327,12 @@
 			
 			<p>
 			<a name="MONEY"><B>MONEY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
 			<a name="MONIES"><B>MONIES</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
@@ -2634,7 +2652,7 @@
 			
 			<p>
 			<a name="QUIET"><B>QUIET</B></a>
-			<pre>Command : QUIET<BR>Usage   : QUIET<BR>Example : quiet<BR>Short(s): <BR>Turns off all global channels, such as GOSSIP, GRATZ, and others. To turn them<BR>back on, you may issue the GOSSIP, GRATZ command agin, or reissue the QUIET<BR>command to turn them all back on.</pre>
+			<pre>Command : QUIET<BR>Usage   : QUIET (ON/OFF)<BR>Example : quiet<BR>Example : quiet off<BR>Short(s): <BR>Turns off all global channels, such as GOSSIP, GRATZ, and others. To turn them<BR>back on, you may issue the GOSSIP, GRATZ command agin, or reissue the QUIET<BR>command to turn them all back on.</pre>
 			</P>
 			
 			<p>
@@ -2679,7 +2697,12 @@
 			
 			<p>
 			<a name="REMORT"><B>REMORT</B></a>
-			<pre>Remorting requires careful planning and, if you don't have the benefits of<BR>certain Druidic chants, lots of time.  Remorting is done through your children.<BR> Children are created by using the MATE social with a member of the opposite<BR>sex while the both of you are suitably undressed.  If pregnancy occurs in the<BR>female, birth will occur some 10 mud-months following this, though the time<BR>required to give birth is highly race-dependent.  The child should remain in<BR>the mothers inventory until it can walk, which occurs 9 mud- months following<BR>birth (more or less, depending on race again).  If the baby is Christened by a<BR>Cleric with a player legal name, and if the child remains as a follower of<BR>either the father or the mother until it grows up, it will become a player,<BR>which occurs 18-27 mud-months after birth.  If the child does not remain an<BR>active follower, or if it is never Christened, it will grow up to be a mob, or<BR>perhaps not grow up at all! Should the named child grow up, the child will<BR>cease to be a following mob, and become a player which can be logged-in as. <BR>The child may be a mixed breed of the mother and father if one of them is a<BR>Human and the other is not.  Racial benefits will be split between the mother<BR>and father, though children will have a bonus to one of their maximum stats<BR>when they become a player, making them a good choice for playing!</pre>
+			<pre>Command : REMORT<BR>Usage   : REMORT<BR>Example : remort<BR>Short(s): <BR>Causes your player to lose all or most of their levels, skills, stats, and<BR>other personal attributes, without ever losing your equipment, bank accounts,<BR>properties, or clan affiliation.  This allows you to try a different direction<BR>with your character.</pre>
+			</P>
+			
+			<p>
+			<a name="REMORTING"><B>REMORTING</B></a>
+			<pre>For direct REMORTING, if your mud supports it, please see help on the REMORT<BR>command.  Otherwise, remorting requires careful planning and, if you don't have<BR>the benefits of certain Druidic chants, lots of time.  Legacy remorting is done<BR>through your children.  Children are created by using the MATE social with a<BR>member of the opposite sex while the both of you are suitably undressed.  If<BR>pregnancy occurs in the female, birth will occur some 10 mud-months following<BR>this, though the time required to give birth is highly race-dependent.  The<BR>child should remain in the mothers inventory until it can walk, which occurs 9<BR>mud- months following birth (more or less, depending on race again).  If the<BR>baby is Christened by a Cleric with a player legal name, and if the child<BR>remains as a follower of either the father or the mother until it grows up, it<BR>will become a player, which occurs 18-27 mud-months after birth.  If the child<BR>does not remain an active follower, or if it is never Christened, it will grow<BR>up to be a mob, or perhaps not grow up at all! Should the named child grow up,<BR>the child will cease to be a following mob, and become a player which can be<BR>logged-in as.  The child may be a mixed breed of the mother and father if one<BR>of them is a Human and the other is not.  Racial benefits will be split between<BR>the mother and father, though children will have a bonus to one of their<BR>maximum stats when they become a player, making them a good choice for playing!</pre>
 			</P>
 			
 			<p>
@@ -2729,7 +2752,7 @@
 			
 			<p>
 			<a name="RETIRE"><B>RETIRE</B></a>
-			<pre>Command : RETIRE<BR>Usage   : RETIRE<BR>Example : retire<BR>Short(s): <BR>If you REALLY think there is no hope for your character, this command will<BR>delete your adventurer from the system forever.</pre>
+			<pre>Command : RETIRE<BR>Usage   : RETIRE<BR>Example : retire<BR>Short(s): <BR>If you REALLY think there is no hope for your character, this command will<BR>delete your adventurer from the system forever.  If there is still SOME hope,<BR>and you qualify, you might consider the REMORT command.</pre>
 			</P>
 			
 			<p>
@@ -2944,7 +2967,7 @@
 			
 			<p>
 			<a name="STAT"><B>STAT</B></a>
-			<pre>Command : STAT<BR>Usage   : STAT [STAT_NAME] ([STAT_NAME]...)<BR>Example : stat hits<BR>Example : stat hits mana strength<BR>Short(s): <BR>This command allows you to quickly and simply view one of more of your stats.<BR>Enter STATS by itself to see a list of available state to show, which includes:<BR><BR>HITS, MANA, MOVE, HUNGER, THIRST, FATIGUE, MAXHITS, MAXMANA, MAXMOVE,<BR>MAXHUNGER, MAXTHIRST, MAXFATIGUE, STRENGTH, INTELLIGENCE, DEXTERITY,<BR>CONSTITUTION, CHARISMA, WISDOM, GENDER, PARALYSIS, FIRE, COLD, WATER, GAS,<BR>MIND, GENERAL, JUSTICE, ACID, ELECTRICITY, POISON, UNDEAD, MAGIC, DISEASE,<BR>TRAPS, MAXSTRENGTH, MAXINTELLIGENCE, MAXDEXTERITY, MAXCONSTITUTION,<BR>MAXCHARISMA, MAXWISDOM, AGE, DETECTION, OVERLOOKING, CONVERSION, WEIGHTADJ,<BR>LEVEL, SENSESMASK, ARMOR, DAMAGE, ATTACK, DISPOSITIONMASK, REJUV, WEIGHT,<BR>ABILITY, HEIGHT</pre>
+			<pre>Command : STAT<BR>Usage   : STAT [STAT_NAME] ([STAT_NAME]...)<BR>Example : stat hits<BR>Example : stat hits mana strength<BR>Short(s): <BR>This command allows you to quickly and simply view one of more of your stats.<BR>Enter STATS by itself to see a list of available state to show, which includes:<BR><BR>HITS, MANA, MOVE, HUNGER, THIRST, FATIGUE, MAXHITS, MAXMANA, MAXMOVE,<BR>MAXHUNGER, MAXTHIRST, MAXFATIGUE, STRENGTH, INTELLIGENCE, DEXTERITY,<BR>CONSTITUTION, CHARISMA, WISDOM, GENDER, PARALYSIS, FIRE, COLD, WATER, GAS,<BR>MIND, GENERAL, JUSTICE, ACID, ELECTRICITY, POISON, UNDEAD, MAGIC, DISEASE,<BR>TRAPS, MAXSTRENGTH, MAXINTELLIGENCE, MAXDEXTERITY, MAXCONSTITUTION,<BR>MAXCHARISMA, MAXWISDOM, AGE, DETECTION, OVERLOOKING, CONVERSION, WEIGHTADJ,<BR>LEVEL, SENSESMASK, ARMOR, DAMAGE, ATTACK, DISPOSITIONMASK, REJUV, WEIGHT,<BR>ABILITY, HEIGHT, XP (experience), XPFNL (experience for next level), and XPTNL<BR>(experience to next level), QUESTPOINTS, TRAINS, PRACTICES.</pre>
 			</P>
 			
 			<p>
@@ -2965,6 +2988,11 @@
 			<p>
 			<a name="SWIM"><B>SWIM</B></a>
 			<pre>Skill    : SWIM<BR>Usage    : SWIM [DIRECTION]<BR>Available: ALL<BR>Example  : swim e<BR>This skill allows the character to travel on a water surface.  The amount of<BR>weight being carried can affect this skill.</pre>
+			</P>
+			
+			<p>
+			<a name="SWITCH"><B>SWITCH</B></a>
+			<pre>Command : SWITCH<BR>Usage   : SWITCH [PLAYER]<BR>Example : switch joe<BR>Short(s): <BR>Allows your player to switch sessions with another character on the same<BR>account.  If the other character is already logged on, then the two players<BR>will switch sessions/screens; the window that the switch player is typing in<BR>will now control the other character, and vis-a-versa.  If the other character<BR>is NOT currently logged in, then this command will log the current player out<BR>and quickly re-log the other character in, while remaining in the same<BR>connected session.</pre>
 			</P>
 			
 			<p>
@@ -3219,22 +3247,22 @@
 			
 			<p>
 			<a name="WORLD_CURRENCIES"><B>WORLD_CURRENCIES</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
 			<a name="WORLD_CURRENCY"><B>WORLD_CURRENCY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
 			<a name="WORLD_MONEY"><B>WORLD_MONEY</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>
 			<a name="WORLD_MONIES"><B>WORLD_MONIES</B></a>
-			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Credit<BR>credit(s) (c)       : (exchange rate is 1.0 of base)<BR>megacredit(s) (mc)  : Equal to 1000 credits.<BR>gigacredit(s) (gc)  : Equal to 1000000 credits.<BR><BR>Currency            : Copper<BR>copper bit(s) (cc)  : (exchange rate is 1.0 of base)<BR>silver bit(s) (sc)  : Equal to 10 copper bits.<BR>gold bit(s) (gc)    : Equal to 100 copper bits.<BR>platinum bit(s) (pc): Equal to 500 copper bits.<BR>aluminum bit(s) (ac): Equal to 10000 copper bits.<BR><BR>Currency            : Gold<BR>copper piece(s) (cp): (exchange rate is 0.01 of base)<BR>silver piece(s) (sp): Equal to 10 copper pieces.<BR>gold piece(s) (gp)  : Equal to 100 copper pieces.<BR>platinum piece(s) (p: Equal to 500 copper pieces.<BR></pre>
+			<pre><BR>World Currencies    :<BR>Currency            : default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR><BR>Currency            : Peis<BR>peis (s)            : (exchange rate is 1.0 of base)<BR><BR>Currency            : Alramian<BR></pre>
 			</P>
 			
 			<p>

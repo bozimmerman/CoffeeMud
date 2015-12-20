@@ -309,16 +309,21 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				else
 					help.append(CMStrings.capitalizeAndLower(currency));
 				final MoneyLibrary.MoneyDenomination denoms[]=CMLib.beanCounter().getCurrencySet(currency);
-				for (final MoneyDenomination denom : denoms)
+				if(denoms == null)
+					Log.errOut("Help","Unknown currency: "+currency);
+				else
 				{
-					if(denom.abbr().length()>0)
-						help.append("\n\r"+CMStrings.padRight(denom.name()+" ("+denom.abbr()+")",20)+":");
-					else
-						help.append("\n\r"+CMStrings.padRight(denom.name(),20)+":");
-					if(denom.value()==CMLib.beanCounter().getLowestDenomination(currency))
-						help.append(" (exchange rate is "+denom.value()+" of base)");
-					else
-						help.append(" "+CMLib.beanCounter().getConvertableDescription(currency,denom.value()));
+					for (final MoneyDenomination denom : denoms)
+					{
+						if(denom.abbr().length()>0)
+							help.append("\n\r"+CMStrings.padRight(denom.name()+" ("+denom.abbr()+")",20)+":");
+						else
+							help.append("\n\r"+CMStrings.padRight(denom.name(),20)+":");
+						if(denom.value()==CMLib.beanCounter().getLowestDenomination(currency))
+							help.append(L(" (exchange rate is @x1 of base)",""+denom.value()));
+						else
+							help.append(" "+CMLib.beanCounter().getConvertableDescription(currency,denom.value()));
+					}
 				}
 				help.append("\n\r");
 			}
