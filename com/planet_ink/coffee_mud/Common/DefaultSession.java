@@ -1310,7 +1310,12 @@ public class DefaultSession implements Session
 					}
 					else
 					if(terminalType.toLowerCase().startsWith("mushclient")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
+					{
 						negotiateTelnetMode(rawout,TELNET_MXP);
+						mxpSupportSet.remove("+IMAGE");
+						mxpSupportSet.remove("+IMAGE.URL");
+						mxpSupportSet.add("-IMAGE.URL");
+					}
 					else
 					if(terminalType.toLowerCase().equals("simplemu"))
 					{
@@ -1458,13 +1463,21 @@ public class DefaultSession implements Session
 						final int x=s.indexOf('.');
 						if(s.startsWith("+"))
 						{
-							mxpSupportSet.add(s);
-							if(x>0)
-								mxpSupportSet.add(s.substring(0, x));
+							if((terminalType == null)
+							||(!terminalType.toLowerCase().startsWith("mushclient"))
+							||(s.indexOf("IMAGE")<0))
+							{
+								mxpSupportSet.add(s);
+								if(x>0)
+									mxpSupportSet.add(s.substring(0, x));
+							}
 						}
 						else
 						if(s.startsWith("-"))
-							mxpSupportSet.remove(s);
+						{
+							mxpSupportSet.add(s);
+							mxpSupportSet.remove("+"+s.substring(1));
+						}
 					}
 				}
 				else

@@ -45,3 +45,12 @@ guides            : html manuals and help
 lib               : external java libraries
 resources         : coffeemud file-based configuration data
 web               : base directory for http server config and files
+
+Favorite Clients for playing CoffeeMud:
+TinTin++
+WinTin++
+ZMUD/CMUD (fully supports MXP and MSP)
+Siplet (built into the web site)
+MushClient
+
+
