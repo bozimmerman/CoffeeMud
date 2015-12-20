@@ -34,34 +34,120 @@ import java.util.*;
 */
 public class Avariel extends StdRace
 {
-	@Override public String ID(){	return "Avariel"; }
-	@Override public String name(){ return "Avariel"; }
-	@Override public int shortestMale(){return 59;}
-	@Override public int shortestFemale(){return 59;}
-	@Override public int heightVariance(){return 12;}
-	@Override public int lightestWeight(){return 80;}
-	@Override public int weightVariance(){return 80;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Elf";}
-	private final String[]culturalAbilityNames={"Elvish"};
-	private final int[]culturalAbilityProficiencies={75};
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
-	private final String[]racialAbilityNames={"WingFlying"};
-	private final int[]racialAbilityLevels={1};
-	private final int[]racialAbilityProficiencies={100};
-	private final boolean[]racialAbilityQuals={false};
-	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override
+	public String ID()
+	{
+		return "Avariel";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Avariel";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 59;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 59;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 80;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 80;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Elf";
+	}
+
+	private final String[]	culturalAbilityNames			= { "Elvish" };
+	private final int[]		culturalAbilityProficiencies	= { 75 };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
+
+	private final String[]	racialAbilityNames			= { "WingFlying" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,2 };
-	@Override public int[] bodyMask(){return parts;}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -69,6 +155,7 @@ public class Avariel extends StdRace
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -130,9 +217,12 @@ public class Avariel extends StdRace
 		}
 		return outfitChoices;
 	}
+	
 	@Override
 	public Weapon myNaturalWeapon()
-	{ return funHumanoidWeapon();	}
+	{
+		return funHumanoidWeapon();
+	}
 
 	@Override
 	public String healthText(MOB viewer, MOB mob)
@@ -171,6 +261,7 @@ public class Avariel extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

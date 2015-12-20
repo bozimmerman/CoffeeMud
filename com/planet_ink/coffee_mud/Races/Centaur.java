@@ -147,6 +147,7 @@ public class Centaur extends StdRace
 		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)-1);
 		affectableStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,affectableStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)-1);
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -171,45 +172,51 @@ public class Centaur extends StdRace
 				return name().toLowerCase()+" foal";
 			case Race.AGE_CHILD:
 			case Race.AGE_YOUNGADULT:
+			{
 				switch(gender)
 				{
-			case 'M':
-			case 'm':
-				return name().toLowerCase() + " colt";
-			case 'F':
-			case 'f':
-				return name().toLowerCase() + " filly";
-			default:
-				return "young " + name().toLowerCase();
+				case 'M':
+				case 'm':
+					return name().toLowerCase() + " colt";
+				case 'F':
+				case 'f':
+					return name().toLowerCase() + " filly";
+				default:
+					return "young " + name().toLowerCase();
 				}
+			}
 			case Race.AGE_MATURE:
 			case Race.AGE_MIDDLEAGED:
 			default:
+			{
 				switch(gender)
 				{
-			case 'M':
-			case 'm':
-				return "male " + name().toLowerCase();
-			case 'F':
-			case 'f':
-				return "female " + name().toLowerCase();
-			default:
-				return name().toLowerCase();
+				case 'M':
+				case 'm':
+					return "male " + name().toLowerCase();
+				case 'F':
+				case 'f':
+					return "female " + name().toLowerCase();
+				default:
+					return name().toLowerCase();
 				}
+			}
 			case Race.AGE_OLD:
 			case Race.AGE_VENERABLE:
 			case Race.AGE_ANCIENT:
+			{
 				switch(gender)
 				{
-			case 'M':
-			case 'm':
-				return "old male " + name().toLowerCase();
-			case 'F':
-			case 'f':
-				return "old female " + name().toLowerCase();
-			default:
-				return "old " + name().toLowerCase();
+				case 'M':
+				case 'm':
+					return "old male " + name().toLowerCase();
+				case 'F':
+				case 'f':
+					return "old female " + name().toLowerCase();
+				default:
+					return "old " + name().toLowerCase();
 				}
+			}
 		}
 	}
 
@@ -250,6 +257,7 @@ public class Centaur extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

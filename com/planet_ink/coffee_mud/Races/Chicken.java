@@ -34,53 +34,135 @@ import java.util.*;
 */
 public class Chicken extends StdRace
 {
-	@Override public String ID(){	return "Chicken"; }
-	@Override public String name(){ return "Chicken"; }
-	@Override public int shortestMale(){return 13;}
-	@Override public int shortestFemale(){return 13;}
-	@Override public int heightVariance(){return 6;}
-	@Override public int lightestWeight(){return 20;}
-	@Override public int weightVariance(){return 5;}
-	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EYES);}
-	@Override public String racialCategory(){return "Avian";}
+	@Override
+	public String ID()
+	{
+		return "Chicken";
+	}
 
-	private final String[]racialAbilityNames={"ChickenSpeak"};
-	private final int[]racialAbilityLevels={1};
-	private final int[]racialAbilityProficiencies={100};
-	private final boolean[]racialAbilityQuals={false};
-	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
-	
+	@Override
+	public String name()
+	{
+		return "Chicken";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 13;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 13;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 6;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 20;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 5;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return ~(Wearable.WORN_HEAD | Wearable.WORN_EYES);
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Avian";
+	}
+
+	private final String[]	racialAbilityNames			= { "ChickenSpeak" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,0 ,0 ,1 ,1 ,0 ,2 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,2,4,7,15,20,21,22};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 1, 2, 4, 7, 15, 20, 21, 22 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
-
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,3);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,4);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "walks in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "walks";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -103,30 +185,51 @@ public class Chicken extends StdRace
 			case Race.AGE_INFANT:
 			case Race.AGE_TODDLER:
 			case Race.AGE_CHILD:
+			{
 				switch(gender)
 				{
-				case 'M': case 'm': return "cockrell";
-				case 'F': case 'f': return "chick";
-				default: return super.makeMobName(gender, age);
+				case 'M':
+				case 'm':
+					return "cockrell";
+				case 'F':
+				case 'f':
+					return "chick";
+				default:
+					return super.makeMobName(gender, age);
 				}
+			}
 			case Race.AGE_YOUNGADULT:
 			case Race.AGE_MATURE:
 			case Race.AGE_MIDDLEAGED:
+			{
 				switch(gender)
 				{
-				case 'M': case 'm': return "rooster";
-				case 'F': case 'f': return "hen";
-				default: return super.makeMobName(gender, age);
+				case 'M':
+				case 'm':
+					return "rooster";
+				case 'F':
+				case 'f':
+					return "hen";
+				default:
+					return super.makeMobName(gender, age);
 				}
+			}
 			case Race.AGE_OLD:
 			case Race.AGE_VENERABLE:
 			case Race.AGE_ANCIENT:
+			{
 				switch(gender)
 				{
-				case 'M': case 'm': return "old rooster";
-				case 'F': case 'f': return "old hen";
-				default: return super.makeMobName(gender, age);
+				case 'M':
+				case 'm':
+					return "old rooster";
+				case 'F':
+				case 'f':
+					return "old hen";
+				default:
+					return super.makeMobName(gender, age);
 				}
+			}
 			default :
 				return super.makeMobName(gender, age);
 		}

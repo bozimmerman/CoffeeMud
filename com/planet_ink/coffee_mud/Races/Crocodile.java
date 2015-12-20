@@ -32,16 +32,46 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Crocodile extends GreatLizard
 {
-	@Override public String ID(){	return "Crocodile"; }
-	@Override public String name(){ return "Crocodile"; }
-	private final String[]racialAbilityNames={"Skill_Swim","AlligatorSpeak"};
-	private final int[]racialAbilityLevels={1,1};
-	private final int[]racialAbilityProficiencies={100,100};
-	private final boolean[]racialAbilityQuals={false,false};
-	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override
+	public String ID()
+	{
+		return "Crocodile";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Crocodile";
+	}
+
+	private final String[]	racialAbilityNames			= { "Skill_Swim", "AlligatorSpeak" };
+	private final int[]		racialAbilityLevels			= { 1, 1 };
+	private final int[]		racialAbilityProficiencies	= { 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

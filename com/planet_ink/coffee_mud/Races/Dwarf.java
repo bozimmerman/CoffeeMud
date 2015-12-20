@@ -34,29 +34,99 @@ import java.util.*;
 */
 public class Dwarf extends StdRace
 {
-	@Override public String ID(){	return "Dwarf"; }
-	@Override public String name(){ return "Dwarf"; }
-	@Override public int shortestMale(){return 52;}
-	@Override public int shortestFemale(){return 48;}
-	@Override public int heightVariance(){return 8;}
-	@Override public int lightestWeight(){return 150;}
-	@Override public int weightVariance(){return 100;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Dwarf";}
-	private final String[]culturalAbilityNames={"Dwarven","Mining"};
-	private final int[]culturalAbilityProficiencies={100,50};
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override
+	public String ID()
+	{
+		return "Dwarf";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Dwarf";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 52;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 48;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 8;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 150;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 100;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Dwarf";
+	}
+
+	private final String[]	culturalAbilityNames			= { "Dwarven", "Mining" };
+	private final int[]		culturalAbilityProficiencies	= { 100, 50 };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,5,40,125,188,250,270,290};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	private final int[]	agingChart	= { 0, 1, 5, 40, 125, 188, 250, 270, 290 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -64,6 +134,7 @@ public class Dwarf extends StdRace
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -74,6 +145,7 @@ public class Dwarf extends StdRace
 		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-1);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+10);
 	}
+
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{
@@ -109,9 +181,12 @@ public class Dwarf extends StdRace
 		}
 		return outfitChoices;
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
-	{ return funHumanoidWeapon();	}
+	{
+		return funHumanoidWeapon();
+	}
 
 	@Override
 	public String healthText(MOB viewer, MOB mob)
@@ -150,6 +225,7 @@ public class Dwarf extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

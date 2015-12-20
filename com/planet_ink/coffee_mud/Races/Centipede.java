@@ -35,25 +35,84 @@ import java.util.*;
 */
 public class Centipede extends StdRace
 {
-	@Override public String ID(){	return "Centipede"; }
-	@Override public String name(){ return "Centipede"; }
-	@Override public int shortestMale(){return 1;}
-	@Override public int shortestFemale(){return 1;}
-	@Override public int heightVariance(){return 0;}
-	@Override public int lightestWeight(){return 1;}
-	@Override public int weightVariance(){return 0;}
-	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_TORSO);}
-	@Override public String racialCategory(){return "Insect";}
+	@Override
+	public String ID()
+	{
+		return "Centipede";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Centipede";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 1;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 1;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 0;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 1;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 0;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return ~(Wearable.WORN_TORSO);
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Insect";
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,99,99,0 ,0 ,1 ,0 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,0,0,1,1,1,1,2,2};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 0, 0, 1, 1, 1, 1, 2, 2 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -63,6 +122,7 @@ public class Centipede extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -71,16 +131,19 @@ public class Centipede extends StdRace
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "crawls in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "crawls";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -94,6 +157,7 @@ public class Centipede extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{

@@ -35,8 +35,18 @@ import java.util.*;
 */
 public class ClayGolem extends StoneGolem
 {
-	@Override public String ID(){	return "ClayGolem"; }
-	@Override public String name(){ return "Clay Golem"; }
+	@Override
+	public String ID()
+	{
+		return "ClayGolem";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Clay Golem";
+	}
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	@Override

@@ -34,13 +34,47 @@ import java.util.*;
 */
 public class Dummy extends Doll
 {
-	@Override public String ID(){	return "Dummy"; }
-	@Override public String name(){ return "Dummy"; }
-	@Override public int shortestMale(){return 68;}
-	@Override public int shortestFemale(){return 64;}
-	@Override public int heightVariance(){return 12;}
-	@Override public int lightestWeight(){return 150;}
-	@Override public int weightVariance(){return 50;}
+	@Override
+	public String ID()
+	{
+		return "Dummy";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Dummy";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 68;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 64;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 150;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 50;
+	}
 
 	@Override
 	public void affectCharState(MOB mob, CharState affectableMaxState)

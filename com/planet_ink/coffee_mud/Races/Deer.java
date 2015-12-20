@@ -34,34 +34,113 @@ import java.util.*;
 */
 public class Deer extends StdRace
 {
-	@Override public String ID(){	return "Deer"; }
-	@Override public String name(){ return "Deer"; }
-	@Override public int shortestMale(){return 38;}
-	@Override public int shortestFemale(){return 38;}
-	@Override public int heightVariance(){return 6;}
-	@Override public int lightestWeight(){return 150;}
-	@Override public int weightVariance(){return 50;}
-	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
-	@Override public String racialCategory(){return "Equine";}
+	@Override
+	public String ID()
+	{
+		return "Deer";
+	}
 
-	private final String[]racialAbilityNames={"DeerSpeak"};
-	private final int[]racialAbilityLevels={1};
-	private final int[]racialAbilityProficiencies={100};
-	private final boolean[]racialAbilityQuals={false};
-	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override
+	public String name()
+	{
+		return "Deer";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 38;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 38;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 6;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 150;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 50;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return ~(Wearable.WORN_FEET | Wearable.WORN_NECK | Wearable.WORN_EARS | Wearable.WORN_EYES);
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Equine";
+	}
+
+	private final String[]	racialAbilityNames			= { "DeerSpeak" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,2,4,7,15,20,21,22};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 1, 2, 4, 7, 15, 20, 21, 22 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -71,6 +150,7 @@ public class Deer extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,18);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -84,6 +164,7 @@ public class Deer extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{
@@ -97,23 +178,38 @@ public class Deer extends StdRace
 			case Race.AGE_MATURE:
 			case Race.AGE_MIDDLEAGED:
 			default:
+			{
 				switch(gender)
 				{
-				case 'M': case 'm': return "stag";
-				case 'F': case 'f': return "doe";
-				default: return name().toLowerCase();
+				case 'M':
+				case 'm':
+					return "stag";
+				case 'F':
+				case 'f':
+					return "doe";
+				default:
+					return name().toLowerCase();
 				}
+			}
 			case Race.AGE_OLD:
 			case Race.AGE_VENERABLE:
 			case Race.AGE_ANCIENT:
+			{
 				switch(gender)
 				{
-				case 'M': case 'm': return "old buck";
-				case 'F': case 'f': return "old doe";
-				default: return "old "+name().toLowerCase();
+				case 'M':
+				case 'm':
+					return "old buck";
+				case 'F':
+				case 'f':
+					return "old doe";
+				default:
+					return "old " + name().toLowerCase();
 				}
+			}
 		}
 	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -151,6 +247,7 @@ public class Deer extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -161,11 +258,15 @@ public class Deer extends StdRace
 				resources.addElement(makeResource
 				("a pair of "+name().toLowerCase()+" horns",RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<7;i++)
+				{
 					resources.addElement(makeResource
 					("a strip of "+name().toLowerCase()+" leather",RawMaterial.RESOURCE_LEATHER));
+				}
 				for(int i=0;i<3;i++)
+				{
 					resources.addElement(makeResource
 					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
+				}
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource

@@ -32,6 +32,15 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Elephant extends Pachyderm
 {
-	@Override public String ID(){	return "Elephant"; }
-	@Override public String name(){ return "Elephant"; }
+	@Override
+	public String ID()
+	{
+		return "Elephant";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Elephant";
+	}
 }

@@ -34,34 +34,101 @@ import java.util.Vector;
 */
 public class Cobra extends Snake
 {
-	@Override public String ID(){	return "Cobra"; }
-	@Override public String name(){ return "Cobra"; }
-	@Override public int shortestMale(){return 6;}
-	@Override public int shortestFemale(){return 6;}
-	@Override public int heightVariance(){return 3;}
-	@Override public int lightestWeight(){return 15;}
-	@Override public int weightVariance(){return 20;}
-	@Override public String racialCategory(){return "Serpent";}
-	private final String[]racialAbilityNames={"Poison_Heartstopper"};
-	private final int[]racialAbilityLevels={5};
-	private final int[]racialAbilityProficiencies={30};
-	private final boolean[]racialAbilityQuals={false};
-	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override
+	public String ID()
+	{
+		return "Cobra";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Cobra";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 6;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 6;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 3;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 15;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 20;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Serpent";
+	}
+
+	private final String[]	racialAbilityNames			= { "Poison_Heartstopper" };
+	private final int[]		racialAbilityLevels			= { 5 };
+	private final int[]		racialAbilityProficiencies	= { 30 };
+	private final boolean[]	racialAbilityQuals			= { false };
+
+	@Override
+	public String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	public int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	public int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	public boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,1 ,0 ,1 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,18);
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

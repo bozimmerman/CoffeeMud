@@ -35,37 +35,128 @@ import java.util.*;
 */
 public class Bullywug extends StdRace
 {
-	@Override public String ID(){	return "Bullywug"; }
-	@Override public String name(){ return "Bullywug"; }
-	@Override public int shortestMale(){return 55;}
-	@Override public int shortestFemale(){return 50;}
-	@Override public int heightVariance(){return 8;}
-	@Override public int lightestWeight(){return 80;}
-	@Override public int weightVariance(){return 50;}
-	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
-	@Override public String racialCategory(){return "Amphibian";}
-	private final String[]culturalAbilityNames={"Goblinese","Skill_Hunting"};
-	private final int[]culturalAbilityProficiencies={100,50};
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
-	private final String[]racialAbilityNames={"Skill_Swim"};
-	private final int[]racialAbilityLevels={1};
-	private final int[]racialAbilityProficiencies={100};
-	private final boolean[]racialAbilityQuals={false};
-	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override
+	public String ID()
+	{
+		return "Bullywug";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Bullywug";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 55;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 50;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 8;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 80;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 50;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return ~(Wearable.WORN_EYES);
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Amphibian";
+	}
+
+	private final String[]	culturalAbilityNames			= { "Goblinese", "Skill_Hunting" };
+	private final int[]		culturalAbilityProficiencies	= { 100, 50 };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
+
+	private final String[]	racialAbilityNames			= { "Skill_Swim" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+
+	@Override
+	public String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	public int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	public int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	public boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
 
 	//  						   		   an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,4,8,12,16,20,24,28,32};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 4, 8, 12, 16, 20, 24, 28, 32 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -74,6 +165,7 @@ public class Bullywug extends StdRace
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -82,9 +174,12 @@ public class Bullywug extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,7);
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
-	{ return funHumanoidWeapon();	}
+	{
+		return funHumanoidWeapon();
+	}
 
 	@Override
 	public String makeMobName(char gender, int age)
@@ -138,6 +233,7 @@ public class Bullywug extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+	
 	@Override
 	public List<RawMaterial> myResources()
 	{
