@@ -196,7 +196,7 @@ public class StdRideable extends StdMOB implements Rideable
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
-			if(!CMLib.flags().hasSeenContents(this))
+			if(!CMLib.flags().isWithSeenContents(this))
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 			if(amRiding(mob))
 			{

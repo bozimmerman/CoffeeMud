@@ -378,7 +378,7 @@ public class DefaultSocial implements Social
 
 			if ((target != null) 
 			&& (target instanceof Physical) 
-			&& (!CMLib.flags().isSeen((Physical) target)))
+			&& (!CMLib.flags().isSeeable((Physical) target)))
 				target = null;
 		}
 

@@ -105,7 +105,7 @@ public class FireBuilding extends CommonSkill
 			&&(I2 instanceof RawMaterial)
 			&&(((I2.material()&RawMaterial.RESOURCE_MASK)==material)
 				||(((I2.material())&RawMaterial.MATERIAL_MASK)==material))
-			&&(!CMLib.flags().enchanted(I2)))
+			&&(!CMLib.flags().isEnchanted(I2)))
 				here.addElement(I2);
 		}
 		return here;
@@ -200,7 +200,7 @@ public class FireBuilding extends CommonSkill
 					return false;
 				}
 			}
-			durationOfBurn=CMLib.flags().burnStatus(lighting);
+			durationOfBurn=CMLib.materials().getBurnDuration(lighting);
 			if(durationOfBurn<0)
 			{
 				commonTell(mob,L("You need to cook that, if you can."));

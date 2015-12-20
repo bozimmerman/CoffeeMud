@@ -156,7 +156,7 @@ public class GatheringSkill extends CommonSkill
 					foundAnyway=I;
 				if((I instanceof RawMaterial)
 				&&(!CMLib.flags().isOnFire(I))
-				&&(!CMLib.flags().enchanted(I))
+				&&(!CMLib.flags().isEnchanted(I))
 				&&(I.container()==null)
 				&&((I.material()==foundResource)
 					||((foundResource<0)&&maskV.contains(Integer.valueOf(I.material())))))

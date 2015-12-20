@@ -121,13 +121,13 @@ public class Spell_MirrorImage extends Spell
 			{
 				Say.append("^M");
 				if(compress)
-					Say.append(CMLib.flags().colorCodes(mob,mob)+"^M ");
+					Say.append(CMLib.flags().getDispositionBlurbs(mob,mob)+"^M ");
 				if(mob.displayText(msg.source()).length()>0)
 					Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.displayText(msg.source()))));
 				else
 					Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.name())));
 				if(!compress)
-					Say.append(CMLib.flags().colorCodes(mob,msg.source())+"^N\n\r");
+					Say.append(CMLib.flags().getDispositionBlurbs(mob,msg.source())+"^N\n\r");
 				else
 					Say.append("^N");
 			}

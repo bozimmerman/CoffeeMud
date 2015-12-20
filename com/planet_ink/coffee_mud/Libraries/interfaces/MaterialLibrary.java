@@ -68,4 +68,12 @@ public interface MaterialLibrary extends CMLibrary
 	public Item findFirstResource(MOB E, String other);
 	public void adjustResourceName(Item I);
 	public String genericType(Item I);
+
+	/**
+	 * Returns the number of ticks that the given item, whatever
+	 * will burn, or 0 if it won't burn.
+	 * @param E the item to check
+	 * @return the number of ticks to burn, or 0
+	 */
+	public int getBurnDuration(Environmental E);
 }

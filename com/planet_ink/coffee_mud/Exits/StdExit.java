@@ -471,12 +471,12 @@ public class StdExit implements Exit
 			if(room==null)
 				viewMsg.append("^Z(null)^.^? ");
 			else
-				viewMsg.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+CMLib.flags().colorCodes(room,mob)+" ");
+				viewMsg.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+CMLib.flags().getDispositionBlurbs(room,mob)+" ");
 			viewMsg.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
 		if(((CMLib.flags().canBeSeenBy(this,mob))||(isOpen()&&hasADoor()))
-		&&(CMLib.flags().isSeen(this)))
+		&&(CMLib.flags().isSeeable(this)))
 		{
 			if(isOpen())
 			{
@@ -484,14 +484,14 @@ public class StdExit implements Exit
 					viewMsg.append("darkness");
 				else
 				if(displayText().length()>0)
-					viewMsg.append(displayText()+CMLib.flags().colorCodes(this,mob));
+					viewMsg.append(displayText()+CMLib.flags().getDispositionBlurbs(this,mob));
 				else
 				if(room!=null)
-					viewMsg.append(room.displayText(mob)+CMLib.flags().colorCodes(room,mob));
+					viewMsg.append(room.displayText(mob)+CMLib.flags().getDispositionBlurbs(room,mob));
 			}
 			else
 			if((CMLib.flags().canBeSeenBy(this,mob))&&(closedText().trim().length()>0))
-				viewMsg.append(closedText()+CMLib.flags().colorCodes(this,mob));
+				viewMsg.append(closedText()+CMLib.flags().getDispositionBlurbs(this,mob));
 		}
 		return viewMsg;
 	}

@@ -1253,7 +1253,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("+"))
 							{
-								final int code=CMLib.flags().getSensesCode(str2.substring(1));
+								final int code=CMLib.flags().getSensesIndex(str2.substring(1));
 								if(code>=0)
 									buf.append(PhyStats.CAN_SEE_DESCS[code]+", ");
 							}
@@ -1273,7 +1273,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("-"))
 							{
-								final int code=CMLib.flags().getSensesCode(str2.substring(1));
+								final int code=CMLib.flags().getSensesIndex(str2.substring(1));
 								if(code>=0)
 									buf.append(PhyStats.CAN_SEE_DESCS[code]+", ");
 							}
@@ -1548,7 +1548,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("+"))
 							{
-								final int code=CMLib.flags().getDispositionCode(str2.substring(1));
+								final int code=CMLib.flags().getDispositionIndex(str2.substring(1));
 								if(code>=0)
 									buf.append(PhyStats.IS_DESCS[code]+", ");
 							}
@@ -1568,7 +1568,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("-"))
 							{
-								final int code=CMLib.flags().getDispositionCode(str2.substring(1));
+								final int code=CMLib.flags().getDispositionIndex(str2.substring(1));
 								if(code>=0)
 									buf.append(PhyStats.IS_DESCS[code]+", ");
 							}
@@ -3244,7 +3244,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							else
 							if((str2.startsWith("-"))||(str2.startsWith("+")))
 							{
-								final int code=CMLib.flags().getDispositionCode(str2.substring(1));
+								final int code=CMLib.flags().getDispositionIndex(str2.substring(1));
 								if(code>=0)
 									parms.add(Integer.valueOf((int)CMath.pow(2,code)));
 							}
@@ -3268,7 +3268,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							else
 							if((str2.startsWith("-"))||(str2.startsWith("+")))
 							{
-								final int code=CMLib.flags().getSensesCode(str2.substring(1));
+								final int code=CMLib.flags().getSensesIndex(str2.substring(1));
 								if(code>=0)
 									parms.add(Integer.valueOf((int)CMath.pow(2,code)));
 							}

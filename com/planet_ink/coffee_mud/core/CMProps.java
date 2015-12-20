@@ -351,6 +351,11 @@ public class CMProps extends Properties
 		TOD_CHANGE_INSIDE,
 		WEATHER_ENDS,
 		WEAPON_HIT_DESCS,
+		RACIAL_CATEGORY_IS_UNDEAD,
+		RACIAL_CATEGORY_IS_OUTSIDER,
+		RACIAL_CATEGORY_IS_INSECT,
+		RACIAL_CATEGORY_IS_VERMIN,
+		RACIAL_CATEGORY_IS_VEGETATION,
 		TECH_LEVEL_NAMES,
 		TECH_BABBLE_VERBS,
 		TECH_BABBLE_ADJ1,
@@ -403,26 +408,28 @@ public class CMProps extends Properties
 		NEWPLAYERS
 	}
 
-	protected final String[]	sysVars				= new String[Str.values().length];
-	protected final Integer[]   sysInts				= new Integer[Int.values().length];
-	protected final Boolean[]   sysBools			= new Boolean[Bool.values().length];
-	protected final String[][]  sysLists			= new String[StrList.values().length][];
-	protected final Object[]	sysLstFileLists		= new Object[ListFile.values().length];
-	protected final List<String>sayFilter			= new Vector<String>();
-	protected final List<String>channelFilter		= new Vector<String>();
-	protected final List<String>emoteFilter			= new Vector<String>();
-	protected final List<String>poseFilter			= new Vector<String>();
-	protected String[][]		statCodeExtensions 	= null;
-	protected int				pkillLevelDiff		= 26;
-	protected boolean			loaded				= false;
-	protected byte[]			promptSuffix		= new byte[0];
-	protected long				lastReset			= System.currentTimeMillis();
-	protected long  			TIME_TICK			= 4000;
-	protected long  			MILLIS_PER_MUDHOUR	= 600000;
-	protected long  			TICKS_PER_RLMIN		= (int)Math.round(60000.0/TIME_TICK);
-	protected long  			TICKS_PER_RLHOUR	= TICKS_PER_RLMIN * 60;
-	protected long  			TICKS_PER_RLDAY		=TICKS_PER_RLHOUR * 24;
-	protected double			TIME_TICK_DOUBLE	= TIME_TICK;
+	@SuppressWarnings("unchecked")
+	protected final Set<String>[]sysLstFileSet		= new Set[ListFile.values().length];
+	protected final String[]	 sysVars			= new String[Str.values().length];
+	protected final Integer[]	 sysInts			= new Integer[Int.values().length];
+	protected final Boolean[]	 sysBools			= new Boolean[Bool.values().length];
+	protected final String[][]	 sysLists			= new String[StrList.values().length][];
+	protected final Object[]	 sysLstFileLists	= new Object[ListFile.values().length];
+	protected final List<String> sayFilter			= new Vector<String>();
+	protected final List<String> channelFilter		= new Vector<String>();
+	protected final List<String> emoteFilter		= new Vector<String>();
+	protected final List<String> poseFilter			= new Vector<String>();
+	protected String[][]		 statCodeExtensions = null;
+	protected int				 pkillLevelDiff		= 26;
+	protected boolean			 loaded				= false;
+	protected byte[]			 promptSuffix		= new byte[0];
+	protected long				 lastReset			= System.currentTimeMillis();
+	protected long  			 TIME_TICK			= 4000;
+	protected long  			 MILLIS_PER_MUDHOUR	= 600000;
+	protected long  			 TICKS_PER_RLMIN	= (int)Math.round(60000.0/TIME_TICK);
+	protected long  			 TICKS_PER_RLHOUR	= TICKS_PER_RLMIN * 60;
+	protected long  			 TICKS_PER_RLDAY	=TICKS_PER_RLHOUR * 24;
+	protected double			 TIME_TICK_DOUBLE	= TIME_TICK;
 	protected final Map<String,Integer>	maxClanCatsMap				= new HashMap<String,Integer>();
 	protected final Set<String>			publicClanCats				= new HashSet<String>();
 	protected final Map<String,Double>	skillMaxManaExceptions		= new HashMap<String,Double>();
@@ -903,7 +910,9 @@ public class CMProps extends Properties
 			return p().sysInts[varNum.ordinal()].intValue(); 
 		}
 		catch(final Exception t) 
-		{ return -1; }
+		{
+			return -1;
+		}
 	}
 
 	/**
@@ -919,7 +928,39 @@ public class CMProps extends Properties
 			return p().sysLists[varType.ordinal()]; 
 		}
 		catch(final Exception t) 
-		{ return new String[0]; }
+		{
+			return new String[0];
+		}
+	}
+
+	/**
+	 * Retreive one of the pre-processed coffeemud.ini lists for
+	 * the callers thread group, as a hashed set of values.
+	 * @param varType the StrList enum of the set list to get
+	 * @return the list set from the properties.
+	 */
+	public static final Set<String> getListFileVarSet(final ListFile varType)
+	{
+		try 
+		{
+			final CMProps p=p();
+			if(p.sysLstFileSet[varType.ordinal()] == null)
+			{
+				synchronized(p.sysLstFileSet)
+				{
+					if(p.sysLstFileSet[varType.ordinal()] == null)
+					{
+						final String[] list =  CMProps.getListFileStringList(varType);
+						p.sysLstFileSet[varType.ordinal()] = Collections.synchronizedSet(new HashSet<String>(Arrays.asList(list)));
+					}
+				}
+			}
+			return p.sysLstFileSet[varType.ordinal()];
+		}
+		catch(final Exception t) 
+		{
+			return new HashSet<String>();
+		}
 	}
 
 	/**
@@ -935,7 +976,9 @@ public class CMProps extends Properties
 			return p().sysBools[varNum.ordinal()].booleanValue(); 
 		}
 		catch(final Exception t) 
-		{ return false; }
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -962,8 +1005,10 @@ public class CMProps extends Properties
 		if(varNum==null)
 			return;
 		for(final CMProps p : CMProps.props)
+		{
 			if(p!=null)
 				p.sysBools[varNum.ordinal()]=Boolean.valueOf(val);
+		}
 	}
 
 	/**
@@ -1117,8 +1162,10 @@ public class CMProps extends Properties
 	public static final void setUpAllLowVar(final Str varNum, final String val)
 	{
 		for (final CMProps prop : props)
+		{
 			if(prop!=null)
 				setUpLowVar(prop,varNum,val);
+		}
 	}
 
 	/**
@@ -1335,6 +1382,7 @@ public class CMProps extends Properties
 		synchronized(DV)
 		{
 			for(int i=DV.size()-1;i>=0;i--)
+			{
 				if(DV.elementAt(i).first.equalsIgnoreCase(address))
 				{
 					if(System.currentTimeMillis()>(DV.elementAt(i).second.longValue()))
@@ -1342,6 +1390,7 @@ public class CMProps extends Properties
 					else
 						count++;
 				}
+			}
 		}
 		return count;
 	}
@@ -1423,7 +1472,8 @@ public class CMProps extends Properties
 				if(rawListData==null)
 				{
 					rawListData=new Properties();
-					final String listFileName=CMProps.p().getProperty("LISTFILE");
+					CMProps p=p();
+					final String listFileName=p.getProperty("LISTFILE");
 					final CMFile F=new CMFile(listFileName,null,CMFile.FLAG_LOGERRORS);
 					if(F.exists())
 					{
@@ -1431,12 +1481,16 @@ public class CMProps extends Properties
 						{
 							rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(Str.CHARSETINPUT)));
 						}
-						catch(final IOException e){}
+						catch (final IOException e)
+						{
+						}
 					}
 					Resources.submitResource(rscKey, rawListData);
-					final Object[] set=p().sysLstFileLists;
-					for(int i=0;i<set.length;i++)
-						set[i]=null;
+					for(final ListFile lfVar : ListFile.values())
+					{
+						p.sysLstFileLists[lfVar.ordinal()]=null;
+						p.sysLstFileSet[lfVar.ordinal()]=null;
+					}
 				}
 			}
 		}
@@ -1469,9 +1523,13 @@ public class CMProps extends Properties
 	{
 		if(var==null)
 			return new String[0];
-		final Object[] objs=p().sysLstFileLists;
+		final CMProps p=p();
+		final Object[] objs=p.sysLstFileLists;
 		if(objs[var.ordinal()]==null)
+		{
 			objs[var.ordinal()]=CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),true));
+			p.sysLstFileSet[var.ordinal()]=null;
+		}
 		return ((String[])objs[var.ordinal()]);
 	}
 
@@ -1485,11 +1543,15 @@ public class CMProps extends Properties
 	{
 		if(var==null)
 			return new int[0];
-		final Object[] objs=p().sysLstFileLists;
+		final CMProps p=p();
+		final Object[] objs=p.sysLstFileLists;
 		if(objs[var.ordinal()]==null)
 		{
 			if(objs[var.ordinal()]==null)
+			{
 				objs[var.ordinal()]=CMParms.toIntArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),true));
+				p.sysLstFileSet[var.ordinal()]=null;
+			}
 		}
 		return ((int[])objs[var.ordinal()]);
 	}
@@ -1498,17 +1560,21 @@ public class CMProps extends Properties
 	{
 		if(var==null)
 			return new Object[0][];
-		final Object[] objs=p().sysLstFileLists;
+		final CMProps p=p();
+		final Object[] objs=p.sysLstFileLists;
 		if(objs[var.ordinal()]==null)
 		{
 			final String[] baseArray = CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),false));
 			final Object[][] finalArray=new Object[baseArray.length][];
 			for(int s=0;s<finalArray.length;s++)
+			{
 				if((baseArray[s]==null)||(baseArray[s].length()==0))
 					finalArray[s]=new Object[]{""};
 				else
 					finalArray[s]=CMParms.toStringArray(CMParms.parseAny(baseArray[s], '|', false));
+			}
 			objs[var.ordinal()]=finalArray;
+			p.sysLstFileSet[var.ordinal()]=null;
 		}
 		return (Object[][])objs[var.ordinal()];
 	}
@@ -1523,7 +1589,8 @@ public class CMProps extends Properties
 	{
 		if(var==null)
 			return new String[0][0][];
-		final Object[] objs=p().sysLstFileLists;
+		final CMProps p=p();
+		final Object[] objs=p.sysLstFileLists;
 		if(objs[var.ordinal()]==null)
 		{
 			final List<String> V=CMParms.parseSemicolons(getRawListFileEntry(var.getKey()),true);
@@ -1535,12 +1602,15 @@ public class CMProps extends Properties
 			{
 				finalSet[s]=new Object[subSet[s].length][];
 				for(int s1=0;s1<subSet[s].length;s1++)
+				{
 					if((subSet[s][s1]==null)||(((String)subSet[s][s1]).length()==0))
 						finalSet[s][s1]=new Object[]{""};
 					else
 						finalSet[s][s1]=CMParms.toStringArray(CMParms.parseAny((String)subSet[s][s1], '|', false));
+				}
 			}
 			objs[var.ordinal()]=finalSet;
+			p.sysLstFileSet[var.ordinal()]=null;
 		}
 		return (Object[][][])objs[var.ordinal()];
 	}
@@ -1620,8 +1690,10 @@ public class CMProps extends Properties
 	{
 		final Set<String> newSet=new HashSet<String>();
 		for(final String s : p().privateSet.keySet())
+		{
 			if(Pattern.matches(mask, s))
 				newSet.add(s);
+		}
 		return newSet;
 	}
 
@@ -1635,8 +1707,10 @@ public class CMProps extends Properties
 	{
 		final String tag=s.toUpperCase().trim();
 		for(final CMProps p : CMProps.props)
+		{
 			if((p!=null)&&p.privateSet.containsKey(tag))
 				return p.privateSet.get(tag);
+		}
 		return null;
 	}
 
@@ -1752,7 +1826,10 @@ public class CMProps extends Properties
 			}
 		}
 		for(final ListFile lfVar : ListFile.values())
+		{
 			sysLstFileLists[lfVar.ordinal()]=null;
+			sysLstFileSet[lfVar.ordinal()]=null;
+		}
 		setVar(Str.EMOTEFILTER,getStr("EMOTEFILTER"));
 		p().emoteFilter.clear();
 		p().emoteFilter.addAll(CMParms.parse((getStr("EMOTEFILTER")).toUpperCase()));
@@ -1916,6 +1993,7 @@ public class CMProps extends Properties
 		V=CMParms.parseCommas(getStr("MAXCLANCATS"), true);
 		p().maxClanCatsMap.clear();
 		for(final String cat : V)
+		{
 			if(CMath.isInteger(cat.trim()))
 				p().maxClanCatsMap.put("", Integer.valueOf(CMath.s_int(cat.trim())));
 			else
@@ -1924,6 +2002,7 @@ public class CMProps extends Properties
 				if((x>0)&&CMath.isInteger(cat.substring(x+1).trim()))
 					p().maxClanCatsMap.put(cat.substring(0,x).trim().toUpperCase(), Integer.valueOf(CMath.s_int(cat.substring(x+1).trim())));
 			}
+		}
 		if(!p().maxClanCatsMap.containsKey(""))
 			p().maxClanCatsMap.put("", Integer.valueOf(1));
 
@@ -2047,8 +2126,10 @@ public class CMProps extends Properties
 	{
 		final Str[] filters = new Str[] {Str.EMOTEFILTER,Str.POSEFILTER,Str.SAYFILTER,Str.CHANNELFILTER};
 		for(Str filter : filters)
+		{
 			if(isINIFiltered(msg,filter))
 				return true;
+		}
 		return false;
 	}
 	
@@ -2100,7 +2181,6 @@ public class CMProps extends Properties
 				&&((len==upp.length())
 					||(!Character.isLetter(upp.charAt(len)))))
 				{
-
 					for(;fdex<len;fdex++)
 					{
 						if(!Character.isWhitespace(msg.charAt(fdex)))
@@ -2130,10 +2210,18 @@ public class CMProps extends Properties
 		final List<String> filter;
 		switch(whichFilter)
 		{
-		case EMOTEFILTER: filter=p().emoteFilter; break;
-		case POSEFILTER: filter=p().poseFilter; break;
-		case SAYFILTER: filter=p().sayFilter; break;
-		case CHANNELFILTER: filter=p().channelFilter; break;
+		case EMOTEFILTER:
+			filter = p().emoteFilter;
+			break;
+		case POSEFILTER:
+			filter = p().poseFilter;
+			break;
+		case SAYFILTER:
+			filter = p().sayFilter;
+			break;
+		case CHANNELFILTER:
+			filter = p().channelFilter;
+			break;
 		default:
 			return msg;
 		}
@@ -2159,7 +2247,6 @@ public class CMProps extends Properties
 				&&((len==upp.length())
 					||(!Character.isLetter(upp.charAt(len)))))
 				{
-
 					for(;fdex<len;fdex++)
 					{
 						if(!Character.isWhitespace(msg.charAt(fdex)))

@@ -127,8 +127,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if((inhab!=null)
 			&&(inhab!=mob)
 			&&(!h1.contains(inhab))
-			&&(CMLib.flags().isSeen(inhab)||CMLib.flags().canMove(inhab))
-			&&(CMLib.flags().isSeen(inhab)||(!CMLib.flags().isCloaked(inhab)))
+			&&(CMLib.flags().isSeeable(inhab)||CMLib.flags().canMove(inhab))
+			&&(CMLib.flags().isSeeable(inhab)||(!CMLib.flags().isCloaked(inhab)))
 			&&((beRuthless)||(!mob.isMonster())||(!inhab.isMonster())))
 				h.addUnsafe(inhab);
 		}
@@ -341,8 +341,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&((inhab==mob.getVictim())
 				||((inhab!=mob)
 					&&(inhab.getVictim()!=mob.getVictim())
-					&&(CMLib.flags().isSeen(inhab)||(!CMLib.flags().isCloaked(inhab)))
-					&&(CMLib.flags().canMove(inhab)||CMLib.flags().isSeen(inhab))
+					&&(CMLib.flags().isSeeable(inhab)||(!CMLib.flags().isCloaked(inhab)))
+					&&(CMLib.flags().canMove(inhab)||CMLib.flags().isSeeable(inhab))
 					&&(!h1.contains(inhab)))))
 				 h.addUnsafe(inhab);
 		}

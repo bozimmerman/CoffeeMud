@@ -94,7 +94,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			break;
 		}
 		if((comp.getType()!=AbilityComponent.CompType.STRING)
-		&&(CMLib.flags().isOnFire(I)||CMLib.flags().enchanted(I)))
+		&&(CMLib.flags().isOnFire(I)||CMLib.flags().isEnchanted(I)))
 			return false;
 		if(comp.getType()==AbilityComponent.CompType.STRING)
 		{

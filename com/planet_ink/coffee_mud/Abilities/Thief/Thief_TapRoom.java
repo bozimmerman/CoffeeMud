@@ -276,7 +276,7 @@ public class Thief_TapRoom extends ThiefSkill
 			&&(((Drink)I).liquidHeld()<400)
 			&&(I.fetchEffect(ID())==null)
 			&&(CMLib.flags().canBeSeenBy(I,mob))
-			&&(!CMLib.flags().enchanted(I)))
+			&&(!CMLib.flags().isEnchanted(I)))
 			{
 				if(returnI[0]==null)
 					returnI[0]=I;
@@ -302,7 +302,7 @@ public class Thief_TapRoom extends ThiefSkill
 			if((I instanceof RawMaterial)
 			&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)
 			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().enchanted(I))
+			&&(!CMLib.flags().isEnchanted(I))
 			&&(I.container()==null)
 			&&(I.fetchEffect(ID())==null))
 				available.add((RawMaterial)I);

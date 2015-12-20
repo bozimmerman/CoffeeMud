@@ -126,7 +126,7 @@ public class DiseaseCure extends StdAbility
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					offensiveAffects.get(a).unInvoke();
-				if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
+				if((!CMLib.flags().isStillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) much better."));
 			}
 		}

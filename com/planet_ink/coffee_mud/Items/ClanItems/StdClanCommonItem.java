@@ -85,7 +85,7 @@ public class StdClanCommonItem extends StdClanItem
 			&&(I2 instanceof RawMaterial)
 			&&(((I2.material()&RawMaterial.RESOURCE_MASK)==material)
 				||(((I2.material())&RawMaterial.MATERIAL_MASK)==material))
-			&&(!CMLib.flags().enchanted(I2)))
+			&&(!CMLib.flags().isEnchanted(I2)))
 				here.addElement(I2);
 		}
 		return here;
@@ -102,7 +102,7 @@ public class StdClanCommonItem extends StdClanItem
 			&&(I2 instanceof RawMaterial)
 			&&(((I2.material()&RawMaterial.RESOURCE_MASK)==material)
 				||(((I2.material())&RawMaterial.MATERIAL_MASK)==material))
-			&&(!CMLib.flags().enchanted(I2)))
+			&&(!CMLib.flags().isEnchanted(I2)))
 				here.addElement(I2);
 		}
 		return here;

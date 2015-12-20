@@ -1663,7 +1663,7 @@ public class StdMOB implements MOB
 		|| ((amFollowing() != null) && (amFollowing().fetchFollowerOrder(this) > 0))
 		|| ((this instanceof Rideable)
 			&& (((Rideable) this).numRiders() > 0)
-			&& CMLib.flags().hasSeenContents(this))
+			&& CMLib.flags().isWithSeenContents(this))
 		|| (isInCombat()))
 		{
 			StringBuffer sendBack = null;
@@ -1672,7 +1672,7 @@ public class StdMOB implements MOB
 			else
 				sendBack = new StringBuffer(titledName());
 			sendBack.append(" ");
-			sendBack.append(L(CMLib.flags().dispositionString(this, CMFlagLibrary.Disposition.IS)+" here"));
+			sendBack.append(L(CMLib.flags().getPresentDispositionVerb(this, CMFlagLibrary.ComingOrGoing.IS)+" here"));
 			if (riding() != null)
 			{
 				sendBack.append(" " + riding().stateString(this) + " ");

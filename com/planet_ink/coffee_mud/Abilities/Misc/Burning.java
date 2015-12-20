@@ -155,7 +155,7 @@ public class Burning extends StdAbility
 							&&(I instanceof RawMaterial)
 							&&(I.material()==((Item)affected).material()))
 							{
-								int durationOfBurn=CMLib.flags().burnStatus(I);
+								int durationOfBurn=CMLib.materials().getBurnDuration(I);
 								if(durationOfBurn<=0) 
 									durationOfBurn=5;
 								final Burning B=new Burning();
@@ -210,11 +210,11 @@ public class Burning extends StdAbility
 							((RawMaterial)ash).rebundle();
 							if((affected instanceof RawMaterial)
 							&&(affected.basePhyStats().weight()>1)
-							&&(CMLib.flags().burnStatus(affected)>0))
+							&&(CMLib.materials().getBurnDuration(affected)>0))
 							{
 								affected.basePhyStats().setWeight(affected.basePhyStats().weight()-1);
 								affected.recoverPhyStats();
-								this.tickDown = CMLib.flags().burnStatus(affected);
+								this.tickDown = CMLib.materials().getBurnDuration(affected);
 								CMLib.materials().adjustResourceName((Item)affected);
 								room.recoverRoomStats();
 								return super.tick(ticking,tickID);
@@ -401,7 +401,7 @@ public class Burning extends StdAbility
 				}
 			}
 			if(asLevel == 0)
-				asLevel = CMLib.flags().burnStatus(target);
+				asLevel = CMLib.materials().getBurnDuration(target);
 			if(asLevel < 0)
 				asLevel = 0;
 			beneficialAffect(mob,target,0,asLevel);

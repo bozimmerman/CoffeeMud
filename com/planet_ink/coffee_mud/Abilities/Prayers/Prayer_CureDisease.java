@@ -126,7 +126,7 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> had diseases too powerful for <S-YOUPOSS> magic."));
 				else
 					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> cure(s) the diseases in <T-NAMESELF>."));
-				if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
+				if(!CMLib.flags().isStillAffectedBy(target,offensiveAffects,false))
 					target.tell(L("You feel much better!"));
 			}
 		}

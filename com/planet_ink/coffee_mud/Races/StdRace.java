@@ -1662,8 +1662,8 @@ public class StdRace implements Race
 				if(newStat>oldStat)
 					str.append(CharStats.CODES.DESC(c).toLowerCase()+"+"+(newStat-oldStat)+", ");
 			}
-			dispChgDesc=CMLib.flags().describeDisposition(mob);
-			sensesChgDesc=CMLib.flags().describeSenses(mob);
+			dispChgDesc=CMLib.flags().getDispositionStateList(mob);
+			sensesChgDesc=CMLib.flags().getSensesStateList(mob);
 			mob.destroy();
 			mob2.destroy();
 			baseStatChgDesc=str.toString();

@@ -218,22 +218,22 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		final StringBuilder Say=new StringBuilder("");
 		if(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 		{
-			Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+CMLib.flags().colorCodes(room,mob)+" ");
+			Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+CMLib.flags().getDispositionBlurbs(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?name():closedText()));
 		}
 		else
 		if(( CMLib.flags().canBeSeenBy(this,mob)|| (isOpen()&&hasADoor()))
-		&&(CMLib.flags().isSeen(this)))
+		&&(CMLib.flags().isSeeable(this)))
 			if(isOpen())
 			{
 				if(!CMLib.flags().canBeSeenBy(room,mob))
 					Say.append("darkness");
 				else
-					Say.append(name()+CMLib.flags().colorCodes(this,mob));
+					Say.append(name()+CMLib.flags().getDispositionBlurbs(this,mob));
 			}
 			else
 			if((CMLib.flags().canBeSeenBy(this,mob))&&(closedText().trim().length()>0))
-				Say.append(closedText()+CMLib.flags().colorCodes(this,mob));
+				Say.append(closedText()+CMLib.flags().getDispositionBlurbs(this,mob));
 		return Say;
 	}
 

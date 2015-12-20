@@ -107,7 +107,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 					((Drink)target).setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
 					target.basePhyStats().setAbility(0);
 				}
-				if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
+				if((!CMLib.flags().isStillAffectedBy(target,offensiveAffects,false))
 				&&(target instanceof MOB))
 				{
 					((MOB)target).tell(L("You feel much better!"));

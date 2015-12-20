@@ -79,7 +79,7 @@ public class Thief_Arsonry extends ThiefSkill
 				&&(I.displayText().length()==0)
 				&&(CMLib.flags().isGettable(I))
 				&&(!(I instanceof ClanItem))
-				&&(CMLib.flags().burnStatus(I)>0))
+				&&(CMLib.materials().getBurnDuration(I)>0))
 					choices.addElement(I);
 			}
 			if(choices.size()==0)
@@ -129,7 +129,7 @@ public class Thief_Arsonry extends ThiefSkill
 					targetRoom.sendOthers(mob,msg);
 				final Ability B=CMClass.getAbility("Burning");
 				if(B!=null)
-					B.invoke(mob,target,true,CMLib.flags().burnStatus(target));
+					B.invoke(mob,target,true,CMLib.materials().getBurnDuration(target));
 			}
 		}
 		else

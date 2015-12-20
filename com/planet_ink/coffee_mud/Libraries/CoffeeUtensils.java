@@ -1444,7 +1444,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					if (CMLib.flags().isCloaked(mob))
 						buf.append("Cloaked");
 					else 
-					if (!CMLib.flags().isSeen(mob))
+					if (!CMLib.flags().isSeeable(mob))
 						buf.append(L("Undetectable"));
 					else 
 					if (CMLib.flags().isInvisible(mob) && CMLib.flags().isHidden(mob))

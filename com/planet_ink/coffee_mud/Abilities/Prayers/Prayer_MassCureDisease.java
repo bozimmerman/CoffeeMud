@@ -133,7 +133,7 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 								}
 								if(badOnes)
 									mob.tell(mob,target,null,L("<T-NAME> had diseases too powerful for this magic."));
-								if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
+								if(!CMLib.flags().isStillAffectedBy(target,offensiveAffects,false))
 									target.tell(L("You feel much better!"));
 							}
 						}

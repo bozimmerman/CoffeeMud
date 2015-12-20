@@ -164,7 +164,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			if((str.equals(str2))
 			&&(item instanceof Physical)
 			&&(item2 instanceof Physical)
-			&&(CMLib.flags().seenTheSameWay(viewerM,(Physical)item,(Physical)item2)))
+			&&(CMLib.flags().isSeenTheSameWay(viewerM,(Physical)item,(Physical)item2)))
 			{
 				reps++;
 				theRest.remove(item2);
@@ -278,12 +278,12 @@ public class CMLister extends StdLibrary implements ListingLibrary
 						say.append("^<"+tag+tagParm+"^>");
 				}
 				if((compress)&&(item instanceof Physical))
-					say.append(CMLib.flags().colorCodes((Physical)item,viewerM)+"^I");
+					say.append(CMLib.flags().getDispositionBlurbs((Physical)item,viewerM)+"^I");
 				say.append(itemSeenString(viewerM,item,useName,longLook,sysmsgs));
 				if(tag!=null)
 					say.append("^</"+tag+"^>");
 				if((!compress)&&(item instanceof Physical))
-					say.append(CMLib.flags().colorCodes((Physical)item,viewerM)+"^N\n\r");
+					say.append(CMLib.flags().getDispositionBlurbs((Physical)item,viewerM)+"^N\n\r");
 				else
 					say.append("^N");
 
@@ -316,10 +316,10 @@ public class CMLister extends StdLibrary implements ListingLibrary
 								say.append(CMLib.protocol().mxpImage(item," H=10 W=10",""," "));
 							say.append("^I");
 							if(compress)
-								say.append(CMLib.flags().colorCodes(item2,viewerM)+"^I");
+								say.append(CMLib.flags().getDispositionBlurbs(item2,viewerM)+"^I");
 							say.append(CMStrings.endWithAPeriod(itemSeenString(viewerM,item2,useName,longLook,sysmsgs)));
 							if(!compress)
-								say.append(CMLib.flags().colorCodes(item2,viewerM)+"^N\n\r");
+								say.append(CMLib.flags().getDispositionBlurbs(item2,viewerM)+"^N\n\r");
 							else
 								say.append("^N");
 						}

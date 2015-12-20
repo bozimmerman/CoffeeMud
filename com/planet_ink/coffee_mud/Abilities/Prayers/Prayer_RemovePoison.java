@@ -104,7 +104,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 					((Drink)target).setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
 					target.basePhyStats().setAbility(0);
 				}
-				if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
+				if(!CMLib.flags().isStillAffectedBy(target,offensiveAffects,false))
 				{
 					if(target instanceof MOB)
 					{

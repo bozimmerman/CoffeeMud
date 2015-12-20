@@ -1057,9 +1057,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		else
 		{
 			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,
-									L("<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.Disposition.ARRIVES)+" from @x1.",otherDirectionName));
+									L("<S-NAME> "+CMLib.flags().getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.ARRIVES)+" from @x1.",otherDirectionName));
 			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,
-									((flee)?L("<S-NAME> flee(s) @x1.",directionName):L("<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.Disposition.LEAVES)+" @x1.",directionName)));
+									((flee)?L("<S-NAME> flee(s) @x1.",directionName):L("<S-NAME> "+CMLib.flags().getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.LEAVES)+" @x1.",directionName)));
 		}
 		final boolean gotoAllowed=(!mob.isMonster()) && CMSecurity.isAllowed(mob,destRoom,CMSecurity.SecFlag.GOTO);
 		if((exit==null)&&(!gotoAllowed))

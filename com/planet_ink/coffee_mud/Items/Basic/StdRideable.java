@@ -282,7 +282,7 @@ public class StdRideable extends StdContainer implements Rideable
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
-			if(!CMLib.flags().hasSeenContents(this))
+			if(!CMLib.flags().isWithSeenContents(this))
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 			if((mob.isInCombat())&&(mob.rangeToTarget()==0)&&(amRiding(mob)))
 			{
@@ -305,7 +305,7 @@ public class StdRideable extends StdContainer implements Rideable
  		&&(stateStringSubject(this).length()>0)
  		&&(displayText!=null)
  		&&(displayText.length()>0)
- 		&&CMLib.flags().hasSeenContents(this))
+ 		&&CMLib.flags().isWithSeenContents(this))
 		{
 			final StringBuffer sendBack=new StringBuffer(name(mob));
 			sendBack.append(" "+stateStringSubject(this)+" ");

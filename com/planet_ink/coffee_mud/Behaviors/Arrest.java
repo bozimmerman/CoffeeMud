@@ -1770,7 +1770,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_NATURAL)
 		&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_HAMMER)
 		&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_STAFF)
-		&&(CMLib.flags().isSeen(w))
+		&&(CMLib.flags().isSeeable(w))
 		&&(!CMLib.flags().isHidden(w))
 		&&(!CMLib.flags().isInvisible(w)))
 		{

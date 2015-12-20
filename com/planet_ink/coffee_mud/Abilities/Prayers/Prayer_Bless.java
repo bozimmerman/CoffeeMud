@@ -149,7 +149,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 
 	public static boolean isCursed(Item item)
 	{
-		if(CMLib.flags().isSeen(item))
+		if(CMLib.flags().isSeeable(item))
 		{
 			if(!CMLib.flags().isRemovable(item))
 				return true;

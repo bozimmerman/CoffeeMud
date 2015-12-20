@@ -143,7 +143,7 @@ public class Scrapping extends CommonSkill
 			return false;
 		}
 
-		if(CMLib.flags().enchanted(I))
+		if(CMLib.flags().isEnchanted(I))
 		{
 			commonTell(mob,L("@x1 is enchanted, and can't be scrapped.",I.name(mob)));
 			return false;

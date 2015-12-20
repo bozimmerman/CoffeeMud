@@ -401,7 +401,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				{
 					final boolean ignore=((target.playerStats()!=null)&&(target.playerStats().getIgnored().contains(mob.Name())));
 					CMMsg msg=null;
-					if((!CMLib.flags().isSeen(mob))||(!CMLib.flags().isSeen(target)))
+					if((!CMLib.flags().isSeeable(mob))||(!CMLib.flags().isSeeable(target)))
 						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^>You tell <T-NAME> '@x2'^</TELL^>^?^.",CMStrings.removeColors(target.name(mob)),text),CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^><S-NAME> tell(s) you '@x2'^</TELL^>^?^.",CMStrings.removeColors(mob.name(target)),text),CMMsg.NO_EFFECT,null);
 					else
 						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^>You tell @x2 '@x3'^</TELL^>^?^.",CMStrings.removeColors(target.name(mob)),target.name(mob),text),CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^>@x2 tell(s) you '@x3'^</TELL^>^?^.",CMStrings.removeColors(mob.name(target)),mob.Name(),text),CMMsg.NO_EFFECT,null);
@@ -1197,7 +1197,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		if(CMLib.flags().canBeSeenBy(room,mob))
 		{
-			Say.append("^O^<RName^>" + room.displayText(mob)+"^</RName^>"+CMLib.flags().colorCodes(room,mob)+"^L\n\r");
+			Say.append("^O^<RName^>" + room.displayText(mob)+"^</RName^>"+CMLib.flags().getDispositionBlurbs(room,mob)+"^L\n\r");
 			if((lookCode!=LOOK_BRIEFOK)||(!mob.isAttributeSet(MOB.Attrib.BRIEF)))
 			{
 				String roomDesc=room.description(mob);
@@ -1306,7 +1306,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							Say.append(CMLib.protocol().mxpImage(mob2," H=10 W=10",""," "));
 						Say.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
 						if(compress)
-							Say.append(CMLib.flags().colorCodes(mob2,mob)+"^M ");
+							Say.append(CMLib.flags().getDispositionBlurbs(mob2,mob)+"^M ");
 						if(displayText.length()>0)
 							Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText)));
 						else
@@ -1315,7 +1315,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						if(sysmsgs)
 							Say.append("^H("+CMClass.classID(mob2)+")^N ");
 						if(!compress)
-							Say.append(CMLib.flags().colorCodes(mob2,mob)+"^N\n\r");
+							Say.append(CMLib.flags().getDispositionBlurbs(mob2,mob)+"^N\n\r");
 						else
 							Say.append("^N");
 					}
@@ -1969,7 +1969,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				final StringBuilder Say=((Exit)I).viewableText(mob, room);
 				if(Say.length()>0)
 				{
-					Say.append(CMLib.flags().colorCodes(I, mob));
+					Say.append(CMLib.flags().getDispositionBlurbs(I, mob));
 					if(Say.length()>5)
 						buf.append("^D^<MEX^>" + ((Exit)I).doorName()+"^</MEX^>:^.^N ^d"+Say+"^.^N\n\r");
 					else
