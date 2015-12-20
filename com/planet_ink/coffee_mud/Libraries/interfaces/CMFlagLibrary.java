@@ -285,12 +285,12 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canSenseMoving(Physical sensed, MOB sensor);
 
 	/**
-	 * Returns whether the given hearer mob can hear the given mob or
+	 * Returns whether the given sensor mob can sense the given mob or
 	 * object coming and going.  Mostly by comparing the sneaking and hear sneakers
-	 * as well as general hearing ability.
-	 * @param heard the thing or mob moving around
-	 * @param hearer the mob who wants to hear it
-	 * @return whether the given hearer can hear the heard
+	 * as well as general seeing and hearing ability.
+	 * @param sensed the thing or mob moving around
+	 * @param sensor the mob who wants to sense it
+	 * @return whether the given sensor can sense the sensed
 	 */
 	public boolean canSenseEnteringLeaving(Physical sensed, MOB sensor);
 
@@ -505,7 +505,7 @@ public interface CMFlagLibrary extends CMLibrary
 	/**
 	 * Returns whether the given mobby factionmember is
 	 * goodly aligned due to factions.
-	 * @param P the factionmember to check
+	 * @param M the factionmember to check
 	 * @return true if it is goodness
 	 */
 	public boolean isReallyGood(FactionMember M);
@@ -521,7 +521,7 @@ public interface CMFlagLibrary extends CMLibrary
 	/**
 	 * Returns whether the given mobby factionmember is
 	 * neutrally aligned due to factions.
-	 * @param P the factionmember to check
+	 * @param M the factionmember to check
 	 * @return true if it is neutral
 	 */
 	public boolean isReallyNeutral(FactionMember M);
@@ -529,7 +529,7 @@ public interface CMFlagLibrary extends CMLibrary
 	/**
 	 * Returns whether the given mobby factionmember is
 	 * evilly aligned due to factions.
-	 * @param P the factionmember to check
+	 * @param M the factionmember to check
 	 * @return true if it is evilness
 	 */
 	public boolean isReallyEvil(FactionMember M);
@@ -689,7 +689,7 @@ public interface CMFlagLibrary extends CMLibrary
 	/**
 	 * Returns whether the given room, whatever is 
 	 * watery.
-	 * @param P the item, mob, whatever to check
+	 * @param R the room to check
 	 * @return true if it is watery, false otherwise
 	 */
 	public boolean isWatery(Room R);
@@ -740,7 +740,7 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given mob is of a vegetable race type.
-	 * @param mob the mob to check
+	 * @param M the mob to check
 	 * @return true if it is a vegetable type, false otherwise
 	 */
 	public boolean isVegetable(MOB M);
@@ -789,7 +789,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * Returns whether the given mob is standing (not sitting 
 	 * or sleeping)
 	 * marked as swimming/floating.
-	 * @param P the item, mob, whatever to check
+	 * @param mob the mob to check
 	 * @return true if it is standing, false otherwise
 	 */
 	public boolean isStanding(MOB mob);
@@ -815,7 +815,7 @@ public interface CMFlagLibrary extends CMLibrary
 	/**
 	 * Returns whether the given item, mob, whatever is 
 	 * on fire.
-	 * @param P the item, mob, whatever to check
+	 * @param seen the item, mob, whatever to check
 	 * @return true if it is on fire, false otherwise
 	 */
 	public boolean isOnFire(Physical seen);
@@ -1050,7 +1050,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * given ability domain.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_ABJURATION
 	 * @param P the mob, item, room, whatever
-	 * @param flag the ability flags
+	 * @param domain the ability domain
 	 * @return the list of effects in the given domain.
 	 */
 	public List<Ability> domainAnyAffects(Physical P, int domain);
@@ -1060,7 +1060,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * given ability domain.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_ABJURATION
 	 * @param P the mob, item, room, whatever
-	 * @param flag the ability flags
+	 * @param domain the ability domain
 	 * @return the list of effects in the given domain.
 	 */
 	public List<Ability> domainAffects(Physical P, int domain);
@@ -1070,7 +1070,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * given ability domain.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_ABJURATION
 	 * @param M the mob to check
-	 * @param flag the ability flags
+	 * @param domain the ability domain
 	 * @return the list of abilities in the given domain.
 	 */
 	public List<Ability> domainAbilities(MOB M, int domain);
