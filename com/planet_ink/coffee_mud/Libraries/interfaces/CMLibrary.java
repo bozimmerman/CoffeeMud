@@ -16,11 +16,39 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * This is the base interface for all CoffeeMud libraries.
+ * @author Bo Zimmerman
+ */
 public interface CMLibrary extends CMObject
 {
+	/**
+	 * Activates the library.  This is called after the mud
+	 * is booted, but before connections are accepted.
+	 * @return true if activation was successful, false if you're screwed
+	 */
 	public boolean activate();
+	
+	/**
+	 * Shuts down the library.  Called at system shutdown time
+	 * obviously, but is sometimes called just to reset the library.
+	 * @return true if shutdown was successful, false if there's nothing you can do about it
+	 */
 	public boolean shutdown();
+	
+	/**
+	 * This method is called whenever system properties are altered by the user.  This
+	 * allows the library to react to any important properties they monitor.
+	 */
 	public void propertiesLoaded();
+	
+	/**
+	 * If this library has a service thread, this method returns the TickClient
+	 * object associated with that service.  Normally returns null, since most
+	 * libraries don't set themselves up to receive thread time.
+	 * @see com.planet_ink.coffee_mud.core.interfaces.TickClient
+	 * @return null, or the TickClient for the service
+	 */
 	public TickClient getServiceClient();
 
 	/**
