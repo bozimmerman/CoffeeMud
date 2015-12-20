@@ -36,15 +36,23 @@ import java.util.concurrent.TimeUnit;
 
 public class Shutdown extends StdCommand implements Tickable
 {
-	public Shutdown(){}
+	public Shutdown()
+	{
+	}
 
-	private final String[] access=I(new String[]{"SHUTDOWN"});
-	@Override public String[] getAccessWords(){return access;}
-	protected MOB shuttingDownMob=null;
-	protected long shuttingDownNextAnnounce=0;
-	protected long shuttingDownCompletes=0;
-	protected boolean keepItDown=true;
-	protected String externalCommand=null;
+	private final String[]	access	= I(new String[] { "SHUTDOWN" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	protected MOB		shuttingDownMob				= null;
+	protected long		shuttingDownNextAnnounce	= 0;
+	protected long		shuttingDownCompletes		= 0;
+	protected boolean	keepItDown					= true;
+	protected String	externalCommand				= null;
 
 	protected void showDisplayableShutdownTimeRemaining()
 	{
@@ -125,8 +133,17 @@ public class Shutdown extends StdCommand implements Tickable
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SHUTDOWN);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.SHUTDOWN);
+	}
 
 	public void startShutdown(final MOB mob)
 	{
@@ -150,8 +167,18 @@ public class Shutdown extends StdCommand implements Tickable
 		}.start();
 	}
 
-	@Override public int getTickStatus() { return Tickable.STATUS_ALIVE;}
-	@Override public String name() { return super.ID(); }
+	@Override
+	public int getTickStatus()
+	{
+		return Tickable.STATUS_ALIVE;
+	}
+
+	@Override
+	public String name()
+	{
+		return super.ID();
+	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
