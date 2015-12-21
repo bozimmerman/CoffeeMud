@@ -96,7 +96,7 @@ public class Email extends StdCommand
 					||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED))
 					||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS)))
 					{
-						if(mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+						if(!mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 							mob.tell(L("You have no email waiting, but then, it's probably been forwarded to you already."));
 						else
 							mob.tell(L("You have no email waiting."));
