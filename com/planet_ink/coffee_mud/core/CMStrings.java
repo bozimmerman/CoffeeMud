@@ -566,9 +566,7 @@ public class CMStrings
 	{
 		if(str==null)
 			return str;
-		if(str.indexOf('\\')<0)
-			return str;
-		return replaceAll(replaceAll(str,"\\\\","\\"),"\\\"","\"");
+		return replaceAll(replaceAll(str,"\\","\\\\"),"\"","\\\"");
 	}
 	
 	/**

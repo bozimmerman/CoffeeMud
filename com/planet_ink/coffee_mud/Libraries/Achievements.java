@@ -592,11 +592,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(!CMath.isInteger(numStr))
 						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
 					num=CMath.s_int(numStr);
-					String zapperMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "ZAPPERMASK", ""),"\\\"","\""),"\\\\","\\");
+					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ZAPPERMASK", ""));
 					if(zapperMask.trim().length()==0)
 						return "Error: Missing or invalid ZAPPERMASK parameter: "+zapperMask+"!";
 					this.npcMask = CMLib.masking().getPreCompiledMask(zapperMask);
-					zapperMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "PLAYERMASK", ""),"\\\"","\""),"\\\\","\\");
+					zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					this.playerMask = null;
 					if(zapperMask.trim().length()>0)
 						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
@@ -707,7 +707,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					String zapperMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "PLAYERMASK", ""),"\\\"","\""),"\\\\","\\");
+					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					if(zapperMask.trim().length()==0)
 						return "Error: Missing or invalid PLAYERMASK parameter: "+zapperMask+"!";
 					this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
@@ -1504,12 +1504,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(!CMath.isInteger(numStr))
 						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
 					num=CMath.s_int(numStr);
-					final String zapperMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "PLAYERMASK", ""),"\\\"","\""),"\\\\","\\");
+					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					if(zapperMask.trim().length()>0)
 						this.mask = CMLib.masking().getPreCompiledMask(zapperMask);
 					else
 						this.mask = null;
-					final String questMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "QUESTMASK", ""),"\\\"","\""),"\\\\","\\");
+					final String questMask=CMStrings.deEscape(CMParms.getParmStr(parms, "QUESTMASK", ""));
 					this.questPattern = null;
 					if(questMask.trim().length()>0)
 					{
@@ -1639,7 +1639,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String list=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "ACHIEVEMENTLIST", ""),"\\\"","\""),"\\\\","\\");
+					final String list=CMStrings.deEscape(CMParms.getParmStr(parms, "ACHIEVEMENTLIST", ""));
 					if(list.trim().length()==0)
 						return "Error: Missing or invalid ACHIEVEMENTLIST parameter: "+list+"!";
 					final String[] listArray = list.toUpperCase().trim().split(",");
@@ -1754,7 +1754,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public String parseParms(final String parms)
 				{
-					final String list=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "ROOMID", ""),"\\\"","\""),"\\\\","\\");
+					final String list=CMStrings.deEscape(CMParms.getParmStr(parms, "ROOMID", ""));
 					if(list.trim().length()==0)
 						return "Error: Missing or invalid ROOMID parameter: "+list+"!";
 					final String[] listArray = list.toUpperCase().trim().split(",");
@@ -1885,7 +1885,126 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(!CMath.isInteger(numStr))
 						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
 					num=CMath.s_int(numStr);
-					String zapperMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "PLAYERMASK", ""),"\\\"","\""),"\\\\","\\");
+					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					if(zapperMask.trim().length()>0)
+						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
+					return "";
+				}
+			};
+			break;
+		case GOTITEM:
+			A=new Achievement()
+			{
+				private MaskingLibrary.CompiledZapperMask playerMask = null;
+				private MaskingLibrary.CompiledZapperMask itemMask = null;
+				
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+				
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return Integer.MIN_VALUE;
+				}
+				
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+				
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private volatile boolean gotIt=false;;
+
+						@Override
+						public Achievement getAchievement() 
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(MOB mob) 
+						{
+							return gotIt;
+						}
+
+						@Override
+						public int getCount(MOB mob)
+						{
+							return 0;
+						}
+
+						@Override
+						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						{
+							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
+							{
+								if((parms[0] instanceof Item)
+								&&((itemMask==null)||(CMLib.masking().maskCheck(itemMask, (Item)parms[0], true))))
+								{
+									gotIt = true;
+									return true;
+								}
+							}
+							return false;
+						}
+						
+					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return false;
+				}
+				
+				@Override
+				public String parseParms(final String parms)
+				{
+					String itemZapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ITEMMASK", ""));
+					if(itemZapperMask.trim().length()>0)
+						this.itemMask = CMLib.masking().getPreCompiledMask(itemZapperMask);
+					else
+						return "Error: Missing or invalid ITEMMASK parameter!";
+					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					if(zapperMask.trim().length()>0)
 						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					return "";
@@ -2000,7 +2119,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(!CMath.isInteger(numStr))
 						return "Error: Missing or invalid SECONDS parameter: "+numStr+"!";
 					seconds=CMath.s_int(numStr);
-					String zapperMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "PLAYERMASK", ""),"\\\"","\""),"\\\\","\\");
+					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					if(zapperMask.trim().length()>0)
 						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					return "";
@@ -2120,10 +2239,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
 					num=CMath.s_int(numStr);
 					this.npcMask = null;
-					String zapperMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "ZAPPERMASK", ""),"\\\"","\""),"\\\\","\\");
+					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ZAPPERMASK", ""));
 					if(zapperMask.trim().length()>=0)
 						this.npcMask = CMLib.masking().getPreCompiledMask(zapperMask);
-					zapperMask=CMStrings.replaceAll(CMStrings.replaceAll(CMParms.getParmStr(parms, "PLAYERMASK", ""),"\\\"","\""),"\\\\","\\");
+					zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					this.playerMask = null;
 					if(zapperMask.trim().length()>0)
 						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
@@ -2535,7 +2654,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				if(CMath.isMathExpression(value))
 					str.append(value).append(" ");
 				else
-					str.append("\"").append(CMStrings.replaceAll(CMStrings.replaceAll(value, "\\", "\\\\"), "\"", "\\\"")).append("\" ");
+					str.append("\"").append(CMStrings.escape(value)).append("\" ");
 			}
 		}
 		return str.toString();
@@ -2586,7 +2705,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						.append(" ").append(((ExpertiseAward)award).getExpertise().ID());
 				break;
 			case QP:
-				awardStr.append(" ").append(((CurrencyAward)award).getAmount())
+				awardStr.append(" ").append(((AmountAward)award).getAmount())
 						.append(" ").append("QP");
 				break;
 			case TITLE:

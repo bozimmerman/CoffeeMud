@@ -128,7 +128,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	@Override
 	public String getViewDescription(MOB viewerM, Environmental E)
 	{
-		final StringBuffer str=new StringBuffer("");
+		final StringBuilder str=new StringBuilder("");
 		if(E==null)
 			return str.toString();
 		str.append(L("Interested in @x1?",E.name()));
@@ -803,7 +803,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 								   ShopKeeper shop,
 								   String mask)
 	{
-		final StringBuffer str=new StringBuffer("");
+		final StringBuilder str=new StringBuilder("");
 		int csize=0;
 		final Vector<Environmental> inventory=new Vector<Environmental>();
 		Environmental E=null;
@@ -1621,7 +1621,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if(data.getAuctionedItem() instanceof Container)
 			((Container)data.getAuctionedItem()).emptyPlease(false);
-		final StringBuffer xml=new StringBuffer("<AUCTION>");
+		final StringBuilder xml=new StringBuilder("<AUCTION>");
 		xml.append("<PRICE>"+data.getBid()+"</PRICE>");
 		xml.append("<BUYOUT>"+data.getBuyOutPrice()+"</BUYOUT>");
 		if(data.getHighBidderMob()!=null)
@@ -1716,7 +1716,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 									  Auctioneer auction,
 									  String mask)
 	{
-		final StringBuffer str=new StringBuffer("");
+		final StringBuilder str=new StringBuilder("");
 		str.append("^x"+CMStrings.padRight(L("Lvl"),3)+" "+CMStrings.padRight(L("Item"),50)+" "+CMStrings.padRight(L("Days"),4)+" ["+CMStrings.padRight(L("Bid"),6)+"] Buy^.^N\n\r");
 		final List<AuctionData> auctions=getAuctions(null,auction.auctionHouse());
 		for(int v=0;v<auctions.size();v++)

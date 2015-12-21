@@ -113,15 +113,15 @@ public class AchievementData extends StdWebMacro
 			String newDisplay=httpReq.getUrlParameter("DISPLAY");
 			if(newDisplay==null)
 				return "[missing DISPLAY error]";
-			row+="DISPLAY=\""+CMStrings.replaceAll(CMStrings.replaceAll(newDisplay,"\\\"","\""),"\\\\","\\")+"\" ";
+			row+="DISPLAY=\""+CMStrings.escape(newDisplay)+"\" ";
 			
 			String newTitle=httpReq.getUrlParameter("TITLE");
 			if((newTitle != null)&&(newTitle.length()>0))
-				row+="TITLE=\""+CMStrings.replaceAll(CMStrings.replaceAll(newTitle,"\\\"","\""),"\\\\","\\")+"\" ";
+				row+="TITLE=\""+CMStrings.escape(newTitle)+"\" ";
 
 			String newRewards=httpReq.getUrlParameter("REWARDS");
 			if((newRewards != null)&&(newRewards.length()>0))
-				row+="REWARDS=\""+CMStrings.replaceAll(CMStrings.replaceAll(newRewards,"\\\"","\""),"\\\\","\\")+"\" ";
+				row+="REWARDS=\""+CMStrings.escape(newRewards)+"\" ";
 
 			for(String s : E.getParameters())
 			{
@@ -129,7 +129,9 @@ public class AchievementData extends StdWebMacro
 				{
 					String newValue=httpReq.getUrlParameter(s);
 					if((newValue != null)&&(newValue.length()>0))
-						row+=s+"=\""+CMStrings.replaceAll(CMStrings.replaceAll(newValue,"\\\"","\""),"\\\\","\\")+"\" ";
+					{
+						row+=s+"=\""+CMStrings.escape(newValue)+"\" ";
+					}
 				}
 			}
 
@@ -386,7 +388,7 @@ public class AchievementData extends StdWebMacro
 				{
 					String newValue=httpReq.getUrlParameter(otherParmName);
 					if((newValue==null)&&(A!=null))
-						newValue=A.getRawParmVal(otherParmName);
+						newValue=CMStrings.deEscape(A.getRawParmVal(otherParmName));
 					if(newValue!=null)
 						str.append(CMStrings.replaceAll(newValue,"\"","&quot;")+", ");
 				}

@@ -45,6 +45,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	private final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> noLootPolicy = new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
 	private int lastLootPolicyHash=0;
 
+	public static final int LOOTFLAG_RUIN=1;
+	public static final int LOOTFLAG_LOSS=2;
+	public static final int LOOTFLAG_WORN=4;
+	public static final int LOOTFLAG_UNWORN=8;
+
 	@Override
 	public String niceCommaList(List<?> V, boolean andTOrF)
 	{
@@ -812,17 +817,17 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				}
 				int flags=0;
 				if(parsed.contains("RUIN"))
-					flags|=CMMiscUtils.LOOTFLAG_RUIN;
+					flags|=LOOTFLAG_RUIN;
 				else
 				if(parsed.contains("LOSS"))
-					flags|=CMMiscUtils.LOOTFLAG_LOSS;
+					flags|=LOOTFLAG_LOSS;
 				if(flags==0)
-					flags|=CMMiscUtils.LOOTFLAG_LOSS;
+					flags|=LOOTFLAG_LOSS;
 				if(parsed.contains("WORN"))
-					flags|=CMMiscUtils.LOOTFLAG_WORN;
+					flags|=LOOTFLAG_WORN;
 				else
 				if(parsed.contains("UNWORN"))
-					flags|=CMMiscUtils.LOOTFLAG_UNWORN;
+					flags|=LOOTFLAG_UNWORN;
 				policies.addElement(Integer.valueOf(pct),Integer.valueOf(flags),compiledMask);
 			}
 			lootPolicy=policies;
@@ -914,12 +919,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			if(CMLib.dice().rollPercentage()>policies.get(d).first.intValue())
 				continue;
 			final int flags=policies.get(d).second.intValue();
-			if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_WORN)&&I.amWearingAt(Wearable.IN_INVENTORY))
+			if(CMath.bset(flags,LOOTFLAG_WORN)&&I.amWearingAt(Wearable.IN_INVENTORY))
 				continue;
 			else
-			if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_UNWORN)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
+			if(CMath.bset(flags,LOOTFLAG_UNWORN)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 				continue;
-			if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_LOSS))
+			if(CMath.bset(flags,LOOTFLAG_LOSS))
 				return null;
 			final Item I2=CMClass.getItem("GenRuinedItem");
 			I2.basePhyStats().setWeight(I.basePhyStats().weight());

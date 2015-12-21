@@ -53,6 +53,12 @@
             document.RESOURCES.action='/grinder/achievement.cmvp';
             document.RESOURCES.submit();
         }
+        function Refresh()
+        {
+            document.RESOURCES.FUNCTION.value='';
+            document.RESOURCES.action='/grinder/achievement.cmvp';
+            document.RESOURCES.submit();
+        }
         function ReTitle()
         {
             document.RESOURCES.FUNCTION.value='REACHIEVEMENT';

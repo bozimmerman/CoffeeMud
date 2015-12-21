@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -1768,6 +1769,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			return;
 		final Item item=(Item)msg.target();
 		final MOB mob=msg.source();
+		final boolean isMine = mob.isMine(item);
 		if(item instanceof Container)
 		{
 			if(msg.tool() instanceof Item)
@@ -1780,10 +1782,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 			}
 			else
-			if(!mob.isMine(item))
+			if(!isMine)
 			{
 				item.setContainer(null);
 				mob.moveItemTo(item);
+				if(!isMine)
+					CMLib.achievements().possiblyBumpAchievement(mob, Event.GOTITEM, 1, item);
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 				else
@@ -1804,9 +1808,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				item.basePhyStats().setDisposition(item.basePhyStats().disposition()&((int)PhyStats.ALLMASK-PhyStats.IS_HIDDEN));
 			if(mob.location().isContent(item))
 				mob.location().delItem(item);
-			if(!mob.isMine(item))
+			if(!isMine)
 			{
 				mob.addItem(item);
+				if(!isMine)
+					CMLib.achievements().possiblyBumpAchievement(mob, Event.GOTITEM, 1, item);
 				if(CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					mob.phyStats().setWeight(mob.phyStats().weight()+item.phyStats().weight());
 			}
@@ -1839,6 +1845,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(mob.isMine(item))
 		{
 			mob.delItem(item);
+			CMLib.achievements().possiblyBumpAchievement(mob, Event.GOTITEM, -1, item);
 			if(!mob.location().isContent(item))
 				mob.location().addItem(item,ItemPossessor.Expire.Player_Drop);
 			if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))

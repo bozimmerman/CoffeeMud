@@ -34,13 +34,25 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The MiscUtils (Miscellaneous Utilities) library should not exist.
+ * Its purpose is to expose universal functionality that doesn't
+ * seem to fit anywhere else.  Usually, however, it does fit
+ * elsewhere just fine, but the elsewhere felt too crowded already
+ * to receive it.  I'm sure this library will always exist, but the
+ * interface is definitely subject to change.
+ * 
+ * @author Bo Zimmerman
+ */
 public interface CMMiscUtils extends CMLibrary
 {
-	public static final int LOOTFLAG_RUIN=1;
-	public static final int LOOTFLAG_LOSS=2;
-	public static final int LOOTFLAG_WORN=4;
-	public static final int LOOTFLAG_UNWORN=8;
-
+	/**
+	 * Checks the given player mob for the format of their prompt in
+	 * their playerstats and generates a fully formed prompt, complete
+	 * with all variables filled in.
+	 * @param mob the mob to build a prompt for
+	 * @return the fully filled in customized prompt string
+	 */
 	public String builtPrompt(MOB mob);
 
 	public String getFormattedDate(Environmental E);

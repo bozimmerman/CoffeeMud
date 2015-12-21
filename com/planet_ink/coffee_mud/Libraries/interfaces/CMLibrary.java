@@ -25,6 +25,7 @@ public interface CMLibrary extends CMObject
 	/**
 	 * Activates the library.  This is called after the mud
 	 * is booted, but before connections are accepted.
+	 * @see CMLibrary#shutdown()
 	 * @return true if activation was successful, false if you're screwed
 	 */
 	public boolean activate();
@@ -32,6 +33,7 @@ public interface CMLibrary extends CMObject
 	/**
 	 * Shuts down the library.  Called at system shutdown time
 	 * obviously, but is sometimes called just to reset the library.
+	 * @see CMLibrary#activate()
 	 * @return true if shutdown was successful, false if there's nothing you can do about it
 	 */
 	public boolean shutdown();

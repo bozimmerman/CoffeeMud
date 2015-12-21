@@ -96,16 +96,34 @@ public class Who extends StdCommand
 			else
 				msg.append(CMStrings.padRight(levelStr,colWidths[2]));
 		}
-		String name=null;
-		if(CMath.bset(who.phyStats().disposition(),PhyStats.IS_CLOAKED))
-			name="("+(who.Name().equals(who.name())?who.titledName():who.name())+")";
-		else
-			name=(who.Name().equals(who.name())?who.titledName():who.name());
-		if((who.session()!=null)&&(who.session().isAfk()))
-			name=name+(" (idle: "+CMLib.time().date2BestShortEllapsedTime(who.session().getIdleMillis())+")");
+		String name=getWhoName(who);
 		msg.append("] "+CMStrings.padRight(name,colWidths[3]));
 		msg.append("\n\r");
 		return msg;
+	}
+	
+	public String getWhoName(MOB seenM)
+	{
+		String name=null;
+		if(CMath.bset(seenM.phyStats().disposition(),PhyStats.IS_CLOAKED))
+			name="("+(seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name())+")";
+		else
+			name=(seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name());
+		if((seenM.session()!=null)&&(seenM.session().isAfk()))
+			name=name+(" (idle: "+CMLib.time().date2BestShortEllapsedTime(seenM.session().getIdleMillis())+")");
+		return name;
+	}
+	
+	public boolean checkWho(MOB seerM, MOB seenM, Set<String> friends, Filterer<MOB> mobFilter)
+	{
+		if((seenM!=null)
+		&&((((seenM.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
+			||((CMSecurity.isAllowedAnywhere(seerM,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(seerM,CMSecurity.SecFlag.WIZINV))&&(seerM.phyStats().level()>=seenM.phyStats().level()))))
+		&&((friends==null)||(friends.contains(seenM.Name())||(friends.contains("All"))))
+		&&((mobFilter==null)||(mobFilter.passesFilter(seenM)))
+		&&(seenM.phyStats().level()>0))
+			return true;
+		return false;
 	}
 
 	public String getWho(MOB mob, Set<String> friends, boolean emptyOnNone, Filterer<MOB> mobFilter)
@@ -118,12 +136,7 @@ public class Who extends StdCommand
 			if((mob2!=null)&&(mob2.soulMate()!=null))
 				mob2=mob2.soulMate();
 
-			if((mob2!=null)
-			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
-				||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
-			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
-			&&((mobFilter==null)||(mobFilter.passesFilter(mob2)))
-			&&(mob2.phyStats().level()>0))
+			if(checkWho(mob,mob2,friends,mobFilter))
 				msg.append(showWhoShort(mob2,colWidths));
 		}
 		if((emptyOnNone)&&(msg.length()==0))
@@ -175,6 +188,42 @@ public class Who extends StdCommand
 				if((mob2!=null)&&(mob2.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 					friends.add(mob2.Name());
 			}
+		}
+		
+		if((mobName!=null)
+		&&(mob!=null)
+		&&(mobName.equalsIgnoreCase("acct")
+			||mobName.equalsIgnoreCase("accounts")
+			||mobName.equalsIgnoreCase("account"))
+		&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
+		&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
+		{
+			int[] colWidths = new int[]{
+					CMLib.lister().fixColWidth(20,mob.session()),
+					CMLib.lister().fixColWidth(40,mob.session())
+				};
+			final StringBuilder msg=new StringBuilder("");
+			msg.append("^x[");
+			msg.append(CMStrings.padRight(L("Account"),colWidths[0]));
+			msg.append("] Character name^.^N\n\r");
+			for(final Session S : CMLib.sessions().localOnlineIterable())
+			{
+				MOB mob2=S.mob();
+				if((mob2!=null)&&(mob2.soulMate()!=null))
+					mob2=mob2.soulMate();
+
+				if(checkWho(mob,mob2,friends,null))
+				{
+					final PlayerStats pStats2=mob2.playerStats();
+					final String accountName = (pStats2 != null) && (pStats2.getAccount() != null) ? pStats2.getAccount().getAccountName() : "?!?";
+					msg.append("["+CMStrings.padRight(accountName,colWidths[0]));
+					final String name=getWhoName(mob2);
+					msg.append("] "+CMStrings.padRight(name,colWidths[1]));
+					msg.append("\n\r");
+				}
+			}
+			mob.tell(msg.toString());
+			return false;
 		}
 
 		final String msg = getWho(mob,friends,mobName!=null,null);
