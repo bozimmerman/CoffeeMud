@@ -185,3 +185,56 @@ function finishCreateCharacter()
 	writeLine("");
 	startPlaying();
 }
+
+/*
+Base Priorities & Risks
+1. Health
+	1.1 Declining Health
+		1.1.1 Combat Damage
+		1.1.2 Poison / Disease
+		1.1.3 Bleeding
+		1.1.4 Extreme Thirst
+		1.1.5 Extreme Hunger
+	1.2 Non-Improving Health
+		1.2.1 Bleeding
+		1.2.2 Thirst
+		1.2.3 Hunger
+		1.2.4 Exhaustion
+	1.3 Debilitation / Injury
+		1.3.1 Amputation
+		1.3.2 Injury
+2. Freedom
+	2.1 Prison (Avoidance mostly)
+	2.2 Taxes (Avoidance mostly)
+	2,3 Danger of Attack / Dangerous Areas (Avoidance mostly)
+	2.4 Weather effects (Avoidance mostly)
+3. Levels
+	3.1 Preparation
+		3.1.1 Training of useful Stats
+		3.1.2 Training Useful skills
+		3.1.3 Practicing of Skills / Gaining more Trains
+		3.1.4 Gear
+			3.1.2.1 Improved Gear from Loot
+			3.1.2.2 Improved Gear from Crafting
+			3.1.2.3 Improved Gear from Shops
+		3.1.5 Companions
+			3.1.5.1 Companions from Skills
+			3.1.5.2 Companions from Shops
+		3.1.6 Evaulating best leveling areas (xp, alignment, risk)
+		3.1.7 Evaulating best travel methods and routes
+		3.1.8 Obtaining best travel method
+	3.2 Execution
+		3.2.0 Buffing
+		3.2.1 Traveling to leveling area
+		3.2.6 Wandering around evaluating targets and executing them.
+	3.3 Alternative
+		3.3.1 Engage in class-specific xp activity (explore bars, etc)
+4. Wealth (Need can be improved by need for Shop food, gear, 
+	4.1 Finding shops for inventory junk, traveling, and selling it.
+	4.2 Disposing of unsellable junk to get inventory space
+	4.3 Crafting/Gathering for sale/wealth, if wealth needs require it
+5. Social
+	5.1 Chat with people in same room.
+	5.2 Do socials at people in same room.
+	5.3 Respond to or initiate channel messages.
+*/
