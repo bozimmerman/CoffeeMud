@@ -2148,7 +2148,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		if((acct!=null)&&(acct.getEmail().length()>0))
 		{
-			mob.setAttribute(MOB.Attrib.AUTOFORWARD,true);
+			mob.setAttribute(MOB.Attrib.AUTOFORWARD,false);
 			loginObj.state=LoginState.CHARCR_EMAILDONE;
 		}
 		else
@@ -2159,7 +2159,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		else
 		{
-			mob.setAttribute(MOB.Attrib.AUTOFORWARD,false);
+			mob.setAttribute(MOB.Attrib.AUTOFORWARD,true);
 			loginObj.state=LoginState.CHARCR_EMAILDONE;
 		}
 		return null;
