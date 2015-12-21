@@ -1664,6 +1664,13 @@ public class Test extends StdCommand
 
 			}
 			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("dumpMobBitmaps")))
+			{
+				mob.tell(CMStrings.padRight("Attribute", 15)+CMStrings.padRight("Value", 11)+CMStrings.padRight("Reversed", 11));
+				for(MOB.Attrib A : MOB.Attrib.values())
+					mob.tell(CMStrings.padRight(A.name(), 15)+CMStrings.padRight(A.getBitCode()+"", 11)+CMStrings.padRight(A.isAutoReversed()+"", 11));
+			}
+			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("parseAny")))
 			{
 				final String t1="";
