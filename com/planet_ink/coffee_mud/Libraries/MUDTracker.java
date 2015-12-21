@@ -59,12 +59,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	{
 		private RFilterNode head=null;
 		@Override
-		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+		public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 		{
 			RFilterNode me=head;
 			while(me!=null)
 			{
-				if(me.filter.isFilteredOut(R,E,dir))
+				if(me.filter.isFilteredOut(hostR,R,E, dir))
 					return true;
 				me=me.next;
 			}
@@ -437,7 +437,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 					if((R==null)||(E==null)
 					||(H.contains(R))
-					||(filters.isFilteredOut(R, E, d)))
+					||(filters.isFilteredOut(R1, R, E, d)))
 						continue;
 					rooms.add(R);
 					H.add(R);

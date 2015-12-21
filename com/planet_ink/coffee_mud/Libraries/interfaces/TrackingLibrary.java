@@ -69,12 +69,12 @@ public interface TrackingLibrary extends CMLibrary
 
 	public static interface RFilter
 	{
-		public boolean isFilteredOut(final Room R, final Exit E, final int dir);
+		public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir);
 	}
 
 	public static interface RFilters
 	{
-		public boolean isFilteredOut(final Room R, final Exit E, final int dir);
+		public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir);
 		
 		public RFilters plus(RFilter filter);
 	}
@@ -89,7 +89,7 @@ public interface TrackingLibrary extends CMLibrary
 		NOHOMES(new RFilter()
 		{
 			@Override
-			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
 				return CMLib.law().getLandTitle(R) != null;
 			}
@@ -97,7 +97,7 @@ public interface TrackingLibrary extends CMLibrary
 		OPENONLY(new RFilter()
 		{
 			@Override
-			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
 				return !E.isOpen();
 			}
@@ -105,7 +105,7 @@ public interface TrackingLibrary extends CMLibrary
 		UNLOCKEDONLY(new RFilter()
 		{
 			@Override
-			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
 				return E.hasALock();
 			}
@@ -113,15 +113,15 @@ public interface TrackingLibrary extends CMLibrary
 		AREAONLY(new RFilter()
 		{
 			@Override
-			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
-				return CMLib.law().getLandTitle(R) != null;
+				return (R!=null)&&(hostR!=null)&&(hostR.getArea()!=R.getArea());
 			}
 		}),
 		NOEMPTYGRIDS(new RFilter()
 		{
 			@Override
-			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
 				return (R.getGridParent() != null) && (R.getGridParent().roomID().length() == 0);
 			}
@@ -129,7 +129,7 @@ public interface TrackingLibrary extends CMLibrary
 		NOAIR(new RFilter()
 		{
 			@Override
-			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
 				return (R.domainType() == Room.DOMAIN_INDOORS_AIR) || (R.domainType() == Room.DOMAIN_OUTDOORS_AIR);
 			}
@@ -137,7 +137,7 @@ public interface TrackingLibrary extends CMLibrary
 		NOWATER(new RFilter()
 		{
 			@Override
-			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
 				return (R.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE) || (R.domainType() == Room.DOMAIN_INDOORS_UNDERWATER) || (R.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER)
 						|| (R.domainType() == Room.DOMAIN_OUTDOORS_WATERSURFACE);
@@ -146,7 +146,7 @@ public interface TrackingLibrary extends CMLibrary
 		NOCLIMB(new RFilter()
 		{
 			@Override
-			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
 				return (CMLib.flags().isClimbing(R) || CMLib.flags().isClimbing(E));
 			}
@@ -154,7 +154,7 @@ public interface TrackingLibrary extends CMLibrary
 		NOCRAWL(new RFilter()
 		{
 			@Override
-			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
 				return (CMLib.flags().isCrawlable(R) || CMLib.flags().isCrawlable(E));
 			}
@@ -162,7 +162,7 @@ public interface TrackingLibrary extends CMLibrary
 		OUTDOORONLY(new RFilter()
 		{
 			@Override
-			public boolean isFilteredOut(final Room R, final Exit E, final int dir)
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
 				return (R.domainType() & Room.INDOORS) != 0;
 			}
