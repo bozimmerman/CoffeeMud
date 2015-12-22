@@ -2911,7 +2911,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		for(final Enumeration<Achievement> a=achievements(agent);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
-			if(!added.contains(A.getTattoo()))
+			if(!added.contains(A.getTattoo().toUpperCase().trim()))
 			{
 				final Map<String,String> parmTree = new TreeMap<String,String>();
 				fillAchievementParmTree(parmTree,A);
@@ -2939,7 +2939,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				final Achievement A=a.nextElement();
 				if(A.getAgent() == agent)
-					maps[agent.ordinal()].put(A.getTattoo(), A);
+					maps[agent.ordinal()].put(A.getTattoo().toUpperCase().trim(), A);
 			}
 		}
 		final String EOL= Resources.getEOLineMarker(buf);
@@ -2975,7 +2975,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				else
 				{
 					final String tatt = row.substring(0,x).trim();
-					if(maps[currentAgent.ordinal()].containsKey(tatt))
+					if(maps[currentAgent.ordinal()].containsKey(tatt.toUpperCase().trim()))
 					{
 						final Achievement A=maps[currentAgent.ordinal()].get(tatt);
 						if((modifyTattoo != null)&&(modifyTattoo.equalsIgnoreCase(tatt)))
@@ -2986,7 +2986,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 						else
 							newFileData.append(row).append(EOL);
-						added.add(tatt);
+						added.add(tatt.toUpperCase().trim());
 					}
 				}
 			}
