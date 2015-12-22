@@ -176,7 +176,7 @@ public class MOBloader
 				if(pstats.getSavedPose().length()>0)
 					mob.setDisplayText(pstats.getSavedPose());
 				CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
-				if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)&&(pstats.getAccount()==null))
+				if((CMProps.isUsingAccountSystem())&&(pstats.getAccount()==null))
 				{
 					// yes, this can happen when you wiggle in and out of the account system.
 					for(final Enumeration<PlayerAccount> a = CMLib.players().accounts(); a.hasMoreElements();)
@@ -1712,7 +1712,7 @@ public class MOBloader
 			thinPlayer.accountName = CMLib.xml().returnXMLValue(buf,"ACCOUNT");
 			if((thinPlayer.accountName!=null)&&(thinPlayer.accountName.length()>0))
 				acct = CMLib.players().getLoadAccount(thinPlayer.accountName);
-			if((acct != null)&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
+			if((acct != null)&&(CMProps.isUsingAccountSystem()))
 				thinPlayer.expiration=acct.getAccountExpiration();
 			else
 			if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)

@@ -831,7 +831,7 @@ public class Stat  extends Skills
 				}
 				else
 				{
-					if((target.playerStats()!=null)&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
+					if((target.playerStats()!=null)&&(CMProps.isUsingAccountSystem()))
 						str.append(L("\n\r^xMember of Account:^.^N ^w@x1^?",(target.playerStats().getAccount()!=null)?target.playerStats().getAccount().getAccountName():L("None"))).append("\n\r");
 					str.append(CMLib.commands().getScore(target));
 				}

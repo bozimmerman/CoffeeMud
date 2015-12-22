@@ -188,6 +188,114 @@ public interface AccountStats extends CMCommon
 	public void setNotes(String newnotes);
 
 	/**
+	 * Returns the number of bonus char stat points to assign to stats
+	 * during character creation.  This is independent of the account
+	 * bonus.
+	 * @see AccountStats#setBonusCharStatPoints(int)
+	 * 
+	 * @return the number of bonus charstat points
+	 */
+	public int getBonusCharStatPoints();
+
+	/**
+	 * Sets the number of bonus char stat points to assign to stats
+	 * during character creation.  This is independent of the account
+	 * bonus.
+	 * @see AccountStats#getBonusCharStatPoints()
+	 * 
+	 * @param bonus the number of bonus charstat points
+	 */
+	public void setBonusCharStatPoints(int bonus);
+
+	/**
+	 * Returns the number of bonus common skills available to
+	 * this character.  This is independent of the account
+	 * bonus.
+	 * 
+	 * @see AccountStats#setBonusCommonSkillLimits(int)
+	 * 
+	 * @return the number of bonus Common points
+	 */
+	public int getBonusCommonSkillLimits();
+
+	/**
+	 * Sets the number of bonus common skills available to
+	 * this character.  This is independent of the account
+	 * bonus.
+	 * 
+	 * @see AccountStats#getBonusCommonSkillLimits()
+	 * 
+	 * @param bonus the number of bonus Common points
+	 */
+	public void setBonusCommonSkillLimits(int bonus);
+
+	/**
+	 * Returns the number of bonus Crafting skills available to
+	 * this character.  This is independent of the account
+	 * bonus.
+	 * 
+	 * @see AccountStats#setBonusCraftingSkillLimits(int)
+	 * 
+	 * @return the number of bonus Crafting points
+	 */
+	public int getBonusCraftingSkillLimits();
+
+	/**
+	 * Sets the number of bonus Crafting skills available to
+	 * this character.  This is independent of the account
+	 * bonus.
+	 * 
+	 * @see AccountStats#getBonusCraftingSkillLimits()
+	 * 
+	 * @param bonus the number of bonus Crafting points
+	 */
+	public void setBonusCraftingSkillLimits(int bonus);
+
+	/**
+	 * Returns the number of bonus Gathering skills available to
+	 * this character.  This is independent of the account
+	 * bonus.
+	 * 
+	 * @see AccountStats#setBonusNonCraftingSkillLimits(int)
+	 * 
+	 * @return the number of bonus Gathering points
+	 */
+	public int getBonusNonCraftingSkillLimits();
+
+	/**
+	 * Sets the number of bonus Gathering skills available to
+	 * this character.  This is independent of the account
+	 * bonus.
+	 * 
+	 * @see AccountStats#getBonusNonCraftingSkillLimits()
+	 * 
+	 * @param bonus the number of bonus Gathering points
+	 */
+	public void setBonusNonCraftingSkillLimits(int bonus);
+
+	/**
+	 * Returns the number of bonus Language skills available to
+	 * this character.  This is independent of the account
+	 * bonus.
+	 * 
+	 * @see AccountStats#setBonusLanguageLimits(int)
+	 * 
+	 * @return the number of bonus Language points
+	 */
+	public int getBonusLanguageLimits();
+
+	/**
+	 * Sets the number of bonus Language skills available to
+	 * this character.  This is independent of the account
+	 * bonus.
+	 * 
+	 * @see AccountStats#getBonusLanguageLimits()
+	 * 
+	 * @param bonus the number of bonus Language points
+	 */
+	public void setBonusLanguageLimits(int bonus);
+
+	/**
 	 * Returns a modifiable Set that contains the set of player
 	 * Names that constitutes this players friends.
 	 *

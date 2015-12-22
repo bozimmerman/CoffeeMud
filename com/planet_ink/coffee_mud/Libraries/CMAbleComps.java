@@ -685,18 +685,22 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	@Override
 	public AbilityLimits getCommonSkillLimit(MOB studentM)
 	{
-		
 		final AbilityLimits aL = new AbilityLimits()
 		{
-			private int commonSkills = 0;
-			private int craftingSkills = 0;
-			private int nonCraftingSkills = 0;
-			private int specificSkillLimit = 0;
+			private int	commonSkills		= 0;
+			private int	maxCommonSkills		= 0;
+			private int	craftingSkills		= 0;
+			private int	maxCraftingSkills	= 0;
+			private int	nonCraftingSkills	= 0;
+			private int	maxNonCraftingSkills= 0;
+			private int	specificSkillLimit	= 0;
 			
 			@Override
 			public AbilityLimits commonSkills(int newVal)
 			{
 				commonSkills = newVal;
+				if(newVal > maxCommonSkills)
+					maxCommonSkills = newVal;
 				return this;
 			}
 
@@ -704,6 +708,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			public AbilityLimits craftingSkills(int newVal)
 			{
 				craftingSkills = newVal;
+				if(newVal > maxCraftingSkills)
+					maxCraftingSkills = newVal;
 				return this;
 			}
 
@@ -711,6 +717,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			public AbilityLimits nonCraftingSkills(int newVal)
 			{
 				nonCraftingSkills = newVal;
+				if(newVal > maxNonCraftingSkills)
+					maxNonCraftingSkills = newVal;
 				return this;
 			}
 
@@ -740,6 +748,24 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			}
 
 			@Override
+			public int maxCommonSkills()
+			{
+				return maxCommonSkills;
+			}
+
+			@Override
+			public int maxCraftingSkills()
+			{
+				return maxCraftingSkills;
+			}
+
+			@Override
+			public int maxNonCraftingSkills()
+			{
+				return maxNonCraftingSkills;
+			}
+
+			@Override
 			public int specificSkillLimit()
 			{
 				return specificSkillLimit;
@@ -764,6 +790,28 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				aL.nonCraftingSkills(Integer.MAX_VALUE);
 			else
 				aL.nonCraftingSkills(C.maxNonCraftingSkills());
+		}
+		if((studentM != null) && (studentM.playerStats() != null))
+		{
+			final PlayerStats pStats = studentM.playerStats();
+			if (aL.commonSkills() < Integer.MAX_VALUE)
+			{
+				aL.commonSkills(aL.commonSkills() + pStats.getBonusCommonSkillLimits());
+				if(pStats.getAccount() != null)
+					aL.commonSkills(aL.commonSkills() + pStats.getAccount().getBonusCommonSkillLimits());
+			}
+			if (aL.craftingSkills() < Integer.MAX_VALUE)
+			{
+				aL.craftingSkills(aL.craftingSkills() + pStats.getBonusCraftingSkillLimits());
+				if(pStats.getAccount() != null)
+					aL.craftingSkills(aL.craftingSkills() + pStats.getAccount().getBonusCraftingSkillLimits());
+			}
+			if (aL.nonCraftingSkills() < Integer.MAX_VALUE)
+			{
+				aL.nonCraftingSkills(aL.nonCraftingSkills() + pStats.getBonusNonCraftingSkillLimits());
+				if(pStats.getAccount() != null)
+					aL.nonCraftingSkills(aL.nonCraftingSkills() + pStats.getAccount().getBonusNonCraftingSkillLimits());
+			}
 		}
 		return aL;
 	}

@@ -112,7 +112,47 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	 * @param setOrUnset true to set it, false to unset
 	 */
 	public void setFlag(AccountFlag flag, boolean setOrUnset);
-	
+
+	/**
+	 * Returns the number of bonus characters online available to
+	 * this account.
+	 * 
+	 * @see AccountStats#setBonusCharsOnlineLimit(int)
+	 * 
+	 * @return the number of bonus chars online
+	 */
+	public int getBonusCharsOnlineLimit();
+
+	/**
+	 * Sets the number of bonus characters online available to
+	 * this account.
+	 * 
+	 * @see AccountStats#getBonusCharsOnlineLimit()
+	 * 
+	 * @param bonus the number of bonus chars online
+	 */
+	public void setBonusCharsOnlineLimit(int bonus);
+
+	/**
+	 * Returns the number of bonus characters available to
+	 * this account.
+	 * 
+	 * @see AccountStats#setBonusCharsLimit(int)
+	 * 
+	 * @return the number of bonus chars
+	 */
+	public int getBonusCharsLimit();
+
+	/**
+	 * Sets the number of bonus characters available to
+	 * this account.
+	 * 
+	 * @see AccountStats#getBonusCharsLimit()
+	 * 
+	 * @param bonus the number of bonus chars
+	 */
+	public void setBonusCharsLimit(int bonus);
+
 	/**
 	 * Various account-level flags
 	 * @author Bo Zimmerman

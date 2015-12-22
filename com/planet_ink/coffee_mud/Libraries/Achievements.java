@@ -413,7 +413,36 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							});
 						}
 						else
-						if(CMLib.coffeeMaker().isAnyGenStat(CMClass.sampleMOB(), thing))
+						if(CMLib.coffeeMaker().isAnyGenStat(CMClass.samplePlayer(), thing))
+						{
+							final String stat = thing.toUpperCase().trim();
+							
+							awardsList.add(new StatAward()
+							{
+								@Override
+								public AwardType getType()
+								{
+									return AwardType.STAT;
+								}
+
+								@Override
+								public int getAmount()
+								{
+									return number;
+								}
+
+								@Override
+								public String getStat()
+								{
+									return stat;
+								}
+							});
+						}
+						else
+						if(thing.toUpperCase().startsWith("ACCOUNT ")
+						&&(CMClass.samplePlayer().playerStats()!=null)
+						&&(CMClass.samplePlayer().playerStats().getAccount()!=null)
+						&&CMLib.coffeeMaker().isAnyGenStat(CMClass.samplePlayer(), thing.substring(8)))
 						{
 							final String stat = thing.toUpperCase().trim();
 							
@@ -1606,7 +1635,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						{
 							int count = 0;
 							Tattooable other;
-							if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0)
+							if((CMProps.isUsingAccountSystem())
 							&&(mob.playerStats()!=null))
 								other=mob.playerStats().getAccount();
 							else
@@ -1952,7 +1981,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final Achievement me=this;
 					return new Tracker()
 					{
-						private volatile boolean gotIt=false;;
+						private volatile boolean gotIt=false;
 
 						@Override
 						public Achievement getAchievement() 
@@ -2436,11 +2465,26 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case STAT:
 			{
 				final StatAward aaward=(StatAward)award;
-				String value = CMLib.coffeeMaker().getAnyGenStat(mob, aaward.getStat());
-				if(CMath.isNumber(value))
+				if((mob.playerStats()!=null)
+				&&(mob.playerStats().getAccount()!=null)
+				&&(aaward.getStat().startsWith("ACCOUNT ")))
 				{
-					awardMessage.append(L("^HYou are awarded @x1!\n\r^?",aaward.getAmount() + " " + aaward.getStat()));
-					CMLib.coffeeMaker().setAnyGenStat(mob, aaward.getStat(), "" + (CMath.s_int(value) + aaward.getAmount()));
+					final String stat = aaward.getStat().substring(8).trim();
+					String value = mob.playerStats().getAccount().getStat(stat);
+					if(CMath.isNumber(value))
+					{
+						awardMessage.append(L("^HYour account is awarded @x1!\n\r^?",aaward.getAmount() + " " + stat));
+						mob.playerStats().getAccount().setStat(stat, "" + (CMath.s_int(value) + aaward.getAmount()));
+					}
+				}
+				else
+				{
+					String value = CMLib.coffeeMaker().getAnyGenStat(mob, aaward.getStat());
+					if(CMath.isNumber(value))
+					{
+						awardMessage.append(L("^HYou are awarded @x1!\n\r^?",aaward.getAmount() + " " + aaward.getStat()));
+						CMLib.coffeeMaker().setAnyGenStat(mob, aaward.getStat(), "" + (CMath.s_int(value) + aaward.getAmount()));
+					}
 				}
 				break;
 			}

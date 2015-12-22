@@ -1208,7 +1208,6 @@ public class StdAbility implements Ability
 		if(usageType()==Ability.USAGE_NADA)
 			return STATIC_USAGE_NADA;
 
-
 		final int[][] abilityUsageCache=mob.getAbilityUsageCache(ID());
 		final int myCacheIndex=ignoreClassOverride?Ability.CACHEINDEX_CLASSLESS:Ability.CACHEINDEX_NORMAL;
 		final int[] myCache=abilityUsageCache[myCacheIndex];
@@ -1266,7 +1265,7 @@ public class StdAbility implements Ability
 				consumed=(consumed - (consumed /10 * diff));
 			if(consumed<minimum)
 				consumed=minimum;
-			if(overrideMana()>=0) 
+			if((overrideMana()>=0) && (CMProps.getMaxManaException(ID()) == Integer.MIN_VALUE))
 				consumed=overrideMana();
 			if((costOverrides!=null)&&(costOverrides[AbilityMapper.Cost.MANA.ordinal()]!=null))
 			{

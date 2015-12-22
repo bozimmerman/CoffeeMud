@@ -950,6 +950,36 @@ public class CMClass extends ClassLoader
 		return myC.sampleMOB;
 	}
 
+	protected MOB samplePlayer=null;
+	/**
+	 * Returns the saved copy of the first mob prototype as a player
+	 * @return the saved copy of the first mob prototype as a player
+	 */
+	public static final MOB samplePlayer()
+	{
+		final CMClass myC=c();
+		if((myC.samplePlayer==null)&&(myC.MOBs.size()>0))
+		{
+			myC.samplePlayer=(MOB)myC.MOBs.firstElement().copyOf();
+			myC.samplePlayer.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN);
+			myC.samplePlayer.phyStats().setDisposition(PhyStats.IS_NOT_SEEN);
+			final PlayerStats playerStats = (PlayerStats)getCommon("DefaultPlayerStats");
+			if(playerStats != null)
+			{
+				if(CMProps.isUsingAccountSystem())
+				{
+					final PlayerAccount account = (PlayerAccount)getCommon("DefaultPlayerAccount");
+					if(account != null)
+						playerStats.setAccount(account);
+				}
+				myC.samplePlayer.setPlayerStats(playerStats);
+			}
+		}
+		if(myC.samplePlayer.location()==null)
+			myC.samplePlayer.setLocation(CMLib.map().getRandomRoom());
+		return myC.samplePlayer;
+	}
+
 	/**
 	 * Searches the command prototypes for a trigger word match and returns the command.
 	 * @param word the command word to search for

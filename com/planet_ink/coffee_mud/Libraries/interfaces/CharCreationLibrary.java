@@ -299,9 +299,11 @@ public interface CharCreationLibrary extends CMLibrary
 	 * Based on the rules of the system, this method returns the number of
 	 * bonus stat points available to players to allocate, if the system
 	 * lets them do such a thing.
+	 * @param playerStats TODO
+	 * @param account TODO
 	 * @return the number of stat points available to allocate
 	 */
-	public int getTotalBonusStatPoints();
+	public int getTotalBonusStatPoints(PlayerStats playerStats, PlayerAccount account);
 	
 	/**
 	 * Returns a random fantasy name with the range of syllables given.

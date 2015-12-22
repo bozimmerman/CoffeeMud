@@ -2361,7 +2361,7 @@ public class ListCmd extends StdCommand
 		final StringBuilder buf=new StringBuilder("");
 		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 		{
-			final String theWord=(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"account":"character";
+			final String theWord=(CMProps.isUsingAccountSystem())?"account":"character";
 			final List<String> l=CMLib.login().getExpiredAcctOrCharsList();
 			if(l.size()>0)
 			{
@@ -2553,7 +2553,7 @@ public class ListCmd extends StdCommand
 		final int COL_LEN5=CMLib.lister().fixColWidth(11.0,viewerS);
 		final int COL_LEN6=CMLib.lister().fixColWidth(26.0,viewerS);
 		final int COL_LEN7=COL_LEN1+1+COL_LEN2+1+COL_LEN3+1+COL_LEN4+1+COL_LEN5+1;
-		final boolean accountSys = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM) > 1; 
+		final boolean accountSys = CMProps.isUsingAccountSystem(); 
 		for(AccountStats.Agent agent : AccountStats.Agent.values())
 		{
 			if((!accountSys) && (agent != AccountStats.Agent.PLAYER))

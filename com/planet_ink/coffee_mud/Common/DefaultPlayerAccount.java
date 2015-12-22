@@ -42,8 +42,17 @@ import java.util.*;
 */
 public class DefaultPlayerAccount implements PlayerAccount
 {
-	@Override public String ID(){return "DefaultPlayerAccount";}
-	@Override public String name() { return ID();}
+	@Override
+	public String ID()
+	{
+		return "DefaultPlayerAccount";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
 
 	protected SHashSet<String>	friends				= new SHashSet<String>();
 	protected SHashSet<String>	ignored				= new SHashSet<String>();
@@ -56,6 +65,13 @@ public class DefaultPlayerAccount implements PlayerAccount
 	protected String			password			= "";
 	protected String			notes				= "";
 	protected long 				accountExpiration	= 0;
+	protected int				bonusCommonSk		= 0;
+	protected int				bonusCraftSk		= 0;
+	protected int				bonusNonCraftSk		= 0;
+	protected int				bonusLanguages		= 0;
+	protected int				bonusCharStatPt		= 0;
+	protected int				bonusCharLimit		= 0;
+	protected int				bonusCharOnlineLimit= 0;
 	protected String[]			xtraValues			= null;
 	protected Set<AccountFlag>	acctFlags			= new SHashSet<AccountFlag>();
 	protected volatile MOB 		fakePlayerM			= null;
@@ -309,6 +325,15 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 		rest.append(" />");
 		rest.append("<TATTOOS>").append(CMParms.toListString(tattoos)).append("</TATTOOS>");
+		rest.append("<ACCSTATS>")
+			.append(bonusCommonSk).append(';')
+			.append(bonusCraftSk).append(';')
+			.append(bonusNonCraftSk).append(';')
+			.append(bonusLanguages).append(';')
+			.append(bonusCharStatPt).append(';')
+			.append(bonusCharLimit).append(';')
+			.append(bonusCharOnlineLimit).append(';')
+			.append("</ACCSTATS>");
 		return rest.toString();
 	}
 
@@ -350,6 +375,18 @@ public class DefaultPlayerAccount implements PlayerAccount
 		this.tattoos.clear();
 		for(String tattoo : allTattoos)
 			this.addTattoo(tattoo);
+		
+		final String[] allAccStats=xmlLib.getValFromPieces(xml, "ACCSTATS").split(";");
+		if(allAccStats.length>=7)
+		{
+			bonusCommonSk=CMath.s_int(allAccStats[0]);
+			bonusCraftSk=CMath.s_int(allAccStats[1]);
+			bonusNonCraftSk=CMath.s_int(allAccStats[2]);
+			bonusLanguages=CMath.s_int(allAccStats[3]);
+			bonusCharStatPt=CMath.s_int(allAccStats[4]);
+			bonusCharLimit=CMath.s_int(allAccStats[5]);
+			bonusCharOnlineLimit=CMath.s_int(allAccStats[6]);
+		}
 	}
 
 	// Acct Expire Code
@@ -674,7 +711,95 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return tattoos.find(of.trim());
 	}
 
-	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","LASTIP","LASTDATETIME","NOTES","ACCTEXPIRATION","FLAGS","EMAIL"};
+
+	@Override
+	public int getBonusCharStatPoints()
+	{
+		return this.bonusCharStatPt;
+	}
+
+	@Override
+	public void setBonusCharStatPoints(int bonus)
+	{
+		this.bonusCharStatPt = bonus;
+	}
+
+	@Override
+	public int getBonusCommonSkillLimits()
+	{
+		return this.bonusCommonSk;
+	}
+
+	@Override
+	public void setBonusCommonSkillLimits(int bonus)
+	{
+		this.bonusCommonSk = bonus;
+	}
+
+	@Override
+	public int getBonusCraftingSkillLimits()
+	{
+		return this.bonusCraftSk;
+	}
+
+	@Override
+	public void setBonusCraftingSkillLimits(int bonus)
+	{
+		this.bonusCraftSk = bonus;
+	}
+
+	@Override
+	public int getBonusNonCraftingSkillLimits()
+	{
+		return this.bonusNonCraftSk;
+	}
+
+	@Override
+	public void setBonusNonCraftingSkillLimits(int bonus)
+	{
+		this.bonusNonCraftSk = bonus;
+	}
+
+	@Override
+	public int getBonusLanguageLimits()
+	{
+		return this.bonusLanguages;
+	}
+
+	@Override
+	public void setBonusLanguageLimits(int bonus)
+	{
+		this.bonusLanguages = bonus;
+	}
+
+	@Override
+	public int getBonusCharsOnlineLimit()
+	{
+		return bonusCharOnlineLimit;
+	}
+
+	@Override
+	public void setBonusCharsOnlineLimit(int bonus)
+	{
+		bonusCharOnlineLimit = bonus;
+	}
+
+	@Override
+	public int getBonusCharsLimit()
+	{
+		return bonusCharLimit;
+	}
+
+	@Override
+	public void setBonusCharsLimit(int bonus)
+	{
+		bonusCharLimit = bonus;
+	}
+
+	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","LASTIP","LASTDATETIME",
+									 "NOTES","ACCTEXPIRATION","FLAGS","EMAIL",
+									 "BONUSCOMMON", "BONUSCRAFT","BONUSNONCRAFT","BONUSLANGS",
+									 "BONUSCHARSTATS", "BONUSCHARLIMIT", "BONUSCHARONLINE"};
 
 	@Override
 	public String getStat(String code)
@@ -699,6 +824,20 @@ public class DefaultPlayerAccount implements PlayerAccount
 			return CMParms.toListString(acctFlags);
 		case 8:
 			return email;
+		case 9:
+			return "" + bonusCommonSk;
+		case 10:
+			return "" + bonusCraftSk;
+		case 11:
+			return "" + bonusNonCraftSk;
+		case 12:
+			return "" + bonusLanguages;
+		case 13:
+			return "" + bonusCharStatPt;
+		case 14:
+			return "" + bonusCharLimit;
+		case 15:
+			return "" + bonusCharOnlineLimit;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -747,6 +886,27 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 		case 8:
 			email = val;
+			break;
+		case 9:
+			bonusCommonSk = CMath.s_parseIntExpression(val);
+			break;
+		case 10:
+			bonusCraftSk = CMath.s_parseIntExpression(val);
+			break;
+		case 11:
+			bonusNonCraftSk = CMath.s_parseIntExpression(val);
+			break;
+		case 12:
+			bonusLanguages = CMath.s_parseIntExpression(val);
+			break;
+		case 13:
+			bonusCharStatPt = CMath.s_parseIntExpression(val);
+			break;
+		case 14:
+			bonusCharLimit = CMath.s_parseIntExpression(val);
+			break;
+		case 15:
+			bonusCharOnlineLimit = CMath.s_parseIntExpression(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
@@ -803,4 +963,5 @@ public class DefaultPlayerAccount implements PlayerAccount
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
+
 }

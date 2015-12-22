@@ -38,10 +38,17 @@ import java.util.*;
 
 public class Remort extends StdCommand
 {
-	public Remort(){}
+	public Remort()
+	{
+	}
 
-	private final String[] access=I(new String[]{"REMORT"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "REMORT" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 	
 	private enum RemortRetain
 	{
@@ -301,7 +308,7 @@ public class Remort extends StdCommand
 					else
 					{
 						totalnow -= CMProps.getIntVar(CMProps.Int.BASEMINSTAT) * CharStats.CODES.BASECODES().length;
-						totalnow -= CMLib.login().getTotalBonusStatPoints();
+						totalnow -= CMLib.login().getTotalBonusStatPoints(pstats, pstats.getAccount());
 					}
 					if(totalnow < 0)
 						totalnow = 0;
@@ -318,12 +325,19 @@ public class Remort extends StdCommand
 		mob.tell(L("^HThis will drop your level back to @x1!",""+newLevel[0]));
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)
 		{
-			@Override public void showPrompt()
+			@Override
+			public void showPrompt()
 			{
 				session.promptPrint(L("If that's what you want, re-enter your password: "));
 			}
-			@Override public void timedOut() {}
-			@Override public void callBack()
+
+			@Override
+			public void timedOut()
+			{
+			}
+
+			@Override
+			public void callBack()
 			{
 				if(input.trim().length()==0)
 					return;

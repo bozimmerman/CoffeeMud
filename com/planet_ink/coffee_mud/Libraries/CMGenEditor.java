@@ -8662,7 +8662,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		final String oldName=me.Name();
-		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+		if(CMProps.isUsingAccountSystem())
 			mob.tell(L("*. Account: '@x1'.",((me.playerStats()!=null)&&(me.playerStats().getAccount()!=null))?me.playerStats().getAccount().getAccountName():L("None")));
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -8683,7 +8683,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			me.setName(newName);
 
-			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+			if(CMProps.isUsingAccountSystem())
 			{
 				final String oldAccountName = ((me.playerStats()!=null)&&(me.playerStats().getAccount()!=null))?me.playerStats().getAccount().getAccountName():"";
 				String accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,++showNumber,showFlag,"Account",true,false,null));
@@ -8740,6 +8740,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			me.setTrains(prompt(mob,me.getTrains(),++showNumber,showFlag,"Training Points"));
 			me.setPractices(prompt(mob,me.getPractices(),++showNumber,showFlag,"Practice Points"));
 			me.setQuestPoint(prompt(mob,me.getQuestPoint(),++showNumber,showFlag,"Quest Points"));
+			final PlayerStats pStats = me.playerStats();
+			if(pStats != null)
+			{
+				pStats.setBonusCommonSkillLimits(prompt(mob,pStats.getBonusCommonSkillLimits(),++showNumber,showFlag,"Bonus Common Skills"));
+				pStats.setBonusCraftingSkillLimits(prompt(mob,pStats.getBonusCraftingSkillLimits(),++showNumber,showFlag,"Bonus Craft Skills"));
+				pStats.setBonusNonCraftingSkillLimits(prompt(mob,pStats.getBonusNonCraftingSkillLimits(),++showNumber,showFlag,"Bonus Gather Skills"));
+				pStats.setBonusLanguageLimits(prompt(mob,pStats.getBonusLanguageLimits(),++showNumber,showFlag,"Bonus Languages"));
+				pStats.setBonusCharStatPoints(prompt(mob,pStats.getBonusCharStatPoints(),++showNumber,showFlag,"Bonus Creation Pts"));
+			}
 			genAbilities(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
@@ -9242,6 +9251,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 				genAccountExpiration(mob,A,++showNumber,showFlag);
 			promptStatStr(mob,A,PlayerAccount.AccountFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
+			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Common Skills: "),"BONUSCOMMON");
+			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Crafting Skills: "),"BONUSCRAFT");
+			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Gathering Skills: "),"BONUSNONCRAFT");
+			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Languages: "),"BONUSLANGS");
+			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Char Stat Points: "),"BONUSCHARSTATS");
+			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Char Limit: "),"BONUSCHARLIMIT");
+			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Char Online: "),"BONUSCHARONLINE");
 			promptStatStr(mob,A,++showNumber,showFlag,"Notes: ","NOTES");
 			genTattoos(mob,A,++showNumber,showFlag);
 			for(int x=A.getSaveStatIndex();x<A.getStatCodes().length;x++)

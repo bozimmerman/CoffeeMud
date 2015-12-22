@@ -153,7 +153,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public PlayerAccount getLoadAccountByEmail(String email)
 	{
-		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=1)
+		if(!CMProps.isUsingAccountSystem())
 			return null;
 		for(final Enumeration<PlayerAccount> e=accounts();e.hasMoreElements();)
 		{
@@ -1094,7 +1094,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					for(int x=0;x<pStats.length;x++)
 						for(int y=0;y<pStats[x].length;y++)
 							topPlayers[x][y]=pStats[x][y];
-					if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+					if(CMProps.isUsingAccountSystem())
 					{
 						final List<Pair<String,Integer>>[][] aStats = CMLib.database().DBScanPrideAccountWinners(PRIDE_TOP_SIZE, (short)5);
 						for(int x=0;x<aStats.length;x++)

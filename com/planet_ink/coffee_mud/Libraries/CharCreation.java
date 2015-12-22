@@ -195,7 +195,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 	
 	@Override
-	public int getTotalBonusStatPoints()
+	public int getTotalBonusStatPoints(PlayerStats playerStats, PlayerAccount account)
 	{
 		final int basemax = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 		final int basemin = CMProps.getIntVar(CMProps.Int.BASEMINSTAT);
@@ -209,6 +209,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if (points > (basemax - 1) * CharStats.CODES.BASECODES().length)
 			points = (basemax - 1) * CharStats.CODES.BASECODES().length;
 
+		if(playerStats != null)
+			points += playerStats.getBonusCharStatPoints();
+		if(account != null)
+			points += account.getBonusCharStatPoints();
+		
 		// Subtract stat minimums from point total to get distributable points
 		return points - (basemin * CharStats.CODES.BASECODES().length);
 	}
@@ -439,7 +444,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 		{
 			final long now=System.currentTimeMillis();
-			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+			if(CMProps.isUsingAccountSystem())
 			{
 				for(final Enumeration<PlayerAccount> e = CMLib.players().accounts(null,null); e.hasMoreElements(); )
 				{
@@ -1023,7 +1028,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 		}
 			
-		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+		if(CMProps.isUsingAccountSystem())
 			session.promptPrint(L("\n\raccount name: "));
 		else
 			session.promptPrint(L("\n\rname: "));
@@ -1045,8 +1050,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			session.println("^w ^N");
 			session.println(L("^w* Enter an existing name to log in.^N"));
-			session.println(L("^w* Enter a new name to create @x1.^N",((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"an account":" a character")));
-			session.println(L("^w* Enter '*' to generate a random @x1 name.^N",((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"account":"character")));
+			session.println(L("^w* Enter a new name to create @x1.^N",((CMProps.isUsingAccountSystem())?"an account":" a character")));
+			session.println(L("^w* Enter '*' to generate a random @x1 name.^N",((CMProps.isUsingAccountSystem())?"account":"character")));
 			loginObj.state=LoginState.LOGIN_START;
 			if((Math.random()>0.5)&&(loginObj.attempt>0))
 				loginObj.attempt--;
@@ -1073,7 +1078,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.wizi=true;
 		}
 		loginObj.login = CMStrings.capitalizeAndLower(loginObj.login);
-		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+		if(CMProps.isUsingAccountSystem())
 		{
 			loginObj.acct = CMLib.players().getLoadAccount(loginObj.login);
 			if(loginObj.acct!=null)
@@ -1306,7 +1311,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		if(loginObj.player==null)
 		{
-			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+			if(CMProps.isUsingAccountSystem())
 			{
 				if(newAccountsAllowed(loginObj.login,session,loginObj.acct))
 				{
@@ -1967,10 +1972,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=acct.numPlayers())
+			int maxPlayersOnAccount = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM);
+			if(maxPlayersOnAccount < Integer.MAX_VALUE)
+				maxPlayersOnAccount += acct.getBonusCharsLimit();
+			if((maxPlayersOnAccount<=acct.numPlayers())
 			&&(!acct.isSet(PlayerAccount.AccountFlag.NUMCHARSOVERRIDE)))
 			{
-				session.println(L("You may only have @x1 characters.  Please delete one to create another.",""+CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)));
+				session.println(L("You may only have @x1 characters.  Please delete one to create another.",""+maxPlayersOnAccount));
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
@@ -2050,17 +2058,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			&&(S.mob().playerStats().getAccount()==acct))
 				numAccountOnline++;
 		}
-		if((CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)>0)
-		&&(numAccountOnline>=CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT))
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, session.getAddress()))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, playMe.accountName))
-		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, playMe.name))
-		&&(!acct.isSet(PlayerAccount.AccountFlag.MAXCONNSOVERRIDE)))
+		if(acct != null)
 		{
-			session.println(L("You may only have @x1 of your characters on at one time.",""+CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)));
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
+			int maxConnectionsPerAccount = CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT);
+			if(maxConnectionsPerAccount > 0)
+				maxConnectionsPerAccount += acct.getBonusCharsOnlineLimit();
+			if((maxConnectionsPerAccount>0)
+			&&(numAccountOnline>=maxConnectionsPerAccount)
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
+			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, session.getAddress()))
+			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, playMe.accountName))
+			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, playMe.name))
+			&&(!acct.isSet(PlayerAccount.AccountFlag.MAXCONNSOVERRIDE)))
+			{
+				session.println(L("You may only have @x1 of your characters on at one time.",""+CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)));
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
 		}
 		playMe.loadedMOB=realMOB;
 		final LoginResult prelimResults = prelimChecks(session,playMe.name,playMe);
@@ -2609,10 +2623,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		{
 			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,CMFile.FLAG_LOGERRORS).text();
-			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(final Exception ex){}
+			try
+			{
+				introText = CMLib.webMacroFilter().virtualPageFilter(introText);
+			}
+			catch (final Exception ex)
+			{
+			}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
-			loginObj.statPoints = getTotalBonusStatPoints()+bonusPoints;
+			loginObj.statPoints = getTotalBonusStatPoints(mob.playerStats(), loginObj.acct)+bonusPoints;
 			for(int i=0;i<CharStats.CODES.BASECODES().length;i++)
 				mob.baseCharStats().setStat(CharStats.CODES.BASECODES()[i],CMProps.getIntVar(CMProps.Int.BASEMINSTAT));
 			mob.recoverCharStats();
@@ -2745,7 +2765,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(prompt.toLowerCase().startsWith("r"))
 		{
 			loginObj.baseStats.copyInto(mob.baseCharStats());
-			reRollStats(mob.baseCharStats(),getTotalBonusStatPoints());
+			reRollStats(mob.baseCharStats(),getTotalBonusStatPoints(mob.playerStats(), loginObj.acct));
 			loginObj.statPoints=0;
 			loginObj.state=LoginState.CHARCR_STATSTART;
 			return null;
@@ -3311,7 +3331,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean skipAccountNameCheck)
 	{
-		final boolean accountSystemEnabled = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1;
+		final boolean accountSystemEnabled = CMProps.isUsingAccountSystem();
 
 		if(((CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS)&&(!accountSystemEnabled))
 			||(CMSecurity.isDisabled(CMSecurity.DisFlag.NEWCHARACTERS)))
@@ -3363,12 +3383,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.println(L("\n\r'@x1' is not recognized.",CMStrings.capitalizeAndLower(login)));
 			return false;
 		case OK:
-			if((acct!=null)
-			&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=acct.numPlayers())
-			&&(!acct.isSet(PlayerAccount.AccountFlag.NUMCHARSOVERRIDE)))
+			if(acct!=null)
 			{
-				session.println(L("You may only have @x1 characters.  Please retire one to create another.",""+CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)));
-				return false;
+				int maxPlayersOnAccount = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM);
+				if(maxPlayersOnAccount < Integer.MAX_VALUE)
+					maxPlayersOnAccount += acct.getBonusCharsLimit();
+				if((maxPlayersOnAccount<=acct.numPlayers())
+				&&(!acct.isSet(PlayerAccount.AccountFlag.NUMCHARSOVERRIDE)))
+				{
+					session.println(L("You may only have @x1 characters.  Please retire one to create another.",""+maxPlayersOnAccount));
+					return false;
+				}
 			}
 			return true;
 		}
@@ -3394,14 +3419,21 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.println(L("\n\r'@x1' is not recognized.",CMStrings.capitalizeAndLower(login)));
 			return false;
 		case OK:
-			if((acct!=null)
-			&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=acct.numPlayers())
-			&&(!acct.isSet(PlayerAccount.AccountFlag.NUMCHARSOVERRIDE)))
+		{
+			if(acct!=null)
 			{
-				session.println(L("You may only have @x1 characters.  Please retire one to create another.",""+CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)));
-				return false;
+				int maxPlayersOnAccount = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM);
+				if(maxPlayersOnAccount < Integer.MAX_VALUE)
+					maxPlayersOnAccount += acct.getBonusCharsLimit();
+				if((maxPlayersOnAccount<=acct.numPlayers())
+				&&(!acct.isSet(PlayerAccount.AccountFlag.NUMCHARSOVERRIDE)))
+				{
+					session.println(L("You may only have @x1 characters.  Please retire one to create another.",""+maxPlayersOnAccount));
+					return false;
+				}
 			}
 			return true;
+		}
 		}
 	}
 

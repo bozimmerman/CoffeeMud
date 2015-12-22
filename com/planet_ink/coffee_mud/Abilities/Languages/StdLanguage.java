@@ -385,6 +385,21 @@ public class StdLanguage extends StdAbility implements Language
 		return numLanguages;
 	}
 
+	private int getMaxLanguages(final MOB student)
+	{
+		if(student==null)
+			return 0;
+		final CharClass C=student.charStats().getCurrentClass();
+		int maxLanguages = C.maxLanguages();
+		final PlayerStats pStats = student.playerStats();
+		if((pStats != null) && (maxLanguages < Integer.MAX_VALUE))
+		{
+			maxLanguages += pStats.getBonusLanguageLimits();
+			if(pStats.getAccount() != null)
+				maxLanguages += pStats.getAccount().getBonusLanguageLimits();
+		}
+		return maxLanguages;
+	}
 
 	@Override
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
@@ -394,15 +409,16 @@ public class StdLanguage extends StdAbility implements Language
 		if(student==null)
 			return true;
 		final CharClass C=student.charStats().getCurrentClass();
-		if(C.maxLanguages()==0)
+		final int maxLanguages = getMaxLanguages(student);
+		if(maxLanguages==0)
 			return true;
 		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 			return true;
 		final int numLanguages=numLanguagesKnown(student);
-		if((C.maxLanguages()>0)&&(C.maxLanguages()<=numLanguages))
+		if((maxLanguages>0)&&(maxLanguages<=numLanguages))
 		{
 			teacher.tell(L("@x1 can not learn any more languages.",student.name()));
-			student.tell(L("You may only learn @x1 languages.",""+C.maxLanguages()));
+			student.tell(L("You may only learn @x1 languages.",""+maxLanguages));
 			return false;
 		}
 		return true;
@@ -415,12 +431,13 @@ public class StdLanguage extends StdAbility implements Language
 		if((student!=null)&&(student.fetchAbility(ID())!=null))
 		{
 			final CharClass C=student.charStats().getCurrentClass();
-			if(C.maxLanguages()==0)
+			final int maxLanguages = getMaxLanguages(student);
+			if(maxLanguages==0)
 				return;
 			if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 				return;
 			final int numLanguages=numLanguagesKnown(student);
-			final int remaining = C.maxLanguages() - numLanguages;
+			final int remaining = maxLanguages - numLanguages;
 			if(remaining<=0)
 				student.tell(L("@x1 may not learn any more languages.",student.name()));
 			else

@@ -709,6 +709,11 @@ public class CMProps extends Properties
 			return 0;
 		}
 	}
+	
+	public static final boolean isUsingAccountSystem()
+	{
+		return getIntVar(Int.COMMONACCOUNTSYSTEM) > 1;
+	}
 
 	/**
 	 * Return the action cost associated with a specific Command ID(), or the default value if

@@ -94,7 +94,7 @@ public class Tell extends StdCommand
 		targetM=CMLib.sessions().findPlayerOnline(targetName,true);
 		if(targetM==null)
 			targetM=CMLib.sessions().findPlayerOnline(targetName,false);
-		if((targetM==null)&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
+		if((targetM==null)&&(CMProps.isUsingAccountSystem()))
 		{
 			final PlayerAccount P=CMLib.players().getAccount(targetName);
 			if(P!=null)

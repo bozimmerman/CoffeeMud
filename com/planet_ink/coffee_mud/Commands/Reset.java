@@ -394,7 +394,7 @@ public class Reset extends StdCommand
 			String finalName= "";
 			AccountStats stat = null;
 			MOB M=null;
-			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+			if(CMProps.isUsingAccountSystem())
 			{
 				final PlayerAccount A=CMLib.players().getLoadAccount(name);
 				if(A!=null)
@@ -411,7 +411,7 @@ public class Reset extends StdCommand
 					final PlayerStats pStats=M.playerStats();
 					if(pStats!=null)
 					{
-						if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+						if((CMProps.isUsingAccountSystem())
 						&&(pStats.getAccount()!=null))
 						{
 							stat=pStats.getAccount();

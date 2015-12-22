@@ -1196,7 +1196,7 @@ public class Destroy extends StdCommand
 			players(mob,commands);
 		}
 		else
-		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
+		if((commandType.equals("ACCOUNT"))&&(CMProps.isUsingAccountSystem()))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS))
 				return errorOut(mob);

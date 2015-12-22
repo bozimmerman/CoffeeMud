@@ -178,6 +178,6 @@ public class Account extends StdCommand
 	@Override
 	public boolean securityCheck(MOB mob)
 	{
-		return (CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM) > 1) && (mob != null) && (mob.playerStats()!=null) && (mob.playerStats().getAccount() != null);
+		return (CMProps.isUsingAccountSystem()) && (mob != null) && (mob.playerStats()!=null) && (mob.playerStats().getAccount() != null);
 	}
 }

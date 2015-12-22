@@ -257,6 +257,12 @@ public interface AbilityComponents extends CMLibrary
 		public int commonSkills();
 
 		/**
+		 * Returns max number of common skills
+		 * @return max number of common skills
+		 */
+		public int maxCommonSkills();
+		
+		/**
 		 * Sets number of common skills
 		 * @param newVal number of common skills
 		 */
@@ -269,6 +275,12 @@ public interface AbilityComponents extends CMLibrary
 		public int craftingSkills();
 
 		/**
+		 * Returns max number of crafting skills
+		 * @return max number of crafting skills
+		 */
+		public int maxCraftingSkills();
+
+		/**
 		 * Sets number of crafting skills
 		 * @param newVal number of crafting skills
 		 */
@@ -279,6 +291,12 @@ public interface AbilityComponents extends CMLibrary
 		 * @return number of non-crafting skills
 		 */
 		public int nonCraftingSkills();
+
+		/**
+		 * Returns max number of non-crafting skills
+		 * @return max number of non-crafting skills
+		 */
+		public int maxNonCraftingSkills();
 
 		/**
 		 * Sets number of non-crafting skills

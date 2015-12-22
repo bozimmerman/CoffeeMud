@@ -44,80 +44,166 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GenCharClass extends StdCharClass
 {
-	protected String ID="GenCharClass";
-	protected Integer[] nameLevels={Integer.valueOf(0)};
-	protected String baseClass="Commoner";
-	protected String hitPointsFormula="((@x6<@x7)/3)+(1*(1?6))";
-	protected String manaFormula="((@x4<@x5)/6)+(1*(1?3))";
-	protected String movementFormula="5*((@x2<@x3)/18)";
-	protected int levelCap=-1;
-	protected int bonusPracLevel=0;
-	protected int bonusAttackLevel=0;
-	protected int attackAttribute=CharStats.STAT_STRENGTH;
-	protected int pracsFirstLevel=5;
-	protected int trainsFirstLevel=3;
-	protected int levelsPerBonusDamage=10;
-	protected int allowedArmorLevel=CharClass.ARMOR_ANY;
-	protected String otherLimitations="";
-	protected String otherBonuses="";
-	protected String qualifications="";
-	protected String[] xtraValues=null;
-	protected SubClassRule subClassRule=SubClassRule.BASEONLY;
-	protected int selectability=0;
-
-	@Override public String getManaFormula(){return manaFormula; }
-	@Override public String getHitPointsFormula(){return hitPointsFormula; }
-	@Override public SubClassRule getSubClassRule() { return subClassRule; }
-
-	@Override public int getLevelCap() {return levelCap;}
-
-	protected int maxNonCraftingSkills=CMProps.getIntVar(CMProps.Int.MAXNONCRAFTINGSKILLS);
-	protected int maxCraftingSkills=CMProps.getIntVar(CMProps.Int.MAXCRAFTINGSKILLS);
-	protected int maxCommonSkills=CMProps.getIntVar(CMProps.Int.MAXCOMMONSKILLS);
-	protected int maxLanguages=CMProps.getIntVar(CMProps.Int.MAXLANGUAGES);
-
-	@Override public int maxNonCraftingSkills() { return maxNonCraftingSkills;}
-	@Override public int maxCraftingSkills() { return maxCraftingSkills;}
-	@Override public int maxCommonSkills() { return maxCommonSkills;}
-	@Override public int maxLanguages() { return maxLanguages;}
-
-	// IS *only* used by stdcharclass for weaponliminatations, buildDisallowedWeaponClasses,  buildRequiredWeaponMaterials
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
-
-	private Set<Integer> requiredWeaponMaterials=null; // set of Integer material masks
-	@Override protected Set<Integer> requiredWeaponMaterials(){return requiredWeaponMaterials;}
-
-	protected int requiredArmorSourceMinor=-1;
-	@Override public int requiredArmorSourceMinor(){return requiredArmorSourceMinor;}
-
-	private String[] raceRequiredList=new String[0];
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
-
-	private Pair<String,Integer>[] minimumStatRequirements=new Pair[0];
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
-
-	protected Set<Integer> disallowedWeaponSet=null; // set of Integers for weapon classes
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
-	protected CharStats setStats=null;
-	protected CharStats adjStats=null;
-	protected PhyStats adjPStats=null;
-	protected CharState adjState=null;
-	protected CharState startAdjState=null;
-	protected CharClass statBuddy=null;
-	protected CharClass eventBuddy=null;
-	protected int disableFlags=0;
-	protected String startingMoney="";
-	@Override public boolean raceless(){return (disableFlags&CharClass.GENFLAG_NORACE)==CharClass.GENFLAG_NORACE;}
-	@Override public boolean leveless(){return (disableFlags&CharClass.GENFLAG_NOLEVELS)==CharClass.GENFLAG_NOLEVELS;}
-	@Override public boolean expless(){return (disableFlags&CharClass.GENFLAG_NOEXP)==CharClass.GENFLAG_NOEXP;}
-	@Override public boolean showThinQualifyList(){return (disableFlags&CharClass.GENFLAG_THINQUALLIST)==CharClass.GENFLAG_THINQUALLIST;}
-	@Override public String getStartingMoney() { return startingMoney; }
+	protected String		ID						= "GenCharClass";
+	protected Integer[]		nameLevels				= { Integer.valueOf(0) };
+	protected String		baseClass				= "Commoner";
+	protected String		hitPointsFormula		= "((@x6<@x7)/3)+(1*(1?6))";
+	protected String		manaFormula				= "((@x4<@x5)/6)+(1*(1?3))";
+	protected String		movementFormula			= "5*((@x2<@x3)/18)";
+	protected int			levelCap				= -1;
+	protected int			bonusPracLevel			= 0;
+	protected int			bonusAttackLevel		= 0;
+	protected int			attackAttribute			= CharStats.STAT_STRENGTH;
+	protected int			pracsFirstLevel			= 5;
+	protected int			trainsFirstLevel		= 3;
+	protected int			levelsPerBonusDamage	= 10;
+	protected int			allowedArmorLevel		= CharClass.ARMOR_ANY;
+	protected String		otherLimitations		= "";
+	protected String		otherBonuses			= "";
+	protected String		qualifications			= "";
+	protected String[]		xtraValues				= null;
+	protected SubClassRule	subClassRule			= SubClassRule.BASEONLY;
+	protected int			selectability			= 0;
+	protected int			maxNonCraftingSkills	= CMProps.getIntVar(CMProps.Int.MAXNONCRAFTINGSKILLS);
+	protected int			maxCraftingSkills		= CMProps.getIntVar(CMProps.Int.MAXCRAFTINGSKILLS);
+	protected int			maxCommonSkills			= CMProps.getIntVar(CMProps.Int.MAXCOMMONSKILLS);
+	protected int			maxLanguages			= CMProps.getIntVar(CMProps.Int.MAXLANGUAGES);
+	private Set<Integer> 	requiredWeaponMaterials = null; // set of Integer material masks
+	protected int 			requiredArmorSourceMinor= -1;
+	private String[] 		raceRequiredList		= new String[0];
+	protected Set<Integer> 	disallowedWeaponSet		= null; // set of Integers for weapon classes
+	protected CharStats 	setStats				= null;
+	protected CharStats 	adjStats				= null;
+	protected PhyStats 		adjPStats				= null;
+	protected CharState 	adjState				= null;
+	protected CharState 	startAdjState			= null;
+	protected CharClass 	statBuddy				= null;
+	protected CharClass 	eventBuddy				= null;
+	protected int 			disableFlags			= 0;
+	protected String 		startingMoney			= "";
+	protected List<String>[]securityGroups			= new List[0];
+	protected Integer[] 	securityGroupLevels		= {};
+	protected String 		helpEntry 				= "";
 
 	//protected Vector<Item> outfitChoices=null; from stdcharclass -- but don't forget them!
-	protected List<String>[] securityGroups=new List[0];
-	protected Integer[] securityGroupLevels={};
-	protected Map<Integer,CMSecurity.SecGroup> securityGroupCache=new Hashtable<Integer,CMSecurity.SecGroup>();
-	protected String helpEntry = "";
+	private Pair<String,Integer>[] 			   minimumStatRequirements	= new Pair[0];
+	protected Map<Integer,CMSecurity.SecGroup> securityGroupCache		= new Hashtable<Integer,CMSecurity.SecGroup>();
+	
+	@Override
+	public String getManaFormula()
+	{
+		return manaFormula;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return hitPointsFormula;
+	}
+
+	@Override
+	public SubClassRule getSubClassRule()
+	{
+		return subClassRule;
+	}
+
+	@Override
+	public int getLevelCap()
+	{
+		return levelCap;
+	}
+
+	@Override
+	public int maxNonCraftingSkills()
+	{
+		return maxNonCraftingSkills;
+	}
+
+	@Override
+	public int maxCraftingSkills()
+	{
+		return maxCraftingSkills;
+	}
+
+	@Override
+	public int maxCommonSkills()
+	{
+		return maxCommonSkills;
+	}
+
+	@Override
+	public int maxLanguages()
+	{
+		return maxLanguages;
+	}
+
+	// IS *only* used by stdcharclass for weaponliminatations,
+	// buildDisallowedWeaponClasses, buildRequiredWeaponMaterials
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_ANY;
+	}
+
+	@Override
+	protected Set<Integer> requiredWeaponMaterials()
+	{
+		return requiredWeaponMaterials;
+	}
+
+	@Override
+	public int requiredArmorSourceMinor()
+	{
+		return requiredArmorSourceMinor;
+	}
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeaponSet;
+	}
+
+	@Override
+	public boolean raceless()
+	{
+		return (disableFlags & CharClass.GENFLAG_NORACE) == CharClass.GENFLAG_NORACE;
+	}
+
+	@Override
+	public boolean leveless()
+	{
+		return (disableFlags & CharClass.GENFLAG_NOLEVELS) == CharClass.GENFLAG_NOLEVELS;
+	}
+
+	@Override
+	public boolean expless()
+	{
+		return (disableFlags & CharClass.GENFLAG_NOEXP) == CharClass.GENFLAG_NOEXP;
+	}
+
+	@Override
+	public boolean showThinQualifyList()
+	{
+		return (disableFlags & CharClass.GENFLAG_THINQUALLIST) == CharClass.GENFLAG_THINQUALLIST;
+	}
+
+	@Override
+	public String getStartingMoney()
+	{
+		return startingMoney;
+	}
 
 	@Override
 	public SecGroup getSecurityFlags(int classLevel)
@@ -128,18 +214,35 @@ public class GenCharClass extends StdCharClass
 			return securityGroupCache.get(Integer.valueOf(classLevel));
 		final List<String> allFlags=new ArrayList<String>();
 		for(int i=securityGroupLevels.length-1;i>=0;i--)
+		{
 			if((classLevel>=securityGroupLevels[i].intValue())
 			&&(i<securityGroups.length))
 				allFlags.addAll(securityGroups[i]);
+		}
 		final SecGroup g = CMSecurity.instance().createGroup("", allFlags);
 		securityGroupCache.put(Integer.valueOf(classLevel),g);
 		return g;
 	}
 
 
-	@Override public boolean isGeneric(){return true;}
-	@Override public String ID(){return ID;}
-	@Override public String name(){return names[0];}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
+
+	@Override
+	public String ID()
+	{
+		return ID;
+	}
+
+	@Override
+	public String name()
+	{
+		return names[0];
+	}
+
 	@Override
 	public String name(int classLevel)
 	{
@@ -149,18 +252,78 @@ public class GenCharClass extends StdCharClass
 				return names[i];
 		return names[0];
 	}
-	@Override public String baseClass(){return baseClass;}
-	@Override public int getBonusPracLevel(){return bonusPracLevel;}
-	@Override public int getBonusAttackLevel(){return bonusAttackLevel;}
-	@Override public int getAttackAttribute(){return attackAttribute;}
-	@Override public int getPracsFirstLevel(){return pracsFirstLevel;}
-	@Override public int getTrainsFirstLevel(){return trainsFirstLevel;}
-	@Override public int getLevelsPerBonusDamage(){ return levelsPerBonusDamage;}
-	@Override public String getMovementFormula(){return movementFormula;}
-	@Override public int allowedArmorLevel(){return allowedArmorLevel;}
-	@Override public String getOtherLimitsDesc(){return otherLimitations;}
-	@Override public String getOtherBonusDesc(){return otherBonuses;}
-	@Override public int availabilityCode(){return selectability;}
+
+	@Override
+	public String baseClass()
+	{
+		return baseClass;
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return bonusPracLevel;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return bonusAttackLevel;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return attackAttribute;
+	}
+
+	@Override
+	public int getPracsFirstLevel()
+	{
+		return pracsFirstLevel;
+	}
+
+	@Override
+	public int getTrainsFirstLevel()
+	{
+		return trainsFirstLevel;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return levelsPerBonusDamage;
+	}
+
+	@Override
+	public String getMovementFormula()
+	{
+		return movementFormula;
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return allowedArmorLevel;
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return otherLimitations;
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return otherBonuses;
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return selectability;
+	}
 
 	public GenCharClass()
 	{
@@ -204,7 +367,19 @@ public class GenCharClass extends StdCharClass
 	{
 	}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new GenCharClass();}}
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new GenCharClass();
+		}
+	}
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -213,8 +388,14 @@ public class GenCharClass extends StdCharClass
 		return E;
 	}
 
-	public boolean loaded(){return true;}
-	public void setLoaded(boolean truefalse){}
+	public boolean loaded()
+	{
+		return true;
+	}
+
+	public void setLoaded(boolean truefalse)
+	{
+	}
 
 	@Override
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
@@ -275,6 +456,7 @@ public class GenCharClass extends StdCharClass
 		if(statBuddy!=null)
 			statBuddy.affectPhyStats(affected,affectableStats);
 	}
+
 	@Override
 	public boolean tick(Tickable myChar, int tickID)
 	{
@@ -283,6 +465,7 @@ public class GenCharClass extends StdCharClass
 				return false;
 		return super.tick(myChar, tickID);
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -290,6 +473,7 @@ public class GenCharClass extends StdCharClass
 			eventBuddy.executeMsg(myHost, msg);
 		super.executeMsg(myHost, msg);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -299,19 +483,27 @@ public class GenCharClass extends StdCharClass
 		return super.okMessage(myHost, msg);
 
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(adjStats!=null)
+		{
 			for(final int i: CharStats.CODES.ALLCODES())
 				affectableStats.setStat(i,affectableStats.getStat(i)+adjStats.getStat(i));
+		}
 		if(setStats!=null)
+		{
 			for(final int i: CharStats.CODES.ALLCODES())
+			{
 				if(setStats.getStat(i)!=0)
 					affectableStats.setStat(i,setStats.getStat(i));
+			}
+		}
 		if(statBuddy!=null)
 			statBuddy.affectCharStats(affectedMob,affectableStats);
 	}
+
 	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
@@ -900,7 +1092,9 @@ public class GenCharClass extends StdCharClass
 		}
 		return "";
 	}
+	
 	protected String[] tempables=new String[9];
+	
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -1267,6 +1461,7 @@ public class GenCharClass extends StdCharClass
 			break;
 		}
 	}
+
 	@Override
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
@@ -1281,8 +1476,15 @@ public class GenCharClass extends StdCharClass
 			mob.baseState().setThirst(mob.baseState().getThirst()+startAdjState.getThirst());
 		}
 	}
-	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
-	private static String[] codes=null;
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return (xtraValues == null) ? getStatCodes().length : getStatCodes().length - xtraValues.length;
+	}
+
+	private static String[]	codes	= null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -1291,6 +1493,7 @@ public class GenCharClass extends StdCharClass
 		codes=CMProps.getStatCodesList(CODES,this);
 		return codes;
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
@@ -1301,6 +1504,7 @@ public class GenCharClass extends StdCharClass
 				return i;
 		return -1;
 	}
+
 	@Override
 	public boolean sameAs(CharClass E)
 	{

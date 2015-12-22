@@ -70,6 +70,11 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String		 savedPose		= "";
 	protected String		 notes			= "";
 	protected int   		 wrap			= 78;
+	protected int			 bonusCommonSk	= 0;
+	protected int			 bonusCraftSk	= 0;
+	protected int			 bonusNonCraftSk= 0;
+	protected int			 bonusLanguages = 0;
+	protected int			 bonusCharStatPt= 0;
 	protected int   		 pageBreak		= CMProps.getIntVar(CMProps.Int.PAGEBREAK);
 	protected int[] 		 birthday		= null;
 	protected MOB   		 replyTo		= null;
@@ -676,7 +681,14 @@ public class DefaultPlayerStats implements PlayerStats
 			// getCount(null) should be ok, because it's only the un-savable trackers that need the mob obj
 		}
 		rest.append(" />");
-
+		rest.append("<PCCSTATS>")
+			.append(bonusCommonSk).append(';')
+			.append(bonusCraftSk).append(';')
+			.append(bonusNonCraftSk).append(';')
+			.append(bonusLanguages).append(';')
+			.append(bonusCharStatPt).append(';')
+			.append("</PCCSTATS>");
+		
 		return ((friendsStr.length()>0)?"<FRIENDS>"+friendsStr+"</FRIENDS>":"")
 			+((ignoredStr.length()>0)?"<IGNORED>"+ignoredStr+"</IGNORED>":"")
 			+((privateListStr.length()>0)?"<INTROS>"+privateListStr+"</INTROS>":"")
@@ -966,10 +978,20 @@ public class DefaultPlayerStats implements PlayerStats
 		str = xmlLib.getValFromPieces(xml,"ACCOUNT");
 		if(debug)
 			Log.debugOut("ACCOUNT="+str);
-		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+		if(CMProps.isUsingAccountSystem())
 		{
 			if((str != null)&&(str.length()>0))
 				account = CMLib.players().getLoadAccount(str);
+		}
+		
+		final String[] allAccStats=xmlLib.getValFromPieces(xml, "PCCSTATS").split(";");
+		if(allAccStats.length>=5)
+		{
+			bonusCommonSk=CMath.s_int(allAccStats[0]);
+			bonusCraftSk=CMath.s_int(allAccStats[1]);
+			bonusNonCraftSk=CMath.s_int(allAccStats[2]);
+			bonusLanguages=CMath.s_int(allAccStats[3]);
+			bonusCharStatPt=CMath.s_int(allAccStats[4]);
 		}
 	}
 
@@ -1276,6 +1298,66 @@ public class DefaultPlayerStats implements PlayerStats
 		return extItems;
 	}
 
+	@Override
+	public int getBonusCharStatPoints()
+	{
+		return this.bonusCharStatPt;
+	}
+
+	@Override
+	public void setBonusCharStatPoints(int bonus)
+	{
+		this.bonusCharStatPt = bonus;
+	}
+
+	@Override
+	public int getBonusCommonSkillLimits()
+	{
+		return this.bonusCommonSk;
+	}
+
+	@Override
+	public void setBonusCommonSkillLimits(int bonus)
+	{
+		this.bonusCommonSk = bonus;
+	}
+
+	@Override
+	public int getBonusCraftingSkillLimits()
+	{
+		return this.bonusCraftSk;
+	}
+
+	@Override
+	public void setBonusCraftingSkillLimits(int bonus)
+	{
+		this.bonusCraftSk = bonus;
+	}
+
+	@Override
+	public int getBonusNonCraftingSkillLimits()
+	{
+		return this.bonusNonCraftSk;
+	}
+
+	@Override
+	public void setBonusNonCraftingSkillLimits(int bonus)
+	{
+		this.bonusNonCraftSk = bonus;
+	}
+
+	@Override
+	public int getBonusLanguageLimits()
+	{
+		return this.bonusLanguages;
+	}
+
+	@Override
+	public void setBonusLanguageLimits(int bonus)
+	{
+		this.bonusLanguages = bonus;
+	}
+
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",
 									 "ALIAS","LASTIP","LASTDATETIME",
 									 "CHANNELMASK",
@@ -1283,7 +1365,9 @@ public class DefaultPlayerStats implements PlayerStats
 									 "POOFOUT","TRANPOOFIN","TRAINPOOFOUT",
 									 "ANNOUNCEMSG","NOTES","WRAP","BIRTHDAY",
 									 "ACCTEXPIRATION","INTRODUCTIONS","PAGEBREAK",
-									 "SAVEDPOSE","THEME", "LEGLEVELS"};
+									 "SAVEDPOSE","THEME", "LEGLEVELS","BONUSCOMMON",
+									 "BONUSCRAFT","BONUSNONCRAFT","BONUSLANGS",
+									 "BONUSCHARSTATS"};
 	@Override
 	public String getStat(String code)
 	{
@@ -1337,10 +1421,21 @@ public class DefaultPlayerStats implements PlayerStats
 			return "" + theme;
 		case 23:
 			return "" + getTotalLegacyLevels();
+		case 24:
+			return "" + bonusCommonSk;
+		case 25:
+			return "" + bonusCraftSk;
+		case 26:
+			return "" + bonusNonCraftSk;
+		case 27:
+			return "" + bonusLanguages;
+		case 28:
+			return "" + bonusCharStatPt;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+	
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -1370,10 +1465,10 @@ public class DefaultPlayerStats implements PlayerStats
 			lastIP = val;
 			break;
 		case 6:
-			lLastDateTime = CMath.s_long(val);
+			lLastDateTime = CMath.s_parseLongExpression(val);
 			break;
 		case 7:
-			channelMask = CMath.s_int(val);
+			channelMask = CMath.s_parseIntExpression(val);
 			break;
 		case 8:
 			colorStr = val;
@@ -1400,13 +1495,13 @@ public class DefaultPlayerStats implements PlayerStats
 			notes = val;
 			break;
 		case 16:
-			setWrap(CMath.s_int(val));
+			setWrap(CMath.s_parseIntExpression(val));
 			break;
 		case 17:
 			setBirthday(val);
 			break;
 		case 18:
-			accountExpires = CMath.s_long(val);
+			accountExpires = CMath.s_parseLongExpression(val);
 			break;
 		case 19:
 		{
@@ -1415,16 +1510,31 @@ public class DefaultPlayerStats implements PlayerStats
 			break;
 		}
 		case 20:
-			pageBreak = CMath.s_int(val);
+			pageBreak = CMath.s_parseIntExpression(val);
 			break;
 		case 21:
 			savedPose = val;
 			break;
 		case 22:
-			theme = CMath.s_int(val);
+			theme = CMath.s_parseIntExpression(val);
 			break;
 		case 23:
 			break; // legacy levels
+		case 24:
+			bonusCommonSk = CMath.s_parseIntExpression(val);
+			break;
+		case 25:
+			bonusCraftSk = CMath.s_parseIntExpression(val);
+			break;
+		case 26:
+			bonusNonCraftSk = CMath.s_parseIntExpression(val);
+			break;
+		case 27:
+			bonusLanguages = CMath.s_parseIntExpression(val);
+			break;
+		case 28:
+			bonusCharStatPt = CMath.s_parseIntExpression(val);
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

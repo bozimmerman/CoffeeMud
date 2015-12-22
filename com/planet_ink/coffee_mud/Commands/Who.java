@@ -196,7 +196,7 @@ public class Who extends StdCommand
 			||mobName.equalsIgnoreCase("accounts")
 			||mobName.equalsIgnoreCase("account"))
 		&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
-		&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
+		&&(CMProps.isUsingAccountSystem()))
 		{
 			int[] colWidths = new int[]{
 					CMLib.lister().fixColWidth(20,mob.session()),
@@ -212,7 +212,7 @@ public class Who extends StdCommand
 				if((mob2!=null)&&(mob2.soulMate()!=null))
 					mob2=mob2.soulMate();
 
-				if(checkWho(mob,mob2,friends,null))
+				if(checkWho(mob,mob2,friends,null) && (mob2!=null))
 				{
 					final PlayerStats pStats2=mob2.playerStats();
 					final String accountName = (pStats2 != null) && (pStats2.getAccount() != null) ? pStats2.getAccount().getAccountName() : "?!?";

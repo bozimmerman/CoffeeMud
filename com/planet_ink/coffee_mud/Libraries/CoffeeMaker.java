@@ -2629,8 +2629,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return true;
 			if(((MOB)P).baseState().isStat(stat))
 				return true;
-			if(((MOB)P).playerStats()!=null)
-				return ((MOB)P).playerStats().isStat(stat);
+			if((((MOB)P).playerStats()!=null)
+			&&((MOB)P).playerStats().isStat(stat))
+				return true;
+			if((((MOB)P).playerStats()!=null)
+			&&(((MOB)P).playerStats().getAccount()!=null)
+			&&(((MOB)P).playerStats().getAccount().isStat(stat)))
+				return true;
 			if(getGenMobCodeNum(stat)>=0)
 				return true;
 			final GenMOBBonusFakeStats fakeStat = (GenMOBBonusFakeStats)CMath.s_valueOf(GenMOBBonusFakeStats.class, stat);
@@ -2662,8 +2667,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return current?((MOB)P).charStats().getStat(stat):((MOB)P).baseCharStats().getStat(stat);
 			if(((MOB)P).baseState().isStat(stat))
 				return current?((MOB)P).curState().getStat(stat):((MOB)P).baseState().getStat(stat);
-			if(((MOB)P).playerStats()!=null)
+			if((((MOB)P).playerStats()!=null)
+			&&(((MOB)P).playerStats().isStat(stat)))
 				return ((MOB)P).playerStats().getStat(stat);
+			if((((MOB)P).playerStats()!=null)
+			&&(((MOB)P).playerStats().getAccount() != null)
+			&&(((MOB)P).playerStats().getAccount().isStat(stat)))
+				return ((MOB)P).playerStats().getAccount().getStat(stat);
 			if(getGenMobCodeNum(stat)>=0)
 				return getGenMobStat((MOB)P, stat);
 			final GenMOBBonusFakeStats fakeStat = (GenMOBBonusFakeStats)CMath.s_valueOf(GenMOBBonusFakeStats.class, stat);
@@ -2759,9 +2769,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					((MOB)P).baseState().setStat(stat, value);
 				return;
 			}
-			if(((MOB)P).playerStats()!=null)
+			if((((MOB)P).playerStats()!=null)
+			&&(((MOB)P).playerStats().isStat(stat)))
 			{
 				((MOB)P).playerStats().setStat(stat, value);
+				return;
+			}
+			if((((MOB)P).playerStats()!=null)
+			&&(((MOB)P).playerStats().getAccount() != null)
+			&&(((MOB)P).playerStats().getAccount().isStat(stat)))
+			{
+				((MOB)P).playerStats().getAccount().setStat(stat, value);
 				return;
 			}
 			if(getGenMobCodeNum(stat)>=0)

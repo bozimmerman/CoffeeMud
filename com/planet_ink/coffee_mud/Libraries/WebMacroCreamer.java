@@ -1315,7 +1315,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				if (aM != null)
 					author = aM.Name();
 				else 
-				if (CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM) > 1)
+				if (CMProps.isUsingAccountSystem())
 				{
 					final PlayerAccount A = CMLib.players().getLoadAccountByEmail(author);
 					if (A == null)

@@ -131,12 +131,12 @@ public class Export extends StdCommand
 		&&(!commandType.equalsIgnoreCase("WORLD"))
 		&&(!commandType.equalsIgnoreCase("CATALOG"))
 		&&(!commandType.equalsIgnoreCase("PLAYER"))
-		&&(!(commandType.equalsIgnoreCase("ACCOUNT")&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)))
+		&&(!(commandType.equalsIgnoreCase("ACCOUNT")&&(CMProps.isUsingAccountSystem())))
 		&&(!commandType.equalsIgnoreCase("AREA")))
 		{
 			if(S!=null)
 			{
-				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+				if(CMProps.isUsingAccountSystem())
 					mob.tell(L("Export what?  Room, World, Player, Account, or Area?"));
 				else
 					mob.tell(L("Export what?  Room, World, Player, or Area?"));

@@ -49,7 +49,7 @@ public class Top extends StdCommand
 			if("PLAYERS".startsWith(what))
 				doPlayers=true;
 			else
-			if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)&&("ACCOUNTS".startsWith(what)))
+			if((CMProps.isUsingAccountSystem())&&("ACCOUNTS".startsWith(what)))
 				doPlayers=false;
 			else
 			{

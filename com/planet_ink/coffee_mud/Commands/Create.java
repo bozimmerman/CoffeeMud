@@ -849,7 +849,7 @@ public class Create extends StdCommand
 	public void achievements(MOB mob, List<String> commands)
 	throws IOException
 	{
-		final boolean accountSys = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1;
+		final boolean accountSys = CMProps.isUsingAccountSystem();
 		if(commands.size()<((accountSys)?4:3))
 		{
 			if(accountSys)
@@ -1196,7 +1196,7 @@ public class Create extends StdCommand
 			rooms(mob,commands);
 		}
 		else
-		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
+		if((commandType.equals("ACCOUNT"))&&(CMProps.isUsingAccountSystem()))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS))
 				return errorOut(mob);
