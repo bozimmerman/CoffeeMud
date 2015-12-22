@@ -23,7 +23,6 @@ TECH
 
 NON-TECH
    *. Change MG auth token to use password hash instead of pw, for security.
-   *. Prop_BindItem onpickup, onequip, sellable, to player, account, clan
    *. Simple Desires quest behavior - see Tim's Wants and Needs doc
    *. Wants and Needs engine - similar to slavery system
    *. Start on Spell Research?
