@@ -92,9 +92,7 @@ public interface PlayerLibrary extends CMLibrary
 
 		public boolean matchesPassword(String checkPass)
 		{
-			return CMLib.encoder().isARandomHashString(password)
-				?CMLib.encoder().checkAgainstRandomHashString(checkPass,password):
-					checkPass.equalsIgnoreCase(password);
+			return CMLib.encoder().passwordCheck(checkPass, password);
 		}
 	}
 }

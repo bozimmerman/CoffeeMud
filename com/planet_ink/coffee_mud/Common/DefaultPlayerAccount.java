@@ -189,9 +189,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	@Override
 	public boolean matchesPassword(String checkPass)
 	{
-		if(CMLib.encoder().isARandomHashString(password))
-			return CMLib.encoder().checkAgainstRandomHashString(checkPass, password);
-		return checkPass.equalsIgnoreCase(password);
+		return CMLib.encoder().passwordCheck(checkPass, password);
 	}
 
 	@Override

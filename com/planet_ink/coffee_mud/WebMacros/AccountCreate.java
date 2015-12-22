@@ -146,13 +146,17 @@ public class AccountCreate extends StdWebMacro
 		{
 			httpReq.addFakeUrlParameter("PLAYER",name);
 			if(Authenticate.authenticated(httpReq,name,password))
+			{
 				try
 				{
-					httpReq.addFakeUrlParameter("AUTH", URLEncoder.encode(Authenticate.Encrypt(Authenticate.getLogin(httpReq))+"-"+Authenticate.Encrypt(Authenticate.getPassword(httpReq)),"UTF-8"));
+					final String loginUrlStr= URLEncoder.encode(Authenticate.Encrypt(Authenticate.getLogin(httpReq)),"UTF-8");
+					final String passwordUrlStr=URLEncoder.encode(Authenticate.Encrypt(Authenticate.getPassword(httpReq)),"UTF-8");
+					httpReq.addFakeUrlParameter("AUTH", loginUrlStr+"-"+passwordUrlStr);
 				}
 				catch(final Exception u)
 				{
 				}
+			}
 		}
 		return "";
 	}

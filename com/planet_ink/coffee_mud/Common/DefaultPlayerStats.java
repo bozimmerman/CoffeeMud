@@ -249,9 +249,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if(account!=null)
 			return account.matchesPassword(checkPass);
-		if(CMLib.encoder().isARandomHashString(password))
-			return CMLib.encoder().checkAgainstRandomHashString(checkPass, password);
-		return checkPass.equalsIgnoreCase(password);
+		return CMLib.encoder().passwordCheck(checkPass, password);
 	}
 
 	@Override

@@ -49,7 +49,9 @@ public class Authenticate extends StdWebMacro
 		{
 			try
 			{
-				return URLEncoder.encode(Encrypt(getLogin(httpReq))+"-"+Encrypt(getPassword(httpReq)),"UTF-8");
+				final String loginUrlStr= URLEncoder.encode(Authenticate.Encrypt(Authenticate.getLogin(httpReq)),"UTF-8");
+				final String passwordUrlStr=URLEncoder.encode(Authenticate.Encrypt(Authenticate.getPassword(httpReq)),"UTF-8");
+				return loginUrlStr+"-"+passwordUrlStr;
 			}
 			catch(final Exception u)
 			{
@@ -289,7 +291,11 @@ public class Authenticate extends StdWebMacro
 	{
 		String password=httpReq.getUrlParameter("PASSWORD");
 		if((password!=null)&&(password.length()>0))
-			return password;
+		{
+			if(CMLib.encoder().isARandomHashString(password))
+				return password;
+			return CMLib.encoder().makeRandomHashString(password);
+		}
 		final String auth=httpReq.getUrlParameter("AUTH");
 		if(auth==null)
 			return "";

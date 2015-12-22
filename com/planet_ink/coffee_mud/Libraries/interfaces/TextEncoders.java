@@ -35,6 +35,7 @@ public interface TextEncoders extends CMLibrary
 	public byte[] compressString(String s);
 	public boolean checkAgainstRandomHashString(final String checkString, final String hashString);
 	public boolean isARandomHashString(final String password);
+	public boolean passwordCheck(final String pass1, final String pass2);
 	public String makeRandomHashString(final String password);
 	public String generateRandomPassword();
 }

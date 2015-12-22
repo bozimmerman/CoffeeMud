@@ -69,7 +69,8 @@ public class PlayerOnline extends StdWebMacro
 				if(M!=null)
 				{
 					final String login=Authenticate.getLogin(httpReq);
-					if(Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
+					final String pass=Authenticate.getPassword(httpReq);
+					if(Authenticate.authenticated(httpReq,login,pass))
 					{
 						boolean canBan=false;
 						boolean canModify=false;

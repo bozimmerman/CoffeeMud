@@ -27,10 +27,15 @@ import com.planet_ink.coffee_mud.core.Log;
 */
 public class CMEncoder extends StdLibrary implements TextEncoders
 {
-	@Override public String ID(){return "CMEncoder";}
-	private byte[] encodeBuffer = new byte[65536];
-	private final Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
-	private final Inflater decompresser = new Inflater();
+	@Override
+	public String ID()
+	{
+		return "CMEncoder";
+	}
+
+	private byte[]			encodeBuffer	= new byte[65536];
+	private final Deflater	compresser		= new Deflater(Deflater.BEST_COMPRESSION);
+	private final Inflater	decompresser	= new Inflater();
 
 	public CMEncoder()
 	{
@@ -128,6 +133,34 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 				str.append((char)('a'+CMLib.dice().roll(1, 26, -1)));
 		}
 		return str.toString();
+	}
+
+	@Override
+	public boolean passwordCheck(String pass1, String pass2)
+	{
+		if(pass1 == null)
+		{
+			return (pass2==null);
+		}
+		else
+		if(pass2 == null)
+			return false;
+		
+		if(pass1.equalsIgnoreCase(pass2))
+			return true;
+		if(CMLib.encoder().isARandomHashString(pass2))
+		{
+			if(CMLib.encoder().isARandomHashString(pass1))
+				return pass1.equalsIgnoreCase(pass2);
+			else
+				return CMLib.encoder().checkAgainstRandomHashString(pass1, pass2);
+		}
+		else
+		{
+			if(CMLib.encoder().isARandomHashString(pass1))
+				return CMLib.encoder().checkAgainstRandomHashString(pass2, pass1);
+			return pass1.equalsIgnoreCase(pass2);
+		}
 	}
 
 }
