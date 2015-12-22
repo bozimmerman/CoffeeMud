@@ -2711,7 +2711,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case TITLE:
 				break;
 			case XP:
-				awardStr.append(" ").append(((CurrencyAward)award).getAmount())
+				awardStr.append(" ").append(((AmountAward)award).getAmount())
 						.append(" ").append("XP");
 				break;
 			default:

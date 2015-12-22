@@ -22,6 +22,12 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
+   *. Bonus charcreation points from achievements, 
+   *. Bonus common skill limits from achievements
+   *. Bonus number of characters per account
+   *. Bonus number of characters online at one time
+   *. Change MG auth token to use password hash instead of pw, for security.
+   *. Prop_BindItem onpickup, onequip, sellable, to player, account, clan
    *. Simple Desires quest behavior - see Tim's Wants and Needs doc
    *. Wants and Needs engine - similar to slavery system
    *. Start on Spell Research?
