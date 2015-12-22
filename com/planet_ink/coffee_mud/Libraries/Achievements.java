@@ -2781,7 +2781,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		for(String s : A.getEvent().getParameters())
 		{
 			if(!CMParms.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, s))
-				parmTree.put(s, A.getRawParmVal(s));
+				parmTree.put(s, CMStrings.deEscape(A.getRawParmVal(s)));
 		}
 	}
 	

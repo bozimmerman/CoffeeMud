@@ -217,7 +217,7 @@ public class AchievementData extends StdWebMacro
 			if(help != null)
 			{
 				str.append("<PRE>");
-				str.append(CMStrings.replaceAll(help,"\n\r","\n"));
+				str.append(CMStrings.replaceAll(CMStrings.deEscape(help),"\n\r","\n"));
 				str.append("</PRE>");
 				str.append(", ");
 			}
@@ -284,7 +284,7 @@ public class AchievementData extends StdWebMacro
 				{
 					if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, otherParmName))
 					{
-						value += A.getRawParmVal(otherParmName)+" ";
+						value += CMStrings.deEscape(A.getRawParmVal(otherParmName))+" ";
 					}
 				}
 			}
