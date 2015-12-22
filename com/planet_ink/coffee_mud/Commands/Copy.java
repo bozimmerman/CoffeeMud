@@ -35,10 +35,17 @@ import java.util.*;
 
 public class Copy extends StdCommand
 {
-	public Copy(){}
+	public Copy()
+	{
+	}
 
-	private final String[] access=I(new String[]{"COPY"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[] access = I(new String[] { "COPY" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -151,7 +158,11 @@ public class Copy extends StdCommand
 			{
 				E=CMLib.map().findFirstInhabitant(mob.location().getArea().getMetroMap(), mob, name, 50);
 				if(E==null)
+					E=CMLib.map().findFirstInhabitant(CMLib.map().rooms(), mob, name, 50);
+				if(E==null)
 					E=CMLib.map().findFirstRoomItem(mob.location().getArea().getMetroMap(), mob, name, true, 50);
+				if(E==null)
+					E=CMLib.map().findFirstRoomItem(CMLib.map().rooms(), mob, name, true, 50);
 				if(E==null)
 					E=CMLib.map().findFirstInventory(null, mob, name, 50);
 				if(E==null)
@@ -160,7 +171,10 @@ public class Copy extends StdCommand
 					E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, name, 50);
 				if(E==null)
 					E=CMLib.map().findFirstShopStock(CMLib.map().rooms(), mob, name, 50);
-			}catch(final NoSuchElementException e){}
+			}
+			catch (final NoSuchElementException e)
+			{
+			}
 		}
 		if((E==null)&&(srchContainer==null))
 		{

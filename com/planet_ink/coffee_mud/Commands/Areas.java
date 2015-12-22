@@ -36,10 +36,18 @@ import java.util.*;
 
 public class Areas extends StdCommand
 {
-	public Areas(){}
+	public Areas()
+	{
+	}
 
-	private final String[] access=I(new String[]{"AREAS"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[] access = I(new String[] { "AREAS" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -63,7 +71,8 @@ public class Areas extends StdCommand
 			if(s.toUpperCase().startsWith("SORT=REV"))
 			{
 				final List<Area> levelSorted=new ArrayList<Area>();
-				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
+				for (; a.hasMoreElements();)
+					levelSorted.add(a.nextElement());
 				Collections.sort(levelSorted, new Comparator<Area>()
 				{
 					@Override
@@ -134,7 +143,8 @@ public class Areas extends StdCommand
 				}
 				final int sortStat=statVal;
 				final List<Area> levelSorted=new ArrayList<Area>();
-				for(;a.hasMoreElements();) levelSorted.add(a.nextElement());
+				for (; a.hasMoreElements();)
+					levelSorted.add(a.nextElement());
 				Collections.sort(levelSorted, new Comparator<Area>()
 				{
 					@Override
@@ -176,10 +186,18 @@ public class Areas extends StdCommand
 				if(sysop)
 				switch(A.getAreaState())
 				{
-				case ACTIVE: name="^w"+name+"^?";break;
-				case PASSIVE: name="^W"+name+"^?"; break;
-				case FROZEN: name="^b"+name+"^?"; break;
-				case STOPPED: name="^r"+name+"^?"; break;
+				case ACTIVE:
+					name = "^w" + name + "^?";
+					break;
+				case PASSIVE:
+					name = "^W" + name + "^?";
+					break;
+				case FROZEN:
+					name = "^b" + name + "^?";
+					break;
+				case STOPPED:
+					name = "^r" + name + "^?";
+					break;
 				}
 				if(expression!=null)
 				{
@@ -220,7 +238,9 @@ public class Areas extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-
-
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }
