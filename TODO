@@ -22,12 +22,10 @@ TECH
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
-   *. Change MG auth token to use password hash instead of pw, for security.
    *. Simple Desires quest behavior - see Tim's Wants and Needs doc
    *. Wants and Needs engine - similar to slavery system
    *. Start on Spell Research?
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
-   *. Create Magi Robes(or whatever you wanted to call them) that would enhance his/her magic of their chosen field.
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
    *. Builder Achievements, Archon Achievements, Clan Achievements, Timed achievements (within a time period)
@@ -36,6 +34,3 @@ NON-TECH
    *. Facebook interface?
    *. MudFTP/DawnFTP support - lets you edit room descriptions etc. in your favourite text editor, or just for fun
    *. Clan Calendar system, that can use mud and rl dates, for scheduling things. Might send reminders -- based on journaling system of course.
-   *. Lich Phylactery -- acts as a recall beacon, but only during death. If the Phylactery is destroyed then the lich loses xp and must construct a new one,
-      undergoing the ritual all over again. However if they have a phylactery when they die they do not lose experience but they do have to wait until their
-      corperal body is remade, giving them a waiting period in an incorporeal state.
