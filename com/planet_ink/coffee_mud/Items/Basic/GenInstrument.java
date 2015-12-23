@@ -74,6 +74,14 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	{
 		return type.name();
 	}
+	
+	@Override
+	public void setReadableText(String text)
+	{
+		super.setReadableText(text);
+		if(CMath.isInteger(text))
+			setInstrumentType(CMath.s_int(text));
+	}
 
 	@Override
 	public void setInstrumentType(int typeOrdinal)

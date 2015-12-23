@@ -80,6 +80,14 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	}
 
 	@Override
+	public void setReadableText(String text)
+	{
+		super.setReadableText(text);
+		if(CMath.isInteger(text))
+			setInstrumentType(CMath.s_int(text));
+	}
+
+	@Override
 	public void setInstrumentType(int typeOrdinal)
 	{
 		if(typeOrdinal < InstrumentType.values().length)

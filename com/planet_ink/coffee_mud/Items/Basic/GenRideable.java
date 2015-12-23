@@ -49,7 +49,11 @@ public class GenRideable extends StdRideable
 		recoverPhyStats();
 	}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
@@ -62,13 +66,25 @@ public class GenRideable extends StdRideable
 	{
 		return readableText;
 	}
+
 	@Override
 	public void setKeyName(String newKeyName)
 	{
 		readableText=newKeyName;
 	}
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText = text;
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -76,7 +92,9 @@ public class GenRideable extends StdRideable
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD","DEFCLOSED","DEFLOCKED"};
+
 	@Override
 	public String getStat(String code)
 	{
@@ -84,19 +102,29 @@ public class GenRideable extends StdRideable
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+hasALock();
-		case 1: return ""+hasADoor();
-		case 2: return ""+capacity();
-		case 3: return ""+containTypes();
-		case 4: return ""+openDelayTicks();
-		case 5: return ""+rideBasis();
-		case 6: return ""+riderCapacity();
-		case 7: return ""+defaultsClosed();
-		case 8: return ""+defaultsLocked();
+		case 0:
+			return "" + hasALock();
+		case 1:
+			return "" + hasADoor();
+		case 2:
+			return "" + capacity();
+		case 3:
+			return "" + containTypes();
+		case 4:
+			return "" + openDelayTicks();
+		case 5:
+			return "" + rideBasis();
+		case 6:
+			return "" + riderCapacity();
+		case 7:
+			return "" + defaultsClosed();
+		case 8:
+			return "" + defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public void setStat(String code, String val)
 	{
@@ -105,29 +133,52 @@ public class GenRideable extends StdRideable
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),CMath.s_bool(val),false,CMath.s_bool(val)&&defaultsLocked()); break;
-		case 1: setDoorsNLocks(CMath.s_bool(val),isOpen(),CMath.s_bool(val)&&defaultsClosed(),hasALock(),isLocked(),defaultsLocked()); break;
-		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
-		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
-		case 5: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
-		case 6: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
-		case 7: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
-		case 8: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
-		default:
+			case 0:
+				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+				break;
+			case 1:
+				setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+				break;
+			case 2:
+				setCapacity(CMath.s_parseIntExpression(val));
+				break;
+			case 3:
+				setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+				break;
+			case 4:
+				setOpenDelayTicks(CMath.s_parseIntExpression(val));
+				break;
+			case 5:
+				setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS, val));
+				break;
+			case 6:
+				setRiderCapacity(CMath.s_parseIntExpression(val));
+				break;
+			case 7:
+				setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+				break;
+			case 8:
+				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+				break;
+			default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+	
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+	
 	private static String[] codes=null;
+	
 	@Override
 	public String[] getStatCodes()
 	{
@@ -143,6 +194,7 @@ public class GenRideable extends StdRideable
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+	
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -150,8 +202,10 @@ public class GenRideable extends StdRideable
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }
