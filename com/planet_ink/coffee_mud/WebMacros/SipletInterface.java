@@ -47,16 +47,24 @@ import com.planet_ink.siplet.applet.*;
 */
 public class SipletInterface extends StdWebMacro
 {
-	@Override public String name() { return "SipletInterface"; }
+	@Override
+	public String name()
+	{
+		return "SipletInterface";
+	}
 
-	@Override public boolean isAWebPath(){return true;}
+	@Override
+	public boolean isAWebPath()
+	{
+		return true;
+	}
 
 	public static final LinkedList<String> removables		 = new LinkedList<String>();
 	public static final Object 			   sipletConnectSync = new Object();
 	public static volatile boolean 		   initialized		 = false;
 	public static final SHashtable<String,SipletSession> 	 siplets 	= new SHashtable<String,SipletSession>();
 
-	private class SipletSession
+	protected class SipletSession
 	{
 		public long 		lastTouched = System.currentTimeMillis();
 		public Siplet 		siplet		= null;
@@ -64,13 +72,14 @@ public class SipletInterface extends StdWebMacro
 		public SipletSession(Siplet sip) { siplet=sip;}
 	}
 
-	private class PipeSocket extends Socket
+	protected class PipeSocket extends Socket
 	{
-		private boolean 			isClosed = false;
-		private final PipedInputStream 	inStream = new PipedInputStream();
-		private final PipedOutputStream 	outStream= new PipedOutputStream();
-		private InetAddress			addr=null;
-		private PipeSocket 			friendPipe=null;
+		private boolean					isClosed	= false;
+		private final PipedInputStream	inStream	= new PipedInputStream();
+		private final PipedOutputStream	outStream	= new PipedOutputStream();
+		private InetAddress				addr		= null;
+		private PipeSocket				friendPipe	= null;
+
 		public PipeSocket(InetAddress addr, PipeSocket pipeLocal) throws IOException
 		{
 			this.addr=addr;
@@ -82,35 +91,139 @@ public class SipletInterface extends StdWebMacro
 				pipeLocal=friendPipe;
 			}
 		}
+
 		@Override
 		public void shutdownInput() throws IOException
 		{
 			inStream.close();
-			isClosed=true;
+			isClosed = true;
 		}
+
 		@Override
 		public void shutdownOutput() throws IOException
 		{
 			outStream.close();
-			isClosed=true;
+			isClosed = true;
 		}
-		@Override public boolean isConnected() { return !isClosed; }
-		@Override public boolean isClosed() { return isClosed; }
+
+		@Override
+		public boolean isConnected()
+		{
+			return !isClosed;
+		}
+
+		@Override
+		public boolean isClosed()
+		{
+			return isClosed;
+		}
+
 		@Override
 		public synchronized void close() throws IOException
 		{
 			inStream.close();
 			outStream.close();
-			if(friendPipe!=null)
+			if (friendPipe != null)
 			{
 				friendPipe.shutdownInput();
 				friendPipe.shutdownOutput();
 			}
 			isClosed = true;
 		}
-		@Override public InputStream getInputStream() throws IOException { return inStream; }
-		@Override public OutputStream getOutputStream() throws IOException { return outStream; }
-		@Override public InetAddress getInetAddress() { return addr; }
+
+		@Override
+		public InputStream getInputStream() throws IOException
+		{
+			return inStream;
+		}
+
+		@Override
+		public OutputStream getOutputStream() throws IOException
+		{
+			return outStream;
+		}
+
+		@Override
+		public InetAddress getInetAddress()
+		{
+			return addr;
+		}
+	}
+	
+	protected void initialize()
+	{
+		initialized = true;
+		CMLib.threads().startTickDown(new Tickable()
+		{
+			private int	tickStatus	= Tickable.STATUS_NOT;
+
+			@Override
+			public int getTickStatus()
+			{
+				return tickStatus;
+			}
+
+			@Override
+			public String name()
+			{
+				return "SipletInterface";
+			}
+
+			@Override
+			public boolean tick(Tickable ticking, int tickID)
+			{
+				tickStatus = Tickable.STATUS_ALIVE;
+				synchronized (siplets)
+				{
+					for (final String key : siplets.keySet())
+					{
+						final SipletSession p = siplets.get(key);
+						if ((p != null) && ((System.currentTimeMillis() - p.lastTouched) > (2 * 60 * 1000)))
+						{
+							p.siplet.disconnectFromURL();
+							removables.addLast(key);
+						}
+					}
+					if (removables.size() > 0)
+					{
+						for (final String remme : removables)
+							siplets.remove(remme);
+						removables.clear();
+					}
+				}
+				tickStatus = Tickable.STATUS_NOT;
+				return true;
+			}
+
+			@Override
+			public String ID()
+			{
+				return "SipletInterface";
+			}
+
+			@Override
+			public CMObject copyOf()
+			{
+				return this;
+			}
+
+			@Override
+			public void initializeClass()
+			{
+			}
+
+			@Override
+			public CMObject newInstance()
+			{
+				return this;
+			}
+
+			@Override
+			public int compareTo(CMObject o)
+			{
+				return o == this ? 0 : 1;
+			}
+		}, Tickable.TICKID_MISCELLANEOUS, 10);
 	}
 
 	@Override
@@ -120,43 +233,7 @@ public class SipletInterface extends StdWebMacro
 			return "false;";
 		if(!initialized)
 		{
-			initialized=true;
-			CMLib.threads().startTickDown(new Tickable()
-			{
-				private int tickStatus=Tickable.STATUS_NOT;
-				@Override public int getTickStatus() { return tickStatus;}
-				@Override public String name() { return "SipletInterface";}
-				@Override
-				public boolean tick(Tickable ticking, int tickID)
-				{
-					tickStatus=Tickable.STATUS_ALIVE;
-					synchronized(siplets)
-					{
-						for(final String key : siplets.keySet())
-						{
-							final SipletSession p = siplets.get(key);
-							if((p!=null)&&((System.currentTimeMillis()-p.lastTouched)>(2 * 60 * 1000)))
-							{
-								p.siplet.disconnectFromURL();
-								removables.addLast(key);
-							}
-						}
-						if(removables.size()>0)
-						{
-							for(final String remme : removables)
-								siplets.remove(remme);
-							removables.clear();
-						}
-					}
-					tickStatus=Tickable.STATUS_NOT;
-					return true;
-				}
-				@Override public String ID() { return "SipletInterface";}
-				@Override public CMObject copyOf() { return this;}
-				@Override public void initializeClass() {}
-				@Override public CMObject newInstance() { return this;}
-				@Override public int compareTo(CMObject o) { return o==this?0:1;}
-			}, Tickable.TICKID_MISCELLANEOUS, 10);
+			initialize();
 		}
 
 		if(httpReq.isUrlParameter("CONNECT"))
@@ -172,6 +249,7 @@ public class SipletInterface extends StdWebMacro
 				synchronized(sipletConnectSync)
 				{
 					for(final MudHost h : CMLib.hosts())
+					{
 						if(h.getPort()==port)
 						{
 							try
@@ -187,6 +265,7 @@ public class SipletInterface extends StdWebMacro
 								success=false;
 							}
 						}
+					}
 				}
 				if(success)
 				{

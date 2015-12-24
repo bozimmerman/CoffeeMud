@@ -47,28 +47,70 @@ import java.util.*;
 */
 public class StdWebMacro implements WebMacro
 {
-	@Override public String ID()		{return name();}
-	@Override public String name()	{return "UNKNOWN";}
+	@Override
+	public String ID()
+	{
+		return name();
+	}
 
-	@Override public boolean isAWebPath(){return false;}
-	@Override public boolean preferBinary(){return false;}
-	@Override public boolean isAdminMacro()	{return false;}
-	@Override public CMObject newInstance(){return this;}
-	@Override public void initializeClass(){}
-	@Override public CMObject copyOf(){return this;}
+	@Override
+	public String name()
+	{
+		return "UNKNOWN";
+	}
+
+	@Override
+	public boolean isAWebPath()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean preferBinary()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isAdminMacro()
+	{
+		return false;
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		return this;
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public CMObject copyOf()
+	{
+		return this;
+	}
 
 	@Override
 	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		return runMacro(httpReq,parm).getBytes();
 	}
+
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		return "[Unimplemented macro!]";
 	}
 
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 
 	@Override
 	public String getFilename(HTTPRequest httpReq, String filename)
@@ -173,10 +215,21 @@ public class StdWebMacro implements WebMacro
 		return s;
 	}
 
-	protected String clearWebMacros(String s) { return CMLib.webMacroFilter().clearWebMacros(s); }
-	protected String clearWebMacros(StringBuffer s) { return CMLib.webMacroFilter().clearWebMacros(s); }
+	protected String clearWebMacros(String s)
+	{
+		return CMLib.webMacroFilter().clearWebMacros(s);
+	}
 
-	protected StringBuilder helpHelp(StringBuilder s){return helpHelp(s,70);}
+	protected String clearWebMacros(StringBuffer s)
+	{
+		return CMLib.webMacroFilter().clearWebMacros(s);
+	}
+
+	protected StringBuilder helpHelp(StringBuilder s)
+	{
+		return helpHelp(s, 70);
+	}
+
 	protected StringBuilder helpHelp(StringBuilder s, int limit)
 	{
 		if(s!=null)
@@ -397,7 +450,12 @@ public class StdWebMacro implements WebMacro
 		}
 		return buf;
 	}
-	protected String htmlOutgoingFilter(String buf){return htmlOutgoingFilter(new StringBuffer(buf)).toString();}
+
+	protected String htmlOutgoingFilter(String buf)
+	{
+		return htmlOutgoingFilter(new StringBuffer(buf)).toString();
+	}
+
 	protected StringBuffer htmlOutgoingFilter(StringBuffer buf)
 	{
 		int loop=0;
@@ -450,29 +508,144 @@ public class StdWebMacro implements WebMacro
 			final HTTPRequest newReq=new HTTPRequest()
 			{
 				final Hashtable<String,String> params=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
-				@Override public String getHost() { return httpReq.getHost(); }
-				@Override public String getUrlPath() { return file; }
-				@Override public String getFullRequest() { return httpReq.getMethod().name()+" "+getUrlPath(); }
-				@Override public String getUrlParameter(String name) { return params.get(name.toLowerCase()); }
-				@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }
-				@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toLowerCase()); }
-				@Override public Set<String> getUrlParameters() { return params.keySet(); }
-				@Override public HTTPMethod getMethod() { return httpReq.getMethod(); }
-				@Override public String getHeader(String name) { return httpReq.getHeader(name); }
-				@Override public InetAddress getClientAddress() { return httpReq.getClientAddress(); }
-				@Override public int getClientPort() { return httpReq.getClientPort(); }
-				@Override public InputStream getBody() { return httpReq.getBody(); }
-				@Override public String getCookie(String name) { return httpReq.getCookie(name); }
-				@Override public Set<String> getCookieNames() { return httpReq.getCookieNames(); }
-				@Override public List<MultiPartData> getMultiParts() { return httpReq.getMultiParts(); }
-				@Override public double getSpecialEncodingAcceptability(String type) { return httpReq.getSpecialEncodingAcceptability(type); }
-				@Override public String getFullHost() { return httpReq.getFullHost(); }
-				@Override public List<long[]> getRangeAZ() { return httpReq.getRangeAZ(); }
-				@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toLowerCase(), value); }
-				@Override public void removeUrlParameter(String name) { params.remove(name.toLowerCase()); }
-				@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
-				@Override public float getHttpVer() { return httpReq.getHttpVer(); }
-				@Override public String getQueryString() { return httpReq.getQueryString(); }
+
+				@Override
+				public String getHost()
+				{
+					return httpReq.getHost();
+				}
+
+				@Override
+				public String getUrlPath()
+				{
+					return file;
+				}
+
+				@Override
+				public String getFullRequest()
+				{
+					return httpReq.getMethod().name() + " " + getUrlPath();
+				}
+
+				@Override
+				public String getUrlParameter(String name)
+				{
+					return params.get(name.toLowerCase());
+				}
+
+				@Override
+				public Map<String, String> getUrlParametersCopy()
+				{
+					return new XHashtable<String, String>(params);
+				}
+
+				@Override
+				public boolean isUrlParameter(String name)
+				{
+					return params.containsKey(name.toLowerCase());
+				}
+
+				@Override
+				public Set<String> getUrlParameters()
+				{
+					return params.keySet();
+				}
+
+				@Override
+				public HTTPMethod getMethod()
+				{
+					return httpReq.getMethod();
+				}
+
+				@Override
+				public String getHeader(String name)
+				{
+					return httpReq.getHeader(name);
+				}
+
+				@Override
+				public InetAddress getClientAddress()
+				{
+					return httpReq.getClientAddress();
+				}
+
+				@Override
+				public int getClientPort()
+				{
+					return httpReq.getClientPort();
+				}
+
+				@Override
+				public InputStream getBody()
+				{
+					return httpReq.getBody();
+				}
+
+				@Override
+				public String getCookie(String name)
+				{
+					return httpReq.getCookie(name);
+				}
+
+				@Override
+				public Set<String> getCookieNames()
+				{
+					return httpReq.getCookieNames();
+				}
+
+				@Override
+				public List<MultiPartData> getMultiParts()
+				{
+					return httpReq.getMultiParts();
+				}
+
+				@Override
+				public double getSpecialEncodingAcceptability(String type)
+				{
+					return httpReq.getSpecialEncodingAcceptability(type);
+				}
+
+				@Override
+				public String getFullHost()
+				{
+					return httpReq.getFullHost();
+				}
+
+				@Override
+				public List<long[]> getRangeAZ()
+				{
+					return httpReq.getRangeAZ();
+				}
+
+				@Override
+				public void addFakeUrlParameter(String name, String value)
+				{
+					params.put(name.toLowerCase(), value);
+				}
+
+				@Override
+				public void removeUrlParameter(String name)
+				{
+					params.remove(name.toLowerCase());
+				}
+
+				@Override
+				public Map<String, Object> getRequestObjects()
+				{
+					return httpReq.getRequestObjects();
+				}
+
+				@Override
+				public float getHttpVer()
+				{
+					return httpReq.getHttpVer();
+				}
+
+				@Override
+				public String getQueryString()
+				{
+					return httpReq.getQueryString();
+				}
 			};
 
 			final DataBuffers data=config.getFileGetter().getFileData(newReq);
@@ -492,29 +665,144 @@ public class StdWebMacro implements WebMacro
 			final HTTPRequest newReq=new HTTPRequest()
 			{
 				public final Hashtable<String,String> params=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
-				@Override public String getHost() { return httpReq.getHost(); }
-				@Override public String getUrlPath() { return file; }
-				@Override public String getFullRequest() { return httpReq.getMethod().name()+" "+getUrlPath(); }
-				@Override public String getUrlParameter(String name) { return params.get(name.toUpperCase()); }
-				@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toUpperCase()); }
-				@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }
-				@Override public Set<String> getUrlParameters() { return params.keySet(); }
-				@Override public HTTPMethod getMethod() { return httpReq.getMethod(); }
-				@Override public String getHeader(String name) { return httpReq.getHeader(name); }
-				@Override public InetAddress getClientAddress() { return httpReq.getClientAddress(); }
-				@Override public int getClientPort() { return httpReq.getClientPort(); }
-				@Override public InputStream getBody() { return httpReq.getBody(); }
-				@Override public String getCookie(String name) { return httpReq.getCookie(name); }
-				@Override public Set<String> getCookieNames() { return httpReq.getCookieNames(); }
-				@Override public List<MultiPartData> getMultiParts() { return httpReq.getMultiParts(); }
-				@Override public double getSpecialEncodingAcceptability(String type) { return httpReq.getSpecialEncodingAcceptability(type); }
-				@Override public String getFullHost() { return httpReq.getFullHost(); }
-				@Override public List<long[]> getRangeAZ() { return httpReq.getRangeAZ(); }
-				@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toUpperCase(), value); }
-				@Override public void removeUrlParameter(String name) { params.remove(name.toUpperCase()); }
-				@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
-				@Override public float getHttpVer() { return httpReq.getHttpVer(); }
-				@Override public String getQueryString() { return httpReq.getQueryString(); }
+
+				@Override
+				public String getHost()
+				{
+					return httpReq.getHost();
+				}
+
+				@Override
+				public String getUrlPath()
+				{
+					return file;
+				}
+
+				@Override
+				public String getFullRequest()
+				{
+					return httpReq.getMethod().name() + " " + getUrlPath();
+				}
+
+				@Override
+				public String getUrlParameter(String name)
+				{
+					return params.get(name.toUpperCase());
+				}
+
+				@Override
+				public boolean isUrlParameter(String name)
+				{
+					return params.containsKey(name.toUpperCase());
+				}
+
+				@Override
+				public Map<String, String> getUrlParametersCopy()
+				{
+					return new XHashtable<String, String>(params);
+				}
+
+				@Override
+				public Set<String> getUrlParameters()
+				{
+					return params.keySet();
+				}
+
+				@Override
+				public HTTPMethod getMethod()
+				{
+					return httpReq.getMethod();
+				}
+
+				@Override
+				public String getHeader(String name)
+				{
+					return httpReq.getHeader(name);
+				}
+
+				@Override
+				public InetAddress getClientAddress()
+				{
+					return httpReq.getClientAddress();
+				}
+
+				@Override
+				public int getClientPort()
+				{
+					return httpReq.getClientPort();
+				}
+
+				@Override
+				public InputStream getBody()
+				{
+					return httpReq.getBody();
+				}
+
+				@Override
+				public String getCookie(String name)
+				{
+					return httpReq.getCookie(name);
+				}
+
+				@Override
+				public Set<String> getCookieNames()
+				{
+					return httpReq.getCookieNames();
+				}
+
+				@Override
+				public List<MultiPartData> getMultiParts()
+				{
+					return httpReq.getMultiParts();
+				}
+
+				@Override
+				public double getSpecialEncodingAcceptability(String type)
+				{
+					return httpReq.getSpecialEncodingAcceptability(type);
+				}
+
+				@Override
+				public String getFullHost()
+				{
+					return httpReq.getFullHost();
+				}
+
+				@Override
+				public List<long[]> getRangeAZ()
+				{
+					return httpReq.getRangeAZ();
+				}
+
+				@Override
+				public void addFakeUrlParameter(String name, String value)
+				{
+					params.put(name.toUpperCase(), value);
+				}
+
+				@Override
+				public void removeUrlParameter(String name)
+				{
+					params.remove(name.toUpperCase());
+				}
+
+				@Override
+				public Map<String, Object> getRequestObjects()
+				{
+					return httpReq.getRequestObjects();
+				}
+
+				@Override
+				public float getHttpVer()
+				{
+					return httpReq.getHttpVer();
+				}
+
+				@Override
+				public String getQueryString()
+				{
+					return httpReq.getQueryString();
+				}
 			};
 
 			return config.getFileGetter().createFile(newReq,config.getFileGetter().assembleFilePath(newReq));
