@@ -19,10 +19,10 @@
 			document.ACCESS.LASTPAGE.value='access.cmvp';
 			Clicked('register.cmvp');
 		}
-        function Back()
-        {
-            Clicked('@RequestParameter?LASTPAGE@');
-        }
+		function Back()
+		{
+			Clicked('@RequestParameter?LASTPAGE@');
+		}
 	//-->
 	</SCRIPT>
 </head>
@@ -105,7 +105,7 @@
 		<TR><TD WIDTH=100><FONT COLOR=BLACK>Email Address:</FONT></TD><TD><INPUT TYPE=TEXT SIZE=20 ID=EMAILADDRESS NAME=EMAILADDRESS VALUE="@RequestParameter?EMAILADDRESS@"></TD></TR>
 	@endif@
 	<TR><TD><IMG SRC="/ImageVerificationImage?IMAGE"></TD>
-		<TD><INPUT TYPE=HIDDEN SIZE=15 NAME=VERIFYKEY VALUE="@ImageVerificationImage@"><INPUT TYPE=TEXT SIZE=15 ID=VERIFY NAME=VERIFY></TD>
+		<TD><INPUT TYPE=HIDDEN SIZE=15 NAME=IMGVERKEY VALUE="@ImageVerificationImage@"><INPUT TYPE=TEXT SIZE=15 ID=VERIFY NAME=VERIFY></TD>
 	</TR>
 	<TR><TD COLSPAN=2 ALIGN=CENTER>
 		<INPUT TYPE=SUBMIT NAME=LOGINBUTTON VALUE=Create>

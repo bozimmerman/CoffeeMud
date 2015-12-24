@@ -39,7 +39,7 @@ public class AreaIDEncoded extends StdWebMacro
 	@Override public String name() { return "AreaIDEncoded"; }
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final String last=httpReq.getUrlParameter("AREA");
 		if(last==null)

@@ -113,12 +113,26 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 	}
 
 	@Override
-	public boolean checkAgainstRandomHashString(final String checkString, final String hashString)
+	public boolean checkPasswordAgainstRandomHashString(final String passwordString, final String hashString)
 	{
 		final int hashDex=hashString.indexOf('|',1);
 		final int salt=ByteBuffer.wrap(B64Encoder.B64decode(hashString.substring(1,hashDex))).getInt();
 		final int hash=ByteBuffer.wrap(B64Encoder.B64decode(hashString.substring(hashDex+1))).getInt();
-		return hash==(checkString+salt).toLowerCase().hashCode();
+		return hash==(passwordString+salt).toLowerCase().hashCode();
+	}
+
+	@Override
+	public boolean checkHashStringPairs(final String hashString1, final String hashString2)
+	{
+		final int hashDex1=hashString1.indexOf('|',1);
+		final int salt1=ByteBuffer.wrap(B64Encoder.B64decode(hashString1.substring(1,hashDex1))).getInt();
+		final int hash1=ByteBuffer.wrap(B64Encoder.B64decode(hashString1.substring(hashDex1+1))).getInt();
+		
+		final int hashDex2=hashString2.indexOf('|',1);
+		final int salt2=ByteBuffer.wrap(B64Encoder.B64decode(hashString2.substring(1,hashDex2))).getInt();
+		final int hash2=ByteBuffer.wrap(B64Encoder.B64decode(hashString2.substring(hashDex2+1))).getInt();
+		
+		return (hash1==(hashString2+salt1).toLowerCase().hashCode()) || (hash2==(hashString1+salt2).toLowerCase().hashCode());
 	}
 
 	@Override
@@ -151,14 +165,14 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		if(CMLib.encoder().isARandomHashString(pass2))
 		{
 			if(CMLib.encoder().isARandomHashString(pass1))
-				return pass1.equalsIgnoreCase(pass2);
+				return checkHashStringPairs(pass1,pass2);
 			else
-				return CMLib.encoder().checkAgainstRandomHashString(pass1, pass2);
+				return CMLib.encoder().checkPasswordAgainstRandomHashString(pass1, pass2);
 		}
 		else
 		{
 			if(CMLib.encoder().isARandomHashString(pass1))
-				return CMLib.encoder().checkAgainstRandomHashString(pass2, pass1);
+				return CMLib.encoder().checkPasswordAgainstRandomHashString(pass2, pass1);
 			return pass1.equalsIgnoreCase(pass2);
 		}
 	}

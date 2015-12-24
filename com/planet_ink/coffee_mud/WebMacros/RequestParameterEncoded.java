@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.net.URLEncoder;
 
@@ -38,10 +39,10 @@ public class RequestParameterEncoded extends RequestParameter
 	@Override public String name() { return "RequestParameterEncoded"; }
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 
-		String str=super.runMacro(httpReq, parm);
+		String str=super.runMacro(httpReq, parm, httpResp);
 		try
 		{
 			str=URLEncoder.encode(str,"UTF-8");

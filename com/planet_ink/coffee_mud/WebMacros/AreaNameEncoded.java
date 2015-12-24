@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.net.URLEncoder;
 
@@ -40,7 +41,7 @@ public class AreaNameEncoded extends StdWebMacro
 	@Override public String name() { return "AreaNameEncoded"; }
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final String last=httpReq.getUrlParameter("AREA");
 		if(last==null)

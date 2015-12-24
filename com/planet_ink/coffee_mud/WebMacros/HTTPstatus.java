@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -37,7 +38,7 @@ public class HTTPstatus extends StdWebMacro
 	@Override public String name()	{return "HTTPstatus";}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		if(httpReq.getRequestObjects().get("SYSTEM_HTTP_STATUS")!=null)
 			return (String)httpReq.getRequestObjects().get("SYSTEM_HTTP_STATUS");

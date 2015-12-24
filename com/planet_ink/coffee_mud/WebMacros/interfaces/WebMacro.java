@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_web.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -53,8 +54,8 @@ public interface WebMacro extends CMObject
 	/**
 	 * Whether the runMacro or runBinaryMacro executor should be called.
 	 * 
-	 * @see WebMacro#runBinaryMacro(HTTPRequest, String)
-	 * @see WebMacro#runMacro(HTTPRequest, String)
+	 * @see WebMacro#runBinaryMacro(HTTPRequest, String, HTTPResponse)
+	 * @see WebMacro#runMacro(HTTPRequest, String, HTTPResponse)
 	 * @return whether the runBinaryMacro executor should be called instead of
 	 *         runMacro
 	 */
@@ -68,54 +69,34 @@ public interface WebMacro extends CMObject
 	public boolean isAdminMacro();
 
 	/**
-	 * Whether this macro returns an attachment instead of something
-	 * displayable. If true, the content-disposition will reflect the filename
-	 * parameter, and any other header or other response settings may be
-	 * embedded here.
-	 * 
-	 * @see WebMacro#getFilename(HTTPRequest, String)
-	 * @param response the WebServer servlet response object
-	 * @param filename the filename from getFilename
-	 */
-	public void setServletResponse(SimpleServletResponse response, final String filename);
-
-	/**
 	 * Whether this macro substitutes as an aspect of the web path instead of a
 	 * standard web macro. If true is returned, URLs such as:
 	 * http://mydomain.com/mymacroname?firstparm=value&amp;secondparm=value
 	 * might succeeed
 	 * 
-	 * @see WebMacro#getFilename(HTTPRequest, String)
 	 * @return whether this is a wierd URL macro
 	 */
 	public boolean isAWebPath();
-
-	/**
-	 * If this macro returns true from isAWebPath(), this will be the substitute
-	 * filename to use as a page for returning to the caller. It may simply
-	 * return what is given to it.
-	 * 
-	 * @see WebMacro#isAWebPath()
-	 * @see com.planet_ink.coffee_web.interfaces.HTTPRequest
-	 * @param httpReq the requests object
-	 * @param filename the default filename
-	 * @return usually the default filename again
-	 */
-	public String getFilename(HTTPRequest httpReq, String filename);
 
 	/**
 	 * This method is executed only if this macro returns true for
 	 * preferBinary(). It will execute the macro and return its results as a
 	 * binary byte array.
 	 * 
+	 * The response object is used to set cookies and headers only.  Any 
+	 * response body is in the return object.  Since 99% of macros are only
+	 * filling in an existing page, nothing will be done with that anyway,
+	 * and is only important when isAWebPath return true.
+	 * 
 	 * @see WebMacro#preferBinary()
 	 * @see com.planet_ink.coffee_web.interfaces.HTTPRequest
 	 * @param httpReq the external requests object
-	 * @param parm any parameter strigs given to the macro
+	 * @param parm any parameter strings given to the macro
+	 * @param httpResp the response, with headers
 	 * @return the binary stream result of running this macro
 	 * @throws HTTPServerException a http error to pass to the user
 	 */
-	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException;
+	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException;
 
 	/**
 	 * This method is executed only if this macro returns false for
@@ -123,12 +104,18 @@ public interface WebMacro extends CMObject
 	 * string, which is then substituted for the macro reference in the web page
 	 * where the macro was found.
 	 * 
+	 * The response object is used to set cookies and headers only.  Any 
+	 * response body is in the return object.  Since 99% of macros are only
+	 * filling in an existing page, nothing will be done with that anyway,
+	 * and is only important when isAWebPath return true.
+	 * 
 	 * @see WebMacro#preferBinary()
 	 * @see com.planet_ink.coffee_web.interfaces.HTTPRequest
 	 * @param httpReq the external requests object
-	 * @param parm any parameter strigs given to the macro
+	 * @param parm any parameter strings given to the macro
+	 * @param httpResp the response, with headers
 	 * @return the string result of running this macro
 	 * @throws HTTPServerException a http error to pass to the user
 	 */
-	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException;
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException;
 }

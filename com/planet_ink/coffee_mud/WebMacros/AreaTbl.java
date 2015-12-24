@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -40,7 +41,7 @@ public class AreaTbl extends StdWebMacro
 	protected static final int AT_MAX_COL = 3;
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		// have to check, otherwise we'll be stuffing a blank string into resources
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))

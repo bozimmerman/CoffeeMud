@@ -45,7 +45,7 @@ public class SocialData extends StdWebMacro
 	static int[] CODES={CMMsg.MSG_SPEAK,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISE,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_HANDS};
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("SOCIAL");

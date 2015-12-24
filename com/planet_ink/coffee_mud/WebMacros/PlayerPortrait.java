@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -16,6 +17,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
@@ -42,7 +44,6 @@ public class PlayerPortrait extends StdWebMacro
 	@Override public boolean isAWebPath(){return true;}
 	@Override public boolean preferBinary(){return true;}
 
-	@Override
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
 		final String foundFilename=httpReq.getUrlParameter("FILENAME");
@@ -52,8 +53,11 @@ public class PlayerPortrait extends StdWebMacro
 	}
 
 	@Override
-	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
 	{
+		final MIMEType mimeType = MIMEType.All.getMIMEType(getFilename(httpReq,""));
+		if(mimeType != null)
+			httpResp.setHeader("Content-Type", mimeType.getType());
 		final String last=httpReq.getUrlParameter("PLAYER");
 		if(last==null) return null; // for binary macros, null is BREAK
 		byte[] img=null;
@@ -76,7 +80,7 @@ public class PlayerPortrait extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
 	{
 		return "[Unimplemented string method!]";
 	}

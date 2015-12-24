@@ -40,7 +40,7 @@ public class WebServerName extends StdWebMacro
 	@Override public String name()	{return "WebServerName";}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		if(Thread.currentThread() instanceof CWThread)
 		{

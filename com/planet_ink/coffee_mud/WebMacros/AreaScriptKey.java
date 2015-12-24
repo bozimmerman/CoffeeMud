@@ -39,7 +39,7 @@ public class AreaScriptKey extends StdWebMacro
 	@Override public String name() { return "AreaScriptKey"; }
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final String last=httpReq.getUrlParameter("AREASCRIPT");
 		if(last==null)

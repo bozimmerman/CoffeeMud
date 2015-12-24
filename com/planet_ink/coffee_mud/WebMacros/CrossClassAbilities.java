@@ -39,7 +39,7 @@ public class CrossClassAbilities extends StdWebMacro
 	@Override public String name()	{return "CrossClassAbilities";}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final Vector<StringBuffer> rowsFavoring=new Vector<StringBuffer>();
 		final Vector<StringBuffer> allOtherRows=new Vector<StringBuffer>();

@@ -40,7 +40,7 @@ public class AbilityData extends StdWebMacro
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final MOB mob=Authenticate.getAuthenticatedMob(httpReq);

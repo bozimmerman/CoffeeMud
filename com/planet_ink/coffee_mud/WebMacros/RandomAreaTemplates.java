@@ -42,7 +42,7 @@ public class RandomAreaTemplates extends StdWebMacro
 	@Override public boolean isAdminMacro()	{return true;}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);

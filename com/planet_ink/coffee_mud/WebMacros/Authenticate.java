@@ -42,7 +42,7 @@ public class Authenticate extends StdWebMacro
 	private static final long ONE_REAL_DAY=(long)1000*60*60*24;
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if((parms!=null)&&(parms.containsKey("AUTH")))
@@ -291,11 +291,7 @@ public class Authenticate extends StdWebMacro
 	{
 		String password=httpReq.getUrlParameter("PASSWORD");
 		if((password!=null)&&(password.length()>0))
-		{
-			if(CMLib.encoder().isARandomHashString(password))
-				return password;
-			return CMLib.encoder().makeRandomHashString(password);
-		}
+			return password;
 		final String auth=httpReq.getUrlParameter("AUTH");
 		if(auth==null)
 			return "";

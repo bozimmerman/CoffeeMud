@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -39,7 +40,7 @@ public class SocialTbl extends StdWebMacro
 	protected static final int AT_MAX_COL = 6;
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final StringBuffer TBL=(StringBuffer)Resources.getResource("WEB SOCIALS TBL");
 		if(TBL!=null)

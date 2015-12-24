@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2005-2015 Bo Zimmerman
@@ -33,9 +34,10 @@ public interface TextEncoders extends CMLibrary
 {
 	public String decompressString(byte[] b);
 	public byte[] compressString(String s);
-	public boolean checkAgainstRandomHashString(final String checkString, final String hashString);
+	public boolean checkPasswordAgainstRandomHashString(final String passwordString, final String hashString);
 	public boolean isARandomHashString(final String password);
 	public boolean passwordCheck(final String pass1, final String pass2);
+	public boolean checkHashStringPairs(final String hashString1, final String hashString2);
 	public String makeRandomHashString(final String password);
 	public String generateRandomPassword();
 }

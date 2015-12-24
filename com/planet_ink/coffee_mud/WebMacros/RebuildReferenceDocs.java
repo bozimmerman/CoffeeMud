@@ -43,7 +43,7 @@ public class RebuildReferenceDocs extends StdWebMacro
 	@Override public boolean isAdminMacro() { return true;}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
 	{
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null)

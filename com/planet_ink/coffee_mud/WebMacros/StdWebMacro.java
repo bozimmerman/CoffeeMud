@@ -95,13 +95,13 @@ public class StdWebMacro implements WebMacro
 	}
 
 	@Override
-	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
 	{
-		return runMacro(httpReq,parm).getBytes();
+		return runMacro(httpReq,parm, null).getBytes();
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
 	{
 		return "[Unimplemented macro!]";
 	}
@@ -110,18 +110,6 @@ public class StdWebMacro implements WebMacro
 	public int compareTo(CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
-	}
-
-	@Override
-	public String getFilename(HTTPRequest httpReq, String filename)
-	{
-		return filename;
-	}
-
-	@Override
-	public void setServletResponse(SimpleServletResponse response, final String filename)
-	{
-		response.setHeader("Content-Type", MIMEType.All.getMIMEType(filename).getType());
 	}
 
 	protected StringBuffer colorwebifyOnly(StringBuffer s)

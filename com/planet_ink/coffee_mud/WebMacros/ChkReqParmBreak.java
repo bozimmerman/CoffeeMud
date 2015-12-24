@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -37,9 +38,9 @@ public class ChkReqParmBreak extends CheckReqParm
 	@Override public String name() { return "ChkReqParmBreak"; }
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
-		final String ans=super.runMacro(httpReq, parm);
+		final String ans=super.runMacro(httpReq, parm, httpResp);
 		if(CMath.s_bool(ans))
 			return " @break@";
 		return "";

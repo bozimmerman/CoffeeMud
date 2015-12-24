@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.net.URLEncoder;
 import java.util.*;
 
@@ -38,7 +39,7 @@ public class AchievementID extends StdWebMacro
 	@Override public String name() { return "AchievementID"; }
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final String last=httpReq.getUrlParameter("ACHIEVEMENT");
 		if(last==null)

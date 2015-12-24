@@ -673,7 +673,7 @@ public class RaceData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 

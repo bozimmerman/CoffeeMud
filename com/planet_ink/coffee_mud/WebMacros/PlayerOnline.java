@@ -41,7 +41,7 @@ public class PlayerOnline extends StdWebMacro
 	public static final int MAX_IMAGE_SIZE=50*1024;
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);

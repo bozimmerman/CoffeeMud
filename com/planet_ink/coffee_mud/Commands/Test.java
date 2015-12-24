@@ -1632,7 +1632,6 @@ public class Test extends StdCommand
 							if(setToAdd.get(i3)==O2)
 							{
 								setToAdd.remove(i3);
-								System.out.println("Removed Dup");
 							}
 					}
 					for(int i=0;i<setToAdd.size();i++)

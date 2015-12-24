@@ -252,7 +252,7 @@ public class CharClassData extends StdWebMacro
 	// mana, movement, attack, weapons, armorlimits, limits, bonuses,
 	// prime, quals, startingeq
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final MOB mob=Authenticate.getAuthenticatedMob(httpReq);

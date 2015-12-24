@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -15,7 +16,9 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
+
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 
 /*
@@ -40,20 +43,6 @@ public class FileData extends StdWebMacro
 	@Override public boolean isAWebPath(){return true;}
 	@Override public boolean preferBinary(){return true;}
 
-	@Override
-	public void setServletResponse(SimpleServletResponse response, final String filename)
-	{
-		String file=filename;
-		if(file==null)
-			file="FileData";
-		final int x=file.lastIndexOf('/');
-		if((x>=0)&&(x<file.length()-1))
-			file=file.substring(x+1);
-		super.setServletResponse(response, file);
-		response.setHeader("Content-Disposition", "attachment; filename="+file);
-	}
-
-	@Override
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
 		final String path=httpReq.getUrlParameter("PATH");
@@ -66,22 +55,32 @@ public class FileData extends StdWebMacro
 	}
 
 	@Override
-	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
 	{
-		final String filename=getFilename(httpReq,"");
+		String filename=getFilename(httpReq,"");
+		if(filename==null)
+			filename="FileData";
+		final int x=filename.lastIndexOf('/');
+		if((x>=0)&&(x<filename.length()-1))
+			filename=filename.substring(x+1);
+		final MIMEType mimeType = MIMEType.All.getMIMEType(filename);
+		if(mimeType != null)
+			httpResp.setHeader("Content-Type", mimeType.getType());
+		httpResp.setHeader("Content-Disposition", "attachment; filename="+filename);
+		
 		if(filename.length()==0)
 			return null;
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null)
 			return null;
-		final CMFile F=new CMFile(filename,M);
+		final CMFile F=new CMFile(getFilename(httpReq,""),M);
 		if((!F.exists())||(!F.canRead()))
 			return null;
 		return F.raw();
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
 	{
 		return "[Unimplemented string method!]";
 	}

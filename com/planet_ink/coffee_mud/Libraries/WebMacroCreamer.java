@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
 import com.planet_ink.coffee_web.http.HTTPException;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.HTTPStatus;
+import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.http.MultiPartData;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 import com.planet_ink.coffee_web.interfaces.SimpleServlet;
@@ -745,14 +746,14 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			else 
 			if (W.preferBinary())
 			{
-				final byte[] bin = W.runBinaryMacro(request, (parms == null) ? null : parms.toString());
+				final byte[] bin = W.runBinaryMacro(request, (parms == null) ? null : parms.toString(), null);
 				if (bin == null)
 					q = " @break@";
 				else
 					q = new String(bin);
 			}
 			else
-				q = W.runMacro(request, (parms == null) ? null : parms.toString());
+				q = W.runMacro(request, (parms == null) ? null : parms.toString(), null);
 			if (q != null)
 				return q;
 			return "[error]";
@@ -1009,17 +1010,16 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			}
 			else
 			{
-				final String filename = W.getFilename(request, "");
 				try
 				{
 					try
 					{
-						W.setServletResponse(response, filename);
+						response.setHeader("Content-Type", MIMEType.All.getMIMEType("").getType());
 						byte[] responseData;
 						if (W.preferBinary())
-							responseData = W.runBinaryMacro(request, "");
+							responseData = W.runBinaryMacro(request, "", response);
 						else
-							responseData = W.runMacro(request, "").getBytes();
+							responseData = W.runMacro(request, "", response).getBytes();
 						response.getOutputStream().write(responseData);
 					}
 					catch (final HTTPServerException e)
@@ -1255,7 +1255,6 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			else
 			{
 				startOfDate = msgPage.indexOf("<span class=\"msg-newfont\" title=\"");
-				// if(startOfDate<0) System.out.println(msgPage);
 				if (startOfDate < 0)
 					return "Failed: to find date start in url:" + sess.url + "/message/" + sess.lastMsgNum;
 				startOfDate += 33;// MAGIC NUMBER

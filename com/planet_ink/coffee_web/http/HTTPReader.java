@@ -862,12 +862,14 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						{
 							final HTTPReqProcessor processor = new HTTPReqProcessor(config);
 							final DataBuffers bufs = processor.generateOutput(currentReq);
-							
+
 							if(accessLog != null)
+							{
 								accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
 									currentReq.getClientAddress().getHostAddress()
 									+" "+currentReq.getHost()+":"+currentReq.getClientPort()
 									+" \""+currentReq.getFullRequest()+" \" "+processor.getLastHttpStatusCode()+" "+bufs.getLength())).append("\n");
+							}
 							writeBytesToChannel(bufs);
 							// after output, prepare for a second request on this channel
 							final String closeHeader = currentReq.getHeader(HTTPHeader.Common.CONNECTION.lowerCaseName()); 
@@ -886,10 +888,12 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					final DataBuffers bufs=me.generateOutput(currentReq);
 					writeBytesToChannel(bufs);
 					if(accessLog != null)
+					{
 						accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
 							currentReq.getClientAddress().getHostAddress()
 							+" "+currentReq.getHost()+":"+currentReq.getClientPort()
 							+" \""+currentReq.getFullRequest()+"\" "+me.getStatus().getStatusCode()+" "+bufs.getLength())).append("\n");
+					}
 					// have to assume any exception caused
 					// before a finish is malformed and needs a closed connection.
 					if(currentReq.isFinished())

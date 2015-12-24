@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -43,14 +44,6 @@ public class AreaXML extends StdWebMacro
 	@Override public boolean isAWebPath(){return true;}
 	@Override public boolean preferBinary(){return true;}
 
-	@Override
-	public void setServletResponse(SimpleServletResponse response, final String filename)
-	{
-		response.setHeader("Content-Disposition", "attachment; filename="+filename);
-		response.setHeader("Content-Type", "application/cmare");
-	}
-
-	@Override
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
@@ -81,8 +74,11 @@ public class AreaXML extends StdWebMacro
 	}
 
 	@Override
-	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
 	{
+		httpResp.setHeader("Content-Disposition", "attachment; filename="+getFilename(httpReq,""));
+		httpResp.setHeader("Content-Type", "application/cmare");
+		
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob==null)
 			return null;
@@ -107,7 +103,7 @@ public class AreaXML extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
 	{
 		return "[Unimplemented string method!]";
 	}

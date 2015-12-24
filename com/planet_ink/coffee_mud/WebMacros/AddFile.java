@@ -43,7 +43,7 @@ public class AddFile extends StdWebMacro
 	@Override public String name() { return "AddFile"; }
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final PairSVector<String,String> parms=super.parseOrderedParms(parm,true);
 		if((parms==null)||(parms.size()==0))

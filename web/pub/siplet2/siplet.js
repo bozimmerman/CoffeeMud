@@ -8,7 +8,7 @@ var Siplet =function()
 
 Siplet.prototype.connectToURL = function(host, port)
 {
-	socket = new WebSocket("ws://"+host+":"+port);
+	socket = new WebSocket("ws://"+host+":"+port+"/SipletInterface");
 	socket.onmessage = this.receivedData;
 	socket.onopen = this.openOccurred;
 	socket.onclose = this.closeOccurred;
@@ -46,7 +46,7 @@ Siplet.prototype.disconnectFromURL = function()
 
 Siplet.prototype.isConnectedToURL = function()
 {
-	
+	return this.connected;
 };
 
 Siplet.prototype.readURLData = function()

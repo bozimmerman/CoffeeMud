@@ -334,11 +334,7 @@ public class DBConnections
 		{
 			if(shutdown)
 			{
-				// can't throw without declaring, so this is the only way.
-				final int x=1;
-				final int y=x-1;
-				System.out.println(x/y);
-				// this should create a division by zero error.
+				throw new java.lang.IllegalArgumentException();
 			}
 
 			if(connections.size()<maxConnections)

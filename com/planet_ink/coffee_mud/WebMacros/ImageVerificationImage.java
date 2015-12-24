@@ -27,9 +27,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
 import javax.imageio.ImageIO;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
@@ -63,6 +65,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 
 	@Override public boolean isAWebPath(){return true;}
 	@Override public boolean preferBinary(){return true;}
+	
 	public ImageVerificationImage (){}
 
 	public static class ImgCacheEntry
@@ -100,69 +103,74 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 		return verSet;
 	}
 
-	 @Override
 	public String getFilename(HTTPRequest httpReq, String filename)
-	 {
+	{
 		 final String foundFilename=httpReq.getUrlParameter("FILENAME");
 		 if((foundFilename!=null)&&(foundFilename.length()>0))
 			 return foundFilename;
 		 return filename;
-	 }
+	}
+
+	@Override
+	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	{
+		final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+		try
+		{
+			synchronized(sync)
+			{
+				final boolean imageRequest=httpReq.isUrlParameter("IMAGE");
+				if(imageRequest)
+				{
+					final MIMEType mimeType = MIMEType.All.getMIMEType(getFilename(httpReq,""));
+					if(mimeType != null)
+						httpResp.setHeader("Content-Type", mimeType.getType());
+				}
+				final SLinkedList<ImgCacheEntry> cache = getVerifyCache();
+				String value=null;
+				String key=null;
+				final String hisIp=httpReq.getClientAddress().getHostAddress();
+				if(imageRequest)
+				{
+		 			for(final Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
+					{
+						final ImageVerificationImage.ImgCacheEntry entry=p.next();
+						if(entry.ip.equalsIgnoreCase(hisIp))
+						{
+							value=entry.value;
+							key=entry.key;
+							break;
+						}
+					}
+				}
+				final ImageVerificationImage  img=new ImageVerificationImage(value,bout);
+				if(key==null)
+					key=Long.toHexString(Math.round(Math.abs(rand.nextDouble() * (Long.MAX_VALUE/2.0))));
+				if(value==null)
+				{
+					final ImgCacheEntry entry=new ImgCacheEntry();
+					entry.ip=hisIp;
+					entry.key=key;
+					entry.value=img.getVerificationValue();
+					cache.addLast(entry);
+				}
+				if(!imageRequest)
+				{
+					bout.reset();
+					bout.write(key.getBytes());
+				}
+				httpReq.addFakeUrlParameter("IMGVERKEY", key);
+			}
+		}
+		catch(final IOException ioe)
+		{
+			Log.errOut("ImgVerWM",ioe);
+		}
+		return bout.toByteArray();
+	}
 
 	 @Override
-	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
-	 {
-		 final ByteArrayOutputStream bout=new ByteArrayOutputStream();
-		 try
-		 {
-			 synchronized(sync)
-			 {
-				 final boolean imageRequest=httpReq.isUrlParameter("IMAGE");
-				 final SLinkedList<ImgCacheEntry> cache = getVerifyCache();
-				 String value=null;
-				 String key=null;
-				 final String hisIp=httpReq.getClientAddress().getHostAddress();
-				 if(imageRequest)
-				 {
-		 		   	for(final Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
-				   	{
-				   		 final ImageVerificationImage.ImgCacheEntry entry=p.next();
-						 if(entry.ip.equalsIgnoreCase(hisIp))
-						 {
-							 value=entry.value;
-							 key=entry.key;
-							 break;
-						 }
-				   	}
-				 }
-				 final ImageVerificationImage  img=new ImageVerificationImage(value,bout);
-				 if(key==null)
-					 key=Long.toHexString(Math.round(Math.abs(rand.nextDouble() * (Long.MAX_VALUE/2.0))));
-				 if(value==null)
-				 {
-					 final ImgCacheEntry entry=new ImgCacheEntry();
-					 entry.ip=hisIp;
-					 entry.key=key;
-					 entry.value=img.getVerificationValue();
-					 cache.addLast(entry);
-				 }
-				 if(!imageRequest)
-				 {
-					 bout.reset();
-					 bout.write(key.getBytes());
-				 }
-				 httpReq.addFakeUrlParameter("IMGVERKEY", key);
-			 }
-		 }
-		 catch(final IOException ioe)
-		 {
-			 Log.errOut("ImgVerWM",ioe);
-		 }
-		 return bout.toByteArray();
-	 }
-
-	 @Override
-	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
 	 {
 		 return "[Unimplemented string method!]";
 	 }

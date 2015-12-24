@@ -40,7 +40,7 @@ public class AddRandomFileFromDir extends StdWebMacro
 	@Override public String name() { return "AddRandomFileFromDir"; }
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0))

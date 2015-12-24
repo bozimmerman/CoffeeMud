@@ -39,7 +39,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 	@Override public String name()	{return "CrossBaseClassAbilities";}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final StringBuffer buf=new StringBuffer("");
 		final java.util.Map<String,String> parms=parseParms(parm);

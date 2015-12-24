@@ -38,7 +38,7 @@ public class RoomName extends StdWebMacro
 	@Override public String name() { return "RoomName"; }
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final String last=httpReq.getUrlParameter("ROOM");
 		if(last==null)

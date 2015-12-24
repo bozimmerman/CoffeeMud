@@ -25,10 +25,13 @@ import java.io.PipedOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.channels.Pipe;
+import java.security.MessageDigest;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 import com.planet_ink.siplet.applet.*;
+import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 /*
    Copyright 2011-2015 Bo Zimmerman
@@ -227,13 +230,37 @@ public class SipletInterface extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return "false;";
 		if(!initialized)
 		{
 			initialize();
+		}
+		
+		if(("websocket".equals(httpReq.getHeader("upgrade")))
+		&&("Upgrade".equals(httpReq.getHeader("connection"))))
+		{
+			try
+			{
+				final String key = httpReq.getHeader("sec-websocket-key");
+				final String tokenStr = key + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+				final MessageDigest cript = MessageDigest.getInstance("SHA-1");
+				cript.reset();
+				cript.update(tokenStr.getBytes("utf8"));
+				final String token = Base64.encode(cript.digest());
+				httpResp.setStatusCode(101);
+				httpResp.setHeader("Upgrade", "websocket");
+				httpResp.setHeader("Connection", "Upgrade");
+				httpResp.setHeader("Sec-WebSocket-Accept", token);
+				return "";
+			}
+			catch (Exception e)
+			{
+				Log.errOut(e);
+				throw new HTTPServerException(e.getMessage());
+			}
 		}
 
 		if(httpReq.isUrlParameter("CONNECT"))

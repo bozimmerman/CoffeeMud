@@ -282,12 +282,7 @@ function connect(url,port,tries)
 	var theSpan=top.term.document.getElementById(myname+'namer');
 	theSpan.innerHTML=s
 	gauges=new Array(0);
-	var connectWorked = theSiplet.connectToURL(url,port); 
-	if(!connectWorked)
-	{
-		connectWorked = theSiplet.connectToURL(url,@WebServerPort?CURRENT@); 
-		if(connectWorked) sendData('MUD\n\n\r\r');
-	}
+	var connectWorked = theSiplet.connectToURL(url,@WebServerPort?CURRENT@); 
 	if(!connectWorked)
 		goRed();
 	else

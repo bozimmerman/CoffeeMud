@@ -46,7 +46,7 @@ public class AccountCreate extends StdWebMacro
 	// OK, NO_NEW_PLAYERS, NO_NEW_LOGINS, BAD_USED_NAME, CREATE_LIMIT_REACHED
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
@@ -83,7 +83,7 @@ public class AccountCreate extends StdWebMacro
 			if(!password.equalsIgnoreCase(passwordagain))
 				return AccountCreateErrors.BAD_PASSWORDMATCH.toString();
 		}
-		final String verifykey=httpReq.getUrlParameter("VERIFYKEY");
+		final String verifykey=httpReq.getUrlParameter("IMGVERKEY");
 		if((verifykey==null)||(verifykey.length()==0))
 			return AccountCreateErrors.NO_VERIFYKEY.toString();
 		final String verify=httpReq.getUrlParameter("VERIFY");

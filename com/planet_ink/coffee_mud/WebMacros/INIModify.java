@@ -58,7 +58,7 @@ public class INIModify extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
 		final MOB authM=Authenticate.getAuthenticatedMob(httpReq);
 		if((authM==null)||(!CMSecurity.isASysOp(authM)))
