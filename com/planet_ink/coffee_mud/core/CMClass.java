@@ -2578,10 +2578,8 @@ public class CMClass extends ClassLoader
 					size+=tempV.size();
 					c.abilities.addAll(tempV);
 
-					size+=tempV.size();
 					if(size>0)
 						Log.sysOut(Thread.currentThread().getName(),"Fighter Skills    : "+size);
-					c.abilities.addAll(tempV);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Druid/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
 					if(tempV.size()>0)

@@ -152,8 +152,8 @@ public class Qualify  extends Skills
 						col=1;
 					}
 					thisLine.append("^N[^H"+CMStrings.padRight(""+l,COL_LEN1)+"^?] "
-					+CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",COL_LEN2)+" "
-					+CMStrings.padRight(A.requirements(viewerM),(col==2)?COL_LEN3:COL_LEN4));
+										   +CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",COL_LEN2)+" "
+										   +CMStrings.padRight(A.requirements(viewerM),(col==2)?COL_LEN3:COL_LEN4));
 				}
 			}
 			if(thisLine.length()>0)
