@@ -127,6 +127,8 @@ public interface HTTPHeader
 		X_POWERED_BY("X-Powered-by"),
 		X_CONTENT_TYPE_OPTIONS("X-Content-Type-Options"),
 		PRAGMA("Pragma"),
+		UPGRADE("Upgrade"),
+		SEC_WEBSOCKET_ACCEPT("Sec-WebSocket-Accept"),
 		X_FRAME_OPTIONS("X-Frame-Options")
 		;
 		public static final String		 		KEEP_ALIVE_FMT	= "timeout=%d, max=%d";
@@ -134,9 +136,9 @@ public interface HTTPHeader
 		
 		private static final String EOLN = HTTPIOHandler.EOLN;
 		
-		private String name;
-		private String defaultValue;
-		private String keyName;
+		private final String name;
+		private final String defaultValue;
+		private final String keyName;
 
 		private Common(String name, String defaultValue)
 		{
@@ -235,6 +237,7 @@ public interface HTTPHeader
 		{
 			Common.keepAliveHeader=header;
 		}
+
 		/**
 		 * Return the statically defined keep alive header line
 		 * @return the keep alive header line, a favorite
@@ -257,6 +260,7 @@ public interface HTTPHeader
 			final String enumName = name.toUpperCase().replace('-', '_');
 			return new HTTPHeader()
 			{
+				@Override
 				public String name()
 				{
 					return enumName;

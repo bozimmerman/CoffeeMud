@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_web.interfaces;
 
+import com.planet_ink.coffee_web.http.HTTPException;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 
 /*
@@ -26,8 +27,8 @@ import com.planet_ink.coffee_web.http.HTTPMethod;
 public interface SimpleServlet 
 {
 	public void init();
-	public void doGet(SimpleServletRequest request, SimpleServletResponse response);
-	public void doPost(SimpleServletRequest request, SimpleServletResponse response);
-	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response);
+	public void doGet(SimpleServletRequest request, SimpleServletResponse response) throws HTTPException;
+	public void doPost(SimpleServletRequest request, SimpleServletResponse response) throws HTTPException;
+	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response) throws HTTPException;
 }
  

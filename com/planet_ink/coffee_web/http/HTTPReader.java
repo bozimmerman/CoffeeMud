@@ -6,8 +6,10 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +17,8 @@ import java.io.*;
 
 import com.planet_ink.coffee_web.interfaces.DataBuffers;
 import com.planet_ink.coffee_web.interfaces.HTTPIOHandler;
+import com.planet_ink.coffee_web.interfaces.HTTPRequest;
+import com.planet_ink.coffee_web.interfaces.ProtocolHandler;
 import com.planet_ink.coffee_web.server.WebServer;
 import com.planet_ink.coffee_web.util.CWDataBuffers;
 import com.planet_ink.coffee_web.util.ThrottleSpec;
@@ -51,29 +55,31 @@ import com.planet_ink.coffee_mud.core.Log.Type;
  * @author Bo Zimmerman
  *
  */
-public class HTTPReader implements HTTPIOHandler, Runnable
+public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 {
 	private static final AtomicLong 	idCounter		 = new AtomicLong(0);
 	
-	private volatile boolean 	 		isRunning 		 = false; // the request is currently getting active thread/read time
+	private volatile AtomicBoolean 		isRunning 		 = new AtomicBoolean(false); // the request is currently getting active thread/read time
 	private volatile boolean 	 		closeMe 		 = false; // the request is closed, along with its channel
 	private volatile boolean 	 		closeRequested 	 = false; // the request is closed, along with its channel
 
 	protected final SocketChannel  		chan;					  // the channel from which the request is read
 	protected final String				name;					  // the name of this handler -- to denote a request ID
 	protected final boolean				isDebugging;			  // true if the log debug channel is on -- an optomization
-	private final long			 		startTime;		   		  // the initial start time of the request, for overall age calculation
-	protected final CWConfig		config;		  	  	 	  // mini web configuration variables
-	protected final WebServer		server;		  	  	 	  // mini web server managing this request
+	private final long			 		startTime;				  // the initial start time of the request, for overall age calculation
+	protected final CWConfig			config;					  // mini web configuration variables
+	protected final WebServer			server;					  // mini web server managing this request
 
-	private volatile long		 		idleTime 	 	 = System.currentTimeMillis();  // the last time this handler went idle
+	private volatile AtomicLong	 		idleTime 	 	 = new AtomicLong(System.currentTimeMillis());  // the last time this handler went idle
 	
 	private volatile CWHTTPRequest 		currentReq;			  	  // the parser and pojo of the current request
 	private volatile ParseState  		currentState	 = ParseState.REQ_INLINE;	// the current parse state of this request
-	private volatile int				nextChunkSize	= 0;
+	private volatile int				nextChunkSize	 = 0;
 	
 	private volatile HTTPForwarder		forwarder		 = null;  // in the off chance everything is just being forwarded, it goes here
 	private volatile ThrottleSpec		outputThrottle	 = null;
+	private volatile ProtocolHandler	protocolHandler= this;
+	private volatile int				lastHttpStatus	 = 0;
 	
 	private final LinkedList<DataBuffers>writeables		 = new LinkedList<DataBuffers>();
 	
@@ -163,7 +169,8 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			try
 			{
 				chan.close();
-			}catch(final Exception e){}
+			}
+			catch(final Exception e){}
 			if(forwarder!=null)
 				forwarder.closeChannels();
 		}
@@ -178,7 +185,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	{
 		closeChannels();
 		final long time = System.currentTimeMillis();
-		while((System.currentTimeMillis()-time<30000) && (isRunning))
+		while((System.currentTimeMillis()-time<30000) && (isRunning.get()))
 		{
 			try { Thread.sleep(100); }catch(final Exception e){}
 		}
@@ -193,7 +200,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	@Override 
 	public boolean isRunning() 
 	{ 
-		return isRunning && ((forwarder==null) || forwarder.isRunning());
+		return isRunning.get() && ((forwarder==null) || forwarder.isRunning());
 	}
 
 	/**
@@ -207,19 +214,28 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 		if(closeMe)
 			return true;
 		final long currentTime=System.currentTimeMillis();
-		if((idleTime!=0) && ((currentTime - idleTime) > config.getRequestMaxIdleMs()))
+		final long idleTime = this.idleTime.get();
+		if(idleTime > 0)
 		{
-			if (isDebugging) config.getLogger().finest("Idle Timed out: "+this.getName()+" "+(currentTime - idleTime) +">"+ config.getRequestMaxIdleMs());
-			return true;
+			final long idleDiffTime = isRunning.get() ? 0 : (currentTime - idleTime);
+			if(idleDiffTime > config.getRequestMaxIdleMs())
+			{
+				if(idleDiffTime > config.getRequestMaxIdleMs())
+				{
+					if (isDebugging) config.getLogger().finest("Idle Timed out: "+this.getName()+" "+idleDiffTime +">"+ config.getRequestMaxIdleMs());
+					return true;
+				}
+			}
 		}
 		if((!chan.isOpen()) || (!chan.isConnected()) || (!chan.isRegistered()))
 		{
 			if (isDebugging) config.getLogger().finest("Disconnected: "+this.getName());
 			return true;
 		}
-		if((startTime!=0) && (currentTime - startTime) > (config.getRequestMaxAliveSecs() * 1000))
+		final long totalDiffTime = (currentTime - startTime); 
+		if((startTime!=0) && (totalDiffTime > (config.getRequestMaxAliveSecs() * 1000)))
 		{
-			if (isDebugging) config.getLogger().finest("Over Timed Out: "+this.getName()+" "+(currentTime - startTime) +">"+ (config.getRequestMaxAliveSecs() * 1000));
+			if (isDebugging) config.getLogger().finest("Over Timed Out: "+this.getName()+" "+totalDiffTime +">"+ (config.getRequestMaxAliveSecs() * 1000));
 			return true;
 		}
 		if((forwarder!=null) && (forwarder.isCloseable()))
@@ -312,10 +328,12 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	 * The method should exit with the buffer in the same writeable state it
 	 * was handed.
 	 * 
+	 * @param request the request currently being parsed
 	 * @param buffer the bytebuffer to process data from
 	 * @throws HTTPException
 	 */
-	private void processBuffer(ByteBuffer buffer) throws HTTPException
+	@Override
+	public DataBuffers processBuffer(HTTPRequest request, ByteBuffer buffer) throws HTTPException
 	{
 		ParseState state = currentState; // since currentState is volatile, lets cache local before tinkering with it
 		try
@@ -644,6 +662,14 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 		{
 			currentState = state; // the state was cached local, so copy back to memory when done
 		}
+		if(currentReq.isFinished())
+		{
+			final HTTPReqProcessor processor = new HTTPReqProcessor(config);
+			final DataBuffers bufs = processor.generateOutput(currentReq);
+			lastHttpStatus = processor.getLastHttpStatusCode();
+			return bufs;
+		}
+		return null;
 	}
 	
 	/**
@@ -840,8 +866,8 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	{
 		synchronized(this) // don't let mulitple readers in at the same time, ever.
 		{
-			isRunning=true; // for record keeping purposes
-			idleTime=0;
+			isRunning.set(true); // for record keeping purposes
+			idleTime.set(0);
 			try // begin of the IO error handling and record integrity block
 			{
 				int bytesRead=0; // read bytes until we can't any more
@@ -857,20 +883,18 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 							config.getLogger().finer("Processing handler '"+name+"'");
 							announcedAlready=true;
 						}
-						processBuffer(currentReq.getBuffer()); // process any data received
+						final DataBuffers bufs = protocolHandler.processBuffer(currentReq, currentReq.getBuffer()); // process any data received
+						if((bufs != null) && (bufs.getLength() > 0))
+							writeBytesToChannel(bufs);
 						if(currentReq.isFinished()) // if the request was completed, generate output!
 						{
-							final HTTPReqProcessor processor = new HTTPReqProcessor(config);
-							final DataBuffers bufs = processor.generateOutput(currentReq);
-
-							if(accessLog != null)
+							if((accessLog != null)&&(bufs != null))
 							{
 								accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
 									currentReq.getClientAddress().getHostAddress()
 									+" "+currentReq.getHost()+":"+currentReq.getClientPort()
-									+" \""+currentReq.getFullRequest()+" \" "+processor.getLastHttpStatusCode()+" "+bufs.getLength())).append("\n");
+									+" \""+currentReq.getFullRequest()+" \" "+lastHttpStatus+" "+bufs.getLength())).append("\n");
 							}
-							writeBytesToChannel(bufs);
 							// after output, prepare for a second request on this channel
 							final String closeHeader = currentReq.getHeader(HTTPHeader.Common.CONNECTION.lowerCaseName()); 
 							if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
@@ -887,6 +911,11 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				{
 					final DataBuffers bufs=me.generateOutput(currentReq);
 					writeBytesToChannel(bufs);
+					if(me.getStatus() == HTTPStatus.S101_SWITCHING_PROTOCOLS)
+					{
+						if(me.getNewProtocolHandler() != null)
+							this.protocolHandler = me.getNewProtocolHandler();
+					}
 					if(accessLog != null)
 					{
 						accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
@@ -949,8 +978,8 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			}
 			finally
 			{
-				isRunning=false;
-				idleTime=System.currentTimeMillis();
+				idleTime.set(System.currentTimeMillis());
+				isRunning.set(false);
 			}
 		}
 	}

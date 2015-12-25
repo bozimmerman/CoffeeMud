@@ -10,6 +10,7 @@ import com.planet_ink.coffee_web.interfaces.DataBuffers;
 import com.planet_ink.coffee_web.interfaces.HTTPIOHandler;
 import com.planet_ink.coffee_web.interfaces.HTTPOutputConverter;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
+import com.planet_ink.coffee_web.interfaces.ProtocolHandler;
 import com.planet_ink.coffee_web.util.CWDataBuffers;
 import com.planet_ink.coffee_web.util.CWThread;
 import com.planet_ink.coffee_web.util.CWConfig;
@@ -51,6 +52,7 @@ public class HTTPException extends Exception
 	private final Logger				debugLogger;
 	private final CWConfig				config;
 	private final static String			EOLN		 = HTTPIOHandler.EOLN;
+	private volatile ProtocolHandler 	protoHandler = null;
 	
 	/**
 	 * Construct with body -- a strange case for now
@@ -116,6 +118,30 @@ public class HTTPException extends Exception
 	public Map<HTTPHeader, String> getErrorHeaders()
 	{
 		return errorHeaders;
+	}
+	
+	/**
+	 * When an exception is of type 101-switching protocols,
+	 * this method allows the switcher to specify what the
+	 * new protocol handler class will, in fact, be.
+	 * @see HTTPException#getNewProtocolHandler()
+	 * @param handler the new protocol handler
+	 */
+	public void setNewProtocolHandler(ProtocolHandler handler)
+	{
+		this.protoHandler = handler;
+	}
+	
+	/**
+	 * When an exception is of type 101-switching protocols,
+	 * this method allows the switcher to specify what the
+	 * new protocol handler class will, in fact, be.
+	 * @see HTTPException#setNewProtocolHandler(ProtocolHandler)
+	 * @return handler the new protocol handler
+	 */
+	public ProtocolHandler getNewProtocolHandler()
+	{
+		return this.protoHandler;
 	}
 	
 	/**

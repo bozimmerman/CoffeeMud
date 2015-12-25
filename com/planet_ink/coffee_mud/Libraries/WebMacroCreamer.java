@@ -989,7 +989,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	}
 
 	@Override
-	public void doGet(SimpleServletRequest request, SimpleServletResponse response)
+	public void doGet(SimpleServletRequest request, SimpleServletResponse response) throws HTTPException
 	{
 		final String[] url = request.getUrlPath().split("/");
 		if (url.length > 0)
@@ -1024,6 +1024,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					}
 					catch (final HTTPServerException e)
 					{
+						if(e.getCause() instanceof HTTPException)
+							throw (HTTPException)e.getCause();
 						try
 						{
 							response.getOutputStream().write(HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR).generateOutput(request).flushToBuffer().array());
@@ -1041,13 +1043,13 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	}
 
 	@Override
-	public void doPost(SimpleServletRequest request, SimpleServletResponse response)
+	public void doPost(SimpleServletRequest request, SimpleServletResponse response) throws HTTPException
 	{
 		doGet(request, response);
 	}
 
 	@Override
-	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response)
+	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response) throws HTTPException
 	{
 	}
 

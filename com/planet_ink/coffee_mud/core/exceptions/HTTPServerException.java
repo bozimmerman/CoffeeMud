@@ -38,5 +38,10 @@ public class HTTPServerException extends CoffeeMudException
 	{
 		super(s);
 	}
+	
+	public HTTPServerException(Exception e)
+	{
+		super(e);
+	}
 }
 

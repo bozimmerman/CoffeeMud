@@ -25,9 +25,15 @@ public abstract class CoffeeMudException extends Exception
 	{
 		super(s,new Exception());
 	}
+	
 	public CoffeeMudException(String s, Exception e)
 	{
 		super(s,e);
+	}
+	
+	public CoffeeMudException(Exception e)
+	{
+		super(e);
 	}
 }
 

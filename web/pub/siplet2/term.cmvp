@@ -179,23 +179,76 @@ function displayData()
 		goOffline();
 	else
 	{
-		theSiplet.readURLData();
-		var t=theSiplet.getURLData();
-		var s="";
-		s=s+t;
-		addToWindow(s);
-		t=theSiplet.getJScriptCommands();
-		s="";
-		s=s+t;
-		if(s.length>0) eval(s);
-		lastReceived = new Date().getTime();
-		setTimeout('displayData();',pingDelay);
+		theSiplet.getURLData(function(connected, txt){
+			if(!connected || (!txt) || (txt.substr(0,5)!='true;'))
+				goOffline();
+			else
+			{
+				txt=txt.substr(5);
+				var tk=theSiplet.token+";";
+				var x=txt.indexOf(tk);
+				if(x<0)
+					goOffline();
+				else
+				{
+					var data=txt.substr(0,x);
+					var s="";
+					s=s+data;
+					addToWindow(s);
+					
+					txt=txt.substr(x+tk.length);
+					x=txt.indexOf(tk);
+					if(x>0)
+					{
+						data=txt.substr(0,x);
+						s="";
+						s=s+data;
+						if(s.length>0)
+							eval(s);
+					}
+					lastReceived = new Date().getTime();
+					setTimeout(displayData,pingDelay);
+				}
+			}
+		});
 	}
 }
+
 function sendData(me)
 {
 	var s=''+me;
-	theSiplet.sendData(s);
+	theSiplet.sendData(s,function(success,txt) {
+		if(!success || (!txt) || (txt.substr(0,5)!='true;'))
+			goOffline();
+		else
+		{
+			txt=txt.substr(5);
+			var tk=theSiplet.token+";";
+			var x=txt.indexOf(tk);
+			if(x<0)
+				goOffline();
+			else
+			{
+				var data=txt.substr(0,x);
+				var s="";
+				s=s+data;
+				addToWindow(s);
+				
+				txt=txt.substr(x+tk.length);
+				x=txt.indexOf(tk);
+				if(x>0)
+				{
+					data=txt.substr(0,x);
+					s="";
+					s=s+data;
+					if(s.length>0)
+						eval(s);
+				}
+				lastReceived = new Date().getTime();
+				setTimeout(displayData,pingDelay);
+			}
+		}
+	});
 }
 
 function createGauge(entity,caption,color,value,max)
@@ -276,22 +329,47 @@ function connect(url,port,tries)
 {
 	errorState=false;
 	goCaution();
-	window.onerror=new Function('NoJava();');
-	var s=theSiplet.info();
-	window.onerror=null;
-	var theSpan=top.term.document.getElementById(myname+'namer');
-	theSpan.innerHTML=s
 	gauges=new Array(0);
-	var connectWorked = theSiplet.connectToURL(url,@WebServerPort?CURRENT@); 
-	if(!connectWorked)
-		goRed();
-	else
-	{
-		goGreen();
-		lastReceived = new Date().getTime();
-		setTimeout('displayData(); top.entry.boxFocus();',pingDelay);
-	}
+	theSiplet.connectToURL(url,@WebServerPort?CURRENT@,port,function(connectWorked, txt){
+		var s='';
+		var x=txt.indexOf(';');
+		if(x<0)
+			connectWorked=false;
+		else
+		{
+			connectWorked = connectWorked && txt.substr(0,x) == "true";
+			if(connectWorked == true)
+			{
+				txt=txt.substr(x+1);
+				x=txt.indexOf(';');
+				theSiplet.token=txt.substr(0,x);
+				top.term.allapplets[top.term.currentWindow] = theSiplet;
+				txt=txt.substr(x+1);
+				var tk=theSiplet.token+";";
+				var x=txt.indexOf(tk);
+				if(x<0)
+					connectWorked=false;
+				else
+					s=txt.substr(0,x);
+			}
+		}
+		//window.onerror=null;
+		var thespan=top.term.document.getElementById(myname+'namer');
+		thespan.innerHTML=s
+		gauges=new Array(0);
+		if(!connectWorked)
+		{
+			goRed();
+		}
+		else
+		{
+			goGreen();
+			lastReceived = new Date().getTime();
+			setTimeout('displayData(); top.entry.boxFocus();',pingDelay);
+		}
+	}); 
 }
+
 function addToPrompt(x,att)
 {
 	top.entry.document.ENTER.TEXT.value=x;
@@ -300,6 +378,7 @@ function addToPrompt(x,att)
 	else
 		top.entry.document.ENTER.TEXT.value+=" ";
 }
+
 function goDefault(x)
 {
 	top.term.front('dwindow'+x,x);
