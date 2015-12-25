@@ -35,11 +35,31 @@ import java.util.*;
 */
 public class Wizard extends Mage
 {
-	@Override public String ID(){return "Wizard";}
-	private final static String localizedStaticName = CMLib.lang().L("Wizard");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Mage";}
-	@Override protected boolean grantSomeSpells(){return false;}
+	@Override
+	public String ID()
+	{
+		return "Wizard";
+	}
+
+	private final static String	localizedStaticName	= CMLib.lang().L("Wizard");
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Mage";
+	}
+
+	@Override
+	protected boolean grantSomeSpells()
+	{
+		return false;
+	}
 
 	@Override
 	public void initializeClass()
@@ -78,8 +98,14 @@ public class Wizard extends Mage
 		}
 	}
 
-	@Override public int availabilityCode(){return 0;}
-	//public int availabilityCode(){return Area.THEME_FANTASY;}
+	// @Override public int availabilityCode(){return 0;}
+	
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
+
 	@Override
 	public String getOtherBonusDesc()
 	{

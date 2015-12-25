@@ -35,16 +35,57 @@ import java.util.*;
 
 public class Skill_ScrollCopy extends StdSkill
 {
-	@Override public String ID() { return "Skill_ScrollCopy"; }
-	private final static String localizedName = CMLib.lang().L("Memorize");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"MEMORIZE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
-	@Override protected int overrideMana(){return 0;} //-1=normal, Ability.COST_ALL=all, Ability.COST_PCT
+	@Override
+	public String ID()
+	{
+		return "Skill_ScrollCopy";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Memorize");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "MEMORIZE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_CALLIGRAPHY;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 0;
+	} // -1=normal, Ability.COST_ALL=all, Ability.COST_PCT
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

@@ -38,17 +38,48 @@ import java.util.*;
 
 public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "ScrollScribing"; }
-	private final static String localizedName = CMLib.lang().L("Scroll Scribing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"ENSCRIBE","SCROLLSCRIBE","SCROLLSCRIBING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getNormalSkillGainCost(ID()); }
-	@Override public String supportedResourceString(){return "MISC";}
-	@Override public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}
+	@Override
+	public String ID()
+	{
+		return "ScrollScribing";
+	}
 
-	protected Ability theSpell=null;
-	protected Scroll fromTheScroll=null;
+	private final static String	localizedName	= CMLib.lang().L("Scroll Scribing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "ENSCRIBE", "SCROLLSCRIBE", "SCROLLSCRIBING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	{
+		return CMProps.getNormalSkillGainCost(ID());
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "MISC";
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return "SPELL_ID\tRESOURCE_NAME";
+	}
+
+	protected Ability	theSpell		= null;
+	protected Scroll	fromTheScroll	= null;
 	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -65,8 +96,17 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-	@Override public String parametersFile(){ return "scribing.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "scribing.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -107,23 +147,42 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 		switch(lvl)
 		{
-		case 0: return lvl;
-		case 1: return lvl;
-		case 2: return lvl+1;
-		case 3: return lvl+1;
-		case 4: return lvl+2;
-		case 5: return lvl+2;
-		case 6: return lvl+3;
-		case 7: return lvl+3;
-		case 8: return lvl+4;
-		case 9: return lvl+4;
-		default: return lvl+5;
+		case 0:
+			return lvl;
+		case 1:
+			return lvl;
+		case 2:
+			return lvl + 1;
+		case 3:
+			return lvl + 1;
+		case 4:
+			return lvl + 2;
+		case 5:
+			return lvl + 2;
+		case 6:
+			return lvl + 3;
+		case 7:
+			return lvl + 3;
+		case 8:
+			return lvl + 4;
+		case 9:
+			return lvl + 4;
+		default:
+			return lvl + 5;
 		}
 	}
 
-	@Override public boolean supportsDeconstruction() { return false; }
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return false;
+	}
 
-	@Override public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0,false); }
+	@Override
+	public ItemKeyPair craftItem(String recipe)
+	{
+		return craftItem(recipe, 0, false);
+	}
 
 	protected void eraseFromScrollItem(Scroll buildingI, Ability theSpell, int level)
 	{
@@ -397,11 +456,13 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			if(buildingI!=null)
 			{
 				for(final Ability spell: ((Scroll)buildingI).getSpells())
+				{
 					if(spell.ID().equals(theSpell.ID()))
 					{
 						mob.tell(L("That spell is already scribed onto @x1.",buildingI.name()));
 						return false;
 					}
+				}
 			}
 			
 			final int resourceType=(ingredient.length()==0) ? -1 : RawMaterial.CODES.FIND_IgnoreCase(ingredient);
