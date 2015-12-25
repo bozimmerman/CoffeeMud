@@ -55,8 +55,32 @@ public interface CMMiscUtils extends CMLibrary
 	 */
 	public String builtPrompt(MOB mob);
 
+	/**
+	 * Returns the current mud-month-day-year for the object, depending
+	 * on the timeclock where the environmental is located.
+	 * @param E the object curious about the date
+	 * @return the date string
+	 */
 	public String getFormattedDate(Environmental E);
+	
+	/**
+	 * Returns a rediculous best guess on the amount of memory used
+	 * by the given environmental.  
+	 * @param E the object to check for a footprint of
+	 * @param number the accuracy -- higher is better
+	 * @return the amount of memory used, very approximately
+	 */
 	public double memoryUse ( Environmental E, int number );
+	
+	/**
+	 * Nice english comma-delimited list, with oxford commas
+	 * and trailing "and" or "or" at the end.  If the list is
+	 * of environmental, it will use the name, otherwise, it 
+	 * casts everything as a string and lists it.
+	 * @param V the objects to list
+	 * @param andTOrF true for trailing and, false for trailing or
+	 * @return the readable comma list.
+	 */
 	public String niceCommaList(List<?> V, boolean andTOrF);
 	public long[][] compileConditionalRange(List<String> condV, int numDigits, final int startOfRange, final int endOfRange);
 
