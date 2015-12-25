@@ -39,8 +39,6 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 import com.planet_ink.siplet.applet.*;
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 /*
    Copyright 2011-2015 Bo Zimmerman
@@ -397,7 +395,7 @@ public class SipletInterface extends StdWebMacro
 				final MessageDigest cript = MessageDigest.getInstance("SHA-1");
 				cript.reset();
 				cript.update(tokenStr.getBytes("utf8"));
-				final String token = Base64.encode(cript.digest());
+				final String token = B64Encoder.B64encodeBytes(cript.digest());
 				httpResp.setStatusCode(101);
 				exception.getErrorHeaders().put(HTTPHeader.Common.CONNECTION, HTTPHeader.Common.UPGRADE.toString());
 				exception.getErrorHeaders().put(HTTPHeader.Common.UPGRADE, "websocket");
