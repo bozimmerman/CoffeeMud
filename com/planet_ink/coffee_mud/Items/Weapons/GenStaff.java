@@ -37,7 +37,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class GenStaff extends GenWeapon implements Wand
 {
-	@Override public String ID(){    return "GenStaff";}
+	@Override
+	public String ID()
+	{
+		return "GenStaff";
+	}
+
 	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 
 	public GenStaff()
@@ -65,10 +70,24 @@ public class GenStaff extends GenWeapon implements Wand
 	}
 
 	protected int maxUses=Integer.MAX_VALUE;
-	@Override public int maxUses(){return maxUses;}
-	@Override public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public int maxUses()
+	{
+		return maxUses;
+	}
+
+	@Override
+	public void setMaxUses(int newMaxUses)
+	{
+		maxUses = newMaxUses;
+	}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public int value()
@@ -77,6 +96,7 @@ public class GenStaff extends GenWeapon implements Wand
 			return 0;
 		return super.value();
 	}
+
 	@Override
 	public void setSpell(Ability theSpell)
 	{
@@ -85,8 +105,19 @@ public class GenStaff extends GenWeapon implements Wand
 			readableText=theSpell.ID();
 		secretWord=StdWand.getWandWord(readableText);
 	}
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){ readableText=text;secretWord=StdWand.getWandWord(readableText);}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText = text;
+		secretWord = StdWand.getWandWord(readableText);
+	}
 
 	@Override
 	public String secretIdentity()
@@ -138,9 +169,14 @@ public class GenStaff extends GenWeapon implements Wand
 				boolean alreadyWanding=false;
 				final List<CMMsg> trailers =msg.trailerMsgs();
 				if(trailers!=null)
+				{
 					for(final CMMsg msg2 : trailers)
-						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+					{
+						if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+						&&(msg2.target() == this))
 							alreadyWanding=true;
+					}
+				}
 				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if((!alreadyWanding)&&(said!=null)&&(checkWave(mob,said)))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,CMMsg.NO_EFFECT,null));

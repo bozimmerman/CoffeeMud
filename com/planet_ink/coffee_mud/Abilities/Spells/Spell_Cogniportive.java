@@ -35,14 +35,49 @@ import java.util.*;
 
 public class Spell_Cogniportive extends Spell
 {
-	@Override public String ID() { return "Spell_Cogniportive"; }
-	private final static String localizedName = CMLib.lang().L("Cogniportive");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Cogniportive";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Cogniportive");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING;
+	}
 
 	public String establishHome(MOB mob, Item me, boolean beLoose)
 	{
@@ -65,11 +100,15 @@ public class Spell_Cogniportive extends Spell
 				&&(CMLib.law().getLandTitle(room)==null))
 					return CMLib.map().getExtendedRoomID(room);
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch (final NoSuchElementException nse)
+		{
+		}
 		try
 		{
 			final List<Environmental> all=CMLib.map().findShopStockers(CMLib.map().rooms(), mob, srchStr, 10);
 			for(final Environmental O : all)
+			{
 				if(O instanceof ShopKeeper)
 				{
 					final ShopKeeper S=(ShopKeeper)O;
@@ -80,7 +119,11 @@ public class Spell_Cogniportive extends Spell
 					&&(CMLib.law().getLandTitle(room)==null))
 						return CMLib.map().getExtendedRoomID(room);
 				}
-		}catch(final NoSuchElementException nse){}
+			}
+		}
+		catch (final NoSuchElementException nse)
+		{
+		}
 		try
 		{
 			// check mobs inventory items third!
@@ -95,7 +138,10 @@ public class Spell_Cogniportive extends Spell
 				&&(CMLib.law().getLandTitle(room)==null))
 					return CMLib.map().getExtendedRoomID(room);
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch (final NoSuchElementException nse)
+		{
+		}
 		try
 		{
 			// check room stuff last
@@ -106,9 +152,12 @@ public class Spell_Cogniportive extends Spell
 				if((R!=null)
 				&&((beLoose) || me.sameAs(I))
 				&&(CMLib.law().getLandTitle(R)==null))
-				   return CMLib.map().getExtendedRoomID(R);
+					return CMLib.map().getExtendedRoomID(R);
 			}
-		}catch(final NoSuchElementException nse){}
+		}
+		catch (final NoSuchElementException nse)
+		{
+		}
 		return "";
 	}
 
@@ -187,9 +236,14 @@ public class Spell_Cogniportive extends Spell
 							boolean alreadyWanding=false;
 							final List<CMMsg> trailers =msg.trailerMsgs();
 							if(trailers!=null)
+							{
 								for(final CMMsg msg2 : trailers)
-									if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+								{
+									if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+									&&(msg2.target() == affected))
 										alreadyWanding=true;
+								}
+							}
 							if(!alreadyWanding)
 								msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
 						}

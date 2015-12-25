@@ -40,25 +40,66 @@ import java.io.ObjectOutputStream;
 
 public class Spell_Spellbinding extends Spell
 {
-	@Override public String ID() { return "Spell_Spellbinding"; }
-	private final static String localizedName = CMLib.lang().L("Spellbinding");
-	@Override public String name() { return localizedName; }
-	@Override protected int overrideMana(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Spell_Spellbinding";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Spellbinding");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 0;
+	}
+
 	@Override
 	public String displayText()
 	{
-		if(spellbindings.size()==0)
+		if (spellbindings.size() == 0)
 			return "";
-		final StringBuffer bindings=new StringBuffer("");
-		for(int i=0;i<spellbindings.size();i++)
-			bindings.append(" "+((String)spellbindings.elementAt(i,1)));
-		return "(Bindings: "+bindings.toString()+")";
+		final StringBuffer bindings = new StringBuffer("");
+		for (int i = 0; i < spellbindings.size(); i++)
+			bindings.append(" " + ((String) spellbindings.elementAt(i, 1)));
+		return "(Bindings: " + bindings.toString() + ")";
 	}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	@Override public boolean isAutoInvoked(){ return spellbindings.size()>0; }
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ALTERATION;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return spellbindings.size() > 0;
+	}
 
 	protected DVector spellbindings=new DVector(2);
 	protected final static int COST_STATIC=50;
@@ -136,9 +177,14 @@ public class Spell_Spellbinding extends Spell
 						boolean alreadyWanding=false;
 						final List<CMMsg> trailers =msg.trailerMsgs();
 						if(trailers!=null)
+						{
 							for(final CMMsg msg2 : trailers)
-								if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+							{
+								if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+								&&(msg2.target() == msg.target()))
 									alreadyWanding=true;
+							}
+						}
 						if(!alreadyWanding)
 							msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,L("The magic of '@x1' swells within you!",s),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 					}
@@ -238,24 +284,38 @@ public class Spell_Spellbinding extends Spell
 		}
 		DVector thePriorKey=null;
 		if(priorBinding!=null)
+		{
 			for(int x=0;x<priorBinding.spellbindings.size();x++)
+			{
 				if(((String)priorBinding.spellbindings.elementAt(x,1)).equalsIgnoreCase(key))
-				{    thePriorKey=(DVector)priorBinding.spellbindings.elementAt(x,2);}
+				{
+					thePriorKey = (DVector) priorBinding.spellbindings.elementAt(x, 2);
+				}
+			}
+		}
 
 		for(int v=0;v<V.size();v++)
+		{
 			for(int v2=0;v2<V.size();v2++)
+			{
 				if((v!=v2)&&(((String)V.elementAt(v,1)).equals(V.elementAt(v2,1))))
 				{
 					mob.tell(L("The same spell can not be bound to the same trigger more than once."));
 					return false;
 				}
+			}
+		}
 		if(thePriorKey!=null)
+		{
 			for(int v=0;v<V.size();v++)
+			{
 				if(thePriorKey.contains(V.elementAt(v,1)))
 				{
 					mob.tell(L("The same spell can not be bound to the same trigger more than once."));
 					return false;
 				}
+			}
+		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

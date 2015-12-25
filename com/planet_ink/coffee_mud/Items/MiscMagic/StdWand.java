@@ -218,9 +218,14 @@ public class StdWand extends StdItem implements Wand
 				boolean alreadyWanding=false;
 				final List<CMMsg> trailers =msg.trailerMsgs();
 				if(trailers!=null)
+				{
 					for(final CMMsg msg2 : trailers)
-						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+					{
+						if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+						&&(msg2.target() == this))
 							alreadyWanding=true;
+					}
+				}
 				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if((!alreadyWanding)&&(said!=null)&&(checkWave(mob,said)))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,CMMsg.NO_EFFECT,null));

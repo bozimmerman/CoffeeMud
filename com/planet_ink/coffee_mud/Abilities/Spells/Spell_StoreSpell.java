@@ -36,8 +36,18 @@ import java.util.*;
 
 public class Spell_StoreSpell extends Spell
 {
-	@Override public String ID() { return "Spell_StoreSpell"; }
-	@Override public String Name(){return "Store Spell";}
+	@Override
+	public String ID()
+	{
+		return "Spell_StoreSpell";
+	}
+
+	@Override
+	public String Name()
+	{
+		return "Store Spell";
+	}
+
 	@Override
 	public String name()
 	{
@@ -59,12 +69,33 @@ public class Spell_StoreSpell extends Spell
 		}
 		return Name();
 	}
-	@Override protected int canTargetCode(){return CAN_ITEMS;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	@Override protected int overrideMana(){return overridemana;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
-	public String spellName="";
-	protected int overridemana=-1;
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return overridemana;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	public String	spellName		= "";
+	protected int	overridemana	= -1;
 
 	public String getSpeakableName(String name)
 	{
@@ -146,9 +177,14 @@ public class Spell_StoreSpell extends Spell
 				boolean alreadyWanding=false;
 				final List<CMMsg> trailers =msg.trailerMsgs();
 				if(trailers!=null)
+				{
 					for(final CMMsg msg2 : trailers)
-						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+					{
+						if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+						&&(msg2.target() == affected))
 							alreadyWanding=true;
+					}
+				}
 				if(!alreadyWanding)
 				{
 					final String name=getSpeakableName(affected.name());
@@ -261,7 +297,6 @@ public class Spell_StoreSpell extends Spell
 		}
 		else
 			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
-
 
 		// return whether it worked
 		return success;

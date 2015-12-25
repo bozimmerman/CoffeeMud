@@ -36,7 +36,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Staff extends StdWeapon implements Wand
 {
-	@Override public String ID(){    return "Staff";}
+	@Override
+	public String ID()
+	{
+		return "Staff";
+	}
+
 	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 
 	public Staff()
@@ -62,8 +67,16 @@ public class Staff extends StdWeapon implements Wand
 		setUsesRemaining(0);
 	}
 
-	@Override public int maxUses(){return Integer.MAX_VALUE;}
-	@Override public void setMaxUses(int newMaxUses){}
+	@Override
+	public int maxUses()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public void setMaxUses(int newMaxUses)
+	{
+	}
 
 	@Override
 	public String magicWord()
@@ -92,6 +105,7 @@ public class Staff extends StdWeapon implements Wand
 	{
 		return CMClass.getAbility(text());
 	}
+
 	@Override
 	public int value()
 	{
@@ -99,6 +113,7 @@ public class Staff extends StdWeapon implements Wand
 			return 0;
 		return super.value();
 	}
+
 	@Override
 	public String secretIdentity()
 	{
@@ -138,9 +153,14 @@ public class Staff extends StdWeapon implements Wand
 				boolean alreadyWanding=false;
 				final List<CMMsg> trailers =msg.trailerMsgs();
 				if(trailers!=null)
+				{
 					for(final CMMsg msg2 : trailers)
-						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+					{
+						if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+						&&(msg2.target() == this))
 							alreadyWanding=true;
+					}
+				}
 				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if((!alreadyWanding)&&(said!=null)&&(checkWave(mob,said)))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,CMMsg.NO_EFFECT,null));

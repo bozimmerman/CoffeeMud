@@ -59,25 +59,30 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		return true;
 	}
 
-	@Override public long flags(){return Ability.FLAG_CASTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_CASTER;
+	}
 
 	@Override
 	protected int canAffectCode()
 	{
 		return Ability.CAN_ITEMS;
 	}
-	protected boolean activated=false;
-	protected String type="";
-	protected int TypeOfEffect=0;
-	protected int WeaponType=0;
-	protected int PowerLevel=0;
-	protected long LastChecked=0;
-	protected boolean notAgain=false;
-	protected String clanName="";
-	protected String clanType="";
-	String lastMessage=null;
-	protected CharStats EQadjCharStats=null;
-	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
+
+	protected boolean	activated		= false;
+	protected String	type			= "";
+	protected int		TypeOfEffect	= 0;
+	protected int		WeaponType		= 0;
+	protected int		PowerLevel		= 0;
+	protected long		LastChecked		= 0;
+	protected boolean	notAgain		= false;
+	protected String	clanName		= "";
+	protected String	clanType		= "";
+	String				lastMessage		= null;
+	protected CharStats	EQadjCharStats	= null;
+	protected String	secretWord		= CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 
 	@Override
 	public int triggerMask()
@@ -97,11 +102,12 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		if((affected instanceof Weapon)&&(!(affected instanceof Wand))&&(TypeOfEffect<1000))
 		{
 			id.append("Does "+(1*PowerLevel)+"-"+(6*PowerLevel)+" additional "+type.toLowerCase()+" damage.");
-		}else
-			if((affected instanceof Armor)&&(TypeOfEffect<1000)&&(!(affected instanceof Shield)))
-			{
-				id.append("Raises "+type.toLowerCase()+" resistance by "+(PowerLevel*5)+".");
-			}
+		}
+		else
+		if((affected instanceof Armor)&&(TypeOfEffect<1000)&&(!(affected instanceof Shield)))
+		{
+			id.append("Raises "+type.toLowerCase()+" resistance by "+(PowerLevel*5)+".");
+		}
 		if((affected instanceof Armor)&&(TypeOfEffect<1000)&&(affected instanceof Shield))
 		{
 			id.append("Causes "+(1*PowerLevel)+"-"+(3*PowerLevel)+" "+type.toLowerCase()+" damage to melee attackers.");
@@ -136,75 +142,87 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 			TypeOfEffect=CMMsg.TYP_PARALYZE;
 			WeaponType=Weapon.TYPE_STRIKING;
 			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_PARALYSIS,PowerLevel*5);
-		}else
-			if(type.equalsIgnoreCase("FIRE"))
-			{
-				TypeOfEffect=CMMsg.TYP_FIRE;
-				WeaponType=Weapon.TYPE_BURNING;
-				this.EQadjCharStats.setStat(CharStats.STAT_SAVE_FIRE,PowerLevel*5);
-			}else
-				if(type.equalsIgnoreCase("COLD"))
-				{
-					TypeOfEffect=CMMsg.TYP_COLD;
-					WeaponType=Weapon.TYPE_FROSTING;
-					this.EQadjCharStats.setStat(CharStats.STAT_SAVE_COLD,PowerLevel*5);
-				}else
-					if(type.equalsIgnoreCase("WATER"))
-					{
-						TypeOfEffect=CMMsg.TYP_WATER;
-						WeaponType=Weapon.TYPE_SLASHING;
-						this.EQadjCharStats.setStat(CharStats.STAT_SAVE_WATER,PowerLevel*5);
-					}else
-						if(type.equalsIgnoreCase("GAS"))
-						{
-							TypeOfEffect=CMMsg.TYP_GAS;
-							WeaponType=Weapon.TYPE_GASSING;
-							this.EQadjCharStats.setStat(CharStats.STAT_SAVE_GAS,PowerLevel*5);
-						}else
-							if(type.equalsIgnoreCase("MIND"))
-							{
-								TypeOfEffect=CMMsg.TYP_MIND;
-								WeaponType=Weapon.TYPE_STRIKING;
-								this.EQadjCharStats.setStat(CharStats.STAT_SAVE_MIND,PowerLevel*5);
-							}else
-								if(type.equalsIgnoreCase("ACID"))
-								{
-									TypeOfEffect=CMMsg.TYP_ACID;
-									WeaponType=Weapon.TYPE_MELTING;
-									this.EQadjCharStats.setStat(CharStats.STAT_SAVE_ACID,PowerLevel*5);
-								}else
-									if(type.equalsIgnoreCase("ELECTRIC"))
-									{
-										TypeOfEffect=CMMsg.TYP_ELECTRIC;
-										WeaponType=Weapon.TYPE_BURNING;
-										this.EQadjCharStats.setStat(CharStats.STAT_SAVE_ELECTRIC,PowerLevel*5);
-									}else
-										if(type.equalsIgnoreCase("POISON"))
-										{
-											TypeOfEffect=CMMsg.TYP_POISON;
-											WeaponType=Weapon.TYPE_STRIKING;
-											this.EQadjCharStats.setStat(CharStats.STAT_SAVE_POISON,PowerLevel*5);
-										}else
-											if(type.equalsIgnoreCase("DISEASE"))
-											{
-												TypeOfEffect=CMMsg.TYP_DISEASE;
-												WeaponType=Weapon.TYPE_STRIKING;
-												this.EQadjCharStats.setStat(CharStats.STAT_SAVE_DISEASE,PowerLevel*5);
-											}else
-												if(type.equalsIgnoreCase("HEALTH"))
-												{
-													TypeOfEffect=1001;
-													WeaponType=Weapon.TYPE_BURSTING;
-												}else
-													if(type.equalsIgnoreCase("MAGIC"))
-													{
-														TypeOfEffect=1002;
-														WeaponType=Weapon.TYPE_BURSTING;
-													}else
-														if(type.equalsIgnoreCase("SPEED"))
-														{
-															TypeOfEffect=1003;
-														}
+		}
+		else
+		if(type.equalsIgnoreCase("FIRE"))
+		{
+			TypeOfEffect=CMMsg.TYP_FIRE;
+			WeaponType=Weapon.TYPE_BURNING;
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_FIRE,PowerLevel*5);
+		}
+		else
+		if(type.equalsIgnoreCase("COLD"))
+		{
+			TypeOfEffect=CMMsg.TYP_COLD;
+			WeaponType=Weapon.TYPE_FROSTING;
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_COLD,PowerLevel*5);
+		}
+		else
+		if(type.equalsIgnoreCase("WATER"))
+		{
+			TypeOfEffect=CMMsg.TYP_WATER;
+			WeaponType=Weapon.TYPE_SLASHING;
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_WATER,PowerLevel*5);
+		}
+		else
+		if(type.equalsIgnoreCase("GAS"))
+		{
+			TypeOfEffect=CMMsg.TYP_GAS;
+			WeaponType=Weapon.TYPE_GASSING;
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_GAS,PowerLevel*5);
+		}
+		else
+		if(type.equalsIgnoreCase("MIND"))
+		{
+			TypeOfEffect=CMMsg.TYP_MIND;
+			WeaponType=Weapon.TYPE_STRIKING;
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_MIND,PowerLevel*5);
+		}
+		else
+		if(type.equalsIgnoreCase("ACID"))
+		{
+			TypeOfEffect=CMMsg.TYP_ACID;
+			WeaponType=Weapon.TYPE_MELTING;
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_ACID,PowerLevel*5);
+		}
+		else
+		if(type.equalsIgnoreCase("ELECTRIC"))
+		{
+			TypeOfEffect=CMMsg.TYP_ELECTRIC;
+			WeaponType=Weapon.TYPE_BURNING;
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_ELECTRIC,PowerLevel*5);
+		}
+		else
+		if(type.equalsIgnoreCase("POISON"))
+		{
+			TypeOfEffect=CMMsg.TYP_POISON;
+			WeaponType=Weapon.TYPE_STRIKING;
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_POISON,PowerLevel*5);
+		}
+		else
+		if(type.equalsIgnoreCase("DISEASE"))
+		{
+			TypeOfEffect=CMMsg.TYP_DISEASE;
+			WeaponType=Weapon.TYPE_STRIKING;
+			this.EQadjCharStats.setStat(CharStats.STAT_SAVE_DISEASE,PowerLevel*5);
+		}
+		else
+		if(type.equalsIgnoreCase("HEALTH"))
+		{
+			TypeOfEffect=1001;
+			WeaponType=Weapon.TYPE_BURSTING;
+		}
+		else
+		if(type.equalsIgnoreCase("MAGIC"))
+		{
+			TypeOfEffect=1002;
+			WeaponType=Weapon.TYPE_BURSTING;
+		}
+		else
+		if(type.equalsIgnoreCase("SPEED"))
+		{
+			TypeOfEffect=1003;
+		}
 	}
 
 	public boolean useAsWand(MOB mob, int level)
@@ -271,7 +289,8 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 				if((wandUse==null)||(!wandUse.proficiencyCheck(mob,0,false)))
 				{
 					mob.tell(L("@x1 glows faintly for a moment, then fades.",me.name()));
-				}else
+				}
+				else
 				{
 					wandUse.setInvoker(mob);
 					if(useAsWand(mob,wandUse.abilityCode()))
@@ -361,9 +380,10 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		if((mob!=null)&&(msg.amITarget(mob))&&(affected instanceof Shield)&&(!((Shield)affected).amWearingAt(Wearable.IN_INVENTORY))
 		&&(TypeOfEffect<1000)&&(!msg.amISource(mob)))
 		{
-			if((CMLib.dice().rollPercentage()>32+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))&&(msg.source().rangeToTarget()==0)
-					&&((lastMessage==null)||(lastMessage.indexOf("The magic around")<0))
-					&&((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOVE))))
+			if((CMLib.dice().rollPercentage()>32+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))
+			&&(msg.source().rangeToTarget()==0)
+			&&((lastMessage==null)||(lastMessage.indexOf("The magic around")<0))
+			&&((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOVE))))
 			{
 				final CMMsg msg2=CMClass.getMsg(mob,source,this,CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,null);
 				if((source!=null)&&(source.location().okMessage(source,msg2)))
@@ -385,6 +405,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		 * *************************
 		 */
 		if(affected instanceof Wand)
+		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_WAND_USE:
@@ -397,9 +418,14 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 					boolean alreadyWanding=false;
 					final List<CMMsg> trailers =msg.trailerMsgs();
 					if(trailers!=null)
+					{
 						for(final CMMsg msg2 : trailers)
-							if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+						{
+							if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+							&&(msg2.target() == this))
 								alreadyWanding=true;
+						}
+					}
 					final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
 					if((!alreadyWanding)
 					&&(said != null)
@@ -410,5 +436,6 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 			default:
 				break;
 			}
+		}
 	}
 }
