@@ -2926,7 +2926,11 @@ public class CMClass extends ClassLoader
 	 * @return the CMMsg Object
 	 */
 	public static final CMMsg getMsg(final MOB source, final int newAllCode, final String allMessage)
-	{ final CMMsg M=getMsg(); M.modify(source,newAllCode,allMessage); return M;}
+	{
+		final CMMsg M = getMsg();
+		M.modify(source, newAllCode, allMessage);
+		return M;
+	}
 	
 	/**
 	 * Creates and configures a CMMsg object for use in the game
@@ -2941,7 +2945,11 @@ public class CMClass extends ClassLoader
 	 * @return the CMMsg Object
 	 */
 	public static final CMMsg getMsg(final MOB source, final int newAllCode, final String allMessage, final int newValue)
-	{ final CMMsg M=getMsg(); M.modify(source,newAllCode,allMessage,newValue); return M;}
+	{
+		final CMMsg M = getMsg();
+		M.modify(source, newAllCode, allMessage, newValue);
+		return M;
+	}
 
 	/**
 	 * Creates and configures a CMMsg object for use in the game
@@ -2956,7 +2964,12 @@ public class CMClass extends ClassLoader
 	 * @return the CMMsg Object
 	 */
 	public static final CMMsg getMsg(final MOB source, final Environmental target, final int newAllCode, final String allMessage)
-	{ final CMMsg M=getMsg(); M.modify(source,target,newAllCode,allMessage); return M;}
+	{
+		final CMMsg M = getMsg();
+		M.modify(source, target, newAllCode, allMessage);
+		return M;
+	}
+
 	/**
 	 * Creates and configures a CMMsg object for use in the game
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -2972,7 +2985,12 @@ public class CMClass extends ClassLoader
 	 * @return the CMMsg Object
 	 */
 	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newAllCode, final String allMessage)
-	{ final CMMsg M=getMsg(); M.modify(source,target,tool,newAllCode,allMessage); return M;}
+	{
+		final CMMsg M = getMsg();
+		M.modify(source, target, tool, newAllCode, allMessage);
+		return M;
+	}
+
 	/**
 	 * Creates and configures a CMMsg object for use in the game
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -2993,7 +3011,12 @@ public class CMClass extends ClassLoader
 	 */
 	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final int newTargetCode,
 									 final int newOthersCode, final String allMessage)
-	{ final CMMsg M=getMsg(); M.modify(source,target,tool,newSourceCode,newTargetCode,newOthersCode,allMessage); return M;}
+	{
+		final CMMsg M = getMsg();
+		M.modify(source, target, tool, newSourceCode, newTargetCode, newOthersCode, allMessage);
+		return M;
+	}
+
 	/**
 	 * Creates and configures a CMMsg object for use in the game
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -3014,7 +3037,12 @@ public class CMClass extends ClassLoader
 	 */
 	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newAllCode, final String sourceMessage,
 									 final String targetMessage, final String othersMessage)
-	{ final CMMsg M=getMsg(); M.modify(source,target,tool,newAllCode,sourceMessage,newAllCode,targetMessage,newAllCode,othersMessage); return M;}
+	{
+		final CMMsg M = getMsg();
+		M.modify(source, target, tool, newAllCode, sourceMessage, newAllCode, targetMessage, newAllCode, othersMessage);
+		return M;
+	}
+
 	/**
 	 * Creates and configures a CMMsg object for use in the game
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -3039,7 +3067,11 @@ public class CMClass extends ClassLoader
 	 */
 	public static final CMMsg getMsg(final MOB source, final Environmental target, final Environmental tool, final int newSourceCode, final String sourceMessage,
 									 final int newTargetCode, final String targetMessage, final int newOthersCode, final String othersMessage)
-	{ final CMMsg M=getMsg(); M.modify(source,target,tool,newSourceCode,sourceMessage,newTargetCode,targetMessage,newOthersCode,othersMessage); return M;}
+	{
+		final CMMsg M = getMsg();
+		M.modify(source, target, tool, newSourceCode, sourceMessage, newTargetCode, targetMessage, newOthersCode, othersMessage);
+		return M;
+	}
 
 	/**
 	 * Factory mob objects are normally re-used, and this method is the recycle bin.
