@@ -35,15 +35,43 @@ import java.util.*;
 
 public class Butchering extends GatheringSkill
 {
-	@Override public String ID() { return "Butchering"; }
-	private final static String localizedName = CMLib.lang().L("Butchering");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"BUTCHER","BUTCHERING","SKIN"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "Butchering";
+	}
 
-	@Override public String supportedResourceString(){return "FLESH|LEATHER|BLOOD|BONE|MILK|EGGS|WOOL";}
-	protected DeadBody body=null;
-	protected boolean failed=false;
+	private final static String	localizedName	= CMLib.lang().L("Butchering");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "BUTCHER", "BUTCHERING", "SKIN" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_GATHERINGSKILL;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "FLESH|LEATHER|BLOOD|BONE|MILK|EGGS|WOOL";
+	}
+
+	protected DeadBody	body	= null;
+	protected boolean	failed	= false;
+	
 	public Butchering()
 	{
 		super();
@@ -59,7 +87,12 @@ public class Butchering extends GatheringSkill
 			duration=40;
 		return duration;
 	}
-	@Override protected int baseYield() { return 1; }
+
+	@Override
+	protected int baseYield()
+	{
+		return 1;
+	}
 
 	@Override
 	public void unInvoke()
@@ -128,7 +161,6 @@ public class Butchering extends GatheringSkill
 				return super.bundle(mob,commands);
 			return false;
 		}
-
 
 		if((mob.isMonster()
 		&&(!CMLib.flags().isAnimalIntelligence(mob)))
