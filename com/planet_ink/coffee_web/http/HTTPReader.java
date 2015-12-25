@@ -220,11 +220,8 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 			final long idleDiffTime = isRunning.get() ? 0 : (currentTime - idleTime);
 			if(idleDiffTime > config.getRequestMaxIdleMs())
 			{
-				if(idleDiffTime > config.getRequestMaxIdleMs())
-				{
-					if (isDebugging) config.getLogger().finest("Idle Timed out: "+this.getName()+" "+idleDiffTime +">"+ config.getRequestMaxIdleMs());
-					return true;
-				}
+				if (isDebugging) config.getLogger().finest("Idle Timed out: "+this.getName()+" "+idleDiffTime +">"+ config.getRequestMaxIdleMs());
+				return true;
 			}
 		}
 		if((!chan.isOpen()) || (!chan.isConnected()) || (!chan.isRegistered()))
