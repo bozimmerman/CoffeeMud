@@ -35,9 +35,17 @@ import java.util.*;
 */
 public class Horse extends Equine
 {
-	@Override public String ID(){	return "Horse"; }
-	@Override public String name(){ return "Horse"; }
+	@Override
+	public String ID()
+	{
+		return "Horse";
+	}
 
+	@Override
+	public String name()
+	{
+		return "Horse";
+	}
 
 	@Override
 	public String makeMobName(char gender, int age)
@@ -51,27 +59,42 @@ public class Horse extends Equine
 			case Race.AGE_YOUNGADULT:
 				switch(gender)
 				{
-				case 'M': case 'm': return "colt";
-				case 'F': case 'f': return "filly";
-				default: return "young "+name().toLowerCase();
+				case 'M':
+				case 'm':
+					return "colt";
+				case 'F':
+				case 'f':
+					return "filly";
+				default:
+					return "young " + name().toLowerCase();
 				}
 			case Race.AGE_MATURE:
 			case Race.AGE_MIDDLEAGED:
 			default:
 				switch(gender)
 				{
-				case 'M': case 'm': return "stud";
-				case 'F': case 'f': return "stallion";
-				default: return name().toLowerCase();
+				case 'M':
+				case 'm':
+					return "stud";
+				case 'F':
+				case 'f':
+					return "stallion";
+				default:
+					return name().toLowerCase();
 				}
 			case Race.AGE_OLD:
 			case Race.AGE_VENERABLE:
 			case Race.AGE_ANCIENT:
 				switch(gender)
 				{
-				case 'M': case 'm': return "old male "+name().toLowerCase();
-				case 'F': case 'f': return "old female "+name().toLowerCase();
-				default: return "old "+name().toLowerCase();
+				case 'M':
+				case 'm':
+					return "old male " + name().toLowerCase();
+				case 'F':
+				case 'f':
+					return "old female " + name().toLowerCase();
+				default:
+					return "old " + name().toLowerCase();
 				}
 		}
 	}

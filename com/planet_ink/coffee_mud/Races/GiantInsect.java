@@ -35,25 +35,84 @@ import java.util.*;
 */
 public class GiantInsect extends StdRace
 {
-	@Override public String ID(){	return "GiantInsect"; }
-	@Override public String name(){ return "Giant Insect"; }
-	@Override public int shortestMale(){return 35;}
-	@Override public int shortestFemale(){return 29;}
-	@Override public int heightVariance(){return 5;}
-	@Override public int lightestWeight(){return 120;}
-	@Override public int weightVariance(){return 30;}
-	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	@Override public String racialCategory(){return "Insect";}
+	@Override
+	public String ID()
+	{
+		return "GiantInsect";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Giant Insect";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 35;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 29;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 5;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 120;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 30;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Insect";
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,0 ,0 ,1 ,0 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,2,3,4,5,6,7,8};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -61,22 +120,26 @@ public class GiantInsect extends StdRace
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "creeps in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "creeps";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -90,6 +153,7 @@ public class GiantInsect extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -103,6 +167,7 @@ public class GiantInsect extends StdRace
 		}
 		return resources;
 	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{

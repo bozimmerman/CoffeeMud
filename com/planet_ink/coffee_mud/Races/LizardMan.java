@@ -35,26 +35,91 @@ import java.util.*;
 */
 public class LizardMan extends StdRace
 {
-	@Override public String ID(){	return "LizardMan"; }
-	@Override public String name(){ return "Lizard Man"; }
-	@Override public int shortestMale(){return 72;}
-	@Override public int shortestFemale(){return 66;}
-	@Override public int heightVariance(){return 3;}
-	@Override public int lightestWeight(){return 200;}
-	@Override public int weightVariance(){return 50;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Lizard Man";}
-	private final String[]culturalAbilityNames={"Draconic"};
-	private final int[]culturalAbilityProficiencies={75};
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override
+	public String ID()
+	{
+		return "LizardMan";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Lizard Man";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 72;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 66;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 3;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 200;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 50;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Lizard Man";
+	}
+
+	private final String[]	culturalAbilityNames			= { "Draconic" };
+	private final int[]		culturalAbilityProficiencies	= { 75 };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,3,14,30,45,60,62,64};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	private final int[]	agingChart	= { 0, 1, 3, 14, 30, 45, 60, 62, 64 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
@@ -64,16 +129,19 @@ public class LizardMan extends StdRace
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,6);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "ambles in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "runs";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -87,6 +155,7 @@ public class LizardMan extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -124,6 +193,7 @@ public class LizardMan extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

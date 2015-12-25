@@ -35,31 +35,106 @@ import java.util.*;
 */
 public class GreatFish extends GiantFish
 {
-	@Override public String ID(){	return "GreatFish"; }
-	@Override public String name(){ return "Great Fish"; }
-	@Override public int shortestMale(){return 30;}
-	@Override public int shortestFemale(){return 35;}
-	@Override public int heightVariance(){return 10;}
-	@Override public int lightestWeight(){return 55;}
-	@Override public int weightVariance(){return 15;}
-	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
-	@Override public String racialCategory(){return "Amphibian";}
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	private final String[]racialAbilityNames={"Skill_Swim"};
-	private final int[]racialAbilityLevels={1};
-	private final int[]racialAbilityProficiencies={100};
-	private final boolean[]racialAbilityQuals={false};
-	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override
+	public String ID()
+	{
+		return "GreatFish";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Great Fish";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 30;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 35;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 10;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 55;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 15;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return ~(Wearable.WORN_EYES);
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Amphibian";
+	}
+
+	protected static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();
+	private final String[]					racialAbilityNames			= { "Skill_Swim" };
+	private final int[]						racialAbilityLevels			= { 1 };
+	private final int[]						racialAbilityProficiencies	= { 100 };
+	private final boolean[]					racialAbilityQuals			= { false };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,2,3,4,5,6,7,8};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	private final int[]	agingChart	= { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -68,16 +143,19 @@ public class GreatFish extends GiantFish
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "swims in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "swims";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -99,11 +177,15 @@ public class GreatFish extends GiantFish
 			if(resources.size()==0)
 			{
 				for(int i=0;i<8;i++)
-				resources.addElement(makeResource
-				("some "+name().toLowerCase(),RawMaterial.RESOURCE_FISH));
+				{
+					resources.addElement(makeResource
+					("some "+name().toLowerCase(),RawMaterial.RESOURCE_FISH));
+				}
 				for(int i=0;i<5;i++)
-				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" scaly hide",RawMaterial.RESOURCE_SCALES));
+				{
+					resources.addElement(makeResource
+					("a "+name().toLowerCase()+" scaly hide",RawMaterial.RESOURCE_SCALES));
+				}
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}

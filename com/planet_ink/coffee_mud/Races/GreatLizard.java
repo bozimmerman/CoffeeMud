@@ -35,25 +35,84 @@ import java.util.*;
 */
 public class GreatLizard extends StdRace
 {
-	@Override public String ID(){	return "GreatLizard"; }
-	@Override public String name(){ return "Great Lizard"; }
-	@Override public int shortestMale(){return 20;}
-	@Override public int shortestFemale(){return 20;}
-	@Override public int heightVariance(){return 5;}
-	@Override public int lightestWeight(){return 250;}
-	@Override public int weightVariance(){return 50;}
-	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
-	@Override public String racialCategory(){return "Reptile";}
+	@Override
+	public String ID()
+	{
+		return "GreatLizard";
+	}
 
-	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-	@Override public int[] bodyMask(){return parts;}
+	@Override
+	public String name()
+	{
+		return "Great Lizard";
+	}
 
-	private final int[] agingChart={0,2,4,8,14,30,40,41,42};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int shortestMale()
+	{
+		return 20;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
+	public int shortestFemale()
+	{
+		return 20;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 5;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 250;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 50;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return ~(Wearable.WORN_EYES);
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Reptile";
+	}
+
+	//                                     an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[]	parts	= { 0, 2, 0, 1, 1, 0, 0, 1, 4, 4, 1, 0, 1, 1, 1, 0 };
+
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	private final int[]	agingChart	= { 0, 2, 4, 8, 14, 30, 40, 41, 42 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

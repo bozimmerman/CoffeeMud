@@ -34,29 +34,99 @@ import java.util.*;
 */
 public class HalfElf extends StdRace
 {
-	@Override public String ID(){	return "HalfElf"; }
-	@Override public String name(){ return "Half Elf"; }
-	@Override public int shortestMale(){return 64;}
-	@Override public int shortestFemale(){return 59;}
-	@Override public int heightVariance(){return 12;}
-	@Override public int lightestWeight(){return 90;}
-	@Override public int weightVariance(){return 90;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Elf";}
-	private final String[]culturalAbilityNames={"Elvish","Fishing"};
-	private final int[]culturalAbilityProficiencies={50,50};
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override
+	public String ID()
+	{
+		return "HalfElf";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Half Elf";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 64;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 59;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 90;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 90;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Elf";
+	}
+
+	private final String[]	culturalAbilityNames			= { "Elvish", "Fishing" };
+	private final int[]		culturalAbilityProficiencies	= { 50, 50 };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,4,20,62,93,125,131,137};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	private final int[]	agingChart	= { 0, 1, 4, 20, 62, 93, 125, 131, 137 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -64,6 +134,7 @@ public class HalfElf extends StdRace
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -71,6 +142,7 @@ public class HalfElf extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+5);
 		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,affectableStats.getStat(CharStats.STAT_SAVE_JUSTICE)+5);
 	}
+
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{
@@ -91,9 +163,12 @@ public class HalfElf extends StdRace
 		}
 		return outfitChoices;
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
-	{ return funHumanoidWeapon();	}
+	{
+		return funHumanoidWeapon();
+	}
 
 	@Override
 	public String healthText(MOB viewer, MOB mob)
@@ -132,6 +207,7 @@ public class HalfElf extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

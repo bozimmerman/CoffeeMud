@@ -34,29 +34,99 @@ import java.util.*;
 */
 public class Goblin extends StdRace
 {
-	@Override public String ID(){	return "Goblin"; }
-	@Override public String name(){ return "Goblin"; }
-	@Override public int shortestMale(){return 45;}
-	@Override public int shortestFemale(){return 40;}
-	@Override public int heightVariance(){return 6;}
-	@Override public int lightestWeight(){return 70;}
-	@Override public int weightVariance(){return 50;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Goblinoid";}
-	private final String[]culturalAbilityNames={"Goblinese","Orcish","Mining"};
-	private final int[]culturalAbilityProficiencies={100,50,75};
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override
+	public String ID()
+	{
+		return "Goblin";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Goblin";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 45;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 40;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 6;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 70;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 50;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Goblinoid";
+	}
+
+	private final String[]	culturalAbilityNames			= { "Goblinese", "Orcish", "Mining" };
+	private final int[]		culturalAbilityProficiencies	= { 100, 50, 75 };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,2,12,21,34,52,57,63};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	private final int[]	agingChart	= { 0, 1, 2, 12, 21, 34, 52, 57, 63 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -64,6 +134,7 @@ public class Goblin extends StdRace
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -89,6 +160,7 @@ public class Goblin extends StdRace
 			affectableStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,affectableStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)+1);
 		}
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -102,6 +174,7 @@ public class Goblin extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{

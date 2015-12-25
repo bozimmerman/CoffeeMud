@@ -35,25 +35,84 @@ import java.util.*;
 */
 public class GiantLizard extends StdRace
 {
-	@Override public String ID(){	return "GiantLizard"; }
-	@Override public String name(){ return "Giant Lizard"; }
-	@Override public int shortestMale(){return 70;}
-	@Override public int shortestFemale(){return 70;}
-	@Override public int heightVariance(){return 20;}
-	@Override public int lightestWeight(){return 2500;}
-	@Override public int weightVariance(){return 500;}
-	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_EYES);}
-	@Override public String racialCategory(){return "Reptile";}
+	@Override
+	public String ID()
+	{
+		return "GiantLizard";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Giant Lizard";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 70;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 70;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 20;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 2500;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 500;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return ~(Wearable.WORN_EYES);
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Reptile";
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,2,4,8,14,30,40,41,42};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 2, 4, 8, 14, 30, 40, 41, 42 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -63,16 +122,19 @@ public class GiantLizard extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "crawls in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "crawls";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -86,6 +148,7 @@ public class GiantLizard extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -133,11 +196,15 @@ public class GiantLizard extends StdRace
 				resources.addElement(makeResource
 				("a "+name().toLowerCase()+" tongue",RawMaterial.RESOURCE_MEAT));
 				for(int i=0;i<35;i++)
+				{
 					resources.addElement(makeResource
 					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
+				}
 				for(int i=0;i<85;i++)
+				{
 					resources.addElement(makeResource
 					("a "+name().toLowerCase()+" scale",RawMaterial.RESOURCE_SCALES));
+				}
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}

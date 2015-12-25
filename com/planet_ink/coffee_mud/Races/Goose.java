@@ -34,17 +34,46 @@ import java.util.*;
 */
 public class Goose extends WaterFowl
 {
-	@Override public String ID(){	return "Duck"; }
-	@Override public String name(){ return "Duck"; }
+	@Override
+	public String ID()
+	{
+		return "Duck";
+	}
 
-	private final String[]racialAbilityNames=CMParms.combine(super.racialAbilityNames(), new String[]{"GooseSpeak"});
-	private final int[]racialAbilityLevels=CMParms.combine(super.racialAbilityLevels(), new int[]{1});
-	private final int[]racialAbilityProficiencies=CMParms.combine(super.racialAbilityProficiencies(), new int[]{100});
-	private final boolean[]racialAbilityQuals=CMParms.combine(super.racialAbilityQuals(), new boolean[]{false});
-	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override
+	public String name()
+	{
+		return "Duck";
+	}
+
+	private final String[]	racialAbilityNames			= CMParms.combine(super.racialAbilityNames(), new String[] { "GooseSpeak" });
+	private final int[]		racialAbilityLevels			= CMParms.combine(super.racialAbilityLevels(), new int[] { 1 });
+	private final int[]		racialAbilityProficiencies	= CMParms.combine(super.racialAbilityProficiencies(), new int[] { 100 });
+	private final boolean[]	racialAbilityQuals			= CMParms.combine(super.racialAbilityQuals(), new boolean[] { false });
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
 
 	@Override
 	public String makeMobName(char gender, int age)
@@ -61,18 +90,28 @@ public class Goose extends WaterFowl
 			default:
 				switch(gender)
 				{
-				case 'M': case 'm': return "gander";
-				case 'F': case 'f': return "goose";
-				default: return name().toLowerCase();
+				case 'M':
+				case 'm':
+					return "gander";
+				case 'F':
+				case 'f':
+					return "goose";
+				default:
+					return name().toLowerCase();
 				}
 			case Race.AGE_OLD:
 			case Race.AGE_VENERABLE:
 			case Race.AGE_ANCIENT:
 				switch(gender)
 				{
-				case 'M': case 'm': return "old gander";
-				case 'F': case 'f': return "old goose";
-				default: return "old "+name().toLowerCase();
+				case 'M':
+				case 'm':
+					return "old gander";
+				case 'F':
+				case 'f':
+					return "old goose";
+				default:
+					return "old " + name().toLowerCase();
 				}
 		}
 	}

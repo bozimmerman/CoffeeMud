@@ -34,34 +34,113 @@ import java.util.*;
 */
 public class Monkey extends StdRace
 {
-	@Override public String ID(){	return "Monkey"; }
-	@Override public String name(){ return "Monkey"; }
-	@Override public int shortestMale(){return 18;}
-	@Override public int shortestFemale(){return 18;}
-	@Override public int heightVariance(){return 6;}
-	@Override public int lightestWeight(){return 50;}
-	@Override public int weightVariance(){return 60;}
-	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_HELD|Wearable.WORN_WIELD|Wearable.WORN_EARS|Wearable.WORN_EYES);}
-	@Override public String racialCategory(){return "Primate";}
+	@Override
+	public String ID()
+	{
+		return "Monkey";
+	}
 
-	private final String[]racialAbilityNames={"MonkeySpeak"};
-	private final int[]racialAbilityLevels={1};
-	private final int[]racialAbilityProficiencies={100};
-	private final boolean[]racialAbilityQuals={false};
-	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override
+	public String name()
+	{
+		return "Monkey";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 18;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 18;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 6;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 50;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 60;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return ~(Wearable.WORN_HEAD | Wearable.WORN_FEET | Wearable.WORN_NECK | Wearable.WORN_HELD | Wearable.WORN_WIELD | Wearable.WORN_EARS | Wearable.WORN_EYES);
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Primate";
+	}
+
+	private final String[]	racialAbilityNames			= { "MonkeySpeak" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,2,4,7,15,20,21,22};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 1, 2, 4, 7, 15, 20, 21, 22 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -71,9 +150,13 @@ public class Monkey extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
-	{ return funHumanoidWeapon();	}
+	{
+		return funHumanoidWeapon();
+	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{

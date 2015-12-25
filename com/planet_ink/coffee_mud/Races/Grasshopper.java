@@ -35,25 +35,84 @@ import java.util.*;
 */
 public class Grasshopper extends StdRace
 {
-	@Override public String ID(){	return "Grasshopper"; }
-	@Override public String name(){ return "Grasshopper"; }
-	@Override public int shortestMale(){return 1;}
-	@Override public int shortestFemale(){return 1;}
-	@Override public int heightVariance(){return 0;}
-	@Override public int lightestWeight(){return 1;}
-	@Override public int weightVariance(){return 0;}
-	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_TORSO|Wearable.WORN_EYES);}
-	@Override public String racialCategory(){return "Insect";}
+	@Override
+	public String ID()
+	{
+		return "Grasshopper";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Grasshopper";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 1;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 1;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 0;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 1;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 0;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return ~(Wearable.WORN_TORSO | Wearable.WORN_EYES);
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Insect";
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,0 ,0 ,1 ,0 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,0,0,1,1,1,1,2,2};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 0, 0, 1, 1, 1, 1, 2, 2 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -62,6 +121,7 @@ public class Grasshopper extends StdRace
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -70,16 +130,19 @@ public class Grasshopper extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "hops in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "hops";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -93,6 +156,7 @@ public class Grasshopper extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -106,6 +170,7 @@ public class Grasshopper extends StdRace
 		}
 		return resources;
 	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{

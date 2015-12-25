@@ -35,8 +35,17 @@ import java.util.Vector;
 */
 public class Lich extends Skeleton
 {
-	@Override public String ID(){	return "Lich"; }
-	@Override public String name(){ return "Lich"; }
+	@Override
+	public String ID()
+	{
+		return "Lich";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Lich";
+	}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
@@ -47,6 +56,7 @@ public class Lich extends Skeleton
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-4);
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+6);
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

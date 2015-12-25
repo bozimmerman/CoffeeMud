@@ -35,29 +35,90 @@ import java.util.*;
 */
 public class Humanoid extends StdRace
 {
-	@Override public String ID(){	return "Humanoid"; }
-	@Override public String name(){ return "Humanoid"; }
-	@Override public int shortestMale(){return 64;}
-	@Override public int shortestFemale(){return 59;}
-	@Override public int heightVariance(){return 12;}
-	@Override public int lightestWeight(){return 90;}
-	@Override public int weightVariance(){return 90;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Humanoid";}
+	@Override
+	public String ID()
+	{
+		return "Humanoid";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Humanoid";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 64;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 59;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 90;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 90;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Humanoid";
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,3,15,35,53,70,74,78};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 1, 3, 15, 35, 53, 70, 74, 78 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public Weapon myNaturalWeapon()
-	{ return funHumanoidWeapon();	}
+	{
+		return funHumanoidWeapon();
+	}
 
 	@Override
 	public String healthText(MOB viewer, MOB mob)
@@ -96,6 +157,7 @@ public class Humanoid extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

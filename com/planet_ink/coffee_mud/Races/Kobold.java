@@ -35,29 +35,99 @@ import java.util.*;
 */
 public class Kobold extends StdRace
 {
-	@Override public String ID(){	return "Kobold"; }
-	@Override public String name(){ return "Kobold"; }
-	@Override public int shortestMale(){return 45;}
-	@Override public int shortestFemale(){return 40;}
-	@Override public int heightVariance(){return 6;}
-	@Override public int lightestWeight(){return 50;}
-	@Override public int weightVariance(){return 50;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Reptile";}
-	private final String[]culturalAbilityNames={"Draconic"};
-	private final int[]culturalAbilityProficiencies={75};
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override
+	public String ID()
+	{
+		return "Kobold";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Kobold";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 45;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 40;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 6;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 50;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 50;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Reptile";
+	}
+
+	private final String[]	culturalAbilityNames			= { "Draconic" };
+	private final int[]		culturalAbilityProficiencies	= { 75 };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,2,12,20,30,45,47,49};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 1, 2, 12, 20, 30, 45, 47, 49 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -65,6 +135,7 @@ public class Kobold extends StdRace
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -73,19 +144,25 @@ public class Kobold extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,10);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "creeps in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "creeps";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
-	{ return funHumanoidWeapon();	}
+	{
+		return funHumanoidWeapon();
+	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -123,6 +200,7 @@ public class Kobold extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -133,8 +211,10 @@ public class Kobold extends StdRace
 				resources.addElement(makeResource
 				("some nobby "+name().toLowerCase()+" horns",RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<2;i++)
+				{
 					resources.addElement(makeResource
 					("some "+name().toLowerCase()+" scales",RawMaterial.RESOURCE_SCALES));
+				}
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource

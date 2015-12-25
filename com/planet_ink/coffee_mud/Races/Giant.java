@@ -35,25 +35,84 @@ import java.util.*;
 */
 public class Giant extends StdRace
 {
-	@Override public String ID(){	return "Giant"; }
-	@Override public String name(){ return "Giant"; }
-	@Override public int shortestMale(){return 84;}
-	@Override public int shortestFemale(){return 80;}
-	@Override public int heightVariance(){return 24;}
-	@Override public int lightestWeight(){return 300;}
-	@Override public int weightVariance(){return 200;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Giant-kin";}
+	@Override
+	public String ID()
+	{
+		return "Giant";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Giant";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 84;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 80;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 24;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 300;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 200;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Giant-kin";
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,5,40,125,188,250,270,290};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 1, 5, 40, 125, 188, 250, 270, 290 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -63,16 +122,19 @@ public class Giant extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,7);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,7);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "thunders in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "storms";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -124,6 +186,7 @@ public class Giant extends StdRace
 		else
 			return L("^c@x1^c is in towering health^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

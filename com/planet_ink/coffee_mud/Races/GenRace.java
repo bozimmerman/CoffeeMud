@@ -39,66 +39,161 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 public class GenRace extends StdRace
 {
-	protected String ID="GenRace";
-	protected String name="GenRace";
-	public int availability=0;
-	public int[] agingChart=null;
-	protected String[] xtraValues=null;
-	public boolean isRideable=false;
-	public int shortestMale=24;
-	public int shortestFemale=24;
-	public int heightVariance=5;
-	public int lightestWeight=60;
-	public int weightVariance=10;
-	public long forbiddenWornBits=0;
-	public String racialCategory="Unknown";
-	protected int disableFlags=0;
-	protected CharStats setStats=null;
-	protected CharStats adjStats=null;
-	protected PhyStats adjPStats=null;
-	protected CharState adjState=null;
-	protected CharState startAdjState=null;
-	protected Vector<RawMaterial> resourceChoices=null;
-	protected Race healthBuddy=null;
-	protected Race eventBuddy=null;
-	protected Race weaponBuddy=null;
-	protected String helpEntry = "";
-	protected String[] racialEffectNames=null;
-	protected int[] racialEffectLevels=null;
-	protected String[] racialEffectParms=null;
-	protected String[] racialAbilityNames=null;
-	protected int[] racialAbilityLevels=null;
-	protected int[] racialAbilityProficiencies=null;
-	protected boolean[] racialAbilityQuals=null;
-	protected String[] culturalAbilityNames=null;
-	protected int[] culturalAbilityProficiencies=null;
-	protected int[] sortedBreathables=new int[]{RawMaterial.RESOURCE_AIR};
-	protected boolean destroyBodyAfterUse=false;
-	protected String arriveStr="arrives";
-	protected String leaveStr="leaves";
+	protected String				ID								= "GenRace";
+	protected String				name							= "GenRace";
+	public int						availability					= 0;
+	public int[]					agingChart						= null;
+	protected String[]				xtraValues						= null;
+	public boolean					isRideable						= false;
+	public int						shortestMale					= 24;
+	public int						shortestFemale					= 24;
+	public int						heightVariance					= 5;
+	public int						lightestWeight					= 60;
+	public int						weightVariance					= 10;
+	public long						forbiddenWornBits				= 0;
+	public String					racialCategory					= "Unknown";
+	protected int					disableFlags					= 0;
+	protected CharStats				setStats						= null;
+	protected CharStats				adjStats						= null;
+	protected PhyStats				adjPStats						= null;
+	protected CharState				adjState						= null;
+	protected CharState				startAdjState					= null;
+	protected Vector<RawMaterial>	resourceChoices					= null;
+	protected Race					healthBuddy						= null;
+	protected Race					eventBuddy						= null;
+	protected Race					weaponBuddy						= null;
+	protected String				helpEntry						= "";
+	protected String[]				racialEffectNames				= null;
+	protected int[]					racialEffectLevels				= null;
+	protected String[]				racialEffectParms				= null;
+	protected String[]				racialAbilityNames				= null;
+	protected int[]					racialAbilityLevels				= null;
+	protected int[]					racialAbilityProficiencies		= null;
+	protected boolean[]				racialAbilityQuals				= null;
+	protected String[]				culturalAbilityNames			= null;
+	protected int[]					culturalAbilityProficiencies	= null;
+	protected int[]					sortedBreathables				= new int[] { RawMaterial.RESOURCE_AIR };
+	protected boolean				destroyBodyAfterUse				= false;
+	protected String				arriveStr						= "arrives";
+	protected String				leaveStr						= "leaves";
 
 	//  				   an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	protected int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 
-	@Override public String ID(){	return ID; }
-	@Override public String name(){ return name; }
-	@Override public int practicesAtFirstLevel(){return 0;}
-	@Override public int trainsAtFirstLevel(){return 0;}
-	@Override public long forbiddenWornBits(){return forbiddenWornBits;}
-	@Override public String racialCategory(){return racialCategory;}
-	@Override public boolean isGeneric(){return true;}
-	@Override public int shortestFemale(){return shortestFemale;}
-	@Override public int heightVariance(){return heightVariance;}
-	@Override public int lightestWeight(){return lightestWeight;}
-	@Override public int weightVariance(){return weightVariance;}
-	@Override public int shortestMale(){return shortestMale;}
-	@Override public boolean classless(){return (disableFlags&Race.GENFLAG_NOCLASS)==Race.GENFLAG_NOCLASS;}
-	@Override public boolean leveless(){return (disableFlags&Race.GENFLAG_NOLEVELS)==Race.GENFLAG_NOLEVELS;}
-	@Override public boolean expless(){return (disableFlags&Race.GENFLAG_NOEXP)==Race.GENFLAG_NOEXP;}
-	@Override public boolean fertile(){return !((disableFlags&Race.GENFLAG_NOFERTILE)==Race.GENFLAG_NOFERTILE);}
-	@Override protected boolean uncharmable(){return ((disableFlags&Race.GENFLAG_NOCHARM)==Race.GENFLAG_NOCHARM);}
-	@Override public int[] bodyMask(){return parts;}
-	@Override public int availabilityCode(){return availability;}
+	@Override
+	public String ID()
+	{
+		return ID;
+	}
+
+	@Override
+	public String name()
+	{
+		return name;
+	}
+
+	@Override
+	public int practicesAtFirstLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public int trainsAtFirstLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return forbiddenWornBits;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return racialCategory;
+	}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return shortestFemale;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return heightVariance;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return lightestWeight;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return weightVariance;
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return shortestMale;
+	}
+
+	@Override
+	public boolean classless()
+	{
+		return (disableFlags & Race.GENFLAG_NOCLASS) == Race.GENFLAG_NOCLASS;
+	}
+
+	@Override
+	public boolean leveless()
+	{
+		return (disableFlags & Race.GENFLAG_NOLEVELS) == Race.GENFLAG_NOLEVELS;
+	}
+
+	@Override
+	public boolean expless()
+	{
+		return (disableFlags & Race.GENFLAG_NOEXP) == Race.GENFLAG_NOEXP;
+	}
+
+	@Override
+	public boolean fertile()
+	{
+		return !((disableFlags & Race.GENFLAG_NOFERTILE) == Race.GENFLAG_NOFERTILE);
+	}
+
+	@Override
+	protected boolean uncharmable()
+	{
+		return ((disableFlags & Race.GENFLAG_NOCHARM) == Race.GENFLAG_NOCHARM);
+	}
+
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return availability;
+	}
+
 	@Override
 	public int[] getAgingChart()
 	{
@@ -107,19 +202,77 @@ public class GenRace extends StdRace
 		return agingChart;
 	}
 
-	@Override protected String[] racialEffectNames(){return racialEffectNames;}
-	@Override protected int[] racialEffectLevels(){return racialEffectLevels;}
-	@Override protected String[] racialEffectParms(){return racialEffectParms;}
-	@Override public int[] getBreathables() { return sortedBreathables; }
-	@Override public boolean useRideClass() { return isRideable; }
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
 
-	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
-	@Override protected boolean destroyBodyAfterUse(){return destroyBodyAfterUse;}
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
+	@Override
+	public int[] getBreathables()
+	{
+		return sortedBreathables;
+	}
+
+	@Override
+	public boolean useRideClass()
+	{
+		return isRideable;
+	}
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean destroyBodyAfterUse()
+	{
+		return destroyBodyAfterUse;
+	}
 
 	public GenRace()
 	{
@@ -127,7 +280,19 @@ public class GenRace extends StdRace
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new GenRace();}}
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new GenRace();
+		}
+	}
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -135,6 +300,7 @@ public class GenRace extends StdRace
 		E.setRacialParms(racialParms());
 		return E;
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -150,12 +316,19 @@ public class GenRace extends StdRace
 	{
 		return arriveStr;
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return leaveStr;
 	}
-	@Override public Race makeGenRace(){return this;}
+
+	@Override
+	public Race makeGenRace()
+	{
+		return this;
+	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -181,17 +354,25 @@ public class GenRace extends StdRace
 			affectableStats.setWeight(affectableStats.weight()+adjPStats.weight());
 		}
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(adjStats!=null)
+		{
 			for(final int i: CharStats.CODES.ALLCODES())
 				affectableStats.setStat(i,affectableStats.getStat(i)+adjStats.getStat(i));
+		}
 		if(setStats!=null)
+		{
 			for(final int i: CharStats.CODES.ALLCODES())
+			{
 				if(setStats.getStat(i)!=0)
 					affectableStats.setRacialStat(i,setStats.getStat(i));
+			}
+		}
 	}
+
 	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
@@ -205,6 +386,7 @@ public class GenRace extends StdRace
 			affectableMaxState.setThirst(affectableMaxState.getThirst()+adjState.getThirst());
 		}
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -366,6 +548,7 @@ public class GenRace extends StdRace
 		str.append("</RACE>");
 		return str.toString();
 	}
+
 	@Override
 	public void setRacialParms(String parms)
 	{
@@ -424,9 +607,15 @@ public class GenRace extends StdRace
 			else
 			switch(CMath.s_int(playerval))
 			{
-			case 0: availability=Area.THEME_FANTASY; break;
-			case 1: availability=Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK; break;
-			case 2: availability=0; break;
+			case 0:
+				availability = Area.THEME_FANTASY;
+				break;
+			case 1:
+				availability = Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+				break;
+			case 2:
+				availability = 0;
+				break;
 			}
 		}
 		final String avail=CMLib.xml().getValFromPieces(raceData,"AVAIL").trim().toUpperCase();
@@ -441,8 +630,10 @@ public class GenRace extends StdRace
 		final String body=CMLib.xml().getValFromPieces(raceData,"BODY");
 		final List<String> V=CMParms.parseSemicolons(body,false);
 		for(int v=0;v<V.size();v++)
+		{
 			if(v<bodyMask().length)
 				bodyMask()[v]=CMath.s_int(V.get(v));
+		}
 		adjPStats=null;
 		final String eStats=CMLib.xml().getValFromPieces(raceData,"ESTATS");
 		if(eStats.length()>0)
@@ -624,6 +815,7 @@ public class GenRace extends StdRace
 									 "DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE", "HELP",
 									 "BREATHES","CANRIDE"
 									 };
+
 	@Override
 	public String getStat(String code)
 	{
@@ -638,63 +830,110 @@ public class GenRace extends StdRace
 		}
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return name();
-		case 2: return racialCategory;
-		case 3: return ""+forbiddenWornBits();
-		case 4: return ""+weightVariance();
-		case 5: return ""+lightestWeight();
-		case 6: return ""+heightVariance();
-		case 7: return ""+shortestFemale();
-		case 8: return ""+shortestMale();
-		case 9: return ""+availabilityCode();
-		case 10: return leaveStr();
-		case 11: return arriveStr();
-		case 12: return getRaceLocatorID(healthBuddy);
+		case 0:
+			return ID();
+		case 1:
+			return name();
+		case 2:
+			return racialCategory;
+		case 3:
+			return "" + forbiddenWornBits();
+		case 4:
+			return "" + weightVariance();
+		case 5:
+			return "" + lightestWeight();
+		case 6:
+			return "" + heightVariance();
+		case 7:
+			return "" + shortestFemale();
+		case 8:
+			return "" + shortestMale();
+		case 9:
+			return "" + availabilityCode();
+		case 10:
+			return leaveStr();
+		case 11:
+			return arriveStr();
+		case 12:
+			return getRaceLocatorID(healthBuddy);
 		case 13:
 		{
-			final StringBuffer bbody=new StringBuffer("");
-			for(int i=0;i<bodyMask().length;i++)
-				bbody.append((""+bodyMask()[i])+";");
+			final StringBuffer bbody = new StringBuffer("");
+			for (int i = 0; i < bodyMask().length; i++)
+				bbody.append(("" + bodyMask()[i]) + ";");
 			return bbody.toString();
 		}
-		case 14: return (adjPStats==null)?"":CMLib.coffeeMaker().getPhyStatsStr(adjPStats);
-		case 15: return (adjStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(adjStats);
-		case 16: return (setStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(setStats);
-		case 17: return (adjState==null)?"":CMLib.coffeeMaker().getCharStateStr(adjState);
-		case 18: return ""+myResources().size();
-		case 19: return ""+((Item)myResources().get(num)).ID();
-		case 20: return ""+((Item)myResources().get(num)).text();
-		case 21: return (naturalWeapon==null)?"":naturalWeapon.ID();
-		case 22: return (naturalWeapon==null)?"":naturalWeapon.text();
-		case 23: return (racialAbilityNames==null)?"0":(""+racialAbilityNames.length);
-		case 24: return (racialAbilityNames==null)?"":(""+racialAbilityNames[num]);
-		case 25: return (racialAbilityProficiencies==null)?"0":(""+racialAbilityProficiencies[num]);
-		case 26: return (racialAbilityQuals==null)?"false":(""+racialAbilityQuals[num]);
-		case 27: return (racialAbilityLevels==null)?"0":(""+racialAbilityLevels[num]);
-		case 28: return (culturalAbilityNames==null)?"0":(""+culturalAbilityNames.length);
-		case 29: return (culturalAbilityNames==null)?"":(""+culturalAbilityNames[num]);
-		case 30: return (culturalAbilityProficiencies==null)?"0":(""+culturalAbilityProficiencies[num]);
-		case 31: return ""+((outfit(null)!=null)?outfit(null).size():0);
-		case 32: return ""+((outfit(null)!=null)?outfit(null).get(num).ID():"");
-		case 33: return ""+((outfit(null)!=null)?outfit(null).get(num).text():"");
-		case 34: return ""+destroyBodyAfterUse();
-		case 35: return (racialEffectNames==null)?"0":(""+racialEffectNames.length);
-		case 36: return (racialEffectNames==null)?"":(""+racialEffectNames[num]);
-		case 37: return (racialEffectParms==null)?"0":(""+racialEffectParms[num]);
-		case 38: return (racialEffectLevels==null)?"0":(""+racialEffectLevels[num]);
-		case 39: return CMParms.toListString(getAgingChart());
-		case 40: return ""+disableFlags;
-		case 41: return (startAdjState==null)?"":CMLib.coffeeMaker().getCharStateStr(startAdjState);
-		case 42: return getRaceLocatorID(eventBuddy);
-		case 43: return getRaceLocatorID(weaponBuddy);
-		case 44: return helpEntry;
-		case 45: return CMParms.toListString(sortedBreathables);
-		case 46: return ""+isRideable;
+		case 14:
+			return (adjPStats == null) ? "" : CMLib.coffeeMaker().getPhyStatsStr(adjPStats);
+		case 15:
+			return (adjStats == null) ? "" : CMLib.coffeeMaker().getCharStatsStr(adjStats);
+		case 16:
+			return (setStats == null) ? "" : CMLib.coffeeMaker().getCharStatsStr(setStats);
+		case 17:
+			return (adjState == null) ? "" : CMLib.coffeeMaker().getCharStateStr(adjState);
+		case 18:
+			return "" + myResources().size();
+		case 19:
+			return "" + ((Item) myResources().get(num)).ID();
+		case 20:
+			return "" + ((Item) myResources().get(num)).text();
+		case 21:
+			return (naturalWeapon == null) ? "" : naturalWeapon.ID();
+		case 22:
+			return (naturalWeapon == null) ? "" : naturalWeapon.text();
+		case 23:
+			return (racialAbilityNames == null) ? "0" : ("" + racialAbilityNames.length);
+		case 24:
+			return (racialAbilityNames == null) ? "" : ("" + racialAbilityNames[num]);
+		case 25:
+			return (racialAbilityProficiencies == null) ? "0" : ("" + racialAbilityProficiencies[num]);
+		case 26:
+			return (racialAbilityQuals == null) ? "false" : ("" + racialAbilityQuals[num]);
+		case 27:
+			return (racialAbilityLevels == null) ? "0" : ("" + racialAbilityLevels[num]);
+		case 28:
+			return (culturalAbilityNames == null) ? "0" : ("" + culturalAbilityNames.length);
+		case 29:
+			return (culturalAbilityNames == null) ? "" : ("" + culturalAbilityNames[num]);
+		case 30:
+			return (culturalAbilityProficiencies == null) ? "0" : ("" + culturalAbilityProficiencies[num]);
+		case 31:
+			return "" + ((outfit(null) != null) ? outfit(null).size() : 0);
+		case 32:
+			return "" + ((outfit(null) != null) ? outfit(null).get(num).ID() : "");
+		case 33:
+			return "" + ((outfit(null) != null) ? outfit(null).get(num).text() : "");
+		case 34:
+			return "" + destroyBodyAfterUse();
+		case 35:
+			return (racialEffectNames == null) ? "0" : ("" + racialEffectNames.length);
+		case 36:
+			return (racialEffectNames == null) ? "" : ("" + racialEffectNames[num]);
+		case 37:
+			return (racialEffectParms == null) ? "0" : ("" + racialEffectParms[num]);
+		case 38:
+			return (racialEffectLevels == null) ? "0" : ("" + racialEffectLevels[num]);
+		case 39:
+			return CMParms.toListString(getAgingChart());
+		case 40:
+			return "" + disableFlags;
+		case 41:
+			return (startAdjState == null) ? "" : CMLib.coffeeMaker().getCharStateStr(startAdjState);
+		case 42:
+			return getRaceLocatorID(eventBuddy);
+		case 43:
+			return getRaceLocatorID(weaponBuddy);
+		case 44:
+			return helpEntry;
+		case 45:
+			return CMParms.toListString(sortedBreathables);
+		case 46:
+			return "" + isRideable;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
+
 	@Override
 	public boolean tick(Tickable myChar, int tickID)
 	{
@@ -703,6 +942,7 @@ public class GenRace extends StdRace
 				return false;
 		return super.tick(myChar, tickID);
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -710,6 +950,7 @@ public class GenRace extends StdRace
 			eventBuddy.executeMsg(myHost, msg);
 		super.executeMsg(myHost, msg);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -759,9 +1000,15 @@ public class GenRace extends StdRace
 		}
 		switch(getCodeNum(code))
 		{
-		case 0: ID=val; break;
-		case 1: name=val; break;
-		case 2: racialCategory=val; break;
+		case 0:
+			ID = val;
+			break;
+		case 1:
+			name = val;
+			break;
+		case 2:
+			racialCategory = val;
+			break;
 		case 3:
 		{
 			if(CMath.isLong(val))
@@ -780,14 +1027,30 @@ public class GenRace extends StdRace
 			}
 			break;
 		}
-		case 4: weightVariance=CMath.s_parseIntExpression(val); break;
-		case 5: lightestWeight=CMath.s_parseIntExpression(val); break;
-		case 6: heightVariance=CMath.s_parseIntExpression(val); break;
-		case 7: shortestFemale=CMath.s_parseIntExpression(val); break;
-		case 8: shortestMale=CMath.s_parseIntExpression(val); break;
-		case 9: availability=CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES,val); break;
-		case 10: leaveStr=val;break;
-		case 11: arriveStr=val;break;
+		case 4:
+			weightVariance = CMath.s_parseIntExpression(val);
+			break;
+		case 5:
+			lightestWeight = CMath.s_parseIntExpression(val);
+			break;
+		case 6:
+			heightVariance = CMath.s_parseIntExpression(val);
+			break;
+		case 7:
+			shortestFemale = CMath.s_parseIntExpression(val);
+			break;
+		case 8:
+			shortestMale = CMath.s_parseIntExpression(val);
+			break;
+		case 9:
+			availability = CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES, val);
+			break;
+		case 10:
+			leaveStr = val;
+			break;
+		case 11:
+			arriveStr = val;
+			break;
 		case 12:
 		{
 			healthBuddy=CMClass.getRace(val);
@@ -1030,7 +1293,9 @@ public class GenRace extends StdRace
 			}
 			break;
 		}
-		case 34: destroyBodyAfterUse=CMath.s_bool(val); break;
+		case 34:
+			destroyBodyAfterUse = CMath.s_bool(val);
+			break;
 		case 35:
 		{
 			racialEffectMap=null;
@@ -1082,7 +1347,9 @@ public class GenRace extends StdRace
 			}
 			break;
 		}
-		case 40: disableFlags=CMath.s_int(val); break;
+		case 40:
+			disableFlags = CMath.s_int(val);
+			break;
 		case 41:
 		{
 			startAdjState=null;
@@ -1133,8 +1400,15 @@ public class GenRace extends StdRace
 			break;
 		}
 	}
-	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
-	private static String[] codes=null;
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return (xtraValues == null) ? getStatCodes().length : getStatCodes().length - xtraValues.length;
+	}
+
+	private static String[]	codes	= null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -1143,16 +1417,20 @@ public class GenRace extends StdRace
 		codes=CMProps.getStatCodesList(CODES,this);
 		return codes;
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 			code=code.substring(0,code.length()-1);
 		for(int i=0;i<CODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(CODES[i]))
 				return i;
+		}
 		return -1;
 	}
+
 	@Override
 	public boolean sameAs(Race E)
 	{

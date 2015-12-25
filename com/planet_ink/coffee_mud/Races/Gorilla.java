@@ -34,25 +34,80 @@ import java.util.*;
 */
 public class Gorilla extends Monkey
 {
-	@Override public String ID(){	return "Gorilla"; }
-	@Override public String name(){ return "Gorilla"; }
-	@Override public int shortestMale(){return 62;}
-	@Override public int shortestFemale(){return 60;}
-	@Override public int heightVariance(){return 12;}
-	@Override public int lightestWeight(){return 220;}
-	@Override public int weightVariance(){return 80;}
-	@Override public String racialCategory(){return "Primate";}
-	
-	private final String[]culturalAbilityNames={"ApeSpeak"};
-	private final int[]culturalAbilityProficiencies={100};
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override
+	public String ID()
+	{
+		return "Gorilla";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Gorilla";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 62;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 60;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 220;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 80;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Primate";
+	}
+
+	private final String[]	culturalAbilityNames			= { "ApeSpeak" };
+	private final int[]		culturalAbilityProficiencies	= { 100 };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -61,6 +116,7 @@ public class Gorilla extends Monkey
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,16);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -69,13 +125,17 @@ public class Gorilla extends Monkey
 			if(resources.size()==0)
 			{
 				for(int i=0;i<3;i++)
+				{
 					resources.addElement(makeResource
 					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_FUR));
+				}
 				resources.addElement(makeResource
 				("an "+name().toLowerCase()+" nose",RawMaterial.RESOURCE_HIDE));
 				for(int i=0;i<3;i++)
+				{
 					resources.addElement(makeResource
 					("a pound of "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MEAT));
+				}
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource

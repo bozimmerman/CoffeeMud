@@ -35,15 +35,40 @@ import java.util.*;
 */
 public class Githyanki extends Humanoid
 {
-	@Override public String ID(){	return "Githyanki"; }
-	@Override public String name(){ return "Githyanki"; }
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
-	@Override public String racialCategory(){return "Gith";}
+	@Override
+	public String ID()
+	{
+		return "Githyanki";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Githyanki";
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Gith";
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
+
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
