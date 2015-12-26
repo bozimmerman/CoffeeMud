@@ -179,14 +179,15 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 
 
 	@Override
-	public void setTrapped(Physical myThang, boolean isTrapped)
+	public void setTrapped(Physical myThang)
 	{
 		final Trap t=makeADeprecatedTrap(myThang);
 		t.setReset(50);
-		setTrapped(myThang,t,isTrapped);
+		setTrapped(myThang,t);
 	}
+
 	@Override
-	public void setTrapped(Physical myThang, Trap theTrap, boolean isTrapped)
+	public void setTrapped(Physical myThang, Trap theTrap)
 	{
 		for(int a=0;a<myThang.numEffects();a++)
 		{
@@ -195,7 +196,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				A.unInvoke();
 		}
 
-		if((isTrapped)&&(myThang.fetchEffect(theTrap.ID())==null))
+		if(myThang.fetchEffect(theTrap.ID())==null)
 			myThang.addEffect(theTrap);
 	}
 
@@ -329,7 +330,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(dirCode<0)
 		{
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				if(room.getExitInDir(d)==msg.target()){ dirCode=d; break;}
+			{
+				if (room.getExitInDir(d) == msg.target())
+				{
+					dirCode = d;
+					break;
+				}
+			}
 		}
 		if(dirCode<0)
 			return;
@@ -748,7 +755,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				Bs.addAll(getDeadBodies(V.get(v)));
 			return Bs;
 		}
-		return new Vector<DeadBody>();
+		return new Vector<DeadBody>(1);
 	}
 	
 	@Override
@@ -1107,10 +1114,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					CMLib.leveler().level(rejuvedMOB);
 				else
 				if(whatToDo.startsWith("ASTR"))
-				{}
-				else
-				if(whatToDo.startsWith("PUR"))
-				{}
+				{
+				}
+				else if (whatToDo.startsWith("PUR"))
+				{
+				}
 				else
 				if((whatToDo.trim().equals("0"))||(CMath.s_int(whatToDo)>0))
 				{

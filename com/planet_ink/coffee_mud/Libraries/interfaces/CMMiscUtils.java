@@ -62,7 +62,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return the date string
 	 */
 	public String getFormattedDate(Environmental E);
-	
+
 	/**
 	 * Returns a rediculous best guess on the amount of memory used
 	 * by the given environmental.  
@@ -71,7 +71,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return the amount of memory used, very approximately
 	 */
 	public double memoryUse ( Environmental E, int number );
-	
+
 	/**
 	 * Nice english comma-delimited list, with oxford commas
 	 * and trailing "and" or "or" at the end.  If the list is
@@ -82,7 +82,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return the readable comma list.
 	 */
 	public String niceCommaList(List<?> V, boolean andTOrF);
-	
+
 	/**
 	 * This strange method takes a list of space-delimited expressions of the
 	 * form [CONDITION]number number number number, etc. E.G.: >1 3 2 5 3 2.
@@ -106,7 +106,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @param items the items to outfit the mob with
 	 */
 	public void outfit(MOB mob, List<Item> items);
-	
+
 	/**
 	 * Returns the language being spoke by the given object (mob, usually).
 	 * A null return usually means Common. 
@@ -114,7 +114,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return the language being spoken.
 	 */
 	public Language getLanguageSpoken(Physical P);
-	
+
 	/**
 	 * Returns whether the given Item is reachable by the given mob.
 	 * It may not be reachable if the mob is riding something, and the
@@ -125,7 +125,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return true, or false if it's unreachable
 	 */
 	public boolean reachableItem(MOB mob, Environmental E);
-	
+
 	/**
 	 * Recursively extinguishes everything from the given target on down.
 	 * If a room is given, everything in the room, including the room,
@@ -137,7 +137,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @param mundane true to skip magic and elemental targets
 	 */
 	public void extinguish(MOB source, Physical target, boolean mundane);
-	
+
 	/**
 	 * Given the allowedArmorLevel code and the mob, this method returns
 	 * whether the given mob is only wearing permitted items on the
@@ -148,7 +148,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return true if the mob is good to go, false otherwise
 	 */
 	public boolean armorCheck(MOB mob, int allowedArmorLevel);
-	
+
 	/**
 	 * Given the allowedArmorLevel code and the mob, this method returns
 	 * whether the given mob is permitted to wear the given item is
@@ -160,28 +160,178 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return true if the mob is good to go for that item, false otherwise
 	 */
 	public boolean armorCheck(MOB mob, Item I, int allowedArmorLevel);
+
+	/**
+	 * Drops all items from the given mob into the given room which are inside the given
+	 * container (or are the given item).  The bodyFlag ensures that the contents are
+	 * not marked for cleanup.  This method does the deed, but does not generate any
+	 * new messages.  It also does not recover the state of the mob.
+	 * @param mob the mob who is dropping
+	 * @param room the room where it's being dropped
+	 * @param thisContainer the item or container where the items must be
+	 * @param bodyFlag true if the container is a body, false otherwise
+	 */
 	public void recursiveDropMOB(MOB mob, Room room, Item thisContainer, boolean bodyFlag);
+
+	/**
+	 * Returns a copy of the given item/container and a copy of every item in that
+	 * container, recursively.
+	 * @param theContainer the container or item to copy
+	 * @return a list of copies of all the contents
+	 */
 	public List<Item> deepCopyOf(Item theContainer);
+
+	/**
+	 * This method removes all equipment from the mob and quickly attempt to re-wear/hold/wield
+	 * it all where it originally was by issueing wear messages which are previewed and executed.
+	 * In the end, the mob will be wearing everything that the system will let them wear.
+	 * Moreover, this is all done silently.
+	 * @param mob the mob to confirm the equipment of
+	 */
 	public void confirmWearability(MOB mob);
+
+	/**
+	 * Assumes that every inventory item, equipped item, and store inventory
+	 * are for an NPC mob, where "rejuv" doesn't really matter.  In those cases,
+	 * the "rejuv" stat is, for non-rivalrous items, a pct chance of it being
+	 * retained on this mob.  For rivalrous items (two wielded swords, for example),
+	 * it is a weighted chance of being selected.  Electronics items also have their
+	 * random stats determined at this time. 
+	 * @param mob the npc mob to process variable equipment on
+	 * @return 0 for success, -1 if an admin is in the room, so nothing could be done.
+	 */
 	public int processVariableEquipment(MOB mob);
 
+	/**
+	 * Creates one of the deprecated traps depending on what sort of object is passed
+	 * in, whether it has a lid or a lock, etc.
+	 * @param unlockThis the exit, container, room, whatever
+	 * @return the trap to add to the physical thing, or null
+	 */
 	public Trap makeADeprecatedTrap(Physical unlockThis);
-	public void setTrapped(Physical myThang, boolean isTrapped);
-	public void setTrapped(Physical myThang, Trap theTrap, boolean isTrapped);
+	
+	/**
+	 * Creates and sets a deprecated trap on the given exit, room,
+	 * container, or whatever.
+	 * @see CMMiscUtils#makeADeprecatedTrap(Physical)
+	 * @see CMMiscUtils#setTrapped(Physical, Trap)
+	 * @see CMMiscUtils#fetchMyTrap(Physical)
+	 * @param myThang the thing to set the trap on.
+	 */
+	public void setTrapped(Physical myThang);
+	
+	/**
+	 * Sets the given deprecated trap on the given exit, room,
+	 * container, or whatever.
+	 * @see CMMiscUtils#makeADeprecatedTrap(Physical)
+	 * @see CMMiscUtils#setTrapped(Physical)
+	 * @param myThang the thing to set the trap on.
+	 * @param theTrap the deprecated trap to set on it
+	 */
+	public void setTrapped(Physical myThang, Trap theTrap);
+	
+	/**
+	 * Returns any trap found on the given thing, or null.
+	 * @see CMMiscUtils#makeADeprecatedTrap(Physical)
+	 * @param myThang the thing to check for a trap
+	 * @return the trap found, or null
+	 */
 	public Trap fetchMyTrap(Physical myThang);
 
+	/**
+	 * If any mob (probably a player) is possessing the
+	 * given mob, this will return that mob, or null
+	 * @param mob the mob to check for possession
+	 * @return the mob possessing the given mob
+	 */
 	public MOB getMobPossessingAnother(MOB mob);
+
+	/**
+	 * Normally just sends the message to the room by calling
+	 * Room.send.  However, if the target of the message is 
+	 * an exit, then the several exits involved would also
+	 * informed by having executeMsg called on them.
+	 * @param msg the message to send
+	 * @param room the room to send the message to
+	 * @param dirCode if known, the direction of the target exit
+	 */
 	public void roomAffectFully(CMMsg msg, Room room, int dirCode);
+
+	/**
+	 * Returns any corpses found in the given container, recursively.
+	 * @param container the container that possibly has corpses
+	 * @return a list of any corpses found, or an empty list
+	 */
 	public List<DeadBody> getDeadBodies(Environmental container);
+
+	/**
+	 * Resurrects the given body according to all system rules.
+	 * 
+	 * @param tellMob if the corpse could not be resurrected, tell this mob.
+	 * @param corpseRoom room to bring the mob to after resurrection, probably same as body's location
+	 * @param body the corpse to resurrect
+	 * @param XPLevel if > 0, and rules allow, bonus xp restored
+	 * @return true if the resurrection happened, false otherwise
+	 */
 	public boolean resurrect(MOB tellMob, Room corpseRoom, DeadBody body, int XPLevel);
 
+	/**
+	 * This method parses the item ruinning rules and possibly ruins the given item
+	 * by returning the ruined version.  Or it might do nothing
+	 * and just return the item.
+	 * @param mob the mob to get ruin policies for
+	 * @param I the item to potentially ruin
+	 * @return the ruined item, or the original item, depending
+	 */
 	public Item isRuinedLoot(MOB mob, Item I);
 
+	/**
+	 * Iterates through every mob and player in the game, replacing the old race
+	 * object with the new one.
+	 * @see CMMiscUtils#reloadCharClasses(CharClass)
+	 * @param newR the new race object
+	 * @param oldR the old race object
+	 */
 	public void swapRaces(Race newR, Race oldR);
+
+	/**
+	 * Iterates through every mob and player in the game, replacing the old char class
+	 * object given with the new one of the same ID from CMClass.
+	 * @see CMMiscUtils#swapRaces(Race, Race)
+	 * @param oldC the old charclass object
+	 */
 	public void reloadCharClasses(CharClass oldC);
 
+	/**
+	 * Returns whether the given item can be destroyed by the given mob, probably magically.
+	 * This is a recursive check if the item is a container.
+	 * @param mob the mob who wants to destroy the item
+	 * @param I the item to destroy
+	 * @param ignoreBodies true to ignore corpse checks, false otherwise
+	 * @return true if the item can be destroyed, false otherwise
+	 */
 	public boolean canBePlayerDestroyed(final MOB mob, final Item I, final boolean ignoreBodies);
-	
+
+	/**
+	 * Calls unInvoke on all effects on the given environmental.  
+	 * This may not cause the effects to disappear, depending on the
+	 * behavior of each effect.
+	 * @param E the object to diseffect
+	 * @return true if the item still exists, false if it was destroyed
+	 */
 	public boolean disInvokeEffects(Environmental E);
+
+	/**
+	 * Removes magical effects from wands, and other spell holders,
+	 * deletes any effects after attempting to uninvoke.  This method
+	 * probably needs more thought, since not all effects are
+	 * magic (though they usually are)
+	 * 
+	 * The return value is a very strange number: 0 if the item is 
+	 * destroyed, -999 if nothing done, or the item level minus the 
+	 * magic value of what was done to it.
+	 * @param target the object to disenchant.
+	 * @return a bizarre number 
+	 */
 	public int disenchantItem(Item target);
 }
