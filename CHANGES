@@ -4,6 +4,7 @@
    3. New Player stats for Bonus char creation points, common skill limits
    4. New Account stats for Bonus char per account, chars online, char creation points, common skill limits
    5. New Property: Prop_ItemBinder, for binding items to char, acct, clan. How did that get missed all these years?
+   6. New version of Siplet (the web client).  Now uses WebSockets for streaming joy.
 # Build 5.9.0 Released 12/20/2015
    1. Web Server upgraded to 2.3
    2. coffeemud.ini entry FLEE has new (blank) option to basically disable fleeing and break a bunch of skills.

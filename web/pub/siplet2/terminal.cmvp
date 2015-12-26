@@ -52,11 +52,13 @@ function openWindow()
 {
 	var foundX = -1;
 	for(var i=0;i<10;i++)
+	{
 		if(alldivs[i]==null)
 		{
 			foundX=i;
 			break;
 		}
+	}
 	if(foundX<0)
 	{
 		if(window.alert) window.alert("Unable to open another window.  10 is the limit!");

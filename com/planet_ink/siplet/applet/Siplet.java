@@ -26,7 +26,7 @@ public class Siplet
 	public final static boolean debugDataOut=false;
 
 	public final static long serialVersionUID=7;
-	public static final float VERSION_MAJOR=(float)2.1;
+	public static final float VERSION_MAJOR=(float)2.2;
 	public static final long  VERSION_MINOR=0;
 	
 	protected StringBuffer		buf			= new StringBuffer("");

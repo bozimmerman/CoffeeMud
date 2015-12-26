@@ -39,14 +39,20 @@ setTimeout(connectChecker,10001);
 
 function closeWindow()
 {
-	theSiplet.disconnectFromURL();
+	if(theSiplet)
+		theSiplet.disconnectFromURL();
 	top.document.location.href='/index.cmvp';
 }
 
 function reconnect()
 {
-	theSiplet.disconnectFromURL();
-	setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
+	if(theSiplet)
+	{
+		if(!theSiplet.isConnecting())
+			theSiplet.disconnectFromURL();
+	}
+	if((!theSiplet) || (!theSiplet.isConnecting()))
+		setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
 }
 
 function addToWindow(s)
@@ -126,8 +132,8 @@ function goRed()
 function goOffline()
 {
 	theSiplet.disconnectFromURL();
+	theSiplet=new Siplet();
 	goRed();
-	
 }
 
 function BoxFocus()
