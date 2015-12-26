@@ -90,7 +90,6 @@ public interface HTTPHeader
 	 */
 	public String name();
 	
-	
 	/**
 	 * Enum of all the publicaly recognized headers.
 	 * @author Bo Zimmerman
@@ -130,7 +129,9 @@ public interface HTTPHeader
 		UPGRADE("Upgrade"),
 		SEC_WEBSOCKET_ACCEPT("Sec-WebSocket-Accept"),
 		SEC_WEBSOCKET_VERSION("Sec-WebSocket-Version"),
-		X_FRAME_OPTIONS("X-Frame-Options")
+		SEC_WEBSOCKET_LOCATION("Sec-WebSocket-Location"),
+		X_FRAME_OPTIONS("X-Frame-Options"),
+		ORIGIN("Origin")
 		;
 		public static final String		 		KEEP_ALIVE_FMT	= "timeout=%d, max=%d";
 		private static String					keepAliveHeader =KEEP_ALIVE_FMT;

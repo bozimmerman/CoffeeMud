@@ -2,7 +2,6 @@ BUGS
 
 TECH
    *. ShopKeeper VIEW should give more information about tech items
-   *. interacting items of diff tech level might damage each other
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
    *. work on automatic component values ??
@@ -19,6 +18,7 @@ TECH
    *. add electronics to MG
    *. add spaceobject stuff to MG
    *. add spaceobject mapper system to MG
+   *. interacting items of diff tech level might damage each other
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH

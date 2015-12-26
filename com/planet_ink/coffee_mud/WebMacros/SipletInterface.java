@@ -400,8 +400,13 @@ public class SipletInterface extends StdWebMacro
 				exception.getErrorHeaders().put(HTTPHeader.Common.CONNECTION, HTTPHeader.Common.UPGRADE.toString());
 				exception.getErrorHeaders().put(HTTPHeader.Common.UPGRADE, httpReq.getHeader("upgrade"));
 				exception.getErrorHeaders().put(HTTPHeader.Common.SEC_WEBSOCKET_ACCEPT, token);
-				//if(httpReq.getHeader("sec-websocket-version")!=null)
-				//	exception.getErrorHeaders().put(HTTPHeader.Common.SEC_WEBSOCKET_VERSION, httpReq.getHeader("sec-websocket-version"));
+				if(httpReq.getHeader("origin")!=null)
+					exception.getErrorHeaders().put(HTTPHeader.Common.ORIGIN, httpReq.getHeader("origin"));
+				final StringBuilder locationStr = new StringBuilder("ws://"+httpReq.getHost());
+				if(httpReq.getClientPort() != 80)
+					locationStr.append(":").append(httpReq.getClientPort());
+				locationStr.append(httpReq.getUrlPath());
+				exception.getErrorHeaders().put(HTTPHeader.Common.SEC_WEBSOCKET_LOCATION, locationStr.toString());
 				final SipletProtocolHander newHandler = new SipletProtocolHander();
 				exception.setNewProtocolHandler(newHandler);
 			}
@@ -551,7 +556,7 @@ public class SipletInterface extends StdWebMacro
 		{
 			switch(opCode)
 			{
-			case 1:
+			case 1: // text data
 			{
 				final String cmd = new String(payload.toByteArray());
 				parseUrlEncodedKeypairs(request,cmd);
@@ -562,7 +567,7 @@ public class SipletInterface extends StdWebMacro
 				outBuffer.add(encodedResp,System.currentTimeMillis(),true);
 				break;
 			}
-			case 9:
+			case 9: // ping
 			{
 				final byte[] newPayload = msg.toByteArray();
 				newPayload[0] = (byte)((newPayload[0] & 0xf0) + 10); // 10=pong
@@ -571,8 +576,9 @@ public class SipletInterface extends StdWebMacro
 				outBuffer.add(newPayload,System.currentTimeMillis(),true);
 				break;
 			}
-			case 10:
-				// ignore pong
+			case 10: // pong -- ignore
+				break;
+			case 11: // close
 				break;
 			default:
 				break;

@@ -154,14 +154,22 @@ public class HTTPException extends Exception
 	{
 		final StringBuilder str = new StringBuilder("");
 		str.append("HTTP/").append(request.getHttpVer()).append(" ").append(getStatus().getStatusCode()).append(" ").append(getMessage());
-		if(isDebugging)
-			debugLogger.finer("Response Exception: "+str.toString());
-		str.append(EOLN);
 		final Map<HTTPHeader,String> headers=getErrorHeaders();
+		str.append(EOLN);
 		str.append(HTTPIOHandler.SERVER_HEADER);
-		str.append(HTTPIOHandler.CONN_HEADER);
-		str.append(HTTPHeader.Common.getKeepAliveHeader());
+		if(!headers.containsKey(HTTPHeader.Common.CONNECTION))
+		{
+			str.append(HTTPIOHandler.CONN_HEADER);
+			str.append(HTTPHeader.Common.getKeepAliveHeader());
+		}
 		str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
+		if(isDebugging)
+		{
+			final StringBuilder dbgBuilder=new StringBuilder(str.toString().replace('\r', ',').replace('\n', ' ')); 
+			for(HTTPHeader h : headers.keySet())
+				dbgBuilder.append(h.toString()+": "+headers.get(h)+", ");
+			debugLogger.finer("Response Exception: "+dbgBuilder.toString());
+		}
 		
 		DataBuffers finalBody=null;
 		if((body.length()==0)
