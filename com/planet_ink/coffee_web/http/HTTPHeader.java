@@ -129,6 +129,7 @@ public interface HTTPHeader
 		PRAGMA("Pragma"),
 		UPGRADE("Upgrade"),
 		SEC_WEBSOCKET_ACCEPT("Sec-WebSocket-Accept"),
+		SEC_WEBSOCKET_VERSION("Sec-WebSocket-Version"),
 		X_FRAME_OPTIONS("X-Frame-Options")
 		;
 		public static final String		 		KEEP_ALIVE_FMT	= "timeout=%d, max=%d";

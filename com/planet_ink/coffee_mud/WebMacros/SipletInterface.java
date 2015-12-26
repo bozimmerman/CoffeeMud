@@ -398,8 +398,10 @@ public class SipletInterface extends StdWebMacro
 				final String token = B64Encoder.B64encodeBytes(cript.digest());
 				httpResp.setStatusCode(101);
 				exception.getErrorHeaders().put(HTTPHeader.Common.CONNECTION, HTTPHeader.Common.UPGRADE.toString());
-				exception.getErrorHeaders().put(HTTPHeader.Common.UPGRADE, "websocket");
+				exception.getErrorHeaders().put(HTTPHeader.Common.UPGRADE, httpReq.getHeader("upgrade"));
 				exception.getErrorHeaders().put(HTTPHeader.Common.SEC_WEBSOCKET_ACCEPT, token);
+				//if(httpReq.getHeader("sec-websocket-version")!=null)
+				//	exception.getErrorHeaders().put(HTTPHeader.Common.SEC_WEBSOCKET_VERSION, httpReq.getHeader("sec-websocket-version"));
 				final SipletProtocolHander newHandler = new SipletProtocolHander();
 				exception.setNewProtocolHandler(newHandler);
 			}
