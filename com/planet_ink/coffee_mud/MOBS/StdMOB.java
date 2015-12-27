@@ -3329,7 +3329,7 @@ public class StdMOB implements MOB
 
 				tickStatus = Tickable.STATUS_ALIVE;
 
-				if((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.COMBAT_TURNBASED) && isInCombat())
+				if((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.TURNBASED.ordinal()) && isInCombat())
 				{
 					if(CMLib.combat().doTurnBasedCombat(this,R,A))
 					{
@@ -3389,7 +3389,7 @@ public class StdMOB implements MOB
 
 				if (isInCombat())
 				{
-					if (CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.COMBAT_DEFAULT)
+					if (CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.CombatSystem.DEFAULT.ordinal())
 						setActions(actions() + 1.0); // bonus action is employed in default system
 					tickStatus = Tickable.STATUS_FIGHT;
 					peaceTime = 0;

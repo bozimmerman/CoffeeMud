@@ -1895,11 +1895,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	protected void subtickBeforeAttack(final MOB fighter, final int combatSystem)
+	protected void subtickBeforeAttack(final MOB fighter, final CombatSystem combatSystem)
 	{
 		// combat que system eats up standard commands
 		// before using any attacks
-		while(((combatSystem==CombatLibrary.COMBAT_QUEUE)||(combatSystem==CombatLibrary.COMBAT_TURNBASED))
+		while(((combatSystem==CombatLibrary.CombatSystem.QUEUE)||(combatSystem==CombatLibrary.CombatSystem.TURNBASED))
 		&&(!fighter.amDead())
 		&&(fighter.dequeCommand()))
 			{}
@@ -1967,7 +1967,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			weapon=fighter.fetchWieldedItem();
 		}
 
-		final int combatSystem=CMProps.getIntVar(CMProps.Int.COMBATSYSTEM);
+		final CombatSystem combatSystem=CombatSystem.values()[CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) % CombatSystem.values().length];
 
 		subtickBeforeAttack(fighter, combatSystem);
 
@@ -1979,12 +1979,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							fighter.amFollowing().fetchFollowerOrder(fighter)+fighter.amFollowing().rangeToTarget():-1;
 		if(CMLib.flags().isAliveAwakeMobile(fighter,true))
 		{
-			if(((combatSystem!=CombatLibrary.COMBAT_MANUAL)&&(combatSystem!=CombatLibrary.COMBAT_TURNBASED))
+			if(((combatSystem!=CombatLibrary.CombatSystem.MANUAL)&&(combatSystem!=CombatLibrary.CombatSystem.TURNBASED))
 			||(fighter.isMonster()))
 			{
-				final int saveAction=(combatSystem!=CombatLibrary.COMBAT_DEFAULT)?0:1;
+				final int saveAction=(combatSystem!=CombatLibrary.CombatSystem.DEFAULT)?0:1;
 				int numAttacks=(int)Math.round(Math.floor(fighter.actions()))-saveAction;
-				if((combatSystem==CombatLibrary.COMBAT_DEFAULT)
+				if((combatSystem==CombatLibrary.CombatSystem.DEFAULT)
 				&&(numAttacks>(int)Math.round(Math.floor(fighter.phyStats().speed()+0.9))))
 					numAttacks=(int)Math.round(Math.floor(fighter.phyStats().speed()+0.9));
 				for(int s=0;s<numAttacks;s++)

@@ -30,12 +30,55 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * Fighting, healing, determining combatants, death, attacking, 
+ * damaging, and formations.  These are all the things handled
+ * by the combat library.  But I'm betting you already knew that.
+ * 
+ * @author Bo Zimmerman
+ *
+ */
 public interface CombatLibrary extends CMLibrary
 {
-	public static final int COMBAT_DEFAULT=0;
-	public static final int COMBAT_QUEUE=1;
-	public static final int COMBAT_MANUAL=2;
-	public static final int COMBAT_TURNBASED=3;
+	/**
+	 * An enumeration of the several combat systems.
+	 * These are specified in the coffeemud.ini file.
+	 * 
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum CombatSystem
+	{
+		/**
+		 * The default system allows one action point to be used
+		 * by each combatant on a skill, per round.  All other action
+		 * points are automatically used on basic attacks, every round.
+		 */
+		DEFAULT,
+		
+		/**
+		 * The queue system allows all action points to be used
+		 * by each combatant on skills.  All unused action points are
+		 * spent on basic attacks every round.
+		 */
+		QUEUE,
+		
+		/**
+		 * The manual system allows all action points to be used
+		 * by each combatant on skills or on basic attacks, but
+		 * all attack must be manually entered.  Any unused points
+		 * are lost every round. 
+		 */
+		MANUAL,
+		
+		/**
+		 * The turn based system gives each combatant an amount of time
+		 * to use all their action points on skills or basic attacks,
+		 * not permitting any other combatant to act until the previous
+		 * one completes.
+		 */
+		TURNBASED
+	}
 
 	public Set<MOB> allPossibleCombatants(MOB mob, boolean beRuthless);
 	public Set<MOB> properTargets(Ability A, MOB caster, boolean beRuthless);
