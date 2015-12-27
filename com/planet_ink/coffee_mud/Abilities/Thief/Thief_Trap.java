@@ -151,7 +151,7 @@ public class Thief_Trap extends ThiefSkill
 				buf.append(T.requiresToSet()+"\n\r");
 			}
 			if(mob.session()!=null)
-				mob.session().rawPrintln(buf.toString());
+				mob.session().safeRawPrintln(buf.toString());
 			return true;
 		}
 		else

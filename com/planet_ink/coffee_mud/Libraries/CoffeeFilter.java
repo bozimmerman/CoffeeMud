@@ -591,7 +591,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	}
 
 	// no word-wrapping, text filtering or ('\','n') -> '\n' translations
-	// (it's not a member of the interface either so probably shouldn't be public)
 	@Override
 	public String colorOnlyFilter(String msg, Session S)
 	{
@@ -678,6 +677,77 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		return buf.toString();
 	}
 
+	// no word-wrapping, text filtering or ('\','n') -> '\n' translations
+	@Override
+	public String mxpSafetyFilter(String msg, Session S)
+	{
+		if(msg==null)
+			return null;
+
+		if(msg.length()==0)
+			return msg;
+		final StringBuffer buf=new StringBuffer(msg);
+		int loop=0;
+
+		while(buf.length()>loop)
+		{
+			switch(buf.charAt(loop))
+			{
+			case '>':
+				if((S!=null)&&(S.isAllowedMxp(buf.substring(loop,loop+1))))
+				{
+					buf.delete(loop,loop+1);
+					buf.insert(loop,"&gt;".toCharArray());
+					loop+=3;
+				}
+				break;
+			case '"':
+				if((S!=null)&&(S.isAllowedMxp(buf.substring(loop,loop+1))))
+				{
+					buf.delete(loop,loop+1);
+					buf.insert(loop,"&quot;".toCharArray());
+					loop+=5;
+				}
+				break;
+			case '&':
+				if((S!=null)&&(S.isAllowedMxp(buf.substring(loop,loop+3))))
+				{
+					if((!buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
+					&&(buf.substring(loop,loop+3).equalsIgnoreCase("gt;")))
+					{
+						buf.delete(loop,loop+1);
+						buf.insert(loop,"&amp;".toCharArray());
+						loop+=4;
+					}
+				}
+				else
+				if(loop<buf.length()-3)
+				{
+					if(buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
+						buf.replace(loop,loop+3,"<");
+					else
+					if(buf.substring(loop,loop+3).equalsIgnoreCase("gt;"))
+						buf.replace(loop,loop+3,">");
+				}
+				break;
+			case '<':
+				if((S!=null)&&(S.isAllowedMxp(buf.substring(loop,loop+1))))
+				{
+					buf.delete(loop,loop+1);
+					buf.insert(loop,"&lt;".toCharArray());
+					loop+=3;
+				}
+				break;
+			default:
+				break;
+			}
+			loop++;
+		}
+
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.OUTPUT))
+			Log.debugOut("CoffeeFilter","OUTPUT: "+(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+": "+buf.toString());
+		return buf.toString();
+	}
 
 	@Override
 	public String getLastWord(StringBuffer buf, int lastSp, int lastSpace)

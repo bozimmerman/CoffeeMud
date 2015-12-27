@@ -2782,12 +2782,12 @@ public class ListCmd extends StdCommand
 			if((!F.exists())||(!F.canRead()))
 			{
 				if(S!=null)
-					S.rawPrintln(L("File not found: @x1",fileName));
+					S.safeRawPrintln(L("File not found: @x1",fileName));
 				return;
 			}
 		}
 		if(S!=null)
-			S.rawPrintln(L("Searching..."));
+			S.safeRawPrintln(L("Searching..."));
 		
 		fileName = fileName.toLowerCase();
 		Map<String,Set<Environmental>> found=new TreeMap<String,Set<Environmental>>();
@@ -2810,7 +2810,7 @@ public class ListCmd extends StdCommand
 			}
 		}
 		if(S!=null)
-			S.rawPrintln(L("Done."));
+			S.safeRawPrintln(L("Done."));
 	}
 
 	public void listLog(MOB mob, List<String> commands)
@@ -2823,7 +2823,7 @@ public class ListCmd extends StdCommand
 			String line=log.nextLine();
 			while((line!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
-				mob.session().rawPrintln(line);
+				mob.session().safeRawPrintln(line);
 				if((pageBreak>0)&&(lineNum>=pageBreak))
 					if(!pause(mob.session()))
 						break;
@@ -2903,7 +2903,7 @@ public class ListCmd extends StdCommand
 		{
 			if((lineNum>start)&&(lineNum<=end))
 			{
-				mob.session().rawPrintln(line);
+				mob.session().safeRawPrintln(line);
 				if((pageBreak>0)&&(shownLineNum>=pageBreak))
 					if(!pause(mob.session()))
 						break;

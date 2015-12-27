@@ -139,7 +139,7 @@ public class Alias extends StdCommand
 	{
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
-			@Override public void showPrompt() { session.rawPrintln(L("\n\rEnter a value for alias '@x1'.  Use ~ to separate commands.",aliasName)); session.promptPrint(": "); }
+			@Override public void showPrompt() { session.safeRawPrintln(L("\n\rEnter a value for alias '@x1'.  Use ~ to separate commands.",aliasName)); session.promptPrint(": "); }
 			@Override public void timedOut() { }
 			@Override public void callBack()
 			{

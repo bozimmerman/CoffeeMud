@@ -75,7 +75,7 @@ public class Thief_MakeBomb extends ThiefSkill
 				buf.append(T.requiresToSet()+"\n\r");
 			}
 			if(mob.session()!=null)
-				mob.session().rawPrintln(buf.toString());
+				mob.session().safeRawPrintln(buf.toString());
 			return true;
 		}
 		else

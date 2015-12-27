@@ -83,7 +83,7 @@ public class Skill_Warrants extends BardSkill
 					buf.append(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,W.criminal(),W.victim(),null,W.crime(),false)+"\n\r");
 				}
 				if(!mob.isMonster())
-					mob.session().rawPrintln(buf.toString());
+					mob.session().safeRawPrintln(buf.toString());
 			}
 		}
 		else

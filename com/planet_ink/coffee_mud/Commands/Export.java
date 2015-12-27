@@ -64,7 +64,7 @@ public class Export extends StdCommand
 			xml=xml.replace('\n',' ');
 			xml=xml.replace('\r',' ');
 			if(S!=null)
-				S.rawPrintln(xml+"\n\r\n\r");
+				S.safeRawPrintln(xml+"\n\r\n\r");
 		}
 		else
 		if(fileName.equalsIgnoreCase("EMAIL"))

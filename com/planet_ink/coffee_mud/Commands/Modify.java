@@ -1278,7 +1278,7 @@ public class Modify extends StdCommand
 
 		if(commands.size()<3)
 		{
-			mob.session().rawPrintln(L("but fail to specify the proper fields.\n\rThe format is MODIFY SOCIAL [NAME] ([PARAM])\n\r"));
+			mob.session().safeRawPrintln(L("but fail to specify the proper fields.\n\rThe format is MODIFY SOCIAL [NAME] ([PARAM])\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}

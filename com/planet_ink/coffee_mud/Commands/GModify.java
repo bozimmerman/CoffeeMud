@@ -639,9 +639,9 @@ public class GModify extends StdCommand
 		if(mob.session()!=null)
 		{
 			if(changes.size()==0)
-				mob.session().rawPrintln(L("Searching..."));
+				mob.session().safeRawPrintln(L("Searching..."));
 			else
-				mob.session().rawPrint(L("Searching, modifying and saving..."));
+				mob.session().safeRawPrint(L("Searching, modifying and saving..."));
 		}
 		if(noisy)
 			gmodifydebugtell(mob,"Rooms to do: "+placesToDo.size());

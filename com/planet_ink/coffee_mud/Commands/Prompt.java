@@ -51,7 +51,7 @@ public class Prompt extends StdCommand
 			return false;
 
 		if(commands.size()==1)
-			sess.rawPrintln(L("Your prompt is currently set at:\n\r@x1",pstats.getPrompt()));
+			sess.safeRawPrintln(L("Your prompt is currently set at:\n\r@x1",pstats.getPrompt()));
 		else
 		{
 			String str=CMParms.combine(commands,1);
@@ -64,7 +64,7 @@ public class Prompt extends StdCommand
 			if(sess.confirm(L("Change your prompt to: @x1, are you sure (Y/n)?",showStr),"Y"))
 			{
 				pstats.setPrompt(str);
-				sess.rawPrintln(L("Your prompt is currently now set at:\n\r@x1",pstats.getPrompt()));
+				sess.safeRawPrintln(L("Your prompt is currently now set at:\n\r@x1",pstats.getPrompt()));
 			}
 		}
 		return false;

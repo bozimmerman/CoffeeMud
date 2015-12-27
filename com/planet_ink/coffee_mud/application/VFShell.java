@@ -391,6 +391,18 @@ public class VFShell
 					}
 
 					@Override
+					public void safeRawPrintln(String msg)
+					{
+						onlyPrint(msg + "\n", false);
+					}
+
+					@Override
+					public void safeRawPrint(String msg)
+					{
+						onlyPrint(msg, false);
+					}
+
+					@Override
 					public void stdPrint(String msg)
 					{
 						onlyPrint(msg, false);

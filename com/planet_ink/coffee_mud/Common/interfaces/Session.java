@@ -123,6 +123,29 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public void rawPrint(String msg);
 
 	/**
+	 * Low level line-output method.  Sets the
+	 * prompt flag after write, and inserts
+	 * additional pre-linefeed if currently at
+	 * the prompt.  Adds post linefeed of course.
+	 * Does not do a page break, or color, but does
+	 * protect mxp clients.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#safeRawPrint(String)
+	 * @param msg the string to send to the user
+	 */
+	public void safeRawPrintln(String msg);
+
+	/**
+	 * Low level line-output method.  Sets the
+	 * prompt flag after write, and inserts
+	 * additional pre-linefeed if currently at
+	 * the prompt.  Does not do color, but does
+	 * protect mxp clients.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#safeRawPrintln(String)
+	 * @param msg the string to send to the user
+	 */
+	public void safeRawPrint(String msg);
+
+	/**
 	 * Higher-level line output method.  Does full
 	 * filtering of special characters and codes.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String)

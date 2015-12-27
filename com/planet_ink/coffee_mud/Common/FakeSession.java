@@ -250,6 +250,12 @@ public class FakeSession implements Session
 		onlyPrint(msg + "\n", false);
 	}
 
+	@Override
+	public void safeRawPrintln(String msg)
+	{
+		onlyPrint(msg + "\n", false);
+	}
+
 	public void rawPrintln(String msg, int pageBreak)
 	{
 		onlyPrint(msg + "\n", false);
@@ -257,6 +263,12 @@ public class FakeSession implements Session
 
 	@Override
 	public void rawPrint(String msg)
+	{
+		onlyPrint(msg, false);
+	}
+
+	@Override
+	public void safeRawPrint(String msg)
 	{
 		onlyPrint(msg, false);
 	}

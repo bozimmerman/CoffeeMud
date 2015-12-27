@@ -137,7 +137,7 @@ public class Thief_TrophyCount extends ThiefSkill
 				str.append(CMStrings.padRight(one[0],20)+kills+"\n\r");
 			}
 			if(mob.session()!=null)
-				mob.session().rawPrintln(str.toString());
+				mob.session().safeRawPrintln(str.toString());
 			return true;
 		}
 		mob.tell(L("You failed to recall your count."));

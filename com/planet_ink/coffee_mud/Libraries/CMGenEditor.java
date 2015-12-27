@@ -271,7 +271,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((maxChars > 0)&&(showVal.length()>maxChars)&& (!((showFlag!=showNumber)&&(showFlag>-999))))
 			showVal=showVal.substring(0,maxChars)+"...";
 		if(rawPrint)
-			mob.session().rawPrintln(showNumber+". "+FieldDisp+": '"+showVal+"'.");
+			mob.session().safeRawPrintln(showNumber+". "+FieldDisp+": '"+showVal+"'.");
 		else
 			mob.tell(showNumber+". "+FieldDisp+": '"+showVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
@@ -1273,7 +1273,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		if(mob.session()!=null)
-			mob.session().rawPrintln(L("@x1. Display: '@x2'.",""+showNumber,E.displayText()));
+			mob.session().safeRawPrintln(L("@x1. Display: '@x2'.",""+showNumber,E.displayText()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName=null;
@@ -1303,23 +1303,23 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		if(mob.session()==null)
 			return;
-		mob.session().rawPrintln(L("@x1. Mount Strings: '@x2'.",""+showNumber,E.getStat("PUTSTR")+"/"+E.getStat("MOUNTSTR")+"/"+E.getStat("DISMOUNTSTR")));
+		mob.session().safeRawPrintln(L("@x1. Mount Strings: '@x2'.",""+showNumber,E.getStat("PUTSTR")+"/"+E.getStat("MOUNTSTR")+"/"+E.getStat("DISMOUNTSTR")));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName;
-		mob.session().rawPrintln(L("Enter new 'put' string (ENTER='"+E.getStat("PUTSTR")+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'put' string (ENTER='"+E.getStat("PUTSTR")+"')"));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
 			E.setStat("PUTSTR",newName);
 		else
 			mob.tell(L("(no change)"));
-		mob.session().rawPrintln(L("Enter new 'mount' string (ENTER='"+E.getStat("MOUNTSTR")+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'mount' string (ENTER='"+E.getStat("MOUNTSTR")+"')"));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
 			E.setStat("MOUNTSTR",newName);
 		else
 			mob.tell(L("(no change)"));
-		mob.session().rawPrintln(L("Enter new 'dismount' string (ENTER='"+E.getStat("DISMOUNTSTR")+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'dismount' string (ENTER='"+E.getStat("DISMOUNTSTR")+"')"));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
 			E.setStat("DISMOUNTSTR",newName);

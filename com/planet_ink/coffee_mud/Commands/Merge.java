@@ -555,7 +555,7 @@ public class Merge extends StdCommand
 		}
 
 		if(mob.session()!=null)
-			mob.session().rawPrintln(L("!\n\rDone!"));
+			mob.session().safeRawPrintln(L("!\n\rDone!"));
 		Area A=null;
 		for(int i=0;i<placesToDo.size();i++)
 		{

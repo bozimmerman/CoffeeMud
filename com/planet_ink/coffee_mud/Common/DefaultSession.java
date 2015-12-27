@@ -1045,12 +1045,22 @@ public class DefaultSession implements Session
 	{
 		rawCharsOut(msg);
 	}
+	
 	@Override
 	public void rawPrint(String msg)
 	{
 		if(msg==null)
 			return;
 		onlyPrint((needPrompt?"":"\n\r")+msg,false);
+		needPrompt=true;
+	}
+
+	@Override
+	public void safeRawPrint(String msg)
+	{
+		if(msg==null)
+			return;
+		onlyPrint((needPrompt?"":"\n\r")+CMLib.coffeeFilter().mxpSafetyFilter(msg, this),false);
 		needPrompt=true;
 	}
 
@@ -1089,6 +1099,13 @@ public class DefaultSession implements Session
 	{
 		if(msg!=null)
 			rawPrint(msg+"\n\r");
+	}
+
+	@Override
+	public void safeRawPrintln(String msg)
+	{
+		if(msg!=null)
+			safeRawPrint(msg+"\n\r");
 	}
 
 	@Override
