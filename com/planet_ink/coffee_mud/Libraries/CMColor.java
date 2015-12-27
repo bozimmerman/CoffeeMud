@@ -108,8 +108,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		return newColorState;
 	}
 	
-	@Override
-	public int translateSingleCMCodeToANSIOffSet(String code)
+	protected int translateSingleCMCodeToANSIOffSet(String code)
 	{
 		if(code.length()==0)
 			return -1;
@@ -117,10 +116,12 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			return -1;
 		int i=code.length()-1;
 		while(i>=0)
+		{
 			if(Character.isLetter(code.charAt(i)))
 				return "krgybpcw".indexOf(Character.toLowerCase(code.charAt(i)));
 			else
 				i++;
+		}
 		return 3;
 	}
 
@@ -135,8 +136,10 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			code=code.substring(0,background);
 		int bold=0;
 		for(int i=0;i<code.length();i++)
+		{
 			if(Character.isLowerCase(code.charAt(i)))
 				bold=1;
+		}
 		return bold+";"+(30+translateSingleCMCodeToANSIOffSet(code))+"m";
 	}
 
@@ -150,8 +153,10 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		final int background=code.indexOf('|');
 		int bold=0;
 		for(int i=0;i<code.length();i++)
+		{
 			if(Character.isLowerCase(code.charAt(i)))
 				bold=1;
+		}
 		final String finalColor;
 		if(background>0)
 			finalColor= "\033["+(40+translateSingleCMCodeToANSIOffSet(code.substring(0,background)))+";"+bold+";"+(30+translateSingleCMCodeToANSIOffSet(code.substring(background+1)))+"m";
@@ -172,12 +177,12 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		String code1=null;
 		String code2=null;
 		final boolean bold=(code.indexOf(";1;")>0)||(code.indexOf("[1;")>0);
-		for(int i=0;i<COLOR_CODELETTERSINCARDINALORDER.length;i++)
+		for(int i=0;i<COLORS_INCARDINALORDER.length;i++)
 		{
 			if((code1==null)&&(code.indexOf(""+(40+i))>0))
-				code1="^"+Character.toUpperCase(COLOR_CODELETTERSINCARDINALORDER[i].getCodeChar());
+				code1="^"+Character.toUpperCase(COLORS_INCARDINALORDER[i].getCodeChar());
 			if((code2==null)&&(code.indexOf(""+(30+i))>0))
-				code2="^"+(bold?COLOR_CODELETTERSINCARDINALORDER[i].getCodeChar():Character.toUpperCase(COLOR_CODELETTERSINCARDINALORDER[i].getCodeChar()));
+				code2="^"+(bold?COLORS_INCARDINALORDER[i].getCodeChar():Character.toUpperCase(COLORS_INCARDINALORDER[i].getCodeChar()));
 		}
 		if((code1!=null)&&(code2!=null))
 			return code1+"|"+code2;
@@ -376,7 +381,12 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		return htlookup;
 	}
 
-	@Override public void clearLookups(){clookup=null;}
+	@Override
+	public void clearLookups()
+	{
+		clookup = null;
+	}
+
 	@Override
 	public String[] standardColorLookups()
 	{
@@ -483,8 +493,6 @@ public class CMColor extends StdLibrary implements ColorLibrary
 					}
 				}
 			}
-
-
 
 			for(int i=0;i<clookup.length;i++)
 			{
