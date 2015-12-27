@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -36,10 +37,17 @@ import java.util.*;
 
 public class ColorSet extends StdCommand
 {
-	public ColorSet(){}
+	public ColorSet()
+	{
+	}
 
-	private final String[] access=I(new String[]{"COLORSET"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "COLORSET" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public String colorDescription(String code)
 	{
@@ -47,12 +55,14 @@ public class ColorSet extends StdCommand
 		String what=CMLib.color().translateANSItoCMCode(code);
 		while((what!=null)&&(what.length()>1))
 		{
-			for(int ii=0;ii<ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS.length;ii++)
-				if(what.charAt(1)==ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii].charAt(0))
+			for(Color C : Color.values())
+			{
+				if(what.charAt(1)==C.getCodeChar())
 				{
-					buf.append("^"+ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
+					buf.append("^"+C.getCodeChar()+CMStrings.capitalizeAndLower(C.name()));
 					break;
 				}
+			}
 			if(what.indexOf('|')>0)
 			{
 				what=what.substring(what.indexOf('|')+1);
@@ -70,16 +80,27 @@ public class ColorSet extends StdCommand
 		{
 			mob.session().prompt(new InputCallback(InputCallback.Type.PROMPT,"")
 			{
-				@Override public void showPrompt() { callBack.showPrompt(); }
-				@Override public void timedOut() { callBack.timedOut(); }
-				@Override public void callBack()
+				@Override
+				public void showPrompt()
+				{
+					callBack.showPrompt();
+				}
+
+				@Override
+				public void timedOut()
+				{
+					callBack.timedOut();
+				}
+
+				@Override 
+				public void callBack()
 				{
 					callBack.setInput("-1");
 					if(this.input.length()>0)
 					{
 						for(int ii=0;ii<set.length;ii++)
 						{
-							if(ColorLibrary.COLOR_ALLCOLORNAMES[ii].toUpperCase().startsWith(this.input.toUpperCase()))
+							if(Color.values()[ii].name().toUpperCase().startsWith(this.input.toUpperCase()))
 							{
 								callBack.setInput(""+ii);
 								break;
@@ -124,6 +145,24 @@ public class ColorSet extends StdCommand
 			mob.tell(L("Your colors have been changed back to default."));
 			return false;
 		}
+		
+		List<String> allExtendedColorsList = new ArrayList<String>();
+		List<String> allBasicColorsList = new ArrayList<String>();
+		for(Color C : Color.values())
+		{
+			if(C.isExtendedColor())
+			{
+				allExtendedColorsList.add(Character.toString(C.getCodeChar()));
+				if(C.isBasicColor())
+				{
+					allBasicColorsList.add(Character.toString(C.getCodeChar()));
+				}
+			}
+		}
+		
+		final String[] COLOR_ALLEXTENDEDCOLORCODELETTERS = allExtendedColorsList.toArray(new String[allExtendedColorsList.size()]);
+		final String[] COLOR_ALLBASICCOLORCODELETTERS = allBasicColorsList.toArray(new String[allBasicColorsList.size()]);
+		
 		if(clookup[0]==null)
 			return false;
 		final
@@ -148,7 +187,8 @@ public class ColorSet extends StdCommand
 		final InputCallback[] IC=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"")
 		{
-			@Override public void showPrompt()
+			@Override 
+			public void showPrompt()
 			{
 				final StringBuffer buf=new StringBuffer("");
 				for(int i=0;i<theSet.length;i++)
@@ -160,7 +200,12 @@ public class ColorSet extends StdCommand
 				session.println(buf.toString());
 				session.promptPrint(L("Enter Number or RETURN: "));
 			}
-			@Override public void timedOut() {}
+
+			@Override
+			public void timedOut()
+			{
+			}
+
 			@Override public void callBack()
 			{
 				if(input.trim().length()==0)
@@ -178,17 +223,30 @@ public class ColorSet extends StdCommand
 					if(theSet[num][1].charAt(0)!='Q')
 					{
 						buf.append(L("^N\n\rAvailable Colors: "));
-						for(int ii=0;ii<ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
+						for(int ii=0;ii<Color.values().length;ii++)
 						{
-							if(ii>0)
-								buf.append(", ");
-							buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
+							Color C = Color.values()[ii];
+							if(C.isBasicColor())
+							{
+								if(ii>0)
+									buf.append(", ");
+								buf.append("^"+C.getCodeChar()+CMStrings.capitalizeAndLower(C.name()));
+							}
 						}
 						session.println(buf.toString()+"^N");
-						pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
+						pickColor(mob,COLOR_ALLBASICCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
 						{
-							@Override public void showPrompt() { session.promptPrint(L("Enter Name of New Color: ")); }
-							@Override public void timedOut() { }
+							@Override
+							public void showPrompt()
+							{
+								session.promptPrint(L("Enter Name of New Color: "));
+							}
+
+							@Override
+							public void timedOut()
+							{
+							}
+
 							@Override public void callBack()
 							{
 								final int colorNum=CMath.s_int(this.input);
@@ -196,7 +254,7 @@ public class ColorSet extends StdCommand
 									mob.tell(L("That is not a valid color!"));
 								else
 								{
-									clookup[0][theSet[num][1].charAt(0)]=clookup[0][ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[colorNum].charAt(0)];
+									clookup[0][theSet[num][1].charAt(0)]=clookup[0][Color.values()[colorNum].getCodeChar()];
 									makeColorChanges(theSet, pstats, session, clookup);
 								}
 								session.prompt(IC[0].reset());
@@ -207,52 +265,76 @@ public class ColorSet extends StdCommand
 					{
 						buf.append(L("^N\n\r\n\rAvailable Background Colors: "));
 						boolean first=true;
-						for(int ii=0;ii<ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS.length;ii++)
-							if(Character.isUpperCase(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii].charAt(0)))
+						for(Color C : Color.values())
+						{
+							if(C.isExtendedColor()
+							&& Character.isUpperCase(C.getCodeChar()))
 							{
 								if(first)
 									first=false; else buf.append(", ");
-								if(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]==ColorLibrary.COLOR_BLACK)
-									buf.append("^"+ColorLibrary.COLOR_WHITE+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
+								if(C==Color.BLACK)
+									buf.append("^"+Color.WHITE.getCodeChar()+CMStrings.capitalizeAndLower(C.name()));
 								else
-									buf.append("^"+ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
+									buf.append("^"+C.getCodeChar()+CMStrings.capitalizeAndLower(C.name()));
 							}
+						}
 						buf.append(L("^N\n\rAvailable Foreground Colors: "));
 						first=true;
-						for(int ii=0;ii<ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
-							if(Character.isLowerCase(ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii].charAt(0)))
+						for(Color C : Color.values())
+						{
+							if((C.isBasicColor())
+							&&(Character.isLowerCase(C.getCodeChar())))
 							{
 								if(first)
 									first=false; else buf.append(", ");
-								buf.append("^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
+								buf.append("^"+C.getCodeChar()+CMStrings.capitalizeAndLower(C.name()));
 							}
+						}
 						session.println(buf.toString()+"^N");
-						pickColor(mob,ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
+						pickColor(mob,COLOR_ALLEXTENDEDCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
 						{
-							@Override public void showPrompt() { session.promptPrint(L("Enter Name of Background Color: ")); }
-							@Override public void timedOut() { }
+							@Override
+							public void showPrompt()
+							{
+								session.promptPrint(L("Enter Name of Background Color: "));
+							}
+
+							@Override
+							public void timedOut()
+							{
+							}
+
 							@Override public void callBack()
 							{
 								final int colorNum1=CMath.s_int(this.input);
-								if((colorNum1<0)||(!Character.isUpperCase(ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[colorNum1].charAt(0))))
+								if((colorNum1<0)||(!Character.isUpperCase(Color.values()[colorNum1].getCodeChar())))
 								{
 									mob.tell(L("That is not a valid Background color!"));
 									session.prompt(IC[0].reset());
 								}
 								else
 								{
-									pickColor(mob,ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
+									pickColor(mob,COLOR_ALLBASICCOLORCODELETTERS,new InputCallback(InputCallback.Type.PROMPT,"")
 									{
-										@Override public void showPrompt() { session.promptPrint(L("Enter Name of Foreground Color: ")); }
-										@Override public void timedOut() { }
+										@Override
+										public void showPrompt()
+										{
+											session.promptPrint(L("Enter Name of Foreground Color: "));
+										}
+
+										@Override
+										public void timedOut()
+										{
+										}
+
 										@Override public void callBack()
 										{
 											final int colorNum2=CMath.s_int(this.input);
-											if((colorNum2<0)||(Character.isUpperCase(ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2].charAt(0))))
+											if((colorNum2<0)||(Character.isUpperCase(Color.values()[colorNum2].getCodeChar())))
 												mob.tell(L("That is not a valid Foreground color!"));
 											else
 											{
-												clookup[0][theSet[num][1].charAt(0)]=CMLib.color().translateCMCodeToANSI("^"+ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[colorNum1]+"|^"+ColorLibrary.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2]);
+												clookup[0][theSet[num][1].charAt(0)]=CMLib.color().translateCMCodeToANSI("^"+Color.values()[colorNum1].getCodeChar()+"|^"+Color.values()[colorNum2].getCodeChar());
 												makeColorChanges(theSet, pstats, session, clookup);
 											}
 											session.prompt(IC[0].reset());

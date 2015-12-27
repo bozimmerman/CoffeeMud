@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -25,6 +26,7 @@ import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.MultiPartData;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
+
 
 
 
@@ -1700,7 +1702,7 @@ public class Test extends StdCommand
 			}
 			if((what.equalsIgnoreCase("all"))||(what.equalsIgnoreCase("escapefilterbug")))
 			{
-				String str=L("@x1@x2^<CHANNEL \"TEST\"^>You TEST 'message'^</CHANNEL^>^N^.",ColorLibrary.COLOR_GREY,ColorLibrary.COLOR_BGGREEN);
+				String str=L("@x1@x2^<CHANNEL \"TEST\"^>You TEST 'message'^</CHANNEL^>^N^.",Color.GREY.getANSICode(),Color.BGGREEN.getANSICode());
 				str=CMLib.coffeeFilter().fullOutFilter(mob.session(), mob, mob, null, null, str, false);
 				str=CMLib.coffeeFilter().fullOutFilter(mob.session(), mob, mob, null, null, str, false);
 				str=CMLib.coffeeFilter().fullOutFilter(mob.session(), mob, mob, null, null, str, false);

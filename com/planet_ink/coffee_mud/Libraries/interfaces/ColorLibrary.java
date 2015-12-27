@@ -31,180 +31,175 @@ import java.util.*;
 */
 public interface ColorLibrary extends CMLibrary
 {
-	public static final String COLOR_WHITE="\033[1;37m";
-	public static final String COLOR_LIGHTGREEN="\033[1;32m";
-	public static final String COLOR_LIGHTBLUE="\033[1;34m";
-	public static final String COLOR_LIGHTRED="\033[1;31m";
-	public static final String COLOR_YELLOW="\033[1;33m";
-	public static final String COLOR_LIGHTCYAN="\033[1;36m";
-	public static final String COLOR_LIGHTPURPLE="\033[1;35m";
-	public static final String COLOR_GREY="\033[0;37m";
-	public static final String COLOR_GREEN="\033[0;32m";
-	public static final String COLOR_BLUE="\033[0;34m";
-	public static final String COLOR_RED="\033[0;31m";
-	public static final String COLOR_BROWN="\033[0;33m";
-	public static final String COLOR_CYAN="\033[0;36m";
-	public static final String COLOR_PURPLE="\033[0;35m";
-	public static final String COLOR_DARKGREY="\033[1;30m";
-	public static final String COLOR_BLACK="\033[0;30m";
-	public static final String COLOR_NONE="\033[0;0m";
-	public static final String COLOR_BOLD="\033[1m";
-	public static final String COLOR_UNDERLINE="\033[4m";
-	public static final String COLOR_BLINK="\033[5m";
-	public static final String COLOR_ITALICS="\033[6m";
-	public static final String COLOR_BGWHITE="\033[47m";
-	public static final String COLOR_BGGREEN="\033[42m";
-	public static final String COLOR_BGBLUE="\033[44m";
-	public static final String COLOR_BGRED="\033[41m";
-	public static final String COLOR_BGYELLOW="\033[43m";
-	public static final String COLOR_BGCYAN="\033[46m";
-	public static final String COLOR_BGPURPLE="\033[45m";
-	public static final String COLOR_BGBLACK="\033[40m";
-	public static final String COLOR_BGDEFAULT="\033[49m";
+	public enum Color
+	{
+		WHITE("\033[1;37m","<FONT COLOR=WHITE",'w'),
+		LIGHTGREEN("\033[1;32m","<FONT COLOR=LIGHTGREEN",'g'),
+		LIGHTBLUE("\033[1;34m","<FONT COLOR=BLUE",'b'),
+		LIGHTRED("\033[1;31m","<FONT COLOR=RED",'r'),
+		YELLOW("\033[1;33m","<FONT COLOR=YELLOW",'y'),
+		LIGHTCYAN("\033[1;36m","<FONT COLOR=CYAN",'c'),
+		LIGHTPURPLE("\033[1;35m","<FONT COLOR=VIOLET",'p'),
+		GREY("\033[0;37m","<FONT COLOR=LIGHTGREY",'W'),
+		GREEN("\033[0;32m","<FONT COLOR=GREEN",'G'),
+		BLUE("\033[0;34m","<FONT COLOR=#000099",'B'),
+		RED("\033[0;31m","<FONT COLOR=#993300",'R'),
+		BROWN("\033[0;33m","<FONT COLOR=#999966",'Y'),
+		CYAN("\033[0;36m","<FONT COLOR=DARKCYAN",'C'),
+		PURPLE("\033[0;35m","<FONT COLOR=PURPLE",'P'),
+		DARKGREY("\033[1;30m","<FONT COLOR=GRAY",'k'),
+		BLACK("\033[0;30m","<FONT COLOR=BLACK",'K'),
+		NONE("\033[0;0m","</I></U></BLINK></B></FONT"),
+		BOLD("\033[1m","<B"),
+		UNDERLINE("\033[4m","<U"),
+		BLINK("\033[5m","<BLINK"),
+		ITALICS("\033[6m","<I"),
+		BGWHITE("\033[47m"," style=\"background-color: white\""),
+		BGGREEN("\033[42m"," style=\"background-color: green\""),
+		BGBLUE("\033[44m"," style=\"background-color: #000099\""),
+		BGRED("\033[41m"," style=\"background-color: #993300\""),
+		BGYELLOW("\033[43m"," style=\"background-color: #999966\""),
+		BGCYAN("\033[46m"," style=\"background-color: darkcyan\""),
+		BGPURPLE("\033[45m"," style=\"background-color: purple\""),
+		BGBLACK("\033[40m"," style=\"background-color: black\""),
+		BGDEFAULT("\033[49m"," style=\"background-color: white\""),
+		;
+		
+		private final String	ansiCode;
+		private final String	htmlTag;
+		private final char		codeLetter;
+		private final boolean	isBasicColor;
+		private final boolean	isExtendedColor;
+		
+		private Color(String ansiCode, String htmlTag, char codeLetter)
+		{
+			this.ansiCode = ansiCode;
+			this.codeLetter = codeLetter;
+			this.htmlTag = htmlTag;
+			isBasicColor = ((this.codeLetter != 'K') && (this.codeLetter != '\0'));
+			isExtendedColor = (this.codeLetter != '\0');
+		}
+		
+		private Color(String ansiCode, String htmlTag)
+		{
+			this(ansiCode, htmlTag, '\0');
+		}
+		
+		public final boolean isBasicColor()
+		{
+			return isBasicColor;
+		}
+		
+		public final boolean isExtendedColor()
+		{
+			return isExtendedColor;
+		}
+		
+		public final String getHtmlTag()
+		{
+			return htmlTag;
+		}
+		
+		public final String getANSICode()
+		{
+			return ansiCode;
+		}
+		
+		public final char getCodeChar()
+		{
+			return codeLetter;
+		}
+		
+		public final String getCodeString()
+		{
+			return name();
+		}
+		
+	}
 
-	public static final String HTTAG_WHITE="<FONT COLOR=WHITE";
-	public static final String HTTAG_LIGHTGREEN="<FONT COLOR=LIGHTGREEN";
-	public static final String HTTAG_LIGHTBLUE="<FONT COLOR=BLUE";
-	public static final String HTTAG_LIGHTRED="<FONT COLOR=RED";
-	public static final String HTTAG_YELLOW="<FONT COLOR=YELLOW";
-	public static final String HTTAG_LIGHTCYAN="<FONT COLOR=CYAN";
-	public static final String HTTAG_LIGHTPURPLE="<FONT COLOR=VIOLET";
-	public static final String HTTAG_GREY="<FONT COLOR=LIGHTGREY";
-	public static final String HTTAG_GREEN="<FONT COLOR=GREEN";
-	public static final String HTTAG_BLUE="<FONT COLOR=#000099";
-	public static final String HTTAG_RED="<FONT COLOR=#993300";
-	public static final String HTTAG_BROWN="<FONT COLOR=#999966";
-	public static final String HTTAG_CYAN="<FONT COLOR=DARKCYAN";
-	public static final String HTTAG_PURPLE="<FONT COLOR=PURPLE";
-	public static final String HTTAG_DARKGREY="<FONT COLOR=GRAY";
-	public static final String HTTAG_BLACK="<FONT COLOR=BLACK";
-	public static final String HTTAG_NONE="</I></U></BLINK></B></FONT";
-	public static final String HTTAG_BOLD="<B";
-	public static final String HTTAG_UNDERLINE="<U";
-	public static final String HTTAG_BLINK="<BLINK";
-	public static final String HTTAG_ITALICS="<I";
-	public static final String HTTAG_BGWHITE=" style=\"background-color: white\"";
-	public static final String HTTAG_BGGREEN=" style=\"background-color: green\"";
-	public static final String HTTAG_BGBLUE=" style=\"background-color: #000099\"";
-	public static final String HTTAG_BGRED=" style=\"background-color: #993300\"";
-	public static final String HTTAG_BGYELLOW=" style=\"background-color: #999966\"";
-	public static final String HTTAG_BGCYAN=" style=\"background-color: darkcyan\"";
-	public static final String HTTAG_BGPURPLE=" style=\"background-color: purple\"";
-	public static final String HTTAG_BGBLACK=" style=\"background-color: black\"";
-	public static final String HTTAG_BGDEFAULT=" style=\"background-color: white\"";
-
-	public static final String[] COLOR_CODELETTERSINCARDINALORDER={
-		"k","r","g","y","b","p","c","w",null,null
+	public static final Color[] COLOR_CODELETTERSINCARDINALORDER=
+	{
+		Color.DARKGREY,
+		Color.LIGHTRED,
+		Color.LIGHTGREEN,
+		Color.YELLOW,
+		Color.LIGHTBLUE,
+		Color.LIGHTPURPLE,
+		Color.LIGHTCYAN,
+		Color.WHITE,
+		null,
+		null
 	};
-	public static final String[] COLOR_ALLCOLORS={
-		COLOR_WHITE,COLOR_LIGHTGREEN,COLOR_LIGHTBLUE,COLOR_LIGHTRED,
-		COLOR_YELLOW,COLOR_LIGHTCYAN,COLOR_LIGHTPURPLE,COLOR_GREY,
-		COLOR_GREEN,COLOR_BLUE,COLOR_RED,COLOR_BROWN,
-		COLOR_CYAN,COLOR_PURPLE,COLOR_DARKGREY,COLOR_BLACK,COLOR_NONE,
-		COLOR_BOLD,COLOR_UNDERLINE,COLOR_BLINK,COLOR_ITALICS,
-		COLOR_BGWHITE,COLOR_BGGREEN,COLOR_BGBLUE,COLOR_BGRED,
-		COLOR_BGYELLOW,COLOR_BGCYAN,COLOR_BGPURPLE,COLOR_BGBLACK,
-		COLOR_BGDEFAULT,
-
-	};
-	public static final String[] COLOR_ALLHTTAGS={
-		HTTAG_WHITE,HTTAG_LIGHTGREEN,HTTAG_LIGHTBLUE,HTTAG_LIGHTRED,
-		HTTAG_YELLOW,HTTAG_LIGHTCYAN,HTTAG_LIGHTPURPLE,HTTAG_GREY,
-		HTTAG_GREEN,HTTAG_BLUE,HTTAG_RED,HTTAG_BROWN,
-		HTTAG_CYAN,HTTAG_PURPLE,HTTAG_DARKGREY,HTTAG_BLACK,HTTAG_NONE,
-		HTTAG_BOLD,HTTAG_UNDERLINE,HTTAG_BLINK,HTTAG_ITALICS,
-		HTTAG_BGWHITE,HTTAG_BGGREEN,HTTAG_BGBLUE,HTTAG_BGRED,
-		HTTAG_BGYELLOW,HTTAG_BGCYAN,HTTAG_BGPURPLE,HTTAG_BGBLACK,
-		HTTAG_BGDEFAULT
-	};
-	public static final String[] COLOR_ALLCOLORNAMES={
-		"WHITE","LIGHTGREEN","LIGHTBLUE","LIGHTRED",
-		"YELLOW","LIGHTCYAN","LIGHTPURPLE","GREY",
-		"GREEN","BLUE","RED","BROWN",
-		"CYAN","PURPLE","DARKGREY","BLACK","NONE",
-		"BOLD","UNDERLINE","BLINK","ITALICS",
-		"BGWHITE","BGGREEN","BGBLUE","BGRED",
-		"BGYELLOW","BGCYAN","BGPURPLE","BGBLACK",
-		"BGDEFAULT"
-	};
-
-	public static final Map<String,String> MAP_COLOR_TO_BGCOLOR=new SHashtable<String,String>(new Object[][]{
-		{   COLOR_WHITE, COLOR_BGWHITE},
-		{   COLOR_LIGHTGREEN, COLOR_BGGREEN},
-		{   COLOR_LIGHTBLUE, COLOR_BGBLUE},
-		{   COLOR_LIGHTRED, COLOR_BGRED},
-		{   COLOR_YELLOW, COLOR_BGYELLOW},
-		{   COLOR_LIGHTCYAN, COLOR_BGCYAN},
-		{   COLOR_LIGHTPURPLE, COLOR_BGPURPLE},
-		{   COLOR_GREY, COLOR_BGWHITE},
-		{   COLOR_GREEN, COLOR_BGGREEN},
-		{   COLOR_BLUE, COLOR_BGBLUE},
-		{   COLOR_RED, COLOR_BGRED},
-		{   COLOR_BROWN, COLOR_BGYELLOW},
-		{   COLOR_CYAN, COLOR_BGCYAN},
-		{   COLOR_PURPLE, COLOR_BGPURPLE},
-		{   COLOR_DARKGREY, COLOR_BGDEFAULT},
-		{   COLOR_BLACK, COLOR_BGBLACK}
+	
+	public static final Map<String,String> MAP_ANSICOLOR_TO_ANSIBGCOLOR=new SHashtable<String,String>(new Object[][]{
+		{   Color.WHITE.getANSICode(), Color.BGWHITE.getANSICode()},
+		{   Color.LIGHTGREEN.getANSICode(), Color.BGGREEN.getANSICode()},
+		{   Color.LIGHTBLUE.getANSICode(), Color.BGBLUE.getANSICode()},
+		{   Color.LIGHTRED.getANSICode(), Color.BGRED.getANSICode()},
+		{   Color.YELLOW.getANSICode(), Color.BGYELLOW.getANSICode()},
+		{   Color.LIGHTCYAN.getANSICode(), Color.BGCYAN.getANSICode()},
+		{   Color.LIGHTPURPLE.getANSICode(), Color.BGPURPLE.getANSICode()},
+		{   Color.GREY.getANSICode(), Color.BGWHITE.getANSICode()},
+		{   Color.GREEN.getANSICode(), Color.BGGREEN.getANSICode()},
+		{   Color.BLUE.getANSICode(), Color.BGBLUE.getANSICode()},
+		{   Color.RED.getANSICode(), Color.BGRED.getANSICode()},
+		{   Color.BROWN.getANSICode(), Color.BGYELLOW.getANSICode()},
+		{   Color.CYAN.getANSICode(), Color.BGCYAN.getANSICode()},
+		{   Color.PURPLE.getANSICode(), Color.BGPURPLE.getANSICode()},
+		{   Color.DARKGREY.getANSICode(), Color.BGDEFAULT.getANSICode()},
+		{   Color.BLACK.getANSICode(), Color.BGBLACK.getANSICode()}
 	});
 
-	public static final String[] COLOR_ALLNORMALCOLORCODELETTERS={
-		"w","g","b","r",
-		"y","c","p","W",
-		"G","B","R","Y",
-		"C","P","k"
-	};
-	public static final String[] COLOR_ALLEXTENDEDCOLORCODELETTERS={
-		"w","g","b","r",
-		"y","c","p","W",
-		"G","B","R","Y",
-		"C","P","k","K"
-	};
 	//remaining=aijlnoszAJV
-	public static final char COLORCODE_YOU_FIGHT='f';
-	public static final char COLORCODE_FIGHT_YOU='e';
-	public static final char COLORCODE_FIGHT='F';
-	public static final char COLORCODE_SPELL='S';
-	public static final char COLORCODE_EMOTE='E';
-	public static final char COLORCODE_WEATHER='J';
-	public static final char COLORCODE_TALK='T';
-	public static final char COLORCODE_TELL='t';
-	public static final char COLORCODE_CHANNEL='Q';
-	public static final char COLORCODE_CHANNELFORE='q';
-	public static final char COLORCODE_IMPORTANT1='x';
-	public static final char COLORCODE_IMPORTANT2='X';
-	public static final char COLORCODE_IMPORTANT3='Z';
-	public static final char COLORCODE_ROOMTITLE='O';
-	public static final char COLORCODE_ROOMDESC='L';
-	public static final char COLORCODE_DIRECTION='D';
-	public static final char COLORCODE_DOORDESC='d';
-	public static final char COLORCODE_ITEM='I';
-	public static final char COLORCODE_MOB='M';
-	public static final char COLORCODE_HITPOINTS='h';
-	public static final char COLORCODE_MANA='m';
-	public static final char COLORCODE_MOVES='v';
-	public static final char COLORCODE_NORMAL='N';
-	public static final char COLORCODE_HIGHLIGHT='H';
-	public static final char COLORCODE_UNEXPDIRECTION='U';
-	public static final char COLORCODE_UNEXPDOORDESC='u';
-
-	public static final char[] COLORCODE_ALLCODES={
-		COLORCODE_YOU_FIGHT,COLORCODE_FIGHT_YOU,COLORCODE_FIGHT,COLORCODE_SPELL,
-		COLORCODE_EMOTE,COLORCODE_TALK,COLORCODE_TELL,COLORCODE_CHANNEL,
-		COLORCODE_CHANNELFORE,COLORCODE_IMPORTANT1,COLORCODE_IMPORTANT2,
-		COLORCODE_IMPORTANT3,COLORCODE_ROOMTITLE,COLORCODE_ROOMDESC,
-		COLORCODE_DIRECTION,COLORCODE_DOORDESC,COLORCODE_ITEM,COLORCODE_MOB,
-		COLORCODE_HITPOINTS,COLORCODE_MANA,COLORCODE_MOVES,COLORCODE_NORMAL,
-		COLORCODE_HIGHLIGHT,COLORCODE_UNEXPDIRECTION,COLORCODE_UNEXPDOORDESC,
-		COLORCODE_WEATHER
-	};
-	public static final String[] COLORCODE_ALLCODENAMES={
-		"YOU-FIGHT","FIGHT-YOU","FIGHT","SPELL","EMOTE","TALK",
-		"TELL","CHANNEL","CHANNELFORE","IMPORTANT1",
-		"IMPORTANT2","IMPORTANT3","ROOMTITLE","ROOMDESC",
-		"DIRECTION","DOORDESC","ITEM","MOB",
-		"HITPOINTS","MANA","MOVES","NORMAL",
-		"HIGHLIGHT","UNEXPDIRECTION","UNEXPDOORDESC","WEATHER"
-	};
+	public enum SpecialColor
+	{
+		YOU_FIGHT('f'),
+		FIGHT_YOU('e'),
+		FIGHT('F'),
+		SPELL('S'),
+		EMOTE('E'),
+		TALK('T'),
+		TELL('t'),
+		CHANNEL('Q'),
+		CHANNELFORE('q'),
+		IMPORTANT1('x'),
+		IMPORTANT2('X'),
+		IMPORTANT3('Z'),
+		ROOMTITLE('O'),
+		ROOMDESC('L'),
+		DIRECTION('D'),
+		DOORDESC('d'),
+		ITEM('I'),
+		MOB('M'),
+		HITPOINTS('h'),
+		MANA('m'),
+		MOVES('v'),
+		NORMAL('N'),
+		HIGHLIGHT('H'),
+		UNEXPDIRECTION('U'),
+		UNEXPDOORDESC('u'),
+		WEATHER('J')
+		;
+		
+		private final char		code;
+		private final String	underStr;
+		
+		private SpecialColor(char escapeCode)
+		{
+			this.code = escapeCode;
+			this.underStr = name().replace('_', '-');
+		}
+		
+		public final char getCodeChar()
+		{
+			return code;
+		}
+		
+		public final String getCodeString()
+		{
+			return underStr;
+		}
+	}
 
 	public static final char COLORCODE_BACKGROUND='~';
 	public static final char COLORCODE_FANSI256='#';

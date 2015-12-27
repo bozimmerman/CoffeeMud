@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelMsg;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -492,15 +493,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			}
 			else
 			{
-				final int colorNum=CMParms.indexOf(ColorLibrary.COLOR_ALLCOLORNAMES, s);
-				if(colorNum>=0)
+				Color C=(Color)CMath.s_valueOf(Color.class, s);
+				if(C!=null)
 				{
 					V.remove(v);
 					if(s.startsWith("BG"))
-						colorOverride[0]=colorOverride[0]+ColorLibrary.COLOR_ALLCOLORS[colorNum];
+						colorOverride[0]=colorOverride[0]+C.getANSICode();
 					else
-						colorOverride[0]=ColorLibrary.COLOR_ALLCOLORS[colorNum]+ColorLibrary.COLOR_ALLCOLORS[colorNum]+colorOverride[0];
-					colorOverride[1]+=" "+ColorLibrary.COLOR_ALLCOLORNAMES[colorNum];
+						colorOverride[0]=C.getANSICode()+colorOverride[0];
+					colorOverride[1]+=" "+C.getANSICode();
 				}
 			}
 		}

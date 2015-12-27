@@ -35,12 +35,19 @@ import java.util.*;
 */
 public class CMColor extends StdLibrary implements ColorLibrary
 {
-	@Override public String ID(){return "CMColor";}
+	@Override
+	public String ID()
+	{
+		return "CMColor";
+	}
 
 	public String[] clookup=null;
 	public String[] htlookup=null;
 
 	private final static Map<Integer,ColorState> cache=new SHashtable<Integer,ColorState>();
+	
+	private final Map<String, SpecialColor> nameMap = new Hashtable<String, SpecialColor>();
+
 	
 	private static class ColorStateImpl implements ColorState
 	{
@@ -168,9 +175,9 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		for(int i=0;i<COLOR_CODELETTERSINCARDINALORDER.length;i++)
 		{
 			if((code1==null)&&(code.indexOf(""+(40+i))>0))
-				code1="^"+Character.toUpperCase(COLOR_CODELETTERSINCARDINALORDER[i].charAt(0));
+				code1="^"+Character.toUpperCase(COLOR_CODELETTERSINCARDINALORDER[i].getCodeChar());
 			if((code2==null)&&(code.indexOf(""+(30+i))>0))
-				code2="^"+(bold?COLOR_CODELETTERSINCARDINALORDER[i]:(""+Character.toUpperCase(COLOR_CODELETTERSINCARDINALORDER[i].charAt(0))));
+				code2="^"+(bold?COLOR_CODELETTERSINCARDINALORDER[i].getCodeChar():Character.toUpperCase(COLOR_CODELETTERSINCARDINALORDER[i].getCodeChar()));
 		}
 		if((code1!=null)&&(code2!=null))
 			return code1+"|"+code2;
@@ -236,6 +243,28 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		return msg;
 	}
 
+	protected final SpecialColor findCodeColor(String name)
+	{
+		if(this.nameMap.size()==0)
+		{
+			for(SpecialColor code : SpecialColor.values())
+			{
+				nameMap.put(code.getCodeString(), code);
+			}
+		}
+		if(this.nameMap.containsKey(name))
+			return this.nameMap.get(name);
+		return (SpecialColor)CMath.s_valueOf(SpecialColor.class, name);
+	}
+	
+	protected final char findCodeChar(String name)
+	{
+		final SpecialColor code = findCodeColor(name);
+		if(code != null)
+			return code.getCodeChar();
+		return ' ';
+	}
+	
 	@Override
 	public String[] standardHTMLlookups()
 	{
@@ -243,45 +272,48 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		{
 			htlookup=new String[256];
 
-			htlookup['!']=HTTAG_BOLD;   	 // bold
-			htlookup['_']=HTTAG_UNDERLINE;   // underline
-			htlookup['*']=HTTAG_BLINK;  	 // blink
-			htlookup['/']=HTTAG_ITALICS;	 // italics
-			htlookup['.']=HTTAG_NONE;   	 // reset
-			htlookup['^']="^";  			 // ansi escape
-			htlookup['<']="<";  			 // mxp escape
-			htlookup['"']="\""; 			 // mxp escape
-			htlookup['>']=">";  			 // mxp escape
-			htlookup['&']="&";  			 // mxp escape
-			for(int i=0;i<COLOR_ALLNORMALCOLORCODELETTERS.length;i++)
-				htlookup[COLOR_ALLNORMALCOLORCODELETTERS[i].charAt(0)]=COLOR_ALLHTTAGS[i];
+			htlookup['!']=Color.BOLD.getHtmlTag();		// bold
+			htlookup['_']=Color.UNDERLINE.getHtmlTag(); // underline
+			htlookup['*']=Color.BLINK.getHtmlTag();		// blink
+			htlookup['/']=Color.ITALICS.getHtmlTag();	// italics
+			htlookup['.']=Color.NONE.getHtmlTag();   	// reset
+			htlookup['^']="^";  						// ansi escape
+			htlookup['<']="<";  						// mxp escape
+			htlookup['"']="\""; 						// mxp escape
+			htlookup['>']=">";  						// mxp escape
+			htlookup['&']="&";  						// mxp escape
+			for(Color C : Color.values())
+			{
+				if(C.isBasicColor())
+					htlookup[C.getCodeChar()] = C.getHtmlTag();
+			}
 
 			// default color settings:
-			htlookup[COLORCODE_HIGHLIGHT]=HTTAG_LIGHTCYAN;
-			htlookup[COLORCODE_YOU_FIGHT]=HTTAG_LIGHTPURPLE;
-			htlookup[COLORCODE_FIGHT_YOU]=HTTAG_LIGHTRED;
-			htlookup[COLORCODE_FIGHT]=HTTAG_RED;
-			htlookup[COLORCODE_SPELL]=HTTAG_YELLOW;
-			htlookup[COLORCODE_EMOTE]=HTTAG_LIGHTPURPLE;
-			htlookup[COLORCODE_WEATHER]=HTTAG_WHITE;
-			htlookup[COLORCODE_TALK]=HTTAG_LIGHTBLUE;
-			htlookup[COLORCODE_TELL]=HTTAG_CYAN;
-			htlookup[COLORCODE_CHANNEL]=mixHTMLCodes(HTTAG_LIGHTCYAN,HTTAG_BGBLUE);
-			htlookup[COLORCODE_CHANNELFORE]=HTTAG_LIGHTCYAN;
-			htlookup[COLORCODE_IMPORTANT1]=mixHTMLCodes(HTTAG_LIGHTCYAN,HTTAG_BGBLUE);
-			htlookup[COLORCODE_IMPORTANT2]=mixHTMLCodes(HTTAG_YELLOW,HTTAG_BGBLUE);
-			htlookup[COLORCODE_IMPORTANT3]=mixHTMLCodes(HTTAG_YELLOW,HTTAG_BGRED);
-			htlookup[COLORCODE_ROOMTITLE]=HTTAG_LIGHTCYAN;
-			htlookup[COLORCODE_ROOMDESC]=HTTAG_WHITE;
-			htlookup[COLORCODE_DIRECTION]=mixHTMLCodes(HTTAG_LIGHTCYAN,HTTAG_BGBLUE);
-			htlookup[COLORCODE_DOORDESC]=HTTAG_LIGHTBLUE;
-			htlookup[COLORCODE_ITEM]=HTTAG_LIGHTGREEN;
-			htlookup[COLORCODE_MOB]=HTTAG_LIGHTPURPLE;
-			htlookup[COLORCODE_HITPOINTS]=HTTAG_LIGHTCYAN;
-			htlookup[COLORCODE_MANA]=HTTAG_LIGHTCYAN;
-			htlookup[COLORCODE_MOVES]=HTTAG_LIGHTCYAN;
-			htlookup[COLORCODE_UNEXPDIRECTION]=mixHTMLCodes(HTTAG_CYAN,HTTAG_BGBLUE);
-			htlookup[COLORCODE_UNEXPDOORDESC]=HTTAG_LIGHTBLUE;
+			htlookup[SpecialColor.HIGHLIGHT.getCodeChar()]=Color.LIGHTCYAN.getHtmlTag();
+			htlookup[SpecialColor.YOU_FIGHT.getCodeChar()]=Color.LIGHTPURPLE.getHtmlTag();
+			htlookup[SpecialColor.FIGHT_YOU.getCodeChar()]=Color.LIGHTRED.getHtmlTag();
+			htlookup[SpecialColor.FIGHT.getCodeChar()]=Color.RED.getHtmlTag();
+			htlookup[SpecialColor.SPELL.getCodeChar()]=Color.YELLOW.getHtmlTag();
+			htlookup[SpecialColor.EMOTE.getCodeChar()]=Color.LIGHTPURPLE.getHtmlTag();
+			htlookup[SpecialColor.WEATHER.getCodeChar()]=Color.WHITE.getHtmlTag();
+			htlookup[SpecialColor.TALK.getCodeChar()]=Color.LIGHTBLUE.getHtmlTag();
+			htlookup[SpecialColor.TELL.getCodeChar()]=Color.CYAN.getHtmlTag();
+			htlookup[SpecialColor.CHANNEL.getCodeChar()]=mixHTMLCodes(Color.LIGHTCYAN.getHtmlTag(),Color.BGBLUE.getHtmlTag());
+			htlookup[SpecialColor.CHANNELFORE.getCodeChar()]=Color.LIGHTCYAN.getHtmlTag();
+			htlookup[SpecialColor.IMPORTANT1.getCodeChar()]=mixHTMLCodes(Color.LIGHTCYAN.getHtmlTag(),Color.BGBLUE.getHtmlTag());
+			htlookup[SpecialColor.IMPORTANT2.getCodeChar()]=mixHTMLCodes(Color.YELLOW.getHtmlTag(),Color.BGBLUE.getHtmlTag());
+			htlookup[SpecialColor.IMPORTANT3.getCodeChar()]=mixHTMLCodes(Color.YELLOW.getHtmlTag(),Color.BGRED.getHtmlTag());
+			htlookup[SpecialColor.ROOMTITLE.getCodeChar()]=Color.LIGHTCYAN.getHtmlTag();
+			htlookup[SpecialColor.ROOMDESC.getCodeChar()]=Color.WHITE.getHtmlTag();
+			htlookup[SpecialColor.DIRECTION.getCodeChar()]=mixHTMLCodes(Color.LIGHTCYAN.getHtmlTag(),Color.BGBLUE.getHtmlTag());
+			htlookup[SpecialColor.DOORDESC.getCodeChar()]=Color.LIGHTBLUE.getHtmlTag();
+			htlookup[SpecialColor.ITEM.getCodeChar()]=Color.LIGHTGREEN.getHtmlTag();
+			htlookup[SpecialColor.MOB.getCodeChar()]=Color.LIGHTPURPLE.getHtmlTag();
+			htlookup[SpecialColor.HITPOINTS.getCodeChar()]=Color.LIGHTCYAN.getHtmlTag();
+			htlookup[SpecialColor.MANA.getCodeChar()]=Color.LIGHTCYAN.getHtmlTag();
+			htlookup[SpecialColor.MOVES.getCodeChar()]=Color.LIGHTCYAN.getHtmlTag();
+			htlookup[SpecialColor.UNEXPDIRECTION.getCodeChar()]=mixHTMLCodes(Color.CYAN.getHtmlTag(),Color.BGBLUE.getHtmlTag());
+			htlookup[SpecialColor.UNEXPDOORDESC.getCodeChar()]=Color.LIGHTBLUE.getHtmlTag();
 			final List<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.Str.COLORSCHEME),true);
 			for(int i=0;i<schemeSettings.size();i++)
 			{
@@ -291,10 +323,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 				{
 					final String key=s.substring(0,x).trim();
 					String value=s.substring(x+1).trim();
-					char codeChar=' ';
-					for(int ii=0;ii<COLORCODE_ALLCODENAMES.length;ii++)
-						if(key.equalsIgnoreCase(COLORCODE_ALLCODENAMES[ii]))
-						{ codeChar=COLORCODE_ALLCODES[ii]; break;}
+					char codeChar=this.findCodeChar(key.toUpperCase());
 					if(codeChar!=' ')
 					{
 						String newVal=null;
@@ -314,9 +343,14 @@ public class CMColor extends StdLibrary implements ColorLibrary
 								value=value.substring(x+1).trim();
 							}
 							addCode=null;
-							for(int ii=0;ii<COLOR_ALLCOLORNAMES.length;ii++)
-								if(COLOR_ALLCOLORNAMES[ii].equalsIgnoreCase(addColor))
-								{ addCode=COLOR_ALLHTTAGS[ii]; break;}
+							for(Color C : Color.values())
+							{
+								if(C.name().equalsIgnoreCase(addColor))
+								{
+									addCode = C.getHtmlTag();
+									break;
+								}
+							}
 							if(addCode!=null)
 							{
 								if(newVal==null)
@@ -337,7 +371,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 				if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
 					htlookup[i]=htlookup[s.charAt(1)];
 			}
-			htlookup[COLORCODE_NORMAL]=HTTAG_NONE;
+			htlookup[SpecialColor.NORMAL.getCodeChar()]=Color.NONE.getHtmlTag();
 		}
 		return htlookup;
 	}
@@ -349,49 +383,53 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		if(clookup==null)
 		{
 			clookup=new String[256];
-			clookup['!']=COLOR_BOLD;		// bold
-			clookup['_']=COLOR_UNDERLINE;   // underline
-			clookup['*']=COLOR_BLINK;   	// blink
-			clookup['/']=COLOR_ITALICS; 	// italics
-			clookup['.']=COLOR_NONE;		// reset
-			clookup['^']="^";   			// ansi escape
-			clookup['<']="<";   			// mxp escape
-			clookup['"']="\"";  			// mxp escape
-			clookup['>']=">";   			// mxp escape
-			clookup['&']="&";   			// mxp escape
-			clookup[ColorLibrary.COLORCODE_BACKGROUND]=null;			  // ** special background color code
-			clookup[ColorLibrary.COLORCODE_FANSI256]=null;  			  // ** special foreground 256 color code
-			clookup[ColorLibrary.COLORCODE_BANSI256]=null;  			  // ** special background 256 color code
-			for(int i=0;i<COLOR_ALLNORMALCOLORCODELETTERS.length;i++)
-				clookup[COLOR_ALLNORMALCOLORCODELETTERS[i].charAt(0)]=COLOR_ALLCOLORS[i];
+			clookup['!']=Color.BOLD.getANSICode();		// bold
+			clookup['_']=Color.UNDERLINE.getANSICode(); // underline
+			clookup['*']=Color.BLINK.getANSICode();   	// blink
+			clookup['/']=Color.ITALICS.getANSICode(); 	// italics
+			clookup['.']=Color.NONE.getANSICode();		// reset
+			clookup['^']="^";   						// ansi escape
+			clookup['<']="<";   						// mxp escape
+			clookup['"']="\"";  						// mxp escape
+			clookup['>']=">";   						// mxp escape
+			clookup['&']="&";   						// mxp escape
+			clookup[COLORCODE_BACKGROUND]=null;			  // ** special background color code
+			clookup[COLORCODE_FANSI256]=null;  			  // ** special foreground 256 color code
+			clookup[COLORCODE_BANSI256]=null;  			  // ** special background 256 color code
+			
+			for(Color C : Color.values())
+			{
+				if(C.isBasicColor())
+					clookup[C.getCodeChar()]=C.getANSICode();
+			}
 
 			// default color settings:
-			clookup[COLORCODE_NORMAL]=COLOR_GREY;
-			clookup[COLORCODE_HIGHLIGHT]=COLOR_LIGHTCYAN;
-			clookup[COLORCODE_YOU_FIGHT]=COLOR_LIGHTPURPLE;
-			clookup[COLORCODE_FIGHT_YOU]=COLOR_LIGHTRED;
-			clookup[COLORCODE_FIGHT]=COLOR_RED;
-			clookup[COLORCODE_SPELL]=COLOR_YELLOW;
-			clookup[COLORCODE_EMOTE]=COLOR_LIGHTPURPLE;
-			clookup[COLORCODE_WEATHER]=COLOR_WHITE;
-			clookup[COLORCODE_TALK]=COLOR_LIGHTBLUE;
-			clookup[COLORCODE_TELL]=COLOR_CYAN;
-			clookup[COLORCODE_CHANNEL]=mixColorCodes(COLOR_LIGHTCYAN,COLOR_BGBLUE);
-			clookup[COLORCODE_CHANNELFORE]=COLOR_LIGHTCYAN;
-			clookup[COLORCODE_IMPORTANT1]=mixColorCodes(COLOR_LIGHTCYAN,COLOR_BGBLUE);
-			clookup[COLORCODE_IMPORTANT2]=mixColorCodes(COLOR_YELLOW,COLOR_BGBLUE);
-			clookup[COLORCODE_IMPORTANT3]=mixColorCodes(COLOR_YELLOW,COLOR_BGRED);
-			clookup[COLORCODE_ROOMTITLE]=COLOR_LIGHTCYAN;
-			clookup[COLORCODE_ROOMDESC]=COLOR_WHITE;
-			clookup[COLORCODE_DIRECTION]=mixColorCodes(COLOR_LIGHTCYAN,COLOR_BGBLUE);
-			clookup[COLORCODE_DOORDESC]=COLOR_LIGHTBLUE;
-			clookup[COLORCODE_ITEM]=COLOR_LIGHTGREEN;
-			clookup[COLORCODE_MOB]=COLOR_LIGHTPURPLE;
-			clookup[COLORCODE_HITPOINTS]=COLOR_LIGHTCYAN;
-			clookup[COLORCODE_MANA]=COLOR_LIGHTCYAN;
-			clookup[COLORCODE_MOVES]=COLOR_LIGHTCYAN;
-			clookup[COLORCODE_UNEXPDIRECTION]=mixColorCodes(COLOR_CYAN,COLOR_BGBLUE);
-			clookup[COLORCODE_UNEXPDOORDESC]=COLOR_LIGHTBLUE;
+			clookup[SpecialColor.NORMAL.getCodeChar()] = Color.GREY.getANSICode();
+			clookup[SpecialColor.HIGHLIGHT.getCodeChar()] = Color.LIGHTCYAN.getANSICode();
+			clookup[SpecialColor.YOU_FIGHT.getCodeChar()] = Color.LIGHTPURPLE.getANSICode();
+			clookup[SpecialColor.FIGHT_YOU.getCodeChar()] = Color.LIGHTRED.getANSICode();
+			clookup[SpecialColor.FIGHT.getCodeChar()] = Color.RED.getANSICode();
+			clookup[SpecialColor.SPELL.getCodeChar()] = Color.YELLOW.getANSICode();
+			clookup[SpecialColor.EMOTE.getCodeChar()] = Color.LIGHTPURPLE.getANSICode();
+			clookup[SpecialColor.WEATHER.getCodeChar()] = Color.WHITE.getANSICode();
+			clookup[SpecialColor.TALK.getCodeChar()] = Color.LIGHTBLUE.getANSICode();
+			clookup[SpecialColor.TELL.getCodeChar()] = Color.CYAN.getANSICode();
+			clookup[SpecialColor.CHANNEL.getCodeChar()] = mixColorCodes(Color.LIGHTCYAN.getANSICode(), Color.BGBLUE.getANSICode());
+			clookup[SpecialColor.CHANNELFORE.getCodeChar()] = Color.LIGHTCYAN.getANSICode();
+			clookup[SpecialColor.IMPORTANT1.getCodeChar()] = mixColorCodes(Color.LIGHTCYAN.getANSICode(), Color.BGBLUE.getANSICode());
+			clookup[SpecialColor.IMPORTANT2.getCodeChar()] = mixColorCodes(Color.YELLOW.getANSICode(), Color.BGBLUE.getANSICode());
+			clookup[SpecialColor.IMPORTANT3.getCodeChar()] = mixColorCodes(Color.YELLOW.getANSICode(), Color.BGRED.getANSICode());
+			clookup[SpecialColor.ROOMTITLE.getCodeChar()] = Color.LIGHTCYAN.getANSICode();
+			clookup[SpecialColor.ROOMDESC.getCodeChar()] = Color.WHITE.getANSICode();
+			clookup[SpecialColor.DIRECTION.getCodeChar()] = mixColorCodes(Color.LIGHTCYAN.getANSICode(), Color.BGBLUE.getANSICode());
+			clookup[SpecialColor.DOORDESC.getCodeChar()] = Color.LIGHTBLUE.getANSICode();
+			clookup[SpecialColor.ITEM.getCodeChar()] = Color.LIGHTGREEN.getANSICode();
+			clookup[SpecialColor.MOB.getCodeChar()] = Color.LIGHTPURPLE.getANSICode();
+			clookup[SpecialColor.HITPOINTS.getCodeChar()] = Color.LIGHTCYAN.getANSICode();
+			clookup[SpecialColor.MANA.getCodeChar()] = Color.LIGHTCYAN.getANSICode();
+			clookup[SpecialColor.MOVES.getCodeChar()] = Color.LIGHTCYAN.getANSICode();
+			clookup[SpecialColor.UNEXPDIRECTION.getCodeChar()] = mixColorCodes(Color.CYAN.getANSICode(), Color.BGBLUE.getANSICode());
+			clookup[SpecialColor.UNEXPDOORDESC.getCodeChar()] = Color.LIGHTBLUE.getANSICode();
 			final List<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.Str.COLORSCHEME),true);
 			for(int i=0;i<schemeSettings.size();i++)
 			{
@@ -401,10 +439,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 				{
 					final String key=s.substring(0,x).trim();
 					String value=s.substring(x+1).trim();
-					char codeChar=' ';
-					for(int ii=0;ii<COLORCODE_ALLCODENAMES.length;ii++)
-						if(key.equalsIgnoreCase(COLORCODE_ALLCODENAMES[ii]))
-						{ codeChar=COLORCODE_ALLCODES[ii]; break;}
+					char codeChar=this.findCodeChar(key.toUpperCase());
 					if(codeChar!=' ')
 					{
 						String newVal=null;
@@ -426,9 +461,14 @@ public class CMColor extends StdLibrary implements ColorLibrary
 							if(addColor!=null)
 							{
 								addCode=null;
-								for(int ii=0;ii<COLOR_ALLCOLORNAMES.length;ii++)
-									if(addColor.equalsIgnoreCase(COLOR_ALLCOLORNAMES[ii]))
-									{ addCode=COLOR_ALLCOLORS[ii]; break;}
+								for(Color C : Color.values())
+								{
+									if(C.name().equalsIgnoreCase(addColor))
+									{
+										addCode = C.getANSICode();
+										break;
+									}
+								}
 								if(addCode!=null)
 								{
 									if(newVal==null)

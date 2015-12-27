@@ -341,7 +341,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				else
 					escapeSequence="\033[38;5;"+(lastColor.foregroundCode() & 0xff)+"m";
 				if(lastColor.backgroundCode()=='.')
-					escapeSequence=ColorLibrary.COLOR_NONE+escapeSequence;
+					escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
 				else
 				{
 					String bgEscapeSequence;
@@ -349,10 +349,10 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					{
 						bgEscapeSequence=clookup[lastColor.backgroundCode()];
 						if(bgEscapeSequence==null)
-							bgEscapeSequence=ColorLibrary.COLOR_BGBLACK;
+							bgEscapeSequence=ColorLibrary.Color.BGBLACK.getANSICode();
 						else
-						if(ColorLibrary.MAP_COLOR_TO_BGCOLOR.containsKey(bgEscapeSequence))
-							bgEscapeSequence=ColorLibrary.MAP_COLOR_TO_BGCOLOR.get(bgEscapeSequence);
+						if(ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.containsKey(bgEscapeSequence))
+							bgEscapeSequence=ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.get(bgEscapeSequence);
 					}
 					else
 						bgEscapeSequence="\033[48;5;"+(lastColor.backgroundCode() & 0xff)+"m";
@@ -409,7 +409,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				{
 					escapeSequence="\033[38;5;"+finalNum+"m";
 					if((S!=null)&&(S.getCurrentColor().backgroundCode()!='.'))
-						escapeSequence=ColorLibrary.COLOR_NONE+escapeSequence;
+						escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
 				}
 				else
 					escapeSequence="\033[48;5;"+finalNum+"m";
@@ -443,7 +443,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			final char bc=str.charAt(enDex);
 			final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.getColorCodes();
 			final String escapeSequence=clookup[bc];
-			final String bgEscapeSequence=ColorLibrary.MAP_COLOR_TO_BGCOLOR.get(escapeSequence);
+			final String bgEscapeSequence=ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.get(escapeSequence);
 			if(bgEscapeSequence != null)
 			{
 				str.insert(index+3, bgEscapeSequence);
@@ -574,7 +574,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				{
 					final ColorState state=S.getCurrentColor();
 					if(state.backgroundCode()!='.')
-						escapeSequence=ColorLibrary.COLOR_NONE+escapeSequence;
+						escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
 					S.setLastColor(state);
 					S.setCurrentColor(CMLib.color().valueOf(c,'.'));
 				}
