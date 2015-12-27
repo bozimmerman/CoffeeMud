@@ -342,9 +342,10 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				commonTell(mob,L("You'll need to pick that up first."));
 				return false;
 			}
-			if(!CMath.bset(buildingI.material(),RawMaterial.MATERIAL_PAPER))
+			if((!CMath.bset(buildingI.material(),RawMaterial.MATERIAL_PAPER))
+			&&(buildingI.material() != RawMaterial.RESOURCE_SILK))
 			{
-				commonTell(mob,L("@x1 isn't even made of paper!",buildingI.name(mob)));
+				commonTell(mob,L("@x1 isn't even made of paper or silk!",buildingI.name(mob)));
 				return false;
 			}
 			if((!(buildingI instanceof Scroll))||(!buildingI.isGeneric()))
