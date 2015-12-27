@@ -1527,7 +1527,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					for(final Enumeration<Item> e=V.elements();e.hasMoreElements();)
 					{
 						I=e.nextElement();
-						if(I.isGeneric())
+						if(I.isGeneric() || I.ID().equalsIgnoreCase("StdDeckOfCards"))
 							V2.addElement(I);
 					}
 					createChoices(V2);

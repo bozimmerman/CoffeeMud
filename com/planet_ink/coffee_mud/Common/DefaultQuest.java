@@ -835,7 +835,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									{
 										final Area A2=e.nextElement();
 										if(!areas.contains(A2))
-											areas.add(e.nextElement());
+											areas.add(A2);
 									}
 								}
 								else
@@ -3689,9 +3689,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				final int day=CMath.s_parseIntExpression(startDate.substring(x+1));
 				int year=Calendar.getInstance().get(Calendar.YEAR);
 				long distance=CMLib.time().string2Millis(month+"/"+day+"/"+year+" 12:00 AM");
-				while(distance<System.currentTimeMillis())
+				final Calendar C=Calendar.getInstance();
+				long today=CMLib.time().string2Millis((C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DAY_OF_MONTH)+"/"+C.get(Calendar.YEAR)+" 12:00 AM");
+				while(distance<today)
 					distance=CMLib.time().string2Millis(month+"/"+day+"/"+(++year)+" 12:00 AM");
-				waitRemaining=(int)((distance-System.currentTimeMillis())/CMProps.getTickMillis());
+				waitRemaining=(int)((distance-today)/CMProps.getTickMillis());
 			}
 		}
 		else
