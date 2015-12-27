@@ -64,7 +64,7 @@ public class Spell_Scribe extends Spell
 	@Override
 	protected int overrideMana()
 	{
-		return Ability.COST_ALL;
+		return Ability.COST_ALL-50;
 	}
 
 	@Override
