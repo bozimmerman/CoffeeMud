@@ -37,7 +37,11 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdRace implements Race
 {
-	@Override public String	 ID(){	return "StdRace"; }
+	@Override
+	public String ID()
+	{
+		return "StdRace";
+	}
 
 	protected static final int[] breatheAnythingArray	= new int[0];
 	protected static final int[] breatheAirArray		= new int[] { RawMaterial.RESOURCE_AIR };
@@ -448,11 +452,13 @@ public class StdRace implements Race
 			}
 		}
 	}
+
 	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -1512,7 +1518,8 @@ public class StdRace implements Race
 			racialAbilityMap=new Hashtable<Integer,SearchIDList<Ability>>();
 			for(int i=0;i<racialAbilityNames().length;i++)
 			{
-				CMLib.ableMapper().addDynaAbilityMapping(ID(),
+				CMLib.ableMapper().addDynaAbilityMapping(
+						 ID(),
 						 racialAbilityLevels()[i],
 						 racialAbilityNames()[i],
 						 racialAbilityProficiencies()[i],

@@ -34,29 +34,102 @@ import java.util.*;
 */
 public class Undead extends StdRace
 {
-	@Override public String ID(){	return "Undead"; }
-	@Override public String name(){ return "Undead"; }
-	@Override public int shortestMale(){return 64;}
-	@Override public int shortestFemale(){return 60;}
-	@Override public int heightVariance(){return 12;}
-	@Override public int lightestWeight(){return 100;}
-	@Override public int weightVariance(){return 100;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Undead";}
-	@Override public boolean fertile(){return false;}
-	@Override public boolean uncharmable(){return true;}
-	@Override public int[] getBreathables() { return breatheAnythingArray; }
+	@Override
+	public String ID()
+	{
+		return "Undead";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Undead";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 64;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 60;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 100;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 100;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Undead";
+	}
+
+	@Override
+	public boolean fertile()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean uncharmable()
+	{
+		return true;
+	}
+
+	@Override
+	public int[] getBreathables()
+	{
+		return breatheAnythingArray;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	private final int[]	agingChart	= { 0, 0, 0, 0, 0, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER };
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
@@ -67,6 +140,7 @@ public class Undead extends StdRace
 		affectableState.setThirst(CharState.DEFAULT_THIRST_FULL+10);
 		affectedMOB.curState().setThirst(affectableState.getThirst());
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -187,6 +261,7 @@ public class Undead extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+
 	@Override
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
@@ -250,6 +325,7 @@ public class Undead extends StdRace
 		else
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

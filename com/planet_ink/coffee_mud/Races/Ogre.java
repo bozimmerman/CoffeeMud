@@ -34,29 +34,99 @@ import java.util.*;
 */
 public class Ogre extends Humanoid
 {
-	@Override public String ID(){	return "Ogre"; }
-	@Override public String name(){ return "Ogre"; }
-	@Override public int shortestMale(){return 74;}
-	@Override public int shortestFemale(){return 69;}
-	@Override public int heightVariance(){return 12;}
-	@Override public int lightestWeight(){return 290;}
-	@Override public int weightVariance(){return 90;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Giant-kin";}
-	private final String[]culturalAbilityNames={"Gigantic","Orcish","Butchering"};
-	private final int[]culturalAbilityProficiencies={100,50,75};
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override
+	public String ID()
+	{
+		return "Ogre";
+	}
 
-	private final int[] agingChart={0,2,6,30,69,104,136,142,148};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public String name()
+	{
+		return "Ogre";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 74;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 69;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 290;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 90;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Giant-kin";
+	}
+
+	private final String[]	culturalAbilityNames			= { "Gigantic", "Orcish", "Butchering" };
+	private final int[]		culturalAbilityProficiencies	= { 100, 50, 75 };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
+
+	private final int[]	agingChart	= { 0, 2, 6, 30, 69, 104, 136, 142, 148 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

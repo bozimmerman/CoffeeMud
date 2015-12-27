@@ -32,11 +32,35 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class PlayerRace extends Human
 {
-	@Override public String ID(){ return "PlayerRace"; }
-	@Override public String name(){ return "PlayerRace"; }
-	@Override public String[] culturalAbilityNames(){return null;}
-	@Override public int[] culturalAbilityProficiencies(){return null;}
-	@Override public int availabilityCode(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "PlayerRace";
+	}
+
+	@Override
+	public String name()
+	{
+		return "PlayerRace";
+	}
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return null;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return null;
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return 0;
+	}
 
 	public PlayerRace()
 	{

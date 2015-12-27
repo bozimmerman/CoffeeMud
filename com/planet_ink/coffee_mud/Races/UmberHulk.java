@@ -35,29 +35,104 @@ import java.util.*;
 */
 public class UmberHulk extends StdRace
 {
-	@Override public String ID(){	return "UmberHulk"; }
-	@Override public String name(){ return "Umber Hulk"; }
-	@Override public int shortestMale(){return 96;}
-	@Override public int shortestFemale(){return 90;}
-	@Override public int heightVariance(){return 24;}
-	@Override public int lightestWeight(){return 800;}
-	@Override public int weightVariance(){return 200;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Giant-kin";}
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	private final String[]racialAbilityNames={"Chant_StoneWalking","Spell_Confusion"};
-	private final int[]racialAbilityLevels={1,10};
-	private final int[]racialAbilityProficiencies={100,50};
-	private final boolean[]racialAbilityQuals={false,false};
-	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override
+	public String ID()
+	{
+		return "UmberHulk";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Umber Hulk";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 96;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 90;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 24;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 800;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 200;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Giant-kin";
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
+
+	protected static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();
+	private final String[]					racialAbilityNames			= { "Chant_StoneWalking", "Spell_Confusion" };
+	private final int[]						racialAbilityLevels			= { 1, 10 };
+	private final int[]						racialAbilityProficiencies	= { 100, 50 };
+	private final boolean[]					racialAbilityQuals			= { false, false };
+
+	@Override
+	public String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	public int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	public int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	public boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
+
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -67,16 +142,19 @@ public class UmberHulk extends StdRace
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,8);
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,9);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "thunders in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "leaves";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -90,6 +168,7 @@ public class UmberHulk extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{
@@ -104,6 +183,7 @@ public class UmberHulk extends StdRace
 				return super.makeMobName('N', age);
 		}
 	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -141,6 +221,7 @@ public class UmberHulk extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -149,8 +230,10 @@ public class UmberHulk extends StdRace
 			if(resources.size()==0)
 			{
 				for(int i=0;i<4;i++)
+				{
 					resources.addElement(makeResource
 					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_LEATHER));
+				}
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource

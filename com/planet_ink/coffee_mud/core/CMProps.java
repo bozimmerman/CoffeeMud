@@ -428,7 +428,7 @@ public class CMProps extends Properties
 	protected long  			 MILLIS_PER_MUDHOUR	= 600000;
 	protected long  			 TICKS_PER_RLMIN	= (int)Math.round(60000.0/TIME_TICK);
 	protected long  			 TICKS_PER_RLHOUR	= TICKS_PER_RLMIN * 60;
-	protected long  			 TICKS_PER_RLDAY	=TICKS_PER_RLHOUR * 24;
+	protected long  			 TICKS_PER_RLDAY	= TICKS_PER_RLHOUR * 24;
 	protected double			 TIME_TICK_DOUBLE	= TIME_TICK;
 	protected final Map<String,Integer>	maxClanCatsMap				= new HashMap<String,Integer>();
 	protected final Set<String>			publicClanCats				= new HashSet<String>();

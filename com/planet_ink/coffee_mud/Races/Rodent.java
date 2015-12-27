@@ -34,34 +34,113 @@ import java.util.*;
 */
 public class Rodent extends StdRace
 {
-	@Override public String ID(){	return "Rodent"; }
-	@Override public String name(){ return "Rodent"; }
-	@Override public int shortestMale(){return 2;}
-	@Override public int shortestFemale(){return 2;}
-	@Override public int heightVariance(){return 3;}
-	@Override public int lightestWeight(){return 1;}
-	@Override public int weightVariance(){return 5;}
-	@Override public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_EARS|Wearable.WORN_EYES);}
-	@Override public String racialCategory(){return "Rodent";}
+	@Override
+	public String ID()
+	{
+		return "Rodent";
+	}
 
-	private final String[]racialAbilityNames={"RodentSpeak"};
-	private final int[]racialAbilityLevels={1};
-	private final int[]racialAbilityProficiencies={100};
-	private final boolean[]racialAbilityQuals={false};
-	@Override protected String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override
+	public String name()
+	{
+		return "Rodent";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 2;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 2;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 3;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 1;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 5;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return ~(Wearable.WORN_HEAD | Wearable.WORN_EARS | Wearable.WORN_EYES);
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Rodent";
+	}
+
+	private final String[]	racialAbilityNames			= { "RodentSpeak" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,1,2,2,2,3,3,4};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 1, 1, 2, 2, 2, 3, 3, 4 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -69,6 +148,7 @@ public class Rodent extends StdRace
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -78,16 +158,19 @@ public class Rodent extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,18);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "scurries in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "scurries";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -101,6 +184,7 @@ public class Rodent extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{
@@ -112,9 +196,14 @@ public class Rodent extends StdRace
 			case Race.AGE_CHILD:
 				switch(gender)
 				{
-				case 'M': case 'm': return "boy "+name().toLowerCase()+" pup";
-				case 'F': case 'f': return "girl "+name().toLowerCase()+" pup";
-				default: return "young "+name().toLowerCase();
+				case 'M':
+				case 'm':
+					return "boy " + name().toLowerCase() + " pup";
+				case 'F':
+				case 'f':
+					return "girl " + name().toLowerCase() + " pup";
+				default:
+					return "young " + name().toLowerCase();
 				}
 			default:
 				return super.makeMobName(gender, age);
@@ -158,6 +247,7 @@ public class Rodent extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

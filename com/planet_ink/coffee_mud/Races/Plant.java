@@ -34,23 +34,82 @@ import java.util.*;
 */
 public class Plant extends Vine
 {
-	@Override public String ID(){	return "Plant"; }
-	@Override public String name(){ return "Plant"; }
-	@Override public int shortestMale(){return 4;}
-	@Override public int shortestFemale(){return 4;}
-	@Override public int heightVariance(){return 5;}
-	@Override public int lightestWeight(){return 1;}
-	@Override public int weightVariance(){return 1;}
-	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	@Override public String racialCategory(){return "Vegetation";}
-	@Override public int[] getBreathables() { return breatheAnythingArray; }
+	@Override
+	public String ID()
+	{
+		return "Plant";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Plant";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 4;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 4;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 5;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 1;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 1;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Vegetation";
+	}
+
+	@Override
+	public int[] getBreathables()
+	{
+		return breatheAnythingArray;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,8 ,8 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -58,12 +117,14 @@ public class Plant extends Vine
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK|PhyStats.CAN_NOT_TASTE|PhyStats.CAN_NOT_MOVE);
 	}
+
 	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
 		affectableState.setHunger((Integer.MAX_VALUE/2)+10);
 		affectedMOB.curState().setHunger(affectableState.getHunger());
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -76,16 +137,19 @@ public class Plant extends Vine
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "shuffles in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "shuffles";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -100,6 +164,7 @@ public class Plant extends Vine
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -165,6 +230,7 @@ public class Plant extends Vine
 		else
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

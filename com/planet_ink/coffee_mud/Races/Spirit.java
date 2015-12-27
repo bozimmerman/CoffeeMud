@@ -35,15 +35,49 @@ import java.util.*;
 
 public class Spirit extends Undead
 {
-	@Override public String ID(){	return "Spirit"; }
-	@Override public String name(){ return "Spirit"; }
-	@Override public int shortestMale(){return 64;}
-	@Override public int shortestFemale(){return 60;}
-	@Override public int heightVariance(){return 12;}
-	@Override protected boolean destroyBodyAfterUse(){return true;}
-	@Override public int[] getBreathables() { return breatheAnythingArray; }
+	@Override
+	public String ID()
+	{
+		return "Spirit";
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	@Override
+	public String name()
+	{
+		return "Spirit";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 64;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 60;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	protected boolean destroyBodyAfterUse()
+	{
+		return true;
+	}
+
+	@Override
+	public int[] getBreathables()
+	{
+		return breatheAnythingArray;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	protected Weapon funHumanoidWeapon()
@@ -59,37 +93,37 @@ public class Spirit extends Undead
 					case 1:
 					case 2:
 					case 3:
-					naturalWeapon.setName(L("an invisible punch"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
-					break;
+						naturalWeapon.setName(L("an invisible punch"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
+						break;
 					case 4:
-					naturalWeapon.setName(L("an incorporal bite"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
-					break;
+						naturalWeapon.setName(L("an incorporal bite"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
+						break;
 					case 5:
-					naturalWeapon.setName(L("a fading elbow"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
-					break;
+						naturalWeapon.setName(L("a fading elbow"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
+						break;
 					case 6:
-					naturalWeapon.setName(L("a translucent backhand"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
-					break;
+						naturalWeapon.setName(L("a translucent backhand"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
+						break;
 					case 7:
-					naturalWeapon.setName(L("a strong ghostly jab"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
-					break;
+						naturalWeapon.setName(L("a strong ghostly jab"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
+						break;
 					case 8:
-					naturalWeapon.setName(L("a ghostly punch"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
-					break;
+						naturalWeapon.setName(L("a ghostly punch"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
+						break;
 					case 9:
-					naturalWeapon.setName(L("a translucent knee"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
-					break;
+						naturalWeapon.setName(L("a translucent knee"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
+						break;
 					case 10:
-					naturalWeapon.setName(L("an otherworldly slap"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
-					break;
+						naturalWeapon.setName(L("an otherworldly slap"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BURSTING);
+						break;
 				}
 				naturalWeapon.setMaterial(RawMaterial.RESOURCE_PLASMA);
 				naturalWeapon.setUsesRemaining(1000);
@@ -98,15 +132,19 @@ public class Spirit extends Undead
 		}
 		return naturalWeaponChoices.get(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
-	{ return funHumanoidWeapon();	}
+	{
+		return funHumanoidWeapon();
+	}
 
 	@Override
 	public String makeMobName(char gender, int age)
 	{
 		return super.makeMobName('N', Race.AGE_MATURE);
 	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{

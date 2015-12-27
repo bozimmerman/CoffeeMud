@@ -36,25 +36,84 @@ import java.util.*;
 
 public class Smurf extends StdRace
 {
-	@Override public String ID(){	return "Smurf"; }
-	@Override public String name(){ return "Smurf"; }
-	@Override public int shortestMale(){return 7;}
-	@Override public int shortestFemale(){return 7;}
-	@Override public int heightVariance(){return 1;}
-	@Override public int lightestWeight(){return 5;}
-	@Override public int weightVariance(){return 2;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Fairy-kin";}
+	@Override
+	public String ID()
+	{
+		return "Smurf";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Smurf";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 7;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 7;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 1;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 5;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 2;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Fairy-kin";
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,2,20,110,175,263,350,390,430};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 2, 20, 110, 175, 263, 350, 390, 430 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	protected Weapon funHumanoidWeapon()
@@ -70,37 +129,37 @@ public class Smurf extends StdRace
 					case 1:
 					case 2:
 					case 3:
-					naturalWeapon.setName(L("a smurfy punch"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-					break;
+						naturalWeapon.setName(L("a smurfy punch"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+						break;
 					case 4:
-					naturalWeapon.setName(L("some smurfy teeth"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
-					break;
+						naturalWeapon.setName(L("some smurfy teeth"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
+						break;
 					case 5:
-					naturalWeapon.setName(L("a smurfy elbow"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
-					break;
+						naturalWeapon.setName(L("a smurfy elbow"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
+						break;
 					case 6:
-					naturalWeapon.setName(L("a smurfy backhand"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-					break;
+						naturalWeapon.setName(L("a smurfy backhand"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+						break;
 					case 7:
-					naturalWeapon.setName(L("a smurfy jab"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-					break;
+						naturalWeapon.setName(L("a smurfy jab"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+						break;
 					case 8:
-					naturalWeapon.setName(L("a smurfy poke"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-					break;
+						naturalWeapon.setName(L("a smurfy poke"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+						break;
 					case 9:
-					naturalWeapon.setName(L("a smurfy knee"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-					break;
+						naturalWeapon.setName(L("a smurfy knee"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+						break;
 					case 10:
-					naturalWeapon.setName(L("a smurfy head butt"));
-					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
-					break;
+						naturalWeapon.setName(L("a smurfy head butt"));
+						naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+						break;
 				}
 				naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 				naturalWeapon.setUsesRemaining(1000);
@@ -109,9 +168,13 @@ public class Smurf extends StdRace
 		}
 		return naturalWeaponChoices.get(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
-	{ return funHumanoidWeapon();	}
+	{
+		return funHumanoidWeapon();
+	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -149,6 +212,7 @@ public class Smurf extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

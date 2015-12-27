@@ -35,24 +35,79 @@ import java.util.*;
 */
 public class WereWolf extends GiantWolf
 {
-	@Override public String ID(){	return "WereWolf"; }
-	@Override public String name(){ return "WereWolf"; }
-	@Override public int shortestMale(){return 59;}
-	@Override public int shortestFemale(){return 59;}
-	@Override public int heightVariance(){return 12;}
-	@Override public int lightestWeight(){return 80;}
-	@Override public int weightVariance(){return 80;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Canine";}
+	@Override
+	public String ID()
+	{
+		return "WereWolf";
+	}
+
+	@Override
+	public String name()
+	{
+		return "WereWolf";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 59;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 59;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 80;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 80;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Canine";
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,4,8,12,16,20,24,28,32};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	private final int[]	agingChart	= { 0, 4, 8, 12, 16, 20, 24, 28, 32 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -93,8 +148,10 @@ public class WereWolf extends GiantWolf
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" claws",RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<4;i++)
+				{
 					resources.addElement(makeResource
 					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_FUR));
+				}
 				for(int i=0;i<2;i++)
 				{
 					final RawMaterial meat=makeResource

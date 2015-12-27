@@ -34,27 +34,96 @@ import java.util.*;
 */
 public class Vine extends StdRace
 {
-	@Override public String ID(){	return "Vine"; }
-	@Override public String name(){ return "Vine"; }
-	@Override public int shortestMale(){return 34;}
-	@Override public int shortestFemale(){return 30;}
-	@Override public int heightVariance(){return 12;}
-	@Override public int lightestWeight(){return 50;}
-	@Override public int weightVariance(){return 100;}
-	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	@Override public String racialCategory(){return "Vegetation";}
-	@Override public boolean uncharmable(){return true;}
-	@Override public int[] getBreathables() { return breatheAnythingArray; }
+	@Override
+	public String ID()
+	{
+		return "Vine";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Vine";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 34;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 30;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 50;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 100;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Vegetation";
+	}
+
+	@Override
+	public boolean uncharmable()
+	{
+		return true;
+	}
+
+	@Override
+	public int[] getBreathables()
+	{
+		return breatheAnythingArray;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,8 ,8 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,2,4,8,14,30,40,41,42};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 2, 4, 8, 14, 30, 40, 41, 42 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -64,6 +133,7 @@ public class Vine extends StdRace
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(2*affected.phyStats().level()));
 		affectableStats.setDamage(affectableStats.damage()+(affected.phyStats().level()/2));
 	}
+
 	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
@@ -71,6 +141,7 @@ public class Vine extends StdRace
 		affectableState.setHunger((Integer.MAX_VALUE/2)+10);
 		affectedMOB.curState().setHunger(affectableState.getHunger());
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -82,16 +153,19 @@ public class Vine extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "slithers in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "slithers";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -106,6 +180,7 @@ public class Vine extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

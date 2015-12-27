@@ -34,27 +34,96 @@ import java.util.*;
 */
 public class Stone extends StdRace
 {
-	@Override public String ID(){	return "Stone"; }
-	@Override public String name(){ return "Stone"; }
-	@Override public int shortestMale(){return 2;}
-	@Override public int shortestFemale(){return 2;}
-	@Override public int heightVariance(){return 1;}
-	@Override public int lightestWeight(){return 1;}
-	@Override public int weightVariance(){return 1;}
-	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	@Override public String racialCategory(){return "Stone Golem";}
-	@Override public boolean uncharmable(){return true;}
-	@Override public int[] getBreathables() { return breatheAnythingArray; }
+	@Override
+	public String ID()
+	{
+		return "Stone";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Stone";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 2;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 2;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 1;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 1;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 1;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Stone Golem";
+	}
+
+	@Override
+	public boolean uncharmable()
+	{
+		return true;
+	}
+
+	@Override
+	public int[] getBreathables()
+	{
+		return breatheAnythingArray;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 0, 0, 0, 0, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -65,6 +134,7 @@ public class Stone extends StdRace
 		affectableStats.setAttackAdjustment(0);
 		affectableStats.setDamage(0);
 	}
+
 	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
@@ -74,6 +144,7 @@ public class Stone extends StdRace
 		affectableState.setThirst((Integer.MAX_VALUE/2)+10);
 		affectedMOB.curState().setThirst(affectableState.getThirst());
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -85,16 +156,19 @@ public class Stone extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "rolls in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "rolls";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -109,6 +183,7 @@ public class Stone extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -154,6 +229,7 @@ public class Stone extends StdRace
 	{
 		return makeMobName('N',Race.AGE_MATURE);
 	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -191,7 +267,7 @@ public class Stone extends StdRace
 		else
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
-	
+
 	@Override 
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{

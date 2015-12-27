@@ -58,16 +58,25 @@ public class Quests extends StdLibrary implements QuestManager
 		return null;
 	}
 
-	@Override public int numQuests(){return quests.size();}
+	@Override
+	public int numQuests()
+	{
+		return quests.size();
+	}
+
 	@Override
 	public Quest fetchQuest(int i)
 	{
 		try
 		{
 			return quests.elementAt(i);
-		}catch(final Exception e){}
+		}
+		catch (final Exception e)
+		{
+		}
 		return null;
 	}
+
 	@Override
 	public Quest fetchQuest(String qname)
 	{
@@ -79,6 +88,7 @@ public class Quests extends StdLibrary implements QuestManager
 		}
 		return null;
 	}
+
 	@Override
 	public Quest findQuest(String qname)
 	{
@@ -111,6 +121,7 @@ public class Quests extends StdLibrary implements QuestManager
 			Q.autostartup();
 		}
 	}
+
 	@Override
 	public boolean shutdown()
 	{
@@ -122,6 +133,7 @@ public class Quests extends StdLibrary implements QuestManager
 		quests.clear();
 		return true;
 	}
+
 	@Override
 	public void delQuest(Quest Q)
 	{
@@ -133,6 +145,7 @@ public class Quests extends StdLibrary implements QuestManager
 			quests.removeElement(Q);
 		}
 	}
+
 	@Override
 	public void save()
 	{
@@ -213,10 +226,14 @@ public class Quests extends StdLibrary implements QuestManager
 				if(line.size()>1)
 				{
 					var=line.get(1).toUpperCase();
-					if(var.equals("AREAGROUP"))
-					{ areaLine=line;}
-					if(var.equals("NAME"))
-					{ nameLine=line;}
+					if (var.equals("AREAGROUP"))
+					{
+						areaLine = line;
+					}
+					if (var.equals("NAME"))
+					{
+						nameLine = line;
+					}
 				}
 			}
 			if(nameLine!=null)
@@ -226,8 +243,13 @@ public class Quests extends StdLibrary implements QuestManager
 				{
 					if((!contains) && (areaName != null))
 					for(int l=2;l<areaLine.size();l++)
+					{
 						if(areaName.equalsIgnoreCase(areaLine.get(l)))
-						{	contains=true; break;}
+							{
+								contains = true;
+								break;
+							}
+					}
 				}
 				else
 				{
@@ -614,7 +636,11 @@ public class Quests extends StdLibrary implements QuestManager
 					ok=true;
 				}
 			}
-		}catch(final java.io.IOException e){return;}
+		}
+		catch (final java.io.IOException e)
+		{
+			return;
+		}
 		if(ok)
 		{
 			final String err=alterHoliday(oldName, encodedData);

@@ -34,43 +34,115 @@ import java.util.*;
 */
 public class TreeGolem extends StdRace
 {
-	@Override public String ID(){	return "TreeGolem"; }
-	@Override public String name(){ return "Tree Golem"; }
-	@Override public int shortestMale(){return 64;}
-	@Override public int shortestFemale(){return 60;}
-	@Override public int heightVariance(){return 12;}
-	@Override public int lightestWeight(){return 400;}
-	@Override public int weightVariance(){return 100;}
-	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	@Override public String racialCategory(){return "Vegetation";}
-	@Override public boolean uncharmable(){return true;}
-	@Override public int[] getBreathables() { return breatheAnythingArray; }
+	@Override
+	public String ID()
+	{
+		return "TreeGolem";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Tree Golem";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 64;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 60;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 12;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 400;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 100;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Vegetation";
+	}
+
+	@Override
+	public boolean uncharmable()
+	{
+		return true;
+	}
+
+	@Override
+	public int[] getBreathables()
+	{
+		return breatheAnythingArray;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,8 ,8 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,10,20,50,65,75,100,150,160};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 10, 20, 50, 65, 75, 100, 150, 160 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "slides in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "slides";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -85,6 +157,7 @@ public class TreeGolem extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -112,6 +185,7 @@ public class TreeGolem extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{

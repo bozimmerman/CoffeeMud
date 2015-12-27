@@ -35,25 +35,84 @@ import java.util.*;
 */
 public class Worm extends StdRace
 {
-	@Override public String ID(){	return "Worm"; }
-	@Override public String name(){ return "Worm"; }
-	@Override public int shortestMale(){return 2;}
-	@Override public int shortestFemale(){return 2;}
-	@Override public int heightVariance(){return 0;}
-	@Override public int lightestWeight(){return 1;}
-	@Override public int weightVariance(){return 0;}
-	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	@Override public String racialCategory(){return "Worm";}
+	@Override
+	public String ID()
+	{
+		return "Worm";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Worm";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 2;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 2;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 0;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 1;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 0;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Worm";
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,2,4,6,8,10,12,14,16};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 2, 4, 6, 8, 10, 12, 14, 16 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -70,16 +129,19 @@ public class Worm extends StdRace
 	{
 		return "shuffles in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "shuffles";
 	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{
 		return makeMobName('N',age);
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -93,6 +155,7 @@ public class Worm extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

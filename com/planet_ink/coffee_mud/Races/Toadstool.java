@@ -35,26 +35,91 @@ import java.util.*;
 */
 public class Toadstool extends StdRace
 {
-	@Override public String ID(){	return "Toadstool"; }
-	@Override public String name(){ return "Toadstool"; }
-	@Override public int shortestMale(){return 1;}
-	@Override public int shortestFemale(){return 1;}
-	@Override public int heightVariance(){return 1;}
-	@Override public int lightestWeight(){return 1;}
-	@Override public int weightVariance(){return 1;}
-	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	@Override public String racialCategory(){return "Vegetation";}
-	@Override public int availabilityCode(){return 0;}
-	@Override public int[] getBreathables() { return breatheAnythingArray; }
+	@Override
+	public String ID()
+	{
+		return "Toadstool";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Toadstool";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 1;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 1;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 1;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 1;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 1;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Vegetation";
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int[] getBreathables()
+	{
+		return breatheAnythingArray;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+	private final int[]	agingChart	= { 0, 0, 0, 0, 0, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -68,6 +133,7 @@ public class Toadstool extends StdRace
 		affectableStats.setDamage(0);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -76,6 +142,7 @@ public class Toadstool extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,1);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -124,6 +191,7 @@ public class Toadstool extends StdRace
 		else
 			return L("^c@x1^c is in perfect condition^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -132,8 +200,10 @@ public class Toadstool extends StdRace
 			if(resources.size()==0)
 			{
 				for(int i=0;i<5;i++)
+				{
 					resources.addElement(makeResource
 					("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MUSHROOMS));
+				}
 			}
 		}
 		return resources;

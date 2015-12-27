@@ -34,8 +34,17 @@ import java.util.*;
 */
 public class Skeleton extends Undead
 {
-	@Override public String ID(){	return "Skeleton"; }
-	@Override public String name(){ return "Skeleton"; }
+	@Override
+	public String ID()
+	{
+		return "Skeleton";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Skeleton";
+	}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
@@ -78,8 +87,10 @@ public class Skeleton extends Undead
 			if(resources.size()==0)
 			{
 				for(int i=0;i<2;i++)
+				{
 					resources.addElement(makeResource
 						("knuckle bone",RawMaterial.RESOURCE_BONE));
+				}
 				resources.addElement(makeResource
 						("a skull",RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource

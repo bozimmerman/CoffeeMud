@@ -35,13 +35,37 @@ import java.util.*;
 */
 public class Shadow extends Spirit
 {
-	@Override public String ID(){	return "Shadow"; }
-	@Override public String name(){ return "Shadow"; }
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override protected boolean destroyBodyAfterUse(){return true;}
+	@Override
+	public String ID()
+	{
+		return "Shadow";
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	@Override
+	public String name()
+	{
+		return "Shadow";
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	protected boolean destroyBodyAfterUse()
+	{
+		return true;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

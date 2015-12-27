@@ -35,29 +35,99 @@ import java.util.*;
 */
 public class Troll extends StdRace
 {
-	@Override public String ID(){	return "Troll"; }
-	@Override public String name(){ return "Troll"; }
-	@Override public int shortestMale(){return 74;}
-	@Override public int shortestFemale(){return 70;}
-	@Override public int heightVariance(){return 14;}
-	@Override public int lightestWeight(){return 200;}
-	@Override public int weightVariance(){return 200;}
-	@Override public long forbiddenWornBits(){return 0;}
-	@Override public String racialCategory(){return "Troll-kin";}
-	private final String[]culturalAbilityNames={"Draconic"};
-	private final int[]culturalAbilityProficiencies={50};
-	@Override public String[] culturalAbilityNames(){return culturalAbilityNames;}
-	@Override public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
+	@Override
+	public String ID()
+	{
+		return "Troll";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Troll";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 74;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 70;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 14;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 200;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 200;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return 0;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Troll-kin";
+	}
+
+	private final String[]	culturalAbilityNames			= { "Draconic" };
+	private final int[]		culturalAbilityProficiencies	= { 50 };
+
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,1,5,40,100,150,200,230,260};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 1, 5, 40, 100, 150, 200, 230, 260 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -68,6 +138,7 @@ public class Troll extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,8);
 		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-100);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -134,18 +205,18 @@ public class Troll extends StdRace
 		return true;
 	}
 
-
-
 	@Override
 	public String arriveStr()
 	{
 		return "thunders in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "leaves";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -159,6 +230,7 @@ public class Troll extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -196,6 +268,7 @@ public class Troll extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -204,8 +277,10 @@ public class Troll extends StdRace
 			if(resources.size()==0)
 			{
 				for(int i=0;i<4;i++)
+				{
 					resources.addElement(makeResource
 					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
+				}
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource

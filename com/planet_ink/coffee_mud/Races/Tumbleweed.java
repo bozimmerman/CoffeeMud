@@ -34,28 +34,102 @@ import java.util.*;
 */
 public class Tumbleweed extends StdRace
 {
-	@Override public String ID(){	return "Tumbleweed"; }
-	@Override public String name(){ return "Tumbleweed"; }
-	@Override public int shortestMale(){return 14;}
-	@Override public int shortestFemale(){return 10;}
-	@Override public int heightVariance(){return 5;}
-	@Override public int lightestWeight(){return 2;}
-	@Override public int weightVariance(){return 5;}
-	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	@Override public String racialCategory(){return "Vegetation";}
-	@Override public boolean uncharmable(){return true;}
-	@Override public boolean fertile(){return false;}
-	@Override public int[] getBreathables() { return breatheAnythingArray; }
+	@Override
+	public String ID()
+	{
+		return "Tumbleweed";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Tumbleweed";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 14;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 10;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 5;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 2;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 5;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Vegetation";
+	}
+
+	@Override
+	public boolean uncharmable()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean fertile()
+	{
+		return false;
+	}
+
+	@Override
+	public int[] getBreathables()
+	{
+		return breatheAnythingArray;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,0,0,0,0,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER,YEARS_AGE_LIVES_FOREVER};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 0, 0, 0, 0, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER, YEARS_AGE_LIVES_FOREVER };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -84,6 +158,7 @@ public class Tumbleweed extends StdRace
 			}
 		}
 	}
+
 	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
@@ -102,16 +177,19 @@ public class Tumbleweed extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "rolls in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "rolls";
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{

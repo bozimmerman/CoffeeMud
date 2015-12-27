@@ -35,33 +35,113 @@ import java.util.*;
 */
 public class Tarantula extends StdRace
 {
-	@Override public String ID(){	return "Tarantula"; }
-	@Override public String name(){ return "Tarantula"; }
-	@Override public int shortestMale(){return 2;}
-	@Override public int shortestFemale(){return 2;}
-	@Override public int heightVariance(){return 0;}
-	@Override public int lightestWeight(){return 1;}
-	@Override public int weightVariance(){return 0;}
-	@Override public long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	@Override public String racialCategory(){return "Arachnid";}
-	private final String[]racialAbilityNames={"Poison_Venom"};
-	private final int[]racialAbilityLevels={1};
-	private final int[]racialAbilityProficiencies={25};
-	private final boolean[]racialAbilityQuals={false};
-	@Override public String[] racialAbilityNames(){return racialAbilityNames;}
-	@Override public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	@Override public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
-	@Override public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	@Override
+	public String ID()
+	{
+		return "Tarantula";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Tarantula";
+	}
+
+	@Override
+	public int shortestMale()
+	{
+		return 2;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 2;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 0;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 1;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 0;
+	}
+
+	@Override
+	public long forbiddenWornBits()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public String racialCategory()
+	{
+		return "Arachnid";
+	}
+
+	private final String[]	racialAbilityNames			= { "Poison_Venom" };
+	private final int[]		racialAbilityLevels			= { 1 };
+	private final int[]		racialAbilityProficiencies	= { 25 };
+	private final boolean[]	racialAbilityQuals			= { false };
+
+	@Override
+	public String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	public int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	public int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	public boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
-	@Override public int[] bodyMask(){return parts;}
 
-	private final int[] agingChart={0,0,0,1,1,1,1,2,2};
-	@Override public int[] getAgingChart(){return agingChart;}
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	@Override public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+	private final int[]	agingChart	= { 0, 0, 0, 1, 1, 1, 1, 2, 2 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -70,6 +150,7 @@ public class Tarantula extends StdRace
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -79,16 +160,19 @@ public class Tarantula extends StdRace
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
+
 	@Override
 	public String arriveStr()
 	{
 		return "creeps in";
 	}
+
 	@Override
 	public String leaveStr()
 	{
 		return "creeps";
 	}
+
 	@Override
 	public String makeMobName(char gender, int age)
 	{
@@ -102,6 +186,7 @@ public class Tarantula extends StdRace
 				return super.makeMobName('N', age);
 		}
 	}
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -115,6 +200,7 @@ public class Tarantula extends StdRace
 		}
 		return naturalWeapon;
 	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
