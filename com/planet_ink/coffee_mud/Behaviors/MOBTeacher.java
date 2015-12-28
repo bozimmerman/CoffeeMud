@@ -38,14 +38,20 @@ import java.util.Map.Entry;
 
 public class MOBTeacher extends CombatAbilities
 {
-	@Override public String ID(){return "MOBTeacher";}
-	protected MOB myMOB=null;
-	protected boolean teachEverything=true;
-	protected boolean noCommon=false;
-	protected boolean noExpertises=false; // doubles as a "done ticking" flag
-	protected boolean noHLExpertises=false;
-	protected int tickDownToKnowledge=4;
-	protected List<ExpertiseDefinition> trainableExpertises=null;
+	@Override
+	public String ID()
+	{
+		return "MOBTeacher";
+	}
+
+	protected MOB		myMOB				= null;
+	protected boolean	teachEverything		= true;
+	protected boolean	noCommon			= false;
+	protected boolean	noExpertises		= false;  // doubles as a "done ticking" flag
+	protected boolean	noHLExpertises		= false;
+	protected int		tickDownToKnowledge	= 4;	
+	
+	protected List<ExpertiseDefinition> trainableExpertises = null;
 
 	@Override
 	public String accountForYourself()
@@ -311,6 +317,7 @@ public class MOBTeacher extends CombatAbilities
 		}
 		return super.okMessage(host,msg);
 	}
+
 	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
@@ -432,11 +439,13 @@ public class MOBTeacher extends CombatAbilities
 							theExpertise=def;
 					}
 					if(theExpertise==null)
-					for(final ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
 					{
-						if((CMLib.english().containsString(def.name(),s)
-						&&(theExpertise==null)))
-							theExpertise=def;
+						for(final ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
+						{
+							if((CMLib.english().containsString(def.name(),s)
+							&&(theExpertise==null)))
+								theExpertise=def;
+						}
 					}
 					if(theExpertise!=null)
 					{

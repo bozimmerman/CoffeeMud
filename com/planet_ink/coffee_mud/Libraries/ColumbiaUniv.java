@@ -746,8 +746,14 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			final Ability theA=(Ability)learnThis;
 			teacher.charStats().setStat(CharStats.STAT_WISDOM, teacher.charStats().getStat(CharStats.STAT_WISDOM)+5);
 			teacher.charStats().setStat(CharStats.STAT_INTELLIGENCE, teacher.charStats().getStat(CharStats.STAT_INTELLIGENCE)+5);
+			final Set<String> oldSkillSet = new HashSet<String>();
+			for(Enumeration<Ability> a=student.abilities();a.hasMoreElements();)
+				oldSkillSet.add(a.nextElement().ID());
 			theA.teach(teacher,student);
 			teacher.recoverCharStats();
+			if((student.fetchAbility(theA.ID())==null) && (!oldSkillSet.contains(theA.ID())))
+				student.tell(L("You failed to understand @x1.",theA.name()));
+			else
 			if((!teacher.isMonster()) && (!student.isMonster()))
 				CMLib.leveler().postExperience(teacher, null, null, 100, false);
 		}

@@ -406,22 +406,32 @@ public class Mage extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Spellbinding",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
-
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	private final String[] raceRequiredList=new String[]{
 		"Human","Elf","Gith","Dragon","Humanoid","Illithid",
 		"Gnome","Fairy-kin","HalfElf"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
-	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]
+	{
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
 	};
 
 	@Override
-	public Pair<String,Integer>[] getMinimumStatRequirements() {
+	public Pair<String,Integer>[] getMinimumStatRequirements() 
+	{
 		return minimumStatRequirements;
 	}
 

@@ -124,22 +124,15 @@ public class Wizard extends Mage
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return;
 		final MOB mob=(MOB)myHost;
-		if(msg.amISource(mob)&&(msg.tool()!=null))
+		if(msg.amISource(mob)&&(msg.tool() instanceof Ability))
 		{
-			if(msg.tool() instanceof Ability)
+			final Ability A=(Ability)msg.tool();
+			if((mob.isMine(A))
+			&&(!CMLib.ableMapper().getDefaultGain(ID(),false,A.ID()))
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 			{
-				final Ability A=mob.fetchAbility(msg.tool().ID());
-				if((A!=null)&&(!CMLib.ableMapper().getDefaultGain(ID(),false,A.ID()))
-				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
-				{
-					mob.delAbility(A);
-					mob.recoverMaxState();
-				}
-			}
-			else
-			if(msg.tool().ID().equalsIgnoreCase("Skill_ScrollCopy"))
-			{
-
+				mob.delAbility(A);
+				mob.recoverMaxState();
 			}
 		}
 	}

@@ -34,10 +34,18 @@ import java.util.*;
 */
 public class Gain extends StdCommand
 {
-	public Gain(){}
+	public Gain()
+	{
+	}
 
-	private final String[] access=I(new String[]{"GAIN"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "GAIN" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -51,9 +59,22 @@ public class Gain extends StdCommand
 		mob.doCommand(commands,metaFlags);
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return false;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 }
