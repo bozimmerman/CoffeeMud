@@ -37,7 +37,7 @@ import java.util.*;
 public class INIValue extends StdWebMacro
 {
 	@Override public String name() { return "INIValue"; }
-	@Override public boolean isAdminMacro()	{return true;}
+	@Override public boolean isAdminMacro()	{return false;}
 
 
 	public String getHelpFor(String tag, String mask)
@@ -84,13 +84,18 @@ public class INIValue extends StdWebMacro
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms==null)
 			return "";
-		final String last=httpReq.getUrlParameter("INI");
+		String last=httpReq.getUrlParameter("INI");
+		boolean descZapperMask = parms.remove("DESCZAPPERMASK") != null;
+		if(last == null)
+			last = parms.remove("INI");
 		if((parms.size()==0)&&(last!=null)&&(last.length()>0))
 		{
 			final CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 			if((page==null)||(!page.isLoaded()))
 				return "";
-			return page.getStr(last);
+			if(!descZapperMask)
+				return page.getStr(last);
+			return CMLib.masking().maskDesc(page.getStr(last));
 		}
 		if(parms.containsKey("RESET"))
 		{
