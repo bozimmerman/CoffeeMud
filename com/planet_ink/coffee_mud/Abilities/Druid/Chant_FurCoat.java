@@ -153,8 +153,18 @@ public class Chant_FurCoat extends Chant
 
 		if(Druid_ShapeShift.isShapeShifted(target))
 		{
-			mob.tell(L("You cannot invoke this chant in your present form."));
-			return false;
+			final Race R=target.charStats().getMyRace();
+			boolean exception = false;
+			for(final RawMaterial m : R.myResources())
+			{
+				if(m.material() == RawMaterial.RESOURCE_FUR)
+					exception = true;
+			}
+			if(!exception)
+			{
+				mob.tell(L("You cannot invoke this chant in your present form."));
+				return false;
+			}
 		}
 
 		if(target.freeWearPositions(Wearable.WORN_TORSO,(short)-2048,(short)0)<=0)
