@@ -41,10 +41,12 @@ public class Gargoyle extends StoneGolem
 		return "Gargoyle";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Gargoyle");
+
 	@Override
 	public String name()
 	{
-		return "Gargoyle";
+		return localizedStaticName;
 	}
 
 	private final String[]	racialAbilityNames			= { "WingFlying" };

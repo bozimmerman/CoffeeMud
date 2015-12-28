@@ -41,10 +41,12 @@ public class Shark extends GiantFish
 		return "Shark";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Shark");
+
 	@Override
 	public String name()
 	{
-		return "Shark";
+		return localizedStaticName;
 	}
 
 	@Override

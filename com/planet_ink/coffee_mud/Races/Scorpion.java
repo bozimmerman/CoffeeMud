@@ -41,10 +41,12 @@ public class Scorpion extends StdRace
 		return "Scorpion";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Scorpion");
+
 	@Override
 	public String name()
 	{
-		return "Scorpion";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Scorpion extends StdRace
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Arachnid");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Arachnid";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "Poison_Heartstopper" };

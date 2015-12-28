@@ -40,10 +40,12 @@ public class Dwarf extends StdRace
 		return "Dwarf";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Dwarf");
+
 	@Override
 	public String name()
 	{
-		return "Dwarf";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Dwarf extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Dwarf");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Dwarf";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Dwarven", "Mining" };

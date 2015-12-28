@@ -41,10 +41,12 @@ public class WereBear extends Bear
 		return "WereBear";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("WereBear");
+
 	@Override
 	public String name()
 	{
-		return "WereBear";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class WereBear extends Bear
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Ursine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Ursine";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

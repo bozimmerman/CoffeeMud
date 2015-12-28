@@ -40,10 +40,12 @@ public class Cobra extends Snake
 		return "Cobra";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Cobra");
+
 	@Override
 	public String name()
 	{
-		return "Cobra";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -76,10 +78,12 @@ public class Cobra extends Snake
 		return 20;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Serpent");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Serpent";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "Poison_Heartstopper" };

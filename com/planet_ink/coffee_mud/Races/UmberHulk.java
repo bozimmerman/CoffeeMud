@@ -41,10 +41,12 @@ public class UmberHulk extends StdRace
 		return "UmberHulk";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Umber Hulk");
+
 	@Override
 	public String name()
 	{
-		return "Umber Hulk";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class UmberHulk extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Giant-kin");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Giant-kin";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

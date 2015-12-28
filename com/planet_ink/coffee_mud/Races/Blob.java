@@ -40,10 +40,12 @@ public class Blob extends Unique
 		return "Blob";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Blob");
+
 	@Override
 	public String name()
 	{
-		return "Blob";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Blob extends Unique
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Slime");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Slime";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

@@ -41,10 +41,12 @@ public class Naga extends Python
 		return "Naga";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Naga");
+
 	@Override
 	public String name()
 	{
-		return "Naga";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Naga extends Python
 		return Wearable.WORN_LEGS | Wearable.WORN_FEET;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Serpent");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Serpent";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Draconic" };

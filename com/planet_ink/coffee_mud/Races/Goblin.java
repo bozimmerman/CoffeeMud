@@ -40,10 +40,12 @@ public class Goblin extends StdRace
 		return "Goblin";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Goblin");
+
 	@Override
 	public String name()
 	{
-		return "Goblin";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Goblin extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Goblinoid");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Goblinoid";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Goblinese", "Orcish", "Mining" };

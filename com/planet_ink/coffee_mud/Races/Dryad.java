@@ -40,10 +40,12 @@ public class Dryad extends StdRace
 		return "Dryad";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Dryad");
+
 	@Override
 	public String name()
 	{
-		return "Dryad";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Dryad extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Fairy-kin");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Fairy-kin";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Fey" };

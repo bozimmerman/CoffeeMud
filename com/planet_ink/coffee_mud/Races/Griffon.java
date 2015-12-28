@@ -41,10 +41,12 @@ public class Griffon extends GreatBird
 		return "Griffon";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Griffon");
+
 	@Override
 	public String name()
 	{
-		return "Griffon";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Griffon extends GreatBird
 		return Wearable.WORN_HELD | Wearable.WORN_WIELD;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Avian");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Avian";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

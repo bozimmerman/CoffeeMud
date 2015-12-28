@@ -40,10 +40,12 @@ public class Pig extends StdRace
 		return "Pig";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Pig");
+
 	@Override
 	public String name()
 	{
-		return "Pig";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Pig extends StdRace
 		return ~(Wearable.WORN_HEAD | Wearable.WORN_EARS | Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Porcine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Porcine";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "PigSpeak" };

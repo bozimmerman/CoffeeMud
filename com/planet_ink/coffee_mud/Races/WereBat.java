@@ -42,10 +42,12 @@ public class WereBat extends Bat
 		return "WereBat";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("WereBat");
+
 	@Override
 	public String name()
 	{
-		return "WereBat";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -84,10 +86,12 @@ public class WereBat extends Bat
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Pteropine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Pteropine";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

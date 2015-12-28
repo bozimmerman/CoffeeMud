@@ -40,10 +40,12 @@ public class Human extends StdRace
 		return "Human";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Human");
+
 	@Override
 	public String name()
 	{
-		return "Human";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -88,10 +90,12 @@ public class Human extends StdRace
 		return 2;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Human");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Human";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Chopping" };

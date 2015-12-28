@@ -40,16 +40,20 @@ public class DireWolf extends GiantWolf
 		return "DireWolf";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Dire Wolf");
+
 	@Override
 	public String name()
 	{
-		return "Dire Wolf";
+		return localizedStaticName;
 	}
+
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Canine");
 
 	@Override
 	public String racialCategory()
 	{
-		return "Canine";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -41,10 +41,12 @@ public class WereWolf extends GiantWolf
 		return "WereWolf";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("WereWolf");
+
 	@Override
 	public String name()
 	{
-		return "WereWolf";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class WereWolf extends GiantWolf
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Canine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Canine";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

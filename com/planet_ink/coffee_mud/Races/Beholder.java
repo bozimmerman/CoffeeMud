@@ -41,10 +41,12 @@ public class Beholder extends StdRace
 		return "Beholder";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Beholder");
+
 	@Override
 	public String name()
 	{
-		return "Beholder";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Beholder extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Unique");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Unique";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "Spell_Sleep", "Spell_FloatingDisc", "Spell_Fear", "Spell_Slow", 

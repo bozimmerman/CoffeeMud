@@ -41,16 +41,20 @@ public class Eagle extends GreatBird
 		return "Eagle";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Eagle");
+
 	@Override
 	public String name()
 	{
-		return "Eagle";
+		return localizedStaticName;
 	}
+
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Avian");
 
 	@Override
 	public String racialCategory()
 	{
-		return "Avian";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

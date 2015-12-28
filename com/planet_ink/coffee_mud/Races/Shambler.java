@@ -40,10 +40,12 @@ public class Shambler extends StdRace
 		return "Shambler";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Shambler");
+
 	@Override
 	public String name()
 	{
-		return "Shambler";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Shambler extends StdRace
 		return ~(Wearable.WORN_HELD);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Vegetation");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Vegetation";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

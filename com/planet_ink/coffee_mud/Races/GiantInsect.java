@@ -41,10 +41,12 @@ public class GiantInsect extends StdRace
 		return "GiantInsect";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Giant Insect");
+
 	@Override
 	public String name()
 	{
-		return "Giant Insect";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class GiantInsect extends StdRace
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Insect");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Insect";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

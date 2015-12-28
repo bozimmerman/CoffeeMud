@@ -41,10 +41,12 @@ public class Spirit extends Undead
 		return "Spirit";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Spirit");
+
 	@Override
 	public String name()
 	{
-		return "Spirit";
+		return localizedStaticName;
 	}
 
 	@Override

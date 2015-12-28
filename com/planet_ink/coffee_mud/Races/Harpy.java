@@ -41,10 +41,12 @@ public class Harpy extends GreatBird
 		return "Harpy";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Harpy");
+
 	@Override
 	public String name()
 	{
-		return "Harpy";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Harpy extends GreatBird
 		return Wearable.WORN_HELD | Wearable.WORN_WIELD | Wearable.WORN_FEET;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Avian");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Avian";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

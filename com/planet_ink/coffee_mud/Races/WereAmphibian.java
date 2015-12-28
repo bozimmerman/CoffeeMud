@@ -41,10 +41,12 @@ public class WereAmphibian extends StdRace
 		return "WereAmphibian";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("WereAmphibian");
+
 	@Override
 	public String name()
 	{
-		return "WereAmphibian";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class WereAmphibian extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Amphibian");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Amphibian";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "Skill_Swim" };

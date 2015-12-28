@@ -41,10 +41,12 @@ public class GreatFish extends GiantFish
 		return "GreatFish";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Great Fish");
+
 	@Override
 	public String name()
 	{
-		return "Great Fish";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class GreatFish extends GiantFish
 		return ~(Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Amphibian");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Amphibian";
+		return localizedStaticRacialCat;
 	}
 
 	protected static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();

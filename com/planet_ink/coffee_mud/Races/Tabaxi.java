@@ -41,10 +41,12 @@ public class Tabaxi extends GreatCat
 		return "Tabaxi";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Tabaxi");
+
 	@Override
 	public String name()
 	{
-		return "Tabaxi";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Tabaxi extends GreatCat
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Feline");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Feline";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "Skill_Hide", "Skill_Sneak" };

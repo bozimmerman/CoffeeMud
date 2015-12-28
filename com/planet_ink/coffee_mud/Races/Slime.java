@@ -40,10 +40,12 @@ public class Slime extends StdRace
 		return "Slime";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Slime");
+
 	@Override
 	public String name()
 	{
-		return "Slime";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Slime extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Slime");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Slime";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

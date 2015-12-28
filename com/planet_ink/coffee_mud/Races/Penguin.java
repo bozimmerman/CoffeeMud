@@ -41,10 +41,12 @@ public class Penguin extends StdRace
 		return "Penguin";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Penguin");
+
 	@Override
 	public String name()
 	{
-		return "Penguin";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Penguin extends StdRace
 		return ~(Wearable.WORN_HEAD | Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Avian");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Avian";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "Skill_Swim" };

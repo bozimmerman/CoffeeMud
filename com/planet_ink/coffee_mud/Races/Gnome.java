@@ -40,10 +40,12 @@ public class Gnome extends StdRace
 		return "Gnome";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Gnome");
+
 	@Override
 	public String name()
 	{
-		return "Gnome";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Gnome extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Gnome");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Gnome";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Gnomish", "Digging" };

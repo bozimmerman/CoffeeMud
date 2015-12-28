@@ -40,10 +40,12 @@ public class Pachyderm extends StdRace
 		return "Pachyderm";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Pachyderm");
+
 	@Override
 	public String name()
 	{
-		return "Pachyderm";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Pachyderm extends StdRace
 		return ~(Wearable.WORN_HEAD | Wearable.WORN_EARS | Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Pachyderm");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Pachyderm";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

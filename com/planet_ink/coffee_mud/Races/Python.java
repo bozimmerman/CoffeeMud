@@ -40,10 +40,12 @@ public class Python extends Snake
 		return "Python";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Python");
+
 	@Override
 	public String name()
 	{
-		return "Python";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -76,10 +78,12 @@ public class Python extends Snake
 		return 20;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Serpent");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Serpent";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -40,10 +40,12 @@ public class GiantWolf extends Wolf
 		return "GiantWolf";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Giant Wolf");
+
 	@Override
 	public String name()
 	{
-		return "Giant Wolf";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class GiantWolf extends Wolf
 		return ~(Wearable.WORN_HEAD | Wearable.WORN_FEET | Wearable.WORN_NECK | Wearable.WORN_EARS | Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Canine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Canine";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

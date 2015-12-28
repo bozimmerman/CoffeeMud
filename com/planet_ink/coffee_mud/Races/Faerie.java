@@ -38,10 +38,12 @@ public class Faerie extends SmallElfKin
 		return "Faerie";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Faerie");
+
 	@Override
 	public String name()
 	{
-		return "Faerie";
+		return localizedStaticName;
 	}
 
 	//                                     an ey ea he ne ar ha to le fo no gi mo wa ta wi

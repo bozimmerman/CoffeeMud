@@ -40,10 +40,12 @@ public class FireElemental extends StdRace
 		return "FireElemental";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Fire Elemental");
+
 	@Override
 	public String name()
 	{
-		return "Fire Elemental";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class FireElemental extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Elemental");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Elemental";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

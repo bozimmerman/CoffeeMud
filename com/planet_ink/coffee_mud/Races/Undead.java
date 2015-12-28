@@ -40,10 +40,12 @@ public class Undead extends StdRace
 		return "Undead";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Undead");
+
 	@Override
 	public String name()
 	{
-		return "Undead";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Undead extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Undead");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Undead";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

@@ -40,10 +40,12 @@ public class Rodent extends StdRace
 		return "Rodent";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Rodent");
+
 	@Override
 	public String name()
 	{
-		return "Rodent";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Rodent extends StdRace
 		return ~(Wearable.WORN_HEAD | Wearable.WORN_EARS | Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Rodent");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Rodent";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "RodentSpeak" };

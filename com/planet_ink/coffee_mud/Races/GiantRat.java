@@ -41,10 +41,12 @@ public class GiantRat extends Rat
 		return "GiantRat";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Giant Rat");
+
 	@Override
 	public String name()
 	{
-		return "Giant Rat";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class GiantRat extends Rat
 		return ~(Wearable.WORN_HEAD | Wearable.WORN_EARS | Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Rodent");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Rodent";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

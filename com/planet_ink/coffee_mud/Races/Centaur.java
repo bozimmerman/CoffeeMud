@@ -41,10 +41,12 @@ public class Centaur extends StdRace
 		return "Centaur";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Centaur");
+
 	@Override
 	public String name()
 	{
-		return "Centaur";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Centaur extends StdRace
 		return Wearable.WORN_WAIST | Wearable.WORN_LEGS | Wearable.WORN_FEET;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Equine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Equine";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

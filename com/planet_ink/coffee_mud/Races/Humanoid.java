@@ -41,10 +41,12 @@ public class Humanoid extends StdRace
 		return "Humanoid";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Humanoid");
+
 	@Override
 	public String name()
 	{
-		return "Humanoid";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Humanoid extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Humanoid");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Humanoid";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

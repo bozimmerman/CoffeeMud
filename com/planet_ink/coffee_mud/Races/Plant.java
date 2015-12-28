@@ -40,10 +40,12 @@ public class Plant extends Vine
 		return "Plant";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Plant");
+
 	@Override
 	public String name()
 	{
-		return "Plant";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Plant extends Vine
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Vegetation");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Vegetation";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

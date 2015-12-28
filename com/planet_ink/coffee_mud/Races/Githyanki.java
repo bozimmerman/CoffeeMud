@@ -41,10 +41,12 @@ public class Githyanki extends Humanoid
 		return "Githyanki";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Githyanki");
+
 	@Override
 	public String name()
 	{
-		return "Githyanki";
+		return localizedStaticName;
 	}
 
 	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
@@ -55,10 +57,12 @@ public class Githyanki extends Humanoid
 		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Gith");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Gith";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

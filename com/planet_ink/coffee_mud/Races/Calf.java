@@ -41,10 +41,12 @@ public class Calf extends Cow
 		return "Calf";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Cow");
+
 	@Override
 	public String name()
 	{
-		return "Cow";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -77,10 +79,12 @@ public class Calf extends Cow
 		return 100;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Bovine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Bovine";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

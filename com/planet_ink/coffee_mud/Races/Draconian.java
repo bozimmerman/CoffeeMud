@@ -40,10 +40,12 @@ public class Draconian extends StdRace
 		return "Draconian";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Draconian");
+
 	@Override
 	public String name()
 	{
-		return "Draconian";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Draconian extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Dragon");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Dragon";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Draconic", "Butchering" };

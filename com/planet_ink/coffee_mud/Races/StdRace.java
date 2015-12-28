@@ -66,10 +66,12 @@ public class StdRace implements Race
 	protected Map<Integer,SearchIDList<Ability>> racialAbilityMap	= null;
 	protected Map<Integer,SearchIDList<Ability>> racialEffectMap	= null;
 
+	private final static String localizedStaticName = CMLib.lang().L("StdRace");
+
 	@Override
 	public String name()
 	{
-		return "StdRace";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -108,10 +110,12 @@ public class StdRace implements Race
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Unknown");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Unknown";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

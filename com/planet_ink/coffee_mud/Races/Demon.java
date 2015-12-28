@@ -40,10 +40,12 @@ public class Demon extends Unique
 		return "Demon";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Demon");
+
 	@Override
 	public String name()
 	{
-		return "Demon";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -85,10 +87,12 @@ public class Demon extends Unique
 	private final String[]	culturalAbilityNames			= { "Undercommon" };
 	private final int[]		culturalAbilityProficiencies	= { 25 };
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Demon");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Demon";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

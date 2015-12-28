@@ -41,10 +41,12 @@ public class Worm extends StdRace
 		return "Worm";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Worm");
+
 	@Override
 	public String name()
 	{
-		return "Worm";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Worm extends StdRace
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Worm");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Worm";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

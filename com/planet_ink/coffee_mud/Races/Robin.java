@@ -41,16 +41,20 @@ public class Robin extends Bird
 		return "Robin";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Robin");
+
 	@Override
 	public String name()
 	{
-		return "Robin";
+		return localizedStaticName;
 	}
+
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Avian");
 
 	@Override
 	public String racialCategory()
 	{
-		return "Avian";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -41,10 +41,12 @@ public class MindFlayer extends Humanoid
 		return "MindFlayer";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("MindFlayer");
+
 	@Override
 	public String name()
 	{
-		return "MindFlayer";
+		return localizedStaticName;
 	}
 
 	protected static List<RawMaterial>	resources	= new Vector<RawMaterial>();
@@ -55,10 +57,12 @@ public class MindFlayer extends Humanoid
 		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Illithid");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Illithid";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Spell_MindFog", "Spell_Charm", "Undercommon" };

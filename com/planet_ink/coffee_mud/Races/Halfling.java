@@ -40,10 +40,12 @@ public class Halfling extends StdRace
 		return "Halfling";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Halfling");
+
 	@Override
 	public String name()
 	{
-		return "Halfling";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Halfling extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Halfling");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Halfling";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Elvish", "Cooking" };

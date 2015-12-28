@@ -40,10 +40,12 @@ public class WoodGolem extends StdRace
 		return "WoodGolem";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Wooden Golem");
+
 	@Override
 	public String name()
 	{
-		return "Wooden Golem";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class WoodGolem extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Wood Golem");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Wood Golem";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

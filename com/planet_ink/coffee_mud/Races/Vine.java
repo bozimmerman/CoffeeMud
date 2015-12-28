@@ -40,10 +40,12 @@ public class Vine extends StdRace
 		return "Vine";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Vine");
+
 	@Override
 	public String name()
 	{
-		return "Vine";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Vine extends StdRace
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Vegetation");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Vegetation";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

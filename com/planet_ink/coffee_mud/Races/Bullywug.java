@@ -41,10 +41,12 @@ public class Bullywug extends StdRace
 		return "Bullywug";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Bullywug");
+
 	@Override
 	public String name()
 	{
-		return "Bullywug";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Bullywug extends StdRace
 		return ~(Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Amphibian");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Amphibian";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Goblinese", "Skill_Hunting" };

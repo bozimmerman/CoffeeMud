@@ -38,10 +38,12 @@ public class Puppy extends Dog
 		return "Puppy";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Puppy");
+
 	@Override
 	public String name()
 	{
-		return "Puppy";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -80,10 +82,12 @@ public class Puppy extends Dog
 		return ~(Wearable.WORN_HEAD | Wearable.WORN_FEET | Wearable.WORN_NECK | Wearable.WORN_EARS | Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Canine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Canine";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

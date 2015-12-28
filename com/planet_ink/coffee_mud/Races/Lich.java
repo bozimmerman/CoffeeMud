@@ -41,10 +41,12 @@ public class Lich extends Skeleton
 		return "Lich";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Lich");
+
 	@Override
 	public String name()
 	{
-		return "Lich";
+		return localizedStaticName;
 	}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();

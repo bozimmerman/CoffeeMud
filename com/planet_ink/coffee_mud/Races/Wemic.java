@@ -40,10 +40,12 @@ public class Wemic extends StdRace
 		return "Wemic";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Wemic");
+
 	@Override
 	public String name()
 	{
-		return "Wemic";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Wemic extends StdRace
 		return Wearable.WORN_WAIST | Wearable.WORN_LEGS | Wearable.WORN_FEET;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Feline");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Feline";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

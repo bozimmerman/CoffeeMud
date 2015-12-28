@@ -40,10 +40,12 @@ public class MetalGolem extends StdRace
 		return "MetalGolem";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Metal Golem");
+
 	@Override
 	public String name()
 	{
-		return "Metal Golem";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class MetalGolem extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Metal Golem");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Metal Golem";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

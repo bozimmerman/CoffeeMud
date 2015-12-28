@@ -2,18 +2,21 @@ package com.planet_ink.coffee_mud.Races;
 import java.util.List;
 import java.util.Vector;
 
-import com.planet_ink.coffee_mud.Areas.interfaces.Area;
-import com.planet_ink.coffee_mud.Common.interfaces.CharStats;
-import com.planet_ink.coffee_mud.Common.interfaces.PhyStats;
-import com.planet_ink.coffee_mud.Items.interfaces.Armor;
-import com.planet_ink.coffee_mud.Items.interfaces.Item;
-import com.planet_ink.coffee_mud.Items.interfaces.RawMaterial;
-import com.planet_ink.coffee_mud.Items.interfaces.Weapon;
-import com.planet_ink.coffee_mud.Locales.interfaces.Room;
-import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
-import com.planet_ink.coffee_mud.core.CMClass;
-import com.planet_ink.coffee_mud.core.CMath;
-import com.planet_ink.coffee_mud.core.interfaces.Physical;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
    Copyright 2006 Lee Fox
@@ -38,10 +41,12 @@ public class Drow extends Elf
 		return "Drow";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Drow");
+
 	@Override
 	public String name()
 	{
-		return "Drow";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -80,10 +85,12 @@ public class Drow extends Elf
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Elf");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Elf";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Drowish", "Spell_Darkness", "Spell_FaerieFire", "Undercommon" };

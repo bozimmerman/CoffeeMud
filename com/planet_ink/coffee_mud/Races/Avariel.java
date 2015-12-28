@@ -40,10 +40,12 @@ public class Avariel extends StdRace
 		return "Avariel";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Avariel");
+
 	@Override
 	public String name()
 	{
-		return "Avariel";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Avariel extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Elf");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Elf";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Elvish" };

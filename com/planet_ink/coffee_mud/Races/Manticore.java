@@ -42,10 +42,12 @@ public class Manticore extends GreatCat
 		return "Manticore";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Manticore");
+
 	@Override
 	public String name()
 	{
-		return "Manticore";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -84,10 +86,12 @@ public class Manticore extends GreatCat
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Feline");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Feline";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "WingFlying" };

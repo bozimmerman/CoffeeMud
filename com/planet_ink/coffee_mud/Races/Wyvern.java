@@ -41,10 +41,12 @@ public class Wyvern extends StdRace
 		return "Wyvern";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Wyvern");
+
 	@Override
 	public String name()
 	{
-		return "Wyvern";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Wyvern extends StdRace
 		return Wearable.WORN_HELD | Wearable.WORN_WIELD | Wearable.WORN_WAIST;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Reptile");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Reptile";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Draconic" };

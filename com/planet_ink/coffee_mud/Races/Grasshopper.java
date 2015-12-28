@@ -41,10 +41,12 @@ public class Grasshopper extends StdRace
 		return "Grasshopper";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Grasshopper");
+
 	@Override
 	public String name()
 	{
-		return "Grasshopper";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Grasshopper extends StdRace
 		return ~(Wearable.WORN_TORSO | Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Insect");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Insect";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

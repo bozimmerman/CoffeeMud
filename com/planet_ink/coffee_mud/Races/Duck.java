@@ -40,10 +40,12 @@ public class Duck extends WaterFowl
 		return "Duck";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Duck");
+
 	@Override
 	public String name()
 	{
-		return "Duck";
+		return localizedStaticName;
 	}
 
 	private final String[]	racialAbilityNames			= { "DuckSpeak" };

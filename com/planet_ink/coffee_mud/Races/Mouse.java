@@ -40,16 +40,20 @@ public class Mouse extends Rodent
 		return "Mouse";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Mouse");
+
 	@Override
 	public String name()
 	{
-		return "Mouse";
+		return localizedStaticName;
 	}
+
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Rodent");
 
 	@Override
 	public String racialCategory()
 	{
-		return "Rodent";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

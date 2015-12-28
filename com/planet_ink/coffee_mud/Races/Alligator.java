@@ -38,10 +38,12 @@ public class Alligator extends GreatLizard
 		return "Alligator";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Alligator");
+
 	@Override
 	public String name()
 	{
-		return "Alligator";
+		return localizedStaticName;
 	}
 
 	private final String[]	racialAbilityNames			= { "Skill_Swim", "AlligatorSpeak" };

@@ -41,10 +41,12 @@ public class Rat extends Rodent
 		return "Rat";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Rat");
+
 	@Override
 	public String name()
 	{
-		return "Rat";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -77,10 +79,12 @@ public class Rat extends Rodent
 		return 10;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Rodent");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Rodent";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

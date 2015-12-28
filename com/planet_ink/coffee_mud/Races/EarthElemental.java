@@ -40,10 +40,12 @@ public class EarthElemental extends StdRace
 		return "EarthElemental";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Earth Elemental");
+
 	@Override
 	public String name()
 	{
-		return "Earth Elemental";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class EarthElemental extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Elemental");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Elemental";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

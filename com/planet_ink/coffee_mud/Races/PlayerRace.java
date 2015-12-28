@@ -38,10 +38,12 @@ public class PlayerRace extends Human
 		return "PlayerRace";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("PlayerRace");
+
 	@Override
 	public String name()
 	{
-		return "PlayerRace";
+		return localizedStaticName;
 	}
 
 	@Override

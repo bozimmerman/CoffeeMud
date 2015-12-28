@@ -41,10 +41,12 @@ public class Minotaur extends Cow
 		return "Minotaur";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Minotaur");
+
 	@Override
 	public String name()
 	{
-		return "Minotaur";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Minotaur extends Cow
 		return Wearable.WORN_HEAD;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Bovine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Bovine";
+		return localizedStaticRacialCat;
 	}
 
 	private final int[]	agingChart	= { 0, 1, 3, 15, 35, 53, 70, 74, 78 };

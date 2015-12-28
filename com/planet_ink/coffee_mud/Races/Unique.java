@@ -41,10 +41,12 @@ public class Unique extends StdRace
 		return "Unique";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Unique");
+
 	@Override
 	public String name()
 	{
-		return "Unique";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Unique extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Unique");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Unique";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

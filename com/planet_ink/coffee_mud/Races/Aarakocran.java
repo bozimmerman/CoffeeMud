@@ -41,10 +41,12 @@ public class Aarakocran extends Harpy
 		return "Aarakocran";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Aarakocran");
+
 	@Override
 	public String name()
 	{
-		return "Aarakocran";
+		return localizedStaticName;
 	}
 
 	@Override

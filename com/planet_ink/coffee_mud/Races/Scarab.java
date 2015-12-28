@@ -41,10 +41,12 @@ public class Scarab extends StdRace
 		return "Scarab";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Scarab");
+
 	@Override
 	public String name()
 	{
-		return "Scarab";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Scarab extends StdRace
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Insect");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Insect";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

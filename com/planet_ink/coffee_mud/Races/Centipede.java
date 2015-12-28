@@ -41,10 +41,12 @@ public class Centipede extends StdRace
 		return "Centipede";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Centipede");
+
 	@Override
 	public String name()
 	{
-		return "Centipede";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Centipede extends StdRace
 		return ~(Wearable.WORN_TORSO);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Insect");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Insect";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -41,18 +41,22 @@ public class GardenSnake extends Snake
 		return "GardenSnake";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Garden Snake");
+
 	@Override
 	public String name()
 	{
-		return "Garden Snake";
+		return localizedStaticName;
 	}
 
 	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Serpent");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Serpent";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

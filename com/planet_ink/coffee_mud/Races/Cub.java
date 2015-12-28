@@ -41,10 +41,12 @@ public class Cub extends Bear
 		return "Cub";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Cub");
+
 	@Override
 	public String name()
 	{
-		return "Cub";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -77,10 +79,12 @@ public class Cub extends Bear
 		return 10;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Ursine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Ursine";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

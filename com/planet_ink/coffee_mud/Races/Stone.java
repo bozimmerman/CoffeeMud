@@ -40,10 +40,12 @@ public class Stone extends StdRace
 		return "Stone";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Stone");
+
 	@Override
 	public String name()
 	{
-		return "Stone";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Stone extends StdRace
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Stone Golem");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Stone Golem";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

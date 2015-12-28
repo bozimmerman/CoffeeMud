@@ -41,10 +41,12 @@ public class Horse extends Equine
 		return "Horse";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Horse");
+
 	@Override
 	public String name()
 	{
-		return "Horse";
+		return localizedStaticName;
 	}
 
 	@Override

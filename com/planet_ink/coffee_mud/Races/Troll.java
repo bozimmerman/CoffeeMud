@@ -41,10 +41,12 @@ public class Troll extends StdRace
 		return "Troll";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Troll");
+
 	@Override
 	public String name()
 	{
-		return "Troll";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Troll extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Troll-kin");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Troll-kin";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Draconic" };

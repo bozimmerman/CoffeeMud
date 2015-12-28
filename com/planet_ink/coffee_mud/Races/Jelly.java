@@ -40,10 +40,12 @@ public class Jelly extends Unique
 		return "Jelly";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Jelly");
+
 	@Override
 	public String name()
 	{
-		return "Jelly";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Jelly extends Unique
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Slime");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Slime";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

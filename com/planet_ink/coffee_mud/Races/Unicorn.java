@@ -40,10 +40,12 @@ public class Unicorn extends StdRace
 		return "Unicorn";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Unicorn");
+
 	@Override
 	public String name()
 	{
-		return "Unicorn";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Unicorn extends StdRace
 		return ~(Wearable.WORN_HEAD | Wearable.WORN_EARS | Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Equine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Equine";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "HorseSpeak" };

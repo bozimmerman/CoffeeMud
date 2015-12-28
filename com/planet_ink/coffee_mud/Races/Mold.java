@@ -40,10 +40,12 @@ public class Mold extends StdRace
 		return "Mold";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Mold");
+
 	@Override
 	public String name()
 	{
-		return "Mold";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Mold extends StdRace
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Vegetation");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Vegetation";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

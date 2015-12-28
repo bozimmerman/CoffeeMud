@@ -40,10 +40,12 @@ public class Tumbleweed extends StdRace
 		return "Tumbleweed";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Tumbleweed");
+
 	@Override
 	public String name()
 	{
-		return "Tumbleweed";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Tumbleweed extends StdRace
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Vegetation");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Vegetation";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

@@ -41,10 +41,12 @@ public class Shadow extends Spirit
 		return "Shadow";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Shadow");
+
 	@Override
 	public String name()
 	{
-		return "Shadow";
+		return localizedStaticName;
 	}
 
 	@Override

@@ -40,10 +40,12 @@ public class Skeleton extends Undead
 		return "Skeleton";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Skeleton");
+
 	@Override
 	public String name()
 	{
-		return "Skeleton";
+		return localizedStaticName;
 	}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();

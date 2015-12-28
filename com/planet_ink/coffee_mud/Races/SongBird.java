@@ -42,10 +42,12 @@ public class SongBird extends StdRace
 		return "SongBird";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Song Bird");
+
 	@Override
 	public String name()
 	{
-		return "Song Bird";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -84,10 +86,12 @@ public class SongBird extends StdRace
 		return ~(Wearable.WORN_EYES | Wearable.WORN_HEAD);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Avian");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Avian";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "WingFlying", "BirdSpeak" };

@@ -41,10 +41,12 @@ public class Spider extends StdRace
 		return "Spider";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Spider");
+
 	@Override
 	public String name()
 	{
-		return "Spider";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Spider extends StdRace
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Arachnid");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Arachnid";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

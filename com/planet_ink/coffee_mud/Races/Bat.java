@@ -40,10 +40,12 @@ public class Bat extends StdRace
 		return "Bat";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Bat");
+
 	@Override
 	public String name()
 	{
-		return "Bat";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -90,10 +92,12 @@ public class Bat extends StdRace
 		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Pteropine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Pteropine";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "BatSpeak", "WingFlying" };

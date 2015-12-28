@@ -40,10 +40,12 @@ public class Dragon extends StdRace
 		return "Dragon";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Dragon");
+
 	@Override
 	public String name()
 	{
-		return "Dragon";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Dragon extends StdRace
 		return Wearable.WORN_WIELD | Wearable.WORN_WAIST | Wearable.WORN_BACK | Wearable.WORN_ABOUT_BODY | Wearable.WORN_FEET | Wearable.WORN_HANDS;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Dragon");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Dragon";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "Dragonbreath", "WingFlying" };

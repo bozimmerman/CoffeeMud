@@ -40,18 +40,22 @@ public class DireRat extends GiantRat
 		return "DireRat";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Dire Rat");
+
 	@Override
 	public String name()
 	{
-		return "Dire Rat";
+		return localizedStaticName;
 	}
 
 	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Rodent");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Rodent";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

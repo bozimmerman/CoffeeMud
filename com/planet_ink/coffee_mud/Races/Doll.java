@@ -41,10 +41,12 @@ public class Doll extends StdRace
 		return "Doll";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Doll");
+
 	@Override
 	public String name()
 	{
-		return "Doll";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Doll extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Wood Golem");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Wood Golem";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

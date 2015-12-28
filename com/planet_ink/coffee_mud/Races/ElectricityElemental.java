@@ -40,10 +40,12 @@ public class ElectricityElemental extends StdRace
 		return "ElectricityElemental";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Electricity Elemental");
+
 	@Override
 	public String name()
 	{
-		return "Electricity Elemental";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class ElectricityElemental extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Elemental");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Elemental";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

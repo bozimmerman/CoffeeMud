@@ -41,10 +41,12 @@ public class Lizard extends StdRace
 		return "Lizard";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Lizard");
+
 	@Override
 	public String name()
 	{
-		return "Lizard";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Lizard extends StdRace
 		return ~(Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Reptile");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Reptile";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Draconic" };

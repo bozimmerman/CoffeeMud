@@ -41,10 +41,12 @@ public class Turtle extends StdRace
 		return "Turtle";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Turtle");
+
 	@Override
 	public String name()
 	{
-		return "Turtle";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Turtle extends StdRace
 		return ~(Wearable.WORN_HEAD | Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Reptile");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Reptile";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

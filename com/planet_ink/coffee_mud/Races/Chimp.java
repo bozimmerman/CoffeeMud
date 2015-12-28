@@ -40,10 +40,12 @@ public class Chimp extends Monkey
 		return "Chimp";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Chimp");
+
 	@Override
 	public String name()
 	{
-		return "Chimp";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -76,10 +78,12 @@ public class Chimp extends Monkey
 		return 50;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Primate");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Primate";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "ChimpSpeak" };

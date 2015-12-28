@@ -40,10 +40,12 @@ public class TreeGolem extends StdRace
 		return "TreeGolem";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Tree Golem");
+
 	@Override
 	public String name()
 	{
-		return "Tree Golem";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class TreeGolem extends StdRace
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Vegetation");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Vegetation";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

@@ -40,10 +40,12 @@ public class Kitten extends Cat
 		return "Kitten";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Kitten");
+
 	@Override
 	public String name()
 	{
-		return "Kitten";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Kitten extends Cat
 		return ~(Wearable.WORN_HEAD | Wearable.WORN_FEET | Wearable.WORN_EARS | Wearable.WORN_EYES);
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Feline");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Feline";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi

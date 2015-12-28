@@ -40,10 +40,12 @@ public class Ogre extends Humanoid
 		return "Ogre";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Ogre");
+
 	@Override
 	public String name()
 	{
-		return "Ogre";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class Ogre extends Humanoid
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Giant-kin");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Giant-kin";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Gigantic", "Orcish", "Butchering" };

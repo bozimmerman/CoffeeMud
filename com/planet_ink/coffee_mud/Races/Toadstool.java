@@ -41,10 +41,12 @@ public class Toadstool extends StdRace
 		return "Toadstool";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Toadstool");
+
 	@Override
 	public String name()
 	{
-		return "Toadstool";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -83,10 +85,12 @@ public class Toadstool extends StdRace
 		return Integer.MAX_VALUE;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Vegetation");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Vegetation";
+		return localizedStaticRacialCat;
 	}
 
 	@Override

@@ -41,10 +41,12 @@ public class Sasquatch extends Gorilla
 		return "Sasquatch";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Sasquatch");
+
 	@Override
 	public String name()
 	{
-		return "Sasquatch";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -53,10 +55,12 @@ public class Sasquatch extends Gorilla
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Primate");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Primate";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	culturalAbilityNames			= { "Gigantic" };

@@ -40,10 +40,12 @@ public class WaterElemental extends StdRace
 		return "WaterElemental";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Water Elemental");
+
 	@Override
 	public String name()
 	{
-		return "Water Elemental";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -82,10 +84,12 @@ public class WaterElemental extends StdRace
 		return 0;
 	}
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Elemental");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Elemental";
+		return localizedStaticRacialCat;
 	}
 
 	private final String[]	racialAbilityNames			= { "Skill_Swim" };

@@ -41,10 +41,12 @@ public class ClayGolem extends StoneGolem
 		return "ClayGolem";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Clay Golem");
+
 	@Override
 	public String name()
 	{
-		return "Clay Golem";
+		return localizedStaticName;
 	}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();

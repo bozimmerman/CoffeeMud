@@ -38,9 +38,11 @@ public class Elephant extends Pachyderm
 		return "Elephant";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Elephant");
+
 	@Override
 	public String name()
 	{
-		return "Elephant";
+		return localizedStaticName;
 	}
 }

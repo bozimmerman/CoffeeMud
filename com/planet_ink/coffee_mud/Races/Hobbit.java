@@ -37,10 +37,12 @@ public class Hobbit extends Halfling
 		return "Hobbit";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Hobbit");
+
 	@Override
 	public String name()
 	{
-		return "Hobbit";
+		return localizedStaticName;
 	}
 
 	@Override

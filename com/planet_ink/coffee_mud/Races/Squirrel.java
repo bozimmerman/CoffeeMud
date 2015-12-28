@@ -42,9 +42,11 @@ public class Squirrel extends Rodent
 		return "Squirrel";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Squirrel");
+
 	@Override
 	public String name()
 	{
-		return "Squirrel";
+		return localizedStaticName;
 	}
 }

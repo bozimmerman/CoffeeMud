@@ -40,10 +40,12 @@ public class Dummy extends Doll
 		return "Dummy";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Dummy");
+
 	@Override
 	public String name()
 	{
-		return "Dummy";
+		return localizedStaticName;
 	}
 
 	@Override

@@ -41,10 +41,12 @@ public class Bull extends Buffalo
 		return "Bull";
 	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Bull");
+
 	@Override
 	public String name()
 	{
-		return "Bull";
+		return localizedStaticName;
 	}
 
 	@Override
@@ -79,10 +81,12 @@ public class Bull extends Buffalo
 
 	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Bovine");
+
 	@Override
 	public String racialCategory()
 	{
-		return "Bovine";
+		return localizedStaticRacialCat;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
