@@ -1859,7 +1859,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(isSleeping(seen))
 		{
 			if(flag_msgType!=ComingOrGoing.IS)
-				type="floats";
+				type=(seen instanceof MOB) ? "sleepwalks" : "floats";
 			else
 				type="sleeps";
 		}

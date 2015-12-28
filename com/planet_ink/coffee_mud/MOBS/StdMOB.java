@@ -2300,17 +2300,21 @@ public class StdMOB implements MOB
 
 				if (CMath.bset(srcCode, CMMsg.MASK_MOVE))
 				{
-					boolean sitting = CMLib.flags().isSitting(this);
-					if ((sitting) && ((msg.sourceMinor() == CMMsg.TYP_LEAVE) || (msg.sourceMinor() == CMMsg.TYP_ENTER)))
-						sitting = false;
+					final boolean sleeping = CMLib.flags().isSleeping(this);
+					final boolean sitting = ((CMLib.flags().isSitting(this)) 
+											&& (msg.sourceMinor() != CMMsg.TYP_LEAVE) 
+											&& (msg.sourceMinor() != CMMsg.TYP_ENTER));
 
-					if (((CMLib.flags().isSleeping(this)) || (sitting))
+					if ((sleeping || sitting)
 					&& (msg.sourceMinor() != CMMsg.TYP_STAND)
 					&& (msg.sourceMinor() != CMMsg.TYP_SITMOVE)
 					&& (msg.sourceMinor() != CMMsg.TYP_SIT)
 					&& (msg.sourceMinor() != CMMsg.TYP_SLEEP))
 					{
-						tell(L("You need to stand up!"));
+						if(sleeping)
+							tell(L("You need to wake up!"));
+						else
+							tell(L("You need to stand up!"));
 						if ((msg.sourceMinor() != CMMsg.TYP_WEAPONATTACK) && (msg.sourceMinor() != CMMsg.TYP_THROW))
 							return false;
 					}
@@ -3428,6 +3432,12 @@ public class StdMOB implements MOB
 								R.show(this, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> fall(s) asleep from exhaustion!!"));
 								basePhyStats().setDisposition(basePhyStats().disposition() | PhyStats.IS_SLEEPING);
 								phyStats().setDisposition(phyStats().disposition() | PhyStats.IS_SLEEPING);
+								if((CMLib.dice().rollPercentage() < 10) && (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+								{
+									final Ability theYawns = CMClass.getAbility("Disease_Sleepwalking");
+									if (theYawns != null)
+										theYawns.invoke(this, this, true, 0);
+								}
 							}
 						}
 					}
