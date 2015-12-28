@@ -114,7 +114,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public Set<MOB> allPossibleCombatants(MOB mob, boolean beRuthless)
+	public Set<MOB> allPossibleCombatants(MOB mob, boolean includePlayers)
 	{
 		final SHashSet<MOB> h=new SHashSet<MOB>();
 		final Room thisRoom=mob.location();
@@ -129,14 +129,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&(!h1.contains(inhab))
 			&&(CMLib.flags().isSeeable(inhab)||CMLib.flags().canMove(inhab))
 			&&(CMLib.flags().isSeeable(inhab)||(!CMLib.flags().isCloaked(inhab)))
-			&&((beRuthless)||(!mob.isMonster())||(!inhab.isMonster())))
+			&&((includePlayers)||(!mob.isMonster())||(!inhab.isMonster())))
 				h.addUnsafe(inhab);
 		}
 		return h;
 	}
 
 	@Override
-	public Set<MOB> properTargets(Ability A, MOB caster, boolean beRuthless)
+	public Set<MOB> properTargets(Ability A, MOB caster, boolean includePlayers)
 	{
 		Set<MOB> h=null;
 		if(A.abstractQuality()!=Ability.QUALITY_MALICIOUS)
@@ -155,7 +155,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(caster.isInCombat())
 			h=allCombatants(caster);
 		else
-			h=allPossibleCombatants(caster,beRuthless);
+			h=allPossibleCombatants(caster,includePlayers);
 		return h;
 	}
 
@@ -536,7 +536,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if((M!=null)
 			&&(M.getVictim()==mob)
 			&&(M!=mob)
-			&&(!exceptionSet.contains(M)))
+			&&((exceptionSet==null)||(!exceptionSet.contains(M))))
 				M.setVictim(null);
 		}
 	}
