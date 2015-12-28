@@ -70,7 +70,7 @@ public class Prayer_Bury extends Prayer
 		Item hole=mob.location().findItem("HoleInTheGround");
 		if((hole!=null)&&(!hole.text().equalsIgnoreCase(mob.Name())))
 		{
-			mob.tell(L("This chant will not work on desecrated ground."));
+			mob.tell(L("This prayer will not work on this previously used burial ground."));
 			return false;
 		}
 
