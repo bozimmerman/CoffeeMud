@@ -122,6 +122,7 @@ public class BuildingSkill extends CraftingSkill
 	protected final static int	DAT_REQDIR			= 5;
 	protected final static int	DAT_REQNONULL		= 6;
 	protected final static int	DAT_BUILDCODE		= 7;
+	protected final static int	DAT_BUILDERMASK		= 8;
 
 	@Override
 	public String parametersFile()
@@ -900,6 +901,88 @@ public class BuildingSkill extends CraftingSkill
 		return null;
 	}
 	
+	public String establishVerb(final MOB mob, final Building doingCode)
+	{
+		String verb="";
+		switch(doingCode)
+		{
+		case ROOF:
+			verb=L("building a frame and roof");
+			break;
+		case POOL:
+			verb=L("building a pool");
+			break;
+		case WALL:
+			verb=L("building the @x1 wall",Directions.getDirectionName(dir));
+			break;
+		case ARCH:
+			verb=L("building the @x1 archway",Directions.getDirectionName(dir));
+			break;
+		case FENCE:
+			verb=L("building the @x1 fence",Directions.getDirectionName(dir));
+			break;
+		case PORTCULIS:
+			verb=L("building the @x1 portcullis",Directions.getDirectionName(dir));
+			break;
+		case TITLE:
+			verb=L("giving this place a title");
+			break;
+		case DESC:
+			verb=L("giving this place a description");
+			break;
+		case MONUMENT:
+			verb=L("building a druidic monument");
+			break;
+		case GATE:
+			verb=L("building the @x1 gate",Directions.getDirectionName(dir));
+			break;
+		case DOOR:
+			verb=L("building the @x1 door",Directions.getDirectionName(dir));
+			break;
+		case SECRETDOOR:
+			verb=L("building a hidden @x1 door",Directions.getDirectionName(dir));
+			break;
+		case WINDOW:
+			verb=L("building a window @x1",Directions.getDirectionName(dir));
+			break;
+		case CRAWLWAY:
+			verb=L("building a crawlway @x1",Directions.getDirectionName(dir));
+			break;
+		case STAIRS:
+			verb=L("building another floor");
+			break;
+		case DEMOLISH:
+			if(dir<0)
+			{
+				if((mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+						verb=L("demolishing the pool");
+				else
+				if((mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+				{
+					commonTell(mob,null,null,L("You must demolish a pool from above."));
+					return "";
+				}
+				else
+				if(!mob.location().ID().equalsIgnoreCase(this.getClosedLocaleType()))
+				{
+					commonTell(mob,null,null,L("This building was not made with @x1, you can`t demolish it.",name()));
+					return "";
+				}
+				else
+				if(CMLib.law().isHomeRoomUpstairs(mob.location()))
+					verb=L("demolishing the room");
+				else
+					verb=L("demolishing the roof");
+			}
+			else
+				verb=L("demolishing the @x1 wall",Directions.getDirectionName(dir));
+			break;
+		}
+		return verb;
+	}
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -922,11 +1005,8 @@ public class BuildingSkill extends CraftingSkill
 			final StringBuffer buf=new StringBuffer(CMStrings.padRight(L("Item"),colWidth) + L(" @x2 required\n\r",this.getMainResourceName().toLowerCase()));
 			for(int r=0;r<data.length;r++)
 			{
-				final Building buildCode = Building.valueOf(data[r][DAT_BUILDCODE]);
-				if(((buildCode!=Building.SECRETDOOR)
-					||(mob.charStats().getCurrentClass().baseClass().equals("Thief")))
-				&&((buildCode!=Building.MONUMENT)
-					||(mob.charStats().getCurrentClass().baseClass().equals("Druid"))
+				if(((data[r][DAT_BUILDERMASK].length()==0)
+					||(CMLib.masking().maskCheck(data[r][DAT_BUILDERMASK], mob, false))
 					||CMSecurity.isASysOp(mob))
 				&&((mask==null)
 					||(mask.length()==0)
@@ -1001,10 +1081,8 @@ public class BuildingSkill extends CraftingSkill
 		{
 			final Building buildCode = Building.valueOf(data[r][DAT_BUILDCODE]);
 			if((data[r][0].toUpperCase().startsWith(firstWord.toUpperCase()))
-			&&((buildCode!=Building.SECRETDOOR)
-				||(mob.charStats().getCurrentClass().baseClass().equals("Thief")))
-			&&((buildCode!=Building.MONUMENT)
-				||(mob.charStats().getCurrentClass().baseClass().equals("Druid"))
+			&&((data[r][DAT_BUILDERMASK].length()==0)
+				||(CMLib.masking().maskCheck(data[r][DAT_BUILDERMASK], mob, false))
 				||CMSecurity.isASysOp(mob)))
 			{
 				doingCode=buildCode;
@@ -1267,82 +1345,8 @@ public class BuildingSkill extends CraftingSkill
 		if(woodRequired>0)
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,idata[0][FOUND_CODE],0,null);
 
-		switch(doingCode)
-		{
-		case ROOF:
-			verb=L("building a frame and roof");
-			break;
-		case POOL:
-			verb=L("building a pool");
-			break;
-		case WALL:
-			verb=L("building the @x1 wall",Directions.getDirectionName(dir));
-			break;
-		case ARCH:
-			verb=L("building the @x1 archway",Directions.getDirectionName(dir));
-			break;
-		case FENCE:
-			verb=L("building the @x1 fence",Directions.getDirectionName(dir));
-			break;
-		case PORTCULIS:
-			verb=L("building the @x1 portcullis",Directions.getDirectionName(dir));
-			break;
-		case TITLE:
-			verb=L("giving this place a title");
-			break;
-		case DESC:
-			verb=L("giving this place a description");
-			break;
-		case MONUMENT:
-			verb=L("building a druidic monument");
-			break;
-		case GATE:
-			verb=L("building the @x1 gate",Directions.getDirectionName(dir));
-			break;
-		case DOOR:
-			verb=L("building the @x1 door",Directions.getDirectionName(dir));
-			break;
-		case SECRETDOOR:
-			verb=L("building a hidden @x1 door",Directions.getDirectionName(dir));
-			break;
-		case WINDOW:
-			verb=L("building a window @x1",Directions.getDirectionName(dir));
-			break;
-		case CRAWLWAY:
-			verb=L("building a crawlway @x1",Directions.getDirectionName(dir));
-			break;
-		case STAIRS:
-			verb=L("building another floor");
-			break;
-		case DEMOLISH:
-			if(dir<0)
-			{
-				if((mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-						verb=L("demolishing the pool");
-				else
-				if((mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
-				{
-					commonTell(mob,null,null,L("You must demolish a pool from above."));
-					return false;
-				}
-				else
-				if(!mob.location().ID().equalsIgnoreCase(this.getClosedLocaleType()))
-				{
-					commonTell(mob,null,null,L("This building was not made with @x1, you can`t demolish it.",name()));
-					return false;
-				}
-				else
-				if(CMLib.law().isHomeRoomUpstairs(mob.location()))
-					verb=L("demolishing the room");
-				else
-					verb=L("demolishing the roof");
-			}
-			else
-				verb=L("demolishing the @x1 wall",Directions.getDirectionName(dir));
-			break;
-		}
+		verb = establishVerb(mob, doingCode);
+		
 		messedUp=!proficiencyCheck(mob,0,auto);
 		startStr=L("<S-NAME> start(s) @x1",verb);
 		playSound=this.getSoundName();
