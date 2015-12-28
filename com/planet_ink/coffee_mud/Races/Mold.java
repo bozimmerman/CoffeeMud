@@ -261,7 +261,7 @@ public class Mold extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a palm-full of "+name().toLowerCase(),RawMaterial.RESOURCE_HERBS));
+				(L("a palm-full of @x1",name().toLowerCase()),RawMaterial.RESOURCE_HERBS));
 			}
 		}
 		return resources;

@@ -166,7 +166,7 @@ public class Unique extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" internal organ",RawMaterial.RESOURCE_MEAT));
+				(L("a @x1 internal organ",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 			}
 		}
 		return resources;

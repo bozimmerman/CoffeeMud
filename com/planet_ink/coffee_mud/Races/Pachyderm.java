@@ -271,17 +271,17 @@ public class Pachyderm extends StdRace
 				for(int i=0;i<12;i++)
 				{
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_LEATHER));
+					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_LEATHER));
 				}
 				for(int i=0;i<52;i++)
 				{
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
+					(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_BEEF));
 				}
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" tusk",RawMaterial.RESOURCE_BONE));
+				(L("a @x1 tusk",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

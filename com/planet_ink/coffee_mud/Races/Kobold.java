@@ -209,21 +209,21 @@ public class Kobold extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some nobby "+name().toLowerCase()+" horns",RawMaterial.RESOURCE_BONE));
+				(L("some nobby @x1 horns",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<2;i++)
 				{
 					resources.addElement(makeResource
-					("some "+name().toLowerCase()+" scales",RawMaterial.RESOURCE_SCALES));
+					(L("some @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
 				}
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		final Vector<RawMaterial> rsc=new XVector<RawMaterial>(resources);
 		final Item meat=makeResource
-		("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MEAT);
+		(L("some @x1 flesh",name().toLowerCase()),RawMaterial.RESOURCE_MEAT);
 		if((CMLib.dice().rollPercentage()<5)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Lepresy");

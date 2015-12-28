@@ -209,7 +209,7 @@ public class Tarantula extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" legs",RawMaterial.RESOURCE_MEAT));
+				(L("some @x1 legs",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 			}
 		}
 		return resources;

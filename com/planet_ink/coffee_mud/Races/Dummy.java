@@ -149,7 +149,7 @@ public class Dummy extends Doll
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" parts",RawMaterial.RESOURCE_WOOD));
+				(L("a pile of @x1 parts",name().toLowerCase()),RawMaterial.RESOURCE_WOOD));
 			}
 		}
 		return resources;

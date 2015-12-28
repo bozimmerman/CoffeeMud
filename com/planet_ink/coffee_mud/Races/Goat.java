@@ -251,14 +251,14 @@ public class Goat extends StdRace
 			{
 				for(int i=0;i<10;i++)
 					resources.addElement(makeResource
-					("some "+name().toLowerCase()+" wool",RawMaterial.RESOURCE_WOOL));
+					(L("some @x1 wool",name().toLowerCase()),RawMaterial.RESOURCE_WOOL));
 				for(int i=0;i<3;i++)
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MUTTON));
+					(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MUTTON));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

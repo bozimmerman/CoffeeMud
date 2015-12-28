@@ -202,7 +202,7 @@ public class Toadstool extends StdRace
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MUSHROOMS));
+					(L("some @x1 flesh",name().toLowerCase()),RawMaterial.RESOURCE_MUSHROOMS));
 				}
 			}
 		}

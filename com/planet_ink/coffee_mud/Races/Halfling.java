@@ -226,11 +226,11 @@ public class Halfling extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of hairy "+name().toLowerCase()+" feet",RawMaterial.RESOURCE_MEAT));
+				(L("a pair of hairy @x1 feet",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

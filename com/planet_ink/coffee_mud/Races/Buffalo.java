@@ -202,17 +202,17 @@ public class Buffalo extends Cow
 				for(int i=0;i<10;i++)
 				{
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_FUR));
+					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
 				}
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
+					(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_BEEF));
 				}
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -140,7 +140,7 @@ public class Jelly extends Unique
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a palm-full of "+name().toLowerCase(),RawMaterial.RESOURCE_BLOOD));
+				(L("a palm-full of @x1",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

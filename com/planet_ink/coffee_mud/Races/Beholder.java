@@ -186,7 +186,7 @@ public class Beholder extends StdRace
 				for(int x=0;x<10;x++)
 				{
 					resources.addElement(makeResource
-					("a "+name().toLowerCase()+" eye",RawMaterial.RESOURCE_MEAT));
+					(L("a @x1 eye",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				}
 			}
 		}

@@ -268,7 +268,7 @@ public class Tumbleweed extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some tumbleweed strands",RawMaterial.RESOURCE_HEMP));
+					(L("some tumbleweed strands"),RawMaterial.RESOURCE_HEMP));
 			}
 		}
 		return resources;

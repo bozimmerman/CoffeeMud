@@ -162,7 +162,7 @@ public class GiantInsect extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" guts",RawMaterial.RESOURCE_MEAT));
+				(L("a pile of @x1 guts",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 			}
 		}
 		return resources;

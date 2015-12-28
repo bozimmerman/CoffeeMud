@@ -245,11 +245,11 @@ public class Frog extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" tongue",RawMaterial.RESOURCE_MEAT));
+				(L("a @x1 tongue",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
+				(L("a @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

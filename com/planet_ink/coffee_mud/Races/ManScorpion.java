@@ -166,12 +166,12 @@ public class ManScorpion extends StdRace
 				for(int i=0;i<4;i++)
 				{
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" plating",RawMaterial.RESOURCE_STEEL));
+					(L("a pound of @x1 plating",name().toLowerCase()),RawMaterial.RESOURCE_STEEL));
 				}
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -258,9 +258,9 @@ public class TreeGolem extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("a pound of wood",RawMaterial.RESOURCE_WOOD));
+					(L("a pound of wood"),RawMaterial.RESOURCE_WOOD));
 				resources.addElement(makeResource
-					("a pound of leaves",RawMaterial.RESOURCE_GREENS));
+					(L("a pound of leaves"),RawMaterial.RESOURCE_GREENS));
 			}
 		}
 		return resources;

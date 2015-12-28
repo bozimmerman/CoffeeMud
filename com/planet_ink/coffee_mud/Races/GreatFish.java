@@ -179,15 +179,15 @@ public class GreatFish extends GiantFish
 				for(int i=0;i<8;i++)
 				{
 					resources.addElement(makeResource
-					("some "+name().toLowerCase(),RawMaterial.RESOURCE_FISH));
+					(L("some @x1",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
 				}
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					("a "+name().toLowerCase()+" scaly hide",RawMaterial.RESOURCE_SCALES));
+					(L("a @x1 scaly hide",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
 				}
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

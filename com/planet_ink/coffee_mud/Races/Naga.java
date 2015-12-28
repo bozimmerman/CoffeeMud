@@ -136,16 +136,16 @@ public class Naga extends Python
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" fangs",RawMaterial.RESOURCE_BONE));
+				(L("a pair of @x1 fangs",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" scales",RawMaterial.RESOURCE_SCALES));
+					(L("a strip of @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
 				}
 				resources.addElement(makeResource
-				("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
+				(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

@@ -232,7 +232,7 @@ public class FireElemental extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("a pile of coal",RawMaterial.RESOURCE_COAL));
+					(L("a pile of coal"),RawMaterial.RESOURCE_COAL));
 			}
 		}
 		return resources;

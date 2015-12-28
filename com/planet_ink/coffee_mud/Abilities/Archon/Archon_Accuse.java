@@ -125,7 +125,7 @@ public class Archon_Accuse extends ArchonSkill
 			int x=CMath.s_int(commands.get(commands.size()-1));
 			if((x<0)||(x>Law.PUNISHMENT_HIGHEST))
 			{
-				mob.tell("The punishment level given is invalid: "+x);
+				mob.tell(L("The punishment level given is invalid: @x1",""+x));
 				return false;
 			}
 			punishmentLevel = x;

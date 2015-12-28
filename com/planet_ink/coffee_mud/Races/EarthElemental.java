@@ -215,7 +215,7 @@ public class EarthElemental extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("a pound of stone",RawMaterial.RESOURCE_STONE));
+					(L("a pound of stone"),RawMaterial.RESOURCE_STONE));
 			}
 		}
 		return resources;

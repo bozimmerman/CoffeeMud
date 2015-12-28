@@ -117,15 +117,15 @@ public class Calf extends Cow
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" hooves",RawMaterial.RESOURCE_BONE));
+				(L("a pair of @x1 hooves",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-				("a strip of "+name().toLowerCase()+" leather",RawMaterial.RESOURCE_LEATHER));
+				(L("a strip of @x1 leather",name().toLowerCase()),RawMaterial.RESOURCE_LEATHER));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
+				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_BEEF));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

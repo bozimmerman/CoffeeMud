@@ -239,7 +239,7 @@ public class Plant extends Vine
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("a stem",RawMaterial.RESOURCE_VINE));
+					(L("a stem"),RawMaterial.RESOURCE_VINE));
 			}
 		}
 		return resources;

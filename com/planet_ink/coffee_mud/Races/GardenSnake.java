@@ -67,11 +67,11 @@ public class GardenSnake extends Snake
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" scales",RawMaterial.RESOURCE_SCALES));
+				(L("some @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
+				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

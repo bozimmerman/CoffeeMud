@@ -202,7 +202,7 @@ public class Spirit extends Undead
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" essence",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 essence",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

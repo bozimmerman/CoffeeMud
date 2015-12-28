@@ -264,7 +264,7 @@ public class Vine extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some vine strands",RawMaterial.RESOURCE_VINE));
+					(L("some vine strands"),RawMaterial.RESOURCE_VINE));
 			}
 		}
 		return resources;

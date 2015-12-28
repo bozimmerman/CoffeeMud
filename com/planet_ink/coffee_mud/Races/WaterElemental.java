@@ -259,7 +259,7 @@ public class WaterElemental extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("a puddle of water",RawMaterial.RESOURCE_FRESHWATER));
+					(L("a puddle of water"),RawMaterial.RESOURCE_FRESHWATER));
 			}
 		}
 		return resources;

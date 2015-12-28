@@ -100,12 +100,12 @@ public class GiantAmphibian extends GreatAmphibian
 			{
 				for(int i=0;i<25;i++)
 				resources.addElement(makeResource
-				("some "+name().toLowerCase(),RawMaterial.RESOURCE_FISH));
+				(L("some @x1",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
 				for(int i=0;i<15;i++)
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
+				(L("a @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

@@ -251,7 +251,7 @@ public class Flower extends Vine
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some petals",RawMaterial.RESOURCE_HERBS));
+					(L("some petals"),RawMaterial.RESOURCE_HERBS));
 			}
 		}
 		return resources;

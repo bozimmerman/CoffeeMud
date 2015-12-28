@@ -149,7 +149,7 @@ public class MindFlayer extends Humanoid
 			{
 				resources=super.myResources();
 				resources.add(makeResource
-				("a "+name().toLowerCase()+" tenticle",RawMaterial.RESOURCE_MEAT));
+				(L("a @x1 tenticle",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 			}
 		}
 		return resources;

@@ -194,7 +194,7 @@ public class Scorpion extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" pincers",RawMaterial.RESOURCE_BONE));
+				(L("some @x1 pincers",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -212,9 +212,9 @@ public class MetalGolem extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("a pound of iron",RawMaterial.RESOURCE_IRON));
+					(L("a pound of iron"),RawMaterial.RESOURCE_IRON));
 				resources.addElement(makeResource
-					("essence of golem",RawMaterial.RESOURCE_BLOOD));
+					(L("essence of golem"),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

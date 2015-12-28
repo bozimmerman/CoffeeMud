@@ -246,15 +246,15 @@ public class Bird extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" brains",RawMaterial.RESOURCE_MEAT));
+				(L("some @x1 brains",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" feathers",RawMaterial.RESOURCE_FEATHERS));
+				(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_POULTRY));
+				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_POULTRY));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

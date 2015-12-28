@@ -188,7 +188,7 @@ public class Insect extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" guts",RawMaterial.RESOURCE_MEAT));
+				(L("some @x1 guts",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 			}
 		}
 		return resources;

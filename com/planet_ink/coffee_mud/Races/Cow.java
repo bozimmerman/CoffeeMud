@@ -289,26 +289,26 @@ public class Cow extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" horns",RawMaterial.RESOURCE_BONE));
+				(L("a pair of @x1 horns",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<10;i++)
 				{
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" leather",RawMaterial.RESOURCE_LEATHER));
+					(L("a strip of @x1 leather",name().toLowerCase()),RawMaterial.RESOURCE_LEATHER));
 				}
 				for(int i=0;i<20;i++)
 				{
 					resources.addElement(makeResource
-					("some "+name().toLowerCase()+" milk",RawMaterial.RESOURCE_MILK));
+					(L("some @x1 milk",name().toLowerCase()),RawMaterial.RESOURCE_MILK));
 				}
 				for(int i=0;i<7;i++)
 				{
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
+					(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_BEEF));
 				}
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

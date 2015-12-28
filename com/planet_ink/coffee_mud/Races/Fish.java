@@ -289,11 +289,11 @@ public class Fish extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name().toLowerCase(),RawMaterial.RESOURCE_FISH));
+				(L("some @x1",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" scales",RawMaterial.RESOURCE_SCALES));
+				(L("a @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

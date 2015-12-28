@@ -231,13 +231,13 @@ public class Penguin extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some webbed "+name().toLowerCase()+" feet",RawMaterial.RESOURCE_BONE));
+				(L("some webbed @x1 feet",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_POULTRY));
+				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_POULTRY));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

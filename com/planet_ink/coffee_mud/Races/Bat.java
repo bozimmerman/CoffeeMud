@@ -234,11 +234,11 @@ public class Bat extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some "+name().toLowerCase()+" hair",RawMaterial.RESOURCE_FUR));
+					(L("some @x1 hair",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
 				resources.addElement(makeResource
-					("a pair of "+name().toLowerCase()+" wings",RawMaterial.RESOURCE_HIDE));
+					(L("a pair of @x1 wings",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-					("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+					(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

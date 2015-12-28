@@ -526,7 +526,7 @@ public class Test extends StdCommand
 							}
 							catch(CMException e2)
 							{
-								mob.tell("Recipe parse exception "+e2.getMessage());
+								mob.tell(L("Recipe parse exception @x1",e2.getMessage()));
 							}
 						}
 					}
@@ -1667,7 +1667,7 @@ public class Test extends StdCommand
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("dumpMobBitmaps")))
 			{
-				mob.tell(CMStrings.padRight("Attribute", 15)+CMStrings.padRight("Value", 11)+CMStrings.padRight("Reversed", 11));
+				mob.tell(CMStrings.padRight(L("Attribute"), 15)+CMStrings.padRight(L("Value"), 11)+CMStrings.padRight(L("Reversed"), 11));
 				for(MOB.Attrib A : MOB.Attrib.values())
 					mob.tell(CMStrings.padRight(A.name(), 15)+CMStrings.padRight(A.getBitCode()+"", 11)+CMStrings.padRight(A.isAutoReversed()+"", 11));
 			}

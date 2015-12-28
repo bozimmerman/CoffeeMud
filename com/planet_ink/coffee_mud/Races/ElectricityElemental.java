@@ -217,7 +217,7 @@ public class ElectricityElemental extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("a small conductive filing",RawMaterial.RESOURCE_IRON));
+					(L("a small conductive filing"),RawMaterial.RESOURCE_IRON));
 			}
 		}
 		return resources;

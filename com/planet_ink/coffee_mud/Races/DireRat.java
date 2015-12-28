@@ -73,17 +73,17 @@ public class DireRat extends GiantRat
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_FUR));
+					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
 				}
 				for(int i=0;i<2;i++)
 				{
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
+					(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				}
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" teeth",RawMaterial.RESOURCE_BONE));
+				(L("a pair of @x1 teeth",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

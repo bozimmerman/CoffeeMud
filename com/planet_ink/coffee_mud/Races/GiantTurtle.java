@@ -209,7 +209,7 @@ public class GiantTurtle extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" shell",RawMaterial.RESOURCE_BONE));
+				(L("a @x1 shell",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

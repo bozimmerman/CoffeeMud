@@ -165,7 +165,7 @@ public class Grasshopper extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" legs",RawMaterial.RESOURCE_BONE));
+				(L("a pair of @x1 legs",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

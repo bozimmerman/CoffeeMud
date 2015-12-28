@@ -287,7 +287,7 @@ public class Stone extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some pebbles",RawMaterial.RESOURCE_STONE));
+					(L("some pebbles"),RawMaterial.RESOURCE_STONE));
 			}
 		}
 		return resources;

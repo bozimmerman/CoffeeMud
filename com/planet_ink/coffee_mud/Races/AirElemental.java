@@ -228,7 +228,7 @@ public class AirElemental extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("a pile of leaves",RawMaterial.RESOURCE_GREENS));
+					(L("a pile of leaves"),RawMaterial.RESOURCE_GREENS));
 			}
 		}
 		return resources;

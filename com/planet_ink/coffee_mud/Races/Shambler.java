@@ -230,7 +230,7 @@ public class Shambler extends StdRace
 				for(int i=0;i<3;i++)
 				{
 					resources.addElement(makeResource
-						("a pile of vegetation",RawMaterial.RESOURCE_GREENS));
+						(L("a pile of vegetation"),RawMaterial.RESOURCE_GREENS));
 				}
 			}
 		}

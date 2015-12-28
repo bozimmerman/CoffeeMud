@@ -165,12 +165,12 @@ public class Arachnid extends StdRace
 				for(int x=0;x<8;x++)
 				{
 					resources.addElement(makeResource
-					("an "+name().toLowerCase()+" leg",RawMaterial.RESOURCE_OAK));
+					(L("an @x1 leg",name().toLowerCase()),RawMaterial.RESOURCE_OAK));
 				}
 				for(int x=0;x<5;x++)
 				{
 					resources.addElement(makeResource
-					("some "+name().toLowerCase()+" guts",RawMaterial.RESOURCE_MEAT));
+					(L("some @x1 guts",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				}
 			}
 		}

@@ -205,7 +205,7 @@ public class Who extends StdCommand
 			final StringBuilder msg=new StringBuilder("");
 			msg.append("^x[");
 			msg.append(CMStrings.padRight(L("Account"),colWidths[0]));
-			msg.append("] Character name^.^N\n\r");
+			msg.append(L("] Character name^.^N\n\r"));
 			for(final Session S : CMLib.sessions().localOnlineIterable())
 			{
 				MOB mob2=S.mob();

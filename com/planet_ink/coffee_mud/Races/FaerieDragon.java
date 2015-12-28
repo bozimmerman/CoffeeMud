@@ -231,19 +231,19 @@ public class FaerieDragon extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" claw",RawMaterial.RESOURCE_BONE));
+				(L("a @x1 claw",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				for(int i=0;i<3;i++)
 				{
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" scales",RawMaterial.RESOURCE_SCALES));
+					(L("a strip of @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
 				}
 				for(int i=0;i<2;i++)
 				{
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_DRAGONMEAT));
+					(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_DRAGONMEAT));
 				}
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_DRAGONBLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_DRAGONBLOOD));
 			}
 		}
 		return resources;

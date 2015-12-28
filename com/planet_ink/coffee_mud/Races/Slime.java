@@ -257,7 +257,7 @@ public class Slime extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" bit",RawMaterial.RESOURCE_SLIME));
+				(L("a @x1 bit",name().toLowerCase()),RawMaterial.RESOURCE_SLIME));
 			}
 		}
 		return resources;

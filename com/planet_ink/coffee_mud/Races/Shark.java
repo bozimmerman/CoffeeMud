@@ -98,20 +98,20 @@ public class Shark extends GiantFish
 				for(int i=0;i<25;i++)
 				{
 					resources.addElement(makeResource
-					("some "+name().toLowerCase(),RawMaterial.RESOURCE_FISH));
+					(L("some @x1",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
 				}
 				for(int i=0;i<15;i++)
 				{
 					resources.addElement(makeResource
-					("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
+					(L("a @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				}
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					("a "+name().toLowerCase()+" tooth",RawMaterial.RESOURCE_BONE));
+					(L("a @x1 tooth",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				}
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;
