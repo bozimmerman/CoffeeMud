@@ -1,0 +1,13 @@
+#name	 level	ticks	wood	 ok=0/roof=1/out=2	 req direction=1	 nonull=1 nullonly=2	code
+Wall	1	25	250	1	1	0	WALL
+Roof	1	25	500	2	0	0	ROOF
+Archway	1	25	200	0	1	0	ARCH
+Demolish	1	25	0	0	1	0	DEMOLISH
+Title	1	15	0	0	0	0	TITLE
+Description	1	10	0	0	0	0	DESC
+Druidic Monument	1	25	1000	2	0	0	MONUMENT
+Window	1	25	100	1	1	1	WINDOW
+Crawlway	1	25	500	1	1	1	CRAWLWAY
+Pool	1	35	700	2	0	0	POOL
+Portcullis	1	25	100	0	1	0	PORTCULIS
+Stairs	1	45	2550	1	0	0	STAIRS

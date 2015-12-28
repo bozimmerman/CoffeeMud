@@ -1,0 +1,13 @@
+#name	level	ticks	 wood	 ok=0/roof=1/out=2	 req direction=1	 nonull=1 nullonly=2	code
+Wall	1	25	100	1	1	0	WALL
+Door	1	25	125	1	1	0	DOOR
+Roof	1	25	350	2	0	0	ROOF
+Gate	1	25	50	2	1	0	GATE
+Fence	1	25	50	2	1	0	FENCE
+Demolish	1	25	0	0	1	0	DEMOLISH
+Title	1	0	15	0	0	0	TITLE
+Description	1	10	0	0	0	0	DESC
+Secret Door	1	25	200	1	1	0	SECRETDOOR
+Window	1	25	50	1	1	1	WINDOW
+Crawlway	1	25	250	1	1	1	CRAWLWAY
+Stairs	1	45	850	1	0	0	STAIRS
