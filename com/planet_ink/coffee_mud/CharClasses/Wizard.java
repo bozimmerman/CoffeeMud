@@ -87,8 +87,7 @@ public class Wizard extends Mage
 				if(level>0)
 				{
 					final AbilityMapper.AbilityMapping able=CMLib.ableMapper().getAbleMap(ID(),A.ID());
-					if((able!=null)
-					&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
+					if(able!=null)
 					{
 						able.costOverrides(new Integer[]{Integer.valueOf(0),Integer.valueOf(0),Integer.valueOf(0),Integer.valueOf(0)});
 						able.defaultProficiency(100);
@@ -98,12 +97,10 @@ public class Wizard extends Mage
 		}
 	}
 
-	// @Override public int availabilityCode(){return 0;}
-	
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY;
+		return 0;
 	}
 
 	@Override
