@@ -9251,13 +9251,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 				genAccountExpiration(mob,A,++showNumber,showFlag);
 			promptStatStr(mob,A,PlayerAccount.AccountFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
-			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Common Skills: "),"BONUSCOMMON");
-			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Crafting Skills: "),"BONUSCRAFT");
-			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Gathering Skills: "),"BONUSNONCRAFT");
 			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Languages: "),"BONUSLANGS");
-			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Char Stat Points: "),"BONUSCHARSTATS");
 			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Char Limit: "),"BONUSCHARLIMIT");
 			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Char Online: "),"BONUSCHARONLINE");
+			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Char Stat Points: "),"BONUSCHARSTATS");
+			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus All-Common Skills: "),"BONUSCOMMON");
+			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Crafting Skills: "),"BONUSCRAFT");
+			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Non-Craft Common Skills: "),"BONUSNONCRAFT");
 			promptStatStr(mob,A,++showNumber,showFlag,"Notes: ","NOTES");
 			genTattoos(mob,A,++showNumber,showFlag);
 			for(int x=A.getSaveStatIndex();x<A.getStatCodes().length;x++)

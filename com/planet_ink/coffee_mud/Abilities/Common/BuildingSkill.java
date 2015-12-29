@@ -60,6 +60,12 @@ public class BuildingSkill extends CraftingSkill
 	}
 
 	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_BUILDINGSKILL;
+	}
+
+	@Override
 	public String supportedResourceString()
 	{
 		return "";
@@ -788,7 +794,7 @@ public class BuildingSkill extends CraftingSkill
 		}
 		case STAIRS:
 		{
-			this.buildStairs(mob, room, Directions.UP);
+			this.buildStairs(mob, room, dir);
 			break;
 		}
 		case TITLE:
@@ -1199,18 +1205,24 @@ public class BuildingSkill extends CraftingSkill
 
 		if(doingCode == Building.STAIRS)
 		{
+			dir=Directions.UP; // DELME
+			if((dir!=Directions.UP)&&(dir!=Directions.DOWN))
+			{
+				commonTell(mob,L("A valid direction in which to build stairs must also be specified.  Try UP or DOWN."));
+				return false;
+			}
 			final LandTitle title=CMLib.law().getLandTitle(mob.location());
 			if((title==null)||(!title.allowsExpansionConstruction()))
 			{
 				commonTell(mob,L("The title here does not permit the building of stairs."));
 				return false;
 			}
-			if(!CMath.bset(mob.location().domainType(), Room.INDOORS))
+			if((!CMath.bset(mob.location().domainType(), Room.INDOORS))&&(dir==Directions.UP))
 			{
 				commonTell(mob,L("You need to build a ceiling (or roof) first!"));
 				return false;
 			}
-			if((mob.location().getRoomInDir(Directions.UP)!=null)||(mob.location().rawDoors()[Directions.UP]!=null))
+			if((mob.location().getRoomInDir(dir)!=null)||(mob.location().rawDoors()[dir]!=null))
 			{
 				commonTell(mob,L("There are already stairs here."));
 				return false;

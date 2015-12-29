@@ -43,7 +43,8 @@ public class Qualify  extends Skills
 	
 	protected final static int SKILL_ANY=-1;
 	protected final static int SKILL_CRAFTING_ONLY=-2;
-	protected final static int SKILL_GATHERING_ONLY=-3;
+	protected final static int SKILL_BUILDING_ONLY=-3;
+	protected final static int SKILL_GATHERING_ONLY=-4;
 
 	public StringBuffer getQualifiedAbilities(MOB viewerM,
 											  MOB ableM,
@@ -76,6 +77,10 @@ public class Qualify  extends Skills
 		case SKILL_GATHERING_ONLY:
 			badDomain = Ability.DOMAIN_CRAFTINGSKILL;
 			checkDomain = -1;
+			break;
+		case SKILL_BUILDING_ONLY:
+			badDomain = -1;
+			checkDomain = Ability.DOMAIN_BUILDINGSKILL;
 			break;
 		case SKILL_ANY:
 		case 0:
@@ -184,6 +189,8 @@ public class Qualify  extends Skills
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_ANY,"\n\r^HCommon Skills:^? ",shortOnly));
 		else if ("CRAFTING SKILLS".startsWith(qual))
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_CRAFTING_ONLY,"\n\r^HCrafting Skills:^? ",shortOnly));
+		else if ("BUILDING SKILLS".startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_BUILDING_ONLY,"\n\r^HBuilding Skills:^? ",shortOnly));
 		else if ("GATHERING SKILLS".startsWith(qual)
 			||"NON CRAFTING SKILLS".startsWith(qual)||"NON-CRAFTING SKILLS".startsWith(qual)||"NONCRAFTING SKILLS".startsWith(qual))
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_GATHERING_ONLY,"\n\r^HNon-Crafting Common Skills:^? ",shortOnly));
@@ -352,9 +359,9 @@ public class Qualify  extends Skills
 			if(msg.length()==0)
 			{
 				if(qual.length()>0)
-					mob.tell(L("You don't appear to qualify for any '@x1'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, LANGUAGES, CRAFTING, or NON-CRAFTING.",qual));
+					mob.tell(L("You don't appear to qualify for any '@x1'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, LANGUAGES, CRAFTING, GATHERING, BUILDING, or NON-CRAFTING.",qual));
 				else
-					mob.tell(L("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, LANGUAGES, CRAFTING, or NON-CRAFTING."));
+					mob.tell(L("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, LANGUAGES, CRAFTING, GATHERING, BUILDING,, or NON-CRAFTING."));
 			}
 			else
 			if(!mob.isMonster())
