@@ -145,7 +145,7 @@ public class CommonSkill extends StdAbility
 	@Override
 	public void unInvoke()
 	{
-		if(canBeUninvoked())
+		if(canBeUninvoked() && (!super.unInvoked))
 		{
 			if((affected!=null)
 			&&(affected instanceof MOB)

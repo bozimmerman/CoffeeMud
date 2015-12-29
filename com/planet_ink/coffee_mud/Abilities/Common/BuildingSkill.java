@@ -139,7 +139,7 @@ public class BuildingSkill extends CraftingSkill
 	@Override
 	public void unInvoke()
 	{
-		if(canBeUninvoked())
+		if(canBeUninvoked() && (!super.unInvoked))
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(!helping))
 			{
@@ -173,7 +173,7 @@ public class BuildingSkill extends CraftingSkill
 	
 	public String[][] getRecipeData(final MOB mob)
 	{
-		List<List<String>> recipeData = addRecipes(mob,super.loadRecipes(super.parametersFile()));
+		List<List<String>> recipeData = addRecipes(mob,loadRecipes(parametersFile()));
 		String[][] finalDat = new String[recipeData.size()][];
 		for(int i=0;i<recipeData.size();i++)
 			finalDat[i] = recipeData.get(i).toArray(new String[recipeData.get(i).size()]);
@@ -955,11 +955,11 @@ public class BuildingSkill extends CraftingSkill
 			if(dir<0)
 			{
 				if((mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+				||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 						verb=L("demolishing the pool");
 				else
 				if((mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+				||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
 				{
 					commonTell(mob,null,null,L("You must demolish a pool from above."));
 					return "";
@@ -986,7 +986,7 @@ public class BuildingSkill extends CraftingSkill
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(super.checkStop(mob, commands))
+		if(checkStop(mob, commands))
 			return true;
 		
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
@@ -1002,7 +1002,7 @@ public class BuildingSkill extends CraftingSkill
 		{
 			final String mask=CMParms.combine(commands,1);
 			final int colWidth=CMLib.lister().fixColWidth(20,mob.session());
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight(L("Item"),colWidth) + L(" @x2 required\n\r",this.getMainResourceName().toLowerCase()));
+			final StringBuffer buf=new StringBuffer(CMStrings.padRight(L("Item"),colWidth) + L(" @x1 required\n\r",this.getMainResourceName()));
 			for(int r=0;r<data.length;r++)
 			{
 				if(((data[r][DAT_BUILDERMASK].length()==0)
@@ -1013,9 +1013,10 @@ public class BuildingSkill extends CraftingSkill
 					||mask.equalsIgnoreCase("all")
 					||CMLib.english().containsString(CMStrings.padRight(data[r][RCP_FINALNAME],colWidth),mask)))
 				{
+					final Building buildCode = Building.valueOf(data[r][DAT_BUILDCODE]);
 					final int woodRequired=adjustWoodRequired(CMath.s_int(data[r][DAT_WOOD]),mob);
 					buf.append(CMStrings.padRight(data[r][RCP_FINALNAME],colWidth)+" "+woodRequired);
-					if(doingCode == Building.PORTCULIS)
+					if(buildCode == Building.PORTCULIS)
 						buf.append(L(" metal"));
 					buf.append("\n\r");
 				}
