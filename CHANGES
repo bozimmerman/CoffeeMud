@@ -7,6 +7,7 @@
    6. New version of Siplet (the web client).  Now uses WebSockets for streaming joy.
    7. New disease: Sleepwalking.  Very rare, but can be caught through extreme fatigue.
    8. TickTock can now be used to trigger achievement checks for all players online.
+   9. New Beastmaster / Ranger skill: Animal Bonding.
 # Build 5.9.0 Released 12/20/2015
    1. Web Server upgraded to 2.3
    2. coffeemud.ini entry FLEE has new (blank) option to basically disable fleeing and break a bunch of skills.
