@@ -1633,6 +1633,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult acctmenuCommand(final LoginSessionImpl loginObj, final Session session) throws IOException
 	{
 		final PlayerAccount acct=loginObj.acct;
+		if(acct==null)
+			return LoginResult.NO_LOGIN;
 		final String s=loginObj.lastInput.trim();
 		if(s==null)
 			return LoginResult.NO_LOGIN;
@@ -2058,24 +2060,22 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			&&(S.mob().playerStats().getAccount()==acct))
 				numAccountOnline++;
 		}
-		if(acct != null)
+		int maxConnectionsPerAccount = CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT);
+		if(maxConnectionsPerAccount > 0)
+			maxConnectionsPerAccount += acct.getBonusCharsOnlineLimit();
+		if((maxConnectionsPerAccount>0)
+		&&(numAccountOnline>=maxConnectionsPerAccount)
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, session.getAddress()))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, playMe.accountName))
+		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, playMe.name))
+		&&(!acct.isSet(PlayerAccount.AccountFlag.MAXCONNSOVERRIDE)))
 		{
-			int maxConnectionsPerAccount = CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT);
-			if(maxConnectionsPerAccount > 0)
-				maxConnectionsPerAccount += acct.getBonusCharsOnlineLimit();
-			if((maxConnectionsPerAccount>0)
-			&&(numAccountOnline>=maxConnectionsPerAccount)
-			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
-			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, session.getAddress()))
-			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, playMe.accountName))
-			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, playMe.name))
-			&&(!acct.isSet(PlayerAccount.AccountFlag.MAXCONNSOVERRIDE)))
-			{
-				session.println(L("You may only have @x1 of your characters on at one time.",""+CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)));
-				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-				return null;
-			}
+			session.println(L("You may only have @x1 of your characters on at one time.",""+CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)));
+			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+			return null;
 		}
+
 		playMe.loadedMOB=realMOB;
 		final LoginResult prelimResults = prelimChecks(session,playMe.name,playMe);
 		if(prelimResults!=null)

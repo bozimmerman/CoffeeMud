@@ -1468,7 +1468,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(E instanceof MOB)
 		{
 			final MOB M=(MOB)E;
-			if(isGolem(M) && (M!=null) && (M.charStats()!=null) && (M.charStats().getMyRace()!=null))
+			if(isGolem(M) && (M.charStats()!=null) && (M.charStats().getMyRace()!=null))
 			{
 				final List<RawMaterial> mats = M.charStats().getMyRace().myResources();
 				for(final Item I : mats)

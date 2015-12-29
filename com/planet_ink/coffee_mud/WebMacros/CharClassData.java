@@ -298,6 +298,7 @@ public class CharClassData extends StdWebMacro
 				return ""+(CMClass.getCharClass(last)==null);
 			if(C!=null)
 			{
+				final CharClass origC = C;
 				final StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("NAME"))
 				{
@@ -1129,15 +1130,19 @@ public class CharClassData extends StdWebMacro
 					str.append(C.getAttackDesc()+", ");
 
 				if(parms.containsKey("WEAPONS"))
+				{
 					if(C.getWeaponLimitDesc().length()>0)
 						str.append(C.getWeaponLimitDesc()+", ");
 					else
 						str.append("Any, ");
+				}
 				if(parms.containsKey("ARMORLIMITS"))
+				{
 					if(C.getArmorLimitDesc().length()>0)
 						str.append(C.getArmorLimitDesc()+", ");
 					else
 						str.append("Any, ");
+				}
 				if(parms.containsKey("LIMITS"))
 				{
 					final StringBuffer limits = new StringBuffer("");
@@ -1151,26 +1156,34 @@ public class CharClassData extends StdWebMacro
 						str.append(limits.toString().trim()).append(", ");
 				}
 				if(parms.containsKey("BONUSES"))
+				{
 					if(C.getOtherBonusDesc().length()>0)
 						str.append(C.getOtherBonusDesc()+", ");
 					else
 						str.append("None, ");
+				}
 				if(parms.containsKey("QUALS"))
+				{
 					if(C.getStatQualDesc().length()>0)
 						str.append(C.getStatQualDesc()+", ");
+				}
 				if(parms.containsKey("STARTINGEQ"))
 				{
 					final List<Item> items=C.outfit(null);
 					if(items !=null)
 					for(final Item I : items)
+					{
 						if(I!=null)
 							str.append(I.name()+", ");
+					}
 				}
 				if(parms.containsKey("BALANCE"))
 					str.append(balanceChart(C));
 				String strstr=str.toString();
 				if(strstr.endsWith(", "))
 					strstr=strstr.substring(0,strstr.length()-2);
+				if(C.isGeneric() && !origC.isGeneric())
+					origC.initializeClass();
 				return clearWebMacros(strstr);
 			}
 		}
@@ -1350,16 +1363,16 @@ public class CharClassData extends StdWebMacro
 	public int avgMath(int stat, int level, int add, String formula)
 	{
 		final double[] variables={
-				level,
-				stat,
-				(double)stat+7,
-				stat,
-				(double)stat+7,
-				stat,
-				(double)stat+7,
-				stat,
-				stat
-			};
+			level,
+			stat,
+			(double)stat+7,
+			stat,
+			(double)stat+7,
+			stat,
+			(double)stat+7,
+			stat,
+			stat
+		};
 		return add+(level*(int)Math.round(CMath.parseMathExpression(formula, variables)));
 	}
 }
