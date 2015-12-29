@@ -4,6 +4,7 @@ Spell_ResistMagicMissiles	SCALES
 Spell_MagicalAura	MILK
 Spell_Shield	BRASS
 Spell_Blur	COTTON
+Spell_Light	SAND
 Spell_Infravision	TIN
 Spell_DetectUndead	PEPPERS
 Spell_ObscureSelf	BALSA
