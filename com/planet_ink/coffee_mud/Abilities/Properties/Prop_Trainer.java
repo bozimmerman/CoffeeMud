@@ -36,10 +36,29 @@ import java.util.*;
 
 public class Prop_Trainer extends Prop_StatTrainer
 {
-	@Override public String ID() { return "Prop_Trainer"; }
-	@Override public String name(){ return "THE Training MOB";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override public String accountForYourself() { return "Trainer";	}
+	@Override
+	public String ID()
+	{
+		return "Prop_Trainer";
+	}
+
+	@Override
+	public String name()
+	{
+		return "THE Training MOB";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public String accountForYourself()
+	{
+		return "Trainer";
+	}
 
 	private boolean built=false;
 
@@ -47,8 +66,13 @@ public class Prop_Trainer extends Prop_StatTrainer
 	{
 		boolean found=false;
 		for(int n=0;n<mob.baseCharStats().numClasses();n++)
+		{
 			if(mob.baseCharStats().getMyClass(n).ID().equals(C.ID()))
-			{ found=true; break;}
+			{
+				found = true;
+				break;
+			}
+		}
 		if((!found)&&(C.availabilityCode()!=0))
 		{
 			mob.baseCharStats().setCurrentClass(C);
@@ -63,6 +87,8 @@ public class Prop_Trainer extends Prop_StatTrainer
 		{
 			built=true;
 			CharClass C=null;
+			final MOB mob=(MOB)affected;
+			CharClass currC=mob.charStats().getCurrentClass();
 			final Vector<CharClass> allowedClasses=new Vector<CharClass>();
 			final Vector<ExpertiseLibrary.ExpertiseDefinition> allowedExpertises=new Vector<ExpertiseLibrary.ExpertiseDefinition>();
 			final Vector<String> V=CMParms.parse(text());
@@ -107,8 +133,6 @@ public class Prop_Trainer extends Prop_StatTrainer
 					allowedExpertises.addElement(e.nextElement());
 			}
 
-
-			final MOB mob=(MOB)affected;
 			for(int c=0;c<allowedClasses.size();c++)
 			{
 				C=allowedClasses.elementAt(c);
@@ -116,6 +140,8 @@ public class Prop_Trainer extends Prop_StatTrainer
 			}
 			for(int e=0;e<allowedExpertises.size();e++)
 				mob.addExpertise(allowedExpertises.elementAt(e).ID());
+			mob.baseCharStats().setCurrentClass(currC);
+			mob.charStats().setCurrentClass(currC);
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();

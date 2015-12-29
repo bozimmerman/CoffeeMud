@@ -59,6 +59,17 @@ public class TickTock extends StdCommand
 			if(s.startsWith("clantick"))
 				CMLib.clans().tickAllClans();
 			else
+			if(s.startsWith("achievements"))
+			{
+				CMLib.clans().tickAllClans();
+				for(final Enumeration<MOB> m=CMLib.players().players();m.hasMoreElements();)
+				{
+					final MOB M=m.nextElement();
+					if(CMLib.flags().isInTheGame(M, true))
+						CMLib.achievements().evaluateAchievements(mob);
+				}
+			}
+			else
 			{
 				for(final Enumeration e=CMLib.libraries();e.hasMoreElements();)
 				{
@@ -73,7 +84,7 @@ public class TickTock extends StdCommand
 						return false;
 					}
 				}
-				mob.tell(L("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id."));
+				mob.tell(L("Ticktock what?  Enter a number of mud-hours, or clanticks, achievements, or thread id."));
 			}
 		}
 		catch(final Exception e)

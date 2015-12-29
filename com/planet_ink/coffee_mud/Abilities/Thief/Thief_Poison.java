@@ -79,6 +79,8 @@ public class Thief_Poison extends ThiefSkill
 				{
 					final Ability A=CMClass.getAbility("Poison");
 					A.invoke(mob,target,true,asLevel);
+					if(target.fetchEffect("Poison")!=null)
+						mob.tell(L("@x1 is now poisoned.",target.name()));
 				}
 			}
 		}
