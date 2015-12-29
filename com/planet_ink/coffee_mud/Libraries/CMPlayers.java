@@ -127,12 +127,15 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public PlayerAccount getLoadAccount(String calledThis)
 	{
-		final PlayerAccount A = getAccount(calledThis);
+		PlayerAccount A = getAccount(calledThis);
 		if(A!=null)
 			return A;
 		if(allAccountsLoaded)
 			return null;
-		return CMLib.database().DBReadAccount(calledThis);
+		A=CMLib.database().DBReadAccount(calledThis);
+		if(A!=null)
+			addAccount(A);
+		return A;
 	}
 
 	@Override
