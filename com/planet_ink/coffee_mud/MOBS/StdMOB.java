@@ -2449,6 +2449,15 @@ public class StdMOB implements MOB
 						}
 					}
 					break;
+				case CMMsg.TYP_READ:
+					if (isInCombat() 
+					&& (!msg.sourceMajor(CMMsg.MASK_MAGIC)) 
+					&& (!(msg.target() instanceof Scroll)))
+					{
+						tell(L("You are too busy fighting to read!"));
+						return false;
+					}
+					break;
 				case CMMsg.TYP_BUY:
 				case CMMsg.TYP_BID:
 				case CMMsg.TYP_DELICATE_HANDS_ACT:
@@ -2461,7 +2470,6 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_VALUE:
 				case CMMsg.TYP_SELL:
 				case CMMsg.TYP_VIEW:
-				case CMMsg.TYP_READ:
 					if (isInCombat() && (!msg.sourceMajor(CMMsg.MASK_MAGIC)))
 					{
 						tell(L("Not while you are fighting!"));
