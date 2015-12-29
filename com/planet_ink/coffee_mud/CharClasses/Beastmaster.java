@@ -37,22 +37,93 @@ import java.util.*;
 
 public class Beastmaster extends StdCharClass
 {
-	@Override public String ID(){return "Beastmaster";}
-	private final static String localizedStaticName = CMLib.lang().L("Beastmaster");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Druid";}
-	@Override public int getBonusPracLevel(){return 2;}
-	@Override public int getBonusAttackLevel(){return 0;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
-	@Override public int getLevelsPerBonusDamage(){ return 15;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
-	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
-	private final HashSet<Integer> requiredWeaponMaterials=buildRequiredWeaponMaterials();
-	@Override protected Set<Integer> requiredWeaponMaterials(){return requiredWeaponMaterials;}
-	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
+	@Override
+	public String ID()
+	{
+		return "Beastmaster";
+	}
+
+	private final static String	localizedStaticName	= CMLib.lang().L("Beastmaster");
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Druid";
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_CONSTITUTION;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 15;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/2)+(2*(1?7))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/4)+(1*(1?4))";
+	}
+
+	@Override
+	protected String armorFailMessage()
+	{
+		return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_NONMETAL;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_NATURAL;
+	}
+
+	private final HashSet<Integer>	requiredWeaponMaterials	= buildRequiredWeaponMaterials();
+
+	@Override
+	protected Set<Integer> requiredWeaponMaterials()
+	{
+		return requiredWeaponMaterials;
+	}
+
+	@Override
+	public int requiredArmorSourceMinor()
+	{
+		return CMMsg.TYP_CAST_SPELL;
+	}
 
 	public Beastmaster()
 	{
@@ -77,6 +148,7 @@ public class Beastmaster extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_BestowName",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_HardenSkin",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalBonding",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_SensePregnancy",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
 

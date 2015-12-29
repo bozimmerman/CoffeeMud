@@ -36,27 +36,93 @@ import java.util.*;
 */
 public class Ranger extends StdCharClass
 {
-	@Override public String ID(){return "Ranger";}
-	private final static String localizedStaticName = CMLib.lang().L("Ranger");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Fighter";}
-	@Override public int getBonusPracLevel(){return 0;}
-	@Override public int getBonusAttackLevel(){return 0;}
-	@Override public String getMovementFormula(){return "12*((@x2<@x3)/18)"; }
-	@Override public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	@Override public int getLevelsPerBonusDamage(){ return 30;}
-	@Override public int getPracsFirstLevel(){return 3;}
-	@Override public int getTrainsFirstLevel(){return 4;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?6))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/7)+(1*(1?3))"; }
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	@Override
+	public String ID()
+	{
+		return "Ranger";
+	}
+
+	private final static String	localizedStaticName	= CMLib.lang().L("Ranger");
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Fighter";
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public String getMovementFormula()
+	{
+		return "12*((@x2<@x3)/18)";
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_STRENGTH;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 30;
+	}
+
+	@Override
+	public int getPracsFirstLevel()
+	{
+		return 3;
+	}
+
+	@Override
+	public int getTrainsFirstLevel()
+	{
+		return 4;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/2)+(2*(1?6))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/7)+(1*(1?3))";
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_ANY;
+	}
 
 	public Ranger()
 	{
 		super();
-		maxStatAdj[CharStats.STAT_STRENGTH]=4;
-		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
+		maxStatAdj[CharStats.STAT_STRENGTH] = 4;
+		maxStatAdj[CharStats.STAT_INTELLIGENCE] = 4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -77,6 +143,7 @@ public class Ranger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Ranger_Track",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",0,"ANTIDOTES",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AnimalBonding",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Ranger_FindWater",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);

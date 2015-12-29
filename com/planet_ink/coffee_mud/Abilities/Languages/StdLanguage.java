@@ -334,7 +334,11 @@ public class StdLanguage extends StdAbility implements Language
 					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDMOBS)||(!((MOB)msg.target()).isMonster()))
 					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDROOMS)||(!((MOB)msg.target()).isMonster())))
 					{
-						final Language L=getAnyTranslator(ID(),msg.source());
+						final Language L;
+						if((msg.tool() instanceof Language)&&(msg.tool().ID().equals(ID())))
+							L=(Language)msg.tool();
+						else
+							L=getAnyTranslator(ID(),msg.source());
 						if((L==null)
 						||(!L.beingSpoken(ID()))
 						||((CMLib.dice().rollPercentage()*2)>(L.getProficiency(ID())+getProficiency(ID()))))
