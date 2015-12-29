@@ -37,50 +37,139 @@ import java.util.*;
 
 public class CommonSkill extends StdAbility
 {
-	@Override public String ID() { return "CommonSkill"; }
+	@Override
+	public String ID()
+	{
+		return "CommonSkill";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Common Skill");
-	@Override public String name() { return localizedName; }
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
 	private static final String[] triggerStrings = empty;
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	public String supportedResourceString(){return "";}
-	public static final Map<String,Integer[]> resourcesMap=new Hashtable<String,Integer[]>();
-	protected static Item fakeFire=null;
-	protected static final List<String> uninvokeEmpties=new ReadOnlyList<String>(new ArrayList<String>(0));
 
-	protected volatile Room activityRoom=null;
-	protected boolean aborted=false;
-	protected boolean helping=false;
-	protected boolean bundling=false;
-	public Ability helpingAbility=null;
-	protected volatile int tickUp=0;
-	protected String verb=L("working");
-	protected String playSound=null;
-	protected int yield=baseYield();
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
-	protected int baseYield() { return 1; }
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	protected String displayText=L("(Doing something productive)");
-	@Override public String displayText(){return displayText;}
+	public String supportedResourceString()
+	{
+		return "";
+	}
 
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getCommonSkillGainCost(ID()); }
-	@Override protected int iniPracticesToPractice(){return 1;}
+	public static final Map<String, Integer[]>	resourcesMap	= new Hashtable<String, Integer[]>();
+	protected static Item						fakeFire		= null;
+	protected static final List<String>			uninvokeEmpties	= new ReadOnlyList<String>(new ArrayList<String>(0));
 
-	protected boolean allowedWhileMounted(){return true;}
+	protected volatile Room	activityRoom	= null;
+	protected boolean		aborted			= false;
+	protected boolean		helping			= false;
+	protected boolean		bundling		= false;
+	public Ability			helpingAbility	= null;
+	protected volatile int	tickUp			= 0;
+	protected String		verb			= L("working");
+	protected String		playSound		= null;
+	protected int			yield			= baseYield();
+	protected volatile int	lastBaseDuration= 0;
 
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	protected int baseYield()
+	{
+		return 1;
+	}
 
-	protected boolean allowedInTheDark() { return false; }
-	
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
-	protected List<String> getUninvokeException() { return uninvokeEmpties; }
-	@Override public int classificationCode()	{	return Ability.ACODE_COMMON_SKILL; }
-	protected boolean canBeDoneSittingDown() { return false; }
-	protected int getActivityMessageType() { return canBeDoneSittingDown()?CMMsg.MSG_HANDS|CMMsg.MASK_SOUND:CMMsg.MSG_NOISYMOVEMENT; }
+	protected String displayText = L("(Doing something productive)");
 
-	@Override public int abilityCode(){return yield;}
-	@Override public void setAbilityCode(int newCode){yield=newCode;}
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	{
+		return CMProps.getCommonSkillGainCost(ID());
+	}
+
+	@Override
+	protected int iniPracticesToPractice()
+	{
+		return 1;
+	}
+
+	protected boolean allowedWhileMounted()
+	{
+		return true;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	protected boolean allowedInTheDark()
+	{
+		return false;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	protected List<String> getUninvokeException()
+	{
+		return uninvokeEmpties;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL;
+	}
+
+	protected boolean canBeDoneSittingDown()
+	{
+		return false;
+	}
+
+	protected int getActivityMessageType()
+	{
+		return canBeDoneSittingDown() ? CMMsg.MSG_HANDS | CMMsg.MASK_SOUND : CMMsg.MSG_NOISYMOVEMENT;
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return yield;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		yield = newCode;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -170,6 +259,10 @@ public class CommonSkill extends StdAbility
 		final double pct=CMath.div(level,CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))*.5;
 		ticks-=(int)Math.round(CMath.mul(ticks, pct));
 
+		lastBaseDuration=ticks;
+		if(lastBaseDuration<minDuration)
+			lastBaseDuration=minDuration;
+		
 		final double quickPct = getXTIMELevel(mob) * 0.05;
 		ticks-=(int)Math.round(CMath.mul(ticks, quickPct));
 		if(ticks<minDuration)
@@ -318,12 +411,24 @@ public class CommonSkill extends StdAbility
 			if(diff>0)
 			switch(diff)
 			{
-			case 1: consumed=20; break;
-			case 2: consumed=16; break;
-			case 3: consumed=13; break;
-			case 4: consumed=11; break;
-			case 5: consumed=8; break;
-			default: consumed=5; break;
+			case 1:
+				consumed = 20;
+				break;
+			case 2:
+				consumed = 16;
+				break;
+			case 3:
+				consumed = 13;
+				break;
+			case 4:
+				consumed = 11;
+				break;
+			case 5:
+				consumed = 8;
+				break;
+			default:
+				consumed = 5;
+				break;
 			}
 			final int maxOverride=CMProps.getMaxManaException(ID());
 			if(maxOverride!=Short.MIN_VALUE)
@@ -382,11 +487,13 @@ public class CommonSkill extends StdAbility
 		final List<Integer> resources=room.resourceChoices();
 		if(resources!=null)
 		for(int i=0;i<resources.size();i++)
+		{
 			if(isMaterial&&(resource==(resources.get(i).intValue()&RawMaterial.MATERIAL_MASK)))
 				return true;
 			else
 			if(resources.get(i).equals(I))
 				return true;
+		}
 		return false;
 	}
 
@@ -519,6 +626,8 @@ public class CommonSkill extends StdAbility
 	public void bumpTickDown(long byThisMuch)
 	{
 		tickDown+=byThisMuch;
+		if(byThisMuch > 0)
+			this.lastBaseDuration+=byThisMuch;
 	}
 
 	@Override

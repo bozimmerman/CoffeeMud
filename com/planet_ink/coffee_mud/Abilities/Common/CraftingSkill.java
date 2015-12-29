@@ -39,17 +39,49 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CraftingSkill extends GatheringSkill
 {
-	@Override public String ID() { return "CraftingSkill"; }
+	@Override
+	public String ID()
+	{
+		return "CraftingSkill";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Crafting Skill");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL;}
-	@Override public String accountForYourself(){return name()+" requires: "+supportedResourceString();}
-	protected Item buildingI=null;
-	protected Recipe recipeHolder = null;
-	protected boolean fireRequired=true;
-	protected enum CraftingActivity { CRAFTING, MENDING, LEARNING, REFITTING, RETITLING }
-	protected CraftingActivity activity = CraftingActivity.CRAFTING;
-	protected boolean messedUp=false;
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_CRAFTINGSKILL;
+	}
+
+	@Override
+	public String accountForYourself()
+	{
+		return name() + " requires: " + supportedResourceString();
+	}
+
+	protected Item		buildingI		= null;
+	protected Recipe	recipeHolder	= null;
+	protected boolean	fireRequired	= true;
+	
+	protected LinkedList<String> last4items = new LinkedList<String>();
+
+	protected enum CraftingActivity
+	{
+		CRAFTING,
+		MENDING,
+		LEARNING,
+		REFITTING,
+		RETITLING
+	}
+
+	protected CraftingActivity	activity		= CraftingActivity.CRAFTING;
+	protected boolean			messedUp		= false;
 
 	// common recipe definition indexes
 	protected static final int RCP_FINALNAME=0;
@@ -71,7 +103,10 @@ public class CraftingSkill extends GatheringSkill
 		}
 	}
 
-	public CraftingSkill(){super();}
+	public CraftingSkill()
+	{
+		super();
+	}
 
 	protected enum EnhancedExpertise
 	{
@@ -93,7 +128,10 @@ public class CraftingSkill extends GatheringSkill
 		
 	}
 
-	public String parametersFile(){ return "";}
+	public String parametersFile()
+	{
+		return "";
+	}
 
 	public double getItemWeightMultiplier(boolean bundling)
 	{
@@ -235,10 +273,12 @@ public class CraftingSkill extends GatheringSkill
 	{
 		int newWoodRequired=woodRequired-(int)Math.round((0.05*woodRequired*getXPCOSTLevel(mob)));
 		if(newWoodRequired<=0)
+		{
 			if(woodRequired > 0)
 				newWoodRequired=1;
 			else
 				newWoodRequired=0;
+		}
 		return newWoodRequired;
 	}
 
@@ -252,18 +292,62 @@ public class CraftingSkill extends GatheringSkill
 			commonTell(mob,L("You have built NOTHING?!!"));
 		else
 		{
-			R.addItem(building,ItemPossessor.Expire.Player_Drop);
-			R.recoverRoomStats();
-			boolean foundIt=false;
-			for(int r=0;r<R.numItems();r++)
+			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
+			
+			final double levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
+			final double levelDiff=buildingI.phyStats().level()-mob.phyStats().level();
+			double levelXPFactor = 100.0;
+			if(levelDiff<(-levelLimit) )
+				levelXPFactor=0.0;
+			else
+			if(levelLimit>0)
 			{
-				if(R.getItem(r)==building)
-					foundIt=true;
+				double levelFactor=levelDiff / levelLimit;
+				if( levelFactor > levelLimit )
+					levelFactor = levelLimit;
+				levelXPFactor+=(levelFactor *  levelXPFactor);
 			}
-			if(!foundIt)
+			if((buildingI instanceof DoorKey) && (!ID().equalsIgnoreCase("LockSmith")))
+				msg.setValue(0);
+			else
 			{
-				commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
-				CMLib.leveler().postExperience(mob, null, null,50,false);
+				final CraftingSkill mySkill = (CraftingSkill)mob.fetchAbility(ID());
+				if(mySkill == null)
+					msg.setValue(0);
+				else
+				{
+					final LinkedList<String> localLast5Items = mySkill.last4items;
+					double baseXP = lastBaseDuration * levelXPFactor / 25.0;
+					double xp = lastBaseDuration * levelXPFactor / 25.0;
+					for(String s : localLast5Items)
+					{
+						if(s.equals(buildingI.Name()))
+							xp -= (baseXP * 0.25);
+					}
+					if(localLast5Items.size()==5)
+						localLast5Items.removeFirst();
+					localLast5Items.addLast(buildingI.Name());
+					if(xp > 0.0)
+						msg.setValue((int)Math.round(xp));
+				}
+			}
+			if(mob.location().okMessage(mob,msg))
+			{
+				R.addItem(building,ItemPossessor.Expire.Player_Drop);
+				R.recoverRoomStats();
+				mob.location().send(mob,msg);
+			
+				boolean foundIt=false;
+				for(int r=0;r<R.numItems();r++)
+				{
+					if(R.getItem(r)==building)
+						foundIt=true;
+				}
+				if(!foundIt)
+				{
+					commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
+					CMLib.leveler().postExperience(mob, null, null,50,false);
+				}
 			}
 		}
 	}
@@ -380,6 +464,7 @@ public class CraftingSkill extends GatheringSkill
 
 	protected static final int FOUND_CODE=0;
 	protected static final int FOUND_AMT=1;
+	
 	protected int fixResourceRequirement(int resource, int amt)
 	{
 		if(amt<=0)
@@ -409,7 +494,10 @@ public class CraftingSkill extends GatheringSkill
 		return loadRecipes();
 	}
 
-	protected List<List<String>> loadRecipes(){ return new Vector<List<String>>();}
+	protected List<List<String>> loadRecipes()
+	{
+		return new Vector<List<String>>();
+	}
 
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
@@ -496,6 +584,7 @@ public class CraftingSkill extends GatheringSkill
 		if(req2Required>0)
 		{
 			if(req2Desc != null)
+			{
 				if(((req2!=null)&&(data[1][FOUND_AMT]==0))
 				||((req2==null)&&(req2Desc.length()>0)&&(data[1][FOUND_AMT]==0)))
 				{
@@ -505,6 +594,7 @@ public class CraftingSkill extends GatheringSkill
 						commonTell(mob,L("You need some @x1 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",req2Desc.toLowerCase()));
 					return null;
 				}
+			}
 			if(!bundle)
 				req2Required=fixResourceRequirement(data[1][FOUND_CODE],req2Required);
 		}
@@ -738,6 +828,7 @@ public class CraftingSkill extends GatheringSkill
 				return matches;
 			final String lastWord=CMParms.parse(recipeName).lastElement();
 			if(lastWord.length()>1)
+			{
 				for(int r=0;r<recipes.size();r++)
 				{
 					final List<String> V=recipes.get(r);
@@ -749,6 +840,7 @@ public class CraftingSkill extends GatheringSkill
 							matches.add(V);
 					}
 				}
+			}
 		}
 		return matches;
 	}

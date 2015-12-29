@@ -35,22 +35,87 @@ import java.util.*;
 */
 public class Artisan extends StdCharClass
 {
-	@Override public String ID(){return "Artisan";}
-	private final static String localizedStaticName = CMLib.lang().L("Artisan");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Commoner";}
-	@Override public int getBonusPracLevel(){return 2;}
-	@Override public int getBonusAttackLevel(){return -1;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	@Override public int getLevelsPerBonusDamage(){ return 30;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/6)+(1*(1?5))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public String ID()
+	{
+		return "Artisan";
+	}
 
+	private final static String localizedStaticName = CMLib.lang().L("Artisan");
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Commoner";
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return -1;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_WISDOM;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 30;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/6)+(1*(1?5))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/10)+(1*(1?2))";
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_CLOTH;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_DAGGERONLY;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	public Artisan()
 	{
@@ -75,54 +140,54 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chopping",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Digging",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Drilling",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fishing",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Fishing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Foraging",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Hunting",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Hunting",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Mining",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Searching",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Pottery",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Pottery",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"ScrimShaw",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Shearing",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Shearing",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Blacksmithing",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Carpentry",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"LeatherWorking",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"GlassBlowing",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Sculpting",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Tailoring",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Blacksmithing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Carpentry",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"LeatherWorking",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"GlassBlowing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Sculpting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Tailoring",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Weaving",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"CageBuilding",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"CageBuilding",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Cooking",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Baking",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"FoodPrep",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"JewelMaking",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"JewelMaking",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Warrants",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Costuming",true,CMParms.parseSemicolons("Tailoring",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Costuming",false,CMParms.parseSemicolons("Tailoring",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Dyeing",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Embroidering",true,CMParms.parseSemicolons("Skill_Write",true));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Engraving",true,CMParms.parseSemicolons("Skill_Write",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Embroidering",false,CMParms.parseSemicolons("Skill_Write",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Engraving",false,CMParms.parseSemicolons("Skill_Write",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Lacquerring",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Smelting",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Smelting",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Armorsmithing",true,CMParms.parseSemicolons("Blacksmithing",true));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fletching",true,CMParms.parseSemicolons("Specialization_Ranged",true));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Weaponsmithing",true,CMParms.parseSemicolons("Blacksmithing;Specialization_*",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Armorsmithing",false,CMParms.parseSemicolons("Blacksmithing",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Fletching",false,CMParms.parseSemicolons("Specialization_Ranged",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Weaponsmithing",false,CMParms.parseSemicolons("Blacksmithing;Specialization_*",true));
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Shipwright",true,CMParms.parseSemicolons("Carpentry",true));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Wainwrighting",true,CMParms.parseSemicolons("Carpentry",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Shipwright",false,CMParms.parseSemicolons("Carpentry",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Wainwrighting",false,CMParms.parseSemicolons("Carpentry",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"PaperMaking",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Cobbling",false,CMParms.parseSemicolons("LeatherWorking",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Distilling",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Farming",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Farming",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_WandUse",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Speculate",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Painting",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Painting",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"LockSmith",0,"",true);
 
@@ -139,7 +204,7 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Stability",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Appraise",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"InstrumentMaking",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"InstrumentMaking",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_Haggle",false);
 
@@ -172,6 +237,18 @@ public class Artisan extends StdCharClass
 	}
 
 	@Override
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		if((msg.source() == myHost)
+		&&(msg.targetMinor() == CMMsg.TYP_ITEMGENERATED)
+		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
+		&&(msg.value() > 0))
+			CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
+	}
+	
+	
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
@@ -201,15 +278,26 @@ public class Artisan extends StdCharClass
 		return super.tick(ticking,tickID);
 	}
 
-	private final String[] raceRequiredList=new String[]{"All"};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+	private final String[] raceRequiredList = new String[] { "All" };
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
-	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]
+	{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	@Override
 	public List<Item> outfit(MOB myChar)
@@ -225,5 +313,9 @@ public class Artisan extends StdCharClass
 		return outfitChoices;
 	}
 
-	@Override public String getOtherBonusDesc(){return "Gains experience when using common skills.";}
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return "Gains experience when using common skills.";
+	}
 }

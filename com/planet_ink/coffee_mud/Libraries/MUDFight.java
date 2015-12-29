@@ -1077,7 +1077,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		final Set<MOB> dividers=getCombatDividers(source,target,combatCharClass);
 
-
 		dispenseExperience(beneficiaries,dividers,target);
 
 		final String currency=CMLib.beanCounter().getCurrency(target);

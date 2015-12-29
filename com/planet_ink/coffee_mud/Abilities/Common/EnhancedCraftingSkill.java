@@ -37,16 +37,38 @@ import java.util.Map.Entry;
 
 public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 {
-	@Override public String ID() { return "EnhancedCraftingSkill"; }
+	@Override
+	public String ID()
+	{
+		return "EnhancedCraftingSkill";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Enhanced Crafting Skill");
-	@Override public String name() { return localizedName; }
 
-	public Hashtable<String,String> parametersFields(){ return new Hashtable<String,String>();}
-	@Override public String parametersFormat(){ return ""; }
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
 
-	protected int materialAdjustments=0;
-	
-	@Override public boolean supportsDeconstruction() { return true; }
+	public Hashtable<String, String> parametersFields()
+	{
+		return new Hashtable<String, String>();
+	}
+
+	@Override
+	public String parametersFormat()
+	{
+		return "";
+	}
+
+	protected int materialAdjustments = 0;
+
+	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
 
 	@Override
 	protected int[][] fetchFoundResourceData(MOB mob,
@@ -442,6 +464,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		if(WA!=null)
 			WA.setMiscText((WA.text()+" "+stat+adjustment).trim());
 	}
+
 	public void addSpellAdjustment(Item item, String spell, String parm)
 	{
 		Ability WA=item.fetchEffect("Prop_WearSpellCast");
