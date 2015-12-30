@@ -26,11 +26,12 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
  * operations are done.  Also maintains a tree, using the CMObject
  * ID() of the stored object as sort key.
  */
-public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess
+public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess, SafeCollectionHost
 {
 	private static final long serialVersionUID = 6687178785122561992L;
 	private volatile Vector<T> V;
 	private final    TreeMap<String,T> S;
+	private final Set<Object> iterators = new HashSet<Object>();
 
 	public CMSTreeVector()
 	{
@@ -95,7 +96,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	{
 		if(E!=null)
 		{
-			V=(Vector<T>)V.clone();
+			if (doClone())
+				V=(Vector<T>)V.clone();
 			for(;E.hasMoreElements();)
 				addBoth(E.nextElement());
 		}
@@ -106,7 +108,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	{
 		if(E!=null)
 		{
-			V=(Vector<T>)V.clone();
+			if (doClone())
+				V=(Vector<T>)V.clone();
 			for(final T e : E)
 				addBoth(e);
 		}
@@ -117,7 +120,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	{
 		if(E!=null)
 		{
-			V=(Vector<T>)V.clone();
+			if (doClone())
+				V=(Vector<T>)V.clone();
 			for(;E.hasNext();)
 				addBoth(E.next());
 		}
@@ -128,7 +132,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	{
 		if(E!=null)
 		{
-			V=(Vector<T>)V.clone();
+			if (doClone())
+				V=(Vector<T>)V.clone();
 			for(;E.hasMoreElements();)
 				removeBoth(E.nextElement());
 		}
@@ -139,7 +144,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	{
 		if(E!=null)
 		{
-			V=(Vector<T>)V.clone();
+			if (doClone())
+				V=(Vector<T>)V.clone();
 			for(;E.hasNext();)
 				removeBoth(E.next());
 		}
@@ -150,7 +156,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	{
 		if(E!=null)
 		{
-			V=(Vector<T>)V.clone();
+			if (doClone())
+				V=(Vector<T>)V.clone();
 			for(final T o : E)
 				removeBoth(o);
 		}
@@ -193,7 +200,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	@SuppressWarnings("unchecked")
 	public synchronized void copyInto(Object[] anArray)
 	{
-		V=(Vector<T>)V.clone();
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		V.copyInto(anArray);
 	}
 
@@ -204,7 +212,7 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 
 	public synchronized Enumeration<T> elements()
 	{
-		return V.elements();
+		return new SafeFeedbackEnumeration<T>(V.elements(), this);
 	}
 
 	public synchronized void ensureCapacity(int minCapacity)
@@ -304,7 +312,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	@SuppressWarnings("unchecked")
 	public synchronized void setSize(int newSize)
 	{
-		V=(Vector<T>)V.clone();
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		V.setSize(newSize);
 	}
 
@@ -317,7 +326,7 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	@Override
 	public synchronized List<T> subList(int fromIndex, int toIndex)
 	{
-		return V.subList(fromIndex, toIndex);
+		return new SafeChildList<T>(V.subList(fromIndex, toIndex), this);
 	}
 
 	@Override
@@ -342,7 +351,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	@SuppressWarnings("unchecked")
 	public synchronized void trimToSize()
 	{
-		V=(Vector<T>)V.clone();
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		V.trimToSize();
 	}
 
@@ -354,7 +364,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 			return;
 		if(!S.containsKey(element.ID().toUpperCase()))
 		{
-			V=(Vector<T>)V.clone();
+			if (doClone())
+				V=(Vector<T>)V.clone();
 			V.add(index, element);
 			S.put(element.ID().toUpperCase(), element);
 		}
@@ -368,7 +379,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 			return false;
 		if(!S.containsKey(e.ID().toUpperCase()))
 		{
-			V=(Vector<T>)V.clone();
+			if (doClone())
+				V=(Vector<T>)V.clone();
 			if(V.add(e))
 				S.put(e.ID().toUpperCase(), e);
 			return true;
@@ -376,10 +388,13 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		return false;
 	}
 
-	private boolean addBoth(T e)
+	@SuppressWarnings("unchecked")
+	private synchronized boolean addBoth(T e)
 	{
 		if(S.containsKey(e.ID().toUpperCase()))
 			return false;
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		V.add(e);
 		S.put(e.ID().toUpperCase(), e);
 		return true;
@@ -389,7 +404,6 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	@Override
 	public synchronized boolean addAll(Collection<? extends T> c)
 	{
-		V=(Vector<T>)V.clone();
 		boolean kaplah=false;
 		for(final Object o : c)
 			if(o instanceof CMObject)
@@ -422,7 +436,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	@Override
 	public synchronized void clear()
 	{
-		V=(Vector<T>)V.clone();
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		V.clear();
 		S.clear();
 	}
@@ -451,11 +466,13 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		final String OID=O.ID().toUpperCase();
 		if(!S.containsKey(OID))
 			return false;
-		V=(Vector<T>)V.clone();
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		S.remove(OID);
 		return V.remove(o);
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean removeBoth(Object o)
 	{
 		if(!(o instanceof CMObject))
@@ -464,16 +481,21 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		final String OID=O.ID().toUpperCase();
 		if(!S.containsKey(OID))
 			return false;
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		S.remove(OID);
 		return V.remove(o);
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean removeBoth(CMObject o)
 	{
 		final String OID=o.ID().toUpperCase();
 		if(!S.containsKey(OID))
 			return false;
 		S.remove(OID);
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		return V.remove(o);
 	}
 
@@ -481,7 +503,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	@Override
 	public synchronized T remove(int index)
 	{
-		V=(Vector<T>)V.clone();
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		final T O=V.remove(index);
 		if(O==null)
 			return null;
@@ -495,7 +518,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	@Override
 	public synchronized boolean removeAll(Collection<?> c)
 	{
-		V=(Vector<T>)V.clone();
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		boolean kaplah=false;
 		for(final Object o : c)
 			kaplah = removeBoth(o) || kaplah;
@@ -505,7 +529,8 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	@SuppressWarnings("unchecked")
 	public synchronized void removeAllElements()
 	{
-		V=(Vector<T>)V.clone();
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		V.removeAllElements();
 		S.clear();
 	}
@@ -525,25 +550,52 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	@SuppressWarnings("unchecked")
 	public synchronized void removeElementAt(int index)
 	{
-		V=(Vector<T>)V.clone();
+		if (doClone())
+			V=(Vector<T>)V.clone();
 		removeBoth(V.get(index));
 	}
 
 	@Override
 	public synchronized Iterator<T> iterator()
 	{
-		return new ReadOnlyIterator<T>(V.iterator());
+		return new SafeFeedbackIterator<T>(V.iterator(), this);
 	}
 
 	@Override
 	public synchronized ListIterator<T> listIterator()
 	{
-		return new ReadOnlyListIterator<T>(V.listIterator());
+		return new SafeFeedbackListIterator<T>(V.listIterator(), this);
 	}
 
 	@Override
 	public synchronized ListIterator<T> listIterator(int index)
 	{
-		return new ReadOnlyListIterator<T>(V.listIterator());
+		return new SafeFeedbackListIterator<T>(V.listIterator(), this);
+	}
+	
+	private boolean doClone()
+	{
+		synchronized(this.iterators)
+		{
+			return this.iterators.size() > 0;
+		}
+	}
+	
+	@Override
+	public void returnIterator(Object iter) 
+	{
+		synchronized(this.iterators)
+		{
+			this.iterators.remove(iter);
+		}
+	}
+
+	@Override
+	public void submitIterator(Object iter) 
+	{
+		synchronized(this.iterators)
+		{
+			this.iterators.add(iter);
+		}
 	}
 }

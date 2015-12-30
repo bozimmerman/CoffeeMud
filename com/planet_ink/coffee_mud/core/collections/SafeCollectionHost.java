@@ -20,4 +20,6 @@ public interface SafeCollectionHost
 {
 	public void returnIterator(Object iter);
 	public void submitIterator(Object iter);
+	
+	public final static long ITERATOR_TIMEOUT_MS = 10000;
 }
