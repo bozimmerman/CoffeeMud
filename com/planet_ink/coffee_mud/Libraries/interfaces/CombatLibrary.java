@@ -326,6 +326,8 @@ public interface CombatLibrary extends CMLibrary
 	 * row.  Only the leaders formation settings matter,
 	 * so any mob can be sent, because the leader will be
 	 * teased out and used.
+	 * @see CombatLibrary#getFormationFollowed(MOB)
+	 * @see CombatLibrary#getFormationAbsOrder(MOB)
 	 * @param mob a member of a group with a formation.
 	 * @return the formation.
 	 */
@@ -335,6 +337,7 @@ public interface CombatLibrary extends CMLibrary
 	 * Returns the list of mobs behind the given mob in
 	 * their respective formation order.
 	 * @see CombatLibrary#getFormation(MOB)
+	 * @see CombatLibrary#getFormationAbsOrder(MOB)
 	 * @param mob the mob in the formation
 	 * @return the list of mobs behind the given one
 	 */
@@ -343,6 +346,8 @@ public interface CombatLibrary extends CMLibrary
 	/**
 	 * Returns the numeric position of the given mob
 	 * in his or her combat formation.
+	 * @see CombatLibrary#getFormationFollowed(MOB)
+	 * @see CombatLibrary#getFormation(MOB)
 	 * @param mob the mob in formation
 	 * @return the numeric order, with 0 being front.
 	 */
@@ -352,36 +357,259 @@ public interface CombatLibrary extends CMLibrary
 	 * Returns the character class of the given killer, 
 	 * or their leader if they are following someone
 	 * who is not a mob.
+	 * @see CombatLibrary#getCombatDividers(MOB, MOB, CharClass)
+	 * @see CombatLibrary#getCombatBeneficiaries(MOB, MOB, CharClass)
 	 * @param killer the killer
 	 * @param killed the killed
 	 * @return the leaders char class
 	 */
 	public CharClass getCombatDominantClass(MOB killer, MOB killed);
 	
-	
+	/**
+	 * Returns all the mobs for whom experience awards must be divided
+	 * before awarding.  This does not mean the others do not get 
+	 * experience, just that they aren't counted for the purposes of
+	 * decreasing the experience each member wil get.  This is usually
+	 * used to exclude the mob followers of certain classes.
+	 * @see CombatLibrary#getCombatBeneficiaries(MOB, MOB, CharClass)
+	 * @see CombatLibrary#getCombatDominantClass(MOB, MOB)
+	 * @param killer the killer
+	 * @param killed the killed the killer killed
+	 * @param combatCharClass the charclass of the leader (usually)
+	 * @return the set of mobs who must decrease experience through division.
+	 */
 	public Set<MOB> getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass);
+
+	/**
+	 * Returns all the mobs set to benefit from the death of the given killed
+	 * mob by the given killer.  This means going through the followers,
+	 * and asking the classes if they are allowed to benefit from xp.\
+	 * @see CombatLibrary#getCombatDividers(MOB, MOB, CharClass)
+	 * @see CombatLibrary#getCombatDominantClass(MOB, MOB)
+	 * @param killer the killer of the killed
+	 * @param killed the killed one
+	 * @param combatCharClass the charclass of the killer
+	 * @return the set of mobs who get xp from the kill
+	 */
 	public Set<MOB> getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass);
-	public DeadBody justDie(MOB source, MOB target);
+
+	/**
+	 * Returns the friendly armor string for the given mob,
+	 * describing how well armored they are.
+	 * @see CombatLibrary#fightingProwessStr(MOB)
+	 * @param mob the mob who has armor
+	 * @return the displayable armor string
+	 */
 	public String armorStr(MOB mob);
-	public String standardHitWord(int type, int damage);
+
+	/**
+	 * Returns the friendly attack string for the given mob,
+	 * describing how well attacky they are.
+	 * @see CombatLibrary#armorStr(MOB)
+	 * @param mob the mob who has attack
+	 * @return the displayable attack string
+	 */
 	public String fightingProwessStr(MOB mob);
+
+	/**
+	 * Given the weapon type and amount of damage,
+	 * this method returns the hit/damage string from
+	 * the lists.ini file that matches.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon#TYPE_BASHING
+	 * @param type the weapon type
+	 * @param damage the amount of damage
+	 * @return the hit/damage word
+	 */
+	public String standardHitWord(int type, int damage);
+
+	/**
+	 * Given the weapon type and classification and name,
+	 * this method returns either the fullly filled out weapon
+	 * miss string, or generic non-extended non-weapon miss string
+	 * from the lists.ini file that matches.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon#TYPE_DESCS
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon#CLASS_DESCS
+	 * @param weaponDamageType the weapon type
+	 * @param weaponClassification the weapon classification
+	 * @param weaponName the name of the weapon
+	 * @param useExtendedMissString true to include the weapon name, false for a shorter message
+	 * @return the fully formed swing and miss string
+	 */
 	public String standardMissString(int weaponDamageType, int weaponClassification, String weaponName, boolean useExtendedMissString);
+
+	/**
+	 * Given the weapon type and classification and name,
+	 * this method returns either the fullly filled out weapon
+	 * hit/damage string from the the lists.ini file that matches.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon#TYPE_DESCS
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon#CLASS_DESCS
+	 * @param weaponDamageType the weapon type
+	 * @param weaponClass the weapon classification
+	 * @param damageAmount the amount of damage done
+	 * @param weaponName the name of the weapon
+	 * @return the fully formed hit and damage string
+	 */
 	public String standardHitString(int weaponDamageType, int weaponClass, int damageAmount,  String weaponName);
+
+	/**
+	 * When a particular race does not provide its own override
+	 * health condition message, this method provides the base
+	 * message from the list.ini file.  It returns the condition
+	 * of the given mob as seen by the given viewer.
+	 * @param viewer the viewer of the mob
+	 * @param mob the mob who has a health condition
+	 * @return the condition of the health of the mob
+	 */
 	public String standardMobCondition(MOB viewer, MOB mob);
-	public void resistanceMsgs(CMMsg msg, MOB source, MOB target);
+
+	/**
+	 * When the source does something to the target that the 
+	 * target resists, and the given message has a targetminor
+	 * containing the type of damage that's being resisted,
+	 * this message will generate and tack on a new message
+	 * with the resistance of the target, and flag the given
+	 * message as having been resisted.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#addTrailerMsg(CMMsg)
+	 * @param source the attacker
+	 * @param target the defender who is resisting
+	 * @param msg the message to flag as being resisted and tack on resistance msg
+	 */
+	public void resistanceMsgs(MOB source, MOB target, CMMsg msg);
+
+	/**
+	 * Given an attacking source and a defending target and the sources weapon
+	 * or skill, this method will set the distance between the source and target
+	 * from each other.
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#setRangeToTarget(int)
+	 * @param source the attacker
+	 * @param target the target
+	 * @param tool the sources weapon
+	 */
 	public void establishRange(MOB source, MOB target, Environmental tool);
-	public void makeFollowersFight(MOB observer, MOB target, MOB source);
+
+	/**
+	 * When the given observerM witnesses the given attacker mob attacking
+	 * the given defender mob, this method checks to see if the observer has
+	 * a dog in the fight, and if they do, causes them to start fighting
+	 * either the attacker or the defender.
+	 * @param observerM the observer mob who might be a follower
+	 * @param defenderM the defender mob who is being attacked
+	 * @param attackerM the attacker mob who is attacking the defender
+	 */
+	public void makeFollowersFight(MOB observerM, MOB defenderM, MOB attackerM);
+
+	/**
+	 * When a healing message targeting a given mob is received, 
+	 * this method is called to actually do the healing.
+	 * @param msg the healing message
+	 */
 	public void handleBeingHealed(CMMsg msg);
+
+	/**
+	 * When a damaging message targeting a given mob is received, 
+	 * this method is called to actually do the damaging.
+	 * @param msg the damaging message
+	 */
 	public void handleBeingDamaged(CMMsg msg);
+
+	/**
+	 * When an attack message targeting a given mob is received, 
+	 * this method is called to react to the attack.  If the 
+	 * target is not in combat, range is established and the target
+	 * is pissed off (has their victim set).  An attack roll is
+	 * then made for the source and the results used to alter the
+	 * message. The target will also be made to stand.
+	 * The message has a source attacker, target, and the tool is
+	 * a weapon.
+	 * @param msg the attack message
+	 */
 	public void handleBeingAssaulted(CMMsg msg);
+
+	/**
+	 * When a death message is received by a mob and the message
+	 * has the mob as a source, this method is called to kill
+	 * the source of the message off.  The message has a source
+	 * as dead person, the target is null, and the tool is the
+	 * killer.
+	 * @param msg the death message
+	 */
 	public void handleDeath(CMMsg msg);
-	public void doDeathPostProcessing(CMMsg msg);
+	
+	/**
+	 * When an observer observes a death, this method is called
+	 * is called to have the observer react.
+	 * @param observer the one observing the death
+	 * @param fighting the dead mob
+	 * @param msg the death message
+	 */
 	public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg);
-	public boolean isKnockedOutUponDeath(MOB mob, MOB fighting);
-	public boolean handleConsequences(MOB mob, MOB fighting, String[] commands, int[] lostExperience, String message);
+
+	/**
+	 * When a death occurs, there are certain record keeping processes
+	 * that need to happen.  This method does nothing but make sure
+	 * those records are kept. The message has a source
+	 * as dead person, the target is null, and the tool is the
+	 * killer.
+	 * @param msg the death message
+	 */
+	public void doDeathPostProcessing(CMMsg msg);
+
+	/**
+	 * Returns whether the system properties specify that, when the
+	 * given dead mob does by the hand of the given killer mob, that
+	 * the dead mob won't actually die, but just be knocked out.
+	 * @param deadM the dead mob
+	 * @param killerM the killer mob
+	 * @return true if there's no death, but only being knocked out
+	 */
+	public boolean isKnockedOutUponDeath(MOB deadM, MOB killerM);
+
+	/**
+	 * When a player dies or flees, the system coffeemud.ini file
+	 * defines the consequences of losing the fight. 
+	 * @param deadM the mob who died or is fleeing
+	 * @param killerM the killer or attacker of the given mob
+	 * @param consequences the list of consequence strings from the ini file
+	 * @param lostExperience a one dimensional array containing the base experience to lose
+	 * @param message the xp loss message, sometimes localized, sometimes not.. you got me!
+	 * @return false if the mob is obliterated, true otherwise
+	 */
+	public boolean handleCombatLossConsequences(MOB deadM, MOB killerM, String[] consequences, int[] lostExperience, String message);
+
+	/**
+	 * This is the heart of the main combat engine.  Every tick that a mob
+	 * is in combat, and is permitted to use auto attacks, this method is called.
+	 * It figures out how many weapon attacks to dish out, and dishes them. 
+	 * @param fighter the attacker
+	 */
 	public void tickCombat(MOB fighter);
+
+	/**
+	 * Every tick, this method is called.  If the given mob is not
+	 * in combat, it will help the mob recover some of their hit points,
+	 * mana, movement, etc.
+	 * @param mob the mob who is recovering
+	 */
 	public void recoverTick(MOB mob);
+
+	/**
+	 * The heart of the alternative turn-based combat engine, this method is
+	 * called every tick to determine if it is the given mobs turn to fight.
+	 * If it is not the method returns false, and if it is, true
+	 * @param mob the mob who wants to fight
+	 * @param R the room the mob is in
+	 * @param A the area the room is in
+	 * @return true if its time to fight, false otherwise
+	 */
 	public boolean doTurnBasedCombat(final MOB mob, final Room R, final Area A);
+
+	/**
+	 * Every tick, THIS method is called to make the given mob a little more
+	 * hungry and thirsty. It might even expend movement if they are walking
+	 * around.
+	 * @param mob the mob who needs to get hungry
+	 * @param expendMovement true to also expend the rooms movement amt, false otherwise
+	 */
 	public void expendEnergy(final MOB mob, final boolean expendMovement);
 
 	/**

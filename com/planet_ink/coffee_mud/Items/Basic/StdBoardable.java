@@ -471,7 +471,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 						{
 							//players will get some fancy message when appearing in death room -- which means they should die!
 							M.executeMsg(expireMsg.source(), expireMsg);
-							CMLib.combat().justDie(expireMsg.source(), M);
+							CMLib.combat().postDeath(expireMsg.source(), M,null);
 						}
 					}
 					R.send(expireMsg.source(), expireMsg);

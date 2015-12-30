@@ -2747,7 +2747,7 @@ public class StdMOB implements MOB
 
 						if (CMLib.dice().rollPercentage() < chanceToFail)
 						{
-							CMLib.combat().resistanceMsgs(msg, srcM, this);
+							CMLib.combat().resistanceMsgs(srcM, this, msg);
 							msg.setValue(msg.value() + 1);
 						}
 					}

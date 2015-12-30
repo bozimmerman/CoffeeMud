@@ -1127,7 +1127,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(!isKnockedOutUponDeath(target,source)))
 			body=target.killMeDead(true);
 
-		handleConsequences(target,source,cmds,expLost,L("^*You lose @x1 experience points.^?^.",""+expLost[0]));
+		handleCombatLossConsequences(target,source,cmds,expLost,L("^*You lose @x1 experience points.^?^.",""+expLost[0]));
 
 		if(!isKnockedOutUponDeath(target,source))
 		{
@@ -1387,7 +1387,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void resistanceMsgs(CMMsg msg, MOB source, MOB target)
+	public void resistanceMsgs(MOB source, MOB target, CMMsg msg)
 	{
 		if(msg.value()>0)
 			return;
@@ -1791,38 +1791,38 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void makeFollowersFight(MOB observer, MOB target, MOB source)
+	public void makeFollowersFight(MOB observerM, MOB defenderM, MOB attackerM)
 	{
-		if((source==null)||(target==null)||observer==null)
+		if((attackerM==null)||(defenderM==null)||observerM==null)
 			return;
-		if(source==target)
+		if(attackerM==defenderM)
 			return;
-		if((target==observer)||(source==observer))
+		if((defenderM==observerM)||(attackerM==observerM))
 			return;
-		if((target.location()!=observer.location())||(target.location()!=source.location()))
+		if((defenderM.location()!=observerM.location())||(defenderM.location()!=attackerM.location()))
 			return;
-		if((observer.isAttributeSet(MOB.Attrib.AUTOASSIST)))
+		if((observerM.isAttributeSet(MOB.Attrib.AUTOASSIST)))
 			return;
-		if(observer.isInCombat())
+		if(observerM.isInCombat())
 			return;
-		final MOB observerFollows=observer.amFollowing();
-		final MOB targetFollows=target.amFollowing();
-		final MOB sourceFollows=source.amFollowing();
+		final MOB observerFollows=observerM.amFollowing();
+		final MOB targetFollows=defenderM.amFollowing();
+		final MOB sourceFollows=attackerM.amFollowing();
 
-		if((observerFollows==target)
-		||(targetFollows==observer)
+		if((observerFollows==defenderM)
+		||(targetFollows==observerM)
 		||((targetFollows!=null)&&(targetFollows==observerFollows)))
 		{
-			observer.setVictim(source);
-			establishRange(observer,source,observer.fetchWieldedItem());
+			observerM.setVictim(attackerM);
+			establishRange(observerM,attackerM,observerM.fetchWieldedItem());
 		}
 		else
-		if((observerFollows==source)
-		||(sourceFollows==observer)
+		if((observerFollows==attackerM)
+		||(sourceFollows==observerM)
 		||((sourceFollows!=null)&&(sourceFollows==observerFollows)))
 		{
-			observer.setVictim(target);
-			establishRange(observer,target,observer.fetchWieldedItem());
+			observerM.setVictim(defenderM);
+			establishRange(observerM,defenderM,observerM.fetchWieldedItem());
 		}
 	}
 
@@ -2099,10 +2099,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public boolean isKnockedOutUponDeath(MOB mob, MOB fighting)
+	public boolean isKnockedOutUponDeath(MOB deadM, MOB killerM)
 	{
 		String whatToDo=null;
-		if(((mob.isMonster())||(mob.soulMate()!=null)))
+		if(((deadM.isMonster())||(deadM.soulMate()!=null)))
 			whatToDo=CMProps.getVar(CMProps.Str.MOBDEATH).toUpperCase();
 		else
 			whatToDo=CMProps.getVar(CMProps.Str.PLAYERDEATH).toUpperCase();
@@ -2199,25 +2199,25 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public boolean handleConsequences(MOB mob, MOB fighting, String[] commands, int[] lostExperience, String message)
+	public boolean handleCombatLossConsequences(MOB deadM, MOB killerM, String[] consequences, int[] lostExperience, String message)
 	{
-		if((commands==null)||(commands.length==0))
+		if((consequences==null)||(consequences.length==0))
 			return false;
 		if(lostExperience==null)
 			lostExperience=new int[1];
 		final int baseExperience=lostExperience[0];
 		lostExperience[0]=0;
-		int rejuv=mob.phyStats().rejuv();
+		int rejuv=deadM.phyStats().rejuv();
 		if((rejuv==0)||(rejuv==Integer.MAX_VALUE))
-			rejuv=mob.phyStats().level();
-		if(((!mob.isMonster())&&(mob.soulMate()==null)))
+			rejuv=deadM.phyStats().level();
+		if(((!deadM.isMonster())&&(deadM.soulMate()==null)))
 			rejuv=1;
 		final double[] varVals={
-				mob.basePhyStats().level()>mob.phyStats().level()?mob.basePhyStats().level():mob.phyStats().level(),
-				(fighting!=null)?fighting.phyStats().level():0,
+				deadM.basePhyStats().level()>deadM.phyStats().level()?deadM.basePhyStats().level():deadM.phyStats().level(),
+				(killerM!=null)?killerM.phyStats().level():0,
 				rejuv
 		};
-		for (final String command : commands)
+		for (final String command : consequences)
 		{
 			final String whatToDo=command.toUpperCase();
 			if(whatToDo.startsWith("UNL"))
@@ -2227,27 +2227,27 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if((V.size()>1)&&(CMath.s_int(V.lastElement())>1))
 					times=CMath.s_int(V.lastElement());
 				for(int t=0;t<times;t++)
-					CMLib.leveler().unLevel(mob);
+					CMLib.leveler().unLevel(deadM);
 			}
 			else
 			if(whatToDo.startsWith("RECALL"))
-				mob.killMeDead(false);
+				deadM.killMeDead(false);
 			else
 			if(whatToDo.startsWith("ASTR"))
 			{
 				final Ability A=CMClass.getAbility("Prop_AstralSpirit");
-				if((A!=null)&&(mob.fetchAbility(A.ID())==null))
+				if((A!=null)&&(deadM.fetchAbility(A.ID())==null))
 				{
-					mob.tell(L("^HYou are now a spirit.^N"));
+					deadM.tell(L("^HYou are now a spirit.^N"));
 					if(whatToDo.startsWith("ASTRAL_R"))
 					{
 						A.setMiscText("SELF-RES");
-						mob.tell(L("^HFind your corpse and use ENTER [body name] to re-enter your body.^N"));
+						deadM.tell(L("^HFind your corpse and use ENTER [body name] to re-enter your body.^N"));
 					}
 					else
-						mob.tell(L("^HFind your corpse have someone resurrect it.^N"));
-					mob.addAbility(A);
-					A.autoInvocation(mob, false);
+						deadM.tell(L("^HFind your corpse have someone resurrect it.^N"));
+					deadM.addAbility(A);
+					A.autoInvocation(deadM, false);
 				}
 			}
 			else
@@ -2257,14 +2257,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				final int tickDown=CMath.s_parseIntExpression(whatToDo.substring(4).trim(),varVals);
 				if((A!=null)&&(tickDown>0))
 				{
-					A.invoke(mob,new XVector<String>(""+tickDown,"SAFELY"),mob,true,0);
-					mob.resetToMaxState();
+					A.invoke(deadM,new XVector<String>(""+tickDown,"SAFELY"),deadM,true,0);
+					deadM.resetToMaxState();
 				}
 			}
 			else
 			if(whatToDo.startsWith("PUR"))
 			{
-				final MOB deadMOB=CMLib.players().getLoadPlayer(mob.Name());
+				final MOB deadMOB=CMLib.players().getLoadPlayer(deadM.Name());
 				if(deadMOB!=null)
 				{
 					CMLib.players().obliteratePlayer(deadMOB,true,false);
@@ -2274,18 +2274,18 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			else
 			if(whatToDo.startsWith("LOSESK"))
 			{
-				if(mob.numAbilities()>0)
+				if(deadM.numAbilities()>0)
 				{
-					final Ability A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
+					final Ability A=deadM.fetchAbility(CMLib.dice().roll(1,deadM.numAbilities(),-1));
 					if(A!=null)
 					{
-						mob.tell(L("You've forgotten @x1.",A.Name()));
-						mob.delAbility(A);
+						deadM.tell(L("You've forgotten @x1.",A.Name()));
+						deadM.delAbility(A);
 						if(A.isAutoInvoked())
 						{
-							final Ability A2=mob.fetchEffect(A.ID());
+							final Ability A2=deadM.fetchEffect(A.ID());
 							A2.unInvoke();
-							mob.delEffect(A2);
+							deadM.delEffect(A2);
 						}
 					}
 				}
@@ -2297,8 +2297,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if(lostExperience[0]>0)
 				{
 					message=CMStrings.replaceAll(message,"@x1",""+lostExperience[0]);
-					mob.tell(message);
-					CMLib.leveler().postExperience(mob,null,null,-lostExperience[0],false);
+					deadM.tell(message);
+					CMLib.leveler().postExperience(deadM,null,null,-lostExperience[0],false);
 				}
 			}
 			else
@@ -2308,8 +2308,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if(lostExperience[0]>0)
 				{
 					message=CMStrings.replaceAll(message,"@x1",""+baseExperience);
-					mob.tell(message);
-					CMLib.leveler().postExperience(mob,null,null,-baseExperience,false);
+					deadM.tell(message);
+					CMLib.leveler().postExperience(deadM,null,null,-baseExperience,false);
 				}
 			}
 		}

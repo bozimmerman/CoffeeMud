@@ -220,6 +220,6 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		&&(!this.amWearingAt(Wearable.IN_INVENTORY))
 		&&(mob.isMine(this))
 		&&(rollChance()))
-			CMLib.combat().resistanceMsgs(msg,msg.source(),mob);
+			CMLib.combat().resistanceMsgs(msg.source(),mob,msg);
 	}
 }
