@@ -1073,8 +1073,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return dividers;
 	}
 
-	@Override
-	public DeadBody justDie(MOB source, MOB target)
+	protected DeadBody justDie(MOB source, MOB target)
 	{
 		if(target==null)
 			return null;
@@ -1242,7 +1241,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final int[] thresholds=CMProps.getListFileIntList(CMProps.ListFile.DAMAGE_WORDS_THRESHOLDS);
 		int damnCode=thresholds.length-2;
 		for(int i=0;i<thresholds.length;i++)
-			if(damage<=thresholds[i]){ damnCode=i; break;}
+		{
+			if (damage <= thresholds[i])
+			{
+				damnCode = i;
+				break;
+			}
+		}
 		damnCode++; // always add 1 because index into hitwords is type=0, annoy=1;
 		final Object[][][] hitWords = CMProps.getListFileGrid(CMProps.ListFile.DAMAGE_WORDS);
 		if(hitWords != hitWordsChanged)
@@ -1263,7 +1268,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						ALL=hitWord;
 					else
 					if(((String)hitWord[0][0]).equalsIgnoreCase(Weapon.TYPE_DESCS[w]))
-					{ MINE=hitWord; break;}
+					{
+						MINE = hitWord;
+						break;
+					}
 				}
 				if(MINE!=null)
 					newWordIndex[w]=MINE;
@@ -1399,24 +1407,91 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		else
 		if(msg.tool() instanceof Ability)
 			tool=((Ability)msg.tool()).name();
+		
 
 		String tackOn=null;
 		switch(msg.targetMinor())
 		{
-		case CMMsg.TYP_MIND: tackOn="<S-NAME> shake(s) off the "+((tool==null)?"mental attack":tool)+endPart; break;
-		case CMMsg.TYP_GAS: tackOn="<S-NAME> resist(s) the "+((tool==null)?"noxious fumes":tool)+endPart; break;
-		case CMMsg.TYP_COLD: tackOn="<S-NAME> shake(s) off the "+((tool==null)?"cold blast":tool)+endPart;  break;
-		case CMMsg.TYP_ELECTRIC: tackOn="<S-NAME> shake(s) off the "+((tool==null)?"electrical attack":tool)+endPart; break;
-		case CMMsg.TYP_FIRE: tackOn="<S-NAME> resist(s) the "+((tool==null)?"blast of heat":tool)+endPart; break;
-		case CMMsg.TYP_WATER: tackOn="<S-NAME> dodge(s) the "+((tool==null)?"wet blast":tool)+endPart;  break;
-		case CMMsg.TYP_UNDEAD:  tackOn="<S-NAME> shake(s) off the "+((tool==null)?"evil attack":tool)+endPart; break;
-		case CMMsg.TYP_POISON:  tackOn="<S-NAME> shake(s) off the "+((tool==null)?"poison":tool)+endPart; break;
-		case CMMsg.TYP_DISEASE: tackOn="<S-NAME> resist(s) the "+((tool==null)?"disease":tool); break;
-		case CMMsg.TYP_JUSTICE:break;
-		case CMMsg.TYP_CAST_SPELL:  tackOn="<S-NAME> resist(s) the "+((tool==null)?"magical attack":tool)+endPart; break;
-		case CMMsg.TYP_PARALYZE: tackOn="<S-NAME> resist(s) the "+((tool==null)?"paralysis":tool)+endPart; break;
-		case CMMsg.TYP_SONIC:  tackOn="<S-NAME> shake(s) off the "+((tool==null)?"sonic":tool)+endPart; break;
-		case CMMsg.TYP_LASER:  tackOn="<S-NAME> dodge(s) the "+((tool==null)?"laser":tool)+endPart; break;
+		case CMMsg.TYP_MIND:
+			if(tool == null)
+				tackOn = L("<S-NAME> shake(s) off the mental attack" + endPart);
+			else
+				tackOn = L("<S-NAME> shake(s) off the @x1" + endPart,tool);
+			break;
+		case CMMsg.TYP_GAS:
+			if(tool == null)
+				tackOn = L("<S-NAME> resist(s) the noxious fumes" + endPart);
+			else
+				tackOn = L("<S-NAME> resist(s) the @x1" + endPart,tool);
+			break;
+		case CMMsg.TYP_COLD:
+			if(tool == null)
+				tackOn = L("<S-NAME> shake(s) off the cold blast" + endPart);
+			else
+				tackOn = L("<S-NAME> shake(s) off the @x1" + endPart,tool);
+			break;
+		case CMMsg.TYP_ELECTRIC:
+			if(tool == null)
+				tackOn = L("<S-NAME> shake(s) off the electrical attack" + endPart);
+			else
+				tackOn = L("<S-NAME> shake(s) off the @x1" + endPart,tool);
+			break;
+		case CMMsg.TYP_FIRE:
+			if(tool == null)
+				tackOn = L("<S-NAME> resist(s) the blast of heat" + endPart);
+			else
+				tackOn = L("<S-NAME> resist(s) the @x1" + endPart,tool);
+			break;
+		case CMMsg.TYP_WATER:
+			if(tool == null)
+				tackOn = L("<S-NAME> dodge(s) the wet blast" + endPart);
+			else
+				tackOn = L("<S-NAME> dodge(s) the @x1" + endPart,tool);
+			break;
+		case CMMsg.TYP_UNDEAD:
+			if(tool == null)
+				tackOn = L("<S-NAME> shake(s) off the evil attack" + endPart);
+			else
+				tackOn = L("<S-NAME> shake(s) off the @x1" + endPart,tool);
+			break;
+		case CMMsg.TYP_POISON:
+			if(tool == null)
+				tackOn = L("<S-NAME> shake(s) off the poison" + endPart);
+			else
+				tackOn = L("<S-NAME> shake(s) off the @x1" + endPart,tool);
+			break;
+		case CMMsg.TYP_DISEASE:
+			if(tool == null)
+				tackOn = L("<S-NAME> resist(s) the disease.");
+			else
+				tackOn = L("<S-NAME> resist(s) the @x1.",tool);
+			break;
+		case CMMsg.TYP_JUSTICE:
+			break;
+		case CMMsg.TYP_CAST_SPELL:
+			if(tool == null)
+				tackOn = L("<S-NAME> resist(s) the magical attack" + endPart);
+			else
+				tackOn = L("<S-NAME> resist(s) the @x1" + endPart,tool);
+			break;
+		case CMMsg.TYP_PARALYZE:
+			if(tool == null)
+				tackOn = L("<S-NAME> resist(s) the paralysis" + endPart);
+			else
+				tackOn = L("<S-NAME> resist(s) the @x1" + endPart,tool);
+			break;
+		case CMMsg.TYP_SONIC:
+			if(tool == null)
+				tackOn = L("<S-NAME> shake(s) off the sonic" + endPart);
+			else
+				tackOn = L("<S-NAME> shake(s) off the @x1" + endPart,tool);
+			break;
+		case CMMsg.TYP_LASER:
+			if(tool == null)
+				tackOn = L("<S-NAME> dodge(s) the laser" + endPart);
+			else
+				tackOn = L("<S-NAME> dodge(s) the @x1" + endPart,tool);
+			break;
 		}
 		if(tackOn!=null)
 		{
