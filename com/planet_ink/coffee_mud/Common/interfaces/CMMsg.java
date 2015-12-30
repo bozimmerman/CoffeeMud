@@ -817,6 +817,18 @@ public interface CMMsg extends CMCommon
 	 * @return whether this object is the same as the one passed in
 	 */
 	public boolean sameAs(CMMsg E);
+
+	/**
+	 * An enum for the three major views of a message,
+	 * source, target, or others
+	 * @author Bo Zimmerman
+	 */
+	public static enum View
+	{
+		SOURCE,
+		TARGET,
+		OTHERS
+	}
 	
 	// 0-1999 are message types
 	// 2000-2047 are channels

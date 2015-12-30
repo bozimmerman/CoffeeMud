@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CMMsg.View;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -201,42 +202,163 @@ public interface CombatLibrary extends CMLibrary
 	 * which often causes the mob to flee.  This method will initiate
 	 * that process by causing a combat panic, and either posting
 	 * it to the room, or adding it as a trailer to the given msg.
+	 * Generates a CMMsg message and sends it to the mobs room.
+	 * @see CombatLibrary#postDeath(MOB, MOB, CMMsg)
 	 * @param mob the mob who is panicing
 	 * @param addHere null, or the message to add the panic to
 	 */
 	public void postPanic(MOB mob, CMMsg addHere);
-	
+
 	/**
 	 * This method will create an official death message for the
 	 * given deadM mob, by the given killerM mob.  It will then
 	 * either post it, or add it as a trailer to the given msg
+	 * Generates a CMMsg message and sends it to the target room.
+	 * @see CombatLibrary#postPanic(MOB, CMMsg)
 	 * @param killerM the killer mob
 	 * @param deadM the dead mob
 	 * @param addHere null, or the message to add this one to.
 	 */
 	public void postDeath(MOB killerM, MOB deadM, CMMsg addHere);
-	
+
 	/**
 	 * This method causes a mundane attack to occur by the given
 	 * attack to the given target using the given weapon.  If 
 	 * no weapon is given, it might attempt a draw first.
+	 * Generates a CMMsg message and sends it to the target room.
 	 * @param attacker the attacker mob
 	 * @param target the target mob
 	 * @param weapon the weapon used by the attacker, or null
 	 * @return true if the attack succeeded, false if it failed.
 	 */
 	public boolean postAttack(MOB attacker, MOB target, Item weapon);
-	public boolean postHealing(MOB healer, MOB target, Environmental tool, int messageCode, int healing, String allDisplayMessage);
-	public String replaceDamageTag(String str, int damage, int damageType, char sourceTargetSTO);
+
+	/**
+	 * Posts a message of healing from the given healer to the given
+	 * target using the given optional Ability tool.  There are no
+	 * optional parameters here, except the msg of course
+	 * Generates a CMMsg message and sends it to the target room.
+	 * @param healer the healer mob
+	 * @param target the target mob being healed
+	 * @param tool the skill doing the healing, or null
+	 * @param healing the amount of healing to do
+	 * @param messageCode msg code for the source and others code
+	 * @param allDisplayMessage the string to show everyone
+	 * @return true if the healing post worked, false otherwise
+	 */
+	public boolean postHealing(MOB healer, MOB target, Ability tool, int healing, int messageCode, String allDisplayMessage);
+
+	/**
+	 * Because damage messages are basically always modified in message preview (okMessage),
+	 * there is no point in putting the amount of damage into the message string.  Because of this
+	 * the string &lt;DAMAGE&gt; or &lt;DAMAGES&gt; is put as a placeholder, and then this method
+	 * is called to replace those tags with actual damage words based on the given final amount 
+	 * and the given weapon type, and a clue as to who would see the message 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg.View
+	 * @see CombatLibrary#postDamage(MOB, MOB, Environmental, int, int, int, String)
+	 * @param str the original string with the appropriate tag
+	 * @param damage the final amount of damage
+	 * @param damageType the weapon type code {@link com.planet_ink.coffee_mud.Items.interfaces.Weapon#TYPE_BASHING}
+	 * @param sourceTargetSTO the view of the message
+	 * @return the final modified string
+	 */
+	public String replaceDamageTag(String str, int damage, int damageType, View sourceTargetSTO);
+
+	/**
+	 * The official way to post damage that is happening.  
+	 * It generates a message and sends it to the target room.
+	 * Handles MXP tagging, fight coloring, and other details on the
+	 * string message.  replaceDataTag is called to ensure a proper
+	 * damage word.  
+	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
+	 * @param attacker the attacking mob
+	 * @param target the target mob being healed
+	 * @param weapon the item weapon, ability skill, or null tool used to damage
+	 * @param damage the initial amount of damage
+	 * @param messageCode msg code for the source and others code
+	 * @param damageType the weapon type code {@link com.planet_ink.coffee_mud.Items.interfaces.Weapon#TYPE_BASHING}
+	 * @param allDisplayMessage the message to send 
+	 */
 	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage);
-	public void postWeaponDamage(MOB source, MOB target, Item item, boolean success);
+
+	/**
+	 * This method handles both a hit or a miss with a weapon.  The
+	 * hit, obviously, posts damage, while the miss, posts a miss.
+	 * replaceDataTag is called to ensure a proper damage word.
+	 * Generates a CMMsg message and sends it to the SOURCE room.
+	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
+	 * @param source the attacker
+	 * @param target the target
+	 * @param item the weapon used
+	 * @param success true if it was a hit with damage, false if it was a miss
+	 */
+	public void postWeaponAttackResult(MOB source, MOB target, Item item, boolean success);
+
+	/**
+	 * This method handles an item taking damage.  If the item is subject
+	 * to wear and tear, it will take the amount of specific damage
+	 * given until it gets below 0, after which it is destroyed.  If the
+	 * item is not subject to wear and tear, any positive damage destroys
+	 * the item.
+	 * @param mob the mob doing damage to an item
+	 * @param I the item being damaged
+	 * @param tool the weapon or skill used to do the damage
+	 * @param damageAmount the amount of damage done (0-100)
+	 * @param messageType the CMMsg message code for source and others
+	 * @param message the message string
+	 */
 	public void postItemDamage(MOB mob, Item I, Environmental tool, int damageAmount, int messageType, String message);
-	public void processFormation(List<MOB>[] done, MOB leader, int level);
+	
+	/**
+	 * Returns the front of the follower line for
+	 * this mob.  If this mob is following someone, it returns
+	 * the MOB being ultimately followed, otherwise it 
+	 * just returns the mob
+	 * @param mob the mob who might be following someone
+	 * @return the leader mob
+	 */
 	public MOB getFollowedLeader(MOB mob);
+	
+	/**
+	 * Returns this mobs combat formation an an array
+	 * of string lists, where each entry is a "row" in the
+	 * formation, and the lists contain the mobs at that
+	 * row.  Only the leaders formation settings matter,
+	 * so any mob can be sent, because the leader will be
+	 * teased out and used.
+	 * @param mob a member of a group with a formation.
+	 * @return the formation.
+	 */
 	public List<MOB>[] getFormation(MOB mob);
+	
+	/**
+	 * Returns the list of mobs behind the given mob in
+	 * their respective formation order.
+	 * @see CombatLibrary#getFormation(MOB)
+	 * @param mob the mob in the formation
+	 * @return the list of mobs behind the given one
+	 */
 	public List<MOB> getFormationFollowed(MOB mob);
+	
+	/**
+	 * Returns the numeric position of the given mob
+	 * in his or her combat formation.
+	 * @param mob the mob in formation
+	 * @return the numeric order, with 0 being front.
+	 */
 	public int getFormationAbsOrder(MOB mob);
+	
+	/**
+	 * Returns the character class of the given killer, 
+	 * or their leader if they are following someone
+	 * who is not a mob.
+	 * @param killer the killer
+	 * @param killed the killed
+	 * @return the leaders char class
+	 */
 	public CharClass getCombatDominantClass(MOB killer, MOB killed);
+	
+	
 	public Set<MOB> getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass);
 	public Set<MOB> getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass);
 	public DeadBody justDie(MOB source, MOB target);

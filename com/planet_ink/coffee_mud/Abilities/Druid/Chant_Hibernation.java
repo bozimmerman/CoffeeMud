@@ -135,8 +135,8 @@ public class Chant_Hibernation extends Chant
 				if(!CMLib.combat().postHealing( mob,
 												mob,
 												this,
-												CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,
 												(int)Math.round( ( hp * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) ) ) / 2.0 ) ),
+												CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,
 												null ) )
 					unInvoke();
 			}

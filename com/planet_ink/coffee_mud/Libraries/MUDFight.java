@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
+import com.planet_ink.coffee_mud.Common.interfaces.CMMsg.View;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -198,11 +199,32 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			R.send(mob,msg);
 			if(msg.value()<=0)
 			{
-				I.setUsesRemaining(I.usesRemaining()-damageAmount);
-				I.recoverPhyStats(); // important relation to setuses -- for brittle
-				if(I.usesRemaining()<=0)
+				if(I.subjectToWearAndTear())
 				{
-					I.setUsesRemaining(100);
+					I.setUsesRemaining(I.usesRemaining()-damageAmount);
+					I.recoverPhyStats(); // important relation to setuses -- for brittle
+					if(I.usesRemaining()<=0)
+					{
+						I.setUsesRemaining(100);
+						I.unWear();
+						msg=CMClass.getMsg(mob,null,I,CMMsg.MSG_OK_VISUAL,L("<O-NAME> is destroyed!"),null,L("<O-NAME> carried by <S-NAME> is destroyed!"));
+						if(R.okMessage(mob,msg))
+							R.send(mob,msg);
+						I.destroy();
+						mob.recoverPhyStats();
+						mob.recoverCharStats();
+						mob.recoverMaxState();
+						R.recoverRoomStats();
+					}
+					else
+					if(I.usesRemaining()<=10)
+					{
+						mob.tell(L("@x1 is looking really bad.",I.name(mob)));
+					}
+				}
+				else
+				if(damageAmount > 0)
+				{
 					I.unWear();
 					msg=CMClass.getMsg(mob,null,I,CMMsg.MSG_OK_VISUAL,L("<O-NAME> is destroyed!"),null,L("<O-NAME> carried by <S-NAME> is destroyed!"));
 					if(R.okMessage(mob,msg))
@@ -212,11 +234,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					mob.recoverCharStats();
 					mob.recoverMaxState();
 					R.recoverRoomStats();
-				}
-				else
-				if(I.usesRemaining()<=10)
-				{
-					mob.tell(L("@x1 is looking really bad.",I.name(mob)));
 				}
 			}
 		}
@@ -469,9 +486,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public boolean postHealing(MOB healer,
 							   MOB target,
-							   Environmental tool,
-							   int messageCode,
+							   Ability tool,
 							   int healing,
+							   int messageCode,
 							   String allDisplayMessage)
 	{
 		if(healer==null)
@@ -493,7 +510,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public String replaceDamageTag(String str, int damage, int damageType, char sourceTargetSTO)
+	public String replaceDamageTag(String str, int damage, int damageType, View sourceTargetSTO)
 	{
 		if(str==null)
 			return null;
@@ -505,8 +522,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final boolean damages = (str.charAt(replace+7)=='S') && (str.charAt(replace+8)=='>');
 		final String showDamage = CMProps.getVar(CMProps.Str.SHOWDAMAGE);
 		final boolean showNumbers = showDamage.equalsIgnoreCase("YES")
-								||((sourceTargetSTO=='S')&&showDamage.equalsIgnoreCase("SOURCE"))
-								||((sourceTargetSTO=='T')&&showDamage.equalsIgnoreCase("TARGET"));
+								||((sourceTargetSTO==CMMsg.View.SOURCE)&&showDamage.equalsIgnoreCase("SOURCE"))
+								||((sourceTargetSTO==CMMsg.View.TARGET)&&showDamage.equalsIgnoreCase("TARGET"));
 		if(damages)
 		{
 			final String hitWord=CMStrings.deleteAllofAny(standardHitWord(damageType,damage),PARENS);
@@ -592,11 +609,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							   msg.target(),
 							   msg.tool(),
 							   msg.sourceCode(),
-							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType,'S'),
+							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType,CMMsg.View.SOURCE),
 							   msg.targetCode(),
-							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,'T'),
+							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,CMMsg.View.TARGET),
 							   msg.othersCode(),
-							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,'O'));
+							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,CMMsg.View.OTHERS));
 				}
 				R.send(target,msg);
 			}
@@ -783,7 +800,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 
 	@Override
-	public void postWeaponDamage(MOB source, MOB target, Item item, boolean success)
+	public void postWeaponAttackResult(MOB source, MOB target, Item item, boolean success)
 	{
 		if(source==null)
 			return;
@@ -825,11 +842,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							   msg.target(),
 							   msg.tool(),
 							   msg.sourceCode(),
-							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType,'S'),
+							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType,CMMsg.View.SOURCE),
 							   msg.targetCode(),
-							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,'T'),
+							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType,CMMsg.View.TARGET),
 							   msg.othersCode(),
-							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,'O'));
+							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType,CMMsg.View.OTHERS));
 				}
 				if((source.mayIFight(target))
 				&&(source.location()==room)
@@ -856,8 +873,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	@Override
-	public void processFormation(List<MOB>[] done, MOB leader, int level)
+	protected void processFormation(List<MOB>[] done, MOB leader, int level)
 	{
 		for (final List<MOB> element : done)
 		{
@@ -1678,7 +1694,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if(weapon!=null)
 				{
 					final boolean isHit=rollToHit(attacker,target);
-					postWeaponDamage(attacker,target,weapon,isHit);
+					postWeaponAttackResult(attacker,target,weapon,isHit);
 					if(isHit)
 						msg.setValue(1);
 				}
@@ -1693,7 +1709,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 			else
 			if(msg.tool() instanceof Item)
-				postWeaponDamage(attacker,target,(Item)msg.tool(),true);
+				postWeaponAttackResult(attacker,target,(Item)msg.tool(),true);
 		}
 		if(CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target))
 			CMLib.commands().postStand(target,true);

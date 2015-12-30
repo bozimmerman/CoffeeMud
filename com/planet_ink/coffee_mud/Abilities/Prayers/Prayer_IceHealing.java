@@ -79,7 +79,7 @@ public class Prayer_IceHealing extends Prayer
 		{
 			final int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The icy attack heals <S-NAME> @x1 points.",""+recovery));
-			CMLib.combat().postHealing(mob,mob,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,recovery,null);
+			CMLib.combat().postHealing(mob,mob,this,recovery,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
 			return false;
 		}
 		return true;

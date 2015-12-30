@@ -88,7 +88,7 @@ public class Skill_CurtainCall extends BardSkill
 				if(mob.curState().getMovement() >= moveLoss)
 				{
 					mob.curState().adjMovement(-moveLoss, mob.maxState());
-					CMLib.combat().postHealing(mob, mob, this, CMMsg.MSG_HEALING, hpGain, null);
+					CMLib.combat().postHealing(mob, mob, this, hpGain, CMMsg.MSG_HEALING, null);
 					mob.curState().adjMana(manaGain, mob.maxState());
 				}
 				else

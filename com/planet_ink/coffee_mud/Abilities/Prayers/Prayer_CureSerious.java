@@ -88,7 +88,7 @@ public class Prayer_CureSerious extends Prayer implements MendingSkill
 				mob.location().send(mob,msg);
 				final int healing=CMLib.dice().roll(3,adjustedLevel(mob,asLevel),5);
 				final int oldHP=target.curState().getHitPoints();
-				CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
+				CMLib.combat().postHealing(mob,target,this,healing,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
 				if(target.curState().getHitPoints()>oldHP)
 					target.tell(L("You feel better!"));
 				lastCastHelp=System.currentTimeMillis();

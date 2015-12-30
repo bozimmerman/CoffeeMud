@@ -86,7 +86,7 @@ public class Prayer_MassHeal extends Prayer implements MendingSkill
 				{
 					mob.location().send(mob,msg);
 					final int healing=CMLib.dice().roll(adjustedLevel(mob,asLevel),5,adjustedLevel(mob,asLevel));
-					CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
+					CMLib.combat().postHealing(mob,target,this,healing,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
 					target.tell(L("You feel tons better!"));
 				}
 			}

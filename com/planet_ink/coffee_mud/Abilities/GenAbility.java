@@ -461,7 +461,7 @@ public class GenAbility extends StdAbility
 									else
 									if(dmg<0)
 									{
-										CMLib.combat().postHealing(mob,finalTargetMOB,me,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),-dmg,(String)V(ID,V_PCST));
+										CMLib.combat().postHealing(mob,finalTargetMOB,me,-dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),(String)V(ID,V_PCST));
 										dmg=0;
 									}
 									else
@@ -474,7 +474,7 @@ public class GenAbility extends StdAbility
 							else
 							if(dmg<0)
 							{
-								CMLib.combat().postHealing(mob,finalTargetMOB,me,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),-dmg,null);
+								CMLib.combat().postHealing(mob,finalTargetMOB,me,-dmg,CMMsg.MASK_ALWAYS|((OTH.intValue()<=0)?finalCastCode:OTH.intValue()),null);
 							}
 							if(CMLib.flags().isInTheGame(mob,true)&&((finalTarget==null)||CMLib.flags().isInTheGame((MOB)finalTarget,true)))
 							{

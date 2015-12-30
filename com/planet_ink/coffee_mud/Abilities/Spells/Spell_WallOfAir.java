@@ -83,7 +83,7 @@ public class Spell_WallOfAir extends Spell
 				M.setName(L("The wall of air"));
 				M.setVictim(mob);
 				M.setRangeToTarget(mob.rangeToTarget());
-				CMLib.combat().postWeaponDamage(M,mob,(Weapon)msg.tool(),true);
+				CMLib.combat().postWeaponAttackResult(M,mob,(Weapon)msg.tool(),true);
 				M.setLocation(null);
 				M.setVictim(null);
 				M.destroy();

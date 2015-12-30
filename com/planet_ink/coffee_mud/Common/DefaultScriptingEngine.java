@@ -10014,7 +10014,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							final int amt=(max==min)?min:CMLib.dice().roll(1,max-min,min);
 							if(amt>0)
-								CMLib.combat().postHealing(healerM,healedM,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,amt,null);
+								CMLib.combat().postHealing(healerM,healedM,null,amt,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
 						}
 					}
 					else

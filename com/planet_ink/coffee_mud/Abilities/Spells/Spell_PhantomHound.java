@@ -148,11 +148,11 @@ public class Spell_PhantomHound extends Spell
 		{
 			final int damageType=Weapon.TYPE_NATURAL;
 			if(msg.sourceMessage()!=null)
-				msg.setSourceMessage(CMLib.combat().replaceDamageTag(msg.sourceMessage(), msg.value(), damageType, 'S'));
+				msg.setSourceMessage(CMLib.combat().replaceDamageTag(msg.sourceMessage(), msg.value(), damageType, CMMsg.View.SOURCE));
 			if(msg.targetMessage()!=null)
-				msg.setTargetMessage(CMLib.combat().replaceDamageTag(msg.targetMessage(), msg.value(), damageType, 'T'));
+				msg.setTargetMessage(CMLib.combat().replaceDamageTag(msg.targetMessage(), msg.value(), damageType, CMMsg.View.TARGET));
 			if(msg.othersMessage()!=null)
-				msg.setOthersMessage(CMLib.combat().replaceDamageTag(msg.othersMessage(), msg.value(), damageType, 'O'));
+				msg.setOthersMessage(CMLib.combat().replaceDamageTag(msg.othersMessage(), msg.value(), damageType, CMMsg.View.OTHERS));
 			msg.setValue(0);
 		}
 		return super.okMessage(myHost,msg);

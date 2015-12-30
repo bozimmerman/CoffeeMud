@@ -71,7 +71,7 @@ public class Prayer_Drain extends Prayer
 					final int damage = CMLib.dice().roll(1,adjustedLevel(mob,asLevel),0);
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,auto?L("<T-NAME> shudder(s) in a draining magical wake."):L("The draining grasp <DAMAGE> <T-NAME>."));
 					if(mob!=target)
-						CMLib.combat().postHealing(mob,mob,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,damage,null);
+						CMLib.combat().postHealing(mob,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
 				}
 			}
 		}

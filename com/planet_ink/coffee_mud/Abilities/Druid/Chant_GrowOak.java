@@ -95,7 +95,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 					dmg=dmg/2;
 				if(dmg>0)
 				{
-					if(CMLib.combat().postHealing(invoker,invoker,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,dmg,null))
+					if(CMLib.combat().postHealing(invoker,invoker,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null))
 						invoker.tell(L("Your oak absorbs @x1 points of your damage!",""+dmg));
 				}
 				hpRemaining-=dmg;

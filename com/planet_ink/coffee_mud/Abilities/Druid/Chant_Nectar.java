@@ -119,7 +119,7 @@ public class Chant_Nectar extends Chant
 				{
 					final MOB M=msg.source();
 					final int hp=CMLib.dice().roll(1,M.charStats().getStat(CharStats.STAT_CONSTITUTION)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
-					CMLib.combat().postHealing(M,M,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,hp,null);
+					CMLib.combat().postHealing(M,M,this,hp,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,null);
 					final int mana=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
 					M.curState().adjMana(mana,M.maxState());
 					final int move=CMLib.dice().roll(1,((M.charStats().getStat(CharStats.STAT_WISDOM)+M.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2)+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()),0);
