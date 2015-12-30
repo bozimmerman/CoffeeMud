@@ -4,7 +4,7 @@ import java.util.Enumeration;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
-	Copyright 2000-2015 Bo Zimmerman
+	Copyright 2015-2015 Bo Zimmerman
 	
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -22,13 +22,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SafeFeedbackEnumeration<K> implements Enumeration<K> 
 {
 	private final Enumeration<K> iter;
-	private final SafeCollection<K> collection;
+	private final SafeCollectionHost collection;
 	private final AtomicBoolean returned = new AtomicBoolean(false);
 
-	public SafeFeedbackEnumeration(Enumeration<K> iter, SafeCollection<K> collection) 
+	public SafeFeedbackEnumeration(Enumeration<K> iter, SafeCollectionHost collection) 
 	{
 		this.iter = iter;
 		this.collection = collection;
+		this.collection.submitIterator(this);
 	}
 
 	@Override

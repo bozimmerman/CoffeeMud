@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /*
-   Copyright 2000-2015 Bo Zimmerman
+   Copyright 2015-2015 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -19,10 +19,11 @@ import java.util.*;
    limitations under the License.
  */
 
-public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Set<K>
+public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Set<K>, SafeCollectionHost
 {
 	private static final long	serialVersionUID	= -6713012858869312626L;
 	private volatile HashSet<K>	T;
+	private final Set<Object> iterators = new HashSet<Object>();
 
 	public SHashSet()
 	{
@@ -84,46 +85,61 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public synchronized void addAll(Enumeration<K> E)
 	{
 		if (E != null)
 		{
+			if (doClone())
+				T = (HashSet<K>) T.clone();
 			for (; E.hasMoreElements();)
 				T.add(E.nextElement());
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public synchronized void addAll(Iterator<K> E)
 	{
 		if (E != null)
 		{
+			if (doClone())
+				T = (HashSet<K>) T.clone();
 			for (; E.hasNext();)
 				T.add(E.next());
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(Enumeration<K> E)
 	{
 		if (E != null)
 		{
+			if (doClone())
+				T = (HashSet<K>) T.clone();
 			for (; E.hasMoreElements();)
 				T.remove(E.nextElement());
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(Iterator<K> E)
 	{
 		if (E != null)
 		{
+			if (doClone())
+				T = (HashSet<K>) T.clone();
 			for (; E.hasNext();)
 				T.remove(E.next());
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(List<K> E)
 	{
 		if (E != null)
 		{
+			if (doClone())
+				T = (HashSet<K>) T.clone();
 			for (final K o : E)
 				T.remove(o);
 		}
@@ -147,12 +163,16 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@Override
 	public synchronized boolean add(K e)
 	{
-		T = (HashSet<K>) T.clone();
+		if (doClone())
+			T = (HashSet<K>) T.clone();
 		return T.add(e);
 	}
 
+	@SuppressWarnings("unchecked")
 	public synchronized boolean addUnsafe(K e)
 	{
+		if (doClone())
+			T = (HashSet<K>) T.clone();
 		return T.add(e);
 	}
 
@@ -160,7 +180,8 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@Override
 	public synchronized boolean addAll(Collection<? extends K> c)
 	{
-		T = (HashSet<K>) T.clone();
+		if (doClone())
+			T = (HashSet<K>) T.clone();
 		return T.addAll(c);
 	}
 
@@ -168,7 +189,8 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@Override
 	public synchronized void clear()
 	{
-		T = (HashSet<K>) T.clone();
+		if (doClone())
+			T = (HashSet<K>) T.clone();
 		T.clear();
 	}
 
@@ -195,14 +217,15 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@Override
 	public synchronized Iterator<K> iterator()
 	{
-		return new ReadOnlyIterator<K>(T.iterator());
+		return new SafeFeedbackIterator<K>(T.iterator(), this);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized boolean remove(Object o)
 	{
-		T = (HashSet<K>) T.clone();
+		if (doClone())
+			T = (HashSet<K>) T.clone();
 		return T.remove(o);
 	}
 
@@ -228,7 +251,8 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@Override
 	public synchronized boolean removeAll(Collection<?> arg0)
 	{
-		T = (HashSet<K>) T.clone();
+		if (doClone())
+			T = (HashSet<K>) T.clone();
 		return T.removeAll(arg0);
 	}
 
@@ -242,7 +266,8 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@Override
 	public synchronized boolean retainAll(Collection<?> arg0)
 	{
-		T = (HashSet<K>) T.clone();
+		if (doClone())
+			T = (HashSet<K>) T.clone();
 		return T.retainAll(arg0);
 	}
 
@@ -264,4 +289,29 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		return super.toString();
 	}
 
+	private boolean doClone()
+	{
+		synchronized(this.iterators)
+		{
+			return this.iterators.size() > 0;
+		}
+	}
+	
+	@Override
+	public void returnIterator(Object iter) 
+	{
+		synchronized(this.iterators)
+		{
+			this.iterators.remove(iter);
+		}
+	}
+
+	@Override
+	public void submitIterator(Object iter) 
+	{
+		synchronized(this.iterators)
+		{
+			this.iterators.add(iter);
+		}
+	}
 }

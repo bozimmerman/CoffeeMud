@@ -3,7 +3,7 @@ package com.planet_ink.coffee_mud.core.collections;
 import java.util.*;
 
 /*
-   Copyright 2000-2015 Bo Zimmerman
+   Copyright 2015-2015 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -17,10 +17,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-public class SHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializable
+public class SHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializable, SafeCollectionHost
 {
 	private static final long	     serialVersionUID	= 6687178785122561993L;
 	private volatile Hashtable<K, F>	H;
+	private final Set<Object> iterators = new HashSet<Object>();
 
 	public SHashtable()
 	{
@@ -98,7 +99,8 @@ public class SHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializab
 	@Override
 	public synchronized void clear()
 	{
-		H = (Hashtable<K, F>) H.clone();
+		if (doClone())
+			H = (Hashtable<K, F>) H.clone();
 		H.clear();
 	}
 
@@ -129,7 +131,7 @@ public class SHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializab
 
 	public synchronized Enumeration<F> elements()
 	{
-		return H.elements();
+		return new SafeFeedbackEnumeration<F>(H.elements(), this);
 	}
 
 	@Override
@@ -164,20 +166,21 @@ public class SHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializab
 
 	public synchronized Enumeration<K> keys()
 	{
-		return H.keys();
+		return new SafeFeedbackEnumeration<K>(H.keys(), this);
 	}
 
 	@Override
 	public synchronized Set<K> keySet()
 	{
-		return H.keySet();
+		return new SafeChildSet<K>(H.keySet(), this);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized F put(K arg0, F arg1)
 	{
-		H = (Hashtable<K, F>) H.clone();
+		if (doClone())
+			H = (Hashtable<K, F>) H.clone();
 		return H.put(arg0, arg1);
 	}
 
@@ -185,7 +188,8 @@ public class SHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializab
 	@Override
 	public synchronized F remove(Object arg0)
 	{
-		H = (Hashtable<K, F>) H.clone();
+		if (doClone())
+			H = (Hashtable<K, F>) H.clone();
 		return H.remove(arg0);
 	}
 
@@ -204,15 +208,41 @@ public class SHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializab
 	@Override
 	public synchronized Collection<F> values()
 	{
-		return new ReadOnlyCollection<F>(H.values());
+		return new SafeChildCollection<F>(H.values(),this);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized void putAll(Map<? extends K, ? extends F> arg0)
 	{
-		H = (Hashtable<K, F>) H.clone();
+		if (doClone())
+			H = (Hashtable<K, F>) H.clone();
 		H.putAll(arg0);
 	}
 
+	private boolean doClone()
+	{
+		synchronized(this.iterators)
+		{
+			return this.iterators.size() > 0;
+		}
+	}
+	
+	@Override
+	public void returnIterator(Object iter) 
+	{
+		synchronized(this.iterators)
+		{
+			this.iterators.remove(iter);
+		}
+	}
+	
+	@Override
+	public void submitIterator(Object iter) 
+	{
+		synchronized(this.iterators)
+		{
+			this.iterators.add(iter);
+		}
+	}
 }

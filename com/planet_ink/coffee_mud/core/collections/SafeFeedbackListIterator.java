@@ -4,7 +4,7 @@ import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
-	Copyright 2000-2015 Bo Zimmerman
+	Copyright 2015-2015 Bo Zimmerman
 	
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -22,13 +22,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SafeFeedbackListIterator<K> implements ListIterator<K> 
 {
 	private final ListIterator<K> iter;
-	private final SafeCollection<K> collection;
+	private final SafeCollectionHost collection;
 	private final AtomicBoolean returned = new AtomicBoolean(false);
 
-	public SafeFeedbackListIterator(ListIterator<K> iter, SafeCollection<K> collection) 
+	public SafeFeedbackListIterator(ListIterator<K> iter, SafeCollectionHost collection) 
 	{
 		this.iter = iter;
 		this.collection = collection;
+		this.collection.submitIterator(this);
 	}
 
 	@Override

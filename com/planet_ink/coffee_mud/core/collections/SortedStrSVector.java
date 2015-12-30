@@ -89,25 +89,25 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public void add(int arg0, T arg1)
+	public synchronized void add(int arg0, T arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean addAll(int arg0, Collection<? extends T> arg1)
+	public synchronized boolean addAll(int arg0, Collection<? extends T> arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean contains(Object arg0)
+	public synchronized boolean contains(Object arg0)
 	{
 		return indexOf(arg0) >= 0;
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0)
+	public synchronized boolean containsAll(Collection<?> arg0)
 	{
 		for (final Object o : arg0)
 		{
@@ -118,7 +118,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public T get(int arg0)
+	public synchronized T get(int arg0)
 	{
 		return super.get(arg0);
 	}
@@ -238,7 +238,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public T set(int arg0, T arg1)
+	public synchronized T set(int arg0, T arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
