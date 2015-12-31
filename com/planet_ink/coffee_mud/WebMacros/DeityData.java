@@ -42,9 +42,9 @@ public class DeityData extends StdWebMacro
 	// valid parms include description, worshipreq, clericreq,
 	// worshiptrig, clerictrig, worshipsintrig,clericsintrig,powertrig
 
-	private DVector getDeityData(HTTPRequest httpReq, String deityName)
+	private List<PlayerLibrary.ThinPlayer> getDeityData(HTTPRequest httpReq, String deityName)
 	{
-		DVector folData=(DVector)httpReq.getRequestObjects().get("DEITYDATAFOR-"+deityName.toUpperCase().trim());
+		List<PlayerLibrary.ThinPlayer> folData=(List<PlayerLibrary.ThinPlayer>)httpReq.getRequestObjects().get("DEITYDATAFOR-"+deityName.toUpperCase().trim());
 		if(folData!=null)
 			return folData;
 		folData = CMLib.database().worshippers(deityName);
@@ -173,18 +173,18 @@ public class DeityData extends StdWebMacro
 				}
 				if(parms.containsKey("NUMFOLLOWERS"))
 				{
-					final DVector data=getDeityData(httpReq,D.Name());
+					final List<PlayerLibrary.ThinPlayer> data=getDeityData(httpReq,D.Name());
 					final int num=data.size();
 					str.append(num+", ");
 				}
 				if(parms.containsKey("NUMPRIESTS"))
 				{
-					final DVector data=getDeityData(httpReq,D.Name());
+					final List<PlayerLibrary.ThinPlayer> data=getDeityData(httpReq,D.Name());
 					int num=0;
 					//DV.addElement(username, cclass, ""+level, race);
 					for(int d=0;d<data.size();d++)
 					{
-						final CharClass C=CMClass.getCharClass((String)data.elementAt(d, 2));
+						final CharClass C=CMClass.getCharClass(data.get(d).charClass());
 						if((C!=null)&&(C.baseClass().equalsIgnoreCase("CLERIC")))
 							num++;
 					}
