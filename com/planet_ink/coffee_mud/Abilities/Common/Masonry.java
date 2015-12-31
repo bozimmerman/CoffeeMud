@@ -89,7 +89,7 @@ public class Masonry extends BuildingSkill
 	@Override
 	protected String getMazeLocaleType()
 	{
-		return "StoneRoomMaze";
+		return "StoneMaze";
 	}
 
 	@Override
