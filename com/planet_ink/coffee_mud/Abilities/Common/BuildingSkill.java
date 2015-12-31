@@ -1348,7 +1348,7 @@ public class BuildingSkill extends CraftingSkill
 			}
 			if(!CMLib.law().isHomeRoomUpstairs(mob.location()))
 			{
-				commonTell(mob,L("You can only demolish upstairs rooms.  You might try just demolishing the ceiling/roof?"));
+				commonTell(mob,L("You can only demolish upstairs/downstairs rooms.  You might try just demolishing the ceiling/roof?"));
 				return false;
 			}
 			int numAdjacentProperties=0;
@@ -1408,16 +1408,23 @@ public class BuildingSkill extends CraftingSkill
 				commonTell(mob,L("A valid direction in which to demolish stairs must also be specified.  Try UP or DOWN."));
 				return false;
 			}
+			final Room inR=R.getRoomInDir(dir);
+			final Exit inE=R.getExitInDir(dir);
 			if((!CMath.bset(R.domainType(), Room.INDOORS))&&(dir==Directions.UP))
 			{
 				commonTell(mob,L("You need to build a ceiling (or roof) first, and then some stairs."));
 				return false;
 			}
 			
-			if(((R.getRoomInDir(dir)==null)&&(R.rawDoors()[dir]==null))
-			||(R.getRoomInDir(dir).roomID().length()==0))
+			if((inR==null)||(inR.roomID().length()==0)||(inE==null))
 			{
 				commonTell(mob,L("Building a hole means demolishing stairs, but there are no stairs here."));
+				return false;
+			}
+			else
+			if(inE.fetchEffect("Spell_Fly")!=null)
+			{
+				commonTell(mob,L("There is already a hole in that direction."));
 				return false;
 			}
 		}
@@ -1441,9 +1448,13 @@ public class BuildingSkill extends CraftingSkill
 				commonTell(mob,L("You need to build a ceiling (or roof) first!"));
 				return false;
 			}
-			if((mob.location().getRoomInDir(dir)!=null)||(mob.location().rawDoors()[dir]!=null))
+			final Room inR=mob.location().getRoomInDir(dir);
+			if(inR!=null)
 			{
-				commonTell(mob,L("There are already stairs here."));
+				if(dir == Directions.UP)
+					commonTell(mob,L("There is already something up here."));
+				else
+					commonTell(mob,L("There is already something down here."));
 				return false;
 			}
 		}
@@ -1574,6 +1585,8 @@ public class BuildingSkill extends CraftingSkill
 			return false;
 
 		room=mob.location();
+		if(room.getGridParent() != null)
+			room = room.getGridParent();
 		if(woodRequired>0)
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,idata[0][FOUND_CODE],0,null);
 

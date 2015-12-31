@@ -35,11 +35,25 @@ import java.util.*;
 
 public class Prop_LotsForSale extends Prop_RoomForSale
 {
-	@Override public String ID() { return "Prop_LotsForSale"; }
-	@Override public String name(){ return "Putting many rooms up for sale";}
-	protected String uniqueLotID=null;
+	@Override
+	public String ID()
+	{
+		return "Prop_LotsForSale";
+	}
 
-	@Override public boolean allowsExpansionConstruction(){ return true; }
+	@Override
+	public String name()
+	{
+		return "Putting many rooms up for sale";
+	}
+
+	protected String	uniqueLotID	= null;
+
+	@Override
+	public boolean allowsExpansionConstruction()
+	{
+		return true;
+	}
 
 	protected void fillCluster(Room R, List<Room> V)
 	{
@@ -82,7 +96,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				R=r.next();
 				if(R!=null)
 					A=R.fetchEffect(ID());
-				if(A!=null)
+				if(A instanceof Prop_LotsForSale)
 					((Prop_LotsForSale)A).uniqueLotID=uniqueID;
 			}
 		}
@@ -106,9 +120,9 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		{
 			final Room R=theRoom.rawDoors()[d];
 			if((R!=null)
-			   &&(R!=fromRoom)
-			   &&(R.roomID().length()>0)
-			   &&((CMLib.law().getLandTitle(R)==null)||(CMLib.law().getLandTitle(R).getOwnerName().length()>0)))
+			&&(R!=fromRoom)
+			&&(R.roomID().length()>0)
+			&&((CMLib.law().getLandTitle(R)==null)||(CMLib.law().getLandTitle(R).getOwnerName().length()>0)))
 				return false;
 		}
 		return true;
@@ -136,6 +150,14 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		return uniqueLotID;
 	}
 
+	protected LandTitle generateUniqueTitle(LandTitle oldTitle)
+	{
+		final LandTitle newTitle=(LandTitle)((Ability)oldTitle).copyOf();
+		newTitle.setOwnerName("");
+		newTitle.setBackTaxes(0);
+		return newTitle;
+	}
+	
 	@Override
 	public void updateLot(List<String> optPlayerList)
 	{
@@ -218,12 +240,11 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 							if(R2.roomID().length()==0)
 								continue;
 							R2.setArea(R.getArea());
-							LandTitle newTitle=CMLib.law().getLandTitle(R);
-							if((newTitle!=null)&&(CMLib.law().getLandTitle(R2)==null))
+							LandTitle oldTitle=CMLib.law().getLandTitle(R);
+							LandTitle newTitle = null;
+							if((oldTitle!=null)&&(CMLib.law().getLandTitle(R2)==null))
 							{
-								newTitle=(LandTitle)((Ability)newTitle).copyOf();
-								newTitle.setOwnerName("");
-								newTitle.setBackTaxes(0);
+								newTitle = generateUniqueTitle(oldTitle);
 								R2.addNonUninvokableEffect((Ability)newTitle);
 							}
 							R.rawDoors()[d]=R2;
