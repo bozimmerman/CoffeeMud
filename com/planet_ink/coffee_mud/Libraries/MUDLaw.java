@@ -37,7 +37,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class MUDLaw extends StdLibrary implements LegalLibrary
 {
-	@Override public String ID(){return "MUDLaw";}
+	@Override
+	public String ID()
+	{
+		return "MUDLaw";
+	}
 
 	@Override
 	public Law getTheLaw(Room R, MOB mob)
@@ -68,6 +72,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		}
 		return B;
 	}
+
 	@Override
 	public LegalBehavior getLegalBehavior(Room R)
 	{
@@ -78,6 +83,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return (LegalBehavior)V.get(0);
 		return getLegalBehavior(R.getArea());
 	}
+
 	@Override
 	public Area getLegalObject(Area A)
 	{
@@ -97,6 +103,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		}
 		return A3;
 	}
+
 	@Override
 	public Area getLegalObject(Room R)
 	{
@@ -181,7 +188,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		}
 		return null;
 	}
-	
+
 	@Override
 	public PrivateProperty getPropertyRecord(Area area)
 	{
@@ -436,7 +443,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return true;
 		return false;
 	}
-	
+
 	@Override
 	public boolean doesOwnThisProperty(MOB mob, Room room)
 	{
@@ -458,7 +465,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return doesOwnThisProperty(mob.amFollowing(),room);
 		return false;
 	}
-	
+
 	@Override
 	public Ability getClericInfusion(Physical room)
 	{
@@ -472,6 +479,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		}
 		return null;
 	}
+
 	@Override
 	public Deity getClericInfused(Room room)
 	{
@@ -530,5 +538,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return false;
 		return B.isJudge(A, mob);
 	}
-	@Override public boolean isLegalOfficialHere(MOB mob){ return isLegalOfficerHere(mob)||isLegalJudgeHere(mob);}
+
+	@Override
+	public boolean isLegalOfficialHere(MOB mob)
+	{
+		return isLegalOfficerHere(mob) || isLegalJudgeHere(mob);
+	}
 }

@@ -233,22 +233,22 @@ public interface CatalogLibrary extends CMLibrary
 	 * requirement for a unique name/key for each mob or item. Unlike
 	 * setCatagory, this method is totally synchronized and also 
 	 * clears the VFSDir cache.
-	 * @see CatalogLibrary#setCatagory(Physical, String)
+	 * @see CatalogLibrary#setCategory(Physical, String)
 	 * @param modelP the prototype mob or item
 	 * @param newCat the catagory to change it into, or null
 	 */
-	public void updateCatalogCatagory(Physical modelP, String newCat);
+	public void updateCatalogCategory(Physical modelP, String newCat);
 	
 	/**
 	 * Changes the catagory of the catalog item with the given
 	 * physical objects name to the given catagory. Unlike
 	 * updateCatalogCatagory, this method is not synchronized
 	 * and does not clear the VFSDir cache
-	 * @see CatalogLibrary#updateCatalogCatagory(Physical, String)
+	 * @see CatalogLibrary#updateCatalogCategory(Physical, String)
 	 * @param P the catalog item to get a key/name from
 	 * @param catagory the new catagory, such as null
 	 */
-	public void setCatagory(Physical P, String catagory);
+	public void setCategory(Physical P, String catagory);
 	
 	/**
 	 * Completely removes the given item or mob from the catalog, deleting
@@ -612,7 +612,7 @@ public interface CatalogLibrary extends CMLibrary
 		/**
 		 * Returns the user-defined catagory to which this
 		 * cataloged object belongs.  null is uncatagorized  
-		 * @see CataData#setCatagory(String)
+		 * @see CataData#setCategory(String)
 		 * @return the catagory name
 		 */
 		public String category();
@@ -623,7 +623,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @see CataData#category()
 		 * @param cat the catagory name
 		 */
-		public void setCatagory(String cat);
+		public void setCategory(String cat);
 
 		/**
 		 * Returns this metadata as an xml doc

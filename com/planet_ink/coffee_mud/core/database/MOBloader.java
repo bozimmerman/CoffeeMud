@@ -678,30 +678,17 @@ public class MOBloader
 		return list;
 	}
 
-	public DVector worshippers(String deityID)
+	public List<PlayerLibrary.ThinPlayer> worshippers(String deityID)
 	{
 		DBConnection D=null;
-		final DVector DV=new DVector(4);
+		final List<PlayerLibrary.ThinPlayer> DV=new Vector<PlayerLibrary.ThinPlayer>();
 		try
 		{
 			D=DB.DBFetch();
 			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMWORS='"+deityID+"'");
 			if(R!=null) while(R.next())
 			{
-				final String username=DBConnections.getRes(R,"CMUSERID");
-				String cclass=DBConnections.getRes(R,"CMCLAS");
-				final int x=cclass.lastIndexOf(';');
-				if((x>0)&&(x<cclass.length()-2))
-					cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
-				final String race=(CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
-				final List<String> lvls=CMParms.parseSemicolons(DBConnections.getRes(R,"CMLEVL"), true);
-				int level=0;
-				for(final String lvl : lvls)
-					level+=CMath.s_int(lvl);
-				DV.addElement(username,
-							  cclass,
-							  ""+level,
-							  race);
+				DV.add(parseThinUser(R));
 			}
 		}
 		catch(final Exception sqle)

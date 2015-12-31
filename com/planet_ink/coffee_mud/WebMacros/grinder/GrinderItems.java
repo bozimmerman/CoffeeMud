@@ -639,7 +639,7 @@ public class GrinderItems
 					{
 						if(cataData==null)
 							cataData=CMLib.catalog().sampleCataData("");
-						cataData.setCatagory(old.toUpperCase().trim());
+						cataData.setCategory(old.toUpperCase().trim());
 					}
 					break;
 				case ISPORTAL: // isportal
@@ -786,10 +786,10 @@ public class GrinderItems
 				httpReq.addFakeUrlParameter("ITEM",itemCode);
 				if(I2==null)
 				{
-					String catagory=null;
+					String category=null;
 					if(cataData!=null)
-						catagory=cataData.category();
-					CMLib.catalog().addCatalog(catagory,I);
+						category=cataData.category();
+					CMLib.catalog().addCatalog(category,I);
 					Log.infoOut("GrinderItems",whom.Name()+" created catalog ITEM "+I.Name());
 				}
 				else

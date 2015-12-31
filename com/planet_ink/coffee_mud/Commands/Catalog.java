@@ -90,7 +90,7 @@ public class Catalog extends StdCommand
 					}
 					else
 					{
-						CMLib.catalog().updateCatalogCatagory(cataP,newCat);
+						CMLib.catalog().updateCatalogCategory(cataP,newCat);
 						return true;
 					}
 				}
@@ -110,7 +110,7 @@ public class Catalog extends StdCommand
 			}
 			msg="<S-NAME> modif(ys) the cataloged version of <T-NAMESELF>.";
 			if((data!=null)&&(!data.category().equals(newCat)))
-				CMLib.catalog().updateCatalogCatagory(cataP,newCat);
+				CMLib.catalog().updateCatalogCategory(cataP,newCat);
 		}
 		else
 			CMLib.catalog().addCatalog(newCat,P);

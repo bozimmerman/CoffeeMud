@@ -99,7 +99,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 
-	protected void addCatalogReplace(DVector DV, String catagory, Physical P)
+	protected void addCatalogReplace(DVector DV, String category, Physical P)
 	{
 		int start=0;
 		int end=DV.size()-1;
@@ -137,8 +137,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		else
 		{
 			final CataData data=new CataDataImpl("");
-			if(catagory!=null)
-				data.setCatagory(catagory);
+			if(category!=null)
+				data.setCategory(category);
 			if(mid>=0)
 			{
 				for(comp=lastStart;comp<=lastEnd;comp++)
@@ -418,7 +418,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void addCatalog(String catagory, Physical PA)
+	public void addCatalog(String category, Physical PA)
 	{
 		if((PA==null)
 		||(!(PA instanceof DBIdentifiable))
@@ -444,8 +444,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			final CataData data=getCatalogData(PA);
 			if(data!=null)
 			{
-				if(catagory != null)
-					data.setCatagory(catagory);
+				if(category != null)
+					data.setCategory(category);
 				data.addReference(origP);
 			}
 		}
@@ -457,7 +457,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		submitToCatalog(null,P);
 	}
 
-	public void submitToCatalog(String catagory, Physical P)
+	public void submitToCatalog(String category, Physical P)
 	{
 		if((P==null)
 		||(!(P instanceof DBIdentifiable))
@@ -473,7 +473,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			{
 				synchronized(icatalog)
 				{
-					addCatalogReplace(icatalog,catagory,P);
+					addCatalogReplace(icatalog,category,P);
 				}
 			}
 			else
@@ -481,7 +481,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			{
 				synchronized(mcatalog)
 				{
-					addCatalogReplace(mcatalog,catagory,P);
+					addCatalogReplace(mcatalog,category,P);
 				}
 			}
 		}
@@ -564,7 +564,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void updateCatalogCatagory(Physical modelP, String newCat)
+	public void updateCatalogCategory(Physical modelP, String newCat)
 	{
 		if((modelP==null)
 		||(!(modelP instanceof DBIdentifiable))
@@ -575,7 +575,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			final CataData data=getCatalogData(modelP);
 			if(data!=null)
 			{
-				data.setCatagory(newCat.toUpperCase().trim());
+				data.setCategory(newCat.toUpperCase().trim());
 				if(modelP instanceof MOB)
 				{
 					CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)modelP);
@@ -803,11 +803,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void setCatagory(Physical P, String catagory)
+	public void setCategory(Physical P, String category)
 	{
 		final CataData data=getCatalogData(P);
-		if((data!=null)&&(catagory!=null))
-			data.setCatagory(catagory);
+		if((data!=null)&&(category!=null))
+			data.setCategory(category);
 	}
 
 	@Override
@@ -1056,7 +1056,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	protected static class CataDataImpl implements CataData
 	{
 		public String 		lmaskStr			= null;
-		public String		catagory			= "";
+		public String		category			= "";
 		public boolean 		live				= false;
 		public double 		rate				= 0.0;
 		public volatile int deathPickup			= 0;
@@ -1094,16 +1094,16 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		@Override
 		public String category()
 		{
-			return catagory;
+			return category;
 		}
 
 		@Override
-		public void setCatagory(String cat)
+		public void setCategory(String cat)
 		{
 			if(cat!=null)
-				catagory=cat;
+				category=cat;
 			else
-				catagory="";
+				category="";
 		}
 
 		protected RoomnumberSet getLocations()
@@ -1352,7 +1352,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			buf.append("<CATALOGDATA ");
 			if(name != null)
 				buf.append("NAME=\""+CMLib.xml().parseOutAngleBracketsAndQuotes(name)+"\" ");
-			buf.append("CATAGORY=\""+CMLib.xml().parseOutAngleBracketsAndQuotes(catagory)+"\">");
+			buf.append("CATAGORY=\""+CMLib.xml().parseOutAngleBracketsAndQuotes(category)+"\">");
 			buf.append("<RATE>"+CMath.toPct(rate)+"</RATE>");
 			buf.append("<LMASK>"+CMLib.xml().parseOutAngleBrackets(lmaskStr)+"</LMASK>");
 			buf.append("<LIVE>"+live+"</LIVE>");
@@ -1370,9 +1370,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				final XMLTag piece=CMLib.xml().getPieceFromPieces(V,"CATALOGDATA");
 				if((piece!=null)&&(piece.contents()!=null)&&(piece.contents().size()>0))
 				{
-					catagory=CMLib.xml().restoreAngleBrackets(piece.getParmValue( "CATAGORY"));
-					if(catagory==null)
-						catagory="";
+					category=CMLib.xml().restoreAngleBrackets(piece.getParmValue( "CATAGORY"));
+					if(category==null)
+						category="";
 					lmaskStr=CMLib.xml().restoreAngleBrackets(piece.getValFromPieces("LMASK"));
 					final String ratestr=piece.getValFromPieces("RATE");
 					rate=CMath.s_pct(ratestr);

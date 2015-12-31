@@ -84,16 +84,16 @@ public class CatalogMobNext extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("MOB");
-		String catagory=httpReq.getUrlParameter("CATACAT");
-		if(catagory!=null)
+		String category=httpReq.getUrlParameter("CATACAT");
+		if(category!=null)
 		{
-			if(catagory.equalsIgnoreCase("UNCATEGORIZED"))
-				catagory="";
+			if(category.equalsIgnoreCase("UNCATEGORIZED"))
+				category="";
 			else
-			if(catagory.length()==0)
-				catagory=null;
+			if(category.length()==0)
+				category=null;
 			else
-				catagory=catagory.toUpperCase().trim();
+				category=category.toUpperCase().trim();
 		}
 		final String optCol=httpReq.getUrlParameter("OPTIONALCOLUMN");
 		final String optionalColumn;
@@ -115,14 +115,14 @@ public class CatalogMobNext extends StdWebMacro
 		MOB M=null;
 		String name=null;
 		CatalogLibrary.CataData data=null;
-		String[] names=CMLib.catalog().getCatalogMobNames(catagory);
+		String[] names=CMLib.catalog().getCatalogMobNames(category);
 		final String sortBy=httpReq.getUrlParameter("SORTBY");
 		if((sortBy!=null)&&(sortBy.length()>0))
 		{
 			final int sortIndex=CMParms.indexOf(DATA, "CATALOG_MOB_"+sortBy.toUpperCase());
 			if((sortIndex>=0)||(sortBy.equalsIgnoreCase(optionalColumn)))
 			{
-				final String[] sortedNames=(String[])httpReq.getRequestObjects().get("CATALOG_MOB_"+catagory+"_"+sortBy.toUpperCase());
+				final String[] sortedNames=(String[])httpReq.getRequestObjects().get("CATALOG_MOB_"+category+"_"+sortBy.toUpperCase());
 				if(sortedNames!=null)
 					names=sortedNames;
 				else
@@ -150,7 +150,7 @@ public class CatalogMobNext extends StdWebMacro
 					});
 					for(int s=0;s<names.length;s++)
 						names[s]=(String)((Object[])sortifiable[s])[0];
-					httpReq.getRequestObjects().put("CATALOG_MOB_"+catagory+"_"+sortBy.toUpperCase(),names);
+					httpReq.getRequestObjects().put("CATALOG_MOB_"+category+"_"+sortBy.toUpperCase(),names);
 				}
 			}
 		}

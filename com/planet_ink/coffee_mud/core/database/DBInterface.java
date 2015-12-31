@@ -74,21 +74,24 @@ public class DBInterface implements DatabaseEngine
 		this.DB=DB;
 		DBConnector oldBaseDB=DB;
 		final DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MudHost.MAIN_HOST,CMLib.Library.DATABASE);
-		if((privacyV!=null)&&(baseEngine!=null)&&(baseEngine.getConnector()!=DB)&&(baseEngine.isConnected()))
+		if(privacyV == null)
+			privacyV = new HashSet<String>();
+		if((baseEngine!=null)&&(baseEngine.getConnector()!=DB)&&(baseEngine.isConnected()))
 			oldBaseDB=baseEngine.getConnector();
-		this.GAbilityLoader=new GAbilityLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBABILITY.toString())?DB:oldBaseDB);
-		this.GCClassLoader=new GCClassLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBCHARCLASS.toString())?DB:oldBaseDB);
-		this.GRaceLoader=new GRaceLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBRACE.toString())?DB:oldBaseDB);
-		this.MOBloader=new MOBloader((privacyV==null)||privacyV.contains(DatabaseTables.DBPLAYERS.toString())?DB:oldBaseDB);
-		this.RoomLoader=new RoomLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBMAP.toString())?DB:oldBaseDB);
-		this.DataLoader=new DataLoader(this,(privacyV==null)||privacyV.contains(DatabaseTables.DBPLAYERS.toString())?DB:oldBaseDB);
-		this.StatLoader=new StatLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBSTATS.toString())?DB:oldBaseDB);
-		this.PollLoader=new PollLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBPOLLS.toString())?DB:oldBaseDB);
-		this.VFSLoader=new VFSLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBVFS.toString())?DB:oldBaseDB);
-		this.JournalLoader=new JournalLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBJOURNALS.toString())?DB:oldBaseDB);
-		this.QuestLoader=new QuestLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBQUEST.toString())?DB:oldBaseDB);
-		this.ClanLoader=new ClanLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBCLANS.toString())?DB:oldBaseDB);
-		this.BackLogLoader=new BackLogLoader((privacyV==null)||privacyV.contains(DatabaseTables.DBBACKLOG.toString())?DB:oldBaseDB);
+		
+		this.GAbilityLoader = 	new GAbilityLoader(privacyV.contains(DatabaseTables.DBABILITY.toString()) ? DB : oldBaseDB);
+		this.GCClassLoader = 	new GCClassLoader(privacyV.contains(DatabaseTables.DBCHARCLASS.toString()) ? DB : oldBaseDB);
+		this.GRaceLoader = 		new GRaceLoader(privacyV.contains(DatabaseTables.DBRACE.toString()) ? DB : oldBaseDB);
+		this.MOBloader = 		new MOBloader(privacyV.contains(DatabaseTables.DBPLAYERS.toString()) ? DB : oldBaseDB);
+		this.RoomLoader = 		new RoomLoader(privacyV.contains(DatabaseTables.DBMAP.toString()) ? DB : oldBaseDB);
+		this.DataLoader = 		new DataLoader(this, privacyV.contains(DatabaseTables.DBPLAYERDATA.toString()) ? DB : oldBaseDB);
+		this.StatLoader = 		new StatLoader(privacyV.contains(DatabaseTables.DBSTATS.toString()) ? DB : oldBaseDB);
+		this.PollLoader = 		new PollLoader(privacyV.contains(DatabaseTables.DBPOLLS.toString()) ? DB : oldBaseDB);
+		this.VFSLoader = 		new VFSLoader(privacyV.contains(DatabaseTables.DBVFS.toString()) ? DB : oldBaseDB);
+		this.JournalLoader = 	new JournalLoader(privacyV.contains(DatabaseTables.DBJOURNALS.toString()) ? DB : oldBaseDB);
+		this.QuestLoader = 		new QuestLoader(privacyV.contains(DatabaseTables.DBQUEST.toString()) ? DB : oldBaseDB);
+		this.ClanLoader = 		new ClanLoader(privacyV.contains(DatabaseTables.DBCLANS.toString()) ? DB : oldBaseDB);
+		this.BackLogLoader = 	new BackLogLoader(privacyV.contains(DatabaseTables.DBBACKLOG.toString()) ? DB : oldBaseDB);
 	}
 	@Override
 	public CMObject newInstance()
@@ -168,7 +171,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public DVector worshippers(String deityID)
+	public List<PlayerLibrary.ThinPlayer> worshippers(String deityID)
 	{
 		return MOBloader.worshippers(deityID);
 	}

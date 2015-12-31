@@ -755,7 +755,7 @@ public class GrinderMobs
 					{
 						if(cataData==null)
 							cataData=CMLib.catalog().sampleCataData("");
-						cataData.setCatagory(old.toUpperCase().trim());
+						cataData.setCategory(old.toUpperCase().trim());
 					}
 					break;
 				}
@@ -906,10 +906,10 @@ public class GrinderMobs
 					newMobCode=mobCode;
 					if(M2==null)
 					{
-						String catagory=null;
+						String category=null;
 						if(cataData!=null)
-							catagory=cataData.category();
-						CMLib.catalog().addCatalog(catagory,M);
+							category=cataData.category();
+						CMLib.catalog().addCatalog(category,M);
 						Log.infoOut("GrinderItems",whom.Name()+" created catalog MOB "+M.Name());
 					}
 					else

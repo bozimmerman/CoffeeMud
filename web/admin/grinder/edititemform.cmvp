@@ -149,7 +149,7 @@
 </TR>
 @if?CheckReqParm?<ITEM=CATALOG-&@
 <TR>
-    <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Catalog Catagory:</B></FONT></TD>
+    <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Catalog Category:</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CATACAT SIZE=60 VALUE="@ItemData?CATACAT@"></TD>
 </TR>
 @endif@
