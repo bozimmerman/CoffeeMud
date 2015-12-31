@@ -35,20 +35,43 @@ import java.util.*;
 */
 public class ShallowWater extends StdRoom implements Drink
 {
-	@Override public String ID(){return "ShallowWater";}
+	@Override
+	public String ID()
+	{
+		return "ShallowWater";
+	}
+
 	public ShallowWater()
 	{
 		super();
-		name="the water";
+		name = "the water";
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
-		climask=Places.CLIMASK_WET;
+		climask = Places.CLIMASK_WET;
 	}
 
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
-	@Override protected int baseThirst(){return 0;}
-	@Override public long decayTime(){return 0;}
-	@Override public void setDecayTime(long time){}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_WATERSURFACE;
+	}
+
+	@Override
+	protected int baseThirst()
+	{
+		return 0;
+	}
+
+	@Override
+	public long decayTime()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setDecayTime(long time)
+	{
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -64,6 +87,7 @@ public class ShallowWater extends StdRoom implements Drink
 		}
 		return super.okMessage(myHost,msg);
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -84,16 +108,71 @@ public class ShallowWater extends StdRoom implements Drink
 		}
 	}
 
-	@Override public int thirstQuenched(){return 500;}
-	@Override public int liquidHeld(){return Integer.MAX_VALUE-1000;}
-	@Override public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	@Override public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
-	@Override public void setLiquidType(int newLiquidType){}
-	@Override public void setThirstQuenched(int amount){}
-	@Override public void setLiquidHeld(int amount){}
-	@Override public void setLiquidRemaining(int amount){}
-	@Override public boolean disappearsAfterDrinking(){return false;}
-	@Override public boolean containsDrink(){return true;}
-	@Override public int amountTakenToFillMe(Drink theSource){return 0;}
-	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	@Override
+	public int thirstQuenched()
+	{
+		return 500;
+	}
+
+	@Override
+	public int liquidHeld()
+	{
+		return Integer.MAX_VALUE - 1000;
+	}
+
+	@Override
+	public int liquidRemaining()
+	{
+		return Integer.MAX_VALUE - 1000;
+	}
+
+	@Override
+	public int liquidType()
+	{
+		return RawMaterial.RESOURCE_FRESHWATER;
+	}
+
+	@Override
+	public void setLiquidType(int newLiquidType)
+	{
+	}
+
+	@Override
+	public void setThirstQuenched(int amount)
+	{
+	}
+
+	@Override
+	public void setLiquidHeld(int amount)
+	{
+	}
+
+	@Override
+	public void setLiquidRemaining(int amount)
+	{
+	}
+
+	@Override
+	public boolean disappearsAfterDrinking()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean containsDrink()
+	{
+		return true;
+	}
+
+	@Override
+	public int amountTakenToFillMe(Drink theSource)
+	{
+		return 0;
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderWater.roomResources;
+	}
 }

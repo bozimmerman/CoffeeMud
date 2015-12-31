@@ -87,6 +87,12 @@ public class Masonry extends BuildingSkill
 	}
 
 	@Override
+	protected String getMazeLocaleType()
+	{
+		return "StoneRoomMaze";
+	}
+
+	@Override
 	protected String getSoundName()
 	{
 		return "stone.wav";
