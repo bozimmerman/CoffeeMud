@@ -37,9 +37,13 @@ import java.util.*;
 */
 public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 {
-	@Override public String ID(){    return "StdElecWeapon";}
+	@Override
+	public String ID()
+	{
+		return "StdElecWeapon";
+	}
 
-	protected int		weaponDamageType				= Weapon.TYPE_SHOOT;
+	protected int		weaponDamageType		= Weapon.TYPE_SHOOT;
 	protected int		weaponClassification	= Weapon.CLASS_RANGED;
 	protected boolean	useExtendedMissString	= false;
 	protected int		minRange				= 0;
@@ -128,7 +132,11 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		}
 	}
 
-	@Override public String text() { return mode.toString(); }
+	@Override
+	public String text()
+	{
+		return mode.toString();
+	}
 
 	@Override
 	public void recoverPhyStats()
@@ -153,10 +161,29 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		}
 	}
 
-	@Override public int weaponClassification(){return weaponClassification;}
-	@Override public void setWeaponDamageType(int newType){weaponDamageType=newType;}
-	@Override public void setWeaponClassification(int newClassification){weaponClassification=newClassification;}
-	@Override public TechType getTechType() { return TechType.PERSONAL_WEAPON; }
+	@Override
+	public int weaponClassification()
+	{
+		return weaponClassification;
+	}
+
+	@Override
+	public void setWeaponDamageType(int newType)
+	{
+		weaponDamageType = newType;
+	}
+
+	@Override
+	public void setWeaponClassification(int newClassification)
+	{
+		weaponClassification = newClassification;
+	}
+
+	@Override
+	public TechType getTechType()
+	{
+		return TechType.PERSONAL_WEAPON;
+	}
 
 	@Override
 	public String secretIdentity()
@@ -457,16 +484,19 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 			newUses=100;
 		super.setUsesRemaining(newUses);
 	}
+
 	@Override
 	public String missString()
 	{
 		return CMLib.combat().standardMissString(weaponDamageType,weaponClassification,name(),useExtendedMissString);
 	}
+
 	@Override
 	public String hitString(int damageAmount)
 	{
 		return CMLib.combat().standardHitString(weaponDamageType, weaponClassification,damageAmount,name());
 	}
+
 	@Override
 	public int minRange()
 	{
@@ -474,6 +504,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 			return 0;
 		return minRange;
 	}
+
 	@Override
 	public int maxRange()
 	{
@@ -481,7 +512,17 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 			return 100;
 		return maxRange;
 	}
-	@Override public void setRanges(int min, int max){minRange=min;maxRange=max;}
 
-	@Override public boolean subjectToWearAndTear() { return false; }
+	@Override
+	public void setRanges(int min, int max)
+	{
+		minRange = min;
+		maxRange = max;
+	}
+
+	@Override
+	public boolean subjectToWearAndTear()
+	{
+		return false;
+	}
 }

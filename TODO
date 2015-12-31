@@ -1,31 +1,46 @@
 BUGS
 
 TECH
-   *. ShopKeeper VIEW should give more information about tech items
+   *. shopkeepers price degredation should begin by counting the number of items, num resources, etc.
+   *. instead of being blended, perhaps tech ships should show paragraph form for all ship tech only.
+   *. add synthetic raw materials, see tech.doc
+   *. new power generators: solar (day, outside), hydro (outside, on shore), wind (outside)
+   *. Giant Space Mobs! Including Space Mobs that have rooms inside.
+   *. Radiation Props: Alpha (damage), Beta (?!), Gamma (Mutation if in too long)
+   *. Space TRech power consumption depends on tech level of generator, panel
+   *. Lots of great thrusters stuff about midway down the tech doc -- use it 
+   *. Droids! Powered slave mobs.
+   *. Message Bouey Launcher
+   *. When it's time to make the Real Software, good categories in tech docs
+   *. Light Switches for rooms.
+   *. powered rideables.  ability to mount heavy gear, like engines to things.
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. entry systems for ships (default entry key card, voice code, identifying scanner)
    *. work on automatic component values ??
    *. make tractor beam system -- esp important for pirates!
    *. make ship shield systems murder motel again -- some good against phasers, some torpedos, some lasers
-   *. make ship phaser, laser systems murder motel again
-   *. make ship torpedo launchers and torpedo containers
-   *. make ship impulse and warp engines
-   *. make ship dampeners
+   *. make ship phaser, laser systems murder motel again-- see tech doc
+   *. make ship torpedo launchers and torpedo containers-- see tech doc
+   *. make ship impulse and warp engines -- see tech doc
    *. Implement accelleration damage to the people on-board.
+   *. make ship dampeners, gravity generators
+   *. make food generators, and refrigerators, water recycler, 
+   *. turbo list -- moveable rooms
+   *. --Transporters-- 
    *. damaged systems should sometimes require random parts, from particular manufacturers, that repair respects
    *. finish main ship software for controlling all this stuff
    *. add electronics to guides, how to make a ship, how to build space, etc, details about tech
    *. add electronics to MG
    *. add spaceobject stuff to MG
    *. add spaceobject mapper system to MG
-   *. interacting items of diff tech level might damage each other
+   *. interacting items of diff tech level might damage each other -- done after everthing else please
    *. keep reviewing and updating the GameOverview.html doc
 
 NON-TECH
+   *. Wants and Needs engine - similar to slavery system
    *. Builder Achievements, Archon Achievements, Clan Achievements, Timed achievements (within a time period)
    *. Start on Spell Research?
    *. Simple Desires quest behavior - see Tim's Wants and Needs doc
-   *. Wants and Needs engine - similar to slavery system
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
    *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
