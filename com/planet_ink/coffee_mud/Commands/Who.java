@@ -121,7 +121,7 @@ public class Who extends StdCommand
 			||((CMSecurity.isAllowedAnywhere(seerM,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(seerM,CMSecurity.SecFlag.WIZINV))&&(seerM.phyStats().level()>=seenM.phyStats().level()))))
 		&&((friends==null)||(friends.contains(seenM.Name())||(friends.contains("All"))))
 		&&((mobFilter==null)||(mobFilter.passesFilter(seenM)))
-		&&(seenM.phyStats().level()>0))
+		&&(seenM.basePhyStats().level()>0))
 			return true;
 		return false;
 	}
