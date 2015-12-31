@@ -317,6 +317,9 @@ public class CraftingSkill extends GatheringSkill
 				else
 				{
 					final LinkedList<String> localLast5Items = mySkill.last4items;
+					int lastBaseDuration = this.lastBaseDuration;
+					if(lastBaseDuration > 75)
+						lastBaseDuration = 75;
 					double baseXP = lastBaseDuration * levelXPFactor / 25.0;
 					double xp = lastBaseDuration * levelXPFactor / 25.0;
 					for(String s : localLast5Items)
