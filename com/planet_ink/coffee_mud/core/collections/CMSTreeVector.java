@@ -31,7 +31,7 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	private static final long serialVersionUID = 6687178785122561992L;
 	private volatile Vector<T> V;
 	private final    TreeMap<String,T> S;
-	private final Set<Object> iterators = new HashSet<Object>();
+    private final Date lastIteratorCall = new Date(0);
 
 	public CMSTreeVector()
 	{
@@ -575,27 +575,23 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	
 	private boolean doClone()
 	{
-		synchronized(this.iterators)
+		synchronized(this.lastIteratorCall)
 		{
-			return this.iterators.size() > 0;
+			return System.currentTimeMillis() < this.lastIteratorCall.getTime();
 		}
 	}
 	
 	@Override
 	public void returnIterator(Object iter) 
 	{
-		synchronized(this.iterators)
-		{
-			this.iterators.remove(iter);
-		}
 	}
 
 	@Override
 	public void submitIterator(Object iter) 
 	{
-		synchronized(this.iterators)
+		synchronized(this.lastIteratorCall)
 		{
-			this.iterators.add(iter);
+			this.lastIteratorCall.setTime(System.currentTimeMillis() + ITERATOR_TIMEOUT_MS);
 		}
 	}
 }
