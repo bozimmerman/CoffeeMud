@@ -10,11 +10,11 @@ Archway	1	25	200	DIR	DOOR	GenExit	archway		@x1 archway
 Demolish	1	25	0	DIR	DEMOLISH	NA	-	-	demolishing	
 Title	1	15	0		TITLE	NA	-	-	title	
 Description	1	10	0		DESC	NA	-	-	description	
-Druidic Monument	1	25	1000	OUTDOOR	ITEM	DruidicMonument	-		druidic monument	-BASECLASS +Druid
+Druidic Monument	1	25	1000	OUTDOOR	ITEM	DruidicMonument			druidic monument	-BASECLASS +Druid
 Window	1	25	100	INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	@x1 window	
 Crawlway	1	25	500	INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1	
 Pool	1	35	400	OUTDOOR	ROOM	WaterSurface	0		pool	
 Deep Pool	1	35	700	OUTDOOR	ROOM	WaterSurface	1		pool	
-Portcullis	1	25	100	DIR METAL	GenDoor	portcullis|raise|lower|A portcullis blocks your way.		@x1 portcullis	
+Portcullis	1	25	100	DIR METAL	DOOR	GenDoor	portcullis|raise|lower|A portcullis blocks your way.		@x1 portcullis	
 Stairs	1	45	2550	INDOOR	STAIRS	StoneRoom	@x1stairs to the @x2 floor		stairway @x1	
 Hole Floor	1	45	2550	INDOOR	STAIRS	StoneRoom	@x1 a hole to the @x2 floor.	Spell_Fly	hole @x1 to another floor	
