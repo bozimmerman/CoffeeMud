@@ -158,6 +158,11 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		return newTitle;
 	}
 	
+	protected boolean canGenerateAdjacentRooms(Room R)
+	{
+		return getOwnerName().length()>0;
+	}
+	
 	@Override
 	public void updateLot(List<String> optPlayerList)
 	{
@@ -226,7 +231,9 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					}
 				}
 				else
+				if(canGenerateAdjacentRooms(R))
 				{
+					//int numberOfPeers = getConnectedPropertyRooms().size();
 					boolean updateExits=false;
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{

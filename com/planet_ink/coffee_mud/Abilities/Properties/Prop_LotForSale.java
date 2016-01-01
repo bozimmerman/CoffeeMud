@@ -60,5 +60,13 @@ public class Prop_LotForSale extends Prop_LotsForSale
 		newTitle.setBackTaxes(0);
 		return newTitle;
 	}
-	
+
+	@Override
+	public boolean canGenerateAdjacentRooms(Room R)
+	{
+		return ((R.displayText().indexOf(L(INDOORSTR))<0)
+			  &&(R.displayText().indexOf(L(OUTDOORSTR))<0)
+			  &&(R.description().indexOf(L(SALESTR))<0)
+			  &&(R.description().indexOf(L(RENTSTR))<0));
+	}
 }

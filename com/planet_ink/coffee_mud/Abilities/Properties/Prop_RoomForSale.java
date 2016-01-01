@@ -36,23 +36,44 @@ import java.util.*;
 
 public class Prop_RoomForSale extends Property implements LandTitle
 {
-	@Override public String ID() { return "Prop_RoomForSale"; }
-	@Override public String name(){ return "Putting a room up for sale";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_RoomForSale";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Putting a room up for sale";
+	}
 
 	public final static String SALESTR=" This lot is for sale (look id).";
 	public final static String RENTSTR=" This lot (look id) is for rent on a monthly basis.";
 	public final static String INDOORSTR=" An empty room";
 	public final static String OUTDOORSTR=" An empty plot";
-	protected int lastItemNums=-1;
-	protected int lastDayDone=-1;
-	protected boolean scheduleReset=false;
+	
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
+
+	protected int		lastItemNums	= -1;
+	protected int		lastDayDone		= -1;
+	protected boolean	scheduleReset	= false;
 
 	@Override
 	public String accountForYourself()
-	{ return "For Sale";	}
+	{
+		return "For Sale";
+	}
 
-	@Override public boolean allowsExpansionConstruction(){ return false;}
+	@Override
+	public boolean allowsExpansionConstruction()
+	{
+		return false;
+	}
 
 	@Override
 	public void setMiscText(String newMiscText)
@@ -80,15 +101,24 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return price;
 	}
 
-	@Override public List<Room> getConnectedPropertyRooms() { return getAllTitledRooms();}
+	@Override
+	public List<Room> getConnectedPropertyRooms()
+	{
+		return getAllTitledRooms();
+	}
 
+	protected void saveData(String owner, int price, boolean rental, int backTaxes)
+	{
+		setMiscText(owner+"/"
+				+(rental?"RENTAL ":"")
+				+((backTaxes>0)?"TAX"+backTaxes+"X ":"")
+				+price);
+	}
+	
 	@Override
 	public void setPrice(int price)
 	{
-		setMiscText(getOwnerName()+"/"
-			+(rentalProperty()?"RENTAL ":"")
-			+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
-			+price);
+		saveData(getOwnerName(), price, rentalProperty(), backTaxes());
 	}
 
 	@Override
@@ -117,10 +147,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		if((owner.length()==0)&&(getOwnerName().length()>0))
 			scheduleReset=true;
-		setMiscText(owner+"/"
-				+(rentalProperty()?"RENTAL ":"")
-				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
-				+getPrice());
+		saveData(owner, getPrice(), rentalProperty(), backTaxes());
 	}
 
 	@Override
@@ -133,15 +160,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(x<0)
 			return 0;
 		final String s=CMParms.parse(text().substring(x+3)).firstElement();
-		return CMath.s_int(s.substring(0,s.length()-1));
+		return CMath.s_int(s.substring(0,s.length()-1)); // last char always X, so eat it
 	}
+	
 	@Override
 	public void setBackTaxes(int tax)
 	{
-		setMiscText(getOwnerName()+"/"
-				+(rentalProperty()?"RENTAL ":"")
-				+((tax!=0)?"TAX"+tax+"X ":"")
-				+getPrice());
+		saveData(getOwnerName(), getPrice(), rentalProperty(), tax);
 	}
 
 	@Override
@@ -157,10 +182,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@Override
 	public void setRentalProperty(boolean truefalse)
 	{
-		setMiscText(getOwnerName()+"/"
-				+(truefalse?"RENTAL ":"")
-				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
-				+getPrice());
+		saveData(getOwnerName(), getPrice(), truefalse, backTaxes());
 	}
 
 	// update title, since it may affect clusters, worries about ALL involved
@@ -191,7 +213,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return "";
 	}
 
-	@Override public String getUniqueLotID(){ return "ROOM_PROPERTY_"+landPropertyID();}
+	@Override
+	public String getUniqueLotID()
+	{
+		return "ROOM_PROPERTY_" + landPropertyID();
+	}
 
 	@Override
 	public String landPropertyID()
@@ -201,7 +227,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return "";
 	}
 
-	@Override public void setLandPropertyID(String landID){}
+	@Override
+	public void setLandPropertyID(String landID)
+	{
+	}
 
 	public static boolean shopkeeperMobPresent(Room R)
 	{
@@ -267,8 +296,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		super.executeMsg(myHost,msg);
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
-				||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==affected))
-				||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
+			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==affected))
+			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(affected instanceof Room))
 		{
 			updateLot(null);
@@ -303,7 +332,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		Prop_RoomForSale.robberyCheck(this,msg);
+		robberyCheck(this,msg);
 		return true;
 	}
 
@@ -312,8 +341,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-			final String theStr=rental?RENTSTR:SALESTR;
-			final String otherStr=rental?SALESTR:RENTSTR;
+			final String theStr=CMLib.lang().L(rental?RENTSTR:SALESTR);
+			final String otherStr=CMLib.lang().L(rental?SALESTR:RENTSTR);
 			int x=R.description().indexOf(otherStr);
 			while(x>=0)
 			{
@@ -323,12 +352,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			}
 			final String oldDescription=R.description();
 			x=R.description().indexOf(theStr.trim());
-			if((x<0)||(reset&&(!R.displayText().equals(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR))))
+			final String displayStr =  CMLib.lang().L(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR);
+			if((x<0)||(reset&&(!R.displayText().equals(displayStr))))
 			{
 				if(reset)
 				{
 					R.setDescription("");
-					R.setDisplayText(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR);
+					R.setDisplayText(displayStr);
 					x=-1;
 				}
 				if(x<0)
@@ -419,6 +449,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 				Ability A=null;
 				if(clearAllItems)
+				{
 					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
 						A=a.nextElement();
@@ -428,6 +459,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 							R.delEffect(A);
 							updateRoom=true;
 						}
+					}
 				}
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
@@ -654,12 +686,14 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				{
 					lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
 					if((getOwnerName().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
+					{
 						if(doRentalProperty(R.getArea(),R.roomID(),getOwnerName(),getPrice()))
 						{
 							setOwnerName("");
 							CMLib.database().DBUpdateRoom(R);
 							lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,optPlayerList,lastItemNums);
 						}
+					}
 				}
 				scheduleReset=false;
 			}
