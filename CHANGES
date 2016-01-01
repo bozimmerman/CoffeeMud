@@ -12,6 +12,7 @@
   11. Artisans now get bonus xp for crafting items, with some minor anti-botting measures in.
   12. Due to a strange accident, lots of Wizard-class bugs fixed.  It's still an unavailable class.
   13. New Property: Prop_LotForSale, like Prop_LotsForSale, but you only have to buy the property once.
+  14. Construction/Masonry have their own recipe files now, with several new construction options
 # Build 5.9.0 Released 12/20/2015
    1. Web Server upgraded to 2.3
    2. coffeemud.ini entry FLEE has new (blank) option to basically disable fleeing and break a bunch of skills.

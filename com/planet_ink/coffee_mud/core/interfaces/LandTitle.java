@@ -110,7 +110,16 @@ public interface LandTitle extends PrivateProperty
 	public int backTaxes();
 
 	/**
+	 * If this title allows expansion construction, this this will return the new
+	 * title to assign to the newly constructed rooms.
+	 * @see LandTitle#allowsExpansionConstruction()
+	 * @return the new title to assigne to a new room.
+	 */
+	public LandTitle generateNextRoomTitle();
+	
+	/**
 	 * Returns whether this title allows property to be expanded through masonry or construction.
+	 * @see LandTitle#generateNextRoomTitle()
 	 * @return true if expansion is OK, false otherwise
 	 */
 	public boolean allowsExpansionConstruction();

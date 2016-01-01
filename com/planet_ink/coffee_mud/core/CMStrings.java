@@ -1191,7 +1191,7 @@ public class CMStrings
 	{
 		final int numValues=(values==null)?0:values.length;
 		final int firstIndex=str.indexOf("@");
-		if((numValues==0)&&(firstIndex<0))
+		if((numValues==0)||(firstIndex<0))
 			return;
 		final int valueLen=(numValues<=10)?1:Integer.toString(numValues).length();
 		for(int i=firstIndex;i<str.length()-(1+valueLen);i++)

@@ -32,6 +32,30 @@ import java.util.*;
 */
 public interface LegalLibrary extends CMLibrary
 {
+	/**
+	 * The default room description for a room for sale
+	 * These get localized later.
+	 */
+	public final static String SALESTR=" This lot is for sale (look id).";
+
+	/**
+	 * The default room description for a room for rent
+	 * These get localized later.
+	 */
+	public final static String RENTSTR=" This lot (look id) is for rent on a monthly basis.";
+
+	/**
+	 * The default room title for an indoor room
+	 * These get localized later.
+	 */
+	public final static String INDOORSTR=" An empty room";
+
+	/**
+	 * The default room title for an outdoor room
+	 * These get localized later.
+	 */
+	public final static String OUTDOORSTR=" An empty plot";
+
 	public Law getTheLaw(Room R, MOB mob);
 	public LegalBehavior getLegalBehavior(Area A);
 	public LegalBehavior getLegalBehavior(Room R);
@@ -39,6 +63,7 @@ public interface LegalLibrary extends CMLibrary
 	public Area getLegalObject(Room R);
 	public String getLandOwnerName(Room room);
 	public String getPropertyOwnerName(Room room);
+	public void colorRoomForSale(Room R, boolean rental, boolean reset);
 
 	public LandTitle getLandTitle(Area area);
 	public LandTitle getLandTitle(Room room);

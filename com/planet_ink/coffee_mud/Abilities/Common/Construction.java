@@ -81,18 +81,6 @@ public class Construction extends BuildingSkill
 	}
 
 	@Override
-	protected String getClosedLocaleType()
-	{
-		return "WoodRoom";
-	}
-	
-	@Override
-	protected String getMazeLocaleType()
-	{
-		return "WoodRoomMaze";
-	}
-
-	@Override
 	protected String getSoundName()
 	{
 		return "hammer.wav";

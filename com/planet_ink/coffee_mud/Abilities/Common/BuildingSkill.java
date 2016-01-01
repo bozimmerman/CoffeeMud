@@ -76,16 +76,6 @@ public class BuildingSkill extends CraftingSkill
 		return "Wood";
 	}
 
-	protected String getClosedLocaleType()
-	{
-		return "WoodRoom";
-	}
-
-	protected String getMazeLocaleType()
-	{
-		return "WoodRoomMaze";
-	}
-
 	protected String getSoundName()
 	{
 		return "hammer.wav";
@@ -100,37 +90,29 @@ public class BuildingSkill extends CraftingSkill
 	{
 		WALL,
 		DOOR,
-		GATE,
-		FENCE,
-		SECRETDOOR,
-		ROOF,
-		ARCH,
+		ROOM,
+		ITEM,
 		DEMOLISH,
 		TITLE,
 		DESC,
-		MONUMENT,
-		WINDOW,
-		CRAWLWAY,
-		POOL,
-		PORTCULIS,
-		STAIRS,
-		HOLE,
-		SMALLMAZE,
-		MAZE,
-		BIGMAZE,
-		SHALLOWWATER,
-		WIDEROOF,
-		LOWROOF,
-		DEEPPOOL
+		STAIRS
+	}
+	
+	public enum Flag
+	{
+		DIR,
+		NOWALL,
+		INDOOR,
+		OUTDOOR,
+		METAL,
+		NODOWN
 	}
 
 	//TODO: push this stuff into recipes, you can do it.
 	
 	protected Room		room				= null;
 	protected int		dir					= -1;
-	protected Building	doingCode			= null;
-	protected int		recipeIndex			= -1;
-	protected int		workingOn			= -1;
+	protected String[]	recipe				= null;
 	protected String	designTitle			= "";
 	protected String	designDescription	= "";	
 	
@@ -138,12 +120,14 @@ public class BuildingSkill extends CraftingSkill
 	//protected static final int	RCP_LEVEL			= 1;
 	//protected static final int	RCP_TICKS			= 2;
 	protected final static int	DAT_WOOD			= 3;
-	protected final static int	DAT_ROOF			= 4;
-	protected final static int	DAT_REQDIR			= 5;
-	protected final static int	DAT_REQNONULL		= 6;
-	protected final static int	DAT_BUILDCODE		= 7;
-	protected final static int	DAT_BUILDERMASK		= 8;
-
+	protected final static int	DAT_FLAG			= 4;
+	protected final static int	DAT_BUILDCODE		= 5;
+	protected final static int	DAT_CLASS			= 6;
+	protected final static int	DAT_MISC			= 7;
+	protected final static int	DAT_PROPERTIES		= 8;
+	protected final static int	DAT_DESC			= 9;
+	protected final static int	DAT_BUILDERMASK		= 10;
+	
 	@Override
 	public String parametersFile()
 	{
@@ -168,11 +152,11 @@ public class BuildingSkill extends CraftingSkill
 				{
 					if((messedUp)&&(room!=null))
 					{
-						notifyMessUp(mob);
+						notifyMessUp(mob, recipe);
 					}
 					else
 					{
-						this.buildComplete(mob, room, dir, workingOn, designTitle, designDescription);
+						this.buildComplete(mob, recipe, room, dir, designTitle, designDescription);
 					}
 				}
 			}
@@ -218,83 +202,9 @@ public class BuildingSkill extends CraftingSkill
 		return E2;
 	}
 
-	protected void notifyMessUp(final MOB mob)
+	protected void notifyMessUp(final MOB mob, final String[] recipe)
 	{
-		switch(doingCode)
-		{
-		case ROOF:
-			commonTell(mob,L("You've ruined the frame and roof!"));
-			break;
-		case LOWROOF:
-			commonTell(mob,L("You've ruined the lowered frame and ceiling!"));
-			break;
-		case SMALLMAZE:
-			commonTell(mob,L("You've ruined the small maze frame and ceiling!"));
-			break;
-		case MAZE:
-			commonTell(mob,L("You've ruined the maze frame and ceiling!"));
-			break;
-		case BIGMAZE:
-			commonTell(mob,L("You've ruined the huge maze frame and ceiling!"));
-			break;
-		case WIDEROOF:
-			commonTell(mob,L("You've ruined the broad frame and ceiling!"));
-			break;
-		case WALL:
-			commonTell(mob,L("You've ruined the wall!"));
-			break;
-		case DOOR:
-			commonTell(mob,L("You've ruined the door!"));
-			break;
-		case ARCH:
-			commonTell(mob,L("You've ruined the archway!"));
-			break;
-		case PORTCULIS:
-			commonTell(mob,L("You've ruined the portcullis!"));
-			break;
-		case MONUMENT:
-			commonTell(mob,L("You've ruined the druidic monument!"));
-			break;
-		case POOL:
-			commonTell(mob,L("You've ruined the pool!"));
-			break;
-		case DEEPPOOL:
-			commonTell(mob,L("You've ruined the deep pool!"));
-			break;
-		case SHALLOWWATER:
-			commonTell(mob,L("You've ruined the watery area!"));
-			break;
-		case SECRETDOOR:
-			commonTell(mob,L("You've ruined the secret door!"));
-			break;
-		case FENCE:
-			commonTell(mob,L("You've ruined the fence!"));
-			break;
-		case GATE:
-			commonTell(mob,L("You've ruined the gate!"));
-			break;
-		case TITLE:
-			commonTell(mob,L("You've ruined the titling!"));
-			break;
-		case DESC:
-			commonTell(mob,L("You've ruined the describing!"));
-			break;
-		case WINDOW:
-			commonTell(mob,L("You've ruined the window!"));
-			break;
-		case CRAWLWAY:
-			commonTell(mob,L("You've ruined the crawlway!"));
-			break;
-		case HOLE:
-			commonTell(mob,L("You've ruined the hole passageway!"));
-			break;
-		case STAIRS:
-			commonTell(mob,L("You've ruined the stairs!"));
-			break;
-		case DEMOLISH:
-			commonTell(mob,L("You've failed to demolish!"));
-			break;
-		}
+		commonTell(mob,L("You've ruined the "+recipe[DAT_DESC]+"!",Directions.getDirectionName(dir)));
 	}
 	
 	protected void demolishRoom(MOB mob, Room room)
@@ -359,6 +269,35 @@ public class BuildingSkill extends CraftingSkill
 			theRoomToReturnTo.setRawExit(Directions.UP, null);
 		}
 		CMLib.map().obliterateRoom(room);
+	}
+	
+	private void addEffects(Affectable E, Room R2, String extraProp)
+	{
+		extraProp=extraProp.trim();
+		if(extraProp.length()>0)
+		{
+			List<String> spells = CMParms.parseAny(extraProp, ")", true);
+			for(String spellName : spells)
+			{
+				String parms="";
+				int x=spellName.indexOf('(');
+				if(x>0)
+				{
+					parms=spellName.substring(x+1);
+					spellName=spellName.substring(0,x);
+				}
+				final Ability A=CMClass.getAbility(spellName);
+				if(A!=null)
+				{
+					if(parms.length()>0)
+						A.setMiscText(parms);
+					else
+					if(A.ID().equals("Prop_RoomView"))
+						A.setMiscText(CMLib.map().getExtendedRoomID(R2));
+					E.addNonUninvokableEffect(A);
+				}
+			}
+		}
 	}
 
 	protected Room buildNewRoomType(Room room, String newLocale, String extraProp, int dimension)
@@ -496,24 +435,7 @@ public class BuildingSkill extends CraftingSkill
 			}
 
 			R.getArea().fillInAreaRoom(R);
-			extraProp=extraProp.trim();
-			if(extraProp.length()>0)
-			{
-				String spellName=extraProp;
-				String parms="";
-				int x=extraProp.indexOf('(');
-				if((x>0)&&(extraProp.endsWith(")")))
-				{
-					spellName=extraProp.substring(0,x);
-					parms=extraProp.substring(x+1,extraProp.length()-1);
-				}
-				final Ability A=CMClass.getAbility(spellName);
-				if(A!=null)
-				{
-					A.setMiscText(parms);
-					R.addNonUninvokableEffect(A);
-				}
-			}
+			addEffects(R,R,extraProp);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
 				Log.debugOut(ID(),R.roomID()+" updated.");
 			CMLib.database().DBUpdateRoom(R);
@@ -523,74 +445,53 @@ public class BuildingSkill extends CraftingSkill
 		return R;
 	}
 	
-	protected void buildArchway(Room room, int dir)
+	protected void buildDoor(String[] recipe, Room room, int dir)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
-			room=CMLib.map().getRoom(room);
-			final Exit x=CMClass.getExit("GenExit");
-			final Exit x2=CMClass.getExit("GenExit");
-			x.setName(L("an archway"));
-			x.setDescription(L("A majestic archway towers above you."));
-			x2.setName(L("an archway"));
-			x2.setDescription(L("A majestic archway towers above you."));
-			room.setRawExit(dir,x);
-			if(room.rawDoors()[dir]!=null)
+			String localeName = recipe[DAT_CLASS];
+			String doorName = recipe[DAT_MISC];
+			String spells = recipe[DAT_PROPERTIES];
+			//int size = CMath.s_int(recipe[DAT_MISC]);
+			String closeWord=null;
+			String openWord=null;
+			String closedWord=null;
+			String displayText="";
+			if(doorName.indexOf("|")>0)
 			{
-				room.rawDoors()[dir].setRawExit(Directions.getOpDirectionCode(dir),x2);
-				CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
+				List<String> split=CMParms.parseAny(doorName, '|',false);
+				doorName=split.get(0);
+				if(split.size()>1)
+					openWord=split.get(1);
+				if(split.size()>2)
+					closeWord=split.get(2);
+				if(split.size()>3)
+					closedWord=split.get(3);
+				if(split.size()>4)
+					displayText=split.get(4);
 			}
-			CMLib.database().DBUpdateExits(room);
-		}
-	}
-	
-	protected void buildPortculis(Room room, int dir)
-	{
-		synchronized(("SYNC"+room.roomID()).intern())
-		{
+			if(closeWord == null)
+				closeWord="close";
+			if(openWord == null)
+				openWord="open";
+			if(closedWord == null)
+				closedWord=CMLib.english().startWithAorAn("closed "+doorName);
 			room=CMLib.map().getRoom(room);
-			final Exit x=CMClass.getExit("GenExit");
-			final Exit x2=CMClass.getExit("GenExit");
-			x.setName(L("a portcullis"));
-			x.setDescription(L("A portcullis lies this way."));
-			x.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
-			x.setDoorsNLocks(true,false,true,false,false,false);
-			x2.setName(L("a portcullis"));
-			x2.setDescription(L("A portcullis lies this way."));
-			x2.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
-			x2.setDoorsNLocks(true,false,true,false,false,false);
-			room.setRawExit(dir,x);
-			if(room.rawDoors()[dir]!=null)
-			{
-				room.rawDoors()[dir].setRawExit(Directions.getOpDirectionCode(dir),x2);
-				CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
-			}
-			CMLib.database().DBUpdateExits(room);
-		}
-	}
-
-	protected void buildDoor(String doorName, Room room, int dir, boolean secret)
-	{
-		synchronized(("SYNC"+room.roomID()).intern())
-		{
-			room=CMLib.map().getRoom(room);
-			final Exit X=CMClass.getExit("GenExit");
-			if(secret)
-				X.basePhyStats().setDisposition(PhyStats.IS_HIDDEN);
-			X.setName(L("a "+doorName));
+			final Exit X=CMClass.getExit(localeName);
+			X.setName(CMLib.english().startWithAorAn(doorName));
 			X.setDescription("");
-			X.setDisplayText("");
+			X.setDisplayText(displayText);
 			X.setOpenDelayTicks(9999);
-			X.setExitParams(doorName,"close","open","a closed "+doorName);
-			X.setDoorsNLocks(true,false,true,false,false,false);
+			X.setExitParams(doorName,closeWord,openWord,closedWord);
+			if(X.defaultsClosed() && X.hasADoor())
+				X.setDoorsNLocks(X.hasADoor(), !X.defaultsClosed(), X.defaultsClosed(), X.hasALock(), X.hasALock(), X.defaultsLocked());
+			addEffects(X, room.getRoomInDir(dir),spells);
 			X.recoverPhyStats();
 			X.text();
 			room.setRawExit(dir,X);
 			if(room.rawDoors()[dir]!=null)
 			{
 				final Exit X2=(Exit)X.copyOf();
-				if(secret)
-					X2.basePhyStats().setDisposition(PhyStats.IS_HIDDEN);
 				X2.recoverPhyStats();
 				X2.text();
 				room.rawDoors()[dir].setRawExit(Directions.getOpDirectionCode(dir),X2);
@@ -600,28 +501,7 @@ public class BuildingSkill extends CraftingSkill
 		}
 	}
 	
-	protected void buildHole(final MOB mob, Room room, int dir)
-	{
-		synchronized(("SYNC"+room.roomID()).intern())
-		{
-			room=CMLib.map().getRoom(room);
-			final Exit X=room.getExitInDir(dir);
-			X.addNonUninvokableEffect(CMClass.getAbility("Spell_Fly"));
-			X.recoverPhyStats();
-			X.text();
-			if(room.rawDoors()[dir]!=null)
-			{
-				final Exit X2=(Exit)X.copyOf();
-				X2.recoverPhyStats();
-				X2.text();
-				room.rawDoors()[dir].setRawExit(Directions.getOpDirectionCode(dir),X2);
-				CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
-			}
-			CMLib.database().DBUpdateExits(room);
-		}
-	}
-	
-	protected Room buildStairs(final MOB mob, Room room, int dirUpOrDown)
+	protected Room buildStairs(final MOB mob, Room room, int dirUpOrDown, String desc, String addParms)
 	{
 		Room upRoom;
 		synchronized(("SYNC"+room.roomID()).intern())
@@ -639,39 +519,53 @@ public class BuildingSkill extends CraftingSkill
 			upRoom.setRoomID(room.getArea().getNewRoomID(room,dirUpOrDown));
 			if(upRoom.roomID().length()==0)
 			{
-				commonTell(mob,L("You've failed to build the stairs!"));
+				commonTell(mob,L("You've failed to build the new floor!"));
 				return null;
 			}
 			upRoom.setArea(room.getArea());
 			LandTitle newTitle=CMLib.law().getLandTitle(room);
 			if((newTitle!=null)&&(CMLib.law().getLandTitle(upRoom)==null))
 			{
-				newTitle=(LandTitle)((Ability)newTitle).copyOf();
+				newTitle = newTitle.generateNextRoomTitle();
 				newTitle.setLandPropertyID(upRoom.roomID());
-				newTitle.setOwnerName("");
-				newTitle.setBackTaxes(0);
 				upRoom.addNonUninvokableEffect((Ability)newTitle);
 			}
+			
+			int upFloor = (floor+1);
+			int downFloor = floor;
+			if(dir == Directions.DOWN)
+			{
+				upFloor = floor;
+				downFloor = (floor - 1);
+			}
+			final Exit upExit=CMClass.getExit("GenExit");
+			upExit.setName(L("a passageway"));
+			upExit.setDescription(L(desc,Directions.getDirectionName(dir),""+upFloor+CMath.numAppendage(upFloor)));
+			upExit.setDisplayText(L(desc,Directions.getDirectionName(dir),""+upFloor+CMath.numAppendage(upFloor)));
+			addEffects(upExit, room.getRoomInDir(dir),addParms);
+			upExit.recoverPhyStats();
+			upExit.text();
 			room.rawDoors()[dirUpOrDown]=upRoom;
-			final Exit upExit=CMClass.getExit("OpenDescriptable");
-			if(dirUpOrDown == Directions.UP)
-				upExit.setMiscText("Upstairs to the "+(floor+1)+CMath.numAppendage(floor+1)+" floor.");
-			else
-				upExit.setMiscText("Downstairs to the "+(floor+1)+CMath.numAppendage(floor+1)+" floor.");
 			room.setRawExit(dirUpOrDown,upExit);
 
-			final Exit downExit=CMClass.getExit("OpenDescriptable");
-			if(opDirUpOrDown == Directions.DOWN)
-				downExit.setMiscText("Downstairs to the "+(floor)+CMath.numAppendage(floor)+" floor.");
-			else
-				downExit.setMiscText("Upstairs to the "+(floor)+CMath.numAppendage(floor)+" floor.");
+			final Exit downExit=CMClass.getExit("GenExit");
+			downExit.setName(L("a passageway"));
+			downExit.setDescription(L(desc,Directions.getDirectionName(opDirUpOrDown),""+downFloor+CMath.numAppendage(downFloor)));
+			downExit.setDisplayText(L(desc,Directions.getDirectionName(opDirUpOrDown),""+downFloor+CMath.numAppendage(downFloor)));
+			addEffects(downExit, room.getRoomInDir(dir),addParms);
+			downExit.recoverPhyStats();
+			downExit.text();
+			
 			upRoom.rawDoors()[opDirUpOrDown]=room;
 			upRoom.setRawExit(opDirUpOrDown,downExit);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
 				Log.debugOut(ID(),upRoom.roomID()+" created and put up for sale.");
 			CMLib.database().DBCreateRoom(upRoom);
 			if(newTitle!=null)
+			{
+				CMLib.law().colorRoomForSale(upRoom, newTitle.rentalProperty(), true);
 				newTitle.updateLot(null);
+			}
 			upRoom.getArea().fillInAreaRoom(upRoom);
 			CMLib.database().DBUpdateExits(upRoom);
 			CMLib.database().DBUpdateExits(room);
@@ -702,13 +596,22 @@ public class BuildingSkill extends CraftingSkill
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
 			room=CMLib.map().getRoom(room);
+			Room returnRoom = null;
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			{
+				if(room.getRoomInDir(d)!=null)
+					returnRoom=room.getRoomInDir(d);
+			}
 			room.setDisplayText(designTitle);
 			CMLib.database().DBUpdateRoom(room);
 			if(room instanceof GridLocale)
 			{
-				((GridLocale)room).clearGrid(null);
+				((GridLocale)room).clearGrid(returnRoom);
 				((GridLocale)room).buildGrid();
 			}
+			LandTitle T=CMLib.law().getLandTitle(room);
+			if(T != null)
+				T.updateLot(null);
 		}
 	}
 
@@ -730,64 +633,24 @@ public class BuildingSkill extends CraftingSkill
 			}
 			else
 			{
+				Room returnRoom = null;
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				{
+					if(room.getRoomInDir(d)!=null)
+						returnRoom=room.getRoomInDir(d);
+				}
 				room.setDescription(designDescription);
+				if(room instanceof GridLocale)
+				{
+					((GridLocale)room).clearGrid(returnRoom);
+					((GridLocale)room).buildGrid();
+				}
 				CMLib.database().DBUpdateRoom(room);
-			}
-			if(room instanceof GridLocale)
-			{
-				((GridLocale)room).clearGrid(null);
-				((GridLocale)room).buildGrid();
+				LandTitle T=CMLib.law().getLandTitle(room);
+				if(T != null)
+					T.updateLot(null);
 			}
 		}
-	}
-
-	protected void buildCrawlway(Room room, int dir)
-	{
-		synchronized(("SYNC"+room.roomID()).intern())
-		{
-			room=CMLib.map().getRoom(room);
-			if((dir>=0)&&(room.getExitInDir(dir)!=null))
-			{
-				Exit E=room.getExitInDir(dir);
-				if((!E.isGeneric())&&(room.getRawExit(dir)==E))
-				{
-					E=generify(E);
-					room.setRawExit(dir,E);
-				}
-				final Ability A=CMClass.getAbility("Prop_Crawlspace");
-				if(A!=null)
-					E.addNonUninvokableEffect(A);
-				CMLib.database().DBUpdateExits(room);
-			}
-		}
-	}
-
-	protected void buildWindow(Room room, int dir)
-	{
-		synchronized(("SYNC"+room.roomID()).intern())
-		{
-			room=CMLib.map().getRoom(room);
-			if((dir>=0)&&(room.getExitInDir(dir)!=null))
-			{
-				Exit E=room.getExitInDir(dir);
-				if((!E.isGeneric())&&(room.getRawExit(dir)==E))
-				{
-					E=generify(E);
-					room.setRawExit(dir,E);
-				}
-				final Room R2=room.getRoomInDir(dir);
-				if(R2!=null)
-				{
-					final Ability A=CMClass.getAbility("Prop_RoomView");
-					if(A!=null)
-					{
-						A.setMiscText(CMLib.map().getExtendedRoomID(R2));
-						E.addNonUninvokableEffect(A);
-					}
-				}
-				CMLib.database().DBUpdateExits(room);
-			}
-		}	
 	}
 
 	protected void demolish(final MOB mob, Room room, int dir)
@@ -818,20 +681,11 @@ public class BuildingSkill extends CraftingSkill
 		}
 	}
 	
-	protected void buildComplete(final MOB mob, Room room, int dir, int workingOn, String designTitle, String designDescription)
+	protected void buildComplete(final MOB mob, final String[] recipe, Room room, int dir, String designTitle, String designDescription)
 	{
+		final Building doingCode = Building.valueOf(recipe[DAT_BUILDCODE]);
 		switch(doingCode)
 		{
-		case ARCH:
-		{
-			this.buildArchway(room, dir);
-			break;
-		}
-		case CRAWLWAY:
-		{
-			this.buildCrawlway(room, workingOn);
-			break;
-		}
 		case DEMOLISH:
 		{
 			this.demolish(mob, room, dir);
@@ -839,134 +693,32 @@ public class BuildingSkill extends CraftingSkill
 		}
 		case DESC:
 		{
-			this.buildDesc(room, workingOn, designDescription);
+			this.buildDesc(room, dir, designDescription);
 			break;
 		}
 		case DOOR:
 		{
-			this.buildDoor("door", room, dir, false);
+			this.buildDoor(recipe, room, dir);
 			break;
 		}
-		case FENCE:
+		case ITEM:
 		{
-			this.buildWall(room, dir);
-			break;
-		}
-		case GATE:
-		{
-			this.buildDoor("gate", room, dir, false);
-			break;
-		}
-		case MONUMENT:
-		{
-			final Item I=CMClass.getItem("DruidicMonument");
+			final Item I=CMClass.getItem(recipe[DAT_CLASS]);
 			room.addItem(I);
 			I.setExpirationDate(0);
 			break;
 		}
-		case POOL:
+		case ROOM:
 		{
-			String newLocale;
-			if((room.domainType()&Room.INDOORS)==Room.INDOORS)
-				newLocale = "IndoorWaterSurface";
-			else
-				newLocale = "WaterSurface";
-			this.buildNewRoomType(room, newLocale, "", 0);
-			break;
-		}
-		case DEEPPOOL:
-		{
-			String newLocale;
-			if((room.domainType()&Room.INDOORS)==Room.INDOORS)
-				newLocale = "IndoorWaterSurface";
-			else
-				newLocale = "WaterSurface";
-			this.buildNewRoomType(room, newLocale, "", 3);
-			break;
-		}
-		case SHALLOWWATER:
-		{
-			String newLocale;
-			if((room.domainType()&Room.INDOORS)==Room.INDOORS)
-				newLocale = "IndoorShallowWater";
-			else
-				newLocale = "ShallowWater";
-			this.buildNewRoomType(room, newLocale, "", 0);
-			break;
-		}
-		case PORTCULIS:
-		{
-			this.buildPortculis(room, dir);
-			break;
-		}
-		case ROOF:
-		{
-			this.buildNewRoomType(room, this.getClosedLocaleType(), "", 0);
-			break;
-		}
-		case SMALLMAZE:
-		{
-			String newLocale;
-			if((room.domainType()&Room.INDOORS)==Room.INDOORS)
-				newLocale = this.getMazeLocaleType();
-			else
-				newLocale = "StdMaze";
-			this.buildNewRoomType(room, newLocale, "", 3);
-			break;
-		}
-		case MAZE:
-		{
-			String newLocale;
-			if((room.domainType()&Room.INDOORS)==Room.INDOORS)
-				newLocale = this.getMazeLocaleType();
-			else
-				newLocale = "StdMaze";
-			this.buildNewRoomType(room, newLocale, "", 4);
-			break;
-		}
-		case BIGMAZE:
-		{
-			String newLocale;
-			if((room.domainType()&Room.INDOORS)==Room.INDOORS)
-				newLocale = this.getMazeLocaleType();
-			else
-				newLocale = "StdMaze";
-			this.buildNewRoomType(room, newLocale, "", 5);
-			break;
-		}
-		case LOWROOF:
-		{
-			String newLocale;
-			if((room.domainType()&Room.INDOORS)==Room.INDOORS)
-				newLocale = room.roomID();
-			else
-				newLocale = this.getClosedLocaleType();
-			this.buildNewRoomType(room, newLocale, "Prop_Crawlspace", 0);
-			break;
-		}
-		case WIDEROOF:
-		{
-			String newLocale;
-			if((room.domainType()&Room.INDOORS)==Room.INDOORS)
-				newLocale = room.roomID();
-			else
-				newLocale = this.getClosedLocaleType();
-			this.buildNewRoomType(room, newLocale, "Prop_EnlargeRoom(10)", 0);
-			break;
-		}
-		case SECRETDOOR:
-		{
-			this.buildDoor("door", room, dir, true);
+			String localeName = recipe[DAT_CLASS];
+			String spells = recipe[DAT_PROPERTIES];
+			int size = CMath.s_int(recipe[DAT_MISC]);
+			this.buildNewRoomType(room, localeName, spells, size);
 			break;
 		}
 		case STAIRS:
 		{
-			this.buildStairs(mob, room, dir);
-			break;
-		}
-		case HOLE:
-		{
-			this.buildHole(mob, room, dir);
+			this.buildStairs(mob, room, dir, recipe[DAT_MISC], recipe[DAT_PROPERTIES]);
 			break;
 		}
 		case TITLE:
@@ -977,11 +729,6 @@ public class BuildingSkill extends CraftingSkill
 		case WALL:
 		{
 			this.buildWall(room, dir);
-			break;
-		}
-		case WINDOW:
-		{
-			this.buildWindow(room, workingOn);
 			break;
 		}
 		}
@@ -1079,110 +826,62 @@ public class BuildingSkill extends CraftingSkill
 		return null;
 	}
 	
-	public String establishVerb(final MOB mob, final Building doingCode)
+	public String establishVerb(final MOB mob, final String[] recipe)
 	{
 		String verb="";
-		switch(doingCode)
+		final Building doingCode = Building.valueOf(recipe[DAT_BUILDCODE]);
+		if(doingCode == Building.DEMOLISH)
 		{
-		case ROOF:
-			verb=L("building a frame and roof");
-			break;
-		case LOWROOF:
-			verb=L("building a low frame and roof");
-			break;
-		case WIDEROOF:
-			verb=L("building a broad frame and roof");
-			break;
-		case SMALLMAZE:
-			verb=L("building a small maze frame and roof");
-			break;
-		case MAZE:
-			verb=L("building a maze frame and roof");
-			break;
-		case BIGMAZE:
-			verb=L("building a huge maze frame and roof");
-			break;
-		case POOL:
-			verb=L("building a pool");
-			break;
-		case DEEPPOOL:
-			verb=L("building a deep pool");
-			break;
-		case SHALLOWWATER:
-			verb=L("building a shallow water area");
-			break;
-		case WALL:
-			verb=L("building the @x1 wall",Directions.getDirectionName(dir));
-			break;
-		case ARCH:
-			verb=L("building the @x1 archway",Directions.getDirectionName(dir));
-			break;
-		case FENCE:
-			verb=L("building the @x1 fence",Directions.getDirectionName(dir));
-			break;
-		case PORTCULIS:
-			verb=L("building the @x1 portcullis",Directions.getDirectionName(dir));
-			break;
-		case TITLE:
-			verb=L("giving this place a title");
-			break;
-		case DESC:
-			verb=L("giving this place a description");
-			break;
-		case MONUMENT:
-			verb=L("building a druidic monument");
-			break;
-		case GATE:
-			verb=L("building the @x1 gate",Directions.getDirectionName(dir));
-			break;
-		case DOOR:
-			verb=L("building the @x1 door",Directions.getDirectionName(dir));
-			break;
-		case SECRETDOOR:
-			verb=L("building a hidden @x1 door",Directions.getDirectionName(dir));
-			break;
-		case WINDOW:
-			verb=L("building a window @x1",Directions.getDirectionName(dir));
-			break;
-		case CRAWLWAY:
-			verb=L("building a crawlway @x1",Directions.getDirectionName(dir));
-			break;
-		case HOLE:
-			verb=L("demolishing the stairs @x1",Directions.getDirectionName(dir));
-			break;
-		case STAIRS:
-			verb=L("building a stairway @x1",Directions.getDirectionName(dir));
-			break;
-		case DEMOLISH:
 			if(dir<0)
 			{
-				if((mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-				||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+				Room R=mob.location();
+				boolean roomClassFound = false;
+				for(List<String> recipeChk : loadRecipes(parametersFile()))
+				{
+					if(R.ID().equalsIgnoreCase(recipeChk.get(DAT_CLASS)))
+						roomClassFound=true;
+				}
+				if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 						verb=L("demolishing the pool");
 				else
-				if((mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-				||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+				if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
 				{
 					commonTell(mob,null,null,L("You must demolish a pool from above."));
 					return "";
 				}
 				else
-				if(!mob.location().ID().equalsIgnoreCase(this.getClosedLocaleType()))
+				if(!roomClassFound)
 				{
 					commonTell(mob,null,null,L("This building was not made with @x1, you can`t demolish it.",name()));
 					return "";
 				}
 				else
-				if(CMLib.law().isHomeRoomUpstairs(mob.location()))
+				if(CMLib.law().isHomeRoomUpstairs(R))
 					verb=L("demolishing the room");
 				else
 					verb=L("demolishing the roof");
 			}
 			else
 				verb=L("demolishing the @x1 wall",Directions.getDirectionName(dir));
-			break;
 		}
+		else
+			verb = L("building the "+recipe[DAT_DESC],Directions.getDirectionName(dir));
 		return verb;
+	}
+
+	private Set<Flag> makeFlags(String[] recipe)
+	{
+		final Set<Flag> flags = new HashSet<Flag>();
+		String[] flagStrs = CMParms.parse(recipe[DAT_FLAG].toUpperCase()).toArray(new String[0]);
+		for(String flag : flagStrs)
+		{
+			Flag F=(Flag)CMath.s_valueOf(Flag.class, flag);
+			if(F!=null)
+				flags.add(F);
+		}
+		return flags;
 	}
 	
 	@Override
@@ -1191,7 +890,7 @@ public class BuildingSkill extends CraftingSkill
 		if(checkStop(mob, commands))
 			return true;
 		
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes(parametersFile())),commands,0);
 		
 		if(commands.size()==0)
 		{
@@ -1215,10 +914,10 @@ public class BuildingSkill extends CraftingSkill
 					||mask.equalsIgnoreCase("all")
 					||CMLib.english().containsString(CMStrings.padRight(data[r][RCP_FINALNAME],colWidth),mask)))
 				{
-					final Building buildCode = Building.valueOf(data[r][DAT_BUILDCODE]);
+					final Set<Flag> flags = makeFlags(data[r]);
 					final int woodRequired=adjustWoodRequired(CMath.s_int(data[r][DAT_WOOD]),mob);
 					buf.append(CMStrings.padRight(data[r][RCP_FINALNAME],colWidth)+" "+woodRequired);
-					if(buildCode == Building.PORTCULIS)
+					if(flags.contains(Flag.METAL))
 						buf.append(L(" metal"));
 					buf.append("\n\r");
 				}
@@ -1231,9 +930,8 @@ public class BuildingSkill extends CraftingSkill
 		designDescription="";
 		String startStr=null;
 		int duration=15;
-		workingOn=-1;
-		doingCode=null;
-		recipeIndex=-1;
+		recipe = null;
+		Building doingCode = null;
 		dir=-1;
 
 		room=null;
@@ -1289,14 +987,17 @@ public class BuildingSkill extends CraftingSkill
 				||CMSecurity.isASysOp(mob)))
 			{
 				doingCode=buildCode;
-				recipeIndex=r;
+				recipe = data[r];
 			}
 		}
-		if(doingCode == null)
+		if((doingCode == null)||(recipe == null))
 		{
 			commonTell(mob,L("'@x1' is not a valid @x2 project.  Try LIST.",firstWord,name()));
 			return false;
 		}
+		
+		final Set<Flag> flags = makeFlags(recipe);
+		
 		if((mob.location()!=null)
 		&&((mob.location() instanceof BoardableShip) || (mob.location().getArea() instanceof BoardableShip)))
 		{
@@ -1370,13 +1071,13 @@ public class BuildingSkill extends CraftingSkill
 		}
 		else
 		if(((dir<0)||(dir==Directions.UP)||(dir==Directions.DOWN))
-		&&(CMath.s_int(data[recipeIndex][DAT_REQDIR])==1))
+		&&(flags.contains(Flag.DIR)))
 		{
 			commonTell(mob,L("A valid direction in which to build must also be specified."));
 			return false;
 		}
 
-		if((CMath.s_int(data[recipeIndex][DAT_REQNONULL])==1)
+		if((flags.contains(Flag.NOWALL))
 		&&(dir>=0)
 		&&(mob.location().getExitInDir(dir)==null))
 		{
@@ -1384,63 +1085,33 @@ public class BuildingSkill extends CraftingSkill
 			return false;
 		}
 
-		int woodRequired=adjustWoodRequired(CMath.s_int(data[recipeIndex][DAT_WOOD]),mob);
+		int woodRequired=adjustWoodRequired(CMath.s_int(recipe[DAT_WOOD]),mob);
 		if(((mob.location().domainType()&Room.INDOORS)==0)
-		&&(CMath.s_int(data[recipeIndex][DAT_ROOF])==1))
+		&&(flags.contains(Flag.INDOOR)))
 		{
 			commonTell(mob,L("That can only be built after a roof, which includes the frame."));
 			return false;
 		}
 		else
 		if(((mob.location().domainType()&Room.INDOORS)>0)
-		&&(CMath.s_int(data[recipeIndex][DAT_ROOF])==2))
+		&&(flags.contains(Flag.OUTDOOR)))
 		{
 			commonTell(mob,L("That can only be built outdoors!"));
 			return false;
 		}
 
-		if(doingCode == Building.HOLE)
-		{
-			final Room R=mob.location();
-			dir=Directions.UP; // DELME
-			if((dir!=Directions.UP)&&(dir!=Directions.DOWN))
-			{
-				commonTell(mob,L("A valid direction in which to demolish stairs must also be specified.  Try UP or DOWN."));
-				return false;
-			}
-			final Room inR=R.getRoomInDir(dir);
-			final Exit inE=R.getExitInDir(dir);
-			if((!CMath.bset(R.domainType(), Room.INDOORS))&&(dir==Directions.UP))
-			{
-				commonTell(mob,L("You need to build a ceiling (or roof) first, and then some stairs."));
-				return false;
-			}
-			
-			if((inR==null)||(inR.roomID().length()==0)||(inE==null))
-			{
-				commonTell(mob,L("Building a hole means demolishing stairs, but there are no stairs here."));
-				return false;
-			}
-			else
-			if(inE.fetchEffect("Spell_Fly")!=null)
-			{
-				commonTell(mob,L("There is already a hole in that direction."));
-				return false;
-			}
-		}
-		
 		if(doingCode == Building.STAIRS)
 		{
 			dir=Directions.UP; // DELME
 			if((dir!=Directions.UP)&&(dir!=Directions.DOWN))
 			{
-				commonTell(mob,L("A valid direction in which to build stairs must also be specified.  Try UP or DOWN."));
+				commonTell(mob,L("A valid direction in which to build must also be specified.  Try UP or DOWN."));
 				return false;
 			}
 			final LandTitle title=CMLib.law().getLandTitle(mob.location());
 			if((title==null)||(!title.allowsExpansionConstruction()))
 			{
-				commonTell(mob,L("The title here does not permit the building of stairs."));
+				commonTell(mob,L("The title here does not permit the building of new floors."));
 				return false;
 			}
 			if((!CMath.bset(mob.location().domainType(), Room.INDOORS))&&(dir==Directions.UP))
@@ -1474,13 +1145,13 @@ public class BuildingSkill extends CraftingSkill
 			}
 		}
 
-		if(doingCode == Building.POOL)
+		if(flags.contains(Flag.NODOWN))
 		{
 			final Room nextRoom=mob.location().getRoomInDir(Directions.DOWN);
 			final Exit exitRoom=mob.location().getExitInDir(Directions.DOWN);
 			if((nextRoom!=null)||(exitRoom!=null))
 			{
-				commonTell(mob,L("You may not build a pool here!"));
+				commonTell(mob,L("You may not that here!"));
 				return false;
 			}
 		}
@@ -1493,8 +1164,8 @@ public class BuildingSkill extends CraftingSkill
 				commonTell(mob,L("A title must be specified."));
 				return false;
 			}
-			final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-			final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
+			final TrackingLibrary.TrackingFlags trackingFlags=CMLib.tracking().newFlags();
+			final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),trackingFlags,20);
 			for (final Room room2 : checkSet)
 			{
 				final Room R=CMLib.map().getRoom(room2);
@@ -1522,7 +1193,6 @@ public class BuildingSkill extends CraftingSkill
 					commonTell(mob,L("There is no exit @x1 to describe.",Directions.getInDirectionName(dir)));
 					return false;
 				}
-				workingOn=dir;
 				commands.remove(1);
 			}
 			else
@@ -1542,12 +1212,9 @@ public class BuildingSkill extends CraftingSkill
 			}
 			designDescription=title;
 		}
-		else
-		if((doingCode == Building.WINDOW)||(doingCode == Building.CRAWLWAY))
-			workingOn=dir;
 
 		int[][] idata=null;
-		if(doingCode == Building.PORTCULIS)
+		if(flags.contains(Flag.METAL))
 		{
 			final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 			idata=fetchFoundResourceData(mob,
@@ -1567,8 +1234,7 @@ public class BuildingSkill extends CraftingSkill
 
 		if(!canBuild)
 		{
-			if((dir>=0)
-			&&((CMath.s_int(data[recipeIndex][DAT_REQDIR])==1)||(workingOn==dir)))
+			if((dir>=0)&&(flags.contains(Flag.DIR)))
 			{
 				final Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)&&(CMLib.law().doesOwnThisLand(mob,R)))
@@ -1590,12 +1256,13 @@ public class BuildingSkill extends CraftingSkill
 		if(woodRequired>0)
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,idata[0][FOUND_CODE],0,null);
 
-		verb = establishVerb(mob, doingCode);
-		
+		verb = establishVerb(mob, recipe);
+		if(verb.length()==0)
+			return false;
 		messedUp=!proficiencyCheck(mob,0,auto);
 		startStr=L("<S-NAME> start(s) @x1",verb);
 		playSound=this.getSoundName();
-		duration=getDuration(CMath.s_int(data[recipeIndex][RCP_TICKS]),mob,CMath.s_int(data[recipeIndex][RCP_LEVEL]),10);
+		duration=getDuration(CMath.s_int(recipe[RCP_TICKS]),mob,CMath.s_int(recipe[RCP_LEVEL]),10);
 
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr+".");
 		if(mob.location().okMessage(mob,msg))

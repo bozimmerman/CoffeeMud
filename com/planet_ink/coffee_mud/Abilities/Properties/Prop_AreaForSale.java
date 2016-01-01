@@ -184,6 +184,14 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		return "";
 	}
 
+	@Override
+	public LandTitle generateNextRoomTitle()
+	{
+		final LandTitle newTitle=(LandTitle)this.copyOf();
+		newTitle.setBackTaxes(0);
+		return newTitle;
+	}
+	
 	@Override public void setLandPropertyID(String landID){}
 
 	@Override

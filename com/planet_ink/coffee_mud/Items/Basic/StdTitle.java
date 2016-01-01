@@ -81,6 +81,15 @@ public class StdTitle extends StdItem implements LandTitle
 	}
 
 	@Override
+	public LandTitle generateNextRoomTitle()
+	{
+		final LandTitle A=fetchALandTitle();
+		if(A==null)
+			return this;
+		return A.generateNextRoomTitle();
+	}
+	
+	@Override
 	public void setPrice(int price)
 	{
 		final LandTitle A=fetchALandTitle();

@@ -150,9 +150,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		return uniqueLotID;
 	}
 
-	protected LandTitle generateUniqueTitle(LandTitle oldTitle)
+	@Override
+	public LandTitle generateNextRoomTitle()
 	{
-		final LandTitle newTitle=(LandTitle)((Ability)oldTitle).copyOf();
+		final LandTitle newTitle=(LandTitle)this.copyOf();
 		newTitle.setOwnerName("");
 		newTitle.setBackTaxes(0);
 		return newTitle;
@@ -251,7 +252,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 							LandTitle newTitle = null;
 							if((oldTitle!=null)&&(CMLib.law().getLandTitle(R2)==null))
 							{
-								newTitle = generateUniqueTitle(oldTitle);
+								newTitle = oldTitle.generateNextRoomTitle();
 								R2.addNonUninvokableEffect((Ability)newTitle);
 							}
 							R.rawDoors()[d]=R2;
@@ -263,7 +264,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 								Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
 							CMLib.database().DBCreateRoom(R2);
 							if(newTitle!=null)
-								colorForSale(R2,newTitle.rentalProperty(),true);
+								CMLib.law().colorRoomForSale(R2,newTitle.rentalProperty(),true);
 							R2.getArea().fillInAreaRoom(R2);
 							CMLib.database().DBUpdateExits(R2);
 							didAnything=true;

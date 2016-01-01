@@ -54,9 +54,9 @@ public class Prop_LotForSale extends Prop_LotsForSale
 	}
 	
 	@Override
-	protected LandTitle generateUniqueTitle(LandTitle oldTitle)
+	public LandTitle generateNextRoomTitle()
 	{
-		final LandTitle newTitle=(LandTitle)((Ability)oldTitle).copyOf();
+		final LandTitle newTitle=(LandTitle)this.copyOf();
 		newTitle.setBackTaxes(0);
 		return newTitle;
 	}
@@ -64,9 +64,9 @@ public class Prop_LotForSale extends Prop_LotsForSale
 	@Override
 	public boolean canGenerateAdjacentRooms(Room R)
 	{
-		return ((R.displayText().indexOf(L(INDOORSTR))<0)
-			  &&(R.displayText().indexOf(L(OUTDOORSTR))<0)
-			  &&(R.description().indexOf(L(SALESTR))<0)
-			  &&(R.description().indexOf(L(RENTSTR))<0));
+		return ((R.displayText().indexOf(L(LegalLibrary.INDOORSTR))<0)
+			  &&(R.displayText().indexOf(L(LegalLibrary.OUTDOORSTR))<0)
+			  &&(R.description().indexOf(L(LegalLibrary.SALESTR))<0)
+			  &&(R.description().indexOf(L(LegalLibrary.RENTSTR))<0));
 	}
 }

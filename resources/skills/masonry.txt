@@ -1,13 +1,20 @@
-#name	 level	ticks	wood	 ok=0/roof=1/out=2	 req direction=1	 nonull=1 nullonly=2	code	builder mask
-Wall	1	25	250	1	1	0	WALL	
-Roof	1	25	500	2	0	0	ROOF	
-Archway	1	25	200	0	1	0	ARCH	
-Demolish	1	25	0	0	1	0	DEMOLISH	
-Title	1	15	0	0	0	0	TITLE	
-Description	1	10	0	0	0	0	DESC	
-Druidic Monument	1	25	1000	2	0	0	MONUMENT	-BASECLASS +Druid
-Window	1	25	100	1	1	1	WINDOW	
-Crawlway	1	25	500	1	1	1	CRAWLWAY	
-Pool	1	35	700	2	0	0	POOL	
-Portcullis	1	25	100	0	1	0	PORTCULIS	
-Stairs	1	45	2550	1	0	0	STAIRS	
+#name	 level	ticks	wood	 flags	code	class	misc	property	desc	builder mask
+Wall	1	25	250	DIR INDOOR	WALL	NA	-		@x1 wall	
+Roof	1	25	500	OUTDOOR	ROOM	StoneRoom	0		frame and roof	
+Low Roof	1	25	250	OUTDOOR	ROOM	StoneRoom	0	Prop_Crawlspace	lower frame and roof	
+Wide Roof	1	25	1000	OUTDOOR	ROOM	StoneRoom	0	Prop_EnlargeRoom(10)	broad frame and roof	
+Small Maze	1	25	1500	OUTDOOR	ROOM	StoneMaze	3		small maze frame and roof	
+Maze	1	25	2500	OUTDOOR	ROOM	StoneMaze	5		maze frame and roof	
+Big Maze	1	25	3500	OUTDOOR	ROOM	StoneMaze	7		large maze frame and roof	
+Archway	1	25	200	DIR	DOOR	GenExit	archway		@x1 archway	
+Demolish	1	25	0	DIR	DEMOLISH	NA	-	-	demolishing	
+Title	1	15	0		TITLE	NA	-	-	title	
+Description	1	10	0		DESC	NA	-	-	description	
+Druidic Monument	1	25	1000	OUTDOOR	ITEM	DruidicMonument	-		druidic monument	-BASECLASS +Druid
+Window	1	25	100	INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	@x1 window	
+Crawlway	1	25	500	INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1	
+Pool	1	35	400	OUTDOOR	ROOM	WaterSurface	0		pool	
+Deep Pool	1	35	700	OUTDOOR	ROOM	WaterSurface	1		pool	
+Portcullis	1	25	100	DIR METAL	GenDoor	portcullis|raise|lower|A portcullis blocks your way.		@x1 portcullis	
+Stairs	1	45	2550	INDOOR	STAIRS	StoneRoom	@x1stairs to the @x2 floor		stairway @x1	
+Hole Floor	1	45	2550	INDOOR	STAIRS	StoneRoom	@x1 a hole to the @x2 floor.	Spell_Fly	hole @x1 to another floor	

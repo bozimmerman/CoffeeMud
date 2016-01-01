@@ -48,11 +48,6 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return "Putting a room up for sale";
 	}
 
-	public final static String SALESTR=" This lot is for sale (look id).";
-	public final static String RENTSTR=" This lot (look id) is for rent on a monthly basis.";
-	public final static String INDOORSTR=" An empty room";
-	public final static String OUTDOORSTR=" An empty plot";
-	
 	@Override
 	protected int canAffectCode()
 	{
@@ -232,6 +227,15 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 	}
 
+	@Override
+	public LandTitle generateNextRoomTitle()
+	{
+		final LandTitle newTitle=(LandTitle)this.copyOf();
+		newTitle.setOwnerName("");
+		newTitle.setBackTaxes(0);
+		return newTitle;
+	}
+
 	public static boolean shopkeeperMobPresent(Room R)
 	{
 		if(R==null)
@@ -334,59 +338,6 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			return false;
 		robberyCheck(this,msg);
 		return true;
-	}
-
-	public static void colorForSale(Room R, boolean rental, boolean reset)
-	{
-		synchronized(("SYNC"+R.roomID()).intern())
-		{
-			R=CMLib.map().getRoom(R);
-			final String theStr=CMLib.lang().L(rental?RENTSTR:SALESTR);
-			final String otherStr=CMLib.lang().L(rental?SALESTR:RENTSTR);
-			int x=R.description().indexOf(otherStr);
-			while(x>=0)
-			{
-				R.setDescription(R.description().substring(0,x));
-				CMLib.database().DBUpdateRoom(R);
-				x=R.description().indexOf(otherStr);
-			}
-			final String oldDescription=R.description();
-			x=R.description().indexOf(theStr.trim());
-			final String displayStr =  CMLib.lang().L(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR);
-			if((x<0)||(reset&&(!R.displayText().equals(displayStr))))
-			{
-				if(reset)
-				{
-					R.setDescription("");
-					R.setDisplayText(displayStr);
-					x=-1;
-				}
-				if(x<0)
-					R.setDescription(R.description()+theStr);
-				else
-				if(!reset)
-					R.setDescription(R.description().substring(0,x+theStr.trim().length()));
-				if(!R.description().equals(oldDescription))
-					CMLib.database().DBUpdateRoom(R);
-			}
-			else
-			{
-				R.setDescription(R.description().substring(0,x+theStr.trim().length()));
-				if(!R.description().equals(oldDescription))
-					CMLib.database().DBUpdateRoom(R);
-			}
-			Item I=R.findItem(null,"$id$");
-			if((I==null)||(!I.ID().equals("GenWallpaper")))
-			{
-				I=CMClass.getItem("GenWallpaper");
-				CMLib.flags().setReadable(I,true);
-				I.setName(("id"));
-				I.setReadableText(CMLib.lang().L("This room is "+CMLib.map().getExtendedRoomID(R)));
-				I.setDescription(CMLib.lang().L("This room is @x1",CMLib.map().getExtendedRoomID(R)));
-				R.addItem(I);
-				CMLib.database().DBUpdateItems(R);
-			}
-		}
 	}
 
 	@Override
@@ -492,7 +443,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					CMLib.database().DBUpdateItems(R);
 				if(updateRoom)
 					CMLib.database().DBUpdateRoom(R);
-				colorForSale(R,T.rentalProperty(),resetRoomName);
+				CMLib.law().colorRoomForSale(R,T.rentalProperty(),resetRoomName);
 				return -1;
 			}
 
@@ -517,13 +468,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 			}
 
-			int x=R.description().indexOf(SALESTR);
+			int x=R.description().indexOf(LegalLibrary.SALESTR);
 			if(x>=0)
 			{
 				R.setDescription(R.description().substring(0,x));
 				CMLib.database().DBUpdateRoom(R);
 			}
-			x=R.description().indexOf(RENTSTR);
+			x=R.description().indexOf(LegalLibrary.RENTSTR);
 			if(x>=0)
 			{
 				R.setDescription(R.description().substring(0,x));

@@ -544,4 +544,59 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		return isLegalOfficerHere(mob) || isLegalJudgeHere(mob);
 	}
+	
+
+	@Override
+	public void colorRoomForSale(Room R, boolean rental, boolean reset)
+	{
+		synchronized(("SYNC"+R.roomID()).intern())
+		{
+			R=CMLib.map().getRoom(R);
+			final String theStr=CMLib.lang().L(rental?RENTSTR:SALESTR);
+			final String otherStr=CMLib.lang().L(rental?SALESTR:RENTSTR);
+			int x=R.description().indexOf(otherStr);
+			while(x>=0)
+			{
+				R.setDescription(R.description().substring(0,x));
+				CMLib.database().DBUpdateRoom(R);
+				x=R.description().indexOf(otherStr);
+			}
+			final String oldDescription=R.description();
+			x=R.description().indexOf(theStr.trim());
+			final String displayStr =  CMLib.lang().L(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR);
+			if((x<0)||(reset&&(!R.displayText().equals(displayStr))))
+			{
+				if(reset)
+				{
+					R.setDescription("");
+					R.setDisplayText(displayStr);
+					x=-1;
+				}
+				if(x<0)
+					R.setDescription(R.description()+theStr);
+				else
+				if(!reset)
+					R.setDescription(R.description().substring(0,x+theStr.trim().length()));
+				if(!R.description().equals(oldDescription))
+					CMLib.database().DBUpdateRoom(R);
+			}
+			else
+			{
+				R.setDescription(R.description().substring(0,x+theStr.trim().length()));
+				if(!R.description().equals(oldDescription))
+					CMLib.database().DBUpdateRoom(R);
+			}
+			Item I=R.findItem(null,"$id$");
+			if((I==null)||(!I.ID().equals("GenWallpaper")))
+			{
+				I=CMClass.getItem("GenWallpaper");
+				CMLib.flags().setReadable(I,true);
+				I.setName(("id"));
+				I.setReadableText(CMLib.lang().L("This room is "+CMLib.map().getExtendedRoomID(R)));
+				I.setDescription(CMLib.lang().L("This room is @x1",CMLib.map().getExtendedRoomID(R)));
+				R.addItem(I);
+				CMLib.database().DBUpdateItems(R);
+			}
+		}
+	}
 }
