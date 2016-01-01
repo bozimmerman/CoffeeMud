@@ -35,16 +35,63 @@ import java.util.*;
 
 public class Skill_FireBreathing extends BardSkill
 {
-	@Override public String ID() { return "Skill_FireBreathing"; }
-	private final static String localizedName = CMLib.lang().L("Fire Breathing");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	private static final String[] triggerStrings =I(new String[] {"FIREBREATHING","FIREBREATH"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int maxRange(){return adjustedMaxInvokerRange(5);}
-	@Override public int minRange(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Skill_FireBreathing";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Fire Breathing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "FIREBREATHING", "FIREBREATH" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(5);
+	}
+
+	@Override
+	public int minRange()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_DIRTYFIGHTING;
+	}
 
 	public Item getFireSource(MOB mob)
 	{

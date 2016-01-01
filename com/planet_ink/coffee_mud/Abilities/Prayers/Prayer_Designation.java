@@ -36,15 +36,55 @@ import java.util.*;
 
 public class Prayer_Designation extends Prayer
 {
-	@Override public String ID() { return "Prayer_Designation"; }
-	private final static String localizedName = CMLib.lang().L("Designation");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
-	@Override public String displayText(){return "";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
-	@Override public long flags(){return Ability.FLAG_UNHOLY;}
+	@Override
+	public String ID()
+	{
+		return "Prayer_Designation";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Designation");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_UNHOLY;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectedStats)

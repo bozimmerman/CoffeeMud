@@ -35,16 +35,59 @@ import java.util.*;
 
 public class Thief_DampenAuras extends ThiefSkill
 {
-	@Override public String ID() { return "Thief_DampenAuras"; }
-	private final static String localizedName = CMLib.lang().L("Dampen Auras");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Dampened Auras)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"DAMPENAURAS"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "Thief_DampenAuras";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Dampen Auras");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Dampened Auras)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_DECEPTIVE;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "DAMPENAURAS" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

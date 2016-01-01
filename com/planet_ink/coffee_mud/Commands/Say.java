@@ -42,7 +42,12 @@ public class Say extends StdCommand
 												 "`",
 												 "SA",
 												 "SAYTO"});
-	@Override public String[] getAccessWords(){return access;}
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	protected static final String[] impossibleTargets={
 		"HERE",
@@ -132,18 +137,28 @@ public class Say extends StdCommand
 		{
 			whom=commands.get(1).toUpperCase();
 			if(!toFlag)
+			{
 				for (final String impossibleTarget : impossibleTargets)
+				{
 					if(impossibleTarget.startsWith(whom))
-					{ whom=""; break;}
+					{
+						whom = "";
+						break;
+					}
+				}
+			}
 			if(whom.equalsIgnoreCase("self"))
+			{
 				target=mob;
+				commands.remove(1);
+			}
 			else
 			if(whom.length()>0)
 			{
 				target=R.fetchFromRoomFavorMOBs(null,whom);
 				if((toFlag)&&(target==null))
 					target=mob.findItem(null,whom);
-
+				
 				if((!toFlag)&&(target!=null))
 				{
 					if(!(target instanceof MOB))

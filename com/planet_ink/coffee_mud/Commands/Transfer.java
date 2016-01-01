@@ -247,10 +247,10 @@ public class Transfer extends At
 			&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
 			{
 				if((mob.playerStats().getTranPoofOut().length()>0)&&(mob.location()!=null))
-					M.location().show(mob,M,CMMsg.MSG_OK_VISUAL,mob.playerStats().getTranPoofOut());
+					M.location().show(M,M.location(),CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofOut());
 				room.bringMobHere(M,true);
 				if(mob.playerStats().getTranPoofIn().length()>0)
-					room.showOthers(mob,M,CMMsg.MSG_OK_VISUAL,mob.playerStats().getTranPoofIn());
+					M.location().show(M,M.location(),CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS,mob.playerStats().getTranPoofIn());
 				if(!M.isMonster())
 					CMLib.commands().postLook(M,true);
 			}

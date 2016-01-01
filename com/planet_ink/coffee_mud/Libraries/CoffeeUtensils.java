@@ -1075,7 +1075,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		{
 			if(rejuvedMOB.location()!=corpseRoom)
 			{
-				rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> disappears!"));
+				rejuvedMOB.location().showOthers(rejuvedMOB,rejuvedMOB.location(),CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS,L("<S-NAME> disappears!"));
 				corpseRoom.bringMobHere(rejuvedMOB,false);
 			}
 			Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");

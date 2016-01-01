@@ -35,17 +35,57 @@ import java.util.*;
 
 public class Skill_Struggle extends BardSkill
 {
-	@Override public String ID() { return "Skill_Struggle"; }
-	private final static String localizedName = CMLib.lang().L("Struggle");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"STRUGGLE"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
-	@Override public int usageType(){return USAGE_MANA;}
+	@Override
+	public String ID()
+	{
+		return "Skill_Struggle";
+	}
 
+	private final static String	localizedName	= CMLib.lang().L("Struggle");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "STRUGGLE" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_EVASIVE;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MANA;
+	}
 
 	@Override
 	public void affectCharStats(MOB mob, CharStats stats)
@@ -54,7 +94,10 @@ public class Skill_Struggle extends BardSkill
 		if(!CMLib.flags().isBound(mob))
 			unInvoke();
 		else
-			stats.setStat(CharStats.STAT_STRENGTH,stats.getStat(CharStats.STAT_STRENGTH)+stats.getStat(CharStats.STAT_DEXTERITY)+mob.phyStats().level());
+		{
+			final int xlvl=super.getXLEVELLevel(mob);
+			stats.setStat(CharStats.STAT_STRENGTH,stats.getStat(CharStats.STAT_STRENGTH)+stats.getStat(CharStats.STAT_DEXTERITY)+mob.phyStats().level()+xlvl);
+		}
 	}
 
 	@Override
