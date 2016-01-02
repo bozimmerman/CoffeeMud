@@ -500,7 +500,8 @@ public class DBConnection
 				||(sqle.getMessage().toUpperCase().indexOf("PRIMARY KEY")<0))
 					failuresInARow++;
 				lastError=""+sqle;
-				Log.errOut("DBConnection",updateString+": "+sqle);
+				Log.errOut("DBConnection",updateString);
+				Log.errOut("DBConnection",sqle);
 				if((myParent!=null) && (myStatement != null))
 					myParent.enQueueError(updateString,""+sqle,""+(retryNum+1));
 				if(isProbablyDead())
