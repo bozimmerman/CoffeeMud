@@ -501,30 +501,30 @@ public class BuildingSkill extends CraftingSkill
 		}
 	}
 	
-	protected Room buildStairs(final MOB mob, Room room, int dirUpOrDown, String desc, String addParms)
+	protected Room buildStairs(final MOB mob, Room room, int dir, String desc, String addParms)
 	{
-		Room upRoom;
+		Room newRoom;
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
-			int opDirUpOrDown = Directions.getOpDirectionCode(dirUpOrDown);
+			int opDir = Directions.getOpDirectionCode(dir);
 			room=CMLib.map().getRoom(room);
 			int floor=0;
-			upRoom=room;
-			while((upRoom!=null)&&(upRoom.ID().length()>0)&&(CMLib.law().getLandTitle(upRoom)!=null))
+			newRoom=room;
+			while((newRoom!=null)&&(newRoom.ID().length()>0)&&(CMLib.law().getLandTitle(newRoom)!=null))
 			{
-				upRoom=upRoom.getRoomInDir(dirUpOrDown);
+				newRoom=newRoom.getRoomInDir(dir);
 				floor++;
 			}
-			upRoom=CMClass.getLocale(CMClass.classID(room));
-			upRoom.setRoomID(room.getArea().getNewRoomID(room,dirUpOrDown));
-			if(upRoom.roomID().length()==0)
+			newRoom=CMClass.getLocale(CMClass.classID(room));
+			newRoom.setRoomID(room.getArea().getNewRoomID(room,dir));
+			if(newRoom.roomID().length()==0)
 			{
-				commonTell(mob,L("You've failed to build the new floor!"));
+				commonTell(mob,L("You've failed to build the "+desc+"!",Directions.getDirectionName(dir)));
 				return null;
 			}
-			upRoom.setArea(room.getArea());
+			newRoom.setArea(room.getArea());
 			LandTitle newTitle=CMLib.law().getLandTitle(room);
-			if((newTitle!=null)&&(CMLib.law().getLandTitle(upRoom)==null))
+			if((newTitle!=null)&&(CMLib.law().getLandTitle(newRoom)==null))
 			{
 				final List<Room> allRooms = newTitle.getConnectedPropertyRooms();
 				if(allRooms.size()>0)
@@ -532,54 +532,76 @@ public class BuildingSkill extends CraftingSkill
 					Ability cap = allRooms.get(0).fetchEffect("Prop_ReqCapacity");
 					if(cap != null)
 					{
-						upRoom.addNonUninvokableEffect((Ability)cap.copyOf());
+						newRoom.addNonUninvokableEffect((Ability)cap.copyOf());
 					}
 				}
 				newTitle = newTitle.generateNextRoomTitle();
-				newTitle.setLandPropertyID(upRoom.roomID());
-				upRoom.addNonUninvokableEffect((Ability)newTitle);
+				newTitle.setLandPropertyID(newRoom.roomID());
+				newRoom.addNonUninvokableEffect((Ability)newTitle);
 			}
 			
-			int upFloor = (floor+1);
-			int downFloor = floor;
+			int newFloorNum = (floor+1);
+			int curFloorNum = floor;
 			if(dir == Directions.DOWN)
 			{
-				upFloor = floor;
-				downFloor = (floor - 1);
+				newFloorNum = floor;
+				curFloorNum = (floor - 1);
 			}
-			final Exit upExit=CMClass.getExit("GenExit");
-			upExit.setName(L("a passageway"));
-			upExit.setDescription(L(desc,Directions.getDirectionName(dir),""+upFloor+CMath.numAppendage(upFloor)));
-			upExit.setDisplayText(L(desc,Directions.getDirectionName(dir),""+upFloor+CMath.numAppendage(upFloor)));
-			addEffects(upExit, room.getRoomInDir(dir),addParms);
-			upExit.recoverPhyStats();
-			upExit.text();
-			room.rawDoors()[dirUpOrDown]=upRoom;
-			room.setRawExit(dirUpOrDown,upExit);
 
-			final Exit downExit=CMClass.getExit("GenExit");
-			downExit.setName(L("a passageway"));
-			downExit.setDescription(L(desc,Directions.getDirectionName(opDirUpOrDown),""+downFloor+CMath.numAppendage(downFloor)));
-			downExit.setDisplayText(L(desc,Directions.getDirectionName(opDirUpOrDown),""+downFloor+CMath.numAppendage(downFloor)));
-			addEffects(downExit, room.getRoomInDir(dir),addParms);
-			downExit.recoverPhyStats();
-			downExit.text();
-			
-			upRoom.rawDoors()[opDirUpOrDown]=room;
-			upRoom.setRawExit(opDirUpOrDown,downExit);
+			final Exit newExit;
+			final Exit returnExit;
+
+			if((dir == Directions.UP)||(dir == Directions.DOWN))
+			{
+				newExit=CMClass.getExit("GenExit");
+				newExit.setName(L("a passageway"));
+				newExit.setDescription(L(desc,Directions.getDirectionName(dir),""+newFloorNum+CMath.numAppendage(newFloorNum)));
+				newExit.setDisplayText(L(desc,Directions.getDirectionName(dir),""+newFloorNum+CMath.numAppendage(newFloorNum)));
+				addEffects(newExit, room.getRoomInDir(dir),addParms);
+				newExit.recoverPhyStats();
+				newExit.text();
+
+				returnExit=CMClass.getExit("GenExit");
+				returnExit.setName(L("a passageway"));
+				returnExit.setDescription(L(desc,Directions.getDirectionName(opDir),""+curFloorNum+CMath.numAppendage(curFloorNum)));
+				returnExit.setDisplayText(L(desc,Directions.getDirectionName(opDir),""+curFloorNum+CMath.numAppendage(curFloorNum)));
+				addEffects(returnExit, room.getRoomInDir(dir),addParms);
+				returnExit.recoverPhyStats();
+				returnExit.text();
+			}
+			else
+			{
+				newExit=CMClass.getExit("GenExit");
+				newExit.setName(L("a passageway"));
+				addEffects(newExit, room.getRoomInDir(dir),addParms);
+				newExit.recoverPhyStats();
+				newExit.text();
+
+				returnExit=CMClass.getExit("GenExit");
+				returnExit.setName(L("a passageway"));
+				addEffects(returnExit, room.getRoomInDir(dir),addParms);
+				returnExit.recoverPhyStats();
+				returnExit.text();
+			}
+			room.rawDoors()[dir]=newRoom;
+			room.setRawExit(dir,newExit);
+
+			newRoom.rawDoors()[opDir]=room;
+			newRoom.setRawExit(opDir,returnExit);
+
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
-				Log.debugOut(ID(),upRoom.roomID()+" created and put up for sale.");
-			CMLib.database().DBCreateRoom(upRoom);
+				Log.debugOut(ID(),newRoom.roomID()+" created and put up for sale.");
+			CMLib.database().DBCreateRoom(newRoom);
 			if(newTitle!=null)
 			{
-				CMLib.law().colorRoomForSale(upRoom, newTitle.rentalProperty(), true);
+				CMLib.law().colorRoomForSale(newRoom, newTitle.rentalProperty(), true);
 				newTitle.updateLot(null);
 			}
-			upRoom.getArea().fillInAreaRoom(upRoom);
-			CMLib.database().DBUpdateExits(upRoom);
+			newRoom.getArea().fillInAreaRoom(newRoom);
+			CMLib.database().DBUpdateExits(newRoom);
 			CMLib.database().DBUpdateExits(room);
 		}
-		return upRoom;
+		return newRoom;
 	}
 
 	protected void buildWall(Room room, int dir)
