@@ -37,20 +37,56 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_ShapeShift extends StdAbility
 {
-	@Override public String ID() { return "Druid_ShapeShift"; }
-	private final static String localizedName = CMLib.lang().L("Shape Shift");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHAPE_SHIFTING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	private static final String[] triggerStrings =I(new String[] {"SHAPESHIFT"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
+	@Override
+	public String ID()
+	{
+		return "Druid_ShapeShift";
+	}
 
-	public int myRaceCode=-1;
-	public int myRaceLevel=-1;
-	public Race newRace=null;
-	public String raceName="";
+	private final static String	localizedName	= CMLib.lang().L("Shape Shift");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SHAPESHIFT" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	public int		myRaceCode	= -1;
+	public int		myRaceLevel	= -1;
+	public Race		newRace		= null;
+	public String	raceName	= "";
 
 	@Override
 	public String displayText()
@@ -379,8 +415,10 @@ public class Druid_ShapeShift extends StdAbility
 						if(CMLib.english().containsString(forms[A.myRaceCode],parm))
 							return A.invoke(mob,new Vector<String>(),givenTarget,auto,asLevel);
 						for(int i1=raceLevel;i1>=0;i1--)
+						{
 							if(CMLib.english().containsString(shapes[i1][A.myRaceCode],parm))
 								return A.invoke(mob,new XVector(parm),givenTarget,auto,asLevel);
+						}
 					}
 				}
 			}
@@ -393,7 +431,10 @@ public class Druid_ShapeShift extends StdAbility
 					return A.invoke(mob,new Vector<String>(),givenTarget,auto,asLevel);
 				}
 			}
-			mob.tell(L("'@x1' is an illegal form!\n\rValid forms include: \n\r@x2",parm,list.toString()));
+			if(parm.equalsIgnoreCase("LIST"))
+				mob.tell(L("Valid forms include: \n\r@x1",list.toString()));
+			else
+				mob.tell(L("'@x1' is an illegal form!\n\rValid forms include: \n\r@x2",parm,list.toString()));
 			return false;
 		}
 
