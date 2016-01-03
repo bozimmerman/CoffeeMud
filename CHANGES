@@ -14,6 +14,7 @@
   13. New Property: Prop_LotForSale, like Prop_LotsForSale, but you only have to buy the property once.
   14. Construction/Masonry have their own recipe files now, with several new construction options
   15. Prop_ReqCapacity now has a new argument to interact with Prop_LotForSale, and special circumstances for it.
+  16. New tech skill: Welding
 # Build 5.9.0 Released 12/20/2015
    1. Web Server upgraded to 2.3
    2. coffeemud.ini entry FLEE has new (blank) option to basically disable fleeing and break a bunch of skills.
