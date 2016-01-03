@@ -1850,7 +1850,7 @@ public class ListCmd extends StdCommand
 			final Area A=a.nextElement();
 			msg.append(CMStrings.padRight(A.Name(),COL_LEN)+": ");
 			if(A.getSubOpList().length()==0)
-				msg.append(L("No Area staff defined.\n\r"));
+				msg.append("\n\r");
 			else
 				msg.append(A.getSubOpList()+"\n\r");
 		}
