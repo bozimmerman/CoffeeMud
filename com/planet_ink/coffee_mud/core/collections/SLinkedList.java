@@ -20,11 +20,10 @@ import com.planet_ink.coffee_mud.core.Log;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Collection<K>, Deque<K>, List<K>, Queue<K>, SafeCollectionHost
+public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Collection<K>, Deque<K>, List<K>, Queue<K>
 {
 	private static final long	   serialVersionUID	= -4174213459327144771L;
 	private volatile LinkedList<K>	L;
-	private final Date lastIteratorCall = new Date(0);
 
 	public SLinkedList()
 	{
@@ -71,73 +70,55 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public synchronized void addAll(Enumeration<K> E)
 	{
 		if (E != null)
 		{
-			if (doClone())
-				L = (LinkedList<K>) L.clone();
 			for (; E.hasMoreElements();)
 				L.add(E.nextElement());
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public synchronized void addAll(K[] E)
 	{
 		if (E != null)
 		{
-			if (doClone())
-				L = (LinkedList<K>) L.clone();
 			for (final K e : E)
 				L.add(e);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public synchronized void addAll(Iterator<K> E)
 	{
 		if (E != null)
 		{
-			if (doClone())
-				L = (LinkedList<K>) L.clone();
 			for (; E.hasNext();)
 				L.add(E.next());
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(Enumeration<K> E)
 	{
 		if (E != null)
 		{
-			if (doClone())
-				L = (LinkedList<K>) L.clone();
 			for (; E.hasMoreElements();)
 				L.remove(E.nextElement());
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(Iterator<K> E)
 	{
 		if (E != null)
 		{
-			if (doClone())
-				L = (LinkedList<K>) L.clone();
 			for (; E.hasNext();)
 				L.remove(E.next());
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public synchronized void removeAll(List<K> E)
 	{
 		if (E != null)
 		{
-			if (doClone())
-				L = (LinkedList<K>) L.clone();
 			for (final K o : E)
 				L.remove(o);
 		}
@@ -161,8 +142,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized void add(int arg0, K arg1)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		L.add(arg0, arg1);
 	}
 
@@ -170,8 +150,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized boolean add(K arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.add(arg0);
 	}
 
@@ -179,8 +158,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized boolean addAll(Collection<? extends K> arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.addAll(arg0);
 	}
 
@@ -188,8 +166,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized boolean addAll(int arg0, Collection<? extends K> arg1)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.addAll(arg0, arg1);
 	}
 
@@ -197,8 +174,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized void addFirst(K arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		L.addFirst(arg0);
 	}
 
@@ -206,8 +182,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized void addLast(K arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		L.addLast(arg0);
 	}
 
@@ -215,8 +190,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized void clear()
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		L.clear();
 	}
 
@@ -237,7 +211,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized Iterator<K> descendingIterator()
 	{
-		return new SafeFeedbackIterator<K>(L.descendingIterator(), this);
+		return new ReadOnlyIterator<K>(L.descendingIterator());
 	}
 
 	@Override
@@ -280,15 +254,14 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized ListIterator<K> listIterator(int arg0)
 	{
-		return new SafeFeedbackListIterator<K>(L.listIterator(arg0), this);
+		return new ReadOnlyListIterator<K>(L.listIterator(arg0));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized boolean offer(K arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.offer(arg0);
 	}
 
@@ -296,8 +269,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized boolean offerFirst(K arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.offerFirst(arg0);
 	}
 
@@ -305,8 +277,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized boolean offerLast(K arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.offerLast(arg0);
 	}
 
@@ -332,8 +303,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized K poll()
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.poll();
 	}
 
@@ -341,8 +311,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized K pollFirst()
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.pollFirst();
 	}
 
@@ -350,8 +319,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized K pollLast()
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.pollLast();
 	}
 
@@ -359,8 +327,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized K pop()
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.pop();
 	}
 
@@ -368,8 +335,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized void push(K arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		L.push(arg0);
 	}
 
@@ -377,8 +343,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized K remove()
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.remove();
 	}
 
@@ -386,8 +351,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized K remove(int arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.remove(arg0);
 	}
 
@@ -395,8 +359,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized boolean remove(Object arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.remove(arg0);
 	}
 
@@ -404,8 +367,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized K removeFirst()
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.removeFirst();
 	}
 
@@ -413,8 +375,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized boolean removeFirstOccurrence(Object arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.removeFirstOccurrence(arg0);
 	}
 
@@ -422,8 +383,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized K removeLast()
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.removeLast();
 	}
 
@@ -431,8 +391,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized boolean removeLastOccurrence(Object arg0)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.removeLastOccurrence(arg0);
 	}
 
@@ -440,8 +399,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized K set(int arg0, K arg1)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.set(arg0, arg1);
 	}
 
@@ -466,7 +424,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized Iterator<K> iterator()
 	{
-		return new SafeFeedbackIterator<K>(L.iterator(), this);
+		return new ReadOnlyIterator<K>(L.iterator());
 	}
 
 	@Override
@@ -484,13 +442,13 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized ListIterator<K> listIterator()
 	{
-		return new SafeFeedbackListIterator<K>(L.listIterator(), this);
+		return new ReadOnlyListIterator<K>(L.listIterator());
 	}
 
 	@Override
 	public synchronized List<K> subList(int arg0, int arg1)
 	{
-		return new SafeChildList<K>(L.subList(arg0, arg1), this);
+		return new ReadOnlyList<K>(L.subList(arg0, arg1));
 	}
 
 	@Override
@@ -509,8 +467,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized boolean removeAll(Collection<?> c)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.removeAll(c);
 	}
 
@@ -518,8 +475,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	@Override
 	public synchronized boolean retainAll(Collection<?> c)
 	{
-		if (doClone())
-			L = (LinkedList<K>) L.clone();
+		L = (LinkedList<K>) L.clone();
 		return L.retainAll(c);
 	}
 
@@ -529,25 +485,4 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 		return super.toString();
 	}
 
-	private boolean doClone()
-	{
-		synchronized(this.lastIteratorCall)
-		{
-			return System.currentTimeMillis() < this.lastIteratorCall.getTime();
-		}
-	}
-	
-	@Override
-	public void returnIterator(Object iter) 
-	{
-	}
-
-	@Override
-	public void submitIterator(Object iter) 
-	{
-		synchronized(this.lastIteratorCall)
-		{
-			this.lastIteratorCall.setTime(System.currentTimeMillis() + ITERATOR_TIMEOUT_MS);
-		}
-	}
 }

@@ -17,11 +17,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializable, SafeCollectionHost
+public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Serializable
 {
 	private static final long	         serialVersionUID	= 6687178785122561993L;
 	private volatile LinkedHashMap<K, F>	H;
-	private final Date lastIteratorCall = new Date(0);
 
 	public SLinkedHashtable()
 	{
@@ -85,8 +84,7 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	@Override
 	public synchronized void clear()
 	{
-		if (doClone())
-			H = (LinkedHashMap<K, F>) H.clone();
+		H = (LinkedHashMap<K, F>) H.clone();
 		H.clear();
 	}
 
@@ -117,18 +115,18 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 
 	public synchronized Enumeration<F> elements()
 	{
-		return new SafeFeedbackEnumeration<F>(new IteratorEnumeration<F>(H.values().iterator()), this);
+		return new IteratorEnumeration<F>(H.values().iterator());
 	}
 
 	public synchronized Enumeration<Map.Entry<K, F>> entries()
 	{
-		return new SafeFeedbackEnumeration<Map.Entry<K, F>>(new IteratorEnumeration<Map.Entry<K, F>>(H.entrySet().iterator()), this);
+		return new IteratorEnumeration<Map.Entry<K, F>>(H.entrySet().iterator());
 	}
 
 	@Override
 	public synchronized Set<java.util.Map.Entry<K, F>> entrySet()
 	{
-		return new SafeChildSet<java.util.Map.Entry<K, F>>(H.entrySet(), this);
+		return H.entrySet();
 	}
 
 	@Override
@@ -157,21 +155,20 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 
 	public synchronized Enumeration<K> keys()
 	{
-		return new SafeFeedbackEnumeration<K>(new IteratorEnumeration<K>(H.keySet().iterator()), this);
+		return new IteratorEnumeration<K>(H.keySet().iterator());
 	}
 
 	@Override
 	public synchronized Set<K> keySet()
 	{
-		return new SafeChildSet<K>(H.keySet(), this);
+		return H.keySet();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized F put(K arg0, F arg1)
 	{
-		if (doClone())
-			H = (LinkedHashMap<K, F>) H.clone();
+		H = (LinkedHashMap<K, F>) H.clone();
 		return H.put(arg0, arg1);
 	}
 
@@ -179,8 +176,7 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	@Override
 	public synchronized F remove(Object arg0)
 	{
-		if (doClone())
-			H = (LinkedHashMap<K, F>) H.clone();
+		H = (LinkedHashMap<K, F>) H.clone();
 		return H.remove(arg0);
 	}
 
@@ -199,37 +195,15 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	@Override
 	public synchronized Collection<F> values()
 	{
-		return new SafeChildCollection<F>(H.values(), this);
+		return new ReadOnlyCollection<F>(H.values());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized void putAll(Map<? extends K, ? extends F> arg0)
 	{
-		if (doClone())
-			H = (LinkedHashMap<K, F>) H.clone();
+		H = (LinkedHashMap<K, F>) H.clone();
 		H.putAll(arg0);
 	}
 
-	private boolean doClone()
-	{
-		synchronized(this.lastIteratorCall)
-		{
-			return System.currentTimeMillis() < this.lastIteratorCall.getTime();
-		}
-	}
-	
-	@Override
-	public void returnIterator(Object iter) 
-	{
-	}
-
-	@Override
-	public void submitIterator(Object iter) 
-	{
-		synchronized(this.lastIteratorCall)
-		{
-			this.lastIteratorCall.setTime(System.currentTimeMillis() + ITERATOR_TIMEOUT_MS);
-		}
-	}
 }
