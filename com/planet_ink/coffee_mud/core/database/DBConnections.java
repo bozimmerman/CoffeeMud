@@ -392,12 +392,21 @@ public class DBConnections
 							}
 						}
 					}
-				}catch(final Exception e){}
+				}
+				catch (final Exception e)
+				{
+				}
 			}
 			if((ThisDB!=null)&&(ThisDB.isProbablyDead()||ThisDB.isProbablyLockedUp()||(!ThisDB.ready())))
 			{
 				Log.errOut("DBConnections","Failed to connect to database.");
-				try{ThisDB.close();}catch(final Exception e){}
+				try
+				{
+					ThisDB.close();
+				}
+				catch (final Exception e)
+				{
+				}
 				ThisDB=null;
 			}
 			if(ThisDB==null)
@@ -534,7 +543,14 @@ public class DBConnections
 		}
 		catch(final SQLException sqle)
 		{
-			Log.errOut("DBConnections",""+sqle);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+			{
+				
+				Log.errOut("DBConnections","getString: "+Field);
+				Log.errOut("DBConnections",sqle);
+			}
+			else
+				Log.errOut("DBConnections",""+sqle);
 			return "";
 		}
 	}
@@ -564,7 +580,14 @@ public class DBConnections
 		}
 		catch(final SQLException sqle)
 		{
-			Log.errOut("DBConnections",""+sqle);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+			{
+				
+				Log.errOut("DBConnections","getLong: "+Field);
+				Log.errOut("DBConnections",sqle);
+			}
+			else
+				Log.errOut("DBConnections",""+sqle);
 			return 0;
 		}
 		catch(final java.lang.NumberFormatException nfe){ return 0;}
@@ -591,7 +614,14 @@ public class DBConnections
 		}
 		catch(final SQLException sqle)
 		{
-			Log.errOut("DBConnections",""+sqle);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+			{
+				
+				Log.errOut("DBConnections","getRes: "+One);
+				Log.errOut("DBConnections",sqle);
+			}
+			else
+				Log.errOut("DBConnections",""+sqle);
 			return "";
 		}
 	}
@@ -607,6 +637,12 @@ public class DBConnections
 		}
 		catch(final SQLException sqle)
 		{
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+			{
+				
+				Log.errOut("DBConnections","getStringQ: "+Field);
+				Log.errOut("DBConnections",sqle);
+			}
 			return "";
 		}
 	}
@@ -739,7 +775,9 @@ public class DBConnections
 				{
 					in = new BufferedReader(new FileReader(myFile));
 				}
-				catch(final FileNotFoundException f){}
+				catch (final FileNotFoundException f)
+				{
+				}
 
 				if(in!=null)
 				{
@@ -754,14 +792,18 @@ public class DBConnections
 							Queue.addElement(queueLine);
 						}
 					}
-					catch(final IOException e){}
+					catch (final IOException e)
+					{
+					}
 
 					// close the channel.. done?
 					try
 					{
 						  in.close();
 					}
-					catch(final IOException e){}
+					catch (final IOException e)
+					{
+					}
 				}
 			}
 			myFile.delete();
@@ -804,12 +846,14 @@ public class DBConnections
 							{
 								DB.update(retrySQL,oldAttempts);
 								successes++;
-								//Log.sysOut("DBConnections","Successful retry: "+queueLine);
+								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+									Log.sysOut("DBConnections","Successful retry: "+queueLine);
 							}
 							catch(final SQLException sqle)
 							{
 								unsuccesses++;
-								//Log.errOut("DBConnections","Unsuccessfull retry: "+queueLine);
+								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+									Log.errOut("DBConnections","Unsuccessfull retry: "+queueLine);
 								//DO NOT DO THIS AGAIN -- the UPDATE WILL GENERATE the ENQUE!!!
 								//enQueueError(retrySQL,""+sqle,oldDate);
 							}

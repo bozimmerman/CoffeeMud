@@ -2146,7 +2146,8 @@ public class CMSecurity
 		CLANMEMBERS("Clan Membership"),
 		INPUT("All user input"),
 		SHUTDOWN("System Shutdown"),
-		SPACESHIP("Spaceships")
+		SPACESHIP("Spaceships"),
+		SQLERRORS("SQL error traces")
 		;
 		private final String desc;
 

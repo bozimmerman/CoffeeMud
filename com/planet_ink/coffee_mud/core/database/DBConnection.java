@@ -120,7 +120,8 @@ public class DBConnection
 		}
 		p.put("SetBigStringTryClob", "true");
 		myConnection=DriverManager.getConnection(DBService,p);
-		//Log.debugOut("New connection made to :"+DBService+" using "+DBClass);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+			Log.debugOut("New connection made to :"+DBService+" using "+DBClass);
 		sqlserver=false;
 		inUse=false;
 	}
@@ -131,7 +132,13 @@ public class DBConnection
 		{
 			return myConnection.getCatalog();
 		}
-		catch(final Exception e){}
+		catch (final Exception e)
+		{
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+			{
+				Log.errOut("DBConnection",e);
+			}
+		}
 		return "";
 	}
 
@@ -160,19 +167,31 @@ public class DBConnection
 			if(myStatement!=null)
 				myStatement.close();
 		}
-		catch(final SQLException e){}
+		catch (final SQLException e)
+		{
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+				Log.errOut("DBConnection",e);
+		}
 		try
 		{
 			if(myPreparedStatement!=null)
 				myPreparedStatement.close();
 		}
-		catch(final SQLException e){}
+		catch (final SQLException e)
+		{
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+				Log.errOut("DBConnection",e);
+		}
 		try
 		{
 			if(myConnection!=null)
 				myConnection.close();
 		}
-		catch(final SQLException e){}
+		catch (final SQLException e)
+		{
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+				Log.errOut("DBConnection",e);
+		}
 		myConnection=null;
 		myStatement=null;
 		myPreparedStatement=null;
@@ -199,6 +218,8 @@ public class DBConnection
 			}
 			catch(final SQLException e)
 			{
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+					Log.errOut("DBConnection",e);
 				myConnection=null;
 				failuresInARow++;
 				sqlserver=false;
@@ -217,6 +238,11 @@ public class DBConnection
 			}
 			catch(final SQLException e)
 			{
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+				{
+					Log.errOut("DBConnection","Error use: "+openerSQL);
+					Log.errOut("DBConnection",e);
+				}
 				return false;
 				// not a real error?!
 			}
@@ -275,6 +301,11 @@ public class DBConnection
 			}
 			catch(final SQLException e)
 			{
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+				{
+					Log.errOut("DBConnection","Error prepare: "+SQL);
+					Log.errOut("DBConnection",e);
+				}
 				sqlserver=false;
 				myConnection=null;
 				failuresInARow++;
@@ -315,7 +346,13 @@ public class DBConnection
 			}
 			catch(final SQLException e)
 			{
-				Log.errOut("DBConnection",e.getMessage());
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+				{
+					Log.errOut("DBConnection","Error prepare: "+SQL);
+					Log.errOut("DBConnection",e);
+				}
+				else
+					Log.errOut("DBConnection",(e==null)?(""+e):e.getMessage());
 				sqlserver=false;
 				myConnection=null;
 				failuresInARow++;
@@ -362,6 +399,10 @@ public class DBConnection
 		}
 		catch(final SQLException e)
 		{
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+			{
+				Log.errOut("DBConnection",e);
+			}
 			// not a real error?
 		}
 	}
@@ -417,6 +458,13 @@ public class DBConnection
 			}
 			catch(final SQLException sqle)
 			{
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+				{
+					Log.errOut("DBConnection","Error query: "+queryString);
+					Log.errOut("DBConnection",""+sqle);
+				}
+				else
+					Log.errOut("DBConnection",(sqle==null)?(""+sqle):sqle.getMessage());
 				sqlserver=false;
 				failuresInARow++;
 				lastError=""+sqle;
@@ -500,8 +548,13 @@ public class DBConnection
 				||(sqle.getMessage().toUpperCase().indexOf("PRIMARY KEY")<0))
 					failuresInARow++;
 				lastError=""+sqle;
-				Log.errOut("DBConnection",updateString);
-				Log.errOut("DBConnection",sqle);
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
+				{
+					Log.errOut("DBConnection","Error update: "+updateString);
+					Log.errOut("DBConnection",sqle);
+				}
+				else
+					Log.errOut("DBConnection",updateString+": "+sqle);
 				if((myParent!=null) && (myStatement != null))
 					myParent.enQueueError(updateString,""+sqle,""+(retryNum+1));
 				if(isProbablyDead())
