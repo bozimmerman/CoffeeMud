@@ -234,15 +234,31 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				else
 				if(canGenerateAdjacentRooms(R))
 				{
-					//int numberOfPeers = getConnectedPropertyRooms().size();
+					int numberOfPeers = -1;//getConnectedPropertyRooms().size();
+					long roomLimit = Long.MAX_VALUE;
 					boolean updateExits=false;
+					Prop_ReqCapacity cap = null;
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
 						if((d==Directions.UP)||(d==Directions.DOWN)||(d==Directions.GATE))
 							continue;
 						Room R2=R.getRoomInDir(d);
-						if(R2==null)
+						if((R2==null)&&(numberOfPeers < 0))
 						{
+							final List<Room> allRooms = getConnectedPropertyRooms();
+							if(allRooms.size()>0)
+							{
+								cap = (Prop_ReqCapacity)allRooms.get(0).fetchEffect("Prop_ReqCapacity");
+								if(cap != null)
+								{
+									roomLimit = cap.roomLimit;
+								}
+							}
+							numberOfPeers = allRooms.size();
+						}
+						if((R2==null)&&(numberOfPeers < roomLimit))
+						{
+							numberOfPeers++;
 							R2=CMClass.getLocale(CMClass.classID(R));
 							R2.setRoomID(R.getArea().getNewRoomID(R,d));
 							if(R2.roomID().length()==0)
@@ -262,6 +278,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 							updateExits=true;
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
 								Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
+							if(cap != null)
+								R2.addNonUninvokableEffect((Ability)cap.copyOf());
 							CMLib.database().DBCreateRoom(R2);
 							if(newTitle!=null)
 								CMLib.law().colorRoomForSale(R2,newTitle.rentalProperty(),true);

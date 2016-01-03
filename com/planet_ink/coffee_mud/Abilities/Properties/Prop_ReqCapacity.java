@@ -35,20 +35,38 @@ import java.util.*;
 */
 public class Prop_ReqCapacity extends Property implements TriggeredAffect
 {
-	@Override public String ID() { return "Prop_ReqCapacity"; }
-	@Override public String name(){ return "Capacity Limitations";}
-	@Override protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	@Override
+	public String ID()
+	{
+		return "Prop_ReqCapacity";
+	}
 
-	public int peopleCap=Integer.MAX_VALUE;
-	public int playerCap=Integer.MAX_VALUE;
-	public int mobCap=Integer.MAX_VALUE;
-	public int itemCap=Integer.MAX_VALUE;
-	public int maxWeight=Integer.MAX_VALUE;
-	public boolean indoorOnly=false;
-	public boolean containersOk=false;
+	@Override
+	public String name()
+	{
+		return "Capacity Limitations";
+	}
 
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS | Ability.CAN_AREAS | Ability.CAN_EXITS;
+	}
 
-	@Override public long flags(){return Ability.FLAG_ZAPPER;}
+	public int		peopleCap		= Integer.MAX_VALUE;
+	public int		playerCap		= Integer.MAX_VALUE;
+	public int		mobCap			= Integer.MAX_VALUE;
+	public int		itemCap			= Integer.MAX_VALUE;
+	public int		maxWeight		= Integer.MAX_VALUE;
+	public int		roomLimit		= Integer.MAX_VALUE;
+	public boolean	indoorOnly		= false;
+	public boolean	containersOk	= false;
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ZAPPER;
+	}
 
 	@Override
 	public int triggerMask()
@@ -59,11 +77,13 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 	@Override
 	public String accountForYourself()
 	{
-		return "Person limit: "+((peopleCap==Integer.MAX_VALUE)?"None":(""+peopleCap))
-		  +"\n\rPlayer limit: "+((playerCap==Integer.MAX_VALUE)?"None":(""+playerCap))
-		  +"\n\rMOB limit   : "+((mobCap==Integer.MAX_VALUE)?"None":(""+mobCap))
-		  +"\n\rItem limit  : "+((itemCap==Integer.MAX_VALUE)?"None":(""+itemCap))
-		  +"\n\rWeight limit: "+((maxWeight==Integer.MAX_VALUE)?"None":(""+maxWeight));
+		return 
+		   ((peopleCap==Integer.MAX_VALUE)?"":L("\n\rPerson limit: @x1",(""+peopleCap)))
+		  +((playerCap==Integer.MAX_VALUE)?"":L("\n\rPlayer limit: @x1",(""+playerCap)))
+		  +((mobCap==Integer.MAX_VALUE)?"":L("\n\rMOB limit   : @x1",(""+mobCap)))
+		  +((itemCap==Integer.MAX_VALUE)?"":L("\n\rItem limit  : @x1",(""+itemCap)))
+		  +((roomLimit==Integer.MAX_VALUE)?"":L("\n\rRoom limit  : @x1",(""+roomLimit)))
+		  +((maxWeight==Integer.MAX_VALUE)?"":L("\n\rWeight limit: @x1",(""+maxWeight)));
 	}
 
 	@Override
@@ -75,6 +95,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 		mobCap=Integer.MAX_VALUE;
 		itemCap=Integer.MAX_VALUE;
 		maxWeight=Integer.MAX_VALUE;
+		roomLimit=Integer.MAX_VALUE;
 		indoorOnly=false;
 		if(txt.length()==0)
 			peopleCap=2;
@@ -87,6 +108,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 			playerCap=CMParms.getParmInt(txt,"players",playerCap);
 			mobCap=CMParms.getParmInt(txt,"mobs",mobCap);
 			itemCap=CMParms.getParmInt(txt,"items",itemCap);
+			roomLimit=CMParms.getParmInt(txt,"rooms",roomLimit);
 			maxWeight=CMParms.getParmInt(txt,"weight",maxWeight);
 			indoorOnly=CMParms.getParmBool(txt,"indoor",indoorOnly);
 			containersOk=CMParms.getParmBool(txt,"droponly",containersOk)||CMParms.getParmBool(txt,"containersok",containersOk);

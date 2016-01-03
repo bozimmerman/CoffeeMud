@@ -526,6 +526,15 @@ public class BuildingSkill extends CraftingSkill
 			LandTitle newTitle=CMLib.law().getLandTitle(room);
 			if((newTitle!=null)&&(CMLib.law().getLandTitle(upRoom)==null))
 			{
+				final List<Room> allRooms = newTitle.getConnectedPropertyRooms();
+				if(allRooms.size()>0)
+				{
+					Ability cap = allRooms.get(0).fetchEffect("Prop_ReqCapacity");
+					if(cap != null)
+					{
+						upRoom.addNonUninvokableEffect((Ability)cap.copyOf());
+					}
+				}
 				newTitle = newTitle.generateNextRoomTitle();
 				newTitle.setLandPropertyID(upRoom.roomID());
 				upRoom.addNonUninvokableEffect((Ability)newTitle);
@@ -1127,6 +1136,24 @@ public class BuildingSkill extends CraftingSkill
 				else
 					commonTell(mob,L("There is already something down here."));
 				return false;
+			}
+			
+			if(title != null)
+			{
+				final List<Room> allRooms = title.getConnectedPropertyRooms();
+				if(allRooms.size()>0)
+				{
+					Ability cap = allRooms.get(0).fetchEffect("Prop_ReqCapacity");
+					if(cap != null)
+					{
+						int roomLimit = CMParms.getParmInt(cap.text(),"rooms",Integer.MAX_VALUE);
+						if(allRooms.size() >= roomLimit)
+						{
+							commonTell(mob,L("You are not allowed to add more rooms."));
+							return false;
+						}
+					}
+				}
 			}
 		}
 
