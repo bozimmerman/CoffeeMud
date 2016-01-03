@@ -529,10 +529,10 @@ public class DefaultSession implements Session
 	@Override
 	public boolean isAllowedMxp(final String tagString)
 	{
-		if((!getClientTelnetMode(TELNET_MXP))||(mxpSupportSet.size()==0))
-			return false;
 		if(tagString.startsWith("^<"))
 		{
+			if((!getClientTelnetMode(TELNET_MXP))||(mxpSupportSet.size()==0))
+				return false;
 			int x=tagString.indexOf(' ');
 			if(x<0) 
 				x=tagString.indexOf('>');
