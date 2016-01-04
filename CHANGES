@@ -1,4 +1,4 @@
-# Build 5.9.1 Released 01/??/2016
+# Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)
    3. New Player stats for Bonus char creation points, common skill limits
@@ -6,16 +6,15 @@
    5. New Property: Prop_ItemBinder, for binding items to char, acct, clan. How did that get missed all these years?
    6. New version of Siplet (the web client).  Now uses WebSockets for streaming joy.
    7. New disease: Sleepwalking.  Very rare, but can be caught through extreme fatigue.
-   8. TickTock can now be used to trigger achievement checks for all players online.
-   9. New Beastmaster / Ranger skill: Animal Bonding.
-  10. Masonry/Construction now have their own recipe files.  Not much you can do with them, but still better than code.
-  11. Artisans now get bonus xp for crafting items, with some minor anti-botting measures in.
-  12. Due to a strange accident, lots of Wizard-class bugs fixed.  It's still an unavailable class.
-  13. New Property: Prop_LotForSale, like Prop_LotsForSale, but you only have to buy the property once.
-  13. New Property: Prop_RoomPlusForSale, like Prop_RoomForSale, but you are allowed to expand it
-  14. Construction/Masonry have their own recipe files now, with several new construction options
-  15. Prop_ReqCapacity now has a new argument to interact with Prop_LotForSale, and special circumstances for it.
-  17. New property building skills: Landscaping, Excavation, and Unknown/Unfinished skills: Welding, Irrigation
+   8. New Beastmaster / Ranger skill: Animal Bonding.
+   9. Masonry/Construction now have their own recipe files.  Not much you can do with them, but still better than code.
+  10. Artisans now get bonus xp for crafting items, with some minor anti-botting measures in.
+  11. Due to a strange accident, lots of Wizard-class bugs fixed.  It's still an unavailable class.
+  12. New Property: Prop_LotForSale, like Prop_LotsForSale, but you only have to buy the property once.
+  13. New Property: Prop_RoomPlusForSale, like Prop_RoomForSale, but you are allowed to expand it for free.
+  14. Prop_ReqCapacity now has a new argument to interact with Prop_LotForSale, and special circumstances for it.
+  15. New property building skills: Landscaping, Excavation, and Unknown/Unfinished skills: Welding, Irrigation
+  16. Lots of bugs fixed.
 # Build 5.9.0 Released 12/20/2015
    1. Web Server upgraded to 2.3
    2. coffeemud.ini entry FLEE has new (blank) option to basically disable fleeing and break a bunch of skills.
