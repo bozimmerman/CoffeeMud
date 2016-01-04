@@ -45,7 +45,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	@Override public String name() { return localizedName; }
 	private static final String[] triggerStrings =I(new String[] {"WEAVING","WEAVE"});
 	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON";}
+	@Override public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON|FLOWERS|BAMBOO";}
 	@Override
 	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
@@ -179,6 +179,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		&&(I.material()!=RawMaterial.RESOURCE_HEMP)
 		&&(I.material()!=RawMaterial.RESOURCE_VINE)
 		&&(I.material()!=RawMaterial.RESOURCE_WHEAT)
+		&&(I.material()!=RawMaterial.RESOURCE_FLOWERS)
+		&&(I.material()!=RawMaterial.RESOURCE_BAMBOO)
 		&&(I.material()!=RawMaterial.RESOURCE_SEAWEED)
 		&&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)))
 			return false;
@@ -367,6 +369,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			&&(buildingI.material()!=RawMaterial.RESOURCE_HEMP)
 			&&(buildingI.material()!=RawMaterial.RESOURCE_VINE)
 			&&(buildingI.material()!=RawMaterial.RESOURCE_WHEAT)
+			&&(buildingI.material()!=RawMaterial.RESOURCE_BAMBOO)
+			&&(buildingI.material()!=RawMaterial.RESOURCE_FLOWERS)
 			&&(buildingI.material()!=RawMaterial.RESOURCE_SEAWEED))
 			{
 				commonTell(mob,L("That's not made of any sort of weavable material.  It can't be refitted."));
@@ -437,6 +441,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 					  RawMaterial.RESOURCE_SILK,
 					  RawMaterial.RESOURCE_HEMP,
 					  RawMaterial.RESOURCE_VINE,
+					  RawMaterial.RESOURCE_FLOWERS,
+					  RawMaterial.RESOURCE_BAMBOO,
 					  RawMaterial.RESOURCE_WHEAT,
 					  RawMaterial.RESOURCE_SEAWEED};
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
