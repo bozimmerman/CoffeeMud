@@ -92,11 +92,12 @@ public class Welding extends BuildingSkill
 	}
 
 	@Override
-	protected int[][] getBasicMaterials(final MOB mob, int woodRequired)
+	protected int[][] getBasicMaterials(final MOB mob, int woodRequired, String miscType)
 	{
-		final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
+		if(miscType.length()==0)
+			miscType="metal";
 		final int[][] idata=fetchFoundResourceData(mob,
-													woodRequired,"metal",pm,
+													woodRequired,miscType,null,
 													0,null,null,
 													false,
 													0,null);

@@ -22,7 +22,7 @@ import java.util.*;
 
 
 /*
-   Copyright 2003-2015 Bo Zimmerman
+   Copyright 2015-2015 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -38,15 +38,15 @@ import java.util.*;
 */
 
 
-public class Masonry extends BuildingSkill
+public class Landscaping extends BuildingSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Masonry";
+		return "Landscaping";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Masonry");
+	private final static String	localizedName	= CMLib.lang().L("Landscaping");
 
 	@Override
 	public String name()
@@ -54,7 +54,7 @@ public class Masonry extends BuildingSkill
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "MASONRY" });
+	private static final String[]	triggerStrings	= I(new String[] { "LANDSCAPE", "LANDSCAPING" });
 
 	@Override
 	public String[] triggerStrings()
@@ -71,13 +71,13 @@ public class Masonry extends BuildingSkill
 	@Override
 	public String parametersFile()
 	{
-		return "masonry.txt";
+		return "landscaping.txt";
 	}
 
 	@Override
 	protected String getMainResourceName()
 	{
-		return "Stone";
+		return "Material";
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class Masonry extends BuildingSkill
 		return "stone.wav";
 	}
 
-	public Masonry()
+	public Landscaping()
 	{
 		super();
 	}

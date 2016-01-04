@@ -92,11 +92,12 @@ public class Construction extends BuildingSkill
 	}
 
 	@Override
-	protected int[][] getBasicMaterials(final MOB mob, int woodRequired)
+	protected int[][] getBasicMaterials(final MOB mob, int woodRequired, String miscType)
 	{
-		final int[] pm={RawMaterial.MATERIAL_WOODEN};
+		if(miscType.length()==0)
+			miscType="wood";
 		final int[][] idata=fetchFoundResourceData(mob,
-													woodRequired,"wood",pm,
+													woodRequired,miscType,null,
 													0,null,null,
 													false,
 													0,null);

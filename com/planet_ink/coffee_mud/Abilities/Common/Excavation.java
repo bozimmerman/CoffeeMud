@@ -22,7 +22,7 @@ import java.util.*;
 
 
 /*
-   Copyright 2003-2015 Bo Zimmerman
+   Copyright 2015-2015 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -38,15 +38,15 @@ import java.util.*;
 */
 
 
-public class Masonry extends BuildingSkill
+public class Excavation extends BuildingSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Masonry";
+		return "Excavation";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Masonry");
+	private final static String	localizedName	= CMLib.lang().L("Excavation");
 
 	@Override
 	public String name()
@@ -54,7 +54,7 @@ public class Masonry extends BuildingSkill
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "MASONRY" });
+	private static final String[]	triggerStrings	= I(new String[] { "EXCAVATE", "EXCAVATION" });
 
 	@Override
 	public String[] triggerStrings()
@@ -71,7 +71,7 @@ public class Masonry extends BuildingSkill
 	@Override
 	public String parametersFile()
 	{
-		return "masonry.txt";
+		return "excavation.txt";
 	}
 
 	@Override
@@ -86,11 +86,21 @@ public class Masonry extends BuildingSkill
 		return "stone.wav";
 	}
 
-	public Masonry()
+	public Excavation()
 	{
 		super();
 	}
 
+	@Override
+	public String establishVerb(final MOB mob, final String[] recipe)
+	{
+		final Building doingCode = Building.valueOf(recipe[DAT_BUILDCODE]);
+		if(doingCode == Building.EXCAVATE)
+			return L("excavating the "+recipe[DAT_DESC],Directions.getDirectionName(dir));
+		else
+			return super.establishVerb(mob, recipe);
+	}
+	
 	@Override
 	protected int[][] getBasicMaterials(final MOB mob, int woodRequired, String miscType)
 	{

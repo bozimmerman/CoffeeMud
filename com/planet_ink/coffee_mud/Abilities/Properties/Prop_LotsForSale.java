@@ -129,20 +129,6 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	}
 
 	@Override
-	public String getTitleID()
-	{
-		if(affected instanceof Room)
-			return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID((Room)affected);
-		else
-		{
-			final Room R=CMLib.map().getRoom(landPropertyID());
-			if(R!=null)
-				return "LAND_TITLE_FOR#"+CMLib.map().getExtendedRoomID(R);
-		}
-		return "";
-	}
-
-	@Override
 	public String getUniqueLotID()
 	{
 		if(uniqueLotID==null)

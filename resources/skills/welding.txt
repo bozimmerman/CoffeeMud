@@ -1,23 +1,23 @@
-#name	 level	ticks	wood	 flags	code	class	misc	property	desc	builder mask
-Wall	1	25	250	DIR INDOOR	WALL	NA	-		@x1 wall	
-Roof	1	25	500	OUTDOOR	ROOM	MetalRoom	0		frame and roof	
-Low Roof	1	25	250	OUTDOOR	ROOM	MetalRoom	0	Prop_Crawlspace	lower frame and roof	
-Wide Roof	1	25	1000	OUTDOOR	ROOM	MetalRoom	0	Prop_EnlargeRoom(10)	broad frame and roof	
-Small Maze	1	25	1500	OUTDOOR	ROOM	MetalRoomMaze	3		small maze frame and roof	
-Maze	1	25	2500	OUTDOOR	ROOM	MetalRoomMaze	5		maze frame and roof	
-Big Maze	1	25	3500	OUTDOOR	ROOM	MetalRoomMaze	7		large maze frame and roof	
-Archway	1	25	200	DIR	DOOR	GenExit	archway		@x1 archway	
-Demolish	1	25	0	DIR	DEMOLISH	NA	-	-	demolishing	
-Title	1	15	0		TITLE	NA	-	-	title	
-Description	1	10	0		DESC	NA	-	-	description	
-Window	1	25	100	INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	@x1 window	
-Crawlway	1	25	500	INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1	
-Pool	1	35	400	OUTDOOR	ROOM	WaterSurface	0		pool	
-Deep Pool	1	35	700	OUTDOOR	ROOM	WaterSurface	1		pool	
-Portcullis	1	25	100	DIR METAL	DOOR	GenDoor	portcullis|raise|lower|A portcullis blocks your way.		@x1 portcullis	
-Stairs	1	45	2550	INDOOR	STAIRS	MetalRoom	@x1stairs to the @x2 floor		stairway @x1	
-Hole Floor	1	45	2550	INDOOR	STAIRS	MetalRoom	@x1 a hole to the @x2 floor.	Spell_Fly	hole @x1 to another floor	
-Fence	1	25	50	OUTDOOR DIR	WALL	NA			@x1 fence	
-Secret Door	1	25	200	INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief
-Shallow Water	1	35	200	OUTDOOR	ROOM	ShallowWater	0		shallow water	
-Hole Floor	1	45	2550	INDOOR	STAIRS	MetalRoom	@x1 a hole to the @x2 floor.	Spell_Fly	hole @x1 to another floor	
+#name	level	ticks	wood	misc resource	flag	code	class	misc	property	desc	builder mask
+Wall	1	25	250		DIR INDOOR	WALL	NA	-		@x1 wall	
+Roof	1	25	500		OUTDOOR	ROOM	MetalRoom	0		frame and roof	
+Low Roof	1	25	250		OUTDOOR	ROOM	MetalRoom	0	Prop_Crawlspace	lower frame and roof	
+Wide Roof	1	25	1000		OUTDOOR	ROOM	MetalRoom	0	Prop_EnlargeRoom(10)	broad frame and roof	
+Small Maze	1	25	1500		OUTDOOR	ROOM	MetalRoomMaze	3		small maze frame and roof	
+Maze	1	25	2500		OUTDOOR	ROOM	MetalRoomMaze	5		maze frame and roof	
+Big Maze	1	25	3500		OUTDOOR	ROOM	MetalRoomMaze	7		large maze frame and roof	
+Archway	1	25	200		DIR	DOOR	GenExit	archway		@x1 archway	
+Demolish	1	25	0		DIR	DEMOLISH	Plains	-	-	demolishing	
+Title	1	15	0			TITLE	NA	-	-	title	
+Description	1	10	0			DESC	NA	-	-	description	
+Window	1	25	100		INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	@x1 window	
+Crawlway	1	25	500		INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1	
+Pool	1	35	400		OUTDOOR	ROOM	WaterSurface	0		pool	
+Deep Pool	1	35	700		OUTDOOR	ROOM	WaterSurface	1		pool	
+Portcullis	1	25	100	METAL	DIR	DOOR	GenDoor	portcullis|raise|lower|A portcullis blocks your way.		@x1 portcullis	
+Stairs	1	45	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1	
+Hole Floor	1	45	2550		INDOOR	STAIRS	MetalRoom	@x1 a hole to the @x2 floor.	Spell_Fly	hole @x1 to another floor	
+Fence	1	25	50		OUTDOOR DIR	WALL	NA			@x1 fence	
+Secret Door	1	25	200		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief
+Shallow Water	1	35	200		OUTDOOR	ROOM	ShallowWater	0		shallow water	
+Hole Floor	1	45	2550		INDOOR	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly	hole @x1 to another floor	

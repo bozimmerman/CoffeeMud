@@ -76,6 +76,11 @@ public class BuildingSkill extends CraftingSkill
 		return "Wood";
 	}
 
+	protected String getDemolishRoom()
+	{
+		return "Plains";
+	}
+
 	protected String getSoundName()
 	{
 		return "hammer.wav";
@@ -95,7 +100,8 @@ public class BuildingSkill extends CraftingSkill
 		DEMOLISH,
 		TITLE,
 		DESC,
-		STAIRS
+		STAIRS,
+		EXCAVATE
 	}
 	
 	public enum Flag
@@ -104,12 +110,11 @@ public class BuildingSkill extends CraftingSkill
 		NOWALL,
 		INDOOR,
 		OUTDOOR,
-		METAL,
-		NODOWN
+		CAVEONLY,
+		NODOWN,
+		WATERONLY
 	}
 
-	//TODO: push this stuff into recipes, you can do it.
-	
 	protected Room		room				= null;
 	protected int		dir					= -1;
 	protected String[]	recipe				= null;
@@ -120,13 +125,14 @@ public class BuildingSkill extends CraftingSkill
 	//protected static final int	RCP_LEVEL			= 1;
 	//protected static final int	RCP_TICKS			= 2;
 	protected final static int	DAT_WOOD			= 3;
-	protected final static int	DAT_FLAG			= 4;
-	protected final static int	DAT_BUILDCODE		= 5;
-	protected final static int	DAT_CLASS			= 6;
-	protected final static int	DAT_MISC			= 7;
-	protected final static int	DAT_PROPERTIES		= 8;
-	protected final static int	DAT_DESC			= 9;
-	protected final static int	DAT_BUILDERMASK		= 10;
+	protected final static int	DAT_WOODTYPE		= 4;
+	protected final static int	DAT_FLAG			= 5;
+	protected final static int	DAT_BUILDCODE		= 6;
+	protected final static int	DAT_CLASS			= 7;
+	protected final static int	DAT_MISC			= 8;
+	protected final static int	DAT_PROPERTIES		= 9;
+	protected final static int	DAT_DESC			= 10;
+	protected final static int	DAT_BUILDERMASK		= 11;
 	
 	@Override
 	public String parametersFile()
@@ -164,11 +170,12 @@ public class BuildingSkill extends CraftingSkill
 		super.unInvoke();
 	}
 
-	protected int[][] getBasicMaterials(final MOB mob, int woodRequired)
+	protected int[][] getBasicMaterials(final MOB mob, int woodRequired, String miscType)
 	{
-		final int[] pm={RawMaterial.MATERIAL_ROCK};
+		if(miscType.length()==0)
+			miscType="stone";
 		final int[][] idata=fetchFoundResourceData(mob,
-													woodRequired,"stone",pm,
+													woodRequired,miscType,null,
 													0,null,null,
 													false,
 													0,null);
@@ -500,26 +507,63 @@ public class BuildingSkill extends CraftingSkill
 			CMLib.database().DBUpdateExits(room);
 		}
 	}
+
+	protected int findFloorNumber(Room room, Set<Room> done, int floor)
+	{
+		LandTitle title = CMLib.law().getLandTitle(room);
+		if(title == null)
+			return floor;
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			Room R=room.getRoomInDir(d);
+			if((R!=null)&&(!done.contains(R)))
+			{
+				done.add(R);
+				if(d==Directions.UP)
+				{
+					int f=findFloorNumber(R,done,floor-1);
+					if(f != Integer.MIN_VALUE)
+						return f;
+				}
+				else
+				if(d==Directions.DOWN)
+				{
+					int f=findFloorNumber(R,done,floor+1);
+					if(f != Integer.MIN_VALUE)
+						return f;
+				}
+				else
+				{
+					int f=findFloorNumber(R,done,floor);
+					if(f != Integer.MIN_VALUE)
+						return f;
+				}
+			}
+		}
+		return Integer.MIN_VALUE;
+	}
 	
-	protected Room buildStairs(final MOB mob, Room room, int dir, String desc, String addParms)
+	protected Room buildStairs(final MOB mob, Room room, int dir, String[] recipe)
 	{
 		Room newRoom;
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
+			String desc = recipe[DAT_MISC];
+			String addParms = recipe[DAT_PROPERTIES];
+			String localeClass = recipe[DAT_CLASS];
+			
 			int opDir = Directions.getOpDirectionCode(dir);
 			room=CMLib.map().getRoom(room);
-			int floor=0;
-			newRoom=room;
-			while((newRoom!=null)&&(newRoom.ID().length()>0)&&(CMLib.law().getLandTitle(newRoom)!=null))
-			{
-				newRoom=newRoom.getRoomInDir(dir);
-				floor++;
-			}
-			newRoom=CMClass.getLocale(CMClass.classID(room));
+			int floor=findFloorNumber(room, new HashSet<Room>(), 1);
+			if(localeClass.length()==0)
+				newRoom=CMClass.getLocale(CMClass.classID(room));
+			else
+				newRoom=CMClass.getLocale(localeClass);
 			newRoom.setRoomID(room.getArea().getNewRoomID(room,dir));
 			if(newRoom.roomID().length()==0)
 			{
-				commonTell(mob,L("You've failed to build the "+desc+"!",Directions.getDirectionName(dir)));
+				String verbDesc = recipe[DAT_DESC];
+				commonTell(mob,L("You've failed to build the "+verbDesc+"!",Directions.getDirectionName(dir)));
 				return null;
 			}
 			newRoom.setArea(room.getArea());
@@ -551,7 +595,7 @@ public class BuildingSkill extends CraftingSkill
 			final Exit newExit;
 			final Exit returnExit;
 
-			if((dir == Directions.UP)||(dir == Directions.DOWN))
+			if(((dir == Directions.UP)||(dir == Directions.DOWN))&&(newFloorNum > 0))
 			{
 				newExit=CMClass.getExit("GenExit");
 				newExit.setName(L("a passageway"));
@@ -684,7 +728,7 @@ public class BuildingSkill extends CraftingSkill
 		}
 	}
 
-	protected void demolish(final MOB mob, Room room, int dir)
+	protected void demolish(final MOB mob, Room room, int dir, String[] recipe)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
@@ -692,12 +736,13 @@ public class BuildingSkill extends CraftingSkill
 			if(dir<0)
 			{
 
-				if(CMLib.law().isHomeRoomUpstairs(room))
+				if((CMLib.law().isHomeRoomUpstairs(room))
+				||(recipe[DAT_CLASS].trim().length()==0))
 				{
 					demolishRoom(mob,room);
 				}
 				else
-					convertToPlains(room);
+					convertToPlains(room,recipe[DAT_CLASS]);
 			}
 			else
 			{
@@ -719,7 +764,7 @@ public class BuildingSkill extends CraftingSkill
 		{
 		case DEMOLISH:
 		{
-			this.demolish(mob, room, dir);
+			this.demolish(mob, room, dir, recipe);
 			break;
 		}
 		case DESC:
@@ -747,9 +792,10 @@ public class BuildingSkill extends CraftingSkill
 			this.buildNewRoomType(room, localeName, spells, size);
 			break;
 		}
+		case EXCAVATE:
 		case STAIRS:
 		{
-			this.buildStairs(mob, room, dir, recipe[DAT_MISC], recipe[DAT_PROPERTIES]);
+			this.buildStairs(mob, room, dir, recipe);
 			break;
 		}
 		case TITLE:
@@ -765,9 +811,9 @@ public class BuildingSkill extends CraftingSkill
 		}
 	}
 	
-	protected Room convertToPlains(Room room)
+	protected Room convertToPlains(Room room, String localeID)
 	{
-		final Room R=CMClass.getLocale("Plains");
+		final Room R=CMClass.getLocale(localeID);
 		R.setRoomID(room.roomID());
 		R.setDisplayText(room.displayText());
 		R.setDescription(room.description());
@@ -930,8 +976,12 @@ public class BuildingSkill extends CraftingSkill
 		}
 		final String str=commands.get(0);
 		final String[][] data=getRecipeData(mob);
+		LandTitle title = CMLib.law().getLandTitle(mob.location());
+		double landValue = ((title == null) ? 0 : title.getPrice()) / 100.0;
+		String landCurrency = CMLib.beanCounter().getCurrency(mob.location());
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
+			boolean hasValueTag = false;
 			final String mask=CMParms.combine(commands,1);
 			final int colWidth=CMLib.lister().fixColWidth(20,mob.session());
 			final StringBuffer buf=new StringBuffer(CMStrings.padRight(L("Item"),colWidth) + L(" @x1 required\n\r",this.getMainResourceName()));
@@ -945,14 +995,35 @@ public class BuildingSkill extends CraftingSkill
 					||mask.equalsIgnoreCase("all")
 					||CMLib.english().containsString(CMStrings.padRight(data[r][RCP_FINALNAME],colWidth),mask)))
 				{
-					final Set<Flag> flags = makeFlags(data[r]);
-					final int woodRequired=adjustWoodRequired(CMath.s_int(data[r][DAT_WOOD]),mob);
-					buf.append(CMStrings.padRight(data[r][RCP_FINALNAME],colWidth)+" "+woodRequired);
-					if(flags.contains(Flag.METAL))
-						buf.append(L(" metal"));
-					buf.append("\n\r");
+					buf.append(CMStrings.padRight(data[r][RCP_FINALNAME],colWidth)+" ");
+					String material=data[r][DAT_WOODTYPE];
+					if(material.equalsIgnoreCase("VALUE"))
+					{
+						hasValueTag=true;
+						final String woodStr = recipe[DAT_WOOD];
+						if(CMath.isInteger(woodStr))
+						{
+							int wood=CMath.s_int(woodStr);
+							wood=adjustWoodRequired(wood,mob);
+							if(title == null)
+								buf.append(wood+"% ??\n\r");
+							else
+								buf.append(CMLib.beanCounter().nameCurrencyLong(landCurrency, landValue * wood)).append("\n\r");
+						}
+						else
+							buf.append("??\n\r");
+					}
+					else
+					{
+						final String wood=getComponentDescription(mob,Arrays.asList(data[r]),DAT_WOOD);
+						if(wood.length()>5)
+							material="";
+						buf.append(wood+" "+material.toLowerCase()+"\n\r");
+					}
 				}
 			}
+			if((title == null) && hasValueTag)
+				buf.append(L("\n\rYou can't tell anything about some costs from this location.\n\r"));
 			commonTell(mob,buf.toString());
 			return true;
 		}
@@ -1026,9 +1097,9 @@ public class BuildingSkill extends CraftingSkill
 			commonTell(mob,L("'@x1' is not a valid @x2 project.  Try LIST.",firstWord,name()));
 			return false;
 		}
-		
+
 		final Set<Flag> flags = makeFlags(recipe);
-		
+
 		if((mob.location()!=null)
 		&&((mob.location() instanceof BoardableShip) || (mob.location().getArea() instanceof BoardableShip)))
 		{
@@ -1037,6 +1108,7 @@ public class BuildingSkill extends CraftingSkill
 		}
 		final String dirName=commands.get(commands.size()-1);
 		dir=Directions.getGoodDirectionCode(dirName);
+		
 		if((doingCode == Building.DEMOLISH)&&(dirName.equalsIgnoreCase("roof"))||(dirName.equalsIgnoreCase("ceiling")))
 		{
 			final Room upRoom=mob.location().getRoomInDir(Directions.UP);
@@ -1065,7 +1137,6 @@ public class BuildingSkill extends CraftingSkill
 		else
 		if((doingCode == Building.DEMOLISH)&&(dirName.equalsIgnoreCase("room")))
 		{
-			final LandTitle title=CMLib.law().getLandTitle(mob.location());
 			if((!CMLib.law().doesOwnThisLand(mob, mob.location()))
 			&&(title!=null)
 			&&(title.getOwnerName().length()>0))
@@ -1139,10 +1210,42 @@ public class BuildingSkill extends CraftingSkill
 				commonTell(mob,L("A valid direction in which to build must also be specified.  Try UP or DOWN."));
 				return false;
 			}
-			final LandTitle title=CMLib.law().getLandTitle(mob.location());
+		}
+		
+		if(doingCode == Building.EXCAVATE)
+		{
+			if(dir==Directions.DOWN)
+			{
+				switch(mob.location().domainType())
+				{
+				case Room.DOMAIN_INDOORS_METAL:
+				case Room.DOMAIN_INDOORS_STONE:
+				case Room.DOMAIN_INDOORS_WOOD:
+					int floorNumber = this.findFloorNumber(mob.location(), new HashSet<Room>(), 1);
+					if(floorNumber > 1)
+					{
+						commonTell(mob,L("You cannot excavate from above the ground."));
+						return false;
+					}
+					break;
+				case Room.DOMAIN_OUTDOORS_AIR:
+				case Room.DOMAIN_OUTDOORS_UNDERWATER:
+				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+				case Room.DOMAIN_INDOORS_AIR:
+				case Room.DOMAIN_INDOORS_UNDERWATER:
+				case Room.DOMAIN_INDOORS_WATERSURFACE:
+					commonTell(mob,L("You can only excavate down into the ground."));
+					return false;
+				}
+				flags.remove(Flag.CAVEONLY);  // caveonly only matters if complex DOWN rules don't apply.
+			}
+		}
+		
+		if((doingCode == Building.STAIRS)||(doingCode == Building.EXCAVATE))
+		{
 			if((title==null)||(!title.allowsExpansionConstruction()))
 			{
-				commonTell(mob,L("The title here does not permit the building of new floors."));
+				commonTell(mob,L("The title here does not permit the building of new places."));
 				return false;
 			}
 			if((!CMath.bset(mob.location().domainType(), Room.INDOORS))&&(dir==Directions.UP))
@@ -1156,7 +1259,10 @@ public class BuildingSkill extends CraftingSkill
 				if(dir == Directions.UP)
 					commonTell(mob,L("There is already something up here."));
 				else
+				if(dir == Directions.DOWN)
 					commonTell(mob,L("There is already something down here."));
+				else
+					commonTell(mob,L("There is already something over there."));
 				return false;
 			}
 			
@@ -1204,11 +1310,33 @@ public class BuildingSkill extends CraftingSkill
 				return false;
 			}
 		}
+		
+		if(flags.contains(Flag.CAVEONLY))
+		{
+			if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+			{
+				commonTell(mob,L("This can only be done underground."));
+				return false;
+			}
+		}
+		
+		if(flags.contains(Flag.WATERONLY))
+		{
+			if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
+			&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+			&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
+			{
+				commonTell(mob,L("This can only be done in water."));
+				return false;
+			}
+		}
+		
 
 		if(doingCode == Building.TITLE)
 		{
-			final String title=CMParms.combine(commands,1);
-			if(title.length()==0)
+			final String titleStr=CMParms.combine(commands,1);
+			if(titleStr.length()==0)
 			{
 				commonTell(mob,L("A title must be specified."));
 				return false;
@@ -1218,13 +1346,13 @@ public class BuildingSkill extends CraftingSkill
 			for (final Room room2 : checkSet)
 			{
 				final Room R=CMLib.map().getRoom(room2);
-				if(R.displayText(mob).equalsIgnoreCase(title))
+				if(R.displayText(mob).equalsIgnoreCase(titleStr))
 				{
 					commonTell(mob,L("That title has already been taken.  Choose another."));
 					return false;
 				}
 			}
-			designTitle=title;
+			designTitle=titleStr;
 		}
 		else
 		if(doingCode == Building.DESC)
@@ -1253,33 +1381,37 @@ public class BuildingSkill extends CraftingSkill
 			else
 				commands.remove(1);
 
-			final String title=CMParms.combine(commands,1);
-			if(title.length()==0)
+			final String descStr=CMParms.combine(commands,1);
+			if(descStr.length()==0)
 			{
 				commonTell(mob,L("A description must be specified."));
 				return false;
 			}
-			designDescription=title;
+			designDescription=descStr;
 		}
 
-		int[][] idata=null;
-		if(flags.contains(Flag.METAL))
+		int[][] idata;
+		if(recipe[DAT_WOODTYPE].equalsIgnoreCase("VALUE"))
 		{
-			final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
-			idata=fetchFoundResourceData(mob,
-			 							woodRequired,"metal",pm,
-			 							0,null,null,
-			 							false,
-			 							0,null);
+			idata=null;
+			int wood=CMath.s_int(recipe[DAT_WOOD]);
+			wood=adjustWoodRequired(wood,mob);
+			double roomValue = landValue * wood;
+			if(CMLib.beanCounter().getTotalAbsoluteValue(mob, landCurrency) < roomValue)
+			{
+				commonTell(mob,L("You'll need @x1 to do that.",CMLib.beanCounter().nameCurrencyLong(landCurrency, roomValue)));
+				return false;
+			}
+			woodRequired=0;
 		}
 		else
 		{
-			idata = this.getBasicMaterials(mob, woodRequired);
-		}
+			idata=this.getBasicMaterials(mob, woodRequired, recipe[DAT_WOODTYPE]);
 
-		if(idata==null)
-			return false;
-		woodRequired=idata[0][FOUND_AMT];
+			if(idata==null)
+				return false;
+			woodRequired=idata[0][FOUND_AMT];
+		}
 
 		if(!canBuild)
 		{
@@ -1302,8 +1434,17 @@ public class BuildingSkill extends CraftingSkill
 		room=mob.location();
 		if(room.getGridParent() != null)
 			room = room.getGridParent();
-		if(woodRequired>0)
+		
+		if((woodRequired>0)&&(idata!=null))
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,idata[0][FOUND_CODE],0,null);
+		else
+		if(recipe[DAT_WOODTYPE].equalsIgnoreCase("VALUE"))
+		{
+			int wood=CMath.s_int(recipe[DAT_WOOD]);
+			wood=adjustWoodRequired(wood,mob);
+			double roomValue = landValue * wood;
+			CMLib.beanCounter().subtractMoney(mob, landCurrency, roomValue);
+		}
 
 		verb = establishVerb(mob, recipe);
 		if(verb.length()==0)

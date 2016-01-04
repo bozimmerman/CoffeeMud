@@ -1,0 +1,17 @@
+#name	level	ticks	wood	misc resource	flag	code	class	misc	property	desc	builder mask
+Demolish	1	25	0		DIR	DEMOLISH	Plains	-		demolishing	
+Title	1	15	0			TITLE	NA	-	-	title	
+Description	1	10	0			DESC	NA	-	-	description	
+Wall	1	25	100		DIR	WALL	NA	-		@x1 wall	
+Desert	10	113	150	VALUE	OUTDOOR	ROOM	Desert	0		desert	
+Hills	25	225	300	VALUE	OUTDOOR	ROOM	Hills	0		hills	
+Jungle	20	188	250	VALUE	OUTDOOR	ROOM	Jungle	0		jungle	
+Mountains	30	375	500	VALUE	OUTDOOR	ROOM	Mountains	0		mountains	
+Cave	17	169	225	VALUE	OUTDOOR	ROOM	Dave	0		cave	
+Plains	1	5	100	VALUE	OUTDOOR	ROOM	Plains	0		plains	
+Road	1	38	50	VALUE	OUTDOOR	ROOM	Road	0		road	
+CityStreet	1	38	50	VALUE	OUTDOOR	ROOM	CityStreet	0		city street	
+Shallow Water	5	75	100	VALUE	OUTDOOR	ROOM	ShallowWater	0		shallow water	
+Shore	7	94	125	VALUE	OUTDOOR	ROOM	Shore	0		shore	
+Swamp	15	150	200	VALUE	OUTDOOR	ROOM	Swamp	0		swamp	
+Forest	3	56	75	VALUE	OUTDOOR	ROOM	Forest	0		forest	
