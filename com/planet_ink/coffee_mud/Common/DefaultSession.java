@@ -545,7 +545,7 @@ public class DefaultSession implements Session
 			if(terminalType.equalsIgnoreCase("mushclient"))
 				return true;
 		}
-		return getClientTelnetMode(Session.TELNET_MXP);
+		return true;
 	}
 
 	@Override
