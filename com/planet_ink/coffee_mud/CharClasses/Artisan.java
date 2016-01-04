@@ -191,9 +191,11 @@ public class Artisan extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"LockSmith",0,"",true);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Excavation",false,CMParms.parseSemicolons("Sculpting",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Construction",true,CMParms.parseSemicolons("Carpentry",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Masonry",true,CMParms.parseSemicolons("Sculpting",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Landscaping",false,CMParms.parseSemicolons("Farming",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Cage",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Merchant",true);
@@ -246,7 +248,6 @@ public class Artisan extends StdCharClass
 		&&(msg.value() > 0))
 			CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
 	}
-	
 	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

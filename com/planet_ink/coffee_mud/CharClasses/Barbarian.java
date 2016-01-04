@@ -241,4 +241,20 @@ public class Barbarian extends StdCharClass
 		}
 		return outfitChoices;
 	}
+	
+	@Override
+	public int classDurationModifier(MOB myChar,
+									 Ability skill,
+									 int duration)
+	{
+		if(myChar==null)
+			return duration;
+		if((((skill.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+			||((skill.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BUILDINGSKILL))
+		&&(!skill.ID().equals("Foraging"))
+		&&(!skill.ID().equals("Hunting")))
+			return duration*2;
+
+		return duration;
+	}
 }

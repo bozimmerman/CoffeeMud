@@ -60,9 +60,7 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Scrapping",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AstroEngineering",100,"",true,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Excavation",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Welding",100,"",true,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Landscaping",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Irrigation",100,"",true,true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Common",100,"",true,true);

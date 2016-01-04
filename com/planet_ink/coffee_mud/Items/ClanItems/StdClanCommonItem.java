@@ -245,6 +245,7 @@ public class StdClanCommonItem extends StdClanItem
 					A.setProficiency(100);
 					boolean success=false;
 					if(((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL)
+					&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_BUILDINGSKILL)
 					&&(CMLib.flags().isMobile(M)))
 					{
 						final DVector DV=needChart.get(M.location().getArea());
@@ -263,7 +264,11 @@ public class StdClanCommonItem extends StdClanItem
 										final int rand=i;
 										needs=(List)DV.elementAt(rand,2);
 										M2=(MOB)DV.elementAt(rand,1);
-									}catch(final Exception e){continue;}
+									}
+									catch (final Exception e)
+									{
+										continue;
+									}
 									if((needs!=null)
 									&&(M2!=null)
 									&&(needs.contains(Integer.valueOf(RawMaterial.MATERIAL_METAL)))
@@ -381,13 +386,27 @@ public class StdClanCommonItem extends StdClanItem
 					{
 						switch(CMLib.dice().roll(1,7,0))
 						{
-						case 1: CMLib.commands().postSay(M,null,L("I can't see a thing.")); break;
-						case 2: CMLib.commands().postSay(M,null,L("It's too dark to work.")); break;
-						case 3: CMLib.commands().postSay(M,null,L("How am I supposed to work in these conditions?")); break;
-						case 4: CMLib.commands().postSay(M,null,L("Too dadgum dark.")); break;
-						case 5: CMLib.commands().postSay(M,null,L("Is anyone there?  I can't see!")); break;
-						case 6: CMLib.commands().postSay(M,null,L("Someone turn on the lights to I can work!")); break;
-						case 7: CMLib.commands().postSay(M,null,L("I could use some light, if you expect me to work.")); break;
+						case 1:
+							CMLib.commands().postSay(M, null, L("I can't see a thing."));
+							break;
+						case 2:
+							CMLib.commands().postSay(M, null, L("It's too dark to work."));
+							break;
+						case 3:
+							CMLib.commands().postSay(M, null, L("How am I supposed to work in these conditions?"));
+							break;
+						case 4:
+							CMLib.commands().postSay(M, null, L("Too dadgum dark."));
+							break;
+						case 5:
+							CMLib.commands().postSay(M, null, L("Is anyone there?  I can't see!"));
+							break;
+						case 6:
+							CMLib.commands().postSay(M, null, L("Someone turn on the lights to I can work!"));
+							break;
+						case 7:
+							CMLib.commands().postSay(M, null, L("I could use some light, if you expect me to work."));
+							break;
 						}
 					}
 

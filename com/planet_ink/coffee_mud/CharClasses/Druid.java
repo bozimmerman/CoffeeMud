@@ -431,13 +431,16 @@ public class Druid extends StdCharClass
 	{
 		if(myChar==null)
 			return duration;
-		if(((skill.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+		if((((skill.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+			||((skill.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BUILDINGSKILL))
 		&&(myChar.charStats().getCurrentClass().ID().equals(ID()))
 		&&(!skill.ID().equals("FoodPrep"))
 		&&(!skill.ID().equals("Cooking"))
 		&&(!skill.ID().equals("Herbalism"))
 		&&(!skill.ID().equals("Weaving"))
-		&&(!skill.ID().equals("Masonry")))
+		&&(!skill.ID().equals("Masonry"))
+		&&(!skill.ID().equals("Landscaping"))
+		&&(!skill.ID().equals("Excavation")))
 			return duration*2;
 
 		return duration;
