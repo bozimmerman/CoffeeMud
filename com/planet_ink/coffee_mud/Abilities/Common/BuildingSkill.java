@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class BuildingSkill extends CraftingSkill
+public class BuildingSkill extends CraftingSkill implements CraftorAbility
 {
 	@Override
 	public String ID()
@@ -104,7 +104,7 @@ public class BuildingSkill extends CraftingSkill
 		EXCAVATE
 	}
 	
-	public enum Flag
+	protected enum Flag
 	{
 		DIR,
 		NOWALL,
@@ -135,9 +135,31 @@ public class BuildingSkill extends CraftingSkill
 	protected final static int	DAT_BUILDERMASK		= 11;
 	
 	@Override
+	public String parametersFormat()
+	{
+		if(Resources.getResource("BUILDING_SKILL_CODES_FLAGS")==null)
+		{
+			final String[] codes = CMParms.toStringArray(Building.values());
+			final String[] flags = CMParms.toStringArray(Flag.values());
+			Pair<String[],String[]> codesFlags = new Pair<String[],String[]>(codes, flags);
+			Resources.submitResource("BUILDING_SKILL_CODES_FLAGS", codesFlags);
+		}
+		return"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tRESOURCE_OR_MATERIAL\t"
+			+ "BUILDING_CODE\tBUILDING_FLAGS\tROOMEXIT_CLASS_ID\tBUILDING_GRID_SIZE||EXIT_NAMES||N_A\t"
+			+ "PCODED_SPELL_LIST\tBUILDING_NOUN\tBUILDER_MASK";
+	}
+	
+	@Override
 	public String parametersFile()
 	{
 		return "";
+	}
+
+	@Override
+	public String getDecodedComponentsDescription(MOB mob, List<String> recipe)
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

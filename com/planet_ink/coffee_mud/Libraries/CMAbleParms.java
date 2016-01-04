@@ -327,14 +327,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(dataRow.elementAt(d,1) instanceof List)
 			{
 				final List<String> V=(List<String>)dataRow.elementAt(d,1);
-				if(V.contains("ITEM_CLASS_ID")||V.contains("FOOD_DRINK"))
+				if(V.contains("ITEM_CLASS_ID")||V.contains("FOOD_DRINK")||V.contains("BUILDING_CODE"))
 					return d;
 			}
 			else
 			if(dataRow.elementAt(d,1) instanceof String)
 			{
 				final String s=(String)dataRow.elementAt(d,1);
-				if(s.equalsIgnoreCase("ITEM_CLASS_ID")||s.equalsIgnoreCase("FOOD_DRINK"))
+				if(s.equalsIgnoreCase("ITEM_CLASS_ID")||s.equalsIgnoreCase("FOOD_DRINK")||s.equalsIgnoreCase("BUILDING_CODE"))
 					return d;
 			}
 		}
@@ -1125,6 +1125,64 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return newName;
 				}
 			},
+			new AbilityParmEditorImpl("BUILDING_NOUN","Building noun",ParmType.STRING)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "thing";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+			},
+			new AbilityParmEditorImpl("BUILDING_NOUN","Building noun",ParmType.STRING)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "thing";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+			},
+			new AbilityParmEditorImpl("BUILDER_MASK","Builder Mask",ParmType.STRING)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+			},
+			
 			new AbilityParmEditorImpl("ITEM_LEVEL","Lvl",ParmType.NUMBER)
 			{
 				@Override
@@ -1508,6 +1566,38 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
 					return ""+I.baseGoldValue();
+				}
+			},
+			new AbilityParmEditorImpl("ROOMEXIT_CLASS_ID","Class ID",ParmType.CHOICES)
+			{
+				@Override
+				public void createChoices()
+				{
+					final Vector<Environmental> V  = new Vector<Environmental>();
+					V.addAll(new XVector<Room>(CMClass.locales()));
+					V.addAll(new XVector<Exit>(CMClass.exits()));
+					final Vector<CMObject> V2=new Vector<CMObject>();
+					Environmental I;
+					for(final Enumeration<Environmental> e=V.elements();e.hasMoreElements();)
+					{
+						I=e.nextElement();
+						if(I.isGeneric() || (I instanceof Room))
+							V2.addElement(I);
+					}
+					createChoices(V2);
+					this.choices().add(0,new Pair<String,String>("NA","N/A"));
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "NA";
 				}
 			},
 			new AbilityParmEditorImpl("ITEM_CLASS_ID","Class ID",ParmType.CHOICES)
@@ -2104,6 +2194,62 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return "LOCK";
 					if(C.hasADoor())
 						return "LID";
+					return "";
+				}
+			},
+			new AbilityParmEditorImpl("BUILDING_CODE","Code",ParmType.CHOICES)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					return 1;
+				}
+	
+				@SuppressWarnings("unchecked")
+				@Override
+				public void createChoices()
+				{
+					final Pair<String[],String[]> codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS"); 
+					createChoices(codesFlags.first);
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "TITLE";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "TITLE";
+				}
+			},
+			new AbilityParmEditorImpl("BUILDING_CODE","Flags",ParmType.MULTICHOICES)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					return 1;
+				}
+	
+				@SuppressWarnings("unchecked")
+				@Override
+				public void createChoices()
+				{
+					final Pair<String[],String[]> codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS"); 
+					createChoices(codesFlags.second);
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
 					return "";
 				}
 			},
@@ -3689,7 +3835,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				return new String[]{oldVal};
 			}
 			case MULTICHOICES:
-				if(oldVal.trim().length()==0) return new String[]{"NULL"};
+				if(oldVal.trim().length()==0) 
+					return new String[]{"NULL"};
 				if(!CMath.isInteger(oldVal))
 				{
 					final Vector<String> V = new XVector<String>(choices.toArrayFirst(new String[0]));
