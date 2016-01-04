@@ -368,6 +368,8 @@
 			
 			<li> <a href="#WHERE">WHERE</a>
 			
+			<li> <a href="#WHO">WHO</a>
+			
 			<li> <a href="#WIZEMOTE">WIZEMOTE</a>
 			
 			<li> <a href="#WIZINFO">WIZINFO</a>
@@ -471,7 +473,7 @@
 			
 			<p>
 			<a name="CATALOG"><B>CATALOG</B></a>
-			<pre>Command  : CATALOG<BR>Usage    : CATALOG LIST (MOBS/ITEMS/) (NAME MASK)<BR>Usage    : CATALOG (DELETE) [ITEM/MOB NAME]<BR>Usage    : CATALOG (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Usage    : CATALOG EDIT [ITEM NAME]<BR>Usage    : CATALOG CATAGORY [CATAGORY NAME]<BR>Usage    : CATALOG SCAN/DBSCAN (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Usage    : CATALOG OVERLOOK/DBOVERLOOK (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Example  : catalog list<BR>Example  : catalog list mobs the st<BR>Example  : catalog the waiter<BR>Example  : catalog delete the waiter<BR>Example  : catalog edit the sword<BR>Example  : catalog room mobs<BR>Example  : catalog scan area<BR>Example  : catalog dboverlook area mobs<BR>Short(s) : <BR>This command is used to manage your muds global catalog of generic mobs and/or<BR>items. The catalog is a place where you can store templates of mobs and items<BR>for reuse, or for quick global modification and analysis.  Mobs and items in<BR>your catalog can be changed globally simply by creating and then changing any<BR>instance of one of them.  You can create new instances of a cataloged object<BR>simply by entering CREATE &lt;cataloged object name>. Your catalog is keyed by<BR>name, so once the name of a cataloged item or mob is set, it should not be<BR>changed. <BR><BR>Cataloged items can be placed into categories by issueing the catalog category<BR>command before adding or modifying catalog entries.  Mobs and items so<BR>cataloged must still have a unique global name, but flagging them this way can<BR>make listing them must easier. <BR><BR>You may review the objects in your catalog using the catalog list command. You<BR>can also check the catalog synchronicity of the objects in your live rooms with<BR>scan, or your saved rooms with dbscan.  You can check for uncataloged objects<BR>in live rooms with the overlook parameter, or in your saved rooms with<BR>dboverlook. <BR><BR>You may delete an object from your catalog to stop using it as a global<BR>template. Deleting an object from the catalog only detaches instances of a<BR>cataloged object from all others, but does not destroy any actual instances.<BR><BR>The catalog is also used to manage a global random item-drop table.  Items can<BR>be set to randomly appear in the inventories of selected mobs when those mobs<BR>are brought to life, or at the moment of their death. Use CATALOG EDIT &lt;item<BR>name> to change drop settings.</pre>
+			<pre>Command  : CATALOG<BR>Usage    : CATALOG LIST (MOBS/ITEMS/) (NAME MASK)<BR>Usage    : CATALOG (DELETE) [ITEM/MOB NAME]<BR>Usage    : CATALOG (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Usage    : CATALOG EDIT [ITEM NAME]<BR>Usage    : CATALOG CATEGORY [CATEGORY NAME]<BR>Usage    : CATALOG SCAN/DBSCAN (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Usage    : CATALOG OVERLOOK/DBOVERLOOK (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Example  : catalog list<BR>Example  : catalog list mobs the st<BR>Example  : catalog the waiter<BR>Example  : catalog delete the waiter<BR>Example  : catalog edit the sword<BR>Example  : catalog room mobs<BR>Example  : catalog scan area<BR>Example  : catalog dboverlook area mobs<BR>Short(s) : <BR>This command is used to manage your muds global catalog of generic mobs and/or<BR>items. The catalog is a place where you can store templates of mobs and items<BR>for reuse, or for quick global modification and analysis.  Mobs and items in<BR>your catalog can be changed globally simply by creating and then changing any<BR>instance of one of them.  You can create new instances of a cataloged object<BR>simply by entering CREATE &lt;cataloged object name>. Your catalog is keyed by<BR>name, so once the name of a cataloged item or mob is set, it should not be<BR>changed. <BR><BR>Cataloged items can be placed into categories by issueing the catalog category<BR>command before adding or modifying catalog entries.  Mobs and items so<BR>cataloged must still have a unique global name, but flagging them this way can<BR>make listing them must easier. <BR><BR>You may review the objects in your catalog using the catalog list command. You<BR>can also check the catalog synchronicity of the objects in your live rooms with<BR>scan, or your saved rooms with dbscan.  You can check for uncataloged objects<BR>in live rooms with the overlook parameter, or in your saved rooms with<BR>dboverlook. <BR><BR>You may delete an object from your catalog to stop using it as a global<BR>template. Deleting an object from the catalog only detaches instances of a<BR>cataloged object from all others, but does not destroy any actual instances.<BR><BR>The catalog is also used to manage a global random item-drop table.  Items can<BR>be set to randomly appear in the inventories of selected mobs when those mobs<BR>are brought to life, or at the moment of their death. Use CATALOG EDIT &lt;item<BR>name> to change drop settings.</pre>
 			</P>
 			
 			<p>
@@ -1231,7 +1233,7 @@
 			
 			<p>
 			<a name="TICKTOCK"><B>TICKTOCK</B></a>
-			<pre>Command : TickTock<BR>Usage   : [NUM HOURS]/CLANTICK/[THREAD NAME]<BR>Example : ticktock 10<BR>Example : ticktock -4<BR>Example : ticktock CLANTICK<BR>Example : ticktock THPLAYERS0<BR>Advance the time by specified number of hours, or cause one of the specified<BR>maintenance threads to immediately go through a cycle.  Use LIST REPORTS to get<BR>a list of maintenance threads.</pre>
+			<pre>Command : TickTock<BR>Usage   : [NUM HOURS]/CLANTICK/[THREAD NAME]<BR>Example : ticktock 10<BR>Example : ticktock -4<BR>Example : ticktock CLANTICK<BR>Example : ticktock THPLAYERS0<BR>Advance the time by specified number of hours, or cause one of the specified<BR>maintenance threads to immediately go through a cycle.  Use LIST REPORTS to get<BR>a list of maintenance threads.  The CLANTICK argument forces the timed clan<BR>maintenance.</pre>
 			</P>
 			
 			<p>
@@ -1267,6 +1269,11 @@
 			<p>
 			<a name="WHERE"><B>WHERE</B></a>
 			<pre>Command : WHERE<BR>Usage   : WHERE (AREA) (ROOM/MOB/ITEM/MOBMASK/ITEMMASK) ([MASK])<BR>Example : where<BR>Example : where dog<BR>Example : where area item knife<BR>Example : where area mobmask -race +orc -levels +>=10<BR>Example : where !<BR>Short(s): <BR>Without an argument, this command displays the names and locations of all<BR>players online.  With the ROOM, MOB, ITEM, or no argument, it will show all<BR>mobs, rooms, and/or items the match the given key words in the mask, along with<BR>room locations.  With the MOBMASK, ITEMMASK arguments, it will show all mobs or<BR>items that match the given Zapper Mask (See ZAPPERMASKS). The arguments may be<BR>qualified with AREA to show only the Archons current area. The argument ! will<BR>show the mundane/player version of the WHERE command.</pre>
+			</P>
+			
+			<p>
+			<a name="WHO"><B>WHO</B></a>
+			<pre>Command : WHO<BR>Usage   : WHO ([OPTIONAL PARAMETER])<BR>Example : who<BR>Example : who @CoffeeMud<BR>Example : who friends<BR>Example : who account<BR>Example : who playerkill<BR>Short(s): <BR>This command will list all of the characters presently online, regardless of<BR>where they are.  If an @ sign is used, this command will list all the players<BR>at a particular MUD.  If "friends" is given, then the list will consist only of<BR>those from the players friends list (see the FRIENDS command). If "Playerkill"<BR>is given, then the list will consist only of those players who have their<BR>playerkill flags on. If account is given, then a list of players with the<BR>account they belong to is shown.</pre>
 			</P>
 			
 			<p>
