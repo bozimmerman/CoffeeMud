@@ -19,7 +19,7 @@ import java.util.*;
 
 
 /*
-   Copyright 2000-2015 Lee H. Fox
+   Copyright 2000-2016 Lee H. Fox
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

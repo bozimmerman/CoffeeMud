@@ -29,7 +29,7 @@ import java.math.BigInteger;
 import java.util.*;
 import java.util.Map.Entry;
 /*
-   Copyright 2001-2015 Bo Zimmerman
+   Copyright 2001-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Hashtable;
 
 /*
-   Copyright 2012-2015 Bo Zimmerman
+   Copyright 2012-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import java.util.Hashtable;
 
 
 /*
-   Copyright 2012-2015 Bo Zimmerman
+   Copyright 2012-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
