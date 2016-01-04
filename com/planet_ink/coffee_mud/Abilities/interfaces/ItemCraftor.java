@@ -41,37 +41,8 @@ import java.util.*;
  * and internal aspect of the ability, these methods allow that
  * functionality to be exposed for archon use.
  */
-public interface ItemCraftor extends Ability
+public interface ItemCraftor extends CraftorAbility
 {
-	/**
-	 * A list containing an entry for each craftable recipe
-	 * Each craftable recipe is also a list of strings.
-	 * @return a vector of vectors
-	 */
-	public List<List<String>> fetchRecipes();
-
-	/**
-	 * A String containing the format of each entry in the parameter file
-	 * in a recipe.
-	 * @return a String showing the format of each entry in the parameter file
-	 */
-	public String parametersFormat();
-
-	/**
-	 * A String naming the file where the recipes are found
-	 * @return a String naming the file where the recipes are found
-	 */
-	public String parametersFile();
-
-	/**
-	 * Returns a vector containing an entry for each craftable recipe
-	 * whose name matches the given name.  Each entry is also a vector.
-	 * @param recipeName the name of the recipe to craft
-	 * @param beLoose whether to be specific or "loose" with name matching
-	 * @return a vector of vectors
-	 */
-	public List<List<String>> matchingRecipeNames(String recipeName, boolean beLoose);
-
 	/**
 	 * Crafts a random item of a type supported by this class of
 	 * the given resource code.
@@ -128,14 +99,6 @@ public interface ItemCraftor extends Ability
 	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels);
 
 	/**
-	 * Returns a list of Integer objects where each Integer
-	 * is a fully qualified RawMaterial code.
-	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
-	 * @return a vector of integers
-	 */
-	public List<Integer> myResources();
-
-	/**
 	 * For auto-crafting, this object represents an item,
 	 * and (optionally) a key to go with it.
 	 * @author Bo Zimmermanimmerman
@@ -177,19 +140,4 @@ public interface ItemCraftor extends Ability
 	 * @return the ratio of the weight of material used to make an item with this
 	 */
 	public double getItemWeightMultiplier(boolean bundling);
-
-	/**
-	 * Given a raw recipe, returns a description of the required components to build it.
-	 * @param mob the potential builder
-	 * @param recipe the raw recipe description
-	 * @return a descriptive string
-	 */
-	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe);
-
-	/**
-	 * Given a raw recipe, returns the raw name and level of the item built therefrom.
-	 * @param recipe the raw recipe description
-	 * @return a descriptive pair
-	 */
-	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe);
 }
