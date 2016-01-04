@@ -539,7 +539,13 @@ public class DefaultSession implements Session
 			if((x>0)&&(this.mxpSupportSet.contains("-"+tagString.substring(2,x))))
 				return false;
 		}
-		return true;
+		else
+		if(tagString.startsWith("&"))
+		{
+			if(terminalType.equalsIgnoreCase("mushclient"))
+				return true;
+		}
+		return getClientTelnetMode(Session.TELNET_MXP);
 	}
 
 	@Override
