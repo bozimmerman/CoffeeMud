@@ -1303,13 +1303,27 @@ public class StdRoom implements Room
 						curDex = y+code.closeTag.length();
 					switch(code.c)
 					{
-					case '\n': addMe = !addMe; break;
-					case '\r': addMe=true; break;
-					case 'W': addMe = A.getClimateObj().weatherType(null)==code.num; break;
-					case 'C': addMe = A.getTimeObj().getTODCode().ordinal()==code.num; break;
-					case 'S': addMe = A.getTimeObj().getSeasonCode().ordinal()==code.num; break;
-					case 'M': addMe =  ((mob!=null)&&(CMath.bset(mob.phyStats().disposition(),code.num))); break;
-					case 'V': addMe =  ((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().hasVisited(this))); break;
+					case '\n':
+						addMe = !addMe;
+						break;
+					case '\r':
+						addMe = true;
+						break;
+					case 'W':
+						addMe = A.getClimateObj().weatherType(null) == code.num;
+						break;
+					case 'C':
+						addMe = A.getTimeObj().getTODCode().ordinal() == code.num;
+						break;
+					case 'S':
+						addMe = A.getTimeObj().getSeasonCode().ordinal() == code.num;
+						break;
+					case 'M':
+						addMe = ((mob != null) && (CMath.bset(mob.phyStats().disposition(), code.num)));
+						break;
+					case 'V':
+						addMe = ((mob != null) && (mob.playerStats() != null) && (mob.playerStats().hasVisited(this)));
+						break;
 					}
 					if(addMe)
 						buf.append(parseVariesCodes(mob,A,text.substring(aligatorDex+code.openTag.length(),y)));
@@ -2918,7 +2932,9 @@ public class StdRoom implements Room
 		{
 			return scripts.elementAt(x);
 		}
-		catch(final Exception e){}
+		catch (final Exception e)
+		{
+		}
 		return null;
 	}
 
@@ -2937,7 +2953,8 @@ public class StdRoom implements Room
 			}
 		}
 		catch(final ArrayIndexOutOfBoundsException e)
-		{}
+		{
+		}
 	}
 
 	@Override

@@ -1477,10 +1477,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(room==null)
 			return null;
 		room=CMLib.map().getRoom(room);
-		final Room R=CMClass.getLocale(room.ID());
-		if(R==null)
-			return null;
-		R.setRoomID(room.roomID());
+		Room R=CMLib.database().DBReadRoomData(room.roomID(), false).get(room.roomID());
 		CMLib.database().DBReadContent(R.roomID(),R,makeLive);
 		return R;
 	}

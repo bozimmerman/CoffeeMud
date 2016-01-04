@@ -36,22 +36,30 @@ import java.util.regex.*;
 
 public class GModify extends StdCommand
 {
-	public GModify(){}
+	public GModify()
+	{
+	}
 
-	private final String[] access=I(new String[]{"GMODIFY"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "GMODIFY" });
 
-	private static final int FLAG_CASESENSITIVE=1;
-	private static final int FLAG_SUBSTRING=2;
-	private static final int FLAG_OR=4;
-	private static final int FLAG_AND=8;
-	private static final int EQUATOR_$=0;
-	private static final int EQUATOR_EQ=1;
-	private static final int EQUATOR_NEQ=2;
-	private static final int EQUATOR_GT=3;
-	private static final int EQUATOR_LT=4;
-	private static final int EQUATOR_LTEQ=5;
-	private static final int EQUATOR_GTEQ=6;
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+	
+	private static final int	FLAG_CASESENSITIVE	= 1;
+	private static final int	FLAG_SUBSTRING		= 2;
+	private static final int	FLAG_OR				= 4;
+	private static final int	FLAG_AND			= 8;
+	private static final int	EQUATOR_$			= 0;
+	private static final int	EQUATOR_EQ			= 1;
+	private static final int	EQUATOR_NEQ			= 2;
+	private static final int	EQUATOR_GT			= 3;
+	private static final int	EQUATOR_LT			= 4;
+	private static final int	EQUATOR_LTEQ		= 5;
+	private static final int	EQUATOR_GTEQ		= 6;
+	
 	private static final Map<Object,Integer> EQUATORS=CMStrings.makeNumericHash(new String[]{"$","=","!=",">","<","<=",">="});
 
 	public static String getStat(Environmental E, String stat)
@@ -150,126 +158,128 @@ public class GModify extends StdCommand
 			stat=getStat(E,field);
 			final Integer EQ=EQUATORS.get(equator);
 			if(EQ!=null)
-			switch(EQ.intValue())
 			{
-			case EQUATOR_$:
-				if(pattern!=null)
+				switch(EQ.intValue())
 				{
-					if(!CMath.bset(codes,FLAG_SUBSTRING))
+				case EQUATOR_$:
+					if(pattern!=null)
 					{
-						if(stat.matches(value))
+						if(!CMath.bset(codes,FLAG_SUBSTRING))
+						{
+							if(stat.matches(value))
+							{
+								matchStart=0;
+								matchEnd=stat.length();
+							}
+						}
+						else
+						{
+							M=pattern.matcher(stat);
+							M.reset();
+							if(M.find())
+							{
+								matchStart=M.start();
+								matchEnd=M.end();
+							}
+						}
+					}
+					break;
+				case EQUATOR_EQ:
+				{
+					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
+					{
+						stat=stat.toLowerCase();
+						value=value.toLowerCase();
+					}
+					if(CMath.bset(codes,FLAG_SUBSTRING))
+					{
+						matchStart=stat.indexOf(value);
+						matchEnd=matchStart+value.length();
+					}
+					else
+					if(stat.equals(value))
+					{
+						matchStart=0;
+						matchEnd=stat.length();
+					}
+					break;
+				}
+				case EQUATOR_NEQ:
+				{
+					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
+					{
+						stat=stat.toLowerCase();
+						value=value.toLowerCase();
+					}
+					if(CMath.bset(codes,FLAG_SUBSTRING))
+					{
+						if(stat.indexOf(value)<0)
 						{
 							matchStart=0;
 							matchEnd=stat.length();
 						}
 					}
 					else
-					{
-						M=pattern.matcher(stat);
-						M.reset();
-						if(M.find())
-						{
-							matchStart=M.start();
-							matchEnd=M.end();
-						}
-					}
-				}
-				break;
-			case EQUATOR_EQ:
-			{
-				if(!CMath.bset(codes,FLAG_CASESENSITIVE))
-				{
-					stat=stat.toLowerCase();
-					value=value.toLowerCase();
-				}
-				if(CMath.bset(codes,FLAG_SUBSTRING))
-				{
-					matchStart=stat.indexOf(value);
-					matchEnd=matchStart+value.length();
-				}
-				else
-				if(stat.equals(value))
-				{
-					matchStart=0;
-					matchEnd=stat.length();
-				}
-				break;
-			}
-			case EQUATOR_NEQ:
-			{
-				if(!CMath.bset(codes,FLAG_CASESENSITIVE))
-				{
-					stat=stat.toLowerCase();
-					value=value.toLowerCase();
-				}
-				if(CMath.bset(codes,FLAG_SUBSTRING))
-				{
-					if(stat.indexOf(value)<0)
+					if(!stat.equals(value))
 					{
 						matchStart=0;
 						matchEnd=stat.length();
 					}
+					break;
 				}
-				else
-				if(!stat.equals(value))
+				case EQUATOR_GT:
 				{
-					matchStart=0;
-					matchEnd=stat.length();
+					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
+					{
+						stat=stat.toLowerCase();
+						value=value.toLowerCase();
+					}
+					if(CMath.isNumber(stat)&&CMath.isNumber(value))
+						matchStart=(CMath.s_long(stat)>CMath.s_long(value))?0:-1;
+					else
+						matchStart=(stat.compareTo(value)>0)?0:-1;
+					break;
 				}
-				break;
-			}
-			case EQUATOR_GT:
-			{
-				if(!CMath.bset(codes,FLAG_CASESENSITIVE))
+				case EQUATOR_LT:
 				{
-					stat=stat.toLowerCase();
-					value=value.toLowerCase();
+					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
+					{
+						stat=stat.toLowerCase();
+						value=value.toLowerCase();
+					}
+					if(CMath.isNumber(stat)&&CMath.isNumber(value))
+						matchStart=(CMath.s_long(stat)<CMath.s_long(value))?0:-1;
+					else
+						matchStart=(stat.compareTo(value)<0)?0:-1;
+					break;
 				}
-				if(CMath.isNumber(stat)&&CMath.isNumber(value))
-					matchStart=(CMath.s_long(stat)>CMath.s_long(value))?0:-1;
-				else
-					matchStart=(stat.compareTo(value)>0)?0:-1;
-				break;
-			}
-			case EQUATOR_LT:
-			{
-				if(!CMath.bset(codes,FLAG_CASESENSITIVE))
+				case EQUATOR_LTEQ:
 				{
-					stat=stat.toLowerCase();
-					value=value.toLowerCase();
+					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
+					{
+						stat=stat.toLowerCase();
+						value=value.toLowerCase();
+					}
+					if(CMath.isNumber(stat)&&CMath.isNumber(value))
+						matchStart=(CMath.s_long(stat)<=CMath.s_long(value))?0:-1;
+					else
+						matchStart=(stat.compareTo(value)<=0)?0:-1;
+					break;
 				}
-				if(CMath.isNumber(stat)&&CMath.isNumber(value))
-					matchStart=(CMath.s_long(stat)<CMath.s_long(value))?0:-1;
-				else
-					matchStart=(stat.compareTo(value)<0)?0:-1;
-				break;
-			}
-			case EQUATOR_LTEQ:
-			{
-				if(!CMath.bset(codes,FLAG_CASESENSITIVE))
+				case EQUATOR_GTEQ:
 				{
-					stat=stat.toLowerCase();
-					value=value.toLowerCase();
+					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
+					{
+						stat=stat.toLowerCase();
+						value=value.toLowerCase();
+					}
+					if(CMath.isNumber(stat)&&CMath.isNumber(value))
+						matchStart=(CMath.s_long(stat)>=CMath.s_long(value))?0:-1;
+					else
+						matchStart=(stat.compareTo(value)>=0)?0:-1;
+					break;
 				}
-				if(CMath.isNumber(stat)&&CMath.isNumber(value))
-					matchStart=(CMath.s_long(stat)<=CMath.s_long(value))?0:-1;
-				else
-					matchStart=(stat.compareTo(value)<=0)?0:-1;
-				break;
-			}
-			case EQUATOR_GTEQ:
-			{
-				if(!CMath.bset(codes,FLAG_CASESENSITIVE))
-				{
-					stat=stat.toLowerCase();
-					value=value.toLowerCase();
 				}
-				if(CMath.isNumber(stat)&&CMath.isNumber(value))
-					matchStart=(CMath.s_long(stat)>=CMath.s_long(value))?0:-1;
-				else
-					matchStart=(stat.compareTo(value)>=0)?0:-1;
-				break;
-			}
 			}
 			if(matchStart>=0)
 				matches.add(field,Integer.valueOf(matchStart),Integer.valueOf(matchEnd));
@@ -317,11 +327,13 @@ public class GModify extends StdCommand
 					int matchStart=-1;
 					int matchEnd=-1;
 					for(int m=0;m<matches.size();m++)
+					{
 						if(((String)matches.get(m,1)).equals(field))
 						{
 							matchStart=((Integer)matches.get(m,2)).intValue();
 							matchEnd=((Integer)matches.get(m,3)).intValue();
 						}
+					}
 					if(matchStart>=0)
 					{
 						stat=getStat(E,field);
@@ -361,11 +373,13 @@ public class GModify extends StdCommand
 			final Environmental E=e.nextElement();
 			final String[] fields=E.getStatCodes();
 			for(int x=0;x<fields.length;x++)
+			{
 				if(!allKnownFields.contains(fields[x]))
 				{
 					allKnownFields.add(fields[x]);
 					allFieldsMsg.append(fields[x]+" ");
 				}
+			}
 		}
 	}
 
@@ -530,6 +544,7 @@ public class GModify extends StdCommand
 				int divBackLen=0;
 				eq=-1;
 				while((divBackLen==0)&&((++eq)<val.length()))
+				{
 					switch(val.charAt(eq))
 					{
 					case '&':
@@ -547,6 +562,7 @@ public class GModify extends StdCommand
 						}
 						break;
 					}
+				}
 				if(divBackLen==0)
 					str="";
 				else
@@ -756,8 +772,15 @@ public class GModify extends StdCommand
 		return false;
 	}
 
-	@Override public boolean canBeOrdered(){return false;}
-	@Override public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.GMODIFY);}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
-
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowedAnywhere(mob, CMSecurity.SecFlag.GMODIFY);
+	}
 }
