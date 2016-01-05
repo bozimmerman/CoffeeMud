@@ -2527,7 +2527,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					String[] keys = new String[]{"Noun","Open","Close","Closed Display","Open Display"};
 					for(int i=0;i<keys.length;i++)
 					{
-						str.append("<TR><TD WIDTH=30%>"+L(keys[i])+"</TD>");
+						str.append("<TR><TD WIDTH=30%><FONT COLOR=WHITE>"+L(keys[i])+"</FONT></TD>");
 						str.append("<TD><INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_W"+(i+1)+" VALUE=\""+vals[i]+"\">");
 						str.append("</TD></TR>");
 					}
