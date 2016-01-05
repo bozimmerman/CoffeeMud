@@ -36,16 +36,26 @@ import java.util.*;
 */
 public class EndlessThinOcean extends StdThinGrid
 {
-	@Override public String ID(){return "EndlessThinOcean";}
+	@Override
+	public String ID()
+	{
+		return "EndlessThinOcean";
+	}
+
 	public EndlessThinOcean()
 	{
 		super();
-		name="the ocean";
+		name = "the ocean";
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
-		climask=Places.CLIMASK_WET;
+		climask = Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_WATERSURFACE;
+	}
 
 	@Override
 	public CMObject newInstance()
@@ -54,24 +64,39 @@ public class EndlessThinOcean extends StdThinGrid
 			return super.newInstance();
 		return new EndlessOcean().newInstance();
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
 		{
-		case -1: return false;
-		case 1: return true;
+		case -1:
+			return false;
+		case 1:
+			return true;
 		}
 		return super.okMessage(myHost,msg);
 	}
-	@Override public String getGridChildLocaleID(){return "SaltWaterThinSurface";}
-	@Override public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "SaltWaterThinSurface";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderSaltWater.roomResources;
+	}
+
 	@Override
 	protected void fillExitsOfGridRoom(Room R, int x, int y)
 	{

@@ -3810,7 +3810,6 @@ damage is done to clan records.</p>
 set one of the internal scripting
 engine
 variables. The variables included, and their meaning, is as follows:</p>
-      <p> </p>
       <ul>
         <li><b>SCOPE</b>:
 Manually changes the scope of variable
@@ -3827,6 +3826,9 @@ registerd with. Affects only the Quest related MP commands.</li>
         <li><b>SAVABLE</b>:
 Determines if this script will be saved as
 a permanent part of the host. Values are true or false.</li>
+        <li><span style="font-weight: bold;">PASSIVE</span>: Whether
+this script keeps triggering RAND_PROG or other tick-based triggers
+even when the area is passive. Values are true or false.</li>
       </ul>
       <h3><a name="mpsetvar">mpsetvar</a></h3>
       <p>Usage:</p>

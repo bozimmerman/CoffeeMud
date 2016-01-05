@@ -2011,9 +2011,9 @@ public class ListCmd extends StdCommand
 			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				final Ability A=e.nextElement();
-				if(A instanceof ItemCraftor)
+				if(A instanceof CraftorAbility)
 				{
-					final ItemCraftor iA = (ItemCraftor)A;
+					final CraftorAbility iA = (CraftorAbility)A;
 					if((iA.parametersFormat()==null)
 					||(iA.parametersFormat().length()==0)
 					||(iA.parametersFile()==null)
@@ -2031,11 +2031,11 @@ public class ListCmd extends StdCommand
 			if(A==null)
 				str.append(L("Ability '@x1' does not exist -- try list recipes",rest));
 			else
-			if(!(A instanceof ItemCraftor))
+			if(!(A instanceof CraftorAbility))
 				str.append(L("Ability '@x1' is not a proper ability -- try list recipes",A.ID()));
 			else
 			{
-				final ItemCraftor iA = (ItemCraftor)A;
+				final CraftorAbility iA = (CraftorAbility)A;
 				if((iA.parametersFormat()==null)
 				||(iA.parametersFormat().length()==0)
 				||(iA.parametersFile()==null)

@@ -81,6 +81,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected String				myScript		 = "";
 	protected String				defaultQuestName = "";
 	protected String				scriptKey		 = null;
+	protected boolean				runInPassiveAreas= true;
 	protected boolean				debugBadScripts	 = false;
 	protected List<ScriptableResponse>que			 = new Vector<ScriptableResponse>();
 	protected final AtomicInteger	recurseCounter	 = new AtomicInteger();
@@ -7557,6 +7558,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(arg2.equals("SAVABLE"))
 					setSavable(CMath.s_bool(arg3));
 				else
+				if(arg2.equals("PASSIVE"))
+					this.runInPassiveAreas = CMath.s_bool(arg3); 
+				else
 					logError(scripted,"MPSETINTERNAL","Syntax","Unknown stat: "+arg2);
 				break;
 			}
@@ -11840,6 +11844,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final PhysicalAgent affecting=(ticking instanceof PhysicalAgent)?((PhysicalAgent)ticking):null;
 
 		final List<DVector> scripts=getScripts();
+		
+		if(!runInPassiveAreas)
+		{
+			final Area A=CMLib.map().areaLocation(ticking);
+			if((A!=null)&&(A.getAreaState() != Area.State.ACTIVE))
+			{
+				return true;
+			}
+		}
 
 		int triggerCode=-1;
 		String trigger="";

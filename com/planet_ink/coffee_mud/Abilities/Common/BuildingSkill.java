@@ -144,9 +144,9 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			Pair<String[],String[]> codesFlags = new Pair<String[],String[]>(codes, flags);
 			Resources.submitResource("BUILDING_SKILL_CODES_FLAGS", codesFlags);
 		}
-		return"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tRESOURCE_OR_MATERIAL\t"
-			+ "BUILDING_CODE\tBUILDING_FLAGS\tROOMEXIT_CLASS_ID\tBUILDING_GRID_SIZE||EXIT_NAMES||N_A\t"
-			+ "PCODED_SPELL_LIST\tBUILDING_NOUN\tBUILDER_MASK";
+		return"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tOPTIONAL_RESOURCE_OR_MATERIAL\t"
+			+ "BUILDING_FLAGS\tBUILDING_CODE\tROOM_CLASS_ID||EXIT_CLASS_ID||ALLITEM_CLASS_ID||ROOM_CLASS_ID_OR_NONE\t"
+			+ "BUILDING_GRID_SIZE||EXIT_NAMES||STAIRS_DESC\tPCODED_SPELL_LIST\tBUILDING_NOUN\tBUILDER_MASK";
 	}
 	
 	@Override
@@ -489,14 +489,15 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			if(doorName.indexOf("|")>0)
 			{
 				List<String> split=CMParms.parseAny(doorName, '|',false);
-				doorName=split.get(0);
-				if(split.size()>1)
+				if(split.get(0).length()>0)
+					doorName=split.get(0);
+				if((split.size()>1)&&(split.get(1).length()>0))
 					openWord=split.get(1);
-				if(split.size()>2)
+				if((split.size()>2)&&(split.get(2).length()>0))
 					closeWord=split.get(2);
-				if(split.size()>3)
+				if((split.size()>3)&&(split.get(3).length()>0))
 					closedWord=split.get(3);
-				if(split.size()>4)
+				if((split.size()>4)&&(split.get(4).length()>0))
 					displayText=split.get(4);
 			}
 			if(closeWord == null)

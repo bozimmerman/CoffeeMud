@@ -256,8 +256,8 @@ public interface AbilityParameters extends CMLibrary
 	/**
 	 * Main method for altering a particular recipe list from any of the crafting common
 	 * skills, from the command line, for the given mob.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFile()
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFormat()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFile()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFormat()
 	 * @param mob the mob who is editing this recipe file
 	 * @param recipeFilename the unpathed regular filename of the recipe file to edit
 	 * @param recipeFormat the recipe format from the crafting skill recipe format string
@@ -269,8 +269,8 @@ public interface AbilityParameters extends CMLibrary
 	 * Test method for the crafting common skill recipe parsers.  Basically it loads a recipe
 	 * file, parses it into the editors, re-generates the recipe file data from the
 	 * editors, and then optionally re-saves.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFile()
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFormat()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFile()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFormat()
 	 * @param recipeFilename the unpathed regular filename of the recipe data to start with
 	 * @param recipeFormat the recipe format coded string from
 	 * @param save true to re-save the recipes file, false not to
@@ -281,8 +281,8 @@ public interface AbilityParameters extends CMLibrary
 	 * Test method for the crafting common skill recipe parsers.  Basically it takes loaded
 	 * recipe file data, parses it into the editors, re-generates the recipe file data from the
 	 * editors, and then either returns, or throws an exception if there were parsing errors
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFile()
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFormat()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFile()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFormat()
 	 * @param recipesString the raw loaded recipe data
 	 * @param recipeFormat the recipe format coded string from
 	 * @throws CMException a parse error, if any
@@ -292,8 +292,8 @@ public interface AbilityParameters extends CMLibrary
 	/**
 	 * Mian parser for the crafting common skill recipe parsers.  It loads a recipe
 	 * file, parses it into the editors, and then returns the AbilityRecipeData.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFile()
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor#parametersFormat()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFile()
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility#parametersFormat()
 	 * @see AbilityParameters.AbilityRecipeData
 	 * @param recipeFilename the unpathed regular filename of the recipe data to start with
 	 * @param recipeFormat the recipe format coded string from
@@ -322,13 +322,13 @@ public interface AbilityParameters extends CMLibrary
 	public void resaveRecipeFile(MOB mob, String recipeFilename, List<DVector> rowsV, List<? extends Object> columnsV, boolean saveVFS);
 	
 	/**
-	 * Given an ItemCraftor object (usually a common skill), this method will load the raw
+	 * Given an CraftorAbility object (usually a common skill), this method will load the raw
 	 * recipe file and return it as a stringbuffer.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor
-	 * @param iA the ItemCraftor skill
-	 * @return the recipes for that ItemCraftor, as a stringbuffer
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.CraftorAbility
+	 * @param iA the CraftorAbility skill
+	 * @return the recipes for that CraftorAbility, as a stringbuffer
 	 */
-	public StringBuffer getRecipeList(ItemCraftor iA);
+	public StringBuffer getRecipeList(CraftorAbility iA);
 	
 	/**
 	 * Given an ItemCraftor object (usually a common skill), and an item which the ItemCraftor
@@ -343,7 +343,7 @@ public interface AbilityParameters extends CMLibrary
 	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException;
 
 	/**
-	 * An AbilityParameters interface for passing around a completely decoded ItemCraftor
+	 * An AbilityParameters interface for passing around a completely decoded CraftorAbility
 	 * (Common Skill) recipe list, ready for manipulation by users.
 	 * 
 	 * DEV NOTES: Data rows are a DVector (editor ID, data).  However, it starts off as

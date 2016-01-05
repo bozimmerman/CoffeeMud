@@ -120,6 +120,7 @@ public class TimsItemTable extends StdWebMacro
 			{
 				final int ii=CMLib.ableMapper().lowestQualifyingLevel(skill.ID());
 				for(int i=0;i<=craftingSkills.size();i++)
+				{
 					if(i>=craftingSkills.size())
 					{
 						craftingSkills.add(skill);
@@ -131,6 +132,7 @@ public class TimsItemTable extends StdWebMacro
 						craftingSkills.add(i,skill);
 						break;
 					}
+				}
 			}
 			for(final ItemCraftor skill : craftingSkills)
 			{

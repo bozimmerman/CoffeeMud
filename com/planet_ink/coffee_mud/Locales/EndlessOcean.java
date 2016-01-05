@@ -34,32 +34,55 @@ import java.util.*;
 */
 public class EndlessOcean extends StdGrid
 {
-	@Override public String ID(){return "EndlessOcean";}
+	@Override
+	public String ID()
+	{
+		return "EndlessOcean";
+	}
+
 	public EndlessOcean()
 	{
 		super();
-		name="the ocean";
+		name = "the ocean";
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
-		climask=CLIMASK_WET;
+		climask = CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 
-	@Override public String getGridChildLocaleID(){return "SaltWaterSurface";}
-	@Override public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_WATERSURFACE;
+	}
+
+	@Override
+	public String getGridChildLocaleID()
+	{
+		return "SaltWaterSurface";
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderSaltWater.roomResources;
+	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
 		{
-		case -1: return false;
-		case 1: return true;
+		case -1:
+			return false;
+		case 1:
+			return true;
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -72,17 +95,29 @@ public class EndlessOcean extends StdGrid
 		{
 			final Exit ox=CMClass.getExit("Open");
 			if(rawDoors()[Directions.NORTH]==null)
+			{
 				for (final Room[] element : subMap)
+				{
 					if(element[0]!=null)
 						linkRoom(element[0],element[yGridSize()/2],Directions.NORTH,ox,ox);
+				}
+			}
 			if(rawDoors()[Directions.SOUTH]==null)
+			{
 				for (final Room[] element : subMap)
+				{
 					if(element[yGridSize()-1]!=null)
 						linkRoom(element[yGridSize()-1],element[yGridSize()/2],Directions.SOUTH,ox,ox);
+				}
+			}
 			if(rawDoors()[Directions.EAST]==null)
+			{
 				for(int i=0;i<subMap[0].length;i++)
+				{
 					if(subMap[xGridSize()-1][i]!=null)
 						linkRoom(subMap[xGridSize()-1][i],subMap[xGridSize()/2][i],Directions.EAST,ox,ox);
+				}
+			}
 			if(rawDoors()[Directions.WEST]==null)
 				for(int i=0;i<subMap[0].length;i++)
 					if(subMap[0][i]!=null)

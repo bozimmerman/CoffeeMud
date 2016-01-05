@@ -342,7 +342,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Item getSampleItem(DVector dataRow)
+	protected Object getSampleObject(DVector dataRow)
 	{
 		boolean classIDRequired = false;
 		String classID = null;
@@ -367,7 +367,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(classID.equalsIgnoreCase("DRINK"))
 				return CMClass.getItemPrototype("GenDrink");
 			else
-				return CMClass.getItemPrototype(classID);
+			{
+				PhysicalAgent I=CMClass.getItemPrototype(classID);
+				if(I==null)
+				{
+					Pair<String[],String[]> codeFlags = getBuildingCodesNFlags();
+					if(CMParms.containsIgnoreCase(codeFlags.first, classID))
+						return classID.toUpperCase().trim();
+				}
+				return I;
+			}
 		}
 		if(classIDRequired)
 			return null;
@@ -471,12 +480,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 	protected boolean fixDataColumn(DVector dataRow, int rowShow) throws CMException
 	{
-		final Item classModelI = getSampleItem(dataRow);
+		final Object classModelI = getSampleObject(dataRow);
 		return fixDataColumn(dataRow,rowShow,classModelI);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected boolean fixDataColumn(DVector dataRow, int rowShow, final Item classModelI) throws CMException
+	protected boolean fixDataColumn(DVector dataRow, int rowShow, final Object classModelI) throws CMException
 	{
 		final Map<String,AbilityParmEditor> editors = getEditors();
 		if(classModelI == null)
@@ -513,14 +522,23 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final AbilityParmEditor A = editors.get(dataRow.elementAt(d,1));
 			if(A==null)
 			{
-				throw new CMException(L("Item id @x1 has no editor for @x2",classModelI.ID(),((String)dataRow.elementAt(d,1))));
+				if(classModelI instanceof CMObject)
+					throw new CMException(L("Item id @x1 has no editor for @x2",((CMObject)classModelI).ID(),((String)dataRow.elementAt(d,1))));
+				else
+					throw new CMException(L("Item id @x1 has no editor for @x2",classModelI+"",((String)dataRow.elementAt(d,1))));
 				//Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has no editor for "+((String)dataRow.elementAt(d,1)));
 				//return false;
 			}
 			else
 			if((rowShow>=0)&&(!A.confirmValue((String)dataRow.elementAt(d,2))))
-				throw new CMException(L("Item id @x1 has bad data '@x2' for column @x3 at row @x4",classModelI.ID(),((String)dataRow.elementAt(d,2)),((String)dataRow.elementAt(d,1)),""+rowShow));
+			{
+				String data = ((String)dataRow.elementAt(d,2)).replace('@', ' ');
+				if(classModelI instanceof CMObject)
+					throw new CMException(L("Item id @x1 has bad data '@x2' for column @x3 at row @x4",((CMObject)classModelI).ID(),data,((String)dataRow.elementAt(d,1)),""+rowShow));
+				else
+					throw new CMException(L("Item id @x1 has bad data '@x2' for column @x3 at row @x4",""+classModelI,data,((String)dataRow.elementAt(d,1)),""+rowShow));
 				//Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1))+" at row "+rowShow);
+			}
 		}
 		return true;
 	}
@@ -678,7 +696,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@Override
-	public StringBuffer getRecipeList(ItemCraftor iA)
+	public StringBuffer getRecipeList(CraftorAbility iA)
 	{
 		final AbilityRecipeData recipe = parseRecipe(iA.parametersFile(),iA.parametersFormat());
 		if(recipe.parseError() != null)
@@ -922,6 +940,24 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	protected static Pair<String[],String[]> getBuildingCodesNFlags()
+	{
+		Pair<String[],String[]> codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS"); 
+		if(codesFlags == null)
+		{
+			CraftorAbility A=(CraftorAbility)CMClass.getAbility("Masonry");
+			if(A==null)
+				A=(CraftorAbility)CMClass.getAbility("Construction");
+			if(A==null)
+				A=(CraftorAbility)CMClass.getAbility("Excavation");
+			if(A!=null)
+				A.parametersFormat();
+			codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS");
+		}
+		return codesFlags;
+	}
+	
 	protected static void addExtraAbilityMaterial(final Map<Integer,int[]> extraMatsM, final Item I, final Ability A)
 	{
 		double level = CMLib.ableMapper().lowestQualifyingLevel( A.ID() );
@@ -1125,7 +1161,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return newName;
 				}
 			},
-			new AbilityParmEditorImpl("BUILDING_NOUN","Building noun",ParmType.STRING)
+			
+			new AbilityParmEditorImpl("STAIRS_DESC","Exit Desc",ParmType.STRING)
 			{
 				@Override
 				public void createChoices()
@@ -1133,9 +1170,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 	
 				@Override
+				public int appliesToClass(Object o)
+				{
+					if(o instanceof String)
+					{
+						String chk=((String)o).toUpperCase();
+						if(chk.equals("STAIRS"))
+							return 1;
+					}
+					return -1;
+				}
+				
+				@Override
 				public String defaultValue()
 				{
-					return "thing";
+					return "@x1stairs to the @x2 floor";
 				}
 	
 				@Override
@@ -1163,7 +1212,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
-			new AbilityParmEditorImpl("BUILDER_MASK","Builder Mask",ParmType.STRING)
+			new AbilityParmEditorImpl("BUILDER_MASK","Builder Mask",ParmType.STRINGORNULL)
 			{
 				@Override
 				public void createChoices()
@@ -1206,6 +1255,37 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return ""+timsLevel;
 					}
 					return ""+I.basePhyStats().level();
+				}
+			},
+			new AbilityParmEditorImpl("BUILDING_GRID_SIZE","Grid Size",ParmType.NUMBER)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public int appliesToClass(Object o)
+				{
+					if(o instanceof String)
+					{
+						String chk=((String)o).toUpperCase();
+						if(chk.equals("ROOM"))
+							return 1;
+					}
+					return -1;
+				}
+				
+				@Override
+				public String defaultValue()
+				{
+					return "1";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "1";
 				}
 			},
 			new AbilityParmEditorImpl("BUILD_TIME_TICKS","Time",ParmType.NUMBER)
@@ -1568,24 +1648,27 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return ""+I.baseGoldValue();
 				}
 			},
-			new AbilityParmEditorImpl("ROOMEXIT_CLASS_ID","Class ID",ParmType.CHOICES)
+			new AbilityParmEditorImpl("ROOM_CLASS_ID","Class ID",ParmType.CHOICES)
 			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					if(o instanceof String)
+					{
+						String chk=((String)o).toUpperCase();
+						if(chk.equalsIgnoreCase("ROOM")
+						||chk.equalsIgnoreCase("EXCAVATE"))
+							return 1;
+					}
+					return -1;
+				}
+				
 				@Override
 				public void createChoices()
 				{
 					final Vector<Environmental> V  = new Vector<Environmental>();
 					V.addAll(new XVector<Room>(CMClass.locales()));
-					V.addAll(new XVector<Exit>(CMClass.exits()));
-					final Vector<CMObject> V2=new Vector<CMObject>();
-					Environmental I;
-					for(final Enumeration<Environmental> e=V.elements();e.hasMoreElements();)
-					{
-						I=e.nextElement();
-						if(I.isGeneric() || (I instanceof Room))
-							V2.addElement(I);
-					}
-					createChoices(V2);
-					this.choices().add(0,new Pair<String,String>("NA","N/A"));
+					createChoices(V);
 				}
 
 				@Override
@@ -1597,7 +1680,125 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String defaultValue()
 				{
-					return "NA";
+					return "Plains";
+				}
+			},
+			new AbilityParmEditorImpl("ALLITEM_CLASS_ID","Class ID",ParmType.CHOICES)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					if(o instanceof String)
+					{
+						String chk=((String)o).toUpperCase();
+						if(chk.equalsIgnoreCase("ITEM"))
+							return 1;
+					}
+					return -1;
+				}
+				
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				@Override
+				public void createChoices()
+				{
+					final XVector V  = new XVector();
+					V.addAll(CMClass.basicItems());
+					V.addAll(CMClass.weapons());
+					V.addAll(CMClass.tech());
+					V.addAll(CMClass.armor());
+					V.addAll(CMClass.miscMagic());
+					V.addAll(CMClass.clanItems());
+					createChoices(V);
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "StdItem";
+				}
+			},
+			new AbilityParmEditorImpl("ROOM_CLASS_ID_OR_NONE","Class ID",ParmType.CHOICES)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					if(o instanceof String)
+					{
+						String chk=((String)o).toUpperCase();
+						if(chk.equalsIgnoreCase("DEMOLISH")
+						||chk.equalsIgnoreCase("STAIRS"))
+							return 1;
+					}
+					return -1;
+				}
+				
+				@Override
+				public void createChoices()
+				{
+					final Vector<Object> V  = new Vector<Object>();
+					V.add("");
+					V.addAll(new XVector<Room>(CMClass.locales()));
+					createChoices(V);
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+			},
+			new AbilityParmEditorImpl("EXIT_CLASS_ID","Class ID",ParmType.CHOICES)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					if(o instanceof String)
+					{
+						String chk=((String)o).toUpperCase();
+						if(chk.equalsIgnoreCase("DOOR"))
+							return 1;
+					}
+					return -1;
+				}
+				
+				@Override
+				public void createChoices()
+				{
+					final Vector<Environmental> V  = new Vector<Environmental>();
+					V.addAll(new XVector<Exit>(CMClass.exits()));
+					final Vector<CMObject> V2=new Vector<CMObject>();
+					Environmental I;
+					for(final Enumeration<Environmental> e=V.elements();e.hasMoreElements();)
+					{
+						I=e.nextElement();
+						if(I.isGeneric())
+							V2.addElement(I);
+					}
+					createChoices(V2);
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "GenExit";
 				}
 			},
 			new AbilityParmEditorImpl("ITEM_CLASS_ID","Class ID",ParmType.CHOICES)
@@ -2137,6 +2338,437 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return (newVal==null)?oldVal:newVal.toString();
 				}
 			},
+			new AbilityParmEditorImpl("BUILDING_FLAGS","Flags",ParmType.SPECIAL)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public boolean confirmValue(String oldVal)
+				{
+					if(oldVal.trim().length()==0)
+						return true;
+					Pair<String[],String[]> codesFlags = CMAbleParms.getBuildingCodesNFlags();
+					String[] names = CMParms.parseSpaces(oldVal, true).toArray(new String[0]);
+					for(String name : names)
+					{
+						if(!CMParms.containsIgnoreCase(codesFlags.second, name))
+							return false;
+					}
+					return true;
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+	
+				@Override
+				public String[] fakeUserInput(String oldVal)
+				{
+					return CMParms.parseSpaces(oldVal, true).toArray(new String[0]);
+				}
+				
+				@Override
+				public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final String webValue = httpReq.getUrlParameter(fieldName);
+					if(webValue == null)
+						return oldVal;
+					StringBuilder s=new StringBuilder("");
+					String id="";
+					int index=0;
+					Pair<String[],String[]> codesFlags = CMAbleParms.getBuildingCodesNFlags();
+					for(;httpReq.isUrlParameter(fieldName+id);id=""+(++index))
+					{
+						final String newVal = httpReq.getUrlParameter(fieldName+id);
+						if(CMParms.containsIgnoreCase(codesFlags.second, newVal.toUpperCase().trim()))
+							s.append(" ").append(newVal.toUpperCase().trim());
+					}
+					return s.toString().trim();
+				}
+
+				@Override
+				public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final StringBuffer str = new StringBuffer("");
+					final String webValue = webValue(httpReq,parms,oldVal,fieldName);
+					String onChange = null;
+					onChange = " MULTIPLE ";
+					if(!parms.containsKey("NOSELECT"))
+						onChange+= "ONCHANGE=\"MultiSelect(this);\"";
+					Pair<String[],String[]> codesFlags = CMAbleParms.getBuildingCodesNFlags();
+					String[] fakeValues = this.fakeUserInput(webValue);
+					str.append("\n\r<SELECT NAME="+fieldName+onChange+">");
+					for(int i=0;i<codesFlags.second.length;i++)
+					{
+						final String option = (codesFlags.second[i]);
+						str.append("<OPTION VALUE=\""+option+"\" ");
+						if(CMParms.containsIgnoreCase(fakeValues, option))
+							str.append("SELECTED");
+						str.append(">"+option);
+					}
+					return str.toString()+"</SELECT>";
+				}
+
+				@Override
+				public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+				{
+					Pair<String[],String[]> codesFlags = CMAbleParms.getBuildingCodesNFlags();
+					String help=CMParms.combineWith(Arrays.asList(codesFlags.second), ',');
+					String newVal = CMLib.genEd().prompt(mob, oldVal, ++showNumber[0], showFlag, "Flags", true, help);
+					String[] newVals;
+					if(newVal.indexOf(',')>0)
+						newVals = CMParms.parseCommas(newVal.toUpperCase().trim(), true).toArray(new String[0]);
+					else
+					if(newVal.indexOf(';')>0)
+						newVals = CMParms.parseSemicolons(newVal.toUpperCase().trim(), true).toArray(new String[0]);
+					else
+						newVals = CMParms.parse(newVal.toUpperCase().trim()).toArray(new String[0]);
+					StringBuilder finalVal = new StringBuilder("");
+					for(int i=0;i<newVals.length;i++)
+					{
+						if(CMParms.containsIgnoreCase(codesFlags.second, newVals[i]))
+							finalVal.append(" ").append(newVals[i]);
+					}
+					return finalVal.toString().toUpperCase().trim();
+				}
+			},
+			new AbilityParmEditorImpl("EXIT_NAMES","Exit Words",ParmType.SPECIAL)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public int appliesToClass(Object o)
+				{
+					if(o instanceof String)
+					{
+						String chk=((String)o).toUpperCase();
+						if(chk.equalsIgnoreCase("DOOR"))
+							return 1;
+					}
+					return -1;
+				}
+				
+				@Override
+				public boolean confirmValue(String oldVal)
+				{
+					if(oldVal.trim().length()==0)
+						return true;
+					String[] names = CMParms.parseAny(oldVal.trim(), '|', true).toArray(new String[0]);
+					if(names.length > 5)
+						return false;
+					return true;
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "door|open|close|A closed door.|An open doorway.";
+				}
+	
+				@Override
+				public String[] fakeUserInput(String oldVal)
+				{
+					
+					final Vector<String> V = new Vector<String>();
+					V.addAll(CMParms.parseAny(oldVal.trim(), '|', true));
+					while(V.size()<5)
+						V.add("");
+					return CMParms.toStringArray(V);
+				}
+				
+				@Override
+				public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					if(httpReq.isUrlParameter(fieldName+"_W1"))
+					{
+						StringBuilder str=new StringBuilder("");
+						str.append(httpReq.getUrlParameter(fieldName+"_W1")).append("|");
+						str.append(httpReq.getUrlParameter(fieldName+"_W2")).append("|");
+						str.append(httpReq.getUrlParameter(fieldName+"_W3")).append("|");
+						str.append(httpReq.getUrlParameter(fieldName+"_W4")).append("|");
+						str.append(httpReq.getUrlParameter(fieldName+"_W5"));
+						String s=str.toString();
+						while(s.endsWith("|"))
+							s=s.substring(0,s.length()-1);
+						return s;
+					}
+					else
+					{
+						return oldVal;
+					}
+				}
+
+				@Override
+				public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final StringBuffer str = new StringBuffer("");
+					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
+					String[] vals = this.fakeUserInput(oldVal);
+					String[] keys = new String[]{"Noun","Open","Close","Closed Display","Open Display"};
+					for(int i=0;i<keys.length;i++)
+					{
+						str.append("<TR><TD WIDTH=30%>"+L(keys[i])+"</TD>");
+						str.append("<TD><INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_W"+(i+1)+" VALUE=\""+vals[i]+"\">");
+						str.append("</TD></TR>");
+					}
+					str.append("</TABLE>");
+					return str.toString();
+				}
+
+				@Override
+				public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+				{
+					String[] vals = this.fakeUserInput(oldVal);
+					StringBuilder newVal = new StringBuilder("");
+					newVal.append(CMLib.genEd().prompt(mob, vals[0], ++showNumber[0], showFlag, "Exit Noun", true)).append("|");
+					newVal.append(CMLib.genEd().prompt(mob, vals[1], ++showNumber[0], showFlag, "Open Verb", true)).append("|");
+					newVal.append(CMLib.genEd().prompt(mob, vals[2], ++showNumber[0], showFlag, "Close Verb", true)).append("|");
+					newVal.append(CMLib.genEd().prompt(mob, vals[3], ++showNumber[0], showFlag, "Opened Text", true)).append("|");
+					newVal.append(CMLib.genEd().prompt(mob, vals[4], ++showNumber[0], showFlag, "Closed Text", true));
+					String s=newVal.toString();
+					while(s.endsWith("|"))
+						s=s.substring(0,s.length()-1);
+					return s;
+				}
+			},
+			new AbilityParmEditorImpl("PCODED_SPELL_LIST","Spell Affects",ParmType.SPECIAL)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public int appliesToClass(Object o)
+				{
+					if(o instanceof String)
+					{
+						String chk=((String)o).toUpperCase();
+						if(chk.equalsIgnoreCase("WALL")
+						||chk.equalsIgnoreCase("DEMOLISH")
+						||chk.equalsIgnoreCase("TITLE")
+						||chk.equalsIgnoreCase("DESC"))
+							return -1;
+						final Pair<String[],String[]> codeFlags = CMAbleParms.getBuildingCodesNFlags();
+						if(CMParms.contains(codeFlags.first, chk))
+							return 1;
+					}
+					return -1;
+				}
+				
+				@Override
+				public boolean confirmValue(String oldVal)
+				{
+					if(oldVal.trim().length()==0)
+						return true;
+					String[] spells = CMParms.parseAny(oldVal.trim(), ')', true).toArray(new String[0]);
+					for(String spell : spells)
+					{
+						final int x=spell.indexOf('(');
+						if(x>0)
+							spell=spell.substring(0,x);
+						if(spell.trim().length()==0)
+							continue;
+						if(CMClass.getAbility(spell)==null)
+							return false;
+					}
+					return true;
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+	
+				public String rebuild(List<Ability> spells) throws CMException
+				{
+					final StringBuffer newVal = new StringBuffer("");
+					for(int s=0;s<spells.size();s++)
+					{
+						final String txt = spells.get(s).text().trim();
+						newVal.append(spells.get(s).ID()).append("(").append(txt).append(")");
+					}
+					return newVal.toString();
+				}
+
+				@Override
+				public String[] fakeUserInput(String oldVal)
+				{
+					final Vector<String> V = new Vector<String>();
+					String[] spells = CMParms.parseAny(oldVal.trim(), ')', true).toArray(new String[0]);
+					for(String spell : spells)
+					{
+						final int x=spell.indexOf('(');
+						String parms="";
+						if(x>0)
+						{
+							parms=spell.substring(x+1).trim();
+							spell=spell.substring(0,x);
+						}
+						if(spell.trim().length()==0)
+							continue;
+						if(CMClass.getAbility(spell)!=null)
+						{
+							V.add(spell);
+							V.add(parms);
+						}
+					}
+					return CMParms.toStringArray(V);
+				}
+				
+				public List<Ability> getCodedSpells(String oldVal)
+				{
+					String[] spellStrs = this.fakeUserInput(oldVal);
+					List<Ability> spells=new ArrayList<Ability>(spellStrs.length/2);
+					for(int s=0;s<spellStrs.length;s+=2)
+					{
+						Ability A=CMClass.getAbility(spellStrs[s]);
+						if(A!=null)
+						{
+							if(spellStrs[s+1].length()>0)
+								A.setMiscText(spellStrs[s+1]);
+							spells.add(A);
+						}
+					}
+					return spells;
+				}
+
+				@Override
+				public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					List<Ability> spells=null;
+					if(httpReq.isUrlParameter(fieldName+"_AFFECT1"))
+					{
+						spells = new Vector<Ability>();
+						int num=1;
+						String behav=httpReq.getUrlParameter(fieldName+"_AFFECT"+num);
+						String theparm=httpReq.getUrlParameter(fieldName+"_ADATA"+num);
+						while((behav!=null)&&(theparm!=null))
+						{
+							if(behav.length()>0)
+							{
+								final Ability A=CMClass.getAbility(behav);
+								if(theparm.trim().length()>0)
+									A.setMiscText(theparm);
+								spells.add(A);
+							}
+							num++;
+							behav=httpReq.getUrlParameter(fieldName+"_AFFECT"+num);
+							theparm=httpReq.getUrlParameter(fieldName+"_ADATA"+num);
+						}
+					}
+					else
+					{
+						spells = getCodedSpells(oldVal);
+					}
+					try
+					{
+						return rebuild(spells);
+					}
+					catch(final Exception e)
+					{
+						return oldVal;
+					}
+				}
+
+				@Override
+				public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final List<Ability> spells=getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
+					final StringBuffer str = new StringBuffer("");
+					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
+					for(int i=0;i<spells.size();i++)
+					{
+						final Ability A=spells.get(i);
+						str.append("<TR><TD WIDTH=50%>");
+						str.append("\n\r<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+fieldName+"_AFFECT"+(i+1)+">");
+						str.append("<OPTION VALUE=\"\">Delete!");
+						str.append("<OPTION VALUE=\""+A.ID()+"\" SELECTED>"+A.ID());
+						str.append("</SELECT>");
+						str.append("</TD><TD WIDTH=50%>");
+						final String theparm=CMStrings.replaceAll(A.text(),"\"","&quot;");
+						str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
+						str.append("</TD></TR>");
+					}
+					str.append("<TR><TD WIDTH=50%>");
+					str.append("\n\r<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+fieldName+"_AFFECT"+(spells.size()+1)+">");
+					str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					{
+						final Ability A=a.nextElement();
+						if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+							continue;
+						final String cnam=A.ID();
+						str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+					}
+					str.append("</SELECT>");
+					str.append("</TD><TD WIDTH=50%>");
+					str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_ADATA"+(spells.size()+1)+" VALUE=\"\">");
+					str.append("</TD></TR>");
+					str.append("</TABLE>");
+					return str.toString();
+				}
+
+				@Override
+				public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+				{
+					final List<Ability> spells=getCodedSpells(oldVal);
+					final StringBuffer rawCheck = new StringBuffer("");
+					for(int s=0;s<spells.size();s++)
+						rawCheck.append(spells.get(s).ID()).append(";").append(spells.get(s).text()).append(";");
+					boolean okToProceed = true;
+					++showNumber[0];
+					String newVal = null;
+					while(okToProceed)
+					{
+						okToProceed = false;
+						CMLib.genEd().spells(mob,spells,showNumber[0],showFlag,true);
+						final StringBuffer sameCheck = new StringBuffer("");
+						for(int s=0;s<spells.size();s++)
+							sameCheck.append(spells.get(s).ID()).append(';').append(spells.get(s).text()).append(';');
+						if(sameCheck.toString().equals(rawCheck.toString()))
+							return oldVal;
+						try
+						{
+							newVal = rebuild(spells);
+						}
+						catch(final CMException e)
+						{
+							mob.tell(e.getMessage());
+							okToProceed = true;
+							break;
+						}
+					}
+					return (newVal==null)?oldVal:newVal.toString();
+				}
+			},
 			new AbilityParmEditorImpl("BASE_DAMAGE","Dmg.",ParmType.NUMBER)
 			{
 				@Override
@@ -2205,23 +2837,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return 1;
 				}
 	
-				@SuppressWarnings("unchecked")
 				@Override
 				public void createChoices()
 				{
-					Pair<String[],String[]> codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS"); 
-					if(codesFlags == null)
-					{
-						CraftorAbility A=(CraftorAbility)CMClass.getAbility("Masonry");
-						if(A==null)
-							A=(CraftorAbility)CMClass.getAbility("Construction");
-						if(A==null)
-							A=(CraftorAbility)CMClass.getAbility("Excavation");
-						if(A!=null)
-							A.parametersFormat();
-						codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS");
-					}
-					createChoices(codesFlags.first);
+					createChoices(getBuildingCodesNFlags().first);
 				}
 	
 				@Override
@@ -2234,45 +2853,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
 					return "TITLE";
-				}
-			},
-			new AbilityParmEditorImpl("BUILDING_CODE","Flags",ParmType.MULTICHOICES)
-			{
-				@Override
-				public int appliesToClass(Object o)
-				{
-					return 1;
-				}
-	
-				@SuppressWarnings("unchecked")
-				@Override
-				public void createChoices()
-				{
-					Pair<String[],String[]> codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS"); 
-					if(codesFlags == null)
-					{
-						CraftorAbility A=(CraftorAbility)CMClass.getAbility("Masonry");
-						if(A==null)
-							A=(CraftorAbility)CMClass.getAbility("Construction");
-						if(A==null)
-							A=(CraftorAbility)CMClass.getAbility("Excavation");
-						if(A!=null)
-							A.parametersFormat();
-						codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS");
-					}
-					createChoices(codesFlags.second);
-				}
-	
-				@Override
-				public String defaultValue()
-				{
-					return "";
-				}
-	
-				@Override
-				public String convertFromItem(final ItemCraftor A, final Item I)
-				{
-					return "";
 				}
 			},
 			new AbilityParmEditorImpl("STATUE","Statue",ParmType.CHOICES)
@@ -3456,7 +4036,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public boolean confirmValue(String oldVal)
 				{
-					return oldVal.trim().length() == 0 || oldVal.equals("0");
+					return oldVal.trim().length() == 0 || oldVal.equals("0") || oldVal.equals("NA") || oldVal.equals("-");
 				}
 	
 				@Override

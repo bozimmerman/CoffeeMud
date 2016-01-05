@@ -1634,12 +1634,12 @@ public class Modify extends StdCommand
 				mob.tell(L("'@x1' is not a valid skill id.",name));
 				return false;
 			}
-			if(!(A instanceof ItemCraftor))
+			if(!(A instanceof CraftorAbility))
 			{
-				mob.tell(L("'@x1' is not a common crafting skill.",A.ID()));
+				mob.tell(L("'@x1' is not a common crafting/building skill.",A.ID()));
 				return false;
 			}
-			final ItemCraftor iA = (ItemCraftor)A;
+			final CraftorAbility iA = (CraftorAbility)A;
 			if((iA.parametersFormat()==null)
 			||(iA.parametersFormat().length()==0)
 			||(iA.parametersFile()==null)

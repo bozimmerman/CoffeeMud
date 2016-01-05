@@ -67,17 +67,17 @@ public class AbilityRecipeData extends StdWebMacro
 		{
 			final Ability A=CMClass.getAbility(last);
 			if((A!=null)
-			&&(A instanceof ItemCraftor)
-			&&(((ItemCraftor)A).parametersFile()!=null)
-			&&(((ItemCraftor)A).parametersFile().length()>0)
-			&&(((ItemCraftor)A).parametersFormat()!=null)
-			&&(((ItemCraftor)A).parametersFormat().length()>0))
+			&&(A instanceof CraftorAbility)
+			&&(((CraftorAbility)A).parametersFile()!=null)
+			&&(((CraftorAbility)A).parametersFile().length()>0)
+			&&(((CraftorAbility)A).parametersFormat()!=null)
+			&&(((CraftorAbility)A).parametersFormat().length()>0))
 			{
 				AbilityParameters.AbilityRecipeData recipeData =
 					(AbilityParameters.AbilityRecipeData)httpReq.getRequestObjects().get("ABILITYRECIPEDATA-"+last);
 				if(recipeData == null)
 				{
-					recipeData = CMLib.ableParms().parseRecipe(((ItemCraftor)A).parametersFile(),((ItemCraftor)A).parametersFormat());
+					recipeData = CMLib.ableParms().parseRecipe(((CraftorAbility)A).parametersFile(),((CraftorAbility)A).parametersFormat());
 					if(recipeData.parseError() != null)
 					{
 						Log.errOut(ID(),recipeData.parseError());

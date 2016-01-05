@@ -1861,10 +1861,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 			mob.tell(L("(no change)"));
 		final Ability A=CMClass.getAbility(E.getCommonSkillID());
-		final ItemCraftor C;
-		if((A!=null)&&(A.classificationCode()==(Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL))&&(A instanceof ItemCraftor))
+		final CraftorAbility C;
+		if((A!=null)&&(A.classificationCode()==(Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL))&&(A instanceof CraftorAbility))
 		{
-			C=(ItemCraftor)A;
+			C=(CraftorAbility)A;
 			mob.tell(L("Params: @x1",CMStrings.replaceAll(C.parametersFormat(), "\t", ",")));
 		}
 		else

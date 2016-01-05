@@ -119,11 +119,11 @@ public class AbilityNext extends StdWebMacro
 				okToShow=A.isGeneric();
 			else
 			if(parmsEditable)
-				okToShow=((A instanceof ItemCraftor)
-					   &&(((ItemCraftor)A).parametersFile()!=null)
-					   &&(((ItemCraftor)A).parametersFile().length()>0)
-					   &&(((ItemCraftor)A).parametersFormat()!=null)
-					   &&(((ItemCraftor)A).parametersFormat().length()>0));
+				okToShow=((A instanceof CraftorAbility)
+					   &&(((CraftorAbility)A).parametersFile()!=null)
+					   &&(((CraftorAbility)A).parametersFile().length()>0)
+					   &&(((CraftorAbility)A).parametersFormat()!=null)
+					   &&(((CraftorAbility)A).parametersFormat().length()>0));
 
 			if((className!=null)&&(className.length()>0))
 			{
