@@ -1,4 +1,3 @@
-#name	level	ticks	wood	misc resource	flag	code	class	misc	property	desc	builder mask
 Demolish	1	25	0		DIR	DEMOLISH		-		demolishing	
 Title	1	15	0			TITLE	NA	-	-	title	
 Description	1	10	0			DESC	NA	-	-	description	

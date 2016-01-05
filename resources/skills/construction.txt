@@ -1,4 +1,3 @@
-#name	level	ticks	wood	misc resource	flag	code	class	misc	property	desc	builder mask
 Wall	1	25	100		INDOOR DIR	WALL	NA	-		@x1 wall	
 Door	1	25	125		INDOOR DIR	DOOR	GenDoor	door		@x1 door	
 Roof	1	25	350		OUTDOOR	ROOM	WoodRoom	0		frame and roof	
