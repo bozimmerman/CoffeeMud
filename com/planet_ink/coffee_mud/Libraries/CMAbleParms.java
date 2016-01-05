@@ -2209,7 +2209,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public void createChoices()
 				{
-					final Pair<String[],String[]> codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS"); 
+					Pair<String[],String[]> codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS"); 
+					if(codesFlags == null)
+					{
+						CraftorAbility A=(CraftorAbility)CMClass.getAbility("Masonry");
+						if(A==null)
+							A=(CraftorAbility)CMClass.getAbility("Construction");
+						if(A==null)
+							A=(CraftorAbility)CMClass.getAbility("Excavation");
+						if(A!=null)
+							A.parametersFormat();
+						codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS");
+					}
 					createChoices(codesFlags.first);
 				}
 	
@@ -2237,7 +2248,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public void createChoices()
 				{
-					final Pair<String[],String[]> codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS"); 
+					Pair<String[],String[]> codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS"); 
+					if(codesFlags == null)
+					{
+						CraftorAbility A=(CraftorAbility)CMClass.getAbility("Masonry");
+						if(A==null)
+							A=(CraftorAbility)CMClass.getAbility("Construction");
+						if(A==null)
+							A=(CraftorAbility)CMClass.getAbility("Excavation");
+						if(A!=null)
+							A.parametersFormat();
+						codesFlags = (Pair<String[],String[]>)Resources.getResource("BUILDING_SKILL_CODES_FLAGS");
+					}
 					createChoices(codesFlags.second);
 				}
 	
