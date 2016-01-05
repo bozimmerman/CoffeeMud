@@ -97,7 +97,7 @@ public class Chant_Grapevine extends Chant
 			mob.tell(L("You are already listening through a grapevine."));
 			return false;
 		}
-		final Vector<Room> myRooms=Druid_MyPlants.myPlantRooms(mob);
+		final List<Room> myRooms=Druid_MyPlants.myPlantRooms(mob);
 		if((myRooms==null)||(myRooms.size()==0))
 		{
 			mob.tell(L("There doesn't appear to be any of your plants around to listen through."));
@@ -128,7 +128,7 @@ public class Chant_Grapevine extends Chant
 					return false;
 				for(int i=0;i<myRooms.size();i++)
 				{
-					final Room R=myRooms.elementAt(i);
+					final Room R=myRooms.get(i);
 					int ii=0;
 					myPlant=Druid_MyPlants.myPlant(R,mob,ii);
 					while(myPlant!=null)

@@ -36,16 +36,47 @@ import java.util.*;
 
 public class Chant_SummonPlants extends Chant
 {
-	@Override public String ID() { return "Chant_SummonPlants"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonPlants";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Summon Plants");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	protected Room plantsLocationR=null;
-	protected Item littlePlantsI=null;
-	protected static Map<String,long[]> plantBonuses=new Hashtable<String,long[]>();
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	protected Room							plantsLocationR	= null;
+	protected Item							littlePlantsI	= null;
+	protected static Map<String, long[]>	plantBonuses	= new Hashtable<String, long[]>();
 
 	@Override
 	public void unInvoke()
@@ -123,6 +154,7 @@ public class Chant_SummonPlants extends Chant
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
+		Druid_MyPlants.addNewPlant(mob, newItem);
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprout(s) up here.",newItem.name()));
 		newChant.plantsLocationR=room;
@@ -143,7 +175,7 @@ public class Chant_SummonPlants extends Chant
 	{
 		final Area A=room.getArea();
 		final boolean bonusWorthy=(Druid_MyPlants.myPlant(room,mob,0)==null);
-		final Vector<Room> V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
+		final List<Room> V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
 		int pct=0;
 		if(A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
 			pct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
@@ -189,7 +221,10 @@ public class Chant_SummonPlants extends Chant
 		return I;
 	}
 
-	protected Item buildMyPlant(MOB mob, Room room){ return buildPlant(mob,room);}
+	protected Item buildMyPlant(MOB mob, Room room)
+	{
+		return buildPlant(mob, room);
+	}
 
 	public boolean rightPlace(MOB mob,boolean auto)
 	{

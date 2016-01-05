@@ -36,14 +36,45 @@ import java.util.*;
 
 public class Chant_SummonFlower extends Chant_SummonPlants
 {
-	@Override public String ID() { return "Chant_SummonFlower"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonFlower";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Summon Flower");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	protected boolean processing=false;
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	protected boolean processing = false;
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -104,6 +135,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 		}
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
+		Druid_MyPlants.addNewPlant(mob, newItem);
 		room.addItem(newItem);
 		final Chant_SummonFlower newChant=new Chant_SummonFlower();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));

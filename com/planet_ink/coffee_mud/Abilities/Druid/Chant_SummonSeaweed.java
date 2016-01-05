@@ -36,14 +36,48 @@ import java.util.*;
 
 public class Chant_SummonSeaweed extends Chant_SummonPlants
 {
-	@Override public String ID() { return "Chant_SummonSeaweed"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonSeaweed";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Summon Seaweed");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	protected boolean seaOk(){return true;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	protected boolean seaOk()
+	{
+		return true;
+	}
 
 	public Item buildSeaweed(MOB mob, Room room)
 	{
@@ -83,6 +117,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
+		Druid_MyPlants.addNewPlant(mob, newItem);
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprout(s) up here.",newItem.name()));
 		newChant.plantsLocationR=room;

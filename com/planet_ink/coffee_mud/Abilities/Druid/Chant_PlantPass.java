@@ -62,11 +62,11 @@ public class Chant_PlantPass extends Chant
 			return false;
 		}
 
-		final Vector<Room> candidates=Druid_MyPlants.myPlantRooms(mob);
+		final List<Room> candidates=Druid_MyPlants.myPlantRooms(mob);
 		Room newRoom=null;
 		for(int m=0;m<candidates.size();m++)
 		{
-			final Room room=candidates.elementAt(m);
+			final Room room=candidates.get(m);
 			if(CMLib.english().containsString(room.displayText(mob),areaName))
 			{
 			   newRoom=room;

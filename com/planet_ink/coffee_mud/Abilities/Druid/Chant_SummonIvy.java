@@ -36,13 +36,43 @@ import java.util.*;
 
 public class Chant_SummonIvy extends Chant_SummonPlants
 {
-	@Override public String ID() { return "Chant_SummonIvy"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonIvy";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Summon Ivy");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override protected int canAffectCode(){return CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	public Item buildIvy(MOB mob, Room room)
 	{
@@ -74,6 +104,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		newItem.addNonUninvokableEffect(CMClass.getAbility("Disease_PoisonIvy"));
+		Druid_MyPlants.addNewPlant(mob, newItem);
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,CMLib.lang().L("Suddenly, @x1 sprout(s) up here.",newItem.name()));

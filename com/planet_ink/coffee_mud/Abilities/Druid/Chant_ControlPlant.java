@@ -38,13 +38,43 @@ import java.util.List;
 
 public class Chant_ControlPlant extends Chant
 {
-	@Override public String ID() { return "Chant_ControlPlant"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_ControlPlant";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Control Plant");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTCONTROL;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
 
 	public static Ability isPlant(Item I)
 	{
@@ -75,7 +105,17 @@ public class Chant_ControlPlant extends Chant
 			return false;
 		}
 
-		if(myPlant.rawSecretIdentity().equals(mob.Name()))
+		String oldController = myPlant.rawSecretIdentity();
+		final Ability A=isPlant(myPlant);
+		if((oldController.length()==0) || (!CMLib.players().playerExists(oldController)))
+		{
+			if((A.text().length()>0)&&(CMLib.players().playerExists(A.text())))
+				oldController = A.text();
+		}
+		
+		final MOB oldM = (oldController.length() > 0) ? CMLib.players().getLoadPlayer(oldController) : null;
+		
+		if(oldController.equals(mob.Name()))
 		{
 			mob.tell(L("You already control @x1.",myPlant.name()));
 			return false;
@@ -93,11 +133,16 @@ public class Chant_ControlPlant extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Ability A=isPlant(myPlant);
 				if(A!=null)
+				{
 					A.setInvoker(mob);
+					A.setMiscText(mob.Name());
+				}
 				mob.tell(L("You wrest control of @x1 from @x2.",myPlant.name(),myPlant.secretIdentity()));
 				myPlant.setSecretIdentity(mob.Name());
+				Druid_MyPlants.addNewPlant(mob, myPlant);
+				if(oldM != null)
+					Druid_MyPlants.removeLostPlant(oldM, myPlant);
 			}
 
 		}

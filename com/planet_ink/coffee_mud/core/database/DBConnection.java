@@ -330,6 +330,7 @@ public class DBConnection
 	 * @param SQL    Any SQL string you'd like to use
 	 * @return boolean    The connection being used
 	 */
+	@SuppressWarnings("null")
 	public synchronized boolean rePrepare(String SQL)
 	{
 		if(inUse)
@@ -439,6 +440,7 @@ public class DBConnection
 	 * @return ResultSet	The results of the query
 	 * @throws SQLException a sql error
 	 */
+	@SuppressWarnings("null")
 	public ResultSet query(String queryString)
 		throws SQLException
 	{

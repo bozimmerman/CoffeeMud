@@ -36,16 +36,52 @@ import java.util.*;
 
 public class Chant_GrowOak extends Chant_SummonPlants
 {
-	@Override public String ID() { return "Chant_GrowOak"; }
+	@Override
+	public String ID()
+	{
+		return "Chant_GrowOak";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Grow Oak");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int overrideMana(){return Ability.COST_ALL;}
-	protected int hpRemaining=0;
-	protected int lastHp=-1;
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PLANTGROWTH;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	protected int	hpRemaining	= 0;
+	protected int	lastHp		= -1;
 
 	@Override
 	protected Item buildMyPlant(MOB mob, Room room)
@@ -66,6 +102,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
+		Druid_MyPlants.addNewPlant(mob, newItem);
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,L("a tall, healthy @x1 tree sprouts up.",RawMaterial.CODES.NAME(code).toLowerCase()));
 		room.recoverPhyStats();
@@ -129,10 +166,10 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Vector<Room> V=Druid_MyPlants.myPlantRooms(mob);
+		final List<Room> V=Druid_MyPlants.myPlantRooms(mob);
 		for(int v=0;v<V.size();v++)
 		{
-			final Room R=V.elementAt(v);
+			final Room R=V.get(v);
 			for(int i=0;i<R.numItems();i++)
 			{
 				final Item I=R.getItem(i);

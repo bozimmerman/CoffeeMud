@@ -68,7 +68,7 @@ public class Chant_DruidicConnection extends Chant
 			if(ellapsed>=millisPerHoursPerDay)
 			{
 				lastTime=System.currentTimeMillis();
-				final Vector<Room> V=Druid_MyPlants.myAreaPlantRooms(invoker(),(Area)affected);
+				final List<Room> V=Druid_MyPlants.myAreaPlantRooms(invoker(),(Area)affected);
 				int pct=0;
 				if(((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
 					pct=(int)Math.round(100.0*CMath.div(V.size(),((Area)affected).getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
@@ -110,18 +110,18 @@ public class Chant_DruidicConnection extends Chant
 		final Physical affected=this.affected;
 		if((canBeUninvoked())&&(invoker!=null)&&(affected instanceof Area))
 		{
-			final Vector<Room> V=Druid_MyPlants.myAreaPlantRooms(invoker,(Area)affected);
+			final List<Room> V=Druid_MyPlants.myAreaPlantRooms(invoker,(Area)affected);
 			if(V.size()>1)
-				V.removeElementAt(0);
+				V.remove(0);
 			for(int v=0;v<V.size();v++)
 			{
-				Item I=Druid_MyPlants.myPlant(V.elementAt(v),invoker,0);
+				Item I=Druid_MyPlants.myPlant(V.get(v),invoker,0);
 				int num=0;
 				while(I!=null)
-					I=Druid_MyPlants.myPlant(V.elementAt(v),invoker,++num);
+					I=Druid_MyPlants.myPlant(V.get(v),invoker,++num);
 				for(int x=num-1;x>=0;x--)
 				{
-					I=Druid_MyPlants.myPlant(V.elementAt(v),invoker,x);
+					I=Druid_MyPlants.myPlant(V.get(v),invoker,x);
 					if(I!=null)
 						I.destroy();
 				}
@@ -154,7 +154,7 @@ public class Chant_DruidicConnection extends Chant
 				mob.tell(L("This place is already connected to a druid."));
 			return false;
 		}
-		final Vector<Room> V=Druid_MyPlants.myAreaPlantRooms(mob,target);
+		final List<Room> V=Druid_MyPlants.myAreaPlantRooms(mob,target);
 		int pct=0;
 		if(target.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
 			pct=(int)Math.round(100.0*CMath.div(V.size(),target.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]));
