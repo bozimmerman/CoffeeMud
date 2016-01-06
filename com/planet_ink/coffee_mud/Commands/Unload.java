@@ -236,6 +236,9 @@ public class Unload extends StdCommand
 						done++;
 						if(M.session()!=null)
 							M.session().stopSession(true,true,true);
+						PlayerStats pStats = M.playerStats();
+						if(pStats != null)
+							pStats.getExtItems().delAllItems(true);
 						CMLib.players().delPlayer(M);
 						M.destroy();
 					}
