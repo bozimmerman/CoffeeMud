@@ -535,9 +535,7 @@ public class Druid extends StdCharClass
 		&&(!skill.ID().equals("Cooking"))
 		&&(!skill.ID().equals("Herbalism"))
 		&&(!skill.ID().equals("Weaving"))
-		&&(!skill.ID().equals("Masonry"))
-		&&(!skill.ID().equals("Landscaping"))
-		&&(!skill.ID().equals("Excavation")))
+		&&(!skill.ID().equals("Masonry")))
 			return duration*2;
 
 		return duration;

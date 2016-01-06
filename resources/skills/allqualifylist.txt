@@ -87,3 +87,7 @@
 10 JewelMaking REQUIRES=Blacksmithing Pottery MASK=+WIS 16
 10 LockSmith REQUIRES=Blacksmithing MASK=+DEX 14
 10 Taxidermy MASK=+INT 12
+
+15 Landscaping REQUIRES=Farming MASK=+CON 15
+15 Excavation REQUIRES=Sculpting MASK=+CON 15
+15 Irrigation REQUIRES=Drilling MASK=+CON 15
