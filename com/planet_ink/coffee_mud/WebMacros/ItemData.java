@@ -549,9 +549,9 @@ public class ItemData extends StdWebMacro
 						break;
 					case ISUNTWOHANDED: // is untwo handed
 						if(firstTime)
-							old=I.rawLogicalAnd()?"checked":"";
+							old=I.rawLogicalAnd()?"":"checked";
 						else
-						if(old.equals("on"))
+						if(old.equals(""))
 							old="checked";
 						str.append(old);
 						break;
@@ -745,13 +745,13 @@ public class ItemData extends StdWebMacro
 						break;
 					case ISTWOHANDED: // is two handed
 						if(firstTime)
-							old=I.rawLogicalAnd()?"":"checked";
+							old=I.rawLogicalAnd()?"checked":"";
 						else
 						{
 							old=httpReq.getUrlParameter("ISTWOHANDED");
 							if(old==null)
 								old="";
-							if(old.equals(""))
+							if(old.equals("on"))
 								old="checked";
 						}
 						str.append(old);
