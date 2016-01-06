@@ -1,4 +1,3 @@
-#name	level	ticks	wood	misc resource	flag	code	class	misc	property	desc	builder mask
 Wall	1	25	250		DIR INDOOR	WALL	NA	-		@x1 wall	
 Roof	1	25	500		OUTDOOR	ROOM	MetalRoom	0		frame and roof	
 Low Roof	1	25	250		OUTDOOR	ROOM	MetalRoom	0	Prop_Crawlspace	lower frame and roof	
