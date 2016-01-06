@@ -2360,15 +2360,15 @@ public class StdMOB implements MOB
 					break;
 				case CMMsg.TYP_FILL:
 				case CMMsg.TYP_GIVE:
-				case CMMsg.TYP_LOCK:
 				case CMMsg.TYP_PUT:
-					if ((charStats().getBodyPart(Race.BODY_HAND) == 0)
-					&&(baseCharStats().getMyRace().bodyMask()[Race.BODY_HAND] > 0))
+					if ((charStats().getBodyPart(Race.BODY_ARM) == 0)
+					&&(baseCharStats().getMyRace().bodyMask()[Race.BODY_ARM] > 0))
 					{
-						tell(L("You need hands to do that."));
+						tell(L("You need arms to do that."));
 						return false;
 					}
 					break;
+				case CMMsg.TYP_LOCK:
 				case CMMsg.TYP_HANDS:
 				case CMMsg.TYP_INSTALL:
 				case CMMsg.TYP_REPAIR:
@@ -2822,13 +2822,15 @@ public class StdMOB implements MOB
 				|| (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.CMDMOBS) && (isMonster()))
 				|| (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.CMDROOMS) && (isMonster())))
 					return true;
-				if ((getWearPositions(Wearable.WORN_ARMS) == 0) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
+				if ((charStats().getBodyPart(Race.BODY_ARM) == 0)
+				&&(baseCharStats().getMyRace().bodyMask()[Race.BODY_ARM] > 0)
+				&& (!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
 				{
 					srcM.tell(L("@x1 is unable to accept that from you.",name(srcM)));
 					return false;
 				}
 				if ((!CMLib.flags().canBeSeenBy(msg.tool(), this))
-						&& (!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
+				&& (!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
 				{
 					srcM.tell(L("@x1 can't see what you are giving.",name(srcM)));
 					return false;
