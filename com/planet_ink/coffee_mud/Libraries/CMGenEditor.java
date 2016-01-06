@@ -8820,7 +8820,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genAttack(mob,me,++showNumber,showFlag);
 			genDamage(mob,me,++showNumber,showFlag);
 			genArmor(mob,me,++showNumber,showFlag);
-			genHitPoints(mob,me,++showNumber,showFlag);
 			genTPQ(mob,me,++showNumber,showFlag);
 			final PlayerStats pStats = me.playerStats();
 			if(pStats != null)
