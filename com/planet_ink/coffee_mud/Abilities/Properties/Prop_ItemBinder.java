@@ -56,6 +56,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 	{
 		CHARACTER,
 		ACCOUNT,
+		GROUP,
 		CLAN
 	}
 
@@ -96,7 +97,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 		if(on == null)
 			on = BoundOn.PICKUP;
 		
-		boundToName = CMParms.getParmStr(text, "BOUND", "");
+		boundToName = CMStrings.deEscape(CMParms.getParmStr(text, "BOUND", ""));
 		msgStr=CMParms.getParmStr(text,"MESSAGE",defaultMessage());
 		super.setMiscText(text);
 	}
@@ -123,8 +124,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 	{
 		if(boundToName.length()>0)
 			return "Bound to: "+boundToName;
-		else
-			return "Ownership restricted as follows: "+CMLib.masking().maskDesc(text());
+		return "Binds to "+this.to.toString().toLowerCase()+" on "+this.on.toString().toLowerCase();
 	}
 
 	@Override
@@ -159,6 +159,13 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 						if(this.boundToName.equals(msg.source().Name()))
 							zap=false;
 						break;
+					case GROUP:
+					{
+						final List<String> names=CMParms.parse(this.boundToName);
+						if(names.contains(msg.source().Name()))
+							zap=false;
+						break;
+					}
 					case ACCOUNT:
 						if((msg.source().playerStats()!=null)
 						&&(msg.source().playerStats().getAccount()!=null)
@@ -201,6 +208,14 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 		{
 		case CHARACTER:
 			return mob.Name();
+		case GROUP:
+		{
+			final Set<MOB> grp = mob.getGroupMembers(new HashSet<MOB>());
+			final List<String> grpMemberNames = new ArrayList<String>();
+			for(MOB M : grp)
+				grpMemberNames.add(M.Name());
+			return CMParms.combineQuoted(grpMemberNames, 0);
+		}
 		case ACCOUNT:
 			if((mob.playerStats()!=null)
 			&&(mob.playerStats().getAccount()!=null))
@@ -234,7 +249,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 				{
 					this.boundToName = getBindyName(msg.source());
 					if(this.boundToName.length()>0)
-						super.miscText = text()+" BOUND=\""+this.boundToName+"\"";
+						super.miscText = text()+" BOUND=\""+CMStrings.escape(this.boundToName)+"\"";
 				}
 				break;
 			case CMMsg.TYP_GET:
@@ -243,7 +258,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 				{
 					this.boundToName = getBindyName(msg.source());
 					if(this.boundToName.length()>0)
-						super.miscText = text()+" BOUND=\""+this.boundToName+"\"";
+						super.miscText = text()+" BOUND=\""+CMStrings.escape(this.boundToName)+"\"";
 				}
 				break;
 			default:

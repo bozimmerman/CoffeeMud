@@ -197,6 +197,7 @@ public class Apprentice extends StdCharClass
 	@Override
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
+		super.startCharacter(mob, isBorrowedClass, verifyOnly);
 		if(!verifyOnly)
 		{
 			if(mob.playerStats()!=null)

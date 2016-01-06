@@ -43,6 +43,7 @@ public class GenDoor extends GenExit
 		description="An ordinary wooden door with hinges and a latch.";
 		hasADoor=true;
 		hasALock=false;
+		isOpen=false;
 		doorDefaultsClosed=true;
 		doorDefaultsLocked=false;
 		closedText="a closed door";
