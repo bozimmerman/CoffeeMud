@@ -37,14 +37,43 @@ import java.util.*;
 */
 public class PlayerClass extends StdCharClass
 {
-	@Override public String ID(){return "PlayerClass";}
+	@Override
+	public String ID()
+	{
+		return "PlayerClass";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("PlayerClass");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return ID();}
-	@Override public boolean showThinQualifyList(){return true;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return ID();
+	}
+
+	@Override
+	public boolean showThinQualifyList()
+	{
+		return true;
+	}
+
+	private static boolean abilitiesLoaded = false;
+
+	public boolean loaded()
+	{
+		return abilitiesLoaded;
+	}
+
+	public void setLoaded(boolean truefalse)
+	{
+		abilitiesLoaded = truefalse;
+	}
 
 	public PlayerClass()
 	{
@@ -53,9 +82,18 @@ public class PlayerClass extends StdCharClass
 			maxStatAdj[i]=7;
 	}
 
-	@Override public int availabilityCode(){return 0;}
+	@Override
+	public int availabilityCode()
+	{
+		return 0;
+	}
 
-	@Override public String getStatQualDesc(){return "";}
+	@Override
+	public String getStatQualDesc()
+	{
+		return "";
+	}
+
 	@Override
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -100,12 +138,14 @@ public class PlayerClass extends StdCharClass
 					reqSet.add(pA.ID());
 			}
 			if(reqSet.size()==0)
+			{
 				for(final String prevID : prevSet)
 				{
 					final Ability pA=CMClass.getAbility(prevID);
 					if((A.classificationCode()&Ability.ALL_ACODES)==(pA.classificationCode()&Ability.ALL_ACODES))
 						reqSet.add(pA.ID());
 				}
+			}
 			if(reqSet.size()==0)
 			{
 				final boolean aIsSkill=isSkill(A.classificationCode());

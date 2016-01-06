@@ -35,19 +35,79 @@ import java.util.*;
 */
 public class Monk extends StdCharClass
 {
-	@Override public String ID(){return "Monk";}
+	@Override
+	public String ID()
+	{
+		return "Monk";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Monk");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Fighter";}
-	@Override public int getBonusPracLevel(){return -1;}
-	@Override public int getBonusAttackLevel(){return 1;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	@Override public int getLevelsPerBonusDamage(){ return 20;}
-	@Override public int getPracsFirstLevel(){return 3;}
-	@Override public int getTrainsFirstLevel(){return 4;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?7))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?2))"; }
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Fighter";
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return -1;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 1;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_STRENGTH;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 20;
+	}
+
+	@Override
+	public int getPracsFirstLevel()
+	{
+		return 3;
+	}
+
+	@Override
+	public int getTrainsFirstLevel()
+	{
+		return 4;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/3)+(2*(1?7))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/8)+(1*(1?2))";
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_CLOTH;
+	}
 
 	public Monk()
 	{
@@ -143,19 +203,33 @@ public class Monk extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fighter_AtemiStrike",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	private final String[] raceRequiredList=new String[]{
 			"Human","Humanoid","Elf","Goblinoid"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	public boolean anyWeapons(final MOB mob)
 	{
@@ -174,7 +248,8 @@ public class Monk extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return "Receives defensive bonus for high dexterity.  Receives unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives trap avoidance.  Receives bonus conquest and duel experience.";
+		return L("Receives defensive bonus for high dexterity.  Receives unarmed attack bonus.  Receives bonus attack when unarmed.  "
+				+ "Has Slow Fall ability.  Receives trap avoidance.  Receives bonus conquest and duel experience.");
 	}
 
 	@Override

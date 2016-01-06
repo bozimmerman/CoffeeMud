@@ -591,9 +591,15 @@ public class CommonSkill extends StdAbility
 		}
 		if(remainders.specificSkillLimit()<=0)
 		{
-			teacherM.tell(L("@x1 can not learn any more @x2crafting common skills.",studentM.name(teacherM),(crafting?"":"non-")));
+			if(crafting)
+				teacherM.tell(L("@x1 can not learn any more crafting common skills.",studentM.name(teacherM)));
+			else
+				teacherM.tell(L("@x1 can not learn any more non-crafting common skills.",studentM.name(teacherM)));
 			final int max = crafting ? remainders.maxCraftingSkills() : remainders.maxNonCraftingSkills();
-			studentM.tell(L("You have learned the maximum @x1@x2crafting skills, and may not learn any more.",""+max,(crafting?" ":" non-")));
+			if(crafting)
+				studentM.tell(L("You have learned the maximum @x1 crafting skills, and may not learn any more.",""+max));
+			else
+				studentM.tell(L("You have learned the maximum @x1 non-crafting skills, and may not learn any more.",""+max));
 			return false;
 		}
 		return true;

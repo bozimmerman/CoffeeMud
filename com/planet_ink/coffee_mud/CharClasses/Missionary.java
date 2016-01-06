@@ -35,14 +35,45 @@ import java.util.*;
 */
 public class Missionary extends Cleric
 {
-	@Override public String ID(){return "Missionary";}
+	@Override
+	public String ID()
+	{
+		return "Missionary";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Missionary");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Cleric";}
-	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NEUTRALCLERIC;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Cleric";
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_WISDOM;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_NEUTRALCLERIC;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
 
 	public Missionary()
 	{
@@ -139,29 +170,53 @@ public class Missionary extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Sermon",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
 		for(final int i : CharStats.CODES.SAVING_THROWS())
+		{
 			affectableStats.setStat(i,
 				affectableStats.getStat(i)
 					+(affectableStats.getClassLevel(this)));
+		}
 	}
 
-	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return super.getRequiredRaceList();
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	@Override public String getOtherBonusDesc(){return "Never fumbles neutral prayers, and receives 1pt/level luck bonus to all saving throws per level.  Receives 1pt/level electricity damage reduction.";}
-	@Override public String getOtherLimitsDesc(){return "Using non-neutral prayers introduces failure chance.  Vulnerable to acid attacks.";}
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("Never fumbles neutral prayers, and receives 1pt/level luck bonus to all saving throws per level.  Receives 1pt/level electricity damage reduction.");
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Using non-neutral prayers introduces failure chance.  Vulnerable to acid attacks.");
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

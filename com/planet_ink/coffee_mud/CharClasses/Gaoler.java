@@ -35,22 +35,89 @@ import java.util.*;
 */
 public class Gaoler extends StdCharClass
 {
-	@Override public String ID(){return "Gaoler";}
+	@Override
+	public String ID()
+	{
+		return "Gaoler";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Gaoler");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Commoner";}
-	@Override public int getBonusPracLevel(){return 2;}
-	@Override public int getBonusAttackLevel(){return -1;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	@Override public int getLevelsPerBonusDamage(){ return 5;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/6)+(1*(1?5))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_FLAILONLY;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
-	public Hashtable<String,int[]> mudHourMOBXPMap=new Hashtable<String,int[]>();
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Commoner";
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return -1;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_STRENGTH;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 5;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/6)+(1*(1?5))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/10)+(1*(1?2))";
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_CLOTH;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_FLAILONLY;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
+
+	public Hashtable<String, int[]> mudHourMOBXPMap = new Hashtable<String, int[]>();
 
 	public Gaoler()
 	{
@@ -218,15 +285,25 @@ public class Gaoler extends StdCharClass
 	}
 
 
-	private final String[] raceRequiredList=new String[]{"All"};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+	private final String[] raceRequiredList = new String[] { "All" };
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(5)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(5))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	@Override
 	public List<Item> outfit(MOB myChar)
@@ -242,5 +319,9 @@ public class Gaoler extends StdCharClass
 		return outfitChoices;
 	}
 
-	@Override public String getOtherBonusDesc(){return "Gains experience when using certain skills.  Screams of flayed, amputated, tattooed, body pierced, or chirguried victims grants xp/hr.";}
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("Gains experience when using certain skills.  Screams of flayed, amputated, tattooed, body pierced, or chirguried victims grants xp/hr.");
+	}
 }

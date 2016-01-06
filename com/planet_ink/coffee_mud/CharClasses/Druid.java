@@ -37,23 +37,95 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Druid extends StdCharClass
 {
-	@Override public String ID(){return "Druid";}
+	@Override
+	public String ID()
+	{
+		return "Druid";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Druid");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return ID();}
-	@Override public int getBonusPracLevel(){return 2;}
-	@Override public int getBonusAttackLevel(){return 0;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
-	@Override public int getLevelsPerBonusDamage(){ return 30;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
-	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
-	private final Set<Integer> requiredWeaponMaterials=buildRequiredWeaponMaterials();
-	@Override protected Set<Integer> requiredWeaponMaterials(){return requiredWeaponMaterials;}
-	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
-	public static Hashtable<Environmental,Object[]> animalChecking=new Hashtable<Environmental,Object[]>();
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return ID();
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_CONSTITUTION;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 30;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/2)+(2*(1?7))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/4)+(1*(1?4))";
+	}
+
+	@Override
+	protected String armorFailMessage()
+	{
+		return L("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_NONMETAL;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_NATURAL;
+	}
+
+	private final Set<Integer> requiredWeaponMaterials = buildRequiredWeaponMaterials();
+
+	@Override
+	protected Set<Integer> requiredWeaponMaterials()
+	{
+		return requiredWeaponMaterials;
+	}
+
+	@Override
+	public int requiredArmorSourceMinor()
+	{
+		return CMMsg.TYP_CAST_SPELL;
+	}
+
+	public static Hashtable<Environmental, Object[]> animalChecking = new Hashtable<Environmental, Object[]>();
 
 	public Druid()
 	{
@@ -201,8 +273,11 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_Reincarnation",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
-
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
@@ -275,12 +350,14 @@ public class Druid extends StdCharClass
 	{
 		super.affectCharState(affected,affectableState);
 		if(affected.location()!=null)
+		{
 			for(int i=0;i<affected.location().numItems();i++)
 			{
 				final Item I=affected.location().getItem(i);
 				if((I!=null)&&(I.ID().equals("DruidicMonument")))
 					affectableState.setMana(affectableState.getMana()+(affectableState.getMana()/2));
 			}
+		}
 	}
 
 
@@ -288,15 +365,35 @@ public class Druid extends StdCharClass
 		"Human","Humanoid","Elf","Vegetation","Dwarf","Giant-kin",
 		"Goblinoid","HalfElf","Centaur"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	@Override public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	@Override public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.  Benefits from balancing the weather.";}
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Must remain Neutral to avoid skill and chant failure chances.");
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  "
+				+ "Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.  Benefits from balancing the weather.");
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

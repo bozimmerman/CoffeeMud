@@ -35,13 +35,37 @@ import java.util.*;
 */
 public class Qualifier extends StdCharClass
 {
-	@Override public String ID(){return "Qualifier";}
+	@Override
+	public String ID()
+	{
+		return "Qualifier";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Qualifier");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return ID();}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return ID();
+	}
+
+	private static boolean abilitiesLoaded = false;
+
+	public boolean loaded()
+	{
+		return abilitiesLoaded;
+	}
+
+	public void setLoaded(boolean truefalse)
+	{
+		abilitiesLoaded = truefalse;
+	}
 
 	public Qualifier()
 	{
@@ -50,9 +74,18 @@ public class Qualifier extends StdCharClass
 			maxStatAdj[i]=7;
 	}
 
-	@Override public int availabilityCode(){return 0;}
+	@Override
+	public int availabilityCode()
+	{
+		return 0;
+	}
 
-	@Override public String getStatQualDesc(){return "Must be granted by an Archon.";}
+	@Override
+	public String getStatQualDesc()
+	{
+		return L("Must be granted by an Archon.");
+	}
+
 	@Override
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

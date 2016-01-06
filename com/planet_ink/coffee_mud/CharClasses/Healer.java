@@ -35,15 +35,52 @@ import java.util.*;
 */
 public class Healer extends Cleric
 {
-	@Override public String ID(){return "Healer";}
+	@Override
+	public String ID()
+	{
+		return "Healer";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Healer");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Cleric";}
-	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	@Override protected int alwaysFlunksThisQuality(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Cleric";
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_WISDOM;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_GOODCLERIC;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
+
+	@Override
+	protected int alwaysFlunksThisQuality()
+	{
+		return 0;
+	}
+
 	protected volatile long auraCheckTime = System.currentTimeMillis();
 
 	public Healer()
@@ -52,6 +89,7 @@ public class Healer extends Cleric
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -145,7 +183,11 @@ public class Healer extends Cleric
 		// level 30 == healing aura
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public int classLevelModifier(MOB myChar, Ability skill, int level)
@@ -203,17 +245,36 @@ public class Healer extends Cleric
 	private final String[] raceRequiredList=new String[]{
 		"Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	@Override public String getOtherBonusDesc(){return "All healing prayers give bonus healing.  Attains healing aura after 30th level.";}
-	@Override public String getOtherLimitsDesc(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("All healing prayers give bonus healing.  Attains healing aura after 30th level.");
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.");
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

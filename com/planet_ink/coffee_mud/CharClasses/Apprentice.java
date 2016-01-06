@@ -36,24 +36,101 @@ import java.util.*;
 */
 public class Apprentice extends StdCharClass
 {
-	@Override public String ID(){return "Apprentice";}
+	@Override
+	public String ID()
+	{
+		return "Apprentice";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Apprentice");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Commoner";}
-	@Override public int getBonusPracLevel(){return 5;}
-	@Override public int getBonusAttackLevel(){return -1;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	@Override public int getLevelsPerBonusDamage(){ return 10;}
-	@Override public int getTrainsFirstLevel(){return 6;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/9)+(1*(1?4))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
-	@Override public int getLevelCap(){ return 1;}
-	@Override public SubClassRule getSubClassRule() { return SubClassRule.ANY; }
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected Set<Tickable> currentApprentices=new HashSet<Tickable>();
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Commoner";
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 5;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return -1;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_WISDOM;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 10;
+	}
+
+	@Override
+	public int getTrainsFirstLevel()
+	{
+		return 6;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/9)+(1*(1?4))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/10)+(1*(1?2))";
+	}
+
+	@Override
+	public int getLevelCap()
+	{
+		return 1;
+	}
+
+	@Override
+	public SubClassRule getSubClassRule()
+	{
+		return SubClassRule.ANY;
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_CLOTH;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_DAGGERONLY;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
+
+	protected Set<Tickable> currentApprentices = new HashSet<Tickable>();
 
 	@Override
 	public void initializeClass()
@@ -118,6 +195,19 @@ public class Apprentice extends StdCharClass
 	}
 
 	@Override
+	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
+	{
+		if(!verifyOnly)
+		{
+			if(mob.playerStats()!=null)
+			{
+				mob.playerStats().setBonusCommonSkillLimits(mob.playerStats().getBonusCommonSkillLimits()+1);
+				mob.playerStats().setBonusCraftingSkillLimits(mob.playerStats().getBonusCraftingSkillLimits()+1);
+				mob.playerStats().setBonusNonCraftingSkillLimits(mob.playerStats().getBonusNonCraftingSkillLimits()+1);
+			}
+		}
+	}
+	@Override
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -150,6 +240,6 @@ public class Apprentice extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return "Gains lots of xp for training to a new class.";
+		return L("Gains lots of xp for training to a new class, and gets bonus common skills.");
 	}
 }

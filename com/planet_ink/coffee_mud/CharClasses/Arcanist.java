@@ -35,11 +35,31 @@ import java.util.*;
 
 public class Arcanist extends Thief
 {
-	@Override public String ID(){return "Arcanist";}
+	@Override
+	public String ID()
+	{
+		return "Arcanist";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Arcanist");
-	@Override public String name() { return localizedStaticName; }
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
-	@Override public String getManaFormula(){return "((@x4<@x5)/5)+(1*(1?3))"; }
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/5)+(1*(1?3))";
+	}
 
 	public Arcanist()
 	{
@@ -146,7 +166,11 @@ public class Arcanist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_MagicItem",true);
 	}
 
-	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return super.getRequiredRaceList();
+	}
 	
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]
@@ -154,13 +178,20 @@ public class Arcanist extends Thief
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return "Magic resistance, 1%/level.  Huge discounts when buying potions after 5th level.  Ability to memorize spells learned through SpellCraft. Can see wand charges at level 30.";
+		return L("Magic resistance, 1%/level.  Huge discounts when buying potions after 5th level.  Ability to memorize spells learned through SpellCraft. "
+				+ "Can see wand charges at level 30.");
 	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

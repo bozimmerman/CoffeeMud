@@ -165,7 +165,7 @@ public class StdCharClass implements CharClass
 
 	protected String armorFailMessage()
 	{
-		return "<S-NAME> fumble(s) <S-HIS-HER> <SKILL> due to <S-HIS-HER> armor!";
+		return L("<S-NAME> fumble(s) <S-HIS-HER> <SKILL> due to <S-HIS-HER> armor!");
 	}
 
 	@Override
@@ -1169,9 +1169,9 @@ public class StdCharClass implements CharClass
 			if(!armorCheck(msg.source(),msg.sourceCode(),msg.tool()))
 			{
 				if(msg.tool()==null)
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(armorFailMessage(),"<SKILL>","maneuver"));
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(armorFailMessage(),"<SKILL>",L("maneuver")));
 				else
-					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(armorFailMessage(),"<SKILL>",msg.tool().name()+" attempt"));
+					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(armorFailMessage(),"<SKILL>",msg.tool().name()+L(" attempt")));
 				return false;
 			}
 			if(!weaponCheck(msg.source(),msg.sourceCode(),msg.tool()))

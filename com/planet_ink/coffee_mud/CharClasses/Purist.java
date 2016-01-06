@@ -36,15 +36,51 @@ import java.util.*;
 */
 public class Purist extends Cleric
 {
-	@Override public String ID(){return "Purist";}
+	@Override
+	public String ID()
+	{
+		return "Purist";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Purist");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Cleric";}
-	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	@Override protected int alwaysFlunksThisQuality(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Cleric";
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_WISDOM;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_GOODCLERIC;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
+
+	@Override
+	protected int alwaysFlunksThisQuality()
+	{
+		return 0;
+	}
 
 	public Purist()
 	{
@@ -52,6 +88,7 @@ public class Purist extends Cleric
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -150,7 +187,11 @@ public class Purist extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_AuraIntolerance",false);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public boolean tick(Tickable myChar, int tickID)
@@ -171,10 +212,25 @@ public class Purist extends Cleric
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	@Override public String getOtherBonusDesc(){return "Receives 1pt/level cold damage reduction.";}
-	@Override public String getOtherLimitsDesc(){return "Always fumbles evil prayers, and fumbles all prayers when alignment is below pure neutral.  Qualifies and receives good prayers, and bonus damage from good spells.  Using non-aligned prayers introduces failure chance.  Vulnerable to fire attacks.";}
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("Receives 1pt/level cold damage reduction.");
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Always fumbles evil prayers, and fumbles all prayers when alignment is below pure neutral.  Qualifies and receives good prayers, "
+				+ "and bonus damage from good spells.  Using non-aligned prayers introduces failure chance.  Vulnerable to fire attacks.");
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

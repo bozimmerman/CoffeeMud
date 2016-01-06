@@ -35,15 +35,51 @@ import java.util.*;
 */
 public class Oracle extends Cleric
 {
-	@Override public String ID(){return "Oracle";}
+	@Override
+	public String ID()
+	{
+		return "Oracle";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Oracle");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Cleric";}
-	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	@Override protected int alwaysFlunksThisQuality(){return 0;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Cleric";
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_WISDOM;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_GOODCLERIC;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
+
+	@Override
+	protected int alwaysFlunksThisQuality()
+	{
+		return 0;
+	}
 
 	public Oracle()
 	{
@@ -161,17 +197,36 @@ public class Oracle extends Cleric
 	private final String[] raceRequiredList=new String[]{
 		"Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin","Centaur"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	@Override public String getOtherBonusDesc(){return "Receives a non-class skill at 30th level, and every Oracle level thereafter.";}
-	@Override public String getOtherLimitsDesc(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("Receives a non-class skill at 30th level, and every Oracle level thereafter.");
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.");
+	}
 
 	protected int numNonQualified(MOB mob)
 	{

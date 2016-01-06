@@ -35,22 +35,93 @@ import java.util.*;
 */
 public class Jester extends StdCharClass
 {
-	@Override public String ID(){return "Jester";}
+	@Override
+	public String ID()
+	{
+		return "Jester";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Jester");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Bard";}
-	@Override public int getBonusPracLevel(){return 1;}
-	@Override public int getBonusAttackLevel(){return 0;}
-	@Override public String getMovementFormula(){return "16*((@x2<@x3)/18)"; }
-	@Override public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
-	@Override public int getLevelsPerBonusDamage(){ return 10;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?6))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/6)+(1*(1?3))"; }
-	@Override protected String armorFailMessage(){return "<S-NAME> armor makes <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Bard";
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 1;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public String getMovementFormula()
+	{
+		return "16*((@x2<@x3)/18)";
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_CHARISMA;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 10;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/3)+(2*(1?6))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/6)+(1*(1?3))";
+	}
+
+	@Override
+	protected String armorFailMessage()
+	{
+		return L("<S-NAME> armor makes <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!");
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_NONMETAL;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_THIEFLIKE;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
 
 	public Jester()
 	{
@@ -156,20 +227,33 @@ public class Jester extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_Buffoonery",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
-
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	private final String[] raceRequiredList=new String[]{
 		"Human","Gnome","Halfling","HalfElf"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -202,9 +286,25 @@ public class Jester extends StdCharClass
 		}
 	}
 
-	@Override public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host, mob,victim,amount,6.0);}
-	@Override public String getOtherLimitsDesc(){return "";}
-	@Override public String getOtherBonusDesc(){return "Receives 2%/level bonus to saves versus poison.  Receives extra natural damaging skill. Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration and pub-finding experience based on danger level.";}
+	@Override
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
+	{
+		return Bard.bardAdjustExperienceGain(host, mob, victim, amount, 6.0);
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return "";
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("Receives 2%/level bonus to saves versus poison.  Receives extra natural damaging skill. Receives group bonus combat experience when in an intelligent group, "
+				+ "and more for a group of players.  Receives exploration and pub-finding experience based on danger level.");
+	}
+
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{

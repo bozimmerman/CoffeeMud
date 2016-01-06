@@ -33,9 +33,19 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Trapper extends Thief
 {
-	@Override public String ID(){return "Trapper";}
+	@Override
+	public String ID()
+	{
+		return "Trapper";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Trapper");
-	@Override public String name() { return localizedStaticName; }
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
 
 	public Trapper()
 	{
@@ -43,6 +53,7 @@ public class Trapper extends Thief
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -144,13 +155,13 @@ public class Trapper extends Thief
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return "Benefits from animal followers leveling.  Gets experience for selling foreign unconjured animals of comparable level.";
+		return L("Benefits from animal followers leveling.  Gets experience for selling foreign unconjured animals of comparable level.");
 	}
 
 	@Override
 	public String getOtherLimitsDesc()
 	{
-		return "Sneak and Hide attempts will fail outside of the wild.";
+		return L("Sneak and Hide attempts will fail outside of the wild.");
 	}
 
 	@Override

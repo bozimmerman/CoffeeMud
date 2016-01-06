@@ -96,7 +96,7 @@ public class Beastmaster extends StdCharClass
 	@Override
 	protected String armorFailMessage()
 	{
-		return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";
+		return L("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
 	}
 
 	@Override
@@ -131,6 +131,7 @@ public class Beastmaster extends StdCharClass
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -241,21 +242,33 @@ public class Beastmaster extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Druid_PackCall",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
-
-
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Elf","Dwarf","Giant-kin","Centaur"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -282,6 +295,7 @@ public class Beastmaster extends StdCharClass
 		}
 		return true;
 	}
+
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
@@ -290,8 +304,18 @@ public class Beastmaster extends StdCharClass
 		Druid.doAnimalFreeingCheck(this,host,msg);
 	}
 
-	@Override public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	@Override public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.";}
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Must remain Neutral to avoid skill and chant failure chances.");
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  "
+				+ "Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.");
+	}
 
 	@Override
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
@@ -320,7 +344,6 @@ public class Beastmaster extends StdCharClass
 		}
 		return outfitChoices;
 	}
-
 
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)

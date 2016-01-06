@@ -36,21 +36,78 @@ import java.util.*;
 
 public class Cleric extends StdCharClass
 {
-	@Override public String ID(){return "Cleric";}
+	@Override
+	public String ID()
+	{
+		return "Cleric";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Cleric");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return ID();}
-	@Override public int getBonusPracLevel(){return 2;}
-	@Override public int getBonusAttackLevel(){return 0;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	@Override public int getLevelsPerBonusDamage(){ return 30;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(1*(1?10))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ALLCLERIC;}
-	private final Set<Integer> disallowedWeaponsG=buildDisallowedWeaponClasses(CharClass.WEAPONS_GOODCLERIC);
-	private final Set<Integer> disallowedWeaponsN=buildDisallowedWeaponClasses(CharClass.WEAPONS_NEUTRALCLERIC);
-	private final Set<Integer> disallowedWeaponsE=buildDisallowedWeaponClasses(CharClass.WEAPONS_EVILCLERIC);
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return ID();
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_WISDOM;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 30;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/3)+(1*(1?10))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/4)+(1*(1?4))";
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_ANY;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_ALLCLERIC;
+	}
+
+	private final Set<Integer>	disallowedWeaponsG	= buildDisallowedWeaponClasses(CharClass.WEAPONS_GOODCLERIC);
+	private final Set<Integer>	disallowedWeaponsN	= buildDisallowedWeaponClasses(CharClass.WEAPONS_NEUTRALCLERIC);
+	private final Set<Integer>	disallowedWeaponsE	= buildDisallowedWeaponClasses(CharClass.WEAPONS_EVILCLERIC);
+
 	@Override
 	protected Set<Integer> disallowedWeaponClasses(MOB mob)
 	{
@@ -60,13 +117,18 @@ public class Cleric extends StdCharClass
 			return disallowedWeaponsG;
 		return disallowedWeaponsN;
 	}
-	protected int alwaysFlunksThisQuality(){return -1;}
+
+	protected int alwaysFlunksThisQuality()
+	{
+		return -1;
+	}
 
 	public Cleric()
 	{
 		super();
 		maxStatAdj[CharStats.STAT_WISDOM]=7;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -266,18 +328,36 @@ public class Cleric extends StdCharClass
 		}
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
-	private final String[] raceRequiredList=new String[]{"All"};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+	private final String[] raceRequiredList = new String[] { "All" };
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	@Override public String getOtherLimitsDesc(){return "Using prayers outside your alignment introduces failure chance.";}
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Using prayers outside your alignment introduces failure chance.");
+	}
 
 	protected int holyQuality(Ability A)
 	{

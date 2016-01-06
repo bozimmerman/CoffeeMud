@@ -94,7 +94,7 @@ public class Minstrel extends StdCharClass
 	@Override
 	protected String armorFailMessage()
 	{
-		return "<S-NAME> armor makes <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";
+		return L("<S-NAME> armor makes <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!");
 	}
 
 	@Override
@@ -310,9 +310,9 @@ public class Minstrel extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return "Receives group bonus combat experience when in an intelligent group, and "
+		return L("Receives group bonus combat experience when in an intelligent group, and "
 				+ "more for a group of players.  Receives exploration and "
-				+ "pub-finding experience based on danger level.";
+				+ "pub-finding experience based on danger level.");
 	}
 
 	@Override

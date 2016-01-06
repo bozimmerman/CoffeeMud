@@ -317,6 +317,6 @@ public class Artisan extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return "Gains experience when using common skills.";
+		return L("Gains experience when using common skills and no common skill limits.");
 	}
 }

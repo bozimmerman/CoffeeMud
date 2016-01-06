@@ -35,21 +35,86 @@ import java.util.*;
 */
 public class Fighter extends StdCharClass
 {
-	@Override public String ID(){return "Fighter";}
+	@Override
+	public String ID()
+	{
+		return "Fighter";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Fighter");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return ID();}
-	@Override public int getBonusPracLevel(){return -1;}
-	@Override public int getBonusAttackLevel(){return 0;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	@Override public int getLevelsPerBonusDamage(){ return 30;}
-	@Override public int getPracsFirstLevel(){return 3;}
-	@Override public int getTrainsFirstLevel(){return 4;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?2))"; }
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
-	@Override public String getMovementFormula(){return "12*((@x2<@x3)/18)"; }
-	
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return ID();
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return -1;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_STRENGTH;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 30;
+	}
+
+	@Override
+	public int getPracsFirstLevel()
+	{
+		return 3;
+	}
+
+	@Override
+	public int getTrainsFirstLevel()
+	{
+		return 4;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/2)+(2*(1?7))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/8)+(1*(1?2))";
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_ANY;
+	}
+
+	@Override
+	public String getMovementFormula()
+	{
+		return "12*((@x2<@x3)/18)";
+	}
+
 	protected static final long MILLIS_BETWEEN_DUEL_WINS = 30 * 60000;
 	protected static volatile long lastDuelWinner = 0;
 	protected static TreeMap<String,long[]> duelWinners = new TreeMap<String,long[]>();
@@ -152,17 +217,30 @@ public class Fighter extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fighter_CoupDeGrace",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
+	private final String[] raceRequiredList = new String[] { "All" };
 
-	private final String[] raceRequiredList=new String[]{"All"};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
@@ -196,7 +274,7 @@ public class Fighter extends StdCharClass
 	@Override 
 	public String getOtherBonusDesc()
 	{
-		return "Receives bonus conquest experience and bonus duel experience.";
+		return L("Receives bonus conquest experience and bonus duel experience.");
 	}
 	
 	public static void duelExperience(CharClass C, Environmental host, CMMsg msg)

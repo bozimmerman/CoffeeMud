@@ -34,13 +34,39 @@ import java.util.*;
 */
 public class Burglar extends Thief
 {
-	@Override public String ID(){return "Burglar";}
+	@Override
+	public String ID()
+	{
+		return "Burglar";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Burglar");
-	@Override public String name() { return localizedStaticName; }
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_BURGLAR;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_BURGLAR;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
 
 	public Burglar()
 	{
@@ -48,6 +74,7 @@ public class Burglar extends Thief
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -145,12 +172,21 @@ public class Burglar extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_ContractHit",true);
 	}
 
-	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return super.getRequiredRaceList();
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 }

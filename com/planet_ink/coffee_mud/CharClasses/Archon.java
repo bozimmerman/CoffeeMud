@@ -35,11 +35,31 @@ import java.util.*;
 */
 public class Archon extends StdCharClass
 {
-	@Override public String ID(){return "Archon";}
+	@Override
+	public String ID()
+	{
+		return "Archon";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Archon");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return ID();}
-	@Override public boolean leveless(){return true;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return ID();
+	}
+
+	@Override
+	public boolean leveless()
+	{
+		return true;
+	}
 
 	public Archon()
 	{
@@ -47,6 +67,7 @@ public class Archon extends StdCharClass
 		for(final int i : CharStats.CODES.BASECODES())
 			maxStatAdj[i]=7;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -80,9 +101,18 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
 	}
 
-	@Override public int availabilityCode(){return 0;}
+	@Override
+	public int availabilityCode()
+	{
+		return 0;
+	}
 
-	@Override public String getStatQualDesc(){return "Must be granted by another Archon.";}
+	@Override
+	public String getStatQualDesc()
+	{
+		return "Must be granted by another Archon.";
+	}
+
 	@Override
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

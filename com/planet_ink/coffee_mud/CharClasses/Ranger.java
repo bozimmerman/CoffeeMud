@@ -248,14 +248,23 @@ public class Ranger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Ranger_AnimalFrenzy",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
-	@Override public String getOtherLimitsDesc(){return "Must remain Neutral to avoid chant failure chances.";}
-	
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Must remain Neutral to avoid chant failure chances.");
+	}
+
 	@Override 
 	public String getOtherBonusDesc()
 	{
-		return "When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest and duel experience.  Benefits from animal followers leveling.";
+		return L("When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest and duel experience.  "
+				+ "Benefits from animal followers leveling.");
 	}
 	
 	@Override 
@@ -270,14 +279,24 @@ public class Ranger extends StdCharClass
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Troll-kin","Elf","Centaur"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

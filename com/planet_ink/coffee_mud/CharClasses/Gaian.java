@@ -37,22 +37,93 @@ import java.util.*;
 
 public class Gaian extends StdCharClass
 {
-	@Override public String ID(){return "Gaian";}
+	@Override
+	public String ID()
+	{
+		return "Gaian";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Gaian");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Druid";}
-	@Override public int getBonusPracLevel(){return 2;}
-	@Override public int getBonusAttackLevel(){return 0;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
-	@Override public int getLevelsPerBonusDamage(){ return 30;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
-	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
-	private final Set<Integer> requiredWeaponMaterials=buildRequiredWeaponMaterials();
-	@Override protected Set<Integer> requiredWeaponMaterials(){return requiredWeaponMaterials;}
-	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Druid";
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_CONSTITUTION;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 30;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/2)+(2*(1?7))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/4)+(1*(1?4))";
+	}
+
+	@Override
+	protected String armorFailMessage()
+	{
+		return L("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_NONMETAL;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_NATURAL;
+	}
+
+	private final Set<Integer> requiredWeaponMaterials = buildRequiredWeaponMaterials();
+
+	@Override
+	protected Set<Integer> requiredWeaponMaterials()
+	{
+		return requiredWeaponMaterials;
+	}
+
+	@Override
+	public int requiredArmorSourceMinor()
+	{
+		return CMMsg.TYP_CAST_SPELL;
+	}
 
 	public Gaian()
 	{
@@ -189,19 +260,45 @@ public class Gaian extends StdCharClass
 	private final String[] raceRequiredList=new String[]{
 		"Human","Elf","Vegetation","Humanoid","Halfling","Dwarf","Centaur"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	@Override public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	@Override public String getOtherBonusDesc(){return "Attains Greenskin (sunlight based bonuses/penalties) at level 5.  At level 30, becomes totally undetectable in wilderness settings while hidden.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.";}
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
-	@Override public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);  Druid.doAnimalFreeingCheck(this,host,msg);}
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Must remain Neutral to avoid skill and chant failure chances.");
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("Attains Greenskin (sunlight based bonuses/penalties) at level 5.  At level 30, becomes totally undetectable in wilderness settings while hidden.  "
+				+ "Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.");
+	}
+
+	@Override
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		super.executeMsg(host, msg);
+		Druid.doAnimalFollowerLevelingCheck(this, host, msg);
+		Druid.doAnimalFreeingCheck(this, host, msg);
+	}
 
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)
@@ -318,7 +415,6 @@ public class Gaian extends StdCharClass
 		}
 		return outfitChoices;
 	}
-
 
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)

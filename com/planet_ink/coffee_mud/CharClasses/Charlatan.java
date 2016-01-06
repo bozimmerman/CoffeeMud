@@ -37,20 +37,77 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Charlatan extends StdCharClass
 {
-	@Override public String ID(){return "Charlatan";}
+	@Override
+	public String ID()
+	{
+		return "Charlatan";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Charlatan");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Bard";}
-	@Override public int getBonusPracLevel(){return 1;}
-	@Override public int getBonusAttackLevel(){return 0;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
-	@Override public int getLevelsPerBonusDamage(){ return 10;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?6))"; }
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected volatile WeakReference<Ability> invokable=new WeakReference(null);
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Bard";
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 1;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_CHARISMA;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 10;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/3)+(2*(1?6))";
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_NONMETAL;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_THIEFLIKE;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
+
+	protected volatile WeakReference<Ability> invokable = new WeakReference(null);
 
 	public Charlatan()
 	{
@@ -152,20 +209,32 @@ public class Charlatan extends StdCharClass
 		// 30 -- cheaper skills
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
-
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","HalfElf"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9)),
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9))
 	};
 	
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	@Override 
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
@@ -173,13 +242,18 @@ public class Charlatan extends StdCharClass
 		return Bard.bardAdjustExperienceGain(host,mob,victim,amount,6.0);
 	}
 
-	@Override 
-	public String getOtherLimitsDesc(){return "";}
-	
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return "";
+	}
+
 	@Override 
 	public String getOtherBonusDesc()
 	{
-		return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! Receives exploration and pub-finding experience based on danger level.";
+		return L("Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  "
+				+ "Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! "
+				+ "Receives exploration and pub-finding experience based on danger level.");
 	}
 	
 	@Override

@@ -113,7 +113,7 @@ public class Mage extends StdCharClass
 	@Override
 	protected String armorFailMessage()
 	{
-		return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";
+		return L("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
 	}
 
 	@Override

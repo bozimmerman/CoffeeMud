@@ -33,12 +33,37 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Conjurer extends SpecialistMage
 {
-	@Override public String ID(){return "Conjurer";}
+	@Override
+	public String ID()
+	{
+		return "Conjurer";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Conjurer");
-	@Override public String name() { return localizedStaticName; }
-	@Override public int domain(){return Ability.DOMAIN_CONJURATION;}
-	@Override public int opposed(){return Ability.DOMAIN_TRANSMUTATION;}
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public int domain()
+	{
+		return Ability.DOMAIN_CONJURATION;
+	}
+
+	@Override
+	public int opposed()
+	{
+		return Ability.DOMAIN_TRANSMUTATION;
+	}
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public void initializeClass()

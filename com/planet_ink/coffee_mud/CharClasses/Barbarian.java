@@ -36,20 +36,85 @@ import java.util.*;
 */
 public class Barbarian extends StdCharClass
 {
-	@Override public String ID(){return "Barbarian";}
+	@Override
+	public String ID()
+	{
+		return "Barbarian";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Barbarian");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Fighter";}
-	@Override public int getBonusPracLevel(){return -1;}
-	@Override public int getBonusAttackLevel(){return 0;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	@Override public int getLevelsPerBonusDamage(){ return 30;}
-	@Override public int getPracsFirstLevel(){return 3;}
-	@Override public int getTrainsFirstLevel(){return 4;}
-	@Override public String getMovementFormula(){return "13*((@x2<@x3)/18)"; }
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/8)+(1*(1?2))"; }
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Fighter";
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return -1;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_STRENGTH;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 30;
+	}
+
+	@Override
+	public int getPracsFirstLevel()
+	{
+		return 3;
+	}
+
+	@Override
+	public int getTrainsFirstLevel()
+	{
+		return 4;
+	}
+
+	@Override
+	public String getMovementFormula()
+	{
+		return "13*((@x2<@x3)/18)";
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/2)+(2*(1?7))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/8)+(1*(1?2))";
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_NONMETAL;
+	}
 
 	public Barbarian()
 	{
@@ -146,12 +211,16 @@ public class Barbarian extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fighter_Shrug",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override 
 	public String getOtherBonusDesc()
 	{
-		return "Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.  Receives bonus conquest and duel experience.";
+		return L("Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.  Receives bonus conquest and duel experience.");
 	}
 	
 	@Override 
@@ -162,15 +231,25 @@ public class Barbarian extends StdCharClass
 		Fighter.duelExperience(this, host, msg);
 	}
 	
-	private final String[] raceRequiredList=new String[]{"All"};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+	private final String[] raceRequiredList = new String[] { "All" };
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -205,7 +284,6 @@ public class Barbarian extends StdCharClass
 		}
 		return super.okMessage(myChar,msg);
 	}
-
 
 	@Override
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
@@ -243,9 +321,7 @@ public class Barbarian extends StdCharClass
 	}
 	
 	@Override
-	public int classDurationModifier(MOB myChar,
-									 Ability skill,
-									 int duration)
+	public int classDurationModifier(MOB myChar, Ability skill, int duration)
 	{
 		if(myChar==null)
 			return duration;

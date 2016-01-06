@@ -35,12 +35,35 @@ import java.util.*;
 */
 public class SpecialistMage extends Mage
 {
-	@Override public String ID(){return "SpecialistMage";}
+	@Override
+	public String ID()
+	{
+		return "SpecialistMage";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Specialist Mage");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Mage";}
-	public int domain(){return Ability.DOMAIN_ABJURATION;}
-	public int opposed(){return Ability.DOMAIN_ENCHANTMENT;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Mage";
+	}
+
+	public int domain()
+	{
+		return Ability.DOMAIN_ABJURATION;
+	}
+
+	public int opposed()
+	{
+		return Ability.DOMAIN_ENCHANTMENT;
+	}
 
 	@Override
 	public void initializeClass()
@@ -74,18 +97,28 @@ public class SpecialistMage extends Mage
 		}
 	}
 
-	@Override public int availabilityCode(){return 0;}
+	@Override
+	public int availabilityCode()
+	{
+		return 0;
+	}
+
 	@Override
 	public String getOtherBonusDesc()
 	{
-		final String chosen=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain()>>5].replace('_',' '));
-		return "At 5th level, receives bonus damage from "+chosen+" as levels advance.  At 10th level, receives double duration on your "+chosen+" magic, and half duration from malicious "+chosen+" magic.";
+		final String chosen = CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain() >> 5].replace('_', ' '));
+		return L("At 5th level, receives bonus damage from @x1 as levels advance.  "
+				+ "At 10th level, receives double duration on your @x1 magic, "
+				+ "and half duration from malicious @x1 magic.",chosen);
 	}
+
 	@Override
 	public String getOtherLimitsDesc()
 	{
-		final String opposed=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[opposed()>>5].replace('_',' '));
-		return "Unable to cast "+opposed+" spells.  Receives penalty damage from "+opposed+" as levels advance.  Receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
+		final String opposed = CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[opposed() >> 5].replace('_', ' '));
+		return L("Unable to cast @x1 spells.  Receives penalty damage from @x1 as levels advance.  "
+				+ "Receives double duration from malicious @x1 magic, half duration on other @x1"
+				+ " effects.",opposed);
 	}
 
 	@Override

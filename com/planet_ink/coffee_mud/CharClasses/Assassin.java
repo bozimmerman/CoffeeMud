@@ -34,23 +34,44 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 @SuppressWarnings("unchecked")
 public class Assassin extends Thief
 {
-	@Override public String ID(){return "Assassin";}
+	@Override
+	public String ID()
+	{
+		return "Assassin";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Assassin");
-	@Override public String name() { return localizedStaticName; }
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
 
-	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
-		new Pair<String,Integer>("Dexterity",Integer.valueOf(5)),
-		new Pair<String,Integer>("Wisdom",Integer.valueOf(5))
-	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return super.getRequiredRaceList();
+	}
+
+	private final Pair<String, Integer>[] minimumStatRequirements = new Pair[] { new Pair<String, Integer>("Dexterity", Integer.valueOf(5)), new Pair<String, Integer>("Wisdom", Integer.valueOf(5)) };
+
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return "Strong resistance to all poisons at 21st level.";
+		return L("Strong resistance to all poisons at 21st level.");
 	}
 	public Assassin()
 	{
@@ -156,6 +177,7 @@ public class Assassin extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Shadowstrike",true);
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

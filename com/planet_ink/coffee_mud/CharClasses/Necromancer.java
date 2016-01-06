@@ -37,16 +37,53 @@ import java.util.*;
 */
 public class Necromancer extends Cleric
 {
-	@Override public String ID(){return "Necromancer";}
+	@Override
+	public String ID()
+	{
+		return "Necromancer";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Necromancer");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Cleric";}
-	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_EVILCLERIC;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	@Override protected int alwaysFlunksThisQuality(){return 1000;}
-	protected boolean registeredAsListener=false;
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Cleric";
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_WISDOM;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_EVILCLERIC;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
+
+	@Override
+	protected int alwaysFlunksThisQuality()
+	{
+		return 1000;
+	}
+
+	protected boolean registeredAsListener = false;
 
 	public Necromancer()
 	{
@@ -54,6 +91,7 @@ public class Necromancer extends Cleric
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -158,17 +196,35 @@ public class Necromancer extends Cleric
 		}
 	}
 
-	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return super.getRequiredRaceList();
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	@Override public String getOtherBonusDesc(){return "Can sense deaths at Necromancer level 15, and becomes a Lich upon death at 30.  Undead followers will not drain experience.";}
-	@Override public String getOtherLimitsDesc(){return "Always fumbles good prayers.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.";}
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("Can sense deaths at Necromancer level 15, and becomes a Lich upon death at 30.  Undead followers will not drain experience.");
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Always fumbles good prayers.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.");
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

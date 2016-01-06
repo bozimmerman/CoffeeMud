@@ -35,15 +35,51 @@ import java.util.*;
 */
 public class Templar extends Cleric
 {
-	@Override public String ID(){return "Templar";}
+	@Override
+	public String ID()
+	{
+		return "Templar";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("Templar");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Cleric";}
-	@Override public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
-	private final Set<Integer> disallowedWeapons=buildDisallowedWeaponClasses();
-	@Override protected Set<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	@Override protected int alwaysFlunksThisQuality(){return 1000;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Cleric";
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_WISDOM;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_ANY;
+	}
+
+	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
+
+	@Override
+	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	{
+		return disallowedWeapons;
+	}
+
+	@Override
+	protected int alwaysFlunksThisQuality()
+	{
+		return 1000;
+	}
 
 	protected int tickDown=0;
 
@@ -53,6 +89,7 @@ public class Templar extends Cleric
 		maxStatAdj[CharStats.STAT_STRENGTH]=4;
 		maxStatAdj[CharStats.STAT_WISDOM]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -151,7 +188,11 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Avatar",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -172,18 +213,35 @@ public class Templar extends Cleric
 		return super.tick(myChar,tickID);
 	}
 
-	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return super.getRequiredRaceList();
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Strength",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
 
-	@Override public String getOtherBonusDesc(){return "Receives Aura of Strife which increases in power.";}
-	@Override public String getOtherLimitsDesc(){return "Always fumbles good prayers.  Using non-evil prayers introduces failure chance.";}
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("Receives Aura of Strife which increases in power.");
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Always fumbles good prayers.  Using non-evil prayers introduces failure chance.");
+	}
 
 	@Override
 	public List<Item> outfit(MOB myChar)

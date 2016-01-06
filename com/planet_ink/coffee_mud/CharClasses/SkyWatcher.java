@@ -36,22 +36,93 @@ import java.util.*;
 
 public class SkyWatcher extends StdCharClass
 {
-	@Override public String ID(){return "SkyWatcher";}
+	@Override
+	public String ID()
+	{
+		return "SkyWatcher";
+	}
+
 	private final static String localizedStaticName = CMLib.lang().L("SkyWatcher");
-	@Override public String name() { return localizedStaticName; }
-	@Override public String baseClass(){return "Druid";}
-	@Override public int getBonusPracLevel(){return 2;}
-	@Override public int getBonusAttackLevel(){return 0;}
-	@Override public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
-	@Override public int getLevelsPerBonusDamage(){ return 30;}
-	@Override public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
-	@Override public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
-	@Override protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
-	@Override public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
-	@Override public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
-	private final Set<Integer> requiredWeaponMaterials=buildRequiredWeaponMaterials();
-	@Override protected Set<Integer> requiredWeaponMaterials(){return requiredWeaponMaterials;}
-	@Override public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
+
+	@Override
+	public String name()
+	{
+		return localizedStaticName;
+	}
+
+	@Override
+	public String baseClass()
+	{
+		return "Druid";
+	}
+
+	@Override
+	public int getBonusPracLevel()
+	{
+		return 2;
+	}
+
+	@Override
+	public int getBonusAttackLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getAttackAttribute()
+	{
+		return CharStats.STAT_CONSTITUTION;
+	}
+
+	@Override
+	public int getLevelsPerBonusDamage()
+	{
+		return 30;
+	}
+
+	@Override
+	public String getHitPointsFormula()
+	{
+		return "((@x6<@x7)/2)+(2*(1?7))";
+	}
+
+	@Override
+	public String getManaFormula()
+	{
+		return "((@x4<@x5)/4)+(1*(1?4))";
+	}
+
+	@Override
+	protected String armorFailMessage()
+	{
+		return L("<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+	}
+
+	@Override
+	public int allowedArmorLevel()
+	{
+		return CharClass.ARMOR_NONMETAL;
+	}
+
+	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_NATURAL;
+	}
+
+	private final Set<Integer> requiredWeaponMaterials = buildRequiredWeaponMaterials();
+
+	@Override
+	protected Set<Integer> requiredWeaponMaterials()
+	{
+		return requiredWeaponMaterials;
+	}
+
+	@Override
+	public int requiredArmorSourceMinor()
+	{
+		return CMMsg.TYP_CAST_SPELL;
+	}
 
 	public SkyWatcher()
 	{
@@ -59,6 +130,7 @@ public class SkyWatcher extends StdCharClass
 		maxStatAdj[CharStats.STAT_CONSTITUTION]=4;
 		maxStatAdj[CharStats.STAT_INTELLIGENCE]=4;
 	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -172,7 +244,11 @@ public class SkyWatcher extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_MoveSky",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -210,17 +286,37 @@ public class SkyWatcher extends StdCharClass
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Elf","Dwarf","Giant-kin","Duergar","Centaur"
 	};
-	@Override public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return raceRequiredList;
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	@Override public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	@Override public String getOtherBonusDesc(){return "Attains Lunar Changes (lunar phase based bonuses/penalties) at level 5.  Can create a druidic connection with an area.  Benefits from freeing animals from cities.  Benefits from balancing the weather.";}
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Must remain Neutral to avoid skill and chant failure chances.");
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("Attains Lunar Changes (lunar phase based bonuses/penalties) at level 5.  Can create a druidic connection with an area.  "
+				+ "Benefits from freeing animals from cities.  Benefits from balancing the weather.");
+	}
 
 	@Override
 	public void affectCharState(MOB affected, CharState affectableState)

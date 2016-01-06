@@ -186,7 +186,11 @@ public class Shaman extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_HolyDay",true);
 	}
 
-	@Override public int availabilityCode(){return Area.THEME_FANTASY;}
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY;
+	}
 
 	@Override
 	public boolean tick(Tickable myChar, int tickID)
@@ -197,17 +201,35 @@ public class Shaman extends Cleric
 		return true;
 	}
 
-	@Override public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	@Override
+	public String[] getRequiredRaceList()
+	{
+		return super.getRequiredRaceList();
+	}
 
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	@Override public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
-	@Override public String getOtherBonusDesc(){return "Never fumbles neutral prayers, receives smallest prayer fumble chance, and receives 1pt/level of acid damage reduction.";}
-	@Override public String getOtherLimitsDesc(){return "Using non-neutral prayers introduces small failure chance.  Vulnerable to electric attacks.";}
+	@Override
+	public Pair<String, Integer>[] getMinimumStatRequirements()
+	{
+		return minimumStatRequirements;
+	}
+
+	@Override
+	public String getOtherBonusDesc()
+	{
+		return L("Never fumbles neutral prayers, receives smallest prayer fumble chance, and receives 1pt/level of acid damage reduction.");
+	}
+
+	@Override
+	public String getOtherLimitsDesc()
+	{
+		return L("Using non-neutral prayers introduces small failure chance.  Vulnerable to electric attacks.");
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
