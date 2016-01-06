@@ -811,7 +811,7 @@ public interface Ability extends Environmental
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int DOMAIN_THEATRE=72<<5;
 	/** constant mask returned by classificationCode() designating this ability as being a building skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
-	public static final int DOMAIN_BUILDINGSKILL=29<<5;
+	public static final int DOMAIN_BUILDINGSKILL=73<<5;
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */

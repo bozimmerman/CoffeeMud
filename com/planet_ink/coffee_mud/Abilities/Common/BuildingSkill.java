@@ -402,19 +402,18 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	protected Exit buildExitAbility(Room R, int dir, String extraProp)
 	{
 		Exit E=null;
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
 			E=R.getExitInDir(dir);
-			if(R!=null)
-				addEffects(E,R,extraProp);
+			addEffects(E,R,extraProp);
 		}
 		return E;
 	}
 
 	protected Room removeRoomAbility(Room R, int dir, String extraProp)
 	{
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
 			extraProp=CMStrings.replaceAll(extraProp, "@dir", Directions.getDirectionName(dir));
@@ -426,12 +425,11 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	protected Exit removeExitAbility(Room R, int dir, String extraProp)
 	{
 		Exit E=null;
-		synchronized(("SYNC"+room.roomID()).intern())
+		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
 			E=R.getExitInDir(dir);
-			if(R!=null)
-				removeEffects(E,extraProp);
+			removeEffects(E,extraProp);
 		}
 		return E;
 	}
