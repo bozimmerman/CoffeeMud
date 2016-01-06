@@ -129,18 +129,22 @@ public interface DatabaseEngine extends CMLibrary
 	public boolean isConnected();
 
 	/**
-	 * 
-	 * @param sql
-	 * @return
-	 * @throws CMException
+	 * Executes an arbitrary SQL statement against your
+	 * main database and returns the response number/code.
+	 * @param sql the SQL statement
+	 * @return the exec response number (usually num rows)
+	 * @throws CMException any errors that occur
 	 */
 	public int DBRawExecute(String sql) throws CMException;
 
 	/**
-	 * 
-	 * @param sql
-	 * @return
-	 * @throws CMException
+	 * Executes an arbitrary SQL query against your 
+	 * main database and returns the results as a list of
+	 * string arrays, where each array is a row, and each
+	 * column is a column from the query.
+	 * @param sql the SQL query 
+	 * @return the results of the query
+	 * @throws CMException any errors that occur
 	 */
 	public List<String[]> DBRawQuery(String sql) throws CMException;
 
