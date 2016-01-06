@@ -636,30 +636,39 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	{
 		final Map<String,AbilityParmEditor> editors = getEditors();
 		DVector dataRow = null;
+		int numRows[]=new int[headers.length];
 		for(int r=0;r<rowsV.size();r++)
 		{
 			dataRow=rowsV.elementAt(r);
 			for(int c=0;c<dataRow.size();c++)
 			{
 				final AbilityParmEditor A = editors.get(dataRow.elementAt(c,1));
+				try
+				{
+					lengths[c]+=((String)dataRow.elementAt(c, 2)).length();
+					numRows[c]++;
+				}
+				catch(Exception e)
+				{
+				}
 				if(A==null)
 					Log.errOut("CMAbleParms","Inexplicable lack of a column: "+((String)dataRow.elementAt(c,1)));
 				else
 				if(headers[c] == null)
 				{
 					headers[c] = A.colHeader();
-					lengths[c]=headers[c].length();
 				}
 				else
 				if((!headers[c].startsWith("#"))&&(!headers[c].equalsIgnoreCase(A.colHeader())))
 				{
 					headers[c]="#"+c;
-					lengths[c]=headers[c].length();
 				}
 			}
 		}
 		for(int i=0;i<headers.length;i++)
 		{
+			if(numRows[i]>0)
+				lengths[i] /= numRows[i];
 			if(headers[i]==null)
 				headers[i]="*Add*";
 		}
