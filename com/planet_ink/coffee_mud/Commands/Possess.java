@@ -94,40 +94,76 @@ public class Possess extends StdCommand
 			return false;
 		}
 		commands.remove(0);
-		final String MOBname=CMParms.combine(commands,0);
+		String MOBname=CMParms.combine(commands,0);
 		MOB target=getTarget(mob,commands,true);
-		if((target==null)||(!target.isMonster()))
-			target=mob.location().fetchInhabitant(MOBname);
-		if((target==null)||(!target.isMonster()))
+		if(target == null)
 		{
-			final Enumeration<Room> r=mob.location().getArea().getProperMap();
-			for(;r.hasMoreElements();)
+			int x=MOBname.lastIndexOf('@');
+			Enumeration<Room> targetRooms = null;
+			if(x>0)
 			{
-				final Room R=r.nextElement();
-				final MOB mob2=R.fetchInhabitant(MOBname);
-				if((mob2!=null)&&(mob2.isMonster()))
+				String place=MOBname.substring(x+1);
+				MOBname=MOBname.substring(0,x);
+				final Room tR=CMLib.map().getRoom(place);
+				if(tR!=null)
+					targetRooms=new XVector<Room>(tR).elements();
+				else
 				{
-					target=mob2;
-					break;
+					final Area tA=CMLib.map().findArea(place);
+					if(tA!=null)
+						targetRooms=tA.getMetroMap();
+				}
+				if(targetRooms != null)
+				{
+					try
+					{
+						final List<MOB> inhabs=CMLib.map().findInhabitants(targetRooms, mob,MOBname,100);
+						for(final MOB mob2 : inhabs)
+						{
+							if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),CMSecurity.SecFlag.POSSESS)))
+							{
+								target=mob2;
+								break;
+							}
+						}
+					}
+					catch(final NoSuchElementException e)
+					{}
 				}
 			}
-		}
-		if((target==null)||(!target.isMonster()))
-		{
-			try
+			if((target==null)||(!target.isMonster()))
+				target=mob.location().fetchInhabitant(MOBname);
+			if((target==null)||(!target.isMonster()))
 			{
-				final List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
-				for(final MOB mob2 : inhabs)
+				final Enumeration<Room> r=mob.location().getArea().getProperMap();
+				for(;r.hasMoreElements();)
 				{
-					if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),CMSecurity.SecFlag.POSSESS)))
+					final Room R=r.nextElement();
+					final MOB mob2=R.fetchInhabitant(MOBname);
+					if((mob2!=null)&&(mob2.isMonster()))
 					{
 						target=mob2;
 						break;
 					}
 				}
 			}
-			catch(final NoSuchElementException e)
-			{}
+			if((target==null)||(!target.isMonster()))
+			{
+				try
+				{
+					final List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
+					for(final MOB mob2 : inhabs)
+					{
+						if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),CMSecurity.SecFlag.POSSESS)))
+						{
+							target=mob2;
+							break;
+						}
+					}
+				}
+				catch(final NoSuchElementException e)
+				{}
+			}
 		}
 		if((target==null)||(!target.isMonster())||(!CMLib.flags().isInTheGame(target,true)))
 		{

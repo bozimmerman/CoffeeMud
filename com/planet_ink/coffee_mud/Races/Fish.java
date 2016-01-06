@@ -217,17 +217,17 @@ public class Fish extends StdRace
 	}
 
 	@Override
-	public boolean okMessage(Environmental affected, CMMsg msg)
+	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(msg.amISource((MOB)affected))
+		&&(msg.amISource((MOB)host))
 		&&(msg.source().isMonster())
 		&&(msg.target() instanceof Room)
 		&&(msg.tool() instanceof Exit)
 		&&(!canBreatheHere(msg.source(), (Room)msg.target()))
 		&&(canBreatheHere(msg.source(), msg.source().location()))) // it's ok to flee if you can't breathe here
 		{
-			((MOB)affected).tell(L("That way looks too dry."));
+			((MOB)host).tell(L("That way looks too dry."));
 			return false;
 		}
 		return true;

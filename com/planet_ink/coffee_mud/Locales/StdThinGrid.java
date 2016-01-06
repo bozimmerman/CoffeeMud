@@ -334,11 +334,14 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				for(int a=0;a<numEffects();a++)
 					R.addEffect((Ability)fetchEffect(a).copyOf());
 				if(behaviors != null)
+				{
 					for(final Behavior B : behaviors)
 						R.addBehavior((Behavior)B.copyOf());
+				}
 				R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
 				addSortedRoom(R,x,y);
 				R.setArea(getArea());
+				//R.giveASky(0);
 			}
 		}
 		return R;
