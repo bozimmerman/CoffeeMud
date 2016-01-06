@@ -2589,7 +2589,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							spell=spell.substring(0,x);
 						if(spell.trim().length()==0)
 							continue;
-						if(CMClass.getAbility(spell)==null)
+						if((CMClass.getAbility(spell)==null)&&(CMClass.getBehavior(spell)==null))
 							return false;
 					}
 					return true;
@@ -2607,12 +2607,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 	
-				public String rebuild(List<Ability> spells) throws CMException
+				public String rebuild(List<CMObject> spells) throws CMException
 				{
 					final StringBuffer newVal = new StringBuffer("");
 					for(int s=0;s<spells.size();s++)
 					{
-						final String txt = spells.get(s).text().trim();
+						final String txt;
+						if(spells.get(s) instanceof Ability)
+							txt = ((Ability)spells.get(s)).text().trim();
+						else
+						if(spells.get(s) instanceof Behavior)
+							txt = ((Behavior)spells.get(s)).getParms().trim();
+						else
+							continue;
 						newVal.append(spells.get(s).ID()).append("(").append(txt).append(")");
 					}
 					return newVal.toString();
@@ -2634,7 +2641,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						if(spell.trim().length()==0)
 							continue;
-						if(CMClass.getAbility(spell)!=null)
+						if((CMClass.getAbility(spell)!=null)
+						||(CMClass.getBehavior(spell)!=null))
 						{
 							V.add(spell);
 							V.add(parms);
@@ -2643,10 +2651,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return CMParms.toStringArray(V);
 				}
 				
-				public List<Ability> getCodedSpells(String oldVal)
+				public List<CMObject> getCodedSpells(String oldVal)
 				{
 					String[] spellStrs = this.fakeUserInput(oldVal);
-					List<Ability> spells=new ArrayList<Ability>(spellStrs.length/2);
+					List<CMObject> spells=new ArrayList<CMObject>(spellStrs.length/2);
 					for(int s=0;s<spellStrs.length;s+=2)
 					{
 						Ability A=CMClass.getAbility(spellStrs[s]);
@@ -2656,6 +2664,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								A.setMiscText(spellStrs[s+1]);
 							spells.add(A);
 						}
+						else
+						{
+							Behavior B=CMClass.getBehavior(spellStrs[s]);
+							if(spellStrs[s+1].length()>0)
+								B.setParms(spellStrs[s+1]);
+							spells.add(B);
+						}
 					}
 					return spells;
 				}
@@ -2663,10 +2678,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 				{
-					List<Ability> spells=null;
+					List<CMObject> spells=null;
 					if(httpReq.isUrlParameter(fieldName+"_AFFECT1"))
 					{
-						spells = new Vector<Ability>();
+						spells = new Vector<CMObject>();
 						int num=1;
 						String behav=httpReq.getUrlParameter(fieldName+"_AFFECT"+num);
 						String theparm=httpReq.getUrlParameter(fieldName+"_ADATA"+num);
@@ -2675,9 +2690,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							if(behav.length()>0)
 							{
 								final Ability A=CMClass.getAbility(behav);
-								if(theparm.trim().length()>0)
-									A.setMiscText(theparm);
-								spells.add(A);
+								if(A!=null)
+								{
+									if(theparm.trim().length()>0)
+										A.setMiscText(theparm);
+									spells.add(A);
+								}
+								else
+								{
+									final Behavior B=CMClass.getBehavior(behav);
+									if(theparm.trim().length()>0)
+										B.setParms(theparm);
+									spells.add(B);
+								}
 							}
 							num++;
 							behav=httpReq.getUrlParameter(fieldName+"_AFFECT"+num);
@@ -2701,19 +2726,26 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
 				{
-					final List<Ability> spells=getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
+					final List<CMObject> spells=getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
 					final StringBuffer str = new StringBuffer("");
 					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
 					for(int i=0;i<spells.size();i++)
 					{
-						final Ability A=spells.get(i);
+						final CMObject A=spells.get(i);
 						str.append("<TR><TD WIDTH=50%>");
 						str.append("\n\r<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+fieldName+"_AFFECT"+(i+1)+">");
 						str.append("<OPTION VALUE=\"\">Delete!");
 						str.append("<OPTION VALUE=\""+A.ID()+"\" SELECTED>"+A.ID());
 						str.append("</SELECT>");
 						str.append("</TD><TD WIDTH=50%>");
-						final String theparm=CMStrings.replaceAll(A.text(),"\"","&quot;");
+						final String theparm;
+						if(A instanceof Ability)
+							theparm=CMStrings.replaceAll(((Ability)A).text(),"\"","&quot;");
+						else
+						if(A instanceof Behavior)
+							theparm=CMStrings.replaceAll(((Behavior)A).getParms(),"\"","&quot;");
+						else
+							continue;
 						str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
 						str.append("</TD></TR>");
 					}
@@ -2728,6 +2760,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						final String cnam=A.ID();
 						str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 					}
+					for(final Enumeration<Behavior> a=CMClass.behaviors();a.hasMoreElements();)
+					{
+						final Behavior A=a.nextElement();
+						final String cnam=A.ID();
+						str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+					}
 					str.append("</SELECT>");
 					str.append("</TD><TD WIDTH=50%>");
 					str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_ADATA"+(spells.size()+1)+" VALUE=\"\">");
@@ -2739,20 +2777,37 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
 				{
-					final List<Ability> spells=getCodedSpells(oldVal);
+					final List<CMObject> spells=getCodedSpells(oldVal);
 					final StringBuffer rawCheck = new StringBuffer("");
 					for(int s=0;s<spells.size();s++)
-						rawCheck.append(spells.get(s).ID()).append(";").append(spells.get(s).text()).append(";");
+					{
+						rawCheck.append(spells.get(s).ID()).append(";");
+						if(spells.get(s) instanceof Ability)
+							rawCheck.append(((Ability)spells.get(s)).text()).append(";");
+						else
+						if(spells.get(s) instanceof Behavior)
+							rawCheck.append(((Behavior)spells.get(s)).getParms()).append(";");
+						else
+							rawCheck.append(";");
+					}
 					boolean okToProceed = true;
 					++showNumber[0];
 					String newVal = null;
 					while(okToProceed)
 					{
 						okToProceed = false;
-						CMLib.genEd().spells(mob,spells,showNumber[0],showFlag,true);
+						CMLib.genEd().spellsOrBehaviors(mob,spells,showNumber[0],showFlag,true);
 						final StringBuffer sameCheck = new StringBuffer("");
 						for(int s=0;s<spells.size();s++)
-							sameCheck.append(spells.get(s).ID()).append(';').append(spells.get(s).text()).append(';');
+						{
+							if(spells.get(s) instanceof Ability)
+								rawCheck.append(((Ability)spells.get(s)).text()).append(";");
+							else
+							if(spells.get(s) instanceof Behavior)
+								rawCheck.append(((Behavior)spells.get(s)).getParms()).append(";");
+							else
+								rawCheck.append(";");
+						}
 						if(sameCheck.toString().equals(rawCheck.toString()))
 							return oldVal;
 						try
@@ -3599,6 +3654,34 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					final XVector<String> V2=new XVector<String>(RawMaterial.Material.names());
 					Collections.sort(V2);
 					V.addAll(V2);
+					V.addElement("");
+					createChoices(V);
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+			},
+			new AbilityParmEditorImpl("OPTIONAL_BUILDING_RESOURCE_OR_MATERIAL","Rsc/Mat",ParmType.CHOICES)
+			{
+				@Override
+				public void createChoices()
+				{
+					final XVector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
+					Collections.sort(V);
+					final XVector<String> V2=new XVector<String>(RawMaterial.Material.names());
+					Collections.sort(V2);
+					V.addAll(V2);
+					V.addElement("VALUE");
+					V.addElement("MONEY");
 					V.addElement("");
 					createChoices(V);
 				}

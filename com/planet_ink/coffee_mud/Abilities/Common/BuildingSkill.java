@@ -101,7 +101,10 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		TITLE,
 		DESC,
 		STAIRS,
-		EXCAVATE
+		EXCAVATE,
+		ROOMEFFECT,
+		EXITEFFECT,
+		DELEFFECT
 	}
 	
 	protected enum Flag
@@ -112,7 +115,12 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		OUTDOOR,
 		CAVEONLY,
 		NODOWN,
-		WATERONLY
+		DOWNONLY,
+		WATERONLY,
+		WATERSURFACEONLY,
+		UNDERWATERONLY,
+		SALTWATER,
+		FRESHWATER
 	}
 
 	protected Room		room				= null;
@@ -144,7 +152,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			Pair<String[],String[]> codesFlags = new Pair<String[],String[]>(codes, flags);
 			Resources.submitResource("BUILDING_SKILL_CODES_FLAGS", codesFlags);
 		}
-		return"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tOPTIONAL_RESOURCE_OR_MATERIAL\t"
+		return"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tOPTIONAL_BUILDING_RESOURCE_OR_MATERIAL\t"
 			+ "BUILDING_FLAGS\tBUILDING_CODE\tROOM_CLASS_ID||EXIT_CLASS_ID||ALLITEM_CLASS_ID||ROOM_CLASS_ID_OR_NONE\t"
 			+ "BUILDING_GRID_SIZE||EXIT_NAMES||STAIRS_DESC\tPCODED_SPELL_LIST\tBUILDING_NOUN\tBUILDER_MASK";
 	}
@@ -300,7 +308,34 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		CMLib.map().obliterateRoom(room);
 	}
 	
-	private void addEffects(Affectable E, Room R2, String extraProp)
+	private void removeEffects(PhysicalAgent E, String extraProp)
+	{
+		extraProp=extraProp.trim();
+		if(extraProp.length()>0)
+		{
+			List<String> spells = CMParms.parseAny(extraProp, ")", true);
+			for(String spellName : spells)
+			{
+				int x=spellName.indexOf('(');
+				if(x>0)
+					spellName=spellName.substring(0,x);
+				final Ability A=E.fetchEffect(spellName);
+				if(A!=null)
+				{
+					A.unInvoke();
+					E.delEffect(A);
+				}
+				else
+				{
+					final Behavior B=E.fetchBehavior(spellName);
+					if(B!=null)
+						E.delBehavior(B);
+				}
+			}
+		}
+	}
+	
+	private void addEffects(PhysicalAgent E, Room R2, String extraProp)
 	{
 		extraProp=extraProp.trim();
 		if(extraProp.length()>0)
@@ -315,9 +350,26 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					parms=spellName.substring(x+1);
 					spellName=spellName.substring(0,x);
 				}
+				if(parms.trim().equalsIgnoreCase("@remove"))
+				{
+					final Ability A=E.fetchEffect(spellName);
+					if(A!=null)
+					{
+						A.unInvoke();
+						E.delEffect(A);
+					}
+					else
+					{
+						final Behavior B=E.fetchBehavior(spellName);
+						if(B!=null)
+							E.delBehavior(B);
+					}
+					continue;
+				}
 				final Ability A=CMClass.getAbility(spellName);
 				if(A!=null)
 				{
+					
 					if(parms.length()>0)
 						A.setMiscText(parms);
 					else
@@ -325,8 +377,63 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 						A.setMiscText(CMLib.map().getExtendedRoomID(R2));
 					E.addNonUninvokableEffect(A);
 				}
+				else
+				{
+					final Behavior B=CMClass.getBehavior(spellName);
+					if(parms.length()>0)
+						B.setParms(parms);
+					E.addBehavior(B);
+				}
 			}
 		}
+	}
+
+	protected Room buildRoomAbility(Room R, int dir, String extraProp)
+	{
+		synchronized(("SYNC"+room.roomID()).intern())
+		{
+			R=CMLib.map().getRoom(R);
+			extraProp=CMStrings.replaceAll(extraProp, "@dir", Directions.getDirectionName(dir));
+			addEffects(R,R,extraProp);
+		}
+		return R;
+	}
+
+	protected Exit buildExitAbility(Room R, int dir, String extraProp)
+	{
+		Exit E=null;
+		synchronized(("SYNC"+room.roomID()).intern())
+		{
+			R=CMLib.map().getRoom(R);
+			E=R.getExitInDir(dir);
+			if(R!=null)
+				addEffects(E,R,extraProp);
+		}
+		return E;
+	}
+
+	protected Room removeRoomAbility(Room R, int dir, String extraProp)
+	{
+		synchronized(("SYNC"+room.roomID()).intern())
+		{
+			R=CMLib.map().getRoom(R);
+			extraProp=CMStrings.replaceAll(extraProp, "@dir", Directions.getDirectionName(dir));
+			removeEffects(R,extraProp);
+		}
+		return R;
+	}
+
+	protected Exit removeExitAbility(Room R, int dir, String extraProp)
+	{
+		Exit E=null;
+		synchronized(("SYNC"+room.roomID()).intern())
+		{
+			R=CMLib.map().getRoom(R);
+			E=R.getExitInDir(dir);
+			if(R!=null)
+				removeEffects(E,extraProp);
+		}
+		return E;
 	}
 
 	protected Room buildNewRoomType(Room room, String newLocale, String extraProp, int dimension)
@@ -813,6 +920,27 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			String spells = recipe[DAT_PROPERTIES];
 			int size = CMath.s_int(recipe[DAT_MISC]);
 			this.buildNewRoomType(room, localeName, spells, size);
+			break;
+		}
+		case DELEFFECT:
+		{
+			String spells = recipe[DAT_PROPERTIES];
+			if(dir >=0)
+				this.removeExitAbility(room, dir, spells);
+			else
+				this.removeRoomAbility(room, dir, spells);
+			break;
+		}
+		case ROOMEFFECT:
+		{
+			String spells = recipe[DAT_PROPERTIES];
+			this.buildRoomAbility(room, dir, spells);
+			break;
+		}
+		case EXITEFFECT:
+		{
+			String spells = recipe[DAT_PROPERTIES];
+			this.buildExitAbility(room, dir, spells);
 			break;
 		}
 		case EXCAVATE:
@@ -1341,9 +1469,21 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			final Exit exitRoom=mob.location().getExitInDir(Directions.DOWN);
 			if((nextRoom!=null)||(exitRoom!=null))
 			{
-				commonTell(mob,L("You may not that here!"));
+				commonTell(mob,L("You may not build that here!"));
 				return false;
 			}
+		}
+		
+		if(flags.contains(Flag.DOWNONLY))
+		{
+			final Room nextRoom=mob.location().getRoomInDir(Directions.DOWN);
+			final Exit exitRoom=mob.location().getExitInDir(Directions.DOWN);
+			if((nextRoom!=null)&&(exitRoom!=null)&&(nextRoom.roomID().length()>0))
+			{
+				commonTell(mob,L("You may not build that here!"));
+				return false;
+			}
+			dir=Directions.DOWN;
 		}
 		
 		if(flags.contains(Flag.CAVEONLY))
@@ -1367,7 +1507,46 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			}
 		}
 		
-
+		if(flags.contains(Flag.WATERSURFACEONLY))
+		{
+			if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
+			{
+				commonTell(mob,L("This can only be done on the water."));
+				return false;
+			}
+		}
+		
+		if(flags.contains(Flag.UNDERWATERONLY))
+		{
+			if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+			&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
+			{
+				commonTell(mob,L("This can only be done under the water."));
+				return false;
+			}
+		}
+		
+		if(flags.contains(Flag.SALTWATER))
+		{
+			if((mob.location().getAtmosphere()!=RawMaterial.RESOURCE_SALTWATER)
+			&&((!(mob.location() instanceof Drink))||(((Drink)mob.location()).liquidType()!=RawMaterial.RESOURCE_SALTWATER)))
+			{
+				commonTell(mob,L("This can only be done in salt water."));
+				return false;
+			}
+		}
+		
+		if(flags.contains(Flag.FRESHWATER))
+		{
+			if((mob.location().getAtmosphere()!=RawMaterial.RESOURCE_FRESHWATER)
+			&&((!(mob.location() instanceof Drink))||(((Drink)mob.location()).liquidType()!=RawMaterial.RESOURCE_SALTWATER)))
+			{
+				commonTell(mob,L("This can only be done in fresh water."));
+				return false;
+			}
+		}
+		
 		if(doingCode == Building.TITLE)
 		{
 			final String titleStr=CMParms.combine(commands,1);

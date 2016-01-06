@@ -3,7 +3,11 @@ Title	1	15	0			TITLE	NA	-	-	title
 Description	1	10	0			DESC	NA	-	-	description	
 Wall	1	25	100		DIR	WALL	NA	-		@x1 wall	
 Sea	15	325	600	VALUE	OUTDOOR	ROOM	SaltWaterSurface	0		sea	
-Lake	10	225	300	VALUE	OUTDOOR	ROOM	SaltWaterSurface	0		lake	
-#todo: underwater, undersaltwater
-#todo: currents min 1 max 10 chance 40,  StrongCurrents chance 99, calmwater nocurrents
-#todo: waterfall Created by IRRIGATE UP, creating a WaterSurface (not SaltWaterSurface) room up.  If the exit DOWN from this room is an InTheAir, WaterSurface or SaltWaterSurface room, it instead creates an InTheAir Room, with an exit up to a WaterSurfaceRoom (and the Down exit still goes to the WaterSurface below)
+Lake	10	225	300	VALUE	OUTDOOR	ROOM	WaterSurface	0		lake	
+No Current	22	150	0		WATERONLY DIR	DELEFFECT				no current	WaterCurrents()
+Slow Current	22	150	50	VALUE	WATERONLY DIR	ROOMEFFECT				slow current	WaterCurrents(min=1 max=20 chance=99 @dir)
+Light Current	23	150	100	VALUE	WATERONLY DIR	ROOMEFFECT				light current	WaterCurrents(min=1 max=15 chance=99 @dir)
+Water Current	25	150	150	VALUE	WATERONLY DIR	ROOMEFFECT				water current	WaterCurrents(min=1 max=10 chance=99 @dir)
+Strong Current	27	150	200	VALUE	WATERONLY DIR	ROOMEFFECT				strong current	WaterCurrents(min=1 max=5 chance=99 @dir)
+Lake Underwater	17	45	255	VALUE	FRESHWATER WATERSURFACEONLY DOWNONLY	STAIRS	UnderWater	0		underwater	
+Sea Underwater	17	45	255	VALUE	SALTWATER WATERSURFACEONLY DOWNONLY	STAIRS	UnderSaltWater	0		underwater	

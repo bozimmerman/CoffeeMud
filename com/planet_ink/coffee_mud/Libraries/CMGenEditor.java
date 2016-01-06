@@ -4503,6 +4503,123 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
+	@Override
+	public void spellsOrBehaviors(MOB mob, List<CMObject> V, int showNumber, int showFlag, boolean inParms) throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		String behave="NO";
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
+		{
+			String affectstr="";
+			for(int b=0;b<V.size();b++)
+			{
+				if(V.get(b) instanceof Ability)
+				{
+					final Ability A=(Ability)V.get(b);
+					if((A!=null)&&(A.isSavable()))
+					{
+						affectstr+=A.ID();
+						if(A.text().trim().length()>0)
+							affectstr+="("+A.text().trim()+"), ";
+						else
+							affectstr+=", ";
+					}
+				}
+				else
+				if(V.get(b) instanceof Behavior)
+				{
+					final Behavior A=(Behavior)V.get(b);
+					if((A!=null)&&(A.isSavable()))
+					{
+						affectstr+=A.ID();
+						if(A.getParms().trim().length()>0)
+							affectstr+="("+A.getParms().trim()+"), ";
+						else
+							affectstr+=", ";
+					}
+				}
+			}
+			if(affectstr.length()>0)
+				affectstr=affectstr.substring(0,affectstr.length()-2);
+			mob.tell(L("@x1. Effects/Behavs: '@x2'.",""+showNumber,affectstr));
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
+			behave=mob.session().prompt(L("Enter a spell/behavior to add/remove (?)\n\r:"),"");
+			if(behave.length()>0)
+			{
+				if(behave.equalsIgnoreCase("?"))
+				{
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.behaviors(),-1).toString());
+				}
+				else
+				{
+					CMObject chosenOne=null;
+					for(int a=0;a<V.size();a++)
+					{
+						final CMObject A=V.get(a);
+						if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
+							chosenOne=A;
+					}
+					if(chosenOne!=null)
+					{
+						mob.tell(L("@x1 removed.",chosenOne.ID()));
+						V.remove(chosenOne);
+					}
+					else
+					{
+						chosenOne=CMClass.getAbility(behave);
+						if((chosenOne instanceof Ability)
+						&&((((Ability)chosenOne).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(!CMSecurity.isASysOp(mob)))
+							chosenOne=null;
+						if(chosenOne!=null)
+						{
+							if(inParms)
+							{
+								String parms="?";
+								while(parms.equals("?"))
+								{
+									if(chosenOne instanceof Ability)
+									{
+										parms=mob.session().prompt(L("Enter any effect parameters (?)\n\r:@x1",((Ability)chosenOne).text()));
+									}
+									else
+									if(chosenOne instanceof Behavior)
+									{
+										parms=mob.session().prompt(L("Enter any behavior parameters (?)\n\r:@x1",((Behavior)chosenOne).getParms()));
+									}
+									if (parms.equals("?"))
+									{
+										final StringBuilder s2 = CMLib.help().getHelpText(chosenOne.ID(), mob, true);
+										if (s2 != null)
+											mob.tell(s2.toString());
+										else
+											mob.tell(L("no help!"));
+									}
+								}
+								if(chosenOne instanceof Ability)
+									((Ability)chosenOne).setMiscText(parms.trim());
+								else
+								if(chosenOne instanceof Behavior)
+									((Behavior)chosenOne).setParms(parms.trim());
+							}
+							mob.tell(L("@x1 added.",chosenOne.ID()));
+							V.add(chosenOne);
+						}
+						else
+						{
+							mob.tell(L("'@x1' is not recognized.  Try '?'.",behave));
+						}
+					}
+				}
+			}
+			else
+				mob.tell(L("(no change)"));
+		}
+	}
+
 	protected void genClanMembers(MOB mob, Clan E, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
