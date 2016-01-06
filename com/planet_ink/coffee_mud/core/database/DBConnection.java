@@ -330,7 +330,6 @@ public class DBConnection
 	 * @param SQL    Any SQL string you'd like to use
 	 * @return boolean    The connection being used
 	 */
-	@SuppressWarnings("null")
 	public synchronized boolean rePrepare(String SQL)
 	{
 		if(inUse)
@@ -349,11 +348,14 @@ public class DBConnection
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 				{
-					Log.errOut("DBConnection","Error prepare: "+SQL);
+					Log.errOut("DBConnection","Error reprepare: "+SQL);
 					Log.errOut("DBConnection",e);
 				}
 				else
-					Log.errOut("DBConnection",(e==null)?(""+e):e.getMessage());
+				if((""+e).equals("null"))
+					Log.errOut("DBConnection","Re-prepare error: null");
+				else
+					Log.errOut("DBConnection","Re-prepare error: "+e.getMessage());
 				sqlserver=false;
 				myConnection=null;
 				failuresInARow++;
@@ -440,7 +442,6 @@ public class DBConnection
 	 * @return ResultSet	The results of the query
 	 * @throws SQLException a sql error
 	 */
-	@SuppressWarnings("null")
 	public ResultSet query(String queryString)
 		throws SQLException
 	{
@@ -466,7 +467,10 @@ public class DBConnection
 					Log.errOut("DBConnection",""+sqle);
 				}
 				else
-					Log.errOut("DBConnection",(sqle==null)?(""+sqle):sqle.getMessage());
+				if((""+sqle).equals("null"))
+					Log.errOut("DBConnection","Query error: null");
+				else
+					Log.errOut("DBConnection","Query error: "+sqle.getMessage());
 				sqlserver=false;
 				failuresInARow++;
 				lastError=""+sqle;
