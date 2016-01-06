@@ -47,7 +47,11 @@ import java.util.regex.*;
 */
 public class CMGenEditor extends StdLibrary implements GenericEditor
 {
-	@Override public String ID(){return "CMGenEditor";}
+	@Override
+	public String ID()
+	{
+		return "CMGenEditor";
+	}
 
 	private final long maxLength=Long.MAX_VALUE;
 	// showNumber should always be a valid number no less than 1
@@ -71,85 +75,122 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	};
 	
 	@Override
-	public void promptStatInt(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
-	throws IOException
-	{ promptStatInt(mob,E,null,showNumber,showFlag,FieldDisp,Field);}
-	@Override
-	public void promptStatInt(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
-	throws IOException
-	{ E.setStat(Field,""+prompt(mob,CMath.s_long(E.getStat(Field)),showNumber,showFlag,FieldDisp,help)); }
-	@Override
-	public void promptStatBool(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
-	throws IOException
-	{ promptStatBool(mob,E,null,showNumber,showFlag,FieldDisp,Field);}
-	@Override
-	public void promptStatBool(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
-	throws IOException
-	{ E.setStat(Field,""+prompt(mob,CMath.s_bool(E.getStat(Field)),showNumber,showFlag,FieldDisp,help)); }
-	@Override
-	public void promptStatStr(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
-	throws IOException
-	{ promptStatStr(mob,E,null,showNumber,showFlag,FieldDisp,Field,true);}
-	@Override
-	public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK)
-	throws IOException
-	{ E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,emptyOK,false,help,null,null)); }
-	public void promptRawStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK)
-	throws IOException
-	{ E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,emptyOK,true,help,null,null)); }
-	public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, int maxChars)
-	throws IOException
-	{ E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,false,false,maxChars,help,null,null)); }
-	@Override
-	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices)
-	throws IOException
-	{	E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,false,false,help,CMEVAL_INSTANCE,choices)); }
-	@Override
-	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices)
-	throws IOException
-	{	E.setStat(Field,this.promptCommaList(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, help, CMEVAL_INSTANCE, choices)); }
-	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
-	throws IOException
-	{ return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,null,null,null); }
-	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help)
-	throws IOException
-	{ return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,help,null,null); }
-	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK)
-	throws IOException
-	{return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null,null,null); }
-	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help)
-	throws IOException
-	{ return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,help);}
-	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint)
-	throws IOException
-	{ return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,rawPrint,null,null,null);}
-	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help)
-	throws IOException
-	{ return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,rawPrint,help,null,null);}
-	@Override
-	public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp)
-	throws IOException
-	{ return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null); }
-	@Override
-	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp)
-	throws IOException
-	{ return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null); }
-	@Override
-	public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp)
-	throws IOException
-	{ return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);}
-	@Override
-	public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp)
-	throws IOException
-	{ return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);}
+	public void promptStatInt(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException
+	{
+		promptStatInt(mob, E, null, showNumber, showFlag, FieldDisp, Field);
+	}
 
+	@Override
+	public void promptStatInt(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException
+	{
+		E.setStat(Field, "" + prompt(mob, CMath.s_long(E.getStat(Field)), showNumber, showFlag, FieldDisp, help));
+	}
 
+	@Override
+	public void promptStatBool(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException
+	{
+		promptStatBool(mob, E, null, showNumber, showFlag, FieldDisp, Field);
+	}
+
+	@Override
+	public void promptStatBool(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException
+	{
+		E.setStat(Field, "" + prompt(mob, CMath.s_bool(E.getStat(Field)), showNumber, showFlag, FieldDisp, help));
+	}
+
+	@Override
+	public void promptStatStr(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException
+	{
+		promptStatStr(mob, E, null, showNumber, showFlag, FieldDisp, Field, true);
+	}
+
+	@Override
+	public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK) throws IOException
+	{
+		E.setStat(Field, prompt(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, emptyOK, false, help, null, null));
+	}
+
+	public void promptRawStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK) throws IOException
+	{
+		E.setStat(Field, prompt(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, emptyOK, true, help, null, null));
+	}
+
+	public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, int maxChars) throws IOException
+	{
+		E.setStat(Field, prompt(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, false, false, maxChars, help, null, null));
+	}
+
+	@Override
+	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException
+	{
+		E.setStat(Field, prompt(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, false, false, help, CMEVAL_INSTANCE, choices));
+	}
+
+	@Override
+	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException
+	{
+		E.setStat(Field, this.promptCommaList(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, help, CMEVAL_INSTANCE, choices));
+	}
+
+	@Override
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException
+	{
+		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, false, false, null, null, null);
+	}
+
+	@Override
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException
+	{
+		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, false, false, help, null, null);
+	}
+
+	@Override
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK) throws IOException
+	{
+		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, emptyOK, false, null, null, null);
+	}
+
+	@Override
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help) throws IOException
+	{
+		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, emptyOK, false, help);
+	}
+
+	@Override
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint) throws IOException
+	{
+		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, emptyOK, rawPrint, null, null, null);
+	}
+
+	@Override
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help) throws IOException
+	{
+		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, emptyOK, rawPrint, help, null, null);
+	}
+
+	@Override
+	public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException
+	{
+		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, null);
+	}
+
+	@Override
+	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException
+	{
+		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, null);
+	}
+
+	@Override
+	public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException
+	{
+		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, null);
+	}
+
+	@Override
+	public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException
+	{
+		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, null);
+	}
 
 	@Override
 	public boolean promptToggle(MOB mob, int showNumber, int showFlag, String FieldDisp)
@@ -2176,7 +2217,30 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-
+	protected void genCommonBonus(MOB mob, PlayerStats pStats, int showNumber, int showFlag)
+			throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+		{
+			final StringBuffer buf=new StringBuffer(showNumber+". New Char Bonuses: ");
+			buf.append(" C:").append(pStats.getBonusCommonSkillLimits())
+			   .append(" F:").append(pStats.getBonusCraftingSkillLimits())
+			   .append(" G:").append(pStats.getBonusNonCraftingSkillLimits())
+			   .append(" L:").append(pStats.getBonusLanguageLimits())
+			   .append(" R:").append(pStats.getBonusCharStatPoints());
+			mob.tell(buf.toString());
+			return;
+		}
+	
+		pStats.setBonusCommonSkillLimits(CMath.s_int(mob.session().prompt(L("*. Bonus Common Skills (@x1): ",""+pStats.getBonusCommonSkillLimits()),""+pStats.getBonusCommonSkillLimits())));
+		pStats.setBonusCharStatPoints(CMath.s_int(mob.session().prompt(L("*. Bonus Craft Skills (@x1): ",""+pStats.getBonusCraftingSkillLimits()),""+pStats.getBonusCraftingSkillLimits())));
+		pStats.setBonusNonCraftingSkillLimits(CMath.s_int(mob.session().prompt(L("*. Bonus Gather Skills (@x1): ",""+pStats.getBonusNonCraftingSkillLimits()),""+pStats.getBonusNonCraftingSkillLimits())));
+		pStats.setBonusLanguageLimits(CMath.s_int(mob.session().prompt(L("*. Bonus Languages (@x1): ",""+pStats.getBonusLanguageLimits()),""+pStats.getBonusLanguageLimits())));
+		pStats.setBonusCharStatPoints(CMath.s_int(mob.session().prompt(L("*. Bonus Creation Pts (@x1): ",""+pStats.getBonusCharStatPoints()),""+pStats.getBonusCharStatPoints())));
+	}
+	
 	protected void genCharStats(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -2740,15 +2804,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genHeight(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
-	{ P.basePhyStats().setHeight(prompt(mob,P.basePhyStats().height(),showNumber,showFlag,"Height")); }
-
+	{
+		P.basePhyStats().setHeight(prompt(mob, P.basePhyStats().height(), showNumber, showFlag, "Height"));
+	}
 
 	protected void genSize(MOB mob, Armor A, int showNumber, int showFlag) throws IOException
-	{ A.basePhyStats().setHeight(prompt(mob,A.basePhyStats().height(),showNumber,showFlag,"Size")); }
+	{
+		A.basePhyStats().setHeight(prompt(mob, A.basePhyStats().height(), showNumber, showFlag, "Size"));
+	}
 
 	@Override
 	public void wornLayer(MOB mob, short[] layerAtt, short[] clothingLayer, int showNumber, int showFlag)
-	throws IOException
+		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
@@ -2772,6 +2839,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		layerAtt[0] = (short)(layerAtt[0]|(multiWear?Armor.LAYERMASK_MULTIWEAR:0));
 	}
 
+	public void genTPQ(MOB mob, MOB me, int showNumber, int showFlag) throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		mob.tell(L("@x1. Trains: @x1, Pracs: @x2, Quest Pts: @x3",""+showNumber,""+me.getTrains(), ""+me.getPractices(), ""+me.getQuestPoint()));
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
+		me.setTrains(CMath.s_int(mob.session().prompt(L("*. Training Points ("+me.getTrains()+"): ",""+me.getTrains()))));
+		me.setPractices(CMath.s_int(mob.session().prompt(L("*. Practice Points ("+me.getPractices()+"): ",""+me.getPractices()))));
+		me.setQuestPoint(CMath.s_int(mob.session().prompt(L("*. Quest Points ("+me.getQuestPoint()+"): ",""+me.getQuestPoint()))));
+	}
+	
+	
 	protected void genLayer(MOB mob, Armor E, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -2784,10 +2864,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genCapacity(MOB mob, Container E, int showNumber, int showFlag) throws IOException
-	{ E.setCapacity(prompt(mob,E.capacity(),showNumber,showFlag,"Capacity")); }
+	{
+		E.setCapacity(prompt(mob, E.capacity(), showNumber, showFlag, "Capacity"));
+	}
 
 	protected void genAttack(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
-	{ P.basePhyStats().setAttackAdjustment(prompt(mob,P.basePhyStats().attackAdjustment(),showNumber,showFlag,"Attack Adjustment")); }
+	{
+		P.basePhyStats().setAttackAdjustment(prompt(mob, P.basePhyStats().attackAdjustment(), showNumber, showFlag, "Attack Adjustment"));
+	}
 
 	protected void genDamage(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
 	{ P.basePhyStats().setDamage(prompt(mob,P.basePhyStats().damage(),showNumber,showFlag,"Damage")); }
@@ -8737,18 +8821,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genDamage(mob,me,++showNumber,showFlag);
 			genArmor(mob,me,++showNumber,showFlag);
 			genHitPoints(mob,me,++showNumber,showFlag);
-			me.setTrains(prompt(mob,me.getTrains(),++showNumber,showFlag,"Training Points"));
-			me.setPractices(prompt(mob,me.getPractices(),++showNumber,showFlag,"Practice Points"));
-			me.setQuestPoint(prompt(mob,me.getQuestPoint(),++showNumber,showFlag,"Quest Points"));
+			genTPQ(mob,me,++showNumber,showFlag);
 			final PlayerStats pStats = me.playerStats();
 			if(pStats != null)
-			{
-				pStats.setBonusCommonSkillLimits(prompt(mob,pStats.getBonusCommonSkillLimits(),++showNumber,showFlag,"Bonus Common Skills"));
-				pStats.setBonusCraftingSkillLimits(prompt(mob,pStats.getBonusCraftingSkillLimits(),++showNumber,showFlag,"Bonus Craft Skills"));
-				pStats.setBonusNonCraftingSkillLimits(prompt(mob,pStats.getBonusNonCraftingSkillLimits(),++showNumber,showFlag,"Bonus Gather Skills"));
-				pStats.setBonusLanguageLimits(prompt(mob,pStats.getBonusLanguageLimits(),++showNumber,showFlag,"Bonus Languages"));
-				pStats.setBonusCharStatPoints(prompt(mob,pStats.getBonusCharStatPoints(),++showNumber,showFlag,"Bonus Creation Pts"));
-			}
+				genCommonBonus(mob,pStats,++showNumber,showFlag);
 			genAbilities(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
