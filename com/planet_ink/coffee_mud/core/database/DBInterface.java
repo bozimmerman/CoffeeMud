@@ -327,13 +327,13 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public Area DBReadArea(Area A)
+	public void DBReadAreaData(Area A)
 	{
-		return RoomLoader.DBReadArea(A);
+		RoomLoader.DBReadArea(A);
 	}
 
 	@Override
-	public Map<String, Room> DBReadRoomData(String roomID, boolean reportStatus)
+	public Room DBReadRoom(String roomID, boolean reportStatus)
 	{
 		return RoomLoader.DBReadRoomData(roomID, reportStatus);
 	}

@@ -237,13 +237,9 @@ public class ThinRoom implements Room
 			myR=CMLib.map().getRoom(roomID);
 			if(myR==null)
 			{
-				final Map<String,Room> V=CMLib.database().DBReadRoomData(roomID,false);
-				if(V.size()>0)
+				myR=CMLib.database().DBReadRoom(roomID,false);
+				if(myR!=null)
 				{
-					final Iterator<String> i=V.keySet().iterator();
-					myR=V.get(i.next());
-					while(i.hasNext())
-						V.remove(i.next());
 					CMLib.database().DBReadRoomExits(roomID,myR,false);
 					CMLib.database().DBReadContent(roomID,myR,true);
 					myR.getArea().fillInAreaRoom(R);

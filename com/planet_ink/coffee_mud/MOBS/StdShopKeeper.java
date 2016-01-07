@@ -9,12 +9,14 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -44,13 +46,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected long			whatIsSoldMask		= 0;
 	protected int			invResetRate		= 0;
 	protected int			invResetTickDown	= 0;
-	protected String		budget				= "";
 	protected long			budgetRemaining		= Long.MAX_VALUE / 2;
 	protected long			budgetMax			= Long.MAX_VALUE / 2;
 	protected int			budgetTickDown		= 2;
-	protected String		devalueRate			= "";
+	protected double[]		devalueRate			= null;
 	protected String[]		pricingAdjustments	= new String[0];
 
+	protected Pair<Long,TimeClock.TimePeriod>	budget = null;
+	
 	public StdShopKeeper()
 	{
 		super();
@@ -211,39 +214,38 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				budgetTickDown = 100;
 				budgetRemaining = Long.MAX_VALUE / 2;
-				String s = finalBudget();
-				final Vector<String> V = CMParms.parse(s.trim().toUpperCase());
-				if (V.size() > 0)
+				Pair<Long,TimeClock.TimePeriod> budget = finalBudget();
+				if(budget != null)
 				{
-					if (V.firstElement().equals("0"))
-						budgetRemaining = 0;
-					else
-					{
-						budgetRemaining = CMath.s_long(V.firstElement());
-						if (budgetRemaining == 0)
-							budgetRemaining = Long.MAX_VALUE / 2;
-					}
-					s = "DAY";
+					budgetRemaining = budget.first.longValue();
+					budgetTickDown = 100;
+					
 					final Room R=location();
-					if (V.size() > 1)
-						s = V.lastElement().toUpperCase();
-					if (s.startsWith("DAY"))
-						budgetTickDown = CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
-					else 
-					if ((R != null) && (R.getArea() != null))
+					final TimeClock C=((R != null) && (R.getArea() != null)) ? R.getArea().getTimeObj() : null;
+					final int ticksPerDay = CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+					switch(budget.second)
 					{
-						final TimeClock C=R.getArea().getTimeObj();
-						if (s.startsWith("HOUR"))
-							budgetTickDown = CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY) / C.getHoursInDay();
-						else 
-						if (s.startsWith("WEEK"))
-							budgetTickDown = C.getDaysInWeek() * CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
-						else 
-						if (s.startsWith("MONTH"))
-							budgetTickDown = C.getDaysInMonth() * CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
-						else 
-						if (s.startsWith("YEAR"))
-							budgetTickDown = C.getDaysInMonth() * C.getMonthsInYear() * CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
+					case ALLTIME:
+						budgetTickDown = 100;
+						break;
+					case DAY:
+						budgetTickDown = ticksPerDay;
+						break;
+					case HOUR:
+						budgetTickDown = ticksPerDay / ((C!=null) ? C.getHoursInDay() : 1);
+						break;
+					case MONTH:
+						budgetTickDown = ticksPerDay * ((C!=null) ? C.getDaysInMonth() : 1);
+						break;
+					case SEASON:
+						budgetTickDown = ticksPerDay * ((C!=null) ? (C.getDaysInMonth() * C.getMonthsInYear() / 4) : 1);
+						break;
+					case WEEK:
+						budgetTickDown = ticksPerDay * ((C!=null) ? C.getDaysInWeek() : 1);
+						break;
+					case YEAR:
+						budgetTickDown = ticksPerDay * ((C!=null) ? (C.getDaysInMonth() * C.getMonthsInYear()) : 1);
+						break;
 					}
 				}
 				budgetMax = budgetRemaining;
@@ -500,44 +502,44 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	}
 
 	@Override
-	public String finalBudget()
+	public Pair<Long, TimePeriod> finalBudget()
 	{
-		if (budget().length() > 0)
-			return budget();
+		if (budget != null)
+			return budget;
 		return getStartArea().finalBudget();
 	}
 
 	@Override
 	public String budget()
 	{
-		return budget;
+		return budget == null ? "" : (budget.first + " " + budget.second.name());
 	}
 
 	@Override
 	public void setBudget(String factors)
 	{
-		budget = factors;
+		budget = CMLib.coffeeShops().parseBudget(factors);
 		budgetTickDown = 0;
 	}
 
 	@Override
-	public String finalDevalueRate()
+	public double[] finalDevalueRate()
 	{
-		if (devalueRate().length() > 0)
-			return devalueRate();
+		if (devalueRate != null)
+			return devalueRate;
 		return getStartArea().finalDevalueRate();
 	}
 
 	@Override
 	public String devalueRate()
 	{
-		return devalueRate;
+		return (devalueRate == null) ? "" : (devalueRate[0] + " " + devalueRate[1]);
 	}
 
 	@Override
 	public void setDevalueRate(String factors)
 	{
-		devalueRate = factors;
+		devalueRate = CMLib.coffeeShops().parseDevalueRate(factors);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -37,7 +38,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdArea implements Area
 {
-	@Override public String ID(){ return "StdArea";}
+	@Override
+	public String ID()
+	{
+		return "StdArea";
+	}
+
 	protected String	name			= "the area";
 	protected String	description 	= "";
 	protected String	miscText		= "";
@@ -56,7 +62,7 @@ public class StdArea implements Area
 	protected String[]  xtraValues  	= null;
 	protected String	author  		= "";
 	protected String	currency		= "";
-	protected String	devalueRate 	= "";
+	protected double[]	devalueRate 	= null;
 	protected String	budget  		= "";
 	protected String	ignoreMask  	= "";
 	protected String	prejudiceFactors= "";
@@ -84,11 +90,29 @@ public class StdArea implements Area
 	protected final static String[] empty					= new String[0];
 	
 
-	@Override public void initializeClass(){}
-	@Override public long flags(){return 0;}
-	@Override public void setAuthorID(String authorID){author=authorID;}
-	@Override public String getAuthorID(){return author;}
-	
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	@Override
+	public long flags()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setAuthorID(String authorID)
+	{
+		author = authorID;
+	}
+
+	@Override
+	public String getAuthorID()
+	{
+		return author;
+	}
+
 	@Override
 	public void setCurrency(String newCurrency)
 	{
@@ -106,10 +130,18 @@ public class StdArea implements Area
 		}
 	}
 	
-	@Override public String getCurrency(){return currency;}
-	
-	@Override public int getAtmosphereCode() { return atmosphere; }
-	
+	@Override
+	public String getCurrency()
+	{
+		return currency;
+	}
+
+	@Override
+	public int getAtmosphereCode()
+	{
+		return atmosphere;
+	}
+
 	@Override
 	public void setAtmosphere(int resourceCode)
 	{
@@ -153,8 +185,12 @@ public class StdArea implements Area
 		return blurbFlags.get(flag.toUpperCase().trim());
 	}
 	
-	@Override public int numBlurbFlags(){return blurbFlags.size();}
-	
+	@Override
+	public int numBlurbFlags()
+	{
+		return blurbFlags.size();
+	}
+
 	@Override
 	public int numAllBlurbFlags()
 	{
@@ -205,19 +241,35 @@ public class StdArea implements Area
 		blurbFlags.remove(flagOnly);
 	}
 
-	@Override public long expirationDate(){return expirationDate;}
-	
-	@Override public void setExpirationDate(long time){expirationDate=time;}
-	
-	@Override public void setClimateObj(Climate obj){climateObj=obj;}
-	
+	@Override
+	public long expirationDate()
+	{
+		return expirationDate;
+	}
+
+	@Override
+	public void setExpirationDate(long time)
+	{
+		expirationDate = time;
+	}
+
+	@Override
+	public void setClimateObj(Climate obj)
+	{
+		climateObj = obj;
+	}
+
 	@Override
 	public Climate getClimateObj()
 	{
 		return climateObj;
 	}
-	
-	@Override public void setTimeObj(TimeClock obj){myClock=obj;}
+
+	@Override
+	public void setTimeObj(TimeClock obj)
+	{
+		myClock = obj;
+	}
 	
 	@Override
 	public TimeClock getTimeObj()
@@ -261,7 +313,7 @@ public class StdArea implements Area
 		metroRoomIDSet=null;
 		author="";
 		currency="";
-		devalueRate="";
+		devalueRate=null;
 		budget="";
 		ignoreMask="";
 		prejudiceFactors="";
@@ -270,8 +322,12 @@ public class StdArea implements Area
 		derivedTheme=THEME_INHERIT;
 	}
 
-	@Override public boolean amDestroyed(){return amDestroyed;}
-	
+	@Override
+	public boolean amDestroyed()
+	{
+		return amDestroyed;
+	}
+
 	@Override
 	public boolean isSavable()
 	{
@@ -279,7 +335,12 @@ public class StdArea implements Area
 				&& (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 				&& (CMLib.flags().isSavable(this)));
 	}
-	@Override public void setSavable(boolean truefalse){CMLib.flags().setSavable(this, truefalse);}
+
+	@Override
+	public void setSavable(boolean truefalse)
+	{
+		CMLib.flags().setSavable(this, truefalse);
+	}
 
 	@Override
 	public String name()
@@ -320,8 +381,12 @@ public class StdArea implements Area
 		}
 	}
 	
-	@Override public String Name(){return name;}
-	
+	@Override
+	public String Name()
+	{
+		return name;
+	}
+
 	@Override
 	public PhyStats phyStats()
 	{
@@ -338,11 +403,14 @@ public class StdArea implements Area
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>()
 		{
-			A.affectPhyStats(me,phyStats);
-		} });
+			@Override
+			public final void apply(final Ability A)
+			{
+				A.affectPhyStats(me, phyStats);
+			}
+		});
 	}
 	
 	@Override
@@ -351,8 +419,12 @@ public class StdArea implements Area
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 	
-	@Override public int getThemeCode() { return theme; }
-	
+	@Override
+	public int getThemeCode()
+	{
+		return theme;
+	}
+
 	@Override
 	public int getTheme()
 	{
@@ -380,15 +452,35 @@ public class StdArea implements Area
 		derivedTheme=THEME_INHERIT;
 	}
 
-	@Override public String getArchivePath(){return archPath;}
-	
-	@Override public void setArchivePath(String pathFile){archPath=pathFile;}
+	@Override
+	public String getArchivePath()
+	{
+		return archPath;
+	}
 
-	@Override public String image(){return imageName;}
-	
-	@Override public String rawImage(){return imageName;}
-	
-	@Override public void setImage(String newImage){imageName=newImage;}
+	@Override
+	public void setArchivePath(String pathFile)
+	{
+		archPath = pathFile;
+	}
+
+	@Override
+	public String image()
+	{
+		return imageName;
+	}
+
+	@Override
+	public String rawImage()
+	{
+		return imageName;
+	}
+
+	@Override
+	public void setImage(String newImage)
+	{
+		imageName = newImage;
+	}
 
 	@Override
 	public void setAreaState(State newState)
@@ -406,7 +498,11 @@ public class StdArea implements Area
 		derivedTheme=THEME_INHERIT;
 	}
 	
-	@Override public State getAreaState(){return flag;}
+	@Override
+	public State getAreaState()
+	{
+		return flag;
+	}
 
 	@Override
 	public boolean amISubOp(String username)
@@ -439,8 +535,12 @@ public class StdArea implements Area
 		subOps.addAll(CMParms.parseSemicolons(list,true));
 	}
 	
-	@Override public void addSubOp(String username){subOps.addElement(username);}
-	
+	@Override
+	public void addSubOp(String username)
+	{
+		subOps.addElement(username);
+	}
+
 	@Override
 	public void delSubOp(String username)
 	{
@@ -482,7 +582,10 @@ public class StdArea implements Area
 					}
 				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 		if(highest<0)
 		{
 			for(int i=0;i<Integer.MAX_VALUE;i++)
@@ -527,8 +630,12 @@ public class StdArea implements Area
 		return new StdArea();
 	}
 	
-	@Override public boolean isGeneric(){return false;}
-	
+	@Override
+	public boolean isGeneric()
+	{
+		return false;
+	}
+
 	protected void cloneFix(StdArea areaA)
 	{
 		me=this;
@@ -588,14 +695,29 @@ public class StdArea implements Area
 		}
 	}
 	
-	@Override public String displayText(){return "";}
-	
-	@Override public void setDisplayText(String newDisplayText){}
-	
-	@Override public String displayText(MOB viewerMob) { return displayText(); }
-	
-	@Override public String name(MOB viewerMob) { return name(); }
-	
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	public void setDisplayText(String newDisplayText)
+	{
+	}
+
+	@Override
+	public String displayText(MOB viewerMob)
+	{
+		return displayText();
+	}
+
+	@Override
+	public String name(MOB viewerMob)
+	{
+		return name();
+	}
+
 	@Override
 	public String finalPrejudiceFactors()
 	{
@@ -618,17 +740,25 @@ public class StdArea implements Area
 		return "";
 	}
 	
-	@Override public String prejudiceFactors(){return prejudiceFactors;}
-	
-	@Override public void setPrejudiceFactors(String factors){prejudiceFactors=factors;}
-	
+	@Override
+	public String prejudiceFactors()
+	{
+		return prejudiceFactors;
+	}
+
+	@Override
+	public void setPrejudiceFactors(String factors)
+	{
+		prejudiceFactors = factors;
+	}
+
 	@Override
 	public String[] finalItemPricingAdjustments()
 	{
 		final String[] s=finalItemPricingAdjustments(this);
 		if(s.length>0)
 			return s;
-		return CMParms.toStringArray(CMParms.parseSemicolons(CMProps.getVar(CMProps.Str.PRICEFACTORS).trim(),true));
+		return CMLib.coffeeShops().parseItemPricingAdjustments(CMProps.getVar(CMProps.Str.PRICEFACTORS).trim());
 	}
 
 	protected String[] finalItemPricingAdjustments(Area A)
@@ -644,10 +774,18 @@ public class StdArea implements Area
 		return empty;
 	}
 
-	@Override public String[] itemPricingAdjustments(){return itemPricingAdjustments;}
-	
-	@Override public void setItemPricingAdjustments(String[] factors){itemPricingAdjustments=factors;}
-	
+	@Override
+	public String[] itemPricingAdjustments()
+	{
+		return itemPricingAdjustments;
+	}
+
+	@Override
+	public void setItemPricingAdjustments(String[] factors)
+	{
+		itemPricingAdjustments = factors;
+	}
+
 	@Override
 	public String finalIgnoreMask()
 	{
@@ -663,73 +801,106 @@ public class StdArea implements Area
 			return A.ignoreMask();
 		for(final Enumeration<Area> i=A.getParents();i.hasMoreElements();)
 		{
-			 final String s=finalIgnoreMask(i.nextElement());
+			final String s=finalIgnoreMask(i.nextElement());
 			if(s.length()!=0)
 				return s;
 		}
 		return "";
 	}
 	
-	@Override public String ignoreMask(){return ignoreMask;}
-	
-	@Override public void setIgnoreMask(String factors){ignoreMask=factors;}
-	
 	@Override
-	public String finalBudget()
+	public String ignoreMask()
 	{
-		final String s=finalBudget(this);
-		if(s.length()>0)
-			return s;
-		return CMProps.getVar(CMProps.Str.BUDGET);
+		return ignoreMask;
+	}
+
+	@Override
+	public void setIgnoreMask(String factors)
+	{
+		ignoreMask = factors;
+	}
+
+	@Override
+	public Pair<Long, TimePeriod> finalBudget()
+	{
+		final Pair<Long, TimePeriod> budget=finalAreaBudget(this);
+		if(budget != null)
+			return budget;
+		return CMLib.coffeeShops().parseBudget(CMProps.getVar(CMProps.Str.BUDGET));
 	}
 	
-	protected String finalBudget(Area A)
+	protected Pair<Long, TimePeriod> finalAreaBudget(Area A)
 	{
 		if(A.budget().length()>0)
-			return A.budget();
+			return CMLib.coffeeShops().parseBudget(A.budget());
 		for(final Enumeration<Area> i=A.getParents();i.hasMoreElements();)
 		{
-			final String s=finalBudget(i.nextElement());
-			if(s.length()!=0)
-				return s;
+			final Pair<Long, TimePeriod> budget=finalAreaBudget(i.nextElement());
+			if(budget != null)
+				return budget;
 		}
-		return "";
+		return null;
 	}
-	
-	@Override public String budget(){return budget;}
-	
-	@Override public void setBudget(String factors){budget=factors;}
 	
 	@Override
-	public String finalDevalueRate()
+	public String budget()
 	{
-		final String s=finalDevalueRate(this);
-		if(s.length()>0)
-			return s;
-		return CMProps.getVar(CMProps.Str.DEVALUERATE);
+		return budget;
+	}
+
+	@Override
+	public void setBudget(String factors)
+	{
+		budget = factors;
+	}
+
+	@Override
+	public double[] finalDevalueRate()
+	{
+		final double[] rate=finalAreaDevalueRate(this);
+		if(rate != null)
+			return rate;
+		
+		return CMLib.coffeeShops().parseDevalueRate(CMProps.getVar(CMProps.Str.DEVALUERATE));
 	}
 	
-	protected String finalDevalueRate(Area A)
+	protected double[] finalAreaDevalueRate(Area A)
 	{
 		if(A.devalueRate().length()>0)
-			return A.devalueRate();
+			return CMLib.coffeeShops().parseDevalueRate(A.devalueRate());
 		for(final Enumeration<Area> i=A.getParents();i.hasMoreElements();)
 		{
-			final String s=finalDevalueRate(i.nextElement());
-			if(s.length()!=0)
-				return s;
+			final double[] rate=finalAreaDevalueRate(i.nextElement());
+			if(rate != null)
+				return rate;
 		}
-		return "";
+		return null;
 	}
 	
-	@Override public String devalueRate(){return devalueRate;}
-	
-	@Override public void setDevalueRate(String factors){devalueRate=factors;}
-	
-	@Override public int invResetRate(){return invResetRate;}
-	
-	@Override public void setInvResetRate(int ticks){invResetRate=ticks;}
-	
+	@Override
+	public String devalueRate()
+	{
+		return (devalueRate == null) ? "" : (devalueRate[0] + " " + devalueRate[1]);
+	}
+
+	@Override
+	public void setDevalueRate(String factors)
+	{
+		devalueRate = CMLib.coffeeShops().parseDevalueRate(factors);
+	}
+
+	@Override
+	public int invResetRate()
+	{
+		return invResetRate;
+	}
+
+	@Override
+	public void setInvResetRate(int ticks)
+	{
+		invResetRate = ticks;
+	}
+
 	@Override
 	public int finalInvResetRate()
 	{
@@ -752,10 +923,18 @@ public class StdArea implements Area
 		return 0;
 	}
 
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 
-	@Override public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
-	
+	@Override
+	public String miscTextFormat()
+	{
+		return CMParms.FORMAT_UNDEFINED;
+	}
+
 	@Override
 	public String text()
 	{
@@ -773,14 +952,30 @@ public class StdArea implements Area
 		derivedTheme=THEME_INHERIT;
 	}
 
-	@Override public String description(){ return description;}
-	
-	@Override public void setDescription(String newDescription){ description=newDescription;}
-	
-	@Override public String description(MOB viewerMob) { return description(); }
-	
-	@Override public int getClimateTypeCode(){return climask;}
-	
+	@Override
+	public String description()
+	{
+		return description;
+	}
+
+	@Override
+	public void setDescription(String newDescription)
+	{
+		description = newDescription;
+	}
+
+	@Override
+	public String description(MOB viewerMob)
+	{
+		return description();
+	}
+
+	@Override
+	public int getClimateTypeCode()
+	{
+		return climask;
+	}
+
 	@Override
 	public void setClimateType(int newClimateType)
 	{
@@ -847,9 +1042,13 @@ public class StdArea implements Area
 				return false;
 		}
 		if(parents!=null)
+		{
 			for (final Area area : parents)
+			{
 				if(!area.okMessage(myHost,msg))
 					return false;
+			}
+		}
 
 		if((getThemeCode()>0)&&(!CMath.bset(getThemeCode(),Area.THEME_FANTASY)))
 		{
@@ -925,32 +1124,47 @@ public class StdArea implements Area
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		eachBehavior(new EachApplicable<Behavior>(){ @Override
-		public final void apply(final Behavior B)
+		eachBehavior(new EachApplicable<Behavior>()
 		{
-			B.executeMsg(me,msg);
-		} });
-		eachScript(new EachApplicable<ScriptingEngine>(){ @Override
-		public final void apply(final ScriptingEngine S)
+			@Override
+			public final void apply(final Behavior B)
+			{
+				B.executeMsg(me, msg);
+			}
+		});
+		eachScript(new EachApplicable<ScriptingEngine>()
 		{
-			S.executeMsg(me,msg);
-		} });
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
+			@Override
+			public final void apply(final ScriptingEngine S)
+			{
+				S.executeMsg(me, msg);
+			}
+		});
+		eachEffect(new EachApplicable<Ability>()
 		{
-			A.executeMsg(me,msg);
-		} });
+			@Override
+			public final void apply(final Ability A)
+			{
+				A.executeMsg(me, msg);
+			}
+		});
 
 		if((msg.sourceMinor()==CMMsg.TYP_RETIRE)
 		&&(amISubOp(msg.source().Name())))
 			delSubOp(msg.source().Name());
 
 		if(parents!=null)
+		{
 			for (final Area area : parents)
 				area.executeMsg(myHost,msg);
+		}
 	}
 
-	@Override public int getTickStatus(){ return tickStatus;}
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -986,12 +1200,15 @@ public class StdArea implements Area
 				S.tick(ticking,tickID);
 			} });
 			tickStatus=Tickable.STATUS_AFFECT;
-			eachEffect(new EachApplicable<Ability>(){ @Override
-			public final void apply(final Ability A)
+			eachEffect(new EachApplicable<Ability>()
 			{
-				if(!A.tick(ticking,tickID))
-					A.unInvoke();
-			} });
+				@Override
+				public final void apply(final Ability A)
+				{
+					if (!A.tick(ticking, tickID))
+						A.unInvoke();
+				}
+			});
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
@@ -1020,34 +1237,43 @@ public class StdArea implements Area
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>()
 		{
-			if(A.bubbleAffect())
-				A.affectPhyStats(affected,affectableStats);
-		} });
+			@Override
+			public final void apply(final Ability A)
+			{
+				if (A.bubbleAffect())
+					A.affectPhyStats(affected, affectableStats);
+			}
+		});
 	}
 	
 	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
+		eachEffect(new EachApplicable<Ability>()
 		{
-			if(A.bubbleAffect())
-				A.affectCharStats(affectedMob,affectableStats);
-		}});
+			@Override
+			public final void apply(final Ability A)
+			{
+				if (A.bubbleAffect())
+					A.affectCharStats(affectedMob, affectableStats);
+			}
+		});
 	}
 	
 	@Override
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
-		eachEffect(new EachApplicable<Ability>(){ @Override
-		public final void apply(final Ability A)
-		{
-			if(A.bubbleAffect())
-				A.affectCharState(affectedMob,affectableMaxState);
-		} });
+		eachEffect(new EachApplicable<Ability>()
+		{ 
+			@Override
+			public final void apply(final Ability A)
+			{
+				if (A.bubbleAffect())
+					A.affectCharState(affectedMob, affectableMaxState);
+			}
+		});
 	}
 
 	@Override
@@ -1123,7 +1349,11 @@ public class StdArea implements Area
 		return (affects==null)?0:affects.size();
 	}
 
-	@Override public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
+	@Override
+	public Enumeration<Ability> effects()
+	{
+		return (affects == null) ? EmptyEnumeration.INSTANCE : affects.elements();
+	}
 
 	@Override
 	public Ability fetchEffect(int index)
@@ -1225,7 +1455,11 @@ public class StdArea implements Area
 		return behaviors.size();
 	}
 	
-	@Override public Enumeration<Behavior> behaviors() { return behaviors.elements();}
+	@Override
+	public Enumeration<Behavior> behaviors()
+	{
+		return behaviors.elements();
+	}
 
 	/** Manipulation of the scripts list */
 	@Override
@@ -1252,14 +1486,37 @@ public class StdArea implements Area
 		scripts.removeElement(S);
 	}
 	
-	@Override public int numScripts(){return scripts.size();}
-	
-	@Override public Enumeration<ScriptingEngine> scripts() { return scripts.elements();}
-	
-	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(final Exception e){} return null;}
-	
-	@Override public void delAllScripts() { scripts.clear(); }
-	
+	@Override
+	public int numScripts()
+	{
+		return scripts.size();
+	}
+
+	@Override
+	public Enumeration<ScriptingEngine> scripts()
+	{
+		return scripts.elements();
+	}
+
+	@Override
+	public ScriptingEngine fetchScript(int x)
+	{
+		try
+		{
+			return scripts.elementAt(x);
+		}
+		catch (final Exception e)
+		{
+		}
+		return null;
+	}
+
+	@Override
+	public void delAllScripts()
+	{
+		scripts.clear();
+	}
+
 	@Override
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
@@ -1277,9 +1534,17 @@ public class StdArea implements Area
 		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
-	@Override public int maxRange(){return Integer.MAX_VALUE;}
-	
-	@Override public int minRange(){return Integer.MIN_VALUE;}
+	@Override
+	public int maxRange()
+	{
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public int minRange()
+	{
+		return Integer.MIN_VALUE;
+	}
 
 	protected int[] buildAreaIStats()
 	{
@@ -1472,7 +1737,9 @@ public class StdArea implements Area
 		{
 			return behaviors.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
 	
@@ -1480,8 +1747,10 @@ public class StdArea implements Area
 	public Behavior fetchBehavior(String ID)
 	{
 		for(final Behavior B : behaviors)
+		{
 			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
 				return B;
+		}
 		return null;
 	}
 	
@@ -1499,7 +1768,9 @@ public class StdArea implements Area
 					applier.apply(B);
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
+		catch (final ArrayIndexOutOfBoundsException e)
+		{
+		}
 	}
 
 	@Override
@@ -1511,7 +1782,11 @@ public class StdArea implements Area
 		}
 	}
 	
-	@Override public void setProperRoomnumbers(RoomnumberSet set){ properRoomIDSet=set;}
+	@Override
+	public void setProperRoomnumbers(RoomnumberSet set)
+	{
+		properRoomIDSet = set;
+	}
 
 	@Override
 	public void addProperRoom(Room R)
@@ -1788,7 +2063,11 @@ public class StdArea implements Area
 		return V.elements();
 	}
 
-	@Override public Enumeration<Room> getCompleteMap(){return getProperMap();}
+	@Override
+	public Enumeration<Room> getCompleteMap()
+	{
+		return getProperMap();
+	}
 
 	@Override
 	public Enumeration<Room> getMetroMap()
@@ -1852,7 +2131,7 @@ public class StdArea implements Area
 			final Area A=i.next();
 			if((A.name().equalsIgnoreCase(named))
 			||(A.Name().equalsIgnoreCase(named)))
-			   return A;
+				return A;
 		}
 		return null;
 	}
@@ -2026,9 +2305,18 @@ public class StdArea implements Area
 		return true;
 	}
 
-	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override
+	public String L(final String str, final String... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
 
-	@Override public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+	@Override
+	public int getSaveStatIndex()
+	{
+		return (xtraValues == null) ? getStatCodes().length : getStatCodes().length - xtraValues.length;
+	}
+
 	protected static final String[] STDAREACODES={"CLASS",
 												  "CLIMATE",
 												  "DESCRIPTION",
@@ -2055,31 +2343,54 @@ public class StdArea implements Area
 		return codes;
 	}
 	
-	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	
-	protected int getCodeNum(String code){ return CMParms.indexOf(codes, code.toUpperCase());}
-	
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
+	}
+
+	protected int getCodeNum(String code)
+	{
+		return CMParms.indexOf(codes, code.toUpperCase());
+	}
+
 	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return ""+getClimateTypeCode();
-		case 2: return description();
-		case 3: return text();
-		case 4: return ""+getThemeCode();
-		case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
-		case 6: return prejudiceFactors();
-		case 7: return budget();
-		case 8: return devalueRate();
-		case 9: return ""+invResetRate();
-		case 10: return ignoreMask();
-		case 11: return CMParms.toListString(itemPricingAdjustments());
-		case 12: return ""+getAtmosphereCode();
-		case 13: return getAuthorID();
-		case 14: return name();
-		default: return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		case 0:
+			return ID();
+		case 1:
+			return "" + getClimateTypeCode();
+		case 2:
+			return description();
+		case 3:
+			return text();
+		case 4:
+			return "" + getThemeCode();
+		case 5:
+			return "" + CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
+		case 6:
+			return prejudiceFactors();
+		case 7:
+			return budget();
+		case 8:
+			return devalueRate();
+		case 9:
+			return "" + invResetRate();
+		case 10:
+			return ignoreMask();
+		case 11:
+			return CMParms.toListString(itemPricingAdjustments());
+		case 12:
+			return "" + getAtmosphereCode();
+		case 13:
+			return getAuthorID();
+		case 14:
+			return name();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
 	@Override
@@ -2088,10 +2399,18 @@ public class StdArea implements Area
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: setClimateType((CMath.s_int(val)<0)?-1:CMath.s_parseBitIntExpression(Places.CLIMATE_DESCS,val)); break;
-		case 2: setDescription(val); break;
-		case 3: setMiscText(val); break;
-		case 4: setTheme(CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES,val)); break;
+		case 1:
+			setClimateType((CMath.s_int(val) < 0) ? -1 : CMath.s_parseBitIntExpression(Places.CLIMATE_DESCS, val));
+			break;
+		case 2:
+			setDescription(val);
+			break;
+		case 3:
+			setMiscText(val);
+			break;
+		case 4:
+			setTheme(CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES, val));
+			break;
 		case 5:
 		{
 			if(val.startsWith("+"))
@@ -2114,23 +2433,42 @@ public class StdArea implements Area
 			}
 			break;
 		}
-		case 6: setPrejudiceFactors(val); break;
-		case 7: setBudget(val); break;
-		case 8: setDevalueRate(val); break;
-		case 9: setInvResetRate(CMath.s_parseIntExpression(val)); break;
-		case 10: setIgnoreMask(val); break;
-		case 11: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
-		case 12: {
-			if(CMath.isMathExpression(val))
+		case 6:
+			setPrejudiceFactors(val);
+			break;
+		case 7:
+			setBudget(val);
+			break;
+		case 8:
+			setDevalueRate(val);
+			break;
+		case 9:
+			setInvResetRate(CMath.s_parseIntExpression(val));
+			break;
+		case 10:
+			setIgnoreMask(val);
+			break;
+		case 11:
+			setItemPricingAdjustments((val.trim().length() == 0) ? new String[0] : CMParms.toStringArray(CMParms.parseCommas(val, true)));
+			break;
+		case 12:
+		{
+			if (CMath.isMathExpression(val))
 				setAtmosphere(CMath.s_parseIntExpression(val));
-			final int matCode=RawMaterial.CODES.FIND_IgnoreCase(val);
-			if(matCode>=0)
+			final int matCode = RawMaterial.CODES.FIND_IgnoreCase(val);
+			if (matCode >= 0)
 				setAtmosphere(matCode);
 			break;
 		}
-		case 13: setAuthorID(val); break;
-		case 14: setName(val); break;
-		default: CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val); break;
+		case 13:
+			setAuthorID(val);
+			break;
+		case 14:
+			setName(val);
+			break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
 		}
 	}
 	
@@ -2141,8 +2479,10 @@ public class StdArea implements Area
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

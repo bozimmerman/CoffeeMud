@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -35,7 +36,12 @@ import java.util.*;
 */
 public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 {
-	@Override public String ID(){return "CoffeeShops";}
+	@Override
+	public String ID()
+	{
+		return "CoffeeShops";
+	}
+
 	@Override
 	public ShopKeeper getShopKeeper(Environmental E)
 	{
@@ -63,12 +69,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if(I instanceof ShopKeeper)
 					return (ShopKeeper)I;
 				if(I!=null)
+				{
 					for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
 						if(A instanceof ShopKeeper)
 							return (ShopKeeper)A;
 					}
+				}
 			}
 		}
 		return null;
@@ -319,9 +327,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final String sellorby=part.substring(0,x);
 		part=part.substring(x+1);
 		if(pawnTo&&(!sellorby.trim().equalsIgnoreCase("SELL")))
-		   return 0.0;
+			return 0.0;
 		if((!pawnTo)&&(!sellorby.trim().equalsIgnoreCase("BUY")))
-		   return 0.0;
+			return 0.0;
 		if(part.trim().indexOf(' ')<0)
 			return CMath.s_double(part.trim());
 		final Vector<String> V=CMParms.parse(part.trim());
@@ -332,22 +340,26 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final String sex=customer.charStats().genderName();
 		for(int v=0;v<V.size();v++)
 		{
-			final String bit=V.elementAt(v);
-			if(CMath.s_double(bit)!=0.0)
-				d=CMath.s_double(bit);
-			if(bit.equalsIgnoreCase(customer.charStats().getCurrentClass().name() ))
-			{ yes=true; break;}
-			if(bit.equalsIgnoreCase(customer.charStats().getCurrentClass().name(customer.charStats().getCurrentClassLevel()) ))
-			{ yes=true; break;}
-			if(bit.equalsIgnoreCase(sex ))
-			{ yes=true; break;}
-			if(bit.equalsIgnoreCase(customer.charStats().getMyRace().racialCategory()))
-			{   yes=true; break;}
-			if(bit.equalsIgnoreCase(align))
-			{ yes=true; break;}
-			for(int vf=0;vf<VF.size();vf++)
-				if(bit.equalsIgnoreCase(V.elementAt(v)))
-				{ yes=true; break;}
+			final String bit = V.elementAt(v);
+			if (CMath.s_double(bit) != 0.0)
+				d = CMath.s_double(bit);
+			if ((bit.equalsIgnoreCase(customer.charStats().getCurrentClass().name()))
+			||(bit.equalsIgnoreCase(customer.charStats().getCurrentClass().name(customer.charStats().getCurrentClassLevel())))
+			||(bit.equalsIgnoreCase(sex))
+			||(bit.equalsIgnoreCase(customer.charStats().getMyRace().racialCategory()))
+			||(bit.equalsIgnoreCase(align)))
+			{
+				yes = true;
+				break;
+			}
+			for (int vf = 0; vf < VF.size(); vf++)
+			{
+				if (bit.equalsIgnoreCase(V.elementAt(v)))
+				{
+					yes = true;
+					break;
+				}
+			}
 		}
 		if(yes)
 			return d;
@@ -387,7 +399,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return 1.0;
 	}
 
-	public double itemPriceFactor(Environmental E, Room R, String[] priceFactors, boolean pawnTo)
+	protected double itemPriceFactor(Environmental E, Room R, String[] priceFactors, boolean pawnTo)
 	{
 		if(priceFactors.length==0)
 			return 1.0;
@@ -456,9 +468,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 		// the price is 200% at 0 charisma, and 100% at 35
 		if(seller.isMonster() && (!CMLib.flags().isGolem(seller)))
+		{
 			val.absoluteGoldPrice=val.absoluteGoldPrice
 								 +val.absoluteGoldPrice
 								 -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.STAT_CHARISMA),35.0));
+		}
+		
 		if(includeSalesTax)
 		{
 			final double salesTax=getSalesTax(seller.getStartRoom(),seller);
@@ -478,31 +493,166 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return val;
 	}
 
-
+	private final static String[] emptyStringArray = new String[0]; 
+	
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String[] parseItemPricingAdjustments(String factors)
+	{
+		if((factors == null) || (factors.trim().length() == 0))
+			return emptyStringArray;
+		Map<String,String[]> hashedPriceAdjustments = (Map)Resources.getResource("SYSTEM_HASHED_PRICINGADJUSTMENTS");
+		if(hashedPriceAdjustments == null)
+		{
+			hashedPriceAdjustments = new Hashtable<String,String[]>();
+			Resources.submitResource("SYSTEM_HASHED_PRICINGADJUSTMENTS", hashedPriceAdjustments);
+		}
+		
+		String[] pricingAdjustments = hashedPriceAdjustments.get(factors);
+		if(pricingAdjustments != null)
+			return pricingAdjustments;
+		pricingAdjustments = CMParms.parseSemicolons(factors,true).toArray(new String[0]);
+		hashedPriceAdjustments.put(factors, pricingAdjustments);
+		return pricingAdjustments;
+	}
+	
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String[] parsePrejudiceFactors(String factors)
+	{
+		if((factors == null) || (factors.trim().length() == 0))
+			return emptyStringArray;
+		Map<String,String[]> hashedPrejudiceFactors = (Map)Resources.getResource("SYSTEM_HASHED_PREJUDICEFACTORS");
+		if(hashedPrejudiceFactors == null)
+		{
+			hashedPrejudiceFactors = new Hashtable<String,String[]>();
+			Resources.submitResource("SYSTEM_HASHED_PREJUDICEFACTORS", hashedPrejudiceFactors);
+		}
+		
+		String[] prejudiceFactors = hashedPrejudiceFactors.get(factors);
+		if(prejudiceFactors != null)
+			return prejudiceFactors;
+		prejudiceFactors = CMParms.parseSemicolons(factors,true).toArray(new String[0]);
+		hashedPrejudiceFactors.put(factors, prejudiceFactors);
+		return prejudiceFactors;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected Pair<Double,String>[] alternateParseItemPricingAdjustments(String factors)
+	{
+		if((factors == null) || (factors.trim().length() == 0))
+			return new Pair[0];
+		Map<String,Pair<Double,String>[]> hashedPriceAdjustments = (Map)Resources.getResource("SYSTEM_HASHED_PRICINGADJUSTMENTS");
+		if(hashedPriceAdjustments == null)
+		{
+			hashedPriceAdjustments = new Hashtable<String,Pair<Double,String>[]>();
+			Resources.submitResource("SYSTEM_HASHED_PRICINGADJUSTMENTS", hashedPriceAdjustments);
+		}
+		
+		Pair<Double,String>[] pricingAdjustments = hashedPriceAdjustments.get(factors);
+		if(pricingAdjustments != null)
+			return pricingAdjustments;
+		List<String> semiParsed = CMParms.parseSemicolons(factors,true);
+		List<Pair<Double,String>> almostParsed = new ArrayList<Pair<Double,String>>();
+		for(String s : semiParsed)
+		{
+			int x=s.indexOf(' ');
+			if(x<0)
+				continue;
+			almostParsed.add(new Pair<Double,String>(Double.valueOf(CMath.s_double(s.substring(0,x).trim())),s.substring(x+1).trim()));
+		}
+		pricingAdjustments = almostParsed.toArray(new Pair[0]);
+		hashedPriceAdjustments.put(factors, pricingAdjustments);
+		return pricingAdjustments;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public Pair<Long,TimeClock.TimePeriod> parseBudget(String budget)
+	{
+		if((budget == null) || (budget.trim().length() == 0))
+			return null;
+		else
+		{
+			Map<String,Pair<Long,TimeClock.TimePeriod>> hashedBudgets = (Map)Resources.getResource("SYSTEM_PARSED_BUDGETS");
+			if(hashedBudgets == null)
+			{
+				hashedBudgets = new Hashtable<String,Pair<Long,TimeClock.TimePeriod>>();
+				Resources.submitResource("SYSTEM_PARSED_BUDGETS", hashedBudgets);
+			}
+			Pair<Long,TimeClock.TimePeriod> budgetVals = hashedBudgets.get(budget);
+			if(budgetVals != null)
+				return budgetVals;
+			budgetVals = new Pair<Long,TimeClock.TimePeriod>(Long.valueOf(Long.MAX_VALUE / 2), TimePeriod.HOUR);
+			final Vector<String> V = CMParms.parse(budget.trim().toUpperCase());
+			if (V.size() > 0)
+			{
+				if (V.firstElement().equals("0"))
+					budgetVals.first = Long.valueOf(0);
+				else
+				{
+					budgetVals.first = Long.valueOf(CMath.s_long(V.firstElement()));
+					if (budgetVals.first.longValue() == 0)
+						budgetVals.first = Long.valueOf(Long.MAX_VALUE / 2);
+				}
+				if (V.size() > 1)
+				{
+					String s = V.lastElement().toUpperCase();
+					budgetVals.second = (TimePeriod)CMath.s_valueOf(TimePeriod.class, s);
+					if((budgetVals.second == null)&&(s.endsWith("S")))
+						budgetVals.second = (TimePeriod)CMath.s_valueOf(TimePeriod.class, s.substring(0,s.length()-1));
+					if(budgetVals.second == null)
+						budgetVals.second = TimePeriod.HOUR;
+				}
+			}
+			hashedBudgets.put(budget, budgetVals);
+			return budgetVals;
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public double[] parseDevalueRate(String factors)
+	{
+		if((factors == null) || (factors.trim().length() == 0))
+			return null;
+		else
+		{
+			Map<String,double[]> hashedValueRates = (Map)Resources.getResource("SYSTEM_PARSED_DEVALUE_RATES");
+			if(hashedValueRates == null)
+			{
+				hashedValueRates = new Hashtable<String,double[]>();
+				Resources.submitResource("SYSTEM_PARSED_DEVALUE_RATES", hashedValueRates);
+			}
+			double[] devalueRate = hashedValueRates.get(factors);
+			if(devalueRate != null)
+				return devalueRate;
+			
+			final Vector<String> V=CMParms.parse(factors.trim());
+			if(V.size()==1)
+			{
+				double rate = CMath.div(CMath.s_double(V.firstElement()),100.0); 
+				devalueRate = new double[] { rate , rate };
+			}
+			else
+			{
+				devalueRate = new double[] { CMath.s_pct(V.firstElement()) , CMath.s_pct(V.lastElement()) };
+			}
+			hashedValueRates.put(factors, devalueRate);
+			return devalueRate;
+		}
+	}
+	
 	@Override
 	public double devalue(ShopKeeper shop, Environmental product)
 	{
 		final int num=shop.getShop().numberInStock(product);
 		if(num<=0)
 			return 0.0;
-		double resourceRate=0.0;
-		double itemRate=0.0;
-		final String s=shop.finalDevalueRate();
-		final Vector<String> V=CMParms.parse(s.trim());
-		if(V.size()<=0)
+		final double[] rates=shop.finalDevalueRate();
+		if(rates == null)
 			return 0.0;
-		else
-		if(V.size()==1)
-		{
-			resourceRate=CMath.div(CMath.s_double(V.firstElement()),100.0);
-			itemRate=resourceRate;
-		}
-		else
-		{
-			itemRate=CMath.div(CMath.s_double(V.firstElement()),100.0);
-			resourceRate=CMath.div(CMath.s_double(V.lastElement()),100.0);
-		}
-		double rate=(product instanceof RawMaterial)?resourceRate:itemRate;
+		double rate=(product instanceof RawMaterial)?rates[1]:rates[0];
 		rate=rate*num;
 		if(rate>1.0)
 			rate=1.0;
@@ -818,9 +968,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(inventory.size()>0)
 		{
 			final int totalCols=((shop.isSold(ShopKeeper.DEAL_LANDSELLER))
-						   ||(shop.isSold(ShopKeeper.DEAL_CLANDSELLER))
-						   ||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER))
-						   ||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER)))?1:2;
+							   ||(shop.isSold(ShopKeeper.DEAL_CLANDSELLER))
+							   ||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER))
+							   ||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER)))?1:2;
 			final int totalWidth=CMLib.lister().fixColWidth(60.0/totalCols,buyer);
 			String showPrice=null;
 			ShopKeeper.ShopPrice price=null;
@@ -1038,10 +1188,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if((T!=null)&&(T.getOwnerName().length()>0))
 				{
 					CMLib.beanCounter().modifyLocalBankGold(seller.getStartRoom().getArea(),
-													T.getOwnerName(),
-													CMLib.utensils().getFormattedDate(buyer)+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(seller,totalFunds)+": Purchase: "+product.Name()+" from "+seller.Name(),
-													CMLib.beanCounter().getCurrency(seller),
-													totalFunds);
+															T.getOwnerName(),
+															CMLib.utensils().getFormattedDate(buyer)
+																+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(seller,totalFunds)
+																+": Purchase: "+product.Name()+" from "+seller.Name(),
+															CMLib.beanCounter().getCurrency(seller),
+															totalFunds);
 				}
 			}
 			if(sellerGetsPaid)
@@ -1061,8 +1213,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return false;
 		final Room room=seller.location();
 		for(int p=0;p<products.size();p++)
+		{
 			if(products.get(p) instanceof Item)
 				room.addItem((Item)products.get(p),ItemPossessor.Expire.Player_Drop);
+		}
 		final CMMsg msg2=CMClass.getMsg(mobFor,baseProduct,seller,CMMsg.MSG_GET,null);
 		if((baseProduct instanceof LandTitle)||(room.okMessage(mobFor,msg2)))
 		{
@@ -1235,6 +1389,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						continue;
 					boolean skipThisOne=false;
 					if(R instanceof Room)
+					{
 						for(int d=0;d<4;d++)
 						{
 							final Room R2=((Room)R).getRoomInDir(d);
@@ -1243,16 +1398,23 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 							{
 								L2=titles.get(R2);
 								if(L2==null)
-								{ skipThisOne=false; break;}
+								{
+									skipThisOne = false;
+									break;
+								}
 							}
 							else
 								continue;
 							if((L2.getOwnerName().equals(name))
 							||(L2.getOwnerName().equals(buyer.getLiegeID())&&(buyer.isMarriedToLiege())))
-							{ skipThisOne=false; break;}
+							{
+								skipThisOne = false;
+								break;
+							}
 							if(L2.getOwnerName().length()>0)
 								skipThisOne=true;
 						}
+					}
 					if(skipThisOne)
 						continue;
 					final Item I=CMClass.getItem("GenTitle");
@@ -1294,6 +1456,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				int lowest=CMath.s_int(L.landPropertyID().substring(x+1).trim());
 				int chk=0;
 				for(int v=1;v<V.size();v++)
+				{
 					if(V.get(v) instanceof LandTitle)
 					{
 						L2=(LandTitle)V.get(v);
@@ -1308,6 +1471,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 							}
 						}
 					}
+				}
 				V.remove(L);
 				V2.addElement(L);
 			}
@@ -1326,82 +1490,116 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return true;
 	}
 
-
 	@Override
 	public String storeKeeperString(CoffeeShop shop)
 	{
 		if(shop==null)
 			return "";
 		if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
-			return "*Anything*";
+			return L("*Anything*");
 
 		final Vector<String> V=new Vector<String>();
 		for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
-		if(shop.isSold(d))
-		switch(d)
 		{
-		case ShopKeeper.DEAL_GENERAL:
-			V.addElement("General items"); break;
-		case ShopKeeper.DEAL_ARMOR:
-			V.addElement("Armor"); break;
-		case ShopKeeper.DEAL_MAGIC:
-			V.addElement("Miscellaneous Magic Items"); break;
-		case ShopKeeper.DEAL_WEAPONS:
-			V.addElement("Weapons"); break;
-		case ShopKeeper.DEAL_PETS:
-			V.addElement("Pets and Animals"); break;
-		case ShopKeeper.DEAL_LEATHER:
-			V.addElement("Leather"); break;
-		case ShopKeeper.DEAL_INVENTORYONLY:
-			V.addElement("Only my Inventory"); break;
-		case ShopKeeper.DEAL_TRAINER:
-			V.addElement("Training in skills/spells/prayers/songs"); break;
-		case ShopKeeper.DEAL_CASTER:
-			V.addElement("Caster of spells/prayers"); break;
-		case ShopKeeper.DEAL_ALCHEMIST:
-			V.addElement("Potions"); break;
-		case ShopKeeper.DEAL_INNKEEPER:
-			V.addElement("My services as an Inn Keeper"); break;
-		case ShopKeeper.DEAL_JEWELLER:
-			V.addElement("Precious stones and jewellery"); break;
-		case ShopKeeper.DEAL_BANKER:
-			V.addElement("My services as a Banker"); break;
-		case ShopKeeper.DEAL_CLANBANKER:
-			V.addElement("My services as a Banker to Clans"); break;
-		case ShopKeeper.DEAL_LANDSELLER:
-			V.addElement("Real estate"); break;
-		case ShopKeeper.DEAL_CLANDSELLER:
-			V.addElement("Clan estates"); break;
-		case ShopKeeper.DEAL_ANYTECHNOLOGY:
-			V.addElement("Any technology"); break;
-		case ShopKeeper.DEAL_BUTCHER:
-			V.addElement("Meats"); break;
-		case ShopKeeper.DEAL_FOODSELLER:
-			V.addElement("Foodstuff"); break;
-		case ShopKeeper.DEAL_GROWER:
-			V.addElement("Vegetables"); break;
-		case ShopKeeper.DEAL_HIDESELLER:
-			V.addElement("Hides and Furs"); break;
-		case ShopKeeper.DEAL_LUMBERER:
-			V.addElement("Lumber"); break;
-		case ShopKeeper.DEAL_METALSMITH:
-			V.addElement("Metal ores"); break;
-		case ShopKeeper.DEAL_STONEYARDER:
-			V.addElement("Stone and rock"); break;
-		case ShopKeeper.DEAL_SHIPSELLER:
-			V.addElement("Ships"); break;
-		case ShopKeeper.DEAL_CSHIPSELLER:
-			V.addElement("Clan Ships"); break;
-		case ShopKeeper.DEAL_SLAVES:
-			V.addElement("Slaves"); break;
-		case ShopKeeper.DEAL_POSTMAN:
-			V.addElement("My services as a Postman"); break;
-		case ShopKeeper.DEAL_CLANPOSTMAN:
-			V.addElement("My services as a Postman for Clans"); break;
-		case ShopKeeper.DEAL_AUCTIONEER:
-			V.addElement("My services as an Auctioneer"); break;
-		default:
-			V.addElement("... I have no idea WHAT I sell"); break;
+			if(shop.isSold(d))
+			{
+				switch(d)
+				{
+				case ShopKeeper.DEAL_GENERAL:
+					V.addElement(L("General items"));
+					break;
+				case ShopKeeper.DEAL_ARMOR:
+					V.addElement(L("Armor"));
+					break;
+				case ShopKeeper.DEAL_MAGIC:
+					V.addElement(L("Miscellaneous Magic Items"));
+					break;
+				case ShopKeeper.DEAL_WEAPONS:
+					V.addElement(L("Weapons"));
+					break;
+				case ShopKeeper.DEAL_PETS:
+					V.addElement(L("Pets and Animals"));
+					break;
+				case ShopKeeper.DEAL_LEATHER:
+					V.addElement(L("Leather"));
+					break;
+				case ShopKeeper.DEAL_INVENTORYONLY:
+					V.addElement(L("Only my Inventory"));
+					break;
+				case ShopKeeper.DEAL_TRAINER:
+					V.addElement(L("Training in skills/spells/prayers/songs"));
+					break;
+				case ShopKeeper.DEAL_CASTER:
+					V.addElement(L("Caster of spells/prayers"));
+					break;
+				case ShopKeeper.DEAL_ALCHEMIST:
+					V.addElement(L("Potions"));
+					break;
+				case ShopKeeper.DEAL_INNKEEPER:
+					V.addElement(L("My services as an Inn Keeper"));
+					break;
+				case ShopKeeper.DEAL_JEWELLER:
+					V.addElement(L("Precious stones and jewellery"));
+					break;
+				case ShopKeeper.DEAL_BANKER:
+					V.addElement(L("My services as a Banker"));
+					break;
+				case ShopKeeper.DEAL_CLANBANKER:
+					V.addElement(L("My services as a Banker to Clans"));
+					break;
+				case ShopKeeper.DEAL_LANDSELLER:
+					V.addElement(L("Real estate"));
+					break;
+				case ShopKeeper.DEAL_CLANDSELLER:
+					V.addElement(L("Clan estates"));
+					break;
+				case ShopKeeper.DEAL_ANYTECHNOLOGY:
+					V.addElement(L("Any technology"));
+					break;
+				case ShopKeeper.DEAL_BUTCHER:
+					V.addElement(L("Meats"));
+					break;
+				case ShopKeeper.DEAL_FOODSELLER:
+					V.addElement(L("Foodstuff"));
+					break;
+				case ShopKeeper.DEAL_GROWER:
+					V.addElement(L("Vegetables"));
+					break;
+				case ShopKeeper.DEAL_HIDESELLER:
+					V.addElement(L("Hides and Furs"));
+					break;
+				case ShopKeeper.DEAL_LUMBERER:
+					V.addElement(L("Lumber"));
+					break;
+				case ShopKeeper.DEAL_METALSMITH:
+					V.addElement(L("Metal ores"));
+					break;
+				case ShopKeeper.DEAL_STONEYARDER:
+					V.addElement(L("Stone and rock"));
+					break;
+				case ShopKeeper.DEAL_SHIPSELLER:
+					V.addElement(L("Ships"));
+					break;
+				case ShopKeeper.DEAL_CSHIPSELLER:
+					V.addElement(L("Clan Ships"));
+					break;
+				case ShopKeeper.DEAL_SLAVES:
+					V.addElement(L("Slaves"));
+					break;
+				case ShopKeeper.DEAL_POSTMAN:
+					V.addElement(L("My services as a Postman"));
+					break;
+				case ShopKeeper.DEAL_CLANPOSTMAN:
+					V.addElement(L("My services as a Postman for Clans"));
+					break;
+				case ShopKeeper.DEAL_AUCTIONEER:
+					V.addElement(L("My services as an Auctioneer"));
+					break;
+				default:
+					V.addElement(L("... I have no idea WHAT I sell"));
+					break;
+				}
+			}
 		}
 		return CMParms.toListString(V);
 	}
@@ -1508,9 +1706,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
 			return !(thisThang instanceof LandTitle);
 		else
-		for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
-			if(shop.isSold(d) && shopKeeperItemTypeCheck(thisThang,d,shop))
-				return true;
+		{
+			for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
+			{
+				if(shop.isSold(d) && shopKeeperItemTypeCheck(thisThang,d,shop))
+					return true;
+			}
+		}
 		return false;
 	}
 
@@ -1522,8 +1724,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		else
 			CMLib.beanCounter().subtractMoney(to, currency,-amt);
 		if(amt!=0)
+		{
 			if(!CMLib.flags().isInTheGame(to,true))
 				CMLib.database().DBUpdatePlayerItems(to);
+		}
 	}
 
 	@Override
@@ -1611,8 +1815,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			E=CMLib.english().fetchEnvironmental(V2,named,false);
 		if(E!=null)
 		for(int v=0;v<V.size();v++)
+		{
 			if(V.get(v).getAuctionedItem()==E)
 				return V.get(v);
+		}
 		return null;
 	}
 
@@ -1634,11 +1840,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		xml.append("</AUCTIONITEM>");
 		xml.append("</AUCTION>");
 		if(!updateOnly)
+		{
 			CMLib.database().DBWriteJournal("SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim(),
 											data.getAuctioningMob().Name(),
 											""+data.getAuctionTickDown(),
 											CMStrings.limit(data.getAuctionedItem().name(),38),
 											xml.toString());
+		}
 		else
 			CMLib.database().DBUpdateJournal(data.getAuctionDBKey(), data.getAuctionedItem().Name(),xml.toString(), 0);
 	}
@@ -1711,10 +1919,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public String getAuctionInventory(MOB seller,
-									  MOB buyer,
-									  Auctioneer auction,
-									  String mask)
+	public String getAuctionInventory(MOB seller, MOB buyer, Auctioneer auction, String mask)
 	{
 		final StringBuilder str=new StringBuilder("");
 		str.append("^x"+CMStrings.padRight(L("Lvl"),3)+" "+CMStrings.padRight(L("Item"),50)+" "+CMStrings.padRight(L("Days"),4)+" ["+CMStrings.padRight(L("Bid"),6)+"] Buy^.^N\n\r");
@@ -1765,13 +1970,16 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(M.playerStats()!=null)
 			{
 				CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),
-												"auction@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
-												"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
-												M.playerStats().getEmail(),
-												"Auction Update for item: "+regardingItem,
-												resp);
+											"auction@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
+											"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
+											M.playerStats().getEmail(),
+											"Auction Update for item: "+regardingItem,
+											resp);
 			}
-		}catch(final Exception e){}
+		}
+		catch (final Exception e)
+		{
+		}
 	}
 
 	@Override

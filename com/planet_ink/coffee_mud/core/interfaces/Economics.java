@@ -8,12 +8,14 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.Vector;
 
 /*
@@ -47,8 +49,10 @@ public interface Economics extends Environmental
 	/**
 	 * A string describing how pricing for this ShopKeeper will differ based on customer attributes
 	 * such as race.
+	 *
 	 * @return the string describing price prejudicing
 	 */
+	//TODO: This is a rediculously complex string parsed EVERY TIME a customer interaction.  Fix it.
 	public String finalPrejudiceFactors();
 	/**
 	 * Sets the string describing how pricing for this ShopKeeper will differ based on customer attributes
@@ -101,9 +105,9 @@ public interface Economics extends Environmental
 	/**
 	 * Returns a description of the buying budget of the shopkeeper.  Format is
 	 * an amount of base currency followed by HOUR,WEEK,DAY,MONTH or YEAR.
-	 * @return the string for the shopkeepers buying budget
+	 * @return the pair for the shopkeepers buying budget
 	 */
-	public String finalBudget();
+	public Pair<Long, TimePeriod> finalBudget();
 	/**
 	 * Sets a description of the buying budget of the shopkeeper.  Format is
 	 * an amount of base currency followed by HOUR,WEEK,DAY,MONTH or YEAR.
@@ -111,15 +115,15 @@ public interface Economics extends Environmental
 	 */
 	public void setBudget(String factors);
 	/**
-	 * Returns a string describing the percentage in the drop of the price at
+	 * Returns a double array describing the percentage in the drop of the price at
 	 * which this ShopKeeper will buy back items based on the number already
 	 * in his inventory.  The format is a number representing the percentage
 	 * price drop per normal item followed by a space, followed by a number
 	 * representing the percentage price drop per raw resource item. A value
-	 * of "0 0" would mean no drop in price for either,  ever.
-	 * @return the price dropping percentage rule for this shopkeeper
+	 * of null or [0,0] would mean no drop in price for either,  ever.
+	 * @return null, or the price dropping percentage rule for this shopkeeper
 	 */
-	public String finalDevalueRate();
+	public double[] finalDevalueRate();
 	/**
 	 * Returns a string describing the percentage in the drop of the price at
 	 * which this ShopKeeper will buy back items based on the number already

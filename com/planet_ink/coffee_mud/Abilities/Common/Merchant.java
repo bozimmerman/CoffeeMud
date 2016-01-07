@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -35,21 +36,79 @@ import java.util.*;
 
 public class Merchant extends CommonSkill implements ShopKeeper
 {
-	@Override public String ID() { return "Merchant"; }
-	private final static String localizedName = CMLib.lang().L("Marketeering");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"MARKET"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int overrideMana(){return 5;}
-	@Override public boolean isAutoInvoked(){return true;}
-	@Override public boolean canBeUninvoked(){return false;}
-	@Override protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost() { return CMProps.getNormalSkillGainCost(ID()); }
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_EXITS|Ability.CAN_AREAS|Ability.CAN_ITEMS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_INFLUENTIAL; }
+	@Override
+	public String ID()
+	{
+		return "Merchant";
+	}
 
-	protected CoffeeShop shop=((CoffeeShop)CMClass.getCommon("DefaultCoffeeShop")).build(this);
-	@Override public CoffeeShop getShop(){return shop;}
+	private final static String	localizedName	= CMLib.lang().L("Marketeering");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "MARKET" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return 5;
+	}
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
+	@Override
+	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
+	{
+		return CMProps.getNormalSkillGainCost(ID());
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS | Ability.CAN_ROOMS | Ability.CAN_EXITS | Ability.CAN_AREAS | Ability.CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_INFLUENTIAL;
+	}
+
+	protected CoffeeShop	shop				= ((CoffeeShop) CMClass.getCommon("DefaultCoffeeShop")).build(this);
+	private double[]		devalueRate			= null;
+	private long			whatIsSoldMask		= ShopKeeper.DEAL_ANYTHING;
+	private String			prejudice			= "";
+	private String			ignore				= "";
+	private MOB				staticMOB			= null;
+	private String[]		pricingAdjustments	= new String[0];
+	
+	private Pair<Long,TimePeriod> budget		= new Pair<Long,TimePeriod>(Long.valueOf(100000), TimePeriod.DAY);
 
 	public Merchant()
 	{
@@ -58,19 +117,55 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		isAutoInvoked();
 	}
+	
+	@Override
+	public CoffeeShop getShop()
+	{
+		return shop;
+	}
+
 	@Override
 	public String text()
 	{
 		return shop.makeXML();
 	}
-	private String budget="100000";
-	@Override public String budget(){return budget;}
-	@Override public void setBudget(String factors){budget=factors;}
-	private String devalueRate="";
-	@Override public String devalueRate(){return devalueRate;}
-	@Override public void setDevalueRate(String factors){devalueRate=factors;}
-	@Override public int invResetRate(){return 0;}
-	@Override public void setInvResetRate(int ticks){}
+
+
+	@Override
+	public String budget()
+	{
+		return budget == null ? "" : (budget.first + " " + budget.second.name());
+	}
+
+	@Override
+	public void setBudget(String factors)
+	{
+		budget = CMLib.coffeeShops().parseBudget(factors);
+	}
+
+	@Override
+	public String devalueRate()
+	{
+		return devalueRate == null ? null : (devalueRate[0] + " "+devalueRate[1]);
+	}
+
+	@Override
+	public void setDevalueRate(String factors)
+	{
+		devalueRate = CMLib.coffeeShops().parseDevalueRate(factors);
+	}
+
+	@Override
+	public int invResetRate()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setInvResetRate(int ticks)
+	{
+	}
+
 	@Override
 	public void setMiscText(String text)
 	{
@@ -87,7 +182,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			affectableStats.setWeight(affectableStats.weight()+shop.totalStockWeight());
 	}
 
-	private long whatIsSoldMask=ShopKeeper.DEAL_ANYTHING;
 	@Override
 	public boolean isSold(int mask)
 	{
@@ -108,7 +202,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				whatIsSoldMask=(CMath.pow(2,whatIsSoldMask-1)<<8);
 
 			for(int c=0;c<ShopKeeper.DEAL_CONFLICTS.length;c++)
+			{
 				for(int c1=0;c1<ShopKeeper.DEAL_CONFLICTS[c].length;c1++)
+				{
 					if(ShopKeeper.DEAL_CONFLICTS[c][c1]==mask)
 					{
 						for(c1=0;c1<ShopKeeper.DEAL_CONFLICTS[c].length;c1++)
@@ -117,6 +213,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 								addSoldType(-ShopKeeper.DEAL_CONFLICTS[c][c1]);
 						break;
 					}
+				}
+			}
 
 			if(mask>0)
 				whatIsSoldMask|=(CMath.pow(2,mask-1)<<8);
@@ -124,19 +222,61 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				whatIsSoldMask=CMath.unsetb(whatIsSoldMask,(CMath.pow(2,(-mask)-1)<<8));
 		}
 	}
-	@Override public long getWhatIsSoldMask(){return whatIsSoldMask;}
-	@Override public void setWhatIsSoldMask(long newSellCode){whatIsSoldMask=newSellCode;}
-	@Override public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(getShop());}
-	@Override public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
-	private String prejudice="";
-	@Override public String prejudiceFactors(){return prejudice;}
-	@Override public void setPrejudiceFactors(String factors){prejudice=factors;}
-	private String ignore="";
-	@Override public String ignoreMask(){return ignore;}
-	@Override public void setIgnoreMask(String factors){ignore=factors;}
-	private MOB staticMOB=null;
-	private String[] pricingAdjustments=new String[0];
-	@Override public String[] itemPricingAdjustments(){ return pricingAdjustments;}
+
+	@Override
+	public long getWhatIsSoldMask()
+	{
+		return whatIsSoldMask;
+	}
+
+	@Override
+	public void setWhatIsSoldMask(long newSellCode)
+	{
+		whatIsSoldMask = newSellCode;
+	}
+
+	@Override
+	public String storeKeeperString()
+	{
+		return CMLib.coffeeShops().storeKeeperString(getShop());
+	}
+
+	@Override
+	public boolean doISellThis(Environmental thisThang)
+	{
+		return CMLib.coffeeShops().doISellThis(thisThang, this);
+	}
+
+	@Override
+	public String prejudiceFactors()
+	{
+		return prejudice;
+	}
+
+	@Override
+	public void setPrejudiceFactors(String factors)
+	{
+		prejudice = factors;
+	}
+
+	@Override
+	public String ignoreMask()
+	{
+		return ignore;
+	}
+
+	@Override
+	public void setIgnoreMask(String factors)
+	{
+		ignore = factors;
+	}
+
+	@Override
+	public String[] itemPricingAdjustments()
+	{
+		return pricingAdjustments;
+	}
+
 	@Override
 	public void setItemPricingAdjustments(String[] factors)
 	{
@@ -183,17 +323,18 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return getStartArea().finalItemPricingAdjustments();
 	}
 	@Override
-	public String finalBudget()
+	public Pair<Long, TimePeriod> finalBudget()
 	{
-		if((budget().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
-			return budget();
+		if((budget != null)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
+			return budget;
 		return getStartArea().finalBudget();
 	}
+	
 	@Override
-	public String finalDevalueRate()
+	public double[] finalDevalueRate()
 	{
-		if((devalueRate().length()>0)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
-			return devalueRate();
+		if ((devalueRate != null)||((affected instanceof MOB)&&(!((MOB)affected).isMonster())))
+			return devalueRate;
 		return getStartArea().finalDevalueRate();
 	}
 
@@ -237,8 +378,11 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 		staticMOB.setStartRoom(room);
 		staticMOB.setLocation(room);
-		if( CMLib.beanCounter().getTotalAbsoluteNativeValue( staticMOB ) < (CMath.s_int( finalBudget() ) ) )
-			staticMOB.setMoney(CMath.s_int(finalBudget()));
+		if(finalBudget() != null)
+		{
+			if( CMLib.beanCounter().getTotalAbsoluteNativeValue( staticMOB ) < finalBudget().first.longValue() )
+				staticMOB.setMoney(finalBudget().first.intValue());
+		}
 		return staticMOB;
 	}
 

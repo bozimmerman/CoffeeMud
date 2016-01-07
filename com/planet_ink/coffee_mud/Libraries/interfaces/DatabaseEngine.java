@@ -150,41 +150,54 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
-	 * 
+	 * Loads both the mob and item catalogs into the catalog library.
 	 */
 	public void DBReadCatalogs();
 
 	/**
 	 * Table category: DBMAP
-	 * 
+	 * Logs all the items in outer space into the space map
 	 */
 	public void DBReadSpace();
 
 	/**
 	 * Table category: DBMAP
+	 * This method is used to load the content (items and mobs) of the 
+	 * given room id into the given room object, and optionally activate
+	 * the contents to live use.  startItemRejuv() is not called, however.
 	 * 
-	 * @param roomID
-	 * @param thisRoom
-	 * @param makeLive
+	 * @param roomID the id of the room to load
+	 * @param thisRoom the room object to load the content into (required!)
+	 * @param makeLive true to bring the mobs to life, false to leave them dead.
 	 */
 	public void DBReadContent(String roomID, Room thisRoom, boolean makeLive);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param A
-	 * @return
+	 * Reloads the basic data of the given area, with a prefilled Name.
+	 * It does not load or alter rooms or anything like that, only
+	 * the internal variables of the area.
+	 * @param A the area to reload
 	 */
-	public Area DBReadArea(Area A);
+	public void DBReadAreaData(Area A);
 
 	/**
 	 * Table category: DBMAP
+	 * Permanently Loads and returns a single Room object, 
+	 * without populating its contents yet. This is often done in 
+	 * preparation to read the content, the exits, or both.  
+	 * It sets the area and room ID, as if the room will have a 
+	 * permanent home in the game.
 	 * 
-	 * @param roomID
-	 * @param reportStatus
-	 * @return
+	 * @see DatabaseEngine#DBReadContent(String, Room, boolean)
+	 * @see DatabaseEngine#DBReReadRoomObject(Room)
+	 * @see DatabaseEngine#DBReadRoomObject(String, boolean)
+	 * 
+	 * @param roomID the room id of the room object to load
+	 * @param reportStatus true to populate global status, false otherwise
+	 * @return the room loaded, or null if it could not be
 	 */
-	public Map<String, Room> DBReadRoomData(String roomID, boolean reportStatus);
+	public Room DBReadRoom(String roomID, boolean reportStatus);
 
 	/**
 	 * Table category: DBMAP

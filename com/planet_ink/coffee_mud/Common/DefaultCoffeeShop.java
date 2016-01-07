@@ -37,11 +37,21 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 */
 public class DefaultCoffeeShop implements CoffeeShop
 {
-	@Override public String ID(){return "DefaultCoffeeShop";}
-	@Override public String name() { return ID();}
-	WeakReference<ShopKeeper> shopKeeper = null;
-	public SVector<Environmental> enumerableInventory=new SVector<Environmental>(); // for Only Inventory situations
-	public List<ShelfProduct> storeInventory=new SVector<ShelfProduct>();
+	@Override
+	public String ID()
+	{
+		return "DefaultCoffeeShop";
+	}
+
+	@Override
+	public String name()
+	{
+		return ID();
+	}
+
+	WeakReference<ShopKeeper>		shopKeeper			= null;
+	public SVector<Environmental>	enumerableInventory	= new SVector<Environmental>(); // for Only Inventory situations
+	public List<ShelfProduct>		storeInventory		= new SVector<ShelfProduct>();
 
 	private static Converter<ShelfProduct,Environmental> converter=new Converter<ShelfProduct,Environmental>()
 	{
@@ -52,7 +62,12 @@ public class DefaultCoffeeShop implements CoffeeShop
 		}
 	};
 
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -75,12 +90,41 @@ public class DefaultCoffeeShop implements CoffeeShop
 		return this;
 	}
 
-	@Override public ShopKeeper shopKeeper(){ return (shopKeeper==null)?null:shopKeeper.get();}
-	@Override public boolean isSold(int code){final ShopKeeper SK=shopKeeper(); return (SK==null)?false:SK.isSold(code);}
-	protected Room startRoom() { return CMLib.map().getStartRoom(shopKeeper());}
+	@Override
+	public ShopKeeper shopKeeper()
+	{
+		return (shopKeeper == null) ? null : shopKeeper.get();
+	}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultCoffeeShop();}}
-	@Override public void initializeClass(){}
+	@Override
+	public boolean isSold(int code)
+	{
+		final ShopKeeper SK = shopKeeper();
+		return (SK == null) ? false : SK.isSold(code);
+	}
+
+	protected Room startRoom()
+	{
+		return CMLib.map().getStartRoom(shopKeeper());
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultCoffeeShop();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
 
 	public void cloneFix(DefaultCoffeeShop E)
 	{
@@ -88,6 +132,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		enumerableInventory=new SVector<Environmental>();
 		final Hashtable<Environmental,Environmental> copyFix=new Hashtable<Environmental,Environmental>();
 		for(final ShelfProduct SP: storeInventory)
+		{
 			if(SP.product!=null)
 			{
 				final Environmental I3=(Environmental)SP.product.copyOf();
@@ -95,6 +140,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				stopTicking(I3);
 				storeInventory.add(new ShelfProduct(I3,SP.number,SP.price));
 			}
+		}
 		for(int i=0;i<E.enumerableInventory.size();i++)
 		{
 			final Environmental I2=E.enumerableInventory.elementAt(i);
@@ -272,22 +318,29 @@ public class DefaultCoffeeShop implements CoffeeShop
 	{
 		int weight=0;
 		for(final ShelfProduct SP : storeInventory)
+		{
 			if(SP.product instanceof Physical)
+			{
 				if(SP.number<=1)
 					weight+=((Physical)SP.product).phyStats().weight();
 				else
 					weight+=(((Physical)SP.product).phyStats().weight()*SP.number);
+			}
+		}
 		return weight;
 	}
+
 	@Override
 	public int totalStockSizeIncludingDuplicates()
 	{
 		int num=0;
 		for(final ShelfProduct SP : storeInventory)
+		{
 			if(SP.number<=1)
 				num++;
 			else
 				num+=SP.number;
+		}
 		return num;
 	}
 
@@ -322,9 +375,9 @@ public class DefaultCoffeeShop implements CoffeeShop
 		if(item==null)
 			item=CMLib.english().fetchEnvironmental(storeInv,name,false);
 		if((item==null)
-		   &&(mob!=null)
-		   &&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
-			  ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER))))
+		&&(mob!=null)
+		&&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
+			||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER))))
 		{
 			final List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<Environmental>(),mob,this,startRoom());
 			item=CMLib.english().fetchEnvironmental(titles,name,true);
@@ -340,17 +393,22 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public int stockPrice(Environmental likeThis)
 	{
 		for(final ShelfProduct SP : storeInventory)
+		{
 			if(shopCompare(SP.product,likeThis))
 				return SP.price;
+		}
 		return -1;
 	}
+
 	@Override
 	public int numberInStock(Environmental likeThis)
 	{
 		int num=0;
 		for(final ShelfProduct SP : storeInventory)
+		{
 			if(shopCompare(SP.product,likeThis))
 				num+=SP.number;
+		}
 		return num;
 	}
 
@@ -384,6 +442,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		if(item instanceof Physical)
 		{
 			for(final ShelfProduct SP : storeInventory)
+			{
 				if(SP.product==item)
 				{
 					final Environmental copyItem=(Environmental)item.copyOf();
@@ -396,6 +455,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 					}
 					item=copyItem;
 				}
+			}
 			((Physical)item).basePhyStats().setRejuv(PhyStats.NO_REJUV);
 			((Physical)item).phyStats().setRejuv(PhyStats.NO_REJUV);
 		}
@@ -414,10 +474,12 @@ public class DefaultCoffeeShop implements CoffeeShop
 		}
 		emptyAllShelves();
 		for(int a=0;a<addBacks.size();a++)
+		{
 			addStoreInventory(
 					(Environmental)addBacks.elementAt(a,1),
 					((Integer)addBacks.elementAt(a,2)).intValue(),
 					((Integer)addBacks.elementAt(a,3)).intValue());
+		}
 		for(final Environmental shopItem : shopItems)
 			shopItem.destroy();
 	}
@@ -430,6 +492,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		if(enumerableInventory!=null)
 			enumerableInventory.clear();
 	}
+
 	@Override
 	public List<Environmental> removeSellableProduct(String named, MOB mob)
 	{

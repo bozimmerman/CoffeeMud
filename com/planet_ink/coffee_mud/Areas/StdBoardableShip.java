@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -39,6 +40,12 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 {
+	@Override
+	public String ID()
+	{
+		return "StdBoardableShip";
+	}
+
 	protected String[]  	xtraValues  	= null;
 	protected String		imageName   	= "";
 	protected RoomnumberSet properRoomIDSet = null;
@@ -66,11 +73,30 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	protected STreeMap<String,String>	blurbFlags		= new STreeMap<String,String>();
 	protected List<Pair<Room,Integer>>	shipExitCache	= new SLinkedList<Pair<Room,Integer>>();
 
-	@Override public String ID(){ return "StdBoardableShip"; }
+	@Override
+	public void initializeClass()
+	{
+	}
 
-	@Override public void initializeClass(){}
-	@Override public Room getIsDocked(){ return CMLib.map().getRoom(savedDock);}
-	@Override public void setClimateObj(Climate obj){}
+	public StdBoardableShip()
+	{
+		super();
+		//CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);
+		xtraValues=CMProps.getExtraStatCodesHolder(this);
+	}
+	
+	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.AREA);}//removed for mem & perf
+	
+	@Override
+	public Room getIsDocked()
+	{
+		return CMLib.map().getRoom(savedDock);
+	}
+
+	@Override
+	public void setClimateObj(Climate obj)
+	{
+	}
 
 	protected Area getShipItemArea()
 	{
@@ -83,8 +109,18 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		final Area shipItemArea = getShipItemArea();
 		return (shipItemArea != null) ? shipItemArea.getClimateObj() : CMLib.map().areas().nextElement().getClimateObj();
 	}
-	@Override public void setAuthorID(String authorID){author=authorID;}
-	@Override public String getAuthorID(){return author;}
+
+	@Override
+	public void setAuthorID(String authorID)
+	{
+		author = authorID;
+	}
+
+	@Override
+	public String getAuthorID()
+	{
+		return author;
+	}
 
 	@Override
 	public TimeClock getTimeObj()
@@ -100,12 +136,35 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			shipItem=(BoardableShip)dockableItem;
 	}
 
-	@Override public void setTimeObj(TimeClock obj){}
-	@Override public void setCurrency(String newCurrency){currency=newCurrency;}
-	@Override public String getCurrency(){return currency;}
-	@Override public long expirationDate(){return expirationDate;}
-	@Override public void setExpirationDate(long time){expirationDate=time;}
-	
+	@Override
+	public void setTimeObj(TimeClock obj)
+	{
+	}
+
+	@Override
+	public void setCurrency(String newCurrency)
+	{
+		currency = newCurrency;
+	}
+
+	@Override
+	public String getCurrency()
+	{
+		return currency;
+	}
+
+	@Override
+	public long expirationDate()
+	{
+		return expirationDate;
+	}
+
+	@Override
+	public void setExpirationDate(long time)
+	{
+		expirationDate = time;
+	}
+
 	@Override 
 	public int getAtmosphereCode() 
 	{
@@ -113,8 +172,11 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return (shipItemArea != null) ? shipItemArea.getAtmosphereCode() : CMLib.map().areas().nextElement().getAtmosphereCode();
 	}
 	
-	@Override public void setAtmosphere(int resourceCode) { }
-	
+	@Override
+	public void setAtmosphere(int resourceCode)
+	{
+	}
+
 	@Override
 	public Item getShipItem()
 	{
@@ -128,8 +190,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return (shipItemArea != null) ? shipItemArea.getAtmosphere() : CMLib.map().areas().nextElement().getAtmosphere();
 	}
 	
-	@Override public long flags(){return 0;}
-	
+	@Override
+	public long flags()
+	{
+		return 0;
+	}
+
 	@Override
 	public void destroy()
 	{
@@ -147,8 +213,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		amDestroyed=true;
 	}
 	
-	@Override public boolean amDestroyed(){return amDestroyed;}
-	
+	@Override
+	public boolean amDestroyed()
+	{
+		return amDestroyed;
+	}
+
 	@Override
 	public boolean isSavable()
 	{
@@ -157,8 +227,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				&& (CMLib.flags().isSavable(this)));
 	}
 	
-	@Override public void setSavable(boolean truefalse){CMLib.flags().setSavable(this, truefalse);}
-	
+	@Override
+	public void setSavable(boolean truefalse)
+	{
+		CMLib.flags().setSavable(this, truefalse);
+	}
+
 	@Override 
 	public int getClimateTypeCode()
 	{
@@ -173,15 +247,11 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return (shipItemArea != null) ? shipItemArea.getClimateType() : CMLib.map().areas().nextElement().getClimateType();
 	}
 	
-	@Override public void setClimateType(int newClimateType){}
-
-	public StdBoardableShip()
+	@Override
+	public void setClimateType(int newClimateType)
 	{
-		super();
-		//CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);
-		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
-	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.AREA);}//removed for mem & perf
+
 	@Override
 	public String name()
 	{
@@ -195,7 +265,13 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		name=newName;
 		CMLib.map().renamedArea(this);
 	}
-	@Override public String Name(){return name;}
+
+	@Override
+	public String Name()
+	{
+		return name;
+	}
+
 	@Override
 	public void renameShip(String newName)
 	{
@@ -215,11 +291,13 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		return basePhyStats;
 	}
+
 	@Override
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		eachEffect(new EachApplicable<Ability>(){ 
+		eachEffect(new EachApplicable<Ability>()
+		{ 
 			@Override
 			public final void apply(final Ability A)
 			{
@@ -229,17 +307,22 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		});
 	}
 
+	@Override
+	public Area getShipArea()
+	{
+		return this;
+	}
 
-	@Override public Area getShipArea() { return this; }
-	@Override public void setShipArea(String xml) {}
+	@Override
+	public void setShipArea(String xml)
+	{
+	}
 
 	@Override
 	public void setBasePhyStats(PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
-	public void setNextWeatherType(int weatherCode){}
-	public void setCurrentWeatherType(int weatherCode){}
 	
 	@Override 
 	public int getThemeCode() 
@@ -255,11 +338,28 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return (shipItemArea != null) ? shipItemArea.getTheme() : CMLib.map().areas().nextElement().getTheme();
 	}
 	
-	@Override public void setTheme(int level){}
+	@Override
+	public void setTheme(int level)
+	{
+	}
 
-	@Override public String image(){return imageName;}
-	@Override public String rawImage(){return imageName;}
-	@Override public void setImage(String newImage){imageName=newImage;}
+	@Override
+	public String image()
+	{
+		return imageName;
+	}
+
+	@Override
+	public String rawImage()
+	{
+		return imageName;
+	}
+
+	@Override
+	public void setImage(String newImage)
+	{
+		imageName = newImage;
+	}
 
 	@Override 
 	public String getHomePortID() 
@@ -273,8 +373,16 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			this.shipItem.setHomePortID(portID);
 	}
 	
-	@Override public String getArchivePath(){return "";}
-	@Override public void setArchivePath(String pathFile){}
+	@Override
+	public String getArchivePath()
+	{
+		return "";
+	}
+
+	@Override
+	public void setArchivePath(String pathFile)
+	{
+	}
 
 	@Override
 	public void setAreaState(State newState)
@@ -284,12 +392,39 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		flag=newState;
 	}
 
-	@Override public State getAreaState(){return flag;}
-	@Override public boolean amISubOp(String username){return false;}
-	@Override public String getSubOpList(){return "";}
-	@Override public void setSubOpList(String list){}
-	@Override public void addSubOp(String username){}
-	@Override public void delSubOp(String username){}
+	@Override
+	public State getAreaState()
+	{
+		return flag;
+	}
+
+	@Override
+	public boolean amISubOp(String username)
+	{
+		return false;
+	}
+
+	@Override
+	public String getSubOpList()
+	{
+		return "";
+	}
+
+	@Override
+	public void setSubOpList(String list)
+	{
+	}
+
+	@Override
+	public void addSubOp(String username)
+	{
+	}
+
+	@Override
+	public void delSubOp(String username)
+	{
+	}
+
 	@Override
 	public CMObject newInstance()
 	{
@@ -303,7 +438,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		}
 		return new StdBoardableShip();
 	}
-	@Override public boolean isGeneric(){return false;}
+
+	@Override
+	public boolean isGeneric()
+	{
+		return false;
+	}
 	
 	protected void cloneFix(StdBoardableShip ship)
 	{
@@ -354,14 +494,43 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			return this.newInstance();
 		}
 	}
-	@Override public String displayText(){return displayText;}
-	@Override public void setDisplayText(String newDisplayText){ displayText=newDisplayText; }
-	@Override public String displayText(MOB viewerMob) { return displayText(); }
-	@Override public String name(MOB viewerMob) { return name(); }
 
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
 
-	@Override public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
+	@Override
+	public void setDisplayText(String newDisplayText)
+	{
+		displayText = newDisplayText;
+	}
+
+	@Override
+	public String displayText(MOB viewerMob)
+	{
+		return displayText();
+	}
+
+	@Override
+	public String name(MOB viewerMob)
+	{
+		return name();
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
+	@Override
+	public String miscTextFormat()
+	{
+		return CMParms.FORMAT_UNDEFINED;
+	}
+
 	@Override
 	public String text()
 	{
@@ -375,9 +544,23 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
 	}
 
-	@Override public String description() { return description;}
-	@Override public void setDescription(String newDescription) { description=newDescription;}
-	@Override public String description(MOB viewerMob) { return description(); }
+	@Override
+	public String description()
+	{
+		return description;
+	}
+
+	@Override
+	public void setDescription(String newDescription)
+	{
+		description = newDescription;
+	}
+
+	@Override
+	public String description(MOB viewerMob)
+	{
+		return description();
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -466,7 +649,13 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			return null;
 		return blurbFlags.get(flag.toUpperCase().trim());
 	}
-	@Override public int numBlurbFlags(){return blurbFlags.size();}
+
+	@Override
+	public int numBlurbFlags()
+	{
+		return blurbFlags.size();
+	}
+
 	@Override
 	public int numAllBlurbFlags()
 	{
@@ -475,6 +664,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			num += i.next().numAllBlurbFlags();
 		return num;
 	}
+
 	@Override
 	public Enumeration<String> areaBlurbFlags()
 	{
@@ -504,6 +694,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		if(getBlurbFlag(flag)==null)
 			blurbFlags.put(flag,flagPlusDesc);
 	}
+
 	@Override
 	public void delBlurbFlag(String flagOnly)
 	{
@@ -517,7 +708,8 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 
 	protected void lookOverBow(final Room R, final CMMsg msg)
 	{
-		msg.addTrailerRunnable(new Runnable(){
+		msg.addTrailerRunnable(new Runnable()
+		{
 			@Override
 			public void run()
 			{
@@ -535,30 +727,39 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(numBehaviors()>0)
-			eachBehavior(new EachApplicable<Behavior>(){ 
+		if (numBehaviors() > 0)
+		{
+			eachBehavior(new EachApplicable<Behavior>()
+			{
 				@Override
 				public final void apply(final Behavior B)
 				{
 					B.executeMsg(me, msg);
-				} 
+				}
 			});
-		if(numScripts()>0)
-			eachScript(new EachApplicable<ScriptingEngine>(){ 
+		}
+		if (numScripts() > 0)
+		{
+			eachScript(new EachApplicable<ScriptingEngine>()
+			{
 				@Override
 				public final void apply(final ScriptingEngine S)
 				{
 					S.executeMsg(me, msg);
-				} 
+				}
 			});
-		if(numEffects()>0)
-			eachEffect(new EachApplicable<Ability>(){ 
+		}
+		if (numEffects() > 0)
+		{
+			eachEffect(new EachApplicable<Ability>()
+			{
 				@Override
 				public final void apply(final Ability A)
 				{
-					A.executeMsg(me,msg);
+					A.executeMsg(me, msg);
 				}
 			});
+		}
 		if(this.shipItem != null)
 		{
 			switch(msg.targetMinor())
@@ -604,10 +805,22 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		
 	}
 
-	@Override public Enumeration<Room> getCompleteMap(){return getProperMap();}
-	public List<Room> getMetroCollection(){return new ReadOnlyList(myRooms);}
+	@Override
+	public Enumeration<Room> getCompleteMap()
+	{
+		return getProperMap();
+	}
 
-	@Override public int getTickStatus(){ return tickStatus;}
+	public List<Room> getMetroCollection()
+	{
+		return new ReadOnlyList(myRooms);
+	}
+
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -618,33 +831,42 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		if(tickID==Tickable.TICKID_AREA)
 		{
 			tickStatus=Tickable.STATUS_BEHAVIOR;
-			if(numBehaviors()>0)
-				eachBehavior(new EachApplicable<Behavior>(){ 
+			if (numBehaviors() > 0)
+			{
+				eachBehavior(new EachApplicable<Behavior>()
+				{
 					@Override
 					public final void apply(final Behavior B)
 					{
-						B.tick(ticking,tickID);
-					} 
+						B.tick(ticking, tickID);
+					}
 				});
-			tickStatus=Tickable.STATUS_SCRIPT;
-			if(numScripts()>0)
-				eachScript(new EachApplicable<ScriptingEngine>(){ 
+			}
+			tickStatus = Tickable.STATUS_SCRIPT;
+			if (numScripts() > 0)
+			{
+				eachScript(new EachApplicable<ScriptingEngine>()
+				{
 					@Override
 					public final void apply(final ScriptingEngine S)
 					{
-						S.tick(ticking,tickID);
-					} 
+						S.tick(ticking, tickID);
+					}
 				});
-			tickStatus=Tickable.STATUS_AFFECT;
-			if(numEffects()>0)
-				eachEffect(new EachApplicable<Ability>(){ 
+			}
+			tickStatus = Tickable.STATUS_AFFECT;
+			if (numEffects() > 0)
+			{
+				eachEffect(new EachApplicable<Ability>()
+				{
 					@Override
 					public final void apply(final Ability A)
 					{
-						if(!A.tick(ticking,tickID))
+						if (!A.tick(ticking, tickID))
 							A.unInvoke();
 					}
 				});
+			}
 			if(shipItem != null)
 				shipItem.tick(ticking, tickID);
 		}
@@ -663,12 +885,16 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
 	}
+
 	@Override
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-	{}
+	{
+	}
+
 	@Override
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
-	{}
+	{
+	}
 
 	@Override
 	public void addNonUninvokableEffect(Ability to)
@@ -682,6 +908,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+
 	@Override
 	public void addEffect(Ability to)
 	{
@@ -692,6 +919,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+
 	@Override
 	public void delEffect(Ability to)
 	{
@@ -700,6 +928,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		if(affects.size()<size)
 			to.setAffectedOne(null);
 	}
+
 	@Override
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
@@ -715,8 +944,11 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					applier.apply(A);
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
+		catch (final ArrayIndexOutOfBoundsException e)
+		{
+		}
 	}
+
 	@Override
 	public void delAllEffects(boolean unInvoke)
 	{
@@ -732,6 +964,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		}
 		affects.clear();
 	}
+
 	@Override
 	public int numEffects()
 	{
@@ -751,9 +984,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		{
 			return affects.elementAt(index);
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
+
 	@Override
 	public Ability fetchEffect(String ID)
 	{
@@ -766,7 +1002,10 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return null;
 	}
 
-	@Override public void fillInAreaRooms() { }
+	@Override
+	public void fillInAreaRooms()
+	{
+	}
 
 	@Override
 	public boolean inMyMetroArea(Area A)
@@ -776,8 +1015,11 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return false;
 	}
 	
-	@Override public void fillInAreaRoom(Room R){}
-	
+	@Override
+	public void fillInAreaRoom(Room R)
+	{
+	}
+
 	@Override
 	public void dockHere(Room roomR)
 	{
@@ -798,7 +1040,6 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					R.rawDoors()[d]=roomR;
 					shipExitCache.add(new Pair<Room,Integer>(R,Integer.valueOf(d)));
 				}
-
 			}
 		}
 	}
@@ -843,6 +1084,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		}
 		return set;
 	}
+
 	@Override
 	public RoomnumberSet getProperRoomnumbers()
 	{
@@ -905,7 +1147,10 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					}
 				}
 			}
-		}catch(final NoSuchElementException e){}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
 		if(highest<0)
 		{
 			if(!CMLib.flags().isSavable(this))
@@ -961,6 +1206,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			behaviors=new SVector<Behavior>();
 		behaviors.addElement(to);
 	}
+
 	@Override
 	public void delBehavior(Behavior to)
 	{
@@ -991,11 +1237,29 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return (behaviors!=null)?behaviors.elements():EmptyEnumeration.INSTANCE;
 	}
 
-	@Override public int maxRange(){return Integer.MAX_VALUE;}
-	@Override public int minRange(){return Integer.MIN_VALUE;}
+	@Override
+	public int maxRange()
+	{
+		return Integer.MAX_VALUE;
+	}
 
-	@Override public int[] getAreaIStats(){return new int[Area.Stats.values().length];}
-	@Override public StringBuffer getAreaStats(){    return new StringBuffer(description());}
+	@Override
+	public int minRange()
+	{
+		return Integer.MIN_VALUE;
+	}
+
+	@Override
+	public int[] getAreaIStats()
+	{
+		return new int[Area.Stats.values().length];
+	}
+
+	@Override
+	public StringBuffer getAreaStats()
+	{
+		return new StringBuffer(description());
+	}
 
 	@Override
 	public Behavior fetchBehavior(int index)
@@ -1007,6 +1271,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+
 	@Override
 	public Behavior fetchBehavior(String ID)
 	{
@@ -1018,21 +1283,26 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		}
 		return null;
 	}
+
 	@Override
 	public void eachBehavior(final EachApplicable<Behavior> applier)
 	{
 		final List<Behavior> behaviors=this.behaviors;
 		if(behaviors!=null)
-		try
 		{
-			for(int a=0;a<behaviors.size();a++)
+			try
 			{
-				final Behavior B=behaviors.get(a);
-				if(B!=null)
-					applier.apply(B);
+				for(int a=0;a<behaviors.size();a++)
+				{
+					final Behavior B=behaviors.get(a);
+					if(B!=null)
+						applier.apply(B);
+				}
+			}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	/** Manipulation of the scripts list */
@@ -1044,16 +1314,20 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		if(!scripts.contains(S))
 		{
 			for(final ScriptingEngine S2 : scripts)
+			{
 				if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
 					return;
+			}
 			scripts.addElement(S);
 		}
 	}
+
 	@Override
 	public void delScript(ScriptingEngine S)
 	{
 		scripts.removeElement(S);
 	}
+
 	@Override
 	public void delAllScripts()
 	{
@@ -1064,24 +1338,51 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
-	@Override public int numScripts(){return (scripts==null)?0:scripts.size();}
-	@Override public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
-	@Override public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(final Exception e){} return null;}
+
+	@Override
+	public int numScripts()
+	{
+		return (scripts == null) ? 0 : scripts.size();
+	}
+
+	@Override
+	public Enumeration<ScriptingEngine> scripts()
+	{
+		return (scripts == null) ? EmptyEnumeration.INSTANCE : scripts.elements();
+	}
+
+	@Override
+	public ScriptingEngine fetchScript(int x)
+	{
+		try
+		{
+			return scripts.elementAt(x);
+		}
+		catch (final Exception e)
+		{
+		}
+		return null;
+	}
+
 	@Override
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
 		if(scripts!=null)
-		try
 		{
-			for(int a=0;a<scripts.size();a++)
+			try
 			{
-				final ScriptingEngine S=scripts.get(a);
-				if(S!=null)
-					applier.apply(S);
+				for(int a=0;a<scripts.size();a++)
+				{
+					final ScriptingEngine S=scripts.get(a);
+					if(S!=null)
+						applier.apply(S);
+				}
+			}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{
 			}
 		}
-		catch(final ArrayIndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -1139,12 +1440,14 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		if((roomID!=null)&&(roomID.length()>0))
 			getProperRoomnumbers().add(roomID);
 	}
+
 	@Override
 	public void delProperRoomnumber(String roomID)
 	{
 		if((roomID!=null)&&(roomID.length()>0))
 			getProperRoomnumbers().remove(roomID);
 	}
+
 	@Override
 	public boolean isRoom(Room R)
 	{
@@ -1173,13 +1476,17 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					end=mid-1;
 				else
 					start=mid+1;
-
 			}
 		}
 		return null;
 	}
 
-	@Override public int metroSize(){return properSize();}
+	@Override
+	public int metroSize()
+	{
+		return properSize();
+	}
+
 	@Override
 	public int properSize()
 	{
@@ -1188,6 +1495,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			return myRooms.size();
 		}
 	}
+
 	@Override
 	public int numberOfProperIDedRooms()
 	{
@@ -1196,14 +1504,22 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		{
 			final Room R=e.nextElement();
 			if(R.roomID().length()>0)
+			{
 				if(R instanceof GridLocale)
 					num+=((GridLocale)R).xGridSize()*((GridLocale)R).yGridSize();
 				else
 					num++;
+			}
 		}
 		return num;
 	}
-	@Override public Room getRandomMetroRoom(){return getRandomProperRoom();}
+
+	@Override
+	public Room getRandomMetroRoom()
+	{
+		return getRandomProperRoom();
+	}
+
 	@Override
 	public Room getRandomProperRoom()
 	{
@@ -1217,14 +1533,50 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			return R;
 		}
 	}
-	@Override public boolean isProperlyEmpty(){ return getProperRoomnumbers().isEmpty(); }
-	@Override public void setProperRoomnumbers(RoomnumberSet set){ properRoomIDSet=set;}
-	public RoomnumberSet getMetroRoomnumbers(){return getProperRoomnumbers();}
-	@Override public Enumeration<Room> getMetroMap(){return getProperMap();}
-	@Override public void addMetroRoomnumber(String roomID){}
-	@Override public void delMetroRoomnumber(String roomID){}
-	@Override public void addMetroRoom(Room R){}
-	@Override public void delMetroRoom(Room R){}
+
+	@Override
+	public boolean isProperlyEmpty()
+	{
+		return getProperRoomnumbers().isEmpty();
+	}
+
+	@Override
+	public void setProperRoomnumbers(RoomnumberSet set)
+	{
+		properRoomIDSet = set;
+	}
+
+	public RoomnumberSet getMetroRoomnumbers()
+	{
+		return getProperRoomnumbers();
+	}
+
+	@Override
+	public Enumeration<Room> getMetroMap()
+	{
+		return getProperMap();
+	}
+
+	@Override
+	public void addMetroRoomnumber(String roomID)
+	{
+	}
+
+	@Override
+	public void delMetroRoomnumber(String roomID)
+	{
+	}
+
+	@Override
+	public void addMetroRoom(Room R)
+	{
+	}
+
+	@Override
+	public void delMetroRoom(Room R)
+	{
+	}
+
 	@Override
 	public Enumeration<Room> getProperMap()
 	{
@@ -1233,17 +1585,59 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			return myRooms.elements();
 		}
 	}
-	@Override public Enumeration<Room> getFilledProperMap() { return getProperMap();}
-	@Override public Enumeration<String> subOps(){ return EmptyEnumeration.INSTANCE;}
+
+	@Override
+	public Enumeration<Room> getFilledProperMap()
+	{
+		return getProperMap();
+	}
+
+	@Override
+	public Enumeration<String> subOps()
+	{
+		return EmptyEnumeration.INSTANCE;
+	}
 
 	// Children
-	@Override public Enumeration<Area> getChildren() {return EmptyEnumeration.INSTANCE; }
-	@Override public Area getChild(String named) { return null;}
-	@Override public boolean isChild(Area named) { return false;}
-	@Override public boolean isChild(String named) { return false;}
-	@Override public void addChild(Area area) {}
-	@Override public void removeChild(Area area) {}
-	@Override public boolean canChild(Area area) { return false;}
+	@Override
+	public Enumeration<Area> getChildren()
+	{
+		return EmptyEnumeration.INSTANCE;
+	}
+
+	@Override
+	public Area getChild(String named)
+	{
+		return null;
+	}
+
+	@Override
+	public boolean isChild(Area named)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isChild(String named)
+	{
+		return false;
+	}
+
+	@Override
+	public void addChild(Area area)
+	{
+	}
+
+	@Override
+	public void removeChild(Area area)
+	{
+	}
+
+	@Override
+	public boolean canChild(Area area)
+	{
+		return false;
+	}
 
 	public SLinkedList<Area> loadAreas(Collection<String> loadableSet)
 	{
@@ -1295,7 +1689,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			final Area A=a.next();
 			if((A.name().equalsIgnoreCase(named))
 			||(A.Name().equalsIgnoreCase(named)))
-			   return A;
+				return A;
 		}
 		return null;
 	}
@@ -1307,7 +1701,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		{
 			final Area A=a.next();
 			if(A == area)
-			   return true;
+				return true;
 		}
 		return false;
 	}
@@ -1355,31 +1749,136 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return true;
 	}
 
-	@Override public String prejudiceFactors(){return "";}
-	@Override public void setPrejudiceFactors(String factors){}
-	public final static String[] empty=new String[0];
-	@Override public String[] itemPricingAdjustments(){return empty;}
-	@Override public void setItemPricingAdjustments(String[] factors){}
-	@Override public String ignoreMask(){return "";}
-	@Override public void setIgnoreMask(String factors){}
-	@Override public String budget(){return "";}
-	@Override public void setBudget(String factors){}
-	@Override public String devalueRate(){return "";}
-	@Override public void setDevalueRate(String factors){}
-	@Override public int invResetRate(){return 0;}
-	@Override public void setInvResetRate(int ticks){}
-	@Override public int finalInvResetRate(){ return 0;}
-	@Override public String finalPrejudiceFactors(){ return "";}
-	@Override public String finalIgnoreMask(){ return "";}
-	@Override public String[] finalItemPricingAdjustments(){ return empty;}
-	@Override public String finalBudget(){ return "";}
-	@Override public String finalDevalueRate(){ return "";}
+	@Override
+	public String prejudiceFactors()
+	{
+		return "";
+	}
 
-	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
-	@Override public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS","AUTHOR","NAME","ATMOSPHERE"};
-	@Override public String[] getStatCodes(){return CODES;}
-	@Override public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	@Override
+	public void setPrejudiceFactors(String factors)
+	{
+	}
+
+	public final static String[]	empty	= new String[0];
+
+	@Override
+	public String[] itemPricingAdjustments()
+	{
+		return empty;
+	}
+
+	@Override
+	public void setItemPricingAdjustments(String[] factors)
+	{
+	}
+
+	@Override
+	public String ignoreMask()
+	{
+		return "";
+	}
+
+	@Override
+	public void setIgnoreMask(String factors)
+	{
+	}
+
+	@Override
+	public String budget()
+	{
+		return "";
+	}
+
+	@Override
+	public void setBudget(String factors)
+	{
+	}
+
+	@Override
+	public String devalueRate()
+	{
+		return "";
+	}
+
+	@Override
+	public void setDevalueRate(String factors)
+	{
+	}
+
+	@Override
+	public int invResetRate()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setInvResetRate(int ticks)
+	{
+	}
+
+	@Override
+	public int finalInvResetRate()
+	{
+		return 0;
+	}
+
+	@Override
+	public String finalPrejudiceFactors()
+	{
+		return "";
+	}
+
+	@Override
+	public String finalIgnoreMask()
+	{
+		return "";
+	}
+
+	@Override
+	public String[] finalItemPricingAdjustments()
+	{
+		return empty;
+	}
+
+	@Override
+	public Pair<Long, TimePeriod> finalBudget()
+	{
+		return null;
+	}
+
+	@Override
+	public double[] finalDevalueRate()
+	{
+		return null;
+	}
+
+	@Override
+	public String L(final String str, final String... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
+
+	@Override
+	public int getSaveStatIndex()
+	{
+		return getStatCodes().length;
+	}
+
+	private static final String[]	CODES	= { "CLASS", "CLIMATE", "DESCRIPTION", "TEXT", "THEME", "BLURBS", "AUTHOR", "NAME", "ATMOSPHERE" };
+
+	@Override
+	public String[] getStatCodes()
+	{
+		return CODES;
+	}
+
+	@Override
+	public boolean isStat(String code)
+	{
+		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
+	}
+
 	protected int getCodeNum(String code)
 	{
 		final String[] CODES=getStatCodes();
@@ -1388,20 +1887,30 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				return i;
 		return -1;
 	}
+
 	@Override
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return ""+getClimateTypeCode();
-		case 2: return description();
-		case 3: return text();
-		case 4: return ""+getThemeCode();
-		case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
-		case 6: return getAuthorID();
-		case 7: return Name();
-		case 8: return ""+getAtmosphereCode();
+		case 0:
+			return ID();
+		case 1:
+			return "" + getClimateTypeCode();
+		case 2:
+			return description();
+		case 3:
+			return text();
+		case 4:
+			return "" + getThemeCode();
+		case 5:
+			return "" + CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
+		case 6:
+			return getAuthorID();
+		case 7:
+			return Name();
+		case 8:
+			return "" + getAtmosphereCode();
 		}
 		return "";
 	}
@@ -1410,11 +1919,20 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return;
-		case 1: setClimateType(CMath.s_parseBitIntExpression(Places.CLIMATE_DESCS,val)); break;
-		case 2: setDescription(val); break;
-		case 3: setMiscText(val); break;
-		case 4: setTheme(CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES,val)); break;
+		case 0:
+			return;
+		case 1:
+			setClimateType(CMath.s_parseBitIntExpression(Places.CLIMATE_DESCS, val));
+			break;
+		case 2:
+			setDescription(val);
+			break;
+		case 3:
+			setMiscText(val);
+			break;
+		case 4:
+			setTheme(CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES, val));
+			break;
 		case 5:
 		{
 			if(val.startsWith("+"))
@@ -1437,8 +1955,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			}
 			break;
 		}
-		case 7: setAuthorID(val); break;
-		case 8: setName(val); break;
+		case 7:
+			setAuthorID(val);
+			break;
+		case 8:
+			setName(val);
+			break;
 		case 9: {
 			if(CMath.isMathExpression(val))
 				setAtmosphere(CMath.s_parseIntExpression(val));
@@ -1456,8 +1978,10 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 

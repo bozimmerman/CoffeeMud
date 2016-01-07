@@ -110,7 +110,8 @@ public interface ShopKeeper extends Environmental, Economics
 	};
 
 	/** A list of strings describing the DEAL_* constants, in their numeric value order. */
-	public final static String[] DEAL_DESCS={
+	public final static String[] DEAL_DESCS=
+	{
 		"ANYTHING","GENERAL","ARMOR","MAGIC","WEAPONS",
 		"PETS","LEATHER","INVENTORY ONLY","TRAINER",
 		"CASTER","JEWELRY","POTIONS","BANKER","LAND",
@@ -118,7 +119,8 @@ public interface ShopKeeper extends Environmental, Economics
 		"VEGETABLES","HIDES","LUMBER","METALS","ROCKS",
 		"CLAN BANKER", "INN KEEPER", "SHIP SELLER",
 		"CLAN SHIP SELLER", "SLAVES", "POSTMAN", "CLAN POSTMAN",
-		"AUCTIONEER"};
+		"AUCTIONEER"
+	};
 
 	/**
 	 * This class represents a given price for a given item in the shopkeepers inventory. It is usually

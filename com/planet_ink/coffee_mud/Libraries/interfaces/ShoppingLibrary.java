@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2005-2016 Bo Zimmerman
@@ -48,6 +49,10 @@ public interface ShoppingLibrary extends CMLibrary
 	public MOB parseBuyingFor(MOB buyer, String message);
 	public double transactPawn(MOB shopkeeper, MOB pawner, ShopKeeper shop, Environmental product);
 	public void transactMoneyOnly(MOB seller, MOB buyer, ShopKeeper shop, Environmental product, boolean sellerGetsPaid);
+	public double[] parseDevalueRate(String factors);
+	public String[] parseItemPricingAdjustments(String factors);
+	public String[] parsePrejudiceFactors(String factors);
+	public Pair<Long,TimeClock.TimePeriod> parseBudget(String budget);
 	public boolean purchaseItems(Item baseProduct, List<Environmental> products, MOB seller, MOB mobFor);
 	public boolean purchaseMOB(MOB product, MOB seller, ShopKeeper shop, MOB mobFor);
 	public void purchaseAbility(Ability A,  MOB seller, ShopKeeper shop, MOB mobFor);

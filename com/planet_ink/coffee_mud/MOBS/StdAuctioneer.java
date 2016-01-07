@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
@@ -803,10 +804,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public String finalBudget()
+	public Pair<Long, TimePeriod> finalBudget()
 	{
-		if (budget().length() > 0)
-			return budget();
 		return getStartArea().finalBudget();
 	}
 
@@ -822,10 +821,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public String finalDevalueRate()
+	public double[] finalDevalueRate()
 	{
-		if (devalueRate().length() > 0)
-			return devalueRate();
 		return getStartArea().finalDevalueRate();
 	}
 

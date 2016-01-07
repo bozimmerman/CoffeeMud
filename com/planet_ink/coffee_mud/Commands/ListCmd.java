@@ -2698,7 +2698,6 @@ public class ListCmd extends StdCommand
 		final StringBuilder buf=new StringBuilder("");
 		Room R=null;
 		Room TR=null;
-		Map<String,Room> set=null;
 		final int SCREEN_LEN1=CMLib.lister().fixColWidth(15.0,mob);
 		final int SCREEN_LEN2=CMLib.lister().fixColWidth(35.0,mob);
 		final int SCREEN_LEN3=CMLib.lister().fixColWidth(3.0,mob);
@@ -2707,12 +2706,11 @@ public class ListCmd extends StdCommand
 			R=(Room)roomsToDo.nextElement();
 			if(R.roomID().length()==0)
 				continue;
-			set=CMLib.database().DBReadRoomData(CMLib.map().getExtendedRoomID(R),false);
-			if((set==null)||(set.size()==0))
+			TR=CMLib.database().DBReadRoom(CMLib.map().getExtendedRoomID(R),false);
+			if(TR==null)
 				buf.append(L("'@x1' could not be read from the database!\n\r",CMLib.map().getExtendedRoomID(R)));
 			else
 			{
-				TR=set.entrySet().iterator().next().getValue();
 				CMLib.database().DBReadContent(TR.roomID(),TR,false);
 				buf.append("\n\r^NRoomID: "+CMLib.map().getExtendedRoomID(TR)+"\n\r");
 				for(int m=0;m<TR.numInhabitants();m++)

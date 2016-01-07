@@ -4214,8 +4214,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(L("(no change)"));
 		}
 	}
+
 	protected void genEconomics1(MOB mob, Economics E, int showNumber, int showFlag) throws IOException
-	{ E.setPrejudiceFactors(prompt(mob,E.prejudiceFactors(),showNumber,showFlag,"Prejudice",true,false)); }
+	{
+		E.setPrejudiceFactors(prompt(mob, E.prejudiceFactors(), showNumber, showFlag, "Prejudice", true, false));
+	}
 
 	protected void genEconomics2(MOB mob, Economics E, int showNumber, int showFlag)
 	throws IOException
