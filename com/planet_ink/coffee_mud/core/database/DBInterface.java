@@ -345,6 +345,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public int[] DBCountRoomMobsItems(String roomID)
+	{
+		return RoomLoader.DBCountRoomMobsItems(roomID);
+	}
+	
+	@Override
 	public Room[] DBReadRoomObjects(String areaName, boolean reportStatus)
 	{
 		return RoomLoader.DBReadRoomObjects(areaName, reportStatus);

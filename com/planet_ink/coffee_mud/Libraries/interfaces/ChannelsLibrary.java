@@ -402,6 +402,7 @@ public interface ChannelsLibrary extends CMLibrary
 		CLANALLYONLY,
 		ACCOUNTOOC,
 		NOBACKLOG,
-		ACHIEVEMENTS
+		ACHIEVEMENTS,
+		ACCOUNTOOCNOADMIN
 	}
 }

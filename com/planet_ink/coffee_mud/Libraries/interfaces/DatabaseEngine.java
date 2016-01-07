@@ -229,6 +229,14 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBMAP
 	 * 
 	 * @param roomID
+	 * @return
+	 */
+	public int[] DBCountRoomMobsItems(String roomID);
+	
+	/**
+	 * Table category: DBMAP
+	 * 
+	 * @param roomID
 	 * @param room
 	 * @param reportStatus
 	 */

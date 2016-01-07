@@ -701,7 +701,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		else
 			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,L("@x1^<CHANNEL \"@x2\"^>You @x3 '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message),CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),L("@x1^<CHANNEL \"@x2\"^><S-NAME> @x3S '@x4'^</CHANNEL^>^N^.",channelColor,channelName,channelName,message));
-		if((chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOC))
+		if((chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOC)
+			||(chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOCNOADMIN) && (!CMSecurity.isStaff(mob))))
 		&&(pStats!=null)
 		&&(pStats.getAccount()!=null)
 		&&(msg.source()==mob))

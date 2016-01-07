@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -40,19 +41,87 @@ public class Save extends StdCommand
 	private final String[] access=I(new String[]{"SAVE"});
 	@Override public String[] getAccessWords(){return access;}
 
-	public void clearSaveAndRestart(Room room, int taskCode)
+	public enum SaveTask
+	{
+		ALL,
+		ITEMS,
+		MOBS
+	}
+	
+	private int numSavableInhabitants(Room room)
+	{
+		int ct=0;
+		for(int i=0;i<room.numInhabitants();i++)
+		{
+			MOB M=room.fetchInhabitant(i);
+			if((M!=null)&&(M.isSavable()))
+				ct++;
+		}
+		return ct;
+	}
+	
+	private int numSavableItems(Room room)
+	{
+		int ct=0;
+		for(int i=0;i<room.numItems();i++)
+		{
+			Item I=room.getItem(i);
+			if((I!=null)&&(I.isSavable()))
+				ct++;
+		}
+		return ct;
+	}
+	
+	public boolean clearSaveAndRestart(final MOB mob, Room room, SaveTask taskCode, boolean noPrompt) throws IOException
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
 			room=CMLib.map().getRoom(room);
 			CMLib.threads().clearDebri(room,0);
-			if(taskCode<2)
+			if((!noPrompt)&&(mob!=null)&&(mob.session()!=null))
+			{
+				int[] counts = CMLib.database().DBCountRoomMobsItems(room.roomID());
+				int mobCountDiff = 0;
+				if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.ITEMS))
+					mobCountDiff= counts[0] - this.numSavableInhabitants(room);
+				int itemCountDiff = 0;
+				if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.ITEMS))
+					itemCountDiff= counts[1] - this.numSavableItems(room);
+				StringBuilder msg = new StringBuilder();
+				if(mobCountDiff < 0)
+					msg.append(L("add @x1 mob(s) ",""+(-mobCountDiff)));
+				else
+				if(mobCountDiff > 0)
+					msg.append(L("delete @x1 mob(s) ",""+(mobCountDiff)));
+				
+				if((itemCountDiff != 0) && (mobCountDiff != 0))
+					msg.append(L("and "));
+				
+				if(itemCountDiff < 0)
+					msg.append(L("add @x1 item(s) ",""+(-itemCountDiff)));
+				else
+				if(itemCountDiff > 0)
+					msg.append(L("delete @x1 item(s) ",""+(itemCountDiff)));
+				
+				if(msg.length() > 0)
+				{
+					if((!mob.session().confirm(L("Saving @x1 will @x2. Are you sure (Y/n)?",
+						CMLib.map().getExtendedRoomID(room),msg.toString()), "Y"))
+					||(mob.session().isStopped()))
+					{
+						return false;
+					}
+				}
+			}
+			
+			if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.ITEMS))
 			{
 				CMLib.database().DBUpdateItems(room);
 				room.startItemRejuv();
 			}
-			if((taskCode==0)||(taskCode==2))
+			if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.MOBS))
 				CMLib.database().DBUpdateMOBs(room);
+			return true;
 		}
 	}
 
@@ -112,17 +181,19 @@ public class Save extends StdCommand
 				if((mob.session()!=null)&&(mob.session().confirm(L("Doing this assumes every item in every room in this area is correctly placed.  Are you sure (N/y)?"),"N")))
 				{
 					final Area A=mob.location().getArea();
+					boolean saved = false;
 					for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
-						clearSaveAndRestart(e.nextElement(),1);
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the area.\n\r"));
+						saved = clearSaveAndRestart(mob,e.nextElement(),SaveTask.ITEMS, true) || saved;
+					if(saved)
+						mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the area.\n\r"));
 				}
 				else
 					return false;
 			}
 			else
 			{
-				clearSaveAndRestart(mob.location(),1);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the room.\n\r"));
+				if(clearSaveAndRestart(mob,mob.location(),SaveTask.ITEMS, false))
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the room.\n\r"));
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}
@@ -139,17 +210,19 @@ public class Save extends StdCommand
 				if((mob.session()!=null)&&(mob.session().confirm(L("Doing this assumes every mob and item in every room in this area is correctly placed.  Are you sure (N/y)?"),"N")))
 				{
 					final Area A=mob.location().getArea();
+					boolean saved = false;
 					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
-						clearSaveAndRestart((Room)e.nextElement(),0);
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the area.\n\r"));
+						saved = clearSaveAndRestart(mob,(Room)e.nextElement(),SaveTask.ALL, true) || saved;
+					if(saved)
+						mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the area.\n\r"));
 				}
 				else
 					return false;
 			}
 			else
 			{
-				clearSaveAndRestart(mob.location(),0);
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the room.\n\r"));
+				if(clearSaveAndRestart(mob,mob.location(),SaveTask.ALL, false))
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the room.\n\r"));
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}
@@ -166,9 +239,11 @@ public class Save extends StdCommand
 				if((mob.session()!=null)&&(mob.session().confirm(L("Doing this assumes every mob in every room in this area is correctly placed.  Are you sure (N/y)?"),"N")))
 				{
 					final Area A=mob.location().getArea();
+					boolean saved = false;
 					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
-						clearSaveAndRestart((Room)e.nextElement(),2);
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the area.\n\r"));
+						saved = clearSaveAndRestart(mob,(Room)e.nextElement(),SaveTask.MOBS, true) || saved;
+					if(saved)
+						mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the area.\n\r"));
 				}
 				else
 					return false;
@@ -176,8 +251,8 @@ public class Save extends StdCommand
 			}
 			else
 			{
-				clearSaveAndRestart(mob.location(),2);
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the room.\n\r"));
+				if(clearSaveAndRestart(mob,mob.location(),SaveTask.MOBS, false))
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the room.\n\r"));
 			}
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}

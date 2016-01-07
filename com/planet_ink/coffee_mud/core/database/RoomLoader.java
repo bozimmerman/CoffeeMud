@@ -715,6 +715,33 @@ public class RoomLoader
 		DBReadContent("SPACE",null,null,null,true,false);
 	}
 
+	public int[] DBCountRoomMobsItems(String roomID)
+	{
+		DBConnection D=null;
+		int[] count = new int[] { 0, 0};
+		// now grab the items
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMROIT WHERE CMROID='"+roomID+"'");
+			count [1] = DB.getRecordCount(D,R);
+			R.close();
+			
+			R=D.query("SELECT * FROM CMROCH WHERE CMROID='"+roomID+"'");
+			count [0] = DB.getRecordCount(D,R);
+			R.close();
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return count;
+	}
+	
 	public void DBReadContent(String thisRoomID, Room thisRoom, Map<String, Room> rooms, RoomnumberSet unloadedRooms, boolean setStatus, boolean makeLive)
 	{
 		final boolean debug=Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMPOP));
