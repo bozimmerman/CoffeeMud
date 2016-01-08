@@ -231,6 +231,12 @@ public class DefaultSocial implements Social
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto)
 	{
+		if(mob == null)
+			return false;
+		final Room R = mob.location();
+		if(R== null)
+			return false;
+		
 		String targetStr = "";
 		if ((commands.size() > 1) 
 		&& (!commands.get(1).equalsIgnoreCase("SELF")) 
@@ -240,7 +246,7 @@ public class DefaultSocial implements Social
 		Physical targetE = target;
 		if (targetE == null)
 		{
-			targetE = mob.location().fetchFromMOBRoomFavorsMOBs(mob, null, targetStr, Wearable.FILTER_ANY);
+			targetE = R.fetchFromMOBRoomFavorsMOBs(mob, null, targetStr, Wearable.FILTER_ANY);
 			if ((targetE != null) && (!CMLib.flags().canBeSeenBy(targetE, mob)))
 				targetE = null;
 			else 
@@ -277,8 +283,8 @@ public class DefaultSocial implements Social
 					(auto ? CMMsg.MASK_ALWAYS : 0) | sourceCode(), See_when_no_target, 
 					CMMsg.NO_EFFECT, null, 
 					CMMsg.NO_EFFECT, null);
-			if (mob.location().okMessage(mob, msg))
-				mob.location().send(mob, msg);
+			if (R.okMessage(mob, msg))
+				R.send(mob, msg);
 		}
 		else 
 		if (targetE == null)
@@ -287,8 +293,8 @@ public class DefaultSocial implements Social
 					(auto ? CMMsg.MASK_ALWAYS : 0) | sourceCode(), (You_see == null) ? null : You_see + mspFile, 
 					CMMsg.NO_EFFECT, null, 
 					othersCode(), (Third_party_sees == null) ? null : Third_party_sees + mspFile);
-			if (mob.location().okMessage(mob, msg))
-				mob.location().send(mob, msg);
+			if (R.okMessage(mob, msg))
+				R.send(mob, msg);
 		}
 		else
 		{
@@ -296,9 +302,9 @@ public class DefaultSocial implements Social
 					(auto ? CMMsg.MASK_ALWAYS : 0) | sourceCode(), (You_see == null) ? null : You_see + mspFile, 
 					targetCode(), (Target_sees == null) ? null : Target_sees + mspFile, 
 					othersCode(), (Third_party_sees == null) ? null : Third_party_sees + mspFile);
-			if (mob.location().okMessage(mob, msg))
+			if (R.okMessage(mob, msg))
 			{
-				mob.location().send(mob, msg);
+				R.send(mob, msg);
 				if (target instanceof MOB)
 				{
 					final MOB tmob = (MOB) target;
