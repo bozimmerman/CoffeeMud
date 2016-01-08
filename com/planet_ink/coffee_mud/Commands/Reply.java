@@ -46,6 +46,11 @@ public class Reply extends StdCommand
 	{
 		if(mob==null)
 			return false;
+		if((!mob.isMonster())&&mob.isAttributeSet(MOB.Attrib.QUIET))
+		{
+			CMLib.commands().doCommandFail(mob,commands,L("You have QUIET mode on.  You must turn it off first."));
+			return false;
+		}
 		Vector<String> origCmds=new XVector<String>(commands);
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
@@ -84,6 +89,11 @@ public class Reply extends StdCommand
 		case PlayerStats.REPLY_TELL:
 		{
 			final Session S=pstats.getReplyToMOB().session();
+			if(pstats.getReplyToMOB().isAttributeSet(MOB.Attrib.QUIET))
+			{
+				CMLib.commands().doCommandFail(mob,origCmds,L("That person can not hear you."));
+				return false;
+			}
 			if(S!=null)
 				S.snoopSuspension(1);
 			CMLib.commands().postSay(mob,pstats.getReplyToMOB(),CMParms.combine(commands,1),true,true);
