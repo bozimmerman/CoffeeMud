@@ -579,7 +579,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public String convertXMLtoTag(String TName, String Data)
 	{
-		if(Data.length()==0)
+		if((Data==null)||(Data.length()==0))
 			return "<"+TName+" />";
 		return "<"+TName+">"+Data+"</"+TName+">";
 	}

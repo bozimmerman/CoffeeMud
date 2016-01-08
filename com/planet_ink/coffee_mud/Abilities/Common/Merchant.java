@@ -146,7 +146,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	@Override
 	public String devalueRate()
 	{
-		return devalueRate == null ? null : (devalueRate[0] + " "+devalueRate[1]);
+		return devalueRate == null ? "" : (devalueRate[0] + " "+devalueRate[1]);
 	}
 
 	@Override
