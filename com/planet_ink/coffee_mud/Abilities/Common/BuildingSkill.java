@@ -110,6 +110,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	protected enum Flag
 	{
 		DIR,
+		DIRUPDOWN,
 		NOWALL,
 		INDOOR,
 		OUTDOOR,
@@ -1090,10 +1091,10 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					verb=L("demolishing the roof");
 			}
 			else
-				verb=L("demolishing the @x1 wall",Directions.getDirectionName(dir));
+				verb=L("demolishing the wall @x1",Directions.getInDirectionName(dir).toLowerCase());
 		}
 		else
-			verb = L("building the "+recipe[DAT_DESC],Directions.getDirectionName(dir));
+			verb = L("building the "+recipe[DAT_DESC],Directions.getInDirectionName(dir).toLowerCase());
 		return verb;
 	}
 
@@ -1338,6 +1339,13 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		else
 		if(((dir<0)||(dir==Directions.UP)||(dir==Directions.DOWN))
 		&&(flags.contains(Flag.DIR)))
+		{
+			commonTell(mob,L("A valid direction in which to build must also be specified."));
+			return false;
+		}
+		else
+		if((dir<0)
+		&&(flags.contains(Flag.DIRUPDOWN)))
 		{
 			commonTell(mob,L("A valid direction in which to build must also be specified."));
 			return false;

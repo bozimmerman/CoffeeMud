@@ -1,7 +1,7 @@
 Demolish	1	25	0		DIR	DEMOLISH	Plains	-		demolishing	
 Title	1	15	0			TITLE	NA	-	-	title	
 Description	1	10	0			DESC	NA	-	-	description	
-Wall	1	25	100		DIR	WALL	NA	-		@x1 wall	
+Barrier	1	25	100		DIR	WALL	NA	-		barrier @x1	
 Desert	10	113	1500	SAND	OUTDOOR	ROOM	Desert	0		desert	
 Hills	25	225	3000	ROCK	OUTDOOR	ROOM	Hills	0		hills	
 Jungle	20	188	2500	WOODEN	OUTDOOR	ROOM	Jungle	0		jungle	
