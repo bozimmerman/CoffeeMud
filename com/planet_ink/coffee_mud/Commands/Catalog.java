@@ -676,6 +676,8 @@ public class Catalog extends StdCommand
 					{
 						roomID=(String)rooms.nextElement();
 						R=CMLib.map().getRoom(roomID);
+						if(R == null)
+							continue;
 						if(db)
 							R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
 						final List<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
