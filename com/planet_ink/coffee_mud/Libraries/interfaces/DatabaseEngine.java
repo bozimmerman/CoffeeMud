@@ -246,25 +246,25 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
-	 * Reads the exits of the room with the given room id
-	 * and populates them into the given room object. It
-	 * also connects each exit to the room if it can
-	 * get to it through the given rooms area object.
-	 * @param roomID the room id
-	 * @param room the room object to populate
-	 * @param reportStatus true to populate global status, false otherwise
-	 * 
-	 * @param roomID
-	 * @return
+	 * Counts the number of mobs and items in the room
+	 * according to the database, and returns the counts
+	 * as a numeric array where the first element is the
+	 * number of mobs and the second the number of items.
+	 * @param roomID the room id to return counts for
+	 * @return the counts as a 2 entry array
 	 */
 	public int[] DBCountRoomMobsItems(String roomID);
 	
 	/**
 	 * Table category: DBMAP
+	 * Reads the exits of the room with the given room id
+	 * and populates them into the given room object. It
+	 * also connects each exit to the room if it can
+	 * get to it through the given rooms area object.
 	 * 
-	 * @param roomID
-	 * @param room
-	 * @param reportStatus
+	 * @param roomID the room id
+	 * @param room the room object to populate
+	 * @param reportStatus true to populate global status, false otherwise
 	 */
 	public void DBReadRoomExits(String roomID, Room room, boolean reportStatus);
 

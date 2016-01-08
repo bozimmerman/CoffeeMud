@@ -458,6 +458,12 @@ HELP_=<EXPERTISE>The ability to cast deep magic chants at a higher power level, 
 ROCKCNTRL@x1=Rock Controlling @x2,10,LEVEL|LOWCOST,-SKILLFLAG +ROCK_CONTROL,-MAXCLASSLEVEL +>={25+(5*@x1)},+STR {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast rock control chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
+WATER@x1=Water Lore @x2,10,LEVEL|LOWCOST,-SKILLFLAG +WATER_LORE,-MAXCLASSLEVEL +>={25+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to cast water magic chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
+
+WATERCNTRL@x1=Water Controlling @x2,10,LEVEL|LOWCOST,-SKILLFLAG +WATER_CONTROL,-MAXCLASSLEVEL +>={25+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to cast water control chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
+
 PLANTGROWER@x1=Plant Growing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +PLANT_GROWTH,-MAXCLASSLEVEL +>={26+(5*@x1)},+WIS {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast plant growing chants at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
