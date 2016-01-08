@@ -202,7 +202,7 @@ public class RoomLoader
 		return new Room[0];
 	}
 
-	private void buildExistingRoomObject(ResultSet R, Room newRoom) throws SQLException
+	private void populateRoomInnerFields(ResultSet R, Room newRoom) throws SQLException
 	{
 		newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
 		if(CMProps.getBoolVar(CMProps.Bool.ROOMDNOCACHE))
@@ -230,7 +230,7 @@ public class RoomLoader
 			else
 			{
 				newRoom.setRoomID(roomID);
-				buildExistingRoomObject(R,newRoom);
+				populateRoomInnerFields(R,newRoom);
 				rooms.add(newRoom);
 			}
 			if(((currentRecordPos%updateBreak)==0)&&(reportStatus))
@@ -239,7 +239,7 @@ public class RoomLoader
 		return rooms;
 	}
 
-	public boolean DBReReadRoomObject(Room room)
+	public boolean DBReReadRoomData(Room room)
 	{
 		if((room==null)||(room.roomID()==null))
 			return false;
@@ -249,7 +249,7 @@ public class RoomLoader
 			D=DB.DBFetch();
 			final ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
 			if(R.next())
-				buildExistingRoomObject(R, room);
+				populateRoomInnerFields(R, room);
 			else
 				return false;
 		}

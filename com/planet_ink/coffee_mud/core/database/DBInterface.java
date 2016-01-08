@@ -363,9 +363,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public boolean DBReReadRoomObject(Room room)
+	public boolean DBReReadRoomData(Room room)
 	{
-		return RoomLoader.DBReReadRoomObject(room);
+		return RoomLoader.DBReReadRoomData(room);
 	}
 
 	@Override

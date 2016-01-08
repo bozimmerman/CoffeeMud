@@ -2223,7 +2223,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			if(room.isSavable())
 			{
-				CMLib.database().DBReReadRoomObject(room);
+				CMLib.database().DBReReadRoomData(room);
 				CMLib.database().DBReadContent(room.roomID(),room,true);
 			}
 			room.startItemRejuv();

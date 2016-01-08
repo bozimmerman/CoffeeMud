@@ -190,7 +190,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * permanent home in the game.
 	 * 
 	 * @see DatabaseEngine#DBReadContent(String, Room, boolean)
-	 * @see DatabaseEngine#DBReReadRoomObject(Room)
+	 * @see DatabaseEngine#DBReReadRoomData(Room)
 	 * @see DatabaseEngine#DBReadRoomObject(String, boolean)
 	 * 
 	 * @param roomID the room id of the room object to load
@@ -201,32 +201,58 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param room
-	 * @return
+	 * Reloads the title, description, affects, and other internal 
+	 * fields of the given room.
+	 * @param room the room to re-read dat afor
+	 * @return true, unless something went wrong
 	 */
-	public boolean DBReReadRoomObject(Room room);
+	public boolean DBReReadRoomData(Room room);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param roomIDtoLoad
-	 * @param reportStatus
-	 * @return
+	 * Read the Room object of the given roomID and returns
+	 * the object.  It does not load the contents.  The
+	 * difference between this and dbreadroom is beyond me.
+	 * I don't think this method actually adds the room
+	 * to an area or to the map. 
+	 * @see DatabaseEngine#DBReadRoom(String, boolean)
+	 * @param roomIDtoLoad the id of the room to load
+	 * @param reportStatus true to populate global status, false otherwise
+	 * @return the room loaded, or null if it could not be
 	 */
 	public Room DBReadRoomObject(String roomIDtoLoad, boolean reportStatus);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param areaName
+	 * Reads all the Room objects in the given area name
+	 * and returns them as an array of rooms.  It does not load the
+	 * item or mob contents.  The rooms are not actually
+	 * added to the Area or the map.
+	 * @param areaName the area name of rooms to load
 	 * @param reportStatus
-	 * @return
+	 * @param reportStatus true to populate global status, false otherwise
+	 * @return the rooms loaded
 	 */
 	public Room[] DBReadRoomObjects(String areaName, boolean reportStatus);
+	
+	/**
+	 * Table category: DBMAP
+	 * Reads the room description of the given room id and
+	 * returns it.
+	 * @param roomID the room id of the description to read
+	 * @return the description, or null
+	 */
+	public String DBReadRoomDesc(String roomID);
 
 	/**
 	 * Table category: DBMAP
+	 * Reads the exits of the room with the given room id
+	 * and populates them into the given room object. It
+	 * also connects each exit to the room if it can
+	 * get to it through the given rooms area object.
+	 * @param roomID the room id
+	 * @param room the room object to populate
+	 * @param reportStatus true to populate global status, false otherwise
 	 * 
 	 * @param roomID
 	 * @return
@@ -244,24 +270,29 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param room
+	 * Resaves the given rooms exit objects, and
+	 * linkages to other rooms.
+	 * @param room the room whose exits to save
 	 */
 	public void DBUpdateExits(Room room);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param roomID
-	 * @param thisItem
+	 * Inserts the given item into the given room id
+	 * in the database, regardless of its worthiness to
+	 * be there.
+	 * @param roomID the room id to save the item at
+	 * @param thisItem the item to save
 	 */
 	public void DBCreateThisItem(String roomID, Item thisItem);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param roomID
-	 * @param thisMOB
+	 * Inserts the given mob into the given room id
+	 * in the database, regardless of its worthiness to
+	 * be there.
+	 * @param roomID the room id to save the mob at
+	 * @param thisMOB the mob to save
 	 */
 	public void DBCreateThisMOB(String roomID, MOB thisMOB);
 
@@ -273,14 +304,6 @@ public interface DatabaseEngine extends CMLibrary
 	 * @return
 	 */
 	public String DBReadRoomMOBData(String roomID, String mobID);
-
-	/**
-	 * Table category: DBMAP
-	 * 
-	 * @param roomID
-	 * @return
-	 */
-	public String DBReadRoomDesc(String roomID);
 
 	/**
 	 * Table category: DBMAP
