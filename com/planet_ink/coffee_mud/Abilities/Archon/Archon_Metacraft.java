@@ -98,7 +98,7 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		if(commands.size()<1)
 		{
-			mob.tell(L("Metacraft what (recipe, everything, every x), (optionally) out of what material, and (optionally) to self, to here, or to file [FILENAME]?"));
+			mob.tell(L("Metacraft what ([recipe], everything, every [recipe], all [skill name]), (optionally) out of what material, and (optionally) to self, to here, or to file [FILENAME]?"));
 			return false;
 		}
 		String mat=null;
@@ -177,6 +177,22 @@ public class Archon_Metacraft extends ArchonSkill
 				if((V!=null)&&(V.size()>0))
 					skillsToUse.add(skill);
 			}
+		}
+		else
+		if(recipe.toUpperCase().startsWith("ALL "))
+		{
+			everyFlag=true;
+			String skillName=recipe.toUpperCase().substring(4);
+			skill = (ItemCraftor)CMLib.english().fetchEnvironmental(craftingSkills, skillName, true);
+			if(skill == null)
+				skill = (ItemCraftor)CMLib.english().fetchEnvironmental(craftingSkills, skillName, false);
+			if(skill == null)
+			{
+				mob.tell(L("'@x1' is not a known crafting skill.",recipe));
+				return false;
+			}
+			skillsToUse = new XVector<Ability>(skill);
+			recipe=null;
 		}
 		else
 		{
