@@ -548,53 +548,60 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		final boolean noCachePlayers=CMProps.getBoolVar(CMProps.Bool.PLAYERSNOCACHE);
 		for(final MOB mob : playersList)
 		{
-			final PlayerStats pStats=mob.playerStats();
-			if(!mob.isMonster())
+			try
 			{
-				CMLib.factions().updatePlayerFactions(mob,mob.location());
-				setThreadStatus(serviceClient,"just saving "+mob.Name());
-				CMLib.database().DBUpdatePlayerMOBOnly(mob);
-				if((mob.Name().length()==0)||(pStats==null))
-					continue;
-				setThreadStatus(serviceClient,"saving "+mob.Name()+", "+mob.numItems()+" items");
-				CMLib.database().DBUpdatePlayerItems(mob);
-				setThreadStatus(serviceClient,"saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
-				CMLib.database().DBUpdatePlayerAbilities(mob);
-				setThreadStatus(serviceClient,"saving "+mob.numFollowers()+" followers of "+mob.Name());
-				CMLib.database().DBUpdateFollowers(mob);
-				final PlayerAccount account = pStats.getAccount();
-				pStats.setLastUpdated(System.currentTimeMillis());
-				if(account!=null)
+				final PlayerStats pStats=mob.playerStats();
+				if(!mob.isMonster())
 				{
-					setThreadStatus(serviceClient,"saving account "+account.getAccountName()+" for "+mob.Name());
-					CMLib.database().DBUpdateAccount(account);
-					account.setLastUpdated(System.currentTimeMillis());
-				}
-				processed++;
-			}
-			else
-			if(pStats!=null)
-			{
-				if((pStats.getLastUpdated()==0)
-				||(pStats.getLastUpdated()<pStats.getLastDateTime())
-				||(noCachePlayers && (!CMLib.flags().isInTheGame(mob, true))))
-				{
+					CMLib.factions().updatePlayerFactions(mob,mob.location());
 					setThreadStatus(serviceClient,"just saving "+mob.Name());
 					CMLib.database().DBUpdatePlayerMOBOnly(mob);
-					if(mob.Name().length()==0)
+					if((mob.Name().length()==0)||(pStats==null))
 						continue;
-					setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numItems()+" items");
+					setThreadStatus(serviceClient,"saving "+mob.Name()+", "+mob.numItems()+" items");
 					CMLib.database().DBUpdatePlayerItems(mob);
-					setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
+					setThreadStatus(serviceClient,"saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
 					CMLib.database().DBUpdatePlayerAbilities(mob);
+					setThreadStatus(serviceClient,"saving "+mob.numFollowers()+" followers of "+mob.Name());
+					CMLib.database().DBUpdateFollowers(mob);
+					final PlayerAccount account = pStats.getAccount();
 					pStats.setLastUpdated(System.currentTimeMillis());
+					if(account!=null)
+					{
+						setThreadStatus(serviceClient,"saving account "+account.getAccountName()+" for "+mob.Name());
+						CMLib.database().DBUpdateAccount(account);
+						account.setLastUpdated(System.currentTimeMillis());
+					}
 					processed++;
 				}
-				if(noCachePlayers && (!CMLib.flags().isInTheGame(mob, true)))
+				else
+				if(pStats!=null)
 				{
-					delPlayer(mob);
-					mob.destroy();
+					if((pStats.getLastUpdated()==0)
+					||(pStats.getLastUpdated()<pStats.getLastDateTime())
+					||(noCachePlayers && (!CMLib.flags().isInTheGame(mob, true))))
+					{
+						setThreadStatus(serviceClient,"just saving "+mob.Name());
+						CMLib.database().DBUpdatePlayerMOBOnly(mob);
+						if(mob.Name().length()==0)
+							continue;
+						setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numItems()+" items");
+						CMLib.database().DBUpdatePlayerItems(mob);
+						setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
+						CMLib.database().DBUpdatePlayerAbilities(mob);
+						pStats.setLastUpdated(System.currentTimeMillis());
+						processed++;
+					}
+					if(noCachePlayers && (!CMLib.flags().isInTheGame(mob, true)))
+					{
+						delPlayer(mob);
+						mob.destroy();
+					}
 				}
+			}
+			catch(Throwable t)
+			{
+				Log.errOut(mob.Name(),t);
 			}
 		}
 		return processed;
