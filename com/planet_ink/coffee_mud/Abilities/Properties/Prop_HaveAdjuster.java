@@ -292,6 +292,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			adjCharStats(charStatsChanges,affectedStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
+
 	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
