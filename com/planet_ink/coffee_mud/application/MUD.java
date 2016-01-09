@@ -440,7 +440,9 @@ public class MUD extends Thread implements MudHost
 			}
 			checkedSleep(3000);
 		}
-		catch(final Exception e){}
+		catch (final Exception e)
+		{
+		}
 		final long free=Runtime.getRuntime().freeMemory()/1024;
 		final long total=Runtime.getRuntime().totalMemory()/1024;
 		Log.debugOut("Memory: "+blockName+": "+(total-free)+"/"+total);
@@ -494,20 +496,35 @@ public class MUD extends Thread implements MudHost
 					}
 				}
 			}
-			for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.PLAYERS);e.hasMoreElements();)
-				((PlayerLibrary)e.nextElement()).savePlayers();
+			try
+			{
+				for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.PLAYERS);e.hasMoreElements();)
+					((PlayerLibrary)e.nextElement()).savePlayers();
+			}
+			catch (final Exception ex)
+			{
+				Log.errOut(ex);
+			}
 			if(S!=null)
 				S.println(CMLib.lang().L("done"));
 			Log.sysOut(Thread.currentThread().getName(),"All users saved.");
 		}
 		if(S!=null)
 			S.print(CMLib.lang().L("Saving stats..."));
-		for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.STATS);e.hasMoreElements();)
-			((StatisticsLibrary)e.nextElement()).update();
+		try
+		{
+			for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.STATS);e.hasMoreElements();)
+				((StatisticsLibrary)e.nextElement()).update();
+		}
+		catch (final Exception ex)
+		{
+			Log.errOut(ex);
+		}
 		if(S!=null)
 			S.println(CMLib.lang().L("done"));
 		Log.sysOut(Thread.currentThread().getName(),"Stats saved.");
-		if(debugMem) shutdownMemReport("Saves");
+		if(debugMem) 
+			shutdownMemReport("Saves");
 
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 		Log.sysOut(Thread.currentThread().getName(),"Notifying all objects of shutdown...");
@@ -535,7 +552,14 @@ public class MUD extends Thread implements MudHost
 				for(final Enumeration<Room> r=map.rooms();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
-					R.send(mob,msg);
+					try
+					{
+						R.send(mob,msg);
+					}
+					catch (final Exception ex)
+					{
+						Log.errOut(ex);
+					}
 					roomSet.addElement(R);
 				}
 			}
@@ -603,8 +627,15 @@ public class MUD extends Thread implements MudHost
 					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Map Update ("+roomCounter+")");
 				}
 				R=e.nextElement();
-				if(R.roomID().length()>0)
-					R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
+				try
+				{
+					if(R.roomID().length()>0)
+						R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
+				}
+				catch (final Exception ex)
+				{
+					Log.errOut(ex);
+				}
 			}
 			if(S!=null)
 				S.println(CMLib.lang().L("done"));
@@ -619,6 +650,10 @@ public class MUD extends Thread implements MudHost
 			{
 				cm1server.shutdown();
 			}
+			catch (final Exception ex)
+			{
+				Log.errOut(ex);
+			}
 			finally
 			{
 				if(S!=null)
@@ -632,7 +667,14 @@ public class MUD extends Thread implements MudHost
 		if(i3server!=null)
 		{
 			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...I3Server");
-			I3Server.shutdown();
+			try
+			{
+				I3Server.shutdown();
+			}
+			catch (final Exception ex)
+			{
+				Log.errOut(ex);
+			}
 			i3server=null;
 			if(S!=null)
 				S.println(CMLib.lang().L("I3Server stopped"));
@@ -643,7 +685,14 @@ public class MUD extends Thread implements MudHost
 		if(imc2server!=null)
 		{
 			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...IMC2Server");
-			imc2server.shutdown();
+			try
+			{
+				imc2server.shutdown();
+			}
+			catch (final Exception ex)
+			{
+				Log.errOut(ex);
+			}
 			imc2server=null;
 			if(S!=null)
 				S.println(CMLib.lang().L("IMC2Server stopped"));
@@ -695,7 +744,16 @@ public class MUD extends Thread implements MudHost
 		{
 			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
 			for(final Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
-				e.nextElement().shutdown();
+			{
+				try
+				{
+					e.nextElement().shutdown();
+				}
+				catch (final Exception ex)
+				{
+					Log.errOut(ex);
+				}
+			}
 		}
 		if(S!=null)
 			S.println(CMLib.lang().L("done"));
@@ -708,7 +766,14 @@ public class MUD extends Thread implements MudHost
 			for(final Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
 			{
 				final CMLibrary library=e.nextElement();
-				library.shutdown();
+				try
+				{
+					library.shutdown();
+				}
+				catch (final Exception ex)
+				{
+					Log.errOut(ex);
+				}
 				if(debugMem) shutdownMemReport(library.ID());
 			}
 		}
@@ -723,7 +788,14 @@ public class MUD extends Thread implements MudHost
 				for(final Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
 				{
 					final CMLibrary library=e.nextElement();
-					library.shutdown();
+					try
+					{
+						library.shutdown();
+					}
+					catch (final Exception ex)
+					{
+						Log.errOut(ex);
+					}
 					if(debugMem) shutdownMemReport(library.ID());
 				}
 			}
@@ -748,7 +820,14 @@ public class MUD extends Thread implements MudHost
 		{
 			final WebServer webServerThread=webServers.get(i);
 			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down web server "+webServerThread.getName()+"...");
-			webServerThread.close();
+			try
+			{
+				webServerThread.close();
+			}
+			catch (final Exception ex)
+			{
+				Log.errOut(ex);
+			}
 			Log.sysOut(Thread.currentThread().getName(),"Web server "+webServerThread.getName()+" stopped.");
 			if(S!=null)
 				S.println(CMLib.lang().L("Web server @x1 stopped",webServerThread.getName()));
@@ -760,7 +839,14 @@ public class MUD extends Thread implements MudHost
 		CMLib.lang().clear();
 		if(debugMem) shutdownMemReport("Macros");
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...unloading classes");
-		CMClass.shutdown();
+		try
+		{
+			CMClass.shutdown();
+		}
+		catch (final Exception ex)
+		{
+			Log.errOut(ex);
+		}
 		if(debugMem) shutdownMemReport("Java Classes");
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 
