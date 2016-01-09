@@ -59,7 +59,10 @@ public class DrinkCmd extends StdCommand
 			thisThang=mob.location();
 		else
 		{
-			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Wearable.FILTER_ANY);
+			String drinkWhat = CMParms.combine(commands,0);
+			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,drinkWhat,Wearable.FILTER_ANY);
+			if((thisThang == null)&&(drinkWhat.equalsIgnoreCase("here")||drinkWhat.equalsIgnoreCase("room")))
+				thisThang=mob.location();
 			if((thisThang==null)
 			||((!mob.isMine(thisThang))
 			   &&(!CMLib.flags().canBeSeenBy(thisThang,mob))))

@@ -93,7 +93,7 @@ public class Chant_FilterWater extends Chant
 		super.unInvoke();
 		if((affected != null) && this.canBeUninvoked() && this.unInvoked && (!affected.amDestroyed()))
 		{
-			if((affected instanceof Item)&&(((Item)affected).container()==null))
+			if((!(affected instanceof Item))||(((Item)affected).container()==null))
 			{
 				Room R=CMLib.map().roomLocation(affected);
 				if((R!=null)&&(invoker!=null))
