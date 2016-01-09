@@ -62,7 +62,7 @@ public class GenPerfume extends StdPerfume
 	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
-		if(CMath.s_int(readableText)==0)
+		if(!CMath.isInteger(readableText))
 			return RawMaterial.RESOURCE_PERFUME;
 		return CMath.s_int(readableText);
 	}

@@ -34,7 +34,14 @@ import java.util.*;
 */
 public class Cow extends StdMOB implements Drink
 {
-	@Override public String ID(){return "Cow";}
+	@Override
+	public String ID()
+	{
+		return "Cow";
+	}
+
+	protected int liquidType = RawMaterial.RESOURCE_MILK;
+	
 	public Cow()
 	{
 		super();
@@ -61,8 +68,17 @@ public class Cow extends StdMOB implements Drink
 		recoverPhyStats();
 		recoverCharStats();
 	}
-	@Override public long decayTime(){return 0;}
-	@Override public void setDecayTime(long time){}
+
+	@Override
+	public long decayTime()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setDecayTime(long time)
+	{
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -71,6 +87,7 @@ public class Cow extends StdMOB implements Drink
 			return true;
 		return super.okMessage(myHost,msg);
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -111,15 +128,67 @@ public class Cow extends StdMOB implements Drink
 					((Room)container.owner()).addItem(I,ItemPossessor.Expire.Resource);
 		}
 	}
-	@Override public int thirstQuenched(){return 100;}
-	@Override public int liquidHeld(){return Integer.MAX_VALUE-1000;}
-	@Override public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	@Override public int liquidType(){return RawMaterial.RESOURCE_MILK;}
-	@Override public boolean disappearsAfterDrinking(){return false;}
-	@Override public void setLiquidType(int newLiquidType){}
-	@Override public void setThirstQuenched(int amount){}
-	@Override public void setLiquidHeld(int amount){}
-	@Override public void setLiquidRemaining(int amount){}
-	@Override public boolean containsDrink(){return true;}
-	@Override public int amountTakenToFillMe(Drink theSource){return 0;}
+
+	@Override
+	public int thirstQuenched()
+	{
+		return 100;
+	}
+
+	@Override
+	public int liquidHeld()
+	{
+		return Integer.MAX_VALUE - 1000;
+	}
+
+	@Override
+	public int liquidRemaining()
+	{
+		return Integer.MAX_VALUE - 1000;
+	}
+
+	@Override
+	public int liquidType()
+	{
+		return liquidType;
+	}
+
+	@Override
+	public boolean disappearsAfterDrinking()
+	{
+		return false;
+	}
+
+	@Override
+	public void setLiquidType(int newLiquidType)
+	{
+		liquidType = newLiquidType;
+	}
+
+	@Override
+	public void setThirstQuenched(int amount)
+	{
+	}
+
+	@Override
+	public void setLiquidHeld(int amount)
+	{
+	}
+
+	@Override
+	public void setLiquidRemaining(int amount)
+	{
+	}
+
+	@Override
+	public boolean containsDrink()
+	{
+		return true;
+	}
+
+	@Override
+	public int amountTakenToFillMe(Drink theSource)
+	{
+		return 0;
+	}
 }

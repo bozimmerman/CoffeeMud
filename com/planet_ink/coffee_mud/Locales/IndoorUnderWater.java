@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 /*
    Copyright 2002-2016 Bo Zimmerman
@@ -35,7 +33,14 @@ import java.util.*;
 */
 public class IndoorUnderWater extends StdRoom implements Drink
 {
-	@Override public String ID(){return "IndoorUnderWater";}
+	@Override
+	public String ID()
+	{
+		return "IndoorUnderWater";
+	}
+
+	protected int liquidType = RawMaterial.RESOURCE_FRESHWATER;
+	
 	public IndoorUnderWater()
 	{
 		super();
@@ -45,10 +50,29 @@ public class IndoorUnderWater extends StdRoom implements Drink
 		recoverPhyStats();
 		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}
-	@Override public int domainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
-	@Override protected int baseThirst(){return 0;}
-	@Override public long decayTime(){return 0;}
-	@Override public void setDecayTime(long time){}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_INDOORS_UNDERWATER;
+	}
+
+	@Override
+	protected int baseThirst()
+	{
+		return 0;
+	}
+
+	@Override
+	public long decayTime()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setDecayTime(long time)
+	{
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -63,8 +87,10 @@ public class IndoorUnderWater extends StdRoom implements Drink
 	{
 		switch(UnderWater.isOkUnderWaterAffect(this,msg))
 		{
-		case -1: return false;
-		case 1: return true;
+		case -1:
+			return false;
+		case 1:
+			return true;
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -75,16 +101,73 @@ public class IndoorUnderWater extends StdRoom implements Drink
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
-	@Override public boolean disappearsAfterDrinking(){return false;}
-	@Override public int thirstQuenched(){return 500;}
-	@Override public int liquidHeld(){return Integer.MAX_VALUE-1000;}
-	@Override public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	@Override public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
-	@Override public void setLiquidType(int newLiquidType){}
-	@Override public void setThirstQuenched(int amount){}
-	@Override public void setLiquidHeld(int amount){}
-	@Override public void setLiquidRemaining(int amount){}
-	@Override public int amountTakenToFillMe(Drink theSource){return 0;}
-	@Override public boolean containsDrink(){return true;}
-	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	
+	@Override
+	public boolean disappearsAfterDrinking()
+	{
+		return false;
+	}
+
+	@Override
+	public int thirstQuenched()
+	{
+		return 500;
+	}
+
+	@Override
+	public int liquidHeld()
+	{
+		return Integer.MAX_VALUE - 1000;
+	}
+
+	@Override
+	public int liquidRemaining()
+	{
+		return Integer.MAX_VALUE - 1000;
+	}
+
+	@Override
+	public int liquidType()
+	{
+		return liquidType;
+	}
+
+	@Override
+	public void setLiquidType(int newLiquidType)
+	{
+		liquidType = newLiquidType;
+	}
+
+	@Override
+	public void setThirstQuenched(int amount)
+	{
+	}
+
+	@Override
+	public void setLiquidHeld(int amount)
+	{
+	}
+
+	@Override
+	public void setLiquidRemaining(int amount)
+	{
+	}
+
+	@Override
+	public int amountTakenToFillMe(Drink theSource)
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean containsDrink()
+	{
+		return true;
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderWater.roomResources;
+	}
 }

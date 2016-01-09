@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class GenMultiPotion extends GenDrink implements Potion
 {
-	@Override public String ID(){	return "GenMultiPotion";}
+	@Override
+	public String ID()
+	{
+		return "GenMultiPotion";
+	}
 
 	public GenMultiPotion()
 	{
@@ -48,14 +52,29 @@ public class GenMultiPotion extends GenDrink implements Potion
 		setDescription("A strange flask with stranger markings.");
 		secretIdentity="";
 		baseGoldValue=200;
+		liquidType = RawMaterial.RESOURCE_DRINKABLE;
 		recoverPhyStats();
 	}
 
 
-	@Override public boolean isGeneric(){return true;}
-	@Override public int liquidType(){return RawMaterial.RESOURCE_DRINKABLE;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
-	@Override public boolean isDrunk(){return (readableText.toUpperCase().indexOf(";DRUNK")>=0);}
+	@Override
+	public boolean isDrunk()
+	{
+		return (readableText.toUpperCase().indexOf(";DRUNK") >= 0);
+	}
+
+	@Override
+	public void setLiquidType(int newLiquidType)
+	{
+		liquidType = newLiquidType;
+	}
+
 	@Override
 	public void setDrunk(boolean isTrue)
 	{
@@ -91,8 +110,16 @@ public class GenMultiPotion extends GenDrink implements Potion
 
 	@Override
 	public String getSpellList()
-	{ return readableText;}
-	@Override public void setSpellList(String list){readableText=list;}
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setSpellList(String list)
+	{
+		readableText = list;
+	}
+
 	@Override
 	public List<Ability> getSpells()
 	{
@@ -135,7 +162,6 @@ public class GenMultiPotion extends GenDrink implements Potion
 			if((liquidRemaining()<=thirstQuenched())&&(!isDrunk()))
 				setDrunk(true);
 		}
-
 	}
 
 	@Override

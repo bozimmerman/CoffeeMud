@@ -34,7 +34,14 @@ import java.util.*;
 */
 public class WaterSurface extends StdRoom implements Drink
 {
-	@Override public String ID(){return "WaterSurface";}
+	@Override
+	public String ID()
+	{
+		return "WaterSurface";
+	}
+
+	protected int liquidType = RawMaterial.RESOURCE_FRESHWATER;
+	
 	public WaterSurface()
 	{
 		super();
@@ -43,13 +50,38 @@ public class WaterSurface extends StdRoom implements Drink
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
-	@Override public long decayTime(){return 0;}
-	@Override public void setDecayTime(long time){}
 
-	protected String UnderWaterLocaleID(){return "UnderWaterGrid";}
-	protected int UnderWaterDomainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	protected boolean IsUnderWaterFatClass(Room thatSea){return (thatSea instanceof UnderWaterGrid)||(thatSea instanceof UnderWaterThinGrid);}
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_WATERSURFACE;
+	}
+
+	@Override
+	public long decayTime()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setDecayTime(long time)
+	{
+	}
+
+	protected String UnderWaterLocaleID()
+	{
+		return "UnderWaterGrid";
+	}
+
+	protected int UnderWaterDomainType()
+	{
+		return Room.DOMAIN_OUTDOORS_UNDERWATER;
+	}
+
+	protected boolean IsUnderWaterFatClass(Room thatSea)
+	{
+		return (thatSea instanceof UnderWaterGrid) || (thatSea instanceof UnderWaterThinGrid);
+	}
 
 	@Override
 	public void giveASky(int depth)
@@ -141,8 +173,10 @@ public class WaterSurface extends StdRoom implements Drink
 	{
 		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
 		{
-		case -1: return false;
-		case 1: return true;
+		case -1:
+			return false;
+		case 1:
+			return true;
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -216,16 +250,73 @@ public class WaterSurface extends StdRoom implements Drink
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
-	@Override public int thirstQuenched(){return 1000;}
-	@Override public int liquidHeld(){return Integer.MAX_VALUE-1000;}
-	@Override public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	@Override public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
-	@Override public void setLiquidType(int newLiquidType){}
-	@Override public void setThirstQuenched(int amount){}
-	@Override public void setLiquidHeld(int amount){}
-	@Override public void setLiquidRemaining(int amount){}
-	@Override public boolean disappearsAfterDrinking(){return false;}
-	@Override public boolean containsDrink(){return true;}
-	@Override public int amountTakenToFillMe(Drink theSource){return 0;}
-	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+
+	@Override
+	public int thirstQuenched()
+	{
+		return 1000;
+	}
+
+	@Override
+	public int liquidHeld()
+	{
+		return Integer.MAX_VALUE - 1000;
+	}
+
+	@Override
+	public int liquidRemaining()
+	{
+		return Integer.MAX_VALUE - 1000;
+	}
+
+	@Override
+	public int liquidType()
+	{
+		return liquidType;
+	}
+
+	@Override
+	public void setLiquidType(int newLiquidType)
+	{
+		liquidType = newLiquidType;
+	}
+
+	@Override
+	public void setThirstQuenched(int amount)
+	{
+	}
+
+	@Override
+	public void setLiquidHeld(int amount)
+	{
+	}
+
+	@Override
+	public void setLiquidRemaining(int amount)
+	{
+	}
+
+	@Override
+	public boolean disappearsAfterDrinking()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean containsDrink()
+	{
+		return true;
+	}
+
+	@Override
+	public int amountTakenToFillMe(Drink theSource)
+	{
+		return 0;
+	}
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderWater.roomResources;
+	}
 }

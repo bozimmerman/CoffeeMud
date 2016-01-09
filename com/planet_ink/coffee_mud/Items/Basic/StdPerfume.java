@@ -35,7 +35,11 @@ import java.util.*;
 
 public class StdPerfume extends StdDrink implements Perfume
 {
-	@Override public String ID(){	return "StdPerfume";}
+	@Override
+	public String ID()
+	{
+		return "StdPerfume";
+	}
 
 	List<String> smellList=new Vector<String>();
 
@@ -59,7 +63,10 @@ public class StdPerfume extends StdDrink implements Perfume
 
 	@Override
 	public List<String> getSmellEmotes()
-	{	return smellList;}
+	{
+		return smellList;
+	}
+
 	@Override
 	public String getSmellList()
 	{
@@ -68,9 +75,12 @@ public class StdPerfume extends StdDrink implements Perfume
 			list.append((smellList.get(i))+";");
 		return list.toString();
 	}
+
 	@Override
 	public void setSmellList(String list)
-	{smellList=CMParms.parseSemicolons(list,true);}
+	{
+		smellList = CMParms.parseSemicolons(list, true);
+	}
 
 	@Override
 	public void wearIfAble(MOB mob)
@@ -102,7 +112,8 @@ public class StdPerfume extends StdDrink implements Perfume
 				return true;
 			if(!super.okMessage(myHost,msg))
 				return false;
-			if(msg.targetMinor()==CMMsg.TYP_DRINK)
+			if((msg.targetMinor()==CMMsg.TYP_DRINK)
+			&&(liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
 			{
 				msg.source().tell(L("You don't want to be drinking that."));
 				return false;
@@ -122,9 +133,13 @@ public class StdPerfume extends StdDrink implements Perfume
 				// the order that these things are checked in should
 				// be holy, and etched in stone.
 				if(behaviors != null)
+				{
 					for(final Behavior B : behaviors)
+					{
 						if(B!=null)
 							B.executeMsg(this,msg);
+					}
+				}
 
 				for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 				{

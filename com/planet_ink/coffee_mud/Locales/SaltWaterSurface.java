@@ -42,18 +42,13 @@ public class SaltWaterSurface extends WaterSurface
 	public SaltWaterSurface()
 	{
 		super();
+		liquidType = RawMaterial.RESOURCE_SALTWATER;
 	}
 
 	@Override
 	protected String UnderWaterLocaleID()
 	{
 		return "UnderSaltWaterGrid";
-	}
-
-	@Override
-	public int liquidType()
-	{
-		return RawMaterial.RESOURCE_SALTWATER;
 	}
 
 	@Override

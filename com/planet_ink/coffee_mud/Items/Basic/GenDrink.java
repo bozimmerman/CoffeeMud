@@ -35,8 +35,14 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenDrink extends StdDrink
 {
-	@Override public String ID(){    return "GenDrink";}
-	protected String	readableText="";
+	@Override
+	public String ID()
+	{
+		return "GenDrink";
+	}
+
+	protected String	readableText	= "";
+
 	public GenDrink()
 	{
 		super();
@@ -55,36 +61,59 @@ public class GenDrink extends StdDrink
 	}
 
 
-	@Override public boolean isGeneric(){return true;}
+	@Override
+	public boolean isGeneric()
+	{
+		return true;
+	}
 
 	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
+
 	@Override
 	public int liquidType()
 	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
-		if(CMath.s_int(readableText)==0)
-			return RawMaterial.RESOURCE_FRESHWATER;
+		if(!CMath.isInteger(readableText))
+			return liquidType;
 		return CMath.s_int(readableText);
 	}
-	@Override public void setLiquidType(int newLiquidType){readableText=""+newLiquidType;}
+
+	@Override
+	public void setLiquidType(int newLiquidType)
+	{
+		liquidType = newLiquidType;
+		readableText = "" + newLiquidType;
+	}
 
 	@Override
 	public String keyName()
 	{
 		return readableText;
 	}
+
 	@Override
 	public void setKeyName(String newKeyName)
 	{
 		readableText=newKeyName;
 	}
-	@Override public String readableText(){return readableText;}
-	@Override public void setReadableText(String text){readableText=text;}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(String text)
+	{
+		readableText = text;
+	}
+
 	@Override
 	public void setMiscText(String newText)
 	{
@@ -92,7 +121,9 @@ public class GenDrink extends StdDrink
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
+
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","QUENCHED","LIQUIDHELD","LIQUIDTYPE","DEFCLOSED","DEFLOCKED"};
+
 	@Override
 	public String getStat(String code)
 	{
@@ -100,16 +131,26 @@ public class GenDrink extends StdDrink
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+hasALock();
-		case 1: return ""+hasADoor();
-		case 2: return ""+capacity();
-		case 3: return ""+containTypes();
-		case 4: return ""+openDelayTicks();
-		case 5: return ""+thirstQuenched();
-		case 6: return ""+liquidHeld();
-		case 7: return ""+liquidType();
-		case 8: return ""+defaultsClosed();
-		case 9: return ""+defaultsLocked();
+		case 0:
+			return "" + hasALock();
+		case 1:
+			return "" + hasADoor();
+		case 2:
+			return "" + capacity();
+		case 3:
+			return "" + containTypes();
+		case 4:
+			return "" + openDelayTicks();
+		case 5:
+			return "" + thirstQuenched();
+		case 6:
+			return "" + liquidHeld();
+		case 7:
+			return "" + liquidType();
+		case 8:
+			return "" + defaultsClosed();
+		case 9:
+			return "" + defaultsLocked();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -122,34 +163,59 @@ public class GenDrink extends StdDrink
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),CMath.s_bool(val),false,CMath.s_bool(val)&&defaultsLocked()); break;
-		case 1: setDoorsNLocks(CMath.s_bool(val),isOpen(),CMath.s_bool(val)&&defaultsClosed(),hasALock(),isLocked(),defaultsLocked()); break;
-		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
-		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
-		case 5: setThirstQuenched(CMath.s_parseIntExpression(val)); break;
-		case 6: setLiquidHeld(CMath.s_parseIntExpression(val)); break;
-		case 7: {
-			int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
-			x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
-			setLiquidType(x); break;
+		case 0:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+			break;
+		case 1:
+			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 2:
+			setCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+			break;
+		case 4:
+			setOpenDelayTicks(CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			setThirstQuenched(CMath.s_parseIntExpression(val));
+			break;
+		case 6:
+			setLiquidHeld(CMath.s_parseIntExpression(val));
+			break;
+		case 7:
+		{
+			int x = CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
+			x = ((x >= 0) && (x < RawMaterial.RESOURCE_MASK)) ? RawMaterial.CODES.GET(x) : x;
+			setLiquidType(x);
+			break;
 		}
-		case 8: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
-		case 9: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
+		case 8:
+			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 9:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
+
 	@Override
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
-	private static String[] codes=null;
+
+	private static String[]	codes	= null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -165,6 +231,7 @@ public class GenDrink extends StdDrink
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -172,8 +239,10 @@ public class GenDrink extends StdDrink
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

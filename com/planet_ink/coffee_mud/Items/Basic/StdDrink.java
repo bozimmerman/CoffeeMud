@@ -35,13 +35,18 @@ import java.util.*;
 */
 public class StdDrink extends StdContainer implements Drink,Item
 {
-	@Override public String ID(){    return "StdDrink";}
-	protected int amountOfThirstQuenched=250;
-	protected int amountOfLiquidHeld=2000;
-	protected int amountOfLiquidRemaining=2000;
-	protected boolean disappearsAfterDrinking=false;
-	protected int liquidType=RawMaterial.RESOURCE_FRESHWATER;
-	protected long decayTime=0;
+	@Override
+	public String ID()
+	{
+		return "StdDrink";
+	}
+
+	protected int		amountOfThirstQuenched	= 250;
+	protected int		amountOfLiquidHeld		= 2000;
+	protected int		amountOfLiquidRemaining	= 2000;
+	protected boolean	disappearsAfterDrinking	= false;
+	protected int		liquidType				= RawMaterial.RESOURCE_FRESHWATER;
+	protected long		decayTime				= 0;
 
 	public StdDrink()
 	{
@@ -57,35 +62,84 @@ public class StdDrink extends StdContainer implements Drink,Item
 		recoverPhyStats();
 	}
 
+	@Override
+	public long decayTime()
+	{
+		return decayTime;
+	}
 
+	@Override
+	public void setDecayTime(long time)
+	{
+		decayTime = time;
+	}
 
-	@Override public long decayTime(){return decayTime;}
-	@Override public void setDecayTime(long time){decayTime=time;}
-	@Override public int thirstQuenched(){return amountOfThirstQuenched;}
-	@Override public int liquidHeld(){return amountOfLiquidHeld;}
-	@Override public int liquidRemaining(){return amountOfLiquidRemaining;}
-	@Override public boolean disappearsAfterDrinking(){return disappearsAfterDrinking;}
+	@Override
+	public int thirstQuenched()
+	{
+		return amountOfThirstQuenched;
+	}
+
+	@Override
+	public int liquidHeld()
+	{
+		return amountOfLiquidHeld;
+	}
+
+	@Override
+	public int liquidRemaining()
+	{
+		return amountOfLiquidRemaining;
+	}
+
+	@Override
+	public boolean disappearsAfterDrinking()
+	{
+		return disappearsAfterDrinking;
+	}
+
 	@Override
 	public int liquidType()
 	{
-		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+		if ((material() & RawMaterial.MATERIAL_MASK) == RawMaterial.MATERIAL_LIQUID)
 			return material();
 		return liquidType;
 	}
-	@Override public void setLiquidType(int newLiquidType){liquidType=newLiquidType;}
 
-	@Override public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
-	@Override public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
-	@Override public void setLiquidRemaining(int amount){amountOfLiquidRemaining=amount;}
+	@Override
+	public void setLiquidType(int newLiquidType)
+	{
+		liquidType = newLiquidType;
+	}
+
+	@Override
+	public void setThirstQuenched(int amount)
+	{
+		amountOfThirstQuenched = amount;
+	}
+
+	@Override
+	public void setLiquidHeld(int amount)
+	{
+		amountOfLiquidHeld = amount;
+	}
+
+	@Override
+	public void setLiquidRemaining(int amount)
+	{
+		amountOfLiquidRemaining = amount;
+	}
 
 	protected int totalDrinkContained()
 	{
 		int total = amountOfLiquidRemaining;
 		final List<Item> V=getContents();
 		for(int v=0;v<V.size();v++)
+		{
 			if((V.get(v) instanceof Drink)
 			&&((V.get(v).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 				total += ((Drink)V.get(v)).liquidRemaining();
+		}
 		return total;
 	}
 
@@ -102,9 +156,11 @@ public class StdDrink extends StdContainer implements Drink,Item
 		{
 			final List<Item> V=getContents();
 			for(int v=0;v<V.size();v++)
+			{
 				if((V.get(v) instanceof Drink)
 				&&((V.get(v).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 					return true;
+			}
 			return false;
 		}
 		return true;

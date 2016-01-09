@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -41,6 +40,8 @@ public class ShallowWater extends StdRoom implements Drink
 		return "ShallowWater";
 	}
 
+	protected int liquidType = RawMaterial.RESOURCE_FRESHWATER;
+	
 	public ShallowWater()
 	{
 		super();
@@ -129,12 +130,13 @@ public class ShallowWater extends StdRoom implements Drink
 	@Override
 	public int liquidType()
 	{
-		return RawMaterial.RESOURCE_FRESHWATER;
+		return liquidType;
 	}
 
 	@Override
 	public void setLiquidType(int newLiquidType)
 	{
+		liquidType = newLiquidType;
 	}
 
 	@Override

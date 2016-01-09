@@ -87,9 +87,29 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 		return super.okMessage(host,msg);
 	}
 
-	protected String domainSource=null;
-	@Override public String domainSource(){return domainSource;}
-	@Override public void setDomainSource(String src){domainSource=src;}
-	@Override public boolean rebundle(){return false;}//CMLib.materials().rebundle(this);}
-	@Override public void quickDestroy(){ CMLib.materials().quickDestroy(this);}
+	protected String	domainSource	= null;
+
+	@Override
+	public String domainSource()
+	{
+		return domainSource;
+	}
+
+	@Override
+	public void setDomainSource(String src)
+	{
+		domainSource = src;
+	}
+
+	@Override
+	public boolean rebundle()
+	{
+		return false;
+	}// CMLib.materials().rebundle(this);}
+
+	@Override
+	public void quickDestroy()
+	{
+		CMLib.materials().quickDestroy(this);
+	}
 }

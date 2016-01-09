@@ -37,7 +37,12 @@ import java.util.*;
 */
 public class StdPotion extends StdDrink implements Potion
 {
-	@Override public String ID(){	return "StdPotion";}
+	@Override
+	public String ID()
+	{
+		return "StdPotion";
+	}
+
 	public StdPotion()
 	{
 		super();
@@ -49,14 +54,18 @@ public class StdPotion extends StdDrink implements Potion
 		secretIdentity="What was once a powerful potion.";
 		capacity=1;
 		containType=Container.CONTAIN_LIQUID;
-		liquidType=RawMaterial.RESOURCE_DRINKABLE;
 		baseGoldValue=200;
 		material=RawMaterial.RESOURCE_GLASS;
+		liquidType = RawMaterial.RESOURCE_DRINKABLE;
 		recoverPhyStats();
 	}
 
-	@Override public int liquidType(){return RawMaterial.RESOURCE_DRINKABLE;}
-	@Override public boolean isDrunk(){return (getSpellList().toUpperCase().indexOf(";DRUNK")>=0);}
+	@Override
+	public boolean isDrunk()
+	{
+		return (getSpellList().toUpperCase().indexOf(";DRUNK") >= 0);
+	}
+
 	@Override
 	public int value()
 	{
@@ -89,6 +98,7 @@ public class StdPotion extends StdDrink implements Potion
 	{
 		final List<Ability> spells=getSpells();
 		if(owner.isMine(this))
+		{
 			if((!isDrunk())&&(spells.size()>0))
 			{
 				final MOB caster=CMLib.map().getFactoryMOB(owner.location());
@@ -111,12 +121,20 @@ public class StdPotion extends StdDrink implements Potion
 				}
 				caster.destroy();
 			}
+		}
 	}
 
 	@Override
 	public String getSpellList()
-	{ return miscText;}
-	@Override public void setSpellList(String list){miscText=list;}
+	{
+		return miscText;
+	}
+
+	@Override
+	public void setSpellList(String list)
+	{
+		miscText = list;
+	}
 
 	public static List<Ability> getSpells(SpellHolder me)
 	{
@@ -148,7 +166,11 @@ public class StdPotion extends StdDrink implements Potion
 		return theSpells;
 	}
 
-	@Override public List<Ability> getSpells(){ return getSpells(this);}
+	@Override
+	public List<Ability> getSpells()
+	{
+		return getSpells(this);
+	}
 
 	@Override
 	public String secretIdentity()

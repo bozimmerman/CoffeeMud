@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -35,15 +35,15 @@ import java.util.*;
 */
 
 
-public class Druid_DruidicPass extends StdAbility
+public class Druid_AquaticPass extends StdAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Druid_DruidicPass";
+		return "Druid_AquaticPass";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Druidic Pass");
+	private final static String	localizedName	= CMLib.lang().L("Aquatic Pass");
 
 	@Override
 	public String name()
@@ -51,7 +51,7 @@ public class Druid_DruidicPass extends StdAbility
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(druidic passage)");
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(aquatic passage)");
 
 	@Override
 	public String displayText()
@@ -65,7 +65,7 @@ public class Druid_DruidicPass extends StdAbility
 		return Ability.QUALITY_OK_SELF;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "PASS" });
+	private static final String[]	triggerStrings	= I(new String[] { "AQUAPASS","APASS" });
 
 	@Override
 	public String[] triggerStrings()
@@ -101,14 +101,14 @@ public class Druid_DruidicPass extends StdAbility
 			{
 				switch(R.domainType())
 				{
-				case Room.DOMAIN_OUTDOORS_CITY:
-				case Room.DOMAIN_OUTDOORS_SPACEPORT:
+				case Room.DOMAIN_INDOORS_UNDERWATER:
+				case Room.DOMAIN_INDOORS_WATERSURFACE:
 				case Room.DOMAIN_OUTDOORS_UNDERWATER:
 				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+					return true;
+				default:
 					return false;
 				}
-				if((R.domainType()&Room.INDOORS)>0)
-					return true;
 			}
 		}
 		return false;
@@ -120,6 +120,7 @@ public class Druid_DruidicPass extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 	}
 
 	@Override
@@ -128,7 +129,7 @@ public class Druid_DruidicPass extends StdAbility
 
 		if(!canPassHere(affected))
 		{
-			mob.tell(L("You must be in the wild to perform the Druidic Pass."));
+			mob.tell(L("You must be in the water to perform the Aquatic Pass."));
 			return false;
 		}
 		final String whatToOpen=CMParms.combine(commands,0);
@@ -160,7 +161,7 @@ public class Druid_DruidicPass extends StdAbility
 			if(exit.isOpen())
 				CMLib.tracking().walk(mob,dirCode,false,false);
 			else
-				beneficialVisualFizzle(mob,null,L("<S-NAME> walk(s) @x1, but go(es) no further.",Directions.getDirectionName(dirCode)));
+				beneficialVisualFizzle(mob,null,L("<S-NAME> go(es) @x1, but go(es) no further.",Directions.getDirectionName(dirCode)));
 		}
 		else
 		if(exit.isOpen())

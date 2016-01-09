@@ -34,7 +34,15 @@ import java.util.*;
 */
 public class Swamp extends StdRoom implements Drink
 {
-	@Override public String ID(){return "Swamp";}
+	@Override
+	public String ID()
+	{
+		return "Swamp";
+	}
+	
+	protected int liquidType = RawMaterial.RESOURCE_FRESHWATER;
+	
+
 	public Swamp()
 	{
 		super();
@@ -43,7 +51,12 @@ public class Swamp extends StdRoom implements Drink
 		recoverPhyStats();
 		climask=Places.CLIMASK_WET;
 	}
-	@Override public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
+
+	@Override
+	public int domainType()
+	{
+		return Room.DOMAIN_OUTDOORS_SWAMP;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -83,7 +96,88 @@ public class Swamp extends StdRoom implements Drink
 		super.executeMsg(myHost,msg);
 	}
 
-	public static final Integer[] resourceList={
+	@Override
+	protected int baseThirst()
+	{
+		return 0;
+	}
+
+	@Override
+	public long decayTime()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setDecayTime(long time)
+	{
+	}
+
+	@Override
+	public int thirstQuenched()
+	{
+		return 500;
+	}
+
+	@Override
+	public int liquidHeld()
+	{
+		return Integer.MAX_VALUE - 1000;
+	}
+
+	@Override
+	public int liquidRemaining()
+	{
+		return Integer.MAX_VALUE - 1000;
+	}
+
+	@Override
+	public int liquidType()
+	{
+		return liquidType;
+	}
+
+	@Override
+	public void setLiquidType(int newLiquidType)
+	{
+		liquidType = newLiquidType;
+	}
+
+	@Override
+	public void setThirstQuenched(int amount)
+	{
+	}
+
+	@Override
+	public void setLiquidHeld(int amount)
+	{
+	}
+
+	@Override
+	public void setLiquidRemaining(int amount)
+	{
+	}
+
+	@Override
+	public boolean disappearsAfterDrinking()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean containsDrink()
+	{
+		return true;
+	}
+
+	@Override
+	public int amountTakenToFillMe(Drink theSource)
+	{
+		return 0;
+	}
+
+	public static final Integer[] resourceList=
+	{
 		Integer.valueOf(RawMaterial.RESOURCE_JADE),
 		Integer.valueOf(RawMaterial.RESOURCE_SCALES),
 		Integer.valueOf(RawMaterial.RESOURCE_COCOA),
@@ -95,21 +189,11 @@ public class Swamp extends StdRoom implements Drink
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 	};
 	
-	@Override protected int baseThirst(){return 0;}
-	@Override public long decayTime(){return 0;}
-	@Override public void setDecayTime(long time){}
-	@Override public int thirstQuenched(){return 500;}
-	@Override public int liquidHeld(){return Integer.MAX_VALUE-1000;}
-	@Override public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	@Override public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
-	@Override public void setLiquidType(int newLiquidType){}
-	@Override public void setThirstQuenched(int amount){}
-	@Override public void setLiquidHeld(int amount){}
-	@Override public void setLiquidRemaining(int amount){}
-	@Override public boolean disappearsAfterDrinking(){return false;}
-	@Override public boolean containsDrink(){return true;}
-	@Override public int amountTakenToFillMe(Drink theSource){return 0;}
-	
-	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
-	@Override public List<Integer> resourceChoices(){return Swamp.roomResources;}
+	public static final List<Integer>	roomResources	= new Vector<Integer>(Arrays.asList(resourceList));
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return Swamp.roomResources;
+	}
 }

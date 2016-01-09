@@ -32,17 +32,22 @@ import java.util.*;
 */
 public class UnderSaltWater extends UnderWater
 {
-	@Override public String ID(){return "UnderSaltWater";}
+	@Override
+	public String ID()
+	{
+		return "UnderSaltWater";
+	}
+
 	public UnderSaltWater()
 	{
 		super();
 		climask=Places.CLIMASK_WET;
 		atmosphere=RawMaterial.RESOURCE_SALTWATER;
+		liquidType=RawMaterial.RESOURCE_SALTWATER;
 	}
 
-
-	@Override public int liquidType(){return RawMaterial.RESOURCE_SALTWATER;}
-	public static final Integer[] resourceList={
+	public static final Integer[] resourceList=
+	{
 		Integer.valueOf(RawMaterial.RESOURCE_SEAWEED),
 		Integer.valueOf(RawMaterial.RESOURCE_FISH),
 		Integer.valueOf(RawMaterial.RESOURCE_TUNA),
@@ -50,7 +55,13 @@ public class UnderSaltWater extends UnderWater
 		Integer.valueOf(RawMaterial.RESOURCE_SAND),
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 		Integer.valueOf(RawMaterial.RESOURCE_PEARL),
-		Integer.valueOf(RawMaterial.RESOURCE_LIMESTONE)};
-	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
-	@Override public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+		Integer.valueOf(RawMaterial.RESOURCE_LIMESTONE)
+	};
+	public static final List<Integer>	roomResources	= new Vector<Integer>(Arrays.asList(resourceList));
+
+	@Override
+	public List<Integer> resourceChoices()
+	{
+		return UnderWater.roomResources;
+	}
 }
