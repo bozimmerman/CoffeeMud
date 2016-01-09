@@ -166,7 +166,6 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 					I.destroy();
 			}
 		innerContents.clear();
-		contents.clear();
 	}
 
 	@Override
