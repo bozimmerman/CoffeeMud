@@ -145,48 +145,58 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		if((--childCheckDown)<=0)
 		{
 			childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
+			LinkedList<AreaInstanceChild> workList = new LinkedList<AreaInstanceChild>();
 			synchronized(instanceChildren)
 			{
 				for(int i=instanceChildren.size()-1;i>=0;i--)
 				{
-					final Area childA=instanceChildren.elementAt(i).A;
+					final AreaInstanceChild child = instanceChildren.get(i);
+					final Area childA=child.A;
 					if(childA.getAreaState() != Area.State.ACTIVE)
 					{
-						final List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
-						boolean anyInside=false;
-						for(final WeakReference<MOB> wmob : V)
-						{
-							final MOB M=wmob.get();
-							if((M!=null)
-							&&CMLib.flags().isInTheGame(M,true)
-							&&(M.location()!=null)
-							&&(M.location().getArea()==childA))
-							{
-								anyInside=true;
-								break;
-							}
-						}
-						if(!anyInside)
-						{
-							instanceChildren.remove(i);
-							for(final WeakReference<MOB> wmob : V)
-							{
-								final MOB M=wmob.get();
-								if((M!=null)
-								&&(M.location()!=null)
-								&&(M.location().getArea()==this))
-									M.setLocation(M.getStartRoom());
-							}
-							final MOB mob=CMClass.sampleMOB();
-							for(final Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
-							{
-								final Room R=e.nextElement();
-								R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
-							}
-							CMLib.map().delArea(childA);
-							childA.destroy();
-						}
+						workList.add(child);
 					}
+				}
+			}
+			for(AreaInstanceChild child : workList)
+			{
+				final Area childA=child.A;
+				final List<WeakReference<MOB>> V=child.mobs;
+				boolean anyInside=false;
+				for(final WeakReference<MOB> wmob : V)
+				{
+					final MOB M=wmob.get();
+					if((M!=null)
+					&&CMLib.flags().isInTheGame(M,true)
+					&&(M.location()!=null)
+					&&(M.location().getArea()==childA))
+					{
+						anyInside=true;
+						break;
+					}
+				}
+				if(!anyInside)
+				{
+					synchronized(instanceChildren)
+					{
+						instanceChildren.remove(child);
+					}
+					for(final WeakReference<MOB> wmob : V)
+					{
+						final MOB M=wmob.get();
+						if((M!=null)
+						&&(M.location()!=null)
+						&&(M.location().getArea()==this))
+							M.setLocation(M.getStartRoom());
+					}
+					final MOB mob=CMClass.sampleMOB();
+					for(final Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
+					{
+						final Room R=e.nextElement();
+						R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
+					}
+					CMLib.map().delArea(childA);
+					childA.destroy();
 				}
 			}
 		}
