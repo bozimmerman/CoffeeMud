@@ -100,37 +100,39 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
 		if(statData!=null)
 			return statData;
+		List<Area> workList = new LinkedList<Area>();
 		synchronized(("STATS_"+areaName).intern())
 		{
 			if(parentArea==null)
 			{
-				final Enumeration<AreaInstanceChild> childE=instanceChildren.elements();
-				int ct=0;
-				if(childE.hasMoreElements())
-				{
-					statData=new int[Area.Stats.values().length];
-					for(;childE.hasMoreElements();)
-					{
-						final int[] theseStats=childE.nextElement().A.getAreaIStats();
-						if(theseStats != emptyStats)
-						{
-							ct++;
-							for(int i=0;i<theseStats.length;i++)
-								statData[i]+=theseStats[i];
-						}
-					}
-				}
-				if((ct==0)||(statData==null))
-					return emptyStats;
-				for(int i=0;i<statData.length;i++)
-					statData[i]=statData[i]/ct;
-				Resources.removeResource("HELP_"+areaName.toUpperCase());
-				Resources.submitResource("STATS_"+areaName.toUpperCase(),statData);
+				for(final Enumeration<AreaInstanceChild> childE=instanceChildren.elements();childE.hasMoreElements();)
+					workList.add(childE.nextElement().A);
 			}
 			else
 			{
 				statData=buildAreaIStats();
 			}
+		}
+		if(parentArea == null)
+		{
+			int ct=0;
+			statData=new int[Area.Stats.values().length];
+			for(Area childA : workList)
+			{
+				final int[] theseStats=childA.getAreaIStats();
+				if(theseStats != emptyStats)
+				{
+					ct++;
+					for(int i=0;i<theseStats.length;i++)
+						statData[i]+=theseStats[i];
+				}
+			}
+			if((ct==0)||(statData==null))
+				return emptyStats;
+			for(int i=0;i<statData.length;i++)
+				statData[i]=statData[i]/ct;
+			Resources.removeResource("HELP_"+areaName.toUpperCase());
+			Resources.submitResource("STATS_"+areaName.toUpperCase(),statData);
 		}
 		return statData;
 	}
