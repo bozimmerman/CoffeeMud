@@ -2550,6 +2550,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"',No mobs loaded: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
 							break;
 						}
+						for(MOB M : q.loadedMobs)
+						{
+							M.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+							M.basePhyStats().setDisposition(M.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
+							M.recoverPhyStats();
+						}
 					}
 					else
 					if(cmd.equals("ITEMS"))
@@ -2581,6 +2587,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						{
 							errorOccurred(q,isQuiet,"Quest '"+name()+"',No items loaded: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
 							break;
+						}
+						for(Item I : q.loadedItems)
+						{
+							I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+							I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
+							I.recoverPhyStats();
 						}
 					}
 					else
