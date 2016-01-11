@@ -706,7 +706,7 @@ public class Catalog extends StdCommand
 									mob.tell(L("Item @x1 in @x2 is not cataloged.",E.Name(),roomID));
 							}
 						}
-						if(db)
+						if(db && (R!=null))
 							R.destroy();
 					}
 				}

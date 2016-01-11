@@ -139,8 +139,28 @@ public interface TrackingLibrary extends CMLibrary
 			@Override
 			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
 			{
-				return (R.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE) || (R.domainType() == Room.DOMAIN_INDOORS_UNDERWATER) || (R.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER)
+				return (R.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE) 
+						|| (R.domainType() == Room.DOMAIN_INDOORS_UNDERWATER) 
+						|| (R.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER)
 						|| (R.domainType() == Room.DOMAIN_OUTDOORS_WATERSURFACE);
+			}
+		}),
+		WATERSURFACEONLY(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+			{
+				return (R.domainType() != Room.DOMAIN_INDOORS_WATERSURFACE)
+						&& (R.domainType() != Room.DOMAIN_OUTDOORS_WATERSURFACE);
+			}
+		}),
+		UNDERWATERONLY(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+			{
+				return (R.domainType() != Room.DOMAIN_INDOORS_UNDERWATER)
+						&& (R.domainType() != Room.DOMAIN_OUTDOORS_UNDERWATER);
 			}
 		}),
 		NOCLIMB(new RFilter()

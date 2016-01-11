@@ -219,7 +219,8 @@ public class CharClassData extends StdWebMacro
 		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
+			if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+			&&(!CMSecurity.isASysOp(mob)))
 				continue;
 			final String ID=A.ID();
 			if(!used.contains(ID))
@@ -267,7 +268,6 @@ public class CharClassData extends StdWebMacro
 			httpReq.addFakeUrlParameter(field, value);
 			httpReq.addFakeUrlParameter("REPLACE","");
 		}
-
 
 		String last=httpReq.getUrlParameter("CLASS");
 		if(last==null)

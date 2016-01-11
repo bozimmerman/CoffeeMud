@@ -367,7 +367,7 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer dynAbilities(List<Ability> ables, String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+	public static StringBuffer dynAbilities(final MOB mob, List<Ability> ables, String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
 		final QuintVector<String,String,String,String,String> theclasses=new QuintVector<String,String,String,String,String>();
@@ -470,7 +470,7 @@ public class RaceData extends StdWebMacro
 		{
 			final Ability A=a.nextElement();
 			final String cnam=A.ID();
-			if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+			if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
 				continue;
 			str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 		}
@@ -921,7 +921,10 @@ public class RaceData extends StdWebMacro
 					}
 				}
 				if(parms.containsKey("RABLE"))
-					str.append(dynAbilities(R.racialAbilities(null),R.ID(),R,httpReq,parms,0,parms.get("FONT"))+", ");
+				{
+					final MOB mob=Authenticate.getAuthenticatedMob(httpReq);
+					str.append(dynAbilities(mob,R.racialAbilities(null),R.ID(),R,httpReq,parms,0,parms.get("FONT"))+", ");
+				}
 				if(parms.containsKey("REFFS"))
 					str.append(dynEffects(R.ID(),R,httpReq,parms,0,parms.get("FONT"))+", ");
 				if(parms.containsKey("CABLE"))

@@ -658,7 +658,8 @@ public class AbilityData extends StdWebMacro
 					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
 						final Ability A2=e.nextElement();
-						if(((A2.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
+						if(((A2.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(!CMSecurity.isASysOp(mob)))
 							continue;
 						final String AID=A2.ID();
 						final String ANAME=A2.name();

@@ -155,44 +155,8 @@ public class Chant_FindPlant extends Chant
 		return "";
 	}
 
-	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	protected boolean findWhatImLookingFor(MOB mob, String s)
 	{
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
-		super.affectPhyStats(affectedEnv, affectableStats);
-	}
-
-	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
-	{
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
-
-		if(target.fetchEffect(this.ID())!=null)
-		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already trying to @x1",name()));
-			return false;
-		}
-		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(final Ability A : V) A.unInvoke();
-
-		if((commands.size()==0)&&(text().length()>0))
-			commands.add(text());
-		if(commands.size()==0)
-		{
-			mob.tell(L("Find which @x1?  Use 'CHANT \"@x2\" LIST' for a list.",lookingFor,name()));
-			return false;
-		}
-		final String s=CMParms.combine(commands,0);
-		if(s.equalsIgnoreCase("LIST"))
-		{
-			final StringBuffer msg=new StringBuffer(L("You may search for any of the following: "));
-			for(int i=0;i<allOkResources().size();i++)
-				msg.append(RawMaterial.CODES.NAME(allOkResources().elementAt(i).intValue()).toLowerCase()+", ");
-			mob.tell(msg.substring(0,msg.length()-2));
-			return false;
-		}
 		whatImLookingFor=-1;
 		for(int i=0;i<allOkResources().size();i++)
 		{
@@ -210,6 +174,79 @@ public class Chant_FindPlant extends Chant
 			mob.tell(L("'@x1' cannot be found with this chant.    Use 'CHANT \"@x2\" LIST' for a list.",s,name()));
 			return false;
 		}
+		return true;
+	}
+
+	protected TrackingLibrary.TrackingFlags getTrackingFlags()
+	{
+		TrackingLibrary.TrackingFlags flags;
+		flags = CMLib.tracking().newFlags()
+				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+				.plus(TrackingLibrary.TrackingFlag.NOAIR)
+				.plus(TrackingLibrary.TrackingFlag.NOWATER);
+		return flags;
+	}
+	
+	@Override
+	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	{
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
+		super.affectPhyStats(affectedEnv, affectableStats);
+	}
+
+	protected List<Room> makeTheTrail(MOB mob, MOB target, Room mobRoom)
+	{
+		final Vector<Room> rooms=new Vector<Room>();
+		TrackingLibrary.TrackingFlags flags = getTrackingFlags();
+		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mobRoom,flags,50+(2*super.getXLEVELLevel(mob)));
+		for (final Room R : checkSet)
+		{
+			if(itsHere(target,R).length()>0)
+				rooms.addElement(R);
+		}
+
+		flags = getTrackingFlags();
+		if(rooms.size()>0)
+			theTrail=CMLib.tracking().findBastardTheBestWay(mobRoom,rooms,flags,50+(2*super.getXLEVELLevel(mob)));
+		return theTrail;
+	}
+	
+	@Override
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+
+		if(target.fetchEffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already trying to @x1",name()));
+			return false;
+		}
+		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(final Ability A : V) 
+			A.unInvoke();
+
+		if((commands.size()==0)&&(text().length()>0))
+			commands.add(text());
+		if(commands.size()==0)
+		{
+			mob.tell(L("Find which @x1?  Use 'CHANT \"@x2\" LIST' for a list.",lookingFor,name()));
+			return false;
+		}
+		final String s=CMParms.combine(commands,0);
+		if(s.equalsIgnoreCase("LIST"))
+		{
+			final StringBuffer msg=new StringBuffer(L("You may search for any of the following: "));
+			for(int i=0;i<allOkResources().size();i++)
+				msg.append(RawMaterial.CODES.NAME(allOkResources().elementAt(i).intValue()).toLowerCase()+", ");
+			mob.tell(msg.substring(0,msg.length()-2));
+			return false;
+		}
+		if(!findWhatImLookingFor(mob,s))
+		{
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -223,25 +260,7 @@ public class Chant_FindPlant extends Chant
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final Vector<Room> rooms=new Vector<Room>();
-		TrackingLibrary.TrackingFlags flags;
-		flags = CMLib.tracking().newFlags()
-				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-				.plus(TrackingLibrary.TrackingFlag.NOAIR)
-				.plus(TrackingLibrary.TrackingFlag.NOWATER);
-		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
-		for (final Room R : checkSet)
-		{
-			if(itsHere(target,R).length()>0)
-				rooms.addElement(R);
-		}
-
-		flags = CMLib.tracking().newFlags()
-				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-				.plus(TrackingLibrary.TrackingFlag.NOAIR)
-				.plus(TrackingLibrary.TrackingFlag.NOWATER);
-		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50);
+		theTrail = makeTheTrail(mob, target, mob.location());
 
 		if((success)&&(theTrail!=null))
 		{

@@ -85,7 +85,7 @@ public class GreatFish extends GiantFish
 		return ~(Wearable.WORN_EYES);
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Amphibian");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Fish");
 
 	@Override
 	public String racialCategory()

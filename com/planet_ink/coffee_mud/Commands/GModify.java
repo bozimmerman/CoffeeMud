@@ -73,6 +73,12 @@ public class GModify extends StdCommand
 					return "0";
 				return ""+((Physical)E).basePhyStats().rejuv();
 			}
+			else
+			if((stat.equalsIgnoreCase("GENDER"))
+			&&(E instanceof MOB))
+			{
+				return ""+((MOB)E).baseCharStats().getStat(CharStats.STAT_GENDER);
+			}
 			return E.getStat(stat);
 		}
 		return "";
@@ -85,6 +91,10 @@ public class GModify extends StdCommand
 			if((stat.equalsIgnoreCase("REJUV"))
 			&&(E instanceof Physical))
 				((Physical)E).basePhyStats().setRejuv(CMath.s_int(value));
+			else
+			if((stat.equalsIgnoreCase("GENDER"))
+			&&(E instanceof MOB))
+				((MOB)E).baseCharStats().setStat(CharStats.STAT_GENDER,value.charAt(0));
 			else
 			if((stat.equalsIgnoreCase("ADDABILITY"))
 			&&(E instanceof AbilityContainer))
@@ -413,7 +423,7 @@ public class GModify extends StdCommand
 			addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
 			addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 			addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
-			allFieldsMsg.append("ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV DESTROY ");
+			allFieldsMsg.append("ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV GENDER DESTROY ");
 			mob.tell(L("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
@@ -466,7 +476,7 @@ public class GModify extends StdCommand
 		addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
 		addEnumeratedStatCodes(CMClass.locales(),allKnownFields,allFieldsMsg);
 		allFieldsMsg.append("REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT ");
-		allKnownFields.addAll(Arrays.asList(new String[]{"REJUV","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT"}));
+		allKnownFields.addAll(Arrays.asList(new String[]{"REJUV","GENDER","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT"}));
 		
 		use=onfields;
 		final Vector<String> newSet=new Vector<String>();

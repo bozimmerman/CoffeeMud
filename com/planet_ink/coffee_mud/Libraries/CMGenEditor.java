@@ -4341,16 +4341,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genEconomics3(MOB mob, Economics E, int showNumber, int showFlag) throws IOException
-	{ E.setBudget(prompt(mob,E.budget(),showNumber,showFlag,"Budget",true,false)); }
+	{
+		E.setBudget(prompt(mob, E.budget(), showNumber, showFlag, "Budget", true, false));
+	}
 
 	protected void genEconomics4(MOB mob, Economics E, int showNumber, int showFlag) throws IOException
-	{ E.setDevalueRate(prompt(mob,E.devalueRate(),showNumber,showFlag,"Devaluation rate(s)",true,false)); }
+	{
+		E.setDevalueRate(prompt(mob, E.devalueRate(), showNumber, showFlag, "Devaluation rate(s)", true, false));
+	}
 
 	protected void genEconomics5(MOB mob, Economics E, int showNumber, int showFlag) throws IOException
-	{ E.setInvResetRate(prompt(mob,E.invResetRate(),showNumber,showFlag,"Inventory reset rate [ticks]")); }
+	{
+		E.setInvResetRate(prompt(mob, E.invResetRate(), showNumber, showFlag, "Inventory reset rate [ticks]"));
+	}
 
 	protected void genEconomics6(MOB mob, Economics E, int showNumber, int showFlag) throws IOException
-	{ E.setIgnoreMask(prompt(mob,E.ignoreMask(),showNumber,showFlag,"Ignore Mask",true,false)); }
+	{
+		E.setIgnoreMask(prompt(mob, E.ignoreMask(), showNumber, showFlag, "Ignore Mask", true, false));
+	}
 
 	protected void genAbilities(MOB mob, MOB M, int showNumber, int showFlag)
 		throws IOException
@@ -4398,7 +4406,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 					{
 						chosenOne=CMClass.getAbility(behave);
-						if((chosenOne!=null)&&((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
+						if((chosenOne!=null)
+						&&((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(!CMSecurity.isASysOp(mob)))
 							chosenOne=null;
 						if(chosenOne!=null)
 						{

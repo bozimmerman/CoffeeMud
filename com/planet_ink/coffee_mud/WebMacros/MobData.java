@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -433,13 +434,26 @@ public class MobData extends StdWebMacro
 				}
 			}
 			else
-			for(final Enumeration e=E.factions();e.hasMoreElements();)
 			{
-				final Faction f=CMLib.factions().getFaction((String)e.nextElement());
-				if(f!=null)
+				for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 				{
-					theclasses.addElement(f.factionID());
-					theparms.addElement(Integer.toString(E.fetchFaction(f.factionID())));
+					final Faction F=f.nextElement();
+					if(F.showInEditor() && (!E.hasFaction(F.factionID())))
+					{
+						int autoDefault = F.findAutoDefault(E);
+						if(autoDefault != Integer.MAX_VALUE)
+							E.addFaction(F.factionID(), autoDefault);
+					}
+				}
+				// the auto factions!
+				for(final Enumeration e=E.factions();e.hasMoreElements();)
+				{
+					final Faction f=CMLib.factions().getFaction((String)e.nextElement());
+					if(f!=null)
+					{
+						theclasses.addElement(f.factionID());
+						theparms.addElement(Integer.toString(E.fetchFaction(f.factionID())));
+					}
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
@@ -462,10 +476,20 @@ public class MobData extends StdWebMacro
 				final Faction.FRange FR=CMLib.factions().getRange(F.factionID(),CMath.s_int(theparm));
 				if(FR==null)
 					str.append("<OPTION VALUE=\""+CMath.s_int(theparm)+"\">"+CMath.s_int(theparm));
-				for(final Enumeration e=F.ranges();e.hasMoreElements();)
+				List<Faction.FRange> sortedRanges = new XVector<Faction.FRange>(F.ranges());
+				Collections.sort(sortedRanges, new Comparator<Faction.FRange>()
 				{
-					final Faction.FRange FR2=(Faction.FRange)e.nextElement();
-					int value=FR2.low()+(FR2.high()-FR2.low());
+					@Override
+					public int compare(FRange o1, FRange o2)
+					{
+						return Integer.valueOf((o1.low()+o1.high())/2).compareTo(Integer.valueOf((o2.low()+o2.high())/2));
+					}
+				});
+				
+				for(final Iterator<Faction.FRange> e=sortedRanges.iterator();e.hasNext();)
+				{
+					final Faction.FRange FR2=e.next();
+					int value=(FR2.high()+FR2.low())/2;
 					if(FR2.low()==F.minimum())
 						value=FR2.low();
 					if(FR2.high()==F.maximum())
@@ -475,7 +499,7 @@ public class MobData extends StdWebMacro
 					str.append("<OPTION VALUE=\""+value+"\"");
 					if(FR2==FR)
 						str.append(" SELECTED");
-					str.append(">"+FR2.name());
+					str.append(">"+FR2.name()+" ("+FR2.low()+" to "+FR2.high()+")");
 				}
 				str.append("</SELECT>");
 				str.append("</TD></TR>");
