@@ -898,7 +898,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		for(final String key : completeAbleMap.keySet())
 		{
 			if((!key.equalsIgnoreCase(classID))
-			&&(completeAbleMap.get(classID).containsKey(abilityID)))
+			&&(completeAbleMap.get(key).containsKey(abilityID)))
 				return false;
 		}
 		return true;

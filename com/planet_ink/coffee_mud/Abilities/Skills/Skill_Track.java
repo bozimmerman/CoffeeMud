@@ -35,28 +35,96 @@ import java.util.*;
 
 public class Skill_Track extends StdSkill
 {
-	protected int cacheCode=-1;
-	private int tickStatus=0;
-	protected List<Room> theTrail=null;
-	public int nextDirection=-2;
+	@Override
+	public String ID()
+	{
+		return "Skill_Track";
+	}
 
-	@Override public String ID() { return "Skill_Track"; }
-	private final static String localizedName = CMLib.lang().L("Tracking");
-	@Override public String name() { return localizedName; }
-	protected String displayText=L("(Tracking)");
-	@Override public String displayText(){ return displayText;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ROOMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	private static final String[] triggerStrings =I(new String[] {"TRACKTO"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL;}
-	@Override public long flags(){return Ability.FLAG_TRACKING;}
-	private final Map<String,List<Room>> cachedPaths=new Hashtable<String,List<Room>>();
-	@Override public int getTickStatus(){return tickStatus;}
-	@Override public int abilityCode(){return cacheCode;}
-	@Override public void setAbilityCode(int newCode){cacheCode=newCode;}
-	@Override public int usageType(){return USAGE_MOVEMENT;}
+	protected int				cacheCode		= -1;
+	private int					tickStatus		= 0;
+	protected List<Room>		theTrail		= null;
+	public int					nextDirection	= -2;
+
+	private final static String	localizedName	= CMLib.lang().L("Tracking");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	protected String	displayText	= L("(Tracking)");
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS | CAN_ROOMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "TRACKTO" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRACKING;
+	}
+
+	private final Map<String, List<Room>>	cachedPaths	= new Hashtable<String, List<Room>>();
+
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return cacheCode;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		cacheCode = newCode;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
@@ -327,7 +395,10 @@ public class Skill_Track extends StdSkill
 					if(R.fetchInhabitant(mobName)!=null)
 						rooms.addElement(R);
 				}
-			}catch(final NoSuchElementException nse){}
+			}
+			catch (final NoSuchElementException nse)
+			{
+			}
 		}
 		tickStatus=Tickable.STATUS_MISC6+6;
 

@@ -73,7 +73,7 @@ public class Chant_BloodyWater extends Chant
 	@Override
 	protected int canAffectCode()
 	{
-		return CAN_ROOMS;
+		return CAN_ROOMS | CAN_MOBS;
 	}
 
 	@Override
@@ -88,7 +88,18 @@ public class Chant_BloodyWater extends Chant
 		return Ability.ACODE_CHANT | Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
+	@Override
+	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	{
+		if(affectedEnv instanceof MOB)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
+		super.affectPhyStats(affectedEnv, affectableStats);
+	}
+
 	protected final List<MOB> bloodyMobs = new Vector<MOB>();
+	protected Room theRoom = null;
+	protected List<Room> theTrail=null;
+
 	final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 												.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 												.plus(TrackingLibrary.TrackingFlag.UNDERWATERONLY);
@@ -98,8 +109,9 @@ public class Chant_BloodyWater extends Chant
 	{
 		if(canBeUninvoked())
 		{
-			for(final MOB mob : bloodyMobs)
+			if(affected instanceof MOB)
 			{
+				MOB mob=(MOB)affected;
 				if(mob.amFollowing()==null)
 				{
 					mob.tell(L("You are no longer sensing the bloody water."));
@@ -107,9 +119,18 @@ public class Chant_BloodyWater extends Chant
 						CMLib.tracking().wanderAway(mob,true,false);
 				}
 			}
-			bloodyMobs.clear();
-			if(affected instanceof Room)
-				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The water is no longer to bloody."));
+			else
+			{
+				for(final MOB mob : bloodyMobs)
+				{
+					Ability A=mob.fetchEffect(ID());
+					if(A!=null)
+						A.unInvoke();
+				}
+				bloodyMobs.clear();
+				if(affected instanceof Room)
+					((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,L("The water is no longer to bloody."));
+			}
 		}
 		super.unInvoke();
 	}
@@ -119,50 +140,72 @@ public class Chant_BloodyWater extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(!(affected instanceof Room))
-			return false;
-		final Room room=(Room)affected;
 		final MOB mob=invoker();
 		final int limit = (mob==null)? 10 : (5 + (2 * super.getXLEVELLevel(mob)));
-		if((bloodyMobs.size()==0)&&(mob!=null))
+		if((affected instanceof MOB)&&(theTrail!=null)&&(theRoom!=null))
 		{
-			final List<Room> checkSet=CMLib.tracking().getRadiantRooms(room,flags,limit);
-			for(final Room R : checkSet)
+			MOB M=(MOB)affected;
+			if(M.location() == theRoom)
 			{
-				if(R!=null)
+				Ability A=M.fetchEffect(ID());
+				if(A!=null)
+					A.unInvoke();
+			}
+			else
+			{
+				int dir=CMLib.tracking().trackNextDirectionFromHere(theTrail,M.location(),true);
+				CMLib.tracking().walk(M, dir, false, false);
+			}
+		}
+		else
+		if(affected instanceof Room)
+		{
+			final Room room=(Room)affected;
+			if((bloodyMobs.size()==0)&&(mob!=null))
+			{
+				final List<Room> destRooms = new XVector<Room>(room);
+				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(room,flags,limit);
+				for(final Room R : checkSet)
 				{
-					for(Enumeration<MOB> m= R.inhabitants();m.hasMoreElements();)
+					if((R!=null)&&(R!=room))
 					{
-						final MOB M = m.nextElement();
-						if(CMLib.flags().isAnimalIntelligence(M)
-						&&(M.isMonster())
-						&&((M.amFollowing()==null)||(M.amFollowing().isMonster()))
-						&&(M.charStats().getMyRace().racialCategory().equalsIgnoreCase("Fish"))
-						&&(!M.amDead())
-						&&(CMLib.flags().canActAtAll(M))
-						&&(!M.isInCombat())
-						&&(bloodyMobs.size()<limit)
-						&&(!bloodyMobs.contains(M)))
+						for(Enumeration<MOB> m= R.inhabitants();m.hasMoreElements();)
 						{
-							bloodyMobs.add(M);
+							final MOB M = m.nextElement();
+							if(CMLib.flags().isAnimalIntelligence(M)
+							&&(bloodyMobs.size()<limit)
+							&&(M.isMonster())
+							&&((M.amFollowing()==null)||(M.amFollowing().isMonster()))
+							&&(M.charStats().getMyRace().racialCategory().equalsIgnoreCase("Fish"))
+							&&(!M.amDead())
+							&&(CMLib.flags().canActAtAll(M))
+							&&(!M.isInCombat())
+							&&(!CMLib.flags().isTracking(M))
+							&(CMLib.flags().canTrack(M))
+							&&(!bloodyMobs.contains(M)))
+							{
+								bloodyMobs.add(M);
+								Chant_BloodyWater w=(Chant_BloodyWater)this.copyOf();
+								w.theRoom = room;
+								w.theTrail = CMLib.tracking().findBastardTheBestWay(M.location(), destRooms, flags, limit);
+								w.startTickDown(mob, M, w.tickDown);
+							}
 						}
 					}
 				}
 			}
-		}
-		if(bloodyMobs.size()>0)
-		{
-			List<Room> destRooms = new XVector<Room>(room);
-			for(Iterator<MOB> m=bloodyMobs.iterator();m.hasNext();)
+			if(bloodyMobs.size()>0)
 			{
-				MOB M=m.next();
-				if(M.location()==room)
-					m.remove();
-				else
+				for(Iterator<MOB> m=bloodyMobs.iterator();m.hasNext();)
 				{
-					List<Room> trail = CMLib.tracking().findBastardTheBestWay(M.location(), destRooms, flags, limit);
-					int dir=CMLib.tracking().trackNextDirectionFromHere(trail,M.location(),true);
-					CMLib.tracking().walk(M, dir, false, false);
+					MOB M=m.next();
+					if(M.location()==room)
+						m.remove();
+					else
+					if(M.fetchEffect(ID())==null)
+					{
+						m.remove();
+					}
 				}
 			}
 		}

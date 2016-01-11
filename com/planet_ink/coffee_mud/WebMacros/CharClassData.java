@@ -118,12 +118,15 @@ public class CharClassData extends StdWebMacro
 			for(final AbilityMapper.AbilityMapping able : data1)
 			{
 				aID=able.abilityID();
-				final int qlvl=CMLib.ableMapper().getQualifyingLevel(E.ID(), false, aID);
-				if(qlvl>maxLvl)
-					maxLvl=qlvl;
-				if(qlvl<minLvl)
-					minLvl=qlvl;
-				sortedData1.addElement(aID,Integer.valueOf(qlvl));
+				if(!CMLib.ableMapper().getAllQualified(E.ID(), true, aID))
+				{
+					final int qlvl=CMLib.ableMapper().getQualifyingLevel(E.ID(), false, aID);
+					if(qlvl>maxLvl)
+						maxLvl=qlvl;
+					if(qlvl<minLvl)
+						minLvl=qlvl;
+					sortedData1.addElement(aID,Integer.valueOf(qlvl));
+				}
 			}
 			Integer qLvl=null;
 			for(int lvl=minLvl;lvl<=maxLvl;lvl++)

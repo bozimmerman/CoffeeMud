@@ -7129,7 +7129,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(int v=0;v<numAbles;v++)
 			{
 				final Ability A=CMClass.getAbility(E.getStat("GETCABLE"+v));
-				if(A!=null)
+				if((A!=null)
+				&&(!CMLib.ableMapper().getAllQualified(E.ID(), true, A.ID())))
 				{
 					final AbilityMapper.AbilityMapping aMAP=CMLib.ableMapper().newAbilityMapping().ID(A.ID());
 					aMAP.abilityID(A.ID());
@@ -7202,6 +7203,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					final List<AbilityMapper.AbilityMapping> lvls=(List<AbilityMapper.AbilityMapping>)levelSets.elementAt(s,2);
 					for(int l=0;l<lvls.size();l++)
+					{
 						if(CMLib.english().containsString(lvls.get(l).abilityID(),newName))
 						{
 							lvlIndex=s;
@@ -7209,6 +7211,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							myLevelSet=lvls;
 							break;
 						}
+					}
 					if(lvlIndex>=0)
 						break;
 				}
