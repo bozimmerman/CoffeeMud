@@ -2555,6 +2555,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							M.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 							M.basePhyStats().setDisposition(M.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
 							M.recoverPhyStats();
+							M.text();
 						}
 					}
 					else
@@ -2593,6 +2594,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 							I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
 							I.recoverPhyStats();
+							I.text();
 						}
 					}
 					else
