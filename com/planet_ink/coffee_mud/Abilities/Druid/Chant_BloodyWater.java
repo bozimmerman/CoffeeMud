@@ -142,19 +142,26 @@ public class Chant_BloodyWater extends Chant
 			return false;
 		final MOB mob=invoker();
 		final int limit = (mob==null)? 10 : (5 + (2 * super.getXLEVELLevel(mob)));
-		if((affected instanceof MOB)&&(theTrail!=null)&&(theRoom!=null))
+		if((affected instanceof MOB)
+		&&(theRoom!=null))
 		{
-			MOB M=(MOB)affected;
-			if(M.location() == theRoom)
-			{
-				Ability A=M.fetchEffect(ID());
-				if(A!=null)
-					A.unInvoke();
-			}
+			if(theTrail==null)
+				unInvoke();
 			else
 			{
-				int dir=CMLib.tracking().trackNextDirectionFromHere(theTrail,M.location(),true);
-				CMLib.tracking().walk(M, dir, false, false);
+				MOB M=(MOB)affected;
+				if(M.location() == theRoom)
+				{
+					unInvoke();
+				}
+				else
+				{
+					int dir=CMLib.tracking().trackNextDirectionFromHere(theTrail,M.location(),true);
+					if(dir < 0)
+						unInvoke();
+					else
+						CMLib.tracking().walk(M, dir, false, false);
+				}
 			}
 		}
 		else
@@ -188,7 +195,8 @@ public class Chant_BloodyWater extends Chant
 								Chant_BloodyWater w=(Chant_BloodyWater)this.copyOf();
 								w.theRoom = room;
 								w.theTrail = CMLib.tracking().findBastardTheBestWay(M.location(), destRooms, flags, limit);
-								w.startTickDown(mob, M, w.tickDown);
+								if(w.theTrail != null)
+									w.startTickDown(mob, M, w.tickDown);
 							}
 						}
 					}
