@@ -562,8 +562,11 @@ public class CMSecurity
 		if(path.equals("/")||path.equals("."))
 			path="";
 		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
-		final Iterator[] allGroups={mob.playerStats().getSecurityFlags().paths(),
-				 mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).paths()};
+		final Iterator[] allGroups=
+		{
+			mob.playerStats().getSecurityFlags().paths(),
+			mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).paths()
+		};
 		for(final Iterator<SecPath> g=new MultiIterator<SecPath>(allGroups);g.hasNext();)
 		{
 			final SecPath p=g.next();
