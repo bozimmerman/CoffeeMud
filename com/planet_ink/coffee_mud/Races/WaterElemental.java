@@ -92,10 +92,10 @@ public class WaterElemental extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "Skill_Swim" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityNames			= { "Aquan","Skill_Swim" };
+	private final int[]		racialAbilityLevels			= { 1,1 };
+	private final int[]		racialAbilityProficiencies	= { 100,100 };
+	private final boolean[]	racialAbilityQuals			= { false,false };
 
 	@Override
 	protected String[] racialAbilityNames()

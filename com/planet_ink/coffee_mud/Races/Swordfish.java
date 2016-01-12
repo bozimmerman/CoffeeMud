@@ -15,11 +15,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
-   Copyright 2003-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GreatFish extends GiantFish
+public class Swordfish extends GiantFish
 {
 	@Override
 	public String ID()
 	{
-		return "GreatFish";
+		return "Swordfish";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Great Fish");
+	private final static String localizedStaticName = CMLib.lang().L("Swordfish");
 
 	@Override
 	public String name()
@@ -52,112 +51,31 @@ public class GreatFish extends GiantFish
 	@Override
 	public int shortestMale()
 	{
-		return 30;
+		return 10;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 35;
+		return 15;
 	}
 
 	@Override
 	public int heightVariance()
 	{
-		return 10;
+		return 20;
 	}
 
 	@Override
 	public int lightestWeight()
 	{
-		return 55;
+		return 355;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 15;
-	}
-
-	@Override
-	public long forbiddenWornBits()
-	{
-		return ~(Wearable.WORN_EYES);
-	}
-
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Fish");
-
-	@Override
-	public String racialCategory()
-	{
-		return localizedStaticRacialCat;
-	}
-
-	protected static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();
-	private final String[]					racialAbilityNames			= { "Aquan","Skill_Swim" };
-	private final int[]						racialAbilityLevels			= { 1,1 };
-	private final int[]						racialAbilityProficiencies	= { 100,100 };
-	private final boolean[]					racialAbilityQuals			= { false,false };
-
-	@Override
-	protected String[] racialAbilityNames()
-	{
-		return racialAbilityNames;
-	}
-
-	@Override
-	protected int[] racialAbilityLevels()
-	{
-		return racialAbilityLevels;
-	}
-
-	@Override
-	protected int[] racialAbilityProficiencies()
-	{
-		return racialAbilityProficiencies;
-	}
-
-	@Override
-	protected boolean[] racialAbilityQuals()
-	{
-		return racialAbilityQuals;
-	}
-
-	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
-
-	@Override
-	public int[] bodyMask()
-	{
-		return parts;
-	}
-
-	private final int[]	agingChart	= { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-
-	@Override
-	public int[] getAgingChart()
-	{
-		return agingChart;
-	}
-
-	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
-	{
-		//super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
-	}
-
-	@Override
-	public String arriveStr()
-	{
-		return "swims in";
-	}
-
-	@Override
-	public String leaveStr()
-	{
-		return "swims";
+		return 105;
 	}
 
 	@Override
@@ -166,13 +84,33 @@ public class GreatFish extends GiantFish
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(L("a heat butt"));
+			naturalWeapon.setName(L("a pointy sword-nose"));
+			naturalWeapon.setRanges(0,1);
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_SLASHING);
 		}
 		return naturalWeapon;
 	}
+
+	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,13);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,16);
+	}
+
+	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + (affectableStats.level() / 10));
+	}
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -180,16 +118,18 @@ public class GreatFish extends GiantFish
 		{
 			if(resources.size()==0)
 			{
-				for(int i=0;i<8;i++)
+				for(int i=0;i<15;i++)
 				{
 					resources.addElement(makeResource
 					(L("some @x1",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
 				}
-				for(int i=0;i<5;i++)
+				for(int i=0;i<10;i++)
 				{
 					resources.addElement(makeResource
-					(L("a @x1 scaly hide",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
+					(L("a @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				}
+				resources.addElement(makeResource
+				(L("a @x1 sword-nose",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Druid;
+package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,10 +15,11 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Vector;
 
 /*
-   Copyright 2004-2016 Bo Zimmerman
+   Copyright 2015-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,33 +33,27 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-public class Druid_ShapeShift5 extends Druid_ShapeShift
+public class Angelfish extends Fish
 {
 	@Override
 	public String ID()
 	{
-		return "Druid_ShapeShift5";
+		return "Angelfish";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Fifth Totem");
+	private final static String localizedStaticName = CMLib.lang().L("Angelfish");
 
 	@Override
 	public String name()
 	{
-		return localizedName;
+		return localizedStaticName;
 	}
 
 	@Override
-	public int abstractQuality()
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		return Ability.QUALITY_OK_SELF;
-	}
-
-	@Override
-	public String[] triggerStrings()
-	{
-		return empty;
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setSpeed(affectableStats.speed() + 2.0);
 	}
 
 }

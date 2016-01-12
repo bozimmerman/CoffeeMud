@@ -91,6 +91,13 @@ public class Shark extends GiantFish
 	}
 
 	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + (affectableStats.level() / 3));
+	}
+
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

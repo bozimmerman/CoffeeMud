@@ -15,11 +15,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
-   Copyright 2004-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GreatAmphibian extends StdRace
+public class Seal extends GiantFish
 {
 	@Override
 	public String ID()
 	{
-		return "GreatAmphibian";
+		return "Seal";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Great Amphibian");
+	private final static String localizedStaticName = CMLib.lang().L("Seal");
 
 	@Override
 	public String name()
@@ -52,19 +51,19 @@ public class GreatAmphibian extends StdRace
 	@Override
 	public int shortestMale()
 	{
-		return 20;
+		return 50;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 25;
+		return 55;
 	}
 
 	@Override
 	public int heightVariance()
 	{
-		return 5;
+		return 10;
 	}
 
 	@Override
@@ -76,16 +75,23 @@ public class GreatAmphibian extends StdRace
 	@Override
 	public int weightVariance()
 	{
-		return 40;
+		return 15;
 	}
 
 	@Override
+	public int[] getBreathables()
+	{
+		return breatheAirWaterArray;
+	}
+	
+	@Override
 	public long forbiddenWornBits()
 	{
-		return ~(Wearable.WORN_EYES);
+		return ~(Wearable.WORN_ABOUT_BODY|Wearable.WORN_BACK|Wearable.WORN_EYES|
+				Wearable.WORN_HEAD|Wearable.WORN_MOUTH|Wearable.WORN_WAIST);
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Amphibian");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Pinniped");
 
 	@Override
 	public String racialCategory()
@@ -123,14 +129,8 @@ public class GreatAmphibian extends StdRace
 		return racialAbilityQuals;
 	}
 
-	@Override
-	public int[] getBreathables()
-	{
-		return breatheAirWaterArray;
-	}
-
-	// an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[]	parts	= { 0, 2, 0, 1, 0, 0, 0, 1, 0, 0, 0, 2, 1, 0, 1, 0 };
+	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,0 ,0 ,1 ,2 ,1 ,1 ,1 ,0 };
 
 	@Override
 	public int[] bodyMask()
@@ -138,7 +138,7 @@ public class GreatAmphibian extends StdRace
 		return parts;
 	}
 
-	private final int[]	agingChart	= { 0, 2, 4, 6, 8, 10, 12, 14, 16 };
+	private final int[]	agingChart	= { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
 	@Override
 	public int[] getAgingChart()
@@ -149,21 +149,21 @@ public class GreatAmphibian extends StdRace
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		super.affectCharStats(affectedMOB, affectableStats);
+		//super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
 	}
 
 	@Override
 	public String arriveStr()
 	{
-		return "shuffles in";
+		return "flops in";
 	}
 
 	@Override
 	public String leaveStr()
 	{
-		return "shuffles";
+		return "flops";
 	}
 
 	@Override
@@ -172,43 +172,13 @@ public class GreatAmphibian extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(L("some sharp teeth"));
+			naturalWeapon.setName(L("a heat butt"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;
 	}
-
-	@Override
-	public String makeMobName(char gender, int age)
-	{
-		switch(age)
-		{
-			case Race.AGE_INFANT:
-			case Race.AGE_TODDLER:
-				return name().toLowerCase()+" tadpole";
-			case Race.AGE_CHILD:
-				return name().toLowerCase()+" polliwog";
-			default :
-				return super.makeMobName('N', age);
-		}
-	}
-
-	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		final MOB mob=(MOB)affected;
-		final Room R=mob.location();
-		if((R!=null)
-		&&((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-			||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			||((RawMaterial.CODES.GET(R.getAtmosphere())&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)))
-				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
-	}
-
 	@Override
 	public List<RawMaterial> myResources()
 	{
@@ -216,7 +186,7 @@ public class GreatAmphibian extends StdRace
 		{
 			if(resources.size()==0)
 			{
-				for(int i=0;i<15;i++)
+				for(int i=0;i<8;i++)
 				{
 					resources.addElement(makeResource
 					(L("some @x1",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
@@ -224,7 +194,7 @@ public class GreatAmphibian extends StdRace
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					(L("a @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
+					(L("a fuzzy @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				}
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));

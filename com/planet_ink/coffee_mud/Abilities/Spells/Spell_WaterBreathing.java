@@ -69,7 +69,7 @@ public class Spell_WaterBreathing extends Spell
 			return;
 		if((lastSet!=breatheables)||(newSet==null))
 		{
-			newSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+2);
+			newSet=Arrays.copyOf(breatheables,breatheables.length+2);
 			newSet[newSet.length-1]=RawMaterial.RESOURCE_SALTWATER;
 			newSet[newSet.length-2]=RawMaterial.RESOURCE_FRESHWATER;
 			Arrays.sort(newSet);

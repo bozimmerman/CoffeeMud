@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Races;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,20 +19,20 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2016 Bo Zimmerman
+ Copyright 2003-2016 Bo Zimmerman
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-	   http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 public class Rodent extends StdRace
 {
 	@Override
@@ -40,7 +41,7 @@ public class Rodent extends StdRace
 		return "Rodent";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Rodent");
+	private final static String	localizedStaticName	= CMLib.lang().L("Rodent");
 
 	@Override
 	public String name()
@@ -84,7 +85,7 @@ public class Rodent extends StdRace
 		return ~(Wearable.WORN_HEAD | Wearable.WORN_EARS | Wearable.WORN_EYES);
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Rodent");
+	private final static String	localizedStaticRacialCat	= CMLib.lang().L("Rodent");
 
 	@Override
 	public String racialCategory()
@@ -121,8 +122,8 @@ public class Rodent extends StdRace
 		return racialAbilityQuals;
 	}
 
-	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
+	// an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[]	parts	= { 0, 2, 2, 1, 1, 0, 0, 1, 4, 4, 1, 0, 1, 1, 1, 0 };
 
 	@Override
 	public int[] bodyMask()
@@ -149,18 +150,18 @@ public class Rodent extends StdRace
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
+		super.affectPhyStats(affected, affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask() | PhyStats.CAN_SEE_DARK);
 	}
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,3);
-		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,18);
-		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH, 3);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE, 1);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY, 18);
+		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE, affectableStats.getStat(CharStats.STAT_SAVE_DISEASE) + 100);
 	}
 
 	@Override
@@ -178,9 +179,9 @@ public class Rodent extends StdRace
 	@Override
 	public Weapon myNaturalWeapon()
 	{
-		if(naturalWeapon==null)
+		if (naturalWeapon == null)
 		{
-			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon = CMClass.getWeapon("StdWeapon");
 			naturalWeapon.setName(L("a pair of sharp teeth"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
@@ -192,79 +193,67 @@ public class Rodent extends StdRace
 	@Override
 	public String makeMobName(char gender, int age)
 	{
-		switch(age)
+		switch (age)
 		{
-			case Race.AGE_INFANT:
-			case Race.AGE_TODDLER:
-				return name().toLowerCase()+" pinkie";
-			case Race.AGE_CHILD:
-				switch(gender)
-				{
-				case 'M':
-				case 'm':
-					return "boy " + name().toLowerCase() + " pup";
-				case 'F':
-				case 'f':
-					return "girl " + name().toLowerCase() + " pup";
-				default:
-					return "young " + name().toLowerCase();
-				}
+		case Race.AGE_INFANT:
+		case Race.AGE_TODDLER:
+			return name().toLowerCase() + " pinkie";
+		case Race.AGE_CHILD:
+			switch (gender)
+			{
+			case 'M':
+			case 'm':
+				return "boy " + name().toLowerCase() + " pup";
+			case 'F':
+			case 'f':
+				return "girl " + name().toLowerCase() + " pup";
 			default:
-				return super.makeMobName(gender, age);
+				return "young " + name().toLowerCase();
+			}
+		default:
+			return super.makeMobName(gender, age);
 		}
 	}
 
 	@Override
 	public String healthText(MOB viewer, MOB mob)
 	{
-		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+		final double pct = (CMath.div(mob.curState().getHitPoints(), mob.maxState().getHitPoints()));
 
-		if(pct<.10)
-			return L("^r@x1^r is one unhappy little critter!^N",mob.name(viewer));
+		if (pct < .10)
+			return L("^r@x1^r is one unhappy little critter!^N", mob.name(viewer));
+		else if (pct < .20)
+			return L("^r@x1^r is covered in blood and matted hair.^N", mob.name(viewer));
+		else if (pct < .30)
+			return L("^r@x1^r is bleeding badly from lots of wounds.^N", mob.name(viewer));
+		else if (pct < .40)
+			return L("^y@x1^y has large patches of bloody matted fur.^N", mob.name(viewer));
+		else if (pct < .50)
+			return L("^y@x1^y has some bloody matted fur.^N", mob.name(viewer));
+		else if (pct < .60)
+			return L("^p@x1^p has a lot of cuts and gashes.^N", mob.name(viewer));
+		else if (pct < .70)
+			return L("^p@x1^p has a few cut patches.^N", mob.name(viewer));
+		else if (pct < .80)
+			return L("^g@x1^g has a cut patch of fur.^N", mob.name(viewer));
+		else if (pct < .90)
+			return L("^g@x1^g has some disheveled fur.^N", mob.name(viewer));
+		else if (pct < .99)
+			return L("^g@x1^g has some misplaced hairs.^N", mob.name(viewer));
 		else
-		if(pct<.20)
-			return L("^r@x1^r is covered in blood and matted hair.^N",mob.name(viewer));
-		else
-		if(pct<.30)
-			return L("^r@x1^r is bleeding badly from lots of wounds.^N",mob.name(viewer));
-		else
-		if(pct<.40)
-			return L("^y@x1^y has large patches of bloody matted fur.^N",mob.name(viewer));
-		else
-		if(pct<.50)
-			return L("^y@x1^y has some bloody matted fur.^N",mob.name(viewer));
-		else
-		if(pct<.60)
-			return L("^p@x1^p has a lot of cuts and gashes.^N",mob.name(viewer));
-		else
-		if(pct<.70)
-			return L("^p@x1^p has a few cut patches.^N",mob.name(viewer));
-		else
-		if(pct<.80)
-			return L("^g@x1^g has a cut patch of fur.^N",mob.name(viewer));
-		else
-		if(pct<.90)
-			return L("^g@x1^g has some disheveled fur.^N",mob.name(viewer));
-		else
-		if(pct<.99)
-			return L("^g@x1^g has some misplaced hairs.^N",mob.name(viewer));
-		else
-			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
+			return L("^c@x1^c is in perfect health.^N", mob.name(viewer));
 	}
 
 	@Override
 	public List<RawMaterial> myResources()
 	{
-		synchronized(resources)
+		synchronized (resources)
 		{
-			if(resources.size()==0)
+			if (resources.size() == 0)
 			{
-				resources.addElement(makeResource
-					(L("some @x1 hair",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
-				resources.addElement(makeResource
-					(L("a pair of @x1 teeth",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
-				resources.addElement(makeResource
-					(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+				resources.addElement(makeResource(L("some @x1 hair", name().toLowerCase()), RawMaterial.RESOURCE_FUR));
+				resources.addElement(makeResource(L("a pair of @x1 teeth", name().toLowerCase()), RawMaterial.RESOURCE_BONE));
+				resources.addElement(makeResource(L("some @x1 blood", name().toLowerCase()), RawMaterial.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

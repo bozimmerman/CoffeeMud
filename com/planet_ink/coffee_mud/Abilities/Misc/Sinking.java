@@ -37,17 +37,46 @@ import java.util.*;
 
 public class Sinking extends StdAbility
 {
-	@Override public String ID() { return "Sinking"; }
-	private final static String localizedName = CMLib.lang().L("Sinking");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText(){ return "";}
-	@Override protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	protected boolean isTreading=false;
-	public Room room=null;
-	protected int sinkTickDown=1;
+	@Override
+	public String ID()
+	{
+		return "Sinking";
+	}
 
-	protected boolean reversed(){return proficiency()==100;}
+	private final static String	localizedName	= CMLib.lang().L("Sinking");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS | Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	protected boolean	isTreading		= false;
+	public Room			room			= null;
+	protected int		sinkTickDown	= 1;
+
+	protected boolean reversed()
+	{
+		return proficiency() == 100;
+	}
 
 	protected boolean isWaterSurface(Room R)
 	{
@@ -58,6 +87,7 @@ public class Sinking extends StdAbility
 			return true;
 		return false;
 	}
+	
 	protected boolean isUnderWater(Room R)
 	{
 		if(R==null)
@@ -109,6 +139,7 @@ public class Sinking extends StdAbility
 		}
 		return true;
 	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -169,7 +200,7 @@ public class Sinking extends StdAbility
 			&&(A.proficiencyCheck(mob,25,(A.proficiency()>=75))
 			&&(mob.curState().getMovement()>0)))
 			{
-				if((R.show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> tread(s) water.")))
+				if((R.show(mob,A,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> tread(s) water.")))
 				&&(!mob.isMonster()))
 				{
 					isTreading=true;

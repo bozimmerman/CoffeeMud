@@ -15,11 +15,10 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
-   Copyright 2014 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Penguin extends StdRace
+public class Selkie extends StdRace
 {
 	@Override
 	public String ID()
 	{
-		return "Penguin";
+		return "Selkie";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Penguin");
+	private final static String localizedStaticName = CMLib.lang().L("Selkie");
 
 	@Override
 	public String name()
@@ -52,40 +51,40 @@ public class Penguin extends StdRace
 	@Override
 	public int shortestMale()
 	{
-		return 8;
+		return 59;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 8;
+		return 59;
 	}
 
 	@Override
 	public int heightVariance()
 	{
-		return 24;
+		return 12;
 	}
 
 	@Override
 	public int lightestWeight()
 	{
-		return 5;
+		return 80;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 5;
+		return 80;
 	}
 
 	@Override
 	public long forbiddenWornBits()
 	{
-		return ~(Wearable.WORN_HEAD | Wearable.WORN_EYES);
+		return 0;
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Avian");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Pinniped");
 
 	@Override
 	public String racialCategory()
@@ -93,10 +92,13 @@ public class Penguin extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "Aquan","Skill_Swim" };
-	private final int[]		racialAbilityLevels			= { 1,1 };
-	private final int[]		racialAbilityProficiencies	= { 100,100 };
-	private final boolean[]	racialAbilityQuals			= { false,false };
+	private final String[]	culturalAbilityNames			= { "Aquan", "Fishing" };
+	private final int[]		culturalAbilityProficiencies	= { 25, 100 };
+
+	private final String[]					racialAbilityNames			= { "Skill_Swim" };
+	private final int[]						racialAbilityLevels			= { 1 };
+	private final int[]						racialAbilityProficiencies	= { 100 };
+	private final boolean[]					racialAbilityQuals			= { false };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -122,8 +124,26 @@ public class Penguin extends StdRace
 		return racialAbilityQuals;
 	}
 
+	@Override
+	public int[] getBreathables()
+	{
+		return breatheAirWaterArray;
+	}
+	
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
+	}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
+	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,1 ,1 ,1 ,0 ,0 };
 
 	@Override
 	public int[] bodyMask()
@@ -131,7 +151,7 @@ public class Penguin extends StdRace
 		return parts;
 	}
 
-	private final int[]	agingChart	= { 0, 1, 2, 4, 5, 5, 6, 7, 8 };
+	private final int[]	agingChart	= { 0, 1, 10, 55, 87, 131, 175, 195, 215 };
 
 	@Override
 	public int[] getAgingChart()
@@ -148,45 +168,58 @@ public class Penguin extends StdRace
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
-	{
-		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,3);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
-		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
-	}
-
-	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
 
 	@Override
-	public String arriveStr()
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		return "waddles in";
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+2);
+		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)+2);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-2);
+		affectableStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,affectableStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)-2);
+		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+15);
 	}
 
 	@Override
-	public String leaveStr()
+	public List<Item> outfit(MOB myChar)
 	{
-		return "waddles";
+		if(outfitChoices==null)
+		{
+			// Have to, since it requires use of special constructor
+			final Armor s1=CMClass.getArmor("GenShirt");
+			if(s1 == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector<Item>();
+			s1.setName(L("a delicate sharkskin shirt"));
+			s1.setDisplayText(L("a delicate sharkskin shirt sits here."));
+			s1.setDescription(L("A plain looking shirt, with slick sharky leather gloss."));
+			s1.setMaterial(RawMaterial.RESOURCE_LEATHER);
+			s1.text();
+			outfitChoices.add(s1);
+
+			final Armor p1=CMClass.getArmor("GenPants");
+			p1.setName(L("a sharkskin loincloth"));
+			p1.setDisplayText(L("a sharkskin loincloth has been left here."));
+			p1.setDescription(L("A plain looking loincloth, with slick sharky leather gloss."));
+			s1.setMaterial(RawMaterial.RESOURCE_LEATHER);
+			p1.text();
+			outfitChoices.add(p1);
+			
+			final Armor s3=CMClass.getArmor("GenBelt");
+			outfitChoices.add(s3);
+		}
+		return outfitChoices;
 	}
 
 	@Override
 	public Weapon myNaturalWeapon()
 	{
-		if(naturalWeapon==null)
-		{
-			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(L("a menacing beak"));
-			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
-			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
-		}
-		return naturalWeapon;
+		return funHumanoidWeapon();
 	}
 
 	@Override
@@ -195,7 +228,7 @@ public class Penguin extends StdRace
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return L("^r@x1^r is hovering on deaths door!^N",mob.name(viewer));
+			return L("^r@x1^r is facing a cold death!^N",mob.name(viewer));
 		else
 		if(pct<.20)
 			return L("^r@x1^r is covered in blood.^N",mob.name(viewer));
@@ -204,25 +237,25 @@ public class Penguin extends StdRace
 			return L("^r@x1^r is bleeding badly from lots of wounds.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return L("^y@x1^y has numerous bloody wounds.^N",mob.name(viewer));
+			return L("^y@x1^y has numerous bloody wounds and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return L("^y@x1^y has some bloody wounds.^N",mob.name(viewer));
+			return L("^y@x1^y has some bloody wounds and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return L("^p@x1^p has a lot of nasty bruises.^N",mob.name(viewer));
+			return L("^p@x1^p has a few bloody wounds.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return L("^p@x1^p has a few nasty bruises.^N",mob.name(viewer));
+			return L("^p@x1^p is cut and bruised heavily.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return L("^g@x1^g has a nasty bruise.^N",mob.name(viewer));
+			return L("^g@x1^g has some minor cuts and bruises.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return L("^g@x1^g has a few bumps.^N",mob.name(viewer));
+			return L("^g@x1^g has a few bruises and scratched fur.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return L("^g@x1^g has a minor bump.^N",mob.name(viewer));
+			return L("^g@x1^g has a few small bruises.^N",mob.name(viewer));
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
@@ -235,9 +268,7 @@ public class Penguin extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				(L("some webbed @x1 feet",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
-				resources.addElement(makeResource
-				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_POULTRY));
+				(L("a @x1 gut",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource

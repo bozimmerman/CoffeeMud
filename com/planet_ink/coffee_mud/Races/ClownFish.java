@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Druid;
+package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,33 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-public class Druid_ShapeShift5 extends Druid_ShapeShift
+public class ClownFish extends SmallFish
 {
 	@Override
 	public String ID()
 	{
-		return "Druid_ShapeShift5";
+		return "ClownFish";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Fifth Totem");
+	private final static String localizedStaticName = CMLib.lang().L("Clown Fish");
 
 	@Override
 	public String name()
 	{
-		return localizedName;
+		return localizedStaticName;
 	}
-
-	@Override
-	public int abstractQuality()
-	{
-		return Ability.QUALITY_OK_SELF;
-	}
-
-	@Override
-	public String[] triggerStrings()
-	{
-		return empty;
-	}
-
 }

@@ -721,7 +721,13 @@ public class StdRace implements Race
 					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 				case 9:
-					naturalWeapon.setName(L("a knee"));
+					if(bodyMask()[Race.BODY_LEG]>0)
+						naturalWeapon.setName(L("a knee"));
+					else
+					if(bodyMask()[Race.BODY_GILL]>0)
+						naturalWeapon.setName(L("a fin"));
+					else
+						naturalWeapon.setName(L("a limb"));
 					naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
 				case 10:

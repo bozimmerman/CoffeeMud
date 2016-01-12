@@ -97,25 +97,28 @@ public class Druid_ShapeShift extends StdAbility
 	}
 
 	private static String[][] shapes={
-	{"Mouse",   "Kitten",   "Puppy",	"Robin",  "Garden Snake", "Cub",	"Grasshopper","Spider Monkey","Calf"},
-	{"Rat", 	"Cat",  	"Dog",  	"Owl",    "Snake",     "Young Bear","Centipede",  "Chimp",  	  "Cow"},
-	{"Dire Rat","Puma", 	"Wolf", 	"Hawk",   "Python",    "Brown Bear","Tarantula",  "Ape",		  "Buffalo"},
-	{"WereRat", "Lion", 	"Dire Wolf","Eagle",  "Cobra",     "Black Bear","Scarab",     "Gorilla",	  "Bull"},
-	{"WereBat", "Manticore","WereWolf", "Harpy",  "Naga",      "WereBear",  "ManScorpion","Sasquatch",    "Minotaur"}
+	{"Mouse",   "Kitten",   "Puppy",	"Robin",  "Garden Snake", "Cub",	"Grasshopper","Spider Monkey","Calf",	 "Clown Fish"},
+	{"Rat", 	"Cat",  	"Dog",  	"Owl",    "Snake",     "Young Bear","Centipede",  "Chimp",  	  "Cow",	 "Angelfish"},
+	{"Dire Rat","Puma", 	"Wolf", 	"Hawk",   "Python",    "Brown Bear","Tarantula",  "Ape",		  "Buffalo", "Swordfish"},
+	{"WereRat", "Lion", 	"Dire Wolf","Eagle",  "Cobra",     "Black Bear","Scarab",     "Gorilla",	  "Bull",	 "Shark"},
+	{"WereBat", "Manticore","WereWolf", "Harpy",  "Naga",      "WereBear",  "ManScorpion","Sasquatch",    "Minotaur","Merfolk"}
 	};
+	
 	private static String[][] races={
-	{"Mouse",  "Kitten",   "Puppy",   "Robin",  "GardenSnake","Cub",	 "Grasshopper","Monkey",   "Calf"},
-	{"Rat",    "Cat",      "Dog",     "Owl",	"Snake",	  "Cub",	 "Centipede",  "Chimp",    "Cow"},
-	{"DireRat","Puma",     "Wolf",    "Hawk",   "Python",     "Bear",    "Tarantula",  "Ape",      "Buffalo"},
-	{"WereRat","Lion",     "DireWolf","Eagle",  "Cobra",	  "Bear",    "Scarab",     "Gorilla",  "Bull"},
-	{"WereBat","Manticore","WereWolf","Harpy",  "Naga", 	  "WereBear","ManScorpion","Sasquatch","Minotaur"}
+	{"Mouse",  "Kitten",   "Puppy",   "Robin",  "GardenSnake","Cub",	 "Grasshopper","Monkey",   "Calf",	  "ClownFish",	"Seal"},
+	{"Rat",    "Cat",      "Dog",     "Owl",	"Snake",	  "Cub",	 "Centipede",  "Chimp",    "Cow",	  "AngelFish",	"Walrus"},
+	{"DireRat","Puma",     "Wolf",    "Hawk",   "Python",     "Bear",    "Tarantula",  "Ape",      "Buffalo", "Swordfish",	"Dolphin"},
+	{"WereRat","Lion",     "DireWolf","Eagle",  "Cobra",	  "Bear",    "Scarab",     "Gorilla",  "Bull",	  "Shark",		"Whale"},
+	{"WereBat","Manticore","WereWolf","Harpy",  "Naga", 	  "WereBear","ManScorpion","Sasquatch","Minotaur","Merfolk",	"Selkie"}
 	};
 	private static double[]   attadj=
-	{.7		  ,1.0		  ,1.0		 ,.2	   ,.3			  ,1.2  	,.7 		 ,1.0   	 ,.7};
+	{.7		  ,1.0		  ,1.0		 ,.2	   ,.3			  ,1.2  	,.7 		 ,1.0   	   ,.7 		   ,0.3			,1.0};
 	private static double[]   dmgadj=
-	{.4		  ,.6   	  ,.8   	 ,1.0	   ,.4			  ,.6   	,.6 		  ,.8   	  ,1.0};
+	{.4		  ,.6   	  ,.8   	 ,1.0	   ,.4			  ,.6   	,.6 		  ,.8   	    ,1.0   	   ,0.4			,.5};
 	private static double[]   armadj=
-	{1.0	  ,.5   	  ,.4   	 ,.5	   ,1.0			  ,.3   	,1.0		  ,.2   	  ,.2};
+	{1.0	  ,.5   	  ,.4   	 ,.5	   ,1.0			  ,.3   	,1.0		  ,.2   	    ,.2   	   ,0.5			,.3};
+	private static double[]   spdadj=
+	{0.2	  ,.0   	  ,.0   	 ,.0	   ,0.0			  ,.0   	,0.3		  ,.0   	    ,.0   	   ,1.0   	   ,0.2};
 
 	private static String[] forms={"Rodent form",
 								   "Feline form",
@@ -125,7 +128,9 @@ public class Druid_ShapeShift extends StdAbility
 								   "Bear form",
 								   "Insect form",
 								   "Monkey form",
-								   "Bovine form"};
+								   "Bovine form",
+								   "Fish form",
+								   "Pinniped form"};
 
 	@Override
 	public void setMiscText(String newText)
@@ -141,18 +146,20 @@ public class Druid_ShapeShift extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
+			final PhyStats stats = affectableStats;
 			final int xlvl=getXLEVELLevel(invoker());
 			affectableStats.setName(CMLib.english().startWithAorAn(raceName.toLowerCase()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
-			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
+			final int raceCode = getRaceCode();
+			final int maxRaceLevel = getMaxCharLevel(myRaceLevel);
+			final int adjustedLevel = ((maxRaceLevel>affectableStats.level()) ? maxRaceLevel : affectableStats.level()) + xlvl; 
+			newRace.setHeightWeight(stats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
 			if(oldAdd>0)
-				affectableStats.setWeight(affectableStats.weight()+oldAdd);
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+
-												(int)Math.round(CMath.mul(affectableStats.level()+xlvl,attadj[getRaceCode()])/2.0));
-			affectableStats.setArmor(affectableStats.armor()-
-									(int)Math.round(CMath.mul(affectableStats.level()+xlvl,armadj[getRaceCode()])/2.0));
-			affectableStats.setDamage(affectableStats.damage()+
-									(int)Math.round(CMath.mul(affectableStats.level()+xlvl,dmgadj[getRaceCode()])/2.0));
+				stats.setWeight(stats.weight()+oldAdd);
+			stats.setAttackAdjustment(stats.attackAdjustment()+(int)Math.round(CMath.mul(adjustedLevel,attadj[raceCode])/2.0));
+			stats.setArmor(stats.armor()-(int)Math.round(CMath.mul(adjustedLevel,armadj[raceCode])/2.0));
+			stats.setDamage(stats.damage()+(int)Math.round(CMath.mul(adjustedLevel,dmgadj[raceCode])/2.0));
+			stats.setSpeed(stats.speed()+(spdadj[raceCode] * (1.0+(xlvl/3.0))));
 		}
 	}
 
@@ -213,6 +220,23 @@ public class Druid_ShapeShift extends StdAbility
 			return 3;
 		else
 			return 4;
+	}
+
+	public int getMaxCharLevel(int raceLevel)
+	{
+		switch(raceLevel)
+		{
+		case 0:
+			return 5;
+		case 1:
+			return 11;
+		case 2:
+			return 17;
+		case 3:
+			return 24;
+		default:
+			return Integer.MAX_VALUE;
+		}
 	}
 
 	public int getRaceLevel(MOB mob)

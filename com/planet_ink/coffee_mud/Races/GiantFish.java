@@ -115,7 +115,7 @@ public class GiantFish extends Fish
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		super.affectCharStats(affectedMOB, affectableStats);
+		//super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,10);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);

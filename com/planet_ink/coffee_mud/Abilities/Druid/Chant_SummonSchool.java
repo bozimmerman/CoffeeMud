@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,21 +33,52 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Spell_MirrorImage extends Spell
+public class Chant_SummonSchool extends Chant
 {
-	@Override public String ID() { return "Spell_MirrorImage"; }
-	private final static String localizedName = CMLib.lang().L("Mirror Image");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Mirror Image spell)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonSchool";
+	}
 
-	private final	Random randomizer = new Random(System.currentTimeMillis());
-	protected int numberOfImages = 0;
-	protected boolean notAgain=false;
+	private final static String	localizedName	= CMLib.lang().L("Summon School");
 
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Summon School)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_SELF;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_ANIMALAFFINITY;
+	}
+
+	private final Random	randomizer		= new Random(System.currentTimeMillis());
+	protected int			numberOfImages	= 0;
+	protected boolean		notAgain		= false;
+	protected String		schoolMemberName= "";
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -74,7 +105,7 @@ public class Spell_MirrorImage extends Spell
 			final int numberOfTargets = numberOfImages + intAdjustment;
 			if(randomizer.nextInt() % numberOfTargets >= intAdjustment)
 			{
-				if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<T-NAME> attack(s) a mirrored image!")))
+				if(mob.location().show(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,L("<T-NAME> attack(s) a member of <S-YOUPOSS> school, making <T-HIM-HER> swim away!")))
 					numberOfImages--;
 				return false;
 			}
@@ -93,6 +124,15 @@ public class Spell_MirrorImage extends Spell
 			return;
 
 		final MOB mob=(MOB)affected;
+		Room R=mob.location();
+		if(R==null)
+			return;
+		if((R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+		&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
+		{
+			unInvoke();
+		}
+		
 		if(msg.amISource(mob))
 		{
 			if((
@@ -142,14 +182,6 @@ public class Spell_MirrorImage extends Spell
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		if(numberOfImages > 0)
-			affectableStats.setArmor(affectableStats.armor()-1-getXLEVELLevel(invoker()));
-	}
-
-	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -160,8 +192,8 @@ public class Spell_MirrorImage extends Spell
 			numberOfImages=0;
 		super.unInvoke();
 
-		if(canBeUninvoked())
-			mob.tell(L("Your mirror images fade away."));
+		if(canBeUninvoked() && (mob.location()!=null))
+			mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION, (L("<S-YOUPOSS> school swims away.")));
 	}
 
 	@Override
@@ -172,7 +204,35 @@ public class Spell_MirrorImage extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> mirror images."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a school here."));
+			return false;
+		}
+
+		if(!Druid_ShapeShift.isShapeShifted(mob))
+		{
+			mob.tell(L("You must be in your animal form to call a mate."));
+			return false;
+		}
+		
+		Room R=mob.location();
+		if(R==null)
+			return false;
+		if((R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+		&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
+		{
+			mob.tell(L("You can only summon a school underwater."));
+			return false;
+		}
+		
+		String raceName = mob.charStats().getMyRace().name();
+		String raceCat = mob.charStats().getMyRace().racialCategory();
+		if((raceCat.equalsIgnoreCase("Fish"))||(raceCat.equalsIgnoreCase("Penniped")))
+		{
+			// yay
+		}
+		else
+		{
+			mob.tell(L("You are not in the proper form to call on a school here."));
 			return false;
 		}
 
@@ -184,8 +244,11 @@ public class Spell_MirrorImage extends Spell
 		if(success)
 		{
 			invoker=mob;
-			numberOfImages = CMLib.dice().roll(1,(int)(Math.round(CMath.div(adjustedLevel(mob,asLevel),3.0))),2);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L((auto?"A spell forms around":"^S<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly @x1 copies appear.^?",""+numberOfImages));
+			if(raceName.equalsIgnoreCase("ClownFish"))
+				numberOfImages = CMLib.dice().roll(1,adjustedLevel(mob,asLevel),100);
+			else
+				numberOfImages = CMLib.dice().roll(1,(int)(Math.round(CMath.div(adjustedLevel(mob,asLevel),3.0))),2);
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L((auto?"":"^S<S-NAME> chant(s) to the waters, and ")+"suddenly @x1 @x2(s) arrive, forming up as a school around <S-NAME>.^?",""+numberOfImages,raceName.toLowerCase()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -195,7 +258,7 @@ public class Spell_MirrorImage extends Spell
 		else
 		{
 			numberOfImages = 0;
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> speak(s) reflectively, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) with great force, but nothing more happens."));
 		}
 		// return whether it worked
 		return success;

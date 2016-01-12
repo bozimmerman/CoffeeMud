@@ -35,11 +35,30 @@ import java.util.*;
 
 public class Druid_ShapeShift2 extends Druid_ShapeShift
 {
-	@Override public String ID() { return "Druid_ShapeShift2"; }
-	private final static String localizedName = CMLib.lang().L("Second Totem");
-	@Override public String name() { return localizedName; }
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public String[] triggerStrings(){return empty;}
+	@Override
+	public String ID()
+	{
+		return "Druid_ShapeShift2";
+	}
 
+	private final static String	localizedName	= CMLib.lang().L("Second Totem");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return empty;
+	}
 
 }

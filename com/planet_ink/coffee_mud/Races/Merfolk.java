@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2016 Bo Zimmerman
+   Copyright 2016-2016 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fish extends StdRace
+public class Merfolk extends StdRace
 {
 	@Override
 	public String ID()
 	{
-		return "Fish";
+		return "Merfolk";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Fish");
+	private final static String localizedStaticName = CMLib.lang().L("Merfolk");
 
 	@Override
 	public String name()
@@ -51,37 +51,37 @@ public class Fish extends StdRace
 	@Override
 	public int shortestMale()
 	{
-		return 8;
+		return 90;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 8;
+		return 90;
 	}
 
 	@Override
 	public int heightVariance()
 	{
-		return 3;
+		return 12;
 	}
 
 	@Override
 	public int lightestWeight()
 	{
-		return 5;
+		return 180;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 15;
+		return 50;
 	}
 
 	@Override
 	public long forbiddenWornBits()
 	{
-		return ~(Wearable.WORN_EYES);
+		return Wearable.WORN_LEGS | Wearable.WORN_FEET;
 	}
 
 	private final static String localizedStaticRacialCat = CMLib.lang().L("Fish");
@@ -92,10 +92,13 @@ public class Fish extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "Aquan","Skill_Swim" };
-	private final int[]		racialAbilityLevels			= { 1,1 };
-	private final int[]		racialAbilityProficiencies	= { 100,100 };
-	private final boolean[]	racialAbilityQuals			= { false,false };
+	private final String[]	culturalAbilityNames			= { "Aquan", "Fishing" };
+	private final int[]		culturalAbilityProficiencies	= { 25, 100 };
+
+	private final String[]					racialAbilityNames			= { "Skill_Swim" };
+	private final int[]						racialAbilityLevels			= { 1 };
+	private final int[]						racialAbilityProficiencies	= { 100 };
+	private final boolean[]					racialAbilityQuals			= { false };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -124,11 +127,23 @@ public class Fish extends StdRace
 	@Override
 	public int[] getBreathables()
 	{
-		return breatheWaterArray;
+		return breatheAirWaterArray;
+	}
+	
+	@Override
+	public String[] culturalAbilityNames()
+	{
+		return culturalAbilityNames;
+	}
+
+	@Override
+	public int[] culturalAbilityProficiencies()
+	{
+		return culturalAbilityProficiencies;
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
+	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,0 ,0 ,1 ,1 ,1 ,1 ,1 ,0 };
 
 	@Override
 	public int[] bodyMask()
@@ -136,7 +151,7 @@ public class Fish extends StdRace
 		return parts;
 	}
 
-	private final int[]	agingChart	= { 0, 1, 1, 2, 2, 3, 3, 4, 4 };
+	private final int[]	agingChart	= { 0, 1, 10, 55, 87, 131, 175, 195, 215 };
 
 	@Override
 	public int[] getAgingChart()
@@ -147,90 +162,69 @@ public class Fish extends StdRace
 	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
+	public String arriveStr()
+	{
+		return "flops in";
+	}
+
+	@Override
+	public String leaveStr()
+	{
+		return "flops";
+	}
+
+	
+	@Override
 	public int availabilityCode()
 	{
 		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
 	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
+	}
+
+	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,3);
-		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,7);
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+2);
+		affectableStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+2);
+		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)-2);
+		affectableStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,affectableStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)-2);
+		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+35);
 	}
 
 	@Override
-	public String arriveStr()
+	public List<Item> outfit(MOB myChar)
 	{
-		return "swims in";
-	}
+		if(outfitChoices==null)
+		{
+			// Have to, since it requires use of special constructor
+			final Armor s1=CMClass.getArmor("GenShirt");
+			if(s1 == null)
+				return new Vector<Item>();
+			outfitChoices=new Vector<Item>();
+			s1.setName(L("a delicate scaley green shirt"));
+			s1.setDisplayText(L("a delicate scaley green shirt sits here."));
+			s1.setDescription(L("Obviously fine craftmenship, with sparking scales and intricate designs."));
+			s1.setMaterial(RawMaterial.RESOURCE_SCALES);
+			s1.text();
+			outfitChoices.add(s1);
 
-	@Override
-	public String leaveStr()
-	{
-		return "swims";
+			final Armor s3=CMClass.getArmor("GenBelt");
+			outfitChoices.add(s3);
+		}
+		return outfitChoices;
 	}
 
 	@Override
 	public Weapon myNaturalWeapon()
 	{
-		if(naturalWeapon==null)
-		{
-			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(L("nasty stingers"));
-			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
-			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
-		}
-		return naturalWeapon;
-	}
-
-	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		final MOB mob=(MOB)affected;
-		final Room R=mob.location();
-		if((R!=null)
-		&&((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-			||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			||((RawMaterial.CODES.GET(R.getAtmosphere())&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)))
-				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
-	}
-
-	protected boolean canBreatheThis(final MOB mob, final int atmoResource)
-	{
-		return ((atmoResource<0)
-			||(mob.charStats().getBreathables().length==0)
-			||(Arrays.binarySearch(mob.charStats().getBreathables(), atmoResource)>=0)
-			||(Arrays.binarySearch(getBreathables(),atmoResource)>=0));
-	}
-
-	protected boolean canBreatheHere(final MOB mob, final Room R)
-	{
-		if((R!=null)&&(mob!=null)&&(mob.charStats()!=null))
-			return canBreatheThis(mob,R.getAtmosphere());
-		return false;
-	}
-
-	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
-	{
-		if((msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(msg.amISource((MOB)host))
-		&&(msg.source().isMonster())
-		&&(msg.target() instanceof Room)
-		&&(msg.tool() instanceof Exit)
-		&&(!canBreatheHere(msg.source(), (Room)msg.target()))
-		&&(canBreatheHere(msg.source(), msg.source().location()))) // it's ok to flee if you can't breathe here
-		{
-			((MOB)host).tell(L("That way looks too dry."));
-			return false;
-		}
-		return true;
+		return funHumanoidWeapon();
 	}
 
 	@Override
@@ -239,11 +233,54 @@ public class Fish extends StdRace
 		switch(age)
 		{
 			case Race.AGE_INFANT:
+				return "merbaby";
 			case Race.AGE_TODDLER:
+				return "mertoddler";
 			case Race.AGE_CHILD:
-				return name().toLowerCase()+" fry";
+				switch(gender)
+				{
+				case 'M':
+				case 'm':
+					return "merboy";
+				case 'F':
+				case 'f':
+					return "mergirl";
+				default:
+					return "young "+name().toLowerCase();
+				}
+			case Race.AGE_YOUNGADULT:
+			case Race.AGE_MATURE:
+			case Race.AGE_MIDDLEAGED:
 			default:
-				return super.makeMobName('N', age);
+			{
+				switch(gender)
+				{
+				case 'M':
+				case 'm':
+					return "merman";
+				case 'F':
+				case 'f':
+					return "mermaid";
+				default:
+					return name().toLowerCase();
+				}
+			}
+			case Race.AGE_OLD:
+			case Race.AGE_VENERABLE:
+			case Race.AGE_ANCIENT:
+			{
+				switch(gender)
+				{
+				case 'M':
+				case 'm':
+					return "old merman";
+				case 'F':
+				case 'f':
+					return "old mermaid";
+				default:
+					return "old " + name().toLowerCase();
+				}
+			}
 		}
 	}
 
@@ -292,18 +329,12 @@ public class Fish extends StdRace
 		{
 			if(resources.size()==0)
 			{
-				for(int i=0;i<3;i++)
-				{
-					resources.addElement(makeResource
-					(L("some @x1",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
-				}
-				for(int i=0;i<2;i++)
-				{
-					resources.addElement(makeResource
-					(L("a @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
-				}
+				resources.addElement(makeResource
+				(L("a pair of @x1 fins",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;
