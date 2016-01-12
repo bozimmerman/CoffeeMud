@@ -84,7 +84,7 @@ public class Selkie extends StdRace
 		return 0;
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Pinniped");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Sea Mammal");
 
 	@Override
 	public String racialCategory()

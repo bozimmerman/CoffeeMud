@@ -91,7 +91,7 @@ public class Seal extends GiantFish
 				Wearable.WORN_HEAD|Wearable.WORN_MOUTH|Wearable.WORN_WAIST);
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Pinniped");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Sea Mammal");
 
 	@Override
 	public String racialCategory()

@@ -122,7 +122,7 @@ public class Druid_ShapeShift extends StdAbility
 
 	private static String[] forms={"Rodent form",
 								   "Feline form",
-								   "K-9 form",
+								   "Canine form",
 								   "Bird form",
 								   "Snake form",
 								   "Bear form",
@@ -130,7 +130,7 @@ public class Druid_ShapeShift extends StdAbility
 								   "Monkey form",
 								   "Bovine form",
 								   "Fish form",
-								   "Pinniped form"};
+								   "Sea Mammal form"};
 
 	@Override
 	public void setMiscText(String newText)
