@@ -142,7 +142,7 @@ public class Remort extends StdCommand
 			if(retainer != null)
 			{
 				int flatAmount=0;
-				double pctAmount = 0.0;
+				double pctAmount = 1.0;
 				if(CMath.isPct(rest))
 				{
 					pctAmount = CMath.s_pct(rest);
