@@ -11,7 +11,8 @@
   10. New Chants: Reef Walking, Capsize
   11. New races: SmallFish, Angelfish, Merfolk, Selkie, Swordfish, Dolphin, Seal, Walrus, Whale
   12. New language: Aquan
-  13. New Druid Shapeshift forms: Fish and Penniped (I bet you saw this coming)
+  13. New Druid Shapeshift forms: Fish and Sea Mammal (I bet you saw this coming)
+  14. Archon AutoInvoke now saves settings.  Default no-invoke list now in lists.ini
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)

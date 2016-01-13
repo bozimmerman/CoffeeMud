@@ -1133,6 +1133,15 @@ public class StdCharClass implements CharClass
 			grantAbilities(mob,isBorrowedClass);
 			CMLib.achievements().grantAbilitiesAndExpertises(mob);
 		}
+		if((mob!=null) && (CMSecurity.isASysOp(mob) || CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.ALLSKILLS)))
+		{
+			final PlayerStats pStats = mob.playerStats();
+			if((pStats != null)&&(!pStats.isOnAutoInvokeList("ANYTHING")))
+			{
+				for(String s : CMProps.getListFileVarSet(CMProps.ListFile.WIZ_NOAUTOINVOKE))
+					pStats.addAutoInvokeList(s);
+			}
+		}
 	}
 
 	@Override

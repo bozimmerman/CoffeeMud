@@ -85,6 +85,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected List<String>	 tellStack		= new SVector<String>();
 	protected List<String>	 gtellStack		= new SVector<String>();
 	protected List<String>	 titles			= new SVector<String>();
+	protected Set<String>	 autoInvokeSet	= new TreeSet<String>();
 	protected PlayerAccount  account		= null;
 	protected SecGroup		 securityFlags	= new SecGroup(new CMSecurity.SecFlag[]{});
 	protected long			 accountExpires	= 0;
@@ -708,6 +709,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+CMLib.xml().parseOutAngleBrackets(tranpoofout)+"</TRANPOOFOUT>":"")
 			+"<DATES>"+this.getLevelDateTimesStr()+"</DATES>"
 			+"<SECGRPS>"+CMLib.xml().parseOutAngleBrackets(getSetSecurityFlags(null))+"</SECGRPS>"
+			+"<AUTOINVSET>"+CMLib.xml().parseOutAngleBrackets(getStat("AUTOINVSET"))+"</AUTOINVSET>"
 			+roomSet().xml()
 			+rest.toString();
 	}
@@ -991,6 +993,8 @@ public class DefaultPlayerStats implements PlayerStats
 			bonusLanguages=CMath.s_int(allAccStats[3]);
 			bonusCharStatPt=CMath.s_int(allAccStats[4]);
 		}
+		
+		setStat("AUTOINVSET",CMLib.xml().restoreAngleBrackets(xmlLib.getValFromPieces(xml,"AUTOINVSET")));
 	}
 
 	private String getLevelDateTimesStr()
@@ -1365,7 +1369,7 @@ public class DefaultPlayerStats implements PlayerStats
 									 "ACCTEXPIRATION","INTRODUCTIONS","PAGEBREAK",
 									 "SAVEDPOSE","THEME", "LEGLEVELS","BONUSCOMMON",
 									 "BONUSCRAFT","BONUSNONCRAFT","BONUSLANGS",
-									 "BONUSCHARSTATS"};
+									 "BONUSCHARSTATS","AUTOINVSET"};
 	@Override
 	public String getStat(String code)
 	{
@@ -1429,6 +1433,8 @@ public class DefaultPlayerStats implements PlayerStats
 			return "" + bonusLanguages;
 		case 28:
 			return "" + bonusCharStatPt;
+		case 29:
+			return CMParms.combineWith(autoInvokeSet, ',');
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1533,12 +1539,39 @@ public class DefaultPlayerStats implements PlayerStats
 		case 28:
 			bonusCharStatPt = CMath.s_parseIntExpression(val);
 			break;
+		case 29:
+			autoInvokeSet = new XTreeSet<String>(CMParms.parseAny(val,',',true));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
 
+	@Override
+	public boolean isOnAutoInvokeList(String abilityID)
+	{
+		if(abilityID != null)
+		{
+			if(abilityID.equals("ANYTHING"))
+				return this.autoInvokeSet.size()>0;
+			return this.autoInvokeSet.contains(abilityID);
+		}
+		return false;
+	}
+	
+	@Override
+	public void addAutoInvokeList(String abilityID)
+	{
+		this.autoInvokeSet.add(abilityID);
+	}
+	
+	@Override
+	public void removeAutoInvokeList(String abilityID)
+	{
+		this.autoInvokeSet.remove(abilityID);
+	}
+	
 	@Override
 	public int getSaveStatIndex()
 	{

@@ -50,6 +50,7 @@ public class AutoInvoke extends StdCommand
 	
 	protected void autoInvoke(MOB mob, Ability foundA, String s, Set<String> effects, AutoInvokeCommand cmd)
 	{
+		final PlayerStats pStats = mob.playerStats();
 		if(foundA==null)
 			mob.tell(L("'@x1' is invalid.",s));
 		else
@@ -57,6 +58,8 @@ public class AutoInvoke extends StdCommand
 		{
 			if((cmd == AutoInvokeCommand.UNINVOKE) || (cmd == AutoInvokeCommand.TOGGLE))
 			{
+				if(pStats != null)
+					pStats.addAutoInvokeList(foundA.ID());
 				foundA=mob.fetchEffect(foundA.ID());
 				if(foundA!=null)
 				{
@@ -72,6 +75,8 @@ public class AutoInvoke extends StdCommand
 		{
 			if((cmd == AutoInvokeCommand.INVOKE) || (cmd == AutoInvokeCommand.TOGGLE))
 			{
+				if(pStats != null)
+					pStats.removeAutoInvokeList(foundA.ID());
 				foundA.autoInvocation(mob, true);
 				if(mob.fetchEffect(foundA.ID())!=null)
 					mob.tell(L("@x1 successfully invoked.",foundA.name()));
@@ -82,7 +87,7 @@ public class AutoInvoke extends StdCommand
 	}
 
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final List<Ability> abilities=new Vector<Ability>();
@@ -111,7 +116,8 @@ public class AutoInvoke extends StdCommand
 		}
 		abilityids.clear();
 
-		Collections.sort(abilities,new Comparator<Ability>(){
+		Collections.sort(abilities,new Comparator<Ability>()
+		{
 			@Override
 			public int compare(Ability o1, Ability o2)
 			{
@@ -158,11 +164,23 @@ public class AutoInvoke extends StdCommand
 			final AutoInvoke me=this;
 			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 			{
-				@Override public void showPrompt() { session.promptPrint(L("Enter one to toggle or RETURN: "));}
-				@Override public void timedOut() { }
-				@Override public void callBack()
+				@Override
+				public void showPrompt()
+				{
+					session.promptPrint(L("Enter one to toggle or RETURN: "));
+				}
+
+				@Override
+				public void timedOut()
+				{
+				}
+
+				@Override
+				public void callBack()
 				{
 					String s=this.input;
+					if(s.trim().length()==0)
+						return;
 					AutoInvokeCommand cmd=AutoInvokeCommand.TOGGLE;
 					if(s.toUpperCase().startsWith("INVOKE "))
 					{
@@ -204,14 +222,22 @@ public class AutoInvoke extends StdCommand
 							&&(A.name().equalsIgnoreCase(s) 
 								|| (startsWith && A.name().toLowerCase().startsWith(s))
 								|| (endsWith && A.name().toLowerCase().endsWith(s))))
-							{ foundA=A; break;}
+							{
+								foundA = A;
+								break;
+							}
 						}
 						if(foundA==null)
+						{
 							for(Ability A : abilities)
 							{
 								if((A!=null)&&(CMLib.english().containsString(A.name(),s)))
-								{ foundA=A; break;}
+								{
+									foundA = A;
+									break;
+								}
 							}
+						}
 						me.autoInvoke(mob, foundA, s, effects, cmd);
 					}
 					mob.recoverCharStats();
@@ -222,12 +248,42 @@ public class AutoInvoke extends StdCommand
 					mob.recoverCharStats();
 					mob.recoverPhyStats();
 					mob.recoverMaxState();
+					CMLib.threads().executeRunnable(new Runnable()
+					{
+						public void run()
+						{
+							session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+							{
+								@Override
+								public void showPrompt()
+								{
+									session.promptPrint(L("Enter to continue: "));
+								}
+
+								@Override
+								public void timedOut()
+								{
+								}
+
+								@Override
+								public void callBack()
+								{
+									try
+									{
+										me.execute(mob, commands, metaFlags);
+									}
+									catch(Exception e)
+									{
+									}
+								}
+							});
+						}
+					});
 				}
 			});
 		}
 		return false;
 	}
-
 
 	@Override public boolean canBeOrdered(){return true;}
 

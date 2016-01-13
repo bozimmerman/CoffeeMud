@@ -709,6 +709,32 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	public void addLegacyLevel(String category);
 
 	/**
+	 * Checks whether the given ability ID is on the list of those skills
+	 * whose autoInvocation should be suppressed.
+	 * The abilityID is case sensitive, and you can send the fake
+	 * ID "ANYTHIN" to check if ANY skills are on the list.
+	 * @param abilityID the ability ID() to suppress
+	 * @return true if it is on the list, false otherwise
+	 */
+	public boolean isOnAutoInvokeList(String abilityID);
+	
+	/**
+	 * Adds the given ability ID is on the list of those skills
+	 * whose autoInvocation should be suppressed.
+	 * The abilityID is case sensitive.
+	 * @param abilityID the ability ID() to add
+	 */
+	public void addAutoInvokeList(String abilityID);
+	
+	/**
+	 * Removes the given ability ID is on the list of those skills
+	 * whose autoInvocation should be suppressed.
+	 * The abilityID is case sensitive.
+	 * @param abilityID the ability ID() to remove
+	 */
+	public void removeAutoInvokeList(String abilityID);
+	
+	/**
 	 * Returns the legacy levels for this player, in the given categories
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addLegacyLevel(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTotalLegacyLevels()

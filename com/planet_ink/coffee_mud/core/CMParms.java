@@ -265,12 +265,30 @@ public class CMParms
 		final StringBuilder combined=new StringBuilder("");
 		if(commands!=null)
 		{
-			for(int commandIndex=0;commandIndex<commands.size();commandIndex++)
-				combined.append(commands.get(commandIndex).toString()+withChar);
+			for(Object o : commands)
+				combined.append(withChar).append(o.toString());
 		}
-		return combined.toString().trim();
+		return combined.substring(1);
 	}
 
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now delimited by the character given.
+	 * @param commands the objects to combine into a single string
+	 * @param withChar the character to use as a delimiter
+	 * @return the single string
+	 */
+	public final static String combineWith(final Set<?> commands, final char withChar)
+	{
+		final StringBuilder combined=new StringBuilder("");
+		if(commands!=null)
+		{
+			for(Object o : commands)
+				combined.append(withChar).append(o.toString());
+		}
+		return combined.substring(1);
+	}
+	
 	/**
 	 * Returns a string containing the given objects, with toString()
 	 * called, and now space delimited.  If any toString() calls
@@ -311,10 +329,28 @@ public class CMParms
 		final StringBuilder combined=new StringBuilder("");
 		if(commands!=null)
 		{
-			for(int commandIndex=0;commandIndex<commands.size();commandIndex++)
-				combined.append(commands.get(commandIndex).toString()).append(withSeparator);
+			for(Object o : commands)
+				combined.append(withSeparator).append(o.toString());
 		}
-		return combined.toString().trim();
+		return combined.substring(withSeparator.length());
+	}
+
+	/**
+	 * Returns a string containing the given objects, with toString()
+	 * called, and now delimited by the string given.
+	 * @param commands the objects to combine into a single string
+	 * @param withSeparator the string to use as a delimiter
+	 * @return the single string
+	 */
+	public final static String combineWith(final Set<?> commands, final String withSeparator)
+	{
+		final StringBuilder combined=new StringBuilder("");
+		if(commands!=null)
+		{
+			for(Object o : commands)
+				combined.append(withSeparator).append(o.toString());
+		}
+		return combined.substring(withSeparator.length());
 	}
 
 	/**

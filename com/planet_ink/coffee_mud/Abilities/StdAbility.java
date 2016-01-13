@@ -1616,6 +1616,12 @@ public class StdAbility implements Ability
 	{
 		if(isAutoInvoked())
 		{
+			if(!force)
+			{
+				final PlayerStats pStats = mob.playerStats();
+				if((pStats != null) && (pStats.isOnAutoInvokeList(ID())))
+					return false;
+			}
 			final Ability thisAbility=mob.fetchEffect(ID());
 			if(thisAbility!=null)
 				return false;

@@ -183,7 +183,7 @@ public class Chant_CallMate extends Chant
 		}
 		
 		String raceCat = mob.charStats().getMyRace().racialCategory();
-		if((raceCat.equalsIgnoreCase("Fish"))||(raceCat.equalsIgnoreCase("Penniped")))
+		if((raceCat.equalsIgnoreCase("Fish"))||(raceCat.equalsIgnoreCase("Sea Mammal")))
 		{
 			if((R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 			&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)

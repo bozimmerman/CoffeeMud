@@ -226,7 +226,7 @@ public class Chant_SummonSchool extends Chant
 		
 		String raceName = mob.charStats().getMyRace().name();
 		String raceCat = mob.charStats().getMyRace().racialCategory();
-		if((raceCat.equalsIgnoreCase("Fish"))||(raceCat.equalsIgnoreCase("Penniped")))
+		if((raceCat.equalsIgnoreCase("Fish"))||(raceCat.equalsIgnoreCase("Sea Mammal")))
 		{
 			// yay
 		}
