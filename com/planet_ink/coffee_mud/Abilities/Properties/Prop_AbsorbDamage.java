@@ -77,20 +77,20 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 
 			int immune=text.indexOf("+ALL");
 			int x=-1;
-			for(final int i : CharStats.CODES.SAVING_THROWS())
-				if((CharStats.CODES.CMMSGMAP(i)==msg.sourceMinor())
-				&&((msg.tool()==null)||(i!=CharStats.STAT_SAVE_MAGIC)))
+			int statCode = CharStats.CODES.RVSCMMSGMAP(msg.sourceMinor());
+			if((statCode>=0)
+			&&((msg.tool()==null)||(statCode!=CharStats.STAT_SAVE_MAGIC)))
+			{
+				x=text.indexOf(CharStats.CODES.NAME(statCode));
+				if(x>0)
 				{
-					x=text.indexOf(CharStats.CODES.NAME(i));
-					if(x>0)
-					{
-						if((text.charAt(x-1)=='-')&&(immune>=0))
-							immune=-1;
-						else
-						if(text.charAt(x-1)!='-')
-							immune=x;
-					}
+					if((text.charAt(x-1)=='-')&&(immune>=0))
+						immune=-1;
+					else
+					if(text.charAt(x-1)!='-')
+						immune=x;
 				}
+			}
 
 			if((x<0)&&(msg.tool() instanceof Weapon))
 			{

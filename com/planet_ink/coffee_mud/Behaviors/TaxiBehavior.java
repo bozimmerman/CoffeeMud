@@ -126,9 +126,9 @@ public class TaxiBehavior extends Concierge
 			if((rideable!=null)&&(room!=null))
 			{
 				MOB mob=this.getTalker(observer, room);
-				for(final Iterator<Rider> r = rideable.riders(); r.hasNext(); )
+				for(final Enumeration<Rider> r = rideable.riders(); r.hasMoreElements(); )
 				{
-					final Rider rider=r.next();
+					final Rider rider=r.nextElement();
 					if(!defaultRiders.contains(rider))
 					{
 						if(rider instanceof MOB)

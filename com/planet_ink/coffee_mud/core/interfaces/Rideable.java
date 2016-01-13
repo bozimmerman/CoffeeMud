@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import java.util.Iterator;
+import java.util.Enumeration;
 import java.util.Set;
 
 /*
@@ -108,7 +108,7 @@ public interface Rideable extends PhysicalAgent
 	 * @see Rider
 	 * @return the riders
 	 */
-	public Iterator<Rider> riders();
+	public Enumeration<Rider> riders();
 
 	/**
 	 * Returns a particular Rider mounted on this Rideable.  May return null

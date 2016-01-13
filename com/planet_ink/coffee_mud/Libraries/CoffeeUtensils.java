@@ -1192,7 +1192,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			if(cond.startsWith("<"))
 				finish=CMath.s_int(cond.substring(1).trim())-1;
 
-			if((start>=startOfRange)&&(finish<=endOfRange)&&(start<=finish))
+			if(finish > endOfRange)
+				finish = endOfRange;
+			if((start>=startOfRange)&&(start<=finish))
 			{
 				for(int s=start;s<=finish;s++)
 				{

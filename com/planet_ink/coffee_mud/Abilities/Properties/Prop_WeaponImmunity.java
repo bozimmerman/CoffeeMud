@@ -108,21 +108,20 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 
 			boolean immune=flags.containsKey("ALL")&&(((Character)flags.get("ALL")).charValue()=='+');
 			Character foundPlusMinus=null;
-			for(final int i : CharStats.CODES.SAVING_THROWS())
-				if((CharStats.CODES.CMMSGMAP(i)==msg.sourceMinor())
-				&&(i!=CharStats.STAT_SAVE_MAGIC))
+			int statCode = CharStats.CODES.RVSCMMSGMAP(msg.sourceMinor());
+			if((statCode>=0)
+			&&(statCode!=CharStats.STAT_SAVE_MAGIC))
+			{
+				foundPlusMinus=(Character)flags.get(CharStats.CODES.NAME(statCode));
+				if(foundPlusMinus!=null)
 				{
-					foundPlusMinus=(Character)flags.get(CharStats.CODES.NAME(i));
-					if(foundPlusMinus!=null)
-					{
-						if((foundPlusMinus.charValue()=='-')&&(immune))
-							immune=false;
-						else
-						if(foundPlusMinus.charValue()!='-')
-							immune=true;
-						break;
-					}
+					if((foundPlusMinus.charValue()=='-')&&(immune))
+						immune=false;
+					else
+					if(foundPlusMinus.charValue()!='-')
+						immune=true;
 				}
+			}
 
 			if((foundPlusMinus==null)&&(msg.tool() instanceof Weapon))
 			{

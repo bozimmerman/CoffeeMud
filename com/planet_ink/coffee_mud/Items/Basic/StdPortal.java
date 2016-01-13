@@ -48,31 +48,133 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		material=RawMaterial.RESOURCE_NOTHING;
 	}
 
+	protected String	doorName	= "";
+	protected String	closedText	= "";
 
 	// common item/mob stuff
-	@Override public boolean isMobileRideBasis(){return false;}
-	@Override public int rideBasis(){return Rideable.RIDEABLE_ENTERIN;}
-	@Override public void setRideBasis(int basis){}
-	@Override public int riderCapacity(){ return 1;}
-	@Override public void setRiderCapacity(int newCapacity){}
-	@Override public int numRiders(){return 0;}
-	@Override public Iterator<Rider> riders(){return EmptyIterator.INSTANCE;}
-	@Override public Rider fetchRider(int which){return null;}
-	@Override public void addRider(Rider mob){}
-	@Override public void delRider(Rider mob){}
-	@Override public void recoverPhyStats(){CMLib.flags().setReadable(this,false); super.recoverPhyStats();}
+	@Override
+	public boolean isMobileRideBasis()
+	{
+		return false;
+	}
 
-	@Override public Set<MOB> getRideBuddies(Set<MOB> list){return list;}
+	@Override
+	public int rideBasis()
+	{
+		return Rideable.RIDEABLE_ENTERIN;
+	}
 
-	@Override public boolean mobileRideBasis(){return false;}
-	@Override public String stateString(Rider R){    return "in";}
-	@Override public String putString(Rider R){ return "in";}
-	@Override public String mountString(int commandType, Rider R){ return "enter(s)";}
-	@Override public String dismountString(Rider R){	return "emerge(s) from";}
-	@Override public String stateStringSubject(Rider R){return "occupied by";    }
-	@Override public short exitUsage(short change){ return 0;}
-	@Override public String displayText(){return displayText;}
-	@Override public boolean amRiding(Rider mob){ return false;}
+	@Override
+	public void setRideBasis(int basis)
+	{
+	}
+
+	@Override
+	public int riderCapacity()
+	{
+		return 1;
+	}
+
+	@Override
+	public void setRiderCapacity(int newCapacity)
+	{
+	}
+
+	@Override
+	public int numRiders()
+	{
+		return 0;
+	}
+
+	@Override
+	public Enumeration<Rider> riders()
+	{
+		return EmptyEnumeration.INSTANCE;
+	}
+
+	@Override
+	public Rider fetchRider(int which)
+	{
+		return null;
+	}
+
+	@Override
+	public void addRider(Rider mob)
+	{
+	}
+
+	@Override
+	public void delRider(Rider mob)
+	{
+	}
+
+	@Override
+	public void recoverPhyStats()
+	{
+		CMLib.flags().setReadable(this, false);
+		super.recoverPhyStats();
+	}
+
+	@Override
+	public Set<MOB> getRideBuddies(Set<MOB> list)
+	{
+		return list;
+	}
+
+	@Override
+	public boolean mobileRideBasis()
+	{
+		return false;
+	}
+
+	@Override
+	public String stateString(Rider R)
+	{
+		return "in";
+	}
+
+	@Override
+	public String putString(Rider R)
+	{
+		return "in";
+	}
+
+	@Override
+	public String mountString(int commandType, Rider R)
+	{
+		return "enter(s)";
+	}
+
+	@Override
+	public String dismountString(Rider R)
+	{
+		return "emerge(s) from";
+	}
+
+	@Override
+	public String stateStringSubject(Rider R)
+	{
+		return "occupied by";
+	}
+
+	@Override
+	public short exitUsage(short change)
+	{
+		return 0;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return displayText;
+	}
+
+	@Override
+	public boolean amRiding(Rider mob)
+	{
+		return false;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -139,7 +241,11 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		return R;
 	}
 
-	@Override public Room lastRoomUsedFrom() { return getDestinationRoom(); }
+	@Override
+	public Room lastRoomUsedFrom()
+	{
+		return getDestinationRoom();
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -189,20 +295,40 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		}
 	}
 
-	@Override public boolean hasADoor(){return super.hasADoor();}
-	@Override public boolean defaultsLocked(){return super.hasALock();}
-	@Override public boolean defaultsClosed(){return super.hasADoor();}
 	@Override
-	public void setDoorsNLocks(boolean hasADoor,
-							   boolean isOpen,
-							   boolean defaultsClosed,
-							   boolean hasALock,
-							   boolean isLocked,
-							   boolean defaultsLocked)
-	{ super.setDoorsNLocks(hasADoor,isOpen,defaultsClosed,hasALock,isLocked,defaultsLocked);}
+	public boolean hasADoor()
+	{
+		return super.hasADoor();
+	}
 
-	@Override public boolean isReadable(){return false;}
-	@Override public void setReadable(boolean isTrue){}
+	@Override
+	public boolean defaultsLocked()
+	{
+		return super.hasALock();
+	}
+
+	@Override
+	public boolean defaultsClosed()
+	{
+		return super.hasADoor();
+	}
+
+	@Override
+	public void setDoorsNLocks(boolean hasADoor, boolean isOpen, boolean defaultsClosed, boolean hasALock, boolean isLocked, boolean defaultsLocked)
+	{
+		super.setDoorsNLocks(hasADoor, isOpen, defaultsClosed, hasALock, isLocked, defaultsLocked);
+	}
+
+	@Override
+	public boolean isReadable()
+	{
+		return false;
+	}
+
+	@Override
+	public void setReadable(boolean isTrue)
+	{
+	}
 
 	private static final StringBuilder empty=new StringBuilder("");
 
@@ -224,6 +350,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		else
 		if(( CMLib.flags().canBeSeenBy(this,mob)|| (isOpen()&&hasADoor()))
 		&&(CMLib.flags().isSeeable(this)))
+		{
 			if(isOpen())
 			{
 				if(!CMLib.flags().canBeSeenBy(room,mob))
@@ -234,16 +361,34 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			else
 			if((CMLib.flags().canBeSeenBy(this,mob))&&(closedText().trim().length()>0))
 				Say.append(closedText()+CMLib.flags().getDispositionBlurbs(this,mob));
+		}
 		return Say;
 	}
 
-	protected String doorName="";
-	@Override public String doorName(){return doorName;}
-	protected String closedText="";
-	@Override public String closedText(){return closedText;}
+	@Override
+	public String doorName()
+	{
+		return doorName;
+	}
 
-	@Override public String closeWord(){return "close";}
-	@Override public String openWord(){return "open";}
+	@Override
+	public String closedText()
+	{
+		return closedText;
+	}
+
+	@Override
+	public String closeWord()
+	{
+		return "close";
+	}
+
+	@Override
+	public String openWord()
+	{
+		return "open";
+	}
+
 	@Override
 	public void setExitParams(String newDoorName,
 							  String newCloseWord,
@@ -254,9 +399,25 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		closedText=newClosedText;
 	}
 
+	@Override
+	public int openDelayTicks()
+	{
+		return 0;
+	}
 
-	@Override public int openDelayTicks(){return 0;}
-	@Override public void setOpenDelayTicks(int numTicks){}
-	@Override public String temporaryDoorLink(){return "";}
-	@Override public void setTemporaryDoorLink(String link){}
+	@Override
+	public void setOpenDelayTicks(int numTicks)
+	{
+	}
+
+	@Override
+	public String temporaryDoorLink()
+	{
+		return "";
+	}
+
+	@Override
+	public void setTemporaryDoorLink(String link)
+	{
+	}
 }

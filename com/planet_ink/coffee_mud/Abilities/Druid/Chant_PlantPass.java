@@ -36,21 +36,66 @@ import java.util.*;
 
 public class Chant_PlantPass extends Chant
 {
-	@Override public String ID() { return "Chant_PlantPass"; }
-	private final static String localizedName = CMLib.lang().L("Plant Pass");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public long flags(){return Ability.FLAG_TRANSPORTING;}
+	@Override
+	public String ID()
+	{
+		return "Chant_PlantPass";
+	}
 
+	private final static String	localizedName	= CMLib.lang().L("Plant Pass");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_SHAPE_SHIFTING;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_TRANSPORTING;
+	}
+
+	protected String getPlantsWord()
+	{
+		return "plants";
+	}
+	
+	protected boolean isAcceptableTargetRoom(MOB mob, Room newRoom)
+	{
+		return true;
+	}
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(L("You must specify the name of the location of one of your plants.  Use your 'My Plants' skill if necessary."));
+			mob.tell(L("You must specify the name of the location of one of your "+getPlantsWord()+".  Use your 'My Plants' skill if necessary."));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -58,7 +103,7 @@ public class Chant_PlantPass extends Chant
 		final Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(myPlant==null)
 		{
-			mob.tell(L("There doesn't appear to be any of your plants here to travel through."));
+			mob.tell(L("There doesn't appear to be any of your "+this.getPlantsWord()+" here to travel through."));
 			return false;
 		}
 
@@ -75,10 +120,20 @@ public class Chant_PlantPass extends Chant
 		}
 		if(newRoom==null)
 		{
-			mob.tell(L("You can't seem to fixate on a place called '@x1', perhaps you have nothing growing there?",CMParms.combine(commands,0)));
+			mob.tell(L("You can't seem to fixate on a place called '@x1', perhaps you have no "+this.getPlantsWord()+" there?",CMParms.combine(commands,0)));
 			return false;
 		}
 
+		if(!this.isAcceptableTargetRoom(mob, newRoom))
+			return false;
+		
+		final Item otherPlant = Druid_MyPlants.myPlant(newRoom, mob, 0);
+		if(otherPlant==null)
+		{
+			mob.tell(L("You can't seem to fixate on place called '@x1', perhaps your "+this.getPlantsWord()+" there are dead?",CMParms.combine(commands,0)));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -98,7 +153,7 @@ public class Chant_PlantPass extends Chant
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> emerge(s) from the ground."));
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> emerge(s) from the @x1.",otherPlant.name()));
 					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> <S-IS-ARE> sucked into @x1.",myPlant.name()));
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{

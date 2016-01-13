@@ -1407,9 +1407,9 @@ public class StdRoom implements Room
 		}
 		if((oldRoom!=null)&&(mob instanceof Rideable)&&(oldRoom!=this))
 		{
-			for(final Iterator<Rider> r=((Rideable)mob).riders();r.hasNext();)
+			for(final Enumeration<Rider> r=((Rideable)mob).riders();r.hasMoreElements();)
 			{
-				final Rider RR=r.next();
+				final Rider RR=r.nextElement();
 				if(CMLib.map().roomLocation(RR)==oldRoom)
 				{
 					if(((Rideable)mob).isMobileRideBasis())

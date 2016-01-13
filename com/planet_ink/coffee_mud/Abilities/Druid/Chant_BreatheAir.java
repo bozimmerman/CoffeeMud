@@ -34,15 +34,16 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Chant_BreatheWater extends Chant
+
+public class Chant_BreatheAir extends Chant
 {
 	@Override
 	public String ID()
 	{
-		return "Chant_BreatheWater";
+		return "Chant_BreatheAir";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Fish Gills");
+	private final static String	localizedName	= CMLib.lang().L("Land Lungs");
 
 	@Override
 	public String name()
@@ -50,7 +51,7 @@ public class Chant_BreatheWater extends Chant
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Fish Gills)");
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Land Lungs)");
 
 	@Override
 	public String displayText()
@@ -67,7 +68,7 @@ public class Chant_BreatheWater extends Chant
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_SELF;
+		return Ability.QUALITY_OK_OTHERS;
 	}
 
 	protected int[]	lastSet	= null;
@@ -82,23 +83,41 @@ public class Chant_BreatheWater extends Chant
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(L("Your fish gills disappear."));
+			mob.tell(L("Your land lungs disappear."));
+	}
+
+	@Override
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				final MOB targetM=(MOB)target;
+				if((targetM.fetchEffect(this.ID())!=null)
+				||(CMParms.contains(targetM.charStats().getBreathables(),RawMaterial.RESOURCE_AIR)))
+					return Ability.QUALITY_INDIFFERENT;
+				final Room R=targetM.location();
+				if((R!=null)
+				&&((R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+					||(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
+					return Ability.QUALITY_BENEFICIAL_OTHERS;
+			}
+		}
+		return super.castingQuality(mob,target);
 	}
 
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if(affectableStats.getBodyPart(Race.BODY_GILL)==0)
-			affectableStats.alterBodypart(Race.BODY_GILL,2);
 		super.affectCharStats(affected,affectableStats);
 		final int[] breatheables=affectableStats.getBreathables();
 		if(breatheables.length==0)
 			return;
 		if((lastSet!=breatheables)||(newSet==null))
 		{
-			newSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+2);
-			newSet[newSet.length-1]=RawMaterial.RESOURCE_SALTWATER;
-			newSet[newSet.length-2]=RawMaterial.RESOURCE_FRESHWATER;
+			newSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+1);
+			newSet[newSet.length-1]=RawMaterial.RESOURCE_AIR;
 			Arrays.sort(newSet);
 			lastSet=breatheables;
 		}
@@ -108,13 +127,11 @@ public class Chant_BreatheWater extends Chant
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
-
-		if(target.fetchEffect(this.ID())!=null)
+		MOB target=super.getTarget(mob, commands, givenTarget, false, false);
+		if((target.fetchEffect(this.ID())!=null)
+		||(CMParms.contains(target.charStats().getBreathables(),RawMaterial.RESOURCE_AIR)))
 		{
-			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already a water breather."));
+			mob.tell(target,null,null,L("<S-NAME> <S-IS-ARE> already an air breather."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -127,7 +144,7 @@ public class Chant_BreatheWater extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) a pair of gills!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> grow(s) a pair of lungs!"));
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

@@ -1933,12 +1933,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for (final Environmental E : list)
 				{
 					if(E!=null)
+					{
 						if(E.ID().equalsIgnoreCase(srchStr)
 						||E.name().equalsIgnoreCase(srchStr)
 						||E.Name().equalsIgnoreCase(srchStr))
+						{
 							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							{
 								if((--myOccurrance)<=0)
 									return E;
+							}
+						}
+					}
 				}
 			}
 			else
@@ -1947,10 +1953,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for (final Environmental E : list)
 				{
 					if((E!=null)
-					   &&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
-					   &&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+					&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+					&&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+					{
 						if((--myOccurrance)<=0)
 							return E;
+					}
 				}
 				myOccurrance=flags.occurrance;
 				for (final Environmental E : list)
@@ -1959,8 +1967,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					&&(!(E instanceof Ability))
 					&&(containsString(E.displayText(),srchStr)
 						||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr))))
-							if((--myOccurrance)<=0)
-								return E;
+					{
+						if((--myOccurrance)<=0)
+							return E;
+					}
 				}
 			}
 		}
@@ -2043,12 +2053,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					final Environmental E=iter.next();
 					if(E!=null)
+					{
 						if(E.ID().equalsIgnoreCase(srchStr)
 						||E.name().equalsIgnoreCase(srchStr)
 						||E.Name().equalsIgnoreCase(srchStr))
+						{
 							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							{
 								if((--myOccurrance)<=0)
 									return E;
+							}
+						}
+					}
 				}
 			}
 			else
@@ -2063,12 +2079,74 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						||containsString(E.displayText(),srchStr)
 						||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
 					&&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+					{
 						if((--myOccurrance)<=0)
 							return E;
+					}
 				}
 			}
 		}
-		catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
+		return null;
+	}
+
+	@Override
+	public Environmental fetchEnvironmental(Enumeration<? extends Environmental> iter, String srchStr, boolean exactOnly)
+	{
+		final FetchFlags flags=fetchFlags(srchStr);
+		if(flags==null)
+			return null;
+
+		srchStr=flags.srchStr;
+		int myOccurrance=flags.occurrance;
+		final boolean allFlag=flags.allFlag;
+		try
+		{
+			if(exactOnly)
+			{
+				srchStr=cleanExtraneousDollarMarkers(srchStr);
+				for (;iter.hasMoreElements();)
+				{
+					final Environmental E=iter.nextElement();
+					if(E!=null)
+					{
+						if(E.ID().equalsIgnoreCase(srchStr)
+						||E.name().equalsIgnoreCase(srchStr)
+						||E.Name().equalsIgnoreCase(srchStr))
+						{
+							if((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							{
+								if((--myOccurrance)<=0)
+									return E;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				myOccurrance=flags.occurrance;
+				for (;iter.hasMoreElements();)
+				{
+					final Environmental E=iter.nextElement();
+					if((E!=null)
+					&&(containsString(E.name(),srchStr)
+						||containsString(E.Name(),srchStr)
+						||containsString(E.displayText(),srchStr)
+						||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+					&&((!allFlag)||(E instanceof Ability)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+					{
+						if((--myOccurrance)<=0)
+							return E;
+					}
+				}
+			}
+		}
+		catch (final java.lang.ArrayIndexOutOfBoundsException x)
+		{
+		}
 		return null;
 	}
 

@@ -2843,7 +2843,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.tell(L("@x1. Trains: @x1, Pracs: @x2, Quest Pts: @x3",""+showNumber,""+me.getTrains(), ""+me.getPractices(), ""+me.getQuestPoint()));
+		mob.tell(L("@x1. Trains: @x2, Pracs: @x3, Quest Pts: @x4",""+showNumber,""+me.getTrains(), ""+me.getPractices(), ""+me.getQuestPoint()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		me.setTrains(CMath.s_int(mob.session().prompt(L("*. Training Points ("+me.getTrains()+"): ",""+me.getTrains()))));

@@ -784,19 +784,20 @@ public interface CharStats extends CMCommon, Modifiable
 	{
 		private static CODES[] insts=new CODES[256];
 
-		private int[] baseStatCodes = new int[0];
-		private int[] maxStatCodes = new int[0];
-		private int[] MaxBaseCrossCodes = new int[0];
-		private int[] allStatCodes = new int[0];
-		private int[] savingThrowCodes = new int[0];
-		private boolean[] isBaseStatCode = new boolean[0];
-		private String[] statAbbreviations=new String[0];
-		private String[] statDescriptions=new String[0];
-		private String[] statNames=new String[0];
-		private String[] baseStatNames=new String[0];
-		private String[] shortNames=new String[0];
-		private String[] statAttributionDescriptions=new String[0];
-		private int[] statCMMsgMapping=new int[0];
+		private int[]			baseStatCodes				= new int[0];
+		private int[]			maxStatCodes				= new int[0];
+		private int[]			MaxBaseCrossCodes			= new int[0];
+		private int[]			allStatCodes				= new int[0];
+		private int[]			savingThrowCodes			= new int[0];
+		private boolean[]		isBaseStatCode				= new boolean[0];
+		private String[]		statAbbreviations			= new String[0];
+		private String[]		statDescriptions			= new String[0];
+		private String[]		statNames					= new String[0];
+		private String[]		baseStatNames				= new String[0];
+		private String[]		shortNames					= new String[0];
+		private String[]		statAttributionDescriptions	= new String[0];
+		private int[]			statCMMsgMapping			= new int[0];
+		private final Map<Integer,Integer> rvsStatCMMsgMapping	= new Hashtable<Integer,Integer>();
 
 		public CODES()
 		{
@@ -1093,6 +1094,18 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @return the CMMsg mapping of the stat
 		 */
 		public static int CMMSGMAP(int code) { return c().statCMMsgMapping[code];}
+		/**
+		 * Returns the Reverse CMMsg mapping of the stat from MsgCode -> Stat Code
+		 * @param code the Stat mapping for the given CMMsg code or -1
+		 * @return the Stat mapping of the CMMsg
+		 */
+		public static int RVSCMMSGMAP(int code) 
+		{
+			final Integer statCode = c().rvsStatCMMsgMapping.get(Integer.valueOf(code));
+			if(statCode != null)
+				return statCode.intValue();
+			return -1;
+		}
 
 		/**
 		 * Returns the code for the given stat name
@@ -1208,6 +1221,7 @@ public interface CharStats extends CMCommon, Modifiable
 			statAttributionDescriptions[allStatCodes.length-1]=attDesc.toUpperCase();
 			statCMMsgMapping=Arrays.copyOf(statCMMsgMapping, allStatCodes.length);
 			statCMMsgMapping[allStatCodes.length-1]=cmmsgMap;
+			rvsStatCMMsgMapping.put(Integer.valueOf(cmmsgMap), Integer.valueOf(allStatCodes.length-1));
 		}
 	}
 }

@@ -6858,8 +6858,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E instanceof Rideable)
 				{
-					for(final Iterator<Rider> r=((Rideable)E).riders();r.hasNext();)
-						results.append(CMParms.quoteIfNecessary(r.next().name())).append(" ");
+					for(final Enumeration<Rider> r=((Rideable)E).riders();r.hasMoreElements();)
+						results.append(CMParms.quoteIfNecessary(r.nextElement().name())).append(" ");
 				}
 				if(E instanceof Container)
 				{

@@ -2725,30 +2725,26 @@ public class StdMOB implements MOB
 
 				if ((msg.targetMinor() != CMMsg.TYP_WEAPONATTACK) && (msg.value() <= 0))
 				{
-					int chanceToFail = Integer.MIN_VALUE;
-					for (final int c : CharStats.CODES.SAVING_THROWS())
+					int charStatCode = CharStats.CODES.RVSCMMSGMAP(msg.targetMinor());
+					if(charStatCode >= 0)
 					{
-						if (msg.targetMinor() == CharStats.CODES.CMMSGMAP(c))
+						int chanceToFail = charStats().getSave(charStatCode);
+						if (chanceToFail > Integer.MIN_VALUE)
 						{
-							chanceToFail = charStats().getSave(c);
-							break;
-						}
-					}
-					if (chanceToFail > Integer.MIN_VALUE)
-					{
-						final int diff = (phyStats().level() - srcM.phyStats().level());
-						final int diffSign = diff < 0 ? -1 : 1;
-						chanceToFail += (diffSign * (diff * diff));
-						if (chanceToFail < 5)
-							chanceToFail = 5;
-						else
-						if (chanceToFail > 95)
-							chanceToFail = 95;
+							final int diff = (phyStats().level() - srcM.phyStats().level());
+							final int diffSign = diff < 0 ? -1 : 1;
+							chanceToFail += (diffSign * (diff * diff));
+							if (chanceToFail < 5)
+								chanceToFail = 5;
+							else
+							if (chanceToFail > 95)
+								chanceToFail = 95;
 
-						if (CMLib.dice().rollPercentage() < chanceToFail)
-						{
-							CMLib.combat().resistanceMsgs(srcM, this, msg);
-							msg.setValue(msg.value() + 1);
+							if (CMLib.dice().rollPercentage() < chanceToFail)
+							{
+								CMLib.combat().resistanceMsgs(srcM, this, msg);
+								msg.setValue(msg.value() + 1);
+							}
 						}
 					}
 				}

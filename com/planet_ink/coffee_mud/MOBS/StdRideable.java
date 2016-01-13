@@ -15,9 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
-
 import java.util.*;
 
 /*
@@ -38,10 +35,16 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdRideable extends StdMOB implements Rideable
 {
-	@Override public String ID(){return "StdRideable";}
-	protected int rideBasis=Rideable.RIDEABLE_LAND;
-	protected int riderCapacity=2;
-	protected List<Rider> riders=new SVector();
+	@Override
+	public String ID()
+	{
+		return "StdRideable";
+	}
+
+	protected int			rideBasis		= Rideable.RIDEABLE_LAND;
+	protected int			riderCapacity	= 2;
+	protected List<Rider>	riders			= new SVector();
+
 	public StdRideable()
 	{
 		super();
@@ -118,12 +121,42 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	// common item/mob stuff
-	@Override public int rideBasis(){return rideBasis;}
-	@Override public void setRideBasis(int basis){rideBasis=basis;}
-	@Override public int riderCapacity(){ return riderCapacity;}
-	@Override public void setRiderCapacity(int newCapacity){riderCapacity=newCapacity;}
-	@Override public int numRiders(){return riders.size();}
-	@Override public boolean mobileRideBasis(){return true;}
+	@Override
+	public int rideBasis()
+	{
+		return rideBasis;
+	}
+
+	@Override
+	public void setRideBasis(int basis)
+	{
+		rideBasis = basis;
+	}
+
+	@Override
+	public int riderCapacity()
+	{
+		return riderCapacity;
+	}
+
+	@Override
+	public void setRiderCapacity(int newCapacity)
+	{
+		riderCapacity = newCapacity;
+	}
+
+	@Override
+	public int numRiders()
+	{
+		return riders.size();
+	}
+
+	@Override
+	public boolean mobileRideBasis()
+	{
+		return true;
+	}
+
 	@Override
 	public Rider fetchRider(int which)
 	{
@@ -149,12 +182,19 @@ public class StdRideable extends StdMOB implements Rideable
 			while(riders.remove(mob))
 				{}
 	}
-	@Override public Iterator<Rider> riders() { return riders.iterator();}
+
+	@Override
+	public Enumeration<Rider> riders()
+	{
+		return new IteratorEnumeration<Rider>(riders.iterator());
+	}
+
 	@Override
 	public String displayText(MOB mob)
 	{
 		return super.displayText(mob); // StdMOB handles rideables
 	}
+
 	@Override
 	public void recoverPhyStats()
 	{
@@ -165,30 +205,37 @@ public class StdRideable extends StdMOB implements Rideable
 		if(rideBasis==Rideable.RIDEABLE_WATER)
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
 	}
+
 	@Override
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(amRiding(affected))
+		{
 			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)&&(A.bubbleAffect()))
 				   A.affectCharStats(affected,affectableStats);
 			}
+		}
 	}
+
 	@Override
 	public void affectCharState(MOB affected, CharState affectableStats)
 	{
 		super.affectCharState(affected,affectableStats);
 		if(amRiding(affected))
+		{
 			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)&&(A.bubbleAffect()))
 				   A.affectCharState(affected,affectableStats);
 			}
+		}
 	}
+
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -214,26 +261,31 @@ public class StdRideable extends StdMOB implements Rideable
 			}
 		}
 	}
+
 	@Override
 	public boolean amRiding(Rider mob)
 	{
 		return riders.contains(mob);
 	}
+
 	@Override
 	public String stateString(Rider R)
 	{
 		return "riding on";
 	}
+
 	@Override
 	public String mountString(int commandType, Rider R)
 	{
 		return "mount(s)";
 	}
+
 	@Override
 	public String dismountString(Rider R)
 	{
 		return "dismount(s)";
 	}
+
 	@Override
 	public String stateStringSubject(Rider R)
 	{
@@ -498,8 +550,8 @@ public class StdRideable extends StdMOB implements Rideable
 		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		{
 			if((msg.amITarget(this))
-			   &&((msg.source().riding()==this)
-				  ||(this.amRiding(msg.source()))))
+			&&((msg.source().riding()==this)
+				||(this.amRiding(msg.source()))))
 			{
 				msg.source().tell(L("You can't attack @x1 right now.",name(msg.source())));
 				if(getVictim()==msg.source())
@@ -510,10 +562,9 @@ public class StdRideable extends StdMOB implements Rideable
 			}
 			else
 			if((msg.amISource(this))
-			   &&(msg.target() instanceof MOB)
-			   &&((amRiding((MOB)msg.target()))
-				  ||(((MOB)msg.target()).riding()==this)))
-
+			&&(msg.target() instanceof MOB)
+			&&((amRiding((MOB)msg.target()))
+				||(((MOB)msg.target()).riding()==this)))
 			{
 				final MOB targ=(MOB)msg.target();
 				tell(L("You can't attack @x1 right now.",targ.name(this)));
@@ -545,16 +596,20 @@ public class StdRideable extends StdMOB implements Rideable
 			{
 				((Rider)msg.tool()).setRiding(null);
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
+				{
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
+				}
 			}
 			else
 			if(amRiding(msg.source()))
 			{
 				msg.source().setRiding(null);
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
+				{
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
+				}
 			}
 			break;
 		case CMMsg.TYP_MOUNT:
@@ -564,16 +619,20 @@ public class StdRideable extends StdMOB implements Rideable
 				{
 					((Rider)msg.tool()).setRiding(this);
 					if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
+					{
 						if(msg.source().location()!=null)
 							msg.source().location().recoverRoomStats();
+					}
 				}
 				else
 				if(!amRiding(msg.source()))
 				{
 					msg.source().setRiding(this);
 					if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
+					{
 						if(msg.source().location()!=null)
 							msg.source().location().recoverRoomStats();
+					}
 				}
 			}
 			break;
@@ -585,10 +644,12 @@ public class StdRideable extends StdMOB implements Rideable
 		case CMMsg.TYP_DEATH:
 			if(amRiding(msg.source()))
 			{
-			   msg.source().setRiding(null);
+				msg.source().setRiding(null);
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
+				{
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
+				}
 			}
 			break;
 		}

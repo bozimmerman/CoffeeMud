@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -113,7 +111,13 @@ public class StdRideable extends StdContainer implements Rideable
 		if((mob!=null)&&(!riders.contains(mob)))
 			riders.add(mob);
 	}
-	@Override public Iterator<Rider> riders(){return riders.iterator();}
+
+	@Override
+	public Enumeration<Rider> riders()
+	{
+		return new IteratorEnumeration<Rider>(riders.iterator());
+	}
+
 	@Override
 	public void delRider(Rider mob)
 	{
