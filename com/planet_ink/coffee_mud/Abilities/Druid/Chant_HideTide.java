@@ -189,17 +189,17 @@ public class Chant_HideTide extends Chant
 		{
 			if((d!=Directions.UP)&&(d!=Directions.DOWN))
 			{
-				Room R=mobR.getRoomInDir(d);
-				Exit E=mobR.getExitInDir(d);
+				final Room R=mobR.getRoomInDir(d);
+				final Exit E=mobR.getExitInDir(d);
 				if((R!=null)&&(E!=null)&&(E.isOpen()))
 				{
 					if(isWaterRoom(R))
 					{
 						return d;
 					}
-					R=R.getRoomInDir(d);
-					E=R.getExitInDir(d);
-					if((R!=null)&&(E!=null)&&(E.isOpen()) && (isWaterRoom(R)))
+					final Room R2=R.getRoomInDir(d);
+					final Exit E2=R.getExitInDir(d);
+					if((R2!=null)&&(E2!=null)&&(E2.isOpen()) && (isWaterRoom(R2)))
 					{
 						return d;
 					}

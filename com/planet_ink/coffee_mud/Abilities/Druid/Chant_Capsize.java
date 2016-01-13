@@ -148,7 +148,7 @@ public class Chant_Capsize extends Chant
 						for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 						{
 							MOB M=m.nextElement();
-							if((M instanceof MOB)&&(!grp.contains(M)))
+							if(!grp.contains(M))
 							{
 								if(M.isMonster() && (M.phyStats().level() > highestLevelNPC))
 								{
@@ -189,9 +189,7 @@ public class Chant_Capsize extends Chant
 			mob.tell(L("This chant does not work here."));
 			return false;
 		}
-		Item target=null;
-		if(target==null)
-			target=getTarget(mob,R,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		Item target=getTarget(mob,R,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 			return false;
 		
