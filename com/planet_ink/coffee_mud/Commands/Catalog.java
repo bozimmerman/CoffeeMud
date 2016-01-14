@@ -260,6 +260,36 @@ public class Catalog extends StdCommand
 
 	}
 
+	protected String listCatagories(CatalogKind whatKind)
+	{
+		StringBuilder list = new StringBuilder("");
+		List<CatalogKind> types = new ArrayList<CatalogKind>();
+		if((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.MOB))
+			types.add(CatalogKind.MOB);
+		if((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.MOB))
+			types.add(CatalogKind.ITEM);
+		for(CatalogKind kind : types)
+		{
+			list.append(L("\n\r^H"+CMStrings.capitalizeAndLower(kind.name()).trim()+" categories:"));
+			list.append("\n\r"+CMStrings.repeat('-',78)+"^?\n\r");
+			List<String> cats;
+			switch(kind)
+			{
+			case MOB:
+				cats=Arrays.asList(CMLib.catalog().getMobCatalogCatagories());
+				break;
+			case ITEM:
+			default:
+				cats=Arrays.asList(CMLib.catalog().getItemCatalogCatagories());
+				break;
+			}
+			for(String c : cats)
+				list.append(c+"\n\r");
+			list.append("\n\r");
+		}
+		return list.toString();
+	}
+	
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -341,6 +371,12 @@ public class Catalog extends StdCommand
 					ID=ID.toUpperCase().trim();
 					if(ID.length()>0)
 					{
+						if(ID.equalsIgnoreCase("LIST"))
+						{
+							mob.tell(listCatagories(CatalogKind.OBJECT));
+							return false;
+						}
+						else
 						if((!CMParms.contains(CMLib.catalog().getItemCatalogCatagories(),ID))
 						&&(!CMParms.contains(CMLib.catalog().getMobCatalogCatagories(),ID)))
 						{
@@ -400,6 +436,17 @@ public class Catalog extends StdCommand
 				MOB M=null;
 				Item I=null;
 				CatalogLibrary.CataData data;
+				if((ID.equalsIgnoreCase("CATEGORIES")
+					||ID.equalsIgnoreCase("CATEGORY")
+					||ID.equalsIgnoreCase("CATAGORIES")
+					||ID.equalsIgnoreCase("CATAGORY")
+					||ID.equalsIgnoreCase("CATS")
+					||ID.equalsIgnoreCase("CAT")))
+				{
+					mob.tell(listCatagories(CatalogKind.OBJECT));
+					return false;
+				}
+				else
 				if((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.MOB))
 				{
 					String cat=currentCats.get(mob.Name());
@@ -416,7 +463,7 @@ public class Catalog extends StdCommand
 						if(M!=null)
 						{
 							data=CMLib.catalog().getCatalogMobData(name);
-							if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(M.Name(),ID)))
+							if((ID.length()==0)||(CMLib.english().containsString(M.Name(),ID)))
 							{
 								list.append(CMStrings.padRight(M.Name(),34)).append(" ");
 								list.append(CMStrings.padRight(Integer.toString(data.numReferences()),3));
@@ -450,7 +497,7 @@ public class Catalog extends StdCommand
 						if(I!=null)
 						{
 							data=CMLib.catalog().getCatalogItemData(name);
-							if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(I.Name(),ID)))
+							if((ID.length()==0)||(CMLib.english().containsString(I.Name(),ID)))
 							{
 								list.append(CMStrings.padRight(I.Name(),34)+" ");
 								list.append(CMStrings.padRight(Integer.toString(data.numReferences()),3)+" ");
@@ -809,7 +856,7 @@ public class Catalog extends StdCommand
 			}
 		}
 		else
-			mob.tell(L("Catalog huh? Try CATALOG LIST (MOBS/ITEMS) (MASK), CATALOG [mob/item name], CATALOG DELETE [mob/item name], CATALOG EDIT [item name]."));
+			mob.tell(L("Catalog huh? Try CATALOG LIST (MOBS/ITEMS/CATEGORIES) (MASK), CATALOG [mob/item name], CATALOG DELETE [mob/item name], CATALOG EDIT [item name], CATALOG CATEGORY LIST/[category name]."));
 		return false;
 	}
 
