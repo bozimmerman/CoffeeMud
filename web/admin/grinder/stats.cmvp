@@ -222,7 +222,7 @@
 			@AreaNext?RESET@
 			@loop@
 			@AreaNext@
-			<OPTION VALUE="_@AreaName?UNDERSCORE@">@AreaName@
+			<OPTION VALUE="X@AreaName?UNDERSCORE&UPPERCASE@">@AreaName@
 			@back@
 			@AreaNext?RESET@
 		@endif@

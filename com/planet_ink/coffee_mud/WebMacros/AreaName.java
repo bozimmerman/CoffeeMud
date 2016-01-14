@@ -53,7 +53,11 @@ public class AreaName extends StdWebMacro
 			if(A!=null)
 			{
 				final java.util.Map<String,String> parms=parseParms(parm);
-				final String name = (parms.containsKey("UNDERSCORE")) ? A.Name().replace(' ','_') : A.Name();
+				String name = A.Name();
+				if(parms.containsKey("UNDERSCORE"))
+					name = name.replace(' ','_');
+				if(parms.containsKey("UPPERCASE"))
+					name = name.toUpperCase();
 				return clearWebMacros(name);
 			}
 		}

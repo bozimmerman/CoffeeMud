@@ -36,25 +36,74 @@ import java.util.*;
 */
 public class DefaultCoffeeTableRow implements CoffeeTableRow
 {
-	@Override public String ID(){return "DefaultCoffeeTableRow";}
-	@Override public String name() { return ID();}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	@Override
+	public String ID()
+	{
+		return "DefaultCoffeeTableRow";
+	}
 
-	public SHashtable<String,long[]> stats=new SHashtable<String,long[]>();
-	public long highestOnline=0;
-	public long numberOnlineTotal=0;
-	public long numberOnlineCounter=0;
-	public long startTime=0;
-	public long endTime=0;
+	@Override
+	public String name()
+	{
+		return ID();
+	}
 
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 
-	@Override public void setStartTime(long time){startTime=time;}
-	@Override public void setEndTime(long time){endTime=time;}
-	@Override public long startTime(){return startTime;}
-	@Override public long endTime(){return endTime;}
-	@Override public long highestOnline(){return highestOnline;}
-	@Override public long numberOnlineTotal(){return numberOnlineTotal;}
-	@Override public long numberOnlineCounter(){return numberOnlineCounter;}
+	public Map<String, long[]> stats= new SHashtable<String, long[]>();
+	
+	public long	highestOnline		= 0;
+	public long	numberOnlineTotal	= 0;
+	public long	numberOnlineCounter	= 0;
+	public long	startTime			= 0;
+	public long	endTime				= 0;
+
+	@Override
+	public void setStartTime(long time)
+	{
+		startTime = time;
+	}
+
+	@Override
+	public void setEndTime(long time)
+	{
+		endTime = time;
+	}
+
+	@Override
+	public long startTime()
+	{
+		return startTime;
+	}
+
+	@Override
+	public long endTime()
+	{
+		return endTime;
+	}
+
+	@Override
+	public long highestOnline()
+	{
+		return highestOnline;
+	}
+
+	@Override
+	public long numberOnlineTotal()
+	{
+		return numberOnlineTotal;
+	}
+
+	@Override
+	public long numberOnlineCounter()
+	{
+		return numberOnlineCounter;
+	}
+
 	@Override
 	public String data()
 	{
@@ -63,9 +112,9 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		data.append(CMLib.xml().convertXMLtoTag("NUMONLINE",numberOnlineTotal));
 		data.append(CMLib.xml().convertXMLtoTag("NUMCOUNT",numberOnlineCounter));
 		data.append("<STATS>");
-		for(final Enumeration<String> e=stats.keys();e.hasMoreElements();)
+		for(final Iterator<String> e=stats.keySet().iterator();e.hasNext();)
 		{
-			final String s=e.nextElement();
+			final String s=e.next();
 			final long[] l=stats.get(s);
 			data.append(CMLib.xml().convertXMLtoTag(s,CMParms.toListString(l)));
 		}
@@ -94,9 +143,9 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	public void totalUp(String code, long[] tot)
 	{
 		code=tagFix(code);
-		for(final Enumeration<String> e=stats.keys();e.hasMoreElements();)
+		for(final Iterator<String> e=stats.keySet().iterator();e.hasNext();)
 		{
-			final String s=e.nextElement();
+			final String s=e.next();
 			if(s.startsWith(code)
 			||(s.startsWith("C")&&code.startsWith("*")))
 			{
@@ -140,7 +189,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			if((A!=null) && (CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				A=CMLib.map().getModelArea(A);
 			if(A!=null)
-				bumpVal("_"+tagFix(A.Name()),type);
+				bumpVal("X"+tagFix(A.Name()),type);
 			bumpVal("B"+tagFix(mob.baseCharStats().getCurrentClass().baseClass()),type);
 			bumpVal("C"+tagFix(mob.baseCharStats().getCurrentClass().ID()),type);
 			bumpVal("R"+tagFix(mob.baseCharStats().getMyRace().ID()),type);
@@ -153,8 +202,10 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			bumpVal("J"+H.size(),type);
 			int pct=0;
 			for (final MOB mob2 : H)
+			{
 				if(!mob2.isMonster())
 					pct++;
+			}
 			if(pct==0)
 				pct=1;
 			bumpVal("P"+pct,type);
@@ -206,8 +257,24 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			}
 		}
 	}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultCoffeeTableRow();}}
-	@Override public void initializeClass(){}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultCoffeeTableRow();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
 
 	@Override
 	public CMObject copyOf()
@@ -215,7 +282,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		try
 		{
 			final DefaultCoffeeTableRow CR=(DefaultCoffeeTableRow)this.clone();
-			CR.stats=stats.copyOf();
+			CR.stats=new SHashtable<String,long[]>();
+			CR.stats.putAll(stats);
 			return CR;
 		}
 		catch(final Exception e){return newInstance();}

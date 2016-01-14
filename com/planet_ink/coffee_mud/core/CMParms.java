@@ -268,6 +268,8 @@ public class CMParms
 			for(Object o : commands)
 				combined.append(withChar).append(o.toString());
 		}
+		if(combined.length()==0)
+			return "";
 		return combined.substring(1);
 	}
 
@@ -286,6 +288,8 @@ public class CMParms
 			for(Object o : commands)
 				combined.append(withChar).append(o.toString());
 		}
+		if(combined.length()==0)
+			return "";
 		return combined.substring(1);
 	}
 	

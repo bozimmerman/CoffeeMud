@@ -137,7 +137,8 @@ public class Stat  extends Skills
 			final int x=rest.indexOf(' ');
 			if(x>0)
 				rest=rest.substring(x+1).trim();
-			else rest="";
+			else 
+				rest="";
 		}
 		if(rest.toUpperCase().trim().startsWith("QUEST"))
 		{
@@ -145,7 +146,8 @@ public class Stat  extends Skills
 			final int x=rest.indexOf(' ');
 			if(x>0)
 				rest=rest.substring(x+1).trim();
-			else rest="";
+			else 
+				rest="";
 		}
 		if(rest.toUpperCase().trim().startsWith("AREA"))
 		{
@@ -339,35 +341,32 @@ public class Stat  extends Skills
 		else
 		if(areaStats)
 		{
-			ArrayList<CoffeeTableRow> backup = new ArrayList<CoffeeTableRow>(V.size());
-			backup.addAll(V);
+			lastCur=ENDQ.getTimeInMillis();
+			final Calendar C2=Calendar.getInstance();
+			C2.setTimeInMillis(curTime);
+			C2.add(Calendar.DATE,-(scale));
+			curTime=C2.getTimeInMillis();
+			C2.set(Calendar.HOUR_OF_DAY,23);
+			C2.set(Calendar.MINUTE,59);
+			C2.set(Calendar.SECOND,59);
+			C2.set(Calendar.MILLISECOND,999);
+			curTime=C2.getTimeInMillis();
+			final ArrayList<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
+			for(int v=V.size()-1;v>=0;v--)
+			{
+				final CoffeeTableRow T=V.get(v);
+				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+				{
+					set.add(T);
+					V.remove(v);
+				}
+			}
 			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=a.nextElement();
 				if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))
 				{
-					code = "_"+A.Name().replace(' ','_');
-					V=backup;
-					lastCur=ENDQ.getTimeInMillis();
-					final Calendar C2=Calendar.getInstance();
-					C2.setTimeInMillis(curTime);
-					C2.add(Calendar.DATE,-(scale));
-					curTime=C2.getTimeInMillis();
-					C2.set(Calendar.HOUR_OF_DAY,23);
-					C2.set(Calendar.MINUTE,59);
-					C2.set(Calendar.SECOND,59);
-					C2.set(Calendar.MILLISECOND,999);
-					curTime=C2.getTimeInMillis();
-					final ArrayList<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
-					for(int v=V.size()-1;v>=0;v--)
-					{
-						final CoffeeTableRow T=V.get(v);
-						if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
-						{
-							set.add(T);
-							V.remove(v);
-						}
-					}
+					code = "X"+A.Name().toUpperCase().replace(' ','_');
 					final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
 					long highestOnline=0;
 					long numberOnlineTotal=0;
@@ -1150,8 +1149,15 @@ public class Stat  extends Skills
 			str.append("^C"+CMStrings.padRight(test.Name(),40)+": ^W"+diff+"\n\r");
 	}
 
-	@Override public boolean canBeOrdered(){return true;}
-	@Override public boolean securityCheck(MOB mob){return true;}
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 
-
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return true;
+	}
 }

@@ -129,7 +129,8 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		return true;
 	}
 
-	@Override public boolean tick(Tickable ticking, int tickID)
+	@Override 
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		try
 		{
