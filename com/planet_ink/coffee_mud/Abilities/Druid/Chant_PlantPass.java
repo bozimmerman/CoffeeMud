@@ -114,8 +114,8 @@ public class Chant_PlantPass extends Chant
 			final Room room=candidates.get(m);
 			if(CMLib.english().containsString(room.displayText(mob),areaName))
 			{
-			   newRoom=room;
-			   break;
+				newRoom=room;
+				break;
 			}
 		}
 		if(newRoom==null)

@@ -1475,8 +1475,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	public BoardableShip getShip(String calledThis)
 	{
 		for (final BoardableShip S : shipList)
+		{
 			if (S.Name().equalsIgnoreCase(calledThis))
 				return S;
+		}
 		return null;
 	}
 	
@@ -1550,7 +1552,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		};
 	}
 
-	public int numPostOffices() { return postOfficeList.size(); }
+	public int numPostOffices()
+	{
+		return postOfficeList.size();
+	}
+
 	protected void addPostOffice(PostOffice newOne)
 	{
 		if(!postOfficeList.contains(newOne))
@@ -2469,6 +2475,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		boolean searchStocks=false;
 		final char[] flags = srchWhatAERIPMVK.toUpperCase().toCharArray();
 		for (final char flag : flags)
+		{
 			switch(flag)
 			{
 				case 'E': searchWeakAreas=true;   break;
@@ -2480,6 +2487,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				case 'V': searchInventories=true; break;
 				case 'K': searchStocks=true;	  break;
 			}
+		}
 		final long startTime = System.currentTimeMillis();
 		if(searchRooms)
 		{
@@ -2488,13 +2496,19 @@ public class CMMap extends StdLibrary implements WorldMap
 				room=addWorldRoomsLiberally(rooms,curRoom.rawDoors()[dirCode]);
 			if(room==null)
 				room=addWorldRoomsLiberally(rooms,getRoom(cmd));
+			if((room == null) && (curRoom != null) && (curRoom.getArea()!=null))
+				room=addWorldRoomsLiberally(rooms,curRoom.getArea().getRoom(cmd));
 		}
 
 		if(room==null)
 		{
 			// first get room ids
 			if((cmd.charAt(0)=='#')&&(curRoom!=null)&&(searchRooms))
+			{
 				room=addWorldRoomsLiberally(rooms,getRoom(curRoom.getArea().Name()+cmd));
+				if(room == null)
+					room=addWorldRoomsLiberally(rooms,curRoom.getArea().getRoom(curRoom.getArea().Name()+cmd));
+			}
 			else
 			{
 				final String srchStr=cmd;

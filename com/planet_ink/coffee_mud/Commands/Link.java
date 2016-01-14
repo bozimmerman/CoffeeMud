@@ -63,14 +63,16 @@ public class Link extends At
 		}
 
 		Room thisRoom=null;
-		final String RoomID=CMParms.combine(commands,1);
-		thisRoom=CMLib.map().getRoom(RoomID);
+		final String roomID=CMParms.combine(commands,1);
+		thisRoom = mob.location().getArea().getRoom(roomID);
+		if(thisRoom != null)
+			thisRoom=CMLib.map().getRoom(roomID);
 		if(thisRoom==null)
 		{
-			thisRoom=CMLib.map().findWorldRoomLiberally(mob,RoomID,"R",100,120000);
+			thisRoom=CMLib.map().findWorldRoomLiberally(mob,roomID,"R",100,120000);
 			if(thisRoom==null)
 			{
-				mob.tell(L("Room \"@x1\" is unknown.  Try again.",RoomID));
+				mob.tell(L("Room \"@x1\" is unknown.  Try again.",roomID));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 				return false;
 			}

@@ -1347,6 +1347,28 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}
 	}
 
+	private void addShipProperty(MOB buyer, List<Environmental> V, ItemCollection extItems)
+	{
+		for(final Enumeration<Item> i=extItems.items();i.hasMoreElements();)
+		{
+			final Item I=i.nextElement();
+			if((I instanceof PrivateProperty)&&(I instanceof BoardableShip))
+			{
+				final PrivateProperty P = (PrivateProperty)I;
+				if(CMLib.law().doesOwnThisProperty(buyer,P))
+				{
+					final LandTitle titleI=(LandTitle)CMClass.getItem("GenTitle");
+					titleI.setLandPropertyID(I.Name());
+					if(!titleI.Name().endsWith(" (Copy)"))
+						titleI.setName(L("@x1 (Copy)",titleI.Name()));
+					titleI.text();
+					((Item)titleI).recoverPhyStats();
+					V.add(titleI);
+				}
+			}
+		}
+	}
+	
 	@Override
 	public List<Environmental> addRealEstateTitles(List<Environmental> V, MOB buyer, CoffeeShop shop, Room myRoom)
 	{
@@ -1434,6 +1456,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				}
 			}
 		}
+		
+		if(shop.isSold(ShopKeeper.DEAL_SHIPSELLER))
+		{
+			final PlayerStats pStats = buyer.playerStats();
+			if((pStats != null)&&(pStats.getExtItems()!=null))
+				this.addShipProperty(buyer, V, pStats.getExtItems());
+		}
+		if(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))
+		{
+			buyerClanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
+			if((buyerClanPair != null)&&(buyerClanPair.first!=null)&&(buyerClanPair.first.getExtItems()!=null))
+				this.addShipProperty(buyer, V, buyerClanPair.first.getExtItems());
+		}
+		
 		if(V.size()<2)
 			return V;
 		final Vector<Environmental> V2=new Vector<Environmental>(V.size());

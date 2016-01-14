@@ -35,18 +35,41 @@ import java.util.*;
 
 public class Prop_AreaForSale extends Property implements LandTitle
 {
-	@Override public String ID() { return "Prop_AreaForSale"; }
-	@Override public String name(){ return "Putting an area up for sale";}
-	@Override protected int canAffectCode(){return Ability.CAN_AREAS;}
-	protected Hashtable<Room,Integer> lastItemNums=new Hashtable<Room,Integer>();
+	@Override
+	public String ID()
+	{
+		return "Prop_AreaForSale";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Putting an area up for sale";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_AREAS;
+	}
+
+	protected Hashtable<Room, Integer>	lastItemNums	= new Hashtable<Room, Integer>();
+
 	@Override
 	public String accountForYourself()
-	{ return "For Sale";	}
-	protected long lastCall=0;
-	protected long lastMobSave=0;
-	protected int lastDayDone=-1;
+	{
+		return "For Sale";
+	}
 
-	@Override public boolean allowsExpansionConstruction(){ return false;}
+	protected long	lastCall	= 0;
+	protected long	lastMobSave	= 0;
+	protected int	lastDayDone	= -1;
+
+	@Override
+	public boolean allowsExpansionConstruction()
+	{
+		return false;
+	}
 
 	@Override
 	public int getPrice()
@@ -147,6 +170,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			return text().indexOf("RENTAL")>=0;
 		return text().indexOf("RENTAL",text().indexOf('/'))>0;
 	}
+	
 	@Override
 	public void setRentalProperty(boolean truefalse)
 	{
@@ -192,7 +216,10 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		return newTitle;
 	}
 	
-	@Override public void setLandPropertyID(String landID){}
+	@Override
+	public void setLandPropertyID(String landID)
+	{
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -259,7 +286,12 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		}
 		return V;
 	}
-	@Override public List<Room> getConnectedPropertyRooms() { return getAllTitledRooms();}
+
+	@Override
+	public List<Room> getConnectedPropertyRooms()
+	{
+		return getAllTitledRooms();
+	}
 
 	// update lot, since its called by the savethread, ONLY worries about itself
 	@Override
@@ -286,11 +318,13 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			{
 				lastDayDone=A.getTimeObj().getDayOfMonth();
 				if((getOwnerName().length()>0)&&rentalProperty())
+				{
 					if(Prop_RoomForSale.doRentalProperty(A,A.Name(),getOwnerName(),getPrice()))
 					{
 						setOwnerName("");
 						CMLib.database().DBUpdateArea(A.Name(),A);
 					}
+				}
 			}
 		}
 	}

@@ -80,6 +80,7 @@ public interface LegalLibrary extends CMLibrary
 	public boolean doesOwnThisLand(MOB mob, Room room);
 	public boolean doesOwnThisProperty(String name, Room room);
 	public boolean doesOwnThisProperty(MOB mob, Room room);
+	public boolean doesOwnThisProperty(MOB mob, PrivateProperty record);
 	public List<LandTitle> getAllUniqueLandTitles(Enumeration<Room> e, String owner, boolean includeRentals);
 	public Ability getClericInfusion(Physical room);
 	public Deity getClericInfused(Room room);

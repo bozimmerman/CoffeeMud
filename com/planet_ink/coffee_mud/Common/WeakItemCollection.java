@@ -152,7 +152,15 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			}
 			else
 			if(I==null)
-				try { innerContents.remove(i); }catch(final java.lang.ArrayIndexOutOfBoundsException x){}
+			{
+				try
+				{
+					innerContents.remove(i);
+				}
+				catch (final java.lang.ArrayIndexOutOfBoundsException x)
+				{
+				}
+			}
 		}
 	}
 	@Override

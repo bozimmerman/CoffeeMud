@@ -180,6 +180,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		if(area==null)
 			return null;
+		if(area instanceof LandTitle)
+			return (LandTitle)area;
 		for(final Enumeration<Ability> a=area.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
@@ -450,6 +452,12 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		final PrivateProperty record=getPropertyRecord(room);
 		if(record==null)
 			return false;
+		return doesOwnThisProperty(mob,record);
+	}
+
+	@Override
+	public boolean doesOwnThisProperty(MOB mob, PrivateProperty record)
+	{
 		if(record.getOwnerName()==null)
 			return false;
 		if(record.getOwnerName().length()==0)
@@ -462,7 +470,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
 			return true;
 		if(mob.amFollowing()!=null)
-			return doesOwnThisProperty(mob.amFollowing(),room);
+			return doesOwnThisProperty(mob.amFollowing(),record);
 		return false;
 	}
 
