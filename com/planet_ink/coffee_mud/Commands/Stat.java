@@ -121,11 +121,16 @@ public class Stat  extends Skills
 		ENDQ.set(Calendar.SECOND,59);
 		ENDQ.set(Calendar.MILLISECOND,999);
 		CMLib.coffeeTables().update();
-		final List<CoffeeTableRow> V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1);
-		if(V.size()==0){ mob.tell(L("No Stats?!")); return false;}
+		List<CoffeeTableRow> V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1);
+		if (V.size() == 0)
+		{
+			mob.tell(L("No Stats?!"));
+			return false;
+		}
 		final StringBuffer table=new StringBuffer("");
 		boolean skillUse=false;
 		boolean questStats=false;
+		boolean areaStats=false;
 		if(rest.toUpperCase().trim().startsWith("SKILLUSE"))
 		{
 			skillUse=true;
@@ -142,11 +147,21 @@ public class Stat  extends Skills
 				rest=rest.substring(x+1).trim();
 			else rest="";
 		}
+		if(rest.toUpperCase().trim().startsWith("AREA"))
+		{
+			areaStats=true;
+			final int x=rest.indexOf(' ');
+			if(x>0)
+				rest=rest.substring(x+1).trim();
+			else 
+				rest="";
+		}
 		table.append("^xStatistics since "+CMLib.time().date2String(ENDQ.getTimeInMillis())+":^.^N\n\r\n\r");
 		if(skillUse)
 			table.append(CMStrings.padRight(L("Skill"),25)+CMStrings.padRight(L("Uses"),10)+CMStrings.padRight(L("Skill"),25)+CMStrings.padRight(L("Uses"),10)+"\n\r");
 		else
 		if(questStats)
+		{
 			table.append(CMStrings.padRight(L("Quest"),30)
 	   					+CMStrings.padRight(L("STRT"),5)
 						+CMStrings.padRight(L("TSRT"),5)
@@ -158,6 +173,22 @@ public class Stat  extends Skills
 						+CMStrings.padRight(L("TSTP"),5)
 						+CMStrings.padRight(L("STOP"),5)
 						+"\n\r");
+		}
+		else
+		if(areaStats)
+		{
+			table.append(CMStrings.padRight(L("Area"),25)
+						 +CMStrings.padRight(L("CONs"),5)
+						 +CMStrings.padRight(L("HIGH"),5)
+						 +CMStrings.padRight(L("ONLN"),5)
+						 +CMStrings.padRight(L("AVGM"),5)
+						 +CMStrings.padRight(L("NEWB"),5)
+						 +CMStrings.padRight(L("DTHs"),5)
+						 +CMStrings.padRight(L("PKDs"),5)
+						 +CMStrings.padRight(L("CLAS"),5)
+						 +CMStrings.padRight(L("PURG"),5)
+						 +CMStrings.padRight(L("MARR"),5)+"\n\r");
+		}
 		else
 			table.append(CMStrings.padRight(L("Date"),25)
 						 +CMStrings.padRight(L("CONs"),5)
@@ -184,7 +215,7 @@ public class Stat  extends Skills
 		if(skillUse)
 		{
 			final CharClass CharC=CMClass.getCharClass(rest);
-			final Vector<Ability> allSkills=new Vector<Ability>();
+			final ArrayList<Ability> allSkills=new ArrayList<Ability>();
 			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				allSkills.add(e.nextElement());
 			final long[][] totals=new long[allSkills.size()][CoffeeTableRow.STAT_TOTAL];
@@ -200,7 +231,7 @@ public class Stat  extends Skills
 				C2.set(Calendar.SECOND,59);
 				C2.set(Calendar.MILLISECOND,999);
 				curTime=C2.getTimeInMillis();
-				final Vector<CoffeeTableRow> set=new Vector<CoffeeTableRow>();
+				final ArrayList<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
 				for(int v=V.size()-1;v>=0;v--)
 				{
 					final CoffeeTableRow T=V.get(v);
@@ -267,7 +298,7 @@ public class Stat  extends Skills
 				C2.set(Calendar.SECOND,59);
 				C2.set(Calendar.MILLISECOND,999);
 				curTime=C2.getTimeInMillis();
-				final Vector<CoffeeTableRow> set=new Vector<CoffeeTableRow>();
+				final ArrayList<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
 				for(int v=V.size()-1;v>=0;v--)
 				{
 					final CoffeeTableRow T=V.get(v);
@@ -306,57 +337,121 @@ public class Stat  extends Skills
 			table.append("\n\r");
 		}
 		else
-		while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
+		if(areaStats)
 		{
-			lastCur=curTime;
-			final Calendar C2=Calendar.getInstance();
-			C2.setTimeInMillis(curTime);
-			C2.add(Calendar.DATE,-(scale));
-			curTime=C2.getTimeInMillis();
-			C2.set(Calendar.HOUR_OF_DAY,23);
-			C2.set(Calendar.MINUTE,59);
-			C2.set(Calendar.SECOND,59);
-			C2.set(Calendar.MILLISECOND,999);
-			curTime=C2.getTimeInMillis();
-			final Vector<CoffeeTableRow> set=new Vector<CoffeeTableRow>();
-			for(int v=V.size()-1;v>=0;v--)
+			ArrayList<CoffeeTableRow> backup = new ArrayList<CoffeeTableRow>(V.size());
+			backup.addAll(V);
+			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				final CoffeeTableRow T=V.get(v);
-				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+				Area A=a.nextElement();
+				if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))
 				{
-					set.add(T);
-					V.remove(v);
+					code = "_"+A.Name().replace(' ','_');
+					V=backup;
+					lastCur=ENDQ.getTimeInMillis();
+					final Calendar C2=Calendar.getInstance();
+					C2.setTimeInMillis(curTime);
+					C2.add(Calendar.DATE,-(scale));
+					curTime=C2.getTimeInMillis();
+					C2.set(Calendar.HOUR_OF_DAY,23);
+					C2.set(Calendar.MINUTE,59);
+					C2.set(Calendar.SECOND,59);
+					C2.set(Calendar.MILLISECOND,999);
+					curTime=C2.getTimeInMillis();
+					final ArrayList<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
+					for(int v=V.size()-1;v>=0;v--)
+					{
+						final CoffeeTableRow T=V.get(v);
+						if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+						{
+							set.add(T);
+							V.remove(v);
+						}
+					}
+					final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
+					long highestOnline=0;
+					long numberOnlineTotal=0;
+					long numberOnlineCounter=0;
+					for(int s=0;s<set.size();s++)
+					{
+						final CoffeeTableRow T=set.get(s);
+						T.totalUp(code,totals);
+						if(T.highestOnline()>highestOnline)
+							highestOnline=T.highestOnline();
+						numberOnlineTotal+=T.numberOnlineTotal();
+						numberOnlineCounter+=T.numberOnlineCounter();
+					}
+					totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
+					double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
+					avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
+					table.append(CMStrings.padRight(A.Name(),25)
+								 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_LOGINS],5)
+								 +CMStrings.centerPreserve(""+highestOnline,5)
+								 +CMStrings.centerPreserve(""+avgOnline,5)
+								 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_TICKSONLINE],5)
+								 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_NEWPLAYERS],5)
+								 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_DEATHS],5)
+								 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_PKDEATHS],5)
+								 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_CLASSCHANGE],5)
+								 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_PURGES],5)
+								 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_MARRIAGES],5)+"\n\r");
 				}
 			}
-			final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
-			long highestOnline=0;
-			long numberOnlineTotal=0;
-			long numberOnlineCounter=0;
-			for(int s=0;s<set.size();s++)
+		}
+		else
+		{
+			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 			{
-				final CoffeeTableRow T=set.get(s);
-				T.totalUp(code,totals);
-				if(T.highestOnline()>highestOnline)
-					highestOnline=T.highestOnline();
-				numberOnlineTotal+=T.numberOnlineTotal();
-				numberOnlineCounter+=T.numberOnlineCounter();
+				lastCur=curTime;
+				final Calendar C2=Calendar.getInstance();
+				C2.setTimeInMillis(curTime);
+				C2.add(Calendar.DATE,-(scale));
+				curTime=C2.getTimeInMillis();
+				C2.set(Calendar.HOUR_OF_DAY,23);
+				C2.set(Calendar.MINUTE,59);
+				C2.set(Calendar.SECOND,59);
+				C2.set(Calendar.MILLISECOND,999);
+				curTime=C2.getTimeInMillis();
+				final ArrayList<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
+				for(int v=V.size()-1;v>=0;v--)
+				{
+					final CoffeeTableRow T=V.get(v);
+					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+					{
+						set.add(T);
+						V.remove(v);
+					}
+				}
+				final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
+				long highestOnline=0;
+				long numberOnlineTotal=0;
+				long numberOnlineCounter=0;
+				for(int s=0;s<set.size();s++)
+				{
+					final CoffeeTableRow T=set.get(s);
+					T.totalUp(code,totals);
+					if(T.highestOnline()>highestOnline)
+						highestOnline=T.highestOnline();
+					numberOnlineTotal+=T.numberOnlineTotal();
+					numberOnlineCounter+=T.numberOnlineCounter();
+				}
+				totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
+				double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
+				avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
+				table.append(CMStrings.padRight(CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1),25)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_LOGINS],5)
+							 +CMStrings.centerPreserve(""+highestOnline,5)
+							 +CMStrings.centerPreserve(""+avgOnline,5)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_TICKSONLINE],5)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_NEWPLAYERS],5)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_DEATHS],5)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_PKDEATHS],5)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_CLASSCHANGE],5)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_PURGES],5)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_MARRIAGES],5)+"\n\r");
+				if(scale==0)
+					break;
 			}
-			totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
-			double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
-			avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
-			table.append(CMStrings.padRight(CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1),25)
-						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_LOGINS],5)
-						 +CMStrings.centerPreserve(""+highestOnline,5)
-						 +CMStrings.centerPreserve(""+avgOnline,5)
-						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_TICKSONLINE],5)
-						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_NEWPLAYERS],5)
-						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_DEATHS],5)
-						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_PKDEATHS],5)
-						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_CLASSCHANGE],5)
-						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_PURGES],5)
-						 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_MARRIAGES],5)+"\n\r");
-			if(scale==0)
-				break;
 		}
 		mob.tell(table.toString());
 		return false;
@@ -415,7 +510,10 @@ public class Stat  extends Skills
 						break;
 					}
 				}
-			}catch(final NoSuchElementException nse){}
+			}
+			catch (final NoSuchElementException nse)
+			{
+			}
 		}
 		if(target==null)
 			target=CMLib.players().getLoadPlayer(MOBname);
@@ -556,7 +654,7 @@ public class Stat  extends Skills
 			{
 				if(ableTypes>=0)
 				{
-					final Vector<Integer> V=new Vector<Integer>();
+					final List<Integer> V=new ArrayList<Integer>();
 					final int mask=Ability.ALL_ACODES;
 					V.add(Integer.valueOf(ableTypes));
 					str=getAbilities(mob,target,V,mask,false,-1);
@@ -570,7 +668,7 @@ public class Stat  extends Skills
 				else
 				if(ableTypes==ABLETYPE_QUESTWINS)
 				{
-					str.append(L("Quests won by "+target.Name()+": "));
+					str.append(L("Quests won by @x1: ",target.Name()));
 					final StringBuffer won=new StringBuffer("");
 					for(int q=0;q<CMLib.quests().numQuests();q++)
 					{
@@ -582,7 +680,7 @@ public class Stat  extends Skills
 						}
 					}
 					if(won.length()==0)
-						won.append(" None!");
+						won.append(L(" None!"));
 					won.deleteCharAt(won.length()-1);
 					str.append(won);
 					str.append("\n\r");
@@ -599,7 +697,7 @@ public class Stat  extends Skills
 							ttl.append(" "+title+",");
 						}
 					if(ttl.length()==0)
-						ttl.append(" None!");
+						ttl.append(L(" None!"));
 					ttl.deleteCharAt(ttl.length()-1);
 					str.append(ttl);
 					str.append("\n\r");

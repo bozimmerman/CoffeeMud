@@ -35,7 +35,11 @@ import java.util.*;
 */
 public class AreaName extends StdWebMacro
 {
-	@Override public String name() { return "AreaName"; }
+	@Override
+	public String name()
+	{
+		return "AreaName";
+	}
 
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
@@ -47,7 +51,11 @@ public class AreaName extends StdWebMacro
 		{
 			final Area A=MUDGrinder.getAreaObject(last);
 			if(A!=null)
-				return clearWebMacros(A.Name());
+			{
+				final java.util.Map<String,String> parms=parseParms(parm);
+				final String name = (parms.containsKey("UNDERSCORE")) ? A.Name().replace(' ','_') : A.Name();
+				return clearWebMacros(name);
+			}
 		}
 		return "";
 	}

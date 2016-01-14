@@ -135,6 +135,12 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		if(E instanceof MOB)
 		{
 			final MOB mob=(MOB)E;
+			final Room R=mob.location();
+			Area A=(R==null) ? null : R.getArea();
+			if((A!=null) && (CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
+				A=CMLib.map().getModelArea(A);
+			if(A!=null)
+				bumpVal("_"+tagFix(A.Name()),type);
 			bumpVal("B"+tagFix(mob.baseCharStats().getCurrentClass().baseClass()),type);
 			bumpVal("C"+tagFix(mob.baseCharStats().getCurrentClass().ID()),type);
 			bumpVal("R"+tagFix(mob.baseCharStats().getMyRace().ID()),type);

@@ -182,6 +182,7 @@
 		<OPTION VALUE="LEVEL">players of level...
 		<OPTION VALUE="GENDER">players of gender...
 		<OPTION VALUE="CLASS">players of race...
+		<OPTION VALUE="AREAS">players in area...
 		</SELECT>
 		<SELECT NAME=CODE ONCHANGE="Clicked('/grinder/stats.cmvp');">
 		<OPTION VALUE="*">ALL
@@ -216,6 +217,14 @@
 			<OPTION VALUE="R@RaceID@">@RaceName@
 			@back@
 			@RaceNext?RESET@
+		@endif@
+		@if?CheckReqParm?CODEPART=AREAS@
+			@AreaNext?RESET@
+			@loop@
+			@AreaNext@
+			<OPTION VALUE="_@AreaName?UNDERSCORE@">@AreaName@
+			@back@
+			@AreaNext?RESET@
 		@endif@
 		@if?CheckReqParm?CODEPART=GENDER@
 			<OPTION VALUE="GM">Male

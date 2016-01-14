@@ -180,7 +180,7 @@ public class Skills extends StdCommand
 
 	protected StringBuilder getAbilities(MOB viewerM, MOB ableM, int ofType, int ofDomain, boolean addQualLine, int maxLevel)
 	{
-		final Vector<Integer> V=new Vector<Integer>();
+		final ArrayList<Integer> V=new ArrayList<Integer>();
 		int mask=Ability.ALL_ACODES;
 		if(ofDomain>=0)
 		{
@@ -191,7 +191,7 @@ public class Skills extends StdCommand
 		return getAbilities(viewerM,ableM,V,mask,addQualLine,maxLevel);
 	}
 
-	protected StringBuilder getAbilities(MOB viewerM, MOB ableM, Vector<Integer> ofTypes, int mask, boolean addQualLine, int maxLevel)
+	protected StringBuilder getAbilities(MOB viewerM, MOB ableM, List<Integer> ofTypes, int mask, boolean addQualLine, int maxLevel)
 	{
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerM);
 		final int COL_LEN2=CMLib.lister().fixColWidth(18.0,viewerM);

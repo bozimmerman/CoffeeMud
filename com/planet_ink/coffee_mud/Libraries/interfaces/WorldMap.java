@@ -52,6 +52,7 @@ public interface WorldMap extends CMLibrary
 	public Enumeration<Area> mundaneAreas();
 	public Enumeration<Area> spaceAreas();
 	public Area getFirstArea();
+	public Area getModelArea(Area A);
 	public Area getRandomArea();
 	public void obliterateArea(Area theOne);
 	public void renamedArea(Area theA);

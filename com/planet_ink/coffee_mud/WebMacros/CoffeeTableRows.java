@@ -215,19 +215,45 @@ public class CoffeeTableRows extends StdWebMacro
 					final String key=orderedParms.getFirst(i);
 					if(key.equals("COLSPAN"))
 						colspan=" COLSPAN="+orderedParms.getSecond(i);
-					else if(key.equalsIgnoreCase("QUESTNAME")) table.append("<TD"+colspan+">"+header+Q.name()+footer+"</TD>");
-					else if(key.equalsIgnoreCase("DATERANGE")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1)+footer+"</TD>");
-					else if(key.equalsIgnoreCase("DATESTART")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+footer+"</TD>");
-					else if(key.equalsIgnoreCase("DATEEND")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(lastCur)+footer+"</TD>");
-					else if(key.equalsIgnoreCase("FAILEDSTART")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTFAILEDSTART]+footer+"</TD>");
-					else if(key.equalsIgnoreCase("TIMESTART")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTTIMESTART]+footer+"</TD>");
-					else if(key.equalsIgnoreCase("TIMESTOP")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTTIMESTOP]+footer+"</TD>");
-					else if(key.equalsIgnoreCase("STOP")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSTOP]+footer+"</TD>");
-					else if(key.equalsIgnoreCase("ACCEPTED")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTACCEPTED]+footer+"</TD>");
-					else if(key.equalsIgnoreCase("FAILED")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTFAILED]+footer+"</TD>");
-					else if(key.equalsIgnoreCase("SUCCESS")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSUCCESS]+footer+"</TD>");
-					else if(key.equalsIgnoreCase("DROPPED")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTDROPPED]+footer+"</TD>");
-					else if(key.equalsIgnoreCase("STARTATTEMPT")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSTARTATTEMPT]+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("QUESTNAME")) 
+						table.append("<TD"+colspan+">"+header+Q.name()+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("DATERANGE")) 
+						table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1)+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("DATESTART")) 
+						table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("DATEEND")) 
+						table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(lastCur)+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("FAILEDSTART")) 
+						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTFAILEDSTART]+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("TIMESTART")) 
+						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTTIMESTART]+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("TIMESTOP")) 
+						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTTIMESTOP]+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("STOP")) 
+						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSTOP]+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("ACCEPTED")) 
+						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTACCEPTED]+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("FAILED")) 
+						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTFAILED]+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("SUCCESS")) 
+						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSUCCESS]+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("DROPPED")) 
+						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTDROPPED]+footer+"</TD>");
+					else 
+					if(key.equalsIgnoreCase("STARTATTEMPT")) 
+						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSTARTATTEMPT]+footer+"</TD>");
 				}
 				table.append("</TR>");
 			}
