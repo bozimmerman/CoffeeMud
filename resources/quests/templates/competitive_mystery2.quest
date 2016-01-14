@@ -294,9 +294,11 @@ set agentgroup $NUM_SUSPECTS
 set mobgroup agentgroup-agent
 give behavior Mobile
 give affect Prop_SafePet
+give script LOAD=$QUEST_ID_suspect.script~
 set mob agent
 give behavior Mobile
 give affect Prop_SafePet
+give script LOAD=$QUEST_ID_suspect.script~
 
 # Set a motives, will automatically set a motive
 set motivegroup $NUM_MOTIVES $MOTIVE_LIST
@@ -611,6 +613,14 @@ RAND_PROG 99
         MPENDQUEST $i
     else
         mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+    endif
+~
+</DATA></FILE>
+<FILE><NAME>$QUEST_ID_suspect.script</NAME>
+<DATA>
+SPEECH_PROG ALL
+    if eval($t == $i)
+        sayto $n As I'm a suspect, I refuse to say anything.
     endif
 ~
 </DATA></FILE>
