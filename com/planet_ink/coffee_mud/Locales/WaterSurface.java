@@ -200,11 +200,26 @@ public class WaterSurface extends StdRoom implements Drink
 		{
 			final MOB mob=msg.source();
 			boolean hasBoat=false;
+			if((msg.tool() instanceof Exit)
+			&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
+			{
+				int dir=CMLib.map().getExitDir(room, (Exit)msg.tool());
+				if(dir >=0)
+				{
+					Room R=room.getRoomInDir(dir);
+					if((R!=null)&&(R.getArea() instanceof BoardableShip))
+						hasBoat=true;
+				}
+			}
+			
 			for(int i=0;i<mob.numItems();i++)
 			{
 				final Item I=mob.getItem(i);
 				if((I!=null)&&(I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
-				{	hasBoat=true; break;}
+				{
+					hasBoat = true;
+					break;
+				}
 			}
 			if((!CMLib.flags().isWaterWorthy(mob))
 			&&(!hasBoat)
@@ -215,11 +230,13 @@ public class WaterSurface extends StdRoom implements Drink
 			}
 			else
 			if(CMLib.flags().isSwimming(mob))
+			{
 				if(mob.phyStats().weight()>Math.round(CMath.mul(mob.maxCarry(),0.50)))
 				{
 					mob.tell(CMLib.lang().L("You are too encumbered to swim."));
 					return -1;
 				}
+			}
 		}
 		else
 		if(((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_SLEEP))

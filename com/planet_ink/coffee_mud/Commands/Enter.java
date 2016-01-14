@@ -35,10 +35,17 @@ import java.util.*;
 
 public class Enter extends Go
 {
-	public Enter(){}
+	public Enter()
+	{
+	}
 
-	private final String[] access=I(new String[]{"ENTER","EN"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "ENTER", "EN" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)

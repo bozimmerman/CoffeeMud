@@ -35,10 +35,17 @@ import java.util.*;
 
 public class Sit extends StdCommand
 {
-	public Sit(){}
+	public Sit()
+	{
+	}
 
-	private final String[] access=I(new String[]{"SIT","REST","R"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "SIT", "REST", "R" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -91,9 +98,22 @@ public class Sit extends StdCommand
 			R.send(mob,msg);
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
 
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

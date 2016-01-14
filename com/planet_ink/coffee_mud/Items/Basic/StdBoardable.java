@@ -40,7 +40,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class StdBoardable extends StdPortal implements PrivateProperty, BoardableShip
 {
-	@Override public String ID(){	return "StdBoardable";}
+	@Override
+	public String ID()
+	{
+		return "StdBoardable";
+	}
+
 	protected String 	readableText	= "";
 	protected String 	ownerName 		= "";
 	protected int 		price 			= 1000;
@@ -672,9 +677,19 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			final InputCallback[] namer=new InputCallback[1];
 			namer[0]=new InputCallback(InputCallback.Type.PROMPT)
 			{
-				@Override public void showPrompt() { session.println(L("\n\rEnter a new name for your ship: ")); }
-				@Override public void timedOut() { }
-				@Override public void callBack()
+				@Override
+				public void showPrompt()
+				{
+					session.println(L("\n\rEnter a new name for your ship: "));
+				}
+
+				@Override
+				public void timedOut()
+				{
+				}
+
+				@Override 
+				public void callBack()
 				{
 					for(final Enumeration<BoardableShip> s=CMLib.map().ships();s.hasMoreElements();)
 					{

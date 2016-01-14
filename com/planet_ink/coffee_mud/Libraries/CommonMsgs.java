@@ -1480,8 +1480,15 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			else
 			if((msg.sourceMinor()!=CMMsg.TYP_NOISYMOVEMENT)
 			||(mob.riding()!=null)
-			||(!CMLib.flags().isWatery(mob.location())))
-				mob.tell(L("You can't get any cleaner here."));
+			||(CMLib.flags().isWatery(mob.location())))
+			{
+				long h=mob.playerStats().getHygiene();
+				if((h>0)&&(h<minHygiene)&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
+				{
+					mob.playerStats().adjHygiene(-h);
+					mob.tell(L("You can't get any cleaner here."));
+				}
+			}
 		}
 	}
 

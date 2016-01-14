@@ -40,7 +40,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenSailingShip extends StdBoardable
 {
-	@Override public String ID(){	return "GenSailingShip";}
+	@Override
+	public String ID()
+	{
+		return "GenSailingShip";
+	}
+
 	protected volatile int		 directionFacing = -1;
 	protected volatile boolean	 anchorDown		 = true;
 	protected final List<Integer>courseDirections= new Vector<Integer>();
@@ -653,22 +658,38 @@ public class GenSailingShip extends StdBoardable
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+hasALock();
-		case 1: return ""+hasADoor();
-		case 2: return ""+capacity();
-		case 3: return ""+containTypes();
-		case 4: return ""+openDelayTicks();
-		case 5: return ""+rideBasis();
-		case 6: return ""+riderCapacity();
-		case 7: return CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
-		case 8: return getOwnerName();
-		case 9: return ""+getPrice();
-		case 10: return putString;
-		case 11: return mountString;
-		case 12: return dismountString;
-		case 13: return ""+defaultsClosed();
-		case 14: return ""+defaultsLocked();
-		case 15: return ""+doorName();
+		case 0:
+			return "" + hasALock();
+		case 1:
+			return "" + hasADoor();
+		case 2:
+			return "" + capacity();
+		case 3:
+			return "" + containTypes();
+		case 4:
+			return "" + openDelayTicks();
+		case 5:
+			return "" + rideBasis();
+		case 6:
+			return "" + riderCapacity();
+		case 7:
+			return CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
+		case 8:
+			return getOwnerName();
+		case 9:
+			return "" + getPrice();
+		case 10:
+			return putString;
+		case 11:
+			return mountString;
+		case 12:
+			return dismountString;
+		case 13:
+			return "" + defaultsClosed();
+		case 14:
+			return "" + defaultsLocked();
+		case 15:
+			return "" + doorName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -681,22 +702,52 @@ public class GenSailingShip extends StdBoardable
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),CMath.s_bool(val),false,CMath.s_bool(val)&&defaultsLocked()); break;
-		case 1: setDoorsNLocks(CMath.s_bool(val),isOpen(),CMath.s_bool(val)&&defaultsClosed(),hasALock(),isLocked(),defaultsLocked()); break;
-		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
-		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setOpenDelayTicks(CMath.s_parseIntExpression(val)); break;
-		case 5: break;
-		case 6: break;
-		case 7: setShipArea(val); break;
-		case 8: setOwnerName(val); break;
-		case 9: setPrice(CMath.s_int(val)); break;
-		case 10: putString=val; break;
-		case 11: mountString=val; break;
-		case 12: dismountString=val; break;
-		case 13: setDoorsNLocks(hasADoor(),isOpen(),CMath.s_bool(val),hasALock(),isLocked(),defaultsLocked()); break;
-		case 14: setDoorsNLocks(hasADoor(),isOpen(),defaultsClosed(),hasALock(),isLocked(),CMath.s_bool(val)); break;
-		case 15: this.doorName = val; break;
+			case 0:
+				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
+				break;
+			case 1:
+				setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+				break;
+			case 2:
+				setCapacity(CMath.s_parseIntExpression(val));
+				break;
+			case 3:
+				setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+				break;
+			case 4:
+				setOpenDelayTicks(CMath.s_parseIntExpression(val));
+				break;
+			case 5:
+				break;
+			case 6:
+				break;
+			case 7:
+				setShipArea(val);
+				break;
+			case 8:
+				setOwnerName(val);
+				break;
+			case 9:
+				setPrice(CMath.s_int(val));
+				break;
+			case 10:
+				putString = val;
+				break;
+			case 11:
+				mountString = val;
+				break;
+			case 12:
+				dismountString = val;
+				break;
+			case 13:
+				setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+				break;
+			case 14:
+				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+				break;
+			case 15:
+				this.doorName = val;
+				break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -706,11 +757,15 @@ public class GenSailingShip extends StdBoardable
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
+		{
 			if(code.equalsIgnoreCase(MYCODES[i]))
 				return i;
+		}
 		return -1;
 	}
+	
 	private static String[] codes=null;
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -726,6 +781,7 @@ public class GenSailingShip extends StdBoardable
 			codes[i]=MYCODES[x];
 		return codes;
 	}
+
 	@Override
 	public boolean sameAs(Environmental E)
 	{
@@ -733,8 +789,10 @@ public class GenSailingShip extends StdBoardable
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
+		{
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
+		}
 		return true;
 	}
 }

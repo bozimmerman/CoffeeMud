@@ -37,8 +37,14 @@ public class Mount extends StdCommand
 {
 	public Mount(){}
 
-	private final String[] access=I(new String[]{"MOUNT","BOARD","RIDE","M"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "MOUNT", "BOARD", "RIDE", "M" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -137,7 +143,22 @@ public class Mount extends StdCommand
 			mob.location().send(mob,msg);
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return true;}
+
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 }

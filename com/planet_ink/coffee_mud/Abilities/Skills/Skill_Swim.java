@@ -35,20 +35,77 @@ import java.util.*;
 
 public class Skill_Swim extends StdSkill
 {
-	@Override public String ID() { return "Skill_Swim"; }
-	private final static String localizedName = CMLib.lang().L("Swim");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Swimming)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"SWIM"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
-	@Override public int usageType(){return USAGE_MOVEMENT;}
-	@Override public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getSkillActionCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0),1.0));}
-	@Override public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getSkillCombatActionCost(ID(),CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME),50.0),1.0));}
+	@Override
+	public String ID()
+	{
+		return "Skill_Swim";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Swim");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Swimming)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "SWIM" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_FITNESS;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
+	public double castingTime(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getSkillActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME), 50.0), 1.0));
+	}
+
+	@Override
+	public double combatCastingTime(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getSkillCombatActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME), 50.0), 1.0));
+	}
 
 	public boolean placeToSwim(Room r2)
 	{
@@ -60,8 +117,11 @@ public class Skill_Swim extends StdSkill
 			return false;
 		return true;
 	}
+
 	public boolean placeToSwim(Environmental E)
-	{ return placeToSwim(CMLib.map().roomLocation(E));}
+	{
+		return placeToSwim(CMLib.map().roomLocation(E));
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
@@ -115,6 +175,7 @@ public class Skill_Swim extends StdSkill
 		}
 		return true;
 	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
