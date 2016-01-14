@@ -15,6 +15,7 @@
   14. Archon AutoInvoke now saves settings.  Default no-invoke list now in lists.ini
   15. CoffeeTable statistics will now track activity by Area also.
   16. Ship Title copies can now be purchased and traded, just like land titles.
+  17. CATALOG command can now be used to list categories.
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)
