@@ -642,9 +642,9 @@ public class Create extends StdCommand
 		}
 		
 		Area A=CMLib.map().getArea(areaName);
-		if(A!=null)
+		if((A!=null)||(CMLib.map().getShip(areaName)!=null))
 		{
-			mob.tell(L("An area with the name '@x1' already exists!",A.name()));
+			mob.tell(L("An area with the name '@x1' already exists!",areaName));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}

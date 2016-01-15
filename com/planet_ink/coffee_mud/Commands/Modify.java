@@ -308,7 +308,7 @@ public class Modify extends StdCommand
 			else
 			if(A==null)
 			{
-				if(!mob.isMonster())
+				if((!mob.isMonster())&&(CMLib.map().getShip(restStr)==null))
 				{
 					if(confirmed||mob.session().confirm(L("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '@x1'.  Are you SURE (y/N)?",restStr),"N"))
 					{

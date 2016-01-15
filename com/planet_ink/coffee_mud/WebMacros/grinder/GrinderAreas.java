@@ -151,7 +151,7 @@ public class GrinderAreas
 		name=name.trim();
 		if(!name.equals(A.Name().trim()))
 		{
-			if(CMLib.map().getArea(name)!=null)
+			if((CMLib.map().getArea(name)!=null)||(CMLib.map().getShip(name)!=null))
 				return "The name you chose is already in use.  Please enter another.";
 			allMyDamnRooms=new Vector<Room>();
 			for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)

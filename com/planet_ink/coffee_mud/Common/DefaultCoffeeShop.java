@@ -257,7 +257,25 @@ public class DefaultCoffeeShop implements CoffeeShop
 		final Environmental E=(Environmental)thisThang.copyOf();
 		stopTicking(E);
 		if(E instanceof PrivateProperty)
-			((PrivateProperty)E).setOwnerName("");
+		{
+			final PrivateProperty P=(PrivateProperty)E;
+			P.setOwnerName("");
+			if(P instanceof LandTitle)
+			{
+				final LandTitle T=(LandTitle)P;
+				final BoardableShip ship = CMLib.map().getShip(T.landPropertyID());
+				if(ship != null)
+				{
+					final Item I=ship.getShipItem();
+					if(I!=null)
+					{
+						I.removeFromOwnerContainer();
+						return I;
+					}
+				}
+			}
+			
+		}
 		return E;
 	}
 
