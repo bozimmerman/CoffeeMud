@@ -36,38 +36,52 @@ import java.util.*;
 
 public class WeatherAffects extends PuddleMaker
 {
-	@Override public String ID(){return "WeatherAffects";}
-	@Override protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
-	protected int puddlepct=0;
-	protected int windsheer=0;
-	protected int rustDown=0;
-	protected int botherDown=0;
-	protected int rumbleDown=0;
-	protected int gustDown=0;
-	protected int tornadoDown=0;
-	protected int lightningDown=0;
-	protected int hailDown=0;
-	protected int rainSlipChance=0;
-	protected int snowSlipChance=0;
-	protected int sleetSlipChance=0;
-	protected int freezeOverChance=0;
-	protected int dustDown=0;
-	protected int diseaseDown=0;
-	protected int droughtFireChance=0;
+	@Override
+	public String ID()
+	{
+		return "WeatherAffects";
+	}
 
-	private static final long[] ALL_COVERED_SPOTS={Wearable.WORN_FEET,Wearable.WORN_TORSO,Wearable.WORN_LEGS};
-	private static long ALL_COVERED_CODE=0;
-	private static final long[] ALL_FROST_SPOTS={Wearable.WORN_FEET,Wearable.WORN_HANDS,Wearable.WORN_HEAD};
-	private static long ALL_FROST_CODE=0;
+	@Override
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_ROOMS | Behavior.CAN_AREAS;
+	}
+
+	protected int				puddlepct			= 0;
+	protected int				windsheer			= 0;
+	protected int				rustDown			= 0;
+	protected int				botherDown			= 0;
+	protected int				rumbleDown			= 0;
+	protected int				gustDown			= 0;
+	protected int				tornadoDown			= 0;
+	protected int				lightningDown		= 0;
+	protected int				hailDown			= 0;
+	protected int				rainSlipChance		= 0;
+	protected int				snowSlipChance		= 0;
+	protected int				sleetSlipChance		= 0;
+	protected int				freezeOverChance	= 0;
+	protected int				dustDown			= 0;
+	protected int				diseaseDown			= 0;
+	protected int				droughtFireChance	= 0;
+
+	private static final long[]	ALL_COVERED_SPOTS	= { Wearable.WORN_FEET, Wearable.WORN_TORSO, Wearable.WORN_LEGS };
+	private static long			ALL_COVERED_CODE	= 0;
+	private static final long[]	ALL_FROST_SPOTS		= { Wearable.WORN_FEET, Wearable.WORN_HANDS, Wearable.WORN_HEAD };
+	private static long			ALL_FROST_CODE		= 0;
 	static
 	{
 		for (final long element : ALL_COVERED_SPOTS)
-			ALL_COVERED_CODE=ALL_COVERED_CODE|element;
+			ALL_COVERED_CODE = ALL_COVERED_CODE | element;
 		for (final long element : ALL_FROST_SPOTS)
-			ALL_FROST_CODE=ALL_FROST_CODE|element;
+			ALL_FROST_CODE = ALL_FROST_CODE | element;
 	}
 
-	@Override public int pct(){return puddlepct;} // for puddles only
+	@Override
+	public int pct()
+	{
+		return puddlepct;
+	} // for puddles only
 
 	@Override
 	public String accountForYourself()
@@ -97,15 +111,50 @@ public class WeatherAffects extends PuddleMaker
 		resetDustTicks();
 	}
 
-	private void resetBotherTicks(){botherDown=CMParms.getParmInt(parms,"botherticks",Climate.WEATHER_TICK_DOWN/3);}
-	private void resetDiseaseTicks(){diseaseDown=CMParms.getParmInt(parms,"diseaseticks",Climate.WEATHER_TICK_DOWN*2);}
-	private void resetRustTicks(){rustDown=CMParms.getParmInt(parms,"rustticks",30);}
-	private void resetLightningTicks(){lightningDown=CMParms.getParmInt(parms,"lightningticks",Climate.WEATHER_TICK_DOWN*8);}
-	private void resetRumbleTicks(){rumbleDown=CMParms.getParmInt(parms,"rumbleticks",Climate.WEATHER_TICK_DOWN/4);}
-	private void resetGustTicks(){gustDown=CMParms.getParmInt(parms,"gustticks",Climate.WEATHER_TICK_DOWN*2);}
-	private void resetTornadoTicks(){tornadoDown=CMParms.getParmInt(parms,"tornadoticks",Climate.WEATHER_TICK_DOWN*15);}
-	private void resetHailTicks(){hailDown=CMParms.getParmInt(parms,"hailticks",Climate.WEATHER_TICK_DOWN);}
-	private void resetDustTicks(){dustDown=CMParms.getParmInt(parms,"dustticks",50);}
+	private void resetBotherTicks()
+	{
+		botherDown = CMParms.getParmInt(parms, "botherticks", Climate.WEATHER_TICK_DOWN / 3);
+	}
+
+	private void resetDiseaseTicks()
+	{
+		diseaseDown = CMParms.getParmInt(parms, "diseaseticks", Climate.WEATHER_TICK_DOWN * 2);
+	}
+
+	private void resetRustTicks()
+	{
+		rustDown = CMParms.getParmInt(parms, "rustticks", 30);
+	}
+
+	private void resetLightningTicks()
+	{
+		lightningDown = CMParms.getParmInt(parms, "lightningticks", Climate.WEATHER_TICK_DOWN * 8);
+	}
+
+	private void resetRumbleTicks()
+	{
+		rumbleDown = CMParms.getParmInt(parms, "rumbleticks", Climate.WEATHER_TICK_DOWN / 4);
+	}
+
+	private void resetGustTicks()
+	{
+		gustDown = CMParms.getParmInt(parms, "gustticks", Climate.WEATHER_TICK_DOWN * 2);
+	}
+
+	private void resetTornadoTicks()
+	{
+		tornadoDown = CMParms.getParmInt(parms, "tornadoticks", Climate.WEATHER_TICK_DOWN * 15);
+	}
+
+	private void resetHailTicks()
+	{
+		hailDown = CMParms.getParmInt(parms, "hailticks", Climate.WEATHER_TICK_DOWN);
+	}
+
+	private void resetDustTicks()
+	{
+		dustDown = CMParms.getParmInt(parms, "dustticks", 50);
+	}
 
 	public Area area(Environmental host)
 	{
@@ -380,8 +429,10 @@ public class WeatherAffects extends PuddleMaker
 				{
 					long coveredPlaces=0;
 					for (final long element : ALL_COVERED_SPOTS)
+					{
 						if(M.getWearPositions(element)==0)
 							coveredPlaces=coveredPlaces|element;
+					}
 					Item I=null;
 					for(int i=0;i<M.numItems();i++)
 					{
@@ -562,6 +613,7 @@ public class WeatherAffects extends PuddleMaker
 						{
 							R2=e.nextElement();
 							if((R2!=R)&&(R2.numInhabitants()>0))
+							{
 								if((A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY)
 								||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
 								{
@@ -572,6 +624,7 @@ public class WeatherAffects extends PuddleMaker
 								}
 								else
 									R2.showHappens(CMMsg.MSG_OK_ACTION,L("^JYou hear a thunderous rumble as a bolt of lightning streaks across the sky!^?@x1",CMLib.protocol().msp("thunder3.wav",40)));
+							}
 						}
 					}
 				}
@@ -626,6 +679,7 @@ public class WeatherAffects extends PuddleMaker
 						{
 							R2=e.nextElement();
 							if((R2!=R)&&(R2.numInhabitants()>0))
+							{
 								if((A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY)
 								||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
 								{
@@ -636,6 +690,7 @@ public class WeatherAffects extends PuddleMaker
 								}
 								else
 									R2.showHappens(CMMsg.MSG_OK_ACTION,L("^JA huge and terrible tornado touches down somewhere near by.^?@x1",CMLib.protocol().msp("tornado.wav",40)));
+							}
 						}
 					}
 				}
@@ -757,8 +812,8 @@ public class WeatherAffects extends PuddleMaker
 					||(S.mob().location().getArea()!=A)
 					||(S.mob().isMonster())
 					||((C.weatherType(S.mob().location())!=Climate.WEATHER_WINDY)
-							&&(C.weatherType(S.mob().location())!=Climate.WEATHER_BLIZZARD)
-							&&(C.weatherType(S.mob().location())!=Climate.WEATHER_DUSTSTORM)))
+						&&(C.weatherType(S.mob().location())!=Climate.WEATHER_BLIZZARD)
+						&&(C.weatherType(S.mob().location())!=Climate.WEATHER_DUSTSTORM)))
 						continue;
 					R=S.mob().location();
 					if((R!=null)&&(!choices.contains(R)))

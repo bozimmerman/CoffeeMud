@@ -114,6 +114,14 @@ public class GenSailingShip extends StdBoardable
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if((msg.target() == this)
+		&&(msg.tool()!=null)
+		&&(msg.tool().ID().equals("AWaterCurrent")))
+		{
+			if(anchorDown)
+				return false;
+		}
+		else
 		if((msg.sourceMinor()==CMMsg.TYP_HUH)
 		&&(msg.targetMessage()!=null)
 		&&(area == CMLib.map().areaLocation(msg.source())))
