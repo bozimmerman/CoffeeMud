@@ -318,6 +318,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		String[] newLine=new String[instructions.length()];
 		for(int i=0;i<instructions.length();i++)
+		{
 			switch(instructions.charAt(i))
 			{
 			case 'c':
@@ -384,6 +385,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 			}
+		}
 		return newLine;
 	}
 
