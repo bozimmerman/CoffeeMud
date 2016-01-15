@@ -419,6 +419,20 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 	
 	@Override
+	public boolean isFish(MOB mob)
+	{
+		return (mob != null) 
+				&& CMProps.getListFileVarSet(CMProps.ListFile.RACIAL_CATEGORY_IS_FISH).contains(mob.charStats().getMyRace().racialCategory());
+	}
+	
+	@Override
+	public boolean isMarine(MOB mob)
+	{
+		return (mob != null) 
+				&& CMProps.getListFileVarSet(CMProps.ListFile.RACIAL_CATEGORY_IS_MARINE).contains(mob.charStats().getMyRace().racialCategory());
+	}
+	
+	@Override
 	public boolean isOutsider(MOB mob)
 	{
 		return (mob != null) 

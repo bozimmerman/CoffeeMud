@@ -718,6 +718,20 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isUndead(MOB mob);
 
 	/**
+	 * Returns whether the given mob is of a fishy race type.
+	 * @param mob the mob to check
+	 * @return true if it is a fishy type, false otherwise
+	 */
+	public boolean isFish(MOB mob);
+	
+	/**
+	 * Returns whether the given mob is of a marine race type.
+	 * @param mob the mob to check
+	 * @return true if it is a marine type, false otherwise
+	 */
+	public boolean isMarine(MOB mob);
+	
+	/**
 	 * Returns whether the given mob is of an outsider race type.
 	 * @param mob the mob to check
 	 * @return true if it is an outsider type, false otherwise

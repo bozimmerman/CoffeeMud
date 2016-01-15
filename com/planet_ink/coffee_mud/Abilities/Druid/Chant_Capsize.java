@@ -58,6 +58,12 @@ public class Chant_Capsize extends Chant
 	}
 
 	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_PCT + 50;
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_INDIFFERENT;
