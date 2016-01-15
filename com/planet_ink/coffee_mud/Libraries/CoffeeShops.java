@@ -1691,10 +1691,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return (E instanceof Potion);
 		case ShopKeeper.DEAL_LANDSELLER:
 		case ShopKeeper.DEAL_CLANDSELLER:
-			return (E instanceof LandTitle);
+			return ((E instanceof LandTitle)&&(CMLib.map().getShip(((LandTitle)E).landPropertyID())==null));
 		case ShopKeeper.DEAL_SHIPSELLER:
 		case ShopKeeper.DEAL_CSHIPSELLER:
-			return (E instanceof BoardableShip);
+			return ((E instanceof BoardableShip)
+					||((E instanceof LandTitle)&&(CMLib.map().getShip(((LandTitle)E).landPropertyID())!=null)));
 		case ShopKeeper.DEAL_ANYTECHNOLOGY:
 			return (E instanceof Electronics);
 		case ShopKeeper.DEAL_BUTCHER:
