@@ -101,7 +101,7 @@ public class Prayer_Paralyze extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,-25+(super.getXLEVELLevel(mob))-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)+(levelDiff*5)),auto);
+		boolean success=proficiencyCheck(mob,(super.getXLEVELLevel(mob))-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)+(levelDiff*5)),auto);
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) an unholy paralysis upon <T-NAMESELF>.^?"));
@@ -112,9 +112,10 @@ public class Prayer_Paralyze extends Prayer
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					int duration = 8 - levelDiff;
-					if(duration < 2)
-						duration = 2;
+					// intentionally lasts longer than hold or mass paralyze, becasue its harder to succeed
+					int duration = 10 - levelDiff;
+					if(duration < 4)
+						duration = 4;
 					success=maliciousAffect(mob,target,asLevel,duration,-1)!=null;
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> can't move!"));
 				}
