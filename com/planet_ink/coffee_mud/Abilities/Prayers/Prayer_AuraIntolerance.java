@@ -107,8 +107,7 @@ public class Prayer_AuraIntolerance extends Prayer
 					CMLib.combat().postDamage(((MOB)affected),M,this,3,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The intolerant aura around <S-NAME> <DAMAGES> <T-NAMESELF>!"));
 				else
 					CMLib.combat().postDamage(((MOB)affected),M,this,1,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The intolerant aura around <S-NAME> <DAMAGES> <T-NAMESELF>!"));
-				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(invoker!=null)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+				CMLib.combat().postRevengeAttack(M, invoker);
 			}
 		}
 		return true;

@@ -78,8 +78,7 @@ public class Spell_InsectPlague extends Spell
 				{
 					final MOB invoker=(invoker()!=null) ? invoker() : M;
 					CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,1+super.getXLEVELLevel(invoker),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,L("<T-NAME> <T-IS-ARE> stung by the plague of insects!"));
-					if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(R.isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-						CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+					CMLib.combat().postRevengeAttack(M, invoker);
 				}
 			}
 			else

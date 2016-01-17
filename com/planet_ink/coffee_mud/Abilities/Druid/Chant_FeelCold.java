@@ -132,8 +132,7 @@ public class Chant_FeelCold extends Chant
 				}
 				else
 					return true;
-				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(invoker!=null)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+				CMLib.combat().postRevengeAttack(M, invoker);
 			}
 		}
 		return true;

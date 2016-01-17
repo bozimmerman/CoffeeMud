@@ -8,7 +8,7 @@
    7. Metacraft can now craft everything from specific skills.  See help.
    8. New Chants: Bloody Water, Find Driftwood, Filter Water, Aquatic Pass, Sense Water, Summon Coral
    9. New Chants: Underwater Action, Water Hammer, Drown, Call Mate, Summon School, High Tide, Land Lungs
-  10. New Chants: Reef Walking, Capsize, Feeding Frenzy
+  10. New Chants: Reef Walking, Capsize, Feeding Frenzy, Calm Seas, Summon Jellyfish
   11. New races: SmallFish, Angelfish, Merfolk, Selkie, Swordfish, Dolphin, Seal, Walrus, Whale
   12. New language: Aquan
   13. New Druid Shapeshift forms: Fish and Sea Mammal (I bet you saw this coming)
@@ -17,6 +17,7 @@
   16. Ship Title copies can now be purchased and traded, just like land titles.
   17. CATALOG command can now be used to list categories.
   18. Anchors Down on sailing ships now prevents WaterCurrent effects (duh!)
+  19. Sailing Ships now get area weather messages and affects
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)

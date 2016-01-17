@@ -70,8 +70,7 @@ public class Prayer_UnholyPortent extends Prayer
 			final MOB invoker=(invoker()!=null) ? invoker() : M;
 			final int damage=CMLib.dice().roll(1,3+(invoker.phyStats().level()/10),0);
 			CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_STRIKING,L("The unholy portent curse <DAMAGE> <T-NAME>!"));
-			if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-				CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+			CMLib.combat().postRevengeAttack(M, invoker);
 		}
 	}
 

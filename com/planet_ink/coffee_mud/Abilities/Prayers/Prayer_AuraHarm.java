@@ -101,8 +101,7 @@ public class Prayer_AuraHarm extends Prayer
 					final int harming=CMLib.dice().roll(1,CMLib.ableMapper().lowestQualifyingLevel(ID())/3,1);
 					CMLib.combat().postDamage(M,M,this,harming,CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The unholy aura <DAMAGE> <T-NAME>!"));
 				}
-				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(invoker!=null)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+				CMLib.combat().postRevengeAttack(M, invoker);
 			}
 		}
 		return super.tick(ticking,tickID);

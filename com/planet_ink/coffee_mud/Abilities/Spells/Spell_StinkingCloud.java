@@ -35,18 +35,59 @@ import java.util.*;
 
 public class Spell_StinkingCloud extends Spell
 {
-	@Override public String ID() { return "Spell_StinkingCloud"; }
-	private final static String localizedName = CMLib.lang().L("Stinking Cloud");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(In the Stinking Cloud)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override public int maxRange(){return adjustedMaxInvokerRange(3);}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+	@Override
+	public String ID()
+	{
+		return "Spell_StinkingCloud";
+	}
 
-	Room castingLocation=null;
+	private final static String	localizedName	= CMLib.lang().L("Stinking Cloud");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(In the Stinking Cloud)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int maxRange()
+	{
+		return adjustedMaxInvokerRange(3);
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SPELL | Ability.DOMAIN_EVOCATION;
+	}
+
+	Room	castingRoom	= null;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -56,7 +97,7 @@ public class Spell_StinkingCloud extends Spell
 		{
 			final MOB M=(MOB)affected;
 			final MOB invoker=(invoker()!=null) ? invoker() : M;
-			if((M.location()!=castingLocation)||(M.amDead()))
+			if((M.location()!=castingRoom)||(M.amDead()))
 				unInvoke();
 			else
 			if((!M.amDead())
@@ -71,8 +112,7 @@ public class Spell_StinkingCloud extends Spell
 					CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,L("<T-NAME> heave(s) all over the place!"));
 					M.curState().adjHunger(-500,M.maxState().maxHunger(M.baseWeight()));
 				}
-				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(invoker!=null)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+				CMLib.combat().postRevengeAttack(M, invoker);
 			}
 			else
 				unInvoke();
@@ -89,6 +129,7 @@ public class Spell_StinkingCloud extends Spell
 		{
 			final MOB mob=(MOB)affected;
 			if(CMLib.flags().canSmell(mob))
+			{
 				switch(msg.sourceMinor())
 				{
 				case CMMsg.TYP_ADVANCE:
@@ -99,6 +140,7 @@ public class Spell_StinkingCloud extends Spell
 					}
 					break;
 				}
+			}
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -183,7 +225,7 @@ public class Spell_StinkingCloud extends Spell
 						mob.location().send(mob,msg2);
 						if((msg.value()<=0)&&(msg2.value()<=0)&&(target.location()==mob.location()))
 						{
-							castingLocation=mob.location();
+							castingRoom=mob.location();
 							success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,
 									L("<S-NAME> become(s) enveloped in the stinking cloud!"));

@@ -34,16 +34,48 @@ import java.util.*;
 */
 public class DefaultClimate implements Climate
 {
-	@Override public String ID(){return "DefaultClimate";}
-	@Override public String name(){return "Climate Object";}
-	protected int tickStatus=Tickable.STATUS_NOT;
-	@Override public int getTickStatus(){return tickStatus;}
-	protected int currentWeather=WEATHER_CLEAR;
-	protected int nextWeather=WEATHER_CLEAR;
-	protected int weatherTicker=WEATHER_TICK_DOWN;
+	@Override
+	public String ID()
+	{
+		return "DefaultClimate";
+	}
 
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultClimate();}}
-	@Override public void initializeClass(){}
+	@Override
+	public String name()
+	{
+		return "Climate Object";
+	}
+
+	protected int	tickStatus	= Tickable.STATUS_NOT;
+
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
+
+	protected int	currentWeather	= WEATHER_CLEAR;
+	protected int	nextWeather		= WEATHER_CLEAR;
+	protected int	weatherTicker	= WEATHER_TICK_DOWN;
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultClimate();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -57,6 +89,7 @@ public class DefaultClimate implements Climate
 			return new DefaultClimate();
 		}
 	}
+
 	@Override
 	public int nextWeatherType(Room room)
 	{
@@ -66,6 +99,7 @@ public class DefaultClimate implements Climate
 			return Climate.WEATHER_CLEAR;
 		return nextWeather;
 	}
+
 	@Override
 	public String nextWeatherDescription(Room room)
 	{
@@ -73,6 +107,7 @@ public class DefaultClimate implements Climate
 			return CMLib.lang().fullSessionTranslation("You can't tell much about the weather from here.");
 		return getNextWeatherDescription(room.getArea());
 	}
+
 	@Override
 	public String getNextWeatherDescription(Area A)
 	{
@@ -146,8 +181,18 @@ public class DefaultClimate implements Climate
 	/*WINTER*/			 0,    0,   0,   0,-100,-100,-100,-100,-100,-100,-100,  -5,  85,
 	};
 
-	@Override public void setNextWeatherType(int weatherCode){nextWeather=weatherCode;}
-	@Override public void setCurrentWeatherType(int weatherCode){currentWeather=weatherCode;}
+	@Override
+	public void setNextWeatherType(int weatherCode)
+	{
+		nextWeather = weatherCode;
+	}
+
+	@Override
+	public void setCurrentWeatherType(int weatherCode)
+	{
+		currentWeather = weatherCode;
+	}
+
 	@Override
 	public int weatherType(Room room)
 	{
@@ -157,6 +202,7 @@ public class DefaultClimate implements Climate
 			return Climate.WEATHER_CLEAR;
 		return currentWeather;
 	}
+
 	@Override
 	public String weatherDescription(Room room)
 	{
@@ -164,6 +210,7 @@ public class DefaultClimate implements Climate
 			return CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEATHER_NONE, 0);
 		return getWeatherDescription(room.getArea());
 	}
+
 	@Override
 	public boolean canSeeTheMoon(Room room, Ability butNotA)
 	{
@@ -175,6 +222,7 @@ public class DefaultClimate implements Climate
 				return true;
 		return false;
 	}
+
 	@Override
 	public boolean canSeeTheStars(Room room)
 	{
@@ -201,7 +249,8 @@ public class DefaultClimate implements Climate
 	@Override
 	public boolean canSeeTheSun(Room room)
 	{
-		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY)&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN))
+		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY)
+			&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN))
 		||(!CMLib.map().hasASky(room))
 		||(CMLib.flags().isInDark(room)))
 			return false;
@@ -246,6 +295,35 @@ public class DefaultClimate implements Climate
 		return returnable;
 	}
 
+	protected void sayToEveryoneInArea(Area A, int oldWeather, String say)
+	{
+		for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			if(CMLib.map().hasASky(R))
+			{
+				for(int i=0;i<R.numInhabitants();i++)
+				{
+					final MOB mob=R.fetchInhabitant(i);
+					if((mob!=null)
+					&&(!mob.isMonster())
+					&&(CMLib.flags().canSee(mob)||(currentWeather!=oldWeather)))
+						mob.tell(say);
+				}
+			}
+		}
+		for(Enumeration<BoardableShip> s =CMLib.map().ships();s.hasMoreElements();)
+		{
+			final BoardableShip ship = s.nextElement();
+			if((ship != null) && (A == CMLib.map().areaLocation(ship.getShipItem())))
+			{
+				Area inA=ship.getShipArea();
+				if(inA!=null)
+					sayToEveryoneInArea(inA,oldWeather,say);
+			}
+		}
+	}
+	
 	public void weatherTick(Area A)
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.WEATHER))
@@ -362,28 +440,23 @@ public class DefaultClimate implements Climate
 				final String stopWord=getWeatherStop(oldWeather);
 				switch(sayMap[(oldWeather*Climate.NUM_WEATHER)+currentWeather])
 				{
-				case 0: break; //say=null break;
-				case 1: say=getWeatherDescription(A); break;
-				case 2: say=stopWord; break;
-				case 3: say=stopWord+" "+getWeatherDescription(A); break;
+				case 0:
+					break; // say=null break;
+				case 1:
+					say = getWeatherDescription(A);
+					break;
+				case 2:
+					say = stopWord;
+					break;
+				case 3:
+					say = stopWord + " " + getWeatherDescription(A);
+					break;
 				}
 			}
 
 			if((say!=null)&&!CMSecurity.isDisabled(CMSecurity.DisFlag.WEATHERNOTIFIES))
 			{
-				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-				{
-					final Room R=r.nextElement();
-					if(CMLib.map().hasASky(R))
-						for(int i=0;i<R.numInhabitants();i++)
-						{
-							final MOB mob=R.fetchInhabitant(i);
-							if((mob!=null)
-							&&(!mob.isMonster())
-							&&(CMLib.flags().canSee(mob)||(currentWeather!=oldWeather)))
-								mob.tell(say);
-						}
-				}
+				sayToEveryoneInArea(A,oldWeather,say);
 			}
 		}
 	}
@@ -431,19 +504,38 @@ public class DefaultClimate implements Climate
 		desc.append((suffix.trim().length()>0) ? prefix + " " + suffix : prefix);
 		switch(weather)
 		{
-		case Climate.WEATHER_HAIL: desc.append(CMLib.protocol().msp("hail.wav",10)); break;
-		case Climate.WEATHER_HEAT_WAVE: break;
-		case Climate.WEATHER_WINTER_COLD: break;
-		case Climate.WEATHER_DROUGHT: break;
-		case Climate.WEATHER_CLOUDY: break;
-		case Climate.WEATHER_THUNDERSTORM: break;
-		case Climate.WEATHER_DUSTSTORM: desc.append(CMLib.protocol().msp("windy.wav",10)); break;
-		case Climate.WEATHER_BLIZZARD: desc.append(CMLib.protocol().msp("blizzard.wav",10)); break;
-		case Climate.WEATHER_CLEAR: break;
-		case Climate.WEATHER_RAIN: desc.append(CMLib.protocol().msp("rainlong.wav",10)); break;
-		case Climate.WEATHER_SNOW: break;
-		case Climate.WEATHER_SLEET: desc.append(CMLib.protocol().msp("rain.wav",10)); break;
-		case Climate.WEATHER_WINDY: desc.append(CMLib.protocol().msp("wind.wav",10)); break;
+		case Climate.WEATHER_HAIL:
+			desc.append(CMLib.protocol().msp("hail.wav", 10));
+			break;
+		case Climate.WEATHER_HEAT_WAVE:
+			break;
+		case Climate.WEATHER_WINTER_COLD:
+			break;
+		case Climate.WEATHER_DROUGHT:
+			break;
+		case Climate.WEATHER_CLOUDY:
+			break;
+		case Climate.WEATHER_THUNDERSTORM:
+			break;
+		case Climate.WEATHER_DUSTSTORM:
+			desc.append(CMLib.protocol().msp("windy.wav", 10));
+			break;
+		case Climate.WEATHER_BLIZZARD:
+			desc.append(CMLib.protocol().msp("blizzard.wav", 10));
+			break;
+		case Climate.WEATHER_CLEAR:
+			break;
+		case Climate.WEATHER_RAIN:
+			desc.append(CMLib.protocol().msp("rainlong.wav", 10));
+			break;
+		case Climate.WEATHER_SNOW:
+			break;
+		case Climate.WEATHER_SLEET:
+			desc.append(CMLib.protocol().msp("rain.wav", 10));
+			break;
+		case Climate.WEATHER_WINDY:
+			desc.append(CMLib.protocol().msp("wind.wav", 10));
+			break;
 		}
 		return "^J"+desc.toString()+"^?";
 	}
@@ -499,5 +591,10 @@ public class DefaultClimate implements Climate
 		}
 		return base;
 	}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 }

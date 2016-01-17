@@ -49,7 +49,7 @@ public class Chant_CalmWeather extends Chant
 	public static void xpWorthyChange(MOB mob, Area area, Climate oldC, Climate newC)
 	{
 		Ability A=area.fetchEffect("Chant_ControlWeather");
-		if(A==null)
+		if((A==null)&&(mob!=null))
 		{
 			if((oldC.nextWeatherType(null)!=Climate.WEATHER_CLEAR)
 			&&(oldC.nextWeatherType(null)!=Climate.WEATHER_CLOUDY)

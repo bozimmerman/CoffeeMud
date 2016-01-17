@@ -144,7 +144,7 @@ public interface CombatLibrary extends CMLibrary
 	 * @return the given mobs adjusted attack bonus
 	 */
 	public int adjustedAttackBonus(MOB mob, MOB target);
-	
+
 	/**
 	 * Returns the given mob (or weapons, if provided) damage bonus,
 	 * after adjusting for hunger, thirst, fatigue, position, and
@@ -584,6 +584,17 @@ public interface CombatLibrary extends CMLibrary
 	 */
 	public void tickCombat(MOB fighter);
 
+	/**
+	 * If an NPC attacker comes under the sudden effect of a spell, and 
+	 * knows who is responsible, but are not presently in combat, this
+	 * method will start combat with them. 
+	 * @param attacker the wronged npc party
+	 * @param defender the defender who wronged the attacker
+	 * @return true if an attack was tried, false if not.
+	 */
+	public boolean postRevengeAttack(MOB attacker, MOB defender);
+	
+	
 	/**
 	 * Every tick, this method is called.  If the given mob is not
 	 * in combat, it will help the mob recover some of their hit points,

@@ -2315,5 +2315,22 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		return true;
 	}
+
+	@Override
+	public boolean postRevengeAttack(MOB attacker, MOB defender)
+	{
+		if((attacker!=null)
+		&&(!attacker.isInCombat())
+		&&(!attacker.amDead())
+		&&(!attacker.amDestroyed())
+		&&(attacker.isMonster())
+		&&(attacker!=defender)
+		&&(defender!=null)
+		&&(attacker.location()==defender.location())
+		&&(attacker.location().isInhabitant(defender))
+		&&(CMLib.flags().canBeSeenBy(defender,attacker)))
+			return postAttack(attacker,defender,attacker.fetchWieldedItem());
+		return false;
+	}
 	
 }

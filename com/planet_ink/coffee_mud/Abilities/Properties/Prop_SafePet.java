@@ -35,15 +35,32 @@ import java.util.*;
 */
 public class Prop_SafePet extends Property
 {
-	@Override public String ID() { return "Prop_SafePet"; }
-	@Override public String name(){ return "Unattackable Pets";}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	protected boolean disabled=false;
-	protected String displayMessage="Awww, leave <T-NAME> alone.";
+	@Override
+	public String ID()
+	{
+		return "Prop_SafePet";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Unattackable Pets";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	protected boolean	disabled		= false;
+	protected String	displayMessage	= "Awww, leave <T-NAME> alone.";
 
 	@Override
 	public String accountForYourself()
-	{ return "Unattackable";	}
+	{
+		return "Unattackable";
+	}
 
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

@@ -140,8 +140,7 @@ public class Prayer_PietyCurse extends Prayer
 				final MOB invoker=(invoker()!=null) ? invoker() : M;
 				final int damage=damageToDo;
 				CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_STRIKING,L("The piety curse <DAMAGE> <T-NAME>!"));
-				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
-					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+				CMLib.combat().postRevengeAttack(M, invoker);
 			}
 		}
 	}

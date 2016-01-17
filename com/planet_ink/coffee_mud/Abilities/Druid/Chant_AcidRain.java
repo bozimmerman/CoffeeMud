@@ -71,12 +71,7 @@ public class Chant_AcidRain extends Chant
 					final MOB invoker=(invoker()!=null) ? invoker() : M;
 					if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_ACID))
 						CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,L("The acid rain <DAMAGE> <T-NAME>!"));
-					if((!M.isInCombat())
-					&&(M!=invoker)
-					&&(M.location()!=null)
-					&&(M.location().isInhabitant(invoker))
-					&&(CMLib.flags().canBeSeenBy(invoker,M)))
-						CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
+					CMLib.combat().postRevengeAttack(M, invoker);
 				}
 			}
 		}
