@@ -35,16 +35,120 @@ import java.util.*;
 
 public class Skill_Befriend extends BardSkill
 {
-	@Override public String ID() { return "Skill_Befriend"; }
-	private final static String localizedName = CMLib.lang().L("Befriend");
-	@Override public String name() { return localizedName; }
-	@Override protected int canAffectCode(){return CAN_MOBS;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings =I(new String[] {"BEFRIEND"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL;}
-	@Override public int usageType(){return USAGE_MANA;}
+	@Override
+	public String ID()
+	{
+		return "Skill_Befriend";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Befriend");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "BEFRIEND" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_INFLUENTIAL;
+	}
+
+	@Override
+	public int usageType()
+	{
+		return USAGE_MANA;
+	}
+	
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if (msg.amITarget(affected))
+		{
+			switch (msg.targetMinor())
+			{
+			case CMMsg.TYP_VALUE:
+			case CMMsg.TYP_SELL:
+			case CMMsg.TYP_BUY:
+			case CMMsg.TYP_LIST:
+				if(affected instanceof MOB)
+				{
+					MOB M=(MOB)affected;
+					final MOB srcM=msg.source();
+					if(srcM==M.amFollowing())
+					{
+						srcM.recoverCharStats();
+						srcM.charStats().setStat(CharStats.STAT_CHARISMA, srcM.charStats().getStat(CharStats.STAT_CHARISMA) + 10);
+						msg.addTrailerRunnable(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								srcM.recoverCharStats();
+							}
+							
+						});
+					}
+					else
+					if((text().length()>0)&&(text().startsWith(srcM.Name())))
+					{
+						String name = text();
+						int amt=10;
+						int x=text().indexOf('=');
+						if(x>0)
+						{
+							name = text().substring(0,x).trim();
+							amt=CMath.s_int(text().substring(x+1).trim());
+						}
+						if(name.equals(srcM.Name()))
+						{
+							srcM.recoverCharStats();
+							srcM.charStats().setStat(CharStats.STAT_CHARISMA, msg.source().charStats().getStat(CharStats.STAT_CHARISMA) + amt);
+							msg.addTrailerRunnable(new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									srcM.recoverCharStats();
+								}
+							});
+						}
+					}
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return super.okMessage(myHost, msg);
+	}
 	
 	@Override 
 	public boolean tick(Tickable ticking, int tickID)
@@ -92,6 +196,12 @@ public class Skill_Befriend extends BardSkill
 		if(!CMLib.flags().isMobile(target))
 		{
 			mob.tell(L("You can only befriend fellow travellers."));
+			return false;
+		}
+
+		if(CMLib.coffeeShops().getShopKeeper(target)!=null)
+		{
+			mob.tell(L("You cann't befriend a merchant."));
 			return false;
 		}
 

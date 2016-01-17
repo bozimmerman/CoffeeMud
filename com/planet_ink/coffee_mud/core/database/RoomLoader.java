@@ -559,8 +559,10 @@ public class RoomLoader
 		}
 
 		if(set==null)
+		{
 			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				a.nextElement().getAreaStats();
+		}
 	}
 
 	public String DBReadRoomDesc(String roomID)
@@ -588,7 +590,7 @@ public class RoomLoader
 		return null;
 	}
 
-	public String DBReadRoomMOBData(String roomID, String mobID)
+	public String DBReadRoomMOBMiscText(String roomID, String mobID)
 	{
 		DBConnection D=null;
 		// now grab the items

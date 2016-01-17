@@ -435,9 +435,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public String DBReadRoomMOBData(String roomID, String mobID)
+	public String DBReadRoomMOBMiscText(String roomID, String mobID)
 	{
-		return RoomLoader.DBReadRoomMOBData(roomID, mobID);
+		return RoomLoader.DBReadRoomMOBMiscText(roomID, mobID);
 	}
 
 	@Override

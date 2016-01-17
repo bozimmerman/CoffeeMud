@@ -1600,6 +1600,17 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return the parameters for the ability/behavior/command above
 		 */
 		public String parameters();
+		
+
+		/**
+		 * The parameters for the ability/behavior/command above returned in
+		 * runtime form so that parameters are adjusted with the given name
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#setRangeName(String)
+		 * @param Name the name to replace the <TARGET> moniker with
+		 * @return the parameters for the ability/behavior/command above
+		 */
+		public String parameters(String Name);
+		
 		/**
 		 * Set the parameters for the ability/behavior/command above.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#rangeCodeName()

@@ -56,8 +56,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			if(newText.startsWith("%DBID>"))
 			{
-				final String dbstr=CMLib.database().DBReadRoomMOBData(newText.substring(6,newText.indexOf('@')),
-																  ((Object)mob).getClass().getName()+newText.substring(newText.indexOf('@')).trim());
+				int x=newText.indexOf('@');
+				final String dbstr=CMLib.database().DBReadRoomMOBMiscText(newText.substring(6,x),
+																  ((Object)mob).getClass().getName()+newText.substring(x).trim());
 				if(dbstr!=null)
 					return dbstr;
 				Log.errOut("Unable to re-read mob data: "+newText);

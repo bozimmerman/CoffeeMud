@@ -34,7 +34,11 @@ import java.util.*;
 
 public class MudChat extends StdBehavior implements ChattyBehavior
 {
-	@Override public String ID(){return "MudChat";}
+	@Override
+	public String ID()
+	{
+		return "MudChat";
+	}
 
 	//----------------------------------------------
 	// format: first group is general mob (no other
@@ -42,25 +46,26 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	// each chat group includes a string describing
 	// qualifying mobs followed by one or more chat
 	// collections.
-	protected ChattyGroup myChatGroup=null;
-	protected String myOldName="";
-	protected ChattyEntry[] addedChatEntries=new ChattyEntry[0];
+	protected ChattyGroup	myChatGroup			= null;
+	protected String		myOldName			= "";
+	protected ChattyEntry[]	addedChatEntries	= new ChattyEntry[0];
 	// chat collection: first string is the pattern
 	// match string
 	// following strings are the proposed responses.
 	//----------------------------------------------
 
-	protected MOB lastReactedTo=null;
-	protected MOB lastRespondedTo=null;
-	protected String lastThingSaid=null;
-	protected SLinkedList<ChattyResponse> responseQue=new SLinkedList<ChattyResponse>();
-	protected int tickDown=3;
-	protected final static int TALK_WAIT_DELAY=8;
-	protected int talkDown=0;
+	protected MOB		lastReactedTo		= null;
+	protected MOB		lastRespondedTo		= null;
+	protected String	lastThingSaid		= null;
+	protected int		tickDown			= 3;
+	protected int		talkDown			= 0;
 	// responseQue is a qued set of commands to
 	// run through the standard command processor,
 	// on tick or more.
-	protected final static int RESPONSE_DELAY=2;
+	protected SLinkedList<ChattyResponse> responseQue=new SLinkedList<ChattyResponse>();
+	
+	protected final static int	RESPONSE_DELAY		= 2;
+	protected final static int	TALK_WAIT_DELAY		= 8;
 
 	@Override
 	public String accountForYourself()
@@ -85,8 +90,10 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			for(final ChattyEntry CE : addedChatEntries)
 				newList.add(CE);
 			for(final ChattyGroup CG : addGroups)
+			{
 				for(final ChattyEntry CE : CG.entries)
 					newList.add(CE);
+			}
 			addedChatEntries = newList.toArray(new ChattyEntry[0]);
 		}
 		else
@@ -98,8 +105,17 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		myChatGroup=null;
 	}
 
-	@Override public String getLastThingSaid(){ return lastThingSaid;}
-	@Override public MOB getLastRespondedTo(){return lastRespondedTo;}
+	@Override
+	public String getLastThingSaid()
+	{
+		return lastThingSaid;
+	}
+
+	@Override
+	public MOB getLastRespondedTo()
+	{
+		return lastRespondedTo;
+	}
 
 	protected static ChattyGroup newChattyGroup(String name)
 	{

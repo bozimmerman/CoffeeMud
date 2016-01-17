@@ -298,54 +298,72 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param roomID
-	 * @param mobID
-	 * @return
+	 * Given a specific room id, and a specific mob id for
+	 * that room (this is a unique coded string found only
+	 * in the db, and loaded as the database id), this method
+	 * returns the misctext for the mob.
+	 * @see Environmental#text()
+	 * @see MOB#databaseID()
+	 * @param roomID the room id
+	 * @param mobID the unique mob string for that room
+	 * @return the misc text of the mob
 	 */
-	public String DBReadRoomMOBData(String roomID, String mobID);
+	public String DBReadRoomMOBMiscText(String roomID, String mobID);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param roomsToRead
+	 * This method does a conventional boot load of all rooms and areas
+	 * in the given set, including exits and content.  Thin areas
+	 * are not loaded, as normal.  Logging and status are as boot.
+	 * Rooms and Areas are added to the map.
+	 * @param roomsToRead null to read all, or the set of rooms to read
 	 */
 	public void DBReadAllRooms(RoomnumberSet roomsToRead);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param room
-	 * @param mobs
+	 * Deletes all mobs from the given room from the database and then
+	 * adds the given mobs to the database.
+	 * @see DatabaseEngine#DBUpdateMOBs(Room)
+	 * @param room the savable room
+	 * @param mobs the mobs in the room that need saving
 	 */
 	public void DBUpdateTheseMOBs(Room room, List<MOB> mobs);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param room
-	 * @param item
+	 * Deletes all items from the given room from the database and then
+	 * adds the given items to the database.
+	 * @param room the savable room
+	 * @param item the items in the room that need saving
 	 */
 	public void DBUpdateTheseItems(Room room, List<Item> item);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param room
+	 * Deletes all mobs from the given room from the database and then
+	 * adds all mobs currently in the room which are savable back to
+	 * the database.
+	 * @see DatabaseEngine#DBUpdateTheseMOBs(Room, List)
+	 * @param room the savable room
 	 */
 	public void DBUpdateMOBs(Room room);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param room
+	 * Creates the basic room object entry in the data.  Does not
+	 * save content or exits, just the room object stuff.
+	 * @param room the room to save
 	 */
 	public void DBCreateRoom(Room room);
 
 	/**
 	 * Table category: DBMAP
-	 * 
-	 * @param room
+	 * Updates only the room object for the given room, not the
+	 * items or content -- just the title, description, behaviors
+	 * and properties, that sort of thing.  No exits either.
+	 * Just the room.
+	 * @param room the room that needs resaving.
 	 */
 	public void DBUpdateRoom(Room room);
 	

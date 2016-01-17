@@ -2199,7 +2199,7 @@ public class DefaultFaction implements Faction, MsgListener
 						myReactions=new Vector<String>();
 					tempReactSet=(List)currentReactionSets.elementAt(d,2);
 					for(final Faction.FReactionItem reactionItem : tempReactSet)
-						myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
+						myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters(myHost.Name()));
 				}
 			}
 			if(myReactions!=null)
@@ -2474,6 +2474,7 @@ public class DefaultFaction implements Faction, MsgListener
 			return parms;
 		}
 
+		@Override
 		public String parameters(String name)
 		{
 			return CMStrings.replaceAll(parms, "<TARGET>", name);
