@@ -34,12 +34,12 @@ import java.util.*;
 */
 
 
-public class Chant_HideTide extends Chant
+public class Chant_HighTide extends Chant
 {
 	@Override
 	public String ID()
 	{
-		return "Chant_HideTide";
+		return "Chant_HighTide";
 	}
 
 	private final static String	localizedName	= CMLib.lang().L("High Tide");
@@ -79,7 +79,7 @@ public class Chant_HideTide extends Chant
 	@Override
 	protected int canAffectCode()
 	{
-		return 0;
+		return CAN_MOBS;
 	}
 
 	@Override

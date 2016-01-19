@@ -42,12 +42,12 @@ public interface Places extends PhysicalAgent
 	public int getAtmosphereCode();
 
 	/**
-	 * Returns the resource (or -1) that represents the atmosphere of this area.
+	 * Returns the resource that represents the atmosphere of this area.
 	 * Since most rooms inherit their atmosphere from the area, this is important.
-	 * Return -1 to have this area inherit its atmosphere from parents (which
+	 * Could have this area inherit its atmosphere from parents (which
 	 * would ultimately go back to RESOURCE_AIR)
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial#MATERIAL_GAS
-	 * @return the RawMaterial resource, or -1
+	 * @return the RawMaterial resource
 	 */
 	public int getAtmosphere();
 

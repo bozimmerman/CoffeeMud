@@ -163,6 +163,22 @@ public interface TrackingLibrary extends CMLibrary
 						&& (R.domainType() != Room.DOMAIN_OUTDOORS_UNDERWATER);
 			}
 		}),
+		FLOORSONLY(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+			{
+				return (R.getRoomInDir(Directions.DOWN)!=null);
+			}
+		}),
+		CEILINGSSONLY(new RFilter()
+		{
+			@Override
+			public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+			{
+				return (R.getRoomInDir(Directions.UP)!=null);
+			}
+		}),
 		NOCLIMB(new RFilter()
 		{
 			@Override

@@ -117,6 +117,25 @@ public class Druid_MyPlants extends StdAbility
 		return false;
 	}
 
+	public static Ability getMyPlantsSpell(Item I, MOB mob)
+	{
+		if((I!=null)
+		&&(I.rawSecretIdentity().equals(mob.Name()))
+		&&(I.owner()!=null)
+		&&(I.owner() instanceof Room))
+		{
+			for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if((A!=null)
+				&&((A.invoker()==mob)||(A.text().equals(mob.Name())))
+				&&(A instanceof Chant_SummonPlants))
+					return A;
+			}
+		}
+		return null;
+	}
+
 	public static Item myPlant(Room R, MOB mob, int which)
 	{
 		int plantNum=0;
@@ -222,6 +241,30 @@ public class Druid_MyPlants extends StdAbility
 		return myPlants;
 	}
 
+	public static List<Item> getMyPlants(final MOB mob, Collection<Room> rooms)
+	{
+		final List<Item> myPlants = getMyPlants(mob);
+		final Vector<Item> V=new Vector<Item>();
+		if(rooms == null)
+			return V;
+		try
+		{
+			for(Item I : myPlants)
+			{
+				if(I!=null)
+				{
+					final Room R=CMLib.map().roomLocation(I);
+					if((R!=null)&&(rooms.contains(R))&&(!V.contains(I)))
+						V.addElement(I);
+				}
+			}
+		}
+		catch (final NoSuchElementException e)
+		{
+		}
+		return myPlants;
+	}
+
 	public static List<Room> myPlantRooms(MOB mob)
 	{
 		final List<Item> myPlants = getMyPlants(mob);
@@ -243,7 +286,6 @@ public class Druid_MyPlants extends StdAbility
 		}
 		return V;
 	}
-
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
