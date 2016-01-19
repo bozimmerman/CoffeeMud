@@ -1171,42 +1171,44 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			ridersBehind(riders,(Room)leaveMsg.target(),(Room)enterMsg.target(),directionCode,flee, running);
 
 		if(!flee)
-		for(int f=0;f<mob.numFollowers();f++)
 		{
-			final MOB follower=mob.fetchFollower(f);
-			if(follower!=null)
+			for(int f=0;f<mob.numFollowers();f++)
 			{
-				if((follower.amFollowing()==mob)
-				&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
+				final MOB follower=mob.fetchFollower(f);
+				if(follower!=null)
 				{
-					if((follower.location()==thisRoom)&&(CMLib.flags().isAliveAwakeMobile(follower,true)))
+					if((follower.amFollowing()==mob)
+					&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
 					{
-						if(follower.isAttributeSet(MOB.Attrib.AUTOGUARD))
-							thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> remain(s) on guard here."));
-						else
+						if((follower.location()==thisRoom)&&(CMLib.flags().isAliveAwakeMobile(follower,true)))
 						{
-							final String inDir=((thisRoom instanceof BoardableShip)||(thisRoom.getArea() instanceof BoardableShip))?
-									Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
-							follower.tell(L("You follow @x1 @x2.",mob.name(follower),inDir));
-							boolean tryStand=false;
-							if(CMLib.flags().isSitting(mob))
+							if(follower.isAttributeSet(MOB.Attrib.AUTOGUARD))
+								thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> remain(s) on guard here."));
+							else
 							{
-								if(CMLib.flags().isSitting(follower))
-									tryStand=true;
-								else
+								final String inDir=((thisRoom instanceof BoardableShip)||(thisRoom.getArea() instanceof BoardableShip))?
+										Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
+								follower.tell(L("You follow @x1 @x2.",mob.name(follower),inDir));
+								boolean tryStand=false;
+								if(CMLib.flags().isSitting(mob))
 								{
-									final CMMsg msg=CMClass.getMsg(follower,null,null,CMMsg.MSG_SIT,null);
-									if((thisRoom.okMessage(mob,msg))
-									&&(!CMLib.flags().isSitting(follower)))
-									{
-										thisRoom.send(mob,msg);
+									if(CMLib.flags().isSitting(follower))
 										tryStand=true;
+									else
+									{
+										final CMMsg msg=CMClass.getMsg(follower,null,null,CMMsg.MSG_SIT,null);
+										if((thisRoom.okMessage(mob,msg))
+										&&(!CMLib.flags().isSitting(follower)))
+										{
+											thisRoom.send(mob,msg);
+											tryStand=true;
+										}
 									}
 								}
+								if(move(follower,directionCode,false,false,false,false, running)
+								&&(tryStand))
+									CMLib.commands().postStand(follower, true);
 							}
-							if(move(follower,directionCode,false,false,false,false, running)
-							&&(tryStand))
-								CMLib.commands().postStand(follower, true);
 						}
 					}
 				}

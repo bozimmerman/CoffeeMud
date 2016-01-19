@@ -7,5 +7,6 @@
 ^XHuman   :^.^? Just like you and me!  Humans are versatile and successful adventurers!
 ^XOgre    :^.^? Big and powerful, but also a bit sluggish and none too smart or suave.
 ^XGoblin  :^.^? Both quick and quick-witted, these nasty, weak little critters are always into something.
+^XDuergar :^.^? A grumpier balder dwarf, these creatures have numerous dark underground abilities.
 ^XDrow    :^.^? These dark skinned cousins of the elves hate the sunlight, and are quick, but frail.
 ^XCentaur :^.^? These half-horse/half-human creatures are strong and smart, but abrupt and unwise.
