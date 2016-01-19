@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /*
@@ -90,12 +91,15 @@ public class Chant_Flippers extends Chant
 		super.affectCharStats(affected,affectableStats);
 	}
 
+	private final AtomicBoolean noRecurse = new AtomicBoolean(false);
+	
 	@Override
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
 		if((affected instanceof MOB)
+		&&(!noRecurse.get())
 		&&(msg.amISource((MOB)affected))
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target() instanceof Room)
@@ -104,29 +108,38 @@ public class Chant_Flippers extends Chant
 		&&(CMLib.flags().isWatery((Room)msg.target()))
 		&&(((Exit)msg.tool()).isOpen()))
 		{
-			final Room targetRoom = (Room)msg.target();
-			final int dir = CMLib.map().getRoomDir(msg.source().location(), (Room)msg.target());
-			final int level = this.adjustedLevel(invoker(), 0);
-			final int numRooms = level / 10;
-			Room finalRoom = targetRoom;
-			for(int i=0;i<numRooms;i++)
+			try
 			{
-				Room R=finalRoom.getRoomInDir(dir);
-				Exit E=finalRoom.getExitInDir(dir);
-				if((R!=null)
-				&&(E!=null)
-				&&(CMLib.flags().isWatery(R))
-				&&(E.isOpen())
-				&&(R.roomID().length()==0))
+				noRecurse.set(true);
+				final Room targetRoom = (Room)msg.target();
+				final int dir = CMLib.map().getRoomDir(msg.source().location(), (Room)msg.target());
+				final int level = this.adjustedLevel(invoker(), 0);
+				final int numRooms = level / 10;
+				Room finalRoom = targetRoom;
+				for(int i=0;i<numRooms;i++)
 				{
-					if(finalRoom!=targetRoom)
-						finalRoom.send(msg.source(), msg);
-					msg.setTarget(R);
-					if(R.okMessage(myHost, msg))
+					Room R=finalRoom.getRoomInDir(dir);
+					Exit E=finalRoom.getExitInDir(dir);
+					if((R!=null)
+					&&(E!=null)
+					&&(CMLib.flags().isWatery(R))
+					&&(E.isOpen())
+					&&(R.roomID().length()==0))
 					{
-						if(finalRoom != targetRoom)
-							CMLib.commands().postLook(msg.source(), true);
-						finalRoom=R;
+						if(finalRoom!=targetRoom)
+							finalRoom.send(msg.source(), msg);
+						msg.setTarget(R);
+						if(R.okMessage(myHost, msg))
+						{
+							if(finalRoom != targetRoom)
+								CMLib.commands().postLook(msg.source(), true);
+							finalRoom=R;
+						}
+						else
+						{
+							msg.setTarget(finalRoom);
+							break;
+						}
 					}
 					else
 					{
@@ -134,11 +147,10 @@ public class Chant_Flippers extends Chant
 						break;
 					}
 				}
-				else
-				{
-					msg.setTarget(finalRoom);
-					break;
-				}
+			}
+			finally
+			{
+				noRecurse.set(false);
 			}
 			
 		}
