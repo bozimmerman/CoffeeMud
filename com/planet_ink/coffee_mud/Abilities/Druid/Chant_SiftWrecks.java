@@ -113,16 +113,15 @@ public class Chant_SiftWrecks extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int radius = adjustedLevel(mob,asLevel)+(10*super.getXMAXRANGELevel(mob))+super.getXLEVELLevel(mob);
+				int radius = (adjustedLevel(mob,asLevel))+(10*super.getXMAXRANGELevel(mob))+super.getXLEVELLevel(mob);
 				final TrackingLibrary.TrackingFlags filters=CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY)
-						.plus(TrackingLibrary.TrackingFlag.UNDERWATERONLY)
-						.plus(TrackingLibrary.TrackingFlag.FLOORSONLY);
+						.plus(TrackingLibrary.TrackingFlag.UNDERWATERONLY);
 				final List<Room> siftables = CMLib.tracking().getRadiantRooms(mob.location(), filters, radius);
 				StringBuilder msgStr=new StringBuilder("");
 				for(Room R : siftables)
 				{
-					if(R.numItems()>0)
+					if((R.numItems()>0)&&(R.getRoomInDir(Directions.DOWN)==null))
 					{
 						List<Integer> trailToThisRoom = null;
 						for(Enumeration<Item> i=R.items();i.hasMoreElements();)
@@ -133,6 +132,9 @@ public class Chant_SiftWrecks extends Chant
 								if(trailToThisRoom == null)
 									trailToThisRoom = CMLib.tracking().getShortestTrail(CMLib.tracking().findAllTrails(mob.location(), R, siftables));
 								msgStr.append(CMStrings.padRight(I.name(mob),20));
+								if(trailToThisRoom==null)
+									msgStr.append(" here? ");
+								else
 								for(Integer dirI : trailToThisRoom)
 									msgStr.append(Directions.getDirectionChar(dirI.intValue())).append(" ");
 								msgStr.append("\n\r");
