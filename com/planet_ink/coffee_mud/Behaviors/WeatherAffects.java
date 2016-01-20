@@ -57,6 +57,7 @@ public class WeatherAffects extends PuddleMaker
 	protected int				tornadoDown			= 0;
 	protected int				lightningDown		= 0;
 	protected int				hailDown			= 0;
+	protected int				boatSlipChance		= 0;
 	protected int				rainSlipChance		= 0;
 	protected int				snowSlipChance		= 0;
 	protected int				sleetSlipChance		= 0;
@@ -100,6 +101,7 @@ public class WeatherAffects extends PuddleMaker
 		sleetSlipChance=CMParms.getParmInt(parms,"sleetslipchance",10);
 		freezeOverChance=CMParms.getParmInt(parms,"iceoverchance",50);
 		droughtFireChance=CMParms.getParmInt(parms,"droughtfirechance",1);
+		boatSlipChance=CMParms.getParmInt(parms,"boatslipchance",20);
 		resetBotherTicks();
 		resetDiseaseTicks();
 		resetRustTicks();
@@ -171,6 +173,22 @@ public class WeatherAffects extends PuddleMaker
 			return A.getClimateObj().weatherType(room);
 		return 0;
 	}
+	
+	private boolean isInclement(final int weather)
+	{
+		switch(weather)
+		{
+			case Climate.WEATHER_BLIZZARD:
+			case Climate.WEATHER_SNOW:
+			case Climate.WEATHER_RAIN:
+			case Climate.WEATHER_THUNDERSTORM:
+			case Climate.WEATHER_SLEET:
+			case Climate.WEATHER_DUSTSTORM:
+				return true;
+			default:
+				return false;
+		}
+	}
 
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -212,40 +230,105 @@ public class WeatherAffects extends PuddleMaker
 			}
 			}
 		}
-		// then try to handle slippage in wet weather
-		if(((msg.sourceMajor(CMMsg.MASK_MOVE)))&&(R!=null))
+		// then try to handle slippage of boats and feet in bad weather
+		if(((msg.sourceMajor(CMMsg.MASK_MOVE)))&&(R!=null)&&(isInclement(weather)))
 		{
-			String what=null;
-			switch(weather)
+			switch(R.domainType())
 			{
+			case Room.DOMAIN_INDOORS_AIR:
+			case Room.DOMAIN_OUTDOORS_AIR:
+				break;
+			case Room.DOMAIN_INDOORS_WATERSURFACE:
+			case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			{
+				final Rideable riding=msg.source().riding();
+				if((riding!=null)
+				&&((riding.rideBasis()==Rideable.RIDEABLE_WATER)||(riding instanceof BoardableShip))
+				&&(!CMLib.flags().isABonusItems(riding)))
+				{
+					String what=null;
+					switch(weather)
+					{
+					case Climate.WEATHER_SNOW:
+						if(((R.getClimateType()&Places.CLIMASK_WINDY)!=0)
+						&&(CMLib.dice().rollPercentage()<boatSlipChance))
+							what="cold snowy winds"; // never L(
+						break;
+					case Climate.WEATHER_RAIN:
+						if(((R.getClimateType()&Places.CLIMASK_WINDY)!=0)
+						&&(CMLib.dice().rollPercentage()<boatSlipChance))
+							what="strong rainy winds"; // never L(
+						break;
+					case Climate.WEATHER_BLIZZARD:
+						if(CMLib.dice().rollPercentage()<boatSlipChance)
+							what="blizzard"; // never L(
+						break;
+					case Climate.WEATHER_THUNDERSTORM:
+						if(CMLib.dice().rollPercentage()<boatSlipChance)
+							what="thunderstorm"; // never L(
+						break;
+					case Climate.WEATHER_DUSTSTORM:
+						if(CMLib.dice().rollPercentage()<boatSlipChance)
+							what="strong winds"; // never L(
+						break;
+					}
+					if(what!=null)
+					{
+						R.show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("^W<S-NAME> make(s) no progress in the "+what+".^?"));
+						if(riding instanceof BoardableShip)
+						{
+							final Area shipArea=((BoardableShip)riding).getShipArea();
+							if(shipArea != null)
+							{
+								for(Enumeration<Room> sr=shipArea.getProperMap();sr.hasMoreElements();)
+								{
+									final Room sR=sr.nextElement();
+									if((sR!=null)&&((sR.domainType()&Room.INDOORS)==0))
+										sR.show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("^W<S-NAME> make(s) no progress in the "+what+".^?"));
+								}
+							}
+							
+						}
+						return false;
+					}
+				}
+				break;
+			}
+			case Room.DOMAIN_INDOORS_UNDERWATER:
+			case Room.DOMAIN_OUTDOORS_UNDERWATER:
+				break;
+			default:
+			{
+				String what=null;
+				switch(weather)
+				{
 				case Climate.WEATHER_BLIZZARD:
 				case Climate.WEATHER_SNOW:
 					if(CMLib.dice().rollPercentage()<snowSlipChance)
-						what="cold wet";
+						what="cold wet"; // never L(
 					break;
 				case Climate.WEATHER_RAIN:
 				case Climate.WEATHER_THUNDERSTORM:
 					if(CMLib.dice().rollPercentage()<rainSlipChance)
-						what="slippery wet";
+						what="slippery wet"; // never L(
 					break;
 				case Climate.WEATHER_SLEET:
 					if(CMLib.dice().rollPercentage()<sleetSlipChance)
-						what="icy";
+						what="icy"; // never L(
 					break;
+				}
+				if((what!=null)
+				&&(!CMLib.flags().isInFlight(msg.source()))
+				&&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
+				{
+					int oldDisposition=msg.source().basePhyStats().disposition();
+					oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
+					msg.source().basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
+					msg.source().recoverPhyStats();
+					R.show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("^W<S-NAME> slip(s) on the "+what+" ground.^?"));
+					return false;
+				}
 			}
-			if((what!=null)
-			&&(!CMLib.flags().isInFlight(msg.source()))
-			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-			&&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
-			{
-				int oldDisposition=msg.source().basePhyStats().disposition();
-				oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
-				msg.source().basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
-				msg.source().recoverPhyStats();
-				R.show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("^W<S-NAME> slip(s) on the @x1 ground.^?",what));
-				return false;
 			}
 		}
 		if((R!=null)

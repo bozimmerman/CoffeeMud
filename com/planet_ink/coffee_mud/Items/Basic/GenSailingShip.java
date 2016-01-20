@@ -516,6 +516,7 @@ public class GenSailingShip extends StdBoardable
 				final String otherDirectionName=Directions.getDirectionName(oppositeDirectionFacing);
 				final Exit opExit=thisRoom.getExitInDir(oppositeDirectionFacing);
 				final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
+				mob.setRiding(this);
 				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 				try
@@ -641,12 +642,14 @@ public class GenSailingShip extends StdBoardable
 			if((R2==null)&&(R!=null)&&(R.getArea()!=null))
 				R2=findOceanRoom(R.getArea());
 			if(R2==null)
+			{
 				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					R2=findOceanRoom(a.nextElement());
 					if(R2!=null)
 						break;
 				}
+			}
 			if(R2==null)
 				return false;
 			R2.moveItemTo(this);
