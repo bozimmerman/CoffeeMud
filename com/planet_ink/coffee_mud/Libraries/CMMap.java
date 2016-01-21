@@ -1490,7 +1490,6 @@ public class CMMap extends StdLibrary implements WorldMap
 	
 	public Enumeration<Room> shipsRoomEnumerator(final Area inA)
 	{
-		
 		return new Enumeration<Room>() 
 		{
 			private Enumeration<Room> cur = null;
@@ -1570,25 +1569,41 @@ public class CMMap extends StdLibrary implements WorldMap
 	public PostOffice getPostOffice(String chain, String areaNameOrBranch)
 	{
 		for (final PostOffice P : postOfficeList)
+		{
 			if((P.postalChain().equalsIgnoreCase(chain))
 			&&(P.postalBranch().equalsIgnoreCase(areaNameOrBranch)))
 				return P;
+		}
 
 		final Area A=findArea(areaNameOrBranch);
 		if(A==null)
 			return null;
 
 		for (final PostOffice P : postOfficeList)
+		{
 			if((P.postalChain().equalsIgnoreCase(chain))
 			&&(getStartArea(P)==A))
 				return P;
+		}
 		return null;
 	}
-	@Override public Enumeration<PostOffice> postOffices() { return new IteratorEnumeration<PostOffice>(postOfficeList.iterator()); }
 
-	@Override public Enumeration<Auctioneer> auctionHouses() { return new IteratorEnumeration<Auctioneer>(auctionHouseList.iterator()); }
+	@Override
+	public Enumeration<PostOffice> postOffices()
+	{
+		return new IteratorEnumeration<PostOffice>(postOfficeList.iterator());
+	}
 
-	public int numAuctionHouses() { return auctionHouseList.size(); }
+	@Override
+	public Enumeration<Auctioneer> auctionHouses()
+	{
+		return new IteratorEnumeration<Auctioneer>(auctionHouseList.iterator());
+	}
+
+	public int numAuctionHouses()
+	{
+		return auctionHouseList.size();
+	}
 
 	protected void addAuctionHouse(Auctioneer newOne)
 	{
@@ -1601,6 +1616,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		auctionHouseList.remove(oneToDel);
 	}
+
 	@Override
 	public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch)
 	{
