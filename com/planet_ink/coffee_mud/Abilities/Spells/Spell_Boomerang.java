@@ -119,7 +119,12 @@ public class Spell_Boomerang extends Spell
 			final MOB owner=getOwner(I);
 			if((owner!=null)&&(I.owner()!=null)&&(I.owner()!=owner))
 			{
-				if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.target()==I)||(msg.tool()==I))
+				final Item C=I.ultimateContainer(null); // C should always be I unless its not
+				if((msg.sourceMinor()==CMMsg.TYP_DROP)
+				||(msg.target()==I)
+				||(msg.tool()==I)
+				||(msg.target()==C)
+				||(msg.tool()==C))
 				{
 					msg.addTrailerMsg(CMClass.getMsg(owner,null,CMMsg.NO_EFFECT,null));
 				}
