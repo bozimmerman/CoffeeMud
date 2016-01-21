@@ -636,13 +636,16 @@ public interface Law extends CMCommon
 	public static final int PUNISHMENTMASK_FINE=2048;
 	/** a bitmask, added to a base punishment type, denoting criminal not walked to releaseroom */
 	public static final int PUNISHMENTMASK_NORELEASE=4096;
+	/** a bitmask, added to a base punishment type, denoting maximum adjusted punishment */
+	public static final int PUNISHMENTMASK_PUNISHCAP=8192;
 	/** a string array for each of the punishment bitmasks */
 	public static final String[] PUNISHMENTMASK_DESCS={
 		"SEPARATE",
 		"SKIPTRIAL",
 		"DETAIN=",
 		"FINE=",
-		"NORELEASE"
+		"NORELEASE",
+		"PUNISHCAP="
 	};
 	/** an array of the various bitmask values added to punishment codes */
 	public static final int[] PUNISHMENTMASK_CODES={
@@ -650,7 +653,8 @@ public interface Law extends CMCommon
 		PUNISHMENTMASK_SKIPTRIAL,
 		PUNISHMENTMASK_DETAIN,
 		PUNISHMENTMASK_FINE,
-		PUNISHMENTMASK_NORELEASE
+		PUNISHMENTMASK_NORELEASE,
+		PUNISHMENTMASK_PUNISHCAP
 	};
 
 	/** a state of adjudication meaning officer has not yet found the criminal */
@@ -764,12 +768,12 @@ public interface Law extends CMCommon
 		"JAIL4TIME=160\n"+
 		"RESISTINGARREST=;;"+CMLib.lang().L("resisting arrest")+";jail1;"+CMLib.lang().L("Resisting arrest by a lawful officer is a serious crime.")+"\n"+
 		"TRESPASSING=!home !indoors;!recently;"+CMLib.lang().L("trespassing")+";jail3;"+CMLib.lang().L("Your kind are not allowed here.")+"\n"+
-		"NUDITY=!home !indoors;witness !recently;"+CMLib.lang().L("indecent exposure")+";warning;"+CMLib.lang().L("Nudity below the waist violates our high moral code.  Use the 'outfit' command if you need clothes!")+"\n"+
+		"NUDITY=!home !indoors;witness !recently;"+CMLib.lang().L("indecent exposure")+";warning punishcap=parole4;"+CMLib.lang().L("Nudity below the waist violates our high moral code.  Use the 'outfit' command if you need clothes!")+"\n"+
 		"ARMED=\n"+
 		"ASSAULT=;;"+CMLib.lang().L("assaulting <T-NAME>")+";jail4;"+CMLib.lang().L("Assault is a hideous offense.")+"\n"+
 		"MURDER=;;"+CMLib.lang().L("murdering <T-NAME>")+";death;"+CMLib.lang().L("Murder is a barbarous offense.")+"\n"+
 		"PROPERTYROB=;;"+CMLib.lang().L("robbing the property of <T-NAME>")+";jail3;"+CMLib.lang().L("Robbery violates our high moral code.")+"\n"+
-		"TAXEVASION=;;"+CMLib.lang().L("evading taxes;jail1")+";"+CMLib.lang().L("Paying taxes and dieing are our solemn duties to the state.")+"\n"+
+		"TAXEVASION=;;"+CMLib.lang().L("evading taxes")+";jail1;"+CMLib.lang().L("Paying taxes and dieing are our solemn duties to the state.")+"\n"+
 		"TREASURY=\n"+
 		"PROPERTYTAX=0\n"+
 		"SALESTAX=0\n"+
@@ -785,8 +789,8 @@ public interface Law extends CMCommon
 		"THIEF_FORGERY=;;"+CMLib.lang().L("forgery")+";jail2;"+CMLib.lang().L("Forgery is deceptive and quite illegal.")+"\n"+
 		"THIEF_RACKETEER=;;"+CMLib.lang().L("racketeering <T-NAME>")+";jail3;"+CMLib.lang().L("Racketeering is a form of vicious theft.")+"\n"+
 		"THIEF_ROBBERY=;;"+CMLib.lang().L("robbing <T-NAME>")+";jail3;"+CMLib.lang().L("Robbery violates our high moral code.")+"\n"+
-		"INEBRIATION=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n"+
-		"POISON_ALCOHOL=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n"+
-		"POISON_FIREBREATHER=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n"+
-		"POISON_LIQUOR=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n";
+		"INEBRIATION=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1 punishcap=jail4;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n"+
+		"POISON_ALCOHOL=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1 punishcap=jail4;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n"+
+		"POISON_FIREBREATHER=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1 punishcap=jail4;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n"+
+		"POISON_LIQUOR=!home !pub !tavern !inn !bar;!recently;"+CMLib.lang().L("public intoxication")+";parole1 punishcap=jail4;"+CMLib.lang().L("Drunkenness is a demeaning and intolerable state.")+"\n";
 }

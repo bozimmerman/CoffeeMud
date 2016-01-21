@@ -932,6 +932,23 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 		if(highest>Law.PUNISHMENT_HIGHEST)
 			highest=Law.PUNISHMENT_HIGHEST;
+		String cap = W.getPunishmentParm(Law.PUNISHMENTMASK_PUNISHCAP);
+		if((cap != null)&&(cap.trim().length()>0))
+		{
+			cap=cap.trim();
+			if(CMath.isInteger(cap))
+			{
+				if(highest>CMath.s_int(cap))
+					highest=CMath.s_int(cap);
+			}
+			else
+			{
+				int x=CMParms.indexOf(Law.PUNISHMENT_DESCS,cap.toUpperCase());
+				if(highest>x)
+					highest=x;
+			}
+		}
+			
 		int adjusted=highest;
 		if((CMLib.flags().isGood(criminal))&&(adjusted>0))
 			adjusted--;
@@ -1683,22 +1700,19 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(s.equalsIgnoreCase(Law.PUNISHMENT_DESCS[i]))
 				{
 					actionCodeSet=true;
-					W.setPunishment(W.punishment()|i);
+					W.setPunishment(W.punishment());
 					if(parm!=null)
 						W.addPunishmentParm(i,parm);
 				}
 			}
-			if(!actionCodeSet)
+			for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
 			{
-				for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
+				if(s.equalsIgnoreCase(Law.PUNISHMENTMASK_DESCS[i]))
 				{
-					if(s.equalsIgnoreCase(Law.PUNISHMENTMASK_DESCS[i]))
-					{
-						actionCodeSet=true;
-						W.setPunishment(W.punishment()|Law.PUNISHMENTMASK_CODES[i]);
-						if(parm!=null)
-							W.addPunishmentParm(Law.PUNISHMENTMASK_CODES[i],parm);
-					}
+					actionCodeSet=true;
+					W.setPunishment(W.punishment()|Law.PUNISHMENTMASK_CODES[i]);
+					if(parm!=null)
+						W.addPunishmentParm(Law.PUNISHMENTMASK_CODES[i],parm);
 				}
 			}
 			if(!actionCodeSet)
@@ -1709,7 +1723,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 
 		if((W.victim()!=null)&&(isTroubleMaker(W.victim()))&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
-			W.setPunishment(W.punishment()/2);
+			W.setPunishment((W.punishment()&Law.PUNISHMENT_MASK)/2);
 
 		if((isStillACrime(W,CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)))
 		&&((W.witness()==null)||CMLib.flags().canBeSeenBy(W.criminal(),W.witness())))

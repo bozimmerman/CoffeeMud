@@ -19,6 +19,7 @@
   18. Anchors Down on sailing ships now prevents WaterCurrent effects (duh!)
   19. Sailing Ships now get area weather messages and affects
   20. Default autoreaction shopkeepers will now adjust prices based on faction.
+  21. Legal system now supports punishment caps on repeat crimes.
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)
