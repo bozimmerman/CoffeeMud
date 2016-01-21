@@ -2188,7 +2188,6 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			if((!CMLib.flags().canBeSeenBy(myHost, M))&&(!CMLib.flags().canBeHeardMovingBy(myHost,M)))
 				return null;
-
 			Vector<String> myReactions=null;
 			List<Faction.FReactionItem> tempReactSet=null;
 			for(int d=0;d<currentReactionSets.size();d++)

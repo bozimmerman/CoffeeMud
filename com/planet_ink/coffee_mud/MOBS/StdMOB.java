@@ -3516,7 +3516,7 @@ public class StdMOB implements MOB
 					}
 				});
 			}
-			if (isMonster)
+			//if (isMonster) why wouldn't this be by players Especially?! 
 			{
 				for (final Enumeration<Faction.FData> t = factions.elements(); t.hasMoreElements();)
 				{

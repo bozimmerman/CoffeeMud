@@ -38,7 +38,12 @@ import java.util.*;
 
 public class Factions extends StdLibrary implements FactionManager
 {
-	@Override public String ID(){return "Factions";}
+	@Override
+	public String ID()
+	{
+		return "Factions";
+	}
+
 	public SHashtable<String,Faction> factionSet = new SHashtable<String,Faction>();
 	public SHashtable<String,FRange> hashedFactionRanges=new SHashtable<String,FRange>();
 
@@ -47,7 +52,13 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		return factionSet.elements();
 	}
-	@Override public int numFactions(){return factionSet.size();}
+
+	@Override
+	public int numFactions()
+	{
+		return factionSet.size();
+	}
+
 	@Override
 	public void clearFactions()
 	{
@@ -74,9 +85,16 @@ public class Factions extends StdLibrary implements FactionManager
 			getFaction(preLoadFactions.get(i));
 	}
 
-	public java.util.Map<String,FRange> rangeCodeNames(){ return hashedFactionRanges; }
+	public java.util.Map<String, FRange> rangeCodeNames()
+	{
+		return hashedFactionRanges;
+	}
 
-	@Override public boolean isRangeCodeName(String key){ return rangeCodeNames().containsKey(key.toUpperCase());}
+	@Override
+	public boolean isRangeCodeName(String key)
+	{
+		return rangeCodeNames().containsKey(key.toUpperCase());
+	}
 
 	@Override
 	public FRange getFactionRangeByCodeName(String rangeCodeName)
@@ -98,6 +116,7 @@ public class Factions extends StdLibrary implements FactionManager
 			return false;
 		return FR2.codeName().equalsIgnoreCase(FR.codeName());
 	}
+
 	@Override
 	public String rangeDescription(Faction.FRange FR, String andOr)
 	{
@@ -292,14 +311,72 @@ public class Factions extends StdLibrary implements FactionManager
 		return msg.toString();
 	}
 
-	@Override public String name(){return "Factions";}
-	@Override public int getTickStatus(){ return Tickable.STATUS_NOT;}
-	@Override public String getName(String factionID) {  final Faction f=getFaction(factionID); if(f!=null) return f.name(); return ""; }
-	@Override public int getMinimum(String factionID) {  final Faction f=getFaction(factionID); if(f!=null) return f.minimum(); return 0; }
-	@Override public int getMaximum(String factionID) {  final Faction f=getFaction(factionID); if(f!=null) return f.maximum(); return 0; }
-	@Override public int getPercent(String factionID, int faction) { final Faction f=getFaction(factionID); if(f!=null) return f.asPercent(faction); return 0; }
-	@Override public int getPercentFromAvg(String factionID, int faction) { final Faction f=getFaction(factionID); if(f!=null) return f.asPercentFromAvg(faction); return 0; }
-	@Override public Faction.FRange getRange(String factionID, int faction) { final Faction f=getFaction(factionID); if(f!=null) return f.fetchRange(faction); return null; }
+	@Override
+	public String name()
+	{
+		return "Factions";
+	}
+
+	@Override
+	public int getTickStatus()
+	{
+		return Tickable.STATUS_NOT;
+	}
+
+	@Override
+	public String getName(String factionID)
+	{
+		final Faction f = getFaction(factionID);
+		if (f != null)
+			return f.name();
+		return "";
+	}
+
+	@Override
+	public int getMinimum(String factionID)
+	{
+		final Faction f = getFaction(factionID);
+		if (f != null)
+			return f.minimum();
+		return 0;
+	}
+
+	@Override
+	public int getMaximum(String factionID)
+	{
+		final Faction f = getFaction(factionID);
+		if (f != null)
+			return f.maximum();
+		return 0;
+	}
+
+	@Override
+	public int getPercent(String factionID, int faction)
+	{
+		final Faction f = getFaction(factionID);
+		if (f != null)
+			return f.asPercent(faction);
+		return 0;
+	}
+
+	@Override
+	public int getPercentFromAvg(String factionID, int faction)
+	{
+		final Faction f = getFaction(factionID);
+		if (f != null)
+			return f.asPercentFromAvg(faction);
+		return 0;
+	}
+
+	@Override
+	public Faction.FRange getRange(String factionID, int faction)
+	{
+		final Faction f = getFaction(factionID);
+		if (f != null)
+			return f.fetchRange(faction);
+		return null;
+	}
+
 	@Override
 	public Enumeration<Faction.FRange> getRanges(String factionID) {
 		final Faction f=getFaction(factionID);
@@ -307,6 +384,7 @@ public class Factions extends StdLibrary implements FactionManager
 			return f.ranges();
 		return null;
 	}
+
 	@Override
 	public double getRangePercent(String factionID, int faction)
 	{
@@ -315,10 +393,31 @@ public class Factions extends StdLibrary implements FactionManager
 			return 0.0;
 		return CMath.div((int)Math.round(CMath.div((faction - F.minimum()),(F.maximum() - F.minimum())) * 10000.0),100.0);
 	}
-	@Override public int getTotal(String factionID) {  final Faction f=getFaction(factionID); if(f!=null) return (f.maximum()-f.minimum()); return 0; }
-	@Override public int getRandom(String factionID) {  final Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
 
-	@Override public String AlignID() { return "alignment.ini"; }
+	@Override
+	public int getTotal(String factionID)
+	{
+		final Faction f = getFaction(factionID);
+		if (f != null)
+			return (f.maximum() - f.minimum());
+		return 0;
+	}
+
+	@Override
+	public int getRandom(String factionID)
+	{
+		final Faction f = getFaction(factionID);
+		if (f != null)
+			return f.randomFaction();
+		return 0;
+	}
+
+	@Override
+	public String AlignID()
+	{
+		return "alignment.ini";
+	}
+
 	@Override
 	public void setAlignment(MOB mob, Faction.Align newAlignment)
 	{
@@ -494,9 +593,13 @@ public class Factions extends StdLibrary implements FactionManager
 		}
 		final Faction[] Fs=getSpecialFactions(mob,R);
 		if(Fs!=null)
+		{
 			for(final Faction F : Fs)
+			{
 				if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
 					mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+			}
+		}
 	}
 
 	protected void addOutsidersAndTimers(Faction F, Vector<Faction.FactionChangeEvent> outSiders, Vector<Faction.FactionChangeEvent> timers)
@@ -504,10 +607,13 @@ public class Factions extends StdLibrary implements FactionManager
 		Faction.FactionChangeEvent[] CEs=null;
 		CEs=F.getChangeEvents("ADDOUTSIDER");
 		if(CEs!=null)
+		{
 			for (final FactionChangeEvent ce : CEs)
 				outSiders.addElement(ce);
+		}
 		CEs=F.getChangeEvents("TIME");
 		if(CEs!=null)
+		{
 			for (final FactionChangeEvent ce : CEs)
 			{
 				if(ce.triggerParameters().length()==0)
@@ -527,6 +633,7 @@ public class Factions extends StdLibrary implements FactionManager
 					}
 				}
 			}
+		}
 	}
 
 	@Override
@@ -561,12 +668,16 @@ public class Factions extends StdLibrary implements FactionManager
 				{
 					Fs=getSpecialFactions(mob, R);
 					if(Fs!=null)
+					{
 						for(final Faction sF : Fs)
+						{
 							if(!factionsDone.contains(sF))
 							{
 								addOutsidersAndTimers(sF, outSiders, timers);
 								factionsDone.add(sF);
 							}
+						}
+					}
 					for(int o=0;o<outSiders.size();o++)
 					{
 						CE=outSiders.elementAt(o);
@@ -581,7 +692,11 @@ public class Factions extends StdLibrary implements FactionManager
 					}
 				}
 			}
-		}catch(final Exception e){ Log.errOut("Factions",e);}
+		}
+		catch (final Exception e)
+		{
+			Log.errOut("Factions", e);
+		}
 		return true;
 	}
 
@@ -649,17 +764,21 @@ public class Factions extends StdLibrary implements FactionManager
 				return 0;
 		}
 	}
+
 	@Override
 	public int isFactionTag(String tag)
 	{
 		for(int i=0;i<Faction.TAG_NAMES.length;i++)
+		{
 			if(tag.equalsIgnoreCase(Faction.TAG_NAMES[i]))
 				return i;
 			else
 			if(Faction.TAG_NAMES[i].endsWith("*")&&tag.startsWith(Faction.TAG_NAMES[i].substring(0,Faction.TAG_NAMES[i].length()-1)))
 				return i;
+		}
 		return -1;
 	}
+
 	@Override
 	public Faction.Align getAlignEnum(String str)
 	{
@@ -1463,11 +1582,13 @@ public class Factions extends StdLibrary implements FactionManager
 					{
 						cont=true;
 						for(final Enumeration<Faction.FRange> e=me.ranges();e.hasMoreElements();)
+						{
 							if(e.nextElement().codeName().equalsIgnoreCase(rangeCode))
 							{
 								newData[0]=rangeCode;
 								cont=false;
 							}
+						}
 						if(cont)
 							mob.tell(L("'@x1' is not a valid range code.  Use ?",rangeCode));
 					}
@@ -1566,13 +1687,15 @@ public class Factions extends StdLibrary implements FactionManager
 
 	private StringBuffer rebuildFactionProperties(Faction F)
 	{
-		final List<String> oldV=Resources.getFileLineVector(Resources.getFileResource(makeFactionFilename(F.factionID()),true));
+		List<String> oldV=Resources.getFileLineVector(Resources.getFileResource(makeFactionFilename(F.factionID()),true));
 		if(oldV.size()<10)
 		{
-
+			final StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,CMFile.FLAG_LOGERRORS).text();
+			oldV=Resources.getFileLineVector(template);
 		}
 		final boolean[] defined=new boolean[Faction.TAG_NAMES.length];
-		for(int i=0;i<defined.length;i++) defined[i]=false;
+		for(int i=0;i<defined.length;i++) 
+			defined[i]=false;
 		for(int v=0;v<oldV.size();v++)
 		{
 			final String s=oldV.get(v);
@@ -1646,7 +1769,11 @@ public class Factions extends StdLibrary implements FactionManager
 			if(!CMath.bset(F.getInternalFlags(), Faction.IFLAG_NEVERSAVE))
 			{
 				final StringBuffer buf = rebuildFactionProperties(F);
-				if(!Resources.updateFileResource(makeFactionFilename(F.factionID()),buf))
+				String factionFilename = makeFactionFilename(F.factionID());
+				CMFile file = new CMFile(makeFactionFilename(F.factionID()),null);
+				if(!file.exists())
+					factionFilename = "::"+factionFilename;
+				if(!Resources.updateFileResource(factionFilename,buf))
 					return "Faction File '"+F.factionID()+"' could not be modified.  Make sure it is not READ-ONLY.";
 			}
 		}
@@ -1658,16 +1785,22 @@ public class Factions extends StdLibrary implements FactionManager
 	public int getAbilityFlagType(String strflag)
 	{
 		for (final String element : Ability.ACODE_DESCS)
+		{
 			if(element.equalsIgnoreCase(strflag))
 				return 1;
+		}
 		for (final String element : Ability.DOMAIN_DESCS)
+		{
 			if(element.equalsIgnoreCase(strflag))
 				return 2;
+		}
 		if(strflag.startsWith("!"))
 			strflag=strflag.substring(1);
 		for (final String element : Ability.FLAG_DESCS)
+		{
 			if(element.equalsIgnoreCase(strflag))
 				return 3;
+		}
 		if(CMClass.getAbility(strflag)!=null)
 			return 0;
 		return -1;

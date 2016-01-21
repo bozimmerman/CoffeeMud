@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -39,10 +40,17 @@ import java.io.IOException;
 
 public class Destroy extends StdCommand
 {
-	public Destroy(){}
+	public Destroy()
+	{
+	}
 
 	private final String[] access=I(new String[]{"DESTROY","JUNK"});
-	@Override public String[] getAccessWords(){return access;}
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
 
 	public boolean errorOut(MOB mob)
 	{
@@ -612,6 +620,7 @@ public class Destroy extends StdCommand
 			}
 
 			if(!confirmed)
+			{
 				if(mob.session().confirm(L("Area: \"@x1\", OBLITERATE IT???",areaName),"N"))
 				{
 					if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
@@ -622,6 +631,7 @@ public class Destroy extends StdCommand
 					}
 					confirmed=true;
 				}
+			}
 			if(confirmed)
 			{
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A thunderous boom of destruction is heard in the distance."));
@@ -959,7 +969,7 @@ public class Destroy extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if((!CMSecurity.isAllowedAnywhereContainsAny(mob,CMSecurity.SECURITY_CMD_GROUP))
@@ -973,15 +983,6 @@ public class Destroy extends StdCommand
 				mob.tell(L("Destroy what?"));
 				return false;
 			}
-			if(mob.location().fetchInhabitant(CMParms.combine(commands,0))!=null)
-			{
-				final Command C=CMClass.getCommand("Kill");
-				commands.add(0,"KILL");
-				if(C!=null)
-					C.execute(mob,commands,metaFlags);
-				return false;
-			}
-
 			final Vector<Item> V=new Vector<Item>();
 			int maxToDrop=Integer.MAX_VALUE;
 
@@ -1057,6 +1058,53 @@ public class Destroy extends StdCommand
 			}
 			if(!didAnything)
 			{
+				final MOB destroyM=mob.location().fetchInhabitant(CMParms.combine(commands,0));
+				if(destroyM!=null)
+				{
+					final Command C=CMClass.getCommand("Kill");
+					final List<String> killCmd = new Vector<String>(commands.size()+1);
+					killCmd.add(0,"KILL");
+					killCmd.addAll(commands);
+					if(C!=null)
+					{
+						final Session sess = mob.session();
+						if(sess ==null)
+							C.execute(mob,killCmd,metaFlags);
+						else
+						{
+							sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+							{
+								@Override
+								public void showPrompt()
+								{
+									sess.promptPrint(L("\n\rAre you sure you want to try to destroy '@x1'(y/N)? ", destroyM.name(mob)));
+								}
+		
+								@Override
+								public void timedOut()
+								{
+								}
+		
+								@Override
+								public void callBack()
+								{
+									if (this.input.equals("Y"))
+									{
+										try
+										{
+											C.execute(mob,killCmd,metaFlags);
+										}
+										catch (IOException e)
+										{
+										}
+									}
+								}
+							});
+						}
+						return false;
+					}
+				}
+
 				if(V.size()==0)
 					mob.tell(L("You don't seem to be carrying that."));
 				else
@@ -1689,9 +1737,23 @@ public class Destroy extends StdCommand
 		}
 		return false;
 	}
-	@Override public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandCombatActionCost(ID());}
-	@Override public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getCommandActionCost(ID());}
-	@Override public boolean canBeOrdered(){return false;}
 
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return false;
+	}
 
 }

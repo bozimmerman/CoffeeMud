@@ -268,6 +268,28 @@ public class Save extends StdCommand
 			mob.tell(L("Quest list saved."));
 		}
 		else
+		if(firstCommand.equals("FACTION"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS))
+			{
+				mob.tell(L("You are not allowed to save factions."));
+				return false;
+			}
+			final String factionID = (commands.size()>2) ? CMParms.combine(commands,2) : ""; 
+			final Faction F=CMLib.factions().getFaction(factionID);
+			if(F==null)
+			{
+				mob.tell(L("No such faction '@x1'.",factionID));
+				return false;
+			}
+			else
+			{
+				F.setInternalFlags(CMath.unsetb(F.getInternalFlags(), Faction.IFLAG_NEVERSAVE));
+				CMLib.factions().resaveFaction(F);
+				mob.tell(L("Faction @x1 saved.",F.factionID()));
+			}
+		}
+		else
 		if(firstCommand.equals("USER")||firstCommand.equals("PLAYER")||firstCommand.equals("CHARACTER")||firstCommand.equals("CHAR"))
 		{
 			final MOB M=CMLib.players().getPlayer(lastCommand);
@@ -302,7 +324,7 @@ public class Save extends StdCommand
 		else
 		{
 			mob.tell(
-				L("\n\rYou cannot save '@x1'. However, you might try ITEMS, USERS, [PLAYERNAME], QUESTS, MOBS, or ROOM.",firstCommand));
+				L("\n\rYou cannot save '@x1'. However, you might try ITEMS, USERS, [PLAYERNAME], FACTION, QUESTS, MOBS, or ROOM.",firstCommand));
 		}
 		return false;
 	}
@@ -311,6 +333,7 @@ public class Save extends StdCommand
 	@Override
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)
 												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)
+												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)
 												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)
 												 ||CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS);}
 
