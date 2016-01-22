@@ -59,13 +59,18 @@ public class MultiEnumeration<K> implements Enumeration<K>
 	@Override
 	public boolean hasMoreElements()
 	{
-		while((enumer==null)||(!enumer.hasMoreElements()))
+		boolean hasMore = (enumer != null) && enumer.hasMoreElements();
+		while(!hasMore)
 		{
 			if(enums.size()==0)
+			{
+				enumer=null;
 				return false;
+			}
 			enumer=enums.removeFirst();
+			hasMore = (enumer != null) && enumer.hasMoreElements();
 		}
-		return enumer.hasMoreElements();
+		return hasMore;
 	}
 
 	@Override

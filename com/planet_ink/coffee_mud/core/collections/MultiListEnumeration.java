@@ -68,13 +68,19 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 	@Override
 	public boolean hasMoreElements()
 	{
-		if(iter==null)
-			return false;
-		if(iter.hasNext())
-			return true;
-		while((!iter.hasNext())&&(listIter.hasNext()))
+		boolean hasMore = (iter != null) && iter.hasNext();
+		while(!hasMore)
+		{
+			if((listIter == null)||(!listIter.hasNext()))
+			{
+				iter=null;
+				listIter = null;
+				return false;
+			}
 			iter = listIter.next().iterator();
-		return iter.hasNext();
+			hasMore = (iter != null) && iter.hasNext();
+		}
+		return hasMore;
 	}
 
 	@Override

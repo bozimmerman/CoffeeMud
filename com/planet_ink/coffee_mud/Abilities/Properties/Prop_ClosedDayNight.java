@@ -120,7 +120,11 @@ public class Prop_ClosedDayNight extends Property
 		boolean closed=false;
 		Room R=CMLib.map().roomLocation(E);
 		if(R==null)
+		{
+			if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+				return false;
 			R=((exitRoom==null)?(Room)CMLib.map().rooms().nextElement():exitRoom);
+		}
 		if(R==null)
 			return false;
 		if((openTime<0)&&(closeTime<0))

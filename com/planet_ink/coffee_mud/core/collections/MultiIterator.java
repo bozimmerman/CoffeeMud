@@ -72,13 +72,18 @@ public class MultiIterator<K> implements Iterator<K>
 	@Override
 	public boolean hasNext()
 	{
-		while((iter==null)||(!iter.hasNext()))
+		boolean hasNext = (iter != null) && iter.hasNext();
+		while(!hasNext)
 		{
 			if(iters.size()==0)
+			{
+				iter=null;
 				return false;
+			}
 			iter=iters.removeFirst();
+			hasNext = (iter != null) && iter.hasNext();
 		}
-		return iter.hasNext();
+		return hasNext;
 	}
 
 	@Override

@@ -287,24 +287,35 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override 
 	public Enumeration<String> roomIDs()
 	{
-		final Enumeration<Area> areaEnumerator=areasPlusShips();
 		return new Enumeration<String>()
 		{
-			Enumeration<String> roomIDEnumerator=null;
+			private volatile Enumeration<String> roomIDEnumerator=null;
+			private volatile Enumeration<Area> areaEnumerator=areasPlusShips();
+			
 			@Override
 			public boolean hasMoreElements()
 			{
-				if((roomIDEnumerator==null)||(!roomIDEnumerator.hasMoreElements()))
-					while(areaEnumerator.hasMoreElements())
+				boolean hasMore = (roomIDEnumerator != null) && roomIDEnumerator.hasMoreElements();
+				while(!hasMore)
+				{
+					if((areaEnumerator == null)||(!areaEnumerator.hasMoreElements()))
 					{
-						final Area A=areaEnumerator.nextElement();
-						roomIDEnumerator=A.getProperRoomnumbers().getRoomIDs();
-						if(roomIDEnumerator.hasMoreElements())
-							return true;
+						roomIDEnumerator=null;
+						areaEnumerator = null;
+						return false;
 					}
-				return ((roomIDEnumerator!=null)&&(roomIDEnumerator.hasMoreElements()));
+					final Area A=areaEnumerator.nextElement();
+					roomIDEnumerator=A.getProperRoomnumbers().getRoomIDs();
+					hasMore = (roomIDEnumerator != null) && roomIDEnumerator.hasMoreElements();
+				}
+				return hasMore;
 			}
-			@Override public String nextElement(){ return hasMoreElements()?(String)roomIDEnumerator.nextElement():null;}
+
+			@Override
+			public String nextElement()
+			{
+				return hasMoreElements() ? (String) roomIDEnumerator.nextElement() : null;
+			}
 		};
 	}
 	
@@ -1493,17 +1504,23 @@ public class CMMap extends StdLibrary implements WorldMap
 		return new Enumeration<Room>() 
 		{
 			private Enumeration<Room> cur = null;
-			private final Enumeration<Area> cA = shipAreaEnumerator(inA);
+			private Enumeration<Area> cA = shipAreaEnumerator(inA);
 			@Override
 			public boolean hasMoreElements()
 			{
-				while((cur == null) || (!cur.hasMoreElements()))
+				boolean hasMore = (cur != null) && cur.hasMoreElements();
+				while(!hasMore)
 				{
-					if(!cA.hasMoreElements())
+					if((cA == null)||(!cA.hasMoreElements()))
+					{
+						cur=null;
+						cA = null;
 						return false;
+					}
 					cur = cA.nextElement().getProperMap();
+					hasMore = (cur != null) && cur.hasMoreElements();
 				}
-				return cur.hasMoreElements();
+				return hasMore;
 			}
 			@Override
 			public Room nextElement()
@@ -1517,20 +1534,21 @@ public class CMMap extends StdLibrary implements WorldMap
 	
 	public Enumeration<Area> shipAreaEnumerator(final Area inA)
 	{
-		final Enumeration<BoardableShip> s=ships();
 		return new Enumeration<Area>() 
 		{
-			private Area nextArea=null;
+			private volatile Area nextArea=null;
+			private volatile Enumeration<BoardableShip> shipsEnum=ships();
 			@Override
 			public boolean hasMoreElements()
 			{
-				if(!s.hasMoreElements())
-					return false;
 				while(nextArea == null)
 				{
-					if(!s.hasMoreElements())
+					if((shipsEnum==null)||(!shipsEnum.hasMoreElements()))
+					{
+						shipsEnum=null;
 						return false;
-					final BoardableShip ship=s.nextElement();
+					}
+					final BoardableShip ship=shipsEnum.nextElement();
 					if((ship!=null)&&(ship.getShipArea()!=null))
 					{
 						if((inA==null)||(areaLocation(ship)==inA))
@@ -1858,7 +1876,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public class AllAreasRoomEnumerator implements Enumeration<Room>
 	{
-		private Enumeration<Area> curAreaEnumeration=null;
+		private Enumeration<Area> curAreaEnumeration=areasPlusShips();
 		private Enumeration<Room> curRoomEnumeration=null;
 		private boolean addSkys = false;
 		public AllAreasRoomEnumerator(boolean includeSkys)
@@ -1868,33 +1886,28 @@ public class CMMap extends StdLibrary implements WorldMap
 		@Override
 		public boolean hasMoreElements()
 		{
-			if(curAreaEnumeration==null)
-				curAreaEnumeration=areasPlusShips();
-			while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
+			boolean hasMore = (curRoomEnumeration!=null)&&(curRoomEnumeration.hasMoreElements());
+			while(!hasMore)
 			{
-				if(!curAreaEnumeration.hasMoreElements())
+				if((curAreaEnumeration == null)||(!curAreaEnumeration.hasMoreElements()))
+				{
+					curRoomEnumeration = null;
+					curAreaEnumeration = null;
 					return false;
+				}
 				if(addSkys)
 					curRoomEnumeration=curAreaEnumeration.nextElement().getFilledProperMap();
 				else
 					curRoomEnumeration=curAreaEnumeration.nextElement().getProperMap();
+				hasMore = (curRoomEnumeration!=null)&&(curRoomEnumeration.hasMoreElements());
 			}
-			return curRoomEnumeration.hasMoreElements();
+			return hasMore;
 		}
 		@Override
 		public Room nextElement()
 		{
-			if(curAreaEnumeration==null)
-				curAreaEnumeration=CMLib.map().areas();
-			while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
-			{
-				if(!curAreaEnumeration.hasMoreElements())
-					return null;
-				if(addSkys)
-					curRoomEnumeration=curAreaEnumeration.nextElement().getFilledProperMap();
-				else
-					curRoomEnumeration=curAreaEnumeration.nextElement().getProperMap();
-			}
+			if(!hasMoreElements())
+				throw new NoSuchElementException();
 			return curRoomEnumeration.nextElement();
 		}
 	}
@@ -3053,7 +3066,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		final MultiListEnumeration<LocatedPair> me=new MultiListEnumeration<LocatedPair>(V,true);
 		return new Enumeration<LocatedPair>()
 		{
-			@Override public boolean hasMoreElements() { return me.hasMoreElements();}
+			@Override
+			public boolean hasMoreElements()
+			{
+				return me.hasMoreElements();
+			}
+
 			@Override
 			public LocatedPair nextElement()
 			{
