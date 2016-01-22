@@ -34,27 +34,47 @@ import java.util.*;
 */
 public class Prop_ClosedDayNight extends Property
 {
-	@Override public String ID() { return "Prop_ClosedDayNight"; }
-	@Override public String name(){ return "Day/Night Visibility";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	protected boolean doneToday=false;
-	protected int lastClosed=-1;
-	protected boolean dayFlag=false;
-	protected boolean sleepFlag=false;
-	protected boolean sitFlag=false;
-	protected boolean lockupFlag=false;
-	protected int openTime=-1;
-	protected int closeTime=-1;
-	protected String Home=null;
-	protected String shopMsg=null;
-	protected Room exitRoom=null;
+	@Override
+	public String ID()
+	{
+		return "Prop_ClosedDayNight";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Day/Night Visibility";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS | Ability.CAN_MOBS | Ability.CAN_EXITS | Ability.CAN_ROOMS;
+	}
+	
+	protected boolean	doneToday	= false;
+	protected int		lastClosed	= -1;
+	protected boolean	dayFlag		= false;
+	protected boolean	sleepFlag	= false;
+	protected boolean	sitFlag		= false;
+	protected boolean	lockupFlag	= false;
+	protected int		openTime	= -1;
+	protected int		closeTime	= -1;
+	protected String	Home		= null;
+	protected String	shopMsg		= null;
+	protected Room		exitRoom	= null;
 
 	@Override
 	public String accountForYourself()
-	{ return "";	}
+	{
+		return "";
+	}
 
-
-	@Override public long flags(){return Ability.FLAG_ADJUSTER;}
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_ADJUSTER;
+	}
 
 	@Override
 	public void setMiscText(String text)
@@ -121,7 +141,7 @@ public class Prop_ClosedDayNight extends Property
 		Room R=CMLib.map().roomLocation(E);
 		if(R==null)
 		{
-			if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			if(CMLib.map().numRooms()<=0)
 				return false;
 			R=((exitRoom==null)?(Room)CMLib.map().rooms().nextElement():exitRoom);
 		}
@@ -136,11 +156,15 @@ public class Prop_ClosedDayNight extends Property
 		else
 		{
 			if(openTime<closeTime)
+			{
 				closed=(R.getArea().getTimeObj().getHourOfDay()<openTime)
 					||(R.getArea().getTimeObj().getHourOfDay()>closeTime);
+			}
 			else
+			{
 				closed=(R.getArea().getTimeObj().getHourOfDay()>closeTime)
 					&&(R.getArea().getTimeObj().getHourOfDay()<openTime);
+			}
 		}
 		return closed;
 	}
@@ -194,9 +218,15 @@ public class Prop_ClosedDayNight extends Property
 					||CMLib.english().containsString(R2.name(),Home)
 					||CMLib.english().containsString(R2.displayText(),Home)
 					||CMLib.english().containsString(R2.description(),Home))
-					{ R=R2; break;}
-					if(R2.fetchInhabitant(Home)!=null)
-					{ R=R2; break;}
+					{
+						R = R2;
+						break;
+					}
+					if (R2.fetchInhabitant(Home) != null)
+					{
+						R = R2;
+						break;
+					}
 				}
 			}
 			if(R!=null)
@@ -212,7 +242,10 @@ public class Prop_ClosedDayNight extends Property
 					if(inhabs.size()>0)
 						R=CMLib.map().roomLocation(inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1)));
 				}
-			}catch(final NoSuchElementException e){}
+			}
+			catch (final NoSuchElementException e)
+			{
+			}
 		}
 		return R;
 	}
@@ -236,6 +269,7 @@ public class Prop_ClosedDayNight extends Property
 
 				if((mob.location()==mob.getStartRoom())
 				&&(lockupFlag))
+				{
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						final Exit E=mob.location().getExitInDir(d);
@@ -263,6 +297,7 @@ public class Prop_ClosedDayNight extends Property
 							}
 						}
 					}
+				}
 
 				if(Home!=null)
 				{
@@ -317,6 +352,7 @@ public class Prop_ClosedDayNight extends Property
 
 				if((mob.location()==mob.getStartRoom())
 				&&(lockupFlag))
+				{
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						final Exit E=mob.location().getExitInDir(d);
@@ -344,6 +380,7 @@ public class Prop_ClosedDayNight extends Property
 							}
 						}
 					}
+				}
 			}
 		}
 		return true;
