@@ -155,6 +155,18 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		"METAL"
 	};
 
+	/** a constant used in the Locale item search classes to filter on only items in rooms */
+	public static final Filterer<Environmental> FILTER_ROOMONLY=new Filterer<Environmental>()
+	{
+		@Override
+		public boolean passesFilter(Environmental obj)
+		{
+			if(obj instanceof Item)
+				return (((Item)obj).owner() instanceof Room);
+			return false;
+		}
+	};
+	
 	/**
 	 * Returns the domain-code for this room, which tells you something about its physical makeup,
 	 * such as whether it is outdoor, if it's in the woods or surrounded by stone, that sort of thing.

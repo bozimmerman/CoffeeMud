@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.collections;
+
 /*
    Copyright 2000-2016 Bo Zimmerman
 
@@ -23,4 +24,5 @@ public interface Filterer<K>
 	{
 		@Override public boolean passesFilter(Object obj) { return true; }
 	};
+	
 }

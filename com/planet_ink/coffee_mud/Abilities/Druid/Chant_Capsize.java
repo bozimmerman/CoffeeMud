@@ -66,7 +66,7 @@ public class Chant_Capsize extends Chant
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_INDIFFERENT;
+		return Ability.QUALITY_MALICIOUS;
 	}
 
 	@Override
@@ -178,6 +178,17 @@ public class Chant_Capsize extends Chant
 		return highestLevelNPCM;
 	}
 	
+	@Override
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			if(!(target instanceof BoardableShip))
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
