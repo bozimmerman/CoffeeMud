@@ -116,11 +116,11 @@ public class WaterSurface extends StdRoom implements Drink
 			setRawExit(Directions.DOWN,dnE);
 			sea.rawDoors()[Directions.UP]=this;
 			sea.setRawExit(Directions.UP,upE);
-			for(int d=0;d<4;d++)
+			for(int dir : Directions.CODES())
 			{
-				final Room thatRoom=rawDoors()[d];
+				final Room thatRoom=rawDoors()[dir];
 				Room thatSea=null;
-				if((thatRoom!=null)&&(getRawExit(d)!=null))
+				if((thatRoom!=null)&&(getRawExit(dir)!=null))
 				{
 					thatRoom.giveASky(depth+1);
 					thatSea=thatRoom.rawDoors()[Directions.DOWN];
@@ -129,15 +129,15 @@ public class WaterSurface extends StdRoom implements Drink
 				&&(thatSea.roomID().length()==0)
 				&&(IsUnderWaterFatClass(thatSea)))
 				{
-					sea.rawDoors()[d]=thatSea;
-					sea.setRawExit(d,getRawExit(d));
-					thatSea.rawDoors()[Directions.getOpDirectionCode(d)]=sea;
+					sea.rawDoors()[dir]=thatSea;
+					sea.setRawExit(dir,getRawExit(dir));
+					thatSea.rawDoors()[Directions.getOpDirectionCode(dir)]=sea;
 					if(thatRoom!=null)
 					{
-						Exit xo=thatRoom.getRawExit(Directions.getOpDirectionCode(d));
+						Exit xo=thatRoom.getRawExit(Directions.getOpDirectionCode(dir));
 						if((xo==null)||(xo.hasADoor()))
 							xo=upE;
-						thatSea.setRawExit(Directions.getOpDirectionCode(d),xo);
+						thatSea.setRawExit(Directions.getOpDirectionCode(dir),xo);
 					}
 					((GridLocale)thatSea).clearGrid(null);
 				}
@@ -206,8 +206,9 @@ public class WaterSurface extends StdRoom implements Drink
 				int dir=CMLib.map().getExitDir(room, (Exit)msg.tool());
 				if(dir >=0)
 				{
-					Room R=room.getRoomInDir(dir);
-					if((R!=null)&&(R.getArea() instanceof BoardableShip))
+					final Room R=room.getRoomInDir(dir);
+					if((R!=null)
+					&&(R.getArea() instanceof BoardableShip))
 						hasBoat=true;
 				}
 			}

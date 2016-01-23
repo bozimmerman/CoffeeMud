@@ -48,6 +48,7 @@ public class GenSailingShip extends StdBoardable
 
 	protected volatile int		 directionFacing = -1;
 	protected volatile boolean	 anchorDown		 = true;
+	protected volatile int		 tickDown		 = -1;
 	protected final List<Integer>courseDirections= new Vector<Integer>();
 
 	public GenSailingShip()
@@ -361,14 +362,30 @@ public class GenSailingShip extends StdBoardable
 				final Room R=CMLib.map().roomLocation(this);
 				if(R==null)
 					return false;
-				sail(dir);
-				this.directionFacing=-1;
+				this.courseDirections.clear(); // sail eliminates a course
+				this.courseDirections.add(Integer.valueOf(-1));
+				this.sail(msg.source(), R, dir);
 				return false;
 			}
 			default:
 				// already done...
 				return false;
 			}
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_SIT)
+		&&(msg.target()==this)
+		&&(msg.source().location()==owner())
+		&&(CMLib.flags().isWatery(msg.source().location()))
+		&&(!CMLib.flags().isClimbing(msg.source()))
+		&&(!CMLib.flags().isFlying(msg.source()))
+		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(), super.getDestinationRoom())))
+		{
+			if(msg.source().riding() != null)
+				msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from @x1.",msg.source().riding().name(msg.source())));
+			else
+				msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from the water."));
+			return false;
 		}
 		if(!super.okMessage(myHost, msg))
 			return false;
@@ -382,11 +399,12 @@ public class GenSailingShip extends StdBoardable
 		{
 			if(amDestroyed())
 				return false;
-			if((!this.anchorDown) && (area != null) && (directionFacing != -1))
+			if((!this.anchorDown) && (area != null) && (directionFacing != -1) && (--tickDown <=0))
 			{
 				int speed=phyStats().ability();
 				if(speed <= 0)
 					speed=1;
+				tickDown = -phyStats().ability();
 				for(int s=0;s<speed;s++)
 				{
 					if(sail(directionFacing)!=-1)
@@ -427,7 +445,7 @@ public class GenSailingShip extends StdBoardable
 					if(this.anchorDown)
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("\n\r^HThe anchor on @x1 is lowered, holding her in place.^.^?",name(msg.source())), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
 					else
-					if(this.directionFacing >= 0)
+					if((this.directionFacing >= 0)&&(this.courseDirections.size()>0))
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, L("\n\r^H@x1 is under full sail, traveling @x2^.^?",name(msg.source()), Directions.getDirectionName(directionFacing)), CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null));
 				}
 				break;
@@ -521,6 +539,7 @@ public class GenSailingShip extends StdBoardable
 				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 				try
 				{
+					this.directionFacing = -1;
 					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> sail(s) in from @x1.",otherDirectionName));
 					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,L("<S-NAME> sail(s) @x1.",directionName));
 					if((exit.okMessage(mob,enterMsg))
@@ -596,6 +615,19 @@ public class GenSailingShip extends StdBoardable
 	protected boolean steer(final MOB mob, final Room R, final int dir)
 	{
 		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> change(s) coarse, steering @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
+		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
+		{
+			R.send(mob, msg2); // this lets the source know, i guess
+			this.sendAreaMessage(msg2, true); // this just sends to "others"
+			this.directionFacing=dir;
+			return true;
+		}
+		return false;
+	}
+	
+	protected boolean sail(final MOB mob, final Room R, final int dir)
+	{
+		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> sail(s) @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
 		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
 		{
 			R.send(mob, msg2); // this lets the source know, i guess
