@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -105,6 +106,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		stateHitPointRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_HITPOINTRECOVER));
 		stateManaRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MANARECOVER));
 		stateMovesRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MOVESRECOVER));
+		
+		if(serviceClient==null)
+		{
+			name="THCombat"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis(), 1);
+		}
 		return true;
 	}
 
@@ -2333,4 +2340,55 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return false;
 	}
 	
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
+
+	protected void tickAllShips()
+	{
+		for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
+		{
+			final BoardableShip ship = s.nextElement();
+			ship.tick(ship, Tickable.TICKID_SPECIALCOMBAT);
+		}
+	}
+	
+	protected void runSpecialCombat()
+	{
+		tickAllShips();
+	}
+	
+	@Override 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		try
+		{
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.SPECOMBATTHREAD))
+			{
+				isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
+				tickStatus=Tickable.STATUS_ALIVE;
+				runSpecialCombat();
+			}
+		}
+		finally
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			setThreadStatus(serviceClient,"sleeping");
+		}
+		return true;
+	}
+
+	@Override
+	public boolean shutdown()
+	{
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
+		{
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			serviceClient=null;
+		}
+		return true;
+	}
+
 }

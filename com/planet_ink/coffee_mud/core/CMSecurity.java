@@ -2242,6 +2242,7 @@ public class CMSecurity
 		STDCLASSES("standard player classes"),
 		CHANNELAUCTION("auction channel"), 
 		ELECTRICTHREAD("electric threads"), 
+		SPECOMBATTHREAD("special combat threads"), 
 		MOBTEACHER("mobteacher"),
 		MSDP("msdp variables"),
 		GMCP("gmcp variables"), 

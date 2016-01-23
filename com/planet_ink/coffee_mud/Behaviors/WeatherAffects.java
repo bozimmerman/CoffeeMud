@@ -260,11 +260,11 @@ public class WeatherAffects extends PuddleMaker
 							what="strong rainy winds"; // never L(
 						break;
 					case Climate.WEATHER_BLIZZARD:
-						if(CMLib.dice().rollPercentage()<boatSlipChance)
+						if(CMLib.dice().rollPercentage()<(boatSlipChance * 1.5))
 							what="blizzard"; // never L(
 						break;
 					case Climate.WEATHER_THUNDERSTORM:
-						if(CMLib.dice().rollPercentage()<boatSlipChance)
+						if(CMLib.dice().rollPercentage()<(boatSlipChance * 1.5))
 							what="thunderstorm"; // never L(
 						break;
 					case Climate.WEATHER_DUSTSTORM:

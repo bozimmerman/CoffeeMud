@@ -46,7 +46,11 @@ import java.util.concurrent.atomic.*;
 */
 public class GroundWired extends StdLibrary implements TechLibrary
 {
-	@Override public String ID(){return "GroundWired";}
+	@Override
+	public String ID()
+	{
+		return "GroundWired";
+	}
 
 	protected Manufacturer defaultManufacturer=null; // must always be DefaultManufacturer, w/o changes.
 
@@ -193,8 +197,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		if(set==null)
 			return list;
 		for(final WeakReference<Electronics> e : set)
+		{
 			if(e.get()!=null)
 				list.add(e.get());
+		}
 		return list;
 	}
 
@@ -248,20 +254,47 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	
 	protected final static Iterator<Electronics.Computer> emptyComputerIterator= new Iterator<Electronics.Computer>()
 	{
-		@Override public boolean hasNext() { return false; }
-		@Override public Computer next() { return null; }
-		@Override public void remove() { }
+		@Override
+		public boolean hasNext()
+		{
+			return false;
+		}
+
+		@Override
+		public Computer next()
+		{
+			return null;
+		}
+
+		@Override
+		public void remove()
+		{
+		}
 	};
 	protected final static Iterator<Room> emptyComputerRoomIterator= new Iterator<Room>()
 	{
-		@Override public boolean hasNext() { return false; }
-		@Override public Room next() { return null; }
-		@Override public void remove() { }
+		@Override
+		public boolean hasNext()
+		{
+			return false;
+		}
+
+		@Override
+		public Room next()
+		{
+			return null;
+		}
+
+		@Override
+		public void remove()
+		{
+		}
 	};
 
 	protected final static Filterer<WeakReference<Electronics>> computerFilterer=new Filterer<WeakReference<Electronics>>()
 	{
-		@Override public boolean passesFilter(WeakReference<Electronics> obj)
+		@Override 
+		public boolean passesFilter(WeakReference<Electronics> obj)
 		{
 			return obj.get() instanceof Electronics.Computer;
 		}
@@ -269,7 +302,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 
 	protected final static Converter<WeakReference<Electronics>,Electronics.Computer> computerConverter=new Converter<WeakReference<Electronics>,Electronics.Computer>()
 	{
-		@Override public Electronics.Computer convert(WeakReference<Electronics> obj) { return (Electronics.Computer)obj.get(); }
+		@Override
+		public Electronics.Computer convert(WeakReference<Electronics> obj)
+		{
+			return (Electronics.Computer) obj.get();
+		}
 	};
 
 	protected final static Converter<Electronics.Computer,Room> computerRoomConverter=new Converter<Electronics.Computer,Room>()
@@ -296,7 +333,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return new FilteredIterator<Room>(new ConvertingIterator<Electronics.Computer,Room>(getComputers(key),computerRoomConverter), new Filterer<Room>()
 		{
 			private final Set<Room> done=new HashSet<Room>();
-			@Override public boolean passesFilter(Room obj)
+			@Override 
+			public boolean passesFilter(Room obj)
 			{
 				if(done.contains(obj))
 					return false;
@@ -456,8 +494,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				G.setPowerRemaining(0);
 			}
 		for(final PowerSource B : batteries)
+		{
 			if(B.activated())
 				availablePowerToDistribute+=B.powerRemaining();
+		}
 		if(availablePowerToDistribute==0)
 		{
 			for(final ElecPanel E : panels)
@@ -736,11 +776,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		if((found==null)||(found!=manufacturer))
 		{
 			for(final String manName : manufacturers.keySet())
+			{
 				if(manufacturers.get(manName)==manufacturer)
 				{
 					manufacturers.remove(manName);
 					break;
 				}
+			}
 			addManufacturer(manufacturer);
 		}
 		saveAllManufacturers();
@@ -804,8 +846,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			xmlFile=new CMFile("::"+filename, null, CMFile.FLAG_FORCEALLOW);
 		final StringBuilder xmlStr=new StringBuilder("<MANUFACTURERS>");
 		for(final Manufacturer man : manufacturers.values())
+		{
 			if(man != defaultManufacturer)
 				xmlStr.append("<MANUFACTURER>").append(man.getXml()).append("</MANUFACTURER>");
+		}
 		xmlStr.append("</MANUFACTURERS>");
 		xmlFile.saveText(xmlStr.toString());
 	}
@@ -822,11 +866,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			final List<XMLLibrary.XMLTag> xDoc=CMLib.xml().parseAllXML(xmlFile.text());
 			final List<XMLLibrary.XMLTag> xMans=new SLinkedList<XMLLibrary.XMLTag>();
 			for(final XMLLibrary.XMLTag x : xDoc)
+			{
 				if(x.tag().equalsIgnoreCase("MANUFACTURER"))
 					xMans.add(x);
 				else
 				if(x.tag().equalsIgnoreCase("MANUFACTURERS"))
 					xMans.addAll(x.contents());
+			}
 			for(final XMLTag x : xMans)
 			{
 				final Manufacturer man =(Manufacturer)CMClass.getCommon("DefaultManufacturer");

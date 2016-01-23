@@ -23,12 +23,23 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 */
 public class StdLibrary implements CMLibrary, Tickable
 {
-	@Override public String ID(){return "StdLibrary";}
-	protected String name=ID();
-	@Override public String name(){return name; }
-	protected int tickStatus=Tickable.STATUS_NOT;
-	protected TickClient serviceClient=null;
-	protected boolean isDebugging = false;
+	@Override
+	public String ID()
+	{
+		return "StdLibrary";
+	}
+
+	protected String	name	= ID();
+
+	@Override
+	public String name()
+	{
+		return name;
+	}
+
+	protected int			tickStatus		= Tickable.STATUS_NOT;
+	protected TickClient	serviceClient	= null;
+	protected boolean		isDebugging		= false;
 
 	@Override
 	public CMObject newInstance()
@@ -44,9 +55,30 @@ public class StdLibrary implements CMLibrary, Tickable
 		return new StdLibrary();
 	}
 
-	@Override public CMObject copyOf(){try{return (CMObject)this.clone();}catch(final Exception e){return newInstance();}}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	@Override public String L(final String str, final String ... xs) { return CMLib.lang().fullSessionTranslation(str, xs); }
+	@Override
+	public CMObject copyOf()
+	{
+		try
+		{
+			return (CMObject) this.clone();
+		}
+		catch (final Exception e)
+		{
+			return newInstance();
+		}
+	}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
+
+	@Override
+	public String L(final String str, final String... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
 
 	@Override
 	public void initializeClass()

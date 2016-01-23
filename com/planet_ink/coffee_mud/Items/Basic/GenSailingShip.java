@@ -395,6 +395,10 @@ public class GenSailingShip extends StdBoardable
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
+		if(tickID == Tickable.TICKID_SPECIALCOMBAT)
+		{
+			
+		}
 		if(tickID == Tickable.TICKID_AREA)
 		{
 			if(amDestroyed())
@@ -405,6 +409,7 @@ public class GenSailingShip extends StdBoardable
 				if(speed <= 0)
 					speed=1;
 				tickDown = -phyStats().ability();
+				
 				for(int s=0;s<speed;s++)
 				{
 					if(sail(directionFacing)!=-1)
