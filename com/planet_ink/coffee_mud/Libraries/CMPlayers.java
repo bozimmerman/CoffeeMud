@@ -1113,8 +1113,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					{
 						final List<Pair<String,Integer>>[][] aStats = CMLib.database().DBScanPrideAccountWinners(PRIDE_TOP_SIZE, (short)5);
 						for(int x=0;x<aStats.length;x++)
+						{
 							for(int y=0;y<aStats[x].length;y++)
 								topAccounts[x][y]=aStats[x][y];
+						}
 					}
 					for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 						topPrideExpiration[period.ordinal()] = period.nextPeriod();
