@@ -37,40 +37,128 @@ import java.util.*;
 */
 public class DefaultTimeClock implements TimeClock
 {
-	@Override public String ID(){return "DefaultTimeClock";}
-	@Override public String name(){return "Time Object";}
-	@Override public CMObject newInstance(){try{return getClass().newInstance();}catch(final Exception e){return new DefaultTimeClock();}}
-	@Override public void initializeClass(){}
+	@Override
+	public String ID()
+	{
+		return "DefaultTimeClock";
+	}
 
-	protected int tickStatus=Tickable.STATUS_NOT;
-	@Override public int getTickStatus(){return tickStatus;}
-	protected boolean loaded=false;
-	protected String loadName=null;
-	@Override public void setLoadName(String name){loadName=name;}
-	protected int year=1000;
-	protected int month=1;
-	protected int day=1;
-	protected int time=0;
-	protected int hoursInDay=6;
+	@Override
+	public String name()
+	{
+		return "Time Object";
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		try
+		{
+			return getClass().newInstance();
+		}
+		catch (final Exception e)
+		{
+			return new DefaultTimeClock();
+		}
+	}
+
+	@Override
+	public void initializeClass()
+	{
+	}
+
+	protected int	tickStatus	= Tickable.STATUS_NOT;
+
+	@Override
+	public int getTickStatus()
+	{
+		return tickStatus;
+	}
+
+	protected boolean	loaded		= false;
+	protected String	loadName	= null;
+
+	@Override
+	public void setLoadName(String name)
+	{
+		loadName = name;
+	}
+
+	protected int		year			= 1000;
+	protected int		month			= 1;
+	protected int		day				= 1;
+	protected int		time			= 0;
+	protected int		hoursInDay		= 6;
+	
 	protected String[] monthsInYear={
-			 "the 1st month","the 2nd month","the 3rd month","the 4th month",
-			 "the 5th month","the 6th month","the 7th month","the 8th month"
+		 "the 1st month","the 2nd month","the 3rd month","the 4th month",
+		 "the 5th month","the 6th month","the 7th month","the 8th month"
 	};
-	protected int daysInMonth=20;
-	protected int[] dawnToDusk={0,1,4,6};
-	protected String[] weekNames={};
-	protected String[] yearNames={"year #"};
+	protected int		daysInMonth		= 20;
+	protected int[]		dawnToDusk		= { 0, 1, 4, 6 };
+	protected String[]	weekNames		= {};
+	protected String[]	yearNames		= { "year #" };
 
-	@Override public int getHoursInDay(){return hoursInDay;}
-	@Override public void setHoursInDay(int h){hoursInDay=h;}
-	@Override public int getDaysInMonth(){return daysInMonth;}
-	@Override public void setDaysInMonth(int d){daysInMonth=d;}
-	@Override public int getMonthsInYear(){return monthsInYear.length;}
-	@Override public String[] getMonthNames(){return monthsInYear;}
-	@Override public void setMonthsInYear(String[] months){monthsInYear=months;}
-	@Override public int[] getDawnToDusk(){return dawnToDusk;}
-	@Override public String[] getYearNames(){return yearNames;}
-	@Override public void setYearNames(String[] years){yearNames=years;}
+	@Override
+	public int getHoursInDay()
+	{
+		return hoursInDay;
+	}
+
+	@Override
+	public void setHoursInDay(int h)
+	{
+		hoursInDay = h;
+	}
+
+	@Override
+	public int getDaysInMonth()
+	{
+		return daysInMonth;
+	}
+
+	@Override
+	public void setDaysInMonth(int d)
+	{
+		daysInMonth = d;
+	}
+
+	@Override
+	public int getMonthsInYear()
+	{
+		return monthsInYear.length;
+	}
+
+	@Override
+	public String[] getMonthNames()
+	{
+		return monthsInYear;
+	}
+
+	@Override
+	public void setMonthsInYear(String[] months)
+	{
+		monthsInYear = months;
+	}
+
+	@Override
+	public int[] getDawnToDusk()
+	{
+		return dawnToDusk;
+	}
+
+	@Override
+	public String[] getYearNames()
+	{
+		return yearNames;
+	}
+
+	@Override
+	public void setYearNames(String[] years)
+	{
+		yearNames = years;
+	}
+
 	@Override
 	public void setDawnToDusk(int dawn, int day, int dusk, int night)
 	{
@@ -79,9 +167,24 @@ public class DefaultTimeClock implements TimeClock
 		dawnToDusk[TimeOfDay.DUSK.ordinal()]=dusk;
 		dawnToDusk[TimeOfDay.NIGHT.ordinal()]=night;
 	}
-	@Override public String[] getWeekNames(){return weekNames;}
-	@Override public int getDaysInWeek(){return weekNames.length;}
-	@Override public void setDaysInWeek(String[] days){weekNames=days;}
+
+	@Override
+	public String[] getWeekNames()
+	{
+		return weekNames;
+	}
+
+	@Override
+	public int getDaysInWeek()
+	{
+		return weekNames.length;
+	}
+
+	@Override
+	public void setDaysInWeek(String[] days)
+	{
+		weekNames = days;
+	}
 
 	@Override
 	public String getShortestTimeDescription()
@@ -93,6 +196,7 @@ public class DefaultTimeClock implements TimeClock
 		timeDesc.append(" HR:"+getHourOfDay());
 		return timeDesc.toString();
 	}
+
 	@Override
 	public String getShortTimeDescription()
 	{
@@ -132,8 +236,7 @@ public class DefaultTimeClock implements TimeClock
 
 		if(page.containsKey("DAWNHR")&&page.containsKey("DAYHR")
 				&&page.containsKey("DUSKHR")&&page.containsKey("NIGHTHR"))
-		setDawnToDusk(
-						CMath.s_int(page.getStr("DAWNHR")),
+		setDawnToDusk(  CMath.s_int(page.getStr("DAWNHR")),
 						CMath.s_int(page.getStr("DAYHR")),
 						CMath.s_int(page.getStr("DUSKHR")),
 						CMath.s_int(page.getStr("NIGHTHR")));
@@ -231,9 +334,24 @@ public class DefaultTimeClock implements TimeClock
 		return TimeClock.MoonPhase.values()[(int)Math.round(Math.floor(CMath.mul(CMath.div(getDayOfMonth(),getDaysInMonth()+1),8.0)))];
 	}
 
-	@Override public int getDayOfMonth(){return day;}
-	@Override public void setDayOfMonth(int d){day=d;}
-	@Override public int getHourOfDay(){return time;}
+	@Override
+	public int getDayOfMonth()
+	{
+		return day;
+	}
+
+	@Override
+	public void setDayOfMonth(int d)
+	{
+		day = d;
+	}
+
+	@Override
+	public int getHourOfDay()
+	{
+		return time;
+	}
+
 	@Override
 	public TimeOfDay getTODCode()
 	{

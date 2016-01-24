@@ -8,18 +8,19 @@
    7. Metacraft can now craft everything from specific skills.  See help.
    8. New Chants: Bloody Water, Find Driftwood, Filter Water, Aquatic Pass, Sense Water, Summon Coral
    9. New Chants: Underwater Action, Water Hammer, Drown, Call Mate, Summon School, High Tide, Land Lungs
-  10. New Chants: Reef Walking, Capsize, Feeding Frenzy, Calm Seas, Summon Jellyfish
-  11. New races: SmallFish, Angelfish, Merfolk, Selkie, Swordfish, Dolphin, Seal, Walrus, Whale
-  12. New language: Aquan
-  13. New Druid Shapeshift forms: Fish and Sea Mammal (I bet you saw this coming)
-  14. Archon AutoInvoke now saves settings.  Default no-invoke list now in lists.ini
-  15. CoffeeTable statistics will now track activity by Area also.
-  16. Ship Title copies can now be purchased and traded, just like land titles.
-  17. CATALOG command can now be used to list categories.
-  18. Anchors Down on sailing ships now prevents WaterCurrent effects (duh!)
-  19. Sailing Ships now get area weather messages and affects
-  20. Default autoreaction shopkeepers will now adjust prices based on faction.
-  21. Legal system now supports punishment caps on repeat crimes.
+  10. New Chants: Reef Walking, Capsize, Feeding Frenzy, Calm Seas, Summon Jellyfish, Flippers, Flood
+  11. New Chants: Sift Wrecks, Favorable Winds, Tide Moon, Tidal Wave
+  12. New races: SmallFish, Angelfish, Merfolk, Selkie, Swordfish, Dolphin, Seal, Walrus, Whale
+  13. New language: Aquan
+  14. New Druid Shapeshift forms: Fish and Sea Mammal (I bet you saw this coming)
+  15. Archon AutoInvoke now saves settings.  Default no-invoke list now in lists.ini
+  16. CoffeeTable statistics will now track activity by Area also.
+  17. Ship Title copies can now be purchased and traded, just like land titles.
+  18. CATALOG command can now be used to list categories.
+  19. Anchors Down on sailing ships now prevents WaterCurrent effects (duh!)
+  20. Sailing Ships now get area weather messages and affects
+  21. Default autoreaction shopkeepers will now adjust prices based on faction.
+  22. Legal system now supports punishment caps on repeat crimes.
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)

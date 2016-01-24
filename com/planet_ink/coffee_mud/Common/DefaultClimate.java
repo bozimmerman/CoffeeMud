@@ -218,8 +218,10 @@ public class DefaultClimate implements Climate
 			return true;
 		final List<Ability> V=CMLib.flags().domainAffects(room,Ability.DOMAIN_MOONSUMMONING);
 		for(int v=0;v<V.size();v++)
+		{
 			if(V.get(v)!=butNotA)
 				return true;
+		}
 		return false;
 	}
 

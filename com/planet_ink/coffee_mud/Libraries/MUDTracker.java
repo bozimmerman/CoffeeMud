@@ -859,6 +859,62 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		toHere.bringMobHere(M,true);
 	}
 
+	@Override
+	public void forceEntry(MOB M, Room toHere, boolean andFollowers, boolean forceLook, String msg)
+	{
+		if(toHere==null) 
+			return;
+		if(M==null) 
+			return;
+		toHere.show(M,toHere,null,CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS,msg);
+		toHere.bringMobHere(M,andFollowers);
+		if(forceLook)
+			CMLib.commands().postLook(M, true);
+	}
+
+	@Override
+	public void forceEntry(MOB M, Room fromHere, Room toHere, boolean andFollowers, boolean forceLook, String msgStr)
+	{
+		if(toHere==null) 
+			return;
+		if(M==null) 
+			return;
+		int dir=this.getRoomDirection(fromHere, toHere, null);
+		Exit enterExit=null;
+		Exit leaveExit=null;
+		if(dir < 0)
+		{
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			{
+				if((d!=Directions.UP)&&(d!=Directions.DOWN))
+				{
+					if(fromHere.getExitInDir(d)!=null)
+						enterExit = fromHere.getExitInDir(d);
+					if(toHere.getExitInDir(d)!=null)
+					{
+						dir=d;
+						leaveExit = toHere.getExitInDir(d);
+					}
+				}
+			}
+			if(dir<0)
+				dir = CMLib.dice().roll(1, Directions.NUM_DIRECTIONS(), -1);
+		}
+		CMMsg enterMsg = CMClass.getMsg(M, toHere, enterExit, CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS, msgStr);
+		CMMsg leaveMsg = CMClass.getMsg(M, fromHere, leaveExit, CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS, null);
+		if(enterExit!=null)
+			enterExit.executeMsg(M,enterMsg);
+		if((M.location()!=null)&&(M.location()!=toHere))
+			M.location().delInhabitant(M);
+		((Room)leaveMsg.target()).send(M,leaveMsg);
+		toHere.bringMobHere(M,andFollowers);
+		((Room)enterMsg.target()).send(M,enterMsg);
+		if(leaveExit!=null)
+			leaveExit.executeMsg(M,leaveMsg);
+		if(forceLook)
+			CMLib.commands().postLook(M, true);
+	}
+
 	public void ridersBehind(List<Rider> riders, Room sourceRoom, Room destRoom, int directionCode, boolean flee, boolean running)
 	{
 		if(riders!=null)
@@ -1451,10 +1507,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	protected int getRoomDirection(Room R, Room toRoom, List<Room> ignore)
 	{
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		{
 			if((R.getRoomInDir(d)==toRoom)
 			&&(R!=toRoom)
-			&&(!ignore.contains(R)))
+			&&((ignore==null)||(!ignore.contains(R))))
 				return d;
+		}
 		return -1;
 	}
 
