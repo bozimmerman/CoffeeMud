@@ -114,7 +114,7 @@ public class Prayer_AuraStrife extends Prayer
 						if(CMLib.dice().rollPercentage()>=levels)
 						{
 							final MOB newvictim=mob.location().fetchRandomInhabitant();
-							if(newvictim!=mob)
+							if((newvictim!=mob)&&(!invokerGroup.contains(newvictim)))
 								mob.setVictim(newvictim);
 						}
 					}
@@ -122,11 +122,13 @@ public class Prayer_AuraStrife extends Prayer
 			}
 			else
 			if((mob.location()!=null)&&(CMLib.flags().isEvil(invoker())))
-			for(int m=0;m<mob.location().numInhabitants();m++)
 			{
-				final MOB M=mob.location().fetchInhabitant(m);
-				if((M!=null)&&(M!=invoker())&&(!invokerGroup.contains(M))&&(!M.Name().equals(mob.getLiegeID())))
-					beneficialAffect(invoker,M,0,Ability.TICKS_FOREVER);
+				for(int m=0;m<mob.location().numInhabitants();m++)
+				{
+					final MOB M=mob.location().fetchInhabitant(m);
+					if((M!=null)&&(M!=invoker())&&(!invokerGroup.contains(M))&&(!M.Name().equals(mob.getLiegeID())))
+						beneficialAffect(invoker,M,0,Ability.TICKS_FOREVER);
+				}
 			}
 		}
 		return true;
