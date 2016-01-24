@@ -127,6 +127,7 @@ public class Hireling extends StdBehavior
 		observer.setFollowing(null);
 		int direction=-1;
 		for(final int dir : Directions.CODES())
+		{
 			if(observer.location().getExitInDir(dir)!=null)
 			{
 				if(observer.location().getExitInDir(dir).isOpen())
@@ -136,6 +137,7 @@ public class Hireling extends StdBehavior
 				}
 				direction=dir;
 			}
+		}
 		if(direction>=0)
 			CMLib.tracking().walk(observer,direction,false,false);
 		if(observer.getStartRoom()!=null)

@@ -1140,6 +1140,7 @@ public class StdMOB implements MOB
 				{
 					final MOB newFol = (MOB) follower.copyOf();
 					newFol.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+					newFol.phyStats().setRejuv(PhyStats.NO_REJUV);
 					newFol.text();
 					follower.killMeDead(false);
 					addFollower(newFol, oldFollowers.getSecond(f).intValue());

@@ -5238,7 +5238,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 			codeVal=CMath.s_int(mob.session().prompt(L("Select an option number above to TOGGLE\n\r: ")));
-			if((codeVal>0)&&(codeVal<codes.total()-2))
+			if((codeVal>0)&&(codeVal<codes.total()+2))
 			{
 				if(codeVal==1)
 					logicalAnd[0]=!logicalAnd[0];

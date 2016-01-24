@@ -101,7 +101,6 @@ public class Chant_TideMoon extends Chant
 			return false;
 		}
 		
-		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

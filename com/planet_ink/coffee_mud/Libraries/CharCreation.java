@@ -3469,6 +3469,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			Room R=follower.location();
 			if((follower.isMonster())
 			&&(!follower.isPossessing())
+			&&(!CMLib.flags().isInTheGame(follower, true))
 			&&((R==null)||(!R.isInhabitant(follower))))
 			{
 				if(R==null)

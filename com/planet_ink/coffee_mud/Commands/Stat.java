@@ -458,10 +458,13 @@ public class Stat  extends Skills
 
 	public int averageDamage(MOB M)
 	{
-		long total=0;
-		for(int i=0;i<1000;i++)
+		double total=0;
+		final double num=5000;
+		for(int i=0;i<num;i++)
+		{
 			total+=CMLib.combat().adjustedDamage(M,null,null,0,true);
-		return (int)(total / 1000);
+		}
+		return (int)Math.round(Math.floor(total / num));
 	}
 
 	protected void addCharStatsChars(CharStats cstats, int headerWidth, int numberWidth, int[] col, StringBuilder str)
@@ -841,13 +844,27 @@ public class Stat  extends Skills
 					for(int i=0;i<target.numItems();i++)
 					{
 						final Item I=target.getItem(i);
-						if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))){ recoverMOB(M); base=CMLib.combat().adjustedAttackBonus(M,null); testMOB(target,M,I); final int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(I,diff,str);}
+						if ((I != null) && (!I.amWearingAt(Wearable.IN_INVENTORY)))
+						{
+							recoverMOB(M);
+							base = CMLib.combat().adjustedAttackBonus(M, null);
+							testMOB(target, M, I);
+							final int diff = CMLib.combat().adjustedAttackBonus(M, null) - base;
+							reportOnDiffMOB(I, diff, str);
+						}
 					}
 					recoverMOB(M);
 					for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
-						if(A!=null){ recoverMOB(M); base=CMLib.combat().adjustedAttackBonus(M,null); testMOB(target,M,A); final int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(A,diff,str);}
+						if (A != null)
+						{
+							recoverMOB(M);
+							base = CMLib.combat().adjustedAttackBonus(M, null);
+							testMOB(target, M, A);
+							final int diff = CMLib.combat().adjustedAttackBonus(M, null) - base;
+							reportOnDiffMOB(A, diff, str);
+						}
 					}
 					recoverMOB(target);
 					recoverMOB(M);
@@ -859,13 +876,27 @@ public class Stat  extends Skills
 					for(int i=0;i<target.numItems();i++)
 					{
 						final Item I=target.getItem(i);
-						if(I!=null){ recoverMOB(M); base=CMLib.combat().adjustedArmor(M); testMOB(target,M,I); final int diff=CMLib.combat().adjustedArmor(M)-base; reportOnDiffMOB(I,diff,str);}
+						if (I != null)
+						{
+							recoverMOB(M);
+							base = CMLib.combat().adjustedArmor(M);
+							testMOB(target, M, I);
+							final int diff = CMLib.combat().adjustedArmor(M) - base;
+							reportOnDiffMOB(I, diff, str);
+						}
 					}
 					recoverMOB(M);
 					for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
-						if(A!=null){ recoverMOB(M); base=CMLib.combat().adjustedArmor(M); testMOB(target,M,A); final int diff=CMLib.combat().adjustedArmor(M)-base; reportOnDiffMOB(A,diff,str);}
+						if (A != null)
+						{
+							recoverMOB(M);
+							base = CMLib.combat().adjustedArmor(M);
+							testMOB(target, M, A);
+							final int diff = CMLib.combat().adjustedArmor(M) - base;
+							reportOnDiffMOB(A, diff, str);
+						}
 					}
 					recoverMOB(target);
 					recoverMOB(M);
@@ -877,13 +908,27 @@ public class Stat  extends Skills
 					for(int i=0;i<target.numItems();i++)
 					{
 						final Item I=target.getItem(i);
-						if(I!=null){ recoverMOB(M); base=averageDamage(M); testMOB(target,M,I); final int diff=averageDamage(M)-base; reportOnDiffMOB(I,diff,str);}
+						if (I != null)
+						{
+							recoverMOB(M);
+							base = averageDamage(M);
+							testMOB(target, M, I);
+							final int diff = averageDamage(M) - base;
+							reportOnDiffMOB(I, diff, str);
+						}
 					}
 					recoverMOB(M);
 					for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
-						if(A!=null){ recoverMOB(M); base=averageDamage(M); testMOB(target,M,A); final int diff=averageDamage(M)-base; reportOnDiffMOB(A,diff,str);}
+						if (A != null)
+						{
+							recoverMOB(M);
+							base = averageDamage(M);
+							testMOB(target, M, A);
+							final int diff = averageDamage(M) - base;
+							reportOnDiffMOB(A, diff, str);
+						}
 					}
 					recoverMOB(target);
 					recoverMOB(M);
