@@ -1345,10 +1345,9 @@ public class Modify extends StdCommand
 		}
 
 		final String mobID=commands.get(2);
-		final MOB M=CMLib.players().getLoadPlayer(mobID);
+		MOB M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
 		{
-			CMLib.database().DBReadFollowers(M,false);
 			if(M.playerStats()!=null)
 				M.playerStats().setLastUpdated(M.playerStats().getLastDateTime());
 			M.recoverPhyStats();
