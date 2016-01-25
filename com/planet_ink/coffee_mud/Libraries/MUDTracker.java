@@ -39,7 +39,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFl
 */
 public class MUDTracker extends StdLibrary implements TrackingLibrary
 {
-	@Override public String ID(){return "MUDTracker";}
+	@Override
+	public String ID()
+	{
+		return "MUDTracker";
+	}
+
 	protected Hashtable<Integer,Vector<String>> directionCommandSets= new Hashtable<Integer,Vector<String>>();
 	protected Hashtable<Integer,Vector<String>> openCommandSets		= new Hashtable<Integer,Vector<String>>();
 	protected Hashtable<Integer,Vector<String>> closeCommandSets	= new Hashtable<Integer,Vector<String>>();
@@ -353,8 +358,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(R==room)
 				return -1;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
 				if(R.getRoomInDir(d)==room)
 					return Directions.getOpDirectionCode(d);
+			}
 		}
 		return -1;
 	}

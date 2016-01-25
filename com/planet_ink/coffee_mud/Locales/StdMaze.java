@@ -35,7 +35,12 @@ import java.util.*;
 
 public class StdMaze extends StdGrid
 {
-	@Override public String ID(){return "StdMaze";}
+	@Override
+	public String ID()
+	{
+		return "StdMaze";
+	}
+
 	public StdMaze()
 	{
 		super();
@@ -52,6 +57,7 @@ public class StdMaze extends StdGrid
 		}
 		return R;
 	}
+
 	@Override
 	protected Room findCenterRoom(int dirCode)
 	{
@@ -183,12 +189,14 @@ public class StdMaze extends StdGrid
 		{
 			subMap=new Room[xsize][ysize];
 			for(int x=0;x<subMap.length;x++)
+			{
 				for(int y=0;y<subMap[x].length;y++)
 				{
 					final Room newRoom=getGridRoom(x,y);
 					if(newRoom!=null)
 						subMap[x][y]=newRoom;
 				}
+			}
 			buildMaze();
 			buildFinalLinks();
 		}

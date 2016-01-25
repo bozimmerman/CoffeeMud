@@ -85,7 +85,7 @@ public class Chant_TideMoon extends Chant
 	@Override
 	protected int canAffectCode()
 	{
-		return 0;
+		return CAN_AREAS|CAN_ROOMS;
 	}
 
 	@Override
