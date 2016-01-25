@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
+
 /*
    Copyright 2016-2016 Bo Zimmerman
 
@@ -34,15 +35,15 @@ import java.util.*;
 */
 
 
-public class Chant_TideMoon extends Chant
+public class Chant_PredictTides extends Chant
 {
 	@Override
 	public String ID()
 	{
-		return "Chant_TideMoon";
+		return "Chant_PredictTides";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Tide Moon");
+	private final static String	localizedName	= CMLib.lang().L("Predict Tides");
 
 	@Override
 	public String name()
@@ -51,17 +52,9 @@ public class Chant_TideMoon extends Chant
 	}
 
 	@Override
-	public String displayText()
+	public int classificationCode()
 	{
-		return "";
-	}
-	
-	protected int abilityCode = 0;
-	
-	@Override
-	public int abilityCode()
-	{
-		return abilityCode;
+		return Ability.ACODE_CHANT | Ability.DOMAIN_MOONSUMMONING;
 	}
 
 	@Override
@@ -70,18 +63,6 @@ public class Chant_TideMoon extends Chant
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	@Override
-	public int classificationCode()
-	{
-		return Ability.ACODE_CHANT | Ability.DOMAIN_MOONALTERING;
-	}
-
-	@Override
-	public long flags()
-	{
-		return Ability.FLAG_TIDEALTERING;
-	}
-	
 	@Override
 	protected int canAffectCode()
 	{
@@ -95,56 +76,40 @@ public class Chant_TideMoon extends Chant
 	}
 
 	@Override
-	protected int overrideMana()
-	{
-		return Ability.COST_ALL - 99;
-	}
-
-	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(mob.location().getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.NIGHT)
+		boolean isWateryEnough = CMLib.flags().isWatery(mob.location());
+		if(!isWateryEnough)
 		{
-			mob.tell(L("This chant can only be done at night."));
-			return false;
-		}
-		
-		if(!mob.location().getArea().getClimateObj().canSeeTheMoon(mob.location(), null))
-		{
-			mob.tell(L("You can't see the moon from here."));
-			return false;
+			if(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_FISH)))
+				isWateryEnough = true;
 		}
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
+
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s) to the moon, and it begins to change shape.^?"));
+			final String msgStr = isWateryEnough ? 
+					 L("^S<S-NAME> chant(s) and gaze(s) upon the waters.^?")
+					:L("^S<S-NAME> chant(s) and gaze(s) toward the distant waters.^?");
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":msgStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Area mobA=mob.location().getArea();
-				if(mobA!=null)
-				{
-					Ability A=mobA.fetchEffect(ID());
-					if(A==null)
-						A=this.beneficialAffect(mob, mobA, asLevel, 0);
-					if(A!=null)
-					{
-						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The moon begins pushing and pulling on the tides in new ways!"));
-						A.setAbilityCode(A.abilityCode()+1);
-						mob.tell(L(mobA.getTimeObj().getTidePhase(mob.location()).getDesc()));
-					}
-				}
+				mob.tell(mob.location().getArea().getTimeObj().getTidePhase(mob.location()).getDesc());
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,L("<S-NAME> chant(s) to the moon, but the magic fades"));
+		{
+			final String msgStr = isWateryEnough ? 
+					 L("^S<S-NAME> chant(s) and gaze(s) upon the waters, but the magic fizzles.^?")
+					:L("^S<S-NAME> chant(s) and gaze(s) toward the distant waters, but the magic fizzles.^?");
+			beneficialVisualFizzle(mob,null,msgStr);
+		}
 
-
-		// return whether it worked
 		return success;
 	}
 }

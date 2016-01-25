@@ -171,9 +171,20 @@ public interface TimeClock extends Tickable, CMCommon
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.MoonPhase
 	 *
+	 * @param room the room to check the moon phase for
 	 * @return the moon phase as an enumeration
 	 */
-	public MoonPhase getMoonPhase();
+	public MoonPhase getMoonPhase(Room room);
+
+	/**
+	 * Gets the phase of the tides as an enumeration.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TidePhase
+	 *
+	 * @param room the room to check the tide phase for
+	 * @return the tide phase as an enumeration
+	 */
+	public TidePhase getTidePhase(Room room);
 
 	/**
 	 * Gets the season code.
@@ -483,20 +494,68 @@ public interface TimeClock extends Tickable, CMCommon
 	 */
 	public enum MoonPhase
 	{
-		NEW("There is a new moon in the sky.",1.0),
-		WAXCRESCENT("The moon is in the waxing crescent phase.",0.5),
-		WAXQUARTER("The moon is in its first quarter.",0.0),
-		WAXGIBBOUS("The moon is in the waxing gibbous phase (almost full).",-0.5),
-		FULL("There is a full moon in the sky.",-1.0),
-		WANEGIBBOUS("The moon is in the waning gibbous phase (no longer full).",-0.5),
-		WANEQUARTER("The moon is in its last quarter.",0.0),
-		WANECRESCENT("The moon is in the waning crescent phase.",0.5),
-		BLUE("There is a BLUE MOON! Oh my GOD! Run away!!!!!",2.0);
+		NEW("There is a new moon in the sky.",1.0,TidePhase.SPRING_HIGH,TidePhase.SPRING_LOW),
+		WAXCRESCENT("The moon is in the waxing crescent phase.",0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
+		WAXQUARTER("The moon is in its first quarter.",0.0,TidePhase.NEAP_HIGH,TidePhase.NEAP_LOW),
+		WAXGIBBOUS("The moon is in the waxing gibbous phase (almost full).",-0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
+		FULL("There is a full moon in the sky.",-1.0,TidePhase.SPRING_HIGH,TidePhase.SPRING_LOW),
+		WANEGIBBOUS("The moon is in the waning gibbous phase (no longer full).",-0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
+		WANEQUARTER("The moon is in its last quarter.",0.0,TidePhase.NEAP_HIGH,TidePhase.NEAP_LOW),
+		WANECRESCENT("The moon is in the waning crescent phase.",0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
+		BLUE("There is a BLUE MOON! Oh my GOD! Run away!!!!!",2.0,TidePhase.SPRING_HIGH,TidePhase.SPRING_LOW);
 
+		private final String	phaseDesc;
+		private final double	factor;
+		private final TidePhase	highTide;
+		private final TidePhase	lowTide;
+
+		private MoonPhase(String desc, double factor, TidePhase highTide, TidePhase lowTide)
+		{
+			phaseDesc=desc;
+			this.factor=factor;
+			this.highTide=highTide;
+			this.lowTide=lowTide;
+		}
+
+		public String getDesc()
+		{
+			return phaseDesc;
+		}
+
+		public double getFactor()
+		{
+			return factor;
+		}
+		
+		public TidePhase getHighTide()
+		{
+			return highTide;
+		}
+		
+		public TidePhase getLowTide()
+		{
+			return lowTide;
+		}
+	}
+
+	/**
+	 * The phases of the tides
+	 * @author Bo Zimmerman
+	 */
+	public enum TidePhase
+	{
+		SPRING_HIGH("The tide is especially high.",1.5),
+		SPRING_LOW("The tide  is especially low.",-1.5),
+		NORMAL_HIGH("The tide is high.",1.0),
+		NORMAL_LOW("The tide is low.",-1.0),
+		NEAP_HIGH("The tide is weak, but high.",0.5),
+		NEAP_LOW("The tide is weak, but low.",-0.5),
+		NO_TIDE("The tide is normal.", 0.0)
+		;
 		private final String phaseDesc;
 		private final double factor;
 
-		private MoonPhase(String desc, double factor)
+		private TidePhase(String desc, double factor)
 		{
 			phaseDesc=desc;
 			this.factor=factor;

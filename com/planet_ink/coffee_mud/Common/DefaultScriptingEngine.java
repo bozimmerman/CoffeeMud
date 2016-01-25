@@ -3714,7 +3714,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						for(final TimeClock.MoonPhase phase : TimeClock.MoonPhase.values())
 						{
 							if(phase.toString().startsWith(arg1)
-							&&(monster.location().getArea().getTimeObj().getMoonPhase()==phase))
+							&&(monster.location().getArea().getTimeObj().getMoonPhase(monster.location())==phase))
 							{
 								returnable=true;
 								break;
@@ -6090,7 +6090,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 57: // ismoon
 			{
 				if(monster.location()!=null)
-					results.append(monster.location().getArea().getTimeObj().getMoonPhase().toString());
+					results.append(monster.location().getArea().getTimeObj().getMoonPhase(monster.location()).toString());
 				break;
 			}
 			case 38: // istime

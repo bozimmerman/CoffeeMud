@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -75,8 +74,9 @@ public class DefaultTimeClock implements TimeClock
 		return tickStatus;
 	}
 
-	protected boolean	loaded		= false;
-	protected String	loadName	= null;
+	protected boolean		loaded		= false;
+	protected String		loadName	= null;
+	protected volatile long	lastTicked	= 0;
 
 	@Override
 	public void setLoadName(String name)
@@ -245,6 +245,11 @@ public class DefaultTimeClock implements TimeClock
 		CMProps.setIntVar(CMProps.Int.TICKSPERMUDMONTH,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()*CMLib.time().globalClock().getDaysInMonth()/CMProps.getTickMillis())));
 	}
 
+	public String L(final String str, final String ... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(str, xs);
+	}
+
 	@Override
 	public String timeDescription(MOB mob, Room room)
 	{
@@ -265,7 +270,7 @@ public class DefaultTimeClock implements TimeClock
 		timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
 		if(getYearNames().length>0)
 			timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
-		timeDesc.append(".\n\rIt is "+getSeasonCode().toString().toLowerCase()+".");
+		timeDesc.append(L(".\n\rIt is "+getSeasonCode().toString().toLowerCase()+"."));
 		if((CMLib.flags().canSee(mob))
 		&&(getTODCode()==TimeClock.TimeOfDay.NIGHT)
 		&&(CMLib.map().hasASky(room)))
@@ -278,13 +283,15 @@ public class DefaultTimeClock implements TimeClock
 			case Climate.WEATHER_SNOW:
 			case Climate.WEATHER_RAIN:
 			case Climate.WEATHER_THUNDERSTORM:
-				timeDesc.append("\n\r"+room.getArea().getClimateObj().weatherDescription(room)+" You can't see the moon."); break;
+				timeDesc.append("\n\r"+room.getArea().getClimateObj().weatherDescription(room)+L(" You can't see the moon.")); break;
 			case Climate.WEATHER_CLOUDY:
-				timeDesc.append("\n\rThe clouds obscure the moon."); break;
+				timeDesc.append(L("\n\rThe clouds obscure the moon."));
+				break;
 			case Climate.WEATHER_DUSTSTORM:
-				timeDesc.append("\n\rThe dust obscures the moon."); break;
+				timeDesc.append(L("\n\rThe dust obscures the moon."));
+				break;
 			default:
-				timeDesc.append("\n\r"+getMoonPhase().getDesc());
+				timeDesc.append(L("\n\r"+getMoonPhase(room).getDesc()));
 				break;
 			}
 		}
@@ -329,9 +336,58 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public MoonPhase getMoonPhase()
+	public MoonPhase getMoonPhase(Room room)
 	{
-		return TimeClock.MoonPhase.values()[(int)Math.round(Math.floor(CMath.mul(CMath.div(getDayOfMonth(),getDaysInMonth()+1),8.0)))];
+		int moonDex = (int)Math.round(Math.floor(CMath.mul(CMath.div(getDayOfMonth(),getDaysInMonth()+1),8.0)));
+		if(room != null)
+		{
+			final Area area = room.getArea();
+			if((room.numEffects()>0) || ((area != null)&&(area.numEffects()>0)))
+			{
+				final List<Ability> moonEffects = new ArrayList<Ability>(1);
+				if(room.numEffects()>0)
+					moonEffects.addAll(CMLib.flags().domainAffects(room, Ability.DOMAIN_MOONALTERING));
+				if((area != null)&&(area.numEffects()>0))
+					moonEffects.addAll(CMLib.flags().domainAffects(area, Ability.DOMAIN_MOONALTERING));
+				for(Ability A : moonEffects)
+					moonDex = (moonDex + A.abilityCode()) % 8;
+			}
+		}
+		return TimeClock.MoonPhase.values()[moonDex];
+	}
+
+	@Override
+	public TidePhase getTidePhase(Room room)
+	{
+		final MoonPhase moonPhase = getMoonPhase(room);
+		TidePhase tidePhase;
+		if(getHourOfDay() == dawnToDusk[1])
+			tidePhase = moonPhase.getLowTide();
+		else 
+		if(getHourOfDay() == dawnToDusk[2])
+			tidePhase = moonPhase.getHighTide();
+		else
+			tidePhase = TidePhase.NO_TIDE;
+		if(room != null)
+		{
+			final Area area = room.getArea();
+			if((room.numEffects()>0) || ((area != null)&&(area.numEffects()>0)))
+			{
+				final List<Ability> moonEffects = new ArrayList<Ability>(1);
+				if(room.numEffects()>0)
+					moonEffects.addAll(CMLib.flags().flaggedAffects(room, Ability.FLAG_TIDEALTERING));
+				if((area != null)&&(area.numEffects()>0))
+					moonEffects.addAll(CMLib.flags().flaggedAffects(area, Ability.FLAG_TIDEALTERING));
+				if(moonEffects.size()>0)
+				{
+					int tideDex = CMParms.indexOf(TidePhase.values(), tidePhase);
+					for(Ability A : moonEffects)
+						tideDex = (tideDex + A.abilityCode()) % TidePhase.values().length;
+					tidePhase = TidePhase.values()[tideDex];
+				}
+			}
+		}
+		return tidePhase;
 	}
 
 	@Override
@@ -368,6 +424,7 @@ public class DefaultTimeClock implements TimeClock
 			return TimeClock.TimeOfDay.NIGHT;
 		return TimeClock.TimeOfDay.DAY;
 	}
+
 	@Override
 	public boolean setHourOfDay(int t)
 	{
@@ -389,6 +446,7 @@ public class DefaultTimeClock implements TimeClock
 			return new DefaultTimeClock();
 		}
 	}
+
 	@Override
 	public TimeClock deriveClock(long millis)
 	{
@@ -462,16 +520,22 @@ public class DefaultTimeClock implements TimeClock
 			return -1;
 		else
 		if(C.getYear()==getYear())
+		{
 			if(C.getMonth()>getMonth())
 				return -1;
 			else
 			if(C.getMonth()==getMonth())
+			{
 				if(C.getDayOfMonth()>getDayOfMonth())
 					return -1;
 				else
 				if(C.getDayOfMonth()==getDayOfMonth())
+				{
 					if(C.getHourOfDay()>getHourOfDay())
 						return -1;
+				}
+			}
+		}
 		numMudHours+=(getYear()-C.getYear())*(getHoursInDay()*getDaysInMonth()*getMonthsInYear());
 		numMudHours+=(getMonth()-C.getMonth())*(getHoursInDay()*getDaysInMonth());
 		numMudHours+=(getDayOfMonth()-C.getDayOfMonth())*getHoursInDay();
@@ -521,7 +585,10 @@ public class DefaultTimeClock implements TimeClock
 						R.recoverRoomStats();
 				}
 			}
-		}catch(final java.util.NoSuchElementException x){}
+		}
+		catch (final java.util.NoSuchElementException x)
+		{
+		}
 	}
 
 	@Override
@@ -566,6 +633,7 @@ public class DefaultTimeClock implements TimeClock
 		if(getTODCode()!=todCode)
 			handleTimeChange();
 	}
+
 	@Override
 	public void save()
 	{
@@ -585,7 +653,6 @@ public class DefaultTimeClock implements TimeClock
 		}
 	}
 
-	public long lastTicked=0;
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -646,5 +713,10 @@ public class DefaultTimeClock implements TimeClock
 		}
 		return true;
 	}
-	@Override public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+	@Override
+	public int compareTo(CMObject o)
+	{
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
+	}
 }

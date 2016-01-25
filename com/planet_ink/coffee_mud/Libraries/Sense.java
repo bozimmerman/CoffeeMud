@@ -1096,7 +1096,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				if((canSeeVictims(seer))&&(seer.getVictim()==seenP))
 					return true;
 				if((R.getArea().getClimateObj().canSeeTheMoon(R,null))
-				&&(R.getArea().getTimeObj().getMoonPhase()==TimeClock.MoonPhase.FULL))
+				&&(R.getArea().getTimeObj().getMoonPhase(R)==TimeClock.MoonPhase.FULL))
 					return true;
 				return false;
 			}
@@ -1107,7 +1107,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			if((seenP instanceof Room)
 			&&(((Room)seenP).getArea().getClimateObj().canSeeTheMoon(((Room)seenP),null)))
-				switch(((Room)seenP).getArea().getTimeObj().getMoonPhase())
+			{
+				switch(((Room)seenP).getArea().getTimeObj().getMoonPhase((Room)seenP))
 				{
 				case FULL:
 				case WAXGIBBOUS:
@@ -1116,6 +1117,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				default:
 					break;
 				}
+			}
 
 			if(isLightSource(seer))
 				return true;
@@ -1138,7 +1140,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				{
 					if(R.getArea().getClimateObj().canSeeTheMoon(R,null))
 					{
-						return R.getArea().getTimeObj().getMoonPhase() != TimeClock.MoonPhase.NEW;
+						return R.getArea().getTimeObj().getMoonPhase(R) != TimeClock.MoonPhase.NEW;
 					}
 				}
 			}
@@ -1148,7 +1150,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				if((seen instanceof Room)
 				&&(((Room)seen).getArea().getClimateObj().canSeeTheMoon(((Room)seen),null)))
 				{
-					switch(((Room)seen).getArea().getTimeObj().getMoonPhase())
+					switch(((Room)seen).getArea().getTimeObj().getMoonPhase((Room)seen))
 					{
 						case FULL:
 						case WAXGIBBOUS:
@@ -1422,6 +1424,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return V;
 	}
+	
 	@Override
 	public List<Ability> flaggedAffects(final Physical P, final long flag)
 	{

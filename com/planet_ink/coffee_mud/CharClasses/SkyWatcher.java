@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.MoonPhase;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -327,12 +328,13 @@ public class SkyWatcher extends StdCharClass
 			final Room room=affected.location();
 			if(affected.charStats().getClassLevel(this)>=5)
 			{
+				final MoonPhase phase = room.getArea().getTimeObj().getMoonPhase(room);
 				affectableState.setMovement(affectableState.getMovement()
-											+(int)Math.round(CMath.mul(CMath.div(affectableState.getMovement(),8.0),room.getArea().getTimeObj().getMoonPhase().getFactor())));
+											+(int)Math.round(CMath.mul(CMath.div(affectableState.getMovement(),8.0),phase.getFactor())));
 				affectableState.setHitPoints(affectableState.getHitPoints()
-											+(int)Math.round(CMath.mul(CMath.div(affectableState.getHitPoints(),8.0),room.getArea().getTimeObj().getMoonPhase().getFactor())));
+											+(int)Math.round(CMath.mul(CMath.div(affectableState.getHitPoints(),8.0),phase.getFactor())));
 				affectableState.setMana(affectableState.getMana()
-											-(int)Math.round(CMath.mul(CMath.div(affectableState.getMana(),4.0),room.getArea().getTimeObj().getMoonPhase().getFactor())));
+											-(int)Math.round(CMath.mul(CMath.div(affectableState.getMana(),4.0),phase.getFactor())));
 			}
 		}
 	}
@@ -347,10 +349,11 @@ public class SkyWatcher extends StdCharClass
 			final int classLevel=mob.charStats().getClassLevel(this);
 			if(classLevel>=5)
 			{
+				final MoonPhase phase = room.getArea().getTimeObj().getMoonPhase(room);
 				affectableStats.setArmor(affectableStats.armor() // - is good
-										 -(int)Math.round(CMath.mul(classLevel,room.getArea().getTimeObj().getMoonPhase().getFactor())));
+										 -(int)Math.round(CMath.mul(classLevel,phase.getFactor())));
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() // - is bad
-										 -(int)Math.round(CMath.mul(classLevel,room.getArea().getTimeObj().getMoonPhase().getFactor())));
+										 -(int)Math.round(CMath.mul(classLevel,phase.getFactor())));
 			}
 		}
 	}

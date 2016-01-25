@@ -694,7 +694,7 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("WEATHER"))
 					str.append(CMStrings.removeColors(A.getClimateObj().getWeatherDescription(A))+", ");
 				if(parms.containsKey("MOON"))
-					str.append(CMStrings.removeColors(A.getTimeObj().getMoonPhase().getDesc())+", ");
+					str.append(CMStrings.removeColors(A.getTimeObj().getMoonPhase(A.getRandomProperRoom()).getDesc())+", ");
 				if(parms.containsKey("STATS"))
 					str.append(A.getAreaStats()+", ");
 				String strstr=str.toString();

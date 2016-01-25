@@ -799,7 +799,6 @@ public class Factions extends StdLibrary implements FactionManager
 		return null;
 	}
 
-
 	@Override
 	public void modifyFaction(MOB mob, Faction me) throws IOException
 	{
@@ -899,7 +898,6 @@ public class Factions extends StdLibrary implements FactionManager
 					FR.setAlignEquiv(Faction.Align.values()[CMath.s_int(mob.session().choose(L("@x1Enter alignment equivalency or 0: ",prompt.toString()),choices.toString(),""+FR.alignEquiv().ordinal()))]);
 				}
 			}
-
 
 			// show in score
 			me.setShowInScore(CMLib.genEd().prompt(mob,me.showInScore(),++showNumber,showFlag,L("Show in 'Score'")));
@@ -1020,12 +1018,14 @@ public class Factions extends StdLibrary implements FactionManager
 				{
 					factor=me.getFactor(factorNum);
 					if(factor!=null)
+					{
 						if(mob.session().choose(L("Would you like to M)odify or D)elete this range (M/d): "),"MD","M").toUpperCase().startsWith("D"))
 						{
 							me.delFactor(factor);
 							mob.tell(L("Factor deleted."));
 							factor=null;
 						}
+					}
 				}
 				else
 					factor=me.addFactor(1.0,1.0,"");
@@ -1775,6 +1775,14 @@ public class Factions extends StdLibrary implements FactionManager
 					factionFilename = "::"+factionFilename;
 				if(!Resources.updateFileResource(factionFilename,buf))
 					return "Faction File '"+F.factionID()+"' could not be modified.  Make sure it is not READ-ONLY.";
+				else
+				if((!F.factionID().toLowerCase().endsWith(".ini"))
+				&&(factionFilename.toLowerCase().endsWith(".ini")))
+				{
+					CMLib.factions().removeFaction(F.factionID());
+					F.setFactionID(F.factionID()+".INI");
+					CMLib.factions().addFaction(F);
+				}
 			}
 		}
 		else

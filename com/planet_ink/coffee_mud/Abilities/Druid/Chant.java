@@ -37,11 +37,27 @@ import java.util.*;
 
 public class Chant extends StdAbility
 {
-	@Override public String ID() { return "Chant"; }
-	private final static String localizedName = CMLib.lang().L("a Druidic Chant");
-	@Override public String name() { return localizedName; }
-	@Override public String displayText() { return "("+name()+")"; }
-	protected boolean renderedMundane=false;
+	@Override
+	public String ID()
+	{
+		return "Chant";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("a Druidic Chant");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public String displayText()
+	{
+		return "(" + name() + ")";
+	}
+
+	protected boolean		renderedMundane	= false;
 
 	/** codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm */
 	public final static int WEATHERQUE_NADA=0;
@@ -66,11 +82,32 @@ public class Chant extends StdAbility
 		}
 		return super.verbalCastCode(mob,target,auto);
 	}
-	private static final String[] triggerStrings =I(new String[] {"CHANT","CH"});
-	@Override public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override protected int canAffectCode(){return Ability.CAN_MOBS;}
-	@Override protected int canTargetCode(){return Ability.CAN_MOBS;}
+	
+	private static final String[]	triggerStrings	= I(new String[] { "CHANT", "CH" });
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_SELF;
+	}
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return Ability.CAN_MOBS;
+	}
 
 	@Override
 	public void setMiscText(String newText)
@@ -80,7 +117,12 @@ public class Chant extends StdAbility
 		else
 			super.setMiscText(newText);
 	}
-	@Override public int classificationCode()	{ return renderedMundane?Ability.ACODE_SKILL:Ability.ACODE_CHANT;}
+
+	@Override
+	public int classificationCode()
+	{
+		return renderedMundane ? Ability.ACODE_SKILL : Ability.ACODE_CHANT;
+	}
 
 	// codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm
 	public int weatherQue(Room R)
@@ -95,17 +137,28 @@ public class Chant extends StdAbility
 		case Climate.WEATHER_THUNDERSTORM:
 		case Climate.WEATHER_HEAT_WAVE:
 			return WEATHERQUE_NADA;
-		case Climate.WEATHER_CLEAR: return WEATHERQUE_WIND|WEATHERQUE_RAIN|WEATHERQUE_HOT|WEATHERQUE_COLD;
-		case Climate.WEATHER_CLOUDY: return WEATHERQUE_WIND|WEATHERQUE_RAIN;
-		case Climate.WEATHER_DROUGHT: return WEATHERQUE_RAIN|WEATHERQUE_COLD;
-		case Climate.WEATHER_DUSTSTORM: return WEATHERQUE_RAIN|WEATHERQUE_CALM|WEATHERQUE_COLD;
-		case Climate.WEATHER_HAIL: return WEATHERQUE_HOT|WEATHERQUE_CALM;
-		case Climate.WEATHER_RAIN: return WEATHERQUE_WIND|WEATHERQUE_RAIN;
-		case Climate.WEATHER_SLEET: return WEATHERQUE_HOT;
-		case Climate.WEATHER_SNOW: return WEATHERQUE_WIND;
-		case Climate.WEATHER_WINDY: return WEATHERQUE_RAIN;
-		case Climate.WEATHER_WINTER_COLD: return WEATHERQUE_RAIN;
-		default: return WEATHERQUE_CALM;
+		case Climate.WEATHER_CLEAR:
+			return WEATHERQUE_WIND | WEATHERQUE_RAIN | WEATHERQUE_HOT | WEATHERQUE_COLD;
+		case Climate.WEATHER_CLOUDY:
+			return WEATHERQUE_WIND | WEATHERQUE_RAIN;
+		case Climate.WEATHER_DROUGHT:
+			return WEATHERQUE_RAIN | WEATHERQUE_COLD;
+		case Climate.WEATHER_DUSTSTORM:
+			return WEATHERQUE_RAIN | WEATHERQUE_CALM | WEATHERQUE_COLD;
+		case Climate.WEATHER_HAIL:
+			return WEATHERQUE_HOT | WEATHERQUE_CALM;
+		case Climate.WEATHER_RAIN:
+			return WEATHERQUE_WIND | WEATHERQUE_RAIN;
+		case Climate.WEATHER_SLEET:
+			return WEATHERQUE_HOT;
+		case Climate.WEATHER_SNOW:
+			return WEATHERQUE_WIND;
+		case Climate.WEATHER_WINDY:
+			return WEATHERQUE_RAIN;
+		case Climate.WEATHER_WINTER_COLD:
+			return WEATHERQUE_RAIN;
+		default:
+			return WEATHERQUE_CALM;
 		}
 	}
 
