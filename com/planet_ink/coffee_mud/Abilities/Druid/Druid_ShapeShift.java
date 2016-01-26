@@ -97,11 +97,11 @@ public class Druid_ShapeShift extends StdAbility
 	}
 
 	private static String[][] shapes={
-	{"Mouse",   "Kitten",   "Puppy",	"Robin",  "Garden Snake", "Cub",	"Grasshopper","Spider Monkey","Calf",	 "Clown Fish"},
-	{"Rat", 	"Cat",  	"Dog",  	"Owl",    "Snake",     "Young Bear","Centipede",  "Chimp",  	  "Cow",	 "Angelfish"},
-	{"Dire Rat","Puma", 	"Wolf", 	"Hawk",   "Python",    "Brown Bear","Tarantula",  "Ape",		  "Buffalo", "Swordfish"},
-	{"WereRat", "Lion", 	"Dire Wolf","Eagle",  "Cobra",     "Black Bear","Scarab",     "Gorilla",	  "Bull",	 "Shark"},
-	{"WereBat", "Manticore","WereWolf", "Harpy",  "Naga",      "WereBear",  "ManScorpion","Sasquatch",    "Minotaur","Merfolk"}
+	{"Mouse",   "Kitten",   "Puppy",	"Robin",  "Garden Snake", "Cub",	"Grasshopper","Spider Monkey","Calf",	 "Clown Fish",	"Seal"},
+	{"Rat", 	"Cat",  	"Dog",  	"Owl",    "Snake",     "Young Bear","Centipede",  "Chimp",  	  "Cow",	 "Angelfish",	"Walrus"},
+	{"Dire Rat","Puma", 	"Wolf", 	"Hawk",   "Python",    "Brown Bear","Tarantula",  "Ape",		  "Buffalo", "Swordfish",	"Dolphin"},
+	{"WereRat", "Lion", 	"Dire Wolf","Eagle",  "Cobra",     "Black Bear","Scarab",     "Gorilla",	  "Bull",	 "Shark",		"Whale"},
+	{"WereBat", "Manticore","WereWolf", "Harpy",  "Naga",      "WereBear",  "ManScorpion","Sasquatch",    "Minotaur","Merfolk",		"Selkie"}
 	};
 	
 	private static String[][] races={
