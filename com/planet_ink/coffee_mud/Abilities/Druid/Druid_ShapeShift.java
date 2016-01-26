@@ -152,7 +152,7 @@ public class Druid_ShapeShift extends StdAbility
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			final int raceCode = getRaceCode();
 			final int maxRaceLevel = getMaxCharLevel(myRaceLevel);
-			final int adjustedLevel = ((maxRaceLevel>affectableStats.level()) ? maxRaceLevel : affectableStats.level()) + xlvl; 
+			final int adjustedLevel = ((maxRaceLevel<affectableStats.level()) ? maxRaceLevel : affectableStats.level()) + xlvl; 
 			newRace.setHeightWeight(stats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
 			if(oldAdd>0)
 				stats.setWeight(stats.weight()+oldAdd);
@@ -352,22 +352,25 @@ public class Druid_ShapeShift extends StdAbility
 			{
 				try
 				{
-				if(!mob.session().confirm(L("You have not yet chosen your form, would you like to now (Y/n)?"),"Y"))
-					return false;
-				final StringBuffer str=new StringBuffer(L("Choose from the following:\n\r"));
-				final StringBuffer choices=new StringBuffer("");
-				for(int i=0;i<forms.length;i++)
-				{
-					if(racesTaken[i]==0)
+					if(!mob.session().confirm(L("You have not yet chosen your form, would you like to now (Y/n)?"),"Y"))
+						return false;
+					final StringBuffer str=new StringBuffer(L("Choose from the following:\n\r"));
+					final StringBuffer choices=new StringBuffer("");
+					for(int i=0;i<forms.length;i++)
 					{
-						str.append(CMStrings.padLeft(""+(i+1),2)+") "+forms[i]+"\n\r");
-						choices.append(""+(i+1));
+						if(racesTaken[i]==0)
+						{
+							str.append(CMStrings.padLeft(""+(i+1),2)+") "+forms[i]+"\n\r");
+							choices.append(""+(i+1));
+						}
 					}
+					str.append(L("Please select: "));
+					final String choice=mob.session().choose(str.toString(),choices.toString(),"");
+					myRaceCode=CMath.s_int(choice)-1;
 				}
-				str.append(L("Please select: "));
-				final String choice=mob.session().choose(str.toString(),choices.toString(),"");
-				myRaceCode=CMath.s_int(choice)-1;
-				}catch(final Exception e){}
+				catch (final Exception e)
+				{
+				}
 			}
 		}
 

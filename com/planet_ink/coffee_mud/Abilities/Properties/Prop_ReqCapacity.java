@@ -130,6 +130,12 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 				if(((Room)msg.target()).numInhabitants()>=peopleCap)
 				{
 					msg.source().tell(L("No more people can fit in there."));
+					if(msg.source().isMonster())
+					{
+						final MOB M=msg.source().amUltimatelyFollowing();
+						if((!M.isMonster())&&(M.location()==(Room)msg.target()))
+							M.tell(L("No more people can fit in here."));
+					}
 					return false;
 				}
 				if(((Room)msg.target()).numPCInhabitants()>=playerCap)
@@ -141,6 +147,9 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 				&& (((Room)msg.target()).numInhabitants()-((Room)msg.target()).numPCInhabitants())>=mobCap)
 				{
 					msg.source().tell(L("No more MOBs can fit in there."));
+					final MOB M=msg.source().amUltimatelyFollowing();
+					if((!M.isMonster())&&(M.location()==(Room)msg.target()))
+						M.tell(L("No more people can fit in here."));
 					return false;
 				}
 			}
