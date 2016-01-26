@@ -55,9 +55,10 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		return Ability.CAN_ITEMS;
 	}
 
-	protected Item			myItem			= null;
-	protected Vector<String>lastMOBeffected	= new Vector<String>();
-	protected boolean		processing2		= false;
+	protected Item				myItem			= null;
+	protected List<String>		lastMOBeffects	= new Vector<String>();
+	protected boolean			processing2		= false;
+	protected volatile boolean	clearedYet		= false;
 
 	@Override
 	public long flags()
@@ -81,15 +82,16 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		lastMOBeffected=new Vector<String>();
+		lastMOBeffects=new Vector<String>();
 	}
-	public boolean addMeIfNeccessary(Environmental source, Environmental target, boolean makeLongLasting, short maxTicks)
+
+	public boolean addMeIfNeccessary(Environmental source, Environmental target, short maxTicks)
 	{
 		if((!(target instanceof MOB))
 		||((compiledMask!=null)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
 			return false;
 		final MOB newMOB=(MOB)target;
-		final List<Ability> V=getMySpellsV();
+		final List<Ability> allAbles=getMySpellsV();
 		int proff=100;
 		int x=text().indexOf('%');
 		if(x>0)
@@ -106,10 +108,9 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 			}
 			proff=tot;
 		}
-		boolean clearedYet=false;
-		for(int v=0;v<V.size();v++)
+		for(int v=0;v<allAbles.size();v++)
 		{
-			final Ability A=V.get(v);
+			final Ability A=allAbles.get(v);
 			if(newMOB.fetchAbility(A.ID())==null)
 			{
 				final String t=A.text();
@@ -124,15 +125,16 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 				final Ability A2=newMOB.fetchEffect(A.ID());
 				A.setProficiency(proff);
 				newMOB.addAbility(A);
-				A.setSavable(makeLongLasting);
+				A.setSavable(false);
 				A.autoInvocation(newMOB, false);
 				if(!clearedYet)
 				{
-					lastMOBeffected.clear();
+					lastMOBeffects.clear();
 					clearedYet=true;
 				}
-				if((A2==null)&&(!lastMOBeffected.contains(A.ID())))
-					lastMOBeffected.addElement(A.ID());
+				if((A2==null)
+				&&(!lastMOBeffects.contains(A.ID())))
+					lastMOBeffects.add(A.ID());
 			}
 		}
 		lastMOB=newMOB;
@@ -145,24 +147,29 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		if(!(P instanceof MOB))
 			return;
 		final List<Ability> V=getMySpellsV();
+		final Set<String> removedAbles = new HashSet<String>();
 		for(int v=0;v<V.size();v++)
 		{
 			final Ability A=V.get(v);
-			((MOB)P).delAbility(A);
+			if(!A.isSavable())
+			{
+				removedAbles.add(A.ID());
+				((MOB)P).delAbility(A);
+			}
 		}
 		if(P==lastMOB)
 		{
-			for(final Iterator<String> e=lastMOBeffected.iterator();e.hasNext();)
+			for(final Iterator<String> e=lastMOBeffects.iterator();e.hasNext();)
 			{
 				final String AID=e.next();
 				final Ability A2=lastMOB.fetchEffect(AID);
-				if(A2!=null)
+				if((A2!=null)&&(removedAbles.contains(A2.ID())))
 				{
 					A2.unInvoke();
 					lastMOB.delEffect(A2);
 				}
 			}
-			lastMOBeffected.clear();
+			lastMOBeffects.clear();
 		}
 	}
 
@@ -176,7 +183,8 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 
 	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
-	{}
+	{
+	}
 
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
@@ -197,7 +205,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 			&&(myItem.owner()!=null)
 			&&(myItem.owner() instanceof MOB)
 			&&(((MOB)myItem.owner()).location()!=null))
-				addMeIfNeccessary(myItem.owner(),myItem.owner(),false,maxTicks);
+				addMeIfNeccessary(myItem.owner(),myItem.owner(),maxTicks);
 		}
 		processing=false;
 	}

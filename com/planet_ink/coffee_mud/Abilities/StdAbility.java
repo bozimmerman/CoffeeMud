@@ -1052,13 +1052,15 @@ public class StdAbility implements Ability
 			else
 			if(being instanceof MOB)
 			{
-				if(((MOB)being).location()!=null)
-					((MOB)being).location().recoverRoomStats();
+				final MOB M=(MOB)being;
+				final Room R=M.location();
+				if((R!=null)&&(R.isInhabitant(M)))
+					R.recoverRoomStats();
 				else
 				{
-					being.recoverPhyStats();
-					((MOB)being).recoverCharStats();
-					((MOB)being).recoverMaxState();
+					M.recoverPhyStats();
+					M.recoverCharStats();
+					M.recoverMaxState();
 				}
 			}
 			else

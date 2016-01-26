@@ -982,17 +982,19 @@ public class WeatherAffects extends PuddleMaker
 						final Item I=M.getItem(i);
 						if(I==null)
 							continue;
-						if((!I.amWearingAt(Wearable.IN_INVENTORY))
-						&&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
-						&&(I.subjectToWearAndTear())
-						&&((CMLib.dice().rollPercentage()>I.phyStats().ability()*25)))
-							rustThese.addElement(I);
-						else
-						if(I.amWearingAt(Wearable.WORN_ABOUT_BODY)
-						&&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)))
+						if(!I.amWearingAt(Wearable.IN_INVENTORY))
 						{
-							rustThese.clear();
-							break;
+							if((((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
+							&&(I.subjectToWearAndTear())
+							&&((CMLib.dice().rollPercentage()>I.phyStats().ability()*25)))
+								rustThese.addElement(I);
+							else
+							if(I.amWearingAt(Wearable.WORN_ABOUT_BODY)
+							&&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)))
+							{
+								rustThese.clear();
+								break;
+							}
 						}
 					}
 					for(int i=0;i<rustThese.size();i++)

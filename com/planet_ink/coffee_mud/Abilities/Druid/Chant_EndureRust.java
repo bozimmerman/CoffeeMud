@@ -36,16 +36,53 @@ import java.util.*;
 
 public class Chant_EndureRust extends Chant
 {
-	@Override public String ID() { return "Chant_EndureRust"; }
-	private final static String localizedName = CMLib.lang().L("Endure Rust");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Endure Rust)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	@Override public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
-	protected HashSet<Environmental> dontbother=new HashSet<Environmental>();
+	@Override
+	public String ID()
+	{
+		return "Chant_EndureRust";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Endure Rust");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Endure Rust)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_MOBS | CAN_ITEMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS | CAN_ITEMS;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_PRESERVING;
+	}
+
+	protected Set<Environmental>	dontbother	= new HashSet<Environmental>();
 
 	@Override
 	public void unInvoke()
@@ -62,7 +99,7 @@ public class Chant_EndureRust extends Chant
 			||(msg.target() instanceof Item)&&(affected instanceof MOB)&&(((MOB)affected).isMine(msg.target())))
 		&&(msg.targetMinor()==CMMsg.TYP_WATER))
 		{
-			if(!dontbother.contains(msg.target()))
+			if(!dontbother.contains(msg.target())) // this just makes it less spammy
 			{
 				final Room R=CMLib.map().roomLocation(affected);
 				dontbother.add(msg.target());

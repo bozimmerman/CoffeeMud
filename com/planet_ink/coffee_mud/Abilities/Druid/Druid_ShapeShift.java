@@ -144,7 +144,7 @@ public class Druid_ShapeShift extends StdAbility
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if((newRace!=null)&&(affected instanceof MOB))
+		if((newRace!=null)&&(affected instanceof MOB)&&(myRaceLevel>=0)&&(myRaceCode>=0))
 		{
 			final PhyStats stats = affectableStats;
 			final int xlvl=getXLEVELLevel(invoker());
@@ -235,7 +235,7 @@ public class Druid_ShapeShift extends StdAbility
 		case 3:
 			return 24;
 		default:
-			return Integer.MAX_VALUE;
+			return 31;
 		}
 	}
 
@@ -258,10 +258,12 @@ public class Druid_ShapeShift extends StdAbility
 		(myRaceCode>attadj.length)) return 0;
 		return myRaceCode;
 	}
+
 	public Race getRace(int classLevel, int raceCode)
 	{
 		return CMClass.getRace(races[getRaceLevel(classLevel)][myRaceCode]);
 	}
+	
 	public String getRaceName(int classLevel, int raceCode)
 	{
 		return shapes[getRaceLevel(classLevel)][raceCode];
@@ -377,11 +379,13 @@ public class Druid_ShapeShift extends StdAbility
 		{
 			final int raceLevel=getRaceLevel(mob);
 			for(int i1=raceLevel;i1>=0;i1--)
+			{
 				if(CMLib.english().containsString(shapes[i1][myRaceCode],parm))
 				{
 					parm="";
 					this.myRaceLevel=i1;
 				}
+			}
 		}
 		setMiscText(""+myRaceCode);
 		setRaceName(mob);

@@ -36,12 +36,27 @@ import java.util.*;
 */
 public class Prop_WearEnabler extends Prop_HaveEnabler
 {
-	@Override public String ID() { return "Prop_WearEnabler"; }
-	@Override public String name(){ return "Granting skills when worn/wielded";}
-	@Override protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	public boolean checked=false;
-	public boolean disabled=false;
-	public boolean layered=false;
+	@Override
+	public String ID()
+	{
+		return "Prop_WearEnabler";
+	}
+
+	@Override
+	public String name()
+	{
+		return "Granting skills when worn/wielded";
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ITEMS;
+	}
+
+	public boolean	checked		= false;
+	public boolean	disabled	= false;
+	public boolean	layered		= false;
 
 	@Override
 	public int triggerMask()
@@ -51,7 +66,11 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 
 	public void check(MOB mob, Armor A)
 	{
-		if(!layered){ checked=true; disabled=false;}
+		if (!layered)
+		{
+			checked = true;
+			disabled = false;
+		}
 		final boolean oldDisabled=disabled;
 		if(A.amWearingAt(Wearable.IN_INVENTORY))
 		{
@@ -109,17 +128,20 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 		else
 			super.executeMsg(host,msg);
 	}
+
 	@Override
-	public boolean addMeIfNeccessary(Environmental source, Environmental target, boolean makeLongLasting, short maxTicks)
+	public boolean addMeIfNeccessary(Environmental source, Environmental target, short maxTicks)
 	{
 		if(disabled&&checked)
 			return false;
-		return super.addMeIfNeccessary(source,target,makeLongLasting, maxTicks);
+		return super.addMeIfNeccessary(source,target,maxTicks);
 	}
 
 	@Override
 	public String accountForYourself()
-	{ return spellAccountingsWithMask("Grants "," to the wearer/wielder.");}
+	{
+		return spellAccountingsWithMask("Grants ", " to the wearer/wielder.");
+	}
 
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
@@ -147,7 +169,7 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 			{
 				if(myItem instanceof Armor)
 					check((MOB)myItem.owner(),((Armor)myItem));
-				addMeIfNeccessary(myItem.owner(),myItem.owner(),false,maxTicks);
+				addMeIfNeccessary(myItem.owner(),myItem.owner(),maxTicks);
 			}
 		}
 		processing=false;

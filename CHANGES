@@ -6,9 +6,9 @@
    5. Save command will now prompt for confirmation with delta message.  
    6. New channel flag: ACCOUNTOOCNOADMIN - for a more nuanced Account Name-based channel
    7. Metacraft can now craft everything from specific skills.  See help.
-   8. New Chants: Bloody Water, Find Driftwood, Filter Water, Aquatic Pass, Sense Water, Summon Coral
+   8. New Chants: Bloody Water, Find Driftwood, Filter Water, Aquatic Pass, Sense Water, Summon Coral, Flood
    9. New Chants: Underwater Action, Water Hammer, Drown, Call Mate, Summon School, High Tide, Land Lungs
-  10. New Chants: Reef Walking, Capsize, Feeding Frenzy, Calm Seas, Summon Jellyfish, Flippers, Flood
+  10. New Chants: Reef Walking, Capsize, Feeding Frenzy, Calm Seas, Summon Jellyfish, Flippers, Waterguard
   11. New Chants: Sift Wrecks, Favorable Winds, Tide Moon, Tidal Wave, Predict Tides, Tsunami, Whirlpool
   12. New races: SmallFish, Angelfish, Merfolk, Selkie, Swordfish, Dolphin, Seal, Walrus, Whale
   13. New language: Aquan

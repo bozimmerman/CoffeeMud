@@ -35,19 +35,62 @@ import java.util.*;
 
 public class Skill_ControlUndead extends StdSkill
 {
-	@Override public String ID() { return "Skill_ControlUndead"; }
-	private final static String localizedName = CMLib.lang().L("Control Undead");
-	@Override public String name() { return localizedName; }
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Controlled)");
-	@Override public String displayText() { return localizedStaticDisplay; }
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return CAN_MOBS;}
-	@Override public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DEATHLORE;}
-	@Override public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	private static final String[] triggerStrings =I(new String[] {"CONTROL"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
+	@Override
+	public String ID()
+	{
+		return "Skill_ControlUndead";
+	}
 
-	protected MOB charmer=null;
+	private final static String	localizedName	= CMLib.lang().L("Control Undead");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Controlled)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return CAN_MOBS;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_SKILL | Ability.DOMAIN_DEATHLORE;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_MALICIOUS;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "CONTROL" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	protected MOB	charmer	= null;
+
 	protected MOB getCharmer()
 	{
 		if(charmer!=null)
@@ -96,12 +139,12 @@ public class Skill_ControlUndead extends StdSkill
 		// from trying to do ANYTHING except sleep
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-		&&(msg.amISource(mob.amFollowing())))
+		&&(msg.amISource(getCharmer())||((mob.amFollowing()!=null)&&(msg.source()==mob.amFollowing()))))
 			unInvoke();
 		else
 		if((msg.amISource(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-		&&(msg.amITarget(mob.amFollowing())))
+		&&(msg.amITarget(getCharmer())||((mob.amFollowing()!=null)&&(msg.target()==mob.amFollowing()))))
 		{
 			if((!invoker().isInCombat())&&(msg.source().getVictim()!=invoker()))
 			{
@@ -262,6 +305,9 @@ public class Skill_ControlUndead extends StdSkill
 							invoker=mob;
 							if(target.amFollowing()!=mob)
 								mob.tell(L("@x1 seems unwilling to obey you.",target.name(mob)));
+							else
+							if(!target.isMonster())
+								beneficialAffect(mob,target,asLevel,0);
 						}
 					}
 					if(!success)
