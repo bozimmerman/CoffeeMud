@@ -721,48 +721,54 @@ public class StdGrid extends StdRoom implements GridLocale
 	public void fillInTheExtraneousExternals(Room[][] subMap, Exit ox)
 	{
 		if(subMap!=null)
-		for(int d=0;d<gridexits.size();d++)
 		{
-			final CrossExit EX=gridexits.get(d);
-			try
+			for(int d=0;d<gridexits.size();d++)
 			{
-				if(EX.out)
-				switch(EX.dir)
+				final CrossExit EX=gridexits.get(d);
+				try
 				{
-				case Directions.NORTH:
-					if(EX.y==0)
-						tryFillInExtraneousExternal(EX,ox);
-					break;
-				case Directions.SOUTH:
-					if(EX.y==yGridSize()-1)
-						tryFillInExtraneousExternal(EX,ox);
-					break;
-				case Directions.EAST:
-					if(EX.x==xGridSize()-1)
-						tryFillInExtraneousExternal(EX,ox);
-					break;
-				case Directions.WEST:
-					if(EX.x==0)
-						tryFillInExtraneousExternal(EX,ox);
-					break;
-				case Directions.NORTHEAST:
-					if((EX.y==0)&&(EX.x==xGridSize()-1))
-						tryFillInExtraneousExternal(EX,ox);
-					break;
-				case Directions.SOUTHWEST:
-					if((EX.y==yGridSize()-1)&&(EX.x==0))
-						tryFillInExtraneousExternal(EX,ox);
-					break;
-				case Directions.NORTHWEST:
-					if((EX.y==0)&&(EX.x==0))
-						tryFillInExtraneousExternal(EX,ox);
-					break;
-				case Directions.SOUTHEAST:
-					if((EX.y==yGridSize()-1)&&(EX.x==xGridSize()-1))
-						tryFillInExtraneousExternal(EX,ox);
-					break;
+					if(!EX.out)
+						continue;
+					switch(EX.dir)
+					{
+					case Directions.NORTH:
+						if(EX.y==0)
+							tryFillInExtraneousExternal(EX,ox);
+						break;
+					case Directions.SOUTH:
+						if(EX.y==yGridSize()-1)
+							tryFillInExtraneousExternal(EX,ox);
+						break;
+					case Directions.EAST:
+						if(EX.x==xGridSize()-1)
+							tryFillInExtraneousExternal(EX,ox);
+						break;
+					case Directions.WEST:
+						if(EX.x==0)
+							tryFillInExtraneousExternal(EX,ox);
+						break;
+					case Directions.NORTHEAST:
+						if((EX.y==0)&&(EX.x==xGridSize()-1))
+							tryFillInExtraneousExternal(EX,ox);
+						break;
+					case Directions.SOUTHWEST:
+						if((EX.y==yGridSize()-1)&&(EX.x==0))
+							tryFillInExtraneousExternal(EX,ox);
+						break;
+					case Directions.NORTHWEST:
+						if((EX.y==0)&&(EX.x==0))
+							tryFillInExtraneousExternal(EX,ox);
+						break;
+					case Directions.SOUTHEAST:
+						if((EX.y==yGridSize()-1)&&(EX.x==xGridSize()-1))
+							tryFillInExtraneousExternal(EX,ox);
+						break;
+					}
 				}
-			}catch(final Exception e){}
+				catch (final Exception e)
+				{
+				}
+			}
 		}
 	}
 

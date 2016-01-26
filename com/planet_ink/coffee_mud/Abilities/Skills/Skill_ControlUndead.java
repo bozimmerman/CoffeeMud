@@ -237,7 +237,8 @@ public class Skill_ControlUndead extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*30,auto);
+		final int adjustedCasterLevel = mob.phyStats().level() + (2*getXLEVELLevel(mob));
+		boolean success=proficiencyCheck(mob,(adjustedCasterLevel-target.phyStats().level())*30,auto);
 
 		if(success)
 		{
@@ -247,7 +248,8 @@ public class Skill_ControlUndead extends StdSkill
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					if(((mob.phyStats().level()-target.phyStats().level())>1)||(target.phyStats().level()==1))
+					success = (((adjustedCasterLevel-target.phyStats().level())>1)||(target.phyStats().level()==1));
+					if(success)
 					{
 						if(!target.isMonster())
 							success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|CMMsg.MASK_ALWAYS)!=null;
@@ -262,7 +264,7 @@ public class Skill_ControlUndead extends StdSkill
 								mob.tell(L("@x1 seems unwilling to obey you.",target.name(mob)));
 						}
 					}
-					else
+					if(!success)
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) submissive!"));
 						target.makePeace(true);
