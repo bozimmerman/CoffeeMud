@@ -269,6 +269,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 							final int level=baseLevel+s.recipeLevel;
 							V1.set(RCP_LEVEL,""+level);
 							for(int i=0;i<=newRecipes.size();i++)
+							{
 								if(newRecipes.size()==i)
 								{
 									newRecipes.add(V1);
@@ -280,6 +281,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 									newRecipes.add(i,V1);
 									break;
 								}
+							}
 						}
 					}
 				}
