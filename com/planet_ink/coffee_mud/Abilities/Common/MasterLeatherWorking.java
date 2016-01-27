@@ -86,14 +86,17 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
-	@Override public String parametersFile(){ return "masterleatherworking.txt";}
-
+	@Override
+	public String parametersFile()
+	{
+		return "masterleatherworking.txt";
+	}
 
 	public enum Stage
 	{
 		Designer(30,4),
 		Cuirbouli(37,5),
-		Reinforced(45,6),
+		Thick(45,6),
 		Masterwork(54,7),
 		Laminar(63,8),
 		Battlemoulded(72,9);
@@ -348,10 +351,10 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			int toggler=1;
 			final int toggleTop=2;
 			final int[] cols={
-					CMLib.lister().fixColWidth(30,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session()),
-					CMLib.lister().fixColWidth(3,mob.session())
-				};
+				CMLib.lister().fixColWidth(30,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session()),
+				CMLib.lister().fixColWidth(3,mob.session())
+			};
 			for(int r=0;r<toggleTop;r++)
 				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Amt"),cols[2]));
 			buf.append("\n\r");
@@ -493,13 +496,13 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"leather",pm,
-												(multiplier==6)?1:0,
-												(multiplier==6)?"metal":null,
-												(multiplier==6)?pm1:null,
-												bundling,
-												autoGenerate,
-												enhancedTypes);
+													woodRequired,"leather",pm,
+													(multiplier==6)?1:0,
+													(multiplier==6)?"metal":null,
+													(multiplier==6)?pm1:null,
+													bundling,
+													autoGenerate,
+													enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);

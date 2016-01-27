@@ -34,12 +34,23 @@ import java.util.*;
 */
 public class After extends StdCommand implements Tickable
 {
-	@Override public String name(){return "SysOpSkills";} // for tickables use
-	@Override public int getTickStatus(){return Tickable.STATUS_NOT;}
+	@Override
+	public String name()
+	{
+		return "SysOpSkills";
+	} // for tickables use
+
+	@Override
+	public int getTickStatus()
+	{
+		return Tickable.STATUS_NOT;
+	}
 
 	public List<AfterCommand> afterCmds=new Vector<AfterCommand>();
 
-	public After(){}
+	public After()
+	{
+	}
 
 	private static class AfterCommand
 	{
@@ -51,8 +62,14 @@ public class After extends StdCommand implements Tickable
 		int metaFlags=0;
 	}
 
-	private final String[] access=I(new String[]{"AFTER"});
-	@Override public String[] getAccessWords(){return access;}
+	private final String[]	access	= I(new String[] { "AFTER" });
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -61,7 +78,11 @@ public class After extends StdCommand implements Tickable
 		commands.remove(0);
 
 		final String afterErr="format: after (every) [X] [TICKS/MINUTES/SECONDS/HOURS] [COMMAND]";
-		if(commands.size()==0){ mob.tell(afterErr); return false;}
+		if (commands.size() == 0)
+		{
+			mob.tell(afterErr);
+			return false;
+		}
 		if(commands.get(0).equalsIgnoreCase("stop"))
 		{
 			afterCmds.clear();
@@ -89,12 +110,27 @@ public class After extends StdCommand implements Tickable
 			return false;
 		}
 		if(commands.get(0).equalsIgnoreCase("every"))
-		{ every=true; commands.remove(0);}
-		if(commands.size()==0){ mob.tell(afterErr); return false;}
+		{
+			every = true;
+			commands.remove(0);
+		}
+		if (commands.size() == 0)
+		{
+			mob.tell(afterErr);
+			return false;
+		}
 		long time=CMath.s_long(commands.get(0));
-		if(time==0) { mob.tell(L("Time may not be 0.@x1",afterErr)); return false;}
+		if (time == 0)
+		{
+			mob.tell(L("Time may not be 0.@x1", afterErr));
+			return false;
+		}
 		commands.remove(0);
-		if(commands.size()==0){ mob.tell(afterErr); return false;}
+		if (commands.size() == 0)
+		{
+			mob.tell(afterErr);
+			return false;
+		}
 		final String s=commands.get(0);
 		final long multiplier=CMLib.english().getMillisMultiplierByName(s);
 		if(multiplier<0)
@@ -105,7 +141,11 @@ public class After extends StdCommand implements Tickable
 		else
 			time=time*multiplier;
 		commands.remove(0);
-		if(commands.size()==0){ mob.tell(afterErr); return false;}
+		if (commands.size() == 0)
+		{
+			mob.tell(afterErr);
+			return false;
+		}
 		final AfterCommand V=new AfterCommand();
 		V.start=System.currentTimeMillis();
 		V.duration=time;

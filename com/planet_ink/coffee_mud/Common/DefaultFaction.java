@@ -1427,133 +1427,137 @@ public class DefaultFaction implements Faction, MsgListener
 			source.adjustFaction(ID,factionAdj);
 	}
 
-	 @Override
+	@Override
 	public String usageFactorRangeDescription(Ability A)
-	 {
-		 final StringBuffer rangeStr=new StringBuffer();
-		 final HashSet<String> namesAdded=new HashSet<String>();
-		 for(final FAbilityUsage usage : abilityUsages)
-		 {
-			 if((usage.possibleAbilityID()&&usage.abilityFlags().equalsIgnoreCase(A.ID()))
-			 ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
-				 &&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
-				 &&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
-				 &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
-			 {
+	{
+		final StringBuffer rangeStr=new StringBuffer();
+		final HashSet<String> namesAdded=new HashSet<String>();
+		for(final FAbilityUsage usage : abilityUsages)
+		{
+			if((usage.possibleAbilityID()&&usage.abilityFlags().equalsIgnoreCase(A.ID()))
+			||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
+				&&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
+				&&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
+				&&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
+			{
 				for(final Enumeration<FRange> e=ranges();e.hasMoreElements();)
 				{
-					 final FRange R=e.nextElement();
-					 if((((R.high()<=usage.high())&&(R.high()>=usage.low()))
-						 ||((R.low()>=usage.low()))&&(R.low()<=usage.high()))
-					 &&(!namesAdded.contains(R.name())))
-					 {
-						 namesAdded.add(R.name());
-						 if(rangeStr.length()>0)
-						 	rangeStr.append(", ");
-						 rangeStr.append(R.name());
-					 }
+					final FRange R=e.nextElement();
+					if((((R.high()<=usage.high())&&(R.high()>=usage.low()))
+						||((R.low()>=usage.low()))&&(R.low()<=usage.high()))
+					&&(!namesAdded.contains(R.name())))
+					{
+						namesAdded.add(R.name());
+						if(rangeStr.length()>0)
+							rangeStr.append(", ");
+						rangeStr.append(R.name());
+					}
 				}
-			 }
-		 }
-		 return rangeStr.toString();
+			}
+		}
+		return rangeStr.toString();
 	}
 
-	 private static String _ALL_TYPES=null;
-	 @Override
+	private static String _ALL_TYPES=null;
+	@Override
 	public String ALL_CHANGE_EVENT_TYPES()
-	 {
-		 final StringBuffer ALL_TYPES=new StringBuffer("");
-		 if(_ALL_TYPES!=null)
-		 	return _ALL_TYPES;
-		 for (final String element : Faction.FactionChangeEvent.MISC_TRIGGERS)
+	{
+		final StringBuffer ALL_TYPES=new StringBuffer("");
+		if(_ALL_TYPES!=null)
+			return _ALL_TYPES;
+		for (final String element : Faction.FactionChangeEvent.MISC_TRIGGERS)
 			ALL_TYPES.append(element+", ");
-		 for (final String element : Ability.ACODE_DESCS)
+		for (final String element : Ability.ACODE_DESCS)
 			ALL_TYPES.append(element+", ");
-		 for (final String element : Ability.DOMAIN_DESCS)
+		for (final String element : Ability.DOMAIN_DESCS)
 			ALL_TYPES.append(element+", ");
-		 for (final String element : Ability.FLAG_DESCS)
+		for (final String element : Ability.FLAG_DESCS)
 			ALL_TYPES.append(element+", ");
-		 _ALL_TYPES=ALL_TYPES.toString()+" a valid Skill, Spell, Chant, etc. ID.";
-		 return _ALL_TYPES;
-	 }
+		_ALL_TYPES=ALL_TYPES.toString()+" a valid Skill, Spell, Chant, etc. ID.";
+		return _ALL_TYPES;
+	}
 
-	 @Override
+	@Override
 	public Faction.FactionChangeEvent createChangeEvent(String key)
-	 {
-		 Faction.FactionChangeEvent event;
-		 if(key==null)
-		 	return null;
-		 if(key.indexOf(';')<0)
-		 {
-			 event=new DefaultFaction.DefaultFactionChangeEvent(this);
-			 if(!event.setEventID(key))
-				 return null;
-		 }
-		 else
-			 event=new DefaultFaction.DefaultFactionChangeEvent(this,key);
-		 abilityChangesCache.clear();
-		 Faction.FactionChangeEvent[] events=changes.get(event.eventID().toUpperCase().trim());
-		 if(events==null)
-			 events=new Faction.FactionChangeEvent[0];
-		 events=Arrays.copyOf(events, events.length+1);
-		 events[events.length-1]=event;
-		 changes.put(event.eventID().toUpperCase().trim(), events);
-		 return event;
-	 }
-
-	 private boolean replaceEvents(String key, Faction.FactionChangeEvent event, boolean strict)
-	 {
-		 final Faction.FactionChangeEvent[] events=changes.get(key);
-		 if(events==null)
-		 	return false;
-		 final Faction.FactionChangeEvent[] nevents=new Faction.FactionChangeEvent[events.length-1];
-		 int ne1=0;
-		 boolean done=false;
-		 for (final FactionChangeEvent event2 : events)
+	{
+		Faction.FactionChangeEvent event;
+		if(key==null)
+			return null;
+		if(key.indexOf(';')<0)
 		{
-			 if((strict&&(event2 == event))||((!strict)&&(event2.toString().equals(event.toString()))))
-			 {
-				 if(nevents.length==0)
-					 changes.remove(key);
-				 else
-					 changes.put(key,nevents);
-				 done=true;
-			 }
-			 else
-			 if(ne1<nevents.length)
-				 nevents[ne1++]=event2;
-		 }
-		 if(done)
-			 abilityChangesCache.clear();
-		 return done;
-	 }
-	 @Override
+			event=new DefaultFaction.DefaultFactionChangeEvent(this);
+			if(!event.setEventID(key))
+				return null;
+		}
+		else
+			event=new DefaultFaction.DefaultFactionChangeEvent(this,key);
+		abilityChangesCache.clear();
+		Faction.FactionChangeEvent[] events=changes.get(event.eventID().toUpperCase().trim());
+		if(events==null)
+			events=new Faction.FactionChangeEvent[0];
+		events=Arrays.copyOf(events, events.length+1);
+		events[events.length-1]=event;
+		changes.put(event.eventID().toUpperCase().trim(), events);
+		return event;
+	}
+
+	private boolean replaceEvents(String key, Faction.FactionChangeEvent event, boolean strict)
+	{
+		final Faction.FactionChangeEvent[] events=changes.get(key);
+		if(events==null)
+			return false;
+		final Faction.FactionChangeEvent[] nevents=new Faction.FactionChangeEvent[events.length-1];
+		int ne1=0;
+		boolean done=false;
+		for (final FactionChangeEvent event2 : events)
+		{
+			if((strict&&(event2 == event))||((!strict)&&(event2.toString().equals(event.toString()))))
+			{
+				if(nevents.length==0)
+					changes.remove(key);
+				else
+					changes.put(key,nevents);
+				done=true;
+			}
+			else
+			if(ne1<nevents.length)
+				nevents[ne1++]=event2;
+		}
+		if(done)
+			abilityChangesCache.clear();
+		return done;
+	}
+	@Override
 	public void clearChangeEvents()
-	 {
-		 abilityChangesCache.clear();
-		 changes.clear();
-	 }
+	{
+		abilityChangesCache.clear();
+		changes.clear();
+	}
 
-	 @Override
+	@Override
 	public boolean delChangeEvent(Faction.FactionChangeEvent event)
-	 {
-		 for(final Enumeration<String> e=changes.keys();e.hasMoreElements();)
-			 if(replaceEvents(e.nextElement(),event,true))
-			 {
-				 abilityChangesCache.clear();
-				 return true;
-			 }
-		 for(final Enumeration<String> e=changes.keys();e.hasMoreElements();)
-			 if(replaceEvents(e.nextElement(),event,false))
-			 {
-				 abilityChangesCache.clear();
-				 return true;
-			 }
-		 return false;
-	 }
+	{
+		for(final Enumeration<String> e=changes.keys();e.hasMoreElements();)
+		{
+			if(replaceEvents(e.nextElement(),event,true))
+			{
+				abilityChangesCache.clear();
+				return true;
+			}
+		}
+		for(final Enumeration<String> e=changes.keys();e.hasMoreElements();)
+		{
+			if(replaceEvents(e.nextElement(),event,false))
+			{
+				abilityChangesCache.clear();
+				return true;
+			}
+		}
+		return false;
+	}
 
-	 public class DefaultFactionChangeEvent implements Faction.FactionChangeEvent
-	 {
+	public class DefaultFactionChangeEvent implements Faction.FactionChangeEvent
+	{
 		private String		ID				= "";
 		private String		flagCache		= "";
 		private int			IDclassFilter	= -1;
@@ -2028,7 +2032,7 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		final Faction.FAbilityUsage usage=
 			(key==null)?new DefaultFaction.DefaultFactionAbilityUsage()
-					   : new DefaultFaction.DefaultFactionAbilityUsage(key);
+					  : new DefaultFaction.DefaultFactionAbilityUsage(key);
 		abilityUsages.addElement(usage);
 		abilityUsages.trimToSize();
 		return usage;
@@ -2186,7 +2190,8 @@ public class DefaultFaction implements Faction, MsgListener
 
 		private Ability setPresenceReaction(MOB M, Physical myHost)
 		{
-			if((!CMLib.flags().canBeSeenBy(myHost, M))&&(!CMLib.flags().canBeHeardMovingBy(myHost,M)))
+			if((!CMLib.flags().canBeSeenBy(myHost, M))
+			&&(!CMLib.flags().canBeHeardMovingBy(myHost,M)))
 				return null;
 			Vector<String> myReactions=null;
 			List<Faction.FReactionItem> tempReactSet=null;
@@ -2246,7 +2251,11 @@ public class DefaultFaction implements Faction, MsgListener
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							M=R.fetchInhabitant(m);
-							if((M!=null)&&(M!=myHost)&&(M.isMonster()))
+							if((M!=null)
+							&&(M!=myHost)
+							&&(M.isMonster())
+							&&(msg.source().amFollowing()!=M)
+							&&(M.amFollowing()!=msg.source()))
 							{
 								A=setPresenceReaction(M,msg.source());
 								if(A!=null) // means yes, we are using light, and yes, heres a reaction to add
@@ -2260,10 +2269,15 @@ public class DefaultFaction implements Faction, MsgListener
 					&&(msg.target()==CMLib.map().roomLocation(myHost))
 					&&(myHost instanceof Physical))
 					{
-						final Ability A=setPresenceReaction(msg.source(),(Physical)myHost);
-						if(A!=null){ // means yes, we are using light, and yes, heres a reaction to add
-							lightPresenceAbilities = Arrays.copyOf(lightPresenceAbilities, lightPresenceAbilities.length+1);
-							lightPresenceAbilities[lightPresenceAbilities.length-1]=A;
+						if((!(myHost instanceof MOB))
+						||(((msg.source().amFollowing()!=myHost)
+							&&(((MOB)myHost).amFollowing()!=msg.source()))))
+						{
+							final Ability A=setPresenceReaction(msg.source(),(Physical)myHost);
+							if(A!=null){ // means yes, we are using light, and yes, heres a reaction to add
+								lightPresenceAbilities = Arrays.copyOf(lightPresenceAbilities, lightPresenceAbilities.length+1);
+								lightPresenceAbilities[lightPresenceAbilities.length-1]=A;
+							}
 						}
 					}
 				}

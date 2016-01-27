@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /*
@@ -37,16 +35,28 @@ import java.util.*;
 
 public class Aggressive extends StdBehavior
 {
-	@Override public String ID(){return "Aggressive";}
-	@Override public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
-	protected int tickWait=0;
-	protected int tickDown=0;
-	protected boolean wander=false;
-	protected boolean mobkill=false;
-	protected boolean misbehave=false;
-	protected String attackMessage=null;
-	protected Room lastRoom=null;
-	protected int lastRoomInhabCount=0;
+	@Override
+	public String ID()
+	{
+		return "Aggressive";
+	}
+
+	@Override
+	public long flags()
+	{
+		return Behavior.FLAG_POTENTIALLYAGGRESSIVE | Behavior.FLAG_TROUBLEMAKING;
+	}
+
+	protected int		tickWait			= 0;
+	protected int		tickDown			= 0;
+	protected boolean	wander				= false;
+	protected boolean	mobkill				= false;
+	protected boolean	misbehave			= false;
+	protected boolean	levelcheck			= false;
+	protected String	attackMessage		= null;
+	protected Room		lastRoom			= null;
+	protected int		lastRoomInhabCount	= 0;
+	protected MaskingLibrary.CompiledZapperMask mask = null;
 
 	@Override
 	public void executeMsg(Environmental affecting, CMMsg msg)
@@ -81,9 +91,11 @@ public class Aggressive extends StdBehavior
 		attackMessage=CMParms.getParmStr(newParms,"MESSAGE",null);
 		final Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		wander=V.contains("WANDER");
+		levelcheck=V.contains("CHECKLEVEL");
 		mobkill=V.contains("MOBKILL")||(V.contains("MOBKILLER"));
 		misbehave=V.contains("MISBEHAVE");
 		tickDown=tickWait;
+		this.mask=CMLib.masking().getPreCompiledMask(newParms);
 	}
 
 	public static boolean startFight(MOB monster, MOB mob, boolean fightMOBs, boolean misBehave, String attackMsg)
@@ -122,7 +134,7 @@ public class Aggressive extends StdBehavior
 		}
 		return false;
 	}
-	public boolean pickAFight(MOB observer, String zapStr, boolean mobKiller, boolean misBehave, String attackMsg)
+	public boolean pickAFight(MOB observer, MaskingLibrary.CompiledZapperMask mask, boolean mobKiller, boolean misBehave, boolean levelCheck, String attackMsg)
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return false;
@@ -139,8 +151,9 @@ public class Aggressive extends StdBehavior
 					final MOB mob=R.fetchInhabitant(i);
 					if((mob!=null)
 					&&(mob!=observer)
+					&&((!levelCheck)||(observer.phyStats().level()<(mob.phyStats().level()+5)))
 					&&((!mob.isMonster())||(mobKiller))
-					&&(CMLib.masking().maskCheck(zapStr,mob,false))
+					&&(CMLib.masking().maskCheck(mask,mob,false))
 					&&(!groupMembers.contains(mob))
 					&&(startFight(observer,mob,mobKiller,misBehave,attackMsg)))
 						return true;
@@ -150,7 +163,7 @@ public class Aggressive extends StdBehavior
 		return false;
 	}
 
-	public void tickAggressively(Tickable ticking, int tickID, boolean mobKiller, boolean misBehave, String zapStr, String attackMsg)
+	public void tickAggressively(Tickable ticking, int tickID, boolean mobKiller, boolean misBehave, boolean levelCheck, MaskingLibrary.CompiledZapperMask mask, String attackMsg)
 	{
 		if(tickID!=Tickable.TICKID_MOB)
 			return;
@@ -158,7 +171,7 @@ public class Aggressive extends StdBehavior
 			return;
 		if(!(ticking instanceof MOB))
 			return;
-		pickAFight((MOB)ticking,zapStr,mobKiller,misBehave,attackMsg);
+		pickAFight((MOB)ticking,mask,mobKiller,misBehave,levelCheck,attackMsg);
 	}
 
 	@Override
@@ -174,7 +187,8 @@ public class Aggressive extends StdBehavior
 							 tickID,
 							 mobkill,
 							 misbehave,
-							 getParms(),
+							 this.levelcheck,
+							 this.mask,
 							 attackMessage);
 		}
 		return true;

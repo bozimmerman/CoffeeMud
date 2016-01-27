@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,14 +34,27 @@ import java.util.*;
 */
 public class MobileAggressive extends Mobile
 {
-	@Override public String ID(){return "MobileAggressive";}
-	protected int tickWait=0;
-	@Override public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
-	protected boolean mobkill=false;
-	protected boolean misbehave=false;
-	protected String attackMsg=null;
-	protected int aggressiveTickDown=0;
-	protected VeryAggressive veryA=new VeryAggressive();
+	@Override
+	public String ID()
+	{
+		return "MobileAggressive";
+	}
+
+	protected int	tickWait	= 0;
+
+	@Override
+	public long flags()
+	{
+		return Behavior.FLAG_POTENTIALLYAGGRESSIVE | Behavior.FLAG_TROUBLEMAKING;
+	}
+
+	protected boolean			mobkill				= false;
+	protected boolean			misbehave			= false;
+	protected String			attackMsg			= null;
+	protected int				aggressiveTickDown	= 0;
+	protected boolean			levelcheck			= false;
+	protected VeryAggressive	veryA				= new VeryAggressive();
+	protected MaskingLibrary.CompiledZapperMask	mask= null;
 
 	public MobileAggressive()
 	{
@@ -70,8 +82,10 @@ public class MobileAggressive extends Mobile
 		tickDown=tickWait;
 		aggressiveTickDown=tickWait;
 		final Vector<String> V=CMParms.parse(newParms.toUpperCase());
+		levelcheck=V.contains("CHECKLEVEL");
 		mobkill=V.contains("MOBKILL");
 		misbehave=V.contains("MISBEHAVE");
+		this.mask=CMLib.masking().getPreCompiledMask(newParms);
 	}
 	@Override
 	public boolean grantsAggressivenessTo(MOB M)
@@ -103,9 +117,9 @@ public class MobileAggressive extends Mobile
 		{
 			aggressiveTickDown=tickWait;
 			tickStatus=Tickable.STATUS_MISC+2;
-			veryA.tickAggressively(ticking,tickID,mobkill,misbehave,getParms(),attackMsg);
+			veryA.tickAggressively(ticking,tickID,mobkill,misbehave,levelcheck,this.mask,attackMsg);
 			tickStatus=Tickable.STATUS_MISC+3;
-			veryA.tickVeryAggressively(ticking,tickID,wander,mobkill,misbehave,getParms(),attackMsg);
+			veryA.tickVeryAggressively(ticking,tickID,wander,mobkill,misbehave,levelcheck,this.mask,attackMsg);
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;

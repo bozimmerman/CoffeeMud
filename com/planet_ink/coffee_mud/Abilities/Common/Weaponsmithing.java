@@ -40,13 +40,39 @@ import java.util.*;
 
 public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
-	@Override public String ID() { return "Weaponsmithing"; }
-	private final static String localizedName = CMLib.lang().L("Weaponsmithing");
-	@Override public String name() { return localizedName; }
-	private static final String[] triggerStrings =I(new String[] {"WEAPONSMITH","WEAPONSMITHING"});
-	@Override public String[] triggerStrings(){return triggerStrings;}
-	@Override public String supportedResourceString(){return "METAL|MITHRIL";}
-	protected int displayColumns(){return 2;}
+	@Override
+	public String ID()
+	{
+		return "Weaponsmithing";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Weaponsmithing");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private static final String[]	triggerStrings	= I(new String[] { "WEAPONSMITH", "WEAPONSMITHING" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
+	@Override
+	public String supportedResourceString()
+	{
+		return "METAL|MITHRIL";
+	}
+
+	protected int displayColumns()
+	{
+		return 2;
+	}
+
 	@Override
 	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
@@ -91,8 +117,17 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
 	}
 
-	@Override public String parametersFile(){ return "weaponsmith.txt";}
-	@Override protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+	@Override
+	public String parametersFile()
+	{
+		return "weaponsmith.txt";
+	}
+
+	@Override
+	protected List<List<String>> loadRecipes()
+	{
+		return super.loadRecipes(parametersFile());
+	}
 
 	@Override
 	public void unInvoke()
@@ -154,6 +189,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 		return -1;
 	}
+
 	protected int specType(String weaponDamageType)
 	{
 		for(int i=0;i<Weapon.TYPE_DESCS.length;i++)
@@ -163,6 +199,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 		return -1;
 	}
+
 	protected boolean canDo(String weaponClass, MOB mob)
 	{
 		if((mob.isMonster())&&(!CMLib.flags().isAnimalIntelligence(mob)))
@@ -173,18 +210,33 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		String specialization="";
 		switch(specClass(weaponClass))
 		{
-		case Weapon.CLASS_AXE: specialization="Specialization_Axe"; break;
+		case Weapon.CLASS_AXE:
+			specialization = "Specialization_Axe";
+			break;
 		case Weapon.CLASS_STAFF:
 		case Weapon.CLASS_HAMMER:
-		case Weapon.CLASS_BLUNT: specialization="Specialization_BluntWeapon"; break;
+		case Weapon.CLASS_BLUNT:
+			specialization = "Specialization_BluntWeapon";
+			break;
 		case Weapon.CLASS_DAGGER:
-		case Weapon.CLASS_EDGED: specialization="Specialization_EdgedWeapon"; break;
-		case Weapon.CLASS_FLAILED: specialization="Specialization_FlailedWeapon"; break;
-		case Weapon.CLASS_POLEARM: specialization="Specialization_Polearm"; break;
-		case Weapon.CLASS_SWORD: specialization="Specialization_Sword"; break;
+		case Weapon.CLASS_EDGED:
+			specialization = "Specialization_EdgedWeapon";
+			break;
+		case Weapon.CLASS_FLAILED:
+			specialization = "Specialization_FlailedWeapon";
+			break;
+		case Weapon.CLASS_POLEARM:
+			specialization = "Specialization_Polearm";
+			break;
+		case Weapon.CLASS_SWORD:
+			specialization = "Specialization_Sword";
+			break;
 		case Weapon.CLASS_THROWN:
-		case Weapon.CLASS_RANGED: specialization="Specialization_Ranged"; break;
-		default: return false;
+		case Weapon.CLASS_RANGED:
+			specialization = "Specialization_Ranged";
+			break;
+		default:
+			return false;
 		}
 		if(mob.fetchAbility(specialization)==null)
 			return false;
@@ -222,7 +274,11 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return true;
 	}
 
-	@Override public boolean supportsMending(Physical I){ return canMend(null,I,true);}
+	@Override
+	public boolean supportsMending(Physical I)
+	{
+		return canMend(null, I, true);
+	}
 
 	@Override
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
@@ -253,7 +309,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+									final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -378,8 +434,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				if(V.size()>0)
 				{
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
-					if((autoGenerate>0)||((level<=mob.phyStats().level())
-										&&(canDo(V.get(RCP_WEAPONCLASS),mob))))
+					if((autoGenerate>0)
+					||((level<=mob.phyStats().level())&&(canDo(V.get(RCP_WEAPONCLASS),mob))))
 					{
 						foundRecipe=V;
 						break;
@@ -406,11 +462,11 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			bundling=spell.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"metal",pm,
-												otherRequired.length()>0?1:0,otherRequired,null,
-												false,
-												autoGenerate,
-												enhancedTypes);
+													woodRequired,"metal",pm,
+													otherRequired.length()>0?1:0,otherRequired,null,
+													false,
+													autoGenerate,
+													enhancedTypes);
 			if(data==null)
 				return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -442,6 +498,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI.setBaseValue((CMath.s_int(foundRecipe.get(RCP_VALUE))/4)+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			buildingI.setMaterial(data[0][FOUND_CODE]);
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
+			if(buildingI.basePhyStats().level()<1)
+				buildingI.basePhyStats().setLevel(1);
 			buildingI.setSecretIdentity(getBrand(mob));
 			if(bundling)
 				buildingI.setBaseValue(lostValue);

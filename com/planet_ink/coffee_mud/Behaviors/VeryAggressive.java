@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -35,8 +34,17 @@ import java.util.*;
 */
 public class VeryAggressive extends Aggressive
 {
-	@Override public String ID(){return "VeryAggressive";}
-	@Override public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
+	@Override
+	public String ID()
+	{
+		return "VeryAggressive";
+	}
+
+	@Override
+	public long flags()
+	{
+		return Behavior.FLAG_POTENTIALLYAGGRESSIVE | Behavior.FLAG_TROUBLEMAKING;
+	}
 
 	public VeryAggressive()
 	{
@@ -68,7 +76,8 @@ public class VeryAggressive extends Aggressive
 		return CMLib.masking().maskCheck(getParms(),M,false);
 	}
 
-	public void tickVeryAggressively(Tickable ticking, int tickID, boolean wander, boolean mobKiller, boolean misBehave, String zapStr, String attackMsg)
+	public void tickVeryAggressively(Tickable ticking, int tickID, boolean wander, boolean mobKiller, boolean misBehave, 
+									boolean levelCheck, MaskingLibrary.CompiledZapperMask mask, String attackMsg)
 	{
 		if(tickID!=Tickable.TICKID_MOB)
 			return;
@@ -80,12 +89,14 @@ public class VeryAggressive extends Aggressive
 
 		// ridden things dont wander!
 		if(ticking instanceof Rideable)
+		{
 			if(((Rideable)ticking).numRiders()>0)
 				return;
+		}
 
 		if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
 		||(!CMLib.flags().canTaste(mob)))
-		   return;
+			return;
 
 		// let's not do this 100%
 		if(CMLib.dice().rollPercentage()>15)
@@ -107,8 +118,8 @@ public class VeryAggressive extends Aggressive
 			final Room room=thisRoom.getRoomInDir(d);
 			final Exit exit=thisRoom.getExitInDir(d);
 			if((room!=null)
-			   &&(exit!=null)
-			   &&(wander||room.getArea().Name().equals(thisRoom.getArea().Name())))
+			&&(exit!=null)
+			&&(wander||room.getArea().Name().equals(thisRoom.getArea().Name())))
 			{
 				if(exit.isOpen())
 				{
@@ -118,10 +129,11 @@ public class VeryAggressive extends Aggressive
 						if((inhab!=null)
 						&&((!inhab.isMonster())||(mobKiller))
 						&&(CMLib.flags().canSenseEnteringLeaving(inhab,mob))
-						&&(CMLib.masking().maskCheck(zapStr,inhab,false))
-						&&((zapStr.length()>0)
-						||((inhab.phyStats().level()<(mob.phyStats().level()+8))
-						   &&(inhab.phyStats().level()>(mob.phyStats().level()-8)))))
+						&&((!levelCheck)||(mob.phyStats().level()<(inhab.phyStats().level()+5)))
+						&&(CMLib.masking().maskCheck(mask,inhab,false))
+						&&(((mask!=null)&&(mask.entries().length>0))
+							||((inhab.phyStats().level()<(mob.phyStats().level()+8))
+								&&(inhab.phyStats().level()>(mob.phyStats().level()-8)))))
 						{
 							dirCode=d;
 							break;
@@ -136,7 +148,7 @@ public class VeryAggressive extends Aggressive
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY)))
 		{
 			CMLib.tracking().walk(mob,dirCode,false,false);
-			pickAFight(mob,zapStr,mobKiller,misBehave,attackMsg);
+			pickAFight(mob,mask,mobKiller,misBehave,levelCheck,attackMsg);
 		}
 	}
 
@@ -151,7 +163,8 @@ public class VeryAggressive extends Aggressive
 								 wander,
 								 mobkill,
 								 misbehave,
-								 getParms(),
+								 this.levelcheck,
+								 this.mask,
 								 attackMessage);
 		}
 		return true;

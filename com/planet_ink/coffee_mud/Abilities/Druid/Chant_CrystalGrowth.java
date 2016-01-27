@@ -37,14 +37,49 @@ import java.util.List;
 
 public class Chant_CrystalGrowth extends Chant
 {
-	@Override public String ID() { return "Chant_CrystalGrowth"; }
-	private final static String localizedName = CMLib.lang().L("Crystal Growth");
-	@Override public String name() { return localizedName; }
-	@Override public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	@Override protected int canAffectCode(){return 0;}
-	@Override protected int canTargetCode(){return 0;}
-	@Override protected int overrideMana(){return 50;}
-	@Override public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
+	@Override
+	public String ID()
+	{
+		return "Chant_CrystalGrowth";
+	}
+
+	private final static String	localizedName	= CMLib.lang().L("Crystal Growth");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ROCKCONTROL;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return 50;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -68,7 +103,7 @@ public class Chant_CrystalGrowth extends Chant
 				mob.location().send(mob,msg);
 
 				ItemCraftor A=null;
-				switch(CMLib.dice().roll(1,10,0))
+				switch(CMLib.dice().roll(1,10,0)+9)//TODO: FIXME!!!!!!!!!!!!!!!!!!!
 				{
 				case 1:
 				case 2:
@@ -84,6 +119,7 @@ public class Chant_CrystalGrowth extends Chant
 				case 8:
 				case 9:
 				case 10:
+				default:
 					A=(ItemCraftor)CMClass.getAbility("Weaponsmithing");
 					break;
 				}

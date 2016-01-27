@@ -79,12 +79,18 @@ public class Shutdown extends StdCommand implements Tickable
 		{
 			final String s=commands.get(i);
 			if(s.equalsIgnoreCase("RESTART"))
-			{ keepItDown=false; commands.remove(i);}
+			{
+				keepItDown = false;
+				commands.remove(i);
+			}
 			else
 			if(s.equalsIgnoreCase("NOPROMPT"))
-			{ noPrompt=true; commands.remove(i); }
+			{
+				noPrompt = true;
+				commands.remove(i);
+			}
 			else
-			if(s.equalsIgnoreCase("CANCEL"))
+			if(s.equalsIgnoreCase("CANCEL")||s.equalsIgnoreCase("STOP"))
 			{
 				if(shuttingDownMob==null)
 				{
@@ -92,7 +98,11 @@ public class Shutdown extends StdCommand implements Tickable
 					return false;
 				}
 				shuttingDownMob=null;
-				CMLib.threads().deleteTick(this, Tickable.TICKID_AREA);
+				if(CMLib.threads().deleteTick(this, Tickable.TICKID_AREA))
+					mob.tell(L("The shutdown has been cancelled."));
+				else
+					mob.tell(L("Either no shutdown has been scheduled or is already underway and can't be cancelled."));
+				return false;
 			}
 			else
 			if((s.equalsIgnoreCase("IN"))&&(i==commands.size()-3))
@@ -106,11 +116,11 @@ public class Shutdown extends StdCommand implements Tickable
 				final long timeMultiplier=CMLib.english().getMillisMultiplierByName(multiplier);
 				if((timeMultiplier<0)||(wait<=0))
 				{
-				   mob.tell(L("I don't know how to shutdown within the next @x1 @x2; try `5 minutes` or something similar.",""+wait,multiplier));
-				   return false;
+					mob.tell(L("I don't know how to shutdown within the next @x1 @x2; try `5 minutes` or something similar.",""+wait,multiplier));
+					return false;
 				}
 				if((!mob.session().confirm(L("Shutdown @x1 in @x2 @x3 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME),""+wait,multiplier.toLowerCase()),"N")))
-				   return false;
+					return false;
 				shuttingDownCompletes=System.currentTimeMillis()+(wait * timeMultiplier)-1;
 				shuttingDownNextAnnounce=System.currentTimeMillis() + ((wait * timeMultiplier)/2)-100;
 				shuttingDownMob=mob;

@@ -528,32 +528,32 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		final StringBuilder str=new StringBuilder("");
 		if(time > (TimeManager.MILI_YEAR))
 		{
-			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_YEAR));
-			time = time % TimeManager.MILI_YEAR;
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,TimeManager.MILI_YEAR)));
+			time = time - (num *TimeManager.MILI_YEAR);
 			str.append(num+(shortest?"y":(" year"+(num!=1?"s":""))));
 		}
 		if(time > (TimeManager.MILI_MONTH))
 		{
 			if(str.length()>0)
 				str.append(shortest?" ":", ");
-			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_MONTH));
-			time = time % TimeManager.MILI_MONTH;
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,TimeManager.MILI_MONTH)));
+			time = time - (num *TimeManager.MILI_MONTH);
 			str.append(num+(shortest?"M":(" month"+(num!=1?"s":""))));
 		}
 		if(time > (TimeManager.MILI_WEEK))
 		{
 			if(str.length()>0)
 				str.append(shortest?" ":", ");
-			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_WEEK));
-			time = time % TimeManager.MILI_WEEK;
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,TimeManager.MILI_WEEK)));
+			time = time - (num *TimeManager.MILI_WEEK);
 			str.append(num+(shortest?"w":(" week"+(num!=1?"s":""))));
 		}
 		if(time > (TimeManager.MILI_DAY))
 		{
 			if(str.length()>0)
 				str.append(shortest?" ":", ");
-			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_DAY));
-			time = time % TimeManager.MILI_DAY;
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,TimeManager.MILI_DAY)));
+			time = time - (num *TimeManager.MILI_DAY);
 			str.append(num+(shortest?"d":(" day"+(num!=1?"s":""))));
 		}
 		if(minUnit == TimeUnit.DAYS)
@@ -562,8 +562,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		{
 			if(str.length()>0)
 				str.append(shortest?" ":", ");
-			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_HOUR));
-			time = time % TimeManager.MILI_HOUR;
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,TimeManager.MILI_HOUR)));
+			time = time - (num *TimeManager.MILI_HOUR);
 			str.append(num+(shortest?"h":(" hour"+(num!=1?"s":""))));
 		}
 		if(minUnit == TimeUnit.HOURS)
@@ -572,8 +572,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		{
 			if(str.length()>0)
 				str.append(shortest?" ":", ");
-			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_MINUTE));
-			time = time % TimeManager.MILI_MINUTE;
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,TimeManager.MILI_MINUTE)));
+			time = time - (num *TimeManager.MILI_MINUTE);
 			str.append(num+(shortest?"m":(" minute"+(num!=1?"s":""))));
 		}
 		if(minUnit == TimeUnit.MINUTES)
@@ -582,8 +582,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		{
 			if(str.length()>0)
 				str.append(shortest?" ":", ");
-			final int num=(int)Math.round(CMath.div(time,TimeManager.MILI_SECOND));
-			time = time % TimeManager.MILI_SECOND;
+			final int num=(int)Math.round(CMath.floor(CMath.div(time,TimeManager.MILI_SECOND)));
+			time = time - (num*TimeManager.MILI_SECOND);
 			str.append(num+(shortest?"s":(" second"+(num!=1?"s":""))));
 		}
 		if(minUnit == TimeUnit.SECONDS)

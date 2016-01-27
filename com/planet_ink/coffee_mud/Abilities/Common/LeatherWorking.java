@@ -484,6 +484,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI.setSecretIdentity(getBrand(mob));
 			final int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-2;
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness/2));
+			if(buildingI.basePhyStats().level()<1)
+				buildingI.basePhyStats().setLevel(1);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));

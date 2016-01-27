@@ -22,6 +22,8 @@
   21. Default autoreaction shopkeepers will now adjust prices based on faction.
   22. Legal system now supports punishment caps on repeat crimes.
   23. New Locale type: Whirlpool.
+  24. Autoreaction ranges adjusted, and aggressive tagged to only affect near levels
+  25. New Aggressive/MobileAgressive flag: CHECKLEVEL, see help on those behaviors.
 # Build 5.9.1 Released 01/04/2016
    1. "Who accounts", used by an archon, can quickly list the account name of each player online.
    2. New Achievement event "GOTITEM", and new rewards (see new stats below and achievements.ini)
