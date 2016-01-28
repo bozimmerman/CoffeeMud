@@ -292,9 +292,10 @@ public class Chant_Whirlpool extends Chant
 				Chant_Whirlpool W=(Chant_Whirlpool)beneficialAffect(mob,target,asLevel,0);
 				if(W!=null)
 				{
+					W.theWhirlpool = CMClass.getLocale("Whirlpool");
 					W.theWhirlpool.setDisplayText(L("You are caught in a massive whirlpool"));
 					W.theWhirlpool.setDescription(L("The only way out appear to be to fight against the currents."));
-					W.theWhirlpool = CMClass.getLocale("Whirlpool");
+					((GridLocale)W.theWhirlpool).buildGrid();
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
 						if(d != Directions.DOWN)
