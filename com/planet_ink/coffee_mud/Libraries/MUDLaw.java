@@ -475,6 +475,49 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
+	public MOB getPropertyOwner(PrivateProperty record)
+	{
+		if(record.getOwnerName()==null)
+			return null;
+		if(record.getOwnerName().length()==0)
+			return null;
+		final Clan clan = CMLib.clans().getClan(record.getOwnerName());
+		if(clan != null)
+			return clan.getResponsibleMember();
+		return CMLib.players().getLoadPlayer(record.getOwnerName());
+	}
+	
+	@Override
+	public boolean canAttackThisProperty(MOB mob, PrivateProperty record)
+	{
+		if(record.getOwnerName()==null)
+			return true;
+		if(record.getOwnerName().length()==0)
+			return true;
+		if(record.getOwnerName().equals(mob.Name()))
+			return true;
+		if((record.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
+			return true;
+		final Clan clan = CMLib.clans().getClan(record.getOwnerName());
+		if(clan != null)
+		{
+			final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());
+			if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
+				return true;
+			final MOB M=clan.getResponsibleMember();
+			if(M!=null)
+				return mob.mayIFight(M);
+		}
+		else
+		{
+			final MOB M=CMLib.players().getLoadPlayer(record.getOwnerName());
+			if(M!=null)
+				return mob.mayIFight(M);
+		}
+		return false;
+	}
+
+	@Override
 	public Ability getClericInfusion(Physical room)
 	{
 		if(room==null)

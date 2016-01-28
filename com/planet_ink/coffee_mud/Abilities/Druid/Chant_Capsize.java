@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -111,7 +112,7 @@ public class Chant_Capsize extends Chant
 		return items;
 	}
 	
-	protected MOB getHighestLevel(MOB casterM, Item I)
+	protected MOB getHighestLevel(MOB casterM, Item I) throws CMException
 	{
 		int highestLevelPC=0;
 		int highestLevelNPC=0;
@@ -126,6 +127,8 @@ public class Chant_Capsize extends Chant
 				if((R instanceof MOB)&&(!grp.contains(R)))
 				{
 					MOB M=(MOB)R;
+					if(!casterM.mayIFight(M))
+						throw new CMException("Not permitted.");
 					if(M.isMonster() && (M.phyStats().level() > highestLevelNPC))
 					{
 						highestLevelNPC = M.phyStats().level();
@@ -156,6 +159,8 @@ public class Chant_Capsize extends Chant
 							MOB M=m.nextElement();
 							if(!grp.contains(M))
 							{
+								if(!casterM.mayIFight(M))
+									throw new CMException("Not permitted.");
 								if(M.isMonster() && (M.phyStats().level() > highestLevelNPC))
 								{
 									highestLevelNPC = M.phyStats().level();
@@ -210,11 +215,20 @@ public class Chant_Capsize extends Chant
 		if(target==null)
 			return false;
 		
-		if(target instanceof BoardableShip)
-		{ //ok
+		if(target instanceof PrivateProperty)
+		{
+			if(!CMLib.law().canAttackThisProperty(mob, (PrivateProperty)target))
+			{
+				mob.tell(L("You may not target @x1 with this chant.",target.Name()));
+				return false;
+			}
 		}
 		else
 		if((target instanceof Rideable) && (((Rideable)target).rideBasis() == Rideable.RIDEABLE_WATER))
+		{ //ok
+		}
+		else
+		if(target instanceof BoardableShip)
 		{ //ok
 		}
 		else
@@ -229,6 +243,17 @@ public class Chant_Capsize extends Chant
 			return false;
 		}
 
+		MOB M;
+		try
+		{
+			M = this.getHighestLevel(mob, target);
+		}
+		catch (CMException e)
+		{
+			mob.tell(L("You are not permitted to target @x1!",target.name()));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -236,7 +261,6 @@ public class Chant_Capsize extends Chant
 
 		if(success)
 		{
-			MOB M=this.getHighestLevel(mob, target);
 			if(M!=null)
 			{
 				int chanceToFail = M.charStats().getSave(CharStats.STAT_SAVE_JUSTICE);

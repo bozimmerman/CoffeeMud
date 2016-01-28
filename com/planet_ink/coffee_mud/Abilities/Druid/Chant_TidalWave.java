@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -87,15 +88,17 @@ public class Chant_TidalWave extends Chant
 		return Ability.CAN_ITEMS | Ability.CAN_ROOMS;
 	}
 
-	protected MOB gatherHighestLevels(final MOB mob, final Room R, final Set<MOB> grp, final int[] highestLevels, final MOB[] highestLevelM)
+	protected MOB gatherHighestLevels(final MOB mob, final Room R, final Set<MOB> grp, final int[] highestLevels, final MOB[] highestLevelM) throws CMException
 	{
 		if(R!=null && (R.numInhabitants() >0))
 		{
 			for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 			{
 				final MOB M=m.nextElement();
-				if((M!=null)&&(!grp.contains(M))&&(mob.mayIFight(M)))
+				if((M!=null)&&(!grp.contains(M)))
 				{
+					if(!mob.mayIFight(M))
+						throw new CMException("Not permitted.");
 					if(M.isMonster() && (M.phyStats().level() > highestLevels[1]))
 					{
 						highestLevels[1] = M.phyStats().level();
@@ -115,7 +118,7 @@ public class Chant_TidalWave extends Chant
 		return highestLevelM[1];
 	}
 
-	protected MOB gatherHighestLevels(final MOB mob, final Area A, final Set<MOB> grp, final int[] highestLevels, final MOB[] highestLevelM)
+	protected MOB gatherHighestLevels(final MOB mob, final Area A, final Set<MOB> grp, final int[] highestLevels, final MOB[] highestLevelM) throws CMException
 	{
 		if(A!=null)
 		{
@@ -130,16 +133,18 @@ public class Chant_TidalWave extends Chant
 		return highestLevelM[1];
 	}
 	
-	protected MOB gatherHighestLevels(final MOB mob, final Rideable I, final Set<MOB> grp, final int[] highestLevels, final MOB[] highestLevelM)
+	protected MOB gatherHighestLevels(final MOB mob, final Rideable I, final Set<MOB> grp, final int[] highestLevels, final MOB[] highestLevelM) throws CMException
 	{
 		if(I!=null)
 		{
 			for(final Enumeration<Rider> r=I.riders();r.hasMoreElements();)
 			{
 				final Rider R=r.nextElement();
-				if((R instanceof MOB)&&(!grp.contains(R))&&(mob.mayIFight((MOB)R)))
+				if((R instanceof MOB)&&(!grp.contains(R)))
 				{
 					final MOB M=(MOB)R;
+					if(!mob.mayIFight(M))
+						throw new CMException("Not permitted.");
 					if(M.isMonster() && (M.phyStats().level() > highestLevels[1]))
 					{
 						highestLevels[1] = M.phyStats().level();
@@ -160,7 +165,7 @@ public class Chant_TidalWave extends Chant
 		return highestLevelM[1];
 	}
 	
-	protected MOB getHighestLevel(MOB casterM, Physical target)
+	protected MOB getHighestLevel(MOB casterM, Physical target) throws CMException
 	{
 		// pc=0, npc=1
 		final int[] highestLevels=new int[]{0,0};
@@ -273,6 +278,14 @@ public class Chant_TidalWave extends Chant
 			
 			if(target instanceof BoardableShip)
 			{ //ok
+				if(target instanceof PrivateProperty)
+				{
+					if(!CMLib.law().canAttackThisProperty(mob, (PrivateProperty)target))
+					{
+						mob.tell(L("You may not target @x1 with this chant.",target.Name()));
+						return false;
+					}
+				}
 				for(Enumeration<Room> r=((BoardableShip)target).getShipArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R2=r.nextElement();
@@ -306,6 +319,14 @@ public class Chant_TidalWave extends Chant
 			target = R;
 			if(R.getArea() instanceof BoardableShip)
 			{ //ok
+				if(target instanceof PrivateProperty)
+				{
+					if(!CMLib.law().canAttackThisProperty(mob, (PrivateProperty)target))
+					{
+						mob.tell(L("You may not target @x1 with this chant.",target.Name()));
+						return false;
+					}
+				}
 				target=((BoardableShip)R.getArea()).getShipItem();
 				for(Enumeration<Room> r=((BoardableShip)target).getShipArea().getProperMap();r.hasMoreElements();)
 				{
@@ -389,6 +410,17 @@ public class Chant_TidalWave extends Chant
 			}
 		}
 		
+		MOB highM;
+		try
+		{
+			highM = this.getHighestLevel(mob, target);
+		}
+		catch (CMException e)
+		{
+			mob.tell(L("You are not permitted to target @x1!",target.name()));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -396,13 +428,12 @@ public class Chant_TidalWave extends Chant
 
 		if(success)
 		{
-			MOB M=this.getHighestLevel(mob, target);
-			if(M!=null)
+			if(highM!=null)
 			{
-				int chanceToFail = M.charStats().getSave(CharStats.STAT_SAVE_JUSTICE);
+				int chanceToFail = highM.charStats().getSave(CharStats.STAT_SAVE_JUSTICE);
 				if (chanceToFail > Integer.MIN_VALUE)
 				{
-					final int diff = (M.phyStats().level() - mob.phyStats().level());
+					final int diff = (highM.phyStats().level() - mob.phyStats().level());
 					final int diffSign = diff < 0 ? -1 : 1;
 					chanceToFail += (diffSign * (diff * diff));
 					if (chanceToFail < 5)

@@ -972,6 +972,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	{
 
 		if((riding!=null)&&(riding.mobileRideBasis()))
+		{
 			for(int r=0;r<riding.numRiders();r++)
 			{
 				final Rider rider=riding.fetchRider(r);
@@ -984,6 +985,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						addRiders(theRider,(Rideable)rider,riders);
 				}
 			}
+		}
 		return riders;
 	}
 

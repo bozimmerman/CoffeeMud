@@ -632,7 +632,7 @@ public class GenSailingShip extends StdBoardable
 	
 	protected boolean sail(final MOB mob, final Room R, final int dir)
 	{
-		CMMsg msg2=CMClass.getMsg(mob, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> sail(s) @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
+		CMMsg msg2=CMClass.getMsg(mob, R, R.getExitInDir(dir), CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> sail(s) @x1 @x2.",name(mob),Directions.getDirectionName(dir)));
 		if((R.okMessage(mob, msg2) && this.okAreaMessage(msg2, true)))
 		{
 			R.send(mob, msg2); // this lets the source know, i guess

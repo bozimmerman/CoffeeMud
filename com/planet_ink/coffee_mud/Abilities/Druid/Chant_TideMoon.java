@@ -97,7 +97,7 @@ public class Chant_TideMoon extends Chant
 	@Override
 	protected int overrideMana()
 	{
-		return Ability.COST_ALL - 99;
+		return Ability.COST_ALL - 51;
 	}
 
 	@Override

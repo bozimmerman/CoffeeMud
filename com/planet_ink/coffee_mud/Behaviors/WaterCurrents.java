@@ -49,6 +49,7 @@ public class WaterCurrents extends ActiveTicker
 	}
 
 	protected String	dirs	= "";
+	protected boolean	doBoats = false;
 
 	public WaterCurrents()
 	{
@@ -71,13 +72,20 @@ public class WaterCurrents extends ActiveTicker
 		dirs="";
 		for(int v=0;v<V.size();v++)
 		{
-			final int dir=Directions.getGoodDirectionCode(V.elementAt(v));
-			if(dir>=0)
-				dirs=dirs+Directions.getDirectionChar(dir);
+			final String str=V.get(v);
+			if(str.equalsIgnoreCase("BOATS"))
+				this.doBoats=true;
+			else
+			{
+				final int dir=Directions.getGoodDirectionCode(str);
+				if(dir>=0)
+					dirs=dirs+Directions.getDirectionChar(dir);
+			}
 		}
 		if(dirs.length()==0)
 			dirs="NE";
 	}
+	
 	public void applyCurrents(Room R, Vector<Physical> done)
 	{
 		final Vector<Physical> todo=new Vector<Physical>();
@@ -111,10 +119,11 @@ public class WaterCurrents extends ActiveTicker
 				&&(I.container()==null)
 				&&((!(I instanceof Rideable))
 					||(((Rideable)I).rideBasis()!=Rideable.RIDEABLE_WATER)
-					||(((Rideable)I).numRiders()==0))
+					||(((Rideable)I).numRiders()==0)
+					||(doBoats))
 				&&(!CMLib.flags().isInFlight(I))
 				&&(!CMLib.flags().isMobile(I))
-				&&(!(I instanceof Exit))
+				&&((!(I instanceof Exit))||(doBoats))
 				&&(!done.contains(I)))
 				{
 					todo.addElement(I);
